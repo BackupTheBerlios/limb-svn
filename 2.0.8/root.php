@@ -29,8 +29,11 @@ require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
+require_once(LIMB_DIR . 'core/model/response/response.class.php');
 
 start_user_session();
+
+$stats_register = new stats_register();
 
 debug :: add_timing_point('require_done');
 
@@ -72,6 +75,9 @@ if(($object_data =& fetch_one_by_node_id($node['id'])) === false)
 	if (!$user->is_logged_in())
 	{
 		$tree = limb_tree :: instance();
+		
+		$response = new response();
+		$stats_register->register(-1, '', $response->get_status());
 		reload('/root/login?redirect='. $tree->get_path_to_node($node));
 		exit;
 	}	
@@ -137,8 +143,6 @@ if(!isset($actions[$action]))
 }
 
 $response = $site_object_controller->process();
-
-$stats_register = new stats_register();
 
 $stats_register->register($node['id'], $action, $response->get_status());
 
