@@ -14,17 +14,15 @@ class project_site_objects_loader extends site_objects_loader
 {	
 	function get_classes_list()
 	{
-		$project_db = str_replace('_tests', '', DB_NAME);
-		
 		$db = db_factory :: instance();
 		
-		$db->select_db($project_db);
+		$db->select_db(get_ini_option('common.ini', 'name', 'ApplicationDB'));
 		
 		$db->sql_select('sys_class', '*', 'class_name != "site_object"');
 		
 		$list = $db->get_array();
 		
-		$db->select_db(DB_NAME);
+		$db->select_db(get_ini_option('common.ini', 'name', 'DB'));
 		
 		return complex_array :: get_column_values('class_name', $list);
 	}

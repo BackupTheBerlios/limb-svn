@@ -32,6 +32,15 @@ class caching_file_resolver extends file_resolver_decorator
     
     return $cache_file;
   }
+    
+  public function flush_cache()
+  {
+    $this->_resolved_paths = array();
+    $cache_file = $this->get_cache_file();
+    
+    if(file_exists($cache_file))
+      unlink($cache_file);
+  }  
   
   protected function _load_cache()
   {

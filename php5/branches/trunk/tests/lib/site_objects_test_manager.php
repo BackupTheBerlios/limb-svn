@@ -10,17 +10,20 @@
 ***********************************************************************************/
 class SiteObjectsTestManager
 {
-	function addTestCasesWithLoader(&$group, $loader, $tester_postfix='')
+	function getTestCasesHandlesWithLoader($loader, $tester_postfix='')
 	{
 	  $manager =& new SiteObjectsTestManager();
 	  
+	  $handles = array();
 	  foreach($loader->get_classes_list() as $site_object_class)
 	  {
-	  	$group->addTestCase($manager->_getSiteObjectTestCase($site_object_class, $tester_postfix));
+	  	$handles[] = $manager->_getSiteObjectTestCaseHandle($site_object_class, $tester_postfix);
 	  }
+	  
+	  return $handles;
 	}
 	
-	function &_getSiteObjectTestCase($site_object_class, $tester_postfix = '')
+	function &_getSiteObjectTestCaseHandle($site_object_class, $tester_postfix = '')
 	{
 	  if($tester_postfix)
 	  {
@@ -28,16 +31,12 @@ class SiteObjectsTestManager
 	  } 
 
 		if(file_exists(LIMB_APP_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester.class.php'))
-		{
-			include_once(LIMB_APP_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester.class.php');
-			$tester_name = $site_object_class . $tester_postfix . '_tester';
-			$test_case =& new $tester_name($site_object_class);
+		{		  
+		  return array(LIMB_APP_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester', $site_object_class);
 		}
 		elseif(file_exists(LIMB_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester.class.php'))
 		{
-			include_once(LIMB_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester.class.php');
-			$tester_name = $site_object_class . $tester_postfix . '_tester';
-			$test_case =& new $tester_name($site_object_class);
+		  return array(LIMB_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester', $site_object_class);
 		}
 		else
 		{	
@@ -46,18 +45,14 @@ class SiteObjectsTestManager
 	  	if (is_subclass_of($site_object, 'content_object'))
 	  	{   	  	
 	  	  $tester_name = 'content_object' . $tester_postfix . '_tester';
-	  	  include_once(LIMB_DIR . '/tests/cases/site_objects_testers/' . $tester_name . '.class.php');
-	  		$test_case =& new $tester_name($site_object_class);
+	  	  return array(LIMB_DIR . '/tests/cases/site_objects_testers/' . $tester_name , $site_object_class);
 	  	}
 	  	else
 	  	{
 	  	  $tester_name = 'site_object' . $tester_postfix . '_tester';
-	  	  include_once(LIMB_DIR . '/tests/cases/site_objects_testers/' . $tester_name . '.class.php');
-	  		$test_case =& new $tester_name($site_object_class);
+	  	  return array(LIMB_DIR . '/tests/cases/site_objects_testers/' . $tester_name , $site_object_class);
 	  	}
 		}
-		
-		return $test_case;
 	}
 
 }

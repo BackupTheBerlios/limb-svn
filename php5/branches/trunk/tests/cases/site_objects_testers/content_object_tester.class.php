@@ -12,12 +12,7 @@ require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_tester.cl
 require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
 
 class content_object_tester extends site_object_tester 
-{ 
-  function content_object_tester($class_name) 
-  {
-  	parent :: site_object_tester($class_name);
-  }
-  
+{   
   function _clean_up()
   {
   	parent :: _clean_up();

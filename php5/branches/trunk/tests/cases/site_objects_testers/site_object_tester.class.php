@@ -14,12 +14,7 @@ require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php')
 require_once(LIMB_DIR . 'class/core/actions/empty_action.class.php');
 
 class mock_root_object extends site_object
-{
-	function mock_root_object()
-	{
-		parent :: site_object();
-	}
-	
+{	
 	function _define_class_properties()
 	{
 		return array(
@@ -37,13 +32,13 @@ class site_object_tester extends LimbTestCase
 	var $parent_node_id = '';
 	var $sub_node_id = '';
 	
-  function site_object_tester($class_name) 
+  function site_object_tester($class_name, $test_name = 'site object tester') 
   {
   	$this->db =& db_factory :: instance();
   	
   	$this->class_name = $class_name;
 
-  	parent :: LimbTestCase();
+  	parent :: LimbTestCase($test_name . ' : ' . $class_name);
   }
   
   function &_create_site_object()

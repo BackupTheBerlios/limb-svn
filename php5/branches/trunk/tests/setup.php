@@ -32,11 +32,19 @@ require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');//don't move this lin
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
 include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
 include_once(LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/controller_file_resolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/template_file_resolver.class.php');
 
-register_file_resolver('ini',       LIMB_DIR . '/tests/lib/tests_ini_file_resolver');
-register_file_resolver('action',    LIMB_DIR . '/tests/lib/tests_action_file_resolver');
-register_file_resolver('strings',   LIMB_DIR . '/tests/lib/tests_strings_file_resolver');
-register_file_resolver('db_table',  new db_table_file_resolver(new package_file_resolver()));
+register_file_resolver('ini',         LIMB_DIR . '/tests/lib/tests_ini_file_resolver');
+register_file_resolver('action',      LIMB_DIR . '/tests/lib/tests_action_file_resolver');
+register_file_resolver('strings',     LIMB_DIR . '/tests/lib/tests_strings_file_resolver');
+register_file_resolver('db_table',    new db_table_file_resolver(new package_file_resolver()));
+register_file_resolver('template',    new template_file_resolver(new package_file_resolver()));
+register_file_resolver('controller',  new controller_file_resolver(new package_file_resolver()));
+register_file_resolver('datasource',  new datasource_file_resolver(new package_file_resolver()));
+register_file_resolver('site_object', new site_object_file_resolver(new package_file_resolver()));
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
