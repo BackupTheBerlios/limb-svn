@@ -25,6 +25,15 @@ class stats_event_controller extends site_object_controller
 						'action_name' => strings :: get('show_events_list', 'stats'),
 						'action_path' => '/stats_event/stats_event_filter_action',
 				),
+				'edit' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('edit'),
+						'action_path' => '/site_object/edit_action',
+						'template_path' => '/site_object/edit.html',
+						'img_src' => '/shared/images/edit.gif'
+				),
 				'delete' => array(
 						'permissions_required' => 'w',
 						'JIP' => true,

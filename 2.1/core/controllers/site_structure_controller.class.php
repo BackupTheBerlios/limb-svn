@@ -63,6 +63,16 @@ class site_structure_controller extends site_object_controller
 						'action_path' => '/site_structure/multi_toggle_publish_status_action', 
 						'popup' => true,
 				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete'),
+						'action_path' => '/site_object/delete_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				),
+
 		);
  		
 

@@ -68,6 +68,15 @@ class stats_report_controller extends site_object_controller
 						'action_path' => '/stats_report/stats_routes_report_action',
 						'display_in_breadcrumbs' => true
 				),
+				'edit' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('edit'),
+						'action_path' => '/site_object/edit_action',
+						'template_path' => '/site_object/edit.html',
+						'img_src' => '/shared/images/edit.gif'
+				),
 				'delete' => array(
 						'permissions_required' => 'w',
 						'JIP' => true,

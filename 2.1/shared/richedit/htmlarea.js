@@ -644,7 +644,12 @@ HTMLArea.prototype.generate = function ()
 	// the HTML content into the original textarea.
 	window.onunload = function()
 	{
-		editor._textArea.value = editor.getHTML();
+		for(var i=0; i< window.arr_richedits.length; i++)
+		{
+			value = window.arr_richedits[i].getHTML();
+			re = new RegExp('http://' + location.host, 'g');
+			window.arr_richedits[i]._textArea.value = value.replace(re, '');
+		}
 	};
 
 	// creates & appends the toolbar
