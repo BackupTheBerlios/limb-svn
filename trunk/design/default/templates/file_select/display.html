@@ -4,6 +4,8 @@
 	var preview_obj;
 	var preview_caption_obj;
 	var preview_description_obj;
+	var preview_size_obj;
+	var preview_mime_obj;
 	var insert_button_obj;
 	var file_obj = new Object();
 	
@@ -25,12 +27,16 @@
 
 		preview_caption_obj.nodeValue = file_data.name;
 		preview_description_obj.nodeValue = file_data.description;
+		preview_size_obj.nodeValue = 'Size:' + file_data.size + ' bytes';
+		preview_mime_obj.nodeValue = 'Mime-type:' + file_data.mime_type;
 
 		insert_button_obj.disabled = false;
 		
 		file_obj.node_id = file_data.node_id;
 		file_obj.name = file_data.name;
 		file_obj.description = file_data.description;
+		file_obj.mime_type = file_data.mime_type;
+		file_obj.size = file_data.size;
 	}
 	
 	function insert_file()
@@ -50,6 +56,12 @@
 
 		obj = document.getElementById('_preview_description');
 		preview_description_obj = obj.firstChild;
+
+		obj = document.getElementById('_preview_size');
+		preview_size_obj = obj.firstChild;
+
+		obj = document.getElementById('_preview_mime');
+		preview_mime_obj = obj.firstChild;
 		
 		obj = document.getElementsByName('_insert_button');
 		insert_button_obj = obj[0];
@@ -69,6 +81,8 @@
 			
 			preview_caption_obj.nodeValue = file.name;
 			preview_description_obj.nodeValue = file.description;
+			preview_size_obj.nodeValue = 'Size:' + file.size + ' bytes';
+			preview_mime_obj.nodeValue = 'Mime-type:' + file.mime_type;
 		}
 		
 		process_popup();
@@ -115,12 +129,20 @@
 								<td colspan=2 align='center'><span class='text' style='font-weight:bold'><div id='_preview_caption'>&nbsp;</div></span></td>
 							</tr>
 							<tr>
-								<td><img src='/shared/images/1x1.gif' height=190 width=1></td>
+								<td><img src='/shared/images/1x1.gif' width=1></td>
 								<td align='center' valign='top' width=100%><img id='_preview' src='/shared/images/1x1.gif'></td>
 							</tr>
 							<tr>
-								<td><img src='/shared/images/1x1.gif' height=100 width=1></td>
+								<td><img src='/shared/images/1x1.gif' width=1></td>
 								<td colspan=2 valign='top'><span class='text'><div id='_preview_description'>&nbsp;</div></span></td>
+							</tr>
+							<tr>
+								<td><img src='/shared/images/1x1.gif' width=1></td>
+								<td colspan=2 valign='top'><span class='text'><div id='_preview_size'>&nbsp;</div></span></td>
+							</tr>
+							<tr>
+								<td><img src='/shared/images/1x1.gif' width=1></td>
+								<td colspan=2 valign='top'><span class='text'><div id='_preview_mime'>&nbsp;</div></span></td>
 							</tr>
 							</table>	
 						</fieldset>

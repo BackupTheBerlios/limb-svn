@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: file_object.class.php 579 2004-02-28 13:17:54Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/media_object.class.php');
@@ -81,7 +81,7 @@ class file_object extends media_object
 	
 	function & fetch($params=array(), $sql_params=array())
 	{
-		$sql_params['columns'][] = ', m.file_name, m.mime_type, m.etag ';
+		$sql_params['columns'][] = ', m.file_name, m.mime_type, m.etag, m.size ';
 		$sql_params['tables'][] = ', media as m ';
 		$sql_params['conditions'][] = ' AND tn.media_id=m.id ';
 		
