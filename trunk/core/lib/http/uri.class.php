@@ -11,48 +11,77 @@
 
 class uri
 {
-  var $url = '';
-  
-  var $protocol = '';
+  var $_protocol = '';
 
-  var $username = '';
+  var $_user = '';
 
-  var $password = '';
+  var $_password = '';
 
-  var $host = '';
+  var $_host = '';
   
-  var $port = '';
+  var $_port = '';
   
-  var $path = '';
+  var $_path = '';
   
-  var $anchor = '';
+  var $_anchor = '';
   
   var $_query_items = array();
 
-  var $_use_brackets = true;
-	
   var $_path_elements = array();
 
-  function uri($url='', $use_brackets=true)
+  function uri($str='')
   {
-    if ($url)
-      $this->parse($url, $use_brackets);
+    if ($str)
+      $this->parse($str);
   }
   
-  function parse($url, $use_brackets=true)
+  function get_protocol()
   {
-		$this->_use_brackets = $use_brackets;
-		$this->url         = $url;
-		$this->user        = '';
-		$this->pass        = '';
-		$this->host        = '';
-		$this->port        = 80;
-		$this->path        = '';
+    return $this->_protocol;
+  }
+
+  function get_user()
+  {
+    return $this->_user;
+  }
+
+  function get_password()
+  {
+    return $this->_password;
+  }
+  
+  function get_host()
+  {
+    return $this->_host;
+  }
+
+  function get_port()
+  {
+    return $this->_port;
+  }
+
+  function get_path()
+  {
+    return $this->_path;
+  }
+
+  function get_anchor()
+  {
+    return $this->_anchor;
+  }
+    
+  function parse($str)
+  {
+		$this->_user        = '';
+		$this->_password    = '';
+		$this->_host        = '';
+		$this->_port        = 80;
+		$this->_path        = '';
 		$this->_query_items = array();
-		$this->anchor      = '';
+		$this->_anchor      = '';
 
 		// Only use defaults if not an absolute URL given
-		if (!preg_match('/^[a-z0-9]+:\/\//i', $url)) 
+		if (!preg_match('/^[a-z0-9]+:\/\//i', $str)) 
 		{
       if (!empty($_SERVER['HTTP_HOST']) && preg_match('/^(.*)(:([0-9]+))?$/U', $_SERVER['HTTP_HOST'], $matches))
       {
@@ -63,20 +92,20 @@ class uri
          	$port = '80';			          
       }
 
-      $this->protocol    = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
-      $this->user        = '';
-      $this->pass        = '';
-      $this->host        = !empty($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost');
-      $this->port        = !empty($port) ? $port : (isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80);
-      $this->path        = !empty($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '/';
+      $this->_protocol    = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
+      $this->_user        = '';
+      $this->_password        = '';
+      $this->_host        = !empty($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost');
+      $this->_port        = !empty($port) ? $port : (isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80);
+      $this->_path        = !empty($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '/';
       $this->_query_items = isset($_SERVER['QUERY_STRING']) ? $this->_parse_query_string($_SERVER['QUERY_STRING']) : null;
-      $this->anchor      = '';
+      $this->_anchor      = '';
 		}
 
     // Parse the url and store the various parts
-    if (!empty($url))		
+    if (!empty($str))		
 		{
-      if(!($urlinfo = @parse_url($url)))
+      if(!($urlinfo = @parse_url($str)))
       	return;
 
       // Default query_string
@@ -87,29 +116,40 @@ class uri
         switch ($key) 
         {
           case 'scheme':
-          	$this->protocol = $value;
+          	$this->_protocol = $value;
           break;
           
           case 'user':
-          case 'pass':
+            $this->_user = $value;
+          break;
+          
           case 'host':
+            $this->_host = $value;
+          break;
+          
           case 'port':
-          	$this->$key = $value;
+          	$this->_port = $value;
+          break;
+          
+          case 'pass':
+            $this->_password = $value;
           break;
 
           case 'path':
             if ($value{0} == '/')
-            	$this->path = $value;
+            	$this->_path = $value;
             else 
             {
-            	$path = dirname($this->path) == '/' ? '' : dirname($this->path);//FIXX, not crossplatform?
-            	$this->path = sprintf('%s/%s', $path, $value);
+            	$path = dirname($this->_path) == '/' ? '' : dirname($this->_path);//FIXX, not crossplatform?
+            	$this->_path = sprintf('%s/%s', $path, $value);
             }
             
-    				$last_pos = strlen($this->path)-1;
-  					if($this->path{$last_pos} == '/')
-  						$this->path = substr($this->path, 0, $last_pos);								//probably is subject to change
+    				$last_pos = strlen($this->_path)-1;
+  					if($this->_path{$last_pos} == '/')
+  						$this->_path = substr($this->_path, 0, $last_pos);								//probably is subject to change
         
+            $this->_path = $this->resolve_path($this->_path);
+          
           break;
           
           case 'query':
@@ -117,13 +157,13 @@ class uri
           break;
 
           case 'fragment':
-          	$this->anchor = $value;
+          	$this->_anchor = $value;
           break;
         }
       }
     }
   	  		
-    $this->_path_elements = explode('/',$this->path);
+    $this->_path_elements = explode('/',$this->_path);
   }
 
   function count_path()
@@ -131,80 +171,101 @@ class uri
     return sizeof($this->_path_elements);
   }
   
-  function compare($url, &$rest, &$query_match)
-  { 
-  	$rest = null;
-  		
-  	$uri = new uri($url);
-  	
-  	$count1 = $this->count_path();
-  	$count2 = $uri->count_path();
-  	
-    if (  !$count1 ||
-    			!$count2 ||
-    			$this->protocol !== $uri->protocol ||
-    			$this->host !== $uri->host
+  function count_query_items()
+  {
+    return sizeof($this->_query_items);
+  }
+  
+  function compare($uri)
+  {   		  	
+    if (  
+          $this->_protocol !== $uri->get_protocol() ||
+      		$this->_host !== $uri->get_host() ||
+      		$this->_port !== $uri->get_port() ||
+      		$this->_user !== $uri->get_user() ||
+      		$this->_password !== $uri->get_password()
     		)
     return false;
-        
-    $query_match = false;
     
-    if(sizeof($this->_query_items) == sizeof($uri->_query_items))
-    {
-    	$query_match = true;
-    	
-	    foreach($this->_query_items as $name => $value)
-	    {
-	    	if(	!isset($uri->query_items[$name]) ||
-	    			$uri->query_items[$name] != $this->_query_items[$name])
-	    	{
-	    		$query_match = false;
-	    		break;
-	    	}
-	  	}
-	  }
+    if(!$this->compare_query($uri))
+      return false;
     
-    for($i=0; $i < $count1 && $i < $count2; $i++)
-    {
-      if( $this->_path_elements[$i] != $uri->_path_elements[$i] )
-      	return false;
-    }
-    $rest = ($count1 - $count2);
+    if($this->compare_path($uri) !== 0)
+      return false;
+    
     return true;
   }
-
-  function get_url()
-  {
-    $query_string = $this->get_query_string();
-
-    $this->url = $this->protocol . '://'
-               . $this->user . (!empty($this->pass) ? ':' : '')
-               . $this->pass . (!empty($this->user) ? '@' : '')
-               . $this->host . ($this->port == '80' ? '' : ':' . $this->port)
-               . $this->path
-               . (!empty($query_string) ? '?' . $query_string : '')
-               . (!empty($this->anchor) ? '#' . $this->anchor : '');
-
-    return $this->url;
-  }
   
-  function get_inner_url()
+  function compare_query($uri)
   {
-    $query_string = $this->get_query_string();
+		if ($this->count_query_items() != $uri->count_query_items())
+		  return false;
+  
+    foreach($this->_query_items as $name => $value)
+    {
+    	if(	(($item = $uri->get_query_item($name)) === false) ||
+    			$item != $value)
+    		return false;
+  	}
+  	return true;
+  }
 
-    $url = $this->path
-           . (!empty($query_string) ? '?' . $query_string : '')
-           . (!empty($this->anchor) ? '#' . $this->anchor : '');
-           
-     
-		return $url;
-  }
-  
-  function is_inner()
+  function compare_path($uri)
   {
-  	return ($this->host == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
-  }
+  	$count1 = $this->count_path();
+  	$count2 = $uri->count_path();
   
+    for($i=0; $i < $count1 && $i < $count2; $i++)
+    {
+      if( $this->get_path_element($i) != $uri->get_path_element($i) )
+      	return false;
+    }
+    
+    return ($count1 - $count2);
+  }
+
+  function to_string($parts = array('protocol', 'user', 'password', 'host', 'port', 'path', 'query', 'anchor'))
+  {
+    $string = '';
+    
+    if(in_array('protocol', $parts))
+      $string .= !empty($this->_protocol) ? $this->_protocol . '://' : '';
+      
+    if(in_array('user', $parts))
+    {
+      $string .=  $this->_user;
+
+      if(in_array('password', $parts))
+        $string .= (!empty($this->_password) ? ':' : '') . $this->_password;
+                   
+      $string .= (!empty($this->_user) ? '@' : ''); 
+    }            
+
+    if(in_array('host', $parts))
+    {
+      $string .= $this->_host;
+
+      if(in_array('port', $parts))
+        $string .= (empty($this->_port) || ($this->_port == '80') ? '' : ':' . $this->_port);
+    }
+    else
+      $string = '';
+
+    if(in_array('path', $parts))
+      $string .= $this->_path;
+
+    if(in_array('query', $parts))
+    {
+      $query_string = $this->get_query_string();
+      $string .= !empty($query_string) ? '?' . $query_string : '';
+    }
+
+    if(in_array('anchor', $parts))
+      $string .= !empty($this->_anchor) ? '#' . $this->_anchor : '';
+      
+     return $string;
+  }
+      
   function get_path_element($level)
   {
     return isset($this->_path_elements[$level]) ? $this->_path_elements[$level] : '';
@@ -214,24 +275,19 @@ class uri
   {  		
   	return $this->_path_elements;
   }
-  
-  function remove_anchor()
-  {
-  	$this->anchor = '';
-	}
-  
+	    
   /**
   * Adds a query_string item
   *
   */
-  function add_query_item($name, $value, $preencoded = false)
+  function add_encoded_query_item($name, $value)
   {
-    $this->_query_items[$name] = $preencoded ? $value : urlencode($value);
-    
-    if ($preencoded)
-    	$this->_query_items[$name] = $value;
-    else
-    	$this->_query_items[$name] = is_array($value)? array_map('urlencode', $value): urlencode($value);
+    $this->_query_items[$name] = $value;    
+  }
+  
+  function add_query_item($name, $value)
+  {
+    $this->_query_items[$name] = is_array($value)? array_map('urlencode', $value): urlencode($value);
   }
   
   function get_query_item($name)
@@ -281,9 +337,9 @@ class uri
         if (is_array($value)) 
         {
           foreach ($value as $k => $v)
-          	$query_string[] = $this->_use_brackets ? sprintf('%s[%s]=%s', $name, $k, $v) : ($name . '=' . $v);
+          	$query_string[] = sprintf('%s[%s]=%s', $name, $k, $v);
         } 
-        elseif (!is_null($value))
+        elseif ($value != '' || is_null($value))
         	$query_string[] = $name . '=' . $value;
         else
         	$query_string[] = $name;
@@ -302,44 +358,16 @@ class uri
   function _parse_query_string($query_string)
   {
     $query_string = rawurldecode($query_string);
-    $parts = preg_split('/&/', $query_string, -1, PREG_SPLIT_NO_EMPTY);
-
-    $return = array();
     
-    foreach ($parts as $part) 
+    parse_str($query_string, $arr);
+    
+    foreach($arr as $key => $item)
     {
-      if (strpos($part, '=') !== false) 
-      {
-        $value = rawurlencode(substr($part, strpos($part, '=') + 1));
-        $key   = substr($part, 0, strpos($part, '='));
-      } 
-      else 
-      {
-        $value = null;
-        $key   = $part;
-      }
-      
-      if (substr($key, -2) == '[]') 
-      {
-        $key = substr($key, 0, -2);
-        if (@!is_array($return[$key])) 
-        {
-            $return[$key]   = array();
-            $return[$key][] = $value;
-        } 
-        else
-        	$return[$key][] = $value;
-      } 
-      elseif (!$this->_use_brackets && !empty($return[$key])) 
-      {
-        $return[$key]   = (array)$return[$key];
-        $return[$key][] = $value;
-      } 
-      else
-      	$return[$key] = $value;
+      if(!is_array($item))
+        $arr[$key] = rawurldecode($item);
     }
-
-    return $return;
+    
+    return $arr;
   }
   
   /**

@@ -59,13 +59,17 @@ class stats_uri
 		$this->url->parse($raw_url);
 		
 		$this->url->remove_query_items();
-		$this->url->remove_anchor();
 							
-		if($this->url->is_inner())
-			return $this->url->get_inner_url();
+		if($this->_is_inner_url())
+			return $this->url->to_string(array('path', 'query'));
 		else
-			return $this->url->get_url();
+			return $this->url->to_string(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
 	}	
+
+	function _is_inner_url()
+	{
+    return ($this->url->get_host() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
+	}
 }
 
 ?>

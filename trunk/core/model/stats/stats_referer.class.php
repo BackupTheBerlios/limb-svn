@@ -27,14 +27,19 @@ class stats_referer
 		if(!$clean_uri = $this->_get_clean_referer_page())
 			return -1;
 		
-		if($this->url->is_inner())
+		if($this->_is_inner_url())
 			return -1;
 			
 		if ($result = $this->_get_existing_referer_record_id($clean_uri))
 			return $result;
 		
 		return $this->_insert_referer_record($clean_uri);
-	}	
+	}
+	
+	function _is_inner_url()
+	{
+    return ($this->url->get_host() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
+	}
 	
 	function _get_clean_referer_page()
 	{
@@ -71,9 +76,8 @@ class stats_referer
 		$this->url->parse($raw_url);
 		
 		$this->url->remove_query_item('PHPSESSID');
-		$this->url->remove_anchor();
 		
-		return $this->url->get_url();
+		return $this->url->to_string(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
 	}	
 }
 

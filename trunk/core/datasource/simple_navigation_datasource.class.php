@@ -19,11 +19,11 @@ class simple_navigation_datasource extends fetch_sub_branch_datasource
 
 		foreach($result as $key => $data)
 		{
-			if($uri->compare($data['url'], $url_rest, $query_match))
+			if(is_integer($res = $uri->compare_path(new uri('url'))))
 			{
-				if($url_rest >= 0)
+				if($res >= 0)
 					$result[$key]['in_path'] = true;
-				if($url_rest == 0)
+				if($res == 0)
 					$result[$key]['selected'] = true;
 			}
 		}

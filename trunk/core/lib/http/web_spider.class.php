@@ -33,7 +33,7 @@ class web_spider
 	{
 		$this->_uri->parse($host);
 		
-		$this->_host_bind = $this->_uri->host;
+		$this->_host_bind = $this->_uri->get_host();
 	}
 	
 	function & crawl($init_uri)
@@ -96,16 +96,15 @@ class web_spider
 	{
 		$this->_uri->parse($uri);
 		
-		$host = $this->_uri->host;
+		$host = $this->_uri->get_host();
 		
 		if(	$this->_host_bind && 
 				$host != $this->_host_bind)
 			return;
 
 		$this->_uri->remove_query_item('PHPSESSID');
-		$this->_uri->anchor = '';
 						
-		return $this->_uri->get_url();
+		return $this->_uri->to_string(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
 	}
 			
 	function _get_content_hrefs(& $content)
