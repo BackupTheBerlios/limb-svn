@@ -39,6 +39,7 @@ class site_objects_classes_options_datasource extends datasource
     //media object can't really be a valid site object(refactor!!!)
     $items = fs :: find_subitems(LIMB_DIR . '/core/model/site_objects/', 'f', '~media_object~', false);
 
+    sort($items);
     foreach($items as $item)
     {
       $class = $this->_clean_class_path($item);
@@ -50,6 +51,7 @@ class site_objects_classes_options_datasource extends datasource
   {
     $items = fs :: find_subitems(PROJECT_DIR . '/core/model/site_objects/', 'f', '', false);
 
+    sort($items);
     foreach($items as $item)
     {
       $class = $this->_clean_class_path($item);

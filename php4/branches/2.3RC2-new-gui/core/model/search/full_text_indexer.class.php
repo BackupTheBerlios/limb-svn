@@ -22,6 +22,14 @@ class full_text_indexer
     $this->db = db_factory :: instance();
   }
 
+  function is_enabled()
+  {
+    if(!defined('FULL_TEXT_INDEXER_ENABLED'))
+      return true;
+
+    return constant('FULL_TEXT_INDEXER_ENABLED');
+  }
+
   function & instance()
   {
     $obj =&	instantiate_object('full_text_indexer');
@@ -30,6 +38,11 @@ class full_text_indexer
 
   function add(&$site_object)
   {
+    //quick and dirty solution of the fundamental problem
+    //which should be solved in 3.0 ... :(
+    if(!$this->is_enabled())
+      return;
+
     $indexer =& full_text_indexer :: instance();
 
     $indexer->remove($site_object);

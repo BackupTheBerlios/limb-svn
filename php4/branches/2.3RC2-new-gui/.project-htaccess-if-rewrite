@@ -1,0 +1,7 @@
+RewriteEngine On
+
+RewriteRule  ^root/(.*)$  root.php?%{QUERY_STRING}
+RewriteRule  ^root\?(.*)$  root.php?%{QUERY_STRING}
+RewriteRule  ^root$  root.php?%{QUERY_STRING}
+
+ErrorDocument 404		/root/404

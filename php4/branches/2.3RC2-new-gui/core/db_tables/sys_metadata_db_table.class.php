@@ -19,6 +19,7 @@ class sys_metadata_db_table extends db_table
       'object_id' => array('type' => 'numeric'),
       'keywords' => '',
       'description' => '',
+      'title' => '',
     );
   }
 }

@@ -8,13 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-@define('SIMPLE_TEST', dirname(__FILE__) . '/../../../../external/php_simpletest_1.0RC1/');
+@define('SIMPLE_TEST', dirname(__FILE__) . '/../../external/simpletest/');
 
 if (!file_exists(SIMPLE_TEST . 'unit_tester.php') )
-  die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
+  die ('Make sure the SIMPLE_TEST constant is set correctly in setup.php file!');
 
-if(!defined('LIMB_DIR'))
-  define('LIMB_DIR', dirname(__FILE__) . '/../');
+@define('LIMB_DIR', dirname(__FILE__) . '/../');
 
 require_once(SIMPLE_TEST . 'unit_tester.php');
 require_once(SIMPLE_TEST . 'mock_objects.php');

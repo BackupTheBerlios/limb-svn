@@ -9,10 +9,9 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
-require_once(LIMB_DIR . '/core/lib/mail/send_plain_mail.inc.php');
+require_once(LIMB_DIR . '/core/lib/mail/mail.inc.php');
 require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 require_once(LIMB_DIR . '/core/model/sys_param.class.php');
-
 
 class send_feedback_action extends form_action
 {
@@ -70,11 +69,9 @@ class send_feedback_action extends form_action
 
     if(!$recipient_email ||
        !send_plain_mail(array($recipient_email),
-                    $mail_data['sender_email'],
-                    $subject,
-                    $body
-                    )
-        )
+                        $mail_data['sender_email'],
+                        $subject,
+                        $body))
     {
       message_box :: write_error(strings :: get('mail_not_sent', 'feedback'));
 

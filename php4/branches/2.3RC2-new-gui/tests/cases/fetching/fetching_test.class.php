@@ -138,7 +138,7 @@ class fetching_test extends db_test
 
     $this->access_policy =& access_policy :: instance();
 
-    $this->access_policy->save_object_access($access, array(), ACCESSOR_TYPE_USER);
+    $this->access_policy->save_object_access($access, ACCESSOR_TYPE_USER);
 
     $actions = array(
       $user_id => array(

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/model/site_objects/content_object.class.php');
-require_once(LIMB_DIR . '/core/lib/mail/send_html_mail.inc.php');
+require_once(LIMB_DIR . '/core/lib/mail/mail.inc.php');
 
 class subscribe_mail extends content_object
 {

@@ -32,7 +32,7 @@ class display_file_action extends action
     if ($request->has_attribute('icon'))
     {
       $size = 16;
-      if (!empty($request->get_attribute('icon')))
+      if($request->get_attribute('icon'))
         $size = $request->get_attribute('icon');
 
       $mime_type = $object_data['mime_type'];

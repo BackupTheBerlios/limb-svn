@@ -8,15 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
+//store erros in log files
+@define('DEBUG_OUTPUT_MESSAGE_STORE', true);
+//send erros to DEVELOPER_EMAIL address
+@define('DEBUG_OUTPUT_MESSAGE_SEND', false);
+
 define('DEBUG_LEVEL_NOTICE', 1);
 define('DEBUG_LEVEL_WARNING', 2);
 define('DEBUG_LEVEL_ERROR', 3);
 define('DEBUG_TIMING_POINT', 4);
 define('DEBUG_LEVEL', 5);
-
-define('DEBUG_OUTPUT_MESSAGE_NULL', 0);
-define('DEBUG_OUTPUT_MESSAGE_STORE', 1);
-define('DEBUG_OUTPUT_MESSAGE_SEND', 2);
 
 require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
@@ -48,9 +49,6 @@ class debug
 
   // How many places behing . should be displayed when showing percentages
   var $percent_accuracy = 4;
-
-  // Determines how messages are output (screen/log/mail)
-  var $message_output = DEBUG_OUTPUT_MESSAGE_STORE;
 
   // A list of message types
   var $message_types;
@@ -297,10 +295,9 @@ class debug
 
   function _send_mail($debug_info)
   {
-    include_once(LIMB_DIR . '/core/lib/mail/send_plain_mail.inc.php');
+    include_once(LIMB_DIR . '/core/lib/mail/mail.inc.php');
 
     $title = '';
-    $headers = array();
     $description = debug :: _parse_text_debug_info($debug_info);
     $verbosity_level = $debug_info['level'];
 
@@ -308,7 +305,6 @@ class debug
     {
       case DEBUG_LEVEL_NOTICE:
         $title .= ' debug notice';
-        $headers['X-Priority'] = '0 (Low)';
       break;
 
       case DEBUG_LEVEL_WARNING:
@@ -317,7 +313,6 @@ class debug
 
       case DEBUG_LEVEL_ERROR:
         $title .= ' debug error';
-        $headers['X-Priority'] = '1 (High)';
       break;
 
       case DEBUG_TIMING_POINT:
@@ -340,25 +335,9 @@ class debug
               . "description:\n" . $description;
 
     if(sys :: exec_mode() == 'cli')
-      send_plain_mail(array(DEVELOPER_EMAIL), 'cli' , $title, $message, $headers);
+      send_plain_mail(array(DEVELOPER_EMAIL), 'cli' , $title, $message);
     else
-      send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message, $headers);
-  }
-
-  /*
-   Determines the way messages are output, the $output parameter
-   is DEBUG_OUTPUT_MESSAGE_SCREEN, DEBUG_OUTPUT_MESSAGE_STORE, DEBUG_OUTPUT_MESSAGE_SEND
-  */
-  function set_message_output($output)
-  {
-    if (!isset($this) || get_class($this) != 'debug')
-      $debug =& debug::instance();
-    else
-      $debug =& $this;
-
-    $prev_output = $debug->message_output;
-    $debug->message_output = $output;
-    return $prev_output;
+      send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message);
   }
 
   /*
@@ -439,24 +418,34 @@ class debug
 
     $this->debug_strings[] = $debug_info;
 
-    if ($this->message_output & DEBUG_OUTPUT_MESSAGE_STORE)
+    if(debug :: _should_log_errors())
     {
       $files =& $this->log_files;
       $file_name = false;
 
-      if (isset($files[$verbosity_level]))
+      if(isset($files[$verbosity_level]))
         $file_name = $files[$verbosity_level];
 
-      if ($file_name !== false && $this->is_log_file_enabled($verbosity_level))
+      if($file_name !== false && $this->is_log_file_enabled($verbosity_level))
         $this->_write_file($file_name, $debug_info);
     }
 
-    if($this->message_output & DEBUG_OUTPUT_MESSAGE_SEND)
+    if(debug :: _should_send_errors())
     {
       $this->_send_mail($debug_info);
     }
 
     unset($GLOBALS['debug_recursion']);
+  }
+
+  function _should_log_errors()
+  {
+    return defined('DEBUG_OUTPUT_MESSAGE_STORE') && constant('DEBUG_OUTPUT_MESSAGE_STORE');
+  }
+
+  function _should_send_errors()
+  {
+    return defined('DEBUG_OUTPUT_MESSAGE_SEND') && constant('DEBUG_OUTPUT_MESSAGE_SEND');
   }
 
   /*

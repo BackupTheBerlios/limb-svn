@@ -201,7 +201,7 @@ class user_object extends content_object
 
   function send_activate_password_email(&$user_data, $password)
   {
-    include_once(LIMB_DIR . '/core/lib/mail/send_plain_mail.inc.php');
+    include_once(LIMB_DIR . '/core/lib/mail/mail.inc.php');
     global $_SERVER;
     $http_host = $_SERVER['HTTP_HOST'];
 

@@ -26,7 +26,6 @@ class full_text_search
     $this->use_boolean_mode = $this->_check_boolean_mode();
   }
 
-
   function _can_perform_fulltext_search()
   {
     if(DB_TYPE == 'mysql')

@@ -41,7 +41,7 @@ define('LIMB_VERSION_MICRO', '0');
 /**
  * Software version patch
  */
-define('LIMB_VERSION_PATCH', 'RC2');
+define('LIMB_VERSION_PATCH', 'RC3');
 
 /**
  * Software release version
@@ -51,7 +51,7 @@ define('LIMB_RELEASE_NAME', '');
 /**
  * Software build (full) date
  */
-define('LIMB_VERSION_DATE', 'December 5, 2004');
+define('LIMB_VERSION_DATE', 'January 20, 2004');
 
 /**
  * Software logo

@@ -59,7 +59,7 @@ class set_group_objects_access extends form_action
     if(isset($data['update']) && isset($data['policy']))
     {
       $access_policy =& access_policy :: instance();
-      $access_policy->save_object_access($data['policy'], $groups, ACCESSOR_TYPE_GROUP);
+      $access_policy->save_object_access($data['policy'], ACCESSOR_TYPE_GROUP, $groups);
     }
 
     $this->_set_template_tree();
