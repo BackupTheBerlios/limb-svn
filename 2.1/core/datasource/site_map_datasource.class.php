@@ -27,6 +27,9 @@ class site_map_datasource extends fetch_tree_datasource
 		foreach($tree_array as $id => $tree_item)
 		{	
 			$tree_item['is_expanded'] = true;
+			
+			if(!isset($tree_item['url']))
+				$tree_item['url'] = $tree_item['path'];
 
 			if (!$tree_item['is_last_child'])
 			{
