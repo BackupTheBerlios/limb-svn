@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
+require_once(dirname(__FILE__) . '/../metadata_manager.class.php');
 
 class set_metadata_action extends form_action
 {
@@ -21,10 +22,7 @@ class set_metadata_action extends form_action
 	{
 		$object_data = fetcher :: instance()->fetch_requested_object($request);
 
-		$object = site_object_factory :: create('site_object');
-		$object->set('id', $object_data['id']);
-
-		$data = $object->get_metadata();
+		$data = metadata_manager :: get_metadata($object_data['id']);
 		$this->dataspace->import($data);
 	}
 
@@ -32,17 +30,11 @@ class set_metadata_action extends form_action
 	{
 		$object_data = fetcher :: instance()->fetch_requested_object($request);
 
-		$data = $this->dataspace->export();
+		metadata_manager :: save_metadata($object_data['id'], 
+		                                  $this->dataspace->get('keywords'), 
+		                                  $this->dataspace->get('description'));
 
-		$data['id'] = $object_data['id'];
-
-		$object = site_object_factory :: create('site_object');
-		$object->merge($data);
-
-		if(!$object->save_metadata())
-			$request->set_status(request :: STATUS_FAILURE);
-		else
-		  $request->set_status(request :: STATUS_FORM_SUBMITTED);
+	  $request->set_status(request :: STATUS_FORM_SUBMITTED);
 	}
 }
 ?>
