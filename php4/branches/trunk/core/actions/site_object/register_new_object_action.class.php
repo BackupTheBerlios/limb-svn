@@ -19,20 +19,15 @@ class register_new_object_action extends form_action
 
   function _init_validator()
   {
-    $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'class_name'));
-    $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'controller_name'));
-    $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'identifier'));
-    $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'parent_path'));
-    $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/tree_path_rule', 'parent_path'));
-
-    if($path = $this->dataspace->get('parent_path'))
-    {
-      $tree = tree :: instance();
-      if($node = $tree->get_node_by_path($path))
-        $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule', 'identifier', $node['id']));
-    }
-
-    $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
+    $v = array();
+    
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'class_name'));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'controller_name'));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'controller_name', 0));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'controller_name', -1));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'identifier'));
+		$this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/tree_node_id_rule', 'parent_node_id'));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'title'));
   }
 
   function _valid_perform(&$request, &$response)
@@ -42,45 +37,32 @@ class register_new_object_action extends form_action
     $params = array();
 
     $params['identifier'] = $this->dataspace->get('identifier');
-    $params['parent_path'] = $this->dataspace->get('parent_path');
     $params['class'] = $this->dataspace->get('class_name');
     $params['title'] = $this->dataspace->get('title');
-
+    $params['parent_node_id'] = $this->dataspace->get('parent_node_id');  
     $params['controller_id'] = site_object_controller :: get_id($this->dataspace->get('controller_name'));
 
     $object =& site_object_factory :: create($params['class']);
 
-    $is_root = false;
-    if(!$parent_data = fetch_one_by_path($params['parent_path']))
+    if(!$parent_data = fetch_one_by_node_id($params['parent_node_id']))
     {
-      if ($params['parent_path'] == '/')
-        $is_root = true;
-      else
        error("parent wasn't retrieved",
         __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
     }
 
-    if (!$is_root)
-      $params['parent_node_id'] = $parent_data['node_id'];
-    else
-      $params['parent_node_id'] = 0;
-
     $object->import_attributes($params);
 
-    if(!$object->create($is_root))
+    if(!$object->create())
     {
       error("object wasn't registered",
        __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
     }
 
-    if (!$is_root)
-    {
-      $parent_object =& site_object_factory :: create($parent_data['class_name']);
-      $parent_object->import_attributes($parent_data);
+    $parent_object =& site_object_factory :: create($parent_data['class_name']);
+    $parent_object->import_attributes($parent_data);
 
-      $access_policy =& access_policy :: instance();
-      $access_policy->save_object_access($object, $parent_object);
-    }
+    $access_policy =& access_policy :: instance();
+    $access_policy->save_object_access($object, $parent_object);
 
     $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 

@@ -10,7 +10,6 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/template/components/form/container_form_element.class.php');
 require_once(LIMB_DIR . '/core/template/components/form/option_renderer.class.php');
-require_once(LIMB_DIR . '/core/datasource/datasource_factory.class.php');
 
 class options_form_element extends container_form_element
 {
@@ -192,7 +191,10 @@ class options_form_element extends container_form_element
 	
 	function & _get_datasource()
 	{
+    include_once(LIMB_DIR . '/core/datasource/datasource_factory.class.php');
+    
 		$datasource_path = $this->get_attribute('options_datasource');		
+    
 		return datasource_factory :: create($datasource_path);
 	}
 } 
