@@ -51,7 +51,7 @@ class set_group_objects_access extends form_action
 	protected function _valid_perform($request, $response)
 	{
 		$data = $this->dataspace->export();
-		
+
 		if(isset($data['update']) && isset($data['policy']))
 		{
 			access_policy :: instance()->save_group_object_access($data['policy']);

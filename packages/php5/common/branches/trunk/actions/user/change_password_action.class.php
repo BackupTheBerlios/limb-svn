@@ -41,9 +41,9 @@ class change_password_action extends form_edit_site_object_action
     $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
 	}
 	
-	public function perform($request, $response)
+	public function _valid_perform($request, $response)
 	{
-	  parent :: perform($request, $response);
+	  parent :: _valid_perform($request, $response);
 	  
 		if ($this->_changing_own_password())
 		{
@@ -51,7 +51,10 @@ class change_password_action extends form_edit_site_object_action
 			message_box :: write_warning(strings :: get('need_relogin', 'user'));
 		}
 		else
-		  session :: destroy_user_session($user_id);
+		{
+  		$object_data = $this->_load_object_data();
+		  session :: destroy_user_session($object_data['id']);
+		}  
 
 		if ($request->get_status() == request :: STATUS_SUCCESS)
 		{			  
