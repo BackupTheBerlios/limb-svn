@@ -56,7 +56,7 @@ class set_publish_status_action extends action
 	function get_unpublish_status($object)
 	{
 		$current_status = $object->get_attribute('status');
-		$current_status &= !(SITE_OBJECT_PUBLISHED_STATUS);
+		$current_status ^= SITE_OBJECT_PUBLISHED_STATUS;
 		return $current_status;
 	}
 		
