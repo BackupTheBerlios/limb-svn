@@ -69,6 +69,21 @@ class resolve_handle_test extends LimbTestCase
     $this->assertIsA($handle, 'test_handle_class');
     $this->assertTrue(class_exists('test_handle_class'));
   }
+
+  function test_load_class_file_exception() 
+  {
+    $handle = array(dirname(__FILE__) . '/test_handle_class', 1, 2, 3, 4, 5);
+    
+    try
+    {
+      resolve_handle($handle);
+      $this->assertTrue(false);
+    }
+    catch(Exception $e)
+    {
+      $this->assertEqual($e->getMessage(), 'too many arguments for resolve handle');
+    }
+  }
   
   function test_constructor() 
   {

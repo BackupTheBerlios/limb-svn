@@ -144,8 +144,7 @@ class site_object_fetch_test extends LimbTestCase
 	}
 
   function test_fetch_by_ids_no_ids()
-  {
-		debug_mock :: expect_write_error('ids array is empty');
+  {		
   	$result = $this->object->fetch_by_ids(array());
   	$this->assertEqual($result, array());
   }

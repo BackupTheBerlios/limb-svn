@@ -33,7 +33,7 @@ class content_object extends site_object
 		$columns = $table->get_columns();
 		
 		if($key = $table->get_primary_key_name())
-		unset($columns[$key]);
+		  unset($columns[$key]);
 			
 		return $columns;
 	}
@@ -68,19 +68,24 @@ class content_object extends site_object
 		
 		$sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
 		
-		$result = parent :: fetch($params, $sql_params);
-		
-		return $result;
+		return parent :: fetch($params, $sql_params);
 	}
 	
 	public function recover_version($version)
 	{
 		if(!$version_data = $this->fetch_version($version))
-			return false;
+			throw new LimbException('version record not found', 
+			  array(
+			    'class_name' => get_class($this),
+			    'id' => $this->get_id(),
+			    'node_id' => $this->get_node_id(),
+			    'version' => $version,
+			  )
+			);
 			
 		$this->merge($version_data);
 		
-		return $this->update();
+		$this->update();
 	}
 
 	public function fetch_version($version, $sql_params=array())
@@ -126,9 +131,7 @@ class content_object extends site_object
 		
 		$sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
 		
-		$result = parent :: fetch_ids($params, $sql_params, $sort_ids);
-		
-		return $result;
+		return parent :: fetch_ids($params, $sql_params, $sort_ids);
 	}
 
 	public function fetch_count($params=array(), $sql_params=array())
@@ -211,31 +214,26 @@ class content_object extends site_object
 	
 	public function create($is_root = false)
 	{
-		if(($id = parent :: create($is_root)) === false)
-			return false;
+		$id = parent :: create($is_root);
 			
 		$this->_create_version_record();
 		
-		if(!$this->_create_versioned_content_record())
-			return false;
+		$this->_create_versioned_content_record();
 		
 		return $id;
 	}
 				
 	public function delete()
 	{
-		if(!parent :: delete())
-			return false;
+		parent :: delete();
 
-		return $this->_delete_versioned_content_records();
+		$this->_delete_versioned_content_records();
 	}
 
 	protected function _delete_versioned_content_records()
 	{
 		$db_table = $this->get_db_table();	
 		$db_table->delete(array('object_id' => $this->get_id()));
-		
-		return true;
 	}	
 }
 

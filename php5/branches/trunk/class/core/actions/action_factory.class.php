@@ -33,8 +33,15 @@ class action_factory
 		{
   		resolve_handle($resolver =& get_file_resolver('action'));
   		
-  		if(!$full_path = $resolver->resolve($class_path))
-  			return new empty_action();
+  		try
+  		{ 
+  		  $full_path = $resolver->resolve($class_path);
+  		}
+  		catch(FileNotFoundException $e)
+  		{
+  		  debug :: write_exception($e);
+  		  return new empty_action();
+  		}
   			
   		include_once($full_path);
   	}

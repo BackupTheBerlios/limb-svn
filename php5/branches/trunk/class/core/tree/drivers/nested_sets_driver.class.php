@@ -71,10 +71,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
@@ -96,10 +92,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($child = $this->get_node($id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
@@ -127,10 +119,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($child = $this->get_node($id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 
@@ -165,10 +153,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($sibling = $this->get_node($id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
@@ -183,10 +167,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{		
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 		if ($parent['l'] == ($parent['r'] - 1))
@@ -210,10 +190,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 		
@@ -245,10 +221,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 		
@@ -333,10 +305,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error('node not found',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 		
@@ -459,10 +427,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 		if ($parent['l'] == ($parent['r'] - 1))
@@ -502,12 +466,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
   {
   	if(!$node = $this->get_node($node_id))
   	{
-    	debug :: write_error('node not found',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array(
-    			'node_id' => $node_id
-    		)
-    	);
   		return false;
   	}
   	  	  	
@@ -613,10 +571,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('parent_id' => $id)
-    	);
     	return false;
 		} 
 
@@ -689,10 +643,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 		// invalid target node, bail out
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
@@ -774,20 +724,11 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$node = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
 		if ($node['parent_id'] == 0)
 		{
-    	debug :: write_error('node cant be created right to root node',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
-
 			return false;
 		} 
 
@@ -836,10 +777,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$node = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
@@ -887,28 +824,16 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	{
 		if ($id == $target_id && !$copy)
 		{
-    	debug :: write_error(self :: TREE_ERROR_RECURSION,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-    		 array('id' => $id, 'target_id' => $target_id)
-    	);
     	return false;
 		} 
 		// Get information about source and target
 		if (!($source = $this->get_node($id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
 		if (!($target = $this->get_node($target_id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('target_id' => $target_id)
-    	);
     	return false;
 		} 
 
@@ -922,10 +847,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 						($source['r'] >= $target['r'])))
 			{
 				
-	    	debug :: write_error(self :: TREE_ERROR_RECURSION,
-	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-	    		 array('id' => $id, 'target_id' => $target_id)
-	    	);
 	    	return false;
 			} 
 			// Insert/move before or after
@@ -941,10 +862,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 						(	($source['l'] < $target['l']) &&
 							($source['r'] > $target['r'])))
 		{
-    	debug :: write_error(self :: TREE_ERROR_RECURSION,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-    		 array('id' => $id, 'target_id' => $target_id)
-    	);
     	return false;
 		} 
 		// We have to move between different levels and maybe subtrees - let's rock ;)

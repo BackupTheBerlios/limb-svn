@@ -84,7 +84,7 @@ class form_action_test extends LimbTestCase
   	$this->request->expectOnce('get');
   	$this->request->setReturnValue('get', array(), array('test1'));
 
-  	$this->assertTrue($this->form_action->is_first_time($this->request), '%s ' . __LINE__);
+  	$this->assertTrue($this->form_action->is_first_time($this->request));
   }
   
   function test_is_first_time_false() 	
@@ -95,7 +95,7 @@ class form_action_test extends LimbTestCase
   	$this->request->expectOnce('get');
   	$this->request->setReturnValue('get', array('submitted' => true), array('test1'));
 
-  	$this->assertFalse($this->form_action->is_first_time($this->request), '%s ' . __LINE__);
+  	$this->assertFalse($this->form_action->is_first_time($this->request));
   }
   
   function test_form_action_validate()

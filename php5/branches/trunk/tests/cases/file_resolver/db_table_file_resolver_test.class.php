@@ -29,8 +29,14 @@ class db_table_file_resolver_test extends base_package_file_resolver_test
   
   function test_resolve_db_table_file_failed()
   {
-    debug_mock :: expect_write_error('db_table not found', array('class_path' => 'no_such_db_table'));    
-    $this->assertFalse($this->resolver->resolve('no_such_db_table'));
+    try
+    {    
+      $this->resolver->resolve('no_such_db_table');
+      $this->assertTrue(false);
+    }
+    catch(FileNotFoundException $e)
+    {
+    }    
   }  
   
 }

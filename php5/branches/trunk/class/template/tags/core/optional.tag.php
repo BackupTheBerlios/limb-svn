@@ -23,12 +23,9 @@ register_tag(new core_optional_tag_info());
 */
 class core_optional_tag extends compiler_directive_tag
 {
-	protected $field;
-
 	public function pre_parse()
 	{
-		$field = $this->attributes['for'];
-		if (empty($field))
+		if (!isset($this->attributes['for']) || !$this->attributes['for'])
 		{
 			throw new WactException('missing required attribute', 
 					array('tag' => $this->tag,
@@ -36,8 +33,6 @@ class core_optional_tag extends compiler_directive_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
-
-		$this->field = $field;
 
 		return PARSER_REQUIRE_PARSING;
 	} 
@@ -47,7 +42,7 @@ class core_optional_tag extends compiler_directive_tag
 		parent::pre_generate($code);
 
 		$tempvar = $code->get_temp_variable();
-		$code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get(\'' . $this->field . '\'));');
+		$code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get(\'' . $this->attributes['for'] . '\'));');
 		$code->write_php('if (!empty($' . $tempvar . ')) {');
 	} 
 

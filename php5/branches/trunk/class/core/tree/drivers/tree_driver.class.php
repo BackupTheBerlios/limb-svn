@@ -11,11 +11,7 @@
 require_once(LIMB_DIR . 'class/core/tree/tree_interface.interface.php');
 
 abstract class tree_driver
-{ 
-  const TREE_ERROR_NODE_NOT_FOUND = 'node not found';
-  const TREE_ERROR_NODE_WRONG_PARAM = 'wrong params';
-  const TREE_ERROR_RECURSION = 'recursion detected';
- 
+{  
 	protected $_expanded_parents = array();
 	
 	/**

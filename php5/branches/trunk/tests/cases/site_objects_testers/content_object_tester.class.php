@@ -88,9 +88,9 @@ class content_object_tester extends site_object_tester
   
   function _generate_test_attributes()
   {
-  	$definition = $this->object->gets_definition();
+  	$definition = $this->object->get_attributes_definition();
   	
-  	foreach($this->object->gets_definition() as $attribute => $data)
+  	foreach($this->object->get_attributes_definition() as $attribute => $data)
   	{
   		if(in_array($attribute, array('id', 'version', 'object_id', 'parent_node_id')))
   			continue;

@@ -74,11 +74,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
 			
 		$this->object->merge($data_to_import);
 		
-		if(!$this->_update_object_operation())
-		{
-		  $request->set_status(request :: STATUS_FAILURE);
-			return;
-		}	
+		$this->_update_object_operation();
 
 		$this->indexer->add($this->object);
 		
@@ -95,11 +91,9 @@ abstract class form_edit_site_object_action extends form_site_object_action
 	protected function _update_object_operation()
 	{
 	  if ($this->dataspace->get('minor_changes') || ($this->_increase_version == false))
-		  $result = $this->object->update(false);
+		  $this->object->update(false);
 		else
-		  $result = $this->object->update(true);
-		
-		return ($result !== false) ? true : false;
+		  $this->object->update(true);
 	}
 
 	protected function _valid_perform_prepare_data(&$data)

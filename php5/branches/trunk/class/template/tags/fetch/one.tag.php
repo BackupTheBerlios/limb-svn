@@ -24,12 +24,6 @@ class fetch_one_tag extends server_component_tag
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/fetch_component';
 	}
 		
-	public function pre_generate($code)
-	{
-		parent :: pre_generate($code);
-    //$code->write_php($this->get_component_ref_code() . '->prepare();');
-	} 
-	
 	public function generate_contents($code)
 	{		
 		$code->write_php($this->get_component_ref_code() . '->fetch("' . $this->attributes['path'] . '");');

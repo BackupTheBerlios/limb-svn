@@ -114,8 +114,8 @@ class metadata_component_test extends db_test
 
   function test_get_breadcrums()
   {
-  	$this->controller->expectOnce('determine_action');
-  	$this->controller->setReturnValue('determine_action', false);
+  	$this->controller->expectOnce('get_action');
+  	$this->controller->setReturnValue('get_action', false);
   	$this->controller->expectNever('get_action_property');
   	
 		$this->metadata_component->set_node_id($this->sub_node_id);
@@ -141,8 +141,8 @@ class metadata_component_test extends db_test
   
   function test_get_breadcrums_offset_path()
   {
-  	$this->controller->expectOnce('determine_action');
-  	$this->controller->setReturnValue('determine_action', false);
+  	$this->controller->expectOnce('get_action');
+  	$this->controller->setReturnValue('get_action', false);
   	$this->controller->expectNever('get_action_property');
   	
 		$this->metadata_component->set_node_id($this->sub_node_id);
@@ -168,8 +168,8 @@ class metadata_component_test extends db_test
   
   function test_get_breadcrums_with_action()
   {
-  	$this->controller->expectOnce('determine_action');
-  	$this->controller->setReturnValue('determine_action', 'action_test');
+  	$this->controller->expectOnce('get_action');
+  	$this->controller->setReturnValue('get_action', 'action_test');
   	$this->controller->setReturnValue('get_action_property', true, array('action_test', 'display_in_breadcrumbs'));
   	$this->controller->expectOnce('get_default_action');
   	$this->controller->setReturnValue('get_default_action', 'default_action_test');
@@ -192,8 +192,8 @@ class metadata_component_test extends db_test
   
   function test_get_breadcrums_with_no_default_action()
   {
-  	$this->controller->expectOnce('determine_action');
-  	$this->controller->setReturnValue('determine_action', 'action_test');
+  	$this->controller->expectOnce('get_action');
+  	$this->controller->setReturnValue('get_action', 'action_test');
   	$this->controller->setReturnValue('get_action_property', true, array('action_test', 'display_in_breadcrumbs'));
   	$this->controller->expectOnce('get_default_action');
   	$this->controller->setReturnValue('get_default_action', 'action_test');
@@ -205,8 +205,8 @@ class metadata_component_test extends db_test
 
   function test_get_breadcrums_with_no_action()
   {
-  	$this->controller->expectOnce('determine_action');
-  	$this->controller->setReturnValue('determine_action', 'action_test');
+  	$this->controller->expectOnce('get_action');
+  	$this->controller->setReturnValue('get_action', 'action_test');
   	$this->controller->setReturnValue('get_action_property', false, array('action_test', 'display_in_breadcrumbs'));
   	$this->controller->expectNever('get_default_action');
   	$this->controller->expectNever('get_action_name');

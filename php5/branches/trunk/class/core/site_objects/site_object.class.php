@@ -76,14 +76,14 @@ class site_object extends object
 		return array();
 	}
 			
-	public function gets_definition()
+	public function get_attributes_definition()
 	{
 		return $this->_attributes_definition;
 	}
 
 	public function get_definition($attribute_name)
 	{
-		$definition = $this->gets_definition();
+		$definition = $this->get_attributes_definition();
 		
 		if(isset($definition[$attribute_name]))
 		{
@@ -244,12 +244,7 @@ class site_object extends object
 	public function fetch_by_ids($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
-		{
-			debug :: write_error('ids array is empty',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-    	);
 			return array();
-		}	
 	
 		$ids = '('. implode(' , ', $ids_array) . ')';
 		
@@ -280,12 +275,7 @@ class site_object extends object
 	public function fetch_accessible_by_ids($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
-		{
-			debug :: write_error('ids array is empty',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-    	);
 			return array();
-		}	
 			
 		$ids = '('. implode(',', $ids_array) . ')';
 		
@@ -329,12 +319,7 @@ class site_object extends object
 	public function fetch_accessible_by_ids_count($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
-		{
-			debug :: write_error('ids array is empty',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-    	);
 			return array();
-		}	
 	
 		$ids = '('. implode(',', $ids_array) . ')';
 		
@@ -375,12 +360,7 @@ class site_object extends object
 	public function fetch_by_ids_count($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
-		{
-			debug :: write_error('ids array is empty',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-    	);
 			return array();
-		}	
 	
 		$ids = '('. implode(' , ', $ids_array) . ')';
 		
@@ -648,8 +628,6 @@ class site_object extends object
 		$tree = tree :: instance();
 		
 		$tree->delete_node($data['node_id']);
-				
-		return true;
 	}
 	
 	protected function _update_tree_node()
@@ -692,35 +670,20 @@ class site_object extends object
 	public function delete()
 	{
 		if(!$object_id = $this->get_id())
-		{
-		  debug :: write_error('object id not set', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
-		  return false;
-		}
+		  throw new LimbException('object id is not set');
 		
 		if (!$this->can_delete())
-		{
-		  debug :: write_error('deleting not allowed(may have children)', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
-		  return false;
-		}
+		  return;
 
-		if(!$this->_delete_tree_node())
-		{
-		  debug :: write_error('tree node deleting failed', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
-		  return false;
-		}
+		$this->_delete_tree_node();
 		
-		return $this->_delete_site_object_record();
+		$this->_delete_site_object_record();
 	}
 
 	protected function _delete_site_object_record()
 	{
 		$sys_site_object_db_table = db_table_factory :: create('sys_site_object');
 		$sys_site_object_db_table->delete_by_id($this->get('id'));
-		
-		return true;
 	}
 
 	public function can_delete()
@@ -735,9 +698,7 @@ class site_object extends object
 	
 	protected function _can_delete_tree_node($node_id)
 	{
-		$tree = tree :: instance();
-		
-		return $tree->can_delete_node($node_id);
+		return tree :: instance()->can_delete_node($node_id);
 	}
 	
 	protected function _can_delete_site_object($object_id)
@@ -753,7 +714,7 @@ class site_object extends object
 	public function save_metadata()
 	{
 		if(!$id = $this->get_id())
-			return false;
+		  throw new LimbException('object id is not set');
 		
   	$sys_metadata_db_table = db_table_factory :: create('sys_metadata');
   	
@@ -764,10 +725,8 @@ class site_object extends object
   	$metadata['keywords'] = $this->get('keywords');
   	$metadata['description'] = $this->get('description');
   	
-  	if ($sys_metadata_db_table->insert($metadata))
-  		return $sys_metadata_db_table->get_last_insert_id();
-  	else
-  		return false;	
+  	$sys_metadata_db_table->insert($metadata);
+  	return $sys_metadata_db_table->get_last_insert_id();
 	}
 	
 	public function get_metadata()

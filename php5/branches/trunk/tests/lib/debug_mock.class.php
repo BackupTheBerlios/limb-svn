@@ -28,6 +28,14 @@ class debug_mock extends debug
   {
   	self :: instance()->mock->expectNever('write');
   }
+
+	static public function expect_write_exception($e)
+	{
+	  if($e instanceof LimbException)
+	    self :: _expect_write(self :: LEVEL_ERROR, $e->getMessage(), $e->getAdditionalParams());
+	  else
+		  self :: _expect_write(self :: LEVEL_ERROR, $e->getMessage());
+	}
 	
 	static public function expect_write_error($message='', $params=array())
 	{

@@ -38,17 +38,20 @@ class fs
     $dir = self :: clean_path($dir);
     
     if(is_dir($dir))
-      return true;
+      return;
     
     if(!$parents)
-    	return self :: _do_mkdir($dir, $perm);
+    {
+    	self :: _do_mkdir($dir, $perm);
+    	return;
+    }
     
     $separator = self :: separator();
     	
     $dir_elements = self :: explode_path($dir);
         
     if (count($dir_elements) == 0)
-    	return true;
+    	return;
     
     if(!$dir_elements[0])
     {
@@ -58,17 +61,13 @@ class fs
     else
     	$current_dir = array_shift($dir_elements);
 		    
-    if(!self :: _do_mkdir($current_dir, $perm))
-    	return false;
+    self :: _do_mkdir($current_dir, $perm);
           	
     for ($i=0; $i < count($dir_elements); $i++ )
     {
-      $current_dir .= $separator . $dir_elements[$i];
-			
-      if (!self :: _do_mkdir($current_dir, $perm))
-      	return false;
+      $current_dir .= $separator . $dir_elements[$i];			
+      self :: _do_mkdir($current_dir, $perm);
     }
-  	return true;
   }
   
   /*
@@ -77,7 +76,7 @@ class fs
   static protected function _do_mkdir($dir, $perm)
   {
   	if(is_dir($dir))
-  		return true;
+  		return;
   	
   	if(self :: _has_win32_net_prefix($dir))
   	{
@@ -85,22 +84,17 @@ class fs
 		 	__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 			array('dir' => $dir));
 
-  		return true;
+  		return;
   	}
   	  	  	
     $oldumask = umask(0);
     if(!mkdir($dir, $perm))
     {
-      umask($oldumask);
-      
-			debug :: write_error('failed to create directory',
-			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-			array('dir' => $dir));
-      
-      return false;
+      umask($oldumask);      
+      throw new IOException('failed to create directory', array('dir' => $dir));
     }
+    
     umask($oldumask);
-    return true;
   }
   
   static public function explode_path($path)
@@ -168,16 +162,9 @@ class fs
   	$dest = self :: clean_path($dest);
   	
     if (!is_dir($src))
-    {
-			debug :: write_error('no such a directory',
-			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-			array('dir' => $src));
-
-    	return false;
-    }
+      throw new IOException('no such a directory', array('dir' => $src));
     
-    if(!self :: mkdir($dest))
-    	return false;
+    self :: mkdir($dest);
     	
     $separator = self :: separator();
     
@@ -190,7 +177,7 @@ class fs
         $dest .= $separator . $matches[1];
       }
       else
-      	return false;//???
+      	return false;
     }
     $items = self :: find_subitems($src, 'df', $exclude_regex, false, $include_hidden);
     

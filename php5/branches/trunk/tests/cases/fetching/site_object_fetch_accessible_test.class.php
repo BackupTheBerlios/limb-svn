@@ -92,7 +92,6 @@ class site_object_fetch_accessible_test extends LimbTestCase
   {
   	$this->_login_user(200, array(100 => 'admins', 110 => 'users'));
   	
-		debug_mock :: expect_write_error('ids array is empty');
   	$result = $this->object->fetch_accessible_by_ids(array());
   	$this->assertEqual($result, array());
   }

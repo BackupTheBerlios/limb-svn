@@ -56,15 +56,17 @@ class save_object_access_policy_test extends db_test
   	$this->object->setReturnValue('get_id', -1);
   	$this->parent_object->setReturnValue('get_id', -2);
   	$this->parent_object->setReturnValue('get_class_id', -2);
-  	$this->parent_object_controller->setReturnValue('determine_action', 'display');
+  	$this->parent_object_controller->setReturnValue('get_action', 'display');
   	
-  	debug_mock :: expect_write_error('parent object has no acccess records at all', 
-  		array(
-  			'parent_id' => -2
-  		)
-  	);
-  	
-  	$this->assertFalse($this->ac->save_object_access($this->object, $this->parent_object));
+  	try
+  	{
+  	  $this->ac->save_object_access($this->object, $this->parent_object);
+  	}
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'parent object has no acccess records at all');
+  	  $this->assertEqual($e->getAdditionalParams(), array('parent_id' => -2));
+  	}  
   }    
 
   function test_save_object_access_wrong_action_no_parent_records()
@@ -72,15 +74,17 @@ class save_object_access_policy_test extends db_test
   	$this->object->setReturnValue('get_id', -1);
   	$this->parent_object->setReturnValue('get_id', -2);
   	$this->parent_object->setReturnValue('get_class_id', 10);
-  	$this->parent_object_controller->setReturnValue('determine_action', 'display');
+  	$this->parent_object_controller->setReturnValue('get_action', 'display');
   	
-  	debug_mock :: expect_write_error('parent object has no acccess records at all', 
-  		array(
-  			'parent_id' => -2
-  		)
-  	);
-  	
-  	$this->assertFalse($this->ac->save_object_access($this->object, $this->parent_object));
+  	try
+  	{
+  	  $this->ac->save_object_access($this->object, $this->parent_object);
+  	}
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'parent object has no acccess records at all');
+  	  $this->assertEqual($e->getAdditionalParams(), array('parent_id' => -2));
+  	}  
   }    
 
   function test_save_object_access_save_group_template()
@@ -88,7 +92,7 @@ class save_object_access_policy_test extends db_test
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', -2);
   	$this->parent_object->setReturnValue('get_class_id', 10);
-  	$this->parent_object_controller->setReturnValue('determine_action', 'create');
+  	$this->parent_object_controller->setReturnValue('get_action', 'create');
   	
   	$this->assertTrue($this->ac->save_object_access($this->object, $this->parent_object));
   	
@@ -110,7 +114,7 @@ class save_object_access_policy_test extends db_test
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', -2);
   	$this->parent_object->setReturnValue('get_class_id', 11);
-  	$this->parent_object_controller->setReturnValue('determine_action', 'publish');
+  	$this->parent_object_controller->setReturnValue('get_action', 'publish');
   	$this->assertTrue($this->ac->save_object_access($this->object, $this->parent_object));
 
   	$user_objects_access = $this->ac->get_user_object_access_by_ids(array(305));
@@ -131,7 +135,7 @@ class save_object_access_policy_test extends db_test
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', -2);
   	$this->parent_object->setReturnValue('get_class_id', 11);
-  	$this->parent_object_controller->setReturnValue('determine_action', 'create');
+  	$this->parent_object_controller->setReturnValue('get_action', 'create');
   	
   	$this->assertTrue($this->ac->save_object_access($this->object, $this->parent_object));
 
@@ -188,7 +192,7 @@ class save_object_access_policy_test extends db_test
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', 300);
   	$this->parent_object->setReturnValue('get_class_id', -1);
-  	$this->parent_object_controller->setReturnValue('determine_action', 'no_such_action');
+  	$this->parent_object_controller->setReturnValue('get_action', 'no_such_action');
   	
   	$this->assertTrue($this->ac->save_object_access($this->object, $this->parent_object));
 

@@ -26,7 +26,7 @@ class action_button_tag extends button_tag
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
 	}
 	
-	public function check_nesting_level()
+	public function pre_parse()
 	{
 		if (!isset($this->attributes['action']))
 		{
@@ -36,6 +36,8 @@ class action_button_tag extends button_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
+
+    return PARSER_REQUIRE_PARSING;
 	}
 	
 	public function prepare()

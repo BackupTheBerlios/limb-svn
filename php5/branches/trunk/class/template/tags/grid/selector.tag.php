@@ -36,7 +36,10 @@ class grid_selector_tag extends control_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 	
-
+	}
+	
+	public function pre_parse()
+	{
 		if (!isset($this->attributes['name']))
 		{
 			throw new WactException('missing required attribute', 
@@ -45,6 +48,8 @@ class grid_selector_tag extends control_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 		
+
+    return PARSER_REQUIRE_PARSING;
 	}
 
 	public function prepare()

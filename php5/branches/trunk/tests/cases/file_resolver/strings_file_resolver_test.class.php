@@ -24,14 +24,20 @@ class strings_file_resolver_test extends base_package_file_resolver_test
   
   function test_resolve_strings_file_failed()
   {
-    debug_mock :: expect_write_error('strings file not found', 
-      array(
-  		  'file_name' => 'no_such_strings_file',
-  		  'locale_id' => 'fr'
-      )
-    );
-    
-    $this->assertFalse($this->resolver->resolve('no_such_strings_file', 'fr'));
+    try
+    {    
+      $this->resolver->resolve('no_such_strings_file', 'fr');
+      $this->assertTrue(false);
+    }
+    catch(FileNotFoundException $e)
+    {
+      $this->assertEqual($e->getAdditionalParams(),       
+        array(
+          'locale_id' => 'fr',
+  		    'file_path' => 'no_such_strings_file',
+        )
+      );
+    }    
   } 
   
 }

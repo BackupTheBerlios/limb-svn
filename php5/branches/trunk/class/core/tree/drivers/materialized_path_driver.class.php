@@ -70,10 +70,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$child = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 		
@@ -105,10 +101,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$child = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 
@@ -127,10 +119,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($sibling = $this->get_node($id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
@@ -145,10 +133,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{		
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 
@@ -168,10 +152,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 		
@@ -197,10 +177,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$parent_node = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 		
@@ -314,10 +290,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error('node not found',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
 			return false;
 		} 
 		
@@ -449,10 +421,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!($parent = $this->get_node($parent_id)))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $parent_id)
-    	);
 			return false;
 		} 
 		
@@ -561,10 +529,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$parent_node = $this->get_node($parent_id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('parent_id' => $parent_id)
-    	);
     	return false;
 		} 
 		
@@ -598,10 +562,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if (!$node = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 		
@@ -625,37 +585,21 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	{
 		if ($id == $target_id)
 		{
-    	debug :: write_error(self :: TREE_ERROR_RECURSION,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-    		 array('id' => $id, 'target_id' => $target_id)
-    	);
     	return false;
 		} 
 		
 		if (!$source_node = $this->get_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 
 		if (!$target_node = $this->get_node($target_id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('target_id' => $target_id)
-    	);
     	return false;
 		} 
 
 		if (strstr($target_node['path'], $source_node['path']) !== false)
 		{
-    	debug :: write_error(self :: TREE_ERROR_RECURSION,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-    		 array('id' => $id, 'target_id' => $target_id)
-    	);
     	return false;
 		} 
 

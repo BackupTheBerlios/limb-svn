@@ -118,7 +118,6 @@ class sys_params_test extends LimbTestCase
 		$this->assertNull($record['float_value']);
 	}
 	
-	
   function test_save_multitype_value()
   {
   	$sp =& sys_param :: instance();
@@ -154,28 +153,27 @@ class sys_params_test extends LimbTestCase
 		$this->assertEqual($record['int_value'], 123);
 		$this->assertEqual($record['blob_value'],'');
 	}
-	
 
   function test_save_wrong_type_value()
   {
   	$sp =& sys_param :: instance();
-		
-		debug_mock :: expect_write_error(
-			'trying to save undefined type in sys_param',
-			array (
-			  'type' => 'sadnkfjhskjfd',
-			  'param' => 'param_1',
-			)
-		);
-		
-  	$result = $sp->save_param('param_1', 'sadnkfjhskjfd', 123.053);
-  	$this->assertNotNull($result);
-  	
-  	$db_table =& db_table_factory :: create('sys_param');
-  	$list = $db_table->get_list();
-  	$this->assertEqual(count($list) , 0);
+				
+		try
+		{
+  	  $result = $sp->save_param('param_1', 'sadnkfjhskjfd', 123.053);
+  	  $this->assertTrue(false);
+  	}
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'trying to save undefined type in sys_param');  	  
+  	  $this->assertEqual($e->getAdditionalParams(),
+    	  array (
+  			  'type' => 'sadnkfjhskjfd',
+  			  'param' => 'param_1',
+  			)
+  		);
+  	}
 	}		
-
 
   function test_get_value()
   {
@@ -192,20 +190,23 @@ class sys_params_test extends LimbTestCase
   {
   	$sp =& sys_param :: instance();
 
-		debug_mock :: expect_write_error(
-			'trying to get undefined type in sys_param',
-			array (
-			  'type' => 'blabla',
-			  'param' => 'param_1',
-			)
-		);
-
 		$number = 123.053;
-  	$sp->save_param('param_1', 'float', $number);
-
-  	$this->assertNull($sp->get_param('param_1', 'blabla'));
-  	$this->assertNull($sp->get_param('param_2'));    	
+		$sp->save_param('param_1', 'float', $number);
+		
+		try
+		{
+  	  $this->assertNull($sp->get_param('param_1', 'blabla'));  
+  	}
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'trying to get undefined type in sys_param');  	  
+  	  $this->assertEqual($e->getAdditionalParams(),
+    	  array (
+  			  'type' => 'blabla',
+  			  'param' => 'param_1',
+  			)
+  		);  	
+  	}
 	}		
-
 }
 ?>

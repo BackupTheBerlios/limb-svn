@@ -34,7 +34,8 @@ class action_factory_test extends LimbTestCase
   
   function test_create_no_such_action()
   {
-  	debug_mock :: expect_write_error('action not found', array('class_path' => 'no_such_action'));
+  	//debug_mock :: expect_write_error('action not found', array('class_path' => 'no_such_action'));
+  	debug_mock :: expect_write_exception(new FileNotFoundException('action not found', 'no_such_action'));
   	
   	$c =& action_factory :: create('no_such_action');
   	

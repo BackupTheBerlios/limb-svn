@@ -63,10 +63,6 @@ abstract class tree_db_driver extends tree_driver
 	{
 		if(!$this->is_node($id))
 		{
-    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
     	return false;
 		} 
 		
@@ -126,21 +122,12 @@ abstract class tree_db_driver extends tree_driver
 		{
 			if (!isset($this->_params[$field]))
 			{
-	    	debug :: write_error(self :: TREE_ERROR_NODE_WRONG_PARAM,
-	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-	    		 array('param' => $field)
-	    	);
 			  unset($values[$field]);
 				continue;
 			}
 			 
 			if (in_array($this->_params[$field], $this->_required_params))
 			{
-	    	debug :: write_error(self :: TREE_ERROR_NODE_WRONG_PARAM,
-	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		 array('value' => $field)
-	    	);
-
 			  unset($values[$field]);
 			} 
 		} 

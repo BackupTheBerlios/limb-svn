@@ -19,7 +19,7 @@ register_tag(new core_data_transfer_tag_info());
 
 class core_data_transfer_tag extends compiler_directive_tag
 {
-	public function check_nesting_level()
+	public function pre_parse()
 	{
 		if (!isset($this->attributes['target']))
 		{
@@ -29,6 +29,8 @@ class core_data_transfer_tag extends compiler_directive_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
+
+    return PARSER_REQUIRE_PARSING;
 	}
 
 	public function generate_contents($code)

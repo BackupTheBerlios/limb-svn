@@ -135,7 +135,7 @@ class locale
 		else
 		{
 			$this->is_valid = false;
-			debug::write_error('Could not load country settings for ' . $this->country_code, __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
+			throw new LimbException('Could not load country settings', array('country_code' => $this->country_code));
 		} 
 
 		if ($language_ini !== null)
@@ -143,7 +143,7 @@ class locale
 		else
 		{
 			$this->is_valid = false;
-			debug::write_error('Could not load language settings for ' . $this->language_code, __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
+			throw new LimbException('Could not load language settings', array('language_code' => $this->language_code));
 		} 
 		// load variation if any
 		$locale_variation_ini = $this->get_locale_ini(true);

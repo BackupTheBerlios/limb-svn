@@ -99,33 +99,48 @@ class site_object_manipulation_test extends LimbTestCase
   
   function test_failed_create()
   {
-  	debug_mock :: expect_write_error('identifier is empty');
-  	
-  	$this->assertIdentical($this->object->create(), false, 'create should fail here');
+  	try
+  	{
+  	  $this->object->create();
+  	  $this->assertTrue(false);
+  	}
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'identifier is empty');
+  	}
   	
 		$this->object->set_parent_node_id(10);
 		
-		debug_mock :: expect_write_error('identifier is empty');
-		
-  	$this->assertIdentical($this->object->create(), false, 'create should fail here');
+  	try
+  	{
+  	  $this->object->create();
+  	  $this->assertTrue(false);
+  	}
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'identifier is empty');
+  	}
   	
 		$this->object->set_identifier('test');
 		
-		debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 10));
-		
-  	$this->assertIdentical($this->object->create(), false, 'create should fail here');
+  	try
+  	{
+  	  $this->object->create();
+  	  $this->assertTrue(false);
+  	}
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'tree registering failed');
+  	  $this->assertEqual($e->getAdditionalParams(), array('parent_node_id' => 10));
+  	}
   }
 	
   function test_create()
   {
-  	debug_mock :: expect_never_write();
-  	
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
-		
+
   	$id = $this->object->create();
-  	
-  	$this->assertNotIdentical($id, false, 'create operation failed');
   	
   	$this->assertEqual($id, $this->object->get_id());
 
@@ -147,8 +162,7 @@ class site_object_manipulation_test extends LimbTestCase
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test');
   	
-  	$result = $this->object->update();
-  	$this->assertTrue($result, 'update operation failed');
+  	$this->object->update();
 
   	$this->_check_sys_site_object_tree_record();
   	
@@ -166,7 +180,7 @@ class site_object_manipulation_test extends LimbTestCase
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test');
   	
-  	$this->assertTrue($this->object->update(false), 'update operation failed');
+  	$this->object->update(false);
 
   	$this->_check_sys_site_object_tree_record();
   	
@@ -190,7 +204,7 @@ class site_object_manipulation_test extends LimbTestCase
   	$data['node_id'] = $this->sub_node_id;
   	$this->object->merge($data);
   	
-  	$this->assertTrue($this->object->can_delete(), 'object can be deleted');
+  	$this->object->can_delete();
   }
 	      
   function test_delete()
@@ -199,7 +213,7 @@ class site_object_manipulation_test extends LimbTestCase
   	$data['node_id'] = $this->sub_node_id;
   	$this->object->merge($data);
   	
-  	$this->assertTrue($this->object->delete(), 'delete operation failed');
+  	$this->object->delete();
   	
   	$sys_site_object_db_table =& db_table_factory :: create('sys_site_object');
   	$sys_site_object_tree_db_table =& db_table_factory :: create('sys_site_object_tree');

@@ -69,18 +69,16 @@ class datasource_component extends component
 		{
 			$arr = explode('=', $order_pair);
 			
-			if(isset($arr[1]))
+			if(!isset($arr[1]))
 			{
-			  if(strtolower($arr[1]) == 'asc' || strtolower($arr[1]) == 'desc'
-			  	 || strtolower($arr[1]) == 'rand()')			  
-			    $order_pairs[$arr[0]] = strtoupper($arr[1]);
-			  else
-			    debug :: write_error('wrong order type',
-		      __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-		      array('order' => $arr[1]));
-
+			  $order_pairs[$arr[0]] = 'ASC';
+			  continue;
 			}
-			else
+
+		  if(strtolower($arr[1]) == 'asc' || strtolower($arr[1]) == 'desc'
+		  	 || strtolower($arr[1]) == 'rand()')			  
+		    $order_pairs[$arr[0]] = strtoupper($arr[1]);
+		  else
 			  $order_pairs[$arr[0]] = 'ASC';
 		}	
 		

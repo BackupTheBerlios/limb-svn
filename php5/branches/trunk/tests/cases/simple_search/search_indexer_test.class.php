@@ -139,7 +139,7 @@ class search_indexer_test extends LimbTestCase
 		$this->db->sql_select('sys_word');
 		$arr = $this->db->get_array();
 		
-		$this->assertNotEqual($arr, array(), __LINE__);
+		$this->assertNotEqual($arr, array());
 		$this->assertEqual(sizeof($arr), 7);
 		
 		$this->db->sql_select('sys_word_link');
@@ -147,7 +147,7 @@ class search_indexer_test extends LimbTestCase
 		
 		$this->db->sql_select('sys_word', '*', array('word' => 'test', 'object_count' => 3));
 		$row = $this->db->fetch_row();
-		$this->assertNotEqual($row, array(), __LINE__);
+		$this->assertNotEqual($row, array());
 	}
 	
 	function test_index_object_with_same_words_in_db()

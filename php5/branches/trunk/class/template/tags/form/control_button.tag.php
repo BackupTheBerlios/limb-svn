@@ -28,8 +28,8 @@ class control_button_tag extends control_tag
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/control_button_component';
 	}
-	
-	public function check_nesting_level()
+
+	public function pre_parse()
 	{
 		if (!isset($this->attributes['action']))
 		{
@@ -39,7 +39,10 @@ class control_button_tag extends control_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
+
+    return PARSER_REQUIRE_PARSING;
 	}
+	
 	
 	public function get_rendered_tag()
 	{

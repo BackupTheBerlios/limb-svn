@@ -34,6 +34,10 @@ class form_errors_tag extends server_component_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
+	}
+
+	public function pre_parse()
+	{
 		if (!isset($this->attributes['target']))
 		{
 			throw new WactException('missing required attribute', 
@@ -42,7 +46,10 @@ class form_errors_tag extends server_component_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
-	} 
+
+    return PARSER_REQUIRE_PARSING;
+	}
+	 
 	
 	public function generate_contents($code)
 	{

@@ -16,12 +16,7 @@ class tests_action_file_resolver
 		if(file_exists(LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php'))
 			$full_path = LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php';
   	else
-  	{
-  	  debug :: write_error('action not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  	    array('class_path' => $class_path));
-  	    
-  	  return false;
-  	}
+      throw new FileNotFoundException('action not found', $class_path);
   		  
 		return $full_path;
   }  

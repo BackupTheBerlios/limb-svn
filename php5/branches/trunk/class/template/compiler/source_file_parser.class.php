@@ -316,9 +316,12 @@ class source_file_parser
 			} 
 			else
 			{
-				error('MISSINGCLOSE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $parent_component->tag,
-						'file' => $this->source_file,
-						'line' => $this->cur_line_no));
+        throw new WactException('missing close tag', 
+  					array(
+  					  'tag' => $parent_component->tag,
+  					  'file' => $this->source_file,
+  					  'line' => $this->cur_line_no
+  					));		
 			} 
 		} 
 		else

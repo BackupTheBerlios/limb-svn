@@ -29,10 +29,15 @@ class datasource_file_resolver_test extends base_package_file_resolver_test
   
   function test_resolve_datasource_file_failed()
   {
-    debug_mock :: expect_write_error('datasource not found', array('class_path' => 'no_such_datasource'));    
-    $this->assertFalse($this->resolver->resolve('no_such_datasource'));
+    try
+    {    
+      $this->resolver->resolve('no_such_datasource');
+      $this->assertTrue(false);
+    }
+    catch(FileNotFoundException $e)
+    {
+    }
   }  
-  
 }
 
 ?>

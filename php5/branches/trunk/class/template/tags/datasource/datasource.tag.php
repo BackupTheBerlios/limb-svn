@@ -24,7 +24,7 @@ class datasource_tag extends server_component_tag
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/datasource_component';
 	}
 	
-	public function check_nesting_level()
+	public function pre_parse()
 	{
 		if (!isset($this->attributes['target']))
 		{
@@ -34,6 +34,34 @@ class datasource_tag extends server_component_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
+
+    $this->_check_order_parameter();
+
+    return PARSER_REQUIRE_PARSING;
+	}
+	
+	protected function _check_order_parameter()
+	{
+	  if (!isset($this->attributes['order']))
+	    return;
+	  
+		$order_items = explode(',', $this->attributes['order']);
+		$order_pairs = array();
+		foreach($order_items as $order_pair)
+		{
+			$arr = explode('=', $order_pair);
+			
+			if(!isset($arr[1]))
+			  continue;
+
+		  if(strtolower($arr[1]) != 'asc' && strtolower($arr[1]) != 'desc'
+		  	 && !strtolower($arr[1]) == 'rand()')			  
+  			throw new WactException('wrong order type', 
+					array('tag' => $this->tag,
+					'order_value' => $arr[1],
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
+	  }		
 	}
 		
 	public function generate_contents($code)

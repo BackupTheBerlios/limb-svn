@@ -24,8 +24,14 @@ class site_object_file_resolver_test extends base_package_file_resolver_test
   
   function test_resolve_site_object_file_failed()
   {
-    debug_mock :: expect_write_error('site object not found', array('class_path' => 'no_such_site_object'));    
-    $this->assertFalse($this->resolver->resolve('no_such_site_object'));
+    try
+    {    
+      $this->resolver->resolve('no_such_site_object');
+      $this->assertTrue(false);
+    }
+    catch(FileNotFoundException $e)
+    {
+    }    
   }  
   
 }

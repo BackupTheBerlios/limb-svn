@@ -175,7 +175,7 @@ class site_object_tester extends LimbTestCase
 		$rules = $validator->get_rules();
 		$site_object = $action->get_site_object();
 		
-		$attributes_definition = $site_object->gets_definition();
+		$attributes_definition = $site_object->get_attributes_definition();
 		
 		foreach($datamap as $src_field => $dst_field)
 		{
@@ -342,7 +342,7 @@ class site_object_tester extends LimbTestCase
 		
 		reset($arr);
 		$this->assertNotEqual(sizeof($arr), 0, 'nothing fetched');
-		$this->assertEqual(key($arr), $id, __FILE__ . ' : ' . __LINE__ . ': id doesnt match');
+		$this->assertEqual(key($arr), $id, 'id doesnt match');
 		
 		$record = current($arr);
 		
@@ -354,18 +354,18 @@ class site_object_tester extends LimbTestCase
 		$id = $this->object->get_id();
 		
 		$this->assertEqual($record['id'], $id, 'site object id doesnt match');
-		$this->assertEqual($record['node_id'], $this->object->get_node_id(), __FILE__ . ' : ' . __LINE__ . ': node id doesnt match');
-		$this->assertEqual($record['class_id'], $this->object->get_class_id(), __FILE__ . ' : ' . __LINE__ . ': class_id doesnt match');
-		$this->assertEqual($record['class_name'], get_class($this->object), __FILE__ . ' : ' . __LINE__ . ': class name doesnt match');
-		$this->assertEqual($record['identifier'], $this->object->get_identifier(), __FILE__ . ' : ' . __LINE__ . ': identifier doesnt match');
-		$this->assertEqual($record['title'], $this->object->get_title(), __FILE__ . ' : ' . __LINE__ . ': title doesnt match');
-		$this->assertEqual($record['parent_node_id'], $this->object->get_parent_node_id(), __FILE__ . ' : ' . __LINE__ . ': parent_node_id doesnt match');
-		$this->assertEqual($record['version'], $this->object->get_version(), __FILE__ . ' : ' . __LINE__ . ': version doesnt match');
+		$this->assertEqual($record['node_id'], $this->object->get_node_id(), 'node id doesnt match');
+		$this->assertEqual($record['class_id'], $this->object->get_class_id(), 'class_id doesnt match');
+		$this->assertEqual($record['class_name'], get_class($this->object), 'class name doesnt match');
+		$this->assertEqual($record['identifier'], $this->object->get_identifier(), 'identifier doesnt match');
+		$this->assertEqual($record['title'], $this->object->get_title(), 'title doesnt match');
+		$this->assertEqual($record['parent_node_id'], $this->object->get_parent_node_id(), 'parent_node_id doesnt match');
+		$this->assertEqual($record['version'], $this->object->get_version(), 'version doesnt match');
 		
 		$tree =& tree :: instance();
 		
 		$node = $tree->get_node($this->object->get_node_id());
-		$this->assertEqual($record['level'], $node['level'], __FILE__ . ' : ' . __LINE__ . ': level doesnt match');
+		$this->assertEqual($record['level'], $node['level'], 'level doesnt match');
 	}
 }
 

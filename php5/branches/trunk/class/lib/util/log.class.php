@@ -61,11 +61,9 @@ class log
     else
     {
       umask($oldumask);
-     	$result = false;
-      debug :: write_error( "Cannot open log file '$file_name' for writing\n" .
+     	throw new IOException("Cannot open log file '$file_name' for writing\n" .
                          "The web server must be allowed to modify the file.\n" .
-                         "File logging for '$file_name' is disabled." , __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, false);
-    
+                         "File logging for '$file_name' is disabled.");
     }
 
     return $result;

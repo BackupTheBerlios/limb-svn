@@ -15,13 +15,13 @@ abstract class site_object_controller_factory
   
 	static function create($class_name)
 	{
-	  if(isset($this->_controllers[$class_name]))
-	    return $this->_controllers[$class_name];
+	  if(isset(self :: $_controllers[$class_name]))
+	    return self :: $_controllers[$class_name];
 	  
 	  self :: _include_class_file($class_name);
 	  
-	  $this->_controllers[$class_name] = new $class_name();
-  	return $this->_controllers[$class_name];
+	  self :: $_controllers[$class_name] = new $class_name();
+  	return self :: $_controllers[$class_name];
 	}
 	
 	static protected function _include_class_file($class_name)

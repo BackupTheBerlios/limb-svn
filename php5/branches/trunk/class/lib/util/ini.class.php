@@ -109,12 +109,20 @@ class ini
 		$this->reset();
 
 		$cache_dir = $this->cache_dir;
+    
+    try
+    {    
+      fs :: mkdir($cache_dir);
+    }
+    catch(IOException $e)
+    {
+    	debug :: write_warning('could not create cache directory for ini',
+		  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+		  array('cache_dir' => $cache_dir));
 
-		if (!is_dir($cache_dir))
-		{
-			if (!fs :: mkdir($cache_dir, 0777, true))
-				debug::write_error("Couldn't create cache directory $cache_dir, perhaps wrong permissions", __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
-		} 
+      $this->_parse();
+      return;
+    }
 
 		$this->cache_file = $this->cache_dir . md5($this->file_path) . '.php';
 
@@ -127,7 +135,7 @@ class ini
 			
 			$this->charset = $charset;
 			$this->group_values = $group_values;
-		unset($group_values);		
+		  unset($group_values);		
 		} 
 		else
 		{
@@ -161,7 +169,8 @@ class ini
 			$fp = @fopen($this->cache_file, 'w+');
 			if ($fp === false)
 			{
-				debug::write_error("Couldn't create cache file '{$this->cache_file}', perhaps wrong permissions", __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
+				debug::write_error("Couldn't create cache file '{$this->cache_file}', perhaps wrong permissions", 
+				__FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
 				return;
 			} 
 

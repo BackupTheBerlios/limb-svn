@@ -24,8 +24,14 @@ class controller_file_resolver_test extends base_package_file_resolver_test
   
   function test_resolve_controller_file_failed()
   {
-    debug_mock :: expect_write_error('controller not found', array('class_path' => 'no_such_controller'));    
-    $this->assertFalse($this->resolver->resolve('no_such_controller'));
+    try
+    {    
+      $this->resolver->resolve('no_such_controller');
+      $this->assertTrue(false);
+    }
+    catch(FileNotFoundException $e)
+    {
+    }    
   }  
   
 }

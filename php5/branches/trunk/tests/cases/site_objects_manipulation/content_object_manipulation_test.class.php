@@ -58,11 +58,6 @@ class content_object_manipulation_test extends site_object_manipulation_test
   	$this->db->sql_delete('test_news_object');
   }
   
-  function test_failed_create()
-  {
-		parent :: test_failed_create();
-  }
-	
   function test_create()
   {
   	$this->object->set('annotation', 'news annotation');
@@ -89,7 +84,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
   	$this->object->set('content', 'news content2');
   	$this->object->set('news_date', '2004-02-02 00:00:00');
   	
-  	$this->assertTrue($this->object->update(), 'update operation failed');
+  	$this->object->update();
   	  	
   	$this->_check_sys_site_object_tree_record();
   	
@@ -174,7 +169,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test');
   	
-  	$this->assertTrue($this->object->update(false), 'update operation failed');
+  	$this->object->update(false);
 
   	$this->_check_sys_site_object_tree_record();
   	

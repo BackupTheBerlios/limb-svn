@@ -30,7 +30,7 @@ function instantiate_session_object($class_name, &$arguments = array())
 //Original idea by Jeff Moore, http://wact.sourceforge.net/index.php/ResolveHandle
 function resolve_handle(&$handle)
 {
-  if (is_object($handle))
+  if (is_object($handle) || is_null($handle))
     return;
   
   if (is_array($handle)) 
@@ -78,7 +78,7 @@ function resolve_handle(&$handle)
       break;
     default:
       // Too many arguments for this cobbled together implemenentation.  :(
-      die('too many arguments for resolve handle');
+      throw new Exception('too many arguments for resolve handle');
   }
 }
 
