@@ -9,12 +9,15 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/request/http_response.class.php');
+require_once(LIMB_DIR . '/core/request/http_redirect_strategy.class.php');
 
 Mock::generatePartial(
   'http_response',
   'special_mock_response',
   array('_send_header', '_send_string', '_send_file', '_exit')
 );
+
+Mock::generate('http_redirect_strategy', 'Mockhttp_redirect_strategy');
 
 class http_response_test extends LimbTestCase
 {
@@ -112,6 +115,23 @@ class http_response_test extends LimbTestCase
     $this->assertTrue($this->response->is_redirected());
   }
 
+  function test_redirect_only_once()
+  {
+    $strategy =& new Mockhttp_redirect_strategy($this);
+
+    $this->response->set_redirect_strategy($strategy);
+
+    $this->assertFalse($this->response->is_redirected());
+
+    $strategy->expectOnce('redirect');
+    $this->response->redirect('some path');
+    $this->response->redirect('some other path');
+
+    $this->assertTrue($this->response->is_redirected());
+    
+    $this->response->commit();
+  }
+  
   function test_write()
   {
     $this->response->expectOnce('_send_string', array("<b>wow</b>"));

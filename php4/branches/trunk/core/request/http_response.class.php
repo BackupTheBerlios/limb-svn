@@ -26,6 +26,9 @@ class http_response
 
   function redirect($path)
   {
+    if ($this->is_redirected)
+      return;
+    
     if($this->redirect_strategy === null)
       $strategy =& $this->_get_default_redirect_strategy();
     else
