@@ -26,6 +26,7 @@ include($phpbb_root_path . 'common.php');
 //
 // Start session management
 //
+
 $userdata = session_pagestart($user_ip, PAGE_PROFILE);
 init_userprefs($userdata);
 //
@@ -82,8 +83,7 @@ if ( isset($HTTP_GET_VARS['mode']) || isset($HTTP_POST_VARS['mode']) )
 		if ( !$userdata['session_logged_in'] && $mode == 'editprofile' )
 		{
 			$header_location = ( @preg_match("/Microsoft|WebSTAR|Xitami/", getenv("SERVER_SOFTWARE")) ) ? "Refresh: 0; URL=" : "Location: ";
-			
-			header($header_location . append_sid("/root/login?redirect=profile.php&mode=editprofile", true));
+			header($header_location . "/root/login?redirect=". urlencode($_SERVER['PHP_SELF'] . '?mode=editprofile'));
 			exit;
 		}
 

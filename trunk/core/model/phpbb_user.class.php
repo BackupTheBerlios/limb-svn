@@ -96,7 +96,7 @@ class phpbb_user extends object
 	function login($login, $password)
 	{	
 		$this->_delete_cookie();
-		
+
 		$user_ip = sys :: client_ip(true);
 		$sid = md5(uniqid($user_ip));
 		

@@ -42,7 +42,7 @@ init_userprefs($userdata);
 if( !$userdata['session_logged_in'] )
 {
 	$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-	header($header_location . '../' . append_sid("/root/login?redirect=admin/"));
+	header($header_location . "/root/login?redirect=". urlencode('/forum/admin'));
 	exit;
 }
 else if( $userdata['user_level'] != ADMIN )

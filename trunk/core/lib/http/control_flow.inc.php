@@ -21,7 +21,7 @@ function add_url_query_items($url, $items=array())
 	
 	foreach($items as $key => $val)
 	{
-		$url = preg_replace("/&*{$key}=[^&]+/", '', $url);
+		$url = preg_replace("/&*{$key}=[^&]*/", '', $url);
 		$str_params .= "&$key=$val";
 	}
 	
@@ -38,6 +38,8 @@ function reload($url = PHP_SELF)
 	ob_end_clean();
 
 	ob_start();
+	
+	//$header_location = ( preg_match("/Microsoft|WebSTAR|Xitami/", getenv('SERVER_SOFTWARE')) ) ? "Refresh: 0; URL=" : "Location: ";
 	
 	echo "<html><head><meta http-equiv=refresh content='0;url=$url'></head><body bgcolor=white></body></html>";
 	

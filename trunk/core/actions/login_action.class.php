@@ -40,26 +40,20 @@ class login_action extends form_site_object_action
 		if (!isset($_REQUEST['redirect']) || !$_REQUEST['redirect'])
 			return ;
 
-		$this->dataspace->set('redirect', $this->_get_redirect_string());
+		$this->dataspace->set('redirect', urldecode($this->_get_redirect_string()));
 	}
 	
 	function _get_redirect_string()
 	{
-		$forward_to = $_SERVER['QUERY_STRING'];
-
-		if(!preg_match("/^redirect=([a-z0-9\.#\/\?&=\+\-_]+)/si", $forward_to, $forward_matches) )
+		if(!isset($_REQUEST['redirect']))
 			return '';
 			
-		$forward_match = explode('&', $forward_matches[1]);
-	
-		$redirect_url = $forward_match[0];
+		$redirect = $_REQUEST['redirect'];
 		
-		if(count($forward_match) <= 1)
-			return $redirect_url;
-		
-		unset($forward_match[0]);	
-	
-		return $redirect_url . '? '. explode('&', $forward_match);
+		if(!preg_match("/^([a-z0-9\.#\/\?&=\+\-_]+)/si", $redirect))
+			return '';
+				
+		return $redirect;
 	}
 	
 	function _valid_perform()
@@ -73,12 +67,17 @@ class login_action extends form_site_object_action
 		if($is_logged)
 		{
 			if($redirect = $this->_get('redirect'))
-				reload($redirect);
+				$this->_login_redirect($redirect);
 			else
 				reload('/');
 		}	
 			
 		return $is_logged;
+	}
+	
+	function _login_redirect($redirect)
+	{
+		reload($redirect);
 	}
 }
 

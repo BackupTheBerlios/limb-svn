@@ -75,7 +75,7 @@ if ( $userdata['session_logged_in'] )
 }
 else
 {
-	$u_login_logout = '/root/login';
+	$u_login_logout = '/root/login?redirect=' . urlencode($_SERVER['REQUEST_URI']);
 	$l_login_logout = $lang['Login'];
 }
 
