@@ -9,10 +9,6 @@
 *
 ***********************************************************************************/ 
 //Inspired by EZpublish(http//ez.no), debug class
-
-if(!defined('DEVELOPER_EMAIL'))
-	define('DEVELOPER_EMAIL', 'limb@0x00.ru');
-
 require_once(LIMB_DIR . 'class/lib/system/sys.class.php');
 	
 class debug
@@ -21,10 +17,6 @@ class debug
   const LEVEL_WARNING = 2;
   const LEVEL_ERROR   = 3;
   const TIMING_POINT  = 4;
-  
-  const OUTPUT_MESSAGE_NULL   = 0;
-  const OUTPUT_MESSAGE_STORE  = 1;
-  const OUTPUT_MESSAGE_SEND   = 2;
   
   protected static $instance = null;
   
@@ -51,10 +43,7 @@ class debug
 	
 	// How many places behing . should be displayed when showing percentages
 	protected $percent_accuracy = 4; 
-	
-	// Determines how messages are output (screen/log/mail)
-	protected $message_output = self :: OUTPUT_MESSAGE_STORE; 
-	
+		
 	// A list of message types
 	protected $message_types; 
 	
@@ -333,19 +322,6 @@ class debug
 	}
 
 	/*
-   Determines the way messages are output, the $output parameter
-   is self :: OUTPUT_MESSAGE_SCREEN, self :: OUTPUT_MESSAGE_STORE, self :: OUTPUT_MESSAGE_SEND
-  */
-	static public function set_message_output($output)
-	{
-		$debug = self :: instance();
-		
-		$prev_output = $debug->message_output;
-		$debug->message_output = $output;
-		return $prev_output;
-	} 
-
-	/*
     Adds a new timing point for the benchmark report.
   */
 	static public function add_timing_point($description = '')
@@ -415,22 +391,8 @@ class debug
 		
 		$this->debug_strings[] = $debug_info;
 						
-		if ($this->message_output & self :: OUTPUT_MESSAGE_STORE)
-		{
-			$files = $this->log_files;
-			$file_name = false;
-	
-			if (isset($files[$verbosity_level]))
-				$file_name = $files[$verbosity_level];
-
-			if ($file_name !== false && $this->is_log_file_enabled($verbosity_level))
-				$this->_write_file($file_name, $debug_info);
-		}
-			
-		if($this->message_output & self :: OUTPUT_MESSAGE_SEND)
-		{
-			$this->_send_mail($debug_info);
-		}
+		if (isset($this->log_files[$verbosity_level]) && $this->is_log_file_enabled($verbosity_level))
+			$this->_write_file($this->log_files[$verbosity_level], $debug_info);			
 	}
 	
 	/*

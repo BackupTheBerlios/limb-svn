@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+//inspired by PEAR::Date package
 
 /**
 * time_zone representation class, along with time zone information data.

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
+//inspired by PEAR::Date package
 require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 require_once(LIMB_DIR . 'class/lib/date/date_time_zone.class.php');
 
