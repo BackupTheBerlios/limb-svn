@@ -1,0 +1,110 @@
+Version 2.1
+(04 May 2004, from /2.0.8)
+svn://svn.berlios.de/limb/2.1
+
+  --  fixed: node select component would set its value wrong
+  --  fixed: control_flow.php bug (issue #969501)
+  --  fixed: value localization in form components moved at runtime(issue #968107)
+  --  fixed: JS window.onunload function for richedit
+  --  fixed: pager sporadically wouldn't show paginated links (issue #964194)
+  --  fixed: <hint> tag is Mozilla, Opera compatible (issue #964192)
+  --  fixed: full_text_search can perform fulltext search with mysqlversion >= 3.23. 
+      and it returns empty result instead of raising error.
+  --  fixed: all JS document.all[...] calls replaced with document.getElementById
+  --  fixed: materialized_path_driver for tree bug fixed. 
+      Now, if there are 2 or more sub_trees in objects tree, 
+      get_sub_branch() method with 'check_expanded_parents' option works properly 
+      (result set included nodes from another sub_tree before)
+  --  fixed: 'has_more_than_one_page' typo in pager tags, components
+  --  fixed: mod_rewrite compatibility
+  --  fixed: error uses debug :: parse_console();
+  --  fixed: small typo in /image/edit_variations.html (issue #955789)
+  --  fixed: fetch_tree_datasource now do hierarchical sort items correctly
+  --  fixed: critical JS error: add_form_hidden_parameter function behaved bad...
+      it added hidden input with id 'action' and this input overrided form.action
+  --  fixed: if there was a try to log in directly from /root/login page, 
+      login action would redirect you to /root/login again, 
+      now this situation is checked and the user is redirected to /      
+  --  fixed: render_attributes() function in input_form_element, 
+      earlier it would set value attribute empty if there's no value in dataspace. 
+      This behaviour(adopted from WACT) would delete 'value' value from template
+  --  fixed: probable error recursion bug
+
+  --  function load_project_tages added to template_compiler.inc.php to allow 
+      working of project specific files
+  --  metadata component refactored to implement inheritance for project specific metadata
+  --  attribute 'url' added to each object at site map to allow proper displaying 
+      of not only navigation_item objects
+  --  for speed issues with images and files all dont track responses replaced with mere exit()
+  --  RFE: new <grid:COUNTER> tag (issue #964271)
+  --  RFE: got rid of create_object.php now it's a regular action of the admin_page object(issue #958092)
+  --  new tree_path_rule rule
+  --  got rid of PHP_SELF, REQUEST_URI constants, taken directly from $_SERVER!
+  --  project specific setup_custom.php is included in project setup.php in a smart way 
+      via dirname(__FILE__), this provides much better flexibility
+  --  all tests except image tests run on Linux
+  --  got rid of netpbm binary files, these should be stored as external ones
+  --  new <status:PUBLISHED> tag
+  --  new dont_track_response allows not to register object access in stats system, 
+      this is especially effective for image and file objects
+  --  changed display_image_action so that it returns dont_track_response if variation is 
+      not 'original'
+  --  changed display_file_action so that it returns dont_track_response if it 
+      displays a file icon  
+  --  new version.php describing current version of LIMB in detail
+      (will hopefully help in package building automating tasks)
+  --  fetch_sub_branch_datasource_component verifies datasource to be a subclass of 
+      fetch_sub_branch_datasource
+  --  CLI indexer.php script added for rebuilding full text index
+  --  new <metadata:CHARSET> tag, it displays charset according to current MANAGEMENT_LOCALE_ID   
+  --  'status' field in sys_site_object db table is considered to be a bit mask now
+  --  new multi items functionality: delete, publish, unpublish, set_priority
+  --  SimpleTest moved to /tests/lib
+  --  test files renamed: *.group.php => *_group.class.php, * .test.php => *_test.class.php
+  --  added 'children' field in sys_site_object_tree table, it breaks normalization a bit, 
+      however it allows us to know for sure how many immidiate children certain parent has  
+  --  new 'change children priority' functionality, priority field added to 
+      sys_site_object_tree db table
+  --  new <grid:BUTTON>, <grid:INPUT> tags, they make <grid:LIST> to display itself 
+      inside <form> if they exist
+
+Version 2.0.8
+(12 Apr 2004, from /trunk)
+svn://svn.berlios.de/limb/2.0.8
+
+  --  fixed: image_object::_create_variations() method was called twice
+  --  fixed: richedit, now can properly save values of multiple richedits on one page
+  --  fixed: tree bug, now include_parent while get_sub_dbranch() works properly
+  --  fixed: major bug in dir class - mkdir, rmdir, cp methods were buggy
+  --  fixed: major bug in cron.php - it just crashed totally  
+
+  --  new tree: uses tree drivers, materialized path and nested sets currently implemented
+  --  basic multilanguage support:
+      * available locales are declared in global $AVAILABLE_LOCALES
+        (e.g, $AVAILABLE_LOCALES = array('ru', 'en'); 
+      * MAGEMENT_LOCALE_ID definition depends on user::_locale_id property, 
+        if no such property(or empty), CONTENT_LOCALE_ID used
+      * new action in login object: change_user_locale, 
+        allows to change current management locale
+      * user::get_locale_id, user::set_locale_id
+
+  --  pager_navigator tag now supports "mirror_of" attribute. If "mirror_of" 
+      attribute is set, mirrored pager runtime component is used instead of 
+      creating a new runtime component
+  --  new <core:REQUEST_TRANSFER attribute='name'> tag which allows to append
+      values from $_REQUEST to specific html tags attributes: a, form, frame, input, area.
+      Atrribute 'attribute' defines what values exactly should be appended, multiple values 
+      are comma separated
+  --  better JS file_select, image_select, node_select implementation
+  --  new <print:LINK> tag that renders it's content only if 'print_version' action
+      is available, you can get a link to printed object via $link inside this tag  
+  --  new <hint>,  <hint:LINK>, <hint:TITLE>, <hint:CONTENT> tags  
+  --  new <core:REPEAT> tag
+  --  new much improved events log report: multiple values, wildcards, negation in fields etc
+      are supported
+  --  beta revision of the most popular routes report  
+  --  404, 403 error pages support, you are required to declare 
+      ERROR_DOCUMENT_404, ERROR_DOCUMENT_403 in setup.php, also
+      added not_found object to display 404 error message           
+  --  I18N of input tags
+  --  as also, lots of minor refactoring & bugfixes :)

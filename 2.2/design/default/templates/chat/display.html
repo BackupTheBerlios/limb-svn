@@ -1,0 +1,56 @@
+<html>
+<head>
+	<title><metadata:TITLE separator=' :: ' /> :: Official Shweir Secondary School</title>
+	<metadata:CHARSET>
+	<link href="/design/main/styles/main.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/shared/js/common.js"></script>
+	<script language="javascript" src="/design/main/js/form_errors.js"></script>
+	<script src='/design/main/js/chat.js'></script>
+	<metadata:METADATA>
+	<meta name="description" content="{$description}">
+	<meta name="keywords" content="{$keywords}">
+	</metadata:METADATA>
+</head>
+<body>
+<core:INCLUDE file="front_breadcrumbs.html">
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='chat_rooms'>
+	<core:PARAMETER name='loader_class_name' value='chat_room'>
+	<core:PARAMETER name='datasource_path' value='fetch_sub_branch_datasource'>
+</fetch:SUB_BRANCH>
+			<chat:NOT_LOGGED_IN>
+			<core:INCLUDE file='chat/chat_login_form.html'>
+			</chat:NOT_LOGGED_IN>
+
+<grid:LIST id='chat_rooms'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+    <grid:ITERATOR>
+		<tr>
+			<td class=jip >
+				<table border=0 jip='action'>
+				<tr>
+				<td><core:INCLUDE file="published_status.html"></td>
+				<td><core:INCLUDE file="jip_actions/normal.html"></td>
+				<tr>
+				</table>
+				<table jip='object' width=100%>
+					<tr>
+						<td width=30% valign=top>
+							<a href='{$path}'>{$title}</a><br>
+						</td>
+						<td valign=top>
+							{$annotation}
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+    </grid:ITERATOR>
+</table>
+</grid:LIST>
+<div id='popup_div'></div>
+</body>
+</html>

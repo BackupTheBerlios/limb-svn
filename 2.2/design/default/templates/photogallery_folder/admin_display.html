@@ -1,0 +1,64 @@
+<core:WRAP file="admin/admin_display_page.html" placeholder="content">
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='folders'>
+	<core:PARAMETER name='loader_class_name' value='photogallery_folder'>
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<fetch:SUB_BRANCH target='photos' navigator="pager" >
+	<core:PARAMETER name='loader_class_name' value='photogallery_object'>
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='folders'>
+<table width=100%>
+<tr>
+	<th><locale:STRING name='published_status'></th>
+	<th><locale:STRING name='photogallery_folder' file='photogallery'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+<td><core:INCLUDE file="published_status.html"></td>
+<td jip='object'><a href='{$path}?action=admin_display'>{$title}</a></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr><td colspan='4' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
+</table>
+</grid:LIST>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='photos'>
+<table width=100%>
+<tr>
+	<th><locale:STRING name='published_status'></th>
+	<th><locale:STRING name='photo' file='photogallery'></th>
+	<th><locale:STRING name='title'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+<td><core:INCLUDE file="published_status.html"></td>
+<td jip='object'><img src='/root?node_id={$image_id}&icon' align='center' border=0></td>
+<td>{$title}</td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr><td colspan='5' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
+</table>
+</grid:LIST>

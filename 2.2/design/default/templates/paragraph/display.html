@@ -1,0 +1,15 @@
+<core:WRAP file="admin/admin_display_page.html" placeholder="content">
+
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+<tr class='jip'>
+<td jip='object'>
+<fetch:MAPPED>
+{$title}<br>
+{$content}<br>
+</td>
+<td>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+</td>
+</tr>
+</table>
