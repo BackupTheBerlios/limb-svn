@@ -3,11 +3,12 @@
 class FormValidateCommand
 {
   var $form_id;
-  var $validator;
+  var $validator_handle;
 
-  function FormValidateCommand($form_id)
+  function FormValidateCommand($form_id, &$validator_handle)
   {
     $this->form_id = $form_id;
+    $this->validator_handle =& $validator_handle;
   }
 
   function perform()
@@ -15,7 +16,7 @@ class FormValidateCommand
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
-    $validator =& $this->getValidator($dataspace);
+    $validator =& Handle :: resolve($this->validator_handle);
 
     $this->_registerValidationRules($validator, $dataspace);
 
@@ -33,31 +34,8 @@ class FormValidateCommand
       return LIMB_STATUS_OK;
   }
 
-  function & getValidator()
-  {
-    if(is_object($this->validator))
-      return $this->validator;
-
-    $this->validator =& $this->_init_validator();
-
-    return $this->validator;
-  }
-
-  function setValidator(&$validator)
-  {
-    $this->validator =& $validator;
-  }
-
   function _registerValidationRules(&$validator, &$dataspace)
   {
-  }
-
-  function _init_validator()
-  {
-    include_once(WACT_ROOT . '/validation/validator.inc.php');
-    $this->validator = new Validator();
-
-    return new Validator();
   }
 
   function & getFormComponent()
@@ -65,18 +43,6 @@ class FormValidateCommand
     $toolkit =& Limb :: toolkit();
     $view =& $toolkit->getView();
     return $view->findChild($this->form_id);
-  }
-
-  function _defineDatamap()
-  {
-    return array();
-  }
-
-  function _mergeDataspaceWithRequest(&$dataspace, &$request)
-  {
-    ComplexArray :: map($this->_defineDatamap(), $this->_getRequestData($request), $data = array());
-
-    $dataspace->merge($data);
   }
 }
 ?>

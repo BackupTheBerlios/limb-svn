@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/DbConfig.class.php');
+require_once(LIMB_DIR . '/core/util/ini_support.inc.php');
 
 class IniBasedDbConfig extends DbConfig
 {

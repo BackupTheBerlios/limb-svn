@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: FormProcessingCommandTest.class.php 1155 2005-03-10 12:06:35Z seregalimb $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/FormValidateCommand.class.php');
@@ -47,15 +47,13 @@ class FormValidateCommandTest extends LimbTestCase
 
   function testPerformValidateOk()
   {
-    $form_command = new FormValidateCommand($form_id = 'test_form');
+    $validator = new MockValidator($this);
+
+    $form_command = new FormValidateCommand($form_id = 'test_form', $validator);
 
     $dataspace = new Dataspace();
     $this->toolkit->expectOnce('getDataspace');
     $this->toolkit->setReturnReference('getDataspace', $dataspace);
-
-    $validator = new MockValidator($this);
-
-    $form_command->setValidator($validator);
 
     $validator->expectOnce('validate', array($dataspace));
     $validator->expectOnce('isValid');
@@ -68,15 +66,13 @@ class FormValidateCommandTest extends LimbTestCase
 
   function testPerformNotValid()
   {
-    $form_command = new FormValidateCommand($form_id = 'test_form');
+    $validator = new MockValidator($this);
+
+    $form_command = new FormValidateCommand($form_id = 'test_form', $validator);
 
     $dataspace = new Dataspace();
     $this->toolkit->expectOnce('getDataspace');
     $this->toolkit->setReturnReference('getDataspace', $dataspace);
-
-    $validator = new MockValidator($this);
-
-    $form_command->setValidator($validator);
 
     // Validator is not valid
     $validator->expectOnce('validate', array($dataspace));
@@ -103,24 +99,6 @@ class FormValidateCommandTest extends LimbTestCase
 
     $form_component->tally();
     $validator->tally();
-  }
-
-  function testGetValidator()
-  {
-    $form_command = new FormValidateCommand($form_id = 'test_form');
-
-    $validator = new MockValidator($this);
-
-    $form_command->setValidator($validator);
-
-    $this->assertIsA($form_command->getValidator(), 'MockValidator');
-  }
-
-  function testGetDefaultValidator()
-  {
-    $form_command = new FormValidateCommand($form_id = 'test_form');
-
-    $this->assertIsA($form_command->getValidator(), 'Validator');
   }
 }
 

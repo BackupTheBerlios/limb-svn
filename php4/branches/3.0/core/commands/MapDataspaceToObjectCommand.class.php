@@ -30,7 +30,7 @@ class MapDataspaceToObjectCommand
 
     foreach($this->map as $key => $setter)
     {
-      if (($value = $dataspace->get($key)) !== false)
+      if ((($value = $dataspace->get($key)) !== false) && (($value = $dataspace->get($key)) !== null))
         $object->set($setter, $value);
     }
 
