@@ -10,7 +10,6 @@ window.onload = function()
 }
 function apply_behavior()
 {
-
   CLASS_MAP = build_class_map(document)
   var arr = document.getElementsByTagName('*')
   for(var v in arr)
@@ -59,6 +58,16 @@ function build_class_map(doc)
 //=======================
 //  ACTIONS
 //=======================
+
+function debug_info(){}
+debug_info.prototype.onclick = function()
+{
+//  alert(this.alt)
+	WS = new ActiveXObject("WScript.shell");
+	WS.exec("uedit32.exe " + this.alt);
+}
+
+
 function action(){}
 action.prototype.onmouseover = function()
 {

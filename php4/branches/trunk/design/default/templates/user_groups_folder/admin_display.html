@@ -11,24 +11,8 @@
 
 <grid:LIST id='user_groups'>
 <table>
-<tr><td colspan='4' class='btitle1' height='3'></td></tr>
-<tr>
-	<th><grid:SELECTORS_TOGGLER></th>
-	<th><locale:STRING name='items_order'></th>
-	<th><locale:STRING name='user_groups_list' file='user_group'></th>
-	<th><locale:STRING name='actions'></th>
-</tr>
-<grid:ITERATOR>
-<tr>
-  <td><core:INCLUDE file="/admin/selector.html"></td>
-  <td><core:INCLUDE file='/admin/priority_input.html'></td>
-  <td>
-    <core:INCLUDE file="/admin/list_item_hint.html">
-    {$title} ({$identifier})
-  </td>
-  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
-</tr>
-</grid:ITERATOR>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='user_groups_list' file='user_group'></td></tr>
+<core:INCLUDE file='/admin/grid_items/final_level_no_publish_grid_body.html'>
 <core:INCLUDE file='/admin/no_move_grid_footer.html'>
 </table>
 </grid:LIST>

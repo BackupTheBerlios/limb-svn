@@ -23,17 +23,8 @@
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
-<tr>
-  <td><core:INCLUDE file="/admin/selector.html"></td>
-  <td><core:INCLUDE file='/admin/priority_input.html'></td>
-  <td><core:INCLUDE file="published_status.html"></td>
-  <td>
-    <core:INCLUDE file="/admin/list_item_hint.html">
-    <a href='{$path}?action=admin_display'>{$title}</a>
-  </td>
-  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
-</tr>
-</grid:ITERATOR>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='photogallery_folders_list' file='photogallery'></td></tr>
+<core:INCLUDE file='/admin/grid_items/folder_grid_body.html'>
 <core:INCLUDE file='/admin/full_grid_footer.html'></table>
 </grid:LIST>
 
@@ -41,11 +32,12 @@
 
 <grid:LIST id='photos'>
 <table>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='photos_list' file='photogallery'></td></tr>
 <tr>
 	<th><grid:SELECTORS_TOGGLER></th>
 	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='published_status'></th>
-	<th><locale:STRING name='photo' file='photogallery'></th>
+	<th><locale:STRING name='title'></th>
 	<th><locale:STRING name='title'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>

@@ -5,31 +5,13 @@
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='folders' >
-  <core:PARAMETER name='loader_class_name' value='site_object' >
   <core:PARAMETER name='order' value='priority=ASC' >
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='folders'>
 <table width=100%>
-<tr>
-  <th><grid:SELECTORS_TOGGLER></th>
-  <th><locale:STRING name='items_order'></th>
-  <th><locale:STRING name='published_status' ></th>
-  <th><locale:STRING name='documents_folder' file='document'></th>
-  <th><locale:STRING name='actions'></th>
-</tr>
-<grid:ITERATOR>
-<tr>
-  <td><core:INCLUDE file="/admin/selector.html"></td>
-  <td><core:INCLUDE file='/admin/priority_input.html'></td>
-  <td><core:INCLUDE file="published_status.html"></td>
-  <td>
-    <a href="{$path}?action=admin_display">{$title}</a>
-    <core:INCLUDE file="/admin/list_item_hint.html">
-  </td>
-  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
-</tr>
-</grid:ITERATOR>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='document_folders_list' file='document'></td></tr>
+<core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
 <core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>
@@ -43,25 +25,8 @@
 
 <grid:LIST id='documents'>
 <table width=100%>
-<tr>
-  <th><grid:SELECTORS_TOGGLER></th>
-  <th><locale:STRING name='items_order'></th>
-  <th><locale:STRING name='published_status' ></th>
-  <th><locale:STRING name='document' file='document'></th>
-  <th><locale:STRING name='actions'></th>
-</tr>
-<grid:ITERATOR>
-<tr>
-<td><core:INCLUDE file="/admin/selector.html"></td>
-<td><core:INCLUDE file='/admin/priority_input.html'></td>
-<td><core:INCLUDE file="published_status.html"></td>
-<td>
-  <core:INCLUDE file="/admin/list_item_hint.html">
-  <a href="{$path}?action=admin_display">{$title}</a>
-</td>
-<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
-</tr>
-</grid:ITERATOR>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='documents_list' file='document'></td></tr>
+<core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
 <core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>

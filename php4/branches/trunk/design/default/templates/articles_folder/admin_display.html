@@ -17,25 +17,7 @@
 <grid:LIST id='folders'>
 <table>
 <tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='article_folders_list' file='article'></td></tr>
-<tr>
-  <th><grid:SELECTORS_TOGGLER></th>
-  <th><locale:STRING name='items_order'></th>
-  <th><locale:STRING name='published_status' ></th>
-  <th><locale:STRING name='articles_folder' file='article'></th>
-  <th><locale:STRING name='actions'></th>
-</tr>
-<grid:ITERATOR>
-<tr>
-  <td><core:INCLUDE file="/admin/selector.html"></td>
-  <td><core:INCLUDE file='/admin/priority_input.html'></td>
-  <td><core:INCLUDE file="published_status.html"></td>
-  <td>
-    <core:INCLUDE file="/admin/list_item_hint.html">
-    <a href="{$path}?action=admin_display">{$title}</a>
-  </td>
-  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
-</tr>
-</grid:ITERATOR>
+<core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
 <core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>
@@ -45,25 +27,7 @@
 <grid:LIST id='articles'>
 <table>
 <tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='articles_list' file='article'></td></tr>
-<tr>
-  <th><grid:SELECTORS_TOGGLER></th>
-  <th><locale:STRING name='items_order'></th>
-  <th><locale:STRING name='published_status' ></th>
-  <th><locale:STRING name='article' file='article'></th>
-  <th><locale:STRING name='actions'></th>
-</tr>
-<grid:ITERATOR>
-<tr>
-  <td><core:INCLUDE file="/admin/selector.html"></td>
-  <td><core:INCLUDE file='/admin/priority_input.html'></td>
-  <td><core:INCLUDE file="published_status.html"></td>
-  <td>
-    <core:INCLUDE file="/admin/list_item_hint.html">
-    <a href="{$path}" target="_blank">{$title}</a>
-  </td>
-  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
-</tr>
-</grid:ITERATOR>
+<core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
 <core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>
