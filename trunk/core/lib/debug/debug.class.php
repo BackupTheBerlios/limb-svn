@@ -427,9 +427,14 @@ class debug
 		$debug =& debug::instance();
 
 		$time = microtime();
+    $memory = 0;
+    if (function_exists('memory_get_usage'))
+        $memory = memory_get_usage();
+		
 		$tp = array(
 			'time' => $time,
-			'description' => $description
+			'memory_usage' => $memory,
+			'description' => $description			
 		);
 
 		$debug->time_points[] = $tp;
@@ -564,7 +569,8 @@ class debug
 
 		$debug = &debug::instance();
 		$report = &$debug->parse_report_internal(true);
-
+    
+    $ip = sys :: client_ip();
 		$js_window = "
 						<script language='javascript'>
 						<!-- hide this script from old browsers
@@ -575,14 +581,14 @@ class debug
 						  debug_window = window.open( file_name + '?rn=' + rn, title, 'top=370,left=550,height=300,width=400,scrollbars,resizable');
 						}
 						
-						show_debug('{$server_file_path}debug.html', 'debug');
+						show_debug('{$server_file_path}{$ip}-debug.html', 'debug');
 															
 						//-->
 						</script>";
 
 		$header = '<html><head><script>var NEED_TO_FOCUS = false</script><title>debug</title></head><body onload="if(NEED_TO_FOCUS)window.focus();else window.blur()">';
 		$footer = '</body></html>';
-		$fp = fopen(VAR_DIR . 'debug.html', 'w+');
+		$fp = fopen(VAR_DIR . $ip . '-debug.html', 'w+');
 
 		fwrite($fp, $header);
 		fwrite($fp, $report);
@@ -609,7 +615,7 @@ class debug
 	function &_time_to_float($mtime)
 	{
 		$t_time = explode(' ', $mtime);
-		ereg("0\.([0-9]+)", '' . $t_time[0], $t1);
+		preg_match("~0\.([0-9]+)~", '' . $t_time[0], $t1);
 		$time = $t_time[1] . '.' . $t1[1];
 		return $time;
 	} 
@@ -763,33 +769,43 @@ class debug
 		{
 			$return_text .= "</table>";
 			$return_text .= "<h3>Timing points:</h3>";
-			$return_text .= "<table style='border: 1px solid black;' cellspacing='0' cellpadding='1'><tr><th>Checkpoint</th><th>Elapsed</th><th>Rel. Elapsed</th></tr>";
+			$return_text .= "<table style='border: 1px solid black;' cellspacing='0' cellpadding='1'><tr><th>Checkpoint</th><th>Elapsed</th><th>Rel. Elapsed</th><th>Mem</th><th>Rel. Mem</th></tr>";
 		} 
 
 		$start_time = false;
 		$elapsed = 0.00;
 		$rel_array = array(-1 => 0.00);
+		$rel_memory_array = array(-1 => 0);
 
 		for ($i=0; $i < count($this->time_points); ++$i)
 		{
 			$point = $this->time_points[$i];
-			$next_point = false;
-
+			
 			if (isset($this->time_points[$i + 1]))
 				$next_point = $this->time_points[$i + 1];
+			else
+			  $next_point = false;
 
 			$time = debug :: _time_to_float($point['time']);
+			$memory = $point['memory_usage'];
 			$next_time = false;
+			$next_memory = 0;
 
 			if ($next_point !== false)
+			{
 				$next_time = debug :: _time_to_float($next_point['time']);
+				$next_memory = $next_point['memory_usage'];
+			}
 				
 			if ($start_time === false)
 				$start_time = $time;
-
+            
 			$elapsed = $time - $start_time;
 			$rel_elapsed = $rel_array[$i-1];
+			$rel_memory_elapsed = $rel_memory_array[$i-1];
+			
 			$rel_array[] = $next_time - $time;
+			$rel_memory_array[] = $next_memory - $memory;
 			
 			if ($i % 2 == 0)
 				$class = 'timingpoint1';
@@ -799,22 +815,27 @@ class debug
 			if ($as_html)
 			{
 				$return_text .= "<tr><td class='$class'>" . $point['description'] . "</td><td class='$class'>" .
-				number_format($elapsed, $this->timing_accuracy) . " sec</td><td class='$class'>" .
-				(number_format($rel_elapsed, $this->timing_accuracy) . " sec") . "</td>"
-				 . "</tr>";
+				number_format($elapsed, $this->timing_accuracy) . "s</td><td class='$class'>" .
+			  number_format($rel_elapsed, $this->timing_accuracy) . "s</td>" .
+				"<td class='$class'>" . number_format($memory / 1024, $this->timing_accuracy) . "Kb</td>" . 
+				"<td class='$class'>" . number_format($rel_memory_elapsed / 1024, $this->timing_accuracy) . "Kb</td>"
+				. "</tr>";
 			} 
 			else
 			{
 				$return_text .= $point['description'] .
-				number_format($elapsed, $this->timing_accuracy) . " sec " .
-				(number_format($rel_elapsed, $this->timing_accuracy) . " sec") . "\n";
+				number_format($elapsed, $this->timing_accuracy) . "s " .
+				number_format($rel_elapsed, $this->timing_accuracy) . "s " . 
+				number_format($memory / 1024, $this->timing_accuracy) . "Kb " . 
+				number_format($rel_memory_elapsed / 1024, $this->timing_accuracy) . "Kb" . 
+				"\n";
 			} 
 		}
 		
 		if (count($this->time_points) > 0)
 		{
 			$t_time = explode(' ', $end_time);
-			ereg("0\.([0-9]+)", '' . $t_time[0], $t1);
+			preg_match("~0\.([0-9]+)~", '' . $t_time[0], $t1);
 			$end_time = $t_time[1] . '.' . $t1[1];
 
 			$total_elapsed = $end_time - $start_time;
@@ -822,12 +843,12 @@ class debug
 			if ($as_html)
 			{
 				$return_text .= "<tr><td><b>Total runtime:</b></td><td><b>" .
-				number_format(($total_elapsed), $this->timing_accuracy) . " sec</b></td><td></td></tr>";
+				number_format(($total_elapsed), $this->timing_accuracy) . "s</b></td><td></td></tr>";
 			} 
 			else
 			{
 				$return_text .= "Total runtime: " .
-				number_format(($total_elapsed), $this->timing_accuracy) . " sec\n";
+				number_format(($total_elapsed), $this->timing_accuracy) . "s\n";
 			} 
 		} 
 		else

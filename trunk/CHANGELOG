@@ -1,6 +1,6 @@
 Version 2.2
 (04 May 2004, from /trunk)
-svn://svn.berlios.de/limb/2.2
+svn://svn.berlios.de/limb/tags/2.2
 
   --  ***WARNING***: BC break! API of controllers, actions has changed! 
   
@@ -57,7 +57,7 @@ svn://svn.berlios.de/limb/2.2
 
 Version 2.1.1
 (16 Jun 2004, from /trunk)
-svn://svn.berlios.de/limb/2.1.1
+svn://svn.berlios.de/limb/tags/2.1.1
 
   --  ***WARNING***: BC break! API of controllers, actions has changed! 
   --  controllers, actions are greatly refactored in order to simplify inheritance(packages preparation)
@@ -75,7 +75,7 @@ svn://svn.berlios.de/limb/2.1.1
 
 Version 2.1
 (04 May 2004, from /2.0.8)
-svn://svn.berlios.de/limb/2.1
+svn://svn.berlios.de/limb/tags/2.1
 
   --  fixed: node select component would set its value wrong
   --  fixed: control_flow.php bug (issue #969501)
@@ -145,7 +145,7 @@ svn://svn.berlios.de/limb/2.1
 
 Version 2.0.8
 (12 Apr 2004, from /trunk)
-svn://svn.berlios.de/limb/2.0.8
+svn://svn.berlios.de/limb/tags/2.0.8
 
   --  fixed: image_object::_create_variations() method was called twice
   --  fixed: richedit, now can properly save values of multiple richedits on one page
