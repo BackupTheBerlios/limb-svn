@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/user.class.php');
+require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
 
 class user_object extends content_object

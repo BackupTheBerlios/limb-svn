@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/user.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(dirname(__FILE__) . '/../../handlers/db_cart_handler.class.php');
 require_once(dirname(__FILE__) . '/../../cart_item.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');

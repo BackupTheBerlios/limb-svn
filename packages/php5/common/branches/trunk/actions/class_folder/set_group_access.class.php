@@ -24,7 +24,7 @@ class set_group_access extends form_action
 
 		$access_policy = access_policy :: instance();
 
-		$data['policy'] = $access_policy->get_group_action_access_by_class($class_id);
+		$data['policy'] = $access_policy->get_actions_access($class_id, access_policy :: ACCESSOR_TYPE_GROUP);
 
 		$this->dataspace->merge($data);
 	}
@@ -37,7 +37,7 @@ class set_group_access extends form_action
 		$data = $this->dataspace->export();
 		$access_policy = access_policy :: instance();
 
-		$access_policy->save_group_action_access($class_id, $data['policy']);
+		$access_policy->save_actions_access($class_id, $data['policy'], access_policy :: ACCESSOR_TYPE_GROUP);
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 

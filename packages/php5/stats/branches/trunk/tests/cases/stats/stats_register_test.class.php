@@ -108,8 +108,8 @@ class stats_register_test extends LimbTestCase
   	$this->stats_register->setReturnReference('_get_counter_register', $this->stats_counter);
   	$this->stats_register->setReturnReference('_get_referer_register', $this->stats_referer);
   	$this->stats_register->setReturnReference('_get_search_phrase_register', $this->stats_search_phrase);
-
-		$this->_login_user(10, array());
+    
+    user :: instance()->set('id', 10);
   	
   	$this->_clean_up();
   }
@@ -125,6 +125,8 @@ class stats_register_test extends LimbTestCase
 		$this->stats_search_phrase->tally();
 
 		$this->stats_register->tally();
+		
+		user :: instance()->logout();
 		
   	$this->_clean_up();
   }
@@ -228,15 +230,7 @@ class stats_register_test extends LimbTestCase
   	$this->assertEqual($record['status'], $status);
   	$this->assertEqual($record['time'], $time, 'log time is incorrect');
   	$this->assertEqual($record['session_id'], session_id());
-  }
-  
-  function _login_user($id, $groups)
-  {
-  	$user =& user :: instance();
-  	
-  	$user->_set_id($id);
-  	$user->_set_groups($groups);  	
-  }
+  }  
 }
 
 ?>

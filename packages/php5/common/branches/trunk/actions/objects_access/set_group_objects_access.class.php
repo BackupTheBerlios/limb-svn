@@ -34,7 +34,7 @@ class set_group_objects_access extends form_action
 	protected function _fill_policy()
 	{
 		$access_policy = access_policy :: instance();
-		$data['policy'] = $access_policy->get_group_object_access_by_ids($this->object_ids);
+		$data['policy'] = $access_policy->get_objects_access_by_ids($this->object_ids, access_policy :: ACCESSOR_TYPE_GROUP);
 
 		$this->dataspace->merge($data);
 	}
@@ -54,7 +54,7 @@ class set_group_objects_access extends form_action
 
 		if(isset($data['update']) && isset($data['policy']))
 		{
-			access_policy :: instance()->save_group_object_access($data['policy']);
+			access_policy :: instance()->save_objects_access($data['policy'], access_policy :: ACCESSOR_TYPE_GROUP);
 		}
 
 	  if($groups = $this->dataspace->get('filter_groups'))

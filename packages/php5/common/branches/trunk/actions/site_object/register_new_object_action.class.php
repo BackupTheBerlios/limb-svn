@@ -80,7 +80,9 @@ class register_new_object_action extends form_action
 			$parent_object = site_object_factory :: create($parent_data['class_name']);
 			$parent_object->merge($parent_data);
 
-      access_policy :: instance()->save_object_access($object, $parent_object);
+	  	$action = $parent_object->get_controller()->determine_action();
+  
+      access_policy :: instance()->save_new_object_access($object, $parent_object, $action);
 		}	
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);

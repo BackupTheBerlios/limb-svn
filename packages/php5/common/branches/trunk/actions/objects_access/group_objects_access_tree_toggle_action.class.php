@@ -32,7 +32,7 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 
 	protected function _init_dataspace($request)
 	{
-		$data['policy'] = access_policy :: instance()->get_group_object_access_by_ids($this->object_ids);
+		$data['policy'] = access_policy :: instance()->get_objects_access_by_ids($this->object_ids, access_policy :: ACCESSOR_TYPE_GROUP);
 
 		$this->dataspace->merge($data);
 	}
