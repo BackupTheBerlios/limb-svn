@@ -1,172 +1,115 @@
-Структура файлов и папок LIMB и проекта.
+LIMB file structure
 
-LIMB содержим следующие подкаталоги в корневом каталоге:
+LIMB contains the following directories in its root directory:
 
 LIMB_DIR 
 	|
-	+ - core – здесь находятся все практически все php классы, которые использует LIMB (за 
-исключением тестов).
+	+ - core – here all LIMB classes are stored (except test cases).
 	|
-	+ - design – каталог с шаблонами, картинками, css-файлами и прочее, что касается 
-внешнего вида.
+	+ - design – site appearance: images, templates, css-files etc
 	|
-	+ - var – каталог, где хранятся компилированные шаблоны, логи, закешированные файлы и 
-прочее.
+	+ - var – PHP compiled templates, media files, log and cache file are stored here
 	|
-	+ - tests – каталог с тестами.
+	+ - tests - Simpletest cases
 
-Обратите внимание, что структура каталогов в проектах и в самом LIMB_DIR должны совпадать. 
-Это требуется для работы механизма разрешения имен (линк на соответствующую страницу). 
+NOTE: Project file structure should be similar to LIMB. This is required by file name resolving rules.
 
-Теперь более подробно рассмотрим структуру каждого каталога более подробно.
+Now we can examine the directory structure in more detail.
 
 LIMB_DIR/core
-	|
-       + - actions – здесь хранятся все классы для реализации действий, так называемые actions 
-controllers. Мы еще не пришли к окончательному выводу, должны ли actions содержать бизнес-
-логику или нет, где должна находиться бизнес-логика вообще – не хватает опыта.  
-Действия для различных классов объектов хранятся в каталоге с соответствующим именем, 
-например, действия create_article_action, edit_article_action and delete_article_action хранятся в 
-папке с путем LIMB/core/actions/article. 
+	     |
+       + - actions – all classes that implement site
+							       functionality are stored here. We haven't come
+							       to any conclusion whether we need to put business
+							       logic into action classes or leave it in
+							       site_object classes - it's the matter of choice. 
+							       The action classes for site_objects are usually kept in directories named specifically to simplify browsing.
+							       (e.g. create_article_action, edit_article_action and delete_article_action are good candidates to be stored in the LIMB/core/actions/article directory, this is not mandatory yet it helps to grow familiar with LIMB)
        |
-       + - controllers – здесь хранятся классы контроллеров объектов сайта. Они обычно 
-определяют функциональность объектов сайта.
+       + - controllers – site objects controllers are placed here.
        |
-       + - datasource – здесь находятся вспомогательные классы для реализации различных 
-выборок для шаблонов. Используются совместно с тегами <fetch:SUB_BRANCH> < DATASOURCE>. 
-Активность наших шаблонов определяется через эти классы.
+       + - datasource – fetching helper classes can be found here. Our templates are active and their activity mostly implemented by datasources.
        |
-       + - db_tables – классы для работы с отдельными таблицами базы данных. Эти классы 
-реализуют такие операции, как получение списка, создание/редактирование/удаление строки 
-таблицы.
+       + - db_tables – db_tables are classes representing specific tables in the data base. These classes have methods for type-casting, fetching/creating/editing/deleting rows. They're also useful for cascade deleting since some db drivers don't support this feature(e.g. MySQL). In the nearest future we are planning to use db tables to create specific db schema automatically.
        |
-       + - lib – каталог с библиотечными классами (ну с маленькими оговорками).
+       + - lib – this a LIMB utility classes library
        |
-       + - locale – здесь расположены файлы со свойствами локалей.
+       + - locale – ini-files for locale configurations can be found here
        |
-       + - model – классы модели. Классы объектов сайта, политики доступа, система аудита и 
-сбора статистики, response классы. Некоторые классы лежат здесь весьма условно. 
+       + - model – We keep model classes mostly here. However one can find audit, statistics, search, response related stuff(subject to be placed somewhere else). 
        |
-       + - settings – артефакт от WACT. Там находятся файлы настройки для шаблонного 
-механизма.
+       + - settings – template mechanism ini-files are kept here (this is a WACT artifact).
        |
-       + - strings – файлы с локализованными строками.
+       + - strings – ini-files with localized strings.
        |
-       + - template – View, шаблонный механизм и теги.
+       + - template – WACT template mechanism with LIMB specific tags and components
        |
-       + - tree – классы для работы с иерархическими структурами
+       + - tree – Classes to deal with hierarchic structures.
        
-Более подробно разберем каталог LIMB_DIR/	core/lib		
 
-LIMB_DIR/core/lib	
-       	|
-       	+ - cache
-       	|
-       	+ - date
-       	|
-       	+ - db – классы для работы с базами данных
-       	|
-       	+ - debug –для обработки ошибок и ведения логов
-		|
-		+ - error 
-		|
-       + - external – внешние приложения и библиотечные классы. 
-		|
-		+ - http – классы для управления http запросами, разбора url  и т.д.
-		|
-       + - image – классы для работы с изображениями (изменение размеров, 
-преобразование и прочее).
-		|
-		+ - locale – классы для поддержки локализации 
-		|
-       + - mail – классы для работы с почтой
-		|
-		+ - security – классы для аутентификации 
-		|
-       + - session – классы для работы с сессиями
-		|
-		+ - system – прочие классы 
-		|
-       + - session – классы для работы с сессиями
-		|
-		+ - utils – классы для аутентификации (Необходимость в последних каталогах – 
-спорный вопрос. Просто у нас еще не дошли до этого руки).
-		|
-       + - validators – валидаторы и правила валидации. Просятся, чтобы их оттуда 
-вынесли на уровень выше, так как они уже зависят от других классов LIMB
-
-Более подробно разберем каталог LIMB_DIR/	core/model	
+Getting deeper: the LIMB_DIR/core/model directory
 
 LIMB_DIR/core/model	
-		|
-       	+ - chat – очень простая реализация чата. Просто у нас был прецедент создания 
-чата, поэтому он здесь и лежит.
+		    |
+       	+ - chat – very simple implementation of chat. We had a simple project with chat so these files are simply here.
        	|
-       	+ - response – классы с возврата результата действия. Нахождение здесь этих 
-классов весьма спорное.
-		|
-       	+ - search
+       	+ - response – action responses classes(action::perform() is responsible to return some response). 
+		    |
+       	+ - search - search functionality classes.
        	|
-       	+ - shop – простая реализация корзины.
-		|
-       	+ - site_objects – классы объектов сайта.
+       	+ - shop – A simple yet robust implementation of the shopping cart.
+		    |
+       	+ - site_objects – site_objects classes.
        	|
-       	+ - stats – классы, отвечающие на аудит и сбор статистики. Здесь же находятся 
-классы для формирования отчетов.
+       	+ - stats – statistics and user audit related classes are kept here. You can also find here stats and audit report classes.
 
-Более подробно разберем каталог LIMB_DIR/	core/template	
+Now it's time for the LIMB_DIR/core/template directory
 
 LIMB_DIR/core/templates	
-		|
-       	+ - compiler -
+    		|
+       	+ - compiler - compiler classes
        	|
-       	+ - components – runtime components
-		|
-       	+ - fileschemes – file name resolving classes
+       	+ - components – runtime components classes
+		    |
+        + - fileschemes – file name resolving classes
        	|
        	+ - tags – tags files 
-			|
-       		+ - actions – для отображения JIP действий
-       		|
-       		+ - cart – вспомогательные теги для корзины заказа пользователя
-			|
-       		+ - chat – несколько тегов, связанных с chat-ом
-       		|
-       		+ - core – базовые теги для организации шаблонов. Некоторые теги должны 
-быть перенесены в другие папки.
-			|
-       		+ - datasource – теги для реализации активности наших шаблонов
-       		|
-       		+ - dev – теги для работы с файлами и исходниками шаблонов.
-			|
-       		+ - fetch – теги для реализации активности шаблонов. Дополняют datasource
-       		|
-       		+ - form – теги для работы с формами, сюда входят все компоненты форма, 
-такие как поля ввода, кнопки, селекторы и т.д.
-			|
-       		+ - grid – теги для вывода списковых или табличных данных. Аналог тегов 
-list в оригинальном WACT
-       		|
-       		+ - hint – теги для вывода небольших всплывающих подсказок при наводе 
-мыши на какую-либо ссылку или текст.
-			|
-       		+ - locale – теги для локализации вывода шаблонов
-       		|
-       		+ - metadata – теги для вывода вспомогательной информации на страницах, 
-например, заголовков, charset-ов, хлебных крошек, ключевых слов и описаний.
-			|
-       		+ - order – тег для вывода кнопок для смены приоритета. Устаревший. Более 
-не используется.
-       		|
-       		+ - pager – теги для работы с пейджерами.
-			|
-       		+ - phpbb – вспомогательные теги для того, чтобы интегрировать phpBB в 
-       		|
-       		+ - poll – теги для реализации логики системы опросов
-			|
-       		+ - print – тег для вывода ссылок на печатную версию чего-либо
-       		|
-       		+ - status – теги для работы с документооборотом. 
-			|
-       		+ - user – теги для работы с пользователем.
-
+      			|
+         		+ - actions – tags to display JIP-actions
+         		|
+         		+ - cart – helper tags for shopping cart
+      			|
+         		+ - chat – chat helper tags 
+         		|
+         		+ - core – some core WACT original tags and a lot of LIMB specific ones(probably some of these should be moved to somewhere else). 
+      			|
+         		+ - datasource – datasource tag
+         		|
+         		+ - dev – tags to view templates sources.
+        		|
+         		+ - fetch – template's fetching tags. Complement datasource tag
+         		|
+         		+ - form – tags to work with forms. Includes selectors, buttons, inputs and so on.
+    		    |
+         		+ - grid – tags to output tabular data(sort of WACT list tags)
+         		|
+         		+ - hint – tags to display small popups with legend.
+    		    |
+         		+ - locale – data localization tags
+         		|
+         		+ - metadata – meta specific tags
+    		    |
+         		+ - order – deprecated
+         		|
+         		+ - pager - tag for data paginating 
+      			|
+         		+ - phpbb – some helper tags to use LIMB with phpbb
+         		|
+         		+ - poll – poll tags
+      			|
+         		+ - print – outputs link to print version of object if it supports print_version action,
+         		|
+         		+ - status – document flow tags 
+    		    |
+         		+ - user – some helper tags to render user specific information.
+    

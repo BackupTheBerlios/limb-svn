@@ -1,21 +1,18 @@
-Версионность объектов.
+Objects version control
 
-Любой контентный объект поддерживает версионность. Это значит, что когда 
-пользователь изменяет объект, то ему присваивается очередной индекс версии и 
-сохраняется как полная копия его текущего состояния, так и его состояние до 
-модификации. К сожалению, мы еще не ввели признак «Незначительные изменения» для 
-того, чтобы не записывать новое состояние при каждом редактировании объекта. 
-Возможно, это приводит к лишней потере места на диске.
+Any LIMB content object supports versioning. When the user
+changes the content object (like article, document), the object's version number
+is increased and the full object copy is saved in db. 
+Currently 'minor changes' option is not implemented in case there's no need to create a new version. 
+Update method of the content object receives a boolean flag whether it's required to 
+create the new version or not(content_object :: update((bool) $new_version)).
 
-Для каждой версией объекта храниться дата ее создания, последнего изменения, 
-пользователь, который создал версию объекта.
+At the moment the default version behaviour can be overriden by creating a form_edit_site_object_action
+de's descendant and replacing its _update_object_operation() method:
 
-Необходимость записи новой версии определяется в content_object :: 
-update($create_new_version):
-
-class edit_user_action extends form_edit_site_object_action
+class your_action extends form_edit_site_object_action
 {
-	// … some code here
+	[...]
 	function _update_object_operation()
 	{
 		if(!$this->object->update(false))
@@ -25,16 +22,16 @@ class edit_user_action extends form_edit_site_object_action
 	}
 }
 
-Для того чтобы просмотреть список версий объекта, а также состояние объекта в любой из 
-его версий, создать версию из уже существующей в контроллер объекта необходимо 
-добавить описание на соответствующее действие, например:
+To browse the list of versions of an object and to be able to examine
+the object's state for any version you need to add an extra action 
+to content object controller:
 
 class document_controller extends site_object_controller
 {
 	function document_controller()
 	{
 		$this->_actions = array(
-				// some more actions here
+				[...]
 				'admin_detail' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/admin/object_detail_info.html',
@@ -49,43 +46,15 @@ class document_controller extends site_object_controller
 	}
 }
 
-Для корректной работы необходим объект класса version, который должен располагаться 
-по пути /root/version. Для пользователя должны быть разрешены действия display и 
-recover.
+NOTE: object_detail_info.html template renders content object system 
+information and the versions list.
 
-class version_controller extends site_object_controller
-{
-	function version_controller()
-	{
-		$this->_actions = array(
-				'display' => array(
-						'permissions_required' => 'r',
-						'template_path' => '/version/display.html',
-				),
-				'recover' => array(
-						'permissions_required' => 'r',
-						'action_path' => '/version/recover_version_action', 
-						'popup' => true
-				)
-		);
- 		
+To be able to recover version or to see all content object's attributes
+for any version you need to have the access to the /root/version site object(to the display and recover actions in particular). 
 
-		parent :: site_object_controller();
-	}
-} 
+Recover action – creates a new version of the content object based on the version you provide, e.g. if you recover version
+5 and the current version is 7, then the 5-th version is copied to the new 8 version.
 
-шаблон object_detail_info.html отображает системные данные об объекте, а также список 
-всех версий объекта.
-
-/version/display.html отображает состояние всех атрибутов объекта указанной версии.
-
-Recover_version_action – создает новую версию объекта из указанной.
-
-Версионность в LIMB еще находится в зачаточном состоянии. Возможно, в будущем 
-будет изменения даже структура базы данных. Мы готовы обсуждать вопросы 
-версионности объектов. Если у нас будет проект, который будет использовать эту 
-функциональность, тогда будет и значительные улучшения в данном вопросе. 
-
-
-
-
+NOTE: The LIMB versioning is at the very initial stage. 
+It provides a simple yet effective solution for the domain of simple objects.
+Any complexity requires manual handling!

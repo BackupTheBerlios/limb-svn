@@ -1,0 +1,13 @@
+REGISTERING NEW SITE OBJECT
+
+To register the absolutely new site object admin_page object's register_new_object action is used. 
+It permits you to create site objects in any node of the objects tree. 
+
+To create a new object input its class name, identifier, title and
+path to the parent node. If the object is
+successfully registered you should see a confirmation message above the form.
+
+When the new object is created you will probably want to check'n'set object's permissions for groups and
+you will surely want to check'n'set actions access and actions access templates. 
+
+To know more about LIMB access policy visit this page http://limb/documents/AccessPolicy.

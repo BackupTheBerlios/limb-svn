@@ -1,11 +1,12 @@
 <table border=0 cellspacing=0 cellpadding=0 width=100%>
 <pager:total>
 <tr>
-	<td class=tcom align=right><locale:STRING name='total_item_count' locale_type='content'>: <b>{$number}</b></td></tr>
+	<td class=tcom align=right><locale:STRING name='total_item_count' locale_type='content'>: <b>{$number}</b></td>
+</tr>
 <tr>
 	<td height=2 background='/design/main/images/page/b2.gif'><img width=0 height=2></td></tr>
 <tr>
-	<core:OPTIONAL for='more_then_one_page'><td class=text style='padding:3px 0 5px 0'><locale:STRING name='pages'  locale_type='content'>:
+	<core:OPTIONAL for='more_than_one_page'><td class=text style='padding:3px 0 5px 0'><locale:STRING name='pages'  locale_type='content'>:
 	<pager:first><a href={$href} class=tcom1>&lt;&lt;</a></pager:first>
 	<pager:prev><a href={$href} class=tcom1>&lt;</a></pager:prev>
   
