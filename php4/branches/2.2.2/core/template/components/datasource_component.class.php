@@ -107,9 +107,9 @@ class datasource_component extends component
 	
 	function setup_navigator()
 	{
-		$navigator =& $this->parent->find_child($this->get('navigator_id'));
+		$navigator =& $this->_get_navigator_component();
 		if (!$navigator)
-			return;
+			return null;
 		
 		$limit = $navigator->get_items_per_page();
 		$this->set_parameter("limit", $limit);
@@ -129,11 +129,8 @@ class datasource_component extends component
 		foreach($targets as $target)
 		{
 		  $target = trim($target);
-		  
+
 		  $target_component =& $this->parent->find_child($target);
-		  
-		  if(!$target_component)
-		    $target_component =& $this->root->find_child($target);
 		    
 			if($target_component)
 			{
@@ -154,6 +151,9 @@ class datasource_component extends component
 	function fill_navigator()
 	{
 		$navigator =& $this->_get_navigator_component();
+		if (!$navigator)
+			return null;
+
 		$navigator->set_total_items($this->get_total_count());
 	}
 	

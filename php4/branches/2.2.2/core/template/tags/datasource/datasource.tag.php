@@ -38,7 +38,7 @@ class datasource_tag extends server_component_tag
 		
 		if(isset($this->attributes['navigator']))
 		{
-			$code->write_php($this->get_component_ref_code() . '->set("navigator_id", ' . $this->attributes['navigator'] .');');
+			$code->write_php($this->get_component_ref_code() . '->set("navigator_id", "' . $this->attributes['navigator'] .'");');
 			$code->write_php($this->get_component_ref_code() . '->setup_navigator();');
 		}
 
