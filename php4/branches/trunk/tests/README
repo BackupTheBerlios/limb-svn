@@ -1,0 +1,7 @@
+--------------------------------------------------------------------------------
+LIMB Tests -  $Id$
+--------------------------------------------------------------------------------
+
+*** WARNING ***
+
+You can't run LIMB only tests without empty project in the current version of LIMB

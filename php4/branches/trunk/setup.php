@@ -8,8 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
+if(!defined('AVAILABLE_LOCALES'))
+  define('AVAILABLE_LOCALES', 'en');
 
-@define('DEVELOPER_EMAIL', 'dbrain@office.bit');
+$AVAILABLE_LOCALES = explode(',', AVAILABLE_LOCALES);//!!!refactor
+
+@define('DEVELOPER_EMAIL', 'developer@mail.com');
 
 @define('SHARED_DIR', LIMB_DIR . '/shared/');
 @define('SHARED_IMG_URL', '/shared/images/');
@@ -20,7 +24,7 @@
 
 @define('CACHE_DIR', PROJECT_DIR . '/var/cache/');
 
-@define('MEDIA_DIR', PROJECT_DIR .'/var/media/');
+@define('MEDIA_DIR', PROJECT_DIR .'/media/');
 
 if (version_compare(phpversion(), '4.2', '<'))
   include_once(LIMB_DIR . '/core/lib/util/php42.php');

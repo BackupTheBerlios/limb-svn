@@ -13,6 +13,9 @@
 if (!file_exists(SIMPLE_TEST . 'unit_tester.php') )
   die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
 
+if(!defined('LIMB_DIR'))
+  define('LIMB_DIR', dirname(__FILE__) . '/../');
+
 require_once(SIMPLE_TEST . 'unit_tester.php');
 require_once(SIMPLE_TEST . 'mock_objects.php');
 require_once(SIMPLE_TEST . 'web_tester.php');

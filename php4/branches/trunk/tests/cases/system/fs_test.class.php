@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 
 define('TEST_DIR_ABSOLUTE_PATH', PROJECT_DIR . '/var/');
-define('TEST_DIR_RELATIVE_PATH', 'var');
+define('TEST_DIR_RELATIVE_PATH', 'var/');
 
 class special_dir_walker
 {
@@ -50,6 +50,14 @@ class fs_test extends LimbTestCase
   function _remove_file_system()
   {
     fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+  }
+
+  function test_is_absolute_true()
+  {
+    $this->assertTrue(fs :: is_absolute('/test'));
+
+    if(sys :: os_type() == 'win32')
+      $this->assertTrue(fs :: is_absolute('c:/test'));
   }
 
   function test_remove_recursive()
