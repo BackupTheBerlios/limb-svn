@@ -11,6 +11,19 @@
 
 class site_object_behaviour_mapper
 {
+  public function find_by_id($id)
+  {
+    $table = Limb :: toolkit()->createDBTable('sys_behaviour');
+    
+    if(!$row = $table->get_row_by_id($id))
+      return null;
+    
+    $behaviour = Limb :: toolkit()->createBehaviour($row['name']);
+    $behaviour->set_id($id);
+    
+    return $behaviour; 
+  }
+  
   public function save($behaviour)
   {
     if($behaviour->get_id())

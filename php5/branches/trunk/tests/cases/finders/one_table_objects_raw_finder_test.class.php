@@ -8,26 +8,34 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/finders/content_objects_raw_finder.class.php');
+require_once(LIMB_DIR . '/class/core/finders/one_table_objects_raw_finder.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('db_table');
 
-Mock :: generatePartial('content_objects_raw_finder',
-                        'content_objects_raw_finder_test_version',
+class test_objects_raw_finder extends one_table_objects_raw_finder
+{
+  protected function _define_db_table_name()
+  {
+    return 'table1';
+  }
+}
+
+Mock :: generatePartial('test_objects_raw_finder',
+                        'one_table_objects_raw_finder_test_version',
                         array('_do_parent_find',
                               '_do_parent_count'));
 
 class content_object_fetch_test extends LimbTestCase
 {
-	var $object;
+	var $finder;
 	var $toolkit;
 	var $db_table;
   
   function setUp()
   {
-    $this->object = new content_object_fetch_test_version($this);
+    $this->finder = new one_table_objects_raw_finder_test_version($this);
     $this->db_table = new Mockdb_table($this);
     $this->toolkit = new MockLimbToolkit($this);
     
@@ -40,7 +48,7 @@ class content_object_fetch_test extends LimbTestCase
   {
     $this->toolkit->tally();
     $this->db_table->tally();
-    $this->object->tally();
+    $this->finder->tally();
     
     Limb :: popToolkit();
   }
@@ -60,14 +68,14 @@ class content_object_fetch_test extends LimbTestCase
     $expected_sql_params['tables'][] = ',table1 as tn';
     $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
     
-    $this->object->expectOnce('_do_parent_fetch', array(new EqualExpectation($params), 
+    $this->finder->expectOnce('_do_parent_find', array(new EqualExpectation($params), 
                                                         new EqualExpectation($expected_sql_params)));
-    $this->object->setReturnValue('_do_parent_fetch', $result = 'some result');
+    $this->finder->setReturnValue('_do_parent_find', $result = 'some result');
      
-    $this->assertEqual($this->object->fetch($params, $sql_params), $result);
+    $this->assertEqual($this->finder->find($params, $sql_params), $result);
   }
 
-  function test_fetch_count()
+  function test_count()
   {
     $sql_params['conditions'][] = 'some condition';
     
@@ -78,12 +86,12 @@ class content_object_fetch_test extends LimbTestCase
     $expected_sql_params['tables'][] = ',table1 as tn';
     $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
     
-    $this->object->expectOnce('_do_parent_fetch_count', 
+    $this->finder->expectOnce('_do_parent_count', 
                               array(new EqualExpectation($expected_sql_params)));
     
-    $this->object->setReturnValue('_do_parent_fetch_count', $result = 'some result');
+    $this->finder->setReturnValue('_do_parent_count', $result = 'some result');
      
-    $this->assertEqual($this->object->fetch_count($sql_params), $result);
+    $this->assertEqual($this->finder->count($sql_params), $result);
   }
   
 }

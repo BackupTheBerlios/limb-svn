@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/core/data_mappers/site_object_mapper.class.php');
 require_once(LIMB_DIR . '/class/core/data_mappers/site_object_behaviour_mapper.class.php');
+require_once(LIMB_DIR . '/class/core/finders/site_objects_raw_finder.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 require_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
@@ -52,13 +53,16 @@ class SiteObjectManipulationTestToolkit extends SiteObjectToolkitMock
 Mock :: generate('tree_decorator');
 Mock :: generate('user');
 Mock :: generate('site_object');
+Mock :: generate('site_objects_raw_finder');
 Mock :: generate('site_object_behaviour');
 Mock :: generate('site_object_behaviour_mapper');
 
 Mock :: generatePartial('site_object_mapper',
                       'site_object_mapper_test_version0',
                       array('insert', 
-                            'update'));
+                            'update',
+                            '_get_finder',
+                            '_get_behaviour_mapper'));
 
 Mock :: generatePartial('site_object_mapper',
                       'site_object_mapper_test_version1',
@@ -173,6 +177,35 @@ class site_object_mapper_test extends LimbTestCase
     $mapper = new site_object_mapper();
     
     $this->assertEqual($mapper->get_parent_locale_id($parent_node_id), $locale_id);
+  }
+  
+  function test_find_by_id()
+  {
+    $finder = new Mocksite_objects_raw_finder($this);
+    $parameters = array(array(), array('conditions' => array('sso.id=' . $id = 10)));
+    $result = array('id' => $id,
+                    'identifier' => $identifier = 'test',
+                    'behaviour_id' => $behaviour_id = 100);
+    
+    $finder->expectOnce('find', $parameters);
+    $finder->setReturnValue('find', $result, $parameters);
+    
+    $mapper = new site_object_mapper_test_version0($this);
+    
+    $mapper->setReturnValue('_get_finder', $finder);    
+    $mapper->setReturnValue('_get_behaviour_mapper', $this->behaviour_mapper);
+    
+    $this->behaviour_mapper->expectOnce('find_by_id', array($behaviour_id));
+    $this->behaviour_mapper->setReturnValue('find_by_id', $this->behaviour, array($behaviour_id));
+    
+    $site_object = $mapper->find_by_id($id);
+    
+    $this->assertEqual($site_object->get_id(), $id);
+    $this->assertEqual($site_object->get_identifier(), $identifier);
+    $this->assertTrue($site_object->get_behaviour() === $this->behaviour);
+
+    $finder->tally();
+    $mapper->tally();
   }
   
   function test_save_insert()

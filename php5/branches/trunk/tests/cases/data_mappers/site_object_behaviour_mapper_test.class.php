@@ -39,6 +39,21 @@ class site_object_behaviour_mapper_test extends LimbTestCase
   	$this->db->sql_delete('sys_behaviour');
   }
   
+  function test_find_by_id_null()
+  {
+    $this->assertNull($this->mapper->find_by_id(1000));
+  }
+  
+  function test_find_by_id()
+  {
+    $this->db->sql_insert('sys_behaviour', array('id' => $id = 100, 'name' => 'site_object_behaviour'));
+    
+    $behaviour = $this->mapper->find_by_id($id);
+    
+    $this->assertIsA($behaviour, 'site_object_behaviour');
+    $this->assertEqual($id, $behaviour->get_id());
+  }
+  
   function test_save_insert()
   {
     $mapper = new site_object_behaviour_mapper_test_version($this);
