@@ -233,7 +233,7 @@ class CronManagerTest extends LimbTestCase
 
   function testPreformTestingCronJob()
   {
-    $job = array('handle' => dirname(__FILE__) . '/testingCronJob', 'interval' => 1);
+    $job = array('handle' => dirname(__FILE__) . '/TestingCronJob', 'interval' => 1);
 
     $cron_manager = new CronManagerTestVersion2($this);
 
@@ -250,7 +250,7 @@ class CronManagerTest extends LimbTestCase
 
   function testRealPerform()
   {
-    $handle = dirname(__FILE__) . '/testingCronJob';
+    $handle = dirname(__FILE__) . '/TestingCronJob';
     registerTestingIni(
       'cron.ini',
       "
