@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 
+define('STATE_MACHINE_BY_DEFAULT', 255);
+
 class StateMachine
 {
-  const BY_DEFAULT = 255;
-
   var $states = array();
   var $initial_state = null;
 
@@ -65,8 +65,8 @@ class StateMachine
 
     if (isset($state_data['transitions'][$result]))
       return $state_data['transitions'][$result];
-    elseif(isset($state_data['transitions'][StateMachine :: BY_DEFAULT]))
-      return $state_data['transitions'][StateMachine :: BY_DEFAULT];
+    elseif(isset($state_data['transitions'][STATE_MACHINE_BY_DEFAULT]))
+      return $state_data['transitions'][STATE_MACHINE_BY_DEFAULT];
     else
       return false;
   }

@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 
+define('IMAGE_LIBRARY_FLIP_HORIZONTAL', 1);
+define('IMAGE_LIBRARY_FLIP_VERTICAL', 2);
+
 class ImageLibrary
 {
-  const FLIP_HORIZONTAL = 1;
-  const FLIP_VERTICAL = 2;
-
   var $input_file;
   var $input_file_type;
   var $output_file;

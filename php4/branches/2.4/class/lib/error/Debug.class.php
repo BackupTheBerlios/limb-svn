@@ -11,16 +11,15 @@
 //Inspired by EZpublish(http//ez.no), debug class
 require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
 
-if(!defined('DEBUG_HTTP_CONSOLE_DIR'))
-  define('DEBUG_HTTP_CONSOLE_DIR', '/var/');
+@define('DEBUG_HTTP_CONSOLE_DIR', '/var/');
+
+define('DEBUG_LEVEL_NOTICE',   1);
+define('DEBUG_LEVEL_WARNING',  2);
+define('DEBUG_LEVEL_ERROR',    3);
+define('DEBUG_TIMING_POINT',   4);
 
 class Debug
 {
-  const LEVEL_NOTICE  = 1;
-  const LEVEL_WARNING = 2;
-  const LEVEL_ERROR   = 3;
-  const TIMING_POINT  = 4;
-
   // String array containing the debug information
   var $debug_strings = array();
 
@@ -57,39 +56,39 @@ class Debug
   function Debug()
   {
     $this->message_types = array(
-      Debug :: LEVEL_NOTICE,
-      Debug :: LEVEL_WARNING,
-      Debug :: LEVEL_ERROR,
-      Debug :: TIMING_POINT
+      DEBUG_LEVEL_NOTICE,
+      DEBUG_LEVEL_WARNING,
+      DEBUG_LEVEL_ERROR,
+      DEBUG_TIMING_POINT
     );
 
     $this->output_format = array(
-      Debug :: LEVEL_NOTICE => array('color' => 'green',
+      DEBUG_LEVEL_NOTICE => array('color' => 'green',
         'name' => 'Notice'),
-      Debug :: LEVEL_WARNING => array('color' => 'orange',
+      DEBUG_LEVEL_WARNING => array('color' => 'orange',
         'name' => 'Warning'),
-      Debug :: LEVEL_ERROR => array('color' => 'red',
+      DEBUG_LEVEL_ERROR => array('color' => 'red',
         'name' => 'Error'),
-      Debug :: TIMING_POINT => array('color' => 'blue',
+      DEBUG_TIMING_POINT => array('color' => 'blue',
         'name' => 'Timing')
     );
 
     $this->log_files = array(
-      Debug :: LEVEL_NOTICE => array(VAR_DIR . 'log/',
+      DEBUG_LEVEL_NOTICE => array(VAR_DIR . 'log/',
         'notice.log'),
-      Debug :: LEVEL_WARNING => array(VAR_DIR . 'log/',
+      DEBUG_LEVEL_WARNING => array(VAR_DIR . 'log/',
         'warning.log'),
-      Debug :: LEVEL_ERROR => array(VAR_DIR . 'log/',
+      DEBUG_LEVEL_ERROR => array(VAR_DIR . 'log/',
         'error.log'),
-      Debug :: TIMING_POINT => array(VAR_DIR . 'log/',
+      DEBUG_TIMING_POINT => array(VAR_DIR . 'log/',
         'time.log'),
     );
 
     $this->log_file_enabled = array(
-      Debug :: LEVEL_NOTICE => true,
-      Debug :: LEVEL_WARNING => true,
-      Debug :: LEVEL_ERROR => true,
-      Debug :: TIMING_POINT => false,
+      DEBUG_LEVEL_NOTICE => true,
+      DEBUG_LEVEL_WARNING => true,
+      DEBUG_LEVEL_ERROR => true,
+      DEBUG_TIMING_POINT => false,
     );
 
     $this->handle_type = 'native';
@@ -238,7 +237,7 @@ class Debug
     if ($debug->handle_type == 'trigger')
       trigger_error($string, E_USER_NOTICE);
     else
-      $debug->write(Debug :: LEVEL_NOTICE, $string, $code_line, $params);
+      $debug->write(DEBUG_LEVEL_NOTICE, $string, $code_line, $params);
   }
 
   function writeWarning($string, $code_line = '', $params = array())
@@ -251,7 +250,7 @@ class Debug
     if ($debug->handle_type == 'trigger')
       trigger_error($string, E_USER_WARNING);
     else
-      $debug->write(Debug :: LEVEL_WARNING, $string, $code_line, $params);
+      $debug->write(DEBUG_LEVEL_WARNING, $string, $code_line, $params);
   }
 
   function writeError($string, $code_line = '', $params = array())
@@ -264,7 +263,7 @@ class Debug
     if ($debug->handle_type == 'trigger')
       trigger_error($string, E_USER_ERROR);
     else
-      $debug->write(Debug :: LEVEL_ERROR, $string, $code_line, $params);
+      $debug->write(DEBUG_LEVEL_ERROR, $string, $code_line, $params);
   }
 
   function writeException($e)
@@ -286,21 +285,21 @@ class Debug
 
     switch ($verbosity_level)
     {
-      case Debug :: LEVEL_NOTICE:
+      case DEBUG_LEVEL_NOTICE:
         $title .= ' debug notice';
         $headers['X-Priority'] = '0 (Low)';
       break;
 
-      case Debug :: LEVEL_WARNING:
+      case DEBUG_LEVEL_WARNING:
         $title .= ' debug warning';
       break;
 
-      case Debug :: LEVEL_ERROR:
+      case DEBUG_LEVEL_ERROR:
         $title .= ' debug error';
         $headers['X-Priority'] = '1 (High)';
       break;
 
-      case Debug :: TIMING_POINT:
+      case DEBUG_TIMING_POINT:
         $title .= ' timig point';
       break;
     }
@@ -310,7 +309,7 @@ class Debug
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
 
-    if(($user_id = $user->getId()) != User :: DEFAULT_USER_ID)
+    if(($user_id = $user->getId()) != DEFAULT_USER_ID)
       $message .= "user id:\t"
                 .	"{$user_id}\n"
                 . "login:\t\t"  . $user->getLogin() . "\n"
@@ -354,7 +353,7 @@ class Debug
 
     $debug->time_points[] = $tp;
 
-    $debug->write(Debug :: TIMING_POINT, $description);
+    $debug->write(DEBUG_TIMING_POINT, $description);
   }
 
   function _parseTextDebugInfo($debug_info)
@@ -389,7 +388,7 @@ class Debug
       return;
 
     if(!in_array($verbosity_level, $this->message_types))
-      $verbosity_level = Debug :: LEVEL_ERROR;
+      $verbosity_level = DEBUG_LEVEL_ERROR;
 
     $debug_info = array(
       'level' => $verbosity_level,

@@ -81,7 +81,7 @@ class FormEditSiteObjectCommandTest extends LimbTestCase
 
     $this->dataspace->expectOnce('merge', array($object_data));
 
-    $this->assertEqual(Limb :: STATUS_FORM_DISPLAYED, $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_FORM_DISPLAYED, $this->command->perform());
   }
 
 

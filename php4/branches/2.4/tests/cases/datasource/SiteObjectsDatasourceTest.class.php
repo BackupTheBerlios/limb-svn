@@ -123,7 +123,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
     $this->finder->expectNever($method);
 
     $this->cache->expectOnce('get', array(array($params, $sql_params, $method),
-                                          SiteObjectsDatasource :: CACHE_GROUP));
+                                          SITE_OBJECTS_CACHE_GROUP));
     $this->cache->setReturnValue('get', $objects = 'some data');
 
     $this->assertEqual($datasource->fetch(), $objects);
@@ -144,13 +144,13 @@ class SiteObjectsDatasourceTest extends LimbTestCase
     $datasource->setFindMethod($method = 'find');
 
     $key = array($params, $sql_params, $method);
-    $this->cache->expectOnce('get', array($key, SiteObjectsDatasource :: CACHE_GROUP));
+    $this->cache->expectOnce('get', array($key, SITE_OBJECTS_CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
     $this->finder->expectOnce('find', array($params, $sql_params));
     $this->finder->setReturnValue('find', $objects, array($params, $sql_params));
 
-    $this->cache->expectOnce('put', array($key,$objects, SiteObjectsDatasource :: CACHE_GROUP));
+    $this->cache->expectOnce('put', array($key,$objects, SITE_OBJECTS_CACHE_GROUP));
 
     $this->assertEqual($datasource->fetch(), $objects);
   }
@@ -194,7 +194,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
     $this->finder->expectNever($method = 'findCount');
 
     $this->cache->expectOnce('get', array(array($sql_params, $method),
-                                          SiteObjectsDatasource :: CACHE_GROUP));
+                                          SITE_OBJECTS_CACHE_GROUP));
     $this->cache->setReturnValue('get', $result = 101);
 
     $this->assertEqual($datasource->countTotal(), $result);
@@ -211,13 +211,13 @@ class SiteObjectsDatasourceTest extends LimbTestCase
     $datasource->setFindMethod('find');
 
     $key = array($sql_params, $method = 'findCount');
-    $this->cache->expectOnce('get', array($key, SiteObjectsDatasource :: CACHE_GROUP));
+    $this->cache->expectOnce('get', array($key, SITE_OBJECTS_CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
     $this->finder->expectOnce($method, array($sql_params));
     $this->finder->setReturnValue($method, $result, array($sql_params));
 
-    $this->cache->expectOnce('put', array($key, $result, SiteObjectsDatasource :: CACHE_GROUP));
+    $this->cache->expectOnce('put', array($key, $result, SITE_OBJECTS_CACHE_GROUP));
 
     $this->assertEqual($datasource->countTotal(), $result);
   }
@@ -228,7 +228,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
     $this->datasource->setPermissionsAction('test-action');
 
     $this->cache->expectOnce('get', array(array($ids, 'test-action'),
-                                          SiteObjectsDatasource :: CACHE_GROUP));
+                                          SITE_OBJECTS_CACHE_GROUP));
     $this->cache->setReturnValue('get', $result = array(1,2));
 
     $this->authorizer->expectNever('getAccessibleObjectIds');
@@ -242,7 +242,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
     $this->datasource->setPermissionsAction('test-action');
 
     $this->cache->expectOnce('get', array(array($ids, 'test-action'),
-                                          SiteObjectsDatasource :: CACHE_GROUP));
+                                          SITE_OBJECTS_CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
     $this->authorizer->expectOnce('getAccessibleObjectIds');
@@ -250,14 +250,14 @@ class SiteObjectsDatasourceTest extends LimbTestCase
 
     $this->cache->setReturnValue('put', array(array($ids, 'test-action'),
                                               $result,
-                                              SiteObjectsDatasource :: CACHE_GROUP));
+                                              SITE_OBJECTS_CACHE_GROUP));
 
     $this->assertEqual($this->datasource->getAccessibleObjectIds(), $result);
   }
 
   function testFlushCache()
   {
-    $this->cache->expectOnce('flush', array(SiteObjectsDatasource :: CACHE_GROUP));
+    $this->cache->expectOnce('flush', array(SITE_OBJECTS_CACHE_GROUP));
     $this->datasource->flushCache();
   }
 }

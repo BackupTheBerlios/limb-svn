@@ -64,16 +64,16 @@ class FormCommand implements Command
     {
       $this->_initFirstTimeDataspace($dataspace, $request);
 
-      return Limb :: STATUS_FORM_DISPLAYED;
+      return LIMB_STATUS_FORM_DISPLAYED;
     }
     else
     {
       $this->_mergeDataspaceWithRequest($dataspace, $request);
 
       if(!$this->validate($dataspace))
-        return Limb :: STATUS_FORM_NOT_VALID;
+        return LIMB_STATUS_FORM_NOT_VALID;
       else
-        return Limb :: STATUS_FORM_SUBMITTED;
+        return LIMB_STATUS_FORM_SUBMITTED;
     }
   }
 

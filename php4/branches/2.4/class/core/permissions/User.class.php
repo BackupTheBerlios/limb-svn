@@ -12,10 +12,10 @@ require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/class/core/Object.class.php');
 
+define('DEFAULT_USER_ID', -1);
+
 class User extends Object
 {
-  const DEFAULT_USER_ID = -1;
-
   var $_is_logged_in = false;
   var $__session_class_path;
 
@@ -59,7 +59,7 @@ class User extends Object
 
   function getId()
   {
-    return $this->get('id', User :: DEFAULT_USER_ID);
+    return $this->get('id', DEFAULT_USER_ID);
   }
 }
 ?>

@@ -74,7 +74,7 @@ class EditSiteObjectCommandTest extends LimbTestCase
                                    new SiteObjectForEditSiteObjectCommand(),
                                    array('site_object'));
 
-    $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_ERROR, $this->command->perform());
   }
 
   function testPerformOkNoVersionIncrease()

@@ -10,10 +10,10 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/tree/TreeDecorator.class.php');
 
+define('CACHING_TREE_CACHE_GROUP', 'tree');
+
 class CachingTree extends TreeDecorator
 {
-  const CACHE_GROUP = 'tree';
-
   var $cache;
 
   function CachingTree(&$tree)
@@ -26,48 +26,48 @@ class CachingTree extends TreeDecorator
 
   function getNode($id)
   {
-    if($node = $this->cache->get(array('node' => $id), CachingTree :: CACHE_GROUP))
+    if($node = $this->cache->get(array('node' => $id), CACHING_TREE_CACHE_GROUP))
       return $node;
 
     $node = $this->_tree->getNode($id);
 
-    $this->cache->put(array('node' => $id), $node, CachingTree :: CACHE_GROUP);
+    $this->cache->put(array('node' => $id), $node, CACHING_TREE_CACHE_GROUP);
 
     return $node;
   }
 
   function getParents($id)
   {
-    if($node = $this->cache->get(array('parents' => $id), CachingTree :: CACHE_GROUP))
+    if($node = $this->cache->get(array('parents' => $id), CACHING_TREE_CACHE_GROUP))
       return $node;
 
     $parents = $this->_tree->getParents($id);
 
-    $this->cache->put(array('parents' => $id), $parents, CachingTree :: CACHE_GROUP);
+    $this->cache->put(array('parents' => $id), $parents, CACHING_TREE_CACHE_GROUP);
 
     return $parents;
   }
 
   function getChildren($id)
   {
-    if($node = $this->cache->get(array('children' => $id), CachingTree :: CACHE_GROUP))
+    if($node = $this->cache->get(array('children' => $id), CACHING_TREE_CACHE_GROUP))
       return $node;
 
     $children = $this->_tree->getChildren($id);
 
-    $this->cache->put(array('children' => $id), $children, CachingTree :: CACHE_GROUP);
+    $this->cache->put(array('children' => $id), $children, CACHING_TREE_CACHE_GROUP);
 
     return $children;
   }
 
   function countChildren($id)
   {
-    if($node = $this->cache->get(array('count_children' => $id), CachingTree :: CACHE_GROUP))
+    if($node = $this->cache->get(array('count_children' => $id), CACHING_TREE_CACHE_GROUP))
       return $node;
 
     $count = $this->_tree->countChildren($id);
 
-    $this->cache->put(array('count_children' => $id), $count, CachingTree :: CACHE_GROUP);
+    $this->cache->put(array('count_children' => $id), $count, CACHING_TREE_CACHE_GROUP);
 
     return $count;
   }
@@ -76,7 +76,7 @@ class CachingTree extends TreeDecorator
   {
     $result = parent :: createRootNode($values);
 
-    $this->cache->flush(CachingTree :: CACHE_GROUP);
+    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
 
     return $result;
   }
@@ -85,7 +85,7 @@ class CachingTree extends TreeDecorator
   {
     $result = parent :: createSubNode($id, $values);
 
-    $this->cache->flush(CachingTree :: CACHE_GROUP);
+    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
 
     return $result;
   }
@@ -94,7 +94,7 @@ class CachingTree extends TreeDecorator
   {
     $result = parent :: deleteNode($id);
 
-    $this->cache->flush(CachingTree :: CACHE_GROUP);
+    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
 
     return $result;
   }
@@ -103,7 +103,7 @@ class CachingTree extends TreeDecorator
   {
     $result = parent :: updateNode($id, $values, $internal);
 
-    $this->cache->flush(CachingTree :: CACHE_GROUP);
+    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
 
     return $result;
   }
@@ -112,19 +112,19 @@ class CachingTree extends TreeDecorator
   {
     $result = parent :: moveTree($id, $target_id);
 
-    $this->cache->flush(CachingTree :: CACHE_GROUP);
+    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
 
     return $result;
   }
 
   function getNodeByPath($path, $delimiter='/')
   {
-    if($node = $this->cache->get(array('path' => $path), CachingTree :: CACHE_GROUP))
+    if($node = $this->cache->get(array('path' => $path), CACHING_TREE_CACHE_GROUP))
       return $node;
 
     $node = $this->_tree->getNodeByPath($path, $delimiter);
 
-    $this->cache->put(array('path' => $path), $node, CachingTree :: CACHE_GROUP);
+    $this->cache->put(array('path' => $path), $node, CACHING_TREE_CACHE_GROUP);
 
     return $node;
   }
@@ -137,24 +137,24 @@ class CachingTree extends TreeDecorator
                  'include_parent' => $include_parent,
                  'check_expanded_parents' => $check_expanded_parents);
 
-    if($node = $this->cache->get($key, CachingTree :: CACHE_GROUP))
+    if($node = $this->cache->get($key, CACHING_TREE_CACHE_GROUP))
       return $node;
 
     $nodes = $this->_tree->getSubBranch($id, $depth, $include_parent, $check_expanded_parents);
 
-    $this->cache->put($key, $nodes, CachingTree :: CACHE_GROUP);
+    $this->cache->put($key, $nodes, CACHING_TREE_CACHE_GROUP);
 
     return $nodes;
   }
 
   function getRootNodes()
   {
-    if($nodes = $this->cache->get(array('root_nodes'), CachingTree :: CACHE_GROUP))
+    if($nodes = $this->cache->get(array('root_nodes'), CACHING_TREE_CACHE_GROUP))
       return $nodes;
 
     $nodes = $this->_tree->getRootNodes();
 
-    $this->cache->put(array('root_nodes'), $nodes, CachingTree :: CACHE_GROUP);
+    $this->cache->put(array('root_nodes'), $nodes, CACHING_TREE_CACHE_GROUP);
 
     return $nodes;
   }

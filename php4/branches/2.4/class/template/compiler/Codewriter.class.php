@@ -8,14 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
+
+define('CODE_WRITER_MODE_PHP', 1);
+define('CODE_WRITER_MODE_HTML', 2);
+
 /**
 * Provides an API for generating the compiled template.
 */
 class Codewriter
 {
-  const CODE_WRITER_MODE_PHP = 1;
-  const CODE_WRITER_MODE_HTML = 2;
-
   /**
   * String containing the compiled template
   */
@@ -42,7 +43,7 @@ class Codewriter
 
   function Codewriter()
   {
-    $this->mode = Codewriter :: CODE_WRITER_MODE_HTML;
+    $this->mode = CODE_WRITER_MODE_HTML;
   }
 
   /**
@@ -52,9 +53,9 @@ class Codewriter
   */
   function switchToPhp()
   {
-    if ($this->mode == Codewriter :: CODE_WRITER_MODE_HTML)
+    if ($this->mode == CODE_WRITER_MODE_HTML)
     {
-      $this->mode = Codewriter :: CODE_WRITER_MODE_PHP;
+      $this->mode = CODE_WRITER_MODE_PHP;
       $this->code .= '<?php ';
     }
   }
@@ -66,9 +67,9 @@ class Codewriter
   */
   function switchToHtml()
   {
-    if ($this->mode == Codewriter :: CODE_WRITER_MODE_PHP)
+    if ($this->mode == CODE_WRITER_MODE_PHP)
     {
-      $this->mode = Codewriter :: CODE_WRITER_MODE_HTML;
+      $this->mode = CODE_WRITER_MODE_HTML;
       $this->code .= ' ?>';
     }
   }

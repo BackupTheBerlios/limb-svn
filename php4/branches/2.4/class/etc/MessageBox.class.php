@@ -11,15 +11,15 @@
 require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 require_once(LIMB_DIR . '/class/core/session/Session.class.php');
 
+define('MESSAGE_BOX_NOTICE', 1);
+define('MESSAGE_BOX_WARNING', 2);
+define('MESSAGE_BOX_ERROR', 3);
+
 class MessageBox
 {
-  const NOTICE  = 1;
-  const WARNING = 2;
-  const ERROR   = 3;
-
   var $strings = array();
 
-  function messageBox()
+  function MessageBox()
   {
     $toolkit =& Limb :: toolkit();
     $session =& $toolkit->getSession();
@@ -43,22 +43,22 @@ class MessageBox
   function writeNotice($string, $label='')
   {
     $inst =& MessageBox :: instance();
-    $inst->write($string, MessageBox :: NOTICE, $label);
+    $inst->write($string, MESSAGE_BOX_NOTICE, $label);
   }
 
   function writeWarning($string, $label='')
   {
     $inst =& MessageBox :: instance();
-    $inst->write($string, MessageBox :: WARNING, $label);
+    $inst->write($string, MESSAGE_BOX_WARNING, $label);
   }
 
   function writeError($string, $label='')
   {
     $inst =& MessageBox :: instance();
-    $inst->write($string, MessageBox :: ERROR, $label);
+    $inst->write($string, MESSAGE_BOX_ERROR, $label);
   }
 
-  function write($string, $verbosity_level = MessageBox :: NOTICE, $label='')
+  function write($string, $verbosity_level = MESSAGE_BOX_NOTICE, $label='')
   {
     $this->strings[] = array(
                                         'string' => str_replace("'", "\'", $string),

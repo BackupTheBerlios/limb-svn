@@ -44,7 +44,7 @@ class log
       $toolkit =& Limb :: toolkit();
       $user =& $toolkit->getUser();
 
-      if(($user_id = $user->getId()) != User :: DEFAULT_USER_ID)
+      if(($user_id = $user->getId()) != DEFAULT_USER_ID)
         $notice .= '[ ' . $user_id . ' ] [ '  . $user->getLogin() . ' ] [ ' . $user->get('email', '') . ' ] ';
 
       $notice .= '[' . Sys::clientIp() . '] [' . (isset($_SERVER['REQUEST_URI']) ?  $_SERVER['REQUEST_URI'] : '') . "]\n" . $string . "\n\n";

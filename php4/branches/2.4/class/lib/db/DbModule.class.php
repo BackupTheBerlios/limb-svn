@@ -12,11 +12,11 @@ require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
 require_once(LIMB_DIR . '/class/lib/date/Date.class.php');
 require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
+define('DB_TRANSACTION_STATUS_IN', 1);
+define('DB_TRANSACTION_STATUS_OUT', 0);
+
 class DbModule
 {
-  const DB_TRANSACTION_STATUS_IN = 1;
-  const DB_TRANSACTION_STATUS_OUT = 0;
-
   var $_transaction_status;
 
   var $_db_connection;
@@ -28,7 +28,7 @@ class DbModule
 
   function DbModule($db_params)
   {
-    $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_OUT;
+    $this->_transaction_status = DB_TRANSACTION_STATUS_OUT;
 
     $this->_db_connection = -1;
     $this->_sql_result = null;
@@ -440,10 +440,10 @@ class DbModule
 
   function begin()
   {
-    if($this->_transaction_status == DbModule :: DB_TRANSACTION_STATUS_OUT)
+    if($this->_transaction_status == DB_TRANSACTION_STATUS_OUT)
     {
       $this->_beginOperation();
-      $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_IN;
+      $this->_transaction_status = DB_TRANSACTION_STATUS_IN;
     }
   }
 
@@ -451,10 +451,10 @@ class DbModule
 
   function commit()
   {
-    if($this->_transaction_status == DbModule :: DB_TRANSACTION_STATUS_IN)
+    if($this->_transaction_status == DB_TRANSACTION_STATUS_IN)
     {
       $this->_commitOperation();
-      $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_OUT;
+      $this->_transaction_status = DB_TRANSACTION_STATUS_OUT;
     }
   }
 
@@ -462,10 +462,10 @@ class DbModule
 
   function rollback()
   {
-    if($this->_transaction_status == DbModule :: DB_TRANSACTION_STATUS_IN)
+    if($this->_transaction_status == DB_TRANSACTION_STATUS_IN)
     {
       $this->_rollbackOperation();
-      $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_OUT;
+      $this->_transaction_status = DB_TRANSACTION_STATUS_OUT;
     }
   }
 

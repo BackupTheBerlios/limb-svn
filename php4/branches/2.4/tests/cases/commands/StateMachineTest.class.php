@@ -128,11 +128,11 @@ class StateMachineTest extends LimbTestCase
   {
     $command1 = new MockCommand($this);
     $command1->setReturnValue('perform', 'someStatus');
-    $this->state_machine->registerState('initial', $command1, array(StateMachine :: BY_DEFAULT => 'next_state1'));
+    $this->state_machine->registerState('initial', $command1, array(STATE_MACHINE_BY_DEFAULT => 'next_state1'));
 
     $command2 = new MockCommand($this);
     $command2->setReturnValue('perform', 'someOtherStatus');
-    $this->state_machine->registerState('next_state1', $command2, array(StateMachine :: BY_DEFAULT => 'next_state2'));
+    $this->state_machine->registerState('next_state1', $command2, array(STATE_MACHINE_BY_DEFAULT => 'next_state2'));
 
     $command3 = new MockCommand($this);
     $command3->setReturnValue('perform', 'someOtherStatusAlso');

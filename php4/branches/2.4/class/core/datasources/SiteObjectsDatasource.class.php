@@ -10,10 +10,10 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/site_objects_datasource_support.inc.php');
 
+@define(SITE_OBJECTS_CACHE_GROUP, 'site_objects');
+
 class SiteObjectsDatasource /*implements Datasource, Countable*/
 {
-  const CACHE_GROUP = 'site_objects';
-
   var $object_ids;
   var $behaviours;
   var $accessible_object_ids;
@@ -143,7 +143,7 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
     $action = $this->permissions_action;
     $key = array($ids, $action);
 
-    $result = $cache->get($key, SiteObjectsDatasource :: CACHE_GROUP);
+    $result = $cache->get($key, SITE_OBJECTS_CACHE_GROUP);
 
     if($result !== null)
       return $result;
@@ -152,7 +152,7 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
     $authorizer =& $toolkit->getAuthorizer();
     $result = $authorizer->getAccessibleObjectIds($ids, $action);
 
-    $cache->put($key, $result, SiteObjectsDatasource :: CACHE_GROUP);
+    $cache->put($key, $result, SITE_OBJECTS_CACHE_GROUP);
 
     return $result;
   }
@@ -178,7 +178,7 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
     $toolkit =& Limb :: toolkit();
     $cache =& $toolkit->getCache();
 
-    $result = $cache->get($key, SiteObjectsDatasource :: CACHE_GROUP);
+    $result = $cache->get($key, SITE_OBJECTS_CACHE_GROUP);
 
     if($result !== null)
       return $result;
@@ -187,7 +187,7 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
 
     $result = $finder->$count_method($sql_params);
 
-    $cache->put($key, $result, SiteObjectsDatasource :: CACHE_GROUP);
+    $cache->put($key, $result, SITE_OBJECTS_CACHE_GROUP);
 
     return $result;
   }
@@ -202,7 +202,7 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
     $toolkit =& Limb :: toolkit();
     $cache =& $toolkit->getCache();
 
-    $result = $cache->get($key, SiteObjectsDatasource :: CACHE_GROUP);
+    $result = $cache->get($key, SITE_OBJECTS_CACHE_GROUP);
 
     if($result !== null)
       return $result;
@@ -214,7 +214,7 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
 
     $result = $finder->$fetch_method($params, $sql_params);
 
-    $cache->put($key, $result, SiteObjectsDatasource :: CACHE_GROUP);
+    $cache->put($key, $result, SITE_OBJECTS_CACHE_GROUP);
 
     return $result;
   }
@@ -223,7 +223,7 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
   {
     $toolkit =& Limb :: toolkit();
     $cache =& $toolkit->getCache();
-    $cache->flush(SiteObjectsDatasource :: CACHE_GROUP);
+    $cache->flush(SITE_OBJECTS_CACHE_GROUP);
   }
 
   function _getBehavioursIds()

@@ -8,8 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-if (!defined('PHP_IMAGE_DIR_C'))
-  define('PHP_IMAGE_DIR_C', LIMB_DIR . '/class/lib/image/');
+@define('PHP_IMAGE_DIR_C', LIMB_DIR . '/class/lib/image/');
 
 SimpleTestOptions :: ignore('ImageLibraryTest');
 
@@ -151,7 +150,7 @@ class ImageLibraryTest extends LimbTestCase
   {
     $info1 = getimagesize($this->input_file);
 
-    $this->library->flip(ImageLibrary :: FLIP_HORIZONTAL);
+    $this->library->flip(IMAGE_LIBRARY_FLIP_HORIZONTAL);
     $this->library->commit();
 
     $info2 = getimagesize($this->output_file);
@@ -160,7 +159,7 @@ class ImageLibraryTest extends LimbTestCase
 //      $this->assertEqual(filesize($this->output_file), $this->hflipped_size);
     clearstatcache();
 
-    $this->library->flip(ImageLibrary :: FLIP_VERTICAL);
+    $this->library->flip(IMAGE_LIBRARY_FLIP_VERTICAL);
     $this->library->commit();
 
     $info2 = getimagesize($this->output_file);

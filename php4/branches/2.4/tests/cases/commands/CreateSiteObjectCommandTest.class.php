@@ -154,7 +154,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->expectNever('set', array('createdSiteObject',
                                                new IsAExpectation('MockSiteObject')));
 
-    $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_ERROR, $this->command->perform());
   }
 
 }

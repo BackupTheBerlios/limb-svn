@@ -9,17 +9,14 @@
 *
 ***********************************************************************************/
 //inspired by EZpublish(http://ez.no), dir class
-
 require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
+
+define('FS_SEPARATOR_LOCAL', 1);
+define('FS_SEPARATOR_UNIX', 2);
+define('FS_SEPARATOR_DOS',  3);
 
 class Fs
 {
-  const DIR_SEPARATOR_LOCAL   = 1;
-  const DIR_SEPARATOR_UNIX    = 2;
-  const DIR_SEPARATOR_DOS     = 3;
-
-  const WIN32_NET_PREFIX      = '\\\\';
-
   function dirpath($path)
   {
     $path = Fs :: cleanPath($path);
@@ -270,15 +267,15 @@ class Fs
   /*
    return the separator used between directories and files according to $type.
   */
-  function separator($type = Fs :: DIR_SEPARATOR_LOCAL)
+  function separator($type = FS_SEPARATOR_LOCAL)
   {
     switch ($type)
     {
-      case Fs :: DIR_SEPARATOR_LOCAL:
+      case FS_SEPARATOR_LOCAL:
         return Sys :: fileSeparator();
-      case Fs :: DIR_SEPARATOR_UNIX:
+      case FS_SEPARATOR_UNIX:
         return '/';
-      case Fs :: DIR_SEPARATOR_DOS:
+      case FS_SEPARATOR_DOS:
         return "\\";
     }
     return null;
@@ -288,7 +285,7 @@ class Fs
    Converts any directory separators found in $path, in both unix and dos style, into
    the separator type specified by $to_type and returns it.
   */
-  function convertSeparators($path, $to_type = Fs :: DIR_SEPARATOR_UNIX)
+  function convertSeparators($path, $to_type = FS_SEPARATOR_UNIX)
   {
     $separator = Fs :: separator($to_type);
     return preg_replace("#[/\\\\]#", $separator, $path);
@@ -300,7 +297,7 @@ class Fs
    For instance: "var/../lib/db" becomes "lib/db", while "../site/var" will not be changed.
    Will also convert separators
   */
-  function cleanPath($path, $to_type = Fs :: DIR_SEPARATOR_LOCAL)
+  function cleanPath($path, $to_type = FS_SEPARATOR_LOCAL)
   {
     $path = Fs :: convertSeparators($path, $to_type);
     $separator = Fs :: separator($to_type);
@@ -356,11 +353,11 @@ class Fs
     return $clean_path;
   }
 
-  function _hasWin32NetPrefix($path)
+  function _hasWin32NetPrefix($path)//ugly!!!
   {
     if(Sys :: osType() == 'win32' &&  strlen($path) > 2)
     {
-      return (substr($path, 0, 2) == Fs :: WIN32_NET_PREFIX);
+      return (substr($path, 0, 2) == '\\\\');
     }
     return false;
   }
@@ -373,7 +370,7 @@ class Fs
    If $include_end_separator is true then it will make sure that the path ends with a
    separator if false it make sure there are no end separator.
   */
-  function path($names, $include_end_separator=false, $type = Fs :: DIR_SEPARATOR_LOCAL)
+  function path($names, $include_end_separator=false, $type = FS_SEPARATOR_LOCAL)
   {
     $separator = Fs :: separator($type);
     $path = implode($separator, $names);

@@ -12,7 +12,17 @@ require_once(LIMB_DIR . '/class/core/finders/DataFinder.interface.php');
 
 class SiteObjectsRawFinder implements DataFinder
 {
-  const RAW_SELECT_STMT =
+  function _defineRawCountSTMT()
+  {
+    return
+    "SELECT COUNT(sso.id) as count
+     FROM sys_site_object as sso %s
+     WHERE sso.id %s %s";
+  }
+
+  function _defineRawSelectSTMT()
+  {
+    return
     "SELECT
     sso.current_version as current_version,
     sso.modified_date as modified_date,
@@ -45,19 +55,15 @@ class SiteObjectsRawFinder implements DataFinder
     AND sys_behaviour.id = sso.behaviour_id
     AND ssot.object_id = sso.id
     %s %s";
-
-  const RAW_COUNT_STMT =
-    "SELECT COUNT(sso.id) as count
-     FROM sys_site_object as sso %s
-     WHERE sso.id %s %s";
+  }
 
   function find($params = array(), $sql_params=array())//refactor!!!
   {
-    $sql = sprintf(SiteObjectsRawFinder :: RAW_SELECT_STMT,
-                  $this->_addSql($sql_params, 'columns'),
-                  $this->_addSql($sql_params, 'tables'),
-                  $this->_addSql($sql_params, 'conditions'),
-                  $this->_addSql($sql_params, 'group'));
+    $sql = sprintf($this->_defineRawSelectSTMT(),
+                   $this->_addSql($sql_params, 'columns'),
+                   $this->_addSql($sql_params, 'tables'),
+                   $this->_addSql($sql_params, 'conditions'),
+                   $this->_addSql($sql_params, 'group'));
 
     if(isset($params['order']))
       $sql .= ' ORDER BY ' . $this->_buildOrderSql($params['order']);
@@ -98,11 +104,10 @@ class SiteObjectsRawFinder implements DataFinder
 
   function findCount($sql_params=array())//refactor!!!
   {
-    $sql = sprintf(SiteObjectsRawFinder :: RAW_COUNT_STMT,
-                  $this->_addSql($sql_params, 'tables'),
-                  $this->_addSql($sql_params, 'conditions'),
-                  $this->_addSql($sql_params, 'group')
-                );
+    $sql = sprintf($this->_defineRawCountSTMT(),
+                   $this->_addSql($sql_params, 'tables'),
+                   $this->_addSql($sql_params, 'conditions'),
+                   $this->_addSql($sql_params, 'group'));
 
     $toolkit =& Limb :: toolkit();
     $db =& $toolkit->getDB();

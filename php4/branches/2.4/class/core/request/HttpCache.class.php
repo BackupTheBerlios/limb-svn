@@ -10,11 +10,11 @@
 ***********************************************************************************/
 //inspired by http://alexandre.alapetite.net/doc-alex/php-http-304/
 
+define('HTTP_CACHE_TYPE_PRIVATE', 0);
+define('HTTP_CACHE_TYPE_PUBLIC', 1);
+
 class HttpCache
 {
-  const TYPE_PRIVATE = 0;
-  const TYPE_PUBLIC = 1;
-
   var $etag;
   var $last_modified_time;
   var $cache_time;
@@ -30,7 +30,7 @@ class HttpCache
     $this->last_modified_time = time();
     $this->etag = null;
     $this->cache_time = 0;
-    $this->cache_type = HttpCache :: TYPE_PRIVATE;
+    $this->cache_type = HTTP_CACHE_TYPE_PRIVATE;
   }
 
   function checkAndWrite($response)
@@ -116,9 +116,9 @@ class HttpCache
   {
     if ($this->cache_time == 0)
       $cache = 'protected, must-revalidate, ';
-    elseif ($this->cache_type == HttpCache :: TYPE_PRIVATE)
+    elseif ($this->cache_type == HTTP_CACHE_TYPE_PRIVATE)
       $cache = 'protected, ';
-    elseif ($this->cache_type == HttpCache :: TYPE_PUBLIC)
+    elseif ($this->cache_type == HTTP_CACHE_TYPE_PUBLIC)
       $cache = 'public, ';
     else
       $cache = '';

@@ -73,7 +73,7 @@ class FormCommandTest extends LimbTestCase
                                     array(new IsAExpectation('MockDataspace'),
                                           new IsAExpectation('MockRequest')
                                           ));
-    $this->assertEqual($this->form_command->perform(), Limb :: STATUS_FORM_DISPLAYED);
+    $this->assertEqual($this->form_command->perform(), LIMB_STATUS_FORM_DISPLAYED);
   }
 
   function testValidationSucceedOnSubmit()
@@ -91,7 +91,7 @@ class FormCommandTest extends LimbTestCase
     $this->validator->expectOnce('validate');
     $this->validator->setReturnValue('validate', true);
 
-    $this->assertEqual($this->form_command->perform(), Limb :: STATUS_FORM_SUBMITTED);
+    $this->assertEqual($this->form_command->perform(), LIMB_STATUS_FORM_SUBMITTED);
   }
 
   function testValidationFailedOnSubmit()
@@ -109,7 +109,7 @@ class FormCommandTest extends LimbTestCase
     $this->validator->expectOnce('validate');
     $this->validator->setReturnValue('validate', false);
 
-    $this->assertEqual($this->form_command->perform(), Limb :: STATUS_FORM_NOT_VALID);
+    $this->assertEqual($this->form_command->perform(), LIMB_STATUS_FORM_NOT_VALID);
   }
 }
 

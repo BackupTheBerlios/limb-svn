@@ -93,7 +93,7 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->assertEqual($this->delete_command->perform(), Limb :: STATUS_ERROR);
+    $this->assertEqual($this->delete_command->perform(), LIMB_STATUS_ERROR);
   }
 
   function testDeleteFailedSqlException()
@@ -108,7 +108,7 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
 
     try
     {
-      $this->assertEqual($this->delete_command->perform(), Limb :: STATUS_ERROR);
+      $this->assertEqual($this->delete_command->perform(), LIMB_STATUS_ERROR);
       $this->assertTrue(false);
     }
     catch(SQLException $e)

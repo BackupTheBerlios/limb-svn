@@ -9,18 +9,18 @@
 *
 ***********************************************************************************/
 
+define('LIMB_STATUS_SUCCESS_MASK', 15);
+define('LIMB_STATUS_PROBLEM_MASK', 240);
+
+define('LIMB_STATUS_OK', 1);
+define('LIMB_STATUS_FORM_SUBMITTED', 2);
+define('LIMB_STATUS_FORM_DISPLAYED', 4);
+
+define('LIMB_STATUS_FORM_NOT_VALID', 16);
+define('LIMB_STATUS_ERROR', 32);
+
 class Limb
 {
-  const STATUS_SUCCESS_MASK = 15;
-  const STATUS_PROBLEM_MASK = 240;
-
-  const STATUS_OK = 1;
-  const STATUS_FORM_SUBMITTED = 2;
-  const STATUS_FORM_DISPLAYED = 4;
-
-  const STATUS_FORM_NOT_VALID = 16;
-  const STATUS_ERROR = 32;
-
   var $toolkits = array();
 
   function registerToolkit($toolkit)
