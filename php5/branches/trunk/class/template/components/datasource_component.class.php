@@ -10,7 +10,8 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/array_dataset.class.php');
 require_once(LIMB_DIR . 'class/datasources/datasource_factory.class.php');
-
+//  			throw new WactException('target component not found', 
+//					array('target' => $target));
 class datasource_component extends component 
 {
 	protected $parameters = array();
@@ -99,6 +100,70 @@ class datasource_component extends component
 	protected function _get_params_array()
 	{
 		return $this->parameters;
+	}
+	
+	public function setup_navigator()
+	{
+		$navigator = $this->_get_navigator_component();
+		if (!$navigator)
+			return null;
+		
+		$limit = $navigator->get_items_per_page();
+		$this->set_parameter("limit", $limit);
+		
+		$navigator_id = 'page_' . $navigator->get_server_id();
+		if (isset($_GET[$navigator_id]))
+		{
+			$offset = ((int)$_GET[$navigator_id]-1)*$limit;
+			$this->set_parameter("offset", $offset);
+		}		
+	}
+	
+	public function setup_target()
+	{
+		$targets = explode(',', $this->get('target'));
+		
+		foreach($targets as $target)
+		{
+		  $target = trim($target);
+
+		  $target_component = $this->parent->find_child($target);
+		    
+			if($target_component)
+			{
+				$target_component->register_dataset($this->get_dataset());
+				
+				$navigator = $this->_get_navigator_component();
+
+				if($navigator && ($offset = $this->get('offset')))
+				  $target_component->set_offset($offset);
+			}
+			else
+				debug :: write_error('component target not found',
+				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+				array('target' => $target));
+		}
+	}
+	
+	public function fill_navigator()
+	{
+		$navigator = $this->_get_navigator_component();
+		if (!$navigator)
+			return null;
+
+		$navigator->set_total_items($this->get_total_count());
+	}
+	
+	protected function _get_navigator_component()
+	{
+		if (!$navigator_id = $this->get('navigator_id'))
+			return null;
+			
+		$navigator = $this->parent->find_child($navigator_id);
+		if (!$navigator)
+			return null;
+		
+		return $navigator;
 	}
 }
 ?>

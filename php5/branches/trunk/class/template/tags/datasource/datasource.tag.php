@@ -63,64 +63,25 @@ class datasource_tag extends server_component_tag
 					'line' => $this->starting_line_no));
 	  }		
 	}
-		
 	public function generate_contents($code)
 	{
 		parent :: generate_contents($code);
 		
-		$navigator = null;
-		
 		if(isset($this->attributes['navigator']))
 		{
-			if($navigator = $this->parent->find_child($this->attributes['navigator']))
-			{
-				$limit = $code->get_temp_variable();
-				$offset = $code->get_temp_variable();
-				
-				$code->write_php('$' . $limit . '= ' . $navigator->get_component_ref_code() . '->get_items_per_page();');
-				$code->write_php($this->get_component_ref_code() . '->set_parameter("limit", $' . $limit . ');');
-
-				$code->write_php('if(isset($_GET["page_' . $navigator->get_server_id() . '"])){');
-        $code->write_php('$' . $offset . '= ($_GET["page_' . $navigator->get_server_id() . '"]-1)*$' . $limit . ';');
-        $code->write_php($this->get_component_ref_code() . '->set_parameter("offset", $' . $offset . ');');
-				$code->write_php('}');
-			}			
+			$code->write_php($this->get_component_ref_code() . '->set("navigator_id", "' . $this->attributes['navigator'] .'");');
+			$code->write_php($this->get_component_ref_code() . '->setup_navigator();');
 		}
 
-		$targets = explode(',', $this->attributes['target']);
-		foreach($targets as $target)
+		$code->write_php($this->get_component_ref_code() . '->set("target", "' . $this->attributes['target'] .'");');
+		$code->write_php($this->get_component_ref_code() . '->setup_target();');
+
+		if(isset($this->attributes['navigator']))
 		{
-		  $target = trim($target);
-		  
-		  $target_component = $this->parent->find_child($target);
-		  
-		  if(!$target_component)
-		  {
-		    $root = $this->get_root_dataspace();
-		    $target_component = $root->find_child($target);
-		  }
-		    
-			if($target_component)
-			{
-				$code->write_php($target_component->get_component_ref_code() . '->register_dataset(' . $this->get_component_ref_code() . '->get_dataset());');
-				
-				if($navigator)
-				{
-				  $code->write_php('if(isset($' . $offset. ')){');
-				  $code->write_php($target_component->get_component_ref_code() . '->set_offset($' . $offset . ');');
-				  $code->write_php('}');
-				}
-			}
-			else
-  			throw new WactException('target component not found', 
-					array('target' => $target));
+			$code->write_php($this->get_component_ref_code() . '->fill_navigator();');
 		}
-			
-		if(isset($this->attributes['navigator']) && $navigator)
-		{
-			$code->write_php($navigator->get_component_ref_code() . '->set_total_items(' . $this->get_component_ref_code() . '->get_total_count());');
-		}
-	} 	
+	}		
+
 } 
 
 ?>

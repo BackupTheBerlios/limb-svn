@@ -346,7 +346,7 @@ abstract class compiler_component
 		{
 			if($this->is_debug_enabled())
 			{				
-				$code->write_html("<div style='border:dashed 1px green;padding: 10px 10px 10px 10px;'>");
+				$code->write_html("<div class='debug-tmpl-container'>");
 				
 				$this->_generate_debug_editor_link_html($code, $this->wrapping_component->resolved_source_file);
 			}

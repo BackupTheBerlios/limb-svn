@@ -11,7 +11,7 @@ function node_select(id, md5_id, start_path)
 
 node_select.prototype.generate = function()
 {			
-	optimize_window();
+//	optimize_window();
 }
 
 node_select.prototype.set_start_path = function(start_path)

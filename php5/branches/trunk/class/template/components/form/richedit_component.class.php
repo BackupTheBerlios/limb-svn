@@ -62,12 +62,19 @@ class richedit_component extends text_area_component
 	{
 		$this->_load_js_script();
 				
-		echo '<button class="button" onclick="toggle_richedit_textarea();window.location.reload();return false;">
-		      Toggle richedit/textarea
-		      </button><br>';
-		
-		
 		$id = $this->get_attribute('id');
+		
+		if ($_COOKIE['use_textarea_instead_of_richedit'])
+			$caption = strings :: get('use_richedit_instead_of_textarea', 'common');
+		else
+			$caption = strings :: get('use_textarea_instead_of_richedit', 'common');
+		
+		echo "<table cellpadding=0 cellspacing=0>
+					<tr>
+						<td><button id='{$id}_button' class='button' onclick='toggle_richedit_textarea();window.location.reload();return false;' style='display:none'>{$caption}</button></td>
+						<td nowrap> " . strings :: get('richedit_textarea_warning', 'common') . "</td>
+					</tr>
+				  </table>";
 		
 		if ($this->get_attribute('mode') == 'light')
 		  $init_function = 'install_limb_lite_extension(editor.config);';
@@ -75,10 +82,10 @@ class richedit_component extends text_area_component
 		  $init_function = 'install_limb_full_extension(editor.config);editor.registerPlugin(TableOperations);';
 		  
 		if(!$this->get_attribute('rows'))
-		  $this->set('rows', RICHEDIT_DEFAULT_ROWS);
+		  $this->set_attribute('rows', RICHEDIT_DEFAULT_ROWS);
 
 		if(!$this->get_attribute('cols'))
-		  $this->set('cols', RICHEDIT_DEFAULT_COLS);
+		  $this->set_attribute('cols', RICHEDIT_DEFAULT_COLS);
 
 		if(!$width = $this->get_attribute('width'))
 		  $width = RICHEDIT_DEFAULT_WIDTH;
@@ -93,15 +100,22 @@ class richedit_component extends text_area_component
       {
 	    	var editor = new HTMLArea('{$id}');
 	    	
+	    	if(typeof(editor.config) == 'undefined')
+	    		return;
+
 	    	{$init_function}
 	    	
         editor.config.width = '{$width}';
         editor.config.height = '{$height}';  	    	
-        editor.generate();
-      }
       
       c = get_cookie('use_textarea_instead_of_richedit');
+	
       if(c != 1)
+	        editor.generate();
+        
+        document.getElementById('{$id}_button').style.display = 'block';
+      }
+      
         add_event(window, 'load', init_richedit_{$id});      
       
     </script>";

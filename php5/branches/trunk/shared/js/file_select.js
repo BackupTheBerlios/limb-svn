@@ -29,7 +29,7 @@ file_select.prototype.generate = function()
 		this.span_content.style.display = 'none';
 	}
 			
-	optimize_window();
+//	optimize_window();
 }
 
 file_select.prototype.get_file = function()

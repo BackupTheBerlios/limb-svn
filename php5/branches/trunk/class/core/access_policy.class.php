@@ -332,7 +332,14 @@ class access_policy
 		if(empty($action))
 		{
 			$parent_controller = $parent_object->get_controller();
-			$action = $parent_controller->get_action();
+			try
+			{
+				$action = $parent_controller->get_action();
+			}
+			catch(LimbException $e)
+			{
+				$action = '';
+			}
 		}
 
 		$class_id = $parent_object->get_class_id();

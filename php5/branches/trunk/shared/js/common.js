@@ -159,88 +159,111 @@ function optimize_window()
 {	
 	w = window;
 	
-	if(!w.opener)
-	  return;
-	
 	var x_ratio = 0.85;
 	var y_ratio = 0.85;
 	
+	top_opener = window
+	while(typeof(top_opener.top.opener) != 'undefined' && top_opener.top.opener != null)
+	{
+		top_opener = top_opener.top.opener;
+	}
+	
   if (is_ie)
 	{
-		opener_width = w.opener.document.body.clientWidth;
-		opener_height = w.opener.document.body.clientHeight;
+		openerWidth = top_opener.document.body.clientWidth;
+		openerHeight = top_opener.document.body.clientHeight;
+		openerLeft = top_opener.screenLeft;
+		openerTop = top_opener.screenTop;
 	}
-	else if(is_gecko)
+	else if(is_gecko || is_opera)
 	{
-		opener_width = w.opener.outerWidth;
-		opener_height = w.opener.outerHeight;
+		openerWidth = top_opener.innerWidth;
+		openerHeight = top_opener.innerHeight;
+		openerLeft = top_opener.screenX + top_opener.outerWidth - top_opener.innerWidth;
+		openerTop = top_opener.screenY + top_opener.outerHeight - top_opener.innerHeight;
 	}
 	else
 	{
-		opener_width = w.opener.document.body.clientWidth;
-		opener_height = w.opener.document.body.clientHeight;
+		openerWidth = top_opener.document.body.clientWidth;
+		openerHeight = top_opener.document.body.clientHeight;
+		openerLeft = top_opener.screenLeft;
+		openerTop = top_opener.screenTop;
 	}
 
 	if(window.WINDOW_WIDTH)
-  {
-   	deltaX = window.WINDOW_WIDTH;
-  }
+   	newWidth = window.WINDOW_WIDTH;
   else
-  {
-  	deltaX = opener_width*x_ratio;
-  	if (w.document.body.scrollWidth > deltaX )
-  	{
-  	  x_ratio = 1;
-  	  deltaX = opener_width;
-  	} 
-  }	
+  	newWidth = openerWidth*x_ratio;
 
 	if(window.WINDOW_HEIGHT)
-  {
-   	deltaY = window.WINDOW_HEIGHT;
-  }
+   	newHeight = window.WINDOW_HEIGHT;
   else
-  {
-  	deltaY = opener_height*y_ratio;
+  	newHeight = openerHeight*y_ratio;
 
-  	if (w.document.body.scrollHeight > deltaY )
-  	{
-  	  y_ratio = 1;
-  	  deltaY = opener_height;
-  	} 
-  }	
   
-	if (is_ie)
-	{
-		openerLeft = w.opener.screenLeft;
-		openerTop = w.opener.screenTop;
-	}
-	else if((is_gecko)	|| (is_opera))
-	{
-		openerLeft = w.opener.screenX;
-		openerTop = w.opener.screenY;
-	}	
-	else
-	{
-		openerLeft = w.opener.screenLeft;
-		openerTop = w.opener.screenTop;
+	newLeft = openerLeft + (openerWidth - newWidth)/2;
+	newTop = openerTop + (openerHeight - newHeight)/2;
+	
+	w.moveTo(newLeft, newTop);
+	w.resizeTo(newWidth, newHeight);
 	}
 
-	newLeft = (w.screen.width - deltaX)/2 - 20;
-	newTop = (w.screen.height - deltaY)/2 - 30;
+//makes popup window at href address
+function popup(href, window_name, window_params, dont_set_focus, on_close_handler, on_init_handler)
+	{
+  href = set_http_get_parameter(href, 'popup', 1);
+  
+	if (typeof(window_name) == 'undefined' || window_name == null) 
+		window_name = '_generate';
+
+	new_left = window.screen.width / 2 - 100;
+	new_top = window.screen.height / 2 - 50;
+
+	if (typeof(window_params) == 'undefined' || window_params == null) 
+		window_params = 'width=150,height=50,left=' + new_left + ',top=' + new_top + ',scrollbars=yes,resizable=yes,help=no,status=yes';
+	else
+		window_params = 'left=' + new_left + ',top=' + new_top + ',' + window_params;
+
+	if (window_name.toLowerCase() == '_generate')
+		window_name = 'w' + hex_md5(href) + 's';
 		
-	w.moveTo(newLeft, newTop);
-	w.resizeTo(deltaX, deltaY);
+	if (typeof(window.popups) != 'array')
+		window.popups = new Array();
+
+	if (typeof(window.popups[window_name]) != 'array')
+		window.popups[window_name] = new Array();
+		
+	if (typeof(on_close_handler) != 'undefined') 
+		window.popups[window_name]['close_popup_handler'] = on_close_handler;
+
+	if (typeof(on_init_handler) != 'undefined') 
+		window.popups[window_name]['init_popup_handler'] = on_init_handler;
+
+	window.popups[window_name]['status'] = 'popped_up';
+
+	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);	
+	if (href != LOADING_STATUS_PAGE)
+	 w.location.href = href;
+	
+	if(!dont_set_focus)
+		w.focus();
+		
+	return w;
 }
 
 function process_popup()
 {	
 	href = location.href;
 
+	if (typeof(window.opener.popups) != 'undefined')
+		if (window.opener.popups[window.name]['status'] == 'popped_up')
 	optimize_window();
 	
 	if(opener && (get_query_item(href, 'reload_parent')))
 		opener.location.reload();
+	
+	if (typeof(window.opener.popups) != 'undefined')
+		window.opener.popups[window.name]['status'] = 'processed';
 }
 
 function trim(value) 
@@ -349,47 +372,6 @@ function jump_change_get(get, w)
 		href = href.substring(0, get_begin);
 		
 	jump(href + '?' + get, w);
-}
-
-//makes popup window at href address
-function popup(href, window_name, window_params, dont_set_focus, on_close_handler, on_init_handler)
-{	
-  href = set_http_get_parameter(href, 'popup', 1);
-  
-	if (typeof(window_name) == 'undefined' || window_name == null) 
-		window_name = '_generate';
-
-	new_left = window.screen.width / 2 - 100;
-	new_top = window.screen.height / 2 - 50;
-
-	if (typeof(window_params) == 'undefined' || window_params == null) 
-		window_params = 'width=150,height=50,left=' + new_left + ',top=' + new_top + ',scrollbars=yes,resizable=yes,help=no,status=yes';
-	else
-		window_params = 'left=' + new_left + ',top=' + new_top + ',' + window_params;
-	
-	if (window_name.toLowerCase() == '_generate')
-		window_name = 'w' + hex_md5(href) + 's';
-
-	if (typeof(window.popups) != 'array')
-		window.popups = new Array();
-
-	if (typeof(window.popups[window_name]) != 'array')
-		window.popups[window_name] = new Array();
-		
-	if (typeof(on_close_handler) != 'undefined') 
-		window.popups[window_name]['close_popup_handler'] = on_close_handler;
-
-	if (typeof(on_init_handler) != 'undefined') 
-		window.popups[window_name]['init_popup_handler'] = on_init_handler;
-
-	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);	
-	if (href != LOADING_STATUS_PAGE)
-	 w.location.href = href;
-	
-	if(!dont_set_focus)
-		w.focus();
-		
-	return w;
 }
 
 function get_close_popup_handler()
@@ -747,4 +729,202 @@ function binl2b64(binarray)
     }
   }
   return str;
+}
+
+function var_dump(obj, level)
+{
+	if(level>10) return '';
+
+	var res = '';
+	var shift = "";
+	
+	for(i=0; i<level*2; i++) 
+		shift+="\t\t";
+	
+	if(typeof(obj)=='object')
+	{
+		try
+		{
+			for(key in obj)
+			{
+				if(obj[key] == 'none' || obj[key] == '' || obj[key]==null) continue;
+					
+				if(typeof(obj[key]) == 'unknown' || typeof(obj[key]) == 'undefined') continue;
+				
+				res += shift + key + ' = ' + obj[key] + '\n';
+				res += var_dump(obj[key], level++);
+			}
+		}
+		catch(e){}
+	}
+	return res;
+}
+/*debug*/
+tmp_window_onload = window.onload
+window.onload = function()
+{
+	if(window != top)
+		if(top.onload_iframe)
+			top.onload_iframe()
+	if(tmp_window_onload) tmp_window_onload()
+	
+	apply_behavior()
+}
+function apply_behavior()
+{
+	
+	CLASS_MAP = build_class_map(document)
+	var arr = document.getElementsByTagName('*')
+	for(var v in arr)
+	{
+		
+		if(CLASS_MAP[arr[v].className])
+		{
+			try
+			{
+				var clss = window[CLASS_MAP[arr[v].className]].prototype
+				
+			}
+			catch(ex)
+			{
+				confirm('apply_behavior() - NO CLASS DEFINED: ' + CLASS_MAP[arr[v].className])
+				break
+			}
+			for(var j in clss)
+			{
+				arr[v][j] = clss[j]
+			}
+		}
+	}
+}
+function build_class_map(doc)
+{
+	var arr = []
+	for(var i = 0; i<doc.styleSheets.length; i++)
+	{
+		var rules = doc.styleSheets[i].rules
+		if(is_gecko) rules = doc.styleSheets[i].cssRules
+		
+		for(var j = 0; j<rules.length; j++)
+	  {
+			var rule = rules[j];
+			if(rule.style.page)
+			{
+				arr[rule.selectorText.substr(1)] = rule.style.page
+			}
+		}
+	}
+	
+	return arr
+}
+
+//=======================
+//	ACTIONS
+//=======================
+function action(){}
+action.prototype.onmouseover = function()
+{
+	this.style.backgroundImage = "url(/shared/images/rect.gif)"
+	
+}
+action.prototype.onmouseout = function()
+{
+	this.style.backgroundImage = ""
+}
+
+function row(){}
+row.prototype.onmouseover = function()
+{
+	this.style.backgroundColor='#F7F7F7'
+}
+row.prototype.onmouseout = function()
+{
+		this.style.backgroundColor=''
+}
+
+//
+//
+//
+function actions(){}
+actions.prototype.onmouseover = function()
+{
+	this.style.backgroundColor='#F7F7F7'
+
+//	if(this.isHover)return
+//	this.set_active()
+//	this.isHover = true
+}
+actions.prototype.onmouseout = function()
+{
+	this.style.backgroundColor=''
+
+//	if(this.HT()) return
+//	this.set_normal()
+//	this.isHover = false
+		
+}
+//actions.prototype.set_active = function()
+//{
+//	try{
+//	var acts = this.get_jip_element('actions')
+//	if(acts == null) return
+//	acts.className = 'jip-actions-active'
+//	var obj = this.get_jip_element('object')
+//	obj.className = 'jip-object-active'
+//	
+//	this.get_jip_element('l').src = '/shared/images/actl.gif'
+//	this.get_jip_element('r').src = '/shared/images/actr.gif'
+//	}
+//	catch(ex)
+//	{
+////		alert('JIP ACTION: initialization fail')
+//	}
+//}
+//actions.prototype.set_normal = function()
+//{
+//	try{
+//	var acts = this.get_jip_element('actions')
+//	if(acts == null) return
+//	acts.className = 'jip-actions'
+//
+//	this.get_jip_element('object').className = 'jip-object'
+//
+//	this.get_jip_element('l').src = '/shared/images/act1.gif'
+//	this.get_jip_element('r').src = '/shared/images/act3.gif'
+//	}
+//	catch(ex)
+//	{
+////		alert('JIP ACTION: initialization fail')
+//	}
+//}
+////
+//// [ service]
+////
+//actions.prototype.get_jip_element = function(jip_name)
+//{
+//	var arr = this.all
+//	for(var i=0;i<arr.length; i++)
+//		if(arr[i].jip == jip_name) return arr[i]
+//	return null
+//}
+//actions.prototype.HT = function()
+//{
+//	var obj = this.document.elementFromPoint(event.x, event.y)
+//	while(obj != null)
+//	{
+//		if(obj == this)return true
+//		obj = obj.parentElement
+//	}
+//	return false
+//}
+
+
+//
+// debug-info
+//
+function debug_info(){}
+debug_info.prototype.onclick = function()
+{
+//	WS = new ActiveXObject("WScript.shell");
+//	WS.exec("uedit32.exe " + this.alt);
 }
