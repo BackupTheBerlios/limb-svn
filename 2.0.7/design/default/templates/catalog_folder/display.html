@@ -1,0 +1,69 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<!--Õ¿◊¿ÀŒ:  ŒÕ“≈Õ“-->
+
+<span class=jip>
+<fetch:MAPPED><core:INCLUDE file="jip_actions/normal.html"></fetch:MAPPED>
+</span><br>
+
+<fetch:SUB_BRANCH target='folders'>
+	<core:PARAMETER name='loader_class_name' value='catalog_folder'>
+	<core:PARAMETER name='depth' value='1' type='numeric'>
+</fetch:SUB_BRANCH>
+
+	<list:LIST id='folders'>
+		<table width=100% border=0 cellspacing=0 cellpadding=0 bgcolor="DFE4F7">
+	    <list:ITEM>
+			<tr>
+		    <td colspan=100 bgcolor="DFE4F7" style="padding: 2px, 0, 3px, 10px">
+		    	<h3><a href='{$path}'>{$title}</a></h3>
+		    </td>
+			</tr>
+    </list:ITEM>
+   </table>
+	</list:LIST>
+
+
+<fetch:SUB_BRANCH target='direct_objects'>
+	<core:PARAMETER name='loader_class_name' value='catalog_object' >
+	<core:PARAMETER name='depth' value='1' >
+</fetch:SUB_BRANCH>
+
+<table width=100% border=0 cellspacing=1 cellpadding=0 >
+	<tr>
+
+<grid:LIST id='direct_objects'>	
+
+		<grid:SEPARATOR count='2'>
+		</tr><tr>
+		</grid:SEPARATOR>
+		
+		<grid:ITEM>
+			<td  jip='object' class=jip bgcolor="white" valign=top>
+				<core:INCLUDE file="published_status.html">
+				<span jip='action'><core:INCLUDE file="jip_actions/normal.html"></span><br>
+				<core:OPTIONAL for='image_id'>
+				<table style='border: solid 1px D6C4C4' align=left cellspacing=0 cellpadding=3 >
+					<tr>
+						<td>
+							<a href='{$path}'><img src='/root?node_id={$image_id}&thumbnail' align='center' border=0></a></td>
+					</tr>
+				</table>
+				</core:OPTIONAL>
+				<a href='{$path}'>{$title}</a><br>
+				{$annotation}<br>
+				
+				<table border="0"  cellpadding="2" cellspacing="0" valign="bottom" class=cardoff onMouseOver="className='cardon';" onMouseOut="className='cardoff';">
+        <tr> 
+          <td valign="bottom" class=card><a  href="/root/cart?popup=1&action=add_item&id={$node_id}" onclick="return click_href(this.href, 'cart');">Á‡Í‡Á‡Ú¸</a></td>
+          <td><a href="/root/cart?popup=1&action=add_item&id={$node_id}" onclick="return click_href(this.href, 'cart');"><img src="/design/main/images/basket.gif" border="0" align="bottom"></a></td>
+        </tr>
+      	</table>
+			
+			</td>
+		</grid:ITEM>
+
+</grid:LIST>
+		</tr>
+</table>
+<!-- ŒÕ≈÷:  ŒÕ“≈Õ“-->

@@ -1,0 +1,66 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<core:INCLUDE file="page_data.html">
+
+<fetch:MAPPED>
+<span class=jip>
+<core:INCLUDE file="jip_actions/extended.html">
+</span>
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='faq_questions' navigator="pager" >
+	<core:PARAMETER name='loader_class_name' value='faq_object' >
+</fetch:SUB_BRANCH>
+
+
+<core:INCLUDE file="pager.html">
+
+<list:LIST id='faq_questions'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+    <list:ITEM>
+		<tr>
+			<td width=1>
+			<core:INCLUDE file="published_status.html">
+			</td>
+			<td>
+			<a href='#{$identifier}'>{$question}</a>
+			</td>
+		</tr>
+    </list:ITEM>
+</table>
+</list:LIST>
+
+<fetch:SUB_BRANCH target='faq' >
+	<core:PARAMETER name='loader_class_name' value='faq_object' >
+</fetch:SUB_BRANCH>
+
+<list:LIST id='faq'>
+  <table width="100%" border="0" cellspacing="0" cellpadding="8" >
+  <list:ITEM>
+	<tr>
+		<td>
+			<table width=100% border=0 cellspacing=0 cellpadding=0 class='jip'>
+			<tr>
+				<td jip='object' class='jip_object'>
+					<core:INCLUDE file="published_status.html">
+					<core:INCLUDE file="/faq_folder/item.html">
+				</td>
+			</tr>
+			<tr>			
+				<td jip='action'>
+					<core:INCLUDE file="jip_actions/normal.html">
+				</td>
+			</tr>			
+			</table>
+		</td>
+	</tr>			
+  </list:ITEM>
+</table>
+</list:LIST>
+
+<fetch:SUB_BRANCH target='faq_folder' >
+	<core:PARAMETER name='loader_class_name' value='faq_folder' >
+	<core:PARAMETER name='path' value='/root/faq' >
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="/faq_folder/level_folders.html">

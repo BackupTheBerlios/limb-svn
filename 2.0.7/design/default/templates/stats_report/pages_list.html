@@ -1,0 +1,39 @@
+<core:WRAP file="admin/page.html" placeholder="content">
+
+<core:INCLUDE file="/stats_report/pages_form.html"><br>
+<br>
+
+<DATA_SOURCE target='table' navigator='pager'>
+	<core:PARAMETER name='data_source_path' value='stats_pages_list_data_source'>
+</DATA_SOURCE>
+
+<pager:navigator id="pager" items="30">
+	<core:INCLUDE file="pager_contents.html">
+</pager:navigator>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<th>URL</th>
+<th>hits</th>
+<th>%</th>
+</tr>
+
+<list:LIST id='table'>
+<list:ITEM>
+<list:STRIPE odd>
+<tr bgcolor='#f0f0f0'>
+</list:STRIPE>
+
+<list:STRIPE even>
+<tr>
+</list:STRIPE>
+
+<td>
+	<a href='{$uri}'>{$uri}</a>
+</td>
+<td>{$hits}</td>
+<td>{$percentage}</td>
+</tr>
+</list:ITEM>
+</list:LIST>
+</table>

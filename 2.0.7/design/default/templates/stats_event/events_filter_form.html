@@ -1,0 +1,79 @@
+<fieldset>
+	<legend style='color:#000000'>Events filter</legend>
+	<table>
+	<form id='events_filter_form' name='events_filter_form' method='post'>
+	  <tr>
+	    <td nowrap><label for="identifier">IP</label></td>
+	    <td><input type="text" id="stats_ip" name="stats_ip" class='input' size='60'></td>
+	  </tr>
+	  <tr>
+	    <td nowrap><label for="identifier">User</label></td>
+	    <td><input type="text" id="stats_user_login" name="stats_user_login" class='input' size='15'></td>
+	  </tr>
+	  <tr>
+	    <td nowrap><label for="identifier">Action</label></td>
+	    <td><input type="text" id="stats_action_name" name="stats_action_name" class='input' size='20'></td>
+	  </tr>
+	  <tr>
+	    <td nowrap><label for="identifier">Start date</label></td>
+	    <td>
+				<date name="stats_start_date" type="text" id="stats_start_date" label="Start date" class='input'  button='/shared/calendar/calbtn.gif' onfocus="this.blur()" function='fStartPop(document["events_filter_form"]["stats_start_date"],document["events_filter_form"]["stats_finish_date"])'>
+				<select name='stats_start_hour' class='input' options_ini_file='hour_options' use_ini='true' default_value='0'></select> : 
+				<select name='stats_start_minute' class='input' options_ini_file='minute_options' use_ini='true' default_value='0'></select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td nowrap><label for="identifier">Finish date</label></td>
+	    <td>
+				<date name="stats_finish_date" type="text" id="stats_finish_date" label="Finish date" class='input' button='/shared/calendar/calbtn.gif' onfocus="this.blur()" function='fEndPop(document["events_filter_form"]["stats_start_date"],document["events_filter_form"]["stats_finish_date"])'>
+				<select name='stats_finish_hour' class='input' options_ini_file='hour_options' use_ini='true' default_value='23'></select> : 
+				<select name='stats_finish_minute' class='input' options_ini_file='minute_options' use_ini='true' default_value='59'></select>
+	    </td>
+	  </tr>
+	  <tr>	
+	    <td nowrap><label for="stats_object_path">Path to object</label></td>
+	    <td><input type="text" name="stats_object_path" class='input' size='60'></td>
+	  </tr>
+	  <tr>
+	  	<td colspan=2>
+	  		<table width=100%>
+				  <tr>
+				  	<td valign='top'>
+				  		<table width=100%>
+						    <tr>
+						      <td><span style='background-color:black;width:10px;height:10px;'></span><input name="stats_status[0]" type="checkbox" id="status_1" label="Status_1"><label for="status_1">SUCCESS</label>
+						      <td>
+						    </tr>
+						    <tr>
+						      <td><span style='background-color:#408080;width:10px;height:10px;'></span><input name="stats_status[1]" type="checkbox" id="status_2" label="Status_2"><label for="status_2">FORM DISPLAYED</label>
+						    </tr>
+						    <tr>
+						      <td><span style='background-color:green;width:10px;height:10px;'></span><input name="stats_status[2]" type="checkbox" id="status_3" label="Status_3"><label for="status_3">FORM SUBMITTED</label></td>
+						    </tr>
+						  </table>
+						</td>    
+						<td valign='top'>
+							<table width=100%>
+						    <tr>
+						      <td><span style='background-color:red;width:10px;height:10px;'></span><input name="stats_status[3]" type="checkbox" id="status_4" label="Status_4"><label for="status_4">FAILURE</label></td>
+						    </tr>
+						    <tr>
+						      <td><span style='background-color:orange;width:10px;height:10px;'></span><input name="stats_status[4]" type="checkbox" id="status_5" label="Status_5"><label for="status_5">FORM NOT VALID</label>
+						      </td>
+						    </tr>
+						  </table> 
+					  </td>  
+	  		</table>
+	  	</td>
+	  </tr>
+	  <tr>
+	    <td>
+			</td>
+	    <td>
+		    <action_button action="events_list" name="update" type="submit" id="update" value="Filter" class="button">
+		    <input class='button' type='reset' value='Reset'>
+	    </td>
+	  </tr>
+	</form>
+	</table>
+</fieldset>

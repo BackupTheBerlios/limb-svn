@@ -1,0 +1,211 @@
+<html>
+<head>
+	<title><metadata:TITLE separator=' :: ' />::Official Shweir Secondary School</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	<link href="/shared/styles/chat.css" rel="stylesheet" type="text/css">
+	<metadata:METADATA>
+	<meta name="description" content="{$description}">
+	<meta name="keywords" content="{$keywords}">
+	</metadata:METADATA>
+</head>
+
+<script language="javascript" src="/shared/js/common.js"></script>
+<script language="javascript" src="/design/main/js/form_errors.js"></script>
+<script language="javascript" src='/shared/js/chat.js'></script>
+
+<body style="margin: 0px">
+<table id="main_table" width="100%" border="1" height="100%">
+  <tr>
+
+    <td id="main_table_chat_td" width="80%" valign="top" height='100%'>
+			<!-- chat -->
+			<iframe name="chat_messages_frame" style="height: 100%; width: 100%" src='/shared/chat/blank.html'></iframe>
+			<!-- chat ends -->
+		</td>
+
+    <td width="20%" valign='top'>
+			<!-- chat users-->
+			<table height='100%' width='100%' cellpadding='0' cellspacing='0'>
+			<tr>
+				<td id='chat_users_panel_header'>&nbsp;</td>
+			<tr>
+			<tr>
+				<td height='100%' valign='top'>
+					<iframe name="chat_users_panel_frame" style="height: 100%; width: 100%" src='/shared/chat/blank.html'></iframe>
+				</td>
+			<tr>
+			
+			</table>
+			<!-- chat users ends-->
+		</td>
+
+  </tr>
+  <tr>
+    <td colspan="2" height='1'>
+
+			<!-- chat login-->
+			<chat:NOT_LOGGED_IN>
+			<core:LITERAL>
+			<div id="enter" style="display:<!--<<enter_div_display>>-->">
+			<table width=300 cellspacing=0 cellpadding=1 border=0 id=message_panel>
+				<form action="login.php" method="post" target="send_message_frame">
+				<tr>
+					<td class=textbold>
+						Имя:
+					</td>
+					<td colspan=2>
+						<input name=chat_name type=text size=25 maxlength=25>
+					</td>
+				</tr>
+				<tr>
+					<td class=textbold>
+						Пол:
+					</td>
+					<td colspan=2>
+						<select name=sex class=modul>
+							<option class=inputinvert value="male">Мужской
+							<option class=inputinvert value="female">Женский
+							<option class=inputinvert value="unknown">Неопределенный
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class=textbold>
+						Цвет:
+					</td>
+					<td>
+						<select class=inputinvert name=message_color>
+							<option class=blue		value=blue>Синий
+							<option class=fuchsia	value=fuchsia>Фиолетовый
+							<option class=red			value=red>Красный
+							<option class=black 		value=black>Черный
+							<option class=yellow 	value=yellow>Желтый
+							<option class=orange 	value=orange>Оранжевый
+							<option class=green 		value=green>Зеленый
+							<option class=lightblue value=lightblue>Голубой
+						</select>
+					</td>
+					<td>
+						<input class=button type=submit value='Вход'>
+					</td>
+				</tr>
+				</form>
+				</table>
+			</div>
+			</core:LITERAL>
+			</chat:NOT_LOGGED_IN>
+			<!-- chat login ends-->			
+			
+			<!-- chat message-->
+			<chat:LOGGED_IN>
+			<core:LITERAL>
+			<div id="message" style="display:<!--<<message_div_display>>-->">
+				<table cellpadding=0 cellspacing=0 border=0 width=100%>
+				<form action='/chat/send_message.php' id='message_form' name='message_form' target='send_message_frame' method='post' enctype='multipart/form-data'>
+				<tr>
+					<td width=100%>
+						<input type=hidden name=chat_room_id value='<!--<<chat_room_id>>-->'>
+						<table cellspacing=0 cellpadding=5 border=0 id=message_panel>
+						<tr>
+							<td rowspan=2>
+								<table width=100% border=0 cellspacing=0 cellpadding=0>
+								<tr>
+									<td width=1% align=right class=textbold></td>
+									<td colspan=2>
+										<table width=100% border=0 cellspacing=0 cellpadding=0>
+										<tr>
+											<td align='right'>
+												&nbsp;Recipient:&nbsp;
+											</td>
+							
+											<td>
+												<select name='recipient_id' id='chat_users_combobox'>
+														<option value='-1'>To all</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td>
+											</td>
+											<td>
+												</core:LITERAL>
+										
+												<DATA_SOURCE target='smiles'>
+													<core:PARAMETER name='data_source_path' value='smiles_list_data_source' >
+												</DATA_SOURCE>
+		
+												<table>
+													<tr align='center' valign='middle'>
+													<grid:LIST id='smiles'>
+														<grid:SEPARATOR count='20'></tr><tr></grid:SEPARATOR>
+														<grid:ITEM>
+														<td>
+															<a href='javascript:emoticon("{$abbr}")'><img src="/shared/images/smiles/{$img}" border="0" alt="{$title}" title="{$title}"></a>
+														</td>
+														</grid:ITEM>
+													</grid:LIST>
+													</tr>
+												<table>
+
+												<core:LITERAL>
+											</td>
+										</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td class=textbold>&nbsp;Message:&nbsp;</td>
+									<td width=1>
+										<input type='hidden' name='message'>
+										<textarea cols=50 rows=2 name='_message' id='_message' onkeyup='key_up()'></textarea>&nbsp;
+									</td>
+									<td valign=bottom align=left>
+										<table cellpadding=0 cellspacing=0 border=0>
+										<tr>
+											<td class=title>
+												Ctrl+Enter
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class='button' type='button' name='say' value='Say' onclick='start_action("send_message")'>
+											</td>
+										</tr>
+										</table>
+									</td>
+								</tr>
+								<input type='hidden' name='MAX_FILE_SIZE' value='50000'>
+								<tr>
+									<td align=right class=textbold nowrap=1>&nbsp;Picture/file:&nbsp;</td>
+									<td>
+										<input id='file_input' type='file' name='file' size=20> (50 kB max)
+									</td>
+									<td></td>
+								</tr>
+								</table>
+							</td>
+							<td align=right valign=bottom width=1%>
+								<input class=button type=button value='Exit' onclick='start_action("exit")'>
+							</td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+				</form>
+				</table>
+			</div>
+			</core:LITERAL>
+			</chat:LOGGED_IN>
+			<!-- chat message ends-->
+
+	</td>
+  </tr>
+</table>
+<iframe name='send_message_frame' src='/shared/blank.html' width='0' height='0'></iframe>
+<iframe name='get_messages_frame' src='/shared/blank.html' width='0' height='0'></iframe>
+<iframe name='get_users_frame' src='/shared/blank.html' width='0' height='0'></iframe>
+<iframe name='toggle_ignore_user_frame' src='/shared/blank.html' width='0' height='0'></iframe>
+<iframe name='exit_frame' src='/shared/blank.html' width='0' height='0'></iframe>
+<div id='popup_div'></div>
+</body>
+</html>
