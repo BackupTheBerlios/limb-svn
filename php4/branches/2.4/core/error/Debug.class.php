@@ -409,7 +409,7 @@ class Debug
   */
   function _writeFile($file_name, $debug_info)
   {
-    include_once(LIMB_DIR . '/core/util/log.class.php');
+    include_once(LIMB_DIR . '/core/util/Log.class.php');
 
     if (!log :: write($file_name, Debug :: _parseTextDebugInfo($debug_info)))
       $this->setLogFileEnabled(false, $debug_info['level']);

@@ -37,9 +37,9 @@ include_once(LIMB_DIR . '/core/file_resolvers/DatasourceFileResolver.class.php')
 include_once(LIMB_DIR . '/core/file_resolvers/SiteObjectFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/TemplateFileResolver.class.php');
 
-registerFileResolver('ini',         LIMB_DIR . '/tests/lib/testsIniFileResolver');
-registerFileResolver('action',      LIMB_DIR . '/tests/lib/testsActionFileResolver');
-registerFileResolver('strings',     LIMB_DIR . '/tests/lib/testsStringsFileResolver');
+registerFileResolver('ini',         LIMB_DIR . '/tests/lib/TestsIniFileResolver');
+registerFileResolver('action',      LIMB_DIR . '/tests/lib/TestsActionFileResolver');
+registerFileResolver('strings',     LIMB_DIR . '/tests/lib/TestsStringsFileResolver');
 registerFileResolver('db_table',    new DbTableFileResolver(new PackageFileResolver()));
 registerFileResolver('template',    new TemplateFileResolver(new PackageFileResolver()));
 registerFileResolver('behaviour',   new BehaviourFileResolver(new PackageFileResolver()));
