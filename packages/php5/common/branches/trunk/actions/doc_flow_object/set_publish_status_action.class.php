@@ -64,7 +64,7 @@ class set_publish_status_action extends action
 	{
 	  try
 	  {
-	    access_policy :: instance()->save_object_access_for_action($object, $action)
+	    access_policy :: instance()->save_object_access_for_action($object, $action);
 	  }
 	  catch(LimbException $e)
 	  {
