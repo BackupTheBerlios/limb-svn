@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php'
  
 class tests_action_file_resolver implements file_resolver
 {
-  function resolve($class_path)
+  function resolve($class_path, $params = array())
   {
 		if(file_exists(LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php'))
 			$full_path = LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php';

@@ -19,7 +19,7 @@ class package_tests_ini_file_resolver implements file_resolver
     $this->package_directory = $package_directory;
   }
   
-  function resolve($file_name)
+  function resolve($file_name, $params = array())
   {
   	if (file_exists($this->package_directory . '/tests/settings/' . $file_name))
   		$dir = $this->package_directory . '/tests/settings/';

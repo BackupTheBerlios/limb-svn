@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php'
 
 class app_tests_ini_file_resolver implements file_resolver
 {
-  function resolve($file_name)
+  function resolve($file_name, $params = array())
   {
   	if (file_exists(LIMB_APP_DIR . '/tests/settings/' . $file_name))
   		$dir = LIMB_APP_DIR . '/tests/settings/';
