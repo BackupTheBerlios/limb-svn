@@ -106,29 +106,25 @@ function & _session_db_read($session_id)
   	return false;
 }
 
-function _session_db_write( $session_id, $value )
+function _session_db_write($session_id, $value)
 {
 	$db =& db_factory :: instance();
 	
-	$db->sql_select('sys_session', '*', "session_id='{$session_id}'");
+	$user_id = user :: get_id();
 
-	 // check if session already exists
-	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
-  $session_res = $db->get_array();	
-
-  $user_id = user :: get_id();
-
-  if(count($session_res) == 1)
-		$res = $db->sql_update('sys_session', "last_activity_time=". time().", session_data='{$value}', user_id = {$user_id}" , "session_id='{$session_id}'");
+	$db->sql_select('sys_session', 'session_id', "session_id='{$session_id}'");
+	
+  if($db->fetch_row())
+		$db->sql_update('sys_session', 
+										"last_activity_time=". time().", session_data='{$value}', user_id={$user_id}" , 
+										"session_id='{$session_id}'");
   else
-  	$res = $db->sql_insert('sys_session',
-  			 										array(
-  			 											'last_activity_time' => time(), 
-  			 											'session_data' => "{$value}",
-  			 											'user_id' => "{$user_id}", 
-  			 											'session_id' => "{$session_id}"
-  			 										)
-  			 									);
+  	$db->sql_insert('sys_session',
+	 										array(
+	 											'last_activity_time' => time(), 
+	 											'session_data' => "{$value}",
+	 											'user_id' => "{$user_id}", 
+	 											'session_id' => "{$session_id}"));
 }
 
 function _session_db_destroy($session_id)
