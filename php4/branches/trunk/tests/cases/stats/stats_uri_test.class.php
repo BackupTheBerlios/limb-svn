@@ -87,7 +87,7 @@ class stats_uri_test extends LimbTestCase
   function test_clean_outer_uri()
   {
     $this->assertEqual(
-      'http://wow.com.bit/some/path',
+      'http://wow.com.bit/some/path/',
       $this->stats_uri->clean_url('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
 

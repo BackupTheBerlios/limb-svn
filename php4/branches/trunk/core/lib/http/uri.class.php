@@ -71,6 +71,51 @@ class uri
     return $this->_anchor;
   }
 
+  function set_protocol($protocol)
+  {
+    $this->_protocol = $protocol;
+  }
+
+  function set_user($user)
+  {
+    $this->_user = $user;
+  }
+
+  function set_password($password)
+  {
+    $this->_password = $password;
+  }
+
+  function set_host($host)
+  {
+    $this->_host = $host;
+  }
+
+  function set_port($port)
+  {
+    $this->_port = $port;
+  }
+
+  function set_path($path)
+  {
+    $this->_path = $path;
+  }
+
+  function set_anchor($anchor)
+  {
+    $this->_anchor = $anchor;
+  }
+
+  function is_absolute()
+  {
+    return ('/' == substr($this->_path, 0, 1));
+  }
+
+  function is_relative()
+  {
+    return !$this->is_absolute();
+  }
+
   function parse($str)
   {
     $this->_user        = '';
@@ -80,28 +125,6 @@ class uri
     $this->_path        = '';
     $this->_query_items = array();
     $this->_anchor      = '';
-
-    // Only use defaults if not an absolute URL given
-    if (!preg_match('/^[a-z0-9]+:\/\//i', $str))
-    {
-      if (!empty($_SERVER['HTTP_HOST']) && preg_match('/^(.*)(:([0-9]+))?$/U', $_SERVER['HTTP_HOST'], $matches))
-      {
-        $host = $matches[1];
-        if (!empty($matches[3]))
-          $port = $matches[3];
-        else
-          $port = '80';
-      }
-
-      $this->_protocol    = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
-      $this->_user        = '';
-      $this->_password        = '';
-      $this->_host        = !empty($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost');
-      $this->_port        = !empty($port) ? $port : (isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80);
-      $this->_path        = !empty($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '/';
-      $this->_query_items = isset($_SERVER['QUERY_STRING']) ? $this->_parse_query_string($_SERVER['QUERY_STRING']) : null;
-      $this->_anchor      = '';
-    }
 
     // Parse the url and store the various parts
     if (!empty($str))
@@ -137,20 +160,7 @@ class uri
           break;
 
           case 'path':
-            if ($value{0} == '/')
-              $this->_path = $value;
-            else
-            {
-              $path = dirname($this->_path) == '/' ? '' : dirname($this->_path);//FIXX, not crossplatform?
-              $this->_path = sprintf('%s/%s', $path, $value);
-            }
-
-            $last_pos = strlen($this->_path)-1;
-            if($this->_path{$last_pos} == '/')
-              $this->_path = substr($this->_path, 0, $last_pos);								//probably is subject to change
-
-            $this->_path = $this->resolve_path($this->_path);
-
+            $this->_path = $value;
           break;
 
           case 'query':
@@ -343,7 +353,7 @@ class uri
     $flat_array = array();
 
     complex_array :: to_flat_array($this->_query_items, $flat_array);
-
+    ksort($flat_array);
     foreach($flat_array as $key => $value)
     {
       if ($value != '' || is_null($value))
@@ -385,8 +395,9 @@ class uri
   * /foo/bar/.././/boo.php => /foo/boo.php
   *
   */
-  function resolve_path($path)
+  function normalize_path()
   {
+    $path = $this->_path;
     $path = explode('/', str_replace('//', '/', $path));
 
     for ($i=0; $i < sizeof($path); $i++)
@@ -414,7 +425,8 @@ class uri
         continue;
     }
 
-    return implode('/', $path);
+    $this->_path = implode('/', $path);
+    $this->_path_elements = explode('/',$this->_path);
   }
 
 }

@@ -19,10 +19,6 @@ class uri_test extends LimbTestCase
     $this->uri =& new uri();
   }
 
-  function tearDown()
-  {
-  }
-
   function test_parse()
   {
     $url = 'http://admin:test@localhost:81/test.php/test?foo=bar#23';
@@ -54,6 +50,16 @@ class uri_test extends LimbTestCase
     $this->uri->parse($url);
 
     $this->assertEqual($this->uri->to_string(), $url);
+  }
+
+  function test_to_string_query_items_sort()
+  {
+    $url = 'http://localhost/test.php?b=1&a=2&c[1]=456';
+    $expected_url = 'http://localhost/test.php?a=2&b=1&c[1]=456';
+
+    $this->uri->parse($url);
+
+    $this->assertEqual($this->uri->to_string(), $expected_url);
   }
 
   function test_to_string_no_protocol()
@@ -164,11 +170,19 @@ class uri_test extends LimbTestCase
     $this->assertEqual($this->uri->get_query_item('foo'), array('i1' => '1', 'i2' => '2'));
   }
 
-  function test_resolve_path()
+  function test_normalize_path()
   {
-    $this->assertEqual($this->uri->resolve_path('/foo/bar/../boo.php'), '/foo/boo.php');
-    $this->assertEqual($this->uri->resolve_path('/foo/bar/../../boo.php'), '/boo.php');
-    $this->assertEqual($this->uri->resolve_path('/foo/bar/../boo.php'), '/foo/boo.php');
+    $this->uri->parse('/foo/bar/../boo.php');
+    $this->uri->normalize_path();
+    $this->assertEqual($this->uri, new uri('/foo/boo.php'));
+
+    $this->uri->parse('/foo/bar/../../boo.php');
+    $this->uri->normalize_path();
+    $this->assertEqual($this->uri, new uri('/boo.php'));
+
+    $this->uri->parse('/foo/bar/../boo.php');
+    $this->uri->normalize_path();
+    $this->assertEqual($this->uri, new uri('/foo/boo.php'));
   }
 
   function test_add_query_item()
@@ -178,7 +192,7 @@ class uri_test extends LimbTestCase
     $this->uri->parse($url);
 
     $this->uri->add_query_item('bar', 'foo');
-    $this->assertEqual($this->uri->get_query_string(), 'foo=bar&bar=foo');
+    $this->assertEqual($this->uri->get_query_string(), 'bar=foo&foo=bar');
   }
 
   function test_add_query_item2()
@@ -199,7 +213,7 @@ class uri_test extends LimbTestCase
 
     $this->uri->add_query_item('foo', array('i1' => 'bar'));
     $this->uri->add_query_item('bar', 1);
-    $this->assertEqual($this->uri->get_query_string(), 'foo[i1]=bar&bar=1');
+    $this->assertEqual($this->uri->get_query_string(), 'bar=1&foo[i1]=bar');
   }
 
   function test_add_query_item4()
@@ -210,7 +224,7 @@ class uri_test extends LimbTestCase
 
     $this->uri->add_query_item('foo', array('i1' => array('i2' => 'bar')));
     $this->uri->add_query_item('bar', 1);
-    $this->assertEqual($this->uri->get_query_string(), 'foo[i1][i2]=bar&bar=1');
+    $this->assertEqual($this->uri->get_query_string(), 'bar=1&foo[i1][i2]=bar');
   }
 
   function test_add_query_item_urlencode()
@@ -303,28 +317,6 @@ class uri_test extends LimbTestCase
 
     $this->assertTrue($this->uri->compare(
       new uri('http://admin:test@localhost:81')
-     ));
-  }
-
-  function test_compare_equal3()
-  {
-    $url = 'http://admin:test@localhost:81?';
-
-    $this->uri->parse($url);
-
-    $this->assertTrue($this->uri->compare(
-      new uri('http://admin:test@localhost:81/')
-     ));
-  }
-
-  function test_compare_equal4()
-  {
-    $url = 'http://admin:test@localhost:81?bar=foo';
-
-    $this->uri->parse($url);
-
-    $this->assertTrue($this->uri->compare(
-      new uri('http://admin:test@localhost:81/?bar=foo')
      ));
   }
 
@@ -490,6 +482,24 @@ class uri_test extends LimbTestCase
 
     $this->assertEqual('', $this->uri->get_query_string());
     $this->assertEqual('http://localhost/test.php', $this->uri->to_string());
+  }
+
+  function test_is_absolute()
+  {
+    $url = '/test.php';
+
+    $this->uri->parse($url);
+
+    $this->assertTrue($this->uri->is_absolute());
+  }
+
+  function test_is_relative()
+  {
+    $url = '../../test.php';
+
+    $this->uri->parse($url);
+
+    $this->assertTrue($this->uri->is_relative());
   }
 
 }

@@ -12,12 +12,8 @@ require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 
 class TestFinder
 {
-  var $_test_case_extension = '_test.class.php';
-  var $_test_group_extension = '_group.class.php';
-
-  function TestFinder()
-  {
-  }
+  var $_test_case_extension = 'test.class.php';
+  var $_test_group_extension = 'group.class.php';
 
   function &getTestCasesHandlesFromDirectory($directory)
   {

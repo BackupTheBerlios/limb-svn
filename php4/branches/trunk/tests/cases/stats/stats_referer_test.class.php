@@ -85,8 +85,9 @@ class stats_referer_test extends LimbTestCase
 
   function test_clean_url()
   {
+    //uri sorts query items during output
     $this->assertEqual(
-      'http://wow.com.bit/some/path?yo=1&haba',
+      'http://wow.com.bit/some/path/?haba&yo=1',
       $this->stats_referer->clean_url('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
 
