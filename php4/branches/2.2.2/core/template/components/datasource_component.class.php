@@ -127,7 +127,7 @@ class datasource_component extends component
 		$targets = explode(',', $this->get('target'));
 
 	  $dataset =& $this->get_dataset();
-		
+
 		foreach($targets as $target)
 		{
 		  $target = trim($target);
