@@ -82,17 +82,7 @@ class limb_tree
 			
 		return $node_id;
 	}
-	
-	function create_left_node($id, $values)
-	{
-		return $this->_tree_driver->create_left_node($id, $values);
-	}
-
-	function create_right_node($id, $values)
-	{
-		return $this->_tree_driver->create_right_node($id, $values);
-	}
-	
+		
 	function delete_node($id)
 	{
 		return $this->_tree_driver->delete_node($id);
@@ -103,9 +93,9 @@ class limb_tree
 		return $this->_tree_driver->update_node($id, $values, $internal);
 	}
 	
-	function move_tree($id, $target_id, $pos)
+	function move_tree($id, $target_id)
 	{
-		return $this->_tree_driver->move_tree($id, $target_id, $pos);
+		return $this->_tree_driver->move_tree($id, $target_id);
 	}
 			
 	function set_dumb_mode($status=true)
@@ -167,12 +157,7 @@ class limb_tree
   {
   	return $this->_tree_driver->is_node_expanded($id);
   }
-  
-  function change_node_order($node_id, $direction)
-  {
-		return $this->_tree_driver->change_node_order($node_id, $direction);
-  }
-  	
+    	
   function toggle_node($id)
   {		  	
   	return $this->_tree_driver->toggle_node($id);

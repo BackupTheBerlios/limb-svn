@@ -197,6 +197,13 @@ class db_module
   	);
   }
   
+  function substr($string, $offset, $limit=null)
+  {
+  	error('abstract method',
+  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
+  	);
+  }
+  
   function null()
   {
   	return "''";

@@ -24,7 +24,6 @@ class sys_materialized_path_tree_db_table extends db_table
       'parent_id' => array('type' => 'numeric'),
       'root_id' => array('type' => 'numeric'),
       'object_id' => array('type' => 'numeric'),
-      'ordr' => array('type' => 'numeric'),
       'level' => array('type' => 'numeric'),
       'identifier' => '',
       'path' => '',

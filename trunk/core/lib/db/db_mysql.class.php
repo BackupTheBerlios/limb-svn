@@ -226,6 +226,14 @@ class db_mysql extends db_module
   	return " CONCAT({$str}) ";
   }
   
+  function substr($string, $offset, $limit=null)
+  {
+		if ($limit === null)
+			return " SUBSTRING({$string} FROM {$offset}) ";
+		else 
+			return " SUBSTRING({$string} FROM {$offset} FOR {$limit}) ";
+  }
+  
   function count_selected_rows()
   {
     return mysql_num_rows($this->_sql_result);

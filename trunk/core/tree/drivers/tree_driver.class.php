@@ -11,6 +11,7 @@
 
 define('TREE_ERROR_NODE_NOT_FOUND', 1);
 define('TREE_ERROR_NODE_WRONG_PARAM', 2);
+define('TREE_ERROR_RECURSION', 3);
 
 class tree_driver
 {
