@@ -11,12 +11,7 @@
 require_once(LIMB_DIR . 'core/datasource/fetch_tree_datasource.class.php');
 
 class site_map_datasource extends fetch_tree_datasource
-{
-	function site_map_datasource()
-	{
-		parent :: fetch_tree_datasource();
-	}
-	
+{	
 	function & _fetch(&$counter, $params)
 	{
 		$tree_array =& parent :: _fetch($counter, $params);
@@ -57,7 +52,6 @@ class site_map_datasource extends fetch_tree_datasource
 		
 		return $result;
 	}
-
 }
 
 

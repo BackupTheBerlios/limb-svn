@@ -19,9 +19,16 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 	{
 		$tree =& tree :: instance();
 		
-		$tree_array =& parent :: _fetch($counter, $params);	
+		if(isset($params['order']))
+		{
+			$order = $params['order'];
+			unset($params['order']);
+		}
+		else
+			$order = array('priority' => 'ASC');
 		
-		$tree_array =& tree_sorter :: sort($tree_array, array('priority' => 'ASC'), 'node_id', 'parent_node_id');
+		$tree_array =& parent :: _fetch($counter, $params);
+		$tree_array =& tree_sorter :: sort($tree_array, $order, 'node_id', 'parent_node_id');
 		
 		$path_node = $tree->get_node_by_path($params['path']);
 		if (isset($params['include_parent']) && (bool)$params['include_parent'])
@@ -80,7 +87,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 		}
 		
 		return $tree_array;
-	}	
+	}		
 }
 
 
