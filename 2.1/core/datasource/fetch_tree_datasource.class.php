@@ -18,7 +18,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 	function & _fetch(&$counter, $params)
 	{
 		$tree =& tree :: instance();
-		
+
 		if(isset($params['order']))
 		{
 			$order = $params['order'];

@@ -284,9 +284,13 @@ class materialized_path_driver extends tree_db_driver
 			$sql_path_condition = '';
 			$sql_for_expanded_parents = array();
 			$sql_for_collapsed_parents = array();
-			
+
 			foreach($this->_expanded_parents as $data)
 			{				
+
+				if(substr($data['path'], 0, strlen($parent_node['path'])) != $parent_node['path'])
+					continue;
+					
 				if($data['status'] == false)
 					$sql_for_collapsed_parents[] = 
 						" {$this->_node_table}.path NOT LIKE '{$data['path']}%%/' ";

@@ -620,15 +620,26 @@ class materialized_path_driver_test extends UnitTestCase
 		$this->db->sql_insert('sys_class', array('id' => 100, 'can_be_parent' => 1));
 		$this->db->sql_insert('sys_class', array('id' => 200, 'can_be_parent' => 0));
 
+		//creating subtree
 		$root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
 		$sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 10));
 		$sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 10));
 		$sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
 		$sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
 		
+		//creating second subtree to check that only one subtree uses during fetch subbranch
+		$root_id_2 = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+		$sub_node_id_2 = $this->driver->create_sub_node($root_id_2, array('identifier' => 'test', 'object_id' => 10));
+		$sub_node_id_2_1 = $this->driver->create_sub_node($sub_node_id_2, array('identifier' => 'test', 'object_id' => 10));
+		$sub_node_id_2_1_1 = $this->driver->create_sub_node($sub_node_id_2_1, array('identifier' => 'test', 'object_id' => 20));
+		$sub_node_id_2_1_2 = $this->driver->create_sub_node($sub_node_id_2_1, array('identifier' => 'test', 'object_id' => 20));
+
 		$this->driver->check_expanded_parents();
 
 		$this->driver->expand_node($sub_node_id_1);
+
+		$this->driver->expand_node($sub_node_id_2);
+		$this->driver->expand_node($sub_node_id_2_1);
 
 		//getting at unlimited depth, including node, checking expanded parents
 		$branch = $this->driver->get_sub_branch($root_id, -1, true, true); 
