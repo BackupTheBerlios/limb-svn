@@ -13,22 +13,22 @@ require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
 
 class user_old_password_rule extends single_field_rule
 {
-	function user_old_password_rule($field_name)
-	{
-		parent :: single_field_rule($field_name);
-	} 
+  function user_old_password_rule($field_name)
+  {
+    parent :: single_field_rule($field_name);
+  } 
 
-	function validate(&$dataspace)
-	{
-		$old_password = $dataspace->get($this->field_name);
-		
-		$user_site_object =& site_object_factory :: create('user_object');
-		
-		if($user_site_object->validate_password($old_password))
-			return;
-		else	
-			$this->error('WRONG_OLD_PASSWORD');
-	} 
+  function validate(&$dataspace)
+  {
+    $old_password = $dataspace->get($this->field_name);
+    
+    $user_site_object =& site_object_factory :: create('user_object');
+    
+    if($user_site_object->validate_password($old_password))
+      return;
+    else  
+      $this->error('WRONG_OLD_PASSWORD');
+  } 
 } 
 
 ?>

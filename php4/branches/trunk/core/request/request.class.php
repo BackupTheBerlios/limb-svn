@@ -33,38 +33,47 @@ class request extends object
   {
     parent :: object();
 
-    global $HTTP_POST_VARS, $HTTP_GET_VARS;
-
-    // for different PHP versions
-    if (isset($_GET))
-      $request = complex_array :: array_merge($_GET, $_POST);
-    else
-      $request = complex_array :: array_merge($HTTP_GET_VARS, $HTTP_POST_VARS);
-
-    if(ini_get('magic_quotes_gpc'))
-      $request = $this->_strip_http_slashes($request);
-
-    foreach ($request as $k => $v)
-      $this->set_attribute($k, $v);
+    $this->_fill_request_properties();
 
     $this->status = REQUEST_STATUS_SUCCESS;
   }
 
+  function _fill_request_properties()
+  {
+    $request = complex_array :: array_merge($_GET, $_POST);
+
+    if(ini_get('magic_quotes_gpc'))
+      $request = $this->_strip_http_slashes($request);
+
+    if($_FILES)
+      $request = complex_array :: array_merge($request, $this->_get_uploaded_files());
+
+    foreach ($request as $k => $v)
+      $this->set_attribute($k, $v);
+  }
+
+  function _get_uploaded_files()
+  {
+    include_once(LIMB_DIR . '/core/request/uploaded_files_parser.class.php');
+    $parser = new uploaded_files_parser();
+    return $parser->parse($_FILES);
+  }
+
   function _strip_http_slashes($data, $result=array())
   {
-  	foreach($data as $k => $v)
-    	if(is_array($v))
-    		$result[$k] = $this->_strip_http_slashes($v);
-  		else
-  			$result[$k] = stripslashes($v);
+    foreach($data as $k => $v)
+      if(is_array($v))
+        $result[$k] = $this->_strip_http_slashes($v);
+      else
+        $result[$k] = stripslashes($v);
 
-  	return $result;
+    return $result;
   }
 
   function & instance()
   {
-		$obj =& instantiate_object('request');
-		return $obj;
+    $obj =& instantiate_object('request');
+    return $obj;
   }
 
   function & get_uri()
@@ -90,15 +99,15 @@ class request extends object
     return $this->status;
   }
 
-	function is_success()
-	{
-		return ($this->status & REQUEST_STATUS_SUCCESS_MASK);
-	}
+  function is_success()
+  {
+    return ($this->status & REQUEST_STATUS_SUCCESS_MASK);
+  }
 
-	function is_problem()
-	{
-		return ($this->status & REQUEST_STATUS_PROBLEM_MASK);
-	}
+  function is_problem()
+  {
+    return ($this->status & REQUEST_STATUS_PROBLEM_MASK);
+  }
 }
 
 ?>

@@ -7,56 +7,52 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/actions/form_create_site_object_action.class.php');
 
 class create_file_action extends form_create_site_object_action
 {
-	function _define_site_object_class_name()
-	{
-	  return 'file_object';
-	}  
-	  
-	function _define_dataspace_name()
-	{
-	  return 'create_file';
-	}
-  
+  function _define_site_object_class_name()
+  {
+    return 'file_object';
+  }
+
+  function _define_dataspace_name()
+  {
+    return 'create_file';
+  }
+
   function _define_datamap()
-	{
-	  return complex_array :: array_merge(
-	      parent :: _define_datamap(),
-	      array(
-  				'description' => 'description',
-	      )
-	  );     
-	}  
+  {
+    return complex_array :: array_merge(
+        parent :: _define_datamap(),
+        array(
+          'description' => 'description',
+        )
+    );
+  }
 
-	function _init_validator()
-	{
-		parent :: _init_validator();
+  function _init_validator()
+  {
+    parent :: _init_validator();
 
-    $this->validator->add_rule($v = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'title'));
-	}
-	
-	function _create_object_operation()
-	{	
-		if(isset($_FILES[$this->name]['tmp_name']['file']))
-		{	
-			if(($_FILES[$this->name]['size']['file']) > ini_get('upload_max_filesize')*1024*1024)
-			{
-				message_box :: write_warning('uploaded file size exceeds limit');
-				return false;
-			}
-			
-			$this->object->set_attribute('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);
-			$this->object->set_attribute('file_name', $_FILES[$this->name]['name']['file']);
-			$this->object->set_attribute('mime_type', $_FILES[$this->name]['type']['file']);
-		}
+    $v = array();
 
-		return parent :: _create_object_operation();
-	}
-	
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'title'));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/file_upload_required_rule', 'file'));
+  }
+
+  function _create_object_operation()
+  {
+    $file = $this->dataspace->get('file');
+
+    $this->object->set_attribute('tmp_file_path', $file['tmp_name']);
+    $this->object->set_attribute('file_name', $file['name']);
+    $this->object->set_attribute('mime_type', $file['type']);
+
+    return parent :: _create_object_operation();
+  }
+
 }
 
 ?>
