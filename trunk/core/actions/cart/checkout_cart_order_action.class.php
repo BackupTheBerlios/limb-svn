@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_group_objects_access.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
@@ -32,6 +32,18 @@ class checkout_cart_order_action extends form_action
 		$this->validator->add_rule(new required_rule('name'));
 		$this->validator->add_rule(new required_rule('email'));
 		$this->validator->add_rule(new email_rule('email'));
+	}
+
+	function _init_dataspace()
+	{
+		if(!user::is_logged_in())
+			return;
+
+		$data = array(
+				'name' => user :: get_name() .' '. user :: get_lastname(),
+				'email' => user :: get_email(),
+		);
+		$this->_import($data);
 	}
 	
 	function _valid_perform()
