@@ -22,11 +22,18 @@ class register_new_object_action extends form_action
     $v = array();
     
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'class_name'));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'class_name', 0));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'class_name', -1));
+    
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'controller_name'));
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'controller_name', 0));
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'controller_name', -1));
+    
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'identifier'));
+    
 		$this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/tree_node_id_rule', 'parent_node_id'));
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'parent_node_id'));
+    
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'title'));
   }
 

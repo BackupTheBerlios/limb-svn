@@ -14,8 +14,8 @@ require_once(LIMB_DIR . '/core/lib/validators/rules/single_field_rule.class.php'
 class tree_node_id_rule extends single_field_rule
 {	
 	function check($value)
-	{
-		$tree = tree :: instance();
+	{ 
+		$tree =& tree :: instance();
 		
 		if(empty($value))
 		  $this->error(strings :: get('error_invalid_tree_node_id', 'error'));
