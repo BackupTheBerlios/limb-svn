@@ -65,7 +65,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & createDAO($dao_path)
   {
-    include_once(LIMB_DIR . '/core/dao/DAOFactory.class.php');
+    include_once(LIMB_DIR . '/core/DAO/DAOFactory.class.php');
     return DAOFactory :: create($dao_path);
   }
 

@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/DAO/DAO.class.php');
 
 Mock :: generate('LimbBaseToolkit');
-Mock :: generate('DAO');
+Mock :: generate('SQLBasedDAO');
 
 class LimbDatasourceDAOTagTestCase extends LimbTestCase
 {
@@ -28,7 +28,7 @@ class LimbDatasourceDAOTagTestCase extends LimbTestCase
 
   function setUp()
   {
-    $this->ds =& new MockDAO($this);
+    $this->ds =& new MockSQLBasedDAO($this);
     $this->toolkit =& new MockLimbBaseToolkit($this);
 
     Limb :: registerToolkit($this->toolkit);

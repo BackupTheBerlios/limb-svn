@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/core/dao/criteria/ServicesCriteria.class.php');
+require_once(LIMB_DIR . '/core/DAO/criteria/ServicesCriteria.class.php');
 
 Mock :: generatePartial('SQLBasedDAO',
                         'SQLBasedDAOSCTestVersion',

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 require_once(LIMB_DIR . '/core/DomainObject.class.php');
-require_once(LIMB_DIR . '/core/dao/DAO.class.php');
+require_once(LIMB_DIR . '/core/DAO/DAO.class.php');
 
 class SimpleObjectMapper extends AbstractDataMapper{}
 

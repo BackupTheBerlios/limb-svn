@@ -14,10 +14,10 @@ class DAOFileResolver extends FileResolverDecorator
 {
   function resolve($class_path, $params = array())
   {
-    if(file_exists(LIMB_DIR . '/core/dao/' . $class_path . '.class.php'))
-      return LIMB_DIR . '/core/dao/' . $class_path . '.class.php';
+    if(file_exists(LIMB_DIR . '/core/DAO/' . $class_path . '.class.php'))
+      return LIMB_DIR . '/core/DAO/' . $class_path . '.class.php';
 
-    return $this->_resolver->resolve('dao/' . $class_path . '.class.php', $params);
+    return $this->_resolver->resolve('DAO/' . $class_path . '.class.php', $params);
   }
 }
 
