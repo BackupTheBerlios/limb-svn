@@ -8,12 +8,13 @@
 
 <fetch:SUB_BRANCH target='folders' navigator='pager'>
 	<core:PARAMETER name='loader_class_name' value='poll'>
+	<core:PARAMETER name='order' value='start_date=DESC'>
 </fetch:SUB_BRANCH>
 
 
 <core:INCLUDE file="pager.html">
 
-<grid:LIST id='folders'>
+<list:LIST id='folders'>
 <table width=100%>
 <tr>
 	<th><locale:STRING name='poll_questions_list' file='poll'></th>
@@ -23,7 +24,7 @@
 	<th><locale:STRING name='actions'></th>
 </tr>
 
-<grid:ITERATOR>
+<list:ITEM>
 	<tr class="jip">
 		<td jip='object'><a href="{$path}">{$title}</a></td>
 		<td align="center"><core:INCLUDE file="published_status.html"></td>
@@ -31,6 +32,6 @@
 		<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 		<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
-</grid:ITERATOR>
+</list:ITEM>
 </table>
-</grid:LIST>
+</list:LIST>

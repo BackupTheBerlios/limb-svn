@@ -29,8 +29,7 @@ class poll_container extends site_object
 	
 	function can_vote()
 	{
-		$poll_data = $this->get_active_poll();
-		if(!count($poll_data))
+		if(!$poll_data = $this->get_active_poll())
 			return false;
 			
 		$poll_id = $poll_data['id'];
@@ -47,15 +46,7 @@ class poll_container extends site_object
 			case 1:
 				return true;
 			break;
-			
-			case 3:
-				if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-					$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-				
-				if ($this->_is_poll_ip_exists($poll_id, $_SERVER['REMOTE_ADDR']))
-					return false;
-			break;
-			
+
 			case 2:
 				$cookie = $_COOKIE;
 				if (!isset($cookie['poll_ids']))
@@ -69,6 +60,11 @@ class poll_container extends site_object
 						return false;
 				}
 			break;
+			
+			case 3:				
+				if ($this->_poll_ip_exists($poll_id, sys :: client_ip()))
+					return false;
+			break;			
 		}
 
 		return true;
@@ -79,8 +75,7 @@ class poll_container extends site_object
 		if (!$answer_id)
 			return false;
 
-		$poll_data = $this->get_active_poll();
-		if(!count($poll_data))
+		if(!$poll_data = $this->get_active_poll())
 			return false;
 	
 		$poll_id = $poll_data['id'];
@@ -101,14 +96,7 @@ class poll_container extends site_object
 			case 1:
 				return true;
 			break;
-			
-			case 3:
-				if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-					$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-				
-				$this->_register_new_ip($poll_id, $_SERVER['REMOTE_ADDR']);
-			break;
-			
+
 			case 2:
 				$cookie = $_COOKIE;
 				if (isset($cookie['poll_ids']))
@@ -124,6 +112,10 @@ class poll_container extends site_object
 				$one_week = 7 * 24 * 60 * 60;
 				setcookie('poll_ids', $poll_ids, time() + $one_week, '/');
 			break;
+			
+			case 3:				
+				$this->_register_new_ip($poll_id, sys :: client_ip());
+			break;			
 		}
 		
 		return true;
@@ -152,13 +144,13 @@ class poll_container extends site_object
 		$poll_ip_db_table->insert($data);
 	}
 	
-	function _is_poll_ip_exists($poll_id, $ip)
+	function _poll_ip_exists($poll_id, $ip)
 	{
 		$poll_ip_db_table = & db_table_factory :: instance('poll_ip');
 		$where['poll_id'] = $poll_id;
 		$where['ip'] = $ip;
-		$data = $poll_ip_db_table->get_list($where);
-		if (count($data))
+		
+		if ($poll_ip_db_table->get_list($where))
 			return true;
 		else
 			return false;
@@ -166,12 +158,10 @@ class poll_container extends site_object
 
 	function get_active_poll()
 	{
-		$questions = $this->_load_all_questions();
+		if(!$questions = $this->_load_all_questions())
+			return array();
 
 		$current_date = date('Y-m-d', time());
-
-		if (!count($questions))
-			return array();
 		
 		foreach($questions as $key => $data)
 		{

@@ -35,17 +35,21 @@ class poll_tag extends server_component_tag
 	function generate_contents(&$code)
 	{		
 		$form_child =& $this->find_child_by_class('poll_form_tag');
-		$results_child =& $this->find_child_by_class('poll_results_tag');
+		$results_child =& $this->find_child_by_class('poll_result_tag');
 		
 		$code->write_php('if (' . $this->get_component_ref_code() . '->poll_exists()) {');
+					
 		$code->write_php('if (' . $this->get_component_ref_code() . '->can_vote()) {');
-			if ($form_child)
-				$form_child->generate($code);
-		$code->write_php('}else{');
-			if ($results_child)
-				$results_child->generate($code);
-		$code->write_php("}
-			}");
+
+		if($form_child)
+			$form_child->generate($code);
+										
+			$code->write_php('}else{');
+		
+		if ($results_child)
+			$results_child->generate($code);
+				
+		$code->write_php('}}');
 	} 
 
  

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
+require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class vote_action extends form_action
 {
@@ -20,7 +21,6 @@ class vote_action extends form_action
 	function _valid_perform()
 	{
 		$object =& site_object_factory :: create('poll_container');
-		
 		$data = $this->_export();
 		
 		if (!isset($data['answer']))
@@ -30,7 +30,7 @@ class vote_action extends form_action
 		}
 		
 		if($object->register_answer($data['answer']))
-			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+			return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, '/root/polls');
 		else
 			return new failed_response();
 	}
