@@ -72,23 +72,20 @@ class stats_events_list_datasource extends datasource
 	
 	function _set_login_filter()
 	{
-		if (isset($_REQUEST['stats_user_login']))
+		if (isset($_REQUEST['stats_user_login']) && $_REQUEST['stats_user_login'])
 			$this->stats_event_report->set_login_filter($_REQUEST['stats_user_login']);
 	}
 
 	function _set_action_filter()
 	{
-		if (isset($_REQUEST['stats_action_name']))
+		if (isset($_REQUEST['stats_action_name']) && $_REQUEST['stats_action_name'])
 			$this->stats_event_report->set_action_filter($_REQUEST['stats_action_name']);
 	}
 	
 	function _set_ip_filter()
 	{
-		if (!isset($_REQUEST['stats_ip']))
-			return;
-			
-		$ip_list = ip :: process_ip_range($_REQUEST['stats_ip']);
-		$this->stats_event_report->set_ip_filter($ip_list);
+		if (isset($_REQUEST['stats_ip']) && $_REQUEST['stats_ip'])	
+			$this->stats_event_report->set_ip_filter($_REQUEST['stats_ip']);
 	}
 	
 	function _set_status_filter()
@@ -107,15 +104,9 @@ class stats_events_list_datasource extends datasource
 	}
 	
 	function _set_object_filter()
-	{
-		if (!isset($_REQUEST['stats_object_path']) || !$_REQUEST['stats_object_path'])
-			return ;
-
-		$tree =& limb_tree :: instance();
-		if($node = $tree->get_node_by_path($_REQUEST['stats_object_path']))
-			$this->stats_event_report->set_object_filter($node['id']);
-		else
-			$this->stats_event_report->set_object_filter(-1);
+	{		
+		if (isset($_REQUEST['stats_object_path']) && $_REQUEST['stats_object_path'])	
+			$this->stats_event_report->set_object_filter($_REQUEST['stats_object_path']);
 	}
 	
 	function _set_period_filter()

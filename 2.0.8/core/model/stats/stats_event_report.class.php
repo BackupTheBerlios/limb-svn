@@ -22,16 +22,26 @@ class stats_event_report
 		$this->db =& db_factory :: instance();
 	}
 	
-	function set_login_filter($login)
+	function set_login_filter($login_string)
 	{
-		if($login)
-			$this->filter_conditions[] = "AND user.identifier = '{$login}'";
+		$condition = $this->_combine_positive_negative_conditions(
+			$this->_build_positive_conditions('user.identifier', $login_string),
+			$this->_build_negative_conditions('user.identifier', $login_string)
+		);
+		
+		if($condition)
+			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
 	}
 
-	function set_action_filter($action)
+	function set_action_filter($action_string)
 	{
-		if($action)
-			$this->filter_conditions[] = "AND sslog.action = '{$action}'";
+		$condition = $this->_combine_positive_negative_conditions(
+			$this->_build_positive_conditions('sslog.action', $action_string),
+			$this->_build_negative_conditions('sslog.action', $action_string)
+		);
+		
+		if($condition)
+			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
 	}
 	
 	function set_period_filter($start_date, $finish_date)
@@ -42,9 +52,55 @@ class stats_event_report
 		$this->filter_conditions[] = " AND sslog.time BETWEEN {$start_stamp} AND {$finish_stamp} ";
 	}
 	
-	function set_object_filter($node_id)
+	function set_object_filter($objects_string)
 	{
-		$this->filter_conditions[] = " AND sslog.node_id = {$node_id}";
+		$tree =& limb_tree :: instance();
+		
+		$object_path_list = $this->_parse_input_string($objects_string);
+		
+		$object_positive_paths_list = array();
+		$object_negative_paths_list = array();
+
+		foreach($object_path_list as $path)
+		{
+			if(substr($path, 0, 1) == '!')
+			{
+				$path = substr($path, 1);
+				$object_path_list =& $object_negative_paths_list;
+			}
+			else
+				$object_path_list =& $object_positive_paths_list;
+				
+			if(substr($path, -1) == '%')
+			{
+				$path = substr($path, 0, -1);
+				
+				if(($branch = $tree->get_sub_branch_by_path($path)) !== false)
+				{
+					foreach($branch as $node)
+						$object_path_list[] = $node['id'];
+				}	
+			}
+			elseif($node = $tree->get_node_by_path($path))
+				$object_path_list[] = $node['id'];
+		}
+		
+		$positive_conditions = array();
+		foreach($object_positive_paths_list as $node_id)
+		{
+			$positive_conditions[] = $this->_build_positive_condition('sslog.node_id', $node_id);
+		}
+
+		$negative_conditions = array();
+		foreach($object_negative_paths_list as $node_id)
+		{
+			$negative_conditions[] = $this->_build_negative_condition('sslog.node_id', $node_id);
+		}
+				
+		$condition = $this->_combine_positive_negative_conditions($positive_conditions, $negative_conditions);
+		
+		if($condition)
+			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
 	}
 	
 	function set_status_filter($status_mask)
@@ -52,19 +108,63 @@ class stats_event_report
 		$this->filter_conditions[] = "AND (sslog.status & {$status_mask}) = sslog.status";
 	}
 	
-	function set_ip_filter($ip_list)
-	{		
-		$filter_ip_arr = array();
+	function set_ip_filter($ip_string)
+	{	
+		$ip_positive_hex_list = array();
+		$ip_negative_hex_list = array();
 		
-		foreach($ip_list as $ip)
+		$ip_string_list = $this->_parse_input_string($ip_string);
+
+		foreach($ip_string_list as $ip_piece)
 		{
-			if ( preg_match('/(ff\.)|(\.ff)/is', chunk_split($ip, 2, '.')) )
-				$filter_ip_arr[] = "ip LIKE '" . str_replace('.', '', preg_replace('/(ff\.)|(\.ff)/is', '%', chunk_split($ip, 2, "."))) . "'";
+			if(substr($ip_piece, 0, 1) == '!')
+			{
+				$ip_piece = substr($ip_piece, 1);
+				$ip_hex_list =& $ip_negative_hex_list;
+			}
 			else
-				$filter_ip_arr[] = "ip = '" . $ip . "'";
+				$ip_hex_list =& $ip_positive_hex_list;
+			
+			if(ip :: is_valid($ip_piece))
+			{
+				if(strpos($ip_piece, '*') !== false)	
+					$ip_hex_list[] = ip :: encode_ip(str_replace('*', '255', $ip_piece));
+				else
+					$ip_hex_list[] = ip :: encode_ip($ip_piece);
+			}
+			elseif(preg_match('/^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})[ ]*\-[ ]*([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})$/', $ip_piece, $ip_match))
+			{
+				foreach(ip :: encode_ip_range($ip_match[1], $ip_match[2]) as $ip_range_hex_item)
+					$ip_hex_list[] = $ip_range_hex_item;
+			}
 		}
-		if($filter_ip_arr)
-			$this->filter_conditions[] = 'AND (' . implode(' OR ', $filter_ip_arr) . ')';
+		
+		$positive_conditions = array();
+		foreach($ip_positive_hex_list as $hex_ip)
+		{
+			if ( preg_match('/(ff\.)|(\.ff)/is', chunk_split($hex_ip, 2, '.')) )
+				$value = str_replace('.', '', preg_replace('/(ff\.)|(\.ff)/is', '%', chunk_split($hex_ip, 2, "."))) . "'";
+			else
+				$value = $hex_ip;
+			
+			$positive_conditions[] = $this->_build_positive_condition('sslog.ip', $value);			
+		}
+		
+		$negative_conditions = array();
+		foreach($ip_negative_hex_list as $hex_ip)
+		{
+			if ( preg_match('/(ff\.)|(\.ff)/is', chunk_split($hex_ip, 2, '.')) )
+				$value = str_replace('.', '', preg_replace('/(ff\.)|(\.ff)/is', '%', chunk_split($hex_ip, 2, "."))) . "'";
+			else
+				$value = $hex_ip;
+			
+			$negative_conditions[] = $this->_build_negative_condition('sslog.ip', $value);			
+		}
+		
+		$condition = $this->_combine_positive_negative_conditions($positive_conditions, $negative_conditions);
+		
+		if($condition)
+			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
 	}
 		
 	function _build_filter_condition()
@@ -124,6 +224,90 @@ class stats_event_report
 			
 		return implode(', ', $columns);
 	}	
+	
+	function _parse_input_string($input_string)
+	{
+		if(!$input_string = trim(str_replace('*', '%', $input_string)))
+			return false;
+		
+		$items = explode(',', $input_string);
+		foreach($items as $index => $item)
+			$items[$index] = trim($item);
+			
+		return $items;
+	}
+		
+	function _build_negative_conditions($field_name, $condition_string)
+	{		
+		if(($conditions = $this->_parse_input_string($condition_string)) === false)
+			return '';
+		
+		$negative_conditions = array();
+		foreach($conditions as $value)
+		{
+			if(substr($value, 0, 1) == '!')
+			{
+				$value = substr($value, 1);
+				
+				$negative_conditions[] = $this->_build_negative_condition($field_name, $value);				
+			}
+		}
+		return $negative_conditions;
+	}
+	
+	function _build_positive_conditions($field_name, $condition_string)
+	{
+		if(($conditions = $this->_parse_input_string($condition_string)) === false)
+			return '';
+		
+		$positive_conditions = array();
+		foreach($conditions as $value)
+		{
+			if(substr($value, 0, 1) != '!')
+			{
+				$positive_conditions[] = $this->_build_positive_condition($field_name, $value);
+			}
+		}
+		return $positive_conditions;
+	}	
+	
+	function _build_negative_condition($field_name, $value)
+	{
+		if(strpos($value, '%') !== false)
+			$negative_condition = "{$field_name} NOT LIKE '{$value}'";	
+		else
+			$negative_condition = "{$field_name} <> '{$value}'";
+			
+		return $negative_condition;
+	}
+
+	function _build_positive_condition($field_name, $value)
+	{
+		if(strpos($value, '%') !== false)
+			$negative_condition = "{$field_name} LIKE '{$value}'";	
+		else
+			$negative_condition = "{$field_name} = '{$value}'";
+			
+		return $negative_condition;
+	}
+	
+	function _combine_positive_negative_conditions($positive_conditions, $negative_conditions)
+	{
+		$sql_condition = '';
+		
+		if($positive_conditions)
+			$sql_condition = '(' . implode(' OR ', $positive_conditions) . ')';
+				
+		if($negative_conditions)
+		{
+			if($positive_conditions)
+				$sql_condition .= ' AND ';
+	
+			$sql_condition .=	'(' . implode(' AND ', $negative_conditions) . ')';
+		}
+
+		return $sql_condition;
+	}
 }
 
 ?>
