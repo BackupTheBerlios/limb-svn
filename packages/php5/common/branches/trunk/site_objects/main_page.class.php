@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
 
 class main_page extends content_object
 {

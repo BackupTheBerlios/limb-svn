@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
 require_once(LIMB_SHOP_DIR . 'cart_item.class.php');
 
 class catalog_object extends content_object

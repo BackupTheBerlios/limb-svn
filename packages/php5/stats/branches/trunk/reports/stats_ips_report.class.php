@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(dirname(__FILE__) . '/stats_report_interface.interface.php');
 
 class stats_ips_report implements stats_report_interface

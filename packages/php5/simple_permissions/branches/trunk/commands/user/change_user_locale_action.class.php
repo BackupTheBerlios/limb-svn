@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
-require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.php');
-require_once(LIMB_DIR . 'class/validators/rules/required_rule.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/required_rule.class.php');
 
 class change_user_locale_action extends form_action
 {
@@ -21,7 +21,7 @@ class change_user_locale_action extends form_action
 	
 	protected function _init_validator()
 	{
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'locale_id'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'locale_id'));
 	}
 	
 	protected function _valid_perform($request, $response)

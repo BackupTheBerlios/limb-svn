@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/fetch_tree_datasource.class.php');
-require_once(LIMB_DIR . 'class/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/datasources/fetch_tree_datasource.class.php');
+require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 
 class tree_navigation_datasource extends fetch_tree_datasource
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/fetch_sub_branch_datasource.class.php');
+require_once(LIMB_DIR . '/class/datasources/fetch_sub_branch_datasource.class.php');
 
 class simple_navigation_datasource extends fetch_sub_branch_datasource
 {

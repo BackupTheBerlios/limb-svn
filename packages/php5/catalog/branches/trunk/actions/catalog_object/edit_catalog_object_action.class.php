@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
 
 class edit_catalog_object_action extends form_edit_site_object_action
 {
@@ -38,8 +38,8 @@ class edit_catalog_object_action extends form_edit_site_object_action
 	{
 		parent :: _init_validator();
 
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'annotation'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'object_content'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'annotation'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'object_content'));
 	}
 }
 

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
-require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
 require_once(dirname(__FILE__) . '/../simple_authenticator.class.php');
 
 class login_action extends form_action
@@ -21,8 +21,8 @@ class login_action extends form_action
 
 	protected function _init_validator()
 	{
-		$this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'login'));
-		$this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'password'));
+		$this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'login'));
+		$this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
 	}
 	
 	protected function _init_dataspace($request)

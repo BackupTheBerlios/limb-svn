@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
 class faq_folder_container extends site_object
 {

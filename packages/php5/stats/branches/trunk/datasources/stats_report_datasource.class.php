@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
 
 abstract class stats_report_datasource implements datasource
 {		

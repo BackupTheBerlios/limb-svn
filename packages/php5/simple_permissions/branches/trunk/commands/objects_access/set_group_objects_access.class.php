@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
 require_once(dirname(__FILE__) . '/../../access_policy.class.php');
 
 class set_group_objects_access extends form_action

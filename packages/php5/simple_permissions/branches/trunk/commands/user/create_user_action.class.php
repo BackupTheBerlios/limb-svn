@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/form_create_site_object_action.class.php');
 
 class create_user_action extends form_create_site_object_action
 {
@@ -40,14 +40,14 @@ class create_user_action extends form_create_site_object_action
 	{
 		parent :: _init_validator();
 		
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/unique_user_rule', 'identifier'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/unique_user_email_rule', 'email'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'name'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/email_rule', 'email'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'password'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'second_password'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'email'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/unique_user_rule', 'identifier'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/unique_user_email_rule', 'email'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'name'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'email'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'second_password'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'email'));
 	}
 }
 

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/cart_handler.class.php');
-require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'class/core/session.class.php');
+require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/class/core/session.class.php');
 
 class session_cart_handler extends cart_handler
 {			

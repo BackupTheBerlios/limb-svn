@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
 
 class class_group_action_access_datasource implements datasource
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/form_create_site_object_action.class.php');
 
 class create_user_group_action extends form_create_site_object_action
 {
@@ -26,7 +26,7 @@ class create_user_group_action extends form_create_site_object_action
 	{
 		parent :: _init_validator();
 		
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
 	}
 }
 

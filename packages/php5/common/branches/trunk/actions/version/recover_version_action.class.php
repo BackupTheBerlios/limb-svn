@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions/action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/action.class.php');
 
 class recover_version_action extends action
 {

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/cart_handler.class.php');
-require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
-require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
 
 class db_cart_handler extends cart_handler
 {

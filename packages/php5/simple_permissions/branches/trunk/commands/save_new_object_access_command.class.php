@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
 
 class save_new_object_access_command implements Command
 {

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
-require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
 
 class change_password_action extends form_edit_site_object_action
 {
@@ -37,9 +37,9 @@ class change_password_action extends form_edit_site_object_action
 
 	protected function _init_validator()
 	{
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'password'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'second_password'));
-    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'second_password'));
+    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
 	}
 	
 	public function _valid_perform($request, $response)

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(dirname(__FILE__) . '/stats_counter.class.php');
 require_once(dirname(__FILE__) . '/stats_ip.class.php');
 require_once(dirname(__FILE__) . '/stats_uri.class.php');

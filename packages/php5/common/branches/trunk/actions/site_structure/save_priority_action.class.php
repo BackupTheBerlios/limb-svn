@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
 
 class save_priority_action extends form_action
 {

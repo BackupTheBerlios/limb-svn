@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/db_tables/content_object_db_table.class.php');
+require_once(LIMB_DIR . '/class/db_tables/content_object_db_table.class.php');
 
 class faq_object_db_table extends content_object_db_table
 {  

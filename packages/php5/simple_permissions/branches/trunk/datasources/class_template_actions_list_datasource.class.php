@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
 
 class class_template_actions_list_datasource implements datasource
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
 
 class apply_action_access_template_command implements Command
 {

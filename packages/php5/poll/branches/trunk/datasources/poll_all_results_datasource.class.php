@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
 
 class poll_all_results_datasource implements datasource
 {

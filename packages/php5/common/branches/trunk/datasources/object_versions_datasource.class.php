@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
 
 class object_versions_datasource implements datasource
 {

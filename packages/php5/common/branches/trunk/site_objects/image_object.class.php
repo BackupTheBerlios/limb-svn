@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/media_object.class.php');
-require_once(LIMB_DIR . 'class/lib/image/image_factory.class.php');
-require_once(LIMB_DIR . 'class/etc/message_box.class.php');
+require_once(LIMB_DIR . '/class/lib/image/image_factory.class.php');
+require_once(LIMB_DIR . '/class/etc/message_box.class.php');
 
 class image_object extends media_object
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
 	
 class file_object_controller extends site_object_controller
 {
