@@ -26,7 +26,7 @@
 <tr>
 <td>
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/simple.html">
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
 </td>
 </tr>
@@ -48,7 +48,7 @@
     <grid:ITERATOR>
         <tr>
           <td><img src='/shared/images/folder.gif' align='center'>&nbsp;<a href="{$path}?action=image_select">{$title}({$children})</a></td>
-          <td><core:INCLUDE file="jip_actions/simple.html"></td>
+          <td><core:INCLUDE file="jip_actions/normal.html"></td>
         </tr>
     </grid:ITERATOR>
       </table>
@@ -60,7 +60,7 @@
 <grid:ITERATOR>
 <tr>
 <td><img src='/root?node_id={$node_id}&icon' align='center'>&nbsp;{$identifier}({$children})</td>
-<td width='1'><core:INCLUDE file="/jip_actions/simple.html"></td>
+<td width='1'><core:INCLUDE file="/jip_actions/normal.html"></td>
 <td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_image_data(</core:LITERAL>{node_id: "{$node_id}", name: "{$identifier}", description: "<core:HTMLSPECIALCHARS hash_id='description'>", variations: {original: {width: "{$variations['original']['width']}", height: "{$variations['original']['height']}", size: "{$variations['original']['size']}"}, thumbnail: {width: "{$variations['thumbnail']['width']}", height: "{$variations['thumbnail']['height']}", size: "{$variations['thumbnail']['size']}"}, icon: {width: "{$variations['icon']['width']}", height: "{$variations['icon']['height']}", size: "{$variations['icon']['size']}"}}}<core:LITERAL>)'></core:LITERAL><locale:STRING name='select' ><core:LITERAL></button></a></core:LITERAL></td>
 </tr>
 </grid:ITERATOR>

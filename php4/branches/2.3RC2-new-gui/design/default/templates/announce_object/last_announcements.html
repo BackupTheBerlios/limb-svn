@@ -1,32 +1,32 @@
 <fetch:SUB_BRANCH target='announcements' >
-	<core:PARAMETER name='datasource_path' value='last_objects_datasource' >
-	<core:PARAMETER name='loader_class_name' value='announce_object' >
-	<core:PARAMETER name='fetch_method' value='fetch_valid_period' >
-	<core:PARAMETER name='limit' value='5'>
+  <core:PARAMETER name='datasource_path' value='last_objects_datasource' >
+  <core:PARAMETER name='loader_class_name' value='announce_object' >
+  <core:PARAMETER name='fetch_method' value='fetch_valid_period' >
+  <core:PARAMETER name='limit' value='5'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='announcements'>
 <table width=100% border=0 cellspacing=0 cellpadding=0 class=com1>
 <tr class=com5>
-	<td class=btitle1><img src='/design/main/images/titles/ad.gif'></td>
+  <td class=btitle1><img src='/design/main/images/titles/ad.gif'></td>
 </tr>
 <tr>
-	<td style='padding:5px'>
-		<table width=100% border=0 cellspacing=0 cellpadding=5>
-		<col span=2 valign=top>	
-			<grid:ITERATOR>
-			<tr>
-				<td><core:OPTIONAL for='image_id'><img src='/root?node_id={$image_id}' align='left' vspace='5' hspace='5'></core:OPTIONAL>
-				<core:OPTIONAL for='url'><a href='{$url}'></core:OPTIONAL>{$annotation}<core:OPTIONAL for='url'></a></core:OPTIONAL></td>
-			</tr>
-			<tr>
-				<td>
-				<core:INCLUDE file="/jip_actions/simple.html">
-				</td>
-			</tr>
-			</grid:ITERATOR>
-		</table>
-	</td>
+  <td style='padding:5px'>
+    <table width=100% border=0 cellspacing=0 cellpadding=5>
+    <col span=2 valign=top>
+      <grid:ITERATOR>
+      <tr>
+        <td><core:OPTIONAL for='image_id'><img src='/root?node_id={$image_id}' align='left' vspace='5' hspace='5'></core:OPTIONAL>
+        <core:OPTIONAL for='url'><a href='{$url}'></core:OPTIONAL>{$annotation}<core:OPTIONAL for='url'></a></core:OPTIONAL></td>
+      </tr>
+      <tr>
+        <td>
+        <core:INCLUDE file="/jip_actions/dropdown.html">
+        </td>
+      </tr>
+      </grid:ITERATOR>
+    </table>
+  </td>
 </tr>
 </table>
 </grid:LIST>
