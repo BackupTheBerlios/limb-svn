@@ -1,20 +1,20 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
 <span class=jip>
-<fetch:MAPPED>
+<site_object:REQUESTED>
 <core:INCLUDE file="jip_actions/extended.html">
-</fetch:MAPPED>
+</site_object:REQUESTED>
 </span>
 
-<fetch:SUB_BRANCH target='folders' >
+<datasource datasource_path='site_objects_branch_datasource' target='folders' >
 	<core:PARAMETER name='loader_class_name' value='articles_folder' >
 	<core:PARAMETER name='order' value='priority=ASC'>
-</fetch:SUB_BRANCH>
+</datasource>
 
-<fetch:SUB_BRANCH target='articles' navigator="pager" >
+<datasource datasource_path='site_objects_branch_datasource' target='articles' navigator='pager' >
 	<core:PARAMETER name='loader_class_name' value='article' >
 	<core:PARAMETER name='order' value='priority=ASC'>
-</fetch:SUB_BRANCH>
+</datasource>
 
 <grid:LIST id='folders'>
 <table width=100%>

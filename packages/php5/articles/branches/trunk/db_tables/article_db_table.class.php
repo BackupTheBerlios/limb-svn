@@ -14,15 +14,15 @@ class article_db_table extends content_object_db_table
 {  
   function _define_columns()
   {
-  	return complex_array :: array_merge(
-  		parent :: _define_columns(),
-  		array(
-	      'annotation' => '',
-	      'content' => '',
-	      'author' => '',
-	      'source' => '',
-	      'uri' => '',
-	    )  
+    return complex_array :: array_merge(
+      parent :: _define_columns(),
+      array(
+        'annotation' => '',
+        'content' => '',
+        'author' => '',
+        'source' => '',
+        'uri' => '',
+      )  
     );
   }
 }

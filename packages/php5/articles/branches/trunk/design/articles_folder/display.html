@@ -1,19 +1,20 @@
 <core:WRAP file="page.html" placeholder="content">
 
 <span class=jip>
-<fetch:MAPPED>
+<site_object:REQUESTED>
 <core:INCLUDE file="jip_actions/normal.html">
-</fetch:MAPPED>
+</site_object:REQUESTED>
 
 </span> 
-<fetch:SUB_BRANCH target='articles_folders' >
+
+<datasource datasource_path='site_objects_branch_datasource' target='articles_folders'>
 	<core:PARAMETER name='loader_class_name' value='articles_folder' >
-</fetch:SUB_BRANCH>
+</datasource>
 
 
-<fetch:SUB_BRANCH target='articles' navigator='pager'>
+<datasource datasource_path='site_objects_branch_datasource' target='articles' navigator='pager'>
 	<core:PARAMETER name='loader_class_name' value='article' >
-</fetch:SUB_BRANCH>
+</datasource>
 
 <table width=100% border=0 cellpadding=4 > 
 	<tr>
