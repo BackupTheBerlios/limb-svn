@@ -25,7 +25,7 @@ class node_select_action extends action
 	  if(!$object_data = $datasource->fetch())
 	    return;
 
-	  session :: set('limb_node_select_working_path', $path);
+	  Limb :: toolkit()->getSession()->set('limb_node_select_working_path', $path);
 	  $dataspace = $this->view->find_child('parent_node_data');
 
 	  $dataspace->import($object_data);

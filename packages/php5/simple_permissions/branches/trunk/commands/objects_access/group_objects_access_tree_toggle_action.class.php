@@ -22,7 +22,7 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 	
 	public function perform($request, $response)
 	{				
-		if ($filter_groups = session :: get('filter_groups'))
+		if ($filter_groups = Limb :: toolkit()->getSession()->get('filter_groups'))
 			$this->dataspace->set('filter_groups', $filter_groups);	
 
 		parent :: perform($request, $response);

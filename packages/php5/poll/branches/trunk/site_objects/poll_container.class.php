@@ -22,7 +22,7 @@ class poll_container extends site_object
 		if(defined('DEBUG_POLL_ENABLED') && constant('DEBUG_POLL_ENABLED'))
 			return true;
 
-		$poll_session =& session :: get('poll_session');
+		$poll_session = Limb :: toolkit()->getSession()->get('poll_session');
 		if (is_array($poll_session) && isset($poll_session[$poll_id]))
 			return false;
 
@@ -73,7 +73,7 @@ class poll_container extends site_object
 		if(!$this->_add_vote_to_answer($poll_data['answers'][$answer_id]['record_id']))
 			return false;
 
-		$poll_session =& session :: get('poll_session');
+		$poll_session =& Limb :: toolkit()->getSession()->get_reference('poll_session');
 		$poll_session[$poll_id] = $poll_id;
 
 		switch($poll_data['restriction'])

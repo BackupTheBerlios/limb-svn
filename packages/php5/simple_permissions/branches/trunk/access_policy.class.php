@@ -9,9 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 class access_policy
 {

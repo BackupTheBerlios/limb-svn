@@ -8,14 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
-require_once(dirname(__FILE__) . '/stats_counter.class.php');
-require_once(dirname(__FILE__) . '/stats_ip.class.php');
-require_once(dirname(__FILE__) . '/stats_uri.class.php');
-require_once(dirname(__FILE__) . '/stats_referer.class.php');
-require_once(dirname(__FILE__) . '/stats_search_phrase.class.php');
-
-include(dirname(__FILE__) . '/search_engines.setup.php');
+include(dirname(__FILE__) . '/search_engines.setup.php');//ugly ???
 
 class stats_register
 {
@@ -106,40 +99,55 @@ class stats_register
 	
 	protected function _get_ip_register()
 	{
-		if (!$this->_ip_register)
-			$this->_ip_register = new stats_ip();
+		if ($this->_ip_register)
+      return $this->_ip_register;
+    
+    include_once(dirname(__FILE__) . '/stats_ip.class.php');
+		$this->_ip_register = new stats_ip();
 		
 		return $this->_ip_register;
 	}	
 
 	protected function _get_counter_register()
 	{
-		if (!$this->_counter_register)
-			$this->_counter_register = new stats_counter();
+		if ($this->_counter_register)      
+      return $this->_counter_register;
+    
+    include_once(dirname(__FILE__) . '/stats_counter.class.php');
+		$this->_counter_register = new stats_counter();
 		
 		return $this->_counter_register;
 	}	
 	
 	protected function _get_referer_register()
 	{
-		if (!$this->_referer_register)
-			$this->_referer_register = new stats_referer();
+		if ($this->_referer_register)
+			return $this->_referer_register;
+    
+    include_once(dirname(__FILE__) . '/stats_referer.class.php');
+    $this->_referer_register = new stats_referer();
 		
 		return $this->_referer_register;
 	}
 	
 	protected function _get_uri_register()
 	{
-		if (!$this->_uri_register)
-			$this->_uri_register = new stats_uri();
+		if ($this->_uri_register)
+			return $this->_uri_register;
+    
+    include_once(dirname(__FILE__) . '/stats_uri.class.php');
+    $this->_uri_register = new stats_uri();
 		
 		return $this->_uri_register;
 	}
 	
 	protected function _get_search_phrase_register()
 	{
-		if (!$this->_search_phrase_register)
-			$this->_search_phrase_register = stats_search_phrase :: instance();
+		if ($this->_search_phrase_register)
+			return $this->_search_phrase_register;
+    
+    include_once(dirname(__FILE__) . '/stats_search_phrase.class.php');
+    $this->_search_phrase_register = stats_search_phrase :: instance();
 		
 		return $this->_search_phrase_register;
 	}

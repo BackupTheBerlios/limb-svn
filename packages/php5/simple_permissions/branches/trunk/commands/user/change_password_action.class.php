@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
 
 class change_password_action extends form_edit_site_object_action
@@ -54,7 +53,7 @@ class change_password_action extends form_edit_site_object_action
 		else
 		{
   		$object_data = $this->_load_object_data();
-		  session :: destroy_user_session($object_data['id']);
+		  Limb :: toolkit()->getSession()->storage_destroy_user($object_data['id']);
 		}  
 
 		if ($request->get_status() == request :: STATUS_SUCCESS)

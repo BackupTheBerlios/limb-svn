@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
 
 class edit_guestbook_message_action extends form_edit_site_object_action

@@ -24,7 +24,7 @@ class set_group_objects_access extends form_action
 	{
 		Limb :: toolkit()->getTree()->initialize_expanded_parents();				
 
-		if ($filter_groups = session :: get('filter_groups'))
+		if ($filter_groups = Limb :: toolkit()->getSession()->get('filter_groups'))
 			$this->dataspace->set('filter_groups', $filter_groups);	
 		
 		parent :: perform($request, $response);
@@ -54,7 +54,7 @@ class set_group_objects_access extends form_action
 		$data = $this->dataspace->export();
 
  	  if($groups = $this->dataspace->get('filter_groups'))
-	  	session :: set('filter_groups', $groups);
+	  	Limb :: toolkit()->getSession()->set('filter_groups', $groups);
 
 		if(isset($data['update']) && isset($data['policy']))
 		{

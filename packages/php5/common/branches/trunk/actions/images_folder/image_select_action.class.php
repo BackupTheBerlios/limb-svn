@@ -19,7 +19,7 @@ class image_select_action extends action
     
 		$object = $datasource->fetch();
 
-	  session :: set('limb_image_select_working_path', $object['path']);
+	  Limb :: toolkit()->getSession()->set('limb_image_select_working_path', $object['path']);
 	}
 }
 ?>
