@@ -47,6 +47,20 @@ class stats_report_controller extends site_object_controller
 						'action_path' => '/stats_report/stats_ips_report_action',
 						'display_in_breadcrumbs' => true
 				),
+				'keywords_report' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/stats_report/keywords_list.html',
+						'action_name' => strings :: get('show_keywords_report', 'stats'),
+						'action_path' => '/stats_report/stats_keywords_report_action',
+						'display_in_breadcrumbs' => true
+				),
+				'search_engines_report' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/stats_report/search_engines_list.html',
+						'action_name' => strings :: get('show_search_engines_report', 'stats'),
+						'action_path' => '/stats_report/stats_search_engines_report_action',
+						'display_in_breadcrumbs' => true
+				),
 		);
  		
 		parent :: site_object_controller();
