@@ -36,7 +36,7 @@ class site_param_object_controller extends site_object_controller
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('set_params', 'site_param'),
-						'action_path' => '/site_param_object/update_action',
+						'action_path' => '/site_param_object/update_param_action',
 						'template_path' => '/site_param_object/update.html',
 						'img_src' => '/shared/images/details.gif'
 				),
