@@ -76,3 +76,20 @@ a.menu_selected_links{font-weight:bold;}
     font-style:  normal;
     font-weight: normal;
     src: url('/shared/fonts/compact.eot')}
+
+/*admin*/
+.row{page:row;}
+.jip{page:actions;border:solid 1px #ffffff;}
+.jip-object{border:solid 1px #ffffff;}
+.jip-object-active{border:dotted 1px #7095ED;}
+
+.jip-actions{border:solid 1px #63D465; background-color:#E6FAE6;}
+.jip-actions-active{}
+
+.jip-td{}
+
+.action{page:action;background-repeat:no-repeat;background-position:center center;}
+.error-block{border:dashed 1px #e00000; padding:3px 20px 0 20px}
+
+.hint-table-css{background-color: #FFFFFF; border: 1px solid #999999;}
+.hint-title-css{background-color: #F8F8F8; font-weight: bold;}	    
