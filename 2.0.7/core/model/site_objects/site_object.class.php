@@ -241,10 +241,10 @@ class site_object extends object
 			return array();
 		}	
 	
-		$ids = '('. implode(',', $ids_array) . ')';
-		
 		if(isset($params['limit']))
 		{
+			$ids = '('. implode(',', $ids_array) . ')';
+		
 			$ids_sql_params = $sql_params;
 			$ids_sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 			
