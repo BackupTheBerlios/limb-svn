@@ -10,12 +10,12 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
-class stats_pages_report
+class stats_ips_report
 {
 	var $db = null;
 	var $filter_conditions = array();
 	
-	function stats_pages_report()
+	function stats_ips_report()
 	{
 		$this->db =& db_factory :: instance();
 	}
@@ -23,14 +23,14 @@ class stats_pages_report
 	function fetch($params = array())
 	{
 		$sql = 'SELECT
-						node_id, 
-						COUNT(node_id) as hits 
+						ip, 
+						COUNT(ip) as hits 
 						FROM 
 						sys_stat_log';
 
 		$sql .= $this->_build_filter_condition();
 		
-		$sql .= '	GROUP BY node_id
+		$sql .= '	GROUP BY ip
 							ORDER BY hits DESC';
 						
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
@@ -44,13 +44,13 @@ class stats_pages_report
 	function fetch_count($params = array())
 	{
 		$sql = 'SELECT
-						node_id
+						ip
 						FROM 
 						sys_stat_log';
 
 		$sql .= $this->_build_filter_condition();
 		
-		$sql .= 'GROUP BY node_id';
+		$sql .= 'GROUP BY ip';
 		
 		$this->db->sql_exec($sql);
 		return $this->db->count_selected_rows();
@@ -62,9 +62,9 @@ class stats_pages_report
 						COUNT(id) as total
 						FROM 
 						sys_stat_log';
-						
-		$sql .= $this->_build_filter_condition();
 
+		$sql .= $this->_build_filter_condition();
+						
 		$this->db->sql_exec($sql);
 		$record = $this->db->fetch_row();
 		

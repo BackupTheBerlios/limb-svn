@@ -740,6 +740,8 @@ CREATE TABLE `sys_stat_day_counters` (
   `time` int(11) NOT NULL default '0',
   `hits` int(11) NOT NULL default '0',
   `hosts` int(11) NOT NULL default '0',
+  `home_hits` int(11) NOT NULL default '0',
+  `audience` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
@@ -771,6 +773,7 @@ CREATE TABLE `sys_stat_log` (
   `session_id` varchar(50) NOT NULL default '',
   `user_id` int(11) NOT NULL default '0',
   `status` int(11) default NULL,
+  `stat_uri_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `url` (`node_id`),
   KEY `referer` (`stat_referer_id`),
@@ -789,6 +792,18 @@ CREATE TABLE `sys_stat_referer_url` (
   `referer_url` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `url` (`referer_url`)
+) TYPE=InnoDB;
+
+
+/*
+Table struture for sys_stat_uri
+*/
+
+drop table if exists `sys_stat_uri`;
+CREATE TABLE `sys_stat_uri` (
+  `id` int(11) NOT NULL auto_increment,
+  `uri` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
 

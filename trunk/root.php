@@ -121,6 +121,10 @@ $response = $site_object_controller->process();
 
 $stats_register = new stats_register();
 
+//$stats_register->set_node($node);
+//$stats_register->set_action($node);
+//$stats_register->set_response($response);
+
 $stats_register->register($node['id'], $action, $response->get_status());
 
 $response->perform();

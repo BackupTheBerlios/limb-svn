@@ -33,6 +33,13 @@ class stats_report_controller extends site_object_controller
 						'action_path' => '/stats_report/stats_hits_hosts_report_action',
 						'display_in_breadcrumbs' => true
 				),
+				'ips_report' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/stats_report/ips_list.html',
+						'action_name' => strings :: get('show_ips_report', 'stats'),
+						'action_path' => '/stats_report/stats_ips_report_action',
+						'display_in_breadcrumbs' => true
+				),
 		);
  		
 		parent :: site_object_controller();

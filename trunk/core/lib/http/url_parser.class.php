@@ -124,7 +124,6 @@ class url_parser
     }
   	  		
     $this->_path_elements = explode('/',$this->path);
-    
   }
 
   function count_path()
@@ -188,7 +187,24 @@ class url_parser
 
     return $this->url;
   }
+  
+  function get_inner_url()
+  {
+    $query_string = $this->get_query_string();
 
+    $url = $this->path
+           . (!empty($query_string) ? '?' . $query_string : '')
+           . (!empty($this->anchor) ? '#' . $this->anchor : '');
+           
+     
+		return $url;
+  }
+  
+  function is_inner()
+  {
+  	return ($this->host == $_SERVER['HTTP_HOST']);
+  }
+  
   function get_path_element($level)
   {
     return isset($this->_path_elements[$level]) ? $this->_path_elements[$level] : '';

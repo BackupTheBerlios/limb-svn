@@ -10,9 +10,9 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
-class sys_stat_log_db_table extends db_table
+class sys_stat_uri_db_table extends db_table
 {
-  function sys_stat_log_db_table()
+  function sys_stat_uri_db_table()
   {
     parent :: db_table();
   }
@@ -21,15 +21,7 @@ class sys_stat_log_db_table extends db_table
   {
   	return array(
   		'id' => array('type' => 'numeric'),
-  		'node_id' => array('type' => 'numeric'),
-  		'stat_referer_id' => array('type' => 'numeric'),
-  		'stat_uri_id' => array('type' => 'numeric'),
-  		'time' => array('type' => 'numeric'),
-  		'ip' => '',
-  		'action' => '',
-  		'session_id' => '',
-  		'user_id' => array('type' => 'numeric'),
-  		'status' => array('type' => 'numeric'),
+  		'uri' => '',
     );
   }
 }

@@ -5,23 +5,85 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: dir.test.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
 
+Mock::generatePartial
+(
+  'stats_referer',
+  'stats_referer_self_test_version',
+  array(
+  	'_get_http_referer'
+  )
+);
+
 class test_stats_referer extends UnitTestCase 
 {
   var $stats_referer = null;
+  var $db = null;
 	
   function test_stats_referer() 
   {
   	parent :: UnitTestCase();
+  	
+  	$this->db =& db_factory :: instance();
   }
   
   function setUp()
   {
-   	$this->stats_referer = new stats_referer();
+   	$this->stats_referer = new stats_referer_self_test_version($this);
+   	$this->stats_referer->stats_referer();
+   	
+   	$this->_clean_up();
+  }
+  
+  function tearDown()
+  {
+  	$this->stats_referer->tally();
+  	
+  	$this->_clean_up();
+  }
+  
+  function _clean_up()
+  {
+  	$this->db->sql_delete('sys_stat_referer_url');
+  }
+  
+  function test_get_referer_page_id_no_referer()
+  {
+  	$this->stats_referer->setReturnValue('_get_http_referer', '');
+  	
+  	$this->assertEqual(-1, $this->stats_referer->get_referer_page_id());
+  }
+  
+  function test_get_referer_page_id_inner_referer()
+  {
+  	$this->stats_referer->setReturnValue('_get_http_referer', 'http://' . $_SERVER['HTTP_HOST'] . '/test');
+  	
+  	$this->assertEqual(-1, $this->stats_referer->get_referer_page_id());
+  }
+  
+  function test_get_referer_page_id()
+  {
+  	$this->stats_referer->setReturnValue('_get_http_referer', 'http://wow.com/test/referer');
+  	
+  	$id = $this->stats_referer->get_referer_page_id();
+  	
+  	$this->db->sql_select('sys_stat_referer_url');
+  	$arr = $this->db->get_array();
+  	$record = current($arr);
+  	
+  	$this->assertEqual(sizeof($arr), 1);
+  	
+		$this->assertEqual($record['id'], $id);
+  }
+  
+  function test_get_referer_page_id_same_id()
+  {
+  	$this->test_get_referer_page_id();
+  	$this->test_get_referer_page_id();
   }
           
   function test_clean_url()
