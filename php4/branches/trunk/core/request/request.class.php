@@ -76,7 +76,31 @@ class request extends object
     return $obj;
   }
 
-  function & get_uri()
+  function to_string()
+  {
+    $uri = $this->get_uri();
+    $uri->remove_query_items();
+
+    $result = array();
+    $query = '';
+
+    $exported = $this->export_attributes();
+
+    //removing files data
+    if(isset($exported['file']))
+     unset($exported['file']);
+
+    complex_array :: to_flat_array($exported, $result);
+
+    foreach($result as $key => $value)
+      $query .= $key . '=' . $value . '&';
+
+    $query = rtrim($query, '&');
+
+    return rtrim($uri->to_string() . '?' . $query, '?');
+  }
+
+  function get_uri()
   {
     if($this->uri === null)
       $this->_init_uri();
@@ -86,6 +110,7 @@ class request extends object
 
   function _init_uri()
   {
+    include_once(LIMB_DIR . '/core/lib/http/uri.class.php');
     $this->uri = new uri($_SERVER['REQUEST_URI']);
   }
 
