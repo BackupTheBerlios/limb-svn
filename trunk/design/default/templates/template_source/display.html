@@ -8,6 +8,12 @@
 
 <h1>{#template_path}</h1>
 
+<core:OPTIONAL for='from_template_path'>
+<br>
+<br>
+back to <a style='font-weight:bold;text-decoration:underline; ' href='/root/template_source?{#history_query}'>{#from_template_path}</a>
+</core:OPTIONAL>
+
 <pre>
 {#template_content}
 </pre>

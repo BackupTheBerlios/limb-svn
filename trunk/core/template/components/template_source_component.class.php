@@ -9,13 +9,22 @@
 *
 ***********************************************************************************/
 
-class cart_summ_component extends component
+class template_source_component extends component
 {
-	function get_cart_summ()
+	function get_current_template_source_link()
 	{
-		$cart =& cart :: instance();
+		if(!$site_object = wrap_with_site_object(fetch_mapped_by_url()))
+			return '';
 		
-		return $cart->get_total_summ();
+		$site_object_controller = $site_object->get_controller();
+		
+		if(($action = $site_object_controller->determine_action()) === false)
+			return '';
+			
+		if(!$template_path = $site_object_controller->get_action_property($action, 'template_path'))
+			return '';
+		
+		return '/root/template_source?t[]=' . $template_path;
 	}
 } 
 

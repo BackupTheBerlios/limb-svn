@@ -12,12 +12,17 @@ require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
 
 class template_highlight_handler 
 {
-  var $html;
-  var $current_tag;
+  var $html = '';
+  var $current_tag = '';
+  var $template_path_history = array();
 
   function template_highlight_handler()
   {
-  	$this->html = '';
+  }
+  
+  function set_template_path_history($history)
+  {
+  	$this->template_path_history = $history;
   }
 	
 	function write_attributes($attributes)
@@ -29,7 +34,17 @@ class template_highlight_handler
 				if($this->current_tag == 'core:wrap' || $this->current_tag == 'core:include')
 				{
 					if($name == 'file')
-						$value = "<a href=/root/template_source?template_path={$value}>$value</a>";
+					{
+						$history = array();
+						$history = $this->template_path_history;
+						$history[] = $value;
+						
+						$history_string = 't[]=' . implode('&t[]=', $history);
+						
+						$href = "/root/template_source?{$history_string}";
+												
+						$value = "<a style='text-decoration:underline;font-weight:bold;' href={$href}>{$value}</a>";
+					}
 				}
 				
 				$this->html .= ' ' . $name . '="' . $value . '"';
@@ -68,6 +83,8 @@ class template_highlight_handler
 
   function get_html() 
   {
+  	$this->html = preg_replace('~(\{(\$|\^|#)[^\}]+\})~', "<span style='background-color:lightgreen;font-weight:bold;'>\\1</span>", $this->html);
+  	
   	return $this->html;
   }
 }

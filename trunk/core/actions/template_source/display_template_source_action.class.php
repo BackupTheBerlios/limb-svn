@@ -16,38 +16,45 @@ require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
 
 class display_template_source_action extends action
 {
+	var $history = array();
+	
 	function display_template_source_action($name='')
 	{
 		parent :: action($name);
 	}
 	
 	function perform()
-	{
-		if(isset($_REQUEST['template_node_id']))
-		{
-			$template_node_id = (int)$_REQUEST['template_node_id'];
-			if(!$template_path = $this->_get_template_path_from_node($template_node_id))
-			{
-				debug :: write_error('template node id not found',
-		 			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-					array('template_node_id' => $template_node_id));
-
-				return new failed_response();
-			}
-		}
-		elseif(isset($_REQUEST['template_path']))
-			$template_path = $_REQUEST['template_path'];
+	{		
+		if(isset($_REQUEST['t']) && is_array($_REQUEST['t']) && sizeof($_REQUEST['t']) > 0)
+			$this->history = $_REQUEST['t'];
+		else
+			return new failed_response();
 		
+		$template_path = end($this->history);
+				
 		if(!$source_file_path = resolve_template_source_file_name($template_path))
 		{
 			debug :: write_error('template not found',
 	 			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array('template_path' => $template_path));
+				array('template_path' => $this->template_path));
 
 			return new failed_response();
 		}
 		
 		$template_contents = file_get_contents($source_file_path);
+
+		if(sizeof($this->history) > 1)
+		{
+			$tmp_history = $this->history;
+			
+			$from_template_path = $tmp_history[sizeof($tmp_history) - 2];
+			$tmp_history = array_splice($tmp_history, 0, sizeof($tmp_history) - 1);
+			
+			$history_query = 't[]=' . implode('&t[]=', $tmp_history);
+			
+			$this->view->set('history_query', $history_query);
+			$this->view->set('from_template_path', $from_template_path);
+		}
 		
 		$this->view->set('template_path', $template_path);
 		$this->view->set('template_content', $this->_process_template_content($template_contents));
@@ -70,6 +77,8 @@ class display_template_source_action extends action
   	$parser =& new XML_HTMLSax();
   	
   	$handler =& new template_highlight_handler();
+  	
+  	$handler->set_template_path_history($this->history);
   	
   	$parser->set_object($handler);
   	
