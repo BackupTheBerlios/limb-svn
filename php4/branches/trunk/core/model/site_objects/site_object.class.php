@@ -854,6 +854,7 @@ class site_object extends object
     $metadata['object_id'] = $id;
     $metadata['keywords'] = $this->get_attribute('keywords');
     $metadata['description'] = $this->get_attribute('description');
+    $metadata['title'] = $this->get_attribute('title');
 
     if ($sys_metadata_db_table->insert($metadata))
       return $sys_metadata_db_table->get_last_insert_id();

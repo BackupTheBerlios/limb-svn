@@ -282,6 +282,7 @@ drop table if exists `sys_metadata`;
 CREATE TABLE `sys_metadata` (
   `id` int(11) NOT NULL auto_increment,
   `object_id` int(11) NOT NULL default '0',
+  `title` varchar(255) NULL,
   `keywords` text,
   `description` text,
   PRIMARY KEY  (`id`),

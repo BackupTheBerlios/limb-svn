@@ -30,7 +30,7 @@ class metadata_component extends component
   var $offset_path = '';
 
   var $metadata_db_table_name = 'sys_metadata';
-  var $needed_metadata = array('keywords', 'description');
+  var $needed_metadata = array('keywords', 'description', 'title');
 
   function _get_path_objects_ids_array()
   {
