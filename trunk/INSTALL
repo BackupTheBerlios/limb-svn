@@ -1,0 +1,80 @@
+--------------------------------------------------------------------------------
+LIMB - Lithesome Interactive Media Builder -  $Id$
+--------------------------------------------------------------------------------
+http://www.sourceforge.net/projects/limb
+
+--------------------------------------------------------------------------------
+ !!!WARNING!!!
+--------------------------------------------------------------------------------
+This  is  the  pre-alfa of  the  public  release of  LIMB  based  project. These
+instructions contain ***only*** necessary information on how to get LIMB based project
+working.
+You're strongly required to be able to configure Apache, MySQL.
+If you're stuck and need help, please feel free to contact the developers over email: 
+limb@0x00.ru
+
+! This package doesn't contains tests. Contact developers in case you need tests.
+
+--------------------------------------------------------------------------------
+	SYSTEM REQUIREMENTS
+--------------------------------------------------------------------------------
+OS : OS independent
+
+Web Server: Apache  1.3+ (configured  with  AllowOverride  All) with php istalled as
+a module(important!)
+
+Development Environment: PHP 4.2+  
+
+Preferred Database: MySQL 4.0+ 
+(LIMB will work on 3.23+ with InnoDB support, however LIMB uses full text search 
+capabilities of 4.0+ version, hence no search support below 4.0)
+
+--------------------------------------------------------------------------------
+	SETUP PROJECT 
+--------------------------------------------------------------------------------
+1.	Unpack downloaded archive
+2.	Edit project settings in setup_custom.php
+3.	Dump data base structure and initial data from sql.sql that you can find 
+	in /YOUR_PROJECT_FOLDER/init/ directory
+
+--------------------------------------------------------------------------------
+	SETUP APACHE
+--------------------------------------------------------------------------------
+You need to write an alias for shared folder in the apache project virtual host 
+section:
+Alias /shared 		/YOUR_PROJECT_FOLDER/limb/shared/
+
+You may skip this step by simply copying /YOUR_PROJECT_FOLDER/limb/shared/ contents
+to /YOUR_PROJECT_FOLDER/shared/ folder.
+
+--------------------------------------------------------------------------------
+	SETTING PERMISSIONS
+--------------------------------------------------------------------------------
+Your PHP installation will need write access to a 'var' directory in the project folder.
+Usually this directory contains several subfolders: 'compiled', 'cache', 'media', 'log'. 
+Also if you want to run tests you will have to set write permissions to 'var' in 
+'YOUR_PROJECT_FOLDER/tests/' folder.
+After installation use /root/admin address to get access to the administration zone.
+To log in 'admin' as a login and 'test' as a password.
+
+--------------------------------------------------------------------------------
+	config.ini
+--------------------------------------------------------------------------------
+Every project has config.ini file in /core/settings folder
+
+By default it contains only one valuable parameter:
+force_compile = 1
+
+This parameter forces the WACT template engine to recompile requested template every time 
+it is requested.
+
+--------------------------------------------------------------------------------
+ TEMPLATE FILE NAME RESOLVING 
+--------------------------------------------------------------------------------
+Templates can be found in YOUR_PROJECT_FOLDER/design/main/templates/
+folder or in YOUR_PROJECT_FOLDER/limb/design/default/templates/ folder.
+
+Templating engine first looks up the requested template in
+YOUR_PROJECT_FOLDER/design/main/templates/ 
+if not found, it tries
+YOUR_PROJECT_FOLDER/limb/design/default/templates/.
