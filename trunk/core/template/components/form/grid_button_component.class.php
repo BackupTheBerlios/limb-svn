@@ -43,7 +43,7 @@ class grid_button_component extends form_element
 			unset($this->attributes['reload_parent']);
 		}
 
-		$this->attributes['onclick'] .= "submit_form('grid_form_{$parent_id}', '{$action_path}')";
+		$this->attributes['onclick'] .= "submit_form(this.form, '{$action_path}')";
 
 		unset($this->attributes['path']);
 		unset($this->attributes['action']);

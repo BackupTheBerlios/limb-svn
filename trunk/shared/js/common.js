@@ -333,46 +333,43 @@ function click_href(href, window_name)
 	return !((has_progress > -1) || (is_popup > -1));
 }
 
-function change_form_action(form_name, action)
+function change_form_action(form, action)
 {
-	document.forms[form_name].action = action;
+	if(!form)
+	  return;
+
+	form.action = action;
 }
 
-function add_form_action_parameter(form_id, parameter, val)
+function add_form_action_parameter(form, parameter, val)
 {
-	if(document.forms[form_id])
-	{
-		action = document.forms[form_id].action;
-		document.forms[form_id].action = set_http_get_parameter(action, parameter, val);
-	}
+	if(!form)
+	  return;
+
+  form.action = set_http_get_parameter(form.action, parameter, val);
 }
 
-function add_form_hidden_parameter(form_id, parameter, val)
+function add_form_hidden_parameter(form, parameter, val)
 {	
-	if(document.forms[form_id])
-	{
-		hidden = document.getElementById(parameter + '_hidden_parameter');
-		if(hidden)
-			hidden.value = val;
-		else
-		{			
-			hidden = document.createElement('INPUT');
-			hidden.id = parameter + '_hidden_parameter';
-			hidden.type = 'hidden';
-			hidden.name = parameter;
-			hidden.value = val;
-			document.forms[form_id].appendChild(hidden);
-		}
+	if(!form)
+	  return;
+	  
+	hidden = document.getElementById(parameter + '_hidden_parameter');
+	if(hidden)
+		hidden.value = val;
+	else
+	{			
+		hidden = document.createElement('INPUT');
+		hidden.id = parameter + '_hidden_parameter';
+		hidden.type = 'hidden';
+		hidden.name = parameter;
+		hidden.value = val;
+		form.appendChild(hidden);
 	}
 }
 
-function submit_form(form_name, form_action)
+function submit_form(form, form_action)
 {
-	if(document.forms[form_name])
-		form = document.forms[form_name];
-	else
-		return;
-	
 	has_progress = form_action.indexOf('progress=1');
 	if(has_progress > -1)
 		show_progress();
@@ -391,17 +388,14 @@ function submit_form(form_name, form_action)
 	form.submit();
 }
 
-function process_action_control(form_name, droplist_name)
+function process_action_control(droplist)
 {
-	form = document.forms[form_name];
-	droplist = form.elements[droplist_name];	
-	
 	if (typeof(droplist.value) != 'undefined')
 		value = droplist.value;
 	else
 		value = droplist[0].value;
 	
-	submit_form(form_name, value);
+	submit_form(droplist.form, value);
 }
 
 function sync_action_controls(obj)

@@ -46,7 +46,7 @@ class grid_button_tag extends button_tag
 		
 		if(isset($this->attributes['form_submitted']) && (boolean)$this->attributes['form_submitted'])
 		{
-			$this->attributes['onclick'] .= "add_form_hidden_parameter('grid_form_{$grid_tag->attributes['id']}', 'grid_form[submitted]', 1);";
+			$this->attributes['onclick'] .= "add_form_hidden_parameter(this.form, 'grid_form[submitted]', 1);";
 			unset($this->attributes['form_submitted']);
 		}
 		
