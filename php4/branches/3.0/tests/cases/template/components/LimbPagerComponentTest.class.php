@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/template/components/LimbPagerComponent.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Request');
 
 class LimbPagerComponentTest extends LimbTestCase
@@ -209,7 +209,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->assertEqual($uri, 'http://test.com?p1=+wow+&p2[3]=yo');
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testGetFirstPageUriNoQuery()
@@ -233,7 +233,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->assertEqual($uri, 'http://test.com');
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testGetPageUri()
@@ -257,7 +257,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->assertEqual($uri, 'http://test.com?p1=wow&p2[3]=+yo+&p_navi=2');
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testGetPrevSectionUri()
@@ -290,7 +290,7 @@ class LimbPagerComponentTest extends LimbTestCase
     $this->assertEqual($this->component->getSectionBeginPage(), 1);
     $this->assertEqual($this->component->getSectionEndPage(), 2);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testGetNextSectionUri()
@@ -324,7 +324,7 @@ class LimbPagerComponentTest extends LimbTestCase
     $this->assertEqual($this->component->getSectionBeginPage(), 5);
     $this->assertEqual($this->component->getSectionEndPage(), 6);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 }
 

@@ -24,7 +24,7 @@ class LimbDbPool
   function & newConnection($name, $conf = null)
   {
     if($conf === null)
-      $conf =& new LimbDbConnectionConfiguration();
+      $conf =& LimbDbPool :: getDefaultConfiguration();
 
     $driver = $conf->get('driver');
     $class = ucfirst($driver) . 'Connection';
@@ -34,6 +34,11 @@ class LimbDbPool
     $connection->connect();
 
     return $connection;
+  }
+
+  function & getDefaultConfiguration()
+  {
+    return new LimbDbConnectionConfiguration();
   }
 
   function & getConnection($name = 'default', $conf = null)

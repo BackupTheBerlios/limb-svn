@@ -24,6 +24,22 @@ class LimbBaseToolkit// implements LimbToolkit
   var $uow;
   var $ini_cache = array();
 
+  function reset()
+  {
+    $this->current_dataspace_name = 'default';
+    $this->fetcher = null;
+    $this->response = null;
+    $this->request = null;
+    $this->session = null;
+    $this->user = null;
+    $this->db = null;
+    $this->tree = null;
+    $this->view = null;
+    $this->cache = null;
+    $this->uow = null;
+    $this->ini_cache = array();
+  }
+
   function define($key, $value)
   {
     define($key, $value);

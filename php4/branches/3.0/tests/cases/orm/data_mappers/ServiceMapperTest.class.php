@@ -64,7 +64,7 @@ class ServiceMapperTest extends LimbTestCase
     $this->behaviour->tally();
     $this->behaviour_mapper->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function _cleanUp()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/tree/TreeDecorator.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Tree');
 
 class TreeDecoratorTest extends LimbTestCase
@@ -41,7 +41,7 @@ class TreeDecoratorTest extends LimbTestCase
     $this->toolkit->tally();
     $this->tree->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testIsNode()

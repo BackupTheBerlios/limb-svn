@@ -36,7 +36,7 @@ class Limb
     $limb->toolkits[$name][] =& $toolkit;
   }
 
-  function & popToolkit($name = 'default')
+  function & restoreToolkit($name = 'default')
   {
     $limb =& Limb :: instance();
 
@@ -55,6 +55,14 @@ class Limb
       return false;
 
     return $limb->toolkits[$name][sizeof($limb->toolkits[$name]) - 1];
+  }
+
+  function saveToolkit($name = 'default')
+  {
+    //no &, we simply make a copy
+    $toolkit = clone(Limb :: toolkit($name));
+    $toolkit->reset();
+    Limb :: registerToolkit($toolkit, $name);
   }
 }
 

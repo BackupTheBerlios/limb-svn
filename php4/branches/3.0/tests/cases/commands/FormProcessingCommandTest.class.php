@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/core/commands/FormProcessingCommand.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/template/components/form/form.inc.php');
@@ -28,7 +28,7 @@ Mock :: generatePartial(
         'getFormComponent')
 );
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Request');
 Mock :: generate('Validator');
 Mock :: generate('ErrorList');
@@ -69,7 +69,7 @@ class FormProcessingCommandTest extends LimbTestCase
 
   function tearDown()
   {
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
 
     $this->dataspace->tally();
     $this->request->tally();

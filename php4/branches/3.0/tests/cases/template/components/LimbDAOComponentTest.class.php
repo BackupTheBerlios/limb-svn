@@ -13,9 +13,9 @@ require_once(WACT_ROOT . '/template/components/list/list.inc.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 require_once(LIMB_DIR . '/core/template/components/LimbPagerComponent.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Component');
 Mock :: generate('ListComponent');
 Mock :: generate('LimbDAOComponentTestVersion');
@@ -63,7 +63,7 @@ class LimbDAOComponentTest extends LimbTestCase
     $this->request->tally();
     $this->toolkit->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testProcessSeveralTargetsNoNavigator()

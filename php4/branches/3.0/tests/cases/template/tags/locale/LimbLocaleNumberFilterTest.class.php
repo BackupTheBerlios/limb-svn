@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 
 class LimbLocaleNumberFilterTestCase extends LimbTestCase
 {
@@ -57,7 +57,7 @@ class LimbLocaleNumberFilterTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), '100,000.0000');
 
     $toolkit->tally();
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testUseFractDigits()
@@ -128,7 +128,7 @@ class LimbLocaleNumberFilterTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), '100,000.0000');
 
     $toolkit->tally();
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testDBEUseFractDigits()

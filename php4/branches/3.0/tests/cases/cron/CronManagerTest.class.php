@@ -11,11 +11,11 @@
 require_once(LIMB_DIR . '/core/cron/CronManager.class.php');
 require_once(LIMB_DIR . '/core/cron/cronjobs/CronjobCommand.class.php');
 require_once(LIMB_DIR . '/core/request/Response.interface.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 Mock :: generate('CronjobCommand');
 Mock :: generate('Response');
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 
 Mock :: generatePartial(
   'CronManager',

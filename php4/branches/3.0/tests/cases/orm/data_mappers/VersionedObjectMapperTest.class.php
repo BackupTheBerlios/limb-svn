@@ -77,7 +77,7 @@ class VersionedObjectMapperTest extends LimbTestCase
 
     $this->_cleanUp();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function _cleanUp()

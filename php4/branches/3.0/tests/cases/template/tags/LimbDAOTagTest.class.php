@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/http/Uri.class.php');
 
@@ -21,7 +21,7 @@ class CountableDAO// implements DAO, Countable
 }
 
 Mock :: generate('CountableDAO');
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Request');
 
 class LimbDAOTagTestCase extends LimbTestCase
@@ -47,7 +47,7 @@ class LimbDAOTagTestCase extends LimbTestCase
     $this->ds->tally();
     $this->toolkit->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
 
     ClearTestingTemplates();
   }

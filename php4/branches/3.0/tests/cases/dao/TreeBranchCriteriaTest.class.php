@@ -115,7 +115,7 @@ class TreeBranchCriteriaTest extends LimbTestCase
     $tree->tally();
     $toolkit->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function _insertNodeRecords()

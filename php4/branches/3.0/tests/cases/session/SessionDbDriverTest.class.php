@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/session/SessionDbDriver.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/permissions/User.class.php');
 
 Mock :: generate('User');
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 
 class SessionDbDriverTest extends LimbTestCase
 {
@@ -48,7 +48,7 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->user->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testStorageOpen()

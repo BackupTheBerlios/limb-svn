@@ -80,7 +80,7 @@ class SingleServiceNodeCriteriaTest extends LimbTestCase
     $this->sql->expectOnce('addCondition', array('sys_tree.id = '. $node_id));
     $this->dao->fetch();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testNoConditionsIfNoCritetiasSet()
@@ -107,7 +107,7 @@ class SingleServiceNodeCriteriaTest extends LimbTestCase
     $this->sql->expectOnce('addCondition', array('0 = 1'));
     $this->dao->fetch();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 }
 ?>

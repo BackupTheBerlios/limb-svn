@@ -9,12 +9,12 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/DisplayViewCommand.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/request/Response.interface.php');
 
 require_once(WACT_ROOT . '/template/template.inc.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Response');
 
 class TemplateStub extends Template
@@ -54,7 +54,7 @@ class DisplayViewCommandTest extends LimbTestCase
 
   function tearDown()
   {
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
 
     $this->toolkit->tally();
     $this->response->tally();

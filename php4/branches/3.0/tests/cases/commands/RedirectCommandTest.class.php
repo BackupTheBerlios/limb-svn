@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectCommand.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
 
 Mock :: generate('HttpResponse');
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 
 class RedirectCommandTest extends LimbTestCase
 {
@@ -38,7 +38,7 @@ class RedirectCommandTest extends LimbTestCase
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $response->tally();
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 }
 

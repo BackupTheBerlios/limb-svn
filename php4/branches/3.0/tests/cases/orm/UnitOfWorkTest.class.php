@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
 require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
@@ -16,7 +16,7 @@ require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('AbstractDataMapper');
 Mock :: generate('SQLBasedDAO');
 
@@ -79,7 +79,7 @@ class UnitOfWorkTest extends LimbTestCase
     $this->dao->tally();
     $this->toolkit->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testLoadNotFound()

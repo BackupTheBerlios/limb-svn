@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/http/Uri.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Request');
 
 class LimbPagerNavigatorTagTestCase extends LimbTestCase
@@ -90,7 +90,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), $expected);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testPagerProperties()
@@ -126,7 +126,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), $expected);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testSinglePage()
@@ -165,7 +165,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), $expected);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testFistPage()
@@ -204,7 +204,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), $expected);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testLastPage()
@@ -249,7 +249,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), $expected);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
 
@@ -292,7 +292,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), $expected);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testMirror()
@@ -330,7 +330,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
     $expected = "P1-test.com|P2-test.com|";
     $this->assertEqual($page->capture(), $expected);
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
 }

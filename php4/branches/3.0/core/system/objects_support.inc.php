@@ -10,6 +10,16 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/util/delegate.inc.php');
 
+if (version_compare(phpversion(), '5.0') < 0)
+{
+  eval('
+    function clone($object)
+    {
+      return $object;
+    }
+  ');
+}
+
 class LimbHandle extends Handle
 {
   function LimbHandle($class, $args = array())

@@ -55,7 +55,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->tree->tally();
 
     $this->_cleanUp();
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function _cleanUp()

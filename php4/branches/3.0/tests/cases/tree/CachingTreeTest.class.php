@@ -10,10 +10,10 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/tree/CachingTree.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Tree');
 Mock :: generate('CacheRegistry');
 
@@ -48,7 +48,7 @@ class CachingTreeTest extends LimbTestCase
     $this->tree->tally();
     $this->cache->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testGetNodeCacheHit()

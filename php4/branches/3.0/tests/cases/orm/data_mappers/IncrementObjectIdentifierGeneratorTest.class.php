@@ -11,9 +11,9 @@
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
 require_once(LIMB_DIR . '/core/data_mappers/IncrementObjectIdentifierGenerator.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Object');
 Mock :: generate('Tree');
 
@@ -52,7 +52,7 @@ class IncrementObjectIdentifierGeneratorTest extends LimbTestCase
     $this->tree->tally();
     $this->toolkit->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testGenerateFalse()

@@ -11,13 +11,13 @@
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/dao/criteria/Criteria.class.php');
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(WACT_ROOT . '/db/drivers/mysql/driver.inc.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
 Mock :: generate('Criteria');
 Mock :: generate('ComplexSelectSQL');
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('MySQLConnection');
 Mock :: generate('MySqlQueryStatement');
 Mock :: generatePartial('SQLBasedDAO', 'SQLBasedDAOTestVersion',
@@ -59,7 +59,7 @@ class SQLBasedDAOTest extends LimbTestCase
     $this->conn->tally();
     $this->stmt->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testProcess()
