@@ -72,13 +72,6 @@ class DomainObjectTest extends LimbTestCase
     $this->assertFalse($this->object->isDirty());
   }
 
-  function testObjectBecomesDirtyAfterGetNonexistingReference()
-  {
-    $property =& $this->object->getReference('test');
-
-    $this->assertTrue($this->object->isDirty());
-  }
-
   function testObjectBecomesDirtyAfterReferenceGotChanged1()
   {
     $this->object->import(array('test' => new Object()));
@@ -91,20 +84,6 @@ class DomainObjectTest extends LimbTestCase
 
     $this->assertTrue($this->object->isDirty());
   }
-
-  function testObjectBecomesDirtyAfterReferenceGotChanged2()
-  {
-    $this->object->import(array('test' => 2));
-
-    $ref =& $this->object->getReference('test');
-
-    $this->assertFalse($this->object->isDirty());
-
-    $ref = 1;
-
-    $this->assertTrue($this->object->isDirty());
-  }
-
 }
 
 ?>

@@ -49,7 +49,6 @@ class SingleSiteObjectCriteriaTest extends SiteObjectsSQLBaseTest
 
     $this->assertEqual($record['identifier'], 'object_3');
     $this->assertEqual($record['title'], 'object_3_title');
-    $this->assertEqual($record['version'], 1);
   }
 
   function testLimitByNodeId()
@@ -66,7 +65,6 @@ class SingleSiteObjectCriteriaTest extends SiteObjectsSQLBaseTest
 
     $this->assertEqual($record['identifier'], 'object_4');
     $this->assertEqual($record['title'], 'object_4_title');
-    $this->assertEqual($record['version'], 1);
   }
 
   function testLimitByPath()
@@ -83,7 +81,6 @@ class SingleSiteObjectCriteriaTest extends SiteObjectsSQLBaseTest
 
     $this->assertEqual($record['identifier'], 'object_2');
     $this->assertEqual($record['title'], 'object_2_title');
-    $this->assertEqual($record['version'], 1);
   }
 
   function testNoLimitsSet()

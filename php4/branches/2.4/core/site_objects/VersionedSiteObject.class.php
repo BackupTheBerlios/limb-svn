@@ -23,6 +23,16 @@ class VersionedSiteObject extends SiteObject
   {
     return $this->new_version;
   }
+
+  function getVersionUid()
+  {
+    return (int)$this->get('version_uid');
+  }
+
+  function setVersionUid($version_uid)
+  {
+    $this->set('version_uid', (int)$version_uid);
+  }
 }
 
 ?>

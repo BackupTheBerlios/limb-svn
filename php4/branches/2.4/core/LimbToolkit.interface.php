@@ -18,6 +18,7 @@ class LimbToolkit
   function createSiteObject($site_object_path){}
   function createDataMapper($mapper_path){}
   function createBehaviour($behaviour_path){}
+  function nextUID(){}
   function getDbConnection(){}
   function getTree(){}
   function getUser(){}

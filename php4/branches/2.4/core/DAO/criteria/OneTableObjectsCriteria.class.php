@@ -29,7 +29,9 @@ class OneTableObjectsCriteria
 
     $sql->addField($db_table->getColumnsForSelectAsString('tn', array('id')));
     $sql->addTable($db_table->getTableName() . ' AS tn');
-    $sql->addCondition('sso.id=tn.object_id');
+    $sql->addTable('sys_domain_object_to_node as sdotn');
+    $sql->addCondition('sdotn.uid=tn.id');
+    $sql->addCondition('sdotn.site_object_id=sso.id');
   }
 
   function & getDbTable($db_table_name)

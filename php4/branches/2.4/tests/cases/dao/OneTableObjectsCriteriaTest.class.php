@@ -37,6 +37,7 @@ class OneTableObjectsCriteriaTest extends SiteObjectsSQLBaseTest
     parent :: _cleanUp();
 
     $this->db->delete('document');
+    $this->db->delete('sys_domain_object_to_node');
   }
 
   function testCorrectLink()
@@ -61,12 +62,15 @@ class OneTableObjectsCriteriaTest extends SiteObjectsSQLBaseTest
       $this->db->insert('document',
         array(
           'id' => $i+100,
-          'object_id' => $i,
-          'version' => 1,
-          'identifier' => 'object_' . $i,
-          'title' => 'object_' . $i . '_title',
           'content' => 'object_' . $i . '_content',
           'annotation' => 'object_' . $i . '_annotation',
+        )
+      );
+
+      $this->db->insert('sys_domain_object_to_node',
+        array(
+          'uid' => $i+100,
+          'site_object_id' => $i,
         )
       );
     }

@@ -14,6 +14,16 @@ class SiteObject extends DomainObject
 {
   var $behaviour;
 
+  function getSiteObjectId()
+  {
+    return (int)$this->get('site_object_id');
+  }
+
+  function setSiteObjectId($site_object_id)
+  {
+    $this->set('site_object_id', (int)$site_object_id);
+  }
+
   function & getBehaviour()
   {
     return $this->behaviour;

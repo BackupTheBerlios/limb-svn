@@ -69,22 +69,20 @@ class SiteObjectsSQLBaseTest extends LimbTestCase
     $data = array();
     for($i = 1; $i <= 5; $i++)
     {
+      $values['identifier'] = 'object_' . $i;
+      $values['object_id'] = $i;
+      $this->object2node[$i] = $tree->createSubNode($this->root_node_id, $values);
+
       $this->db->insert('sys_site_object',
         array(
           'id' => $i,
           'class_id' => $this->class_id,
           'behaviour_id' => $this->behaviour_id,
-          'current_version' => 1,
-          'identifier' => 'object_' . $i,
           'title' => 'object_' . $i . '_title',
-          'status' => 0,
           'locale_id' => 'en',
+          'node_id' => $this->object2node[$i]
         )
       );
-
-      $values['identifier'] = 'object_' . $i;
-      $values['object_id'] = $i;
-      $this->object2node[$i] = $tree->createSubNode($this->root_node_id, $values);
     }
   }
 
@@ -100,21 +98,20 @@ class SiteObjectsSQLBaseTest extends LimbTestCase
     $data = array();
     for($i = 6; $i <= 10 ; $i++)
     {
+      $values['identifier'] = 'object_' . $i;
+      $values['object_id'] = $i;
+      $node_id = $tree->createSubNode($this->root_node_id, $values);
+
       $this->db->insert('sys_site_object',
         array(
           'id' => $i,
           'class_id' => 1001,
           'behaviour_id' => $this->behaviour_id,
-          'identifier' => 'object_' . $i,
           'title' => 'object_' . $i . '_title',
-          'status' => 0,
           'locale_id' => 'en',
+          'node_id' => $node_id
         )
       );
-
-      $values['identifier'] = 'object_' . $i;
-      $values['object_id'] = $i;
-      $tree->createSubNode($this->root_node_id, $values);
     }
   }
 

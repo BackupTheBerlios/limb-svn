@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db_tables/OneTableObjectDbTable.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class DocumentTestDbTable extends OneTableObjectDbTable
+class DocumentTestDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
@@ -19,12 +19,9 @@ class DocumentTestDbTable extends OneTableObjectDbTable
 
   function _defineColumns()
   {
-    return ComplexArray :: array_merge(
-      parent :: _defineColumns(),
-      array(
+    return array(
         'content' => '',
         'annotation' => ''
-      )
     );
   }
 }

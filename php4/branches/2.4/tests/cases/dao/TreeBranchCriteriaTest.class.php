@@ -51,7 +51,6 @@ class TreeBranchCriteriaTest extends SiteObjectsSQLBaseTest
 
     $this->assertEqual($record['identifier'], 'object_1');
     $this->assertEqual($record['title'], 'object_1_title');
-    $this->assertEqual($record['version'], 1);
   }
 
   function testNoObjectsIfNoNodesAreFound()

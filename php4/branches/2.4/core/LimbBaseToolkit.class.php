@@ -35,6 +35,12 @@ class LimbBaseToolkit// implements LimbToolkit
     return constant($key);
   }
 
+  function nextUID()
+  {
+    include_once(LIMB_DIR . '/core/UIDGenerator.class.php');
+    return UIDGenerator :: next();
+  }
+
   function & createDBTable($table_name)
   {
     include_once(LIMB_DIR . '/core/db_tables/LimbDbTableFactory.class.php');

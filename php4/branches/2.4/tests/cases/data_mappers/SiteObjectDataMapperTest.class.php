@@ -128,7 +128,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $mapper->load($record, $site_object);
 
-    $this->assertEqual($site_object->getId(), $id);
+    $this->assertEqual($site_object->getSiteObjectId(), $id);
     $this->assertEqual($site_object->getLocaleId(), $locale_id);
     $this->assertEqual($site_object->getClassId(), $class_id);
     $this->assertEqual($site_object->getTitle(), $title);
@@ -167,7 +167,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $id = $mapper->insert($site_object);
 
-    $this->assertEqual($site_object->getId(), $id);
+    $this->assertEqual($site_object->getSiteObjectId(), $id);
 
     $this->_checkSysSiteObjectRecord($site_object);
 
@@ -181,14 +181,14 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $mapper->update($site_object);
     $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'object id not set');
+    $this->assertEqual($e->getMessage(), 'site object id not set');
   }
 
   function  testUpdateSiteObjectRecordFailedNoBehaviourId()
   {
     $mapper = new SiteObjectMapper();
     $site_object = new SiteObject();
-    $site_object->setId(1);
+    $site_object->setSiteObjectId(1);
 
     $mapper->update($site_object);
     $this->assertTrue(catch('Exception', $e));
@@ -204,16 +204,14 @@ class SiteObjectMapperTest extends LimbTestCase
                       'creator_id' => $creator_id = 100,
                       'title' => $title = 'title',
                       'modified_date' => $modified_date = time() - 5,
-                      'created_date' => $created_date = time() - 10,
-                      'current_version' => $version = 1);
+                      'created_date' => $created_date = time() - 10);
 
     $this->db->insert('sys_site_object', $old_data);
 
     $mapper = new SiteObjectMapperTestVersion($this);
 
     $site_object = new SiteObject();
-    $site_object->setId($id);
-    $site_object->setVersion($version);
+    $site_object->setSiteObjectId($id);
     $site_object->setClassId($class_id);
     $site_object->setCreatorId($creator_id);
     $site_object->setCreatedDate($created_date);
@@ -240,7 +238,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $mapper->delete($site_object);
     $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'object id not set');
+    $this->assertEqual($e->getMessage(), 'site object id not set');
   }
 
   function testDelete()
@@ -250,7 +248,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $this->db->insert('sys_site_object', array('id' => $object_id = 1));
 
-    $site_object->setId($object_id);
+    $site_object->setSiteObjectId($object_id);
 
     $mapper->delete($site_object);
 
@@ -260,15 +258,12 @@ class SiteObjectMapperTest extends LimbTestCase
 
   function _checkSysSiteObjectRecord($site_object)
   {
-    $rs =& $this->db->select('sys_site_object', '*', array('id' => $site_object->getId()));
+    $rs =& $this->db->select('sys_site_object', '*', array('id' => $site_object->getSiteObjectId()));
 
     $record = $rs->getRow();
 
     $this->assertNotNull($site_object->getTitle());
     $this->assertEqual($record['title'], $site_object->getTitle());
-
-    $this->assertNotNull($site_object->getVersion());
-    $this->assertEqual($record['current_version'], $site_object->getVersion());
 
     $this->assertNotNull($site_object->getLocaleId());
     $this->assertEqual($record['locale_id'], $site_object->getLocaleId());

@@ -33,13 +33,11 @@ class SiteObjectsRawSQLTest extends SiteObjectsSQLBaseTest
 
     $this->assertEqual($record['identifier'], 'object_1');
     $this->assertEqual($record['title'], 'object_1_title');
-    $this->assertTrue(array_key_exists('current_version', $record));
     $this->assertTrue(array_key_exists('modified_date', $record));
-    $this->assertEqual($record['status'], 0);
     $this->assertTrue(array_key_exists('created_date', $record));
     $this->assertTrue(array_key_exists('creator_id', $record));
     $this->assertEqual($record['locale_id'], 'en');
-    $this->assertTrue(array_key_exists('id', $record));
+    $this->assertTrue(array_key_exists('site_object_id', $record));
     $this->assertTrue(array_key_exists('node_id', $record));
     $this->assertEqual($record['parent_node_id'], $this->root_node_id);
     $this->assertTrue(array_key_exists('level', $record));

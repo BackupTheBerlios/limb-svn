@@ -20,7 +20,6 @@ class MaterializedPathTree// implements Tree
     'id' => 'id',
     'root_id' => 'root_id',
     'identifier' => 'identifier',
-    'object_id' => 'object_id',
     'path' => 'path',
     'level' => 'level',
     'parent_id' => 'parent_id',

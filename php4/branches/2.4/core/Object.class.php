@@ -48,24 +48,9 @@ class Object
     return $this->dataspace->get($name, $default_value);
   }
 
-  function & getReference($name)
-  {
-    return $this->dataspace->getReference($name);
-  }
-
-  function getByIndexString($raw_index, $default_value = null)
-  {
-    return $this->dataspace->getByIndexString($raw_index, $default_value);
-  }
-
   function set($name, $value)
   {
     $this->dataspace->set($name, $value);
-  }
-
-  function setByIndexString($raw_index, $value)
-  {
-    $this->dataspace->setByIndexString($raw_index, $value);
   }
 
   function remove($name)

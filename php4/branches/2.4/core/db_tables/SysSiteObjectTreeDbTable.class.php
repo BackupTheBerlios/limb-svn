@@ -23,24 +23,11 @@ class SysSiteObjectTreeDbTable extends LimbDbTable
       'id' => array('type' => 'numeric'),
       'parent_id' => array('type' => 'numeric'),
       'root_id' => array('type' => 'numeric'),
-      'object_id' => array('type' => 'numeric'),
       'path' => '',
       'level' => array('type' => 'numeric'),
       'identifier' => '',
       'priority' => array('type' => 'numeric'),
       'children' => array('type' => 'numeric'),
-    );
-  }
-
-  function _defineConstraints()
-  {
-    return array(
-      'object_id' =>	array(
-        0 => array(
-          'table_name' => 'sys_site_object',
-          'field' => 'id',
-        ),
-      ),
     );
   }
 }

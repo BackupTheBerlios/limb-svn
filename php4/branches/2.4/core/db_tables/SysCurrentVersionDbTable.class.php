@@ -8,16 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-class NodeLinksGroup extends LimbGroupTest
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
+
+class SysCurrentVersionDbTable extends LimbDbTable
 {
-  function NodeLinksGroup()
+  function _defineDbTableName()
   {
-    parent :: LimbGroupTest('nodes links tests');
+    return 'sys_current_version';
   }
 
-  function getTestCasesHandles()
+  function _defineColumns()
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/node_links');
+    return array(
+      'id' => array('type' => 'numeric'),
+      'uid' => array('type' => 'numeric'),
+      'version_uid' => array('type' => 'numeric'),
+    );
   }
 }
+
 ?>

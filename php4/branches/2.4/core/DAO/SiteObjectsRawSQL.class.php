@@ -16,22 +16,19 @@ class SiteObjectsRawSQL extends ComplexSelectSQL
   {
     return
     "SELECT
-    sso.current_version as current_version,
     sso.modified_date as modified_date,
-    sso.status as status,
     sso.created_date as created_date,
     sso.creator_id as creator_id,
     sso.locale_id as locale_id
     %fields%,
     sso.title as title,
-    sso.identifier as identifier,
-    sso.id as id,
+    sso.id as site_object_id,
+    ssot.identifier as identifier,
     ssot.id as node_id,
     ssot.parent_id as parent_node_id,
     ssot.level as level,
     ssot.priority as priority,
     ssot.children as children,
-    sso.current_version as version,
     sys_class.id as class_id,
     sys_class.name as class_name,
     sys_behaviour.id as behaviour_id,
@@ -40,12 +37,14 @@ class SiteObjectsRawSQL extends ComplexSelectSQL
     sys_behaviour.sort_order as sort_order,
     sys_behaviour.can_be_parent as can_be_parent
     FROM
-    sys_site_object as sso, sys_class, sys_behaviour,
+    sys_site_object as sso,
+    sys_class,
+    sys_behaviour,
     sys_site_object_tree as ssot
     %tables%
     WHERE sys_class.id = sso.class_id
     AND sys_behaviour.id = sso.behaviour_id
-    AND ssot.object_id = sso.id
+    AND ssot.id = sso.node_id
     %where% %group% %order%";
   }
 

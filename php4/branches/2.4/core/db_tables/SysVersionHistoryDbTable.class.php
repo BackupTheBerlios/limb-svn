@@ -9,20 +9,24 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
-require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
 
-class OneTableObjectDbTable extends LimbDbTable
+class SysVersionHistoryDbTable extends LimbDbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_version_history';
+  }
+
   function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
+      'uid' => array('type' => 'numeric'),
+      'version_uid' => array('type' => 'numeric'),
       'version' => array('type' => 'numeric'),
-      'object_id' => array('type' => 'numeric'),
-      'identifier' => '',
-      'title' => '',
+      'creator_id' => array('type' => 'numeric'),
+      'created_date' => array('type' => 'numeric'),
     );
-
   }
 }
 
