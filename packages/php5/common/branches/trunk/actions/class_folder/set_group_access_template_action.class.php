@@ -22,9 +22,7 @@ class set_group_access_template_action extends form_action
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
 
-		$access_policy =& access_policy :: instance();
-
-		$data['template'] = $access_policy->get_group_action_access_templates($class_id);
+		$data['template'] = access_policy :: instance()->get_group_action_access_templates($class_id);
 
 		$this->dataspace->merge($data);
 	}
@@ -35,9 +33,8 @@ class set_group_access_template_action extends form_action
 		  throw new LimbException('class_id not defined');
 
 		$data = $this->dataspace->export();
-		$access_policy =& access_policy :: instance();
 
-		$access_policy->save_group_action_access_template($class_id, $data['template']);
+		access_policy :: instance()->save_group_action_access_template($class_id, $data['template']);
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 

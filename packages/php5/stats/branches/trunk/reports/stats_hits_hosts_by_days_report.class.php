@@ -47,7 +47,7 @@ class stats_hits_hosts_by_days_report implements stats_report_interface
 		$sql .= $this->_build_filter_condition();
 		
 		$this->db->sql_exec($sql);
-		$arr =& $this->db->fetch_row();
+		$arr = $this->db->fetch_row();
 		return (int)$arr['count'];
 	}
 	

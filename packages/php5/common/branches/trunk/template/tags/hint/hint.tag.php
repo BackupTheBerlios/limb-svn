@@ -139,9 +139,9 @@ JS;
 	
 	public function generate_contents($code)
 	{
-		$link =& $this->find_child_by_class('hint_link_tag');
-		$title =& $this->find_child_by_class('hint_title_tag');
-		$content =& $this->find_child_by_class('hint_content_tag');
+		$link = $this->find_child_by_class('hint_link_tag');
+		$title = $this->find_child_by_class('hint_title_tag');
+		$content = $this->find_child_by_class('hint_content_tag');
 
 		$id = $this->get_server_id();
 

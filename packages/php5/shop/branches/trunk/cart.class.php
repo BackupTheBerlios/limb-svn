@@ -66,7 +66,7 @@ class cart
 	  }
 	  else
 	  {
-	    $this->_cart_handler =& $handler;
+	    $this->_cart_handler = $handler;
 	    $this->_cart_handler->set_cart_id($this->_cart_id);
 	    $this->_cart_handler->reset();
 	  }
@@ -89,7 +89,7 @@ class cart
 	  return $this->_cart_handler;
 	}
 	
-	public function add_item(&$new_item)
+	public function add_item($new_item)
 	{
 	  $this->_cart_handler->add_item($new_item); 
 	}
