@@ -23,6 +23,11 @@ class feedback_object_controller extends site_object_controller
 						'action_path' => '/feedback_object/send_feedback_action',
 						'template_path' => '/feedback_object/display.html'
 				),
+				'admin_display' => array(
+						'permissions_required' => 'r',
+						'action_path' => '/feedback_object/send_feedback_action',
+						'template_path' => '/feedback_object/display.html'
+				),
 				'edit' => array(
 						'permissions_required' => 'w',
 						'popup' => true,
