@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/session.class.php');
 require_once(LIMB_DIR . '/class/core/tree/tree_interface.interface.php');
 
 class tree implements tree_interface
@@ -17,33 +16,14 @@ class tree implements tree_interface
 
 	protected $_tree_driver = null;
 
-	function __construct()
-	{
-	  $this->_initialize_tree_driver();
-	}
-
-	public function set_driver($driver)
+	function __construct($driver)
 	{
 	  $this->_tree_driver = $driver;
 	}
 
-	public function get_driver()
-	{
-		return $this->_tree_driver;
-	}
-
-	protected function _initialize_tree_driver()
-	{
-		if($this->_tree_driver === null)
-		{
-		  include_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_driver.class.php');
-			$this->_tree_driver = new materialized_path_driver();
-		}
-	}
-
 	public function initialize_expanded_parents()
 	{
-		$parents =& session :: get('tree_expanded_parents');
+		$parents =& Limb :: toolkit()->getSession()->get_reference('tree_expanded_parents');
 		$this->_tree_driver->set_expanded_parents($parents);
 	}
 
@@ -125,18 +105,18 @@ class tree implements tree_interface
 		return $this->_tree_driver->get_nodes_by_ids($ids_array);
 	}
 
-	public function get_path_to_node($node)
+	public function get_path_to_node($node, $delimeter = '/')
 	{
 		if(($parents = $this->_tree_driver->get_parents($node['id'])) === false)
 			return false;
 		
 		$path = '';
 		foreach($parents as $parent_data)
-			$path .= '/' . $parent_data['identifier'];
+			$path .= $delimeter . $parent_data['identifier'];
 
-		return $path .= '/' . $node['identifier'];
+		return $path .= $delimeter . $node['identifier'];
 	}
-
+    
 	public function get_max_child_identifier($id)
 	{
 		return $this->_tree_driver->get_max_child_identifier($id);

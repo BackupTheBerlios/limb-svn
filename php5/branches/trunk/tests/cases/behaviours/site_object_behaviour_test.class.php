@@ -155,6 +155,19 @@ class site_object_behaviour_test extends LimbTestCase
     
     Limb :: popToolkit();
   }
+  
+  function test_get_ids_by_names()
+  {
+    $this->db->sql_insert('sys_behaviour', array('id' => 10, 'name' => 'test1'));
+    $this->db->sql_insert('sys_behaviour', array('id' => 11, 'name' => 'test2'));
+    $this->db->sql_insert('sys_behaviour', array('id' => 12, 'name' => 'test3'));
+    
+    $ids = site_object_behaviour :: get_ids_by_names(array('test1', 'test2'));
+    
+    sort($ids);
+    $this->assertEqual(sizeof($ids), 2);
+    $this->assertEqual($ids, array(10, 11));
+  }
 }
 
 ?>

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/tree/drivers/tree_db_driver.class.php');
 
-class materialized_path_driver extends tree_db_driver implements tree_interface
+class materialized_path_driver extends tree_db_driver
 {	
 	protected $_params = array(
 		'id' => 'id',

@@ -19,21 +19,14 @@ if(!is_registered_resolver('datasource'))
 
 class datasource_factory
 {
-  protected function __construct(){}
-  
-	static protected function _extract_class_name($class_path)
-	{
-		$pos = strrpos($class_path, '/');
-		
-		if($pos !== false)
-			return substr($class_path, $pos + 1);
-		else
-			return $class_path;	
-	}
+  static protected $datasources = array();
 		
 	static public function create($class_path)
 	{
-		$class_name = self :: _extract_class_name($class_path);
+		$class_name = end(explode('/', $class_path));
+    
+    if(isset(self :: $datasources[$class_name]))
+      return self :: $datasources[$class_name];
 
 		if(!class_exists($class_name))
 		{
@@ -46,6 +39,8 @@ class datasource_factory
   	}
 		
 	  $datasource = new $class_name();
+    
+    self :: $datasources[$class_name] = $datasource; 
 	  
 	  return $datasource;
 	}

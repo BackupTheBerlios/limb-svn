@@ -18,10 +18,12 @@ class BaseLimbToolkit implements LimbToolkit
   protected $authenticator;
   protected $response;
   protected $request;
+  protected $session;
   protected $user;
   protected $db;
   protected $tree;
   protected $view;
+  protected $cache;
   
   public function createDBTable($table_name)
   {
@@ -70,7 +72,9 @@ class BaseLimbToolkit implements LimbToolkit
       return $this->tree;
     
     include_once(LIMB_DIR . '/class/core/tree/tree.class.php');
-    $this->tree = new tree();
+		include_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_driver.class.php');
+    
+    $this->tree = new tree(new materialized_path_driver());
     
     return $this->tree;
   }
@@ -143,12 +147,34 @@ class BaseLimbToolkit implements LimbToolkit
     
     return $this->response;    
   }  
+
+  public function getCache()
+  {
+    if($this->cache)
+      return $this->cache;
+
+    include_once(LIMB_DIR . '/class/cache/cache_registry.class.php');
+    $this->cache = new CacheRegistry();
+    
+    return $this->cache;    
+  }  
   
   public function getLocale($locale_id = '')
   {
     include_once(LIMB_DIR . '/class/i18n/locale.class.php');
     return locale :: instance($locale_id);
   }
+  
+  public function getSession()
+  {
+    if($this->session)
+      return $this->session;
+    
+    include_once(LIMB_DIR . '/class/core/session.class.php');    
+    $this->sessions = new session();
+    
+    return $this->session;    
+  }    
   
   public function getDataspace()
   {

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class fetcher_group extends LimbGroupTest 
+class datasource_group extends LimbGroupTest 
 {
-	function fetcher_group() 
+	function datasource_group() 
 	{
-	  $this->LimbGroupTest('fetcher tests');
+	  $this->LimbGroupTest('datasource tests');
 	}
 
 	function getTestCasesHandles()
 	{
- 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/fetcher');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/datasource');
 	}
 }
 ?>

@@ -72,7 +72,7 @@ class site_object_behaviour
       return $default;
   }
 
-  public function can_accept_children($node_id)
+  static public function can_accept_children($node_id)
   {
     $tree = Limb :: toolkit()->getTree();
 
@@ -97,6 +97,19 @@ class site_object_behaviour
     $behaviour = Limb :: toolkit()->createBehaviour($row['behaviour_name']);
 
     return $behaviour->can_be_parent();
+  }
+  
+  static public function get_ids_by_names($names)
+  {
+    $db = db_factory :: instance();
+
+    $db->sql_select('sys_behaviour', 'id', sql_in('name', $names));
+    
+    $result = array();
+    while($row = $db->fetch_row())
+      $result[] = $row['id'];
+    
+    return $result; 
   }
   
 }

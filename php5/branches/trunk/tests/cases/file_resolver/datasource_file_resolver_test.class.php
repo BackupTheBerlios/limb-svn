@@ -20,7 +20,7 @@ class datasource_file_resolver_test extends base_package_file_resolver_test
 
   function test_resolve_datasource_file_from_limb()
   {
-    $this->assertEqual($this->resolver->resolve('fetch_one_datasource'), LIMB_DIR . '/class/datasources/fetch_one_datasource.class.php');
+    $this->assertEqual($this->resolver->resolve('fetch_one_datasource'), LIMB_DIR . '/class/core/datasources/fetch_one_datasource.class.php');
   }
 
   function test_resolve_datasource_file_ok()

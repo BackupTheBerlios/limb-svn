@@ -7,12 +7,11 @@
 *
 * $Id$
 *
-***********************************************************************************/
-
-interface authorizer
+***********************************************************************************/ 
+interface countable
 {
-  public function get_accessible_object_ids($ids, $action = 'display');
-
-  public function assign_actions_to_objects(&$objects_data);
+	public function count_total();
 }
+
+
 ?>

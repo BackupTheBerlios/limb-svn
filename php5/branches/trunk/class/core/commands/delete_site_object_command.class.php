@@ -15,7 +15,10 @@ class delete_site_object_command implements Command
   protected function _get_object_to_delete()
   {
     $toolkit = Limb :: toolkit();
-    return wrap_with_site_object($toolkit->getFetcher()->fetch_requested_object($toolkit->getRequest()));
+    $datasource = $toolkit->createDatasource('requested_object_datasource');
+    $datasource->set_request($toolkit->getRequest());
+    
+    return wrap_with_site_object($datasource->fetch());
   }
   
 	public function perform()

@@ -14,8 +14,8 @@ class datasource_file_resolver extends file_resolver_decorator
 {
   public function resolve($class_path, $params = array())
   {    
-    if(file_exists(LIMB_DIR . '/class/datasources/' . $class_path . '.class.php'))
-      return LIMB_DIR . '/class/datasources/' . $class_path . '.class.php';
+    if(file_exists(LIMB_DIR . '/class/core/datasources/' . $class_path . '.class.php'))
+      return LIMB_DIR . '/class/core/datasources/' . $class_path . '.class.php';
 
     return $this->_resolver->resolve('datasources/' . $class_path . '.class.php', $params);
   }   

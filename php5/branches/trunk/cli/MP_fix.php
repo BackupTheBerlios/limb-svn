@@ -15,8 +15,9 @@ else
 	
 require_once($project_dir . '/setup.php'); 
 require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_driver.class.php');
 
-$tree = new tree();
+$tree = new tree(new materialized_path_driver());
 $driver = $tree->get_driver();
 $tree_table = $driver->get_node_table();
 

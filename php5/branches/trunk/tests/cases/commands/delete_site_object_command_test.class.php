@@ -10,13 +10,13 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/commands/delete_site_object_command.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('request');
-Mock :: generate('fetcher');
+Mock :: generate('requested_object_datasource');
 Mock :: generate('site_object');
 
 class site_object_delete_command_test_version1 extends site_object
@@ -42,16 +42,16 @@ class delete_site_object_command_test extends LimbTestCase
 	var $site_object;
   var $request;
   var $toolkit;
-  var $fetcher;
+  var $datasource;
 		  	
   function setUp()
   {
     $this->request = new Mockrequest($this);
-    $this->fetcher = new Mockfetcher($this);
+    $this->datasource = new Mockrequested_object_datasource($this);
     $this->site_object = new Mocksite_object($this);
     
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getFetcher', $this->fetcher);
+    $this->toolkit->setReturnValue('createDatasource', $this->datasource, array('requested_object_datasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
      
     Limb :: registerToolkit($this->toolkit);
@@ -64,7 +64,7 @@ class delete_site_object_command_test extends LimbTestCase
     Limb :: popToolkit();
     
     $this->request->tally();
-    $this->fetcher->tally();
+    $this->datasource->tally();
   	$this->toolkit->tally();
     $this->site_object->tally();
   }
@@ -72,8 +72,11 @@ class delete_site_object_command_test extends LimbTestCase
   function test_delete_ok()
   {	
     $object_data = array('class_name' => 'some_class');
-  	$this->fetcher->expectOnce('fetch_requested_object', array(new IsAExpectation('Mockrequest')));
-  	$this->fetcher->setReturnValue('fetch_requested_object', $object_data);
+    
+  	$this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('fetch');
+  	$this->datasource->setReturnValue('fetch', $object_data);
+    
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object);
     
     $this->site_object->expectOnce('delete'); 
@@ -85,8 +88,10 @@ class delete_site_object_command_test extends LimbTestCase
     $this->toolkit->setReturnValue('createSiteObject', new site_object_delete_command_test_version1());
     
     $object_data = array('class_name' => 'some_class');
-  	$this->fetcher->expectOnce('fetch_requested_object', array(new IsAExpectation('Mockrequest')));
-  	$this->fetcher->setReturnValue('fetch_requested_object', $object_data);
+    
+  	$this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('fetch');
+  	$this->datasource->setReturnValue('fetch', $object_data);
     
   	$this->assertEqual($this->delete_command->perform(), Limb :: STATUS_ERROR);
   }
@@ -96,8 +101,10 @@ class delete_site_object_command_test extends LimbTestCase
     $this->toolkit->setReturnValue('createSiteObject', new site_object_delete_command_test_version2());
     
     $object_data = array('class_name' => 'some_class');
-  	$this->fetcher->expectOnce('fetch_requested_object', array(new IsAExpectation('Mockrequest')));
-  	$this->fetcher->setReturnValue('fetch_requested_object', $object_data);
+    
+  	$this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('fetch');
+  	$this->datasource->setReturnValue('fetch', $object_data);
     
     try
     {

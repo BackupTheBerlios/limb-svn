@@ -10,13 +10,13 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/commands/create_site_object_command.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/fetcher.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('request');
-Mock :: generate('fetcher');
+Mock :: generate('requested_object_datasource');
 Mock :: generate('dataspace');
 Mock :: generate('site_object');
 
@@ -34,19 +34,19 @@ class create_site_object_command_test extends LimbTestCase
 	var $command;
   var $request;
   var $toolkit;
-  var $fetcher;
+  var $datasource;
   var $dataspace;
   var $site_object;
 		  	
   function setUp()
   {
     $this->request = new Mockrequest($this);
-    $this->fetcher = new Mockfetcher($this);
+    $this->datasource = new Mockrequested_object_datasource($this);
     $this->dataspace = new Mockdataspace($this);
     $this->site_object = new Mocksite_object($this);
     
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getFetcher', $this->fetcher);
+    $this->toolkit->setReturnValue('createDatasource', $this->datasource, array('requested_object_datasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
     
@@ -62,7 +62,7 @@ class create_site_object_command_test extends LimbTestCase
     Limb :: popToolkit();
     
     $this->request->tally();
-    $this->fetcher->tally();
+    $this->datasource->tally();
   	$this->toolkit->tally();
     $this->dataspace->tally();
     $this->site_object->tally();
@@ -77,8 +77,9 @@ class create_site_object_command_test extends LimbTestCase
     $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', null, array('parent_node_id'));
     
-    $this->fetcher->expectOnce('fetch_requested_object');
-    $this->fetcher->setReturnValue('fetch_requested_object', array('node_id' => 100));
+    $this->datasource->expectOnce('fetch');
+    $this->datasource->expectOnce('set_request', array(new isAExpectation('Mockrequest')));
+    $this->datasource->setReturnValue('fetch', array('node_id' => 100));
     
     $this->site_object->expectOnce('merge', array($data));
     $this->site_object->expectOnce('set', array('parent_node_id', 100));
@@ -103,7 +104,7 @@ class create_site_object_command_test extends LimbTestCase
     $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', 200, array('parent_node_id'));
     
-    $this->fetcher->expectNever('fetch_requested_object');
+    $this->datasource->expectNever('fetch');
     
     $this->site_object->expectOnce('merge', array($data));
     
@@ -127,7 +128,7 @@ class create_site_object_command_test extends LimbTestCase
     $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', 200, array('parent_node_id'));
     
-    $this->fetcher->expectNever('fetch_requested_object');
+    $this->datasource->expectNever('fetch');
     
     $this->toolkit->setReturnValue('createSiteObject', 
                                    new site_object_for_create_site_object_command(), 

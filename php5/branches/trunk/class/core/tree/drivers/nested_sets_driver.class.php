@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/tree/drivers/tree_db_driver.class.php');
 
-class nested_sets_driver extends tree_db_driver implements tree_interface
+class nested_sets_driver extends tree_db_driver
 {
   const MOVE_BEFORE = 'BE';
   const MOVE_AFTER = 'AF';

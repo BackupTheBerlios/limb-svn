@@ -103,12 +103,6 @@ class site_object extends object
 
   public function fetch($params=array(), $sql_params=array())
   {
-    if (!isset($params['restrict_by_class']) ||
-        (isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
-    {
-      $sql_params['conditions'][] = (' AND sso.class_id = ' . $this->get_class_id());
-    }
-
     $sql =
       sprintf( "SELECT
                 sso.current_version as current_version,

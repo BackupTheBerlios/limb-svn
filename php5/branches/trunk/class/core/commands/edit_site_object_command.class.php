@@ -47,7 +47,10 @@ class edit_site_object_command implements Command
 	protected function _load_object_data()
 	{
     $toolkit = Limb :: toolkit();
-		return $toolkit->getFetcher()->fetch_requested_object($toolkit->getRequest());
+    $datasource = $toolkit->createDatasource('requested_object_datasource');
+    $datasource->set_request($toolkit->getRequest());
+
+		return $datasource->fetch();
 	}
 
   function _define_increase_version_flag($object)

@@ -123,8 +123,12 @@ class image_cache_manager
           $node_ids[$node_id] = 1;
       }
     }
+    
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_by_node_ids_datasource');
+    $datasource->set_node_ids(array_keys($node_ids));
+    $datasource->set_site_object_class_name('image_object');
 
-    $images = $this->_get_fetcher()->fetch_by_node_ids(array_keys($node_ids), 'image_object', $counter = 0);
+    $images = $datasource->fetch();
 
     $result = array();
     foreach($images as $node_id => $image)
@@ -225,16 +229,6 @@ class image_cache_manager
 
     if(file_exists(MEDIA_DIR . $media_id . '.media') && !file_exists(IMAGE_CACHE_DIR . $cache_name))
       copy(MEDIA_DIR . $media_id . '.media', IMAGE_CACHE_DIR . $cache_name);
-  }
-
-  protected function _get_fetcher()
-  {
-    return Limb :: toolkit()->getFetcher();
-  }
-
-  protected function _get_user()
-  {
-    return Limb :: toolkit()->getUser();
   }
 
   public function is_cacheable()

@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 interface datasource
 {
-	public function get_dataset(&$counter, $params=array());
+	public function fetch();
 }
 
 

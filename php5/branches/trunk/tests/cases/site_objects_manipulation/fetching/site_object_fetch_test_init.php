@@ -10,17 +10,21 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_driver.class.php');
 
 class site_object_fetch_test_init
 {
-	var $db = null;
-	var $class_id = '';
-	var $root_node_id = '';
-  var $controller_id = '';
+	var $db;
+  var $tree;
+	var $class_id;
+	var $root_node_id;
+  var $controller_id;
 
   function site_object_fetch_test_init()
   {
 		$this->db = db_factory :: instance();
+    $this->tree = new tree(new materialized_path_driver());
   }
 
   function init(& $object)
@@ -38,9 +42,8 @@ class site_object_fetch_test_init
   {
   	$db_table =& db_table_factory :: create('sys_site_object');
 
-  	$tree = new tree();
 		$values['identifier'] = 'root';
-		$this->root_node_id = $tree->create_root_node($values, false, true);
+		$this->root_node_id = $this->tree->create_root_node($values, false, true);
 
   	$data = array();
   	for($i = 1; $i <= 5; $i++)
@@ -63,7 +66,7 @@ class site_object_fetch_test_init
 
 			$values['identifier'] = 'object_' . $i;
 			$values['object_id'] = $i;
-			$tree->create_sub_node($this->root_node_id, $values);
+			$this->tree->create_sub_node($this->root_node_id, $values);
   	}
   }
 
@@ -77,8 +80,6 @@ class site_object_fetch_test_init
   	$class_db_table->insert(array('id' => 1001, 'class_name' => 'fake_class'));
 
   	$db_table =& db_table_factory :: create('sys_site_object');
-
-  	$tree = new tree();
 
   	$data = array();
   	for($i = 6; $i <= 10 ; $i++)
@@ -97,7 +98,7 @@ class site_object_fetch_test_init
 
 			$values['identifier'] = 'object_' . $i;
 			$values['object_id'] = $i;
-			$tree->create_sub_node($this->root_node_id, $values);
+			$this->tree->create_sub_node($this->root_node_id, $values);
   	}
   }
 }

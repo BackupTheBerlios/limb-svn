@@ -39,7 +39,10 @@ abstract class form_edit_site_object_command extends form_command
 	protected function _load_object_data()
 	{
     $toolkit = Limb :: toolkit();
-		return $toolkit->getFetcher()->fetch_requested_object($toolkit->getRequest());
+    $datasource = $toolkit->createDatasource('requested_object_datasource');
+    $datasource->set_request($toolkit->getRequest());
+    
+		return $datasource->fetch();
 	}
 
 	protected function _define_datamap()
