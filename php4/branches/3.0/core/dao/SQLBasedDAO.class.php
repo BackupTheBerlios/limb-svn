@@ -13,26 +13,10 @@ require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
 class SQLBasedDAO
 {
   var $criterias = array();
-  var $sql = null;
 
   function SQLBasedDAO()
   {
     $this->_initCriterias();
-  }
-
-  function setSQL(&$sql)
-  {
-    $this->sql =& $sql;
-  }
-
-  function & getSQL()
-  {
-    if(is_object($this->sql))
-      return $this->sql;
-
-    $this->sql =& $this->_initSQL();
-
-    return $this->sql;
   }
 
   function addCriteria(&$criteria)
@@ -55,19 +39,21 @@ class SQLBasedDAO
 
   function & fetch()
   {
-    $this->_processCriterias();
+    $sql =& $this->_initSQL();
+
+    $this->_processCriterias($sql);
 
     $conn =& $this->_getConnection();
-    $sql =& $this->getSQL();
     $stmt =& $conn->newStatement($sql->toString());
     return $stmt->getRecordSet();
   }
 
   function & fetchById($id)
   {
-    $this->_processCriterias();
+    $sql =& $this->_initSQL();
 
-    $sql =& $this->getSQL();
+    $this->_processCriterias($sql);
+
     $sql->addCondition($this->_defineIdName() . '=' . (int)$id);
 
     $conn =& $this->_getConnection();
@@ -81,10 +67,8 @@ class SQLBasedDAO
     return $rs->current();
   }
 
-  function _processCriterias()
+  function _processCriterias(&$sql)
   {
-    $sql =& $this->getSQL();
-
     foreach(array_keys($this->criterias) as $key)
     {
       $criteria =& Handle :: resolve($this->criterias[$key]);

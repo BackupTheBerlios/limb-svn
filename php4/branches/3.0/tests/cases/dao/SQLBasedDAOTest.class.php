@@ -119,6 +119,7 @@ class SQLBasedDAOTest extends LimbTestCase
     $criteria1->tally();
     $criteria2->tally();
   }
+
 }
 
 ?>

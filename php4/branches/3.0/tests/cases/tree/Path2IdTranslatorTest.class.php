@@ -51,9 +51,9 @@ class Path2IdTranslatorTest extends LimbTestCase
 
   function testToId()
   {
-     $root_node = array('identifier' => 'root');
+    $root_node = array('identifier' => 'root');
 
-     $node = array('identifier' => 'test1');
+    $node = array('identifier' => 'test1');
 
     $root_node_id = $this->tree->createRootNode($root_node);
     $node_id = $this->tree->createSubNode($root_node_id, $node);
@@ -65,9 +65,9 @@ class Path2IdTranslatorTest extends LimbTestCase
 
   function testToIdUsingExternalOffset()
   {
-     $root_node = array('identifier' => 'root');
+    $root_node = array('identifier' => 'root');
 
-     $node = array('identifier' => 'test1');
+    $node = array('identifier' => 'test1');
 
     $root_node_id = $this->tree->createRootNode($root_node);
     $node_id = $this->tree->createSubNode($root_node_id, $node);
@@ -83,9 +83,9 @@ class Path2IdTranslatorTest extends LimbTestCase
 
   function testToIdUsingInternalOffset()
   {
-     $root_node = array('identifier' => 'root');
+    $root_node = array('identifier' => 'root');
 
-     $node = array('identifier' => 'test1');
+    $node = array('identifier' => 'test1');
 
     $root_node_id = $this->tree->createRootNode($root_node);
     $node_id = $this->tree->createSubNode($root_node_id, $node);
@@ -106,9 +106,9 @@ class Path2IdTranslatorTest extends LimbTestCase
 
   function testToPath()
   {
-     $root_node = array('identifier' => 'root');
+    $root_node = array('identifier' => 'root');
 
-     $node = array('identifier' => 'test1');
+    $node = array('identifier' => 'test1');
 
     $root_node_id = $this->tree->createRootNode($root_node);
     $node_id = $this->tree->createSubNode($root_node_id, $node);
