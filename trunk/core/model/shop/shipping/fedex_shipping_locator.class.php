@@ -54,7 +54,6 @@ class fedex_shipping_locator extends shipping_locator
   
   function _parse_html_options($html)
   {
-    require_once(XML_HTMLSAX3 . '/HTMLSax3.php');
     include_once(LIMB_DIR . '/core/model/shop/shipping/fedex_sax_handler.class.php');
     
     $options = array();

@@ -8,6 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/setup_HTMLSax.inc.php');
+require_once(XML_HTMLSAX3 . '/HTMLSax3.php');
 
 class fedex_sax_handler 
 {

@@ -15,10 +15,7 @@ require_once(LIMB_DIR . '/core/model/stats/stats_uri.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_search_phrase.class.php');
 
-if(file_exists(PROJECT_DIR . '/core/model/stats/search_engines.setup.php'))
-	include(PROJECT_DIR . '/core/model/stats/search_engines.setup.php');
-elseif(file_exists(LIMB_DIR . '/core/model/stats/search_engines.setup.php'))
-	include(LIMB_DIR . '/core/model/stats/search_engines.setup.php');
+include(LIMB_DIR . '/core/model/stats/search_engines.setup.php');
 
 class stats_register
 {
