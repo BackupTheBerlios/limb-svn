@@ -20,6 +20,7 @@ class SiteObjectsSQLBaseTest extends LimbTestCase
   var $behaviour_id;
   var $class_id;
   var $root_node_id;
+  var $object2node = array();
   var $db;
   var $conn;
   var $sql;
@@ -83,7 +84,7 @@ class SiteObjectsSQLBaseTest extends LimbTestCase
 
       $values['identifier'] = 'object_' . $i;
       $values['object_id'] = $i;
-      $tree->createSubNode($this->root_node_id, $values);
+      $this->object2node[$i] = $tree->createSubNode($this->root_node_id, $values);
     }
   }
 

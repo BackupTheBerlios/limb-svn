@@ -64,9 +64,9 @@ class TreeBranchCriteria
     $tree =& $toolkit->getTree();
 
     if(!$rs = $tree->getSubBranchByPath($this->path,
-                                           $this->depth,
-                                           $this->include_parent,
-                                           $this->check_expanded_parents))
+                                        $this->depth,
+                                        $this->include_parent,
+                                        $this->check_expanded_parents))
     {
       return array();
     }
