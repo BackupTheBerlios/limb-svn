@@ -114,14 +114,14 @@ class SiteObject extends DomainObject
     $this->set('created_date', (int)$created_date);
   }
 
-  function getStatus()//???
+  function getClassId()
   {
-    return (int)$this->get('status', 0);
+    return (int)$this->get('class_id');
   }
 
-  function setStatus($status)
+  function setClassId($class_id)
   {
-    $this->set('status', (int)$status);
+    $this->set('class_id', (int)$class_id);
   }
 
   function & getController()

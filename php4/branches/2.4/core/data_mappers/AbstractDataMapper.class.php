@@ -8,9 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
 
 class AbstractDataMapper
 {
+  function defineDataMap(){}
+
   function load(&$record, &$domain_object){}
 
   function save(&$domain_object)

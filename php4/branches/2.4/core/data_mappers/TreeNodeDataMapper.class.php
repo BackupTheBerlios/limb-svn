@@ -12,42 +12,28 @@ require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
 class TreeNodeDataMapper extends AbstractDataMapper
 {
-/*  function _doLoad($raw_data, &$site_object)
+  function load(&$record, &$site_object)
   {
-    $site_object->import($raw_data);
-
-    $this->_doLoadBehaviour($raw_data, $site_object);
+    $site_object->setNodeId($record->get('node_id'));
+    $site_object->setParentNodeId($record->get('parent_node_id'));
+    $site_object->setIdentifier($record->get('identifier'));
   }
-
-  function _doLoadBehaviour($raw_data, &$site_object)
-  {
-    $mapper =& $this->_getBehaviourMapper();
-    $behaviour =& $mapper->findById($raw_data['behaviour_id']);
-
-    $site_object->attachBehaviour($behaviour);
-  }
-
-  function &_getBehaviourMapper()
-  {
-    $toolkit =& Limb :: toolkit();
-    return $toolkit->createDataMapper('SiteObjectBehaviourMapper');
-  }*/
 
   function insert(&$site_object)
   {
     if(!($parent_node_id = $site_object->getParentNodeId()))
       return throw(new LimbException('tree parent node is empty'));
 
-    if(!$this->_canAddNodeToParent($parent_node_id))
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
+
+    if(!$tree->canAddNode($parent_node_id))
       return throw(new LimbException('tree registering failed', array('parent_node_id' => $parent_node_id)));
 
     $gntr =& $this->_getIdentifierGenerator();
 
     if(!$identifier = $gntr->generate($site_object))
       return throw(new LimbException('failed to generate identifier'));
-
-    $toolkit =& Limb :: toolkit();
-    $tree =& $toolkit->getTree();
 
     $values['identifier'] = $identifier;
 
@@ -76,7 +62,7 @@ class TreeNodeDataMapper extends AbstractDataMapper
 
     if ($this->_isObjectMovedFromNode($parent_node_id, $node))
     {
-      if(!$this->_canAddNodeToParent($parent_node_id))
+      if(!$tree->canAddNode($parent_node_id))
         return throw(new LimbException('new parent cant accept children',
                                 array('parent_node_id' => $parent_node_id)));
 
@@ -101,14 +87,6 @@ class TreeNodeDataMapper extends AbstractDataMapper
   {
     include_once(LIMB_DIR . '/core/data_mappers/DefaultSiteObjectIdentifierGenerator.class.php');
     return new DefaultSiteObjectIdentifierGenerator();
-  }
-
-  function _canAddNodeToParent($parent_node_id)
-  {
-    $toolkit =& Limb :: toolkit();
-    $tree =& $toolkit->getTree();
-
-    return $tree->canAddNode($parent_node_id);
   }
 
   function _isObjectMovedFromNode($parent_node_id, $node)

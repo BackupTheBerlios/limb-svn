@@ -74,7 +74,7 @@ class SingleSiteObjectCriteria
       return;
     }
 
-    $sql->addCondition('ssot.id = -1');
+    $sql->addCondition('0 = 1');
   }
 }
 

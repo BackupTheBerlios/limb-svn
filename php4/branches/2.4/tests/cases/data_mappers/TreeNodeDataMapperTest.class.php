@@ -168,100 +168,75 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $generator->tally();
   }
 
-  /*function  testUpdateSiteObjectRecordFailedNoId()
-  {
-    $mapper = new SiteObjectMapperTestVersion1($this);
-    $this->site_object->expectOnce('getId');
-
-    $mapper->update($this->site_object);
-    $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'object id not set');
-
-    $mapper->tally();
-  }
-
-  function  testUpdateSiteObjectRecordFailedNoBehaviourId()
-  {
-    $mapper = new SiteObjectMapperTestVersion1($this);
-    $this->site_object->setReturnValue('getId', 125);
-    $this->site_object->setReturnValue('getIdentifier', 'test');
-    $this->site_object->expectOnce('getBehaviour');
-    $this->site_object->setReturnValue('getBehaviour', null);
-
-    $mapper->update($this->site_object);
-    $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'behaviour id not attached');
-
-    $mapper->tally();
-  }
-
-  function  testUpdateSiteObjectRecordFailedNoIdentifier()
-  {
-    $mapper = new SiteObjectMapperTestVersion1($this);
-    $this->site_object->setReturnValue('getId', 125);
-    $this->site_object->setReturnValue('getIdentifier', null);
-
-    $mapper->update($this->site_object);
-    $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'identifier is empty');
-
-    $mapper->tally();
-  }
-
-  function testUpdateSiteObjectRecordOk()
-  {
-    $this->db->insert('sys_site_object',
-                          array('id' => $object_id = 100,
-                                'title' => 'old title',
-                                'identifier' => 'old identifier',
-                                'class_id' => 234));
-
-    $mapper = new SiteObjectMapperTestVersion1($this);
-
-    $site_object = new SiteObject();
-    $site_object->setId($object_id);
-    $site_object->setIdentifier('test');
-    $site_object->setTitle('test');
-    $site_object->setLocaleId('fr');
-    $site_object->attachBehaviour($this->behaviour);
-    $this->behaviour->setReturnValue('getId', 25);
-
-    $this->behaviour_mapper->expectOnce('save', array(new IsAExpectation('MockSiteObjectBehaviour')));
-
-    $mapper->update($site_object);
-
-    $this->_checkSysSiteObjectRecord($site_object);
-
-    $mapper->tally();
-  }
-
   function  testUpdateTreeNodeFailedNoNodeId()
   {
-    $mapper = new SiteObjectMapperTestVersion2($this);
+    $mapper = new TreeNodeDataMapper();
 
-    $mapper->update($this->site_object);
+    $site_object = new SiteObject();
+
+    $mapper->update($site_object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'node id not set');
   }
 
   function  testUpdateTreeNodeFailedNoParentNodeId()
   {
-    $mapper = new SiteObjectMapperTestVersion2($this);
+    $mapper = new TreeNodeDataMapper();
 
-    $this->site_object->setReturnValue('getNodeId', 10);
+    $site_object = new SiteObject();
+    $site_object->setNodeId(10);
 
-    $mapper->update($this->site_object);
+    $mapper->update($site_object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'parent node id not set');
   }
 
-  function  testUpdateTreeNodeFailedToMove()
+  function testUpdateNoNeedToUpdate()
   {
-    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
-    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
+    $mapper = new TreeNodeDataMapper();
 
-    $mapper = new SiteObjectMapperTestVersion2($this);
-    $mapper->setReturnValue('_canAddNodeToParent', true, array($parent_node_id));
+    $site_object = new SiteObject();
+    $site_object->setNodeId($node_id = 100);
+    $site_object->setParentNodeId($parent_node_id = 10);
+    $site_object->setIdentifier($identifier = 'test');
+
+    $this->tree->expectOnce('getNode');
+    $this->tree->setReturnValue('getNode', array('identifier' => $identifier,
+                                                 'parent_id' => $parent_node_id), array($node_id));
+
+    $this->tree->expectNever('moveTree');
+    $this->tree->expectNever('updateNode');
+    $mapper->update($site_object);
+  }
+
+  function testUpdateNoNeedToMove()
+  {
+    $mapper = new TreeNodeDataMapper();
+
+    $site_object = new SiteObject();
+    $site_object->setNodeId($node_id = 100);
+    $site_object->setParentNodeId($parent_node_id = 10);
+    $site_object->setIdentifier($identifier = 'test');
+
+    $this->tree->expectOnce('getNode');
+    $this->tree->setReturnValue('getNode', array('identifier' => 'test2',
+                                                 'parent_id' => $parent_node_id), array($node_id));
+
+    $this->tree->expectNever('moveTree');
+    $this->tree->expectOnce('updateNode', array($node_id, array('identifier' => $identifier), true));
+    $mapper->update($site_object);
+  }
+
+  function testUpdateTreeNodeFailedToMove()
+  {
+    $mapper = new TreeNodeDataMapper();
+
+    $site_object = new SiteObject();
+    $site_object->setNodeId($node_id = 100);
+    $site_object->setParentNodeId($parent_node_id = 10);
+
+    $this->tree->expectOnce('canAddNode');
+    $this->tree->setReturnValue('canAddNode', true);
 
     $this->tree->expectOnce('getNode');
     $this->tree->setReturnValue('getNode', array('parent_id' => 110), array($node_id));
@@ -269,181 +244,110 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->tree->expectOnce('moveTree');
     $this->tree->setReturnValue('moveTree', false, array($node_id, $parent_node_id));
 
-    $mapper->update($this->site_object);
+    $mapper->update($site_object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'could not move node');
-
-    $mapper->tally();
   }
 
-  function  testUpdateTreeNodeFailedNewParentCantAcceptChildren()
+  function testUpdateCantChangeParent()
   {
-    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
-    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
+    $mapper = new TreeNodeDataMapper();
 
-    $mapper = new SiteObjectMapperTestVersion2($this);
-    $mapper->setReturnValue('_canAddNodeToParent', false, array($parent_node_id));
+    $site_object = new SiteObject();
+    $site_object->setNodeId($node_id = 100);
+    $site_object->setParentNodeId($parent_node_id = 10);
+    $site_object->setIdentifier($identifier = 'test');
 
     $this->tree->expectOnce('getNode');
-    $this->tree->setReturnValue('getNode', array('parent_id' => 110), array($node_id));
+    $this->tree->setReturnValue('getNode', array('identifier' => $identifier,
+                                                 'parent_id' => 11), array($node_id));
+
+    $this->tree->expectOnce('canAddNode');
+    $this->tree->setReturnValue('canAddNode', false);
 
     $this->tree->expectNever('moveTree');
-
-    $mapper->update($this->site_object);
+    $this->tree->expectNever('updateNode');
+    $mapper->update($site_object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'new parent cant accept children');
   }
 
-  function  testUpdateOkObjectNotMovedIdentifierChangedInTree()
+  function testUpdateTreeMovedOK()
   {
-    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
-    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
-    $this->site_object->setReturnValue('getIdentifier', $identifier = 'test');
+    $mapper = new TreeNodeDataMapper();
 
-    $mapper = new SiteObjectMapperTestVersion2($this);
-    $mapper->setReturnValue('_canAddNodeToParent', true, array($parent_node_id));
+    $site_object = new SiteObject();
+    $site_object->setNodeId($node_id = 100);
+    $site_object->setParentNodeId($parent_node_id = 10);
+    $site_object->setIdentifier($identifier = 'test');
+
+    $this->tree->expectOnce('canAddNode');
+    $this->tree->setReturnValue('canAddNode', true);
 
     $this->tree->expectOnce('getNode');
-    $this->tree->setReturnValue('getNode',
-                                array('identifier' => 'test2', 'parent_id' => $parent_node_id),
-                                array($node_id));
+    $this->tree->setReturnValue('getNode', array('identifier' => $identifier,
+                                                 'parent_id' => 110), array($node_id));
 
-    $this->tree->expectNever('moveTree');
+    $this->tree->expectOnce('moveTree');
+    $this->tree->setReturnValue('moveTree', true, array($node_id, $parent_node_id));
 
-    $this->tree->expectOnce('updateNode', array($node_id,
-                                                 array('identifier' => $identifier),
-                                                 true));
-
-    $mapper->update($this->site_object);
-  }
-
-  function  testUpdateOkObjectNotMovedIdentifierNotChangedInTree()
-  {
-    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
-    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
-    $this->site_object->setReturnValue('getIdentifier', $identifier = 'test');
-
-    $mapper = new SiteObjectMapperTestVersion2($this);
-    $mapper->setReturnValue('_canAddNodeToParent', true, array($parent_node_id));
-
-    $this->tree->expectOnce('getNode');
-    $this->tree->setReturnValue('getNode',
-                                array('identifier' => $identifier, 'parent_id' => $parent_node_id),
-                                array($node_id));
-
-    $this->tree->expectNever('moveTree');
-    $this->tree->expectNever('updateNode');
-
-    $mapper->update($this->site_object);
-  }
-
-  function testCantDeleteNoId()
-  {
-    $mapper = new SiteObjectMapper();
-
-    $mapper->canDelete($this->site_object);
-    $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'object id not set');
+    $mapper->update($site_object);
   }
 
   function testCantDeleteNoNodeId()
   {
-    $mapper = new SiteObjectMapper();
-    $this->site_object->setReturnValue('getId', 10);
+    $mapper = new TreeNodeDataMapper();
+    $site_object = new SiteObject();
 
-    $mapper->canDelete($this->site_object);
+    $mapper->delete($site_object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'node id not set');
   }
 
-  function testCantDelete()
+  function testCantDeleteFromTree()
   {
-    $this->site_object->setReturnValue('getId', 10);
-    $this->site_object->setReturnValue('getNodeId', 100);
+    $mapper = new TreeNodeDataMapper();
+    $site_object = new SiteObject();
 
-    $mapper = new SiteObjectMapperTestVersion1($this);
-    $mapper->setReturnValue('_canDeleteSiteObjectRecord', false);
-    $this->assertFalse($mapper->canDelete($this->site_object));
-  }
-
-  function testCantDeleteNotTerminalNode()
-  {
-    $this->site_object->setReturnValue('getId', 10);
-    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
-
-    $mapper = new SiteObjectMapperTestVersion1($this);
-    $mapper->setReturnValue('_canDeleteSiteObjectRecord', true);
+    $site_object->setNodeId($node_id = 100);
 
     $this->tree->expectOnce('canDeleteNode', array($node_id));
     $this->tree->setReturnValue('canDeleteNode', false, array($node_id));
 
-    $this->assertFalse($mapper->canDelete($this->site_object));
-  }
-
-  function testCanDelete()
-  {
-    $this->site_object->setReturnValue('getId', 10);
-    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
-
-    $mapper = new SiteObjectMapperTestVersion1($this);
-    $mapper->setReturnValue('_canDeleteSiteObjectRecord', true);
-    $this->tree->setReturnValue('canDeleteNode', true, array($node_id));
-
-    $this->assertTrue($mapper->canDelete($this->site_object));
+    $mapper->delete($site_object);
   }
 
   function testDelete()
   {
-    $this->db->insert('sys_site_object', array('id' => $object_id = 1));
+    $mapper = new TreeNodeDataMapper();
+    $site_object = new SiteObject();
 
-    $this->site_object->setReturnValue('getId', $object_id);
-    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
+    $site_object->setNodeId($node_id = 100);
 
-    $mapper = new SiteObjectMapperTestVersion1($this);
-    $mapper->setReturnValue('_canDeleteSiteObjectRecord', true);
     $this->tree->setReturnValue('canDeleteNode', true, array($node_id));
-
     $this->tree->expectOnce('deleteNode', array($node_id));
 
-    $mapper->delete($this->site_object);
-
-    $rs = $this->db->select('sys_site_object', '*', 'id=' . $object_id);
-    $this->assertTrue(!$record = $rs->getRow());
+    $mapper->delete($site_object);
   }
 
-  function _checkSysSiteObjectRecord($site_object)
+  function testLoad()
   {
-    $rs =& $this->db->select('sys_site_object', '*', 'id=' . $site_object->getId());
+    $mapper = new TreeNodeDataMapper();
+    $site_object = new SiteObject();
 
-    $record = $rs->getRow();
+    $record = new Dataspace();
+    $record->import(array('node_id' => $node_id = 10,
+                          'parent_node_id' => $parent_node_id = 100,
+                          'identifier' => $identifier = 'test',
+                          ));
 
-    $this->assertNotNull($site_object->getIdentifier());
-    $this->assertEqual($record['identifier'], $site_object->getIdentifier());
+    $mapper->load($record, $site_object);
 
-    $this->assertNotNull($site_object->getTitle());
-    $this->assertEqual($record['title'], $site_object->getTitle());
+    $this->assertEqual($site_object->getNodeId(), $node_id);
+    $this->assertEqual($site_object->getParentNodeId(), $parent_node_id);
+    $this->assertEqual($site_object->getIdentifier(), $identifier);
 
-    $this->assertNotNull($site_object->getVersion());
-    $this->assertEqual($record['current_version'], $site_object->getVersion());
-
-    $this->assertNotNull($site_object->getLocaleId());
-    $this->assertEqual($record['locale_id'], $site_object->getLocaleId());
-
-    $this->assertFalse(!$record['class_id']);//???
-
-    $this->assertNotNull($site_object->getCreatorId());
-    $this->assertEqual($record['creator_id'], $site_object->getCreatorId());
-
-    $bhv =& $site_object->getBehaviour();
-    $this->assertNotNull($bhv->getId());
-    $this->assertEqual($record['behaviour_id'], $bhv->getId());
-
-    $this->assertNotNull($site_object->getCreatedDate());
-    $this->assertEqual($record['created_date'], $site_object->getCreatedDate());
-
-    $this->assertNotNull($site_object->getModifiedDate());
-    $this->assertEqual($record['modified_date'], $site_object->getModifiedDate());
-  }*/
+  }
 }
 
 ?>

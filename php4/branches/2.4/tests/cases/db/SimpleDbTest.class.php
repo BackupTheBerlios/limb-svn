@@ -153,6 +153,29 @@ class SimpleDbTest extends LimbTestCase
     $this->assertEqual($record->get('description'), 'description2');
   }
 
+  function testSelectAllUsingAsterisk()
+  {
+    $data = array(
+      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
+      1 => array('id' => null, 'title' =>  'wow', 'description' => 'description2')
+    );
+
+    $this->db->insert('test1', $data[0]);
+    $this->db->insert('test1', $data[1]);
+
+    $result = $this->db->select('test1', '*');
+
+    $this->assertEqual($result->getTotalRowCount(), 2);
+
+    $result->rewind();
+    $record = $result->current();
+    $this->assertEqual($record->get('description'), 'description');
+
+    $result->next();
+    $record = $result->current();
+    $this->assertEqual($record->get('description'), 'description2');
+  }
+
   function testSelectByCondition()
   {
     $data = array(

@@ -15,6 +15,11 @@ class DomainObjectTest extends LimbTestCase
 {
   var $object;
 
+  function DomainObjectTest()
+  {
+    parent :: LimbTestCase('domain object tests');
+  }
+
   function setUp()
   {
     $this->object = new DomainObject();

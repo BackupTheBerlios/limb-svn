@@ -55,7 +55,7 @@ class TreeBranchCriteria
     if(count($node_ids))
       $sql->addCondition('ssot.id IN (' . implode(',', $node_ids). ')');
     else
-      $sql->addCondition('ssot.id = -1');
+      $sql->addCondition('0 = 1');
   }
 
   function _getNodeIds()

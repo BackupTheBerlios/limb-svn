@@ -100,6 +100,12 @@ class SimpleDb
 
   function _addFields(&$sql, $values)
   {
+    if($values === '*')
+    {
+      $sql->addField('*');
+      return;
+    }
+
     foreach($values as $key => $value)
     {
       if(is_integer($key))
