@@ -1,0 +1,14 @@
+<core:WRAP file="popup.html" placeholder="content">
+<h2><locale:STRING name="nav_menu_item_editing" file="navigation"></h2>
+<form method="post" name="edit_navigation_item" id="edit_navigation_item">
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+		<core:INCLUDE file="/navigation_item/form_fields.html">
+    <tr>
+      <td colspan=2 align=center><action_button action="edit" name="update" type="submit" id="update" locale_value="update"  reload_parent="true" class="button">
+      &nbsp;
+      <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+
+      </td>
+    </tr>
+  </table>
+</form>
