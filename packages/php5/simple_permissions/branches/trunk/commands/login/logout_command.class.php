@@ -8,15 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/actions/action.class.php');
+require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
 
-class logout_action extends action
+class logout_command implements Command
 {
-	public function perform($request, $response)
+	public function perform()
 	{
-		Limb :: toolkit()->getUser()->logout();
+    $toolkit = Limb :: toolkit();
 		
-		$response->redirect('/');
+    $toolkit->getUser()->logout();
+    
+		$toolkit->getResponse()->redirect('/');
+    
+    return LIMB :: STATUS_OK;
 	}
 }
 

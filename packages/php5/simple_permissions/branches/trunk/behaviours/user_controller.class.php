@@ -55,6 +55,11 @@ class user_controller extends site_object_controller
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
+				'change_user_locale' => array(
+						'popup' => true,
+						'action_name' => strings :: get('change_locale', 'user'),
+						'action_path' => '/user/change_user_locale_action',
+				),
 		);
 	}
 }
