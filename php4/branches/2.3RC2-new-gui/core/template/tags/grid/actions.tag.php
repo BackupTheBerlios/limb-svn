@@ -80,61 +80,10 @@ class grid_actions_tag extends compiler_directive_tag
     }
     $code->write_html("'_' : {}}</script>");
 
-    $code->write_html("<span id='{$span_id}' behavior='CDDGridAction' ddalign='vbr'><img alt='' src='/shared/images/marker/1.gif'>");
+    $code->write_html("<span id='{$span_id}' behavior='CDDGridAction'><img alt='' src='/shared/images/marker/1.gif'>");
     $code->write_php("echo strings :: get('actions_for_selected');");
     $code->write_html("</span>");
     parent :: post_generate($code);
-  }
-
-  function post_generate__(&$code)
-  {
-    if(!count($this->actions))
-      parent :: post_generate($code);
-    $selector_id = uniqid('');
-
-    $code->write_html("
-    <select id='{$selector_id}'>
-        <option value=''>");
-    $code->write_php("echo strings :: get('choose_any')");
-    $code->write_html("</option>");
-
-    foreach($this->actions as $option)
-    {
-      $action_path = $this->get_action_path($option);
-      $code->write_html("<option value='{$action_path}'>");
-      if(isset($option['locale_value']))
-      {
-        $locale_file = '';
-        if(isset($option['locale_file']))
-          $locale_file = "','{$option['locale_file']}";
-        $code->write_php("echo strings :: get('" . $option['locale_value'] . $locale_file ."')");
-      }
-      else
-        $code->write_html($option['name']);
-      $code->write_html("</option>");
-    }
-    $code->write_html("</select>");
-    $this->render_button($code, $selector_id);
-    parent :: post_generate($code);
-  }
-
-  function render_button(&$code, $selector_id)
-  {
-    $code->write_html("&nbsp;<input type='button' value=");
-
-    if(isset($this->attributes['locale_value']))
-    {
-      $locale_file = '';
-      if(isset($this->attributes['locale_file']))
-        $locale_file = "','{$option['locale_file']}";
-      $code->write_php("echo '\'' . strings :: get('" . $this->attributes['locale_value'] . $locale_file ."') . '\''");
-    }
-    else
-      $code->write_html("'" . $option['name'] . "'");
-    if(isset($this->attributes['button_class']))
-      $code->write_html(" class='{$this->attributes['button_class']}'");
-
-    $code->write_html(" onclick='submit_grid_form(this, \"{$selector_id}\")'>");
   }
 
   function get_action_path($option)

@@ -40,24 +40,23 @@ CDDGridAction.prototype.get_content = function()
   {
     if(v == '_' || v == '_extends' )continue;
     str += '<tr>'
-    str += '<td><nobr><a href="' + arr[v]['href'] + '" onclick="submit_form(' + grid_form + ', this.href); return false;">' + arr[v]['name'] + '</a></nobr></td>'
+    str += '<td nowrap><a href="' + arr[v]['href'] + '" onclick="submit_form(' + grid_form + ', this.href); return false;">' + arr[v]['name'] + '</a></td>'
     str += '</tr>'
   }
   str += '</table>'
   return str
-
-  return str;
 }
 
 //===========================
-// [ Class :: drop down :: info]
+// [ Class :: drop down :: CDDCommon]
 //===========================
-CDropDown_info = function(parent)
+var arr_details = new Array();
+CDDCommon = function(parent)
 {
   this._super(parent)
 }
-CDropDown_info._extends(CDropDown)
-CDropDown_info.prototype.get_content = function()
+CDDCommon._extends(CDropDown)
+CDDCommon.prototype.get_content = function()
 {
   var content_obj = get_obj_by_id(this.getElementsByTagName('span'),'content')
   return content_obj.innerHTML
