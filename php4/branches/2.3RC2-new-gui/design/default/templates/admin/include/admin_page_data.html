@@ -1,0 +1,40 @@
+  <!--BEGIN:[ PATH ]-->
+  <table border="0" cellpadding="0" cellspacing="5" width="100%">
+  <tr>
+    <td>Path:</td>
+    <td width="100%">
+    <metadata:BREADCRUMBS offset_path='/root'>
+    <grid:LIST>
+      <grid:ITERATOR>
+        <core:DEFAULT for='is_last'>
+        <a href="{$path}?action=admin_display">{$title}</a>  &raquo;
+        </core:DEFAULT>
+        <core:OPTIONAL for='is_last'>
+        {$title}
+        </core:OPTIONAL>
+      </grid:ITERATOR>
+    </grid:LIST>
+    </metadata:BREADCRUMBS>
+    </td>
+  </tr>
+  </table>
+  <!--END:[ PATH ]-->
+  <fetch:MAPPED>
+    <table border="0" cellpadding="0" cellspacing="0" class="page-info" width="100%">
+    <tr>
+      <td class="icon">
+        <limb:CONTEXT_ICON resolve_by='path' level='3'>
+      </td>
+      <td>
+        <h1 class="title">{$title}</h1>
+        <!--BEGIN:[ PAGE INFO ]-->
+          <div class="info"><div class="info-text">Небольшое но очень информативное описание данного раздела. Небольшое но очень информативное описание данного раздела. Небольшое но очень информативное описание данного раздела.</div></div>
+        <!--END:[ PAGE INFO ]-->
+        <!--BEGIN:[ PAGE ACTIONS ]-->
+        <core:INCLUDE file="jip_actions/normal.html">
+        <!--END:[ PAGE ACTIONS ]-->
+        <core:INCLUDE file="published_status.html">
+      </td>
+    <tr>
+    </table>
+  </fetch:MAPPED>

@@ -6,25 +6,35 @@
 
 <pager:total>
 <core:OPTIONAL for='more_than_one_page'>
-  <table border=0 cellspacing=10 cellpadding=0 class=pager>
+  <table border="0" cellpadding="0" cellspacing="3" class="pager">
   <tr>
-    <td><pager:first><a href={$href}>&lt;&lt;</a></pager:first></td>
-    <td><pager:prev><a href={$href}>&lt;</a></pager:prev></td>
+    <pager:first>
+      <td><a href="{$href}"><img src='/shared/images/icon/pager/begin.gif'></a></td>
+    </pager:first>
+    <pager:prev>
+      <td style="padding:0 5px 0 0"><a href="{$href}"><img alt="" src="/shared/images/icon/pager/prev.gif"></a></td>
+    </pager:prev>
+    <pager:list>
+      <pager:current>
+        <td class="page-active"><div><b>{$number}</b></div></td>
+      </pager:current>
+      <pager:number>
+        <td class="page"><div><a href="{$href}">{$number}</a></div></td>
+      </pager:number>
+      <pager:section>
+        <td class="page"><div><a href="{$href}">[{$number_begin} - {$number_end}]</a></div></td>
+      </pager:section>
+      <pager:separator></pager:separator>
+    </pager:list>
 
-    <td>
-      <pager:list>
-      <pager:current><a style='color:red' href='{$href}'><b>{$number}</b></a></pager:current>
-      <pager:number><a href='{$href}'>{$number}</a></pager:number>
-      <pager:section> <a href={$href}>[{$number_begin} - {$number_end}]</a> </pager:section>
-      <pager:separator> - </pager:separator>
-      </pager:list>
-    </td>
-
-    <td><pager:next>
-    <a href={$href}>&gt;</a>
-    </pager:next></td>
-    <td><pager:last><a href={$href}>&gt;&gt;</a></pager:last></td>
+    <pager:next>
+      <td style='padding:0 0 0 5px'><a href='{$href}'><img src='/shared/images/icon/pager/next.gif'></a></td>
+    </pager:next>
+    <pager:last>
+      <td><a href='{$href}'><img src='/shared/images/icon/pager/end.gif'></a></td>
+    </pager:last>
   </tr>
   </table>
 </core:OPTIONAL>
 </pager:total>
+
