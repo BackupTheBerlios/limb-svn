@@ -1,24 +1,44 @@
-Заказ с сайта!
+<locale:STRING name='order_title' file='cart'>
+<core:LITERAL>
 
-Имя заказчика: {$name}
+</core:LITERAL>
+<locale:STRING name='name' file='enterprise_member'>: {$name} {$secondname} {$lastname}
+<core:LITERAL>
 
-Мыло: {$email}
+</core:LITERAL>
+E-mail: {$email}
+<core:LITERAL>
 
-Адрес: {$address}
+</core:LITERAL>
+<locale:STRING name='phone' file='enterprise_member'>: {$phone}
+<core:LITERAL>
 
-Телефон: {$phone}
+</core:LITERAL>
+<locale:STRING name='address' file='enterprise_member'>: {$address}
+<core:LITERAL>
 
-Заметки: {$notes}
+</core:LITERAL>
+<locale:STRING name='notes' file='cart'>: {$notes}
+<core:LITERAL>
 
-
-Содержимое заказа:
-
-Наименование       Цена      Кол-во     Сумма       Примечание
-
+</core:LITERAL>
+<locale:STRING name='order_contents' file='cart'>
+<core:LITERAL>
+*************************************************************************************
+</core:LITERAL>
 <list:LIST id='cart_items'>
+<locale:STRING name='order_item' file='cart'> | <locale:STRING name='item_count' file='cart'> | <locale:STRING name='notes' file='cart'>
+<core:LITERAL>
+*************************************************************************************
+</core:LITERAL>
 <list:ITEM>
+{$description} | {$amount} | {$note}
+<list:SEPARATOR>
 
-{$description}       {$price}      {$amount}     {$summ}       {$note}
-
+-------------------------------------------------------------------------------------
+</list:SEPARATOR>
 </list:ITEM>
 </list:LIST>
+<core:LITERAL>
+*************************************************************************************
+</core:LITERAL>

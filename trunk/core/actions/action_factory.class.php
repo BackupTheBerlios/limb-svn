@@ -5,10 +5,11 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: action_factory.class.php 570 2004-02-26 12:37:31Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . 'core/actions/empty_action.class.php');
 
 class action_factory
 {
@@ -39,11 +40,22 @@ class action_factory
 		else
 		{
 			debug :: write_error('action not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('class_path' => $class_path));
-			return null;
+			return new empty_action();
 		}
 			
 		include_once($full_path);
 	  $action =& new $class_name();
+	  
+	  if (!is_object($action))
+		{
+			debug :: write_error('action object not created',
+				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+				 array(
+				 	'class_path' => $class_path
+			 	)
+			);
+			return new empty_action();
+		}
 	  
 	  return $action;
 	}

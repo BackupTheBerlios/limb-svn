@@ -33,7 +33,7 @@ require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
 require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
 require_once(LIMB_DIR . 'core/lib/util/log.class.php');
-require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.php');
+require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
 
 class debug
 { 

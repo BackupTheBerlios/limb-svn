@@ -14,6 +14,7 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
+require_once(LIMB_DIR . 'core/lib/mail/send_html_mail.inc.php');
 require_once(LIMB_DIR . 'core/template/template.class.php');
 require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
@@ -48,14 +49,15 @@ class checkout_cart_order_action extends form_action
 	
 	function _valid_perform()
 	{
-		$body = $this->_get_mail_body();
+		//$html_body = $this->_get_mail_body('/cart/mail_template.html');
+		$text_body = $this->_get_mail_body('/cart/mail_template.txt');
 
 		$subject = sprintf(strings :: get('message_subject', 'cart'), $_SERVER['HTTP_HOST']);
 		
 		if(!send_plain_mail(array(ADMINISTRATOR_EMAIL), 
 												$_SERVER['SERVER_ADMIN']. '<' . $_SERVER['HTTP_HOST'] . '> ', 
 												$subject, 
-												$body))
+												$text_body))
 		{
 			message_box :: write_error(strings :: get('mail_not_sent', 'cart'));
 			return new close_popup_response(RESPONSE_STATUS_FAILURE);
@@ -72,11 +74,11 @@ class checkout_cart_order_action extends form_action
 		$cart =& cart :: instance();
 		$cart->clear();
 	}
-	
-	function _get_mail_body()
+		
+	function _get_mail_body($template_path)
 	{
-		$template = new template('/cart/mail_template.txt');
-	
+		$template = new template($template_path);
+		
 		$locale =& locale :: instance();
 		$date = new date();
 		$template->set('date', $date->format($locale->get_short_date_format()));

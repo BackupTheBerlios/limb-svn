@@ -32,12 +32,12 @@ class period_object extends content_object
 		return $result;
 	}
 
-	function fetch_valid_period_by_ids_count($params=array(), $sql_params=array())
+	function fetch_valid_period_by_ids_count($ids_array, $params=array(), $sql_params=array())
 	{
 		$current_date = date('Y-m-d', time());
 	
 		$sql_params['conditions'][] = " AND tn.start_date <= '{$current_date}' AND tn.finish_date >= '{$current_date}' ";
-		$result = parent :: fetch_by_ids_count($params, $sql_params);
+		$result = parent :: fetch_by_ids_count($ids_array, $params, $sql_params);
 		return $result;
 	}
 

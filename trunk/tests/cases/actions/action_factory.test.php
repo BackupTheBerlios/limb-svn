@@ -27,18 +27,21 @@ class test_action_factory extends UnitTestCase
   	debug_mock :: tally();
   }
   
-  function test_create()
+  function test_create_ok()
   {
   	$c =& action_factory :: create('action');
   	
-  	$this->assertNotNull($c);
-  	
+  	$this->assertIsA($c, 'action');	
+  } 
+  
+  function test_create_no_such_action()
+  {
   	debug_mock :: expect_write_error('action not found', array('class_path' => 'no_such_action'));
   	
   	$c =& action_factory :: create('no_such_action');
   	
-  	$this->assertNull($c);    	
-  }    
+  	$this->assertIsA($c, 'empty_action'); 
+  }
 }
 
 ?>

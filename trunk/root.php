@@ -12,7 +12,6 @@
 setlocale(LC_ALL, 'ru');//temporary
 
 require_once(LIMB_DIR . 'core/process_output.php');
-require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.php');
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
 
 ob_start('process_output');
@@ -41,6 +40,7 @@ if (isset($_REQUEST['recursive_search_for_node']) && $_REQUEST['recursive_search
 	$recursive = true;
 
 $node =& map_url_to_node('', $recursive);
+
 if(!$node)
 {
 	debug :: write_error('node not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);

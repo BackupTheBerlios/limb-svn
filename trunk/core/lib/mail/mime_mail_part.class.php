@@ -10,7 +10,6 @@
 ***********************************************************************************/
 class mime_mail_part
 {
-
 	var $_encoding;
 
 	var $_subparts;
@@ -121,7 +120,7 @@ class mime_mail_part
 		return $encoded;
 	} 
 
-	function &add_sub_part($body, $params)
+	function &add_subpart($body, $params)
 	{
 		$this->_subparts[] = new mime_mail_part($body, $params);
 		return $this->_subparts[count($this->_subparts) - 1];

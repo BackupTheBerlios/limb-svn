@@ -5,21 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: send_plain_mail.php 62 2004-03-23 15:03:17Z server $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
 
-	function send_plain_mail($recipients, $sender, $subject, $body, $headers = array())
-	{
-		$mail = new mime_mail();
-		$mail->set_text($body);
-		$mail->set_subject($subject);
-		$mail->set_from($sender);
-		
-		foreach($headers as $key => $value)
-			$mail->set_header($key, $value);
-		
-		return $mail->send($recipients);
-	}
+function send_html_mail($recipients, $sender, $subject, $html, $text = null, $headers = array())
+{
+	$mail = new mime_mail();
+	$mail->set_html($html, $text);
+	$mail->set_subject($subject);
+	$mail->set_from($sender);
+	
+	foreach($headers as $key => $value)
+		$mail->set_header($key, $value);
+	
+	return $mail->send($recipients);
+}
 ?>

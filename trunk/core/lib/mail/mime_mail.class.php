@@ -264,6 +264,7 @@ class mime_mail
 		$params['content_type'] = 'text/plain';
 		$params['encoding'] = $this->build_params['text_encoding'];
 		$params['charset'] = $this->build_params['text_charset'];
+		
 		if (is_object($obj))
 		{
 			return $obj->add_subpart($text, $params);

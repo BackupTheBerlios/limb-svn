@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: document_controller.class.php 33 2004-03-10 16:05:12Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -22,25 +22,25 @@ class cart_object_controller extends site_object_controller
 						'popup' => true
 				),
 				'add_item' => array(
-						'permissions_required' => 'w',
+						'permissions_required' => 'r',
 						'action_path' => '/cart/add_cart_item_action',
 						'popup' => true,
 						'action_name' => strings :: get('add_item', 'cart'),
 				),
 				'add_items' => array(
-						'permissions_required' => 'w',
+						'permissions_required' => 'r',
 						'action_path' => '/cart/add_cart_items_action',
 						'popup' => true,
 						'action_name' => strings :: get('add_items', 'cart'),
 				),
 				'remove_items' => array(
-						'permissions_required' => 'w',
+						'permissions_required' => 'r',
 						'action_path' => '/cart/remove_cart_items_action',
 						'popup' => true,
 						'action_name' => strings :: get('remove_items', 'cart'),
 				),
 				'recount' => array(
-						'permissions_required' => 'w',
+						'permissions_required' => 'r',
 						'action_path' => '/cart/recount_cart_items_action',
 						'popup' => true,
 						'action_name' => strings :: get('recount', 'cart'),

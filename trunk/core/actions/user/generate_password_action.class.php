@@ -30,7 +30,8 @@ class generate_password_action extends form_action
 		$data = $this->_export();
 		$object =& site_object_factory :: create('user_object');
 		
-		if($object->generate_password($data['email']))
+		$new_non_crypted_password = '';
+		if($object->generate_password($data['email'], $new_non_crypted_password))
 			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 		else
 			return new failed_response();

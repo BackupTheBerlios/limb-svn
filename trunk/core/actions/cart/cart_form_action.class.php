@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_group_objects_access.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
@@ -31,7 +31,7 @@ class cart_form_action extends form_action
 				if(!$item =& $cart->get_item($item_id))
 					continue;
 				
-				$item->set_amount($amount);
+				$item->set_amount((int)$amount);
 			}
 		}	
 	}
@@ -47,7 +47,7 @@ class cart_form_action extends form_action
 				if(!$item =& $cart->get_item($item_id))
 					continue;
 				
-				$item->set_attribute('note', $note);
+				$item->set_attribute('note', strip_tags($note));
 			}
 		}	
 	}
