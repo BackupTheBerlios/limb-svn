@@ -10,15 +10,16 @@
 ***********************************************************************************/
 @define('SIMPLE_TEST', dirname(__FILE__) . '/../../external/simpletest/');
 
-if (!file_exists(SIMPLE_TEST . 'unit_tester.php') )
-  die ('Make sure the SIMPLE_TEST constant is set correctly in setup.php file!');
+if (!file_exists(SIMPLE_TEST . '/unit_tester.php') )
+  die ('Make sure the SIMPLE_TEST constant is set correctly in setup.php file(setup.override.php)!
+       Currently its value is "' . SIMPLE_TEST . '"');
 
 @define('LIMB_DIR', dirname(__FILE__) . '/../');
 
-require_once(SIMPLE_TEST . 'unit_tester.php');
-require_once(SIMPLE_TEST . 'mock_objects.php');
-require_once(SIMPLE_TEST . 'web_tester.php');
-require_once(SIMPLE_TEST . 'reporter.php');
+require_once(SIMPLE_TEST . '/unit_tester.php');
+require_once(SIMPLE_TEST . '/mock_objects.php');
+require_once(SIMPLE_TEST . '/web_tester.php');
+require_once(SIMPLE_TEST . '/reporter.php');
 
 require_once(LIMB_DIR . '/tests/cases/limb_group_test.class.php');
 require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');
