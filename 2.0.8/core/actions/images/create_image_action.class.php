@@ -58,10 +58,7 @@ class create_image_action extends form_create_site_object_action
 		
 		if(($id = parent :: _create_object_operation()) === false)
 			return false;
-		
-		if(!$this->object->create_variations())
-			return false;
-				
+						
 		return $id;
 	}
 }
