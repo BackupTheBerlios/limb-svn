@@ -50,9 +50,8 @@ class selector_tag extends control_tag
 		$ref = $this->get_component_ref_code();
 		
 		$code->write_php("
-		
 		if ({$name} = {$parent}->get('" . $this->attributes['name']. "'))
-			{$ref}->set('name', {$name});
+			{$ref}->set_attribute('name', {$name});
 		");	
 		
 		parent :: pre_generate($code);

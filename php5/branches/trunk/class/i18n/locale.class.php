@@ -543,14 +543,14 @@ class locale
 
 	public function get_available_locales_data()
 	{
-		if (isset($GLOBALS['AVAILABLE_LOCALES']) && is_array($GLOBALS['AVAILABLE_LOCALES']))
-			$available_locales = $GLOBALS['AVAILABLE_LOCALES'];
-		else
-			return array();
+	  $ini = get_ini('common.ini');
+	  
+		if (!$available_locales = $ini->get_group('Locales'))
+		  return array();
 
 		$locales_data = array();
 
-		foreach($available_locales as $locale_id)
+		foreach(array_keys($available_locales) as $locale_id)
 		{
 			$locale_data = self :: instance($locale_id);
 			$locales_data[$locale_id] = $locale_data->get_language_name() ? $locale_data->get_language_name() : $locale_id;
@@ -561,9 +561,11 @@ class locale
 
 	public function is_valid_locale_id($locale_id)
 	{
-		global $AVAILABLE_LOCALES;
+	  $ini = get_ini('common.ini');
+	  
+		$available_locales = $ini->get_group('Locales');
 
-		return (array_search($locale_id, $AVAILABLE_LOCALES) !== false);
+		return (array_search($locale_id, array_keys($available_locales)) !== false);
 	} 
 
 	/*
