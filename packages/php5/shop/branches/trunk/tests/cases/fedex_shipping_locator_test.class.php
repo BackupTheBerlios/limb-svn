@@ -127,7 +127,7 @@ class fedex_shipping_locator_test extends LimbTestCase
   }
 
   function test_get_shipping_options_mock_connect_false()
-  {    
+  {  
     $this->mock_locator->setReturnValue('_get_express_shipping_options_html', false);
     $this->mock_locator->setReturnValue('_get_ground_shipping_options_html', false);    
         

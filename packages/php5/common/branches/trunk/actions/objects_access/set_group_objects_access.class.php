@@ -21,8 +21,7 @@ class set_group_objects_access extends form_action
 	
 	public function perform($request, $response)
 	{
-		$tree = tree :: instance();		
-		$tree->initialize_expanded_parents();				
+		tree :: instance()->initialize_expanded_parents();				
 
 		if ($filter_groups = session :: get('filter_groups'))
 			$this->dataspace->set('filter_groups', $filter_groups);	

@@ -15,6 +15,11 @@ abstract class stats_report_datasource implements datasource
 	protected $_stats_report;
 	
 	abstract protected function _init_stats_report();
+	
+	public function __construct()
+	{
+	  $this->_init_stats_report();
+	}
 
 	public function get_dataset(&$counter, $params=array())
 	{		

@@ -87,14 +87,14 @@ class shipping_locator
       
   protected function _save_cached_options($shipping_configuration, $options)
   {
-    $cache =& $this->get_cache();
+    $cache = $this->get_cache();
     
     $cache->save(serialize($options), $shipping_configuration->get_hash());
   }
 
   protected function _get_cached_options($shipping_configuration)
   {
-    $cache =& $this->get_cache();
+    $cache = $this->get_cache();
     
     if($result = $cache->get($shipping_configuration->get_hash()))
       return unserialize($result);

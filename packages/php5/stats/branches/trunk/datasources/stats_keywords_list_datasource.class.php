@@ -25,7 +25,7 @@ class stats_keywords_list_datasource extends stats_report_datasource
 
 	protected function _process_result_array($arr)		
 	{
-		$total = $this->stats_report->fetch_total_hits();
+		$total = $this->_stats_report->fetch_total_hits();
 			
 		$result = array();
 		foreach($arr as $index => $data)

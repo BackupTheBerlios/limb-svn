@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-interface stats_report
+interface stats_report_interface
 {
 	public function fetch($params = array());
 	
