@@ -115,9 +115,12 @@ class BaseLimbToolkit implements LimbToolkit
     return $ini;
   }
 
-  public function flushINIcache()
+  public function flushINIcache($ini_path = null)
   {
-    $this->ini_cache = array();
+    if(is_null($ini_path))
+      $this->ini_cache = array();
+    elseif(isset($this->ini_cache[$ini_path]))
+      unset($this->ini_cache[$ini_path]);
   }
 
   public function getAuthenticator()

@@ -314,7 +314,7 @@ class Fs
     {
       if ( $path_element == '.' )
         continue;
-      if ( $path_element == '..' && 
+      if ( $path_element == '..' &&
            count( $newpath_elements) > 0 )
         array_pop( $newpath_elements);
       else
@@ -392,7 +392,7 @@ class Fs
   static public function recursiveFind($path, $regex)
   {
     $fs = new Fs();
-    return self :: walkDir($path, array($fs, '_do_recursive_find'), array('regex' => $regex));
+    return self :: walkDir($path, array($fs, '_doRecursiveFind'), array('regex' => $regex));
   }
 
   static protected function _doRecursiveFind($dir, $file, $params, &$return_params)
@@ -428,7 +428,7 @@ class Fs
       {
         if (($file != '.') &&  ($file != '..'))
         {
-          call_user_func_array($function_def, array('dir' => $dir, 'file' => $file, 'params' => $params, 'returnParams' => &$return_params));
+          call_user_func_array($function_def, array('dir' => $dir, 'file' => $file, 'params' => $params, 'return_params' => &$return_params));
 
           if (is_dir($dir . $separator . $file))
             self :: _doWalkDir($dir . $separator . $file, $separator, $function_def, $return_params, $params);

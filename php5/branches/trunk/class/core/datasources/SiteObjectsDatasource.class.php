@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/Datasource.interface.php');
 require_once(dirname(__FILE__) . '/Countable.interface.php');
 require_once(dirname(__FILE__) . '/site_objects_datasource_support.inc.php');
 
-class SiteObjectsDatasource implements Datasource, countable
+class SiteObjectsDatasource implements Datasource, Countable
 {
   const CACHE_GROUP = 'site_objects';
 

@@ -33,7 +33,7 @@ class DatasourceComponent extends Component
 
     foreach($this->parameters as $key => $value)
     {
-      $method = 'set_' . $key;
+      $method = 'set' . ucfirst($key);
 
       if(method_exists($this->datasource, $method))
         $this->datasource->$method($value);
@@ -111,8 +111,8 @@ class DatasourceComponent extends Component
       else
         $sort = trim($arr[1]);
 
-      if(strtolower($sort) == 'asc' || 
-         strtolower($sort) == 'desc' || 
+      if(strtolower($sort) == 'asc' ||
+         strtolower($sort) == 'desc' ||
          strtolower($sort) == 'rand()')
         $order_pairs[$field] = strtoupper($sort);
       else

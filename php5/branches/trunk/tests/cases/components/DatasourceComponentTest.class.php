@@ -17,7 +17,7 @@ require_once(LIMB_DIR . '/class/core/datasources/Countable.interface.php');
 require_once(LIMB_DIR . '/class/core/request/Request.class.php');
 require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
-class DatasourceComponentTestVersion implements Datasource, countable
+class DatasourceComponentTestVersion implements Datasource, Countable
 {
   public function fetch(){}
   public function countTotal(){}
@@ -221,7 +221,7 @@ class DatasourceComponentTest extends LimbTestCase
 
     $this->datasource->expectOnce('setLimit', array(10));
     $this->datasource->expectOnce('setOffset', array(2));
-    $this->datasource->expectOnce('setOrder', array(array('col1' => 'aSC')));
+    $this->datasource->expectOnce('setOrder', array(array('col1' => 'ASC')));
 
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $result = array('whatever'));

@@ -12,23 +12,23 @@ require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
 class DataspaceRegistry
 {
-	static public function get($name)
-	{
-		$obj = null;
-  	
-  	$instance_name = "global_dataspace_instance_{$name}";
-  	
-  	if(isset($GLOBALS[$instance_name]))
-			$obj = $GLOBALS[$instance_name];
-		
-  	if(!$obj ||  get_class($obj) != 'dataspace')
-  	{
-  		$obj = new Dataspace();
-  		$GLOBALS[$instance_name] = $obj;
-  	}
-  	
-  	return $obj;
-	}
+  static public function get($name)
+  {
+    $obj = null;
+
+    $instance_name = "global_dataspace_instance_{$name}";
+
+    if(isset($GLOBALS[$instance_name]))
+      $obj = $GLOBALS[$instance_name];
+
+    if(!$obj instanceof Dataspace)
+    {
+      $obj = new Dataspace();
+      $GLOBALS[$instance_name] = $obj;
+    }
+
+    return $obj;
+  }
 }
 
 ?>

@@ -30,48 +30,50 @@ class BaseLimbToolkitTest extends LimbTestCase
 
   function testCreateDbTable()
   {
-    $this->assertEqual(get_class($this->toolkit->createDBTable('SysSiteObject')),
-                       'sys_site_object_db_table');
+    $this->assertIsA($this->toolkit->createDBTable('SysSiteObject'),
+                     'SysSiteObjectDbTable');
   }
 
   function testGetDatasource()
   {
-    $this->assertEqual(get_class($this->toolkit->getDatasource('SiteObjectsDatasource')),
-                       'site_objects_datasource');
+    $this->assertIsA($this->toolkit->getDatasource('SiteObjectsDatasource'),
+                     'SiteObjectsDatasource');
   }
 
   function testCreateSiteObject()
   {
-    $this->assertEqual(get_class($this->toolkit->createSiteObject('SiteObject')),
-                       'site_object');
+    $this->assertIsA($this->toolkit->createSiteObject('SiteObject'),
+                     'SiteObject');
   }
 
   function testCreateDataMapper()
   {
-    $this->assertEqual(get_class($this->toolkit->createDataMapper('SiteObjectMapper')),
-                       'site_object_mapper');
+    $this->assertIsA($this->toolkit->createDataMapper('SiteObjectMapper'),
+                     'SiteObjectMapper');
   }
 
   function testCreateBehaviour()
   {
-    $this->assertEqual(get_class($this->toolkit->createBehaviour('SiteObjectBehaviour')),
-                       'site_object_behaviour');
+    $this->assertIsA($this->toolkit->createBehaviour('SiteObjectBehaviour'),
+                     'SiteObjectBehaviour');
   }
 
   function testGetDb()
   {
-    $this->assertTrue(is_a($this->toolkit->getDB(), 'DbModule'));
+    $this->assertIsA($this->toolkit->getDB(),
+                     'DbModule');
   }
 
   function testGetTree()
   {
-    $this->assertEqual(get_class($this->toolkit->getTree()),
-                       'tree_decorator');
+    $this->assertIsA($this->toolkit->getTree(),
+                     'TreeDecorator');
   }
 
   function testGetUser()
   {
-    $this->assertEqual(get_class($this->toolkit->getUser()), 'user');
+    $this->assertIsA($this->toolkit->getUser(),
+                     'User');
   }
 
   function testGetConfig()
@@ -84,50 +86,50 @@ class BaseLimbToolkitTest extends LimbTestCase
 
   function testGetAuthenticator()
   {
-    $this->assertEqual(get_class($this->toolkit->getAuthenticator()),
-                       'simple_authenticator');
+    $this->assertIsA($this->toolkit->getAuthenticator(),
+                     'SimpleAuthenticator');
   }
 
   function testGetAuthorizer()
   {
-    $this->assertEqual(get_class($this->toolkit->getAuthorizer()),
-                       'simple_authorizer');
+    $this->assertIsA($this->toolkit->getAuthorizer(),
+                     'SimpleAuthorizer');
   }
 
   function testGetRequest()
   {
-    $this->assertEqual(get_class($this->toolkit->getRequest()),
-                       'request');
+    $this->assertIsA($this->toolkit->getRequest(),
+                     'Request');
   }
 
   function testGetResponse()
   {
-    $this->assertEqual(get_class($this->toolkit->getResponse()),
-                       'http_response');
+    $this->assertIsA($this->toolkit->getResponse(),
+                     'HttpResponse');
   }
 
   function testGetCache()
   {
-    $this->assertEqual(get_class($this->toolkit->getCache()),
-                       'CacheRegistry');
+    $this->assertIsA($this->toolkit->getCache(),
+                     'CacheRegistry');
   }
 
   function testGetLocale()
   {
-    $this->assertEqual(get_class($this->toolkit->getLocale()),
-                       'locale');
+    $this->assertIsA($this->toolkit->getLocale(),
+                     'Locale');
   }
 
   function testGetSession()
   {
-    $this->assertEqual(get_class($this->toolkit->getSession()),
-                       'session');
+    $this->assertIsA($this->toolkit->getSession(),
+                     'Session');
   }
 
   function testGetDataspace()
   {
-    $this->assertEqual(get_class($this->toolkit->getDataspace()),
-                       'dataspace');
+    $this->assertIsA($this->toolkit->getDataspace(),
+                     'Dataspace');
   }
 
   function testSwitchDataspace()
@@ -147,8 +149,8 @@ class BaseLimbToolkitTest extends LimbTestCase
     $view = new ViewTestVersion();
     $this->toolkit->setView($view);
 
-    $this->assertEqual(get_class($this->toolkit->getView()),
-                       'view_test_version');
+    $this->assertIsA($this->toolkit->getView(),
+                     'ViewTestVersion');
   }
 
 

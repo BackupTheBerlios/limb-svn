@@ -44,8 +44,10 @@ class PackagesInfoTest extends LimbTestCase
 
     $this->assertEqual($this->info->getPackages(),
       array(
-        array('path' => PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test1', 'name' => 'PACKAGE1_FOR_PACKAGES_INFO_TEST'),
-        array('path' => PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test2', 'name' => 'PACKAGE2_FOR_PACKAGES_INFO_TEST')
+        array('path' => PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test1',
+              'name' => 'PACKAGE1_FOR_PACKAGES_INFO_TEST'),
+        array('path' => PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test2',
+              'name' => 'PACKAGE2_FOR_PACKAGES_INFO_TEST')
       )
     );
 

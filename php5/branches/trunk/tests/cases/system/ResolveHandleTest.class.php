@@ -47,7 +47,7 @@ class ResolveHandleTest extends LimbTestCase
 
   function testClassDeclaredInSameFile()
   {
-    $handle = 'declared_in_same_file';
+    $handle = 'DeclaredInSameFile';
     resolveHandle($handle);
     $this->assertIsA($handle, 'DeclaredInSameFile');
   }
@@ -55,7 +55,7 @@ class ResolveHandleTest extends LimbTestCase
   function testLoadClassFile1()
   {
     $this->assertFalse(class_exists('LoadedHandleClass'));
-    $handle = dirname(__FILE__) . '/handle.inc.php|loaded_handle_class';
+    $handle = dirname(__FILE__) . '/handle.inc.php|LoadedHandleClass';
     resolveHandle($handle);
     $this->assertIsA($handle, 'LoadedHandleClass');
     $this->assertTrue(class_exists('LoadedHandleClass'));
@@ -64,7 +64,7 @@ class ResolveHandleTest extends LimbTestCase
   function testLoadClassFile2()
   {
     $this->assertFalse(class_exists('TestHandleClass'));
-    $handle = dirname(__FILE__) . '/test_handle_class';
+    $handle = dirname(__FILE__) . '/TestHandleClass';
     resolveHandle($handle);
     $this->assertIsA($handle, 'TestHandleClass');
     $this->assertTrue(class_exists('TestHandleClass'));
@@ -72,7 +72,7 @@ class ResolveHandleTest extends LimbTestCase
 
   function testLoadClassFileException()
   {
-    $handle = array(dirname(__FILE__) . '/test_handle_class', 1, 2, 3, 4, 5);
+    $handle = array(dirname(__FILE__) . '/TestHandleClass', 1, 2, 3, 4, 5);
 
     try
     {
@@ -87,7 +87,7 @@ class ResolveHandleTest extends LimbTestCase
 
   function testConstructor()
   {
-    $handle = array('declared_in_same_file', 'construction_parameter');
+    $handle = array('DeclaredInSameFile', 'construction_parameter');
     resolveHandle($handle);
     $this->assertIsA($handle, 'DeclaredInSameFile');
     $this->assertEqual($handle->test_var, 'construction_parameter');
