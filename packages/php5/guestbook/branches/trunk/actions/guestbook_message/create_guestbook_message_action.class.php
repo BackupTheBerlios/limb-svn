@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . 'class/core/user.class.php');
 require_once(LIMB_DIR . 'class/core/actions/form_create_site_object_action.class.php');
 
 class create_guestbook_message_action extends form_create_site_object_action

@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . 'class/core/user.class.php');
 require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class login_action extends form_action

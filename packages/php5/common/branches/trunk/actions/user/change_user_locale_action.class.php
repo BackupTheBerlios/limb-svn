@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . 'class/core/user.class.php');
 require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.php');
 require_once(LIMB_DIR . 'class/validators/rules/required_rule.class.php');
 
