@@ -17,42 +17,48 @@ class authentication_filter implements intercepting_filter
   {
     debug :: add_timing_point('authentication filter started');
     
-    $this->_initialize_user();
+    $this->initialize_user();
     
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->createDatasource('single_object_datasource');
-    $datasource->set_request($request);
+    $datasource = $toolkit->getDatasource('requested_object_datasource');
     
     if(!$node = $datasource->map_request_to_node($request))
     {
-      $this->_process_404_object($request, $response);
+      $this->process_404_error($request, $response);
       $filter_chain->next();
       return;
     }
     
-    $behaviour = $this->_get_behavoiur($node['object_id']);
+    $behaviour = $this->get_behaviour_by_object_id($node['object_id']);
     
-    $controller = new site_object_controller($behaviour);
+    $controller = $this->_get_controller($behaviour);
     if(!$action = $controller->get_requested_action())
     {
-      $this->_process_404_object($request, $response);
+      $this->process_404_error($request, $response);
       $filter_chain->next();
       return;
     }
     
-    $datasource->set_id($node['object_id']);
-    $datasource->set_permission_action($action);
+    $datasource->set_request($request);
+    $datasource->set_permissions_action($action);
     
     if(!$object_data = $datasource->fetch())
     {
   		$response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
+      $filter_chain->next();
   		return;
     }
 
     $filter_chain->next();
   }
   
-  protected function _initialize_user()
+  // for mocking
+  protected function _get_controller($behaviour)
+  {
+    return new site_object_controller($behaviour);
+  }
+  
+  public function initialize_user()
   {
     $user = Limb :: toolkit()->getUser();
     if($user->is_logged_in())
@@ -62,16 +68,16 @@ class authentication_filter implements intercepting_filter
     $authenticator->login(array('login' => '', 'password' => ''));
   }
   
-  protected function _get_behavoiur($object_id)
+  public function get_behaviour_by_object_id($object_id)
   {
     $behaviour_name = site_object :: find_behaviour_name_by_id($object_id);
     return Limb :: toolkit()->createBehaviour($behaviour_name); 
   }
 
-  protected function _process_404_object($request, $response)
-  {  
-    if(defined('ERROR_DOCUMENT_404'))
-      $response->redirect(ERROR_DOCUMENT_404);
+  public function process_404_error($request, $response)
+  { 
+    if($object_404_path = get_ini_option('common.ini', '404', 'ERROR_DOCUMENTS'))
+      $response->redirect($object_404_path);
     else
       $response->header("HTTP/1.1 404 Not found");
   }    

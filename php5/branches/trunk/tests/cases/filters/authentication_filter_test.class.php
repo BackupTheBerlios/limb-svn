@@ -16,20 +16,27 @@ require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
-require_once(LIMB_DIR . '/class/core/request/response.interface.php');
+require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/authenticator.interface.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('filter_chain');
-Mock :: generate('request');
+Mock :: generate('http_response');
 Mock :: generate('requested_object_datasource');
-Mock :: generate('site_object');
+Mock :: generate('request');
 Mock :: generate('site_object_controller');
 Mock :: generate('site_object_behaviour');
 Mock :: generate('response');
+Mock :: generate('user');
+Mock :: generate('authenticator');
 
 Mock :: generatePartial('authentication_filter',
                         'authentication_filter_test_version',
-                        array('_get_controller')); 
+                        array('_get_controller',
+                              'get_behaviour_by_object_id',
+                              'initialize_user',
+                              'process_404_error')); 
 
 class authentication_filter_test extends LimbTestCase
 {
@@ -38,9 +45,6 @@ class authentication_filter_test extends LimbTestCase
   var $request;
   var $datasource;
   var $toolkit;
-  var $site_object;
-  var $controller;
-  var $behaviour;
   var $response;
   
   function setUp()
@@ -48,28 +52,10 @@ class authentication_filter_test extends LimbTestCase
     $this->filter = new authentication_filter_test_version($this);
     
     $this->toolkit = new MockLimbToolkit($this);
-    $this->site_object = new Mocksite_object($this);
+    $this->datasource = new Mockrequested_object_datasource($this);
     $this->request = new Mockrequest($this);
     $this->filter_chain = new Mockfilter_chain($this);
-    $this->datasource = new Mockrequested_object_datasource($this);
-    $this->controller = new Mocksite_object_controller($this);
-    $this->behaviour = new Mocksite_object_behaviour($this);
-    $this->response = new Mockresponse($this);
-    
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
-    $this->datasource->expectOnce('fetch');
-    
-    $this->toolkit->setReturnValue('getDatasource', 
-                                   $this->datasource, 
-                                   array('requested_object_datasource'));
-    
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
-    
-    $this->filter_chain->expectOnce('next');
-    
-    $this->site_object->setReturnValue('get_controller', $this->controller);
-    
-    $this->controller->expectOnce('process', array(new IsAExpectation('Mockrequest')));
+    $this->response = new Mockhttp_response($this);
     
     Limb :: registerToolkit($this->toolkit);
   }
@@ -77,21 +63,196 @@ class authentication_filter_test extends LimbTestCase
   function tearDown()
   {
     $this->request->tally();
-    $this->filter_chain->tally();
-    $this->datasource->tally();
-    $this->site_object->tally();
-    $this->filter->tally();
-    $this->behaviour->tally();
     $this->response->tally();  
+
+    $this->toolkit->tally();
 
     Limb :: popToolkit();    
   }
   
-  function test_run()
+  function test_initialize_user_is_logged_in()
   {
-    $this->datasource->setReturnValue('fetch', array('class_name' => 'site_object'));
+    $user = new Mockuser($this);
+    $authenticator = new Mockauthenticator($this);
+
+    $this->toolkit->expectOnce('getUser');
+    $this->toolkit->setReturnValue('getUser', $user);
+
+    $user->expectOnce('is_logged_in');
+    $user->setReturnValue('is_logged_in', true);
+    $authenticator->expectNever('login', array(array('login' => '', 'password' => '')));
+    
+    $filter = new authentication_filter();
+    
+    $filter->initialize_user();
+    
+    $user->tally();
+    $authenticator->tally();
+  }
+  
+  function test_initialize_user_not_logged_in()
+  {
+    $user = new Mockuser($this);
+    $authenticator = new Mockauthenticator($this);
+    
+    $this->toolkit->expectOnce('getUser');
+    $this->toolkit->setReturnValue('getUser', $user);
+    
+    $user->expectOnce('is_logged_in');
+    $user->setReturnValue('is_logged_in', false);
+
+    $this->toolkit->expectOnce('getAuthenticator');
+    $this->toolkit->setReturnValue('getAuthenticator', $authenticator);
+
+    $authenticator->expectOnce('login', array(array('login' => '', 'password' => '')));
+    
+    $filter = new authentication_filter();
+    
+    $filter->initialize_user();
+    
+    $user->tally();
+    $authenticator->tally();
+  }
+  
+  function test_process_404_error_from_ini()
+  {
+    register_testing_ini(
+      'common.ini',
+      '[ERROR_DOCUMENTS]
+      404 = /root/404'
+    );
+    
+    $filter = new authentication_filter();
+    
+    $this->response->expectOnce('redirect', array('/root/404'));
+    $this->response->expectNever('header');
+    
+    $filter->process_404_error($this->request, $this->response);
+    
+    $this->response->tally();
+    
+    clear_testing_ini();
+  }
+  
+  function test_run_node_not_found()
+  {
+    $this->toolkit->setReturnValue('getDatasource', 
+                                   $this->datasource, 
+                                   array('requested_object_datasource'));
+    
+    $this->datasource->setReturnValue('map_request_to_node', 
+                                      null, 
+                                      array(new IsAExpectation('Mockrequest')));
+    
+    $this->filter->expectOnce('process_404_error');
+    $this->filter_chain->expectOnce('next');
     
     $this->filter->run($this->filter_chain, $this->request, $this->response);
+    
+    $this->filter->tally();
+    $this->filter_chain->tally();
+  }
+
+  function test_run_no_such_action()
+  {
+    $this->toolkit->setReturnValue('getDatasource', 
+                                   $this->datasource, 
+                                   array('requested_object_datasource'));
+    
+    $this->datasource->setReturnValue('map_request_to_node', 
+                                      array('object_id' => $object_id = 100), 
+                                      array(new IsAExpectation('Mockrequest')));
+    
+    $controller = new Mocksite_object_controller($this);
+    $behaviour = new Mocksite_object_behaviour($this);
+    
+    $this->filter->setReturnValue('get_behaviour_by_object_id', $behaviour, array($object_id));
+    
+    $this->filter->setReturnValue('_get_controller', 
+                                  $controller, 
+                                  array(new IsAExpectation('Mocksite_object_behaviour')));
+    
+    $controller->setReturnValue('get_requested_action', null);
+    
+    $this->filter->expectOnce('process_404_error');
+    $this->filter_chain->expectOnce('next');
+    
+    $this->filter->run($this->filter_chain, $this->request, $this->response);
+    
+    $this->filter->tally();
+    $this->filter_chain->tally();
+  }
+
+  function test_run_object_is_not_accessible()
+  {
+    $this->toolkit->setReturnValue('getDatasource', 
+                                   $this->datasource, 
+                                   array('requested_object_datasource'));
+    
+    $this->datasource->setReturnValue('map_request_to_node', 
+                                      array('object_id' => $object_id = 100), 
+                                      array(new IsAExpectation('Mockrequest')));
+    
+    $controller = new Mocksite_object_controller($this);
+    $behaviour = new Mocksite_object_behaviour($this);
+    
+    $this->filter->setReturnValue('get_behaviour_by_object_id', $behaviour, array($object_id));
+    
+    $this->filter->setReturnValue('_get_controller', 
+                                  $controller, 
+                                  array(new IsAExpectation('Mocksite_object_behaviour')));
+    
+    $controller->setReturnValue('get_requested_action', $action = 'some_actin');
+
+    $this->datasource->expectOnce('set_permissions_action', array($action)); 
+    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest'))); 
+
+    $this->datasource->setReturnValue('fetch', null); 
+
+    $this->response->expectOnce('redirect'); 
+    
+    $this->filter_chain->expectOnce('next');
+    
+    $this->filter->run($this->filter_chain, $this->request, $this->response);
+    
+    $this->filter->tally();
+    $this->filter_chain->tally();
+  }
+
+  function test_run_ok()
+  {
+    $this->toolkit->setReturnValue('getDatasource', 
+                                   $this->datasource, 
+                                   array('requested_object_datasource'));
+    
+    $this->datasource->setReturnValue('map_request_to_node', 
+                                      array('object_id' => $object_id = 100), 
+                                      array(new IsAExpectation('Mockrequest')));
+    
+    $controller = new Mocksite_object_controller($this);
+    $behaviour = new Mocksite_object_behaviour($this);
+    
+    $this->filter->setReturnValue('get_behaviour_by_object_id', $behaviour, array($object_id));
+    
+    $this->filter->setReturnValue('_get_controller', 
+                                  $controller, 
+                                  array(new IsAExpectation('Mocksite_object_behaviour')));
+    
+    $controller->setReturnValue('get_requested_action', $action = 'some_actin');
+
+    $this->datasource->expectOnce('set_permissions_action', array($action)); 
+    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest'))); 
+
+    $this->datasource->setReturnValue('fetch', $result = 'some_fetch_result'); 
+
+    $this->response->expectNever('redirect'); 
+    
+    $this->filter_chain->expectOnce('next');
+    
+    $this->filter->run($this->filter_chain, $this->request, $this->response);
+    
+    $this->filter->tally();
+    $this->filter_chain->tally();
   }
 }
 
