@@ -15,7 +15,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 {
 	protected function _fetch(&$counter, $params)
 	{
-		$tree = LimbToolsBox :: getToolkit()->getTree();
+		$tree = Limb :: toolkit()->getTree();
 
 		if(isset($params['order']))
 		{

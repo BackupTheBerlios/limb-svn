@@ -152,7 +152,7 @@ class full_page_cache_manager
   
   protected function _is_user_in_groups($groups)
   {
-    $user = LimbToolsBox :: getToolkit()->getUser();
+    $user = Limb :: toolkit()->getUser();
     
 		foreach	($user->get('groups', array()) as $group_name)
 			if (in_array($group_name, $groups))

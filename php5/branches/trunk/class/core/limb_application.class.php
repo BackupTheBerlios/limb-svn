@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 
 debug :: add_timing_point('start');
 
-require_once(LIMB_DIR . 'class/core/limb_tools_box.class.php');
+require_once(LIMB_DIR . 'class/core/limb.class.php');
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'class/core/file_resolvers/file_resolvers_registry.inc.php');
 require_once(LIMB_DIR . 'class/core/filters/filter_chain.class.php');
@@ -35,7 +35,7 @@ class limb_application
   
   protected function _register_toolkit()
   {
-    LimbToolsBox :: registerToolKit($this->_create_toolkit());
+    Limb :: registerToolkit($this->_create_toolkit());
   }
   
   protected function _register_filters($filter_chain)
@@ -107,8 +107,8 @@ class limb_application
     
     $this->_load_packages();
     
-    $request = LimbToolsBox :: getToolKit()->getRequest();
-    $response = LimbToolsBox :: getToolKit()->getResponse();
+    $request = Limb :: toolkit()->getRequest();
+    $response = Limb :: toolkit()->getResponse();
      
     $filter_chain = new filter_chain($request, $response);
     

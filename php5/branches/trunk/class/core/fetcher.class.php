@@ -26,19 +26,19 @@ class fetcher
   //for mocking
 	protected function _get_authorizer()
 	{
-	  return LimbToolsBox :: getToolkit()->getAuthorizer();
+	  return Limb :: toolkit()->getAuthorizer();
 	}
 
   //for mocking
 	protected function _get_tree()
 	{
-	  return LimbToolsBox :: getToolkit()->getTree();
+	  return Limb :: toolkit()->getTree();
 	}
 
   //for mocking
   protected function _get_site_object($class_name)
   {
-    return LimbToolsBox :: getToolkit()->createSiteObject($class_name);
+    return Limb :: toolkit()->createSiteObject($class_name);
   }
 
 	public function is_jip_enabled()
@@ -131,7 +131,7 @@ class fetcher
 
 		if (!count($object_ids))
 		  return array();
-
+    
     if(!is_null($counter))
     {
   		$counter = 0;
@@ -292,7 +292,7 @@ function wrap_with_site_object($fetched_data)
 
 	if(isset($fetched_data['class_name']))
 	{
-		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($fetched_data['class_name']);
+		$site_object = Limb :: toolkit()->createSiteObject($fetched_data['class_name']);
 		$site_object->merge($fetched_data);
 		return $site_object;
 	}
@@ -300,7 +300,7 @@ function wrap_with_site_object($fetched_data)
 	$site_objects = array();
 	foreach($fetched_data as $id => $data)
 	{
-		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($data['class_name']);
+		$site_object = Limb :: toolkit()->createSiteObject($data['class_name']);
 		$site_object->merge($data);
 		$site_objects[$id] = $site_object;
 	}

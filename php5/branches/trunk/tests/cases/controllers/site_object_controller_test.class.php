@@ -45,11 +45,9 @@ class site_object_controller_test extends LimbTestCase
   		'display' => array(
   		),
 			'action_test' => array(
-				'permissions_required' => 'w',
 				'action_path' => 'action',
 			),
 			'publish' => array(
-				'permissions_required' => 'w',
 				'transaction' => false
 			)
 		); 

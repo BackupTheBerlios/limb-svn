@@ -120,7 +120,7 @@ class grid_actions_tag extends compiler_directive_tag
 		{
 			$action_path = $_SERVER['PHP_SELF'];
 			
-			if($node_id = LimbToolsBox :: getToolkit()->getRequest()->get_attribute('node_id'))
+			if($node_id = Limb :: toolkit()->getRequest()->get_attribute('node_id'))
 				$action_path .= '?node_id=' . $node_id;
 		}
 		else

@@ -14,7 +14,7 @@ function add_url_query_items($url, $items=array())
 {
 	$str_params = '';
 
-  $request = LimbToolsBox :: getToolkit()->getRequest();
+  $request = Limb :: toolkit()->getRequest();
   
   if (($node_id = $request->get('node_id')) && !isset($items['node_id']))
 		$items['node_id'] = $node_id;

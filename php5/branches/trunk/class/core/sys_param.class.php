@@ -19,7 +19,7 @@ class sys_param
 	
 	function sys_param()
 	{
-		$this->_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_param');
+		$this->_db_table = Limb :: toolkit()->createDBTable('sys_param');
 	}
 	
 	static public function instance()

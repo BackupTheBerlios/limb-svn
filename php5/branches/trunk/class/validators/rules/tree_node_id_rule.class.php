@@ -17,7 +17,7 @@ class tree_node_id_rule extends single_field_rule
 	{
 		if(empty($value))
 		  $this->error(strings :: get('error_invalid_tree_node_id', 'error'));
-		elseif(!LimbToolsBox :: getToolkit()->getTree()->get_node((int)$value))
+		elseif(!Limb :: toolkit()->getTree()->get_node((int)$value))
 			$this->error(strings :: get('error_invalid_tree_node_id', 'error'));
 	} 
 }

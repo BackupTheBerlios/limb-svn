@@ -20,7 +20,7 @@ class request_transfer_component extends tag_component
 		
 		$attributes_to_append = array();
 		
-		$request = LimbToolsBox :: getToolkit()->getRequest();
+		$request = Limb :: toolkit()->getRequest();
 		
 		foreach($transfer_attributes as $attribute)
 		{

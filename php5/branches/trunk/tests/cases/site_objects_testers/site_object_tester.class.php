@@ -113,14 +113,6 @@ class site_object_tester extends LimbTestCase
 		
 		foreach($definitions as $action => $data)
 		{
-			$this->assertTrue(isset($data['permissions_required']), 
-				'controller: "' . $controller_class . 
-				'" permissions_required property for action "' . $action . '"not set');
-			
-			$this->assertTrue(in_array($data['permissions_required'], array('r', 'w', 'rw')), 
-				'controller: "' . $controller_class . 
-				'" permissions_required property for action "' . $action . '"not valid');
-			
 			if (isset($data['template_path']))
 			{
 				$template = new template($data['template_path']);

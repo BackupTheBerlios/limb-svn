@@ -17,7 +17,7 @@ class site_object_controller_filter implements intercepting_filter
   {
     debug :: add_timing_point('site object controller filter started');
 
-    $site_object = wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request));
+    $site_object = wrap_with_site_object(Limb :: toolkit()->getFetcher()->fetch_requested_object($request));
 
     $site_object_controller = $site_object->get_controller();
 

@@ -164,7 +164,7 @@ class pager_component extends component
 	*/
 	public function prepare()
 	{
-	  $request = LimbToolsBox :: getToolkit()->getRequest();
+	  $request = Limb :: toolkit()->getRequest();
 	  
 		$this->current_page = $request->get($this->pager_variable .'_'. $this->get_server_id());
 			

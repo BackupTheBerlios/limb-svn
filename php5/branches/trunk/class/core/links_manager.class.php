@@ -15,7 +15,7 @@ class links_manager
 {  
   public function create_links_group($identifier, $title)
   {
-    $group_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_node_link_group');
+    $group_db_table = Limb :: toolkit()->createDBTable('sys_node_link_group');
     
     $conditions = array(
       'identifier' => $identifier
@@ -39,7 +39,7 @@ class links_manager
   
   public function update_links_group($group_id, $identifier, $title)
   {
-    $group_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_node_link_group');
+    $group_db_table = Limb :: toolkit()->createDBTable('sys_node_link_group');
     
     $group_db_table->update_by_id($group_id, 
       array('identifier' => $identifier, 
@@ -49,12 +49,12 @@ class links_manager
   
   public function delete_links_group($group_id)
   {
-    LimbToolsBox :: getToolkit()->createDBTable('sys_node_link_group')->delete_by_id($group_id);
+    Limb :: toolkit()->createDBTable('sys_node_link_group')->delete_by_id($group_id);
   }
   
   public function set_groups_priority($priority_info)
   {
-    $group_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_node_link_group');
+    $group_db_table = Limb :: toolkit()->createDBTable('sys_node_link_group');
     
     foreach($priority_info as $group_id => $priority_value)
     {
@@ -64,12 +64,12 @@ class links_manager
   
   public function fetch_groups()
   {
-    return LimbToolsBox :: getToolkit()->createDBTable('sys_node_link_group')->get_list('', 'priority ASC');
+    return Limb :: toolkit()->createDBTable('sys_node_link_group')->get_list('', 'priority ASC');
   }
 
   public function fetch_group_by_identifier($identifier)
   {
-    $group_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_node_link_group');
+    $group_db_table = Limb :: toolkit()->createDBTable('sys_node_link_group');
     
     if($arr = $group_db_table->get_list(array('identifier' => $identifier)))
       return current($arr);
@@ -79,7 +79,7 @@ class links_manager
   
   public function fetch_group($group_id)
   {
-    return LimbToolsBox :: getToolkit()->createDBTable('sys_node_link_group')->get_row_by_id($group_id);
+    return Limb :: toolkit()->createDBTable('sys_node_link_group')->get_row_by_id($group_id);
   }
   
   public function create_link($group_id, $linker_object_id, $target_object_id)
@@ -87,7 +87,7 @@ class links_manager
     if ($this->fetch_group($group_id) === false)
       return false;
     
-    $link_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_node_link');
+    $link_db_table = Limb :: toolkit()->createDBTable('sys_node_link');
 
     $data = array(
       'linker_node_id' => $linker_object_id,
@@ -108,7 +108,7 @@ class links_manager
   
   public function delete_link($link_id)
   {
-    LimbToolsBox :: getToolkit()->createDBTable('sys_node_link')->delete_by_id($link_id);
+    Limb :: toolkit()->createDBTable('sys_node_link')->delete_by_id($link_id);
   }
   
   public function fetch_target_links_node_ids($linker_node_id, $groups_ids = array())
@@ -120,7 +120,7 @@ class links_manager
   
   public function fetch_target_links($linker_node_id, $groups_ids = array())
   {
-    $link_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_node_link');
+    $link_db_table = Limb :: toolkit()->createDBTable('sys_node_link');
     
     $conditions = "linker_node_id = {$linker_node_id}";
     
@@ -139,7 +139,7 @@ class links_manager
 
   public function fetch_back_links($target_node_id, $groups_ids = array())
   {
-    $link_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_node_link');
+    $link_db_table = Limb :: toolkit()->createDBTable('sys_node_link');
 
     $conditions = "target_node_id = {$target_node_id}";
     
@@ -151,7 +151,7 @@ class links_manager
 
   public function set_links_priority($priority_info)
   {
-    $link_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_node_link');
+    $link_db_table = Limb :: toolkit()->createDBTable('sys_node_link');
     
     foreach($priority_info as $link_id => $priority_value)
     {

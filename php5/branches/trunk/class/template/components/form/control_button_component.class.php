@@ -18,7 +18,7 @@ class control_button_component extends form_element
 		{
 			$action_path = $_SERVER['PHP_SELF'];
 			
-			$request = LimbToolsBox :: getToolkit()->getRequest();
+			$request = Limb :: toolkit()->getRequest();
 			
 			if($node_id = $request->get('node_id'))
 				$action_path .= '?node_id=' . $node_id;

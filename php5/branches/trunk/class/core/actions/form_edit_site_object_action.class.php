@@ -32,7 +32,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
 
 	protected function _init_validator()
 	{
-		if(!$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object(LimbToolsBox :: getToolkit()->getRequest()))
+		if(!$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object(Limb :: toolkit()->getRequest()))
 			return;
 
 		if($this->object->is_auto_identifier())
@@ -85,7 +85,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
 
 	  $request->set_status(request :: STATUS_FORM_SUBMITTED);
 
-	  LimbToolsBox :: getToolkit()->getFetcher()->flush_cache();
+	  Limb :: toolkit()->getFetcher()->flush_cache();
 	}
 
 	protected function _update_object_operation()
@@ -107,7 +107,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
 
 	protected function _load_object_data($request)
 	{
-		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
+		return Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 	}
 }
 ?>

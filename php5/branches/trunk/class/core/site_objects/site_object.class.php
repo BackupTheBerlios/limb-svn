@@ -45,7 +45,7 @@ class site_object extends object
 
   public function get_locale_by_id($id)
   {
-    $table = LimbToolsBox :: getToolkit()->createDBTable('sys_site_object');
+    $table = Limb :: toolkit()->createDBTable('sys_site_object');
 
     if($row = $table->get_row_by_id($id))
       return $row['locale_id'];
@@ -322,7 +322,7 @@ class site_object extends object
 
     $id = $this->_create_site_object_record();
 
-    $tree = LimbToolsBox :: getToolkit()->getTree();
+    $tree = Limb :: toolkit()->getTree();
 
     $values['identifier'] = $identifier;
     $values['object_id'] = $id;
@@ -352,7 +352,7 @@ class site_object extends object
 
   protected function _generate_auto_identifier()
   {
-    $tree = LimbToolsBox :: getToolkit()->getTree();
+    $tree = Limb :: toolkit()->getTree();
 
     $identifier = $tree->get_max_child_identifier($this->get_parent_node_id());
 
@@ -371,7 +371,7 @@ class site_object extends object
 
   protected function _can_add_node_to_parent($parent_node_id)
   {
-    $tree = LimbToolsBox :: getToolkit()->getTree();
+    $tree = Limb :: toolkit()->getTree();
 
     if (!$tree->can_add_node($parent_node_id))
       return false;
@@ -391,7 +391,7 @@ class site_object extends object
     if (!is_array($row) || !count($row))
       return false;
 
-    $parent_object = LimbToolsBox :: getToolkit()->createSiteObject($row['class_name']);
+    $parent_object = Limb :: toolkit()->createSiteObject($row['class_name']);
 
     return $parent_object->can_be_parent();
   }
@@ -469,7 +469,7 @@ class site_object extends object
     if($this->_class_id)
       return $this->_class_id;
 
-    $type_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_class');
+    $type_db_table = Limb :: toolkit()->createDBTable('sys_class');
 
     $class_name = get_class($this);
 
@@ -517,7 +517,7 @@ class site_object extends object
   {
     $this->set('version', 1);
 
-    $user = LimbToolsBox :: getToolkit()->getUser();
+    $user = Limb :: toolkit()->getUser();
 
     $data['id'] = null;
     $data['identifier'] = $this->get_identifier();
@@ -546,7 +546,7 @@ class site_object extends object
     else
       $data['locale_id'] = $this->_get_parent_locale_id();
 
-    $sys_site_object_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_site_object');
+    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('sys_site_object');
 
     $sys_site_object_db_table->insert($data);
 
@@ -565,7 +565,7 @@ class site_object extends object
 
   protected function _update_site_object_record($force_create_new_version = true)
   {
-    $sys_site_object_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_site_object');
+    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('sys_site_object');
 
     $row_data = $sys_site_object_db_table->get_row_by_id($this->get_id());
 
@@ -588,7 +588,7 @@ class site_object extends object
   {
     $data = $this->_attributes->export();
 
-    $tree = LimbToolsBox :: getToolkit()->getTree();
+    $tree = Limb :: toolkit()->getTree();
 
     $tree->delete_node($data['node_id']);
   }
@@ -597,7 +597,7 @@ class site_object extends object
   {
     $data = $this->_attributes->export();
 
-    $tree = LimbToolsBox :: getToolkit()->getTree();
+    $tree = Limb :: toolkit()->getTree();
 
     $node = $tree->get_node($data['node_id']);
     if (isset($data['parent_node_id']) && isset($data['node_id']))
@@ -645,7 +645,7 @@ class site_object extends object
 
   protected function _delete_site_object_record()
   {
-    $sys_site_object_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_site_object');
+    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('sys_site_object');
     $sys_site_object_db_table->delete_by_id($this->get('id'));
   }
 
@@ -661,7 +661,7 @@ class site_object extends object
 
   protected function _can_delete_tree_node($node_id)
   {
-    return LimbToolsBox :: getToolkit()->getTree()->can_delete_node($node_id);
+    return Limb :: toolkit()->getTree()->can_delete_node($node_id);
   }
 
   protected function _can_delete_site_object($object_id)
@@ -671,7 +671,7 @@ class site_object extends object
 
   public function get_controller()
   {
-    return LimbToolsBox :: getToolkit()->createController($this->_class_properties['controller_class_name']);
+    return Limb :: toolkit()->createController($this->_class_properties['controller_class_name']);
   }
 
   protected function _get_parent_locale_id()

@@ -229,12 +229,12 @@ class image_cache_manager
 
   protected function _get_fetcher()
   {
-    return LimbToolsBox :: getToolkit()->getFetcher();
+    return Limb :: toolkit()->getFetcher();
   }
 
   protected function _get_user()
   {
-    return LimbToolsBox :: getToolkit()->getUser();
+    return Limb :: toolkit()->getUser();
   }
 
   public function is_cacheable()
@@ -271,7 +271,7 @@ class image_cache_manager
 
   protected function _is_user_in_groups($groups)
   {
-    $user = LimbToolsBox :: getToolkit()->getUser();
+    $user = Limb :: toolkit()->getUser();
 
 		foreach	($user->get('groups', array()) as $group_name)
 			if (in_array($group_name, $groups))

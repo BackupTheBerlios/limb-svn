@@ -45,7 +45,7 @@ class content_object extends site_object
 		{
 			$db_table_name = $this->_get_db_table_name();
 				
-			$this->_db_table = LimbToolsBox :: getToolkit()->createDBTable($db_table_name);
+			$this->_db_table = Limb :: toolkit()->createDBTable($db_table_name);
 		}	
 			
 		return $this->_db_table;
@@ -149,7 +149,7 @@ class content_object extends site_object
 		
 	protected function _create_version_record()
 	{
-		$version_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_object_version');
+		$version_db_table = Limb :: toolkit()->createDBTable('sys_object_version');
 		
 		$time = time();
 		
@@ -158,7 +158,7 @@ class content_object extends site_object
 		$data['version'] = $this->get_version();
 		$data['created_date'] = $time;
 		$data['modified_date'] = $time;
-		$data['creator_id'] = LimbToolsBox :: getToolkit()->getUser()->get_id();
+		$data['creator_id'] = Limb :: toolkit()->getUser()->get_id();
 		
 		$version_db_table->insert($data);
 	}

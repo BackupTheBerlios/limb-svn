@@ -42,7 +42,7 @@ class log
   		
   		$notice = '[ ' . $time . " ]\n";
   		
-  		$user = LimbToolsBox :: getToolkit()->getUser();
+  		$user = Limb :: toolkit()->getUser();
   		
 			if(($user_id = $user->get_id()) != user :: DEFAULT_USER_ID)
 				$notice .= '[ ' . $user_id . ' ] [ '  . $user->get_login() . ' ] [ ' . $user->get('email', '') . ' ] ';

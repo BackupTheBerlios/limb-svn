@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class LimbToolsBox
+class Limb
 {
   static protected $toolkit;
   
@@ -18,7 +18,7 @@ class LimbToolsBox
     self :: $toolkit = $toolkit;
   }
 
-  static public function getToolkit()
+  static public function toolkit()
   {
     return self :: $toolkit;
   }

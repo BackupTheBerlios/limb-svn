@@ -86,11 +86,6 @@ abstract class site_object_controller
 		return isset($actions[$action]);
 	}
 	
-	public function get_permissions_required($request = null)
-	{	
-		return $this->get_current_action_property('permissions_required', $request);
-	}
-			
 	public function get_action_name($action)
 	{
 		if(!$name = $this->get_action_property($action, 'action_name'))

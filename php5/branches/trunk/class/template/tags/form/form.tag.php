@@ -92,7 +92,7 @@ class form_tag extends server_tag_component_tag
 		
 		$v = '$' . $code->get_temp_variable();
 		
-		$code->write_php("if({$v} = LimbToolsBox :: getToolkit()->getRequest()->get('node_id')){");
+		$code->write_php("if({$v} = Limb :: toolkit()->getRequest()->get('node_id')){");
 		$code->write_php("echo \"<input type='hidden' name='node_id' value='{$v}'>\";}");
 	}
 			

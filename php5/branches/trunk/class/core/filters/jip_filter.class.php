@@ -20,11 +20,11 @@ class jip_filter implements intercepting_filter
   {
     debug :: add_timing_point('jip filter started');
 
-    $fetcher = LimbToolsBox :: getToolkit()->getFetcher();
+    $fetcher = Limb :: toolkit()->getFetcher();
         
     $fetcher->set_jip_status(false);
     
-    if (LimbToolsBox :: getToolkit()->getUser()->is_logged_in())
+    if (Limb :: toolkit()->getUser()->is_logged_in())
     {
       $ini = get_ini('jip_groups.ini');
       

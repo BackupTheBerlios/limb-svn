@@ -20,9 +20,9 @@ class fetch_sub_branch_datasource implements datasource
 	protected function _fetch(&$counter, $params)
 	{
     if(!isset($params['fetch_method']))
-      return LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch($params['path'], $params['loader_class_name'], $counter, $params);
+      return Limb :: toolkit()->getFetcher()->fetch_sub_branch($params['path'], $params['loader_class_name'], $counter, $params);
     else
-      return LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch($params['path'], $params['loader_class_name'], $counter, $params, $params['fetch_method']);
+      return Limb :: toolkit()->getFetcher()->fetch_sub_branch($params['path'], $params['loader_class_name'], $counter, $params, $params['fetch_method']);
 	}
 }
 

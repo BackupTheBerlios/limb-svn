@@ -57,7 +57,7 @@ foreach($nodes as $node)
 		continue;
 	}
 	
-	$site_object = LimbToolsBox :: getToolkit()->createSiteObject($row['class_name']);
+	$site_object = Limb :: toolkit()->createSiteObject($row['class_name']);
 	
 	$object_data = current($site_object->fetch_by_ids(array($node['object_id'])));
 	

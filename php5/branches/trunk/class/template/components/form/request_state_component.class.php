@@ -18,7 +18,7 @@ class request_state_component extends input_hidden_component
 				
 		if($form->is_first_time())
 		{
-		  if($value = LimbToolsBox :: getToolkit()->getRequest()->get($this->attributes['name']))
+		  if($value = Limb :: toolkit()->getRequest()->get($this->attributes['name']))
 		    return $value;
 		  else
 		    return '';

@@ -52,6 +52,11 @@ require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');
 require_once(LIMB_DIR . '/tests/lib/test_finder.class.php');
 require_once(LIMB_DIR . '/class/lib/error/error.inc.php');
 
+require_once(LIMB_DIR . '/class/core/limb.class.php');
+require_once(LIMB_DIR . 'class/core/base_limb_toolkit.class.php');
+
+Limb :: registerToolkit(new BaseLimbToolkit());
+
 set_time_limit(0);
 error_reporting(E_ALL);
 

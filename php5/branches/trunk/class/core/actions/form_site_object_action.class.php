@@ -62,7 +62,7 @@ abstract class form_site_object_action extends form_action
 	
 	public function get_site_object()
 	{
-		return LimbToolsBox :: getToolkit()->createSiteObject($this->site_object_class_name);
+		return Limb :: toolkit()->createSiteObject($this->site_object_class_name);
 	}	
 }
 ?>

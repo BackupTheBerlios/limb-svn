@@ -16,6 +16,7 @@ class datasource_component extends component
 {
 	protected $parameters = array();
 	protected $datasource = null;
+	protected $_has_navigator = false;
 	
 	protected $total_count = 0;
 	
@@ -33,8 +34,11 @@ class datasource_component extends component
     	);
 			return new empty_dataset();
 		}
-
-		return $datasource->get_dataset($this->total_count, $this->_get_params_array());
+     
+    if($this->_has_navigator)
+      return $datasource->get_dataset($this->total_count, $this->_get_params_array());
+    else
+      return $datasource->get_dataset($counter = null, $this->_get_params_array());
 	}
 
 	public function get_total_count()
@@ -92,7 +96,7 @@ class datasource_component extends component
 		if ($this->datasource)
 			return $this->datasource;
 		
-		$this->datasource = LimbToolsBox :: getToolkit()->createDatasource($this->parameters['datasource_path']);
+		$this->datasource = Limb :: toolkit()->createDatasource($this->parameters['datasource_path']);
 		
 		return $this->datasource;
 	}
@@ -164,6 +168,8 @@ class datasource_component extends component
 		if (!$navigator)
 			return null;
 		
+    $this->_has_navigator = true;
+    
 		return $navigator;
 	}
 }

@@ -81,7 +81,7 @@ abstract class form_create_site_object_action extends form_site_object_action
 	{
 		$parent_data = $this->_load_parent_object_data();
 
-		$parent_object = LimbToolsBox :: getToolkit()->createSiteObject($parent_data['class_name']);
+		$parent_object = Limb :: toolkit()->createSiteObject($parent_data['class_name']);
 
 		$parent_object->merge($parent_data);
 
@@ -98,7 +98,7 @@ abstract class form_create_site_object_action extends form_site_object_action
 
 	protected function _load_parent_object_data($request)
 	{
-		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
+		return Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 	}
 }
 ?>

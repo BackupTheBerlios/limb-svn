@@ -18,17 +18,13 @@ class actions_component_test extends LimbTestCase
   	$j = new actions_component();
   	
   	$actions = array(
-			'display' => array(
-					'permissions_required' => 'r',
-			),
+			'display' => array(),
 			'edit' => array(
-					'permissions_required' => 'r',
 					'JIP' => false,
 					'action_name' => strings :: get('edit'),
 					'img_src' => '/shared/images/edit.gif',
 			),
 			'delete' => array(
-					'permissions_required' => 'r',
 					'JIP' => true,
 					'action_name' => strings :: get('delete'),
 					'img_src' => '/shared/images/rem.gif',

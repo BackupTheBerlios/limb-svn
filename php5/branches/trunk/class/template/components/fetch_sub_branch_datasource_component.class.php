@@ -33,8 +33,8 @@ class fetch_sub_branch_datasource_component extends datasource_component
 		
 		if(!isset($params['path']) || !$params['path'])
 		{
-      $request = LimbToolsBox :: getToolkit()->getRequest();
-			$object_arr = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
+      $request = Limb :: toolkit()->getRequest();
+			$object_arr = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 			$params['path'] = $object_arr['path'];
 		}
 		

@@ -172,7 +172,7 @@ class options_form_element extends container_form_element
 	
 	protected function _get_datasource()
 	{
-		return LimbToolsBox :: getToolkit()->createDatasource($this->get_attribute('options_datasource'));
+		return Limb :: toolkit()->createDatasource($this->get_attribute('options_datasource'));
 	}
 } 
 
