@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/core/session.class.php');
+require_once(LIMB_DIR . '/class/core/session/session.class.php');
 
 class message_box
 {
@@ -23,7 +23,7 @@ class message_box
   
   function message_box()
   {
-  	$this->strings = session :: get('strings');
+  	$this->strings = Limb :: toolkit()->getSession()->get('strings');
   }
 
   public static function reset()

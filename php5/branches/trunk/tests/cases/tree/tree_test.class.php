@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
 require_once(LIMB_DIR . '/class/core/tree/drivers/tree_driver.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/session.class.php');
+require_once(LIMB_DIR . '/class/core/session/session.class.php');
 
 Mock :: generate('LimbToolkit'); 
 Mock :: generate('tree_driver');

@@ -12,7 +12,6 @@ if(!defined('PAGE_CACHE_DIR'))
   define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
   
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 class full_page_cache_manager
 {

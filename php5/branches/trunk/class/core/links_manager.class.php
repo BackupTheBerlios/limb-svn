@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 
 class links_manager

@@ -10,7 +10,6 @@
 ***********************************************************************************/ 
 //Inspired by EZpublish(http//ez.no), debug class
 require_once(LIMB_DIR . '/class/lib/system/sys.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 if(!defined('DEBUG_HTTP_CONSOLE_DIR'))
   define('DEBUG_HTTP_CONSOLE_DIR', '/var/');

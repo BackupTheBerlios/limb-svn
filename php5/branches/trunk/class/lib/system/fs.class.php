@@ -38,39 +38,56 @@ class fs
   static public function mkdir($dir, $perm=0777, $parents=true)
   {      
     $dir = self :: clean_path($dir);
-    
+     
     if(is_dir($dir))
       return;
     
     if(!$parents)
     {
     	self :: _do_mkdir($dir, $perm);
-    	return;
+      return;
     }
     
     $separator = self :: separator();
     	
-    $dir_elements = self :: explode_path($dir);
+    $path_elements = self :: explode_path($dir);
         
-    if (count($dir_elements) == 0)
+    if (count($path_elements) == 0)
     	return;
     
-    if(!$dir_elements[0])
+    $index = self :: _get_first_existent_path_index($path_elements, $separator);
+
+    if($index === false)
     {
-    	array_shift($dir_elements);
-    	$current_dir = $separator . array_shift($dir_elements);
+      throw new IOException('cant find first existent path', array('dir' => $dir)); 
     }
-    else
-    	$current_dir = array_shift($dir_elements);
-		    
-    self :: _do_mkdir($current_dir, $perm);
-          	
-    for ($i=0; $i < count($dir_elements); $i++ )
+
+    $offset_path = '';    
+    for ($i=0; $i < $index; $i++)
     {
-      $current_dir .= $separator . $dir_elements[$i];			
-      self :: _do_mkdir($current_dir, $perm);
+      $offset_path .= $path_elements[$i] . $separator;
     }
+        
+    for ($i=$index; $i < count($path_elements); $i++)
+    {
+      $offset_path .= $path_elements[$i] . $separator;			
+      self :: _do_mkdir($offset_path, $perm);
+    }    
   }
+  
+  static protected function _get_first_existent_path_index($path_elements, $separator)
+  {  
+    for ($i=count($path_elements); $i > 0; $i--)
+    {
+      $path = implode($separator, $path_elements);
+      
+      if(is_dir($path))
+        return $i; 
+      
+      array_pop($path_elements); 
+    }
+    return false;
+  }  
   
   /*
    Creates the directory $dir with permission $perm.

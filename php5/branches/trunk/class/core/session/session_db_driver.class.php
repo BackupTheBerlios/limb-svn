@@ -8,10 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/session_driver.interface.php');
-require_once(LIMB_DIR . '/class/lib/system/sys.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/session/session_driver.interface.php');
 
 class session_db_driver implements session_driver
 {

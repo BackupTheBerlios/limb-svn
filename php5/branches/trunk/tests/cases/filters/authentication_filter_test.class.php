@@ -211,7 +211,7 @@ class authentication_filter_test extends LimbTestCase
 
     $this->response->expectOnce('redirect'); 
     
-    $this->filter_chain->expectOnce('next');
+    $this->filter_chain->expectNever('next');
     
     $this->filter->run($this->filter_chain, $this->request, $this->response);
     

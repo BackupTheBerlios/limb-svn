@@ -66,7 +66,7 @@ class node_select_component extends input_form_element
   	$only_parents_condition = "";
   	$start_path = $this->get_attribute('start_path');
   	if(!$start_path)
-  		$start_path = session :: get('limb_node_select_working_path');
+  		$start_path = Limb :: toolkit()->getSession()->get('limb_node_select_working_path');
   	if(!$start_path)
 			$start_path = '/root';
 

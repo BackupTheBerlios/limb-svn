@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
-require_once(LIMB_DIR . '/class/core/session.class.php');
+require_once(LIMB_DIR . '/class/core/session/session.class.php');
 
 class authentication_filter implements intercepting_filter
 {

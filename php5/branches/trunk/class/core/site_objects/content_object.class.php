@@ -8,10 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . '/class/core/dataspace.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 class content_object extends site_object
 {
