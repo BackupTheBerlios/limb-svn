@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/util/ini_support.inc.php');
+require_once(LIMB_DIR . '/core/util/ini_support.inc.php');
 
 if(!$SimpleTest_dir = getIniOption('external.ini', 'library_path', 'SimpleTest'))
   $SimpleTest_dir = '../external/SimpleTest/';

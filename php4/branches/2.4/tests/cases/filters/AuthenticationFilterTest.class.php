@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/FilterChain.class.php');
-require_once(LIMB_DIR . '/class/filters/AuthenticationFilter.class.php');
-require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
-require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
-require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
-require_once(LIMB_DIR . '/class/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/permissions/Authenticator.interface.php');
-require_once(LIMB_DIR . '/class/util/Ini.class.php');
+require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/core/filters/AuthenticationFilter.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/core/permissions/Authenticator.interface.php');
+require_once(LIMB_DIR . '/core/util/Ini.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('FilterChain');

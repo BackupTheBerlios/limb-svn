@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/image/ImageGd.class.php');
+require_once(LIMB_DIR . '/core/image/ImageGd.class.php');
 require_once(LIMB_DIR . 'tests/cases/image/ImageLibraryTest.class.php');
 
 class GdLibraryTest extends ImageLibraryTest

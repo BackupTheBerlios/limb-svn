@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/util/ComplexArray.class.php');
+require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
 
 $url = parse_url($_SERVER['REQUEST_URI']);
 

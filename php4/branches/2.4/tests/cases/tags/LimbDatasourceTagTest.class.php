@@ -10,8 +10,8 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
 
 class CountableDatasource// implements Datasource, Countable
 {

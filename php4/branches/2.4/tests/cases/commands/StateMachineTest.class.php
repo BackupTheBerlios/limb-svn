@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/StateMachine.class.php');
-require_once(LIMB_DIR . '/class/commands/Command.interface.php');
+require_once(LIMB_DIR . '/core/commands/StateMachine.class.php');
+require_once(LIMB_DIR . '/core/commands/Command.interface.php');
 
 Mock :: generate('Command');
 

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/search/FullTextSearch.class.php');
-require_once(LIMB_DIR . '/class/search/SearchQuery.class.php');
+require_once(LIMB_DIR . '/core/search/FullTextSearch.class.php');
+require_once(LIMB_DIR . '/core/search/SearchQuery.class.php');
 
 class SearchFullTextFindTest extends LimbTestCase
 {

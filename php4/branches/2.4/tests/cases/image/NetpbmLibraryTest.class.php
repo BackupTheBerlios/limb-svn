@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/image/ImageNetpbm.class.php');
+require_once(LIMB_DIR . '/core/image/ImageNetpbm.class.php');
 
 class NetpbmLibraryTest extends ImageLibraryTest
 {

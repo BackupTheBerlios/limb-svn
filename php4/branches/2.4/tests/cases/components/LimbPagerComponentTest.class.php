@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/LimbPagerComponent.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
+require_once(LIMB_DIR . '/core/template/components/LimbPagerComponent.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Request');

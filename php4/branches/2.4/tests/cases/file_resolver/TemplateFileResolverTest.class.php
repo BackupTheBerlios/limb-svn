@@ -10,7 +10,7 @@
 ***********************************************************************************/
 define('OVERRIDE_TEMPLATE_DIR_FOR_TEST', dirname(__FILE__) . '/design/');
 require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
-require_once(LIMB_DIR . '/class/file_resolvers/TemplateFileResolver.class.php');
+require_once(LIMB_DIR . '/core/file_resolvers/TemplateFileResolver.class.php');
 
 Mock :: generatePartial(
   'TemplateFileResolver',

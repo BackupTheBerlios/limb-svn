@@ -11,7 +11,7 @@
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 
-require_once(LIMB_DIR . '/class/validators/rules/InvalidValueRule.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/InvalidValueRule.class.php');
 
 class InvalidValueRuleTest extends SingleFieldRuleTestCase
 {

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
-require_once(LIMB_DIR . '/class/validators/rules/TreeIdentifierRule.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/TreeIdentifierRule.class.php');
 
 class TreeIdentifierRuleTest extends SingleFieldRuleTestCase
 {

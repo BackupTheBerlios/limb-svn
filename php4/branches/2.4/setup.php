@@ -14,6 +14,6 @@
 if(isset($_SERVER['SERVER_PORT']) &&  $_SERVER['SERVER_PORT'] == 81)
   define('ERROR_HANDLER_TYPE', 'native');
 
-require_once(dirname(__FILE__) . '/class/exceptions/setup.php');
+require_once(dirname(__FILE__) . '/core/exceptions/setup.php');
 
 ?>

@@ -24,17 +24,17 @@ require_once(dirname(__FILE__) . '/../../../../external/wact/framework/common.in
 restore_error_handler();
 @define('TMPL_FILESCHEME_PATH', WACT_ROOT . '/../tests/filescheme/');
 
-require_once(LIMB_DIR . '/class/Limb.class.php');
+require_once(LIMB_DIR . '/core/Limb.class.php');
 require_once(LIMB_DIR . '/setup.php');
 require_once(LIMB_DIR . '/tests/lib/DebugMock.class.php');//don't move this line!!!
 
-require_once(LIMB_DIR . '/class/file_resolvers/file_resolvers_registry.inc.php');
-include_once(LIMB_DIR . '/class/file_resolvers/PackageFileResolver.class.php');
-include_once(LIMB_DIR . '/class/file_resolvers/DbTableFileResolver.class.php');
-include_once(LIMB_DIR . '/class/file_resolvers/BehaviourFileResolver.class.php');
-include_once(LIMB_DIR . '/class/file_resolvers/DatasourceFileResolver.class.php');
-include_once(LIMB_DIR . '/class/file_resolvers/SiteObjectFileResolver.class.php');
-include_once(LIMB_DIR . '/class/file_resolvers/TemplateFileResolver.class.php');
+require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_registry.inc.php');
+include_once(LIMB_DIR . '/core/file_resolvers/PackageFileResolver.class.php');
+include_once(LIMB_DIR . '/core/file_resolvers/DbTableFileResolver.class.php');
+include_once(LIMB_DIR . '/core/file_resolvers/BehaviourFileResolver.class.php');
+include_once(LIMB_DIR . '/core/file_resolvers/DatasourceFileResolver.class.php');
+include_once(LIMB_DIR . '/core/file_resolvers/SiteObjectFileResolver.class.php');
+include_once(LIMB_DIR . '/core/file_resolvers/TemplateFileResolver.class.php');
 
 registerFileResolver('ini',         LIMB_DIR . '/tests/lib/testsIniFileResolver');
 registerFileResolver('action',      LIMB_DIR . '/tests/lib/testsActionFileResolver');
@@ -49,9 +49,9 @@ require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/cases/LimbTestCase.class.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
-require_once(LIMB_DIR . '/class/error/error.inc.php');
-require_once(LIMB_DIR . '/class/PackagesInfo.class.php');
-require_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
+require_once(LIMB_DIR . '/core/error/error.inc.php');
+require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 Limb :: registerToolkit(new LimbBaseToolkit());
 

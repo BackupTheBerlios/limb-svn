@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/file_resolvers/FileResolverDecorator.class.php');
+require_once(LIMB_DIR . '/core/file_resolvers/FileResolverDecorator.class.php');
 
 class AppTestsStringsFileResolver extends FileResolverDecorator
 {

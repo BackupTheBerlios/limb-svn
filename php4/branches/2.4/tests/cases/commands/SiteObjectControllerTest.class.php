@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/StateMachine.class.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/core/commands/StateMachine.class.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
 
 Mock :: generate('StateMachine');
 Mock :: generate('Request');

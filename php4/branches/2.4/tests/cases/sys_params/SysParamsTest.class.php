@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
-require_once(LIMB_DIR . '/class/SysParam.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/db_tables/LimbDbTableFactory.class.php');
+require_once(LIMB_DIR . '/core/SysParam.class.php');
 
 class SysParamsTest extends LimbTestCase
 {

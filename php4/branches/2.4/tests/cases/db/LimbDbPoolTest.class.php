@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/util/ini_support.inc.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/util/ini_support.inc.php');
 
 class LimbDbPoolTest extends LimbTestCase
 {

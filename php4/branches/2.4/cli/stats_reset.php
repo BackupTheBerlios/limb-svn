@@ -15,7 +15,7 @@ else
   die('project dir required');
 
 require_once($project_dir . '/setup.php');
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 $db =& LimbDbPool :: getConnection();
 

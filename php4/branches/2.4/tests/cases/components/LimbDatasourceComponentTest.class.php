@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/datasource/LimbDatasourceComponent.class.php');
+require_once(LIMB_DIR . '/core/template/components/datasource/LimbDatasourceComponent.class.php');
 require_once(WACT_ROOT . '/template/components/list/list.inc.php');
-require_once(LIMB_DIR . '/class/template/components/LimbPagerComponent.class.php');
-require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
-require_once(LIMB_DIR . '/class/datasources/Countable.interface.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/template/components/LimbPagerComponent.class.php');
+require_once(LIMB_DIR . '/core/datasources/Datasource.interface.php');
+require_once(LIMB_DIR . '/core/datasources/Countable.interface.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 
 class LimbDatasourceComponentTestVersion //implements Datasource, Countable
 {

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/file_resolvers/FileResolver.interface.php');
-require_once(LIMB_DIR . '/class/file_resolvers/CachingFileResolver.class.php');
+require_once(LIMB_DIR . '/core/file_resolvers/FileResolver.interface.php');
+require_once(LIMB_DIR . '/core/file_resolvers/CachingFileResolver.class.php');
 
 Mock :: generate('FileResolver');
 

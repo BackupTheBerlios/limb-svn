@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/LinksManager.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/LinksManager.class.php');
 
 class LinksManagerTest extends LimbTestCase
 {

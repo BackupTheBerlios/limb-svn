@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/FilterChain.class.php');
-require_once(LIMB_DIR . '/class/filters/InterceptingFilter.interface.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/core/filters/InterceptingFilter.interface.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
 
 Mock :: generate('InterceptingFilter');
 Mock :: generate('Request');

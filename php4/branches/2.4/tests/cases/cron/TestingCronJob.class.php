@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cron/cronjobs/CronjobCommand.class.php');
+require_once(LIMB_DIR . '/core/cron/cronjobs/CronjobCommand.class.php');
 
 class TestingCronJob extends CronjobCommand
 {

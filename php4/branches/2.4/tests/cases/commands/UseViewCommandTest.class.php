@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
-require_once(LIMB_DIR . '/class/commands/UseViewCommand.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/commands/UseViewCommand.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 
 class UseViewCommandTest extends LimbTestCase
 {

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
-require_once(LIMB_DIR . '/class/db/DbModule.class.php');
-require_once(LIMB_DIR . '/class/finders/SiteObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
-require_once(LIMB_DIR . '/class/tree/MaterializedPathTree.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/db_tables/LimbDbTableFactory.class.php');
+require_once(LIMB_DIR . '/core/db/DbModule.class.php');
+require_once(LIMB_DIR . '/core/finders/SiteObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/core/tree/MaterializedPathTree.class.php');
 
 Mock :: generate('DbModule');
 Mock :: generate('LimbToolkit');

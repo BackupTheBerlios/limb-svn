@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
-require_once(LIMB_DIR . '/class/validators/rules/UsZipRule.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/UsZipRule.class.php');
 
 class UsZipRuleTest extends SingleFieldRuleTestCase
 {

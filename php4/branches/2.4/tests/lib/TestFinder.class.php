@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/system/Fs.class.php');
-require_once(LIMB_DIR . '/class/PackagesInfo.class.php');
+require_once(LIMB_DIR . '/core/system/Fs.class.php');
+require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
 
 class TestFinder
 {

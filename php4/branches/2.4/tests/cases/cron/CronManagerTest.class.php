@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cron/CronManager.class.php');
-require_once(LIMB_DIR . '/class/cron/cronjobs/CronjobCommand.class.php');
-require_once(LIMB_DIR . '/class/request/Response.interface.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/cron/CronManager.class.php');
+require_once(LIMB_DIR . '/core/cron/cronjobs/CronjobCommand.class.php');
+require_once(LIMB_DIR . '/core/request/Response.interface.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 
 Mock :: generate('CronjobCommand');
 Mock :: generate('Response');

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/class/tree/TreeSorter.class.php');
+require_once(LIMB_DIR . '/core/tree/TreeSorter.class.php');
 
 class TreeSorterTest extends LimbTestCase
 {

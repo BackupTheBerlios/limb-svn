@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/data_mappers/OneTableObjectsMapper.class.php');
-require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/OneTableObjectsMapper.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
 require_once(dirname(__FILE__) . '/OneTableObjectsMapperTestVersionDbTable.class.php');
-require_once(LIMB_DIR . '/class/finders/OneTableObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/core/finders/OneTableObjectsRawFinder.class.php');
 
 class OneTableObjectsMapperTestVersion extends OneTableObjectsMapper
 {

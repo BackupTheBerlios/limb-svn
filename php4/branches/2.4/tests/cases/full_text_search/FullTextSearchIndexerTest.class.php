@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
-require_once(LIMB_DIR . '/class/search/FullTextIndexer.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/core/search/FullTextIndexer.class.php');
 
 Mock :: generate('SiteObject');
 

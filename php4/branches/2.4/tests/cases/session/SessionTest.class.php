@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/session/Session.class.php');
-require_once(LIMB_DIR . '/class/session/SessionDriver.interface.php');
+require_once(LIMB_DIR . '/core/session/Session.class.php');
+require_once(LIMB_DIR . '/core/session/SessionDriver.interface.php');
 
 Mock :: generate('SessionDriver');
 

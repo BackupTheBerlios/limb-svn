@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/SiteObjectsDatasource.class.php');
-require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/class/permissions/Authorizer.interface.php');
-require_once(LIMB_DIR . '/class/finders/DataFinder.interface.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/cache/CacheRegistry.class.php');
+require_once(LIMB_DIR . '/core/datasources/SiteObjectsDatasource.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/core/permissions/Authorizer.interface.php');
+require_once(LIMB_DIR . '/core/finders/DataFinder.interface.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
 
 Mock :: generatePartial('SiteObjectsDatasource', 'SpecialSiteObjectsDatasource',
   array('_getBehavioursIds', 'getObjectIds', '_getFinder'));

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cache/CacheRegistry.class.php');
+require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
 
 class CacheRegistryTest extends LimbTestCase
 {

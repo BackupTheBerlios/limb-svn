@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/finders/VersionedOneTableObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/core/finders/VersionedOneTableObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('LimbDbTable');

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/data_mappers/VersionedOneTableObjectsMapper.class.php');
-require_once(LIMB_DIR . '/class/site_objects/VersionedSiteObject.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/VersionedOneTableObjectsMapper.class.php');
+require_once(LIMB_DIR . '/core/site_objects/VersionedSiteObject.class.php');
 require_once(dirname(__FILE__) . '/OneTableObjectsMapperTestVersionDbTable.class.php');
-require_once(LIMB_DIR . '/class/finders/VersionedOneTableObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
+require_once(LIMB_DIR . '/core/finders/VersionedOneTableObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 Mock :: generatePartial('LimbBaseToolkit',
                       'VersionedOneTableObjectsToolkitMock', array());

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db/SimpleQueryBuilder.class.php');
+require_once(LIMB_DIR . '/core/db/SimpleQueryBuilder.class.php');
 
 class SimpleQueryBuilderTest extends LimbTestCase
 {

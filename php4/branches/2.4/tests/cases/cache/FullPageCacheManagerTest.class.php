@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cache/FullPageCacheManager.class.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/http/Uri.class.php');
+require_once(LIMB_DIR . '/core/cache/FullPageCacheManager.class.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/http/Uri.class.php');
 
 Mock :: generate('Request');
 Mock :: generate('Uri');

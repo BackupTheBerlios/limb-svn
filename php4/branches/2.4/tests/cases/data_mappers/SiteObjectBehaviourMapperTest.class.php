@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/data_mappers/SiteObjectBehaviourMapper.class.php');
-require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/SiteObjectBehaviourMapper.class.php');
+require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
 
 Mock :: generatePartial('SiteObjectBehaviourMapper',
                         'SiteObjectBehaviourMapperTestVersion',

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/search/SearchQuery.class.php');
+require_once(LIMB_DIR . '/core/search/SearchQuery.class.php');
 
 class SearchQueryTest extends LimbTestCase
 {

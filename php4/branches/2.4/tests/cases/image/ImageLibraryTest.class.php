@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-@define('PHP_IMAGE_DIR_C', LIMB_DIR . '/class/image/');
+@define('PHP_IMAGE_DIR_C', LIMB_DIR . '/core/image/');
 
 SimpleTestOptions :: ignore('ImageLibraryTest');
 

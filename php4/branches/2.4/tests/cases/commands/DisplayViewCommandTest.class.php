@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/DisplayViewCommand.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/request/Response.interface.php');
+require_once(LIMB_DIR . '/core/commands/DisplayViewCommand.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/request/Response.interface.php');
 
 require_once(WACT_ROOT . '/template/template.inc.php');
 

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/datasource/SiteObjectComponent.class.php');
-require_once(LIMB_DIR . '/class/datasources/SingleObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/template/components/datasource/SiteObjectComponent.class.php');
+require_once(LIMB_DIR . '/core/datasources/SingleObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generatePartial('SiteObjectComponent',

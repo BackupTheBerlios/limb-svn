@@ -10,8 +10,8 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
-require_once(LIMB_DIR . '/class/validators/rules/LocaleDateRule.class.php');
-require_once(LIMB_DIR . '/class/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/LocaleDateRule.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
 class LocaleDateRuleTest extends SingleFieldRuleTestCase
 {

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
-require_once(LIMB_DIR . '/class/file_resolvers/DbTableFileResolver.class.php');
+require_once(LIMB_DIR . '/core/file_resolvers/DbTableFileResolver.class.php');
 
 class DbTableFileResolverTest extends BasePackageFileResolverTest
 {
@@ -21,7 +21,7 @@ class DbTableFileResolverTest extends BasePackageFileResolverTest
   function testResolveDbTableFileFromLimb()
   {
     $this->assertEqual($this->resolver->resolve('OneTableObject'),
-                       LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
+                       LIMB_DIR . '/core/db_tables/OneTableObjectDbTable.class.php');
   }
 
   function testResolveDbTableFileOk()

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/search/normalizers/SearchTextNormalizer.class.php');
+require_once(LIMB_DIR . '/core/search/normalizers/SearchTextNormalizer.class.php');
 
 class SearchTextNormalizerTest extends LimbTestCase
 {

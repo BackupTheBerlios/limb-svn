@@ -9,15 +9,15 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/tests/lib/SiteObjectsLoader.class.php');
-require_once(LIMB_DIR . '/class/system/Fs.class.php');
+require_once(LIMB_DIR . '/core/system/Fs.class.php');
 
 class AllSiteObjectsLoader extends SiteObjectsLoader
 {
   function getClassesList()
   {
     $contents = array_merge(
-      Fs :: ls(LIMB_DIR . '/class/site_objects/'),
-      Fs :: ls(LIMB_APP_DIR . '/class/site_objects/')
+      Fs :: ls(LIMB_DIR . '/core/site_objects/'),
+      Fs :: ls(LIMB_APP_DIR . '/core/site_objects/')
     );
 
     $classes_list = array();

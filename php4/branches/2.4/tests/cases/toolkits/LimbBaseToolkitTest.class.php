@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 class ViewTestVersion{}
 

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/FilterChain.class.php');
-require_once(LIMB_DIR . '/class/filters/FullPageCacheFilter.class.php');
-require_once(LIMB_DIR . '/class/cache/FullPageCacheManager.class.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/core/filters/FullPageCacheFilter.class.php');
+require_once(LIMB_DIR . '/core/cache/FullPageCacheManager.class.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('FilterChain');

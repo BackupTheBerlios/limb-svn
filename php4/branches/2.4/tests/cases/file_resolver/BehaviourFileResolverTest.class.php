@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
-require_once(LIMB_DIR . '/class/file_resolvers/BehaviourFileResolver.class.php');
+require_once(LIMB_DIR . '/core/file_resolvers/BehaviourFileResolver.class.php');
 
 class BehaviourFileResolverTest extends BasePackageFileResolverTest
 {

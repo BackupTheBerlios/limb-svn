@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
-require_once(LIMB_DIR . '/class/request/HttpCache.class.php');
+require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/core/request/HttpCache.class.php');
 
 Mock :: generate('HttpResponse');
 

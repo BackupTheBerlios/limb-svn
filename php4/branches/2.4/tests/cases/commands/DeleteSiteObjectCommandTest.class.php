@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/DeleteSiteObjectCommand.class.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/core/commands/DeleteSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Request');

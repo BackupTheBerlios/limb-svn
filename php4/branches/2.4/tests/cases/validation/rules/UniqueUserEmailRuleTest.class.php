@@ -10,8 +10,8 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
-require_once(LIMB_DIR . '/class/validators/rules/UniqueUserEmailRule.class.php');
-require_once(LIMB_DIR . '/class/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/UniqueUserEmailRule.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
 class UniqueEmailUserRuleTest extends SingleFieldRuleTestCase
 {

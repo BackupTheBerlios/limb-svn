@@ -10,7 +10,7 @@
 ***********************************************************************************/
 define('PACKAGES_DIR_FOR_PACKAGES_INFO_TEST', dirname(__FILE__) . '/packages/');
 
-require_once(LIMB_DIR . '/class/PackagesInfo.class.php');
+require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
 
 class PackagesInfoTest extends LimbTestCase
 {

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/system/Sys.class.php');
-require_once(LIMB_DIR . '/class/system/Fs.class.php');
+require_once(LIMB_DIR . '/core/system/Sys.class.php');
+require_once(LIMB_DIR . '/core/system/Fs.class.php');
 
 define('TEST_DIR_ABSOLUTE_PATH', LIMB_DIR . '/var/');
 define('TEST_DIR_RELATIVE_PATH', 'var');

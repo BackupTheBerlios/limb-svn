@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/SingleObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/datasources/SingleObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Tree');
