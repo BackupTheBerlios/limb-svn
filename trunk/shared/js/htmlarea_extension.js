@@ -219,9 +219,24 @@ function insert_limb_repository_file(e, id)
 	  function (obj){});
 }
 
+//===========================================================
+HTMLArea.prototype.stripBaseURL = function(string) {
+	var baseurl = this.config.baseURL;
+  
+	// strip to last directory in case baseurl points to a file
+	baseurl = baseurl.replace(/(\/\/[^\/]+)(\/?.*)$/, '$1');
+	var basere = new RegExp(baseurl);
+	string = string.replace(basere, "");
+
+	// strip host-part of URL which is added by MSIE to links relative to server root
+	baseurl = baseurl.replace(/^(https?:\/\/[^\/]+)(.*)$/, '$1');
+	basere = new RegExp(baseurl);
+	return string.replace(basere, "");
+};
+
 HTMLArea.isBlockElement = function(el) //quick and dirty hack
 {
-  if(!el.tagName)
+  if(!el.tagName)//sometimes it can be not a tag at all in Mozilla!
   {
     return false;
   }
