@@ -27,6 +27,7 @@ class vote_action extends form_action
 		if (!isset($data['answer']))
 		{
 			message_box :: write_notice(strings :: get('no_answer', 'poll'));
+			$response->redirect('/root/polls');
 			return;
 		}
 		

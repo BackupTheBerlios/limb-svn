@@ -19,6 +19,7 @@ require_once(LIMB_DIR . 'core/filters/filter_chain.class.php');
 require_once(LIMB_DIR . 'core/request/response.class.php');
 require_once(LIMB_DIR . 'core/request/request.class.php');
 require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
+require_once(LIMB_DIR . 'core/lib/system/message_box.class.php');
 
 // filters include
 $request =& request :: instance();
@@ -36,7 +37,9 @@ $filter_chain->register_filter($f6 = LIMB_DIR . 'core/filters/site_object_contro
 $filter_chain->process();
 
 if (debug :: is_console_enabled())
-	echo debug :: parse_html_console();
+	echo debug :: parse_html_console();//FIXXX
+	
+echo message_box :: parse();//FIXXX
 
 $response->commit();
 

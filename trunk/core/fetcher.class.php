@@ -313,7 +313,7 @@ class fetcher
 		$uri = new uri($url);
 		
 		if(($node_id = $uri->get_query_item('node_id')) === false)
-			$node =& $tree->get_node_by_path($uri->path, '/', $recursive);
+			$node =& $tree->get_node_by_path($uri->get_path(), '/', $recursive);
 		else
 			$node =& $tree->get_node((int)$node_id);
 		
