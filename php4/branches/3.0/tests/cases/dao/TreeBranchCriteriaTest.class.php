@@ -48,7 +48,14 @@ class TreeBranchCriteriaTest extends LimbTestCase
     $this->_cleanUp();
 
     $this->dao = new SQLBasedDAOTBCTestVersion($this);
-    $this->sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
+
+    $sql = 'SELECT sys_object.oid as oid, '.
+           'tree.id as node_id, tree.parent_id as parent_node_id, tree.identifier %fields% '.
+           ' FROM sys_object, sys_tree as tree, sys_object_to_node %tables% '.
+           ' WHERE sys_object_to_node.oid = sys_object.oid AND sys_object_to_node.node_id = tree.id'.
+           ' %where%';
+
+    $this->sql = new ComplexSelectSQL($sql);
     $this->dao->setReturnReference('_initSQL', $this->sql);
     $this->dao->SQLBasedDAO();
 

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: SiteObjectsBranchDAO.class.php 1034 2005-01-19 13:49:23Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 class TreeBranchCriteria
@@ -51,12 +51,6 @@ class TreeBranchCriteria
   function process(&$sql)
   {
     $node_ids = $this->_getNodeIds();
-
-    $sql->addField('tree.*');
-    $sql->addTable('sys_object_to_node');
-    $sql->addTable('sys_tree as tree');
-    $sql->addCondition('sys_object_to_node.oid = sys_object.oid');
-    $sql->addCondition('sys_object_to_node.node_id = tree.id');
 
     if(count($node_ids))
       $sql->addCondition('tree.id IN (' . implode(',', $node_ids). ')');
