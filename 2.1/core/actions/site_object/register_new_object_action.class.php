@@ -47,6 +47,7 @@ class register_new_object_action extends form_action
 		$params['identifier'] = $this->dataspace->get('identifier');
 		$params['parent_path'] = $this->dataspace->get('parent_path');
 		$params['class'] = $this->dataspace->get('class_name');
+		$params['title'] = $this->dataspace->get('title');
 		
 		$object =& site_object_factory :: create($params['class']);
 		

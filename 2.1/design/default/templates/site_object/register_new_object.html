@@ -5,12 +5,12 @@
 	<table>
 	
 	<tr>
-		<td><span class=req>*</span><locale:STRING name='class_name'></td>
-		<td><input type='text' name='class_name' id='class_name' class='input'></td>
+		<td><label for="class_name"><span class='req'>*</span><locale:STRING name='class_name'></label>
+		<td><input type='text' name='class_name' id='class_name' label="Class name" class='input'></td>
 	</tr>
 	<tr>
-		<td><span class=req>*</span><locale:STRING name='parent'></td>
-		<td><input type='text' name='parent_path' id='parent_path' class='input'></td>
+		<td><label for="parent_path"><span class='req'>*</span><locale:STRING name='parent'></label>
+		<td><input type='text' name='parent_path' id='parent_path' label="Parent element" class='input'></td>
 	</tr>
 	
 	<core:INCLUDE file='/admin/admin_form_items/identifier.html'>	
