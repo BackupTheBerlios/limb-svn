@@ -33,9 +33,20 @@ class core_dataspace_tag extends server_component_tag
 	*/
 	function pre_generate(&$code)
 	{
-		parent::pre_generate($code);
-		$code->write_php($this->get_dataspace_ref_code() . '->prepare();');
+		$code->write_php($this->get_component_ref_code() . '->prepare();');
+		
+		parent :: pre_generate($code);
+
+		$code->write_php('if (!' . $this->get_dataspace_ref_code() . '->is_empty()){');
 	} 
+
+	function post_generate(&$code)
+	{
+		$code->write_php('}');
+		
+		parent :: post_generate($code);
+	} 
+
 
 	/**
 	* Return this instance of the dataspace

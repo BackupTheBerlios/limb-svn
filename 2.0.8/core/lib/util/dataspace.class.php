@@ -223,6 +223,11 @@ class dataspace
 	{
 		$this->vars = array();
 	}
+	
+	function is_empty()
+	{
+		return count($this->vars) ? false : true;
+	}
 } 
 
 ?>

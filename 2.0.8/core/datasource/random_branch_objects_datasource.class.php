@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
 
-define ('DEFAULT_RANDOM_LIMIT', 3);
+define ('DEFAULT_BRANCH_RANDOM_LIMIT', 3);
 
 class random_branch_objects_datasource extends fetch_sub_branch_datasource
 {
@@ -21,7 +21,7 @@ class random_branch_objects_datasource extends fetch_sub_branch_datasource
 
 	function & _fetch(&$counter, $params = array())
 	{
-		$limit = DEFAULT_RANDOM_LIMIT;
+		$limit = DEFAULT_BRANCH_RANDOM_LIMIT;
 		
 		if (isset($params['limit']))
 		{
