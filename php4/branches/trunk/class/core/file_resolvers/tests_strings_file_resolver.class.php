@@ -12,9 +12,9 @@
 class tests_strings_file_resolver
 {
   function resolve($file_name, $locale_id)
-  {  
-  	if(file_exists(LIMB_DIR . '/class/i18n/strings/' . $file_name . '_' . $locale_id . '.ini'))
-  		$dir = LIMB_DIR . '/class/i18n/strings/';
+  { 
+  	if(file_exists(LIMB_DIR . '/tests/i18n/' . $file_name . '_' . $locale_id . '.ini'))
+  		$dir = LIMB_DIR . '/tests/i18n/';
   	else
   		error('strings file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
   			array(
