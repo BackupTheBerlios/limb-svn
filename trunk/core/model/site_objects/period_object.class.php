@@ -19,7 +19,10 @@ class period_object extends content_object
 	
 	function _define_class_properties()
 	{
-		return array('abstract_class' => true);
+		return complex_array :: array_merge(
+					parent :: _define_attributes_definition(),
+					array('abstract_class' => true)
+				);
 	}
 		
 	function & fetch_valid_period_by_ids($ids_array, $params=array(), $sql_params=array())

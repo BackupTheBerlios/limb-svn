@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: form_create_site_object_action.class.php 570 2004-02-26 12:37:31Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
@@ -24,7 +24,6 @@ class form_site_object_action extends form_action
 	function form_site_object_action($name='', $merge_definition=array())
 	{
 		$this->definition = complex_array :: array_merge($this->definition, $merge_definition);
-		
 		$this->object =& $this->get_site_object();
 		
 		parent :: form_action($name);
