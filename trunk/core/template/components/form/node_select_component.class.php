@@ -48,10 +48,8 @@ class node_select_component extends input_form_element
 		$icon = $object_data['icon'];
 		$parent_node_id = $object_data['parent_node_id'];
   	
-  	echo "<b>{$path}</b><br>";
-  	  	
   	echo "	<img id='{$md5id}_icon' align='center' src='{$icon}'/>&nbsp;
-	 					<span id='{$md5id}_path'>{$path}</span><br>
+	 					<b><span id='{$md5id}_path'>{$path}</span></b>
   					<span style='display:none;'>
     				<span id='{$md5id}_identifier'>{$identifier}</span>
     				<span id='{$md5id}_parent_node_id'>{$parent_node_id}</span>
@@ -81,7 +79,7 @@ class node_select_component extends input_form_element
 		      add_event(window, 'load', init_node_select_{$md5id});
 		    </script>";
 	    
-	  echo "<input class='button' type='button' onclick='PopupURL(null, \"/root/parent_select\", node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value='Select parent'>";
+	  echo "<input class='button' type='button' onclick='PopupURL(null, \"/root/parent_select\", node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value=' ... '>";
 	}
 	
 } 

@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 
 class test_email_rule extends test_single_field_rule
 {
-	function test_email_rule($name = 'test_email_rule')
+	function test_email_rule($name = 'email rule test')
 	{
 		parent :: test_single_field_rule($name);
 	} 
