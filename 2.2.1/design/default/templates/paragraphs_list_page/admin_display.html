@@ -1,0 +1,77 @@
+<core:WRAP file="admin/admin_display_page.html" placeholder="content">
+
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='pages'>
+	<core:PARAMETER name='loader_class_name' value='paragraphs_list_page' >
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='pages'>
+<table width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='published_status' ></th>
+	<th><locale:STRING name='paragraphs_list_page' file='paragraph'></th>
+	<th><locale:STRING name='created_date'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+<td><core:INCLUDE file="/admin/selector.html"></td>
+<td><core:INCLUDE file="published_status.html"></td>
+<td jip='object'><a href="{$path}?action=admin_display">{$title}</a></td>
+<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='3' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td colspan='2'  align='right'><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>
+</table>
+</grid:LIST>
+
+<fetch:SUB_BRANCH target='paragraphs' navigator="pager" >
+	<core:PARAMETER name='loader_class_name' value='paragraph' >
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='paragraphs'>
+<table width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='published_status' ></th>
+	<th><locale:STRING name='paragraph' file='paragraph'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+	<td><core:INCLUDE file="/admin/selector.html"></td>
+	<td><core:INCLUDE file="published_status.html"></td>
+	<td jip='object'>{$title}</td>
+	<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+	<td><core:INCLUDE file='/admin/priority_input.html'></td>
+	<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='3' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td colspan='2'  align='right'><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>
+</table>
+</grid:LIST>

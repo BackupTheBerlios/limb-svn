@@ -1,0 +1,19 @@
+<core:WRAP file="popup.html" placeholder="content">
+
+<DATASOURCE target='attributes'>
+	<core:PARAMETER name='datasource_path' value='/version_datasource'>
+</DATASOURCE>
+<grid:LIST id='attributes'>
+<table>
+<grid:ITERATOR>
+<tr>
+<td>{$attribute}</td><td>{$value}</td>
+</tr>
+</grid:ITERATOR>
+<tr>
+<td colspan=2 align='center'>
+	<core:LITERAL><input name="cancel" type="button" id="cancel" value="Close" onclick='window.close();' class="button"></core:LITERAL>
+</td>
+</tr>
+</table>
+</grid:LIST>
