@@ -1,3 +1,25 @@
+Version 2.3RC2
+(5 December 2004, from /php4/branches/trunk r944)
+svn://svn.berlios.de/limb/php4/tags/2.3RC2
+
+  --  all tabs removed from source code, no we use 2 spaces indent
+  --  fixed: wrong method name in create_catalog_folder_action, create_navigation_item_action(thanx to dex_stern)
+  --  http_response improved: now you can define redirect strategy, by default it uses http_redirect_strategy
+  --  limb_application sets meta_redirect_strategy for http_response in the beginnning of its work
+  --  quick'n'dirty hack in authentication_filter: you can define 'redirect_type' for action in controller. Currently 2 types supported: 'meta' and 'http'. For 'meta' type you can also define 'redirect_template_path'...
+  --  initial revision of classes to output localized values of currencies were added. There's now special tag 'locale:CURRENCY' that formats and outputs currency value with currency symbol
+  --  fetcher :: clear_cache() now also resets cached its node_mapped_by_request property
+  --  set_publish_status_action refactored in order to provide better flexibility once for children classes
+  --  recursive_navigation_datasource was added
+  --  fixed: russian init_sql had missing initial values for messages db table
+  --  fixed: a bug with template and component classes when root component was set to null. Now all runtime components have root component assigned.
+  --  core_data_transer tag now server component tag and it has runtime component
+  --  better 'for' variable check in core_optional and core_default tags
+  --  ***Works only in IE!!!*** new TEMPLATE_EDITOR_PATH system constant allows to setup a favourite editor for opening templates right from the browser during templates debug session (DEBUG_TEMPLATE_ENABLED=true). Must have '%s', which will be substituted with file path to the template. By default: define('TEMPLATE_EDITOR_PATH', 'uedit32.exe %s');
+  --  fixed: templates wouldn't open in editor during template debugging
+  --  minor design changes
+  --  authentication_filter will redirect to url specified by 'inaccessible_redirect' property in action properties definition in the according controller if this action is not accessible
+
 Version 2.3RC1
 (13 November 2004, from /php4/branches/trunk r907)
 svn://svn.berlios.de/limb/php4/tags/2.3RC1

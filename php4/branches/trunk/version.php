@@ -51,7 +51,7 @@ define('LIMB_RELEASE_NAME', '');
 /**
  * Software build (full) date
  */
-define('LIMB_VERSION_DATE', 'September 29, 2004');
+define('LIMB_VERSION_DATE', 'December 5, 2004');
 
 /**
  * Software logo
