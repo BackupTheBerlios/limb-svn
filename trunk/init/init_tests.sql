@@ -131,34 +131,6 @@ CREATE TABLE `navigation_item` (
   KEY `o` (`object_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
-
-/*
-Table struture for old_sys_site_object_tree
-*/
-
-drop table if exists `old_sys_site_object_tree`;
-CREATE TABLE `old_sys_site_object_tree` (
-  `id` int(11) NOT NULL auto_increment,
-  `root_id` int(11) NOT NULL default '0',
-  `l` int(11) NOT NULL default '0',
-  `r` int(11) NOT NULL default '0',
-  `parent_id` int(11) NOT NULL default '0',
-  `ordr` int(11) NOT NULL default '0',
-  `level` int(11) NOT NULL default '0',
-  `identifier` char(128) NOT NULL default '',
-  `object_id` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `root_id` (`root_id`),
-  KEY `identifier` (`identifier`),
-  KEY `l` (`l`),
-  KEY `r` (`r`),
-  KEY `level` (`level`),
-  KEY `rlr` (`root_id`,`l`,`r`),
-  KEY `parent_id` (`parent_id`),
-  KEY `object_id` (`object_id`)
-) TYPE=InnoDB;
-
-
 /*
 Table struture for sys_action_access
 */

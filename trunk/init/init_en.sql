@@ -166,68 +166,6 @@ INSERT INTO `navigation_item` VALUES (17,1,48,'Images','/root/images_folder','im
 INSERT INTO `navigation_item` VALUES (18,1,49,'User menu','/root','main');
 
 /*
-Table struture for old_sys_site_object_tree
-*/
-
-drop table if exists `old_sys_site_object_tree`;
-CREATE TABLE `old_sys_site_object_tree` (
-  `id` int(11) NOT NULL auto_increment,
-  `root_id` int(11) NOT NULL default '0',
-  `l` int(11) NOT NULL default '0',
-  `r` int(11) NOT NULL default '0',
-  `parent_id` int(11) NOT NULL default '0',
-  `ordr` int(11) NOT NULL default '0',
-  `level` int(11) NOT NULL default '0',
-  `identifier` char(128) NOT NULL default '',
-  `object_id` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `root_id` (`root_id`),
-  KEY `identifier` (`identifier`),
-  KEY `l` (`l`),
-  KEY `r` (`r`),
-  KEY `level` (`level`),
-  KEY `rlr` (`root_id`,`l`,`r`),
-  KEY `parent_id` (`parent_id`),
-  KEY `object_id` (`object_id`)
-) TYPE=InnoDB;
-
-/*
-Table data for temp.old_sys_site_object_tree
-*/
-
-INSERT INTO `old_sys_site_object_tree` VALUES (1,1,1,62,0,1,1,'root',19);
-INSERT INTO `old_sys_site_object_tree` VALUES (2,1,2,9,1,1,2,'admin',20);
-INSERT INTO `old_sys_site_object_tree` VALUES (3,1,3,4,2,1,3,'site_structure',21);
-INSERT INTO `old_sys_site_object_tree` VALUES (4,1,5,6,2,2,3,'classes',22);
-INSERT INTO `old_sys_site_object_tree` VALUES (5,1,7,8,2,3,3,'objects_access',23);
-INSERT INTO `old_sys_site_object_tree` VALUES (6,1,16,19,1,3,2,'users',24);
-INSERT INTO `old_sys_site_object_tree` VALUES (7,1,17,18,6,1,3,'admin',25);
-INSERT INTO `old_sys_site_object_tree` VALUES (8,1,10,15,1,2,2,'user_groups',26);
-INSERT INTO `old_sys_site_object_tree` VALUES (9,1,11,12,8,1,3,'visitors',27);
-INSERT INTO `old_sys_site_object_tree` VALUES (10,1,13,14,8,2,3,'admins',28);
-INSERT INTO `old_sys_site_object_tree` VALUES (11,1,20,21,1,4,2,'login',29);
-INSERT INTO `old_sys_site_object_tree` VALUES (12,1,22,23,1,5,2,'activate_password',30);
-INSERT INTO `old_sys_site_object_tree` VALUES (13,1,24,25,1,6,2,'change_password',31);
-INSERT INTO `old_sys_site_object_tree` VALUES (14,1,26,27,1,7,2,'generate_password',32);
-INSERT INTO `old_sys_site_object_tree` VALUES (15,1,28,55,1,8,2,'navigation',33);
-INSERT INTO `old_sys_site_object_tree` VALUES (16,1,56,57,1,9,2,'messages',34);
-INSERT INTO `old_sys_site_object_tree` VALUES (17,1,58,59,1,10,2,'images_folder',35);
-INSERT INTO `old_sys_site_object_tree` VALUES (18,1,60,61,1,11,2,'files_folder',36);
-INSERT INTO `old_sys_site_object_tree` VALUES (19,1,29,52,15,1,3,'admin',37);
-INSERT INTO `old_sys_site_object_tree` VALUES (20,1,30,49,19,1,4,'site_management',38);
-INSERT INTO `old_sys_site_object_tree` VALUES (21,1,50,51,19,2,4,'content_management',39);
-INSERT INTO `old_sys_site_object_tree` VALUES (22,1,31,32,20,1,5,'navigation',40);
-INSERT INTO `old_sys_site_object_tree` VALUES (23,1,33,34,20,2,5,'site_structure',41);
-INSERT INTO `old_sys_site_object_tree` VALUES (24,1,35,36,20,3,5,'objects_access',42);
-INSERT INTO `old_sys_site_object_tree` VALUES (25,1,37,38,20,4,5,'classes',43);
-INSERT INTO `old_sys_site_object_tree` VALUES (26,1,39,40,20,5,5,'users',44);
-INSERT INTO `old_sys_site_object_tree` VALUES (27,1,41,42,20,6,5,'user_groups',45);
-INSERT INTO `old_sys_site_object_tree` VALUES (28,1,43,44,20,7,5,'messages',46);
-INSERT INTO `old_sys_site_object_tree` VALUES (29,1,45,46,20,8,5,'files',47);
-INSERT INTO `old_sys_site_object_tree` VALUES (30,1,47,48,20,9,5,'images',48);
-INSERT INTO `old_sys_site_object_tree` VALUES (31,1,53,54,15,2,3,'main',49);
-
-/*
 Table struture for sys_action_access
 */
 
