@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/class/core/dataspace.class.php');
 require_once(LIMB_DIR . '/class/validators/validator.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'form_command', 
   'form_command_test_version',
   array('_get_validator', 
@@ -23,10 +23,10 @@ Mock::generatePartial(
         '_define_datamap')
 );
 
-Mock::generate('LimbToolkit');
-Mock::generate('request');
-Mock::generate('validator');
-Mock::generate('dataspace');
+Mock :: generate('LimbToolkit');
+Mock :: generate('request');
+Mock :: generate('validator');
+Mock :: generate('dataspace');
 
 class form_command_test extends LimbTestCase 
 {

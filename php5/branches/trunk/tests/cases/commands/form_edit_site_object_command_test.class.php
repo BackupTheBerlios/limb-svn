@@ -14,13 +14,13 @@ require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/validators/validator.class.php');
 
-Mock::generate('LimbToolkit');
-Mock::generate('request');
-Mock::generate('fetcher');
-Mock::generate('validator');
-Mock::generate('dataspace');
+Mock :: generate('LimbToolkit');
+Mock :: generate('request');
+Mock :: generate('fetcher');
+Mock :: generate('validator');
+Mock :: generate('dataspace');
 
-Mock::generatePartial(
+Mock :: generatePartial(
                       'form_edit_site_object_command',
                       'form_edit_site_object_command_test_version',
                       array('_is_first_time', '_get_validator')

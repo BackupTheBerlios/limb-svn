@@ -147,14 +147,14 @@ class tree implements tree_interface
   	return $this->_tree_driver->get_node_by_path($path, $delimiter);
 	}
 
-	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
+	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
 	{
-		return $this->_tree_driver->get_sub_branch($id, $depth, $include_parent, $check_expanded_parents, $only_parents);
+		return $this->_tree_driver->get_sub_branch($id, $depth, $include_parent, $check_expanded_parents);
 	}
 
-	public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
+	public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
 	{
-		return $this->_tree_driver->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents);
+		return $this->_tree_driver->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents);
 	}
 
 	public function get_root_nodes()

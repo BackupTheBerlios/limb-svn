@@ -14,22 +14,22 @@ require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 
-Mock::generate('uri');
-Mock::generate('fetcher');
+Mock :: generate('uri');
+Mock :: generate('fetcher');
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'image_cache_manager', 
   'image_cache_manager_test_version', 
   array('get_rules', '_set_matched_rule', '_get_matched_rule', '_is_user_in_groups')
 );
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'image_cache_manager', 
   'image_cache_manager_test_version2', 
   array('is_cacheable', '_get_fetcher', '_cache_media_file', '_is_image_cached', '_get_cached_image_extension')
 );
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'image_cache_manager', 
   'image_cache_manager_test_version3', 
   array('is_cacheable', '_get_fetcher')

@@ -11,9 +11,9 @@
 require_once(LIMB_DIR . '/class/validators/validator.class.php');
 require_once(LIMB_DIR . '/class/core/dataspace.class.php');
 
-Mock::generate('error_list');
+Mock :: generate('error_list');
 
-Mock::generatePartial(
+Mock :: generatePartial(
     'validator',
     'validator_test_version',
     array('_get_error_list')); 

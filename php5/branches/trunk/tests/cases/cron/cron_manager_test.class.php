@@ -12,16 +12,16 @@ require_once(LIMB_DIR . '/class/cron/cron_manager.class.php');
 require_once(LIMB_DIR . '/class/cron/cronjobs/cronjob_command.class.php');
 require_once(LIMB_DIR . '/class/core/request/response.interface.php');
 
-Mock::generate('cronjob_command');
-Mock::generate('response');
+Mock :: generate('cronjob_command');
+Mock :: generate('response');
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'cron_manager', 
   'cron_manager_test_version', 
   array('get_jobs', '_get_time', '_create_job_object')
 );
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'cron_manager', 
   'cron_manager_test_version2', 
   array('get_jobs', '_get_time')

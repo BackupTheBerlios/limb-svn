@@ -12,10 +12,10 @@ require_once(LIMB_DIR . '/class/core/commands/state_machine.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');  
 require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
 
-Mock::generate('StateMachine');
-Mock::generate('request');
+Mock :: generate('StateMachine');
+Mock :: generate('request');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'site_object_controller',
   'site_object_controller_mock',
@@ -27,7 +27,7 @@ Mock::generatePartial
         '_rollback_transaction')
 ); 
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'site_object_controller',
   'site_object_controller_mock2',

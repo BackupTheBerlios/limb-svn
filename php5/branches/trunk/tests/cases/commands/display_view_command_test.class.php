@@ -13,8 +13,8 @@ require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/request/response.interface.php');
 require_once(LIMB_DIR . '/class/template/template.class.php');
 
-Mock::generate('LimbToolkit');
-Mock::generate('response');
+Mock :: generate('LimbToolkit');
+Mock :: generate('response');
 
 class template_stub extends template
 {

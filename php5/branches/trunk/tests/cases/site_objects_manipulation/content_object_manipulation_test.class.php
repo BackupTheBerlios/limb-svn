@@ -12,10 +12,10 @@ require_once(dirname(__FILE__) . '/site_object_manipulation_test.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
 require_once(LIMB_DIR . '/class/db_tables/content_object_db_table.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
-Mock::generatePartial('BaseLimbToolkit',
+Mock :: generatePartial('BaseLimbToolkit',
                       'ContentObjectToolkitMock', array());
 
 Mock :: generate('User');
@@ -87,6 +87,8 @@ class content_object_manipulation_test extends LimbTestCase
     $this->object->tally();
     
     $this->_clean_up();
+    
+    Limb :: popToolkit();
   }
     
   function _clean_up()
@@ -285,7 +287,7 @@ class content_object_manipulation_test extends LimbTestCase
   
   function test_recover_version()
   {
-    Mock::generatePartial('content_object',
+    Mock :: generatePartial('content_object',
                           'content_object_test_recover_version',
                           array('update', 'merge', '_define_db_table_name'));
     

@@ -14,10 +14,10 @@ require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 
-Mock::generate('LimbToolkit');
-Mock::generate('site_object_behaviour');
+Mock :: generate('LimbToolkit');
+Mock :: generate('site_object_behaviour');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'site_object',
   'site_object_test_version',

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'http_response',
   'special_mock_response',
   array('_send_header', '_send_string', '_send_file', '_exit')

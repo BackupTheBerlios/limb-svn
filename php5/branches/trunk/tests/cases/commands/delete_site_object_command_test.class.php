@@ -14,10 +14,10 @@ require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
-Mock::generate('LimbToolkit');
-Mock::generate('request');
-Mock::generate('fetcher');
-Mock::generate('site_object');
+Mock :: generate('LimbToolkit');
+Mock :: generate('request');
+Mock :: generate('fetcher');
+Mock :: generate('site_object');
 
 class site_object_delete_command_test_version1 extends site_object
 {

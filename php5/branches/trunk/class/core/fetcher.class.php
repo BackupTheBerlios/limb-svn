@@ -23,24 +23,6 @@ class fetcher
 
 	protected $_is_jip_enabled = true;
 
-  //for mocking
-	protected function _get_authorizer()
-	{
-	  return Limb :: toolkit()->getAuthorizer();
-	}
-
-  //for mocking
-	protected function _get_tree()
-	{
-	  return Limb :: toolkit()->getTree();
-	}
-
-  //for mocking
-  protected function _get_site_object($class_name)
-  {
-    return Limb :: toolkit()->createSiteObject($class_name);
-  }
-
 	public function is_jip_enabled()
 	{
 	  return $this->_is_jip_enabled;
@@ -82,7 +64,7 @@ class fetcher
 	{
     if ($this->is_jip_enabled())
     {
-		  $this->_get_authorizer()->assign_actions_to_objects($objects_data);
+		  Limb :: toolkit()->getAuthorizer()->assign_actions_to_objects($objects_data);
 		}
 	}
 
@@ -98,14 +80,9 @@ class fetcher
 		else
 			$include_parent = false;
 
-		if (isset($params['only_parents']))
-			$only_parents = (bool)$params['only_parents'];
-		else
-			$only_parents = false;
-
 		$depth = isset($params['depth']) ? $params['depth'] : 1;
 
-		if(!$nodes = $this->_get_tree()->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents))
+		if(!$nodes = Limb :: toolkit()->getTree()->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents))
 			return array();
 
 		if(!$object_ids = complex_array :: get_column_values('object_id', $nodes))
@@ -116,7 +93,7 @@ class fetcher
 
 	public function fetch_by_ids($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{
-		$site_object = $this->_get_site_object($loader_class_name);
+		$site_object = Limb :: toolkit()->createSiteObject($loader_class_name);
 
 		if ($loader_class_name != 'site_object' &&
 				!isset($params['restrict_by_class']) ||
@@ -127,7 +104,7 @@ class fetcher
 		else
 			$class_id = null;
 
-		$object_ids = $this->_get_authorizer()->get_accessible_object_ids($object_ids, '', $class_id);
+		$object_ids = Limb :: toolkit()->getAuthorizer()->get_accessible_object_ids($object_ids, '', $class_id);
 
 		if (!count($object_ids))
 		  return array();
@@ -153,7 +130,7 @@ class fetcher
 
 	public function fetch_by_node_ids($node_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{
-    $nodes = $this->_get_tree()->get_nodes_by_ids($node_ids);
+    $nodes = Limb :: toolkit()->getTree()->get_nodes_by_ids($node_ids);
     if (!is_array($nodes) || !count($nodes))
       return array();
 
@@ -193,7 +170,7 @@ class fetcher
 	  if($object_data = $this->_get_object_from_cache('node_id', $node_id))
 	    return $object_data;
 
-		if (!$node = $this->_get_tree()->get_node($node_id))
+		if (!$node = Limb :: toolkit()->getTree()->get_node($node_id))
 			return false;
 
 		$object_data = $this->fetch_one_by_id($node['object_id']);
@@ -212,7 +189,7 @@ class fetcher
 	  if($object_data = $this->_get_object_from_cache('path', $path))
 	    return $object_data;
 
-		if (!$node = $this->_get_tree()->get_node_by_path($path))
+		if (!$node = Limb :: toolkit()->getTree()->get_node_by_path($path))
 			return false;
 
 		return $this->fetch_one_by_id($node['object_id']);
@@ -234,7 +211,7 @@ class fetcher
 
 	public function map_uri_to_node($uri, $recursive = false)
 	{
-		$tree = $this->_get_tree();
+		$tree = Limb :: toolkit()->getTree();
 
 		if(($node_id = $uri->get_query_item('node_id')) === false)
 			$node = $tree->get_node_by_path($uri->get_path(), '/', $recursive);
@@ -250,7 +227,7 @@ class fetcher
 			return $this->_node_mapped_by_request;
 
 		if($node_id = $request->get('node_id'))
-			$node = $this->_get_tree()->get_node((int)$node_id);
+			$node = Limb :: toolkit()->getTree()->get_node((int)$node_id);
 		else
 		  $node = $this->map_uri_to_node($request->get_uri());
 
@@ -260,7 +237,7 @@ class fetcher
 
 	protected function _assign_paths(&$objects_array, $append = '')
 	{
-		$tree = $this->_get_tree();
+		$tree = Limb :: toolkit()->getTree();
 
 		$parent_paths = array();
 

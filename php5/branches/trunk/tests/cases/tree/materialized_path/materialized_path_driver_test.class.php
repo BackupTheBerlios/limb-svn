@@ -561,41 +561,11 @@ class materialized_path_driver_test extends LimbTestCase
 		$this->_check_result_nodes_array($branch,  __LINE__);
 		$this->_check_proper_nesting($branch, __LINE__);
 	}
-	
-	function test_get_sub_branch_only_parents()
-	{
-		$this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => 100));
-		$this->db->sql_insert('sys_site_object', array('id' => 20, 'class_id' => 200));
-		$this->db->sql_insert('sys_class', array('id' => 100, 'can_be_parent' => 1));
-		$this->db->sql_insert('sys_class', array('id' => 200, 'can_be_parent' => 0));
-
-		$root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-		$sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 10));
-		$sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 10));
-		$sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
-		$sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
-		$sub_node_id_2 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 20));
-		$sub_node_id_1_2 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 20));
 		
-		//getting at depth = 1, including node, not checking expanded parents, only parents
-		$branch = $this->driver->get_sub_branch($root_id, 1, true, false, true); 
-		$this->assertEqual(2, sizeof($branch));
-		$this->_check_result_nodes_array($branch, __LINE__);
-		$this->_check_proper_nesting($branch, __LINE__);
-		
-		//getting at unlimited depth, including node, not checking expanded parents, only parents
-		$branch = $this->driver->get_sub_branch($root_id, -1, true, false, true); 
-		$this->assertEqual(3, sizeof($branch));
-		$this->_check_result_nodes_array($branch, __LINE__);
-		$this->_check_proper_nesting($branch, __LINE__);
-	}
-	
 	function test_get_sub_branch_check_expanded_parents()
 	{
-		$this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => 100));
-		$this->db->sql_insert('sys_site_object', array('id' => 20, 'class_id' => 200));
-		$this->db->sql_insert('sys_class', array('id' => 100, 'can_be_parent' => 1));
-		$this->db->sql_insert('sys_class', array('id' => 200, 'can_be_parent' => 0));
+		$this->db->sql_insert('sys_site_object', array('id' => 10));
+		$this->db->sql_insert('sys_site_object', array('id' => 20));
 
 		//creating subtree
 		$root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
@@ -711,7 +681,7 @@ class materialized_path_driver_test extends LimbTestCase
 				-1
 			)
 		);
-		
+		 
 		$this->assertEqual(sizeof($nodes), 3);
 		$this->_check_result_nodes_array($nodes,  __LINE__);
 

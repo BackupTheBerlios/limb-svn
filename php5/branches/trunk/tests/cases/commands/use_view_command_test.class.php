@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/class/core/commands/use_view_command.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 
-Mock::generate('LimbToolkit');
+Mock :: generate('LimbToolkit');
 
 class use_view_command_test extends LimbTestCase 
 {

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php'
 require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 
-Mock::generate('LimbToolkit');
-Mock::generate('tree');
-Mock::generate('site_object_behaviour');
+Mock :: generate('LimbToolkit');
+Mock :: generate('tree');
+Mock :: generate('site_object_behaviour');
 
 class site_object_behaviour_test_version extends site_object_behaviour
 {	

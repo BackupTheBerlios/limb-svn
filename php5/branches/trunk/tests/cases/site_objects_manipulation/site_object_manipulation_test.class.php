@@ -16,7 +16,7 @@ require_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
 require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
-Mock::generatePartial('BaseLimbToolkit',
+Mock :: generatePartial('BaseLimbToolkit',
                       'SiteObjectToolkitMock', array());
 
 class SiteObjectManipulationTestToolkit extends SiteObjectToolkitMock
@@ -36,10 +36,10 @@ class SiteObjectManipulationTestToolkit extends SiteObjectToolkitMock
   }
 }
 
-Mock::generate('tree');
-Mock::generate('user');
+Mock :: generate('tree');
+Mock :: generate('user');
 
-Mock::generatePartial('site_object',
+Mock :: generatePartial('site_object',
                       'site_object_manipulation_test_version',
                       array('_can_add_node_to_parent', 
                             'get_class_id',

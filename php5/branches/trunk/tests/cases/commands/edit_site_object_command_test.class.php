@@ -14,11 +14,11 @@ require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
-Mock::generate('LimbToolkit');
-Mock::generate('request');
-Mock::generate('fetcher');
-Mock::generate('dataspace');
-Mock::generate('site_object');
+Mock :: generate('LimbToolkit');
+Mock :: generate('request');
+Mock :: generate('fetcher');
+Mock :: generate('dataspace');
+Mock :: generate('site_object');
 
 //do you miss namespaces? yeah, we too :)
 class site_object_for_edit_site_object_command extends site_object

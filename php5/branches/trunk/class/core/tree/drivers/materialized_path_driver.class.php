@@ -36,7 +36,7 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 		$root_nodes = $this->get_root_nodes();
 		foreach($root_nodes as $root_id => $rootnode)
 		{
-			$node_set = $node_set + $this->get_sub_branch($root_id, -1, true, false, false, $add_sql);
+			$node_set = $node_set + $this->get_sub_branch($root_id, -1, true, false, $add_sql);
 		} 
 		return $node_set;
 	}
@@ -172,7 +172,7 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	* get_children only queries the immediate children
 	* get_sub_branch returns all nodes below the given node
 	*/
-	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
+	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $add_sql = array())
 	{
 		if (!$parent_node = $this->get_node($id))
 		{
@@ -181,17 +181,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 
 		if ($depth != -1)
 			$add_sql['append'][] = " AND {$this->_node_table}.level <=" . ($parent_node['level'] + $depth);
-
-		if($only_parents)
-		{
-			if(!$this->_is_table_joined('sys_class', $add_sql))
-				$add_sql['join'][] = ', sys_class as sc';
-
-			if(!$this->_is_table_joined('sys_site_object', $add_sql))
-				$add_sql['join'][] = ', sys_site_object as sso';
-
-			$add_sql['append'][] = " AND {$this->_node_table}.object_id = sso.id AND sc.id = sso.class_id AND sc.can_be_parent = 1";
-		}
 		
 		if($check_expanded_parents)
 		{
@@ -254,12 +243,12 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 		return $node_set;
 	}
 
-	public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
+	public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $add_sql = array())
 	{
 		if(!$parent_node = $this->get_node_by_path($path))
 			return false;
 										
- 		return $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
+ 		return $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $add_sql);
 	}
 
 	/**
@@ -349,7 +338,7 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 				$include_parents = true;
 			else
 				$include_parents = false;
-			$node_set = $node_set + $this->get_sub_branch($root_id, -1, $include_parents, false, false, $add_sql);
+			$node_set = $node_set + $this->get_sub_branch($root_id, -1, $include_parents, false, $add_sql);
 		} 
 		return $node_set;
 
@@ -409,7 +398,7 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 
   	foreach(array_keys($root_nodes) as $id)
   	{
-  		$parents = $this->get_sub_branch($id, -1, true, false, true);
+  		$parents = $this->get_sub_branch($id, -1, true, false);
 
   		foreach($parents as $parent)
   		{

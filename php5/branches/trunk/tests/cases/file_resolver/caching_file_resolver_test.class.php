@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php');
 require_once(LIMB_DIR . '/class/core/file_resolvers/caching_file_resolver.class.php');
 
-Mock::generate('file_resolver');
+Mock :: generate('file_resolver');
 
 class caching_file_resolver_test extends LimbTestCase
 {

@@ -12,15 +12,15 @@ require_once(LIMB_DIR . '/class/cache/full_page_cache_manager.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 
-Mock::generate('uri');
+Mock :: generate('uri');
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'full_page_cache_manager', 
   'full_page_cache_manager_test_version', 
   array('get_rules', '_set_matched_rule', '_get_matched_rule', '_is_user_in_groups')
 );
 
-Mock::generatePartial(
+Mock :: generatePartial(
   'full_page_cache_manager', 
   'full_page_cache_manager_test_version2', 
   array('is_cacheable', 'cache_exists', 'get_cache_id')

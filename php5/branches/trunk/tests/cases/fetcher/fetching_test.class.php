@@ -15,31 +15,33 @@ require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.ph
 require_once(LIMB_DIR . '/class/core/permissions/authorizer.interface.php');
 require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+                      
+Mock :: generatePartial('fetcher', 'special_fetcher', array());
 
-Mock::generatePartial('fetcher', 'special_fetcher',
-  array('_get_authorizer', '_get_site_object', '_get_tree'));
+Mock :: generatePartial('fetcher', 'special_fetcher2',
+  array('fetch_by_ids', '_get_object_class_name_by_id'));
 
-Mock::generatePartial('fetcher', 'special_fetcher2',
-  array('fetch_by_ids', '_get_tree', '_get_object_class_name_by_id'));
+Mock :: generatePartial('fetcher', 'special_fetcher3',
+  array('fetch_one_by_id', 'map_request_to_node', 'set_jip_status', 'fetch_by_ids'));
 
-Mock::generatePartial('fetcher', 'special_fetcher3',
-  array('fetch_one_by_id', 'map_request_to_node', 'set_jip_status', 'fetch_by_ids', '_get_tree'));
-
-Mock::generate('request');
-Mock::generate('uri');
-Mock::generate('authorizer');
-Mock::generate('tree');
-Mock::generate('site_object');
-Mock::generate('site_object_controller');
+Mock :: generate('request');
+Mock :: generate('uri');
+Mock :: generate('authorizer');
+Mock :: generate('tree');
+Mock :: generate('site_object');
+Mock :: generate('site_object_controller');
+Mock :: generate('LimbToolkit');
 
 class fetching_test extends LimbTestCase
 {
-	var $fetcher = null;
+	var $fetcher;
 
-  var $request = null;
-	var $authorizer = null;
-	var $tree = null;
-	var $site_object = null;
+  var $request;
+	var $authorizer;
+	var $tree;
+	var $site_object;
+  var $toolkit;
 
   function setUp()
   {
@@ -51,11 +53,15 @@ class fetching_test extends LimbTestCase
   	$this->tree = new Mocktree($this);
   	$this->site_object = new Mocksite_object($this);
 
-  	$this->fetcher->setReturnValue('_get_authorizer', $this->authorizer);
-  	$this->fetcher->setReturnValue('_get_site_object', $this->site_object);
-  	$this->fetcher->setReturnValue('_get_tree', $this->tree);
-
   	$this->request->setReturnValue('get_uri', $this->uri);
+    
+    $this->toolkit = new MockLimbToolkit($this);
+    
+    $this->toolkit->setReturnValue('getAuthorizer', $this->authorizer);
+    $this->toolkit->setReturnValue('getTree', $this->tree);
+    $this->toolkit->setReturnValue('createSiteObject', $this->site_object);
+    
+    Limb :: registerToolkit($this->toolkit);
   }
 
   function tearDown()
@@ -68,6 +74,8 @@ class fetching_test extends LimbTestCase
     $this->authorizer->tally();
   	$this->tree->tally();
   	$this->site_object->tally();
+    
+    Limb :: popToolkit();
   }
 
   function test_map_uri_to_node_by_node_id()
@@ -215,8 +223,7 @@ class fetching_test extends LimbTestCase
 
   function test_fetch_by_node_ids_no_nodes()
   {
-  	$fetcher = new special_fetcher2($this);
-  	$fetcher->setReturnValue('_get_tree', $this->tree);
+  	$fetcher = new special_fetcher2($this);  	
   	$fetcher->expectNever('fetch_by_ids');
 
   	$this->tree->setReturnValue('get_nodes_by_ids', array(), array($nodes_ids = array(1,2,3)));
@@ -229,7 +236,6 @@ class fetching_test extends LimbTestCase
   function test_fetch_by_node_ids()
   {
   	$fetcher = new special_fetcher2($this);
-  	$fetcher->setReturnValue('_get_tree', $this->tree);
 
     $nodes = array(array('object_id' => 10), array('object_id' => 20));
   	$this->tree->setReturnValue('get_nodes_by_ids', $nodes, array($nodes_ids = array(1, 2)));
@@ -249,7 +255,6 @@ class fetching_test extends LimbTestCase
   function test_fetch_by_node_ids_as_keys()
   {
   	$fetcher = new special_fetcher2($this);
-  	$fetcher->setReturnValue('_get_tree', $this->tree);
 
     $nodes = array(array('object_id' => 10), array('object_id' => 20));
   	$this->tree->setReturnValue('get_nodes_by_ids', $nodes, array($nodes_ids = array(1, 2)));
@@ -294,7 +299,6 @@ class fetching_test extends LimbTestCase
   function test_fetch_one_by_node_id_with_cache()
   {
     $fetcher = new special_fetcher2($this);
-  	$fetcher->setReturnValue('_get_tree', $this->tree);
 
     $object_id = 20;
     $objects = array($object_id => array('id' => $object_id, 'path' => 'some_path', 'node_id' => 10));
@@ -317,7 +321,6 @@ class fetching_test extends LimbTestCase
   function test_fetch_one_by_path_with_cache()
   {
     $fetcher = new special_fetcher2($this);
-  	$fetcher->setReturnValue('_get_tree', $this->tree);
 
     $object_id = 20;
     $objects = array($object_id => array('id' => $object_id, 'path' => 'some_path', 'node_id' => $node_id = 10));
@@ -354,7 +357,6 @@ class fetching_test extends LimbTestCase
   function test_fetch_sub_branch()
   {
     $fetcher = new special_fetcher3($this);
-  	$fetcher->setReturnValue('_get_tree', $this->tree);
 
     $nodes = array(
       1 => array('id' => 1, 'object_id' => 10),
@@ -364,11 +366,10 @@ class fetching_test extends LimbTestCase
     $params = array(
       'depth' => $depth = true,
       'include_parent' => $include_parent = true,
-      'check_expanded_parents' => $check_expanded_parents = true,
-      'only_parents' => $only_parents = true,
+      'check_expanded_parents' => $check_expanded_parents = true
     );
 
-    $this->tree->setReturnValue('get_sub_branch_by_path', $nodes, array('some_path', $depth, $include_parent, $check_expanded_parents, $only_parents));
+    $this->tree->setReturnValue('get_sub_branch_by_path', $nodes, array('some_path', $depth, $include_parent, $check_expanded_parents));
 
     $fetcher->setReturnValue('fetch_by_ids', $objects = array(10, 20), array(array(10, 20), 'loader', $counter = 0, $params, 'fetch_by_ids'));
 
@@ -380,7 +381,6 @@ class fetching_test extends LimbTestCase
   function test_fetch_sub_branch_no_such_path_with_params_by_default()
   {
     $fetcher = new special_fetcher3($this);
-  	$fetcher->setReturnValue('_get_tree', $this->tree);
 
     $this->tree->setReturnValue('get_sub_branch_by_path', array(), array('some_path', 1, false, false, false));
 

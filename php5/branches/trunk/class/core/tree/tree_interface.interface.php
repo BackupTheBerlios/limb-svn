@@ -45,9 +45,9 @@ interface tree_interface
 
 	public function get_node_by_path($path, $delimiter='/');
 
-	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false);
+	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false);
 
-	public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false);
+	public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false);
 
 	public function get_root_nodes();
 
