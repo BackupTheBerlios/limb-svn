@@ -15,7 +15,7 @@ function add_url_query_items($url, $items=array())
 {
 	$str_params = '';
 	
-	if(isset($_REQUEST['node_id']))
+	if(isset($_REQUEST['node_id']) && !isset($items['node_id']))
 		$items['node_id'] = $_REQUEST['node_id'];
 
 	if(strpos($url, '?') === false)
