@@ -35,6 +35,15 @@ class datasource_tag extends server_component_tag
 					'line' => $this->starting_line_no));
 		} 
 
+		if (!isset($this->attributes['datasource_path']))
+		{
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
+					'attribute' => 'datasource_path',
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
+		} 
+    
     $this->_check_order_parameter();
 
     return PARSER_REQUIRE_PARSING;
@@ -66,20 +75,15 @@ class datasource_tag extends server_component_tag
 	public function generate_contents($code)
 	{
 		parent :: generate_contents($code);
+
+		$code->write_php($this->get_component_ref_code() . '->set_datasource_path("' . $this->attributes['datasource_path'] .'");');
 		
 		if(isset($this->attributes['navigator']))
 		{
-			$code->write_php($this->get_component_ref_code() . '->set("navigator_id", "' . $this->attributes['navigator'] .'");');
-			$code->write_php($this->get_component_ref_code() . '->setup_navigator();');
+			$code->write_php($this->get_component_ref_code() . '->setup_navigator("' . $this->attributes['navigator'] .'");');
 		}
 
-		$code->write_php($this->get_component_ref_code() . '->set("target", "' . $this->attributes['target'] .'");');
-		$code->write_php($this->get_component_ref_code() . '->setup_target();');
-
-		if(isset($this->attributes['navigator']))
-		{
-			$code->write_php($this->get_component_ref_code() . '->fill_navigator();');
-		}
+		$code->write_php($this->get_component_ref_code() . '->setup_targets("' . $this->attributes['target'] .'");');
 	}		
 
 } 
