@@ -8,11 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-if(!defined('IMAGE_CACHE_DIR'))
-  define('IMAGE_CACHE_DIR', VAR_DIR . 'images/');
-
-if(!defined('IMAGE_CACHE_WEB_DIR'))
-  define('IMAGE_CACHE_WEB_DIR', '/var/images/');
+@define('IMAGE_CACHE_DIR', VAR_DIR . 'images/');
+@define('IMAGE_CACHE_WEB_DIR', '/var/images/');
 
 require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 

@@ -80,7 +80,7 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object);
 
     $this->site_object->expectOnce('delete');
-    $this->assertEqual($this->delete_command->perform(), Limb :: getSTATUS_OK());
+    $this->assertEqual($this->delete_command->perform(), LIMB_STATUS_OK);
   }
 
   function testDeleteFailed()

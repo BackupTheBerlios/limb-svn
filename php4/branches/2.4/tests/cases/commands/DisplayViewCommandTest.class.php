@@ -58,7 +58,7 @@ class DisplayViewCommandTest extends LimbTestCase
 
     $this->response->expectOnce('write', array('test template'));
 
-    $this->assertEqual($command->perform(), Limb :: getSTATUS_OK());
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
   }
 
   function testPerformFailedNoView()

@@ -11,7 +11,7 @@
 
 class SiteObjectControllerFilter// implements InterceptingFilter
 {
-  function run($filter_chain, $request, $response)
+  function run(&$filter_chain, &$request, &$response)
   {
     Debug :: addTimingPoint('site object controller filter started');
 

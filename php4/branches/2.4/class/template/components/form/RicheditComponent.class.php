@@ -10,14 +10,10 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/template/components/form/TextAreaComponent.class.php');
 
-if(!defined('RICHEDIT_DEFAULT_WIDTH'))
-  define('RICHEDIT_DEFAULT_WIDTH', '600px');
-if(!defined('RICHEDIT_DEFAULT_HEIGHT'))
-  define('RICHEDIT_DEFAULT_HEIGHT', '400px');
-if(!defined('RICHEDIT_DEFAULT_ROWS'))
-  define('RICHEDIT_DEFAULT_ROWS', '30');
-if(!defined('RICHEDIT_DEFAULT_COLS'))
-  define('RICHEDIT_DEFAULT_COLS', '60');
+@define('RICHEDIT_DEFAULT_WIDTH', '600px');
+@define('RICHEDIT_DEFAULT_HEIGHT', '400px');
+@define('RICHEDIT_DEFAULT_ROWS', '30');
+@define('RICHEDIT_DEFAULT_COLS', '60');
 
 class RicheditComponent extends TextAreaComponent
 {

@@ -11,7 +11,7 @@
 
 class LocaleDefinitionFilter// implements InterceptingFilter
 {
-  function run($filter_chain, $request, $response)
+  function run(&$filter_chain, &$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
     $locale =& $toolkit->getLocale();

@@ -110,7 +110,7 @@ class LimbApplication
     $request =& $toolkit->getRequest();
     $response =& $toolkit->getResponse();
 
-    $filter_chain = new FilterChain($request, $response);
+    $filter_chain = new FilterChain(&$request, &$response);
 
     $this->_registerFilters($filter_chain);
 

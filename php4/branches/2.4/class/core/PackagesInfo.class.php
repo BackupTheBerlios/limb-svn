@@ -69,8 +69,7 @@ class PackagesInfo
 
   function _definePackageConstant($package_name, $path)
   {
-    if(!defined($package_name . '_DIR'))
-      define($package_name . '_DIR', $path);
+    @define($package_name . '_DIR', $path);
   }
 
   function _parsePath($path)

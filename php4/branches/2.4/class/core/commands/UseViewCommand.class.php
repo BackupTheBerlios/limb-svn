@@ -25,7 +25,7 @@ class UseViewCommand //implements Command
     $toolkit =& Limb :: toolkit();
     $toolkit->setView($handle);
 
-    return Limb :: getSTATUS_OK();
+    return LIMB_STATUS_OK;
   }
 }
 

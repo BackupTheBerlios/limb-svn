@@ -17,7 +17,7 @@ class FilterChain
   var $request;
   var $response;
 
-  function FilterChain($request, $response)
+  function FilterChain(&$request, &$response)
   {
     $this->request =& $request;
     $this->response =& $response;

@@ -27,7 +27,7 @@ class EditSiteObjectCommand// implements Command
       return LIMB_STATUS_ERROR;
     }
 
-    return Limb :: getSTATUS_OK();
+    return LIMB_STATUS_OK;
   }
 
   function _updateObjectOperation($object)

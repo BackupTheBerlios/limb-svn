@@ -102,7 +102,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
 
     $this->dataspace->expectOnce('set', array('createdSiteObject', new IsAExpectation('MockSiteObject')));
 
-    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_OK, $this->command->perform());
   }
 
   function testPerformOkParentId()
@@ -131,7 +131,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
 
     $this->dataspace->expectOnce('set', array('createdSiteObject', new IsAExpectation('MockSiteObject')));
 
-    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_OK, $this->command->perform());
   }
 
   function testPerformFailed()

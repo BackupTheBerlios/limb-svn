@@ -8,8 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-if(!defined('PAGE_CACHE_DIR'))
-  define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
+@define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
 
 require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 

@@ -21,7 +21,7 @@ class ClosePopupNoParentReloadCommand// implements Command
     if($request->hasAttribute('popup'))
       $response->write(closePopupNoParentReloadResponse();
 
-    return Limb :: getSTATUS_OK();
+    return LIMB_STATUS_OK;
   }
 
 }

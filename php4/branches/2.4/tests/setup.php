@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-if (file_exists(dirname(__FILE__) . '/constants.php'))
-  include_once(dirname(__FILE__) . '/constants.php');
+if (file_exists(dirname(__FILE__) . '/setup.override.php'))
+  include_once(dirname(__FILE__) . '/setup.override.php');
 
 @define('LIMB_DIR', dirname(__FILE__) . '/../');
 @define('VAR_DIR', dirname(__FILE__) . '/var/');

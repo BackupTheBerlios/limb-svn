@@ -96,7 +96,7 @@ class EditSiteObjectCommandTest extends LimbTestCase
 
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
 
-    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_OK, $this->command->perform());
   }
 }
 

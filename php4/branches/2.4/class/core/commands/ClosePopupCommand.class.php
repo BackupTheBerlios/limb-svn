@@ -21,7 +21,7 @@ class ClosePopupCommand// implements Command
     if($request->hasAttribute('popup'))
       $response->write(closePopupResponse($request));
 
-    return Limb :: getSTATUS_OK();
+    return LIMB_STATUS_OK;
   }
 
 }

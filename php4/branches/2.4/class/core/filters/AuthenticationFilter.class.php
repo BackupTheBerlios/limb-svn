@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/session/Session.class.php');
 
 class AuthenticationFilter// implements InterceptingFilter
 {
-  function run($filter_chain, $request, $response)
+  function run(&$filter_chain, &$request, &$response)
   {
     Debug :: addTimingPoint('authentication filter started');
 
@@ -75,7 +75,7 @@ class AuthenticationFilter// implements InterceptingFilter
     return $toolkit->createBehaviour($behaviour_name);
   }
 
-  function process404Error($request, $response)
+  function process404Error(&$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
     $ini =& $toolkit->getINI('common.ini');

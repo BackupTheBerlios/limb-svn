@@ -34,8 +34,7 @@ http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90
 
 require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 
-if(!defined('LOCALE_DIR'))
-  define('LOCALE_DIR', LIMB_DIR . '/class/i18n/locale');
+@define('LOCALE_DIR', LIMB_DIR . '/class/i18n/locale');
 
 class Locale
 {

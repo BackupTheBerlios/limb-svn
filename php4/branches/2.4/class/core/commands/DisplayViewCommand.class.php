@@ -28,7 +28,7 @@ class DisplayViewCommand// implements Command
     if(ob_get_level())
       ob_end_clean();
 
-    return Limb :: getSTATUS_OK();
+    return LIMB_STATUS_OK;
   }
 }
 

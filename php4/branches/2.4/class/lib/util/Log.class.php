@@ -11,11 +11,8 @@
 require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
 
-if(!defined('MAX_LOGROTATE_FILES'))
-  define('MAX_LOGROTATE_FILES', 5);
-
-if(!defined('MAX_LOGFILE_SIZE'))
-  define('MAX_LOGFILE_SIZE', 500*1024);
+@define('MAX_LOGROTATE_FILES', 5);
+@define('MAX_LOGFILE_SIZE', 500*1024);
 
 class log
 {
