@@ -1,0 +1,46 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='folders' navigator='pager'>
+  <core:PARAMETER name='loader_class_name' value='poll'>
+  <core:PARAMETER name='order' value='start_date=DESC'>
+</fetch:SUB_BRANCH>
+
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='folders'>
+<table>
+<tr><td colspan='5' class='btitle1' height='3'></td></tr>
+<tr>
+  <th><grid:SELECTORS_TOGGLER></th>
+  <th><locale:STRING name='published_status' ></th>
+  <th><locale:STRING name='poll_questions_list' file='poll'></th>
+  <th><locale:STRING name='publish_period'></th>
+  <th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+  <td><core:INCLUDE file="/admin/selector.html"></td>
+  <td><core:INCLUDE file="published_status.html"></td>
+  <td jip='object'>
+    <core:INCLUDE file="/admin/list_item_hint.html">
+    <a href="{$path}">{$title}</a>
+  </td>
+  <td><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
+  <td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr><td colspan='5' class='btitle1' height='3'></td></tr>
+<tr>
+  <td colspan='5'>
+  <grid:actions select_class='select' button_class='button' locale_value='do'>
+    <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+    <grid:action shortcut='toggle_published_status'   locale_value='toggle_published_status' form_submitted='1'>
+  </grid:actions>
+  </td>
+</tr>
+</table>
+</grid:LIST>

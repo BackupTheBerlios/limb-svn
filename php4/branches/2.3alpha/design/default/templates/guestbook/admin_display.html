@@ -1,0 +1,49 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+<br>
+
+<fetch:SUB_BRANCH target='messages' navigator='pager'>
+	<core:PARAMETER name='loader_class_name' value='guestbook_message' >
+	<core:PARAMETER name='order' value='created_date=DESC' >
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='messages'>
+<table width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='published_status'></th>
+	<th><locale:STRING name='messages_list' file='guestbook'></th>
+	<th><locale:STRING name='name' file='guestbook'></th>
+	<th><locale:STRING name='created_date'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+
+<grid:ITERATOR>
+	<tr class="jip">
+		<td><core:INCLUDE file="/admin/selector.html"></td>
+		<td><core:INCLUDE file="published_status.html"></td>
+		<td jip='object'><a href="{$path}">{$title}</a></td>
+		<td>
+			<core:DEFAULT for='sender_email'>
+				{$sender}
+			</core:DEFAULT>
+			<core:OPTIONAL for='sender_email'>
+				<a href='mailto:{$sender_email}'>{$sender}</a>
+			</core:OPTIONAL>
+		</td>
+		<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+		<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+	</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='5' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>
+</table>
+</grid:LIST>

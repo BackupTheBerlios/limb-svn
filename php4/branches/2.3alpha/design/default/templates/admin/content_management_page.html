@@ -1,0 +1,34 @@
+<core:INCLUDE file="/admin/admin_top.html">
+<!--BEGIN: layout-->
+
+<!--BEGIN: body-->
+<table width=100% border=0 cellspacing=0 cellpadding=0>
+<tr>
+  <td valign='top' style='padding:10px'>
+  <div id="left_menu" style='display: block;'>
+    <img src='/shared/images/1x1.gif' width='160px' height='1px'>
+    <core:INCLUDE file="/navigation/content_management_admin.html">
+  </div>
+  </td>
+  <td align='right' valign='top'><img id='img_left_menu' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("left_menu");' alt='Show/Hide' title='Show/Hide'></td>
+  <td width=1 class=com2><img src='/shared/images/1x1.gif'></td>
+  <td width=100% valign=top style='padding:10px 20px 30px 20px'>
+    <core:INCLUDE file="/admin/page_data.html">
+    <core:PLACEHOLDER id="content">
+  </td>
+  <td width=1 class=com2><img src='/shared/images/1x1.gif'></td>
+  <td align='right' valign='top'><img id='img_right_menu' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("right_menu");' alt='Show/Hide' title='Show/Hide'></td>
+  <td valign='top' style='padding:10px'>
+  <div id="right_menu" style='display: block;'>
+    <img src='/shared/images/1x1.gif' width='160px' height='1px'>
+    <core:INCLUDE file="/admin/context_help_block.html">
+    <core:INCLUDE file="/admin/session_history.html">
+  </div>
+  </td>
+</tr>
+</table>
+<!--END: body-->
+
+<!--END: layout-->
+</body>
+</html>

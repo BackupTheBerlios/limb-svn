@@ -1,0 +1,18 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+<tr class='jip'>
+<td jip='object'>
+<fetch:MAPPED>
+<locale:DATE_FORMAT hash_id="start_date" locale_format="short_date"><p>
+<img src='/root?node_id={$image_id}' align='center'>
+{$annotation}
+
+</td>
+<td>
+<core:INCLUDE file="jip_actions/normal.html">
+
+</fetch:MAPPED>
+</td>
+</tr>
+</table>

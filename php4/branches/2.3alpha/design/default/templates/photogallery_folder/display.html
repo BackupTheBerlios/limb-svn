@@ -1,0 +1,63 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
+<fetch:MAPPED>
+<span class='jip'>
+    <core:INCLUDE file="published_status.html">
+    <core:INCLUDE file="jip_actions/dropdown.html">
+</span>
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='folders'>
+	<core:PARAMETER name='loader_class_name' value='site_object'>
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<fetch:SUB_BRANCH target='photos'  navigator="pager" >
+	<core:PARAMETER name='loader_class_name' value='photogallery_object'>
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='folders'>
+<table width=100%>
+<grid:ITERATOR>
+<tr class="jip">
+  <td class=h2><a href='{$path}'>{$title}</a></td>
+  <td align="center" >
+    <core:INCLUDE file="published_status.html">
+    <core:INCLUDE file="jip_actions/dropdown.html">
+  </td>
+</tr>
+</grid:ITERATOR>
+</table>
+</grid:LIST>
+
+<pager:navigator id="pager" items="10">
+<core:INCLUDE file="front_pager_contents.html">
+</pager:navigator>
+
+<!--gallery-->
+<table border=0 cellspacing=0 cellpadding=0 width=100%>
+<tr >
+<grid:LIST id='photos'>
+<grid:ITERATOR>
+		<grid:SEPARATOR count='2'>
+			</tr>
+			<tr>
+		</grid:SEPARATOR>
+
+
+			<td class='jip' jip='object' valign=top width=33% jip='action'>
+				<a href='/root?node_id={$image_id}&original' target='_blank'><img src='/root?node_id={$image_id}&thumbnail' align='left' border=0 style='margin-bottom:0px'></a>
+				<span class=h2>{$title}</span><br>
+        <core:INCLUDE file="published_status.html">
+        <core:INCLUDE file="jip_actions/dropdown.html">
+				{$annotation}
+
+			</td>
+
+</grid:ITERATOR>
+</grid:LIST>
+</tr>
+</table>
+<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->

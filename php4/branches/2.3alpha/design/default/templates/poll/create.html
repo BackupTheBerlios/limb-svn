@@ -1,0 +1,14 @@
+<core:WRAP file="popup.html" placeholder="content">
+<h2><locale:STRING name='poll_question_creation' file='poll'></h2>
+<form method="post" name="create_poll" id="create_poll">
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+		<core:INCLUDE file="/poll/form_fields.html">
+    <tr>
+      <td colspan=2 align=center>
+	      <action_button action="create_poll" name="create" type="submit" id="create" locale_value="create" class="button">
+		     &nbsp;
+	      <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+      </td>
+    </tr>
+  </table>
+</form>

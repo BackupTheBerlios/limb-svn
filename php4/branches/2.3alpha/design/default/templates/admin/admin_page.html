@@ -1,0 +1,15 @@
+<core:WRAP file="/admin/site_management_page.html" placeholder="content">
+<span class='jip'>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target="admin_wide_menu" >
+  <core:PARAMETER name='loader_class_name' value='navigation_item' >
+  <core:PARAMETER name='datasource_path' value='pictured_tree_navigation_datasource' >
+  <core:PARAMETER name='path' value='/root/admin/navigation/site_management' >
+  <core:PARAMETER name='order' value='priority=ASC'>
+  <core:PARAMETER name='depth' value='2'>
+</fetch:SUB_BRANCH>
+<core:INCLUDE file="/navigation/admin_wide_menu.html">
