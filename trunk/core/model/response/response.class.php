@@ -5,14 +5,17 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: action.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-define('RESPONSE_STATUS_SUCCESS', 15);
-define('RESPONSE_STATUS_FORM_NOT_SUBMITTED', 2);
+define('RESPONSE_STATUS_SUCCESS_MASK', 15);
+define('RESPONSE_STATUS_SUCCESS', 1);
+define('RESPONSE_STATUS_FORM_SUBMITTED', 2);
+define('RESPONSE_STATUS_FORM_DISPLAYED', 4);
 
-define('RESPONSE_STATUS_FAILURE', 240);
+define('RESPONSE_STATUS_PROBLEM_MASK', 240);
 define('RESPONSE_STATUS_FORM_NOT_VALID', 16);
+define('RESPONSE_STATUS_FAILURE', 32);
 
 class response
 {
@@ -34,12 +37,12 @@ class response
 	
 	function is_success()
 	{
-		return ($this->status & RESPONSE_STATUS_SUCCESS);
+		return ($this->status & RESPONSE_STATUS_SUCCESS_MASK);
 	}
 
-	function is_failure()
+	function is_problem()
 	{
-		return ($this->status & RESPONSE_STATUS_FAILURE);
+		return ($this->status & RESPONSE_STATUS_PROBLEM_MASK);
 	}
 	
 } 

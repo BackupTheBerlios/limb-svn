@@ -43,7 +43,7 @@ class set_metadata_action extends form_action
 		if(!$object->save_metadata())
 			return new failed_response();
 		
-		return new response();
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 }
 ?>

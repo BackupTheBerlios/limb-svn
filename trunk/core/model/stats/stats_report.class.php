@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: site_object.class.php 20 2004-03-05 09:59:38Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
@@ -42,9 +42,18 @@ class stats_report
 		$this->filter_conditions[] = " AND sslog.time BETWEEN {$start_stamp} AND {$finish_stamp} ";
 	}
 	
-	function set_ip_filter($ip_range)
+	function set_object_filter($node_id)
+	{
+		$this->filter_conditions[] = " AND sslog.node_id = {$node_id}";
+	}
+	
+	function set_status_filter($status_mask)
+	{
+		$this->filter_conditions[] = "AND (sslog.status & {$status_mask}) = sslog.status";
+	}
+	
+	function set_ip_filter($ip_list)
 	{		
-		$ip_list = ip :: process_ip_range($ip_range);
 		$filter_ip_arr = array();
 		
 		foreach($ip_list as $ip)

@@ -30,7 +30,7 @@ class form_action1 extends form_action
 	
 	function _valid_perform()
 	{
-		return new response();
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 	
 	function _first_time_perform()

@@ -23,7 +23,7 @@ class front_create_guestbook_message_action extends create_guestbook_message_act
 		$response = parent :: _valid_perform();
 		
 		if ($response->is_success())
-			return new redirect_response();
+			return new redirect_response($response->get_status());
 		
 		return $response;
 	}		

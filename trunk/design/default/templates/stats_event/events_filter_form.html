@@ -30,6 +30,45 @@
 				<select name='stats_finish_minute' class='input' options_ini_file='minute_options' use_ini='true' default_value='59'></select>
 	    </td>
 	  </tr>
+	  <tr>	
+	    <td nowrap><label for="stats_object_path">Path to object</label></td>
+	    <td><input type="text" name="stats_object_path" class='input' size='60'></td>
+	  </tr>
+	  <tr>
+	  	<td colspan=2>
+	  		<table width=100%>
+				  <tr>
+				  	<td valign='top'>
+				  		<table width=100%>
+						    <tr>
+						      <td><label for="status_1">SUCCESS</label></td>
+						      <td><input name="stats_status[0]" type="checkbox" id="status_1" label="Status_1"><span style='background-color:black;width:10px;height:10px;'></span></td>
+						    </tr>
+						    <tr>
+						      <td><label for="status_2">FORM DISPLAYED</label></td>
+						      <td><input name="stats_status[1]" type="checkbox" id="status_2" label="Status_2"><span style='background-color:#408080;width:10px;height:10px;'></span></td>
+						    </tr>
+						    <tr>
+						      <td><label for="status_3">FORM SUBMITTED</label></td>
+						      <td><input name="stats_status[2]" type="checkbox" id="status_3" label="Status_3"><span style='background-color:green;width:10px;height:10px;'></span></td>
+						    </tr>
+						  </table>
+						</td>    
+						<td valign='top'>
+							<table width=100%>
+						    <tr>
+						      <td><label for="status_4">FAILURE</label></td>
+						      <td><input name="stats_status[3]" type="checkbox" id="status_4" label="Status_4"><span style='background-color:red;width:10px;height:10px;'></span></span></td>
+						    </tr>
+						    <tr>
+						      <td><label for="status_5">FORM NOT VALID</label></td>
+						      <td><input name="stats_status[4]" type="checkbox" id="status_5" label="Status_5"><span style='background-color:orange;width:10px;height:10px;'></td>
+						    </tr>
+						  </table> 
+					  </td>  
+	  		</table>
+	  	</td>
+	  </tr>
 	  <tr>
 	    <td>
 			</td>

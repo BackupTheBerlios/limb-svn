@@ -20,7 +20,8 @@ class phpbb_login_action extends login_action
 	function _login_redirect($redirect)
 	{
 		$redirect = add_url_query_items($redirect, array('sid' => session :: get('phpbb_sid')));
-		return new redirect_response(RESPONSE_STATUS_SUCCESS, $redirect);
+		
+		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, $redirect);
 	}
 }
 ?>

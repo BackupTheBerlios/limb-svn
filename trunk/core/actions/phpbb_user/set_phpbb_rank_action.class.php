@@ -48,7 +48,7 @@ class set_phpbb_rank_action extends form_action
 		$db =& db_factory :: instance();
 		
 		if($db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $object_data['id'])))
-			return new response();
+			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 		else
 			return new failed_response();
 	}

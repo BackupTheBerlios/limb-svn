@@ -46,7 +46,7 @@ class input_tag extends control_tag
 				$this->runtime_component_path = '/core/template/components/form/input_password_component';
 				break;
 			case 'checkbox':
-				$this->runtime_component_path = '/core/template/components/form/input_password_component';
+				$this->runtime_component_path = '/core/template/components/form/input_checkbox_component';
 				break;
 			case 'submit':
 				$this->runtime_component_path = '/core/template/components/form/input_submit_component';

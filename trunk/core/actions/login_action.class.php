@@ -67,7 +67,7 @@ class login_action extends form_action
 			if($redirect = $this->_get('redirect'))
 				return $this->_login_redirect($redirect);
 			else
-				return new redirect_response(RESPONSE_STATUS_SUCCESS, '/');
+				return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, '/');
 		}
 		else	
 			return new failed_response();
@@ -75,7 +75,7 @@ class login_action extends form_action
 	
 	function _login_redirect($redirect)
 	{
-		return new redirect_response(RESPONSE_STATUS_SUCCESS, $redirect);
+		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, $redirect);
 	}
 }
 

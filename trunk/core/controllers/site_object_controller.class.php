@@ -130,7 +130,7 @@ class site_object_controller
 		
 		debug :: add_timing_point('action performed');
 		
-		if($this->_response->is_failure())
+		if($this->_response->is_problem())
 			debug :: write_error('action failed', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	}
 	

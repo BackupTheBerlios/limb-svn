@@ -59,7 +59,7 @@ class send_feedback_action extends form_action
 			return new failed_response();
 		}
 
-		return new response();
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 }
 ?>

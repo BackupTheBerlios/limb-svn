@@ -36,7 +36,25 @@
 <td align='center'>{$id}</td>
 <td><locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'></td>
 <td><core:IP hash_id="ip" ></td>
-<td>{$action}</td>
+<td>
+<core:OPTIONAL for='RESPONSE_STATUS_SUCCESS'>
+<span style='color:black'>
+</core:OPTIONAL>
+<core:OPTIONAL for='RESPONSE_STATUS_FORM_SUBMITTED'>
+<span style='color:green'>
+</core:OPTIONAL>
+<core:OPTIONAL for='RESPONSE_STATUS_FORM_DISPLAYED'>
+<span style='color:#408080'>
+</core:OPTIONAL>
+<core:OPTIONAL for='RESPONSE_STATUS_FORM_NOT_VALID'>
+<span style='color:orange'>
+</core:OPTIONAL>
+<core:OPTIONAL for='RESPONSE_STATUS_FAILURE'>
+<span style='color:red'>
+</core:OPTIONAL>
+{$action}
+</span>
+</td>
 <td><a href='/root?node_id={$node_id}' target='_blank'>{$identifier} : {$title}</a></td>
 <td><a href='/root/users/{$user_login}' target='_blank'>{$user_login}</a></td>
 </tr>

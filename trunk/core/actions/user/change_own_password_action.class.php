@@ -35,7 +35,7 @@ class change_own_password_action extends form_action
 		$data = $this->dataspace->export();
 
 		if($user_object->change_own_password($data['password']))
-			return new response();
+			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 		else
 			return new failed_response();
 	}

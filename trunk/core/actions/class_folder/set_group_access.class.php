@@ -46,7 +46,7 @@ class set_group_access extends form_action
 
 		$access_policy->save_group_action_access($_REQUEST['class_id'], $data['policy']);
 		
-		return new close_popup_no_reload_response();
+		return new close_popup_no_reload_response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 
 }

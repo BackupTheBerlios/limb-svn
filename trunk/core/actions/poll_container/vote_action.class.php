@@ -30,7 +30,7 @@ class vote_action extends form_action
 		}
 		
 		if($object->register_answer($data['answer']))
-			return new response();
+			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 		else
 			return new failed_response();
 	}

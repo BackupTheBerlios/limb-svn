@@ -33,7 +33,7 @@ class set_group_objects_access extends form_action
 
 		$access_policy->save_group_object_access($data['policy']);
 		
-		return new response();
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 
 }

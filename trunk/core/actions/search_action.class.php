@@ -44,7 +44,7 @@ class search_action extends form_action
 			
 		$this->_set_pager_items_per_page($items_per_page);
 												
-		return new response();
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 		
 	function _get_query()

@@ -51,7 +51,7 @@ class form_delete_site_object_action extends form_site_object_action
 
 		$parent_object_data = fetch_one_by_node_id($object_data['parent_node_id']);
 		
-		return new close_popup_response(RESPONSE_STATUS_SUCCESS, RELOAD_SELF_URL, true);
+		return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED, RELOAD_SELF_URL, true);
 	}
 
 }

@@ -116,12 +116,12 @@ class form_action extends action
 
 	function _first_time_perform()
 	{
-		return new response(RESPONSE_STATUS_FORM_NOT_SUBMITTED);
+		return new response(RESPONSE_STATUS_FORM_DISPLAYED);
 	}
 		
 	function _valid_perform()
 	{
-		return new response();
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 	
 	function get_validator()

@@ -37,7 +37,7 @@ class set_membership extends form_action
 		
 		$object->save_membership($object_data['id'], $data['membership']);
 	
-		return new response();
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 
 }

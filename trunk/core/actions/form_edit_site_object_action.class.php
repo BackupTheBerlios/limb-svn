@@ -88,7 +88,7 @@ class form_edit_site_object_action extends form_site_object_action
 			$this->_handle_changed_identifier($data['identifier']);
 		}	
 			
-		return new response();
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 	
 	function _update_object_operation()

@@ -70,9 +70,9 @@ class form_create_site_object_action extends form_site_object_action
 		$this->_write_create_access_policy();
 		
 		if(!isset($_REQUEST['popup']) || !$_REQUEST['popup'])
-			return new response();
+			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
 		else
-			return new close_popup_response();
+			return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 	
 	function _create_object_operation()
