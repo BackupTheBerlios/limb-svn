@@ -259,6 +259,35 @@ CREATE TABLE `sys_metadata` (
   KEY `oid` (`object_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
+/*
+Table struture for sys_node_link
+*/
+
+drop table if exists `sys_node_link`;
+CREATE TABLE `sys_node_link` (
+  `id` int(11) NOT NULL auto_increment,
+  `linker_node_id` int(11) NOT NULL default '0',
+  `target_node_id` int(11) NOT NULL default '0',
+  `group_id` int(11) NOT NULL default '0',
+  `priority` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `lg` (`linker_node_id`,`group_id`),
+  KEY `tg` (`target_node_id`,`group_id`)
+) TYPE=InnoDB;
+
+
+/*
+Table struture for sys_node_link_group
+*/
+
+drop table if exists `sys_node_link_group`;
+CREATE TABLE `sys_node_link_group` (
+  `id` int(11) NOT NULL auto_increment,
+  `identifier` varchar(50) NOT NULL default '',
+  `title` varchar(255) NOT NULL default '',
+  `priority` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=InnoDB;
 
 /*
 Table struture for sys_object_access

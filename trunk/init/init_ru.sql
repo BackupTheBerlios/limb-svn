@@ -39,7 +39,7 @@ CREATE TABLE `document` (
 ) TYPE=InnoDB;
 
 /*
-Table data for temp_ru.document
+Table data for document
 */
 
 INSERT INTO `document` VALUES 
@@ -132,7 +132,7 @@ CREATE TABLE `message` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_ru.message
+Table data for message
 */
 
 INSERT INTO `message` VALUES 
@@ -159,7 +159,7 @@ CREATE TABLE `navigation_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_ru.navigation_item
+Table data for navigation_item
 */
 
 INSERT INTO `navigation_item` VALUES 
@@ -200,7 +200,7 @@ CREATE TABLE `sys_action_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_ru.sys_action_access
+Table data for sys_action_access
 */
 
 INSERT INTO `sys_action_access` VALUES 
@@ -309,7 +309,7 @@ CREATE TABLE `sys_class` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for temp_ru.sys_class
+Table data for sys_class
 */
 
 INSERT INTO `sys_class` VALUES 
@@ -356,7 +356,7 @@ CREATE TABLE `sys_full_text_index` (
 ) TYPE=MyISAM;
 
 /*
-Table data for temp_ru.sys_full_text_index
+Table data for sys_full_text_index
 */
 
 INSERT INTO `sys_full_text_index` VALUES 
@@ -446,7 +446,7 @@ CREATE TABLE `sys_group_object_access_template` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_ru.sys_group_object_access_template
+Table data for sys_group_object_access_template
 */
 
 INSERT INTO `sys_group_object_access_template` VALUES 
@@ -474,7 +474,7 @@ CREATE TABLE `sys_group_object_access_template_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_ru.sys_group_object_access_template_item
+Table data for sys_group_object_access_template_item
 */
 
 INSERT INTO `sys_group_object_access_template_item` VALUES 
@@ -516,6 +516,36 @@ CREATE TABLE `sys_metadata` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
+Table struture for sys_node_link
+*/
+
+drop table if exists `sys_node_link`;
+CREATE TABLE `sys_node_link` (
+  `id` int(11) NOT NULL auto_increment,
+  `linker_node_id` int(11) NOT NULL default '0',
+  `target_node_id` int(11) NOT NULL default '0',
+  `group_id` int(11) NOT NULL default '0',
+  `priority` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `lg` (`linker_node_id`,`group_id`),
+  KEY `tg` (`target_node_id`,`group_id`)
+) TYPE=InnoDB;
+
+
+/*
+Table struture for sys_node_link_group
+*/
+
+drop table if exists `sys_node_link_group`;
+CREATE TABLE `sys_node_link_group` (
+  `id` int(11) NOT NULL auto_increment,
+  `identifier` varchar(50) NOT NULL default '',
+  `title` varchar(255) NOT NULL default '',
+  `priority` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=InnoDB;
+
+/*
 Table struture for sys_object_access
 */
 
@@ -534,7 +564,7 @@ CREATE TABLE `sys_object_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_ru.sys_object_access
+Table data for sys_object_access
 */
 
 INSERT INTO `sys_object_access` VALUES 
@@ -665,7 +695,7 @@ CREATE TABLE `sys_object_version` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_ru.sys_object_version
+Table data for sys_object_version
 */
 
 INSERT INTO `sys_object_version` VALUES 
@@ -749,7 +779,7 @@ CREATE TABLE `sys_site_object` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for temp_ru.sys_site_object
+Table data for sys_site_object
 */
 
 INSERT INTO `sys_site_object` VALUES 
@@ -816,7 +846,7 @@ CREATE TABLE `sys_site_object_tree` (
 ) TYPE=InnoDB;
 
 /*
-Table data for temp_ru.sys_site_object_tree
+Table data for sys_site_object_tree
 */
 
 INSERT INTO `sys_site_object_tree` VALUES 
@@ -874,7 +904,7 @@ CREATE TABLE `sys_stat_counter` (
 ) TYPE=InnoDB;
 
 /*
-Table data for temp_ru.sys_stat_counter
+Table data for sys_stat_counter
 */
 
 INSERT INTO `sys_stat_counter` VALUES 
@@ -1019,7 +1049,7 @@ CREATE TABLE `user` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_ru.user
+Table data for user
 */
 
 INSERT INTO `user` VALUES 
@@ -1042,7 +1072,7 @@ CREATE TABLE `user_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_ru.user_group
+Table data for user_group
 */
 
 INSERT INTO `user_group` VALUES 
@@ -1064,7 +1094,7 @@ CREATE TABLE `user_in_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_ru.user_in_group
+Table data for user_in_group
 */
 
 INSERT INTO `user_in_group` VALUES 
