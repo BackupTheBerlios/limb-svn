@@ -32,6 +32,8 @@ class user extends object
 	
 	function user()
 	{
+	  parent :: object();
+	  
 	  //IMPORTANT!!!
 	  $this->__session_class_path = LIMB_DIR . '/core/lib/security/user.class.php';
 	}

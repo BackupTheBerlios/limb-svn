@@ -24,7 +24,7 @@ class shipping_locator
   {
     $this->cache_life_time = SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME;
   }
-  
+    
   function & get_cache()
   {
     if($this->cache)  
@@ -71,14 +71,17 @@ class shipping_locator
         return $options;
     }
     
-    $options = $this->_do_get_shipping_options($shipping_configuration);
+    if(!$options = $this->_do_get_shipping_options($shipping_configuration))
+      return array();
     
-    if($this->cache_result && !empty($options))
+    $options = complex_array :: sort_array($options, array('price' => 'ASC'));
+    
+    if($this->cache_result)
       $this->_save_cached_options($shipping_configuration, $options);
       
     return $options;
   }
-  
+      
   function _save_cached_options($shipping_configuration, $options)
   {
     $cache =& $this->get_cache();

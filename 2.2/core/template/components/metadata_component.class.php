@@ -192,11 +192,16 @@ class metadata_component extends component
 		
 		if (!is_array($objects_data) || !count($objects_data))
 			return new array_dataset();
-		
+
 		$results =& $this->_apply_offset_path($objects_data);
 		
 		$this->_add_object_action_path($results);
 		
+		$record = end($results);
+		array_pop($results);
+		
+		$record['is_last'] = true;
+		$results[] = $record;
 		
 		return new array_dataset($results);
 	}
@@ -233,9 +238,6 @@ class metadata_component extends component
 			$last_element = $data['id'];
 		}
 		
-		if (isset($results[$last_element]))
-			$results[$last_element]['is_last'] = true;
-
 		return $results;
 	}
 

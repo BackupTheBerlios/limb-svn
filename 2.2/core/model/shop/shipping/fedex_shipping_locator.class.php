@@ -44,12 +44,10 @@ class fedex_shipping_locator extends shipping_locator
     else
       $ground_options = $this->_parse_html_options($ground_html);
         
-    $options = array_merge($express_options, $ground_options);
+    $options = complex_array :: array_merge($express_options, $ground_options);
     
     if(empty($options))
       return false;
-    
-    $options = complex_array :: sort_array($options, array('price' => 'ASC'), false);
     
     return $options;
   }
@@ -74,7 +72,7 @@ class fedex_shipping_locator extends shipping_locator
 		
 		return $this->_process_raw_options($handler->get_options());
   }
-    
+  
   function _process_raw_options($raw_options)
   {
 		$processed_options = array();
@@ -87,12 +85,12 @@ class fedex_shipping_locator extends shipping_locator
 		  $data['price'] = str_replace('&nbsp;', '', $data['price']);
 		  $data['price'] *= 1; //???
 		   
-		  $processed_options[] = $data; 
+		  $processed_options[$data['id']] = $data; 
 		}
 		
 		return $processed_options;
-  }
-  
+  }    
+      
   function _clean_cookie()
   {
     if(is_file(SHIPPING_FEDEX_SERVER_COOKIE_FILE))

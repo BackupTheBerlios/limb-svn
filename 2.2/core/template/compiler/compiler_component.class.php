@@ -366,7 +366,7 @@ class compiler_component
 	} 
 
 	/**
-	* Gets a root database
+	* Gets a root dataspace
 	* 
 	* @return mixed object compile time data component if exists or void
 	* @access protected 
