@@ -12,16 +12,16 @@ require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
 
 class NonbufferedResponse implements Response
 {
-  public function write($string)
+  function write($string)
   {
     echo $string;
   }
 
-  public function commit()
+  function commit()
   {
   }
 
-  public function isEmpty()
+  function isEmpty()
   {
     return true;
   }

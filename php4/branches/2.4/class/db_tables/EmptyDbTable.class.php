@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class EmptyDbTable extends DbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return array();
   }

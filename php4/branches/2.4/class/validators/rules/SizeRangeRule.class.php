@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
 class SizeRangeRule extends SingleFieldRule
 {
-  protected $min_len;
-  protected $max_len;
+  var $min_len;
+  var $max_len;
 
   function __construct($field_name, $min_len, $max_len = null)
   {
@@ -31,7 +31,7 @@ class SizeRangeRule extends SingleFieldRule
     }
   }
 
-  protected function check($value)
+  function check($value)
   {
     if (!is_null($this->min_len) &&  (strlen($value) < $this->min_len))
     {

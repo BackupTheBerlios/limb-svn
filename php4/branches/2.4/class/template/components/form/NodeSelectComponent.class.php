@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.
 
 class NodeSelectComponent extends InputFormElement
 {
-  public function initNodeSelect()
+  function initNodeSelect()
   {
     if (defined('NODE_SELECT_LOAD_SCRIPT'))
       return;
@@ -22,7 +22,7 @@ class NodeSelectComponent extends InputFormElement
     define('NODE_SELECT_LOAD_SCRIPT', 1);
   }
 
-  public function renderNodeSelect()
+  function renderNodeSelect()
   {
     $id = $this->getAttribute('id');
     $md5id = substr(md5($id), 0, 5);

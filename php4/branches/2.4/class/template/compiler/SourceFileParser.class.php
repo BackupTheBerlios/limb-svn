@@ -23,32 +23,32 @@ class SourceFileParser
   /**
   * The contents of the source template as a string
   */
-  protected $rawtext;
+  var $rawtext;
   /**
   * path and filename of source template
   */
-  protected $source_file;
+  var $source_file;
   /**
   * Reference to the global instance of the tag_dictionary
   */
-  protected $tag_dictionary;
+  var $tag_dictionary;
   /**
   * Current line number of parser cursor within the raw text
   */
-  protected $cur_line_no;
+  var $cur_line_no;
   /**
   * Regex pattern to match an opening tags which are components,
   * based on the contents of the tag dictionary.
   */
-  protected $tag_starting_pattern;
+  var $tag_starting_pattern;
   /**
   * Regex pattern to match opening tag attributes
   */
-  protected $attribute_pattern;
+  var $attribute_pattern;
   /**
   * Regex pattern to match the contents of a tag.
   */
-  protected $variable_reference_pattern;
+  var $variable_reference_pattern;
 
   function __construct($sourcefile, $tag_dictionary)
   {
@@ -66,7 +66,7 @@ class SourceFileParser
   * Builds the tag starting regex pattern, which "spots" all tags registered
   * in the  $tag_dictionary
   */
-  protected function initializeTagStartingPattern()
+  function initializeTagStartingPattern()
   {
     $tag_list = $this->tag_dictionary->getTagList();
 
@@ -93,21 +93,21 @@ class SourceFileParser
   /**
   * Builds the regex for fetching contents of tags
   */
-  protected function initializeVariableReferencePattern()
+  function initializeVariableReferencePattern()
   {
     $this->variable_reference_pattern = '/^(.*){(\$|\#|\^)([\w\[\]\'\"]+)}(.*)$/Usi';
   }
   /**
   * Builds the attribute spotting regular expression
   */
-  protected function initializeAttributePattern()
+  function initializeAttributePattern()
   {
     $this->attribute_pattern = "/^(\\w+)\\s*(=\\s*(\"|')?((?(3)[^\\3]*?|[^\\s]*))(?(3)\\3))?\\s*/";
   }
   /**
   * Used to find tag components in the template
   */
-  protected function matchText($pattern, &$match)
+  function matchText($pattern, &$match)
   {
     if (preg_match($pattern, $this->rawtext, $match))
     {
@@ -123,7 +123,7 @@ class SourceFileParser
   /**
   * Used to parse the attributes of a component tag
   */
-  protected function parseAttributes($component)
+  function parseAttributes($component)
   {
     $attributes = array();
 
@@ -150,7 +150,7 @@ class SourceFileParser
   /**
   * Used to parse the contents of a component
   */
-  protected function parseText($parent_component, $text)
+  function parseText($parent_component, $text)
   {
     while (preg_match($this->variable_reference_pattern, $text, $match))
     {
@@ -174,7 +174,7 @@ class SourceFileParser
     }
   }
 
-  protected function checkServerId($parent_component, $component)
+  function checkServerId($parent_component, $component)
   {
     $tree = $parent_component;
     if ($component instanceof ServerTagComponentTag)
@@ -207,7 +207,7 @@ class SourceFileParser
   * invoked by the Compiletemplate function, the first component argument
   * being a root_compiler_component. Accesses the $tag_dictionary
   */
-  public function parse($parent_component)
+  function parse($parent_component)
   {
     $tag_info = null;
     $parent_component->contents = '';
@@ -332,21 +332,21 @@ class SourceFileParser
   /**
   * Provide local method of same name to help with Unit testing
   */
-  protected function readTemplateFile($sourcefile)
+  function readTemplateFile($sourcefile)
   {
     return readTemplateFile($sourcefile);
   }
   /**
   * Returns an instance of text_node
   */
-  protected function getTextNode($text)
+  function getTextNode($text)
   {
     return new TextNode($text);
   }
   /*
   * Returns an instance of variable_reference
   */
-  protected function getVariableReference()
+  function getVariableReference()
   {
     return new VariableReference();
   }

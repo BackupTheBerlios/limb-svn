@@ -11,39 +11,39 @@
 
 class EmptyDataset
 {
-  public function reset(){}
+  function reset(){}
 
-  public function next()
+  function next()
   {
     return false;
   }
 
-  public function get($name)
+  function get($name)
   {
     return '';
   }
 
-  public function set($name, $value){}
+  function set($name, $value){}
 
-  public function append($name, $value){}
+  function append($name, $value){}
 
-  public function clear($name){}
+  function clear($name){}
 
-  public function import($valuelist){}
+  function import($valuelist){}
 
-  public function importAppend($valuelist){}
+  function importAppend($valuelist){}
 
-  public function export()
+  function export()
   {
     return array();
   }
 
-  public function getTotalRowCount()
+  function getTotalRowCount()
   {
     return 0;
   }
 
-  public function counter()
+  function counter()
   {
     return 0;
   }

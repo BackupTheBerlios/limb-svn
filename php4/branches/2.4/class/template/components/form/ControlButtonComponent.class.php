@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php')
 
 class ControlButtonComponent extends FormElement
 {
-  public function renderAttributes()
+  function renderAttributes()
   {
     if (!isset($this->attributes['path']) ||  !$this->attributes['path'])
     {

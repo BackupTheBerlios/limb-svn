@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class PrintLinkTagInfo
 {
-  public $tag = 'print:LINK';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'print_link_tag';
+  var $tag = 'print:LINK';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'print_link_tag';
 }
 
 registerTag(new PrintLinkTagInfo());
 
 class PrintLinkTag extends CompilerDirectiveTag
 {
-  public function generateContents($code)
+  function generateContents($code)
   {
     $mapped = '$' . $code->getTempVariable();
 

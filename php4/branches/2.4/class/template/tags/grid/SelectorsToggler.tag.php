@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class GridSelectorsTogglerTagInfo
 {
-  public $tag = 'grid:SELECTORS_TOGGLER';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'grid_selectors_toggler_tag';
+  var $tag = 'grid:SELECTORS_TOGGLER';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'grid_selectors_toggler_tag';
 }
 
 registerTag(new GridSelectorsTogglerTagInfo());
 
 class GridSelectorsTogglerTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->findParentByClass('grid_list_tag'))
     {
@@ -31,7 +31,7 @@ class GridSelectorsTogglerTag extends CompilerDirectiveTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $md5id = substr(md5($this->getServerId()), 0, 5);
 

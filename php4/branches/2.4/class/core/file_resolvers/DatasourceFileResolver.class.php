@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolverDecorator.class.
 
 class DatasourceFileResolver extends FileResolverDecorator
 {
-  public function resolve($class_path, $params = array())
+  function resolve($class_path, $params = array())
   {
     if(file_exists(LIMB_DIR . '/class/core/datasources/' . $class_path . '.class.php'))
       return LIMB_DIR . '/class/core/datasources/' . $class_path . '.class.php';

@@ -12,21 +12,19 @@ require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 
 final class Strings
 {
-  static protected $_instance = null;
+  var $_ini_objects = array();
+  var $_path_cache = array();
+  var $_cache = array();
 
-  protected $_ini_objects = array();
-  protected $_path_cache = array();
-  protected $_cache = array();
-
-  static function instance()
+  function & instance()
   {
-    if (!self :: $_instance)
-      self :: $_instance = new Strings();
+    if (!isset($GLOBALS['StringsGlobalInstance']) || !is_a($GLOBALS['StringsGlobalInstance'], 'Strings'))
+      $GLOBALS['StringsGlobalInstance'] =& new Strings();
 
-    return self :: $_instance;
+    return $GLOBALS['StringsGlobalInstance'];
   }
 
-  static public function get($key, $filename='common', $locale_id=null)
+  function get($key, $filename='common', $locale_id=null)
   {
     if(!$locale_id)
     {
@@ -36,10 +34,11 @@ final class Strings
         $locale_id = DEFAULT_MANAGEMENT_LOCALE_ID;
     }
 
-    return self :: instance()->_doGet($key, $filename, $locale_id);
+    $inst =& Strings :: instance();
+    return $inst->_doGet($key, $filename, $locale_id);
   }
 
-  protected function _doGet($key, $filename, $locale_id)
+  function _doGet($key, $filename, $locale_id)
   {
     $path = $this->_getPath($filename, $locale_id);
 
@@ -60,7 +59,7 @@ final class Strings
     return $value;
   }
 
-  protected function _getPath($file_name, $locale_id)
+  function _getPath($file_name, $locale_id)
   {
     if(isset($this->_path_cache[$file_name][$locale_id]))
       return $this->_path_cache[$file_name][$locale_id];

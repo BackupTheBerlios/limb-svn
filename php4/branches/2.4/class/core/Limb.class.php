@@ -21,21 +21,21 @@ class Limb
   const STATUS_FORM_NOT_VALID = 16;
   const STATUS_ERROR = 32;
 
-  static protected $toolkits = array();
+  var $toolkits = array();
 
-  static public function registerToolkit($toolkit)
+  function registerToolkit($toolkit)
   {
-    self :: $toolkits[] = $toolkit;
+    Limb :: $toolkits[] = $toolkit;
   }
 
-  static public function popToolkit()
+  function popToolkit()
   {
-    array_pop(self :: $toolkits);
+    array_pop(Limb :: $toolkits);
   }
 
-  static public function toolkit()
+  function toolkit()
   {
-    return end(self :: $toolkits);
+    return end(Limb :: $toolkits);
   }
 }
 

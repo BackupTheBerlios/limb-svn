@@ -12,21 +12,21 @@ require_once(LIMB_DIR . '/class/template/tags/form/Button.tag.php');
 
 class ActionButtonTagInfo
 {
-  public $tag = 'action_button';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'action_button_tag';
+  var $tag = 'action_button';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'action_button_tag';
 }
 
 registerTag(new ActionButtonTagInfo());
 
 class ActionButtonTag extends ButtonTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['action']))
     {
@@ -40,7 +40,7 @@ class ActionButtonTag extends ButtonTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function prepare()
+  function prepare()
   {
     parent :: prepare();
 
@@ -58,7 +58,7 @@ class ActionButtonTag extends ButtonTag
     unset($this->attributes['action']);
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }

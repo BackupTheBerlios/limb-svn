@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class IpTagInfo
 {
-  public $tag = 'core:IP';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'ip_tag';
+  var $tag = 'core:IP';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'ip_tag';
 }
 
 registerTag(new IpTagInfo());
 
 class IpTag extends CompilerDirectiveTag
 {
-  public function generateContents($code)
+  function generateContents($code)
   {
     if(isset($this->attributes['hash_id']))
     {

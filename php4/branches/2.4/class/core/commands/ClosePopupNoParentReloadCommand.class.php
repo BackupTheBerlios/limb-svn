@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class ClosePopupNoParentReloadCommand implements Command
 {
-  public function perform()
+  function perform()
   {
     $toolkit = Limb :: toolkit();
     $request = $toolkit->getRequest();
@@ -21,7 +21,7 @@ class ClosePopupNoParentReloadCommand implements Command
     if($request->hasAttribute('popup'))
       $toolkit->getResponse()->write(closePopupNoParentReloadResponse();
 
-    return Limb :: STATUS_OK;
+    return Limb :: getSTATUS_OK();
   }
 
 }

@@ -16,7 +16,7 @@ class InputRadioComponent extends FormElement
   * Overrides then calls with the parent render_attributes() method dealing
   * with the special case of the checked attribute
   */
-  public function renderAttributes()
+  function renderAttributes()
   {
     $value = $this->getValue();
 

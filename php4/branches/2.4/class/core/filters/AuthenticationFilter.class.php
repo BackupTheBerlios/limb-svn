@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/core/session/Session.class.php');
 
 class AuthenticationFilter implements InterceptingFilter
 {
-  public function run($filter_chain, $request, $response)
+  function run($filter_chain, $request, $response)
   {
     Debug :: addTimingPoint('authentication filter started');
 
@@ -52,12 +52,12 @@ class AuthenticationFilter implements InterceptingFilter
   }
 
   // for mocking
-  protected function _getController($behaviour)
+  function _getController($behaviour)
   {
     return new SiteObjectController($behaviour);
   }
 
-  public function initializeUser()
+  function initializeUser()
   {
     $user = Limb :: toolkit()->getUser();
     if($user->isLoggedIn())
@@ -67,13 +67,13 @@ class AuthenticationFilter implements InterceptingFilter
     $authenticator->login(array('login' => '', 'password' => ''));
   }
 
-  public function getBehaviourByObjectId($object_id)
+  function getBehaviourByObjectId($object_id)
   {
     $behaviour_name = SiteObject :: findBehaviourNameById($object_id);
     return Limb :: toolkit()->createBehaviour($behaviour_name);
   }
 
-  public function process404Error($request, $response)
+  function process404Error($request, $response)
   {
     if($object_404_path = Limb :: toolkit()->getINI('common.ini')->getOption('404', 'ERROR_DOCUMENTS'))
       $response->redirect($object_404_path);

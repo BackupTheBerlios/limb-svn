@@ -12,16 +12,16 @@ require_once(LIMB_DIR . '/class/template/compiler/CompilerDirectiveTag.class.php
 
 class LocaleStringTagInfo
 {
-  public $tag = 'locale:STRING';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'locale_string_tag';
+  var $tag = 'locale:STRING';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'locale_string_tag';
 }
 
 registerTag(new LocaleStringTagInfo());
 
 class LocaleStringTag extends CompilerDirectiveTag
 {
-  public function generateContents($code)
+  function generateContents($code)
   {
     $file = 'common';
 

@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class CoreParameterTagInfo
 {
-  public $tag = 'core:PARAMETER';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'core_parameter_tag';
+  var $tag = 'core:PARAMETER';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'core_parameter_tag';
 }
 
 registerTag(new CoreParameterTagInfo());
 
 class CoreParameterTag extends CompilerDirectiveTag
 {
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -42,7 +42,7 @@ class CoreParameterTag extends CompilerDirectiveTag
     return PARSER_FORBID_PARSING;
   }
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof ServerComponentTag)
     {
@@ -54,7 +54,7 @@ class CoreParameterTag extends CompilerDirectiveTag
     }
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     if(!isset($this->attributes['type']))
       $this->attributes['type'] = 'string';
@@ -62,7 +62,7 @@ class CoreParameterTag extends CompilerDirectiveTag
     parent::preGenerate($code);
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $value = $this->_typecastValue();
 
@@ -73,7 +73,7 @@ class CoreParameterTag extends CompilerDirectiveTag
     parent::generateContents($code);
   }
 
-  protected function _typecastValue()
+  function _typecastValue()
   {
     $value = $this->attributes['value'];
     switch(strtolower($this->attributes['type']))

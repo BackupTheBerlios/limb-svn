@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.
 
 class FileSelectComponent extends InputFormElement
 {
-  public function initFileSelect()
+  function initFileSelect()
   {
     if (!defined('FILE_SELECT_LOAD_SCRIPT'))
     {
@@ -21,7 +21,7 @@ class FileSelectComponent extends InputFormElement
     }
   }
 
-  public function renderFileSelect()
+  function renderFileSelect()
   {
     $id = $this->getAttribute('id');
     $md5id = substr(md5($id), 0, 5);

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
 class RequiredRule extends SingleFieldRule
 {
-  public function validate($dataspace)
+  function validate($dataspace)
   {
     $value = $dataspace->get($this->field_name);
 

@@ -15,28 +15,28 @@ require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 
 class FullPageCacheManager
 {
-  protected $id;
-  protected $request;
-  protected $rules = array();
-  protected $matched_rule;
+  var $id;
+  var $request;
+  var $rules = array();
+  var $matched_rule;
 
-  protected function _setMatchedRule($rule)
+  function _setMatchedRule($rule)
   {
     $this->matched_rule = $rule;
   }
 
-  protected function _getMatchedRule()
+  function _getMatchedRule()
   {
     return $this->matched_rule;
   }
 
-  public function setRequest($request)
+  function setRequest($request)
   {
     $this->id = null;
     $this->request = $request;
   }
 
-  public function get()
+  function get()
   {
     if(!$this->request)
       return false;
@@ -50,7 +50,7 @@ class FullPageCacheManager
     return false;
   }
 
-  public function write($content)
+  function write($content)
   {
     if(!$id = $this->getCacheId())
       return false;
@@ -68,7 +68,7 @@ class FullPageCacheManager
     return rename($tmp,  PAGE_CACHE_DIR . $id);
   }
 
-  public function getCacheId()
+  function getCacheId()
   {
     if(!$this->request)
       return null;
@@ -102,7 +102,7 @@ class FullPageCacheManager
     return $this->id;
   }
 
-  public function isCacheable()
+  function isCacheable()
   {
     if(!$this->request)
       return false;
@@ -149,7 +149,7 @@ class FullPageCacheManager
     return false;
   }
 
-  protected function _isUserInGroups($groups)
+  function _isUserInGroups($groups)
   {
     $user = Limb :: toolkit()->getUser();
 
@@ -160,7 +160,7 @@ class FullPageCacheManager
     return false;
   }
 
-  public function cacheExists()
+  function cacheExists()
   {
     if(!$id = $this->getCacheId())
       return false;
@@ -168,7 +168,7 @@ class FullPageCacheManager
     return file_exists(PAGE_CACHE_DIR . $id);
   }
 
-  public function flush()
+  function flush()
   {
     Fs :: mkdir(PAGE_CACHE_DIR);
 
@@ -180,7 +180,7 @@ class FullPageCacheManager
     }
   }
 
-  public function getCacheSize()
+  function getCacheSize()
   {
     Fs :: mkdir(PAGE_CACHE_DIR);
 
@@ -196,7 +196,7 @@ class FullPageCacheManager
     return $size;
   }
 
-  public function readCache()
+  function readCache()
   {
     if(!$id = $this->getCacheId())
       return false;
@@ -204,7 +204,7 @@ class FullPageCacheManager
     return file_get_contents(PAGE_CACHE_DIR . $id);
   }
 
-  public function getRules()
+  function getRules()
   {
     if(!$this->rules)
       $this->_loadRules();
@@ -212,7 +212,7 @@ class FullPageCacheManager
     return $this->rules;
   }
 
-  protected function _loadRules()
+  function _loadRules()
   {
     $this->rules = array();
 

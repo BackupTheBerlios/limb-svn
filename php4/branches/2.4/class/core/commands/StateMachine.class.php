@@ -13,10 +13,10 @@ class StateMachine
 {
   const BY_DEFAULT = 255;
 
-  protected $states = array();
-  protected $initial_state = null;
+  var $states = array();
+  var $initial_state = null;
 
-  public function registerState($state_name, $command, $transitions_matrix = array())
+  function registerState($state_name, $command, $transitions_matrix = array())
   {
     if (isset($this->states[$state_name]))
       throw new LimbException('state already been registered',
@@ -26,12 +26,12 @@ class StateMachine
     $this->states[$state_name]['transitions'] = $transitions_matrix;
   }
 
-  public function setInitialState($state)
+  function setInitialState($state)
   {
     $this->initial_state = $state;
   }
 
-  public function run()
+  function run()
   {
     if (!count($this->states))
       return;
@@ -51,7 +51,7 @@ class StateMachine
     }
   }
 
-  protected function _processState($state_name)
+  function _processState($state_name)
   {
     if (!isset($this->states[$state_name]))
     {
@@ -65,13 +65,13 @@ class StateMachine
 
     if (isset($state_data['transitions'][$result]))
       return $state_data['transitions'][$result];
-    elseif(isset($state_data['transitions'][self :: BY_DEFAULT]))
-      return $state_data['transitions'][self :: BY_DEFAULT];
+    elseif(isset($state_data['transitions'][StateMachine :: BY_DEFAULT]))
+      return $state_data['transitions'][StateMachine :: BY_DEFAULT];
     else
       return false;
   }
 
-  public function reset()
+  function reset()
   {
     $this->states = array();
   }

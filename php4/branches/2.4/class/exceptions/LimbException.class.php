@@ -11,9 +11,9 @@
 
 class LimbException extends Exception
 {
-  protected $_additional_params = array();
+  var $_additional_params = array();
 
-  public function __construct($message, $params = array())
+  function __construct($message, $params = array())
   {
     parent::__construct($message);
 
@@ -21,17 +21,17 @@ class LimbException extends Exception
       $this->_setAdditionalParams($params);
   }
 
-  protected function _setAdditionalParams($params)
+  function _setAdditionalParams($params)
   {
     $this->_additional_params = $params;
   }
 
-  public function getAdditionalParams()
+  function getAdditionalParams()
   {
     return $this->_additional_params;
   }
 
-  public function __toString()
+  function __toString()
   {
     $str =  __CLASS__ . " : \"{$this->message}\"\n";
     $str .= "[params: " . var_export($this->_additional_params, true) . "]\n";

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 class ImageFactory
 {
-  static public function create($library = 'gd', $dir = '')
+  function create($library = 'gd', $dir = '')
   {
     if(defined('IMAGE_LIBRARY'))
       $library = IMAGE_LIBRARY;

@@ -21,24 +21,25 @@ require_once(LIMB_DIR . '/class/etc/MessageBox.class.php');
 
 class LimbApplication
 {
-  protected function _loadPackages()
+  function _loadPackages()
   {
     include_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
-    PackagesInfo :: instance()->loadPackages();
+    $inst =& PackagesInfo :: instance()
+    $inst->loadPackages();
   }
 
-  protected function _createToolkit()
+  function _createToolkit()
   {
     include_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
     return new BaseLimbToolkit();
   }
 
-  protected function _registerToolkit()
+  function _registerToolkit()
   {
     Limb :: registerToolkit($this->_createToolkit());
   }
 
-  protected function _registerFilters($filter_chain)
+  function _registerFilters($filter_chain)
   {
     $filters_dir = LIMB_DIR . '/class/core/filters/';
 
@@ -50,7 +51,7 @@ class LimbApplication
     $filter_chain->registerFilter($filters_dir . 'site_object_controller_filter');
   }
 
-  protected function _registerFileResolvers()
+  function _registerFileResolvers()
   {
     $resolvers_dir = LIMB_DIR . '/class/core/file_resolvers/';
 
@@ -75,7 +76,7 @@ class LimbApplication
     registerFileResolver('site_object',         new CachingFileResolver(new SiteObjectFileResolver(new PackageFileResolver())));
   }
 
-  public function run()
+  function run()
   {
     try
     {
@@ -97,7 +98,7 @@ class LimbApplication
     }
   }
 
-  protected function _doRun()
+  function _doRun()
   {
     $this->_registerFileResolvers();
 
@@ -114,7 +115,7 @@ class LimbApplication
 
     $filter_chain->process();
 
-    if( $response->getContentType() == 'text/html' && 
+    if( $response->getContentType() == 'text/html' &&
         $response->getStatus() == 200)//only 200?
     {
       if (Debug :: isConsoleEnabled())

@@ -7,14 +7,14 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysBehaviourDbTable extends DbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
-  	return array(
+    return array(
       'id' => array('type' => 'numeric'),
       'name' => '',
       'icon' => '',

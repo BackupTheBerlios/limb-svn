@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolverDecorator.class.
 
 class StringsFileResolver extends FileResolverDecorator
 {
-  public function resolve($file_name, $params = array())
+  function resolve($file_name, $params = array())
   {
     if(!isset($params[0]))
       $locale_id = DEFAULT_CONTENT_LOCALE_ID;

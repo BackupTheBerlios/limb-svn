@@ -8,26 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/Datasource.interface.php');
-require_once(dirname(__FILE__) . '/Countable.interface.php');
 require_once(dirname(__FILE__) . '/site_objects_datasource_support.inc.php');
 
-class SiteObjectsDatasource implements Datasource, Countable
+class SiteObjectsDatasource /*implements Datasource, Countable*/
 {
   const CACHE_GROUP = 'site_objects';
 
-  protected $object_ids;
-  protected $behaviours;
-  protected $accessible_object_ids;
-  protected $finder_name;
-  protected $fetch_method;
-  protected $limit;
-  protected $offset;
-  protected $order;
-  protected $permissions_action;
-  protected $restriction_class_name;
-  protected $raw_sql_params;
-  protected $finder;
+  var $object_ids;
+  var $behaviours;
+  var $accessible_object_ids;
+  var $finder_name;
+  var $fetch_method;
+  var $limit;
+  var $offset;
+  var $order;
+  var $permissions_action;
+  var $restriction_class_name;
+  var $raw_sql_params;
+  var $finder;
 
   function __construct()
   {
@@ -100,7 +98,7 @@ class SiteObjectsDatasource implements Datasource, Countable
     $this->site_object = null;
   }
 
-  protected function _collectParams()
+  function _collectParams()
   {
     $params = array();
     $params['limit'] = $this->limit;
@@ -110,7 +108,7 @@ class SiteObjectsDatasource implements Datasource, Countable
     return $params;
   }
 
-  protected function _collectRawSqlParams()
+  function _collectRawSqlParams()
   {
     $params = $this->raw_sql_params;
 
@@ -131,12 +129,12 @@ class SiteObjectsDatasource implements Datasource, Countable
   }
 
 
-  public function getObjectIds()
+  function getObjectIds()
   {
     return $this->object_ids;
   }
 
-  public function getAccessibleObjectIds()
+  function getAccessibleObjectIds()
   {
     $cache = Limb :: toolkit()->getCache();
 
@@ -144,7 +142,7 @@ class SiteObjectsDatasource implements Datasource, Countable
     $action = $this->permissions_action;
     $key = array($ids, $action);
 
-    $result = $cache->get($key, self :: CACHE_GROUP);
+    $result = $cache->get($key, SiteObjectsDatasource :: CACHE_GROUP);
 
     if($result !== null)
       return $result;
@@ -152,12 +150,12 @@ class SiteObjectsDatasource implements Datasource, Countable
     $authorizer = Limb :: toolkit()->getAuthorizer();
     $result = $authorizer->getAccessibleObjectIds($ids, $action);
 
-    $cache->put($key, $result, self :: CACHE_GROUP);
+    $cache->put($key, $result, SiteObjectsDatasource :: CACHE_GROUP);
 
     return $result;
   }
 
-  protected function _getFinder()
+  function _getFinder()
   {
     if ($this->finder)
       return $this->finder;
@@ -169,7 +167,7 @@ class SiteObjectsDatasource implements Datasource, Countable
     return $this->finder;
   }
 
-  public function countTotal()
+  function countTotal()
   {
     $sql_params = $this->_collectRawSqlParams();
     $count_method = $this->fetch_method . 'Count';
@@ -177,7 +175,7 @@ class SiteObjectsDatasource implements Datasource, Countable
     $key = array($sql_params, $count_method);
     $cache = Limb :: toolkit()->getCache();
 
-    $result = $cache->get($key, self :: CACHE_GROUP);
+    $result = $cache->get($key, SiteObjectsDatasource :: CACHE_GROUP);
 
     if($result !== null)
       return $result;
@@ -186,12 +184,12 @@ class SiteObjectsDatasource implements Datasource, Countable
 
     $result = $finder->$count_method($sql_params);
 
-    $cache->put($key, $result, self :: CACHE_GROUP);
+    $cache->put($key, $result, SiteObjectsDatasource :: CACHE_GROUP);
 
     return $result;
   }
 
-  public function fetch()
+  function fetch()
   {
     $params = $this->_collectParams();
     $sql_params = $this->_collectRawSqlParams();
@@ -200,7 +198,7 @@ class SiteObjectsDatasource implements Datasource, Countable
     $key = array($params, $sql_params, $fetch_method);
     $cache = Limb :: toolkit()->getCache();
 
-    $result = $cache->get($key, self :: CACHE_GROUP);
+    $result = $cache->get($key, SiteObjectsDatasource :: CACHE_GROUP);
 
     if($result !== null)
       return $result;
@@ -212,17 +210,17 @@ class SiteObjectsDatasource implements Datasource, Countable
 
     $result = $finder->$fetch_method($params, $sql_params);
 
-    $cache->put($key, $result, self :: CACHE_GROUP);
+    $cache->put($key, $result, SiteObjectsDatasource :: CACHE_GROUP);
 
     return $result;
   }
 
-  public function flushCache()
+  function flushCache()
   {
-    Limb :: toolkit()->getCache()->flush(self :: CACHE_GROUP);
+    Limb :: toolkit()->getCache()->flush(SiteObjectsDatasource :: CACHE_GROUP);
   }
 
-  protected function _getBehavioursIds()
+  function _getBehavioursIds()
   {
     require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectBehaviourMapper.class.php');
     return SiteObjectBehaviourMapper :: getIdsByNames($this->behaviours);

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class PagerTotalCountTagInfo
 {
-  public $tag = 'pager:TOTAL';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'pager_total_count_tag';
+  var $tag = 'pager:TOTAL';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'pager_total_count_tag';
 }
 
 registerTag(new PagerTotalCountTagInfo());
@@ -22,7 +22,7 @@ registerTag(new PagerTotalCountTagInfo());
 */
 class PagerTotalCountTag extends ServerComponentTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->findParentByClass('pager_navigator_tag'))
     {
@@ -34,7 +34,7 @@ class PagerTotalCountTag extends ServerComponentTag
     }
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $parent = $this->findParentByClass('pager_navigator_tag');
     parent::preGenerate($code);
@@ -44,12 +44,12 @@ class PagerTotalCountTag extends ServerComponentTag
     $code->writePhp($this->getComponentRefCode() . '->set("more_than_one_page", ' . $parent->getComponentRefCode() . '->has_more_than_one_page());');
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

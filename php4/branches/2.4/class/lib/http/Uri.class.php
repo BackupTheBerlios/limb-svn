@@ -12,23 +12,23 @@ require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
 class Uri
 {
-  protected $_protocol = '';
+  var $_protocol = '';
 
-  protected $_user = '';
+  var $_user = '';
 
-  protected $_password = '';
+  var $_password = '';
 
-  protected $_host = '';
+  var $_host = '';
 
-  protected $_port = '';
+  var $_port = '';
 
-  protected $_path = '';
+  var $_path = '';
 
-  protected $_anchor = '';
+  var $_anchor = '';
 
-  protected $_query_items = array();
+  var $_query_items = array();
 
-  protected $_path_elements = array();
+  var $_path_elements = array();
 
   function __construct($str='')
   {
@@ -36,42 +36,42 @@ class Uri
       $this->parse($str);
   }
 
-  public function getProtocol()
+  function getProtocol()
   {
     return $this->_protocol;
   }
 
-  public function getUser()
+  function getUser()
   {
     return $this->_user;
   }
 
-  public function getPassword()
+  function getPassword()
   {
     return $this->_password;
   }
 
-  public function getHost()
+  function getHost()
   {
     return $this->_host;
   }
 
-  public function getPort()
+  function getPort()
   {
     return $this->_port;
   }
 
-  public function getPath()
+  function getPath()
   {
     return $this->_path;
   }
 
-  public function getAnchor()
+  function getAnchor()
   {
     return $this->_anchor;
   }
 
-  public function parse($str)
+  function parse($str)
   {
     $this->_user        = '';
     $this->_password    = '';
@@ -167,23 +167,23 @@ class Uri
     $this->_path_elements = explode('/',$this->_path);
   }
 
-  public function countPath()
+  function countPath()
   {
     return sizeof($this->_path_elements);
   }
 
-  public function countQueryItems()
+  function countQueryItems()
   {
     return sizeof($this->_query_items);
   }
 
-  public function compare($uri)
+  function compare($uri)
   {
     if (
-          $this->_protocol !== $uri->getProtocol() || 
-          $this->_host !== $uri->getHost() || 
-          $this->_port !== $uri->getPort() || 
-          $this->_user !== $uri->getUser() || 
+          $this->_protocol !== $uri->getProtocol() ||
+          $this->_host !== $uri->getHost() ||
+          $this->_port !== $uri->getPort() ||
+          $this->_user !== $uri->getUser() ||
           $this->_password !== $uri->getPassword()
         )
     return false;
@@ -197,21 +197,21 @@ class Uri
     return true;
   }
 
-  public function compareQuery($uri)
+  function compareQuery($uri)
   {
     if ($this->countQueryItems() != $uri->countQueryItems())
       return false;
 
     foreach($this->_query_items as $name => $value)
     {
-      if(	(($item = $uri->getQueryItem($name)) === false) || 
+      if(	(($item = $uri->getQueryItem($name)) === false) ||
           $item != $value)
         return false;
     }
     return true;
   }
 
-  public function comparePath($uri)
+  function comparePath($uri)
   {
     $count1 = $this->countPath();
     $count2 = $uri->countPath();
@@ -225,7 +225,7 @@ class Uri
     return ($count1 - $count2);
   }
 
-  public function toString($parts = array('protocol', 'user', 'password', 'host', 'port', 'path', 'query', 'anchor'))
+  function toString($parts = array('protocol', 'user', 'password', 'host', 'port', 'path', 'query', 'anchor'))
   {
     $string = '';
 
@@ -267,12 +267,12 @@ class Uri
      return $string;
   }
 
-  public function getPathElement($level)
+  function getPathElement($level)
   {
     return isset($this->_path_elements[$level]) ? $this->_path_elements[$level] : '';
   }
 
-  public function getPathElements()
+  function getPathElements()
   {
     return $this->_path_elements;
   }
@@ -281,19 +281,19 @@ class Uri
   * Adds a query_string item
   *
   */
-  public function addEncodedQueryItem($name, $value)
+  function addEncodedQueryItem($name, $value)
   {
     $this->_query_items[$name] = $value;
   }
 
-  public function addQueryItem($name, $value)
+  function addQueryItem($name, $value)
   {
     $this->_query_items[$name] = is_array($value)?
       ComplexArray :: arrayMapRecursive('urlencode', $value) :
       urlencode($value);
   }
 
-  public function getQueryItem($name)
+  function getQueryItem($name)
   {
     if (isset($this->_query_items[$name]))
       return $this->_query_items[$name];
@@ -301,7 +301,7 @@ class Uri
     return false;
   }
 
-  public function getQueryItems()
+  function getQueryItems()
   {
     return $this->_query_items;
   }
@@ -310,7 +310,7 @@ class Uri
   * Removes a query_string item
   *
   */
-  public function removeQueryItem($name)
+  function removeQueryItem($name)
   {
     if (isset($this->_query_items[$name]))
     unset($this->_query_items[$name]);
@@ -319,7 +319,7 @@ class Uri
   /**
   * Sets the query_string to literally what you supply
   */
-  public function setQueryString($query_string)
+  function setQueryString($query_string)
   {
     $this->_query_items = $this->_parseQueryString($query_string);
   }
@@ -327,7 +327,7 @@ class Uri
   /**
   * Removes query items
   */
-  public function removeQueryItems()
+  function removeQueryItems()
   {
     $this->_query_items = array();
   }
@@ -336,7 +336,7 @@ class Uri
   * Returns flat query_string
   *
   */
-  public function getQueryString()
+  function getQueryString()
   {
     $query_string = '';
     $query_items = array();
@@ -361,7 +361,7 @@ class Uri
   /**
   * Parses raw query_string and returns an array of it
   */
-  protected function _parseQueryString($query_string)
+  function _parseQueryString($query_string)
   {
     $query_string = rawurldecode($query_string);
 
@@ -385,7 +385,7 @@ class Uri
   * /foo/bar/.././/boo.php => /foo/boo.php
   *
   */
-  public function resolvePath($path)
+  function resolvePath($path)
   {
     $path = explode('/', str_replace('//', '/', $path));
 

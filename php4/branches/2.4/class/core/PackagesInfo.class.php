@@ -12,24 +12,22 @@ require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
 class PackagesInfo
 {
-  protected static $_instance = null;
+  var $_packages = array();
 
-  protected $_packages = array();
-
-  static public function instance()
+  function & instance()
   {
-    if (!self :: $_instance)
-      self :: $_instance = new PackagesInfo();
+    if (!isset($GLOBALS['PackagesInfo']) || !is_a($GLOBALS['PackagesInfo'], 'PackagesInfo'))
+      $GLOBALS['PackagesInfo'] =& new PackagesInfo();
 
-    return self :: $_instance;
+    return $GLOBALS['PackagesInfo'];
   }
 
-  public function reset()
+  function reset()
   {
     $this->_packages = array();
   }
 
-  public function getPackages()
+  function getPackages()
   {
     if(!$this->_packages)
       $this->loadPackages();
@@ -37,7 +35,7 @@ class PackagesInfo
     return $this->_packages;
   }
 
-  public function loadPackages()
+  function loadPackages()
   {
     include_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
@@ -68,13 +66,13 @@ class PackagesInfo
     }
   }
 
-  protected function _definePackageConstant($package_name, $path)
+  function _definePackageConstant($package_name, $path)
   {
     if(!defined($package_name . '_DIR'))
       define($package_name . '_DIR', $path);
   }
 
-  protected function _parsePath($path)
+  function _parsePath($path)
   {
     return preg_replace('~\{([^\}]+)\}~e', "constant('\\1')", $path);
   }

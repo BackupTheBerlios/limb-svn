@@ -18,16 +18,16 @@ class VariableReference extends CompilerComponent
   /**
   * Reference of variable
   */
-  public $reference;
+  var $reference;
   /**
   * Scope of variable
   */
-  public $scope;
+  var $scope;
 
   /**
   * Generate the code
   */
-  public function generate($code)
+  function generate($code)
   {
     // This has to find parental namespaces, not parental components
     switch ($this->scope)

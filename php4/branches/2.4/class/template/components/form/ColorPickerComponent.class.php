@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.
 
 class ColorPickerComponent extends InputFormElement
 {
-  public function initColorPicker()
+  function initColorPicker()
   {
     if (defined('COLOR_PICKER_LOAD_SCRIPT'))
       return;
@@ -26,7 +26,7 @@ class ColorPickerComponent extends InputFormElement
     define('COLOR_PICKER_LOAD_SCRIPT',1);
   }
 
-  public function renderColorPicker()
+  function renderColorPicker()
   {
     $id = $this->getAttribute('id');
 

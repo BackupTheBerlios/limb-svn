@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CoreOptionalTagInfo
 {
-  public $tag = 'core:OPTIONAL';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'core_optional_tag';
+  var $tag = 'core:OPTIONAL';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'core_optional_tag';
 }
 
 registerTag(new CoreOptionalTagInfo());
@@ -23,7 +23,7 @@ registerTag(new CoreOptionalTagInfo());
 */
 class CoreOptionalTag extends CompilerDirectiveTag
 {
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['for']) ||  !$this->attributes['for'])
     {
@@ -37,7 +37,7 @@ class CoreOptionalTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
@@ -46,7 +46,7 @@ class CoreOptionalTag extends CompilerDirectiveTag
     $code->writePhp('if (!empty($' . $tempvar . ')) {');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
     parent::postGenerate($code);

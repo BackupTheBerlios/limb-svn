@@ -12,14 +12,14 @@ require_once(LIMB_DIR . '/class/template/Component.class.php');
 
 class SiteObjectComponent extends Component
 {
-  public function fetchByPath($path)
+  function fetchByPath($path)
   {
     $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
     $datasource->setPath($path);
     $this->import($datasource->fetch());
   }
 
-  public function fetchRequested()
+  function fetchRequested()
   {
     $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
     $request = Limb :: toolkit()->getRequest();

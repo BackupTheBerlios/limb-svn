@@ -14,13 +14,13 @@ abstract class AbstractDataMapper
   //current SimpleTest has limited support for php5 features,
   //error pops up when abstract ones are partially mocked :(
 
-  /*abstract*/ protected function _createDomainObject(){}
+  /*abstract*/ function _createDomainObject(){}
 
-  /*abstract*/ protected function _getFinder(){}
+  /*abstract*/ function _getFinder(){}
 
-  /*abstract*/ protected function _doLoad($result_set, $domain_object){}
+  /*abstract*/ function _doLoad($result_set, $domain_object){}
 
-  public function findById($id)
+  function findById($id)
   {
     $result_set = $this->_getFinder()->findById($id);
 
@@ -34,7 +34,7 @@ abstract class AbstractDataMapper
     return $domain_object;
   }
 
-  public function save($domain_object)
+  function save($domain_object)
   {
     if($domain_object->getId())
       $this->update($domain_object);
@@ -42,11 +42,11 @@ abstract class AbstractDataMapper
       $this->insert($domain_object);
   }
 
-  public function insert($domain_object)
+  function insert($domain_object)
   {
   }
 
-  public function update($domain_object)
+  function update($domain_object)
   {
   }
 

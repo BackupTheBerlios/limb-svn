@@ -14,10 +14,10 @@ class TreeIdentifierRule extends SingleFieldRule
 {
   const UNKNOWN_NODE_ID = -1000;
 
-  protected $parent_node_id;
-  protected $node_id;
+  var $parent_node_id;
+  var $node_id;
 
-  function __construct($field_name, $parent_node_id, $node_id = self :: UNKNOWN_NODE_ID)
+  function __construct($field_name, $parent_node_id, $node_id = TreeIdentifierRule :: UNKNOWN_NODE_ID)
   {
     $this->node_id = $node_id;
     $this->parent_node_id = $parent_node_id;
@@ -25,7 +25,7 @@ class TreeIdentifierRule extends SingleFieldRule
     parent :: __construct($field_name);
   }
 
-  public function validate($dataspace)
+  function validate($dataspace)
   {
     if(!$value = $dataspace->get($this->field_name))
       return;
@@ -43,7 +43,7 @@ class TreeIdentifierRule extends SingleFieldRule
       if($node['identifier'] != $value)
         continue;
 
-      if($this->node_id == self :: UNKNOWN_NODE_ID)
+      if($this->node_id == TreeIdentifierRule :: UNKNOWN_NODE_ID)
       {
         $this->error(Strings :: get('error_duplicate_tree_identifier', 'error'));
         break;

@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolverDecorator.class.
 
 class CachingFileResolver extends FileResolverDecorator
 {
-  protected $_resolved_paths = array();
+  var $_resolved_paths = array();
 
   function __construct($resolver)
   {
@@ -25,7 +25,7 @@ class CachingFileResolver extends FileResolverDecorator
     register_shutdown_function(array($this, 'SaveCache'));
   }
 
-  public function getCacheFile()
+  function getCacheFile()
   {
     $cache_file = VAR_DIR . '/resolvers/' . get_class($this->_resolver) . '.php';
     Fs :: mkdir(VAR_DIR . '/resolvers/');
@@ -33,7 +33,7 @@ class CachingFileResolver extends FileResolverDecorator
     return $cache_file;
   }
 
-  public function flushCache()
+  function flushCache()
   {
     $this->_resolved_paths = array();
     $cache_file = $this->getCacheFile();
@@ -42,7 +42,7 @@ class CachingFileResolver extends FileResolverDecorator
       unlink($cache_file);
   }
 
-  protected function _loadCache()
+  function _loadCache()
   {
     $cache_file = $this->getCacheFile();
     if(!file_exists($cache_file))
@@ -56,7 +56,7 @@ class CachingFileResolver extends FileResolverDecorator
       $this->_resolved_paths = array();
   }
 
-  public function saveCache()
+  function saveCache()
   {
     $cache_file = $this->getCacheFile();
 
@@ -76,7 +76,7 @@ class CachingFileResolver extends FileResolverDecorator
     fclose($fp);
   }
 
-  public function resolve($file_path, $params = array())
+  function resolve($file_path, $params = array())
   {
     $hash = $file_path . md5(serialize($params));
 

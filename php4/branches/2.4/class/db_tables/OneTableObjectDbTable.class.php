@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
 class OneTableObjectDbTable extends DbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),

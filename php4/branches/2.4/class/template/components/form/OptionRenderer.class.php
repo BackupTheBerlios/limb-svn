@@ -20,7 +20,7 @@ class OptionRenderer
   * Renders an option, sending directly to display. Called from a compiled
   * template render function.
   */
-  public function renderAttribute($key, $contents, $selected)
+  function renderAttribute($key, $contents, $selected)
   {
     echo '<option value="';
     echo htmlspecialchars($key, ENT_QUOTES);

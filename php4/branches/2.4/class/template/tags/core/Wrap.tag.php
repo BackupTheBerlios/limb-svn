@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CoreWrapTagInfo
 {
-  public $tag = 'core:WRAP';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'core_wrap_tag';
+  var $tag = 'core:WRAP';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'core_wrap_tag';
 }
 
 registerTag(new CoreWrapTagInfo());
@@ -24,11 +24,11 @@ registerTag(new CoreWrapTagInfo());
 */
 class CoreWrapTag extends CompilerDirectiveTag
 {
-  protected $resolved_source_file;
+  var $resolved_source_file;
 
-  protected $keylist;
+  var $keylist;
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('core_wrap_tag'))
     {
@@ -39,7 +39,7 @@ class CoreWrapTag extends CompilerDirectiveTag
     }
   }
 
-  public function preParse()
+  function preParse()
   {
     global $tag_dictionary;
     $file = $this->attributes['file'];
@@ -66,14 +66,14 @@ class CoreWrapTag extends CompilerDirectiveTag
     return PARSER_FORBID_PARSING;
   }
 
-  public function prepare()
+  function prepare()
   {
     $this->parent->wrapping_component = $this;
 
     parent :: prepare();
   }
 
-  public function generateWrapperPrefix($code)
+  function generateWrapperPrefix($code)
   {
     $this->keylist = array_keys($this->children);
     $name = $this->attributes['placeholder'];
@@ -89,7 +89,7 @@ class CoreWrapTag extends CompilerDirectiveTag
     }
   }
 
-  public function generateWrapperPostfix($code)
+  function generateWrapperPostfix($code)
   {
     while (list(, $key) = each($this->keylist))
     {
@@ -101,7 +101,7 @@ class CoreWrapTag extends CompilerDirectiveTag
   * By the time this is called we have already called generate
   * on all of our children, so does nothing
   */
-  public function generate($code)
+  function generate($code)
   {
     // By the time this is called we have already called generate
     // on all of our children.

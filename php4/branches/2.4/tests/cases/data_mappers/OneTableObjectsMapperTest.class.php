@@ -16,12 +16,12 @@ require_once(LIMB_DIR . '/class/core/finders/OneTableObjectsRawFinder.class.php'
 
 class OneTableObjectsMapperTestVersion extends OneTableObjectsMapper
 {
-  protected function _createDomainObject()
+  function _createDomainObject()
   {
     return new OneTableObjectsMapperTestNewsObject();
   }
 
-  protected function _defineDbTableName()
+  function _defineDbTableName()
   {
     return 'OneTableObjectsMapperTestVersion';
   }
@@ -39,32 +39,32 @@ Mock :: generate('OneTableObjectsRawFinder');
 
 class OneTableObjectsMapperTestNewsObject extends SiteObject
 {
-  public function getAnnotation()
+  function getAnnotation()
   {
     return $this->get('annotation');
   }
 
-  public function setAnnotation($annotation)
+  function setAnnotation($annotation)
   {
     $this->set('annotation', $annotation);
   }
 
-  public function getContent()
+  function getContent()
   {
     return $this->get('content');
   }
 
-  public function setContent($content)
+  function setContent($content)
   {
     $this->set('content', $content);
   }
 
-  public function getNewsDate()
+  function getNewsDate()
   {
     return $this->get('news_date');
   }
 
-  public function setNewsDate($news_date)
+  function setNewsDate($news_date)
   {
     $this->set('news_date', $news_date);
   }

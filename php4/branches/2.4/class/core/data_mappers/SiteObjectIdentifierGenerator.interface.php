@@ -11,7 +11,7 @@
 
 interface SiteObjectIdentifierGenerator
 {
-  public function generate($site_object);
+  function generate($site_object);
 }
 
 ?>

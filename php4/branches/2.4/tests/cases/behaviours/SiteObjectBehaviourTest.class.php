@@ -28,8 +28,8 @@ class SiteObjectBehaviourTestVersion extends SiteObjectBehaviour
     );
   }
 
-  public function defineAction1($state_machine){}
-  public function defineAction2($state_machine){}
+  function defineAction1($state_machine){}
+  function defineAction2($state_machine){}
 }
 
 class SiteObjectBehaviourTest extends LimbTestCase

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
 
 abstract class FormEditSiteObjectCommand extends FormCommand
 {
-  protected function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules($validator, $dataspace)
   {
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id'));
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'identifier'));
@@ -28,7 +28,7 @@ abstract class FormEditSiteObjectCommand extends FormCommand
                                      (int)$object_data['node_id']));
   }
 
-  protected function _initFirstTimeDataspace($dataspace, $request)
+  function _initFirstTimeDataspace($dataspace, $request)
   {
     $object_data = $this->_loadObjectData();
     ComplexArray :: map($this->_defineDatamap(), $object_data, $data = array());
@@ -36,7 +36,7 @@ abstract class FormEditSiteObjectCommand extends FormCommand
     $dataspace->merge($data);
   }
 
-  protected function _loadObjectData()
+  function _loadObjectData()
   {
     $toolkit = Limb :: toolkit();
     $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
@@ -45,7 +45,7 @@ abstract class FormEditSiteObjectCommand extends FormCommand
     return $datasource->fetch();
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return array(
       'parent_node_id' => 'parent_node_id',

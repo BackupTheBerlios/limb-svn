@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class FormSuccessStatusTagInfo
 {
-  public $tag = 'form:SUCCESS_STATUS';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'success_status_tag';
+  var $tag = 'form:SUCCESS_STATUS';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'success_status_tag';
 }
 
 registerTag(new FormSuccessStatusTagInfo());
 
 class SuccessStatusTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->findParentByClass('form_status_tag'))
     {

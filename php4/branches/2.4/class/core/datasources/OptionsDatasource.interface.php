@@ -10,9 +10,9 @@
 ***********************************************************************************/
 interface OptionsDatasource
 {
-  public function getOptionsArray();
+  function getOptionsArray();
 
-  public function getDefaultOption();
+  function getDefaultOption();
 }
 
 

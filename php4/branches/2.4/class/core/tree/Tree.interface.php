@@ -11,53 +11,53 @@
 
 interface Tree
 {
-  public function isNode($id);
+  function isNode($id);
 
-  public function getNode($id);
+  function getNode($id);
 
-  public function getParent($id);
+  function getParent($id);
 
-  public function getParents($id);
+  function getParents($id);
 
-  public function getSiblings($id);
+  function getSiblings($id);
 
-  public function getChildren($id);
+  function getChildren($id);
 
-  public function countChildren($id);
+  function countChildren($id);
 
-  public function createRootNode($values);
+  function createRootNode($values);
 
-  public function createSubNode($id, $values);
+  function createSubNode($id, $values);
 
-  public function deleteNode($id);
+  function deleteNode($id);
 
-  public function updateNode($id, $values, $internal = false);
+  function updateNode($id, $values, $internal = false);
 
-  public function moveTree($id, $target_id);
+  function moveTree($id, $target_id);
 
-  public function setDumbMode($status=true);
+  function setDumbMode($status=true);
 
-  public function getAllNodes();
+  function getAllNodes();
 
-  public function getNodesByIds($ids_array);
+  function getNodesByIds($ids_array);
 
-  public function getMaxChildIdentifier($id);
+  function getMaxChildIdentifier($id);
 
-  public function getNodeByPath($path, $delimiter='/');
+  function getNodeByPath($path, $delimiter='/');
 
-  public function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false);
+  function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false);
 
-  public function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false);
+  function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false);
 
-  public function getRootNodes();
+  function getRootNodes();
 
-  public function isNodeExpanded($id);
+  function isNodeExpanded($id);
 
-  public function toggleNode($id);
+  function toggleNode($id);
 
-  public function expandNode($id);
+  function expandNode($id);
 
-  public function collapseNode($id);
+  function collapseNode($id);
 }
 
 ?>

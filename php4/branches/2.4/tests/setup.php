@@ -11,23 +11,12 @@
 if (file_exists(dirname(__FILE__) . '/constants.php'))
   include_once(dirname(__FILE__) . '/constants.php');
 
-if(!defined('LIMB_DIR'))
-  define('LIMB_DIR', dirname(__FILE__) . '/../');
-
-if(!defined('VAR_DIR'))
-  define('VAR_DIR', dirname(__FILE__) . '/var/');
-
-if(!defined('CONTENT_LOCALE_ID'))
-  define('CONTENT_LOCALE_ID', 'en');
-
-if(!defined('MANAGEMENT_LOCALE_ID'))
-  define('MANAGEMENT_LOCALE_ID', 'en');
-
-if(!defined('DEFAULT_MANAGEMENT_LOCALE_ID'))
-  define('DEFAULT_MANAGEMENT_LOCALE_ID', 'en');
-
-if(!defined('DEFAULT_CONTENT_LOCALE_ID'))
-  define('DEFAULT_CONTENT_LOCALE_ID','en');
+@define('LIMB_DIR', dirname(__FILE__) . '/../');
+@define('VAR_DIR', dirname(__FILE__) . '/var/');
+@define('CONTENT_LOCALE_ID', 'en');
+@define('MANAGEMENT_LOCALE_ID', 'en');
+@define('DEFAULT_MANAGEMENT_LOCALE_ID', 'en');
+@define('DEFAULT_CONTENT_LOCALE_ID','en');
 
 require_once(LIMB_DIR . '/setup.php');
 require_once(LIMB_DIR . '/tests/lib/DebugMock.class.php');//don't move this line!!!
@@ -60,7 +49,8 @@ require_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
 
 Limb :: registerToolkit(new BaseLimbToolkit());
 
-PackagesInfo :: instance()->loadPackages();//???
+$inst =& PackagesInfo :: instance();
+$inst->loadPackages();//???
 
 set_time_limit(0);
 error_reporting(E_ALL);

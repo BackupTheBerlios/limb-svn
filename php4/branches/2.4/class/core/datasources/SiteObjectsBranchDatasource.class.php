@@ -12,10 +12,10 @@ require_once(dirname(__FILE__) . '/SiteObjectsDatasource.class.php');
 
 class SiteObjectsBranchDatasource extends SiteObjectsDatasource
 {
-  protected $path;
-  protected $check_expanded_parents;
-  protected $include_parent;
-  protected $depth;
+  var $path;
+  var $check_expanded_parents;
+  var $include_parent;
+  var $depth;
 
   function setPath($path)
   {
@@ -47,7 +47,7 @@ class SiteObjectsBranchDatasource extends SiteObjectsDatasource
     $this->depth = 1;
   }
 
-  public function getObjectIds()
+  function getObjectIds()
   {
     if ($this->object_ids)
       return $this->object_ids;

@@ -13,24 +13,24 @@ require_once(LIMB_DIR . '/class/core/Object.class.php');
 
 class SiteObjectBehaviour extends Object
 {
-  protected $_actions_list = array();
+  var $_actions_list = array();
 
-  public function getId()
+  function getId()
   {
     return (int)$this->get('id');
   }
 
-  public function setId($id)
+  function setId($id)
   {
     $this->set('id', (int)$id);
   }
 
-  public function getDefaultAction()
+  function getDefaultAction()
   {
     return 'display';
   }
 
-  public function getActionsList()
+  function getActionsList()
   {
     if($this->_actions_list)
       return $this->_actions_list;
@@ -44,7 +44,7 @@ class SiteObjectBehaviour extends Object
     return $this->_actions_list;
   }
 
-  public function actionExists($action)
+  function actionExists($action)
   {
     return in_array($action, $this->getActionsList());
   }

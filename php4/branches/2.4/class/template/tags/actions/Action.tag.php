@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class ActionTagInfo
 {
-  public $tag = 'actions:ITEM';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'action_tag';
+  var $tag = 'actions:ITEM';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'action_tag';
 }
 
 registerTag(new ActionTagInfo());
@@ -22,7 +22,7 @@ registerTag(new ActionTagInfo());
 */
 class ActionTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof ActionsTag)
     {
@@ -34,7 +34,7 @@ class ActionTag extends CompilerDirectiveTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp('do { ');
 

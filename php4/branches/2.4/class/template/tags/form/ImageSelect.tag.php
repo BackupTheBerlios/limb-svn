@@ -12,26 +12,26 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class ImageSelectTagInfo
 {
-  public $tag = 'image_select';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'image_select_tag';
+  var $tag = 'image_select';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'image_select_tag';
 }
 
 registerTag(new ImageSelectTagInfo());
 
 class ImageSelectTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/image_select_component';
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $this->attributes['type'] = 'hidden';
 
@@ -40,7 +40,7 @@ class ImageSelectTag extends ControlTag
     parent :: preGenerate($code);
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     parent :: generateContents($code);
 

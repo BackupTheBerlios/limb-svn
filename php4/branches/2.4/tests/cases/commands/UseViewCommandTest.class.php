@@ -39,7 +39,7 @@ class UseViewCommandTest extends LimbTestCase
 
     $this->toolkit->expectOnce('setView', array($handle));
 
-    $this->assertEqual($command->perform(), Limb :: STATUS_OK);
+    $this->assertEqual($command->perform(), Limb :: getSTATUS_OK());
   }
 }
 

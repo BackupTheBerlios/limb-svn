@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 
 class SessionStartupFilter implements InterceptingFilter
 {
-  public function run($filter_chain, $request, $response)
+  function run($filter_chain, $request, $response)
   {
     Debug :: addTimingPoint('session startup filter started');
 

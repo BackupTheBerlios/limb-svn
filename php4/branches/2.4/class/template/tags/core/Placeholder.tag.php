@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CorePlaceHolderTagInfo
 {
-  public $tag = 'core:PLACEHOLDER';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'core_place_holder_tag';
+  var $tag = 'core:PLACEHOLDER';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'core_place_holder_tag';
 }
 
 registerTag(new CorePlaceHolderTagInfo());
@@ -22,12 +22,12 @@ registerTag(new CorePlaceHolderTagInfo());
 */
 class CorePlaceHolderTag extends ServerComponentTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/placeholder_component';
   }
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('core_place_holder_tag'))
     {

@@ -12,14 +12,14 @@ require_once(LIMB_DIR . '/class/core/session/SessionDriver.interface.php');
 
 class Session implements SessionDriver
 {
-  protected $driver;
+  var $driver;
 
   function __construct($driver)
   {
     $this->driver = $driver;
   }
 
-  public function start()
+  function start()
   {
     session_set_save_handler
     (
@@ -34,17 +34,17 @@ class Session implements SessionDriver
     session_start();
   }
 
-  public function storageOpen()
+  function storageOpen()
   {
     $this->driver->storageOpen();
   }
 
-  public function storageClose()
+  function storageClose()
   {
     $this->driver->storageClose();
   }
 
-  public function storageRead($session_id)
+  function storageRead($session_id)
   {
     if($data = $this->driver->storageRead($session_id))
     {
@@ -55,7 +55,7 @@ class Session implements SessionDriver
       return false;
   }
 
-  protected function _includeSessionObjectsClasses($session_data)
+  function _includeSessionObjectsClasses($session_data)
   {
     if(preg_match_all('/"*__session_class_path";s:\d+:"([^"]+)"/',
                       $session_data,
@@ -68,22 +68,22 @@ class Session implements SessionDriver
     }
   }
 
-  public function storageWrite($session_id, $value)
+  function storageWrite($session_id, $value)
   {
     $this->driver->storageWrite($session_id, $value);
   }
 
-  public function storageDestroy($session_id)
+  function storageDestroy($session_id)
   {
     $this->driver->storageDestroy($session_id);
   }
 
-  public function storageDestroyUser($user_id)
+  function storageDestroyUser($user_id)
   {
     $this->driver->storageDestroyUser($user_id);
   }
 
-  public function storageGc($max_life_time)
+  function storageGc($max_life_time)
   {
     //???
     if(defined('SESSION_DB_MAX_LIFE_TIME') &&  constant('SESSION_DB_MAX_LIFE_TIME'))
@@ -92,7 +92,7 @@ class Session implements SessionDriver
     $this->driver->storageGc($max_life_time);
   }
 
-  public function & getReference($name)
+  function & getReference($name)
   {
     if(!isset($_SESSION[$name]))
       $_SESSION[$name] = '';
@@ -100,7 +100,7 @@ class Session implements SessionDriver
     return $_SESSION[$name];
   }
 
-  public function get($name, $default_value = null)
+  function get($name, $default_value = null)
   {
     if(!isset($_SESSION[$name]))
       return $default_value;
@@ -108,17 +108,17 @@ class Session implements SessionDriver
     return $_SESSION[$name];
   }
 
-  public function set($name, $value)
+  function set($name, $value)
   {
     $_SESSION[$name] = $value;
   }
 
-  public function exists($name)
+  function exists($name)
   {
     return isset($_SESSION[$name]);
   }
 
-  public function destroy($name)
+  function destroy($name)
   {
     if(isset($_SESSION[$name]))
     {

@@ -24,7 +24,8 @@ class BasePackageFileResolverTest extends LimbTestCase
   function setUp()
   {
     Limb :: toolkit()->flushINICache();
-    PackagesInfo :: instance()->reset();
+    $inst =& PackagesInfo :: instance();
+    $inst->reset();
 
     DebugMock :: init($this);
 
@@ -47,7 +48,8 @@ class BasePackageFileResolverTest extends LimbTestCase
 
     clearTestingIni();
 
-    PackagesInfo :: instance()->reset();
+    $inst =& PackagesInfo :: instance();
+    $inst->reset();
   }
 
 }

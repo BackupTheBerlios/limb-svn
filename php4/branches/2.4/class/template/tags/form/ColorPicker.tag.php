@@ -12,33 +12,33 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class ColorPickerTagInfo
 {
-  public $tag = 'color_picker';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'color_picker_tag';
+  var $tag = 'color_picker';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'color_picker_tag';
 }
 
 registerTag(new ColorPickerTagInfo());
 
 class ColorPickerTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/color_picker_component';
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $code->writePhp($this->getComponentRefCode() . '->init_color_picker();');
 
     parent :: preGenerate($code);
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     parent :: generateContents($code);
 

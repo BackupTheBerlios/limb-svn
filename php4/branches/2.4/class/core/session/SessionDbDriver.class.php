@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/class/core/session/SessionDriver.interface.php');
 
 class SessionDbDriver implements SessionDriver
 {
-  protected $db;
-  protected $user;
+  var $db;
+  var $user;
 
   function __construct()
   {
@@ -21,17 +21,17 @@ class SessionDbDriver implements SessionDriver
     $this->user = Limb :: toolkit()->getUser();
   }
 
-  public function storageOpen()
+  function storageOpen()
   {
     return true;
   }
 
-  public function storageClose()
+  function storageClose()
   {
     return true;
   }
 
-  public function storageRead($session_id)
+  function storageRead($session_id)
   {
     $this->db->sqlSelect('sys_session', 'session_data', array('session_id' => $session_id));
 
@@ -43,7 +43,7 @@ class SessionDbDriver implements SessionDriver
       return false;
   }
 
-  public function storageWrite($session_id, $value)
+  function storageWrite($session_id, $value)
   {
     $this->db->sqlSelect('sys_session', 'session_id', array('session_id' => $session_id));
 
@@ -61,17 +61,17 @@ class SessionDbDriver implements SessionDriver
     }
   }
 
-  public function storageDestroy($session_id)
+  function storageDestroy($session_id)
   {
     $this->db->sqlDelete('sys_session', array('session_id' => $session_id));
   }
 
-  public function storageGc($max_life_time)
+  function storageGc($max_life_time)
   {
     $this->db->sqlDelete('sys_session', "last_activity_time < ". (time() - $max_life_time));
   }
 
-  public function storageDestroyUser($user_id)
+  function storageDestroyUser($user_id)
   {
     $this->db->sqlDelete('sys_session', array('user_id' => $user_id));
   }

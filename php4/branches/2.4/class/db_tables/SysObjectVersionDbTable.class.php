@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysObjectVersionDbTable extends DbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),

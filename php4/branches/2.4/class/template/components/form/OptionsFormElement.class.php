@@ -15,23 +15,23 @@ require_once(LIMB_DIR . '/class/datasources/DatasourceFactory.class.php');
 
 class OptionsFormElement extends ContainerFormElement
 {
-  protected $default_value;
+  var $default_value;
 
   /**
   * A associative array of choices to build the option list with
   */
-  protected $choice_list = array();
+  var $choice_list = array();
   /**
   * The object responsible for rendering the option tags
   */
-  protected $option_renderer;
+  var $option_renderer;
 
   /**
   * Sets the choice list. Passed an associative array, the keys become the
   * contents of the option value attributes and the values in the array
   * become the text contents of the option tag
   */
-  public function setChoices($choice_list)
+  function setChoices($choice_list)
   {
     $this->choice_list = $choice_list;
   }
@@ -39,7 +39,7 @@ class OptionsFormElement extends ContainerFormElement
   /**
   * Sets a single option to be displayed as selected
   */
-  public function setSelection($selection)
+  function setSelection($selection)
   {
     $form_component = $this->findParentByClass('form_component');
     $form_component->set($this->attributes['name'], $selection);
@@ -48,7 +48,7 @@ class OptionsFormElement extends ContainerFormElement
   /**
   * Sets object responsible for rendering the attributes
   */
-  protected function setRenderer($option_renderer)
+  function setRenderer($option_renderer)
   {
     $this->option_renderer = $option_renderer;
   }
@@ -57,7 +57,7 @@ class OptionsFormElement extends ContainerFormElement
   * Renders the contents of the the select tag, option tags being built by
   * the option handler. Called from with a compiled template render function.
   */
-  public function renderContents()
+  function renderContents()
   {
     $this->_setOptions();
 
@@ -69,17 +69,17 @@ class OptionsFormElement extends ContainerFormElement
     $this->_renderOptions();
   }
 
-  public function setDefaultValue($value)
+  function setDefaultValue($value)
   {
     $this->default_value = $value;
   }
 
-  public function getDefaultValue()
+  function getDefaultValue()
   {
     return $this->default_value;
   }
 
-  public function getValue()
+  function getValue()
   {
     $value = parent :: getValue();
 
@@ -92,7 +92,7 @@ class OptionsFormElement extends ContainerFormElement
       return $value;
   }
 
-  protected function _setOptions()
+  function _setOptions()
   {
     if($this->_useIniOptions())
     {
@@ -108,22 +108,22 @@ class OptionsFormElement extends ContainerFormElement
     }
   }
 
-  protected function _useIniOptions()
+  function _useIniOptions()
   {
     return $this->getAttribute('options_ini_file') &&  $this->getAttribute('use_ini');
   }
 
-  protected function _useStringsOptions()
+  function _useStringsOptions()
   {
     return $this->getAttribute('options_ini_file') &&  !$this->getAttribute('use_ini');
   }
 
-  protected function _useDatasourceOptions()
+  function _useDatasourceOptions()
   {
     return $this->getAttribute('options_datasource');
   }
 
-  protected function _renderOptions()
+  function _renderOptions()
   {
     $value = $this->getValue();
 
@@ -133,7 +133,7 @@ class OptionsFormElement extends ContainerFormElement
     }
   }
 
-  protected function _setOptionsFromIniFile()
+  function _setOptionsFromIniFile()
   {
     $ini_file = $this->getAttribute('options_ini_file');
     $conf = Limb :: toolkit()->getINI($ini_file . '.ini');
@@ -143,7 +143,7 @@ class OptionsFormElement extends ContainerFormElement
       $this->setDefaultValue($conf->getOption('default_option', 'constants'));
   }
 
-  protected function _setOptionsFromStringsFile()
+  function _setOptionsFromStringsFile()
   {
     if($locale_type = $this->getAttribute('locale_type'))
     {
@@ -162,7 +162,7 @@ class OptionsFormElement extends ContainerFormElement
     $this->setDefaultValue(Strings :: get('default_option', $ini_file, constant($locale_constant)));
   }
 
-  protected function _setOptionsFromDatasource()
+  function _setOptionsFromDatasource()
   {
     $datasource = $this->_getDatasource();
 
@@ -171,7 +171,7 @@ class OptionsFormElement extends ContainerFormElement
     $this->setDefaultValue($datasource->getDefaultOption());
   }
 
-  protected function _getDatasource()
+  function _getDatasource()
   {
     return Limb :: toolkit()->getDatasource($this->getAttribute('options_datasource'));
   }

@@ -20,30 +20,30 @@ abstract class FormElement extends TagComponent
   /**
   * Whether the form element has validated successfully (default TRUE)
   */
-  protected $is_valid = true;
+  var $is_valid = true;
   /**
   * Name of the form element (for the name attribute)
   */
-  protected $display_name;
+  var $display_name;
   /**
   * CSS class attribute the element should display if there is an error
   */
-  protected $error_class;
+  var $error_class;
   /**
   * CSS style attribute the element should display if there is an error
   */
-  protected $error_style;
+  var $error_style;
   /**
   * Whether form name prefix is required
   */
-  protected $attach_form_prefix = true;
+  var $attach_form_prefix = true;
 
   /**
   * Returns a value for the name attribute. If $this->display_name is not
   * set, returns either the title, alt or name attribute (in that order
   * of preference, defined for the tag
   */
-  public function getFieldName()
+  function getFieldName()
   {
     if (isset($this->display_name))
     {
@@ -63,7 +63,7 @@ abstract class FormElement extends TagComponent
     }
   }
 
-  public function attachFormPrefix($state = true)
+  function attachFormPrefix($state = true)
   {
     $prev = $this->attach_form_prefix;
     $this->attach_form_prefix = $state;
@@ -73,7 +73,7 @@ abstract class FormElement extends TagComponent
   /**
   * Returns true if the form element is in an error state
   */
-  public function isValid()
+  function isValid()
   {
     return !$this->is_valid;
   }
@@ -82,7 +82,7 @@ abstract class FormElement extends TagComponent
   * Puts the element into the error state and assigns the error class or
   * style attributes, if the corresponding member vars have a value
   */
-  public function setError()
+  function setError()
   {
     $this->is_valid = false;
     if (isset($this->error_class))
@@ -99,7 +99,7 @@ abstract class FormElement extends TagComponent
   * Returns the value of the form element
   * (the contents of the value attribute)
   */
-  public function getValue()
+  function getValue()
   {
     $form_component = $this->findParentByClass('form_component');
 
@@ -111,7 +111,7 @@ abstract class FormElement extends TagComponent
     return $dataspace->getByIndexString($this->_makeIndexName($this->attributes['name']));
   }
 
-  public function setValue($value)
+  function setValue($value)
   {
     $form_component = $this->findParentByClass('form_component');
 
@@ -123,7 +123,7 @@ abstract class FormElement extends TagComponent
     $dataspace->setByIndexString($this->_makeIndexName($this->attributes['name']), $value);
   }
 
-  public function renderErrors()
+  function renderErrors()
   {
     $error_list = ErrorList :: instance();
 
@@ -140,17 +140,17 @@ abstract class FormElement extends TagComponent
     }
   }
 
-  public function renderJsValidation()
+  function renderJsValidation()
   {
     echo '';
   }
 
-  protected function _makeIndexName($name)
+  function _makeIndexName($name)
   {
     return preg_replace('/^([^\[\]]+)(\[.*\])*$/', "[\\1]\\2", $name);
   }
 
-  protected function _processNameAttribute($value)
+  function _processNameAttribute($value)
   {
     $form_component = $this->findParentByClass('form_component');
 
@@ -159,7 +159,7 @@ abstract class FormElement extends TagComponent
     return $form_name . $this->_makeIndexName($value);
   }
 
-  public function renderAttributes()
+  function renderAttributes()
   {
     $this->_processLocalizedValue();
 
@@ -182,7 +182,7 @@ abstract class FormElement extends TagComponent
     }
   }
 
-  protected function _processLocalizedValue()
+  function _processLocalizedValue()
   {
     if (!isset($this->attributes['locale_value']))
       return;

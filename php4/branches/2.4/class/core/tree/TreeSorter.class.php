@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
 class TreeSorter
 {
-  static function sort($tree_array, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
+  function sort($tree_array, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
   {
     $item = reset($tree_array);
     $parent_id = $item[$parent_hash];
@@ -24,7 +24,7 @@ class TreeSorter
     return $sorted_tree_array;
   }
 
-  static function _doSort($tree_array, & $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
+  function _doSort($tree_array, & $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
   {
     $children = array();
 

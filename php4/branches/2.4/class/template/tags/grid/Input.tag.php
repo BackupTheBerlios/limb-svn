@@ -12,21 +12,21 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class GridInputTagInfo
 {
-  public $tag = 'grid:INPUT';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'grid_input_tag';
+  var $tag = 'grid:INPUT';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'grid_input_tag';
 }
 
 registerTag(new GridInputTagInfo());
 
 class GridInputTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_input_component';
   }
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->findParentByClass('grid_iterator_tag'))
     {
@@ -38,7 +38,7 @@ class GridInputTag extends ControlTag
     }
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -52,7 +52,7 @@ class GridInputTag extends ControlTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function prepare()
+  function prepare()
   {
     $this->attributes['type'] = 'text';
 
@@ -62,7 +62,7 @@ class GridInputTag extends ControlTag
     parent :: prepare();
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }

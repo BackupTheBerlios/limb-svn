@@ -11,25 +11,23 @@
 
 class SysParam
 {
-  static protected $_instance = null;
-
-  protected $_db_table = null;
-  protected $_types = array("char", "int", "blob", "float");
+  var $_db_table = null;
+  var $_types = array("char", "int", "blob", "float");
 
   function sysParam()
   {
     $this->_db_table = Limb :: toolkit()->createDBTable('SysParam');
   }
 
-  static public function instance()
+  function & instance()
   {
-    if (!self :: $_instance)
-      self :: $_instance = new SysParam();
+    if (!isset($GLOBALS['SysParamGlobalInstance']) || !is_a($GLOBALS['SysParamGlobalInstance'], 'SysParam'))
+      $GLOBALS['SysParamGlobalInstance'] =& new SysParam();
 
-    return self :: $_instance;
+    return $GLOBALS['SysParamGlobalInstance'];
   }
 
-  public function saveParam($identifier, $type, $value, $force_new = true)
+  function saveParam($identifier, $type, $value, $force_new = true)
   {
     if(!in_array($type, $this->_types))
     {
@@ -81,7 +79,7 @@ class SysParam
     }
   }
 
-  public function getParam($identifier, $type='')
+  function getParam($identifier, $type='')
   {
     if(!empty($type) &&  !in_array($type, $this->_types))
     {

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
 class LocaleNumberFormatComponent extends Component
 {
-  public function format($value)
+  function format($value)
   {
     $locale = Limb :: toolkit()->getLocale();
 

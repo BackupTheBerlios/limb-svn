@@ -10,23 +10,23 @@
 ***********************************************************************************/
 abstract class Rule
 {
-  protected $error_list = null;
+  var $error_list = null;
 
-  protected $is_valid = true;
+  var $is_valid = true;
 
-  public function isValid()
+  function isValid()
   {
     return $this->is_valid;
   }
 
-  public function setErrorList($error_list)
+  function setErrorList($error_list)
   {
     $this->error_list = $error_list;
   }
 
-  abstract protected function error($error, $params=array());
+  abstract function error($error, $params=array());
 
-  abstract public function validate($dataspace);
+  abstract function validate($dataspace);
 }
 
 ?>

@@ -19,7 +19,7 @@ abstract class ServerTagComponentTag extends ServerComponentTag
   /**
   * Returns the XML tag name
   */
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return $this->tag;
   }
@@ -27,7 +27,7 @@ abstract class ServerTagComponentTag extends ServerComponentTag
   /**
   * Adds any additional XML attributes
   */
-  public function generateExtraAttributes($code)
+  function generateExtraAttributes($code)
   {
   }
 
@@ -36,7 +36,7 @@ abstract class ServerTagComponentTag extends ServerComponentTag
   * plus a PHP string which renders the attributes from the runtime
   * component.
   */
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
     $code->writeHtml('<' . $this->getRenderedTag());
@@ -48,7 +48,7 @@ abstract class ServerTagComponentTag extends ServerComponentTag
   /**
   * Writes the closing tag string to the compiled template
   */
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     if ($this->has_closing_tag)
     {
@@ -62,7 +62,7 @@ abstract class ServerTagComponentTag extends ServerComponentTag
   * assigning the attributes found at compile time to the runtime component
   * via a serialized string
   */
-  public function generateConstructor($code)
+  function generateConstructor($code)
   {
     parent::generateConstructor($code);
     $code->writePhp($this->getComponentRefCode() . '->attributes = ' . var_export($this->attributes, true) . ';');

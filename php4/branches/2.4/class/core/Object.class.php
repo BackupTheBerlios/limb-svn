@@ -10,70 +10,70 @@
 ***********************************************************************************/
 class Object
 {
-  protected $dataspace;
+  var $dataspace;
 
   function __construct()
   {
     $this->dataspace = $this->_createDataspace();
   }
 
-  protected function _createDataspace()
+  function _createDataspace()
   {
     include_once(LIMB_DIR . '/class/core/Dataspace.class.php');
     return new Dataspace();
   }
 
-  public function merge($values)
+  function merge($values)
   {
     $this->dataspace->merge($values);
   }
 
-  public function import($values)
+  function import($values)
   {
     $this->dataspace->import($values);
   }
 
-  public function export()
+  function export()
   {
     return $this->dataspace->export();
   }
 
-  public function hasAttribute($name)//rename later
+  function hasAttribute($name)//rename later
   {
     return $this->dataspace->get($name) !== null;
   }
 
-  public function get($name, $default_value=null)
+  function get($name, $default_value=null)
   {
     return $this->dataspace->get($name, $default_value);
   }
 
-  public function & getReference($name)
+  function & getReference($name)
   {
     return $this->dataspace->getReference($name);
   }
 
-  public function getByIndexString($raw_index, $default_value = null)
+  function getByIndexString($raw_index, $default_value = null)
   {
     return $this->dataspace->getByIndexString($raw_index, $default_value);
   }
 
-  public function set($name, $value)
+  function set($name, $value)
   {
     $this->dataspace->set($name, $value);
   }
 
-  public function setByIndexString($raw_index, $value)
+  function setByIndexString($raw_index, $value)
   {
     $this->dataspace->setByIndexString($raw_index, $value);
   }
 
-  public function destroy($name)
+  function destroy($name)
   {
     $this->dataspace->destroy($name);
   }
 
-  public function reset()
+  function reset()
   {
     $this->dataspace->reset();
   }

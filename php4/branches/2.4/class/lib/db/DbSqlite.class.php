@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
 
 class DbSqlite extends DbModule
 {
-  protected function _connectDbOperation($db_params)
+  function _connectDbOperation($db_params)
   {
     if (file_exists($db_params['name']))
       return sqlite_open($db_params['name']);
@@ -20,22 +20,22 @@ class DbSqlite extends DbModule
       return false;
   }
 
-  protected function _selectDbOperation($db_name)
+  function _selectDbOperation($db_name)
   {
     return true;
   }
 
-  protected function _disconnectDbOperation($db_params)
+  function _disconnectDbOperation($db_params)
   {
     sqlite_close($this->_db_connection);
   }
 
-  public function freeResult()
+  function freeResult()
   {
     $this->_sql_result = null;
   }
 
-  protected function _sqlExecOperation($sql, $count=0, $start=0)
+  function _sqlExecOperation($sql, $count=0, $start=0)
   {
     if ($count)
     {
@@ -48,7 +48,7 @@ class DbSqlite extends DbModule
     return sqlite_query($this->_db_connection, $sql);
   }
 
-  public function makeSelectString($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  function makeSelectString($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
     $sql = parent :: makeSelectString($table, $fields, $where, $order, $count, $start);
 
@@ -63,53 +63,53 @@ class DbSqlite extends DbModule
     return $sql;
   }
 
-  public function getAffectedRows()
+  function getAffectedRows()
   {
     return sqlite_changes($this->_db_connection);
   }
 
-  public function getSqlInsertId()
+  function getSqlInsertId()
   {
     return sqlite_last_insert_rowid($this->_db_connection);
   }
 
-  public function getLastError()
+  function getLastError()
   {
     return sqlite_last_error($this->_db_connection);
   }
 
-  public function parseBatchSql(&$ret, $sql, $release)
+  function parseBatchSql(&$ret, $sql, $release)
   {
     $ret[] = $sql;
     return $ret;
   }
 
-  protected function _fetchAssocResultRow($col_num = '')
+  function _fetchAssocResultRow($col_num = '')
   {
     return sqlite_fetch_array($this->_sql_result, SQLITE_ASSOC);
   }
 
-  protected function _resultNumFields()
+  function _resultNumFields()
   {
     return sqlite_num_fields($this->_sql_result);
   }
 
-  protected function _processDefaultValue($value)
+  function _processDefaultValue($value)
   {
     return "'{$value}'";
   }
 
-  public function escape($sql)
+  function escape($sql)
   {
     return sqlite_escape_string($sql);
   }
 
-  public function concat($values)
+  function concat($values)
   {
     return ' ' . implode(' || ' , $values) . ' ';
   }
 
-  public function substr($string, $offset, $limit=null)
+  function substr($string, $offset, $limit=null)
   {
     if ($limit === null)
       $limit = "length($string) - $offset + 1";
@@ -117,22 +117,22 @@ class DbSqlite extends DbModule
     return " substr({$string}, {$offset}, {$limit}) ";
   }
 
-  public function countSelectedRows()
+  function countSelectedRows()
   {
     return sqlite_num_rows($this->_sql_result);
   }
 
-  protected function _beginOperation()
+  function _beginOperation()
   {
     sqlite_query('BEGIN TRANSACTION', $this->_db_connection);
   }
 
-  protected function _commitOperation()
+  function _commitOperation()
   {
     sqlite_query('COMMIT', $this->_db_connection);
   }
 
-  protected function _rollbackOperation()
+  function _rollbackOperation()
   {
     sqlite_query('ROLLBACK', $this->_db_connection);
   }

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class SelectTagInfo
 {
-  public $tag = 'select';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'select_tag';
+  var $tag = 'select';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'select_tag';
 }
 
 registerTag(new SelectTagInfo());
@@ -24,7 +24,7 @@ registerTag(new SelectTagInfo());
 */
 class SelectTag extends ControlTag
 {
-  public function prepare()
+  function prepare()
   {
     if (array_key_exists('multiple', $this->attributes))
     {
@@ -38,7 +38,7 @@ class SelectTag extends ControlTag
   /**
   * Ignore the compiler time contents and generate the contents at run time.
   */
-  public function generateContents($code)
+  function generateContents($code)
   {
     if(isset($this->attributes['default_value']))
       $code->writePhp($this->getComponentRefCode() . '->set_default_value("' . $this->attributes['default_value'] . '");');

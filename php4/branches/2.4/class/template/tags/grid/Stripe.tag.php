@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class GridStripeTagInfo
 {
-  public $tag = 'grid:STRIPE';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'grid_stripe_tag';
+  var $tag = 'grid:STRIPE';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'grid_stripe_tag';
 }
 
 registerTag(new GridStripeTagInfo());
 
 class GridStripeTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('grid_stripe_tag'))
     {
@@ -39,7 +39,7 @@ class GridStripeTag extends CompilerDirectiveTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     if (array_key_exists('even', $this->attributes))
     {

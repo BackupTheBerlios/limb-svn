@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.
 
 class ImageSelectComponent extends InputFormElement
 {
-  public function initImageSelect()
+  function initImageSelect()
   {
     if (!defined('IMAGE_SELECT_LOAD_SCRIPT'))
     {
@@ -21,7 +21,7 @@ class ImageSelectComponent extends InputFormElement
     }
   }
 
-  public function renderImageSelect()
+  function renderImageSelect()
   {
     $id = $this->getAttribute('id');
     $md5id = substr(md5($id), 0, 5);

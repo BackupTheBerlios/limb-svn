@@ -12,11 +12,11 @@ require_once(dirname(__FILE__) . '/SiteObjectsDatasource.class.php');
 
 class RequestedObjectDatasource extends SiteObjectsDatasource
 {
-  protected $object_id;
-  protected $node_mapped_by_request;
-  protected $request;
+  var $object_id;
+  var $node_mapped_by_request;
+  var $request;
 
-  public function reset()
+  function reset()
   {
     parent :: reset();
 
@@ -25,12 +25,12 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
     $this->request = null;
   }
 
-  public function setRequest($request)
+  function setRequest($request)
   {
     $this->request = $request;
   }
 
-  public function getObjectIds()
+  function getObjectIds()
   {
     if($this->object_id)
       return array($this->object_id);
@@ -44,7 +44,7 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
       throw new LimbException('request is null');
   }
 
-  public function mapUriToNode($uri, $recursive = false)
+  function mapUriToNode($uri, $recursive = false)
   {
     $tree = Limb :: toolkit()->getTree();
 
@@ -56,7 +56,7 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
     return $node;
   }
 
-  public function mapRequestToNode($request)
+  function mapRequestToNode($request)
   {
     if($this->node_mapped_by_request)
       return $this->node_mapped_by_request;

@@ -14,19 +14,19 @@ require_once(LIMB_DIR . '/class/i18n/Strings.class.php');
 
 class SiteObjectController
 {
-  protected $behaviour;
+  var $behaviour;
 
   function __construct($behaviour)
   {
     $this->behaviour = $behaviour;
   }
 
-  public function getBehaviour()
+  function getBehaviour()
   {
     return $this->behaviour;
   }
 
-  public function getRequestedAction($request)
+  function getRequestedAction($request)
   {
     if (!$action = $request->get('action'))
       $action = $this->behaviour->getDefaultAction();
@@ -37,7 +37,7 @@ class SiteObjectController
     return $action;
   }
 
-  public function process($request)
+  function process($request)
   {
     $this->_startTransaction();
 
@@ -53,13 +53,13 @@ class SiteObjectController
     }
   }
 
-  protected function _getStateMachine()
+  function _getStateMachine()
   {
     include_once(LIMB_DIR . '/class/commands/StateMachine.class.php');
     return new StateMachine();
   }
 
-  protected function _performAction($request)
+  function _performAction($request)
   {
     if(!$action = $this->getRequestedAction($request))
       throw new LimbException('action not defined in state machine',
@@ -75,17 +75,17 @@ class SiteObjectController
     Debug :: addTimingPoint('action performed');
   }
 
-  protected function _startTransaction()
+  function _startTransaction()
   {
     startUserTransaction();
   }
 
-  protected function _commitTransaction()
+  function _commitTransaction()
   {
     commitUserTransaction();
   }
 
-  protected function _rollbackTransaction()
+  function _rollbackTransaction()
   {
     rollbackUserTransaction();
   }

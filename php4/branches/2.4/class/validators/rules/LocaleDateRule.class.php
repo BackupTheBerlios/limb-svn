@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/class/lib/date/Date.class.php');
 
 class LocaleDateRule extends SingleFieldRule
 {
-  protected $locale_id = '';
+  var $locale_id = '';
 
   function __construct($fieldname, $locale_id = '')
   {
@@ -28,7 +28,7 @@ class LocaleDateRule extends SingleFieldRule
     parent :: __construct($fieldname);
   }
 
-  protected function check($value)
+  function check($value)
   {
     $date = new Date();
     $locale = Limb :: toolkit()->getLocale($this->locale_id);

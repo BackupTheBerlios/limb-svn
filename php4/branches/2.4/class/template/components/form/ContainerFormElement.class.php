@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php')
 
 class ContainerFormElement extends FormElement
 {
-  public function renderContents()
+  function renderContents()
   {
   }
 }

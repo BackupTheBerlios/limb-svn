@@ -12,22 +12,22 @@ require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
 
 class DbMysql extends DbModule
 {
-  protected function _connectDbOperation($db_params)
+  function _connectDbOperation($db_params)
   {
     return mysql_connect($db_params['host'], $db_params['login'], $db_params['password']);
   }
 
-  protected function _selectDbOperation($db_name)
+  function _selectDbOperation($db_name)
   {
     return mysql_select_db($db_name, $this->_db_connection);
   }
 
-  protected function _disconnectDbOperation($db_params)
+  function _disconnectDbOperation($db_params)
   {
     mysql_close($this->_db_connection);
   }
 
-  public function freeResult()
+  function freeResult()
   {
     if($this->_sql_result)
     {
@@ -36,7 +36,7 @@ class DbMysql extends DbModule
     }
   }
 
-  protected function _sqlExecOperation($sql, $count=0, $start=0)
+  function _sqlExecOperation($sql, $count=0, $start=0)
   {
     if ($count)
       $sql .= "\nLIMIT $start, $count";
@@ -44,7 +44,7 @@ class DbMysql extends DbModule
     return mysql_query($sql, $this->_db_connection);
   }
 
-  public function makeSelectString($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  function makeSelectString($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
     $sql = parent :: makeSelectString($table, $fields, $where, $order, $count, $start);
 
@@ -54,22 +54,22 @@ class DbMysql extends DbModule
     return $sql;
   }
 
-  public function getAffectedRows()
+  function getAffectedRows()
   {
     return mysql_affected_rows($this->_db_connection);
   }
 
-  public function getSqlInsertId()
+  function getSqlInsertId()
   {
     return mysql_insert_id($this->_db_connection);
   }
 
-  public function getLastError()
+  function getLastError()
   {
     return mysql_error();
   }
 
-  public function parseBatchSql(&$ret, $sql, $release)
+  function parseBatchSql(&$ret, $sql, $release)
   {
     $sql          = trim($sql);
     $sql_len      = strlen($sql);
@@ -192,33 +192,33 @@ class DbMysql extends DbModule
     return true;
   }
 
-  protected function _fetchAssocResultRow($col_num = '')
+  function _fetchAssocResultRow($col_num = '')
   {
     return mysql_fetch_assoc($this->_sql_result);
   }
 
-  protected function _resultNumFields()
+  function _resultNumFields()
   {
     return mysql_num_fields($this->_sql_result);
   }
 
-  protected function _processDefaultValue($value)
+  function _processDefaultValue($value)
   {
     return "'{$value}'";
   }
 
-  public function escape($sql)
+  function escape($sql)
   {
     return mysql_escape_string($sql);
   }
 
-  public function concat($values)
+  function concat($values)
   {
     $str = implode(',' , $values);
     return " CONCAT({$str}) ";
   }
 
-  public function substr($string, $offset, $limit=null)
+  function substr($string, $offset, $limit=null)
   {
     if ($limit === null)
       return " SUBSTRING({$string} FROM {$offset}) ";
@@ -226,22 +226,22 @@ class DbMysql extends DbModule
       return " SUBSTRING({$string} FROM {$offset} FOR {$limit}) ";
   }
 
-  public function countSelectedRows()
+  function countSelectedRows()
   {
     return mysql_num_rows($this->_sql_result);
   }
 
-  protected function _beginOperation()
+  function _beginOperation()
   {
     mysql_query('START TRANSACTION', $this->_db_connection);
   }
 
-  protected function _commitOperation()
+  function _commitOperation()
   {
     mysql_query('COMMIT', $this->_db_connection);
   }
 
-  protected function _rollbackOperation()
+  function _rollbackOperation()
   {
     mysql_query('ROLLBACK', $this->_db_connection);
   }

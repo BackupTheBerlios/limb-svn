@@ -19,14 +19,14 @@ if(!isRegisteredResolver('datasource'))
 
 class DatasourceFactory
 {
-  static protected $datasources = array();
+  var $datasources = array();
 
-  static public function create($class_path)
+  function create($class_path)
   {
     $class_name = end(explode('/', $class_path));
 
-    if(isset(self :: $datasources[$class_name]))
-      return self :: $datasources[$class_name];
+    if(isset(DatasourceFactory :: $datasources[$class_name]))
+      return DatasourceFactory :: $datasources[$class_name];
 
     if(!class_exists($class_name))
     {
@@ -40,7 +40,7 @@ class DatasourceFactory
 
     $datasource = new $class_name();
 
-    self :: $datasources[$class_name] = $datasource;
+    DatasourceFactory :: $datasources[$class_name] = $datasource;
 
     return $datasource;
   }

@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/cache/ImageCacheManager.class.php');
 
 class ImageCacheFilter implements InterceptingFilter
 {
-  public function run($filter_chain, $request, $response)
+  function run($filter_chain, $request, $response)
   {
     if(!$this->_isCachingEnabled())
     {
@@ -43,12 +43,12 @@ class ImageCacheFilter implements InterceptingFilter
     Debug :: addTimingPoint('image cache write finished');
   }
 
-  protected function _getImageCacheManager()
+  function _getImageCacheManager()
   {
     return new ImageCacheManager();
   }
 
-  protected function _isCachingEnabled()
+  function _isCachingEnabled()
   {
     if(!defined('IMAGE_CACHE_ENABLED'))
       return true;

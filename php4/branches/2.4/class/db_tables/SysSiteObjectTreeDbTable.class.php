@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysSiteObjectTreeDbTable extends DbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
@@ -27,7 +27,7 @@ class SysSiteObjectTreeDbTable extends DbTable
     );
   }
 
-  protected function _defineConstraints()
+  function _defineConstraints()
   {
     return array(
       'object_id' =>	array(

@@ -17,7 +17,7 @@ require_once(LIMB_DIR . '/class/validators/rules/DomainRule.class.php');
 */
 class DnsDomainRule extends DomainRule
 {
-  protected function check($value)
+  function check($value)
   {
     parent::check($value);
 

@@ -28,13 +28,13 @@ class Template extends Component
   /**
   * Stored the name of the compiled template file
   */
-  protected $codefile;
+  var $codefile;
 
-  protected $file;
+  var $file;
   /**
   * Name of function in compiled template which outputs display to screen
   */
-  protected $render_function;
+  var $render_function;
 
   function __construct($file, $resolve_path = true)
   {
@@ -82,7 +82,7 @@ class Template extends Component
     $func($this);
   }
 
-  public function getChild($server_id)
+  function getChild($server_id)
   {
     $result = $this->findChild($server_id);
     if (!is_object($result))
@@ -97,7 +97,7 @@ class Template extends Component
   /**
   * Outputs the template, calling the compiled templates render function
   */
-  public function display()
+  function display()
   {
     $func = $this->render_function;
     $func($this);

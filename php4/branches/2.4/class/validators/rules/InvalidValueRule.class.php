@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
 class InvalidValueRule extends SingleFieldRule
 {
-  protected $invalid_value;
+  var $invalid_value;
 
   function __construct($field_name, $invalid_value)
   {
@@ -21,7 +21,7 @@ class InvalidValueRule extends SingleFieldRule
     $this->invalid_value = $invalid_value;
   }
 
-  public function validate($dataspace)
+  function validate($dataspace)
   {
     $value = $dataspace->get($this->field_name);
 

@@ -12,21 +12,21 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class JsSelectorTagInfo
 {
-  public $tag = 'js_selector';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'js_selector_tag';
+  var $tag = 'js_selector';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'js_selector_tag';
 }
 
 registerTag(new JsSelectorTagInfo());
 
 class JsSelectorTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/js_checkbox_component';
   }
 
-  public function prepare()
+  function prepare()
   {
     if(!isset($this->attributes['selector_name']))
       $this->attributes['name'] = 'selector_name';
@@ -36,12 +36,12 @@ class JsSelectorTag extends ControlTag
     unset($this->attributes['selector_name']);
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $this->attributes['type'] = 'hidden';
 
@@ -58,7 +58,7 @@ class JsSelectorTag extends ControlTag
     parent :: preGenerate($code);
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     parent :: generateContents($code);
 

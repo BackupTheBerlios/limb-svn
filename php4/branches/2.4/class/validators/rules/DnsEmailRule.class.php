@@ -17,7 +17,7 @@ require_once(LIMB_DIR . '/class/validators/rules/EmailRule.class.php');
 */
 class DnsEmailRule extends EmailRule
 {
-  protected function checkDomain($value)
+  function checkDomain($value)
   {
     parent::checkDomain($value);
 

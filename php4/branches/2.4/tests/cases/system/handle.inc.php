@@ -1,8 +1,8 @@
 <?php
 
-class LoadedHandleClass 
+class LoadedHandleClass
 {
-  public $test_var = 'default';
+  var $test_var = 'default';
 }
 
 ?>

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CoreDataspaceTagInfo
 {
-  public $tag = 'core:DATASPACE';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'core_dataspace_tag';
+  var $tag = 'core:DATASPACE';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'core_dataspace_tag';
 }
 
 registerTag(new CoreDataspaceTagInfo());
@@ -22,31 +22,31 @@ registerTag(new CoreDataspaceTagInfo());
 */
 class CoreDataspaceTag extends ServerComponentTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/dataspace_component';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent :: preGenerate($code);
 
     $code->writePhp('if (!' . $this->getDataspaceRefCode() . '->is_empty()){');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
 
     parent :: postGenerate($code);
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

@@ -19,30 +19,30 @@ class Codewriter
   /**
   * String containing the compiled template
   */
-  protected $code = '';
+  var $code = '';
   /**
   * The current state of the writer.
   */
-  protected $mode;
+  var $mode;
   /**
   * A prefix to add to the compiled template construct and render functions
   */
-  protected $function_prefix = '';
+  var $function_prefix = '';
   /**
   * A suffix to add to the compiled template construct and render functions
   */
-  protected $function_suffix = 1;
+  var $function_suffix = 1;
   /**
   * List of files to write include statements for in the compiled template,
   * such as runtime component class files.
   * @access protected
   */
-  protected $include_list = array();
-  protected $temp_var_name = 1;
+  var $include_list = array();
+  var $temp_var_name = 1;
 
   function __construct()
   {
-    $this->mode = self :: CODE_WRITER_MODE_HTML;
+    $this->mode = Codewriter :: CODE_WRITER_MODE_HTML;
   }
 
   /**
@@ -50,11 +50,11 @@ class Codewriter
   * instruction to the template. Does nothing if writer is already
   * in PHP mode
   */
-  protected function switchToPhp()
+  function switchToPhp()
   {
-    if ($this->mode == self :: CODE_WRITER_MODE_HTML)
+    if ($this->mode == Codewriter :: CODE_WRITER_MODE_HTML)
     {
-      $this->mode = self :: CODE_WRITER_MODE_PHP;
+      $this->mode = Codewriter :: CODE_WRITER_MODE_PHP;
       $this->code .= '<?php ';
     }
   }
@@ -64,11 +64,11 @@ class Codewriter
   * instruction to the template. Does nothing if writer is already in
   * HTML mode
   */
-  protected function switchToHtml()
+  function switchToHtml()
   {
-    if ($this->mode == self :: CODE_WRITER_MODE_PHP)
+    if ($this->mode == Codewriter :: CODE_WRITER_MODE_PHP)
     {
-      $this->mode = self :: CODE_WRITER_MODE_HTML;
+      $this->mode = Codewriter :: CODE_WRITER_MODE_HTML;
       $this->code .= ' ?>';
     }
   }
@@ -76,7 +76,7 @@ class Codewriter
   /**
   * Writes some PHP to the compiled template
   */
-  public function writePhp($text)
+  function writePhp($text)
   {
     $this->switchToPhp();
     $this->code .= $text;
@@ -85,7 +85,7 @@ class Codewriter
   /**
   * Writes some HTML to the compiled template
   */
-  public function writeHtml($text)
+  function writeHtml($text)
   {
     $this->switchToHtml();
     $this->code .= $text;
@@ -95,7 +95,7 @@ class Codewriter
   * Returns the finished compiled template, adding the include directives
   * at the start of the template
   */
-  public function getCode()
+  function getCode()
   {
     $this->switchToHtml();
     $includecode = '';
@@ -128,7 +128,7 @@ class Codewriter
   * <br />Note that the path to the file to be included will need to
   * be in PHP's runtime include path.
   */
-  public function registerInclude($includefile)
+  function registerInclude($includefile)
   {
     if (!in_array($includefile, $this->include_list))
     {
@@ -141,7 +141,7 @@ class Codewriter
   * function_prefix and the function_suffix, the latter being post incremented
   * by one.
   */
-  public function beginFunction($ParamList)
+  function beginFunction($ParamList)
   {
     $funcname = 'tpl' . $this->function_prefix . $this->function_suffix++;
     $this->writePhp('function ' . $funcname . $ParamList . "\n{\n");
@@ -151,7 +151,7 @@ class Codewriter
   /**
   * Finish writing a PHP function to the compiled template
   */
-  public function endFunction()
+  function endFunction()
   {
     $this->writePhp("\n}\n");
   }
@@ -159,12 +159,12 @@ class Codewriter
   /**
   * Sets the function prefix
   */
-  public function setFunctionPrefix($prefix)
+  function setFunctionPrefix($prefix)
   {
     $this->function_prefix = $prefix;
   }
 
-  public function getTempVariable()
+  function getTempVariable()
   {
     $var = $this->temp_var_name++;
     if ($var > 675)

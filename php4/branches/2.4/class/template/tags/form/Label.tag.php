@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class LabelTagInfo
 {
-  public $tag = 'label';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'label_tag';
+  var $tag = 'label';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'label_tag';
 }
 
 registerTag(new LabelTagInfo());
@@ -27,7 +27,7 @@ class LabelTag extends ServerTagComponentTag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/label_component';
   }
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('label_tag'))
     {
@@ -47,7 +47,7 @@ class LabelTag extends ServerTagComponentTag
     }
   }
 
-  public function generateConstructor($code)
+  function generateConstructor($code)
   {
     parent::generateConstructor($code);
     if (array_key_exists('error_class', $this->attributes))

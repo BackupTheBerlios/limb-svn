@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class PagerLastTagInfo
 {
-  public $tag = 'pager:LAST';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'pager_last_tag';
+  var $tag = 'pager:LAST';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'pager_last_tag';
 }
 
 registerTag(new PagerLastTagInfo());
@@ -22,9 +22,9 @@ registerTag(new PagerLastTagInfo());
 */
 class PagerLastTag extends ServerComponentTag
 {
-  protected $hide_for_current_page;
+  var $hide_for_current_page;
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('pager_last_tag'))
     {
@@ -43,7 +43,7 @@ class PagerLastTag extends ServerComponentTag
     }
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $this->hide_for_current_page = array_key_exists('hide_for_current_page', $this->attributes);
 
@@ -60,7 +60,7 @@ class PagerLastTag extends ServerComponentTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $parent = $this->findParentByClass('pager_navigator_tag');
 
@@ -71,7 +71,7 @@ class PagerLastTag extends ServerComponentTag
     $code->writePhp('}');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     if (!$this->hide_for_current_page)
     {
@@ -83,12 +83,12 @@ class PagerLastTag extends ServerComponentTag
     $code->writePhp('}');
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

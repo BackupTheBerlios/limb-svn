@@ -16,7 +16,7 @@ Mock :: generate('DbTable');
 
 class TestVersionedOneTableObjectsRawFinder extends VersionedOneTableObjectsRawFinder
 {
-  protected function _defineDbTableName()
+  function _defineDbTableName()
   {
     return 'table1';
   }

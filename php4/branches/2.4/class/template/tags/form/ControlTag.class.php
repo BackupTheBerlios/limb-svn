@@ -13,7 +13,7 @@
 */
 abstract class ControlTag extends ServerTagComponentTag
 {
-  public function getServerId()
+  function getServerId()
   {
     if (!empty($this->attributes['id']))
     {
@@ -30,7 +30,7 @@ abstract class ControlTag extends ServerTagComponentTag
     }
   }
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass(get_class($this)))
     {
@@ -49,7 +49,7 @@ abstract class ControlTag extends ServerTagComponentTag
     }
   }
 
-  public function generateConstructor($code)
+  function generateConstructor($code)
   {
     parent :: generateConstructor($code);
 
@@ -60,7 +60,7 @@ abstract class ControlTag extends ServerTagComponentTag
     }
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     parent :: postGenerate($code);
 

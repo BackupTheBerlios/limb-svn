@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class PagerListTagInfo
 {
-  public $tag = 'pager:LIST';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'pager_list_tag';
+  var $tag = 'pager:LIST';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'pager_list_tag';
 }
 
 registerTag(new PagerListTagInfo());
@@ -22,7 +22,7 @@ registerTag(new PagerListTagInfo());
 */
 class PagerListTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('pager_list_tag'))
     {
@@ -41,7 +41,7 @@ class PagerListTag extends CompilerDirectiveTag
     }
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
@@ -49,7 +49,7 @@ class PagerListTag extends CompilerDirectiveTag
     $code->writePhp('if (' . $parent->getComponentRefCode() . '->next()) {');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
 
@@ -63,7 +63,7 @@ class PagerListTag extends CompilerDirectiveTag
     parent::postGenerate($code);
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $sep_child = $this->findChildByClass('pager_separator_tag');
     $current_child = $this->findChildByClass('pager_current_tag');

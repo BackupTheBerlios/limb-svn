@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class PagerCurrentTagInfo
 {
-  public $tag = 'pager:current';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'pager_current_tag';
+  var $tag = 'pager:current';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'pager_current_tag';
 }
 
 registerTag(new PagerCurrentTagInfo());
 
 class PagerCurrentTag extends ServerComponentTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('pager_current_tag'))
     {
@@ -38,7 +38,7 @@ class PagerCurrentTag extends ServerComponentTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $parent = $this->findParentByClass('pager_navigator_tag');
 
@@ -54,12 +54,12 @@ class PagerCurrentTag extends ServerComponentTag
     $code->writePhp('}');
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

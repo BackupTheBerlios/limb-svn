@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class PagerSeparatorTagInfo
 {
-  public $tag = 'pager:SEPARATOR';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'pager_separator_tag';
+  var $tag = 'pager:SEPARATOR';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'pager_separator_tag';
 }
 
 registerTag(new PagerSeparatorTagInfo());
@@ -22,7 +22,7 @@ registerTag(new PagerSeparatorTagInfo());
 */
 class PagerSeparatorTag extends SilentCompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('pager_separator_tag'))
     {

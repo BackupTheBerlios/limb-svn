@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class LocaleLocaleTagInfo
 {
-  public $tag = 'locale:LOCALE';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'locale_locale_tag';
+  var $tag = 'locale:LOCALE';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'locale_locale_tag';
 }
 
 registerTag(new LocaleLocaleTagInfo());
@@ -33,7 +33,7 @@ class LocaleLocaleTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
@@ -50,7 +50,7 @@ class LocaleLocaleTag extends CompilerDirectiveTag
     $code->writePhp('if ("' . $this->attributes['name']. '" == constant("'. $locale_constant .'")) {');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
     parent::postGenerate($code);

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class ControlButtonTagInfo
 {
-  public $tag = 'control_button';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'control_button_tag';
+  var $tag = 'control_button';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'control_button_tag';
 }
 
 registerTag(new ControlButtonTagInfo());
@@ -24,12 +24,12 @@ registerTag(new ControlButtonTagInfo());
 */
 class ControlButtonTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/control_button_component';
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['action']))
     {
@@ -44,7 +44,7 @@ class ControlButtonTag extends ControlTag
   }
 
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'button';
   }

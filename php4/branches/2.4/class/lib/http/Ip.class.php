@@ -12,11 +12,11 @@
 class Ip
 {
   //Returns an array of hexed IPs
-  static public function encodeIpRange($ip_begin, $ip_end)
+  function encodeIpRange($ip_begin, $ip_end)
   {
     $ip_regex = '/^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/';
 
-    if( ! preg_match($ip_regex, $ip_begin, $ip_begin_range_explode) || 
+    if( ! preg_match($ip_regex, $ip_begin, $ip_begin_range_explode) ||
         ! preg_match($ip_regex, $ip_end, $ip_end_range_explode))
         return array();
 
@@ -35,7 +35,7 @@ class Ip
         $ip_2_counter = 255;
         $ip_2_fragment = 255;
 
-        $ip_list[] = self :: encodeIp("{$ip_1_counter}.255.255.255");
+        $ip_list[] = Ip :: encodeIp("{$ip_1_counter}.255.255.255");
       }
 
       while ( $ip_2_counter <= $ip_2_end )
@@ -48,7 +48,7 @@ class Ip
           $ip_3_counter = 255;
           $ip_3_fragment = 255;
 
-          $ip_list[] = self :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.255.255");
+          $ip_list[] = Ip :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.255.255");
         }
 
         while ( $ip_3_counter <= $ip_3_end )
@@ -61,12 +61,12 @@ class Ip
             $ip_4_counter = 255;
             $ip_4_fragment = 255;
 
-            $ip_list[] = self :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.255");
+            $ip_list[] = Ip :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.255");
           }
 
           while ( $ip_4_counter <= $ip_4_end )
           {
-            $ip_list[] = self :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.{$ip_4_counter}");
+            $ip_list[] = Ip :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.{$ip_4_counter}");
             $ip_4_counter++;
           }
           $ip_3_counter++;
@@ -79,21 +79,21 @@ class Ip
     return $ip_list;
   }
 
-  static public function encodeIp($ip)
+  function encodeIp($ip)
   {
     $ip_sep = explode('.', $ip);
 
     return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
   }
 
-  static public function decodeIp($hex_ip)
+  function decodeIp($hex_ip)
   {
     $hexipbang = explode('.', chunk_split($hex_ip, 2, '.'));
 
     return hexdec($hexipbang[0]). '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
   }
 
-  static public function isValid($ip)
+  function isValid($ip)
   {
     return preg_match('/^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/', $ip);
   }

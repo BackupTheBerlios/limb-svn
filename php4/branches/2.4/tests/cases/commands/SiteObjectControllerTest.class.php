@@ -19,7 +19,7 @@ Mock :: generate('SiteObjectBehaviour');
 
 class SiteObjectBehaviourControllerTestVersion extends SiteObjectBehaviour
 {
-  public function defineTestAction($state_machine){}
+  function defineTestAction($state_machine){}
 }
 
 Mock :: generatePartial
@@ -51,7 +51,7 @@ Mock :: generatePartial
 
 class SiteObjectControllerPerformTestVersion extends SiteObjectController
 {
-  protected function _performAction($request)
+  function _performAction($request)
   {
     throw new LimbException('catch me!');
   }

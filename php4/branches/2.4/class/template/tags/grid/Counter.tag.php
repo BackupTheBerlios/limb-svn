@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class GridCounterTagInfo
 {
-  public $tag = 'grid:COUNTER';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'grid_counter_tag';
+  var $tag = 'grid:COUNTER';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'grid_counter_tag';
 }
 
 registerTag(new GridCounterTagInfo());
 
 class GridCounterTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof GridIteratorTag)
     {
@@ -31,7 +31,7 @@ class GridCounterTag extends CompilerDirectiveTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $grid = $this->findParentByClass('grid_list_tag');
 

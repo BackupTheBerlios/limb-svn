@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/data_mappers/OneTableObjectsMapper.class.ph
 
 abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
 {
-  public function findByVersion($id, $version)
+  function findByVersion($id, $version)
   {
     $raw_data = $this->_getFinder()->findByVersion($id, $version);
 
@@ -36,7 +36,7 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
                               ' AND version <> ' . $version);
   }
 
-  public function insert($site_object)
+  function insert($site_object)
   {
     $id = $this->_doParentInsert($site_object);
 
@@ -46,12 +46,12 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
   }
 
   //for mocking
-  protected function _doParentInsert($site_object)
+  function _doParentInsert($site_object)
   {
     return parent :: insert($site_object);
   }
 
-  protected function _insertVersionRecord($site_object)
+  function _insertVersionRecord($site_object)
   {
     $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
 
@@ -71,7 +71,7 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
     $version_db_table->insert($data);
   }
 
-  protected function _updateVersionRecord($site_object)
+  function _updateVersionRecord($site_object)
   {
     $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
 
@@ -83,7 +83,7 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
                                            'version' => $site_object->getVersion()));
   }
 
-  public function update($site_object)
+  function update($site_object)
   {
     if ($site_object->isNewVersion())
     {
@@ -102,12 +102,12 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
   }
 
   //for mocking
-  protected function _doParentUpdate($site_object)
+  function _doParentUpdate($site_object)
   {
     parent :: update($site_object);
   }
 
-  public function delete($site_object)
+  function delete($site_object)
   {
     $this->_doParentDelete($site_object);
 
@@ -115,12 +115,12 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
   }
 
   //for mocking
-  protected function _doParentDelete($site_object)
+  function _doParentDelete($site_object)
   {
     parent :: delete($site_object);
   }
 
-  protected function _deleteVersionRecords($site_object)
+  function _deleteVersionRecords($site_object)
   {
     $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
     $version_db_table->delete(array('object_id' => $site_object->getId()));

@@ -12,9 +12,10 @@ require_once(LIMB_DIR . '/class/core/SysParam.class.php');
 
 class SysParamComponent extends Component
 {
-  public function getParam($name, $type)
+  function getParam($name, $type)
   {
-    echo SysParam :: instance()->getParam($name, $type);
+    $inst =& SysParam :: instance();
+    echo $inst->getParam($name, $type);
   }
 }
 

@@ -11,17 +11,17 @@
 
 class ComplexArray
 {
-  protected function __construct(){}
+  function __construct(){}
 
 
-  static public function map($map_array, $src_array, &$dest_array)
+  function map($map_array, $src_array, &$dest_array)
   {
     foreach($map_array as $src => $dest)
       if(isset($src_array[$src]))
         $dest_array[$dest] = $src_array[$src];
   }
 
-  static public function array_merge($a1, $a2)
+  function array_merge($a1, $a2)
   {
     $n = $a1;
     foreach($a2 as $k => $v)
@@ -32,7 +32,7 @@ class ComplexArray
     return $n;
   }
 
-  static public function & arrayGet($arr_def, &$res_array, $default_value='')
+  function & arrayGet($arr_def, &$res_array, $default_value='')
   {
     if($size = sizeof($arr_def))
     {
@@ -40,7 +40,7 @@ class ComplexArray
 
       if(is_array($res_array) &&  isset($res_array[$key]))
         if($size > 1)
-          return self :: arrayGet($arr_def, $res_array[$key]);
+          return ComplexArray :: arrayGet($arr_def, $res_array[$key]);
         elseif($size == 1)
           return $res_array[$key];
     }
@@ -48,7 +48,7 @@ class ComplexArray
     return $default_value;
   }
 
-  static public function arraySet($arr_def, &$res_array, $value)
+  function arraySet($arr_def, &$res_array, $value)
   {
     if($size = sizeof($arr_def))
     {
@@ -59,14 +59,14 @@ class ComplexArray
         if (!isset($res_array[$key]))
           $res_array[$key] = array();
 
-        self :: arraySet($arr_def, $res_array[$key], $value);
+        ComplexArray :: arraySet($arr_def, $res_array[$key], $value);
       }
       elseif($size == 1)
         $res_array[$key] = $value;
     }
   }
 
-  static public function getColumnValues($column_name, $array)
+  function getColumnValues($column_name, $array)
   {
     $result = array();
     foreach($array as $item)
@@ -75,11 +75,11 @@ class ComplexArray
     return $result;
   }
 
-  static public function getMaxColumnValue($column_name, $array, &$index)
+  function getMaxColumnValue($column_name, $array, &$index)
   {
     $index = 0;
 
-    if(!$values = self :: getColumnValues($column_name, $array))
+    if(!$values = ComplexArray :: getColumnValues($column_name, $array))
       return false;
 
     $max = max($values);
@@ -89,11 +89,11 @@ class ComplexArray
     return $max;
   }
 
-  static public function getMinColumnValue($column_name, $array, &$index)
+  function getMinColumnValue($column_name, $array, &$index)
   {
     $index = 0;
 
-    if(!$values = self :: getColumnValues($column_name, $array))
+    if(!$values = ComplexArray :: getColumnValues($column_name, $array))
       return false;
 
     $min = min($values);
@@ -103,27 +103,27 @@ class ComplexArray
     return $min;
   }
 
-  static public function toFlatArray($array, &$result, $prefix='')
+  function toFlatArray($array, &$result, $prefix='')
   {
     foreach($array as $key => $value)
     {
       $string_key = ($prefix) ? '[' . $key . ']' : $key;
 
       if(is_array($value))
-        self :: toFlatArray($value, $result, $prefix . $string_key);
+        ComplexArray :: toFlatArray($value, $result, $prefix . $string_key);
       else
         $result[$prefix . $string_key] = $value;
     }
   }
 
-  static public function arrayMapRecursive($in_func, &$in_array)
+  function arrayMapRecursive($in_func, &$in_array)
   {
     foreach (array_keys($in_array) as $key)
     {
       $value =& $in_array[$key];
 
       if (is_array($value))
-        self :: arrayMapRecursive($in_func, $value);
+        ComplexArray :: arrayMapRecursive($in_func, $value);
       else
         $value = call_user_func_array($in_func, array($value));
     }
@@ -131,7 +131,7 @@ class ComplexArray
   }
 
   //e.g, $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')
-  static public function & sortArray($array, $sort_params, $preserve_keys = true)
+  function & sortArray($array, $sort_params, $preserve_keys = true)
   {
    $array_mod = array();
    foreach ($array as $key => $value)

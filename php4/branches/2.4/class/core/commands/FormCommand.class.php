@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class FormCommand implements Command
 {
-  protected $form_name;
+  var $form_name;
 
   function __construct($form_name)
   {
@@ -20,13 +20,13 @@ class FormCommand implements Command
   }
 
   //for mocking
-  protected function _getValidator()
+  function _getValidator()
   {
     include_once(LIMB_DIR . '/class/validators/Validator.class.php');
     return new Validator();
   }
 
-  protected function _isFirstTime($request)
+  function _isFirstTime($request)
   {
     $arr = $request->get($this->form_name);
     if(isset($arr['submitted']) &&  $arr['submitted'])
@@ -35,16 +35,16 @@ class FormCommand implements Command
       return true;
   }
 
-  protected function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules($validator, $dataspace)
   {
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return array();
   }
 
-  public function validate($dataspace)
+  function validate($dataspace)
   {
     $validator = $this->_getValidator();
 
@@ -53,7 +53,7 @@ class FormCommand implements Command
     return $validator->validate($dataspace);
   }
 
-  public function perform()
+  function perform()
   {
     $request = Limb :: toolkit()->getRequest();
 
@@ -76,11 +76,11 @@ class FormCommand implements Command
     }
   }
 
-  protected function _initFirstTimeDataspace($dataspace, $request)
+  function _initFirstTimeDataspace($dataspace, $request)
   {
   }
 
-  protected function _mergeDataspaceWithRequest($dataspace, $request)
+  function _mergeDataspaceWithRequest($dataspace, $request)
   {
     ComplexArray :: map($this->_defineDatamap(), $request->get($this->form_name), $data = array());
 

@@ -17,7 +17,7 @@ abstract class InputFormElement extends FormElement
   * sure there is always a value attribute, even if it's empty.
   * Called from within a compiled template render function.
   */
-  public function renderAttributes()
+  function renderAttributes()
   {
     $value = $this->getValue();
 

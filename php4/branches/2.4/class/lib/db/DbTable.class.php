@@ -13,15 +13,15 @@ require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
 
 class DbTable
 {
-  protected $_db_table_name;
+  var $_db_table_name;
 
-  protected $_primary_key_name;
+  var $_primary_key_name;
 
-  protected $_columns = array();
+  var $_columns = array();
 
-  protected $_constraints = array();
+  var $_constraints = array();
 
-  protected $_db = null;
+  var $_db = null;
 
   function __construct()
   {
@@ -33,7 +33,7 @@ class DbTable
     $this->_db = Limb :: toolkit()->getDB();
   }
 
-  protected function _defineDbTableName()
+  function _defineDbTableName()
   {
     $class_name = get_class($this);
 
@@ -45,37 +45,37 @@ class DbTable
     return $table_name;
   }
 
-  protected function _definePrimaryKeyName()
+  function _definePrimaryKeyName()
   {
     return 'id';
   }
 
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return array();
   }
 
-  protected function _defineConstraints()
+  function _defineConstraints()
   {
     return array();
   }
 
-  public function hasColumn($name)
+  function hasColumn($name)
   {
     return isset($this->_columns[$name]);
   }
 
-  public function getColumns()
+  function getColumns()
   {
     return $this->_columns;
   }
 
-  public function getConstraints()
+  function getConstraints()
   {
     return $this->_constraints;
   }
 
-  public function getColumnTypes()
+  function getColumnTypes()
   {
     $types = array();
     foreach(array_keys($this->_columns) as $column_name)
@@ -84,7 +84,7 @@ class DbTable
     return $types;
   }
 
-  public function getColumnType($column_name)
+  function getColumnType($column_name)
   {
     if(!$this->hasColumn($column_name))
       return false;
@@ -94,19 +94,19 @@ class DbTable
       '';
   }
 
-  public function getPrimaryKeyName()
+  function getPrimaryKeyName()
   {
     return $this->_primary_key_name;
   }
 
-  public function insert($row)
+  function insert($row)
   {
     $filtered_row = $this->_filterRow($row);
 
     return $this->_db->sqlInsert($this->_db_table_name, $filtered_row, $this->getColumnTypes());
   }
 
-  protected function _filterRow($row)
+  function _filterRow($row)
   {
     if (!is_array($row))
       return array();
@@ -120,26 +120,26 @@ class DbTable
     return $filtered;
   }
 
-  public function update($row, $conditions)
+  function update($row, $conditions)
   {
     $filtered_row = $this->_filterRow($row);
 
     return $this->_db->sqlUpdate($this->_db_table_name, $filtered_row, $conditions, $this->getColumnTypes());
   }
 
-  public function updateById($id, $data)
+  function updateById($id, $data)
   {
     return $this->update($data, "{$this->_primary_key_name}='{$id}'");
   }
 
-  public function getRowById($id)
+  function getRowById($id)
   {
     $data = $this->getList($this->_primary_key_name . "='{$id}'");
 
     return current($data);
   }
 
-  public function getList($conditions='', $order='', $group_by_column='', $start=0, $count=0)
+  function getList($conditions='', $order='', $group_by_column='', $start=0, $count=0)
   {
     $this->_db->sqlSelect($this->_db_table_name, '*', $conditions, $order, $start, $count);
 
@@ -152,7 +152,7 @@ class DbTable
       return $this->_db->getArray();
   }
 
-  public function delete($conditions='')
+  function delete($conditions='')
   {
     $affected_rows = $this->_prepareAffectedRows($conditions);
 
@@ -163,34 +163,34 @@ class DbTable
     return true;
   }
 
-  protected function _deleteOperation($conditions, $affected_rows)
+  function _deleteOperation($conditions, $affected_rows)
   {
     $this->_db->sqlDelete($this->_db_table_name, $conditions);
   }
 
-  public function deleteById($id)
+  function deleteById($id)
   {
     return $this->delete(array($this->_primary_key_name => $id));
   }
 
-  public function getLastInsertId()
+  function getLastInsertId()
   {
     return $this->_db->getSqlInsertId($this->_db_table_name, $this->_primary_key_name);
   }
 
-  public function getMaxId()
+  function getMaxId()
   {
     return $this->_db->getMaxColumnValue($this->_db_table_name, $this->_primary_key_name);
   }
 
-  public function getTableName()
+  function getTableName()
   {
     return $this->_db_table_name;
   }
 
-  protected function _cascadeDelete($affected_rows)
+  function _cascadeDelete($affected_rows)
   {
-    if(self :: autoConstraintsEnabled())
+    if(DbTable :: autoConstraintsEnabled())
       return;
 
     if (!count($affected_rows))
@@ -228,29 +228,29 @@ class DbTable
     }
   }
 
-  protected function _mapTableNameToClass($table_name)
+  function _mapTableNameToClass($table_name)
   {
     //this probably should be moved to toolkit...
     return toStudlyCaps($table_name);
 
   }
 
-  protected function _prepareAffectedRows($conditions)
+  function _prepareAffectedRows($conditions)
   {
     $affected_rows = array();
 
-    if(self :: autoConstraintsEnabled())
+    if(DbTable :: autoConstraintsEnabled())
       return $affected_rows;
 
     return $this->getList($conditions);
   }
 
-  static public function autoConstraintsEnabled()
+  function autoConstraintsEnabled()
   {
     return (defined('DB_AUTO_CONSTRAINTS') &&  DB_AUTO_CONSTRAINTS == true);
   }
 
-  public function getColumnsForSelect($table_name = '', $exclude_columns = array())
+  function getColumnsForSelect($table_name = '', $exclude_columns = array())
   {
     if(!$table_name)
       $table_name = $this->getTableName();

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class PagerNavigatorTagInfo
 {
-  public $tag = 'pager:NAVIGATOR';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'pager_navigator_tag';
+  var $tag = 'pager:NAVIGATOR';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'pager_navigator_tag';
 }
 
 registerTag(new PagerNavigatorTagInfo());
@@ -27,14 +27,14 @@ class PagerNavigatorTag extends ServerComponentTag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/pager_component';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
     $code->writePhp($this->getComponentRefCode() . '->prepare();');
   }
 
-  public function generateConstructor($code)
+  function generateConstructor($code)
   {
     parent::generateConstructor($code);
 
@@ -50,7 +50,7 @@ class PagerNavigatorTag extends ServerComponentTag
     }
   }
 
-  public function getComponentRefCode()
+  function getComponentRefCode()
   {
     if (isset($this->attributes['mirror_of']))
     {

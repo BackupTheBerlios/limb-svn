@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
 
 class FormCreateSiteObjectCommand extends FormCommand
 {
-  protected function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules($validator, $dataspace)
   {
     if (($parent_node_id = $dataspace->get('parent_node_id')) === null)
     {
@@ -26,7 +26,7 @@ class FormCreateSiteObjectCommand extends FormCommand
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $parent_node_id));
   }
 
-  protected function _loadParentObjectData()
+  function _loadParentObjectData()
   {
     $toolkit = Limb :: toolkit();
     $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
@@ -35,7 +35,7 @@ class FormCreateSiteObjectCommand extends FormCommand
     return $datasource->fetch();
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return array(
       'parent_node_id' => 'parent_node_id',

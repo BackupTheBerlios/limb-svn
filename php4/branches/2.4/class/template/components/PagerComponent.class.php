@@ -19,49 +19,49 @@ class PagerComponent extends Component
   * Used while displaying a page number list to determine when a separator
   * should be shown between two page numbers
   */
-  public $show_separator;
+  var $show_separator;
   /**
   * Used while displaying a page number list to the page number being displayed
   */
-  public $page;
+  var $page;
   /**
   * The page number of the last page in the list.
   */
-  public $last_page;
+  var $last_page;
   /**
   * The page number of the current page in the list.
   */
-  public $current_page = 0;
+  var $current_page = 0;
 
-  public $current_section = 0;
+  var $current_section = 0;
 
-  public $section = 0;
+  var $section = 0;
 
-  public $pages_per_section = 10;
+  var $pages_per_section = 10;
 
-  public $section_has_changed = false;
+  var $section_has_changed = false;
   /**
   * number of items to display on each page of the list.
   * This is set via the items attribute of the pager:navigator tag.
   */
-  public $items = 20;
+  var $items = 20;
   /**
   * The total number of items in this list.
   */
-  public $total_items = 0;
+  var $total_items = 0;
   /**
   * The variable used to carry the current page in the URL.
   */
-  protected $pager_variable = 'page';
+  var $pager_variable = 'page';
   /**
   * The Url used to display individual pages of the list.
   */
-  protected $base_url;
+  var $base_url;
   /**
   * A paged dataset reference.  Used for determining the total number
   * of items the pager should navagate across.
   */
-  protected $paged_dataset;
+  var $paged_dataset;
 
   function __construct()
   {
@@ -73,22 +73,22 @@ class PagerComponent extends Component
     }
   }
 
-  public function setTotalItems($items)
+  function setTotalItems($items)
   {
     $this->total_items = $items;
   }
 
-  public function getTotalItems()
+  function getTotalItems()
   {
     return $this->total_items;
   }
 
-  public function hasMoreThanOnePage()
+  function hasMoreThanOnePage()
   {
     return $this->total_items > $this->items;
   }
 
-  public function setItemsPerPage($items)
+  function setItemsPerPage($items)
   {
     $this->items = $items;
   }
@@ -96,7 +96,7 @@ class PagerComponent extends Component
   /**
   * Set the database which this pager controls.
   */
-  public function registerDataset($dataset)
+  function registerDataset($dataset)
   {
     $this->paged_dataset = $dataset;
   }
@@ -106,7 +106,7 @@ class PagerComponent extends Component
   * Usually called by the paged_dataset to determine where to
   * begin query.
   */
-  public function getStartingItem()
+  function getStartingItem()
   {
     return $this->items * ($this->current_page - 1);
   }
@@ -116,12 +116,12 @@ class PagerComponent extends Component
   * Usually called by the paged_dataset to determine how many
   * items are on a page.
   */
-  public function getItemsPerPage()
+  function getItemsPerPage()
   {
     return $this->items;
   }
 
-  public function getPagesCount()
+  function getPagesCount()
   {
     return $this->last_page;
   }
@@ -129,7 +129,7 @@ class PagerComponent extends Component
   /**
   * Is the current page being displayed the first page in the page list?
   */
-  public function isFirst()
+  function isFirst()
   {
     return ($this->current_page == 1);
   }
@@ -137,7 +137,7 @@ class PagerComponent extends Component
   /**
   * Is there a page available to display before the current page being displayed?
   */
-  public function hasPrev()
+  function hasPrev()
   {
     return ($this->current_page > 1);
   }
@@ -145,7 +145,7 @@ class PagerComponent extends Component
   /**
   * Is there a page available to display after the current page being displayed?
   */
-  public function hasNext()
+  function hasNext()
   {
     return ($this->current_page < $this->last_page);
   }
@@ -153,7 +153,7 @@ class PagerComponent extends Component
   /**
   * Is the current page being displayed the last page in the page list?
   */
-  public function isLast()
+  function isLast()
   {
     return ($this->current_page == $this->last_page);
   }
@@ -162,7 +162,7 @@ class PagerComponent extends Component
   * Initialize values used by this component.
   * This is called automatically from the compiled template.
   */
-  public function prepare()
+  function prepare()
   {
     $request = Limb :: toolkit()->getRequest();
 
@@ -195,7 +195,7 @@ class PagerComponent extends Component
   * This is called automatically from the compiled template and should
   * not be called directly.
   */
-  public function next()
+  function next()
   {
     $this->page++;
 
@@ -217,7 +217,7 @@ class PagerComponent extends Component
   * This is called automatically from the compiled template and should
   * not be called directly.
   */
-  public function getPageNumber()
+  function getPageNumber()
   {
     return $this->page;
   }
@@ -228,12 +228,12 @@ class PagerComponent extends Component
   * This is called automatically from the compiled template and should
   * not be called directly.
   */
-  public function isCurrentPage()
+  function isCurrentPage()
   {
     return $this->page == $this->current_page;
   }
 
-  public function isDisplayPage()
+  function isDisplayPage()
   {
     if ($this->section != $this->current_section)
       return false;
@@ -241,7 +241,7 @@ class PagerComponent extends Component
       return true;
   }
 
-  public function hasSectionChanged()
+  function hasSectionChanged()
   {
     if($this->section_has_changed)
       $this->page += $this->pages_per_section - 1;
@@ -249,12 +249,12 @@ class PagerComponent extends Component
     return $this->section_has_changed;
   }
 
-  public function getCurrentSectionBeginNumber()
+  function getCurrentSectionBeginNumber()
   {
     return ($this->section - 1) * $this->pages_per_section + 1;
   }
 
-  public function getCurrentSectionUri()
+  function getCurrentSectionUri()
   {
     if ($this->section > $this->current_section)
       return $this->getPageUri(($this->section - 1) * $this->pages_per_section + 1);
@@ -262,7 +262,7 @@ class PagerComponent extends Component
       return $this->getPageUri($this->section * $this->pages_per_section);
   }
 
-  public function getCurrentSectionEndNumber()
+  function getCurrentSectionEndNumber()
   {
     $result = $this->section * $this->pages_per_section;
     if ($result >= $this->last_page)
@@ -276,7 +276,7 @@ class PagerComponent extends Component
   * This is called automatically from the compiled template and should
   * not be called directly.
   */
-  public function getCurrentPageUri()
+  function getCurrentPageUri()
   {
     return $this->getPageUri($this->page);
   }
@@ -284,7 +284,7 @@ class PagerComponent extends Component
   /**
   * Return the URI to a specific page in the list.
   */
-  public function getPageUri($page)
+  function getPageUri($page)
   {
     $params = ComplexArray :: array_merge($_GET, $_POST);
     if ($page <= 1)
@@ -320,7 +320,7 @@ class PagerComponent extends Component
   /**
   * Return the URI to the first page in the list.
   */
-  public function getFirstPageUri()
+  function getFirstPageUri()
   {
     return $this->getPageUri(1);
   }
@@ -328,7 +328,7 @@ class PagerComponent extends Component
   /**
   * Return the URI to the previous page in the list.
   */
-  public function getPrevPageUri()
+  function getPrevPageUri()
   {
     return $this->getPageUri($this->current_page - 1);
   }
@@ -336,7 +336,7 @@ class PagerComponent extends Component
   /**
   * Return the URI to the last page in the list.
   */
-  public function getLastPageUri()
+  function getLastPageUri()
   {
     return $this->getPageUri($this->last_page);
   }
@@ -344,7 +344,7 @@ class PagerComponent extends Component
   /**
   * Return the URI to the next page in the list.
   */
-  public function getNextPageUri()
+  function getNextPageUri()
   {
     return $this->getPageUri($this->current_page + 1);
   }

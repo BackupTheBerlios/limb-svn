@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class DisplayViewCommand implements Command
 {
-  public function perform()
+  function perform()
   {
     if(!$view = Limb :: toolkit()->getView())
       throw new LimbException('view is null');
@@ -27,7 +27,7 @@ class DisplayViewCommand implements Command
     if(ob_get_level())
       ob_end_clean();
 
-    return Limb :: STATUS_OK;
+    return Limb :: getSTATUS_OK();
   }
 }
 

@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
 class DateComponent extends InputFormElement
 {
-  public function initDate()
+  function initDate()
   {
     if (defined('DATEBOX_LOAD_SCRIPT'))
       return;
@@ -28,7 +28,7 @@ class DateComponent extends InputFormElement
     define('DATEBOX_LOAD_SCRIPT',1);
   }
 
-  protected function _getFrameId()
+  function _getFrameId()
   {
     //default-month:theme-name[:agenda-file[:context-name[:plugin-file]]]
 
@@ -80,7 +80,7 @@ class DateComponent extends InputFormElement
     return implode(':', $params);
   }
 
-  public function renderDate()
+  function renderDate()
   {
     $form_id = $this->parent->getAttribute('id');
     $id = $this->getAttribute('id');
@@ -98,7 +98,7 @@ class DateComponent extends InputFormElement
     echo "<a href='javascript:void(0)' onclick='gfPop.". $function .";return false;' HIDEFOCUS><img name='popcal' align='absbottom' src='". $button ."' width='34' height='22' border='0' alt=''></a>";
   }
 
-  public function getValue()
+  function getValue()
   {
     $form = $this->findParentByClass('form_component');
 

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class FormErrorsTagInfo
 {
-  public $tag = 'form:ERRORS';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'form_errors_tag';
+  var $tag = 'form:ERRORS';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'form_errors_tag';
 }
 
 registerTag(new FormErrorsTagInfo());
@@ -24,7 +24,7 @@ class FormErrorsTag extends ServerComponentTag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
   }
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->findParentByClass('form_tag'))
     {
@@ -36,7 +36,7 @@ class FormErrorsTag extends ServerComponentTag
     }
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['target']))
     {
@@ -51,7 +51,7 @@ class FormErrorsTag extends ServerComponentTag
   }
 
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $parent_form = $this->findParentByClass('form_tag');
 

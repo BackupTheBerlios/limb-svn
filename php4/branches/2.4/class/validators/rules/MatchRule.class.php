@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
 class MatchRule extends SingleFieldRule
 {
-  protected $match_field;
+  var $match_field;
 
-  protected $match_field_name;
+  var $match_field_name;
 
   function __construct($field_name, $match_field, $match_field_name = '')
   {
@@ -27,7 +27,7 @@ class MatchRule extends SingleFieldRule
     parent :: __construct($field_name);
   }
 
-  public function validate($dataspace)
+  function validate($dataspace)
   {
     $value1 = $dataspace->get($this->field_name);
     $value2 = $dataspace->get($this->match_field);

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 interface Countable
 {
-  public function countTotal();
+  function countTotal();
 }
 
 

@@ -12,14 +12,14 @@ require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 class	DbFactory
 {
-  static public function instance($db_type='', $db_params=array(), $force_new_instance=false)
+  function & instance($db_type='', $db_params=array(), $force_new_instance=false)
   {
     if(!$db_type)
       $db_type = getIniOption('common.ini', 'type', 'DB');
     elseif(!$db_type)
       $db_type = 'null';
 
-    $db_class_name = self :: _mapTypeToClass($db_type);
+    $db_class_name = DbFactory :: _mapTypeToClass($db_type);
 
     $obj = null;
     if (isset($GLOBALS['global_db_handler']))
@@ -38,28 +38,29 @@ class	DbFactory
 
       include_once(LIMB_DIR . '/class/lib/db/' . $db_class_name . '.class.php');
 
-      $obj = new $db_class_name($db_params);
+      $obj =& new $db_class_name($db_params);
 
-      $GLOBALS['global_db_handler'] = $obj;
+      $GLOBALS['global_db_handler'] =& $obj;
     }
     return $obj;
   }
 
-  public function selectDb($db_name)
+  function selectDb($db_name)
   {
-    DbFactory :: instance()->selectDb($db_name);
+    $inst =& DbFactory :: instance();
+    $isnt->selectDb($db_name);
   }
 
-  public function create($db_type, $db_params)
+  function create($db_type, $db_params)
   {
-    $db_class_name = self :: _mapTypeToClass($db_type);
+    $db_class_name = DbFactory :: _mapTypeToClass($db_type);
 
     include_once(LIMB_DIR . '/class/lib/db/' . $db_class_name . '.class.php');
 
     return new $db_class_name($db_params);
   }
 
-  static protected function _mapTypeToClass($type)
+  function _mapTypeToClass($type)
   {
     return 'Db' . ucfirst($type);
   }
@@ -67,16 +68,19 @@ class	DbFactory
 
 function startUserTransaction()
 {
-  DbFactory :: instance()->begin();
+  $inst =& DbFactory :: instance();
+  $inst->begin();
 }
 
 function commitUserTransaction()
 {
-  DbFactory :: instance()->commit();
+  $inst =& DbFactory :: instance();
+  $inst->commit();
 }
 
 function rollbackUserTransaction()
 {
-  DbFactory :: instance()->rollback();
+  $inst =& DbFactory :: instance();
+  $inst->rollback();
 }
 ?>

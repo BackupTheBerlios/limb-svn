@@ -10,7 +10,7 @@
 ***********************************************************************************/
 interface Datasource
 {
-  public function fetch();
+  function fetch();
 }
 
 

@@ -10,33 +10,33 @@
 ***********************************************************************************/
 class SiteObjectRequestedTagInfo
 {
-  public $tag = 'site_object:REQUESTED';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'site_object_requested_tag';
+  var $tag = 'site_object:REQUESTED';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'site_object_requested_tag';
 }
 
 registerTag(new SiteObjectRequestedTagInfo());
 
 class SiteObjectRequestedTag extends ServerComponentTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/site_object_component';
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp($this->getComponentRefCode() . '->fetch_requested();');
 
     parent :: generateContents($code);
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

@@ -44,17 +44,17 @@ require_once(LIMB_DIR . '/class/lib/image/ImageLibrary.class.php');
 
 class ImageNetpbm extends ImageLibrary
 {
-  protected $lib_dir = '';
-  protected $os = '';
-  protected $ext = '';
-  protected $cmd_array = array();
-  protected $to_pnm = '';
-  protected $from_pnm = '';
-  protected $tmp_dir = '';
-  protected $current_input_file = '';
-  protected $current_input_file_type = '';
-  protected $current_output_file = '';
-  protected $current_output_file_type = '';
+  var $lib_dir = '';
+  var $os = '';
+  var $ext = '';
+  var $cmd_array = array();
+  var $to_pnm = '';
+  var $from_pnm = '';
+  var $tmp_dir = '';
+  var $current_input_file = '';
+  var $current_input_file_type = '';
+  var $current_output_file = '';
+  var $current_output_file_type = '';
 
   function __construct($lib_dir = NETPBM_LIB_DIR)
   {
@@ -63,7 +63,7 @@ class ImageNetpbm extends ImageLibrary
     $this->_determineOptions();
   }
 
-  protected function _determineOptions()
+  function _determineOptions()
   {
     if (Sys :: osType() == "win32")
       $this->ext = '.exe';
@@ -77,7 +77,7 @@ class ImageNetpbm extends ImageLibrary
       $this->library_installed = true;
   }
 
-  protected function _determineReadTypes()
+  function _determineReadTypes()
   {
     if (file_exists($this->lib_dir . JPEGTOPNM . $this->ext))
       $this->read_types[] = 'JPEG';
@@ -95,7 +95,7 @@ class ImageNetpbm extends ImageLibrary
       $this->read_types[] = 'TIFF';
   }
 
-  protected function _determineWriteTypes()
+  function _determineWriteTypes()
   {
     if (file_exists($this->lib_dir . PNMTOJPEG . $this->ext))
       $this->create_types[] = 'JPEG';
@@ -113,14 +113,14 @@ class ImageNetpbm extends ImageLibrary
       $this->create_types[] = 'TIFF';
   }
 
-  public function setInputFile($file_name, $type = '')
+  function setInputFile($file_name, $type = '')
   {
     parent :: setInputFile($file_name, $type);
 
     $this->to_pnm = constant(strtoupper($type . 'TOPNM')) . " $file_name";
   }
 
-  public function setOutputFile($file_name, &$type)
+  function setOutputFile($file_name, &$type)
   {
     parent :: setOutputFile($file_name, $type);
 
@@ -132,12 +132,12 @@ class ImageNetpbm extends ImageLibrary
   $this->from_pnm .= constant(strtoupper('PNMTO' . $type)) . " > $file_name";
   }
 
-  public function reset()
+  function reset()
   {
     $this->cmd_array = array();
   }
 
-  public function commit()
+  function commit()
   {
     if (!$this->library_installed)
       return false;
@@ -161,7 +161,7 @@ class ImageNetpbm extends ImageLibrary
     return true;
   }
 
-  public function resize($params)
+  function resize($params)
   {
     if (!$this->library_installed)
       return false;
@@ -175,7 +175,7 @@ class ImageNetpbm extends ImageLibrary
     $this->cmd_array[] = PNMSCALE . " -width={$dst_width} -height={$dst_height}";
   }
 
-  public function rotate($angle, $bg_color = '')
+  function rotate($angle, $bg_color = '')
   {
     if (!$this->library_installed)
       return false;
@@ -183,21 +183,21 @@ class ImageNetpbm extends ImageLibrary
     $this->cmd_array[] = PNMROTATE . " {$angle}";
   }
 
-  public function flip($params)
+  function flip($params)
   {
     if (!$this->library_installed)
       return false;
 
-    if ($params == self :: FLIP_HORIZONTAL)
+    if ($params == ImageNetpbm :: FLIP_HORIZONTAL)
       $args = '-leftright';
 
-    if ($params == self :: FLIP_VERTICAL)
+    if ($params == ImageNetpbm :: FLIP_VERTICAL)
       $args = '-topbottom';
 
     $this->cmd_array[] = PNMFLIP . " {$args}";
   }
 
-  protected function _toPnm()
+  function _toPnm()
   {
     if (!empty($this->current_input_file))
     {
@@ -213,7 +213,7 @@ class ImageNetpbm extends ImageLibrary
     return constant(strtoupper($type . 'TOPNM')) . " $file_name";
   }
 
-  protected function _fromPnm()
+  function _fromPnm()
   {
     if (!empty($this->current_output_file))
     {
@@ -229,7 +229,7 @@ class ImageNetpbm extends ImageLibrary
     return constant(strtoupper('PNMTO' . $type)) . " > $file_name";
   }
 
-  protected function _runCmd($cmd)
+  function _runCmd($cmd)
   {
     $cwd = getcwd();
     chdir($this->lib_dir);
@@ -237,7 +237,7 @@ class ImageNetpbm extends ImageLibrary
     chdir($cwd);
   }
 
-  public function cut($x, $y, $w, $h, $bg_color = '')
+  function cut($x, $y, $w, $h, $bg_color = '')
   {
     if (!$this->library_installed)
       return false;

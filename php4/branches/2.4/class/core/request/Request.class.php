@@ -12,10 +12,8 @@ require_once(LIMB_DIR . '/class/core/Object.class.php');
 
 class Request extends Object
 {
-  static protected $instance = null;
-
-  protected $status;
-  protected $uri;
+  var $status;
+  var $uri;
 
   function __construct()
   {
@@ -36,7 +34,7 @@ class Request extends Object
       $this->set($k, $v);
   }
 
-  protected function _stripHttpSlashes($data, $result=array())
+  function _stripHttpSlashes($data, $result=array())
   {
     foreach($data as $k => $v)
     {
@@ -49,7 +47,7 @@ class Request extends Object
     return $result;
   }
 
-  public function getUri()
+  function getUri()
   {
     if($this->uri === null)
       $this->_initUri();
@@ -57,7 +55,7 @@ class Request extends Object
     return $this->uri;
   }
 
-  protected function _initUri()
+  function _initUri()
   {
     $this->uri = new Uri($_SERVER['REQUEST_URI']);
   }

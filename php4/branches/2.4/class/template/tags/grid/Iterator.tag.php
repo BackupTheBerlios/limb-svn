@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class GridIteratorTagInfo
 {
-  public $tag = 'grid:ITERATOR';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'grid_iterator_tag';
+  var $tag = 'grid:ITERATOR';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'grid_iterator_tag';
 }
 
 registerTag(new GridIteratorTagInfo());
 
 class GridIteratorTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof GridListTag)
     {
@@ -31,14 +31,14 @@ class GridIteratorTag extends CompilerDirectiveTag
     }
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
     $code->writePhp('if (' . $this->getComponentRefCode() . '->next()) {');
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp('do { ');
 
@@ -47,7 +47,7 @@ class GridIteratorTag extends CompilerDirectiveTag
     $code->writePhp('} while (' . $this->getDataspaceRefCode() . '->next());');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
 

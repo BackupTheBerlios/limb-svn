@@ -12,38 +12,38 @@ require_once(LIMB_DIR . '/class/core/data_mappers/AbstractDataMapper.class.php')
 
 class SiteObjectMapper extends AbstractDataMapper
 {
-  protected function _createDomainObject()
+  function _createDomainObject()
   {
     include_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
     return new SiteObject();
   }
 
-  protected function _getFinder()
+  function _getFinder()
   {
     include_once(LIMB_DIR . '/class/core/finders/FinderFactory.class.php');
     return FinderFactory :: create('site_objects_raw_finder');
   }
 
-  protected function _doLoad($raw_data, $site_object)
+  function _doLoad($raw_data, $site_object)
   {
     $site_object->import($raw_data);
 
     $this->_doLoadBehaviour($raw_data, $site_object);
   }
 
-  protected function _doLoadBehaviour($raw_data, $site_object)
+  function _doLoadBehaviour($raw_data, $site_object)
   {
     $behaviour = $this->_getBehaviourMapper()->findById($raw_data['behaviour_id']);
 
     $site_object->attachBehaviour($behaviour);
   }
 
-  protected function _getBehaviourMapper()
+  function _getBehaviourMapper()
   {
     return Limb :: toolkit()->createDataMapper('SiteObjectBehaviourMapper');
   }
 
-  public function insert($site_object)
+  function insert($site_object)
   {
     $id = $this->_insertSiteObjectRecord($site_object);
 
@@ -55,7 +55,7 @@ class SiteObjectMapper extends AbstractDataMapper
     return $id;
   }
 
-  protected function _insertTreeNode($site_object)
+  function _insertTreeNode($site_object)
   {
     if(!($parent_node_id = $site_object->getParentNodeId()))
       throw new LimbException('tree parent node is empty');
@@ -74,7 +74,7 @@ class SiteObjectMapper extends AbstractDataMapper
     return $node_id;
   }
 
-  protected function _insertSiteObjectRecord($site_object)
+  function _insertSiteObjectRecord($site_object)
   {
     if(!$identifier = $this->_getIdentifierGenerator()->generate($site_object))
       throw new LimbException('identifier is empty');
@@ -121,14 +121,14 @@ class SiteObjectMapper extends AbstractDataMapper
     return $sys_site_object_db_table->getLastInsertId();
   }
 
-  public function update($site_object)
+  function update($site_object)
   {
     $this->_updateTreeNode($site_object);
 
     $this->_updateSiteObjectRecord($site_object);
   }
 
-  protected function _updateSiteObjectRecord($site_object)
+  function _updateSiteObjectRecord($site_object)
   {
     if(!$site_object->getId())
       throw new LimbException('object id not set');
@@ -153,7 +153,7 @@ class SiteObjectMapper extends AbstractDataMapper
     $sys_site_object_db_table->updateById($site_object->getId(), $data);
   }
 
-  protected function _updateTreeNode($site_object)
+  function _updateTreeNode($site_object)
   {
     if(!$site_object->getNodeId())
       throw new LimbException('node id not set');
@@ -189,20 +189,20 @@ class SiteObjectMapper extends AbstractDataMapper
       $tree->updateNode($node_id, array('identifier' => $identifier), true);
   }
 
-  protected function _getIdentifierGenerator()
+  function _getIdentifierGenerator()
   {
     include_once(LIMB_DIR . '/class/core/data_mappers/DefaultSiteObjectIdentifierGenerator.class.php');
     return new DefaultSiteObjectIdentifierGenerator();
   }
 
-  protected function _canAddNodeToParent($parent_node_id)
+  function _canAddNodeToParent($parent_node_id)
   {
     $tree = Limb :: toolkit()->getTree();
 
     return $tree->canAddNode($node_id);
   }
 
-  public function getClassId($site_object)
+  function getClassId($site_object)
   {
     $db_table = Limb :: toolkit()->createDBTable('SysClass');
 
@@ -228,12 +228,12 @@ class SiteObjectMapper extends AbstractDataMapper
     return $db_table->getLastInsertId();
   }
 
-  protected function _isObjectMovedFromNode($parent_node_id, $node)
+  function _isObjectMovedFromNode($parent_node_id, $node)
   {
     return ($node['parent_id'] != $parent_node_id);
   }
 
-  public function delete($site_object)
+  function delete($site_object)
   {
     if (!$this->canDelete($site_object))
       return;
@@ -243,18 +243,18 @@ class SiteObjectMapper extends AbstractDataMapper
     $this->_deleteSiteObjectRecord($site_object);
   }
 
-  protected function _deleteTreeNode($site_object)
+  function _deleteTreeNode($site_object)
   {
     Limb :: toolkit()->getTree()->deleteNode($site_object->getNodeId());
   }
 
-  protected function _deleteSiteObjectRecord($site_object)
+  function _deleteSiteObjectRecord($site_object)
   {
     $sys_site_object_db_table = Limb :: toolkit()->createDBTable('SysSiteObject');
     $sys_site_object_db_table->deleteById($site_object->getId());
   }
 
-  public function canDelete($site_object)
+  function canDelete($site_object)
   {
     if(!$this->_canDeleteSiteObjectRecord($site_object))
       return false;
@@ -262,7 +262,7 @@ class SiteObjectMapper extends AbstractDataMapper
     return $this->_canDeleteTreeNode($site_object);
   }
 
-  protected function _canDeleteTreeNode($site_object)
+  function _canDeleteTreeNode($site_object)
   {
     if(!$site_object->getNodeId())
       throw new LimbException('node id not set');
@@ -270,7 +270,7 @@ class SiteObjectMapper extends AbstractDataMapper
     return Limb :: toolkit()->getTree()->canDeleteNode($site_object->getNodeId());
   }
 
-  protected function _canDeleteSiteObjectRecord($site_object)
+  function _canDeleteSiteObjectRecord($site_object)
   {
     if(!$site_object->getId())
       throw new LimbException('object id not set');
@@ -278,7 +278,7 @@ class SiteObjectMapper extends AbstractDataMapper
     return true;
   }
 
-  public function getParentLocaleId($parent_node_id)
+  function getParentLocaleId($parent_node_id)
   {
     $sql = "SELECT sso.locale_id as locale_id
             FROM sys_site_object as sso, sys_site_object_tree as ssot

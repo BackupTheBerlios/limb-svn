@@ -12,11 +12,11 @@ require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
 
 class HttpResponse implements Response
 {
-  protected $response_string = '';
-  protected $response_file_path = '';
-  protected $headers = array();
+  var $response_string = '';
+  var $response_file_path = '';
+  var $headers = array();
 
-  public function redirect($path)
+  function redirect($path)
   {
     include_once(LIMB_DIR . '/class/i18n/Strings.class.php');
 
@@ -25,14 +25,14 @@ class HttpResponse implements Response
     $this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white><font color=707070><small>{$message}</small></font></body></html>";
   }
 
-  public function reset()
+  function reset()
   {
     $this->response_string = '';
     $this->response_file_path = '';
     $this->headers = array();
   }
 
-  public function getStatus()
+  function getStatus()
   {
     $status = null;
     foreach($this->headers as $header)
@@ -47,7 +47,7 @@ class HttpResponse implements Response
       return 200;
   }
 
-  public function getDirective($directive_name)
+  function getDirective($directive_name)
   {
     $directive = null;
     $regex = '~^' . preg_quote($directive_name). "\s*:(.*)$~i";
@@ -63,7 +63,7 @@ class HttpResponse implements Response
       return false;
   }
 
-  public function getContentType()
+  function getContentType()
   {
     if($directive = $this->getDirective('content-type'))
       return $directive;
@@ -71,52 +71,52 @@ class HttpResponse implements Response
       return 'text/html';
   }
 
-  public function getResponseString()
+  function getResponseString()
   {
     return $this->response_string;
   }
 
-  public function isEmpty()
+  function isEmpty()
   {
     $status = $this->getStatus();
 
     return (
-      empty($this->response_string) && 
-      empty($this->response_file_path) && 
+      empty($this->response_string) &&
+      empty($this->response_file_path) &&
       ($status != 304 &&  $status != 412));//???
   }
 
-  public function headers_sent()
+  function headers_sent()
   {
     return sizeof($this->headers) > 0;
   }
 
-  public function fileSent()
+  function fileSent()
   {
     return !empty($this->response_file_path);
   }
 
-  public function reload()
+  function reload()
   {
     $this->redirect($_SERVER['PHP_SELF']);
   }
 
-  public function header($header)
+  function header($header)
   {
     $this->headers[] = $header;
   }
 
-  public function readfile($file_path)
+  function readfile($file_path)
   {
     $this->response_file_path = $file_path;
   }
 
-  public function write($string)
+  function write($string)
   {
     $this->response_string = $string;
   }
 
-  public function commit()
+  function commit()
   {
     foreach($this->headers as $header)
       $this->_sendHeader($header);
@@ -130,22 +130,22 @@ class HttpResponse implements Response
     $this->_exit();
   }
 
-  protected function _sendHeader($header)
+  function _sendHeader($header)
   {
     header($header);
   }
 
-  protected function _sendString($string)
+  function _sendString($string)
   {
     echo $string;
   }
 
-  protected function _sendFile($file_path)
+  function _sendFile($file_path)
   {
     readfile($file_path);
   }
 
-  protected function _exit()
+  function _exit()
   {
     exit();
   }

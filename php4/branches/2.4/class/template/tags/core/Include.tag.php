@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CoreIncludeTagInfo
 {
-  public $tag = 'core:INCLUDE';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'core_include_tag';
+  var $tag = 'core:INCLUDE';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'core_include_tag';
 }
 
 registerTag(new CoreIncludeTagInfo());
@@ -22,12 +22,12 @@ registerTag(new CoreIncludeTagInfo());
 */
 class CoreIncludeTag extends CompilerDirectiveTag
 {
-  protected $resolved_source_file;
+  var $resolved_source_file;
 
-  public function preParse()
+  function preParse()
   {
     global $tag_dictionary;
-    if (! array_key_exists('file', $this->attributes) || 
+    if (! array_key_exists('file', $this->attributes) ||
         empty($this->attributes['file']))
     {
       throw new WactException('missing required attribute',
@@ -60,7 +60,7 @@ class CoreIncludeTag extends CompilerDirectiveTag
     return PARSER_FORBID_PARSING;
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     if($this->isDebugEnabled())
     {

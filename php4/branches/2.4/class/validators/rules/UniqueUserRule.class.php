@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
 class UniqueUserRule extends SingleFieldRule
 {
-  protected $current_identifier = '';
+  var $current_identifier = '';
 
   function __construct($field_name, $current_identifier='')
   {
@@ -21,12 +21,12 @@ class UniqueUserRule extends SingleFieldRule
     parent :: __construct($field_name);
   }
 
-  public function validate($dataspace)
+  function validate($dataspace)
   {
     if(!$value = $dataspace->get($this->field_name))
       return;
 
-    if(	$this->current_identifier && 
+    if(	$this->current_identifier &&
         $this->current_identifier == $value)
       return;
 

@@ -12,31 +12,31 @@ require_once(dirname(__FILE__) . '/SiteObjectsDatasource.class.php');
 
 class SingleObjectDatasource extends SiteObjectsDatasource
 {
-  protected $path;
-  protected $node_id;
-  protected $object_id;
+  var $path;
+  var $node_id;
+  var $object_id;
 
   function __construct()
   {
     $this->reset();
   }
 
-  public function setPath($path)
+  function setPath($path)
   {
     $this->path = $path;
   }
 
-  public function setNodeId($node_id)
+  function setNodeId($node_id)
   {
     $this->node_id = $node_id;
   }
 
-  public function setObjectId($object_id)
+  function setObjectId($object_id)
   {
     $this->object_id = $object_id;
   }
 
-  public function reset()
+  function reset()
   {
     parent :: reset();
 
@@ -45,7 +45,7 @@ class SingleObjectDatasource extends SiteObjectsDatasource
     $this->object_id = null;
   }
 
-  public function getObjectIds()
+  function getObjectIds()
   {
     if ($this->object_id)
       return array($this->object_id);
@@ -59,7 +59,7 @@ class SingleObjectDatasource extends SiteObjectsDatasource
     return array();
   }
 
-  protected function _getObjectIdByNodeId()
+  function _getObjectIdByNodeId()
   {
     $tree = Limb :: toolkit()->getTree();
     $node = $tree->getNode($this->node_id);
@@ -69,7 +69,7 @@ class SingleObjectDatasource extends SiteObjectsDatasource
       return $node['object_id'];
   }
 
-  protected function _getObjectIdByPath()
+  function _getObjectIdByPath()
   {
     $tree = Limb :: toolkit()->getTree();
     $node = $tree->getNodeByPath($this->path);

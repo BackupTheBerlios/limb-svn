@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class GridListTagInfo
 {
-  public $tag = 'grid:LIST';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'grid_list_tag';
+  var $tag = 'grid:LIST';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'grid_list_tag';
 }
 
 registerTag(new GridListTagInfo());
@@ -22,14 +22,14 @@ registerTag(new GridListTagInfo());
 */
 class GridListTag extends ServerComponentTag
 {
-  protected $has_form = false;
+  var $has_form = false;
 
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $code->writePhp($this->getComponentRefCode() . '->prepare();');
 
@@ -43,7 +43,7 @@ class GridListTag extends ServerComponentTag
     $code->writePhp('if (' . $this->getDataspaceRefCode() . '->get_total_row_count()){');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('} else {');
 
@@ -60,17 +60,17 @@ class GridListTag extends ServerComponentTag
     parent :: postGenerate($code);
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode() . '->dataset';
   }
 
-  public function setFormRequired($status=true)
+  function setFormRequired($status=true)
   {
     $this->has_form = $status;
   }

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CoreLiteralTagInfo
 {
-  public $tag = 'core:LITERAL';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'core_literal_tag';
+  var $tag = 'core:LITERAL';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'core_literal_tag';
 }
 
 registerTag(new CoreLiteralTagInfo());
@@ -23,7 +23,7 @@ registerTag(new CoreLiteralTagInfo());
 */
 class CoreLiteralTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('core_literal_tag'))
     {
@@ -34,7 +34,7 @@ class CoreLiteralTag extends CompilerDirectiveTag
     }
   }
 
-  public function preParse()
+  function preParse()
   {
     return PARSER_FORBID_PARSING;
   }

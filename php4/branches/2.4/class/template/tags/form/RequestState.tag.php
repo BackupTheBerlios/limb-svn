@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class RequestStateTagInfo
 {
-  public $tag = 'request_state';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'request_state_tag';
+  var $tag = 'request_state';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'request_state_tag';
 }
 
 registerTag(new RequestStateTagInfo());
@@ -24,17 +24,17 @@ class RequestStateTag extends ControlTag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/request_state_component';
   }
 
-  public function prepare()
+  function prepare()
   {
     $this->attributes['type'] = 'hidden';
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     if(isset($this->attributes['attach_form_prefix']))
       $code->writePhp($this->getComponentRefCode() . '->attach_form_prefix(true);');

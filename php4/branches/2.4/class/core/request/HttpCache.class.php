@@ -15,17 +15,17 @@ class HttpCache
   const TYPE_PRIVATE = 0;
   const TYPE_PUBLIC = 1;
 
-  protected $etag;
-  protected $last_modified_time;
-  protected $cache_time;
-  protected $cache_type;
+  var $etag;
+  var $last_modified_time;
+  var $cache_time;
+  var $cache_type;
 
   function __construct()
   {
     $this->reset();
   }
 
-  public function reset()
+  function reset()
   {
     $this->last_modified_time = time();
     $this->etag = null;
@@ -33,7 +33,7 @@ class HttpCache
     $this->cache_type = HttpCache :: TYPE_PRIVATE;
   }
 
-  public function checkAndWrite($response)
+  function checkAndWrite($response)
   {
     if($this->is412())
     {
@@ -52,7 +52,7 @@ class HttpCache
     }
   }
 
-  public function is412()
+  function is412()
   {
     if (isset($_SERVER['HTTP_IF_MATCH'])) //rfc2616-sec14.html#sec14.24
     {
@@ -68,7 +68,7 @@ class HttpCache
     return false;
   }
 
-  public function is304()
+  function is304()
   {
     if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) //rfc2616-sec14.html#sec14.25 //rfc1945.txt
     {
@@ -84,7 +84,7 @@ class HttpCache
     return false;
   }
 
-  protected function _write412Response($response)
+  function _write412Response($response)
   {
     $response->header('HTTP/1.1 412 Precondition Failed');
     $response->header('Cache-Control: protected, max-age=0, must-revalidate');
@@ -93,7 +93,7 @@ class HttpCache
     $response->write("HTTP/1.1 Error 412 Precondition Failed: Precondition request failed positive evaluation\n");
   }
 
-  protected function _write304Response($response)
+  function _write304Response($response)
   {
     $response->header('HTTP/1.0 304 Not Modified');
     $response->header('Etag: ' . $this->getEtag());
@@ -103,7 +103,7 @@ class HttpCache
     $response->header('Expires: ');
   }
 
-  protected function _writeCachingResponse($response)
+  function _writeCachingResponse($response)
   {
     $response->header('Cache-Control: ' . $this->_getCacheControl()); //rfc2616-sec14.html#sec14.9
     $response->header('Last-Modified: ' . $this->formatLastModifiedTime());
@@ -112,7 +112,7 @@ class HttpCache
     $response->header('Expires: ');
   }
 
-  protected function _getCacheControl()
+  function _getCacheControl()
   {
     if ($this->cache_time == 0)
       $cache = 'protected, must-revalidate, ';
@@ -126,32 +126,32 @@ class HttpCache
     return $cache;
   }
 
-  public function formatLastModifiedTime()
+  function formatLastModifiedTime()
   {
     return $this->_formatGmtTime($this->last_modified_time);
   }
 
-  protected function _formatGmtTime($time)
+  function _formatGmtTime($time)
   {
     return gmdate('D, d M Y H:i:s \G\M\T', $time);
   }
 
-  public function setLastModifiedTime($last_modified_time)
+  function setLastModifiedTime($last_modified_time)
   {
     $this->last_modified_time = $last_modified_time;
   }
 
-  public function getLastModifiedTime()
+  function getLastModifiedTime()
   {
     return $this->last_modified_time;
   }
 
-  public function setEtag($etag)
+  function setEtag($etag)
   {
     $this->etag = $etag;
   }
 
-  public function getEtag()
+  function getEtag()
   {
     if($this->etag)
       return $this->etag;
@@ -167,7 +167,7 @@ class HttpCache
     return $this->etag;
   }
 
-  protected function _getScriptName()
+  function _getScriptName()
   {
     if (isset($_SERVER['SCRIPT_FILENAME']))
       return $_SERVER['SCRIPT_FILENAME'];
@@ -177,22 +177,22 @@ class HttpCache
       return '';
   }
 
-  public function setCacheTime($cache_time)
+  function setCacheTime($cache_time)
   {
     $this->cache_time = $cache_time;
   }
 
-  public function getCacheTime()
+  function getCacheTime()
   {
     return $this->cache_time;
   }
 
-  public function setCacheType($cache_type)
+  function setCacheType($cache_type)
   {
     $this->cache_type = $cache_type;
   }
 
-  public function getCacheType()
+  function getCacheType()
   {
     return $this->cache_type;
   }

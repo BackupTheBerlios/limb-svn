@@ -14,27 +14,27 @@ abstract class ImageLibrary
   const FLIP_HORIZONTAL = 1;
   const FLIP_VERTICAL = 2;
 
-  protected $input_file;
-  protected $input_file_type;
-  protected $output_file;
-  protected $output_file_type;
-  protected $read_types = array();
-  protected $create_types = array();
-  protected $library_installed = false;
+  var $input_file;
+  var $input_file_type;
+  var $output_file;
+  var $output_file_type;
+  var $read_types = array();
+  var $create_types = array();
+  var $library_installed = false;
 
   function isLibraryInstalled()
   {
     return $this->library_installed;
   }
 
-  public function setInputFile($file_path, $file_type=null)
+  function setInputFile($file_path, $file_type=null)
   {
     $this->input_file = $file_path;
     if(!is_null($file_type))
       $this->setInputType($file_type);
   }
 
-  public function setInputType($type)
+  function setInputType($type)
   {
     if (!$this->isTypeReadSupported($type))
       throw new Exception('type not supported');
@@ -42,14 +42,14 @@ abstract class ImageLibrary
     $this->input_file_type = $type;
   }
 
-  public function setOutputFile($file_path, $file_type=null)
+  function setOutputFile($file_path, $file_type=null)
   {
     $this->output_file = $file_path;
     if(!is_null($file_type))
       $this->setOutputType($file_type);
   }
 
-  public function setOutputType($type)
+  function setOutputType($type)
   {
     if (!$this->isTypeCreateSupported($type))
       throw new Exception('type not supported');
@@ -57,7 +57,7 @@ abstract class ImageLibrary
     $this->output_file_type = $type;
   }
 
-  public function fallBackToAnySupportedType($type)
+  function fallBackToAnySupportedType($type)
   {
     if ($this->isTypeCreateSupported($type))
       return $type;
@@ -71,7 +71,7 @@ abstract class ImageLibrary
     throw new Exception('no file type supported');
   }
 
-  public function getImageType($str)
+  function getImageType($str)
   {
     if (preg_match("/bmp/i", $str))
       return 'BMP';
@@ -86,7 +86,7 @@ abstract class ImageLibrary
       return 'JPEG';
   }
 
-  public function getMimeType($str)
+  function getMimeType($str)
   {
     if (preg_match("/bmp/i", $str))
       return 'image/bmp';
@@ -101,27 +101,27 @@ abstract class ImageLibrary
       return 'image/jpeg';
   }
 
-  public function isTypeReadSupported($type)
+  function isTypeReadSupported($type)
   {
     return in_array(strtoupper($type), $this->read_types);
   }
 
-  public function isTypeCreateSupported($type)
+  function isTypeCreateSupported($type)
   {
     return in_array(strtoupper($type), $this->create_types);
   }
 
-  public function getReadSupportedTypes()
+  function getReadSupportedTypes()
   {
     return $this->read_types;
   }
 
-  public function getCreateSupportedTypes()
+  function getCreateSupportedTypes()
   {
     return $this->create_types;
   }
 
-  public function getDstDimensions($src_width, $src_height, $params)
+  function getDstDimensions($src_width, $src_height, $params)
   {
     if (isset($params['max_dimension']))
     {
@@ -183,17 +183,17 @@ abstract class ImageLibrary
     return array($dst_width, $dst_height);
   }
 
-  abstract public function flip($params);
+  abstract function flip($params);
 
-  abstract public function cut($x, $y, $w, $h, $bg_color);
+  abstract function cut($x, $y, $w, $h, $bg_color);
 
-  abstract public function resize($params);
+  abstract function resize($params);
 
-  abstract public function rotate($angle, $bg_color);
+  abstract function rotate($angle, $bg_color);
 
-  abstract public function commit();
+  abstract function commit();
 
-  protected function _hexColorToX11($color)
+  function _hexColorToX11($color)
   {
     return preg_replace('/(\d{2})(\d{2})(\d{2})/', 'rgb:$1/$2/$3', $color);
   }

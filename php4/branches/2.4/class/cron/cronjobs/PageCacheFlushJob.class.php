@@ -12,14 +12,14 @@ require_once(dirname(__FILE__) . '/CronjobCommand.class.php');
 
 class PageCacheFlushJob extends CronjobCommand
 {
-  protected function _installManagers()
+  function _installManagers()
   {
     include_once(LIMB_DIR . '/class/cache/PartialPageCacheManager.class.php');
     include_once(LIMB_DIR . '/class/cache/FullPageCacheManager.class.php');
     include_once(LIMB_DIR . '/class/cache/ImageCacheManager.class.php');
   }
 
-  public function perform()
+  function perform()
   {
     $this->_installManagers();
 

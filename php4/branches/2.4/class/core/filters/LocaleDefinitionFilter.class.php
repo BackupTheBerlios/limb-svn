@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 
 class LocaleDefinitionFilter implements InterceptingFilter
 {
-  public function run($filter_chain, $request, $response)
+  function run($filter_chain, $request, $response)
   {
     $toolkit = Limb :: toolkit();
 
@@ -47,7 +47,7 @@ class LocaleDefinitionFilter implements InterceptingFilter
   }
 
   //for mocking
-  protected function _findSiteObjectLocaleId($object_id)
+  function _findSiteObjectLocaleId($object_id)
   {
     include_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
     return SiteObject :: findObjectLocaleId($object_id);

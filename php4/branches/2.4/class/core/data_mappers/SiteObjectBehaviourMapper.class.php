@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/data_mappers/AbstractDataMapper.class.php')
 
 class SiteObjectBehaviourMapper extends AbstractDataMapper
 {
-  public function findById($id)
+  function findById($id)
   {
     $table = Limb :: toolkit()->createDBTable('SysBehaviour');
 
@@ -25,7 +25,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
     return $behaviour;
   }
 
-  public function insert($behaviour)
+  function insert($behaviour)
   {
     $table = Limb :: toolkit()->createDBTable('SysBehaviour');
 
@@ -40,7 +40,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
     return $id;
   }
 
-  public function update($behaviour)
+  function update($behaviour)
   {
     if(!$id = $behaviour->getId())
       throw new LimbException('id is not set');
@@ -52,7 +52,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
     $table->updateById($id, $data);
   }
 
-  public function delete($behaviour)
+  function delete($behaviour)
   {
     if(!$id = $behaviour->getId())
       throw new LimbException('id is not set');
@@ -62,7 +62,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
     $table->deleteById($id);
   }
 
-  static public function getIdsByNames($names)
+  function getIdsByNames($names)
   {
     $db = Limb :: toolkit()->getDB();
 

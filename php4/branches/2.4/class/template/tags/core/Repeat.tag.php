@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class CoreDataRepeatTagInfo
 {
-  public $tag = 'core:REPEAT';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'core_data_repeat_tag';
+  var $tag = 'core:REPEAT';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'core_data_repeat_tag';
 }
 
 registerTag(new CoreDataRepeatTagInfo());
 
 class CoreDataRepeatTag extends CompilerDirectiveTag
 {
-  public function generateContents($code)
+  function generateContents($code)
   {
     $dataspace = $this->getDataspaceRefCode();
 

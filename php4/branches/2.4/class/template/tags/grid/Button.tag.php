@@ -12,21 +12,21 @@ require_once(LIMB_DIR . '/class/template/tags/form/Button.tag.php');
 
 class GridButtonTagInfo
 {
-  public $tag = 'grid:BUTTON';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'grid_button_tag';
+  var $tag = 'grid:BUTTON';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'grid_button_tag';
 }
 
 registerTag(new GridButtonTagInfo());
 
 class GridButtonTag extends ButtonTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_button_component';
   }
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->findParentByClass('grid_list_tag'))
     {
@@ -38,7 +38,7 @@ class GridButtonTag extends ButtonTag
     }
   }
 
-  public function prepare()
+  function prepare()
   {
     $grid_tag = $this->findParentByClass('grid_list_tag');
     $grid_tag->setFormRequired();
@@ -56,7 +56,7 @@ class GridButtonTag extends ButtonTag
     parent :: prepare();
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }

@@ -19,12 +19,12 @@ class BlockComponent extends Component
   /**
   * Whether the block is visible or not
   */
-  protected $visible = true;
+  var $visible = true;
   /**
   * Called within the compiled template render function to determine
   * whether block should be displayed.
   */
-  public function isVisible()
+  function isVisible()
   {
     return $this->visible;
   }
@@ -32,7 +32,7 @@ class BlockComponent extends Component
   /**
   * Changes the block state to visible
   */
-  public function show()
+  function show()
   {
     $this->visible = true;
   }
@@ -40,7 +40,7 @@ class BlockComponent extends Component
   /**
   * Changes the block state to invisible
   */
-  public function hide()
+  function hide()
   {
     $this->visible = false;
   }

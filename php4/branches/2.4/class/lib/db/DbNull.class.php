@@ -18,92 +18,92 @@ class DbNull extends DbModule
     $this->_sql_result = null;
   }
 
-  public function connectDb($db_params)
+  function connectDb($db_params)
   {
   }
 
-  public function selectDb($db_name)
+  function selectDb($db_name)
   {
   }
 
-  public function disconnectDb($db_params)
+  function disconnectDb($db_params)
   {
   }
 
-  public function freeResult()
+  function freeResult()
   {
   }
 
-  protected function _sqlExecOperation($sql, $count=0, $start=0)
+  function _sqlExecOperation($sql, $count=0, $start=0)
   {
     return false;
   }
 
-  public function getAffectedRows()
+  function getAffectedRows()
   {
     return 0;
   }
 
-  public function getSqlInsertId()
+  function getSqlInsertId()
   {
     return false;
   }
 
-  public function getLastError()
+  function getLastError()
   {
     return '';
   }
 
-  public function parseBatchSql(&$ret, $sql, $release)
+  function parseBatchSql(&$ret, $sql, $release)
   {
     return false;
   }
 
-  protected function _fetchAssocResultRow()
+  function _fetchAssocResultRow()
   {
     return false;
   }
 
-  protected function _resultNumFields()
+  function _resultNumFields()
   {
     return false;
   }
 
-  protected function _processDefaultValue($value)
+  function _processDefaultValue($value)
   {
     return false;
   }
 
-  public function escape($sql)
+  function escape($sql)
   {
     return false;
   }
 
-  public function concat($values)
+  function concat($values)
   {
     return false;
   }
 
-  public function substr($string, $offset, $limit=null)
+  function substr($string, $offset, $limit=null)
   {
     return false;
   }
 
-  public function countSelectedRows()
+  function countSelectedRows()
   {
     return false;
   }
 
-  protected function _beginOperation()
+  function _beginOperation()
   {
     return false;
   }
 
-  protected function _commitOperation()
+  function _commitOperation()
   {
   }
 
-  protected function _rollbackOperation()
+  function _rollbackOperation()
   {
   }
 }

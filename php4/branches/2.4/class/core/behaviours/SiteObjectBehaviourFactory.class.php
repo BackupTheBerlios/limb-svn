@@ -11,20 +11,20 @@
 
 abstract class SiteObjectBehaviourFactory
 {
-  static protected $_behaviours = array();
+  var $_behaviours = array();
 
-  static public function create($class_name)
+  function create($class_name)
   {
-    if(isset(self :: $_behaviours[$class_name]))
-      return self :: $_behaviours[$class_name];
+    if(isset(SiteObjectBehaviourFactory :: $_behaviours[$class_name]))
+      return SiteObjectBehaviourFactory :: $_behaviours[$class_name];
 
-    self :: _includeClassFile($class_name);
+    SiteObjectBehaviourFactory :: _includeClassFile($class_name);
 
-    self :: $_behaviours[$class_name] = new $class_name();
-    return self :: $_behaviours[$class_name];
+    SiteObjectBehaviourFactory :: $_behaviours[$class_name] = new $class_name();
+    return SiteObjectBehaviourFactory :: $_behaviours[$class_name];
   }
 
-  static protected function _includeClassFile($class_name)
+  function _includeClassFile($class_name)
   {
     if(class_exists($class_name))
       return;

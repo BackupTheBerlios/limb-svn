@@ -10,18 +10,18 @@
 ***********************************************************************************/
 class HtmlspecialcharsTagInfo
 {
-  public $tag = 'core:HTMLSPECIALCHARS';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'htmlspecialchars_tag';
+  var $tag = 'core:HTMLSPECIALCHARS';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'htmlspecialchars_tag';
 }
 
 registerTag(new HtmlspecialcharsTagInfo());
 
 class HtmlspecialcharsTag extends CompilerDirectiveTag
 {
-  public function preParse()
+  function preParse()
   {
-    if (! array_key_exists('hash_id', $this->attributes) || 
+    if (! array_key_exists('hash_id', $this->attributes) ||
         empty($this->attributes['hash_id']))
     {
       throw new WactException('missing required attribute',
@@ -33,7 +33,7 @@ class HtmlspecialcharsTag extends CompilerDirectiveTag
     return PARSER_FORBID_PARSING;
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     if(isset($this->attributes['hash_id']))
     {

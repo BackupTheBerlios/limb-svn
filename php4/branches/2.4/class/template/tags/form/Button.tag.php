@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class ButtonTagInfo
 {
-  public $tag = 'button';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'button_tag';
+  var $tag = 'button';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'button_tag';
 }
 
 registerTag(new ButtonTagInfo());
@@ -24,7 +24,7 @@ registerTag(new ButtonTagInfo());
 */
 class ButtonTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/button_component';
   }

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class GridSelectorTagInfo
 {
-  public $tag = 'grid:SELECTOR';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'grid_selector_tag';
+  var $tag = 'grid:SELECTOR';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'grid_selector_tag';
 }
 
 registerTag(new GridSelectorTagInfo());
@@ -26,7 +26,7 @@ class GridSelectorTag extends ControlTag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_checkbox_component';
   }
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->findParentByClass('grid_iterator_tag'))
     {
@@ -38,7 +38,7 @@ class GridSelectorTag extends ControlTag
     }
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -52,7 +52,7 @@ class GridSelectorTag extends ControlTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function prepare()
+  function prepare()
   {
     $this->attributes['type'] = 'checkbox';
 
@@ -62,7 +62,7 @@ class GridSelectorTag extends ControlTag
     parent :: prepare();
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }

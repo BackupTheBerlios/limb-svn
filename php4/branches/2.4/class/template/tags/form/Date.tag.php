@@ -12,33 +12,33 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class DateTagInfo
 {
-  public $tag = 'date';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'date_tag';
+  var $tag = 'date';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'date_tag';
 }
 
 registerTag(new DateTagInfo());
 
 class DateTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/date_component';
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $code->writePhp($this->getComponentRefCode() . '->init_date();');
 
     parent :: preGenerate($code);
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     parent :: generateContents($code);
 

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysNodeLinkGroupDbTable extends DbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
@@ -22,7 +22,7 @@ class SysNodeLinkGroupDbTable extends DbTable
     );
   }
 
-  protected function _defineConstraints()
+  function _defineConstraints()
   {
     return array(
       'id' =>	array(

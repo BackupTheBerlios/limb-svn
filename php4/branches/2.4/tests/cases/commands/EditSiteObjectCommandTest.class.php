@@ -23,7 +23,7 @@ Mock :: generate('SiteObject');
 //do you miss namespaces? yeah, we too :)
 class SiteObjectForEditSiteObjectCommand extends SiteObject
 {
-  public function update($force_create_new_version = true)
+  function update($force_create_new_version = true)
   {
     throw new LimbException('catch me!');
   }
@@ -96,7 +96,7 @@ class EditSiteObjectCommandTest extends LimbTestCase
 
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 }
 

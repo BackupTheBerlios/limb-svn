@@ -8,42 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
-/**
-* Container for errors implementing the Iterator iterface
-*
-* @todo documention - check that err object is validation_error
-*/
+
 class ErrorList
 {
-  static protected $instance = null;
+  var $errors = array();
 
-  protected $errors = array();
-
-  static public function instance()
+  function & instance()
   {
-    if (!self :: $instance)
-      self :: $instance = new ErrorList();
+    if (!isset($GLOBALS['ErrorListGlobalInstance']) || !is_a($GLOBALS['ErrorListGlobalInstance'], 'ErrorList'))
+      $GLOBALS['ErrorListGlobalInstance'] =& new ErrorList();
 
-    return self :: $instance;
+    return $GLOBALS['ErrorListGlobalInstance'];
   }
 
-  public function addError($field_name, $error_msg, $params=array())
+  function addError($field_name, $error_msg, $params=array())
   {
     $this->errors[$field_name][] = array('error' => $error_msg, 'params' => $params);
   }
 
-  public function getErrors($field_name)
+  function getErrors($field_name)
   {
     if(isset($this->errors[$field_name]))
       return $this->errors[$field_name];
   }
 
-  public function reset()
+  function reset()
   {
     $this->errors = array();
   }
 
-  public function export()
+  function export()
   {
     return $this->errors;
   }

@@ -17,12 +17,12 @@ class TextNode extends CompilerDirectiveTag
   /**
   * A text string to write
   */
-  protected $contents;
+  var $contents;
 
   /**
   * Constructs text_node
   */
-  public function textNode($text)
+  function textNode($text)
   {
     $this->contents = $text;
   }
@@ -31,7 +31,7 @@ class TextNode extends CompilerDirectiveTag
   * Writes the contents of the text node to the compiled template
   * using the write_html method
   */
-  public function generate($code)
+  function generate($code)
   {
     $code->writeHtml($this->contents);
   }

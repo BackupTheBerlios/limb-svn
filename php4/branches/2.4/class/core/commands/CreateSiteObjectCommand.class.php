@@ -12,14 +12,14 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class CreateSiteObjectCommand implements Command
 {
-  protected $behaviour_name;
+  var $behaviour_name;
 
   function __construct($behaviour_name)
   {
     $this->behaviour_name = $behaviour_name;
   }
 
-  public function perform()
+  function perform()
   {
     $object = Limb :: toolkit()->createSiteObject($this->_defineSiteObjectClassName());
 
@@ -34,17 +34,17 @@ class CreateSiteObjectCommand implements Command
       return Limb :: STATUS_ERROR;
     }
 
-    return Limb :: STATUS_OK;
+    return Limb :: getSTATUS_OK();
   }
 
-  protected function _createObjectOperation($object)
+  function _createObjectOperation($object)
   {
     $object->create();
 
     Limb :: toolkit()->getDataspace()->set('created_site_object', $object);
   }
 
-  protected function _fillObject($object)
+  function _fillObject($object)
   {
     $dataspace = Limb :: toolkit()->getDataspace();
 
@@ -59,13 +59,13 @@ class CreateSiteObjectCommand implements Command
     }
   }
 
-  protected function _getBehaviourId()
+  function _getBehaviourId()
   {
     $behaviour = Limb :: toolkit()->createBehaviour($this->behaviour_name);
     return $behaviour->getId();
   }
 
-  protected function _loadParentObjectData()
+  function _loadParentObjectData()
   {
     $toolkit = Limb :: toolkit();
     $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
@@ -73,7 +73,7 @@ class CreateSiteObjectCommand implements Command
     return $datasource->fetch();
   }
 
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'SiteObject';
   }

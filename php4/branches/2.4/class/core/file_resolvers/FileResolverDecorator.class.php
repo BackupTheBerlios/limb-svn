@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php')
 
 class FileResolverDecorator implements FileResolver
 {
-  protected $_resolver = null;
+  var $_resolver = null;
 
   function __construct($resolver)
   {
@@ -24,7 +24,7 @@ class FileResolverDecorator implements FileResolver
     $this->_resolver = $resolver;
   }
 
-  public function resolve($file_path, $params = array())
+  function resolve($file_path, $params = array())
   {
     return $this->_resolver->resolve($file_path, $params);
   }

@@ -12,14 +12,14 @@ require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
 
 class VersionedSiteObject extends SiteObject
 {
-  protected $new_version = false;
+  var $new_version = false;
 
-  public function increaseVersion()
+  function increaseVersion()
   {
     $this->new_version = true;
   }
 
-  public function isNewVersion()
+  function isNewVersion()
   {
     return $this->new_version;
   }

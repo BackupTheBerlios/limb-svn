@@ -11,7 +11,7 @@
 
 interface FileResolver
 {
-  public function resolve($file_path, $params = array());
+  function resolve($file_path, $params = array());
 }
 
 ?>

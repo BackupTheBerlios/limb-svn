@@ -12,8 +12,8 @@ require_once(dirname(__FILE__) . '/SiteObjectsDatasource.class.php');
 
 class SiteObjectsByNodeIdsDatasource extends SiteObjectsDatasource
 {
-  protected $node_ids;
-  protected $use_node_ids_as_keys;
+  var $node_ids;
+  var $use_node_ids_as_keys;
 
   function setNodeIds($node_ids)
   {
@@ -33,7 +33,7 @@ class SiteObjectsByNodeIdsDatasource extends SiteObjectsDatasource
     $this->use_node_ids_as_keys = false;
   }
 
-  public function getObjectIds()
+  function getObjectIds()
   {
     if ($this->object_ids)
       return $this->object_ids;
@@ -50,12 +50,12 @@ class SiteObjectsByNodeIdsDatasource extends SiteObjectsDatasource
     return $this->object_ids;
   }
 
-  protected function _doParentFetch()
+  function _doParentFetch()
   {
     return parent :: fetch();
   }
 
-  public function fetch()
+  function fetch()
   {
     $objects_data = $this->_doParentFetch();
 

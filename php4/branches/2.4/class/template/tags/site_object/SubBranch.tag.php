@@ -7,24 +7,24 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/template/tags/datasource/Datasource.tag.php');
 
 class FetchSubBranchTagInfo
 {
-	public $tag = 'fetch:SUB_BRANCH';
-	public $end_tag = ENDTAG_REQUIRED;
-	public $tag_class = 'fetch_sub_branch_tag';
-} 
+  var $tag = 'fetch:SUB_BRANCH';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'fetch_sub_branch_tag';
+}
 
 registerTag(new FetchSubBranchTagInfo());
 
 class FetchSubBranchTag extends DatasourceTag
-{	
+{
   function __construct()
   {
-	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/fetch_sub_branch_datasource_component';
-	}
-} 
+    $this->runtime_component_path = dirname(__FILE__) . '/../../components/fetch_sub_branch_datasource_component';
+  }
+}
 
 ?>

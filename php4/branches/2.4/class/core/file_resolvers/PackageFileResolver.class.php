@@ -13,14 +13,14 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php')
 
 class PackageFileResolver implements FileResolver
 {
-  protected $_packages_info = null;
+  var $_packages_info = null;
 
   function __construct()
   {
     $this->_packages_info = PackagesInfo :: instance();
   }
 
-  public function resolve($file_path, $params = array())
+  function resolve($file_path, $params = array())
   {
     $packages = $this->_getPackages();
 
@@ -37,7 +37,7 @@ class PackageFileResolver implements FileResolver
     throw new FileNotFoundException('file not found in packages', $file_path);
   }
 
-  protected function _getPackages()
+  function _getPackages()
   {
     return $this->_packages_info->getPackages();
   }

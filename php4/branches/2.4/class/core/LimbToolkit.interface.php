@@ -11,30 +11,30 @@
 
 interface LimbToolkit
 {
-  public function define($key, $value);
-  public function constant($key);
-  public function createDBTable($table_name);
-  public function getDatasource($datasource_path);
-  public function createSiteObject($site_object_path);
-  public function createDataMapper($mapper_path);
-  public function createBehaviour($behaviour_path);
-  public function getDB();
-  public function getTree();
-  public function getUser();
-  public function getINI($ini_path);
-  public function flushINIcache();
-  public function getAuthorizer();
-  public function getAuthenticator();
-  public function getRequest();
-  public function getResponse();
-  public function getLocale();
-  public function getDataspace();
-  public function getCache();
-  public function switchDataspace($name);
-  public function setView($view);
-  public function getView();
-  public function getSession();
-  //public function translate();
+  function define($key, $value);
+  function constant($key);
+  function createDBTable($table_name);
+  function getDatasource($datasource_path);
+  function createSiteObject($site_object_path);
+  function createDataMapper($mapper_path);
+  function createBehaviour($behaviour_path);
+  function getDB();
+  function getTree();
+  function getUser();
+  function getINI($ini_path);
+  function flushINIcache();
+  function getAuthorizer();
+  function getAuthenticator();
+  function getRequest();
+  function getResponse();
+  function getLocale();
+  function getDataspace();
+  function getCache();
+  function switchDataspace($name);
+  function setView($view);
+  function getView();
+  function getSession();
+  //function translate();
 }
 
 ?>

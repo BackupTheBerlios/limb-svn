@@ -10,21 +10,21 @@
 ***********************************************************************************/
 class OrderTagInfo
 {
-  public $tag = 'order';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'order_tag';
+  var $tag = 'order';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'order_tag';
 }
 
 registerTag(new OrderTagInfo());
 
 class OrderTag extends ServerComponentTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/order_component';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
@@ -33,12 +33,12 @@ class OrderTag extends ServerComponentTag
     $code->writePhp($this->getComponentRefCode() . '->prepare();'."\n");
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

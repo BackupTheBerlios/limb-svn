@@ -13,30 +13,30 @@ require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
 class LocaleDateFormatComponent extends Component
 {
-  protected $date = null;
+  var $date = null;
 
-  protected $date_type = 'string';
+  var $date_type = 'string';
 
-  protected $format_string = '';
+  var $format_string = '';
 
-  protected $locale_type = CONTENT_LOCALE_ID;
+  var $locale_type = CONTENT_LOCALE_ID;
 
-  public function prepare()
+  function prepare()
   {
     $this->date = new Date();
   }
 
-  public function setFormatString($string)
+  function setFormatString($string)
   {
     $this->format_string = $string;
   }
 
-  public function setDateType($type)
+  function setDateType($type)
   {
     $this->date_type = $type;
   }
 
-  public function setLocaleType($locale_type)
+  function setLocaleType($locale_type)
   {
     if ($locale_type == 'management')
       $this->locale_type = MANAGEMENT_LOCALE_ID;
@@ -44,7 +44,7 @@ class LocaleDateFormatComponent extends Component
       $this->locale_type = CONTENT_LOCALE_ID;
   }
 
-  public function setLocaleFormatType($type)
+  function setLocaleFormatType($type)
   {
     $locale = Limb :: toolkit()->getLocale($this->locale_type);
 
@@ -79,7 +79,7 @@ class LocaleDateFormatComponent extends Component
     }
   }
 
-  public function setDate($date_string, $format=DATE_SHORT_FORMAT_ISO)
+  function setDate($date_string, $format=DATE_SHORT_FORMAT_ISO)
   {
     switch($this->date_type)
     {
@@ -94,7 +94,7 @@ class LocaleDateFormatComponent extends Component
     }
   }
 
-  public function format()
+  function format()
   {
     $locale = Limb :: toolkit()->getLocale($this->locale_type);
 

@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class GridSiteMapTreeItemTagInfo
 {
-  public $tag = 'grid:SITE_MAP_TREE_ITEM';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'grid_site_map_tree_item_tag';
+  var $tag = 'grid:SITE_MAP_TREE_ITEM';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'grid_site_map_tree_item_tag';
 }
 
 registerTag(new GridSiteMapTreeItemTagInfo());
 
 class GridSiteMapTreeItemTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof GridIteratorTag)
     {
@@ -31,7 +31,7 @@ class GridSiteMapTreeItemTag extends CompilerDirectiveTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $ref = $this->getComponentRefCode();
 

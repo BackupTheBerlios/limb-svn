@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/components/form/InputHiddenComponent.cl
 
 class RequestStateComponent extends InputHiddenComponent
 {
-  public function getValue()
+  function getValue()
   {
     $form = $this->findParentByClass('form_component');
 

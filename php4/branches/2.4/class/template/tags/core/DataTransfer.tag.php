@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class CoreDataTransferTagInfo
 {
-  public $tag = 'core:DATA_TRANSFER';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'core_data_transfer_tag';
+  var $tag = 'core:DATA_TRANSFER';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'core_data_transfer_tag';
 }
 
 registerTag(new CoreDataTransferTagInfo());
 
 class CoreDataTransferTag extends CompilerDirectiveTag
 {
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['target']))
     {
@@ -33,7 +33,7 @@ class CoreDataTransferTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $dataspace = $this->getDataspaceRefCode();
 

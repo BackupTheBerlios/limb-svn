@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class FormStatusTagInfo
 {
-  public $tag = 'form:STATUS';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'form_status_tag';
+  var $tag = 'form:STATUS';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'form_status_tag';
 }
 
 registerTag(new FormStatusTagInfo());
@@ -22,7 +22,7 @@ registerTag(new FormStatusTagInfo());
 */
 class FormStatusTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->findParentByClass('form_tag'))
     {
@@ -34,7 +34,7 @@ class FormStatusTag extends CompilerDirectiveTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $error_child = $this->findChildByClass('error_status_tag');
     $success_child = $this->findChildByClass('success_status_tag');

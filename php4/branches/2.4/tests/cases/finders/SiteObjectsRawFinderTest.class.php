@@ -26,7 +26,7 @@ class SiteObjectsRawFinderFindTestVersion extends SiteObjectsRawFinderFindVersio
 {
   var $_mocked_methods = array('find');
 
-  public function find($params = array(), $sql_params = array())
+  function find($params = array(), $sql_params = array())
   {
     $args = func_get_args();
     return $this->_mock->_invoke('find', $args);

@@ -11,19 +11,19 @@
 
 class CacheRegistry
 {
-  protected $cache = array();
+  var $cache = array();
 
-  protected function _encodeKey($key)
+  function _encodeKey($key)
   {
     return md5(serialize($key));
   }
 
-  public function put($key, $value, $group = 'default')
+  function put($key, $value, $group = 'default')
   {
     $this->cache[$group][$this->_encodeKey($key)] = $value;
   }
 
-  public function get($key, $group = 'default')
+  function get($key, $group = 'default')
   {
     $raw_key = $this->_encodeKey($key);
 
@@ -33,7 +33,7 @@ class CacheRegistry
       return null;
   }
 
-  public function flush($group = null)
+  function flush($group = null)
   {
     if($group !== null)
     {

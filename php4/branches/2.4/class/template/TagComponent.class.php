@@ -16,12 +16,12 @@ class TagComponent extends Component
   /**
   * Array of XML attributes
   */
-  public $attributes = array();
+  var $attributes = array();
 
   /**
   * Returns the value of the ID attribute
   */
-  public function getClientId()
+  function getClientId()
   {
     if (isset($this->attributes['id']))
       return $this->attributes['id'];
@@ -30,7 +30,7 @@ class TagComponent extends Component
   /**
   * Sets an attribute
   */
-  public function setAttribute($attrib, $value)
+  function setAttribute($attrib, $value)
   {
     $this->attributes[$attrib] = $value;
   }
@@ -38,13 +38,13 @@ class TagComponent extends Component
   /**
   * Returns the value of an attribute, given it's name
   */
-  public function getAttribute($attrib)
+  function getAttribute($attrib)
   {
     if (isset($this->attributes[$attrib]))
       return $this->attributes[$attrib];
   }
 
-  public function unsetAttribute($attrib)
+  function unsetAttribute($attrib)
   {
     if (isset($this->attributes[$attrib]))
       unset($this->attributes[$attrib]);
@@ -53,7 +53,7 @@ class TagComponent extends Component
   /**
   * Check to see whether a named attribute exists
   */
-  public function hasAttribute($attrib)
+  function hasAttribute($attrib)
   {
     return array_key_exists($attrib, $this->attributes);
   }
@@ -63,7 +63,7 @@ class TagComponent extends Component
   * htmlspecialchars to convert entities in values. Called by
   * a compiled template
   */
-  public function renderAttributes()
+  function renderAttributes()
   {
     foreach ($this->attributes as $name => $value)
     {

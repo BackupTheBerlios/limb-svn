@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php')
 
 class GridButtonComponent extends FormElement
 {
-  protected $path = '';
-  protected $action = '';
-  protected $reload_parent = 0;
-  protected $onclick = '';
+  var $path = '';
+  var $action = '';
+  var $reload_parent = 0;
+  var $onclick = '';
 
-  protected function _processAttributes()
+  function _processAttributes()
   {
     if (isset($this->attributes['path']))
       $this->path = $this->attributes['path'];
@@ -37,7 +37,7 @@ class GridButtonComponent extends FormElement
     unset($this->attributes['onclick']);
   }
 
-  public function renderAttributes()
+  function renderAttributes()
   {
     $this->_processAttributes();
 

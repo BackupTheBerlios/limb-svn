@@ -12,21 +12,21 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class TextAreaTagInfo
 {
-  public $tag = 'textarea';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'text_area_tag';
+  var $tag = 'textarea';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'text_area_tag';
 }
 
 registerTag(new TextAreaTagInfo());
 
 class TextAreaTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/text_area_component';
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp($this->getComponentRefCode() . '->render_contents();');
   }

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class StatusPublishedTagInfo
 {
-  public $tag = 'status:PUBLISHED';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'status_published_tag';
+  var $tag = 'status:PUBLISHED';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'status_published_tag';
 }
 
 registerTag(new StatusPublishedTagInfo());
@@ -23,7 +23,7 @@ registerTag(new StatusPublishedTagInfo());
 */
 class StatusPublishedTag extends CompilerDirectiveTag
 {
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
@@ -40,7 +40,7 @@ class StatusPublishedTag extends CompilerDirectiveTag
     $code->writePhp('if ((boolean)(site_object :: STATUS_PUBLISHED & $' . $tempvar . ') === ' . $value . ') {');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
     $code->writePhp('}');

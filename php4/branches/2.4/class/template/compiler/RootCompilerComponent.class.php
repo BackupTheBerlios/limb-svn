@@ -20,7 +20,7 @@ class RootCompilerComponent extends CompilerDirectiveTag
   * Calls the parent pre_generate() method then writes
   * "$dataspace->prepare();" to the compiled template.
   */
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
@@ -32,7 +32,7 @@ class RootCompilerComponent extends CompilerDirectiveTag
     }
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     if($this->isDebugEnabled())
     {
@@ -45,7 +45,7 @@ class RootCompilerComponent extends CompilerDirectiveTag
   /**
   * Returns the base for building the PHP runtime component reference string
   */
-  public function getComponentRefCode()
+  function getComponentRefCode()
   {
     return '$dataspace';
   }
@@ -53,7 +53,7 @@ class RootCompilerComponent extends CompilerDirectiveTag
   /**
   * Returns $dataspace
   */
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return '$dataspace';
   }
@@ -61,7 +61,7 @@ class RootCompilerComponent extends CompilerDirectiveTag
   /**
   * Returns this instance of root_compiler_component
   */
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }

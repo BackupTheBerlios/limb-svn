@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class GridItemTagInfo
 {
-  public $tag = 'grid:ITEM';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'grid_item_tag';
+  var $tag = 'grid:ITEM';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'grid_item_tag';
 }
 
 registerTag(new GridItemTagInfo());
 
 class GridItemTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof GridListTag)
     {

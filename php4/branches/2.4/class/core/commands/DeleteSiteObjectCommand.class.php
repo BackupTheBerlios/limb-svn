@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class DeleteSiteObjectCommand implements Command
 {
-  protected function _getObjectToDelete()
+  function _getObjectToDelete()
   {
     $toolkit = Limb :: toolkit();
     $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
@@ -21,7 +21,7 @@ class DeleteSiteObjectCommand implements Command
     return wrapWithSiteObject($datasource->fetch());
   }
 
-  public function perform()
+  function perform()
   {
     $object = $this->_getObjectToDelete();
 
@@ -38,7 +38,7 @@ class DeleteSiteObjectCommand implements Command
       return Limb :: STATUS_ERROR;
     }
 
-    return Limb :: STATUS_OK;
+    return Limb :: getSTATUS_OK();
   }
 }
 

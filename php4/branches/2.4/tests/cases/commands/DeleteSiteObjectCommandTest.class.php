@@ -21,7 +21,7 @@ Mock :: generate('SiteObject');
 
 class SiteObjectDeleteCommandTestVersion1 extends SiteObject
 {
-  public function delete()
+  function delete()
   {
     throw new LimbException('catch me!');
   }
@@ -29,7 +29,7 @@ class SiteObjectDeleteCommandTestVersion1 extends SiteObject
 
 class SiteObjectDeleteCommandTestVersion2 extends SiteObject
 {
-  public function delete()
+  function delete()
   {
     throw new SQLException('catch me!');
   }
@@ -80,7 +80,7 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object);
 
     $this->site_object->expectOnce('delete');
-    $this->assertEqual($this->delete_command->perform(), Limb :: STATUS_OK);
+    $this->assertEqual($this->delete_command->perform(), Limb :: getSTATUS_OK());
   }
 
   function testDeleteFailed()

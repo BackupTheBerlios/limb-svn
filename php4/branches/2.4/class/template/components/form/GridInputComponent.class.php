@@ -12,18 +12,18 @@ require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.
 
 class GridInputComponent extends InputFormElement
 {
-  protected $hash_id = 'node_id';
+  var $hash_id = 'node_id';
 
-  public function getValue()
+  function getValue()
   {
     return $this->findParentByClass('list_component')->get($this->attributes['name']);
   }
 
-  public function setValue($value)
+  function setValue($value)
   {
   }
 
-  public function renderAttributes()
+  function renderAttributes()
   {
     if (isset($this->attributes['hash_id']))
       $this->hash_id = $this->attributes['hash_id'];
@@ -33,7 +33,7 @@ class GridInputComponent extends InputFormElement
     parent :: renderAttributes();
   }
 
-  protected function _processNameAttribute($value)
+  function _processNameAttribute($value)
   {
     $list = $this->findParentByClass('list_component');
 

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/Object.class.php');
 
 class DomainObject extends Object
 {
-  protected $clean_hash;
+  var $clean_hash;
 
   function __construct()
   {
@@ -21,27 +21,27 @@ class DomainObject extends Object
     $this->markClean();
   }
 
-  public function getId()
+  function getId()
   {
     return (int)$this->get('id');
   }
 
-  public function setId($id)
+  function setId($id)
   {
     $this->set('id', (int)$id);
   }
 
-  public function isDirty()
+  function isDirty()
   {
     return ($this->clean_hash != $this->dataspace->getHash());
   }
 
-  public function markClean()
+  function markClean()
   {
     $this->clean_hash = $this->dataspace->getHash();
   }
 
-  public function import($values)
+  function import($values)
   {
     parent :: import($values);
 

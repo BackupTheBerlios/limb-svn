@@ -15,7 +15,7 @@ Mock :: generate('Command');
 
 class StateMachineTest extends LimbTestCase
 {
-  protected $state_machine;
+  var $state_machine;
 
   function setUp()
   {

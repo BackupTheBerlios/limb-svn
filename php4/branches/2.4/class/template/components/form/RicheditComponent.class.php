@@ -21,12 +21,12 @@ if(!defined('RICHEDIT_DEFAULT_COLS'))
 
 class RicheditComponent extends TextAreaComponent
 {
-  public function renderContents()
+  function renderContents()
   {
     echo htmlspecialchars($this->getValue(), ENT_QUOTES);
   }
 
-  protected function _loadJsScript()
+  function _loadJsScript()
   {
     if (defined('HTMLAREA_SCRIPT_LOADED'))
       return;
@@ -58,7 +58,7 @@ class RicheditComponent extends TextAreaComponent
     </script>";
   }
 
-  public function initRichedit()
+  function initRichedit()
   {
     $this->_loadJsScript();
 

@@ -11,10 +11,10 @@
 
 class CronManager
 {
-  protected $jobs = array();
-  protected $jobs_last_time = array();
+  var $jobs = array();
+  var $jobs_last_time = array();
 
-  public function getJobs()
+  function getJobs()
   {
     if(!$this->jobs)
       $this->_loadJobs();
@@ -22,7 +22,7 @@ class CronManager
     return $this->jobs;
   }
 
-  protected function _loadJobs()
+  function _loadJobs()
   {
     $this->jobs = array();
 
@@ -35,7 +35,7 @@ class CronManager
     }
   }
 
-  public function getJobsLastTime()
+  function getJobsLastTime()
   {
     if(!$this->jobs_last_time)
       $this->_loadJobsLastTime();
@@ -43,7 +43,7 @@ class CronManager
     return $this->jobs_last_time;
   }
 
-  protected function _loadJobsLastTime()
+  function _loadJobsLastTime()
   {
     $this->jobs_last_time = array();
 
@@ -65,12 +65,12 @@ class CronManager
     }
   }
 
-  protected function _getTime()
+  function _getTime()
   {
     return time();
   }
 
-  public function perform($response, $force=false)
+  function perform($response, $force=false)
   {
     $now = $this->_getTime();
     $jobs = $this->getJobs();
@@ -107,18 +107,18 @@ class CronManager
     $this->_writeJobsLastTime();
   }
 
-  protected function _createJobObject($handle)
+  function _createJobObject($handle)
   {
     resolveHandle($handle);
     return $handle;
   }
 
-  protected function _setJobLastTime($key, $time)
+  function _setJobLastTime($key, $time)
   {
     $this->jobs_last_time[$key] = $time;
   }
 
-  protected function _writeJobsLastTime()
+  function _writeJobsLastTime()
   {
     $f = fopen(VAR_DIR . '.cronjobs', 'w');
 

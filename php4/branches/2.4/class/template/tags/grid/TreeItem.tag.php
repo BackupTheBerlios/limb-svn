@@ -20,16 +20,16 @@ define('TREE_CROSS_M_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=1
 
 class GridTreeItemTagInfo
 {
-  public $tag = 'grid:TREE_ITEM';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'grid_tree_item_tag';
+  var $tag = 'grid:TREE_ITEM';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'grid_tree_item_tag';
 }
 
 registerTag(new GridTreeItemTagInfo());
 
 class GridTreeItemTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof GridIteratorTag)
     {
@@ -41,7 +41,7 @@ class GridTreeItemTag extends CompilerDirectiveTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $ref = $this->getComponentRefCode();
 

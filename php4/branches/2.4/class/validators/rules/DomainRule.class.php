@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
 class DomainRule extends SingleFieldRule
 {
-  protected function check($value)
+  function check($value)
   {
     // Check for entirely numberic domains.  Is 666.com valid?
     // Don't check for 2-4 character length on TLD because of things like .local

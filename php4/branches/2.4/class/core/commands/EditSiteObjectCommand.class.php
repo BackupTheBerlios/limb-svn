@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class EditSiteObjectCommand implements Command
 {
-  public function perform()
+  function perform()
   {
     $object = Limb :: toolkit()->createSiteObject($this->_defineSiteObjectClassName());
 
@@ -27,15 +27,15 @@ class EditSiteObjectCommand implements Command
       return Limb :: STATUS_ERROR;
     }
 
-    return Limb :: STATUS_OK;
+    return Limb :: getSTATUS_OK();
   }
 
-  protected function _updateObjectOperation($object)
+  function _updateObjectOperation($object)
   {
     $object->update($this->_defineIncreaseVersionFlag($object));
   }
 
-  protected function _fillObject($object)
+  function _fillObject($object)
   {
     $dataspace = Limb :: toolkit()->getDataspace();
 
@@ -44,7 +44,7 @@ class EditSiteObjectCommand implements Command
     $object->merge($dataspace->export());
   }
 
-  protected function _loadObjectData()
+  function _loadObjectData()
   {
     $toolkit = Limb :: toolkit();
     $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
@@ -53,7 +53,7 @@ class EditSiteObjectCommand implements Command
     return $datasource->fetch();
   }
 
-  protected function _defineIncreaseVersionFlag($object)
+  function _defineIncreaseVersionFlag($object)
   {
     if (class_exists('ContentObject') &&  ($object instanceof ContentObject))
       return true;
@@ -61,7 +61,7 @@ class EditSiteObjectCommand implements Command
       return false;
   }
 
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'site_object';
   }

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/Component.class.php');
 
 class OrderComponent extends Component
 {
-  public function prepare()
+  function prepare()
   {
     $params = array();
     $params['id'] = $this->get('node_id');

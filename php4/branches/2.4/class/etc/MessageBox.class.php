@@ -17,44 +17,46 @@ class MessageBox
   const WARNING = 2;
   const ERROR   = 3;
 
-  static protected $instance = null;
-
-  protected $strings = array();
+  var $strings = array();
 
   function messageBox()
   {
     $this->strings = Limb :: toolkit()->getSession()->get('strings');
   }
 
-  public static function reset()
+  function reset()
   {
-    self :: instance()->strings = array();
+    $inst =& MessageBox :: instance();
+    $inst->strings = array();
   }
 
-  static function instance()
+  function & instance()
   {
-    if (!self :: $instance)
-      self :: $instance = new MessageBox();
+    if (!isset($GLOBALS['MessageBoxGlobalInstance']) || !is_a($GLOBALS['MessageBoxGlobalInstance'], 'MessageBox'))
+      $GLOBALS['MessageBoxGlobalInstance'] =& new MessageBox();
 
-    return self :: $instance;
+    return $GLOBALS['MessageBoxGlobalInstance'];
   }
 
-  static function writeNotice($string, $label='')
+  function writeNotice($string, $label='')
   {
-    self :: instance()->write($string, self :: NOTICE, $label);
+    $inst =& MessageBox :: instance();
+    $inst->write($string, MessageBox :: NOTICE, $label);
   }
 
-  static function writeWarning($string, $label='')
+  function writeWarning($string, $label='')
   {
-    self :: instance()->write($string, self :: WARNING, $label);
+    $inst =& MessageBox :: instance();
+    $inst->write($string, MessageBox :: WARNING, $label);
   }
 
-  static function writeError($string, $label='')
+  function writeError($string, $label='')
   {
-    self :: instance()->write($string, self :: ERROR, $label);
+    $inst =& MessageBox :: instance();
+    $inst->write($string, MessageBox :: ERROR, $label);
   }
 
-  public function write($string, $verbosity_level = self :: NOTICE, $label='')
+  function write($string, $verbosity_level = MessageBox :: NOTICE, $label='')
   {
     $this->strings[] = array(
                                         'string' => str_replace("'", "\'", $string),
@@ -63,7 +65,7 @@ class MessageBox
     );
   }
 
-  protected function _getMessageStrings()
+  function _getMessageStrings()
   {
     return $this->strings;
   }
@@ -71,9 +73,10 @@ class MessageBox
   /*
     fetches the message_box report
   */
-  static function parse()
+  function parse()
   {
-    if(!($strings = self :: instance()->_getMessageStrings()))
+    $inst =& MessageBox :: instance();
+    if(!($strings = $inst->_getMessageStrings()))
       return '';
 
     $js_function = "

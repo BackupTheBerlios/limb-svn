@@ -10,21 +10,21 @@
 ***********************************************************************************/
 class ActionsTagInfo
 {
-  public $tag = 'actions';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'actions_tag';
+  var $tag = 'actions';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'actions_tag';
 }
 
 registerTag(new ActionsTagInfo());
 
 class ActionsTag extends ServerComponentTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/actions_component';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent :: preGenerate($code);
 
@@ -47,17 +47,17 @@ class ActionsTag extends ServerComponentTag
     $code->writePhp('if (' . $this->getComponentRefCode() . '->next()) {');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode() . '->dataset';
   }

@@ -20,7 +20,7 @@ class InputFileComponent extends InputFormElement
   * portion of the $_FILES array, allowing initial validation of uploaded
   * files.
   */
-  public function getValue()
+  function getValue()
   {
     return;
   }

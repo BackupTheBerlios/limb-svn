@@ -22,7 +22,7 @@ class log
   /*
    Writes file name $name and storage directory $dir to storage log
   */
-  static public function write($log_file_data, $string)
+  function write($log_file_data, $string)
   {
     $log_dir = $log_file_data[0];
     $log_name = $log_file_data[1];
@@ -73,7 +73,7 @@ class log
    exceed max_logrotate_files() will be removed.
    Rotated files will get the extension .1, .2 etc.
   */
-  static public function rotateLog($file_name)
+  function rotateLog($file_name)
   {
     $max_logrotate_files = MAX_LOGROTATE_FILES;
     for ($i = $max_logrotate_files; $i > 0; --$i)

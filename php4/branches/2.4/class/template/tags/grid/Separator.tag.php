@@ -10,18 +10,18 @@
 ***********************************************************************************/
 class GridSeparatorTagInfo
 {
-  public $tag = 'grid:SEPARATOR';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'grid_separator_tag';
+  var $tag = 'grid:SEPARATOR';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'grid_separator_tag';
 }
 
 registerTag(new GridSeparatorTagInfo());
 
 class GridSeparatorTag extends CompilerDirectiveTag
 {
-  protected $count;
+  var $count;
 
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('grid_separator_tag'))
     {
@@ -41,7 +41,7 @@ class GridSeparatorTag extends CompilerDirectiveTag
     }
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['count']))
       $this->count = 1;
@@ -51,7 +51,7 @@ class GridSeparatorTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
@@ -65,7 +65,7 @@ class GridSeparatorTag extends CompilerDirectiveTag
               ($counter % " . $this->count . " == 0)) {");
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
     parent::postGenerate($code);

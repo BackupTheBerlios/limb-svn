@@ -17,18 +17,18 @@ abstract class DbModule
   const DB_TRANSACTION_STATUS_IN = 1;
   const DB_TRANSACTION_STATUS_OUT = 0;
 
-  protected $_transaction_status;
+  var $_transaction_status;
 
-  protected $_db_connection;
-  protected $_sql_result;
+  var $_db_connection;
+  var $_sql_result;
 
-  protected $_locale_id = '';
+  var $_locale_id = '';
 
-  protected $_executed_sql = array();
+  var $_executed_sql = array();
 
   function __construct($db_params)
   {
-    $this->_transaction_status = self :: DB_TRANSACTION_STATUS_OUT;
+    $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_OUT;
 
     $this->_db_connection = -1;
     $this->_sql_result = null;
@@ -38,17 +38,17 @@ abstract class DbModule
     $this->selectDb($db_params['name']);
   }
 
-  public function setLocaleId($locale_id)
+  function setLocaleId($locale_id)
   {
     $this->_locale_id = $locale_id;
   }
 
-  public function isDebugEnabled()
+  function isDebugEnabled()
   {
     return (defined('DEBUG_DB_ENABLED') &&  constant('DEBUG_DB_ENABLED'));
   }
 
-  public function connectDb($db_params)
+  function connectDb($db_params)
   {
     if(!$this->_db_connection = $this->_connectDbOperation($db_params))
       throw new SQLException('couldnt connect to database at host, check db params',
@@ -61,7 +61,7 @@ abstract class DbModule
                 );
   }
 
-  public function selectDb($db_name)
+  function selectDb($db_name)
   {
     if(!$this->_selectDbOperation($db_name))
       throw new SQLException('couldnt select database, check db params',
@@ -70,27 +70,27 @@ abstract class DbModule
                 );
   }
 
-  abstract protected function _connectDbOperation($db_params);
+  abstract function _connectDbOperation($db_params);
 
-  abstract protected function _disconnectDbOperation($db_params);
+  abstract function _disconnectDbOperation($db_params);
 
-  abstract protected function _selectDbOperation($db_name);
+  abstract function _selectDbOperation($db_name);
 
-  public function disconnectDb()
+  function disconnectDb()
   {
     $this->_disconnectDbOperation();
 
     $this->_db_connection = -1;
   }
 
-  public function freeResult()
+  function freeResult()
   {
     $this->_sql_result = null;
   }
 
-  abstract public function getAffectedRows();
+  abstract function getAffectedRows();
 
-  public function sqlExec($sql, $limit=0, $offset=0)
+  function sqlExec($sql, $limit=0, $offset=0)
   {
     $this->_sql_result = null;
 
@@ -132,9 +132,9 @@ abstract class DbModule
     return $this->_sql_result;
   }
 
-  abstract protected function _sqlExecOperation($sql);
+  abstract function _sqlExecOperation($sql);
 
-  public function sqlExecBatch($sql='')
+  function sqlExecBatch($sql='')
   {
     $sqls = array();
     $this->parseBatchSql($sqls, $sql, 32344);
@@ -145,7 +145,7 @@ abstract class DbModule
     return true;
   }
 
-  public function assignArray(&$result_array, $array_index='')
+  function assignArray(&$result_array, $array_index='')
   {
     if(!$this->_sql_result)
       return;
@@ -164,7 +164,7 @@ abstract class DbModule
     $this->freeResult();
   }
 
-  public function getArray($array_index='')
+  function getArray($array_index='')
   {
     $result_array = array();
 
@@ -187,48 +187,48 @@ abstract class DbModule
     return $result_array;
   }
 
-  public function escape($sql)
+  function escape($sql)
   {
     return $sql;
   }
 
-  abstract public function concat($values);
+  abstract function concat($values);
 
-  abstract public function substr($string, $offset, $limit=null);
+  abstract function substr($string, $offset, $limit=null);
 
-  public function null()
+  function null()
   {
     return 'NULL';
   }
 
   //$count $start not supported by default!
-  public function sqlSelect($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  function sqlSelect($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
     return $this->sqlExec($this->makeSelectString($table, $fields, $where, $order, $count, $start));
   }
 
-  public function sqlInsert($table, $row, $column_types=array())
+  function sqlInsert($table, $row, $column_types=array())
   {
     return $this->sqlExec($this->makeInsertString($table, $row, $column_types));
   }
 
-  public function sqlUpdate($table, $set, $where='', $column_types=array())
+  function sqlUpdate($table, $set, $where='', $column_types=array())
   {
     return $this->sqlExec($this->makeUpdateString($table, $set, $where, $column_types));
   }
 
-  public function sqlDelete($table, $where='')
+  function sqlDelete($table, $where='')
   {
     return $this->sqlExec($this->makeDeleteString($table, $where));
   }
 
-  abstract public function parseBatchSql(&$ret, $sql, $release);
+  abstract function parseBatchSql(&$ret, $sql, $release);
 
-  abstract protected function _resultNumFields();
+  abstract function _resultNumFields();
 
-  abstract protected function _fetchAssocResultRow($col_num = '');
+  abstract function _fetchAssocResultRow($col_num = '');
 
-  public function processValues($names_values, $column_types=array())
+  function processValues($names_values, $column_types=array())
   {
     foreach($names_values as $key => $value)
     {
@@ -239,7 +239,7 @@ abstract class DbModule
     return $names_values;
   }
 
-  protected function _processValue($value, $type='')
+  function _processValue($value, $type='')
   {
     //quick'n'dirty fix for autoincrements
     if(is_null($value))
@@ -279,17 +279,17 @@ abstract class DbModule
     }
   }
 
-  protected function _processStringValue($value)
+  function _processStringValue($value)
   {
     return "'" . $this->escape($value) . "'";
   }
 
-  protected function _processBoolValue($value)
+  function _processBoolValue($value)
   {
     return ($value) ? 1 : 0;
   }
 
-  protected function _processDateValue($value)
+  function _processDateValue($value)
   {
     $locale = Limb :: toolkit()->getLocale($this->_locale_id);
     $date = new Date($value, DATE_SHORT_FORMAT_ISO);
@@ -303,7 +303,7 @@ abstract class DbModule
     return "'" . $value . "'";
   }
 
-  protected function _processDatetimeValue($value)
+  function _processDatetimeValue($value)
   {
     $locale = Limb :: toolkit()->getLocale($this->_locale_id);
     $date = new Date($value, DATE_FORMAT_ISO);
@@ -317,16 +317,16 @@ abstract class DbModule
     return "'" . $value . "'";
   }
 
-  protected function _processDefaultValue($value)
+  function _processDefaultValue($value)
   {
     return strval($value);
   }
 
-  abstract public function getLastError();
+  abstract function getLastError();
 
-  abstract public function getSqlInsertId();
+  abstract function getSqlInsertId();
 
-  public function getMaxColumnValue($table_name, $column_name)
+  function getMaxColumnValue($table_name, $column_name)
   {
     $sql = 'SELECT MAX('. $column_name .') as m FROM '. $table_name;
 
@@ -336,14 +336,14 @@ abstract class DbModule
     return isset($arr['m']) ? $arr['m'] : 0;
   }
 
-  public function fetchRow()
+  function fetchRow()
   {
     return $this->_fetchAssocResultRow();
   }
 
-  abstract public function countSelectedRows();
+  abstract function countSelectedRows();
 
-  public function makeInsertString($table, $names_values, $column_types=array())
+  function makeInsertString($table, $names_values, $column_types=array())
   {
     if(is_array($names_values))
       $names_values = $this->processValues($names_values, $column_types);
@@ -357,7 +357,7 @@ abstract class DbModule
     return "INSERT INTO $table $str_names VALUES $str_values";
   }
 
-  public function makeSelectString($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  function makeSelectString($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
     if(is_array($where))
       $where = ' WHERE (' . $this->sqlAnd($where) . ')';
@@ -376,7 +376,7 @@ abstract class DbModule
     return "SELECT $fields_str FROM $table $where $order";
   }
 
-  public function makeUpdateString($table, $names_values, $where='', $column_types=array())
+  function makeUpdateString($table, $names_values, $where='', $column_types=array())
   {
     if(is_array($names_values))
       $names_values = $this->processValues($names_values, $column_types);
@@ -402,7 +402,7 @@ abstract class DbModule
     return "UPDATE $table SET $fields_str $where";
   }
 
-  public function makeDeleteString($table, $where='')
+  function makeDeleteString($table, $where='')
   {
     if(is_array($where))
       $where = ' WHERE (' . $this->sqlAnd($where) . ')';
@@ -412,7 +412,7 @@ abstract class DbModule
     return "DELETE FROM $table $where";
   }
 
-  public function sqlIn($column_name, $values, $type='')
+  function sqlIn($column_name, $values, $type='')
   {
     $implode_values = array();
     foreach($values as $value)
@@ -423,7 +423,7 @@ abstract class DbModule
     return $column_name . ' IN (' . $in_ids . ')';
   }
 
-  public function sqlAnd($conditions, $column_types=array())
+  function sqlAnd($conditions, $column_types=array())
   {
     $implode_values = array();
 
@@ -436,48 +436,50 @@ abstract class DbModule
     return implode(' AND ', $implode_values);
   }
 
-  public function begin()
+  function begin()
   {
-    if($this->_transaction_status == self :: DB_TRANSACTION_STATUS_OUT)
+    if($this->_transaction_status == DbModule :: DB_TRANSACTION_STATUS_OUT)
     {
       $this->_beginOperation();
-      $this->_transaction_status = self :: DB_TRANSACTION_STATUS_IN;
+      $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_IN;
     }
   }
 
-  abstract protected function _beginOperation();
+  abstract function _beginOperation();
 
-  public function commit()
+  function commit()
   {
-    if($this->_transaction_status == self :: DB_TRANSACTION_STATUS_IN)
+    if($this->_transaction_status == DbModule :: DB_TRANSACTION_STATUS_IN)
     {
       $this->_commitOperation();
-      $this->_transaction_status = self :: DB_TRANSACTION_STATUS_OUT;
+      $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_OUT;
     }
   }
 
-  abstract protected function _commitOperation();
+  abstract function _commitOperation();
 
-  public function rollback()
+  function rollback()
   {
-    if($this->_transaction_status == self :: DB_TRANSACTION_STATUS_IN)
+    if($this->_transaction_status == DbModule :: DB_TRANSACTION_STATUS_IN)
     {
       $this->_rollbackOperation();
-      $this->_transaction_status = self :: DB_TRANSACTION_STATUS_OUT;
+      $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_OUT;
     }
   }
 
-  abstract protected function _rollbackOperation();
+  abstract function _rollbackOperation();
 }
 
 function sqlAnd($conditions, $column_types=array())
 {
-  return DbFactory :: instance()->sqlAnd($conditions, $column_types);
+  $inst =& DbFactory :: instance();
+  return $inst->sqlAnd($conditions, $column_types);
 }
 
 function sqlIn($column_name, $values, $type='')
 {
-  return DbFactory :: instance()->sqlIn($column_name, $values, $type);
+  $inst =& DbFactory :: instance();
+  return $inst->sqlIn($column_name, $values, $type);
 }
 
 ?>

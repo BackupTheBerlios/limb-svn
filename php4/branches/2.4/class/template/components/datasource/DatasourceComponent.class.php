@@ -13,18 +13,18 @@ require_once(LIMB_DIR . '/class/template/Component.class.php');
 
 class DatasourceComponent extends Component
 {
-  protected $datasource_path;
-  protected $datasource;
-  protected $targets;
-  protected $navigator_id;
-  protected $parameters = array();
+  var $datasource_path;
+  var $datasource;
+  var $targets;
+  var $navigator_id;
+  var $parameters = array();
 
-  public function setDatasourcePath($datasource_path)
+  function setDatasourcePath($datasource_path)
   {
     $this->datasource_path = $datasource_path;
   }
 
-  protected function _getDatasource()
+  function _getDatasource()
   {
     if ($this->datasource)
       return $this->datasource;
@@ -41,7 +41,7 @@ class DatasourceComponent extends Component
     return $this->datasource;
   }
 
-  protected function _setTargets($targets)
+  function _setTargets($targets)
   {
     if(is_array($targets))
       $this->targets = $targets;
@@ -56,7 +56,7 @@ class DatasourceComponent extends Component
     }
   }
 
-  public function getDataset()
+  function getDataset()
   {
     if ($result = $this->_getDatasource()->fetch())
       return new ArrayDataset($result);
@@ -64,7 +64,7 @@ class DatasourceComponent extends Component
       return new EmptyDataset();
   }
 
-  public function setParameter($name, $value)
+  function setParameter($name, $value)
   {
     if($name == 'order')
       $this->_setOrderParameters($value);
@@ -74,13 +74,13 @@ class DatasourceComponent extends Component
       $this->parameters[$name] = $value;
   }
 
-  public function getParameter($name)
+  function getParameter($name)
   {
     if(isset($this->parameters[$name]))
       return $this->parameters[$name];
   }
 
-  protected function _setLimitParameters($limit_string)
+  function _setLimitParameters($limit_string)
   {
     $arr = explode(',', $limit_string);
 
@@ -93,7 +93,7 @@ class DatasourceComponent extends Component
       $this->parameters['offset'] = (int)$arr[1];
   }
 
-  protected function _setOrderParameters($order_string)
+  function _setOrderParameters($order_string)
   {
     $order_items = explode(',', $order_string);
     $order_pairs = array();
@@ -123,7 +123,7 @@ class DatasourceComponent extends Component
       $this->parameters['order'] = $order_pairs;
   }
 
-  public function setupNavigator($navigator_id)
+  function setupNavigator($navigator_id)
   {
     $this->navigator_id = $navigator_id;
 
@@ -146,7 +146,7 @@ class DatasourceComponent extends Component
     $navigator->setTotalItems($this->_getDatasource()->countTotal());
   }
 
-  public function setupTargets($targets)
+  function setupTargets($targets)
   {
     $this->_setTargets($targets);
 
@@ -165,7 +165,7 @@ class DatasourceComponent extends Component
     }
   }
 
-  protected function _getNavigatorComponent()
+  function _getNavigatorComponent()
   {
     if (!$this->navigator_id)
       return null;

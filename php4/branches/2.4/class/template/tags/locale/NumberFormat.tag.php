@@ -10,23 +10,23 @@
 ***********************************************************************************/
 class LocaleNumberFormatTagInfo
 {
-  public $tag = 'locale:NUMBER_FORMAT';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'locale_number_format_tag';
+  var $tag = 'locale:NUMBER_FORMAT';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'locale_number_format_tag';
 }
 
 registerTag(new LocaleNumberFormatTagInfo());
 
 class LocaleNumberFormatTag extends ServerComponentTag
 {
-  protected $field;
+  var $field;
 
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/locale_number_format_component';
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['hash_id']) ||  !$this->attributes['hash_id'])
     {
@@ -40,7 +40,7 @@ class LocaleNumberFormatTag extends ServerComponentTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp(
       'echo ' . $this->getComponentRefCode() . '->format(' . $this->getDataspaceRefCode() . '->get("' . $this->attributes['field'] . '"));');

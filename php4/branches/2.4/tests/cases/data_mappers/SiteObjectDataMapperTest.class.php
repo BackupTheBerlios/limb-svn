@@ -25,25 +25,25 @@ class SiteObjectManipulationTestToolkit extends SiteObjectToolkitMock
 {
   var $_mocked_methods = array('getTree', 'getUser', 'constant', 'createDataMapper');
 
-  public function getTree()
+  function getTree()
   {
     $args = func_get_args();
     return $this->_mock->_invoke('getTree', $args);
   }
 
-  public function getUser()
+  function getUser()
   {
     $args = func_get_args();
     return $this->_mock->_invoke('getUser', $args);
   }
 
-  public function createDataMapper($path)
+  function createDataMapper($path)
   {
     $args = func_get_args();
     return $this->_mock->_invoke('createDataMapper', $args);
   }
 
-  public function constant($name)
+  function constant($name)
   {
     $args = func_get_args();
     return $this->_mock->_invoke('constant', $args);

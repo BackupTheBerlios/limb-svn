@@ -12,26 +12,26 @@ require_once(LIMB_DIR . '/class/validators/ErrorList.class.php');
 
 class Validator
 {
-  protected $rules = array();
+  var $rules = array();
 
-  protected $is_valid = true;
+  var $is_valid = true;
 
-  public function addRule($rule)
+  function addRule($rule)
   {
     $this->rules[] = $rule;
   }
 
-  protected function _getErrorList()
+  function _getErrorList()
   {
     return ErrorList :: instance();
   }
 
-  public function isValid()
+  function isValid()
   {
     return $this->is_valid;
   }
 
-  public function validate($dataspace)
+  function validate($dataspace)
   {
     foreach($this->rules as $key => $rule)
     {
@@ -44,12 +44,12 @@ class Validator
     return $this->is_valid;
   }
 
-  public function getRules()
+  function getRules()
   {
     return $this->rules;
   }
 
-  public function addError($field_name, $error, $params=array())
+  function addError($field_name, $error, $params=array())
   {
     $error_list = $this->_getErrorList();
     $error_list->addError($field_name, $error, $params);

@@ -51,9 +51,9 @@ class SiteObjectsRawFinder implements DataFinder
      FROM sys_site_object as sso %s
      WHERE sso.id %s %s";
 
-  public function find($params = array(), $sql_params=array())//refactor!!!
+  function find($params = array(), $sql_params=array())//refactor!!!
   {
-    $sql = sprintf(self :: RAW_SELECT_STMT,
+    $sql = sprintf(SiteObjectsRawFinder :: RAW_SELECT_STMT,
                   $this->_addSql($sql_params, 'columns'),
                   $this->_addSql($sql_params, 'tables'),
                   $this->_addSql($sql_params, 'conditions'),
@@ -72,12 +72,12 @@ class SiteObjectsRawFinder implements DataFinder
     return $db->getArray('id');
   }
 
-  public function findById($id)
+  function findById($id)
   {
     return $this->find(array(), array('conditions' => array(' AND sso.id=' . $id)));
   }
 
-  protected function _addSql($add_sql, $type)//refactor!!!
+  function _addSql($add_sql, $type)//refactor!!!
   {
     if (isset($add_sql[$type]))
       return implode(' ', $add_sql[$type]);
@@ -85,7 +85,7 @@ class SiteObjectsRawFinder implements DataFinder
       return '';
   }
 
-  protected function _buildOrderSql($order_array)
+  function _buildOrderSql($order_array)
   {
     $columns = array();
 
@@ -95,9 +95,9 @@ class SiteObjectsRawFinder implements DataFinder
     return implode(', ', $columns);
   }
 
-  public function findCount($sql_params=array())//refactor!!!
+  function findCount($sql_params=array())//refactor!!!
   {
-    $sql = sprintf(self :: RAW_COUNT_STMT,
+    $sql = sprintf(SiteObjectsRawFinder :: RAW_COUNT_STMT,
                   $this->_addSql($sql_params, 'tables'),
                   $this->_addSql($sql_params, 'conditions'),
                   $this->_addSql($sql_params, 'group')

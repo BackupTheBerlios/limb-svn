@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class GridDefaultTagInfo
 {
-  public $tag = 'grid:DEFAULT';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'grid_default_tag';
+  var $tag = 'grid:DEFAULT';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'grid_default_tag';
 }
 
 registerTag(new GridDefaultTagInfo());
 
 class GridDefaultTag extends SilentCompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('grid_default_tag'))
     {

@@ -12,21 +12,21 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class SelectorTagInfo
 {
-  public $tag = 'selector';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'selector_tag';
+  var $tag = 'selector';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'selector_tag';
 }
 
 registerTag(new SelectorTagInfo());
 
 class SelectorTag extends ControlTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_checkbox_component';
   }
 
-  public function prepare()
+  function prepare()
   {
     $this->attributes['type'] = 'checkbox';
 
@@ -38,12 +38,12 @@ class SelectorTag extends ControlTag
   unset($this->attributes['selector_name']);
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $name = '$' . $code->getTempVariable();
     $parent = $this->getDataspaceRefCode();

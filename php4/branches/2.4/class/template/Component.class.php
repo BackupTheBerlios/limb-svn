@@ -18,31 +18,31 @@ class Component extends Dataspace
   /**
   * Array of child components
   */
-  public $children = array();
+  var $children = array();
   /**
   * parent component - "parent" refers to nesting in template
   * not to class hierarchy.
   */
-  public $parent;
+  var $parent;
   /**
   * root component in template
   */
-  public $root;
+  var $root;
   /**
   * ID of component, corresponding to it's ID attribute in the template
   */
-  public $id;
+  var $id;
 
   /**
   * Returns the ID of the component, as defined in the template tags
   * ID attribute
   */
-  public function getServerId()
+  function getServerId()
   {
     return $this->id;
   }
 
-  public function setServerId($id)
+  function setServerId($id)
   {
     $this->id = $id;
   }
@@ -54,7 +54,7 @@ class Component extends Dataspace
   * based on alphanumeric order: strcasecmp(). Attempt to call it via
   * the nearest known component to the required child.
   */
-  public function findChild($server_id)
+  function findChild($server_id)
   {
     foreach(array_keys($this->children) as $key)
     {
@@ -74,7 +74,7 @@ class Component extends Dataspace
   * Returns the first child component matching the supplied WACT_TEMPLATE
   * component PHP class name
   */
-  public function findChildByClass($class)
+  function findChildByClass($class)
   {
     foreach(array_keys($this->children) as $key)
     {
@@ -94,7 +94,7 @@ class Component extends Dataspace
   * Recursively searches through parents of this component searching
   * for a given WACT_TEMPLATE component PHP class name
   */
-  public function findParentByClass($class)
+  function findParentByClass($class)
   {
     $parent = $this->parent;
 
@@ -108,7 +108,7 @@ class Component extends Dataspace
   * Adds a reference to a child component to this component, using it's
   * ID attribute as the child array key
   */
-  public function addChild($child, $server_id = null)
+  function addChild($child, $server_id = null)
   {
     if (is_null($server_id))
     {

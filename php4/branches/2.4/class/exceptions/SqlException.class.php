@@ -11,9 +11,9 @@
 
 class SQLException extends LimbException
 {
-  protected $_driver_error;
+  var $_driver_error;
 
-  public function __construct($message, $driver_error = null, $additional_params = array())
+  function __construct($message, $driver_error = null, $additional_params = array())
   {
     if ($driver_error !== null)
     {
@@ -24,7 +24,7 @@ class SQLException extends LimbException
     parent::__construct($message, $additional_params);
   }
 
-  public function getDriverError()
+  function getDriverError()
   {
     return $this->_driver_error;
   }

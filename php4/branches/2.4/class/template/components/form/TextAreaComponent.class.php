@@ -16,7 +16,7 @@ class TextAreaComponent extends ContainerFormElement
   * Output the contents of the textarea, passing through htmlspecialchars().
   * Called from within a compiled template's render function
   */
-  public function renderContents()
+  function renderContents()
   {
     echo htmlspecialchars($this->getValue(), ENT_QUOTES);
   }

@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class RadioSelectorTagInfo
 {
-  public $tag = 'radio_selector';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'radio_selector_tag';
+  var $tag = 'radio_selector';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'radio_selector_tag';
 }
 
 registerTag(new RadioSelectorTagInfo());
 
 class RadioSelectorTag extends CompilerDirectiveTag
 {
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $value = '$' . $code->getTempVariable();
     $parent = $this->getDataspaceRefCode();

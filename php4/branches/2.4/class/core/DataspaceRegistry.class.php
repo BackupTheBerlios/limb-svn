@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
 class DataspaceRegistry
 {
-  static public function get($name)
+  function get($name)
   {
     $obj = null;
 

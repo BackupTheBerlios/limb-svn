@@ -16,13 +16,13 @@ define('DATE_SHORT_FORMAT_ISO', "%Y-%m-%d"); //YYYY-MM-DD
 
 class Date
 {
-  protected $year = 0;
-  protected $month = 0;
-  protected $day = 0;
-  protected $hour = 0;
-  protected $minute = 0;
-  protected $second = 0;
-  protected $tz = 0;
+  var $year = 0;
+  var $month = 0;
+  var $day = 0;
+  var $hour = 0;
+  var $minute = 0;
+  var $second = 0;
+  var $tz = 0;
 
   function __construct ($date=null, $format=DATE_SHORT_FORMAT_ISO)
   {
@@ -38,7 +38,7 @@ class Date
       $this->setByStamp();
   }
 
-  static public function create($year=0, $month=0, $day=0, $hour=0, $minute=0, $second=0)
+  function create($year=0, $month=0, $day=0, $hour=0, $minute=0, $second=0)
   {
     $d = new Date();
 
@@ -52,7 +52,7 @@ class Date
     return $d;
   }
 
-  public function reset()
+  function reset()
   {
     $this->year   = 0;
     $this->month  = 0;
@@ -62,7 +62,7 @@ class Date
     $this->second = 0;
   }
 
-  public function isValid()
+  function isValid()
   {
     if ($this->year < 0 ||  $this->year > 9999)
       return false;
@@ -70,7 +70,7 @@ class Date
     return checkdate($this->month, $this->day, $this->year);
   }
 
-  public function setByString($string, $format=DATE_SHORT_FORMAT_ISO)
+  function setByString($string, $format=DATE_SHORT_FORMAT_ISO)
   {
     $this->reset();
 
@@ -117,7 +117,7 @@ class Date
     Returns an array('hour','minute','second','month','day','year')
     At this moment only most common tags are supported.
   */
-  protected function _parseTimeString($locale, $time_string, $fmt)
+  function _parseTimeString($locale, $time_string, $fmt)
   {
     $hour = 0;
     $minute = 0;
@@ -218,7 +218,7 @@ class Date
     return array('hour' => $hour, 'minute' => $minute, 'second' => $second, 'month' => $month, 'day' => $day, 'year' => $year);
   }
 
-  protected function _explodeTimeStringByFormat($time_string, $fmt)
+  function _explodeTimeStringByFormat($time_string, $fmt)
   {
     $fmt_len = strlen($fmt);
     $time_string_len = strlen($time_string);
@@ -254,7 +254,7 @@ class Date
     return $time_array;
   }
 
-  public function setByStamp($time=-1)
+  function setByStamp($time=-1)
   {
     if($time == -1)
       $time = time();
@@ -269,7 +269,7 @@ class Date
     $this->second = $arr['seconds'];
   }
 
-  public function setByDays($days)
+  function setByDays($days)
   {
     $this->reset();
 
@@ -309,7 +309,7 @@ class Date
    * Copy values from another date object
    * Makes this date a copy of another date object.
    */
-  public function copy($date)
+  function copy($date)
   {
     $this->year = $date->getYear();
     $this->month = $date->getMonth();
@@ -355,7 +355,7 @@ class Date
    *  %Y    year as decimal including century (range 0000 to 9999)
    *  %%    literal '%'
    */
-  public function format($locale, $format=DATE_SHORT_FORMAT_ISO)
+  function format($locale, $format=DATE_SHORT_FORMAT_ISO)
   {
     $output = '';
 
@@ -480,17 +480,17 @@ class Date
     return $output;
   }
 
-  public function getStamp()
+  function getStamp()
   {
     return mktime($this->hour, $this->minute, $this->second, $this->month, $this->day, $this->year);
   }
 
-  public function setTimeZone($tz)
+  function setTimeZone($tz)
   {
     $this->tz = $tz;
   }
 
-  public function setTimeZoneById($id)
+  function setTimeZoneById($id)
   {
     if (DateTimeZone::isValidId($id))
       $this->tz = new DateTimeZone($id);
@@ -498,12 +498,12 @@ class Date
       $this->tz = DateTimeZone::getDefault();
   }
 
-  public function isInDaylightTime()
+  function isInDaylightTime()
   {
     return $this->tz->isInDaylightTime($this);
   }
 
-  public function toUTC()
+  function toUTC()
   {
     if ($this->tz->getOffset($this) > 0)
       $this->subSeconds(intval($this->tz->getOffset($this) / 1000));
@@ -522,7 +522,7 @@ class Date
    * date::time_zone::is_in_daylight_time() for more information.
    *
    */
-  public function convertToTimeZone($tz)
+  function convertToTimeZone($tz)
   {
     // convert to UTC
     if ($this->tz->getOffset($this) > 0)
@@ -539,7 +539,7 @@ class Date
     $this->tz = $tz;
   }
 
-  public function convertToTimeZoneById($id)
+  function convertToTimeZoneById($id)
   {
    if (DateTimeZone::isValidId($id))
     $tz = new DateTimeZone($id);
@@ -553,7 +553,7 @@ class Date
    * Compares object with $d date object.
    * return int 0 if the dates are equal, -1 if is before, 1 if is after than $d
    */
-  public function compare($d, $use_time_zone=false)
+  function compare($d, $use_time_zone=false)
   {
     if($use_time_zone)
     {
@@ -574,7 +574,7 @@ class Date
     return 0;
   }
 
-  public function isBefore($when, $use_time_zone=false)
+  function isBefore($when, $use_time_zone=false)
   {
     if ($this->compare($when, $use_time_zone) == -1)
       return true;
@@ -582,7 +582,7 @@ class Date
       return false;
   }
 
-  public function isAfter($when, $use_time_zone=false)
+  function isAfter($when, $use_time_zone=false)
   {
     if ($this->compare($when, $use_time_zone) == 1)
       return true;
@@ -590,7 +590,7 @@ class Date
       return false;
   }
 
-  public function isEqual($when, $use_time_zone=false)
+  function isEqual($when, $use_time_zone=false)
   {
     if ($this->compare($when, $use_time_zone) == 0)
       return true;
@@ -598,12 +598,12 @@ class Date
       return false;
   }
 
-  public function isLeapYear()
+  function isLeapYear()
   {
     return (($this->year % 4 == 0 &&  $this->year % 100 != 0) ||  $this->year % 400 == 0);
   }
 
-  public function getDayOfYear()
+  function getDayOfYear()
   {
     $days = array(0,31,59,90,120,151,181,212,243,273,304,334);
 
@@ -615,7 +615,7 @@ class Date
     return $julian;
   }
 
-  public function getDayOfWeek()
+  function getDayOfWeek()
   {
     $year = $this->year;
     $month = $this->month;
@@ -638,7 +638,7 @@ class Date
     return $weekday_number;
   }
 
-  public function getWeekOfYear()
+  function getWeekOfYear()
   {
     $day = $this->day;
     $month = $this->month;
@@ -704,12 +704,12 @@ class Date
     return $weeknumber;
   }
 
-  public function getQuarterOfYear()
+  function getQuarterOfYear()
   {
     return (intval(($this->month - 1) / 3 + 1));
   }
 
-  public function dateToDays()
+  function dateToDays()
   {
     $century = (int) substr("{$this->year}", 0, 2);
     $year = (int) substr("{$this->year}", 2, 2);
@@ -736,42 +736,42 @@ class Date
         $day + 1721119);
   }
 
-  public function getYear()
+  function getYear()
   {
     return $this->year;
   }
 
-  public function getMonth()
+  function getMonth()
   {
     return $this->month;
   }
 
-  public function getDay()
+  function getDay()
   {
     return $this->day;
   }
 
-  public function getHour()
+  function getHour()
   {
     return $this->hour;
   }
 
-  public function getMinute()
+  function getMinute()
   {
     return $this->minute;
   }
 
-  public function getSecond()
+  function getSecond()
   {
     return $this->second;
   }
 
-  public function getTimeZone()
+  function getTimeZone()
   {
     return $this->tz;
   }
 
-  public function setYear($y)
+  function setYear($y)
   {
     if ($y < 0 ||  $y > 9999)
       $this->year = 0;
@@ -779,7 +779,7 @@ class Date
       $this->year = $y;
   }
 
-  public function setMonth($m)
+  function setMonth($m)
   {
     if ($m < 1 ||  $m > 12)
       $this->month = 1;
@@ -787,7 +787,7 @@ class Date
       $this->month = $m;
   }
 
-  public function setDay($d)
+  function setDay($d)
   {
     if ($d > 31 ||  $d < 1)
       $this->day = 1;
@@ -795,7 +795,7 @@ class Date
       $this->day = $d;
   }
 
-  public function setHour($h)
+  function setHour($h)
   {
     if ($h > 23 ||  $h < 0)
       $this->hour = 0;
@@ -803,7 +803,7 @@ class Date
       $this->hour = $h;
   }
 
-  public function setMinute($m)
+  function setMinute($m)
   {
     if ($m > 59 ||  $m < 0)
       $this->minute = 0;
@@ -811,7 +811,7 @@ class Date
       $this->minute = $m;
   }
 
-  public function setSecond($s)
+  function setSecond($s)
   {
     if ($s > 59 ||  $s < 0)
       $this->second = 0;

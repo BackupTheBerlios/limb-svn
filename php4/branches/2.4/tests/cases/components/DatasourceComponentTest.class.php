@@ -19,11 +19,11 @@ require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
 class DatasourceComponentTestVersion implements Datasource, Countable
 {
-  public function fetch(){}
-  public function countTotal(){}
-  public function setLimit($limit){}
-  public function setOffset($offset){}
-  public function setOrder($order){}
+  function fetch(){}
+  function countTotal(){}
+  function setLimit($limit){}
+  function setOffset($offset){}
+  function setOrder($order){}
 }
 
 Mock :: generate('LimbToolkit');

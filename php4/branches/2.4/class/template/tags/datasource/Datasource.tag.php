@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class DatasourceTagInfo
 {
-  public $tag = 'datasource';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'datasource_tag';
+  var $tag = 'datasource';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'datasource_tag';
 }
 
 registerTag(new DatasourceTagInfo());
@@ -24,7 +24,7 @@ class DatasourceTag extends ServerComponentTag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/datasource_component';
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['target']))
     {
@@ -49,7 +49,7 @@ class DatasourceTag extends ServerComponentTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  protected function _checkOrderParameter()
+  function _checkOrderParameter()
   {
     if (!isset($this->attributes['order']))
       return;
@@ -71,7 +71,7 @@ class DatasourceTag extends ServerComponentTag
           'line' => $this->starting_line_no));
     }
   }
-  public function generateContents($code)
+  function generateContents($code)
   {
     parent :: generateContents($code);
 

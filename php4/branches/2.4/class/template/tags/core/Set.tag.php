@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CoreSetTagInfo
 {
-  public $tag = 'core:SET';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'core_set_tag';
+  var $tag = 'core:SET';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'core_set_tag';
 }
 
 registerTag(new CoreSetTagInfo());
@@ -23,7 +23,7 @@ registerTag(new CoreSetTagInfo());
 */
 class CoreSetTag extends SilentCompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('core_set_tag'))
     {
@@ -34,7 +34,7 @@ class CoreSetTag extends SilentCompilerDirectiveTag
     }
   }
 
-  public function preParse()
+  function preParse()
   {
     $dataspace = $this->getDataspace();
     $dataspace->vars += $this->attributes;

@@ -22,21 +22,21 @@ class FormComponent extends TagComponent
   /**
   * Switch to identify whether the form has errors or not
   */
-  protected $is_valid = true;
+  var $is_valid = true;
   /**
   * An indexed array of variable names used to build hidden form fields which
   * are passed on in the next POST request
   */
-  protected $state_vars = array();
+  var $state_vars = array();
   /**
   * Determined whether the form has errors.
   */
-  public function isValid()
+  function isValid()
   {
     return $this->is_valid;
   }
 
-  public function setValidStatus($status)
+  function setValidStatus($status)
   {
     $this->is_valid = $status;
   }
@@ -44,9 +44,10 @@ class FormComponent extends TagComponent
   /**
   * Returns the error_list if it exists or an empty_error_list if not
   */
-  public function getErrorDataset()
+  function getErrorDataset()
   {
-    $errors = ErrorList :: instance()->export();
+    $inst =& ErrorList :: instance();
+    $errors = $inst->export();
 
     if (!sizeof($errors))
       return new EmptyDataset();
@@ -73,12 +74,12 @@ class FormComponent extends TagComponent
   * Identify a variable stored in the dataspace of the component, which
   * should be passed as a hidden form field in the form post.
   */
-  public function preserveState($variable, $value=null)
+  function preserveState($variable, $value=null)
   {
     $this->state_vars[$variable] = $value;
   }
 
-  public function isFirstTime()
+  function isFirstTime()
   {
     if(isset($this->attributes['name']))
     {
@@ -95,7 +96,7 @@ class FormComponent extends TagComponent
   /**
   * Renders the hidden fields for variables which should be preserved
   */
-  public function renderState()
+  function renderState()
   {
     foreach ($this->state_vars as $var => $value)
     {
@@ -112,7 +113,7 @@ class FormComponent extends TagComponent
     }
   }
 
-  public function renderAttributes()
+  function renderAttributes()
   {
     if(!isset($this->attributes['action']))
     {

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CoreStatusTagInfo
 {
-  public $tag = 'core:STATUS';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'core_status_tag';
+  var $tag = 'core:STATUS';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'core_status_tag';
 }
 
 registerTag(new CoreStatusTagInfo());
@@ -23,9 +23,9 @@ registerTag(new CoreStatusTagInfo());
 */
 class CoreStatusTag extends CompilerDirectiveTag
 {
-  protected $const;
+  var $const;
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -41,7 +41,7 @@ class CoreStatusTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $value = 'true';
     if (isset($this->attributes['value']) &&  !(boolean)$this->attributes['value'])
@@ -54,7 +54,7 @@ class CoreStatusTag extends CompilerDirectiveTag
     parent::preGenerate($code);
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     parent::postGenerate($code);
 

@@ -19,14 +19,14 @@ if(!isRegisteredResolver('mapper'))
 
 abstract class DataMapperFactory
 {
-  static function create($class_name)
+  function create($class_name)
   {
-    self :: _includeClassFile($class_name);
+    DataMapperFactory :: _includeClassFile($class_name);
 
     return new $class_name();
   }
 
-  static protected function _includeClassFile($class_name)
+  function _includeClassFile($class_name)
   {
     if(class_exists($class_name))
       return;

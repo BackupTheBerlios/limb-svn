@@ -20,7 +20,7 @@ abstract class SilentCompilerDirectiveTag extends CompilerComponent
   * Does nothing -  silent_compiler_directive_tags do not generate
   * during construction of the compiled template
   */
-  public function generate($code)
+  function generate($code)
   {
     // Silent Compiler Directives do not generate their contents during the
     // normal generation sequence.
@@ -30,7 +30,7 @@ abstract class SilentCompilerDirectiveTag extends CompilerComponent
   * Results in all components registered as children of the instance of this
   * component having their generate() methods called
   */
-  public function generateNow($code)
+  function generateNow($code)
   {
     return parent :: generate($code);
   }

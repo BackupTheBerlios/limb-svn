@@ -12,16 +12,16 @@ require_once(LIMB_DIR . '/class/template/components/form/InputCheckboxComponent.
 
 class GridCheckboxComponent extends InputCheckboxComponent
 {
-  public function getValue()
+  function getValue()
   {
     return $this->findParentByClass('list_component')->getByIndexString($this->_makeIndexName($this->attributes['name']));
   }
 
-  public function setValue($value)
+  function setValue($value)
   {
   }
 
-  protected function _processNameAttribute($value)
+  function _processNameAttribute($value)
   {
     $list = $this->findParentByClass('list_component');
 

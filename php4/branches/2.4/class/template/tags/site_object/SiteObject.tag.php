@@ -10,21 +10,21 @@
 ***********************************************************************************/
 class SiteObjectTagInfo
 {
-  public $tag = 'site_object';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'site_object';
+  var $tag = 'site_object';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'site_object';
 }
 
 registerTag(new SiteObjectTagInfo());
 
 class SiteObjectTag extends ServerComponentTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/site_object_component';
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['path']))
     {
@@ -38,19 +38,19 @@ class SiteObjectTag extends ServerComponentTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp($this->getComponentRefCode() . '->fetch_by_path("' . $this->attributes['path'] . '");');
 
     parent :: generateContents($code);
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

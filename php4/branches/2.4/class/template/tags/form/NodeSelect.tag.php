@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
 class NodeSelectTagInfo
 {
-  public $tag = 'node_select';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'node_select_tag';
+  var $tag = 'node_select';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'node_select_tag';
 }
 
 registerTag(new NodeSelectTagInfo());
@@ -26,12 +26,12 @@ class NodeSelectTag extends ControlTag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/node_select_component';
   }
 
-  public function getRenderedTag()
+  function getRenderedTag()
   {
     return 'input';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     if(!isset($this->attributes['type']))
       $this->attributes['type'] = 'hidden';
@@ -41,7 +41,7 @@ class NodeSelectTag extends ControlTag
     parent :: preGenerate($code);
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     parent :: generateContents($code);
 

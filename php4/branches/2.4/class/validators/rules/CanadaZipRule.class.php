@@ -14,7 +14,7 @@ class CanadaZipRule extends SingleFieldRule
 {
   //The Canadian postal code is LNL NLN
   //where N=number and L=letter
-  protected function check($value)
+  function check($value)
   {
     $value = "$value";
 

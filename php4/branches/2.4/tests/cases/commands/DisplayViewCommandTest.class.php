@@ -22,7 +22,7 @@ class TemplateStub extends Template
   {
   }
 
-  public function display()
+  function display()
   {
     echo 'test template';
   }
@@ -62,7 +62,7 @@ class DisplayViewCommandTest extends LimbTestCase
 
     $this->response->expectOnce('write', array('test template'));
 
-    $this->assertEqual($command->perform(), Limb :: STATUS_OK);
+    $this->assertEqual($command->perform(), Limb :: getSTATUS_OK());
   }
 
   function testPerformFailedNoView()

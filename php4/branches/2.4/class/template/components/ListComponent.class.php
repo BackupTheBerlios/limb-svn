@@ -18,50 +18,50 @@ class ListComponent extends Component
   /**
   * Data set to iterate over when rendering the list
   */
-  public $dataset;
+  var $dataset;
   /**
   * Whether to show the list seperator
   */
-  public $show_separator;
+  var $show_separator;
 
-  public $offset = 0;
+  var $offset = 0;
 
   /**
   * Registers a dataset with the list component. The dataset must
   * implement the iterator methods defined in dataspace
   */
-  public function registerDataset($dataset)
+  function registerDataset($dataset)
   {
     $this->dataset = $dataset;
   }
 
   // Temporary delegation until better solution can be found
-  public function get($name, $default_value = null)
+  function get($name, $default_value = null)
   {
     return $this->dataset->get($name, $default_value);
   }
 
-  public function reset()
+  function reset()
   {
     return $this->dataset->reset();
   }
 
-  public function next()
+  function next()
   {
     return $this->dataset->next();
   }
 
-  public function getByIndexString($raw_index)
+  function getByIndexString($raw_index)
   {
     return $this->dataset->getByIndexString($raw_index);
   }
 
-  public function setOffset($offset)
+  function setOffset($offset)
   {
     $this->offset = $offset;
   }
 
-  public function getCounter()
+  function getCounter()
   {
     return $this->dataset->getCounter() + $this->offset + 1;
   }
@@ -71,7 +71,7 @@ class ListComponent extends Component
   * data set has been registered then calling the dataset reset
   * method.
   */
-  public function prepare()
+  function prepare()
   {
     if (empty($this->dataset))
     {

@@ -12,26 +12,26 @@ require_once(LIMB_DIR . '/class/template/compiler/ServerComponentTag.class.php')
 
 class LocaleDateFormatTagInfo
 {
-  public $tag = 'locale:DATE_FORMAT';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'locale_date_format_tag';
+  var $tag = 'locale:DATE_FORMAT';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'locale_date_format_tag';
 }
 
 registerTag(new LocaleDateFormatTagInfo());
 
 class LocaleDateFormatTag extends ServerComponentTag
 {
-  public function __construct()
+  function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/locale_date_format_component';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $code->writePhp($this->getComponentRefCode() . '->prepare();');
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     if(isset($this->attributes['hash_id']))
     {

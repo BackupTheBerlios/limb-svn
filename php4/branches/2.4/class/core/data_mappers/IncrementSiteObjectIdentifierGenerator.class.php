@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/SiteObjectIdentifierGenerator.interface.php')
 
 class IncrementSiteObjectIdentifierGenerator implements SiteObjectIdentifierGenerator
 {
-  public function generate($site_object)
+  function generate($site_object)
   {
     $tree = Limb :: toolkit()->getTree();
     $identifier = $tree->getMaxChildIdentifier($site_object->getParentNodeId());

@@ -15,16 +15,16 @@ class LabelComponent extends TagComponent
   /**
   * CSS class attribute to display on error
   */
-  protected $error_class;
+  var $error_class;
   /**
   * CSS style attribute to display on error
   */
-  protected $error_style;
+  var $error_style;
 
   /**
   * If either are set, assigns the attributes for error class or style
   */
-  public function setError()
+  function setError()
   {
     if (isset($this->error_class))
     {

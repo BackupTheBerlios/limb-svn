@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/core/tree/TreeSorter.class.php');
 
 class FetchTreeDatasource extends FetchSubBranchDatasource
 {
-  protected function fetch()
+  function fetch()
   {
     $tree = Limb :: toolkit()->getTree();
 
@@ -75,7 +75,7 @@ class FetchTreeDatasource extends FetchSubBranchDatasource
       $tree_array[$id]['is_first_child'] = $is_first_child;
       $tree_array[$id]['levels_status'] = $levels_status_array;
 
-      if(	$tree_array[$id]['class_name'] == 'image_object' || 
+      if(	$tree_array[$id]['class_name'] == 'image_object' ||
           $tree_array[$id]['class_name'] == 'file_object')
         $tree_array[$id]['icon'] = '/root?node_id=' . $tree_item['node_id'] . '&icon';
       elseif(isset($tree_item['icon']) &&  $tree_item['icon'])

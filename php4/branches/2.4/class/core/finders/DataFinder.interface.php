@@ -10,11 +10,11 @@
 ***********************************************************************************/
 interface DataFinder
 {
-  public function find($params = array(), $sql_params = array());//refactor!!!
+  function find($params = array(), $sql_params = array());//refactor!!!
 
-  public function findCount($sql_params=array());//refactor!!!
+  function findCount($sql_params=array());//refactor!!!
 
-  public function findById($id);
+  function findById($id);
 }
 
 ?>

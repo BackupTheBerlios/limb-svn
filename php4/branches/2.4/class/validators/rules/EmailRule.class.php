@@ -12,18 +12,18 @@ require_once(LIMB_DIR . '/class/validators/rules/DomainRule.class.php');
 
 class EmailRule extends DomainRule
 {
-  protected function checkUser($value)
+  function checkUser($value)
   {
     if (!preg_match('/^[a-z0-9]{1}([-a-z0-9_.]+)*$/', $value))
       $this->error(Strings :: get('invalid_email', 'error'));
   }
 
-  protected function checkDomain($value)
+  function checkDomain($value)
   {
     parent :: check($value);
   }
 
-  protected function check($value)
+  function check($value)
   {
     if (is_integer(strpos($value, '@')))
     {

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 class MimeType
 {
-  protected $mime_types = array();
+  var $mime_types = array();
 
   function __construct()
   {
@@ -106,7 +106,7 @@ class MimeType
     );
   }
 
-  public function getTypeIcon($mime_type, $image_size = 16)
+  function getTypeIcon($mime_type, $image_size = 16)
   {
     if(!array_key_exists($mime_type, $this->mime_types))
       $mime_type = 'default' ;
@@ -114,7 +114,7 @@ class MimeType
     return '/shared/images/mime_icons/'. $this->mime_types[$mime_type]['icon'].'.'.$image_size.'.gif';
   }
 
-  public function getTypeExtension($mime_type)
+  function getTypeExtension($mime_type)
   {
 
     if(!array_key_exists($mime_type, $this->mime_types))

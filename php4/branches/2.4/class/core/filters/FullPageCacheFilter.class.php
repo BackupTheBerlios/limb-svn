@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/cache/FullPageCacheManager.class.php');
 
 class FullPageCacheFilter implements InterceptingFilter
 {
-  public function run($filter_chain, $request, $response)
+  function run($filter_chain, $request, $response)
   {
     if(!$this->_isCachingEnabled())
     {
@@ -42,12 +42,12 @@ class FullPageCacheFilter implements InterceptingFilter
     Debug :: addTimingPoint('full page cache write finished');
   }
 
-  protected function _getFullPacheCacheManager()
+  function _getFullPacheCacheManager()
   {
     return new FullPageCacheManager();
   }
 
-  protected function _isCachingEnabled()
+  function _isCachingEnabled()
   {
     if(!defined('FULL_PAGE_CACHE_ENABLED'))
       return true;

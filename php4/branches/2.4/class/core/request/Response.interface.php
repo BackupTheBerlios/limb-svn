@@ -11,10 +11,10 @@
 
 interface Response
 {
-  public function isEmpty();
+  function isEmpty();
 
-  public function write($string);
+  function write($string);
 
-  public function commit();
+  function commit();
 }
 ?>

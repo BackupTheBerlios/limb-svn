@@ -25,7 +25,7 @@ Mock :: generate('SiteObjectBehaviour');
 //do you miss namespaces? yeah, we too :)
 class SiteObjectForCreateSiteObjectCommand extends SiteObject
 {
-  public function create($is_root = false)
+  function create($is_root = false)
   {
     throw new LimbException('catch me!');
   }
@@ -102,7 +102,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
 
     $this->dataspace->expectOnce('set', array('createdSiteObject', new IsAExpectation('MockSiteObject')));
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 
   function testPerformOkParentId()
@@ -131,7 +131,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
 
     $this->dataspace->expectOnce('set', array('createdSiteObject', new IsAExpectation('MockSiteObject')));
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 
   function testPerformFailed()

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
 class UsZipRule extends SingleFieldRule
 {
-  protected function check($value)
+  function check($value)
   {
     $value = "$value";
 

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
 class UrlRule extends SingleFieldRule
 {
-  protected function check($value)
+  function check($value)
   {
     $regex = "
       \b

@@ -11,7 +11,7 @@
 
 interface Command
 {
-  public function perform();
+  function perform();
 }
 
 ?>

@@ -12,13 +12,13 @@ require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.
 
 class JsCheckboxComponent extends InputFormElement
 {
-  public function renderAttributes()
+  function renderAttributes()
   {
     unset($this->attributes['value']);
     parent :: renderAttributes();
   }
 
-  public function renderJsCheckbox()
+  function renderJsCheckbox()
   {
     $id = $this->getAttribute('id');
     $name = $this->getAttribute('name');

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CoreDefaultTagInfo
 {
-  public $tag = 'core:DEFAULT';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'core_default_tag';
+  var $tag = 'core:DEFAULT';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'core_default_tag';
 }
 
 registerTag(new CoreDefaultTagInfo());
@@ -23,7 +23,7 @@ registerTag(new CoreDefaultTagInfo());
 */
 class CoreDefaultTag extends CompilerDirectiveTag
 {
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['for']) ||  !$this->attributes['for'])
     {
@@ -37,7 +37,7 @@ class CoreDefaultTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
     $tempvar = $code->getTempVariable();
@@ -45,7 +45,7 @@ class CoreDefaultTag extends CompilerDirectiveTag
     $code->writePhp('if (empty($' . $tempvar . ')) {');
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writePhp('}');
     parent::postGenerate($code);

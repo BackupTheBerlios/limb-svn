@@ -10,16 +10,16 @@
 ***********************************************************************************/
 class PagerSectionTagInfo
 {
-  public $tag = 'pager:section';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'pager_section_tag';
+  var $tag = 'pager:section';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'pager_section_tag';
 }
 
 registerTag(new PagerSectionTagInfo());
 
 class PagerSectionTag extends ServerComponentTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if ($this->findParentByClass('pager_section_tag'))
     {
@@ -38,7 +38,7 @@ class PagerSectionTag extends ServerComponentTag
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $parent = $this->findParentByClass('pager_navigator_tag');
     $code->writePhp('if (!' . $parent->getComponentRefCode() . '->is_display_page()) {');
@@ -52,12 +52,12 @@ class PagerSectionTag extends ServerComponentTag
     $code->writePhp('}');
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

@@ -12,44 +12,44 @@ require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
 
 class DebugMock extends Debug
 {
-  protected $expected_data = array();
-  protected $test = null;
-  protected $mock = null;
+  var $expected_data = array();
+  var $test = null;
+  var $mock = null;
 
-  static public function init($test, $wildcard = MOCK_WILDCARD)
+  function init($test, $wildcard = MOCK_WILDCARD)
   {
-    $debug = self :: instance();
+    $debug = DebugMock :: instance();
 
     $debug->test = $test;
     $debug->mock = new SimpleMock($test, $wildcard, false);
   }
 
-  static public function expectWriteException($e)
+  function expectWriteException($e)
   {
     if($e instanceof LimbException)
-      self :: _expectWrite(self :: LEVEL_ERROR, $e->getMessage(), $e->getAdditionalParams());
+      DebugMock :: _expectWrite(DebugMock :: LEVEL_ERROR, $e->getMessage(), $e->getAdditionalParams());
     else
-      self :: _expectWrite(self :: LEVEL_ERROR, $e->getMessage());
+      DebugMock :: _expectWrite(DebugMock :: LEVEL_ERROR, $e->getMessage());
   }
 
-  static public function expectWriteError($message='', $params=array())
+  function expectWriteError($message='', $params=array())
   {
-    self :: _expectWrite(self :: LEVEL_ERROR, $message, $params);
+    DebugMock :: _expectWrite(DebugMock :: LEVEL_ERROR, $message, $params);
   }
 
-  static public function expectWriteWarning($message='', $params=array())
+  function expectWriteWarning($message='', $params=array())
   {
-    self :: _expectWrite(self :: LEVEL_WARNING, $message, $params);
+    DebugMock :: _expectWrite(DebugMock :: LEVEL_WARNING, $message, $params);
   }
 
-  static public function expectWriteNotice($message='', $params=array())
+  function expectWriteNotice($message='', $params=array())
   {
-    self :: _expectWrite(self :: LEVEL_NOTICE, $message, $params);
+    DebugMock :: _expectWrite(DebugMock :: LEVEL_NOTICE, $message, $params);
   }
 
-  static protected function _expectWrite($verbosity_level, $message, $params)
+  function _expectWrite($verbosity_level, $message, $params)
   {
-    $debug = self :: instance();
+    $debug = DebugMock :: instance();
 
     $debug->expected_data[] = array(
       'level' => $verbosity_level,
@@ -61,19 +61,19 @@ class DebugMock extends Debug
     $debug->mock->expectCallCount('write', sizeof($debug->expected_data));
   }
 
-  static public function tally()
+  function tally()
   {
-    $debug = self :: instance();
+    $debug = DebugMock :: instance();
 
     $debug->mock->tally();
     $debug->expected_data = array();
   }
 
-  protected function write($verbosity_level, $string, $code_line = '', $params = array())
+  function write($verbosity_level, $string, $code_line = '', $params = array())
   {
     if(!$this->mock)
     {
-      if($verbosity_level != self :: TIMING_POINT)
+      if($verbosity_level != DebugMock :: TIMING_POINT)
         parent :: write($verbosity_level, $string, $code_line, $params);
       else
         parent :: write($verbosity_level, $string);
@@ -81,15 +81,15 @@ class DebugMock extends Debug
       return;
     }
 
-    if($verbosity_level != self :: TIMING_POINT)
+    if($verbosity_level != DebugMock :: TIMING_POINT)
     {
       $this->mock->_invoke('write', array($verbosity_level, $string, $params));
 
       $call_parent = true;
       foreach($this->expected_data as $id => $data)
       {
-        if(	$verbosity_level == $data['level'] && 
-            $string == $data['message'] && 
+        if(	$verbosity_level == $data['level'] &&
+            $string == $data['message'] &&
             $params == $data['params'])
         {
           $call_parent = false;

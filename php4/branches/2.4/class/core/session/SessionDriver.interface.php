@@ -11,12 +11,12 @@
 
 interface SessionDriver
 {
-  public function storageOpen();
-  public function storageClose();
-  public function storageRead($session_id);
-  public function storageWrite($session_id, $value);
-  public function storageDestroy($session_id);
-  public function storageDestroyUser($user_id);
-  public function storageGc($max_life_time);
+  function storageOpen();
+  function storageClose();
+  function storageRead($session_id);
+  function storageWrite($session_id, $value);
+  function storageDestroy($session_id);
+  function storageDestroyUser($user_id);
+  function storageGc($max_life_time);
 }
 ?>

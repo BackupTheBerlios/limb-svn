@@ -13,19 +13,19 @@ require_once(LIMB_DIR . '/class/validators/rules/Rule.class.php');
 
 class SingleFieldRule extends Rule
 {
-  protected $field_name;
+  var $field_name;
 
   function __construct($field_name)
   {
     $this->field_name = $field_name;
   }
 
-  public function getFieldName()
+  function getFieldName()
   {
     return $this->field_name;
   }
 
-  protected function error($error, $params=array())
+  function error($error, $params=array())
   {
     $this->is_valid = false;
 
@@ -33,7 +33,7 @@ class SingleFieldRule extends Rule
       $this->error_list->addError($this->field_name, $error, $params);
   }
 
-  public function validate($dataspace)
+  function validate($dataspace)
   {
     $this->is_valid = true;
     $value = $dataspace->get($this->field_name);
@@ -44,7 +44,7 @@ class SingleFieldRule extends Rule
     return $this->is_valid;
   }
 
-  protected function check($value)
+  function check($value)
   {
   }
 }

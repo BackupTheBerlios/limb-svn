@@ -10,27 +10,27 @@
 ***********************************************************************************/
 class EmptyTemplate
 {
-  public function findParentByClass($class)
+  function findParentByClass($class)
   {
     return null;
   }
 
-  public function findChildByClass($class)
+  function findChildByClass($class)
   {
     return null;
   }
 
-  public function findChild($server_id)
+  function findChild($server_id)
   {
     return null;
   }
 
-  public function getChild($server_id)
+  function getChild($server_id)
   {
     return null;
   }
 
-  public function display()
+  function display()
   {
     throw new LimbException('template is empty');
   }

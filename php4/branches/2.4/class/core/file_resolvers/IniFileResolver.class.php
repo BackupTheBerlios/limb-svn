@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php')
 
 class IniFileResolver implements FileResolver
 {
-  public function resolve($file_name, $params = array())
+  function resolve($file_name, $params = array())
   {
     if (file_exists(LIMB_APP_DIR . '/settings/' . $file_name))
       $dir = LIMB_APP_DIR . '/settings/';

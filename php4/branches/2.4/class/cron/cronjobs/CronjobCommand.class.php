@@ -13,24 +13,24 @@ require_once(LIMB_DIR . '/class/core/request/NonbufferedResponse.class.php');
 
 class CronjobCommand implements Command
 {
-  protected $response;
+  var $response;
 
   function __construct()
   {
     $this->response = new NonbufferedResponse();
   }
 
-  public function setResponse($response)
+  function setResponse($response)
   {
     $this->response = $response;
   }
 
-  public function getResponse()
+  function getResponse()
   {
     return $this->response;
   }
 
-  public function perform()
+  function perform()
   {
   }
 }

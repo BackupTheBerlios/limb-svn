@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 class TemplateFileResolver extends FileResolverDecorator
 {
-  public function resolve($file_path, $params = array())
+  function resolve($file_path, $params = array())
   {
     $tmpl_path = Limb :: toolkit()->getINI('common.ini')->getOption('path', 'Templates');
 
@@ -37,7 +37,7 @@ class TemplateFileResolver extends FileResolverDecorator
     return $resolved_path;
   }
 
-  protected function _getLocalePrefix()
+  function _getLocalePrefix()
   {
     if (defined('CONTENT_LOCALE_ID'))
       $locale = '_' . CONTENT_LOCALE_ID . '/';

@@ -11,13 +11,13 @@
 
 class ArrayDataset
 {
-  protected $data = array();
+  var $data = array();
 
-  protected $record = array();
+  var $record = array();
 
-  protected $first = true;
+  var $first = true;
 
-  protected $counter = 0;
+  var $counter = 0;
 
   function __construct($array = null)
   {
@@ -27,24 +27,24 @@ class ArrayDataset
     }
   }
 
-  protected function _setCurrentRecord()
+  function _setCurrentRecord()
   {
     if ($this->first)
       $this->next();
   }
 
-  protected function _saveCurrentRecord($record)
+  function _saveCurrentRecord($record)
   {
     $this->data[key($this->data)] = $record;
   }
 
-  public function reset()
+  function reset()
   {
     $this->first = true;
     $this->counter = 0;
   }
 
-  public function next()
+  function next()
   {
     if ($this->first)
     {
@@ -69,7 +69,7 @@ class ArrayDataset
     }
   }
 
-  public function get($name)
+  function get($name)
   {
     $this->_setCurrentRecord();
 
@@ -77,21 +77,21 @@ class ArrayDataset
       return $this->record[$name];
   }
 
-  public function set($name, $value)
+  function set($name, $value)
   {
     $this->_setCurrentRecord();
     $this->record[$name] = $value;
     $this->_saveCurrentRecord($this->record);
   }
 
-  public function append($name, $value)
+  function append($name, $value)
   {
     $this->_setCurrentRecord();
     $this->record[$name] .= $value;
     $this->_saveCurrentRecord($this->record);
   }
 
-  public function import($valuelist)
+  function import($valuelist)
   {
     $this->_setCurrentRecord();
     if (is_array($valuelist))
@@ -102,7 +102,7 @@ class ArrayDataset
     $this->_saveCurrentRecord($this->record);
   }
 
-  public function importAppend($valuelist)
+  function importAppend($valuelist)
   {
     if (is_array($valuelist))
     {
@@ -115,13 +115,13 @@ class ArrayDataset
     }
   }
 
-  public function export()
+  function export()
   {
     $this->_setCurrentRecord();
     return $this->record;
   }
 
-  public function addArray($array)
+  function addArray($array)
   {
     foreach ($array as $value)
     {
@@ -132,17 +132,17 @@ class ArrayDataset
     }
   }
 
-  public function getCounter()
+  function getCounter()
   {
     return $this->counter;
   }
 
-  public function getTotalRowCount()
+  function getTotalRowCount()
   {
     return sizeof($this->data);
   }
 
-  public function getByIndexString($index)
+  function getByIndexString($index)
   {
     $this->_setCurrentRecord();
 

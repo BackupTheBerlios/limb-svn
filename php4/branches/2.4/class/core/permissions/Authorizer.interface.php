@@ -11,8 +11,8 @@
 
 interface Authorizer
 {
-  public function getAccessibleObjectIds($ids, $action = 'display');
+  function getAccessibleObjectIds($ids, $action = 'display');
 
-  public function assignActionsToObjects(&$objects_data);
+  function assignActionsToObjects(&$objects_data);
 }
 ?>

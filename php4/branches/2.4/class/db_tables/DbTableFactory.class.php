@@ -19,27 +19,27 @@ if(!isRegisteredResolver('db_table'))
 
 class DbTableFactory
 {
-  static protected $_tables;
+  var $_tables;
 
-  protected function __construct(){}
+  function __construct(){}
 
-  static function create($db_table_name)
+  function create($db_table_name)
   {
-    if(isset(self :: $_tables[$db_table_name]))
-      return self :: $_tables[$db_table_name];
+    if(isset(DbTableFactory :: $_tables[$db_table_name]))
+      return DbTableFactory :: $_tables[$db_table_name];
 
-    self :: _includeClassFile($db_table_name);
+    DbTableFactory :: _includeClassFile($db_table_name);
 
     $class_name = $db_table_name . 'DbTable';
 
     $object = new $class_name();
 
-    self :: $_tables[$db_table_name] = $object;
+    DbTableFactory :: $_tables[$db_table_name] = $object;
 
     return $object;
   }
 
-  static protected function _includeClassFile($db_table_name)
+  function _includeClassFile($db_table_name)
   {
     if(class_exists($db_table_name . 'DbTable'))
       return;

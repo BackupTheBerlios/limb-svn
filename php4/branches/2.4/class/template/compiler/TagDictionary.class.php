@@ -32,17 +32,17 @@ class TagDictionary
   /**
   * Associative array of tag_info objects
   */
-  protected $tag_information = array();
+  var $tag_information = array();
   /**
   * Indexed array containing registered tag names
   */
-  protected $tag_list = array();
+  var $tag_list = array();
 
   /**
   * Registers a tag in the dictionary, called from the global register_tag()
   * function.
   */
-  public function registerTag($taginfo)
+  function registerTag($taginfo)
   {
     $tag = strtolower($taginfo->tag);
     $this->tag_list[] = $tag;
@@ -53,7 +53,7 @@ class TagDictionary
   * Gets the tag information about a given tag.
   * Called from the source_file_parser
   */
-  public function getTagInfo($tag)
+  function getTagInfo($tag)
   {
     if(isset($this->tag_information[strtolower($tag)]))
       return $this->tag_information[strtolower($tag)];
@@ -63,7 +63,7 @@ class TagDictionary
   * Gets the list of a registered tags.
   * Called from the source_file_parser
   */
-  public function getTagList()
+  function getTagList()
   {
     return $this->tag_list;
   }

@@ -11,8 +11,8 @@
 
 interface Authenticator
 {
-  public function login($params = array());
+  function login($params = array());
 
-  public function logout($params = array());
+  function logout($params = array());
 }
 ?>

@@ -12,12 +12,12 @@ require_once(dirname(__FILE__) . '/ImageLibrary.class.php');
 
 class ImageGd extends ImageLibrary
 {
-  protected $image;
-  protected $gd_version;
-  protected $option_re = '/(<tr.*%s.*<\/tr>)/Ui';
-  protected $create_func = '';
-  protected $resize_func = '';
-  protected $image_types = array(1 => 'GIF', 2 => 'JPEG', 3 => 'PNG', 4 => 'SWF', 5 => 'PSD', 6 => 'BMP', 7 => 'TIFF(intel byte order)', 8 => 'TIFF(motorola byte order)', 9 => 'JPC', 10 => 'JP2', 11 => 'JPX', 12 => 'JB2', 13 => 'SWC', 14 => 'IFF');
+  var $image;
+  var $gd_version;
+  var $option_re = '/(<tr.*%s.*<\/tr>)/Ui';
+  var $create_func = '';
+  var $resize_func = '';
+  var $image_types = array(1 => 'GIF', 2 => 'JPEG', 3 => 'PNG', 4 => 'SWF', 5 => 'PSD', 6 => 'BMP', 7 => 'TIFF(intel byte order)', 8 => 'TIFF(motorola byte order)', 9 => 'JPC', 10 => 'JP2', 11 => 'JPX', 12 => 'JB2', 13 => 'SWC', 14 => 'IFF');
 
   function __construct()
   {
@@ -43,7 +43,7 @@ class ImageGd extends ImageLibrary
     }
   }
 
-  protected function _determineGdOptions()
+  function _determineGdOptions()
   {
     if (function_exists('gd_info'))
       $this->_determineGdOptionsThroughGdInfo();
@@ -51,7 +51,7 @@ class ImageGd extends ImageLibrary
       $this->_determineGdOptionsThroughPhpInfo();
   }
 
-  protected function _determineGdOptionsThroughGdInfo()
+  function _determineGdOptionsThroughGdInfo()
   {
     $info = gd_info();
     $this->gd_version = $this->_getNumericGdVersion($info['GD Version']);
@@ -69,7 +69,7 @@ class ImageGd extends ImageLibrary
       $this->read_types[] = $this->create_types[] = 'PNG';
   }
 
-  protected function _determineGdOptionsThroughPhpInfo()
+  function _determineGdOptionsThroughPhpInfo()
   {
     ob_start();
     phpinfo();
@@ -90,21 +90,21 @@ class ImageGd extends ImageLibrary
       $this->read_types[] = $this->create_types[] = 'PNG';
   }
 
-  protected function _getGdOption($phpinfo, $option)
+  function _getGdOption($phpinfo, $option)
   {
     $re = sprintf($this->option_re, $option);
     preg_match($re, $phpinfo, $matches);
     return $matches[1];
   }
 
-  protected function _getNumericGdVersion($str)
+  function _getNumericGdVersion($str)
   {
     $re = "/[^\.\d]*([\.\d]+)[^\.\d]*/";
     preg_match($re, $str, $matches);
     return (float)$matches[1];
   }
 
-  protected function _getImage()
+  function _getImage()
   {
     if($this->image)
       return $this->image;
@@ -121,12 +121,12 @@ class ImageGd extends ImageLibrary
     return $this->image;
   }
 
-  protected function _setImage($image)
+  function _setImage($image)
   {
     $this->image = $image;
   }
 
-  public function parseHexColor($hex)
+  function parseHexColor($hex)
   {
     $length = strlen($hex);
     $color['red'] = hexdec(substr($hex, $length - 6, 2));
@@ -135,12 +135,12 @@ class ImageGd extends ImageLibrary
     return $color;
   }
 
-  public function reset()
+  function reset()
   {
     $this->image = null;
   }
 
-  public function commit()
+  function commit()
   {
     $image = $this->_getImage();
 
@@ -150,7 +150,7 @@ class ImageGd extends ImageLibrary
     $this->reset();
   }
 
-  public function resize($params)
+  function resize($params)
   {
     $image = $this->_getImage();
 
@@ -170,7 +170,7 @@ class ImageGd extends ImageLibrary
     $this->_setImage($dest_image);
   }
 
-  public function rotate($angle, $bg_color)
+  function rotate($angle, $bg_color)
   {
     $image = $this->_getImage();
 
@@ -179,7 +179,7 @@ class ImageGd extends ImageLibrary
     $this->_setImage(imagerotate($image, $angle, $background_color));
   }
 
-  public function flip($params)
+  function flip($params)
   {
     $image = $this->_getImage();
 
@@ -191,17 +191,17 @@ class ImageGd extends ImageLibrary
 
     $dest_image = $create_func($x, $y);
 
-    if ($params == self :: FLIP_HORIZONTAL)
+    if ($params == ImageGd :: FLIP_HORIZONTAL)
       $resize_func($dest_image, $image, 0, 0, $x, 0, $x, $y, -$x, $y);
 
-    if ($params == self :: FLIP_VERTICAL)
+    if ($params == ImageGd :: FLIP_VERTICAL)
       $resize_func($dest_image, $image, 0, 0, 0, $y, $x, $y, $x, -$y);
 
     imagedestroy($image);
     $this->_setImage($dest_image);
   }
 
-  public function cut($x, $y, $w, $h, $bg_color)
+  function cut($x, $y, $w, $h, $bg_color)
   {
     $image = $this->_getImage();
 

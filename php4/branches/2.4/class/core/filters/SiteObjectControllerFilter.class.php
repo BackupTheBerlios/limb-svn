@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 
 class SiteObjectControllerFilter implements InterceptingFilter
 {
-  public function run($filter_chain, $request, $response)
+  function run($filter_chain, $request, $response)
   {
     Debug :: addTimingPoint('site object controller filter started');
 
@@ -28,7 +28,7 @@ class SiteObjectControllerFilter implements InterceptingFilter
     $filter_chain->next();
   }
 
-  protected function _getController($behaviour)
+  function _getController($behaviour)
   {
     return new SiteObjectController($behaviour);
   }

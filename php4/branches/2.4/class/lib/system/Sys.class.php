@@ -14,16 +14,14 @@ require_once(LIMB_DIR . '/class/lib/http/Ip.class.php');
 
 class Sys
 {
-  protected static $instance = null;
-
-  protected $line_separator;		// line separator used in files
-  protected $file_separator;		// directory separator used for files
-  protected $env_separator;			// list separator used for env variables
-  protected $request_uri;				// uri which is used for parsing module/view information from, may differ from $_SERVER['REQUEST_URI']
-  protected $file_system_type;	// type of file_system, is either win32 or unix. This often used to determine os specific paths.
-  protected $os_type;						// type of file_system, is either win32 or unix. This often used to determine os specific paths.
-  protected $client_ip;					// type of file_system, is either win32 or unix. This often used to determine os specific paths.
-  protected $exec_mode = null;	// cli, cgi, module
+  var $line_separator;		// line separator used in files
+  var $file_separator;		// directory separator used for files
+  var $env_separator;			// list separator used for env variables
+  var $request_uri;				// uri which is used for parsing module/view information from, may differ from $_SERVER['REQUEST_URI']
+  var $file_system_type;	// type of file_system, is either win32 or unix. This often used to determine os specific paths.
+  var $os_type;						// type of file_system, is either win32 or unix. This often used to determine os specific paths.
+  var $client_ip;					// type of file_system, is either win32 or unix. This often used to determine os specific paths.
+  var $exec_mode = null;	// cli, cgi, module
 
   /*
    Initializes the object with settings taken from the current script run.
@@ -33,15 +31,15 @@ class Sys
     $this->_collectSystemParams();
   }
 
-  static public function instance()
+  function & instance()
   {
-    if (!self :: $instance)
-      self :: $instance = new Sys();
+    if (!isset($GLOBALS['SysGlobalInstance']) || !is_a($GLOBALS['SysGlobalInstance'], 'Sys'))
+      $GLOBALS['SysGlobalInstance'] =& new Sys();
 
-    return self :: $instance;
+    return $GLOBALS['SysGlobalInstance'];
   }
 
-  protected function _collectSystemParams()
+  function _collectSystemParams()
   {
     // Determine OS specific settings
     if ( substr( php_uname(), 0, 7 ) == 'Windows' )
@@ -72,7 +70,7 @@ class Sys
       $this->backup_filename = '~';
     }
 
-    $request_uri = self :: serverVariable('REQUEST_URI');
+    $request_uri = Sys :: serverVariable('REQUEST_URI');
 
     // Remove url parameters
     if ( ereg( "([^?]+)", $request_uri, $regs ) )
@@ -108,61 +106,68 @@ class Sys
       $this->exec_mode = 'module';
   }
 
-  static public function osType()
+  function osType()
   {
-    return Sys::instance()->os_type;
+    $inst =& Sys::instance();
+    return $inst->os_type;
   }
 
-  static public function clientIp()
+  function clientIp()
   {
-    return Sys::instance()->client_ip;
+    $inst =& Sys::instance();
+    return $inst->client_ip;
   }
 
   /*
    return the file_system type, either "win32" or "unix"
   */
-  static public function fileSystemType()
+  function fileSystemType()
   {
-    return Sys::instance()->file_system_type;
+    $inst =& Sys::instance();
+    return $inst->file_system_type;
   }
 
   /*
    Returns the string which is used for file separators on the current OS (server).
   */
-  static public function fileSeparator()
+  function fileSeparator()
   {
-    return Sys::instance()->file_separator;
+    $inst =& Sys::instance();
+    return $inst->file_separator;
   }
 
   /*
    return the backup filename for this platform, returns .bak for win32 and ~ for unix and mac.
   */
-  static public function backupFilename()
+  function backupFilename()
   {
-    return Sys::instance()->backup_filename;
+    $inst =& Sys::instance();
+    return $inst->backup_filename;
   }
 
   /*
    Returns the string which is used for line separators on the current OS (server).
   */
-  static public function lineSeparator()
+  function lineSeparator()
   {
-    return Sys::instance()->line_separator;
+    $inst =& Sys::instance();
+    return $inst->line_separator;
   }
 
   /*
    Returns the string which is used for enviroment separators on the current OS (server).
   */
-  static public function envSeparator()
+  function envSeparator()
   {
-    return Sys::instance()->env_separator;
+    $inst =& Sys::instance();
+    return $inst->env_separator;
   }
 
   /*
    return the variable named $name in the global $_SERVER variable.
    If the variable is not present an error is shown and null is returned.
   */
-  static public function serverVariable($name)
+  function serverVariable($name)
   {
     if (isset($_SERVER[$name]))
       return $_SERVER[$name];
@@ -172,7 +177,7 @@ class Sys
    Sets the server variable named $name to $value.
    note Variables are only set for the current page view.
   */
-  static public function setServerVariable($name, $value)
+  function setServerVariable($name, $value)
   {
     $_SERVER[$name] = $value;
   }
@@ -180,7 +185,7 @@ class Sys
   /*
    return the variable named $name in the global $_ENV variable.
   */
-  static public function environmentVariable($name)
+  function environmentVariable($name)
   {
     if (isset($_ENV[$name]))
       return $_ENV[$name];
@@ -190,19 +195,21 @@ class Sys
    Sets the environment variable named $name to $value.
    Variables are only set for the current page view.
   */
-  static public function setEnvironmentVariable($name, $value)
+  function setEnvironmentVariable($name, $value)
   {
     $_ENV[$name] = $value;
   }
 
-  static public function execMode()
+  function execMode()
   {
-    return Sys::instance()->exec_mode;
+    $inst =& Sys::instance();
+    return $inst->exec_mode;
   }
 
-  static public function requestUri()
+  function requestUri()
   {
-    return Sys::instance()->request_uri;
+    $inst =& Sys::instance();
+    return $inst->request_uri;
   }
 }
 

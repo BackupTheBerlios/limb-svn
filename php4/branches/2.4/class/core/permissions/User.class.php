@@ -15,10 +15,9 @@ require_once(LIMB_DIR . '/class/core/Object.class.php');
 class User extends Object
 {
   const DEFAULT_USER_ID = -1;
-  protected static $_instance = null;
 
-  protected $_is_logged_in = false;
-  protected $__session_class_path;
+  var $_is_logged_in = false;
+  var $__session_class_path;
 
   function __construct()
   {
@@ -28,39 +27,39 @@ class User extends Object
     parent :: __construct();
   }
 
-  static public function instance()
+  function & instance()
   {
-    if (!self :: $_instance)
-      self :: $_instance = instantiateSessionObject('user');
+    if (!isset($GLOBALS['UserGlobalInstance']) || !is_a($GLOBALS['UserGlobalInstance'], 'User'))
+      $GLOBALS['UserGlobalInstance'] =& instantiateSessionObject('User');
 
-    return self :: $_instance;
+    return $GLOBALS['UserGlobalInstance'];
   }
 
-  public function login()
+  function login()
   {
     $this->_is_logged_in = true;
   }
 
-  public function logout()
+  function logout()
   {
     $this->reset();
 
     $this->_is_logged_in = false;
   }
 
-  public function isLoggedIn()
+  function isLoggedIn()
   {
     return $this->_is_logged_in;
   }
 
-  public function getLogin()
+  function getLogin()
   {
     return $this->get('login');
   }
 
-  public function getId()
+  function getId()
   {
-    return $this->get('id', self :: DEFAULT_USER_ID);
+    return $this->get('id', User :: DEFAULT_USER_ID);
   }
 }
 ?>

@@ -14,13 +14,13 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
 {
   protected  $_db_table = null;
 
-  protected function _getFinder()
+  function _getFinder()
   {
     include_once(LIMB_DIR . '/class/core/finders/FinderFactory.class.php');
     return FinderFactory :: create('OneTableObjectsRawFinder');
   }
 
-  public function getDbTable()
+  function getDbTable()
   {
     if(!$this->_db_table)
     {
@@ -32,34 +32,34 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
     return $this->_db_table;
   }
 
-  abstract protected function _defineDbTableName();
+  abstract function _defineDbTableName();
 
   //for mocking
-  protected function _doParentInsert($site_object)
+  function _doParentInsert($site_object)
   {
     return parent :: insert($site_object);
   }
 
   //for mocking
-  protected function _doParentUpdate($site_object)
+  function _doParentUpdate($site_object)
   {
     parent :: update($site_object);
   }
 
   //for mocking
-  protected function _doParentDelete($site_object)
+  function _doParentDelete($site_object)
   {
     parent :: delete($site_object);
   }
 
-  public function update($site_object)
+  function update($site_object)
   {
     $this->_doParentUpdate($site_object);
 
     $this->_updateLinkedTableRecord($site_object);
   }
 
-  public function insert($site_object)
+  function insert($site_object)
   {
     $id = $this->_doParentInsert($site_object);
 
@@ -68,14 +68,14 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
     return $id;
   }
 
-  public function delete($site_object)
+  function delete($site_object)
   {
     $this->_doParentDelete($site_object);
 
     $this->_deleteLinkedTableRecord($site_object);
   }
 
-  protected function _insertLinkedTableRecord($site_object)
+  function _insertLinkedTableRecord($site_object)
   {
     $data = $site_object->export();
     $data['object_id'] = $site_object->getId();
@@ -84,7 +84,7 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
     $this->getDbTable()->insert($data);
   }
 
-  protected function _updateLinkedTableRecord($site_object)
+  function _updateLinkedTableRecord($site_object)
   {
     $data = $site_object->export();
     unset($data['id']);
@@ -92,7 +92,7 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
     $this->getDbTable()->update($data, array('object_id' => $site_object->getId()));
   }
 
-  protected function _deleteLinkedTableRecord($site_object)
+  function _deleteLinkedTableRecord($site_object)
   {
     $db_table = $this->getDbTable();
     $db_table->delete(array('object_id' => $site_object->getId()));

@@ -11,11 +11,11 @@
 
 class FilterChain
 {
-  protected $filters = array();
-  protected $counter = 0;
+  var $filters = array();
+  var $counter = 0;
 
-  protected $request;
-  protected $response;
+  var $request;
+  var $response;
 
   function __construct($request, $response)
   {
@@ -23,12 +23,12 @@ class FilterChain
     $this->response = $response;
   }
 
-  public function registerFilter($filter)
+  function registerFilter($filter)
   {
     $this->filters[] = $filter;
   }
 
-  public function hasFilter($filter_class)
+  function hasFilter($filter_class)
   {
     foreach(array_keys($this->filters) as $key)
     {
@@ -40,7 +40,7 @@ class FilterChain
     return false;
   }
 
-  public function next()
+  function next()
   {
     $this->counter++;
 
@@ -51,7 +51,7 @@ class FilterChain
     }
   }
 
-  public function process()
+  function process()
   {
     $this->counter = 0;
 

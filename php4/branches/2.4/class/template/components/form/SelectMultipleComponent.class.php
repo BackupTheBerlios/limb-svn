@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/template/components/form/OptionsFormElement.clas
 
 class SelectMultipleComponent extends OptionsFormElement
 {
-  protected function _processNameAttribute($value)
+  function _processNameAttribute($value)
   {
     return parent :: _processNameAttribute($value) . '[]';
   }
 
-  protected function _renderOptions()
+  function _renderOptions()
   {
     $values = $this->getValue();
 
@@ -30,7 +30,7 @@ class SelectMultipleComponent extends OptionsFormElement
     }
   }
 
-  public function getValue()
+  function getValue()
   {
     return ContainerFormElement :: getValue();
   }

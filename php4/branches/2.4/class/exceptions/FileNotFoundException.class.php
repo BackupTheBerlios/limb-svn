@@ -11,9 +11,9 @@
 
 class FileNotFoundException extends LimbException
 {
-  protected $_file_path;
+  var $_file_path;
 
-  public function __construct($message, $file_path, $params = array())
+  function __construct($message, $file_path, $params = array())
   {
     $this->_file_path = $file_path;
 
@@ -22,7 +22,7 @@ class FileNotFoundException extends LimbException
     parent::__construct($message, $params);
   }
 
-  public function getFilePath()
+  function getFilePath()
   {
     return $this->_file_path;
   }
