@@ -1,0 +1,17 @@
+<fieldset>
+  <legend style='color:#000000'><limb:locale:STRING file="stats">report_filter</limb:locale:STRING></legend>
+  <table>
+  <form id='report_form' name='report_form' method='post'>
+    <core:INCLUDE file='/stats/period_filter_fields.html'>
+    <tr>
+      <td>
+      </td>
+      <td>
+        <input type="submit" name="update" value="{update|LimbI18NString}" class="button">
+        <input class='button' type='reset' value='Reset'>
+        <input class='hidden' name='action' type='reset' value='ipsReport'>
+      </td>
+    </tr>
+  </form>
+  </table>
+</fieldset>

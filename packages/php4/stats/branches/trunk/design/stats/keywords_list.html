@@ -1,21 +1,21 @@
-<core:WRAP file="admin/site_management_page.html" placeholder="content">
+<core:WRAP file="/admin/site_management_page.html" placeholder="content">
 
-<core:INCLUDE file='/stats_report/reports_links.html'>
+<core:INCLUDE file='/stats/reports_links.html'>
 
-<core:INCLUDE file="/stats_report/ips_form.html"><br>
+<core:INCLUDE file="/stats/keywords_form.html"><br>
 <br>
 
 <DATASOURCE target='table' navigator='pager'>
-	<core:PARAMETER name='datasource_path' value='stats_ips_list_datasource'>
+  <core:PARAMETER name='datasource_path' value='stats_keywords_list_datasource'>
 </DATASOURCE>
 
 <pager:navigator id="pager" items="30">
-	<core:INCLUDE file="pager_contents.html">
+  <core:INCLUDE file="pager_contents.html">
 </pager:navigator>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<th>IP</th>
+<th>Phrase</th>
 <th>hits</th>
 <th>%</th>
 </tr>
@@ -30,7 +30,7 @@
 <tr>
 </grid:STRIPE>
 
-<td><core:IP hash_id='ip'></td>
+<td>{$phrase}</td>
 <td>{$hits}</td>
 <td>{$percentage}</td>
 </tr>
