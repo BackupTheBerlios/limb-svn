@@ -44,7 +44,10 @@ if(!$node)
 	if (debug :: is_console_enabled())
 		echo debug :: parse_html_console();
 
-	header("HTTP/1.1 404 Not found");
+	if(defined("ERROR_DOCUMENT_404") && !isset($_GET['node_id']))
+		reload(ERROR_DOCUMENT_404);
+	else
+		header("HTTP/1.1 404 Not found");
 	exit;
 }
 
@@ -54,8 +57,12 @@ if(!$object_data =& fetch_one_by_node_id($node['id']))
 	ob_end_clean();
 	if (debug :: is_console_enabled())
 		echo debug :: parse_html_console();
+	
+	if(defined("ERROR_DOCUMENT_403") && !isset($_GET['node_id']))
+		reload(ERROR_DOCUMENT_403);
+	else
+		header("HTTP/1.1 403 Access denied");
 
-	header("HTTP/1.1 403 Access denied");
 	exit;  
 }
 
@@ -78,8 +85,11 @@ if(($action = $site_object_controller->determine_action()) === false)
 	ob_end_clean();
 	if (debug :: is_console_enabled())
 		echo debug :: parse_html_console();
-
-	header("HTTP/1.1 404 Not found");
+	
+	if(defined("ERROR_DOCUMENT_404"))
+		reload(ERROR_DOCUMENT_404);
+	else
+		header("HTTP/1.1 404 Not found");
 	exit;
 }
 
@@ -92,7 +102,11 @@ if(!isset($actions[$action]))
 	if (debug :: is_console_enabled())
 		echo debug :: parse_html_console();
 
-	header("HTTP/1.1 403 Access denied");
+	if(defined("ERROR_DOCUMENT_403"))
+		reload(ERROR_DOCUMENT_403);
+	else
+		header("HTTP/1.1 403 Access denied");
+
 	exit;
 }
 
@@ -114,4 +128,5 @@ if (debug :: is_console_enabled())
 	echo debug :: parse_html_console();
 
 ob_end_flush();
+
 ?>

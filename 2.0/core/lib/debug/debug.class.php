@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: debug.class.php 418 2004-02-08 11:31:53Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -481,7 +481,7 @@ class debug
   */
 	function is_debug_enabled()
 	{
-		return (!defined('DEBUG_ENABLED') || (defined('DEBUG_ENABLED') && constant('DEBUG_ENABLED')));
+		return (defined('DEBUG_ENABLED') && constant('DEBUG_ENABLED'));
 	} 
 	
 	function is_console_enabled()
