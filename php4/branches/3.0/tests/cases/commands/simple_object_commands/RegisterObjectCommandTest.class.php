@@ -18,16 +18,6 @@ class RegisterObjectCommandTest extends LimbTestCase
     parent :: LimbTestCase('register object command test');
   }
 
-  function setUp()
-  {
-    Limb :: saveToolkit();
-  }
-
-  function tearDown()
-  {
-    Limb :: restoreToolkit();
-  }
-
   function testPerform()
   {
     $object = new SimpleObject();

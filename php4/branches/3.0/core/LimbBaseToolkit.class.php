@@ -39,6 +39,7 @@ class LimbBaseToolkit// implements LimbToolkit
     $this->view = null;
     $this->cache = null;
     $this->uow = null;
+    $this->processed_object = null;
     $this->ini_cache = array();
   }
 

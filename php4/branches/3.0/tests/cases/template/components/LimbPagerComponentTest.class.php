@@ -18,30 +18,33 @@ Mock :: generate('Request');
 class LimbPagerComponentTest extends LimbTestCase
 {
   var $component;
-  var $request;
 
   function LimbPagerComponentTest()
   {
     parent :: LimbTestCase('limb pager component test');
 
     $toolkit =& Limb :: toolkit();
-    $this->request =& $toolkit->getRequest();
   }
 
   function setUp()
   {
+    Limb :: saveToolkit();
     $this->component = new LimbPagerComponent();
   }
 
   function tearDown()
   {
+    Limb :: restoreToolkit();
   }
 
   function testReset()
   {
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+
     $this->component->id = $id = 'navigator';
 
-    $this->request->set($this->component->getPagerId(), 2);
+    $request->set($this->component->getPagerId(), 2);
 
     $this->component->setItemsPerPage(10);
     $this->component->setPagesPerSection(5);
@@ -67,7 +70,9 @@ class LimbPagerComponentTest extends LimbTestCase
   {
     $this->component->id = $id = 'navigator';
 
-    $this->request->set($this->component->getPagerId(), 2);
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $request->set($this->component->getPagerId(), 2);
 
     $this->component->setItemsPerPage(10);
     $this->component->setPagesPerSection(5);
@@ -92,7 +97,9 @@ class LimbPagerComponentTest extends LimbTestCase
   {
     $this->component->id = $id = 'navigator';
 
-    $this->request->set($this->component->getPagerId(), 2);
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $request->set($this->component->getPagerId(), 2);
 
     $this->component->setTotalItems(40);
     $this->component->setItemsPerPage(10);
@@ -112,7 +119,9 @@ class LimbPagerComponentTest extends LimbTestCase
   {
     $this->component->id = $id = 'navigator';
 
-    $this->request->set($this->component->getPagerId(), 2);
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $request->set($this->component->getPagerId(), 2);
 
     $this->component->setTotalItems(40);
     $this->component->setItemsPerPage(10);
@@ -136,7 +145,9 @@ class LimbPagerComponentTest extends LimbTestCase
   {
     $this->component->id = $id = 'navigator';
 
-    $this->request->set($this->component->getPagerId(), 2);
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $request->set($this->component->getPagerId(), 2);
 
     $this->component->setTotalItems(40);
     $this->component->setItemsPerPage(3);
@@ -155,7 +166,9 @@ class LimbPagerComponentTest extends LimbTestCase
   {
     $this->component->id = $id = 'navigator';
 
-    $this->request->set($this->component->getPagerId(), 2);
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $request->set($this->component->getPagerId(), 2);
 
     $this->component->setTotalItems(40);
     $this->component->setItemsPerPage(10);// 4 pages total
@@ -174,7 +187,9 @@ class LimbPagerComponentTest extends LimbTestCase
   {
     $this->component->id = $id = 'navigator';
 
-    $this->request->set($this->component->getPagerId(), 2);
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $request->set($this->component->getPagerId(), 2);
 
     $this->component->setTotalItems(40);
     $this->component->setItemsPerPage(5);

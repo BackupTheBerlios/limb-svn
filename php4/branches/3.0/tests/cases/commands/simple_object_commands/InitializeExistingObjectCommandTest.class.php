@@ -18,16 +18,6 @@ class InitializeExistingObjectCommandTest extends LimbTestCase
     parent :: LimbTestCase('initialize existing object command test');
   }
 
-  function setUp()
-  {
-    Limb :: saveToolkit();
-  }
-
-  function tearDown()
-  {
-    Limb :: restoreToolkit();
-  }
-
   function testPerform()
   {
     $handle = new Handle('SimpleObject');

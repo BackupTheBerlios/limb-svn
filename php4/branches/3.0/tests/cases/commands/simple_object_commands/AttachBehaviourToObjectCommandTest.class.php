@@ -19,16 +19,6 @@ class AttachBehaviourToObjectCommandTest extends LimbTestCase
     parent :: LimbTestCase('attach behaviour to object command test');
   }
 
-  function setUp()
-  {
-    Limb :: saveToolkit();
-  }
-
-  function tearDown()
-  {
-    Limb :: restoreToolkit();
-  }
-
   function testPerform()
   {
     $toolkit =& Limb :: toolkit();

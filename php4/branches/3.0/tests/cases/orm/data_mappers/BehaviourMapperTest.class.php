@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/BehaviourMapper.class.php');
 require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
+require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
 
 Mock :: generatePartial('BehaviourMapper',
                         'BehaviourMapperTestVersion',
