@@ -72,7 +72,7 @@ class form_component extends tag_component
 			{
 				if($child =& $this->find_child($field_name))
 				{
-					if(!$label = $child->_attribute('label'))
+					if(!$label = $child->get_attribute('label'))
 						$label = $child->get_server_id();
 						
 					$array[] = array('label' => $label, 'error_message' => $error['error']);
