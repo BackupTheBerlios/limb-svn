@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 if(!$SimpleTest_dir = get_ini_option('external.ini', 'library_path', 'SimpleTest'))
   $SimpleTest_dir = '../external/SimpleTest/';
-  
+
 define('SIMPLE_TEST', $SimpleTest_dir);
 
 if ( !file_exists(SIMPLE_TEST . 'unit_tester.php') ) 
