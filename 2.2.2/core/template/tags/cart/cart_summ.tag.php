@@ -5,17 +5,17 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: datasource.tag.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-class sart_summ_tag_info
+class cart_summ_tag_info
 {
 	var $tag = 'cart:SUMM';
 	var $end_tag = ENDTAG_FORBIDDEN;
 	var $tag_class = 'cart_summ_tag';
 } 
 
-register_tag(new sart_summ_tag_info());
+register_tag(new cart_summ_tag_info());
 
 class cart_summ_tag extends server_component_tag
 {

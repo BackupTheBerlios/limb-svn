@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: poll_component.class.php 45 2004-03-18 16:26:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
@@ -15,8 +15,9 @@ class cart_summ_component extends component
 	function get_cart_summ()
 	{
 		$cart =& cart :: instance();
+		$locale = locale :: instance();
 		
-		return $cart->get_total_summ();
+		return number_format($cart->get_total_summ(), $locale->fract_digits, $locale->decimal_symbol, $locale->thousand_separator);
 	}
 } 
 
