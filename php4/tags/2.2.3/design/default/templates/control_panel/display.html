@@ -1,0 +1,116 @@
+<html>
+<head>
+	<title></title>
+	<meta http-equiv='Content-Type' content='text/html; charset=windows-1251'>
+	<link rel='stylesheet' type="text/css" href="/design/main/styles/admin.css">
+	<link rel='stylesheet' type="text/css" href="/shared/styles/admin.css">
+	<script language="javascript" src="/shared/js/common.js"></script>
+	<script language="javascript" src="/shared/js/tabs.js"></script>
+</head>
+<body bgcolor='#ffffff'>
+<table width='100%'>
+	<tr>
+		<td width='100%'></td>
+		<td nowrap><core:INCLUDE file="admin/select_user_locale_form.html"></td>
+		<td nowrap><core:INCLUDE file="admin/current_user_info.html"></td>
+	</tr>
+</table>
+<fetch:SUB_BRANCH target="tabs_header, tabs_body" >
+	<core:PARAMETER name='loader_class_name' value='navigation_item' >
+	<core:PARAMETER name='path' value='/root/navigation/admin' >
+	<core:PARAMETER name='order' value='priority=ASC'>
+	<core:PARAMETER name='depth' value='1'>
+</fetch:SUB_BRANCH>
+
+<script>
+	var tabs = new tabs_container();
+
+	function activate_tab(tab)
+	{
+		for(i=0; i<window.frames.length; i++)
+			if (window.frames[i].name == tab.data.iframe_name)
+			{
+				if (window.frames[i].location.href == 'about:blank' || window.frames[i].location.href == '')
+				{
+					window.frames[i].location.href = tab.data.src;
+				}
+				break;
+			}
+	}
+
+	function go_home(tab_id)
+	{	
+		iframe_name = tabs.tab_items[tab_id].data.iframe_name;
+		home_src = tabs.tab_items[tab_id].data.src;
+
+		for(i=0; i<window.frames.length; i++)
+			if (window.frames[i].name == iframe_name)
+			{
+				if (window.frames[i].location.href != home_src)
+				{
+					window.frames[i].location.href = home_src;
+				}
+				break;
+			}
+	}
+	
+	function reload(tab_id)
+	{	
+		iframe_name = tabs.tab_items[tab_id].data.iframe_name;
+
+		for(i=0; i<window.frames.length; i++)
+			if (window.frames[i].name == iframe_name)
+			{
+				window.frames[i].location.reload();
+				break;
+			}
+	}
+	
+</script>
+
+<grid:LIST id='tabs_header'>
+<table width='100%' border='0' cellspacing='0' cellpadding='0' class="tabulator">
+<tr>    
+  <td class="tab">&nbsp;</td>
+	<grid:ITERATOR>
+    <td id='tab_{$identifier}'>
+			<table border='0' cellspacing='0' cellpadding='0' style='height:100%'>
+			<tr>
+				<td nowrap class="tab">
+				<a href='JavaScript:void(0);'>{$title}</a>
+				<a href="JavaScript:go_home('tab_{$identifier}')">h</a>
+				<a href="JavaScript:reload('tab_{$identifier}');">r</a>
+				</td>
+			</tr>
+			</table>	
+		</td>
+	</grid:ITERATOR>
+  <td class=tab width=100%>&nbsp;</td>
+</tr>
+</table>
+<script type='text/javascript'>
+</script>
+
+</grid:LIST>
+
+<grid:LIST id='tabs_body'>
+	<grid:ITERATOR>
+<div id='tab_{$identifier}_content'>			
+	<iframe src='about:blank' id='iframe_{$identifier}' name='iframe_{$identifier}' width='100%' height='90%'></iframe>
+</div>
+<script type='text/javascript'>
+	tab_data = {'id': 'tab_{$identifier}', 'activate_handler': activate_tab, 'src': '{$url}', 'iframe_name': 'iframe_{$identifier}'}
+	tabs.register_tab_item(tab_data);
+</script>
+
+	</grid:ITERATOR>
+<script type='text/javascript'>
+	if (active_tab = get_cookie('active_tab'))
+		tabs.activate(active_tab);
+	else
+		tabs.activate('');
+</script>
+</grid:LIST>
+
+</body>
+</html>
