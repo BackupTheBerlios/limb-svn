@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/shipping/shipping_configuration.class.php'); 
+require_once(dirname(__FILE__) . '/shipping_configuration.class.php'); 
 require_once(LIMB_DIR . 'class/lib/system/fs.class.php'); 
 
 define('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME', 60*60*24*7);
@@ -29,17 +29,18 @@ class shipping_locator
   {
     if($this->cache)  
       return $this->cache;
+        
+    include_once('Cache/Lite.php');
+    include_once(LIMB_DIR . '/class/lib/system/fs.class.php');
     
-    
-    die('fix me: should use Pear::Lite_Cache!!!');
-    include_once(LIMB_DIR . '/core/lib/cache/cache_lite.class.php');
+    fs :: mkdir(VAR_DIR . '/shipping_options');
     
     $options = array(
-      'cache_dir' => VAR_DIR . '/shipping_options',
-      'life_time' => $this->cache_life_time
+      'cacheDir' => VAR_DIR . '/shipping_options/',
+      'lifeTime' => $this->cache_life_time
     );
         
-    $this->cache =& new cache_lite($options);      
+    $this->cache =& new Cache_Lite($options);      
      
     return $this->cache;    
   }

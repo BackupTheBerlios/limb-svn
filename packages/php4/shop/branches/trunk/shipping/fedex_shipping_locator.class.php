@@ -20,7 +20,7 @@ define('SHIPPING_FEDEX_SERVER_TIMEOUT', 60);
 define('SHIPPING_FEDEX_SERVER_COOKIE_FILE', tempnam(VAR_DIR, 'cookie'));
 define('SHIPPING_FEDEX_SERVER_USERAGENT', 'Mozilla/4.0 (compatible; MSIE 5.5; Windows 98)');
 
-require_once(dirname(__FILE__) . '/shipping/shipping_locator.class.php'); 
+require_once(dirname(__FILE__) . '/shipping_locator.class.php'); 
 
 class fedex_shipping_locator extends shipping_locator
 {
@@ -55,7 +55,7 @@ class fedex_shipping_locator extends shipping_locator
   function _parse_html_options($html)
   {
     include_once(LIMB_COMMON_DIR . '/setup_HTMLSax.inc.php');
-    include_once(LIMB_DIR . '/core/model/shop/shipping/fedex_sax_handler.class.php');
+    include_once(dirname(__FILE__) . '/fedex_sax_handler.class.php');
     
     $options = array();
     

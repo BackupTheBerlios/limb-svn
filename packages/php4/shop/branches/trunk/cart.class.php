@@ -136,7 +136,7 @@ class cart
 		$result_array = array();
 		foreach(array_keys($items) as $key)
 		{
-			$result_array[$key] = $items[$key]->export_attributes();
+			$result_array[$key] = $items[$key]->export();
 			$result_array[$key]['summ'] = $items[$key]->get_summ();
 		}
 		
