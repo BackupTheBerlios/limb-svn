@@ -20,7 +20,7 @@ class StatsSearchPhrase
   function StatsSearchPhrase()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
 
     $this->url = new Uri();
   }

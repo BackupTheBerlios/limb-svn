@@ -18,7 +18,7 @@ class StatsKeywordsReport //implements StatsReportInterface
   function StatsKeywordsReport()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function fetch($params = array())

@@ -19,7 +19,7 @@ class FullTextSearch
   function FullTextSearch()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
 
     $this->use_boolean_mode = $this->_checkBooleanMode();
   }

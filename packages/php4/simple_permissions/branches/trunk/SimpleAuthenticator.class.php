@@ -61,7 +61,7 @@ class SimpleAuthenticator// implements Authenticator
   function _getDefaultDbGroups()
   {
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $sql = "SELECT
             sso.id as id,
@@ -90,7 +90,7 @@ class SimpleAuthenticator// implements Authenticator
   {
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $sql = "SELECT
             sso.id as id,
@@ -121,7 +121,7 @@ class SimpleAuthenticator// implements Authenticator
     $crypted_password = SimpleAuthenticator :: getCryptedPassword($login, $password);
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $sql = "SELECT
             sso.id as id,

@@ -18,7 +18,7 @@ class StatsReferersReport //implements StatsReportInterface
   function StatsReferersReport()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function fetch($params = array())

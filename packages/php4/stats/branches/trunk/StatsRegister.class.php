@@ -25,7 +25,7 @@ class StatsRegister
     $this->_reg_date = new Date();
 
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function getRegisterTimeStamp()

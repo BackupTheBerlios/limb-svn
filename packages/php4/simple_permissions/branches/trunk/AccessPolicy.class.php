@@ -234,7 +234,7 @@ class AccessPolicy
   function getAccessTemplates($behaviour_id, $accessor_type)
   {
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $sql = "SELECT
             saat.action_name as action_name,

@@ -75,7 +75,7 @@ class MetadataComponent extends Component
     ORDER BY ssot.level';
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
     $db->sqlExec($sql);
 
     return $db->getArray('id');

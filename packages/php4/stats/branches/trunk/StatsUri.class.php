@@ -18,7 +18,7 @@ class StatsUri
   function StatsUri()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
 
     $this->url = new Uri();
   }

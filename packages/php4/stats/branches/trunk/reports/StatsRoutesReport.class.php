@@ -22,7 +22,7 @@ class StatsRoutesReport //implements StatsReportInterface
   function StatsRoutesReport()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function fetch($params = array())

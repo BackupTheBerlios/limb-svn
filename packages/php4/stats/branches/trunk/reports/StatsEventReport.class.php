@@ -19,7 +19,7 @@ class StatsEventReport //implements StatsReportInterface
   function StatsEventReport()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function setLoginFilter($login_string)

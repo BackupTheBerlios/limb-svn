@@ -18,7 +18,7 @@ class StatsIpsReport// implements StatsReportInterface
   function StatsIpsReport()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function fetch($params = array())

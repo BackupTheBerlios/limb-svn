@@ -19,7 +19,7 @@ class FullTextIndexer
   function FullTextIndexer()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function & instance()

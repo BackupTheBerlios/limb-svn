@@ -18,7 +18,7 @@ class StatsHitsHostsByDaysReport //implements StatsReportInterface
   function StatsHitsHostsByDaysReport()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function fetch($params = array())

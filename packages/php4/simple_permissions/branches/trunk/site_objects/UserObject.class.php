@@ -141,7 +141,7 @@ class UserObject extends ContentObject
   function getUserByEmail($email)
   {
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $sql =
       'SELECT *, scot.id as node_id, sco.id as id FROM

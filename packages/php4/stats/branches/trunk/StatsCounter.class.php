@@ -22,7 +22,7 @@ class StatsCounter
   function StatsCounter()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
   }
 
   function setNewHost($status = true)

@@ -52,7 +52,7 @@ class ImageObjectsRawFinder extends OneTableObjectsRawFinder
             iv.image_id IN {$ids}";
 
     $t =& Limb :: toolkit();
-    $db =& $t->getDB();
+    $db =& $t->getDbConnection();
 
     $db->sqlExec($sql);
 

@@ -27,7 +27,7 @@ class SimpleAuthorizer// implements Authorizer
     $accessor_ids = implode(',', $accessor_ids);
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $sql = "SELECT soa.object_id as id
       FROM sys_object_access as soa
@@ -130,7 +130,7 @@ class SimpleAuthorizer// implements Authorizer
     $in_ids = implode(',', $accessor_ids);
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $sql = "SELECT saa.action_name as action_name FROM sys_action_access as saa
       WHERE saa.behaviour_id = {$behaviour_id} AND
