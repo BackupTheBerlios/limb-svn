@@ -22,7 +22,7 @@ register_tag(new grid_button_tag_info());
 
 class grid_button_tag extends button_tag
 {
-	var $runtime_component_path = '/core/template/components/form/input_submit_component';
+	var $runtime_component_path = '/core/template/components/form/grid_button_component';
 		
 	function check_nesting_level()
 	{
@@ -33,14 +33,6 @@ class grid_button_tag extends button_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		}
-		
-		if (!isset($this->attributes['path']))
-		{
-			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'attribute' => 'path',
-					'file' => $this->source_file,
-					'line' => $this->starting_line_no));
-		} 
 	}
 
 	function prepare()
@@ -50,17 +42,6 @@ class grid_button_tag extends button_tag
 		
 		$this->attributes['type'] = 'button';
 		
-		$action_path = $this->attributes['path'] . '?';
-		
-		if(isset($this->attributes['action']))
-			$action_path .= 'action=' . $this->attributes['action'];
-			
-		if (isset($this->attributes['reload_parent']) && $this->attributes['reload_parent'])
-		{
-			$action_path .= '&reload_parent=1';
-			unset($this->attributes['reload_parent']);
-		}
-		
 		$this->attributes['onclick'] = '';
 		
 		if(isset($this->attributes['form_submitted']) && (boolean)$this->attributes['form_submitted'])
@@ -69,12 +50,7 @@ class grid_button_tag extends button_tag
 			unset($this->attributes['form_submitted']);
 		}
 		
-		$this->attributes['onclick'] .= "submit_form('grid_form_{$grid_tag->attributes['id']}', '{$action_path}')";
-		
-		parent :: prepare();
-		
-		unset($this->attributes['path']);
-		unset($this->attributes['action']);
+		parent :: prepare();		
 	}
 	
 	function get_rendered_tag()

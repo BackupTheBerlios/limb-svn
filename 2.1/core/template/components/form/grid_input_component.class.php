@@ -30,7 +30,7 @@ class grid_input_component extends input_form_element
 
 		return 'grid_form' . $this->_make_index_name($value) . '[' . $list->get('node_id') . ']';
 	}
-
+	
 } 
 
 ?>
