@@ -8,9 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-interface datasource
+interface options_datasource
 {
-	public function get_dataset(&$counter, $params=array());
+  public function get_options_array();
+  
+  public function get_default_option();
 }
 
 
