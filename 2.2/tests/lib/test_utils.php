@@ -17,6 +17,7 @@ function register_testing_ini($ini_file, $content)
   $GLOBALS['testing_ini'][$ini_file] = 1;
   
   $f = fopen(VAR_DIR . '/' . $ini_file, 'w');
+    
   fwrite($f, $content, strlen($content));
   fclose($f);
   

@@ -11,10 +11,14 @@
 require_once(LIMB_DIR . '/core/lib/util/swf_file.class.php');
 
 class swf_file_test extends UnitTestCase 
-{
-  function swf_file_test() 
+{      
+  function tearDown()
   {
-  	parent :: UnitTestCase();
+    if (is_file(VAR_DIR . '/test.new.swf'))
+      unlink(VAR_DIR . '/test.new.swf');  
+
+    if (is_file(VAR_DIR . '/test.new.gz.swf'))
+      unlink(VAR_DIR . '/test.new.gz.swf');        
   }
   
   function test_save_swf() 
@@ -26,7 +30,7 @@ class swf_file_test extends UnitTestCase
     $this->assertTrue($res);
     $this->assertTrue($swf->loaded);
     
-    $res = $swf->save(LIMB_DIR . '/tests/cases/util/swf/test.new.swf');
+    $res = $swf->save(VAR_DIR . '/test.new.swf');
 
     $this->assertTrue($res);
     
@@ -37,8 +41,6 @@ class swf_file_test extends UnitTestCase
     $this->assertTrue($res);
     $this->assertTrue($swf2->loaded);
     
-    if (is_file(LIMB_DIR . '/tests/cases/util/swf/test.new.swf'))
-      unlink(LIMB_DIR . '/tests/cases/util/swf/test.new.swf');
   }
   
   function test_save_compressed_swf() 
@@ -50,7 +52,7 @@ class swf_file_test extends UnitTestCase
     $this->assertTrue($res);
     $this->assertTrue($swf->loaded);
     
-    $res = $swf->save(LIMB_DIR . '/tests/cases/util/swf/test.new.gz.swf', true);
+    $res = $swf->save(VAR_DIR . '/test.new.gz.swf', true);
 
     $this->assertTrue($res);
     
@@ -60,9 +62,6 @@ class swf_file_test extends UnitTestCase
     
     $this->assertTrue($res);
     $this->assertTrue($swf2->loaded);
-    
-    if (is_file(LIMB_DIR . '/tests/cases/util/swf/test.new.gz.swf'))
-      unlink(LIMB_DIR . '/tests/cases/util/swf/test.new.gz.swf');
   }
 }
 
