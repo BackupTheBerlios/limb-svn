@@ -1,8 +1,8 @@
 /* 
 SQLyog v3.63
-Host - localhost : Database - temp_tests
+Host - localhost : Database - init_tests
 **************************************************************
-Server version 4.0.12-nt
+Server version 4.0.12-nt-log
 */
 
 /*
@@ -10,16 +10,17 @@ Table struture for cart
 */
 
 drop table if exists `cart`;
-CREATE TABLE `cart` (                                                                                                                                                                                                                                                                                                                       
-  `id` int(11) NOT NULL auto_increment,                                                                                                                                                                                                                                                                                                     
-  `cart_id` varchar(32) NOT NULL default '',                                                                                                                                                                                                                                                                                                
-  `user_id` int(11) NOT NULL default '0',                                                                                                                                                                                                                                                                                                   
-  `last_activity_time` int(11) NOT NULL default '0',                                                                                                                                                                                                                                                                                        
-  `cart_items` blob NOT NULL,                                                                                                                                                                                                                                                                                                               
-  PRIMARY KEY  (`id`),                                                                                                                                                                                                                                                                                                                      
-  UNIQUE KEY `cart_id` (`cart_id`),                                                                                                                                                                                                                                                                                                         
-  KEY `user_id` (`user_id`)                                                                                                                                                                                                                                                                                                                 
-  ) TYPE=InnoDB;
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL auto_increment,
+  `cart_id` varchar(32) NOT NULL default '',
+  `user_id` int(11) NOT NULL default '0',
+  `last_activity_time` int(11) NOT NULL default '0',
+  `cart_items` blob NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `cart_id` (`cart_id`),
+  KEY `user_id` (`user_id`)
+) TYPE=InnoDB;
+
 
 /*
 Table struture for document
@@ -57,6 +58,21 @@ CREATE TABLE `file_object` (
   KEY `oid` (`object_id`),
   KEY `v` (`version`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 7168 kB; InnoDB free: 114688 kB; InnoDB free: 1';
+
+
+/*
+Table struture for founding_fathers
+*/
+
+drop table if exists `founding_fathers`;
+CREATE TABLE `founding_fathers` (
+  `id` int(11) NOT NULL auto_increment,
+  `first` varchar(50) NOT NULL default '',
+  `last` varchar(50) NOT NULL default '',
+  `dog_name` varchar(50) default NULL,
+  `int_test` int(11) default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=InnoDB;
 
 
 /*
@@ -150,20 +166,52 @@ CREATE TABLE `navigation_item` (
 
 
 /*
+Table struture for sys_access_template
+*/
+
+drop table if exists `sys_access_template`;
+CREATE TABLE `sys_access_template` (
+  `id` int(11) NOT NULL auto_increment,
+  `controller_id` int(11) NOT NULL default '0',
+  `action_name` char(50) NOT NULL default '',
+  `accessor_type` tinyint(4) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `action_name` (`action_name`),
+  KEY `controller_id` (`controller_id`,`accessor_type`)
+) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
+
+
+/*
+Table struture for sys_access_template_item
+*/
+
+drop table if exists `sys_access_template_item`;
+CREATE TABLE `sys_access_template_item` (
+  `id` int(11) NOT NULL auto_increment,
+  `template_id` int(11) default NULL,
+  `accessor_id` int(11) default NULL,
+  `access` tinyint(4) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `template_id` (`template_id`),
+  KEY `accessor_id` (`accessor_id`)
+) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
+
+
+/*
 Table struture for sys_action_access
 */
 
 drop table if exists `sys_action_access`;
 CREATE TABLE `sys_action_access` (
   `id` int(11) NOT NULL auto_increment,
-  `class_id` int(11) NOT NULL default '0',
+  `controller_id` int(11) NOT NULL default '0',
   `action_name` char(50) NOT NULL default '',
   `accessor_id` int(11) NOT NULL default '0',
   `accessor_type` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `accessor_id` (`accessor_id`),
   KEY `accessor_type` (`accessor_type`),
-  KEY `class_id` (`class_id`)
+  KEY `controller_id` (`controller_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 
@@ -184,6 +232,18 @@ CREATE TABLE `sys_class` (
 
 
 /*
+Table struture for sys_controller
+*/
+
+drop table if exists `sys_controller`;
+CREATE TABLE `sys_controller` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM;
+
+
+/*
 Table struture for sys_full_text_index
 */
 
@@ -199,38 +259,6 @@ CREATE TABLE `sys_full_text_index` (
   KEY `object_id` (`object_id`,`class_id`),
   KEY `body` (`body`(1))
 ) TYPE=MyISAM;
-
-
-/*
-Table struture for sys_group_object_access_template
-*/
-
-drop table if exists `sys_group_object_access_template`;
-CREATE TABLE `sys_group_object_access_template` (
-  `id` int(11) NOT NULL auto_increment,
-  `class_id` int(11) NOT NULL default '0',
-  `action_name` char(50) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `action_name` (`action_name`),
-  KEY `class_id` (`class_id`)
-) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
-
-
-/*
-Table struture for sys_group_object_access_template_item
-*/
-
-drop table if exists `sys_group_object_access_template_item`;
-CREATE TABLE `sys_group_object_access_template_item` (
-  `id` int(11) NOT NULL auto_increment,
-  `template_id` int(11) default NULL,
-  `group_id` int(11) default NULL,
-  `r` tinyint(4) default NULL,
-  `w` tinyint(4) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `template_id` (`template_id`),
-  KEY `group_id` (`group_id`)
-) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 
 /*
@@ -259,6 +287,7 @@ CREATE TABLE `sys_metadata` (
   PRIMARY KEY  (`id`),
   KEY `oid` (`object_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
+
 
 /*
 Table struture for sys_node_link
@@ -290,8 +319,8 @@ CREATE TABLE `sys_node_link_group` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
-/*
 
+/*
 Table struture for sys_object_access
 */
 
@@ -300,12 +329,11 @@ CREATE TABLE `sys_object_access` (
   `id` int(11) NOT NULL auto_increment,
   `object_id` int(11) NOT NULL default '0',
   `accessor_id` int(11) NOT NULL default '0',
-  `r` tinyint(4) NOT NULL default '0',
-  `w` tinyint(4) NOT NULL default '0',
+  `access` tinyint(4) NOT NULL default '0',
   `accessor_type` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `accessor_id` (`accessor_id`),
-  KEY `ora` (`object_id`,`r`,`accessor_id`),
+  KEY `ora` (`object_id`,`access`,`accessor_id`),
   KEY `accessor_type` (`accessor_type`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
@@ -330,21 +358,6 @@ CREATE TABLE `sys_object_version` (
   KEY `v` (`version`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
-/*
-Table data for temp_tests.sys_object_version
-*/
-
-INSERT INTO `sys_object_version` VALUES (31,104,10,1084278749,1084278749,1);
-INSERT INTO `sys_object_version` VALUES (32,105,10,1084278749,1084278749,1);
-INSERT INTO `sys_object_version` VALUES (33,106,10,1084278749,1084278749,1);
-INSERT INTO `sys_object_version` VALUES (34,106,10,1084278749,1084278749,2);
-INSERT INTO `sys_object_version` VALUES (35,107,10,1084278749,1084278749,1);
-INSERT INTO `sys_object_version` VALUES (37,109,10,1084278749,1084278749,1);
-INSERT INTO `sys_object_version` VALUES (38,110,10,1084278750,1084278750,1);
-INSERT INTO `sys_object_version` VALUES (39,112,10,1084278750,1084278750,1);
-INSERT INTO `sys_object_version` VALUES (40,113,10,1084278750,1084278750,1);
-INSERT INTO `sys_object_version` VALUES (41,113,10,1084278750,1084278750,2);
-INSERT INTO `sys_object_version` VALUES (42,114,10,1084278750,1084278750,1);
 
 /*
 Table struture for sys_param
@@ -395,8 +408,9 @@ CREATE TABLE `sys_site_object` (
   `locale_id` char(2) NOT NULL default 'en',
   `title` varchar(255) NOT NULL default '',
   `identifier` varchar(255) NOT NULL default '',
+  `controller_id` int(11) default NULL,
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `idccv` (`id`,`locale_id`,`current_version`,`class_id`),
+  UNIQUE KEY `idccv` (`id`,`locale_id`,`current_version`,`class_id`,`controller_id`),
   KEY `md` (`modified_date`),
   KEY `cd` (`created_date`),
   KEY `cid` (`creator_id`),
@@ -531,38 +545,6 @@ CREATE TABLE `sys_stat_uri` (
   `uri` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
-
-
-/*
-Table struture for sys_user_object_access_template
-*/
-
-drop table if exists `sys_user_object_access_template`;
-CREATE TABLE `sys_user_object_access_template` (
-  `id` int(11) NOT NULL auto_increment,
-  `action_name` char(50) NOT NULL default '',
-  `class_id` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `action_name` (`action_name`),
-  KEY `class_id` (`class_id`)
-) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
-
-
-/*
-Table struture for sys_user_object_access_template_item
-*/
-
-drop table if exists `sys_user_object_access_template_item`;
-CREATE TABLE `sys_user_object_access_template_item` (
-  `id` int(11) NOT NULL auto_increment,
-  `template_id` int(11) default NULL,
-  `user_id` int(11) default NULL,
-  `r` tinyint(4) default NULL,
-  `w` tinyint(4) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `template_id` (`template_id`),
-  KEY `user_id` (`user_id`)
-) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 
 /*
