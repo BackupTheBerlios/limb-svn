@@ -22,6 +22,8 @@ class FakemailDaemon
   var $host = null;
   var $log_path  = null;
 
+  var $accessed_recipients = array();
+
   function FakemailDaemon($fakemail = null, $mail_path = null, $port = null, $host = null)
   {
     $this->fakemail = is_null($fakemail) ?  FAKEMAIL_SCRIPT : $fakemail;
@@ -72,18 +74,33 @@ class FakemailDaemon
        unlink($this->mail_path .'/'. $name);
   }
 
+  function removeAccessedRecipientsMail()
+  {
+    foreach(array_keys($this->accessed_recipients) as $recipient)
+      $this->removeRecipientMail($recipient);
+  }
+
   function getRecipientMailCount($recipient)
   {
+    $this->_markRecipientAccessed($recipient);
+
     return count($this->_getRecipientFileNames($recipient));
   }
 
   function getRecipientMailContents($recipient)
   {
-     $contents = array();
-     $names = $this->_getRecipientFileNames($recipient);
-     foreach($names as $name)
-       $contents[] = file_get_contents($this->mail_path .'/'. $name);
-     return $contents;
+    $this->_markRecipientAccessed($recipient);
+
+    $contents = array();
+    $names = $this->_getRecipientFileNames($recipient);
+    foreach($names as $name)
+     $contents[] = file_get_contents($this->mail_path .'/'. $name);
+    return $contents;
+  }
+
+  function _markRecipientAccessed($recipient)
+  {
+    $this->accessed_recipients[$recipient] = 1;
   }
 
   function _getRecipientFileNames($recipient)
