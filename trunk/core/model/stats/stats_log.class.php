@@ -11,207 +11,92 @@
 
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 require_once(LIMB_DIR . '/core/lib/date/date.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_counter.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_ip.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
 
 class stats_log
 {
 	var $db = null;
 	var $reg_date = null;
+	var $_counter = null;
+	var $_ip_register = null;
+	var $_referer_register = null;
 	
 	function stats_log()
 	{
 		$this->db =& db_factory :: instance();
 		
-		$this->_reset_register_time();
+		$this->_counter = new stats_counter();
+		$this->reg_date = new date();		
 	}
 	
 	function register($node_id, $action)
 	{
-		$this->_reset_register_time();
+		$this->_counter->set_register_time($this->get_register_time_stamp());
 		
-		$referer_page_id = $this->_get_referer_page_id();
+		$ip_register =& $this->_get_ip_register();
+		$ip_register->set_register_time($this->get_register_time_stamp());
+
+		$referer_register =& $this->_get_referer_register();
+		$referer_register->set_register_time($this->get_register_time_stamp());
+
+		$this->_update_counters();
 		
-		$new_host = $this->_is_new_host();
-		
-		$this->_update_counters($new_host);
-		
-		$this->_update_log($node_id, $action, $referer_page_id);
+		$this->_update_log($ip_register->get_client_ip(), $node_id, $action);
 	}
 	
-	function _reset_register_time()
+	function reset_register_time($stamp = null)
 	{
-		$this->reg_date = new date();
+		if(!$stamp)
+			$stamp = time();
+			
+		$this->reg_date->set_by_stamp($stamp);
 	}
-	
+		
 	function get_register_time_stamp()
 	{
 		return $this->reg_date->get_stamp();
 	}
 	
-	function _is_new_host()
+	function & _get_ip_register()
 	{
-		if(($record = $this->_get_stat_ip_record()) === false)
-		{
-			$this->_insert_stat_ip_record();
-			return true;
-		}
+		if (!$this->_ip_register)
+			$this->_ip_register = new stats_ip();
 		
-		$ip_date =& new date();
-		$ip_date->set_by_stamp($record['time']);
-		
-		if($ip_date->date_to_days() < $this->reg_date->date_to_days())
-		{
-			$this->_update_stat_ip_record();
-			return true;
-		}
-		elseif($ip_date->date_to_days() > $this->reg_date->date_to_days()) //this shouldn't happen normally...
-			$this->_update_stat_ip_record();
+		return $this->_ip_register;
+	}
 
-		return false;
-	}
-	
-	function _update_counters($new_host = false)
-	{		
-		if(!($record = $this->_get_counter_record()))
-			return $this->_reset_all_counters();
-		
-		$counters_date =& new date();
-		$counters_date->set_by_stamp($record['time']);
-		
-		if($counters_date->date_to_days() < $this->reg_date->date_to_days())
-		{
-			$this->_reset_today_counters();
-			return;
-		}
-		
-		if ($new_host)
-		{
-			$record['hosts_today']++;
-			$record['hosts_all']++;
-		}	
-		
-		$record['hits_today']++;
-		$record['hits_all']++;
-		
-		$this->_update_today_counters($record['hits_today'], $record['hosts_today'], $record['hits_all'], $record['hosts_all']);	
-	}
-	
-	function _update_log($node_id, $action, $referer_page_id)
+	function & _get_referer_register()
 	{
+		if (!$this->_referer_register)
+			$this->_referer_register = new stats_referer();
+		
+		return $this->_referer_register;
+	}
+	
+	function _update_counters()
+	{	
+		$ip_register =& $this->_get_ip_register();
+		
+		$this->_counter->update($ip_register->is_new_host());
+	}
+	
+	function _update_log($ip, $node_id, $action)
+	{
+		$referer_register =& $this->_get_referer_register();
+	
 		$this->db->sql_insert('sys_stat_log', 
 			array(
-				'ip' => sys :: client_ip(true), 
-				'time' => $this->reg_date->get_stamp(),
+				'ip' => $ip, 
+				'time' => $this->get_register_time_stamp(),
 				'node_id' => $node_id,
-				'stat_referer_id' => $referer_page_id,
+				'stat_referer_id' => $referer_register->get_referer_page_id(),
 				'user_id' => user :: get_id(),
 				'session_id' => session_id(),
 				'action' => $action,
 			)
 		);	
-	}
-	
-	function _update_today_counters($hits_today, $hosts_today, $hits_all, $hosts_all)
-	{
-		$update_array['hits_today'] = $hits_today;
-		$update_array['hosts_today'] = $hosts_today;
-		$update_array['hits_all'] = $hits_all;
-		$update_array['hosts_all'] = $hosts_all;
-		
-		$this->db->sql_update('sys_stat_counter', $update_array);
-	}
-	
-	function _reset_today_counters()
-	{
-		$update_array['hits_today'] = 1;
-		$update_array['hosts_today'] = 1;
-		
-		$this->db->sql_update('sys_stat_counter', $update_array);
-	}
-	
-	function _reset_all_counters()
-	{
-		$this->db->sql_insert('sys_stat_counter', 
-			array(
-				'hosts_all' => 1,
-				'hits_all' => 1,
-				'hosts_today' => 1,
-				'hits_today' => 1,
-				'time' => $this->reg_date->get_stamp()
-			)
-		);	
-	}
-	
-	function _get_counter_record()
-	{
-		$this->db->sql_select('sys_stat_counter');
-		return $this->db->fetch_row();
-	}
-	
-	function _get_referer_page_id()
-	{
-		if ($result = $this->_get_existing_referer_record_id())
-			return $result;
-		else
-			return $this->_insert_referer_record();
-	}
-	
-	function _get_clean_referer_page()
-	{
-		return $this->_clean_url($_SERVER['HTTP_REFERER']);
-	}
-	
-	function _get_existing_referer_record_id()
-	{
-		$this->db->sql_select('sys_stat_referer_url', '*', 
-			"referer_url='" . $this->_get_clean_referer_page() . "'");
-		if ($referer_data = $this->db->fetch_row())
-			return $referer_data['id'];
-		else
-			return false;	
-	}
-	
-	function _insert_referer_record()
-	{
-		$this->db->sql_insert('sys_stat_referer_url', 
-			array('referer_url' => $this->_get_clean_referer_page()));
-		return $this->db->get_sql_insert_id('sys_stat_referer_url');		
-	}
-	
-	function _get_stat_ip_record()
-	{
-		$this->db->sql_select('sys_stat_ip', '*', array('id' => sys :: client_ip(true)));
-		return $this->db->fetch_row();
-	}
-	
-	function _update_stat_ip_record()
-	{
-		$this->db->sql_update('sys_stat_ip', array('time' => $this->reg_date->get_stamp()), array('id' => sys :: client_ip(true)));
-	}
-
-	function _insert_stat_ip_record()
-	{
-		$this->db->sql_insert('sys_stat_ip', array('id' => sys :: client_ip(true), 'time' => $this->reg_date->get_stamp()));
-	}
-			
-	function _clean_url($raw_url)
-	{
-		$url = trim($raw_url);
-		$url = preg_replace('/(^' . preg_quote('http://' . $_SERVER['HTTP_HOST'], '/') . ')(.*)/', '\\2', $url);
-		$url = preg_replace('/#[^\?]*/', '', $url);
-		$url = $this->_trim_url_params($url);
-		return $url;
-	}
-	
-	function _trim_url_params($url)
-	{
-		if(strpos($url, '?') !== false)
-		{
-			$url = preg_replace('/PHPSESSID=[^&]*/', '', $url);
-						
-			if($pos == (strlen($url)-1))
-				$url = rtrim($url, '?');
-		}
-		$url = rtrim($url, '/');
 	}
 }
 

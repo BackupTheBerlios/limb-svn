@@ -9,22 +9,53 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/stats/stats_log.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_ip.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
 
 Mock::generatePartial
 (
   'stats_log',
   'stats_log_test_version',
   array(
+  	'_get_client_ip',
   	'_get_clean_referer_page',
+  	'_get_ip_register',
+  	'_get_referer_register',
   )
 ); 
 
-class test_stats_register_log extends UnitTestCase 
+Mock::generatePartial
+(
+  'stats_ip',
+  'stats_ip_test_version',
+  array(
+  	'get_client_ip',
+  )
+); 
+
+Mock::generatePartial
+(
+  'stats_referer',
+  'stats_referer_test_version',
+  array(
+  	'_get_clean_referer_page'
+  )
+); 
+
+class test_stats_log extends UnitTestCase 
 {
 	var $db = null;
-	var $stats_log = null;
+
+  var	$stats_ip1 = null;
+  var $stats_ip2 = null;
+
+  var $stats_referer1 = null;
+  var $stats_referer2 = null;
 	
-  function test_stats_register_log() 
+	var $stats_log1 = null;
+	var $stats_log2 = null;
+	
+  function test_stats_log() 
   {
   	parent :: UnitTestCase();
   	
@@ -33,9 +64,27 @@ class test_stats_register_log extends UnitTestCase
   
   function setUp()
   {
-   	$this->stats_log = new stats_log_test_version($this);
-   	$this->stats_log->stats_log();
-  	$this->stats_log->setReturnValueAt(1, '_get_clean_referer_page', 'some.referer.com');
+   	$this->stats_ip1 = new stats_ip_test_version($this);
+   	$this->stats_ip1->stats_ip();
+
+   	$this->stats_ip2 = new stats_ip_test_version($this);
+   	$this->stats_ip2->stats_ip();
+
+   	$this->stats_referer1 = new stats_referer_test_version($this);
+   	$this->stats_referer1->stats_referer();
+
+   	$this->stats_referer2 = new stats_referer_test_version($this);
+   	$this->stats_referer2->stats_referer();
+
+   	$this->stats_log1 = new stats_log_test_version($this);
+  	$this->stats_log1->setReturnReference('_get_ip_register', $this->stats_ip1);
+  	$this->stats_log1->setReturnReference('_get_referer_register', $this->stats_referer1);
+   	$this->stats_log1->stats_log();
+
+   	$this->stats_log2 = new stats_log_test_version($this);
+  	$this->stats_log2->setReturnReference('_get_ip_register', $this->stats_ip2);
+  	$this->stats_log2->setReturnReference('_get_referer_register', $this->stats_referer2);
+   	$this->stats_log2->stats_log();
 
 		$this->_login_user(10, array());
   	
@@ -44,7 +93,15 @@ class test_stats_register_log extends UnitTestCase
   
   function tearDown()
   {
-  	$this->stats_log->tally();
+  	$this->stats_ip1->tally();
+  	$this->stats_ip2->tally();
+
+  	$this->stats_referer1->tally();
+  	$this->stats_referer2->tally();
+
+  	$this->stats_log1->tally();
+  	$this->stats_log2->tally();
+  	
   	$this->_clean_up();
   }
   
@@ -56,32 +113,98 @@ class test_stats_register_log extends UnitTestCase
   	$this->db->sql_delete('sys_stat_counter');
   }
       
-  function test_register_new_host() 
+  function test_new_host() 
   {
-  	$this->stats_log->register(2, 'display');
-
-		$this->_check_stats_log_record(1, 1, 10, 2, 'display', $this->stats_log->get_register_time_stamp());
-		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
-		$this->_check_stats_ip_record();
-		$this->_check_stats_counter_record(1, 1, 1, 1, $this->stats_log->get_register_time_stamp());
-  }
-  
-  function test_register_same_host_and_new_referer()
-  {
-  	$this->test_register_new_host();
+  	$this->stats_ip1->setReturnValue('get_client_ip', 'ffffff00');
+  	$this->stats_referer1->setReturnValue('_get_clean_referer_page', 'some.referer.com');
   	
-  	$this->stats_log->setReturnValueAt(2, '_get_clean_referer_page', 'some.other-referer.com');
-  	$this->stats_log->setReturnValueAt(3, '_get_clean_referer_page', 'some.other-referer.com');
-  	$this->stats_log->register(4, 'edit');
-		
-		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log->get_register_time_stamp());
-		$this->_check_stats_referer_url_record(2, 2, 'some.other-referer.com');
-		$this->_check_stats_counter_record(2, 2, 1, 1, $this->stats_log->get_register_time_stamp());
-		$this->_check_stats_ip_record();
+  	$this->stats_log1->reset_register_time(time());
+  	$this->stats_log1->register(2, 'display');
+
+		$this->_check_stats_log_record(1, 1, 10, 2, 'display', $this->stats_log1->get_register_time_stamp());
+		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
+		$this->_check_stats_ip_record(1, 'ffffff00', $this->stats_log1->get_register_time_stamp());
+		$this->_check_stats_counter_record(1, 1, 1, 1, $this->stats_log1->get_register_time_stamp());
   }
   
-  function test_register_same_host()
+  function test_same_host_and_new_referer()
   {
+  	$this->test_new_host();
+  	
+  	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff00');
+  	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.other-referer.com');
+  	
+  	$this->stats_log2->reset_register_time(time()+1);
+  	$this->stats_log2->register(4, 'edit');
+		
+		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_referer_url_record(2, 2, 'some.other-referer.com');
+		$this->_check_stats_counter_record(2, 2, 1, 1, $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_ip_record(1, 'ffffff00', $this->stats_log1->get_register_time_stamp());
+  }
+  
+  function test_second_new_host()
+  {
+  	$this->test_new_host();
+  	
+  	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff01');
+  	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.referer.com');
+  	
+  	$this->stats_log2->reset_register_time(time()+1);
+  	$this->stats_log2->register(4, 'edit');
+		
+		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
+		$this->_check_stats_counter_record(2, 2, 2, 2, $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_ip_record(2, 'ffffff01', $this->stats_log2->get_register_time_stamp());
+  }
+  
+  function test_second_new_host_new_day()
+  {
+  	$this->test_new_host();
+  	
+  	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.referer.com');
+  	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff01');
+  	
+  	$this->stats_log2->reset_register_time(time()+ 60*60*24 + 1);
+  	$this->stats_log2->register(4, 'edit');
+		
+		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
+		$this->_check_stats_counter_record(2, 1, 2, 1, $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_ip_record(1, 'ffffff01', $this->stats_log2->get_register_time_stamp());
+  }
+  
+  function test_existing_host_new_day()
+  {
+  	$this->test_new_host();
+  	
+  	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.referer.com');
+  	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff00');
+  	
+  	$this->stats_log2->reset_register_time(time()+ 60*60*24 + 1);
+  	$this->stats_log2->register(4, 'edit');
+		
+		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
+		$this->_check_stats_counter_record(2, 1, 2, 1, $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_ip_record(1, 'ffffff00', $this->stats_log2->get_register_time_stamp());
+  }
+  
+  function test_second_new_host_wrong_day()
+  {
+  	$this->test_new_host();
+  	
+  	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.referer.com');
+  	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff00');
+  	
+  	$this->stats_log2->reset_register_time(time() - 2*60*60*24);
+  	$this->stats_log2->register(4, 'edit');
+		
+		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
+		$this->_check_stats_counter_record(2, 2, 1, 1, $this->stats_log2->get_register_time_stamp());
+		$this->_check_stats_ip_record(1, 'ffffff00', $this->stats_log2->get_register_time_stamp());
   }
   
 	function _check_stats_log_record($total_records, $current_record, $user_id, $node_id, $action, $time)
@@ -101,7 +224,7 @@ class test_stats_register_log extends UnitTestCase
   	$this->assertEqual($record['user_id'], $user_id);
   	$this->assertEqual($record['node_id'], $node_id);
   	$this->assertEqual($record['action'], $action);
-  	$this->assertEqual($record['time'], $time);
+  	$this->assertEqual($record['time'], $time, 'log time is incorrect');
   	$this->assertEqual($record['session_id'], session_id());
   }
 
@@ -110,7 +233,7 @@ class test_stats_register_log extends UnitTestCase
   	$this->db->sql_select('sys_stat_referer_url', '*', '', 'id');
   	$arr = $this->db->get_array('id');
 
-  	$this->assertTrue(sizeof($arr), $total_records);
+  	$this->assertTrue(sizeof($arr), $total_records, 'referers count is wrong');
   	reset($arr);
   	
   	for($i = 1; $i <= $current_record; $i++)
@@ -122,15 +245,14 @@ class test_stats_register_log extends UnitTestCase
   	$this->assertEqual($record['referer_url'], $referer, 'referer url was parsed or written incorrectly');
   }
   
-  function _check_stats_ip_record()
+  function _check_stats_ip_record($total_records, $ip, $time)
   {
   	$this->db->sql_select('sys_stat_ip');
   	$arr = $this->db->get_array('id');
-  	$record = end($arr);
-  	
-  	$this->assertTrue(sizeof($arr), 1);
-  	$this->assertEqual($record['id'], sys :: client_ip(true), 'client ip was written incorrectly');
-  	$this->assertEqual($record['time'], $this->stats_log->reg_date->get_stamp());
+
+  	$this->assertTrue(sizeof($arr), $total_records, 'ip count is wrong');
+  	$this->assertTrue(isset($arr[$ip]));
+  	$this->assertEqual($arr[$ip]['time'], $time, 'ip time is incorrect');
   }
   
   function _check_stats_counter_record($hits_all, $hits_today, $hosts_all, $hosts_today, $time)
@@ -138,11 +260,11 @@ class test_stats_register_log extends UnitTestCase
   	$this->db->sql_select('sys_stat_counter');
   	$record = $this->db->fetch_row();
   	
-  	$this->assertEqual($record['hits_all'], $hits_all);
-  	$this->assertEqual($record['hits_today'], $hits_today);
-  	$this->assertEqual($record['hosts_all'], $hosts_all);
-  	$this->assertEqual($record['hosts_today'], $hosts_today);
-  	$this->assertEqual($record['time'], $time);
+  	$this->assertEqual($record['hits_all'], $hits_all, 'all hits incorrect. Got ' . $record['hits_all'] . ', expected '. $hits_all);
+  	$this->assertEqual($record['hits_today'], $hits_today, 'today hits incorrect. Got ' . $record['hits_today'] . ', expected '. $hits_today);
+  	$this->assertEqual($record['hosts_all'], $hosts_all, 'all hosts incorrect. Got ' . $record['hosts_all'] . ', expected '. $hosts_all);
+  	$this->assertEqual($record['hosts_today'], $hosts_today, 'today hosts incorrect. Got ' . $record['hosts_today'] . ', expected '. $hosts_today);
+  	$this->assertEqual($record['time'], $time, 'counter time is incorrect. Got ' . $record['time'] . ', expected '. $time);
   }
   
   function _login_user($id, $groups)
