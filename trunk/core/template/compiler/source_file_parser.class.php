@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: source_file_parser.class.php 412 2004-02-06 17:05:40Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 /**
@@ -70,7 +70,7 @@ class source_file_parser
 	* @access private 
 	*/
 	var $variable_reference_pattern; 
-	// --------------------------------------------------------------------------------
+	
 	/**
 	* Constructs SourecFileParser. Uses read_template_file() to get the contents
 	* of the template.
@@ -79,10 +79,10 @@ class source_file_parser
 	* @param string $ path and filename of source template
 	* @access protected 
 	*/
-	function source_file_parser($sourcefile, &$tagdictionary)
+	function source_file_parser($sourcefile, &$tag_dictionary)
 	{
 		$this->source_file = $sourcefile;
-		$this->tag_dictionary = &$tagdictionary;
+		$this->tag_dictionary =& $tag_dictionary;
 		$this->rawtext = $this->read_template_file($sourcefile);
 		$this->cur_line_no = 1;
 		$this->text = '';
@@ -102,7 +102,7 @@ class source_file_parser
 	*/
 	function initializetag_starting_pattern()
 	{
-		$tag_list = $this->tag_dictionary->gettag_list();
+		$tag_list = $this->tag_dictionary->get_tag_list();
 
 		$tag_starting_pattern = '/';
 		$tag_starting_pattern .= '^(.*)';
@@ -309,7 +309,7 @@ class source_file_parser
 			} 
 			else
 			{
-				$tag_info = &$this->tag_dictionary->gettag_info($tag);
+				$tag_info = &$this->tag_dictionary->get_tag_info($tag);
 				$tag_class = $tag_info->tag_class;
 
 				$component =& new $tag_class();
@@ -366,7 +366,7 @@ class source_file_parser
 
 		if (isset($parent_component->tag))
 		{
-			$parenttag_info =& $this->tag_dictionary->gettag_info($parent_component->tag);
+			$parenttag_info =& $this->tag_dictionary->get_tag_info($parent_component->tag);
 			if ($parenttag_info->end_tag != ENDTAG_REQUIRED)
 			{
 				$this->parse_text($parent_component, $this->rawtext);

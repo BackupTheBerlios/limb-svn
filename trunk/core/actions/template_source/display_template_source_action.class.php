@@ -58,7 +58,7 @@ class display_template_source_action extends action
 		
 		$this->view->set('template_path', $template_path);
 		$this->view->set('template_content', $this->_process_template_content($template_contents));
-		
+				
 		return new response();
 	}
 	
@@ -74,9 +74,11 @@ class display_template_source_action extends action
 	
 	function _process_template_content($template_contents)
 	{		
+		global $tag_dictionary; //fixx
+		
   	$parser =& new XML_HTMLSax();
   	
-  	$handler =& new template_highlight_handler();
+  	$handler =& new template_highlight_handler($tag_dictionary);
   	
   	$handler->set_template_path_history($this->history);
   	

@@ -103,7 +103,7 @@ class source_file_parser
 	*/
 	function get_tags()
 	{
-		$this->tag_list = array_map('strtolower', $this->tag_dictionary->gettag_list());
+		$this->tag_list = array_map('strtolower', $this->tag_dictionary->get_tag_list());
 	} 
 	// ----------------------------------------------------------------------------
 	/**
@@ -227,7 +227,7 @@ class source_file_parser
 					if (in_array($tag, $this->tag_list) && !$forbid_parsing)
 					{ 
 						// Get tag info
-						$tag_info = &$this->tag_dictionary->gettag_info($tag);
+						$tag_info = &$this->tag_dictionary->get_tag_info($tag);
 						$tag_class = $tag_info->tag_class; 
 						// Assign current component to parent reference
 						$parent_component = &$component; 
@@ -326,7 +326,7 @@ class source_file_parser
 						} 
 						else
 						{
-							$tag_info = &$this->tag_dictionary->gettag_info($tag); 
+							$tag_info = &$this->tag_dictionary->get_tag_info($tag); 
 							// Check for tags which shouldn't be closed
 							if ($tag_info->end_tag == ENDTAG_FORBIDDEN)
 							{

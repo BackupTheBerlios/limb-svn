@@ -56,7 +56,7 @@ class tag_dictionary
 	{
 		$tag = strtolower($taginfo->tag);
 		$this->tag_list[] = $tag;
-		$this->tag_information[$tag] = &$taginfo;
+		$this->tag_information[$tag] =& $taginfo;
 	} 
 
 	/**
@@ -68,9 +68,10 @@ class tag_dictionary
 	* @return object tag_info class
 	* @access protected 
 	*/
-	function &gettag_info($tag)
+	function &get_tag_info($tag)
 	{
-		return $this->tag_information[strtolower($tag)];
+		if(isset($this->tag_information[strtolower($tag)]))
+			return $this->tag_information[strtolower($tag)];
 	} 
 
 	/**
@@ -82,7 +83,7 @@ class tag_dictionary
 	* @return array list of tags
 	* @access protected 
 	*/
-	function gettag_list()
+	function get_tag_list()
 	{
 		return $this->tag_list;
 	} 

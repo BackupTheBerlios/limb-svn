@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/template/compiler/codewriter.class.php');
 require_once(LIMB_DIR . 'core/template/compiler/utils.inc.php');
@@ -30,11 +28,16 @@ require_once(LIMB_DIR . 'core/template/compiler/variable_reference.class.php');
 
 require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
 
+/**
+* Create the tag_dictionary global variable
+*/
+$GLOBALS['tag_dictionary'] =& new tag_dictionary();
+
 function load_tags($tag_dir)  
 { 
 	if(is_dir($tag_dir))  
 	{  
-		if  ($dir  =  opendir($tag_dir))  
+		if  ($dir = opendir($tag_dir))  
 		{  
 			while(($tag_file = readdir($dir)) !== false) 
 			{  
@@ -48,26 +51,16 @@ function load_tags($tag_dir)
 	}
 } 
 
-/**
-* Create the tag_dictionary global variable
-*/
-$GLOBALS['tag_dictionary'] = &new tag_dictionary();
-/**
-* Load some tag files
-*/
-$path = get_ini_option('compiler.ini', 'tags', 'path');
-foreach ($path as $tagpath)
+function load_system_tags()
 {
-	if (substr($tagpath, 0, 1) != '/')
+	$path = get_ini_option('compiler.ini', 'tags', 'path');
+	foreach ($path as $tagpath)
 	{
 		load_tags(LIMB_DIR . 'core/template/tags/' . $tagpath);
-		load_tags(PROJECT_DIR . 'core/template/tags/' . $tagpath);
 	} 
-	else
-	{
-		load_tags($tagpath);
-	} 
-} 
+}
+
+load_system_tags();
 
 /**
 * Compiles a template file. Uses the file scheme to location the source,
