@@ -269,9 +269,9 @@ class Debug
   function writeException($e)
   {
     if(is_a($e, 'LimbException'))
-      Debug :: writeError($e->getMessage(), $e->getFile() . ' : ' . $e->getLine(), $e->getAdditionalParams());
+      Debug :: writeError($e->getMessage(), $e->getBacktrace(), $e->getAdditionalParams());
     else
-      Debug :: writeError($e->getMessage(), $e->getFile() . ' : ' . $e->getLine());
+      Debug :: writeError($e->getMessage(), $e->getBacktrace());
   }
 
   function _sendMail($debug_info)

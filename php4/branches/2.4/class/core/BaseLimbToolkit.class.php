@@ -35,31 +35,31 @@ class BaseLimbToolkit// implements LimbToolkit
     return constant($key);
   }
 
-  function createDBTable($table_name)
+  function & createDBTable($table_name)
   {
     include_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
     return DbTableFactory :: create($table_name);
   }
 
-  function getDatasource($datasource_path)
+  function & getDatasource($datasource_path)
   {
     include_once(LIMB_DIR . '/class/core/datasources/DatasourceFactory.class.php');
     return DatasourceFactory :: create($datasource_path);
   }
 
-  function createSiteObject($site_object_path)
+  function & createSiteObject($site_object_path)
   {
     include_once(LIMB_DIR . '/class/core/site_objects/SiteObjectFactory.class.php');
     return SiteObjectFactory :: create($site_object_path);
   }
 
-  function createDataMapper($mapper_path)
+  function & createDataMapper($mapper_path)
   {
     include_once(LIMB_DIR . '/class/core/data_mappers/DataMapperFactory.class.php');
     return DataMapperFactory :: create($mapper_path);
   }
 
-  function createBehaviour($behaviour_path)
+  function & createBehaviour($behaviour_path)
   {
     include_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviourFactory.class.php');
     return SiteObjectBehaviourFactory :: create($behaviour_path);
@@ -76,7 +76,7 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->db;
   }
 
-  function getTree()
+  function & getTree()
   {
     if($this->tree)
       return $this->tree;
@@ -100,7 +100,7 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->user;
   }
 
-  function getINI($ini_path)
+  function & getINI($ini_path)
   {
     if(isset($this->ini_cache[$ini_path]))
       return $this->ini_cache[$ini_path];
@@ -122,7 +122,7 @@ class BaseLimbToolkit// implements LimbToolkit
       unset($this->ini_cache[$ini_path]);
   }
 
-  function getAuthenticator()
+  function & getAuthenticator()
   {
     if($this->authenticator)
       return $this->authenticator;
@@ -134,7 +134,7 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->authenticator;
   }
 
-  function getAuthorizer()
+  function & getAuthorizer()
   {
     if($this->authorizer)
       return $this->authorizer;
@@ -146,7 +146,7 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->authorizer;
   }
 
-  function getRequest()
+  function & getRequest()
   {
     if($this->request)
       return $this->request;
@@ -157,7 +157,7 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->request;
   }
 
-  function getResponse()
+  function & getResponse()
   {
     if($this->response)
       return $this->response;
@@ -168,7 +168,7 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->response;
   }
 
-  function getCache()
+  function & getCache()
   {
     if($this->cache)
       return $this->cache;
@@ -179,13 +179,13 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->cache;
   }
 
-  function getLocale($locale_id = '')
+  function & getLocale($locale_id = '')
   {
     include_once(LIMB_DIR . '/class/i18n/Locale.class.php');
     return Locale :: instance($locale_id);
   }
 
-  function getSession()
+  function & getSession()
   {
     if($this->session)
       return $this->session;
@@ -197,13 +197,13 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->session;
   }
 
-  function getDataspace()
+  function & getDataspace()
   {
     include_once(LIMB_DIR . '/class/core/DataspaceRegistry.class.php');
     return DataspaceRegistry :: get($this->current_dataspace_name);
   }
 
-  function switchDataspace($name)
+  function & switchDataspace($name)
   {
     include_once(LIMB_DIR . '/class/core/DataspaceRegistry.class.php');
 
@@ -212,12 +212,12 @@ class BaseLimbToolkit// implements LimbToolkit
     return DataspaceRegistry :: get($name);
   }
 
-  function setView($view)
+  function setView(&$view)
   {
-    $this->view = $view;
+    $this->view =& $view;
   }
 
-  function getView()
+  function & getView()
   {
     resolveHandle($this->view);
     return $this->view;

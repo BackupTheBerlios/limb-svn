@@ -37,7 +37,7 @@ class CreateSiteObjectCommand// implements Command
     return LIMB_STATUS_OK;
   }
 
-  function _createObjectOperation($object)
+  function _createObjectOperation(&$object)
   {
     $object->create();
 
@@ -47,7 +47,7 @@ class CreateSiteObjectCommand// implements Command
     $dataspace->set('created_site_object', $object);
   }
 
-  function _fillObject($object)
+  function _fillObject(&$object)
   {
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();

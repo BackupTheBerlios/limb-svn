@@ -66,9 +66,9 @@ class SiteObjectController
                               array('action' => $action,
                                     'class' => get_class($this->behaviour)));
 
-    $state_machine = $this->_getStateMachine();
+    $state_machine =& $this->_getStateMachine();
 
-    call_user_func(array($this->behaviour, 'define_' . $action), $state_machine);
+    call_user_func(array($this->behaviour, 'define' . $action), $state_machine);
 
     $res = $state_machine->run();
 

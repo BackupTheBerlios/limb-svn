@@ -33,7 +33,14 @@ class Limb
 
   function isError($obj)
   {
-    return is_a($obj, 'Exception');
+    if(is_a($obj, 'Exception'))
+    {
+      unset($GLOBALS['exception_possible_recursion']);
+      array_pop($GLOBALS['exceptions_stack']);
+      return true;
+    }
+    else
+      return false;
   }
 
   function registerToolkit(&$toolkit)
@@ -45,13 +52,17 @@ class Limb
   function & popToolkit()
   {
     $limb =& Limb :: instance();
-    array_pop($limb->toolkits);
+    $toolkit =& array_pop($limb->toolkits);
+    return $toolkit;
   }
 
   function & toolkit()
   {
     $limb =& Limb :: instance();
-    return end($limb->toolkits);
+    if(sizeof($limb->toolkits) == 0)
+      return false;
+
+    return $limb->toolkits[sizeof($limb->toolkits) - 1];
   }
 }
 

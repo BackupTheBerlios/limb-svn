@@ -1,5 +1,18 @@
 <?php
 
+//register_shutdown_function('writeUnhandledExceptions');
+
+function writeUnhandledExceptions()
+{
+  if(sizeof($GLOBALS['exceptions_stack']) == 0)
+    return;
+
+  include_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
+
+  foreach($GLOBALS['exceptions_stack'] as $e)
+    Debug :: writeException($e);
+}
+
 class Exception
 {
   var $code;
@@ -25,12 +38,15 @@ class Exception
     $this->class = @$bc['class'];
     $this->method= @$bc['function'];
 
-    trigger_error($this->toString(), E_USER_WARNING);
-
     if(isset($GLOBALS['exception_possible_recursion']))
       die("Exception recursion detected(probably exception is not properly caught)!!!\n" .
           var_dump($this->backtrace) .
           $this->toString());
+
+    if(!isset($GLOBALS['exceptions_stack']))
+      $GLOBALS['exceptions_stack'] = array();
+
+    $GLOBALS['exceptions_stack'][] = $this;
 
     $GLOBALS['exception_possible_recursion'] = 1;
   }

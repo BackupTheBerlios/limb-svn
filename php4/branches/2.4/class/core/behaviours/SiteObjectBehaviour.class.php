@@ -38,7 +38,7 @@ class SiteObjectBehaviour extends Object
     $methods = get_class_methods($this);
     foreach($methods as $method)
     {
-      if(preg_match('~^define_(.*)$~', $method, $matches))
+      if(preg_match('~^define(.*)$~', $method, $matches))
         $this->_actions_list[] = $matches[1];
     }
     return $this->_actions_list;
@@ -46,7 +46,7 @@ class SiteObjectBehaviour extends Object
 
   function actionExists($action)
   {
-    return in_array($action, $this->getActionsList());
+    return in_array(strtolower($action), $this->getActionsList());
   }
 }
 

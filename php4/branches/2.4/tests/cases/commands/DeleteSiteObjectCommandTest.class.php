@@ -44,6 +44,11 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
   var $toolkit;
   var $datasource;
 
+  function DeleteSiteObjectCommandTest()
+  {
+    parent :: LimbTestCase('delete site object cmd test');
+  }
+
   function setUp()
   {
     $this->request = new MockRequest($this);

@@ -74,6 +74,11 @@ class SiteObjectControllerTest extends LimbTestCase
   var $behaviour;
   var $request;
 
+  function SiteObjectControllerTest()
+  {
+    parent :: LimbTestCase('site object controller test');
+  }
+
   function setUp()
   {
     $this->request = new MockRequest($this);
@@ -94,7 +99,7 @@ class SiteObjectControllerTest extends LimbTestCase
 
   function testGetRequestedActionOk()
   {
-    $this->request->setReturnValue('get', $action = 'testAction', array('action'));
+    $this->request->setReturnValue('get', $action = 'test_action', array('action'));
 
     $this->behaviour->expectOnce('actionExists', array($action));
     $this->behaviour->setReturnValue('actionExists', true, array($action));
@@ -130,7 +135,7 @@ class SiteObjectControllerTest extends LimbTestCase
     $controller = new SiteObjectControllerMock($this);
     $controller->SiteObjectController($behaviour);
 
-    $this->request->setReturnValue('get', 'testAction', array('action'));
+    $this->request->setReturnValue('get', 'TestAction', array('action'));
 
     $controller->expectOnce('_getStateMachine');
     $controller->setReturnReference('_getStateMachine', $this->state_machine);

@@ -16,13 +16,13 @@ class StateMachine
   var $states = array();
   var $initial_state = null;
 
-  function registerState($state_name, $command, $transitions_matrix = array())
+  function registerState($state_name, &$command, $transitions_matrix = array())
   {
     if (isset($this->states[$state_name]))
-      return new LimbException('state already been registered',
+      return new LimbException('state has already been registered',
                               array('state_name' => $state_name));
 
-    $this->states[$state_name]['command'] = $command;
+    $this->states[$state_name]['command'] =& $command;
     $this->states[$state_name]['transitions'] = $transitions_matrix;
 
     return true;
@@ -49,7 +49,8 @@ class StateMachine
     while($next_state != false)
     {
       $state = $next_state;
-      $next_state = $this->_processState($state);
+      if(Limb :: isError($next_state = $this->_processState($state)))
+         return $next_state;
     }
   }
 
@@ -61,9 +62,9 @@ class StateMachine
                             array('state_name' => $state_name));
     }
 
-    $state_data = $this->states[$state_name];
-    resolveHandle($state_data['command']);
-    $result = $state_data['command']->perform();
+    $state_data =& $this->states[$state_name];
+    resolveHandle($command =& $state_data['command']);
+    $result = $command->perform();
 
     if (isset($state_data['transitions'][$result]))
       return $state_data['transitions'][$result];

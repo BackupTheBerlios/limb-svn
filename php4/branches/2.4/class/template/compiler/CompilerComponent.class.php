@@ -170,7 +170,7 @@ class CompilerComponent
   {
     foreach(array_keys($this->children) as $key)
     {
-      if(is_a($this->children[$key] $class))
+      if(is_a($this->children[$key], $class))
       {
         return $this->children[$key];
       }

@@ -17,6 +17,11 @@ class UseViewCommandTest extends LimbTestCase
 {
   var $toolkit;
 
+  function UseViewCommandTest()
+  {
+    parent :: LimbTestCase('use view cmd test');
+  }
+
   function setUp()
   {
     $this->toolkit = new MockLimbToolkit($this);

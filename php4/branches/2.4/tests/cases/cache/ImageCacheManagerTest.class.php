@@ -45,6 +45,11 @@ class ImageCacheManagerTest extends LimbTestCase
   var $datasource;
   var $toolkit;
 
+  function ImageCacheManagerTest()
+  {
+    parent :: LimbTestCase('image cache test');
+  }
+
   function setUp()
   {
     $this->uri = new MockUri($this);

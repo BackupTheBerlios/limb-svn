@@ -38,6 +38,11 @@ class EditSiteObjectCommandTest extends LimbTestCase
   var $dataspace;
   var $site_object;
 
+  function EditSiteObjectCommandTest()
+  {
+    parent :: LimbTestCase('edit site object cmd test');
+  }
+
   function setUp()
   {
     $this->request = new MockRequest($this);

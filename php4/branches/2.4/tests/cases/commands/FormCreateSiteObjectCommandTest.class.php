@@ -35,6 +35,11 @@ class FormCreateSiteObjectCommandTest extends LimbTestCase
   var $validator;
   var $dataspace;
 
+  function FormCreateSiteObjectCommandTest()
+  {
+    parent :: LimbTestCase('form create site object cmd test');
+  }
+
   function setUp()
   {
     $this->request = new MockRequest($this);

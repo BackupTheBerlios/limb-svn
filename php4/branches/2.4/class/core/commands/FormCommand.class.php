@@ -19,7 +19,7 @@ class FormCommand// implements Command
   }
 
   //for mocking
-  function _getValidator()
+  function & _getValidator()
   {
     include_once(LIMB_DIR . '/class/validators/Validator.class.php');
     return new Validator();
@@ -43,9 +43,9 @@ class FormCommand// implements Command
     return array();
   }
 
-  function validate($dataspace)
+  function validate(&$dataspace)
   {
-    $validator = $this->_getValidator();
+    $validator =& $this->_getValidator();
 
     $this->_registerValidationRules($validator, $dataspace);
 

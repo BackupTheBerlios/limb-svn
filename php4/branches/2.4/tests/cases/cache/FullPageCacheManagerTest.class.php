@@ -33,6 +33,11 @@ class FullPageCacheManagerTest extends LimbTestCase
   var $request;
   var $uri;
 
+  function FullPageCacheManagerTest()
+  {
+    parent :: LimbTestCase('full page cache test');
+  }
+
   function setUp()
   {
     $this->request = new MockRequest($this);

@@ -36,6 +36,11 @@ class FormCommandTest extends LimbTestCase
   var $toolkit;
   var $validator;
 
+  function FormCommandTest()
+  {
+    parent :: LimbTestCase('form cmd test');
+  }
+
   function setUp()
   {
     $this->dataspace = new MockDataspace($this);
@@ -68,7 +73,7 @@ class FormCommandTest extends LimbTestCase
     $this->form_command->FormCommand('test_form');
 
     $this->request->expectOnce('get');
-    $this->request->setReturnValue('get', array('submitted' => 0), array('testForm'));
+    $this->request->setReturnValue('get', array('submitted' => 0), array('test_form'));
     $this->form_command->expectOnce('_initFirstTimeDataspace',
                                     array(new IsAExpectation('MockDataspace'),
                                           new IsAExpectation('MockRequest')
@@ -80,7 +85,7 @@ class FormCommandTest extends LimbTestCase
   {
     $this->form_command->FormCommand('test_form');
 
-    $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('testForm'));
+    $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('test_form'));
 
     $this->form_command->setReturnValue('_defineDatamap', array('test' => 'test2'));
 
@@ -98,7 +103,7 @@ class FormCommandTest extends LimbTestCase
   {
     $this->form_command->FormCommand('test_form');
 
-    $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('testForm'));
+    $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('test_form'));
 
     $this->form_command->setReturnValue('_defineDatamap', array('test' => 'test2'));
 

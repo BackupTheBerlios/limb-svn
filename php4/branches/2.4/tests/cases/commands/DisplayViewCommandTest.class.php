@@ -18,6 +18,11 @@ Mock :: generate('Response');
 
 class TemplateStub extends Template
 {
+  function TemplateStub()
+  {
+    //do nothing
+  }
+
   function display()
   {
     echo 'test template';
@@ -29,6 +34,11 @@ class DisplayViewCommandTest extends LimbTestCase
   var $toolkit;
   var $response;
   var $template;
+
+  function DisplayViewCommandTest()
+  {
+    parent :: LimbTestCase('display cmd test');
+  }
 
   function setUp()
   {

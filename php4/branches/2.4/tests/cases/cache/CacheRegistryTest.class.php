@@ -14,6 +14,11 @@ class CacheRegistryTest extends LimbTestCase
 {
   var $cache;
 
+  function CacheRegistryTest()
+  {
+    parent :: LimbTestCase('cache registry test');
+  }
+
   function setUp()
   {
     $this->cache = new CacheRegistry();

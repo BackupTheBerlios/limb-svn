@@ -34,6 +34,11 @@ class PartialPageCacheManagerTest extends LimbTestCase
   var $uri;
   var $request;
 
+  function PartialPageCacheManagerTest()
+  {
+    parent :: LimbTestCase('partial page cache test');
+  }
+
   function setUp()
   {
     $this->uri = new MockUri($this);
@@ -377,7 +382,7 @@ class PartialPageCacheManagerTest extends LimbTestCase
 
     $this->request->setReturnValue('export', $attributes);
 
-    $this->cache_manager->setReturnValue('_getMatchedRule', array('serverId' => $server_id, 'optional' => array('action')));
+    $this->cache_manager->setReturnValue('_getMatchedRule', array('server_id' => $server_id, 'optional' => array('action')));
 
     $this->assertTrue($this->cache_manager->cacheExists());
 
@@ -390,7 +395,7 @@ class PartialPageCacheManagerTest extends LimbTestCase
 
     $this->request->setReturnValue('export', $attributes);
     $this->uri->setReturnValue('getPath', '/root/test');
-    $this->cache_manager->setReturnValue('_getMatchedRule', array('serverId' => $server_id, 'usePath' => true, 'optional' => array('action')));
+    $this->cache_manager->setReturnValue('_getMatchedRule', array('server_id' => $server_id, 'use_path' => true, 'optional' => array('action')));
 
     $this->assertTrue($this->cache_manager->cacheExists());
 

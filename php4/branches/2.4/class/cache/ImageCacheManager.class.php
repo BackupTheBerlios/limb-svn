@@ -40,10 +40,10 @@ class ImageCacheManager
     return $this->matched_rule;
   }
 
-  function setUri($uri)
+  function setUri(&$uri)
   {
     $this->id = null;
-    $this->uri = $uri;
+    $this->uri =& $uri;
   }
 
   function processContent(&$content)
