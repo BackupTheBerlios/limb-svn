@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class MediaManagerTest extends LimbTestCase
 {

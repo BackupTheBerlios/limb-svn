@@ -11,7 +11,6 @@
 require_once(LIMB_STATS_DIR . '/registers/StatsCounterRegister.class.php');
 require_once(LIMB_STATS_DIR . '/registers/StatsRequest.class.php');
 require_once(LIMB_STATS_DIR . '/registers/StatsIp.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generate('StatsIp');
 
@@ -30,7 +29,8 @@ class StatsCounterRegisterTest extends LimbTestCase
 
   function setUp()
   {
-    $this->conn =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $this->conn =& $toolkit->getDbConnection();
     $this->db =& new SimpleDb($this->conn);
 
     $this->ip_register = new MockStatsIp($this);

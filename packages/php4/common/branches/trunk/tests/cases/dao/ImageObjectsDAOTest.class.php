@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../dao/ImageObjectsDAO.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/db/SimpleSelectSQL.class.php');
 
 class ImageObjectsDAOTest extends LimbTestCase

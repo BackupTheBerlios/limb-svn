@@ -13,7 +13,6 @@ require_once(LIMB_STATS_DIR . '/registers/StatsRequest.class.php');
 require_once(LIMB_STATS_DIR . '/registers/StatsReferer.class.php');
 require_once(LIMB_STATS_DIR . '/registers/StatsUri.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generate('StatsReferer');
 Mock :: generate('StatsUri');
@@ -32,7 +31,8 @@ class StatsHitRegisterTest extends LimbTestCase
   {
     parent :: LimbTestCase('stats hit register test');
 
-    $this->conn =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $this->conn =& $toolkit->getDbConnection();
     $this->db =& new SimpleDb($this->conn);
   }
 

@@ -11,7 +11,6 @@
 require_once(dirname(__FILE__) . '/../../../dao/criteria/FileObjectsCriteria.class.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class FileObjectsCriteriaTest extends LimbTestCase
 {
@@ -25,7 +24,8 @@ class FileObjectsCriteriaTest extends LimbTestCase
 
   function setUp()
   {
-    $this->conn =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $this->conn =& $toolkit->getDbConnection();
     $this->db =& new SimpleDb($this->conn);
 
     $this->_cleanUp();

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_STATS_DIR . '/DAO/StatsReferersReportDAO.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class StatsReferersReportDAOTest extends LimbTestCase
 {
@@ -23,7 +22,8 @@ class StatsReferersReportDAOTest extends LimbTestCase
 
   function setUp()
   {
-    $this->conn =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $this->conn =& $toolkit->getDbConnection();
     $this->db =& new SimpleDb($this->conn);
 
     $this->_cleanUp();

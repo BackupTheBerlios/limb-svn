@@ -10,7 +10,6 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../dao/ImageObjectsDAO.class.php');
 require_once(dirname(__FILE__) . '/../../../dao/ImageObjectsRecordSet.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
 class ImageObjectsRecordSetTest extends LimbTestCase
@@ -24,7 +23,9 @@ class ImageObjectsRecordSetTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $toolkit =& Limb :: toolkit();
+    $conn =& $toolkit->getDbConnection();
+    $this->db =& new SimpleDb($conn);
 
     $this->_cleanUp();
   }

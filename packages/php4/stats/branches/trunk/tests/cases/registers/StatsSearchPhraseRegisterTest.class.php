@@ -11,7 +11,6 @@
 require_once(LIMB_STATS_DIR . '/registers/StatsSearchPhraseRegister.class.php');
 require_once(LIMB_STATS_DIR . '/registers/StatsRequest.class.php');
 require_once(LIMB_STATS_DIR . '/search_engine_rules/SearchEngineRegexRule.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generate('SearchEngineRegexRule');
 
@@ -25,7 +24,8 @@ class StatsSearchPhraseRegisterTest extends LimbTestCase
   {
     parent :: LimbTestCase('stats search prase register test');
 
-    $this->conn =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $this->conn =& $toolkit->getDbConnection();
     $this->db =& new SimpleDb($this->conn);
   }
 

@@ -13,7 +13,6 @@
 // require_once(dirname(__FILE__) . '/../../../data_mappers/FileObjectMapper.class.php');
 // require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 // require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
-// require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 // require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
 //
 // Mock :: generatePartial('FileObjectMapper',
@@ -36,7 +35,9 @@ class FileObjectDataMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $conn =& $toolkit->getDbConnection();
+    $this->db =& new SimpleDb($conn);
 
     $this->finder = new MockFileObjectsRawFinder($this);
     $this->media_manager = new MockMediaManager($this);

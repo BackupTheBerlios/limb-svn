@@ -12,7 +12,6 @@ require_once(dirname(__FILE__) . '/../../../ImageObject.class.php');
 require_once(dirname(__FILE__) . '/../../../data_mappers/ImageObjectMapper.class.php');
 require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
 
 Mock :: generatePartial('ImageObjectMapper',
@@ -36,7 +35,10 @@ class ImageObjectDataMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& new SimpleDB(LimbDbPool :: getConnection());
+    $toolkit =& Limb :: toolkit();
+    $conn =& $toolkit->getDbConnection();
+
+    $this->db =& new SimpleDB($conn);
 
     $this->media_manager = new MockMediaManager($this);
 

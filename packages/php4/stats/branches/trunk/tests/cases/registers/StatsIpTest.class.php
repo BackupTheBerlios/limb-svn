@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_STATS_DIR . '/registers/StatsIp.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class StatsIpTest extends LimbTestCase
 {
@@ -23,7 +22,8 @@ class StatsIpTest extends LimbTestCase
   {
     parent :: LimbTestCase('stats ip test');
 
-    $this->conn =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $this->conn =& $toolkit->getDbConnection();
     $this->db =& new SimpleDb($this->conn);
   }
 
