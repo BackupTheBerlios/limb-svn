@@ -33,20 +33,21 @@ class LimbStringTagTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), 'Apply filter');
   }
 
-  function testUseValueAttribute()
+  function testDefaultFileUseChildContentAtRuntime()
   {
-    $template = '<limb:locale:STRING name="apply_filter"/>';
+    $template = '<limb:locale:STRING>{$var}</limb:locale:STRING>';
 
-    RegisterTestingTemplate('/limb/locale_string_value.html', $template);
+    RegisterTestingTemplate('/limb/locale_string_default_at_runtime.html', $template);
 
-    $page =& new Template('/limb/locale_string_value.html');
+    $page =& new Template('/limb/locale_string_default_at_runtime.html');
+    $page->set('var', 'apply_filter');
 
     $this->assertEqual($page->capture(), 'Apply filter');
   }
-  
+
   function testDefinedLocale()
   {
-    $template = '<limb:locale:STRING name="apply_filter" file="test" locale="de"/>';
+    $template = '<limb:locale:STRING file="test" locale="de">apply_filter</limb:locale:STRING>';
 
     RegisterTestingTemplate('/limb/locale_string_locale.html', $template);
 
@@ -54,10 +55,10 @@ class LimbStringTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), 'Apply filter german');
   }
-  
+
   function testFile()
   {
-    $template = '<limb:locale:STRING file="error" name="cant_be_deleted"/>';
+    $template = '<limb:locale:STRING file="error">cant_be_deleted</limb:locale:STRING>';
 
     RegisterTestingTemplate('/limb/locale_string_file.html', $template);
 
@@ -65,8 +66,8 @@ class LimbStringTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), 'Object can\'t be deleted');
   }
-  
-  // I can't test locale_type attribute since CONTENT_LOCALE_ID and MANAGEMENT_LOCALE_ID 
+
+  // I can't test locale_type attribute since CONTENT_LOCALE_ID and MANAGEMENT_LOCALE_ID
   // are equal in test environment
 }
 ?>

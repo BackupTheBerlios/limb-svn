@@ -19,18 +19,18 @@ class LimbLocaleDateTag extends ServerComponentTag
   var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/locale/LocaleDateComponent.class.php';
   var $runtimeComponentName = 'LocaleDateComponent';
 
-  function preParse()
-  {
-    return PARSER_FORBID_PARSING;
-  }
-
   function CheckNestingLevel()
   {
     if ($this->findParentByClass('LimbLocaleDateFormatTag'))
       $this->raiseCompilerError('BADSELFNESTING');
   }
 
-  function generateContents(&$code)
+  function preGenerate(&$code)
+  {
+    $code->writePhp('ob_start();');
+  }
+
+  function postGenerate(&$code)
   {
     $code->writePhp($this->getComponentRefCode() . '->prepare();');
 
@@ -51,18 +51,19 @@ class LimbLocaleDateTag extends ServerComponentTag
     if($format = $this->getAttribute('format'))
        $code->writePhp($this->getComponentRefCode() . '->setFormatString("' . $format . '");');
 
-    $value =& $this->_getValue();
+    $content_var = $code->getTempVarRef();
+
+    $code->writePhp($content_var . ' = ob_get_contents();');
+    $code->writePhp('ob_end_clean();');
 
     if($date_format = $this->getAttribute('date_format'))
-      $code->writePhp($this->getComponentRefCode() . '->setDate("' . $value . '", "' . $date_format .'");');
+      $code->writePhp($this->getComponentRefCode() . '->setDate(' . $content_var . ', "' . $date_format .'");');
     else
-      $code->writePhp($this->getComponentRefCode() . '->setDate("' . $value . '");');
-
+      $code->writePhp($this->getComponentRefCode() . '->setDate(' . $content_var . ');');
 
     $code->writePhp($this->getComponentRefCode() . '->format();');
-
-    $this->removeChildren();
   }
+
 
   function & _getLocale()
   {
@@ -82,19 +83,6 @@ class LimbLocaleDateTag extends ServerComponentTag
     return constant($locale_constant);
   }
 
-  function _getValue()
-  {
-    if($text_node = $this->findChildByClass('TextNode'))
-      return $text_node->contents;
-    elseif($value = $this->getAttribute('value'))
-      return $value;
-  }
-
-  function removeChildren()
-  {
-    foreach(array_keys($this->children) as $key)
-      unset($this->children[$key]);
-  }
 }
 
 ?>

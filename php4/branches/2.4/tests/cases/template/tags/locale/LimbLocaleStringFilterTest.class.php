@@ -94,6 +94,25 @@ class LimbStringFilterTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), 'Apply filter german');
   }
 
+  function testDefaultDBEForAttribute()
+  {
+    $template = '<form id="test_form" name="test_form" runat="server">'.
+                '<input id="test_input" type="text" value="{$^var|LimbI18NString|uppercase}">' .
+                '</form>';
+
+    RegisterTestingTemplate('/limb/locale_string_filter_dbe_for_attribute.html', $template);
+
+    $page =& new Template('/limb/locale_string_filter_dbe_for_attribute.html');
+
+    $page->set('var', 'apply_filter');
+
+    $expected = '<form id="test_form" name="test_form">'. //please note the second value attribute!
+                '<input id="test_input" type="text" name="test_input" value="" value="APPLY FILTER">' .
+                '</form>';
+
+    $this->assertEqual($page->capture(), $expected);
+  }
+
   // I can't test locale_type attribute since CONTENT_LOCALE_ID and MANAGEMENT_LOCALE_ID
   // are equal in test environment
 }

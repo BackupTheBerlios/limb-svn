@@ -14,48 +14,41 @@ TagDictionary::registerTag($taginfo, __FILE__);
 
 class LimbLocaleStringTag extends CompilerDirectiveTag
 {
-	function preParse() 
+  function CheckNestingLevel()
   {
-		return PARSER_FORBID_PARSING;
-	}
-
-	function CheckNestingLevel() 
-  {
-		if ($this->findParentByClass('LimbLocaleStringTag')) 
+    if ($this->findParentByClass('LimbLocaleStringTag'))
       $this->raiseCompilerError('BADSELFNESTING');
-	}
-  
-  function generateContents(&$code)
+  }
+
+  function preGenerate(&$code)
+  {
+    $code->writePhp('ob_start();');
+  }
+
+  function postGenerate(&$code)
   {
     $code->registerInclude(LIMB_DIR . '/core/i18n/Strings.class.php');
-    
+
     $file = 'common';
 
     if(!$file = $this->getAttribute('file'))
       $file = 'common';
 
     $locale = $this->_getLocale();
-    
-    if($text_node = $this->findChildByClass('TextNode'))
-    {
-      $content =& $text_node->contents; 
-      
-      $code->writePhp("echo strings :: get('{$content}', '{$file}', '$locale');");
-      
-    }
-    elseif($name = $this->getAttribute('name'))
-    {
-       $code->writePhp("echo strings :: get('{$name}', '{$file}', '{$locale}');");
-    }
-    
-    $this->removeChildren();
+
+    $content_var = $code->getTempVarRef();
+
+    $code->writePhp($content_var . ' = ob_get_contents();');
+    $code->writePhp('ob_end_clean();');
+
+    $code->writePhp("echo strings :: get($content_var, '{$file}', $locale);");
   }
-  
+
   function _getLocale()
   {
     if($locale = $this->getAttribute('locale'))
-      return $locale;
-    
+      return "'$locale'";
+
     if($locale_type = $this->getAttribute('locale_type'))
     {
       if(strtolower($locale_type) == 'management')
@@ -65,14 +58,9 @@ class LimbLocaleStringTag extends CompilerDirectiveTag
     }
     else
       $locale_constant = 'CONTENT_LOCALE_ID';
-    
-    return constant($locale_constant);
+
+    return "constant('$locale_constant')";
   }
-  
-	function removeChildren() 
-  {
-    $this->children = array();
-	}  
 }
 
 ?>

@@ -37,13 +37,15 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), '02/20/2002');
   }
 
-  function testUseChildValue()
+  function testUseRuntimeChildValue()
   {
-    $template = '<limb:locale:DATE locale="en" value="2002-02-20"/>';
+    $template = '<limb:locale:DATE locale="en">{$var}</limb:locale:DATE>';
 
-    RegisterTestingTemplate('/limb/locale_date_value.html', $template);
+    RegisterTestingTemplate('/limb/locale_date_value_at_runtime.html', $template);
 
-    $page =& new Template('/limb/locale_date_value.html');
+    $page =& new Template('/limb/locale_date_value_at_runtime.html');
+
+    $page->set('var', '2002-02-20');
 
     $this->assertEqual($page->capture(), '02/20/2002');
   }
@@ -52,7 +54,9 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
   {
     $date = Date ::create($year = 2004, $month= 12, $day=20, $hour=10, $minute=15, $second=30);
 
-    $template = '<limb:locale:DATE locale="en" value="'. $date->getStamp() .'" date_type="stamp"/>';
+    $template = '<limb:locale:DATE locale="en" date_type="stamp">'.
+                $date->getStamp().
+                '</limb:locale:DATE>';
 
     RegisterTestingTemplate('/limb/locale_date_stamp.html', $template);
 
@@ -65,7 +69,9 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
   {
     $date = Date ::create($year = 2005, $month = 1, $day=20, $hour=10, $minute=15, $second=30);
 
-    $template = '<limb:locale:DATE locale="en" value="'. $date->getStamp() .'" date_type="stamp" format_type="date"/>';
+    $template = '<limb:locale:DATE locale="en" date_type="stamp" format_type="date">'.
+                $date->getStamp().
+                '</limb:locale:DATE>';
 
     RegisterTestingTemplate('/limb/locale_date_format_type.html', $template);
 
@@ -78,7 +84,9 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
   {
     $date = Date ::create($year = 2005, $month = 1, $day=20, $hour=10, $minute=15, $second=30);
 
-    $template = '<limb:locale:DATE locale="en" value="'. $date->getStamp() .'" date_type="stamp" format="%Y %m %d"/>';
+    $template = '<limb:locale:DATE locale="en" date_type="stamp" format="%Y %m %d">'.
+                $date->getStamp().
+                '</limb:locale:DATE>';
 
     RegisterTestingTemplate('/limb/locale_date_defined_format.html', $template);
 
@@ -89,7 +97,9 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
 
   function testLocalizedFormatedValue()
   {
-    $template = '<limb:locale:DATE locale="en" value="Thursday 20 January 2005" date_format="%A %d %B %Y" date_type="localized_string" format="%Y %m %d"/>';
+    $template = '<limb:locale:DATE locale="en" date_format="%A %d %B %Y" date_type="localized_string" format="%Y %m %d">'.
+                'Thursday 20 January 2005'.
+                '</limb:locale:DATE>';
 
     RegisterTestingTemplate('/limb/locale_date_localized_formated_value.html', $template);
 
@@ -100,7 +110,9 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
 
   function testTranslateFromOneLocaleToAnother()
   {
-    $template = '<limb:locale:DATE date_locale="fr" locale="en" value="Jeudi 20 Janvier 2005" date_format="%A %d %B %Y" date_type="localized_string" format_type="date"/>';
+    $template = '<limb:locale:DATE date_locale="fr" locale="en" date_format="%A %d %B %Y" date_type="localized_string" format_type="date">'.
+                'Jeudi 20 Janvier 2005'.
+                '</limb:locale:DATE>';
 
     RegisterTestingTemplate('/limb/locale_date_transfer_between_locales.html', $template);
 
