@@ -262,6 +262,11 @@ function set_cookie(name, value, path, expires)
   document.cookie = cookie_str;
 }
 
+function remove_cookie(name, path)
+{
+  set_cookie(name, 0, path, '1/1/1980');
+}
+
 function add_cookie_element(cookie_name, element)
 {
 	cookie_elements = get_cookie(cookie_name);

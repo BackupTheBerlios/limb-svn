@@ -39,12 +39,29 @@ class richedit_component extends text_area_component
     <script type='text/javascript'>  
       HTMLArea.loadPlugin('TableOperations');
     </script>
-    <script type='text/javascript' src='/shared/js/htmlarea_extension.js'></script>";	
+    <script type='text/javascript' src='/shared/js/htmlarea_extension.js'></script>
+    
+		<script type='text/javascript'>
+		  function toggle_richedit_textarea()
+		  {
+		    c = get_cookie('use_textarea_instead_of_richedit');
+		    
+		    if(c == 1)
+		      remove_cookie('use_textarea_instead_of_richedit');
+		    else
+		      set_cookie('use_textarea_instead_of_richedit', 1);
+		  }
+		</script>";
 	}
 
 	function init_richedit()
 	{
 		$this->_load_js_script();
+				
+		echo '<button class="button" onclick="toggle_richedit_textarea();window.location.reload();return false;">
+		      Toggle richedit/textarea
+		      </button><br>';
+		
 		
 		$id = $this->get_attribute('id');
 		
@@ -78,7 +95,11 @@ class richedit_component extends text_area_component
         editor.config.height = '{$height}';  	    	
         editor.generate();
       }
-      add_event(window, 'load', init_richedit_{$id});
+      
+      c = get_cookie('use_textarea_instead_of_richedit');
+      if(c != 1)
+        add_event(window, 'load', init_richedit_{$id});      
+      
     </script>";
 	}
 } 
