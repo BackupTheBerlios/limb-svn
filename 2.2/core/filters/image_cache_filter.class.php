@@ -33,13 +33,14 @@ class image_cache_filter extends intercepting_filter
     
     debug :: add_timing_point('image cache started');
     
-    $content = ob_get_contents();
+    if($content = ob_get_contents())
+    {
+      ob_end_clean();
     
-    ob_end_clean();
+      $cache->process_content($content);
     
-    $cache->process_content($content);
-    
-    $response->write($content);
+      $response->write($content);
+    }
     
     debug :: add_timing_point('image cache write finished');    
   }

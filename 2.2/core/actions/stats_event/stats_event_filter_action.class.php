@@ -19,7 +19,7 @@ class stats_event_filter_action extends form_action
  
 	function _valid_perform(&$request, &$response)
 	{
-	  $request->merge($this->dataspace->export());
+	  $request->import_attributes($this->dataspace->export(), true);
 	
 		parent :: _valid_perform($request, $response);
 	}
