@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 /**
 * Represents a page navigator at runtime.  The total number of items in the 
 * list to be paged must be known before the navigator can be displayed.
@@ -127,7 +126,7 @@ class pager_component extends component
 		return $this->total_items;
 	} 
 
-	function has_more_that_one_page()
+	function has_more_than_one_page()
 	{
 		return round($this->total_items / $this->items) > 1 ? true : false;
 	} 
@@ -136,7 +135,6 @@ class pager_component extends component
 	{
 		$this->items = $items;
 	} 
-
 
 	/**
 	* Set the database which this pager controls.

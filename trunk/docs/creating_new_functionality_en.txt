@@ -1,0 +1,578 @@
+How to create new site object
+
+To create new site object you may need to accomplish to following list:
+1) Plan your new site_object: attributes and functionality
+2) Create site_object class for it
+3) Create db_table class if you are creating a content object
+4) Create site_object_controller for it. 
+5) Create ini-files with localized strings
+6) Create action classes to implement functionality
+7) Create template files for listing, editing, creating.
+8) Register new object using parent object's action or 
+	register object action of site_structure object.
+
+PLANNING
+
+Let's imagine we need to support special catalog on some site. The catalog
+will looks like a set of hierarchically linked folders. Every folder can 
+contains catalog objects. To implement this we need 2 site objects:
+say some_catalog_object and some_catalog_folder. This document describes
+how to create all necessary classes and templates to implement the catalog
+step by step. Unfortunately we not going to put all file content here.
+But LIMB comes with common catalog bundled so if you want to look 
+at all classes	and templates see for the corresponding files in your LIMB_DIR.
+
+some_catalog_folder will be a common site_object as far as it doesn't has
+any additional attributes then identifier and title.
+some_catalog_object is a content object, it has the following attributes:
+1) identifier
+2) title
+3) description
+4) price
+5) image_id
+
+CREATING SITE_OBJECTS CLASSES
+
+some_catalog_folder class will be looks like this:
+
+require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
+
+class some_catalog_folder extends site_object
+{
+	function some_catalog_folder ()
+	{
+		parent :: site_object();
+	}
+	
+	function _define_class_properties()
+	{
+		return array(
+			'class_ordr' => 1, // sorting index in tree
+			'can_be_parent' => 1,
+			'controller_class_name' => 'some_catalog_folder_controller',
+			'icon' => '/shared/images/folder.gif' // icon to display in tree
+		);
+	}
+}
+
+some_catalog_object class are looks like this:
+
+require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
+require_once(LIMB_DIR . 'core/model/shop/cart_item.class.php');
+
+class some_catalog_object extends content_object
+{
+	function some_catalog_object()
+	{
+		parent :: content_object();
+	}
+
+	function _define_attributes_definition()
+	{
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+					'description’ => array('search' => true, 'search_weight' => 1),
+				));
+	}
+
+	function _define_class_properties()
+	{
+		return array(
+			'ordr' => 1,
+			'can_be_parent' => 0,
+			'controller_class_name' => 'catalog_object_controller',
+      'auto_identifier' => true
+		);
+	}
+}
+
+NOTE: some_catalog_object class properties have auto_identifier property and it
+means that there is no need to set identifier manually. Identifier for
+some_catalog_object will be assigned automatically.
+
+CREATING DB_TABLE CLASSES
+
+Since some_catalog_object is inherited from content_object class it
+keeps all the additional attributes in one db table (some_catalog_object e.g.).
+Some db_table class is used for carrying-out fetching/creating/deleting 
+operations over that table. some_catalog_object_db_table is used by
+default. You can set db_table class name for content object by
+db_table_name property (do not append '_db_table' postfix).
+
+some_catalog_object_db_table looks like this:
+
+require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
+
+class some_catalog_object_db_table extends content_object_db_table
+{
+  function some_catalog_object_db_table()
+  {
+    parent :: content_object_db_table();
+  }
+  
+  function _define_columns()
+  {
+	  return array(
+      'image_id' => array('type' => 'numeric'),
+      'description' => '',
+      'price' => array('type' => 'numeric'),
+    );
+  }
+}
+
+Columns definitions are useful in type casting and filtering. 
+String type used if the definition for a column is empty. The list of 
+supported types:
+* numeric
+* string
+* boolean
+* date
+* datetime
+
+some_catalog_object_db_table class we work with some_catalog_object
+table by default. You can redefine db_table name:
+
+  function _define_db_table_name()
+  {
+  	return 'some_other_name';
+  }
+ 
+CREATING CONTROLLERS.
+
+Controllers defines objects functionality. Our some_catalog_folder
+will be able to display itself in 2 lists (admin_display + display),
+create child objects and folders, edit and delete itself. some_catalog_object
+doesn't support publishing.
+
+OK, now some_catalog_folder_controller:
+
+require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+	
+class some_catalog_folder_controller extends site_object_controller
+{
+	function some_catalog_folder_controller()
+	{
+		$this->_actions = array(
+				'display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/some_catalog_folder/display.html'
+				),
+				'admin_display' => array(
+						'permissions_required' => 'rw',
+						'template_path' => '/some_catalog_folder/admin_display.html'
+				),
+				'create_some_catalog_folder' => array(
+						'permissions_required' => 'w',
+						'template_path' => '/some_catalog_folder/create.html',
+						'action_path' => '/some_catalog_folder/create_some_catalog_folder_action',
+						'JIP' => true,
+						'popup' => true,
+						'img_src' => '/shared/images/new.folder.gif',
+						'action_name' => strings :: get('create_catalog_folder', 'catalog'),
+						'can_have_access_template' => true,
+				),
+				'create_some_catalog_object' => array(
+						'permissions_required' => 'w',
+						'template_path' => '/some_catalog_object/create.html',
+						'action_path' => '/some_catalog_object/create_some_catalog_object_action',
+						'JIP' => true,
+						'popup' => true,
+						'img_src' => '/shared/images/new.generic.gif',
+						'action_name' => strings :: get('create_catalog_object', 'catalog'),
+						'can_have_access_template' => true,
+				),
+				'edit' => array(
+						'permissions_required' => 'w',
+						'template_path' => '/some_catalog_folder/edit.html',
+						'action_path' => '/some_catalog_folder/edit_some_catalog_folder_action',
+						'JIP' => true,
+						'popup' => true,
+						'img_src' => '/shared/images/edit.gif',
+						'action_name' => strings :: get('edit_catalog_folder', 'catalog'),
+				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete_catalog_folder', 'catalog'),
+						'action_path' => '/ some_catalog_folder/delete_some_catalog_folder_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				),
+		);
+ 		
+		parent :: site_object_controller();
+	}
+}
+
+Let's clarify some actions attributes:
+
+permissions_required tell the necessary permissions level user must have to 
+execute the action.
+JIP flag means that the action will be displayed in actions list of an object.
+action_path tell the relative path to object which will used to implement action.
+popup flag means that a new windows will be opened to perform action.
+template_path point to template file to visualize the action.
+
+Next comes some_catalog_object controller
+
+class some_catalog_object_controller extends site_object_controller
+{
+	function some_catalog_object_controller()
+	{
+		$this->_actions = array(
+				'display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/some_catalog_object/display.html',
+				),
+				'admin_display' => array(
+						'permissions_required' => 'rw',
+						'template_path' => '/some_catalog_object/admin_display.html'
+				),
+				'edit' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('edit_catalog_object', 'catalog'),
+						'action_path' => '/some_catalog_object/edit_some_catalog_object_action',
+						'template_path' => '/some_catalog_object/edit.html',
+						'img_src' => '/shared/images/edit.gif'
+				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/set_publish_status_action',
+						'img_src' => '/shared/images/publish.gif',
+						'can_have_access_template' => true,
+				),
+				'unpublish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('unpublish'),
+						'action_path' => '/doc_flow_object/set_publish_status_action',
+						'img_src' => '/shared/images/unpublish.gif',
+						'can_have_access_template' => true,
+				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete_catalog_object', 'catalog'),
+						'action_path' => '/catalog_object/delete_catalog_object_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				),
+		);
+ 		
+		parent :: site_object_controller();
+	}
+}
+
+LOCALIZED STRINGS INI-FILES
+
+As you may realize from controllers we not going to create new ini-files with
+localized strings to display messages. The existing catalog
+ini-files from LIMB_DIR are used instead. 
+New ini-file could looks like this:
+
+[extends]
+
+filename=catalog
+
+[constants]
+catalog_object= Some catalog object
+catalog_folder=Some catalog folder
+image = Image
+description=Description
+price=Price
+// some more string here
+
+You'll need to create a file for every locale you use at your site e.g.
+some_catalog_en.ini for English, some_catalog_ru for Russian.
+
+CREATING ACTION CLASSES
+
+Action class for creating new some_catalog_folder looks like this:
+
+require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
+
+class create_some_catalog_folder_action extends form_create_site_object_action
+{
+	function create_some_catalog_folder_action()
+	{
+		$definition = array(
+			'site_object' => 'some_catalog_folder',
+		);
+		
+		parent :: form_create_site_object_action('create_some_catalog_folder', $definition);
+	}
+	
+	function _init_validator()
+	{
+		parent :: _init_validator();
+
+		$this->validator->add_rule(new required_rule('title'));
+	}
+}
+
+We think it's simple enough not to comment anything.
+
+Action class for deleting some_catalog_folder:
+
+require_once(LIMB_DIR . 'core/actions/form_delete_site_object_action.class.php');
+
+class delete_some_catalog_folder_action extends form_delete_site_object_action
+{
+	function delete_some_catalog_folder_action($name='delete_form')
+	{		
+		parent :: form_delete_site_object_action($name, array('site_object' => 'some_catalog_folder'));
+	}
+}
+
+
+Action class for creating new some_catalog_object a little bit complicated:
+
+
+class create_some_catalog_object_action extends form_create_site_object_action
+{
+	function create_some_catalog_object_action()
+	{
+		$definition = array(
+			'site_object' => 'some_catalog_object',
+			'datamap' => array(
+				'price' => 'price',
+				'description' => ' description ',
+				'image_id' => 'image_id'
+			)
+		);
+		
+		parent :: form_create_site_object_action('some_catalog_object_form', $definition);
+	}
+	
+	function _init_validator()
+	{
+		parent :: _init_validator();
+
+		$this->validator->add_rule(new required_rule('title'));
+		$this->validator->add_rule(new required_rule('description'));
+		$this->validator->add_rule(new required_rule('price'));
+	}
+}
+
+datamap property tells what request variables should be collected and
+how these variable should be moved into object's attributes.
+
+We not going to show the rest of the actions classes since you can look 
+for them in LIMB_DIR/core/action/catalog_folder and LIMB_DIR/core/action/catalog_object.
+
+CREATING TEMPLATE FILES
+
+Action classes are used if there is need to write something to database.
+LIMB templates are active. All extractive operations performed by 
+datasources. That why creating good templates are essential part of the site 
+development process.
+
+Here is a template for admin_display action of some_catalog_folder:
+
+<core:WRAP file="admin/admin_display_page.html" placeholder="content">
+
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='folders'>
+	<core:PARAMETER name='loader_class_name' value='some_catalog_folder'>
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<fetch:SUB_BRANCH target='some_catalog_objects'>
+	<core:PARAMETER name='loader_class_name' value='some_catalog_object'>
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='folders'>
+<table width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='catalog_folder' file='catalog'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+<td><core:INCLUDE file="/admin/selector.html"></td>
+<td jip='object'><a href='{$path}?action=admin_display'>{$title}({$children})</a></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='4' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td colspan='2'><core:INCLUDE file='/admin/priority_button.html'></td>
+</tr>
+</table>
+</grid:LIST>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='some_catalog_objects'>
+<table width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='published_status'></th>
+	<th><locale:STRING name='catalog_object' file='catalog'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+<td><core:INCLUDE file="/admin/selector.html"></td>
+<td><core:INCLUDE file="published_status.html"></td>
+<td jip='object'><a href='{$path}?action=admin_display'>{$title}</a></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='4' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>
+</table>
+</grid:LIST>
+
+This template contains 2 tables to display child folders and objects.
+<fetch:SUB_BRANCH> gets a bunch of child some_catalog_folders at depth=1 by default and
+put it to target component.
+<grid:LIST> used to display tabular data. <grid:LIST> and <grid:ITERATOR>
+make output only if the data set has at least one record (<grid:DEFAULT> tag
+can be in case of empty data set).
+
+Next comes create templates for creating new some_catalog_folder object:
+
+<core:WRAP file="popup.html" placeholder="content">
+<h2><locale:STRING name='catalog_folder_creation' file='catalog'></h2>
+<form method="post" name="create_some_catalog_folder" id="create_some_catalog_folder">
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+		<core:INCLUDE file='/admin/admin_form_items/folder_form_fields.html'>
+    <tr>
+      <td colspan=2 align=center height=30><action_button action="create_some_catalog_folder" name="create" type="submit" id="create" locale_value="create" class="button">
+      &nbsp;
+      <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+      </td>
+    </tr>
+  </table>
+</form>
+
+Let's say this is a default template for any folder. 
+/admin/admin_form_items/folder_form_fields.html contains all necessary fields
+like identifier, title, form validation errors etc.
+
+And the last is /some_catalog_object/create.html
+
+<core:WRAP file="popup.html" placeholder="content">
+
+<form method="post" name="catalog_object_form" id="catalog_object_form">
+	<table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
+	<tr>
+		<td colspan=2 class=table-title><locale:STRING name='catalog_object_creation' file='catalog'> <h1>"<fetch:MAPPED>{$title}</fetch:MAPPED>"</h1></td>
+	</tr>
+	<tr>
+		<td colspan=2 height=100% valign=top class=com4>
+				<core:INCLUDE file="/some_catalog_object/form_fields.html">
+		</td>
+	</tr>
+	<core:INCLUDE file='/admin/admin_form_items/req_info.html'>
+  <tr>
+    <td colspan=2 align=center height=30><action_button action="create_catalog_object" name="create" type="submit" id="create" locale_value="create" class="button">
+    &nbsp;
+    <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+    </td>
+  </tr>
+	</table>	
+</form>
+
+/some_catalog_object/form_fields.html
+
+	<table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
+	<tr>
+		<td height=1%>
+			<!--BEGIN: tab-->
+			<table width=100% border=0 cellspacing=0 cellpadding=0 id=tabulator active=param_req class=tabulator>
+			<col span=100 valign=bottom class=form>
+			<tr>
+				<td class=tab>&nbsp;</td>
+				<td id=param_req_box class=tab-active>
+					<table border=0 cellspacing=0 cellpadding=0 height=100%>
+					<tr>
+						<td nowrap class=label-active id=param_req><a href='JavaScript:void(0);'><locale:STRING name='properties'></a></td>
+					</tr>
+					</table>	
+				</td>
+				<td class=tab id=param_text_box>
+					<table border=0 cellspacing=0 cellpadding=0 height=100%>
+					<tr>
+						<td nowrap class=label id=param_text><a href='JavaScript:void(0);'><locale:STRING name='content'></a></td>
+					</tr>
+					</table>	
+				</td>
+				<td class=tab width=100%>&nbsp;</td>
+			</tr>
+			</table>	
+			<!--END: tab-->
+		</td>
+	</tr>
+	<core:INCLUDE file='/admin/admin_form_items/errors.html'>
+	<tr>
+		<td height=100% valign=top>
+		
+					<!--BEGIN: tab ¹1-->
+				  <table width="100%" border="0" cellspacing="0" cellpadding="0" style='padding:5px 10px 1px 5px;' id=param_req_content>
+				  	<col align=right width=200 class=labels>
+							<core:INCLUDE file='/admin/admin_form_items/parent_select.html'>
+													<core:INCLUDE file='/admin/admin_form_items/title.html'>
+							<core:INCLUDE file='/admin/admin_form_items/image_select.html'>
+
+<tr>
+  <td><label for="price"><span class='req'>*</span><locale:STRING name=' price ' file=’catalog’></label></td>
+  <td><input type="text" name="price" id="price" label="price" class='input' size='10'>
+  </td>
+</tr>
+</table>
+					<!--END: tab ¹1-->
+
+					<!--BEGIN: tab ¹2-->
+				  <table width="100%" border="0" cellspacing="3" cellpadding="0" height=100% id=param_text_content>
+			    <tr>
+			      <td colspan=2><richedit name="description" id="description" label="Description" rows="25" style='width:100%;'></richedit>
+			      </td>
+			    </tr>
+				  </table>
+					<!--END: tab ¹2-->
+
+		</td>
+	</tr>
+	</table>	
+<script>
+	init_tab('param_req',	'tabulator', 'label', 'tab')
+	init_tab('param_text',	'tabulator', 'label', 'tab','window.onresize()')
+</script>
+
+	<div id='popup_div'></div>
+	
+A little bit awful but we got used to that.
+
+Over templates could be found in LIMB_DIR/design/main/templates/catalog_folder
+and LIMB_DIR/design/main/templates/catalog_object.
+
+If you have any questions please email us.

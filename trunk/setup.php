@@ -21,9 +21,6 @@ if(!defined('DEVELOPER_EMAIL'))
 define('SHARED_DIR', LIMB_DIR . 'shared/');
 define('SHARED_IMG_URL', '/shared/images/');  
 
-define('PHP_SELF', $_SERVER['PHP_SELF']);
-define('REQUEST_URI', $_SERVER['REQUEST_URI']);
-
 define('VAR_DIR', PROJECT_DIR . 'var/');
 
 if(!defined('VAR_URL'))

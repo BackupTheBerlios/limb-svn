@@ -1,0 +1,136 @@
+Access policy principles.
+
+LIMB uses 2 tier permissions system:
+1) Object access. The access system determines the user's permissions for the requested object: read, write or both
+2) Actions access. The access system determines whether the user is allowed to perform the requested action over the object.
+ 
+These steps are sequent and tightly connected. An action requires a set of object permissions to be accessible by user. So it's not enough for a user to have an action access only - the user must have specific permissions for the requested object too. Sounds a bit complicated, a good example should make everything clear hopefully.
+
+Lets start with some general conceptions used in LIMB access policy.
+
+USER GROUP content object(usually at /root/user_groups).
+
+USER content object(usually at /root/users)
+Users can belong to several USER GROUP at the same time.
+
+LIMB uses only resolving (positive) access records. So user accumulates 
+permissions from all the groups he participates in with his own
+permissions. Currently there is no way to restrict any user to have
+access to some object if any group that user participates in has
+access to that object.
+
+Objects access. User or group can have 2 types of permissions to the object:
+to read and to write (or both). If user doesn't have read permissions
+for the object then in most cases the user is not aware of the object existence at all.
+The only possible way to see such objects is to directly use site_object::fetch() method. 
+You can browse and set user permissions(group based) for objects 
+at http://limbdemo.0x00.ru/root/admin/objects_access
+
+Actions access. Action is a set of any operations. Defined in the site object controller actions may apply directly to the site object or..perform whatever you need. To perform an action the user 
+must has a permission to execute it. At the moment we have the only instrument to set actions permissions for groups - class_folder. 
+You can see it here: http://limbdemo.0x00.ru/root/admin/classes
+The administrator sets what actions are accessible by user groups.
+As mentioned above LIMB doesn't has a GUI to set actions permission for 
+individual users. We have not faced any use case that required such functionality 
+in our practice so far, yet it's not a problem to implement one.
+
+Each action requires the certain set of object access permissions described in the site object controller.
+Lets look into one small example to make everything clear:
+
+Suppose we have some object class, say article. 
+
+class article extends content_object
+{	
+	function _define_class_properties()
+	{
+		return array(
+			'class_ordr' => 1,
+			'can_be_parent' => 0,
+			'controller_class_name' => 'article_controller',
+		);
+	}
+}
+
+It supports only 2 actions: display and delete.
+
+class article_controller extends site_object_controller
+{
+	function article_controller()
+	{
+		$this->_actions = array(
+	    'display' => array(
+	     'permissions_required' => 'r',
+	    ),
+	   'delete' => array(
+	     'permissions_required' => 'w',
+	    ),
+		);
+		
+		parent :: site_object_controller();
+	}
+}
+
+Note 'permissions_required' attribute, it defines what type of the permission the user 
+must have for the site object to perform an action('r' - read, 'w' - write or 'rw' for both). 
+So to perform any action the user must has permission to execute an action and appropriate
+permission level for the requested object.
+
+Ok, let's imagine we have 3 article objects in out system: article1, article2
+and article3. 
+
+Our user is a member of 2 groups: visitors and admins.
+
+Objects permissions that user groups have for objects are:
+
+					article1		article2	article3
+visitors                 r        r
+admins      rw           r        w
+
+And user groups actions access as follows:
+
+				display		delete
+visitor   1 				0
+admins		1					1
+
+It means that our user is allowed to display all articles (since the user is a member
+of visitors and admin groups), can delete article1 and article3 and not article2
+(he has only r permission for article2 - that's not enough to execute delete action as required by action definition).
+
+
+ACCESS TEMPLATES
+In some cases we need to set a predefined set of object permissions. For example new article, created by the content manager needs to be verified by the editor in chief before it is published for public view. Hence we need the new article to be created with no access permissions for ordinary user and with full access rights to the editorial staff. Meet 'access templates'!
+
+"Access templates" is a matrix of the object permissions applied to the object. This a common instrument for the document flow control. 
+We've faced 2 cases of using access templates so far:
+ - applying acces template from parent to child
+ - applying access template for object itself
+
+access_policy object resolves all questions, connected with getting or saving access policy for the particular object.
+A small example should clarify a bit:
+
+class articles_folder_controller extends site_object_controller
+{
+	function articles_folder_controller()
+	{
+		$this->_actions = array(
+				'create_article' => array(
+						'permissions_required' => 'w',
+						'action_path' => '/article/create_article_action',
+						'action_name' => strings :: get('create_article', 'article'),
+						'can_have_access_template' => true,
+				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'can_have_access_template' => true, //note this attribute!
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/set_publish_status_action',						
+				),
+		);
+		parent :: site_object_controller();
+	}
+}
+'can_have_access_template' attribute defines that object has access template for this action. 
+
+In case of creating a new article (create_article action) appropriate action tries to create an article_object and to apply access permissions as defined in access template. If there is no access template for this action (e.g. it's empty) then access permissions are copied from the parent object.
+
+When publishing an object access permissions are applied to the object itself(access template IS mandatory in this case).

@@ -70,7 +70,6 @@ class image_object extends media_object
 	function create_variations()
 	{
 		$image_variations = $this->_get_variations_ini_list();
-		
 		$result = array();
 				
 		foreach($image_variations as $variation => $variation_data)

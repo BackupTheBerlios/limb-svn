@@ -88,14 +88,14 @@ class grid_tree_item_tag extends compiler_directive_tag
 		$code->write_php("
 			if({$ref}->get('is_last_child'))
 			{
-				{$open_link} = sprintf(\"" . TREE_END_P_IMG . "\", add_url_query_items(PHP_SELF, {$open_params}) . {$anchor});
-				{$close_link} = sprintf(\"" . TREE_END_M_IMG . "\", add_url_query_items(PHP_SELF, {$close_params}) . {$anchor});
+				{$open_link} = sprintf(\"" . TREE_END_P_IMG . "\", add_url_query_items(\$_SERVER['PHP_SELF'], {$open_params}) . {$anchor});
+				{$close_link} = sprintf(\"" . TREE_END_M_IMG . "\", add_url_query_items(\$_SERVER['PHP_SELF'], {$close_params}) . {$anchor});
 				{$next_img} = \"" . TREE_END_IMG . "\";
 			}
 			else
 			{
-				{$open_link} = sprintf(\"" . TREE_CROSS_P_IMG . "\", add_url_query_items(PHP_SELF, {$open_params}) . {$anchor});
-				{$close_link} = sprintf(\"" . TREE_CROSS_M_IMG . "\", add_url_query_items(PHP_SELF, {$close_params}) . {$anchor});
+				{$open_link} = sprintf(\"" . TREE_CROSS_P_IMG . "\", add_url_query_items(\$_SERVER['PHP_SELF'], {$open_params}) . {$anchor});
+				{$close_link} = sprintf(\"" . TREE_CROSS_M_IMG . "\", add_url_query_items(\$_SERVER['PHP_SELF'], {$close_params}) . {$anchor});
 				{$next_img} = \"" . TREE_CROSS_IMG . "\";
 			}
 		");

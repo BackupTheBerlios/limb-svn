@@ -1,0 +1,60 @@
+FILE NAME RESOLVING FOR CLASSES AND TEMPLATES
+
+From the very beginning LIMB has been developed to manage several projects
+using one copy of it. Sometimes some projects requires a bit
+different behavior then default one. That’s why file name resolving
+works to handle this easily: first file is searched in PROJECT_DIR then
+in LIMB_DIR. That's why file structure of LIMB and project must
+be equal. You can read more about file structure on SOME_LINK.
+
+This PROJECT->LIMB resolving system works almost everywhere:
+
+1) Classes file includes in all factory classes like db_table_factory,
+action_factory, site_object_factory. They use objects_support class
+in LIMB_DIR/core/lib/system directory for instantiating class file 
+including.
+2) strings class in LIMB_DIR/core/lib/locale looks ini-files with
+localized strings using this algorithm. 
+3) ini class in LIMB_DIR/core/lib/utils for ini-files resolving
+4) create methods of some classes like site_object_controller. They also
+use objects_support class for instantiating class file including.
+
+In fact, if you need say a new functionality of some class for very 
+specific project you can copy file with the class to your project 
+and modify it. Sometimes we you resolving algorithm to extend site
+object controllers functionality, actions, strings ini-files,
+ settings ini-files. But you have to be very careful with it. If you 
+ planning to use new functionality later maybe it better to create
+ a new inherited class and put it into your LIMB_DIR. Actually we are
+ thinking about to abandon this practice and to implement packages instead.
+ So everything project needs will be stored in project directory and LIMB
+ will be just a necessary class library.
+ 
+Template file name resolving works a little different. It tries to take 
+into account localization during template compilation. It makes if in 
+the following way:
+
+1) PROJECT_DIR . '/design/main/templates/_' . CONTENT_LOCALE_ID + 
+$file_relative_path
+2) PROJECT_DIR . '/design/main/templates/ + $file_relative_path
+3) LIMB_DIR . '/design/main/templates/_' . CONTENT_LOCALE_ID + 
+$file_relative_path
+4) LIMB_DIR . '/design/main/templates/ + $file_relative_path
+5) PROJECT_DIR . '/templates/_' . CONTENT_LOCALE_ID + $file_relative_path
+6) PROJECT_DIR . '/templates/ + $file_relative_path
+
+NOTE: all file name resolvings for <core:INCLUDE file=''> tag 
+works only at complile time not at runtime!
+
+That’s why if you what to customize template according to 
+CONTENT_LOCALE_ID you should use something like this:
+	<locale:LOCALE name='en'>
+		<core:INCLUDE file='_en/type_tables.html'>
+	</locale:LOCALE>
+	<locale:LOCALE name='ru'>
+		<core:INCLUDE file=/_ru/type_tables.html'>
+	</locale:LOCALE>
+
+Also try to use only <locale:STRING> tag to output strings in templates
+and simplify you templates file structure when possible.
+

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: action.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/response/response.class.php');
@@ -15,9 +15,12 @@ class redirect_response extends response
 {
 	var $url = '';
 	
-	function redirect_response($status = RESPONSE_STATUS_SUCCESS, $url = PHP_SELF)
+	function redirect_response($status = RESPONSE_STATUS_SUCCESS, $url = '')
 	{
-		$this->url = $url;
+		if(!$url)
+			$this->url = $_SERVER['PHP_SELF'];
+		else
+			$this->url = $url;
 		
 		parent :: response($status);
 	}
@@ -27,8 +30,5 @@ class redirect_response extends response
 		reload($this->url);
 		exit;
 	}
-	
 } 
-
-
 ?>

@@ -17,9 +17,6 @@ require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
 
-if(!defined('REQUEST_URI'))
-	define('REQUEST_URI', $_SERVER['REQUEST_URI']);
-
 class log
 {
   function log( )
