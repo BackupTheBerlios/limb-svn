@@ -43,7 +43,7 @@ class FormEditSiteObjectCommandTest extends LimbTestCase
     $this->dataspace = new MockDataspace($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('switchDataspace', $this->dataspace, array('test_form'));
 

@@ -66,8 +66,7 @@ class SiteObjectBehaviourTest extends LimbTestCase
 
   function testGetActionsList()
   {
-    $this->assertEqual(
-                       array('action1', 'action2'),
+    $this->assertEqual(array('action1', 'action2'),
                        $this->behaviour->getActionsList());
   }
 

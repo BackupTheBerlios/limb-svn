@@ -20,8 +20,8 @@ class FinderFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveFinderFileOk()
   {
-    $this->assertEqual($this->resolver->resolve('test_finder'),
-                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/finders/test_finder.class.php');
+    $this->assertEqual($this->resolver->resolve('TestFinder'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/finders/TestFinder.class.php');
   }
 
   function testResolveFinderFileFailed()

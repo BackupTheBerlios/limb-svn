@@ -52,23 +52,27 @@ class TemplateFileResolverTest extends BasePackageFileResolverTest
   function testResolveTemplateFileFoundInTemplatesDirUsingLocale()
   {
     $this->resolver->setReturnValueAt(0, '_getLocalePrefix', '_en/');
-    $this->assertEqual($this->resolver->resolve('test1.html'), OVERRIDE_TEMPLATE_DIR_FOR_TEST . '_en/test1.html');
+    $this->assertEqual($this->resolver->resolve('test1.html'),
+                       OVERRIDE_TEMPLATE_DIR_FOR_TEST . '_en/test1.html');
   }
 
   function testResolveTemplateFileFoundInTemplatesDir()
   {
-    $this->assertEqual($this->resolver->resolve('test1.html'), OVERRIDE_TEMPLATE_DIR_FOR_TEST . 'test1.html');
+    $this->assertEqual($this->resolver->resolve('test1.html'),
+                       OVERRIDE_TEMPLATE_DIR_FOR_TEST . 'test1.html');
   }
 
   function testResolveTemplateFileFoundInPackageUsingLocale()
   {
     $this->resolver->setReturnValueAt(0, '_getLocalePrefix', '_en/');
-    $this->assertEqual($this->resolver->resolve('test2.html'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/design/_en/test2.html');
+    $this->assertEqual($this->resolver->resolve('test2.html'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/design/_en/test2.html');
   }
 
   function testResolveTemplateFileFoundInPackage()
   {
-    $this->assertEqual($this->resolver->resolve('test2.html'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/design/test2.html');
+    $this->assertEqual($this->resolver->resolve('test2.html'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/design/test2.html');
   }
 
   function testResolveTemplateFileFailed()

@@ -20,7 +20,8 @@ class SiteObjectFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveSiteObjectFileOk()
   {
-    $this->assertEqual($this->resolver->resolve('test_site_object'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/site_objects/test_site_object.class.php');
+    $this->assertEqual($this->resolver->resolve('TestSiteObject'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/site_objects/TestSiteObject.class.php');
   }
 
   function testResolveSiteObjectFileFailed()

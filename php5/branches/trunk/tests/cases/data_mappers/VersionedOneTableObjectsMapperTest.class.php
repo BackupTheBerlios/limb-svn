@@ -39,7 +39,7 @@ class VersionedOneTableObjectsMapperTestVersion extends VersionedOneTableObjects
 
   protected function _defineDbTableName()
   {
-    return 'one_table_objects_mapper_test_version';
+    return 'OneTableObjectsMapperTestVersion';
   }
 }
 
@@ -157,14 +157,14 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $site_object->setVersion(1);
     $site_object->increaseVersion();
 
-    $this->db->sqlInsert('test_one_table_object', array(
-                                                   'object_id' => $object_id,
-                                                   'identifier' => 'test',
-                                                   'title' => 'Title',
-                                                   'annotation' => 'news annotation',
-                                                   'content' => 'news content',
-                                                   'news_date' => '2000-01-02 00:00:00',
-                                                   'version' => 1));
+    $this->db->sqlInsert('test_one_table_object',
+                         array('object_id' => $object_id,
+                               'identifier' => 'test',
+                               'title' => 'Title',
+                               'annotation' => 'news annotation',
+                               'content' => 'news content',
+                               'news_date' => '2000-01-02 00:00:00',
+                               'version' => 1));
 
     $this->mapper->expectOnce('_doParentUpdate', array($site_object));
 
@@ -195,12 +195,12 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $site_object->setCreatedDate($created_date = 10);
     $site_object->setModifiedDate($modified_date = 10);
 
-    $this->db->sqlInsert('sys_object_version', array(
-                                                   'object_id' => $object_id,
-                                                   'creator_id' => $creator_id,
-                                                   'created_date' => $created_date,
-                                                   'modified_date' => $modified_date,
-                                                   'version' => $version));
+    $this->db->sqlInsert('sys_object_version',
+                         array('object_id' => $object_id,
+                               'creator_id' => $creator_id,
+                               'created_date' => $created_date,
+                               'modified_date' => $modified_date,
+                               'version' => $version));
 
 
     $this->mapper->expectOnce('_doParentUpdate', array($site_object));
@@ -246,17 +246,17 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
     $site_object->setId($object_id = 100);
 
-    $this->db->sqlInsert('sys_object_version', array(
-                                                   'object_id' => $object_id,
-                                                   'version' => 1));
+    $this->db->sqlInsert('sys_object_version',
+                         array('object_id' => $object_id,
+                               'version' => 1));
 
-    $this->db->sqlInsert('sys_object_version', array(
-                                                   'object_id' => $object_id,
-                                                   'version' => 2));
+    $this->db->sqlInsert('sys_object_version',
+                         array('object_id' => $object_id,
+                               'version' => 2));
 
-    $this->db->sqlInsert('sys_object_version', array(
-                                                   'object_id' => $junk_object_id = 101,
-                                                   'version' => 2));
+    $this->db->sqlInsert('sys_object_version',
+                         array('object_id' => $junk_object_id = 101,
+                               'version' => 2));
 
 
     $this->mapper->expectOnce('_doParentDelete', array($site_object));
@@ -271,37 +271,37 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
   function testTrimVersions()
   {
-    $this->db->sqlInsert('sys_object_version', array(
-                                                   'object_id' => $object_id = 100,
-                                                   'version' => 1));
+    $this->db->sqlInsert('sys_object_version',
+                         array('object_id' => $object_id = 100,
+                               'version' => 1));
 
-    $this->db->sqlInsert('sys_object_version', array(
-                                                   'object_id' => $object_id,
-                                                   'version' => 3));
-
-    // should not be deleted!
-    $this->db->sqlInsert('sys_object_version', array(
-                                                   'object_id' => $junk_object_id = 101,
-                                                   'version' => 2));
-
-    $this->db->sqlInsert('test_one_table_object', array(
-                                                   'object_id' => $object_id,
-                                                   'identifier' => 'test',
-                                                   'title' => 'Title',
-                                                   'annotation' => 'news annotation',
-                                                   'content' => 'news content',
-                                                   'news_date' => '2000-01-02 00:00:00',
-                                                   'version' => 1));
+    $this->db->sqlInsert('sys_object_version',
+                         array('object_id' => $object_id,
+                               'version' => 3));
 
     // should not be deleted!
-    $this->db->sqlInsert('test_one_table_object', array(
-                                                   'object_id' => $junk_object_id,
-                                                   'identifier' => 'test',
-                                                   'title' => 'Title',
-                                                   'annotation' => 'news annotation',
-                                                   'content' => 'news content',
-                                                   'news_date' => '2000-01-02 00:00:00',
-                                                   'version' => 1));
+    $this->db->sqlInsert('sys_object_version',
+                         array('object_id' => $junk_object_id = 101,
+                               'version' => 2));
+
+    $this->db->sqlInsert('test_one_table_object',
+                         array('object_id' => $object_id,
+                               'identifier' => 'test',
+                               'title' => 'Title',
+                               'annotation' => 'news annotation',
+                               'content' => 'news content',
+                               'news_date' => '2000-01-02 00:00:00',
+                               'version' => 1));
+
+    // should not be deleted!
+    $this->db->sqlInsert('test_one_table_object',
+                         array('object_id' => $junk_object_id,
+                               'identifier' => 'test',
+                               'title' => 'Title',
+                               'annotation' => 'news annotation',
+                               'content' => 'news content',
+                               'news_date' => '2000-01-02 00:00:00',
+                               'version' => 1));
     $this->mapper->trimVersions($object_id, $version = 2);
 
     $this->db->sqlSelect('sys_object_version');

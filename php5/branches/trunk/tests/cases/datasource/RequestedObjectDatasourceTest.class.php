@@ -57,10 +57,10 @@ class RequestedObjectDatasourceTest extends LimbTestCase
 
   function testMapUriToNodeByNodeId()
   {
-    $this->uri->setReturnValue('getQueryItem', $node_id = 10, array('nodeId'));
+    $this->uri->setReturnValue('getQueryItem', $node_id = 10, array('node_id'));
 
     $this->tree->expectOnce('getNode');
-    $this->tree->setReturnValue('getNode', $node = array('nodeId' => $node_id), array($node_id));
+    $this->tree->setReturnValue('getNode', $node = array('node_id' => $node_id), array($node_id));
     $this->assertEqual($node, $this->datasource->mapUriToNode($this->uri));
   }
 
@@ -70,15 +70,15 @@ class RequestedObjectDatasourceTest extends LimbTestCase
     $this->uri->setReturnValue('getPath', $path = '/path');
 
     $this->tree->expectOnce('getNodeByPath');
-    $this->tree->setReturnValue('getNodeByPath', $node = array('nodeId' => 10), array($path, '/', false));
+    $this->tree->setReturnValue('getNodeByPath', $node = array('node_id' => 10), array($path, '/', false));
 
     $this->assertEqual($node, $this->datasource->mapUriToNode($this->uri));
   }
 
   function testMapRequestToNodeByNodeId()
   {
-    $this->request->setReturnValue('get', $node_id = 10, array('nodeId'));
-    $this->tree->setReturnValue('getNode', $node = array('nodeId' => $node_id), array($node_id));
+    $this->request->setReturnValue('get', $node_id = 10, array('node_id'));
+    $this->tree->setReturnValue('getNode', $node = array('node_id' => $node_id), array($node_id));
 
     $this->assertEqual($node, $this->datasource->mapRequestToNode($this->request));
   }
@@ -91,7 +91,7 @@ class RequestedObjectDatasourceTest extends LimbTestCase
     $this->request->setReturnValue('get', false, array('node_id'));
 
     $this->tree->expectOnce('getNodeByPath');
-    $this->tree->setReturnValue('getNodeByPath', $node = array('nodeId' => 10), array($path, '/', false));
+    $this->tree->setReturnValue('getNodeByPath', $node = array('node_id' => 10), array($path, '/', false));
     $this->assertEqual($node, $this->datasource->mapRequestToNode($this->request));
   }
 
@@ -99,8 +99,8 @@ class RequestedObjectDatasourceTest extends LimbTestCase
   {
     $this->request->expectOnce('get');
 
-    $this->request->setReturnValue('get', $node_id = 10, array('nodeId'));
-    $this->tree->setReturnValue('getNode', $node = array('nodeId' => $node_id), array($node_id));
+    $this->request->setReturnValue('get', $node_id = 10, array('node_id'));
+    $this->tree->setReturnValue('getNode', $node = array('node_id' => $node_id), array($node_id));
 
     $this->datasource->mapRequestToNode($this->request);
     $this->assertEqual($node, $this->datasource->mapRequestToNode($this->request));

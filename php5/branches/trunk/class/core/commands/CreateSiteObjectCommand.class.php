@@ -75,7 +75,7 @@ class CreateSiteObjectCommand implements Command
 
   protected function _defineSiteObjectClassName()
   {
-    return 'site_object';
+    return 'SiteObject';
   }
 
 }

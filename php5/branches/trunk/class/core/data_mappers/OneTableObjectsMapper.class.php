@@ -17,7 +17,7 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
   protected function _getFinder()
   {
     include_once(LIMB_DIR . '/class/core/finders/FinderFactory.class.php');
-    return FinderFactory :: create('one_table_objects_raw_finder');
+    return FinderFactory :: create('OneTableObjectsRawFinder');
   }
 
   public function getDbTable()

@@ -51,7 +51,7 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
     $this->site_object = new MockSiteObject($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
 
     Limb :: registerToolkit($this->toolkit);

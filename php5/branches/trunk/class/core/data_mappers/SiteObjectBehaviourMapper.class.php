@@ -19,7 +19,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
     if(!$row = $table->getRowById($id))
       return null;
 
-    $behaviour = Limb :: toolkit()->createBehaviour($row['Name']);
+    $behaviour = Limb :: toolkit()->createBehaviour($row['name']);
     $behaviour->setId($id);
 
     return $behaviour;

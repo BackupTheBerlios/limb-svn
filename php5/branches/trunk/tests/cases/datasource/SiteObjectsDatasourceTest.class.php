@@ -124,7 +124,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
 
     $this->cache->expectOnce('get', array(array($params, $sql_params, $method),
                                           SiteObjectsDatasource :: CACHE_GROUP));
-    $this->cache->setReturnValue('get', $objects = 'someData');
+    $this->cache->setReturnValue('get', $objects = 'some data');
 
     $this->assertEqual($datasource->fetch(), $objects);
   }
@@ -210,7 +210,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
 
     $datasource->setFindMethod('find');
 
-    $key = array($sql_params, $method = 'find_count');
+    $key = array($sql_params, $method = 'findCount');
     $this->cache->expectOnce('get', array($key, SiteObjectsDatasource :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 

@@ -101,7 +101,7 @@ class SiteObjectMapperTest extends LimbTestCase
     $this->toolkit->setReturnValue('getUser', $this->user);
     $this->toolkit->setReturnValue('createDataMapper',
                                    $this->behaviour_mapper,
-                                   array('site_object_behaviour_mapper'));
+                                   array('SiteObjectBehaviourMapper'));
 
     $this->behaviour = new MockSiteObjectBehaviour($this);
 
@@ -161,7 +161,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $this->toolkit->setReturnValue('constant',
                                    $locale_id  = 'ge',
-                                   array('dEFAULTCONTENTLOCALEID'));
+                                   array('DEFAULT_CONTENT_LOCALE_ID'));
 
     $this->assertEqual($mapper->getParentLocaleId(10000), $locale_id);
   }
@@ -169,7 +169,7 @@ class SiteObjectMapperTest extends LimbTestCase
   function testGetParentLocaleId()
   {
     $this->db->sqlInsert('sys_site_object', array('locale_id' => $locale_id = 'ru',
-                                                   'id' => 200));
+                                                  'id' => 200));
 
     $this->db->sqlInsert('sys_site_object_tree', array('object_id' => 200,
                                                         'id' => $parent_node_id = 300));
@@ -468,7 +468,7 @@ class SiteObjectMapperTest extends LimbTestCase
     $mapper->setReturnValue('_canAddNodeToParent', true, array($parent_node_id));
 
     $this->tree->expectOnce('getNode');
-    $this->tree->setReturnValue('getNode', array('parentId' => 110), array($node_id));
+    $this->tree->setReturnValue('getNode', array('parent_id' => 110), array($node_id));
 
     $this->tree->expectOnce('moveTree');
     $this->tree->setReturnValue('moveTree', false, array($node_id, $parent_node_id));
@@ -495,7 +495,7 @@ class SiteObjectMapperTest extends LimbTestCase
     $mapper->setReturnValue('_canAddNodeToParent', false, array($parent_node_id));
 
     $this->tree->expectOnce('getNode');
-    $this->tree->setReturnValue('getNode', array('parentId' => 110), array($node_id));
+    $this->tree->setReturnValue('getNode', array('parent_id' => 110), array($node_id));
 
     $this->tree->expectNever('moveTree');
 
@@ -521,7 +521,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $this->tree->expectOnce('getNode');
     $this->tree->setReturnValue('getNode',
-                                array('identifier' => 'test2', 'parentId' => $parent_node_id),
+                                array('identifier' => 'test2', 'parent_id' => $parent_node_id),
                                 array($node_id));
 
     $this->tree->expectNever('moveTree');
@@ -544,7 +544,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $this->tree->expectOnce('getNode');
     $this->tree->setReturnValue('getNode',
-                                array('identifier' => $identifier, 'parentId' => $parent_node_id),
+                                array('identifier' => $identifier, 'parent_id' => $parent_node_id),
                                 array($node_id));
 
     $this->tree->expectNever('moveTree');

@@ -23,7 +23,7 @@ class OneTableObjectsMapperTestVersion extends OneTableObjectsMapper
 
   protected function _defineDbTableName()
   {
-    return 'one_table_objects_mapper_test_version';
+    return 'OneTableObjectsMapperTestVersion';
   }
 }
 
@@ -158,13 +158,13 @@ class OneTableObjectsMapperTest extends LimbTestCase
     //we do it because we mock parent update call
     $site_object->setId($object_id = 100);
 
-    $this->db->sqlInsert('test_one_table_object', array(
-                                                   'object_id' => $object_id,
-                                                   'identifier' => 'test',
-                                                   'title' => 'Title',
-                                                   'annotation' => 'news annotation',
-                                                   'content' => 'news content',
-                                                   'news_date' => '2000-01-02 00:00:00'));
+    $this->db->sqlInsert('test_one_table_object',
+                         array('object_id' => $object_id,
+                               'identifier' => 'test',
+                               'title' => 'Title',
+                               'annotation' => 'news annotation',
+                               'content' => 'news content',
+                               'news_date' => '2000-01-02 00:00:00'));
 
     $this->mapper->expectOnce('_doParentUpdate', array($site_object));
 

@@ -59,7 +59,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('site_objects_by_node_ids_datasource'));
+                                   array('SiteObjectsByNodeIdsDatasource'));
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -262,8 +262,7 @@ class ImageCacheManagerTest extends LimbTestCase
     );
 
     $this->cache_manager->setReturnValue('getRules',
-      array($rule1, $rule2)
-    );
+                                         array($rule1, $rule2));
 
     $this->uri->setReturnValue('getPath', '/root/test2');
 
@@ -286,7 +285,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
     $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('imageObject'));
+    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
     $this->datasource->expectOnce('fetch');
 
     $this->datasource->setReturnValue('fetch',
@@ -324,7 +323,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnValue('_getCachedImageExtension', false, array(2, 'thumbnail'));
 
     $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('imageObject'));
+    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
     $this->datasource->expectOnce('fetch');
 
     $this->datasource->setReturnValue('fetch',
@@ -358,7 +357,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
     $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('imageObject'));
+    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
     $this->datasource->expectOnce('fetch');
 
     $this->datasource->setReturnValue('fetch',
@@ -389,7 +388,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
     $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('imageObject'));
+    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
     $this->datasource->expectOnce('fetch');
 
     $this->datasource->setReturnValue('fetch',
@@ -420,7 +419,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
     $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('imageObject'));
+    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
     $this->datasource->expectOnce('fetch');
 
     $this->datasource->setReturnValue('fetch',
@@ -451,7 +450,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
     $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('imageObject'));
+    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
     $this->datasource->expectOnce('fetch');
 
     $this->datasource->setReturnValue('fetch',
@@ -490,7 +489,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $cache_manager->setReturnValue('isCacheable', true);
 
     $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('imageObject'));
+    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
     $this->datasource->expectOnce('fetch');
 
     $this->datasource->setReturnValue('fetch',
@@ -521,7 +520,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $cache_manager->setReturnValue('isCacheable', true);
 
     $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('imageObject'));
+    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
     $this->datasource->expectOnce('fetch');
 
     $this->datasource->setReturnValue('fetch',

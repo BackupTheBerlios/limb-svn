@@ -89,7 +89,7 @@ class SiteObjectsDatasource implements Datasource, countable
     $this->object_ids = array();
     $this->behaviours = array();
     $this->accessible_object_ids = array();
-    $this->finder_name = 'site_objects_raw_finder';
+    $this->finder_name = 'SiteObjectsRawFinder';
     $this->fetch_method = 'find';
     $this->limit = null;
     $this->offset = null;
@@ -172,7 +172,7 @@ class SiteObjectsDatasource implements Datasource, countable
   public function countTotal()
   {
     $sql_params = $this->_collectRawSqlParams();
-    $count_method = $this->fetch_method . '_count';
+    $count_method = $this->fetch_method . 'Count';
 
     $key = array($sql_params, $count_method);
     $cache = Limb :: toolkit()->getCache();

@@ -50,14 +50,14 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->behaviour = new MockSiteObjectBehaviour($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
     $this->toolkit->setReturnValue('createBehaviour',
                                    $this->behaviour,
                                    array($behaviour_name = 'some_behaviour'));
 
-    $this->toolkit->expectOnce('createSiteObject', array('siteObject'));
+    $this->toolkit->expectOnce('createSiteObject', array('SiteObject'));
 
     Limb :: registerToolkit($this->toolkit);
 
@@ -81,12 +81,12 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->setReturnValue('export', $data = array('identifier' => 'test',
                                                              'title' => 'test'));
 
-    $this->dataspace->expectOnce('get', array('parentNodeId'));
+    $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', null, array('parent_node_id'));
 
     $this->datasource->expectOnce('fetch');
     $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
-    $this->datasource->setReturnValue('fetch', array('nodeId' => 100));
+    $this->datasource->setReturnValue('fetch', array('node_id' => 100));
 
     $this->site_object->expectOnce('merge', array($data));
 
@@ -94,11 +94,11 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->behaviour->setReturnValue('getId', $behaviour_id = 100);
 
     $this->site_object->expectOnce('setBehaviourId', array($behaviour_id));
-    $this->site_object->expectOnce('set', array('parentNodeId', 100));
+    $this->site_object->expectOnce('set', array('parent_node_id', 100));
 
     $this->site_object->expectOnce('create');
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
+    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('SiteObject'));
 
     $this->dataspace->expectOnce('set', array('createdSiteObject', new IsAExpectation('MockSiteObject')));
 
@@ -110,11 +110,11 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->expectOnce('export');
     $this->dataspace->setReturnValue('export', $data = array('identifier' => 'test',
                                                      'title' => 'test',
-                                                     'parentNodeId' => 200
+                                                     'parent_node_id' => 200
                                                      ));
 
-    $this->dataspace->expectOnce('get', array('parentNodeId'));
-    $this->dataspace->setReturnValue('get', 200, array('parentNodeId'));
+    $this->dataspace->expectOnce('get', array('parent_node_id'));
+    $this->dataspace->setReturnValue('get', 200, array('parent_node_id'));
 
     $this->datasource->expectNever('fetch');
 
@@ -127,7 +127,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
 
     $this->site_object->expectOnce('create');
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
+    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('SiteObject'));
 
     $this->dataspace->expectOnce('set', array('createdSiteObject', new IsAExpectation('MockSiteObject')));
 
@@ -139,17 +139,17 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->expectOnce('export');
     $this->dataspace->setReturnValue('export', array('identifier' => 'test',
                                                      'title' => 'test',
-                                                     'parentNodeId' => 200
+                                                     'parent_node_id' => 200
                                                      ));
 
-    $this->dataspace->expectOnce('get', array('parentNodeId'));
-    $this->dataspace->setReturnValue('get', 200, array('parentNodeId'));
+    $this->dataspace->expectOnce('get', array('parent_node_id'));
+    $this->dataspace->setReturnValue('get', 200, array('parent_node_id'));
 
     $this->datasource->expectNever('fetch');
 
     $this->toolkit->setReturnValue('createSiteObject',
                                    new SiteObjectForCreateSiteObjectCommand(),
-                                   array('site_object'));
+                                   array('SiteObject'));
 
     $this->dataspace->expectNever('set', array('createdSiteObject',
                                                new IsAExpectation('MockSiteObject')));

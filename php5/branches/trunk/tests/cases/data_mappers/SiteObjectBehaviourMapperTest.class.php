@@ -46,7 +46,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testFindById()
   {
-    $this->db->sqlInsert('sys_behaviour', array('id' => $id = 100, 'name' => 'site_object_behaviour'));
+    $this->db->sqlInsert('sys_behaviour', array('id' => $id = 100, 'name' => 'SiteObjectBehaviour'));
 
     $behaviour = $this->mapper->findById($id);
 

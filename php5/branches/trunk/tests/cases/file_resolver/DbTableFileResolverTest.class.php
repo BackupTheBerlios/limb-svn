@@ -20,12 +20,14 @@ class DbTableFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveDbTableFileFromLimb()
   {
-    $this->assertEqual($this->resolver->resolve('one_table_object'), LIMB_DIR . '/class/db_tables/one_table_object_db_table.class.php');
+    $this->assertEqual($this->resolver->resolve('OneTableObject'),
+                       LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
   }
 
   function testResolveDbTableFileOk()
   {
-    $this->assertEqual($this->resolver->resolve('test'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/db_tables/test_db_table.class.php');
+    $this->assertEqual($this->resolver->resolve('Test'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/db_tables/TestDbTable.class.php');
   }
 
   function testResolveDbTableFileFailed()

@@ -63,7 +63,7 @@ class SingleObjectDatasourceTest extends LimbTestCase
 
     $this->tree->expectNever('getNodeByPath');
     $this->tree->expectOnce('getNode');
-    $this->tree->setReturnValue('getNode', array('objectId' => 10), array($node_id));
+    $this->tree->setReturnValue('getNode', array('object_id' => 10), array($node_id));
 
     $this->assertEqual($this->datasource->getObjectIds(), array(10));
   }
@@ -74,7 +74,7 @@ class SingleObjectDatasourceTest extends LimbTestCase
 
     $this->tree->expectNever('getNode');
     $this->tree->expectOnce('getNodeByPath');
-    $this->tree->setReturnValue('getNodeByPath', array('objectId' => 10), array($path));
+    $this->tree->setReturnValue('getNodeByPath', array('object_id' => 10), array($path));
 
     $this->assertEqual($this->datasource->getObjectIds(), array(10));
   }

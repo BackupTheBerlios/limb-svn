@@ -20,7 +20,8 @@ class StringsFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveStringsFileOk()
   {
-    $this->assertEqual($this->resolver->resolve('test', array('en')), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/i18n/test_en.ini');
+    $this->assertEqual($this->resolver->resolve('test', array('en')),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/i18n/test_en.ini');
   }
 
   function testResolveStringsFileFailed()

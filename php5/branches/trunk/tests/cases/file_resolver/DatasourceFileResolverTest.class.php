@@ -20,12 +20,14 @@ class DatasourceFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveDatasourceFileFromLimb()
   {
-    $this->assertEqual($this->resolver->resolve('site_objects_datasource'), LIMB_DIR . '/class/core/datasources/site_objects_datasource.class.php');
+    $this->assertEqual($this->resolver->resolve('SiteObjectsDatasource'),
+                       LIMB_DIR . '/class/core/datasources/SiteObjectsDatasource.class.php');
   }
 
   function testResolveDatasourceFileOk()
   {
-    $this->assertEqual($this->resolver->resolve('test_datasource'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/datasources/test_datasource.class.php');
+    $this->assertEqual($this->resolver->resolve('TestDatasource'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/datasources/TestDatasource.class.php');
   }
 
   function testResolveDatasourceFileFailed()

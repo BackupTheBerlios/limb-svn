@@ -69,7 +69,7 @@ class ImageCacheManager
 
     $content = preg_replace_callback(
       $this->_defineReplaceRegexArray(),
-      array($this, '_mark_images_callback'),
+      array($this, '_markImagesCallback'),
       $content
     );
 
@@ -125,7 +125,7 @@ class ImageCacheManager
 
     $datasource = Limb :: toolkit()->getDatasource('SiteObjectsByNodeIdsDatasource');
     $datasource->setNodeIds(array_keys($node_ids));
-    $datasource->setSiteObjectClassName('image_object');
+    $datasource->setSiteObjectClassName('ImageObject');
 
     $images = $datasource->fetch();
 

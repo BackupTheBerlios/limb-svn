@@ -26,7 +26,8 @@ class PackageFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveFileName()
   {
-    $this->assertEqual($this->resolver->resolve('package2_action'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/package2_action');
+    $this->assertEqual($this->resolver->resolve('package2_action'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/package2_action');
   }
 
 }

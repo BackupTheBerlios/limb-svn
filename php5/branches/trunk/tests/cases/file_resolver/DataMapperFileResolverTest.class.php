@@ -20,8 +20,8 @@ class DataMapperFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveDataMapperFileOk()
   {
-    $this->assertEqual($this->resolver->resolve('test_mapper'),
-                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/data_mappers/test_mapper.class.php');
+    $this->assertEqual($this->resolver->resolve('TestMapper'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/data_mappers/TestMapper.class.php');
   }
 
   function testResolveDataMapperFileFailed()

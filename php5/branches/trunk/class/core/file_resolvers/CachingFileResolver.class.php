@@ -22,7 +22,7 @@ class CachingFileResolver extends FileResolverDecorator
     $this->_loadCache();
 
     //destructors are buggy!!!
-    register_shutdown_function(array($this, 'save_cache'));
+    register_shutdown_function(array($this, 'SaveCache'));
   }
 
   public function getCacheFile()
@@ -63,7 +63,7 @@ class CachingFileResolver extends FileResolverDecorator
     $fp = fopen($cache_file, 'w+');
     if ($fp === false)
     {
-      Debug::writeError("Couldn't create cache file '{$cache_file}', perhaps wrong permissions",
+      Debug :: writeError("Couldn't create cache file '{$cache_file}', perhaps wrong permissions",
       __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
       return;
     }

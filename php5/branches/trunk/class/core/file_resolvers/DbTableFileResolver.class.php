@@ -14,10 +14,10 @@ class DbTableFileResolver extends FileResolverDecorator
 {
   public function resolve($class_path, $params = array())
   {
-    if(file_exists(LIMB_DIR . '/class/db_tables/' . $class_path . '_db_table.class.php'))
-      return LIMB_DIR . '/class/db_tables/' . $class_path . '_db_table.class.php';
+    if(file_exists(LIMB_DIR . '/class/db_tables/' . $class_path . 'DbTable.class.php'))
+      return LIMB_DIR . '/class/db_tables/' . $class_path . 'DbTable.class.php';
 
-    return $this->_resolver->resolve('db_tables/' . $class_path . '_db_table.class.php', $params);
+    return $this->_resolver->resolve('db_tables/' . $class_path . 'DbTable.class.php', $params);
   }
 }
 
