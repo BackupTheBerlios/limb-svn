@@ -11,11 +11,11 @@
 require_once(WACT_ROOT . 'template/template.inc.php');
 require_once(WACT_ROOT . 'template/components/form/form.inc.php');
 
-class LimbFormComponentTestCase extends LimbTestCase
+class LimbFormTagTestCase extends LimbTestCase
 {
-  function LimbFormComponentTestCase()
+  function LimbFormTagTestCase()
   {
-    parent :: LimbTestCase('limb form component case');
+    parent :: LimbTestCase('limb form tag case');
   }
 
   function testChildFormElementsNamesWrapping()
