@@ -24,13 +24,14 @@ class input_radio_component extends form_element
 	function render_attributes()
 	{
 		$value = $this->get_value();
-		if ($value == $this->attributes['value'])
+		
+		if (isset($this->attributes['value']) && $value == $this->attributes['value'])
 		{
 			$this->attributes['checked'] = 1;
 		} 
 		else
 		{
-		unset($this->attributes['checked']);
+		  unset($this->attributes['checked']);
 		} 
 		parent::render_attributes();
 	} 
