@@ -162,7 +162,7 @@ class emailer
 	//
 	function send()
 	{
-		global $phpEx, $phpbb_root_path;
+		global $phpbb_root_path;
 
 		if ( $this->address == NULL )
 		{
@@ -184,7 +184,7 @@ class emailer
 		{
 			if ( !defined('SMTP_INCLUDED') ) 
 			{
-				include($phpbb_root_path . 'includes/smtp.' . $phpEx);
+				include($phpbb_root_path . 'includes/smtp.php');
 			}
 
 			$result = smtpmail($this->address, $this->subject, $this->msg, $this->extra_headers);

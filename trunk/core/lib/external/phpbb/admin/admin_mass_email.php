@@ -33,8 +33,7 @@ if( !empty($setmodules) )
 // Load default header
 //
 $no_page_header = TRUE;
-require($phpbb_root_path . 'extension.inc');
-require($phpbb_root_path . 'admin/pagestart.' . $phpEx);
+require($phpbb_root_path . 'admin/pagestart.php');
 
 //
 // Increase maximum execution time in case of a lot of users, but don't complain about it if it isn't
@@ -97,7 +96,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 
 	if ( !$error )
 	{
-		include($phpbb_root_path . 'includes/emailer.'.$phpEx);
+		include($phpbb_root_path . 'includes/emailer.php');
 
 		//
 		// Let's do some checking to make sure that mass mail functions
@@ -135,7 +134,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 		$emailer->send();
 		$emailer->reset();
 
-		message_die(GENERAL_MESSAGE, $lang['Email_sent'] . '<br /><br />' . sprintf($lang['Click_return_admin_index'],  '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>'));
+		message_die(GENERAL_MESSAGE, $lang['Email_sent'] . '<br /><br />' . sprintf($lang['Click_return_admin_index'],  '<a href="' . append_sid("index.php?pane=right") . '">', '</a>'));
 	}
 }	
 
@@ -176,7 +175,7 @@ $select_list .= '</select>';
 //
 // Generate page
 //
-include('./page_header_admin.'.$phpEx);
+include('./page_header_admin.php');
 
 $template->set_filenames(array(
 	'body' => 'admin/user_email_body.tpl')
@@ -195,12 +194,12 @@ $template->assign_vars(array(
 	'L_EMAIL' => $lang['Email'],
 	'L_NOTICE' => $notice,
 
-	'S_USER_ACTION' => append_sid('admin_mass_email.'.$phpEx),
+	'S_USER_ACTION' => append_sid('admin_mass_email.php'),
 	'S_GROUP_SELECT' => $select_list)
 );
 
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
+include('./page_footer_admin.php');
 
 ?>

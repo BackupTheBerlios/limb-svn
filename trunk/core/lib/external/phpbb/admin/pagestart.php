@@ -27,7 +27,7 @@ if ( !defined('IN_PHPBB') )
 
 define('IN_ADMIN', true);
 
-include($phpbb_root_path . 'common.'.$phpEx);
+include($phpbb_root_path . 'common.php');
 
 //
 // Start session management
@@ -42,7 +42,7 @@ init_userprefs($userdata);
 if( !$userdata['session_logged_in'] )
 {
 	$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-	header($header_location . '../' . append_sid("login.$phpEx?redirect=admin/"));
+	header($header_location . '../' . append_sid("login.php?redirect=admin/"));
 	exit;
 }
 else if( $userdata['user_level'] != ADMIN )
@@ -54,7 +54,7 @@ if ( empty($no_page_header) )
 {
 	// Not including the pageheader can be neccesarry if META tags are
 	// needed in the calling script.
-	include($phpbb_root_path . 'admin/page_header_admin.' . $phpEx);
+	include($phpbb_root_path . 'admin/page_header_admin.php');
 }
 
 ?>

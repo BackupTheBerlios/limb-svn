@@ -41,14 +41,13 @@ $cancel = ( isset($HTTP_POST_VARS['cancel']) ) ? TRUE : FALSE;
 if( empty($HTTP_POST_VARS['send_file']) )
 {
 	$no_page_header = ( $cancel ) ? TRUE : FALSE;
-	require($phpbb_root_path . 'extension.inc');
-	require($phpbb_root_path . 'admin/pagestart.' . $phpEx);
+	require($phpbb_root_path . 'admin/pagestart.php');
 }
 
 if( $cancel )
 {
 	$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-	header($header_location  . append_sid("admin_styles.$phpEx"));
+	header($header_location  . append_sid("admin_styles.php"));
 	exit;
 }
 
@@ -245,7 +244,7 @@ switch( $mode )
 					message_die(GENERAL_ERROR, "Could not update themes name table!", "", __LINE__, __FILE__, $sql);
 				}
 							
-				$message = $lang['Theme_updated'] . "<br /><br />" . sprintf($lang['Click_return_styleadmin'], "<a href=\"" . append_sid("admin_styles.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+				$message = $lang['Theme_updated'] . "<br /><br />" . sprintf($lang['Click_return_styleadmin'], "<a href=\"" . append_sid("admin_styles.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 				message_die(GENERAL_MESSAGE, $message);
 			}
@@ -346,7 +345,7 @@ switch( $mode )
 					message_die(GENERAL_ERROR, "Could not insert themes name table!", "", __LINE__, __FILE__, $sql);
 				}
 				
-				$message = $lang['Theme_created'] . "<br /><br />" . sprintf($lang['Click_return_styleadmin'], "<a href=\"" . append_sid("admin_styles.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+				$message = $lang['Theme_created'] . "<br /><br />" . sprintf($lang['Click_return_styleadmin'], "<a href=\"" . append_sid("admin_styles.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 				message_die(GENERAL_MESSAGE, $message);
 			}
@@ -559,7 +558,7 @@ switch( $mode )
 				"SPAN_CLASS2_NAME" => $selected['span_class2_name'],
 				"SPAN_CLASS3_NAME" => $selected['span_class3_name'],
 				
-				"S_THEME_ACTION" => append_sid("admin_styles.$phpEx"),
+				"S_THEME_ACTION" => append_sid("admin_styles.php"),
 				"S_TEMPLATE_SELECT" => $s_template_select,
 				"S_HIDDEN_FIELDS" => $s_hidden_fields)
 			);
@@ -603,8 +602,8 @@ switch( $mode )
 				"STYLE_NAME" => $style_rowset[$i]['style_name'],
 				"TEMPLATE_NAME" => $style_rowset[$i]['template_name'],
 
-				"U_STYLES_EDIT" => append_sid("admin_styles.$phpEx?mode=edit&amp;style_id=" . $style_rowset[$i]['themes_id']),
-				"U_STYLES_DELETE" => append_sid("admin_styles.$phpEx?mode=delete&amp;style_id=" . $style_rowset[$i]['themes_id']))
+				"U_STYLES_EDIT" => append_sid("admin_styles.php?mode=edit&amp;style_id=" . $style_rowset[$i]['themes_id']),
+				"U_STYLES_DELETE" => append_sid("admin_styles.php?mode=delete&amp;style_id=" . $style_rowset[$i]['themes_id']))
 			);
 		}
 		
@@ -614,7 +613,7 @@ switch( $mode )
 
 if( !$HTTP_POST_VARS['send_file'] )
 {
-	include('./page_footer_admin.'.$phpEx);
+	include('./page_footer_admin.php');
 }
 
 ?>

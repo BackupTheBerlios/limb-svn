@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 define('IN_PHPBB', true);
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
+include($phpbb_root_path . 'common.php');
 
 //
 // Start session management
@@ -37,7 +36,7 @@ init_userprefs($userdata);
 // Set default email variables
 //
 $script_name = preg_replace('/^\/?(.*?)\/?$/', '\1', trim($board_config['script_path']));
-$script_name = ( $script_name != '' ) ? $script_name . '/profile.'.$phpEx : 'profile.'.$phpEx;
+$script_name = ( $script_name != '' ) ? $script_name . '/profile.php' : 'profile.php';
 $server_name = trim($board_config['server_name']);
 $server_protocol = ( $board_config['cookie_secure'] ) ? 'https://' : 'http://';
 $server_port = ( $board_config['server_port'] <> 80 ) ? ':' . trim($board_config['server_port']) . '/' : '/';
@@ -75,7 +74,7 @@ if ( isset($HTTP_GET_VARS['mode']) || isset($HTTP_POST_VARS['mode']) )
 
 	if ( $mode == 'viewprofile' )
 	{
-		include($phpbb_root_path . 'includes/usercp_viewprofile.'.$phpEx);
+		include($phpbb_root_path . 'includes/usercp_viewprofile.php');
 		exit;
 	}
 	else if ( $mode == 'editprofile')
@@ -83,28 +82,28 @@ if ( isset($HTTP_GET_VARS['mode']) || isset($HTTP_POST_VARS['mode']) )
 		if ( !$userdata['session_logged_in'] && $mode == 'editprofile' )
 		{
 			$header_location = ( @preg_match("/Microsoft|WebSTAR|Xitami/", getenv("SERVER_SOFTWARE")) ) ? "Refresh: 0; URL=" : "Location: ";
-			header($header_location . append_sid("login.$phpEx?redirect=profile.$phpEx&mode=editprofile", true));
+			header($header_location . append_sid("login.php?redirect=profile.php&mode=editprofile", true));
 			exit;
 		}
 
-		include($phpbb_root_path . 'includes/usercp_register.'.$phpEx);
+		include($phpbb_root_path . 'includes/usercp_register.php');
 		exit;
 	}
 	else if ( $mode == 'sendpassword' )
 	{
-		include($phpbb_root_path . 'includes/usercp_sendpasswd.'.$phpEx);
+		include($phpbb_root_path . 'includes/usercp_sendpasswd.php');
 		exit;
 	}
 	else if ( $mode == 'email' )
 	{
-		include($phpbb_root_path . 'includes/usercp_email.'.$phpEx);
+		include($phpbb_root_path . 'includes/usercp_email.php');
 		exit;
 	}
 }
 else
 {
 	$header_location = ( @preg_match("/Microsoft|WebSTAR|Xitami/", getenv("SERVER_SOFTWARE")) ) ? "Refresh: 0; URL=" : "Location: ";
-	header($header_location . append_sid("index.$phpEx", true));
+	header($header_location . append_sid("index.php", true));
 	exit;
 }
 

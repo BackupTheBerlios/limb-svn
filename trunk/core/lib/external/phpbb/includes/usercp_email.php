@@ -38,7 +38,7 @@ else
 
 if ( !$userdata['session_logged_in'] )
 {
-	header('Location: ' . append_sid("login.$phpEx?redirect=profile.$phpEx&mode=email&" . POST_USERS_URL . "=$user_id", true));
+	header('Location: ' . append_sid("login.php?redirect=profile.php&mode=email&" . POST_USERS_URL . "=$user_id", true));
 	exit;
 }
 
@@ -91,7 +91,7 @@ if ( $result = $db->sql_query($sql) )
 					WHERE user_id = " . $userdata['user_id'];
 				if ( $result = $db->sql_query($sql) )
 				{
-					include($phpbb_root_path . 'includes/emailer.'.$phpEx);
+					include($phpbb_root_path . 'includes/emailer.php');
 					$emailer = new emailer($board_config['smtp_delivery']);
 
 					$email_headers = 'Return-Path: ' . $userdata['user_email'] . "\nFrom: " . $userdata['user_email'] . "\n";
@@ -135,10 +135,10 @@ if ( $result = $db->sql_query($sql) )
 					}
 
 					$template->assign_vars(array(
-						'META' => '<meta http-equiv="refresh" content="5;url=' . append_sid("index.$phpEx") . '">')
+						'META' => '<meta http-equiv="refresh" content="5;url=' . append_sid("index.php") . '">')
 					);
 
-					$message = $lang['Email_sent'] . '<br /><br />' . sprintf($lang['Click_return_index'],  '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
+					$message = $lang['Email_sent'] . '<br /><br />' . sprintf($lang['Click_return_index'],  '<a href="' . append_sid("index.php") . '">', '</a>');
 
 					message_die(GENERAL_MESSAGE, $message);
 				}
@@ -149,12 +149,12 @@ if ( $result = $db->sql_query($sql) )
 			}
 		}
 
-		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+		include($phpbb_root_path . 'includes/page_header.php');
 
 		$template->set_filenames(array(
 			'body' => 'profile_send_email.tpl')
 		);
-		make_jumpbox('viewforum.'.$phpEx);
+		make_jumpbox('viewforum.php');
 
 		if ( $error )
 		{
@@ -170,7 +170,7 @@ if ( $result = $db->sql_query($sql) )
 		$template->assign_vars(array(
 			'USERNAME' => $username,
 
-			'S_POST_ACTION' => append_sid("profile.$phpEx?&amp;mode=email&amp;" . POST_USERS_URL . "=$user_id"), 
+			'S_POST_ACTION' => append_sid("profile.php?&amp;mode=email&amp;" . POST_USERS_URL . "=$user_id"), 
 
 			'L_SEND_EMAIL_MSG' => $lang['Send_email_msg'], 
 			'L_RECIPIENT' => $lang['Recipient'], 
@@ -187,7 +187,7 @@ if ( $result = $db->sql_query($sql) )
 
 		$template->pparse('body');
 
-		include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+		include($phpbb_root_path . 'includes/page_tail.php');
 	}
 	else
 	{

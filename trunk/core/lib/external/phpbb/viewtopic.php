@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 define('IN_PHPBB', true);
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
-include($phpbb_root_path . 'includes/bbcode.'.$phpEx);
+include($phpbb_root_path . 'common.php');
+include($phpbb_root_path . 'includes/bbcode.php');
 
 //
 // Start initial var setup
@@ -84,12 +83,12 @@ if ( isset($HTTP_GET_VARS['view']) && empty($HTTP_GET_VARS[POST_POST_URL]) )
 				}
 
 				$post_id = $row['post_id'];
-				header($header_location . append_sid("viewtopic.$phpEx?" . POST_POST_URL . "=$post_id#$post_id", true));
+				header($header_location . append_sid("viewtopic.php?" . POST_POST_URL . "=$post_id#$post_id", true));
 				exit;
 			}
 		}
 
-		header($header_location . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id", true));
+		header($header_location . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id", true));
 		exit;
 	}
 	else if ( $HTTP_GET_VARS['view'] == 'next' || $HTTP_GET_VARS['view'] == 'previous' )
@@ -174,7 +173,7 @@ if( !$is_auth['auth_view'] || !$is_auth['auth_read'] )
 		$redirect = ( isset($post_id) ) ? POST_POST_URL . "=$post_id" : POST_TOPIC_URL . "=$topic_id"; 
 		$redirect .= ( isset($start) ) ? "&start=$start" : '';
 		$header_location = ( @preg_match("/Microsoft|WebSTAR|Xitami/", getenv("SERVER_SOFTWARE")) ) ? "Refresh: 0; URL=" : "Location: ";
-		header($header_location . append_sid("login.$phpEx?redirect=viewtopic.$phpEx&$redirect", true));
+		header($header_location . append_sid("login.php?redirect=viewtopic.php&$redirect", true));
 		exit;
 	}
 
@@ -231,10 +230,10 @@ if( $userdata['session_logged_in'] )
 			}
 			
 			$template->assign_vars(array(
-				'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start") . '">')
+				'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start") . '">')
 			);
 
-			$message = $lang['No_longer_watching'] . '<br /><br />' . sprintf($lang['Click_return_topic'], '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start") . '">', '</a>');
+			$message = $lang['No_longer_watching'] . '<br /><br />' . sprintf($lang['Click_return_topic'], '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start") . '">', '</a>');
 			message_die(GENERAL_MESSAGE, $message);
 		}
 		else
@@ -273,10 +272,10 @@ if( $userdata['session_logged_in'] )
 			}
 
 			$template->assign_vars(array(
-				'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start") . '">')
+				'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start") . '">')
 			);
 
-			$message = $lang['You_are_watching'] . '<br /><br />' . sprintf($lang['Click_return_topic'], '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start") . '">', '</a>');
+			$message = $lang['You_are_watching'] . '<br /><br />' . sprintf($lang['Click_return_topic'], '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start") . '">', '</a>');
 			message_die(GENERAL_MESSAGE, $message);
 		}
 		else
@@ -292,7 +291,7 @@ else
 		if ( $HTTP_GET_VARS['unwatch'] == 'topic' )
 		{
 			$header_location = ( @preg_match("/Microsoft|WebSTAR|Xitami/", getenv("SERVER_SOFTWARE")) ) ? "Refresh: 0; URL=" : "Location: ";
-			header($header_location . append_sid("login.$phpEx?redirect=viewtopic.$phpEx&" . POST_TOPIC_URL . "=$topic_id&unwatch=topic", true));
+			header($header_location . append_sid("login.php?redirect=viewtopic.php&" . POST_TOPIC_URL . "=$topic_id&unwatch=topic", true));
 			exit;
 		}
 	}
@@ -472,11 +471,11 @@ else
 // Post, reply and other URL generation for
 // templating vars
 //
-$new_topic_url = append_sid("posting.$phpEx?mode=newtopic&amp;" . POST_FORUM_URL . "=$forum_id");
-$reply_topic_url = append_sid("posting.$phpEx?mode=reply&amp;" . POST_TOPIC_URL . "=$topic_id");
-$view_forum_url = append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id");
-$view_prev_topic_url = append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;view=previous");
-$view_next_topic_url = append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;view=next");
+$new_topic_url = append_sid("posting.php?mode=newtopic&amp;" . POST_FORUM_URL . "=$forum_id");
+$reply_topic_url = append_sid("posting.php?mode=reply&amp;" . POST_TOPIC_URL . "=$topic_id");
+$view_forum_url = append_sid("viewforum.php?" . POST_FORUM_URL . "=$forum_id");
+$view_prev_topic_url = append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;view=previous");
+$view_next_topic_url = append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;view=next");
 
 //
 // Mozilla navigation bar
@@ -537,13 +536,13 @@ if ( $userdata['session_logged_in'] )
 $template->set_filenames(array(
 	'body' => 'viewtopic_body.tpl')
 );
-make_jumpbox('viewforum.'.$phpEx, $forum_id);
+make_jumpbox('viewforum.php', $forum_id);
 
 //
 // Output page header
 // 
 $page_title = $lang['View_topic'] .' - ' . $topic_title;
-include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+include($phpbb_root_path . 'includes/page_header.php');
 
 //
 // User authorisation levels output
@@ -558,15 +557,15 @@ $topic_mod = '';
 
 if ( $is_auth['auth_mod'] )
 {
-	$s_auth_can .= sprintf($lang['Rules_moderate'], '<a href="' . append_sid("modcp.$phpEx?" . POST_FORUM_URL . "=$forum_id") . '">', '</a>');
+	$s_auth_can .= sprintf($lang['Rules_moderate'], '<a href="' . append_sid("modcp.php?" . POST_FORUM_URL . "=$forum_id") . '">', '</a>');
 
-	$topic_mod .= '<a href="' . append_sid("modcp.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;mode=delete") . '"><img src="' . $images['topic_mod_delete'] . '" alt="' . $lang['Delete_topic'] . '" title="' . $lang['Delete_topic'] . '" border="0" /></a>&nbsp;';
+	$topic_mod .= '<a href="' . append_sid("modcp.php?" . POST_TOPIC_URL . "=$topic_id&amp;mode=delete") . '"><img src="' . $images['topic_mod_delete'] . '" alt="' . $lang['Delete_topic'] . '" title="' . $lang['Delete_topic'] . '" border="0" /></a>&nbsp;';
 
-	$topic_mod .= '<a href="' . append_sid("modcp.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;mode=move"). '"><img src="' . $images['topic_mod_move'] . '" alt="' . $lang['Move_topic'] . '" title="' . $lang['Move_topic'] . '" border="0" /></a>&nbsp;';
+	$topic_mod .= '<a href="' . append_sid("modcp.php?" . POST_TOPIC_URL . "=$topic_id&amp;mode=move"). '"><img src="' . $images['topic_mod_move'] . '" alt="' . $lang['Move_topic'] . '" title="' . $lang['Move_topic'] . '" border="0" /></a>&nbsp;';
 
-	$topic_mod .= ( $forum_topic_data['topic_status'] == TOPIC_UNLOCKED ) ? '<a href="' . append_sid("modcp.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;mode=lock") . '"><img src="' . $images['topic_mod_lock'] . '" alt="' . $lang['Lock_topic'] . '" title="' . $lang['Lock_topic'] . '" border="0" /></a>&nbsp;' : '<a href="' . append_sid("modcp.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;mode=unlock") . '"><img src="' . $images['topic_mod_unlock'] . '" alt="' . $lang['Unlock_topic'] . '" title="' . $lang['Unlock_topic'] . '" border="0" /></a>&nbsp;';
+	$topic_mod .= ( $forum_topic_data['topic_status'] == TOPIC_UNLOCKED ) ? '<a href="' . append_sid("modcp.php?" . POST_TOPIC_URL . "=$topic_id&amp;mode=lock") . '"><img src="' . $images['topic_mod_lock'] . '" alt="' . $lang['Lock_topic'] . '" title="' . $lang['Lock_topic'] . '" border="0" /></a>&nbsp;' : '<a href="' . append_sid("modcp.php?" . POST_TOPIC_URL . "=$topic_id&amp;mode=unlock") . '"><img src="' . $images['topic_mod_unlock'] . '" alt="' . $lang['Unlock_topic'] . '" title="' . $lang['Unlock_topic'] . '" border="0" /></a>&nbsp;';
 
-	$topic_mod .= '<a href="' . append_sid("modcp.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;mode=split") . '"><img src="' . $images['topic_mod_split'] . '" alt="' . $lang['Split_topic'] . '" title="' . $lang['Split_topic'] . '" border="0" /></a>&nbsp;';
+	$topic_mod .= '<a href="' . append_sid("modcp.php?" . POST_TOPIC_URL . "=$topic_id&amp;mode=split") . '"><img src="' . $images['topic_mod_split'] . '" alt="' . $lang['Split_topic'] . '" title="' . $lang['Split_topic'] . '" border="0" /></a>&nbsp;';
 }
 
 //
@@ -577,13 +576,13 @@ if ( $can_watch_topic )
 {
 	if ( $is_watching_topic )
 	{
-		$s_watching_topic = '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;unwatch=topic&amp;start=$start") . '">' . $lang['Stop_watching_topic'] . '</a>';
-		$s_watching_topic_img = ( isset($images['Topic_un_watch']) ) ? '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;unwatch=topic&amp;start=$start") . '"><img src="' . $images['Topic_un_watch'] . '" alt="' . $lang['Stop_watching_topic'] . '" title="' . $lang['Stop_watching_topic'] . '" border="0"></a>' : '';
+		$s_watching_topic = '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;unwatch=topic&amp;start=$start") . '">' . $lang['Stop_watching_topic'] . '</a>';
+		$s_watching_topic_img = ( isset($images['Topic_un_watch']) ) ? '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;unwatch=topic&amp;start=$start") . '"><img src="' . $images['Topic_un_watch'] . '" alt="' . $lang['Stop_watching_topic'] . '" title="' . $lang['Stop_watching_topic'] . '" border="0"></a>' : '';
 	}
 	else
 	{
-		$s_watching_topic = '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;watch=topic&amp;start=$start") . '">' . $lang['Start_watching_topic'] . '</a>';
-		$s_watching_topic_img = ( isset($images['Topic_watch']) ) ? '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;watch=topic&amp;start=$start") . '"><img src="' . $images['Topic_watch'] . '" alt="' . $lang['Stop_watching_topic'] . '" title="' . $lang['Start_watching_topic'] . '" border="0"></a>' : '';
+		$s_watching_topic = '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;watch=topic&amp;start=$start") . '">' . $lang['Start_watching_topic'] . '</a>';
+		$s_watching_topic_img = ( isset($images['Topic_watch']) ) ? '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;watch=topic&amp;start=$start") . '"><img src="' . $images['Topic_watch'] . '" alt="' . $lang['Stop_watching_topic'] . '" title="' . $lang['Start_watching_topic'] . '" border="0"></a>' : '';
 	}
 }
 
@@ -591,7 +590,7 @@ if ( $can_watch_topic )
 // If we've got a hightlight set pass it on to pagination, 
 // I get annoyed when I lose my highlight after the first page.
 //
-$pagination = ( $highlight_active ) ? generate_pagination("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;postdays=$post_days&amp;postorder=$post_order&amp;highlight=" . $HTTP_GET_VARS['highlight'], $total_replies, $board_config['posts_per_page'], $start) : generate_pagination("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;postdays=$post_days&amp;postorder=$post_order", $total_replies, $board_config['posts_per_page'], $start);
+$pagination = ( $highlight_active ) ? generate_pagination("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;postdays=$post_days&amp;postorder=$post_order&amp;highlight=" . $HTTP_GET_VARS['highlight'], $total_replies, $board_config['posts_per_page'], $start) : generate_pagination("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;postdays=$post_days&amp;postorder=$post_order", $total_replies, $board_config['posts_per_page'], $start);
 
 //
 // Send vars to template
@@ -627,12 +626,12 @@ $template->assign_vars(array(
 	'S_TOPIC_LINK' => POST_TOPIC_URL, 
 	'S_SELECT_POST_DAYS' => $select_post_days,
 	'S_SELECT_POST_ORDER' => $select_post_order,
-	'S_POST_DAYS_ACTION' => append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . '=' . $topic_id . "&amp;start=$start"), 
+	'S_POST_DAYS_ACTION' => append_sid("viewtopic.php?" . POST_TOPIC_URL . '=' . $topic_id . "&amp;start=$start"), 
 	'S_AUTH_LIST' => $s_auth_can,
 	'S_TOPIC_ADMIN' => $topic_mod,
 	'S_WATCH_TOPIC' => $s_watching_topic,
 
-	'U_VIEW_TOPIC' => append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start&amp;postdays=$post_days&amp;postorder=$post_order&amp;highlight=" . $HTTP_GET_VARS['highlight']), 
+	'U_VIEW_TOPIC' => append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;start=$start&amp;postdays=$post_days&amp;postorder=$post_order&amp;highlight=" . $HTTP_GET_VARS['highlight']), 
 	'U_VIEW_FORUM' => $view_forum_url,
 	'U_VIEW_OLDER_TOPIC' => $view_prev_topic_url,
 	'U_VIEW_NEWER_TOPIC' => $view_next_topic_url,
@@ -754,7 +753,7 @@ if ( !empty($forum_topic_data['topic_vote']) )
 				'L_SUBMIT_VOTE' => $lang['Submit_vote'],
 				'L_VIEW_RESULTS' => $lang['View_results'],
 
-				'U_VIEW_RESULTS' => append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;postdays=$post_days&amp;postorder=$post_order&amp;vote=viewresult"))
+				'U_VIEW_RESULTS' => append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;postdays=$post_days&amp;postorder=$post_order&amp;vote=viewresult"))
 			);
 
 			$s_hidden_fields = '<input type="hidden" name="topic_id" value="' . $topic_id . '"><input type="hidden" name="mode" value="vote">';
@@ -769,7 +768,7 @@ if ( !empty($forum_topic_data['topic_vote']) )
 			'POLL_QUESTION' => $vote_title,
 
 			'S_HIDDEN_FIELDS' => ( !empty($s_hidden_fields) ) ? $s_hidden_fields : '',
-			'S_POLL_ACTION' => append_sid("posting.$phpEx?" . POST_TOPIC_URL . "=$topic_id"))
+			'S_POLL_ACTION' => append_sid("posting.php?" . POST_TOPIC_URL . "=$topic_id"))
 		);
 
 		$template->assign_var_from_handle('POLL_DISPLAY', 'pollbox');
@@ -835,7 +834,7 @@ for($i = 0; $i < $total_posts; $i++)
 		$mini_post_alt = $lang['Post'];
 	}
 	
-	$mini_post_url = append_sid("viewtopic.$phpEx?" . POST_POST_URL . '=' . $postrow[$i]['post_id']) . '#' . $postrow[$i]['post_id'];
+	$mini_post_url = append_sid("viewtopic.php?" . POST_POST_URL . '=' . $postrow[$i]['post_id']) . '#' . $postrow[$i]['post_id'];
 
 	//
 	// Generate ranks, set them to empty string initially.
@@ -881,17 +880,17 @@ for($i = 0; $i < $total_posts; $i++)
 
 	if ( $poster_id != ANONYMOUS )
 	{
-		$temp_url = append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$poster_id");
+		$temp_url = append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$poster_id");
 		$profile_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_profile'] . '" alt="' . $lang['Read_profile'] . '" title="' . $lang['Read_profile'] . '" border="0" /></a>';
 		$profile = '<a href="' . $temp_url . '">' . $lang['Read_profile'] . '</a>';
 
-		$temp_url = append_sid("privmsg.$phpEx?mode=post&amp;" . POST_USERS_URL . "=$poster_id");
+		$temp_url = append_sid("privmsg.php?mode=post&amp;" . POST_USERS_URL . "=$poster_id");
 		$pm_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_pm'] . '" alt="' . $lang['Send_private_message'] . '" title="' . $lang['Send_private_message'] . '" border="0" /></a>';
 		$pm = '<a href="' . $temp_url . '">' . $lang['Send_private_message'] . '</a>';
 
 		if ( !empty($postrow[$i]['user_viewemail']) || $is_auth['auth_mod'] )
 		{
-			$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.$phpEx?mode=email&amp;" . POST_USERS_URL .'=' . $poster_id) : 'mailto:' . $postrow[$i]['user_email'];
+			$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.php?mode=email&amp;" . POST_USERS_URL .'=' . $poster_id) : 'mailto:' . $postrow[$i]['user_email'];
 
 			$email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
 			$email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
@@ -921,7 +920,7 @@ for($i = 0; $i < $total_posts; $i++)
 		$aim_img = ( $postrow[$i]['user_aim'] ) ? '<a href="aim:goim?screenname=' . $postrow[$i]['user_aim'] . '&amp;message=Hello+Are+you+there?"><img src="' . $images['icon_aim'] . '" alt="' . $lang['AIM'] . '" title="' . $lang['AIM'] . '" border="0" /></a>' : '';
 		$aim = ( $postrow[$i]['user_aim'] ) ? '<a href="aim:goim?screenname=' . $postrow[$i]['user_aim'] . '&amp;message=Hello+Are+you+there?">' . $lang['AIM'] . '</a>' : '';
 
-		$temp_url = append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$poster_id");
+		$temp_url = append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$poster_id");
 		$msn_img = ( $postrow[$i]['user_msnm'] ) ? '<a href="' . $temp_url . '"><img src="' . $images['icon_msnm'] . '" alt="' . $lang['MSNM'] . '" title="' . $lang['MSNM'] . '" border="0" /></a>' : '';
 		$msn = ( $postrow[$i]['user_msnm'] ) ? '<a href="' . $temp_url . '">' . $lang['MSNM'] . '</a>' : '';
 
@@ -949,17 +948,17 @@ for($i = 0; $i < $total_posts; $i++)
 		$yim = '';
 	}
 
-	$temp_url = append_sid("posting.$phpEx?mode=quote&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id']);
+	$temp_url = append_sid("posting.php?mode=quote&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id']);
 	$quote_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_quote'] . '" alt="' . $lang['Reply_with_quote'] . '" title="' . $lang['Reply_with_quote'] . '" border="0" /></a>';
 	$quote = '<a href="' . $temp_url . '">' . $lang['Reply_with_quote'] . '</a>';
 
-	$temp_url = append_sid("search.$phpEx?search_author=" . urlencode($postrow[$i]['username']) . "&amp;showresults=posts");
+	$temp_url = append_sid("search.php?search_author=" . urlencode($postrow[$i]['username']) . "&amp;showresults=posts");
 	$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_user_posts'] . '" title="' . $lang['Search_user_posts'] . '" border="0" /></a>';
 	$search = '<a href="' . $temp_url . '">' . $lang['Search_user_posts'] . '</a>';
 
 	if ( ( $userdata['user_id'] == $poster_id && $is_auth['auth_edit'] ) || $is_auth['auth_mod'] )
 	{
-		$temp_url = append_sid("posting.$phpEx?mode=editpost&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id']);
+		$temp_url = append_sid("posting.php?mode=editpost&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id']);
 		$edit_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_edit'] . '" alt="' . $lang['Edit_delete_post'] . '" title="' . $lang['Edit_delete_post'] . '" border="0" /></a>';
 		$edit = '<a href="' . $temp_url . '">' . $lang['Edit_delete_post'] . '</a>';
 	}
@@ -971,11 +970,11 @@ for($i = 0; $i < $total_posts; $i++)
 
 	if ( $is_auth['auth_mod'] )
 	{
-		$temp_url = append_sid("modcp.$phpEx?mode=ip&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id'] . "&amp;" . POST_TOPIC_URL . "=" . $topic_id);
+		$temp_url = append_sid("modcp.php?mode=ip&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id'] . "&amp;" . POST_TOPIC_URL . "=" . $topic_id);
 		$ip_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_ip'] . '" alt="' . $lang['View_IP'] . '" title="' . $lang['View_IP'] . '" border="0" /></a>';
 		$ip = '<a href="' . $temp_url . '">' . $lang['View_IP'] . '</a>';
 
-		$temp_url = append_sid("posting.$phpEx?mode=delete&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id']);
+		$temp_url = append_sid("posting.php?mode=delete&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id']);
 		$delpost_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_delpost'] . '" alt="' . $lang['Delete_post'] . '" title="' . $lang['Delete_post'] . '" border="0" /></a>';
 		$delpost = '<a href="' . $temp_url . '">' . $lang['Delete_post'] . '</a>';
 	}
@@ -986,7 +985,7 @@ for($i = 0; $i < $total_posts; $i++)
 
 		if ( $userdata['user_id'] == $poster_id && $is_auth['auth_delete'] && $forum_topic_data['topic_last_post_id'] == $postrow[$i]['post_id'] )
 		{
-			$temp_url = append_sid("posting.$phpEx?mode=delete&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id']);
+			$temp_url = append_sid("posting.php?mode=delete&amp;" . POST_POST_URL . "=" . $postrow[$i]['post_id']);
 			$delpost_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_delpost'] . '" alt="' . $lang['Delete_post'] . '" title="' . $lang['Delete_post'] . '" border="0" /></a>';
 			$delpost = '<a href="' . $temp_url . '">' . $lang['Delete_post'] . '</a>';
 		}
@@ -1243,6 +1242,6 @@ for($i = 0; $i < $total_posts; $i++)
 
 $template->pparse('body');
 
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+include($phpbb_root_path . 'includes/page_tail.php');
 
 ?>

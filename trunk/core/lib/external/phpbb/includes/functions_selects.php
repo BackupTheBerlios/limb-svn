@@ -26,8 +26,6 @@
 //
 function language_select($default, $select_name = "language", $dirname="language")
 {
-	global $phpEx;
-	
 	$dirname = LIMB_DIR . '/core/lib/external/phpbb/' . $dirname;
 	$dir = opendir($dirname);
 

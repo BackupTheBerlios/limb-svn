@@ -40,7 +40,7 @@ if ( $row = $db->sql_fetchrow($result) )
 	if ( $row['user_active'] && $row['user_actkey'] == '' )
 	{
 		$template->assign_vars(array(
-			'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.$phpEx") . '">')
+			'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.php") . '">')
 		);
 
 		message_die(GENERAL_MESSAGE, $lang['Already_activated']);
@@ -59,7 +59,7 @@ if ( $row = $db->sql_fetchrow($result) )
 
 		if ( $board_config['require_activation'] == USER_ACTIVATION_ADMIN && $sql_update_pass == '' )
 		{
-			include($phpbb_root_path . 'includes/emailer.'.$phpEx);
+			include($phpbb_root_path . 'includes/emailer.php');
 			$emailer = new emailer($board_config['smtp_delivery']);
 
 			$email_headers = 'From: ' . $board_config['board_email'] . "\nReturn-Path: " . $board_config['board_email'] . "\n";
@@ -79,7 +79,7 @@ if ( $row = $db->sql_fetchrow($result) )
 			$emailer->reset();
 
 			$template->assign_vars(array(
-				'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.$phpEx") . '">')
+				'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.php") . '">')
 			);
 
 			message_die(GENERAL_MESSAGE, $lang['Account_active_admin']);
@@ -87,7 +87,7 @@ if ( $row = $db->sql_fetchrow($result) )
 		else
 		{
 			$template->assign_vars(array(
-				'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.$phpEx") . '">')
+				'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.php") . '">')
 			);
 
 			$message = ( $sql_update_pass == '' ) ? $lang['Account_active'] : $lang['Password_activated']; 

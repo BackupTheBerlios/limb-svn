@@ -47,8 +47,7 @@ if( isset($HTTP_GET_VARS['export_pack']) )
 	}
 }
 
-require($phpbb_root_path . 'extension.inc');
-require($phpbb_root_path . 'admin/pagestart.' . $phpEx);
+require($phpbb_root_path . 'admin/pagestart.php');
 
 //
 // Check to see what mode we should operate in.
@@ -182,7 +181,7 @@ if( isset($HTTP_GET_VARS['import_pack']) || isset($HTTP_POST_VARS['import_pack']
 			}
 		}
 
-		$message = $lang['smiley_import_success'] . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+		$message = $lang['smiley_import_success'] . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 		message_die(GENERAL_MESSAGE, $message);
 		
@@ -219,7 +218,7 @@ if( isset($HTTP_GET_VARS['import_pack']) || isset($HTTP_POST_VARS['import_pack']
 			"L_REPLACE_EXISTING" => $lang['replace_existing'], 
 			"L_KEEP_EXISTING" => $lang['keep_existing'], 
 
-			"S_SMILEY_ACTION" => append_sid("admin_smilies.$phpEx"),
+			"S_SMILEY_ACTION" => append_sid("admin_smilies.php"),
 			"S_SMILE_SELECT" => $smile_paks_select,
 			"S_HIDDEN_FIELDS" => $hidden_vars)
 		);
@@ -259,7 +258,7 @@ else if( isset($HTTP_POST_VARS['export_pack']) || isset($HTTP_GET_VARS['export_p
 		exit;
 	}
 
-	$message = sprintf($lang['export_smiles'], "<a href=\"" . append_sid("admin_smilies.$phpEx?export_pack=send", true) . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+	$message = sprintf($lang['export_smiles'], "<a href=\"" . append_sid("admin_smilies.php?export_pack=send", true) . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 	message_die(GENERAL_MESSAGE, $message);
 
@@ -294,7 +293,7 @@ else if( isset($HTTP_POST_VARS['add']) || isset($HTTP_GET_VARS['add']) )
 
 		"SMILEY_IMG" => $smilies_dir_name . '/' . $smiley_images[0], 
 
-		"S_SMILEY_ACTION" => append_sid("admin_smilies.$phpEx"), 
+		"S_SMILEY_ACTION" => append_sid("admin_smilies.php"), 
 		"S_HIDDEN_FIELDS" => $s_hidden_fields, 
 		"S_FILENAME_OPTIONS" => $filename_list, 
 		"S_SMILEY_BASEDIR" => $smilies_dir_name)
@@ -321,7 +320,7 @@ else if ( $mode != "" )
 				message_die(GENERAL_ERROR, "Couldn't delete smiley", "", __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['smiley_del_success'] . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['smiley_del_success'] . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 			message_die(GENERAL_MESSAGE, $message);
 			break;
@@ -380,7 +379,7 @@ else if ( $mode != "" )
 
 				"SMILEY_IMG" => $smilies_dir_name . '/' . $smiley_edit_img, 
 
-				"S_SMILEY_ACTION" => append_sid("admin_smilies.$phpEx"),
+				"S_SMILEY_ACTION" => append_sid("admin_smilies.php"),
 				"S_HIDDEN_FIELDS" => $s_hidden_fields, 
 				"S_FILENAME_OPTIONS" => $filename_list, 
 				"S_SMILEY_BASEDIR" => $smilies_dir_name)
@@ -420,7 +419,7 @@ else if ( $mode != "" )
 				message_die(GENERAL_ERROR, "Couldn't update smilies info", "", __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['smiley_edit_success'] . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['smiley_edit_success'] . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 			message_die(GENERAL_MESSAGE, $message);
 			break;
@@ -455,7 +454,7 @@ else if ( $mode != "" )
 				message_die(GENERAL_ERROR, "Couldn't insert new smiley", "", __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['smiley_add_success'] . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['smiley_add_success'] . "<br /><br />" . sprintf($lang['Click_return_smileadmin'], "<a href=\"" . append_sid("admin_smilies.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 			message_die(GENERAL_MESSAGE, $message);
 			break;
@@ -496,7 +495,7 @@ else
 		"L_EXPORT_PACK" => $lang['export_smile_pack'],
 		
 		"S_HIDDEN_FIELDS" => $s_hidden_fields, 
-		"S_SMILEY_ACTION" => append_sid("admin_smilies.$phpEx"))
+		"S_SMILEY_ACTION" => append_sid("admin_smilies.php"))
 	);
 
 	//
@@ -521,8 +520,8 @@ else
 			"CODE" => $smilies[$i]['code'],
 			"EMOT" => $smilies[$i]['emoticon'],
 			
-			"U_SMILEY_EDIT" => append_sid("admin_smilies.$phpEx?mode=edit&amp;id=" . $smilies[$i]['smilies_id']), 
-			"U_SMILEY_DELETE" => append_sid("admin_smilies.$phpEx?mode=delete&amp;id=" . $smilies[$i]['smilies_id']))
+			"U_SMILEY_EDIT" => append_sid("admin_smilies.php?mode=edit&amp;id=" . $smilies[$i]['smilies_id']), 
+			"U_SMILEY_DELETE" => append_sid("admin_smilies.php?mode=delete&amp;id=" . $smilies[$i]['smilies_id']))
 		);
 	}
 
@@ -535,6 +534,6 @@ else
 //
 // Page Footer
 //
-include('./page_footer_admin.'.$phpEx);
+include('./page_footer_admin.php');
 
 ?>

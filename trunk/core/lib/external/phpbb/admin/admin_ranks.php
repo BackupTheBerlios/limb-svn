@@ -32,8 +32,7 @@ if( !empty($setmodules) )
 //
 // Let's set the root dir for phpBB
 //
-require($phpbb_root_path . 'extension.inc');
-require($phpbb_root_path . 'admin/pagestart.' . $phpEx);
+require($phpbb_root_path . 'admin/pagestart.php');
 
 if( isset($HTTP_GET_VARS['mode']) || isset($HTTP_POST_VARS['mode']) )
 {
@@ -122,7 +121,7 @@ if( $mode != "" )
 			"L_YES" => $lang['Yes'],
 			"L_NO" => $lang['No'],
 			
-			"S_RANK_ACTION" => append_sid("admin_ranks.$phpEx"),
+			"S_RANK_ACTION" => append_sid("admin_ranks.php"),
 			"S_HIDDEN_FIELDS" => $s_hidden_fields)
 		);
 		
@@ -182,7 +181,7 @@ if( $mode != "" )
 			message_die(GENERAL_ERROR, "Couldn't update/insert into ranks table", "", __LINE__, __FILE__, $sql);
 		}
 
-		$message .= "<br /><br />" . sprintf($lang['Click_return_rankadmin'], "<a href=\"" . append_sid("admin_ranks.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+		$message .= "<br /><br />" . sprintf($lang['Click_return_rankadmin'], "<a href=\"" . append_sid("admin_ranks.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 		message_die(GENERAL_MESSAGE, $message);
 
@@ -221,7 +220,7 @@ if( $mode != "" )
 				message_die(GENERAL_ERROR, $lang['No_update_ranks'], "", __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['Rank_removed'] . "<br /><br />" . sprintf($lang['Click_return_rankadmin'], "<a href=\"" . append_sid("admin_ranks.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['Rank_removed'] . "<br /><br />" . sprintf($lang['Click_return_rankadmin'], "<a href=\"" . append_sid("admin_ranks.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 			message_die(GENERAL_MESSAGE, $message);
 
@@ -262,7 +261,7 @@ if( $mode != "" )
 			"L_ADD_RANK" => $lang['Add_new_rank'],
 			"L_ACTION" => $lang['Action'],
 			
-			"S_RANKS_ACTION" => append_sid("admin_ranks.$phpEx"))
+			"S_RANKS_ACTION" => append_sid("admin_ranks.php"))
 		);
 		
 		for( $i = 0; $i < $rank_count; $i++)
@@ -288,8 +287,8 @@ if( $mode != "" )
 
 				"SPECIAL_RANK" => ( $special_rank == 1 ) ? $lang['Yes'] : $lang['No'],
 
-				"U_RANK_EDIT" => append_sid("admin_ranks.$phpEx?mode=edit&amp;id=$rank_id"),
-				"U_RANK_DELETE" => append_sid("admin_ranks.$phpEx?mode=delete&amp;id=$rank_id"))
+				"U_RANK_EDIT" => append_sid("admin_ranks.php?mode=edit&amp;id=$rank_id"),
+				"U_RANK_DELETE" => append_sid("admin_ranks.php?mode=delete&amp;id=$rank_id"))
 			);
 		}
 	}
@@ -324,7 +323,7 @@ else
 		"L_ADD_RANK" => $lang['Add_new_rank'],
 		"L_ACTION" => $lang['Action'],
 		
-		"S_RANKS_ACTION" => append_sid("admin_ranks.$phpEx"))
+		"S_RANKS_ACTION" => append_sid("admin_ranks.php"))
 	);
 	
 	for($i = 0; $i < $rank_count; $i++)
@@ -351,14 +350,14 @@ else
 			"SPECIAL_RANK" => $rank_is_special,
 			"RANK_MIN" => $rank_min,
 
-			"U_RANK_EDIT" => append_sid("admin_ranks.$phpEx?mode=edit&amp;id=$rank_id"),
-			"U_RANK_DELETE" => append_sid("admin_ranks.$phpEx?mode=delete&amp;id=$rank_id"))
+			"U_RANK_EDIT" => append_sid("admin_ranks.php?mode=edit&amp;id=$rank_id"),
+			"U_RANK_DELETE" => append_sid("admin_ranks.php?mode=delete&amp;id=$rank_id"))
 		);
 	}
 }
 
 $template->pparse("body");
 
-include('./page_footer_admin.'.$phpEx);
+include('./page_footer_admin.php');
 
 ?>

@@ -55,9 +55,8 @@ if( !empty($setmodules) )
 // Load default header
 //
 $no_page_header = TRUE;
-require($phpbb_root_path . 'extension.inc');
-require($phpbb_root_path . 'admin/pagestart.' . $phpEx);
-include($phpbb_root_path . 'includes/sql_parse.'.$phpEx);
+require($phpbb_root_path . 'admin/pagestart.php');
+include($phpbb_root_path . 'includes/sql_parse.php');
 
 //
 // Set VERBOSE to 1  for debugging info..
@@ -695,7 +694,7 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 						break;
 				}
 
-				include('./page_header_admin.'.$phpEx);
+				include('./page_header_admin.php');
 
 				$template->set_filenames(array(
 					"body" => "admin/admin_message_body.tpl")
@@ -740,7 +739,7 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 
 			if( !isset($HTTP_POST_VARS['backupstart']) && !isset($HTTP_GET_VARS['backupstart']))
 			{
-				include('./page_header_admin.'.$phpEx);
+				include('./page_header_admin.php');
 
 				$template->set_filenames(array(
 					"body" => "admin/db_utils_backup_body.tpl")
@@ -761,7 +760,7 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 					"L_YES" => $lang['Yes'],
 
 					"S_HIDDEN_FIELDS" => $s_hidden_fields,
-					"S_DBUTILS_ACTION" => append_sid("admin_db_utilities.$phpEx"))
+					"S_DBUTILS_ACTION" => append_sid("admin_db_utilities.php"))
 				);
 				$template->pparse("body");
 
@@ -779,17 +778,17 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 				);
 
 				$template->assign_vars(array(
-					"META" => "<meta http-equiv=\"refresh\" content=\"2;url=admin_db_utilities.$phpEx?perform=backup&additional_tables=" . quotemeta($additional_tables) . "&backup_type=$backup_type&drop=1&amp;backupstart=1&gzipcompress=$gzipcompress&startdownload=1\">",
+					"META" => "<meta http-equiv=\"refresh\" content=\"2;url=admin_db_utilities.php?perform=backup&additional_tables=" . quotemeta($additional_tables) . "&backup_type=$backup_type&drop=1&amp;backupstart=1&gzipcompress=$gzipcompress&startdownload=1\">",
 
 					"MESSAGE_TITLE" => $lang['Database_Utilities'] . " : " . $lang['Backup'],
 					"MESSAGE_TEXT" => $lang['Backup_download'])
 				);
 
-				include('./page_header_admin.'.$phpEx);
+				include('./page_header_admin.php');
 
 				$template->pparse("body");
 
-				include('./page_footer_admin.'.$phpEx);
+				include('./page_footer_admin.php');
 
 			}
 			header("Pragma: no-cache");
@@ -876,7 +875,7 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 				//
 				// Define Template files...
 				//
-				include('./page_header_admin.'.$phpEx);
+				include('./page_header_admin.php');
 
 				$template->set_filenames(array(
 					"body" => "admin/db_utils_restore_body.tpl")
@@ -890,7 +889,7 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 					"L_SELECT_FILE" => $lang['Select_file'],
 					"L_START_RESTORE" => $lang['Start_Restore'],
 
-					"S_DBUTILS_ACTION" => append_sid("admin_db_utilities.$phpEx"),
+					"S_DBUTILS_ACTION" => append_sid("admin_db_utilities.php"),
 					"S_HIDDEN_FIELDS" => $s_hidden_fields)
 				);
 				$template->pparse("body");
@@ -996,7 +995,7 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 					}
 				}
 
-				include('./page_header_admin.'.$phpEx);
+				include('./page_header_admin.php');
 
 				$template->set_filenames(array(
 					"body" => "admin/admin_message_body.tpl")
@@ -1016,6 +1015,6 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 	}
 }
 
-include('./page_footer_admin.'.$phpEx);
+include('./page_footer_admin.php');
 
 ?>

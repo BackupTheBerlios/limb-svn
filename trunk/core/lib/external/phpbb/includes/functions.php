@@ -92,7 +92,7 @@ function get_userdata($user)
 
 function make_jumpbox($action, $match_forum_id = 0)
 {
-	global $template, $lang, $db, $SID, $nav_links, $phpEx;
+	global $template, $lang, $db, $SID, $nav_links;
 
 //	$is_auth = auth(AUTH_VIEW, AUTH_LIST_ALL, $userdata);
 
@@ -150,7 +150,7 @@ function make_jumpbox($action, $match_forum_id = 0)
 						// 'chapter' and 'forum' can create multiple items, therefore we are using a nested array.
 						//
 						$nav_links['chapter forum'][$forum_rows[$j]['forum_id']] = array (
-							'url' => append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=" . $forum_rows[$j]['forum_id']),
+							'url' => append_sid("viewforum.php?" . POST_FORUM_URL . "=" . $forum_rows[$j]['forum_id']),
 							'title' => $forum_rows[$j]['forum_name']
 						);
 
@@ -200,7 +200,7 @@ function make_jumpbox($action, $match_forum_id = 0)
 function init_userprefs($userdata)
 {
 	global $board_config, $theme, $images;
-	global $template, $lang, $phpEx, $phpbb_root_path;
+	global $template, $lang, $phpbb_root_path;
 
 	if ( $userdata['user_id'] != ANONYMOUS )
 	{
@@ -221,21 +221,21 @@ function init_userprefs($userdata)
 	}
 
 	$language_dir = LIMB_DIR . '/core/lib/external/phpbb/language/';
-	if ( !file_exists($language_dir . 'lang_' . $board_config['default_lang'] . '/lang_main.'.$phpEx) )
+	if ( !file_exists($language_dir . 'lang_' . $board_config['default_lang'] . '/lang_main.php') )
 	{
 		$board_config['default_lang'] = 'english';
 	}
 
-	include($language_dir . 'lang_' . $board_config['default_lang'] . '/lang_main.' . $phpEx);
+	include($language_dir . 'lang_' . $board_config['default_lang'] . '/lang_main.php');
 
 	if ( defined('IN_ADMIN') )
 	{
-		if( !file_exists($language_dir . 'lang_' . $board_config['default_lang'] . '/lang_admin.'.$phpEx) )
+		if( !file_exists($language_dir . 'lang_' . $board_config['default_lang'] . '/lang_admin.php') )
 		{
 			$board_config['default_lang'] = 'english';
 		}
 
-		include($language_dir . 'lang_' . $board_config['default_lang'] . '/lang_admin.' . $phpEx);
+		include($language_dir . 'lang_' . $board_config['default_lang'] . '/lang_admin.php');
 	}
 
 	//
@@ -522,7 +522,7 @@ function obtain_word_list(&$orig_word, &$replacement_word)
 //
 function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
 {
-	global $db, $template, $board_config, $theme, $lang, $phpEx, $phpbb_root_path, $nav_links, $gen_simple_header;
+	global $db, $template, $board_config, $theme, $lang, $phpbb_root_path, $nav_links, $gen_simple_header;
 	global $userdata, $user_ip, $session_length;
 	global $starttime;
 
@@ -569,11 +569,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 		{
 			if ( !empty($board_config['default_lang']) )
 			{
-				include($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_main.'.$phpEx);
+				include($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
 			}
 			else
 			{
-				include($phpbb_root_path . 'language/lang_english/lang_main.'.$phpEx);
+				include($phpbb_root_path . 'language/lang_english/lang_main.php');
 			}
 		}
 
@@ -591,11 +591,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 		//
 		if ( !defined('IN_ADMIN') )
 		{
-			include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+			include($phpbb_root_path . 'includes/page_header.php');
 		}
 		else
 		{
-			include($phpbb_root_path . 'admin/page_header_admin.'.$phpEx);
+			include($phpbb_root_path . 'admin/page_header_admin.php');
 		}
 	}
 
@@ -632,7 +632,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 			// Critical errors mean we cannot rely on _ANY_ DB information being
 			// available so we're going to dump out a simple echo'd statement
 			//
-			include($phpbb_root_path . 'language/lang_english/lang_main.'.$phpEx);
+			include($phpbb_root_path . 'language/lang_english/lang_main.php');
 
 			if ( $msg_text == '' )
 			{
@@ -687,11 +687,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 
 		if ( !defined('IN_ADMIN') )
 		{
-			include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+			include($phpbb_root_path . 'includes/page_tail.php');
 		}
 		else
 		{
-			include($phpbb_root_path . 'admin/page_footer_admin.'.$phpEx);
+			include($phpbb_root_path . 'admin/page_footer_admin.php');
 		}
 	}
 	else

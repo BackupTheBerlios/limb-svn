@@ -70,12 +70,12 @@ $template->set_filenames(array(
 //
 if ( $userdata['session_logged_in'] )
 {
-	$u_login_logout = 'login.'.$phpEx.'?logout=true';
+	$u_login_logout = '/root/login?action=logout';
 	$l_login_logout = $lang['Logout'] . ' [ ' . $userdata['username'] . ' ]';
 }
 else
 {
-	$u_login_logout = 'login.'.$phpEx;
+	$u_login_logout = '/root/login';
 	$l_login_logout = $lang['Login'];
 }
 
@@ -130,12 +130,12 @@ while( $row = $db->sql_fetchrow($result) )
 
 			if ( $row['user_allow_viewonline'] )
 			{
-				$user_online_link = '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '"' . $style_color .'>' . $row['username'] . '</a>';
+				$user_online_link = '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '"' . $style_color .'>' . $row['username'] . '</a>';
 				$logged_visible_online++;
 			}
 			else
 			{
-				$user_online_link = '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '"' . $style_color .'><i>' . $row['username'] . '</i></a>';
+				$user_online_link = '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '"' . $style_color .'><i>' . $row['username'] . '</i></a>';
 				$logged_hidden_online++;
 			}
 
@@ -363,29 +363,29 @@ $template->assign_vars(array(
 	'L_WHOSONLINE_ADMIN' => sprintf($lang['Admin_online_color'], '<span style="color:#' . $theme['fontcolor3'] . '">', '</span>'),
 	'L_WHOSONLINE_MOD' => sprintf($lang['Mod_online_color'], '<span style="color:#' . $theme['fontcolor2'] . '">', '</span>'),
 
-	'U_SEARCH_UNANSWERED' => append_sid('search.'.$phpEx.'?search_id=unanswered'),
-	'U_SEARCH_SELF' => append_sid('search.'.$phpEx.'?search_id=egosearch'),
-	'U_SEARCH_NEW' => append_sid('search.'.$phpEx.'?search_id=newposts'),
-	'U_INDEX' => append_sid('index.'.$phpEx),
-	'U_REGISTER' => append_sid('profile.'.$phpEx.'?mode=register'),
-	'U_PROFILE' => append_sid('profile.'.$phpEx.'?mode=editprofile'),
-	'U_PRIVATEMSGS' => append_sid('privmsg.'.$phpEx.'?folder=inbox'),
-	'U_PRIVATEMSGS_POPUP' => append_sid('privmsg.'.$phpEx.'?mode=newpm'),
-	'U_SEARCH' => append_sid('search.'.$phpEx),
-	'U_MEMBERLIST' => append_sid('memberlist.'.$phpEx),
-	'U_MODCP' => append_sid('modcp.'.$phpEx),
-	'U_FAQ' => append_sid('faq.'.$phpEx),
-	'U_VIEWONLINE' => append_sid('viewonline.'.$phpEx),
+	'U_SEARCH_UNANSWERED' => append_sid('search.php'.'?search_id=unanswered'),
+	'U_SEARCH_SELF' => append_sid('search.php'.'?search_id=egosearch'),
+	'U_SEARCH_NEW' => append_sid('search.php'.'?search_id=newposts'),
+	'U_INDEX' => append_sid('index.php'),
+	'U_REGISTER' => append_sid('profile.php'.'?mode=register'),
+	'U_PROFILE' => append_sid('profile.php'.'?mode=editprofile'),
+	'U_PRIVATEMSGS' => append_sid('privmsg.php'.'?folder=inbox'),
+	'U_PRIVATEMSGS_POPUP' => append_sid('privmsg.php'.'?mode=newpm'),
+	'U_SEARCH' => append_sid('search.php'),
+	'U_MEMBERLIST' => append_sid('memberlist.php'),
+	'U_MODCP' => append_sid('modcp.php'),
+	'U_FAQ' => append_sid('faq.php'),
+	'U_VIEWONLINE' => append_sid('viewonline.php'),
 	'U_LOGIN_LOGOUT' => append_sid($u_login_logout),
-	'U_MEMBERSLIST' => append_sid('memberlist.'.$phpEx),
-	'U_GROUP_CP' => append_sid('groupcp.'.$phpEx),
+	'U_MEMBERSLIST' => append_sid('memberlist.php'),
+	'U_GROUP_CP' => append_sid('groupcp.php'),
 
 	'S_CONTENT_DIRECTION' => $lang['DIRECTION'],
 	'S_CONTENT_ENCODING' => $lang['ENCODING'],
 	'S_CONTENT_DIR_LEFT' => $lang['LEFT'],
 	'S_CONTENT_DIR_RIGHT' => $lang['RIGHT'],
 	'S_TIMEZONE' => sprintf($lang['All_times'], $lang[number_format($board_config['board_timezone'])]),
-	'S_LOGIN_ACTION' => append_sid('login.'.$phpEx),
+	'S_LOGIN_ACTION' => append_sid('login.php'),
 
 	'T_HEAD_STYLESHEET' => $theme['head_stylesheet'],
 	'T_BODY_BACKGROUND' => $theme['body_background'],

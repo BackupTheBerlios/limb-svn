@@ -26,8 +26,7 @@ define('IN_PHPBB', 1);
 // Load default header
 //
 $no_page_header = TRUE;
-require($phpbb_root_path . 'extension.inc');
-require($phpbb_root_path . 'admin/pagestart.' . $phpEx);
+require($phpbb_root_path . 'admin/pagestart.php');
 
 // ---------------
 // Begin functions
@@ -57,7 +56,7 @@ if( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'left' )
 	$setmodules = 1;
 	while( $file = @readdir($dir) )
 	{
-		if( preg_match("/^admin_.*?\." . $phpEx . "$/", $file) )
+		if( preg_match("/^admin_.*?\.php$/", $file) )
 		{
 			include($file);
 		}
@@ -67,15 +66,15 @@ if( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'left' )
 
 	unset($setmodules);
 
-	include('./page_header_admin.'.$phpEx);
+	include('./page_header_admin.php');
 
 	$template->set_filenames(array(
 		"body" => "admin/index_navigate.tpl")
 	);
 
 	$template->assign_vars(array(
-		"U_FORUM_INDEX" => append_sid("../index.$phpEx"),
-		"U_ADMIN_INDEX" => append_sid("index.$phpEx?pane=right"),
+		"U_FORUM_INDEX" => append_sid("../index.php"),
+		"U_ADMIN_INDEX" => append_sid("index.php?pane=right"),
 
 		"L_FORUM_INDEX" => $lang['Main_index'],
 		"L_ADMIN_INDEX" => $lang['Admin_Index'],
@@ -115,12 +114,12 @@ if( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'left' )
 
 	$template->pparse("body");
 
-	include('./page_footer_admin.'.$phpEx);
+	include('./page_footer_admin.php');
 }
 elseif( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'right' )
 {
 
-	include('./page_header_admin.'.$phpEx);
+	include('./page_header_admin.php');
 
 	$template->set_filenames(array(
 		"body" => "admin/index_body.tpl")
@@ -394,48 +393,48 @@ elseif( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'right' )
 					{
 						case PAGE_INDEX:
 							$location = $lang['Forum_index'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						case PAGE_POSTING:
 							$location = $lang['Posting_message'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						case PAGE_LOGIN:
 							$location = $lang['Logging_on'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						case PAGE_SEARCH:
 							$location = $lang['Searching_forums'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						case PAGE_PROFILE:
 							$location = $lang['Viewing_profile'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						case PAGE_VIEWONLINE:
 							$location = $lang['Viewing_online'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						case PAGE_VIEWMEMBERS:
 							$location = $lang['Viewing_member_list'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						case PAGE_PRIVMSGS:
 							$location = $lang['Viewing_priv_msgs'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						case PAGE_FAQ:
 							$location = $lang['Viewing_FAQ'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 							break;
 						default:
 							$location = $lang['Forum_index'];
-							$location_url = "index.$phpEx?pane=right";
+							$location_url = "index.php?pane=right";
 					}
 				}
 				else
 				{
-					$location_url = append_sid("admin_forums.$phpEx?mode=editforum&amp;" . POST_FORUM_URL . "=" . $onlinerow_reg[$i]['user_session_page']);
+					$location_url = append_sid("admin_forums.php?mode=editforum&amp;" . POST_FORUM_URL . "=" . $onlinerow_reg[$i]['user_session_page']);
 					$location = $forum_data[$onlinerow_reg[$i]['user_session_page']];
 				}
 
@@ -454,7 +453,7 @@ elseif( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'right' )
 					"IP_ADDRESS" => $reg_ip,
 
 					"U_WHOIS_IP" => "http://www.samspade.org/t/ipwhois?a=$reg_ip",
-					"U_USER_PROFILE" => append_sid("admin_users.$phpEx?mode=edit&amp;" . POST_USERS_URL . "=" . $onlinerow_reg[$i]['user_id']),
+					"U_USER_PROFILE" => append_sid("admin_users.php?mode=edit&amp;" . POST_USERS_URL . "=" . $onlinerow_reg[$i]['user_id']),
 					"U_FORUM_LOCATION" => append_sid($location_url))
 				);
 			}
@@ -486,48 +485,48 @@ elseif( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'right' )
 				{
 					case PAGE_INDEX:
 						$location = $lang['Forum_index'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					case PAGE_POSTING:
 						$location = $lang['Posting_message'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					case PAGE_LOGIN:
 						$location = $lang['Logging_on'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					case PAGE_SEARCH:
 						$location = $lang['Searching_forums'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					case PAGE_PROFILE:
 						$location = $lang['Viewing_profile'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					case PAGE_VIEWONLINE:
 						$location = $lang['Viewing_online'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					case PAGE_VIEWMEMBERS:
 						$location = $lang['Viewing_member_list'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					case PAGE_PRIVMSGS:
 						$location = $lang['Viewing_priv_msgs'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					case PAGE_FAQ:
 						$location = $lang['Viewing_FAQ'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 						break;
 					default:
 						$location = $lang['Forum_index'];
-						$location_url = "index.$phpEx?pane=right";
+						$location_url = "index.php?pane=right";
 				}
 			}
 			else
 			{
-				$location_url = append_sid("admin_forums.$phpEx?mode=editforum&amp;" . POST_FORUM_URL . "=" . $onlinerow_guest[$i]['session_page']);
+				$location_url = append_sid("admin_forums.php?mode=editforum&amp;" . POST_FORUM_URL . "=" . $onlinerow_guest[$i]['session_page']);
 				$location = $forum_data[$onlinerow_guest[$i]['session_page']];
 			}
 
@@ -560,7 +559,7 @@ elseif( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'right' )
 
 	$template->pparse("body");
 
-	include('./page_footer_admin.'.$phpEx);
+	include('./page_footer_admin.php');
 
 }
 else
@@ -573,8 +572,8 @@ else
 	);
 
 	$template->assign_vars(array(
-		"S_FRAME_NAV" => append_sid("index.$phpEx?pane=left"),
-		"S_FRAME_MAIN" => append_sid("index.$phpEx?pane=right"))
+		"S_FRAME_NAV" => append_sid("index.php?pane=left"),
+		"S_FRAME_MAIN" => append_sid("index.php?pane=right"))
 	);
 
 	header ("Expires: " . gmdate("D, d M Y H:i:s", time()) . " GMT");

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 define('IN_PHPBB', true);
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
+include($phpbb_root_path . 'common.php');
 
 //
 // Start initial var setup
@@ -103,7 +102,7 @@ if ( !$is_auth['auth_read'] || !$is_auth['auth_view'] )
 	{
 		$redirect = POST_FORUM_URL . "=$forum_id" . ( ( isset($start) ) ? "&start=$start" : '' );
 		$header_location = ( @preg_match("/Microsoft|WebSTAR|Xitami/", getenv("SERVER_SOFTWARE")) ) ? "Refresh: 0; URL=" : "Location: ";
-		header($header_location . append_sid("login.$phpEx?redirect=viewforum.$phpEx&$redirect", true));
+		header($header_location . append_sid("login.php?redirect=viewforum.php&$redirect", true));
 		exit;
 	}
 	//
@@ -152,11 +151,11 @@ if ( $mark_read == 'topics' )
 		}
 
 		$template->assign_vars(array(
-			'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id") . '">')
+			'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("viewforum.php?" . POST_FORUM_URL . "=$forum_id") . '">')
 		);
 	}
 
-	$message = $lang['Topics_marked_read'] . '<br /><br />' . sprintf($lang['Click_return_forum'], '<a href="' . append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id") . '">', '</a> ');
+	$message = $lang['Topics_marked_read'] . '<br /><br />' . sprintf($lang['Click_return_forum'], '<a href="' . append_sid("viewforum.php?" . POST_FORUM_URL . "=$forum_id") . '">', '</a> ');
 	message_die(GENERAL_MESSAGE, $message);
 }
 //
@@ -173,8 +172,8 @@ if ( $is_auth['auth_mod'] && $board_config['prune_enable'] )
 {
 	if ( $forum_row['prune_next'] < time() && $forum_row['prune_enable'] )
 	{
-		include($phpbb_root_path . 'includes/prune.'.$phpEx);
-		require($phpbb_root_path . 'includes/functions_admin.'.$phpEx);
+		include($phpbb_root_path . 'includes/prune.php');
+		require($phpbb_root_path . 'includes/functions_admin.php');
 		auto_prune($forum_id);
 	}
 }
@@ -204,7 +203,7 @@ if ( !($result = $db->sql_query($sql)) )
 $moderators = array();
 while( $row = $db->sql_fetchrow($result) )
 {
-	$moderators[] = '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '">' . $row['username'] . '</a>';
+	$moderators[] = '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '">' . $row['username'] . '</a>';
 }
 
 $sql = "SELECT g.group_id, g.group_name 
@@ -224,7 +223,7 @@ if ( !($result = $db->sql_query($sql)) )
 
 while( $row = $db->sql_fetchrow($result) )
 {
-	$moderators[] = '<a href="' . append_sid("groupcp.$phpEx?" . POST_GROUPS_URL . "=" . $row['group_id']) . '">' . $row['group_name'] . '</a>';
+	$moderators[] = '<a href="' . append_sid("groupcp.php?" . POST_GROUPS_URL . "=" . $row['group_id']) . '">' . $row['group_name'] . '</a>';
 }
 	
 $l_moderators = ( count($moderators) == 1 ) ? $lang['Moderator'] : $lang['Moderators'];
@@ -355,10 +354,10 @@ obtain_word_list($orig_word, $replacement_word);
 $template->assign_vars(array(
 	'L_DISPLAY_TOPICS' => $lang['Display_topics'],
 
-	'U_POST_NEW_TOPIC' => append_sid("posting.$phpEx?mode=newtopic&amp;" . POST_FORUM_URL . "=$forum_id"),
+	'U_POST_NEW_TOPIC' => append_sid("posting.php?mode=newtopic&amp;" . POST_FORUM_URL . "=$forum_id"),
 
 	'S_SELECT_TOPIC_DAYS' => $select_topic_days,
-	'S_POST_DAYS_ACTION' => append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=" . $forum_id . "&amp;start=$start"))
+	'S_POST_DAYS_ACTION' => append_sid("viewforum.php?" . POST_FORUM_URL . "=" . $forum_id . "&amp;start=$start"))
 );
 
 //
@@ -372,14 +371,14 @@ $s_auth_can .= ( ( $is_auth['auth_vote'] ) ? $lang['Rules_vote_can'] : $lang['Ru
 
 if ( $is_auth['auth_mod'] )
 {
-	$s_auth_can .= sprintf($lang['Rules_moderate'], '<a href="' . append_sid("modcp.$phpEx?" . POST_FORUM_URL . "=$forum_id") . '">', '</a>');
+	$s_auth_can .= sprintf($lang['Rules_moderate'], '<a href="' . append_sid("modcp.php?" . POST_FORUM_URL . "=$forum_id") . '">', '</a>');
 }
 
 //
 // Mozilla navigation bar
 //
 $nav_links['up'] = array(
-	'url' => append_sid('index.'.$phpEx),
+	'url' => append_sid('index.php'),
 	'title' => sprintf($lang['Forum_Index'], $board_config['sitename'])
 );
 
@@ -387,12 +386,12 @@ $nav_links['up'] = array(
 // Dump out the page header and load viewforum template
 //
 $page_title = $lang['View_forum'] . ' - ' . $forum_row['forum_name'];
-include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+include($phpbb_root_path . 'includes/page_header.php');
 
 $template->set_filenames(array(
 	'body' => 'viewforum_body.tpl')
 );
-make_jumpbox('viewforum.'.$phpEx);
+make_jumpbox('viewforum.php');
 
 $template->assign_vars(array(
 	'FORUM_ID' => $forum_id,
@@ -433,9 +432,9 @@ $template->assign_vars(array(
 
 	'S_AUTH_LIST' => $s_auth_can, 
 
-	'U_VIEW_FORUM' => append_sid("viewforum.$phpEx?" . POST_FORUM_URL ."=$forum_id"),
+	'U_VIEW_FORUM' => append_sid("viewforum.php?" . POST_FORUM_URL ."=$forum_id"),
 
-	'U_MARK_READ' => append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id&amp;mark=topics"))
+	'U_MARK_READ' => append_sid("viewforum.php?" . POST_FORUM_URL . "=$forum_id&amp;mark=topics"))
 );
 //
 // End header
@@ -552,7 +551,7 @@ if( $total_topics )
 							$folder_image = $folder_new;
 							$folder_alt = $lang['New_posts'];
 
-							$newest_post_img = '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;view=newest") . '"><img src="' . $images['icon_newest_reply'] . '" alt="' . $lang['View_newest_post'] . '" title="' . $lang['View_newest_post'] . '" border="0" /></a> ';
+							$newest_post_img = '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;view=newest") . '"><img src="' . $images['icon_newest_reply'] . '" alt="' . $lang['View_newest_post'] . '" title="' . $lang['View_newest_post'] . '" border="0" /></a> ';
 						}
 						else
 						{
@@ -567,7 +566,7 @@ if( $total_topics )
 						$folder_image = $folder_new;
 						$folder_alt = ( $topic_rowset[$i]['topic_status'] == TOPIC_LOCKED ) ? $lang['Topic_locked'] : $lang['New_posts'];
 
-						$newest_post_img = '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;view=newest") . '"><img src="' . $images['icon_newest_reply'] . '" alt="' . $lang['View_newest_post'] . '" title="' . $lang['View_newest_post'] . '" border="0" /></a> ';
+						$newest_post_img = '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;view=newest") . '"><img src="' . $images['icon_newest_reply'] . '" alt="' . $lang['View_newest_post'] . '" title="' . $lang['View_newest_post'] . '" border="0" /></a> ';
 					}
 				}
 				else 
@@ -595,7 +594,7 @@ if( $total_topics )
 			$times = 1;
 			for($j = 0; $j < $replies + 1; $j += $board_config['posts_per_page'])
 			{
-				$goto_page .= '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=" . $topic_id . "&amp;start=$j") . '">' . $times . '</a>';
+				$goto_page .= '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=" . $topic_id . "&amp;start=$j") . '">' . $times . '</a>';
 				if( $times == 1 && $total_pages > 4 )
 				{
 					$goto_page .= ' ... ';
@@ -615,9 +614,9 @@ if( $total_topics )
 			$goto_page = '';
 		}
 		
-		$view_topic_url = append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id");
+		$view_topic_url = append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id");
 
-		$topic_author = ( $topic_rowset[$i]['user_id'] != ANONYMOUS ) ? '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $topic_rowset[$i]['user_id']) . '">' : '';
+		$topic_author = ( $topic_rowset[$i]['user_id'] != ANONYMOUS ) ? '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $topic_rowset[$i]['user_id']) . '">' : '';
 		$topic_author .= ( $topic_rowset[$i]['user_id'] != ANONYMOUS ) ? $topic_rowset[$i]['username'] : ( ( $topic_rowset[$i]['post_username'] != '' ) ? $topic_rowset[$i]['post_username'] : $lang['Guest'] );
 
 		$topic_author .= ( $topic_rowset[$i]['user_id'] != ANONYMOUS ) ? '</a>' : '';
@@ -626,9 +625,9 @@ if( $total_topics )
 
 		$last_post_time = create_date($board_config['default_dateformat'], $topic_rowset[$i]['post_time'], $board_config['board_timezone']);
 
-		$last_post_author = ( $topic_rowset[$i]['id2'] == ANONYMOUS ) ? ( ($topic_rowset[$i]['post_username2'] != '' ) ? $topic_rowset[$i]['post_username2'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $topic_rowset[$i]['id2']) . '">' . $topic_rowset[$i]['user2'] . '</a>';
+		$last_post_author = ( $topic_rowset[$i]['id2'] == ANONYMOUS ) ? ( ($topic_rowset[$i]['post_username2'] != '' ) ? $topic_rowset[$i]['post_username2'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $topic_rowset[$i]['id2']) . '">' . $topic_rowset[$i]['user2'] . '</a>';
 
-		$last_post_url = '<a href="' . append_sid("viewtopic.$phpEx?"  . POST_POST_URL . '=' . $topic_rowset[$i]['topic_last_post_id']) . '#' . $topic_rowset[$i]['topic_last_post_id'] . '"><img src="' . $images['icon_latest_reply'] . '" alt="' . $lang['View_latest_post'] . '" title="' . $lang['View_latest_post'] . '" border="0" /></a>';
+		$last_post_url = '<a href="' . append_sid("viewtopic.php?"  . POST_POST_URL . '=' . $topic_rowset[$i]['topic_last_post_id']) . '#' . $topic_rowset[$i]['topic_last_post_id'] . '"><img src="' . $images['icon_latest_reply'] . '" alt="' . $lang['View_latest_post'] . '" title="' . $lang['View_latest_post'] . '" border="0" /></a>';
 
 		$views = $topic_rowset[$i]['topic_views'];
 		
@@ -660,7 +659,7 @@ if( $total_topics )
 	}
 
 	$template->assign_vars(array(
-		'PAGINATION' => generate_pagination("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id&amp;topicdays=$topic_days", $topics_count, $board_config['topics_per_page'], $start),
+		'PAGINATION' => generate_pagination("viewforum.php?" . POST_FORUM_URL . "=$forum_id&amp;topicdays=$topic_days", $topics_count, $board_config['topics_per_page'], $start),
 		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $board_config['topics_per_page'] ) + 1 ), ceil( $topics_count / $board_config['topics_per_page'] )), 
 
 		'L_GOTO_PAGE' => $lang['Goto_page'])
@@ -688,6 +687,6 @@ $template->pparse('body');
 //
 // Page footer
 //
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+include($phpbb_root_path . 'includes/page_tail.php');
 
 ?>

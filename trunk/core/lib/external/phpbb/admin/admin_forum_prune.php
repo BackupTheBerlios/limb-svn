@@ -32,10 +32,9 @@ if ( !empty($setmodules) )
 //
 // Load default header
 //
-require($phpbb_root_path . 'extension.inc');
-require($phpbb_root_path . 'admin/pagestart.' . $phpEx);
-require($phpbb_root_path . 'includes/prune.'.$phpEx);
-require($phpbb_root_path . 'includes/functions_admin.'.$phpEx); 
+require($phpbb_root_path . 'admin/pagestart.php');
+require($phpbb_root_path . 'includes/prune.php');
+require($phpbb_root_path . 'includes/functions_admin.php'); 
 
 //
 // Get the forum ID for pruning
@@ -149,7 +148,7 @@ else
 			'L_SELECT_FORUM' => $lang['Select_a_Forum'], 
 			'L_LOOK_UP' => $lang['Look_up_Forum'],
 
-			'S_FORUMPRUNE_ACTION' => append_sid("admin_forum_prune.$phpEx"),
+			'S_FORUMPRUNE_ACTION' => append_sid("admin_forum_prune.php"),
 			'S_FORUMS_SELECT' => $select_list)
 		);
 	}
@@ -182,7 +181,7 @@ else
 			'L_FORUM_PRUNE_EXPLAIN' => $lang['Forum_Prune_explain'], 
 			'L_DO_PRUNE' => $lang['Do_Prune'],
 
-			'S_FORUMPRUNE_ACTION' => append_sid("admin_forum_prune.$phpEx"),
+			'S_FORUMPRUNE_ACTION' => append_sid("admin_forum_prune.php"),
 			'S_PRUNE_DATA' => $prune_data,
 			'S_HIDDEN_VARS' => $hidden_input)
 		);
@@ -193,6 +192,6 @@ else
 //
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
+include('./page_footer_admin.php');
 
 ?>

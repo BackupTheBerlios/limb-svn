@@ -112,16 +112,16 @@ $gen_simple_header = FALSE;
 
 if( !defined("PHPBB_INSTALLED") )
 {
-	header("Location: install.$phpEx");
+	header("Location: install.php");
 	exit;
 }
 
-include($phpbb_root_path . 'includes/constants.'.$phpEx);
-include($phpbb_root_path . 'includes/template.'.$phpEx);
-include($phpbb_root_path . 'includes/sessions.'.$phpEx);
-include($phpbb_root_path . 'includes/auth.'.$phpEx);
-include($phpbb_root_path . 'includes/functions.'.$phpEx);
-include($phpbb_root_path . 'includes/db.'.$phpEx);
+include($phpbb_root_path . 'includes/constants.php');
+include($phpbb_root_path . 'includes/template.php');
+include($phpbb_root_path . 'includes/sessions.php');
+include($phpbb_root_path . 'includes/auth.php');
+include($phpbb_root_path . 'includes/functions.php');
+include($phpbb_root_path . 'includes/db.php');
 
 //
 // Mozilla navigation bar
@@ -129,19 +129,19 @@ include($phpbb_root_path . 'includes/db.'.$phpEx);
 // Defined here and not in page_header.php so they can be redefined in the code
 //
 $nav_links['top'] = array ( 
-	'url' => append_sid($phpbb_root_dir."index.".$phpEx),
+	'url' => append_sid($phpbb_root_dir."index.php"),
 	'title' => sprintf($lang['Forum_Index'], $board_config['sitename'])
 );
 $nav_links['search'] = array ( 
-	'url' => append_sid($phpbb_root_dir."search.".$phpEx),
+	'url' => append_sid($phpbb_root_dir."search.php"),
 	'title' => $lang['Search']
 );
 $nav_links['help'] = array ( 
-	'url' => append_sid($phpbb_root_dir."faq.".$phpEx),
+	'url' => append_sid($phpbb_root_dir."faq.php"),
 	'title' => $lang['FAQ']
 );
 $nav_links['author'] = array ( 
-	'url' => append_sid($phpbb_root_dir."memberlist.".$phpEx),
+	'url' => append_sid($phpbb_root_dir."memberlist.php"),
 	'title' => $lang['Memberlist']
 );
 
