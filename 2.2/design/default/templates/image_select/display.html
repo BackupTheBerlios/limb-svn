@@ -2,6 +2,7 @@
 
 <script src='/shared/js/image_properties.js'></script>
 <script>
+
 	var image_properties_objects = new Array();
 	var image_id_obj;
 	var preview_obj;
@@ -27,8 +28,8 @@
 		obj = document.getElementsByName(prop_name);
 		if (obj.length && obj.length > 0)
 		{
-			if (typeof(obj(0)) == 'object')
-				obj(0).value = value;
+			if (typeof(obj[0]) == 'object')
+				obj[0].value = value;
 		}
 	}
 
@@ -102,6 +103,11 @@
 			preview_caption_obj.nodeValue = img.name;
 		}
 		
+		start_path = img.start_path;
+		if(!start_path)
+			start_path = '/root/images_folder';
+
+		image_select_frame.location = start_path;
 //		hide_loading_div();
 		render_properties();
 		process_popup();
@@ -159,7 +165,7 @@
 							</tr>
 							<tr>
 								<td align=center>
-									<iframe src='/root/images_folder?action=image_select' width=400 height=300></iframe>
+									<iframe name='image_select_frame' src='/root/images_folder?action=image_select' width=400 height=300></iframe>
 									</td>
 							</tr>
 							</table>	

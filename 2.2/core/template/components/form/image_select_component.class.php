@@ -28,16 +28,31 @@ class image_select_component extends input_form_element
   	$md5id = substr(md5($id), 0, 5);
 
   	$image_node_id = $this->get_value();
-  	
+
+  	$start_path = '';
+
   	if($image_node_id && $image_data = fetch_one_by_node_id($image_node_id))
   	{
 			$span_name = $image_data['identifier'];
+			$start_path = '/root?action=image_select&node_id=' . $image_data['parent_node_id'];
 		}
 		else
-		{
 			$span_name = '';
+
+  	$start_path_condition = "";
+  	if(!$start_path)
+  	{
+	 		$start_path = $this->get_attribute('start_path');
+	  	if(!$start_path)
+	  		$start_path = session :: get('limb_image_select_working_path');
+	  	if(!$start_path)
+				$start_path = '/root/images_folder';
+
+			$start_path .= '?action=image_select';
 		}
-  	  	
+
+  	$start_path_condition = "image_select_{$md5id}.set_start_path('{$start_path}');";
+  	  	  	
   	echo "<span id='{$md5id}_name'>{$span_name}</span><br><img id='{$md5id}_img' src='/shared/images/1x1.gif'/>
 	    <script type='text/javascript'>
 	    	var image_select_{$md5id};
@@ -45,6 +60,7 @@ class image_select_component extends input_form_element
 	      function init_image_select_{$md5id}()
 	      {
 	        image_select_{$md5id} = new image_select('{$id}', '{$md5id}');
+	        {$start_path_condition}
 	        image_select_{$md5id}.generate();
 	      }
 	      

@@ -59,6 +59,8 @@ class images_folder_controller extends site_object_controller
 				),
 				'image_select' => array(
 						'permissions_required' => 'r',
+						'action_name' => strings :: get('select_image', 'image'),
+						'action_path' => '/images_folder/image_select_action',
 						'template_path' => '/images_folder/image_select.html',
 						'trasaction' => false,
 				),
