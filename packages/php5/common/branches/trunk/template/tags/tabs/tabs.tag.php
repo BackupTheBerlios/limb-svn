@@ -23,7 +23,8 @@ class tabs_tag extends compiler_directive_tag
     $tabs = array(),
 	  $tabulator_class = 'class="tabulator"',
 	  $tab_class = 'class="tab"',
-	  $active_tab_class = 'class="active-tab"';
+	  $active_tab_class = 'class="active-tab"',
+	  $use_cookie = false;
 
   public function prepare()
   {
@@ -41,6 +42,9 @@ class tabs_tag extends compiler_directive_tag
 	  if(isset($this->attributes['active_tab_class']))
 	    $this->active_tab_class = 'class="' . $this->attributes['active_tab_class'] . '"';
 	    
+	  if(isset($this->attributes['use_cookie']))
+	    $this->use_cookie = $this->attributes['use_cookie'];
+
     parent :: prepare();
   }
     	
@@ -79,9 +83,15 @@ class tabs_tag extends compiler_directive_tag
 	  }
 	  
 	  foreach($this->tabs as $id)
-	   $js .= "tabs.register_tab_item('{$id}');\n";
+	   $js .= "var tab_data={'id':'{$id}'};\n tabs.register_tab_item(tab_data);\n";
 	   
 	   
+    if ($this->use_cookie)
+	    $js .= "if (active_tab = get_cookie('active_tab'))\n
+	    					tabs.activate(active_tab);\n
+	    				else
+	    					tabs.activate('{$active_tab}');\n";
+	  else
     $js .= "tabs.activate('{$active_tab}');\n";          
 	
 		$code->write_html("    	

@@ -1,15 +1,19 @@
 <grid:LIST id='menu'>
-<table width='100%' border='0' cellspacing='3' cellpadding='1'>
+<table width='100%' border='0' cellspacing='0' cellpadding='1'>
 <grid:ITERATOR>
 		<tr>
-			<td align='right' class='border1'><a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a></td>
+			<td align='right'><a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a></td>
 			<core:OPTIONAL for="in_path">
 				<td><img src='/shared/images/arr1.gif'></td>
 			</core:OPTIONAL>
 			<core:DEFAULT for="in_path">
-				<td class='border1'>&nbsp;</td>
+				<td>&nbsp;</td>
 			</core:DEFAULT>
 		</tr>
+		<tr>
+			<td align=center colspan=3><img src='/shared/images/1x1.gif' class=com2 width=80% height=1></td>
+		</tr>
+		
 </grid:ITERATOR>
 <tr>
 <td></td>
