@@ -52,7 +52,7 @@ class LimbDatasourceTagTestCase extends LimbTestCase
     ClearTestingTemplates();
   }
 
-  function testSetupSingleTargetDatasource()
+  function testSingleTarget()
   {
     $this->toolkit->setReturnReference('getDatasource', $this->ds, array('TestDatasource'));
 
@@ -76,7 +76,7 @@ class LimbDatasourceTagTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), 'joeivan');
   }
 
-  function testSetupMultipleTargetDatasource()
+  function testMultipleTargets()
   {
     $this->toolkit->setReturnReference('getDatasource', $this->ds, array('TestDatasource'));
 
@@ -101,7 +101,7 @@ class LimbDatasourceTagTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), 'joeivanfisherrush');
   }
 
-  function testSetupNavigatorDatasource()
+  function testWithNavigator()
   {
     $this->toolkit->setReturnReference('getDatasource', $this->ds, array('TestDatasource'));
 
@@ -120,9 +120,6 @@ class LimbDatasourceTagTestCase extends LimbTestCase
 
     $request->setReturnValue('getUri', new Uri('test.com'));
 
-    $this->ds->expectOnce('countTotal');
-    $this->ds->setReturnValue('countTotal', $total = 40);
-
     $template = '<limb:DATASOURCE target="testTarget" class="TestDatasource" navigator="pagenav"></limb:DATASOURCE>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$username}</list:ITEM></list:LIST>'.
                 '<limb:pager:NAVIGATOR id="pagenav" items="10"></limb:pager:NAVIGATOR>';
@@ -134,7 +131,7 @@ class LimbDatasourceTagTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), 'joeivan');
 
     $pager =& $page->findChild('pagenav');
-    $this->assertEqual($pager->getTotalItems(), $total);
+    $this->assertEqual($pager->getTotalItems(), 2);
   }
 }
 ?>

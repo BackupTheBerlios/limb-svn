@@ -78,7 +78,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
     $request->setReturnValue('get', 2, array($navigator->getPagerId()));
 
     $navigator->setTotalItems(40);
-    $navigator->reset();
+    $navigator->prepare();
 
     $expected = 'F-test.com|' .
                 'P-test.com|'.
@@ -120,7 +120,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
     $request->setReturnValue('get', 2, array($navigator->getPagerId()));
 
     $navigator->setTotalItems(40);
-    $navigator->reset();
+    $navigator->prepare();
 
     $expected = '40|8|yes|from:6|to:10';
 
@@ -159,7 +159,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
     $navigator =& $page->findChild('test');
     $navigator->setTotalItems(5);
 
-    $navigator->reset();
+    $navigator->prepare();
 
     $expected = '';
 
@@ -197,7 +197,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
     $navigator =& $page->findChild('test');
     $navigator->setTotalItems(40);
 
-    $navigator->reset();
+    $navigator->prepare();
 
     $expected = 'C-test.com|1|'.
                 'N-test.com?page_test=2|2|N-test.com?page_test=3|3|N-test.com?page_test=4|4|';
@@ -239,7 +239,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
     $request->setReturnValue('get', 3, array($navigator->getPagerId()));
 
     $navigator->setTotalItems(30);
-    $navigator->reset();
+    $navigator->prepare();
 
     $expected = 'F-test.com|' .
                 'P-test.com?page_test=2|'.
@@ -283,7 +283,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
     $request->setReturnValue('get', 3, array($navigator->getPagerId()));
 
     $navigator->setTotalItems(60);
-    $navigator->reset();
+    $navigator->prepare();
 
     $expected = 'S-test.com?page_test=2|1|2|' .
                 'C-test.com?page_test=3|3|'.
@@ -325,7 +325,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
     $request->setReturnValue('get', 3, array($pager_id));
 
     $navigator->setTotalItems(60);
-    $navigator->reset();
+    $navigator->prepare();
 
     $expected = "P1-test.com|P2-test.com|";
     $this->assertEqual($page->capture(), $expected);

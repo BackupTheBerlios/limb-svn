@@ -25,6 +25,7 @@ class LimbPagerComponent extends Component
 
   var $pager_prefix = 'page';
   var $base_url;
+  var $paged_dataset = null;
 
   function setPagerPrefix($prefix)
   {
@@ -36,8 +37,11 @@ class LimbPagerComponent extends Component
     $this->total_items = $items;
   }
 
-  function reset()
+  function prepare()
   {
+    if ($this->paged_dataset)
+      $this->setTotalItems($this->paged_dataset->getTotalRowCount());
+
     $this->_initBaseUrl();
 
     $this->total_page_count = ceil($this->total_items / $this->items_per_page);
@@ -82,6 +86,19 @@ class LimbPagerComponent extends Component
   function setItemsPerPage($items)
   {
     $this->items_per_page = $items;
+  }
+
+  //implementing WACT pager interface
+  function getStartingItem()
+  {
+    return $this->getDisplayedPageBeginItem();
+  }
+
+  function setPagedDataSet(&$dataset)
+  {
+    $this->paged_dataset =& $dataset;
+
+    $this->prepare();
   }
 
   function getDisplayedPageBeginItem()

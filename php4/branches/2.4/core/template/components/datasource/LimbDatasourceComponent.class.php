@@ -34,7 +34,7 @@ class LimbDatasourceComponent extends Component
     return $this->datasource;
   }
 
-  function _setTargets($targets)
+  function setTargets($targets)
   {
     if(is_array($targets))
       $this->targets = $targets;
@@ -58,23 +58,8 @@ class LimbDatasourceComponent extends Component
   {
     if($name == 'order')
       $this->_setOrderParameters($value);
-    elseif($name == 'limit')
-      $this->_setLimitParameters($value);
     else
       $this->_setDatasourceParameter($name, $value);
-  }
-
-  function _setLimitParameters($limit_string)
-  {
-    $arr = explode(',', $limit_string);
-
-    if(empty($arr[0]))
-      return;
-
-    $this->_setDatasourceParameter('limit', (int)$arr[0]);
-
-    if(!empty($arr[1]))
-      $this->_setDatasourceParameter('offset', (int)$arr[1]);
   }
 
   function _setOrderParameters($order_string)
@@ -107,19 +92,9 @@ class LimbDatasourceComponent extends Component
       $this->_setDatasourceParameter('order', $order_pairs);
   }
 
-  function setupNavigator($navigator_id)
+  function setNavigator($navigator_id)
   {
     $this->navigator_id = $navigator_id;
-
-    if(!$navigator =& $this->_getNavigatorComponent())
-      return null;
-
-    $ds =& $this->_getDatasource();
-    $navigator->setTotalItems($ds->countTotal());
-    $navigator->reset();//???
-
-    $this->_setDatasourceParameter('limit', $navigator->getItemsPerPage());
-    $this->_setDatasourceParameter('offset', $navigator->getDisplayedPageBeginItem());
   }
 
   function _setDatasourceParameter($parameter, $value)
@@ -132,11 +107,13 @@ class LimbDatasourceComponent extends Component
       $ds->$method($value);
   }
 
-  function setupTargets($targets)
+  function process()
   {
-    $this->_setTargets($targets);
-
     $dataset =& $this->getDataset();
+
+    if($navigator =& $this->_getNavigatorComponent())
+      $dataset->paginate($navigator);
+
     foreach($this->targets as $target)
     {
       if($target_component =& $this->parent->findChild($target))

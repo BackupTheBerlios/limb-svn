@@ -46,10 +46,11 @@ class LimbDatasourceTag extends ServerComponentTag
     $navigator = $this->getAttribute('navigator');
     if(!empty($navigator))
     {
-      $code->writePhp($this->getComponentRefCode() . '->setupNavigator("' . $navigator .'");');
+      $code->writePhp($this->getComponentRefCode() . '->setNavigator("' . $navigator .'");');
     }
 
-    $code->writePhp($this->getComponentRefCode() . '->setupTargets("' . $this->getAttribute('target') .'");');
+    $code->writePhp($this->getComponentRefCode() . '->setTargets("' . $this->getAttribute('target') .'");');
+    $code->writePhp($this->getComponentRefCode() . '->process();');
   }
 
 }
