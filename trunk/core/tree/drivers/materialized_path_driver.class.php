@@ -370,7 +370,7 @@ class materialized_path_driver extends tree_db_driver
 		return $result;
 	}
 	
-	function count_accessible_children($id)
+	function count_accessible_children($id, $add_sql=array())
 	{
 		if (!($parent = $this->get_node($id)))
 		{

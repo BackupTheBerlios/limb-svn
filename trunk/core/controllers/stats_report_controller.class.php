@@ -61,6 +61,13 @@ class stats_report_controller extends site_object_controller
 						'action_path' => '/stats_report/stats_search_engines_report_action',
 						'display_in_breadcrumbs' => true
 				),
+				'routes_report' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/stats_report/routes_list.html',
+						'action_name' => strings :: get('show_routes_report', 'stats'),
+						'action_path' => '/stats_report/stats_routes_report_action',
+						'display_in_breadcrumbs' => true
+				),
 		);
  		
 		parent :: site_object_controller();

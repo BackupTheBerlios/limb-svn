@@ -25,7 +25,6 @@ class tree_db_driver extends tree_driver
 		'root_id' => 'root_id',
 		'identifier' => 'identifier',
 		'object_id' => 'object_id',
-		'path' => 'path',
 		'level' => 'level', 
 		'parent_id' => 'parent_id',
 	);
@@ -35,7 +34,7 @@ class tree_db_driver extends tree_driver
 	* @var array An array of field ids that must exist in the table
 	* @access private 
 	*/
-	var $_required_params = array();
+	var $_required_params = array('id', 'root_id', 'level');
 	
 	/**
 	* 
@@ -44,7 +43,6 @@ class tree_db_driver extends tree_driver
 	*/
 	var $_node_table = 'sys_site_object_tree';
 
-		
 	function tree_db_driver()
 	{
 		$this->_db =& db_factory :: instance();
