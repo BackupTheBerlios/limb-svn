@@ -31,8 +31,6 @@ class control_button_component extends form_element
 		else	
 			$action_path .= '&';
 		
-		$form_parent_id = $this->parent->get_server_id();
-		
 		if(isset($this->attributes['action']))
 			$action_path .= 'action=' . $this->attributes['action'];
 			
@@ -45,7 +43,7 @@ class control_button_component extends form_element
     if(!isset($this->attributes['onclick']))
       $this->attributes['onclick'] = '';
       
-		$this->attributes['onclick'] .= "submit_form('{$form_parent_id}', '{$action_path}')";
+		$this->attributes['onclick'] .= "submit_form(this.form, '{$action_path}')";
 
 		unset($this->attributes['path']);
 		unset($this->attributes['action']);

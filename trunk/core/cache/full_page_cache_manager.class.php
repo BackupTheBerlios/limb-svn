@@ -179,6 +179,20 @@ class full_page_cache_manager
     }  
   }
   
+  function get_cache_size()
+  {
+    $files = dir :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^f]~');
+    
+    $size = 0;
+    
+    foreach($files as $file)
+    {
+      $size += (filesize($file));
+    }  
+    
+    return $size;
+  }
+  
   function read_cache()
   {
     if(!$id = $this->get_cache_id())

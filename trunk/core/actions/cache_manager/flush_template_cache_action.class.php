@@ -20,7 +20,7 @@ class flush_template_cache_action extends action
 	    unlink($file);
 	  
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_no_parent_reload_response());
+		  $response->write_response_string(close_popup_response($request));
 	  
 	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}

@@ -185,6 +185,20 @@ class partial_page_cache_manager
       unlink($file);
     }  
   }  
+
+  function get_cache_size()
+  {
+    $files = dir :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^p]~');
+    
+    $size = 0;
+    
+    foreach($files as $file)
+    {
+      $size += (filesize($file));
+    }  
+    
+    return $size;
+  }
   
   function read_cache()
   {

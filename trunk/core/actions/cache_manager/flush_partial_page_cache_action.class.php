@@ -21,7 +21,7 @@ class flush_partial_page_cache_action extends action
 	  $request->set_status(REQUEST_STATUS_SUCCESS);
 
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_no_parent_reload_response());
+		  $response->write_response_string(close_popup_reload_response($request));
 	}
 }
 

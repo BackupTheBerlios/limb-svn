@@ -19,6 +19,7 @@ class cache_manager_controller extends site_object_controller
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/cache_manager/display.html',
+						'action_path' => '/cache_manager/display_cache_manager_action', 
 				),
 				'flush_full_page_cache' => array(
 						'permissions_required' => 'r',
