@@ -258,7 +258,7 @@ class site_object extends object
 			return array();
 		}	
 	
-		$ids = '('. implode(',', $ids_array) . ')';
+		$ids = '('. implode(' , ', $ids_array) . ')';
 		
 		if(isset($params['limit']))
 		{
@@ -278,7 +278,7 @@ class site_object extends object
 			$sql_params['conditions'] = array();
 		}
 		
-		$ids = '('. implode(',', $ids_array) . ')';
+		$ids = '('. implode(' , ', $ids_array) . ')';
 		$sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 
 		$arr =& $this->fetch($params, $sql_params);
@@ -395,7 +395,7 @@ class site_object extends object
 			return array();
 		}	
 	
-		$ids = '('. implode(',', $ids_array) . ')';
+		$ids = '('. implode(' , ', $ids_array) . ')';
 		
 		$sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 		
@@ -623,16 +623,27 @@ class site_object extends object
 		$this->set_attribute('version', 1); 
 		
 		$user =& user :: instance();
-		
-		$time = time();
+
 		$data['identifier'] = $this->get_identifier();
 		$data['title'] = $this->get_title();
 		$data['class_id'] = $this->get_class_id();
 		$data['current_version'] = $this->get_version();
-		$data['created_date'] = $time;
-		$data['modified_date'] = $time;
 		$data['creator_id'] = $user->get_id();
 		$data['status'] = $this->get_attribute('status', 0);
+
+		$created_date = $this->get_attribute('created_date', 0);
+		$modified_date = $this->get_attribute('modified_date', 0);
+		$time = time();
+
+		if(!$created_date)
+			$data['created_date'] = $time;
+		else
+			$data['created_date'] = $created_date;
+
+		if(!$modified_date)
+			$data['modified_date'] = $time;
+		else
+			$data['modified_date'] = $modified_date;
 
 		if ($this->get_attribute('locale_id'))
 			$data['locale_id'] = $this->get_attribute('locale_id');

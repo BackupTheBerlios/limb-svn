@@ -785,7 +785,7 @@ HTMLArea.prototype.onsize = function()
 			if(this.active_tab_id)
 			{
 				var obj = document.getElementById(this.active_tab_id);
-				obj._iframe.style.height = obj.parentElement.parentElement.offsetHeight - obj._toolbar.offsetHeight - obj._statusBar.offsetHeight;
+				obj._iframe.style.height = obj.parentNode.parentNode.offsetHeight - obj._toolbar.offsetHeight - obj._statusBar.offsetHeight;
 			}
 			else
 			{

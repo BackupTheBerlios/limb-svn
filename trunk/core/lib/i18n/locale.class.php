@@ -32,8 +32,8 @@ http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90
 
 require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
 
-define('LOCALE_DEBUG_INTERNALS', false);
-define('LOCALE_DIR', LIMB_DIR . '/core/locale');
+if(!defined('LOCALE_DIR'))
+  define('LOCALE_DIR', LIMB_DIR . '/core/locale');
 
 class locale
 {
@@ -52,6 +52,7 @@ class locale
 	var $override_charset = '';
 	var $locale_code = '';
 	var $http_locale_code = ''; 
+	var $LC_ALL = '';
 	// numbers
 	var $decimal_symbol = '';
 	var $thousand_separator = '';
@@ -105,12 +106,13 @@ class locale
 
 		$locale = locale::get_locale_information($locale_string);
 
-		$this->country_code = &$locale['country'];
-		$this->country_variation = &$locale['country-variation'];
-		$this->language_code = &$locale['language'];
-		$this->locale_code = &$locale['locale'];
+		$this->country_code = $locale['country'];
+		$this->country_variation = $locale['country-variation'];
+		$this->language_code = $locale['language'];
+		$this->locale_code = $locale['locale'];
 		$this->charset = $locale['charset'];
 		$this->override_charset = $locale['charset']; 
+		
 		// Figure out if we use one locale file or separate country/language file.
 		$locale_ini = &$this->get_locale_ini();
 		$country_ini = &$locale_ini;
@@ -270,6 +272,7 @@ class locale
 		$language_ini->assign_option($this->intl_language_name, 'international_language_name', 'regional_settings');
 		$language_ini->assign_option($this->language_comment, 'language_comment', 'regional_settings');
 		$language_ini->assign_option($this->language_direction, 'language_direction', 'regional_settings');
+		$language_ini->assign_option($this->LC_ALL, 'LC_ALL', 'regional_settings');
 		
 		$language_ini->assign_option($this->http_locale_code, 'content_language', 'http');
 		
@@ -385,16 +388,9 @@ class locale
 		return $info;
 	} 
 
-	/*
-   Sets locale information in PHP. This means that some of the string/sort functions in
-   PHP will work with non-latin1 characters.
-   Make sure setlanguage is called before this.
-  */
-	function init_php($charset = false)
+	function setlocale()
 	{
-		if ($charset === false)
-			$charset = $this->language->code();
-		set_locale(LC_ALL, $charset);
+	  setlocale(LC_ALL, $this->LC_ALL);
 	} 
 
 	/*
@@ -676,9 +672,6 @@ class locale
 				$locale .= '@' . $country_variation;
 		} 
 		$file_name = $locale . '.ini';
-
-		if (locale::is_debug_enabled())
-			debug::write_notice("Requesting $file_name", 'locale :: _get_locale_ini');
     
 		if (file_exists($directory . '/' . $file_name))
 			return ini::instance($directory . '/' . $file_name);
@@ -743,33 +736,10 @@ class locale
 			return $GLOBALS['global_locale_' . $locale_string];
 		} 
 
-		$obj = &new locale($locale_string);
-		$GLOBALS['global_locale_' . $locale_string] = &$obj;
+		$obj =& new locale($locale_string);
+		$GLOBALS['global_locale_' . $locale_string] =& $obj;
 
 		return $obj;
 	} 
-
-	/*
-   static
-   return true if debugging of internals is enabled, this will display
-   which files are loaded and when cache files are created.
-   Set the option with set_debug_enabled().
-  */
-	function is_debug_enabled()
-	{
-		if (!isset($GLOBALS['global_locale_debug_internal_enabled']))
-			$GLOBALS['global_locale_debug_internal_enabled'] = LOCALE_DEBUG_INTERNALS;
-		return $GLOBALS['global_locale_debug_internal_enabled'];
-	} 
-
-	/*
-   static
-   Sets whether internal debugging is enabled or not.
-  */
-	function set_debug_enabled($debug)
-	{
-		$GLOBALS['global_locale_debug_internal_enabled'] = $debug;
-	} 
-} ;
-
+}
 ?>

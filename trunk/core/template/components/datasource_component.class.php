@@ -69,11 +69,25 @@ class datasource_component extends component
 		$order_pairs = array();
 		foreach($order_items as $order_pair)
 		{
-			list($field, $order_type) = explode('=', $order_pair);
-			$order_pairs[$field] = $order_type;
+			$arr = explode('=', $order_pair);
+			
+			if(isset($arr[1]))
+			{
+			  if(strtolower($arr[1]) == 'asc' || strtolower($arr[1]) == 'desc'
+			  	 || strtolower($arr[1]) == 'rand()')			  
+			    $order_pairs[$arr[0]] = strtoupper($arr[1]);
+			  else
+			    debug :: write_error('wrong order type',
+		      __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+		      array('order' => $arr[1]));
+
+			}
+			else
+			  $order_pairs[$arr[0]] = 'ASC';
 		}	
 		
-		$this->parameters['order'] = $order_pairs;
+		if(sizeof($order_pairs))
+			$this->parameters['order'] = $order_pairs;
 	}
 	
 	function & _get_datasource()

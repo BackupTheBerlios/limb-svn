@@ -23,19 +23,15 @@ class vote_action extends form_action
 		$data = $this->dataspace->export();
 		
 		$request->set_status(REQUEST_STATUS_FAILURE);
-		
+
 		if (!isset($data['answer']))
 		{
 			message_box :: write_notice(strings :: get('no_answer', 'poll'));
-			$response->redirect('/root/polls');
 			return;
 		}
 		
-		if($object->register_answer($data['answer']))
-		{
-		  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
-			$response->redirect('/root/polls');
-		}
+		$object->register_answer($data['answer']);
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	}
 
 }

@@ -5,20 +5,22 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: navigation_item.class.php 458 2004-02-17 15:32:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class navigation_item extends content_object
 {
-	function navigation_item()
+	function _define_attributes_definition()
 	{
-		parent :: content_object();
-		
-    $this->_attributes_definition['title'] = array('search' => true, 'search_weight' => 1);
-    $this->_attributes_definition['identifier'] = array('search' => true, 'search_weight' => 1);
-	}
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+					'identifier' => array('search' => true, 'search_weight' => 1),
+					'title' => array('search' => true, 'search_weight' => 1),
+				));
+	} 
 	
 	function _define_class_properties()
 	{

@@ -14,13 +14,6 @@ define('DEBUG_LEVEL_ERROR', 3);
 define('DEBUG_TIMING_POINT', 4);
 define('DEBUG_LEVEL', 5);
 
-define('DEBUG_SHOW_NOTICE', 1 << (DEBUG_LEVEL_NOTICE - 1));
-define('DEBUG_SHOW_WARNING', 1 << (DEBUG_LEVEL_WARNING - 1));
-define('DEBUG_SHOW_ERROR', 1 << (DEBUG_LEVEL_ERROR - 1));
-define('DEBUG_SHOW_TIMING_POINT', 1 << (DEBUG_TIMING_POINT - 1));
-define('DEBUG_SHOW', 1 << (DEBUG_LEVEL - 1));
-define('DEBUG_SHOW_ALL', DEBUG_SHOW_NOTICE | DEBUG_SHOW_WARNING | DEBUG_SHOW_ERROR | DEBUG_SHOW_TIMING_POINT | DEBUG_SHOW);
-
 define('DEBUG_HANDLE_NATIVE', 0);
 define('DEBUG_HANDLE_CUSTOM', 1);
 define('DEBUG_HANDLE_TRIGGER_ERROR', 2);
@@ -45,10 +38,7 @@ class debug
 	
 	// Array wich contains time accumulators
 	var $time_accumulator_list = array(); 
-	
-	// Determines which debug messages should be shown
-	var $show_types; 
-	
+		
 	// Determines what to do with php errors, ignore, fetch or output
 	var $handle_type = DEBUG_HANDLE_NATIVE; 
 	
@@ -78,6 +68,14 @@ class debug
 
 	function debug()
 	{
+		$this->message_types = array(
+			DEBUG_LEVEL_NOTICE,
+			DEBUG_LEVEL_WARNING,
+			DEBUG_LEVEL_ERROR,
+			DEBUG_TIMING_POINT,
+			DEBUG_LEVEL
+		);
+				
 		$this->output_format = array(
 			DEBUG_LEVEL_NOTICE => array('color' => 'green',
 				'name' => 'Notice'),
@@ -88,7 +86,8 @@ class debug
 			DEBUG_LEVEL => array('color' => 'brown',
 				'name' => 'Debug'),
 			DEBUG_TIMING_POINT => array('color' => 'blue',
-				'name' => 'Timing'));
+				'name' => 'Timing')
+		);
 
 		$this->log_files = array(
 			DEBUG_LEVEL_NOTICE => array(VAR_DIR . 'log/',
@@ -100,30 +99,24 @@ class debug
 			DEBUG_TIMING_POINT => array(VAR_DIR . 'log/',
 				'time.log'),
 			DEBUG_LEVEL => array(VAR_DIR . 'log/',
-				'debug.log'));
-
-		$this->message_types = array(
-			DEBUG_LEVEL_NOTICE,
-			DEBUG_LEVEL_WARNING,
-			DEBUG_LEVEL_ERROR,
-			DEBUG_TIMING_POINT,
-			DEBUG_LEVEL);
+				'debug.log')
+		);
 
 		$this->log_file_enabled = array(
 			DEBUG_LEVEL_NOTICE => true,
 			DEBUG_LEVEL_WARNING => true,
 			DEBUG_LEVEL_ERROR => true,
 			DEBUG_TIMING_POINT => false,
-			DEBUG_LEVEL => true);
+			DEBUG_LEVEL => true
+		);
 
-		$this->show_types = DEBUG_SHOW_ALL;
 		$this->handle_type = DEBUG_HANDLE_NATIVE;
 		$this->old_handler = false;
 		$this->script_start = debug :: _time_to_float(microtime());
 		$this->time_accumulator_list = array();
 		$this->time_accumulator_group_list = array();
 	} 
-
+	
 	function reset()
 	{
 		$this->debug_strings = array();
@@ -140,15 +133,12 @@ class debug
 
 		return $impl;
 	} 
-
-	/*
-   Returns true if the message type $type can be shown.
-  */
-	function show_message($type)
+	
+	function sizeof()
 	{
-		$debug = &debug::instance();
-		return $debug->show_types & $type;
-	} 
+	  $debug =& debug::instance();
+	  return sizeof($debug->debug_strings);
+	}	
 
 	/*
    Determines how PHP errors are handled. If $type is DEBUG_HANDLE_TRIGGER_ERROR all error messages
@@ -185,28 +175,6 @@ class debug
 			case DEBUG_HANDLE_NATIVE:
 		} 
 		$debug->handle_type = $type;
-	} 
-
-	/*
-   Sets types to be shown to $types and returns the old show types.
-   If $types is not supplied the current value is returned and no change is done.
-   $types is one or more of DEBUG_SHOW_NOTICE, DEBUG_SHOW_WARNING, DEBUG_SHOW_ERROR, DEBUG_SHOW_TIMING_POINT
-   or'ed together.
-  */
-	function show_types($types = false)
-	{
-		if (!isset($this) || get_class($this) != 'debug')
-			$debug =& debug::instance();
-		else
-			$debug =& $this;
-
-		if ($types === false)
-			return $debug->show_types;
-
-		$old_types = $debug->show_types;
-		$debug->show_types = $types;
-
-		return $old_types;
 	} 
 
 	/*
@@ -249,26 +217,26 @@ class debug
 			case E_CORE_ERROR:
 			case E_COMPILE_ERROR:
 			case E_USER_ERROR:
-				{
+			{
 					debug::write_error($str, 'PHP');
-				} 
-				break;
+			} 
+			break;
 
 			case E_WARNING:
 			case E_CORE_WARNING:
 			case E_COMPILE_WARNING:
 			case E_USER_WARNING:
-				{
+			{
 					debug::write_warning($str, 'PHP');
-				} 
-				break;
+			} 
+			break;
 
 			case E_USER_NOTICE:
 			case E_NOTICE:
-				{
+			{
 					debug::write_notice($str, 'PHP');
-				} 
-				break;
+			} 
+			break;
 		} 
 	} 
 
@@ -278,8 +246,6 @@ class debug
 	function write_notice($string, $code_line = '', $params = array())
 	{
 		if (!debug::is_debug_enabled())
-			return;
-		if (!debug::show_message(DEBUG_SHOW_NOTICE))
 			return;
 
 		$debug =& debug::instance();
@@ -296,8 +262,6 @@ class debug
 	{
 		if (!debug::is_debug_enabled())
 			return;
-		if (!debug::show_message(DEBUG_SHOW_WARNING))
-			return;
 
 		$debug =& debug::instance();
 		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
@@ -312,8 +276,6 @@ class debug
 	function write_error($string, $code_line = '', $params = array())
 	{
 		if (!debug::is_debug_enabled())
-			return;
-		if (!debug::show_message(DEBUG_SHOW_ERROR))
 			return;
 
 		$debug =& debug::instance();
@@ -330,8 +292,6 @@ class debug
 	{
 		if (!debug::is_debug_enabled())
 			return;
-		if (!debug::show_message(DEBUG_SHOW_ERROR))
-			return;
 
 		$debug =& debug::instance();
 		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
@@ -340,12 +300,14 @@ class debug
 			$debug->write(DEBUG_LEVEL, $string, $code_line, $params);
 	} 
 	
-	function _send_mail($description, $verbosity_level)
+	function _send_mail($debug_info)
 	{
 		include_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
 		
 		$title = '';
 		$headers = array();
+		$description = debug :: _parse_text_debug_info($debug_info);
+		$verbosity_level = $debug_info['verbosity_level'];
 		
 		switch ($verbosity_level)
 		{
@@ -404,24 +366,12 @@ class debug
 		return $prev_output;
 	} 
 
-	function set_store_log($store)
-	{
-		if (!isset($this) || get_class($this) != 'debug')
-			$debug =& debug::instance();
-		else
-			$debug =& $this;
-
-		$debug->store_log = $store;
-	} 
-
 	/*
     Adds a new timing point for the benchmark report.
   */
 	function add_timing_point($description = '')
 	{
 		if (!debug::is_debug_enabled())
-			return;
-		if (!debug::show_message(DEBUG_SHOW_TIMING_POINT))
 			return;
 			
 		$debug =& debug::instance();
@@ -441,6 +391,32 @@ class debug
 
 		$debug->write(DEBUG_TIMING_POINT, $description);
 	} 
+	
+	function _parse_text_debug_info($debug_info)
+	{
+	  $string = $debug_info['string'];
+	  $code_line = $debug_info['code_line'];
+	  $params = $debug_info['params'];
+	
+		$log_string = $string;
+		$log_string .= (($code_line) ? "\n{$code_line}" : '');
+		$log_string .= (count($params) ? "\n" . var_export($params, true) : '');	
+		
+		return $log_string;
+	}
+
+	function _parse_html_debug_info($debug_info)
+	{
+	  $string = $debug_info['string'];
+	  $code_line = $debug_info['code_line'];
+	  $params = $debug_info['params'];
+	  
+		$log_string = $string;
+		$log_string .= (($code_line) ? "<br>{$code_line}" : '');
+		$log_string .= (count($params) ? '<br><pre>' . htmlspecialchars(var_export($params, true)) . '</pre>' : '');
+		
+		return $log_string;
+	}
 
 	/*
     Writes a debug log message.
@@ -453,46 +429,46 @@ class debug
 		if(!in_array($verbosity_level, $this->message_types))
 			$verbosity_level = DEBUG_LEVEL_ERROR;
 		
-		$log_string = $string;		
-		$log_string .= (($code_line) ? "\n{$code_line}" : '');
-		$log_string .= (count($params) ? "\n" . var_export($params, true) : '');
-		
+		$debug_info = array(
+  		'level' => $verbosity_level,
+  		'time' => time(),
+  		'string' => $string,
+  		'code_line' => $code_line,
+  		'params' => $params
+		);
+				
 		if ($this->message_output & DEBUG_OUTPUT_MESSAGE_SCREEN)
 		{
-			print("$verbosity_level:\n $log_string\n\n");
+			print("$verbosity_level:\n " . debug :: _parse_text_debug_info($debug_info) . "\n\n");
 		} 
 		
 		if ($this->message_output & DEBUG_OUTPUT_MESSAGE_STORE)
 		{
-			$this->debug_strings[] = array(
-				'level' => $verbosity_level,
-				'time' => time(),
-				'string' => $log_string
-			);
+			$this->debug_strings[] = $debug_info;
 
-			$files =& $this->log_files();
+			$files =& $this->log_files;
 			$file_name = false;
 	
 			if (isset($files[$verbosity_level]))
 				$file_name = $files[$verbosity_level];
 
 			if ($file_name !== false && $this->is_log_file_enabled($verbosity_level))
-				$this->_write_file($file_name, $log_string, $verbosity_level);
+				$this->_write_file($file_name, $debug_info);
 		}
 			
 		if($this->message_output & DEBUG_OUTPUT_MESSAGE_SEND)
 		{
-			$this->_send_mail($log_string, $verbosity_level);
+			$this->_send_mail($debug_info);
 		}
 	}
 	
 	/*
    Writes the log message $string to the file $file_name.
   */
-	function _write_file(&$log_file_data, $string, $verbosity_level)
+	function _write_file($file_name, $debug_info)
 	{
-		if (!log::write($log_file_data, $string))
-			$this->set_log_file_enabled(false, $verbosity_level);
+		if (!log::write($file_name, debug :: _parse_text_debug_info($debug_info)))
+			$this->set_log_file_enabled(false, $debug_info['verbosity_level']);
 	} 
 
 	/*
@@ -519,23 +495,6 @@ class debug
 	function is_log_file_enabled($type)
 	{
 		return $this->log_file_enabled[$type];
-	} 
-
-	/*
-   return an array with the available message types.
-  */
-	function message_types()
-	{
-		return $this->message_types;
-	} 
-
-	/*
-   Returns an associative array of all the log files used by this class
-   where each key is the debug level (DEBUG_LEVEL_NOTICE, DEBUG_LEVEL_WARNING or DEBUG_LEVEL_ERROR or DEBUG_LEVEL).
-  */
-	function &log_files()
-	{
-		return $this->log_files;
 	} 
 
 	/*
@@ -568,7 +527,7 @@ class debug
 			return '';
 
 		$debug = &debug::instance();
-		$report = &$debug->parse_report_internal(true);
+		$report = &$debug->_parse_report_internal(true);
     
     $ip = sys :: client_ip();
 		$js_window = "
@@ -604,7 +563,7 @@ class debug
 			return '';
 
 		$debug = &debug::instance();
-		$report = &$debug->parse_report_internal(false);
+		$report = &$debug->_parse_report_internal(false);
 		
 		return $report;
 	}
@@ -730,7 +689,7 @@ class debug
 	/*
     Prints a full debug report with notice, warnings, errors and a timing report.
   */
-	function parse_report_internal($as_html = true)
+	function _parse_report_internal($as_html = true)
 	{
 		$end_time = microtime();
 		$return_text = '';
@@ -756,12 +715,12 @@ class debug
 				if ($as_html)
 				{
 					$return_text .= "<tr>
-													<th align='left'>{$counter})<span style='color:$color'>{$name}:</span></th>
+													<th align='left'><a name={$counter}>{$counter})<span style='color:$color'>{$name}:</span></th>
                           </tr>
-                          <tr><td><pre>" . htmlspecialchars($debug['string']) . "</pre></td></tr>";
+                          <tr><td>" . debug :: _parse_html_debug_info($debug) . "</td></tr>";
 				} 
 				else
-					$return_text .= "$name: " . $debug['string'] . "\n";
+					$return_text .= "$name: " . debug :: _parse_text_debug_info($debug);
 			} 
 		} 
 

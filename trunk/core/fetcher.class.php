@@ -351,7 +351,7 @@ class fetcher
 	function _assign_paths(&$objects_array, $append = '')
 	{
 		$tree =& tree :: instance();
-		
+				
 		$parent_paths = array();
 		
 		foreach($objects_array as $key => $data)

@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 
 class uri
 {
@@ -287,7 +288,9 @@ class uri
   
   function add_query_item($name, $value)
   {
-    $this->_query_items[$name] = is_array($value)? array_map('urlencode', $value): urlencode($value);
+    $this->_query_items[$name] = is_array($value)? 
+      complex_array :: array_map_recursive('urlencode', $value) : 
+      urlencode($value);
   }
   
   function get_query_item($name)
@@ -336,23 +339,21 @@ class uri
   function get_query_string()
   {
     $query_string = ''; 
-    $query_items = array();
-
-    foreach ($this->_query_items as $name => $value) 
+    $query_items = array();    
+    $flat_array = array();
+    
+    complex_array :: to_flat_array($this->_query_items, $flat_array);
+        
+    foreach($flat_array as $key => $value)
     {
-      if (is_array($value)) 
-      {
-        foreach ($value as $k => $v)
-        	$query_items[] = sprintf('%s[%s]=%s', $name, $k, $v);
-      } 
-      elseif ($value != '' || is_null($value))
-      	$query_items[] = $name . '=' . $value;
+      if ($value != '' || is_null($value))
+      	$query_items[] = $key . '=' . $value;
       else
-      	$query_items[] = $name;
+      	$query_items[] = $key;      
     }
     
     if($query_items)
-      $query_string = implode('&', $query_items);	        
+      $query_string = implode('&', $query_items);
 
     return $query_string;
   }

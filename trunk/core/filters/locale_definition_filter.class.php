@@ -17,12 +17,15 @@ class locale_definition_filter extends intercepting_filter
   function run(&$filter_chain, &$request, &$response) 
   {
     debug :: add_timing_point('locale filter started');
-  
+    
     if(!$node = map_request_to_node($request))
     {
     	define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
     	define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
-
+    	
+    	$locale =& locale :: instance();    	
+    	$locale->setlocale();
+    	
       $filter_chain->next();
       return;
     }
@@ -39,6 +42,9 @@ class locale_definition_filter extends intercepting_filter
       define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
               
     debug :: add_timing_point('locale filter finished');
+
+  	$locale =& locale :: instance();    	
+  	$locale->setlocale();
     
     $filter_chain->next();
   }   

@@ -77,6 +77,11 @@ class materialized_path_driver extends tree_db_driver
 	*/
 	function & get_root_nodes($add_sql = array())
 	{
+	  static $root_nodes = null;
+	  
+	  if($root_nodes !== null)
+	    return $root_nodes;
+	  
 		$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.parent_id=0 %s',
 										$this->_get_select_fields(),
 										$this->_add_sql($add_sql, 'columns'),
@@ -85,9 +90,9 @@ class materialized_path_driver extends tree_db_driver
 										$this->_node_table,
 										$this->_add_sql($add_sql, 'append'));
 
-		$node_set =& $this->_get_result_set($sql);
+		$root_nodes =& $this->_get_result_set($sql);
 
-		return $node_set;
+		return $root_nodes;
 	} 
 
 	/**

@@ -36,14 +36,8 @@ class select_tag extends control_tag
 	{
 		if (array_key_exists('multiple', $this->attributes))
 		{
+		  $this->attributes['multiple'] = 1;		  
 			$this->runtime_component_path = '/core/template/components/form/select_multiple_component';
-
-			if (!is_integer(strpos($this->attributes['name'], '[]')))
-			{
-				error('compiler', 'CONTROLARRAYREQUIRED', array('name' => $this->attributes['name'],
-						'file' => $this->source_file,
-						'line' => $this->starting_line_no));
-			} 
 		} 
 		else
 			$this->runtime_component_path = '/core/template/components/form/select_single_component';

@@ -49,7 +49,7 @@ class form_edit_site_object_action extends form_site_object_action
 
 	function _init_dataspace(&$request)
 	{
-		$object_data =& fetch_requested_object();
+		$object_data =& $this->_load_object_data();
 
 		$data = array();
 		complex_array :: map(array_flip($this->datamap), $object_data, $data);

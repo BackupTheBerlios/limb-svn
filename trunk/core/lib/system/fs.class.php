@@ -33,8 +33,11 @@ class fs
    just like 'mkdir -p'.
   */
   function mkdir($dir, $perm=0777, $parents=true)
-  {
+  {      
     $dir = fs :: clean_path($dir);
+    
+    if(is_dir($dir))
+      return true;
     
     if(!$parents)
     	return fs :: _do_mkdir($dir, $perm);
@@ -53,8 +56,7 @@ class fs
     }
     else
     	$current_dir = array_shift($dir_elements);
-		
-    
+		    
     if(!fs :: _do_mkdir($current_dir, $perm))
     	return false;
           	

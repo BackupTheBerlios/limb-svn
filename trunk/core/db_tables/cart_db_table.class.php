@@ -8,15 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
+require_once(LIMB_DIR  . '/core/lib/db/db_table.class.php');
 
-class navigation_item_db_table extends content_object_db_table
+class cart_db_table extends db_table
 {
   function _define_columns()
   {
   	return array(
-      'url' => '',
-      'new_window' => array('type' => 'numeric'),
+      'id' => array('type' => 'numeric'),
+      'user_id' => array('type' => 'numeric'),
+      'cart_id' => '',
+      'cart_items' => '',
+      'last_activity_time' => array('type' => 'numeric')
     );
   }
 }

@@ -8,17 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
-
-class navigation_item_db_table extends content_object_db_table
+class filters_group extends GroupTest 
 {
-  function _define_columns()
-  {
-  	return array(
-      'url' => '',
-      'new_window' => array('type' => 'numeric'),
-    );
-  }
+	function filters_group() 
+	{
+	  $this->GroupTest('shop tests');
+	  
+ 		TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/shop');
+	}
 }
-
 ?>
