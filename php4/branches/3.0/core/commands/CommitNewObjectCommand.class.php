@@ -5,32 +5,25 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: DAO.class.php 1159 2005-03-14 10:10:35Z pachanga $
+* $Id: CreateSimpleObjectCommand.class.php 1165 2005-03-16 14:28:14Z pachanga $
 *
 ***********************************************************************************/
 
-class RequestedObjectDAO
+class CommitNewObjectCommand
 {
-  function RequestedObjectDAO(){}
+  function CommitNewObjectCommand(){}
 
-  function & fetch()
+  function perform()
   {
     $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-
-    if(!$id = $request->get('id'))
-      return new Dataspace();
-
-    $dao =& $toolkit->createDAO('ObjectsClassNamesDAO');
-    if(!$dataspace = $dao->fetchById($id))
-      return new Dataspace();
+    if(!$object =& $toolkit->getProcessedObject($toolkit))
+      return LIMB_STATUS_ERROR;
 
     $uow =& $toolkit->getUOW();
 
-    if(!$object = $uow->load($dataspace->get('name'), $id))
-      return new Dataspace();
+    $uow->register($object);
 
-    return $object;
+    return LIMB_STATUS_OK;
   }
 }
 

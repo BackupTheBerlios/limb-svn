@@ -11,18 +11,8 @@
 require_once(LIMB_DIR . '/core/commands/DeleteSimpleObjectCommand.class.php');
 require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
-class DeleteSimpleObjectCommandStub extends DeleteSimpleObjectCommand
-{
-  function &_defineObjectHandle()
-  {
-    return new LimbHandle('SimpleObject');
-  }
-}
-
 class DeleteSimpleObjectCommandTest extends LimbTestCase
 {
-  var $cmd;
-
   function DeleteSimpleObjectCommandTest()
   {
     parent :: LimbTestCase('delete simple cms object command test');
@@ -30,8 +20,6 @@ class DeleteSimpleObjectCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->cmd = new DeleteSimpleObjectCommandStub();
-
     Limb :: saveToolkit();
   }
 
@@ -45,6 +33,8 @@ class DeleteSimpleObjectCommandTest extends LimbTestCase
     $object = new SimpleObject();
     $object->set('id', $id = 1001);
 
+    $command = new DeleteSimpleObjectCommand($object);
+
     $toolkit =& Limb :: toolkit();
 
     $uow =& $toolkit->getUOW();
@@ -53,7 +43,7 @@ class DeleteSimpleObjectCommandTest extends LimbTestCase
     $request =& $toolkit->getRequest();
     $request->set('id', $id);
 
-    $this->assertEqual($this->cmd->perform(), LIMB_STATUS_OK);
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $this->assertTrue($uow->isDeleted($object));
   }
@@ -61,6 +51,8 @@ class DeleteSimpleObjectCommandTest extends LimbTestCase
   function testPerformError()
   {
     $object = new SimpleObject();
+
+    $command = new DeleteSimpleObjectCommand($object);
 
     $toolkit =& Limb :: toolkit();
 
@@ -70,7 +62,7 @@ class DeleteSimpleObjectCommandTest extends LimbTestCase
     $request =& $toolkit->getRequest();
     $request->set('id', $id = 1000);
 
-    $this->assertEqual($this->cmd->perform(), LIMB_STATUS_ERROR);
+    $this->assertEqual($command->perform(), LIMB_STATUS_ERROR);
 
     $this->assertFalse($uow->isDeleted($object));
   }

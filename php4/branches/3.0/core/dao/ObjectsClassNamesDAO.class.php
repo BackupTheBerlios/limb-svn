@@ -8,29 +8,17 @@
 * $Id: DAO.class.php 1159 2005-03-14 10:10:35Z pachanga $
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
 
-class RequestedObjectDAO
+class ObjectsClassNamesDAO extends SQLBasedDAO
 {
-  function RequestedObjectDAO(){}
-
-  function & fetch()
+  function _initSQL()
   {
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
+    $sql = new ComplexSelectSQL('SELECT sys_class.name, sys_object.oid as oid %fields% ' .
+                                ' FROM sys_object, sys_class %tables% %left_join% '.
+                                ' WHERE sys_object.class_id = sys_class.id  %where% %order% %group%');
 
-    if(!$id = $request->get('id'))
-      return new Dataspace();
-
-    $dao =& $toolkit->createDAO('ObjectsClassNamesDAO');
-    if(!$dataspace = $dao->fetchById($id))
-      return new Dataspace();
-
-    $uow =& $toolkit->getUOW();
-
-    if(!$object = $uow->load($dataspace->get('name'), $id))
-      return new Dataspace();
-
-    return $object;
+    return $sql;
   }
 }
 

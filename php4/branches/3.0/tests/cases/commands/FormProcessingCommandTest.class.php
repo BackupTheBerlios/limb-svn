@@ -15,15 +15,6 @@ require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/template/components/form/form.inc.php');
 
-class FormProcessingCommandStub extends FormProcessingCommand
-{
-  function _defineRequest2DataspaceMap()
-  {
-    return array('request_field1' => 'dataspace_field1',
-                 'request_field2' => 'dataspace_field2');
-  }
-}
-
 Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Request');
 Mock :: generate('Dataspace');
@@ -72,7 +63,7 @@ class FormProcessingCommandTest extends LimbTestCase
 
   function testMultiFormDisplay()
   {
-    $form_command = new FormProcessingCommandStub($form_id = 'test_form', LIMB_MULTI_FORM);
+    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_MULTI_FORM, array());
 
     $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array($form_id));
 
@@ -86,7 +77,7 @@ class FormProcessingCommandTest extends LimbTestCase
 
   function testSingleFormDisplay()
   {
-    $form_command = new FormProcessingCommandStub($form_id = 'test_form', LIMB_SINGLE_FORM);
+    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_SINGLE_FORM, array());
 
     $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
 
@@ -100,7 +91,10 @@ class FormProcessingCommandTest extends LimbTestCase
 
   function testMultiFormSubmit()
   {
-    $form_command = new FormProcessingCommandStub($form_id = 'test_form', LIMB_MULTI_FORM);
+    $map = array('request_field1' => 'dataspace_field1',
+                 'request_field2' => 'dataspace_field2');
+
+    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_MULTI_FORM, $map);
 
     $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array('test_form'));
 
@@ -118,7 +112,10 @@ class FormProcessingCommandTest extends LimbTestCase
 
   function testSingleFormSubmit()
   {
-    $form_command = new FormProcessingCommandStub($form_id = 'test_form', LIMB_SINGLE_FORM);
+    $map = array('request_field1' => 'dataspace_field1',
+                 'request_field2' => 'dataspace_field2');
+
+    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_SINGLE_FORM, $map);
 
     $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
 

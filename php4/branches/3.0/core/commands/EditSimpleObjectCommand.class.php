@@ -11,6 +11,15 @@
 
 class EditSimpleObjectCommand
 {
+  var $map;
+  var $object_handle;
+
+  function EditSimpleObjectCommand($map, &$object_handle)
+  {
+    $this->map = $map;
+    $this->object_handle =& $object_handle;
+  }
+
   function perform()
   {
     if(!$object =& $this->_findObjectInUnitOfWork())
@@ -23,7 +32,7 @@ class EditSimpleObjectCommand
 
   function &_findObjectInUnitOfWork()
   {
-    $object =& Handle :: resolve($this->_defineObjectHandle());
+    $object =& Handle :: resolve($this->object_handle);
 
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
@@ -36,21 +45,11 @@ class EditSimpleObjectCommand
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
-    foreach($this->_defineDataspace2ObjectMap() as $key => $setter)
+    foreach($this->map as $key => $setter)
     {
       if (($value = $dataspace->get($key)) !== false)
         $object->set($setter, $value);
     }
-  }
-
-  function _defineDataspace2ObjectMap()
-  {
-    return array();
-  }
-
-  function &_defineObjectHandle()
-  {
-    return false;
   }
 }
 

@@ -11,9 +11,18 @@
 
 class CreateSimpleObjectCommand
 {
+  var $map = array();
+  var $object_handle = array();
+
+  function CreateSimpleObjectCommand($map, &$handle)
+  {
+    $this->map = $map;
+    $this->object_handle =& $handle;
+  }
+
   function perform()
   {
-    $object =& Handle :: resolve($this->_defineObjectHandle());
+    $object =& Handle :: resolve($this->object_handle);
 
     $this->_populateObjectUsingDataspace($object);
 
@@ -35,21 +44,11 @@ class CreateSimpleObjectCommand
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
-    foreach($this->_defineDataspace2ObjectMap() as $key => $setter)
+    foreach($this->map as $key => $setter)
     {
       if (($value = $dataspace->get($key)) !== false)
         $object->set($setter, $value);
     }
-  }
-
-  function _defineDataspace2ObjectMap()
-  {
-    return array();
-  }
-
-  function &_defineObjectHandle()
-  {
-    return false;
   }
 }
 

@@ -8,40 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-class InitializeDataspaceFromSimpleObjectCommand
+class InitializeDataspaceFromProcessedObjectCommand
 {
+  var $map;
+  var $object_handle;
+
+  function InitializeDataspaceFromProcessedObjectCommand($map)
+  {
+    $this->map = $map;
+  }
+
   function perform()
   {
-    if (!$object =& $this->_findObjectInUnitOfWork())
+    $toolkit =& Limb :: toolkit();
+    if(!$object =& $toolkit->getProcessedObject())
       return LIMB_STATUS_ERROR;
 
-    $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
-    foreach($this->_defineObject2DataspaceMap() as $getter => $key)
+    foreach($this->map as $getter => $key)
       $dataspace->set($key, $object->get($getter));
 
     return LIMB_STATUS_OK;
-  }
-
-  function &_findObjectInUnitOfWork()
-  {
-    $object =& Handle :: resolve($this->_defineObjectHandle());
-
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-    $uow =& $toolkit->getUOW();
-    return $uow->load($object->__class_name, $request->get('id'));
-  }
-
-  function _defineObject2DataspaceMap()
-  {
-    return array();
-  }
-
-  function &_defineObjectHandle()
-  {
-    return false;
   }
 }
 

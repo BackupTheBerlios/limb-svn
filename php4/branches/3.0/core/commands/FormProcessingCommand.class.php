@@ -18,12 +18,13 @@ class FormProcessingCommand// implements Command
 {
   var $form_id;
   var $is_multi;
-  var $validator;
+  var $map;
 
-  function FormProcessingCommand($form_id, $is_multi = LIMB_SINGLE_FORM)
+  function FormProcessingCommand($form_id, $is_multi = LIMB_SINGLE_FORM, $map)
   {
     $this->form_id = $form_id;
     $this->is_multi = $is_multi;
+    $this->map = $map;
   }
 
   function perform()
@@ -53,14 +54,9 @@ class FormProcessingCommand// implements Command
       return true;
   }
 
-  function _defineRequest2DataspaceMap()
-  {
-    return array();
-  }
-
   function _mergeDataspaceWithRequest(&$dataspace, &$request)
   {
-    ComplexArray :: map($this->_defineRequest2DataspaceMap(),
+    ComplexArray :: map($this->map,
                         $this->_getRequestData($request),
                         $data = array());
 

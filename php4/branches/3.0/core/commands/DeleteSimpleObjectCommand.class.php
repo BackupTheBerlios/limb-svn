@@ -11,6 +11,13 @@
 
 class DeleteSimpleObjectCommand
 {
+  var $object_handle;
+
+  function DeleteSimpleObjectCommand(&$handle)
+  {
+    $this->object_handle =& $handle;
+  }
+
   function perform()
   {
     $toolkit =& Limb :: toolkit();
@@ -26,17 +33,12 @@ class DeleteSimpleObjectCommand
 
   function &_findObjectInUnitOfWork()
   {
-    $object =& Handle :: resolve($this->_defineObjectHandle());
+    $object =& Handle :: resolve($this->object_handle);
 
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
     $uow =& $toolkit->getUOW();
     return $uow->load($object->__class_name, $request->get('id'));
-  }
-
-  function &_defineObjectHandle()
-  {
-    return false;
   }
 }
 

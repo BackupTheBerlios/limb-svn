@@ -22,6 +22,7 @@ class LimbBaseToolkit// implements LimbToolkit
   var $view;
   var $cache;
   var $uow;
+  var $processed_object;
   var $ini_cache = array();
   var $dataspace_registry;
 
@@ -255,6 +256,15 @@ class LimbBaseToolkit// implements LimbToolkit
     return $this->view;
   }
 
+  function setProcessedObject(&$object)
+  {
+    $this->processed_object =& $object;
+  }
+
+  function & getProcessedObject()
+  {
+    return $this->processed_object;
+  }
 }
 
 ?>

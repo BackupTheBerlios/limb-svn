@@ -150,7 +150,13 @@ class LimbBaseToolkitTest extends LimbTestCase
                      'ViewTestVersion');
   }
 
+  function testSetGetProcessedObject()
+  {
+    $object = new Object();
+    $this->toolkit->setProcessedObject($object);
 
+    $this->assertEqual($this->toolkit->getProcessedObject(), $object);
+  }
 }
 
 ?>

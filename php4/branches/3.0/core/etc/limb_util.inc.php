@@ -38,19 +38,16 @@ function addUrlQueryItems($url, $items=array())
 {
   $str_params = '';
 
-  $toolkit =& Limb :: toolkit();
-  $request =& $toolkit->getRequest();
-
-  if (($node_id = $request->get('node_id')) &&  !isset($items['node_id']))
-    $items['node_id'] = $node_id;
-
   if(strpos($url, '?') === false)
     $url .= '?';
+  else
+    $url .= '&';
 
+  $str_params_arr = array();
   foreach($items as $key => $val)
   {
     $url = preg_replace("/&*{$key}=[^&]*/", '', $url);
-    $str_params .= "&$key=$val";
+    $str_params_arr[] = "$key=$val";
   }
 
   $items = explode('#', $url);
@@ -58,7 +55,7 @@ function addUrlQueryItems($url, $items=array())
   $url = $items[0];
   $fragment = isset($items[1]) ? '#' . $items[1] : '';
 
-  return $url . $str_params . $fragment;
+  return $url . implode('&', $str_params_arr) . $fragment;
 }
 
 

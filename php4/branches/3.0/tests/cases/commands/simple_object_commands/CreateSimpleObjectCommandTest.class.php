@@ -11,29 +11,8 @@
 require_once(LIMB_DIR . '/core/commands/CreateSimpleObjectCommand.class.php');
 require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
-class CreateSimpleObjectCommandStub extends CreateSimpleObjectCommand
-{
-  var $object;
-
-  function &_defineObjectHandle()
-  {
-    return $this->object;
-  }
-
-  function _defineDataspace2ObjectMap()
-  {
-    //dataspace => object's setter
-    return array('title' => 'title',
-                 'annotation' => 'annotation',
-                 'content' => 'content');
-  }
-}
-
-
 class CreateSimpleObjectCommandTest extends LimbTestCase
 {
-  var $cmd;
-
   function CreateSimpleObjectCommandTest()
   {
     parent :: LimbTestCase('create simple cms object command test');
@@ -41,8 +20,6 @@ class CreateSimpleObjectCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->cmd = new CreateSimpleObjectCommandStub();
-
     Limb :: saveToolkit();
   }
 
@@ -55,16 +32,21 @@ class CreateSimpleObjectCommandTest extends LimbTestCase
   {
     $object = new SimpleObject();
 
-    $this->cmd->object =& $object;
+    //dataspace field => object's fields
+    $map = array('ds_title' => 'title',
+                 'ds_annotation' => 'annotation',
+                 'ds_content' => 'content');
+
+    $command = new CreateSimpleObjectCommand($map, $object);
 
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
-    $dataspace->set('title', $title = 'title');
-    $dataspace->set('annotation', $annotation = 'annotation');
-    $dataspace->set('content', $content = '');
+    $dataspace->set('ds_title', $title = 'title');
+    $dataspace->set('ds_annotation', $annotation = 'annotation');
+    $dataspace->set('ds_content', $content = '');
 
-    $this->assertEqual($this->cmd->perform(), LIMB_STATUS_OK);
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $uow =& $toolkit->getUOW();
 
@@ -74,7 +56,6 @@ class CreateSimpleObjectCommandTest extends LimbTestCase
     $this->assertEqual($object->get('annotation'), $annotation);
     $this->assertIdentical($object->get('content'), $content);
   }
-
 }
 
 ?>
