@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/content_objects_raw_finder.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('db_table');
 
-Mock :: generatePartial('content_object',
-                        'content_object_fetch_test_version',
-                        array('_do_parent_fetch',
-                              '_do_parent_fetch_count'));
+Mock :: generatePartial('content_objects_raw_finder',
+                        'content_objects_raw_finder_test_version',
+                        array('_do_parent_find',
+                              '_do_parent_count'));
 
 class content_object_fetch_test extends LimbTestCase
 {

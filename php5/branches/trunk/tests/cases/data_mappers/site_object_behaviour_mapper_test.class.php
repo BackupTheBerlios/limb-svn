@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/core/mappers/site_object_behaviour_mapper.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/site_object_behaviour_mapper.class.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 
 Mock :: generatePartial('site_object_behaviour_mapper',

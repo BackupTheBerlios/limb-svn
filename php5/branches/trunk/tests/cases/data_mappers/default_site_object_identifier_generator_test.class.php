@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/default_site_object_identifier_generator.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/default_site_object_identifier_generator.class.php');
 
 Mock :: generate('site_object');
 

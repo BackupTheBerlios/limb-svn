@@ -9,21 +9,22 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_module.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/site_objects_raw_finder.class.php');
+require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
+require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
 
 Mock :: generate('db_module');
 Mock :: generate('LimbToolkit');
 
-Mock :: generatePartial('site_object',
-                        'site_object_fetch_test_version',
-                        array('fetch'));
-
-class site_object_fetch_test extends LimbTestCase
+class site_objects_raw_finder_test extends LimbTestCase
 {
 	var $class_id;
-	var $object;
+	var $finder;
 	var $db;
+	var $root_node_id;
+  var	$behaviour_id;
 
   function setUp()
   {    
@@ -31,27 +32,18 @@ class site_object_fetch_test extends LimbTestCase
 
     $this->_clean_up();
 
-    $this->_init_object();
-    $this->_init_fetch_data($this->object);
-
-    $this->class_id = $this->object->get_class_id();
+  	$this->_insert_sys_class_record();
+  	$this->_insert_sys_behaviour_record();
+    
+  	$this->_insert_sys_site_object_records();
+  	$this->_insert_fake_sys_site_object_records();
+    
+    $this->finder = new site_objects_raw_finder();
   }
 
   function tearDown()
   {
     $this->_clean_up();    
-  }
-
-  function _init_fetch_data($object)
-  {
-    include_once(dirname(__FILE__) . '/site_object_fetch_test_init.php');
-    $test_init = new site_object_fetch_test_init();
-  	$test_init->init($object);
-  }
-
-  function _init_object()
-  {
-  	$this->object = new site_object();
   }
 
   function _clean_up()
@@ -62,10 +54,10 @@ class site_object_fetch_test extends LimbTestCase
   	$this->db->sql_delete('sys_behaviour');
   }
   
-  function test_fetch_required_fields()
+  function test_find_required_fields()
   {
     $sql_params['conditions'][] = ' AND sso.id = 1';
-    $objects_data = $this->object->fetch(array(), $sql_params);
+    $objects_data = $this->finder->find(array(), $sql_params);
     $record = reset($objects_data);
     
     $this->assertEqual($record['identifier'], 'object_1');
@@ -78,20 +70,20 @@ class site_object_fetch_test extends LimbTestCase
     $this->assertEqual($record['locale_id'], 'en');
     $this->assertTrue(array_key_exists('id', $record));
     $this->assertTrue(array_key_exists('node_id', $record));
-    $this->assertTrue(array_key_exists('parent_node_id', $record));
+    $this->assertEqual($record['parent_node_id'], $this->root_node_id);
     $this->assertTrue(array_key_exists('level', $record));
     $this->assertTrue(array_key_exists('priority', $record));
     $this->assertTrue(array_key_exists('children', $record));
     $this->assertEqual($record['class_id'], $this->class_id);
-    $this->assertEqual($record['class_name'], get_class($this->object));
+    $this->assertEqual($record['class_name'], 'site_object');
     $this->assertTrue(array_key_exists('behaviour_id', $record));
-    $this->assertEqual($record['behaviour'], get_class($this->object) . '_behaviour');
+    $this->assertEqual($record['behaviour'], 'site_object_behaviour');
     $this->assertTrue(array_key_exists('icon', $record));
     $this->assertTrue(array_key_exists('sort_order', $record));
     $this->assertTrue(array_key_exists('can_be_parent', $record));
   }
   
-  function test_fetch_sql()
+  function test_find_sql()
   {
     $db_mock = new Mockdb_module($this);
     $toolkit = new MockLimbToolkit($this);
@@ -124,14 +116,14 @@ class site_object_fetch_test extends LimbTestCase
     $db_mock->expectOnce('sql_exec', array($expectation, 10, 5));
     $db_mock->expectOnce('get_array', array('id'));
     
-    $this->object->fetch($params, $sql_params);
+    $this->finder->find($params, $sql_params);
     
     Limb :: popToolkit();
     
     $db_mock->tally();
   }
   
-	function test_fetch_count_sql_with_group()
+	function test_count_sql_with_group()
   {
     $db_mock = new Mockdb_module($this);
     $toolkit = new MockLimbToolkit($this);
@@ -155,14 +147,14 @@ class site_object_fetch_test extends LimbTestCase
     $db_mock->expectOnce('count_selected_rows');
     $db_mock->setReturnValue('count_selected_rows', $result = 10);
     
-    $this->assertEqual($result, $this->object->fetch_count($sql_params));
+    $this->assertEqual($result, $this->finder->count($sql_params));
     
     Limb :: popToolkit();
     
     $db_mock->tally();    
   }  
 
-  function test_fetch_count_sql_no_group()
+  function test_count_sql_no_group()
   {
     $db_mock = new Mockdb_module($this);
     $toolkit = new MockLimbToolkit($this);
@@ -184,17 +176,17 @@ class site_object_fetch_test extends LimbTestCase
     $db_mock->expectNever('count_selected_rows');
     $db_mock->expectOnce('fetch_row');
     $db_mock->setReturnValue('fetch_row', array('count' => 10));
-    
-    $this->assertEqual(10, $this->object->fetch_count($sql_params));
+
+    $this->assertEqual(10, $this->finder->count($sql_params));
     
     Limb :: popToolkit();
     
     $db_mock->tally();    
   }  
 
-  function test_fetch_no_params()
+  function test_find_no_params()
   {
-  	$result = $this->object->fetch();
+  	$result = $this->finder->find();
 
   	for($i = 1; $i <=5; $i++)
   	{
@@ -203,11 +195,11 @@ class site_object_fetch_test extends LimbTestCase
   	}
   }
 
-  function test_fetch_limit_offset()
+  function test_find_limit_offset()
   {
   	$params['limit'] = $limit = 3;
   	$params['offset'] = $limit = 2;
-  	$result = $this->object->fetch($params);
+  	$result = $this->finder->find($params);
 
   	for($i = 3; $i <= 5; $i++)
   	{
@@ -216,12 +208,12 @@ class site_object_fetch_test extends LimbTestCase
   	}
   }
 
-  function test_fetch_limit_offset_order()
+  function test_find_limit_offset_order()
   {
   	$params['limit'] = $limit = 3;
   	$params['offset'] = 2;
   	$params['order'] = array('title' => 'DESC'); 
-  	$result = $this->object->fetch($params);
+  	$result = $this->finder->find($params);
  
   	for($i = 7; $i >=5; $i--)
   	{
@@ -230,11 +222,88 @@ class site_object_fetch_test extends LimbTestCase
   	}
   }
   
-	function test_fetch_count()
+	function test_count()
 	{
-  	$result = $this->object->fetch_count();
+  	$result = $this->finder->count();
   	$this->assertEqual($result, 10);
 	}
+  
+  function _insert_sys_class_record()
+  {
+  	$db_table = db_table_factory :: create('sys_class');
+    $db_table->insert(array('name' => 'site_object'));
+    
+    $this->class_id = $db_table->get_last_insert_id(); 
+  }
+
+  function _insert_sys_behaviour_record()
+  {
+  	$db_table = db_table_factory :: create('sys_behaviour');
+    $db_table->insert(array('name' => 'site_object_behaviour'));
+    
+    $this->behaviour_id = $db_table->get_last_insert_id(); 
+  }
+
+  function _insert_sys_site_object_records()
+  {
+    $tree = new materialized_path_tree();
+
+		$values['identifier'] = 'root';
+		$this->root_node_id = $tree->create_root_node($values, false, true);
+
+  	$data = array();
+  	for($i = 1; $i <= 5; $i++)
+  	{
+  		$version = mt_rand(1, 3);
+
+  		$this->db->sql_insert('sys_site_object',
+  			array(
+  				'id' => $i,
+  				'class_id' => $this->class_id,
+  				'behaviour_id' => $this->behaviour_id,
+  				'current_version' => $version,
+  				'identifier' => 'object_' . $i,
+  				'title' => 'object_' . $i . '_title',
+  				'status' => 0,
+  				'locale_id' => 'en',
+  			)
+  		);
+
+			$values['identifier'] = 'object_' . $i;
+			$values['object_id'] = $i;
+			$tree->create_sub_node($this->root_node_id, $values);
+  	}
+  }
+
+  function _insert_fake_sys_site_object_records()
+  {
+  	$class_db_table = db_table_factory :: create('sys_class');
+  	$class_db_table->insert(array('id' => 1001, 'class_name' => 'fake_class'));
+
+    $tree = new materialized_path_tree();
+
+  	$db_table =& db_table_factory :: create('sys_site_object');
+
+  	$data = array();
+  	for($i = 6; $i <= 10 ; $i++)
+  	{
+  		$this->db->sql_insert('sys_site_object',
+  			array(
+  				'id' => $i,
+  				'class_id' => 1001,
+  				'behaviour_id' => $this->behaviour_id,
+  				'identifier' => 'object_' . $i,
+  				'title' => 'object_' . $i . '_title',
+  				'status' => 0,
+  				'locale_id' => 'en',
+  			)
+  		);
+
+			$values['identifier'] = 'object_' . $i;
+			$values['object_id'] = $i;
+			$tree->create_sub_node($this->root_node_id, $values);
+  	}
+  }
 }
 
 ?>

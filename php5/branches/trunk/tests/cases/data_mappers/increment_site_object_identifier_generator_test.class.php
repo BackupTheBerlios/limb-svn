@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
-require_once(LIMB_DIR . '/class/core/site_objects/increment_site_object_identifier_generator.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/increment_site_object_identifier_generator.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
