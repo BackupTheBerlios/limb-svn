@@ -303,7 +303,6 @@ class debug
     include_once(LIMB_DIR . '/core/lib/mail/mail.inc.php');
 
     $title = '';
-    $headers = array();
     $description = debug :: _parse_text_debug_info($debug_info);
     $verbosity_level = $debug_info['level'];
 
@@ -311,7 +310,6 @@ class debug
     {
       case DEBUG_LEVEL_NOTICE:
         $title .= ' debug notice';
-        $headers['X-Priority'] = '0 (Low)';
       break;
 
       case DEBUG_LEVEL_WARNING:
@@ -320,7 +318,6 @@ class debug
 
       case DEBUG_LEVEL_ERROR:
         $title .= ' debug error';
-        $headers['X-Priority'] = '1 (High)';
       break;
 
       case DEBUG_TIMING_POINT:
@@ -343,9 +340,9 @@ class debug
               . "description:\n" . $description;
 
     if(sys :: exec_mode() == 'cli')
-      send_plain_mail(array(DEVELOPER_EMAIL), 'cli' , $title, $message, $headers);
+      send_plain_mail(array(DEVELOPER_EMAIL), 'cli' , $title, $message);
     else
-      send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message, $headers);
+      send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message);
   }
 
   /*

@@ -65,6 +65,8 @@ function send_html_mail($recipients, $sender, $subject, $html, $text = null, $ch
 
 function process_mail_recipients($recipients)
 {
+  if(!is_array($recipients))
+     $recipients = array($recipients);
   $result = array();
   foreach($recipients as $recipient)
   {
