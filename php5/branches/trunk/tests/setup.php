@@ -29,7 +29,7 @@ if(!defined('DEFAULT_CONTENT_LOCALE_ID'))
 require_once(LIMB_DIR . '/setup.php');
 require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');//don't move this line!!!
 
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.inc.php');
 
 register_file_resolver('ini',     LIMB_DIR . '/tests/lib/tests_ini_file_resolver');
 register_file_resolver('action',  LIMB_DIR . '/tests/lib/tests_action_file_resolver');

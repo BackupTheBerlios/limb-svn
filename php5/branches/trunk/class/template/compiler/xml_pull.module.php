@@ -174,7 +174,7 @@ class xml_pull
 * Base class for representing SAX XML events
 * 
 * @abstract 
-* @package LIMB_TEMPLATE
+* @package WACT_TEMPLATE
 */
 class xml_event
 {
@@ -223,7 +223,7 @@ class xml_event
 * Represents an XML start element
 * 
 * @access public 
-* @package LIMB_TEMPLATE
+* @package WACT_TEMPLATE
 */
 class xml_open extends xml_event
 {
@@ -293,7 +293,7 @@ class xml_open extends xml_event
 * Represents an XML end element
 * 
 * @access public 
-* @package LIMB_TEMPLATE
+* @package WACT_TEMPLATE
 */
 class xml_close extends xml_event
 {
@@ -331,7 +331,7 @@ class xml_close extends xml_event
 * Represents data inside an element
 * 
 * @access public 
-* @package LIMB_TEMPLATE
+* @package WACT_TEMPLATE
 */
 class xml_data extends xml_event
 {
@@ -369,7 +369,7 @@ class xml_data extends xml_event
 * For XML processing instructions
 * 
 * @access public 
-* @package LIMB_TEMPLATE
+* @package WACT_TEMPLATE
 */
 class xml_pi extends xml_event
 {
@@ -427,7 +427,7 @@ class xml_pi extends xml_event
 * Note: HTMLSax only
 * 
 * @access public 
-* @package LIMB_TEMPLATE
+* @package WACT_TEMPLATE
 */
 class xml_escape extends xml_event
 {
@@ -466,7 +466,7 @@ class xml_escape extends xml_event
 * Note: HTMLSax only
 * 
 * @access public 
-* @package LIMB_TEMPLATE
+* @package WACT_TEMPLATE
 */
 class xml_jasp extends xml_event
 {

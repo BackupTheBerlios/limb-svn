@@ -8,65 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'class/core/dataspace.class.php');
 
-/** --------------------------------------------------------------------------------
 // This is a bit problematic, since not every component is a dataspace.
 // every template is a dataspace, however.
 // Bit of a refused bequest here.
-
-* Base class for runtime components.<br />
-* Note that components that output XML tags should not inherit directly from
-* component but rather the child tag_component<br />
-* Note that in the comments for this class, the terms parent and child
-* refer to the given components relative position in a template's
-* hierarchy, not to the PHP class hierarchy
-* @access public 
-* @abstract 
-* @package LIMB_COMPONENT
-*/
 class component extends dataspace
 {
 	/**
 	* Array of child components
-	* 
-	* @var array of component objects
-	* @access private 
 	*/
-	var $children = array();
+	protected $children = array();
 	/**
 	* parent component - "parent" refers to nesting in template
 	* not to class hierarchy.
-	* 
-	* @var object component object
-	* @access private 
 	*/
-	var $parent;
+	protected $parent;
 	/**
 	* root component in template
-	* 
-	* @var object component object
-	* @access private 
 	*/
-	var $root;
+	protected $root;
 	/**
 	* ID of component, corresponding to it's ID attribute in the template
-	* 
-	* @var string 
-	* @access private 
 	*/
-	var $id;
+	protected $id;
 
 	/**
 	* Returns the ID of the component, as defined in the template tags
 	* ID attribute
-	* 
-	* @return string 
-	* @access public 
 	*/
-	function get_server_id()
+	public function get_server_id()
 	{
 		return $this->id;
 	} 
@@ -77,18 +48,14 @@ class component extends dataspace
 	* many components, as it calls the find_child method of children
 	* based on alphanumeric order: strcasecmp(). Attempt to call it via
 	* the nearest known component to the required child.
-	* 
-	* @param string $ id
-	* @return mixed refernce to child component object or false if not found
-	* @access public 
 	*/
-	function &find_child($server_id)
+	public function find_child($server_id)
 	{
 		foreach(array_keys($this->children) as $key)
 		{
 			if (strcasecmp($key, $server_id))
 			{
-				$result = &$this->children[$key]->find_child($server_id);
+				$result = $this->children[$key]->find_child($server_id);
 				if ($result)
 					return $result;
 			} 
@@ -99,14 +66,10 @@ class component extends dataspace
 	} 
 
 	/**
-	* Returns the first child component matching the supplied LIMB_TEMPLATE
-	* component PHP class name<br />
-	* 
-	* @param string $ component class name
-	* @return mixed reference to child component object or false if not found
-	* @access public 
+	* Returns the first child component matching the supplied WACT_TEMPLATE
+	* component PHP class name
 	*/
-	function &find_child_by_class($class)
+	public function find_child_by_class($class)
 	{
 		foreach(array_keys($this->children) as $key)
 		{
@@ -124,17 +87,14 @@ class component extends dataspace
 
 	/**
 	* Recursively searches through parents of this component searching
-	* for a given LIMB_TEMPLATE component PHP class name
-	* 
-	* @param string $ component class name
-	* @return mixed reference to parent component object or false if not found
-	* @access public 
+	* for a given WACT_TEMPLATE component PHP class name
 	*/
-	function &find_parent_by_class($class)
+	public function find_parent_by_class($class)
 	{
-		$parent = &$this->parent;
+		$parent = $this->parent;
+		
 		while ($parent && !is_a($parent, $class))
-		$parent = &$parent->parent;
+		  $parent = $parent->parent;
 
 		return $parent;
 	} 
@@ -142,13 +102,8 @@ class component extends dataspace
 	/**
 	* Adds a reference to a child component to this component, using it's
 	* ID attribute as the child array key
-	* 
-	* @param object $ child component
-	* @param string $ value for ID attribute
-	* @return void 
-	* @access public 
 	*/
-	function add_child(&$child, $server_id = null)
+	public function add_child($child, $server_id = null)
 	{
     if (is_null($server_id)) 
     {
@@ -157,9 +112,9 @@ class component extends dataspace
 			$genid++;
     }
 
-		$child->parent = &$this;
+		$child->parent = $this;
 		$child->id = $server_id;
-		$this->children[$server_id] = &$child;
+		$this->children[$server_id] = $child;
 	} 
 } 
 

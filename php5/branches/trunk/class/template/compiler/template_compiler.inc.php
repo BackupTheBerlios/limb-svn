@@ -25,7 +25,7 @@ require_once(LIMB_DIR . 'class/template/compiler/source_file_parser.class.php');
 require_once(LIMB_DIR . 'class/template/compiler/codewriter.class.php');
 require_once(LIMB_DIR . 'class/template/compiler/variable_reference.class.php');
 
-require_once(LIMB_DIR . 'class/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . 'class/template/fileschemes/compiler_support.inc.php');
 require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 
 /**

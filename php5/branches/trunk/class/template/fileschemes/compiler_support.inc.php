@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.php'); 
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.inc.php'); 
 
 /**
 * Determines the full path to a source template file.

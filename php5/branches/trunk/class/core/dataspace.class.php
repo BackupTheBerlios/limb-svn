@@ -15,7 +15,7 @@ require_once(LIMB_DIR . 'class/lib/util/complex_array.class.php');
 */
 class dataspace
 {
-	private $vars = array();
+	public $vars = array();//public is done for speed in compiled template
 	
 	function __construct($vars = null)
 	{

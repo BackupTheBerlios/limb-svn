@@ -10,15 +10,6 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/dataspace.class.php');
 
-class NullClass{} 
-
-class Filter
-{
-	function do_filter(){}
-}
-
-Mock::generate('Filter', 'MockFilter');
-
 SimpleTestOptions::ignore('dataspace_test');
 
 class dataspace_test extends LimbTestCase
@@ -56,8 +47,7 @@ class dataspace_test extends LimbTestCase
 	
 	function test_get_set_object()
 	{
-		$foo = new NullClass();
-		$foo->colors = array('red', 'blue', 'green');
+		$foo = array('red', 'blue', 'green');
 		$this->dataspace->set('foo', $foo);
 		$this->assertIdentical($this->dataspace->get('foo'), $foo);
 	} 
@@ -128,19 +118,8 @@ class dataspace_test extends LimbTestCase
 		$expected = $this->dataspace->export();
 		$this->assertIdentical($expected['foo'], 'kung');
 	} 
-	function test_filter()
-	{
-		$array = array('color' => 'red');
-		$filter =& new MockFilter($this);
-		$filter->expectArguments('do_filter', array($array));
-		$filter->expectCallCount('do_filter', 1);
-		$this->dataspace->import($array);
-		$this->dataspace->register_filter($filter);
-		$this->dataspace->prepare();
-		$filter->tally();
-	}
 	
-	function testunset()
+	function test_unset()
 	{
 		$array = array('rainbow' => array('color' => 'red'));
 		$this->dataspace->import($array);

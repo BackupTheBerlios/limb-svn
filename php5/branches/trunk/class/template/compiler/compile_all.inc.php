@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/template/compiler/template_compiler.inc.php');
 require_once(LIMB_DIR . 'class/template/compiler/var_file_compiler.inc.php');
-require_once(LIMB_DIR . 'class/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . 'class/template/fileschemes/compiler_support.inc.php');
 
 /**
 * Invokes compiling of all templates below the directory where the function

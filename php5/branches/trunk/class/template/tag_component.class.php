@@ -8,32 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-
 /**
 * Base class for runtime components that output XML tags
-* 
-* @access public 
-* @abstract 
-* @package LIMB_COMPONENT
 */
 class tag_component extends component
 {
 	/**
 	* Array of XML attributes
-	* 
-	* @var array 
-	* @access private 
 	*/
-	var $attributes = array();
+	protected $attributes = array();
 
 	/**
 	* Returns the value of the ID attribute
-	* 
-	* @param string $ component class name
-	* @return string 
-	* @access public 
 	*/
-	function get_client_id()
+	public function get_client_id()
 	{
 		if (isset($this->attributes['id']))
 			return $this->attributes['id'];
@@ -41,32 +29,22 @@ class tag_component extends component
 
 	/**
 	* Sets an attribute
-	* 
-	* @param string $ name of attribute
-	* @param string $ value of attribute
-	* @return void 
-	* @access public 
 	*/
-	function set_attribute($attrib, $value)
+	public function set_attribute($attrib, $value)
 	{
 		$this->attributes[$attrib] = $value;
 	} 
 
 	/**
 	* Returns the value of an attribute, given it's name
-	* 
-	* @param string $ name of attribute
-	* @return string value of attribute
-	* @access public 
 	*/
-	function get_attribute($attrib)
+	public function get_attribute($attrib)
 	{
 		if (isset($this->attributes[$attrib]))
 			return $this->attributes[$attrib];
 	} 
 
-
-	function unset_attribute($attrib)
+	public function unset_attribute($attrib)
 	{
 		if (isset($this->attributes[$attrib]))
 			unset($this->attributes[$attrib]);
@@ -74,12 +52,8 @@ class tag_component extends component
 
 	/**
 	* Check to see whether a named attribute exists
-	* 
-	* @param string $ name of attribute
-	* @return boolean 
-	* @access public 
 	*/
-	function has_attribute($attrib)
+	public function has_attribute($attrib)
 	{
 		return array_key_exists($attrib, $this->attributes);
 	} 
@@ -88,11 +62,8 @@ class tag_component extends component
 	* Writes the contents of the attributes to the screen, using
 	* htmlspecialchars to convert entities in values. Called by
 	* a compiled template
-	* 
-	* @return void 
-	* @access public 
 	*/
-	function render_attributes()
+	public function render_attributes()
 	{
 		foreach ($this->attributes as $name => $value)
 		{

@@ -14,8 +14,8 @@ define('TMPL_INCLUDE', 'include');
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/template/component.class.php');
-require_once(LIMB_DIR . 'class/template/fileschemes/simpleroot/compiler_support.inc.php');
-require_once(LIMB_DIR . 'class/template/fileschemes/simpleroot/runtime_support.inc.php');
+require_once(LIMB_DIR . 'class/template/fileschemes/compiler_support.inc.php');
+require_once(LIMB_DIR . 'class/template/fileschemes/runtime_support.inc.php');
 
 /**
 * Instantiate global variable $template_render and $template_construct as arrays

@@ -19,7 +19,7 @@ class array_dataset
 	
 	private $counter = 0;
 	
-	function array_dataset($array = null)
+	function __construct($array = null)
 	{
 		if (is_array($array))
 		{
@@ -60,7 +60,6 @@ class array_dataset
 		if (is_array($record))
 		{
 			$this->record = $record;
-			$this->prepare();
 			return true;
 		} 
 		else

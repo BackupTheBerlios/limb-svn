@@ -10,16 +10,12 @@
 ***********************************************************************************/ 
 class empty_template
 {
-	function empty_template()
-	{
-	} 
-
-	function &get_child($server_id)
+	public function get_child($server_id)
 	{
 		return null;
 	} 
 
-	function display()
+	public function display()
 	{
 		debug :: write_error('template is null', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	} 
