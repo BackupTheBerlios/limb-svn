@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 require_once(LIMB_DIR . 'core/model/sys_param.class.php');
 
-class update_action extends form_action
+class update_param_common_action extends form_action
 {
 	var $definition = array(
 		'params_type' => array(
@@ -22,7 +22,7 @@ class update_action extends form_action
 		),
 	);
 	
-	function update_action($name='site_param_form',$merge_definition=array())
+	function update_param_common_action($name='site_param_form',$merge_definition=array())
 	{
 		$this->definition = complex_array :: array_merge($this->definition, $merge_definition);
 		

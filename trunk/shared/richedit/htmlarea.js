@@ -28,6 +28,13 @@ function HTMLArea(textarea, config)
 		this.plugins = {};
 		this._timerToolbar = null;
 		this._mdoc = document; // cache the document, we need it in plugins
+
+		if(typeof(window.arr_richedits) == 'undefined')
+		{
+			window.arr_richedits = new Array();
+		}
+		
+		window.arr_richedits[window.arr_richedits.length] = this;
 	}
 };
 
@@ -624,9 +631,12 @@ HTMLArea.prototype.generate = function ()
 		// update original textarea.
 		textarea.form.onsubmit = function()
 	 	{
-			value = editor.getHTML();
-			re = new RegExp('http://' + location.host, 'g');
-			editor._textArea.value = value.replace(re, '');
+			for(var i=0; i< window.arr_richedits.length; i++)
+			{
+				value = window.arr_richedits[i].getHTML();
+				re = new RegExp('http://' + location.host, 'g');
+				window.arr_richedits[i]._textArea.value = value.replace(re, '');
+			}
 		};
 	}
 
@@ -777,7 +787,7 @@ HTMLArea.prototype.onsize = function()
 			}
 		}catch(ex){}
 	}
-	
+
 
 
 	// the editor including the toolbar now have the same size as the
