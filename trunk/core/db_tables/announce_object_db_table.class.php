@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: document_db_table.class.php 36 2004-02-29 18:57:15Z server $
+* $Id: announce_object_db_table.class.php 239 2004-02-29 19:00:20Z server $
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
 
-class document_db_table extends content_object_db_table
+class announce_object_db_table extends content_object_db_table
 {
-  function document_db_table()
+  function announce_object_db_table()
   {
     parent :: content_object_db_table();
   }
@@ -20,8 +20,11 @@ class document_db_table extends content_object_db_table
   function _define_columns()
   {
   	return array(
-      'content' => '',
+      'image_id' => array('type' => 'numeric'),
       'annotation' => '',
+      'url' => '',
+      'start_date' => array('type' => 'date'),
+      'finish_date' => array('type' => 'date'),
     );
   }
 }

@@ -108,7 +108,7 @@ class test_project_db_tables extends UnitTestCase
 				break;
 				
 				case 'numeric':
-					$this->assertWantedPattern('/int|double|dec/', $db_column['Type'], $status_string . 'numeric');
+					$this->assertWantedPattern('/int|double|dec|float/', $db_column['Type'], $status_string . 'numeric');
 				break;
 				
 				case 'date':

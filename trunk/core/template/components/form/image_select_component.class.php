@@ -26,8 +26,8 @@ class image_select_component extends input_form_element
 	}
 	
 	function render_image_select()
-	{
-  	$id = $this->get_attribute('id');
+	{ 
+		$id = $this->get_attribute('id'); 	  	
   	$md5id = substr(md5($id), 0, 5);
   	  	
   	echo "<img id='{$md5id}_img' src='/shared/images/1x1.gif'/>
@@ -49,11 +49,19 @@ class image_select_component extends input_form_element
 	      {
 	      	return image_select_{$md5id}.get_image();
 	      }
+	      
+	      function image_reset_{$md5id}()
+	      {
+	      	image_select_{$md5id}.id_container.value = 0;
+	      	init_image_select_{$md5id}();
+	      }
 	     
 	      add_event(window, 'load', init_image_select_{$md5id});
 	    </script>";
 	    
 	  echo "<input class='button' type='button' onclick='PopupURL(null, \"/root/image_select?properties=0\", image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='Select image'>";
+	  echo '&nbsp;';
+	  echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='Reset'>";
 	}
 	
 	function get_value()

@@ -1,0 +1,32 @@
+<fetch:SUB_BRANCH target='announcements' >
+	<core:PARAMETER name='data_source_path' value='last_objects_data_source' >
+	<core:PARAMETER name='loader_class_name' value='announce_object' >
+	<core:PARAMETER name='fetch_method' value='fetch_valid_period' >
+	<core:PARAMETER name='limit' value='5'>
+</fetch:SUB_BRANCH>
+
+<list:LIST id='announcements'>
+<table width=100% border=0 cellspacing=0 cellpadding=0 class=com1>
+<tr class=com5>
+	<td class=btitle1><img src='/design/main/images/titles/ad.gif'></td>
+</tr>
+<tr>
+	<td style='padding:5px'>
+		<table width=100% border=0 cellspacing=0 cellpadding=5>
+		<col span=2 valign=top>	
+			<list:ITEM>
+			<tr>
+				<td><core:OPTIONAL for='image_id'><img src='/root?node_id={$image_id}' align='left' vspace='5' hspace='5'></core:OPTIONAL>
+				<core:OPTIONAL for='url'><a href='{$url}'></core:OPTIONAL>{$annotation}<core:OPTIONAL for='url'></a></core:OPTIONAL></td>
+			</tr>
+			<tr>
+				<td>
+				<core:INCLUDE file="/jip_actions/simple.html">
+				</td>
+			</tr>
+			</list:ITEM>
+		</table>
+	</td>
+</tr>
+</table>
+</list:LIST>

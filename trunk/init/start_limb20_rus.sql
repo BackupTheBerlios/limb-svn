@@ -1,49 +1,9 @@
 /* 
 SQLyog v3.63
-Host - localhost : Database - alex-m
+Host - localhost : Database - ptpa
 **************************************************************
 Server version 4.0.12-nt
 */
-
-/*
-Table struture for document
-*/
-
-drop table if exists `document`;
-CREATE TABLE `document` (
-  `id` int(11) NOT NULL auto_increment,
-  `version` int(11) NOT NULL default '0',
-  `object_id` int(11) NOT NULL default '0',
-  `content` text NOT NULL,
-  `title` varchar(255) NOT NULL default '',
-  `identifier` varchar(50) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `vo` (`version`,`object_id`)
-) TYPE=InnoDB;
-
-
-/*
-Table struture for event_object
-*/
-
-drop table if exists `event_object`;
-CREATE TABLE `event_object` (
-  `id` int(11) NOT NULL auto_increment,
-  `object_id` int(11) NOT NULL default '0',
-  `version` int(11) NOT NULL default '0',
-  `content` text,
-  `start_date` date default NULL,
-  `title` varchar(255) default NULL,
-  `finish_date` date NOT NULL default '0000-00-00',
-  `annotation` varchar(255) default NULL,
-  `identifier` varchar(50) NOT NULL default '',
-  `event_date` date NOT NULL default '0000-00-00',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ov` (`object_id`,`version`),
-  UNIQUE KEY `osfv` (`object_id`,`start_date`,`finish_date`,`version`),
-  UNIQUE KEY `start_date` (`start_date`,`finish_date`,`object_id`,`version`)
-) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
-
 
 /*
 Table struture for file_object
@@ -136,7 +96,7 @@ CREATE TABLE `message` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for alex-m.message
+Table data for ptpa.message
 */
 
 INSERT INTO `message` VALUES (1,1,16,'Message',NULL,'messages');
@@ -160,7 +120,7 @@ CREATE TABLE `navigation_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for alex-m.navigation_item
+Table data for ptpa.navigation_item
 */
 
 INSERT INTO `navigation_item` VALUES (1,1,15,'Навигация','','navigation');
@@ -183,29 +143,6 @@ INSERT INTO `navigation_item` VALUES (17,1,48,'Изображения','/root/images_folder
 INSERT INTO `navigation_item` VALUES (18,1,49,'Меню пользователя','/root','main');
 
 /*
-Table struture for period_news_object
-*/
-
-drop table if exists `period_news_object`;
-CREATE TABLE `period_news_object` (
-  `id` int(11) NOT NULL auto_increment,
-  `object_id` int(11) NOT NULL default '0',
-  `version` int(11) NOT NULL default '0',
-  `content` text,
-  `start_date` date default NULL,
-  `title` varchar(255) default NULL,
-  `finish_date` date default NULL,
-  `annotation` varchar(255) default NULL,
-  `identifier` varchar(50) NOT NULL default '',
-  `news_date` date default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ov` (`object_id`,`version`),
-  UNIQUE KEY `osfv` (`object_id`,`start_date`,`finish_date`,`version`),
-  UNIQUE KEY `start_date` (`start_date`,`finish_date`,`object_id`,`version`)
-) TYPE=InnoDB COMMENT='InnoDB free: 1029120 kB';
-
-
-/*
 Table struture for sys_action_access
 */
 
@@ -223,7 +160,7 @@ CREATE TABLE `sys_action_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for alex-m.sys_action_access
+Table data for ptpa.sys_action_access
 */
 
 INSERT INTO `sys_action_access` VALUES (216,17,'display',27,0);
@@ -262,9 +199,9 @@ INSERT INTO `sys_action_access` VALUES (268,7,'edit',28,0);
 INSERT INTO `sys_action_access` VALUES (269,7,'set_membership',28,0);
 INSERT INTO `sys_action_access` VALUES (270,7,'change_password',28,0);
 INSERT INTO `sys_action_access` VALUES (271,7,'delete',28,0);
-INSERT INTO `sys_action_access` VALUES (276,10,'login',27,0);
+INSERT INTO `sys_action_access` VALUES (276,10,'display',27,0);
 INSERT INTO `sys_action_access` VALUES (277,10,'logout',27,0);
-INSERT INTO `sys_action_access` VALUES (278,10,'login',28,0);
+INSERT INTO `sys_action_access` VALUES (278,10,'display',28,0);
 INSERT INTO `sys_action_access` VALUES (279,10,'logout',28,0);
 INSERT INTO `sys_action_access` VALUES (280,10,'edit',28,0);
 INSERT INTO `sys_action_access` VALUES (308,3,'display',27,0);
@@ -314,7 +251,7 @@ CREATE TABLE `sys_class` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for alex-m.sys_class
+Table data for ptpa.sys_class
 */
 
 INSERT INTO `sys_class` VALUES (1,'main_page','/shared/images/folder.gif',0);
@@ -337,7 +274,8 @@ INSERT INTO `sys_class` VALUES (17,'files_folder','/shared/images/folder.gif',0)
 INSERT INTO `sys_class` VALUES (18,'site_object','/shared/images/generic.gif',1);
 INSERT INTO `sys_class` VALUES (19,'file_object','',1);
 INSERT INTO `sys_class` VALUES (20,'image_object','',1);
-INSERT INTO `sys_class` VALUES (21,'period_news_object','',2);
+INSERT INTO `sys_class` VALUES (21,'image_select','',0);
+INSERT INTO `sys_class` VALUES (22,'file_select','',0);
 
 /*
 Table struture for sys_full_text_index
@@ -372,7 +310,7 @@ CREATE TABLE `sys_group_object_access_template` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for alex-m.sys_group_object_access_template
+Table data for ptpa.sys_group_object_access_template
 */
 
 INSERT INTO `sys_group_object_access_template` VALUES (2,6,'create_user');
@@ -394,7 +332,7 @@ CREATE TABLE `sys_group_object_access_template_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for alex-m.sys_group_object_access_template_item
+Table data for ptpa.sys_group_object_access_template_item
 */
 
 INSERT INTO `sys_group_object_access_template_item` VALUES (3,2,27,1,0);
@@ -447,7 +385,7 @@ CREATE TABLE `sys_object_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for alex-m.sys_object_access
+Table data for ptpa.sys_object_access
 */
 
 INSERT INTO `sys_object_access` VALUES (1,1,9,1,1,0);
@@ -544,6 +482,10 @@ INSERT INTO `sys_object_access` VALUES (127,48,27,1,0,0);
 INSERT INTO `sys_object_access` VALUES (128,48,28,1,1,0);
 INSERT INTO `sys_object_access` VALUES (129,49,27,1,0,0);
 INSERT INTO `sys_object_access` VALUES (130,49,28,1,1,0);
+INSERT INTO `sys_object_access` VALUES (131,50,27,1,0,0);
+INSERT INTO `sys_object_access` VALUES (132,50,28,1,1,0);
+INSERT INTO `sys_object_access` VALUES (133,51,27,1,0,0);
+INSERT INTO `sys_object_access` VALUES (134,51,28,1,1,0);
 
 /*
 Table struture for sys_object_version
@@ -566,7 +508,7 @@ CREATE TABLE `sys_object_version` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for alex-m.sys_object_version
+Table data for ptpa.sys_object_version
 */
 
 INSERT INTO `sys_object_version` VALUES (1,7,0,1076755675,1076755675,1);
@@ -629,15 +571,16 @@ CREATE TABLE `sys_session` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for alex-m.sys_session
+Table data for ptpa.sys_session
 */
 
 INSERT INTO `sys_session` VALUES ('0311a416fb1fda371fe7ccf2d7482d82','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078403421,0);
 INSERT INTO `sys_session` VALUES ('0db63b915f4ec4f4f03bb3eedc82fa54','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078827265,0);
 INSERT INTO `sys_session` VALUES ('1f9fdb87882d9d7a300f3963c1be1e10','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078926706,0);
 INSERT INTO `sys_session` VALUES ('509c21f6f9d832a93e1eaa3becbf583e','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}}logged_in_user_data|a:9:{s:12:\"is_logged_in\";b:1;s:2:\"id\";s:2:\"25\";s:7:\"node_id\";s:1:\"7\";s:5:\"login\";s:5:\"admin\";s:5:\"email\";s:15:\"mike@office.bit\";s:4:\"name\";s:5:\"admin\";s:8:\"lastname\";s:5:\"super\";s:8:\"password\";s:32:\"66d4aaa5ea177ac32c69946de3731ec0\";s:6:\"groups\";a:1:{i:28;s:6:\"admins\";}}strings|s:0:\"\";',1078393927,25);
-INSERT INTO `sys_session` VALUES ('78b10830afe2d15ec915834de79ca8fe','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1079602661,-1);
-INSERT INTO `sys_session` VALUES ('e08eb344e72d835ee55bbc49d9d49234','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:0:{}strings|s:0:\"\";',1079185449,0);
+INSERT INTO `sys_session` VALUES ('5b39094a61ae3692e64d8a6508b2a567','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078993482,-1);
+INSERT INTO `sys_session` VALUES ('68f07cf759793e95ffd08eaa994f11fb','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1079345032,-1);
+INSERT INTO `sys_session` VALUES ('8c317de631c7deaf3a1de2d54583b028','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:64;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:9:{s:12:\"is_logged_in\";b:1;s:2:\"id\";s:2:\"25\";s:7:\"node_id\";s:1:\"7\";s:5:\"login\";s:5:\"admin\";s:5:\"email\";s:15:\"mike@office.bit\";s:4:\"name\";s:5:\"admin\";s:8:\"lastname\";s:5:\"super\";s:8:\"password\";s:32:\"66d4aaa5ea177ac32c69946de3731ec0\";s:6:\"groups\";a:1:{i:28;s:6:\"admins\";}}strings|s:0:\"\";',1079691620,25);
 INSERT INTO `sys_session` VALUES ('e1b27d0011d1b33418268cb2160d92f5','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078474017,0);
 INSERT INTO `sys_session` VALUES ('fc724b23a69ffdedc6427e1607ddbf44','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078480397,0);
 
@@ -666,7 +609,7 @@ CREATE TABLE `sys_site_object` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for alex-m.sys_site_object
+Table data for ptpa.sys_site_object
 */
 
 INSERT INTO `sys_site_object` VALUES (1,1,1,1076755675,0,1076755675,0,'ru','Главная','root');
@@ -716,6 +659,8 @@ INSERT INTO `sys_site_object` VALUES (46,14,1,1076772578,0,1076772578,25,'ru','С
 INSERT INTO `sys_site_object` VALUES (47,14,1,1076772601,0,1076772601,25,'ru','Файлы','files');
 INSERT INTO `sys_site_object` VALUES (48,14,1,1076772623,0,1076772623,25,'ru','Изображения','images');
 INSERT INTO `sys_site_object` VALUES (49,14,1,1076772668,0,1076772668,25,'ru','Меню пользователя','main');
+INSERT INTO `sys_site_object` VALUES (50,21,1,1079691597,0,1079691597,25,'ru','Выбор изображения','image_select');
+INSERT INTO `sys_site_object` VALUES (51,22,1,1079691620,0,1079691620,25,'ru','Выбор файла','file_select');
 
 /*
 Table struture for sys_site_object_tree
@@ -744,10 +689,10 @@ CREATE TABLE `sys_site_object_tree` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for alex-m.sys_site_object_tree
+Table data for ptpa.sys_site_object_tree
 */
 
-INSERT INTO `sys_site_object_tree` VALUES (1,1,1,62,0,1,1,'root',19);
+INSERT INTO `sys_site_object_tree` VALUES (1,1,1,66,0,1,1,'root',19);
 INSERT INTO `sys_site_object_tree` VALUES (2,1,16,23,1,5,2,'admin',20);
 INSERT INTO `sys_site_object_tree` VALUES (3,1,19,20,2,2,3,'site_structure',21);
 INSERT INTO `sys_site_object_tree` VALUES (4,1,17,18,2,1,3,'classes',22);
@@ -778,6 +723,8 @@ INSERT INTO `sys_site_object_tree` VALUES (28,1,43,44,20,7,5,'messages',46);
 INSERT INTO `sys_site_object_tree` VALUES (29,1,45,46,20,8,5,'files',47);
 INSERT INTO `sys_site_object_tree` VALUES (30,1,47,48,20,9,5,'images',48);
 INSERT INTO `sys_site_object_tree` VALUES (31,1,53,54,15,2,3,'main',49);
+INSERT INTO `sys_site_object_tree` VALUES (32,1,62,63,1,12,2,'image_select',50);
+INSERT INTO `sys_site_object_tree` VALUES (33,1,64,65,1,13,2,'file_select',51);
 
 /*
 Table struture for sys_stat_counter
@@ -795,10 +742,10 @@ CREATE TABLE `sys_stat_counter` (
 ) TYPE=InnoDB;
 
 /*
-Table data for alex-m.sys_stat_counter
+Table data for ptpa.sys_stat_counter
 */
 
-INSERT INTO `sys_stat_counter` VALUES (1,1,12,1,12,1079602652);
+INSERT INTO `sys_stat_counter` VALUES (1,1,1,1,1,1079691537);
 
 /*
 Table struture for sys_stat_day_counters
@@ -816,10 +763,10 @@ CREATE TABLE `sys_stat_day_counters` (
 ) TYPE=InnoDB;
 
 /*
-Table data for alex-m.sys_stat_day_counters
+Table data for ptpa.sys_stat_day_counters
 */
 
-INSERT INTO `sys_stat_day_counters` VALUES (1,1079557200,12,1,12,1);
+INSERT INTO `sys_stat_day_counters` VALUES (1,1079643600,1,1,1,1);
 
 /*
 Table struture for sys_stat_ip
@@ -833,10 +780,10 @@ CREATE TABLE `sys_stat_ip` (
 ) TYPE=InnoDB;
 
 /*
-Table data for alex-m.sys_stat_ip
+Table data for ptpa.sys_stat_ip
 */
 
-INSERT INTO `sys_stat_ip` VALUES ('c0a80006',1079602502);
+INSERT INTO `sys_stat_ip` VALUES ('c0a80006',1079691537);
 
 /*
 Table struture for sys_stat_log
@@ -862,21 +809,10 @@ CREATE TABLE `sys_stat_log` (
 ) TYPE=InnoDB ROW_FORMAT=DYNAMIC COMMENT='InnoDB free: 9216 kB';
 
 /*
-Table data for alex-m.sys_stat_log
+Table data for ptpa.sys_stat_log
 */
 
-INSERT INTO `sys_stat_log` VALUES (1,1,-1,1079602502,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (2,1,-1,1079602503,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (3,1,-1,1079602504,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (4,1,-1,1079602504,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (5,1,-1,1079602510,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (6,1,-1,1079602516,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (7,1,-1,1079602517,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (8,1,-1,1079602574,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (9,1,-1,1079602577,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (10,1,-1,1079602593,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (11,1,-1,1079602631,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
-INSERT INTO `sys_stat_log` VALUES (12,1,-1,1079602652,'c0a80006','display','78b10830afe2d15ec915834de79ca8fe',-1,1,1);
+INSERT INTO `sys_stat_log` VALUES (1,1,-1,1079691537,'c0a80006','display','8c317de631c7deaf3a1de2d54583b028',-1,1,1);
 
 /*
 Table struture for sys_stat_referer_url
@@ -903,7 +839,7 @@ CREATE TABLE `sys_stat_uri` (
 ) TYPE=InnoDB;
 
 /*
-Table data for alex-m.sys_stat_uri
+Table data for ptpa.sys_stat_uri
 */
 
 INSERT INTO `sys_stat_uri` VALUES (1,'/root');
@@ -964,7 +900,7 @@ CREATE TABLE `user` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for alex-m.user
+Table data for ptpa.user
 */
 
 INSERT INTO `user` VALUES (1,1,7,NULL,'super','',NULL,NULL,'','admin');
@@ -987,7 +923,7 @@ CREATE TABLE `user_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for alex-m.user_group
+Table data for ptpa.user_group
 */
 
 INSERT INTO `user_group` VALUES (3,1,27,'Посетители','visitors');
@@ -1008,7 +944,7 @@ CREATE TABLE `user_in_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for alex-m.user_in_group
+Table data for ptpa.user_in_group
 */
 
 INSERT INTO `user_in_group` VALUES (1,25,28);

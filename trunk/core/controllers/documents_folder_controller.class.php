@@ -80,12 +80,11 @@ class documents_folder_controller extends site_object_controller
 						'img_src' => '/shared/images/unpublish.gif',
 						'can_have_access_template' => true,
 				),
-
 				'delete' => array(
 						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
-						'action_name' => strings :: get('delete_document_folder','document'),
+						'action_name' => strings :: get('delete'),
 						'action_path' => '/documents_folder/delete_documents_folder_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'

@@ -84,7 +84,11 @@
 		{
 			if (img.node_id)
 			{
-				preview_obj.src = '/root?node_id=' + img.node_id;
+				if(img.node_id == 0)
+					preview_obj.src = '/shared/images/no_img.gif';
+				else
+					preview_obj.src = '/root?node_id=' + img.node_id;
+					
 				insert_button_obj.disabled = false;
 			}
 			

@@ -1,6 +1,6 @@
 /* 
 SQLyog v3.63
-Host - localhost : Database - temp
+Host - localhost : Database - ptpa
 **************************************************************
 Server version 4.0.12-nt
 */
@@ -96,7 +96,7 @@ CREATE TABLE `message` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp.message
+Table data for ptpa.message
 */
 
 INSERT INTO `message` VALUES (1,1,16,'Message',NULL,'messages');
@@ -120,7 +120,7 @@ CREATE TABLE `navigation_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp.navigation_item
+Table data for ptpa.navigation_item
 */
 
 INSERT INTO `navigation_item` VALUES (1,1,15,'navigation','','navigation');
@@ -160,7 +160,7 @@ CREATE TABLE `sys_action_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp.sys_action_access
+Table data for ptpa.sys_action_access
 */
 
 INSERT INTO `sys_action_access` VALUES (216,17,'display',27,0);
@@ -252,7 +252,7 @@ CREATE TABLE `sys_class` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for temp.sys_class
+Table data for ptpa.sys_class
 */
 
 INSERT INTO `sys_class` VALUES (1,'main_page','/shared/images/folder.gif',0);
@@ -273,6 +273,8 @@ INSERT INTO `sys_class` VALUES (15,'message','',0);
 INSERT INTO `sys_class` VALUES (16,'images_folder','/shared/images/folder.gif',0);
 INSERT INTO `sys_class` VALUES (17,'files_folder','/shared/images/folder.gif',0);
 INSERT INTO `sys_class` VALUES (18,'site_object','/shared/images/generic.gif',1);
+INSERT INTO `sys_class` VALUES (19,'image_select','',0);
+INSERT INTO `sys_class` VALUES (20,'file_select','',0);
 
 /*
 Table struture for sys_full_text_index
@@ -307,7 +309,7 @@ CREATE TABLE `sys_group_object_access_template` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp.sys_group_object_access_template
+Table data for ptpa.sys_group_object_access_template
 */
 
 INSERT INTO `sys_group_object_access_template` VALUES (1,6,'create_user');
@@ -329,7 +331,7 @@ CREATE TABLE `sys_group_object_access_template_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp.sys_group_object_access_template_item
+Table data for ptpa.sys_group_object_access_template_item
 */
 
 INSERT INTO `sys_group_object_access_template_item` VALUES (1,1,27,1,1);
@@ -382,7 +384,7 @@ CREATE TABLE `sys_object_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp.sys_object_access
+Table data for ptpa.sys_object_access
 */
 
 INSERT INTO `sys_object_access` VALUES (1,1,9,1,1,0);
@@ -479,6 +481,10 @@ INSERT INTO `sys_object_access` VALUES (127,48,27,1,0,0);
 INSERT INTO `sys_object_access` VALUES (128,48,28,1,1,0);
 INSERT INTO `sys_object_access` VALUES (129,49,27,1,0,0);
 INSERT INTO `sys_object_access` VALUES (130,49,28,1,1,0);
+INSERT INTO `sys_object_access` VALUES (131,50,27,1,0,0);
+INSERT INTO `sys_object_access` VALUES (132,50,28,1,1,0);
+INSERT INTO `sys_object_access` VALUES (133,51,27,1,0,0);
+INSERT INTO `sys_object_access` VALUES (134,51,28,1,1,0);
 
 /*
 Table struture for sys_object_version
@@ -501,7 +507,7 @@ CREATE TABLE `sys_object_version` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp.sys_object_version
+Table data for ptpa.sys_object_version
 */
 
 INSERT INTO `sys_object_version` VALUES (1,7,0,1076755675,1076755675,1);
@@ -564,10 +570,11 @@ CREATE TABLE `sys_session` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp.sys_session
+Table data for ptpa.sys_session
 */
 
 INSERT INTO `sys_session` VALUES ('8478ecc9584bf2eb4f0ee0c42d308a42','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:2;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:9;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:8;a:4:{s:1:\"l\";i:10;s:1:\"r\";i:15;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:19;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:9:{s:12:\"is_logged_in\";b:1;s:2:\"id\";s:2:\"25\";s:7:\"node_id\";s:1:\"7\";s:5:\"login\";s:5:\"admin\";s:5:\"email\";s:15:\"mike@office.bit\";s:4:\"name\";s:5:\"admin\";s:8:\"lastname\";s:5:\"super\";s:8:\"password\";s:32:\"66d4aaa5ea177ac32c69946de3731ec0\";s:6:\"groups\";a:1:{i:28;s:6:\"admins\";}}strings|s:0:\"\";',1077190936,25);
+INSERT INTO `sys_session` VALUES ('8c317de631c7deaf3a1de2d54583b028','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:64;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:2;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:9;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:8;a:4:{s:1:\"l\";i:10;s:1:\"r\";i:15;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:19;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:9:{s:12:\"is_logged_in\";b:1;s:2:\"id\";s:2:\"25\";s:7:\"node_id\";s:1:\"7\";s:5:\"login\";s:5:\"admin\";s:5:\"email\";s:15:\"mike@office.bit\";s:4:\"name\";s:5:\"admin\";s:8:\"lastname\";s:5:\"super\";s:8:\"password\";s:32:\"66d4aaa5ea177ac32c69946de3731ec0\";s:6:\"groups\";a:1:{i:28;s:6:\"admins\";}}strings|s:0:\"\";',1079691763,25);
 
 /*
 Table struture for sys_site_object
@@ -594,7 +601,7 @@ CREATE TABLE `sys_site_object` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for temp.sys_site_object
+Table data for ptpa.sys_site_object
 */
 
 INSERT INTO `sys_site_object` VALUES (1,1,1,1076755675,0,1076755675,0,'en','Main','root');
@@ -644,6 +651,8 @@ INSERT INTO `sys_site_object` VALUES (46,14,1,1076772578,0,1076772578,25,'en','M
 INSERT INTO `sys_site_object` VALUES (47,14,1,1076772601,0,1076772601,25,'en','Files','files');
 INSERT INTO `sys_site_object` VALUES (48,14,1,1076772623,0,1076772623,25,'en','Images','images');
 INSERT INTO `sys_site_object` VALUES (49,14,1,1076772668,0,1076772668,25,'en','User menu','main');
+INSERT INTO `sys_site_object` VALUES (50,19,1,1079691750,0,1079691750,25,'en','Select image','image_select');
+INSERT INTO `sys_site_object` VALUES (51,20,1,1079691763,0,1079691763,25,'en','Select file','file_select');
 
 /*
 Table struture for sys_site_object_tree
@@ -672,10 +681,10 @@ CREATE TABLE `sys_site_object_tree` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp.sys_site_object_tree
+Table data for ptpa.sys_site_object_tree
 */
 
-INSERT INTO `sys_site_object_tree` VALUES (1,1,1,62,0,1,1,'root',19);
+INSERT INTO `sys_site_object_tree` VALUES (1,1,1,66,0,1,1,'root',19);
 INSERT INTO `sys_site_object_tree` VALUES (2,1,2,9,1,1,2,'admin',20);
 INSERT INTO `sys_site_object_tree` VALUES (3,1,3,4,2,1,3,'site_structure',21);
 INSERT INTO `sys_site_object_tree` VALUES (4,1,5,6,2,2,3,'classes',22);
@@ -706,6 +715,8 @@ INSERT INTO `sys_site_object_tree` VALUES (28,1,43,44,20,7,5,'messages',46);
 INSERT INTO `sys_site_object_tree` VALUES (29,1,45,46,20,8,5,'files',47);
 INSERT INTO `sys_site_object_tree` VALUES (30,1,47,48,20,9,5,'images',48);
 INSERT INTO `sys_site_object_tree` VALUES (31,1,53,54,15,2,3,'main',49);
+INSERT INTO `sys_site_object_tree` VALUES (32,1,62,63,1,12,2,'image_select',50);
+INSERT INTO `sys_site_object_tree` VALUES (33,1,64,65,1,13,2,'file_select',51);
 
 /*
 Table struture for sys_stat_counter
@@ -722,6 +733,11 @@ CREATE TABLE `sys_stat_counter` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+/*
+Table data for ptpa.sys_stat_counter
+*/
+
+INSERT INTO `sys_stat_counter` VALUES (1,1,1,1,1,1079691725);
 
 /*
 Table struture for sys_stat_day_counters
@@ -738,6 +754,11 @@ CREATE TABLE `sys_stat_day_counters` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+/*
+Table data for ptpa.sys_stat_day_counters
+*/
+
+INSERT INTO `sys_stat_day_counters` VALUES (1,1079643600,1,1,1,1);
 
 /*
 Table struture for sys_stat_ip
@@ -750,6 +771,11 @@ CREATE TABLE `sys_stat_ip` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+/*
+Table data for ptpa.sys_stat_ip
+*/
+
+INSERT INTO `sys_stat_ip` VALUES ('c0a80006',1079691725);
 
 /*
 Table struture for sys_stat_log
@@ -774,6 +800,11 @@ CREATE TABLE `sys_stat_log` (
   KEY `ip` (`ip`)
 ) TYPE=InnoDB ROW_FORMAT=DYNAMIC COMMENT='InnoDB free: 9216 kB';
 
+/*
+Table data for ptpa.sys_stat_log
+*/
+
+INSERT INTO `sys_stat_log` VALUES (1,1,-1,1079691725,'c0a80006','display','8c317de631c7deaf3a1de2d54583b028',-1,1,1);
 
 /*
 Table struture for sys_stat_referer_url
@@ -799,6 +830,11 @@ CREATE TABLE `sys_stat_uri` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+/*
+Table data for ptpa.sys_stat_uri
+*/
+
+INSERT INTO `sys_stat_uri` VALUES (1,'/root');
 
 /*
 Table struture for sys_user_object_access_template
@@ -856,7 +892,7 @@ CREATE TABLE `user` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp.user
+Table data for ptpa.user
 */
 
 INSERT INTO `user` VALUES (1,1,7,NULL,'super','',NULL,NULL,'','admin');
@@ -879,7 +915,7 @@ CREATE TABLE `user_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp.user_group
+Table data for ptpa.user_group
 */
 
 INSERT INTO `user_group` VALUES (3,1,27,'Visitors','visitors');
@@ -900,7 +936,7 @@ CREATE TABLE `user_in_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp.user_in_group
+Table data for ptpa.user_in_group
 */
 
 INSERT INTO `user_in_group` VALUES (1,25,28);
