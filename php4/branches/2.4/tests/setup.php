@@ -12,12 +12,17 @@ if (file_exists(dirname(__FILE__) . '/setup.override.php'))
   include_once(dirname(__FILE__) . '/setup.override.php');
 
 @define('LIMB_DIR', dirname(__FILE__) . '/../');
-@define('WACT_ROOT', dirname(__FILE__) . '/../../../../external/wact/framework/');
 @define('VAR_DIR', dirname(__FILE__) . '/var/');
 @define('CONTENT_LOCALE_ID', 'en');
 @define('MANAGEMENT_LOCALE_ID', 'en');
 @define('DEFAULT_MANAGEMENT_LOCALE_ID', 'en');
 @define('DEFAULT_CONTENT_LOCALE_ID','en');
+
+//WACT init
+@define('WACT_CONFIG_DIRECTORY', dirname(__FILE__) . '/settings/');
+require_once(dirname(__FILE__) . '/../../../../external/wact/framework/common.inc.php');
+restore_error_handler();
+@define('TMPL_FILESCHEME_PATH', WACT_ROOT . '/../tests/filescheme/');
 
 require_once(LIMB_DIR . '/class/core/Limb.class.php');
 require_once(LIMB_DIR . '/setup.php');

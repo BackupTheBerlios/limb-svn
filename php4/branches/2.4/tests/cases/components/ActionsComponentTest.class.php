@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/class/i18n/Strings.class.php');
 
 class ActionsComponentTest extends LimbTestCase
 {
+  function ActionsComponentTest()
+  {
+    parent :: LimbTestCase('actions component test');
+  }
+
   function testGetActions()
   {
     $j = new ActionsComponent();

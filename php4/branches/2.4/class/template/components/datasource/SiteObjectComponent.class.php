@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/Component.class.php');
+require_once(WACT_ROOT . '/template/template.inc.php');
 
 class SiteObjectComponent extends Component
 {

@@ -54,7 +54,7 @@ class SiteObjectController
 
   function &_getStateMachine()
   {
-    include_once(LIMB_DIR . '/class/commands/StateMachine.class.php');
+    include_once(LIMB_DIR . '/class/core/commands/StateMachine.class.php');
     return new StateMachine();
   }
 

@@ -8,7 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/ListComponent.class.php');
+require_once(WACT_ROOT . '/template/template.inc.php');
+require_once(WACT_ROOT . '/template/components/list/list.inc.php');
 require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
 
 class ActionsComponent extends ListComponent

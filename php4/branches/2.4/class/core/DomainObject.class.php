@@ -33,12 +33,12 @@ class DomainObject extends Object
 
   function isDirty()
   {
-    return ($this->clean_hash != $this->dataspace->getHash());
+    return ($this->clean_hash != $this->getHash());
   }
 
   function markClean()
   {
-    $this->clean_hash = $this->dataspace->getHash();
+    $this->clean_hash = $this->getHash();
   }
 
   function import($values)
@@ -46,6 +46,11 @@ class DomainObject extends Object
     parent :: import($values);
 
     $this->markClean();
+  }
+
+  function getHash()//quick'n'dirty hack
+  {
+    return md5(serialize($this->dataspace));
   }
 }
 

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(WACT_ROOT . '/framework/iterator/arraydataset.inc.php');
-require_once(LIMB_DIR . '/class/template/Component.class.php');
+require_once(WACT_ROOT . '/template/template.inc.php');
+require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
-class DatasourceComponent extends Component
+class LimbDatasourceComponent extends Component
 {
   var $datasource_path;
   var $datasource;
@@ -24,7 +24,7 @@ class DatasourceComponent extends Component
     $this->datasource_path = $datasource_path;
   }
 
-  function _getDatasource()
+  function &_getDatasource()
   {
     if ($this->datasource)
       return $this->datasource;
@@ -57,7 +57,7 @@ class DatasourceComponent extends Component
     }
   }
 
-  function getDataset()
+  function &getDataset()
   {
     $ds =& $this->_getDatasource();
     if ($result = $ds->fetch())
@@ -129,7 +129,7 @@ class DatasourceComponent extends Component
   {
     $this->navigator_id = $navigator_id;
 
-    if(!$navigator = $this->_getNavigatorComponent())
+    if(!$navigator =& $this->_getNavigatorComponent())
       return null;
 
     $limit = $navigator->getItemsPerPage();
@@ -154,10 +154,10 @@ class DatasourceComponent extends Component
   {
     $this->_setTargets($targets);
 
-    $dataset = $this->getDataset();
+    $dataset =& $this->getDataset();
     foreach($this->targets as $target)
     {
-      if($target_component = $this->parent->findChild($target))
+      if($target_component =& $this->parent->findChild($target))
       {
         $target_component->registerDataset($dataset);
       }
@@ -169,12 +169,12 @@ class DatasourceComponent extends Component
     }
   }
 
-  function _getNavigatorComponent()
+  function &_getNavigatorComponent()
   {
     if (!$this->navigator_id)
       return null;
 
-    if(!$navigator = $this->parent->findChild($this->navigator_id))
+    if(!$navigator =& $this->parent->findChild($this->navigator_id))
       return null;
 
     return $navigator;

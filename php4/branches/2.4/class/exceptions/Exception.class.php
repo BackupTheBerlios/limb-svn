@@ -1,6 +1,6 @@
 <?php
 
-register_shutdown_function('writeUnhandledExceptions');
+//register_shutdown_function('writeUnhandledExceptions');
 
 function writeUnhandledExceptions()
 {
@@ -167,7 +167,12 @@ function throw(&$exception)
              $exception->toString(),
              $GLOBALS['global_exception']->toString());
 
-      print $GLOBALS['global_exception']->getBacktrace();
+      if(php_sapi_name() == 'cli')
+        $use_html = false;
+      else
+        $use_html = true;
+
+      print $GLOBALS['global_exception']->getBacktrace($use_html);
       die();//???
     }
   }

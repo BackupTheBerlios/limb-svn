@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/template/components/datasource/SiteObjectComponent.class.php');
-require_once(LIMB_DIR . '/class/template/Component.class.php');
 require_once(LIMB_DIR . '/class/core/datasources/SingleObjectDatasource.class.php');
 require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
 require_once(LIMB_DIR . '/class/core/request/Request.class.php');
@@ -29,6 +28,11 @@ class SiteObjectComponentTest extends LimbTestCase
   var $datasource;
   var $toolkit;
   var $request;
+
+  function SiteObjectComponentTest()
+  {
+    parent :: LimbTestCase('site object component test');
+  }
 
   function setUp()
   {

@@ -24,7 +24,7 @@ class LimbApplication
   function _loadPackages()
   {
     include_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
-    $inst =& PackagesInfo :: instance()
+    $inst =& PackagesInfo :: instance();
     $inst->loadPackages();
   }
 
@@ -58,19 +58,17 @@ class LimbApplication
     include_once($resolvers_dir . 'PackageFileResolver.class.php');
     include_once($resolvers_dir . 'CachingFileResolver.class.php');
     include_once($resolvers_dir . 'IniFileResolver.class.php');
-    include_once($resolvers_dir . 'ActionFileResolver.class.php');
     include_once($resolvers_dir . 'StringsFileResolver.class.php');
     include_once($resolvers_dir . 'TemplateFileResolver.class.php');
-    include_once($resolvers_dir . 'ControllerFileResolver.class.php');
+    include_once($resolvers_dir . 'BehaviourFileResolver.class.php');
     include_once($resolvers_dir . 'DbTableFileResolver.class.php');
     include_once($resolvers_dir . 'DatasourceFileResolver.class.php');
     include_once($resolvers_dir . 'SiteObjectFileResolver.class.php');
 
     registerFileResolver('ini',                 new CachingFileResolver(new IniFileResolver(new PackageFileResolver())));
-    registerFileResolver('action',              new CachingFileResolver(new ActionFileResolver(new PackageFileResolver())));
     registerFileResolver('strings',             new CachingFileResolver(new StringsFileResolver(new PackageFileResolver())));
     registerFileResolver('template',            new CachingFileResolver(new TemplateFileResolver(new PackageFileResolver())));
-    registerFileResolver('controller',          new CachingFileResolver(new ControllerFileResolver(new PackageFileResolver())));
+    registerFileResolver('behaviour',           new CachingFileResolver(new BehaviourFileResolver(new PackageFileResolver())));
     registerFileResolver('db_table',            new CachingFileResolver(new DbTableFileResolver(new PackageFileResolver())));
     registerFileResolver('datasource',          new CachingFileResolver(new DatasourceFileResolver(new PackageFileResolver())));
     registerFileResolver('site_object',         new CachingFileResolver(new SiteObjectFileResolver(new PackageFileResolver())));

@@ -31,12 +31,10 @@ class LimbException extends Exception
     return $this->_additional_params;
   }
 
-  function __toString()
+  function toString()
   {
     $str =  __CLASS__ . " : \"{$this->message}\"\n";
     $str .= "[params: " . var_export($this->_additional_params, true) . "]\n";
-
-    $str .= $this->getTraceAsString();
 
     return $str;
   }

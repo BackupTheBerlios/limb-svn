@@ -8,16 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/datasource/DatasourceComponent.class.php');
-require_once(LIMB_DIR . '/class/template/components/ListComponent.class.php');
-require_once(LIMB_DIR . '/class/template/Component.class.php');
+require_once(LIMB_DIR . '/class/template/components/datasource/LimbDatasourceComponent.class.php');
+require_once(WACT_ROOT . '/template/components/list/list.inc.php');
 require_once(LIMB_DIR . '/class/template/components/PagerComponent.class.php');
 require_once(LIMB_DIR . '/class/core/datasources/Datasource.interface.php');
 require_once(LIMB_DIR . '/class/core/datasources/Countable.interface.php');
 require_once(LIMB_DIR . '/class/core/request/Request.class.php');
 require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
-class DatasourceComponentTestVersion //implements Datasource, Countable
+class LimbDatasourceComponentTestVersion //implements Datasource, Countable
 {
   function fetch(){}
   function countTotal(){}
@@ -29,15 +28,15 @@ class DatasourceComponentTestVersion //implements Datasource, Countable
 Mock :: generate('LimbToolkit');
 Mock :: generate('Component');
 Mock :: generate('ListComponent');
-Mock :: generate('DatasourceComponentTestVersion');
+Mock :: generate('LimbDatasourceComponentTestVersion');
 Mock :: generate('PagerComponent');
 Mock :: generate('Request');
 
-Mock :: generatePartial('DatasourceComponent',
-                        'DatasourceComponentSetupTargetsTestVersion',
+Mock :: generatePartial('LimbDatasourceComponent',
+                        'LimbDatasourceComponentSetupTargetsTestVersion',
                         array('getDataset'));
 
-class DatasourceComponentTest extends LimbTestCase
+class LimbDatasourceComponentTest extends LimbTestCase
 {
   var $component;
   var $datasource;
@@ -45,18 +44,23 @@ class DatasourceComponentTest extends LimbTestCase
   var $parent;
   var $request;
 
+  function LimbDatasourceComponentTest()
+  {
+    parent :: LimbTestCase('limb datasource component test');
+  }
+
   function setUp()
   {
     $this->toolkit = new MockLimbToolkit($this);
 
     $this->parent = new MockComponent($this);
 
-    $this->component = new DatasourceComponent();
-    $this->component->parent = $this->parent;
+    $this->component = new LimbDatasourceComponent();
+    $this->component->parent =& $this->parent;
 
     $this->request = new MockRequest($this);
 
-    $this->datasource = new MockDatasourceComponentTestVersion($this);
+    $this->datasource = new MockLimbDatasourceComponentTestVersion($this);
 
     $this->toolkit->setReturnReference('getRequest', $this->request);
 
@@ -147,7 +151,7 @@ class DatasourceComponentTest extends LimbTestCase
     $pager = new MockPagerComponent($this);
 
     $this->parent->expectOnce('findChild', array($pager_id = 'test-nav'));
-    $this->parent->setReturnValue('findChild', $pager, array($pager_id));
+    $this->parent->setReturnReference('findChild', $pager, array($pager_id));
 
     $pager->expectOnce('getItemsPerPage');
     $pager->setReturnValue('getItemsPerPage', 100);
@@ -182,7 +186,7 @@ class DatasourceComponentTest extends LimbTestCase
     $pager = new MockPagerComponent($this);
 
     $this->parent->expectOnce('findChild', array($pager_id = 'test-nav'));
-    $this->parent->setReturnValue('findChild', $pager, array($pager_id));
+    $this->parent->setReturnReference('findChild', $pager, array($pager_id));
 
     $pager->expectOnce('getItemsPerPage');
     $pager->expectOnce('getServerId');
@@ -230,17 +234,17 @@ class DatasourceComponentTest extends LimbTestCase
 
   function testSetupTargets()
   {
-    $component = new DatasourceComponentSetupTargetsTestVersion($this);
+    $component = new LimbDatasourceComponentSetupTargetsTestVersion($this);
 
-    $component->parent = $this->parent;
+    $component->parent =& $this->parent;
     $this->parent->expectArgumentsAt(0, 'findChild', array('target1'));
     $this->parent->expectArgumentsAt(1, 'findChild', array('target2'));
-    $this->parent->setReturnValueAt(0, 'findChild', $target1 = new MockListComponent($this));
-    $this->parent->setReturnValueAt(1, 'findChild', $target2 = new MockListComponent($this));
+    $this->parent->setReturnReferenceAt(0, 'findChild', $target1 = new MockListComponent($this));
+    $this->parent->setReturnReferenceAt(1, 'findChild', $target2 = new MockListComponent($this));
 
     $component->expectOnce('getDataset');
     $dataset = new ArrayDataset(array('some_data'));
-    $component->setReturnValue('getDataset', $dataset);
+    $component->setReturnReference('getDataset', $dataset);
 
     $target1->expectOnce('registerDataset', array($dataset));
     $target2->expectOnce('registerDataset', array($dataset));
@@ -253,7 +257,7 @@ class DatasourceComponentTest extends LimbTestCase
 
   function testSetupTargetsFailedNoSuchRuntimeTarget()
   {
-    $component = new DatasourceComponentSetupTargetsTestVersion($this);
+    $component = new LimbDatasourceComponentSetupTargetsTestVersion($this);
 
     $component->parent = $this->parent;
     $this->parent->expectArgumentsAt(0, 'findChild', array('target1'));
@@ -261,7 +265,7 @@ class DatasourceComponentTest extends LimbTestCase
 
     $component->expectOnce('getDataset');
     $dataset = new ArrayDataset(array('some_data'));
-    $component->setReturnValue('getDataset', $dataset);
+    $component->setReturnReference('getDataset', $dataset);
 
     $component->setupTargets('target1, target2');
     $this->assertTrue(catch('Exception', $e));

@@ -30,6 +30,9 @@ class SiteObjectBehaviourFactory
 
     SiteObjectBehaviourFactory :: _includeClassFile($class_name);
 
+    if(catch('FileNotFoundException', $e))//???
+      return null;
+
     $bhvr =& new $class_name();
     $factory->_behaviours[$class_name] =& $bhvr;
     return $bhvr;
@@ -43,6 +46,9 @@ class SiteObjectBehaviourFactory
     resolveHandle($resolver =& getFileResolver('behaviour'));
 
     $full_path = $resolver->resolve($class_name);
+
+    if(catch('Exception', $e))
+      return throw($e);
 
     include_once($full_path);
   }
