@@ -11,7 +11,6 @@
 require_once(LIMB_DIR . '/core/cache/full_page_cache_manager.class.php');
 require_once(LIMB_DIR . '/core/request/request.class.php');
 require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
-require_once(LIMB_DIR . '/core/lib/util/array_dataset.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 
 Mock::generate('uri');
@@ -51,8 +50,6 @@ class full_page_cache_manager_test extends UnitTestCase
     $this->cache_manager->tally();
     $this->uri->tally();
     $this->user->tally();
-    
-    clear_testing_ini();
   }
   
   function test_get_rules_from_ini()
@@ -81,6 +78,8 @@ class full_page_cache_manager_test extends UnitTestCase
         array('path_regex' => '/root/test2', 'groups' => array('members', 'visitors'))
       )
     );
+    
+    clear_testing_ini();
   } 
   
   function test_is_not_cacheable_no_uri()
