@@ -35,8 +35,10 @@ class pager_navigator_tag extends server_component_tag
 	function pre_generate(&$code)
 	{
 		parent::pre_generate($code);
+
 		$code->write_php($this->get_component_ref_code() . '->prepare();');
 	} 
+	
 	/**
 	* 
 	* @param code $ _writer
@@ -46,6 +48,7 @@ class pager_navigator_tag extends server_component_tag
 	function generate_constructor(&$code)
 	{
 		parent::generate_constructor($code);
+
 		if (array_key_exists('items', $this->attributes))
 		{
 			$code->write_php($this->get_component_ref_code() . '->items = \'' . $this->attributes['items'] . '\';');
@@ -56,8 +59,21 @@ class pager_navigator_tag extends server_component_tag
 			$code->write_php($this->get_component_ref_code() . '->pages_per_section = \'' . $this->attributes['pages_per_section'] . '\';');
 			unset($this->attributes['pages_per_section']);
 		} 
-		
-		 
+	}
+	
+	function get_component_ref_code()
+	{
+		if (isset($this->attributes['mirrow_of']))
+		{
+			if($mirrowed_pager =& $this->parent->find_child($this->attributes['mirrow_of']))
+				return $mirrowed_pager->get_component_ref_code();
+			else
+				debug :: write_error('mirrow_of pager component not found',
+				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+				array('mirrow_of' => $this->attributes['mirrow_of']));
+		}	
+		else
+			return parent :: get_component_ref_code();
 	} 
 } 
 
