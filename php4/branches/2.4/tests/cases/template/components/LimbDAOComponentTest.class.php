@@ -8,64 +8,51 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/template/components/datasource/LimbDatasourceComponent.class.php');
+require_once(LIMB_DIR . '/core/template/components/dao/LimbDAOComponent.class.php');
 require_once(WACT_ROOT . '/template/components/list/list.inc.php');
-require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
+require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 require_once(LIMB_DIR . '/core/template/components/LimbPagerComponent.class.php');
-require_once(LIMB_DIR . '/core/datasources/Datasource.interface.php');
-require_once(LIMB_DIR . '/core/datasources/Countable.interface.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
-
-class LimbDatasourceComponentTestVersion //implements Datasource, Countable
-{
-  function fetch(){}
-  function setOrder($order){}
-  function setBar($bar){}
-}
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Component');
 Mock :: generate('ListComponent');
-Mock :: generate('LimbDatasourceComponentTestVersion');
+Mock :: generate('LimbDAOComponentTestVersion');
 Mock :: generate('LimbPagerComponent');
 Mock :: generate('Request');
-Mock :: generate('ArrayDataSet');
+Mock :: generate('PagedArrayDataSet');
 
-Mock :: generatePartial('LimbDatasourceComponent',
-                        'LimbDatasourceComponentSetupTargetsTestVersion',
+Mock :: generatePartial('LimbDAOComponent',
+                        'LimbDAOComponentSetupTargetsTestVersion',
                         array('getDataset'));
 
-class LimbDatasourceComponentTest extends LimbTestCase
+class LimbDAOComponentTest extends LimbTestCase
 {
   var $component;
-  var $datasource;
+  var $dao;
   var $toolkit;
   var $parent;
   var $request;
 
-  function LimbDatasourceComponentTest()
+  function LimbDAOComponentTest()
   {
-    parent :: LimbTestCase('limb datasource component test');
+    parent :: LimbTestCase('limb dao component test');
   }
 
   function setUp()
   {
     $this->parent = new MockComponent($this);
 
-    $this->component = new LimbDatasourceComponent();
+    $this->component = new LimbDAOComponent();
     $this->component->parent =& $this->parent;
-    $this->component->setClassPath('test-datasource');
+    $this->component->setClassPath('test-dao');
 
     $this->request = new MockRequest($this);
-
-    $this->datasource = new MockLimbDatasourceComponentTestVersion($this);
 
     $this->toolkit = new MockLimbToolkit($this);
 
     $this->toolkit->setReturnReference('getRequest', $this->request);
-
-    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -74,45 +61,14 @@ class LimbDatasourceComponentTest extends LimbTestCase
   {
     $this->parent->tally();
     $this->request->tally();
-    $this->datasource->tally();
     $this->toolkit->tally();
 
     Limb :: popToolkit();
   }
 
-  function testSetGetParameter()
-  {
-    $this->component->setParameter('bar', 'test parameter');
-    $this->datasource->expectOnce('setBar', array('test parameter'));
-
-    //we can't check it...
-    //$this->component->setParameter('foo', 'test parameter');
-    //$this->datasource->expectNever('setFoo');
-  }
-
-  function testSetOrderParameter1()
-  {
-    $this->component->setParameter('order', '');
-    $this->datasource->expectNever('setOrder');
-  }
-
-  function testSetOrderParameter2()
-  {
-    $this->component->setParameter('order', 'c1 =AsC, c2 = DeSC , c3=Junky');
-    $this->datasource->expectOnce('setOrder',
-                                  array(array('c1' => 'ASC', 'c2' => 'DESC', 'c3' => 'ASC')));
-  }
-
-  function testSetOrderParameter3()
-  {
-    $this->component->setParameter('order', 'c1, c2 = Rand() ');//!!!mysql only
-    $this->datasource->expectOnce('setOrder',
-                                  array(array('c1' => 'ASC', 'c2' => 'RAND()')));
-  }
-
   function testProcessSeveralTargetsNoNavigator()
   {
-    $component = new LimbDatasourceComponentSetupTargetsTestVersion($this);
+    $component = new LimbDAOComponentSetupTargetsTestVersion($this);
 
     $component->parent =& $this->parent;
     $this->parent->expectArgumentsAt(0, 'findChild', array('target1'));
@@ -121,7 +77,7 @@ class LimbDatasourceComponentTest extends LimbTestCase
     $this->parent->setReturnReferenceAt(1, 'findChild', $target2 = new MockListComponent($this));
 
     $component->expectOnce('getDataset');
-    $dataset = new ArrayDataset(array('some_data'));
+    $dataset = new PagedArrayDataset(array('some_data'));
     $component->setReturnReference('getDataset', $dataset);
 
     $target1->expectOnce('registerDataset', array($dataset));
@@ -136,7 +92,7 @@ class LimbDatasourceComponentTest extends LimbTestCase
 
   function testProcessSeveralTargetsWithNavigator()
   {
-    $component = new LimbDatasourceComponentSetupTargetsTestVersion($this);
+    $component = new LimbDAOComponentSetupTargetsTestVersion($this);
 
     $component->parent =& $this->parent;
     $this->parent->setReturnReference('findChild', $target1 = new MockListComponent($this), array('target1'));
@@ -144,12 +100,12 @@ class LimbDatasourceComponentTest extends LimbTestCase
     $this->parent->setReturnReference('findChild', $pager = new MockLimbPagerComponent($this), array('pager'));
 
     $component->expectOnce('getDataset');
-    $rs = new MockArrayDataSet($this);
+    $rs = new MockPagedArrayDataSet($this);
     $rs->expectOnce('paginate', array(new IsAExpectation('MockLimbPagerComponent')));
     $component->setReturnReference('getDataset', $rs);
 
-    $target1->expectOnce('registerDataset', array(new IsAExpectation('MockArrayDataSet')));
-    $target2->expectOnce('registerDataset', array(new IsAExpectation('MockArrayDataSet')));
+    $target1->expectOnce('registerDataset', array(new IsAExpectation('MockPagedArrayDataSet')));
+    $target2->expectOnce('registerDataset', array(new IsAExpectation('MockPagedArrayDataSet')));
     $component->setTargets(array('target1', 'target2'));
     $component->setNavigator('pager');
 
@@ -164,14 +120,14 @@ class LimbDatasourceComponentTest extends LimbTestCase
 
   function testSetupTargetsFailedNoSuchRuntimeTarget()
   {
-    $component = new LimbDatasourceComponentSetupTargetsTestVersion($this);
+    $component = new LimbDAOComponentSetupTargetsTestVersion($this);
 
     $component->parent = $this->parent;
     $this->parent->expectArgumentsAt(0, 'findChild', array('target1'));
     $this->parent->setReturnValueAt(0, 'findChild', null);
 
     $component->expectOnce('getDataset');
-    $dataset = new ArrayDataset(array('some_data'));
+    $dataset = new PagedArrayDataset(array('some_data'));
     $component->setReturnReference('getDataset', $dataset);
 
     $component->setTargets('target1, target2');

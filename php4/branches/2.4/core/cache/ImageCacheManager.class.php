@@ -121,11 +121,11 @@ class ImageCacheManager
     }
 
     $toolkit =& Limb :: toolkit();
-    $datasource =& $toolkit->getDatasource('SiteObjectsByNodeIdsDatasource');
-    $datasource->setNodeIds(array_keys($node_ids));
-    $datasource->setSiteObjectClassName('ImageObject');
+    $dao =& $toolkit->createDAO('SiteObjectsByNodeIdsDAO');
+    $dao->setNodeIds(array_keys($node_ids));
+    $dao->setSiteObjectClassName('ImageObject');
 
-    $images = $datasource->fetch();
+    $images = $dao->fetch();
 
     $result = array();
     foreach($images as $node_id => $image)

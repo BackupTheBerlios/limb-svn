@@ -47,10 +47,10 @@ class LimbBaseToolkit// implements LimbToolkit
     return LimbDbTableFactory :: create($table_name);
   }
 
-  function & getDatasource($datasource_path)
+  function & createDAO($dao_path)
   {
-    include_once(LIMB_DIR . '/core/datasources/DatasourceFactory.class.php');
-    return DatasourceFactory :: create($datasource_path);
+    include_once(LIMB_DIR . '/core/dao/DAOFactory.class.php');
+    return DAOFactory :: create($dao_path);
   }
 
   function & createSiteObject($site_object_path)

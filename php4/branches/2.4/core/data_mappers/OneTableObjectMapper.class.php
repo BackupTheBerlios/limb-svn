@@ -23,17 +23,12 @@ class OneTableObjectMapper extends AbstractDataMapper
   {
     if(!$this->_db_table)
     {
-      //$db_table_name = $this->_defineDbTableName();
-
       $toolkit =& Limb :: toolkit();
       $this->_db_table =& $toolkit->createDBTable($this->_db_name);
     }
 
     return $this->_db_table;
   }
-
-  //function _defineDbTableName(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
-
 
   function load(&$record, &$domain_object)
   {

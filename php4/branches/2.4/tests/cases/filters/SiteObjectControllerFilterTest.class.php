@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/filters/SiteObjectControllerFilter.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
-require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/daos/RequestedObjectDAO.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
 require_once(LIMB_DIR . '/core/request/Response.interface.php');
@@ -21,7 +21,7 @@ require_once(LIMB_DIR . '/core/request/Response.interface.php');
 Mock :: generate('LimbToolkit');
 Mock :: generate('FilterChain');
 Mock :: generate('Request');
-Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('RequestedObjectDAO');
 Mock :: generate('SiteObject');
 Mock :: generate('SiteObjectController');
 Mock :: generate('SiteObjectBehaviour');
@@ -36,7 +36,7 @@ class SiteObjectControllerFilterTest extends LimbTestCase
   var $filter_chain;
   var $filter;
   var $request;
-  var $datasource;
+  var $dao;
   var $toolkit;
   var $site_object;
   var $controller;
@@ -51,17 +51,17 @@ class SiteObjectControllerFilterTest extends LimbTestCase
     $this->site_object = new MockSiteObject($this);
     $this->request = new MockRequest($this);
     $this->filter_chain = new MockFilterChain($this);
-    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->dao = new MockRequestedObjectDAO($this);
     $this->controller = new MockSiteObjectController($this);
     $this->behaviour = new MockSiteObjectBehaviour($this);
     $this->response = new MockResponse($this);
 
-    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
+    $this->dao->expectOnce('fetch');
 
-    $this->toolkit->setReturnReference('getDatasource',
-                                   $this->datasource,
-                                   array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO',
+                                   $this->dao,
+                                   array('RequestedObjectDAO'));
 
     $this->toolkit->setReturnReference('createSiteObject', $this->site_object, array('SiteObject'));
 
@@ -78,7 +78,7 @@ class SiteObjectControllerFilterTest extends LimbTestCase
   {
     $this->request->tally();
     $this->filter_chain->tally();
-    $this->datasource->tally();
+    $this->dao->tally();
     $this->site_object->tally();
     $this->filter->tally();
     $this->behaviour->tally();
@@ -89,7 +89,7 @@ class SiteObjectControllerFilterTest extends LimbTestCase
 
   function testRun()
   {
-    $this->datasource->setReturnValue('fetch', array('class_name' => 'SiteObject'));
+    $this->dao->setReturnValue('fetch', array('class_name' => 'SiteObject'));
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }

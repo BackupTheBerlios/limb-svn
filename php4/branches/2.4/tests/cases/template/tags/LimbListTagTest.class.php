@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
-require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
+require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 require_once(WACT_ROOT . '/template/components/page/pager.inc.php');
 
 Mock :: generate('PageNavigatorComponent');
@@ -44,7 +44,7 @@ class LimbListTagTestCase extends LimbTestCase
     $page =& new Template('/limb/list_separator_default.html');
 
     $list =& $page->getChild('test');
-    $list->registerDataSet(new ArrayDataSet($this->names));
+    $list->registerDataSet(new PagedArrayDataSet($this->names));
 
     $this->assertEqual($page->capture(), 'Alex|Serega|Pavel|John');
   }
@@ -60,7 +60,7 @@ class LimbListTagTestCase extends LimbTestCase
     $page =& new Template('/limb/list_separator_defined_step.html');
 
     $list =& $page->getChild('test');
-    $list->registerDataSet(new ArrayDataSet($this->names));
+    $list->registerDataSet(new PagedArrayDataSet($this->names));
 
     $this->assertEqual($page->capture(), 'AlexSerega|PavelJohn');
   }
@@ -76,7 +76,7 @@ class LimbListTagTestCase extends LimbTestCase
     $page =& new Template('/limb/list_row_number_no_pager.html');
 
     $list =& $page->getChild('test');
-    $list->registerDataSet(new ArrayDataSet($this->names));
+    $list->registerDataSet(new PagedArrayDataSet($this->names));
 
     $this->assertEqual($page->capture(), '1:Alex2:Serega3:Pavel4:John');
   }
@@ -93,7 +93,7 @@ class LimbListTagTestCase extends LimbTestCase
 
     $list =& $page->getChild('test');
 
-    $dataset = new ArrayDataSet($this->names);
+    $dataset = new PagedArrayDataSet($this->names);
     $pager = new MockPageNavigatorComponent($this);
     $pager->setReturnValue('getStartingItem', 3);
     $pager->setReturnValue('getItemsPerPage', 4);

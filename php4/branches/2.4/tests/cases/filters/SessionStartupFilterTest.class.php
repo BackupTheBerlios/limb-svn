@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
 require_once(LIMB_DIR . '/core/filters/SessionStartupFilter.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/session/Session.class.php');
-require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/daos/RequestedObjectDAO.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
 

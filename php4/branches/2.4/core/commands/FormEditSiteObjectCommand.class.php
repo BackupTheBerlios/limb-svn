@@ -39,10 +39,10 @@ class FormEditSiteObjectCommand extends FormCommand
   function _loadObjectData()
   {
     $toolkit =& Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
-    $datasource->setRequest($toolkit->getRequest());
+    $dao = $toolkit->createDAO('RequestedObjectDAO');
+    $dao->setRequest($toolkit->getRequest());
 
-    return $datasource->fetch();
+    return $dao->fetch();
   }
 
   function _defineDatamap()

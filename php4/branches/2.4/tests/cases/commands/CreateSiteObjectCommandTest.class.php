@@ -11,14 +11,14 @@
 require_once(LIMB_DIR . '/core/commands/CreateSiteObjectCommand.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
-require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/daos/RequestedObjectDAO.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
 require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Request');
-Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('RequestedObjectDAO');
 Mock :: generate('Dataspace');
 Mock :: generate('SiteObject');
 Mock :: generate('SiteObjectBehaviour');
@@ -37,7 +37,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
   var $command;
   var $request;
   var $toolkit;
-  var $datasource;
+  var $dao;
   var $dataspace;
   var $site_object;
   var $behaviour;
@@ -50,13 +50,13 @@ class CreateSiteObjectCommandTest extends LimbTestCase
   function setUp()
   {
     $this->request = new MockRequest($this);
-    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->dao = new MockRequestedObjectDAO($this);
     $this->dataspace = new MockDataspace($this);
     $this->site_object = new MockSiteObject($this);
     $this->behaviour = new MockSiteObjectBehaviour($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO', $this->dao, array('RequestedObjectDAO'));
     $this->toolkit->setReturnReference('getRequest', $this->request);
     $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
     $this->toolkit->setReturnReference('createBehaviour',
@@ -75,7 +75,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     Limb :: popToolkit();
 
     $this->request->tally();
-    $this->datasource->tally();
+    $this->dao->tally();
     $this->toolkit->tally();
     $this->dataspace->tally();
     $this->site_object->tally();
@@ -90,9 +90,9 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', null, array('parent_node_id'));
 
-    $this->datasource->expectOnce('fetch');
-    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
-    $this->datasource->setReturnValue('fetch', array('node_id' => 100));
+    $this->dao->expectOnce('fetch');
+    $this->dao->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
+    $this->dao->setReturnValue('fetch', array('node_id' => 100));
 
     $this->site_object->expectOnce('merge', array($data));
 
@@ -122,7 +122,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', 200, array('parent_node_id'));
 
-    $this->datasource->expectNever('fetch');
+    $this->dao->expectNever('fetch');
 
     $this->site_object->expectOnce('merge', array($data));
 
@@ -151,7 +151,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', 200, array('parent_node_id'));
 
-    $this->datasource->expectNever('fetch');
+    $this->dao->expectNever('fetch');
 
     $this->toolkit->setReturnReference('createSiteObject',
                                    new SiteObjectForCreateSiteObjectCommand(),

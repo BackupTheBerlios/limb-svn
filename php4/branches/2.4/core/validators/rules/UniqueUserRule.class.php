@@ -31,13 +31,11 @@ class UniqueUserRule extends SingleFieldRule
     $conn =& $toolkit->getDbConnection();
 
     $sql = 'SELECT *
-            FROM sys_site_object as sco, user as tn
-            WHERE sco.identifier=:identifier:
-            AND sco.id=tn.object_id
-            AND sco.current_version=tn.version';
+            FROM user as tn
+            WHERE tn.login=:login:';
 
     $stmt = $conn->newStatement($sql);
-    $stmt->setVarChar('identifier', $value);
+    $stmt->setVarChar('login', $value);
     $rs =& $stmt->getRecordSet();
 
     if($rs->getTotalRowCount() > 0)

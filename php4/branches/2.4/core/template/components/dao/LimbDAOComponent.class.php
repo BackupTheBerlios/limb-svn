@@ -11,10 +11,10 @@
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
-class LimbDatasourceComponent extends Component
+class LimbDAOComponent extends Component
 {
   var $class_path;
-  var $datasource;
+  var $dao;
   var $targets;
   var $navigator_id;
 
@@ -23,15 +23,15 @@ class LimbDatasourceComponent extends Component
     $this->class_path = $class_path;
   }
 
-  function &_getDatasource()
+  function &_createDAO()
   {
-    if ($this->datasource)
-      return $this->datasource;
+    if ($this->dao)
+      return $this->dao;
 
     $toolkit =& Limb :: toolkit();
-    $this->datasource =& $toolkit->getDatasource($this->class_path);
+    $this->dao =& $toolkit->createDAO($this->class_path);
 
-    return $this->datasource;
+    return $this->dao;
   }
 
   function setTargets($targets)
@@ -50,61 +50,13 @@ class LimbDatasourceComponent extends Component
 
   function &getDataset()
   {
-    $ds =& $this->_getDatasource();
+    $ds =& $this->_createDAO();
     return $ds->fetch();
-  }
-
-  function setParameter($name, $value)
-  {
-    if($name == 'order')
-      $this->_setOrderParameters($value);
-    else
-      $this->_setDatasourceParameter($name, $value);
-  }
-
-  function _setOrderParameters($order_string)
-  {
-    $order_items = explode(',', $order_string);
-    $order_pairs = array();
-    foreach($order_items as $order_pair)
-    {
-      $arr = explode('=', $order_pair);
-      if(!$field = trim($arr[0]))
-        continue;
-
-      if(empty($arr[1]))
-      {
-        $order_pairs[$field] = 'ASC';
-        continue;
-      }
-      else
-        $sort = trim($arr[1]);
-
-      if(strtolower($sort) == 'asc' ||
-         strtolower($sort) == 'desc' ||
-         strtolower($sort) == 'rand()')
-        $order_pairs[$field] = strtoupper($sort);
-      else
-        $order_pairs[$field] = 'ASC';
-    }
-
-    if($order_pairs)
-      $this->_setDatasourceParameter('order', $order_pairs);
   }
 
   function setNavigator($navigator_id)
   {
     $this->navigator_id = $navigator_id;
-  }
-
-  function _setDatasourceParameter($parameter, $value)
-  {
-    $ds =& $this->_getDatasource();
-
-    $method = 'set' . ucfirst($parameter);
-
-    if(method_exists($ds, $method))
-      $ds->$method($value);
   }
 
   function process()

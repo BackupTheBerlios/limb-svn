@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: SiteObjectsBranchDatasource.class.php 1034 2005-01-19 13:49:23Z pachanga $
+* $Id: SiteObjectsBranchDAO.class.php 1034 2005-01-19 13:49:23Z pachanga $
 *
 ***********************************************************************************/
 class TreeBranchCriteria

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
 require_once(LIMB_DIR . '/core/filters/LocaleDefinitionFilter.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/request/Response.interface.php');
-require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/daos/RequestedObjectDAO.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/core/i18n/Locale.class.php');
 require_once(LIMB_DIR . '/core/permissions/User.class.php');
@@ -22,7 +22,7 @@ Mock :: generate('FilterChain');
 Mock :: generate('Request');
 Mock :: generate('Locale');
 Mock :: generate('Response');
-Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('RequestedObjectDAO');
 Mock :: generate('User');
 
 Mock :: generatePartial('LocaleDefinitionFilter',
@@ -36,7 +36,7 @@ class LocaleDefinitionFilterTest extends LimbTestCase
   var $request;
   var $locale;
   var $response;
-  var $datasource;
+  var $dao;
   var $toolkit;
   var $user;
 
@@ -49,12 +49,12 @@ class LocaleDefinitionFilterTest extends LimbTestCase
     $this->response = new MockResponse($this);
     $this->locale = new MockLocale($this);
     $this->filter_chain = new MockFilterChain($this);
-    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->dao = new MockRequestedObjectDAO($this);
     $this->user = new MockUser($this);
 
-    $this->toolkit->setReturnReference('getDatasource',
-                                   $this->datasource,
-                                   array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO',
+                                   $this->dao,
+                                   array('RequestedObjectDAO'));
 
     $this->toolkit->setReturnReference('getUser', $this->user);
     $this->toolkit->setReturnReference('getLocale', $this->locale);
@@ -70,7 +70,7 @@ class LocaleDefinitionFilterTest extends LimbTestCase
     $this->request->tally();
     $this->response->tally();
     $this->filter_chain->tally();
-    $this->datasource->tally();
+    $this->dao->tally();
     $this->locale->tally();
     $this->user->tally();
 
@@ -79,8 +79,8 @@ class LocaleDefinitionFilterTest extends LimbTestCase
 
   function testRunNodeNotFound()
   {
-    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
-    $this->datasource->setReturnValue('mapRequestToNode', false);
+    $this->dao->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->dao->setReturnValue('mapRequestToNode', false);
 
     $this->toolkit->expectArgumentsAt(0, 'define', array('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID));
     $this->toolkit->expectArgumentsAt(1, 'define', array('MANAGEMENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID));
@@ -90,8 +90,8 @@ class LocaleDefinitionFilterTest extends LimbTestCase
 
   function testRunNodeFound1()
   {
-    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
-    $this->datasource->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
+    $this->dao->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->dao->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
 
     $this->filter->expectOnce('_findSiteObjectLocaleId', array($object_id));
     $this->filter->setReturnValue('_findSiteObjectLocaleId', $locale_id = 'fr');
@@ -111,8 +111,8 @@ class LocaleDefinitionFilterTest extends LimbTestCase
 
   function testRunNodeFound2()
   {
-    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
-    $this->datasource->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
+    $this->dao->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->dao->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
 
     $this->filter->expectOnce('_findSiteObjectLocaleId', array($object_id));
     $this->filter->setReturnValue('_findSiteObjectLocaleId', $locale_id = 'fr');
@@ -129,8 +129,8 @@ class LocaleDefinitionFilterTest extends LimbTestCase
 
   function testRunNodeFound3()
   {
-    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
-    $this->datasource->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
+    $this->dao->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->dao->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
 
     $this->filter->expectOnce('_findSiteObjectLocaleId', array($object_id));
     $this->filter->setReturnValue('_findSiteObjectLocaleId', null);
@@ -148,8 +148,8 @@ class LocaleDefinitionFilterTest extends LimbTestCase
 
   function testRunNodeFound4()
   {
-    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
-    $this->datasource->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
+    $this->dao->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->dao->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
 
     $this->filter->expectOnce('_findSiteObjectLocaleId', array($object_id));
     $this->filter->setReturnValue('_findSiteObjectLocaleId', null);

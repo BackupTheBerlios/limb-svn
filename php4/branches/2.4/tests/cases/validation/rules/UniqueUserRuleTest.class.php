@@ -27,21 +27,23 @@ class UniqueUserRuleTest extends SingleFieldRuleTestCase
     parent :: setUp();
 
     $this->db =& new SimpleDb(LimbDbPool :: getConnection());
-    $this->db->delete('user');
-    $this->db->delete('sys_site_object');
 
-    $this->db->insert('sys_site_object', array('id' => 1, 'identifier' => 'vasa', 'class_id' => '1', 'current_version' => '1'));
-    $this->db->insert('sys_site_object', array('id' => 2, 'identifier' => 'sasa', 'class_id' => '1', 'current_version' => '1'));
-    $this->db->insert('user', array('id' => 1, 'name' => 'Vasa', 'password' => '1', 'version' => '1', 'object_id' => '1'));
-    $this->db->insert('user', array('id' => 2, 'name' => 'Sasa', 'password' => '1', 'version' => '1', 'object_id' => '2'));
+    $this->_cleanUp();
+
+    $this->db->insert('user', array('id' => 1, 'login' => 'vasa', 'name' => 'Vasa', 'password' => '1'));
+    $this->db->insert('user', array('id' => 2, 'login' => 'sasa', 'name' => 'Sasa', 'password' => '1'));
   }
 
   function tearDown()
   {
     parent :: tearDown();
 
+    $this->_cleanUp();
+  }
+
+  function _cleanUp()
+  {
     $this->db->delete('user');
-    $this->db->delete('sys_site_object');
   }
 
   function testUniqueUserRuleCorrect()

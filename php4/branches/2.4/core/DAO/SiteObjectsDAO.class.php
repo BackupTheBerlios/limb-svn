@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/dao/DAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 
-class SiteObjectsDAO extends DAO
+class SiteObjectsDAO extends SQLBasedDAO
 {
   function & _initSQL()
   {

@@ -8,13 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/file_resolvers/FileResolverDecorator.class.php');
 
-class DAO
+class DAOFileResolver extends FileResolverDecorator
 {
-  function & fetch()
+  function resolve($class_path, $params = array())
   {
-    include_once(WACT_ROOT . '/iterator/iterator.inc.php');
-    return new EmptyIterator();
+    if(file_exists(LIMB_DIR . '/core/dao/' . $class_path . '.class.php'))
+      return LIMB_DIR . '/core/dao/' . $class_path . '.class.php';
+
+    return $this->_resolver->resolve('dao/' . $class_path . '.class.php', $params);
   }
 }
 

@@ -14,7 +14,7 @@ class LimbToolkit
   function define($key, $value){}
   function constant($key){}
   function createDBTable($table_name){}
-  function getDatasource($datasource_path){}
+  function createDAO($dao_path){}
   function createSiteObject($site_object_path){}
   function createDataMapper($mapper_path){}
   function createBehaviour($behaviour_path){}

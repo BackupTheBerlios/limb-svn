@@ -39,10 +39,10 @@ class LimbBaseToolkitTest extends LimbTestCase
                      'SysSiteObjectDbTable');
   }
 
-  function testGetDatasource()
+  function testCreateDAO()
   {
-    $this->assertIsA($this->toolkit->getDatasource('SiteObjectsDatasource'),
-                     'SiteObjectsDatasource');
+    $this->assertIsA($this->toolkit->createDAO('DAO'),
+                     'DAO');
   }
 
   function testCreateSiteObject()

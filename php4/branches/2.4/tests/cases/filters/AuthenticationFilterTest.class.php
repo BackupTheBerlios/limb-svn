@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/filters/AuthenticationFilter.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
-require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/daos/RequestedObjectDAO.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
@@ -24,7 +24,7 @@ require_once(LIMB_DIR . '/core/util/Ini.class.php');
 Mock :: generate('LimbToolkit');
 Mock :: generate('FilterChain');
 Mock :: generate('HttpResponse');
-Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('RequestedObjectDAO');
 Mock :: generate('Request');
 Mock :: generate('SiteObjectController');
 Mock :: generate('SiteObjectBehaviour');
@@ -45,7 +45,7 @@ class AuthenticationFilterTest extends LimbTestCase
   var $filter_chain;
   var $filter;
   var $request;
-  var $datasource;
+  var $dao;
   var $toolkit;
   var $response;
   var $ini;
@@ -59,7 +59,7 @@ class AuthenticationFilterTest extends LimbTestCase
 
     $this->toolkit->setReturnReference('getINI', $this->ini);
 
-    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->dao = new MockRequestedObjectDAO($this);
     $this->request = new MockRequest($this);
     $this->filter_chain = new MockFilterChain($this);
     $this->response = new MockHttpResponse($this);
@@ -148,11 +148,11 @@ class AuthenticationFilterTest extends LimbTestCase
 
   function testRunNodeNotFound()
   {
-    $this->toolkit->setReturnReference('getDatasource',
-                                   $this->datasource,
-                                   array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO',
+                                   $this->dao,
+                                   array('RequestedObjectDAO'));
 
-    $this->datasource->setReturnValue('mapRequestToNode',
+    $this->dao->setReturnValue('mapRequestToNode',
                                       null,
                                       array(new IsAExpectation('MockRequest')));
 
@@ -164,11 +164,11 @@ class AuthenticationFilterTest extends LimbTestCase
 
   function testRunNoSuchAction()
   {
-    $this->toolkit->setReturnReference('getDatasource',
-                                   $this->datasource,
-                                   array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO',
+                                   $this->dao,
+                                   array('RequestedObjectDAO'));
 
-    $this->datasource->setReturnValue('mapRequestToNode',
+    $this->dao->setReturnValue('mapRequestToNode',
                                       array('object_id' => $object_id = 100),
                                       array(new IsAExpectation('MockRequest')));
 
@@ -191,11 +191,11 @@ class AuthenticationFilterTest extends LimbTestCase
 
   function testRunObjectIsNotAccessible()
   {
-    $this->toolkit->setReturnReference('getDatasource',
-                                   $this->datasource,
-                                   array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO',
+                                   $this->dao,
+                                   array('RequestedObjectDAO'));
 
-    $this->datasource->setReturnValue('mapRequestToNode',
+    $this->dao->setReturnValue('mapRequestToNode',
                                       array('object_id' => $object_id = 100),
                                       array(new IsAExpectation('MockRequest')));
 
@@ -210,10 +210,10 @@ class AuthenticationFilterTest extends LimbTestCase
 
     $controller->setReturnValue('getRequestedAction', $action = 'someAction');
 
-    $this->datasource->expectOnce('setPermissionsAction', array($action));
-    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
+    $this->dao->expectOnce('setPermissionsAction', array($action));
+    $this->dao->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
 
-    $this->datasource->setReturnValue('fetch', null);
+    $this->dao->setReturnValue('fetch', null);
 
     $this->response->expectOnce('redirect');
 
@@ -224,11 +224,11 @@ class AuthenticationFilterTest extends LimbTestCase
 
   function testRunOk()
   {
-    $this->toolkit->setReturnReference('getDatasource',
-                                   $this->datasource,
-                                   array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO',
+                                   $this->dao,
+                                   array('RequestedObjectDAO'));
 
-    $this->datasource->setReturnValue('mapRequestToNode',
+    $this->dao->setReturnValue('mapRequestToNode',
                                       array('object_id' => $object_id = 100),
                                       array(new IsAExpectation('MockRequest')));
 
@@ -243,10 +243,10 @@ class AuthenticationFilterTest extends LimbTestCase
 
     $controller->setReturnValue('getRequestedAction', $action = 'someAction');
 
-    $this->datasource->expectOnce('setPermissionsAction', array($action));
-    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
+    $this->dao->expectOnce('setPermissionsAction', array($action));
+    $this->dao->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
 
-    $this->datasource->setReturnValue('fetch', $result = 'someFetchResult');
+    $this->dao->setReturnValue('fetch', $result = 'someFetchResult');
 
     $this->response->expectNever('redirect');
 

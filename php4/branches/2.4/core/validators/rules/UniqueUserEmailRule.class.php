@@ -12,29 +12,27 @@ require_once(WACT_ROOT . '/validation/rule.inc.php');
 
 class UniqueUserEmailRule extends SingleFieldRule
 {
-  var $current_identifier = '';
+  var $current_email = '';
 
-  function UniqueUserEmailRule($field_name, $current_identifier='')
+  function UniqueUserEmailRule($field_name, $email='')
   {
-    $this->current_identifier = $current_identifier;
+    $this->current_email = $email;
 
     parent :: SingleFieldRule($field_name);
   }
 
   function check($value)
   {
-    if(	$this->current_identifier &&
-        $this->current_identifier == $value)
+    if(	$this->current_email &&
+        $this->current_email == $value)
       return;
 
     $toolkit =& Limb :: toolkit();
     $conn =& $toolkit->getDbConnection();
 
     $sql = 'SELECT *
-            FROM sys_site_object as sco, user as tn
-            WHERE tn.email=:email:
-            AND sco.id=tn.object_id
-            AND sco.current_version=tn.version';
+            FROM user as tn
+            WHERE tn.email=:email:';
 
     $stmt = $conn->newStatement($sql);
     $stmt->setVarChar('email', $value);

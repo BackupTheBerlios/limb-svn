@@ -68,9 +68,9 @@ class CreateSiteObjectCommand// implements Command
   function _loadParentObjectData()
   {
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
-    $datasource->setRequest($toolkit->getRequest());
-    return $datasource->fetch();
+    $dao = $toolkit->createDAO('RequestedObjectDAO');
+    $dao->setRequest($toolkit->getRequest());
+    return $dao->fetch();
   }
 
   function _defineSiteObjectClassName()

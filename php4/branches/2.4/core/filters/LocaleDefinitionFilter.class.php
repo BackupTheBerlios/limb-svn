@@ -20,9 +20,9 @@ class LocaleDefinitionFilter// implements InterceptingFilter
 
     $locale->setlocale();
 
-    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
+    $dao =& $toolkit->createDAO('RequestedObjectDAO');
 
-    if(!$node = $datasource->mapRequestToNode($request))
+    if(!$node = $dao->mapRequestToNode($request))
     {
       $toolkit->define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
       $toolkit->define('MANAGEMENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);

@@ -19,9 +19,9 @@ class AuthenticationFilter// implements InterceptingFilter
     $this->initializeUser();
 
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $dao = $toolkit->createDAO('RequestedObjectDAO');
 
-    if(!$node = $datasource->mapRequestToNode($request))
+    if(!$node = $dao->mapRequestToNode($request))
     {
       $this->process404Error($request, $response);
       $filter_chain->next();
@@ -38,10 +38,10 @@ class AuthenticationFilter// implements InterceptingFilter
       return;
     }
 
-    $datasource->setRequest($request);
-    $datasource->setPermissionsAction($action);
+    $dao->setRequest($request);
+    $dao->setPermissionsAction($action);
 
-    if(!$object_data = $datasource->fetch())
+    if(!$object_data = $dao->fetch())
     {
       $response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
       return;

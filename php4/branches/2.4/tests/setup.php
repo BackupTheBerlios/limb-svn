@@ -33,7 +33,7 @@ require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_registry.inc.php');
 include_once(LIMB_DIR . '/core/file_resolvers/PackageFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/DbTableFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/BehaviourFileResolver.class.php');
-include_once(LIMB_DIR . '/core/file_resolvers/DatasourceFileResolver.class.php');
+include_once(LIMB_DIR . '/core/file_resolvers/DAOFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/SiteObjectFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/TemplateFileResolver.class.php');
 
@@ -43,7 +43,7 @@ registerFileResolver('strings',     LIMB_DIR . '/tests/lib/TestsStringsFileResol
 registerFileResolver('db_table',    new DbTableFileResolver(new PackageFileResolver()));
 registerFileResolver('template',    new TemplateFileResolver(new PackageFileResolver()));
 registerFileResolver('behaviour',   new BehaviourFileResolver(new PackageFileResolver()));
-registerFileResolver('datasource',  new DatasourceFileResolver(new PackageFileResolver()));
+registerFileResolver('dao',  new DAOFileResolver(new PackageFileResolver()));
 registerFileResolver('site_object', new SiteObjectFileResolver(new PackageFileResolver()));
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');

@@ -12,11 +12,11 @@ require_once(LIMB_DIR . '/core/cache/ImageCacheManager.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/http/Uri.class.php');
 require_once(LIMB_DIR . '/core/permissions/User.class.php');
-require_once(LIMB_DIR . '/core/datasources/SiteObjectsByNodeIdsDatasource.class.php');
+require_once(LIMB_DIR . '/core/daos/SiteObjectsByNodeIdsDAO.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 
 Mock :: generate('Uri');
-Mock :: generate('SiteObjectsByNodeIdsDatasource');
+Mock :: generate('SiteObjectsByNodeIdsDAO');
 Mock :: generate('LimbToolkit');
 
 Mock :: generatePartial(
@@ -42,7 +42,7 @@ class ImageCacheManagerTest extends LimbTestCase
   var $cache_manager;
   var $cache_manager2;
   var $uri;
-  var $datasource;
+  var $dao;
   var $toolkit;
 
   function ImageCacheManagerTest()
@@ -53,7 +53,7 @@ class ImageCacheManagerTest extends LimbTestCase
   function setUp()
   {
     $this->uri = new MockUri($this);
-    $this->datasource = new MockSiteObjectsByNodeIdsDatasource($this);
+    $this->dao = new MockSiteObjectsByNodeIdsDAO($this);
 
     $this->cache_manager = new ImageCacheManagerTestVersion($this);
     $this->cache_manager->setUri($this->uri);
@@ -62,9 +62,9 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnValue('isCacheable', true);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnReference('getDatasource',
-                                   $this->datasource,
-                                   array('SiteObjectsByNodeIdsDatasource'));
+    $this->toolkit->setReturnReference('createDAO',
+                                   $this->dao,
+                                   array('SiteObjectsByNodeIdsDAO'));
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -74,7 +74,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager->tally();
     $this->cache_manager2->tally();
     $this->uri->tally();
-    $this->datasource->tally();
+    $this->dao->tally();
 
     Limb :: popToolkit();
   }
@@ -279,7 +279,7 @@ class ImageCacheManagerTest extends LimbTestCase
   {
     $this->cache_manager2->processContent($c = '');
     $this->assertIdentical($c, '');
-    $this->toolkit->expectNever('getDatasource');
+    $this->toolkit->expectNever('createDAO');
   }
 
   function testProcessImgTag()
@@ -289,11 +289,11 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->expectOnce('_isImageCached');
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
-    $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setNodeIds', array(array(1)));
+    $this->dao->expectOnce('setSiteObjectClassName', array('ImageObject'));
+    $this->dao->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->setReturnValue('fetch',
       array(
         1 => array(
           'identifier' => 'testImage',
@@ -327,11 +327,11 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnValue('_getCachedImageExtension', '.jpg', array(2, 'thumbnail'));
     $this->cache_manager2->setReturnValue('_getCachedImageExtension', false, array(2, 'thumbnail'));
 
-    $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setNodeIds', array(array(1)));
+    $this->dao->expectOnce('setSiteObjectClassName', array('ImageObject'));
+    $this->dao->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->setReturnValue('fetch',
       array(
         1 => array(
           'identifier' => 'testImage',
@@ -361,11 +361,11 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->expectOnce('_isImageCached');
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
-    $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setNodeIds', array(array(1)));
+    $this->dao->expectOnce('setSiteObjectClassName', array('ImageObject'));
+    $this->dao->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->setReturnValue('fetch',
       array(
         1 => array(
           'identifier' => 'testImage',
@@ -392,11 +392,11 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->expectOnce('_isImageCached');
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
-    $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setNodeIds', array(array(1)));
+    $this->dao->expectOnce('setSiteObjectClassName', array('ImageObject'));
+    $this->dao->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->setReturnValue('fetch',
       array(
         1 => array(
           'identifier' => 'testImage',
@@ -423,11 +423,11 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->expectOnce('_isImageCached');
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
-    $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setNodeIds', array(array(1)));
+    $this->dao->expectOnce('setSiteObjectClassName', array('ImageObject'));
+    $this->dao->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->setReturnValue('fetch',
       array(
         1 => array(
           'identifier' => 'testImage',
@@ -454,11 +454,11 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->expectCallCount('_isImageCached', 2);
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
-    $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setNodeIds', array(array(1)));
+    $this->dao->expectOnce('setSiteObjectClassName', array('ImageObject'));
+    $this->dao->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->setReturnValue('fetch',
       array(
         1 => array(
           'identifier' => 'testImage',
@@ -493,11 +493,11 @@ class ImageCacheManagerTest extends LimbTestCase
     $cache_manager = new ImageCacheManagerTestVersion3($this);
     $cache_manager->setReturnValue('isCacheable', true);
 
-    $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setNodeIds', array(array(1)));
+    $this->dao->expectOnce('setSiteObjectClassName', array('ImageObject'));
+    $this->dao->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->setReturnValue('fetch',
       array(
         1 => array(
           'identifier' => 'testImage',
@@ -524,11 +524,11 @@ class ImageCacheManagerTest extends LimbTestCase
     $cache_manager = new ImageCacheManagerTestVersion3($this);
     $cache_manager->setReturnValue('isCacheable', true);
 
-    $this->datasource->expectOnce('setNodeIds', array(array(1)));
-    $this->datasource->expectOnce('setSiteObjectClassName', array('ImageObject'));
-    $this->datasource->expectOnce('fetch');
+    $this->dao->expectOnce('setNodeIds', array(array(1)));
+    $this->dao->expectOnce('setSiteObjectClassName', array('ImageObject'));
+    $this->dao->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->setReturnValue('fetch',
       array(
         1 => array(
           'identifier' => 'testImage',

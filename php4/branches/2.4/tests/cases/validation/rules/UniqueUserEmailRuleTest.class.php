@@ -28,22 +28,23 @@ class UniqueEmailUserRuleTest extends SingleFieldRuleTestCase
 
     $this->db =& new SimpleDb(LimbDbPool :: getConnection());
 
-    $this->db->delete('user');
-    $this->db->delete('sys_site_object');
+    $this->_cleanUp();
 
-    $this->db->insert('sys_site_object', array('id' => 1, 'identifier' => 'vasa', 'class_id' => '1', 'current_version' => '1'));
-    $this->db->insert('sys_site_object', array('id' => 2, 'identifier' => 'sasa', 'class_id' => '1', 'current_version' => '1'));
-    $this->db->insert('user', array('id' => 1, 'name' => 'Vasa',' email' => '1@1.1', 'password' => '1', 'version' => '1', 'object_id' => '1'));
-    $this->db->insert('user', array('id' => 2, 'name' => 'Sasa', 'email' => '2@2.2', 'password' => '1', 'version' => '1', 'object_id' => '2'));
-    $this->db->insert('user', array('id' => 3, 'name' => 'Sasa', 'email' => '3@3.3', 'password' => '1', 'version' => '2', 'object_id' => '2'));
+    $this->db->delete('user');
+    $this->db->insert('user', array('id' => 1, 'login' => 'vasa', 'name' => 'Vasa',' email' => '1@1.1', 'password' => '1'));
+    $this->db->insert('user', array('id' => 2, 'login' => 'sasa', 'name' => 'Sasa', 'email' => '2@2.2', 'password' => '1'));
   }
 
   function tearDown()
   {
     parent :: tearDown();
 
+    $this->_cleanUp();
+  }
+
+  function _cleanUp()
+  {
     $this->db->delete('user');
-    $this->db->delete('sys_site_object');
   }
 
   function testUniqueUserEmailRuleCorrect()
@@ -66,7 +67,9 @@ class UniqueEmailUserRuleTest extends SingleFieldRuleTestCase
     $data = new Dataspace();
     $data->set('test', '2@2.2');
 
-    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_DUPLICATE_USER', array('Field' => 'test'), NULL));
+    $this->ErrorList->expectOnce('addError', array('validation',
+                                                   'ERROR_DUPLICATE_USER',
+                                                   array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());

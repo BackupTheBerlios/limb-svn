@@ -14,10 +14,10 @@ class DeleteSiteObjectCommand// implements Command
   function _getObjectToDelete()
   {
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
-    $datasource->setRequest($toolkit->getRequest());
+    $dao = $toolkit->createDAO('RequestedObjectDAO');
+    $dao->setRequest($toolkit->getRequest());
 
-    return wrapWithSiteObject($datasource->fetch());
+    return wrapWithSiteObject($dao->fetch());
   }
 
   function perform()

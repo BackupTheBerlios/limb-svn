@@ -12,11 +12,11 @@ require_once(LIMB_DIR . '/core/commands/EditSiteObjectCommand.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
-require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/daos/RequestedObjectDAO.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Request');
-Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('RequestedObjectDAO');
 Mock :: generate('Dataspace');
 Mock :: generate('SiteObject');
 
@@ -34,7 +34,7 @@ class EditSiteObjectCommandTest extends LimbTestCase
   var $command;
   var $request;
   var $toolkit;
-  var $datasource;
+  var $dao;
   var $dataspace;
   var $site_object;
 
@@ -46,12 +46,12 @@ class EditSiteObjectCommandTest extends LimbTestCase
   function setUp()
   {
     $this->request = new MockRequest($this);
-    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->dao = new MockRequestedObjectDAO($this);
     $this->dataspace = new MockDataspace($this);
     $this->site_object = new MockSiteObject($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO', $this->dao, array('RequestedObjectDAO'));
     $this->toolkit->setReturnReference('getRequest', $this->request);
     $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
 
@@ -67,7 +67,7 @@ class EditSiteObjectCommandTest extends LimbTestCase
     Limb :: popToolkit();
 
     $this->request->tally();
-    $this->datasource->tally();
+    $this->dao->tally();
     $this->toolkit->tally();
     $this->dataspace->tally();
     $this->site_object->tally();
@@ -89,9 +89,9 @@ class EditSiteObjectCommandTest extends LimbTestCase
                                                      'title' => 'test',
                                                      ));
 
-    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
-    $this->datasource->expectOnce('fetch');
-    $this->datasource->setReturnValue('fetch',
+    $this->dao->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
+    $this->dao->expectOnce('fetch');
+    $this->dao->setReturnValue('fetch',
                                    array('nodeId' => 100,
                                          'someOtherAttrib' => 'someValue'));
 

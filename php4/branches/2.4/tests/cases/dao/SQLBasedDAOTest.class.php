@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/dao/DAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/dao/criteria/Criteria.class.php');
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
@@ -19,19 +19,19 @@ Mock :: generate('ComplexSelectSQL');
 Mock :: generate('LimbToolkit');
 Mock :: generate('MySQLConnection');
 Mock :: generate('MySqlQueryStatement');
-Mock :: generatePartial('DAO', 'DAOTestVersion',
+Mock :: generatePartial('SQLBasedDAO', 'SQLBasedDAOTestVersion',
                  array('_initSQL'));
 
-class DAOTest extends LimbTestCase
+class SQLBasedDAOTest extends LimbTestCase
 {
   var $dao;
   var $sql;
   var $conn;
   var $stmt;
 
-  function DAOTest()
+  function SQLBasedDAOTest()
   {
-    parent :: LimbTestCase('DAO test');
+    parent :: LimbTestCase('SQLBasedDAO test');
   }
 
   function setUp()
@@ -43,7 +43,7 @@ class DAOTest extends LimbTestCase
     $toolkit = new MockLimbToolkit($this);
     $toolkit->setReturnReference('getDbConnection', $this->conn);
 
-    $this->dao = new DAOTestVersion($this);
+    $this->dao = new SQLBasedDAOTestVersion($this);
     $this->dao->setReturnReference('_initSQL', $this->sql);
 
     $this->dao->DAO();

@@ -11,13 +11,13 @@
 require_once(LIMB_DIR . '/core/commands/FormCreateSiteObjectCommand.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/core/daos/RequestedObjectDAO.class.php');
 
 require_once(WACT_ROOT . '/validation/validator.inc.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Request');
-Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('RequestedObjectDAO');
 Mock :: generate('Validator');
 Mock :: generate('Dataspace');
 
@@ -32,7 +32,7 @@ class FormCreateSiteObjectCommandTest extends LimbTestCase
   var $command;
   var $request;
   var $toolkit;
-  var $datasource;
+  var $dao;
   var $validator;
   var $dataspace;
 
@@ -44,12 +44,12 @@ class FormCreateSiteObjectCommandTest extends LimbTestCase
   function setUp()
   {
     $this->request = new MockRequest($this);
-    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->dao = new MockRequestedObjectDAO($this);
     $this->validator = new MockValidator($this);
     $this->dataspace = new MockDataspace($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('createDAO', $this->dao, array('RequestedObjectDAO'));
     $this->toolkit->setReturnReference('getRequest', $this->request);
     $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array('test_form'));
 
@@ -68,7 +68,7 @@ class FormCreateSiteObjectCommandTest extends LimbTestCase
     Limb :: popToolkit();
 
     $this->request->tally();
-    $this->datasource->tally();
+    $this->dao->tally();
     $this->toolkit->tally();
     $this->validator->tally();
     $this->dataspace->tally();
@@ -81,9 +81,9 @@ class FormCreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->expectOnce('get', array('parentNodeId'));
     $this->dataspace->setReturnValue('get', null);
 
-    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
-    $this->datasource->expectOnce('fetch');
-    $this->datasource->setReturnValue('fetch', $object_data);
+    $this->dao->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
+    $this->dao->expectOnce('fetch');
+    $this->dao->setReturnValue('fetch', $object_data);
 
     $this->validator->expectCallCount('addRule', 2);
     $this->validator->expectArgumentsAt(0, 'addRule', array(array(LIMB_DIR . '/core/validators/rules/treeNodeIdRule', 'parentNodeId')));
@@ -97,7 +97,7 @@ class FormCreateSiteObjectCommandTest extends LimbTestCase
     $this->dataspace->expectOnce('get', array('parentNodeId'));
     $this->dataspace->setReturnValue('get', 100);
 
-    $this->datasource->expectNever('fetch');
+    $this->dao->expectNever('fetch');
 
     $this->validator->expectCallCount('addRule', 2);
     $this->validator->expectArgumentsAt(0, 'addRule', array(array(LIMB_DIR . '/core/validators/rules/treeNodeIdRule', 'parentNodeId')));
