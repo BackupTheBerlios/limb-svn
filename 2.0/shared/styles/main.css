@@ -70,9 +70,3 @@ a.menu_selected_links{font-weight:bold;}
 			filter:progid:DXImageTransform.Microsoft.Shadow(color=#cccccc, Direction=135, Strength=4) }
 
 .checkbox{behavior:url('/shared/htcs/checkbox.htc');width:1px;height:1px;}
-
-@font-face {
-    font-family: compact;
-    font-style:  normal;
-    font-weight: normal;
-    src: url('/shared/fonts/compact.eot')}

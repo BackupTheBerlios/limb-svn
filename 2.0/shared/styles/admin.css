@@ -26,7 +26,7 @@ th{text-align: left; padding:4px 5px 4px 5px}
 .title{font:15pt Compact, Verdana, sans; color:#6171AD}
 /*list*/
 
-li{list-style-image:url(../images/marker1.gif);padding:0 0 10px 0}
+li{padding:0 0 10px 0}
 ul, ol{margin:0 0 0 25px;}
 ul.list{margin:0 0 0 10px;font:bold 9pt Arial, sans;}
 ul.list li{padding:0 0 0px 10px; font:normal 8pt Verdana, sans;list-style-image:url();}
@@ -47,8 +47,8 @@ a:hover{text-decoration:underline}
 .pager a{font:bold 10pt Arial, sans;}
 
 /*design*/
-.btitle1{background-image:URL('/shared/images/admin/btitle.gif'); text-align:right; padding:7px 10px 6px 3px;}
-.btitle2{background-image:URL('/shared/images/admin/btitle.gif'); padding:7px 10px 6px 30px;}
+.btitle1{ text-align:right; padding:7px 10px 6px 3px;}
+.btitle2{ padding:7px 10px 6px 30px;}
 .border1{border:solid 1px #E4E4E4; background-color:#FBFBFB;}
 .border2{border:solid 1px #F3F3F3}
 .border3{border:solid 1px #CACEDB}
