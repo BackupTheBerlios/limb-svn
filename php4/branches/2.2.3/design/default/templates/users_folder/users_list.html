@@ -1,25 +1,30 @@
 <grid:LIST id='users'>
-<table width=100%>
+<table>
 	<tr>
 		<th><grid:SELECTORS_TOGGLER></th>
 		<th><locale:STRING name='login' file='user'></th>
 		<th><locale:STRING name='email'></th>
 		<th><locale:STRING name='name' file='user'></th>
 		<th><locale:STRING name='lastname' file='user'></th>
-		<th><locale:STRING name='created_date'></th>
-		<th><locale:STRING name='modified_date'></th>
 		<th><locale:STRING name='actions'></th>
 	</tr>
 	<grid:ITERATOR>
 	<tr class="jip">
 		<td><core:INCLUDE file="/admin/selector.html"></td>
-		<td jip='object' class='jip_object'>{$identifier}</td>
+		<td jip='object' class='jip_object'>
+		{$identifier}
+	    <hint>
+		    <hint:CONTENT>		    
+        <locale:STRING name='created_date'>:  <locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'><br>
+        <locale:STRING name='modified_date'>:  <locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'>
+        </hint:CONTENT>
+	    </hint>
+		
+		</td>
 		<td><a href='mailto:{$email}'>{$email}</a></td>
 		<td>{$name}</td>
 		<td>{$lastname}</td>
-		<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
-		<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
-		<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+		<td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
 	</tr>
 	</grid:ITERATOR>
 	<tr>
