@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
+require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date_time_zone.class.php');
 
 define('DATE_FORMAT_ISO', "%Y-%m-%d %T"); //YYYY-MM-DD HH:MM:SS

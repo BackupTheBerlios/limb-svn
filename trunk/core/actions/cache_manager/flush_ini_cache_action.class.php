@@ -9,34 +9,19 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
+require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
 
-class recover_version_action extends action
+class flush_ini_cache_action extends action
 {
 	function perform(&$request, &$response)
 	{
+	  $files = dir :: find_subitems(CACHE_DIR, 'f');
+	  foreach($files as $file)
+	    unlink($file);
+	  
 		if($request->has_attribute('popup'))
 		  $response->write_response_string(close_popup_no_parent_reload_response());
-	
-	  $request->set_status(REQUEST_STATUS_FAILURE);
 	  
-		if(!$version = $request->get_attribute('version'))
-			return;
-
-		if(!$node_id = $request->get_attribute('version_node_id'))
-	    return;
-			
-		if(!$site_object = wrap_with_site_object(fetch_one_by_node_id((int)$node_id)))
-			return;
-		
-		if(!is_subclass_of($site_object, 'content_object'))
-			return;
-
-		if(!$site_object->recover_version((int)$version))
-		  return;
-
-		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_response($request));
-	
 	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}
 }

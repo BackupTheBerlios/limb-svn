@@ -10,8 +10,8 @@
 ***********************************************************************************/
 
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
-require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
-require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
+require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
+require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
 require_once(LIMB_DIR . 'core/lib/util/mime_type.class.php');
 

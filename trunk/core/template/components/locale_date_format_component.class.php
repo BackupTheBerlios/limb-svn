@@ -11,7 +11,7 @@
 
 
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
-require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
+require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
 
 
 class locale_date_format_component extends component

@@ -169,6 +169,16 @@ class full_page_cache_manager
     return file_exists(PAGE_CACHE_DIR . $id);
   }
   
+  function flush()
+  {
+    $files = dir :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^f]~');
+
+    foreach($files as $file)
+    {
+      unlink($file);
+    }  
+  }
+  
   function read_cache()
   {
     if(!$id = $this->get_cache_id())

@@ -13,6 +13,8 @@ require_once(LIMB_DIR . 'core/template/components/form/input_form_element.class.
 
 class grid_input_component extends input_form_element
 {
+  var $hash_id = 'node_id';
+  
 	function get_value()
 	{
 		$list =& $this->find_parent_by_class('list_component');
@@ -23,12 +25,22 @@ class grid_input_component extends input_form_element
 	function set_value($value)
 	{
 	}
-	
+
+	function render_attributes()
+	{ 
+	  if (isset($this->attributes['hash_id']))
+	    $this->hash_id = $this->attributes['hash_id'];
+	    
+	  unset($this->attributes['hash_id']);
+	  
+	  parent :: render_attributes();
+	}
+		
 	function _process_name_attribute($value)
 	{
 		$list =& $this->find_parent_by_class('list_component');
-
-		return 'grid_form' . $this->_make_index_name($value) . '[' . $list->get('node_id') . ']';
+    
+		return 'grid_form' . $this->_make_index_name($value) . '[' . $list->get($this->hash_id) . ']';
 	}
 	
 } 

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/lib/mail/mime_mail_part.class.php');
-require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
+require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
 
 class mime_mail
 {

@@ -14,6 +14,7 @@
 */
 class control_tag extends server_tag_component_tag
 {
+  
 	/**
 	* Returns the identifying server ID. It's value it determined in the
 	* following order;

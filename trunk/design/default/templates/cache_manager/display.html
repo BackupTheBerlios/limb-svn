@@ -1,0 +1,29 @@
+<core:WRAP file="/admin/page.html" placeholder="content">
+
+<form name='cache_manager' id='cache_manager' method='post'>
+
+  <control_button action='flush_full_page_cache&popup=1'>
+  <locale:STRING name='flush_full_page_cache' file='cache_manager'>
+  </control_button>
+  
+  <br><br>
+  
+  <control_button action='flush_partial_page_cache&popup=1'>
+  <locale:STRING name='flush_partial_page_cache' file='cache_manager'>
+  </control_button>
+  
+  <br><br>
+  
+  <control_button action='flush_ini_cache&popup=1'>
+  <locale:STRING name='flush_ini_cache' file='cache_manager'>
+  </control_button>
+  
+  <br><br>
+  
+  <control_button action='flush_template_cache&popup=1'>
+  <locale:STRING name='flush_template_cache' file='cache_manager'>
+  </control_button>
+  
+  <br><br>
+
+</form>

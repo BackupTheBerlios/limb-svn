@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
-require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
+require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
 	
 class article_controller extends site_object_controller
 {

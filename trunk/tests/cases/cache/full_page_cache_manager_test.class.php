@@ -538,8 +538,29 @@ class full_page_cache_manager_test extends UnitTestCase
     
     $this->assertTrue($cache_manager->write($contents));
     $this->assertEqual($this->_read_simple_cache($cache_id), $contents);
+
+    $this->_clean_simple_cache($cache_id);
     
     $cache_manager->tally();
+  }
+  
+  function test_flush()
+  {
+    $this->_write_simple_cache('f_test1', $content1 = 'test-content1');
+    $this->_write_simple_cache('f_test2', $content2 ='test-content2');
+    $this->_write_simple_cache('not_page_file', $content3 ='test-content3');
+    
+    $cache_manager =& new full_page_cache_manager();
+    $cache_manager->flush();
+    
+    $files = dir :: find_subitems(PAGE_CACHE_DIR);
+    
+    $this->assertEqual(sizeof($files), 1);
+    
+    $file = reset($files);
+    $this->assertEqual(dir :: clean_path($file), dir :: clean_path(PAGE_CACHE_DIR . dir :: separator() . 'not_page_file'));
+
+    $this->_clean_simple_cache('not_page_file');
   }
       
   function _write_cache($path, $attributes, $contents='test')

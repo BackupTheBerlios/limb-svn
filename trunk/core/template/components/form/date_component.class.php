@@ -12,7 +12,7 @@
 
 require_once(LIMB_DIR . 'core/template/components/form/input_form_element.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
-require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
+require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
 
 class date_component extends input_form_element
 {

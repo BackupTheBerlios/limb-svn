@@ -8,20 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
-require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
-require_once(LIMB_DIR . 'core/lib/security/user.class.php');
+require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
-class available_locales_datasource extends datasource
-{	
-	function get_options_array()
+class cache_manager extends site_object
+{
+	function _define_class_properties()
 	{
-		return locale :: get_available_locales_data();
-	}
-	
-	function get_default_option()
-	{
-		return MANAGEMENT_LOCALE_ID;
+		return array(
+			'class_ordr' => 1,
+			'can_be_parent' => 0,
+			'controller_class_name' => 'cache_manager_controller',
+		);
 	}
 }
+
 ?>
