@@ -74,7 +74,9 @@ class display_template_source_action extends action
 	}
 	
 	function _process_template_content($template_contents)
-	{		
+	{
+	  include_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
+	  		
 		global $tag_dictionary; //fixx
 		
   	$parser =& new XML_HTMLSax();

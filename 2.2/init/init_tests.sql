@@ -1,6 +1,6 @@
 /* 
 SQLyog v3.63
-Host - localhost : Database - demo_tests
+Host - localhost : Database - temp_tests
 **************************************************************
 Server version 4.0.12-nt
 */
@@ -131,6 +131,7 @@ CREATE TABLE `navigation_item` (
   KEY `o` (`object_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
+
 /*
 Table struture for sys_action_access
 */
@@ -244,6 +245,37 @@ CREATE TABLE `sys_metadata` (
 
 
 /*
+Table struture for sys_node_link
+*/
+
+drop table if exists `sys_node_link`;
+CREATE TABLE `sys_node_link` (
+  `id` int(11) NOT NULL auto_increment,
+  `linker_node_id` int(11) NOT NULL default '0',
+  `target_node_id` int(11) NOT NULL default '0',
+  `group_id` int(11) NOT NULL default '0',
+  `priority` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `lg` (`linker_node_id`,`group_id`),
+  KEY `tg` (`target_node_id`,`group_id`)
+) TYPE=InnoDB;
+
+
+/*
+Table struture for sys_node_link_group
+*/
+
+drop table if exists `sys_node_link_group`;
+CREATE TABLE `sys_node_link_group` (
+  `id` int(11) NOT NULL auto_increment,
+  `identifier` varchar(50) NOT NULL default '',
+  `title` varchar(255) NOT NULL default '',
+  `priority` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=InnoDB;
+
+
+/*
 Table struture for sys_object_access
 */
 
@@ -283,7 +315,7 @@ CREATE TABLE `sys_object_version` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for demo_tests.sys_object_version
+Table data for temp_tests.sys_object_version
 */
 
 INSERT INTO `sys_object_version` VALUES (31,104,10,1084278749,1084278749,1);
