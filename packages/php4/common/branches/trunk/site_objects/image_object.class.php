@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/site_objects/media_object.class.php');
-require_once(LIMB_DIR . '/core/lib/image/image_factory.class.php');
-require_once(LIMB_DIR . '/core/lib/system/message_box.class.php');
+require_once(dirname(__FILE__) . '/media_object.class.php');
+require_once(LIMB_DIR . 'class/lib/image/image_factory.class.php');
+require_once(LIMB_DIR . 'class/etc/message_box.class.php');
 
 class image_object extends media_object
 {
@@ -58,7 +58,7 @@ class image_object extends media_object
 		if(($id = parent :: create()) === false)
 			return false;
 		
-		if($this->get_attribute('files_data'))
+		if($this->get('files_data'))
 		{
 			if(!$this->create_variations())
 				return false;
@@ -74,7 +74,7 @@ class image_object extends media_object
 				
 		foreach($image_variations as $variation => $variation_data)
 		{
-			$action = $this->get_attribute($variation . '_action');
+			$action = $this->get($variation . '_action');
 			
 			switch($action)
 			{
@@ -94,10 +94,10 @@ class image_object extends media_object
 	
 	function _create_generate_operation($variation, &$result)
 	{
-		$files_data = $this->get_attribute('files_data', array());
+		$files_data = $this->get('files_data', array());
 		$output_file = tempnam(VAR_DIR, 'p');
 		
-		if(!isset($files_data['name'][$this->get_attribute($variation . '_base_variation')]))
+		if(!isset($files_data['name'][$this->get($variation . '_base_variation')]))
 		{
 		  debug :: write_error('uploaded file not found', 
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
@@ -106,8 +106,8 @@ class image_object extends media_object
 		}
 		
 		if(!$this->_resize_operation(
-					$this->get_attribute($variation . '_base_variation'), 
-					(int)$this->get_attribute('generate_' . $variation . '_max_size'),
+					$this->get($variation . '_base_variation'), 
+					(int)$this->get('generate_' . $variation . '_max_size'),
 					$output_file,
 					$output_file_type))
 		{
@@ -116,7 +116,7 @@ class image_object extends media_object
 			return true;
 		}
 			
-		$name_parts = explode('.', $files_data['name'][$this->get_attribute($variation . '_base_variation')]);
+		$name_parts = explode('.', $files_data['name'][$this->get($variation . '_base_variation')]);
 		if(is_array($name_parts) && sizeof($name_parts) > 1)
 		{
 			$arr_size = sizeof($name_parts);
@@ -141,7 +141,7 @@ class image_object extends media_object
 	
 	function _create_upload_operation($variation, &$result)
 	{
-		$files_data = $this->get_attribute('files_data', array());
+		$files_data = $this->get('files_data', array());
 
 		if(	!isset($files_data['name'][$variation]) ||
 				!isset($files_data['tmp_name'][$variation]) ||
@@ -163,7 +163,7 @@ class image_object extends media_object
 			$files_data['type'][$variation]
 		);
 		
-		if($upload_max_size = $this->get_attribute('upload_' . $variation . '_max_size'))
+		if($upload_max_size = $this->get('upload_' . $variation . '_max_size'))
 		{
 			$output_file = tempnam(VAR_DIR, 'p');
 			
@@ -203,7 +203,7 @@ class image_object extends media_object
 
 		foreach($image_variations as $variation => $variation_data)
 		{
-			$action = $this->get_attribute($variation . '_action');
+			$action = $this->get($variation . '_action');
 			
 			switch($action)
 			{
@@ -224,8 +224,8 @@ class image_object extends media_object
 		$output_file = tempnam(VAR_DIR, 'p');
 		
 		if(!$this->_resize_operation(
-					$this->get_attribute($variation . '_base_variation'), 
-					(int)$this->get_attribute('generate_' . $variation . '_max_size'),
+					$this->get($variation . '_base_variation'), 
+					(int)$this->get('generate_' . $variation . '_max_size'),
 					$output_file,
 					$output_file_type
 				))
@@ -246,7 +246,7 @@ class image_object extends media_object
 		}
 		else
 		{
-			$media_data = $this->get_variation_media_data($this->get_attribute($variation . '_base_variation'));
+			$media_data = $this->get_variation_media_data($this->get($variation . '_base_variation'));
 		  
 		  $this->_insert_variation(
 		  	$variation, 
@@ -262,7 +262,7 @@ class image_object extends media_object
 	
 	function _update_upload_operation($variation, &$result)
 	{
-		$files_data = $this->get_attribute('files_data');
+		$files_data = $this->get('files_data');
 		
 		if(	!isset($files_data['name'][$variation]) ||
 				!isset($files_data['tmp_name'][$variation]) ||
@@ -296,7 +296,7 @@ class image_object extends media_object
 			);
 		}
 		
-		if ($upload_max_size = $this->get_attribute('upload_' . $variation . '_max_size'))
+		if ($upload_max_size = $this->get('upload_' . $variation . '_max_size'))
 		{
 			$output_file = tempnam(VAR_DIR, 'p');
 			
@@ -494,7 +494,7 @@ class image_object extends media_object
 		
 		foreach($image_variations as $variation => $variation_data)
 		{
-			$action = $this->get_attribute($variation . '_action');
+			$action = $this->get($variation . '_action');
 			if($action == 'upload' || $action == 'generate')
 			{
 				if (!$result[$variation]['saved'])
@@ -502,7 +502,7 @@ class image_object extends media_object
 					message_box :: write_warning($variation . ' not saved');
 				}
 				
-				if ($this->get_attribute($action . '_' . $variation . '_max_size') && !$result[$variation]['resized'])
+				if ($this->get($action . '_' . $variation . '_max_size') && !$result[$variation]['resized'])
 				{
 					message_box :: write_warning($variation . ' not resized');
 				}

@@ -33,8 +33,8 @@ class user_object extends content_object
 	
 	function create($is_root = false)
 	{
-		$crypted_password = user :: get_crypted_password($this->get_identifier(), $this->get_attribute('password'));
-		$this->set_attribute('password', $crypted_password);
+		$crypted_password = user :: get_crypted_password($this->get_identifier(), $this->get('password'));
+		$this->set('password', $crypted_password);
 		return parent :: create($is_root);
 	}
 	
@@ -82,11 +82,11 @@ class user_object extends content_object
 		
 		$user =& user :: instance();
 		
-		$this->set_attribute(
+		$this->set(
 			'password', 
 			$user->get_crypted_password(
 				$identifier, 
-				$this->get_attribute('password')
+				$this->get('password')
 			)
 		);
 		
@@ -135,7 +135,7 @@ class user_object extends content_object
 		
 		$user_db_table =& db_table_factory :: create('user');
 
-		$this->set_attribute('password', $data['password']);
+		$this->set('password', $data['password']);
 		
 		if ($user_db_table->update($data, 'identifier="'. $user->get_login() . '"'))
 			return $this->login($user->get_login(), $password);
@@ -152,7 +152,7 @@ class user_object extends content_object
 
 		$new_non_crypted_password = user :: generate_password();
 		$crypted_password = user :: get_crypted_password($user_data['identifier'], $new_non_crypted_password);
-		$this->set_attribute('generated_password', $crypted_password);
+		$this->set('generated_password', $crypted_password);
 		
 		if($result = $this->update(false))
 			$this->send_activate_password_email($user_data, $new_non_crypted_password);
@@ -164,10 +164,10 @@ class user_object extends content_object
 	{
 	  $request = request :: instance();
 	  
-	  if(!$email = $request->get_attribute('user'))
+	  if(!$email = $request->get('user'))
 			return false;
 
-	  if(!$password = $request->get_attribute('id'))
+	  if(!$password = $request->get('id'))
 			return false;
 		
 		$user_data = $this->get_user_by_email($email);
@@ -175,8 +175,8 @@ class user_object extends content_object
 			return false;
 		
 		$this->import_attributes($user_data);
-		$this->set_attribute('password', $user_data['generated_password']);
-		$this->set_attribute('generated_password', '');
+		$this->set('password', $user_data['generated_password']);
+		$this->set('generated_password', '');
 
 		return $this->update(false);
 	}

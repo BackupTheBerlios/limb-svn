@@ -16,7 +16,7 @@ class class_group_action_access_datasource extends datasource
 	{
 	  $request = request :: instance();
 	  
-		if(!$class_id = $request->get_attribute('class_id'))
+		if(!$class_id = $request->get('class_id'))
 			return new array_dataset();
 		
 		$db_table =& db_table_factory :: instance('sys_class');

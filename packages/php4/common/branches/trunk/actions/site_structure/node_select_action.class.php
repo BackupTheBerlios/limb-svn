@@ -16,7 +16,7 @@ class node_select_action extends action
 	{
 	  $request->set_status(REQUEST_STATUS_DONT_TRACK);
 	  
-	  if(!$path = $request->get_attribute('path'))
+	  if(!$path = $request->get('path'))
 	    return;
 	 
 	 if(!$node = map_url_to_node($path))

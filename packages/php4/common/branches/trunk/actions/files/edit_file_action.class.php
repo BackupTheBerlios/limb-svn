@@ -56,10 +56,10 @@ class edit_file_action extends form_edit_site_object_action
 			
 			$object_data =& fetch_requested_object();
 			
-			$this->object->set_attribute('media_id', $object_data['media_id']);
-			$this->object->set_attribute('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);
-			$this->object->set_attribute('file_name', $_FILES[$this->name]['name']['file']);
-			$this->object->set_attribute('mime_type', $_FILES[$this->name]['type']['file']);
+			$this->object->set('media_id', $object_data['media_id']);
+			$this->object->set('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);
+			$this->object->set('file_name', $_FILES[$this->name]['name']['file']);
+			$this->object->set('mime_type', $_FILES[$this->name]['type']['file']);
 		}
 
 		return parent :: _update_object_operation();

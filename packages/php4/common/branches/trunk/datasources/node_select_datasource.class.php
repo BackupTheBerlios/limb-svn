@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/datasources/fetch_sub_branch_datasource.class.php');
 
 class node_select_datasource extends fetch_sub_branch_datasource
@@ -19,7 +18,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 
 	  $request = request :: instance();		
 
-		if($request->get_attribute('only_parents') == 'false')
+		if($request->get('only_parents') == 'false')
 			$params['only_parents'] = false;
 		else
 			$params['only_parents'] = true;
@@ -36,7 +35,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 
 	  $request = request :: instance();		
 		
-		if(!$path = $request->get_attribute('path'))
+		if(!$path = $request->get('path'))
 			return $default_path;
 
 		if(strpos($path, '?') !== false)

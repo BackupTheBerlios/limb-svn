@@ -71,7 +71,7 @@ class edit_variations_action extends form_edit_site_object_action
 	
 	function _update_object_operation()
 	{	
-		$this->object->set_attribute('files_data', $_FILES[$this->name]);
+		$this->object->set('files_data', $_FILES[$this->name]);
 		
 		$this->object->update_variations();
 							

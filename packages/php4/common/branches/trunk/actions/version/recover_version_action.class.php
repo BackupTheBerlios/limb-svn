@@ -19,10 +19,10 @@ class recover_version_action extends action
 	
 	  $request->set_status(REQUEST_STATUS_FAILURE);
 	  
-		if(!$version = $request->get_attribute('version'))
+		if(!$version = $request->get('version'))
 			return;
 
-		if(!$node_id = $request->get_attribute('version_node_id'))
+		if(!$node_id = $request->get('version_node_id'))
 	    return;
 			
 		if(!$site_object = wrap_with_site_object(fetch_one_by_node_id((int)$node_id)))

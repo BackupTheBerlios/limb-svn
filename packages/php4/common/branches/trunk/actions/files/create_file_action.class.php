@@ -49,9 +49,9 @@ class create_file_action extends form_create_site_object_action
 				return false;
 			}
 			
-			$this->object->set_attribute('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);
-			$this->object->set_attribute('file_name', $_FILES[$this->name]['name']['file']);
-			$this->object->set_attribute('mime_type', $_FILES[$this->name]['type']['file']);
+			$this->object->set('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);
+			$this->object->set('file_name', $_FILES[$this->name]['name']['file']);
+			$this->object->set('mime_type', $_FILES[$this->name]['type']['file']);
 		}
 
 		return parent :: _create_object_operation();

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/site_objects/media_object.class.php');
+require_once(dirname(__FILE__) . '/media_object.class.php');
 
 class file_object extends media_object
 {	
@@ -34,7 +34,7 @@ class file_object extends media_object
 	
 	function update($force_create_new_version = true)
 	{
-		if($this->get_attribute('tmp_file_path') && !$this->update_file())
+		if($this->get('tmp_file_path') && !$this->update_file())
 			return false;
 			
 		return parent :: update($force_create_new_version);
@@ -42,25 +42,25 @@ class file_object extends media_object
 	
 	function create_file()
 	{
-		$tmp_file_path = $this->get_attribute('tmp_file_path');
-		$file_name = $this->get_attribute('file_name');
-		$mime_type = $this->get_attribute('mime_type');
+		$tmp_file_path = $this->get('tmp_file_path');
+		$file_name = $this->get('file_name');
+		$mime_type = $this->get('mime_type');
 		
 		if(($media_id = $this->_create_media_record($tmp_file_path, $file_name, $mime_type)) === false)
 		  return false;
 		
-		$this->set_attribute('media_id', $media_id);
+		$this->set('media_id', $media_id);
 		
 		return true;
 	}
 	
 	function update_file()
 	{
-		$tmp_file_path = $this->get_attribute('tmp_file_path');
-		$file_name = $this->get_attribute('file_name');
-		$mime_type = $this->get_attribute('mime_type');
+		$tmp_file_path = $this->get('tmp_file_path');
+		$file_name = $this->get('file_name');
+		$mime_type = $this->get('mime_type');
 		
-		if(!$media_id = $this->get_attribute('media_id'))
+		if(!$media_id = $this->get('media_id'))
 		{
 		  debug :: write_error('media id not set', 
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__

@@ -20,7 +20,7 @@ class tree_toggle_action extends action
 		$tree =& tree :: instance();
 		$tree->initialize_expanded_parents();
 				
-		if(!$id = $request->get_attribute('id'))
+		if(!$id = $request->get('id'))
 			$id = get_mapped_id();
 			
 		if($request->has_attribute('expand'))

@@ -38,7 +38,7 @@ class multi_toggle_publish_status_action extends form_action
 				continue;
 				
 			$object = wrap_with_site_object($item);
-			$status = $object->get_attribute('status');
+			$status = $object->get('status');
 			
 			if ($status & SITE_OBJECT_PUBLISHED_STATUS)
 			{
@@ -52,7 +52,7 @@ class multi_toggle_publish_status_action extends form_action
 				$action = 'publish';
 			}	
 
-			$object->set_attribute('status', $status);
+			$object->set('status', $status);
 			$object->update(false);
 			
 			$this->_apply_access_policy($object, $action);

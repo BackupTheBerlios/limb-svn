@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
 
 class media_object extends content_object
 {	
@@ -68,7 +68,7 @@ class media_object extends content_object
   			'etag' => $etag,
   		));
 		
-		$this->set_attribute('etag', $etag);
+		$this->set('etag', $etag);
 		
 		return $media_id;
 	}
@@ -119,7 +119,7 @@ class media_object extends content_object
   			'etag' => $etag,
   		));
   		
-  	$this->set_attribute('etag', $etag);
+  	$this->set('etag', $etag);
   		
 		return true;
 	}				

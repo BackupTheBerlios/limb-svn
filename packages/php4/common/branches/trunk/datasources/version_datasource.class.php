@@ -18,10 +18,10 @@ class version_datasource extends datasource
 		
 	  $request = request :: instance();
     
-    if (!$version = $request->get_attribute('version'))
+    if (!$version = $request->get('version'))
       return new empty_dataset();
 
-    if (!$node_id = $request->get_attribute('version_node_id'))
+    if (!$node_id = $request->get('version_node_id'))
       return new empty_dataset();
 			
 		$version = (int)$version;
