@@ -13,6 +13,11 @@ if(!defined('LIMB_DIR'))
   
 if(!defined('PROJECT_DIR'))
   define('PROJECT_DIR', LIMB_DIR);
+  
+define('VAR_DIR', dirname(__FILE__) . '/var/');
+
+if($_SERVER['SERVER_PORT'] == 81)
+	define('ERROR_HANDLER_TYPE', DEBUG_HANDLE_NATIVE);
     
 require_once(PROJECT_DIR . 'setup.php');
 
@@ -56,6 +61,8 @@ require_once(SIMPLE_TEST . 'reporter.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');
 require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');
+require_once(LIMB_DIR . '/tests/lib/test_manager.php');
+require_once(LIMB_DIR . '/core/lib/error/error.inc.php');
 
 set_time_limit(0);
 error_reporting(E_ALL);

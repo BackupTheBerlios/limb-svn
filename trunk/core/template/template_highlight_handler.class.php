@@ -93,7 +93,7 @@ class template_highlight_handler
 
   function escape_handler(& $parser, $data) 
   {
-   	$this->html .= '<span style="color:green;font-style:italic;">&lt;!--' . $data . '--&gt;</span>';
+   	$this->html .= '<span style="color:green;font-style:italic;">&lt;!' . $data . '&gt;</span>';
   }
 
   function get_html() 

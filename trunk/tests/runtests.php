@@ -9,8 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/setup.php');
-require_once(LIMB_DIR . '/tests/lib/test_manager.php');
-require_once(LIMB_DIR . '/core/lib/error/error.inc.php');
 
 function usage()
 {

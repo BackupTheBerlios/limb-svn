@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
+require_once(XML_HTMLSAX3 . '/HTMLSax3.php');
 require_once(LIMB_DIR . '/core/model/shop/shipping/fedex_sax_handler.class.php');
 
 class fedex_sax_handler_test extends LimbTestCase
@@ -18,7 +18,7 @@ class fedex_sax_handler_test extends LimbTestCase
   
   function setUp()
   {
-    $this->parser =& new XML_HTMLSax();
+    $this->parser =& new XML_HTMLSax3();
     $this->handler =& new fedex_sax_handler();
     
     $this->parser->set_object($this->handler);

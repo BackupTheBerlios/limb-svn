@@ -10,8 +10,7 @@
 ***********************************************************************************/ 
 ob_start();
 
-require_once(LIMB_DIR . '/tests/lib/test_utils.php');
-require_once(LIMB_DIR . '/tests/lib/test_manager.php');
+require_once(dirname(__FILE__) . '/setup.php');
 
 if (!include_once(SIMPLE_TEST . 'reporter.php'))
 {
@@ -21,7 +20,7 @@ if (!include_once(SIMPLE_TEST . 'reporter.php'))
 
 if(isset($_GET['all']))
 {
-	TestManager::runAllTests($_GET['all'], new HTMLReporter);
+	TestManager::runAllTests($_GET['all'], new HTMLReporter());
 	
 	echo "<p><a href='" . $_SERVER['PHP_SELF'] . "'>Run more tests</a></p>";
 	

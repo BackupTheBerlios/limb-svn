@@ -19,7 +19,7 @@ class LimbTestCase extends UnitTestCase
   function &_createRunner(&$reporter) 
   {
     if ($this->_isDebugging()) 
-      return SimpleRunner($this, $reporter);
+      return new SimpleRunner($this, $reporter);
     
     return parent::_createRunner($reporter);
   }

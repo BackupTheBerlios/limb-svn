@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
 
 class fedex_sax_handler 
 {
@@ -130,11 +129,11 @@ class fedex_sax_handler
   {
     switch(trim($data))
     {
-      case 'TABLE:  Begin Services.':      
+      case '-- TABLE:  Begin Services. --':      
         $this->services_began = true;
       break;
       
-      case 'column:  Service':
+      case '-- column:  Service --':
         
         if(!$this->services_began)
           break;
@@ -150,7 +149,7 @@ class fedex_sax_handler
      	        
       break;
       
-      case 'column:  Delivery Time':
+      case '-- column:  Delivery Time --':
       
         if(!$this->services_began)
           break;      
@@ -160,7 +159,7 @@ class fedex_sax_handler
         
       break;
       
-      case 'column:  Rate (US$)':
+      case '-- column:  Rate (US$) --':
       
         if(!$this->services_began)
           break;      
