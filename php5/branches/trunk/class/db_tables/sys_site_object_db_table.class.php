@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
 class sys_site_object_db_table extends db_table
@@ -27,7 +27,7 @@ class sys_site_object_db_table extends db_table
       'locale_id' => '',
     );
   }
-  
+
   protected function _define_constraints()
   {
   	return array(
@@ -35,10 +35,6 @@ class sys_site_object_db_table extends db_table
     		array(
 					'table_name' => 'sys_object_version',
 					'field' => 'object_id',
-				),
-	  		array(
-					'table_name' => 'sys_object_access',
-					'field' => 'object_id'
 				),
 	  		array(
 					'table_name' => 'sys_full_text_index',

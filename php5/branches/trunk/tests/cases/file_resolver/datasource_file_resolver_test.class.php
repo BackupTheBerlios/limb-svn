@@ -19,26 +19,26 @@ class datasource_file_resolver_test extends base_package_file_resolver_test
   }
 
   function test_resolve_datasource_file_from_limb()
-  {    
-    $this->assertEqual($this->resolver->resolve('fetch_datasource'), LIMB_DIR . '/class/datasources/fetch_datasource.class.php');
-  }  
-    
+  {
+    $this->assertEqual($this->resolver->resolve('fetch_one_datasource'), LIMB_DIR . '/class/datasources/fetch_one_datasource.class.php');
+  }
+
   function test_resolve_datasource_file_ok()
-  {    
+  {
     $this->assertEqual($this->resolver->resolve('test_datasource'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/datasources/test_datasource.class.php');
-  }  
-  
+  }
+
   function test_resolve_datasource_file_failed()
   {
     try
-    {    
+    {
       $this->resolver->resolve('no_such_datasource');
       $this->assertTrue(false);
     }
     catch(FileNotFoundException $e)
     {
     }
-  }  
+  }
 }
 
 ?>

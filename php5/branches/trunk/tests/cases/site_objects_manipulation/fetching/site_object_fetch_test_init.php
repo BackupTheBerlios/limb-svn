@@ -10,30 +10,6 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
-class site_object_fetch_test_version extends site_object
-{
-	function _define_attributes_definition()
-	{
-		return complex_array :: array_merge(
-				parent :: _define_attributes_definition(),
-				array(
-				'title' => '',
-				'name' => array('type' => 'numeric'),
-				'search' => array('search' => true),
-				));
-	}
-
-	function _define_class_properties()
-	{
-		return array(
-			'ordr' => 1,
-			'can_be_parent' => 1,
-			'db_table_name' => 'site_object',
-			'controller_class_name' => 'controller_test'
-		);
-	}
-}
-
 class site_object_fetch_test_init
 {
 	var $db = null;
@@ -43,8 +19,6 @@ class site_object_fetch_test_init
   function site_object_fetch_test_init()
   {
 		$this->db = db_factory :: instance();
-
-		$this->_clean_up();
   }
 
   function init(& $object)
@@ -64,7 +38,7 @@ class site_object_fetch_test_init
 		$this->root_node_id = $tree->create_root_node($values, false, true);
 
   	$data = array();
-  	for($i = 1; $i <= 10; $i++)
+  	for($i = 1; $i <= 5; $i++)
   	{
   		$version = mt_rand(1, 3);
   		$this->_insert_object_version_records($i, $version);
@@ -101,7 +75,7 @@ class site_object_fetch_test_init
   	$tree =& tree :: instance();
 
   	$data = array();
-  	for($i = 11; $i <= 20 ; $i++)
+  	for($i = 6; $i <= 10 ; $i++)
   	{
   		$this->db->sql_insert('sys_site_object',
   			array(
@@ -118,13 +92,6 @@ class site_object_fetch_test_init
 			$values['object_id'] = $i;
 			$tree->create_sub_node($this->root_node_id, $values);
   	}
-  }
-
-  function _clean_up()
-  {
-  	$this->db->sql_delete('sys_site_object');
-  	$this->db->sql_delete('sys_site_object_tree');
-  	$this->db->sql_delete('sys_class');
   }
 }
 

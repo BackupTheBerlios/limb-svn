@@ -8,11 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
-require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/http/uri.class.php');
 require_once(LIMB_DIR . 'class/core/request/request.class.php');
-require_once(LIMB_DIR . 'class/core/permissions/access_policy.class.php');
 
 class fetcher
 {
@@ -24,7 +21,7 @@ class fetcher
 
 	protected $_cached_objects = array('path' => array(), 'node_id' => array(), 'id' => array());
 
-	protected $_is_jip_enabled = false;
+	protected $_is_jip_enabled = true;
 
 	static public function instance()
 	{
@@ -34,12 +31,26 @@ class fetcher
     return self :: $_instance;
 	}
 
-	protected function _get_access_policy()
+  //for mocking
+	protected function _get_authorizer()
 	{
-	  include_once(LIMB_DIR . 'class/core/permissions/access_policy.class.php');
-	  $access_policy = access_policy :: instance();
-	  return $access_policy;
+	  include_once(LIMB_DIR . 'class/core/permissions/authorizer.class.php');
+	  return authorizer :: instance();
 	}
+
+  //for mocking
+	protected function _get_tree()
+	{
+	  include_once(LIMB_DIR . 'class/core/tree/tree.class.php');
+	  return tree :: instance();
+	}
+
+  //for mocking
+  protected function _get_site_object($class_name)
+  {
+    include_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
+    return site_object_factory :: create($class_name);
+  }
 
 	public function is_jip_enabled()
 	{
@@ -56,6 +67,7 @@ class fetcher
 	public function flush_cache()
 	{
 	  $this->_cached_objects = array('path' => array(), 'node_id' => array(), 'id' => array());
+	  $this->_node_mapped_by_request = null;
 	}
 
 	protected function _place_object_to_cache($object_data, $cache_type='auto', $cache_id='')
@@ -81,42 +93,12 @@ class fetcher
 	{
     if ($this->is_jip_enabled())
     {
-		  $access_policy = $this->_get_access_policy();
-		  $access_policy->assign_actions_to_objects($objects_data);
+		  $this->_get_authorizer()->assign_actions_to_objects($objects_data);
 		}
-	}
-
-	public function fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
-	{
-		$counter = 0;
-		$count_method = $fetch_method . '_count';
-
-		$site_object = site_object_factory :: create($loader_class_name);
-		$counter = $site_object->$count_method($params);
-
-		$result = $site_object->$fetch_method($params);
-
-		if(!count($result))
-			return array();
-
-    $this->_assign_actions($result);
-
-		$this->_assign_paths($result);
-		return $result;
 	}
 
 	public function fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{
-		$tree = tree :: instance();
-		$site_object = site_object_factory :: create($loader_class_name);
-
-		if ($loader_class_name != 'site_object' &&
-				!isset($params['restrict_by_class']) ||
-				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
-			$class_id = $site_object->get_class_id();
-		else
-			$class_id = null;
-
 		if (isset($params['check_expanded_parents']))
 			$check_expanded_parents = (bool)$params['check_expanded_parents'];
 		else
@@ -134,25 +116,39 @@ class fetcher
 
 		$depth = isset($params['depth']) ? $params['depth'] : 1;
 
-		if(!$nodes = $tree->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents))
+		if(!$nodes = $this->_get_tree()->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents))
 			return array();
 
 		if(!$object_ids = complex_array :: get_column_values('object_id', $nodes))
 			return array();
 
-		$objects_data = $this->fetch_by_ids($object_ids, $loader_class_name, $counter, $params, $fetch_method);
-
-		return $objects_data;
+		return $this->fetch_by_ids($object_ids, $loader_class_name, $counter, $params, $fetch_method);
 	}
 
 	public function fetch_by_ids($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{
-		$counter = 0;
-		$count_method = $fetch_method . '_count';
+		$site_object = $this->_get_site_object($loader_class_name);
 
-		$site_object = site_object_factory :: create($loader_class_name);
+		if ($loader_class_name != 'site_object' &&
+				!isset($params['restrict_by_class']) ||
+				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
+		{
+			$class_id = $site_object->get_class_id();
+		}
+		else
+			$class_id = null;
 
-		$counter = $site_object->$count_method($object_ids, $params);
+		$object_ids = $this->_get_authorizer()->get_accessible_object_ids($object_ids, '', $class_id);
+
+		if (!count($object_ids))
+		  return array();
+
+    if(!is_null($counter))
+    {
+  		$counter = 0;
+  		$count_method = $fetch_method . '_count';
+		  $counter = $site_object->$count_method($object_ids, $params);
+		}
 
 		$result = $site_object->$fetch_method($object_ids, $params);
 
@@ -163,44 +159,30 @@ class fetcher
 
 		$this->_assign_paths($result);
 
-		if (isset($params['order']))//assumed it's already ordered by site_object
-			return $result;
-
-		$ids_sorted_result = array();
-		foreach($object_ids as $id)
-		{
-			if(isset($result[$id]))
-				$ids_sorted_result[$id] = $result[$id];
-		}
-
-		return $ids_sorted_result;
+		return $result;
 	}
 
-	public function  fetch_by_node_ids($node_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
+	public function fetch_by_node_ids($node_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{
-		$object_ids = array();
-		$tree = tree :: instance();
-
-    $nodes = $tree->get_nodes_by_ids($node_ids);
+    $nodes = $this->_get_tree()->get_nodes_by_ids($node_ids);
     if (!is_array($nodes) || !count($nodes))
       return array();
 
-		foreach($nodes as $node)
-			$object_ids[$node['id']] = $node['object_id'];
+		$object_ids = complex_array :: get_column_values('object_id', $nodes);
 
 		$objects_data = $this->fetch_by_ids($object_ids, $loader_class_name, $counter, $params, $fetch_method);
-		$sorted_objects_data = array();
 
-		foreach($node_ids as $node_id)
+		if(isset($params['use_node_ids_as_keys']))
 		{
-		  if (!isset($object_ids[$node_id]))
-		    continue;
+  		$result = array();
 
-			if (isset($objects_data[$object_ids[$node_id]]))
-				$sorted_objects_data[$node_id] = $objects_data[$object_ids[$node_id]];
-		}
+  		foreach($objects_data as $object_data)
+  			$result[$object_data['node_id']] = $object_data;
 
-		return $sorted_objects_data;
+		  return $result;
+	  }
+	  else
+	    return $objects_data;
 	}
 
 	public function fetch_one_by_id($object_id)
@@ -208,30 +190,13 @@ class fetcher
 	  if($object_data = $this->_get_object_from_cache('id', $object_id))
 	    return $object_data;
 
-	  $access_policy = $this->_get_access_policy();
-		$object_ids = $access_policy->get_accessible_objects(array($object_id));
+    $loader_class_name = $this->_get_object_class_name_by_id($object_id);
+    $objects_data = $this->fetch_by_ids(array($object_id), $loader_class_name, $counter = 0);
+		$result = reset($objects_data);
 
-		if (!is_array($object_ids) || !count($object_ids))
-			return false;
+		$this->_place_object_to_cache($result);
 
-		$object_id = reset($object_ids);
-
-		$site_object = site_object_factory :: create($this->_get_object_class_name_by_id($object_id));
-
-		$result = $site_object->fetch_by_ids(array($object_id));
-
-		if (!is_array($result) || !count($result))
-			return false;
-
-    $this->_assign_actions($result);
-
-		$this->_assign_paths($result);
-
-		$object_data = reset($result);
-
-		$this->_place_object_to_cache($object_data);
-
-		return $object_data;
+		return $result;
 	}
 
 	public function fetch_one_by_node_id($node_id)
@@ -239,9 +204,7 @@ class fetcher
 	  if($object_data = $this->_get_object_from_cache('node_id', $node_id))
 	    return $object_data;
 
-		$tree = tree :: instance();
-
-		if (!$node = $tree->get_node($node_id))
+		if (!$node = $this->_get_tree()->get_node($node_id))
 			return false;
 
 		$object_data = $this->fetch_one_by_id($node['object_id']);
@@ -249,27 +212,10 @@ class fetcher
 		return $object_data;
 	}
 
+  //for mocking
 	protected function _get_object_class_name_by_id($object_id)
 	{
-		$db = db_factory :: instance();
-
-		$sql = "SELECT sc.class_name as class_name
-			FROM sys_site_object as sso, sys_class as sc
-			WHERE sso.class_id = sc.id
-			AND sso.id={$object_id}";
-
-		$db->sql_exec($sql);
-		$row = $db->fetch_row();
-		if (!isset($row['class_name']))
-		{
-			throw new LimbException('object class name not found',
-    		array(
-    			'object_id' => $object_id
-    		)
-    	);
-		}
-		else
-			return $row['class_name'];
+	  return site_object :: _get_object_class_name_by_id($object_id);
 	}
 
 	public function fetch_one_by_path($path)
@@ -277,13 +223,10 @@ class fetcher
 	  if($object_data = $this->_get_object_from_cache('path', $path))
 	    return $object_data;
 
-		$tree = tree :: instance();
-
-		if (!$node = $tree->get_node_by_path($path))
+		if (!$node = $this->_get_tree()->get_node_by_path($path))
 			return false;
 
-		$object_data = $this->fetch_one_by_node_id($node['id']);
-		return $object_data;
+		return $this->fetch_one_by_id($node['object_id']);
 	}
 
 	public function fetch_requested_object($request = null)
@@ -291,23 +234,21 @@ class fetcher
 	  if($request === null)
 	    $request = request :: instance();
 
-		if(!$node = $this->map_request_to_node())
+		if(!$node = $this->map_request_to_node($request))
 			return array();
 
 		$prev_jip_status	= $this->set_jip_status(true);
 
-		$object_data = $this->fetch_one_by_node_id($node['id']);
+		$object_data = $this->fetch_one_by_id($node['object_id']);
 
 		$this->set_jip_status($prev_jip_status);
 
 		return $object_data;
 	}
 
-	public function map_url_to_node($url, $recursive = false)
+	public function map_uri_to_node($uri, $recursive = false)
 	{
-		$tree = tree :: instance();
-
-		$uri = new uri($url);
+		$tree = $this->_get_tree();
 
 		if(($node_id = $uri->get_query_item('node_id')) === false)
 			$node = $tree->get_node_by_path($uri->get_path(), '/', $recursive);
@@ -326,28 +267,17 @@ class fetcher
 	    $request = request :: instance();
 
 		if($node_id = $request->get('node_id'))
-		{
-			$tree = tree :: instance();
-
-			$node = $tree->get_node((int)$node_id);
-
-			$this->_node_mapped_by_request = $node;
-
-			return $node;
-		}
+			$node = $this->_get_tree()->get_node((int)$node_id);
 		else
-			$url = $_SERVER['PHP_SELF'];
-
-		$node = $this->map_url_to_node($url);
+		  $node = $this->map_uri_to_node($request->get_uri());
 
 		$this->_node_mapped_by_request = $node;
-
 		return $node;
 	}
 
 	protected function _assign_paths(&$objects_array, $append = '')
 	{
-		$tree = tree :: instance();
+		$tree = $this->_get_tree();
 
 		$parent_paths = array();
 

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class metadata_group extends LimbGroupTest 
+class fetcher_group extends LimbGroupTest 
 {
-  function metadata_group() 
-  {
-    $this->LimbGroupTest('metadata tests');
-  }
-    
+	function fetcher_group() 
+	{
+	  $this->LimbGroupTest('fetcher tests');
+	}
+
 	function getTestCasesHandles()
 	{
- 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/metadata');
-	}    
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/fetcher');
+	}
 }
 ?>
