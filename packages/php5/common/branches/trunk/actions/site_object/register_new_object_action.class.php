@@ -26,7 +26,7 @@ class register_new_object_action extends form_action
 	
 		if($path = $this->dataspace->get('parent_path'))
 		{
-			if($node = tree :: instance()->get_node_by_path($path))
+			if($node = LimbToolsBox :: getToolkit()->getTree()->get_node_by_path($path))
         $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', $node['id'])); 
 		}
 		
@@ -42,10 +42,10 @@ class register_new_object_action extends form_action
 		$params['class'] = $this->dataspace->get('class_name');
 		$params['title'] = $this->dataspace->get('title');
 		
-		$object = site_object_factory :: create($params['class']);
+		$object = LimbToolsBox :: getToolkit()->createSiteObject($params['class']);
 		
 		$is_root = false;
-		if(!$parent_data = fetcher :: instance()->fetch_one_by_path($params['parent_path']))
+		if(!$parent_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_path($params['parent_path']))
 		{
 			if ($params['parent_path'] == '/')
 				$is_root = true;
@@ -77,12 +77,13 @@ class register_new_object_action extends form_action
 		
 		if (!$is_root)
 		{
-			$parent_object = site_object_factory :: create($parent_data['class_name']);
+			$parent_object = LimbToolsBox :: getToolkit()->createSiteObject($parent_data['class_name']);
 			$parent_object->merge($parent_data);
 
 	  	$action = $parent_object->get_controller()->determine_action();
   
-      access_policy :: instance()->save_new_object_access($object, $parent_object, $action);
+      $access_policy = new access_policy(); 
+      $access_policy->save_new_object_access($object, $parent_object, $action);
 		}	
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);

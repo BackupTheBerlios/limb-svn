@@ -16,7 +16,7 @@ class version_datasource implements datasource
 	{
 		$counter = 0;
 
-	  $request = request :: instance();
+	  $request = LimbToolsBox :: getToolkit()->getRequest();
 
     if (!$version = $request->get('version'))
       return new empty_dataset();
@@ -27,7 +27,7 @@ class version_datasource implements datasource
 		$version = (int)$version;
 		$node_id = (int)$node_id;
 
-		if(!$site_object = wrap_with_site_object(fetcher :: instance()->fetch_one_by_node_id($node_id)))
+		if(!$site_object = wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_node_id($node_id)))
 			return new empty_dataset();
 
 		if(!is_subclass_of($site_object, 'content_object'))

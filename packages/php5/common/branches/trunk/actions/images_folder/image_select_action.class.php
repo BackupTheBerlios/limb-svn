@@ -15,7 +15,7 @@ class image_select_action extends action
 	public function perform($request, $response)
 	{
 	  $request->set_status(request :: STATUS_DONT_TRACK);
-		$object = fetcher :: instance()->fetch_requested_object();
+		$object = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
 
 	  session :: set('limb_image_select_working_path', $object['path']);
 	}

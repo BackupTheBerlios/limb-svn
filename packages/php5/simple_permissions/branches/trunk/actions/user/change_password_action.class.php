@@ -48,7 +48,7 @@ class change_password_action extends form_edit_site_object_action
 	  
 		if ($this->_changing_own_password())
 		{
-			user :: instance()->logout();
+			LimbToolsBox :: getToolkit()->getUser()->logout();
 			message_box :: write_warning(strings :: get('need_relogin', 'user'));
 		}
 		else
@@ -68,7 +68,7 @@ class change_password_action extends form_edit_site_object_action
 	{
 		$object_data = $this->_load_object_data();
 		
-		return ($object_data['id'] == user :: instance()->get_id()) ? true : false;
+		return ($object_data['id'] == LimbToolsBox :: getToolkit()->getUser()->get_id()) ? true : false;
 	}
 	
 	protected function _update_object_operation()

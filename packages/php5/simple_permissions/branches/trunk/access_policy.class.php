@@ -23,7 +23,7 @@ class access_policy
     if (!is_array($ids) || !count($ids))
       return array();
 
-    $db_table = db_table_factory :: create('sys_object_access');
+    $db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_object_access');
 
     $ids_sql = 'object_id IN ('. implode(',', $ids) . ') AND accessor_type=' . $accessor_type;
 
@@ -38,7 +38,7 @@ class access_policy
 
   public function get_actions_access($class_id, $accessor_type)
   {
-    $db_table = db_table_factory :: create('sys_action_access');
+    $db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_action_access');
 
     $condition = 'class_id ='. $class_id . ' AND accessor_type=' . $accessor_type;
 
@@ -53,7 +53,7 @@ class access_policy
 
   public function save_actions_access($class_id, $policy_array, $accessor_type)
   {
-    $db_table = db_table_factory :: create('sys_action_access');
+    $db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_action_access');
     $conditions['class_id'] = $class_id;
     $conditions['accessor_type'] = $accessor_type;
 
@@ -108,7 +108,7 @@ class access_policy
       return true;
   }
 
-  public function apply_access_templates_to_object($object, $action)
+  public function apply_access_templates($object, $action)
   {
     $class_id = $object->get_class_id();
     $object_id = $object->get_id();
@@ -123,7 +123,7 @@ class access_policy
       );
     }
 
-    $db_table = db_table_factory :: create('sys_object_access');
+    $db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_object_access');
 
     $conditions['object_id'] = $object_id;
 
@@ -137,7 +137,7 @@ class access_policy
 
   public function save_objects_access($policy_array, $accessor_type, $accessor_ids = array())
   {
-    $db_table = db_table_factory :: create('sys_object_access');
+    $db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_object_access');
 
     foreach($policy_array as $object_id => $access_data)
     {
@@ -167,7 +167,7 @@ class access_policy
 
   public function copy_object_access($object_id, $source_id, $accessor_type)
   {
-    $db_table = db_table_factory :: create('sys_object_access');
+    $db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_object_access');
 
     $conditions['object_id'] = $object_id;
     $conditions['accessor_type'] = $accessor_type;
@@ -192,8 +192,8 @@ class access_policy
 
   public function save_access_templates($class_id, $template_array, $accessor_type)
   {
-    $db_table = db_table_factory :: create('sys_action_access_template');
-    $item_db_table= db_table_factory :: create('sys_action_access_template_item');
+    $db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_action_access_template');
+    $item_db_table= LimbToolsBox :: getToolkit()->createDBTable('sys_action_access_template_item');
 
     $conditions['class_id'] = $class_id;
     $conditions['accessor_type'] = $accessor_type;
@@ -249,6 +249,10 @@ class access_policy
       $result[$data['action_name']][$data['accessor_id']] = $data['access'];
 
     return $result;
+  }
+  
+  function save_object_access_for_action($object, $action)
+  {
   }
 }
 ?>

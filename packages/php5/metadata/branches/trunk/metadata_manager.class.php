@@ -12,7 +12,7 @@ class metadata_manager
 {
   static public function save_metadata($object_id, $keywords, $description)
   {
-    $sys_metadata_db_table = db_table_factory :: create('sys_metadata');
+    $sys_metadata_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_metadata');
 
     $sys_metadata_db_table->delete('object_id=' . $object_id);
 
@@ -27,7 +27,7 @@ class metadata_manager
 
   static public function get_metadata($object_id)
   {
-    $sys_metadata_db_table = db_table_factory :: create('sys_metadata');
+    $sys_metadata_db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_metadata');
     $arr = $sys_metadata_db_table->get_list('object_id=' . $object_id);
 
     if (!count($arr))

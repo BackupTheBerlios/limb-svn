@@ -40,7 +40,7 @@ class stats_events_list_datasource extends stats_report_datasource
 	
 	protected function _configure_filters()
 	{
-	  $request = request :: instance();
+	  $request = LimbToolsBox :: getToolkit()->getRequest();
 	
 		$this->_set_ip_filter($request);
 		

@@ -17,7 +17,7 @@ class tree_toggle_action extends action
 		if($request->has_attribute('recursive_search_for_node'))
 			return;
 		
-		$tree = tree :: instance();
+		$tree = LimbToolsBox :: getToolkit()->getTree();
 		$tree->initialize_expanded_parents();
 				
 		if(!$id = $request->get('id'))

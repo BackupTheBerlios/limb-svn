@@ -33,14 +33,14 @@ class save_metadata_test extends LimbTestCase
   	$metadata['keywords'] = 'keywords';
   	$metadata['description'] = 'description';
   	
-  	$o =& site_object_factory :: create('site_object');
+  	$o = site_object_factory :: create('site_object');
   	
   	$o->merge($metadata);
   	$result_id = $o->save_metadata();
   	
   	$this->assertNotNull($result_id);
   	
-  	$sys_metadata_db_table =& db_table_factory :: create('sys_metadata');
+  	$sys_metadata_db_table = db_table_factory :: create('sys_metadata');
   	$metadata_row = $sys_metadata_db_table->get_row_by_id($result_id);
   	
   	$this->assertTrue(is_array($metadata_row));

@@ -14,10 +14,12 @@ class class_list_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params = array())
 	{
-		if(!$arr = fetcher :: instance()->fetch_requested_object())
+    $request = LimbToolsBox :: getToolkit()->getRequest();
+    
+		if(!$arr = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request))
 			return new array_dataset();
 
-		$db_table = db_table_factory :: create('sys_class');
+		$db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_class');
 		$classes = $db_table->get_list('', 'class_name');
 
 		$result = array();

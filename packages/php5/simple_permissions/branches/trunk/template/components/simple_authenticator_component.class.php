@@ -14,7 +14,7 @@ class simple_authenticator_component extends component
 {
 	public function is_user_in_groups($groups)
 	{
-	  if ((user :: instance()->is_logged_in()) && simple_authenticator :: is_user_in_groups($groups))
+	  if ((LimbToolsBox :: getToolkit()->getUser()->is_logged_in()) && simple_authenticator :: is_user_in_groups($groups))
       return true;
 	}
 	

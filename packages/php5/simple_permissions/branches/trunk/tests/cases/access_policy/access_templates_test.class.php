@@ -17,7 +17,7 @@ class access_templates_test extends LimbTestCase
   function setUp()
   {
     $this->_clean_up();
-    $this->ac = access_policy :: instance();
+    $this->ac = new access_policy();
   }
 
   function tearDown()

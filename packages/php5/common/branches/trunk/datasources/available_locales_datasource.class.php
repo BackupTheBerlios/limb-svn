@@ -14,7 +14,7 @@ require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 class available_locales_datasource implements options_datasource
 {	
 	public function get_options_array()
-	{
+	{ 
 		return locale :: get_available_locales_data();
 	}
 	

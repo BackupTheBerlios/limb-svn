@@ -21,7 +21,7 @@ class metadata_metadata_tag extends server_component_tag
 {
   public function __construct()
   {
-	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/metadata_component';
+	  $this->runtime_component_path = dirname(__FILE__) . '/../components/metadata_component';
 	}
 		
 	public function generate_contents($code)

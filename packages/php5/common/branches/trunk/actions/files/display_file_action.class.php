@@ -14,7 +14,7 @@ class display_file_action extends action
 {
 	public function perform($request, $response)
 	{
-		$object_data = fetcher :: instance()->fetch_requested_object($request);
+		$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
 
 		if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
 		{

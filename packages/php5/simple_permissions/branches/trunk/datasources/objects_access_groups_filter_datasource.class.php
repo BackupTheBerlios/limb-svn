@@ -15,7 +15,7 @@ class objects_access_groups_filter_datasource implements options_datasource
 	public function get_options_array()
 	{
 		$params['order'] = array('priority' => 'ASC');
-		$user_groups = fetcher :: instance()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$user_groups = LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
 
 		$options_array = array();
 

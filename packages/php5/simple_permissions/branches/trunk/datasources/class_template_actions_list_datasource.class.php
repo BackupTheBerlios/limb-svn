@@ -14,18 +14,18 @@ class class_template_actions_list_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params = array())
 	{
-	  $request = request :: instance();
+	  $request = LimbToolsBox :: getToolkit()->getRequest();
 	  
 		if(!$class_id = $request->get('class_id'))
 			return new array_dataset();
 			
-		$db_table = db_table_factory :: create('sys_class');
+		$db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_class');
 		$class_data = $db_table->get_row_by_id($class_id);
 		
 		if (!$class_data)
 			return new array_dataset();
 
-		$site_object = site_object_factory :: create($class_data['class_name']);	
+		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($class_data['class_name']);	
 		
 		$site_object_controller = $site_object->get_controller();
 		

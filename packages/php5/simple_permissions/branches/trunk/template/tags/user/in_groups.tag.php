@@ -19,7 +19,10 @@ register_tag(new user_in_groups_tag_info());
 
 class user_in_groups_tag extends server_component_tag
 {
-  $this->runtime_component_path = dirname(__FILE__) . '/../../components/simple_authenticator_component';
+  public function __construct()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/simple_authenticator_component';
+	}
    
 	public function pre_parse()
 	{
@@ -37,9 +40,12 @@ class user_in_groups_tag extends server_component_tag
 
 	public function generate_contents($code)
 	{
-		$code->write_php('if ' . $this->get_component_ref_code() . '->is_user_in_groups(' . $this->attributes['groups'] .'){");
-			parent :: generate_contents($code);
-		$code->write_php("}");
+		$code->write_php('if ' . 
+      $this->get_component_ref_code() . '->is_user_in_groups(' . $this->attributes['groups'] .'){');
+      
+		parent :: generate_contents($code);
+      
+		$code->write_php('}');
 	}
 } 
 

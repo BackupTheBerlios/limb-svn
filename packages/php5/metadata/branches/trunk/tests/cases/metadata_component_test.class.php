@@ -40,7 +40,7 @@ class metadata_component_test extends LimbTestCase
 
   	$this->metadata_component->setReturnReference('_get_mapped_controller', $this->controller);
 
-  	$tree =& tree :: instance();
+  	$tree = new tree();
 
 		$values['identifier'] = 'object_300';
 		$values['object_id'] = 300;
@@ -63,7 +63,7 @@ class metadata_component_test extends LimbTestCase
   {
   	clear_testing_db_tables();
 
-  	$user =& user :: instance();
+  	$user = user :: instance();
   	$user->logout();
 
   	$this->metadata_component->tally();

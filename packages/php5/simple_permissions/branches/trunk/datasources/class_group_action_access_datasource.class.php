@@ -14,24 +14,24 @@ class class_group_action_access_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params = array())
 	{
-	  $request = request :: instance();
+	  $request = LimbToolsBox :: getToolkit()->getRequest();
 
 		if(!$class_id = $request->get('class_id'))
 			return new array_dataset();
 
-		$db_table = db_table_factory :: create('sys_class');
+		$db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_class');
 		$class_data = $db_table->get_row_by_id($class_id);
 
 		if (!$class_data)
 			return new array_dataset();
 
-		$site_object = site_object_factory :: create($class_data['class_name']);
+		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($class_data['class_name']);
 
 		$site_object_controller = $site_object->get_controller();
 
 		$actions = $site_object_controller->get_actions_definitions();
 
-		$user_groups = fetcher :: instance()->fetch_sub_branch('/root/user_groups', 'user_group', $counter);
+		$user_groups = LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter);
 
 		$result = array();
 		foreach($actions as $action => $action_params)

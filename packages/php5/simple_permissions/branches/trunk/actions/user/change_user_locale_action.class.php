@@ -40,7 +40,7 @@ class change_user_locale_action extends form_action
 		  $request->set_status(request :: STATUS_FAILURE);
 		}
 		
-		user :: instance()->set('locale_id', $locale_id);
+		LimbToolsBox :: getToolkit()->getUser()->set('locale_id', $locale_id);
 		
 		$request->set_status(request :: STATUS_SUCCESS);
 	}

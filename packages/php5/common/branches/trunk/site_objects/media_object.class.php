@@ -51,7 +51,7 @@ abstract class media_object extends content_object
 			$etag = md5($contents);
 		}
 				
-		$media_db_table = db_table_factory :: create('media');
+		$media_db_table = LimbToolsBox :: getToolkit()->createDBTable('media');
 		
   	$media_db_table->insert(
   		array(
@@ -96,7 +96,7 @@ abstract class media_object extends content_object
 			);
 		}
 
-		$media_db_table = db_table_factory :: create('media');
+		$media_db_table = LimbToolsBox :: getToolkit()->createDBTable('media');
 		
   	$media_db_table->update_by_id(
   		$id,

@@ -26,7 +26,7 @@ class generate_password_action extends form_action
 	protected function _valid_perform($request, $response)
 	{
 		$data = $this->dataspace->export();
-		$object = site_object_factory :: create('user_object');
+		$object = LimbToolsBox :: getToolkit()->createSiteObject('user_object');
 		
 		$new_non_crypted_password = '';
 		if($object->generate_password($data['email'], $new_non_crypted_password))

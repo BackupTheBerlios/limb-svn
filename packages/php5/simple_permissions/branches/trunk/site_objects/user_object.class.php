@@ -42,14 +42,14 @@ class user_object extends content_object
 	
 	public function get_membership($user_id)
 	{
-		$db_table	= db_table_factory :: create('user_in_group');
+		$db_table	= LimbToolsBox :: getToolkit()->createDBTable('user_in_group');
 		$groups = $db_table->get_list('user_id='. $user_id, '', 'group_id');		
 		return $groups;
 	}
 	
 	public function save_membership($user_id, $membership)
 	{
-		$db_table	= db_table_factory :: create('user_in_group');
+		$db_table	= LimbToolsBox :: getToolkit()->createDBTable('user_in_group');
 		$db_table->delete('user_id='. $user_id);		
 
 		foreach($membership as $group_id => $is_set)
@@ -86,14 +86,14 @@ class user_object extends content_object
 
 	public function validate_password($password)
 	{
-		$user = user :: instance();
+		$user = LimbToolsBox :: getToolkit()->getUser();
 		
-		if(!$user->is_logged_in() || !$node_id = $user->get_node_id())
+		if(!$user->is_logged_in() || !$node_id = $user->get('node_id'))
 		  return false;
 
 		$password = simple_authenticator :: get_crypted_password($user->get_login(), $password);
 		
-		if($user->get_password() !== $password)
+		if($user->get('password') !== $password)
 			return false;
 		else 
 			return true;
@@ -101,13 +101,13 @@ class user_object extends content_object
 
 	public function change_own_password($password)
 	{
-		$user = user :: instance();
+		$user = LimbToolsBox :: getToolkit()->getUser();
 		
-		$node_id = $user->get_node_id();
+		$node_id = $user->get('node_id');
 
 		$data['password'] = simple_authenticator :: get_crypted_password($user->get_login(),	$password);
 		
-		$user_db_table = db_table_factory :: create('user');
+		$user_db_table = LimbToolsBox :: getToolkit()->createDBTable('user');
 
 		$this->set('password', $data['password']);
 		
@@ -132,7 +132,7 @@ class user_object extends content_object
 
 	public function activate_password()
 	{
-	  $request = request :: instance();
+	  $request = LimbToolsBox :: getToolkit()->getRequest();
 	  
 	  if(!$email = $request->get('user'))
 			return false;

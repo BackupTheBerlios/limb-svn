@@ -26,7 +26,7 @@ class site_structure extends site_object
 		if(!count($params))
 			return true;
 
-		$db_table = db_table_factory :: create('sys_site_object_tree');
+		$db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_site_object_tree');
 			
 		foreach($params as $node_id => $value)
 		{

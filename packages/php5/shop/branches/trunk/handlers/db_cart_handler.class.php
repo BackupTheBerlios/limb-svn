@@ -21,7 +21,7 @@ class db_cart_handler extends cart_handler
 	{
 	  parent :: __construct($cart_id);
 	  
-	  $this->cart_db_table = db_table_factory :: create('cart');
+	  $this->cart_db_table = LimbToolsBox :: getToolkit()->createDBTable('cart');
 	  
 	  register_shutdown_function(array($this, '_db_cart_handler'));
 	}
@@ -78,7 +78,7 @@ class db_cart_handler extends cart_handler
 	
 	protected function _get_user()
 	{
-	  return user :: instance();
+	  return LimbToolsBox :: getToolkit()->getUser();
 	}
 	
 	public function _db_cart_handler()

@@ -42,7 +42,7 @@ class last_objects_datasource extends fetch_datasource
 			'use_node_ids_as_keys' => true,
 		);
 
-		$parents = fetcher :: instance()->fetch_by_node_ids($parent_node_ids, 'site_object', $parents_counter, $params, 'fetch_by_ids');
+		$parents = LimbToolsBox :: getToolkit()->getFetcher()->fetch_by_node_ids($parent_node_ids, 'site_object', $parents_counter, $params, 'fetch_by_ids');
 
 		foreach($items as $key => $data)
 		{

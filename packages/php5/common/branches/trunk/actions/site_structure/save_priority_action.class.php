@@ -20,7 +20,7 @@ class save_priority_action extends form_action
 	protected function _valid_perform($request, $response)
 	{
 		$data = $this->dataspace->export();
-		$object = site_object_factory :: create('site_structure');
+		$object = LimbToolsBox :: getToolkit()->createSiteObject('site_structure');
 		
 		if(isset($data['priority']))
 			$object->save_priority($data['priority']);

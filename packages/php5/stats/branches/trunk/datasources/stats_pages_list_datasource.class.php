@@ -35,7 +35,7 @@ class stats_pages_list_datasource extends stats_report_datasource
 		
 	protected function _configure_filters()
 	{
-		$this->_set_period_filter(request :: instance());
+		$this->_set_period_filter(LimbToolsBox :: getToolkit()->getRequest());
 	}
 		
 	protected function _set_period_filter($request)

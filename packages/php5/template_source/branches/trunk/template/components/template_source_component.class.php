@@ -12,12 +12,14 @@ class template_source_component extends component
 {
 	public function get_current_template_source_link()
 	{
-		if(!$site_object = wrap_with_site_object(fetcher :: instance()->fetch_requested_object()))
+    $request = LimbToolsBox :: getToolkit()->getRequest();
+    
+		if(!$site_object = wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request)))
 			return '';
 
 		$site_object_controller = $site_object->get_controller();
 
-		if(($action = $site_object_controller->get_action()) === false)
+		if(($action = $site_object_controller->get_action($request)) === false)
 			return '';
 
 		if(!$template_path = $site_object_controller->get_action_property($action, 'template_path'))

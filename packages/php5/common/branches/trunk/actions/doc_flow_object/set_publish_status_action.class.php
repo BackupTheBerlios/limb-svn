@@ -19,7 +19,7 @@ class set_publish_status_action extends action
 		if($request->has_attribute('popup'))
 			$response->write(close_popup_response($request));
 
-		if(!$object = wrap_with_site_object(fetcher :: instance()->fetch_requested_object()))
+		if(!$object = wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request)))
   		return;
 
 		$site_object_controller = $object->get_controller();
@@ -43,7 +43,7 @@ class set_publish_status_action extends action
 
 		$this->_apply_access_policy($object, $action);
 
-	  fetcher :: instance()->flush_cache();
+	  LimbToolsBox :: getToolkit()->getFetcher()->flush_cache();
 	}
 
 	public function get_publish_status($object)
@@ -64,7 +64,8 @@ class set_publish_status_action extends action
 	{
 	  try
 	  {
-	    access_policy :: instance()->save_object_access_for_action($object, $action);
+      $access_policy = new access_policy();
+	    $access_policy->apply_access_templates($object, $action);
 	  }
 	  catch(LimbException $e)
 	  {

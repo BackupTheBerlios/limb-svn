@@ -22,7 +22,7 @@ class set_group_objects_access extends form_action
 	
 	public function perform($request, $response)
 	{
-		tree :: instance()->initialize_expanded_parents();				
+		LimbToolsBox :: getToolkit()->getTree()->initialize_expanded_parents();				
 
 		if ($filter_groups = session :: get('filter_groups'))
 			$this->dataspace->set('filter_groups', $filter_groups);	
@@ -70,7 +70,7 @@ class set_group_objects_access extends form_action
 	
 	protected function _set_template_tree()
 	{
-		$datasource = datasource_factory :: create('group_object_access_datasource');
+		$datasource = LimbToolsBox :: getToolkit()->createDatasource('group_object_access_datasource');
 		$params = array(
 			'path' => '/root',
 			'depth' => -1,

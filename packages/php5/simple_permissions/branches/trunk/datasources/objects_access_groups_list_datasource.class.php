@@ -15,7 +15,7 @@ class objects_access_groups_list_datasource implements datasource
 	public function get_dataset(&$counter, $params = array())
 	{
 		$params['order'] = array('priority' => 'ASC');
-		$groups = fetcher :: instance()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$groups = LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
 
 		$dataspace = dataspace_registry :: get('set_group_access');
 		$filter_groups = $dataspace->get('filter_groups');

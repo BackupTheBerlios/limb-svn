@@ -14,7 +14,7 @@ class logout_action extends action
 {
 	public function perform($request, $response)
 	{
-		user :: instance()->logout();
+		LimbToolsBox :: getToolkit()->getUser()->logout();
 		
 		$response->redirect('/');
 	}

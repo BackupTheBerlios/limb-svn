@@ -77,7 +77,9 @@ class stats_counter
 
 	protected function _is_home_hit()
 	{
-		if(!$object_data = fetcher :: instance()->fetch_requested_object())
+    $request = LimbToolsBox :: getToolkit()->getRequest();
+    
+		if(!$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request))
 			return false;
 
 		return ($object_data['parent_node_id'] == 0);

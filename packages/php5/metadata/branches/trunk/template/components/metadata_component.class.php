@@ -36,7 +36,7 @@ class metadata_component extends component
 		if (count($this->object_ids_array))
 			return $this->object_ids_array;
 
-		$tree = tree :: instance();
+		$tree = LimbToolsBox :: getToolkit()->getTree();
 
 		$node = $tree->get_node($this->get_node_id());
 		$parents = $tree->get_parents($this->get_node_id());
@@ -90,7 +90,7 @@ class metadata_component extends component
 			return false;
 		$ids_array = array_reverse($ids_array);
 
-		$metadata_db_table	= db_table_factory :: create($this->metadata_db_table_name);
+		$metadata_db_table	= LimbToolsBox :: getToolkit()->createDBTable($this->metadata_db_table_name);
 		$objects_metadata = $metadata_db_table->get_list(sql_in('object_id', $ids_array), '', 'object_id');
 
 		if (!count($objects_metadata))
@@ -131,18 +131,21 @@ class metadata_component extends component
 
 	public function get_node_id()
 	{
+    $toolkit = LimbToolsBox :: getToolkit();
+    
 		if (!$this->node_id)
 		{
+      $request = $toolkit->getRequest();
+      
 			if($this->request_path)
 			{
-			  $request = request :: instance();
 			  $node_path = $request->get($this->request_path);
 
-				if(!$node = fetcher :: instance()->map_uri_to_node(new uri($node_path)))
-					$node = fetcher :: instance()->map_request_to_node();
+				if(!$node = $toolkit->getFetcher()->map_uri_to_node(new uri($node_path)))
+					$node = $toolkit->getFetcher()->map_request_to_node($request);
 			}
 			else
-				$node = fetcher :: instance()->map_request_to_node();
+				$node = $toolkit->getFetcher()->map_request_to_node($request);
 
 			$this->node_id = $node['id'];
 		}
@@ -255,8 +258,8 @@ class metadata_component extends component
 		$path = $data['path'];
 
 		$controller = $this->_get_mapped_controller();
-
-		$action = $controller->get_action();
+    $request = LimbToolsBox :: getToolkit()->getRequest();
+		$action = $controller->get_action($request);
 
 		if ($action !== false &&
 				$controller->get_action_property($action, 'display_in_breadcrumbs') === true)
@@ -273,7 +276,8 @@ class metadata_component extends component
 
 	protected function _get_mapped_controller()
 	{
-	  return wrap_with_site_object(fetcher :: instance()->fetch_requested_object())->get_controller();
+    $request = LimbToolsBox :: getToolkit()->getRequest();
+	  return wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request))->get_controller();
 	}
 
 	public function set_offset_path($path)

@@ -42,8 +42,10 @@ class edit_user_action extends form_edit_site_object_action
 	protected function _init_validator()
 	{
 		parent :: _init_validator();
-
-		if ($object_data = fetcher :: instance()->fetch_requested_object())
+    
+    $request = LimbToolsBox :: getToolkit()->getRequest();
+    
+		if ($object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request))
 		{
       $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/unique_user_rule', 'identifier', $object_data['identifier']));
       $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/unique_user_email_rule', 'email', $object_data['email']));
