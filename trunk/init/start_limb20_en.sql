@@ -163,22 +163,6 @@ CREATE TABLE `sys_action_access` (
 Table data for temp.sys_action_access
 */
 
-INSERT INTO `sys_action_access` VALUES (216,17,'display',27,0);
-INSERT INTO `sys_action_access` VALUES (217,17,'file_select',27,0);
-INSERT INTO `sys_action_access` VALUES (218,17,'display',28,0);
-INSERT INTO `sys_action_access` VALUES (219,17,'create_file',28,0);
-INSERT INTO `sys_action_access` VALUES (220,17,'create_files_folder',28,0);
-INSERT INTO `sys_action_access` VALUES (221,17,'edit_files_folder',28,0);
-INSERT INTO `sys_action_access` VALUES (222,17,'delete',28,0);
-INSERT INTO `sys_action_access` VALUES (223,17,'file_select',28,0);
-INSERT INTO `sys_action_access` VALUES (224,16,'display',27,0);
-INSERT INTO `sys_action_access` VALUES (225,16,'image_select',27,0);
-INSERT INTO `sys_action_access` VALUES (226,16,'display',28,0);
-INSERT INTO `sys_action_access` VALUES (227,16,'create_image',28,0);
-INSERT INTO `sys_action_access` VALUES (228,16,'create_images_folder',28,0);
-INSERT INTO `sys_action_access` VALUES (229,16,'edit_images_folder',28,0);
-INSERT INTO `sys_action_access` VALUES (230,16,'delete',28,0);
-INSERT INTO `sys_action_access` VALUES (231,16,'image_select',28,0);
 INSERT INTO `sys_action_access` VALUES (232,1,'display',27,0);
 INSERT INTO `sys_action_access` VALUES (233,1,'display',28,0);
 INSERT INTO `sys_action_access` VALUES (234,1,'admin_display',28,0);
@@ -189,22 +173,6 @@ INSERT INTO `sys_action_access` VALUES (238,15,'display',28,0);
 INSERT INTO `sys_action_access` VALUES (239,15,'create_message',28,0);
 INSERT INTO `sys_action_access` VALUES (240,15,'edit',28,0);
 INSERT INTO `sys_action_access` VALUES (241,15,'delete',28,0);
-INSERT INTO `sys_action_access` VALUES (242,14,'display',27,0);
-INSERT INTO `sys_action_access` VALUES (243,14,'display',28,0);
-INSERT INTO `sys_action_access` VALUES (244,14,'create_navigation_item',28,0);
-INSERT INTO `sys_action_access` VALUES (245,14,'edit',28,0);
-INSERT INTO `sys_action_access` VALUES (246,14,'delete',28,0);
-INSERT INTO `sys_action_access` VALUES (247,14,'order',28,0);
-INSERT INTO `sys_action_access` VALUES (259,9,'display',27,0);
-INSERT INTO `sys_action_access` VALUES (260,9,'display',28,0);
-INSERT INTO `sys_action_access` VALUES (261,9,'edit',28,0);
-INSERT INTO `sys_action_access` VALUES (262,9,'delete',28,0);
-INSERT INTO `sys_action_access` VALUES (266,7,'display',27,0);
-INSERT INTO `sys_action_access` VALUES (267,7,'display',28,0);
-INSERT INTO `sys_action_access` VALUES (268,7,'edit',28,0);
-INSERT INTO `sys_action_access` VALUES (269,7,'set_membership',28,0);
-INSERT INTO `sys_action_access` VALUES (270,7,'change_password',28,0);
-INSERT INTO `sys_action_access` VALUES (271,7,'delete',28,0);
 INSERT INTO `sys_action_access` VALUES (276,10,'login',27,0);
 INSERT INTO `sys_action_access` VALUES (277,10,'logout',27,0);
 INSERT INTO `sys_action_access` VALUES (278,10,'login',28,0);
@@ -214,28 +182,59 @@ INSERT INTO `sys_action_access` VALUES (308,3,'display',27,0);
 INSERT INTO `sys_action_access` VALUES (309,3,'display',28,0);
 INSERT INTO `sys_action_access` VALUES (310,3,'toggle',28,0);
 INSERT INTO `sys_action_access` VALUES (311,3,'order',28,0);
-INSERT INTO `sys_action_access` VALUES (312,5,'display',27,0);
-INSERT INTO `sys_action_access` VALUES (313,5,'display',28,0);
-INSERT INTO `sys_action_access` VALUES (314,5,'set_group_access',28,0);
-INSERT INTO `sys_action_access` VALUES (315,5,'toggle',28,0);
-INSERT INTO `sys_action_access` VALUES (316,6,'display',27,0);
-INSERT INTO `sys_action_access` VALUES (317,6,'display',28,0);
-INSERT INTO `sys_action_access` VALUES (318,6,'create_user',28,0);
 INSERT INTO `sys_action_access` VALUES (319,11,'activate_password',27,0);
 INSERT INTO `sys_action_access` VALUES (320,11,'activate_password',28,0);
 INSERT INTO `sys_action_access` VALUES (321,12,'change_own_password',27,0);
 INSERT INTO `sys_action_access` VALUES (322,12,'change_own_password',28,0);
 INSERT INTO `sys_action_access` VALUES (323,13,'generate_password',27,0);
 INSERT INTO `sys_action_access` VALUES (324,13,'generate_password',28,0);
-INSERT INTO `sys_action_access` VALUES (325,8,'display',27,0);
-INSERT INTO `sys_action_access` VALUES (326,8,'display',28,0);
-INSERT INTO `sys_action_access` VALUES (327,8,'create_user_group',28,0);
 INSERT INTO `sys_action_access` VALUES (328,4,'display',28,0);
 INSERT INTO `sys_action_access` VALUES (329,4,'set_group_access',28,0);
 INSERT INTO `sys_action_access` VALUES (330,4,'set_group_access_template',28,0);
 INSERT INTO `sys_action_access` VALUES (331,2,'display',27,0);
 INSERT INTO `sys_action_access` VALUES (332,2,'display',28,0);
 INSERT INTO `sys_action_access` VALUES (333,2,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (334,7,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (335,7,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (336,7,'set_membership',28,0);
+INSERT INTO `sys_action_access` VALUES (337,7,'change_password',28,0);
+INSERT INTO `sys_action_access` VALUES (338,7,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (339,8,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (340,8,'create_user_group',28,0);
+INSERT INTO `sys_action_access` VALUES (341,9,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (342,9,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (343,9,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (344,6,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (345,6,'create_user',28,0);
+INSERT INTO `sys_action_access` VALUES (346,5,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (347,5,'set_group_access',28,0);
+INSERT INTO `sys_action_access` VALUES (348,5,'toggle',28,0);
+INSERT INTO `sys_action_access` VALUES (349,14,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (350,14,'create_navigation_item',28,0);
+INSERT INTO `sys_action_access` VALUES (351,14,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (352,14,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (353,14,'order',28,0);
+INSERT INTO `sys_action_access` VALUES (354,17,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (355,17,'create_file',28,0);
+INSERT INTO `sys_action_access` VALUES (356,17,'create_files_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (357,17,'edit_files_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (358,17,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (359,17,'file_select',28,0);
+INSERT INTO `sys_action_access` VALUES (360,16,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (361,16,'create_image',28,0);
+INSERT INTO `sys_action_access` VALUES (362,16,'create_images_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (363,16,'edit_images_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (364,16,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (365,16,'image_select',28,0);
+INSERT INTO `sys_action_access` VALUES (366,19,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (367,19,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (368,19,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (369,19,'edit_variations',28,0);
+INSERT INTO `sys_action_access` VALUES (370,19,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (371,18,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (372,18,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (373,18,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (374,18,'delete',28,0);
 
 /*
 Table struture for sys_class
@@ -272,6 +271,8 @@ INSERT INTO `sys_class` VALUES (14,'navigation_item','',1);
 INSERT INTO `sys_class` VALUES (15,'message','',0);
 INSERT INTO `sys_class` VALUES (16,'images_folder','/shared/images/folder.gif',0);
 INSERT INTO `sys_class` VALUES (17,'files_folder','/shared/images/folder.gif',0);
+INSERT INTO `sys_class` VALUES (18,'file_object','',1);
+INSERT INTO `sys_class` VALUES (19,'image_object','',1);
 
 /*
 Table struture for sys_full_text_index
@@ -309,7 +310,11 @@ CREATE TABLE `sys_group_object_access_template` (
 Table data for temp.sys_group_object_access_template
 */
 
-INSERT INTO `sys_group_object_access_template` VALUES (1,6,'create_user');
+INSERT INTO `sys_group_object_access_template` VALUES (2,17,'create_file');
+INSERT INTO `sys_group_object_access_template` VALUES (3,17,'create_files_folder');
+INSERT INTO `sys_group_object_access_template` VALUES (4,16,'create_image');
+INSERT INTO `sys_group_object_access_template` VALUES (5,16,'create_images_folder');
+INSERT INTO `sys_group_object_access_template` VALUES (6,6,'create_user');
 
 /*
 Table struture for sys_group_object_access_template_item
@@ -331,8 +336,15 @@ CREATE TABLE `sys_group_object_access_template_item` (
 Table data for temp.sys_group_object_access_template_item
 */
 
-INSERT INTO `sys_group_object_access_template_item` VALUES (1,1,27,1,1);
-INSERT INTO `sys_group_object_access_template_item` VALUES (2,1,28,0,1);
+INSERT INTO `sys_group_object_access_template_item` VALUES (3,2,27,1,0);
+INSERT INTO `sys_group_object_access_template_item` VALUES (4,2,28,1,1);
+INSERT INTO `sys_group_object_access_template_item` VALUES (5,3,27,1,0);
+INSERT INTO `sys_group_object_access_template_item` VALUES (6,3,28,1,1);
+INSERT INTO `sys_group_object_access_template_item` VALUES (7,4,27,1,0);
+INSERT INTO `sys_group_object_access_template_item` VALUES (8,4,28,1,1);
+INSERT INTO `sys_group_object_access_template_item` VALUES (9,5,27,1,0);
+INSERT INTO `sys_group_object_access_template_item` VALUES (10,5,28,1,1);
+INSERT INTO `sys_group_object_access_template_item` VALUES (11,6,28,1,1);
 
 /*
 Table struture for sys_lock
@@ -566,7 +578,7 @@ CREATE TABLE `sys_session` (
 Table data for temp.sys_session
 */
 
-INSERT INTO `sys_session` VALUES ('8478ecc9584bf2eb4f0ee0c42d308a42','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:2;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:9;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:8;a:4:{s:1:\"l\";i:10;s:1:\"r\";i:15;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:19;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:9:{s:12:\"is_logged_in\";b:1;s:2:\"id\";s:2:\"25\";s:7:\"node_id\";s:1:\"7\";s:5:\"login\";s:5:\"admin\";s:5:\"email\";s:15:\"mike@office.bit\";s:4:\"name\";s:5:\"admin\";s:8:\"lastname\";s:5:\"super\";s:8:\"password\";s:32:\"66d4aaa5ea177ac32c69946de3731ec0\";s:6:\"groups\";a:1:{i:28;s:6:\"admins\";}}strings|s:0:\"\";',1077190936,25);
+INSERT INTO `sys_session` VALUES ('aea8db4808f336008d3012b6dfd526ec','tree_expanded_parents|a:9:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:2;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:9;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:8;a:4:{s:1:\"l\";i:10;s:1:\"r\";i:15;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:19;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:18;a:4:{s:1:\"l\";i:60;s:1:\"r\";i:61;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:17;a:4:{s:1:\"l\";i:58;s:1:\"r\";i:59;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}}global_user|O:4:\"user\":10:{s:3:\"_id\";s:2:\"25\";s:8:\"_node_id\";s:1:\"7\";s:6:\"_login\";s:5:\"admin\";s:9:\"_password\";s:32:\"66d4aaa5ea177ac32c69946de3731ec0\";s:6:\"_email\";s:15:\"mike@office.bit\";s:5:\"_name\";s:5:\"admin\";s:9:\"_lastname\";s:5:\"super\";s:13:\"_is_logged_in\";b:1;s:7:\"_groups\";a:1:{i:28;s:6:\"admins\";}s:11:\"_attributes\";N;}session_classes_paths|a:1:{i:0;s:56:\"c:/var/dev/limb2/trunk//core/lib/security/user.class.php\";}strings|s:0:\"\";',1080739941,25);
 
 /*
 Table struture for sys_site_object
@@ -721,6 +733,11 @@ CREATE TABLE `sys_stat_counter` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+/*
+Table data for temp.sys_stat_counter
+*/
+
+INSERT INTO `sys_stat_counter` VALUES (1,1,76,1,76,1080739941);
 
 /*
 Table struture for sys_stat_day_counters
@@ -737,6 +754,11 @@ CREATE TABLE `sys_stat_day_counters` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+/*
+Table data for temp.sys_stat_day_counters
+*/
+
+INSERT INTO `sys_stat_day_counters` VALUES (1,1080676800,76,1,2,1);
 
 /*
 Table struture for sys_stat_ip
@@ -749,6 +771,11 @@ CREATE TABLE `sys_stat_ip` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+/*
+Table data for temp.sys_stat_ip
+*/
+
+INSERT INTO `sys_stat_ip` VALUES ('c0a80006',1080739181);
 
 /*
 Table struture for sys_stat_log
@@ -770,6 +797,86 @@ CREATE TABLE `sys_stat_log` (
   KEY `complex` (`node_id`,`time`,`user_id`,`stat_uri_id`)
 ) TYPE=InnoDB ROW_FORMAT=DYNAMIC COMMENT='InnoDB free: 9216 kB';
 
+/*
+Table data for temp.sys_stat_log
+*/
+
+INSERT INTO `sys_stat_log` VALUES (1,1,-1,1080739181,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',-1,1,1);
+INSERT INTO `sys_stat_log` VALUES (2,11,-1,1080739184,'c0a80006','login','aea8db4808f336008d3012b6dfd526ec',-1,4,2);
+INSERT INTO `sys_stat_log` VALUES (3,11,-1,1080739186,'c0a80006','login','aea8db4808f336008d3012b6dfd526ec',-1,4,2);
+INSERT INTO `sys_stat_log` VALUES (4,11,-1,1080739191,'c0a80006','login','aea8db4808f336008d3012b6dfd526ec',25,2,2);
+INSERT INTO `sys_stat_log` VALUES (5,2,-1,1080739191,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,3);
+INSERT INTO `sys_stat_log` VALUES (6,4,-1,1080739195,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,4);
+INSERT INTO `sys_stat_log` VALUES (7,4,-1,1080739197,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (8,4,-1,1080739199,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (9,4,-1,1080739200,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (10,4,-1,1080739202,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (11,4,-1,1080739203,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (12,4,-1,1080739205,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (13,4,-1,1080739208,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (14,4,-1,1080739210,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (15,4,-1,1080739212,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (16,4,-1,1080739213,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (17,4,-1,1080739217,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (18,4,-1,1080739236,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (19,4,-1,1080739238,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (20,4,-1,1080739242,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (21,4,-1,1080739245,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (22,4,-1,1080739248,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (23,4,-1,1080739256,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (24,4,-1,1080739417,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,4);
+INSERT INTO `sys_stat_log` VALUES (25,4,-1,1080739419,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (26,4,-1,1080739423,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (27,4,-1,1080739426,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (28,4,-1,1080739428,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (29,4,-1,1080739431,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (30,4,-1,1080739433,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (31,4,-1,1080739435,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (32,4,-1,1080739442,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (33,4,-1,1080739444,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (34,4,-1,1080739445,'c0a80006','set_group_access_template','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (35,4,-1,1080739455,'c0a80006','set_group_access_template','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (36,4,-1,1080739457,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (37,4,-1,1080739460,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (38,4,-1,1080739463,'c0a80006','set_group_access_template','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (39,4,-1,1080739467,'c0a80006','set_group_access_template','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (40,4,-1,1080739470,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (41,4,-1,1080739473,'c0a80006','set_group_access_template','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (42,4,-1,1080739478,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (43,4,-1,1080739489,'c0a80006','set_group_access_template','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (44,4,-1,1080739492,'c0a80006','set_group_access_template','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (45,4,-1,1080739505,'c0a80006','set_group_access_template','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (46,18,-1,1080739524,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,5);
+INSERT INTO `sys_stat_log` VALUES (47,18,-1,1080739526,'c0a80006','create_files_folder','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (48,18,-1,1080739528,'c0a80006','create_file','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (49,18,-1,1080739537,'c0a80006','create_file','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (50,18,-1,1080739537,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,5);
+INSERT INTO `sys_stat_log` VALUES (51,17,-1,1080739542,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,6);
+INSERT INTO `sys_stat_log` VALUES (52,17,-1,1080739543,'c0a80006','create_image','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (53,17,-1,1080739566,'c0a80006','create_image','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (54,17,-1,1080739576,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,6);
+INSERT INTO `sys_stat_log` VALUES (55,17,-1,1080739582,'c0a80006','create_image','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (56,17,-1,1080739891,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,6);
+INSERT INTO `sys_stat_log` VALUES (57,17,-1,1080739896,'c0a80006','create_image','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (58,17,-1,1080739903,'c0a80006','create_image','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (59,17,-1,1080739903,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,6);
+INSERT INTO `sys_stat_log` VALUES (60,4,-1,1080739906,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,4);
+INSERT INTO `sys_stat_log` VALUES (61,4,-1,1080739911,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (62,4,-1,1080739917,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (63,4,-1,1080739920,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (64,4,-1,1080739923,'c0a80006','set_group_access','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (65,1,-1,1080739926,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,1);
+INSERT INTO `sys_stat_log` VALUES (66,4,-1,1080739928,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,4);
+INSERT INTO `sys_stat_log` VALUES (67,18,-1,1080739931,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,5);
+INSERT INTO `sys_stat_log` VALUES (68,32,-1,1080739931,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,7);
+INSERT INTO `sys_stat_log` VALUES (69,32,-1,1080739934,'c0a80006','delete','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (70,32,-1,1080739935,'c0a80006','delete','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (71,18,-1,1080739935,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,5);
+INSERT INTO `sys_stat_log` VALUES (72,17,-1,1080739937,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,6);
+INSERT INTO `sys_stat_log` VALUES (73,33,-1,1080739937,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,8);
+INSERT INTO `sys_stat_log` VALUES (74,33,-1,1080739940,'c0a80006','delete','aea8db4808f336008d3012b6dfd526ec',25,4,1);
+INSERT INTO `sys_stat_log` VALUES (75,33,-1,1080739941,'c0a80006','delete','aea8db4808f336008d3012b6dfd526ec',25,2,1);
+INSERT INTO `sys_stat_log` VALUES (76,17,-1,1080739941,'c0a80006','display','aea8db4808f336008d3012b6dfd526ec',25,1,6);
 
 /*
 Table struture for sys_stat_referer_url
@@ -809,6 +916,18 @@ CREATE TABLE `sys_stat_uri` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+/*
+Table data for temp.sys_stat_uri
+*/
+
+INSERT INTO `sys_stat_uri` VALUES (1,'/root');
+INSERT INTO `sys_stat_uri` VALUES (2,'/root/login');
+INSERT INTO `sys_stat_uri` VALUES (3,'/root/admin');
+INSERT INTO `sys_stat_uri` VALUES (4,'/root/admin/classes');
+INSERT INTO `sys_stat_uri` VALUES (5,'/root/files_folder');
+INSERT INTO `sys_stat_uri` VALUES (6,'/root/images_folder');
+INSERT INTO `sys_stat_uri` VALUES (7,'/root/files_folder/dgg');
+INSERT INTO `sys_stat_uri` VALUES (8,'/root/images_folder/wewe');
 
 /*
 Table struture for sys_user_object_access_template

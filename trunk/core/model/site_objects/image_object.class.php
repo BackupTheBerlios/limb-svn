@@ -33,10 +33,10 @@ class image_object extends media_object
 		
 		foreach(array_keys($image_variations) as $variation)
 		{
-			$definition['upload_' . $variation . '_max_size'] = 'upload_' . $variation . '_max_size';
-			$definition['generate_' . $variation . '_max_size'] = 'generate_' . $variation . '_max_size';
-			$definition[$variation . '_action'] = $variation . '_action';
-			$definition[$variation . '_base_variation'] = $variation . '_base_variation';
+			$definition['upload_' . $variation . '_max_size'] = array();
+			$definition['generate_' . $variation . '_max_size'] = array();
+			$definition[$variation . '_action'] = array();
+			$definition[$variation . '_base_variation'] = array();
 		}
 		
 		$definition['files_data'] = array();
