@@ -8,6 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
+define('RESPONSE_STATUS_DONT_TRACK', 0);
+
 define('RESPONSE_STATUS_SUCCESS_MASK', 15);
 define('RESPONSE_STATUS_SUCCESS', 1);
 define('RESPONSE_STATUS_FORM_SUBMITTED', 2);

@@ -10,13 +10,10 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 require_once(LIMB_DIR . 'core/model/response/exit_response.class.php');
+require_once(LIMB_DIR . 'core/model/response/dont_track_response.class.php');
 
 class display_image_action extends action
-{
-	function display_image_action($name='')
-	{
-	}
-	
+{	
 	function perform()
 	{
 		$object_data =& fetch_mapped_by_url();
@@ -27,11 +24,13 @@ class display_image_action extends action
 		$image_variations = $ini->get_named_array();
 		
 		foreach($image_variations as $key => $value)
+		{
 			if (array_key_exists($key, $_GET))
 			{
 				$variation = $key;
 				break;
 			}
+		}
 		
 		if (empty($variation))
 			$variation = 'thumbnail';
@@ -42,13 +41,22 @@ class display_image_action extends action
 		{
 			header("Content-type: image/gif");
 			readfile(SHARED_DIR . 'images/1x1.gif');
-			return new exit_response(RESPONSE_STATUS_FAILURE);
+			
+			if($variation == 'original')
+				return new exit_response(RESPONSE_STATUS_FAILURE);
+			else
+				return new dont_track_response();
+
 		}		
 				
 		if(!file_exists(MEDIA_DIR. $image['media_id'] . '.media'))
 		{
 			header("HTTP/1.1 404 Not found");
-			return new exit_response(RESPONSE_STATUS_FAILURE);
+			
+			if($variation == 'original')
+				return new exit_response(RESPONSE_STATUS_FAILURE);
+			else
+				return new dont_track_response();
 		}		
 				
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $image['etag'])
@@ -69,7 +77,11 @@ class display_image_action extends action
 			header("Content-Disposition: filename={$image['file_name']}"); 
 			readfile(MEDIA_DIR. $image['media_id'] .'.media');
 		}
-		return new exit_response();
+		
+		if($variation == 'original')
+			return new exit_response();
+		else
+			return new dont_track_response();
 	}
 }
 

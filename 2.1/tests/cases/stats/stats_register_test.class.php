@@ -130,6 +130,21 @@ class stats_register_test extends UnitTestCase
   	$this->db->sql_delete('sys_stat_counter');
   	$this->db->sql_delete('sys_stat_day_counters');
   }
+  
+  function test_register_dont_track()
+  {
+  	$this->stats_ip->expectNever('is_new_host');
+  	$this->stats_ip->expectNever('get_client_ip');
+
+  	$this->stats_counter->expectNever('set_new_host');
+  	$this->stats_counter->expectNever('update');
+
+  	$this->stats_referer->expectNever('get_referer_page_id');
+
+  	$this->stats_search_phrase->expectNever('register');
+
+  	$this->stats_register->register(0, '', RESPONSE_STATUS_DONT_TRACK);
+  }
       
   function test_register() 
   {

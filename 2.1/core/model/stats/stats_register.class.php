@@ -51,6 +51,9 @@ class stats_register
 
 	function register($node_id, $action, $status_code)
 	{
+		if($status_code === RESPONSE_STATUS_DONT_TRACK)
+			return;
+		
 		$this->_update_log($node_id, $action, $status_code);
 		
 		$this->_update_counters();
