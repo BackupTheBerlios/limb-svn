@@ -24,7 +24,10 @@ class cart_test extends UnitTestCase
   function setUp()
   {
     $this->cart_handler =& new Mockcart_handler($this);
-    $this->cart =& new cart(1);
+    $this->cart_handler->expectOnce('set_cart_id', array(1));
+    $this->cart_handler->expectOnce('reset');
+    
+    $this->cart =& new cart(1, $h = null);
     $this->cart->set_cart_handler($this->cart_handler);
   }
   
@@ -40,14 +43,31 @@ class cart_test extends UnitTestCase
   
   function test_get_default_card_id()
   {
-    $cart = new cart();
+    $cart = new cart(null, $h = null);
     $this->assertEqual($cart->get_cart_id(), session_id());
   }
 
   function test_get_default_card_handler()
   {
-    $cart = new cart();
-    $this->assertIsA($cart->get_cart_handler(), 'session_cart_handler');
+    $cart = new cart(1, $h = null);
+    $h = $cart->get_cart_handler();
+    
+    $this->assertIsA($h, CART_DEFAULT_HANDLER_TYPE . '_cart_handler');
+    
+    $this->assertEqual($h->get_cart_id(), 1);
+  }
+  
+  function test_initialize_cart_handler()
+  {
+    $cart_handler =& new Mockcart_handler($this);
+    $cart_handler->expectOnce('set_cart_id', array(1));
+    $cart_handler->expectOnce('reset');
+    $cart = new cart(1, $cart_handler);
+    $cart_handler->tally();
+  }
+  
+  function test_set_cart_id()
+  {
   }
     
   function test_get_card_id()
@@ -57,7 +77,7 @@ class cart_test extends UnitTestCase
   
   function test_get_card_handler()
   {
-    $this->assertIsA($this->cart->get_cart_handler(), 'Mockcart_handler');
+    $this->assertIsA($this->cart->get_cart_handler(), 'Mockcart_handler');    
   }
   
   function test_add_item()

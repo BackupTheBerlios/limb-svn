@@ -14,12 +14,15 @@ require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 
 define('CART_DEFAULT_ID', session_id());
 
+if(!defined('CART_DEFAULT_HANDLER_TYPE'))
+  define('CART_DEFAULT_HANDLER_TYPE', 'session');
+
 class cart
 {		
 	var $_cart_id = null;
 	var $_cart_handler = null;
 		
-	function cart($cart_id = null, $handler = null)
+	function cart($cart_id, &$handler)
 	{
 	  if($cart_id === null)
 		  $this->_cart_id = CART_DEFAULT_ID;
@@ -27,8 +30,6 @@ class cart
 		  $this->_cart_id = $cart_id;
 		
 		$this->initialize_cart_handler($handler);
-		
-		$this->_items = array();
 	}
 
  	function & instance($cart_id = null, $handler = null)
@@ -41,16 +42,40 @@ class cart
 	{
 	  if($handler === null)
 	  {
-	    include_once(LIMB_DIR . '/core/model/shop/handlers/session_cart_handler.class.php');
-	    $this->_cart_handler =& new session_cart_handler($this->_cart_id);
+	    switch(CART_DEFAULT_HANDLER_TYPE)
+	    {
+	      case 'session':
+	        include_once(LIMB_DIR . '/core/model/shop/handlers/session_cart_handler.class.php');
+	        $this->_cart_handler =& new session_cart_handler($this->_cart_id);
+	      break;
+	        
+	      case 'db':
+	        include_once(LIMB_DIR . '/core/model/shop/handlers/db_cart_handler.class.php');
+	        $this->_cart_handler =& new db_cart_handler($this->_cart_id);
+        break;
+        
+        default:
+          error('unknown default cart handler type',
+    		  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+    		  array('type' => CART_DEFAULT_HANDLER_TYPE));
+	    }
+	    
+	    
+	    $this->_cart_handler->reset();
 	  }
 	  else
+	  {
 	    $this->_cart_handler =& $handler;
+	    $this->_cart_handler->set_cart_id($this->_cart_id);
+	    $this->_cart_handler->reset();
+	  }
 	}
 
   function set_cart_handler(&$handler)
   {
     $this->_cart_handler =& $handler;
+    $this->_cart_handler->set_cart_id($this->_cart_id);
+    $this->_cart_handler->reset();
   }
 	
 	function get_cart_id()	

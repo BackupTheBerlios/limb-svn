@@ -12,17 +12,26 @@
 class cart_handler
 {		
 	var $_cart_id = null;
-	var $_items = null;
+	var $_items = array();
 		
 	function cart_handler($cart_id)
 	{
 		$this->_cart_id = $cart_id;
-		$this->_items = array();
+	}
+	
+	function reset()
+	{
+	  $this->_items = array();
 	}
 		
 	function get_cart_id()	
 	{
 		return $this->_cart_id;
+	}
+	
+	function set_cart_id($cart_id)
+	{
+	  $this->_cart_id = $cart_id;
 	}
 	
 	function add_item(&$new_item)
