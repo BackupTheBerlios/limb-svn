@@ -17,7 +17,7 @@ class sys_params_group extends LimbGroupTest
     
 	function getTestCasesHandles()
 	{
- 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/sys_params');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/sys_params');
 	}    
 }
 ?>

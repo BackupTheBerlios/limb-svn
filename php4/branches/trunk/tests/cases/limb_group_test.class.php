@@ -11,9 +11,16 @@
 
 class LimbGroupTest extends GroupTest 
 {
+  var $tests_handles = array();
+  
+  function addTestCaseHandle(&$handle)
+  {
+    $this->tests_handles[] =& $handle;
+  }
+  
   function &getTestCasesHandles()
   {
-    return array();
+    return $this->tests_handles;
   }
 }
 

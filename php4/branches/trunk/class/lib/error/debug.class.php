@@ -337,9 +337,14 @@ class debug
 								.	"{$user_id}\n"
 								. "login:\t\t"  . $user->get_login() . "\n"
 								. "e-mail:\t\t" . $user->get_email() . "\n";
-
+    
+    if(sys :: exec_mode() == 'cli')
+      $request_uri = 'cli';
+    else
+      $request_uri = $_SERVER['REQUEST_URI'];
+      
 		$message .= "ip:\t\t" . sys :: client_ip() . "\n"
-							. "request:\t" . $_SERVER['REQUEST_URI'] . "\n"
+							. "request:\t" . $request_uri . "\n"
 							. "description:\n" . $description;
 		
 		if(sys :: exec_mode() == 'cli')

@@ -40,7 +40,7 @@ require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');
 require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');
-require_once(LIMB_DIR . '/tests/lib/test_manager.class.php');
+require_once(LIMB_DIR . '/tests/lib/test_finder.class.php');
 require_once(LIMB_DIR . '/class/lib/error/error.inc.php');
 
 set_time_limit(0);

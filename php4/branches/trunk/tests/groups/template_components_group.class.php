@@ -17,7 +17,7 @@ class template_components_group extends LimbGroupTest
   
 	function getTestCasesHandles()
 	{
- 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/components');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/components');
 	}  
 }
 ?>

@@ -17,7 +17,7 @@ class util_group extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
- 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/util');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/util');
 	}	
 }
 ?>

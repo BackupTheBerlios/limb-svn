@@ -39,15 +39,20 @@ class HTMLTestRunner extends TestRunner
       $this->browse('', $root_group);  
   }
  
-  function _displayPerform($path, &$root_group, &$current_group)
+  function _displayBeforePerform($path, &$root_group, &$current_group)
   {    
+    echo '';
+  }
+  
+  function _displayAfterPerform($path, &$root_group, &$current_group)
+  {
     if(isset($_GET['back']))  
       $postfix = '';
     else
       $postfix = '/..';
       
     echo '<p><a href="' . $this->getBaseURL() . '?browse=' . $path . $postfix . '">Back</a></p>';
-    
+  
     echo debug :: parse_html_console();
   }
   

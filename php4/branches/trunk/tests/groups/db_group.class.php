@@ -17,7 +17,7 @@ class db_group extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
- 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/db');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/db');
 	}
 	
 }

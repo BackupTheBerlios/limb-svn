@@ -95,12 +95,12 @@ EOD;
     return new LimbCLIReporter();
   }
   
-  function getBaseUrl()
-  {
-    return $_SERVER['PHP_SELF'];
+  function _displayBeforePerform($path, &$root_group, &$current_group)
+  {  
+    echo '';
   }
  
-  function _displayPerform($path, &$root_group, &$current_group)
+  function _displayAfterPerform($path, &$root_group, &$current_group)
   {  
     echo '';
   }
@@ -112,7 +112,7 @@ EOD;
 		else  
 		  $group_tests = array();
     
-		$buffer = "Available test cases in " . $current_group->getLabel() . " :\n";
+		$buffer = "Available test cases in \n'=== " . $current_group->getLabel() . " ===' :\n";
 		
 		if (sizeof($group_tests))
 		{		

@@ -17,7 +17,7 @@ class site_objects_manipulation_group extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
- 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/site_objects_manipulation');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/site_objects_manipulation');
 	}		
 }
 ?>

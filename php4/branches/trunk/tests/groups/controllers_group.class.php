@@ -17,7 +17,7 @@ class controllers_group extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
- 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/controllers');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/controllers');
 	}
 	
 }

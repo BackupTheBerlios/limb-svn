@@ -10,16 +10,16 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/tests/cases/limb_group_test.class.php');
 
-class RootGroupTest extends LimbGroupTest
+class LimbRootGroupTest extends LimbGroupTest
 {
-	function RootGroupTest() 
+	function LimbRootGroupTest() 
 	{
-	  $this->LimbGroupTest('all tests');
+	  $this->LimbGroupTest('all LIMB tests');
 	}
 	
 	function getTestCasesHandles()
 	{
- 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/groups');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/groups');
 	}
 }
 

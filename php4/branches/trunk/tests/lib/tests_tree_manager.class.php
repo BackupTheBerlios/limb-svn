@@ -10,23 +10,8 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
 
-class TestManager
-{
-	var $_test_case_extension = '_test.class.php';
-	var $_test_group_extension = '_group.class.php';
-
-	function TestManager()
-	{
-		$this->_installSimpleTest();
-	} 
-
-	function _installSimpleTest()
-	{
-		require_once(SIMPLE_TEST . 'unit_tester.php');
-		require_once(SIMPLE_TEST . 'web_tester.php');
-		require_once(SIMPLE_TEST . 'mock_objects.php');
-	} 
-	
+class TestsTreeManager
+{	
 	function run(&$test, &$reporter)
 	{
     if(is_a($test, 'LimbGroupTest'))
@@ -103,7 +88,7 @@ class TestManager
 	  }
 	}
 
-	function &getTestCasesHandlesFromDirectory($directory)
+	function &getTestCasesHandlesFromDirectoryRecursive($directory)
 	{
 	  $manager = new TestManager();
 		$files = $manager->_getRecursiveFileList($directory,
@@ -134,50 +119,6 @@ class TestManager
 		  return array();
 		
 		return $matches[1];
-	} 
-
-	function &_getRecursiveFileList($directory, $file_test_function)
-	{
-		$dh = opendir($directory);
-		if (! is_resource($dh))
-		{
-			trigger_error("Couldn't open {$directory}", E_USER_ERROR);
-		} 
-
-		$file_list = array();
-		while ($file = readdir($dh))
-		{
-			$file_path = $directory . DIRECTORY_SEPARATOR . $file;
-
-			if (0 === strpos($file, '.')) continue;
-
-			if (is_dir($file_path))
-			{
-				$file_list =
-				array_merge($file_list,
-					$this->_getRecursiveFileList(
-						$file_path,
-						$file_test_function));
-			} 
-			if ($file_test_function[0]->$file_test_function[1]($file))
-			{
-				$file_list[] = fs :: clean_path($file_path);
-			} 
-		} 
-		closedir($dh);
-		return $file_list;
-	} 
-
-	function _isTestCaseFile($file)
-	{
-		return ($this->_hasExpectedExtension($file, $this->_test_case_extension) || 
-		        $this->_hasExpectedExtension($file, $this->_test_group_extension));
-	} 
-
-	function _hasExpectedExtension($file, $extension)
-	{
-		return $extension ==
-		strtolower(substr($file, (0 - strlen($extension))));
 	} 
 } 
 ?>

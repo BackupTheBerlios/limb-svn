@@ -22,7 +22,7 @@ function error($description, $error_place='', $params=array())
 	if(isset($GLOBALS['error_recursion']) && $GLOBALS['error_recursion'])
 		die('error recursion');
 
-	if($_SERVER['SERVER_PORT'] == 81)
+	if(sys :: exec_mode() != 'cli' && $_SERVER['SERVER_PORT'] == 81)
 		trigger_error('error', E_USER_WARNING);		
 		
 	$GLOBALS['error_recursion'] = true;
