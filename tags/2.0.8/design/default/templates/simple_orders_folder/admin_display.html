@@ -1,0 +1,47 @@
+<core:WRAP file="admin/page.html" placeholder="content">
+
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='orders' navigator='pager' >
+	<core:PARAMETER name='loader_class_name' value='simple_order_object'>
+	<core:PARAMETER name='datasource_path' value='simple_orders_list_datasource'>
+	<core:PARAMETER name='order' value='time=DESC'>
+	<core:PARAMETER name='fetch_method' value='fetch'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='orders'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+<tr>
+	<th>Номер заказа</th>
+	<th>Дата формирования заказа</th>
+	<th>ФИО заказчика</th>
+	<th>Email заказчика</th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+	<tr class="jip">
+		<td jip='object'>
+			<a href={$path}?action=view&popup=1 target='_blank' onclick='click_href(this.href);return false;'>#{$identifier}</a>
+		</td>
+		<td>
+			<locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'>
+		</td>
+		<td>
+			{$user_name} {$user_secondname} {$user_lastname}
+		</td>
+		<td>
+			<a href=mailto:{$user_email}>{$user_email}</a>
+		</td>
+		<td>
+			<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+		</td>
+	</tr>
+</grid:ITERATOR>
+</table>
+</grid:LIST>

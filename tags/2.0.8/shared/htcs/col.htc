@@ -1,0 +1,38 @@
+<PUBLIC:COMPONENT lightweight = true>
+<PUBLIC:ATTACH EVENT="onmouseover" ONEVENT="fnOnMouseOver()" />
+<PUBLIC:ATTACH EVENT="onmouseout" ONEVENT="fnOnMouseOut()" />
+
+
+<script language="javascript">
+var tmp_backgroundColor = element.style.backgroundColor
+var cur_col = get_cur_row()
+function fnOnMouseOver()
+{	
+//	alert(element.parentElement.parentElement.parentElement.tagName)
+	element.style.backgroundColor ="#DEE3FC"
+//	if(cur_col.style.backgroundColor!="#F0F2FC")
+//		cur_col.style.backgroundColor ="#F0F2FC"
+}
+function fnOnMouseOut()
+{
+		element.style.backgroundColor = tmp_backgroundColor
+//		if(cur_col.style.backgroundColor!="")
+//			cur_col.style.backgroundColor =""
+}
+function get_cur_row()
+{
+	var cols_arr = element.parentElement.parentElement.parentElement.getElementsByTagName("COL")
+	var cur_el = element.previousSibling
+	var cur_sme = 0
+	for(;;)
+	{
+		if(cur_el==null)
+			break;
+			cur_el = cur_el.previousSibling
+			cur_sme++
+	}
+	return cols_arr[cur_sme]
+}
+
+</script>
+</PUBLIC:COMPONENT>

@@ -1,0 +1,21 @@
+.status1
+{
+	font-family: Verdana;
+	font-size: xx-small;
+	font-weight: bold;
+	color: green;
+}
+
+.status2
+{
+	font-family: Verdana;
+	font-size: xx-small;
+	font-weight: bold;
+	color: #FF0000;
+}
+
+.message
+{
+	font-family: Verdana;
+	font-size: xx-small;
+}

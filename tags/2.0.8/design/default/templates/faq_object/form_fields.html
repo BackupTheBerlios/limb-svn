@@ -1,0 +1,87 @@
+	<table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
+	<tr>
+		<td height=1%>
+			<!--BEGIN: табулятор-->
+			<table width=100% border=0 cellspacing=0 cellpadding=0 id=tabulator active=param_req class=tabulator>
+			<col span=100 valign=bottom class=form>
+			<tr>
+				<td class=tab>&nbsp;</td>
+				<td id=param_req_box class=tab-active>
+					<table border=0 cellspacing=0 cellpadding=0 height=100%>
+					<tr>
+						<td nowrap class=label-active id=param_req><a href='JavaScript:void(0);'><locale:STRING name="question" file="faq"></a></td>
+					</tr>
+					</table>	
+				</td>
+				<td class=tab id=param_text_box>
+					<table border=0 cellspacing=0 cellpadding=0 height=100%>
+					<tr>
+						<td nowrap class=label id=param_text><a href='JavaScript:void(0);'><locale:STRING name="answer" file="faq"></a></td>
+					</tr>
+					</table>	
+				</td>
+				<td class=tab width=100%>&nbsp;</td>
+			</tr>
+			</table>	
+			<!--END: табулятор-->
+		</td>
+	</tr>
+	<tr class=com4>
+		<td colspan=2 class=pad4><core:INCLUDE file="form_errors.html"></td>
+	</tr>
+	<tr>
+		<td height=100% valign=top>
+		
+					<!--BEGIN: вкладка №1-->
+				  <table width="100%" border="0" cellspacing="0" cellpadding="0" style='padding:5px 10px 1px 5px;' id=param_req_content>
+			  	<col align=right width=200 class=labels valign=top>
+			    <tr>
+			      <td><label for="question"><span class=req>*</span><locale:STRING name="question" file="faq"></label></td>
+			      <td><textarea name="question" id="question" label="Question" cols="50" rows="10" class="textarea"></textarea>
+			      </td>
+			    </tr>
+			    <tr>
+			      <td><label for="question_author"><locale:STRING name="question_author" file="faq"></label></td>
+			      <td><input type="text" name="question_author" id="question_author" label="Question author" class="input">
+			      </td>
+			    </tr>
+			    <tr>
+			      <td><label for="question_author_email"><locale:STRING name="question_author_email" file="faq"></label></td>
+			      <td><input type="text" name="question_author_email" id="question_author_email" label="Question author email" class="input">
+			      </td>
+			    </tr>
+				  </table>
+					<!--END: вкладка №1-->
+
+					<!--BEGIN: вкладка №2-->
+				  <table width="100%" border="0" cellspacing="3" cellpadding="0" height=100% id=param_text_content>
+			  	<col align=right width=100 class=labels>
+			  	<col width=80%>
+			    <tr>
+			      <td colspan=2 height=100% align=left><richedit name="answer" id="answer" label="Answer" rows="45" cols="80" ></richedit>
+			      </td>
+			    </tr>
+			    <tr><td colspan=2>&nbsp;</td></tr>
+			    <tr>
+			      <td><label for="answer_author"><locale:STRING name="answer_author" file="faq"></label></td>
+			      <td><input type="text" name="answer_author" id="answer_author" label="Answer author" class="input"></td>
+			    </tr>
+			    <tr>
+			      <td><label for="answer_author_email"><locale:STRING name="answer_author_email" file="faq"></label></td>
+			      <td><input type="text" name="answer_author_email" id="answer_author_email" label="Answer author email" class="input">
+			      </td>
+			    </tr>
+			    <tr><td colspan=2>&nbsp;</td></tr>
+				  </table>
+					<!--END: вкладка №2-->
+
+		</td>
+	</tr>
+	</table>	
+<script>
+	init_tab('param_req',	'tabulator', 'label', 'tab')
+	init_tab('param_text',	'tabulator', 'label', 'tab','window.onresize()')
+</script>
+
+ 
+<div id='popup_div'></div>
