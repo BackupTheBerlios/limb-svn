@@ -5,34 +5,29 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: action.tag.php 916 2004-11-23 09:14:28Z pachanga $
 *
 ***********************************************************************************/
 include_once(LIMB_DIR . '/core/lib/util/ini.class.php');
 
-class grid_action_tag_info
+class admin_list_action_tag_info
 {
-  var $tag = 'grid:action';
+  var $tag = 'admin:list:action';
   var $end_tag = ENDTAG_FORBIDDEN;
-  var $tag_class = 'grid_action_tag';
+  var $tag_class = 'admin_list_action_tag';
 }
 
-register_tag(new grid_action_tag_info());
+register_tag(new  admin_list_action_tag_info());
 
-class grid_action_tag extends compiler_directive_tag
+class  admin_list_action_tag extends compiler_directive_tag
 {
-  /**
-  *
-  * @return void
-  * @access protected
-  */
   function check_nesting_level()
   {
-    if (!is_a($this->parent, 'grid_actions_tag'))
+    if (!is_a($this->parent, 'admin_list_actions_tag'))
     {
       error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
       array('tag' => $this->tag,
-          'enclosing_tag' => 'gird:actions',
+          'enclosing_tag' => ' admin:list:actions',
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
     }

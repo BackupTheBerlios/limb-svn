@@ -6,19 +6,11 @@
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='items'>
+  <admin:list:HEADER>
+   <admin:list:TITLE><locale:STRING name='navigation_items_list' file='navigation'></admin:list:TITLE>
+  </admin:list:HEADER>
+
 <!--BEGIN:[ TABLE ]-->
-  <table class="datatable">
-  <tr>
-    <td>
-      <table class="header">
-        <tr>
-          <td class='title'><locale:STRING name='navigation_items_list' file='navigation'></td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td>
     <table cellpadding="0" cellspacing="0" class="content">
       <tr>
         <th class="icon"><grid:SELECTORS_TOGGLER></th>
@@ -45,13 +37,9 @@
       </tr>
       </grid:ITERATOR>
     </table>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
-    </td>
-  </tr>
-  </table>
+
+  <admin:list:FOOTER>
+   <core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
+  </admin:list:FOOTER>
 <!--END:[ TABLE ]-->
 </grid:LIST>

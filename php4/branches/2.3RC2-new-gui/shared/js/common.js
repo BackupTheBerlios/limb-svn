@@ -88,7 +88,7 @@ function get_query_items(uri)
 
   for(index in arr)
   {
-    if(arr[index] && index != '_extends')
+    if(arr[index])
     {
       key_value = arr[index].split('=');
       if(!key_value[1])

@@ -33,7 +33,7 @@ hr{height:1px; color:#0D2F89;padding:0;margin:0}
 
 .datatable{border:solid 1px #0D2F89;background-image:URL('/shared/images/bgr/striped.gif')}
 .datatable .header{ width : 100%;   }
-.datatable  .title{background : #6688E2 URL('/shared/images/icon/table.gif') no-repeat 5px; font:bold 9pt Tahoma; color:#ffffff;  width : 100%;  text-align : center;  }
+.datatable  .title{background : #6688E2 URL('/shared/images/icon/table.gif') no-repeat 5px; font:bold 9pt Tahoma; color:#ffffff;  width : 100%;  text-align : center;  height : 25px;   }
 .datatable  .filter{border:solid 1px #0D2F89; background-color:#ffffff;font:bold 9pt Tahoma; color:#409C00;  background :#FFFFFF;  white-space : nowrap;   }
 .datatable .icon{padding:3px 4px 3px 4px}
 .datatable .content{background-color:#F0F0F0;border:solid 1px #C0C0C0;  width : 100%; }

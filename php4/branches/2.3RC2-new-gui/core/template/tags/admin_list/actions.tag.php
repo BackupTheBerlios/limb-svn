@@ -5,20 +5,20 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: actions.tag.php 1014 2005-01-12 13:47:44Z moltyaninov $
 *
 ***********************************************************************************/
 
-class grid_actions_tag_info
+class  admin_list_actions_tag_info
 {
-  var $tag = 'grid:actions';
+  var $tag = 'admin:list:actions';
   var $end_tag = ENDTAG_REQUIRED;
-  var $tag_class = 'grid_actions_tag';
+  var $tag_class = 'admin_list_actions_tag';
 }
 
-register_tag(new grid_actions_tag_info());
+register_tag(new  admin_list_actions_tag_info());
 
-class grid_actions_tag extends compiler_directive_tag 
+class  admin_list_actions_tag extends compiler_directive_tag 
 {
   var $actions = array();
 
@@ -27,9 +27,9 @@ class grid_actions_tag extends compiler_directive_tag
     if (!$this->find_parent_by_class('grid_list_tag'))
     {
       error('INVALIDNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-          'enclosing_tag' => 'grid:LIST',
-          'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+      'enclosing_tag' => 'grid:LIST',
+      'file' => $this->source_file,
+      'line' => $this->starting_line_no));
     }
   }
 
@@ -39,12 +39,6 @@ class grid_actions_tag extends compiler_directive_tag
     $grid_tag->set_form_required();
 
     parent :: prepare();
-  }
-
-
-  function pre_generate(&$code)
-  {
-    parent :: pre_generate($code);
   }
 
   function register_action($action)
@@ -80,7 +74,7 @@ class grid_actions_tag extends compiler_directive_tag
     }
     $code->write_html("'_' : {}}</script>");
 
-    $code->write_html("<span id='{$span_id}' behavior='CDDGridAction'><img alt='' src='/shared/images/marker/1.gif'>");
+    $code->write_html("<span id='{$span_id}' behavior='CDDGridAction' ddalign='vbr'><img alt='' src='/shared/images/marker/1.gif'> ");
     $code->write_php("echo strings :: get('actions_for_selected');");
     $code->write_html("</span>");
     parent :: post_generate($code);

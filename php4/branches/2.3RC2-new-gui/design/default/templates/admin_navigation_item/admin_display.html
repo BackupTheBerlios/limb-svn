@@ -1,4 +1,4 @@
-<core:WRAP file="admin/site_management_page.html" placeholder="content">
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
 
 <fetch:SUB_BRANCH target='items'>
   <core:PARAMETER name='loader_class_name' value='navigation_item'>
@@ -6,20 +6,11 @@
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='items'>
+  <admin:list:HEADER>
+   <admin:list:TITLE><locale:STRING name='navigation_items_list' file='navigation'></admin:list:TITLE>
+  </admin:list:HEADER>
+
 <!--BEGIN:[ TABLE ]-->
-  <table class="datatable">
-  <tr>
-    <td>
-      <table class="header">
-        <tr>
-          <td class='title'><locale:STRING name='navigation_items_list' file='navigation'></td>
-          <td class='filter'><img alt="" src="/shared/images/icon/on.gif"> Фильтр</td>
-      </tr>
-      </table>
-      </td>
-  </tr>
-  <tr>
-    <td>
     <table cellpadding="0" cellspacing="0" class="content">
       <tr>
         <th class="icon"><grid:SELECTORS_TOGGLER></th>
@@ -28,7 +19,7 @@
         <th><locale:STRING name='title'></th>
         <th>URL</th>
         <th><locale:STRING name='actions'></th>
-        </tr>
+      </tr>
       <tr><td class="col6" colspan="6" height="1"></td></tr>
       <grid:ITERATOR>
         <grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
@@ -45,14 +36,10 @@
         <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
       </tr>
       </grid:ITERATOR>
-      </table>
-      </td>
-  </tr>
-  <tr>
-    <td>
-      <core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
-    </td>
-  </tr>
-  </table>
+    </table>
+
+  <admin:list:FOOTER>
+   <core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
+  </admin:list:FOOTER>
 <!--END:[ TABLE ]-->
 </grid:LIST>
