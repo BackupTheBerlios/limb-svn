@@ -1,25 +1,9 @@
 /* 
 SQLyog v3.63
-Host - 192.168.0.6 : Database - mebelgid
+Host - localhost : Database - init_ru2
 **************************************************************
-Server version 4.0.12-nt
+Server version 4.0.12-nt-log
 */
-
-/*
-Table struture for cart
-*/
-
-drop table if exists `cart`;
-CREATE TABLE `cart` (                                                                                                                                                                                                                                                                                                                       
-  `id` int(11) NOT NULL auto_increment,                                                                                                                                                                                                                                                                                                     
-  `cart_id` varchar(32) NOT NULL default '',                                                                                                                                                                                                                                                                                                
-  `user_id` int(11) NOT NULL default '0',                                                                                                                                                                                                                                                                                                   
-  `last_activity_time` int(11) NOT NULL default '0',                                                                                                                                                                                                                                                                                        
-  `cart_items` blob NOT NULL,                                                                                                                                                                                                                                                                                                               
-  PRIMARY KEY  (`id`),                                                                                                                                                                                                                                                                                                                      
-  UNIQUE KEY `cart_id` (`cart_id`),                                                                                                                                                                                                                                                                                                         
-  KEY `user_id` (`user_id`)                                                                                                                                                                                                                                                                                                                 
-  ) TYPE=InnoDB; 
 
 /*
 Table struture for document
@@ -36,14 +20,13 @@ CREATE TABLE `document` (
   `title` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ov` (`object_id`,`version`)
-) TYPE=InnoDB;
+) TYPE=InnoDB ROW_FORMAT=DYNAMIC;
 
 /*
-Table data for mebelgid.document
+Table data for init_ru2.document
 */
 
-INSERT INTO `document` VALUES 
-(1,19,1,'аннотация','Text','root','Главная');
+INSERT INTO `document` VALUES (57,19,1,'Аннотация','<p>Контент</p>','root','Main');
 
 /*
 Table struture for file_object
@@ -64,6 +47,7 @@ CREATE TABLE `file_object` (
   KEY `v` (`version`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 7168 kB; InnoDB free: 114688 kB; InnoDB free: 1';
 
+
 /*
 Table struture for image_object
 */
@@ -80,6 +64,7 @@ CREATE TABLE `image_object` (
   KEY `oid` (`object_id`),
   KEY `v` (`version`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 9216 kB; InnoDB free: 114688 kB; InnoDB free: 1';
+
 
 /*
 Table struture for image_variation
@@ -99,6 +84,7 @@ CREATE TABLE `image_variation` (
   KEY `v` (`variation`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 9216 kB; InnoDB free: 114688 kB; InnoDB free: 1';
 
+
 /*
 Table struture for media
 */
@@ -113,6 +99,7 @@ CREATE TABLE `media` (
   PRIMARY KEY  (`id`),
   KEY `id` (`id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 9216 kB; InnoDB free: 114688 kB; InnoDB free: 1';
+
 
 /*
 Table struture for message
@@ -132,13 +119,10 @@ CREATE TABLE `message` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for mebelgid.message
+Table data for init_ru2.message
 */
 
-INSERT INTO `message` VALUES 
-(1,1,16,'Message',NULL,'messages'),
-(2,1,34,'Message',NULL,'messages'),
-(3,1,55,'Страница не найдена','Страница не найдена','404');
+INSERT INTO `message` VALUES (19,5,87,'Не найдено','<p>Страница не найдена.</p>','404');
 
 /*
 Table struture for navigation_item
@@ -159,38 +143,225 @@ CREATE TABLE `navigation_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for mebelgid.navigation_item
+Table data for init_ru2.navigation_item
 */
 
-INSERT INTO `navigation_item` VALUES 
-(1,1,15,'Навигация','','navigation',0),
-(3,1,37,'Администрирование','/root/admin','admin',0),
-(4,1,38,'Структура сайта','/root/admin/site_structure','site_structure',0),
-(5,1,39,'Навигация','/root/navigation','navigation',0),
-(7,2,38,'Управление сайтом','/root/admin','site_management',0),
-(8,2,39,'Управление контентом','/root/admin','content_management',0),
-(19,2,37,'Администрирование','/root/admin','navigation',0),
-(20,3,37,'Навигция администрирования','/root/admin','navigation',0),
-(21,4,37,'Навигация администрирования','/root/admin','navigation',0),
-(22,1,59,'Безопасность','/root/admin','security',0),
-(23,2,45,'Группы пользователей','/root/user_groups','user_groups',0),
-(24,2,44,'Пользователи','/root/users','users',0),
-(26,2,42,'Доступ к объектам','/root/admin/objects_access','objects_access',0),
-(27,1,60,'Общие','/root/admin','common',0),
-(28,2,41,'Структура сайта','/root/admin/site_structure','site_structure',0),
-(29,2,40,'Навигация(админ)','/root/admin/navigation','navigation',0),
-(30,1,61,'Общие','/root/admin','common',0),
-(31,1,62,'Медиа','/root/media','media',0),
-(32,2,48,'Изображения','/root/media/images_folder','images',0),
-(33,2,47,'Файлы','/root/media/files_folder','files',0),
-(34,2,46,'Служебные сообщения','/root/messages','messages',0),
-(35,3,43,'Типы объектов','/root/admin/controllers','classes',0),
-(38,1,65,'JIP-управление','/root','jip',0),
-(39,3,39,'Управление контентом','/root?action=admin_display','content_management',0),
-(40,1,66,'Навигация','/root/navigation','navi',0),
-(41,1,67,'Навигация','','navigation',0),
-(43,1,70,'Управление кэшем','/root/admin/cache_manager','cache',0),
-(44,1,71,'Конфигурация сайта','/root/admin/site_params','site_params',0);
+INSERT INTO `navigation_item` VALUES (1,1,15,'Навигация','','navigation',0);
+INSERT INTO `navigation_item` VALUES (3,1,37,'Административная навигация','/root/admin','navigation',0);
+INSERT INTO `navigation_item` VALUES (6,2,33,'Навигация','/root/navigation','navigation',0);
+INSERT INTO `navigation_item` VALUES (10,1,41,'Структура сайта','/root/admin/site_structure','site_structure',0);
+INSERT INTO `navigation_item` VALUES (11,1,42,'Доступ к объектам','/root/admin/objects_access','objects_access',0);
+INSERT INTO `navigation_item` VALUES (18,1,49,'Пользовательское меню','/root','main',0);
+INSERT INTO `navigation_item` VALUES (45,1,140,'JIP-режим','/root','jip',0);
+INSERT INTO `navigation_item` VALUES (46,3,39,'Управление контентом','/root?action=admin_display','content_management',0);
+INSERT INTO `navigation_item` VALUES (51,3,38,'Управление сайтом','/root/admin?action=admin_display','site_management',0);
+INSERT INTO `navigation_item` VALUES (53,3,47,'Файлы','/root/files?action=admin_display','files',0);
+INSERT INTO `navigation_item` VALUES (54,3,46,'Сообщения','/root/messages?action=admin_display','messages',0);
+INSERT INTO `navigation_item` VALUES (55,3,40,'Навигация','/root/navigation?action=admin_display','navigation',0);
+INSERT INTO `navigation_item` VALUES (57,3,43,'Контроллеры','/root/admin/controllers','classes',0);
+INSERT INTO `navigation_item` VALUES (58,2,44,'Пользователи','/root/admin/users','users',0);
+INSERT INTO `navigation_item` VALUES (59,2,45,'Группы пользователей','/root/admin/user_groups','user_groups',0);
+INSERT INTO `navigation_item` VALUES (62,3,119,'Системные события','/root/admin/events','events',0);
+INSERT INTO `navigation_item` VALUES (63,3,121,'Статистика по сайту','/root/admin/stats','stats',0);
+INSERT INTO `navigation_item` VALUES (64,1,143,'Общее','/root','common',0);
+INSERT INTO `navigation_item` VALUES (65,1,145,'Навигация(admin.)','/root/admin/navigation','navigation',0);
+INSERT INTO `navigation_item` VALUES (66,1,146,'Безопасность','/root','security',0);
+INSERT INTO `navigation_item` VALUES (68,1,148,'Общее','/root','common',0);
+INSERT INTO `navigation_item` VALUES (69,1,149,'Медиа','/root','media',0);
+INSERT INTO `navigation_item` VALUES (78,4,155,'Изображения','/root/images?action=admin_display','images',0);
+INSERT INTO `navigation_item` VALUES (80,1,160,'Отчет по хостам/хитам','/root/admin/stats?action=hits_hosts_report','hits_report',0);
+INSERT INTO `navigation_item` VALUES (81,1,161,'Отчет по страницам','/root/admin/stats?action=pages_report','pages_report',0);
+INSERT INTO `navigation_item` VALUES (82,1,162,'Отчет по рефералам','/root/admin/stats?action=referers_report','referers_report',0);
+INSERT INTO `navigation_item` VALUES (83,1,163,'Отчет по IP','/root/admin/stats?action=ips_report','ips_report',0);
+INSERT INTO `navigation_item` VALUES (84,1,164,'Отчет по ключевым словам','/root/admin/stats?action=keywords_report','keywords_report',0);
+INSERT INTO `navigation_item` VALUES (85,1,165,'Отчет по поисковикам','/root/admin/stats?action=search_engines_report','search_engines_report',0);
+INSERT INTO `navigation_item` VALUES (86,1,166,'Отчет по путям','/root/admin/stats?action=routes_report','routes_report',0);
+
+/*
+Table struture for sys_access_template
+*/
+
+drop table if exists `sys_access_template`;
+CREATE TABLE `sys_access_template` (
+  `id` int(11) NOT NULL auto_increment,
+  `controller_id` int(11) NOT NULL default '0',
+  `action_name` char(50) NOT NULL default '',
+  `accessor_type` tinyint(4) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `action_name` (`action_name`),
+  KEY `controller_id` (`controller_id`,`accessor_type`)
+) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
+
+/*
+Table data for init_ru2.sys_access_template
+*/
+
+INSERT INTO `sys_access_template` VALUES (50,40,'publish',0);
+INSERT INTO `sys_access_template` VALUES (51,40,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (52,33,'create_article',0);
+INSERT INTO `sys_access_template` VALUES (53,33,'create_articles_folder',0);
+INSERT INTO `sys_access_template` VALUES (54,33,'publish',0);
+INSERT INTO `sys_access_template` VALUES (55,33,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (56,47,'create_catalog_folder',0);
+INSERT INTO `sys_access_template` VALUES (57,47,'create_catalog_object',0);
+INSERT INTO `sys_access_template` VALUES (58,47,'publish',0);
+INSERT INTO `sys_access_template` VALUES (59,47,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (60,48,'publish',0);
+INSERT INTO `sys_access_template` VALUES (61,48,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (65,41,'create_faq_object',0);
+INSERT INTO `sys_access_template` VALUES (66,41,'publish',0);
+INSERT INTO `sys_access_template` VALUES (67,41,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (68,38,'create_document',0);
+INSERT INTO `sys_access_template` VALUES (69,38,'publish',0);
+INSERT INTO `sys_access_template` VALUES (70,38,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (74,42,'publish',0);
+INSERT INTO `sys_access_template` VALUES (75,42,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (76,17,'create_file',0);
+INSERT INTO `sys_access_template` VALUES (77,17,'create_files_folder',0);
+INSERT INTO `sys_access_template` VALUES (80,44,'publish',0);
+INSERT INTO `sys_access_template` VALUES (81,44,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (82,16,'create_image',0);
+INSERT INTO `sys_access_template` VALUES (83,16,'create_images_folder',0);
+INSERT INTO `sys_access_template` VALUES (84,1,'create_document',0);
+INSERT INTO `sys_access_template` VALUES (85,15,'create_message',0);
+INSERT INTO `sys_access_template` VALUES (92,32,'create_poll',0);
+INSERT INTO `sys_access_template` VALUES (93,6,'create_user',0);
+INSERT INTO `sys_access_template` VALUES (94,36,'publish',0);
+INSERT INTO `sys_access_template` VALUES (95,36,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (108,43,'create_catalog_folder',0);
+INSERT INTO `sys_access_template` VALUES (109,43,'create_catalog_object',0);
+INSERT INTO `sys_access_template` VALUES (110,43,'publish',0);
+INSERT INTO `sys_access_template` VALUES (111,43,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (112,34,'create_document',0);
+INSERT INTO `sys_access_template` VALUES (113,34,'publish',0);
+INSERT INTO `sys_access_template` VALUES (114,34,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (115,28,'create_faq_folder',0);
+INSERT INTO `sys_access_template` VALUES (116,28,'publish',0);
+INSERT INTO `sys_access_template` VALUES (117,28,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (118,37,'create_faq_object',0);
+INSERT INTO `sys_access_template` VALUES (119,37,'publish',0);
+INSERT INTO `sys_access_template` VALUES (120,37,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (121,31,'display',0);
+INSERT INTO `sys_access_template` VALUES (122,31,'create_guestbook_message',0);
+INSERT INTO `sys_access_template` VALUES (123,14,'create_navigation_item',0);
+INSERT INTO `sys_access_template` VALUES (124,14,'publish',0);
+INSERT INTO `sys_access_template` VALUES (125,14,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (126,25,'create_news',0);
+INSERT INTO `sys_access_template` VALUES (128,39,'create_answer',0);
+INSERT INTO `sys_access_template` VALUES (129,39,'publish',0);
+INSERT INTO `sys_access_template` VALUES (130,39,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (131,29,'create_poll',0);
+INSERT INTO `sys_access_template` VALUES (141,30,'create_article',0);
+INSERT INTO `sys_access_template` VALUES (142,30,'create_articles_folder',0);
+INSERT INTO `sys_access_template` VALUES (143,30,'publish',0);
+INSERT INTO `sys_access_template` VALUES (144,30,'unpublish',0);
+INSERT INTO `sys_access_template` VALUES (145,49,'create_navigation_item',0);
+INSERT INTO `sys_access_template` VALUES (146,49,'publish',0);
+INSERT INTO `sys_access_template` VALUES (147,49,'unpublish',0);
+
+/*
+Table struture for sys_access_template_item
+*/
+
+drop table if exists `sys_access_template_item`;
+CREATE TABLE `sys_access_template_item` (
+  `id` int(11) NOT NULL auto_increment,
+  `template_id` int(11) default NULL,
+  `accessor_id` int(11) default NULL,
+  `access` tinyint(4) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `template_id` (`template_id`),
+  KEY `acessor_id` (`accessor_id`)
+) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
+
+/*
+Table data for init_ru2.sys_access_template_item
+*/
+
+INSERT INTO `sys_access_template_item` VALUES (72,50,28,1);
+INSERT INTO `sys_access_template_item` VALUES (74,50,27,1);
+INSERT INTO `sys_access_template_item` VALUES (75,51,28,1);
+INSERT INTO `sys_access_template_item` VALUES (77,52,28,1);
+INSERT INTO `sys_access_template_item` VALUES (79,53,28,1);
+INSERT INTO `sys_access_template_item` VALUES (81,54,28,1);
+INSERT INTO `sys_access_template_item` VALUES (83,54,27,1);
+INSERT INTO `sys_access_template_item` VALUES (84,55,28,1);
+INSERT INTO `sys_access_template_item` VALUES (86,56,28,1);
+INSERT INTO `sys_access_template_item` VALUES (88,57,28,1);
+INSERT INTO `sys_access_template_item` VALUES (90,58,28,1);
+INSERT INTO `sys_access_template_item` VALUES (92,58,27,1);
+INSERT INTO `sys_access_template_item` VALUES (93,59,28,1);
+INSERT INTO `sys_access_template_item` VALUES (95,60,28,1);
+INSERT INTO `sys_access_template_item` VALUES (97,60,27,1);
+INSERT INTO `sys_access_template_item` VALUES (98,61,28,1);
+INSERT INTO `sys_access_template_item` VALUES (107,65,28,1);
+INSERT INTO `sys_access_template_item` VALUES (109,66,28,1);
+INSERT INTO `sys_access_template_item` VALUES (111,66,27,1);
+INSERT INTO `sys_access_template_item` VALUES (112,67,28,1);
+INSERT INTO `sys_access_template_item` VALUES (114,68,28,1);
+INSERT INTO `sys_access_template_item` VALUES (116,69,28,1);
+INSERT INTO `sys_access_template_item` VALUES (118,69,27,1);
+INSERT INTO `sys_access_template_item` VALUES (119,70,28,1);
+INSERT INTO `sys_access_template_item` VALUES (128,74,28,1);
+INSERT INTO `sys_access_template_item` VALUES (130,74,27,1);
+INSERT INTO `sys_access_template_item` VALUES (131,75,28,1);
+INSERT INTO `sys_access_template_item` VALUES (133,76,28,1);
+INSERT INTO `sys_access_template_item` VALUES (135,76,27,1);
+INSERT INTO `sys_access_template_item` VALUES (136,77,28,1);
+INSERT INTO `sys_access_template_item` VALUES (138,77,27,1);
+INSERT INTO `sys_access_template_item` VALUES (145,80,28,1);
+INSERT INTO `sys_access_template_item` VALUES (147,80,27,1);
+INSERT INTO `sys_access_template_item` VALUES (148,81,28,1);
+INSERT INTO `sys_access_template_item` VALUES (150,82,28,1);
+INSERT INTO `sys_access_template_item` VALUES (152,82,27,1);
+INSERT INTO `sys_access_template_item` VALUES (153,83,28,1);
+INSERT INTO `sys_access_template_item` VALUES (155,83,27,1);
+INSERT INTO `sys_access_template_item` VALUES (156,84,28,1);
+INSERT INTO `sys_access_template_item` VALUES (158,85,28,1);
+INSERT INTO `sys_access_template_item` VALUES (160,85,27,1);
+INSERT INTO `sys_access_template_item` VALUES (176,92,28,1);
+INSERT INTO `sys_access_template_item` VALUES (178,93,28,1);
+INSERT INTO `sys_access_template_item` VALUES (180,94,28,1);
+INSERT INTO `sys_access_template_item` VALUES (182,94,27,1);
+INSERT INTO `sys_access_template_item` VALUES (183,95,28,1);
+INSERT INTO `sys_access_template_item` VALUES (212,108,28,1);
+INSERT INTO `sys_access_template_item` VALUES (214,109,28,1);
+INSERT INTO `sys_access_template_item` VALUES (216,110,28,1);
+INSERT INTO `sys_access_template_item` VALUES (218,110,27,1);
+INSERT INTO `sys_access_template_item` VALUES (219,111,28,1);
+INSERT INTO `sys_access_template_item` VALUES (221,112,28,1);
+INSERT INTO `sys_access_template_item` VALUES (223,113,28,1);
+INSERT INTO `sys_access_template_item` VALUES (225,113,27,1);
+INSERT INTO `sys_access_template_item` VALUES (226,114,28,1);
+INSERT INTO `sys_access_template_item` VALUES (228,115,28,1);
+INSERT INTO `sys_access_template_item` VALUES (230,116,28,1);
+INSERT INTO `sys_access_template_item` VALUES (232,116,27,1);
+INSERT INTO `sys_access_template_item` VALUES (233,117,28,1);
+INSERT INTO `sys_access_template_item` VALUES (235,118,28,1);
+INSERT INTO `sys_access_template_item` VALUES (237,119,28,1);
+INSERT INTO `sys_access_template_item` VALUES (239,119,27,1);
+INSERT INTO `sys_access_template_item` VALUES (240,120,28,1);
+INSERT INTO `sys_access_template_item` VALUES (242,121,28,1);
+INSERT INTO `sys_access_template_item` VALUES (244,122,28,1);
+INSERT INTO `sys_access_template_item` VALUES (246,123,28,1);
+INSERT INTO `sys_access_template_item` VALUES (248,124,28,1);
+INSERT INTO `sys_access_template_item` VALUES (250,124,27,1);
+INSERT INTO `sys_access_template_item` VALUES (251,125,28,1);
+INSERT INTO `sys_access_template_item` VALUES (253,126,28,1);
+INSERT INTO `sys_access_template_item` VALUES (257,128,28,1);
+INSERT INTO `sys_access_template_item` VALUES (259,129,28,1);
+INSERT INTO `sys_access_template_item` VALUES (261,129,27,1);
+INSERT INTO `sys_access_template_item` VALUES (262,130,28,1);
+INSERT INTO `sys_access_template_item` VALUES (264,131,28,1);
+INSERT INTO `sys_access_template_item` VALUES (266,131,27,1);
+INSERT INTO `sys_access_template_item` VALUES (285,141,28,1);
+INSERT INTO `sys_access_template_item` VALUES (287,142,28,1);
+INSERT INTO `sys_access_template_item` VALUES (289,143,28,1);
+INSERT INTO `sys_access_template_item` VALUES (291,143,27,1);
+INSERT INTO `sys_access_template_item` VALUES (292,144,28,1);
+INSERT INTO `sys_access_template_item` VALUES (294,145,28,1);
+INSERT INTO `sys_access_template_item` VALUES (296,146,28,1);
+INSERT INTO `sys_access_template_item` VALUES (298,147,28,1);
 
 /*
 Table struture for sys_action_access
@@ -199,131 +370,317 @@ Table struture for sys_action_access
 drop table if exists `sys_action_access`;
 CREATE TABLE `sys_action_access` (
   `id` int(11) NOT NULL auto_increment,
+  `controller_id` int(11) NOT NULL default '0',
   `action_name` char(50) NOT NULL default '',
   `accessor_id` int(11) NOT NULL default '0',
   `accessor_type` tinyint(4) NOT NULL default '0',
-  `controller_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `as` (`action_name`,`accessor_id`,`controller_id`),
   KEY `accessor_id` (`accessor_id`),
-  KEY `accessor_type` (`accessor_type`)
+  KEY `accessor_type` (`accessor_type`),
+  KEY `controller_id` (`controller_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for mebelgid.sys_action_access
+Table data for init_ru2.sys_action_access
 */
 
-INSERT INTO `sys_action_access` VALUES 
-(319,'activate_password',27,0,11),
-(320,'activate_password',28,0,11),
-(321,'change_own_password',27,0,12),
-(322,'change_own_password',28,0,12),
-(323,'generate_password',27,0,13),
-(324,'generate_password',28,0,13),
-(358,'admin_display',28,0,5),
-(359,'set_group_access',28,0,5),
-(360,'toggle',28,0,5),
-(369,'display',27,0,18),
-(370,'display',28,0,18),
-(371,'edit',28,0,18),
-(372,'delete',28,0,18),
-(380,'display',27,0,19),
-(381,'display',28,0,19),
-(382,'edit',28,0,19),
-(383,'edit_variations',28,0,19),
-(384,'delete',28,0,19),
-(386,'display',28,0,1),
-(387,'admin_display',28,0,1),
-(388,'create_document',28,0,1),
-(389,'set_metadata',28,0,1),
-(390,'edit',28,0,1),
-(391,'display',27,0,1),
-(408,'login',28,0,10),
-(409,'logout',28,0,10),
-(410,'edit',28,0,10),
-(411,'change_user_locale',28,0,10),
-(412,'login',27,0,10),
-(413,'logout',27,0,10),
-(417,'display',28,0,24),
-(418,'edit',28,0,24),
-(419,'display',27,0,24),
-(420,'display',28,0,2),
-(421,'admin_display',28,0,2),
-(422,'register_new_object',28,0,2),
-(427,'admin_display',28,0,17),
-(428,'create_file',28,0,17),
-(429,'create_files_folder',28,0,17),
-(430,'edit',28,0,17),
-(431,'delete',28,0,17),
-(432,'file_select',28,0,17),
-(433,'display',28,0,21),
-(434,'edit',28,0,21),
-(435,'admin_display',28,0,16),
-(436,'create_image',28,0,16),
-(437,'create_images_folder',28,0,16),
-(438,'edit',28,0,16),
-(439,'delete',28,0,16),
-(440,'image_select',28,0,16),
-(441,'display',28,0,20),
-(442,'edit',28,0,20),
-(443,'admin_display',28,0,15),
-(444,'create_message',28,0,15),
-(445,'edit',28,0,15),
-(446,'delete',28,0,15),
-(447,'admin_display',28,0,14),
-(448,'create_navigation_item',28,0,14),
-(449,'edit',28,0,14),
-(450,'publish',28,0,14),
-(451,'unpublish',28,0,14),
-(452,'delete',28,0,14),
-(453,'admin_display',28,0,23),
-(454,'edit',28,0,23),
-(455,'update',28,0,23),
-(456,'admin_display',28,0,3),
-(457,'toggle',28,0,3),
-(458,'edit',28,0,3),
-(459,'node_select',28,0,3),
-(460,'save_priority',28,0,3),
-(461,'multi_delete',28,0,3),
-(462,'multi_toggle_publish_status',28,0,3),
-(463,'admin_display',28,0,6),
-(464,'create_user',28,0,6),
-(465,'edit',28,0,6),
-(466,'admin_display',28,0,8),
-(467,'create_user_group',28,0,8),
-(468,'admin_display',28,0,9),
-(469,'edit',28,0,9),
-(470,'delete',28,0,9),
-(471,'admin_display',28,0,7),
-(472,'edit',28,0,7),
-(473,'set_membership',28,0,7),
-(474,'change_password',28,0,7),
-(475,'delete',28,0,7),
-(481,'display',28,0,4),
-(482,'admin_display',28,0,4),
-(483,'set_group_access',28,0,4),
-(484,'set_group_access_template',28,0,4),
-(485,'display',28,0,25),
-(486,'edit',28,0,25),
-(487,'delete',28,0,25),
-(488,'admin_display',28,0,26),
-(489,'edit',28,0,26),
-(490,'admin_display',28,0,27),
-(491,'edit',28,0,27),
-(492,'delete',28,0,27),
-(495,'display',28,0,22),
-(496,'edit',28,0,22),
-(497,'delete',28,0,22),
-(498,'display',28,0,28),
-(499,'recover',28,0,28),
-(500,'edit',28,0,28),
-(501,'delete',28,0,28),
-(508,'admin_display',28,0,29),
-(509,'create_navigation_item',28,0,29),
-(510,'edit',28,0,29),
-(511,'publish',28,0,29),
-(512,'unpublish',28,0,29),
-(513,'delete',28,0,29);
+INSERT INTO `sys_action_access` VALUES (577,33,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (578,33,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (579,33,'set_metadata',28,0);
+INSERT INTO `sys_action_access` VALUES (580,33,'create_article',28,0);
+INSERT INTO `sys_action_access` VALUES (581,33,'create_articles_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (582,33,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (583,33,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (584,33,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (585,33,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (595,33,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (596,47,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (597,47,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (598,47,'set_metadata',28,0);
+INSERT INTO `sys_action_access` VALUES (599,47,'create_catalog_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (600,47,'create_catalog_object',28,0);
+INSERT INTO `sys_action_access` VALUES (601,47,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (602,47,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (603,47,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (604,47,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (614,47,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (615,48,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (616,48,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (617,48,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (618,48,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (619,48,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (620,48,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (627,48,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (632,38,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (633,38,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (634,38,'set_metadata',28,0);
+INSERT INTO `sys_action_access` VALUES (635,38,'admin_detail',28,0);
+INSERT INTO `sys_action_access` VALUES (636,38,'create_document',28,0);
+INSERT INTO `sys_action_access` VALUES (637,38,'print_version',28,0);
+INSERT INTO `sys_action_access` VALUES (638,38,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (639,38,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (640,38,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (641,38,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (652,38,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (653,38,'print_version',27,0);
+INSERT INTO `sys_action_access` VALUES (654,41,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (655,41,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (656,41,'admin_detail',28,0);
+INSERT INTO `sys_action_access` VALUES (657,41,'create_faq_object',28,0);
+INSERT INTO `sys_action_access` VALUES (658,41,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (659,41,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (660,41,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (661,41,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (670,41,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (684,42,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (685,42,'admin_detail',28,0);
+INSERT INTO `sys_action_access` VALUES (686,42,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (687,42,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (688,42,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (689,42,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (696,42,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (716,18,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (717,18,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (718,18,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (722,18,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (755,19,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (756,19,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (757,19,'edit_variations',28,0);
+INSERT INTO `sys_action_access` VALUES (758,19,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (763,19,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (766,10,'login',28,0);
+INSERT INTO `sys_action_access` VALUES (767,10,'logout',28,0);
+INSERT INTO `sys_action_access` VALUES (768,10,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (769,10,'change_user_locale',28,0);
+INSERT INTO `sys_action_access` VALUES (774,10,'login',27,0);
+INSERT INTO `sys_action_access` VALUES (775,10,'logout',27,0);
+INSERT INTO `sys_action_access` VALUES (776,1,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (777,1,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (778,1,'create_document',28,0);
+INSERT INTO `sys_action_access` VALUES (779,1,'set_metadata',28,0);
+INSERT INTO `sys_action_access` VALUES (780,1,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (786,1,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1014,59,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1015,59,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1016,59,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1052,15,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1053,15,'create_message',28,0);
+INSERT INTO `sys_action_access` VALUES (1054,15,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1055,15,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1097,9,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1098,9,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1099,9,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1107,7,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1108,7,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1109,7,'set_membership',28,0);
+INSERT INTO `sys_action_access` VALUES (1110,7,'change_password',28,0);
+INSERT INTO `sys_action_access` VALUES (1111,7,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1152,44,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1153,44,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1154,44,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1155,44,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1156,44,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1157,44,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1164,44,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1191,29,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1192,29,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1193,29,'create_poll',28,0);
+INSERT INTO `sys_action_access` VALUES (1194,29,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1195,29,'vote',28,0);
+INSERT INTO `sys_action_access` VALUES (1201,29,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1202,29,'vote',27,0);
+INSERT INTO `sys_action_access` VALUES (1222,43,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1223,43,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1224,43,'set_metadata',28,0);
+INSERT INTO `sys_action_access` VALUES (1225,43,'create_catalog_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (1226,43,'create_catalog_object',28,0);
+INSERT INTO `sys_action_access` VALUES (1227,43,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1228,43,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1229,43,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1230,43,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1240,43,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1270,36,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1271,36,'set_metadata',28,0);
+INSERT INTO `sys_action_access` VALUES (1272,36,'admin_detail',28,0);
+INSERT INTO `sys_action_access` VALUES (1273,36,'print_version',28,0);
+INSERT INTO `sys_action_access` VALUES (1274,36,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1275,36,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1276,36,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1277,36,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1286,36,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1293,30,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1294,30,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1295,30,'set_metadata',28,0);
+INSERT INTO `sys_action_access` VALUES (1296,30,'create_article',28,0);
+INSERT INTO `sys_action_access` VALUES (1297,30,'create_articles_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (1298,30,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1299,30,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1300,30,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1301,30,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1311,30,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1319,46,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1320,46,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1321,46,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1324,34,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1325,34,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1326,34,'set_metadata',28,0);
+INSERT INTO `sys_action_access` VALUES (1327,34,'admin_detail',28,0);
+INSERT INTO `sys_action_access` VALUES (1328,34,'create_document',28,0);
+INSERT INTO `sys_action_access` VALUES (1329,34,'print_version',28,0);
+INSERT INTO `sys_action_access` VALUES (1330,34,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1331,34,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1332,34,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1333,34,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1344,34,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1345,28,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1346,28,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1347,28,'create_faq_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (1348,28,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1349,28,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1350,28,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1356,28,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1357,37,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1358,37,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1359,37,'admin_detail',28,0);
+INSERT INTO `sys_action_access` VALUES (1360,37,'create_faq_object',28,0);
+INSERT INTO `sys_action_access` VALUES (1361,37,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1362,37,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1363,37,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1364,37,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1373,37,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1374,32,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1375,32,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1376,32,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1377,32,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1382,32,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1383,17,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1384,17,'create_file',28,0);
+INSERT INTO `sys_action_access` VALUES (1385,17,'create_files_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (1386,17,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1387,17,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1388,17,'file_select',28,0);
+INSERT INTO `sys_action_access` VALUES (1395,21,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1396,21,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1397,21,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1399,31,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1400,31,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1401,31,'create_guestbook_message',28,0);
+INSERT INTO `sys_action_access` VALUES (1402,31,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1403,31,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1408,31,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1409,16,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1410,16,'create_image',28,0);
+INSERT INTO `sys_action_access` VALUES (1411,16,'create_images_folder',28,0);
+INSERT INTO `sys_action_access` VALUES (1412,16,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1413,16,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1414,16,'image_select',28,0);
+INSERT INTO `sys_action_access` VALUES (1421,20,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1422,20,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1423,20,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1425,14,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1426,14,'create_navigation_item',28,0);
+INSERT INTO `sys_action_access` VALUES (1427,14,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1428,14,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1429,14,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1430,14,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1437,25,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1438,25,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1439,25,'create_news',28,0);
+INSERT INTO `sys_action_access` VALUES (1440,25,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1445,23,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1446,23,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1447,23,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1449,35,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1450,35,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1451,35,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1454,35,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1455,5,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1456,5,'set_group_access',28,0);
+INSERT INTO `sys_action_access` VALUES (1457,5,'toggle',28,0);
+INSERT INTO `sys_action_access` VALUES (1458,5,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1461,39,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1462,39,'create_answer',28,0);
+INSERT INTO `sys_action_access` VALUES (1463,39,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1464,39,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1465,39,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1466,39,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1473,22,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1474,22,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1475,22,'update',28,0);
+INSERT INTO `sys_action_access` VALUES (1476,22,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1494,26,'events_list',28,0);
+INSERT INTO `sys_action_access` VALUES (1495,26,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1496,26,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1499,27,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1500,27,'pages_report',28,0);
+INSERT INTO `sys_action_access` VALUES (1501,27,'referers_report',28,0);
+INSERT INTO `sys_action_access` VALUES (1502,27,'hits_hosts_report',28,0);
+INSERT INTO `sys_action_access` VALUES (1503,27,'ips_report',28,0);
+INSERT INTO `sys_action_access` VALUES (1504,27,'keywords_report',28,0);
+INSERT INTO `sys_action_access` VALUES (1505,27,'search_engines_report',28,0);
+INSERT INTO `sys_action_access` VALUES (1506,27,'routes_report',28,0);
+INSERT INTO `sys_action_access` VALUES (1507,27,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1508,27,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1521,6,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1522,6,'create_user',28,0);
+INSERT INTO `sys_action_access` VALUES (1523,6,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1526,11,'activate_password',28,0);
+INSERT INTO `sys_action_access` VALUES (1527,11,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1529,11,'activate_password',27,0);
+INSERT INTO `sys_action_access` VALUES (1530,12,'change_own_password',28,0);
+INSERT INTO `sys_action_access` VALUES (1531,12,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1533,12,'change_own_password',27,0);
+INSERT INTO `sys_action_access` VALUES (1534,13,'generate_password',28,0);
+INSERT INTO `sys_action_access` VALUES (1535,13,'password_generated',28,0);
+INSERT INTO `sys_action_access` VALUES (1536,13,'password_not_generated',28,0);
+INSERT INTO `sys_action_access` VALUES (1537,13,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1538,13,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1542,13,'generate_password',27,0);
+INSERT INTO `sys_action_access` VALUES (1543,13,'password_generated',27,0);
+INSERT INTO `sys_action_access` VALUES (1544,13,'password_not_generated',27,0);
+INSERT INTO `sys_action_access` VALUES (1545,8,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1546,8,'create_user_group',28,0);
+INSERT INTO `sys_action_access` VALUES (1547,8,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1559,45,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1560,45,'recover',28,0);
+INSERT INTO `sys_action_access` VALUES (1561,45,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1562,45,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1567,45,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1574,4,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1575,4,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1576,4,'set_group_access',28,0);
+INSERT INTO `sys_action_access` VALUES (1577,4,'set_group_access_template',28,0);
+INSERT INTO `sys_action_access` VALUES (1578,4,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1620,49,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1621,49,'create_navigation_item',28,0);
+INSERT INTO `sys_action_access` VALUES (1622,49,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1623,49,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1624,49,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1625,49,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1632,3,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1633,3,'change_controller',28,0);
+INSERT INTO `sys_action_access` VALUES (1634,3,'toggle',28,0);
+INSERT INTO `sys_action_access` VALUES (1635,3,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1636,3,'node_select',28,0);
+INSERT INTO `sys_action_access` VALUES (1637,3,'save_priority',28,0);
+INSERT INTO `sys_action_access` VALUES (1638,3,'multi_move',28,0);
+INSERT INTO `sys_action_access` VALUES (1639,3,'multi_delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1640,3,'multi_toggle_publish_status',28,0);
+INSERT INTO `sys_action_access` VALUES (1641,3,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1649,40,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1650,40,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1651,40,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1652,40,'publish',28,0);
+INSERT INTO `sys_action_access` VALUES (1653,40,'unpublish',28,0);
+INSERT INTO `sys_action_access` VALUES (1654,40,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1661,40,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1669,24,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1670,24,'delete',28,0);
+INSERT INTO `sys_action_access` VALUES (1672,24,'display',27,0);
+INSERT INTO `sys_action_access` VALUES (1673,2,'display',28,0);
+INSERT INTO `sys_action_access` VALUES (1674,2,'admin_display',28,0);
+INSERT INTO `sys_action_access` VALUES (1675,2,'edit',28,0);
+INSERT INTO `sys_action_access` VALUES (1676,2,'register_new_object',28,0);
 
 /*
 Table struture for sys_class
@@ -341,18 +698,21 @@ CREATE TABLE `sys_class` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for mebelgid.sys_class
+Table data for init_ru2.sys_class
 */
 
-INSERT INTO `sys_class` VALUES 
-(1,'main_page','/shared/images/folder.gif',0,1),
-(7,'user_object','/shared/images/generic.gif',1,0),
-(9,'user_group','/shared/images/generic.gif',1,0),
-(14,'navigation_item','/shared/images/generic.gif',1,1),
-(15,'message','/shared/images/generic.gif',0,1),
-(19,'file_object','/shared/images/generic.gif',1,0),
-(20,'image_object','/shared/images/generic.gif',1,0),
-(21,'site_object','/shared/images/generic.gif',1,1);
+INSERT INTO `sys_class` VALUES (1,'main_page','/shared/images/folder.gif',0,1);
+INSERT INTO `sys_class` VALUES (3,'site_structure','/shared/images/generic.gif',1,1);
+INSERT INTO `sys_class` VALUES (7,'user_object','/shared/images/generic.gif',1,0);
+INSERT INTO `sys_class` VALUES (9,'user_group','/shared/images/generic.gif',1,0);
+INSERT INTO `sys_class` VALUES (14,'navigation_item','/shared/images/generic.gif',1,1);
+INSERT INTO `sys_class` VALUES (15,'message','/shared/images/generic.gif',0,1);
+INSERT INTO `sys_class` VALUES (18,'file_object','/shared/images/generic.gif',1,0);
+INSERT INTO `sys_class` VALUES (19,'image_object','/shared/images/generic.gif',1,0);
+INSERT INTO `sys_class` VALUES (38,'document','/shared/images/generic.gif',1,1);
+INSERT INTO `sys_class` VALUES (46,'site_object','/shared/images/generic.gif',1,1);
+INSERT INTO `sys_class` VALUES (49,'poll','/shared/images/generic.gif',1,1);
+INSERT INTO `sys_class` VALUES (50,'news_object','/shared/images/generic.gif',0,0);
 
 /*
 Table struture for sys_controller
@@ -362,45 +722,46 @@ drop table if exists `sys_controller`;
 CREATE TABLE `sys_controller` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `name` (`name`)
+  PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
 /*
-Table data for mebelgid.sys_controller
+Table data for init_ru2.sys_controller
 */
 
-INSERT INTO `sys_controller` VALUES 
-(14,'admin_navigation_item_controller'),
-(2,'admin_page_controller'),
-(31,'cache_manager_controller'),
-(4,'controller_folder_controller'),
-(25,'control_panel_controller'),
-(17,'files_folder_controller'),
-(18,'file_object_controller'),
-(21,'file_select_controller'),
-(16,'images_folder_controller'),
-(19,'image_object_controller'),
-(20,'image_select_controller'),
-(10,'login_object_controller'),
-(1,'main_page_controller'),
-(27,'media_page_controller'),
-(15,'message_controller'),
-(29,'navigation_item_controller'),
-(22,'node_select_controller'),
-(24,'not_found_page_controller'),
-(5,'objects_access_controller'),
-(26,'simple_folder_controller'),
-(23,'site_param_object_controller'),
-(3,'site_structure_controller'),
-(6,'users_folder_controller'),
-(11,'user_activate_password_controller'),
-(12,'user_change_own_password_controller'),
-(7,'user_controller'),
-(13,'user_generate_password_controller'),
-(8,'user_groups_folder_controller'),
-(9,'user_group_controller'),
-(28,'version_controller');
+INSERT INTO `sys_controller` VALUES (1,'main_page_controller');
+INSERT INTO `sys_controller` VALUES (2,'admin_page_controller');
+INSERT INTO `sys_controller` VALUES (3,'site_structure_controller');
+INSERT INTO `sys_controller` VALUES (4,'controller_folder_controller');
+INSERT INTO `sys_controller` VALUES (5,'objects_access_controller');
+INSERT INTO `sys_controller` VALUES (6,'users_folder_controller');
+INSERT INTO `sys_controller` VALUES (7,'user_controller');
+INSERT INTO `sys_controller` VALUES (8,'user_groups_folder_controller');
+INSERT INTO `sys_controller` VALUES (9,'user_group_controller');
+INSERT INTO `sys_controller` VALUES (10,'login_object_controller');
+INSERT INTO `sys_controller` VALUES (11,'user_activate_password_controller');
+INSERT INTO `sys_controller` VALUES (12,'user_change_own_password_controller');
+INSERT INTO `sys_controller` VALUES (13,'user_generate_password_controller');
+INSERT INTO `sys_controller` VALUES (14,'navigation_item_controller');
+INSERT INTO `sys_controller` VALUES (15,'message_controller');
+INSERT INTO `sys_controller` VALUES (16,'images_folder_controller');
+INSERT INTO `sys_controller` VALUES (17,'files_folder_controller');
+INSERT INTO `sys_controller` VALUES (18,'file_object_controller');
+INSERT INTO `sys_controller` VALUES (19,'image_object_controller');
+INSERT INTO `sys_controller` VALUES (20,'image_select_controller');
+INSERT INTO `sys_controller` VALUES (21,'file_select_controller');
+INSERT INTO `sys_controller` VALUES (22,'site_param_object_controller');
+INSERT INTO `sys_controller` VALUES (23,'node_select_controller');
+INSERT INTO `sys_controller` VALUES (26,'stats_event_controller');
+INSERT INTO `sys_controller` VALUES (27,'stats_report_controller');
+INSERT INTO `sys_controller` VALUES (34,'document_controller');
+INSERT INTO `sys_controller` VALUES (35,'not_found_page_controller');
+INSERT INTO `sys_controller` VALUES (42,'site_object_controller');
+INSERT INTO `sys_controller` VALUES (45,'version_controller');
+INSERT INTO `sys_controller` VALUES (46,'control_panel_controller');
+INSERT INTO `sys_controller` VALUES (47,'simple_folder_controller');
+INSERT INTO `sys_controller` VALUES (48,'cache_manager_controller');
+INSERT INTO `sys_controller` VALUES (49,'admin_navigation_item_controller');
 
 /*
 Table struture for sys_full_text_index
@@ -419,166 +780,6 @@ CREATE TABLE `sys_full_text_index` (
   KEY `body` (`body`(1))
 ) TYPE=MyISAM;
 
-/*
-Table data for mebelgid.sys_full_text_index
-*/
-
-INSERT INTO `sys_full_text_index` VALUES 
-(1,'title',50,29,10,'авторизация'),
-(2,'identifier',50,29,10,'login'),
-(3,'title',50,30,11,'активировать пароль'),
-(4,'identifier',50,30,11,'activate_password'),
-(5,'title',50,31,12,'смена пароля'),
-(6,'identifier',50,31,12,'change_password'),
-(7,'title',50,32,13,'забыли пароль'),
-(8,'identifier',50,32,13,'generate_password'),
-(129,'identifier',1,70,14,'cache'),
-(78,'title',1,37,14,'навигация администрирования'),
-(13,'title',1,38,14,'управление сайтом'),
-(14,'identifier',1,38,14,'site_management'),
-(94,'title',1,40,14,'навигация админ'),
-(93,'identifier',1,40,14,'navigation'),
-(92,'title',1,41,14,'структура сайта'),
-(91,'identifier',1,41,14,'site_structure'),
-(88,'title',1,42,14,'доступ к объектам'),
-(87,'identifier',1,42,14,'objects_access'),
-(106,'title',1,43,14,'типы объектов'),
-(105,'identifier',1,43,14,'classes'),
-(84,'title',1,44,14,'пользователи'),
-(83,'identifier',1,44,14,'users'),
-(82,'title',1,45,14,'группы пользователей'),
-(81,'identifier',1,45,14,'user_groups'),
-(104,'title',1,46,14,'служебные сообщения'),
-(103,'identifier',1,46,14,'messages'),
-(102,'title',1,47,14,'файлы'),
-(101,'identifier',1,47,14,'files'),
-(100,'title',1,48,14,'изображения'),
-(99,'identifier',1,48,14,'images'),
-(122,'title',1,39,14,'управление контентом'),
-(121,'identifier',1,39,14,'content_management'),
-(130,'title',1,70,14,'управление кэшем'),
-(37,'title',50,34,15,'сообщения'),
-(38,'identifier',50,34,15,'messages'),
-(118,'title',50,35,21,'изображения'),
-(117,'identifier',50,35,21,'images_folder'),
-(114,'title',50,36,21,'файлы'),
-(113,'identifier',50,36,21,'files_folder'),
-(43,'title',50,20,2,'администрирование'),
-(44,'identifier',50,20,2,'admin'),
-(45,'title',50,21,3,'структура сайта'),
-(46,'identifier',50,21,3,'site_structure'),
-(128,'title',50,53,21,'конфигурирование сайта'),
-(127,'identifier',50,53,21,'site_params'),
-(71,'identifier',50,22,21,'controllers'),
-(51,'title',50,23,5,'доступ к объектам'),
-(52,'identifier',50,23,5,'objects_access'),
-(116,'title',50,50,21,'выбор изображения'),
-(115,'identifier',50,50,21,'image_select'),
-(112,'title',50,51,21,'выбор файла'),
-(111,'identifier',50,51,21,'file_select'),
-(119,'identifier',1,65,14,'jip'),
-(59,'title',50,24,6,'пользователи'),
-(60,'identifier',50,24,6,'users'),
-(61,'title',50,25,7,'администрирование'),
-(62,'identifier',50,25,7,'admin'),
-(63,'title',50,26,8,'группы пользователей'),
-(64,'identifier',50,26,8,'user_groups'),
-(65,'title',50,28,9,'администраторы'),
-(66,'identifier',50,28,9,'admins'),
-(67,'title',50,27,9,'посетители'),
-(68,'identifier',50,27,9,'visitors'),
-(69,'identifier',50,55,15,'404'),
-(70,'title',50,55,15,'страница не найдена'),
-(72,'title',50,22,21,'типы контроллеров'),
-(77,'identifier',1,37,14,'navigation'),
-(79,'identifier',1,59,14,'security'),
-(80,'title',1,59,14,'безопасность'),
-(89,'identifier',1,60,14,'common'),
-(90,'title',1,60,14,'общие'),
-(95,'identifier',1,61,14,'common'),
-(96,'title',1,61,14,'общие'),
-(97,'identifier',1,62,14,'media'),
-(98,'title',1,62,14,'медиа'),
-(120,'title',1,65,14,'jip управление'),
-(123,'identifier',1,66,14,'navi'),
-(124,'title',1,66,14,'навигация'),
-(131,'identifier',1,71,14,'site_params'),
-(132,'title',1,71,14,'конфигурация сайта');
-
-/*
-Table struture for sys_group_object_access_template
-*/
-
-drop table if exists `sys_group_object_access_template`;
-CREATE TABLE `sys_group_object_access_template` (
-  `id` int(11) NOT NULL auto_increment,
-  `action_name` char(50) NOT NULL default '',
-  `controller_id` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `action_name` (`action_name`),
-  KEY `controller_id` (`controller_id`)
-) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
-
-/*
-Table data for mebelgid.sys_group_object_access_template
-*/
-
-INSERT INTO `sys_group_object_access_template` VALUES 
-(3,'create_file',17),
-(4,'create_files_folder',17),
-(5,'create_image',16),
-(6,'create_images_folder',16),
-(7,'create_user',6),
-(8,'create_document',1),
-(9,'create_message',15),
-(10,'create_navigation_item',14),
-(11,'publish',14),
-(12,'unpublish',14),
-(16,'create_navigation_item',29),
-(17,'publish',29),
-(18,'unpublish',29);
-
-/*
-Table struture for sys_group_object_access_template_item
-*/
-
-drop table if exists `sys_group_object_access_template_item`;
-CREATE TABLE `sys_group_object_access_template_item` (
-  `id` int(11) NOT NULL auto_increment,
-  `template_id` int(11) default NULL,
-  `group_id` int(11) default NULL,
-  `r` tinyint(4) default NULL,
-  `w` tinyint(4) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `template_id` (`template_id`),
-  KEY `group_id` (`group_id`)
-) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
-
-/*
-Table data for mebelgid.sys_group_object_access_template_item
-*/
-
-INSERT INTO `sys_group_object_access_template_item` VALUES 
-(5,3,27,1,0),
-(6,3,28,1,1),
-(7,4,27,1,0),
-(8,4,28,1,1),
-(9,5,27,1,0),
-(10,5,28,1,1),
-(11,6,27,1,0),
-(12,6,28,1,1),
-(13,7,28,1,1),
-(14,8,28,1,1),
-(15,9,28,1,1),
-(16,9,27,1,0),
-(17,10,28,1,1),
-(18,11,28,1,1),
-(19,11,27,1,0),
-(20,12,28,1,1),
-(26,16,28,1,1),
-(27,17,28,1,1),
-(28,17,27,1,0),
-(29,18,28,1,1);
 
 /*
 Table struture for sys_lock
@@ -591,6 +792,7 @@ CREATE TABLE `sys_lock` (
   `lock_stamp` int(11) NOT NULL default '0',
   PRIMARY KEY  (`lock_id`,`lock_table`)
 ) TYPE=InnoDB COMMENT='Table locks for NestedSet; InnoDB free: 114688 kB; InnoDB fr';
+
 
 /*
 Table struture for sys_metadata
@@ -605,6 +807,7 @@ CREATE TABLE `sys_metadata` (
   PRIMARY KEY  (`id`),
   KEY `oid` (`object_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
+
 
 /*
 Table struture for sys_node_link
@@ -622,6 +825,7 @@ CREATE TABLE `sys_node_link` (
   KEY `tg` (`target_node_id`,`group_id`)
 ) TYPE=InnoDB;
 
+
 /*
 Table struture for sys_node_link_group
 */
@@ -635,6 +839,7 @@ CREATE TABLE `sys_node_link_group` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+
 /*
 Table struture for sys_object_access
 */
@@ -644,134 +849,115 @@ CREATE TABLE `sys_object_access` (
   `id` int(11) NOT NULL auto_increment,
   `object_id` int(11) NOT NULL default '0',
   `accessor_id` int(11) NOT NULL default '0',
-  `r` tinyint(4) NOT NULL default '0',
-  `w` tinyint(4) NOT NULL default '0',
+  `access` tinyint(4) NOT NULL default '0',
   `accessor_type` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `ora` (`object_id`,`accessor_id`,`r`,`w`),
   KEY `accessor_id` (`accessor_id`),
+  KEY `ora` (`object_id`,`access`,`accessor_id`),
   KEY `accessor_type` (`accessor_type`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for mebelgid.sys_object_access
+Table data for init_ru2.sys_object_access
 */
 
-INSERT INTO `sys_object_access` VALUES 
-(1,1,9,1,1,0),
-(2,1,10,1,1,0),
-(3,2,9,1,1,0),
-(4,2,10,1,1,0),
-(5,3,9,1,1,0),
-(6,3,10,1,1,0),
-(7,4,9,1,1,0),
-(8,4,10,1,1,0),
-(9,5,9,1,1,0),
-(10,5,10,1,1,0),
-(11,6,9,1,1,0),
-(12,6,10,1,1,0),
-(13,7,9,1,1,0),
-(14,7,10,1,1,0),
-(15,8,9,1,1,0),
-(16,8,10,1,1,0),
-(17,9,9,1,1,0),
-(18,9,10,1,1,0),
-(19,10,9,1,1,0),
-(20,10,10,1,1,0),
-(21,11,9,1,1,0),
-(22,11,10,1,1,0),
-(23,12,9,1,1,0),
-(24,12,10,1,1,0),
-(25,13,9,1,1,0),
-(26,13,10,1,1,0),
-(27,14,9,1,1,0),
-(28,14,10,1,1,0),
-(29,15,9,1,1,0),
-(30,15,10,1,1,0),
-(31,16,9,1,1,0),
-(32,16,10,1,1,0),
-(33,17,9,1,1,0),
-(34,17,10,1,1,0),
-(35,18,9,1,1,0),
-(36,18,10,1,1,0),
-(81,25,27,1,0,0),
-(82,25,28,1,1,0),
-(85,27,27,1,0,0),
-(86,27,28,1,1,0),
-(87,28,27,1,0,0),
-(88,28,28,1,1,0),
-(111,40,27,1,0,0),
-(112,40,28,1,1,0),
-(113,41,27,1,0,0),
-(114,41,28,1,1,0),
-(115,42,27,1,0,0),
-(116,42,28,1,1,0),
-(117,43,27,1,0,0),
-(118,43,28,1,1,0),
-(119,44,27,1,0,0),
-(120,44,28,1,1,0),
-(121,45,27,1,0,0),
-(122,45,28,1,1,0),
-(123,46,27,1,0,0),
-(124,46,28,1,1,0),
-(125,47,27,1,0,0),
-(126,47,28,1,1,0),
-(127,48,27,1,0,0),
-(128,48,28,1,1,0),
-(140,55,27,1,0,0),
-(141,55,28,1,1,0),
-(148,59,28,1,1,0),
-(149,60,28,1,1,0),
-(150,61,28,1,1,0),
-(151,62,28,1,1,0),
-(152,19,27,1,0,0),
-(153,19,28,1,1,0),
-(154,34,27,1,0,0),
-(155,34,28,1,1,0),
-(156,54,27,1,0,0),
-(157,54,28,1,1,0),
-(158,30,27,1,0,0),
-(159,30,28,1,1,0),
-(160,20,28,1,1,0),
-(161,22,28,1,1,0),
-(162,37,28,1,1,0),
-(163,39,28,1,1,0),
-(164,38,28,1,1,0),
-(165,23,28,1,1,0),
-(166,53,28,1,1,0),
-(167,21,28,1,1,0),
-(168,31,27,1,0,0),
-(169,31,28,1,1,0),
-(170,56,27,1,0,0),
-(171,56,28,1,1,0),
-(172,51,27,1,0,0),
-(173,51,28,1,1,0),
-(174,36,27,1,0,0),
-(175,36,28,1,1,0),
-(176,32,27,1,0,0),
-(177,32,28,1,1,0),
-(178,50,27,1,0,0),
-(179,50,28,1,1,0),
-(180,35,27,1,0,0),
-(181,35,28,1,1,0),
-(182,29,27,1,0,0),
-(183,29,28,1,1,0),
-(188,57,28,1,1,0),
-(189,58,28,1,1,0),
-(190,26,27,1,0,0),
-(191,26,28,1,1,0),
-(192,24,27,1,0,0),
-(193,24,28,1,1,0),
-(194,63,27,1,0,0),
-(195,63,28,1,1,0),
-(196,64,28,1,1,0),
-(197,65,28,1,1,0),
-(198,66,28,1,1,0),
-(199,67,27,1,0,0),
-(200,67,28,1,1,0),
-(202,69,28,1,1,0),
-(203,70,28,1,1,0),
-(204,71,28,1,1,0);
+INSERT INTO `sys_object_access` VALUES (730,87,28,1,0);
+INSERT INTO `sys_object_access` VALUES (732,87,27,1,0);
+INSERT INTO `sys_object_access` VALUES (828,37,28,1,0);
+INSERT INTO `sys_object_access` VALUES (830,37,27,1,0);
+INSERT INTO `sys_object_access` VALUES (831,39,28,1,0);
+INSERT INTO `sys_object_access` VALUES (833,39,27,1,0);
+INSERT INTO `sys_object_access` VALUES (858,38,28,1,0);
+INSERT INTO `sys_object_access` VALUES (860,38,27,1,0);
+INSERT INTO `sys_object_access` VALUES (861,43,28,1,0);
+INSERT INTO `sys_object_access` VALUES (863,43,27,1,0);
+INSERT INTO `sys_object_access` VALUES (864,119,28,1,0);
+INSERT INTO `sys_object_access` VALUES (866,119,27,1,0);
+INSERT INTO `sys_object_access` VALUES (867,47,28,1,0);
+INSERT INTO `sys_object_access` VALUES (869,47,27,1,0);
+INSERT INTO `sys_object_access` VALUES (873,46,28,1,0);
+INSERT INTO `sys_object_access` VALUES (875,46,27,1,0);
+INSERT INTO `sys_object_access` VALUES (876,40,28,1,0);
+INSERT INTO `sys_object_access` VALUES (878,40,27,1,0);
+INSERT INTO `sys_object_access` VALUES (879,42,28,1,0);
+INSERT INTO `sys_object_access` VALUES (881,42,27,1,0);
+INSERT INTO `sys_object_access` VALUES (882,41,28,1,0);
+INSERT INTO `sys_object_access` VALUES (884,41,27,1,0);
+INSERT INTO `sys_object_access` VALUES (885,121,28,1,0);
+INSERT INTO `sys_object_access` VALUES (887,121,27,1,0);
+INSERT INTO `sys_object_access` VALUES (888,45,28,1,0);
+INSERT INTO `sys_object_access` VALUES (890,45,27,1,0);
+INSERT INTO `sys_object_access` VALUES (891,44,28,1,0);
+INSERT INTO `sys_object_access` VALUES (893,44,27,1,0);
+INSERT INTO `sys_object_access` VALUES (894,49,28,1,0);
+INSERT INTO `sys_object_access` VALUES (896,49,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1024,22,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1026,118,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1028,23,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1030,120,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1032,52,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1034,21,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1268,28,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1270,28,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1274,27,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1276,27,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1280,25,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1282,25,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1492,63,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1494,63,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1726,53,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1727,53,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1756,140,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1757,140,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1782,143,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1784,144,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1786,145,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1788,146,28,1,0);
+INSERT INTO `sys_object_access` VALUES (1954,19,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1958,34,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1962,77,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1966,30,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1973,31,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1975,139,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1979,51,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1981,36,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1983,32,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1987,50,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1989,35,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1991,29,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1993,33,27,1,0);
+INSERT INTO `sys_object_access` VALUES (1999,142,27,1,0);
+INSERT INTO `sys_object_access` VALUES (2001,26,27,1,0);
+INSERT INTO `sys_object_access` VALUES (2003,24,27,1,0);
+INSERT INTO `sys_object_access` VALUES (2005,125,27,1,0);
+INSERT INTO `sys_object_access` VALUES (2060,19,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2064,34,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2068,77,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2072,30,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2074,20,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2080,31,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2082,139,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2086,51,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2088,36,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2090,32,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2094,50,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2096,35,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2098,29,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2100,33,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2106,142,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2108,26,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2110,24,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2112,125,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2140,148,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2142,149,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2154,155,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2167,160,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2169,161,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2171,162,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2173,163,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2175,164,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2177,165,28,1,0);
+INSERT INTO `sys_object_access` VALUES (2179,166,28,1,0);
 
 /*
 Table struture for sys_object_version
@@ -786,7 +972,7 @@ CREATE TABLE `sys_object_version` (
   `created_date` int(11) NOT NULL default '0',
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `object_id` (`object_id`,`version`),
+  KEY `oid` (`object_id`),
   KEY `cid` (`creator_id`),
   KEY `md` (`modified_date`),
   KEY `cd` (`created_date`),
@@ -794,43 +980,67 @@ CREATE TABLE `sys_object_version` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for mebelgid.sys_object_version
+Table data for init_ru2.sys_object_version
 */
 
-INSERT INTO `sys_object_version` VALUES 
-(6,25,0,1076762314,1076762314,1),
-(7,27,0,1076762314,1076762314,1),
-(8,28,0,1076762314,1076762314,1),
-(10,34,0,1076762315,1076762315,1),
-(11,37,25,1076770835,1076770835,1),
-(12,38,25,1076770879,1076770879,1),
-(13,39,25,1076771149,1076771149,1),
-(15,38,25,1076771356,1076771356,2),
-(16,39,25,1076771416,1076771416,2),
-(27,19,25,1076762314,1076762314,1),
-(28,55,25,1086440706,1086440706,1),
-(29,37,25,1096891196,1096891196,2),
-(30,37,25,1096891245,1096891245,3),
-(31,37,25,1096891316,1096891316,4),
-(32,59,25,1096891430,1096891430,1),
-(33,45,25,1096891459,1096891459,2),
-(34,44,25,1096891474,1096891474,2),
-(36,42,25,1096891505,1096891505,2),
-(37,60,25,1096891551,1096891551,1),
-(38,41,25,1096891579,1096891579,2),
-(39,40,25,1096891613,1096891613,2),
-(40,61,25,1096891649,1096891649,1),
-(41,62,25,1096891675,1096891675,1),
-(42,48,25,1096891704,1096891704,2),
-(43,47,25,1096891734,1096891734,2),
-(44,46,25,1096891753,1096891753,2),
-(45,43,25,1096891933,1096891933,3),
-(48,65,25,1096892379,1096892379,1),
-(49,39,25,1096892398,1096892398,3),
-(50,66,25,1096892737,1096892737,1),
-(51,67,25,1096893354,1096893354,1),
-(53,70,25,1096893652,1096893652,1),
-(54,71,25,1096893683,1096893683,1);
+INSERT INTO `sys_object_version` VALUES (6,25,0,1076762314,1076762314,1);
+INSERT INTO `sys_object_version` VALUES (7,27,0,1076762314,1076762314,1);
+INSERT INTO `sys_object_version` VALUES (8,28,0,1076762314,1076762314,1);
+INSERT INTO `sys_object_version` VALUES (10,34,0,1076762315,1076762315,1);
+INSERT INTO `sys_object_version` VALUES (11,37,25,1076770835,1076770835,1);
+INSERT INTO `sys_object_version` VALUES (14,33,25,1076771224,1076771224,2);
+INSERT INTO `sys_object_version` VALUES (15,38,25,1076771356,1076771356,2);
+INSERT INTO `sys_object_version` VALUES (16,39,25,1076771416,1076771416,2);
+INSERT INTO `sys_object_version` VALUES (17,40,25,1076771605,1076771605,1);
+INSERT INTO `sys_object_version` VALUES (18,41,25,1076772382,1076772382,1);
+INSERT INTO `sys_object_version` VALUES (19,42,25,1076772439,1076772439,1);
+INSERT INTO `sys_object_version` VALUES (20,43,25,1076772480,1076772480,1);
+INSERT INTO `sys_object_version` VALUES (21,44,25,1076772520,1076772520,1);
+INSERT INTO `sys_object_version` VALUES (22,45,25,1076772541,1076772541,1);
+INSERT INTO `sys_object_version` VALUES (23,46,25,1076772578,1076772578,1);
+INSERT INTO `sys_object_version` VALUES (24,47,25,1076772601,1076772601,1);
+INSERT INTO `sys_object_version` VALUES (26,49,25,1076772668,1076772668,1);
+INSERT INTO `sys_object_version` VALUES (53,87,25,1084284790,1084284790,1);
+INSERT INTO `sys_object_version` VALUES (140,119,25,1084436242,1084436242,1);
+INSERT INTO `sys_object_version` VALUES (141,121,25,1084436412,1084436412,1);
+INSERT INTO `sys_object_version` VALUES (201,140,25,1095492667,1095492667,1);
+INSERT INTO `sys_object_version` VALUES (202,39,25,1095493592,1095493592,3);
+INSERT INTO `sys_object_version` VALUES (203,40,25,1095494170,1095494170,2);
+INSERT INTO `sys_object_version` VALUES (204,46,25,1095494218,1095494218,2);
+INSERT INTO `sys_object_version` VALUES (206,47,25,1095495013,1095495013,2);
+INSERT INTO `sys_object_version` VALUES (211,87,25,1095518793,1095518793,2);
+INSERT INTO `sys_object_version` VALUES (212,87,25,1095518853,1095518853,3);
+INSERT INTO `sys_object_version` VALUES (213,87,25,1095521497,1095521497,4);
+INSERT INTO `sys_object_version` VALUES (214,87,25,1095521584,1095521584,5);
+INSERT INTO `sys_object_version` VALUES (215,19,25,1095762404,1095762404,1);
+INSERT INTO `sys_object_version` VALUES (216,38,124,1096456157,1096456157,3);
+INSERT INTO `sys_object_version` VALUES (218,47,124,1096456856,1096456856,3);
+INSERT INTO `sys_object_version` VALUES (219,46,124,1096456861,1096456861,3);
+INSERT INTO `sys_object_version` VALUES (220,40,124,1096456867,1096456867,3);
+INSERT INTO `sys_object_version` VALUES (221,43,124,1096458212,1096458212,2);
+INSERT INTO `sys_object_version` VALUES (222,43,124,1096458374,1096458374,3);
+INSERT INTO `sys_object_version` VALUES (223,44,124,1096458387,1096458387,2);
+INSERT INTO `sys_object_version` VALUES (224,45,124,1096458449,1096458449,2);
+INSERT INTO `sys_object_version` VALUES (225,119,124,1096458465,1096458465,2);
+INSERT INTO `sys_object_version` VALUES (226,121,124,1096458475,1096458475,2);
+INSERT INTO `sys_object_version` VALUES (227,119,124,1096458513,1096458513,3);
+INSERT INTO `sys_object_version` VALUES (228,121,124,1096458518,1096458518,3);
+INSERT INTO `sys_object_version` VALUES (229,143,124,1100013336,1100013336,1);
+INSERT INTO `sys_object_version` VALUES (230,145,124,1100013547,1100013547,1);
+INSERT INTO `sys_object_version` VALUES (231,146,124,1100014019,1100014019,1);
+INSERT INTO `sys_object_version` VALUES (233,148,124,1100172147,1100172147,1);
+INSERT INTO `sys_object_version` VALUES (234,149,124,1100172309,1100172309,1);
+INSERT INTO `sys_object_version` VALUES (240,155,124,1100182180,1100182180,1);
+INSERT INTO `sys_object_version` VALUES (241,155,124,1100182267,1100182267,2);
+INSERT INTO `sys_object_version` VALUES (242,155,124,1100182287,1100182287,3);
+INSERT INTO `sys_object_version` VALUES (243,155,124,1100182331,1100182331,4);
+INSERT INTO `sys_object_version` VALUES (251,160,124,1100284559,1100284559,1);
+INSERT INTO `sys_object_version` VALUES (252,161,124,1100284602,1100284602,1);
+INSERT INTO `sys_object_version` VALUES (253,162,124,1100284636,1100284636,1);
+INSERT INTO `sys_object_version` VALUES (254,163,124,1100284734,1100284734,1);
+INSERT INTO `sys_object_version` VALUES (255,164,124,1100284756,1100284756,1);
+INSERT INTO `sys_object_version` VALUES (256,165,124,1100284797,1100284797,1);
+INSERT INTO `sys_object_version` VALUES (257,166,124,1100284815,1100284815,1);
 
 /*
 Table struture for sys_param
@@ -849,6 +1059,7 @@ CREATE TABLE `sys_param` (
   UNIQUE KEY `id_u` (`identifier`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
+
 /*
 Table struture for sys_session
 */
@@ -862,6 +1073,7 @@ CREATE TABLE `sys_session` (
   PRIMARY KEY  (`session_id`),
   KEY `user_id` (`user_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
+
 
 /*
 Table struture for sys_site_object
@@ -879,9 +1091,9 @@ CREATE TABLE `sys_site_object` (
   `locale_id` char(2) NOT NULL default 'en',
   `title` varchar(255) NOT NULL default '',
   `identifier` varchar(255) NOT NULL default '',
-  `controller_id` int(11) NOT NULL default '0',
+  `controller_id` int(11) default NULL,
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `idccv` (`class_id`,`id`,`current_version`,`locale_id`,`controller_id`),
+  UNIQUE KEY `idccv` (`id`,`locale_id`,`current_version`,`class_id`,`controller_id`),
   KEY `md` (`modified_date`),
   KEY `cd` (`created_date`),
   KEY `cid` (`creator_id`),
@@ -889,59 +1101,67 @@ CREATE TABLE `sys_site_object` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for mebelgid.sys_site_object
+Table data for init_ru2.sys_site_object
 */
 
-INSERT INTO `sys_site_object` VALUES 
-(19,1,1,1076768404,0,1076762314,0,'ru','Главная','root',1),
-(20,21,1,1076762314,0,1076762314,0,'ru','Администрирование','admin',2),
-(21,21,2,1076769130,0,1076762314,0,'ru','Структура сайта','site_structure',3),
-(22,21,2,1096890786,0,1076762314,0,'ru','Типы контроллеров','controllers',4),
-(23,21,2,1076769145,0,1076762314,0,'ru','Доступ к объектам','objects_access',5),
-(24,21,2,1076769160,0,1076762314,0,'ru','Пользователи','users',6),
-(25,7,1,1076762588,0,1076762314,0,'ru','Администрирование','admin',7),
-(26,21,2,1076769173,0,1076762314,0,'ru','Группы пользователей','user_groups',8),
-(27,9,1,1076762314,0,1076762314,0,'ru','Посетители','visitors',9),
-(28,9,1,1076762314,0,1076762314,0,'ru','Администраторы','admins',9),
-(29,21,2,1076769188,0,1076762314,0,'ru','Авторизация','login',10),
-(30,21,2,1076769202,0,1076762314,0,'ru','Активировать пароль','activate_password',11),
-(31,21,2,1076769224,0,1076762314,0,'ru','Смена пароля','change_password',12),
-(32,21,2,1076769246,0,1076762315,0,'ru','Забыли пароль?','generate_password',13),
-(34,15,1,1076762315,0,1076762315,0,'ru','Сообщения','messages',15),
-(35,21,1,1096892215,0,1076762315,0,'ru','Изображения','images_folder',16),
-(36,21,1,1096892176,0,1076762315,0,'ru','Файлы','files_folder',17),
-(37,14,4,1096891316,0,1076770835,25,'ru','Навигация администрирования','navigation',14),
-(38,14,2,1076771356,0,1076770879,25,'ru','Управление сайтом','site_management',14),
-(39,14,3,1096892398,0,1076771149,25,'ru','Управление контентом','content_management',14),
-(40,14,2,1096891613,0,1076771604,25,'ru','Навигация(админ)','navigation',14),
-(41,14,2,1096891579,0,1076772382,25,'ru','Структура сайта','site_structure',14),
-(42,14,2,1096891505,0,1076772439,25,'ru','Доступ к объектам','objects_access',14),
-(43,14,3,1096891933,0,1076772480,25,'ru','Типы объектов','classes',14),
-(44,14,2,1096891474,0,1076772520,25,'ru','Пользователи','users',14),
-(45,14,2,1096891459,0,1076772540,25,'ru','Группы пользователей','user_groups',14),
-(46,14,2,1096891753,0,1076772578,25,'ru','Служебные сообщения','messages',14),
-(47,14,2,1096891734,0,1076772601,25,'ru','Файлы','files',14),
-(48,14,2,1096891704,0,1076772623,25,'ru','Изображения','images',14),
-(50,21,1,1096892196,0,1079691597,25,'ru','Выбор изображения','image_select',20),
-(51,21,1,1096892157,0,1079691620,25,'ru','Выбор файла','file_select',21),
-(53,21,1,1096893619,0,1084270920,25,'ru','Конфигурирование сайта','site_params',23),
-(54,21,1,1086440668,0,1086440668,25,'ru','Страница не найдена','404',24),
-(55,15,1,1086440706,0,1086440706,25,'ru','Страница не найдена','404',15),
-(56,21,1,1096890583,0,1096890583,25,'ru','Панель управления','cp',25),
-(57,21,1,1096891063,0,1096891063,25,'ru','Инструменты','tools',26),
-(58,21,1,1096891135,0,1096891135,25,'ru','Выбор элемента','node_select',22),
-(59,14,1,1096891430,0,1096891430,25,'ru','Безопасность','security',14),
-(60,14,1,1096891551,0,1096891551,25,'ru','Общие','common',14),
-(61,14,1,1096891649,0,1096891649,25,'ru','Общие','common',14),
-(62,14,1,1096891675,0,1096891675,25,'ru','Медиа','media',14),
-(63,21,1,1096891901,0,1096891901,25,'ru','Медиа','media',27),
-(64,21,1,1096892304,0,1096892304,25,'ru','Контроль версий','version',28),
-(65,14,1,1096892379,0,1096892379,25,'ru','JIP-управление','jip',14),
-(66,14,1,1096892737,0,1096892737,25,'ru','Навигация','navi',14),
-(67,14,1,1096893354,0,1096893354,25,'ru','Навигация','navigation',29),
-(69,21,1,1096893581,0,1096893581,25,'ru','Управление кэшем','cache_manager',31),
-(70,14,1,1096893652,0,1096893652,25,'ru','Управление кэшем','cache',14),
-(71,14,1,1096893683,0,1096893683,25,'ru','Конфигурация сайта','site_params',14);
+INSERT INTO `sys_site_object` VALUES (19,1,1,1100287286,0,1076762314,0,'ru','Главная','root',1);
+INSERT INTO `sys_site_object` VALUES (20,46,1,1100282879,0,1076762314,0,'ru','Управление сайтом','admin',2);
+INSERT INTO `sys_site_object` VALUES (21,46,2,1076769130,0,1076762314,0,'ru','Структура сайта','site_structure',3);
+INSERT INTO `sys_site_object` VALUES (22,46,2,1096458350,0,1076762314,0,'ru','Контроллеры','controllers',4);
+INSERT INTO `sys_site_object` VALUES (23,46,2,1076769145,0,1076762314,0,'ru','Доступ к объектам','objects_access',5);
+INSERT INTO `sys_site_object` VALUES (24,46,2,1100278924,0,1076762314,0,'ru','Пользователи','users',6);
+INSERT INTO `sys_site_object` VALUES (25,7,1,1095423742,0,1076762314,0,'ru','Управление','admin',7);
+INSERT INTO `sys_site_object` VALUES (26,46,2,1100278924,0,1076762314,0,'ru','Группы пользователей','user_groups',8);
+INSERT INTO `sys_site_object` VALUES (27,9,1,1076762314,0,1076762314,0,'ru','Гости','visitors',9);
+INSERT INTO `sys_site_object` VALUES (28,9,1,1076762314,0,1076762314,0,'ru','Администраторы','admins',9);
+INSERT INTO `sys_site_object` VALUES (29,46,2,1076769188,0,1076762314,0,'ru','Login','login',10);
+INSERT INTO `sys_site_object` VALUES (30,46,2,1076769202,0,1076762314,0,'ru','Активировать пароль','activate_password',11);
+INSERT INTO `sys_site_object` VALUES (31,46,2,1076769224,0,1076762314,0,'ru','Сменить пароль','change_password',12);
+INSERT INTO `sys_site_object` VALUES (32,46,2,1076769246,0,1076762315,0,'ru','Забыли пароль?','generate_password',13);
+INSERT INTO `sys_site_object` VALUES (33,14,2,1076771224,0,1076762315,0,'ru','Навигация','navigation',14);
+INSERT INTO `sys_site_object` VALUES (34,15,1,1076762315,0,1076762315,0,'ru','Сообщения','messages',15);
+INSERT INTO `sys_site_object` VALUES (35,46,1,1100283904,0,1076762315,0,'ru','Изображения','images',16);
+INSERT INTO `sys_site_object` VALUES (36,46,1,1100283889,0,1076762315,0,'ru','Файлы','files',17);
+INSERT INTO `sys_site_object` VALUES (37,14,1,1100176539,0,1076770835,25,'ru','Административная навигация','navigation',49);
+INSERT INTO `sys_site_object` VALUES (38,14,3,1100174979,0,1076770879,25,'ru','Управление сайтом','site_management',49);
+INSERT INTO `sys_site_object` VALUES (39,14,3,1100174799,0,1076771149,25,'ru','Управление контентом','content_management',49);
+INSERT INTO `sys_site_object` VALUES (40,14,3,1100174896,0,1076771604,25,'ru','Навигация','navigation',49);
+INSERT INTO `sys_site_object` VALUES (41,14,1,1100175046,0,1076772382,25,'ru','Структура сайта','site_structure',49);
+INSERT INTO `sys_site_object` VALUES (42,14,1,1100186042,0,1076772439,25,'ru','Доступ к объектам','objects_access',49);
+INSERT INTO `sys_site_object` VALUES (43,14,3,1100175061,0,1076772480,25,'ru','Контроллеры','classes',49);
+INSERT INTO `sys_site_object` VALUES (44,14,2,1100278943,0,1076772520,25,'ru','Пользователи','users',49);
+INSERT INTO `sys_site_object` VALUES (45,14,2,1100278951,0,1076772540,25,'ru','Группы пользователей','user_groups',49);
+INSERT INTO `sys_site_object` VALUES (46,14,3,1100174887,0,1076772578,25,'ru','Сообщения','messages',49);
+INSERT INTO `sys_site_object` VALUES (47,14,3,1100283962,0,1076772601,25,'ru','Файлы','files',49);
+INSERT INTO `sys_site_object` VALUES (49,14,1,1076772668,0,1076772668,25,'ru','Пользовательское меню','main',14);
+INSERT INTO `sys_site_object` VALUES (50,46,1,1100283671,0,1084266500,25,'ru','Выбор изображения','image_select',20);
+INSERT INTO `sys_site_object` VALUES (51,46,1,1100283671,0,1084266511,25,'ru','Выбор файла','file_select',21);
+INSERT INTO `sys_site_object` VALUES (52,46,10,1084361850,0,1084266564,25,'ru','Параметры','site_params',22);
+INSERT INTO `sys_site_object` VALUES (53,46,1,1084266606,0,1084266606,25,'ru','Выбор элемента дерева','node_select',23);
+INSERT INTO `sys_site_object` VALUES (77,46,2,1084368911,0,1084283697,25,'ru','Не найдено','404',35);
+INSERT INTO `sys_site_object` VALUES (87,15,5,1095521584,0,1084284790,25,'ru','Не найдено','404',15);
+INSERT INTO `sys_site_object` VALUES (118,46,1,1084436155,0,1084436155,25,'ru','События','events',26);
+INSERT INTO `sys_site_object` VALUES (119,14,3,1100284479,0,1084436242,25,'ru','Системные события','events',49);
+INSERT INTO `sys_site_object` VALUES (120,46,1,1084436311,0,1084436311,25,'ru','Статистика по сайту','stats',27);
+INSERT INTO `sys_site_object` VALUES (121,14,3,1100175016,0,1084436412,25,'ru','Статистика по сайту','stats',49);
+INSERT INTO `sys_site_object` VALUES (125,46,1,1086439596,0,1086439596,124,'ru','Управление версиями','version',45);
+INSERT INTO `sys_site_object` VALUES (139,46,1,1095450568,0,1095450568,124,'ru','Панель управления','cp',46);
+INSERT INTO `sys_site_object` VALUES (140,14,1,1100174966,0,1095492667,25,'ru','JIP-режим','jip',49);
+INSERT INTO `sys_site_object` VALUES (142,46,1,1100012496,0,1100012496,124,'ru','Инструменты','tools',47);
+INSERT INTO `sys_site_object` VALUES (143,14,1,1100175000,0,1100013336,124,'ru','Общее','common',49);
+INSERT INTO `sys_site_object` VALUES (144,46,1,1100013507,0,1100013507,124,'ru','Управление кешем','cache_manager',48);
+INSERT INTO `sys_site_object` VALUES (145,14,1,1100175027,0,1100013547,124,'ru','Навигация(admin.)','navigation',49);
+INSERT INTO `sys_site_object` VALUES (146,14,1,1100175008,0,1100014019,124,'ru','Безопасность','security',49);
+INSERT INTO `sys_site_object` VALUES (148,14,1,1100174816,0,1100172147,124,'ru','Общее','common',49);
+INSERT INTO `sys_site_object` VALUES (149,14,1,1100174930,0,1100172309,124,'ru','Медиа','media',49);
+INSERT INTO `sys_site_object` VALUES (155,14,4,1100283949,0,1100182180,124,'ru','Изображения','images',49);
+INSERT INTO `sys_site_object` VALUES (160,14,1,1100284559,0,1100284559,124,'ru','Отчет по хостам/хитам','hits_report',49);
+INSERT INTO `sys_site_object` VALUES (161,14,1,1100284602,0,1100284602,124,'ru','Отчет по страницам','pages_report',49);
+INSERT INTO `sys_site_object` VALUES (162,14,1,1100284656,0,1100284636,124,'ru','Отчет по рефералам','referers_report',49);
+INSERT INTO `sys_site_object` VALUES (163,14,1,1100284767,0,1100284734,124,'ru','Отчет по IP','ips_report',49);
+INSERT INTO `sys_site_object` VALUES (164,14,1,1100284756,0,1100284756,124,'ru','Отчет по ключевым словам','keywords_report',49);
+INSERT INTO `sys_site_object` VALUES (165,14,1,1100284796,0,1100284796,124,'ru','Отчет по поисковикам','search_engines_report',49);
+INSERT INTO `sys_site_object` VALUES (166,14,1,1100284815,0,1100284815,124,'ru','Отчет по путям','routes_report',49);
 
 /*
 Table struture for sys_site_object_tree
@@ -959,9 +1179,6 @@ CREATE TABLE `sys_site_object_tree` (
   `path` varchar(255) NOT NULL default '',
   `children` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `op` (`object_id`,`id`,`path`),
-  UNIQUE KEY `ipl` (`identifier`,`path`,`level`),
-  UNIQUE KEY `path_level` (`path`,`level`),
   KEY `root_id` (`root_id`),
   KEY `identifier` (`identifier`),
   KEY `level` (`level`),
@@ -971,59 +1188,67 @@ CREATE TABLE `sys_site_object_tree` (
 ) TYPE=InnoDB;
 
 /*
-Table data for mebelgid.sys_site_object_tree
+Table data for init_ru2.sys_site_object_tree
 */
 
-INSERT INTO `sys_site_object_tree` VALUES 
-(1,1,0,0,1,'root',19,'/1/',13),
-(2,1,1,0,2,'admin',20,'/1/2/',6),
-(3,1,2,0,3,'site_structure',21,'/1/2/3/',0),
-(4,1,2,0,3,'controllers',22,'/1/2/4/',0),
-(5,1,2,0,3,'objects_access',23,'/1/2/5/',0),
-(6,1,1,0,2,'users',24,'/1/6/',1),
-(7,1,6,0,3,'admin',25,'/1/6/7/',0),
-(8,1,1,0,2,'user_groups',26,'/1/8/',2),
-(9,1,8,0,3,'visitors',27,'/1/8/9/',0),
-(10,1,8,0,3,'admins',28,'/1/8/10/',0),
-(11,1,1,0,2,'login',29,'/1/11/',0),
-(12,1,1,0,2,'activate_password',30,'/1/12/',0),
-(13,1,1,0,2,'change_password',31,'/1/13/',0),
-(14,1,1,0,2,'generate_password',32,'/1/14/',0),
-(16,1,1,0,2,'messages',34,'/1/16/',1),
-(17,1,45,0,3,'images_folder',35,'/1/45/17/',0),
-(18,1,45,0,3,'files_folder',36,'/1/45/18/',0),
-(19,1,2,1,3,'navigation',37,'/1/2/19/',3),
-(20,1,19,2,4,'site_management',38,'/1/2/19/20/',2),
-(21,1,19,1,4,'content_management',39,'/1/2/19/21/',2),
-(22,1,42,3,6,'navigation',40,'/1/2/19/20/42/22/',0),
-(23,1,42,1,6,'site_structure',41,'/1/2/19/20/42/23/',0),
-(24,1,41,2,6,'objects_access',42,'/1/2/19/20/41/24/',0),
-(25,1,41,3,6,'classes',43,'/1/2/19/20/41/25/',0),
-(26,1,41,4,6,'users',44,'/1/2/19/20/41/26/',0),
-(27,1,41,5,6,'user_groups',45,'/1/2/19/20/41/27/',0),
-(28,1,43,2,6,'messages',46,'/1/2/19/21/43/28/',0),
-(29,1,44,8,6,'files',47,'/1/2/19/21/44/29/',0),
-(30,1,44,7,6,'images',48,'/1/2/19/21/44/30/',0),
-(32,1,45,0,3,'image_select',50,'/1/45/32/',0),
-(33,1,45,0,3,'file_select',51,'/1/45/33/',0),
-(35,1,2,0,3,'site_params',53,'/1/2/35/',0),
-(36,1,1,0,2,'404',54,'/1/36/',0),
-(37,1,16,0,3,'404',55,'/1/16/37/',0),
-(38,1,1,0,2,'cp',56,'/1/38/',0),
-(39,1,1,0,2,'tools',57,'/1/39/',2),
-(40,1,39,0,3,'node_select',58,'/1/39/40/',0),
-(41,1,20,2,5,'security',59,'/1/2/19/20/41/',4),
-(42,1,20,1,5,'common',60,'/1/2/19/20/42/',4),
-(43,1,21,0,5,'common',61,'/1/2/19/21/43/',2),
-(44,1,21,0,5,'media',62,'/1/2/19/21/44/',2),
-(45,1,1,0,2,'media',63,'/1/45/',4),
-(46,1,39,0,3,'version',64,'/1/39/46/',0),
-(47,1,19,0,4,'jip',65,'/1/2/19/47/',0),
-(48,1,43,1,6,'navi',66,'/1/2/19/21/43/48/',0),
-(49,1,1,0,2,'navigation',67,'/1/49/',0),
-(50,1,2,0,3,'cache_manager',69,'/1/2/50/',0),
-(51,1,42,2,6,'cache',70,'/1/2/19/20/42/51/',0),
-(52,1,42,4,6,'site_params',71,'/1/2/19/20/42/52/',0);
+INSERT INTO `sys_site_object_tree` VALUES (1,1,0,0,1,'root',19,'/1/',15);
+INSERT INTO `sys_site_object_tree` VALUES (2,1,1,0,2,'admin',20,'/1/2/',10);
+INSERT INTO `sys_site_object_tree` VALUES (3,1,2,1,3,'site_structure',21,'/1/2/3/',0);
+INSERT INTO `sys_site_object_tree` VALUES (4,1,2,4,3,'controllers',22,'/1/2/4/',0);
+INSERT INTO `sys_site_object_tree` VALUES (5,1,2,2,3,'objects_access',23,'/1/2/5/',0);
+INSERT INTO `sys_site_object_tree` VALUES (6,1,2,0,3,'users',24,'/1/2/6/',1);
+INSERT INTO `sys_site_object_tree` VALUES (7,1,6,0,4,'admin',25,'/1/2/6/7/',0);
+INSERT INTO `sys_site_object_tree` VALUES (8,1,2,0,3,'user_groups',26,'/1/2/8/',2);
+INSERT INTO `sys_site_object_tree` VALUES (9,1,8,30,4,'visitors',27,'/1/2/8/9/',0);
+INSERT INTO `sys_site_object_tree` VALUES (10,1,8,20,4,'admins',28,'/1/2/8/10/',0);
+INSERT INTO `sys_site_object_tree` VALUES (11,1,1,0,2,'login',29,'/1/11/',0);
+INSERT INTO `sys_site_object_tree` VALUES (12,1,1,0,2,'activate_password',30,'/1/12/',0);
+INSERT INTO `sys_site_object_tree` VALUES (13,1,1,0,2,'change_password',31,'/1/13/',0);
+INSERT INTO `sys_site_object_tree` VALUES (14,1,1,0,2,'generate_password',32,'/1/14/',0);
+INSERT INTO `sys_site_object_tree` VALUES (15,1,1,0,2,'navigation',33,'/1/15/',1);
+INSERT INTO `sys_site_object_tree` VALUES (16,1,1,0,2,'messages',34,'/1/16/',1);
+INSERT INTO `sys_site_object_tree` VALUES (17,1,1,0,2,'images',35,'/1/17/',0);
+INSERT INTO `sys_site_object_tree` VALUES (18,1,1,0,2,'files',36,'/1/18/',0);
+INSERT INTO `sys_site_object_tree` VALUES (19,1,2,0,3,'navigation',37,'/1/2/19/',3);
+INSERT INTO `sys_site_object_tree` VALUES (20,1,19,30,4,'site_management',38,'/1/2/19/20/',3);
+INSERT INTO `sys_site_object_tree` VALUES (21,1,19,20,4,'content_management',39,'/1/2/19/21/',2);
+INSERT INTO `sys_site_object_tree` VALUES (22,1,116,12,6,'navigation',40,'/1/2/19/21/116/22/',0);
+INSERT INTO `sys_site_object_tree` VALUES (23,1,111,1,6,'site_structure',41,'/1/2/19/20/111/23/',0);
+INSERT INTO `sys_site_object_tree` VALUES (24,1,114,3,6,'objects_access',42,'/1/2/19/20/114/24/',0);
+INSERT INTO `sys_site_object_tree` VALUES (25,1,114,4,6,'classes',43,'/1/2/19/20/114/25/',0);
+INSERT INTO `sys_site_object_tree` VALUES (26,1,114,7,6,'users',44,'/1/2/19/20/114/26/',0);
+INSERT INTO `sys_site_object_tree` VALUES (27,1,114,8,6,'user_groups',45,'/1/2/19/20/114/27/',0);
+INSERT INTO `sys_site_object_tree` VALUES (28,1,116,11,6,'messages',46,'/1/2/19/21/116/28/',0);
+INSERT INTO `sys_site_object_tree` VALUES (29,1,117,10,6,'files',47,'/1/2/19/21/117/29/',0);
+INSERT INTO `sys_site_object_tree` VALUES (31,1,15,0,3,'main',49,'/1/15/31/',0);
+INSERT INTO `sys_site_object_tree` VALUES (32,1,110,0,3,'image_select',50,'/1/110/32/',0);
+INSERT INTO `sys_site_object_tree` VALUES (33,1,110,0,3,'file_select',51,'/1/110/33/',0);
+INSERT INTO `sys_site_object_tree` VALUES (34,1,2,5,3,'site_params',52,'/1/2/34/',0);
+INSERT INTO `sys_site_object_tree` VALUES (35,1,110,0,3,'node_select',53,'/1/110/35/',0);
+INSERT INTO `sys_site_object_tree` VALUES (59,1,1,0,2,'404',77,'/1/59/',0);
+INSERT INTO `sys_site_object_tree` VALUES (68,1,16,0,3,'404',87,'/1/16/68/',0);
+INSERT INTO `sys_site_object_tree` VALUES (97,1,2,3,3,'events',118,'/1/2/97/',0);
+INSERT INTO `sys_site_object_tree` VALUES (98,1,114,10,6,'events',119,'/1/2/19/20/114/98/',0);
+INSERT INTO `sys_site_object_tree` VALUES (99,1,2,6,3,'stats',120,'/1/2/99/',0);
+INSERT INTO `sys_site_object_tree` VALUES (100,1,20,11,5,'stats',121,'/1/2/19/20/100/',7);
+INSERT INTO `sys_site_object_tree` VALUES (104,1,1,0,2,'version',125,'/1/104/',0);
+INSERT INTO `sys_site_object_tree` VALUES (107,1,1,0,2,'cp',139,'/1/107/',0);
+INSERT INTO `sys_site_object_tree` VALUES (108,1,19,10,4,'jip',140,'/1/2/19/108/',0);
+INSERT INTO `sys_site_object_tree` VALUES (110,1,1,0,2,'tools',142,'/1/110/',2);
+INSERT INTO `sys_site_object_tree` VALUES (111,1,20,0,5,'common',143,'/1/2/19/20/111/',2);
+INSERT INTO `sys_site_object_tree` VALUES (112,1,2,0,3,'cache_manager',144,'/1/2/112/',0);
+INSERT INTO `sys_site_object_tree` VALUES (113,1,111,0,6,'navigation',145,'/1/2/19/20/111/113/',0);
+INSERT INTO `sys_site_object_tree` VALUES (114,1,20,0,5,'security',146,'/1/2/19/20/114/',5);
+INSERT INTO `sys_site_object_tree` VALUES (116,1,21,10,5,'common',148,'/1/2/19/21/116/',2);
+INSERT INTO `sys_site_object_tree` VALUES (117,1,21,20,5,'media',149,'/1/2/19/21/117/',2);
+INSERT INTO `sys_site_object_tree` VALUES (118,1,117,0,6,'images',155,'/1/2/19/21/117/118/',0);
+INSERT INTO `sys_site_object_tree` VALUES (120,1,100,10,6,'hits_report',160,'/1/2/19/20/100/120/',0);
+INSERT INTO `sys_site_object_tree` VALUES (121,1,100,20,6,'pages_report',161,'/1/2/19/20/100/121/',0);
+INSERT INTO `sys_site_object_tree` VALUES (122,1,100,30,6,'referers_report',162,'/1/2/19/20/100/122/',0);
+INSERT INTO `sys_site_object_tree` VALUES (123,1,100,60,6,'ips_report',163,'/1/2/19/20/100/123/',0);
+INSERT INTO `sys_site_object_tree` VALUES (124,1,100,40,6,'keywords_report',164,'/1/2/19/20/100/124/',0);
+INSERT INTO `sys_site_object_tree` VALUES (125,1,100,50,6,'search_engines_report',165,'/1/2/19/20/100/125/',0);
+INSERT INTO `sys_site_object_tree` VALUES (126,1,100,70,6,'routes_report',166,'/1/2/19/20/100/126/',0);
 
 /*
 Table struture for sys_stat_counter
@@ -1040,12 +1265,6 @@ CREATE TABLE `sys_stat_counter` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
-/*
-Table data for mebelgid.sys_stat_counter
-*/
-
-INSERT INTO `sys_stat_counter` VALUES 
-(1,1,394,1,394,1096894454);
 
 /*
 Table struture for sys_stat_day_counters
@@ -1062,12 +1281,6 @@ CREATE TABLE `sys_stat_day_counters` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
-/*
-Table data for mebelgid.sys_stat_day_counters
-*/
-
-INSERT INTO `sys_stat_day_counters` VALUES 
-(1,1096833600,394,1,8,1);
 
 /*
 Table struture for sys_stat_ip
@@ -1080,12 +1293,6 @@ CREATE TABLE `sys_stat_ip` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
-/*
-Table data for mebelgid.sys_stat_ip
-*/
-
-INSERT INTO `sys_stat_ip` VALUES 
-('c0a80005',1096888225);
 
 /*
 Table struture for sys_stat_log
@@ -1107,6 +1314,7 @@ CREATE TABLE `sys_stat_log` (
   KEY `complex` (`node_id`,`time`,`user_id`,`stat_uri_id`)
 ) TYPE=InnoDB ROW_FORMAT=DYNAMIC COMMENT='InnoDB free: 9216 kB';
 
+
 /*
 Table struture for sys_stat_referer_url
 */
@@ -1118,6 +1326,7 @@ CREATE TABLE `sys_stat_referer_url` (
   PRIMARY KEY  (`id`),
   KEY `url` (`referer_url`)
 ) TYPE=InnoDB;
+
 
 /*
 Table struture for sys_stat_search_phrase
@@ -1132,6 +1341,7 @@ CREATE TABLE `sys_stat_search_phrase` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+
 /*
 Table struture for sys_stat_uri
 */
@@ -1143,67 +1353,6 @@ CREATE TABLE `sys_stat_uri` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
-/*
-Table data for mebelgid.sys_stat_uri
-*/
-
-INSERT INTO `sys_stat_uri` VALUES 
-(1,'/root'),
-(2,'/design/main/styles/main.css'),
-(3,'/design/main/js/form_errors.js'),
-(4,'/root/login'),
-(5,'/root/admin/site_structure'),
-(6,'/root/admin'),
-(7,'/root/404'),
-(8,'/root/admin/objects_access'),
-(9,'/root/admin/classes'),
-(10,'/root/admin/controllers'),
-(11,'/root/navigation'),
-(12,'/root/navigation/admin'),
-(13,'/root/tools/node_select'),
-(14,'/root/navigation/main'),
-(15,'/root/cp'),
-(16,'/root/admin/navigation'),
-(17,'/root/admin/navigation/site_management'),
-(18,'/root/admin/navigation/content_management'),
-(19,'/root/admin/navigation/site_management/security'),
-(20,'/root/media/files_folder'),
-(21,'/root/media/images_folder'),
-(22,'/root/messages'),
-(23,'/root/admin/navigation/content_management/common'),
-(24,'/root/admin/navigation/123'),
-(25,'/root/admin/navigation/site_management/common');
-
-/*
-Table struture for sys_user_object_access_template
-*/
-
-drop table if exists `sys_user_object_access_template`;
-CREATE TABLE `sys_user_object_access_template` (
-  `id` int(11) NOT NULL auto_increment,
-  `action_name` char(50) NOT NULL default '',
-  `class_id` int(11) NOT NULL default '0',
-  `controller_id` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `action_name` (`action_name`),
-  KEY `controller_id` (`controller_id`)
-) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
-
-/*
-Table struture for sys_user_object_access_template_item
-*/
-
-drop table if exists `sys_user_object_access_template_item`;
-CREATE TABLE `sys_user_object_access_template_item` (
-  `id` int(11) NOT NULL auto_increment,
-  `template_id` int(11) default NULL,
-  `user_id` int(11) default NULL,
-  `r` tinyint(4) default NULL,
-  `w` tinyint(4) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `template_id` (`template_id`),
-  KEY `user_id` (`user_id`)
-) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
 Table struture for user
@@ -1222,7 +1371,6 @@ CREATE TABLE `user` (
   `title` varchar(50) NOT NULL default '',
   `identifier` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `object_id` (`object_id`,`version`),
   KEY `pwd` (`password`),
   KEY `gpwd` (`generated_password`),
   KEY `v` (`version`),
@@ -1230,11 +1378,10 @@ CREATE TABLE `user` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for mebelgid.user
+Table data for init_ru2.user
 */
 
-INSERT INTO `user` VALUES 
-(2,1,25,'admin','super','66d4aaa5ea177ac32c69946de3731ec0','mike@office.bit',NULL,'','admin');
+INSERT INTO `user` VALUES (2,1,25,'admin','super','66d4aaa5ea177ac32c69946de3731ec0','yourmail@dot.com',NULL,'Управление','admin');
 
 /*
 Table struture for user_group
@@ -1253,12 +1400,11 @@ CREATE TABLE `user_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for mebelgid.user_group
+Table data for init_ru2.user_group
 */
 
-INSERT INTO `user_group` VALUES 
-(3,1,27,'Посетители','visitors'),
-(4,1,28,'Администраторы','admins');
+INSERT INTO `user_group` VALUES (3,1,27,'Гости','visitors');
+INSERT INTO `user_group` VALUES (4,1,28,'Администраторы','admins');
 
 /*
 Table struture for user_in_group
@@ -1275,9 +1421,8 @@ CREATE TABLE `user_in_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for mebelgid.user_in_group
+Table data for init_ru2.user_in_group
 */
 
-INSERT INTO `user_in_group` VALUES 
-(1,25,28);
+INSERT INTO `user_in_group` VALUES (9,25,28);
 
