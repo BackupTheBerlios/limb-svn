@@ -69,13 +69,13 @@ class stats_event_report
 		
 	function _build_filter_condition()
 	{
-		return ' WHERE 1=1 ' . implode(' ', $this->filter_conditions);
+		return implode(' ', $this->filter_conditions);
 	}
 	
 	function fetch($params = array())
 	{
 		$sql = "SELECT 
-						sslog.*, 
+						sslog.*, ssu.uri,
 						sso.id as object_id, 
 						sso.identifier as identifier,
 						sso.title as title,
@@ -83,7 +83,10 @@ class stats_event_report
 						FROM 
 						sys_stat_log as sslog LEFT JOIN user ON user.object_id=sslog.user_id 
 						LEFT JOIN sys_site_object_tree as ssot ON ssot.id=sslog.node_id
-						LEFT JOIN sys_site_object as sso ON ssot.object_id=sso.id";
+						LEFT JOIN sys_site_object as sso ON ssot.object_id=sso.id,
+						sys_stat_uri as ssu
+						WHERE ssu.id = sslog.stat_uri_id 
+						";
 						
 		$sql .= $this->_build_filter_condition();
 		

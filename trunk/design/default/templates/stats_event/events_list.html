@@ -20,6 +20,7 @@
 <th>ip</th>
 <th><locale:STRING name='action'></th>
 <th><locale:STRING name='object'></th>
+<th>url</th>
 <th><locale:STRING name='user' file='user'></th>
 </tr>
 
@@ -55,7 +56,13 @@
 {$action}
 </span>
 </td>
+<core:OPTIONAL for='identifier'>
 <td><a href='/root?node_id={$node_id}' target='_blank'>{$identifier} : {$title}</a></td>
+</core:OPTIONAL>
+<core:DEFAULT for='identifier'>
+<td></td>
+</core:DEFAULT>
+<td>{$uri}</td>
 <td><a href='/root/users/{$user_login}' target='_blank'>{$user_login}</a></td>
 </tr>
 </list:ITEM>
