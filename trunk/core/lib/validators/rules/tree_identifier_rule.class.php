@@ -28,10 +28,6 @@ class tree_identifier_rule extends single_field_rule
 	{
 		if(!$value = $dataspace->get($this->field_name))
 			return;
-
-		if(	$this->current_identifier &&
-				$this->current_identifier == $value)
-			return;
 		
 		$tree = limb_tree :: instance();
 		

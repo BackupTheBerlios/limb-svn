@@ -41,14 +41,20 @@ class form_edit_site_object_action extends form_site_object_action
 	
 	function _init_validator()
 	{
-		$object_data =& fetch_mapped_by_url();
-		
 		if(!$this->object->is_auto_identifier())
 		{
 			$this->validator->add_rule(new required_rule('identifier'));
 			
-			if($object_data)
-				$this->validator->add_rule(new tree_identifier_rule('identifier', $object_data['parent_node_id'], $object_data['identifier']));
+			$object_data = fetch_mapped_by_url();
+			
+			if(($parent_node_id = $this->dataspace->get('parent_node_id')) && $object_data)
+			{
+				$this->validator->add_rule(new tree_identifier_rule('identifier', (int)$parent_node_id, $object_data['identifier']));
+			}
+			elseif($object_data)
+			{
+				$this->validator->add_rule(new tree_identifier_rule('identifier', (int)$object_data['parent_node_id'], $object_data['identifier']));
+			}
 		}
 	}
 
