@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 
 class stats_event_filter_action extends form_action
 {
-	function _define_dataspace_name()
-	{
-	  return 'events_filter_form';
-	}
- 
-	function _valid_perform(&$request, &$response)
-	{
-	  $request->import_attributes($this->dataspace->export(), true);
-	
-		parent :: _valid_perform($request, $response);
-	}
+  function _define_dataspace_name()
+  {
+    return 'events_filter_form';
+  }
+
+  function _valid_perform(&$request, &$response)
+  {
+    $request->merge_attributes($this->dataspace->export());
+
+    parent :: _valid_perform($request, $response);
+  }
 }
 
 ?>

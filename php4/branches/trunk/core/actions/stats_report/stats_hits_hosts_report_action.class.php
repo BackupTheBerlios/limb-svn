@@ -12,18 +12,18 @@ require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 
 class stats_hits_hosts_report_action extends form_action
 {
-	function _define_dataspace_name()
-	{
-	  return 'hits_hosts_form';
-	}
-	
-	function _valid_perform(&$request, &$response)
-	{
-	  $request->import_attributes($this->dataspace->export());
+  function _define_dataspace_name()
+  {
+    return 'hits_hosts_form';
+  }
 
-		parent :: _valid_perform($request, $response);
-	}
-	
+  function _valid_perform(&$request, &$response)
+  {
+    $request->merge_attributes($this->dataspace->export());
+
+    parent :: _valid_perform($request, $response);
+  }
+
 }
 
 ?>

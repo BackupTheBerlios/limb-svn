@@ -25,6 +25,10 @@ class site_structure_controller extends site_object_controller
             'template_path' => '/site_structure/admin_display.html',
             'action_path' => '/site_structure/tree_display_action',
         ),
+        'change_controller' => array(
+            'template_path' => '/site_structure/change_controller.html',
+            'action_path' => '/site_structure/change_controller_action',
+        ),
         'toggle' => array(
             'template_path' => '/site_structure/admin_display.html',
             'action_path' => '/site_structure/tree_toggle_action',

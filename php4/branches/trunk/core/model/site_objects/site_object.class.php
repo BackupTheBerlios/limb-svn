@@ -220,7 +220,8 @@ class site_object extends object
                 sys_class.icon as icon,
                 sys_class.class_ordr as class_ordr,
                 sys_class.can_be_parent as can_be_parent,
-                sys_controller.name as controller_name
+                sys_controller.name as controller_name,
+                sys_controller.id as controller_id
                 FROM
                 sys_site_object as sso, sys_class, sys_controller,
                 sys_site_object_tree as ssot
@@ -704,6 +705,7 @@ class site_object extends object
     $data['identifier'] = $this->get_identifier();
     $data['title'] = $this->get_title();
     $data['status'] = $this->get_attribute('status', 0);
+    $data['controller_id'] = $this->get_attribute('controller_id');
 
     return $sys_site_object_db_table->update_by_id($this->get_id(), $data);
   }

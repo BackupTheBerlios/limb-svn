@@ -32,7 +32,7 @@
 </td>
 <td align="center"><core:INCLUDE file="published_status.html"></td>
 <td><core:INCLUDE file="/jip_actions/dropdown.html"></td>
-<td><small>&nbsp;{$controller_name}</small></td>
+<td><a title='<locale:STRING name="change_controller" file="site_structure">' href="{^path}?action=change_controller&id={$node_id}&popup=1" onclick="return click_href(this.href);" ><img src='/shared/images/configure.gif'></a><small>&nbsp;{$controller_name}</small></td>
 </tr>
 </grid:ITERATOR>
 </grid:LIST>

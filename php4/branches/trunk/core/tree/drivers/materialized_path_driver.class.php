@@ -293,7 +293,6 @@ class materialized_path_driver extends tree_db_driver
 
       foreach($this->_expanded_parents as $data)
       {
-
         if(substr($data['path'], 0, strlen($parent_node['path'])) != $parent_node['path'])
           continue;
 
@@ -710,15 +709,15 @@ class materialized_path_driver extends tree_db_driver
       return false;
     }
 
-    $this->_db->sql_exec("	DELETE FROM {$this->_node_table}
-                            WHERE
-                            path LIKE '{$node['path']}%' AND
-                            root_id={$node['root_id']}");
+    $this->_db->sql_exec("DELETE FROM {$this->_node_table}
+                          WHERE
+                          path LIKE '{$node['path']}%' AND
+                          root_id={$node['root_id']}");
 
-    $this->_db->sql_exec("	UPDATE {$this->_node_table}
-                            SET children = children - 1
-                            WHERE
-                            id = {$node['parent_id']}");
+    $this->_db->sql_exec("UPDATE {$this->_node_table}
+                          SET children = children - 1
+                          WHERE
+                          id = {$node['parent_id']}");
 
     return true;
   }
@@ -797,15 +796,15 @@ class materialized_path_driver extends tree_db_driver
 
     $this->_db->sql_exec($sql);
 
-    $this->_db->sql_exec("	UPDATE {$this->_node_table}
-                            SET children = children - 1
-                            WHERE
-                            id = {$source_node['parent_id']}");
+    $this->_db->sql_exec("UPDATE {$this->_node_table}
+                          SET children = children - 1
+                          WHERE
+                          id = {$source_node['parent_id']}");
 
-    $this->_db->sql_exec("	UPDATE {$this->_node_table}
-                            SET children = children + 1
-                            WHERE
-                            id = {$target_id}");
+    $this->_db->sql_exec("UPDATE {$this->_node_table}
+                          SET children = children + 1
+                          WHERE
+                          id = {$target_id}");
 
     return true;
   }

@@ -7,16 +7,16 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/actions/action.class.php');
 
 class tree_display_action extends action
 {
-	function perform(&$request, &$response)
-	{		
-		$tree =& tree :: instance();		
-		$tree->initialize_expanded_parents();				
-	}
+  function perform(&$request, &$response)
+  {
+    $tree =& tree :: instance();
+    $tree->initialize_expanded_parents();
+  }
 }
 
 ?>

@@ -66,7 +66,7 @@ class register_new_object_action extends form_action
         __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
     }
 
-    $object->import_attributes($params);
+    $object->merge_attributes($params);
 
     if(!$object->create())
     {
@@ -75,7 +75,7 @@ class register_new_object_action extends form_action
     }
 
     $parent_object =& site_object_factory :: create($parent_data['class_name']);
-    $parent_object->import_attributes($parent_data);
+    $parent_object->merge_attributes($parent_data);
 
     $access_policy =& access_policy :: instance();
     $access_policy->save_initial_object_access($object, $parent_object);

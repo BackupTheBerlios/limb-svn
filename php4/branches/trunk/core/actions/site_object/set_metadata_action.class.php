@@ -7,43 +7,43 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 
 class set_metadata_action extends form_action
 {
-	function _define_dataspace_name()
-	{
-	  return 'set_metadata';
-	}
-	
-	function _init_dataspace(&$request)
-	{
-		$object_data =& fetch_requested_object($request);
+  function _define_dataspace_name()
+  {
+    return 'set_metadata';
+  }
 
-		$object =& site_object_factory :: create('site_object');
-		$object->set_attribute('id', $object_data['id']);
-		
-		$data = $object->get_metadata();
-		$this->dataspace->import($data);
-	}
+  function _init_dataspace(&$request)
+  {
+    $object_data =& fetch_requested_object($request);
 
-	function _valid_perform(&$request, &$response)
-	{
-		$object_data =& fetch_requested_object($request);
+    $object =& site_object_factory :: create('site_object');
+    $object->set_attribute('id', $object_data['id']);
 
-		$data = $this->dataspace->export();
+    $data = $object->get_metadata();
+    $this->dataspace->import($data);
+  }
 
-		$data['id'] = $object_data['id'];
-		
-		$object =& site_object_factory :: create('site_object');
-		$object->import_attributes($data);
-		
-		if(!$object->save_metadata())
-			$request->set_status(REQUEST_STATUS_FAILURE);
-		else
-		  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
-	}
+  function _valid_perform(&$request, &$response)
+  {
+    $object_data =& fetch_requested_object($request);
+
+    $data = $this->dataspace->export();
+
+    $data['id'] = $object_data['id'];
+
+    $object =& site_object_factory :: create('site_object');
+    $object->merge_attributes($data);
+
+    if(!$object->save_metadata())
+      $request->set_status(REQUEST_STATUS_FAILURE);
+    else
+      $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+  }
 }
 ?>
