@@ -75,7 +75,7 @@ class ImageVariationTest extends LimbTestCase
     $this->variation->setMimeType($mime_type = 'jpeg');
     $this->variation->setMediaFileId($media_file_id = 'sd3232cvc1op');//remember explicit calls are forbidden!!!
 
-    $this->media_manager->setReturnValue('getMediaFilePath', $media_file_path = 'mediaPath', array($media_file_id));
+    $this->media_manager->setReturnValue('getMediaFilePath', $media_file_path = 'media_path', array($media_file_id));
 
     $this->variation->expectOnce('_generateTempFile');
     $this->variation->setReturnValue('_generateTempFile', $output_temp_file = 'test');
@@ -91,7 +91,7 @@ class ImageVariationTest extends LimbTestCase
 
     $this->image_library->expectOnce('setOutputFile', array($output_temp_file));
     $this->image_library->expectOnce('setOutputType', array($output_file_type));
-    $this->image_library->expectOnce('resize', array(array('maxDimension' => $max_size = 30)));
+    $this->image_library->expectOnce('resize', array(array('max_dimension' => $max_size = 30)));
     $this->image_library->expectOnce('commit');
 
     $this->media_manager->expectOnce('store', array($output_temp_file));

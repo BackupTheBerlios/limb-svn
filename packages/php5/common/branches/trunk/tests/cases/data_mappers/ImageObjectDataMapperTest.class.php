@@ -14,6 +14,7 @@ require_once(dirname(__FILE__) . '/../../../data_mappers/ImageObjectMapper.class
 require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
 
 Mock :: generatePartial('ImageObjectMapper',
                         'ImageObjectMapperTestVersion',
@@ -65,34 +66,28 @@ class ImageObjectDataMapperTest extends LimbTestCase
   function testFindById()
   {
     $variations_data = array('original' => array('id' => $id1 = 200,
-                                                              'name' => $name1 = 'original',
-                                                              'etag' => $etag1 = 'etag1',
-                                                              'width' => $width1 = 200,
-                                                              'height' => $height1 = 100,
-                                                              'media_id' => $media_id1 = 101,
-                                                              'media_file_id' => $media_file_id1 = 'media_file_id1',
-                                                              'file_name' => $file_name1 = 'file_name1',
-                                                              'mime_type' => $mime_type1 = 'mime_type1',
-                                                              'size' => $size1 = 500
-                                                              ),
-                                          'icon' => array(    'id' => $id2 = 300,
-                                                              'name' => $name2 = 'icon',
-                                                              'etag' => $etag2 = 'etag2',
-                                                              'width' => $width2 = 20,
-                                                              'height' => $height2 = 10,
-                                                              'media_id' => $media_id2 = 102,
-                                                              'media_file_id' => $media_file_id2 = 'media_file_id2',
-                                                              'file_name' => $file_name2 = 'file_name2',
-                                                              'mime_type' => $mime_type2 = 'mime_type2',
-                                                              'size' => $size2 = 50
-                                                              ),
-
-                                          );
+                                                'name' => $name1 = 'original',
+                                                'etag' => $etag1 = 'etag1',
+                                                'width' => $width1 = 200,
+                                                'height' => $height1 = 100,
+                                                'media_id' => $media_id1 = 101,
+                                                'media_file_id' => $media_file_id1 = 'media_file_id1',
+                                                'file_name' => $file_name1 = 'file_name1',
+                                                'mime_type' => $mime_type1 = 'mime_type1',
+                                                'size' => $size1 = 500),
+                                          'icon' => array('id' => $id2 = 300,
+                                                          'name' => $name2 = 'icon',
+                                                          'etag' => $etag2 = 'etag2',
+                                                          'width' => $width2 = 20,
+                                                          'height' => $height2 = 10,
+                                                          'media_id' => $media_id2 = 102,
+                                                          'media_file_id' => $media_file_id2 = 'media_file_id2',
+                                                          'file_name' => $file_name2 = 'file_name2',
+                                                          'mime_type' => $mime_type2 = 'mime_type2',
+                                                          'size' => $size2 = 50));
     $result = array('id' => $id = 100,
                     'description' => $description = 'Description',
-                    'variations' => $variations_data
-
-    );
+                    'variations' => $variations_data);
 
     $this->finder->expectOnce('findById', array($id));
     $this->finder->setReturnValue('findById', $result, array($id));
@@ -176,19 +171,19 @@ class ImageObjectDataMapperTest extends LimbTestCase
   function testUpdate()
   {
     $this->db->sqlInsert('image_object', array('id' => $id = 1000,
-                                                'description' => 'Description'));
+                                               'description' => 'Description'));
 
     $this->db->sqlInsert('image_variation', array('id' => $variation_id = 1000,
-                                                   'media_id' => $media_id = 101,
-                                                   'image_id' => $id = 100,
-                                                   'variation' => 'whatever'));
+                                                  'media_id' => $media_id = 101,
+                                                  'image_id' => $id = 100,
+                                                  'variation' => 'whatever'));
 
     $this->db->sqlInsert('media', array('id' => $media_id,
-                                         'media_file_id' => $old_media_file_id = 'sdFjfskd23923sds',
-                                         'file_name' => 'file1',
-                                         'mime_type' => 'type1',
-                                         'size' => 20,
-                                         'etag' => 'etag1'));
+                                        'media_file_id' => $old_media_file_id = 'sdFjfskd23923sds',
+                                        'file_name' => 'file1',
+                                        'mime_type' => 'type1',
+                                        'size' => 20,
+                                        'etag' => 'etag1'));
 
 
     $image = new ImageObject();
@@ -276,7 +271,7 @@ class ImageObjectDataMapperTest extends LimbTestCase
 
       foreach($data as $field => $value)
       {
-        $get_method = 'get_' . $field;
+        $get_method = toStudlyCaps('get' . $field, false);
         $this->assertEqual($variation->$get_method(), $value);
       }
     }
