@@ -441,9 +441,14 @@ function add_form_hidden_parameter(form, parameter, val)
 	  
 	hidden = document.getElementById(parameter + '_hidden_parameter');
 	if(hidden)
+	{
+		alert(1);
 		hidden.value = val;
+		form.appendChild(hidden);
+	}	
 	else
 	{			
+		alert(2);
 		hidden = document.createElement('INPUT');
 		hidden.id = parameter + '_hidden_parameter';
 		hidden.type = 'hidden';
