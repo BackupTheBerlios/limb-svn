@@ -123,8 +123,11 @@ class ini
       $this->_parse();
       return;
     }
-
-		$this->cache_file = $this->cache_dir . md5($this->file_path) . '.php';
+    
+    if($override_file = $this->get_override_file())
+      $this->cache_file = $this->cache_dir . md5($override_file) . '.php';
+    else
+		  $this->cache_file = $this->cache_dir . md5($this->file_path) . '.php';
 
 		if ($this->_is_cache_valid())
 		{
@@ -146,15 +149,18 @@ class ini
 	
 	protected function _is_cache_valid()
 	{
-		if (file_exists($this->cache_file) && 
-		    filemtime($this->cache_file) > filemtime($this->file_path))
+	  if(!file_exists($this->cache_file))
+	    return false;
+	  
+	  $override_file = $this->get_override_file();
+	  	
+		if (filemtime($this->cache_file) > filemtime($this->file_path))
 		{
-		  if(($override_file = $this->get_override_file()) && 
-		    filemtime($this->cache_file) < filemtime($override_file))
+		  if($override_file && filemtime($this->cache_file) < filemtime($override_file))
 		    return false;
 		  else
 		    return true;
-		} 
+		}
 	  
 	  return false;
 	}
@@ -249,7 +255,9 @@ class ini
 			{
 				$new_group_name = trim($new_group_name_array[1]);
 				$current_group = $new_group_name;
-				$this->group_values[$current_group] = array();
+				
+				if(!isset($this->group_values[$current_group]))
+				  $this->group_values[$current_group] = array();
 				continue;
 			} 
 			// check for variable

@@ -28,18 +28,42 @@ class ini_override_test extends LimbTestCase
   	debug_mock :: tally();
   	clear_testing_ini();
   }
+
+  function test_override_group_values_properly()
+  {
+  	register_testing_ini(
+      'testing2.ini',
+      '
+        [Templates]
+        force_compile = 0
+        path = design/templates/      '
+    );
+
+  	register_testing_ini(
+      'testing2.ini.override',
+      '
+        [Templates]
+        force_compile = 1
+      '
+    );
+        
+    $ini = new ini (VAR_DIR . 'testing2.ini', false);
+          	
+		$this->assertEqual($ini->get_option('path', 'Templates'), 'design/templates/');
+		$this->assertEqual($ini->get_option('force_compile', 'Templates'), 1);
+  }
     
-  function test_override()
+  function test_override_use_real_file()
   {
     $ini =& ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test2.ini', false);
         
-  	$this->assertTrue($ini->has_group('test'));
+  	$this->assertTrue($ini->has_group('test1'));
   	$this->assertTrue($ini->has_group('test2'));
   	
-		$this->assertTrue($ini->has_option('test', 'test'));
-		$this->assertTrue($ini->has_option('test2', 'test2'));
-		$this->assertEqual($ini->get_option('test', 'test'), 2);
-		$this->assertEqual($ini->get_option('test2', 'test2'), 2);
+		$this->assertEqual($ini->get_option('v1', 'test1'), 1);
+		$this->assertEqual($ini->get_option('v2', 'test1'), 2);
+		$this->assertEqual($ini->get_option('v3', 'test1'), 3);
+		$this->assertEqual($ini->get_option('v1', 'test2'), 1);
   }
   
   function test_cache_original_file_was_modified()
@@ -71,6 +95,34 @@ class ini_override_test extends LimbTestCase
     
     $ini->reset_cache();
   }   
+  
+  function test_cache_override_file_was_removed()
+  {
+  	register_testing_ini(
+      'testing2.ini',
+      'test = 1'
+    );
+
+  	register_testing_ini(
+      'testing2.ini.override',
+      'test = 2'
+    );
+    
+    $ini =& new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...    
+    
+    touch($ini->get_original_file(), time()-100);
+    unlink($ini->get_override_file());
+    
+    $ini_mock =& new ini_mock_version_override($this);
+    $ini_mock->expectOnce('_parse');
+    $ini_mock->expectOnce('_save_cache');
+    
+    $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
+        
+    $ini_mock->tally();
+    
+    $ini->reset_cache();
+  }  
 
   function test_cache_override_file_was_modified()
   {
@@ -100,7 +152,35 @@ class ini_override_test extends LimbTestCase
     $ini_mock->tally();
     
     $ini->reset_cache();
-  }  
+  }
+  
+  function test_cache_hit()
+  {
+  	register_testing_ini(
+      'testing2.ini',
+      'test = 1'
+    );
+
+  	register_testing_ini(
+      'testing2.ini.override',
+      'test = 2'
+    );
+    
+    $ini =& new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here... 
+    
+    $ini_mock =& new ini_mock_version_override($this);
+    
+    touch($ini->get_cache_file(), time()+100);
+    
+    $ini_mock->expectNever('_parse');
+    $ini_mock->expectNever('_save_cache');
+    
+    $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
+        
+    $ini_mock->tally();
+    
+    $ini->reset_cache();
+  }
 }
 
 ?>
