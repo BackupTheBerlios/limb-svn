@@ -5,21 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: outputcache.tag.php 441 2004-02-13 16:07:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-class core_output_cache_tag_info
+class core_litecache_tag_info
 {
-	var $tag = 'core:OUTPUTCACHE';
+	var $tag = 'core:LITECACHE';
 	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_output_cache_tag';
+	var $tag_class = 'core_litecache_tag';
 } 
 
-register_tag(new core_output_cache_tag_info());
+register_tag(new core_litecache_tag_info());
 
-class core_output_cache_tag extends server_component_tag
+class core_litecache_tag extends server_component_tag
 {
-	var $runtime_component_path = '/core/template/components/output_cache_component';
+	var $runtime_component_path = '/core/template/components/litecache_component';
 
 	/**
 	* Name of runtime variable reference where cached content is stored

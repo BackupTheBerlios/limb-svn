@@ -61,8 +61,8 @@ class full_page_cache_manager_test extends UnitTestCase
       ' 
       [rule1]
        path_regex = /root/test1
-       attributes[] = test1
-       attributes[] = test2
+       optional[] = test1
+       optional[] = test2
       [rule2]
        path_regex = /root/test2
        groups[] = members
@@ -74,7 +74,7 @@ class full_page_cache_manager_test extends UnitTestCase
 
     $this->assertEqual($cache_manager->get_rules(), 
       array(
-        array('path_regex' => '/root/test1', 'attributes' => array('test1', 'test2')),
+        array('path_regex' => '/root/test1', 'optional' => array('test1', 'test2')),
         array('path_regex' => '/root/test2', 'groups' => array('members', 'visitors'))
       )
     );
@@ -88,15 +88,34 @@ class full_page_cache_manager_test extends UnitTestCase
     
     $this->assertFalse($cache_manager->is_cacheable());
   }
-  
-  function test_is_cacheable()
+
+  function test_is_cacheable_required_attributes()
   {         
     $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
-               'attributes' => array('action', 'pager'),
+               'required' => array('action', 'pager'),
+               'type' => 'allow'
+              );
+
+    $this->cache_manager->setReturnValue('get_rules',
+      array($rule)    
+    );
+    
+    $this->assertTrue($this->cache_manager->is_cacheable());
+    $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
+  }
+    
+  function test_is_cacheable_optional_attributes()
+  {         
+    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->uri->setReturnValue('get_path', '/root/test');
+    
+    $rule = array(
+               'path_regex' => '/^\/root\/test.*$/',
+               'optional' => array('action', 'pager'),
                'type' => 'allow'
               );
 
@@ -117,7 +136,7 @@ class full_page_cache_manager_test extends UnitTestCase
     
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
                'type' => 'allow',
                'groups' => array('members', 'visitors')
               );
@@ -139,7 +158,7 @@ class full_page_cache_manager_test extends UnitTestCase
     
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
                'type' => 'allow',
                'groups' => array('members')
               );
@@ -156,7 +175,7 @@ class full_page_cache_manager_test extends UnitTestCase
   { 
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
               );
 
     $this->cache_manager->setReturnValue('get_rules',
@@ -174,7 +193,7 @@ class full_page_cache_manager_test extends UnitTestCase
   { 
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
                'type' => 'deny'
               );
 
@@ -193,7 +212,7 @@ class full_page_cache_manager_test extends UnitTestCase
   {       
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
-               'attributes' => array('action', 'pager'),
+               'required' => array('action', 'pager'),
                'type' => 'allow'
               );
 
@@ -201,7 +220,7 @@ class full_page_cache_manager_test extends UnitTestCase
       array($rule)    
     );
       
-    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1 , 'extra' => 1));
+    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1, 'extra' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->assertTrue($this->cache_manager->is_cacheable());
@@ -212,7 +231,7 @@ class full_page_cache_manager_test extends UnitTestCase
   {    
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
-               'attributes' => array('action', 'pager'),
+               'required' => array('action', 'pager'),
                'type' => 'allow'
               );
 
@@ -231,7 +250,7 @@ class full_page_cache_manager_test extends UnitTestCase
   {        
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
-               'attributes' => array('action', 'pager'),
+               'required' => array('action', 'pager'),
                'type' => 'allow'
               );
 
@@ -269,13 +288,13 @@ class full_page_cache_manager_test extends UnitTestCase
   {    
     $rule1 = array(
            'path_regex' => '/^\/root\/test.*$/',
-           'attributes' => array('action', 'pager'),
+           'optional' => array('action', 'pager'),
            'type' => 'allow'
     );
 
     $rule2 = array(
            'path_regex' => '/^\/root\/test.*$/',
-           'attributes' => array('action'),
+           'optional' => array('action'),
            'type' => 'allow'
     );
 
@@ -299,13 +318,13 @@ class full_page_cache_manager_test extends UnitTestCase
   {    
     $rule1 = array(
            'path_regex' => '/^\/root\/test.*$/',
-           'attributes' => array('action', 'pager'),
+           'required' => array('action', 'pager'),
            'type' => 'allow'
     );
 
     $rule2 = array(
            'path_regex' => '/^\/root\/test.*$/',
-           'attributes' => array('action'),
+           'required' => array('action'),
            'type' => 'deny'
     );
 
@@ -344,11 +363,11 @@ class full_page_cache_manager_test extends UnitTestCase
     $this->assertNull($this->cache_manager->get_cache_id());  
   }
   
-  function test_get_cache_id()
+  function test_get_cache_id_optional_merged_with_required()
   {
-    $rule = array('attributes' => array('action'));
+    $rule = array('optional' => array('pager', 'prop'), 'required' => array('action'));
     
-    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1));
+    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'pager' => 2));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
@@ -358,7 +377,30 @@ class full_page_cache_manager_test extends UnitTestCase
       md5('/root/test' . serialize($query_items))
     ); 
   }
+  
+  function test_get_cache_id_query_items_sorted()
+  {
+    $rule = array('optional' => array('pager', 'prop'), 'required' => array('action'));
+    
+    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'pager' => 2));
 
+    $this->uri->setReturnValue('get_path', '/root/test');
+
+    $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
+
+    $cache_id = $this->cache_manager->get_cache_id();
+    
+    $this->uri->setReturnValue('get_query_items', $query_items = array('junky' => 1, 'pager' => 2, 'action' => 1));
+    $this->uri->setReturnValue('get_path', '/root/test');
+
+    $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
+
+    $this->assertEqual(
+      $this->cache_manager->get_cache_id(), 
+      $cache_id
+    ); 
+  }
+  
   function test_get_cache_id_no_attributes()
   {
     $rule = array();
@@ -376,16 +418,16 @@ class full_page_cache_manager_test extends UnitTestCase
 
   function test_get_cache_id_junky_attributes()
   {
-    $rule = array('attributes' => array('action'));
+    $rule = array('optional' => array('pager'), 'required' => array('action'));
     
-    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'extra' => 1));
+    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'pager' => 1, 'extra' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
 
     $this->assertEqual(
       $this->cache_manager->get_cache_id(), 
-      md5('/root/test' . serialize(array('action' => 1)))
+      md5('/root/test' . serialize(array('action' => 1, 'pager' => 1)))
     ); 
   }
 
@@ -401,7 +443,7 @@ class full_page_cache_manager_test extends UnitTestCase
     
     $this->uri->setReturnValue('get_path', $path);
     $this->uri->setReturnValue('get_query_items', $attributes);
-    $this->cache_manager->setReturnValue('_get_matched_rule', array('attributes' => array('action')));
+    $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
     
     $this->assertTrue($this->cache_manager->cache_exists());
     
@@ -415,7 +457,7 @@ class full_page_cache_manager_test extends UnitTestCase
     $this->uri->setReturnValue('get_path', '/root/test');   
     $this->uri->setReturnValue('get_query_items', array('action' => 1));
             
-    $this->cache_manager->setReturnValue('_get_matched_rule', array('attributes' => array('action')));
+    $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
     
     $this->assertFalse($this->cache_manager->cache_exists());
     
@@ -429,7 +471,7 @@ class full_page_cache_manager_test extends UnitTestCase
     $this->uri->setReturnValue('get_path', '/root/test');   
     $this->uri->setReturnValue('get_query_items', array('action' => 1));
             
-    $this->cache_manager->setReturnValue('_get_matched_rule', array('attributes' => array('action')));
+    $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
     
     $this->assertFalse($this->cache_manager->cache_exists());
     

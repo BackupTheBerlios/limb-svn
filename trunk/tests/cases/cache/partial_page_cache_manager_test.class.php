@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/cache/template_cache_manager.class.php');
+require_once(LIMB_DIR . '/core/cache/partial_page_cache_manager.class.php');
 require_once(LIMB_DIR . '/core/request/request.class.php');
 require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
@@ -17,19 +17,19 @@ Mock::generate('uri');
 Mock::generate('user');
 
 Mock::generatePartial(
-  'template_cache_manager', 
-  'template_cache_manager_test_version', 
+  'partial_page_cache_manager', 
+  'partial_page_cache_manager_test_version', 
   array('get_rules', '_set_matched_rule', '_get_matched_rule', '_get_user') 
 );
 
 Mock::generatePartial(
-  'template_cache_manager', 
-  'template_cache_manager_test_version2', 
+  'partial_page_cache_manager', 
+  'partial_page_cache_manager_test_version2', 
   array('is_cacheable', 'cache_exists', 'get_cache_id')
 );
 
 
-class template_cache_manager_test extends UnitTestCase
+class partial_page_cache_manager_test extends UnitTestCase
 {
   var $cache_manager;
   var $uri;
@@ -40,7 +40,7 @@ class template_cache_manager_test extends UnitTestCase
     $this->uri =& new Mockuri($this);
     $this->user =& new Mockuser($this);
     
-    $this->cache_manager =& new template_cache_manager_test_version($this);
+    $this->cache_manager =& new partial_page_cache_manager_test_version($this);
     $this->cache_manager->set_uri($this->uri);
     
     $this->cache_manager->setReturnReference('_get_user', $this->user);
@@ -55,27 +55,27 @@ class template_cache_manager_test extends UnitTestCase
   
   function test_get_rules_from_ini()
   {
-    $cache_manager = new template_cache_manager();
+    $cache_manager = new partial_page_cache_manager();
     
     register_testing_ini(
       'template_cache.ini',
       ' 
       [rule1]
        server_id = test1
-       attributes[] = test1
-       attributes[] = test2
+       optional[] = test1
+       required[] = test2
       [rule2]
        server_id = wow
        groups[] = members
        groups[] = visitors
       [not_valid_rule]
-       path_regex = /root/test3
+       bla-bla = bla-bla
       '
     );
 
     $this->assertEqual($cache_manager->get_rules(), 
       array(
-        array('server_id' => 'test1', 'attributes' => array('test1', 'test2')),
+        array('server_id' => 'test1', 'optional' => array('test1'), 'required' => array('test2')),
         array('server_id' => 'wow', 'groups' => array('members', 'visitors'))
       )
     );
@@ -85,7 +85,7 @@ class template_cache_manager_test extends UnitTestCase
   
   function test_is_not_cacheable_no_uri()
   {
-    $cache_manager = new template_cache_manager();
+    $cache_manager = new partial_page_cache_manager();
     
     $this->assertFalse($cache_manager->is_cacheable());
   }
@@ -104,12 +104,12 @@ class template_cache_manager_test extends UnitTestCase
     
     $rule1 = array(
                'server_id' => 'last_news',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
                'type' => 'allow'
               );
     $rule2 = array(
                'server_id' => 'last_docs',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
                'type' => 'allow'
               );
 
@@ -127,7 +127,7 @@ class template_cache_manager_test extends UnitTestCase
   { 
     $rule = array(
                'server_id' => 'last_news',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
               );
 
     $this->cache_manager->setReturnValue('get_rules',
@@ -142,11 +142,31 @@ class template_cache_manager_test extends UnitTestCase
     $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
   }
 
-  function test_is_cacheable()
+  function test_is_cacheable_optional_attributes()
   { 
     $rule = array(
                'server_id' => 'last_news',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
+               'type' => 'allow'
+              );
+
+    $this->cache_manager->setReturnValue('get_rules',
+      array($rule)    
+    );
+        
+    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1));
+
+    $this->cache_manager->set_server_id('last_news');
+    
+    $this->assertTrue($this->cache_manager->is_cacheable());
+    $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
+  }
+  
+  function test_is_cacheable_required_attributes()
+  { 
+    $rule = array(
+               'server_id' => 'last_news',
+               'required' => array('action', 'pager'),
                'type' => 'allow'
               );
 
@@ -171,7 +191,7 @@ class template_cache_manager_test extends UnitTestCase
     
     $rule = array(
                'server_id' => 'last_news',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
                'type' => 'allow',
                'groups' => array('members', 'visitors')
               );
@@ -195,7 +215,7 @@ class template_cache_manager_test extends UnitTestCase
     
     $rule = array(
                'server_id' => 'last_news',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
                'type' => 'allow',
                'groups' => array('members', 'visitors')
               );
@@ -214,7 +234,7 @@ class template_cache_manager_test extends UnitTestCase
   { 
     $rule = array(
                'server_id' => 'last_news',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
               );
 
     $this->cache_manager->setReturnValue('get_rules',
@@ -233,7 +253,7 @@ class template_cache_manager_test extends UnitTestCase
   { 
     $rule = array(
                'server_id' => 'last_news',
-               'attributes' => array('action', 'pager'),
+               'optional' => array('action', 'pager'),
                'type' => 'deny'
               );
 
@@ -253,7 +273,7 @@ class template_cache_manager_test extends UnitTestCase
   { 
     $rule = array(
                'server_id' => 'last_news',
-               'attributes' => array('action', 'pager'),
+               'required' => array('action', 'pager'),
               );
 
     $this->cache_manager->setReturnValue('get_rules',
@@ -270,7 +290,7 @@ class template_cache_manager_test extends UnitTestCase
 
   function test_get_cache_id()
   {
-    $rule = array('attributes' => array('action'), 'server_id' => 'last_news');
+    $rule = array('optional' => array('action'), 'server_id' => 'last_news');
     
     $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1));
 
@@ -281,10 +301,31 @@ class template_cache_manager_test extends UnitTestCase
       md5( 'last_news' . serialize($query_items))
     ); 
   }
+  
+  function test_get_cache_id_query_items_sorted()
+  {
+    $rule = array('server_id' => 'test', 'optional' => array('pager', 'prop'), 'required' => array('action'));
+    
+    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'pager' => 2));
+
+    $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
+
+    $cache_id = $this->cache_manager->get_cache_id();
+    
+    $this->uri->setReturnValue('get_query_items', $query_items = array('junky' => 1, 'pager' => 2, 'action' => 1));
+    $this->uri->setReturnValue('get_path', '/root/test');
+
+    $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
+
+    $this->assertEqual(
+      $this->cache_manager->get_cache_id(), 
+      $cache_id
+    ); 
+  }  
 
   function test_get_cache_id_use_path()
   {
-    $rule = array('attributes' => array('action'), 'server_id' => 'last_news', 'use_path' => true);
+    $rule = array('optional' => array('action'), 'server_id' => 'last_news', 'use_path' => true);
     
     $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
@@ -299,7 +340,7 @@ class template_cache_manager_test extends UnitTestCase
 
   function test_get_cache_id_extra_attributes()
   {
-    $rule = array('attributes' => array('action'), 'server_id' => 'last_news');
+    $rule = array('optional' => array('action'), 'server_id' => 'last_news');
     
     $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'extra' => 1));
 
@@ -327,7 +368,7 @@ class template_cache_manager_test extends UnitTestCase
 
   function test_cache_doesnt_exist_no_uri()
   {
-    $cache_manager = new template_cache_manager();
+    $cache_manager = new partial_page_cache_manager();
     $this->assertFalse($cache_manager->cache_exists());
   }
 
@@ -336,7 +377,7 @@ class template_cache_manager_test extends UnitTestCase
     $this->_write_cache($server_id = 'last_news', $attributes = array('action' => 1));
     
     $this->uri->setReturnValue('get_query_items', $attributes);
-    $this->cache_manager->setReturnValue('_get_matched_rule', array('server_id' => $server_id, 'attributes' => array('action')));
+    $this->cache_manager->setReturnValue('_get_matched_rule', array('server_id' => $server_id, 'optional' => array('action')));
     
     $this->assertTrue($this->cache_manager->cache_exists());
     
@@ -348,7 +389,7 @@ class template_cache_manager_test extends UnitTestCase
     $this->_write_cache($server_id = 'last_news', $attributes = array('action' => 1), $path = '/root/test');
     
     $this->uri->setReturnValue('get_query_items', $attributes);
-    $this->cache_manager->setReturnValue('_get_matched_rule', array('server_id' => $server_id, 'use_path' => true, 'attributes' => array('action')));
+    $this->cache_manager->setReturnValue('_get_matched_rule', array('server_id' => $server_id, 'use_path' => true, 'optional' => array('action')));
     
     $this->assertTrue($this->cache_manager->cache_exists());
     
@@ -357,7 +398,7 @@ class template_cache_manager_test extends UnitTestCase
 
   function test_get()
   {
-    $cache_manager =& new template_cache_manager_test_version2($this);
+    $cache_manager =& new partial_page_cache_manager_test_version2($this);
     $cache_manager->set_uri($this->uri);
     
     $this->_write_simple_cache($cache_id = 1, $contents = 'test-test');
@@ -375,13 +416,13 @@ class template_cache_manager_test extends UnitTestCase
 
   function test_write_false_no_uri()
   {
-    $cache_manager = new template_cache_manager();
+    $cache_manager = new partial_page_cache_manager();
     $this->assertFalse($cache_manager->write($content = 'test'));      
   }
 
   function test_write()
   {
-    $cache_manager =& new template_cache_manager_test_version2($this);
+    $cache_manager =& new partial_page_cache_manager_test_version2($this);
     $cache_manager->set_uri($this->uri);
     
     $contents = 'test-test';
@@ -400,7 +441,7 @@ class template_cache_manager_test extends UnitTestCase
   {
     $this->_write_simple_cache($cache_id = 1, $contents = 'test-overwrite');
     
-    $cache_manager =& new template_cache_manager_test_version2($this);
+    $cache_manager =& new partial_page_cache_manager_test_version2($this);
     $cache_manager->set_uri($this->uri);
     
     $contents = 'test-test';

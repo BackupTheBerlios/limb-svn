@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . 'core/lib/cache/cache_lite.class.php');
-require_once(LIMB_DIR . 'core/cache/template_cache_manager.class.php');
+require_once(LIMB_DIR . 'core/cache/partial_page_cache_manager.class.php');
 
 class limb_cache_component extends component
 {
@@ -18,7 +18,7 @@ class limb_cache_component extends component
   
 	function limb_cache_component()
 	{
-		$this->cache_manager =& new template_cache_manager();
+		$this->cache_manager =& new partial_page_cache_manager();
 	}
 	
 	function prepare()

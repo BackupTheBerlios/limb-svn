@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: output_cache_component.class.php 441 2004-02-13 16:07:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -16,7 +16,7 @@ require_once(LIMB_DIR . 'core/lib/cache/cache_lite.class.php');
 * The block_component provides an API which allows the block to be shown
 * or hidden at runtime.
 */
-class output_cache_component extends component
+class litecache_component extends component
 {
 	/**
 	* Whether caching is on or off
@@ -62,7 +62,7 @@ class output_cache_component extends component
 	*/
 	var $output = '';
 	/**
-	* Constructs the output_cache_component
+	* Constructs the litecache_component
 	* 
 	* @param int $ number of seconds after which cache file expires
 	* @param string $ name of compiled template file
@@ -70,7 +70,7 @@ class output_cache_component extends component
 	* @param string $ cache group - identifies a group of cache files
 	* @access public 
 	*/
-	function output_cache_component($codefile, $expires = '3600', $cacheby = '', $cachegroup = false)
+	function litecache_component($codefile, $expires = '3600', $cacheby = '', $cachegroup = false)
 	{
 		$this->codefile = $codefile;
 

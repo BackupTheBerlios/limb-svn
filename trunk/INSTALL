@@ -63,7 +63,9 @@ NameVirtualHost 192.168.0.6
 </VirtualHost>
 
 Please note that you need to write an alias for shared directory in the apache 
-project virtual host section. You may skip this step by simply copying 
+project virtual host section. 
+
+NOTE!!! You may skip this step by simply copying 
 YOUR_PROJECT_DIRECTORY/limb/shared/ contents to YOUR_PROJECT_DIRECTORY/shared/ directory.
 
 --------------------------------------------------------------------------------

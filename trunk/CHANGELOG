@@ -37,7 +37,7 @@ svn://svn.berlios.de/limb/2.1
       of not only navigation_item objects
   --  for speed issues with images and files all dont track responses replaced with mere exit()
   --  RFE: new <grid:COUNTER> tag (issue #964271)
-  --  got rid of create_object.php now it's a regular action of the admin_page object
+  --  RFE: got rid of create_object.php now it's a regular action of the admin_page object(issue #958092)
   --  new tree_path_rule rule
   --  got rid of PHP_SELF, REQUEST_URI constants, taken directly from $_SERVER!
   --  project specific setup_custom.php is included in project setup.php in a smart way 

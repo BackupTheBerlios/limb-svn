@@ -26,7 +26,7 @@ class core_limb_cache_tag extends server_component_tag
 		$v = '$' . $code->get_temp_variable();
 
 		$code->write_php($this->get_component_ref_code() . '->prepare();');
-		$code->write_php('if (!' . $v . ' = ' . $this->get_component_ref_code() . '->get()) {');
+		$code->write_php('if (!(' . $v . ' = ' . $this->get_component_ref_code() . '->get())) {');
 		$code->write_php('ob_start();');
 
 		parent::generate_contents($code);

@@ -91,20 +91,21 @@ class full_page_cache_manager
               
     $query_items = $this->uri->get_query_items();
     $cache_query_items = array();
-          
-    if(isset($matched_rule['attributes']) && is_array($matched_rule['attributes']))
-    {
-      foreach($query_items as $key => $value)
-      {
-        if(in_array($key, $matched_rule['attributes']))
-          $cache_query_items[$key] = $value;
-      }    
-    } 
-    else
-    {
-      $cache_query_items = array();
+    $attributes = array();
+    
+    if(isset($matched_rule['optional']) && is_array($matched_rule['optional']))
+      $attributes = $matched_rule['optional'];
+
+    if(isset($matched_rule['required']) && is_array($matched_rule['required']))
+      $attributes = array_merge($matched_rule['required'], $attributes);
+    
+    foreach($query_items as $key => $value)
+    {          
+      if(in_array($key, $attributes))
+        $cache_query_items[$key] = $value;      
     }
     
+    ksort($cache_query_items);
     $this->id = md5($this->uri->get_path() . serialize($cache_query_items));
     
     return $this->id;
@@ -126,34 +127,34 @@ class full_page_cache_manager
     
     foreach($rules as $rule)
     {
+      if(!preg_match($rule['path_regex'], $uri_path))
+        continue;
+    
       if(isset($rule['groups']))
       {
         if(!$user->is_in_groups($rule['groups']))
           continue;
       }
       
-      if(isset($rule['attributes']))
+      if(isset($rule['required']))
       {
-        if(sizeof($query_keys) < sizeof($rule['attributes']))
+        if(sizeof($query_keys) < sizeof($rule['required']))
           continue;
         
-        foreach($rule['attributes'] as $query_key)
+        foreach($rule['required'] as $query_key)
         {
           if(!in_array($query_key, $query_keys))
             continue 2;
         }
       }
-      
-      if(preg_match($rule['path_regex'], $uri_path))
+              
+      if(!isset($rule['type']) || $rule['type'] === 'allow')
       {
-        if(!isset($rule['type']) || $rule['type'] === 'allow')
-        {
-          $this->_set_matched_rule($rule);
-          return true;
-        }  
-        else
-          return false;
-      }
+        $this->_set_matched_rule($rule);
+        return true;
+      }  
+      else
+        return false;
     }
     
     return false;

@@ -14,7 +14,7 @@ if(!defined('PAGE_CACHE_DIR'))
 require_once(LIMB_DIR . '/core/lib/system/dir.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 
-class template_cache_manager
+class partial_page_cache_manager
 {
   var $id;
   var $server_id;
@@ -22,7 +22,7 @@ class template_cache_manager
   var $rules = array();
   var $matched_rule;
   
-  function template_cache_manager()
+  function partial_page_cache_manager()
   {
   }
   
@@ -94,22 +94,24 @@ class template_cache_manager
     
     if($this->id)
       return $this->id;
-              
+                        
     $query_items = $this->uri->get_query_items();
     $cache_query_items = array();
-          
-    if(isset($matched_rule['attributes']) && is_array($matched_rule['attributes']))
-    {
-      foreach($query_items as $key => $value)
-      {
-        if(in_array($key, $matched_rule['attributes']))
-          $cache_query_items[$key] = $value;
-      }    
-    } 
-    else
-    {
-      $cache_query_items = array();
+    $attributes = array();
+    
+    if(isset($matched_rule['optional']) && is_array($matched_rule['optional']))
+      $attributes = $matched_rule['optional'];
+
+    if(isset($matched_rule['required']) && is_array($matched_rule['required']))
+      $attributes = array_merge($matched_rule['required'], $attributes);
+    
+    foreach($query_items as $key => $value)
+    {          
+      if(in_array($key, $attributes))
+        $cache_query_items[$key] = $value;      
     }
+    
+    ksort($cache_query_items);
     
     if (isset($matched_rule['use_path']))
       $this->id = md5($matched_rule['server_id'] . $this->uri->get_path() . serialize($cache_query_items));
@@ -142,18 +144,18 @@ class template_cache_manager
           continue;
       }
       
-      if(isset($rule['attributes']))
+      if(isset($rule['required']))
       {
-        if(sizeof($query_keys) < sizeof($rule['attributes']))
+        if(sizeof($query_keys) < sizeof($rule['required']))
           continue;
         
-        foreach($rule['attributes'] as $query_key)
+        foreach($rule['required'] as $query_key)
         {
           if(!in_array($query_key, $query_keys))
             continue 2;
         }
       }
-      
+            
       if(!isset($rule['type']) || $rule['type'] === 'allow')
       {
         $this->_set_matched_rule($rule);
