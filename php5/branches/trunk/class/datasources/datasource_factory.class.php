@@ -10,9 +10,14 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 
+if(!is_registered_resolver('datasource'))
+  register_file_resolver('datasource', $r = LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver');
+
 class datasource_factory
 {
-	function _extract_class_name($class_path)
+  private function __construct(){}
+  
+	static private function _extract_class_name($class_path)
 	{
 		$pos = strrpos($class_path, '/');
 		
@@ -22,9 +27,9 @@ class datasource_factory
 			return $class_path;	
 	}
 		
-	function & create($class_path)
+	static public function create($class_path)
 	{
-		$class_name = datasource_factory :: _extract_class_name($class_path);
+		$class_name = self :: _extract_class_name($class_path);
 
 		if(!class_exists($class_name))
 		{
@@ -37,7 +42,7 @@ class datasource_factory
   		include_once($full_path);
   	}
 		
-	  $datasource =& new $class_name();
+	  $datasource = new $class_name();
 	  
 	  return $datasource;
 	}

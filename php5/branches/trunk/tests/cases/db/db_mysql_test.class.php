@@ -59,7 +59,7 @@ class db_mysql_test extends LimbTestCase
 	
 	function test_instance()
 	{
-		$this->assertReference(db_factory :: instance(), db_factory :: instance());
+		$this->assertTrue(db_factory :: instance() === db_factory :: instance());
 	} 
 	
 	function test_execute()

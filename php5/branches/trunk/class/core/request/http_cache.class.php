@@ -10,30 +10,30 @@
 ***********************************************************************************/
 //inspired by http://alexandre.alapetite.net/doc-alex/php-http-304/
 
-define('HTTP_CACHE_TYPE_PRIVATE', 0);
-define('HTTP_CACHE_TYPE_PUBLIC', 1);
-
 class http_cache
 {
-  var $etag;
-  var $last_modified_time;
-  var $cache_time;
-  var $cache_type;
+  const TYPE_PRIVATE = 0;
+  const TYPE_PUBLIC = 1;
   
-  function http_cache()
+  protected $etag;
+  protected $last_modified_time;
+  protected $cache_time;
+  protected $cache_type;
+  
+  function __construct()
   {
     $this->reset();
   }
   
-  function reset()
+  public function reset()
   {
     $this->last_modified_time = time();
     $this->etag = null;
     $this->cache_time = 0;
-    $this->cache_type = HTTP_CACHE_TYPE_PRIVATE;
+    $this->cache_type = http_cache :: TYPE_PRIVATE;
   }
   
-  function check_and_write(&$response)
+  public function check_and_write($response)
   {
     if($this->is412())
     {
@@ -52,7 +52,7 @@ class http_cache
     }
   }
   
-  function is412()
+  public function is412()
   {
     if (isset($_SERVER['HTTP_IF_MATCH'])) //rfc2616-sec14.html#sec14.24
     {
@@ -68,7 +68,7 @@ class http_cache
     return false;
   }
   
-  function is304()
+  public function is304()
   {
     if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) //rfc2616-sec14.html#sec14.25 //rfc1945.txt
     {
@@ -84,7 +84,7 @@ class http_cache
     return false;  
   }
 
-  function _write_412_response(&$response)
+  protected function _write_412_response($response)
   {
     $response->header('HTTP/1.1 412 Precondition Failed');
     $response->header('Cache-Control: private, max-age=0, must-revalidate');
@@ -93,7 +93,7 @@ class http_cache
     $response->write("HTTP/1.1 Error 412 Precondition Failed: Precondition request failed positive evaluation\n");
   }
   
-  function _write_304_response(&$response)
+  protected function _write_304_response($response)
   {
     $response->header('HTTP/1.0 304 Not Modified');
     $response->header('Etag: ' . $this->get_etag()); 
@@ -103,7 +103,7 @@ class http_cache
     $response->header('Expires: ');
   }
   
-  function _write_caching_response(&$response)
+  protected function _write_caching_response($response)
   { 
     $response->header('Cache-Control: ' . $this->_get_cache_control()); //rfc2616-sec14.html#sec14.9
     $response->header('Last-Modified: ' . $this->format_last_modified_time());
@@ -112,13 +112,13 @@ class http_cache
     $response->header('Expires: ');
   }
   
-  function _get_cache_control()
+  protected function _get_cache_control()
   {
     if ($this->cache_time == 0)
       $cache = 'private, must-revalidate, ';
-    elseif ($this->cache_type == HTTP_CACHE_TYPE_PRIVATE) 
+    elseif ($this->cache_type == http_cache :: TYPE_PRIVATE) 
       $cache = 'private, ';
-    elseif ($this->cache_type == HTTP_CACHE_TYPE_PUBLIC) 
+    elseif ($this->cache_type == http_cache :: TYPE_PUBLIC) 
       $cache = 'public, ';
     else 
       $cache = '';
@@ -126,32 +126,32 @@ class http_cache
     return $cache;  
   }
   
-  function format_last_modified_time()
+  public function format_last_modified_time()
   {
     return $this->_format_gmt_time($this->last_modified_time);
   }
   
-  function _format_gmt_time($time)
+  protected function _format_gmt_time($time)
   {
     return gmdate('D, d M Y H:i:s \G\M\T', $time);
   }
 
-  function set_last_modified_time($last_modified_time)
+  public function set_last_modified_time($last_modified_time)
   {
     $this->last_modified_time = $last_modified_time;
   }
   
-  function get_last_modified_time()
+  public function get_last_modified_time()
   {
     return $this->last_modified_time;
   } 
 
-  function set_etag($etag)
+  public function set_etag($etag)
   {
     $this->etag = $etag;
   }
   
-  function get_etag()
+  public function get_etag()
   {
     if($this->etag)
       return $this->etag;
@@ -167,7 +167,7 @@ class http_cache
     return $this->etag;
   } 
   
-  function _get_script_name()
+  protected function _get_script_name()
   {
     if (isset($_SERVER['SCRIPT_FILENAME']))
       return $_SERVER['SCRIPT_FILENAME'];
@@ -177,22 +177,22 @@ class http_cache
       return '';  
   }
     
-  function set_cache_time($cache_time)
+  public function set_cache_time($cache_time)
   {
     $this->cache_time = $cache_time;
   }
   
-  function get_cache_time()
+  public function get_cache_time()
   {
     return $this->cache_time;
   }  
   
-  function set_cache_type($cache_type)
+  public function set_cache_type($cache_type)
   {
     $this->cache_type = $cache_type;
   }
   
-  function get_cache_type()
+  public function get_cache_type()
   {
     return $this->cache_type;
   }   

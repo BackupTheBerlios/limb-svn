@@ -8,14 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
 
 class site_object_manipulation_test_version extends site_object
 {		
-	function _define_attributes_definition()
+	protected function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(
 				parent :: _define_attributes_definition(),
@@ -26,7 +25,7 @@ class site_object_manipulation_test_version extends site_object
 				));		
 	}
 	
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'ordr' => 1,
@@ -202,9 +201,9 @@ class site_object_manipulation_test extends LimbTestCase
   	
   	$this->assertTrue($this->object->delete(), 'delete operation failed');
   	
-  	$sys_site_object_db_table =& db_table_factory :: instance('sys_site_object');
-  	$sys_site_object_tree_db_table =& db_table_factory :: instance('sys_site_object_tree');
-  	$sys_site_object_version_db_table =& db_table_factory :: instance('sys_object_version');
+  	$sys_site_object_db_table =& db_table_factory :: create('sys_site_object');
+  	$sys_site_object_tree_db_table =& db_table_factory :: create('sys_site_object_tree');
+  	$sys_site_object_version_db_table =& db_table_factory :: create('sys_object_version');
   	
   	$arr = $sys_site_object_db_table->get_row_by_id($this->object->get_id());
   	$this->assertIdentical($arr, false);

@@ -8,108 +8,86 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
 
 class debug_mock extends debug
 {
-	var $expected_data = array();
-	var $test = null;
-	var $mock = null;
-	
-	function debug_mock()
+	private $expected_data = array();
+	private $test = null;
+	private $mock = null;
+				
+	static public function init($test, $wildcard = MOCK_WILDCARD)
 	{
-		parent :: debug();
-	}
-	
-	function &instance()
-	{
-		$impl =& instantiate_object('debug_mock');
-		return $impl;
-	}
+		$debug = self :: instance();
 		
-	function init(&$test, $wildcard = MOCK_WILDCARD)
-	{
-		$debug =& debug_mock :: instance();
-		
-		$debug->test =& $test;
-		$debug->mock =& new SimpleMock($test, $wildcard, false);
+		$debug->test = $test;
+		$debug->mock = new SimpleMock($test, $wildcard, false);
 	} 
 	
-  function expect_never_write() 
+  static public function expect_never_write() 
   {
-  	$debug =& debug_mock :: instance();
-  	
-  	$debug->mock->expectNever('write');
+  	self :: instance()->mock->expectNever('write');
   }
 	
-	function expect_write_error($message='', $params=array())
+	static public function expect_write_error($message='', $params=array())
 	{
-		$debug =& debug_mock :: instance();
-		
-		$debug->_expect_write(DEBUG_LEVEL_ERROR, $message, $params);
+		self :: _expect_write(self :: LEVEL_ERROR, $message, $params);
 	}
 
-	function expect_write_warning($message='', $params=array())
+	static public function expect_write_warning($message='', $params=array())
 	{
-		$debug =& debug_mock :: instance();
-		
-		$debug->_expect_write(DEBUG_LEVEL_WARNING, $message, $params);
+		self :: _expect_write(self :: LEVEL_WARNING, $message, $params);
 	}
 	
-	function expect_write_notice($message='', $params=array())
+	static public function expect_write_notice($message='', $params=array())
 	{
-		$debug =& debug_mock :: instance();
-		
-		$debug->_expect_write(DEBUG_LEVEL_NOTICE, $message, $params);
+		self :: _expect_write(self :: LEVEL_NOTICE, $message, $params);
 	}
 	
-	function _expect_write($verbosity_level, $message, $params)
+	static private function _expect_write($verbosity_level, $message, $params)
 	{
-		$debug =& debug_mock :: instance();
-		
+	  $debug = self :: instance();
+	  
 		$debug->expected_data[] = array(
 			'level' => $verbosity_level, 
 			'message' => $message, 
 			'params' => $params);
 			
-		$debug->mock->expectArgumentsAt(sizeof($this->expected_data)-1, 'write', array($verbosity_level, $message, $params));
+		$debug->mock->expectArgumentsAt(sizeof($debug->expected_data)-1, 'write', array($verbosity_level, $message, $params));
 		
-		$debug->mock->expectCallCount('write', sizeof($this->expected_data));
+		$debug->mock->expectCallCount('write', sizeof($debug->expected_data));
 	}
 
-	function tally()
+	static public function tally()
 	{
-		$debug =& debug_mock :: instance();
+		$debug = self :: instance();
 		
 		$debug->mock->tally();
 		$debug->expected_data = array();
 	} 
-
-	function &write()
+  
+  protected function write($verbosity_level, $string, $code_line = '', $params = array())
 	{
-		$args = func_get_args();
-					
 		if(!$this->mock)
 		{
-			if($args[0] != DEBUG_TIMING_POINT)
-				parent :: write($args[0], $args[1], $args[2], $args[3]);
+			if($verbosity_level != self :: TIMING_POINT)
+				parent :: write($verbosity_level, $string, $code_line, $params);
 			else
-				parent :: write($args[0], $args[1]);
+				parent :: write($verbosity_level, $string);
 				
 			return;
 		}
 		
-		if($args[0] != DEBUG_TIMING_POINT)
+		if($verbosity_level != self :: TIMING_POINT)
 		{	
-			$this->mock->_invoke('write', array($args[0], $args[1], $args[3]));
+			$this->mock->_invoke('write', array($verbosity_level, $string, $params));
 			
 			$call_parent = true;
 			foreach($this->expected_data as $id => $data)
 			{
-				if(	$args[0] == $data['level'] && 
-						$args[1] == $data['message'] &&
-						$args[3] == $data['params'])
+				if(	$verbosity_level == $data['level'] && 
+						$string == $data['message'] &&
+						$params == $data['params'])
 				{
 					$call_parent = false;
 					break;
@@ -118,9 +96,9 @@ class debug_mock extends debug
 			
 			if($call_parent)
 			{
-				$this->test->fail('unexpected debug exception: [ ' . $args[1] . ' ]');
+				$this->test->fail('unexpected debug exception: [ ' . $string . ' ]');
 				
-				parent :: write($args[0], $args[1], $args[2], $args[3]);
+				parent :: write($verbosity_level, $string, $code_line, $params);
 			}
 		}
 	} 	

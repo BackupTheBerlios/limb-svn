@@ -10,30 +10,9 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
-/**
-* Check for a valid domain name.
-*/
 class domain_rule extends single_field_rule
 {
-	/**
-	* Constructs a domain_rule
-	* 
-	* @param string $ fieldname to validate
-	* @param array $ of acceptable values
-	* @access public 
-	*/
-	function domain_rule($fieldname)
-	{
-		parent :: single_field_rule($fieldname);
-	} 
-
-	/**
-	* Performs validation of a single value
-	* 
-	* @access protected 
-	* @todo Find the RFC that describes valid domain names and post a link to it here.
-	*/
-	function check($value)
+	protected function check($value)
 	{ 
 		// Check for entirely numberic domains.  Is 666.com valid?
 		// Don't check for 2-4 character length on TLD because of things like .local

@@ -12,16 +12,16 @@ require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class unique_user_email_rule extends single_field_rule
 {
-	var $current_identifier = '';
+	private $current_identifier = '';
 	
-	function unique_user_email_rule($field_name, $current_identifier='')
+	function __construct($field_name, $current_identifier='')
 	{
 		$this->current_identifier = $current_identifier;
 		
-		parent :: single_field_rule($field_name);
+		parent :: __construct($field_name);
 	} 
 
-	function validate(&$dataspace)
+	public function validate($dataspace)
 	{
 		if(!$value = $dataspace->get($this->field_name))
 			return;
@@ -30,7 +30,7 @@ class unique_user_email_rule extends single_field_rule
 				$this->current_identifier == $value)
 			return;
 
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$sql = 'SELECT *
 		FROM sys_site_object as sco, user as tn

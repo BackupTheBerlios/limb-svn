@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/cron/cron_manager.class.php');
-require_once(LIMB_DIR . '/class/cron/cron_job.class.php');
-require_once(LIMB_DIR . '/class/core/request/response.class.php');
+require_once(LIMB_DIR . '/class/core/actions/command.interface.php');
+require_once(LIMB_DIR . '/class/core/request/response.interface.php');
 
-Mock::generate('cron_job');
+Mock::generate('command');
 Mock::generate('response');
 
 Mock::generatePartial(
@@ -37,7 +37,7 @@ class cron_manager_test extends LimbTestCase
   {
     $this->cron_manager =& new cron_manager_test_version($this);
     $this->response =& new Mockresponse($this);
-    $this->cron_job =& new Mockcron_job($this);
+    $this->cron_job =& new Mockcommand($this);
   }
   
   function tearDown()

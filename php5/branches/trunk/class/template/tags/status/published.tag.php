@@ -37,7 +37,7 @@ class status_published_tag extends compiler_directive_tag
 
 		$code->write_php('if (isset($' . $actions_tempvar . '["publish"]) && isset($' . $actions_tempvar . '["unpublish"])) {');
 		$code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
-		$code->write_php('if ((boolean)(constant("SITE_OBJECT_PUBLISHED_STATUS") & $' . $tempvar . ') === ' . $value . ') {');
+		$code->write_php('if ((boolean)(constant("site_object :: STATUS_PUBLISHED") & $' . $tempvar . ') === ' . $value . ') {');
 	} 
 
 	function post_generate(&$code)

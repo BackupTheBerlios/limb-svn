@@ -8,19 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . 'class/core/request/response.interface.php');
 
-class nonbuffered_response
+class nonbuffered_response implements response
 {			
-	function write($string)
+	public function write($string)
 	{
 	  echo $string;
 	}
 	
-	function commit()
+	public function commit()
 	{
 	}
 	
-	function is_empty()
+	public function is_empty()
 	{
 	  return true;
 	}			

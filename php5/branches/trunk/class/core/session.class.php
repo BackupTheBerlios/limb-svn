@@ -13,11 +13,7 @@ require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
 class session
 {
-	function session()
-	{
-	}
-
-	function & get($name)
+	public function & get($name)
 	{
 		if(!isset($_SESSION[$name]))
 			$_SESSION[$name] = '';
@@ -25,17 +21,17 @@ class session
 		return $_SESSION[$name];
 	}
 	
-	function set($name, $value)
+	public function set($name, $value)
 	{
 		$_SESSION[$name] = $value;
 	}
 	
-	function session_exists($name)
+	public function session_exists($name)
 	{
 		return isset($_SESSION[$name]);
 	}
 
-	function destroy($name)
+	public function destroy($name)
 	{
 		if(isset($_SESSION[$name]))
 		{
@@ -44,7 +40,7 @@ class session
 		}
 	}
 	
-	function destroy_user_session($user_id)
+	public function destroy_user_session($user_id)
 	{
 		$db =& db_factory :: instance();
 		
@@ -90,9 +86,9 @@ function _session_db_close()
   return true;
 }
 
-function & _session_db_read($session_id)
+function _session_db_read($session_id)
 {
-	$db =& db_factory :: instance();
+	$db = db_factory :: instance();
 
 	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
 	
@@ -115,9 +111,8 @@ function & _session_db_read($session_id)
 
 function _session_db_write($session_id, $value)
 {
-	$db =& db_factory :: instance();
-	
-	$user =& user :: instance();
+	$db = db_factory :: instance();	
+	$user = user :: instance();
 	
 	$user_id = $user->get_id();
 

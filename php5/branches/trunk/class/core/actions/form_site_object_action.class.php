@@ -13,35 +13,35 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . 'class/search/full_text_indexer.class.php');
 
-class form_site_object_action extends form_action
+abstract class form_site_object_action extends form_action
 {
-	var $object = null;
+	protected $object = null;
 	
-	var $site_object_class_name = '';
+	protected $site_object_class_name = '';
 	
-	var $datamap = array();
+	protected $datamap = array();
 
-	var $indexer = null;
+	protected $indexer = null;
 	
-	function form_site_object_action($name='', $merge_definition=array())
+	function __construct()
 	{
 		$this->site_object_class_name = $this->_define_site_object_class_name();
 		
-		$this->object =& $this->get_site_object();
+		$this->object = $this->get_site_object();
 		
 		$this->datamap = $this->_define_datamap();
 
-		$this->indexer =& $this->_get_site_object_indexer();
+		$this->indexer = $this->_get_site_object_indexer();
 
-		parent :: form_action($name);
+		parent :: __construct();
 	}
 	
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'site_object';
 	}
 
-	function _define_datamap()
+	protected function _define_datamap()
 	{
 	  return array(
 			'parent_node_id' => 'parent_node_id',
@@ -50,17 +50,17 @@ class form_site_object_action extends form_action
 	  );
 	}
 
-	function & _get_site_object_indexer()
+	protected function _get_site_object_indexer()
 	{
 		return new full_text_indexer();
 	}
 	
-	function get_datamap()
+	public function get_datamap()
 	{
 		return $this->datamap;
 	}	
 	
-	function & get_site_object()
+	public function get_site_object()
 	{
 		return site_object_factory :: create($this->site_object_class_name);
 	}	

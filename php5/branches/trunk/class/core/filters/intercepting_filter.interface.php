@@ -8,15 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 
-class empty_db_table extends db_table
+interface intercepting_filter 
 {
-  protected function _define_columns()
-  {
-  	return array();
-  }
+  function run($filter_chain, $request, $response);
 }
-
 
 ?>

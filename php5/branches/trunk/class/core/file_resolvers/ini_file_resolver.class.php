@@ -11,7 +11,7 @@
 
 class ini_file_resolver
 {
-  function resolve($file_name)
+  public function resolve($file_name)
   {
   	if (file_exists(LIMB_APP_DIR . '/settings/' . $file_name))
   		$dir = LIMB_APP_DIR . '/settings/';

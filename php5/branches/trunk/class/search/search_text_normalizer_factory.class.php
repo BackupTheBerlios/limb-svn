@@ -10,17 +10,16 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 
-class search_text_normalizer_factory
+abstract class search_text_normalizer_factory
 {
-	function & instance($class_name)
+	static public function create($class_name)
 	{	
-	  search_text_normalizer_factory :: _include_class_file($class_name);
+	  self :: _include_class_file($class_name);
 	  
-		$obj =&	instantiate_object($class_name);
-		return $obj;
+		return new $class_name();
 	}
 
-	function _include_class_file($class_name)
+	static private function _include_class_file($class_name)
 	{
 	  if(class_exists($class_name))
 	    return;

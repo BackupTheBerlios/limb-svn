@@ -73,7 +73,7 @@ class nested_sets_driver_test extends LimbTestCase
 	
 	function test_get_parent_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000));
 		$this->assertIdentical(false, $this->driver->get_parent(1000));
 	}
 	
@@ -122,11 +122,11 @@ class nested_sets_driver_test extends LimbTestCase
 			'parent_id' => 1000
 		);
 		
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'l'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'r'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'l'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'r'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
 		
 		$node_id = $this->driver->create_root_node($node);
 		
@@ -176,7 +176,7 @@ class nested_sets_driver_test extends LimbTestCase
 	
 	function test_create_sub_node_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('parent_id' => 100000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('parent_id' => 100000));
 		$this->driver->create_sub_node(100000, array());
 	}
 
@@ -197,11 +197,11 @@ class nested_sets_driver_test extends LimbTestCase
 			'parent_id' => 1000
 		);
 				
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'l'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'r'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'l'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'r'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
 
 		$sub_node_id = $this->driver->create_sub_node($parent_node_id, $sub_node);
 
@@ -296,7 +296,7 @@ class nested_sets_driver_test extends LimbTestCase
 
 	function test_get_max_identifier_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000));
 		$this->assertIdentical(false, $this->driver->get_max_child_identifier(1000));
 	}
 	
@@ -328,7 +328,7 @@ class nested_sets_driver_test extends LimbTestCase
 
 	function test_delete_node_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 100000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 100000));
 		$this->driver->delete_node(100000);
 	}
 			
@@ -377,7 +377,7 @@ class nested_sets_driver_test extends LimbTestCase
 	
 	function test_get_parents_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
 		$this->assertFalse($this->driver->get_parents(10000));
 	}
 
@@ -416,7 +416,7 @@ class nested_sets_driver_test extends LimbTestCase
 	
 	function test_get_children_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
 		$this->assertFalse($this->driver->get_children(10000));
 	}
 	
@@ -447,7 +447,7 @@ class nested_sets_driver_test extends LimbTestCase
 	
 	function test_count_children_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
 		$this->assertFalse($this->driver->count_children(10000));
 	}
 
@@ -463,7 +463,7 @@ class nested_sets_driver_test extends LimbTestCase
 	
 	function test_get_siblings_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
 		$this->assertFalse($this->driver->get_siblings(10000));		
 	}
 	
@@ -493,7 +493,7 @@ class nested_sets_driver_test extends LimbTestCase
 	
 	function test_update_node_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 10000));
 		$this->assertFalse($this->driver->update_node(10000, array()));
 	}
 	
@@ -512,11 +512,11 @@ class nested_sets_driver_test extends LimbTestCase
 			'parent_id' => 1000
 		);
 
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'l'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'r'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'l'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'r'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
 
 		$this->assertTrue($this->driver->update_node($node_id, $node));
 		
@@ -529,19 +529,19 @@ class nested_sets_driver_test extends LimbTestCase
 //	
 //	function test_move_tree_failed()
 //	{
-//		debug_mock :: expect_write_error(TREE_ERROR_RECURSION,  array('id' => 1, 'target_id' => 1));
+//		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_RECURSION,  array('id' => 1, 'target_id' => 1));
 //		$this->assertFalse($this->driver->move_tree(1, 1));
 //		
-//		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND,  array('id' => 1));
+//		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND,  array('id' => 1));
 //		$this->assertFalse($this->driver->move_tree(1, 2));
 //		
 //		$node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
 //		$sub_node_id = $this->driver->create_sub_node($node_id, array('identifier' => 'test', 'object_id' => 10));
 //		
-//		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND,  array('target_id' => $node_id-1));
+//		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND,  array('target_id' => $node_id-1));
 //		$this->assertFalse($this->driver->move_tree($node_id, $node_id-1));
 //
-//		debug_mock :: expect_write_error(TREE_ERROR_RECURSION,  array('id' => $node_id, 'target_id' => $sub_node_id));
+//		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_RECURSION,  array('id' => $node_id, 'target_id' => $sub_node_id));
 //		$this->assertFalse($this->driver->move_tree($node_id, $sub_node_id));
 //	}
 //	
@@ -593,7 +593,7 @@ class nested_sets_driver_test extends LimbTestCase
 //	
 	function test_get_sub_branch_failed()
 	{
-		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND,  array('id' => 1));
+		debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND,  array('id' => 1));
 		$this->assertFalse($this->driver->get_sub_branch(1));
 	}
 

@@ -8,25 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
-class action_test extends LimbTestCase 
-{
-	var $a = null;
-  	  
-  function setUp()
-  {    	
-  	$this->a =& new action();
-  }
-  
-  function tearDown()
-  {
-  }
-  
-  function test_init()
-  {
-  	$this->assertNotNull($this->a);
-  }    
-}
-
+interface response
+{	
+	public function is_empty();
+		
+	public function write($string);
+		
+	public function commit();
+} 
 ?>

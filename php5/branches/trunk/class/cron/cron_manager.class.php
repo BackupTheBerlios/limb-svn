@@ -12,14 +12,10 @@ include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
 
 class cron_manager
 {
-  var $jobs = array();
-  var $jobs_last_time = array();
-  
-  function cron_manager()
-  {
-  }
-      
-  function get_jobs()
+  protected $jobs = array();
+  protected $jobs_last_time = array();
+        
+  public function get_jobs()
   {
     if(!$this->jobs)
       $this->_load_jobs();
@@ -27,12 +23,11 @@ class cron_manager
     return $this->jobs;
   }
   
-  function _load_jobs()
+  protected function _load_jobs()
   {
-    $ini =& get_ini('cron.ini');
     $this->jobs = array();
     
-    $groups = $ini->get_all();
+    $groups = get_ini('cron.ini')->get_all();
 
     foreach($groups as $group => $data)
     {
@@ -41,7 +36,7 @@ class cron_manager
     }
   }
   
-  function get_jobs_last_time()
+  public function get_jobs_last_time()
   {
     if(!$this->jobs_last_time)
       $this->_load_jobs_last_time();
@@ -49,7 +44,7 @@ class cron_manager
     return $this->jobs_last_time;
   }
 
-  function _load_jobs_last_time()
+  protected function _load_jobs_last_time()
   {
     $this->jobs_last_time = array();
     
@@ -71,12 +66,12 @@ class cron_manager
     } 
   }  
   
-  function _get_time()
+  protected function _get_time()
   {
     return time();
   }
   
-  function perform(&$response, $force=false)
+  public function perform($response, $force=false)
   {
     $now = $this->_get_time();
     $jobs = $this->get_jobs();
@@ -99,7 +94,7 @@ class cron_manager
         
         $response->write("hadle {$handle} starting\n");
         
-        $object =& $this->_create_job_object($handle);
+        $object = $this->_create_job_object($handle);
         
         $object->perform($response);
         
@@ -112,7 +107,7 @@ class cron_manager
     $this->_write_jobs_last_time();
   }
   
-  function &_create_job_object($handle)
+  protected function _create_job_object($handle)
   {
     $object = $handle;
     resolve_handle($object);
@@ -120,12 +115,12 @@ class cron_manager
     return $object;
   }
   
-  function _set_job_last_time($key, $time)
+  protected function _set_job_last_time($key, $time)
   {
     $this->jobs_last_time[$key] = $time;
   }
   
-  function _write_jobs_last_time()
+  protected function _write_jobs_last_time()
   {
     $f = fopen(VAR_DIR . '.cronjobs', 'w');
     

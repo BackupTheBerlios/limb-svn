@@ -12,16 +12,17 @@ require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 
 class content_object_db_table extends db_table
 {
-  function content_object_db_table()
+  protected function _define_columns()  
   {
-    parent :: db_table();
+    return array(
+      'id' => array('type' => 'numeric'),
+      'version' => array('type' => 'numeric'),
+      'object_id' => array('type' => 'numeric'),
+      'identifier' => '',
+      'title' => '',
+    );
     
-    $this->_columns['id'] = array('type' => 'numeric');
-    $this->_columns['version'] = array('type' => 'numeric');
-    $this->_columns['object_id'] = array('type' => 'numeric');
-    $this->_columns['identifier'] = array();
-    $this->_columns['title'] = array();
-  }  
+  }
 }
 
 ?>

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/lib/util/ini.class.php');
 
 class	db_factory
 {
-	function &instance($db_type='', $db_params=array(), $force_new_instance=false)
+	function instance($db_type='', $db_params=array(), $force_new_instance=false)
 	{
 		if(!$db_type)
 			$db_type = get_ini_option('common.ini', 'type', 'DB');
@@ -21,7 +21,9 @@ class	db_factory
 	  
 		$db_class_name = 'db_' . $db_type;
 
-		$obj	=& $GLOBALS['global_db_handler'];
+    $obj = null;
+    if (isset($GLOBALS['global_db_handler']))
+		  $obj = $GLOBALS['global_db_handler'];
 		
 		if (get_class( $obj ) != $db_class_name || $force_new_instance)
 		{
@@ -35,20 +37,19 @@ class	db_factory
 			
 		  include_once(LIMB_DIR . 'class/lib/db/' . $db_class_name . '.class.php');
 		  
-		  $obj =& new $db_class_name($db_params);
+		  $obj = new $db_class_name($db_params);
 		  
-  		$GLOBALS['global_db_handler'] =& $obj;
+  		$GLOBALS['global_db_handler'] = $obj;
 		}
 		return $obj;
 	}
 	
-	function select_db($db_name)
+	public function select_db($db_name)
 	{
-		$db =& db_factory :: instance();
-		$db->select_db($db_name);
+		db_factory :: instance()->select_db($db_name);
 	}
 
-	function create($db_type, $db_params)
+	public function create($db_type, $db_params)
 	{	
 		$db_class_name = 'db_' . $db_type;
 
@@ -60,19 +61,16 @@ class	db_factory
 
 function start_user_transaction()
 {
-	$db =& db_factory :: instance();
-	$db->begin();
+	db_factory :: instance()->begin();
 }
 
 function commit_user_transaction()
 {
-	$db =& db_factory :: instance();
-	$db->commit();
+	db_factory :: instance()->commit();
 }
 
 function rollback_user_transaction()
 {
-	$db =& db_factory :: instance();
-	$db->rollback();
+	db_factory :: instance()->rollback();
 }
 ?>

@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/lib/util/complex_array.class.php');
 
 class tree_sorter
 {  
-  function sort($tree_array, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
+  static function sort($tree_array, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
   {
 		$item = reset($tree_array);
 		$parent_id = $item[$parent_hash];
@@ -25,7 +24,7 @@ class tree_sorter
 		return $sorted_tree_array;
   }
   
-  function _do_sort(& $tree_array, & $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
+  static function _do_sort($tree_array, & $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
   {
  		$children = array();
  		
@@ -34,7 +33,7 @@ class tree_sorter
   		if($item[$parent_hash] == $parent_id)
   		{
   			$children[] = $item;
-  		unset($tree_array[$index]);
+  		  unset($tree_array[$index]);
   		}
   	}
 

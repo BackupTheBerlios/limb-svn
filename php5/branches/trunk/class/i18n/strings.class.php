@@ -11,16 +11,24 @@
 require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/lib/util/ini.class.php');
 
-class strings
+final class strings
 {
-	var $_ini_objects = array();
-	var $_path_cache = array();
-	var $_cache = array();
+  static protected $_instance = null;
+  
+	private $_ini_objects = array();
+	private $_path_cache = array();
+	private $_cache = array();
 	
-	function get($key, $filename='common', $locale_id=null)
+	static function instance()
 	{
-		$strings =& strings :: instance();
-		
+    if (!self :: $_instance)
+      self :: $_instance = new strings();
+
+    return self :: $_instance;	
+	}	
+	
+	static public function get($key, $filename='common', $locale_id=null)
+	{
   	if(!$locale_id)
   	{
 	  	if(defined('MANAGEMENT_LOCALE_ID'))
@@ -29,10 +37,10 @@ class strings
 	  		$locale_id = DEFAULT_MANAGEMENT_LOCALE_ID;
 	  }		
 			  
-	  return $strings->_do_get($key, $filename, $locale_id);
+	  return self :: instance()->_do_get($key, $filename, $locale_id);
 	}
 	
-	function _do_get($key, $filename, $locale_id)
+	private function _do_get($key, $filename, $locale_id)
 	{
 		$path = $this->_get_path($filename, $locale_id);
 		
@@ -40,11 +48,11 @@ class strings
 			return $this->_cache[$path][$key];
 		
 		if(isset($this->_ini_objects[$path]))
-			$ini =& $this->_ini_objects[$path];
+			$ini = $this->_ini_objects[$path];
 		else
-		{	  	
-			$ini =& ini :: instance($path);			
-			$this->_ini_objects[$path] =& $ini;
+		{
+		  $ini = ini :: instance($path);
+			$this->_ini_objects[$path] = $ini;
 		}
 		
 		if($value = $ini->get_option($key, 'constants'))
@@ -53,12 +61,12 @@ class strings
 		return $value;
 	}
 		
-	function _get_path($file_name, $locale_id)
+	private function _get_path($file_name, $locale_id)
 	{					  
 		if(isset($this->_path_cache[$file_name][$locale_id]))
 			return $this->_path_cache[$file_name][$locale_id];	  
 			
-    $resolver =& get_file_resolver('strings');
+    $resolver = get_file_resolver('strings');
     resolve_handle($resolver);
     $path = $resolver->resolve($file_name, $locale_id);
 			
@@ -66,14 +74,6 @@ class strings
 	  
 	  return $path;
 	}
-	
- 	function & instance()
-  {   	
-  	if(!isset($GLOBALS['global_strings_instance']))
-			$GLOBALS['global_strings_instance'] =& new strings();
-			  	
-  	return $GLOBALS['global_strings_instance'];
-  }	
 }
 
 ?>

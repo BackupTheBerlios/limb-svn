@@ -22,7 +22,7 @@ class http_response_test extends LimbTestCase
   
   function setUp()
   {
-    $this->response =& new special_mock_response($this);
+    $this->response = new special_mock_response($this);
   }
   
   function tearDown()

@@ -29,7 +29,7 @@ class packages_info_test extends LimbTestCase
   
   function test_instance()
   {
-    $this->assertReference($i1 =& packages_info :: instance(), $i2 =& packages_info :: instance());
+    $this->assertTrue(packages_info :: instance() === packages_info :: instance());
   }
   
   function test_get_packages_from_ini()

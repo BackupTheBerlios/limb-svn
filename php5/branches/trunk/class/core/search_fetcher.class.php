@@ -8,26 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/search/full_text_search.class.php');
 
 class search_fetcher extends fetcher
 {
-	var $_query_object = null;
+	protected $_query_object = null;
 		
-	function &instance()
+	static public function instance()
 	{
-		$obj =&	instantiate_object('search_fetcher');
-		return $obj;
+    if (!self :: $_instance)
+      self :: $_instance = new search_fetcher();
+
+    return self :: $_instance;	
 	}
 	
-	function set_search_query_object($query_object)
+	public function set_search_query_object($query_object)
 	{
 		$this->_query_object = $query_object;
 	}
 	
-	function _get_classes_ids_from_string($classes_string)
+	protected function _get_classes_ids_from_string($classes_string)
 	{
 		$classes_ids = array();
 		$classes_names = explode(',', $classes_string);
@@ -35,7 +36,7 @@ class search_fetcher extends fetcher
 		{
 			if(trim($class_name))
 			{
-				$site_object =& site_object_factory :: instance(trim($class_name));
+				$site_object = site_object_factory :: create(trim($class_name));
 				$classes_ids[] = $site_object->get_class_id();
 			}
 		}
@@ -43,7 +44,7 @@ class search_fetcher extends fetcher
 		return $classes_ids;
 	}
 
-	function & search_fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
+	public function search_fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
 	{
 		if (!$this->_query_object)
 		{
@@ -54,7 +55,7 @@ class search_fetcher extends fetcher
     	return array();
     }	
 
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$site_object = site_object_factory :: create($loader_class_name);
 
 		$restricted_classes = array();
 		$allowed_classes = array();
@@ -73,7 +74,7 @@ class search_fetcher extends fetcher
 			
 		}
 
-		$search =& new full_text_search();
+		$search = new full_text_search();
 
 		$search_result = $search->find($this->_query_object, $class_id, $restricted_classes, $allowed_classes);
 		if (!count($search_result))
@@ -83,7 +84,7 @@ class search_fetcher extends fetcher
 		$count_method = $fetch_method . '_count';
 
 		$counter = $site_object->$count_method(array_keys($search_result), $params);
-		$fetched_objects =& $site_object->$fetch_method(array_keys($search_result), $params);
+		$fetched_objects = $site_object->$fetch_method(array_keys($search_result), $params);
 
 		if(!count($fetched_objects))
 			return array();
@@ -106,10 +107,10 @@ class search_fetcher extends fetcher
 		return $result;
 	}
 	
-	function & search_fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
+	public function search_fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
 	{
-		$tree =& tree :: instance();
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$tree = tree :: instance();
+		$site_object = site_object_factory :: create($loader_class_name);
 
 		if (!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
@@ -137,12 +138,10 @@ class search_fetcher extends fetcher
 		if (!count($object_ids))
 			return array();
 		
-		$result =& $this->search_fetch_by_ids($object_ids, $loader_class_name, $counter, $params, $fetch_method);
-		
-		return $result;
+		return $this->search_fetch_by_ids($object_ids, $loader_class_name, $counter, $params, $fetch_method);
 	}
 
-	function & search_fetch_by_ids($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
+	public function search_fetch_by_ids($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{
 		if (!$this->_query_object)
 		{
@@ -153,7 +152,7 @@ class search_fetcher extends fetcher
     	return array();
     }	
 
-		$search =& new full_text_search();
+		$search = new full_text_search();
 		$search_result = $search->find_by_ids($object_ids, $this->_query_object);
 
 		if(!count($search_result))
@@ -162,9 +161,9 @@ class search_fetcher extends fetcher
 		$counter = 0;
 		$count_method = $fetch_method . '_count';
 		
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$site_object = site_object_factory :: create($loader_class_name);
 		$counter = $site_object->$count_method(array_keys($search_result), $params);
-		$fetched_objects =& $site_object->$fetch_method(array_keys($search_result),$params);
+		$fetched_objects = $site_object->$fetch_method(array_keys($search_result),$params);
 
 		if(!count($fetched_objects))
 			return array();
@@ -185,7 +184,7 @@ class search_fetcher extends fetcher
 		return $result;
 	}
 	
-	function _assign_search_paths(& $objects_array, $offset = 0)
+	protected function _assign_search_paths(& $objects_array, $offset = 0)
 	{
 		$query = $this->_query_object->to_string();
 		
@@ -202,21 +201,16 @@ class search_fetcher extends fetcher
 
 function set_search_query_object($query_object)
 {
-	$search_fetcher =& search_fetcher :: instance();
-	$search_fetcher->set_search_query_object($query_object);
+	search_fetcher :: instance()->set_search_query_object($query_object);
 }
 
-function & search_fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
+function search_fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
 {
-	$search_fetcher =& search_fetcher :: instance();
-	$result =& $search_fetcher->search_fetch($loader_class_name, $counter, $params, $fetch_method);
-	return $result;
+	return search_fetcher :: instance()->search_fetch($loader_class_name, $counter, $params, $fetch_method);
 }
 
-function & search_fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
+function search_fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
 {
-	$search_fetcher =& search_fetcher :: instance();
-	$result =& $search_fetcher->search_fetch_sub_branch($path, $loader_class_name, $counter, $params, $fetch_method);
-	return $result;
+	return search_fetcher :: instance()->search_fetch_sub_branch($path, $loader_class_name, $counter, $params, $fetch_method);
 }
 ?>

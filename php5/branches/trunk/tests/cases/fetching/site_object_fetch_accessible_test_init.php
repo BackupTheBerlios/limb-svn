@@ -36,7 +36,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
 
   function _insert_group_site_object_access_records()
   {
-  	$access_db_table =& db_table_factory :: instance('sys_object_access');
+  	$access_db_table =& db_table_factory :: create('sys_object_access');
   	
   	$data = array();
   	for($i = 1; $i <= 5; $i++)
@@ -47,7 +47,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   				'accessor_id' => 100,
   				'r' => 1,
   				'w' => 1,
-  				'accessor_type' => ACCESSOR_TYPE_GROUP,
+  				'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP,
   			)
   		);
 
@@ -57,7 +57,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   				'accessor_id' => 110,
   				'r' => 1,
   				'w' => 0,
-  				'accessor_type' => ACCESSOR_TYPE_GROUP,
+  				'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP,
   			)
   		);
   	}
@@ -65,7 +65,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
 
   function _insert_user_site_object_access_records()
   {
-  	$access_db_table =& db_table_factory :: instance('sys_object_access');
+  	$access_db_table =& db_table_factory :: create('sys_object_access');
   	
   	$data = array();
   	for($i = 8; $i <= 10; $i++)
@@ -76,7 +76,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   				'accessor_id' => 200,
   				'r' => 1,
   				'w' => 1,
-  				'accessor_type' => ACCESSOR_TYPE_USER,
+  				'accessor_type' => access_policy :: ACCESSOR_TYPE_USER,
   			)
   		);
   	}

@@ -11,24 +11,24 @@
 require_once(LIMB_DIR . 'class/core/actions/form_site_object_action.class.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 
-class form_create_site_object_action extends form_site_object_action
+abstract class form_create_site_object_action extends form_site_object_action
 {
-  function _init_dataspace(&$request)
+  protected function _init_dataspace($request)
   {
     parent :: _init_dataspace($request);
     
     if (($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
     {
-      $parent_object_data =& $this->_load_parent_object_data();
+      $parent_object_data = $this->_load_parent_object_data();
       $this->dataspace->set('parent_node_id', $parent_object_data['node_id']);
     }
   }
   
-	function _init_validator()
+	protected function _init_validator()
 	{		
 		if (($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
 		{
-		  if(!$parent_object_data =& $this->_load_parent_object_data())
+		  if(!$parent_object_data = $this->_load_parent_object_data())
 		  	return;
 		  	
 			$parent_node_id = $parent_object_data['parent_node_id'];		
@@ -43,9 +43,9 @@ class form_create_site_object_action extends form_site_object_action
 		$this->validator->add_rule($v3 = array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', $parent_node_id));
 	}
 	
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
-		$parent_object_data =& $this->_load_parent_object_data();
+		$parent_object_data = $this->_load_parent_object_data();
 		
 		$data['parent_node_id'] = $parent_object_data['node_id'];
 		
@@ -55,7 +55,7 @@ class form_create_site_object_action extends form_site_object_action
 
 		if($this->_create_object_operation() === false)
 		{
-		  $request->set_status(REQUEST_STATUS_FAILURE);
+		  $request->set_status(request :: STATUS_FAILURE);
 			return;
 		}
 			
@@ -63,13 +63,13 @@ class form_create_site_object_action extends form_site_object_action
 		
 		$this->_write_create_access_policy();
 		
-		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 		
 		if($request->has_attribute('popup'))
 			$response->write(close_popup_response($request));
 	}
 	
-	function _create_object_operation()
+	protected function _create_object_operation()
 	{
 		if(!$object_id = $this->object->create())
 			return false;
@@ -77,28 +77,25 @@ class form_create_site_object_action extends form_site_object_action
 		return $object_id;
 	}
 	
-	function _write_create_access_policy()
+	protected function _write_create_access_policy()
 	{
-		$parent_data =& $this->_load_parent_object_data();
+		$parent_data = $this->_load_parent_object_data();
 
-		$parent_object =& site_object_factory :: instance($parent_data['class_name']);
+		$parent_object = site_object_factory :: create($parent_data['class_name']);
 		
 		$parent_object->merge($parent_data);
 
-		$access_policy =& access_policy :: instance();
-		
-		$access_policy->save_object_access($this->object, $parent_object);
+		access_policy :: instance()->save_object_access($this->object, $parent_object);
 	}
 	
-	function _valid_perform_prepare_data(&$data)
+	protected function _valid_perform_prepare_data(&$data)
 	{
 		complex_array :: map($this->datamap, $this->dataspace->export(), $data);
 	}
 
-	function & _load_parent_object_data()
+	protected function _load_parent_object_data()
 	{
-		$result =& fetch_requested_object();
-		return $result;
+		return fetch_requested_object();
 	}
 }
 ?>

@@ -58,7 +58,7 @@ class site_object_fetch_test_init
 
   function _insert_sys_site_object_records()
   {
-  	$db_table =& db_table_factory :: instance('sys_site_object');
+  	$db_table =& db_table_factory :: create('sys_site_object');
   	
   	$tree =& tree :: instance();
 		$values['identifier'] = 'root';
@@ -94,10 +94,10 @@ class site_object_fetch_test_init
 	
   function _insert_fake_sys_site_object_records()
   {
-  	$class_db_table = db_table_factory :: instance('sys_class');
+  	$class_db_table = db_table_factory :: create('sys_class');
   	$class_db_table->insert(array('id' => 1001, 'class_name' => 'fake_class'));
   	
-  	$db_table =& db_table_factory :: instance('sys_site_object');
+  	$db_table =& db_table_factory :: create('sys_site_object');
 
   	$tree =& tree :: instance();
   	

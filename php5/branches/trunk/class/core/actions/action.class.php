@@ -8,36 +8,37 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/dataspace_registry.class.php');
+require_once(LIMB_DIR . 'class/core/actions/action_interface.interface.php');
 
-class action
+class action implements action_interface
 {
-	var $name = '';
+	protected $name = '';
 	
-	var $dataspace = null;
+	protected $dataspace = null;
 	
-	var $view = null;
-	
-	function action()
+	protected $view = null;
+		
+	function __construct()
 	{
 		$this->name = $this->_define_dataspace_name();
 		
+    include_once(LIMB_DIR . 'class/core/dataspace_registry.class.php');		
 		$this->dataspace =& dataspace_registry :: get($this->name);
 	}
 	
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return '';
 	}
 	
-	function set_view(&$view)
+	public function set_view($view)
 	{
-		$this->view =& $view;
+		$this->view = $view;
 	}
 		
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
-	  $request->set_status(REQUEST_STATUS_SUCCESS);
+	  $request->set_status(request :: STATUS_SUCCESS);
 	}	
 } 
 ?>

@@ -11,35 +11,13 @@
 
 class array_dataset
 {
-	/**
-	* Array to iterate over
-	* 
-	* @var array of arrays
-	* @access private 
-	*/
-	var $data = array();
-	/**
-	* Current record (row) from the array
-	* 
-	* @var mixed 
-	* @access private 
-	*/
-	var $record = array();
-	/**
-	* TRUE if at start of the array
-	* 
-	* @var boolean (default=true)
-	* @access private 
-	*/
-	var $first = true;
-	/**
-	* Constructs array_dataset
-	* 
-	* @param array $ (an array of arrays)
-	* @access public 
-	*/
+	private $data = array();
 	
-	var $counter = 0;
+	private $record = array();
+	
+	private $first = true;
+	
+	private $counter = 0;
 	
 	function array_dataset($array = null)
 	{
@@ -48,67 +26,40 @@ class array_dataset
 			$this->add_array($array);
 		} 
 	} 
-	/**
-	* Badly named utility function to make sure that record points to something
-	* - really could do with a more apt name, hint hint
-	* 
-	* @access private 
-	* @return void 
-	*/
-	function &_set_current_record()
+	
+	protected function _set_current_record()
 	{
 		if ($this->first)
-		{
 			$this->next();
-		} 
 	} 
-	/**
-	* Saves the current, modified, record back into the array_dataset.
-	* 
-	* @access private 
-	* @return void 
-	* @param array $ The modified record
-	*/
-	function _save_current_record(&$record)
+	
+	protected function _save_current_record($record)
 	{
-		$this->data[key($this->data)] = &$record;
+		$this->data[key($this->data)] = $record;
 	} 
-	/**
-	* Returns to start of array_dataset
-	* 
-	* @return void 
-	* @access public 
-	*/
-	function reset()
+	
+	public function reset()
 	{
 		$this->first = true;
 		$this->counter = 0;
 	} 
-	/**
-	* Iterates through the array_dataset, setting $this->record to the current
-	* record.
-	* Returns TRUE if there was another record to iterator over
-	* Returns false if it's reached the end of the array
-	* 
-	* @return boolean 
-	* @access public 
-	*/
-	function next()
+	
+	public function next()
 	{
 		if ($this->first)
 		{
-			$record =& reset($this->data);
+			$record = reset($this->data);
 			$this->first = false;
 			$this->counter = 0;
 		} 
 		else
 		{
-			$record =& next($this->data);
+			$record = next($this->data);
 			$this->counter++;
 		} 
 		if (is_array($record))
 		{
-			$this->record =& $record;
+			$this->record = $record;
 			$this->prepare();
 			return true;
 		} 
@@ -118,57 +69,30 @@ class array_dataset
 			return false;
 		} 
 	} 
-	/**
-	* Gets an element from the current record, given its name
-	* 
-	* @return mixed 
-	* @access public 
-	*/
-	function get($name)
+	
+	public function get($name)
 	{
 		$this->_set_current_record();
 		
 		if (isset($this->record[$name]))
 			return $this->record[$name];
 	} 
-
 	
-	/**
-	* Places an element in the current record of the array_dataset
-	* 
-	* @param string $ name of element
-	* @param mixed $ value of element
-	* @return void 
-	* @access public 
-	*/
-	function set($name, $value)
+	public function set($name, $value)
 	{
 		$this->_set_current_record();
 		$this->record[$name] = $value;
 		$this->_save_current_record($this->record);
 	} 
-	/**
-	* Appends some data to an existing element
-	* 
-	* @param string $ name of element
-	* @param mixed $ value of element
-	* @return void 
-	* @access public 
-	*/
-	function append($name, $value)
+	
+	public function append($name, $value)
 	{
 		$this->_set_current_record();
 		$this->record[$name] .= $value;
 		$this->_save_current_record($this->record);
 	} 
-	/**
-	* Replaces the current record with a new array
-	* 
-	* @param array $ 
-	* @return void 
-	* @access public 
-	*/
-	function import($valuelist)
+	
+	public function import($valuelist)
 	{
 		$this->_set_current_record();
 		if (is_array($valuelist))
@@ -178,15 +102,8 @@ class array_dataset
 		} 
 		$this->_save_current_record($this->record);
 	} 
-	/**
-	* Appends an array to the existing record. Duplicate keys will be
-	* overwritten.
-	* 
-	* @param array $ 
-	* @return void 
-	* @access public 
-	*/
-	function import_append($valuelist)
+	
+	public function import_append($valuelist)
 	{
 		if (is_array($valuelist))
 		{
@@ -198,53 +115,14 @@ class array_dataset
 			$this->_save_current_record($this->record);
 		} 
 	} 
-	/**
-	* Returns the complete data set
-	* 
-	* @return array 
-	* @access public 
-	*/
-	function &export()
+	
+	public function export()
 	{
 		$this->_set_current_record();
 		return $this->record;
 	} 
-	/**
-	* Registers a filter.
-	* Filters are used to transform stored variables.
-	* 
-	* @param object $ instance of filter class containing a do_filter() method
-	* @return void 
-	* @access public 
-	*/
-	function register_filter(&$filter)
-	{
-		$this->filter = &$filter;
-	} 
-	/**
-	* Executes the do_filter() method of the
-	* registered filter, if one exists
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function prepare()
-	{
-		if (isset($this->filter))
-		{
-			$this->_set_current_record();
-			$this->filter->do_filter($this->record);
-		} 
-	} 
-	/**
-	* Add an array to the current array_dataset. Keys are replaced with the next
-	* available index for $this->data - duplicate keys will NOT be overwritten.
-	* 
-	* @return void 
-	* @access public 
-	* @param array $ 
-	*/
-	function add_array($array)
+	
+	public function add_array($array)
 	{
 		foreach ($array as $value)
 		{
@@ -255,17 +133,17 @@ class array_dataset
 		} 
 	}
 	
-	function get_counter()
+	public function get_counter()
 	{
 		return $this->counter;
 	}
 	
-	function get_total_row_count()
+	public function get_total_row_count()
 	{
 		return sizeof($this->data);
 	}
 	
-	function get_by_index_string($index)
+	public function get_by_index_string($index)
 	{
 		$this->_set_current_record();
 		

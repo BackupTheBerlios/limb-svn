@@ -8,26 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-
-require_once(LIMB_DIR . 'class/search/full_text_indexer.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
 class full_text_search
 {
-	var $db = null;
-	var $indexer = null;
-	var $use_boolean_mode = false;
+	protected $db = null;
+	protected $use_boolean_mode = false;
 	
-	function full_text_search()
+	function __construct()
 	{
-		$this->db =& db_factory :: instance();
-		$this->indexer =& new full_text_indexer();
+		$this->db = db_factory :: instance();
 		
 		$this->use_boolean_mode = $this->_check_boolean_mode();
 	}
 	
-
-	function _can_perform_fulltext_search()
+	protected function _can_perform_fulltext_search()
 	{
 	  $db_type = get_ini_option('common.ini', 'type', 'DB');
 	  
@@ -44,7 +39,7 @@ class full_text_search
 		return false;
 	}
 	
-	function & find($query, $class_id=null, $restricted_classes_ids = array(), $allowed_classes_ids = array())
+	public function find($query, $class_id=null, $restricted_classes_ids = array(), $allowed_classes_ids = array())
 	{	
 		if(!$this->_can_perform_fulltext_search())
 			$result = array();
@@ -66,12 +61,10 @@ class full_text_search
 				$sql .= ' AND ' . sql_in('class_id', $allowed_classes_ids);
 		}
 		
-		$result =& $this->_get_db_result($sql);
-		
-		return $result;
+		return $this->_get_db_result($sql);
 	}
 	
-	function & find_by_ids($ids, $query)
+	public function find_by_ids($ids, $query)
 	{
 		$result = array();
 		
@@ -82,12 +75,10 @@ class full_text_search
 		
 		$sql .= " AND " . sql_in('object_id', $ids);
 		
-		$result =& $this->_get_db_result($sql);
-		
-		return $result;
+		return $this->_get_db_result($sql);
 	}
 	
-	function _check_boolean_mode()
+	protected function _check_boolean_mode()
 	{
 	  $db_type = get_ini_option('common.ini', 'type', 'DB');
 	  
@@ -107,7 +98,7 @@ class full_text_search
 		return false;
 	}
 	
-	function _process_query($query_object)
+	protected function _process_query($query_object)
 	{
 		$query = '';
 		
@@ -128,7 +119,7 @@ class full_text_search
 		return $query;
 	}
 	
-	function _get_search_sql($query_object)
+	protected function _get_search_sql($query_object)
 	{
 		$query = $this->_process_query($query_object);
 		
@@ -153,7 +144,7 @@ class full_text_search
 		return $sql;
 	}
 	
-	function _get_db_result($sql)
+	protected function _get_db_result($sql)
 	{
 		$this->db->sql_exec($sql);
 		

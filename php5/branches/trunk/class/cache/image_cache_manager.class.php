@@ -19,19 +19,15 @@ require_once(LIMB_DIR . '/class/core/user.class.php');
 
 class image_cache_manager
 {
-  var $id;
-  var $uri;
-  var $rules = array();
-  var $matched_rule;
-  var $fetcher;
-  var $found_images = array();
-  var $wild_card;
-  
-  function image_cache_manager()
-  {
-  }
-  
-  function _define_replace_regex_array()
+  protected $id;
+  protected $uri;
+  private   $rules = array();
+  protected $matched_rule;
+  private   $fetcher;
+  protected $found_images = array();
+  protected $wild_card;
+    
+  protected function _define_replace_regex_array()
   {
     return array(
         '~(<img[^>]+src=)("|\')?/root\?node_id=(\d+)(&(thumbnail|original|icon))?("|\')?([^<]*>)~',
@@ -39,23 +35,23 @@ class image_cache_manager
       );
   }
     
-  function _set_matched_rule($rule)
+  protected function _set_matched_rule($rule)
   {
     $this->matched_rule = $rule;
   }
   
-  function _get_matched_rule()
+  protected function _get_matched_rule()
   {
     return $this->matched_rule;
   }
   
-  function set_uri(&$uri)
+  public function set_uri(/*uri*/$uri)
   {
     $this->id = null;
-    $this->uri =& $uri;
+    $this->uri = $uri;
   }
   
-  function process_content(&$content)
+  public function process_content(&$content)
   { 
     if(!$this->is_cacheable())
       return false;
@@ -65,7 +61,7 @@ class image_cache_manager
     return true;
   }
   
-  function _replace_images(&$content)
+  protected function _replace_images($content)
   {
     if(empty($content))
       return '';
@@ -75,7 +71,7 @@ class image_cache_manager
     
     $content = preg_replace_callback(
       $this->_define_replace_regex_array(),
-      array(&$this, '_mark_images_callback'),
+      array($this, '_mark_images_callback'),
       $content
     );
     
@@ -112,12 +108,12 @@ class image_cache_manager
       return $content;
   }
     
-  function _get_wildcard_hash($node_id, $variation)
+  protected function _get_wildcard_hash($node_id, $variation)
   {
     return "<{$this->wild_card}{$node_id}-{$variation}{$this->wild_card}>";
   }
   
-  function _get_not_cached_images()
+  protected function _get_not_cached_images()
   {
     $node_ids = array();
     foreach($this->found_images as $node_id => $variations)
@@ -129,7 +125,7 @@ class image_cache_manager
       }    
     }
     
-    $fetcher =& $this->_get_fetcher();
+    $fetcher = $this->_get_fetcher();
     $images = $fetcher->fetch_by_node_ids(array_keys($node_ids), 'image_object', $counter = 0);
     
     $result = array();
@@ -154,7 +150,7 @@ class image_cache_manager
     return $result;
   }
 
-  function _get_cached_images()
+  protected function _get_cached_images()
   {
     $result = array();
     foreach($this->found_images as $node_id => $variations)
@@ -174,12 +170,12 @@ class image_cache_manager
     return $result;
   }
   
-  function _is_image_cached($node_id, $variation)
+  protected function _is_image_cached($node_id, $variation)
   {
     return ($this->_get_cached_image_extension($node_id, $variation) !== false);
   }
   
-  function _get_cached_image_extension($node_id, $variation)
+  protected function _get_cached_image_extension($node_id, $variation)
   {
     $cache = $node_id . '-' . $variation;
     
@@ -192,7 +188,7 @@ class image_cache_manager
     return false;
   }
   
-  function _get_mime_extension($mime_type)
+  protected function _get_mime_extension($mime_type)
   {
     $extension = '';
     switch($mime_type)
@@ -213,7 +209,7 @@ class image_cache_manager
     return $extension;  
   }
   
-  function _mark_images_callback($matches)
+  protected function _mark_images_callback($matches)
   {
     if(!empty($matches[5]))
       $variation = $matches[5];
@@ -225,7 +221,7 @@ class image_cache_manager
     return $matches[1] . "'" . $this->_get_wildcard_hash($matches[3], $variation) . "'" . $matches[7];
   }
   
-  function _cache_media_file($media_id, $cache_name)
+  protected function _cache_media_file($media_id, $cache_name)
   {
     fs :: mkdir(IMAGE_CACHE_DIR);
     
@@ -233,30 +229,30 @@ class image_cache_manager
       copy(MEDIA_DIR . $media_id . '.media', IMAGE_CACHE_DIR . $cache_name);
   }
   
-  function & _get_fetcher()
+  protected function _get_fetcher()
   {
     if($this->fetcher)
       return $this->fetcher;
       
-    $this->fetcher =& fetcher :: instance();
+    $this->fetcher = fetcher :: instance();
     return $this->fetcher;
   }
   
-  function & _get_user()
+  protected function _get_user()
   {
     return user :: instance();
   }
    
-  function is_cacheable()
+  public function is_cacheable()
   {
     if(!$this->uri)
       return false;
         
     $uri_path = $this->uri->get_path();
     
-    $rules =& $this->get_rules();
+    $rules = $this->get_rules();
     
-    $user =& $this->_get_user();
+    $user = $this->_get_user();
     
     foreach($rules as $rule)
     {
@@ -281,7 +277,7 @@ class image_cache_manager
     return false;
   }
      
-  function flush()
+  public function flush()
   {
     fs :: mkdir(IMAGE_CACHE_DIR);
   
@@ -293,7 +289,7 @@ class image_cache_manager
     }  
   }
   
-  function get_cache_size()
+  public function get_cache_size()
   {
     fs :: mkdir(IMAGE_CACHE_DIR);
   
@@ -309,7 +305,7 @@ class image_cache_manager
     return $size;
   }
             
-  function get_rules()
+  public function get_rules()
   {
     if(!$this->rules)
       $this->_load_rules();
@@ -317,14 +313,13 @@ class image_cache_manager
     return $this->rules;
   }
   
-  function _load_rules()
+  protected function _load_rules()
   {
     include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
     
-    $ini =& get_ini('image_cache.ini');
     $this->rules = array();
     
-    $groups = $ini->get_all();
+    $groups = get_ini('image_cache.ini')->get_all();
 
     foreach($groups as $group => $data)
     {

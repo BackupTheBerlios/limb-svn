@@ -29,7 +29,7 @@ class special_dir_walker extends mock_dir_walker
 		
 		$return_params[] = $counter++;
 		
-		parent :: walk($dir, $file, $params, &$return_params);
+		parent :: walk($dir, $file, $params, $return_params);
 	}
 }
 
@@ -171,10 +171,10 @@ class fs_test extends LimbTestCase
   {
   	$this->_create_file_system();
   	
-	$a1 = array('test1_1', 'test1_2', 'test1_3', 'wow');
-	sort($a1);
-	$a2 =  fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
-	sort($a2);
+	  $a1 = array('test1_1', 'test1_2', 'test1_3', 'wow');
+	  sort($a1);
+	  $a2 =  fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+	  sort($a2);
 	
   	$this->assertEqual($a1, $a2);
   	$this->assertEqual(array('hey', 'test2_1', 'test2_2', 'test2_3'), fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));

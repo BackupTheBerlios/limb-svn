@@ -28,7 +28,7 @@ class content_object_fetch_test extends site_object_fetch_test
   	for($i = 1; $i <= 10; $i++)
   		$ids_array[] = $i;
   		
-  	$params = array('restrict_by_class' => false);	
+  	$params = array('restrict_by_class' => false);
   	$result_ids = $this->object->fetch_ids($params);
   	
   	sort($result_ids);

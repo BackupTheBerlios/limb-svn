@@ -11,59 +11,39 @@
 
 class empty_dataset
 { 
-	function reset()
-	{
-	} 
+	public function reset(){} 
 	
-	function next()
+	public function next()
 	{
 		return false;
 	} 
 	
-	function &get($name)
+	public function get($name)
 	{
 		return '';
 	} 
 	
-	function set($name, $value)
-	{
-	} 
+	public function set($name, $value){} 
 	
-	function append($name, $value)
-	{
-	} 
+	public function append($name, $value){} 
 	
-	function clear($name)
-	{
-	} 
+	public function clear($name){} 
 	
-	function import($valuelist)
-	{
-	} 
+	public function import($valuelist){} 
 	
-	function import_append($valuelist)
-	{
-	} 
+	public function import_append($valuelist){} 
 	
-	function &export()
+	public function export()
 	{
 		return array();
 	} 
-	
-	function register_filter(&$filter)
-	{
-	} 
-	
-	function prepare()
-	{
-	}
-	
-	function get_total_row_count()
+		
+	public function get_total_row_count()
 	{
 		return 0;
 	}
 	
-	function counter()
+	public function counter()
 	{
 		return 0;
 	}

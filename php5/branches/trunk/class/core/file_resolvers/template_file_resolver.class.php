@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
 
 class template_file_resolver extends package_file_resolver
 {
-  function _do_resolve($file_path)
+  protected function _do_resolve($file_path)
   {
     $tmpl_path = get_ini_option('common.ini', 'path', 'Templates');
     
@@ -43,7 +43,7 @@ class template_file_resolver extends package_file_resolver
     }
   }
   
-  function _get_locale_prefix()
+  protected function _get_locale_prefix()
   {
   	if (defined('CONTENT_LOCALE_ID'))
   		$locale = '_' . CONTENT_LOCALE_ID . '/';

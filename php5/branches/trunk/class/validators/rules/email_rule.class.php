@@ -12,48 +12,18 @@ require_once(LIMB_DIR . '/class/validators/rules/domain_rule.class.php');
 
 class email_rule extends domain_rule
 {
-	/**
-	* Constructs a email_rule
-	* 
-	* @param string $ fieldname to validate
-	* @param array $ of acceptable values
-	* @access public 
-	*/
-	function email_rule($fieldname)
-	{
-		parent::domain_rule($fieldname);
-	} 
-
-	/**
-	* Performs validation of an email user
-	* 
-	* @access protected 
-	* @TODO Verify that this is reasonable:
-	*/
-	function check_user($value)
+	protected function check_user($value)
 	{
 		if (!preg_match('/^[a-z0-9]+([_.-][a-z0-9]+)*$/', $value))
-		{
 			$this->error(strings :: get('invalid_email', 'error'));
-		} 
 	} 
 
-	/**
-	* Performs validation of an email domain
-	* 
-	* @access protected 
-	*/
-	function check_domain($value)
+	protected function check_domain($value)
 	{
 		parent :: check($value);
 	} 
 
-	/**
-	* Performs validation of a single value
-	* 
-	* @access protected 
-	*/
-	function check($value)
+	protected function check($value)
 	{
 		if (is_integer(strpos($value, '@')))
 		{

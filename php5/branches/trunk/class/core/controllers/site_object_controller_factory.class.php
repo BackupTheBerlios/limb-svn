@@ -8,32 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
-require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
 
-class site_object_controller_factory
+abstract class site_object_controller_factory
 {	
-	function & create($class_name)
+	static function create($class_name)
 	{
-	  site_object_controller_factory :: _include_class_file($class_name);
+	  self :: _include_class_file($class_name);
 	  
-  	return create_object($class_name);	
+  	return new $class_name();
 	}
-
-	function instance($class_name)
-	{
-	  site_object_controller_factory :: _include_class_file($class_name);
-
-		$obj =&	instantiate_object($class_name);
-		return $obj;
-	}		
 	
-	function _include_class_file($class_name)
+	static private function _include_class_file($class_name)
 	{
 	  if(class_exists($class_name))
 	    return;
 	
-		$resolver =& get_file_resolver('controller');
+		$resolver = get_file_resolver('controller');
 		resolve_handle($resolver);
 		
 		$full_path = $resolver->resolve($class_name);

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 require_once(LIMB_DIR . '/class/core/session.class.php');
 
-class authentication_filter extends intercepting_filter
+class authentication_filter implements intercepting_filter
 {
-  function run(&$filter_chain, &$request, &$response)
+  public function run($filter_chain, $request, $response)
   { 
     debug :: add_timing_point('authentication filter started');
   	
@@ -31,9 +31,9 @@ class authentication_filter extends intercepting_filter
   		return;
     }
     
-    $object =& wrap_with_site_object($object_data); 
+    $object = wrap_with_site_object($object_data); 
 
-    $site_object_controller =& $object->get_controller();
+    $site_object_controller = $object->get_controller();
     
     if(($action = $site_object_controller->determine_action($request)) === false)
     {

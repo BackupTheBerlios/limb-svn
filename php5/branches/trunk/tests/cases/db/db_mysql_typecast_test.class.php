@@ -15,7 +15,7 @@ class db_mysql_typecast_test extends LimbTestCase
 {
 	var $db = null;
 	
-	function db_mysql_typecast_test($name = 'mysql db test case')
+	function db_mysql_typecast_test($name = 'mysql typecast db test case')
 	{
 		parent :: LimbTestCase($name);
 	} 
@@ -36,7 +36,7 @@ class db_mysql_typecast_test extends LimbTestCase
 				'bool_true' => 1,
 				'bool_false' => 0
 			),
-			$this->db->_process_values(
+			$this->db->process_values(
 				array(
 					'id' => 1, 
 					'title' => " \"\" title'",
@@ -60,7 +60,7 @@ class db_mysql_typecast_test extends LimbTestCase
 				'datetime_iso' => '\'1982-12-01 12:01:59\'',
 				'title' => "' \\\"\\\" title\''",
 			),
-			$this->db->_process_values( 
+			$this->db->process_values( 
 				array(
 					'id' => 'abc zxc', 
 					'id1' => '1000',
@@ -98,7 +98,7 @@ class db_mysql_typecast_test extends LimbTestCase
 				'datetime_iso' => '\'1982-12-01 12:01:59\'',
 				'title' => "' \\\"\\\" title\''",
 			),		
-			$this->db->_process_values(
+			$this->db->process_values(
 				array(
 					'null' => null,
 					'bool_true' => true,

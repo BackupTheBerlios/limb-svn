@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 
-class output_buffering_filter extends intercepting_filter 
+class output_buffering_filter implements intercepting_filter 
 {      
-  function run(&$filter_chain, &$request, &$response)
+  public function run($filter_chain, $request, $response)
   { 
     ob_start();
     

@@ -23,11 +23,11 @@ function get_file_resolver($resolver_name)
 		array('resolver' => $resolver_name));
 }
 
-function register_file_resolver($resolver_name, &$resolver)
+function register_file_resolver($resolver_name, $resolver)
 {
   global $LIMB_FILE_RESOLVERS;
 
-  $LIMB_FILE_RESOLVERS[$resolver_name] =& $resolver;
+  $LIMB_FILE_RESOLVERS[$resolver_name] = $resolver;
 }
 
 function is_registered_resolver($resolver_name)

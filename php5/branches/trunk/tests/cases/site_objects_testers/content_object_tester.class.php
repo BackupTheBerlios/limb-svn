@@ -29,7 +29,7 @@ class content_object_tester extends site_object_tester
   
   function _clean_content_db_table_records()
   {
-		$db_table = $this->object->_get_db_table();
+		$db_table = $this->object->get_db_table();
   	$this->db->sql_delete($db_table->get_table_name());
   }
   
@@ -37,7 +37,7 @@ class content_object_tester extends site_object_tester
   {
   	parent :: _do_test_class_properties($props);
   	
-		$db_table = $this->object->_get_db_table();
+		$db_table = $this->object->get_db_table();
 
 		if(isset($props['db_table_name']))
 		{
@@ -198,7 +198,7 @@ class content_object_tester extends site_object_tester
 		$conditions['object_id'] = $this->object->get_id();
 		$conditions['version'] = $this->object->get_version();
 
-		$db_table = $this->object->_get_db_table();
+		$db_table = $this->object->get_db_table();
 		$arr = $db_table->get_list($conditions, 'id');
 
   	$this->assertEqual(sizeof($arr), 1);

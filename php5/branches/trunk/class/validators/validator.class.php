@@ -12,62 +12,26 @@ require_once(LIMB_DIR . '/class/validators/error_list.class.php');
 
 class validator
 {
-	/**
-	* Indexed array of rule objects
-	* 
-	* @see rule
-	* @var array 
-	* @access private 
-	*/
-	var $rules = array();
+	protected $rules = array();
 	
-	/**
-	* Whether the validation process was valid
-	* 
-	* @var boolean 
-	* @access private 
-	*/
-	var $is_valid = true;
+	protected $is_valid = true;
 
-	function validator()
+	public function add_rule($rule)
 	{
-	} 
-
-	/**
-	* Registers a rule
-	* 
-	* @param rule $ 
-	* @return void 
-	* @access public 
-	*/
-	function add_rule(&$rule)
-	{
-		$this->rules[] =& $rule;
+		$this->rules[] = $rule;
 	} 
 	
-	function & _get_error_list()
+	protected function _get_error_list()
 	{
 		return error_list :: instance();
 	}
 
-	/**
-	* Whether the validation process was valid
-	* 
-	* @return boolean TRUE if valid
-	* @access public 
-	*/
-	function is_valid()
+	public function is_valid()
 	{
 		return $this->is_valid;
 	} 
 
-	/**
-	* Perform the validation
-	* 
-	* @return void 
-	* @access public 
-	*/
-	function validate(&$dataspace)
+	public function validate($dataspace)
 	{		
 		foreach($this->rules as $key => $rule)
 		{
@@ -80,14 +44,14 @@ class validator
 		return $this->is_valid;
 	} 
 	
-	function get_rules()
+	public function get_rules()
 	{
 		return $this->rules;
 	}
 	
-	function add_error($field_name, $error, $params=array())
+	public function add_error($field_name, $error, $params=array())
 	{
-	  $error_list =& $this->_get_error_list();
+	  $error_list = $this->_get_error_list();
 	  $error_list->add_error($field_name, $error, $params);
 	}
 } 

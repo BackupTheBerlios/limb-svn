@@ -100,10 +100,10 @@ class access_templates_test extends db_test
 	
 		$this->ac->save_user_action_access_template($class_id = 11, $template);
 		
-		$db_table	=& db_table_factory :: instance('sys_user_object_access_template');
+		$db_table	=& db_table_factory :: create('sys_user_object_access_template');
 		$templates_rows = $db_table->get_list('', 'id', null);
 
-		$items_db_table	=& db_table_factory :: instance('sys_user_object_access_template_item');
+		$items_db_table	=& db_table_factory :: create('sys_user_object_access_template_item');
 		$items_rows = $items_db_table->get_list('', 'id', null);
 
 		$this->assertTrue(is_array($templates_rows));

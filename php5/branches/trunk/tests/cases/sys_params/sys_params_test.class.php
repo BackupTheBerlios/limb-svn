@@ -45,7 +45,7 @@ class sys_params_test extends LimbTestCase
   	
   	$this->assertNotNull($result);
   	
-  	$db_table =& db_table_factory :: instance('sys_param');
+  	$db_table =& db_table_factory :: create('sys_param');
   	$list = $db_table->get_list();
   	$this->assertEqual(count($list) , 1);
   	
@@ -66,7 +66,7 @@ class sys_params_test extends LimbTestCase
   	
   	$this->assertNotNull($result);
   	
-  	$db_table =& db_table_factory :: instance('sys_param');
+  	$db_table =& db_table_factory :: create('sys_param');
   	$list = $db_table->get_list();
   	$this->assertEqual(count($list) , 1);
 		$record = current($list);
@@ -86,7 +86,7 @@ class sys_params_test extends LimbTestCase
   	
   	$this->assertNotNull($result);
   	
-  	$db_table =& db_table_factory :: instance('sys_param');
+  	$db_table =& db_table_factory :: create('sys_param');
   	$list = $db_table->get_list();
   	$this->assertEqual(count($list) , 1);
 		$record = current($list);
@@ -106,7 +106,7 @@ class sys_params_test extends LimbTestCase
   	
   	$this->assertNotNull($result);
   	
-  	$db_table =& db_table_factory :: instance('sys_param');
+  	$db_table =& db_table_factory :: create('sys_param');
   	$list = $db_table->get_list();
   	$this->assertEqual(count($list) , 1);
 		$record = current($list);
@@ -129,7 +129,7 @@ class sys_params_test extends LimbTestCase
   	
   	$this->assertNotNull($result);
   	
-  	$db_table =& db_table_factory :: instance('sys_param');
+  	$db_table =& db_table_factory :: create('sys_param');
   	$list = $db_table->get_list();
   	$this->assertEqual(count($list) , 1);
 		$record = current($list);
@@ -171,7 +171,7 @@ class sys_params_test extends LimbTestCase
   	$result = $sp->save_param('param_1', 'sadnkfjhskjfd', 123.053);
   	$this->assertNotNull($result);
   	
-  	$db_table =& db_table_factory :: instance('sys_param');
+  	$db_table =& db_table_factory :: create('sys_param');
   	$list = $db_table->get_list();
   	$this->assertEqual(count($list) , 0);
 	}		

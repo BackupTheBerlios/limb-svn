@@ -38,7 +38,7 @@ class error_list_test extends LimbTestCase
   	
   	$e2 =& error_list :: instance();
   	
-  	$this->assertReference(&$e, &$e2);
+  	$this->assertTrue($e === $e2);
   }
   
   function test_add_error()

@@ -8,71 +8,53 @@
 * $Id$
 *
 ***********************************************************************************/ 
-define( 'MESSAGE_LEVEL_NOTICE', 1 );
-define( 'MESSAGE_LEVEL_WARNING', 2 );
-define( 'MESSAGE_LEVEL_ERROR', 3 );
-define( 'MESSAGE_LEVEL', 4 );
-
 require_once(LIMB_DIR . 'class/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'class/core/session.class.php');
 
 class message_box
 {
-  // String array containing the message_box information
-  var $strings = array();
+  const NOTICE  = 1;
+  const WARNING = 2;
+  const ERROR   = 3;
+  
+  static protected $instance = null;
+  
+  protected $strings = array();
   
   function message_box()
   {
-  	$this->strings =& session :: get('strings');
+  	$this->strings = session :: get('strings');
   }
 
-  function reset()
+  public function reset()
   {
     $this->strings = array();
   }
+  
+	static function instance()
+	{
+    if (!self :: $instance)
+      self :: $instance = new message_box();
 
-  function &instance( )
+    return self :: $instance;	
+	}
+  
+  static function write_notice($string, $label='')
   {
-    $impl =& $GLOBALS['global_message_box_instance'];
-
-    $class =& get_class( $impl );
-    if ( $class != 'message_box' )
-    	$impl = new message_box();
-    	
-    return $impl;
+    self :: instance()->write($string, self :: NOTICE, $label);
   }
 
-  /*
-    Writes a message_box notice.
-  */
-  function write_notice( $string, $label='' )
+  static function write_warning($string, $label='')
   {
-    $message_box =& message_box::instance();
-    $message_box->write( $string, MESSAGE_LEVEL_NOTICE, $label );
+    self :: instance()->write($string, self :: WARNING, $label);
   }
 
-  /*
-    writes a message_box warning.
-  */
-  function write_warning( $string, $label='' )
+  static function write_error($string, $label='')
   {
-    $message_box =& message_box::instance();
-    $message_box->write( $string, MESSAGE_LEVEL_WARNING, $label );
+    self :: instance()->write($string, self :: ERROR, $label);
   }
 
-  /*
-    Writes a message_box error.
-  */
-  function write_error( $string, $label='' )
-  {
-    $message_box =& message_box::instance();
-    $message_box->write( $string, MESSAGE_LEVEL_ERROR, $label );
-  }
-
-  /*
-    Writes a message_box log message.
-  */
-  function write( $string, $verbosity_level = MESSAGE_LEVEL_NOTICE, $label='' )
+  public function write($string, $verbosity_level = self :: NOTICE, $label='')
   {
   	$this->strings[] = array(
   																			'string' => str_replace("'", "\'", $string),
@@ -81,7 +63,7 @@ class message_box
   	);
   }
   
-  function get_message_strings()
+  protected function _get_message_strings()
   {
   	return $this->strings;
 	}
@@ -89,11 +71,9 @@ class message_box
   /*
     fetches the message_box report
   */
-  function parse()
+  static function parse()
   {
-    $message_box =& message_box::instance();
-    
-    if(!($strings = $message_box->get_message_strings()))
+    if(!($strings = self :: instance()->_get_message_strings()))
     	return '';
     
     $js_function = "

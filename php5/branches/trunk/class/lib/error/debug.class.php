@@ -8,134 +8,130 @@
 * $Id$
 *
 ***********************************************************************************/ 
+//Inspired by EZpublish(http//ez.no), debug class
+
 if(!defined('DEVELOPER_EMAIL'))
 	define('DEVELOPER_EMAIL', 'limb@0x00.ru');
-	
-define('DEBUG_LEVEL_NOTICE', 1);
-define('DEBUG_LEVEL_WARNING', 2);
-define('DEBUG_LEVEL_ERROR', 3);
-define('DEBUG_TIMING_POINT', 4);
-define('DEBUG_LEVEL', 5);
 
-define('DEBUG_OUTPUT_MESSAGE_NULL', 0);
-define('DEBUG_OUTPUT_MESSAGE_STORE', 1);
-define('DEBUG_OUTPUT_MESSAGE_SEND', 2);
-
-require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'class/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'class/lib/system/sys.class.php');
-require_once(LIMB_DIR . 'class/lib/util/log.class.php');
-
+	
 class debug
 { 
+  const LEVEL_NOTICE  = 1;
+  const LEVEL_WARNING = 2;
+  const LEVEL_ERROR   = 3;
+  const TIMING_POINT  = 4;
+  
+  const OUTPUT_MESSAGE_NULL   = 0;
+  const OUTPUT_MESSAGE_STORE  = 1;
+  const OUTPUT_MESSAGE_SEND   = 2;
+  
+  protected static $instance = null;
+  
 	// String array containing the debug information
-	var $debug_strings = array(); 
+	protected $debug_strings = array(); 
 	
 	// Array which contains the time points
-	var $time_points = array(); 
+	protected $time_points = array(); 
 	
 	// Array wich contains time accumulators
-	var $time_accumulator_list = array(); 
+	protected $time_accumulator_list = array(); 
 		
 	// Determines what to do with php errors, ignore, fetch or output
-	var $handle_type = 'native'; 
+	protected $handle_type = 'native'; 
 	
 	// An array of the output_formats for the different debug levels
-	var $output_format; 
+	protected $output_format; 
 	
 	// An array of log_files used by the debug class with each key being the debug level
-	var $log_files; 
+	protected $log_files; 
 	
 	// How many places behing . should be displayed when showing times
-	var $timing_accuracy = 4; 
+	protected $timing_accuracy = 4; 
 	
 	// How many places behing . should be displayed when showing percentages
-	var $percent_accuracy = 4; 
+	protected $percent_accuracy = 4; 
 	
 	// Determines how messages are output (screen/log/mail)
-	var $message_output = DEBUG_OUTPUT_MESSAGE_STORE; 
+	protected $message_output = self :: OUTPUT_MESSAGE_STORE; 
 	
 	// A list of message types
-	var $message_types; 
+	protected $message_types; 
 	
 	// A map with message types and whether they should do file logging.
-	var $log_file_enabled; 
+	protected $log_file_enabled; 
 	
 	// The time when the script was started
-	var $script_start;
+	protected $script_start;
 
-	function debug()
+	protected function __construct()
 	{
 		$this->message_types = array(
-			DEBUG_LEVEL_NOTICE,
-			DEBUG_LEVEL_WARNING,
-			DEBUG_LEVEL_ERROR,
-			DEBUG_TIMING_POINT,
-			DEBUG_LEVEL
+			self :: LEVEL_NOTICE,
+			self :: LEVEL_WARNING,
+			self :: LEVEL_ERROR,
+			self :: TIMING_POINT
 		);
 				
 		$this->output_format = array(
-			DEBUG_LEVEL_NOTICE => array('color' => 'green',
+			self :: LEVEL_NOTICE => array('color' => 'green',
 				'name' => 'Notice'),
-			DEBUG_LEVEL_WARNING => array('color' => 'orange',
+			self :: LEVEL_WARNING => array('color' => 'orange',
 				'name' => 'Warning'),
-			DEBUG_LEVEL_ERROR => array('color' => 'red',
+			self :: LEVEL_ERROR => array('color' => 'red',
 				'name' => 'Error'),
-			DEBUG_LEVEL => array('color' => 'brown',
-				'name' => 'Debug'),
-			DEBUG_TIMING_POINT => array('color' => 'blue',
+			self :: TIMING_POINT => array('color' => 'blue',
 				'name' => 'Timing')
 		);
 
 		$this->log_files = array(
-			DEBUG_LEVEL_NOTICE => array(VAR_DIR . 'log/',
+			self :: LEVEL_NOTICE => array(VAR_DIR . 'log/',
 				'notice.log'),
-			DEBUG_LEVEL_WARNING => array(VAR_DIR . 'log/',
+			self :: LEVEL_WARNING => array(VAR_DIR . 'log/',
 				'warning.log'),
-			DEBUG_LEVEL_ERROR => array(VAR_DIR . 'log/',
+			self :: LEVEL_ERROR => array(VAR_DIR . 'log/',
 				'error.log'),
-			DEBUG_TIMING_POINT => array(VAR_DIR . 'log/',
+			self :: TIMING_POINT => array(VAR_DIR . 'log/',
 				'time.log'),
-			DEBUG_LEVEL => array(VAR_DIR . 'log/',
-				'debug.log')
 		);
 
 		$this->log_file_enabled = array(
-			DEBUG_LEVEL_NOTICE => true,
-			DEBUG_LEVEL_WARNING => true,
-			DEBUG_LEVEL_ERROR => true,
-			DEBUG_TIMING_POINT => false,
-			DEBUG_LEVEL => true
+			self :: LEVEL_NOTICE => true,
+			self :: LEVEL_WARNING => true,
+			self :: LEVEL_ERROR => true,
+			self :: TIMING_POINT => false,
 		);
 
 		$this->handle_type = 'native';
 		$this->old_handler = false;
-		$this->script_start = debug :: _time_to_float(microtime());
+		$this->script_start = self :: _time_to_float(microtime());
 		$this->time_accumulator_list = array();
 		$this->time_accumulator_group_list = array();
 	} 
 	
-	function reset()
+	public function reset()
 	{
 		$this->debug_strings = array();
 		$this->time_accumulator_list = array();
 		$this->time_accumulator_group_list = array();
 	} 
-
-	function &instance()
-	{
-		if(class_exists('debug_mock'))
-			$impl =& instantiate_object('debug_mock');
-		else
-			$impl =& instantiate_object('debug');
-
-		return $impl;
-	} 
 	
-	function sizeof()
+	static public function instance()
 	{
-	  $debug =& debug::instance();
-	  return sizeof($debug->debug_strings);
+    if (!self :: $instance)
+    {
+      if(class_exists('debug_mock'))
+        self :: $instance = new debug_mock();
+      else
+        self :: $instance = new debug();
+    }
+
+    return self :: $instance;	
+	} 	
+	
+	static public function sizeof()
+	{
+	  return sizeof(self :: instance()->debug_strings);
 	}	
 
 	/*
@@ -144,12 +140,9 @@ class debug
    from PHP is fetched using a custom error handler and output as a usual debug message.
    If $type is 'native' there is no error exchange between PHP and debug.
   */
-	function set_handle_type($type)
+	static public function set_handle_type($type)
 	{
-		if (!isset($this) || get_class($this) != 'debug')
-			$debug =& debug::instance();
-		else
-			$debug =& $this;
+		$debug = self :: instance();
 
 		if ($type != 'trigger' && $type != 'custom')
 			$type = 'native';
@@ -179,16 +172,17 @@ class debug
    Handles PHP errors, creates notice, warning and error messages for
    the various PHP error types.
   */
-	function error_handler($errno, $errstr, $errfile, $errline)
+	public function error_handler($errno, $errstr, $errfile, $errline)
 	{
 		if (error_reporting() == 0) // error-control operator is used
 			return;
 
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
 
-		$str = "$errstr in $errfile on line $errline";
-		$errnames = &$GLOBALS['DEBUG_PHP_ERROR_NAMES'];
+		$str = "$errstr in $errfile on line $errline";		
+		$errnames =& $GLOBALS['PHP_ERROR_NAMES'];//???
+		
 		if (!is_array($errnames))
 		{
 			$errnames = array(E_ERROR => 'E_ERROR',
@@ -216,7 +210,7 @@ class debug
 			case E_COMPILE_ERROR:
 			case E_USER_ERROR:
 			{
-					debug::write_error($str, 'PHP');
+			  self :: write_error($str, 'PHP');
 			} 
 			break;
 
@@ -225,14 +219,14 @@ class debug
 			case E_COMPILE_WARNING:
 			case E_USER_WARNING:
 			{
-					debug::write_warning($str, 'PHP');
+			  self :: write_warning($str, 'PHP');
 			} 
 			break;
 
 			case E_USER_NOTICE:
 			case E_NOTICE:
 			{
-					debug::write_notice($str, 'PHP');
+			  self :: write_notice($str, 'PHP');
 			} 
 			break;
 		} 
@@ -241,98 +235,83 @@ class debug
 	/*
     Writes a debug notice.
   */
-	function write_notice($string, $code_line = '', $params = array())
+	static public function write_notice($string, $code_line = '', $params = array())
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
 
-		$debug =& debug::instance();
+		$debug = self :: instance();
+		
 		if ($debug->handle_type == 'trigger')
 			trigger_error($string, E_USER_NOTICE);
 		else
-			$debug->write(DEBUG_LEVEL_NOTICE, $string, $code_line, $params);
+			$debug->write(self :: LEVEL_NOTICE, $string, $code_line, $params);
 	} 
 
 	/*
     writes a debug warning.
   */
-	function write_warning($string, $code_line = '', $params = array())
+	static public function write_warning($string, $code_line = '', $params = array())
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
 
-		$debug =& debug::instance();
+		$debug = self :: instance();
+		
 		if ($debug->handle_type == 'trigger')
 			trigger_error($string, E_USER_WARNING);
 		else
-			$debug->write(DEBUG_LEVEL_WARNING, $string, $code_line, $params);
+			$debug->write(self :: LEVEL_WARNING, $string, $code_line, $params);
 	} 
 
-	/*
-    Writes a debug error.
-  */
-	function write_error($string, $code_line = '', $params = array())
+	static public function write_error($string, $code_line = '', $params = array())
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
 
-		$debug =& debug::instance();
+		$debug = self :: instance();
+		
 		if ($debug->handle_type == 'trigger')
 			trigger_error($string, E_USER_ERROR);
 		else
-			$debug->write(DEBUG_LEVEL_ERROR, $string, $code_line, $params);
+			$debug->write(self :: LEVEL_ERROR, $string, $code_line, $params);
 	} 
-	
-	/*
-    Writes a debug message.
-  */
-	function write_debug($string, $code_line = '', $params = array())
-	{
-		if (!debug::is_debug_enabled())
-			return;
-
-		$debug =& debug::instance();
-		if ($debug->handle_type == 'trigger')
-			trigger_error($string, E_USER_NOTICE);
-		else
-			$debug->write(DEBUG_LEVEL, $string, $code_line, $params);
-	} 
-	
-	function _send_mail($debug_info)
+		
+	static private function _send_mail($debug_info)
 	{
 		include_once(LIMB_DIR . 'class/lib/mail/send_plain_mail.inc.php');
 		
 		$title = '';
 		$headers = array();
-		$description = debug :: _parse_text_debug_info($debug_info);
+		$description = self :: _parse_text_debug_info($debug_info);
 		$verbosity_level = $debug_info['level'];
 		
 		switch ($verbosity_level)
 		{
-			case DEBUG_LEVEL_NOTICE:
+			case self :: LEVEL_NOTICE:
 				$title .= ' debug notice';
 				$headers['X-Priority'] = '0 (Low)';
 			break;
 			
-			case DEBUG_LEVEL_WARNING:
+			case self :: LEVEL_WARNING:
 				$title .= ' debug warning';
 			break;
 			
-			case DEBUG_LEVEL_ERROR:
+			case self :: LEVEL_ERROR:
 				$title .= ' debug error';
 				$headers['X-Priority'] = '1 (High)';
 			break;
 			
-			case DEBUG_TIMING_POINT:
+			case self :: TIMING_POINT:
 				$title .= ' timig point';
 			break;
 		} 
 		
 		$message = '';
 		
-		$user =& user :: instance();
+		$user = user :: instance();
 		
-		if(($user_id = $user->get_id()) != DEFAULT_USER_ID)
+		if(($user_id = $user->get_id()) != user :: DEFAULT_USER_ID)
 			$message .= "user id:\t"
 								.	"{$user_id}\n"
 								. "login:\t\t"  . $user->get_login() . "\n"
@@ -355,14 +334,11 @@ class debug
 
 	/*
    Determines the way messages are output, the $output parameter
-   is DEBUG_OUTPUT_MESSAGE_SCREEN, DEBUG_OUTPUT_MESSAGE_STORE, DEBUG_OUTPUT_MESSAGE_SEND
+   is self :: OUTPUT_MESSAGE_SCREEN, self :: OUTPUT_MESSAGE_STORE, self :: OUTPUT_MESSAGE_SEND
   */
-	function set_message_output($output)
+	static public function set_message_output($output)
 	{
-		if (!isset($this) || get_class($this) != 'debug')
-			$debug =& debug::instance();
-		else
-			$debug =& $this;
+		$debug = self :: instance();
 		
 		$prev_output = $debug->message_output;
 		$debug->message_output = $output;
@@ -372,12 +348,12 @@ class debug
 	/*
     Adds a new timing point for the benchmark report.
   */
-	function add_timing_point($description = '')
+	static public function add_timing_point($description = '')
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
 			
-		$debug =& debug::instance();
+		$debug = self :: instance();
 
 		$time = microtime();
     $memory = 0;
@@ -392,10 +368,10 @@ class debug
 
 		$debug->time_points[] = $tp;
 
-		$debug->write(DEBUG_TIMING_POINT, $description);
+		$debug->write(self :: TIMING_POINT, $description);
 	} 
 	
-	function _parse_text_debug_info($debug_info)
+	static private function _parse_text_debug_info($debug_info)
 	{
 	  $string = $debug_info['string'];
 	  $code_line = $debug_info['code_line'];
@@ -408,7 +384,7 @@ class debug
 		return $log_string;
 	}
 
-	function _parse_html_debug_info($debug_info)
+	static private function _parse_html_debug_info($debug_info)
 	{
 	  $string = $debug_info['string'];
 	  $code_line = $debug_info['code_line'];
@@ -421,16 +397,13 @@ class debug
 		return $log_string;
 	}
 
-	/*
-    Writes a debug log message.
-  */
-	function write($verbosity_level, $string, $code_line = '', $params = array())
+	protected function write($verbosity_level, $string, $code_line = '', $params = array())
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
 		
 		if(!in_array($verbosity_level, $this->message_types))
-			$verbosity_level = DEBUG_LEVEL_ERROR;
+			$verbosity_level = self :: LEVEL_ERROR;
 		
 		$debug_info = array(
   		'level' => $verbosity_level,
@@ -442,9 +415,9 @@ class debug
 		
 		$this->debug_strings[] = $debug_info;
 						
-		if ($this->message_output & DEBUG_OUTPUT_MESSAGE_STORE)
+		if ($this->message_output & self :: OUTPUT_MESSAGE_STORE)
 		{
-			$files =& $this->log_files;
+			$files = $this->log_files;
 			$file_name = false;
 	
 			if (isset($files[$verbosity_level]))
@@ -454,7 +427,7 @@ class debug
 				$this->_write_file($file_name, $debug_info);
 		}
 			
-		if($this->message_output & DEBUG_OUTPUT_MESSAGE_SEND)
+		if($this->message_output & self :: OUTPUT_MESSAGE_SEND)
 		{
 			$this->_send_mail($debug_info);
 		}
@@ -463,9 +436,11 @@ class debug
 	/*
    Writes the log message $string to the file $file_name.
   */
-	function _write_file($file_name, $debug_info)
+	static private function _write_file($file_name, $debug_info)
 	{
-		if (!log::write($file_name, debug :: _parse_text_debug_info($debug_info)))
+	  include_once(LIMB_DIR . 'class/lib/util/log.class.php');
+	  
+		if (!log :: write($file_name, self :: _parse_text_debug_info($debug_info)))
 			$this->set_log_file_enabled(false, $debug_info['level']);
 	} 
 
@@ -473,10 +448,10 @@ class debug
    Enables or disables logging to file for a given message type.
    If $types is not supplied it will do the operation for all types.
   */
-	function set_log_file_enabled($enabled, $types = false)
+	static public function set_log_file_enabled($enabled, $types = false)
 	{
 		if ($types === false)
-			$types = &$this->message_types();
+			$types = $this->message_types();
 			
 		if (!is_array($types))
 			$types = array($types);
@@ -490,42 +465,42 @@ class debug
 	/*
    return true if the message type $type has logging to file enabled.
   */
-	function is_log_file_enabled($type)
+	static public function is_log_file_enabled($type)
 	{
-		return $this->log_file_enabled[$type];
+		return self :: instance()->log_file_enabled[$type];
 	} 
 
 	/*
    return true if debug should be enabled.
   */
-	function is_debug_enabled()
+	static public function is_debug_enabled()
 	{
-		return (!defined('DEBUG_ENABLED') || (defined('DEBUG_ENABLED') && constant('DEBUG_ENABLED')));
+		return (!defined('ENABLED') || (defined('ENABLED') && constant('ENABLED')));
 	} 
 	
-	function is_console_enabled()
+	static public function is_console_enabled()
 	{
-		return (defined('DEBUG_CONSOLE_ENABLED') && constant('DEBUG_CONSOLE_ENABLED'));
+		return (defined('CONSOLE_ENABLED') && constant('CONSOLE_ENABLED'));
 	}
 	
-	function parse_console()
+	static public function parse_console()
 	{
 		if(sys :: exec_mode() == 'cli')
-			return debug :: parse_cli_console();
+			return self :: parse_cli_console();
 		else
-			return debug :: parse_html_console();
+			return self :: parse_html_console();
 	}
 
 	/*
     fetches the debug report
   */
-	function &parse_html_console()
+	static public function parse_html_console()
 	{	  
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return '';
 
-		$debug = &debug::instance();
-		$report = &$debug->_parse_report_internal(true);
+		$debug = self :: instance();
+		$report = $debug->_parse_report_internal(true);
     
     $ip = sys :: client_ip();
 		$js_window = "
@@ -557,21 +532,18 @@ class debug
 		return $js_window;
 	} 
 	
-	function parse_cli_console()
+	static public function parse_cli_console()
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return '';
 
-		$debug = &debug::instance();
-		$report = &$debug->_parse_report_internal(false);
-		
-		return $report;
+		return self :: instance()->_parse_report_internal(false);
 	}
 
 	/*
    Returns the microtime as a float value. $mtime must be in microtime() format.
   */
-	function &_time_to_float($mtime)
+	static private function _time_to_float($mtime)
 	{
 		$t_time = explode(' ', $mtime);
 		preg_match("~0\.([0-9]+)~", '' . $t_time[0], $t1);
@@ -584,27 +556,28 @@ class debug
    If $mtime is not supplied it gets the current microtime().
    This is used to calculate total execution time and percentages.
   */
-	function set_script_start($mtime = false)
+	static public function set_script_start($mtime = false)
 	{
 		if ($mtime == false)
 			$mtime = microtime();
-		$time = debug::_time_to_float(microtime());
-		$debug = &debug::instance();
-		$debug->script_start = $time;
+			
+		$time = self :: _time_to_float(microtime());
+		self :: instance()->script_start = $time;
 	} 
 
 	/*
     Creates an accumulator group with key $key and group name $name.
     If $name is not supplied name is taken from $key.
   */
-	function create_accumulator_group($key, $name = false)
+	static public function create_accumulator_group($key, $name = false)
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
+			
 		if ($name == '' || $name === false)
 			$name = $key;
 
-		$debug = &debug::instance();
+		$debug = self :: instance();
 
 		if (!array_key_exists($key, $debug->time_accumulator_list))
 			$debug->time_accumulator_list[$key] = array('name' => $name, 'time' => 0, 'count' => 0, 'is_group' => true, 'in_group' => false);
@@ -618,14 +591,15 @@ class debug
    If $name is not supplied name is taken from $key.
    If $in_group is supplied it will place the accumulator under the specified group.
   */
-	function create_accumulator($key, $in_group = false, $name = false)
+	static public function create_accumulator($key, $in_group = false, $name = false)
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
+			
 		if ($name == '' || $name === false)
 			$name = $key;
 
-		$debug = &debug::instance();
+		$debug = self :: instance();
 
 		$is_group = false;
 		if (array_key_exists($key, $debug->time_accumulator_list) &&
@@ -652,12 +626,13 @@ class debug
    Starts an time count for the accumulator $key.
    You can also specify a name which will be displayed.
   */
-	function accumulator_start($key, $in_group = false, $name = false)
+	static public function accumulator_start($key, $in_group = false, $name = false)
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
 
-		$debug = &debug::instance();
+		$debug = self :: instance();
+		
 		if (! array_key_exists($key, $debug->time_accumulator_list))
 			$debug->create_accumulator($key, $in_group, $name);
 
@@ -668,16 +643,17 @@ class debug
 	/*
    Stops a previous time count and adds the total time to the accumulator $key.
   */
-	function accumulator_stop($key)
+	static public function accumulator_stop($key)
 	{
-		if (!debug::is_debug_enabled())
+		if (!self :: is_debug_enabled())
 			return;
 
-		$debug = &debug::instance();
+		$debug = self :: instance();
+		
 		$stop_time = $debug->_time_to_float(microtime());
 		if (! array_key_exists($key, $debug->time_accumulator_list))
 		{
-			debug::write_warning('Accumulator $key does not exists, run debug::accumulator_start first', 'debug::accumulator_stop');
+			self :: write_warning('Accumulator $key does not exists, run self :: accumulator_start first', 'self :: accumulator_stop');
 			return;
 		} 
 		$accumulator = &$debug->time_accumulator_list[$key];
@@ -689,7 +665,7 @@ class debug
 	/*
     Prints a full debug report with notice, warnings, errors and a timing report.
   */
-	function _parse_report_internal($as_html = true)
+	private function _parse_report_internal($as_html = true)
 	{
 		$end_time = microtime();
 		$return_text = '';
@@ -717,10 +693,10 @@ class debug
 					$return_text .= "<tr>
 													<th align='left'><a name={$counter}>{$counter})<span style='color:$color'>{$name}:</span></th>
                           </tr>
-                          <tr><td>" . debug :: _parse_html_debug_info($debug) . "</td></tr>";
+                          <tr><td>" . self :: _parse_html_debug_info($debug) . "</td></tr>";
 				} 
 				else
-					$return_text .= "$name: " . debug :: _parse_text_debug_info($debug);
+					$return_text .= "$name: " . self :: _parse_text_debug_info($debug);
 			} 
 		} 
 
@@ -745,14 +721,14 @@ class debug
 			else
 			  $next_point = false;
 
-			$time = debug :: _time_to_float($point['time']);
+			$time = self :: _time_to_float($point['time']);
 			$memory = $point['memory_usage'];
 			$next_time = false;
 			$next_memory = 0;
 
 			if ($next_point !== false)
 			{
-				$next_time = debug :: _time_to_float($next_point['time']);
+				$next_time = self :: _time_to_float($next_point['time']);
 				$next_memory = $next_point['memory_usage'];
 			}
 				
@@ -827,7 +803,7 @@ class debug
 			$i = 0;
 		} 
 
-		$script_end_time = debug::_time_to_float(microtime());
+		$script_end_time = self :: _time_to_float(microtime());
 		$total_elapsed = $script_end_time - $this->script_start;
 		$time_list = $this->time_accumulator_list;
 		$groups = $this->time_accumulator_group_list;
@@ -966,8 +942,7 @@ function debug_error_handler($errno, $errstr, $errfile, $errline)
 	} 
 	$GLOBALS['global_debug_recursion_flag'] = true;
 
-	$debug = &debug::instance();
-	$debug->error_handler($errno, $errstr, $errfile, $errline);
+	debug :: instance()->error_handler($errno, $errstr, $errfile, $errline);
 
 	$GLOBALS['global_debug_recursion_flag'] = false;
 } 

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.
 
 class controller_file_resolver extends package_file_resolver
 {
-  function resolve($class_path)
+  public function resolve($class_path)
   {
     if(!$resolved_path = parent :: resolve('controllers/' . $class_path . '.class.php'))    
   	{

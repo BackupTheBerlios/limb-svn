@@ -57,7 +57,7 @@ foreach($nodes as $node)
 		continue;
 	}
 	
-	$site_object =& site_object_factory :: instance($row['class_name']);
+	$site_object =& site_object_factory :: create($row['class_name']);
 	
 	$object_data = current($site_object->fetch_by_ids(array($node['object_id'])));
 	

@@ -9,12 +9,8 @@
 *
 ***********************************************************************************/ 
 class image_factory
-{
-	function image_factory()
-	{
-	}
-		
-	function & create($library = 'gd', $dir = '')
+{		
+	static public function create($library = 'gd', $dir = '')
 	{
 		if(defined('IMAGE_LIBRARY'))
 			$library = IMAGE_LIBRARY; 

@@ -8,14 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cache/partial_page_cache_manager.class.php');
-require_once(LIMB_DIR . '/class/cache/full_page_cache_manager.class.php');
-require_once(LIMB_DIR . '/class/cache/image_cache_manager.class.php');
+require_once(LIMB_DIR . '/class/core/actions/command.interface.php');
 
-class page_cache_flush_job
+class page_cache_flush_job implements command
 {
-  function perform(&$response)
-  {    
+  protected function _install_managers()
+  {
+    include_once(LIMB_DIR . '/class/cache/partial_page_cache_manager.class.php');
+    include_once(LIMB_DIR . '/class/cache/full_page_cache_manager.class.php');
+    include_once(LIMB_DIR . '/class/cache/image_cache_manager.class.php');    
+  }
+  
+  public function perform($response)
+  { 
+    $this->_install_managers();
+       
     $response->write("Flushing full page cache...");
     
     $full_cache_mgr = new full_page_cache_manager();

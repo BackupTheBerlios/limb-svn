@@ -12,49 +12,49 @@ require_once(LIMB_DIR . 'class/core/dataspace.class.php');
 
 class object
 {
-	var $_attributes = null;
+	protected $_attributes = null;
 	
-	function object()
+	function __construct()
 	{
-    $this->_attributes =& new dataspace();	
+    $this->_attributes = new dataspace();
 	}
 
-	function merge($attributes)
+	public function merge($attributes)
 	{		
 	  $this->_attributes->merge($attributes);
 	}
 	
-	function import($attributes)
+	public function import($attributes)
 	{
 	  $this->_attributes->import($attributes);
 	}
 		
-	function export()
+	public function export()
 	{
 		return $this->_attributes->export();
 	}
 	
-	function has_attribute($name)
+	public function has_attribute($name)
 	{
 	  return $this->_attributes->get($name) !== null;
 	}
 		
-	function get($name, $default_value=null)
+	public function get($name, $default_value=null)
 	{
 		return $this->_attributes->get($name, $default_value);
 	}
 	
-	function set($name, $value)
+	public function set($name, $value)
 	{
 		$this->_attributes->set($name, $value);
 	}
 
-	function destroy($name)
+	public function destroy($name)
 	{
 		$this->_attributes->destroy($name);
 	}
 
-	function reset()
+	public function reset()
 	{
 		$this->_attributes->reset();
 	}

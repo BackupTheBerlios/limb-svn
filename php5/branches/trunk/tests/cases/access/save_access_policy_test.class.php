@@ -44,10 +44,10 @@ class save_access_policy_test extends db_test
 
 		$this->ac->save_user_action_access($class_id = 10, $policy);
 		
-		$db_table	=  & db_table_factory :: instance('sys_action_access');
+		$db_table	=  & db_table_factory :: create('sys_action_access');
 
 		$conditions['class_id'] = $class_id;
-		$conditions['accessor_type'] = ACCESSOR_TYPE_USER;
+		$conditions['accessor_type'] = access_policy :: ACCESSOR_TYPE_USER;
 
 		$rows = $db_table->get_list($conditions, 'id', null);
 		
@@ -55,11 +55,11 @@ class save_access_policy_test extends db_test
 		
 		$this->assertEqual($rows, 
 			array(
-				array('id' => $rows[0]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'display', 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[1]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'create', 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[2]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'edit', 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[3]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'delete', 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[4]['id'], 'class_id' => 10, 'accessor_id' => 210, 'action_name' => 'display', 'accessor_type' => ACCESSOR_TYPE_USER),
+				array('id' => $rows[0]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'display', 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[1]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'create', 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[2]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'edit', 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[3]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'delete', 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[4]['id'], 'class_id' => 10, 'accessor_id' => 210, 'action_name' => 'display', 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
 			)
 		);
   }    
@@ -83,10 +83,10 @@ class save_access_policy_test extends db_test
 
 		$this->ac->save_group_action_access($class_id = 10, $policy);
 		
-		$db_table	=  & db_table_factory :: instance('sys_action_access');
+		$db_table	=  & db_table_factory :: create('sys_action_access');
 
 		$conditions['class_id'] = $class_id;
-		$conditions['accessor_type'] = ACCESSOR_TYPE_GROUP;
+		$conditions['accessor_type'] = access_policy :: ACCESSOR_TYPE_GROUP;
 
 		$rows = $db_table->get_list($conditions, 'id', null);
 
@@ -94,12 +94,12 @@ class save_access_policy_test extends db_test
 		
 		$this->assertEqual($rows, 
 			array(
-				array('id' => $rows[0]['id'], 'class_id' => 10, 'action_name' => 'display', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[1]['id'], 'class_id' => 10, 'action_name' => 'create', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[2]['id'], 'class_id' => 10, 'action_name' => 'edit', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[3]['id'], 'class_id' => 10, 'action_name' => 'delete', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[4]['id'], 'class_id' => 10, 'action_name' => 'display', 'accessor_id' => 110, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[5]['id'], 'class_id' => 10, 'action_name' => 'delete', 'accessor_id' => 110, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[0]['id'], 'class_id' => 10, 'action_name' => 'display', 'accessor_id' => 100, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[1]['id'], 'class_id' => 10, 'action_name' => 'create', 'accessor_id' => 100, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[2]['id'], 'class_id' => 10, 'action_name' => 'edit', 'accessor_id' => 100, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[3]['id'], 'class_id' => 10, 'action_name' => 'delete', 'accessor_id' => 100, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[4]['id'], 'class_id' => 10, 'action_name' => 'display', 'accessor_id' => 110, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[5]['id'], 'class_id' => 10, 'action_name' => 'delete', 'accessor_id' => 110, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
 			)
 		);
   }    
@@ -132,9 +132,9 @@ class save_access_policy_test extends db_test
 
 		$this->ac->save_user_object_access($policy);
 		
-		$db_table	=& db_table_factory :: instance('sys_object_access');
+		$db_table	=& db_table_factory :: create('sys_object_access');
 
-		$conditions['accessor_type'] = ACCESSOR_TYPE_USER;
+		$conditions['accessor_type'] = access_policy :: ACCESSOR_TYPE_USER;
 		$rows = $db_table->get_list($conditions, 'id', null);
 		
 		$this->assertTrue(is_array($rows));
@@ -142,11 +142,11 @@ class save_access_policy_test extends db_test
 
 		$this->assertEqual($rows, 
 			array(
-				array('id' => $rows[0]['id'], 'object_id' => 303, 'accessor_id' => 200, 'r' => 0, 'w' => 1, 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[1]['id'], 'object_id' => 300, 'accessor_id' => 200, 'r' => 1, 'w' => 1, 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[2]['id'], 'object_id' => 300, 'accessor_id' => 210, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[3]['id'], 'object_id' => 301, 'accessor_id' => 200, 'r' => 0, 'w' => 1, 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[4]['id'], 'object_id' => 301, 'accessor_id' => 210, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_USER),
+				array('id' => $rows[0]['id'], 'object_id' => 303, 'accessor_id' => 200, 'r' => 0, 'w' => 1, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[1]['id'], 'object_id' => 300, 'accessor_id' => 200, 'r' => 1, 'w' => 1, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[2]['id'], 'object_id' => 300, 'accessor_id' => 210, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[3]['id'], 'object_id' => 301, 'accessor_id' => 200, 'r' => 0, 'w' => 1, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[4]['id'], 'object_id' => 301, 'accessor_id' => 210, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
 			)
 		);
   }    
@@ -179,9 +179,9 @@ class save_access_policy_test extends db_test
 
 		$this->ac->save_group_object_access($policy);
 		
-		$db_table	=& db_table_factory :: instance('sys_object_access');
+		$db_table	=& db_table_factory :: create('sys_object_access');
 
-		$conditions['accessor_type'] = ACCESSOR_TYPE_GROUP;
+		$conditions['accessor_type'] = access_policy :: ACCESSOR_TYPE_GROUP;
 		$rows = $db_table->get_list($conditions, 'id', null);
 
 		$this->assertTrue(is_array($rows));
@@ -189,14 +189,14 @@ class save_access_policy_test extends db_test
 
 		$this->assertEqual($rows, 
 			array(
-				array('id' => $rows[0]['id'], 'object_id' => 302, 'accessor_id' => 100, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[1]['id'], 'object_id' => 303, 'accessor_id' => 100, 'r' => 0, 'w' => 1, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[2]['id'], 'object_id' => 302, 'accessor_id' => 110, 'r' => 0, 'w' => 1, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[3]['id'], 'object_id' => 303, 'accessor_id' => 110, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[4]['id'], 'object_id' => 300, 'accessor_id' => 100, 'r' => 1, 'w' => 1, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[5]['id'], 'object_id' => 300, 'accessor_id' => 110, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[6]['id'], 'object_id' => 301, 'accessor_id' => 100, 'r' => 0, 'w' => 1, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[7]['id'], 'object_id' => 301, 'accessor_id' => 110, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[0]['id'], 'object_id' => 302, 'accessor_id' => 100, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[1]['id'], 'object_id' => 303, 'accessor_id' => 100, 'r' => 0, 'w' => 1, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[2]['id'], 'object_id' => 302, 'accessor_id' => 110, 'r' => 0, 'w' => 1, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[3]['id'], 'object_id' => 303, 'accessor_id' => 110, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[4]['id'], 'object_id' => 300, 'accessor_id' => 100, 'r' => 1, 'w' => 1, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[5]['id'], 'object_id' => 300, 'accessor_id' => 110, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[6]['id'], 'object_id' => 301, 'accessor_id' => 100, 'r' => 0, 'w' => 1, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[7]['id'], 'object_id' => 301, 'accessor_id' => 110, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
 			)
 		);
   }    
@@ -206,9 +206,9 @@ class save_access_policy_test extends db_test
 	{
 		$this->ac->copy_user_object_access($object_id = 304, $parent_id = 300);
 
-		$db_table	=& db_table_factory :: instance('sys_object_access');
+		$db_table	=& db_table_factory :: create('sys_object_access');
 
-		$conditions['accessor_type'] = ACCESSOR_TYPE_USER;
+		$conditions['accessor_type'] = access_policy :: ACCESSOR_TYPE_USER;
 		$conditions['object_id'] = $object_id;
 		
 		$rows = $db_table->get_list($conditions, 'id', null);
@@ -217,8 +217,8 @@ class save_access_policy_test extends db_test
 
 		$this->assertEqual($rows, 
 			array(
-				array('id' => $rows[0]['id'], 'object_id' => 304, 'accessor_id' => 200, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[1]['id'], 'object_id' => 304, 'accessor_id' => 210, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_USER),
+				array('id' => $rows[0]['id'], 'object_id' => 304, 'accessor_id' => 200, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+				array('id' => $rows[1]['id'], 'object_id' => 304, 'accessor_id' => 210, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
 			)
 		);
 
@@ -239,9 +239,9 @@ class save_access_policy_test extends db_test
 	{
 		$this->ac->copy_group_object_access($object_id = 304, $parent_id = 300);
 
-		$db_table	=& db_table_factory :: instance('sys_object_access');
+		$db_table	=& db_table_factory :: create('sys_object_access');
 
-		$conditions['accessor_type'] = ACCESSOR_TYPE_GROUP;
+		$conditions['accessor_type'] = access_policy :: ACCESSOR_TYPE_GROUP;
 		$conditions['object_id'] = $object_id;
 		
 		$rows = $db_table->get_list($conditions, 'id', null);
@@ -250,8 +250,8 @@ class save_access_policy_test extends db_test
 
 		$this->assertEqual($rows, 
 			array(
-				array('id' => $rows[0]['id'], 'object_id' => 304, 'accessor_id' => 100, 'r' => 1, 'w' => 1, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[1]['id'], 'object_id' => 304, 'accessor_id' => 110, 'r' => 1, 'w' => 0, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[0]['id'], 'object_id' => 304, 'accessor_id' => 100, 'r' => 1, 'w' => 1, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[1]['id'], 'object_id' => 304, 'accessor_id' => 110, 'r' => 1, 'w' => 0, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
 			)
 		);
 

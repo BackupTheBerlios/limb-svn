@@ -220,7 +220,7 @@ class site_object_tester extends LimbTestCase
 		$this->object->set_identifier('test');
 
   	if($this->object->is_auto_identifier())
-			debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000000));
+			debug_mock :: expect_write_error(tree_driver :: TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000000));
 		else
 			debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 1000000));
 		
@@ -291,9 +291,9 @@ class site_object_tester extends LimbTestCase
   	
   	$this->assertTrue($result);
   	
-  	$sys_site_object_db_table =& db_table_factory :: instance('sys_site_object');
-  	$sys_site_object_tree_db_table =& db_table_factory :: instance('sys_site_object_tree');
-  	$sys_site_object_version_db_table =& db_table_factory :: instance('sys_object_version');
+  	$sys_site_object_db_table =& db_table_factory :: create('sys_site_object');
+  	$sys_site_object_tree_db_table =& db_table_factory :: create('sys_site_object_tree');
+  	$sys_site_object_version_db_table =& db_table_factory :: create('sys_object_version');
   	
   	$arr = $sys_site_object_db_table->get_row_by_id($this->object->get_id());
   	$this->assertIdentical($arr, false);

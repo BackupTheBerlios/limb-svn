@@ -10,38 +10,14 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
 
-/**
-* For fields have a minimum and maximum length
-*/
-
 class size_range_rule extends single_field_rule
 {
-	/**
-	* Minumum length
-	* 
-	* @var int 
-	* @access private 
-	*/
-	var $min_len;
-	/**
-	* Maximum length
-	* 
-	* @var int 
-	* @access private 
-	*/
-	var $max_len;
+	private $min_len;
+	private $max_len;
 
-	/**
-	* Constructs size_range_rule
-	* 
-	* @param string $ field_name to validate
-	* @param int $ Minumum length
-	* @param int $ Maximum length (optional)
-	* @access public 
-	*/
-	function size_range_rule($field_name, $min_len, $max_len = null)
+	function __construct($field_name, $min_len, $max_len = null)
 	{
-		parent :: single_field_rule($field_name);
+		parent :: __construct($field_name);
 		
 		if (is_null($max_len))
 		{
@@ -55,12 +31,7 @@ class size_range_rule extends single_field_rule
 		} 
 	} 
 
-	/**
-	* Performs validation of a single value
-	* 
-	* @access protected 
-	*/
-	function check($value)
+	protected function check($value)
 	{
 		if (!is_null($this->min_len) && (strlen($value) < $this->min_len))
 		{

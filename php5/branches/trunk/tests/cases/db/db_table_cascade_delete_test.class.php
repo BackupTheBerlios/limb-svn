@@ -88,9 +88,9 @@ class db_table_cascade_delete_test extends db_test
 	
 	function setUp()
 	{
-		$this->image =& db_table_factory :: instance('test_image');
-		$this->image_variation =& db_table_factory :: instance('test_image_variation');
-		$this->media =& db_table_factory :: instance('test_media');
+		$this->image =& db_table_factory :: create('test_image');
+		$this->image_variation =& db_table_factory :: create('test_image_variation');
+		$this->media =& db_table_factory :: create('test_media');
 		
 		parent :: setUp();
 	}

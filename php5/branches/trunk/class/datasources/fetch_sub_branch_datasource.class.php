@@ -8,23 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/fetcher.class.php');
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/fetch_datasource.class.php');
 
-class fetch_sub_branch_datasource extends datasource
-{
-	function & get_dataset(&$counter, $params=array())
+class fetch_sub_branch_datasource extends fetch_datasource
+{	
+	protected function _fetch(&$counter, $params)
 	{
-		$arr =& $this->_fetch($counter, $params);
-		
-		return new array_dataset($arr);
-	}
-	
-	function & _fetch(&$counter, $params)
-	{
-		$arr =& fetch_sub_branch($params['path'], $params['loader_class_name'], $counter, $params, $params['fetch_method']);
-		
-		return $arr;
+		return fetch_sub_branch($params['path'], $params['loader_class_name'], $counter, $params, $params['fetch_method']);
 	}
 }
 

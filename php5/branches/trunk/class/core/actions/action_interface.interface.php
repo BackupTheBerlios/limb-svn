@@ -7,19 +7,10 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-class datasource
-{
-	function datasource()
-	{
-	}
+***********************************************************************************/
 
-	function & get_dataset(&$counter, $params=array())
-	{
-		$counter = 0;
-		return new array_dataset(array());
-	}
+interface action_interface
+{	
+	public function perform($request, $response);
 }
-
-
 ?>

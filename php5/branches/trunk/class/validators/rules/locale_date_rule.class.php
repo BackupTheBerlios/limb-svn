@@ -14,9 +14,9 @@ require_once(LIMB_DIR . '/class/lib/date/date.class.php');
 
 class locale_date_rule extends single_field_rule 
 {
-	var $locale_id = '';
+	private $locale_id = '';
 	
-	function locale_date_rule($fieldname, $locale_id = '')
+	function __construct($fieldname, $locale_id = '')
 	{
 		if (!$locale_id && !defined('CONTENT_LOCALE_ID'))
 			$this->locale_id = DEFAULT_CONTENT_LOCALE_ID;
@@ -25,15 +25,14 @@ class locale_date_rule extends single_field_rule
 		else	
 			$this->locale_id = $locale_id;
 		
-		parent :: single_field_rule($fieldname);
+		parent :: __construct($fieldname);
 	} 
 
-	function check($value)
+	protected function check($value)
 	{
-		$locale =& locale :: instance($this->locale_id);
-		$date =& new date();
+		$date = new date();
 		
-		$date->set_by_string($value, $locale->get_short_date_format());
+		$date->set_by_string($value, locale :: instance($this->locale_id)->get_short_date_format());
 		
 		if(!$date->is_valid())
 			$this->error('INVALID_DATE');

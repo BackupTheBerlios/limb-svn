@@ -14,11 +14,11 @@ require_once(LIMB_DIR . 'class/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'class/core/dataspace_registry.class.php');
 
 require_once(LIMB_DIR . 'class/core/request/request.class.php');
-require_once(LIMB_DIR . 'class/core/request/response.class.php');
+require_once(LIMB_DIR . 'class/core/request/response.interface.php');
 
 class form_action_stub extends form_action
 {
-	function _init_validator()
+	protected function _init_validator()
 	{
 		$this->validator->add_rule(new required_rule('username'));
 		$this->validator->add_rule(new required_rule('password'));
@@ -69,7 +69,6 @@ class form_action_test extends LimbTestCase
   	$this->form_action->tally();
   	$this->request->tally();
   	$this->response->tally();
-  	
   }
       
   function test_is_valid()
@@ -80,7 +79,7 @@ class form_action_test extends LimbTestCase
   function test_is_first_time()
   {	
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
-  	$this->form_action->form_action();
+  	$this->form_action->__construct();
 
   	$this->request->expectOnce('get');
   	$this->request->setReturnValue('get', array(), array('test1'));
@@ -91,7 +90,7 @@ class form_action_test extends LimbTestCase
   function test_is_first_time_false() 	
   {
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
-  	$this->form_action->form_action();
+  	$this->form_action->__construct();
 
   	$this->request->expectOnce('get');
   	$this->request->setReturnValue('get', array('submitted' => true), array('test1'));
@@ -102,7 +101,7 @@ class form_action_test extends LimbTestCase
   function test_form_action_validate()
   {
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
-  	$this->form_action->form_action();
+  	$this->form_action->__construct();
   
   	$this->dataspace->import(array('username' => 'vasa', 'password' => 'yoyoyo'));
   	
@@ -112,7 +111,7 @@ class form_action_test extends LimbTestCase
   function test_double_validation()
   {
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
-  	$this->form_action->form_action();
+  	$this->form_action->__construct();
   
    	$this->dataspace->set('username', 'vasa');
    	$this->dataspace->set('password', 'yoyoyoyo');
@@ -134,10 +133,10 @@ class form_action_test extends LimbTestCase
   	$this->request->setReturnValue('get', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
-  	$this->form_action->form_action();
+  	$this->form_action->__construct();
   	
   	$this->form_action->expectOnce('_init_dataspace', array(new IsAexpectation('Mockrequest'))); 	
-  	$this->request->expectOnce('set_status', array(REQUEST_STATUS_FORM_DISPLAYED));
+  	$this->request->expectOnce('set_status', array(request :: STATUS_FORM_DISPLAYED));
   	
   	$this->form_action->perform($this->request, $this->response);  	
   }
@@ -153,9 +152,9 @@ class form_action_test extends LimbTestCase
   	$this->request->setReturnValue('get', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
-  	$this->form_action->form_action();
+  	$this->form_action->__construct();
   	
-  	$this->request->expectOnce('set_status', array(REQUEST_STATUS_FORM_NOT_VALID));
+  	$this->request->expectOnce('set_status', array(request :: STATUS_FORM_NOT_VALID));
   	$this->form_action->perform($this->request, $this->response);  	
   }
 
@@ -171,7 +170,7 @@ class form_action_test extends LimbTestCase
   	$this->request->setReturnValue('get', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
-  	$this->form_action->form_action();
+  	$this->form_action->__construct();
 
   	$this->form_action->perform($this->request, $this->response);
   	
@@ -189,9 +188,9 @@ class form_action_test extends LimbTestCase
   	$this->request->setReturnValue('get', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
-  	$this->form_action->form_action();
+  	$this->form_action->__construct();
   	
-  	$this->request->expectOnce('set_status', array(REQUEST_STATUS_FORM_SUBMITTED));
+  	$this->request->expectOnce('set_status', array(request :: STATUS_FORM_SUBMITTED));
   	$this->form_action->perform($this->request, $this->response);  	
   }
 }

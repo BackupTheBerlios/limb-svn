@@ -8,37 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
 
 class sys_param
 {
-	var $_db_table = null;
-	var $_types = array("char", "int", "blob", "float");
+  static protected $_instance = null;
+  
+	private $_db_table = null;
+	private $_types = array("char", "int", "blob", "float");
 	
 	function sys_param()
 	{
-		$this->_db_table =& db_table_factory :: instance('sys_param');
+		$this->_db_table = db_table_factory :: create('sys_param');
 	}
 	
-	function & instance($force = false)
+	static public function instance()
 	{
-	  $obj = null;
-  	$object_name = 'global_sys_param_object';
-  	if(isset($GLOBALS[$object_name]))
-			$obj =& $GLOBALS[$object_name];
-		
-  	if(!$obj || get_class($obj) != 'sys_param' || $force)
-  	{
-  		$obj = & new sys_param();
-  		$GLOBALS[$object_name] =& $obj;
-  	}
-  	
-  	return $obj;
-	}
-	
+    if (!self :: $_instance)
+      self :: $_instance = new sys_param();
 
-	function save_param($identifier, $type, $value, $force_new = true)
+    return self :: $_instance;	
+	}	
+	
+	public function save_param($identifier, $type, $value, $force_new = true)
 	{
 		if(!in_array($type, $this->_types))
 		{
@@ -91,7 +83,7 @@ class sys_param
 		}
 	}
 	
-	function get_param($identifier, $type='')
+	public function get_param($identifier, $type='')
 	{
 		if(!empty($type) && !in_array($type, $this->_types))
 		{
@@ -113,7 +105,5 @@ class sys_param
 
 		return $param["{$type}_value"];
 	}	
-	
-	
 }
 ?>

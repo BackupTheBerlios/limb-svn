@@ -82,7 +82,7 @@ class metadata_component extends component
 			return false;
 		$ids_array = array_reverse($ids_array);		
 					
-		$metadata_db_table	=& db_table_factory :: instance($this->metadata_db_table_name);
+		$metadata_db_table	=& db_table_factory :: create($this->metadata_db_table_name);
 		$objects_metadata = $metadata_db_table->get_list(sql_in('object_id', $ids_array), '', 'object_id');
 		
 		if (!count($objects_metadata))		

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.
 
 class strings_file_resolver extends package_file_resolver
 {
-  function resolve($file_name, $locale_id)  
+  public function resolve($file_name, $locale_id)  
   {  
     if(!$resolved_path = parent :: resolve('i18n/' . $file_name . '_' . $locale_id . '.ini'))    
   	{

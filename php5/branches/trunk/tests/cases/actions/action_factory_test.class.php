@@ -9,6 +9,9 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/core/actions/action_factory.class.php');
+require_once(LIMB_DIR . 'class/core/actions/action.class.php');
+
+class action_for_action_factory_test extends action{}
 
 class action_factory_test extends LimbTestCase 
 {  	  
@@ -24,9 +27,9 @@ class action_factory_test extends LimbTestCase
   
   function test_create_ok()
   {
-  	$c =& action_factory :: create('action');
+  	$c =& action_factory :: create('action_for_action_factory_test');
   	
-  	$this->assertIsA($c, 'action');	
+  	$this->assertIsA($c, 'action_for_action_factory_test');	
   } 
   
   function test_create_no_such_action()

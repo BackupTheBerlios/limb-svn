@@ -16,32 +16,28 @@ require_once(LIMB_DIR . '/class/core/user.class.php');
 
 class full_page_cache_manager
 {
-  var $id;
-  var $uri;
-  var $rules = array();
-  var $matched_rule;
-  
-  function full_page_cache_manager()
-  {
-  }
+  protected $id;
+  protected $uri;
+  private $rules = array();
+  private $matched_rule;
     
-  function _set_matched_rule($rule)
+  protected function _set_matched_rule($rule)
   {
     $this->matched_rule = $rule;
   }
   
-  function _get_matched_rule()
+  protected function _get_matched_rule()
   {
     return $this->matched_rule;
   }
   
-  function set_uri(&$uri)
+  public function set_uri($uri)
   {
     $this->id = null;
-    $this->uri =& $uri;
+    $this->uri = $uri;
   }
   
-  function & get()
+  public function get()
   {
     if(!$this->uri)
       return false;
@@ -55,12 +51,13 @@ class full_page_cache_manager
     return false;
   }
   
-  function & _get_user()
+  //for mocking
+  protected function _get_user()
   {
     return user :: instance();
   }
   
-  function write(&$content)
+  public function write($content)
   {      
     if(!$id = $this->get_cache_id())
       return false;      
@@ -78,7 +75,7 @@ class full_page_cache_manager
     return rename($tmp,  PAGE_CACHE_DIR . $id);
   }
   
-  function get_cache_id()
+  public function get_cache_id()
   {
     if(!$this->uri)
       return null;
@@ -112,7 +109,7 @@ class full_page_cache_manager
     return $this->id;
   }
   
-  function is_cacheable()
+  public function is_cacheable()
   {
     if(!$this->uri)
       return false;
@@ -122,9 +119,9 @@ class full_page_cache_manager
     
     $uri_path = $this->uri->get_path();
     
-    $rules =& $this->get_rules();
+    $rules = $this->get_rules();
     
-    $user =& $this->_get_user();
+    $user = $this->_get_user();
     
     foreach($rules as $rule)
     {
@@ -161,7 +158,7 @@ class full_page_cache_manager
     return false;
   }
     
-  function cache_exists()
+  public function cache_exists()
   { 
     if(!$id = $this->get_cache_id())
       return false;
@@ -169,7 +166,7 @@ class full_page_cache_manager
     return file_exists(PAGE_CACHE_DIR . $id);
   }
   
-  function flush()
+  public function flush()
   {
     fs :: mkdir(PAGE_CACHE_DIR);
   
@@ -181,7 +178,7 @@ class full_page_cache_manager
     }  
   }
   
-  function get_cache_size()
+  public function get_cache_size()
   {
     fs :: mkdir(PAGE_CACHE_DIR);
 
@@ -197,7 +194,7 @@ class full_page_cache_manager
     return $size;
   }
   
-  function read_cache()
+  public function read_cache()
   {
     if(!$id = $this->get_cache_id())
       return false;
@@ -205,7 +202,7 @@ class full_page_cache_manager
     return file_get_contents(PAGE_CACHE_DIR . $id);
   }
           
-  function get_rules()
+  public function get_rules()
   {
     if(!$this->rules)
       $this->_load_rules();
@@ -213,14 +210,13 @@ class full_page_cache_manager
     return $this->rules;
   }
   
-  function _load_rules()
+  protected function _load_rules()
   {
     include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
     
-    $ini =& get_ini('full_page_cache.ini');
     $this->rules = array();
     
-    $groups = $ini->get_all();
+    $groups = get_ini('full_page_cache.ini')->get_all();
 
     foreach($groups as $group => $data)
     {

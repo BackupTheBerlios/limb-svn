@@ -8,15 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/ 
-class empty_action
+require_once(LIMB_DIR . 'class/core/actions/action_interface.interface.php');
+
+class empty_action implements action_interface
 {
-	function set_view(&$view)
+	public function set_view($view)
 	{
 	}
 		
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
-	  $request->set_status(REQUEST_STATUS_SUCCESS);
+	  $request->set_status(request :: STATUS_SUCCESS);
 	}
 } 
 

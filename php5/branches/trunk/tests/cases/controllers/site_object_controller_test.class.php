@@ -9,13 +9,13 @@
 *
 ***********************************************************************************/   
 require_once(LIMB_DIR . 'class/core/actions/action.class.php');  
-require_once(LIMB_DIR . 'class/core/request/response.class.php');  
+require_once(LIMB_DIR . 'class/core/request/http_response.class.php');  
 require_once(LIMB_DIR . 'class/core/request/request.class.php');  
 require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
 
 Mock::generate('template');
 Mock::generate('action');
-Mock::generate('response');
+Mock::generate('http_response');
 Mock::generate('request');
 
 Mock::generatePartial
@@ -57,11 +57,11 @@ class site_object_controller_test extends LimbTestCase
   function setUp()
   {
   	$this->request = new Mockrequest($this);
-  	$this->response = new Mockresponse($this);
+  	$this->response = new Mockhttp_response($this);
   	
   	$this->site_object_controller =& new site_object_controller_test_version1($this);
   	$this->site_object_controller->setReturnValue('get_actions_definitions', $this->actions_definition_test);
-  	$this->site_object_controller->site_object_controller();
+  	$this->site_object_controller->__construct();
   	
   	debug_mock :: init($this);
   }
@@ -69,7 +69,7 @@ class site_object_controller_test extends LimbTestCase
   function tearDown()
   {
 		$this->site_object_controller->tally();
-	unset($this->site_object_controller);
+	  unset($this->site_object_controller);
 		
 		debug_mock :: tally();
 		
@@ -82,7 +82,6 @@ class site_object_controller_test extends LimbTestCase
   	$this->assertTrue($this->site_object_controller->action_exists('action_test'));
   	$this->assertFalse($this->site_object_controller->action_exists('no_such_action_test'));
   }
-  
   
   function test_determine_action()
   { 
@@ -204,10 +203,10 @@ class site_object_controller_test extends LimbTestCase
   	$site_object_controller->expectOnce('_create_template');
   	$site_object_controller->setReturnReference('_create_template', $template);
   	
-   	$action->expectOnce('perform', array(new IsAExpectation('Mockrequest'), new IsAExpectation('Mockresponse')));
+   	$action->expectOnce('perform', array(new IsAExpectation('Mockrequest'), new IsAExpectation('Mockhttp_response')));
   	$action->expectOnce('set_view');
  	  	
-  	$site_object_controller->site_object_controller();
+  	$site_object_controller->__construct();
 
   	$site_object_controller->process($this->request, $this->response);
   	

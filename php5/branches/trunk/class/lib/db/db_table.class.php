@@ -13,26 +13,27 @@ require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 
 class db_table
 {
-	var $_db_table_name = '';
+	private $_db_table_name;
 	
-	var $_primary_key_name = 'id';
+	private $_primary_key_name;
 	
-	var $_columns = array();
+	private $_columns = array();
 	
-	var $_constraints = array();
+	private $_constraints = array();
 
-  var $_db = null;
+  protected $_db = null;
 
-  function db_table()
+  function __construct()
   {
   	$this->_db_table_name = $this->_define_db_table_name();
     $this->_columns = $this->_define_columns();
     $this->_constraints = $this->_define_constraints();
+    $this->_primary_key_name = $this->_define_primary_key_name();
    
-    $this->_db =& db_factory :: instance();
+    $this->_db = db_factory :: instance();
   }
       
-  function _define_db_table_name()
+  protected function _define_db_table_name()
   {
   	$class_name = get_class($this);
   	
@@ -42,32 +43,37 @@ class db_table
   	return $class_name;
   }
   
-  function _define_columns()
+  protected function _define_primary_key_name()
+  {
+    return 'id';
+  }
+  
+  protected function _define_columns()
   {
   	return array();
   }
   
-  function _define_constraints()
+  protected function _define_constraints()
   {
   	return array();
   }
     
-  function has_column($name)
+  public function has_column($name)
   {
   	return isset($this->_columns[$name]);
   }
   
-  function get_columns()
+  public function get_columns()
   {
   	return $this->_columns;
   }
   
-  function get_constraints()
+  public function get_constraints()
   {
   	return $this->_constraints;
   }
   
-  function get_column_types()
+  public function get_column_types()
   {
   	$types = array();
   	foreach(array_keys($this->_columns) as $column_name)
@@ -76,7 +82,7 @@ class db_table
   	return $types;
   }
   
-  function get_column_type($column_name)
+  public function get_column_type($column_name)
   {
   	if(!$this->has_column($column_name))
   		return false;
@@ -86,12 +92,12 @@ class db_table
   		'';
   }
   
-  function get_primary_key_name()
+  public function get_primary_key_name()
   {
   	return $this->_primary_key_name;
   }
   
-  function insert($row)
+  public function insert($row)
   {
   	if (!is_array($row))
   	{
@@ -101,12 +107,12 @@ class db_table
     	);
   	}
 		
-		$filtered_row =& $this->_filter_row($row);
+		$filtered_row = $this->_filter_row($row);
 		
     return $this->_db->sql_insert($this->_db_table_name, $filtered_row, $this->get_column_types());
   }
   
-  function & _filter_row($row)
+  protected function _filter_row($row)
   {
   	$filtered = array();
   	foreach($row as $key => $value)
@@ -117,7 +123,7 @@ class db_table
   	return $filtered;
   }
     
-  function update($row, $conditions)
+  public function update($row, $conditions)
   { 
   	if (!is_array($row))
   	{
@@ -127,12 +133,12 @@ class db_table
     	);
   	}
 
-  	$filtered_row =& $this->_filter_row($row);
+  	$filtered_row = $this->_filter_row($row);
   	  
     return $this->_db->sql_update($this->_db_table_name, $filtered_row, $conditions, $this->get_column_types());
   } 
 
-  function update_by_id($id, $data)
+  public function update_by_id($id, $data)
   {
 		if (!$this->_primary_key_name)
 		{
@@ -143,7 +149,7 @@ class db_table
   	return $this->update($data, "{$this->_primary_key_name}='{$id}'");
   } 
   
-  function get_row_by_id($id)
+  public function get_row_by_id($id)
   {
 		if (!$this->_primary_key_name)
 		{
@@ -155,12 +161,8 @@ class db_table
 		
 		return current($data);
   }
-  
-  function get_num_rows()
-  {
-  }
-      
-  function & get_list($conditions='', $order='', $group_by_column='', $start=0, $count=0)
+        
+  public function get_list($conditions='', $order='', $group_by_column='', $start=0, $count=0)
 	{			
     $this->_db->sql_select($this->_db_table_name, '*', $conditions, $order, $start, $count);
    
@@ -168,14 +170,12 @@ class db_table
 			$group_by_column = $this->_primary_key_name;
  		 				
 		if($group_by_column)
-    	$result =& $this->_db->get_array($group_by_column);
+    	return $this->_db->get_array($group_by_column);
     else
-    	$result =& $this->_db->get_array();
-    	
-    return $result;
+    	return $this->_db->get_array();
 	}
 	
-  function delete($conditions='')
+  public function delete($conditions='')
   {  	
 		$affected_rows = $this->_prepare_affected_rows($conditions);
 		
@@ -186,12 +186,12 @@ class db_table
     return true;
 	}
 	
-	function _delete_operation($conditions, $affected_rows)
+	protected function _delete_operation($conditions, $affected_rows)
 	{
 		$this->_db->sql_delete($this->_db_table_name, $conditions);
 	}
 	
-	function delete_by_id($id)
+	public function delete_by_id($id)
 	{
 		if (!$this->_primary_key_name)
 		{
@@ -202,24 +202,24 @@ class db_table
 		return $this->delete(array($this->_primary_key_name => $id));
 	}
   	  	
-  function get_last_insert_id()
+  public function get_last_insert_id()
   {		
 		return $this->_db->get_sql_insert_id($this->_db_table_name, $this->_primary_key_name);
 	}
 
-  function get_max_id()
+  public function get_max_id()
   {			
 		return $this->_db->get_max_column_value($this->_db_table_name, $this->_primary_key_name);
 	}
 
-  function get_table_name()
+  public function get_table_name()
   {
 		return $this->_db_table_name;
 	}
   	
-	function _cascade_delete($affected_rows)
+	protected function _cascade_delete($affected_rows)
 	{
-		if($this->auto_constraints_enabled())
+		if(self :: auto_constraints_enabled())
 			return;
 			
 		if (!count($affected_rows))
@@ -232,7 +232,7 @@ class db_table
 				$table_name = $constraint_params['table_name'];
 				$column_name = $constraint_params['field'];
 				
-				$db_table =& db_table_factory :: instance($table_name);
+				$db_table = db_table_factory :: create($table_name);
 				
 				if(!$db_table->has_column($column_name))
 				{
@@ -255,19 +255,17 @@ class db_table
 		}
 	}
 
-	function & _prepare_affected_rows($conditions)
+	protected function _prepare_affected_rows($conditions)
 	{
 		$affected_rows = array();
 		
-		if($this->auto_constraints_enabled())
+		if(self :: auto_constraints_enabled())
 			return $affected_rows;
 			
-		$affected_rows =& $this->get_list($conditions);
-		
-		return $affected_rows;
+		return $this->get_list($conditions);
 	}
 		
-	function auto_constraints_enabled()
+	static public function auto_constraints_enabled()
 	{
 		return (defined('DB_AUTO_CONSTRAINTS') && DB_AUTO_CONSTRAINTS == true);
 	}

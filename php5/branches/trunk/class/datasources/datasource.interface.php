@@ -8,21 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
-class response
+interface datasource
 {
-	
-	function is_empty()
-	{
-	  return true;
-	}
-		
-	function write($string)
-	{	  
-	}
-		
-	function commit()
-	{  	
-	}			
-} 
+	public function get_dataset($counter, $params=array());
+}
+
+
 ?>

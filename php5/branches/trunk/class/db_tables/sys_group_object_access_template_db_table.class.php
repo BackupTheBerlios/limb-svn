@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 
 class sys_group_object_access_template_db_table extends db_table
 {  
-  function _define_columns()
+  protected function _define_columns()
   {
   	return array(
       'id' => array('type' => 'numeric'),
@@ -21,7 +21,7 @@ class sys_group_object_access_template_db_table extends db_table
     );
   }
   
-  function _define_constraints()
+  protected function _define_constraints()
   {
   	return array(
     	'id' =>	array(

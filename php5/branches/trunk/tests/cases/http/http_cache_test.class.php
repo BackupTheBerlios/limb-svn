@@ -249,7 +249,7 @@ class http_cache_test extends LimbTestCase
     
     $this->cache->set_last_modified_time($time = time());
     $this->cache->set_cache_time(100);
-    $this->cache->set_cache_type(HTTP_CACHE_TYPE_PUBLIC);
+    $this->cache->set_cache_type(http_cache :: TYPE_PUBLIC);
     
     $this->response->expectCallCount('header', 5);
     $this->response->expectArgumentsAt(0, 'header', array('Cache-Control: public, max-age=100'));

@@ -12,9 +12,12 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.
 
 class site_object_file_resolver extends package_file_resolver
 {
-  function resolve($class_path)
+  protected function _do_resolve($class_path)
   {
-    if(!$resolved_path = parent :: resolve('site_objects/' . $class_path . '.class.php'))    
+    if(file_exists(LIMB_DIR . 'class/core/site_objects/' . $class_path . '.class.php'))
+      return LIMB_DIR . 'class/core/site_objects/' . $class_path . '.class.php';    
+      
+    if(!$resolved_path = $this->_find_file_in_packages('site_objects/' . $class_path . '.class.php'))    
   	{
   	  debug :: write_error('site object not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
   	    array('class_path' => $class_path));

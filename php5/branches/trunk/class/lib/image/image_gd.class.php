@@ -12,14 +12,14 @@ require_once(LIMB_DIR . 'class/lib/image/image_library.class.php');
 
 class image_gd extends image_library
 {
-	var $image = null;
-	var $gd_version = null;
-	var $option_re = '/(<tr.*%s.*<\/tr>)/Ui';
-	var $create_func = '';
-	var $resize_func = '';
-	var $image_types = array(1 => 'GIF', 2 => 'JPEG', 3 => 'PNG', 4 => 'SWF', 5 => 'PSD', 6 => 'BMP', 7 => 'TIFF(intel byte order)', 8 => 'TIFF(motorola byte order)', 9 => 'JPC', 10 => 'JP2', 11 => 'JPX', 12 => 'JB2', 13 => 'SWC', 14 => 'IFF');
+	protected $image = null;
+	protected $gd_version = null;
+	protected $option_re = '/(<tr.*%s.*<\/tr>)/Ui';
+	protected $create_func = '';
+	protected $resize_func = '';
+	protected $image_types = array(1 => 'GIF', 2 => 'JPEG', 3 => 'PNG', 4 => 'SWF', 5 => 'PSD', 6 => 'BMP', 7 => 'TIFF(intel byte order)', 8 => 'TIFF(motorola byte order)', 9 => 'JPC', 10 => 'JP2', 11 => 'JPX', 12 => 'JB2', 13 => 'SWC', 14 => 'IFF');
 
-	function image_gd()
+	function __construct()
 	{
 		if (!extension_loaded('gd'))
 		{
@@ -43,7 +43,7 @@ class image_gd extends image_library
 		}
 	}
 	
-	function _determine_gd_options()
+	protected function _determine_gd_options()
 	{
 		if (function_exists('gd_info'))
 			$this->_determine_gd_options_through_gd_info();
@@ -51,7 +51,7 @@ class image_gd extends image_library
 			$this->_determine_gd_options_through_php_info();
 	}
 		
-	function _determine_gd_options_through_gd_info()
+	protected function _determine_gd_options_through_gd_info()
 	{
 		$info = gd_info();
 		$this->gd_version = $this->_get_numeric_gd_version($info['GD Version']);
@@ -69,7 +69,7 @@ class image_gd extends image_library
 			$this->read_types[] = $this->create_types[] = 'PNG';
 	}
 	
-	function _determine_gd_options_through_php_info()
+	protected function _determine_gd_options_through_php_info()
 	{
 		ob_start();
 		phpinfo();
@@ -90,21 +90,21 @@ class image_gd extends image_library
 			$this->read_types[] = $this->create_types[] = 'PNG';
 	}
 
-	function _get_gd_option($phpinfo, $option)
+	protected function _get_gd_option($phpinfo, $option)
 	{
 		$re = sprintf($this->option_re, $option);
 		preg_match($re, $phpinfo, $matches);
 		return $matches[1];
 	}
 	
-	function _get_numeric_gd_version($str)
+	protected function _get_numeric_gd_version($str)
 	{
 		$re = "/[^\.\d]*([\.\d]+)[^\.\d]*/";
 		preg_match($re, $str, $matches);
 		return (float)$matches[1];
 	}
 
-	function set_input_file($file_name, $type = '')
+	public function set_input_file($file_name, $type = '')
 	{
 	  if (empty($type))
 	  {
@@ -121,7 +121,7 @@ class image_gd extends image_library
 		return true;
 	}
 	
-	function parse_hex_color($hex)
+	public function parse_hex_color($hex)
 	{
 		$length = strlen($hex);
 		$color['red'] = hexdec(substr($hex, $length - 6, 2));
@@ -130,12 +130,12 @@ class image_gd extends image_library
 		return $color;
 	}
 	
-	function reset()
+	public function reset()
 	{
 	  $this->set_input_file($this->input_file, $this->input_file_type);
 	}
 
-	function commit()
+	public function commit()
 	{
 		if (!$this->library_installed)
 			return false;
@@ -148,7 +148,7 @@ class image_gd extends image_library
 		return true;
   }
 
-	function resize($params)
+	public function resize($params)
 	{
 		if (!$this->library_installed)
 			return false;
@@ -168,7 +168,7 @@ class image_gd extends image_library
 		$this->image = $dest_image;
 	}
 	
-	function rotate($angle, $bg_color)
+	public function rotate($angle, $bg_color)
 	{
 		if (!$this->library_installed)
 			return false;
@@ -178,7 +178,7 @@ class image_gd extends image_library
     $this->image = imagerotate($this->image, $angle, $background_color);
 	}
 	
-	function flip($params)
+	public function flip($params)
 	{
 		if (!$this->library_installed)
 			return false;
@@ -201,7 +201,7 @@ class image_gd extends image_library
 		$this->image = $dest_image;
 	}
 	
-	function cut($x, $y, $w, $h, $bg_color)
+	public function cut($x, $y, $w, $h, $bg_color)
 	{
 		if (!$this->library_installed)
 			return false;

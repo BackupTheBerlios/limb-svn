@@ -13,20 +13,20 @@ require_once(LIMB_DIR . 'class/validators/validator.class.php');
 
 class form_action extends action
 {
-	var $validator = null;
+	protected $validator = null;
 
-	var $validated = false;
+	protected $validated = false;
 
-	var $valid = false;
+	private $valid = false;
 	
-	function form_action()
+	function __construct()
 	{
-		$this->validator =& new validator();
+		$this->validator = new validator();
 				
-		parent :: action();
+		parent :: __construct();
 	}
 				
-	function is_first_time(&$request)
+	public function is_first_time($request)
 	{
 		if($this->name)
 		{
@@ -43,11 +43,11 @@ class form_action extends action
 		}
 	} 
 
-	function _init_validator()
+	protected function _init_validator()
 	{
 	} 
 
-	function validate()
+	public function validate()
 	{
 		if (!$this->validated)
 		{
@@ -60,12 +60,12 @@ class form_action extends action
 		return $this->valid;
 	} 
 
-	function is_valid()
+	public function is_valid()
 	{
 		return $this->valid;
 	} 
 
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
 		if ($this->is_first_time($request))
 		{
@@ -80,16 +80,16 @@ class form_action extends action
 			$this->_process_transfered_dataspace();
 			
 			if(!$this->validate())
-			  $request->set_status(REQUEST_STATUS_FORM_NOT_VALID);
+			  $request->set_status(request :: STATUS_FORM_NOT_VALID);
 			else	
 				$this->_valid_perform($request, $response);
 				
-			if($this->view && $form =& $this->view->find_child($this->name))
+			if($this->view && $form = $this->view->find_child($this->name))
 				$form->set_valid_status($request->is_success());
 		} 
 	}
 	
-	function _htmlspecialchars_dataspace_value($name)
+	protected function _htmlspecialchars_dataspace_value($name)
 	{
 		if($value = $this->dataspace->get($name))
 		{
@@ -98,11 +98,11 @@ class form_action extends action
 		}
 	}
 	
-	function _init_dataspace(&$request)
+	protected function _init_dataspace($request)
 	{
 	}
 	
-	function _transfer_dataspace(&$request)
+	protected function _transfer_dataspace($request)
 	{	
 		if ($arr = $request->get($this->name))
 			$this->dataspace->import($arr);
@@ -110,21 +110,21 @@ class form_action extends action
 			$this->dataspace->import($request->export());
 	}
 
-	function _process_transfered_dataspace()
+	protected function _process_transfered_dataspace()
 	{	
 	}
 
-	function _first_time_perform(&$request, &$response)
+	protected function _first_time_perform($request, $response)
 	{
-		$request->set_status(REQUEST_STATUS_FORM_DISPLAYED);
+		$request->set_status(request :: STATUS_FORM_DISPLAYED);
 	}
 		
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
-		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 	}
 	
-	function get_validator()
+	public function get_validator()
 	{
 		return $this->validator;
 	}

@@ -13,11 +13,6 @@ require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
 class test1_db_table extends db_table
 {
-  function test1_db_table()
-  {
-    parent :: db_table();
-  }
-    
   function _define_columns()
   {
   	return array(
@@ -52,7 +47,7 @@ class db_table_test extends LimbTestCase
 	function setUp()
 	{
 		$this->db =& db_factory :: instance();
-		$this->db_table_test =& db_table_factory :: instance('test1');
+		$this->db_table_test =& db_table_factory :: create('test1');
  		
 		$this->_clean_up();
 	} 
@@ -66,11 +61,6 @@ class db_table_test extends LimbTestCase
 	{
 		$this->db->sql_delete('test1');
 	}
-	
-	function test_instantiate()
-	{
-		$this->assertReference($this->db_table_test, db_table_factory :: instance('test1'));
-	} 
 	
 	function test_correct_table_properties()
 	{		

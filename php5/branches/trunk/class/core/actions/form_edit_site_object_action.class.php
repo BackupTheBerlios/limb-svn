@@ -11,18 +11,18 @@
 require_once(LIMB_DIR . 'class/core/actions/form_site_object_action.class.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 
-class form_edit_site_object_action extends form_site_object_action
+abstract class form_edit_site_object_action extends form_site_object_action
 {
-  var $_increase_version;
+  protected $_increase_version;
   
-  function form_edit_site_object_action()
+  function __construct()
   {
-    parent :: form_site_object_action();
+    parent :: __construct();
     
     $this->_increase_version = $this->_define_increase_version_flag();
   }
   
-  function _define_increase_version_flag()
+  protected function _define_increase_version_flag()
   {
     if (is_a($this->object, 'content_object'))
       return true;
@@ -30,7 +30,7 @@ class form_edit_site_object_action extends form_site_object_action
       return false;
   }
   
-	function _init_validator()
+	protected function _init_validator()
 	{
 		if(!$object_data = fetch_requested_object())
 			return;
@@ -47,9 +47,9 @@ class form_edit_site_object_action extends form_site_object_action
 		$this->validator->add_rule($v3 = array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', (int)$parent_node_id, (int)$object_data['node_id']));
 	}
 
-	function _init_dataspace(&$request)
+	protected function _init_dataspace($request)
 	{
-		$object_data =& $this->_load_object_data();
+		$object_data = $this->_load_object_data();
 
 		$data = array();
 		complex_array :: map(array_flip($this->datamap), $object_data, $data);
@@ -57,9 +57,9 @@ class form_edit_site_object_action extends form_site_object_action
 		$this->dataspace->import($data);
 	}
 
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
-		$object_data =& $this->_load_object_data();
+		$object_data = $this->_load_object_data();
 
 		$data_to_import['id'] = $object_data['id'];
 		$data_to_import['node_id'] = $object_data['node_id'];
@@ -76,7 +76,7 @@ class form_edit_site_object_action extends form_site_object_action
 		
 		if(!$this->_update_object_operation())
 		{
-		  $request->set_status(REQUEST_STATUS_FAILURE);
+		  $request->set_status(request :: STATUS_FAILURE);
 			return;
 		}	
 
@@ -87,12 +87,12 @@ class form_edit_site_object_action extends form_site_object_action
 			$this->_handle_changed_identifier($data_to_import['identifier']);
 		}	
 
-	  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+	  $request->set_status(request :: STATUS_FORM_SUBMITTED);
 	  
 	  fetcher :: flush_cache();
 	}
 	
-	function _update_object_operation()
+	protected function _update_object_operation()
 	{
 	  if ($this->dataspace->get('minor_changes') || ($this->_increase_version == false))
 		  $result = $this->object->update(false);
@@ -102,19 +102,18 @@ class form_edit_site_object_action extends form_site_object_action
 		return ($result !== false) ? true : false;
 	}
 
-	function _valid_perform_prepare_data(&$data)
+	protected function _valid_perform_prepare_data(&$data)
 	{
 		complex_array :: map($this->datamap, $this->dataspace->export(), $data);
 	}
 	
-	function _handle_changed_identifier($new_identifier)
+	protected function _handle_changed_identifier($new_identifier)
 	{
 	}
 	
-	function & _load_object_data()
+	protected function _load_object_data()
 	{
-		$result =& fetch_requested_object();
-		return $result;
+		return fetch_requested_object();
 	}
 }
 ?>

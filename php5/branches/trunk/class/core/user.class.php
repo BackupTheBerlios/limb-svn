@@ -8,48 +8,56 @@
 * $Id$
 *
 ***********************************************************************************/ 
-define('DEFAULT_USER_ID', -1);
-define('DEFAULT_USER_GROUP', 'visitors');
-
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'class/core/object.class.php');
 
+//This class requires serious refactoring since it "knows" too much - it shouldn't make login 
+// and logout operations, it should be just a container!
+
 class user extends object
 {
-	var $_id = DEFAULT_USER_ID;
-	var $_node_id = -1;
-	var $_login = '';
-	var $_password = '';
-	var $_email = '';
-	var $_name = '';
-	var $_lastname = '';
-	var $_locale_id = '';
+  const DEFAULT_USER_ID = -1;
+  const DEFAULT_USER_GROUP = 'visitors';
+  
+  protected static $_instance = null;
+  
+	protected $_id;
+	protected $_node_id = -1;
+	protected $_login = '';
+	protected $_password = '';
+	protected $_email = '';
+	protected $_name = '';
+	protected $_lastname = '';
+	protected $_locale_id = '';
 	
-	var $_is_logged_in = false;
+	protected $_is_logged_in = false;
 	
-	var $_groups = array();
+	protected $_groups = array();
 	
-	function user()
+	protected $__session_class_path = __FILE__;
+	
+	function __construct()
 	{
-	  parent :: object();
-	  
-	  //IMPORTANT!!!
-	  $this->__session_class_path = LIMB_DIR . '/class/core/user.class.php';
+	  $this->_id = self :: DEFAULT_USER_ID;
+	  parent :: __construct();
 	}
+	
+	static public function instance()
+	{
+    if (!self :: $_instance)
+      self :: $_instance = instantiate_session_object('user');
 
-	function & instance()
-	{
-		$obj =& instantiate_session_object('user');
-		return $obj;
+    return self :: $_instance;
 	}
 	
-	function _set_groups($groups)
+	//this should be fixed, since it's made public for testing only
+	public function _set_groups($groups)
 	{
 		$this->_groups = $groups;
 	}
 	
-	function _determine_groups()
+	protected function _determine_groups()
 	{
 		if ($this->is_logged_in())
 			$groups_arr = $this->_get_db_groups();
@@ -66,9 +74,9 @@ class user extends object
 		$this->_set_groups($result);
 	}
 	
-	function _get_db_groups()
+	protected function _get_db_groups()
 	{
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$sql = 
 			'SELECT sso.*, tn.*
@@ -83,14 +91,14 @@ class user extends object
 		return $db->get_array();
 	}
 	
-	function _get_default_db_groups()
+	protected function _get_default_db_groups()
 	{
 		$db =& db_factory :: instance();
 	
 		$sql = 
 			'SELECT sso.*, tn.*
 			FROM sys_site_object as sso, user_group as tn
-			WHERE sso.identifier="' . DEFAULT_USER_GROUP . '"
+			WHERE sso.identifier="' . self :: DEFAULT_USER_GROUP . '"
 			AND sso.id=tn.object_id 
 			AND sso.current_version=tn.version';
 					
@@ -99,7 +107,7 @@ class user extends object
 		return $db->get_array();
 	}
 		
-	function login($login, $password, $locale_id = '')
+	public function login($login, $password, $locale_id = '')
 	{				
 		$this->logout();
 		
@@ -125,11 +133,11 @@ class user extends object
 		return true;
 	}
 	
-	function &_get_identity_record($login, $password)
+	protected function _get_identity_record($login, $password)
 	{
 		$crypted_password = $this->get_crypted_password($login, $password);
 
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$sql = 
 			'SELECT *, ssot.id as node_id, sso.id as id FROM 
@@ -147,109 +155,110 @@ class user extends object
 		return $db->fetch_row();
 	}
 		
-	function logout()
+	public function logout()
 	{	
-		$this->_set_id(DEFAULT_USER_ID);
+		$this->_set_id(self :: DEFAULT_USER_ID);
 		$this->_set_is_logged_in(false);
 		$this->_set_groups(array());
 	}
 	
-	function get_crypted_password($login, $none_crypt_password)
+	public function get_crypted_password($login, $none_crypt_password)
 	{	
 		return md5($login.$none_crypt_password);
 	}
 	
-	function is_logged_in()
+	public function is_logged_in()
 	{
 		return $this->_is_logged_in;
 	}
 	
-	function _set_is_logged_in($status = true)
+	protected function _set_is_logged_in($status = true)
 	{
 		$this->_is_logged_in = $status;
 	}
 	
-	function get_id()
+	public function get_id()
 	{
 		return $this->_id;
 	}
 	
-	function _set_id($id)
+	//this should be fixed, since it's made public for testing only
+	public function _set_id($id)
 	{
 		$this->_id = $id;
 	}
 	
-	function get_node_id()
+	public function get_node_id()
 	{
 		return $this->_node_id;
 	}
 
-	function _set_node_id($node_id)
+	protected function _set_node_id($node_id)
 	{
 		$this->_node_id = $node_id;
 	}
 	
-	function get_login()
+	public function get_login()
 	{
 		return $this->_login;
 	}
 
-	function _set_login($login)
+	protected function _set_login($login)
 	{
 		$this->_login = $login;
 	}
 
-	function get_email()
+	public function get_email()
 	{
 		return $this->_email;
 	}
 
-	function _set_email($email)
+	protected function _set_email($email)
 	{
 		$this->_email = $email;
 	}
 
-	function get_name()
+	public function get_name()
 	{
 		return $this->_name;
 	}
 
-	function _set_name($name)
+	protected function _set_name($name)
 	{
 		$this->_name = $name;
 	}
 	
-	function get_locale_id()
+	public function get_locale_id()
 	{
 		return $this->_locale_id;
 	}
 	
-	function set_locale_id($locale_id)
+	public function set_locale_id($locale_id)
 	{
 		$this->_locale_id = $locale_id;
 	}
 	
-	function get_password()
+	public function get_password()
 	{
 		return $this->_password;
 	}
 
-	function _set_password($password)
+	protected function _set_password($password)
 	{
 		$this->_password = $password;
 	}
 	
-	function get_lastname()
+	public function get_lastname()
 	{
 		return $this->_lastname;
 	}
 	
-	function _set_lastname($lastname)
+	protected function _set_lastname($lastname)
 	{
 		$this->_lastname = $lastname;
 	}
 
-	function get_groups()
+	public function get_groups()
 	{
 		if(!$this->_groups)
 			$this->_determine_groups();
@@ -257,7 +266,7 @@ class user extends object
 		return $this->_groups;
 	}
 		
-	function generate_password()
+	public function generate_password()
 	{
 		$alphabet = array(
 				array('b','c','d','f','g','h','g','k','l','m','n','p','q','r','s','t','v','w','x','z',
@@ -278,7 +287,7 @@ class user extends object
 		return $new_password;
 	}
 		
-	function is_in_groups($groups_to_check)
+	public function is_in_groups($groups_to_check)
 	{
 		if (!is_array($groups_to_check))
 		{

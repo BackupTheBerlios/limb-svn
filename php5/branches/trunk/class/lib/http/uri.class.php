@@ -12,66 +12,66 @@ require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 
 class uri
 {
-  var $_protocol = '';
+  protected $_protocol = '';
 
-  var $_user = '';
+  protected $_user = '';
 
-  var $_password = '';
+  protected $_password = '';
 
-  var $_host = '';
+  protected $_host = '';
   
-  var $_port = '';
+  protected $_port = '';
   
-  var $_path = '';
+  protected $_path = '';
   
-  var $_anchor = '';
+  protected $_anchor = '';
   
-  var $_query_items = array();
+  protected $_query_items = array();
 
-  var $_path_elements = array();
+  protected $_path_elements = array();
 
-  function uri($str='')
+  function __construct($str='')
   {
     if ($str)
       $this->parse($str);
   }
   
-  function get_protocol()
+  public function get_protocol()
   {
     return $this->_protocol;
   }
 
-  function get_user()
+  public function get_user()
   {
     return $this->_user;
   }
 
-  function get_password()
+  public function get_password()
   {
     return $this->_password;
   }
   
-  function get_host()
+  public function get_host()
   {
     return $this->_host;
   }
 
-  function get_port()
+  public function get_port()
   {
     return $this->_port;
   }
 
-  function get_path()
+  public function get_path()
   {
     return $this->_path;
   }
 
-  function get_anchor()
+  public function get_anchor()
   {
     return $this->_anchor;
   }
     
-  function parse($str)
+  public function parse($str)
   {
 		$this->_user        = '';
 		$this->_password    = '';
@@ -167,17 +167,17 @@ class uri
     $this->_path_elements = explode('/',$this->_path);
   }
 
-  function count_path()
+  public function count_path()
   {
     return sizeof($this->_path_elements);
   }
   
-  function count_query_items()
+  public function count_query_items()
   {
     return sizeof($this->_query_items);
   }
   
-  function compare($uri)
+  public function compare($uri)
   {   		  	
     if (  
           $this->_protocol !== $uri->get_protocol() ||
@@ -197,7 +197,7 @@ class uri
     return true;
   }
   
-  function compare_query($uri)
+  public function compare_query($uri)
   {
 		if ($this->count_query_items() != $uri->count_query_items())
 		  return false;
@@ -211,7 +211,7 @@ class uri
   	return true;
   }
 
-  function compare_path($uri)
+  public function compare_path($uri)
   {
   	$count1 = $this->count_path();
   	$count2 = $uri->count_path();
@@ -225,7 +225,7 @@ class uri
     return ($count1 - $count2);
   }
 
-  function to_string($parts = array('protocol', 'user', 'password', 'host', 'port', 'path', 'query', 'anchor'))
+  public function to_string($parts = array('protocol', 'user', 'password', 'host', 'port', 'path', 'query', 'anchor'))
   {
     $string = '';
     
@@ -267,12 +267,12 @@ class uri
      return $string;
   }
       
-  function get_path_element($level)
+  public function get_path_element($level)
   {
     return isset($this->_path_elements[$level]) ? $this->_path_elements[$level] : '';
   }
   
-  function get_path_elements()
+  public function get_path_elements()
   {  		
   	return $this->_path_elements;
   }
@@ -281,19 +281,19 @@ class uri
   * Adds a query_string item
   *
   */
-  function add_encoded_query_item($name, $value)
+  public function add_encoded_query_item($name, $value)
   {
     $this->_query_items[$name] = $value;    
   }
   
-  function add_query_item($name, $value)
+  public function add_query_item($name, $value)
   {
     $this->_query_items[$name] = is_array($value)? 
       complex_array :: array_map_recursive('urlencode', $value) : 
       urlencode($value);
   }
   
-  function get_query_item($name)
+  public function get_query_item($name)
   {
     if (isset($this->_query_items[$name]))
     	return $this->_query_items[$name];
@@ -301,7 +301,7 @@ class uri
 		return false;
   }
   
-  function get_query_items()
+  public function get_query_items()
   {
     return $this->_query_items;
   }
@@ -310,7 +310,7 @@ class uri
   * Removes a query_string item
   *
   */
-  function remove_query_item($name)
+  public function remove_query_item($name)
   {
     if (isset($this->_query_items[$name]))
     unset($this->_query_items[$name]);
@@ -319,7 +319,7 @@ class uri
   /**
   * Sets the query_string to literally what you supply
   */
-  function set_query_string($query_string)
+  public function set_query_string($query_string)
   {
   	$this->_query_items = $this->_parse_query_string($query_string);
   }
@@ -327,7 +327,7 @@ class uri
   /**
   * Removes query items
   */  
-  function remove_query_items()
+  public function remove_query_items()
   {
   	$this->_query_items = array();
 	}
@@ -336,7 +336,7 @@ class uri
   * Returns flat query_string
   *
   */
-  function get_query_string()
+  public function get_query_string()
   {
     $query_string = ''; 
     $query_items = array();    
@@ -361,7 +361,7 @@ class uri
   /**
   * Parses raw query_string and returns an array of it
   */
-  function _parse_query_string($query_string)
+  protected function _parse_query_string($query_string)
   {
     $query_string = rawurldecode($query_string);
     
@@ -385,7 +385,7 @@ class uri
   * /foo/bar/.././/boo.php => /foo/boo.php
   *
   */
-  function resolve_path($path)
+  public function resolve_path($path)
   {
     $path = explode('/', str_replace('//', '/', $path));
     
@@ -416,6 +416,5 @@ class uri
 
     return implode('/', $path);
   }
-  
 }
 ?>

@@ -13,23 +13,23 @@ require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 require_once(LIMB_DIR . 'class/lib/date/date.class.php');
 require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 
-define('DB_TRANSACTION_STATUS_IN', 1);
-define('DB_TRANSACTION_STATUS_OUT', 0);
-
-class db_module
+abstract class db_module
 {
-	var $_transaction_status;
+  const DB_TRANSACTION_STATUS_IN = 1;
+  const DB_TRANSACTION_STATUS_OUT = 0;
+  
+	protected $_transaction_status;
 	
-  var $_db_connection;
-  var $_sql_result;
+  protected $_db_connection;
+  protected $_sql_result;
   
-  var $_locale_id = '';
+  protected $_locale_id = '';
   
-  var $_executed_sql = array();
+  protected $_executed_sql = array();
   
-  function db_module($db_params)
+  function __construct($db_params)
   {
-		$this->_transaction_status = DB_TRANSACTION_STATUS_OUT;
+		$this->_transaction_status = self :: DB_TRANSACTION_STATUS_OUT;
 		
 	  $this->_db_connection = -1;
 	 	$this->_sql_result = null;
@@ -39,71 +39,51 @@ class db_module
   	$this->select_db($db_params['name']);
   }
   
-  function set_locale_id($locale_id)
+  public function set_locale_id($locale_id)
   {
   	$this->_locale_id = $locale_id;
   }
 
-  function is_debug_enabled()
+  public function is_debug_enabled()
 	{
 		return (defined('DEBUG_DB_ENABLED') && constant('DEBUG_DB_ENABLED'));
 	}
 
-  function connect_db($db_params)
+  public function connect_db($db_params)
   {
   	if(!$this->_db_connection = $this->_connect_db_operation($db_params))
   		error("couldnt connect to db at host {$db_params['host']}, check db params", 
   			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);  	
   }
 
-  function select_db($db_name)
+  public function select_db($db_name)
   {  	
   	if(!$this->_select_db_operation($db_name))
   		error("couldnt select db '{$db_name}', check db params", 
   			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
   }
   
-  function _connect_db_operation($db_params)
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);
-  }
+  abstract protected function _connect_db_operation($db_params);
 
-  function _disconnect_db_operation($db_params)
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);
-  }
+  abstract protected function _disconnect_db_operation($db_params);
   
-  function _select_db_operation($db_name)
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-  }
-
-  function disconnect_db()
+  abstract protected function _select_db_operation($db_name);
+  
+  public function disconnect_db()
   {
   	$this->_disconnect_db_operation();
   	
   	$this->_db_connection = -1;
   }
 
-  function free_result()
+  public function free_result()
   {
   	$this->_sql_result = null;
   }
   
-  function get_affected_rows()
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-  }
+  abstract public function get_affected_rows();
 
-  function sql_exec($sql, $limit=0, $offset=0)
+  public function sql_exec($sql, $limit=0, $offset=0)
   { 
   	$this->_sql_result = null;
   	  	 	
@@ -144,19 +124,14 @@ class db_module
     return $this->_sql_result;
   }
   
-  function _sql_exec_operation($sql)
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);
-  }
+  abstract protected function _sql_exec_operation($sql);
   
-  function _sql_exec_error($sql)
+  protected function _sql_exec_error($sql)
   {
   	 return $this->get_last_error() . "\n" . $sql;
   }
 
-  function sql_exec_batch($sql='')
+  public function sql_exec_batch($sql='')
   {
   	$sqls = array();
 		$this->parse_batch_sql($sqls, $sql, 32344);
@@ -167,7 +142,7 @@ class db_module
 		return true;
   }
   
-  function assign_array(&$result_array, $array_index='')
+  public function assign_array(&$result_array, $array_index='')
   {
 		if(!$this->_sql_result)
 			return;
@@ -186,7 +161,7 @@ class db_module
     $this->free_result();
   }
     
-  function & get_array($array_index='')
+  public function get_array($array_index='')
   {
     $result_array = array();
     
@@ -209,73 +184,48 @@ class db_module
     return $result_array;
   }
   
-  function escape($sql)
+  public function escape($sql)
   {
   	return $sql;
   }
   
-  function concat($value1, $value2)
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);
-  }
+  abstract public function concat($values);
   
-  function substr($string, $offset, $limit=null)
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);
-  }
+  abstract public function substr($string, $offset, $limit=null);
   
-  function null()
+  public function null()
   {
   	return "''";
   }
   
 	//$count $start not supported by default!
-  function sql_select($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  public function sql_select($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
     return $this->sql_exec($this->make_select_string($table, $fields, $where, $order, $count, $start));
   }
 
-  function sql_insert($table, $row, $column_types=array())
+  public function sql_insert($table, $row, $column_types=array())
   {  	
     return $this->sql_exec($this->make_insert_string($table, $row, $column_types));
   }
 
-  function sql_update($table, $set, $where='', $column_types=array())
+  public function sql_update($table, $set, $where='', $column_types=array())
   {  	
   	return $this->sql_exec($this->make_update_string($table, $set, $where, $column_types));
   }
 
-  function sql_delete($table, $where='')
+  public function sql_delete($table, $where='')
   {  	
     return $this->sql_exec($this->make_delete_string($table, $where));
   }
    
-  function parse_batch_sql(&$ret, $sql, $release)
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-	}
+  abstract public function parse_batch_sql(&$ret, $sql, $release);
 	
-	function _result_num_fields()
-	{
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-	}
+	abstract protected function _result_num_fields();
 	
-	function _fetch_assoc_result_row($col_num)
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-  }
+	abstract protected function _fetch_assoc_result_row($col_num = '');
 	
-	function _process_values($names_values, $column_types=array())
+	public function process_values($names_values, $column_types=array())
 	{
 		foreach($names_values as $key => $value)
 		{
@@ -286,7 +236,7 @@ class db_module
   	return $names_values;
 	}
 	
-	function _process_value($value, $type='')
+	protected function _process_value($value, $type='')
   { 
   	$type = ($type) ? $type : gettype($value);
   	
@@ -320,20 +270,20 @@ class db_module
     }
   }
   
-  function _process_string_value($value)
+  protected function _process_string_value($value)
   {
   	return "'" . $this->escape($value) . "'";
   }
 
-  function _process_bool_value($value)
+  protected function _process_bool_value($value)
   {
   	return ($value) ? 1 : 0;
   }
 
-  function _process_date_value($value)
+  protected function _process_date_value($value)
   {
-  	$locale =& locale :: instance($this->_locale_id);
-  	$date =& new date($value, DATE_SHORT_FORMAT_ISO);
+  	$locale = locale :: instance($this->_locale_id);
+  	$date = new date($value, DATE_SHORT_FORMAT_ISO);
   	
   	if(!$date->is_valid())
   	{
@@ -344,10 +294,10 @@ class db_module
   	return "'" . $value . "'";
   }
 
-  function _process_datetime_value($value)
+  protected function _process_datetime_value($value)
   {
-  	$locale =& locale :: instance($this->_locale_id);
-  	$date =& new date($value, DATE_FORMAT_ISO);
+  	$locale = locale :: instance($this->_locale_id);
+  	$date = new date($value, DATE_FORMAT_ISO);
   	
   	if(!$date->is_valid())
   	{
@@ -358,24 +308,19 @@ class db_module
   	return "'" . $value . "'";
   }  
   
-  function _process_default_value($value)
+  protected function _process_default_value($value)
   {
   	return strval($value);
   }
   	
-	function get_last_error()
+	public function get_last_error()
 	{
 		return 'undefined error';
 	}
 	
-	function get_sql_insert_id()
-	{
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-	}
+	abstract public function get_sql_insert_id();
 	
-  function get_max_column_value($table_name, $column_name)
+  public function get_max_column_value($table_name, $column_name)
   {	
   	$sql = 'SELECT MAX('. $column_name .') as m FROM '. $table_name;
 		
@@ -385,22 +330,17 @@ class db_module
 		return isset($arr['m']) ? $arr['m'] : 0;
 	}
 	
-	function fetch_row()
+	public function fetch_row()
 	{
 	  return $this->_fetch_assoc_result_row();
 	}
 	
-	function count_selected_rows()
-	{
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-	}
+	abstract public function count_selected_rows();
 	
-  function make_insert_string($table, $names_values, $column_types=array())
+  public function make_insert_string($table, $names_values, $column_types=array())
   {
   	if(is_array($names_values))
-  		$names_values = $this->_process_values($names_values, $column_types);
+  		$names_values = $this->process_values($names_values, $column_types);
     	
 		$keys = array_keys($names_values);
 		$values = array_values($names_values);
@@ -411,7 +351,7 @@ class db_module
     return "INSERT INTO $table $str_names VALUES $str_values";
   }
 
-  function make_select_string($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  public function make_select_string($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
     if(is_array($where))
     	$where = ' WHERE (' . $this->sql_and($where) . ')';
@@ -430,10 +370,10 @@ class db_module
     return "SELECT $fields_str FROM $table $where $order";
   }
 
-  function make_update_string($table, $names_values, $where='', $column_types=array())
+  public function make_update_string($table, $names_values, $where='', $column_types=array())
   { 
   	if(is_array($names_values))
-  		$names_values = $this->_process_values($names_values, $column_types);
+  		$names_values = $this->process_values($names_values, $column_types);
    	    	   
 		if(is_array($where))
 			$where = ' WHERE (' . $this->sql_and($where) . ')';
@@ -456,7 +396,7 @@ class db_module
     return "UPDATE $table SET $fields_str $where";
   }
 
-  function make_delete_string($table, $where='')
+  public function make_delete_string($table, $where='')
   {
     if(is_array($where))
     	$where = ' WHERE (' . $this->sql_and($where) . ')';
@@ -466,7 +406,7 @@ class db_module
     return "DELETE FROM $table $where";
   }
   
-  function sql_in($column_name, $values, $type='')
+  public function sql_in($column_name, $values, $type='')
   {
 		$implode_values = array();
 		foreach($values as $value)
@@ -477,7 +417,7 @@ class db_module
 		return $column_name . ' IN (' . $in_ids . ')';
   }
   
-  function sql_and($conditions, $column_types=array())
+  public function sql_and($conditions, $column_types=array())
   {
 		$implode_values = array();
 		
@@ -490,68 +430,48 @@ class db_module
 		return implode(' AND ', $implode_values);
   }
   
-  function begin()
+  public function begin()
   {
-  	if($this->_transaction_status == DB_TRANSACTION_STATUS_OUT)
+  	if($this->_transaction_status == self :: DB_TRANSACTION_STATUS_OUT)
   	{
   		$this->_begin_operation();
-  		$this->_transaction_status = DB_TRANSACTION_STATUS_IN;
+  		$this->_transaction_status = self :: DB_TRANSACTION_STATUS_IN;
   	}
   }
   
-  function _begin_operation()
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-  }
+  abstract protected function _begin_operation();
   
-  function commit()
+  public function commit()
   {
-  	if($this->_transaction_status == DB_TRANSACTION_STATUS_IN)
+  	if($this->_transaction_status == self :: DB_TRANSACTION_STATUS_IN)
   	{
   		$this->_commit_operation();
-  		$this->_transaction_status = DB_TRANSACTION_STATUS_OUT;
+  		$this->_transaction_status = self :: DB_TRANSACTION_STATUS_OUT;
   	}
   }
 
-  function _commit_operation()
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-  }
+  abstract protected function _commit_operation();
   
-  function rollback()
+  public function rollback()
   {
-  	if($this->_transaction_status == DB_TRANSACTION_STATUS_IN)
+  	if($this->_transaction_status == self :: DB_TRANSACTION_STATUS_IN)
   	{
   		$this->_rollback_operation();
-  		$this->_transaction_status = DB_TRANSACTION_STATUS_OUT;
+  		$this->_transaction_status = self :: DB_TRANSACTION_STATUS_OUT;
   	}
   }
   
-  function _rollback_operation()
-  {
-  	error('abstract method',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-  	);  
-  }
-
+  abstract protected function _rollback_operation();
 }
 
 function sql_and($conditions, $column_types=array())
 {	
-	$db =& db_factory :: instance();
-	
-	return $db->sql_and($conditions, $column_types);
+	return db_factory :: instance()->sql_and($conditions, $column_types);
 }
 
 function sql_in($column_name, $values, $type='')
 {	
-	$db =& db_factory :: instance();
-	
-	return $db->sql_in($column_name, $values, $type);
+	return db_factory :: instance()->sql_in($column_name, $values, $type);
 }
 
 ?>

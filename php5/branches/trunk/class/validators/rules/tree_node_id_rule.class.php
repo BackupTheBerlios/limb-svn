@@ -13,13 +13,11 @@ require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class tree_node_id_rule extends single_field_rule
 {	
-	function check($value)
+	protected function check($value)
 	{
-		$tree = tree :: instance();
-		
 		if(empty($value))
 		  $this->error(strings :: get('error_invalid_tree_node_id', 'error'));
-		elseif(!$tree->get_node((int)$value))
+		elseif(!tree :: instance()->get_node((int)$value))
 			$this->error(strings :: get('error_invalid_tree_node_id', 'error'));
 	} 
 }

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 
-class site_object_controller_filter extends intercepting_filter 
+class site_object_controller_filter implements intercepting_filter 
 { 
-  function run(&$filter_chain, &$request, &$response) 
+  public function run($filter_chain, $request, $response) 
   {  
     debug :: add_timing_point('site object controller filter started');
   
-    $site_object =& wrap_with_site_object(fetch_requested_object($request));
+    $site_object = wrap_with_site_object(fetch_requested_object($request));
      
     $site_object_controller =& $site_object->get_controller();
             

@@ -11,36 +11,36 @@
 
 class filter_chain
 {
-  var $filters = array();
-  var $counter = 0;
+  protected $filters = array();
+  protected $counter = 0;
   
-  var $request;
-  var $response;
+  protected $request;
+  protected $response;
   
-  function filter_chain(&$request, &$response)
+  function __construct($request, $response)
   {
-    $this->request =& $request;
-    $this->response =& $response;
+    $this->request = $request;
+    $this->response = $response;
   }
   
-  function register_filter(&$filter)
+  public function register_filter($filter)
   {
-    $this->filters[] =& $filter;
+    $this->filters[] = $filter;
   }
   
-  function has_filter($filter_class)
+  public function has_filter($filter_class)
   {
     foreach(array_keys($this->filters) as $key)
     {
       resolve_handle($this->filters[$key]);
-      if(get_class($this->filters[$key]) == strtolower($filter_class))
+      if(get_class($this->filters[$key]) == $filter_class)
         return true;
     }
     
     return false;
   }
   
-  function next() 
+  public function next() 
   { 
     $this->counter++;
     
@@ -51,7 +51,7 @@ class filter_chain
     }
   } 
    
-  function process() 
+  public function process() 
   { 
     $this->counter = 0;
     

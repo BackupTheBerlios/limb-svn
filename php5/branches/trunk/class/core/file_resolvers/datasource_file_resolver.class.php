@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.
 
 class datasource_file_resolver extends package_file_resolver
 {
-  function _do_resolve($class_path)
+  protected function _do_resolve($class_path)
   {    
     if(file_exists(LIMB_DIR . '/class/datasources/' . $class_path . '.class.php'))
       return LIMB_DIR . '/class/datasources/' . $class_path . '.class.php';

@@ -16,34 +16,29 @@ class request_test extends LimbTestCase
   
   function setUp()
   {
-    $this->request =& request :: instance();
+    $this->request = request :: instance();
   }
   
   function tearDown()
   {
   } 
-  
-  function test_instance()
-  {
-    $this->assertReference($this->request, request :: instance());
-  }
-  
+    
   function test_set_get_status()
   {
-    $this->request->set_status(REQUEST_STATUS_SUCCESS);
+    $this->request->set_status(request :: STATUS_SUCCESS);
     
-    $this->assertEqual($this->request->get_status(), REQUEST_STATUS_SUCCESS);
+    $this->assertEqual($this->request->get_status(), request :: STATUS_SUCCESS);
   }
   
   function test_is_problem()
   {
-    $this->request->set_status(REQUEST_STATUS_FAILURE | REQUEST_STATUS_FORM_NOT_VALID);
+    $this->request->set_status(request :: STATUS_FAILURE | request :: STATUS_FORM_NOT_VALID);
     $this->assertTrue($this->request->is_problem());
   }
   
   function test_is_success()
   {
-    $this->request->set_status(REQUEST_STATUS_FORM_SUBMITTED | REQUEST_STATUS_FORM_DISPLAYED);
+    $this->request->set_status(request :: STATUS_FORM_SUBMITTED | request :: STATUS_FORM_DISPLAYED);
     $this->assertTrue($this->request->is_success());
   }  
 }

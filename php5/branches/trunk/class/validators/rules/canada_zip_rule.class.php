@@ -12,14 +12,9 @@ require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class canada_zip_rule extends single_field_rule
 {
-	function canada_zip_rule($fieldname)
-	{
-		parent :: single_field_rule($fieldname);
-	} 
-
   //The Canadian postal code is LNL NLN
   //where N=number and L=letter
-	function check($value)
+	protected function check($value)
 	{
 	  $value = "$value";
 	  

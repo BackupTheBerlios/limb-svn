@@ -10,29 +10,24 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 
-class site_object_factory
+if(!is_registered_resolver('site_object'))
+  register_file_resolver('site_object', $r = LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver');
+
+abstract class site_object_factory
 {
-	function create($class_name)
+	static function create($class_name)
 	{	
-	  site_object_factory :: _include_class_file($class_name);
+	  self :: _include_class_file($class_name);
 	  
-  	return create_object($class_name);	
+  	return new $class_name();	
 	}
 	
-	function & instance($class_name)
-	{	
-	  site_object_factory :: _include_class_file($class_name);
-	  
-		$obj =&	instantiate_object($class_name);
-		return $obj;
-	}
-
-	function _include_class_file($class_name)
+	static private function _include_class_file($class_name)
 	{
 	  if(class_exists($class_name))
 	    return;
 	
-		$resolver =& get_file_resolver('site_object');
+		$resolver = get_file_resolver('site_object');
 		resolve_handle($resolver);
 		
 		$full_path = $resolver->resolve($class_name);

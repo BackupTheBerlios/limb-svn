@@ -23,22 +23,22 @@ require_once(LIMB_DIR . 'class/etc/message_box.class.php');
 
 class limb_application
 {
-  var $request;
-  var $response;
+  private $request;
+  private $response;
     
-  function limb_application()
+  public function limb_application()
   {
-    $this->request =& request :: instance();
-    $this->response =& new http_response();  
+    $this->request = request :: instance();
+    $this->response = new http_response();  
   }
   
-  function _load_packages()
+  protected function _load_packages()
   {
     $p =& packages_info :: instance();
     $p->load_packages();
   }
   
-  function _register_filters(&$filter_chain)
+  protected function _register_filters($filter_chain)
   {
     $f = array();
     
@@ -52,7 +52,7 @@ class limb_application
     $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/site_object_controller_filter');
   }
   
-  function _register_file_resolvers()
+  protected function _register_file_resolvers()
   {
     $r = array();
     
@@ -67,7 +67,7 @@ class limb_application
     register_file_resolver('site_object',         $r[] = LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver');
   }
     
-  function run()
+  public function run()
   {
     $this->_load_packages();
     

@@ -9,28 +9,28 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/request/response.class.php');
+require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
 
 Mock :: generate('intercepting_filter');
 Mock :: generate('request');
-Mock :: generate('response');
+Mock :: generate('http_response');
 
 class special_intercepting_filter extends Mockintercepting_filter 
 { 
   var $captured = array(); 
   
-  function special_intercepting_filter(&$test) 
+  function special_intercepting_filter($test) 
   { 
     parent :: Mockintercepting_filter($test);
   } 
   
-  function run(&$fc, &$request, &$response) 
+  function run($fc, $request, $response) 
   { 
-    $this->captured['filter_chain'] =& $fc; 
-    $this->captured['request'] =& $request; 
-    $this->captured['response'] =& $response; 
+    $this->captured['filter_chain'] = $fc; 
+    $this->captured['request'] = $request; 
+    $this->captured['response'] = $response; 
     
     $fc->next();
     
@@ -40,12 +40,12 @@ class special_intercepting_filter extends Mockintercepting_filter
 
 class output_filter1 extends Mockintercepting_filter 
 {
-  function output_filter1(&$test) 
+  function output_filter1($test) 
   { 
     parent :: Mockintercepting_filter($test);
   } 
   
-  function run(&$fc, &$request, &$response) 
+  function run($fc, $request, $response) 
   {
     echo '<filter1>';
      
@@ -59,12 +59,12 @@ class output_filter1 extends Mockintercepting_filter
 
 class output_filter2 extends Mockintercepting_filter 
 {
-  function output_filter2(&$test) 
+  function output_filter2($test) 
   { 
     parent :: Mockintercepting_filter($test);
   } 
   
-  function run(&$fc, &$request, &$response) 
+  function run($fc, $request, $response) 
   { 
     echo '<filter2>';
     
@@ -78,12 +78,12 @@ class output_filter2 extends Mockintercepting_filter
 
 class output_filter3 extends Mockintercepting_filter 
 {
-  function output_filter3(&$test) 
+  function output_filter3($test) 
   { 
     parent :: Mockintercepting_filter($test);
   } 
   
-  function run(&$fc, &$request, &$response) 
+  function run($fc, $request, $response) 
   { 
     echo '<filter3>';
     
@@ -103,9 +103,9 @@ class filter_chain_test extends LimbTestCase
   
   function setUp()
   {
-    $this->request =& new Mockrequest($this);
-    $this->response =& new Mockresponse($this);  
-    $this->fc =& new filter_chain($this->request, $this->response);
+    $this->request = new Mockrequest($this);
+    $this->response = new Mockhttp_response($this);  
+    $this->fc = new filter_chain($this->request, $this->response);
   }
   
   function tearDown()
@@ -123,7 +123,7 @@ class filter_chain_test extends LimbTestCase
   
   function test_process()
   {
-    $mock_filter =& new special_intercepting_filter($this);
+    $mock_filter = new special_intercepting_filter($this);
     
     $this->fc->register_filter($mock_filter);
     
@@ -131,17 +131,17 @@ class filter_chain_test extends LimbTestCase
     
     $this->fc->process();
     
-    $this->assertReference($mock_filter->captured['filter_chain'], $this->fc);
-    $this->assertReference($mock_filter->captured['request'], $this->request);
-    $this->assertReference($mock_filter->captured['response'], $this->response);
+    $this->assertTrue($mock_filter->captured['filter_chain'] === $this->fc);
+    $this->assertTrue($mock_filter->captured['request'] === $this->request);
+    $this->assertTrue($mock_filter->captured['response'] === $this->response);
     
     $mock_filter->tally();
   }  
 
   function test_process_proper_nesting()
   {
-    $f1 =& new output_filter1($this);
-    $f2 =& new output_filter2($this);
+    $f1 = new output_filter1($this);
+    $f2 = new output_filter2($this);
     
     $this->fc->register_filter($f1);
     $this->fc->register_filter($f2);

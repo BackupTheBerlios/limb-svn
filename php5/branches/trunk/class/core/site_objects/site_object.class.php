@@ -8,10 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
-define('SITE_OBJECT_PUBLISHED_STATUS', 1);
-define('SITE_OBJECT_RESTRICTED_STATUS', 2);
-
 require_once(LIMB_DIR . 'class/core/object.class.php');
 require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
@@ -20,15 +16,18 @@ require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
 
 class site_object extends object
 {
-	var $_attributes_definition = array();
+  const STATUS_PUBLISHED = 1;
+  const STATUS_RESTRICTED = 2;
+  
+	protected  $_attributes_definition = array();
 	
-	var $_class_properties = array();
+	protected  $_class_properties = array();
 	
-	var $_class_id = null;
+	protected  $_class_id = null;
 
-	var $_controller = null;
+	protected  $_controller = null;
 	
-	function site_object()
+	function __construct()
 	{
     $this->_class_properties = $this->_define_class_properties();
     
@@ -43,12 +42,12 @@ class site_object extends object
     
     $this->_attributes_definition = complex_array :: array_merge($this->_attributes_definition, $new_attributes_definition);
     
-    parent :: object();
+    parent :: __construct();
 	}
 	
-	function get_locale_by_id($id)
+	public function get_locale_by_id($id)
 	{
-	  $table =& db_table_factory :: instance('sys_site_object');
+	  $table = db_table_factory :: create('sys_site_object');
 	  
 	  if($row = $table->get_row_by_id($id))
 	    return $row['locale_id'];
@@ -56,7 +55,7 @@ class site_object extends object
 	    return false;
 	}
 		
-	function is_auto_identifier()
+	public function is_auto_identifier()
 	{
 		if(isset($this->_class_properties['auto_identifier']))
 			return $this->_class_properties['auto_identifier'];
@@ -64,7 +63,7 @@ class site_object extends object
 			return false;		
 	}
 		
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'class_ordr' => 1,
@@ -74,17 +73,17 @@ class site_object extends object
 		);
 	}
 	
-	function _define_attributes_definition()
+	protected function _define_attributes_definition()
 	{
 		return array();
 	}
 			
-	function gets_definition()
+	public function gets_definition()
 	{
 		return $this->_attributes_definition;
 	}
 
-	function get_definition($attribute_name)
+	public function get_definition($attribute_name)
 	{
 		$definition = $this->gets_definition();
 		
@@ -98,20 +97,19 @@ class site_object extends object
 		return false;
 	}
 	
-	function & fetch_accessible($params=array(), $sql_params=array(), $sort_ids = array())
+	public function fetch_accessible($params=array(), $sql_params=array(), $sort_ids = array())
 	{
 		$ids_sql_params = $sql_params;
 		$ids_sql_params['tables'][] = ' , sys_object_access as soa';
 		$ids_sql_params['conditions'][] = ' AND sso.id = soa.object_id AND soa.r = 1';
 	
-		$access_policy =& access_policy :: instance();
-    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
+    $accessor_ids = implode(',', access_policy :: instance()->get_accessor_ids());
 			
 		$ids_sql_params['conditions'][] = " AND soa.accessor_id IN ({$accessor_ids})";
 
 		$ids_sql_params['group'][] = ' GROUP BY sso.id';
 
-		$ids =& $this->fetch_ids($params, $ids_sql_params, $sort_ids);
+		$ids = $this->fetch_ids($params, $ids_sql_params, $sort_ids);
 
 		$ids_sql_params['conditions'] = array();
 		
@@ -125,12 +123,10 @@ class site_object extends object
 		if(isset($params['offset']))
 		unset($params['offset']);
 			
-		$arr =& $this->fetch_by_ids($ids, $params, $sql_params);
-		
-		return $arr;
+		return $this->fetch_by_ids($ids, $params, $sql_params);
 	}
 	
-	function & fetch_ids($params=array(), $sql_params=array(), $sort_ids=array())
+	public function fetch_ids($params=array(), $sql_params=array(), $sort_ids=array())
 	{
 		if (!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
@@ -150,7 +146,7 @@ class site_object extends object
 								$this->_add_sql($sql_params, 'group')
 							);
 
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
@@ -172,7 +168,7 @@ class site_object extends object
 		{
 			$db->sql_exec($sql);
 			
-			if(!$arr =& $db->get_array('id'))
+			if(!$arr = $db->get_array('id'))
 				return $result;
 			
 			foreach($sort_ids as $key)
@@ -195,7 +191,7 @@ class site_object extends object
 		}
 	}
 	
-	function & fetch($params=array(), $sql_params=array())
+	public function fetch($params=array(), $sql_params=array())
 	{
 		if (!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
@@ -237,18 +233,17 @@ class site_object extends object
 		if(isset($params['order']))
 			$sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
 		
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
 
 		$db->sql_exec($sql, $limit, $offset);
 		
-		$arr =& $db->get_array('id');
-		return $arr;
+		return $db->get_array('id');
 	}
 	
-	function & fetch_by_ids($ids_array, $params=array(), $sql_params=array())
+	public function fetch_by_ids($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
 		{
@@ -265,7 +260,7 @@ class site_object extends object
 			$ids_sql_params = $sql_params;
 			$ids_sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 			
-			$ids_array =& $this->fetch_ids($params, $ids_sql_params, $ids_array);
+			$ids_array = $this->fetch_ids($params, $ids_sql_params, $ids_array);
 			
 			if (!count($ids_array))
 				return array();
@@ -281,12 +276,10 @@ class site_object extends object
 		$ids = '('. implode(' , ', $ids_array) . ')';
 		$sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 
-		$arr =& $this->fetch($params, $sql_params);
-		
-		return $arr;
+		return $this->fetch($params, $sql_params);
 	}
 	
-	function & fetch_accessible_by_ids($ids_array, $params=array(), $sql_params=array())
+	public function fetch_accessible_by_ids($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
 		{
@@ -300,12 +293,10 @@ class site_object extends object
 		
 		$sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 		
-		$arr =& $this->fetch_accessible($params, $sql_params, $ids_array);
-		
-		return $arr;
+		return $this->fetch_accessible($params, $sql_params, $ids_array);
 	}
 	
-	function _add_sql($add_sql, $type)
+	protected function _add_sql($add_sql, $type)
 	{
 		if (isset($add_sql[$type]))
 			return implode(' ', $add_sql[$type]);
@@ -313,7 +304,7 @@ class site_object extends object
 			return '';
 	} 
 				
-	function _build_order_sql($order_array)
+	protected function _build_order_sql($order_array)
 	{
 		$columns = array();
 		
@@ -323,13 +314,12 @@ class site_object extends object
 		return implode(', ', $columns);
 	}
 	
-	function fetch_accessible_count($params=array(), $sql_params=array())
+	public function fetch_accessible_count($params=array(), $sql_params=array())
 	{
 		$sql_params['tables'][] = ' INNER JOIN sys_object_access as soa ON soa.object_id = sso.id';
 		$sql_params['conditions'][] = ' AND sso.id = soa.object_id AND soa.r = 1';
 	
-		$access_policy =& access_policy :: instance();
-    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
+    $accessor_ids = implode(',', access_policy :: instance()->get_accessor_ids());
 			
 		$sql_params['conditions'][] = " AND soa.accessor_id IN ({$accessor_ids})";
 
@@ -338,7 +328,7 @@ class site_object extends object
 		return $this->fetch_count($params, $sql_params);
 	}
 	
-	function fetch_accessible_by_ids_count($ids_array, $params=array(), $sql_params=array())
+	public function fetch_accessible_by_ids_count($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
 		{
@@ -352,11 +342,10 @@ class site_object extends object
 		
 		$sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 		
-		$arr =& $this->fetch_accessible_count($params, $sql_params);
-		return $arr;
+		return $this->fetch_accessible_count($params, $sql_params);
 	}
 
-	function fetch_count($params=array(), $sql_params=array())
+	public function fetch_count($params=array(), $sql_params=array())
 	{
 		if (!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
@@ -372,20 +361,20 @@ class site_object extends object
 									$this->_add_sql($sql_params, 'group')
 								);
 		
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$db->sql_exec($sql);
 
 		if (!isset($sql_params['group']))		
 		{
-			$arr =& $db->fetch_row();
+			$arr = $db->fetch_row();
 			return (int)$arr['count'];
 		}
 		else
 			return $db->count_selected_rows();
 	}
 	
-	function fetch_by_ids_count($ids_array, $params=array(), $sql_params=array())
+	public function fetch_by_ids_count($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
 		{
@@ -402,7 +391,7 @@ class site_object extends object
 		return $this->fetch_count($params, $sql_params);
 	}
 				
-	function create($is_root = false)
+	public function create($is_root = false)
 	{
 		if (!$class_id = $this->get_class_id())
 		{
@@ -433,7 +422,7 @@ class site_object extends object
 			return false;
 		}	
 
-		$tree =& tree :: instance();
+		$tree = tree :: instance();
 
 		$values['identifier'] = $identifier;
 		$values['object_id'] = $id;
@@ -478,9 +467,9 @@ class site_object extends object
 		return $id;
 	}
 	
-	function _generate_auto_identifier()
+	protected function _generate_auto_identifier()
 	{
-		$tree =& tree :: instance();
+		$tree = tree :: instance();
 		
 		$identifier = $tree->get_max_child_identifier($this->get_parent_node_id());
 		
@@ -497,9 +486,9 @@ class site_object extends object
 		return $new_identifier;
 	}
 	
-	function _can_add_node_to_parent($parent_node_id)
+	protected function _can_add_node_to_parent($parent_node_id)
 	{
-		$tree =& tree :: instance();
+		$tree = tree :: instance();
 		
 		if (!$tree->can_add_node($parent_node_id))
 			return false;
@@ -510,71 +499,71 @@ class site_object extends object
 		AND sso.class_id=sys_class.id
 		AND sso.id=ssot.object_id";
 		
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$db->sql_exec($sql);
 		
-		$row =& $db->fetch_row();
+		$row = $db->fetch_row();
 		
 		if (!is_array($row) || !count($row))
 			return false;
 		
-		$parent_object = site_object_factory :: instance($row['class_name']);
+		$parent_object = site_object_factory :: create($row['class_name']);
 		
 		return $parent_object->can_be_parent();
 	}
 	
-	function get_parent_node_id()
+	public function get_parent_node_id()
 	{
 		return (int)$this->get('parent_node_id');
 	}
 
-	function set_parent_node_id($parent_node_id)
+	public function set_parent_node_id($parent_node_id)
 	{
 		$this->set('parent_node_id', (int)$parent_node_id);
 	}
 	
-	function get_node_id()
+	public function get_node_id()
 	{
 		return (int)$this->get('node_id');
 	}
 	
-	function get_identifier()
+	public function get_identifier()
 	{
 		return $this->get('identifier');
 	}
 		
-	function set_identifier($identifier)
+	public function set_identifier($identifier)
 	{
 		return $this->set('identifier', $identifier);
 	}
 
-	function get_title()
+	public function get_title()
 	{
 		return $this->get('title');
 	}
 
-	function set_title($title)
+	public function set_title($title)
 	{
 		return $this->set('title', $title);
 	}
 	
-	function get_id()
+	public function get_id()
 	{
 		return (int)$this->get('id');
 	}
 	
-	function get_version()
+	public function get_version()
 	{
 		return (int)$this->get('version');
 	}
 
-	function get_class_id()
+	public function get_class_id()
 	{
 		if($this->_class_id)
 			return $this->_class_id;
 			
-		$type_db_table =& db_table_factory :: instance('sys_class');	
+		$type_db_table = db_table_factory :: create('sys_class');	
 
 		$class_name = get_class($this);
 		
@@ -605,12 +594,12 @@ class site_object extends object
 		return $this->_class_id;
 	}
 			
-	function get_class_properties()
+	public function get_class_properties()
 	{
 		return $this->_class_properties;
 	}
 
-	function can_be_parent()
+	public function can_be_parent()
 	{
 		if (isset($this->_class_properties['can_be_parent']))
 			return $this->_class_properties['can_be_parent'];
@@ -618,11 +607,11 @@ class site_object extends object
 			return false;	
 	}
 	
-	function _create_site_object_record()
+	protected function _create_site_object_record()
 	{
 		$this->set('version', 1); 
 		
-		$user =& user :: instance();
+		$user = user :: instance();
 
 		$data['identifier'] = $this->get_identifier();
 		$data['title'] = $this->get_title();
@@ -650,14 +639,14 @@ class site_object extends object
 		else
 			$data['locale_id'] = $this->_get_parent_locale_id();
 		
-		$sys_site_object_db_table =& db_table_factory :: instance('sys_site_object');
+		$sys_site_object_db_table = db_table_factory :: create('sys_site_object');
 		
 		$sys_site_object_db_table->insert($data);
 		
 		return $sys_site_object_db_table->get_last_insert_id();
 	}
 	
-	function update($force_create_new_version = true)
+	public function update($force_create_new_version = true)
 	{
 		if(!$object_id = $this->get_id())
 		{
@@ -678,9 +667,9 @@ class site_object extends object
 		return true;
 	}
 	
-	function _update_site_object_record($force_create_new_version = true)
+	protected function _update_site_object_record($force_create_new_version = true)
 	{
-		$sys_site_object_db_table =& db_table_factory :: instance('sys_site_object');
+		$sys_site_object_db_table = db_table_factory :: create('sys_site_object');
 		
 		$row_data = $sys_site_object_db_table->get_row_by_id($this->get_id());
 
@@ -699,22 +688,22 @@ class site_object extends object
 		return $sys_site_object_db_table->update_by_id($this->get_id(), $data);
 	}
 	
-	function _delete_tree_node()
+	protected function _delete_tree_node()
 	{
 		$data = $this->_attributes->export();
 
-		$tree =& tree :: instance();
+		$tree = tree :: instance();
 		
 		$tree->delete_node($data['node_id']);
 				
 		return true;
 	}
 	
-	function _update_tree_node()
+	protected function _update_tree_node()
 	{
 		$data = $this->_attributes->export();
 
-		$tree =& tree :: instance();
+		$tree = tree :: instance();
 		
 		$node = $tree->get_node($data['node_id']);
 		if (isset($data['parent_node_id']) && isset($data['node_id']))
@@ -751,7 +740,7 @@ class site_object extends object
 		return true;
 	}
 	
-	function delete()
+	public function delete()
 	{
 		if(!$object_id = $this->get_id())
 		{
@@ -777,15 +766,15 @@ class site_object extends object
 		return $this->_delete_site_object_record();
 	}
 
-	function _delete_site_object_record()
+	protected function _delete_site_object_record()
 	{
-		$sys_site_object_db_table =& db_table_factory :: instance('sys_site_object');
+		$sys_site_object_db_table = db_table_factory :: create('sys_site_object');
 		$sys_site_object_db_table->delete_by_id($this->get('id'));
 		
 		return true;
 	}
 
-	function can_delete()
+	public function can_delete()
 	{
 		$data = $this->_attributes->export();
 
@@ -795,33 +784,33 @@ class site_object extends object
 		return $this->_can_delete_tree_node($data['node_id']);
 	}
 	
-	function _can_delete_tree_node($node_id)
+	protected function _can_delete_tree_node($node_id)
 	{
-		$tree =& tree :: instance();
+		$tree = tree :: instance();
 		
 		return $tree->can_delete_node($node_id);
 	}
 	
-	function _can_delete_site_object($object_id)
+	protected function _can_delete_site_object($object_id)
 	{
 		return true;
 	}
 		
-	function & get_controller()
+	public function get_controller()
 	{
 	  if ($this->_controller)
 	    return $this->_controller;
 	   
-		$this->_controller =& site_object_controller_factory :: create($this->_class_properties['controller_class_name']);
+		$this->_controller = site_object_controller_factory :: create($this->_class_properties['controller_class_name']);
 		return $this->_controller;
 	}
 	
-	function save_metadata()
+	public function save_metadata()
 	{
 		if(!$id = $this->get_id())
 			return false;
 		
-  	$sys_metadata_db_table =& db_table_factory :: instance('sys_metadata');
+  	$sys_metadata_db_table = db_table_factory :: create('sys_metadata');
   	
   	$sys_metadata_db_table->delete('object_id=' . $id);
   	
@@ -836,12 +825,12 @@ class site_object extends object
   		return false;	
 	}
 	
-	function get_metadata()
+	public function get_metadata()
 	{
 		if(!$id = $this->get_id())
 			return false;
 		
-  	$sys_metadata_db_table =& db_table_factory :: instance('sys_metadata');
+  	$sys_metadata_db_table = db_table_factory :: create('sys_metadata');
   	$arr = $sys_metadata_db_table->get_list('object_id=' . $id);
 		
 		if (!count($arr))
@@ -850,7 +839,7 @@ class site_object extends object
 		return current($arr);
 	}
 	
-	function _get_parent_locale_id()
+	protected function _get_parent_locale_id()
 	{
 		if (!$parent_node_id = $this->get_parent_node_id())
 			return DEFAULT_CONTENT_LOCALE_ID;
@@ -860,11 +849,11 @@ class site_object extends object
 		WHERE ssot.id = {$parent_node_id} 
 		AND sso.id = ssot.object_id";
 		
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$db->sql_exec($sql);
 		
-		$parent_data =& $db->fetch_row();
+		$parent_data = $db->fetch_row();
 		
 		if (isset($parent_data['locale_id']) && $parent_data['locale_id'])
 			return $parent_data['locale_id'];
@@ -872,7 +861,7 @@ class site_object extends object
 			return DEFAULT_CONTENT_LOCALE_ID;
 	}
 	
-	function can_accept_child_class($class_name)
+	public function can_accept_child_class($class_name)
 	{
 		$class_properties = $this->get_class_properties();
 		

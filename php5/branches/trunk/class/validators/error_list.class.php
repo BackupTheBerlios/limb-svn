@@ -15,61 +15,38 @@
 */
 class error_list
 {
-	/**
-	* Indexed array of validation_error objects
-	* 
-	* @var array 
-	* @access private 
-	*/
-	var $errors = array();
-	
- 	function & instance()
-  {
-  	$class_name = 'error_list';
-  	$obj =& $GLOBALS['global_' . $class_name];
-
-  	if(get_class($obj) != $class_name)
-  	{
-  		include_once(LIMB_DIR . 'class/validators/error_list.class.php');
-  		
-  		$obj = & new $class_name();
-  		$GLOBALS['global_' . $class_name] =& $obj;
-  	}
-  	
-  	return $obj;
-  }
+  static protected $instance = null;
   
-  function error_list()
-  {
-  }
+	protected $errors = array();
+	
+	static public function instance()
+	{
+    if (!self :: $instance)
+      self :: $instance = new error_list();
 
-	/**
-	* Add a validation_error object
-	* 
-	* @return void 
-	* @access public 
-	*/
-	function add_error($field_name, $error_msg, $params=array())
+    return self :: $instance;	
+	}		
+	  
+	public function add_error($field_name, $error_msg, $params=array())
 	{
 		$this->errors[$field_name][] = array('error' => $error_msg, 'params' => $params);
 	} 
 	
-	function get_errors($field_name)
+	public function get_errors($field_name)
 	{
 		if(isset($this->errors[$field_name]))
 			return $this->errors[$field_name];
 	}
 	
-	function reset()
+	public function reset()
 	{
 		$this->errors = array();
 	}
 	
-	function export()
+	public function export()
 	{
 		return $this->errors;
 	}
-
 } 
 
 ?>

@@ -8,54 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/ 
-/**
-* Base class for defining rules to validate against
-*/
-class rule
+abstract class rule
 {
-	var $error_list = null;
+	protected $error_list = null;
 	
-	/**
-	* Is this field valid?
-	* 
-	* @var boolean 
-	* @access private 
-	*/
-	var $is_valid = true;
-	
-	function rule()
-	{
-	}
-	
-	function is_valid()
+	protected $is_valid = true;
+		
+	public function is_valid()
 	{
 		return $this->is_valid;
 	} 
 	
-	function set_error_list(&$error_list)
+	public function set_error_list($error_list)
 	{
-		$this->error_list = &$error_list;
+		$this->error_list = $error_list;
 	}
 	
-	function error()
-	{
-		error('ABSTRACTMETHOD', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-			array('method' => __FUNCTION__ . '()', 'class' => __CLASS__));
-	}
+	abstract protected function error($error, $params=array());
 	
-	/**
-	* Perform validation
-	* 
-	* @param error_list $ 
-	* @return boolean (always TRUE is base class)
-	* @access protected 
-	* @abstract 
-	*/
-	function validate(&$dataspace, &$error_list)
-	{
-		error('ABSTRACTMETHOD', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-			array('method' => __FUNCTION__ . '()', 'class' => __CLASS__));
-	} 
+	abstract public function validate($dataspace);
 } 
 
 ?>

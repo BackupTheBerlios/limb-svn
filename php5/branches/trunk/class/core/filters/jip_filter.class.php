@@ -8,24 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 
-class jip_filter extends intercepting_filter 
+class jip_filter implements intercepting_filter 
 { 
-  function run(&$filter_chain, &$request, &$response) 
+  public function run($filter_chain, $request, $response) 
   {
     debug :: add_timing_point('jip filter started');
   
-    $fetcher =& fetcher :: instance();
-    $fetcher->set_jip_status(false);
+    fetcher :: instance()->set_jip_status(false);
     
-    $user =& user :: instance();
+    $user = user :: instance();
     
     if ($user->is_logged_in())
     {
-      $ini =& get_ini('jip_groups.ini');
+      $ini = get_ini('jip_groups.ini');
       
       if($user->is_in_groups(array_keys($ini->get_group('groups'))))
         $fetcher->set_jip_status(true);

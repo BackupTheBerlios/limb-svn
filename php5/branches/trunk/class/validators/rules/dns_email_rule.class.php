@@ -17,26 +17,10 @@ require_once(LIMB_DIR . '/class/validators/rules/email_rule.class.php');
 */
 class dns_email_rule extends email_rule
 {
-	/**
-	* Constructs a dns_email_rule
-	* 
-	* @param string $ fieldname to validate
-	* @param array $ of acceptable values
-	* @access public 
-	*/
-	function dns_email_rule($fieldname)
-	{
-		parent::email_rule($fieldname);
-	} 
-
-	/**
-	* Performs validation of a single value
-	* 
-	* @access protected 
-	*/
-	function check_domain($value)
+	protected function check_domain($value)
 	{
 		parent::check_domain($value);
+		
 		if ($this->is_valid())
 		{
 			if (!checkdnsrr($value, "MX"))

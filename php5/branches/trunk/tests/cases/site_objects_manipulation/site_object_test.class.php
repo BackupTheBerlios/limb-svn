@@ -57,9 +57,8 @@ class site_object_test extends LimbTestCase
   	
   	$this->_clean_up();
   	
-  	$this->object = new mocked_site_object_test_version($this);
-  	
-  	$this->object->site_object();
+  	$this->object = new mocked_site_object_test_version($this);  	
+  	$this->object->__construct();
   	
   	$user =& user :: instance();
   	$user->_set_id(10);

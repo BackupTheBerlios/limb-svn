@@ -12,7 +12,7 @@
 class ip
 {	
 	//Returns an array of hexed IPs
-	function encode_ip_range($ip_begin, $ip_end)
+	static public function encode_ip_range($ip_begin, $ip_end)
 	{
 		$ip_regex = '/^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/';
 		
@@ -35,7 +35,7 @@ class ip
 				$ip_2_counter = 255;
 				$ip_2_fragment = 255;
 
-				$ip_list[] = ip :: encode_ip("{$ip_1_counter}.255.255.255");
+				$ip_list[] = self :: encode_ip("{$ip_1_counter}.255.255.255");
 			}
 
 			while ( $ip_2_counter <= $ip_2_end )
@@ -48,7 +48,7 @@ class ip
 					$ip_3_counter = 255;
 					$ip_3_fragment = 255;
 
-					$ip_list[] = ip :: encode_ip("{$ip_1_counter}.{$ip_2_counter}.255.255");
+					$ip_list[] = self :: encode_ip("{$ip_1_counter}.{$ip_2_counter}.255.255");
 				}
 
 				while ( $ip_3_counter <= $ip_3_end )
@@ -61,12 +61,12 @@ class ip
 						$ip_4_counter = 255;
 						$ip_4_fragment = 255;
 
-						$ip_list[] = ip :: encode_ip("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.255");
+						$ip_list[] = self :: encode_ip("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.255");
 					}
 
 					while ( $ip_4_counter <= $ip_4_end )
 					{
-						$ip_list[] = ip :: encode_ip("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.{$ip_4_counter}");
+						$ip_list[] = self :: encode_ip("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.{$ip_4_counter}");
 						$ip_4_counter++;
 					}
 					$ip_3_counter++;
@@ -79,21 +79,21 @@ class ip
 		return $ip_list;
 	}
 	
-	function encode_ip($ip)
+	static public function encode_ip($ip)
 	{		
 		$ip_sep = explode('.', $ip);
 			
 		return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
 	}
 	
-	function decode_ip($hex_ip)
+	static public function decode_ip($hex_ip)
 	{
 		$hexipbang = explode('.', chunk_split($hex_ip, 2, '.'));
 		
 		return hexdec($hexipbang[0]). '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
 	}
 	
-	function is_valid($ip)
+	static public function is_valid($ip)
 	{
 		return preg_match('/^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/', $ip);
 	}

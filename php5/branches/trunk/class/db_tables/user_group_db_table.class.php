@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/db_tables/content_object_db_table.class.php');
 
 class user_group_db_table extends content_object_db_table
 {    
-  function _define_constraints()
+  protected function _define_constraints()
   {
   	return array(
 	  	'object_id' =>	array(

@@ -8,29 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/ 
-define('FLIP_HORIZONTAL', 1);
-define('FLIP_VERTICAL', 2);
 
-class image_library
+abstract class image_library
 {
-	var $input_file = null;
-	var $input_file_type = null;
-	var $output_file = null;
-	var $output_file_type = null;
-	var $read_types = array();
-	var $create_types = array();
-	var $library_installed = false;
+  const FLIP_HORIZONTAL = 1;
+  const FLIP_VERTICAL = 2;
 
-	function image_library()
-	{
-	}
+	protected $input_file = null;
+	protected $input_file_type = null;
+	protected $output_file = null;
+	protected $output_file_type = null;
+	protected $read_types = array();
+	protected $create_types = array();
+	protected $library_installed = false;
 	
 	function is_library_installed()
 	{
 		return $this->library_installed;
 	}
 
-	function set_input_file($file_name, $type)
+	public function set_input_file($file_name, $type)
 	{
 		if (!$this->library_installed)
 			return false;
@@ -47,7 +44,7 @@ class image_library
 		return true;
 	}
 	
-	function set_output_file($file_name, &$type)
+	public function set_output_file($file_name, &$type)
 	{
 		if (!$this->library_installed)
 			return false;
@@ -67,7 +64,7 @@ class image_library
 		return true;
 	}
 	
-	function get_image_type($str)
+	public function get_image_type($str)
 	{
 		if (preg_match("/bmp/i", $str))
 			return 'BMP';
@@ -82,7 +79,7 @@ class image_library
 			return 'JPEG';
 	}
 	
-	function get_mime_type($str)
+	public function get_mime_type($str)
 	{
 		if (preg_match("/bmp/i", $str))
 			return 'image/bmp';
@@ -97,27 +94,27 @@ class image_library
 			return 'image/jpeg';
 	}
 	
-	function is_type_read_supported($type)
+	public function is_type_read_supported($type)
 	{
 		return in_array(strtoupper($type), $this->read_types);
 	}
 	
-	function is_type_create_supported($type)
+	public function is_type_create_supported($type)
 	{
 		return in_array(strtoupper($type), $this->create_types);
 	}
 	
-	function get_read_supported_types()
+	public function get_read_supported_types()
 	{
 		return $this->read_types;
   }
 
-	function get_create_supported_types()
+	public function get_create_supported_types()
 	{
 		return $this->create_types;
   }
   
-  function get_dst_dimensions($src_width, $src_height, $params)
+  public function get_dst_dimensions($src_width, $src_height, $params)
   {
 		if (isset($params['max_dimension']))
 		{
@@ -179,23 +176,15 @@ class image_library
 		return array($dst_width, $dst_height);
   }
   
-  function flip()
-  {
-  }
+  abstract public function flip();
   
-	function cut()
-	{
-  }
+	abstract public function cut();
 
-	function resize()
-	{
-  }
+	abstract public function resize();
 
-	function rotate()
-	{
-  }
+	abstract public function rotate();
 
-	function _hex_color_to_X11($color)
+	protected function _hex_color_to_X11($color)
 	{
 		return preg_replace('/(\d{2})(\d{2})(\d{2})/', 'rgb:$1/$2/$3', $color);
 	}

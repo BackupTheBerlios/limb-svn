@@ -11,26 +11,28 @@
 require_once(LIMB_DIR . 'class/core/object.class.php');
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 
-define('REQUEST_STATUS_DONT_TRACK', 0);
-
-define('REQUEST_STATUS_SUCCESS_MASK', 15);
-define('REQUEST_STATUS_PROBLEM_MASK', 240);
-
-define('REQUEST_STATUS_SUCCESS', 1);
-define('REQUEST_STATUS_FORM_SUBMITTED', 2);
-define('REQUEST_STATUS_FORM_DISPLAYED', 4);
-
-define('REQUEST_STATUS_FORM_NOT_VALID', 16);
-define('REQUEST_STATUS_FAILURE', 32);
-
 class request extends object
 {
-  var $status;
-  var $uri;
+  const STATUS_DONT_TRACK = 0;
+
+  const STATUS_SUCCESS_MASK = 15;
+  const STATUS_PROBLEM_MASK = 240;
+
+  const STATUS_SUCCESS = 1;
+  const STATUS_FORM_SUBMITTED = 2;
+  const STATUS_FORM_DISPLAYED = 4;
+
+  const STATUS_FORM_NOT_VALID = 16;
+  const STATUS_FAILURE = 32;
   
-  function request()
+  static protected $instance = null;
+  
+  protected $status;
+  protected $uri;
+  
+  function __construct()
   {
-    parent :: object();
+    parent :: __construct();
     
     global $HTTP_POST_VARS, $HTTP_GET_VARS;
   
@@ -46,27 +48,31 @@ class request extends object
     foreach ($request as $k => $v)
       $this->set($k, $v); 
       
-    $this->status = REQUEST_STATUS_SUCCESS; 
+    $this->status = request :: STATUS_SUCCESS; 
   }
   
-  function _strip_http_slashes($data, $result=array())
+  protected function _strip_http_slashes($data, $result=array())
   {		
   	foreach($data as $k => $v)
+  	{
     	if(is_array($v))
     		$result[$k] = $this->_strip_http_slashes($v);
   		else
   			$result[$k] = stripslashes($v);
+  	}
   			
   	return $result;
   } 
   
-  function & instance()
-  {
-		$obj =& instantiate_object('request');
-		return $obj;  
-  }
-  
-  function & get_uri()
+	static public function instance()
+	{
+    if (!self :: $instance)
+      self :: $instance = new request();
+
+    return self :: $instance;	
+	}
+    
+  protected function get_uri()
   {
     if($this->uri === null)
       $this->_init_uri();
@@ -74,29 +80,29 @@ class request extends object
     return $this->uri;
   }
   
-  function _init_uri()
+  protected function _init_uri()
   {
     $this->uri = new uri($_SERVER['REQUEST_URI']);
   }
   
-  function set_status($status)
+  public function set_status($status)
   {
     $this->status = $status;
   }
   
-  function get_status()
+  public function get_status()
   {
     return $this->status;
   }
   
-	function is_success()
+	public function is_success()
 	{
-		return ($this->status & REQUEST_STATUS_SUCCESS_MASK);
+		return ($this->status & request :: STATUS_SUCCESS_MASK);
 	}
 
-	function is_problem()
+	public function is_problem()
 	{
-		return ($this->status & REQUEST_STATUS_PROBLEM_MASK);
+		return ($this->status & request :: STATUS_PROBLEM_MASK);
 	}  
 }
 

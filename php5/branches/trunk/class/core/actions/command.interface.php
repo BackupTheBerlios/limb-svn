@@ -9,11 +9,9 @@
 *
 ***********************************************************************************/
 
-class cron_job
+interface command
 {
-  function perform(&$response)
-  {
-  }
+  public function perform($response);
 }
 
 ?>

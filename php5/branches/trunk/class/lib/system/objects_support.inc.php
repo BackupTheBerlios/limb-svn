@@ -9,46 +9,25 @@
 *
 ***********************************************************************************/ 
 
-function & create_object($class_name, $arguments = array())
-{
-  $handle =& $arguments;
-  array_unshift($handle, $class_name);
-  
-  resolve_handle($handle);
-  
-  return $handle;
-}
-
-function & instantiate_object($class_name, $arguments = array())
-{
-	if(	!isset($GLOBALS['global_'. $class_name]) || 
-			get_class($GLOBALS['global_'. $class_name]) != $class_name)
-	{  		
-		$obj =& create_object($class_name, $arguments);
-		
-		$GLOBALS['global_' . $class_name] =& $obj;
-	}
-	else
-		$obj =& $GLOBALS['global_' . $class_name];
-	
-	return $obj;
-}
-
-function & instantiate_session_object($class_name, $arguments = array())
+function & instantiate_session_object($class_name, &$arguments = array())
 {
 	if(	!isset($_SESSION['global_'. $class_name]) || 
 			get_class($_SESSION['global_'. $class_name]) != $class_name)
-	{  		
-		$obj =& create_object($class_name, $arguments);
-		
-		$_SESSION['global_' . $class_name] =& $obj;
+	{ 
+    $handle =& $arguments;
+    array_unshift($handle, $class_name);
+    
+    resolve_handle($handle);
+  
+		$_SESSION['global_' . $class_name] =& $handle;
 	}
 	else
-		$obj =& $_SESSION['global_' . $class_name];
+		$handle =& $_SESSION['global_' . $class_name];
 	
-	return $obj;
+	return $handle;
 }
 
+//Original idea by Jeff Moore, http://wact.sourceforge.net/index.php/ResolveHandle
 function resolve_handle(&$handle)
 {
   if (!is_object($handle) && !is_null($handle)) 

@@ -12,11 +12,11 @@ require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class match_rule extends single_field_rule
 {
-	var $match_field;
+	private $match_field;
 
-	var $match_field_name;
+	private $match_field_name;
 
-	function match_rule($field_name, $match_field, $match_field_name = '')
+	function __construct($field_name, $match_field, $match_field_name = '')
 	{
 		$this->match_field = $match_field;
 		if (!$match_field_name)
@@ -24,10 +24,10 @@ class match_rule extends single_field_rule
 		else	
 			$this->match_field_name = $match_field_name;
 			
-		parent :: single_field_rule($field_name);
+		parent :: __construct($field_name);
 	}
 
-	function validate(&$dataspace)
+	public function validate($dataspace)
 	{
 		$value1 = $dataspace->get($this->field_name);
 		$value2 = $dataspace->get($this->match_field);

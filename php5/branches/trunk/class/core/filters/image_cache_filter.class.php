@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 require_once(LIMB_DIR . '/class/cache/image_cache_manager.class.php');
 
-class image_cache_filter extends intercepting_filter 
+class image_cache_filter implements intercepting_filter 
 { 
-  function run(&$filter_chain, &$request, &$response) 
+  public function run($filter_chain, $request, $response) 
   {
     if(!$this->_is_caching_enabled())
     {
@@ -45,7 +45,7 @@ class image_cache_filter extends intercepting_filter
     debug :: add_timing_point('image cache write finished');    
   }
   
-  function _is_caching_enabled()
+  protected function _is_caching_enabled()
   {
     if(!defined('IMAGE_CACHE_ENABLED'))
       return true;

@@ -47,7 +47,7 @@ class validator_test extends LimbTestCase
   	$r1->expectOnce('is_valid');
   	$r1->setReturnValue('is_valid', true);
 
-  	$this->validator->add_rule(&$r1);
+  	$this->validator->add_rule($r1);
   	
   	$this->validator->validate(new array_dataset());
   	
@@ -64,8 +64,8 @@ class validator_test extends LimbTestCase
   	$r1->setReturnValue('is_valid', true);
   	$r2->setReturnValue('is_valid', false);
 
-  	$this->validator->add_rule(&$r1);
-  	$this->validator->add_rule(&$r2);
+  	$this->validator->add_rule($r1);
+  	$this->validator->add_rule($r2);
   	
   	$this->validator->validate(new array_dataset());
   	

@@ -47,7 +47,7 @@ class log
   		
   		$user =& user :: instance();
   		
-			if(($user_id = $user->get_id()) != DEFAULT_USER_ID)
+			if(($user_id = $user->get_id()) != user :: DEFAULT_USER_ID)
 				$notice .= '[ ' . $user_id . ' ] [ '  . $user->get_login() . ' ] [ ' . $user->get_email() . ' ] ';
 
       $notice .= '[' . sys::client_ip() . '] [' . (isset($_SERVER['REQUEST_URI']) ?  $_SERVER['REQUEST_URI'] : '') . "]\n" . $string . "\n\n";

@@ -13,21 +13,20 @@ require_once(LIMB_DIR . 'class/core/request/request.class.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 
 Mock::generate('request');
 
 class fetch_object_controller_test extends site_object_controller
 {
-	function fetch_object_controller_test()
+	protected function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 				),
 		);
-		
-		parent :: site_object_controller();
 	}
 }
 

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 
-class locale_definition_filter extends intercepting_filter 
+class locale_definition_filter implements intercepting_filter 
 { 
-  function run(&$filter_chain, &$request, &$response) 
+  public function run($filter_chain, $request, $response) 
   {
     debug :: add_timing_point('locale filter started');
     
@@ -23,8 +23,7 @@ class locale_definition_filter extends intercepting_filter
     	define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
     	define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
     	
-    	$locale =& locale :: instance();    	
-    	$locale->setlocale();
+    	locale :: instance()->setlocale();
     	
       $filter_chain->next();
       return;
@@ -35,16 +34,14 @@ class locale_definition_filter extends intercepting_filter
     else
       define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
     
-    $user = user :: instance();
-    if($user_locale_id = $user->get_locale_id())
+    if($user_locale_id = user :: instance()->get_locale_id())
     	define('MANAGEMENT_LOCALE_ID', $user_locale_id);
     else
       define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
               
     debug :: add_timing_point('locale filter finished');
 
-  	$locale =& locale :: instance();    	
-  	$locale->setlocale();
+  	locale :: instance()->setlocale();
     
     $filter_chain->next();
   }   

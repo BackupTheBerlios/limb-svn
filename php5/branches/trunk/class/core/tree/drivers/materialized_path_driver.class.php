@@ -11,14 +11,14 @@
 require_once(LIMB_DIR . 'class/core/tree/drivers/tree_db_driver.class.php');
 require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 
-class materialized_path_driver extends tree_db_driver
+class materialized_path_driver extends tree_db_driver implements tree_interface
 {	
 	/**
 	* 
 	* @var array The field parameters of the table with the nested set.
 	* @access public 
 	*/
-	var $_params = array(
+	protected $_params = array(
 		'id' => 'id',
 		'root_id' => 'root_id',
 		'identifier' => 'identifier',
@@ -29,35 +29,22 @@ class materialized_path_driver extends tree_db_driver
 		'children' => 'children'
 	);
 	
-	var $_expanded_parents = array(); 
+	protected $_expanded_parents = array(); 
 	
 	/**
 	* 
 	* @var array An array of field ids that must exist in the table
 	* @access private 
 	*/
-	var $_required_params = array('id', 'root_id', 'path', 'level', 'children');
-	
-	/**
-	* Constructor
-	* 
-	* @param array $params Database column fields which should be returned
-	* @access private 
-	* @return void 
-	*/
-	function materialized_path_driver()
-	{		
-		parent :: tree_db_driver();
-	} 
-				    
+	protected $_required_params = array('id', 'root_id', 'path', 'level', 'children');
+					    
 	/**
 	* Fetch the whole nested set
 	* 
 	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @access public 
 	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_all_nodes($add_sql = array())
+	public function get_all_nodes($add_sql = array())
 	{
 		$node_set = array();
 		$root_nodes = $this->get_root_nodes();
@@ -67,15 +54,14 @@ class materialized_path_driver extends tree_db_driver
 		} 
 		return $node_set;
 	} 
+	
 	/**
 	* Fetches the first level (the rootnodes)
 	* 
 	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
 	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_root_nodes($add_sql = array())
+	public function get_root_nodes($add_sql = array())
 	{
 	  static $root_nodes = null;
 	  
@@ -90,9 +76,7 @@ class materialized_path_driver extends tree_db_driver
 										$this->_node_table,
 										$this->_add_sql($add_sql, 'append'));
 
-		$root_nodes =& $this->_get_result_set($sql);
-
-		return $root_nodes;
+		return $this->_get_result_set($sql);
 	} 
 
 	/**
@@ -101,11 +85,11 @@ class materialized_path_driver extends tree_db_driver
 	* @param int $id The node ID
 	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
 	*/
-	function & get_parents($id, $add_sql = array())
+	public function get_parents($id, $add_sql = array())
 	{
 		if (!$child = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -130,9 +114,7 @@ class materialized_path_driver extends tree_db_driver
 										$this->_add_sql($add_sql, 'append')
 									);
 
-		$node_set =& $this->_get_result_set($sql);
-
-		return $node_set;
+		return $this->_get_result_set($sql);
 	} 
 	
 	/**
@@ -144,11 +126,11 @@ class materialized_path_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or the parent node
 	*/
-	function & get_parent($id, $add_sql = array())
+	public function get_parent($id, $add_sql = array())
 	{
 		if (!$child = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -172,11 +154,11 @@ class materialized_path_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or the parent node
 	*/
-	function & get_siblings($id, $add_sql = array())
+	public function get_siblings($id, $add_sql = array())
 	{
 		if (!($sibling = $this->get_node($id)))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -190,20 +172,12 @@ class materialized_path_driver extends tree_db_driver
 	/**
 	* Fetch the children _one level_ after of a node given by id
 	* 
-	* @param int $id The node ID
-	* @param bool $force_ordr (optional) Force the result to be ordered by the ordr
-	*              param (as opposed to the value of secondary sort).  Used by the move and
-	*              add methods.
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_children($id, $add_sql = array())
+	public function get_children($id, $add_sql = array())
 	{		
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -219,16 +193,14 @@ class materialized_path_driver extends tree_db_driver
 										$this->_node_table, $parent['id'],
 										$this->_add_sql($add_sql, 'append'));
 
-		$node_set =& $this->_get_result_set($sql);
-
-		return $node_set;
+		return $this->_get_result_set($sql);
 	} 
 	
-	function count_children($id, $add_sql=array())
+	public function count_children($id, $add_sql=array())
 	{
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -254,17 +226,12 @@ class materialized_path_driver extends tree_db_driver
 	* get_children only queries the immediate children
 	* get_sub_branch returns all nodes below the given node
 	* 
-	* @param string $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
+	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
 	{
 		if (!$parent_node = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -346,17 +313,15 @@ class materialized_path_driver extends tree_db_driver
 		return $node_set;
 	} 
 
-	function & get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
+	public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
 	{
 		if(!$parent_node = $this->get_node_by_path($path))
 			return false;
 										
- 		$nodes =& $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
-  		
-		return $nodes;
+ 		return $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
 	}	
 	
-	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
+	public function get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
 	{
 		$add_sql['columns'][] = ', soa.object_id';
 		
@@ -368,7 +333,7 @@ class materialized_path_driver extends tree_db_driver
 		
 		$add_sql['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
 	
-		$access_policy =& access_policy :: instance();
+		$access_policy = access_policy :: instance();
     $accessor_ids = implode(',', $access_policy->get_accessor_ids());
 			
 		if ($class_id)
@@ -376,12 +341,10 @@ class materialized_path_driver extends tree_db_driver
 			
 		$add_sql['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
 
-		$result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
-		
-		return $result;
+		return $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
 	}
 	
-	function count_accessible_children($id, $add_sql=array())
+	public function count_accessible_children($id, $add_sql=array())
 	{
 		if (!($parent = $this->get_node($id)))
 		{
@@ -400,7 +363,7 @@ class materialized_path_driver extends tree_db_driver
 		
 		$add_sql['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
 	
-		$access_policy =& access_policy :: instance();
+		$access_policy = access_policy :: instance();
     $accessor_ids = implode(',', $access_policy->get_accessor_ids());
 			
 		$add_sql['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
@@ -426,13 +389,8 @@ class materialized_path_driver extends tree_db_driver
 	/**
 	* Fetch the data of a node with the given id
 	* 
-	* @param int $id The node id of the node to fetch
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_node($id, $add_sql = array())
+	public function get_node($id, $add_sql = array())
 	{	  
 		$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.id=%s %s',
 										$this->_get_select_fields(), 
@@ -443,12 +401,10 @@ class materialized_path_driver extends tree_db_driver
 										$this->_add_sql($add_sql, 'append')
 									);
 
-		$node_set =& $this->_get_result_set($sql);
-    
-		return current($node_set);
+		return current($this->_get_result_set($sql));
 	}
 	
-	function & get_node_by_path($path, $delimiter='/')
+	public function get_node_by_path($path, $delimiter='/')
 	{
   	$path_array = explode($delimiter, $path);
 
@@ -500,7 +456,7 @@ class materialized_path_driver extends tree_db_driver
   	return false;	
 	}
 	
-	function & get_nodes_by_ids($ids)
+	public function get_nodes_by_ids($ids)
 	{
 		$node_set = array();
 
@@ -524,11 +480,11 @@ class materialized_path_driver extends tree_db_driver
 
 	}
 
-	function get_max_child_identifier($parent_id)
+	public function get_max_child_identifier($parent_id)
 	{
 		if (!($parent = $this->get_node($parent_id)))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $parent_id)
     	);
@@ -551,12 +507,12 @@ class materialized_path_driver extends tree_db_driver
 		  return 0;
 	}
 	
-	function is_node($id)
+	public function is_node($id)
 	{
 		return ($this->get_node($id) !== false);
 	}
 	
-  function is_node_expanded($id)
+  public function is_node_expanded($id)
   {
   	if(isset($this->_expanded_parents[$id]))
   		return $this->_expanded_parents[$id]['status'];
@@ -564,17 +520,17 @@ class materialized_path_driver extends tree_db_driver
   		return false;
   }
       
-  function update_expanded_parents()
+  public function update_expanded_parents()
   {
   	$nodes_ids = array_keys($this->_expanded_parents);
   	
-  	$nodes =& $this->get_nodes_by_ids($nodes_ids);
+  	$nodes = $this->get_nodes_by_ids($nodes_ids);
   	
   	foreach($nodes as $id => $node)
   		$this->_set_expanded_parent_status($node, $this->is_node_expanded($id));
   }
   
-  function reset_expanded_parents()
+  public function reset_expanded_parents()
   {
   	$this->_expanded_parents = array();
   	
@@ -594,7 +550,7 @@ class materialized_path_driver extends tree_db_driver
   	}
   }
   
-  function _set_expanded_parent_status($node, $status)
+  protected function _set_expanded_parent_status($node, $status)
   {
   	$id = (int)$node['id'];
 		$this->_expanded_parents[$id]['path'] = $node['path'];
@@ -602,25 +558,7 @@ class materialized_path_driver extends tree_db_driver
 		$this->_expanded_parents[$id]['status'] = $status;
   }
 		
-	/**
-	* Creates a new root node.  If no id is specified then it is either
-	* added to the beginning/end of the tree based on the $pos.
-	* Optionally it deletes the whole tree and creates one initial rootnode
-	* 
-	* <pre>
-	* +-- root1 [target]
-	* |
-	* +-- root2 [new]
-	* |
-	* +-- root3
-	* </pre>
-	* 
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @param integer $id ID of target node (the rootnode after which the node should be inserted)
-	* @access public 
-	* @return mixed The node id or false on error
-	*/
-	function create_root_node($values)
+	public function create_root_node($values)
 	{
 		$this->_verify_user_values($values); 
 
@@ -653,16 +591,12 @@ class materialized_path_driver extends tree_db_driver
 	* +-- root3
 	* </pre>
 	* 
-	* @param integer $parent_id Parent node ID
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @access public 
-	* @return mixed The node id or false on error
 	*/
-	function create_sub_node($parent_id, $values)
+	public function create_sub_node($parent_id, $values)
 	{
 		if (!$parent_node = $this->get_node($parent_id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('parent_id' => $parent_id)
     	);
@@ -695,15 +629,12 @@ class materialized_path_driver extends tree_db_driver
 	/**
 	* Deletes a node
 	* 
-	* @param int $id ID of the node to be deleted
-	* @access public 
-	* @return bool True if the delete succeeds
 	*/
-	function delete_node($id)
+	public function delete_node($id)
 	{
 		if (!$node = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -724,20 +655,14 @@ class materialized_path_driver extends tree_db_driver
 	} 
 		
 	/**
-	* Wrapper for node moving and copying
+	* Moves node
 	* 
-	* @param int $id Source ID
-	* @param int $target Target ID
-	* @param constant $pos Position (use one of the NESE_MOVE_* constants)
-	* @param bool $copy Shall we create a copy
-	* @access public 
-	* @return int ID of the moved node or false on error
 	*/
-	function move_tree($id, $target_id)
+	public function move_tree($id, $target_id)
 	{
 		if ($id == $target_id)
 		{
-    	debug :: write_error(TREE_ERROR_RECURSION,
+    	debug :: write_error(self :: TREE_ERROR_RECURSION,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
     		 array('id' => $id, 'target_id' => $target_id)
     	);
@@ -746,7 +671,7 @@ class materialized_path_driver extends tree_db_driver
 		
 		if (!$source_node = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -755,7 +680,7 @@ class materialized_path_driver extends tree_db_driver
 
 		if (!$target_node = $this->get_node($target_id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('target_id' => $target_id)
     	);
@@ -764,7 +689,7 @@ class materialized_path_driver extends tree_db_driver
 
 		if (strstr($target_node['path'], $source_node['path']) !== false)
 		{
-    	debug :: write_error(TREE_ERROR_RECURSION,
+    	debug :: write_error(self :: TREE_ERROR_RECURSION,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
     		 array('id' => $id, 'target_id' => $target_id)
     	);
@@ -808,8 +733,7 @@ class materialized_path_driver extends tree_db_driver
 														id = {$target_id}");
 		
 		return true;
-	} 
-									
+	} 									
 } 
 
 ?>

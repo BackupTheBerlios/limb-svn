@@ -9,22 +9,18 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
-class fetch_datasource extends datasource
+class fetch_datasource implements datasource
 {
-	function & get_dataset(&$counter, $params=array())
+	public function get_dataset(&$counter, $params=array())
 	{
-		$arr =& $this->_fetch($counter, $params);
-		
-		return new array_dataset($arr);
+		return new array_dataset($this->_fetch($counter, $params));
 	}
 
-	function & _fetch(&$counter, $params)
+	protected function _fetch(&$counter, $params)
 	{
-		$arr =& fetch($params['loader_class_name'], $counter, $params, $params['fetch_method']);
-		
-		return $arr;
+		return fetch($params['loader_class_name'], $counter, $params, $params['fetch_method']);
 	}
 }
 

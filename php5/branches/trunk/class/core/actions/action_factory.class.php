@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'class/core/actions/empty_action.class.php');
 
 class action_factory
 {	
-	function get_class_name($class_path)
+	static private function get_class_name($class_path)
 	{
 		$pos = strrpos($class_path, '/');
 		
@@ -25,13 +25,13 @@ class action_factory
 		return $class_name;
 	}
 		
-	function & create($class_path)
+	static public function create($class_path)
 	{
-		$class_name = action_factory :: get_class_name($class_path);
+		$class_name = self :: get_class_name($class_path);
 		
 		if(!class_exists($class_name))
 		{
-  		$resolver =& get_file_resolver('action');
+  		$resolver = get_file_resolver('action');
   		resolve_handle($resolver);
   		
   		if(!$full_path = $resolver->resolve($class_path))
@@ -40,7 +40,7 @@ class action_factory
   		include_once($full_path);
   	}
   	
-	  $action =& new $class_name();
+	  $action = new $class_name();
 	  
 	  if (!is_object($action))
 		{

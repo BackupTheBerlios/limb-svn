@@ -30,10 +30,13 @@ class test_news_object_db_table extends content_object_db_table
 {		
   function _define_columns()
   {
-  	return array(
-      'annotation' => '',
-      'content' => '',
-      'news_date' => array('type' => 'date'),
+  	return complex_array :: array_merge(
+  	  parent :: _define_columns(),
+  	  array(
+        'annotation' => '',
+        'content' => '',
+        'news_date' => array('type' => 'date'),
+      )
     );
   }
 }
@@ -205,7 +208,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
 		$conditions['object_id'] = $this->object->get_id();
 		$conditions['version'] = $this->object->get_version();
 
-		$db_table = $this->object->_get_db_table();
+		$db_table = $this->object->get_db_table();
 		$arr = $db_table->get_list($conditions, 'id');
 
   	$this->assertEqual(sizeof($arr), 1);

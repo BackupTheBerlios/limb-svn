@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 require_once(LIMB_DIR . '/class/cache/full_page_cache_manager.class.php');
 
-class full_page_cache_filter extends intercepting_filter 
+class full_page_cache_filter implements intercepting_filter
 { 
-  function run(&$filter_chain, &$request, &$response) 
+  public function run($filter_chain, $request, $response) 
   {
     if(!$this->_is_caching_enabled())
     {
@@ -27,7 +27,7 @@ class full_page_cache_filter extends intercepting_filter
     
     $cache->set_uri($request->get_uri());
     
-    if($contents =& $cache->get())
+    if($contents = $cache->get())
     {
       debug :: add_timing_point('full page cache read finished');
     
@@ -37,12 +37,12 @@ class full_page_cache_filter extends intercepting_filter
     
     $filter_chain->next();
     
-    $cache->write($content =& $response->get_response_string());    
+    $cache->write($content = $response->get_response_string());    
 
     debug :: add_timing_point('full page cache write finished');
   }
   
-  function _is_caching_enabled()
+  protected function _is_caching_enabled()
   {
     if(!defined('FULL_PAGE_CACHE_ENABLED'))
       return true;

@@ -8,30 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
-// for moving a node before another
-define('NESE_MOVE_BEFORE', 'BE');
-
-// for moving a node after another
-define('NESE_MOVE_AFTER', 'AF');
-
-// for moving a node below another
-define('NESE_MOVE_BELOW', 'SUB');
-
-// Sortorders
-define('NESE_SORT_LEVEL', 'SLV');
-define('NESE_SORT_PREORDER', 'SPO');
-
 require_once(LIMB_DIR . 'class/core/tree/drivers/tree_db_driver.class.php');
 
-class nested_sets_driver extends tree_db_driver
+class nested_sets_driver extends tree_db_driver implements tree_interface
 {
+  const MOVE_BEFORE = 'BE';
+  const MOVE_AFTER = 'AF';
+  const MOVE_BELOW = 'SUB';
+  const SORT_LEVEL = 'SLV';
+  const SORT_PREORDER = 'SPO';
+  
 	/**
 	* 
 	* @var array The field parameters of the table with the nested set.
 	* @access public 
 	*/
-	var $_params = array(
+	protected $_params = array(
 		'id' => 'id',
 		'root_id' => 'root_id',
 		'identifier' => 'identifier',
@@ -47,33 +39,22 @@ class nested_sets_driver extends tree_db_driver
 	* @var string The table with the actual tree data
 	* @access public 
 	*/
-	var $_node_table = 'sys_site_object_tree';
+	protected $_node_table = 'sys_site_object_tree';
 
 	/**
 	* 
 	* @var array An array of field ids that must exist in the table
 	* @access private 
 	*/
-	var $_required_params = array('id', 'root_id', 'l', 'r', 'level');
+	protected $_required_params = array('id', 'root_id', 'l', 'r', 'level');
 
 	/**
 	* 
 	* @var array Used for mapping a cloned tree to the real tree for move_* operations
 	* @access private 
 	*/
-	var $_relations = array();
+	protected $_relations = array();
 
-	/**
-	* Constructor
-	* 
-	* @param array $params Database column fields which should be returned
-	* @access private 
-	* @return void 
-	*/
-	function nested_sets_driver()
-	{		
-		parent :: tree_db_driver();
-	} 
 			    
 	/**
 	* Fetch the whole nested set
@@ -82,7 +63,7 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_all_nodes($add_sql = array())
+	public function get_all_nodes($add_sql = array())
 	{
 		$node_set = array();
 		$rootnodes = $this->get_root_nodes(true);
@@ -100,7 +81,7 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_root_nodes($add_sql = array())
+	public function get_root_nodes($add_sql = array())
 	{
 		$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.id=%s.root_id %s',
 										$this->_get_select_fields(),
@@ -111,9 +92,7 @@ class nested_sets_driver extends tree_db_driver
 										$this->_node_table,
 										$this->_add_sql($add_sql, 'append'));
 
-		$node_set =& $this->_get_result_set($sql);
-
-		return $node_set;
+		return $this->_get_result_set($sql);
 	} 
 	/**
 	* Fetch the whole branch where a given node id is in
@@ -124,11 +103,11 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_branch($id, $add_sql = array())
+	public function get_branch($id, $add_sql = array())
 	{
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: write_error('TREE_ERROR_NODE_NOT_FOUND',
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -144,9 +123,7 @@ class nested_sets_driver extends tree_db_driver
 										$this->_add_sql($add_sql, 'append'),
 										$this->_node_table);
 
-		$node_set =& $this->_get_result_set($sql);
-
-		return $node_set;
+		return $this->_get_result_set($sql);
 	} 
 	/**
 	* Fetch the parents of a node given by id
@@ -154,11 +131,11 @@ class nested_sets_driver extends tree_db_driver
 	* @param int $id The node ID
 	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
 	*/
-	function & get_parents($id, $add_sql = array())
+	public function get_parents($id, $add_sql = array())
 	{
 		if (!($child = $this->get_node($id)))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -179,9 +156,7 @@ class nested_sets_driver extends tree_db_driver
 										$this->_add_sql($add_sql, 'append'),
 										$this->_node_table);
 
-		$node_set =& $this->_get_result_set($sql);
-
-		return $node_set;
+		return $this->_get_result_set($sql);
 	} 
 	
 	/**
@@ -193,11 +168,11 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or the parent node
 	*/
-	function & get_parent($id, $add_sql = array())
+	public function get_parent($id, $add_sql = array())
 	{
 		if (!($child = $this->get_node($id)))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -218,7 +193,7 @@ class nested_sets_driver extends tree_db_driver
 			$this->_node_table,
 			$child['level']-1);
 
-		$node_set =& $this->get_parents($id, $add_sql);
+		$node_set = $this->get_parents($id, $add_sql);
 
 		if (!empty($node_set))
 			return current($node_set);
@@ -237,11 +212,11 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error
 	*/
-	function & get_siblings($id, $add_sql = array())
+	public function get_siblings($id, $add_sql = array())
 	{
 		if (!($sibling = $this->get_node($id)))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -261,11 +236,11 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_children($id, $add_sql = array())
+	public function get_children($id, $add_sql = array())
 	{		
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -285,16 +260,14 @@ class nested_sets_driver extends tree_db_driver
 										$this->_node_table, $id,
 										$this->_add_sql($add_sql, 'append'));
 
-		$node_set =& $this->_get_result_set($sql);
-
-		return $node_set;
+		return $this->_get_result_set($sql);
 	} 
 	
-	function count_children($id, $add_sql=array())
+	public function count_children($id, $add_sql=array())
 	{
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -331,11 +304,11 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
+	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
 	{
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -394,23 +367,21 @@ class nested_sets_driver extends tree_db_driver
 		return $node_set;
 	} 
 
-	function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
+	public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
 	{
 		if(!$parent_node = $this->get_node_by_path($path))
 			return false;
 								
- 		$nodes =& $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
-  		
-		return $nodes;
+ 		return $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
 	}	
 	
-	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
+	public function get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
 	{
 		$sql_add['columns'][] = ', soa.object_id';
 		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
 		$sql_add['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
 	
-		$access_policy =& access_policy :: instance();
+		$access_policy = access_policy :: instance();
     $accessor_ids = implode(',', $access_policy->get_accessor_ids());
 			
 		if ($class_id)
@@ -418,12 +389,10 @@ class nested_sets_driver extends tree_db_driver
 			
 		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
 
-		$result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $sql_add);
-		
-		return $result;
+		return $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $sql_add);
 	}
 	
-	function count_accessible_children($id)
+	public function count_accessible_children($id)
 	{
 		if (!($parent = $this->get_node($id)))
 		{
@@ -442,7 +411,7 @@ class nested_sets_driver extends tree_db_driver
 		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
 		$sql_add['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
 	
-		$access_policy =& access_policy :: instance();
+		$access_policy = access_policy :: instance();
     $accessor_ids = implode(',', $access_policy->get_accessor_ids());
 			
 		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
@@ -474,7 +443,7 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_node($id, $add_sql = array())
+	public function get_node($id, $add_sql = array())
 	{
 		$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.id=%s %s',
 										$this->_get_select_fields(), 
@@ -485,12 +454,10 @@ class nested_sets_driver extends tree_db_driver
 										$this->_add_sql($add_sql, 'append')
 									);
 
-		$node_set =& $this->_get_result_set($sql);
-
-		return current($node_set);
+		return current($this->_get_result_set($sql));
 	}
 	
-	function & get_node_by_path($path, $delimiter='/', $recursive = false)
+	public function get_node_by_path($path, $delimiter='/', $recursive = false)
 	{
   	$arr = explode($delimiter, $path);
 
@@ -546,9 +513,9 @@ class nested_sets_driver extends tree_db_driver
   		return false;	
 	}
 	
-	function & get_nodes_by_ids($ids)
+	public function get_nodes_by_ids($ids)
 	{
-		$nodes =& $this->get_all_nodes(
+		$nodes = $this->get_all_nodes(
 			array(
 				'append' => array('WHERE ' . sql_in('id', $ids))
 			)
@@ -557,11 +524,11 @@ class nested_sets_driver extends tree_db_driver
 		return $nodes;
 	}
 
-	function get_max_child_identifier($id)
+	public function get_max_child_identifier($id)
 	{
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -587,12 +554,12 @@ class nested_sets_driver extends tree_db_driver
 		  return 0;
 	}
 	
-	function is_node($id)
+	public function is_node($id)
 	{
 		return ($this->get_node($id) !== false);
 	}
 	
-  function is_node_expanded($id)
+  public function is_node_expanded($id)
   {
   	if(isset($this->_expanded_parents[$id]))
   		return $this->_expanded_parents[$id]['status'];
@@ -600,7 +567,7 @@ class nested_sets_driver extends tree_db_driver
   		return false;
   }
   
-  function change_node_order($node_id, $direction)
+  public function change_node_order($node_id, $direction)
   {
   	if(!$node = $this->get_node($node_id))
   	{
@@ -626,12 +593,12 @@ class nested_sets_driver extends tree_db_driver
   	if($direction == 'up' && $pos > 0)
   	{
   		$target_item = $children[$children_keys[$pos-1]];
-  		$result = $this->move_tree($node_id, $target_item['id'], NESE_MOVE_BEFORE);
+  		$result = $this->move_tree($node_id, $target_item['id'], self :: MOVE_BEFORE);
   	}
   	elseif($direction == 'down' && $pos < (sizeof($children_keys) - 1))	
   	{
   		$target_item = $children[$children_keys[$pos+1]];
-  		$result = $this->move_tree($node_id, $target_item['id'], NESE_MOVE_AFTER);
+  		$result = $this->move_tree($node_id, $target_item['id'], self :: MOVE_AFTER);
   	}
   	
 		if($result)
@@ -640,7 +607,7 @@ class nested_sets_driver extends tree_db_driver
 		return $result;
   }
       
-  function reset_expanded_parents()
+  public function reset_expanded_parents()
   {
   	$this->_expanded_parents = array();
   	
@@ -655,7 +622,7 @@ class nested_sets_driver extends tree_db_driver
   	}
   }
   
-  function _set_expanded_parent_status($node, $status)
+  protected function _set_expanded_parent_status($node, $status)
   {
   	$id = (int)$node['id'];
 		$this->_expanded_parents[$id]['l'] = (int)$node['l'];
@@ -682,7 +649,7 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed The node id or false on error
 	*/
-	function create_root_node($values)
+	public function create_root_node($values)
 	{
 		$this->_verify_user_values($values); 
 	
@@ -720,11 +687,11 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed The node id or false on error
 	*/
-	function create_sub_node($id, $values)
+	public function create_sub_node($id, $values)
 	{
 		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('parent_id' => $id)
     	);
@@ -803,13 +770,13 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed The node id or false on error
 	*/
-	function create_left_node($id, $values)
+	public function create_left_node($id, $values)
 	{
 		$this->_verify_user_values($values); 
 		// invalid target node, bail out
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -819,7 +786,7 @@ class nested_sets_driver extends tree_db_driver
 		// If the target node is a rootnode we virtually want to create a new root node
 		if ($this_node['root_id'] == $this_node['id'])
 		{
-			return $this->create_root_node($values, $id, false, NESE_MOVE_BEFORE);
+			return $this->create_root_node($values, $id, false, self :: MOVE_BEFORE);
 		} 
 
 		$insert_data = array();
@@ -894,11 +861,11 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return mixed The node id or false on error
 	*/
-	function create_right_node($id, $values)
+	public function create_right_node($id, $values)
 	{
 		if (!$node = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -960,11 +927,11 @@ class nested_sets_driver extends tree_db_driver
 	* @access public 
 	* @return bool True if the delete succeeds
 	*/
-	function delete_node($id)
+	public function delete_node($id)
 	{
 		if (!$node = $this->get_node($id))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -1002,22 +969,27 @@ class nested_sets_driver extends tree_db_driver
 			
 		return true;
 	} 
+	
+	public function move_tree($id, $target_id)
+	{
+	  return $this->ns_move_tree($id, $target_id, self :: MOVE_AFTER);
+	}
 		
 	/**
 	* Wrapper for node moving and copying
 	* 
 	* @param int $id Source ID
 	* @param int $target Target ID
-	* @param constant $pos Position (use one of the NESE_MOVE_* constants)
+	* @param constant $pos Position (use one of the MOVE_* constants)
 	* @param bool $copy Shall we create a copy
 	* @access public 
 	* @return int ID of the moved node or false on error
 	*/
-	function move_tree($id, $target_id, $pos, $copy = false)
+	public function ns_move_tree($id, $target_id, $pos, $copy = false)
 	{
 		if ($id == $target_id && !$copy)
 		{
-    	debug :: write_error(TREE_ERROR_RECURSION,
+    	debug :: write_error(self :: TREE_ERROR_RECURSION,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
     		 array('id' => $id, 'target_id' => $target_id)
     	);
@@ -1026,7 +998,7 @@ class nested_sets_driver extends tree_db_driver
 		// Get information about source and target
 		if (!($source = $this->get_node($id)))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -1035,7 +1007,7 @@ class nested_sets_driver extends tree_db_driver
 
 		if (!($target = $this->get_node($target_id)))
 		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
+    	debug :: write_error(self :: TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('target_id' => $target_id)
     	);
@@ -1052,7 +1024,7 @@ class nested_sets_driver extends tree_db_driver
 						($source['r'] >= $target['r'])))
 			{
 				
-	    	debug :: write_error(TREE_ERROR_RECURSION,
+	    	debug :: write_error(self :: TREE_ERROR_RECURSION,
 	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 	    		 array('id' => $id, 'target_id' => $target_id)
 	    	);
@@ -1060,7 +1032,7 @@ class nested_sets_driver extends tree_db_driver
 			} 
 			// Insert/move before or after
 			if (($source['root_id'] == $source['id']) &&
-					($target['root_id'] == $target['id']) && ($pos != NESE_MOVE_BELOW))
+					($target['root_id'] == $target['id']) && ($pos != self :: MOVE_BELOW))
 			{ 
 				// We have to move a rootnode which is different from moving inside a tree
 				$nid = $this->_move_root2root($source, $target, $pos);
@@ -1071,7 +1043,7 @@ class nested_sets_driver extends tree_db_driver
 						(	($source['l'] < $target['l']) &&
 							($source['r'] > $target['r'])))
 		{
-    	debug :: write_error(TREE_ERROR_RECURSION,
+    	debug :: write_error(self :: TREE_ERROR_RECURSION,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
     		 array('id' => $id, 'target_id' => $target_id)
     	);
@@ -1116,7 +1088,7 @@ class nested_sets_driver extends tree_db_driver
 	* @param bool $copy Shall we create a copy
 	* @access private 
 	*/
-	function _move_across($source, $target, $pos, $first = false)
+	protected function _move_across($source, $target, $pos, $first = false)
 	{
 		// Get the current data from a node and exclude the id params which will be changed
 		// because of the node move
@@ -1130,15 +1102,15 @@ class nested_sets_driver extends tree_db_driver
 		} 
 		switch ($pos)
 		{
-			case NESE_MOVE_BEFORE:
+			case self :: MOVE_BEFORE:
 				$clone_id = $this->create_left_node($target['id'], $values);
 				break;
 
-			case NESE_MOVE_AFTER:
+			case self :: MOVE_AFTER:
 				$clone_id = $this->create_right_node($target['id'], $values);
 				break;
 
-			case NESE_MOVE_BELOW:
+			case self :: MOVE_BELOW:
 				$clone_id = $this->create_sub_node($target['id'], $values);
 				break;
 		} 
@@ -1156,7 +1128,7 @@ class nested_sets_driver extends tree_db_driver
 
 		if ($children)
 		{
-			$pos = NESE_MOVE_BELOW;
+			$pos = self :: MOVE_BELOW;
 			$sclone_id = $clone_id; 
 			// Recurse through the child nodes
 			foreach($children AS $cid => $child)
@@ -1164,7 +1136,7 @@ class nested_sets_driver extends tree_db_driver
 				$sclone = $this->get_node($sclone_id);
 				$sclone_id = $this->_move_across($child, $sclone, $pos);
 
-				$pos = NESE_MOVE_AFTER;
+				$pos = self :: MOVE_AFTER;
 			} 
 		} 
 
@@ -1180,7 +1152,7 @@ class nested_sets_driver extends tree_db_driver
 	* @param array $copy Are we in copy mode?
 	* @access private 
 	*/
-	function _move_cleanup($copy = false)
+	protected function _move_cleanup($copy = false)
 	{
 		$relations = $this->_relations;
 
@@ -1279,7 +1251,7 @@ class nested_sets_driver extends tree_db_driver
 	* @access private 
 	* @see moveTree
 	*/
-	function _move_root2root($source, $target, $pos)
+	protected function _move_root2root($source, $target, $pos)
 	{
 		$tb = $this->_node_table;
 		$s_order = $source['ordr'];
@@ -1289,7 +1261,7 @@ class nested_sets_driver extends tree_db_driver
 
 		if ($s_order < $t_order)
 		{
-			if ($pos == NESE_MOVE_BEFORE)
+			if ($pos == self :: MOVE_BEFORE)
 			{
 				$sql = "UPDATE {$tb} SET ordr=ordr-1
                 WHERE ordr BETWEEN {$s_order} AND {$t_order} AND
@@ -1301,7 +1273,7 @@ class nested_sets_driver extends tree_db_driver
 				$sql = "UPDATE {$tb} SET ordr={$t_order}-1 WHERE id={$s_id}";
 				$this->_db->sql_exec($sql);
 			} 
-			elseif ($pos == NESE_MOVE_AFTER)
+			elseif ($pos == self :: MOVE_AFTER)
 			{
 				$sql = "UPDATE {$tb} SET ordr=ordr-1
                 WHERE ordr BETWEEN {$s_order} AND {$t_order} AND
@@ -1317,7 +1289,7 @@ class nested_sets_driver extends tree_db_driver
 
 		if ($s_order > $t_order)
 		{
-			if ($pos == NESE_MOVE_BEFORE)
+			if ($pos == self :: MOVE_BEFORE)
 			{
 				$sql = "UPDATE {$tb} SET ordr=ordr+1
                 WHERE ordr BETWEEN {$t_order} AND {$s_order} AND
@@ -1328,7 +1300,7 @@ class nested_sets_driver extends tree_db_driver
 				$sql = "UPDATE {$tb} SET ordr={$t_order} WHERE id={$s_id}";
 				$this->_db->sql_exec($sql);
 			} 
-			elseif ($pos == NESE_MOVE_AFTER)
+			elseif ($pos == self :: MOVE_AFTER)
 			{
 				$sql = "UPDATE $tb SET ordr=ordr+1
                 WHERE ordr BETWEEN $t_order AND $s_order AND
@@ -1344,7 +1316,7 @@ class nested_sets_driver extends tree_db_driver
 		return $s_id;
 	} 
 											
-	function _values2insert_query($values, $insert_data = false)
+	protected function _values2insert_query($values, $insert_data = false)
 	{
 		if (is_array($insert_data))
 		{

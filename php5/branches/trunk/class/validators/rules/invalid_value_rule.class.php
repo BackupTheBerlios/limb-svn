@@ -12,24 +12,16 @@ require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class invalid_value_rule extends single_field_rule
 {
-  var $invalid_value;
+  private $invalid_value;
   
-	function invalid_value_rule($field_name, $invalid_value)
+	function __construct($field_name, $invalid_value)
 	{
-		parent :: single_field_rule($field_name);
+		parent :: __construct($field_name);
 		
 		$this->invalid_value = $invalid_value;
 	} 
 
-	/**
-	* Performs validation
-	* 
-	* @param dataspace $ - data to validate
-	* @param error_list $ 
-	* @return boolean TRUE if validation passed
-	* @access public 
-	*/
-	function validate(&$dataspace)
+	public function validate($dataspace)
 	{
 		$value = $dataspace->get($this->field_name);
 		

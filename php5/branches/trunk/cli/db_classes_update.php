@@ -28,7 +28,7 @@ if(!$site_objects = $loader->get_site_objects())
 	die("no site objects loaded");
 }
 
-$class_db_table =& db_table_factory :: instance('sys_class');
+$class_db_table =& db_table_factory :: create('sys_class');
 
 foreach($site_objects as $object)
 {
