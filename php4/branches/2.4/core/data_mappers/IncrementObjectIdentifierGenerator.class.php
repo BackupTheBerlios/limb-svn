@@ -9,13 +9,13 @@
 *
 ***********************************************************************************/
 
-class IncrementSiteObjectIdentifierGenerator// implements SiteObjectIdentifierGenerator
+class IncrementObjectIdentifierGenerator// implements ObjectIdentifierGenerator
 {
-  function generate(&$site_object)
+  function generate(&$object)
   {
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();
-    $identifier = $tree->getMaxChildIdentifier($site_object->getParentNodeId());
+    $identifier = $tree->getMaxChildIdentifier($object->get('parent_node_id'));
 
     if($identifier === false)
       return false;

@@ -11,9 +11,9 @@
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/TreeNodeDataMapper.class.php');
-require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/data_mappers/SiteObjectIdentifierGenerator.interface.php');
+require_once(LIMB_DIR . '/core/data_mappers/ObjectIdentifierGenerator.interface.php');
 
 Mock :: generate('Tree');
 Mock :: generatePartial('LimbBaseToolkit',
@@ -23,7 +23,7 @@ Mock :: generatePartial('LimbBaseToolkit',
 Mock :: generatePartial('TreeNodeDataMapper',
                         'TreeNodeDataMapperTestVersion',
                         array('_getIdentifierGenerator'));
-Mock :: generate('SiteObjectIdentifierGenerator', 'MockIdentifierGenerator');
+Mock :: generate('ObjectIdentifierGenerator', 'MockIdentifierGenerator');
 
 class TreeNodeDataMapperTest extends LimbTestCase
 {
@@ -67,7 +67,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
   function testLoad()
   {
     $mapper = new TreeNodeDataMapper();
-    $site_object = new SiteObject();
+    $object = new Object();
 
     $record = new Dataspace();
     $record->import(array('node_id' => $node_id = 10,
@@ -75,20 +75,20 @@ class TreeNodeDataMapperTest extends LimbTestCase
                           'identifier' => $identifier = 'test',
                           ));
 
-    $mapper->load($record, $site_object);
+    $mapper->load($record, $object);
 
-    $this->assertEqual($site_object->getNodeId(), $node_id);
-    $this->assertEqual($site_object->getParentNodeId(), $parent_node_id);
-    $this->assertEqual($site_object->getIdentifier(), $identifier);
+    $this->assertEqual($object->get('node_id'), $node_id);
+    $this->assertEqual($object->get('parent_node_id'), $parent_node_id);
+    $this->assertEqual($object->get('identifier'), $identifier);
   }
 
   function testFailedInsertTreeNodeParentIdNotSet()
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
+    $object = new Object();
 
-    $mapper->insert($site_object);
+    $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'tree parent node is empty');
   }
@@ -97,13 +97,13 @@ class TreeNodeDataMapperTest extends LimbTestCase
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
-    $site_object->setParentNodeId($parent_node_id = 10);
+    $object = new Object();
+    $object->set('parent_node_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode', array($parent_node_id));
     $this->tree->setReturnValue('canAddNode', false);
 
-    $mapper->insert($site_object);
+    $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'tree registering failed');
     $this->assertEqual($e->getAdditionalParams(), array('parent_node_id' => 10));
@@ -116,16 +116,16 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
-    $site_object = new SiteObject();
-    $site_object->setParentNodeId($parent_node_id = 10);
+    $object = new Object();
+    $object->set('parent_node_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode', array($parent_node_id));
     $this->tree->setReturnValue('canAddNode', true);
 
-    $generator->expectOnce('generate', array($site_object));
-    $generator->setReturnValue('generate', false, array($site_object));
+    $generator->expectOnce('generate', array($object));
+    $generator->setReturnValue('generate', false, array($object));
 
-    $mapper->insert($site_object);
+    $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'failed to generate identifier');
 
@@ -139,20 +139,20 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
-    $site_object = new SiteObject();
-    $site_object->setParentNodeId($parent_node_id = 10);
+    $object = new Object();
+    $object->set('parent_node_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode', array($parent_node_id));
     $this->tree->setReturnValue('canAddNode', true);
 
-    $generator->expectOnce('generate', array($site_object));
-    $generator->setReturnValue('generate', $identifier = 'identifier', array($site_object));
+    $generator->expectOnce('generate', array($object));
+    $generator->setReturnValue('generate', $identifier = 'identifier', array($object));
 
     $expected = array($parent_node_id, array('identifier' => $identifier));
     $this->tree->expectOnce('createSubNode', $expected);
     $this->tree->setReturnValue('createSubNode', false, $expected);
 
-    $mapper->insert($site_object);
+    $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'could not create tree node');
 
@@ -166,23 +166,23 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
-    $site_object = new SiteObject();
-    $site_object->setParentNodeId($parent_node_id = 10);
+    $object = new Object();
+    $object->set('parent_node_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode', array($parent_node_id));
     $this->tree->setReturnValue('canAddNode', true);
 
-    $generator->expectOnce('generate', array($site_object));
-    $generator->setReturnValue('generate', $identifier = 'identifier', array($site_object));
+    $generator->expectOnce('generate', array($object));
+    $generator->setReturnValue('generate', $identifier = 'identifier', array($object));
 
     $expected = array($parent_node_id, array('identifier' => $identifier));
     $this->tree->expectOnce('createSubNode', $expected);
     $this->tree->setReturnValue('createSubNode', $node_id = 100, $expected);
 
-    $mapper->insert($site_object);
+    $mapper->insert($object);
 
-    $this->assertEqual($site_object->getNodeId(), $node_id);
-    $this->assertEqual($site_object->getIdentifier(), $identifier);
+    $this->assertEqual($object->get('node_id'), $node_id);
+    $this->assertEqual($object->get('identifier'), $identifier);
 
     $generator->tally();
   }
@@ -191,9 +191,9 @@ class TreeNodeDataMapperTest extends LimbTestCase
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
+    $object = new Object();
 
-    $mapper->update($site_object);
+    $mapper->update($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'node id not set');
   }
@@ -202,10 +202,10 @@ class TreeNodeDataMapperTest extends LimbTestCase
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
-    $site_object->setNodeId(10);
+    $object = new Object();
+    $object->set('node_id', 10);
 
-    $mapper->update($site_object);
+    $mapper->update($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'parent node id not set');
   }
@@ -214,10 +214,10 @@ class TreeNodeDataMapperTest extends LimbTestCase
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
-    $site_object->setNodeId($node_id = 100);
-    $site_object->setParentNodeId($parent_node_id = 10);
-    $site_object->setIdentifier($identifier = 'test');
+    $object = new Object();
+    $object->set('node_id', $node_id = 100);
+    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('identifier', $identifier = 'test');
 
     $this->tree->expectOnce('getNode');
     $this->tree->setReturnValue('getNode', array('identifier' => $identifier,
@@ -225,17 +225,17 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $this->tree->expectNever('moveTree');
     $this->tree->expectNever('updateNode');
-    $mapper->update($site_object);
+    $mapper->update($object);
   }
 
   function testUpdateNoNeedToMove()
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
-    $site_object->setNodeId($node_id = 100);
-    $site_object->setParentNodeId($parent_node_id = 10);
-    $site_object->setIdentifier($identifier = 'test');
+    $object = new Object();
+    $object->set('node_id', $node_id = 100);
+    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('identifier', $identifier = 'test');
 
     $this->tree->expectOnce('getNode');
     $this->tree->setReturnValue('getNode', array('identifier' => 'test2',
@@ -243,16 +243,16 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $this->tree->expectNever('moveTree');
     $this->tree->expectOnce('updateNode', array($node_id, array('identifier' => $identifier), true));
-    $mapper->update($site_object);
+    $mapper->update($object);
   }
 
   function testUpdateTreeNodeFailedToMove()
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
-    $site_object->setNodeId($node_id = 100);
-    $site_object->setParentNodeId($parent_node_id = 10);
+    $object = new Object();
+    $object->set('node_id', $node_id = 100);
+    $object->set('parent_node_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode');
     $this->tree->setReturnValue('canAddNode', true);
@@ -263,7 +263,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->tree->expectOnce('moveTree');
     $this->tree->setReturnValue('moveTree', false, array($node_id, $parent_node_id));
 
-    $mapper->update($site_object);
+    $mapper->update($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'could not move node');
   }
@@ -272,10 +272,10 @@ class TreeNodeDataMapperTest extends LimbTestCase
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
-    $site_object->setNodeId($node_id = 100);
-    $site_object->setParentNodeId($parent_node_id = 10);
-    $site_object->setIdentifier($identifier = 'test');
+    $object = new Object();
+    $object->set('node_id', $node_id = 100);
+    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('identifier', $identifier = 'test');
 
     $this->tree->expectOnce('getNode');
     $this->tree->setReturnValue('getNode', array('identifier' => $identifier,
@@ -286,7 +286,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $this->tree->expectNever('moveTree');
     $this->tree->expectNever('updateNode');
-    $mapper->update($site_object);
+    $mapper->update($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'new parent cant accept children');
   }
@@ -295,10 +295,10 @@ class TreeNodeDataMapperTest extends LimbTestCase
   {
     $mapper = new TreeNodeDataMapper();
 
-    $site_object = new SiteObject();
-    $site_object->setNodeId($node_id = 100);
-    $site_object->setParentNodeId($parent_node_id = 10);
-    $site_object->setIdentifier($identifier = 'test');
+    $object = new Object();
+    $object->set('node_id', $node_id = 100);
+    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('identifier', $identifier = 'test');
 
     $this->tree->expectOnce('canAddNode');
     $this->tree->setReturnValue('canAddNode', true);
@@ -310,15 +310,15 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->tree->expectOnce('moveTree');
     $this->tree->setReturnValue('moveTree', true, array($node_id, $parent_node_id));
 
-    $mapper->update($site_object);
+    $mapper->update($object);
   }
 
   function testCantDeleteNoNodeId()
   {
     $mapper = new TreeNodeDataMapper();
-    $site_object = new SiteObject();
+    $object = new Object();
 
-    $mapper->delete($site_object);
+    $mapper->delete($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'node id not set');
   }
@@ -326,27 +326,27 @@ class TreeNodeDataMapperTest extends LimbTestCase
   function testCantDeleteFromTree()
   {
     $mapper = new TreeNodeDataMapper();
-    $site_object = new SiteObject();
+    $object = new Object();
 
-    $site_object->setNodeId($node_id = 100);
+    $object->set('node_id', $node_id = 100);
 
     $this->tree->expectOnce('canDeleteNode', array($node_id));
     $this->tree->setReturnValue('canDeleteNode', false, array($node_id));
 
-    $mapper->delete($site_object);
+    $mapper->delete($object);
   }
 
   function testDelete()
   {
     $mapper = new TreeNodeDataMapper();
-    $site_object = new SiteObject();
+    $object = new Object();
 
-    $site_object->setNodeId($node_id = 100);
+    $object->set('node_id', $node_id = 100);
 
     $this->tree->setReturnValue('canDeleteNode', true, array($node_id));
     $this->tree->expectOnce('deleteNode', array($node_id));
 
-    $mapper->delete($site_object);
+    $mapper->delete($object);
   }
 }
 

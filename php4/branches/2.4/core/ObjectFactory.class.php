@@ -5,23 +5,23 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: ObjectFactory.class.php 1098 2005-02-10 12:06:14Z pachanga $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/system/objects_support.inc.php');
 
-if(!isRegisteredResolver('site_object'))
+if(!isRegisteredResolver('object'))
 {
   include_once(LIMB_DIR . '/core/file_resolvers/PackageFileResolver.class.php');
-  include_once(LIMB_DIR . '/core/file_resolvers/SiteObjectFileResolver.class.php');
-  registerFileResolver('site_object', new SiteObjectFileResolver(new PackageFileResolver()));
+  include_once(LIMB_DIR . '/core/file_resolvers/ObjectFileResolver.class.php');
+  registerFileResolver('object', new ObjectFileResolver(new PackageFileResolver()));
 }
 
-class SiteObjectFactory
+class ObjectFactory
 {
   function create($class_name)
   {
-    SiteObjectFactory :: _includeClassFile($class_name);
+    ObjectFactory :: _includeClassFile($class_name);
 
     return new $class_name();
   }
@@ -31,7 +31,7 @@ class SiteObjectFactory
     if(class_exists($class_name))
       return;
 
-    $resolver =& Handle :: resolve(getFileResolver('site_object'));
+    $resolver =& Handle :: resolve(getFileResolver('object'));
 
     $full_path = $resolver->resolve($class_name);
 

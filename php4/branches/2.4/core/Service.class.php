@@ -46,7 +46,7 @@ class Service extends Object
 
   function & getController()
   {
-    include_once(LIMB_DIR . '/core/site_objects/ServiceController.class.php');
+    include_once(LIMB_DIR . '/core/ServiceController.class.php');
     return new ServiceController($this->getBehaviour());
   }
 

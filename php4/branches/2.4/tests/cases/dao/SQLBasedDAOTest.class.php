@@ -13,6 +13,7 @@ require_once(LIMB_DIR . '/core/dao/criteria/Criteria.class.php');
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 require_once(WACT_ROOT . '/db/drivers/mysql/driver.inc.php');
+require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
 Mock :: generate('Criteria');
 Mock :: generate('ComplexSelectSQL');
@@ -73,7 +74,7 @@ class SQLBasedDAOTest extends LimbTestCase
     $criteria2->expectOnce('process', array(new IsAExpectation('MockComplexSelectSQL')));
 
     $this->sql->expectOnce('toString');
-    $this->sql->setReturnValue('toString', $str = 'SELECT * FROM test1');
+    $this->sql->setReturnValue('toString', $str = 'SELECT *...');
 
     $this->conn->expectOnce('newStatement', array($str));
     $this->conn->setReturnReference('newStatement', $this->stmt, array($str));
@@ -82,6 +83,26 @@ class SQLBasedDAOTest extends LimbTestCase
     $this->stmt->setReturnValue('getRecordSet', $rs = 'anything');
 
     $this->assertEqual($this->dao->fetch(), $rs);
+  }
+
+  function testFindById()
+  {
+    $id = "10";
+
+    $this->sql->expectOnce('addCondition', array('oid=10'));
+    $this->sql->expectOnce('toString');
+    $this->sql->setReturnValue('toString', $str = 'SELECT *...');
+
+    $this->conn->expectOnce('newStatement', array($str));
+    $this->conn->setReturnReference('newStatement', $this->stmt, array($str));
+
+    $record = new DataSpace();
+    $record->import($row = array('whatever'));
+
+    $this->stmt->expectOnce('getRecordSet');
+    $this->stmt->setReturnValue('getRecordSet', $rs = new ArrayDataSet(array($row)));
+
+    $this->assertEqual($this->dao->fetchById($id), $record);
   }
 }
 

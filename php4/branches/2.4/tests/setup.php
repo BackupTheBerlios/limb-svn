@@ -34,7 +34,7 @@ include_once(LIMB_DIR . '/core/file_resolvers/PackageFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/DbTableFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/BehaviourFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/DAOFileResolver.class.php');
-include_once(LIMB_DIR . '/core/file_resolvers/SiteObjectFileResolver.class.php');
+include_once(LIMB_DIR . '/core/file_resolvers/ObjectFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/TemplateFileResolver.class.php');
 
 registerFileResolver('ini',         new LimbHandle(LIMB_DIR . '/tests/lib/TestsIniFileResolver'));
@@ -44,7 +44,7 @@ registerFileResolver('db_table',    new DbTableFileResolver(new PackageFileResol
 registerFileResolver('template',    new TemplateFileResolver(new PackageFileResolver()));
 registerFileResolver('behaviour',   new BehaviourFileResolver(new PackageFileResolver()));
 registerFileResolver('dao',  new DAOFileResolver(new PackageFileResolver()));
-registerFileResolver('site_object', new SiteObjectFileResolver(new PackageFileResolver()));
+registerFileResolver('object', new ObjectFileResolver(new PackageFileResolver()));
 
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/core/i18n/Strings.class.php');
 
 Mock :: generatePartial(
   'HttpResponse',

@@ -12,16 +12,16 @@ require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
 class TreeNodeDataMapper extends AbstractDataMapper
 {
-  function load(&$record, &$site_object)
+  function load(&$record, &$object)
   {
-    $site_object->setNodeId($record->get('node_id'));
-    $site_object->setParentNodeId($record->get('parent_node_id'));
-    $site_object->setIdentifier($record->get('identifier'));
+    $object->set('node_id', $record->get('node_id'));
+    $object->set('parent_node_id', $record->get('parent_node_id'));
+    $object->set('identifier', $record->get('identifier'));
   }
 
-  function insert(&$site_object)
+  function insert(&$object)
   {
-    if(!($parent_node_id = $site_object->getParentNodeId()))
+    if(!($parent_node_id = $object->get('parent_node_id')))
       return throw(new LimbException('tree parent node is empty'));
 
     $toolkit =& Limb :: toolkit();
@@ -32,7 +32,7 @@ class TreeNodeDataMapper extends AbstractDataMapper
 
     $gntr =& $this->_getIdentifierGenerator();
 
-    if(!$identifier = $gntr->generate($site_object))
+    if(!$identifier = $gntr->generate($object))
       return throw(new LimbException('failed to generate identifier'));
 
     $values['identifier'] = $identifier;
@@ -40,21 +40,21 @@ class TreeNodeDataMapper extends AbstractDataMapper
     if (!$node_id = $tree->createSubNode($parent_node_id, $values))
       return throw(new LimbException('could not create tree node'));
 
-    $site_object->setIdentifier($identifier);
-    $site_object->setNodeId($node_id);
+    $object->set('identifier', $identifier);
+    $object->set('node_id', $node_id);
   }
 
-  function update(&$site_object)
+  function update(&$object)
   {
-    if(!$site_object->getNodeId())
+    if(!$object->get('node_id'))
       return throw(new LimbException('node id not set'));
 
-    if(!$site_object->getParentNodeId())
+    if(!$object->get('parent_node_id'))
       return throw(new LimbException('parent node id not set'));
 
-    $node_id = $site_object->getNodeId();
-    $parent_node_id = $site_object->getParentNodeId();
-    $identifier = $site_object->getIdentifier();
+    $node_id = $object->get('node_id');
+    $parent_node_id = $object->get('parent_node_id');
+    $identifier = $object->get('identifier');
 
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();
@@ -85,8 +85,8 @@ class TreeNodeDataMapper extends AbstractDataMapper
 
   function &_getIdentifierGenerator()
   {
-    include_once(LIMB_DIR . '/core/data_mappers/DefaultSiteObjectIdentifierGenerator.class.php');
-    return new DefaultSiteObjectIdentifierGenerator();
+    include_once(LIMB_DIR . '/core/data_mappers/DefaultObjectIdentifierGenerator.class.php');
+    return new DefaultObjectIdentifierGenerator();
   }
 
   function _isObjectMovedFromNode($parent_node_id, $node)
@@ -94,30 +94,30 @@ class TreeNodeDataMapper extends AbstractDataMapper
     return ($node['parent_id'] != $parent_node_id);
   }
 
-  function delete(&$site_object)
+  function delete(&$object)
   {
-    if (!$this->_canDeleteTreeNode($site_object))
+    if (!$this->_canDeleteTreeNode($object))
       return;
 
-    $this->_deleteTreeNode($site_object);
+    $this->_deleteTreeNode($object);
   }
 
-  function _deleteTreeNode(&$site_object)
+  function _deleteTreeNode(&$object)
   {
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();
-    $tree->deleteNode($site_object->getNodeId());
+    $tree->deleteNode($object->get('node_id'));
   }
 
-  function _canDeleteTreeNode(&$site_object)
+  function _canDeleteTreeNode(&$object)
   {
-    if(!$site_object->getNodeId())
+    if(!$object->get('node_id'))
       return throw(new LimbException('node id not set'));
 
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();
 
-    return $tree->canDeleteNode($site_object->getNodeId());
+    return $tree->canDeleteNode($object->get('node_id'));
   }
 }
 

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class SiteObjectControllerFilter// implements InterceptingFilter
+class ServiceControllerFilter// implements InterceptingFilter
 {
   function run(&$filter_chain, &$request, &$response)
   {
@@ -19,8 +19,8 @@ class SiteObjectControllerFilter// implements InterceptingFilter
     $dao =& $toolkit->createDAO('RequestedObjectDAO');
     $dao->setRequest($request);
 
-    $site_object = wrapWithSiteObject($dao->fetch());
-    $ctrlr =& $site_object->getController();
+    $object = wrapWithService($dao->fetch());
+    $ctrlr =& $object->getController();
     $ctrlr->process($request);
 
     Debug :: addTimingPoint('site object controller filter finished');
@@ -30,7 +30,7 @@ class SiteObjectControllerFilter// implements InterceptingFilter
 
   function _getController($behaviour)
   {
-    return new SiteObjectController($behaviour);
+    return new ServiceController($behaviour);
   }
 }
 ?>

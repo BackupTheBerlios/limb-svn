@@ -8,38 +8,38 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/data_mappers/IncrementSiteObjectIdentifierGenerator.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/IncrementObjectIdentifierGenerator.class.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('SiteObject');
+Mock :: generate('Object');
 Mock :: generate('Tree');
 
-class IncrementSiteObjectIdentifierGeneratorTest extends LimbTestCase
+class IncrementObjectIdentifierGeneratorTest extends LimbTestCase
 {
   var $object;
   var $generator;
   var $tree;
   var $toolkit;
 
-  function IncrementSiteObjectIdentifierGeneratorTest()
+  function IncrementObjectIdentifierGeneratorTest()
   {
     parent :: LimbTestCase('incremental identifier generator test');
   }
 
   function setUp()
   {
-    $this->object = new MockSiteObject($this);
-    $this->generator = new IncrementSiteObjectIdentifierGenerator();
+    $this->object = new MockObject($this);
+    $this->generator = new IncrementObjectIdentifierGenerator();
     $this->tree = new MockTree($this);
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnReference('getTree', $this->tree);
 
-    $this->object->expectOnce('getParentNodeId');
-    $this->object->setReturnValue('getParentNodeId', 100);
+    $this->object->expectOnce('get', array('parent_node_id'));
+    $this->object->setReturnValue('get', 100, array('parent_node_id'));
 
     $this->tree->expectOnce('getMaxChildIdentifier', array(100));
 

@@ -53,10 +53,10 @@ class LimbBaseToolkit// implements LimbToolkit
     return DAOFactory :: create($dao_path);
   }
 
-  function & createSiteObject($site_object_path)
+  function & createObject($object_path)
   {
-    include_once(LIMB_DIR . '/core/site_objects/SiteObjectFactory.class.php');
-    return SiteObjectFactory :: create($site_object_path);
+    include_once(LIMB_DIR . '/core/ObjectFactory.class.php');
+    return ObjectFactory :: create($object_path);
   }
 
   function & createDataMapper($mapper_path)

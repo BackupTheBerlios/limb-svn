@@ -40,18 +40,43 @@ class SQLBasedDAO
     $this->criterias[] =& $criteria;
   }
 
+  function & _getConnection()
+  {
+    $toolkit =& Limb :: toolkit();
+    return $toolkit->getDbConnection();
+  }
+
   function & _initSQL(){}
+
+  function & _defineIdName()
+  {
+    return 'oid';
+  }
 
   function & fetch()
   {
     $this->_processCriterias();
 
-    $toolkit =& Limb :: toolkit();
-    $conn =& $toolkit->getDbConnection();
-
+    $conn =& $this->_getConnection();
     $sql =& $this->getSQL();
     $stmt =& $conn->newStatement($sql->toString());
     return $stmt->getRecordSet();
+  }
+
+  function & fetchById($id)
+  {
+    $sql =& $this->getSQL();
+    $sql->addCondition($this->_defineIdName() . '=' . (int)$id);
+
+    $conn =& $this->_getConnection();
+    $stmt =& $conn->newStatement($sql->toString());
+
+    $rs =& $stmt->getRecordSet();
+    $rs->rewind();
+    if(!$rs->valid())
+      return null;
+
+    return $rs->current();
   }
 
   function _processCriterias()

@@ -16,6 +16,8 @@ class DAO
     include_once(WACT_ROOT . '/iterator/iterator.inc.php');
     return new EmptyIterator();
   }
+
+  function fetchById($id){}
 }
 
 ?>

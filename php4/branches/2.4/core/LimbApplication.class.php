@@ -62,7 +62,7 @@ class LimbApplication
     include_once($resolvers_dir . 'BehaviourFileResolver.class.php');
     include_once($resolvers_dir . 'DbTableFileResolver.class.php');
     include_once($resolvers_dir . 'DAOFileResolver.class.php');
-    include_once($resolvers_dir . 'SiteObjectFileResolver.class.php');
+    include_once($resolvers_dir . 'ObjectFileResolver.class.php');
 
     registerFileResolver('ini',                 new CachingFileResolver(new IniFileResolver(new PackageFileResolver())));
     registerFileResolver('strings',             new CachingFileResolver(new StringsFileResolver(new PackageFileResolver())));
@@ -70,7 +70,7 @@ class LimbApplication
     registerFileResolver('behaviour',           new CachingFileResolver(new BehaviourFileResolver(new PackageFileResolver())));
     registerFileResolver('db_table',            new CachingFileResolver(new DbTableFileResolver(new PackageFileResolver())));
     registerFileResolver('dao',          new CachingFileResolver(new DAOFileResolver(new PackageFileResolver())));
-    registerFileResolver('site_object',         new CachingFileResolver(new SiteObjectFileResolver(new PackageFileResolver())));
+    registerFileResolver('object',         new CachingFileResolver(new ObjectFileResolver(new PackageFileResolver())));
   }
 
   function run()

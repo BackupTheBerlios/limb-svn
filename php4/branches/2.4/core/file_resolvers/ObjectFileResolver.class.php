@@ -10,14 +10,14 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/file_resolvers/FileResolverDecorator.class.php');
 
-class SiteObjectFileResolver extends FileResolverDecorator
+class ObjectFileResolver extends FileResolverDecorator
 {
   function resolve($class_path, $params = array())
   {
-    if(file_exists(LIMB_DIR . '/core/site_objects/' . $class_path . '.class.php'))
-      return LIMB_DIR . '/core/site_objects/' . $class_path . '.class.php';
+    if(file_exists(LIMB_DIR . '/core/' . $class_path . '.class.php'))
+      return LIMB_DIR . '/core/' . $class_path . '.class.php';
 
-    return $this->_resolver->resolve('site_objects/' . $class_path . '.class.php', $params);
+    return $this->_resolver->resolve($class_path . '.class.php', $params);
   }
 }
 

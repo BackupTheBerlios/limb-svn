@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-class SiteObjectIdentifierGenerator
+class ObjectIdentifierGenerator
 {
-  function generate($site_object){}
+  function generate($object){}
 }
 
 ?>

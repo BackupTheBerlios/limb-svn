@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/StateMachine.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
-require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/core/ServiceController.class.php');
 require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
 Mock :: generate('StateMachine');
@@ -31,12 +31,12 @@ Mock :: generatePartial
 
 Mock :: generatePartial
 (
-  'SiteObjectController',
-  'SiteObjectControllerMock',
+  'ServiceController',
+  'ServiceControllerMock',
   array('_getStateMachine')
 );
 
-class SiteObjectControllerPerformTestVersion extends SiteObjectController
+class ServiceControllerPerformTestVersion extends ServiceController
 {
   function _performAction(&$request)
   {
@@ -46,22 +46,22 @@ class SiteObjectControllerPerformTestVersion extends SiteObjectController
 
 Mock :: generatePartial
 (
-  'SiteObjectControllerPerformTestVersion',
-  'SiteObjectControllerMock3',
+  'ServiceControllerPerformTestVersion',
+  'ServiceControllerMock3',
   array('_startTransaction',
         '_commitTransaction',
         '_rollbackTransaction')
 );
 
 
-class SiteObjectControllerTest extends LimbTestCase
+class ServiceControllerTest extends LimbTestCase
 {
-  var $site_object_controller;
+  var $object_controller;
   var $state_machine;
   var $behaviour;
   var $request;
 
-  function SiteObjectControllerTest()
+  function ServiceControllerTest()
   {
     parent :: LimbTestCase('site object controller test');
   }
@@ -72,8 +72,8 @@ class SiteObjectControllerTest extends LimbTestCase
     $this->state_machine = new MockStateMachine($this);
     $this->behaviour = new MockBehaviour($this);
 
-    $this->controller = new SiteObjectControllerMock($this);
-    $this->controller->SiteObjectController($this->behaviour);
+    $this->controller = new ServiceControllerMock($this);
+    $this->controller->ServiceController($this->behaviour);
   }
 
   function tearDown()
@@ -119,8 +119,8 @@ class SiteObjectControllerTest extends LimbTestCase
   {
     $behaviour = new BehaviourMock($this);
 
-    $controller = new SiteObjectControllerMock($this);
-    $controller->SiteObjectController($behaviour);
+    $controller = new ServiceControllerMock($this);
+    $controller->ServiceController($behaviour);
 
     $this->request->setReturnValue('get', 'TestAction', array('action'));
 
@@ -141,8 +141,8 @@ class SiteObjectControllerTest extends LimbTestCase
   {
     $behaviour = new BehaviourMock($this);
 
-    $controller = new SiteObjectControllerMock($this);
-    $controller->SiteObjectController($behaviour);
+    $controller = new ServiceControllerMock($this);
+    $controller->ServiceController($behaviour);
 
     $this->request->setReturnValue('get', 'noSuchAction', array('action'));
 

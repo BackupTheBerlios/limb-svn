@@ -45,10 +45,10 @@ class LimbBaseToolkitTest extends LimbTestCase
                      'DAO');
   }
 
-  function testCreateSiteObject()
+  function testCreateObject()
   {
-    $this->assertIsA($this->toolkit->createSiteObject('SiteObject'),
-                     'SiteObject');
+    $this->assertIsA($this->toolkit->createObject('Object'),
+                     'Object');
   }
 
   function testCreateDataMapper()

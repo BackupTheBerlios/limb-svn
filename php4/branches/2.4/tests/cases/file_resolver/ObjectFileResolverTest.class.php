@@ -9,24 +9,24 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
-require_once(LIMB_DIR . '/core/file_resolvers/SiteObjectFileResolver.class.php');
+require_once(LIMB_DIR . '/core/file_resolvers/ObjectFileResolver.class.php');
 
-class SiteObjectFileResolverTest extends BasePackageFileResolverTest
+class ObjectFileResolverTest extends BasePackageFileResolverTest
 {
   function & _defineResolver()
   {
-    return new SiteObjectFileResolver(new PackageFileResolver());
+    return new ObjectFileResolver(new PackageFileResolver());
   }
 
-  function testResolveSiteObjectFileOk()
+  function testResolveObjectFileOk()
   {
-    $this->assertEqual($this->resolver->resolve('TestSiteObject'),
-                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/site_objects/TestSiteObject.class.php');
+    $this->assertEqual($this->resolver->resolve('TestObject'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/TestObject.class.php');
   }
 
-  function testResolveSiteObjectFileFailed()
+  function testResolveObjectFileFailed()
   {
-    $this->resolver->resolve('no_such_site_object');
+    $this->resolver->resolve('no_such_object');
     $this->assertTrue(catch('Exception', $e));
   }
 
