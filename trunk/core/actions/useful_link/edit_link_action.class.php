@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/locale_date_rule.class.php');
+require_once(LIMB_DIR . 'core/lib/validators/rules/url_rule.class.php');
 
 class edit_link_action extends form_edit_site_object_action
 {
@@ -34,6 +34,7 @@ class edit_link_action extends form_edit_site_object_action
 		$this->validator->add_rule(new required_rule('annotation'));
 		$this->validator->add_rule(new required_rule('uri'));
 		$this->validator->add_rule(new required_rule('title'));
+		$this->validator->add_rule(new url_rule('uri'));
 	}
 }
 

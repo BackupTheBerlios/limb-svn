@@ -21,7 +21,14 @@
     <grid:ITERATOR>
     <thead class=jip>
 		<tr>
-			<td jip='object' class=jip-object><img src='/shared/images/folder.gif' align='center'>&nbsp;<a href='{$path}'>{$identifier}</a></td>
+			<td jip='object' class=jip-object><img src='/shared/images/folder.gif' align='center'>&nbsp;
+			<core:OPTIONAL for='title'>
+				<a href='{$path}'>{$title}</a>
+			</core:OPTIONAL>
+			<core:DEFAULT for='title'>
+				<a href='{$path}'>{$identifier}</a>
+			</core:DEFAULT>			
+			</td>
 			<td>
 			<core:INCLUDE file="jip_actions/normal.html">
 			</td>
@@ -34,7 +41,7 @@
     <grid:ITERATOR>
     <thead class=jip>
 		<tr>
-			<td jip='object' class=jip-object><img src='{$path}?icon'><a href='{$path}'>{$identifier}</a></td>
+			<td jip='object' class=jip-object><img src='{$path}?icon'>&nbsp;<a href='{$path}'>{$identifier}</a></td>
 			<td>
 			<core:INCLUDE file="jip_actions/normal.html">
 			</td>

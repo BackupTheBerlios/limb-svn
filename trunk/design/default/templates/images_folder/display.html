@@ -22,7 +22,14 @@
   <grid:ITERATOR>
   <thead class=jip>
 	<tr>
-		<td jip='object' class=jip-object><a href='{$path}'>{$identifier}</a></td>
+		<td jip='object' class=jip-object valign='bottom'>
+			<core:OPTIONAL for='title'>
+			<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$title}</a>
+			</core:OPTIONAL>
+			<core:DEFAULT for='title'>
+			<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$identifier}</a>
+			</core:DEFAULT>		
+		</td>
 		<td>
 		<core:INCLUDE file="jip_actions/normal.html">
 		</td>
@@ -35,7 +42,15 @@
   <grid:ITERATOR>
     <thead class=jip>
 		<tr>
-			<td jip='object' class=jip-object><img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a></td>
+			<td jip='object' class=jip-object>
+			<core:OPTIONAL for='title'>
+			<img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
+			</core:OPTIONAL>
+			<core:DEFAULT for='title'>
+			<img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
+			</core:DEFAULT>		
+			
+			</td>
 			<td>
 			<core:INCLUDE file="jip_actions/normal.html">
 			</td>
