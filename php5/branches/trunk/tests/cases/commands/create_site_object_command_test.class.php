@@ -71,9 +71,8 @@ class create_site_object_command_test extends LimbTestCase
   function test_perform_ok_no_parent_id()
   {	
     $this->dataspace->expectOnce('export');
-    $this->dataspace->setReturnValue('export', array('junk1' => 1, 
-                                                     'identifier' => 'test',
-                                                     'title' => 'Test'));
+    $this->dataspace->setReturnValue('export', $data = array('identifier' => 'test',
+                                                             'title' => 'Test'));
     
     $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', null, array('parent_node_id'));
@@ -81,11 +80,7 @@ class create_site_object_command_test extends LimbTestCase
     $this->fetcher->expectOnce('fetch_requested_object');
     $this->fetcher->setReturnValue('fetch_requested_object', array('node_id' => 100));
     
-    $filtered_data = array(
-                 'identifier' => 'test',
-                 'title' => 'Test');                  
-
-    $this->site_object->expectOnce('merge', array($filtered_data));
+    $this->site_object->expectOnce('merge', array($data));
     $this->site_object->expectOnce('set', array('parent_node_id', 100));
     
     $this->site_object->expectOnce('create');
@@ -100,8 +95,7 @@ class create_site_object_command_test extends LimbTestCase
   function test_perform_ok_parent_id()
   {	
     $this->dataspace->expectOnce('export');
-    $this->dataspace->setReturnValue('export', array('junk1' => 1, 
-                                                     'identifier' => 'test',
+    $this->dataspace->setReturnValue('export', $data = array('identifier' => 'test',
                                                      'title' => 'Test',
                                                      'parent_node_id' => 200
                                                      ));
@@ -111,13 +105,7 @@ class create_site_object_command_test extends LimbTestCase
     
     $this->fetcher->expectNever('fetch_requested_object');
     
-    $filtered_data = array(
-                 'parent_node_id' => 200,
-                 'identifier' => 'test',
-                 'title' => 'Test',
-                 );                  
-
-    $this->site_object->expectOnce('merge', array($filtered_data));
+    $this->site_object->expectOnce('merge', array($data));
     
     $this->site_object->expectOnce('create');
     
@@ -131,8 +119,7 @@ class create_site_object_command_test extends LimbTestCase
   function test_perform_failed()
   {	
     $this->dataspace->expectOnce('export');
-    $this->dataspace->setReturnValue('export', array('junk1' => 1, 
-                                                     'identifier' => 'test',
+    $this->dataspace->setReturnValue('export', array('identifier' => 'test',
                                                      'title' => 'Test',
                                                      'parent_node_id' => 200
                                                      ));
@@ -142,17 +129,12 @@ class create_site_object_command_test extends LimbTestCase
     
     $this->fetcher->expectNever('fetch_requested_object');
     
-    $filtered_data = array(
-                 'parent_node_id' => 200,
-                 'identifier' => 'test',
-                 'title' => 'Test',
-                 );                  
-
     $this->toolkit->setReturnValue('createSiteObject', 
                                    new site_object_for_create_site_object_command(), 
                                    array('site_object'));
 
-    $this->dataspace->expectNever('set', array('created_site_object', new IsAExpectation('Mocksite_object')));
+    $this->dataspace->expectNever('set', array('created_site_object',
+                                               new IsAExpectation('Mocksite_object')));
     
     $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
   }

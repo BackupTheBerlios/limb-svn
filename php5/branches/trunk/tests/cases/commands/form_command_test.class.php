@@ -17,7 +17,10 @@ require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 Mock::generatePartial(
   'form_command', 
   'form_command_test_version',
-  array('_get_validator', '_register_validation_rules')
+  array('_get_validator', 
+        '_register_validation_rules', 
+        '_init_first_time_dataspace',
+        '_define_datamap')
 );
 
 Mock::generate('LimbToolkit');
@@ -40,7 +43,7 @@ class form_command_test extends LimbTestCase
     $this->validator = new Mockvalidator($this);
     
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
+    $this->toolkit->setReturnValue('switchDataspace', $this->dataspace, array('test_form'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
      
     Limb :: registerToolkit($this->toolkit);
@@ -62,44 +65,46 @@ class form_command_test extends LimbTestCase
           
   function test_form_displayed_status()
   {	
-    $this->dataspace->setReturnValue('get', 0, array('submitted'));
-    $this->dataspace->expectOnce('merge', array($test_data = array('test' => 1)));
-    
   	$this->form_command->__construct('test_form');
-
-  	$this->request->expectOnce('get');
-  	$this->request->setReturnValue('get', $test_data, array('test_form'));
-  
+    
+    $this->request->expectOnce('get');
+    $this->request->setReturnValue('get', array('submitted' => 0), array('test_form'));
+    $this->form_command->expectOnce('_init_first_time_dataspace', 
+                                    array(new IsAExpectation('Mockdataspace'),
+                                          new IsAExpectation('Mockrequest')
+                                          ));
   	$this->assertEqual($this->form_command->perform(), Limb :: STATUS_FORM_DISPLAYED);
   }
   
   function test_validation_succeed_on_submit() 	
   {
-    $this->dataspace->setReturnValue('get', 1, array('submitted'));
-    $this->dataspace->expectOnce('merge', array($test_data = array('test' => 1)));
+    $this->form_command->__construct('test_form');
     
-  	$this->form_command->__construct('test_form');
+    $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('test_form'));
+    
+    $this->form_command->setReturnValue('_define_datamap', array('test' => 'test2'));
+    
+    $this->dataspace->expectOnce('merge', array(array('test2' => 1)));
+    
   	$this->form_command->expectOnce('_register_validation_rules');
-
-  	$this->request->expectOnce('get');
-  	$this->request->setReturnValue('get', $test_data, array('test_form'));
 
    	$this->validator->expectOnce('validate');
   	$this->validator->setReturnValue('validate', true);
 
   	$this->assertEqual($this->form_command->perform(), Limb :: STATUS_FORM_SUBMITTED);
   }
-
+  
   function test_validation_failed_on_submit() 	
   {
-    $this->dataspace->setReturnValue('get', 1, array('submitted'));
-    $this->dataspace->expectOnce('merge', array($test_data = array('test' => 1)));
+    $this->form_command->__construct('test_form');
     
-  	$this->form_command->__construct('test_form');
+    $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('test_form'));
+    
+    $this->form_command->setReturnValue('_define_datamap', array('test' => 'test2'));
+    
+    $this->dataspace->expectOnce('merge', array(array('test2' => 1)));
+    
   	$this->form_command->expectOnce('_register_validation_rules');
-
-  	$this->request->expectOnce('get');
-  	$this->request->setReturnValue('get', $test_data, array('test_form'));
 
    	$this->validator->expectOnce('validate');
   	$this->validator->setReturnValue('validate', false);

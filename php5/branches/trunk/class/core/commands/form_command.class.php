@@ -26,52 +26,66 @@ class form_command implements Command
     return new validator();
   }
   				
-	protected function _is_first_time()
+	protected function _is_first_time($request)
 	{
-    if(Limb :: toolkit()->getDataspace()->get('submitted'))
+    $arr = $request->get($this->form_name);
+    if(isset($arr['submitted']) && $arr['submitted'])
       return false;
     else
       return true;    
 	} 
 
-	protected function _register_validation_rules($validator)
+	protected function _register_validation_rules($validator, $dataspace)
 	{
 	} 
   
-  protected function _merge_dataspace_with_request()
-  {
-    $request = Limb :: toolkit()->getRequest();
-    $dataspace = Limb :: toolkit()->getDataspace();
-    
-    if ($arr = $request->get($this->form_name))
-			$dataspace->merge($arr);    
-  }
-
-	public function validate()
+	protected function _define_datamap()
+	{
+    return array();
+	}   
+  
+	public function validate($dataspace)
 	{
     $validator = $this->_get_validator();
     
-    $this->_register_validation_rules($validator);
+    $this->_register_validation_rules($validator, $dataspace);
     
-    return $validator->validate(Limb :: toolkit()->getDataspace());
+    return $validator->validate($dataspace);
 	} 
 
 	public function perform()
-	{ 
-    $this->_merge_dataspace_with_request();
+	{
+    $request = Limb :: toolkit()->getRequest();
     
-		if ($this->_is_first_time())
+    $dataspace = Limb :: toolkit()->switchDataspace($this->form_name);
+    
+		if ($this->_is_first_time($request))
 		{
+      $this->_init_first_time_dataspace($dataspace, $request);
+      
 			return Limb :: STATUS_FORM_DISPLAYED;
 		} 
 		else
 		{
-			if(!$this->validate())
+      $this->_merge_dataspace_with_request($dataspace, $request);
+      
+			if(!$this->validate($dataspace))
 			  return Limb :: STATUS_FORM_NOT_VALID;
 			else	
         return Limb :: STATUS_FORM_SUBMITTED;
 		} 
 	}
+
+  protected function _init_first_time_dataspace($dataspace, $request)
+  {
+  }
+  
+  protected function _merge_dataspace_with_request($dataspace, $request)
+  {
+		complex_array :: map($this->_define_datamap(), $request->get($this->form_name), $data = array());
+    
+    $dataspace->merge($data);
+  }
 } 
 
 

@@ -23,7 +23,7 @@ Mock::generate('site_object');
 //do you miss namespaces? yeah, we too :)
 class site_object_for_edit_site_object_command extends site_object
 {
-  public function edit($force_create_new_version = true)
+  public function update($force_create_new_version = true)
   {
     throw new LimbException('catch me!');
   }
@@ -54,7 +54,7 @@ class edit_site_object_command_test extends LimbTestCase
      
     Limb :: registerToolkit($this->toolkit);
     
-  	$this->command = new create_site_object_command();
+  	$this->command = new edit_site_object_command();
   }
   
   function tearDown()
@@ -67,36 +67,36 @@ class edit_site_object_command_test extends LimbTestCase
     $this->dataspace->tally();
     $this->site_object->tally();
   }
-          
-  function test_perform_ok_no_parent_id()
+
+  function test_perform_failure()
+  {	
+    $this->toolkit->setReturnValue('createSiteObject', 
+                                   new site_object_for_edit_site_object_command(),
+                                   array('site_object'));
+    
+    $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
+  }
+
+  function test_perform_ok_no_version_increase()
   {	
     $this->dataspace->expectOnce('export');
-    $this->dataspace->setReturnValue('export', array('junk1' => 1, 
-                                                     'identifier' => 'test',
-                                                     'title' => 'Test'));
-    
-    $this->dataspace->expectOnce('get', array('parent_node_id'));
-    $this->dataspace->setReturnValue('get', null, array('parent_node_id'));
+    $this->dataspace->setReturnValue('export', $data = array('identifier' => 'test',
+                                                     'title' => 'Test',
+                                                     ));
     
     $this->fetcher->expectOnce('fetch_requested_object');
-    $this->fetcher->setReturnValue('fetch_requested_object', array('node_id' => 100));
+    $this->fetcher->setReturnValue('fetch_requested_object',
+                                   array('node_id' => 100,
+                                         'some_other_attrib' => 'some_value'));
     
-    $filtered_data = array(
-                 'identifier' => 'test',
-                 'title' => 'Test');                  
-
-    $this->site_object->expectOnce('merge', array($filtered_data));
-    $this->site_object->expectOnce('set', array('parent_node_id', 100));
+    $this->site_object->expectOnce('merge', array($data));
     
-    $this->site_object->expectOnce('create');
+    $this->site_object->expectOnce('update', array(false));
 
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
     
-    $this->dataspace->expectOnce('set', array('created_site_object', new IsAExpectation('Mocksite_object')));
-    
     $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
   }
-
 }
 
 ?>

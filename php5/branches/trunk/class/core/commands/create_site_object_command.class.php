@@ -41,9 +41,7 @@ class create_site_object_command implements Command
   {
     $dataspace = Limb :: toolkit()->getDataspace();
     
-    complex_array :: map($this->_define_datamap(), $dataspace->export(), $data = array());
-    
-    $object->merge($data);
+    $object->merge($dataspace->export());
     
     if (!$dataspace->get('parent_node_id'))
     {
@@ -63,14 +61,6 @@ class create_site_object_command implements Command
 	  return 'site_object';
 	}
 
-	protected function _define_datamap()
-	{
-	  return array(
-			'parent_node_id' => 'parent_node_id',
-			'identifier' => 'identifier',
-			'title' => 'title'
-	  );
-	}
 }
 
 ?> 

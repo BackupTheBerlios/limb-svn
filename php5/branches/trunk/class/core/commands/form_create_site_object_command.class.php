@@ -12,10 +12,8 @@ require_once(LIMB_DIR . 'class/core/commands/form_command.class.php');
 
 class form_create_site_object_command extends form_command
 {
-	protected function _register_validation_rules($validator)
+	protected function _register_validation_rules($validator, $dataspace)
 	{
-    $dataspace = Limb :: toolkit()->getDataspace();
-    
 		if (($parent_node_id = $dataspace->get('parent_node_id')) === null)
 		{
 		  if(!$parent_object_data = $this->_load_parent_object_data())
@@ -33,5 +31,14 @@ class form_create_site_object_command extends form_command
     $toolkit = Limb :: toolkit();
 		return $toolkit->getFetcher()->fetch_requested_object($toolkit->getRequest());
 	}
+
+	protected function _define_datamap()
+	{
+	  return array(
+			'parent_node_id' => 'parent_node_id',
+			'identifier' => 'identifier',
+			'title' => 'title'
+	  );
+	}   
 }
 ?>

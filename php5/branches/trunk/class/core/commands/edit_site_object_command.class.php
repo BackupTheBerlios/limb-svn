@@ -41,9 +41,7 @@ class edit_site_object_command implements Command
 
     $object->import($this->_load_object_data());
     
-		complex_array :: map($this->_define_datamap(), $dataspace->export(), $data = array());
-		
-		$this->object->merge($data);
+		$object->merge($dataspace->export());
   }
 
 	protected function _load_object_data()
@@ -54,7 +52,7 @@ class edit_site_object_command implements Command
 
   function _define_increase_version_flag()
   {
-    if (class_exists('content_object') && $this->object instanceof 'content_object'))
+    if (class_exists('content_object') && ($this->object instanceof content_object))
       return true;
     else 
       return false;
@@ -65,14 +63,6 @@ class edit_site_object_command implements Command
 	  return 'site_object';
 	}
 
-	protected function _define_datamap()
-	{
-	  return array(
-			'parent_node_id' => 'parent_node_id',
-			'identifier' => 'identifier',
-			'title' => 'title'
-	  );
-	}
 }
 
 ?> 

@@ -45,7 +45,7 @@ class form_create_site_object_command_test extends LimbTestCase
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getFetcher', $this->fetcher);
     $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
+    $this->toolkit->setReturnValue('switchDataspace', $this->dataspace, array('test_form'));
      
     Limb :: registerToolkit($this->toolkit);
     

@@ -45,14 +45,13 @@ class form_edit_site_object_command_test extends LimbTestCase
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getFetcher', $this->fetcher);
     $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
+    $this->toolkit->setReturnValue('switchDataspace', $this->dataspace, array('test_form'));
      
     Limb :: registerToolkit($this->toolkit);
     
   	$this->command = new form_edit_site_object_command_test_version($this);
     $this->command->__construct('test_form');
     
-    $this->command->setReturnValue('_is_first_time', false);
     $this->command->setReturnValue('_get_validator', $this->validator);
     $this->validator->setReturnValue('validate', true);
   }
@@ -67,9 +66,28 @@ class form_edit_site_object_command_test extends LimbTestCase
     $this->validator->tally();
     $this->dataspace->tally();
   }
+  
+  function test_init_dataspace_first_time()
+  {
+    $this->command->setReturnValue('_is_first_time', true);
+
+    $object_data = array('parent_node_id' => 100,
+                         'identifier' => 'some_identifier',
+                         'title' => 'some_title');
+    
+  	$this->fetcher->expectOnce('fetch_requested_object', array(new IsAExpectation('Mockrequest')));
+  	$this->fetcher->setReturnValue('fetch_requested_object', $object_data);
+
+    $this->dataspace->expectOnce('merge', array($object_data));
+    
+    $this->assertEqual(Limb :: STATUS_FORM_DISPLAYED, $this->command->perform());
+  }
+  
           
   function test_register_validation_rules1()
   {	
+    $this->command->setReturnValue('_is_first_time', false);
+    
     $object_data = array('parent_node_id' => 100, 'node_id' => 110);
     
     $this->dataspace->expectOnce('get', array('parent_node_id'));
@@ -88,6 +106,8 @@ class form_edit_site_object_command_test extends LimbTestCase
 
   function test_register_validation_rules2()
   {	
+    $this->command->setReturnValue('_is_first_time', false);
+    
     $object_data = array('parent_node_id' => 100, 'node_id' => 110);
     
     $this->dataspace->expectOnce('get', array('parent_node_id'));

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 
 class BaseLimbToolkit implements LimbToolkit
 {
-  protected $dataspace;
+  protected $current_dataspace_name = 'default';
   protected $fetcher;
   protected $authorizer;
   protected $authenticator;
@@ -151,15 +151,19 @@ class BaseLimbToolkit implements LimbToolkit
   
   public function getDataspace()
   {
-    if($this->dataspace)
-      return $this->dataspace;
-    
-    include_once(LIMB_DIR . '/class/core/dataspace.class.php');
-    
-    $this->dataspace = new dataspace();
-    
-    return $this->dataspace;
+    include_once(LIMB_DIR . '/class/core/dataspace_registry.class.php');    
+    return dataspace_registry :: get($this->current_dataspace_name);
   }
+  
+  public function switchDataspace($name)
+  {
+    include_once(LIMB_DIR . '/class/core/dataspace_registry.class.php');
+    
+    $this->current_dataspace_name = $name;
+    
+    return dataspace_registry :: get($name);
+  }
+  
 }
 
 ?> 

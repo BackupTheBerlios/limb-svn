@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/actions/action_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 require_once(LIMB_DIR . 'class/template/template.class.php');
 require_once(LIMB_DIR . 'class/template/empty_template.class.php');
@@ -22,8 +21,6 @@ abstract class site_object_controller
 	protected $_current_action = '';
 
 	protected $_default_action = '';
-	
-	protected $_view = null;
 	
 	protected $_request = null;
 	
@@ -94,118 +91,61 @@ abstract class site_object_controller
 		return $name;
 	}
 	
-	public function process($request, $response)
+	public function process($request)
 	{			
-		$this->_start_transaction($request);
+		$this->_start_transaction();
 		
 		try
 		{
-		  $this->_perform_action($request, $response);
-		  $this->_commit_transaction($request);
+		  $this->_perform_action($request);
+		  $this->_commit_transaction();
 		}
 		catch(LimbException $e)
 		{
-		  $this->_rollback_transaction($request);
+		  $this->_rollback_transaction();
 		  throw $e;
 		}
 	}
+  
+  protected function _get_state_machine()
+  {
+    include_once(LIMB_DIR . '/class/commands/state_machine.class.php');
+    return new state_machine();
+  }
 	
-	protected function _perform_action($request, $response)
+	protected function _perform_action($request)
 	{
-		$action = $this->get_action_object($request);
-		
-		if($view = $this->get_view($request))
-			$action->set_view($view);
-
-		$action->perform($request, $response);
-		
+    $action = $this->get_action($request);
+    
+    if(!method_exists($this, '_define_' . $action))
+      throw new LimbException('action not defined in state machine', 
+                              array('action' => $action, 
+                                    'class' => get_class($this)));
+      
+    $state_machine = $this->_get_state_machine();
+    
+    call_user_func(array($this, '_define_' . $action), $state_machine);
+    
+    $state_machine->run();
+    
 		debug :: add_timing_point('action performed');
 	}
 	
-	public function display_view($request = null)
+	protected function _start_transaction()
 	{
-		$view = $this->get_view($request);
-		
-		$view->display();
-		
-		debug :: add_timing_point('template executed');
+    start_user_transaction();
 	}
 	
-	protected function _start_transaction($request = null)
+	protected function _commit_transaction()
 	{
-		if($this->is_transaction_required($request))	
-			start_user_transaction();
-	}
-	
-	protected function _commit_transaction($request = null)
-	{
-		if(!$this->is_transaction_required($request))
-			return;
-			
 		commit_user_transaction();
 	}
 	
-  protected function _rollback_transaction($request = null)
-  {
-		if($this->is_transaction_required($request))	
-      rollback_user_transaction();
+  protected function _rollback_transaction()
+  {			
+    rollback_user_transaction();
   }
-  				
-	public function is_transaction_required($request = null)
-	{
-		$requires_transaction = $this->get_current_action_property('transaction', $request);
 		
-		if ($requires_transaction === false)
-			return false;
-		else
-			return true;
-	}
-	
-	public function get_action_object($request = null)
-	{
-	  if(!$action_path = $this->get_current_action_property('action_path', $request))
-	    $action_path = 'empty_action';
-		
-		return $this->_create_action($action_path);
-	}
-	
-	protected function _create_action($action_path)
-	{
-		return action_factory :: create($action_path);
-	}
-	
-	public function get_view($request = null)
-	{
-		if($this->_view)
-			return $this->_view;
-				
-		$this->_view = $this->_create_template($request);
-
-	  debug :: add_timing_point('template created');
-		
-		return $this->_view;
-	}
-	
-	protected function _create_template($request = null)
-	{
-		if($template_path = $this->get_current_action_property('template_path', $request))
-			return new template($template_path);
-		else
-			return new empty_template();
-	}
-	
-	public function get_current_action_property($property_name, $request = null)
-	{	
-	  try
-	  {		
-		  return $this->get_action_property($this->get_action($request), $property_name);
-		}
-		catch(LimbException $e)
-		{
-		  return null;
-		}
-	}
-	
 	public function get_action_property($action, $property_name)
 	{
 		$actions = $this->get_actions_definitions();

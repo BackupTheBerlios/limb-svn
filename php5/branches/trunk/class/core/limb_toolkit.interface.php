@@ -26,6 +26,7 @@ interface LimbToolkit
   public function getResponse();
   public function getLocale();
   public function getDataspace();
+  public function switchDataspace($name);
   //public function translate();
 }
 

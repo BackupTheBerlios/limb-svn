@@ -12,12 +12,11 @@ require_once(LIMB_DIR . 'class/core/commands/form_command.class.php');
 
 abstract class form_edit_site_object_command extends form_command
 {
-	protected function _register_validation_rules($validator)
+	protected function _register_validation_rules($validator, $dataspace)
 	{
 		$validator->add_rule(array(LIMB_DIR . 'class/validators/rules/tree_node_id_rule', 'parent_node_id'));
 		$validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'identifier'));
     
-    $dataspace = Limb :: toolkit()->getDataspace();
     $object_data = $this->_load_object_data();
     
 		if(($parent_node_id = $dataspace->get('parent_node_id')) === null)
@@ -29,10 +28,27 @@ abstract class form_edit_site_object_command extends form_command
                                      (int)$object_data['node_id']));
 	}
 
+  protected function _init_first_time_dataspace($dataspace, $request)
+  {
+    $object_data = $this->_load_object_data();
+		complex_array :: map($this->_define_datamap(), $object_data, $data = array());
+    
+    $dataspace->merge($data);
+  }
+
 	protected function _load_object_data()
 	{
     $toolkit = Limb :: toolkit();
 		return $toolkit->getFetcher()->fetch_requested_object($toolkit->getRequest());
 	}
+
+	protected function _define_datamap()
+	{
+	  return array(
+			'parent_node_id' => 'parent_node_id',
+			'identifier' => 'identifier',
+			'title' => 'title'
+	  );
+	}   
 }
 ?>
