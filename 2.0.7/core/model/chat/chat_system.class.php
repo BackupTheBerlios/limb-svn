@@ -316,6 +316,9 @@ class chat_system
 
 	function toggle_ignore_user($ignorer_id, $ignorer_nickname, $ignorant_id, $chat_room_id)
 	{
+		if($ignorer_id == $ignorant_id)
+			return;
+
 		$db =& db_factory :: instance();		
 		
 		$sql = "SELECT count(*) as count

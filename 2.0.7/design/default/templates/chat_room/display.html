@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title><metadata:TITLE separator=' :: ' />::Official Shweir Secondary School</title>
+	<title><metadata:TITLE separator=' :: ' /> :: Official Shweir Secondary School</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
 	<link href="/shared/styles/chat.css" rel="stylesheet" type="text/css">
 	<metadata:METADATA>
@@ -11,10 +11,15 @@
 
 <script language="javascript" src="/shared/js/common.js"></script>
 <script language="javascript" src="/design/main/js/form_errors.js"></script>
+<script language="javascript" src='/shared/js/chat_design.js'></script>
 <script language="javascript" src='/shared/js/chat.js'></script>
 
 <body style="margin: 0px">
-<table id="main_table" width="100%" border="1" height="100%">
+<core:INCLUDE file="front_breadcrumbs.html"><br>
+<fetch:MAPPED>
+{$title} <a href='javascript:window.location.reload()'>(<locale:STRING name='refresh' file='chat'>)</a>
+</fetch:MAPPED>
+<table id="main_table" width="100%" border="1" height="90%">
   <tr>
 
     <td id="main_table_chat_td" width="80%" valign="top" height='100%'>
@@ -27,7 +32,10 @@
 			<!-- chat users-->
 			<table height='100%' width='100%' cellpadding='0' cellspacing='0'>
 			<tr>
-				<td id='chat_users_panel_header'>&nbsp;</td>
+				<td >
+					<span id='chat_users_panel_header'>&nbsp;</span><br>
+					<a href='javascript:start_action('get_users')'><locale:STRING name='refresh' file='chat'></a>
+				</td>
 			<tr>
 			<tr>
 				<td height='100%' valign='top'>
@@ -41,86 +49,43 @@
 
   </tr>
   <tr>
-    <td colspan="2" height='1'>
+    <td height='1'>
 
 			<!-- chat login-->
 			<chat:NOT_LOGGED_IN>
-			<core:LITERAL>
-			<div id="enter" style="display:<!--<<enter_div_display>>-->">
-			<table width=300 cellspacing=0 cellpadding=1 border=0 id=message_panel>
-				<form action="login.php" method="post" target="send_message_frame">
-				<tr>
-					<td class=textbold>
-						Имя:
-					</td>
-					<td colspan=2>
-						<input name=chat_name type=text size=25 maxlength=25>
-					</td>
-				</tr>
-				<tr>
-					<td class=textbold>
-						Пол:
-					</td>
-					<td colspan=2>
-						<select name=sex class=modul>
-							<option class=inputinvert value="male">Мужской
-							<option class=inputinvert value="female">Женский
-							<option class=inputinvert value="unknown">Неопределенный
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td class=textbold>
-						Цвет:
-					</td>
-					<td>
-						<select class=inputinvert name=message_color>
-							<option class=blue		value=blue>Синий
-							<option class=fuchsia	value=fuchsia>Фиолетовый
-							<option class=red			value=red>Красный
-							<option class=black 		value=black>Черный
-							<option class=yellow 	value=yellow>Желтый
-							<option class=orange 	value=orange>Оранжевый
-							<option class=green 		value=green>Зеленый
-							<option class=lightblue value=lightblue>Голубой
-						</select>
-					</td>
-					<td>
-						<input class=button type=submit value='Вход'>
-					</td>
-				</tr>
-				</form>
-				</table>
-			</div>
-			</core:LITERAL>
+			<core:INCLUDE file='chat/chat_login_form.html'>
 			</chat:NOT_LOGGED_IN>
 			<!-- chat login ends-->			
 			
 			<!-- chat message-->
 			<chat:LOGGED_IN>
 			<core:LITERAL>
-			<div id="message" style="display:<!--<<message_div_display>>-->">
-				<table cellpadding=0 cellspacing=0 border=0 width=100%>
+				<table cellpadding=0 cellspacing=0 border=1 width=100%>
 				<form action='/chat/send_message.php' id='message_form' name='message_form' target='send_message_frame' method='post' enctype='multipart/form-data'>
+				<!--<form action='/chat/send_message.php' id='message_form' name='message_form' target='send_message_frame' method='post' >-->
 				<tr>
 					<td width=100%>
 						<input type=hidden name=chat_room_id value='<!--<<chat_room_id>>-->'>
-						<table cellspacing=0 cellpadding=5 border=0 id=message_panel>
+						<table cellspacing=0 cellpadding=5 border=1 id=message_panel>
 						<tr>
 							<td rowspan=2>
 								<table width=100% border=0 cellspacing=0 cellpadding=0>
 								<tr>
 									<td width=1% align=right class=textbold></td>
 									<td colspan=2>
+									</core:LITERAL>
 										<table width=100% border=0 cellspacing=0 cellpadding=0>
 										<tr>
 											<td align='right'>
-												&nbsp;Recipient:&nbsp;
+												&nbsp;<locale:STRING name='recipient' file='chat'>&nbsp;
 											</td>
 							
 											<td>
+												<core:LITERAL>
 												<select name='recipient_id' id='chat_users_combobox'>
-														<option value='-1'>To all</option>
+												</core:LITERAL>
+														<option value='-1'><locale:STRING name='recipient_all' file='chat'></option>
+												<core:LITERAL>
 												</select>
 											</td>
 										</tr>
@@ -154,7 +119,9 @@
 									</td>
 								</tr>
 								<tr>
-									<td class=textbold>&nbsp;Message:&nbsp;</td>
+									<td class=textbold>
+									&nbsp;</core:LITERAL><locale:STRING name='message' file='chat'><core:LITERAL>&nbsp;
+									</td>
 									<td width=1>
 										<input type='hidden' name='message'>
 										<textarea cols=50 rows=2 name='_message' id='_message' onkeyup='key_up()'></textarea>&nbsp;
@@ -174,6 +141,7 @@
 										</table>
 									</td>
 								</tr>
+
 								<input type='hidden' name='MAX_FILE_SIZE' value='50000'>
 								<tr>
 									<td align=right class=textbold nowrap=1>&nbsp;Picture/file:&nbsp;</td>
@@ -182,10 +150,8 @@
 									</td>
 									<td></td>
 								</tr>
+
 								</table>
-							</td>
-							<td align=right valign=bottom width=1%>
-								<input class=button type=button value='Exit' onclick='start_action("exit")'>
 							</td>
 						</tr>
 						</table>
@@ -193,19 +159,74 @@
 				</tr>
 				</form>
 				</table>
-			</div>
 			</core:LITERAL>
 			</chat:LOGGED_IN>
 			<!-- chat message ends-->
+			</td>
+	 </tr>
+	</table>
+</td>
+<td valign=top>
+			<chat:LOGGED_IN>
+				<table cellpadding=1 cellspacing=1 border=1 width=100%>
+				<tr>
+					<td>
+					You are: <chat:USER_ATTRIBUTE name='nickname'>
+					<span style="border: 1px solid #000000; font-family:Verdana; font-size:10px;text-decoration: none;background-color: <chat:USER_ATTRIBUTE name='color'>;">&nbsp;&nbsp;&nbsp;</span>
+					<br>
+					Sex:  <chat:USER_ATTRIBUTE name='status'>
+					<br>
+					<a href='/root/chat?action=user_settings&popup=1' onclick='popup(this.href); return false;' ><locale:STRING name='change_settings' file='chat'></a>
+					</td>
+					<core:LITERAL>
+					<td align=right valign=bottom width=1%>
+						<input class=button type=button value='Exit' onclick='start_action("exit")'>
+					</td>
+					</core:LITERAL>
+				</tr>
+				</table>
+				<fetch:SUB_BRANCH target='chat_rooms'>
+					<core:PARAMETER name='loader_class_name' value='chat_room'>
+					<core:PARAMETER name='data_source_path' value='fetch_sub_branch_data_source'>
+					<core:PARAMETER name='path' value='/root/chat'>
+				</fetch:SUB_BRANCH>
+				<list:LIST id='chat_rooms'>
+				<core:LITERAL>
+				<form>
+				<select id="chat_room_selector" size=1>
+				</core:LITERAL>
+				<option value=none><locale:STRING name='select_chat_room' file='chat'>
+				<option value=none>--------------------
+				<list:ITEM>
+				<option value="{$path}">{$title}
+				</list:ITEM>
+				</list:LIST>
+				<core:LITERAL>
+				</select>
+				<input type="button" value="Go" onclick="jump_to_chat_room()">
+				</form>
+				</core:LITERAL>
 
-	</td>
-  </tr>
+			<script language="JavaScript" type="text/javascript">
+			function jump_to_chat_room()
+			{
+				chat_room_selector = document.getElementById('chat_room_selector');
+				if (chat_room_selector.options[chat_room_selector.selectedIndex].value != "none")
+				{
+						location = chat_room_selector.options[chat_room_selector.selectedIndex].value
+				}
+			}
+			</script>
+			</chat:LOGGED_IN>
+</td>
+</tr>
 </table>
 <iframe name='send_message_frame' src='/shared/blank.html' width='0' height='0'></iframe>
 <iframe name='get_messages_frame' src='/shared/blank.html' width='0' height='0'></iframe>
 <iframe name='get_users_frame' src='/shared/blank.html' width='0' height='0'></iframe>
 <iframe name='toggle_ignore_user_frame' src='/shared/blank.html' width='0' height='0'></iframe>
 <iframe name='exit_frame' src='/shared/blank.html' width='0' height='0'></iframe>
+<iframe name='set_properties' src='/shared/blank.html' width='0' height='0'></iframe>
 <div id='popup_div'></div>
 </body>
 </html>

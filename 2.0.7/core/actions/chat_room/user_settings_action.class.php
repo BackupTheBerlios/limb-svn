@@ -9,7 +9,8 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/response.class.php');
+require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
+require_once(LIMB_DIR . 'core/model/chat/chat_user.class.php');
 
 class user_settings_action extends form_action
 {
@@ -20,13 +21,23 @@ class user_settings_action extends form_action
 	
 	function _init_dataspace()
 	{
-	
+		$chat_user_data = chat_user :: get_chat_user_data();
+		
+		$form_data['color'] = $chat_user_data['color'];
+		$form_data['sex'] = $chat_user_data['status'];
+		$this->_import($form_data);
 	}
 
 	function _valid_perform()
 	{
-	
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+		$chat_user_data = chat_user :: get_chat_user_data();
+		$form_data = $this->dataspace->export();
+
+		$chat_user_data['color'] = $form_data['color'];
+		$chat_user_data['status'] = ($chat_user_data['status'] & (~3)) ^ $form_data['sex'];
+		chat_user :: update_chat_user($chat_user_data);
+
+		return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED);
 	}
 
 	function _process_transfered_dataspace()

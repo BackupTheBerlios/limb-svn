@@ -116,7 +116,7 @@
 //		count_chars();
 	}	
 	
-	function add_message(time, id, name, message, span_class, image)
+	function add_message_default_design(time, id, name, message, message_color, span_class, image)
 	{
 		message_span = chat_messages_frame.document.createElement("SPAN");
 		message_span.className = span_class;
@@ -130,37 +130,37 @@
 
 		message_text = '[' + time + '] ' + name + ':<br>' ;
 		message_text += image_text
-		message_text += message + '<br>';
+		message_text += '<font color="' + message_color + '">' + message + '</font><br>';
 		
 		message_span.innerHTML = message_text;
 		
 		chat_messages_frame.document.body.appendChild(message_span);
 	}
 	
-	function add_system_message(time, id, message)
-	{
-		add_message(time, id, 'ChatRobot', message, 'system_message')
-	}
-
-	function add_warning_message(time, id, message)
-	{
-		add_message(time, id, 'ChatRobot', message, 'system_message')
-	}
-
-	function add_private_incoming_message(time, id, sender_name, message)
-	{
-		add_message(time, id, sender_name, message, 'private_message')
-	}
-
-	function add_private_outgoing_message(time, id, sender_name, message)
-	{
-		add_message(time, id, sender_name, message, 'private_message')
-	}
-
-	function add_common_message(time, id, sender_name, message, image)
-	{
-		add_message(time, id, sender_name, message, 'common_message', image)
-	}
+//	function add_system_message(time, id, message)
+//	{
+//		add_message(time, id, 'ChatRobot', message, '', 'system_message')
+//	}
+//
+//	function add_warning_message(time, id, message)
+//	{
+//		add_message(time, id, 'ChatRobot', message, '', 'system_message')
+//	}
+//
+//	function add_private_incoming_message(time, id, sender_name, message, message_color)
+//	{
+//		add_message(time, id, sender_name, message, message_color, 'private_message')
+//	}
+//
+//	function add_private_outgoing_message(time, id, sender_name, message_color, message)
+//	{
+//		add_message(time, id, sender_name, message, message_color, 'private_message')
+//	}
+//
+//	function add_common_message(time, id, sender_name, message, message_color, image)
+//	{
+//		add_message(time, id, sender_name, message, 'common_message', message_color, image)
+//	}
 	
 	function chat_user_event()
 	{
@@ -209,7 +209,7 @@
 		users_combobox.appendChild(all_option);
 	}
 	
-	function _add_user_to_panel(user)
+	function _add_user_to_panel_default_design(user)
 	{
 		user_span = chat_users_panel_frame.document.createElement("SPAN");
 		

@@ -72,21 +72,17 @@ foreach($messages as $message)
 		break;
 
 		case ($message['recipient_id'] == $chat_user_data['id']):
-			echo "top.add_private_incoming_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\");\n";
+			$file_data = get_message_file_data($message);
+			echo "top.add_private_incoming_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\", '{$message_color}' {$file_data});\n";
 		break;
 
 		case ($message['sender_id'] == $chat_user_data['id']) && ($message['recipient_id'] > 0): 
-			echo "top.add_private_outgoing_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\");\n";
+			$file_data = get_message_file_data($message);
+			echo "top.add_private_outgoing_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\", '{$message_color}' {$file_data});\n";
 		break;
 		default:
-			$file_data = "";
-			if ($message['file_id'])
-			{
-				$icon = mime_type :: get_type_icon($message['mime_type']);
-				$file_data = ", ['{$message['file_id']}', '{$icon}', '{$message['file_size']}', '{$message['image_width']}', '{$message['image_height']}']";
-			}
-
-			echo "top.add_common_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\" {$file_data});\n";
+			$file_data = get_message_file_data($message);
+			echo "top.add_common_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\",'{$message_color}' {$file_data});\n";
 
 	}	
 	
@@ -101,4 +97,16 @@ if(sizeof($messages))
 }
 
 echo "</script>";
+
+function get_message_file_data($message)
+{
+	$file_data = '';
+	if ($message['file_id'])
+	{
+		$icon = mime_type :: get_type_icon($message['mime_type']);
+		$file_data = ", ['{$message['file_id']}', '{$icon}', '{$message['file_size']}', '{$message['image_width']}', '{$message['image_height']}']";
+	}
+
+	return $file_data;
+}
 ?>

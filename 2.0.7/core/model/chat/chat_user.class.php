@@ -182,20 +182,84 @@ class chat_user extends object
 	
 	function update_chat_user($data)
 	{
-		$nickname = $data['nickname'];
-		$status = $$data['status'];
-		$color = $data['color'];
+		if(!$data['id'])
+			return;
+			
+		$set_array = array();
+		$set_str = '';
+		if(isset($data['nickname']))
+			$set_array[] = "nickname='{$data['nickname']}'"; 
+		if(isset($data['status']))
+			$set_array[] = "status='{$data['status']}'";
+		if(isset($data['color']))
+			$set_array[] = "color='{$data['color']}'";
+
+		if(count($set_array))
+			$set_str = 	', ' . implode(', ', $set_array);
+
 		$time = time();
 		
 		$db =& db_factory :: instance();		
 		$sql = "UPDATE chat_user 
-						SET time={$time}, status = {$status},
-							color = {$color}, nickname = {$nickname},
-						WHERE id='{$chat_user_id}'";
+						SET time={$time} {$set_str}
+						WHERE id='{$data['id']}'";
 
 		$db->sql_exec($sql);
 
-		chat_user :: _set_session_chat_user_data($row);
+		chat_user :: _set_session_chat_user_data($data);
 	}
+
+	function enter_chat_room($chat_room_id)
+	{
+
+		if(!($chat_user_data = chat_user :: get_chat_user_data()) || 
+				$chat_user_data['chat_room_id'] == $chat_room_id)
+			return;
+		
+		if($chat_user_data['chat_room_id'] != 0)
+			chat_user :: leave_chat_room();
+
+		chat_system :: enter_chat_room(
+			$chat_user_data['id'], 
+			$chat_user_data['nickname'],
+			$chat_room_id
+		);
+
+		$chat_user_data['chat_room_id'] = $chat_room_id;
+		chat_user :: _set_session_chat_user_data($chat_user_data);
+	}
+	
+	function leave_chat_room()
+	{
+		$chat_user_data = chat_user :: get_chat_user_data();
+		
+		chat_system :: leave_chat_room(
+			$chat_user_data['id'],
+			$chat_user_data['nickname'],
+			$chat_user_data['chat_room_id']
+		);
+		
+		$chat_user_data['chat_room_id'] = 0;
+		
+		chat_user :: _set_session_chat_user_data($chat_user_data);
+	}
+	
+  function get_user_attribute($attribute)
+  {
+		$chat_user_data = chat_user :: get_chat_user_data();
+		if ($attribute == 'status') 
+			return chat_user :: decode_status($chat_user_data[$attribute]);
+  	return $chat_user_data[$attribute];
+  }
+  
+  function decode_status($sex)
+  {
+  	switch ($sex)
+  	{
+  		case 1: return 'female';
+  		case 2: return 'male';
+  		default: return 'unknown';
+  	} 
+  }
 }
 ?>
