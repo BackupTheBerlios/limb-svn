@@ -12,15 +12,6 @@ require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
 class site_structure extends site_object
 {
-	protected function _define_class_properties()
-	{
-		return array(
-			'class_ordr' => 1,
-			'can_be_parent' => 1,
-			'controller_class_name' => 'site_structure_controller',
-		);
-	}
-	
 	public function save_priority($params)
 	{
 		if(!count($params))

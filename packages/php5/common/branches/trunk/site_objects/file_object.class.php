@@ -12,15 +12,6 @@ require_once(dirname(__FILE__) . '/media_object.class.php');
 
 class file_object extends media_object
 {	
-	protected function _define_class_properties()
-	{
-		return array(
-			'class_ordr' => 1,
-			'can_be_parent' => 0,
-			'controller_class_name' => 'file_object_controller',
-		);
-	}
-	
 	public function create($is_root = false)
 	{
 		$this->_create_file();

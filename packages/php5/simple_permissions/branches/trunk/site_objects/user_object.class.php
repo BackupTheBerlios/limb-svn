@@ -14,25 +14,6 @@ require_once(dirname(__FILE__) . '/../simple_authenticator.class.php');
 
 class user_object extends content_object
 {
-	protected function _define_attributes_definition()
-	{
-		return complex_array :: array_merge(
-				parent :: _define_attributes_definition(),
-				array(
-				'second_password' => '',
-				));
-	}
-		
-	protected function _define_class_properties()
-	{
-		return array(
-			'class_ordr' => 1,
-			'db_table_name' => 'user',
-			'can_be_parent' => 0,
-			'controller_class_name' => 'user_controller',
-		);
-	}
-	
 	public function create($is_root = false)
 	{
 		$crypted_password = simple_authenticator :: get_crypted_password($this->get_identifier(), $this->get('password'));

@@ -12,15 +12,7 @@ require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
 
 abstract class media_object extends content_object
 {	
-	protected function _define_class_properties()
-	{
-		return array(
-		  'abstract_class' => true,
-		  'db_table_name' => 'empty',
-      'controller_class_name' => 'empty_controller' 		  
-		);
-	}
-		
+
 	protected function _create_media_record($tmp_file_path, $file_name, $mime_type)
 	{
 		if(!file_exists($tmp_file_path))

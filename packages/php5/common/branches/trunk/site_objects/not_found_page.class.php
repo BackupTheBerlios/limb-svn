@@ -12,15 +12,6 @@ require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
 class not_found_page extends site_object
 {
-	protected function _define_class_properties()
-	{
-		return array(
-			'class_ordr' => 0,
-			'can_be_parent' => 1,
-			'controller_class_name' => 'not_found_page_controller',
-			'icon' => '/shared/images/generic.gif',
-		);
-	}
 }
 
 ?>

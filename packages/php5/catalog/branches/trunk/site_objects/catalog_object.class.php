@@ -13,15 +13,6 @@ require_once(LIMB_SHOP_DIR . 'cart_item.class.php');
 
 class catalog_object extends content_object
 {
-	protected function _define_class_properties()
-	{
-		return array(
-			'ordr' => 1,
-			'can_be_parent' => 0,
-			'controller_class_name' => 'catalog_object_controller',
-		);
-	}
-
 	public function get_cart_item()
 	{
 		$cart_item = new cart_item($this->get_node_id());

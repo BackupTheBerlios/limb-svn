@@ -12,16 +12,6 @@ require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
 class poll_container extends site_object
 {
-	protected function _define_class_properties()
-	{
-		return array(
-			'class_ordr' => 0,
-			'can_be_parent' => 1,
-			'controller_class_name' => 'poll_container_controller',
-			'icon' => '/shared/images/folder.gif'
-		);
-	}
-
 	public function can_vote()
 	{
 		if(!$poll_data = $this->get_active_poll())

@@ -23,36 +23,6 @@ class image_object extends media_object
 		$this->_image_library = image_factory :: create();
 	}
 	
-	protected function _define_attributes_definition()
-	{
-		$ini = get_ini('image_variations.ini');
-		
-		$image_variations = $ini->get_all();
-		
-		$definition = array();
-		
-		foreach(array_keys($image_variations) as $variation)
-		{
-			$definition['upload_' . $variation . '_max_size'] = array();
-			$definition['generate_' . $variation . '_max_size'] = array();
-			$definition[$variation . '_action'] = array();
-			$definition[$variation . '_base_variation'] = array();
-		}
-		
-		$definition['files_data'] = array();
-		
-		return complex_array :: array_merge(parent :: _define_attributes_definition(), $definition);
-	}
-	
-	protected function _define_class_properties()
-	{
-		return array(
-			'class_ordr' => 1,
-			'can_be_parent' => 0,
-			'controller_class_name' => 'image_object_controller'
-		);
-	}
-	
 	public function create($is_root = false)
 	{				
 		$id = parent :: create($is_root);

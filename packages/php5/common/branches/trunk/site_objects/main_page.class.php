@@ -12,16 +12,6 @@ require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
 
 class main_page extends content_object
 {
-	protected function _define_class_properties()
-	{
-		return array(
-			'class_ordr' => 0,
-			'can_be_parent' => 1,
-			'controller_class_name' => 'main_page_controller',
-			'icon' => '/shared/images/folder.gif',
-			'db_table_name' => 'document'
-		);
-	}
 }
 
 ?>
