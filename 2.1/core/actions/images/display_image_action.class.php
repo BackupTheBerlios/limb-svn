@@ -45,7 +45,7 @@ class display_image_action extends action
 			if($variation == 'original')
 				return new exit_response(RESPONSE_STATUS_FAILURE);
 			else
-				return new dont_track_response();
+				exit();//for speed
 
 		}		
 				
@@ -56,7 +56,7 @@ class display_image_action extends action
 			if($variation == 'original')
 				return new exit_response(RESPONSE_STATUS_FAILURE);
 			else
-				return new exit_response(RESPONSE_STATUS_DONT_TRACK);
+				exit();//for speed
 		}		
 				
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $image['etag'])
@@ -81,7 +81,7 @@ class display_image_action extends action
 		if($variation == 'original')
 			return new exit_response();
 		else
-			return new exit_response(RESPONSE_STATUS_DONT_TRACK);
+			exit();//for speed
 	}
 }
 
