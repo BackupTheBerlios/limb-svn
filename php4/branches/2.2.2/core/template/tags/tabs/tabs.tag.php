@@ -24,23 +24,27 @@ class tabs_tag extends compiler_directive_tag
 	var $tabulator_class = 'class="tabulator"';
 	var $tab_class = 'class="tab"';
 	var $active_tab_class = 'class="active-tab"';
+	var $use_cookie = false;
 
   function prepare()
   {
-	  if(isset($link->attributes['active_tab']))
-	    $this->active_tab = $link->attributes['active_tab'];
+	  if(isset($this->attributes['active_tab']))
+	    $this->active_tab = $this->attributes['active_tab'];
 	  else
 	    $this->active_tab = null;
 	
-	  if(isset($link->attributes['class']))
-	    $this->tabulator_class = 'class="' . $link->attributes['class'] . '"';
+	  if(isset($this->attributes['class']))
+	    $this->tabulator_class = 'class="' . $this->attributes['class'] . '"';
 
-	  if(isset($link->attributes['tab_class']))
-	    $this->tab_class = 'class="' . $link->attributes['tab_class'] . '"';
+	  if(isset($this->attributes['tab_class']))
+	    $this->tab_class = 'class="' . $this->attributes['tab_class'] . '"';
 
-	  if(isset($link->attributes['active_tab_class']))
-	    $this->active_tab_class = 'class="' . $link->attributes['active_tab_class'] . '"';
+	  if(isset($this->attributes['active_tab_class']))
+	    $this->active_tab_class = 'class="' . $this->attributes['active_tab_class'] . '"';
 	    
+	  if(isset($this->attributes['use_cookie']))
+	    $this->use_cookie = $this->attributes['use_cookie'];
+
     parent :: prepare();
   }
     	
@@ -65,8 +69,8 @@ class tabs_tag extends compiler_directive_tag
 	{
 		$js = '';
 
-	  if(isset($link->attributes['active_tab']))
-	    $active_tab = $link->attributes['active_tab'];
+	  if(isset($this->attributes['active_tab']))
+	    $active_tab = $this->attributes['active_tab'];
 	  else
 	    $active_tab = reset($this->tabs);
 	
@@ -83,7 +87,13 @@ class tabs_tag extends compiler_directive_tag
 	   $js .= "tabs.register_tab_item('{$id}');\n";
 	   
 	   
-    $js .= "tabs.activate('{$active_tab}');\n";          
+    if ($this->use_cookie)
+	    $js .= "if (active_tab = get_cookie('active_tab'))\n
+	    					tabs.activate(active_tab);\n
+	    				else
+	    					tabs.activate('{$active_tab}');\n";
+	  else
+	    $js .= "tabs.activate('{$active_tab}');\n";
 	
 		$code->write_html("    	
       <script type='text/javascript'>

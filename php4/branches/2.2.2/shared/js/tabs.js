@@ -65,6 +65,8 @@ tab.prototype.activate = function()
 	
 	this.label.className = this.active_tab_class_name;
 	
+	set_cookie('active_tab', this.id)
+	
 	if(this.activate_handler)
 	  this.activate_handler();
 }
@@ -104,12 +106,23 @@ tabs_container.prototype.register_tab_item = function(id, active_tab_class_name,
 }
 
 tabs_container.prototype.activate = function(tab_id)
-{	
+{
+	var active_tab_id, first_tab_id;
+	
 	for(var id in this.tab_items)
 	{
+		if (!first_tab_id)
+			first_tab_id = id;
+		
 	  if(id == tab_id)
+	  {
 	    this.tab_items[id].activate();
+	    active_tab_id = tab_id;
+	  }
 	  else
 	    this.tab_items[id].deactivate();
 	}
+	
+	if (!active_tab_id)
+		this.tab_items[first_tab_id].activate();
 }

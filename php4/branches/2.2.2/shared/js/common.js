@@ -208,14 +208,62 @@ function optimize_window()
 	w.resizeTo(newWidth, newHeight);
 }
 
+//makes popup window at href address
+function popup(href, window_name, window_params, dont_set_focus, on_close_handler, on_init_handler)
+{	
+  href = set_http_get_parameter(href, 'popup', 1);
+  
+	if (typeof(window_name) == 'undefined' || window_name == null) 
+		window_name = '_generate';
+
+	new_left = window.screen.width / 2 - 100;
+	new_top = window.screen.height / 2 - 50;
+
+	if (typeof(window_params) == 'undefined' || window_params == null) 
+		window_params = 'width=150,height=50,left=' + new_left + ',top=' + new_top + ',scrollbars=yes,resizable=yes,help=no,status=yes';
+	else
+		window_params = 'left=' + new_left + ',top=' + new_top + ',' + window_params;
+	
+	if (window_name.toLowerCase() == '_generate')
+		window_name = 'w' + hex_md5(href) + 's';
+
+	if (typeof(window.popups) != 'array')
+		window.popups = new Array();
+
+	if (typeof(window.popups[window_name]) != 'array')
+		window.popups[window_name] = new Array();
+		
+	if (typeof(on_close_handler) != 'undefined') 
+		window.popups[window_name]['close_popup_handler'] = on_close_handler;
+
+	if (typeof(on_init_handler) != 'undefined') 
+		window.popups[window_name]['init_popup_handler'] = on_init_handler;
+
+	window.popups[window_name]['status'] = 'popped_up';
+
+	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);	
+	if (href != LOADING_STATUS_PAGE)
+	 w.location.href = href;
+	
+	if(!dont_set_focus)
+		w.focus();
+		
+	return w;
+}
+
 function process_popup()
 {	
 	href = location.href;
-
-	optimize_window();
+	
+	if (typeof(window.opener.popups) != 'undefined')
+		if (window.opener.popups[window.name]['status'] == 'popped_up')
+			optimize_window();
 	
 	if(opener && (get_query_item(href, 'reload_parent')))
 		opener.location.reload();
+	
+	if (typeof(window.opener.popups) != 'undefined')
+		window.opener.popups[window.name]['status'] = 'processed';
 }
 
 function trim(value) 
@@ -324,47 +372,6 @@ function jump_change_get(get, w)
 		href = href.substring(0, get_begin);
 		
 	jump(href + '?' + get, w);
-}
-
-//makes popup window at href address
-function popup(href, window_name, window_params, dont_set_focus, on_close_handler, on_init_handler)
-{	
-  href = set_http_get_parameter(href, 'popup', 1);
-  
-	if (typeof(window_name) == 'undefined' || window_name == null) 
-		window_name = '_generate';
-
-	new_left = window.screen.width / 2 - 100;
-	new_top = window.screen.height / 2 - 50;
-
-	if (typeof(window_params) == 'undefined' || window_params == null) 
-		window_params = 'width=150,height=50,left=' + new_left + ',top=' + new_top + ',scrollbars=yes,resizable=yes,help=no,status=yes';
-	else
-		window_params = 'left=' + new_left + ',top=' + new_top + ',' + window_params;
-	
-	if (window_name.toLowerCase() == '_generate')
-		window_name = 'w' + hex_md5(href) + 's';
-
-	if (typeof(window.popups) != 'array')
-		window.popups = new Array();
-
-	if (typeof(window.popups[window_name]) != 'array')
-		window.popups[window_name] = new Array();
-		
-	if (typeof(on_close_handler) != 'undefined') 
-		window.popups[window_name]['close_popup_handler'] = on_close_handler;
-
-	if (typeof(on_init_handler) != 'undefined') 
-		window.popups[window_name]['init_popup_handler'] = on_init_handler;
-
-	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);	
-	if (href != LOADING_STATUS_PAGE)
-	 w.location.href = href;
-	
-	if(!dont_set_focus)
-		w.focus();
-		
-	return w;
 }
 
 function get_close_popup_handler()
