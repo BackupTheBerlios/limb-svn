@@ -17,9 +17,15 @@ class simple_navigation_datasource extends fetch_sub_branch_datasource
 		$result =& parent :: _fetch($counter, $params);
 		$uri = new uri($_SERVER['PHP_SELF']);		
 
+
 		foreach($result as $key => $data)
 		{
-			if(is_integer($res = $uri->compare_path(new uri($data['url']))))
+			$nav_uri = new uri($data['url']);
+
+	  	if ($uri->get_host() != $nav_uri->get_host())
+	  		continue;
+			
+			if(is_integer($res = $uri->compare_path($nav_uri)))
 			{
 				if($res >= 0)
 					$result[$key]['in_path'] = true;
