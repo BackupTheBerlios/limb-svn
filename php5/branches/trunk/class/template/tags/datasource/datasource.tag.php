@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 class datasource_tag_info
 {
-	public $tag = 'DATASOURCE';
+	public $tag = 'datasource';
 	public $end_tag = ENDTAG_REQUIRED;
 	public $tag_class = 'datasource_tag';
 } 

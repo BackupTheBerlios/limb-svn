@@ -53,7 +53,7 @@ class edit_site_object_command implements Command
 		return $datasource->fetch();
 	}
 
-  function _define_increase_version_flag($object)
+  protected function _define_increase_version_flag($object)
   {
     if (class_exists('content_object') && ($object instanceof content_object))
       return true;
