@@ -1,8 +1,5 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
-<fetch:MAPPED>
-<core:INCLUDE file="jip_actions/normal.html">
-</fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='informers' navigator="pager" >
   <core:PARAMETER name='loader_class_name' value='informer_object'>
@@ -12,9 +9,17 @@
 <core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='informers'>
-<table width=100%>
-<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='informers_list' file='file'></td></tr>
-<core:INCLUDE file='/admin/grid_items/final_level_grid_body.html'>
-<core:INCLUDE file='/admin/grid_items/no_move_grid_footer.html'>
+<admin:list:header>
+  <admin:list:title>
+    <locale:STRING name='informers_list' file='file'>
+  </admin:list:title>
+</admin:list:header>
+
+<table cellpadding="0" cellspacing="0" class="content">
+<core:INCLUDE file='/admin/grid_items/grid_body_final_level.html'>
 </table>
+<admin:list:footer>
+<core:INCLUDE file='/admin/grid_items/grid_footer_no_move.html'>
+</admin:list:footer>
 </grid:LIST>
+

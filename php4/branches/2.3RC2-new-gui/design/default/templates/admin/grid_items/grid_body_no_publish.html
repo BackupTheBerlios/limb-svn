@@ -1,7 +1,9 @@
-<core:INCLUDE file='/admin/grid_items/no_publish_grid_header.html'>
+<core:INCLUDE file='/admin/grid_items/grid_header_no_publish.html'>
 <grid:ITERATOR>
-<tr>
-  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+<grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
+<grid:STRIPE odd><tr class="odd_row"></grid:STRIPE>
+<grid:STRIPE even><tr class="even_row"></grid:STRIPE>
+  <td><span behavior='CRow' target='-2'></span><core:INCLUDE file="/admin/grid_items/selector.html"></td>
   <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
   <td>
   <core:INCLUDE file="/admin/grid_items/list_item_hint.html">

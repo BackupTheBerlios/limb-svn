@@ -1,9 +1,13 @@
 <core:WRAP file="admin/site_management_page.html" placeholder="content">
 
-<fetch:MAPPED>
-<core:INCLUDE file="jip_actions/normal.html">
-<br>
-<table border="0" cellspacing="0" cellpadding="3">
+<admin:list:header>
+  <admin:list:title>
+    <locale:STRING name='controller_class_name'>
+  </admin:list:title>
+</admin:list:header>
+
+
+<table cellpadding="0" cellspacing="0" class="content">
 <tr>
   <th><locale:STRING name='controller_class_name'></th>
   <th colspan='2'><locale:STRING name='actions'></th>
@@ -14,8 +18,10 @@
 
 <grid:LIST id='controllers'>
 <grid:ITERATOR>
-<tr class=jip>
-  <td><small>{$name}</small></td>
+  <grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
+  <grid:STRIPE odd><tr class="odd_row"></grid:STRIPE>
+  <grid:STRIPE even><tr class="even_row"></grid:STRIPE>
+  <td><span behavior='CRow' target='-2'><small>{$name}</small></td>
   <td>
     <a href='{^path}?popup=1&action=set_group_access&controller_id={$id}' onclick="return click_href(this.href);"><img alt="" src="/shared/images/access_manage.gif">Set group access</a>
   </td>
@@ -26,4 +32,6 @@
 </grid:ITERATOR>
 </grid:LIST>
 </table>
-</fetch:MAPPED>
+<admin:list:footer>
+</admin:list:footer>
+

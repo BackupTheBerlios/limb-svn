@@ -1,7 +1,6 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/normal.html">
 {$content}
 <core:OPTIONAL for="content">
 <br>
@@ -16,9 +15,15 @@
 <core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='messages'>
-<table>
-<tr><td colspan='4' class='btitle1' height='3'><locale:STRING name='messages_list' file='message'></td></tr>
-<core:INCLUDE file='/admin/grid_items/no_publish_folder_grid_body.html'>
-<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
-</table>
+  <admin:list:header>
+    <admin:list:title>
+      <locale:STRING name='messages_list' file='message'>
+    </admin:list:title>
+  </admin:list:header>
+  <table cellpadding="0" cellspacing="0" class="content">
+  <core:INCLUDE file='/admin/grid_items/grid_body_folder_no_publish.html'>
+  </table>
+  <admin:list:footer>
+    <core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
+  </admin:list:footer>
 </grid:LIST>

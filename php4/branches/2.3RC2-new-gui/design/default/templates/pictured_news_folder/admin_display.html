@@ -1,9 +1,5 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
-<fetch:MAPPED>
-<core:INCLUDE file="jip_actions/normal.html">
-</fetch:MAPPED>
-
 <fetch:SUB_BRANCH target='list' navigator="pager">
   <core:PARAMETER name='loader_class_name' value='pictured_news_object'>
   <core:PARAMETER name='order' value='news_date=DESC, created_date=DESC'>
@@ -12,8 +8,14 @@
 <core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='list'>
-<table>
-<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='news_list' file='newsline'></td></tr>
+<admin:list:header>
+  <admin:list:title>
+    <locale:STRING name='news_list' file='newsline'>
+  </admin:list:title>
+</admin:list:header>
+
+
+<table cellpadding="0" cellspacing="0" class="content">
 <tr>
   <th><grid:SELECTORS_TOGGLER></th>
   <th><locale:STRING name='published_status'></th>
@@ -23,8 +25,11 @@
   <th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
-<tr>
-  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
+  <grid:STRIPE odd><tr class="odd_row"></grid:STRIPE>
+  <grid:STRIPE even><tr class="even_row"></grid:STRIPE>
+
+  <td><span behavior='CRow' target='-2'><core:INCLUDE file="/admin/grid_items/selector.html"></td>
   <td><core:INCLUDE file="published_status.html"></td>
   <td>
     <core:OPTIONAL for='image_id'>
@@ -39,6 +44,9 @@
   <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<core:INCLUDE file='/admin/grid_items/no_move_no_order_grid_footer.html'>
 </table>
+<admin:list:footer>
+  <core:INCLUDE file='/admin/grid_items/grid_footer_no_move_no_order.html'>
+</admin:list:footer>
+
 </grid:LIST>

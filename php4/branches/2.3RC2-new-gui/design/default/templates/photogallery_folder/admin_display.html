@@ -1,9 +1,5 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
-<fetch:MAPPED>
-<core:INCLUDE file="jip_actions/normal.html">
-</fetch:MAPPED>
-
 <fetch:SUB_BRANCH target='folders'>
   <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
@@ -14,7 +10,11 @@
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='folders'>
-<table>
+<admin:list:header>
+  <admin:list:title>
+  </admin:list:title>
+</admin:list:header>
+<table cellpadding='0' cellspacing='0' class='content'>
 <tr>
   <th><grid:SELECTORS_TOGGLER></th>
   <th><locale:STRING name='items_order'></th>
@@ -24,36 +24,47 @@
 </tr>
 <grid:ITERATOR>
 <tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='photogallery_folders_list' file='photogallery'></td></tr>
-<core:INCLUDE file='/admin/grid_items/folder_grid_body.html'>
-<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'></table>
+<core:INCLUDE file='/admin/grid_items/grid_body_folder.html'>
+</table>
+<admin:list:footer>
+<core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
+</admin:list:footer>
 </grid:LIST>
 
 <core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='photos'>
-<table>
-<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='photos_list' file='photogallery'></td></tr>
-<tr>
-  <th><grid:SELECTORS_TOGGLER></th>
-  <th><locale:STRING name='items_order'></th>
-  <th><locale:STRING name='published_status'></th>
-  <th><locale:STRING name='title'></th>
-  <th><locale:STRING name='title'></th>
-  <th><locale:STRING name='actions'></th>
-</tr>
-<grid:ITERATOR>
-<tr>
-  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
-  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
-  <td><core:INCLUDE file="published_status.html"></td>
-  <td><img src='/root?node_id={$image_id}&icon' align='center' border=0></td>
-  <td>
-    <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
-    {$title}
-  </td>
-  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
-</tr>
-</grid:ITERATOR>
-<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
-</table>
+  <admin:list:header>
+    <admin:list:title>
+      <locale:STRING name='photos_list' file='photogallery'>
+    </admin:list:title>
+  </admin:list:header>
+  <table cellpadding='0' cellspacing='0' class='content'>
+  <tr>
+    <th><grid:SELECTORS_TOGGLER></th>
+    <th><locale:STRING name='items_order'></th>
+    <th><locale:STRING name='published_status'></th>
+    <th><locale:STRING name='title'></th>
+    <th><locale:STRING name='title'></th>
+    <th><locale:STRING name='actions'></th>
+  </tr>
+  <grid:ITERATOR>
+    <grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
+    <grid:STRIPE odd><tr class="odd_row"></grid:STRIPE>
+    <grid:STRIPE even><tr class="even_row"></grid:STRIPE>
+    <td><span behavior='CRow' target='-2'></span><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+    <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
+    <td><core:INCLUDE file="published_status.html"></td>
+    <td><img src='/root?node_id={$image_id}&icon' align='center' border=0></td>
+    <td>
+      <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+      {$title}
+    </td>
+    <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+  </tr>
+  </grid:ITERATOR>
+  </table>
+  <admin:list:footer>
+  <core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
+  </admin:list:footer>
 </grid:LIST>

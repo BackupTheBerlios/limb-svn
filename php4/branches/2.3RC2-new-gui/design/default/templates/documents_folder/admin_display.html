@@ -1,19 +1,23 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
-<fetch:MAPPED>
-<core:INCLUDE file="jip_actions/normal.html">
-</fetch:MAPPED>
-
 <fetch:SUB_BRANCH target='folders' >
   <core:PARAMETER name='order' value='priority=ASC' >
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='folders'>
-<table width=100%>
-<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='document_folders_list' file='document'></td></tr>
-<core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
-<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
-</table>
+
+  <admin:list:header>
+    <admin:list:title>
+      <locale:STRING name='document_folders_list' file='document'>
+    </admin:list:title>
+  </admin:list:header>
+
+  <table cellpadding='0' cellspacing='0' class='content'>
+    <core:INCLUDE file='/admin/grid_items/grid_body_common.html'>
+  </table>
+  <admin:list:footer>
+    <core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
+  </admin:list:footer>
 </grid:LIST>
 
 <fetch:SUB_BRANCH target='documents' navigator="pager" >
@@ -24,9 +28,15 @@
 <core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='documents'>
-<table width=100%>
-<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='documents_list' file='document'></td></tr>
-<core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
-<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
-</table>
+  <admin:list:header>
+    <admin:list:title>
+      <locale:STRING name='documents_list' file='document'>
+    </admin:list:title>
+  </admin:list:header>
+  <table cellpadding='0' cellspacing='0' class='content'>
+    <core:INCLUDE file='/admin/grid_items/grid_body_common.html'>
+  </table>
+  <admin:list:footer>
+    <core:INCLUDE file='/admin/grid_items/grid_footer_full.html'>
+  </admin:list:footer>
 </grid:LIST>

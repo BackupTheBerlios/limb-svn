@@ -18,10 +18,11 @@ class  admin_list_actions_tag_info
 
 register_tag(new  admin_list_actions_tag_info());
 
-class  admin_list_actions_tag extends compiler_directive_tag 
+class  admin_list_actions_tag extends compiler_directive_tag
 {
   var $actions = array();
-
+  var $grid_list_id = '';
+  
   function check_nesting_level()
   {
     if (!$this->find_parent_by_class('grid_list_tag'))
@@ -37,7 +38,9 @@ class  admin_list_actions_tag extends compiler_directive_tag
   {
     $grid_tag =& $this->find_parent_by_class('grid_list_tag');
     $grid_tag->set_form_required();
-
+    
+    $this->grid_list_id = $grid_tag->get_server_id();
+    
     parent :: prepare();
   }
 
@@ -50,10 +53,8 @@ class  admin_list_actions_tag extends compiler_directive_tag
   {
     if(!count($this->actions))
       parent :: post_generate($code);
-    $span_id = uniqid('');
 
-
-    $code->write_html("<script>arr_actions['{$span_id}'] = {");
+    $code->write_html("<script>arr_actions['{$this->grid_list_id}'] = {");
 
     foreach($this->actions as $action_name => $action)
     {
@@ -74,7 +75,7 @@ class  admin_list_actions_tag extends compiler_directive_tag
     }
     $code->write_html("'_' : {}}</script>");
 
-    $code->write_html("<span id='{$span_id}' behavior='CDDGridAction' ddalign='vbr'><img alt='' src='/shared/images/marker/1.gif'> ");
+    $code->write_html("<span id='{$this->grid_list_id}' behavior='CDDGridAction' ddalign='vbr'><img alt='' src='/shared/images/marker/1.gif'> ");
     $code->write_php("echo strings :: get('actions_for_selected');");
     $code->write_html("</span>");
     parent :: post_generate($code);

@@ -1,6 +1,11 @@
 <grid:LIST id='users'>
-<table>
-  <tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='users_list' file='user'></td></tr>
+<admin:list:header>
+  <admin:list:title>
+    <locale:STRING name='users_list' file='user'>
+  </admin:list:title>
+</admin:list:header>
+
+<table  cellpadding='0' cellspacing='0' class='content'>
   <tr>
     <th><grid:SELECTORS_TOGGLER></th>
     <th><locale:STRING name='login' file='user'></th>
@@ -10,8 +15,11 @@
     <th><locale:STRING name='actions'></th>
   </tr>
   <grid:ITERATOR>
-  <tr>
-    <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
+  <grid:STRIPE odd><tr class="odd_row"></grid:STRIPE>
+  <grid:STRIPE even><tr class="even_row"></grid:STRIPE>
+
+   <td><span behavior='CRow' target='-2'><core:INCLUDE file="/admin/grid_items/selector.html"></td>
     <td>
     <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
     {$identifier}
@@ -22,13 +30,18 @@
     <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
   </tr>
   </grid:ITERATOR>
-  <tr><td colspan='100' class='btitle1' height='3'></td></tr>
-  <tr>
-    <td colspan='100'>
-    <grid:actions select_class='select' button_class='button' locale_value='do'>
-      <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
-    </grid:actions>
-    </td>
-  </tr>
 </table>
+
+<admin:list:footer>
+<table  border="0" cellpadding="0" cellspacing="5" class="col5" width="100%">
+<tr>
+  <td>
+  <admin:list:actions>
+    <admin:list:action shortcut='delete' locale_value='delete' form_submitted='0'>
+  </admin:list:actions>
+  </td>
+</tr>
+</table>
+</admin:list:footer>
+
 </grid:LIST>

@@ -1,9 +1,5 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
-<fetch:MAPPED>
-<core:INCLUDE file="jip_actions/normal.html">
-</fetch:MAPPED>
-
 <fetch:SUB_BRANCH target='announcements' navigator="pager" >
   <core:PARAMETER name='loader_class_name' value='announce_object'>
 </fetch:SUB_BRANCH>
@@ -11,18 +7,29 @@
 <core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='announcements'>
-<table width=100%>
-<tr><td colspan='5' class='btitle1' height='3'><locale:STRING name='announcements_list' file='announce'></td></tr>
-<core:INCLUDE file='/admin/grid_items/common_grid_header.html'>
-<grid:ITERATOR>
-<tr>
-<td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
-<td><core:INCLUDE file="published_status.html"></td>
-<td><a href="{$path}" target='_blank'>{$title}</a></td>
-<td><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
-<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
-</tr>
-</grid:ITERATOR>
-<core:INCLUDE file='/admin/grid_items/no_move_grid_footer.html'>
+<admin:list:header>
+  <admin:list:title>
+    <locale:STRING name='announcements_list' file='announce'>
+  </admin:list:title>
+</admin:list:header>
+
+<table cellpadding='0' cellspacing='0' class='content'>
+  <core:INCLUDE file='/admin/grid_items/grid_header_common.html'>
+  <grid:ITERATOR>
+    <grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
+    <grid:STRIPE odd><tr class="odd_row"></grid:STRIPE>
+    <grid:STRIPE even><tr class="even_row"></grid:STRIPE>
+      <td><span behavior='CRow' target='-2'></span><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+      <td><core:INCLUDE file="published_status.html"></td>
+      <td><a href="{$path}" target='_blank'>{$title}</a></td>
+      <td><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
+      <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+    </tr>
+  </grid:ITERATOR>
 </table>
+
+<admin:list:footer>
+  <core:INCLUDE file='/admin/grid_items/grid_footer_no_move.html'>
+</admin:list:footer>
+
 </grid:LIST>

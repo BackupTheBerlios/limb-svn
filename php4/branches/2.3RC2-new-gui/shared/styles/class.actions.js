@@ -34,7 +34,7 @@ object_inherit(CDDGridAction, CDropDown)
 CDDGridAction.prototype.get_content = function()
 {
   var arr = arr_actions[this.init_obj.id]
-  var grid_form = "document.getElementById('grid_form_items')";
+  var grid_form = "document.getElementById('grid_form_" + this.init_obj.id + "')";
 
   var str = '<table border="0" cellspacing="0" cellpadding="0" class="dd-container">'
   for(var v in arr)
