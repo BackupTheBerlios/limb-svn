@@ -5,31 +5,33 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: edit_chat_room_action.class.php 59 2004-03-22 13:54:41Z server $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . 'core/model/response/response.class.php');
 
-class edit_chat_room_action extends form_edit_site_object_action
+class user_settings_action extends form_action
 {
-	function edit_chat_room_action()
+	function user_settings_action()
 	{
-		$definition = array(
-			'site_object' => 'chat_room',
-			'datamap' => array(
-				'title' => 'title',
-				'annotation' => 'annotation',
-			)
-		);
-
-		parent :: form_edit_site_object_action('chat_room_form', $definition);
+		parent :: form_action('user_settings_form');
 	}
 	
-	function _init_validator()
+	function _init_dataspace()
 	{
-		parent :: _init_validator();
+	
+	}
 
-		$this->validator->add_rule(new required_rule('title'));
+	function _valid_perform()
+	{
+	
+		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+	}
+
+	function _process_transfered_dataspace()
+	{	
+	
 	}
 }
 

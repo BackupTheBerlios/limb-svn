@@ -18,6 +18,7 @@ class create_chat_room_action extends form_create_site_object_action
 			'site_object' => 'chat_room',
 			'datamap' => array(
 				'title' => 'title',
+				'annotation' => 'annotation',
 			)
 		);
 		

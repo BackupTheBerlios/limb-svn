@@ -20,6 +20,7 @@ class chat_room_db_table extends content_object_db_table
   function _define_columns()
   {
   	return array(
+  		'annotation' => '',
    );
   }
 }

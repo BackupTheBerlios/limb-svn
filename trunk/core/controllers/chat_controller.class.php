@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: faculty_controller.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -42,6 +42,12 @@ class chat_controller extends site_object_controller
 						'action_path' => '/site_object/edit_action',
 						'template_path' => '/site_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
+				),
+				'user_settings' => array(
+						'permissions_required' => 'r',
+						'action_path' => '/chat_room/user_settings_action',
+						'template_path' => '/chat/user_settings_form.html',
+						'action_name' => strings :: get('update_user_settings', 'chat'),
 				),
 		);
  		
