@@ -26,7 +26,7 @@ class richedit_component extends text_area_component
 		echo htmlspecialchars($this->get_value(), ENT_QUOTES);
 	} 
 	
-	private function _load_js_script()
+	protected function _load_js_script()
 	{
 		if (defined('HTMLAREA_SCRIPT_LOADED'))
 			return;

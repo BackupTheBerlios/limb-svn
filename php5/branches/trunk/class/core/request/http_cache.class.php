@@ -87,7 +87,7 @@ class http_cache
   protected function _write_412_response($response)
   {
     $response->header('HTTP/1.1 412 Precondition Failed');
-    $response->header('Cache-Control: private, max-age=0, must-revalidate');
+    $response->header('Cache-Control: protected, max-age=0, must-revalidate');
     $response->header('Content-Type: text/plain');
     
     $response->write("HTTP/1.1 Error 412 Precondition Failed: Precondition request failed positive evaluation\n");
@@ -115,9 +115,9 @@ class http_cache
   protected function _get_cache_control()
   {
     if ($this->cache_time == 0)
-      $cache = 'private, must-revalidate, ';
+      $cache = 'protected, must-revalidate, ';
     elseif ($this->cache_type == http_cache :: TYPE_PRIVATE) 
-      $cache = 'private, ';
+      $cache = 'protected, ';
     elseif ($this->cache_type == http_cache :: TYPE_PUBLIC) 
       $cache = 'public, ';
     else 

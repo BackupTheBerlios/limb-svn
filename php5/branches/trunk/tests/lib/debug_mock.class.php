@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
 
 class debug_mock extends debug
 {
-	private $expected_data = array();
-	private $test = null;
-	private $mock = null;
+	protected $expected_data = array();
+	protected $test = null;
+	protected $mock = null;
 				
 	static public function init($test, $wildcard = MOCK_WILDCARD)
 	{
@@ -44,7 +44,7 @@ class debug_mock extends debug
 		self :: _expect_write(self :: LEVEL_NOTICE, $message, $params);
 	}
 	
-	static private function _expect_write($verbosity_level, $message, $params)
+	static protected function _expect_write($verbosity_level, $message, $params)
 	{
 	  $debug = self :: instance();
 	  

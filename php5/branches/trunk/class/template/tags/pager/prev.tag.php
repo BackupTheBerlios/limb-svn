@@ -19,7 +19,7 @@ register_tag(new pager_prev_tag_info());
 
 class pager_prev_tag extends server_component_tag
 {
-	private $hide_for_current_page;
+	protected $hide_for_current_page;
 
 	function check_nesting_level()
 	{

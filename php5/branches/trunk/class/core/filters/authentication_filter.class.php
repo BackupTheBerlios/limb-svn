@@ -58,7 +58,7 @@ class authentication_filter implements intercepting_filter
     }
 
     debug :: add_timing_point('authentication filter finished');
-          
+
     $filter_chain->next();        
   }
 }

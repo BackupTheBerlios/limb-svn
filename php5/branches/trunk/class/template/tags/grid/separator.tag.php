@@ -19,7 +19,7 @@ register_tag(new grid_separator_tag_info());
 
 class grid_separator_tag extends compiler_directive_tag
 {
-	private $count;
+	protected $count;
 
 	public function check_nesting_level()
 	{

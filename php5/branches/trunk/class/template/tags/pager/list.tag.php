@@ -51,7 +51,7 @@ class pager_list_tag extends compiler_directive_tag
 	{
 		$code->write_php('}');
 
-		$emptychild = $this->find_child_by_class('list_default_tag');
+		$emptychild = $this->find_child_by_class('grid_default_tag');
 		if ($emptychild)
 		{
 			$code->write_php(' else { ');

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 
 class fetch_component extends component
 {
-	private $path = '';
+	protected $path = '';
 			
 	public function fetch($path=null)
 	{

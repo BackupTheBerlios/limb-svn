@@ -22,24 +22,26 @@ class user extends object
   
   protected static $_instance = null;
   
-	protected $_id;
-	protected $_node_id = -1;
-	protected $_login = '';
-	protected $_password = '';
-	protected $_email = '';
-	protected $_name = '';
-	protected $_lastname = '';
-	protected $_locale_id = '';
-	
-	protected $_is_logged_in = false;
-	
-	protected $_groups = array();
-	
-	protected $__session_class_path = __FILE__;
+  protected
+	  $_id,
+	  $_node_id = -1,
+	  $_login = '',
+	  $_password = '',
+	  $_email = '',
+	  $_name = '',
+	  $_lastname = '',
+	  $_locale_id = '',
+    $_is_logged_in = false,	
+	  $_groups = array(),
+	  $__session_class_path;
 	
 	function __construct()
 	{
 	  $this->_id = self :: DEFAULT_USER_ID;
+	  
+	  //important!!!
+	  $this->__session_class_path = addslashes(__FILE__);
+	  
 	  parent :: __construct();
 	}
 	

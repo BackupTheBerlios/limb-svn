@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class invalid_value_rule extends single_field_rule
 {
-  private $invalid_value;
+  protected $invalid_value;
   
 	function __construct($field_name, $invalid_value)
 	{

@@ -11,7 +11,7 @@
 
 class complex_array
 {
-  private function __construct(){}
+  protected function __construct(){}
   
   	
 	static public function map($map_array, $src_array, &$dest_array)

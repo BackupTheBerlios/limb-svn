@@ -17,7 +17,7 @@ class form_action extends action
 
 	protected $validated = false;
 
-	private $valid = false;
+	protected $valid = false;
 	
 	function __construct()
 	{

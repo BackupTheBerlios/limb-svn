@@ -12,10 +12,10 @@ require_once(LIMB_DIR . 'class/template/components/form/form_element.class.php')
 
 class grid_button_component extends form_element
 {
-	private $path = '';
-	private $action = '';
-	private $reload_parent = 0;
-	private $onclick = '';
+	protected $path = '';
+	protected $action = '';
+	protected $reload_parent = 0;
+	protected $onclick = '';
 	
 	protected function _process_attributes()
 	{

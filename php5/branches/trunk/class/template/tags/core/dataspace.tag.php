@@ -29,8 +29,6 @@ class core_dataspace_tag extends server_component_tag
 
 	public function pre_generate($code)
 	{
-		$code->write_php($this->get_component_ref_code() . '->prepare();');
-		
 		parent :: pre_generate($code);
 
 		$code->write_php('if (!' . $this->get_dataspace_ref_code() . '->is_empty()){');

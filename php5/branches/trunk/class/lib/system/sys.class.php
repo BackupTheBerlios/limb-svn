@@ -16,14 +16,14 @@ class sys
 {
   protected static $instance = null;
    
-  private $line_separator;		// line separator used in files
-  private $file_separator;		// directory separator used for files
-  private $env_separator;			// list separator used for env variables
-  private $request_uri;				// uri which is used for parsing module/view information from, may differ from $_SERVER['REQUEST_URI']
-  private $file_system_type;	// type of file_system, is either win32 or unix. This often used to determine os specific paths.
-  private $os_type;						// type of file_system, is either win32 or unix. This often used to determine os specific paths.
-  private $client_ip;					// type of file_system, is either win32 or unix. This often used to determine os specific paths.
-  private $exec_mode = null;	// cli, cgi, module
+  protected $line_separator;		// line separator used in files
+  protected $file_separator;		// directory separator used for files
+  protected $env_separator;			// list separator used for env variables
+  protected $request_uri;				// uri which is used for parsing module/view information from, may differ from $_SERVER['REQUEST_URI']
+  protected $file_system_type;	// type of file_system, is either win32 or unix. This often used to determine os specific paths.
+  protected $os_type;						// type of file_system, is either win32 or unix. This often used to determine os specific paths.
+  protected $client_ip;					// type of file_system, is either win32 or unix. This often used to determine os specific paths.
+  protected $exec_mode = null;	// cli, cgi, module
 
   /*
    Initializes the object with settings taken from the current script run.
@@ -92,8 +92,8 @@ class sys
 			{
 				if ( preg_match("/^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/", $_SERVER['HTTP_X_FORWARDED_FOR'], $ip_list))
 				{
-					$private_ip = array('/^0\./', '/^127\.0\.0\.1/', '/^192\.168\..*/', '/^172\.16\..*/', '/^10..*/', '/^224..*/', '/^240..*/');
-					$client_ip = preg_replace($private_ip, $client_ip, $ip_list[1]);
+					$protected_ip = array('/^0\./', '/^127\.0\.0\.1/', '/^192\.168\..*/', '/^172\.16\..*/', '/^10..*/', '/^224..*/', '/^240..*/');
+					$client_ip = preg_replace($protected_ip, $client_ip, $ip_list[1]);
 				}
 			}
 

@@ -17,7 +17,7 @@ class text_node extends compiler_directive_tag
 	/**
 	* A text string to write
 	*/
-	private $contents;
+	protected $contents;
 
 	/**
 	* Constructs text_node

@@ -30,7 +30,6 @@ class image_cache_filter implements intercepting_filter
     
     if(!$response->is_empty())
       return;
-    
     debug :: add_timing_point('image cache started');
     
     if($content = ob_get_contents())

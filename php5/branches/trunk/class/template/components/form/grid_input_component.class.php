@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class
 
 class grid_input_component extends input_form_element
 {
-  private $hash_id = 'node_id';
+  protected $hash_id = 'node_id';
   
 	public function get_value()
 	{

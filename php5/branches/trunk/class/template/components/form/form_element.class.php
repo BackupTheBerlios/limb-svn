@@ -182,7 +182,7 @@ abstract class form_element extends tag_component
 		} 
 	} 
  
-	private function _process_localized_value()
+	protected function _process_localized_value()
 	{
 		if (!isset($this->attributes['locale_value']))
 			return;

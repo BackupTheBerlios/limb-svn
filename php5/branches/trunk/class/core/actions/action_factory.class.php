@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'class/core/actions/empty_action.class.php');
 
 class action_factory
 {	
-	static private function get_class_name($class_path)
+	static protected function get_class_name($class_path)
 	{
 		$pos = strrpos($class_path, '/');
 		
@@ -31,8 +31,7 @@ class action_factory
 		
 		if(!class_exists($class_name))
 		{
-  		$resolver = get_file_resolver('action');
-  		resolve_handle($resolver);
+  		resolve_handle($resolver =& get_file_resolver('action'));
   		
   		if(!$full_path = $resolver->resolve($class_path))
   			return new empty_action();

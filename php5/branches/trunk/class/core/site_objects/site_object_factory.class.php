@@ -22,13 +22,12 @@ abstract class site_object_factory
   	return new $class_name();	
 	}
 	
-	static private function _include_class_file($class_name)
+	static protected function _include_class_file($class_name)
 	{
 	  if(class_exists($class_name))
 	    return;
 	
-		$resolver = get_file_resolver('site_object');
-		resolve_handle($resolver);
+		resolve_handle($resolver =& get_file_resolver('site_object'));
 		
 		$full_path = $resolver->resolve($class_name);
 

@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'class/etc/limb_util.inc.php');
 
 class actions_component extends list_component
 {
-	private $all_actions = array();
+	protected $all_actions = array();
 
-	private $node_id;
+	protected $node_id;
 	
 	public function set_actions($all_actions)
 	{

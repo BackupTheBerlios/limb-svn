@@ -22,7 +22,7 @@ register_tag(new pager_next_tag_info());
 */
 class pager_next_tag extends server_component_tag
 {
-	private $hide_for_current_page;
+	protected $hide_for_current_page;
 
 	public function check_nesting_level()
 	{

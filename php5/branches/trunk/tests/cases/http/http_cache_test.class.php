@@ -179,7 +179,7 @@ class http_cache_test extends LimbTestCase
     
     $this->response->expectCallCount('header', 3);
     $this->response->expectArgumentsAt(0, 'header', array('HTTP/1.1 412 Precondition Failed'));
-    $this->response->expectArgumentsAt(1, 'header', array('Cache-Control: private, max-age=0, must-revalidate'));
+    $this->response->expectArgumentsAt(1, 'header', array('Cache-Control: protected, max-age=0, must-revalidate'));
     $this->response->expectArgumentsAt(2, 'header', array('Content-Type: text/plain'));
     
     $this->response->expectOnce('write', array(new WantedPatternExpectation("~^HTTP/1.1 Error 412~")));
@@ -217,7 +217,7 @@ class http_cache_test extends LimbTestCase
     $this->cache->set_last_modified_time($time = time());
     
     $this->response->expectCallCount('header', 5);
-    $this->response->expectArgumentsAt(0, 'header', array('Cache-Control: private, must-revalidate, max-age=0'));
+    $this->response->expectArgumentsAt(0, 'header', array('Cache-Control: protected, must-revalidate, max-age=0'));
     $this->response->expectArgumentsAt(1, 'header', array('Last-Modified: ' . $this->cache->format_last_modified_time()));
     $this->response->expectArgumentsAt(2, 'header', array('Etag: ' . $this->cache->get_etag()));
     $this->response->expectArgumentsAt(3, 'header', array('Pragma: '));
@@ -234,7 +234,7 @@ class http_cache_test extends LimbTestCase
     $this->cache->set_cache_time(100);
     
     $this->response->expectCallCount('header', 5);
-    $this->response->expectArgumentsAt(0, 'header', array('Cache-Control: private, max-age=100'));
+    $this->response->expectArgumentsAt(0, 'header', array('Cache-Control: protected, max-age=100'));
     $this->response->expectArgumentsAt(1, 'header', array('Last-Modified: ' . $this->cache->format_last_modified_time()));
     $this->response->expectArgumentsAt(2, 'header', array('Etag: ' . $this->cache->get_etag()));
     $this->response->expectArgumentsAt(3, 'header', array('Pragma: '));

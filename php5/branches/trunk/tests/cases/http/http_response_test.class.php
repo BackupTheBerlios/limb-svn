@@ -158,11 +158,11 @@ class http_response_test extends LimbTestCase
   
   function test_get_directive()
   {
-    $this->response->header('Cache-Control: private, max-age=0, must-revalidate');
-    $this->assertEqual($this->response->get_directive('cache-control'), 'private, max-age=0, must-revalidate');
+    $this->response->header('Cache-Control: protected, max-age=0, must-revalidate');
+    $this->assertEqual($this->response->get_directive('cache-control'), 'protected, max-age=0, must-revalidate');
     
-    $this->response->header('Cache-Control :    private, max-age=10  ');
-    $this->assertEqual($this->response->get_directive('cache-control'), 'private, max-age=10');
+    $this->response->header('Cache-Control :    protected, max-age=10  ');
+    $this->assertEqual($this->response->get_directive('cache-control'), 'protected, max-age=10');
   } 
   
   function test_get_content_default_type()

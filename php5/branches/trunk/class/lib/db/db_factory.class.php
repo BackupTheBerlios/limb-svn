@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 class	db_factory
 {
-	static public function instance($db_type='', $db_params=array(), $force_new_instance=false)
+	static public function & instance($db_type='', $db_params=array(), $force_new_instance=false)
 	{
 		if(!$db_type)
 			$db_type = get_ini_option('common.ini', 'type', 'DB');
@@ -23,9 +23,9 @@ class	db_factory
 
     $obj = null;
     if (isset($GLOBALS['global_db_handler']))
-		  $obj = $GLOBALS['global_db_handler'];
+		  $obj =& $GLOBALS['global_db_handler'];
 		
-		if (get_class( $obj ) != $db_class_name || $force_new_instance)
+		if (get_class($obj) != $db_class_name || $force_new_instance)
 		{
 			if(!$db_params && $db_type !== 'null')
 			{
@@ -39,7 +39,7 @@ class	db_factory
 		  
 		  $obj = new $db_class_name($db_params);
 		  
-  		$GLOBALS['global_db_handler'] = $obj;
+  		$GLOBALS['global_db_handler'] =& $obj;
 		}
 		return $obj;
 	}

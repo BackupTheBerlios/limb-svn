@@ -73,7 +73,7 @@ class core_parameter_tag extends compiler_directive_tag
 		parent::generate_contents($code);
 	}
 	
-	private function _typecast_value()
+	protected function _typecast_value()
 	{
 		$value = $this->attributes['value'];
     switch(strtolower($this->attributes['type'])) 

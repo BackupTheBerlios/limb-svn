@@ -28,7 +28,7 @@ class date_component extends input_form_element
 		define('DATEBOX_LOAD_SCRIPT',1);
 	}
 	
-	private function _get_frame_id()
+	protected function _get_frame_id()
 	{
 		//default-month:theme-name[:agenda-file[:context-name[:plugin-file]]]
 

@@ -11,11 +11,11 @@
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 
 if(!is_registered_resolver('db_table'))
-  register_file_resolver('db_table', $r = LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
+  register_file_resolver('db_table', LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
 
 class db_table_factory
 {
-  private function __construct(){}
+  protected function __construct(){}
   		
 	static function create($db_table_name)
 	{	
@@ -26,13 +26,12 @@ class db_table_factory
 	  return new $klass();
 	}
 	
-	static private function _include_class_file($db_table_name)
+	static protected function _include_class_file($db_table_name)
 	{
 	  if(class_exists($db_table_name . '_db_table'))
 	    return;
 	  
-		$resolver = get_file_resolver('db_table');
-		resolve_handle($resolver);
+		resolve_handle($resolver =& get_file_resolver('db_table'));
 		
 		$full_path = $resolver->resolve($db_table_name);
 

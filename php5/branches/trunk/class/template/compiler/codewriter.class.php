@@ -35,7 +35,7 @@ class codewriter
 	/**
 	* List of files to write include statements for in the compiled template,
 	* such as runtime component class files.
-	* @access private 
+	* @access protected 
 	*/
 	protected $include_list = array();
 	protected $temp_var_name = 1;

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class match_rule extends single_field_rule
 {
-	private $match_field;
+	protected $match_field;
 
-	private $match_field_name;
+	protected $match_field_name;
 
 	function __construct($field_name, $match_field, $match_field_name = '')
 	{

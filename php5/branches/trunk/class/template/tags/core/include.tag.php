@@ -22,7 +22,7 @@ register_tag(new core_include_tag_info());
 */
 class core_include_tag extends compiler_directive_tag
 {
-	private $resolved_source_file;
+	protected $resolved_source_file;
 	
 	public function pre_parse()
 	{

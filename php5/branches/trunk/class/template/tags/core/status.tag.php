@@ -23,7 +23,7 @@ register_tag(new core_status_tag_info());
 */
 class core_status_tag extends compiler_directive_tag
 {
-	private $const;
+	protected $const;
 
 	public function pre_parse()
 	{

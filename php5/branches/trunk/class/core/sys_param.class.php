@@ -14,8 +14,8 @@ class sys_param
 {
   static protected $_instance = null;
   
-	private $_db_table = null;
-	private $_types = array("char", "int", "blob", "float");
+	protected $_db_table = null;
+	protected $_types = array("char", "int", "blob", "float");
 	
 	function sys_param()
 	{

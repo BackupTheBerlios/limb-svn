@@ -15,8 +15,8 @@ class tree_identifier_rule extends single_field_rule
 {
   const UNKNOWN_NODE_ID = -1000;
   
-	private $parent_node_id;
-	private $node_id;
+	protected $parent_node_id;
+	protected $node_id;
 	
 	function __construct($field_name, $parent_node_id, $node_id = self :: UNKNOWN_NODE_ID)
 	{

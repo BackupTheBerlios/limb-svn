@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class unique_user_email_rule extends single_field_rule
 {
-	private $current_identifier = '';
+	protected $current_identifier = '';
 	
 	function __construct($field_name, $current_identifier='')
 	{

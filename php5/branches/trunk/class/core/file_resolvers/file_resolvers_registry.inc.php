@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 
 $LIMB_FILE_RESOLVERS = array();
 
-function get_file_resolver($resolver_name)
+function & get_file_resolver($resolver_name)
 {
   global $LIMB_FILE_RESOLVERS;
   if(isset($LIMB_FILE_RESOLVERS[$resolver_name]))

@@ -15,8 +15,7 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.
 */
 function resolve_template_source_file_name($file)
 {
-  $resolver = get_file_resolver('template');
-	resolve_handle($resolver);
+	resolve_handle($resolver =& get_file_resolver('template'));
 		  
   return $resolver->resolve($file);
 } 

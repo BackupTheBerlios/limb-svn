@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/class/lib/date/date.class.php');
 
 class locale_date_rule extends single_field_rule 
 {
-	private $locale_id = '';
+	protected $locale_id = '';
 	
 	function __construct($fieldname, $locale_id = '')
 	{

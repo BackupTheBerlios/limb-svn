@@ -16,22 +16,22 @@ require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
 
 class metadata_component extends component
 {
-	private $node_id = '';
+	protected $node_id = '';
 	
-	private $request_path = '';
+	protected $request_path = '';
 	
-	private $object_ids_array = array();
+	protected $object_ids_array = array();
 
-	private $object_metadata = array();
+	protected $object_metadata = array();
 	
-	private $separator = ' - ';
+	protected $separator = ' - ';
 	
-	private $offset_path = '';
+	protected $offset_path = '';
 	
-	private $metadata_db_table_name = 'sys_metadata';
-	private $needed_metadata = array('keywords', 'description');
+	protected $metadata_db_table_name = 'sys_metadata';
+	protected $needed_metadata = array('keywords', 'description');
 
-	private function _get_path_objects_ids_array()
+	protected function _get_path_objects_ids_array()
 	{		
 		if (count($this->object_ids_array))
 			return $this->object_ids_array;
@@ -55,7 +55,7 @@ class metadata_component extends component
 		return $this->object_ids_array = $result;
 	}
 	
-	private function  _get_path_objects_array()
+	protected function  _get_path_objects_array()
 	{
 		$ids_array = $this->_get_path_objects_ids_array();
 				
@@ -91,7 +91,7 @@ class metadata_component extends component
 		return true;		
 	}
 	
-	private function _process_loaded_metadata($ids_array, $objects_metadata)
+	protected function _process_loaded_metadata($ids_array, $objects_metadata)
 	{
 		foreach($this->needed_metadata as $metadata_name)
 			$metadata_loaded[$metadata_name] = false;
@@ -203,7 +203,7 @@ class metadata_component extends component
 		return new array_dataset($results);
 	}
 	
-	private function _apply_offset_path($objects_data)
+	protected function _apply_offset_path($objects_data)
 	{
 		$path = '/';
 		
@@ -239,7 +239,7 @@ class metadata_component extends component
 		return $results;
 	}
 
-	private function _add_object_action_path(&$results)
+	protected function _add_object_action_path(&$results)
 	{
 		$data = end($results);
 		$path = $data['path'];

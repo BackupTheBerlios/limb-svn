@@ -109,10 +109,8 @@ class cron_manager
   
   protected function _create_job_object($handle)
   {
-    $object = $handle;
-    resolve_handle($object);
-    
-    return $object;
+    resolve_handle($handle);
+    return $handle;
   }
   
   protected function _set_job_last_time($key, $time)

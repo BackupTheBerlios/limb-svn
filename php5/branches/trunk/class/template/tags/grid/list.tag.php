@@ -22,7 +22,7 @@ register_tag(new grid_list_tag_info());
 */
 class grid_list_tag extends server_component_tag
 {
-	private $has_form = false;
+	protected $has_form = false;
 	
   public function __construct()
   {

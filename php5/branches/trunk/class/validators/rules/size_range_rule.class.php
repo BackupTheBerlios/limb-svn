@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
 
 class size_range_rule extends single_field_rule
 {
-	private $min_len;
-	private $max_len;
+	protected $min_len;
+	protected $max_len;
 
 	function __construct($field_name, $min_len, $max_len = null)
 	{

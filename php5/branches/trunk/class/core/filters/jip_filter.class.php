@@ -17,21 +17,21 @@ class jip_filter implements intercepting_filter
   public function run($filter_chain, $request, $response) 
   {
     debug :: add_timing_point('jip filter started');
-  
-    fetcher :: instance()->set_jip_status(false);
     
-    $user = user :: instance();
+    $fetcher = fetcher :: instance();
     
-    if ($user->is_logged_in())
+    $fetcher->set_jip_status(false);
+    
+    if (user :: instance()->is_logged_in())
     {
       $ini = get_ini('jip_groups.ini');
       
-      if($user->is_in_groups(array_keys($ini->get_group('groups'))))
+      if(user :: instance()->is_in_groups(array_keys($ini->get_group('groups'))))
         $fetcher->set_jip_status(true);
     }
 
     debug :: add_timing_point('jip filter done');
-
+    
     $filter_chain->next();
   }   
 } 

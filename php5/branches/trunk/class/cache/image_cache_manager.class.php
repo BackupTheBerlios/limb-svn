@@ -21,9 +21,9 @@ class image_cache_manager
 {
   protected $id;
   protected $uri;
-  private   $rules = array();
+  protected   $rules = array();
   protected $matched_rule;
-  private   $fetcher;
+  protected   $fetcher;
   protected $found_images = array();
   protected $wild_card;
     

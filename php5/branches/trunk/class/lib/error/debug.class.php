@@ -268,7 +268,7 @@ class debug
 			$debug->write(self :: LEVEL_ERROR, $string, $code_line, $params);
 	} 
 		
-	static private function _send_mail($debug_info)
+	static protected function _send_mail($debug_info)
 	{
 		include_once(LIMB_DIR . 'class/lib/mail/send_plain_mail.inc.php');
 		
@@ -349,7 +349,7 @@ class debug
 		$debug->write(self :: TIMING_POINT, $description);
 	} 
 	
-	static private function _parse_text_debug_info($debug_info)
+	static protected function _parse_text_debug_info($debug_info)
 	{
 	  $string = $debug_info['string'];
 	  $code_line = $debug_info['code_line'];
@@ -362,7 +362,7 @@ class debug
 		return $log_string;
 	}
 
-	static private function _parse_html_debug_info($debug_info)
+	static protected function _parse_html_debug_info($debug_info)
 	{
 	  $string = $debug_info['string'];
 	  $code_line = $debug_info['code_line'];
@@ -400,7 +400,7 @@ class debug
 	/*
    Writes the log message $string to the file $file_name.
   */
-	static private function _write_file($file_name, $debug_info)
+	static protected function _write_file($file_name, $debug_info)
 	{
 	  include_once(LIMB_DIR . 'class/lib/util/log.class.php');
 	  
@@ -463,8 +463,7 @@ class debug
 		if (!self :: is_debug_enabled())
 			return '';
 
-		$debug = self :: instance();
-		$report = $debug->_parse_report_internal(true);
+		$report = self :: instance()->_parse_report_internal(true);
     
     $ip = sys :: client_ip();
 		$js_window = "
@@ -473,8 +472,7 @@ class debug
 						
 						function show_debug(file_name, title)
 						{
-            	debug_path = window.location.pathname.replace(/\/[^\/]*$/, '/') + 'var/';
-            	
+            	debug_path = '/var/';
 							rn = Math.random();
 						  debug_window = window.open(debug_path + file_name + '?rn=' + rn, title, 'top=370,left=550,height=300,width=400,scrollbars,resizable');
 						}
@@ -507,7 +505,7 @@ class debug
 	/*
    Returns the microtime as a float value. $mtime must be in microtime() format.
   */
-	static private function _time_to_float($mtime)
+	static protected function _time_to_float($mtime)
 	{
 		$t_time = explode(' ', $mtime);
 		preg_match("~0\.([0-9]+)~", '' . $t_time[0], $t1);
@@ -629,7 +627,7 @@ class debug
 	/*
     Prints a full debug report with notice, warnings, errors and a timing report.
   */
-	private function _parse_report_internal($as_html = true)
+	protected function _parse_report_internal($as_html = true)
 	{
 		$end_time = microtime();
 		$return_text = '';
@@ -689,7 +687,7 @@ class debug
 			$memory = $point['memory_usage'];
 			$next_time = false;
 			$next_memory = 0;
-
+			
 			if ($next_point !== false)
 			{
 				$next_time = self :: _time_to_float($next_point['time']);

@@ -74,7 +74,7 @@ class fs
   /*
    Creates the directory $dir with permission $perm.
   */
-  static private function _do_mkdir($dir, $perm)
+  static protected function _do_mkdir($dir, $perm)
   {
   	if(is_dir($dir))
   		return true;
@@ -139,7 +139,7 @@ class fs
 		clearstatcache();
 	}
 	
-	static private function _do_rm($dir, $separator)
+	static protected function _do_rm($dir, $separator)
 	{
     if (is_dir($dir) && ($handle = opendir($dir)))
     {
@@ -304,7 +304,7 @@ class fs
     return $path;
   }
   
-  static private function _normalize_separators($path, $separator)
+  static protected function _normalize_separators($path, $separator)
   {
   	$clean_path = preg_replace( "#$separator$separator+#", $separator, $path);
   	  	
@@ -314,7 +314,7 @@ class fs
     return $clean_path;
   }
   
-  static private function _has_win32_net_prefix($path)
+  static protected function _has_win32_net_prefix($path)
   {
     if(sys :: os_type() == 'win32' && strlen($path) > 2)
     {
@@ -353,7 +353,7 @@ class fs
 		return self :: walk_dir($path, array($fs, '_do_recursive_find'), array('regex' => $regex));		
   }
   
-  static private function _do_recursive_find($dir, $file, $params, &$return_params)
+  static protected function _do_recursive_find($dir, $file, $params, &$return_params)
   {
   	if(preg_match( '/' . $params['regex'] . '$/', $file))
   	{
@@ -376,7 +376,7 @@ class fs
 		return $return_params;
 	}
 	
-	static private function _do_walk_dir($dir, $separator, $function_def, &$return_params, $params)
+	static protected function _do_walk_dir($dir, $separator, $function_def, &$return_params, $params)
 	{
 		if(is_dir($dir))
 		{

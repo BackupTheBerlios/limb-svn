@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/template/tag_component.class.php');
 
 class request_transfer_component extends tag_component 
 {
-	private $attributes_string = '';
+	protected $attributes_string = '';
 	
 	public function append_request_attributes(&$content)
 	{
@@ -34,7 +34,7 @@ class request_transfer_component extends tag_component
 		}
 	}
 	
-	private function _replace_callback($matches)
+	protected function _replace_callback($matches)
 	{
 		if(strpos($matches[3], '?') === false)
 			$matches[3] .= '?';

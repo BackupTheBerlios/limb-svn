@@ -24,9 +24,9 @@ register_tag(new core_wrap_tag_info());
 */
 class core_wrap_tag extends compiler_directive_tag
 {
-	private $resolved_source_file;
+	protected $resolved_source_file;
 	
-	private $keylist;
+	protected $keylist;
 
 	public function check_nesting_level()
 	{

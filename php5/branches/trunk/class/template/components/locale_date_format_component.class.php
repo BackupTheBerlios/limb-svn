@@ -13,13 +13,13 @@ require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 
 class locale_date_format_component extends component
 {
-	private $date = null;
+	protected $date = null;
 	
-	private $date_type = 'string';
+	protected $date_type = 'string';
 		
-	private $format_string = '';
+	protected $format_string = '';
 	
-	private $locale_type = CONTENT_LOCALE_ID;
+	protected $locale_type = CONTENT_LOCALE_ID;
 
 	public function prepare()
 	{

@@ -11,13 +11,13 @@
 require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 
 if(!is_registered_resolver('datasource'))
-  register_file_resolver('datasource', $r = LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver');
+  register_file_resolver('datasource', LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver');
 
 class datasource_factory
 {
-  private function __construct(){}
+  protected function __construct(){}
   
-	static private function _extract_class_name($class_path)
+	static protected function _extract_class_name($class_path)
 	{
 		$pos = strrpos($class_path, '/');
 		
@@ -33,8 +33,7 @@ class datasource_factory
 
 		if(!class_exists($class_name))
 		{
-  		$resolver =& get_file_resolver('datasource');
-  		resolve_handle($resolver);
+  		resolve_handle($resolver =& get_file_resolver('datasource'));
   		
   		if(!$full_path = $resolver->resolve($class_path))
   			return null;

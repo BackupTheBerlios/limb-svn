@@ -19,7 +19,7 @@ register_tag(new locale_number_format_tag_info());
 
 class locale_number_format_tag extends server_component_tag
 {
-	private $field;
+	protected $field;
 
   public function __construct()
   {

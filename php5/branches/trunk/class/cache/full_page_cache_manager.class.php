@@ -18,8 +18,8 @@ class full_page_cache_manager
 {
   protected $id;
   protected $uri;
-  private $rules = array();
-  private $matched_rule;
+  protected $rules = array();
+  protected $matched_rule;
     
   protected function _set_matched_rule($rule)
   {

@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
 class session
 {
-  private function __construct(){}
+  protected function __construct(){}
   
 	static public function & get($name)
 	{
@@ -87,13 +87,14 @@ function _session_db_close()
 
 function _session_db_read($session_id)
 {
-	$db = db_factory :: instance();
-
+  $db = db_factory :: instance();
+  
+  $session_id = $db->escape($session_id);
 	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
 	
   if($session_res = $db->fetch_row())
   {
-  	if(preg_match_all('/"__session_class_path";s:\d+:"([^"]+)"/', $session_res['session_data'], $matches))
+  	if(preg_match_all('/"*__session_class_path";s:\d+:"([^"]+)"/', $session_res['session_data'], $matches))
   	{
   		foreach($matches as $match)
   		{
@@ -111,26 +112,26 @@ function _session_db_read($session_id)
 function _session_db_write($session_id, $value)
 {
 	$db = db_factory :: instance();	
-	$user = user :: instance();
 	
-	$user_id = $user->get_id();
-
+	$session_id = $db->escape($session_id);
 	$db->sql_select('sys_session', 'session_id', "session_id='{$session_id}'");
 	
+	$session_data = array(
+										  'last_activity_time' => time(),
+										  'session_data' => "{$value}",
+										  'user_id' => user :: instance()->get_id()
+										 );
+	
   if($db->fetch_row())
-		$db->sql_update('sys_session', 
-										"last_activity_time=". time().", session_data='{$value}', user_id={$user_id}" , 
-										"session_id='{$session_id}'");
+		$db->sql_update('sys_session', $session_data, "session_id='{$session_id}'");
   else
-  	$db->sql_insert('sys_session',
-	 										array(
-	 											'last_activity_time' => time(), 
-	 											'session_data' => "{$value}",
-	 											'user_id' => "{$user_id}", 
-	 											'session_id' => "{$session_id}"));
+  {
+    $session_data['session_id'] = $session_id;
+  	$db->sql_insert('sys_session', $session_data);
+	}
 }
 
-function _session_dbunset($session_id)
+function _session_db_unset($session_id)
 {
 	db_factory :: instance()->sql_delete('sys_session', "session_id='{$session_id}'");
 }

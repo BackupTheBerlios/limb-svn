@@ -11,13 +11,13 @@
 
 class array_dataset
 {
-	private $data = array();
+	protected $data = array();
 	
-	private $record = array();
+	protected $record = array();
 	
-	private $first = true;
+	protected $first = true;
 	
-	private $counter = 0;
+	protected $counter = 0;
 	
 	function __construct($array = null)
 	{

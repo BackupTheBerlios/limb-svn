@@ -13,13 +13,13 @@ require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 
 class db_table
 {
-	private $_db_table_name;
+	protected $_db_table_name;
 	
-	private $_primary_key_name;
+	protected $_primary_key_name;
 	
-	private $_columns = array();
+	protected $_columns = array();
 	
-	private $_constraints = array();
+	protected $_constraints = array();
 
   protected $_db = null;
 

@@ -66,7 +66,7 @@ class source_file_parser
 	* Builds the tag starting regex pattern, which "spots" all tags registered
 	* in the  $tag_dictionary
 	*/
-	private function initialize_tag_starting_pattern()
+	protected function initialize_tag_starting_pattern()
 	{
 		$tag_list = $this->tag_dictionary->get_tag_list();
 
@@ -93,21 +93,21 @@ class source_file_parser
 	/**
 	* Builds the regex for fetching contents of tags
 	*/
-	private function initialize_variable_reference_pattern()
+	protected function initialize_variable_reference_pattern()
 	{
 		$this->variable_reference_pattern = '/^(.*){(\$|\#|\^)([\w\[\]\'\"]+)}(.*)$/Usi';
 	} 
 	/**
 	* Builds the attribute spotting regular expression
 	*/
-	private function initialize_attribute_pattern()
+	protected function initialize_attribute_pattern()
 	{
 		$this->attribute_pattern = "/^(\\w+)\\s*(=\\s*(\"|')?((?(3)[^\\3]*?|[^\\s]*))(?(3)\\3))?\\s*/";
 	} 
 	/**
 	* Used to find tag components in the template
 	*/
-	private function match_text($pattern, &$match)
+	protected function match_text($pattern, &$match)
 	{
 		if (preg_match($pattern, $this->rawtext, $match))
 		{
@@ -123,7 +123,7 @@ class source_file_parser
 	/**
 	* Used to parse the attributes of a component tag
 	*/
-	private function parse_attributes($component)
+	protected function parse_attributes($component)
 	{
 		$attributes = array();
 		
@@ -150,7 +150,7 @@ class source_file_parser
 	/**
 	* Used to parse the contents of a component
 	*/
-	private function parse_text($parent_component, $text)
+	protected function parse_text($parent_component, $text)
 	{
 		while (preg_match($this->variable_reference_pattern, $text, $match))
 		{
@@ -174,7 +174,7 @@ class source_file_parser
 		} 
 	} 
 
-	private function check_server_id($parent_component, $component)
+	protected function check_server_id($parent_component, $component)
 	{
 		$tree = $parent_component;
 		if ($component instanceof server_tag_component_tag)
@@ -315,21 +315,21 @@ class source_file_parser
 	/**
 	* Provide local method of same name to help with Unit testing
 	*/
-	private function read_template_file($sourcefile)
+	protected function read_template_file($sourcefile)
 	{
 		return read_template_file($sourcefile);
 	} 
 	/**
 	* Returns an instance of text_node
 	*/
-	private function get_text_node($text)
+	protected function get_text_node($text)
 	{
 		return new text_node($text);
 	} 
 	/*
 	* Returns an instance of variable_reference
 	*/
-	private function get_variable_reference()
+	protected function get_variable_reference()
 	{
 		return new variable_reference();
 	} 

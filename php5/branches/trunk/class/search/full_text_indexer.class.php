@@ -38,7 +38,7 @@ class full_text_indexer
 		$indexer->_do_add($site_object);
 	}
 	
-	private function _do_add($site_object)
+	protected function _do_add($site_object)
 	{
 		$this->remove($site_object);
 				
@@ -80,7 +80,7 @@ class full_text_indexer
 		$indexer->_do_remove($site_object);
 	}
 	
-	private function _do_remove($site_object)
+	protected function _do_remove($site_object)
 	{
 	  $this->db->sql_delete('sys_full_text_index', array('object_id' => $site_object->get_id()));
 	}

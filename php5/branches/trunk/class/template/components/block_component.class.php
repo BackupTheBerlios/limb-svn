@@ -19,7 +19,7 @@ class block_component extends component
 	/**
 	* Whether the block is visible or not
 	*/
-	private $visible = true;
+	protected $visible = true;
 	/**
 	* Called within the compiled template render function to determine
 	* whether block should be displayed.

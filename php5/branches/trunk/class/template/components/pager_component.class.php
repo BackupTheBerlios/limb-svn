@@ -19,36 +19,36 @@ class pager_component extends component
 	* Used while displaying a page number list to determine when a separator
 	* should be shown between two page numbers
 	*/
-	protected $show_separator;
+	public $show_separator;
 	/**
 	* Used while displaying a page number list to the page number being displayed
 	*/
-	protected $page;	
+	public $page;	
 	/**
 	* The page number of the last page in the list.
 	*/
-	protected $last_page;
+	public $last_page;
 	/**
 	* The page number of the current page in the list.
 	*/
-	protected $current_page = 0;
+	public $current_page = 0;
 
-	protected $current_section = 0;
+	public $current_section = 0;
 
-	protected $section = 0;
+	public $section = 0;
 
-	protected $pages_per_section = 10;
+	public $pages_per_section = 10;
 	
-	protected $section_has_changed = false;
+	public $section_has_changed = false;
 	/**
 	* number of items to display on each page of the list.
 	* This is set via the items attribute of the pager:navigator tag.
 	*/
-	protected $items = 20;
+	public $items = 20;
 	/**
 	* The total number of items in this list.
 	*/
-	protected $total_items = 0;
+	public $total_items = 0;
 	/**
 	* The variable used to carry the current page in the URL.
 	*/

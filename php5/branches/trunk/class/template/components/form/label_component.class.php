@@ -15,11 +15,11 @@ class label_component extends tag_component
 	/**
 	* CSS class attribute to display on error
 	*/
-	private $error_class;
+	protected $error_class;
 	/**
 	* CSS style attribute to display on error
 	*/
-	private $error_style;
+	protected $error_style;
 
 	/**
 	* If either are set, assigns the attributes for error class or style

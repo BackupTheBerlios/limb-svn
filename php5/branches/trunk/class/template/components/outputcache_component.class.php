@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/cache/partial_page_cache_manager.class.php');
 
 class outputcache_component extends component
 {
-  private $cache_manager = null;
+  protected $cache_manager = null;
   
 	function __construct()
 	{

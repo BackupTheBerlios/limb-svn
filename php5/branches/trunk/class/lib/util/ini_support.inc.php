@@ -28,8 +28,7 @@ function & get_ini($file_name, $use_cache = null)
   }
   else
   {
-    $resolver =& get_file_resolver('ini');
-    resolve_handle($resolver);
+    resolve_handle($resolver =& get_file_resolver('ini'));
     $resolved_file = $resolver->resolve($file_name);  
   }  
   

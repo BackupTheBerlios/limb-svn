@@ -15,9 +15,9 @@ final class strings
 {
   static protected $_instance = null;
   
-	private $_ini_objects = array();
-	private $_path_cache = array();
-	private $_cache = array();
+	protected $_ini_objects = array();
+	protected $_path_cache = array();
+	protected $_cache = array();
 	
 	static function instance()
 	{
@@ -40,7 +40,7 @@ final class strings
 	  return self :: instance()->_do_get($key, $filename, $locale_id);
 	}
 	
-	private function _do_get($key, $filename, $locale_id)
+	protected function _do_get($key, $filename, $locale_id)
 	{
 		$path = $this->_get_path($filename, $locale_id);
 		
@@ -61,13 +61,12 @@ final class strings
 		return $value;
 	}
 		
-	private function _get_path($file_name, $locale_id)
+	protected function _get_path($file_name, $locale_id)
 	{					  
 		if(isset($this->_path_cache[$file_name][$locale_id]))
 			return $this->_path_cache[$file_name][$locale_id];	  
 			
-    $resolver = get_file_resolver('strings');
-    resolve_handle($resolver);
+    resolve_handle($resolver =& get_file_resolver('strings'));
     $path = $resolver->resolve($file_name, $locale_id);
 			
 	  $this->_path_cache[$file_name][$locale_id] = $path;

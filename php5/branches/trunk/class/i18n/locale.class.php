@@ -651,7 +651,7 @@ class locale
 		return $name;
 	} 
 
-	private function _get_ini($with_variation = false, $directory = '')
+	protected function _get_ini($with_variation = false, $directory = '')
 	{
 		$type = $with_variation ? 'variation' : 'default';
 		$country = $this->get_country_code();

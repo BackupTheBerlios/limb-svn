@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 
 class search_text_normalizer_factory
 {
-  private function __construct(){}
+  protected function __construct(){}
   
 	static public function create($class_name)
 	{	
@@ -21,7 +21,7 @@ class search_text_normalizer_factory
 		return new $class_name();
 	}
 
-	static private function _include_class_file($class_name)
+	static protected function _include_class_file($class_name)
 	{
 	  if(class_exists($class_name))
 	    return;

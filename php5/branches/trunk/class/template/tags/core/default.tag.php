@@ -23,7 +23,7 @@ register_tag(new core_default_tag_info());
 */
 class core_default_tag extends compiler_directive_tag
 {
-	private $field;
+	protected $field;
 
 	public function pre_parse()
 	{
