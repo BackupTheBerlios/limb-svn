@@ -15,4 +15,6 @@ if(!$HTMLSax_dir = get_ini_option('external.ini', 'library_path', 'XML_HTMLSAX')
   
 define('XML_HTMLSAX3', $HTMLSax_dir);
 
+require_once(XML_HTMLSAX3 . '/HTMLSax3.php');
+
 ?>

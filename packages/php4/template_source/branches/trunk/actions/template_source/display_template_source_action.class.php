@@ -74,9 +74,8 @@ class display_template_source_action extends action
 	function _process_template_content($template_contents)
 	{
 	  include_once(LIMB_DIR . 'class/template/compiler/template_compiler.inc.php');
-    include_once(dirname(__FILE__) . '/../template_highlight_handler.class.php');
+    include_once(dirname(__FILE__) . '/../../template_highlight_handler.class.php');
     include_once(LIMB_COMMON_DIR . '/setup_HTMLSax.inc.php');
-    include_once(XML_HTMLSAX3 . '/XML_HTMLSax.php');	  
 	  		
 		global $tag_dictionary; //fixx
 		
