@@ -26,7 +26,7 @@ class multi_toggle_publish_status_action extends form_action
 			return new close_popup_response(RESPONSE_STATUS_FAILURE);
 			
 		$objects = $this->_get_objects(array_keys($data['ids']));
-		
+
 		foreach($objects as $id => $item)
 		{
 			if (!isset($item['actions']['publish']) || !isset($item['actions']['unpublish']))
@@ -38,17 +38,17 @@ class multi_toggle_publish_status_action extends form_action
 			if ($status & SITE_OBJECT_PUBLISHED_STATUS)
 			{
 				$status &= !(SITE_OBJECT_PUBLISHED_STATUS);
-				$action = 'publish';
+				$action = 'unpublish';
 			}	
 			else
 			{
 				$status |= SITE_OBJECT_PUBLISHED_STATUS;
-				$action = 'unpublish';
+				$action = 'publish';
 			}	
 
 			$object->set_attribute('status', $status);
 			$object->update(false);
-
+			
 			$this->_apply_access_policy($object, $action);
 		}	
 

@@ -41,7 +41,7 @@ class set_publish_status_action extends action
 
 		$object->set_attribute('status', $status);
 		$object->update(false);
-
+		
 		$this->_apply_access_policy($object, $action);
 			
 		return new close_popup_response();
