@@ -1,0 +1,20 @@
+<?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id: setup_developer.php 468 2004-02-18 12:03:43Z server $
+*
+***********************************************************************************/ 
+define('DEVELOPER_ENVIROMENT', true);
+
+if(!defined('ERROR_HANDLER_TYPE') && isset($_SERVER['SERVER_PORT']))
+	if($_SERVER['SERVER_PORT'] == 81)
+		define('ERROR_HANDLER_TYPE', DEBUG_HANDLE_NATIVE);
+
+if(!defined('MEDIA_DIR'))
+	define('MEDIA_DIR', '\\\\server\\media_repository\\'. $matches[2] .'\\');			
+
+?>

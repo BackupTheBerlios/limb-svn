@@ -1,0 +1,20 @@
+<fieldset>
+	<legend style='color:#000000'>Поиск по сайту</legend>
+	<table>
+	<form id='full_text_search_form' name='search_form' action='/root/search' method='get'>
+	  <tr>
+	    <td nowrap><label for="identifier">Искать</label></td>
+	    <td><input type="text" id="search_query" name="search_query" class='input' size='40'></td>
+	  </tr>
+	  <tr>
+	    <td>
+			</td>
+	    <td>
+				<select id='fulltext_search_limit_options' name='limit' class='input' options_ini_file='limit_options'></select>
+		    <input type='submit' class='button' value='Найти'>
+		    <core:LITERAL><input type='hidden' name='action' value='fulltext_search'></core:LITERAL>
+	    </td>
+	  </tr>
+	</form>
+	</table>
+</fieldset>

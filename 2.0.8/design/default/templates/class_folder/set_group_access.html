@@ -1,0 +1,64 @@
+<core:WRAP file="popup.html" placeholder="content">
+<h2><locale:STRING name='set_group_access'> </h2>
+
+<DATASOURCE target='class'>
+		<core:PARAMETER name='datasource_path' value='class_datasource' >
+</DATASOURCE>
+<grid:LIST id='class'>
+<grid:ITERATOR>
+<h2>{$class_name}</h2>
+</grid:ITERATOR>
+</grid:LIST>
+<br>
+
+
+<form method="post" name="set_group_access" id="set_group_access">
+<request_state name="class_id" id="class_id">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+<tr>
+<th>
+<locale:STRING name='actions'>
+</th>
+<fetch:SUB_BRANCH target='groups' >
+	<core:PARAMETER name='loader_class_name' value='user_group' >
+	<core:PARAMETER name='path' value='/root' >
+	<core:PARAMETER name='depth' value='-1' type='numeric' >
+</fetch:SUB_BRANCH>
+
+
+<grid:LIST id="groups">
+	<grid:ITERATOR>
+	<th>
+	{$identifier}
+	</th>
+	</grid:ITERATOR>
+</grid:LIST>
+</tr>
+
+<DATASOURCE target='classes'>
+		<core:PARAMETER name='datasource_path' value='class_group_action_access_datasource' >
+</DATASOURCE>
+
+<grid:LIST id='classes'>
+<grid:ITERATOR>
+<tr>
+<td><small>{$action_name}({$permissions_required})</small></td>
+<core:DATA_TRANSFER hash_id='groups' target='checkers'>
+	<grid:LIST id='checkers'>
+		<grid:ITERATOR>
+		<td align="center"><selector class="checkbox"></td>
+		</grid:ITERATOR>
+	</grid:LIST>
+</grid:ITERATOR>
+</grid:LIST>
+</tr>
+<tr>
+	<td colspan=100 align=center>
+		<action_button action="set_group_access" name="update" id="update" value="Update" class="button">
+		&nbsp;
+		<input name="cancel" type="button" id="cancel" value="Cancel" onclick='window.close();' class="button">
+	</td>
+</tr>
+</table>
+</form>

@@ -1,0 +1,80 @@
+<html>
+<head>
+<title><metadata:TITLE separator=' :: ' /></title>
+<meta http-equiv="content-type" content="text/html; charset=windows-1251">
+<link rel="stylesheet" href="/shared/styles/admin.css" type="text/css">
+<script language="javascript" src="/shared/js/common.js"></script>
+<script language="javascript" src="/shared/js/form_errors.js"></script>
+<metadata:METADATA>
+	<meta name="description" content="{$description}">
+	<meta name="keywords" content="{$keywords}">
+</metadata:METADATA>
+</head>
+<body bgcolor="#FFFFFF">
+<!--BEGIN: layout-->
+		<!--BEGIN: header-->
+		<table width=100% border=0 cellspacing=0 cellpadding=0>
+		<tr>
+			<td>
+				<table width=100% border=0 cellspacing=0 cellpadding=0 background='/shared/images/admin/jt31.gif' bgcolor=#2F6EE3>
+				<tr>
+					<td style='padding:4px 0 7px 15px;' background='/shared/images/admin/jt1.jpg' class=norepeat><a href='/'><img src='/shared/images/admin/jt2.gif' border=0></a></td>
+					<td width=100% align=right valign='bottom' style='padding:4px 15px 7px 15px;'>
+						<core:INCLUDE file="admin/current_user_info.html">
+					</td>
+					<td valign=bottom style='padding:0 15px 0 0'><img src='/shared/images/admin/jt4.gif'></td>
+				</tr>
+				</table>	
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table width=100% border=0 cellspacing=0 cellpadding=0 background='/shared/images/admin/jt32.gif' height=6>
+				<tr>
+					<td width=100%></td>
+				</tr>
+				</table>	
+			</td>
+		</tr>
+		</table>
+		<!--END: header-->
+
+<!--BEGIN: body-->
+<table width=100% border=0 cellspacing=0 cellpadding=0>
+<tr>
+	
+	<td>
+		<table width=100% border=0 cellspacing=0 cellpadding=0>
+		<col valign=top class=com5>
+		<col valign=top>
+		<col valign=top class=com1>
+		<tr>
+			<td>
+			<!--начало: левая колонка-->
+				<core:INCLUDE file="/navigation/admin.html">
+			<!--конец: левая колонка-->
+			</td>
+			<td  valign='top' height=100% width=100%>
+
+				<table width=100% border=0 cellspacing=0 cellpadding=0  height=100% >
+				<tr>
+					<td width=100% valign=top style='padding:10px 20px 30px 20px'>
+						<!--НАЧАЛО: КОНТЕНТ-->
+						<core:INCLUDE file="page_data.html">
+						<core:PLACEHOLDER id="content">
+						<!--КОНЕЦ: КОНТЕНТ-->
+					</td>
+				</tr>
+				</table>
+
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+<!--END: body-->
+				<core:INCLUDE file="/bottom.html">
+<!--END: layout-->
+</body>
+</html>

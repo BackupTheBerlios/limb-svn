@@ -1,0 +1,25 @@
+<core:WRAP file="popup.html" placeholder="content">
+
+<form method="post" name="catalog_object_form" id="catalog_object_form">
+	<table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
+	<tr>
+		<td colspan=2 class=table-title><locale:STRING name='catalog_object_edition' file='catalog'> <h1>"<fetch:MAPPED>{$title}</fetch:MAPPED>"</h1></td>
+	</tr>
+	<tr>
+		<td colspan=2 height=100% valign=top class=com4>
+				<core:INCLUDE file="/catalog_object/form_fields.html">
+		</td>
+	</tr>
+	<tr>
+    <td class=tab-bottom><img src='/shared/images/i.gif'></td>
+    <td width=100% class=tab-bottom><span class=desc><locale:STRING name='form_field_req'></span></td>
+	</tr>
+  <tr>
+    <td colspan=2 align=center height=30><action_button action="edit" name="update" type="submit" id="update" value="Update"  reload_parent="true" class="button">
+    &nbsp;
+    <input name="cancel" type="button" id="cancel" value="Cancel" onclick='window.close();' class="button">
+    </td>
+  </tr>
+	</table>	
+</form>
+

@@ -1,0 +1,65 @@
+<html>
+<head>
+<head>
+	<title><metadata:TITLE separator=' :: ' /></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+	<link href="/design/main/styles/main.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/shared/js/common.js"></script>
+	<script language="javascript" src="/design/main/js/form_errors.js"></script>
+	<metadata:METADATA>
+	<meta name="description" content="{$description}">
+	<meta name="keywords" content="{$keywords}">
+	</metadata:METADATA>
+</head>
+
+<body>
+<!--BEGIN: layout-->
+<!--BEGIN: header-->
+<a href='#' name='top'></a>
+<!--END: header-->
+<!--BEGIN: body-->
+<table width=100% border=0 cellspacing=0 cellpadding=0>
+<tr>
+	<td style='padding:5px 5px 0 11px'><a href="javascript:window.print()"><img src='/design/main/images/icons/print.gif' border=0></a></td>
+	<td><a href="javascript:window.print()"><locale:STRING name='print' file='document' locale_type='content'></a></td>
+</tr>
+</table>	
+<table width=100% border=0 cellspacing=0 cellpadding=0>
+<tr>
+	<td style='padding:0 25px 3px 0' class=path>
+	<metadata:BREADCRUMBS>
+		<grid:LIST>
+			<grid:ITERATOR>
+				<core:OPTIONAL for='is_last'>
+					{$title}
+				</core:OPTIONAL>
+				<core:DEFAULT for='is_last'>
+					{$title} >>
+				</core:DEFAULT>
+			</grid:ITERATOR>
+		</grid:LIST>
+	</metadata:BREADCRUMBS>
+	</td>
+</tr>
+</table>
+
+<core:PLACEHOLDER id="content">
+
+<script>
+	window.onbeforeprint = function()
+	{
+		set_preprint_state('none')
+	}
+	window.onafterprint = function()
+	{
+		set_preprint_state('block')
+	}
+	function set_preprint_state(state)
+	{
+		document.getElementById('print_bot').style.display = state
+		document.getElementById('print_top').style.display = state
+	}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<core:WRAP file="admin/page.html" placeholder="content">
+
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='files_folder'>
+	<core:PARAMETER name='loader_class_name' value='files_folder'>
+</fetch:SUB_BRANCH>
+
+<fetch:SUB_BRANCH target='files'  navigator="pager" >
+	<core:PARAMETER name='loader_class_name' value='file_object' >
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+<grid:LIST id='files_folder'>
+    <grid:ITERATOR>
+    <thead class=jip>
+		<tr>
+			<td jip='object' class=jip-object><img src='/shared/images/folder.gif' align='center'>&nbsp;
+			<core:OPTIONAL for='title'>
+				<a href='{$path}'>{$title}</a>
+			</core:OPTIONAL>
+			<core:DEFAULT for='title'>
+				<a href='{$path}'>{$identifier}</a>
+			</core:DEFAULT>			
+			</td>
+			<td>
+			<core:INCLUDE file="jip_actions/normal.html">
+			</td>
+		</tr>
+		</thead>
+  	</grid:ITERATOR>
+</grid:LIST>
+
+<grid:LIST id='files'>
+    <grid:ITERATOR>
+    <thead class=jip>
+		<tr>
+			<td jip='object' class=jip-object><img src='{$path}?icon'>&nbsp;<a href='{$path}'>{$identifier}</a></td>
+			<td>
+			<core:INCLUDE file="jip_actions/normal.html">
+			</td>
+		</tr>
+		</thead>
+  	</grid:ITERATOR>
+</grid:LIST>
+</table>
