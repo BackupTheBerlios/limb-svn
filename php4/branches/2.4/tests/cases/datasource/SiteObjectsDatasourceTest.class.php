@@ -41,7 +41,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
     $this->datasource = new SpecialSiteObjectsDatasource($this);
 
     $this->authorizer = new MockAuthorizer($this);

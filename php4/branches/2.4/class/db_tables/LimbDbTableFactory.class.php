@@ -17,26 +17,26 @@ if(!isRegisteredResolver('db_table'))
   registerFileResolver('db_table', new DbTableFileResolver(new PackageFileResolver()));
 }
 
-class DbTableFactory
+class LimbDbTableFactory
 {
   var $_tables;
 
   function & instance()
   {
-    if (!isset($GLOBALS['DbTableFactoryGlobalInstance']) || !is_a($GLOBALS['DbTableFactoryGlobalInstance'], 'DbTableFactory'))
-      $GLOBALS['DbTableFactoryGlobalInstance'] =& new DbTableFactory();
+    if (!isset($GLOBALS['LimbDbTableFactoryGlobalInstance']) || !is_a($GLOBALS['LimbDbTableFactoryGlobalInstance'], 'LimbDbTableFactory'))
+      $GLOBALS['LimbDbTableFactoryGlobalInstance'] =& new LimbDbTableFactory();
 
-    return $GLOBALS['DbTableFactoryGlobalInstance'];
+    return $GLOBALS['LimbDbTableFactoryGlobalInstance'];
   }
 
   function & create($db_table_name)
   {
-    $factory =& DbTableFactory :: instance();
+    $factory =& LimbDbTableFactory :: instance();
 
     if(isset($factory->_tables[$db_table_name]))
       return $factory->_tables[$db_table_name];
 
-    DbTableFactory :: _includeClassFile($db_table_name);
+    LimbDbTableFactory :: _includeClassFile($db_table_name);
 
     $class_name = $db_table_name . 'DbTable';
 

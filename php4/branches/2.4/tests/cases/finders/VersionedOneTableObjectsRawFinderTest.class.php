@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/finders/VersionedOneTableObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('DbTable');
+Mock :: generate('LimbDbTable');
 
 class TestVersionedOneTableObjectsRawFinder extends VersionedOneTableObjectsRawFinder
 {

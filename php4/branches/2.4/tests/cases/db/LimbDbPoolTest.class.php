@@ -8,22 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
-require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
-class OneTableObjectDbTable extends LimbDbTable
+class LimbDbPoolTest extends LimbTestCase
 {
-  function _defineColumns()
+  function LimbDbPoolTest()
   {
-    return array(
-      'id' => array('type' => 'numeric'),
-      'version' => array('type' => 'numeric'),
-      'object_id' => array('type' => 'numeric'),
-      'identifier' => '',
-      'title' => '',
-    );
+    parent :: LimbTestCase('db factory test case');
+  }
 
+  function testInstance()
+  {
+    $this->assertTrue(LimbDbPool :: getConnection() === LimbDbPool :: getConnection());
   }
 }
-
 ?>

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
 
-class SysParamDbTable extends DbTable
+class SysParamDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {

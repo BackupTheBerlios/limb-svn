@@ -53,7 +53,7 @@ function loadTestingDbDump($dump_path)
   $tables = array();
   $sql_array = file($dump_path);
 
-  $db = DbFactory::instance();
+  $db = LimbDbPool :: getConnection();
 
   foreach($sql_array as $sql)
   {
@@ -64,7 +64,9 @@ function loadTestingDbDump($dump_path)
       continue;
 
     $tables[$matches[1]] = $matches[1];
-    $db->sqlDelete($matches[1]);
+
+    $stmt =& $db->newStatement('DELETE FROM '. $matches[1]);
+    $stmt->execute();
   }
 
   $GLOBALS['testing_db_tables'] = $tables;
@@ -72,7 +74,10 @@ function loadTestingDbDump($dump_path)
   foreach($sql_array as $sql)
   {
     if(trim($sql))
-      $db->sqlExec($sql);
+    {
+      $stmt =& $db->newStatement($sql);
+      $stmt->execute();
+    }
   }
 }
 
@@ -81,10 +86,13 @@ function clearTestingDbTables()
   if(!isset($GLOBALS['testing_db_tables']))
     return;
 
-  $db = DbFactory :: instance();
+  $db = LimbDbPool :: getConnection();
 
   foreach($GLOBALS['testing_db_tables'] as $table)
-    $db->sqlDelete($table);
+  {
+    $stmt =& $db->newStatement('DELETE FROM '. $table);
+    $stmt->execute();
+  }
 
   $GLOBALS['testing_db_tables'] = array();
 }

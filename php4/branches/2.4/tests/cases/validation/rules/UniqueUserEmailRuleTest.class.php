@@ -11,7 +11,7 @@
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/class/validators/rules/UniqueUserEmailRule.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
 
 class UniqueEmailUserRuleTest extends SingleFieldRuleTestCase
 {
@@ -26,7 +26,7 @@ class UniqueEmailUserRuleTest extends SingleFieldRuleTestCase
   {
     parent :: setUp();
 
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->db->sqlDelete('user');
     $this->db->sqlDelete('sys_site_object');

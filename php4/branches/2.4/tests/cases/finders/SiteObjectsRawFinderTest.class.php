@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
 require_once(LIMB_DIR . '/class/finders/SiteObjectsRawFinder.class.php');
 require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
@@ -43,7 +43,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->_cleanUp();
 
@@ -257,7 +257,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
 
   function _insertSysClassRecord()
   {
-    $db_table = DbTableFactory :: create('SysClass');
+    $db_table = LimbDbTableFactory :: create('SysClass');
     $db_table->insert(array('name' => 'site_object'));
 
     $this->class_id = $db_table->getLastInsertId();
@@ -265,7 +265,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
 
   function _insertSysBehaviourRecord()
   {
-    $db_table = DbTableFactory :: create('SysBehaviour');
+    $db_table = LimbDbTableFactory :: create('SysBehaviour');
     $db_table->insert(array('name' => 'site_object_behaviour'));
 
     $this->behaviour_id = $db_table->getLastInsertId();
@@ -304,12 +304,12 @@ class SiteObjectsRawFinderTest extends LimbTestCase
 
   function _insertFakeSysSiteObjectRecords()
   {
-    $class_db_table = DbTableFactory :: create('SysClass');
+    $class_db_table = LimbDbTableFactory :: create('SysClass');
     $class_db_table->insert(array('id' => 1001, 'class_name' => 'fake_class'));
 
     $tree = new MaterializedPathTree();
 
-    $db_table =& DbTableFactory :: create('SysSiteObject');
+    $db_table =& LimbDbTableFactory :: create('SysSiteObject');
 
     $data = array();
     for($i = 6; $i <= 10 ; $i++)

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
 require_once(LIMB_DIR . '/class/SysParam.class.php');
 
 class SysParamsTest extends LimbTestCase
@@ -19,7 +19,7 @@ class SysParamsTest extends LimbTestCase
 
   function sysParamsTest()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
     parent :: LimbTestCase();
   }
 
@@ -45,7 +45,7 @@ class SysParamsTest extends LimbTestCase
 
     $this->assertNotNull($result);
 
-    $db_table =& DbTableFactory :: create('SysParam');
+    $db_table =& LimbDbTableFactory :: create('SysParam');
     $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
 
@@ -66,7 +66,7 @@ class SysParamsTest extends LimbTestCase
 
     $this->assertNotNull($result);
 
-    $db_table =& DbTableFactory :: create('SysParam');
+    $db_table =& LimbDbTableFactory :: create('SysParam');
     $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
@@ -86,7 +86,7 @@ class SysParamsTest extends LimbTestCase
 
     $this->assertNotNull($result);
 
-    $db_table =& DbTableFactory :: create('SysParam');
+    $db_table =& LimbDbTableFactory :: create('SysParam');
     $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
@@ -106,7 +106,7 @@ class SysParamsTest extends LimbTestCase
 
     $this->assertNotNull($result);
 
-    $db_table =& DbTableFactory :: create('SysParam');
+    $db_table =& LimbDbTableFactory :: create('SysParam');
     $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
@@ -128,7 +128,7 @@ class SysParamsTest extends LimbTestCase
 
     $this->assertNotNull($result);
 
-    $db_table =& DbTableFactory :: create('SysParam');
+    $db_table =& LimbDbTableFactory :: create('SysParam');
     $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);

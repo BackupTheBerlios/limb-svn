@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/class/data_mappers/SiteObjectMapper.class.php');
 require_once(LIMB_DIR . '/class/data_mappers/SiteObjectBehaviourMapper.class.php');
 require_once(LIMB_DIR . '/class/finders/SiteObjectsRawFinder.class.php');
@@ -84,7 +84,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->_cleanUp();
   }

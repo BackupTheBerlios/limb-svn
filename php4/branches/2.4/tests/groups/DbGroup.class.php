@@ -12,22 +12,12 @@ class DbGroup extends LimbGroupTest
 {
   function dbGroup()
   {
-    $this->limbGroupTest('db tests');
+    parent :: LimbGroupTest('db tests');
   }
 
   function getTestCasesHandles()
   {
-    $handles = array();
-    $handles = TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/db');
-
-    $db_type = getIniOption('common.ini', 'type', 'DB');
-
-    $handles = array_merge(
-      $handles,
-      TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/db/' . $db_type)
-    );
-
-    return $handles;
+    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/db');
   }
 
 }

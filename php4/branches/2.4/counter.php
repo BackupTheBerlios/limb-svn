@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 function getCounterRecord()
 {
-  $db =& DbFactory :: instance();
+  $db =& LimbDbPool :: getConnection();
   $db->sqlSelect('sys_stat_counter', '*');
   return $db->fetchRow();
 }

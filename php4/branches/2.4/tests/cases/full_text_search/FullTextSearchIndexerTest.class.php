@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
 require_once(LIMB_DIR . '/class/search/FullTextIndexer.class.php');
 
@@ -22,7 +22,7 @@ class FullTextSearchIndexerTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->_cleanUp();
 

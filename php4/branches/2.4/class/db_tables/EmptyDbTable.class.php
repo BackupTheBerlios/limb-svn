@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
 
-class EmptyDbTable extends DbTable
+class EmptyDbTable extends LimbDbTable
 {
   function _defineColumns()
   {

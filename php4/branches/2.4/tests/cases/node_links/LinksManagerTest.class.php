@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/class/LinksManager.class.php');
 
 class LinksManagerTest extends LimbTestCase
@@ -18,7 +18,7 @@ class LinksManagerTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
     $this->links_manager = new LinksManager();
 
     $this->_cleanUp();

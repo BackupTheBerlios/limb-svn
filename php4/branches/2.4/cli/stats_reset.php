@@ -15,9 +15,9 @@ else
   die('project dir required');
 
 require_once($project_dir . '/setup.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
-$db =& DbFactory::instance();
+$db =& LimbDbPool :: getConnection();
 
 $db->sqlDelete('sys_stat_log');
 $db->sqlDelete('sys_stat_counter');

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
+require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
 
-class TestImageDbTable extends DbTable
+class TestImageDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
@@ -41,7 +41,7 @@ class TestImageDbTable extends DbTable
 }
 
 
-class TestImageVariationDbTable extends DbTable
+class TestImageVariationDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
@@ -73,7 +73,7 @@ class TestImageVariationDbTable extends DbTable
   }
 }
 
-class TestMediaDbTable extends DbTable
+class TestMediaDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
@@ -91,7 +91,7 @@ class TestMediaDbTable extends DbTable
     );
   }
 }
-class DbTableCascadeDeleteTest extends LimbTestCase
+class LimbDbTableCascadeDeleteTest extends LimbTestCase
 {
   var $image = null;
   var $image_variation = null;
@@ -99,16 +99,16 @@ class DbTableCascadeDeleteTest extends LimbTestCase
 
   var $dump_file = 'cascade_delete.sql';
 
-  function DbTableCascadeDeleteTest()
+  function LimbDbTableCascadeDeleteTest()
   {
     parent :: LimbTestCase('cascade delete db table tests');
   }
 
   function setUp()
   {
-    $this->image = DbTableFactory :: create('TestImage');
-    $this->image_variation = DbTableFactory :: create('TestImageVariation');
-    $this->media = DbTableFactory :: create('TestMedia');
+    $this->image = LimbDbTableFactory :: create('TestImage');
+    $this->image_variation = LimbDbTableFactory :: create('TestImageVariation');
+    $this->media = LimbDbTableFactory :: create('TestMedia');
 
     loadTestingDbDump(dirname(__FILE__) . '/../../sql/cascade_delete.sql');
   }
@@ -118,6 +118,32 @@ class DbTableCascadeDeleteTest extends LimbTestCase
     clearTestingDbTables();
   }
 
+  function testCascadeDelete()
+  {
+    $this->image_variation->delete(array('id' => 16));
+
+    $medias =& $this->media->select();
+    $this->assertEqual($medias->getTotalRowCount(), 11);
+
+    $variations =& $this->image_variation->select();
+    $this->assertEqual($variations->getTotalRowCount(), 11);
+  }
+
+  function testNestedCascadeDelete()
+  {
+    $this->image->delete(array('id' => 12));
+
+    $images =& $this->image->select();
+    $this->assertEqual($images->getTotalRowCount(), 4);
+
+    $variations =& $this->image_variation->select();
+    $this->assertEqual($variations->getTotalRowCount(), 9);
+
+    $medias =& $this->media->select();
+    $this->assertEqual($medias->getTotalRowCount(), 9);
+  }
+
+  /*
   function testCascadeDelete()
   {
     $this->image_variation->delete(array('id' => 16));
@@ -134,6 +160,7 @@ class DbTableCascadeDeleteTest extends LimbTestCase
     $this->assertEqual(sizeof($this->image_variation->getList()), 9);
     $this->assertEqual(sizeof($this->media->getList()), 9);
   }
+  */
 
 }
 ?>

@@ -37,8 +37,8 @@ class BaseLimbToolkit// implements LimbToolkit
 
   function & createDBTable($table_name)
   {
-    include_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
-    return DbTableFactory :: create($table_name);
+    include_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
+    return LimbDbTableFactory :: create($table_name);
   }
 
   function & getDatasource($datasource_path)
@@ -70,8 +70,8 @@ class BaseLimbToolkit// implements LimbToolkit
     if($this->db)
       return $this->db;
 
-    include_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-    $this->db =& DbFactory :: instance();
+    include_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+    $this->db =& LimbDbPool :: getConnection();
 
     return $this->db;
   }

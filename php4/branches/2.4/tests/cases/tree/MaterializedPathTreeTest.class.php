@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/tree/MaterializedPathTree.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
 define('MATERIALIZED_PATH_TEST_TABLE', 'test_materialized_path_tree');
@@ -26,7 +26,7 @@ class MaterializedPathTreeTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->driver = new MaterializedPathTreeTestVersion();
 

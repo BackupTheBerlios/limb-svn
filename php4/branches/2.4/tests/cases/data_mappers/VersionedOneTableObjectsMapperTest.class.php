@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/class/data_mappers/VersionedOneTableObjectsMapper.class.php');
 require_once(LIMB_DIR . '/class/site_objects/VersionedSiteObject.class.php');
 require_once(dirname(__FILE__) . '/OneTableObjectsMapperTestVersionDbTable.class.php');
@@ -99,7 +99,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->_cleanUp();
 
