@@ -380,8 +380,11 @@ class debug
 		$message .= "ip:\t\t" . sys :: client_ip() . "\n"
 							. "request:\t" . REQUEST_URI . "\n"
 							. "description:\n" . $description;
-				
-		send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message, $headers);
+		
+		if(sys :: exec_mode() == 'cli')
+			send_plain_mail(array(DEVELOPER_EMAIL), 'cli' , $title, $message, $headers);
+		else		
+			send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message, $headers);
 
 	}
 

@@ -90,4 +90,6 @@ fclose($fp);
 echo debug::parse_cli_console();
 
 ob_end_flush();
+
+exit(0);
 ?>

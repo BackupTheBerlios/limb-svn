@@ -65,12 +65,12 @@ class mime_mail
 		$this->build_params['head_charset'] = $locale->get_charset();
 		$this->build_params['text_wrap'] = 998;
 
-		if (!empty($GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST']))
+		if (!empty($_SERVER['HTTP_HOST']))
 		{
-			$helo = $GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST'];
-		} elseif (!empty($GLOBALS['HTTP_SERVER_VARS']['SERVER_NAME']))
+			$helo = $_SERVER['HTTP_HOST'];
+		} elseif (!empty($_SERVER['SERVER_NAME']))
 		{
-			$helo = $GLOBALS['HTTP_SERVER_VARS']['SERVER_NAME'];
+			$helo = $_SERVER['SERVER_NAME'];
 		} 
 		else
 		{
@@ -470,7 +470,7 @@ class mime_mail
 			$this->output = $output['body'];
 			$this->headers = array_merge($this->headers, $output['headers']);
 			srand((double)microtime() * 10000000);
-			$message_id = sprintf('<%s.%s@%s>', base_convert(time(), 10, 36), base_convert(rand(), 10, 36), !empty($GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST']) ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST'] : $GLOBALS['HTTP_SERVER_VARS']['SERVER_NAME']);
+			$message_id = sprintf('<%s.%s@%s>', base_convert(time(), 10, 36), base_convert(rand(), 10, 36), !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (!empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : ''));
 			$this->headers['Message-ID'] = $message_id;
 
 			$this->is_built = true;

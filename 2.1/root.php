@@ -12,7 +12,6 @@ setlocale(LC_ALL, 'ru');//temporary
 
 require_once(LIMB_DIR . 'core/process_output.php');
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
-
 ob_start('process_output');
 
 debug :: add_timing_point('start');
@@ -59,7 +58,7 @@ if(!$node)
 
 if(isset($node['only_parent_found']) && $node['only_parent_found'])
 {
-	if(isset($_REQUEST['action'])) //only action significant when reload to found parent
+	if(isset($_REQUEST['action']))
 		$params = '?action='. $_REQUEST['action'];
 	
 	$tree = tree :: instance();

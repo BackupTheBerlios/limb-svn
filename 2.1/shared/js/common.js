@@ -337,29 +337,30 @@ function change_form_action(form_name, action)
 	document.forms[form_name].action = action;
 }
 
-function add_form_action_parameter(form_name, parameter, val)
+function add_form_action_parameter(form_id, parameter, val)
 {
-	action = document.forms[form_name].action;
-	document.forms[form_name].action = set_http_get_parameter(action, parameter, val);
+	if(document.forms[form_id])
+	{
+		action = document.forms[form_id].action;
+		document.forms[form_id].action = set_http_get_parameter(action, parameter, val);
+	}
 }
 
-function add_form_hidden_parameter(form_name, parameter, val)
-{
-	if(document.forms[form_name])
+function add_form_hidden_parameter(form_id, parameter, val)
+{	
+	if(document.forms[form_id])
 	{
-		hidden = document.getElementById(parameter);
+		hidden = document.getElementById(parameter + '_hidden_parameter');
 		if(hidden)
-		{
 			hidden.value = val;
-		}
 		else
-		{
+		{			
 			hidden = document.createElement('INPUT');
+			hidden.id = parameter + '_hidden_parameter';
 			hidden.type = 'hidden';
-			hidden.id = parameter;
 			hidden.name = parameter;
 			hidden.value = val;
-			document.forms[form_name].appendChild(hidden);
+			document.forms[form_id].appendChild(hidden);
 		}
 	}
 }

@@ -32,6 +32,9 @@ class tree_identifier_rule extends single_field_rule
 			return;
 		
 		$tree = tree :: instance();
+		
+		if(!$tree->is_node($this->parent_node_id))
+			return;
 				
 		if(!$nodes = $tree->get_children($this->parent_node_id))
 			return;
