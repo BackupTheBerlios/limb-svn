@@ -10,11 +10,8 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/date/Date.class.php');
 
-class StatsCounter
+class StatsCounterRegister
 {
-  var $_is_new_host = false;
-  var $_is_home_hit = false;
-
   var $_hits_today;
   var $_hosts_today;
   var $_hits_all;
@@ -23,41 +20,38 @@ class StatsCounter
   var $counter_db_table = null;
   var $day_counters_db_table = null;
 
-  function StatsCounter()
+  var $ip_register = null;
+
+  function StatsCounterRegister()
   {
     $toolkit =& Limb :: toolkit();
     $this->counter_db_table =& $toolkit->createDBTable('StatsCounter');
     $this->day_counters_db_table =& $toolkit->createDBTable('StatsDayCounters');
   }
 
-  function setNewHost($status = true)
+  function register(&$stats_request, $is_new_host = false)
   {
-    $this->_is_new_host = $status;
-  }
-
-  function setHomeHit($status = true)
-  {
-    $this->_is_home_hit = $status;
-  }
-
-  function update($reg_date)
-  {
-    $reg_stamp = $reg_date->getStamp();
-    $record = $this->_getCounterRecord($reg_stamp);
+    $reg_date = new Date();
+    $time = $stats_request->getTime();
+    $reg_date->setByStamp($time);
+    $record = $this->_getCounterRecord($time);
 
     $counters_date = new Date();
     $counters_date->setByStamp($record['time']);
+
+    $ip_register =& $this->getIpRegister();
+    $is_new_host = $ip_register->isNewToday($stats_request->getClientIp());
 
     if($counters_date->dateToDays() < $reg_date->dateToDays())
     {
       $record['hosts_today'] = 0;
       $record['hits_today'] = 0;
-      $this->_insertNewDayCountersRecord($reg_stamp);
+      $this->_insertNewDayCountersRecord($time);
     }
     elseif($counters_date->dateToDays() > $reg_date->dateToDays()) //this shouldn't normally happen
       return;
 
-    if ($this->_is_new_host)
+    if ($is_new_host)
     {
       $record['hosts_today']++;
       $record['hosts_all']++;
@@ -67,21 +61,18 @@ class StatsCounter
     $record['hits_all']++;
 
     $this->_updateCountersRecord(
-      $reg_stamp,
+      $time,
       $record['hits_today'],
       $record['hosts_today'],
       $record['hits_all'],
       $record['hosts_all']);
 
     $this->_updateDayCountersRecord(
-      $reg_stamp,
+      $time,
       $record['hits_today'],
-      $record['hosts_today']);
-  }
-
-  function _isNewAudience()
-  {
-    return (!isset($_SERVER['HTTP_REFERER']));
+      $record['hosts_today'],
+      $is_new_host,
+      $stats_request);
   }
 
   function _getCounterRecord($stamp)
@@ -130,10 +121,10 @@ class StatsCounter
     return mktime(0, 0, 0, $arr['mon'], $arr['mday'], $arr['year']);
   }
 
-  function _updateDayCountersRecord($stamp, $hits_today, $hosts_today)
+  function _updateDayCountersRecord($stamp, $hits_today, $hosts_today, $is_new_host, &$stats_request)
   {
-    $home_hit = $this->_is_home_hit ? 1 : 0;
-    $audience = ($this->_is_new_host &&  $this->_isNewAudience()) ? 1 : 0;
+    $home_hit = $stats_request->isHomeHit() ? 1 : 0;
+    $audience = ($is_new_host && $stats_request->isAudienceHit()) ? 1 : 0;
 
     $sql = new SimpleUpdateSQL($this->day_counters_db_table->getTableName());
     $sql->addField('hosts = ' . $hosts_today);
@@ -158,6 +149,22 @@ class StatsCounter
     $update_array['time'] = $stamp;
 
     $this->counter_db_table->update($update_array);
+  }
+
+  function setIpRegister(&$ip_register)
+  {
+    $this->ip_register =& $ip_register;
+  }
+
+  function & getIpRegister()
+  {
+    if (is_object($this->ip_register))
+      return $this->ip_register;
+
+    include_once(dirname(__FILE__) . '/StatsIp.class.php');
+    $this->ip_register = new StatsIp();
+
+    return $this->ip_register;
   }
 }
 ?>

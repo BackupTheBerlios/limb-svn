@@ -21,20 +21,24 @@ class StatsIp
     $this->db_table =& $toolkit->createDBTable('StatsIp');
   }
 
-  function isNewHost($reg_date)
+  function isNewToday($ip, $reg_time)
   {
-    if(($record = $this->_getStatIpRecord()) === false)
+    $ip = Ip :: encode($ip);
+
+    if(($record = $this->_getStatIpRecord($ip)) === false)
     {
-      $this->_insertStatIpRecord($reg_date->getStamp());
+      $this->_insertStatIpRecord($reg_time, $ip);
       return true;
     }
 
     $ip_date = new Date();
     $ip_date->setByStamp($record['time']);
+    $reg_date = new Date();
+    $reg_date->setByStamp($reg_time);
 
     if($ip_date->dateToDays() < $reg_date->dateToDays())
     {
-      $this->_updateStatIpRecord($reg_date->getStamp());
+      $this->_updateStatIpRecord($reg_time, $ip);
       return true;
     }
     elseif($ip_date->dateToDays() > $reg_date->dateToDays()) //this shouldn't happen normally...
@@ -43,30 +47,25 @@ class StatsIp
     return false;
   }
 
-  function _insertStatIpRecord($stamp)
+  function _insertStatIpRecord($stamp, $ip)
   {
     $this->db_table->insert(array(
-        'id' => $this->getClientIp(),
+        'id' => $ip,
         'time' => $stamp
       )
     );
   }
 
-  function getClientIp()
+  function _getStatIpRecord($ip)
   {
-    return Ip :: encode(Sys :: clientIp());
-  }
-
-  function _getStatIpRecord()
-  {
-    $rs =& $this->db_table->select(array('id' => $this->getClientIp()));
+    $rs =& $this->db_table->select(array('id' => $ip));
     return $rs->getRow();
   }
 
-  function _updateStatIpRecord($stamp)
+  function _updateStatIpRecord($stamp, $ip)
   {
     $this->db_table->update(array('time' => $stamp),
-                            array('id' => $this->getClientIp()));
+                            array('id' => $ip));
   }
 }
 

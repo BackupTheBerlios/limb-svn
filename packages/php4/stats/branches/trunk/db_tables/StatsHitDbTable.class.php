@@ -21,9 +21,8 @@ class StatsHitDbTable extends LimbDbTable
   {
     return array(
       'id' => array('type' => 'numeric'),
-      'node_id' => array('type' => 'numeric'),
-      'stat_referer_id' => array('type' => 'numeric'),
-      'stat_uri_id' => array('type' => 'numeric'),
+      'stats_referer_id' => array('type' => 'numeric'),
+      'stats_uri_id' => array('type' => 'numeric'),
       'time' => array('type' => 'numeric'),
       'ip' => '',
       'action' => '',

@@ -13,68 +13,64 @@ require_once(LIMB_DIR . '/core/http/Uri.class.php');
 class StatsReferer
 {
   var $db_table = null;
-  var $url = null;
+  var $uri = null;
+  var $record = null;
 
   function StatsReferer()
   {
     $toolkit =& Limb :: toolkit();
     $this->db_table =& $toolkit->createDBTable('StatsRefererUrl');
-    $this->url = new Uri();
   }
 
-  function getRefererPageId()
+  function getId(&$uri)
   {
-    if(!$clean_uri = $this->_getCleanRefererPage())
+    $this->uri =& $uri;
+
+    if($this->record)
+      return $this->record->get('id');
+
+    if($this->uri->toString() == '')
       return -1;
 
-    if($this->_isInnerUrl())
-      return -1;
+    if ($record =& $this->_getRefererRecord())
+    {
+      $this->record =& $record;
+      return $this->record->get('id');
+    }
 
-    if ($result = $this->_getExistingRefererRecordId($clean_uri))
-      return $result;
-
-    return $this->_insertRefererRecord($clean_uri);
+    return $this->_insertRefererRecord();
   }
 
-  function _isInnerUrl()
+  function isRefererTo($uri, $base_uri)
   {
-    return ($this->url->getHost() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
-  }
-
-  function _getCleanRefererPage()
-  {
-    if ($referer = $this->_getHttpReferer())
-      return $this->cleanUrl($referer);
-
-    return false;
-  }
-
-  function _getHttpReferer()
-  {
-    return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-  }
-
-  function _getExistingRefererRecordId($uri)
-  {
-    $rs =& $this->db_table->select("referer_url='" . $uri . "'");
-    if ($referer_data = $rs->getRow())
-      return $referer_data['id'];
+    if(($uri->getHost() != $base_uri->getHost()) ||
+       ($uri->getPort() != $base_uri->getPort()) ||
+       ($uri->getProtocol() != $base_uri->getProtocol()))
+      return true;
     else
       return false;
   }
 
-  function _insertRefererRecord($uri)
+  function _getRefererRecord()
   {
-    return $this->db_table->insert(array('id' => null, 'referer_url' => $uri));
+    $rs =& $this->db_table->select("referer_url='" . $this->uri->toString() . "'");
+    $rs->rewind();
+    if($rs->valid())
+      return $rs->current();
+  }
+
+  function _insertRefererRecord()
+  {
+    return $this->db_table->insert(array('referer_url' => $this->uri->toString()));
   }
 
   function cleanUrl($raw_url)
   {
-    $this->url->parse($raw_url);
+    $uri = new Uri($raw_url);
 
-    $this->url->removeQueryItem('PHPSESSID');
+    $uri->removeQueryItem('PHPSESSID');
 
-    return $this->url->toString(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
+    return $uri->toString(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
   }
 }
 

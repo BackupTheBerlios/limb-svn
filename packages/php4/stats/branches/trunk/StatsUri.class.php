@@ -13,60 +13,36 @@ require_once(LIMB_DIR . '/core/http/Uri.class.php');
 class StatsUri
 {
   var $db_table = null;
-  var $url = null;
+  var $uri = null;
 
   function StatsUri()
   {
     $toolkit =& Limb :: toolkit();
     $this->db_table =& $toolkit->createDBTable('StatsUri');
-
-    $this->url = new Uri();
   }
 
-  function getUriId()
+  function getId(& $uri)
   {
-    $uri = $this->cleanUrl($this->_getHttpUri());
+    $this->uri =& $uri;
 
-    if ($result = $this->_getExistingUriRecordId($uri))
-      return $result;
+    if ($record = $this->_getExistingUriRecord())
+      return $record->get('id');
 
-    return $this->_insertUriRecord($uri);
+    return $this->_insertUriRecord();
   }
 
-  function _getHttpUri()
+  function _getExistingUriRecord()
   {
-    return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+    $rs =& $this->db_table->select(array("uri" => $this->uri->toString()));
+    $rs->rewind();
+
+    if ($rs->valid())
+      return $rs->current();
   }
 
-  function _getExistingUriRecordId($uri)
+  function _insertUriRecord()
   {
-    $rs =& $this->db_table->select(array("uri" => $uri));
-    if ($uri_data = $rs->getRow())
-      return $uri_data['id'];
-    else
-      return false;
-  }
-
-  function _insertUriRecord($uri)
-  {
-    return $this->db_table->insert(array('id' => null, 'uri' => $uri));
-  }
-
-  function cleanUrl($raw_url)
-  {
-    $this->url->parse($raw_url);
-
-    $this->url->removeQueryItems();
-
-    if($this->_isInnerUrl())
-      return $this->url->toString(array('path', 'query'));
-    else
-      return $this->url->toString(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
-  }
-
-  function _isInnerUrl()
-  {
-    return ($this->url->getHost() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
+    return $this->db_table->insert(array('id' => null, 'uri' => $this->uri->toString()));
   }
 }
 

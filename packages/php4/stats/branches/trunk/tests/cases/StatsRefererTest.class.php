@@ -40,17 +40,12 @@ class StatsRefererTest extends LimbTestCase
     $this->conn =& LimbDbPool :: getConnection();
     $this->db =& new SimpleDb($this->conn);
 
-    $this->stats_referer = new StatsRefererSelfTestVersion($this);
-    $this->stats_referer->StatsReferer();
-
     $this->_cleanUp();
   }
 
   function tearDown()
   {
     $_SERVER = $this->server;
-
-    $this->stats_referer->tally();
 
     $this->_cleanUp();
   }
@@ -60,25 +55,35 @@ class StatsRefererTest extends LimbTestCase
     $this->db->delete('stats_referer_url');
   }
 
-  function testGetRefererPageIdNoReferer()
+  function testIsRefererToOtherDomain()
   {
-    $this->stats_referer->setReturnValue('_getHttpReferer', '');
+    $uri = new Uri('http://test1.com/');
+    $stats_referer = new StatsReferer();
 
-    $this->assertEqual(-1, $this->stats_referer->getRefererPageId());
+    $uri2 = new Uri('http://test2.com/');
+    $this->assertTrue($stats_referer->isRefererTo($uri, $uri2));
   }
 
-  function testGetRefererPageIdInnerReferer()
+  function testNotIsRefererToSameDomain()
   {
-    $this->stats_referer->setReturnValue('_getHttpReferer', 'http://' . $_SERVER['HTTP_HOST'] . '/test');
+    $uri = new Uri('http://test.com/');
+    $stats_referer = new StatsReferer();
 
-    $this->assertEqual(-1, $this->stats_referer->getRefererPageId());
+    $uri2 = new Uri('http://test.com/');
+    $this->assertFalse($stats_referer->isRefererTo($uri, $uri2));
   }
 
-  function testGetRefererPageId()
+  function testGetIdNoReferer()
   {
-    $this->stats_referer->setReturnValue('_getHttpReferer', 'http://wow.com/test/referer');
+    $stats_referer = new StatsReferer();
+    $this->assertEqual(-1, $stats_referer->getId(new Uri()));
+  }
 
-    $id = $this->stats_referer->getRefererPageId();
+  function testGetId()
+  {
+    $stats_referer = new StatsReferer();
+
+    $id = $stats_referer->getId(new Uri('http://wow.com/test/referer'));
 
     $rs = $this->db->select('stats_referer_url');
     $arr = $rs->getArray();
@@ -91,15 +96,24 @@ class StatsRefererTest extends LimbTestCase
 
   function testGetRefererPageIdSameId()
   {
-    $this->testGetRefererPageId();
-    $this->testGetRefererPageId();
+    $uri = new Uri('http://wow.com/test/referer');
+    $stats_referer = new StatsReferer();
+
+    $id1 = $stats_referer->getId($uri);
+    $id2 = $stats_referer->getId($uri);
+
+    $this->assertEqual($id1, $id2);
+    $rs = $this->db->select('stats_referer_url');
+    $this->assertEqual($rs->getRowCount(), 1);
   }
 
   function testCleanUrl()
   {
+    $stats_referer = new StatsReferer();
+
     $this->assertEqual(
       'http://wow.com.bit/some/path/?haba&yo=1',
-      $this->stats_referer->cleanUrl('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
+      $stats_referer->cleanUrl('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
 
 }

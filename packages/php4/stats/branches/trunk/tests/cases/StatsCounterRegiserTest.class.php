@@ -8,20 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../StatsRegister.class.php');
-require_once(dirname(__FILE__) . '/../../StatsCounter.class.php');
+require_once(dirname(__FILE__) . '/../../StatsCounterRegister.class.php');
+require_once(dirname(__FILE__) . '/../../StatsRequest.class.php');
+require_once(dirname(__FILE__) . '/../../StatsIp.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
-class StatsCounterTest extends LimbTestCase
+Mock :: generate('StatsIp');
+
+class StatsCounterRegisterTest extends LimbTestCase
 {
   var $db = null;
   var $conn = null;
 
-  var $stats_counter = null;
+  var $ip_register = null;
+  var $register = null;
 
-  function StatsCounterTest()
+  function StatsCounterRegisterTest()
   {
-    parent :: LimbTestCase('stats counter test');
+    parent :: LimbTestCase('stats counter register test');
   }
 
   function setUp()
@@ -29,13 +33,18 @@ class StatsCounterTest extends LimbTestCase
     $this->conn =& LimbDbPool :: getConnection();
     $this->db =& new SimpleDb($this->conn);
 
-    $this->stats_counter = new StatsCounter();
+    $this->ip_register = new MockStatsIp($this);
+
+    $this->register = new StatsCounterRegister();
+    $this->register->setIpRegister($this->ip_register);
 
     $this->_cleanUp();
   }
 
   function tearDown()
   {
+    $this->ip_register->tally();
+
     $this->_cleanUp();
   }
 
@@ -47,142 +56,161 @@ class StatsCounterTest extends LimbTestCase
 
   function testNewHost()
   {
-    $date = new Date();
+    $stats_request = new StatsRequest();
+    $stats_request->setTime($time = time());
+    $stats_request->setUri(new Uri('http://test.com'));
+    $stats_request->setRefererUri(new Uri('http://example.com'));
+    $stats_request->setClientIp($ip = '127.0.0.1');
 
-    $this->stats_counter->setNewHost();
+    $this->ip_register->expectOnce('isNewToday', array($ip));
+    $this->ip_register->setReturnValue('isNewToday', true);
 
-    $this->stats_counter->update($date);
+    $this->register->register($stats_request);
 
     $this->_checkStatsCounterRecord(
       $hits_all = 1,
       $hits_today = 1,
       $hosts_all = 1,
       $hosts_today = 1,
-      $date);
+      $time);
 
     $this->_checkStatsDayCountersRecord(
       $hits_today,
       $hosts_today,
       $home_hits = 0,
       $audience_host = 0,
-      $date);
+      $time);
 
-    $this->_checkCountersConsistency($date);
+    $this->_checkCountersConsistency($time);
   }
 
-  function testNewHostSameDay()
+  function testSameDay()
   {
-    $this->testNewHost();
+    $stats_request = new StatsRequest();
+    $stats_request->setTime($time = time());
+    $stats_request->setUri(new Uri('http://test.com'));
+    $stats_request->setRefererUri(new Uri('http://example.com'));
 
-    $date = new Date();
-    $this->stats_counter->setNewHost();
-    $this->stats_counter->update($date);
+    $this->ip_register->setReturnValue('isNewToday', true);
+
+    $this->register->register($stats_request);
+    $this->register->register($stats_request);
 
     $this->_checkStatsCounterRecord(
       $hits_all = 2,
       $hits_today = 2,
       $hosts_all = 2,
       $hosts_today = 2,
-      $date);
+      $time);
 
     $this->_checkStatsDayCountersRecord(
       $hits_today,
       $hosts_today,
       $home_hits = 0,
       $audience_host = 0,
-      $date
-    );
+      $time);
 
-    $this->_checkCountersConsistency($date);
+    $this->_checkCountersConsistency($time);
   }
 
-  function testNewHostNewDay()
+  function testNewDay()
   {
-    $this->testNewHost();
+    $stats_request = new StatsRequest();
+    $stats_request->setTime($time = time());
+    $stats_request->setUri(new Uri('http://test.com'));
+    $stats_request->setRefererUri(new Uri('http://example.com'));
+
+    $this->ip_register->setReturnValue('isNewToday', true);
 
     $date = new Date();
+    $date->setByStamp($time);
+    $this->register->register($stats_request);
+
     $date->setByDays($date->dateToDays() + 1);
-    $this->stats_counter->setNewHost();
-    $this->stats_counter->update($date);
+    $stats_request->setTime($date->getStamp());
+    $this->register->register($stats_request);
 
     $this->_checkStatsCounterRecord(
       $hits_all = 2,
       $hits_today = 1,
       $hosts_all = 2,
       $hosts_today = 1,
-      $date);
+     $date->getStamp());
 
     $this->_checkStatsDayCountersRecord(
       $hits_today,
       $hosts_today,
       $home_hits = 0,
       $audience_host = 0,
-      $date
-    );
+      $time);
 
-    $this->_checkCountersConsistency($date);
+    $this->_checkCountersConsistency($time);
   }
 
   function testNewAudience()
   {
-    $date = new Date();
-    $this->stats_counter->setNewHost();
+    $stats_request = new StatsRequest();
+    $stats_request->setTime($time = time());
+    $stats_request->setUri(new Uri('http://test.com'));
 
-    $old_server_value = $_SERVER;
+    $this->ip_register->setReturnValue('isNewToday', true);
 
-    unset($_SERVER['HTTP_REFERER']);
-
-    $this->stats_counter->update($date);
+    $this->register->register($stats_request);
 
     $this->_checkStatsDayCountersRecord(
       $hits_today = 1,
       $hosts_today = 1,
       $home_hits = 0,
       $audience_host = 1,
-      $date
-    );
-
-    $_SERVER = $old_server_value;
+      $time);
   }
 
   function testNewAudienceSameHost()
   {
-    $date = new Date();
+    $stats_request = new StatsRequest();
+    $stats_request->setTime($time = time());
+    $stats_request->setUri(new Uri('http://test.com'));
 
-    $old_server_value = $_SERVER;
+    $this->ip_register->setReturnValue('isNewToday', false);
 
-    $_SERVER['HTTP_REFERER'] = 'some referer';
-
-    $this->stats_counter->update($date);
+    $this->register->register($stats_request);
 
     $this->_checkStatsDayCountersRecord(
       $hits_today = 1,
       $hosts_today = 0,
       $home_hits = 0,
       $audience_host = 0,
-      $date
-    );
-
-    $old_server_value = $_SERVER;
+      $time);
   }
 
   function testHomeHit()
   {
-    $date = new Date();
-    $this->stats_counter->setHomeHit();
+    $stats_request = new StatsRequest();
+    $stats_request->setTime($time = time());
+    $stats_request->setUri(new Uri('http://test.com'));
+    $stats_request->setBaseUri(new Uri('http://test.com'));
 
-    $this->stats_counter->update($date);
+    $this->ip_register->setReturnValue('isNewToday', false);
+
+    $this->register->register($stats_request);
 
     $this->_checkStatsDayCountersRecord(
       $hits_today = 1,
       $hosts_today = 0,
       $home_hits = 1,
       $audience_host = 0,
-      $date
-    );
+      $time);
   }
 
-  function _checkStatsCounterRecord($hits_all, $hits_today, $hosts_all, $hosts_today, $date)
+  function testGetDefaultIpRegister()
+  {
+    $register = new StatsCounterRegister();
+
+    $this->assertTrue(is_a($register->getIpRegister(), 'StatsIp'));
+
+  }
+
+  function _checkStatsCounterRecord($hits_all, $hits_today, $hosts_all, $hosts_today, $time)
   {
     $rs =& $this->db->select('stats_counter', '*');
 
@@ -193,14 +221,14 @@ class StatsCounterTest extends LimbTestCase
     $this->assertEqual($record['hits_today'], $hits_today, 'today hits incorrect. Got ' . $record['hits_today'] . ', expected '. $hits_today);
     $this->assertEqual($record['hosts_all'], $hosts_all, 'all hosts incorrect. Got ' . $record['hosts_all'] . ', expected '. $hosts_all);
     $this->assertEqual($record['hosts_today'], $hosts_today, 'today hosts incorrect. Got ' . $record['hosts_today'] . ', expected '. $hosts_today);
-    $this->assertEqual($record['time'], $date->getStamp(), 'counter time is incorrect. Got ' . $record['time'] . ', expected '. $date->getStamp());
+    $this->assertEqual($record['time'], $time, 'counter time is incorrect. Got ' . $record['time'] . ', expected '. $time);
   }
 
-  function _checkStatsDayCountersRecord($hits, $hosts, $home_hits, $audience_hosts, $date)
+  function _checkStatsDayCountersRecord($hits, $hosts, $home_hits, $audience_hosts, $time)
   {
     $rs =& $this->db->select('stats_day_counters',
                       '*',
-                      array('time' => $this->stats_counter->makeDayStamp($date->getStamp())));
+                      array('time' => $this->register->makeDayStamp($time)));
 
     $record = $rs->getRow();
 
@@ -211,10 +239,8 @@ class StatsCounterTest extends LimbTestCase
     $this->assertEqual($record['audience'], $audience_hosts, 'audience incorrect. Got ' . $record['audience'] . ', expected '. $audience_hosts);
   }
 
-  function _checkCountersConsistency($date)
+  function _checkCountersConsistency($time)
   {
-    $time = $date->getStamp();
-
     $sql = 'SELECT SUM(hits) as hits_all, SUM(hosts) as hosts_all FROM stats_day_counters';
 
     $stmt =& $this->conn->newStatement($sql);
@@ -234,7 +260,7 @@ class StatsCounterTest extends LimbTestCase
 
     $rs = $this->db->select('stats_day_counters',
                          '*',
-                         array('time' => $this->stats_counter->makeDayStamp($time)));
+                         array('time' => $this->register->makeDayStamp($time)));
 
     $record3 = $rs->getRow();
 

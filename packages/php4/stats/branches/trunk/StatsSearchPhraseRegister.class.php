@@ -11,14 +11,14 @@
 require_once(LIMB_DIR . '/core/http/Uri.class.php');
 require_once(LIMB_DIR . '/core/date/Date.class.php');
 
-class StatsSearchPhrase
+class StatsSearchPhraseRegister
 {
   var $db_table = null;
   var $url = null;
 
   var $engine_rules = array();
 
-  function StatsSearchPhrase()
+  function StatsSearchPhraseRegister()
   {
     $toolkit =& Limb :: toolkit();
     $this->db_table =& $toolkit->createDBTable('StatsSearchPhrase');
@@ -26,48 +26,35 @@ class StatsSearchPhrase
     $this->url = new Uri();
   }
 
-  function & instance()
-  {
-    if (!isset($GLOBALS['StatsSearchPhraseGlobalInstance']) || !is_a($GLOBALS['StatsSearchPhraseGlobalInstance'], 'StatsSearchPhrase'))
-      $GLOBALS['StatsSearchPhraseGlobalInstance'] =& new StatsSearchPhrase();
-
-    return $GLOBALS['StatsSearchPhraseGlobalInstance'];
-  }
-
   function registerSearchEngineRule(&$engine_rule)
   {
     $this->engine_rules[] =& $engine_rule;
   }
 
-  function register($date)
+  function register($stats_request)
   {
-    if(!$rule =& $this->getMatchingSearchEngineRule())
-      return false;
+    if(!$rule =& $this->getMatchingSearchEngineRule($stats_request->getRefererUri()))
+      return;
 
     $this->db_table->insert(array(
                               'id' => null,
                               'engine' => $rule->getEngineName(),
-                              'time' => $date->getStamp(),
+                              'time' => $stats_request->getTime(),
                               'phrase' => stripslashes(strip_tags($rule->getMatchingPhrase()))));
 
     return true;
   }
 
-  function & getMatchingSearchEngineRule()
+  function & getMatchingSearchEngineRule(&$uri)
   {
-    $uri = urldecode($this->_getHttpReferer());
+    $url = urldecode($uri->toString());
 
     foreach(array_keys($this->engine_rules) as $id)
     {
-      if($this->engine_rules[$id]->match($uri))
+      if($this->engine_rules[$id]->match($url))
         return $this->engine_rules[$id];
     }
     return null;
-  }
-
-  function _getHttpReferer()
-  {
-    return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
   }
 }
 

@@ -25,7 +25,6 @@ class StatsUriTest extends LimbTestCase
   var $stats_uri = null;
   var $db = null;
   var $conn = null;
-  var $server = array();
 
   function StatsUriTest()
   {
@@ -34,24 +33,14 @@ class StatsUriTest extends LimbTestCase
 
   function setUp()
   {
-    $this->server = $_SERVER;
-    $_SERVER['HTTP_HOST'] = 'test';
-
     $this->conn =& LimbDbPool :: getConnection();
     $this->db =& new SimpleDb($this->conn);
-
-    $this->stats_uri = new StatsUriSelfTestVersion($this);
-    $this->stats_uri->StatsUri();
 
     $this->_cleanUp();
   }
 
   function tearDown()
   {
-    $_SERVER = $this->server;
-
-    $this->stats_uri->tally();
-
     $this->_cleanUp();
   }
 
@@ -60,11 +49,12 @@ class StatsUriTest extends LimbTestCase
     $this->db->delete('stats_uri');
   }
 
-  function testNewInnerUri()
+  function testGetId()
   {
-    $this->stats_uri->setReturnValue('_getHttpUri', 'http://' . $_SERVER['HTTP_HOST'] . '/test');
+    $uri = new Uri($url = 'http://test.com/path');
+    $stats_uri = new StatsUri();
 
-    $id = $this->stats_uri->getUriId();
+    $id = $stats_uri->getId($uri);
 
     $rs =& $this->db->select('stats_uri');
     $arr = $rs->getArray();
@@ -73,45 +63,21 @@ class StatsUriTest extends LimbTestCase
     $this->assertEqual(sizeof($arr), 1);
 
     $this->assertEqual($record['id'], $id);
-    $this->assertEqual($record['uri'], '/test');
-  }
-
-  function testNewOuterUri()
-  {
-    $this->stats_uri->setReturnValue('_getHttpUri', 'http://wow.com/test');
-
-    $id = $this->stats_uri->getUriId();
-
-    $rs =& $this->db->select('stats_uri');
-    $arr = $rs->getArray();
-    $record = current($arr);
-
-    $this->assertEqual(sizeof($arr), 1);
-
-    $this->assertEqual($record['id'], $id);
-    $this->assertEqual($record['uri'], 'http://wow.com/test');
+    $this->assertEqual($record['uri'], $url);
   }
 
   function testSameUri()
   {
-    $this->testNewOuterUri();
-    $this->testNewOuterUri();
-  }
+    $uri = new Uri($url = 'http://test.com/path');
+    $stats_uri = new StatsUri();
 
-  function testCleanOuterUri()
-  {
-    $this->assertEqual(
-      'http://wow.com.bit/some/path/',
-      $this->stats_uri->cleanUrl('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
-  }
+    $id1 = $stats_uri->getId($uri);
+    $id2 = $stats_uri->getId($uri);
 
-  function testCleanInnerUri()
-  {
-    $this->assertEqual(
-      '/test',
-      $this->stats_uri->cleanUrl('http://' . $_SERVER['HTTP_HOST'] . '/test?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
-  }
+    $rs =& $this->db->select('stats_uri');
 
+    $this->assertEqual($rs->getRowCount(), 1);
+  }
 }
 
 ?>
