@@ -116,7 +116,7 @@ class access_policy
 		return $result;
 	}
 	
-	function & _get_object_access_by_ids($ids, $accessor_type)
+	function & _get_object_access_by_ids(&$ids, $accessor_type)
 	{
 		if (!is_array($ids) || !count($ids))
 			return array();

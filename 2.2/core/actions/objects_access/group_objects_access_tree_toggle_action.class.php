@@ -12,6 +12,8 @@ require_once(LIMB_DIR . 'core/actions/site_structure/tree_toggle_action.class.ph
 
 class group_objects_access_tree_toggle_action extends tree_toggle_action
 {
+	var $objects_ids = array();
+
 	function _define_dataspace_name()
 	{
 	  return 'set_group_access';
@@ -19,14 +21,48 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 	
 	function perform(&$request, &$response)
 	{				
+		parent :: perform($request, $response);
+		$this->_set_template_tree();
+		$this->_init_dataspace($request);
+	}
+
+	function _init_dataspace(&$request)
+	{
 		$access_policy =& access_policy :: instance();
-	
-		$data['policy'] = $access_policy->get_group_object_access();
+		$data['policy'] = $access_policy->get_group_object_access_by_ids($this->object_ids);
 
 		$this->dataspace->import($data);
-		
-		parent :: perform($request, $response);
 	}
+
+	function _set_template_tree()
+	{
+		$datasource =& datasource_factory :: create('group_object_access_datasource');
+		$params = array(
+			'path' => '/root',
+			'depth' => -1,
+			'loader_class_name' => 'site_object',
+			'restrict_by_class' => false,
+			'include_parent' => 'true',
+			'check_expanded_parents' => 'true',
+			'order' => array('class_ordr' => 'ASC', 'identifier' => 'ASC'),
+			'fetch_method' => 'fetch_by_ids'
+			
+		);
+		$count = null;
+		$dataset =& $datasource->get_dataset($count, $params);
+
+		$this->object_ids = array();
+		$dataset->reset();
+		while($dataset->next())
+		{
+			$object = $dataset->export();
+			$this->object_ids[$object['id']] = $object['id'];
+		}
+
+		$dataset->reset();		
+		$access_tree =& $this->view->find_child('access');
+		$access_tree->register_dataset($dataset);
+	}	
 }
 
 ?>
