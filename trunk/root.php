@@ -14,30 +14,24 @@ require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
 
 debug :: add_timing_point('start');
 
+require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/filters/filter_chain.class.php');
 require_once(LIMB_DIR . 'core/request/response.class.php');
 require_once(LIMB_DIR . 'core/request/request.class.php');
 require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 
 // filters include
-require_once(LIMB_DIR . 'core/filters/logging_filter.class.php');
-require_once(LIMB_DIR . 'core/filters/locale_definition_filter.class.php');
-require_once(LIMB_DIR . 'core/filters/authentication_filter.class.php');
-require_once(LIMB_DIR . 'core/filters/jip_filter.class.php');
-require_once(LIMB_DIR . 'core/filters/output_buffering_filter.class.php');
-require_once(LIMB_DIR . 'core/filters/site_object_controller_filter.class.php');
-
 $request =& request :: instance();
 $response =& response :: instance();
 
 $filter_chain =& new filter_chain($request, $response);
 
-$filter_chain->register_filter(new locale_definition_filter());
-$filter_chain->register_filter(new authentication_filter());
-$filter_chain->register_filter(new jip_filter());
-$filter_chain->register_filter(new logging_filter());
-$filter_chain->register_filter(new output_buffering_filter());
-$filter_chain->register_filter(new site_object_controller_filter());
+$filter_chain->register_filter($f1 = LIMB_DIR . 'core/filters/locale_definition_filter');
+$filter_chain->register_filter($f2 = LIMB_DIR . 'core/filters/authentication_filter');
+$filter_chain->register_filter($f3 = LIMB_DIR . 'core/filters/jip_filter');
+$filter_chain->register_filter($f4 = LIMB_DIR . 'core/filters/logging_filter');
+$filter_chain->register_filter($f5 = LIMB_DIR . 'core/filters/output_buffering_filter');
+$filter_chain->register_filter($f6 = LIMB_DIR . 'core/filters/site_object_controller_filter');
 
 $filter_chain->process();
 

@@ -9,8 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
 
 class form_delete_site_object_action extends form_site_object_action
 {

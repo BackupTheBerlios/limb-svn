@@ -20,7 +20,7 @@ class change_user_locale_action extends form_action
 	
 	function _init_validator()
 	{
-		$this->validator->add_rule(new required_rule('locale_id'));
+    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'locale_id'));
 	}
 	
 	function _valid_perform(&$request, &$response)

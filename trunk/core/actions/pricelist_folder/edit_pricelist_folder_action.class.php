@@ -26,7 +26,7 @@ class edit_pricelist_folder_action extends form_edit_site_object_action
 	{
 		parent :: _init_validator();
 		
-		$this->validator->add_rule(new required_rule('title'));
+    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
 	}
 }
 

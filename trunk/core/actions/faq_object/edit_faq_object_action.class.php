@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 
 class edit_faq_object_action extends form_edit_site_object_action
 {
@@ -41,11 +40,11 @@ class edit_faq_object_action extends form_edit_site_object_action
 	function _init_validator()
 	{
 		parent :: _init_validator();
-		
-		$this->validator->add_rule(new required_rule('question'));
-		$this->validator->add_rule(new required_rule('answer'));
-		$this->validator->add_rule(new email_rule('question_author_email'));
-		$this->validator->add_rule(new email_rule('answer_author_email'));
+
+    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'question'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'answer'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/email_rule', 'question_author_email'));
+    $this->validator->add_rule($v4 = array(LIMB_DIR . 'core/lib/validators/rules/email_rule', 'answer_author_email'));
 	}
 }
 

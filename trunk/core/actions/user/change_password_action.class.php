@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/match_rule.class.php');
 
 class change_password_action extends form_edit_site_object_action
 {
@@ -37,9 +36,9 @@ class change_password_action extends form_edit_site_object_action
 
 	function _init_validator()
 	{
-		$this->validator->add_rule(new required_rule('password'));
-		$this->validator->add_rule(new required_rule('second_password'));
-		$this->validator->add_rule(new match_rule('second_password', 'password', 'PASSWORD'));
+    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'password'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'second_password'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
 	}
 	
 	function perform(&$request, &$response)

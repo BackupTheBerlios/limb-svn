@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/model/links_manager.class.php');
 
 class delete_link_action extends form_action
@@ -23,7 +22,7 @@ class delete_link_action extends form_action
 	{
 		parent :: _init_validator();
 
-		$this->validator->add_rule(new required_rule('link_id'));
+    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'link_id'));
 	}
 	
 	function _valid_perform(&$request, &$response)

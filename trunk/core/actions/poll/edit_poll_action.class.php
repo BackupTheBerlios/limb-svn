@@ -37,10 +37,10 @@ class edit_poll_action extends form_edit_site_object_action
 	function _init_validator()
 	{
 		parent :: _init_validator();
-		
-		$this->validator->add_rule(new required_rule('start_date'));
-		$this->validator->add_rule(new required_rule('finish_date'));
-		$this->validator->add_rule(new required_rule('restriction'));
+
+    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'start_date'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'finish_date'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'restriction'));
 	}
 }
 

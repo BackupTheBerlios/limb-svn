@@ -33,31 +33,12 @@ function include_class($class_name, $include_dir='')
 
 function & create_object($class_name, $arguments = array())
 {
-  $evaled_arguments = array(); 
-  foreach($arguments as $key => $value) 
-  { 
-	  switch(strtolower(gettype($value))) 
-	  { 
-	    case 'object': 
-	    	eval("\$" . $key . " =& \$arguments['" . $key . "'];"); 
-	    break; 
-	    case 'string': 
-	    	eval("\$" . $key . " = '" . $value . "';"); 
-	    break;
-	    case 'null':
-	    	eval("\$" . $key . " = null;"); 
-	    break;
-	    default: 
-	    	eval("\$" . $key . " = " . $value . ";"); 
-	    break; 
-	  } 
-    $evaled_arguments[] = "$" . $key; 
-  } 
-  $evaled_arguments_str = implode(", ", $evaled_arguments);
+  $handle =& $arguments;
+  array_unshift($handle, $class_name);
   
-  eval("\$obj =& new {$class_name}(" . $evaled_arguments_str . ");"); 
-	
-	return $obj;
+  resolve_handle($handle);
+  
+  return $handle;
 }
 
 function & instantiate_object($class_name, $arguments = array())
@@ -90,4 +71,60 @@ function & instantiate_session_object($class_name, $arguments = array())
 	
 	return $obj;
 }
+
+function resolve_handle(&$handle)
+{
+  if (!is_object($handle) && !is_null($handle)) 
+  {
+      if (is_array($handle)) 
+      {
+        $class = array_shift($handle);
+        $construction_args = $handle;
+      } 
+      else 
+      {
+        $construction_args = array();
+        $class = $handle;
+      }
+      
+      if (is_integer($pos = strpos($class, '|')))
+      {
+        $file = substr($class, 0, $pos);
+        $class = substr($class, $pos + 1);
+        include_once($file);
+      }
+      elseif(is_integer($pos = strrpos($class, '/')))
+      {
+        $file = $class;
+      	$class = substr($class, $pos + 1);
+        include_once($file . '.class.php');	
+      }
+      
+      switch (count($construction_args)) 
+      {
+        case 0:
+          $handle = new $class();
+          break;
+        case 1:
+          $handle = new $class(array_shift($construction_args));
+          break;
+        case 2:
+          $handle = new $class(
+              array_shift($construction_args), 
+              array_shift($construction_args));
+          break;
+        case 3:
+          $handle = new $class(
+              array_shift($construction_args), 
+              array_shift($construction_args), 
+              array_shift($construction_args));
+          break;
+        default:
+          // Too many arguments for this cobbled together implemenentation.  :(
+          die();
+      }
+   }
+
+}
+
 ?>

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/model/links_manager.class.php');
 
 class create_link_action extends form_action
@@ -23,9 +22,9 @@ class create_link_action extends form_action
 	{
 		parent :: _init_validator();
 
-		$this->validator->add_rule(new required_rule('target_node_id'));
-		$this->validator->add_rule(new required_rule('group_id'));
-		$this->validator->add_rule(new required_rule('linker_node_id'));
+    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'target_node_id'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'group_id'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'linker_node_id'));
 	}
 	
 	function _valid_perform(&$request, &$response)

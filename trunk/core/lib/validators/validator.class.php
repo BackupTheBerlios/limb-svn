@@ -42,7 +42,6 @@ class validator
 	*/
 	function add_rule(&$rule)
 	{
-		$rule->set_error_list($this->_get_error_list());
 		$this->rules[] =& $rule;
 	} 
 	
@@ -72,6 +71,9 @@ class validator
 	{		
 		foreach($this->rules as $key => $rule)
 		{
+      resolve_handle($this->rules[$key]);
+		  
+  		$this->rules[$key]->set_error_list($this->_get_error_list());
 			$this->rules[$key]->validate($dataspace);
 			$this->is_valid = (bool)($this->is_valid & $this->rules[$key]->is_valid());
 		}

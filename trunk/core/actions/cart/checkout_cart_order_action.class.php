@@ -10,8 +10,6 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
 require_once(LIMB_DIR . 'core/lib/mail/send_html_mail.inc.php');
@@ -28,9 +26,9 @@ class checkout_cart_order_action extends form_action
 	{
 		parent :: _init_validator();
 
-		$this->validator->add_rule(new required_rule('name'));
-		$this->validator->add_rule(new required_rule('email'));
-		$this->validator->add_rule(new email_rule('email'));
+    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'name'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'email'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/email_rule', 'email'));
 	}
 
 	function _init_dataspace(&$request)

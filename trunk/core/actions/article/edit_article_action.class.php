@@ -39,10 +39,10 @@ class edit_article_action extends form_edit_site_object_action
 	function _init_validator()
 	{
 		parent :: _init_validator();
-		
-		$this->validator->add_rule(new required_rule('title'));
-		$this->validator->add_rule(new required_rule('author'));
-		$this->validator->add_rule(new required_rule('article_content'));
+
+    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'author'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'article_content'));
 	}
 }
 

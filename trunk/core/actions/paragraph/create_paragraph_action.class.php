@@ -36,7 +36,7 @@ class create_paragraph_action extends form_create_site_object_action
 	{
 		parent :: _init_validator();
 		
-		$this->validator->add_rule(new required_rule('paragraph_content'));
+    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'paragraph_content'));
 	}
 }
 

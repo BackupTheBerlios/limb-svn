@@ -25,8 +25,8 @@ class edit_announce_folder_action extends form_edit_site_object_action
 	function _init_validator()
 	{
 		parent :: _init_validator();
-		
-		$this->validator->add_rule(new required_rule('title'));
+
+    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
 	}
 }
 

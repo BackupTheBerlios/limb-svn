@@ -114,9 +114,8 @@ class filter_chain_test extends UnitTestCase
   
   function test_register_filter()
   {
-    $mock_filter =& new Mockintercepting_filter($this);
-    
-    $this->fc->register_filter($mock_filter);
+    $ref = array('Mockintercepting_filter', $this);
+    $this->fc->register_filter($ref);
     
     $this->assertTrue($this->fc->has_filter('Mockintercepting_filter'));
     $this->assertFalse($this->fc->has_filter('no_such_filter'));

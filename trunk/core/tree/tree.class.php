@@ -21,7 +21,7 @@ class tree
 	
 	function &instance($driver = null)
 	{
-		$obj =&	instantiate_object('tree', array('driver' => $driver));
+		$obj =&	instantiate_object('tree', array($driver));
 		return $obj;
 	}
 	

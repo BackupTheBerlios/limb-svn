@@ -37,7 +37,7 @@ class cart
 	
  	function & instance($cart_id = CART_DEFAULT_ID)
   {  
-		$obj =& instantiate_session_object('cart', array('cart_id' => $cart_id));
+		$obj =& instantiate_session_object('cart', array($cart_id));
 		return $obj;
   }
 

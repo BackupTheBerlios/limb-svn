@@ -30,9 +30,10 @@ class filter_chain
   
   function has_filter($filter_class)
   {
-    foreach($this->filters as $filter)
+    foreach(array_keys($this->filters) as $key)
     {
-      if(get_class($filter) == strtolower($filter_class))
+      resolve_handle($this->filters[$key]);
+      if(get_class($this->filters[$key]) == strtolower($filter_class))
         return true;
     }
     
@@ -45,6 +46,7 @@ class filter_chain
     
     if(isset($this->filters[$this->counter]))
     {
+      resolve_handle($this->filters[$this->counter]);
       $this->filters[$this->counter]->run($this, $this->request, $this->response); 
     }
   } 
@@ -55,6 +57,7 @@ class filter_chain
     
     if(sizeof($this->filters) > 0)
     {
+      resolve_handle($this->filters[0]);
       $this->filters[0]->run($this, $this->request, $this->response);
     }
   }    

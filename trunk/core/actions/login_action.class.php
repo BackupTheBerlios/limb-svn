@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
 class login_action extends form_action
@@ -22,8 +21,8 @@ class login_action extends form_action
 
 	function _init_validator()
 	{
-		$this->validator->add_rule(new required_rule('login'));
-		$this->validator->add_rule(new required_rule('password'));
+		$this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'login'));
+		$this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'password'));
 	}
 	
 	function _init_dataspace(&$request)

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/core/fetcher.class.php');
 
 class site_object_controller_filter extends intercepting_filter 
 { 

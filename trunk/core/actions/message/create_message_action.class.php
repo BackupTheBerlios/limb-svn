@@ -36,8 +36,8 @@ class create_message_action extends form_create_site_object_action
 	{
 		parent :: _init_validator();
 
-		$this->validator->add_rule(new required_rule('title'));
-		$this->validator->add_rule(new required_rule('content'));
+    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'content'));
 	}
 }
 

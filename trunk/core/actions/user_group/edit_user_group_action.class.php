@@ -21,6 +21,13 @@ class edit_user_group_action extends form_edit_site_object_action
 	{
 	  return 'edit_user_group';
 	}
+
+	function _init_validator()
+	{
+		parent :: _init_validator();
+		
+    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
+	}
 }
 
 ?>
