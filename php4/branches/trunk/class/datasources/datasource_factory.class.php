@@ -25,14 +25,17 @@ class datasource_factory
 	function & create($class_path)
 	{
 		$class_name = datasource_factory :: _extract_class_name($class_path);
-		
-		$resolver =& get_file_resolver('datasource');
-		resolve_handle($resolver);
-		
-		if(!$full_path = $resolver->resolve($class_path))
-		  return null;
 
-		include_once($full_path);
+		if(!class_exists($class_name))
+		{
+  		$resolver =& get_file_resolver('datasource');
+  		resolve_handle($resolver);
+  		
+  		if(!$full_path = $resolver->resolve($class_path))
+  			return null;
+  			
+  		include_once($full_path);
+  	}
 		
 	  $datasource =& new $class_name();
 	  

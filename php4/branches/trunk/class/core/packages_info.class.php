@@ -28,12 +28,12 @@ class packages_info
   function get_packages()
   {
     if(!$this->_packages)
-      $this->_load_packages();
+      $this->load_packages();
     
     return $this->_packages;
   }  
   
-  function _load_packages()
+  function load_packages()
   {
     include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
     
