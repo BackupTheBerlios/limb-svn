@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class pricelist_folder extends site_object
 {
-	function pricelist_folder()
-	{
-		parent :: site_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(
@@ -26,7 +21,6 @@ class pricelist_folder extends site_object
 			'icon' => '/shared/images/folder.gif'
 		);
 	}
-
 }
 
 ?>

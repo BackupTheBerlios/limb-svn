@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php')
 
 class simple_orders_list_datasource extends fetch_sub_branch_datasource
 {
-	function simple_orders_list_datasource()
-	{
-		parent :: fetch_sub_branch_datasource();
-	}
-
 	function & _fetch(&$counter, $params)
 	{
 		if(!$result =& parent :: _fetch($counter, $params))

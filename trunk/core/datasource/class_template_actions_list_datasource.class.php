@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class class_template_actions_list_datasource extends datasource
 {
-	function class_template_actions_list_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset($params = array())
 	{
 		if(!isset($_REQUEST['class_id']))

@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class user_object extends content_object
 {
-	function user_object()
-	{
-		parent :: content_object();
-	}
-	
 	function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(

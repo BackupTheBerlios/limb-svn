@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/model/chat/chat_user.class.php');
 
 class chat_users_list_datasource extends datasource
 {
-	function chat_users_list_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(&$counter, $params=array())
 	{
 		$chat_user =& new chat_user();

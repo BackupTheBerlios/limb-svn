@@ -32,16 +32,10 @@ class image_select_component extends input_form_element
   	if($image_node_id && $image_data = fetch_one_by_node_id($image_node_id))
   	{
 			$span_name = $image_data['identifier'];
-//			$span_description = $image_data['description'];
-//			$span_size = $image_data['size'];
-//			$span_mime = $image_data['mime_type'];
 		}
 		else
 		{
 			$span_name = '';
-//			$span_description = '';
-//			$span_size = '';
-//			$span_mime = '';
 		}
   	  	
   	echo "<span id='{$md5id}_name'>{$span_name}</span><br><img id='{$md5id}_img' src='/shared/images/1x1.gif'/>
@@ -73,9 +67,9 @@ class image_select_component extends input_form_element
 	      add_event(window, 'load', init_image_select_{$md5id});
 	    </script>";
 	    
-	  echo "<br><br><input class='button' type='button' onclick='popup(\"/root/image_select?properties=0\", null, null, false, image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='Select image'>";
+	  echo "<br><br><input class='button' type='button' onclick='popup(\"/root/image_select?properties=0\", null, null, false, image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='" . strings :: get('select_image', 'image') . "'>";
 	  echo '&nbsp;';
-	  echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='Reset'>";
+	  echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='" . strings :: get('reset') . "'>";
 	}
 
 } 

@@ -11,20 +11,27 @@
 require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
+require_once(LIMB_DIR . 'core/lib/validators/rules/tree_node_id_rule.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class form_create_site_object_action extends form_site_object_action
 {
 	function _init_validator()
-	{
+	{		
+		if (($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
+		{
+		  $parent_object_data =& $this->_load_parent_object_data();
+			$parent_node_id = $parent_object_data['parent_node_id'];		
+		}	
+		
+		$this->validator->add_rule(new tree_node_id_rule('parent_node_id'));
+		
 		if($this->object->is_auto_identifier())
 			return;
 		
 		$this->validator->add_rule(new required_rule('identifier'));
-		
-		if($parent_object_data =& $this->_load_parent_object_data())
-			$this->validator->add_rule(new tree_identifier_rule('identifier', $parent_object_data['node_id']));
+		$this->validator->add_rule(new tree_identifier_rule('identifier', $parent_node_id));
 	}
 	
 	function _valid_perform()

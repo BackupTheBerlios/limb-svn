@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class site_structure extends site_object
 {
-	function site_structure()
-	{
-		parent :: site_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

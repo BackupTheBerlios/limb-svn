@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: site_structure.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class site_param_object extends site_object
 {
-	function site_param_object()
-	{
-		parent :: site_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

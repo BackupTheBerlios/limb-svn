@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 class request_state_tag_info
 {
 	var $tag = 'request_state';
@@ -19,7 +18,7 @@ class request_state_tag_info
 
 register_tag(new request_state_tag_info());
 
-class request_state_tag extends server_tag_component_tag
+class request_state_tag extends control_tag
 {
 	var $runtime_component_path = '/core/template/components/form/request_state_component';
 	
@@ -32,6 +31,16 @@ class request_state_tag extends server_tag_component_tag
 	{
 		return 'input';
 	}	
+	
+	function pre_generate(&$code)
+	{
+	  if(isset($this->attributes['attach_form_prefix']))
+	    $code->write_php($this->get_component_ref_code() . '->attach_form_prefix(true);');
+	  else
+	    $code->write_php($this->get_component_ref_code() . '->attach_form_prefix(false);');
+	  
+	  parent :: pre_generate($code);
+	}
 } 
 
 ?>

@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/fetch_datasource.class.php');
 
 class last_objects_datasource extends fetch_datasource
 {
-	function last_objects_datasource()
-	{
-		parent :: fetch_datasource();
-	}
-
 	function & _fetch(&$counter, $params)
 	{
 		$result =& parent :: _fetch($counter, $params);

@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class member_subscribe_params_datasource extends datasource
 {
-	function member_subscribe_params_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(& $counter, $params = array())
 	{
 		$themes =& fetch_sub_branch('/root/subscribe', 'subscribe_theme', $counter, $params);

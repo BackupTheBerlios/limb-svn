@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: poll_all_results_datasource.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/lib/util/mime_type.class.php');
 
 class pricelist_datasource extends fetch_sub_branch_datasource
 {
-	function pricelist_datasource()
-	{
-		parent :: fetch_sub_branch_datasource();
-	}
-
 	function & get_dataset(& $counter, $params = array())
 	{
 		$mime_type = new mime_type();

@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: school_photogallery_object.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class paragraph extends content_object
 {
-	function paragraph()
-	{
-		parent :: content_object();
-	}
-	
 	function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(

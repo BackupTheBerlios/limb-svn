@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php')
 
 class node_select_datasource extends fetch_sub_branch_datasource
 {
-	function node_select_datasource()
-	{
-		parent :: fetch_sub_branch_datasource();
-	}
-	
 	function & get_dataset(&$counter, $params = array())
 	{
 		$params['depth'] = 1;

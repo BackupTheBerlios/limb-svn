@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: announce_object.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class useful_link extends content_object
 {
-	function useful_link()
-	{
-		parent :: content_object();
-	}
-
 	function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(

@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class object_versions_datasource extends datasource
 {
-	function object_versions_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(&$counter, $params=array())
 	{
 		$object_data = fetch_mapped_by_url();

@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'core/template/components/form/input_form_element.class.php');
 
 class node_select_component extends input_form_element
@@ -20,6 +19,12 @@ class node_select_component extends input_form_element
 					
 		echo "<script type='text/javascript' src='/shared/js/node_select.js'></script>";
 		
+		if($this->get_value() === null)
+		{
+			$node = map_current_request_to_node();
+			$this->set_value($node['id']);
+		}		
+		
 		define('NODE_SELECT_LOAD_SCRIPT', 1);		
 	}
 	
@@ -28,14 +33,12 @@ class node_select_component extends input_form_element
 		$id = $this->get_attribute('id');
   	$md5id = substr(md5($id), 0, 5);
 
-  	$node_id = $this->get_value();
-
-  	$object_data = array();
-
-  	if($node_id)
+  	if($node_id = $this->get_value())
 	  	$object_data = fetch_one_by_node_id($node_id);
+	  else
+	    $object_data = false;
   	
-  	if(sizeof($object_data))
+  	if($object_data !== false)
   	{
 			$identifier = $object_data['identifier'];
 			$title = $object_data['title'];
@@ -47,7 +50,11 @@ class node_select_component extends input_form_element
 		}
 		else
 		{
-			$identifier = $title = $path = $class_name = $parent_node_id = '';
+			$identifier = '';
+			$title = '';
+			$path = '';
+			$class_name = '';
+			$parent_node_id = '';
 			$icon = '/shared/images/no.gif';
 		}
 		
@@ -103,7 +110,7 @@ class node_select_component extends input_form_element
 		if($this->get_attribute('reset_button'))
 		{
 		  echo '&nbsp;';
-		  echo "<input class='button' type='button' onclick='node_reset_{$md5id}()' value='Reset'>";
+		  echo "<input class='button' type='button' onclick='node_reset_{$md5id}()' value='" . strings :: get('reset'). "'>";
 		}
 
 	}

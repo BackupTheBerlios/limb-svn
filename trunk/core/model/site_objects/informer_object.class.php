@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: informer_object.class.php 122 2004-04-06 14:09:01Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/period_object.class.php');
 
 class informer_object extends period_object
 {
-	function informer_object()
-	{
-		parent :: period_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

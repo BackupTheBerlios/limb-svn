@@ -11,20 +11,22 @@
 require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
+require_once(LIMB_DIR . 'core/lib/validators/rules/tree_node_id_rule.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 
 class form_edit_site_object_action extends form_site_object_action
 {
 	function _init_validator()
 	{
-		if($this->object->is_auto_identifier())
-			return;
-			
-		$this->validator->add_rule(new required_rule('identifier'));
-		
 		if(!$object_data = fetch_mapped_by_url())
 			return;
-
+	
+		if($this->object->is_auto_identifier())
+			return;
+		
+		$this->validator->add_rule(new tree_node_id_rule('parent_node_id'));	
+		$this->validator->add_rule(new required_rule('identifier'));
+		
 		if(($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
 			$parent_node_id = $object_data['parent_node_id'];
 		
@@ -36,7 +38,7 @@ class form_edit_site_object_action extends form_site_object_action
 		$object_data =& fetch_mapped_by_url();
 
 		$data = array();
-		complex_array :: map(array_flip($this->definition['datamap']), $object_data, $data);
+		complex_array :: map(array_flip($this->datamap), $object_data, $data);
 		
 		$this->dataspace->import($data);
 	}
@@ -51,7 +53,7 @@ class form_edit_site_object_action extends form_site_object_action
 		$data_to_import['identifier'] = $object_data['identifier'];
 		$data_to_import['title'] = $object_data['title'];
 		
-		complex_array :: map($this->definition['datamap'], $this->dataspace->export(), $data_to_import);
+		complex_array :: map($this->datamap, $this->dataspace->export(), $data_to_import);
 		
 		if (!isset($data_to_import['status']))
 			$data_to_import['status'] = $object_data['status'];

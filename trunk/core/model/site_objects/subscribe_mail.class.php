@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/lib/mail/send_html_mail.inc.php');
 
 class subscribe_mail extends content_object
 {
-	function subscribe_mail()
-	{
-		parent :: content_object();
-	}
-
 	function _define_class_properties()
 	{
 		return array(

@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: faq_folder.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class faq_folder extends site_object
 {
-	function faq_folder()
-	{
-		parent :: site_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: site_map.class.php 239 2004-02-29 19:00:20Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class site_map extends site_object
 {
-	function site_map()
-	{
-		parent :: site_object();
-	}
-
 	function _define_class_properties()
 	{
 		return array(
@@ -25,7 +20,6 @@ class site_map extends site_object
 			'controller_class_name' => 'site_map_controller',
 		);
 	}
-	
 }
 
 ?>

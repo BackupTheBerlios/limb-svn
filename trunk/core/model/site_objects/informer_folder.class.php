@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: informer_folder.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class informer_folder extends site_object
 {
-	function informer_folder()
-	{
-		parent :: site_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return  array(
@@ -26,7 +21,6 @@ class informer_folder extends site_object
 			'icon' => '/shared/images/folder.gif'
 		);
 	}
-
 }
 
 ?>

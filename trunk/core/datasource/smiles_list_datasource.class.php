@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/model/chat/smiles.class.php');
 
 class smiles_list_datasource extends datasource
 {
-	function smiles_list_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(&$counter, $params=array())
 	{
 		$smiles =& new smiles();

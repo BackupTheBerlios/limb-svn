@@ -75,9 +75,9 @@ class tree
 		return $this->_tree_driver->count_children($id);
 	}
 	
-	function create_root_node($values, $id = false)
+	function create_root_node($values)
 	{
-		return $this->_tree_driver->create_root_node($values, $id);
+		return $this->_tree_driver->create_root_node($values);
 	}
 	
 	function create_sub_node($id, $values)

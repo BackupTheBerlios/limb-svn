@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/fetch_tree_datasource.class.php');
 
 class group_object_access_datasource extends fetch_tree_datasource
 {
-	function group_object_access_datasource()
-	{
-		parent :: fetch_tree_datasource();
-	}
-
 	function & _fetch(&$counter, $params)
 	{
 		$tree_array = parent :: _fetch($counter, $params);

@@ -13,12 +13,6 @@ require_once(LIMB_DIR . 'core/model/shop/cart_item.class.php');
 
 class catalog_object extends content_object
 {
-	function catalog_object()
-	{
-		parent :: content_object();
-	}
-	
-
 	function _define_class_properties()
 	{
 		return array(

@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class poll_all_results_datasource extends datasource
 {
-	function poll_all_results_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(& $counter, $params = array())
 	{
 		$questions =& $this->_load_all_questions($params);

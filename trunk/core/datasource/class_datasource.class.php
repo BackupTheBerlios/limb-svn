@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class class_datasource extends datasource
 {
-	function class_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(&$counter, $params=array())
 	{
 		$counter = 0;

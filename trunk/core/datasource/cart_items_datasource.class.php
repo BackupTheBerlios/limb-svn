@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 
 class cart_items_datasource extends datasource
 {
-	function cart_items_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(&$counter, $params=array())
 	{
 		$cart =& cart :: instance();

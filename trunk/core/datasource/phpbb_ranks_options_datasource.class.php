@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class phpbb_ranks_options_datasource extends datasource
 {
-	function phpbb_ranks_options_datasource()
-	{
-		parent :: datasource();
-	}
-	
 	function get_default_option()
 	{
 		return 0;

@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/period_object.class.php');
 
 class announce_object extends period_object
 {
-	function announce_object()
-	{
-		parent :: period_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: announce_folder.class.php 239 2004-02-29 19:00:20Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class cart_object extends site_object
 {
-	function cart_object()
-	{
-		parent :: site_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return  array(

@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_event.class.php 37 2004-03-13 10:36:02Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class stats_report extends site_object
 {
-	function stats_report()
-	{
-		parent :: site_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

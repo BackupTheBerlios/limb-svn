@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class fetch_datasource extends datasource
 {
-	function fetch_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(&$counter, $params=array())
 	{
 		$arr =& $this->_fetch($counter, $params);

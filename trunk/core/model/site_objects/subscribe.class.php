@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
 			
 class subscribe extends site_object
 {
-	function subscribe()
-	{
-		parent :: site_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

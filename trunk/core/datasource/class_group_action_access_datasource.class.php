@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class class_group_action_access_datasource extends datasource
 {
-	function class_group_action_access_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset($params = array())
 	{
 		if(!isset($_REQUEST['class_id']))

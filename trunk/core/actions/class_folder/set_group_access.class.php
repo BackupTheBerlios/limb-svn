@@ -13,11 +13,11 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_no_reload_response.clas
 
 class set_group_access extends form_action
 {
-	function set_group_access($name='set_group_access')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'set_group_access';
 	}
-	
+   
 	function _init_dataspace()
 	{
 		if (!isset($_REQUEST['class_id']))

@@ -47,6 +47,10 @@ class form_element extends tag_component
 	*/
 	var $error_style;
 	
+	/**
+	* Whether form name prefix is required
+	*
+	*/
 	var $attach_form_prefix = true;
 
 	/**
@@ -76,6 +80,13 @@ class form_element extends tag_component
 			return str_replace('_', ' ', $this->attributes['name']);
 		} 
 	} 
+	
+	function attach_form_prefix($state = true)
+	{
+	  $prev = $this->attach_form_prefix;
+	  $this->attach_form_prefix = $state;
+	  return $prev;
+	}
 
 	/**
 	* Returns true if the form element is in an error state

@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class main_page extends content_object
 {
-	function main_page()
-	{
-		parent :: content_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

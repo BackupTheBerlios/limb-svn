@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: last_objects_datasource.class.php 100 2004-03-30 12:21:26Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
 
 class presentation_datasource extends fetch_sub_branch_datasource
 {
-	function presentation_datasource()
-	{
-		parent :: fetch_sub_branch_datasource();
-	}
-
 	function & _fetch(&$counter, $params)
 	{
 		$items =& parent :: _fetch($counter, $params);

@@ -14,11 +14,6 @@ define ('DEFAULT_RANDOM_LIMIT', 3);
 
 class random_objects_datasource extends fetch_datasource
 {
-	function random_objects_datasource()
-	{
-		parent :: fetch_datasource();
-	}
-
 	function & _fetch(&$counter, $params = array())
 	{
 		$limit = DEFAULT_RANDOM_LIMIT;

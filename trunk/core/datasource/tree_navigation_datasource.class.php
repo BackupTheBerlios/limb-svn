@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/fetch_tree_datasource.class.php');
 
 class tree_navigation_datasource extends fetch_tree_datasource
 {
-	function tree_navigation_datasource()
-	{
-		parent :: fetch_tree_datasource();
-	}
-
 	function & _fetch(&$counter, $params)
 	{
 		$result =& parent :: _fetch($counter, $params);

@@ -5,10 +5,9 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: db_table.class.php 423 2004-02-10 15:03:21Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 

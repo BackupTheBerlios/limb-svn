@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/media_object.class.php');
 
 class file_object extends media_object
 {	
-	function file_object()
-	{
-		parent :: media_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

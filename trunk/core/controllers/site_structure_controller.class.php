@@ -43,6 +43,7 @@ class site_structure_controller extends site_object_controller
 				'node_select' => array(
 						'permissions_required' => 'r',
 						'action_name' => strings :: get('select_node', 'site_structure'),
+						'action_path' => '/site_structure/node_select_action',
 						'template_path' => '/site_structure/node_select.html',
 				),
 				'save_priority' => array(

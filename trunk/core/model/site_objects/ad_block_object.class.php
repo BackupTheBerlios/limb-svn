@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class ad_block_object extends content_object
 {
-	function ad_block_object()
-	{
-		parent :: content_object();
-	}
-
 	function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(

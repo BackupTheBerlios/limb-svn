@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
 class user_membership_datasource extends datasource
 {
-	function user_membership_datasource()
-	{
-		parent :: datasource();
-	}
-
 	function & get_dataset(&$counter, $params = array())
 	{
 		$user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);

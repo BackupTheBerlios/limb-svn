@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_no_reload_response.clas
 
 class set_group_access_template_action extends form_action
 {
-	function set_group_access_template_action($name='set_group_access_template')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'set_group_access_template';
 	}
 	
 	function _init_dataspace()

@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/period_object.class.php');
 
 class period_news_object extends period_object
 {
-	function period_news_object()
-	{
-		parent :: period_object();
-	}
-	
 	function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(

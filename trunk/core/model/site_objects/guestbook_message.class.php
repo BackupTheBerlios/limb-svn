@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: guestbook_message.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class guestbook_message extends content_object
 {
-	function guestbook_message()
-	{
-		parent :: content_object();
-	}
-	
 	function _define_class_properties()
 	{
 		return array(

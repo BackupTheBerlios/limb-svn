@@ -12,12 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class pricelist_object extends content_object
 {
-	function pricelist_object()
-	{
-		parent :: content_object();
-	}
-	
-
 	function _define_class_properties()
 	{
 		return array(

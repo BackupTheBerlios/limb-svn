@@ -81,8 +81,8 @@
 			preview_path_obj.nodeValue = node.path;
 			preview_class_name_obj.nodeValue =  node.class_name;
 
-			if(node.parent_node_id)
-				start_path ='/root/?node_id=' + node.parent_node_id;				
+			if(node.node_id)
+				start_path ='/root/?node_id=' + node.node_id;				
 			else if(node.start_path)
 				start_path = node.start_path;
 			
@@ -170,8 +170,8 @@
 <core:LITERAL>
 		<tr>
 			<td align=right>
-				<input type='button' name='_insert_button' value='Insert' class='button' onclick='insert_node()' disabled=1 >
-				<input type='button' value="Close" class='button' onclick='window.close()'>
+				<input type='button' name='_insert_button' value='</core:LITERAL><locale:STRING name='insert'><core:LITERAL>' class='button' onclick='insert_node()' disabled=1 >
+				<input type='button' value="</core:LITERAL><locale:STRING name='close'><core:LITERAL>" class='button' onclick='window.close()'>
 				</td>
 		</tr>
 		</table>	

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: random_objects_datasource.class.php 100 2004-03-30 12:21:26Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
@@ -14,11 +14,6 @@ define ('DEFAULT_BRANCH_RANDOM_LIMIT', 3);
 
 class random_branch_objects_datasource extends fetch_sub_branch_datasource
 {
-	function random_branch_objects_datasource()
-	{
-		parent :: fetch_sub_branch_datasource();
-	}
-
 	function & _fetch(&$counter, $params = array())
 	{
 		$limit = DEFAULT_BRANCH_RANDOM_LIMIT;

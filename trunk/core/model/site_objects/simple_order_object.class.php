@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: news_object.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class simple_order_object extends content_object
 {
-	function simple_order_object()
-	{
-		parent :: content_object();
-	}
-
 	function _define_class_properties()
 	{
 		return array(

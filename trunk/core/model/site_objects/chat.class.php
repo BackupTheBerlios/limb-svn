@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class chat extends site_object
 {
-	function chat()
-	{
-		parent :: site_object();
-	}
-
 	function _define_class_properties()
 	{
 		return array(

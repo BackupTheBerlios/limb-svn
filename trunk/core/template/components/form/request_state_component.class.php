@@ -9,16 +9,22 @@
 *
 ***********************************************************************************/
 
-
 require_once(LIMB_DIR . 'core/template/components/form/input_hidden_component.class.php');
 
 class request_state_component extends input_hidden_component
 { 
-	var $attach_form_prefix = false;
-	
 	function get_value()
-	{
-		return isset($_REQUEST[$this->attributes['name']]) ? $_REQUEST[$this->attributes['name']] : '';
-	}
+	{	
+		$form =& $this->find_parent_by_class('form_component');
+				
+		if($form->is_first_time())
+		{				
+		  return isset($_REQUEST[$this->attributes['name']]) ? $_REQUEST[$this->attributes['name']] : '';
+		}
+		else
+		{
+		  return parent :: get_value();
+		}
+	}	
 } 
 ?>
