@@ -57,7 +57,7 @@ interface tree
 
   public function expand_node($id);
 
-  public function collapse_node($id);
+  public function collapse_node($id);  
 } 
 
 ?>

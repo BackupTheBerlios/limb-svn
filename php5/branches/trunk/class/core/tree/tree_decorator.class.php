@@ -168,7 +168,6 @@ class tree_decorator implements tree
   	else
   		return false;
   }
-
 } 
 
 ?>

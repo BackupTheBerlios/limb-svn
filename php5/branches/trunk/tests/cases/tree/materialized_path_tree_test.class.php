@@ -9,6 +9,8 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_tree.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 
 define('MATERIALIZED_PATH_TEST_TABLE', 'test_materialized_path_tree');
 
@@ -658,7 +660,7 @@ class materialized_path_tree_test extends LimbTestCase
 		$sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test1', 'object_id' => 20));
 		$sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test1', 'object_id' => 10));
 		$sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test2', 'object_id' => 10));
-		
+		 
 		$nodes = $this->driver->get_nodes_by_ids(
 			array(
 				$root_id, 
@@ -666,32 +668,30 @@ class materialized_path_tree_test extends LimbTestCase
 				$sub_node_id_1_1, 
 				$sub_node_id_1_1_2, 
 				$sub_node_id_1_1_1,
-				-1
+        -1
 			)
 		);
 		
 		$this->assertEqual(sizeof($nodes), 5);
 		$this->_check_result_nodes_array($nodes,  __LINE__);
-
+ 
 		$nodes = $this->driver->get_nodes_by_ids(
 			array(
 				$sub_node_id_1,
 				$sub_node_id_1_1, 
 				$sub_node_id_1_1_1,
-				-1
+        -1
 			)
 		);
 		 
 		$this->assertEqual(sizeof($nodes), 3);
 		$this->_check_result_nodes_array($nodes,  __LINE__);
-
+    
 		$nodes = $this->driver->get_nodes_by_ids(
 			array()
 		);
 		
 		$this->assertEqual(sizeof($nodes), 0);
-		$this->_check_result_nodes_array($nodes,  __LINE__);
-
 	}
 	
 	function _check_result_nodes_array($nodes, $line='')
