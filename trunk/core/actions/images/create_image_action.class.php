@@ -30,7 +30,7 @@ class create_image_action extends form_create_site_object_action
 		
 		$ini =& get_ini('image_variations.ini');
 		
-		$image_variations = $ini->get_named_array();
+		$image_variations = $ini->get_all();
 
 		foreach($image_variations as $variation => $variation_data)
 		{
@@ -59,7 +59,7 @@ class create_image_action extends form_create_site_object_action
 		
 		$ini =& get_ini('image_variations.ini');
 		
-		$image_variations = $ini->get_named_array();
+		$image_variations = $ini->get_all();
 		
 		foreach($image_variations as $variation => $variation_data)
 		{

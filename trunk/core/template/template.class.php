@@ -72,7 +72,7 @@ class template extends component
 		
 		if (!isset($GLOBALS['template_render'][$this->codefile]))
 		{
-			if (get_ini_option('config.ini', 'templates', 'force_compile'))
+			if (get_ini_option('config.ini', 'force_compile', 'templates'))
 			{
 			  include_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);

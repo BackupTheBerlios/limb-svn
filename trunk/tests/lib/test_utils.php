@@ -39,7 +39,7 @@ function clear_testing_ini()
   
   clearstatcache();  
   
-	$instance_name = 'global_ini_instance_' . VAR_DIR . '_' . $ini_file;
+	$instance_name = 'global_ini_instance_' . md5(VAR_DIR .  $ini_file);
   
   if(isset($GLOBALS[$instance_name]))
 	  unset($GLOBALS[$instance_name]);

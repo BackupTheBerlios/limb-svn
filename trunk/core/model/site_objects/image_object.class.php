@@ -27,7 +27,7 @@ class image_object extends media_object
 	{
 		$ini =& get_ini('image_variations.ini');
 		
-		$image_variations = $ini->get_named_array();
+		$image_variations = $ini->get_all();
 		
 		$definition = array();
 		
@@ -332,7 +332,7 @@ class image_object extends media_object
 	{
 		$ini =& get_ini('image_variations.ini');
 		
-		return $ini->get_named_array();
+		return $ini->get_all();
 	}
 	
 	function _insert_variation($variation_name, $tmp_file_path, $file_name, $mime_type)

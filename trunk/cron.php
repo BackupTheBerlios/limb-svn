@@ -21,7 +21,7 @@ require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
 
 $cron_scripts_dir = $site_path . '/cron/';
-$ini =& ini::instance('cron.ini', $cron_scripts_dir, false);
+$ini =& ini::instance($cron_scripts_dir . 'cron.ini', false);
 
 $cron_last_run_file = $cron_scripts_dir . '.scripts_last_run';
 
@@ -37,7 +37,7 @@ if(file_exists($cron_last_run_file))
 	fclose($fp);
 }
 
-$scripts =& $ini->variable('cron', 'scripts');
+$scripts =& $ini->get_option('scripts', 'cron');
 
 foreach($scripts as $id => $script_string)
 {

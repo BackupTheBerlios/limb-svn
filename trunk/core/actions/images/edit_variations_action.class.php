@@ -30,7 +30,7 @@ class edit_variations_action extends form_edit_site_object_action
 		
 		$ini =& get_ini('image_variations.ini');
 		
-		$image_variations = $ini->get_named_array();
+		$image_variations = $ini->get_all();
 
 		foreach($image_variations as $variation => $variation_data)
 		{
@@ -57,7 +57,7 @@ class edit_variations_action extends form_edit_site_object_action
 		
 		$ini =& get_ini('image_variations.ini');
 		
-		$image_variations = $ini->get_named_array();
+		$image_variations = $ini->get_all();
 		
 		foreach($image_variations as $variation => $variation_data)
 		{

@@ -53,7 +53,7 @@ function load_tags($tag_dir)
 
 function load_system_tags()
 {
-	$path = get_ini_option('compiler.ini', 'tags', 'path');
+	$path = get_ini_option('compiler.ini', 'path', 'tags');
 	foreach ($path as $tagpath)
 	{
 		load_tags(LIMB_DIR . 'core/template/tags/' . $tagpath);
@@ -64,7 +64,7 @@ load_system_tags();
 
 function load_project_tags()
 {
-	$path = get_ini_option('config.ini', 'project_tags', 'path');
+	$path = get_ini_option('config.ini', 'path', 'project_tags');
 	if (!$path)
 		return;
 		

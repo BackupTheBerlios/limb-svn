@@ -19,7 +19,7 @@ class display_image_action extends action
 		
 		$ini =& get_ini('image_variations.ini');
 		
-		$image_variations = $ini->get_named_array();
+		$image_variations = $ini->get_all();
 		
 		foreach($image_variations as $key => $value)
 		{

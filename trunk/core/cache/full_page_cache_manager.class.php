@@ -192,7 +192,7 @@ class full_page_cache_manager
     $ini =& get_ini('full_page_cache.ini');
     $this->rules = array();
     
-    $groups = $ini->get_named_array();
+    $groups = $ini->get_all();
 
     foreach($groups as $group => $data)
     {

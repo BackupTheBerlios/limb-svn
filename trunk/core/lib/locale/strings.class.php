@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
 
 class strings
@@ -39,11 +39,11 @@ class strings
 			$this->_ini_objects[$path] =& $ini;					
 		}
 		
-		if(!($value = $ini->variable('constants', $key)))
+		if(!($value = $ini->get_option($key, 'constants')))
 	  {
-		  if($ini->has_variable('extends', 'filename'))
+		  if($ini->has_option('filename', 'extends'))
 		  {
-		  	$extend_filename = $ini->variable('extends', 'filename');
+		  	$extend_filename = $ini->get_option('filename', 'extends');
 		  	$value = $this->_get_recursive($key, $extend_filename, $locale_id);
 		  }
 		}

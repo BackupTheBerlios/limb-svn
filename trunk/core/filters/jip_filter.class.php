@@ -27,7 +27,7 @@ class jip_filter extends intercepting_filter
     {
       $ini =& get_ini('jip_groups.ini');
       
-      if($user->is_in_groups(array_keys($ini->group('groups'))))
+      if($user->is_in_groups(array_keys($ini->get_group('groups'))))
         $fetcher->set_jip_status(true);
     }
 

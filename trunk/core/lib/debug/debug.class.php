@@ -34,7 +34,6 @@ require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
 require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
 require_once(LIMB_DIR . 'core/lib/util/log.class.php');
-require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
 
 class debug
 { 
@@ -343,6 +342,7 @@ class debug
 	
 	function _send_mail($description, $verbosity_level)
 	{
+		include_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
 		
 		$title = '';
 		$headers = array();
@@ -386,7 +386,6 @@ class debug
 			send_plain_mail(array(DEVELOPER_EMAIL), 'cli' , $title, $message, $headers);
 		else		
 			send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message, $headers);
-
 	}
 
 	/*
