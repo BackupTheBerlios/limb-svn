@@ -1,19 +1,18 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
-
-<span class=jip>
 <fetch:MAPPED>
+<span class=jip>
 <core:INCLUDE file="jip_actions/normal.html">
-</fetch:MAPPED>
 </span>
+</fetch:MAPPED>
+<br>
 
-<fetch:SUB_BRANCH target='documents' navigator="pager" >
-  <core:PARAMETER name='loader_class_name' value='document' >
-  <core:PARAMETER name='order' value='priority=ASC'>
+<fetch:SUB_BRANCH target='answers'>
+	<core:PARAMETER name='loader_class_name' value='poll_answer'>
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
-<core:INCLUDE file="pager.html">
 
-<grid:LIST id='documents'>
+<grid:LIST id='answers'>
 <table>
 <tr><td colspan='5' class='btitle1' height='3'></td></tr>
 <tr>
@@ -30,7 +29,7 @@
   <td><core:INCLUDE file="published_status.html"></td>
   <td jip='object'>
     <core:INCLUDE file="/admin/list_item_hint.html">
-    <a href="{$path}?action=admin_display">{$title}</a>
+    {$title}
   </td>
   <td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
@@ -47,4 +46,3 @@
 </tr>
 </table>
 </grid:LIST>
-
