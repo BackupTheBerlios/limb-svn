@@ -57,7 +57,7 @@ class stats_referer
   function _get_existing_referer_record_id($uri)
   {
     $this->db->sql_select('sys_stat_referer_url', '*',
-      "referer_url='" . $uri . "'");
+      "referer_url='" . $this->db->escape($uri) . "'");
     if ($referer_data = $this->db->fetch_row())
       return $referer_data['id'];
     else
@@ -67,7 +67,8 @@ class stats_referer
   function _insert_referer_record($uri)
   {
     $this->db->sql_insert('sys_stat_referer_url',
-      array('referer_url' => $uri));
+      array('referer_url' => "$uri"));
+
     return $this->db->get_sql_insert_id('sys_stat_referer_url');
   }
 
