@@ -67,7 +67,7 @@ class form_edit_site_object_action extends form_site_object_action
 		$data_to_import['identifier'] = $object_data['identifier'];
 		$data_to_import['title'] = $object_data['title'];
 		
-		complex_array :: map($this->datamap, $this->dataspace->export(), $data_to_import);
+		$this->_valid_perform_prepare_data($data_to_import);
 		
 		if (!isset($data_to_import['status']))
 			$data_to_import['status'] = $object_data['status'];
@@ -100,6 +100,11 @@ class form_edit_site_object_action extends form_site_object_action
 		  $result = $this->object->update(true);
 		
 		return ($result !== false) ? true : false;
+	}
+
+	function _valid_perform_prepare_data(&$data)
+	{
+		complex_array :: map($this->datamap, $this->dataspace->export(), $data);
 	}
 	
 	function _handle_changed_identifier($new_identifier)
