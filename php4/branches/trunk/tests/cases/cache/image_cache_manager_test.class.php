@@ -464,6 +464,42 @@ class image_cache_manager_test extends LimbTestCase
       IMAGE_CACHE_WEB_DIR . "1icon.jpg' border=\"0\"></td>");
   }
 
+  function test_process_content_img_and_background_escaped_amp()
+  {
+    $c = '<img src="/root?node_id=1&amp;thumbnail" alt="BLABLA"><br><td width="1" background="/root?node_id=1&amp;icon" border="0"></td>';
+
+    $this->cache_manager2->expectCallCount('_is_image_cached', 2);
+    $this->cache_manager2->setReturnvalue('_is_image_cached', false);
+
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',
+      array(
+        1 => array(
+          'identifier' => 'test_image',
+          'variations' => array(
+            'thumbnail' => array(
+              'media_id' => 200,
+              'mime_type' => 'image/jpeg'
+            ),
+            'icon' => array(
+              'media_id' => 300,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )
+      )
+    );
+
+    $this->cache_manager2->expectArgumentsAt(0, '_cache_media_file', array(200, '1thumbnail.jpg'));
+    $this->cache_manager2->expectArgumentsAt(1, '_cache_media_file', array(300, '1icon.jpg'));
+
+    $this->cache_manager2->process_content($c);
+
+    $this->assertEqual($c, "<img src='" .
+      IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg' alt=\"BLABLA\"><br><td width=\"1\" background='" .
+      IMAGE_CACHE_WEB_DIR . "1icon.jpg' border=\"0\"></td>");
+  }
+
   function test_write_cached_file()
   {
     $c = '<p><img alt="test" src="/root?node_id=1&icon" border="0"></p>';
