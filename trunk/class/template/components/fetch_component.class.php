@@ -31,10 +31,10 @@ class fetch_component extends component
 		
 		$request = request :: instance();
 		
-		if ($version = $request->get_attribute('version'))
+		if ($version = $request->get('version'))
 		{
 			$site_object = site_object_factory :: create($object_arr['class_name']);
-			$site_object->import_attributes($object_arr);
+			$site_object->merge($object_arr);
 			$object_arr = $site_object->fetch_version((int)$version);
 		}
 		

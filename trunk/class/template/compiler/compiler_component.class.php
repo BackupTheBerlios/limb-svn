@@ -98,7 +98,7 @@ class compiler_component
 	* @return void 
 	* @access protected 
 	*/
-	function set_attributes($attrib)
+	function sets($attrib)
 	{
 		$this->attributes = $attrib;
 	} 
@@ -111,7 +111,7 @@ class compiler_component
 	*/
 	function remove_attribute($attrib) 
 	{
-  	unset($this->attributes[strtolower($attrib)]);
+  unset($this->attributes[strtolower($attrib)]);
 	}
 	
 	function has_attribute($attrib) 
@@ -190,7 +190,7 @@ class compiler_component
 			$child = &$this->children[$key];
 			if ($child->get_server_id() == $server_id)
 			{
-				unset($this->children[$key]);
+			unset($this->children[$key]);
 				return $child;
 			} 
 		}

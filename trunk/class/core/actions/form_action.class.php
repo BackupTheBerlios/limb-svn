@@ -30,7 +30,7 @@ class form_action extends action
 	{
 		if($this->name)
 		{
-		  if($arr = $request->get_attribute($this->name))
+		  if($arr = $request->get($this->name))
 		  {		  
 			  return (isset($arr['submitted']) ? false : true);
 			}
@@ -38,7 +38,7 @@ class form_action extends action
 		}
 		else
 		{
-		  $res = $request->get_attribute('submitted');
+		  $res = $request->get('submitted');
 			return empty($res);
 		}
 	} 
@@ -104,10 +104,10 @@ class form_action extends action
 	
 	function _transfer_dataspace(&$request)
 	{	
-		if ($arr = $request->get_attribute($this->name))
+		if ($arr = $request->get($this->name))
 			$this->dataspace->import($arr);
 		else
-			$this->dataspace->import($request->export_attributes());
+			$this->dataspace->import($request->export());
 	}
 
 	function _process_transfered_dataspace()

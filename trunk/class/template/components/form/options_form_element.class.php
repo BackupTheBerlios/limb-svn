@@ -65,7 +65,7 @@ class options_form_element extends container_form_element
 	* @return void 
 	* @access protected 
 	*/
-	function set_attribute_renderer($option_renderer)
+	function set_renderer($option_renderer)
 	{
 		$this->option_renderer = $option_renderer;
 	} 

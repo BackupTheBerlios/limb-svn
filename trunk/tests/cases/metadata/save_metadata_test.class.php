@@ -35,7 +35,7 @@ class save_metadata_test extends LimbTestCase
   	
   	$o =& site_object_factory :: create('site_object');
   	
-  	$o->import_attributes($metadata);
+  	$o->merge($metadata);
   	$result_id = $o->save_metadata();
   	
   	$this->assertNotNull($result_id);

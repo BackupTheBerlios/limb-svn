@@ -34,7 +34,7 @@ class tree_sorter
   		if($item[$parent_hash] == $parent_id)
   		{
   			$children[] = $item;
-  			unset($tree_array[$index]);
+  		unset($tree_array[$index]);
   		}
   	}
 

@@ -212,7 +212,7 @@ class fs
           $items = array_merge($items, $new_items);
           $total_items = array_merge($total_items, $new_items);
           
-          unset($new_items);
+         unset($new_items);
         }
       }
     }

@@ -22,7 +22,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 		if(isset($params['order']))
 		{
 			$order = $params['order'];
-			unset($params['order']);
+		unset($params['order']);
 		}
 		else
 			$order = array('priority' => 'ASC');

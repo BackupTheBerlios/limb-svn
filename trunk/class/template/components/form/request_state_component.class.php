@@ -21,7 +21,7 @@ class request_state_component extends input_hidden_component
 		{
 		  $request = request :: instance();
 		  
-		  if($value = $request->get_attribute($this->attributes['name']))
+		  if($value = $request->get($this->attributes['name']))
 		    return $value;
 		  else
 		    return '';

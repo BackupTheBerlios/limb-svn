@@ -72,7 +72,7 @@ class form_component extends tag_component
 			{
 				if($child =& $this->find_child($field_name))
 				{
-					if(!$label = $child->get_attribute('label'))
+					if(!$label = $child->_attribute('label'))
 						$label = $child->get_server_id();
 						
 					$array[] = array('label' => $label, 'error_message' => $error['error']);
@@ -126,7 +126,7 @@ class form_component extends tag_component
 			echo '" value="';
 			
 			if(!$value)
-				echo htmlspecialchars($this->get($var), ENT_QUOTES);
+				echo htmlspecialchars($this->get_attribute($var), ENT_QUOTES);
 			else
 				echo htmlspecialchars($value, ENT_QUOTES);
 				

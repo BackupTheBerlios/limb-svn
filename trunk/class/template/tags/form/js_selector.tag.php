@@ -31,7 +31,7 @@ class js_selector_tag extends control_tag
 		else
 			$this->attributes['name'] = $this->attributes['selector_name'];
 			
-		unset($this->attributes['selector_name']);
+	unset($this->attributes['selector_name']);
 	}
 		
 	function get_rendered_tag()
@@ -50,7 +50,7 @@ class js_selector_tag extends control_tag
 		$code->write_php("
 		
 		if ({$name} = {$parent}->get('" . $this->attributes['name']. "'))
-			{$ref}->set_attribute('name', {$name});
+			{$ref}->set('name', {$name});
 		");	
 		
 		parent :: pre_generate($code);

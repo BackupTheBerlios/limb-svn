@@ -238,7 +238,7 @@ class source_file_parser
 						$component->source_file = $this->source_file;
 						$component->starting_line_no = $this->get_line_number(); 
 						// Assign attributes to new component
-						$component->set_attributes($attrs); 
+						$component->sets($attrs); 
 						// Check for duplicate IDs
 						$this->check_server_id($parent_component, $component); 
 						// Add child to parent

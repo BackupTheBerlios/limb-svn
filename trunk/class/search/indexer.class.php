@@ -35,13 +35,13 @@ class indexer
 		$index_array = array();
 		$index_array_only_words = array();
 		
-		$attributes =& $site_object->export_attributes();
+		$attributes =& $site_object->export();
 		
 		$keys = array_keys($attributes);
 		
 		foreach($keys as $attribute_name)
 		{
-			$definition = $site_object->get_attribute_definition($attribute_name);
+			$definition = $site_object->get_definition($attribute_name);
 			
 			if (!isset($definition['search']) || !$definition['search'])
 				continue;

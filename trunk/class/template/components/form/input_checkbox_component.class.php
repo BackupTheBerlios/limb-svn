@@ -28,7 +28,7 @@ class input_checkbox_component extends form_element
 		if ($value)
 			$this->attributes['checked'] = 1;
 		else
-			unset($this->attributes['checked']);
+		unset($this->attributes['checked']);
 		
 		parent :: render_attributes();
 	} 

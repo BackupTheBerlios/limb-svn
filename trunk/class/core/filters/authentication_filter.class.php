@@ -50,7 +50,7 @@ class authentication_filter extends intercepting_filter
     	return;
     }
         
-    $actions = $object->get_attribute('actions');
+    $actions = $object->get('actions');
     
     if(!isset($actions[$action]))
     {    		

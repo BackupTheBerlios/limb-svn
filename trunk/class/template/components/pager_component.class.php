@@ -233,7 +233,7 @@ class pager_component extends component
 	{
 	  $request = request :: instance();
 	  
-		$this->current_page = $request->get_attribute($this->pager_variable .'_'. $this->get_server_id());
+		$this->current_page = $request->get($this->pager_variable .'_'. $this->get_server_id());
 			
 		if (empty($this->current_page))
 		{
@@ -371,7 +371,7 @@ class pager_component extends component
 		$params = complex_array :: array_merge($_GET, $_POST);
 		if ($page <= 1)
 		{
-			unset($params[$this->pager_variable.'_'. $this->get_server_id()]);
+		unset($params[$this->pager_variable.'_'. $this->get_server_id()]);
 		} 
 		else
 		{

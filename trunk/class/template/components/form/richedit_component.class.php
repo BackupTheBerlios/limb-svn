@@ -71,10 +71,10 @@ class richedit_component extends text_area_component
 		  $init_function = 'install_limb_full_extension(editor.config);editor.registerPlugin(TableOperations);';
 		  
 		if(!$this->get_attribute('rows'))
-		  $this->set_attribute('rows', RICHEDIT_DEFAULT_ROWS);
+		  $this->set('rows', RICHEDIT_DEFAULT_ROWS);
 
 		if(!$this->get_attribute('cols'))
-		  $this->set_attribute('cols', RICHEDIT_DEFAULT_COLS);
+		  $this->set('cols', RICHEDIT_DEFAULT_COLS);
 
 		if(!$width = $this->get_attribute('width'))
 		  $width = RICHEDIT_DEFAULT_WIDTH;

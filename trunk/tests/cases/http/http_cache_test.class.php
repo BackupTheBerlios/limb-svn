@@ -68,7 +68,7 @@ class http_cache_test extends LimbTestCase
     $query = 'query';
     
     $_SERVER['QUERY_STRING'] = $query;
-    unset($_SERVER['SCRIPT_FILENAME']);
+   unset($_SERVER['SCRIPT_FILENAME']);
     $_SERVER['PATH_TRANSLATED'] = $script;
     
     $this->cache->set_last_modified_time($time = time());
@@ -81,7 +81,7 @@ class http_cache_test extends LimbTestCase
   {
     $script = 'test';
     
-    unset($_SERVER['QUERY_STRING']);
+   unset($_SERVER['QUERY_STRING']);
     $_SERVER['SCRIPT_FILENAME'] = $script;
     
     $this->cache->set_last_modified_time($time = time());
@@ -149,7 +149,7 @@ class http_cache_test extends LimbTestCase
   {
     $etag = 'etag';
     
-    unset($_SERVER['HTTP_IF_MODIFIED_SINCE']);
+   unset($_SERVER['HTTP_IF_MODIFIED_SINCE']);
     $_SERVER['HTTP_IF_NONE_MATCH'] = $etag;
     
     $this->cache->set_last_modified_time($time = time());
@@ -162,7 +162,7 @@ class http_cache_test extends LimbTestCase
   {
     $etag = 'etag';
     
-    unset($_SERVER['HTTP_IF_MODIFIED_SINCE']);
+   unset($_SERVER['HTTP_IF_MODIFIED_SINCE']);
     $_SERVER['HTTP_IF_NONE_MATCH'] = '*';
     
     $this->cache->set_last_modified_time($time = time());

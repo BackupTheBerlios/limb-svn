@@ -441,7 +441,7 @@ class mail_rfc822
 		} 
 		if ($route === $route_addr)
 		{
-			unset($route);
+		unset($route);
 			$addr_spec = $route_addr;
 			if (($addr_spec = $this->_validate_addr_spec($addr_spec)) === false)
 			{

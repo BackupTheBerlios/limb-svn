@@ -47,10 +47,10 @@ class action_button_tag extends button_tag
 		if(isset($this->attributes['reload_parent']))
 		{
 			$this->attributes['onclick'] .= "add_form_action_parameter(this.form, 'reload_parent', '1')";
-			unset($this->attributes['reload_parent']);
+		unset($this->attributes['reload_parent']);
 		}
 		
-		unset($this->attributes['action']);
+	unset($this->attributes['action']);
 	}
 	
 	function get_rendered_tag()

@@ -19,15 +19,17 @@ class object
     $this->_attributes =& new dataspace();	
 	}
 
-	function import_attributes($attributes, $merge=true)
-	{
-		if($merge)
-			$this->_attributes->merge($attributes);
-		else
-			$this->_attributes->import($attributes);
+	function merge($attributes)
+	{		
+	  $this->_attributes->merge($attributes);
 	}
 	
-	function export_attributes()
+	function import($attributes)
+	{
+	  $this->_attributes->import($attributes);
+	}
+		
+	function export()
 	{
 		return $this->_attributes->export();
 	}
@@ -37,22 +39,22 @@ class object
 	  return $this->_attributes->get($name) !== null;
 	}
 		
-	function get_attribute($name, $default_value=null)
+	function get($name, $default_value=null)
 	{
 		return $this->_attributes->get($name, $default_value);
 	}
 	
-	function set_attribute($name, $value)
+	function set($name, $value)
 	{
 		$this->_attributes->set($name, $value);
 	}
 
-	function unset_attribute($name)
+	function destroy($name)
 	{
 		$this->_attributes->destroy($name);
 	}
 
-	function reset_attributes()
+	function reset()
 	{
 		$this->_attributes->reset();
 	}

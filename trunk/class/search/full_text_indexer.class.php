@@ -34,14 +34,14 @@ class full_text_indexer
 		
 		$indexer->remove($site_object);
 				
-		$attributes =& $site_object->export_attributes();
+		$attributes =& $site_object->export();
 		
 		reset($attributes);
 		$keys = array_keys($attributes);
 		
 		foreach($keys as $attribute_name)
 		{
-			$definition = $site_object->get_attribute_definition($attribute_name);
+			$definition = $site_object->get_definition($attribute_name);
 			
 			if (!isset($definition['search']) || !$definition['search'])
 				continue;

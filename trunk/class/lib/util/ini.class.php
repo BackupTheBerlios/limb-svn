@@ -150,7 +150,7 @@ class ini
 			
 			$this->charset = $charset;
 			$this->group_values = $group_values;
-			unset($group_values);		
+		unset($group_values);		
 		} 
 		else
 		{
@@ -232,7 +232,7 @@ class ini
 	function _parse_string(&$contents)
 	{
 		$lines =& preg_split("#\r\n|\r|\n#", $contents);
-		unset($contents);
+	unset($contents);
 
 		if ($lines === false)
 		{

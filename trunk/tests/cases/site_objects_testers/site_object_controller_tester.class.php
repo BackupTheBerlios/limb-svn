@@ -143,7 +143,7 @@ class site_object_controller_tester extends LimbTestCase
 		$rules = $validator->get_rules();
 		$site_object = $action->get_site_object();
 		
-		$attributes_definition = $site_object->get_attributes_definition();
+		$attributes_definition = $site_object->gets_definition();
 		
 		foreach($datamap as $src_field => $dst_field)
 		{

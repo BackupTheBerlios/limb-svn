@@ -24,7 +24,7 @@ class image_select_component extends input_form_element
 	
 	function render_image_select()
 	{ 
-		$id = $this->get_attribute('id');	
+		$id = $this->get('id');	
   	$md5id = substr(md5($id), 0, 5);
 
   	$image_node_id = $this->get_value();

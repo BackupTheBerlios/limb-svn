@@ -61,7 +61,7 @@ foreach($nodes as $node)
 	
 	$object_data = current($site_object->fetch_by_ids(array($node['object_id'])));
 	
-	$site_object->import_attributes($object_data);
+	$site_object->merge($object_data);
 	
 	$counter++;
 	

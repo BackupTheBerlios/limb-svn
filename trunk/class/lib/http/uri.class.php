@@ -313,7 +313,7 @@ class uri
   function remove_query_item($name)
   {
     if (isset($this->_query_items[$name]))
-    	unset($this->_query_items[$name]);
+    unset($this->_query_items[$name]);
   }    
   
   /**
@@ -393,20 +393,20 @@ class uri
     {
       if ($path[$i] == '.') 
       {
-        unset($path[$i]);
+       unset($path[$i]);
         $path = array_values($path);
         $i--;
       } 
       elseif ($path[$i] == '..' && ($i > 1 || ($i == 1 && $path[0] != '') ) ) 
       {
-        unset($path[$i]);
-        unset($path[$i-1]);
+       unset($path[$i]);
+       unset($path[$i-1]);
         $path = array_values($path);
         $i -= 2;
       } 
       elseif ($path[$i] == '..' && $i == 1 && $path[0] == '') 
       {
-        unset($path[$i]);
+       unset($path[$i]);
         $path = array_values($path);
         $i--;
 			}

@@ -51,7 +51,7 @@ class form_create_site_object_action extends form_site_object_action
 		
 		$this->_valid_perform_prepare_data($data);
 		
-		$this->object->import_attributes($data);
+		$this->object->merge($data);
 
 		if($this->_create_object_operation() === false)
 		{
@@ -83,7 +83,7 @@ class form_create_site_object_action extends form_site_object_action
 
 		$parent_object =& site_object_factory :: instance($parent_data['class_name']);
 		
-		$parent_object->import_attributes($parent_data);
+		$parent_object->merge($parent_data);
 
 		$access_policy =& access_policy :: instance();
 		

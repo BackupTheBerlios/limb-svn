@@ -15,7 +15,7 @@ class js_checkbox_component extends input_form_element
 {
 	function render_attributes()
 	{
-		unset($this->attributes['value']);
+	unset($this->attributes['value']);
 		parent :: render_attributes();
 	}
 	

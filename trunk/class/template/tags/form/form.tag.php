@@ -108,7 +108,7 @@ class form_tag extends server_tag_component_tag
 		$v2 = '$' . $code->get_temp_variable();
 		
 		$code->write_php($v1 . ' =& request :: instance();');
-		$code->write_php("if({$v2} = {$v1}->get_attribute('node_id')){");
+		$code->write_php("if({$v2} = {$v1}->get('node_id')){");
 		$code->write_php("echo \"<input type='hidden' name='node_id' value='{$v2}'>\";}");
 	}
 			

@@ -170,7 +170,7 @@ class tree_db_driver extends tree_driver
 	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
 	    		 array('param' => $field)
 	    	);
-				unset($values[$field]);
+			unset($values[$field]);
 				continue;
 			}
 			 
@@ -181,7 +181,7 @@ class tree_db_driver extends tree_driver
     		 array('value' => $field)
 	    	);
 
-				unset($values[$field]);
+			unset($values[$field]);
 			} 
 		} 
 	} 

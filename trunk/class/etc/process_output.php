@@ -94,7 +94,7 @@ function _highlite_callback($matches)
 		if(!$is_closing)
 			$tag_context[$tag] = 1;
 		elseif(isset($tag_context[$tag]))
-			unset($tag_context[$tag]);				
+		unset($tag_context[$tag]);				
 		
 		if(	isset($tag_context['head']) || 
 				isset($tag_context['textarea']) ||

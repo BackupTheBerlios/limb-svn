@@ -143,7 +143,7 @@ class site_object_manipulation_test extends LimbTestCase
   	$this->object->set_identifier('node_test');
 
   	$id = $this->object->create();
-  	$node_id = $this->object->get_attribute('node_id');
+  	$node_id = $this->object->get('node_id');
 
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test');
@@ -178,7 +178,7 @@ class site_object_manipulation_test extends LimbTestCase
   {
   	$data['id'] = 1;
   	$data['node_id'] = $this->parent_node_id;
-  	$this->object->import_attributes($data);
+  	$this->object->merge($data);
   	
   	$result = $this->object->can_delete();
   	
@@ -189,7 +189,7 @@ class site_object_manipulation_test extends LimbTestCase
   {
   	$data['id'] = 10;
   	$data['node_id'] = $this->sub_node_id;
-  	$this->object->import_attributes($data);
+  	$this->object->merge($data);
   	
   	$this->assertTrue($this->object->can_delete(), 'object can be deleted');
   }
@@ -198,7 +198,7 @@ class site_object_manipulation_test extends LimbTestCase
   {
   	$data['id'] = 10;
   	$data['node_id'] = $this->sub_node_id;
-  	$this->object->import_attributes($data);
+  	$this->object->merge($data);
   	
   	$this->assertTrue($this->object->delete(), 'delete operation failed');
   	

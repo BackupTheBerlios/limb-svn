@@ -37,9 +37,9 @@ class radio_selector_tag extends compiler_directive_tag
 		$code->write_php("
 		if ({$value} = {$parent}->get('id'))
 		{
-			{$radio}->set_attribute('value', {$value});
-			{$radio}->set_attribute('id', {$value});
-			{$label}->set_attribute('for', {$value});
+			{$radio}->set('value', {$value});
+			{$radio}->set('id', {$value});
+			{$label}->set('for', {$value});
 		}	
 		");	
 

@@ -33,7 +33,7 @@ class search_indexer_test extends LimbTestCase
 		$this->site_object =& new Mocksite_object($this);
 		
 		$this->site_object->setReturnValue('get_id', 10);
-		$this->site_object->setReturnValue('export_attributes', 
+		$this->site_object->setReturnValue('export', 
 			array(
 				'id' => 10, 
 				'title' => "     <b>this</b><p><br>is 
@@ -50,7 +50,7 @@ class search_indexer_test extends LimbTestCase
 		);
 			
 		foreach($attributes_definition as $id => $definition)
-			$this->site_object->setReturnValue('get_attribute_definition', $definition, array($id));
+			$this->site_object->setReturnValue('get_definition', $definition, array($id));
 		
 		$this->site_object->setReturnValue('get_class_id', 5);		
 	} 
@@ -71,7 +71,7 @@ class search_indexer_test extends LimbTestCase
 	{
 		$this->site_object->expectAtLeastOnce('get_id');
 		$this->site_object->expectAtLeastOnce('get_class_id');
-		$this->site_object->expectOnce('export_attributes');
+		$this->site_object->expectOnce('export');
 
 		indexer :: add($this->site_object);
 

@@ -62,9 +62,9 @@ class content_object_manipulation_test extends site_object_manipulation_test
 	
   function test_create()
   {
-  	$this->object->set_attribute('annotation', 'news annotation');
-  	$this->object->set_attribute('content', 'news content');
-  	$this->object->set_attribute('news_date', '2004-01-02 00:00:00');
+  	$this->object->set('annotation', 'news annotation');
+  	$this->object->set('content', 'news content');
+  	$this->object->set('news_date', '2004-01-02 00:00:00');
   	
   	parent :: test_create();
   	
@@ -75,16 +75,16 @@ class content_object_manipulation_test extends site_object_manipulation_test
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
-  	$this->object->set_attribute('annotation', 'news annotation');
-  	$this->object->set_attribute('content', 'news content');
-  	$this->object->set_attribute('news_date', '2004-01-02 00:00:00');
+  	$this->object->set('annotation', 'news annotation');
+  	$this->object->set('content', 'news content');
+  	$this->object->set('news_date', '2004-01-02 00:00:00');
   	$this->object->create();
   	
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test2');
-  	$this->object->set_attribute('annotation', 'news annotation2');
-  	$this->object->set_attribute('content', 'news content2');
-  	$this->object->set_attribute('news_date', '2004-02-02 00:00:00');
+  	$this->object->set('annotation', 'news annotation2');
+  	$this->object->set('content', 'news content2');
+  	$this->object->set('news_date', '2004-02-02 00:00:00');
   	
   	$this->assertTrue($this->object->update(), 'update operation failed');
   	  	
@@ -106,18 +106,18 @@ class content_object_manipulation_test extends site_object_manipulation_test
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
-  	$this->object->set_attribute('annotation', 'news annotation');
-  	$this->object->set_attribute('content', 'news content');
-  	$this->object->set_attribute('news_date', '2004-01-02 00:00:00');
+  	$this->object->set('annotation', 'news annotation');
+  	$this->object->set('content', 'news content');
+  	$this->object->set('news_date', '2004-01-02 00:00:00');
   	$this->object->create();
   	
-  	$old_attributes = $this->object->export_attributes();
+  	$old_attributes = $this->object->export();
 
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test2');
-  	$this->object->set_attribute('annotation', 'news annotation2');
-  	$this->object->set_attribute('content', 'news content2');
-  	$this->object->set_attribute('news_date', '2004-02-02 00:00:00');
+  	$this->object->set('annotation', 'news annotation2');
+  	$this->object->set('content', 'news content2');
+  	$this->object->set('news_date', '2004-02-02 00:00:00');
   	
   	$this->assertTrue($this->object->update(), 'update operation failed');
   	
@@ -132,18 +132,18 @@ class content_object_manipulation_test extends site_object_manipulation_test
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
-  	$this->object->set_attribute('annotation', 'news annotation');
-  	$this->object->set_attribute('content', 'news content');
-  	$this->object->set_attribute('news_date', '2004-01-02 00:00:00');
+  	$this->object->set('annotation', 'news annotation');
+  	$this->object->set('content', 'news content');
+  	$this->object->set('news_date', '2004-01-02 00:00:00');
   	$this->object->create();
   	
-  	$old_attributes = $this->object->export_attributes();
+  	$old_attributes = $this->object->export();
 
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test2');
-  	$this->object->set_attribute('annotation', 'news annotation2');
-  	$this->object->set_attribute('content', 'news content2');
-  	$this->object->set_attribute('news_date', '2004-02-02 00:00:00');
+  	$this->object->set('annotation', 'news annotation2');
+  	$this->object->set('content', 'news content2');
+  	$this->object->set('news_date', '2004-02-02 00:00:00');
   	
   	$this->assertTrue($this->object->update(), 'update operation failed');
   	
@@ -154,7 +154,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
 			if(($attribute == 'version') || ($attribute == 'record_id'))
 				continue;
 			
-			$recovered_value = $this->object->get_attribute($attribute);
+			$recovered_value = $this->object->get($attribute);
 			$this->assertEqual($value, $recovered_value, "version attribute '{$attribute}' value '{$recovered_value}' not equal to expected '{$value}'");
 		}
 		
@@ -211,7 +211,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
   	$this->assertEqual(sizeof($arr), 1);
   	$record = current($arr);
 		
-		$attribs = $this->object->export_attributes();
+		$attribs = $this->object->export();
 		
 		foreach($attribs as $name => $value)
 			if (isset($record[$name]) && !in_array($name, array('id', 'object_id')))

@@ -30,7 +30,7 @@ class input_radio_component extends form_element
 		} 
 		else
 		{
-			unset($this->attributes['checked']);
+		unset($this->attributes['checked']);
 		} 
 		parent::render_attributes();
 	} 

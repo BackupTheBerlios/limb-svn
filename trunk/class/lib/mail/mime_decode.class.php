@@ -170,7 +170,7 @@ class mime_decode
           case 'message/rfc822':
             $obj = &new mime_decode($body);
             $result->parts[] = $obj->decode(array('include_bodies' => $this->_include_bodies));
-            unset($obj);
+           unset($obj);
             break;
 
           case 'text/plain':

@@ -82,8 +82,8 @@ class form_action_test extends LimbTestCase
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
 
-  	$this->request->expectOnce('get_attribute');
-  	$this->request->setReturnValue('get_attribute', array(), array('test1'));
+  	$this->request->expectOnce('get');
+  	$this->request->setReturnValue('get', array(), array('test1'));
 
   	$this->assertTrue($this->form_action->is_first_time($this->request), '%s ' . __LINE__);
   }
@@ -93,8 +93,8 @@ class form_action_test extends LimbTestCase
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
 
-  	$this->request->expectOnce('get_attribute');
-  	$this->request->setReturnValue('get_attribute', array('submitted' => true), array('test1'));
+  	$this->request->expectOnce('get');
+  	$this->request->setReturnValue('get', array('submitted' => true), array('test1'));
 
   	$this->assertFalse($this->form_action->is_first_time($this->request), '%s ' . __LINE__);
   }
@@ -131,7 +131,7 @@ class form_action_test extends LimbTestCase
       'password' => 'yoyoyo',
     );
     
-  	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
+  	$this->request->setReturnValue('get', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
@@ -150,7 +150,7 @@ class form_action_test extends LimbTestCase
       'submitted' => 1
     );
     
-  	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
+  	$this->request->setReturnValue('get', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
@@ -167,8 +167,8 @@ class form_action_test extends LimbTestCase
       'submitted' => 1
     );
 
-  	$this->request->expectCallCount('get_attribute', 2);
-  	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
+  	$this->request->expectCallCount('get', 2);
+  	$this->request->setReturnValue('get', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
@@ -186,7 +186,7 @@ class form_action_test extends LimbTestCase
       'submitted' => 1
     );
     
-  	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
+  	$this->request->setReturnValue('get', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();

@@ -72,7 +72,7 @@ class form_edit_site_object_action extends form_site_object_action
 		if (!isset($data_to_import['status']))
 			$data_to_import['status'] = $object_data['status'];
 			
-		$this->object->import_attributes($data_to_import);
+		$this->object->merge($data_to_import);
 		
 		if(!$this->_update_object_operation())
 		{

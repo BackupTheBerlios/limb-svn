@@ -47,7 +47,7 @@ class site_object_controller
 	  if($request === null)
 	    $request =& request :: instance();
 	  
-		if (!$action = $request->get_attribute('action'))
+		if (!$action = $request->get('action'))
 			$action = $this->_default_action;
 		
 		if (!$this->action_exists($action))

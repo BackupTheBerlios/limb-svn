@@ -85,29 +85,29 @@ class site_object_test extends LimbTestCase
 
   function test_attributes()
   {
-  	$this->object->set_attribute('attrib_name', 'attrib_value');
-  	$this->assertEqual($this->object->get_attribute('attrib_name'), 'attrib_value');
+  	$this->object->set('attrib_name', 'attrib_value');
+  	$this->assertEqual($this->object->get('attrib_name'), 'attrib_value');
   	
   	$attribs['attrib1'] = 'attrib1_value';
   	$attribs['attrib2'] = 'attrib2_value';
-  	$this->object->import_attributes($attribs);
+  	$this->object->merge($attribs);
 
   	$attribs['attrib_name'] = 'attrib_value';
   	
-  	$this->assertEqual($this->object->export_attributes(), $attribs);
+  	$this->assertEqual($this->object->export(), $attribs);
   	
-  	$this->object->set_attribute('attrib3_name', 'attrib3_value');
-  	unset($attribs['attrib_name']);
-  	$this->object->import_attributes($attribs, false);
-  	$this->assertEqual($this->object->export_attributes(), $attribs);
+  	$this->object->set('attrib3_name', 'attrib3_value');
+  unset($attribs['attrib_name']);
+  	$this->object->import($attribs);
+  	$this->assertEqual($this->object->export(), $attribs);
   	
   }
   
   function test_attributes_definition()
   {  	
-  	$this->assertIdentical($this->object->get_attribute_definition('no_such_attribute'), false);
+  	$this->assertIdentical($this->object->get_definition('no_such_attribute'), false);
   	
-  	$definition = $this->object->get_attribute_definition('id');
+  	$definition = $this->object->get_definition('id');
   	
   	$this->assertEqual($definition['type'], 'numeric');
   }

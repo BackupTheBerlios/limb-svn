@@ -130,7 +130,7 @@ class TestManager
 		preg_match("~lass\s+?(.*)\s+?extends GroupTest~", $file, $matches);
 		if (! empty($matches))
 		{
-			unset($matches[0]);
+		unset($matches[0]);
 			return $matches;
 		} 
 		else

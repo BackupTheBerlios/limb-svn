@@ -88,9 +88,9 @@ class content_object_tester extends site_object_tester
   
   function _generate_test_attributes()
   {
-  	$definition = $this->object->get_attributes_definition();
+  	$definition = $this->object->gets_definition();
   	
-  	foreach($this->object->get_attributes_definition() as $attribute => $data)
+  	foreach($this->object->gets_definition() as $attribute => $data)
   	{
   		if(in_array($attribute, array('id', 'version', 'object_id', 'parent_node_id')))
   			continue;
@@ -103,11 +103,11 @@ class content_object_tester extends site_object_tester
 			switch ($type)
 			{
 				case 'numeric':
-					$this->object->set_attribute($attribute, $this->_generate_number());
+					$this->object->set($attribute, $this->_generate_number());
 				break;
 				
 				case 'string':
-					$this->object->set_attribute($attribute, $this->_generate_number());
+					$this->object->set($attribute, $this->_generate_number());
 				break;
 			}
 			
@@ -204,7 +204,7 @@ class content_object_tester extends site_object_tester
   	$this->assertEqual(sizeof($arr), 1);
   	$record = current($arr);
 		
-		$attribs = $this->object->export_attributes();
+		$attribs = $this->object->export();
 		
 		foreach($attribs as $name => $value)
 			if (isset($record[$name]) && !in_array($name, array('id', 'object_id')))

@@ -25,7 +25,7 @@ class request_transfer_component extends tag_component
 		
 		foreach($transfer_attributes as $attribute)
 		{
-			if($value = $request->get_attribute($attribute))
+			if($value = $request->get($attribute))
 				$attributes_to_append[] = $attribute . '=' . addslashes($value);
 		}
 		if($this->attributes_string = implode('&', $attributes_to_append))

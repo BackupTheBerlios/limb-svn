@@ -176,7 +176,7 @@ class cache_lite
 	*/
 	function cache_lite($attributes = array(null))
 	{
-		$this->import_attributes($attributes);
+		$this->merge($attributes);
 	} 
 
 	/**
@@ -198,7 +198,7 @@ class cache_lite
 	* @param array $attributes attributes
 	* @access public 
 	*/
-	function import_attributes($attributes = array(null))
+	function merge($attributes = array(null))
 	{
 		$available_attributes = '{file_name_protection}{memory_caching}{only_memory_caching}{memory_caching_limit}{cache_dir}{caching}{life_time}{file_last_modified}{file_locking}{write_control}{read_control}{read_control_type}';
 		while (list($key, $value) = each($attributes))
@@ -365,7 +365,7 @@ class cache_lite
 			{
 				if (strpos($key, $motif, 0))
 				{
-					unset($this->_memory_caching[$key]);
+				unset($this->_memory_caching[$key]);
 					$this->_memory_caching_counter = $this->_memory_caching_counter - 1;
 				} 
 			} 
@@ -454,7 +454,7 @@ class cache_lite
 		if ($this->_memory_caching_counter >= $this->_memory_caching_limit)
 		{
 			list($key, $value) = each($this->_memory_caching_array);
-			unset($this->_memory_caching_array[$key]);
+		unset($this->_memory_caching_array[$key]);
 		} 
 		else
 			$this->_memory_caching_counter = $this->_memory_caching_counter + 1;

@@ -492,7 +492,7 @@ class access_policy
 
 		foreach($rows as $id => $data)
 		{
-			unset($data['id']);
+		unset($data['id']);
 			$data['object_id'] = $object_id;
 			$db_table->insert($data);
 		}

@@ -165,7 +165,7 @@ class fetching_test extends db_test
   
   function _add_object($object)
   {
-  	$this->objects[] = $object->export_attributes();
+  	$this->objects[] = $object->export();
   }
 		      
   function test_map_by_url()
@@ -198,7 +198,7 @@ class fetching_test extends db_test
   	$_SERVER['PHP_SELF'] = '/root/articles/no/such/article';
   	
   	$request = new Mockrequest($this);
-  	$request->setReturnValue('get_attribute', $this->articles_object->get_node_id(), array('node_id'));
+  	$request->setReturnValue('get', $this->articles_object->get_node_id(), array('node_id'));
   	
   	$node =& $this->fetcher->map_request_to_node($request);
 

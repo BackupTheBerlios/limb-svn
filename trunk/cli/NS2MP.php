@@ -43,9 +43,9 @@ echo 'total roots: ' . sizeof($root_ns_nodes) . "\n";
 
 foreach($root_ns_nodes as $root_node)
 {
-	unset($root_node['l']);
-	unset($root_node['r']);
-	unset($root_node['ordr']);
+unset($root_node['l']);
+unset($root_node['r']);
+unset($root_node['ordr']);
 	$mp->create_root_node($root_node);
 	
 	$sub_branch = $ns->get_sub_branch($root_node['id'], -1);
@@ -58,9 +58,9 @@ foreach($root_ns_nodes as $root_node)
 	{
 		echo ++$c . ' branch of ' . $branch_size . "\n";
 		
-		unset($node['l']);
-		unset($node['r']);
-		unset($node['ordr']);
+	unset($node['l']);
+	unset($node['r']);
+	unset($node['ordr']);
 		$mp->create_sub_node($node['parent_id'], $node);
 	}
 }

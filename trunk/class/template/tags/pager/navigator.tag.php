@@ -51,12 +51,12 @@ class pager_navigator_tag extends server_component_tag
 		if (array_key_exists('items', $this->attributes))
 		{
 			$code->write_php($this->get_component_ref_code() . '->items = \'' . $this->attributes['items'] . '\';');
-			unset($this->attributes['items']);
+		unset($this->attributes['items']);
 		} 
 		if (array_key_exists('pages_per_section', $this->attributes))
 		{
 			$code->write_php($this->get_component_ref_code() . '->pages_per_section = \'' . $this->attributes['pages_per_section'] . '\';');
-			unset($this->attributes['pages_per_section']);
+		unset($this->attributes['pages_per_section']);
 		} 
 	}
 	

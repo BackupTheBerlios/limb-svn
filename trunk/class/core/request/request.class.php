@@ -44,7 +44,7 @@ class request extends object
       $request = $this->_strip_http_slashes($request);
 
     foreach ($request as $k => $v)
-      $this->set_attribute($k, $v); 
+      $this->set($k, $v); 
       
     $this->status = REQUEST_STATUS_SUCCESS; 
   }

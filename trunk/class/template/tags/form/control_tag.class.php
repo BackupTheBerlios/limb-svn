@@ -80,7 +80,7 @@ class control_tag extends server_tag_component_tag
 		if (array_key_exists('display_name', $this->attributes))
 		{
 			$code->write_php($this->get_component_ref_code() . '->display_name = \'' . $this->attributes['display_name'] . '\';');
-			unset($this->attributes['display_name']);
+		unset($this->attributes['display_name']);
 		} 
 	} 
 		

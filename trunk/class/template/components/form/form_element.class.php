@@ -223,7 +223,7 @@ class form_element extends tag_component
 			else
 				$locale_constant = constant('MANAGEMENT_LOCALE_ID');	
 			
-			unset($this->attributes['locale_type']);
+		unset($this->attributes['locale_type']);
 		}
 		else
 			$locale_constant = constant('MANAGEMENT_LOCALE_ID');	
@@ -231,12 +231,12 @@ class form_element extends tag_component
 		if(isset($this->attributes['locale_file']))
 		{
 			$this->attributes['value'] = strings :: get($this->attributes['locale_value'], $this->attributes['locale_file'], $locale_constant);
-			unset($this->attributes['locale_file']);
+		unset($this->attributes['locale_file']);
 		}	
 		else
 			$this->attributes['value'] = strings :: get($this->attributes['locale_value'], 'common', $locale_constant);
 		
-		unset($this->attributes['locale_value']);
+	unset($this->attributes['locale_value']);
 	}
 } 
 ?>

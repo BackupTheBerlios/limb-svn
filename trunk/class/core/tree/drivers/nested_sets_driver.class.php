@@ -229,7 +229,7 @@ class nested_sets_driver extends tree_db_driver
 	/**
 	* Fetch all siblings of the node given by id
 	* Important: The node given by ID will also be returned
-	* Do a unset($array[$id]) on the result if you don't want that
+	* Do aunset($array[$id]) on the result if you don't want that
 	* 
 	* @param int $id The node ID
 	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.

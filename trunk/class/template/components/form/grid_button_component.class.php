@@ -32,10 +32,10 @@ class grid_button_component extends form_element
 		if (isset($this->attributes['onclick']))
 			$this->onclick = $this->attributes['onclick'];
 		
-		unset($this->attributes['path']);
-		unset($this->attributes['action']);
-		unset($this->attributes['reload_parent']);
-		unset($this->attributes['onclick']);
+	unset($this->attributes['path']);
+	unset($this->attributes['action']);
+	unset($this->attributes['reload_parent']);
+	unset($this->attributes['onclick']);
 	}
 	
 	function render_attributes()
@@ -48,7 +48,7 @@ class grid_button_component extends form_element
 			
 			$request = request :: instance();
 			
-			if($node_id = $request->get_attribute('node_id'))
+			if($node_id = $request->get('node_id'))
 				$action_path .= '?node_id=' . $node_id;
 		}
 		else
@@ -72,7 +72,7 @@ class grid_button_component extends form_element
 
 		parent :: render_attributes();
 		
-		unset($this->attributes['onclick']);
+	unset($this->attributes['onclick']);
 	}
 } 
 

@@ -15,7 +15,7 @@ function add_url_query_items($url, $items=array())
 
   $request = request :: instance();
   
-  if (($node_id = $request->get_attribute('node_id')) && !isset($items['node_id']))
+  if (($node_id = $request->get('node_id')) && !isset($items['node_id']))
 		$items['node_id'] = $node_id;
 	
 	if(strpos($url, '?') === false)

@@ -329,7 +329,7 @@ class fetcher
 	  if($request === null)
 	    $request = request :: instance();			
 			
-		if($node_id = $request->get_attribute('node_id'))
+		if($node_id = $request->get('node_id'))
 		{
 			$tree =& tree :: instance();
 			
@@ -460,7 +460,7 @@ function & wrap_with_site_object($fetched_data)
 	if(isset($fetched_data['class_name']))
 	{
 		$site_object =& site_object_factory :: instance($fetched_data['class_name']);
-		$site_object->import_attributes($fetched_data);
+		$site_object->merge($fetched_data);
 		return $site_object;
 	}
 	
@@ -468,7 +468,7 @@ function & wrap_with_site_object($fetched_data)
 	foreach($fetched_data as $id => $data)
 	{
 		$site_object =& site_object_factory :: instance($data['class_name']);
-		$site_object->import_attributes($data);
+		$site_object->merge($data);
 		$site_objects[$id] =& $site_object;
 	}
 	return $site_objects;	

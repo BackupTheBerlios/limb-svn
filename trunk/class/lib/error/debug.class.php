@@ -843,7 +843,7 @@ class debug
 					$group_list[$group_key]['time_data'] = $time_list[$group_key];
 
 				$group_list[$group_key]['name'] = $time_list[$group_key]['name'];
-				unset($time_list[$group_key]);
+			unset($time_list[$group_key]);
 			} 
 
 			$group_children = array();
@@ -852,7 +852,7 @@ class debug
 				if (array_key_exists($time_key, $time_list))
 				{
 					$group_children[] = $time_list[$time_key];
-					unset($time_list[$time_key]);
+				unset($time_list[$time_key]);
 				} 
 			} 
 			$group_list[$group_key]['children'] = $group_children;

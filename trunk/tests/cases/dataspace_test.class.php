@@ -33,7 +33,7 @@ class dataspace_test extends LimbTestCase
 	
 	function tearDown()
 	{
-		unset($this->dataspace);
+	  unset($this->dataspace);
 	}
 	 
 	function test_get_unset_variable()
@@ -140,7 +140,7 @@ class dataspace_test extends LimbTestCase
 		$filter->tally();
 	}
 	
-	function test_destroy()
+	function testunset()
 	{
 		$array = array('rainbow' => array('color' => 'red'));
 		$this->dataspace->import($array);

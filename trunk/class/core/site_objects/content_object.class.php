@@ -34,7 +34,7 @@ class content_object extends site_object
 		$columns = $table->get_columns();
 		
 		if($key = $table->get_primary_key_name())
-			unset($columns[$key]);
+		unset($columns[$key]);
 			
 		return $columns;
 	}
@@ -79,7 +79,7 @@ class content_object extends site_object
 		if(!$version_data = $this->fetch_version($version))
 			return false;
 			
-		$this->import_attributes($version_data);
+		$this->merge($version_data);
 		
 		return $this->update();
 	}
@@ -167,13 +167,13 @@ class content_object extends site_object
 		$data = $this->_attributes->export();
 		
 		$data['object_id'] = $this->get_id();
-		unset($data['id']);
+	unset($data['id']);
 				
 		$db_table =& $this->_get_db_table();
 		$db_table->insert($data);
 		
 		$record_id = $db_table->get_last_insert_id();
-		$this->set_attribute('record_id', $record_id);
+		$this->set('record_id', $record_id);
 		
 		return true;
 	}
@@ -199,7 +199,7 @@ class content_object extends site_object
 		$id = $row['id'];
 
 		$data = $this->_attributes->export();
-		unset($data['id']);
+	unset($data['id']);
 
 		if($db_table->update_by_id($id, $data))
 			return $id;

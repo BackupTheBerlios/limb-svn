@@ -31,7 +31,7 @@ class grid_input_component extends input_form_element
 	  if (isset($this->attributes['hash_id']))
 	    $this->hash_id = $this->attributes['hash_id'];
 	    
-	  unset($this->attributes['hash_id']);
+	 unset($this->attributes['hash_id']);
 	  
 	  parent :: render_attributes();
 	}

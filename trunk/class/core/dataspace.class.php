@@ -197,7 +197,7 @@ class dataspace
 	{
 		if (isset($this->vars[$name]))
 		{
-			unset($this->vars[$name]);
+		  unset($this->vars[$name]);
 		} 
 	}
 	

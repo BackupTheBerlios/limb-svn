@@ -40,7 +40,7 @@ class session
 		if(isset($_SESSION[$name]))
 		{
 			session_unregister($name);
-			unset($_SESSION[$name]);
+		  unset($_SESSION[$name]);
 		}
 	}
 	
@@ -136,7 +136,7 @@ function _session_db_write($session_id, $value)
 	 											'session_id' => "{$session_id}"));
 }
 
-function _session_db_destroy($session_id)
+function _session_dbunset($session_id)
 {
 	$db =& db_factory :: instance();
 

@@ -79,14 +79,14 @@ class site_object extends object
 		return array();
 	}
 			
-	function get_attributes_definition()
+	function gets_definition()
 	{
 		return $this->_attributes_definition;
 	}
 
-	function get_attribute_definition($attribute_name)
+	function get_definition($attribute_name)
 	{
-		$definition = $this->get_attributes_definition();
+		$definition = $this->gets_definition();
 		
 		if(isset($definition[$attribute_name]))
 		{
@@ -120,10 +120,10 @@ class site_object extends object
 			return $arr;
 		
 		if(isset($params['limit']))
-			unset($params['limit']);
+		unset($params['limit']);
 
 		if(isset($params['offset']))
-			unset($params['offset']);
+		unset($params['offset']);
 			
 		$arr =& $this->fetch_by_ids($ids, $params, $sql_params);
 		
@@ -270,10 +270,10 @@ class site_object extends object
 			if (!count($ids_array))
 				return array();
 			
-			unset($params['limit']);
+		unset($params['limit']);
 
 			if(isset($params['offset']))
-				unset($params['offset']);
+			unset($params['offset']);
 
 			$sql_params['conditions'] = array();
 		}
@@ -472,8 +472,8 @@ class site_object extends object
 			}
 		}
 								
-		$this->set_attribute('id', $id); 
-		$this->set_attribute('node_id', $tree_node_id); 
+		$this->set('id', $id); 
+		$this->set('node_id', $tree_node_id); 
 		
 		return $id;
 	}
@@ -526,47 +526,47 @@ class site_object extends object
 	
 	function get_parent_node_id()
 	{
-		return (int)$this->get_attribute('parent_node_id');
+		return (int)$this->get('parent_node_id');
 	}
 
 	function set_parent_node_id($parent_node_id)
 	{
-		$this->set_attribute('parent_node_id', (int)$parent_node_id);
+		$this->set('parent_node_id', (int)$parent_node_id);
 	}
 	
 	function get_node_id()
 	{
-		return (int)$this->get_attribute('node_id');
+		return (int)$this->get('node_id');
 	}
 	
 	function get_identifier()
 	{
-		return $this->get_attribute('identifier');
+		return $this->get('identifier');
 	}
 		
 	function set_identifier($identifier)
 	{
-		return $this->set_attribute('identifier', $identifier);
+		return $this->set('identifier', $identifier);
 	}
 
 	function get_title()
 	{
-		return $this->get_attribute('title');
+		return $this->get('title');
 	}
 
 	function set_title($title)
 	{
-		return $this->set_attribute('title', $title);
+		return $this->set('title', $title);
 	}
 	
 	function get_id()
 	{
-		return (int)$this->get_attribute('id');
+		return (int)$this->get('id');
 	}
 	
 	function get_version()
 	{
-		return (int)$this->get_attribute('version');
+		return (int)$this->get('version');
 	}
 
 	function get_class_id()
@@ -620,7 +620,7 @@ class site_object extends object
 	
 	function _create_site_object_record()
 	{
-		$this->set_attribute('version', 1); 
+		$this->set('version', 1); 
 		
 		$user =& user :: instance();
 
@@ -629,10 +629,10 @@ class site_object extends object
 		$data['class_id'] = $this->get_class_id();
 		$data['current_version'] = $this->get_version();
 		$data['creator_id'] = $user->get_id();
-		$data['status'] = $this->get_attribute('status', 0);
+		$data['status'] = $this->get('status', 0);
 
-		$created_date = $this->get_attribute('created_date', 0);
-		$modified_date = $this->get_attribute('modified_date', 0);
+		$created_date = $this->get('created_date', 0);
+		$modified_date = $this->get('modified_date', 0);
 		$time = time();
 
 		if(!$created_date)
@@ -645,8 +645,8 @@ class site_object extends object
 		else
 			$data['modified_date'] = $modified_date;
 
-		if ($this->get_attribute('locale_id'))
-			$data['locale_id'] = $this->get_attribute('locale_id');
+		if ($this->get('locale_id'))
+			$data['locale_id'] = $this->get('locale_id');
 		else
 			$data['locale_id'] = $this->_get_parent_locale_id();
 		
@@ -685,16 +685,16 @@ class site_object extends object
 		$row_data = $sys_site_object_db_table->get_row_by_id($this->get_id());
 
 		if ($force_create_new_version)
-			$this->set_attribute('version', $row_data['current_version'] + 1);
+			$this->set('version', $row_data['current_version'] + 1);
 		else
-			$this->set_attribute('version', $row_data['current_version']);
+			$this->set('version', $row_data['current_version']);
 		
 		$time = time();
 		$data['current_version'] = $this->get_version();
 		$data['modified_date'] = $time;
 		$data['identifier'] = $this->get_identifier();
 		$data['title'] = $this->get_title();
-		$data['status'] = $this->get_attribute('status', 0);
+		$data['status'] = $this->get('status', 0);
 		
 		return $sys_site_object_db_table->update_by_id($this->get_id(), $data);
 	}
@@ -734,7 +734,7 @@ class site_object extends object
 			}	
 		}	
 		
-		if (($identifier = $this->get_attribute('identifier')) && ($identifier != $node['identifier']))
+		if (($identifier = $this->get('identifier')) && ($identifier != $node['identifier']))
 		{
 			if(!$tree->update_node($data['node_id'], array('identifier' => $identifier), true))
 			{
@@ -780,7 +780,7 @@ class site_object extends object
 	function _delete_site_object_record()
 	{
 		$sys_site_object_db_table =& db_table_factory :: instance('sys_site_object');
-		$sys_site_object_db_table->delete_by_id($this->get_attribute('id'));
+		$sys_site_object_db_table->delete_by_id($this->get('id'));
 		
 		return true;
 	}
@@ -827,8 +827,8 @@ class site_object extends object
   	
   	$metadata = array();
   	$metadata['object_id'] = $id;
-  	$metadata['keywords'] = $this->get_attribute('keywords');
-  	$metadata['description'] = $this->get_attribute('description');
+  	$metadata['keywords'] = $this->get('keywords');
+  	$metadata['description'] = $this->get('description');
   	
   	if ($sys_metadata_db_table->insert($metadata))
   		return $sys_metadata_db_table->get_last_insert_id();

@@ -60,12 +60,12 @@ class label_tag extends server_tag_component_tag
 		if (array_key_exists('error_class', $this->attributes))
 		{
 			$code->write_php($this->get_component_ref_code() . '->error_class = \'' . $this->attributes['error_class'] . '\';');
-			unset($this->attributes['error_class']);
+		unset($this->attributes['error_class']);
 		} 
 		if (array_key_exists('error_style', $this->attributes))
 		{
 			$code->write_php($this->get_component_ref_code() . '->error_style = \'' . $this->attributes['error_style'] . '\';');
-			unset($this->attributes['error_style']);
+		unset($this->attributes['error_style']);
 		} 
 	} 
 	

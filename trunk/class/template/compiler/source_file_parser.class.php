@@ -198,7 +198,7 @@ class source_file_parser
 			} 
 		} 
 
-		$component->set_attributes($attributes);
+		$component->sets($attributes);
 	} 
 		
 	// --------------------------------------------------------------------------------

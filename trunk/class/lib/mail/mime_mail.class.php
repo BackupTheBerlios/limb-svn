@@ -529,7 +529,7 @@ class mime_mail
 		if (!empty($this->headers['Subject']))
 		{
 			$subject = $this->_encode_header($this->headers['Subject'], $this->build_params['head_charset']);
-			unset($this->headers['Subject']);
+		unset($this->headers['Subject']);
 		} 
 
 		foreach ($this->headers as $name => $value)
@@ -567,8 +567,8 @@ class mime_mail
 				$smtp_recipients[] = sprintf('%s@%s', $address->mailbox, $address->host);
 
 		} 
-		unset($addresses); // These are reused
-		unset($address); // These are reused
+	unset($addresses); // These are reused
+	unset($address); // These are reused
 		
 		foreach ($this->headers as $name => $value)
 		{
