@@ -261,7 +261,7 @@ class date
   		$time = time();
   		
   	$arr = getdate($time);
-  	
+  	 
     $this->year   = $arr['year'];
     $this->month  = $arr['mon'];
     $this->day    = $arr['mday'];
@@ -360,7 +360,7 @@ class date
     $output = '';
 		
 		$locale = locale :: instance();
-		
+		  
     for($strpos = 0; $strpos < strlen($format); $strpos++) 
     {
       $char = substr($format, $strpos, 1);
@@ -635,7 +635,7 @@ class date
         floor(($year / 100) / 4) - 2 *
         floor($year / 100) + 77);
 
-    $weekday_number = (($day - 7 * floor($day / 7)));
+    $weekday_number = (($day - 7 * floor($day / 7))) + 1;
 
     return $weekday_number;
   }
