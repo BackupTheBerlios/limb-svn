@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class ImageLibraryGroup extends LimbGroupTest
 {
-  function imageLibraryGroup()
+  function ImageLibraryGroup()
   {
-    $this->limbGroupTest('image library tests');
+    parent :: LimbGroupTest('image library tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CronGroup extends LimbGroupTest
 {
-  function cronGroup()
+  function CronGroup()
   {
-    $this->limbGroupTest('cron tests');
+    parent :: LimbGroupTest('cron tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class ValidationGroup extends LimbGroupTest
 {
-  function validationGroup()
+  function ValidationGroup()
   {
-    $this->limbGroupTest('validation tests');
+    parent :: LimbGroupTest('validation tests');
   }
 
   function getTestCasesHandles()

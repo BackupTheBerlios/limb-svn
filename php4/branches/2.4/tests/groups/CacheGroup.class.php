@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CacheGroup extends LimbGroupTest
 {
-  function cacheGroup()
+  function CacheGroup()
   {
-    $this->limbGroupTest('cache tests');
+    parent :: LimbGroupTest('cache tests');
   }
 
   function getTestCasesHandles()

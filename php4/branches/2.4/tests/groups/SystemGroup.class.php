@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class SystemGroup extends LimbGroupTest
 {
-  function systemGroup()
+  function SystemGroup()
   {
-    $this->limbGroupTest('system tests');
+    parent :: LimbGroupTest('system tests');
   }
 
   function getTestCasesHandles()

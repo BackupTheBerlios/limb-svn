@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class DataMappersGroup extends LimbGroupTest
 {
-  function dataMappersGroup()
+  function DataMappersGroup()
   {
-    $this->limbGroupTest('data mappers tests');
+    parent :: LimbGroupTest('data mappers tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class FileResolverGroup extends LimbGroupTest
 {
-  function fileResolverGroup()
+  function FileResolverGroup()
   {
-    $this->limbGroupTest('file resolvers tests');
+    parent :: LimbGroupTest('file resolvers tests');
   }
 
   function getTestCasesHandles()

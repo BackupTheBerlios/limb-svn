@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class BehavioursGroup extends LimbGroupTest
 {
-  function behavioursGroup()
+  function BehavioursGroup()
   {
-    $this->limbGroupTest('behaviours tests');
+    parent :: LimbGroupTest('behaviours tests');
   }
 
   function getTestCasesHandles()

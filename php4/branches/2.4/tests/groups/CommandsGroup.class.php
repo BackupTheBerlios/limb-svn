@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CommandsGroup extends LimbGroupTest
 {
-  function commandsGroup()
+  function CommandsGroup()
   {
-    $this->limbGroupTest('commands tests');
+    parent :: LimbGroupTest('commands tests');
   }
 
   function getTestCasesHandles()

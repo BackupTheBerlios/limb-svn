@@ -12,7 +12,7 @@ class I18NGroup extends LimbGroupTest
 {
   function I18NGroup()
   {
-    $this->limbGroupTest('i18n tests');
+    parent :: LimbGroupTest('i18n tests');
   }
 
   function getTestCasesHandles()

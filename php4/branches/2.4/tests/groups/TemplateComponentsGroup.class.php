@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class TemplateComponentsGroup extends LimbGroupTest
 {
-  function templateComponentsGroup()
+  function TemplateComponentsGroup()
   {
-    $this->limbGroupTest('template components tests');
+    parent :: LimbGroupTest('template components tests');
   }
 
   function getTestCasesHandles()

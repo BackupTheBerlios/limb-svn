@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class SysParamsGroup extends LimbGroupTest
 {
-  function sysParamsGroup()
+  function SysParamsGroup()
   {
-    $this->limbGroupTest('sys params tests');
+    parent :: LimbGroupTest('sys params tests');
   }
 
   function getTestCasesHandles()

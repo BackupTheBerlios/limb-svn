@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class ToolkitsGroup extends LimbGroupTest
 {
-  function toolkitsGroup()
+  function ToolkitsGroup()
   {
-    $this->limbGroupTest('toolkits tests');
+    parent :: LimbGroupTest('toolkits tests');
   }
 
   function getTestCasesHandles()

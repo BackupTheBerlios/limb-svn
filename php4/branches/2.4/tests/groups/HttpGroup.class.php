@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class HttpGroup extends LimbGroupTest
 {
-  function httpGroup()
+  function HttpGroup()
   {
-    $this->limbGroupTest('http tests');
+    parent :: LimbGroupTest('http tests');
   }
 
   function getTestCasesHandles()

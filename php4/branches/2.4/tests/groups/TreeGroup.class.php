@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class TreeGroup extends LimbGroupTest
 {
-  function treeGroup()
+  function TreeGroup()
   {
-    $this->limbGroupTest('tree');
+    parent :: LimbGroupTest('tree');
   }
 
   function getTestCasesHandles()

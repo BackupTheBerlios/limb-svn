@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class FiltersGroup extends LimbGroupTest
 {
-  function filtersGroup()
+  function FiltersGroup()
   {
-    $this->limbGroupTest('filters tests');
+    parent :: LimbGroupTest('filters tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class NodeLinksGroup extends LimbGroupTest
 {
-  function nodeLinksGroup()
+  function NodeLinksGroup()
   {
-    $this->limbGroupTest('nodes links tests');
+    parent :: LimbGroupTest('nodes links tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class PackageGroup extends LimbGroupTest
 {
-  function packageGroup()
+  function PackageGroup()
   {
-    $this->limbGroupTest('package tests');
+    parent :: LimbGroupTest('package tests');
   }
 
   function getTestCasesHandles()

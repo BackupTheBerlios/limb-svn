@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class UtilGroup extends LimbGroupTest
 {
-  function utilGroup()
+  function UtilGroup()
   {
-    $this->limbGroupTest('util tests');
+    parent :: LimbGroupTest('util tests');
   }
 
   function getTestCasesHandles()

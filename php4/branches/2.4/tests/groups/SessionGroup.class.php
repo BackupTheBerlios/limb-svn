@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class SessionGroup extends LimbGroupTest
 {
-  function sessionGroup()
+  function SessionGroup()
   {
-    $this->limbGroupTest('session tests');
+    parent :: LimbGroupTest('session tests');
   }
 
   function getTestCasesHandles()

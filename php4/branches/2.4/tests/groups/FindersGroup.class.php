@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class FindersGroup extends LimbGroupTest
 {
-  function findersGroup()
+  function FindersGroup()
   {
-    $this->limbGroupTest('finders tests');
+    parent :: LimbGroupTest('finders tests');
   }
 
   function getTestCasesHandles()

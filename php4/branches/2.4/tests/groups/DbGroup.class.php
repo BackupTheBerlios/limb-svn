@@ -10,7 +10,7 @@
 ***********************************************************************************/
 class DbGroup extends LimbGroupTest
 {
-  function dbGroup()
+  function DbGroup()
   {
     parent :: LimbGroupTest('db tests');
   }

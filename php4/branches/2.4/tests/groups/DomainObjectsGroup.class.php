@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class SiteObjectsGroup extends LimbGroupTest
 {
-  function siteObjectsGroup()
+  function SiteObjectsGroup()
   {
-    $this->limbGroupTest('domain objects tests');
+    parent :: LimbGroupTest('domain objects tests');
   }
 
   function getTestCasesHandles()
