@@ -1,0 +1,38 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='items'>
+  <core:PARAMETER name='loader_class_name' value='navigation_item'>
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='items'>
+<table>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='navigation_items_list' file='navigation'></td></tr>
+<tr>
+  <th><grid:SELECTORS_TOGGLER></th>
+  <th><locale:STRING name='items_order'></th>
+  <th><locale:STRING name='published_status' ></th>
+  <th><locale:STRING name='title'></th>
+  <th>URL</th>
+  <th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
+  <td><core:INCLUDE file="published_status.html"></td>
+  <td>
+    <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+    <a href="{$path}">{$title}({$children})</a>
+  </td>
+  <td><a href='{$url}' target='_blank'><img src='/shared/images/arrow.gif' border='0'  alt='{$url}' title='{$url}'></a></td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+</tr>
+</grid:ITERATOR>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
+</table>
+</grid:LIST>

@@ -1,0 +1,23 @@
+<grid:LIST id='menu'>
+<table width='100%' border='0' cellspacing='0' cellpadding='1'>
+<grid:ITERATOR>
+		<tr>
+			<td align='right'><a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a></td>
+			<core:OPTIONAL for="in_path">
+				<td><img src='/shared/images/arr1.gif'></td>
+			</core:OPTIONAL>
+			<core:DEFAULT for="in_path">
+				<td>&nbsp;</td>
+			</core:DEFAULT>
+		</tr>
+		<tr>
+			<td align=center colspan=3><img src='/shared/images/1x1.gif' class=com2 width=80% height=1></td>
+		</tr>
+		
+</grid:ITERATOR>
+<tr>
+<td></td>
+<td><img src='/shared/images/1x1.gif' width=12 height=0></td>
+</tr>
+</table>
+</grid:LIST>

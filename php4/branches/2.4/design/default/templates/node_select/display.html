@@ -1,0 +1,172 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+
+<core:LITERAL>
+<table cellspacing=0 cellpadding=1 border=0>
+<form>
+<tr id='nodes_panel'>
+  <td>
+    <table cellspacing=0 cellpadding=1 border=0>
+    <tr>
+      <td>
+        <table cellspacing=0 cellpadding=1 border=0>
+        <tr>
+          <td>
+            <fieldset>
+</core:LITERAL>
+              <legend style='color:#000000'>URL</legend>
+              <table cellspacing=0 cellpadding=1 border=0>
+              <tr>
+                <td align=right>
+                  </td>
+              </tr>
+              <tr>
+                <td align=center>
+                  <iframe id='node_select_frame' name='node_select_frame' width=450 height=400 ></iframe>
+                  </td>
+              </tr>
+              </table>
+            </fieldset>
+          </td>
+          <td valign=top>
+            <fieldset>
+              <legend style='color:#000000'><locale:STRING name='detail'></legend>
+              <div style="width:250px;height:300px;overflow: auto;">
+              <table cellspacing=0 cellpadding=1 border=0>
+              <tr>
+                <td colspan=2><img src='/shared/images/1x1.gif' width=160 height=1></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td align='left' valign='top' width=100%><img id='_preview_icon' src='/shared/images/1x1.gif'></td>
+              </tr>
+              <tr>
+                <td colspan=2 align='left'><span class='text' style='font-weight:bold'><div id='_preview_identifier'>&nbsp;</div></span></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td colspan=2 valign='top'><span class='text'><div id='_preview_class_name'>&nbsp;</div></span></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td align='left' valign='top' width=100%><img id='_preview' src='/shared/images/1x1.gif'></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td colspan=2 valign='top'><span class='text'><div id='_preview_title'>&nbsp;</div></span></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td colspan=2 valign='top'><span class='text'><div id='_preview_path'>&nbsp;</div></span></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td colspan=2 valign='top'><span id='_preview_parent_node_id' style='display:none;'>&nbsp;</span>
+                </td>
+              </tr>
+              </table>
+              </div>
+            </fieldset>
+          </td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+<core:LITERAL>
+    <tr>
+      <td align=left>
+        <input type='button' name='_insert_button' value='</core:LITERAL><locale:STRING name='insert'><core:LITERAL>' class='button' onclick='insert_node()' disabled=1 >
+        <input type='button' value="</core:LITERAL><locale:STRING name='close'><core:LITERAL>" class='button' onclick='window.close()'>
+        </td>
+    </tr>
+    </table>
+  </td>
+</tr>
+</form>
+</table>
+</core:LITERAL>
+<script>
+
+  var WINDOW_WIDTH = 750;
+  var WINDOW_HEIGHT = 600;
+
+  obj = document.getElementById('_preview_identifier');
+  var preview_identifier_obj = obj.firstChild;
+
+  obj = document.getElementById('_preview_title');
+  var preview_title_obj = obj.firstChild;
+
+  preview_icon_obj = document.getElementById('_preview_icon');
+
+  obj = document.getElementById('_preview_class_name');
+  var preview_class_name_obj = obj.firstChild;
+
+  obj = document.getElementById('_preview_path');
+  var preview_path_obj = obj.firstChild;
+
+  obj = document.getElementById('_preview_parent_node_id');
+  var preview_parent_node_id_obj = obj.firstChild;
+
+  obj = document.getElementsByName('_insert_button');
+  var insert_button_obj = obj[0];
+
+  var node_obj = new Object();
+
+  function update_node_data(node_data)
+  {
+    preview_parent_node_id_obj.nodeValue = node_data.parent_node_id;
+    preview_identifier_obj.nodeValue = node_data.identifier;
+    preview_title_obj.nodeValue = node_data.title;
+    preview_class_name_obj.nodeValue = node_data.class_name;
+    preview_icon_obj.src = node_data.icon;
+    preview_path_obj.nodeValue = node_data.path;
+
+    insert_button_obj.disabled = false;
+
+    node_obj.node_id = node_data.node_id;
+    node_obj.parent_node_id = node_data.parent_node_id;
+    node_obj.identifier = node_data.identifier;
+    node_obj.title = node_data.title;
+    node_obj.class_name = node_data.class_name;
+    node_obj.path = node_data.path;
+    node_obj.icon = node_data.icon;
+  }
+
+  function insert_node()
+  {
+    h = get_close_popup_handler();
+    h(node_obj);
+    window.close();
+  }
+
+  function get_node()
+  {
+    h = get_init_popup_handler();
+    node = h(window.name);
+
+    start_path = '/root';
+    only_parents = '';
+
+    if (typeof(node) == 'object' && node != null)
+    {
+      preview_identifier_obj.nodeValue = node.identifier;
+      preview_parent_node_id_obj.nodeValue = node.parent_node_id;
+      preview_title_obj.nodeValue = node.title;
+      preview_icon_obj.src = node.icon;
+      preview_path_obj.nodeValue = node.path;
+      preview_class_name_obj.nodeValue =  node.class_name;
+
+      if(node.node_id && node.node_id != 0)
+        start_path ='/root/?node_id=' + node.node_id;
+      else if(node.start_path)
+        start_path = node.start_path;
+
+      if(node.only_parents == 'false')
+        only_parents = '&only_parents=' + node.only_parents;
+    }
+
+    node_select_frame.location = '/root/admin/site_structure?action=node_select&path=' + start_path + only_parents;
+  }
+
+  add_event(window, 'load', get_node);
+
+</script>
