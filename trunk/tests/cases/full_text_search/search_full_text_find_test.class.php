@@ -37,7 +37,7 @@ class search_full_text_find_test extends db_test
 		$this->search_query->add('root');
 		
 		$result = $this->search->find($this->search_query);
-		
+
 		$this->assertEqual(array_keys($result),
 			array(24, 26)
 		);
@@ -53,6 +53,24 @@ class search_full_text_find_test extends db_test
 		);
 	}
 	
+	function test_simple_find_whith_restricted_classes()
+	{	
+		$this->search_query->add('restrict');
+		
+		$result = $this->search->find($this->search_query, null, $restricted_classes = array(110));
+		$this->assertEqual(sizeof($result),2);
+		$this->assertEqual(array_keys($result), array( 27, 26));
+	}
+
+	function test_simple_find_whith_allowed_classes()
+	{	
+		$this->search_query->add('restrict');
+		
+		$result = $this->search->find($this->search_query, null, $restricted_classes = array(), $allowed_classes = array(110, 120));
+		$this->assertEqual(sizeof($result),3);
+		$this->assertEqual(array_keys($result), array(27, 25, 24));
+	}
+
 	function test_simple_find_by_ids()
 	{	
 		$this->search_query->add('mysql');
