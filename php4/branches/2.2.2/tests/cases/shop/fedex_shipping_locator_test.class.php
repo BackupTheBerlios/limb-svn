@@ -76,6 +76,7 @@ class fedex_shipping_locator_test extends UnitTestCase
           'description' => "Delivery in&nbsp;\n5&nbsp;business days",
           'price' => 16.02,
           'id' => $id1,
+          'ground' => true
         ),
         $id2 => array(
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>',
@@ -165,6 +166,7 @@ class fedex_shipping_locator_test extends UnitTestCase
           'description' => "Delivery in&nbsp;\n4&nbsp;business days",
           'price' => 16.02,
           'id' => $id1,
+          'ground' => true
         ),
         $id2 => array(
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>',

@@ -38,11 +38,18 @@ class fedex_shipping_locator extends shipping_locator
       $express_options = array();
     else
       $express_options = $this->_parse_html_options($express_html);
-    
+          
     if($ground_html === false)
       $ground_options = array();
     else
+    {
       $ground_options = $this->_parse_html_options($ground_html);
+      
+      foreach($ground_options as $key => $value)
+      {
+        $ground_options[$key]['ground'] = true;
+      }
+    }
         
     $options = complex_array :: array_merge($express_options, $ground_options);
     
