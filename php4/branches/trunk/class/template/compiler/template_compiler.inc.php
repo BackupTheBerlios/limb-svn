@@ -11,7 +11,6 @@
 require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/template/compiler/codewriter.class.php');
 require_once(LIMB_DIR . 'class/template/compiler/utils.inc.php');
-require_once(LIMB_DIR . 'class/template/compiler/utils.inc.php');
 require_once(LIMB_DIR . 'class/template/compiler/tag_dictionary.class.php');
 
 require_once(LIMB_DIR . 'class/template/compiler/compiler_component.class.php');

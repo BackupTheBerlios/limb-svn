@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 define('TEST_TEMPLATE_RESOLVER_PACKAGE_DIR', dirname(__FILE__) . '/packages/common/');
-define('OVERRIDE_TEMPLATE_DIR_FOR_TEST', dirname(__FILE__) . '/templates/');
+define('OVERRIDE_TEMPLATE_DIR_FOR_TEST', dirname(__FILE__) . '/design/');
 
 require_once(LIMB_DIR . '/class/core/file_resolvers/template_file_resolver.class.php');
 
@@ -77,12 +77,12 @@ class template_file_resolver_test extends LimbTestCase
   function test_resolve_template_file_found_in_package_using_locale()
   {
     $this->resolver->setReturnValueAt(0, '_get_locale_prefix', '_en/');
-    $this->assertEqual($this->resolver->resolve('test2.html'), TEST_TEMPLATE_RESOLVER_PACKAGE_DIR . 'package2/1.0/templates/_en/test2.html');
+    $this->assertEqual($this->resolver->resolve('test2.html'), TEST_TEMPLATE_RESOLVER_PACKAGE_DIR . 'package2/1.0/design/_en/test2.html');
   }  
     
   function test_resolve_template_file_found_in_package()
   {    
-    $this->assertEqual($this->resolver->resolve('test2.html'), TEST_TEMPLATE_RESOLVER_PACKAGE_DIR . 'package2/1.0/templates/test2.html');
+    $this->assertEqual($this->resolver->resolve('test2.html'), TEST_TEMPLATE_RESOLVER_PACKAGE_DIR . 'package2/1.0/design/test2.html');
   }  
   
   function test_resolve_template_file_failed()

@@ -25,11 +25,11 @@ class template_file_resolver extends package_file_resolver
     if(file_exists($tmpl_path . $file_path))
       return $tmpl_path . $file_path;      
       
-    if($resolved_path = $this->_find_file_in_packages('templates/' . $locale . $file_path))
+    if($resolved_path = $this->_find_file_in_packages('design/' . $locale . $file_path))
     {
       return $resolved_path;
     }
-    elseif($resolved_path = $this->_find_file_in_packages('templates/'  . $file_path))
+    elseif($resolved_path = $this->_find_file_in_packages('design/'  . $file_path))
     {
       return $resolved_path;
     }
