@@ -41,6 +41,11 @@ class datasource_file_resolver_test extends LimbTestCase
     unset($this->resolver);
     clear_testing_ini();    
   }
+
+  function test_resolve_datasource_file_from_limb()
+  {    
+    $this->assertEqual($this->resolver->resolve('fetch_datasource'), LIMB_DIR . '/class/datasources/fetch_datasource.class.php');
+  }  
     
   function test_resolve_datasource_file_ok()
   {    

@@ -41,6 +41,11 @@ class db_table_file_resolver_test extends LimbTestCase
     unset($this->resolver);
     clear_testing_ini();    
   }
+
+  function test_resolve_db_table_file_from_limb()
+  {    
+    $this->assertEqual($this->resolver->resolve('content_object'), LIMB_DIR . '/class/db_tables/content_object_db_table.class.php');
+  }  
     
   function test_resolve_db_table_file_ok()
   {    

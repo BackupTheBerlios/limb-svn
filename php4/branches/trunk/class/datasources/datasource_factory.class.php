@@ -25,10 +25,10 @@ class datasource_factory
 		else
 			$class_name = $class_path;
 		
-		if (file_exists(LIMB_APP_DIR . '/class/datasource/' . $class_path . '.class.php')) 
-			$full_path = LIMB_APP_DIR . '/class/datasource/' . $class_path . '.class.php';
-		elseif(file_exists(LIMB_DIR . '/class/datasource/' . $class_path . '.class.php'))
-			$full_path = LIMB_DIR . '/class/datasource/' . $class_path . '.class.php';
+		if (file_exists(LIMB_APP_DIR . '/class/datasources/' . $class_path . '.class.php')) 
+			$full_path = LIMB_APP_DIR . '/class/datasources/' . $class_path . '.class.php';
+		elseif(file_exists(LIMB_DIR . '/class/datasources/' . $class_path . '.class.php'))
+			$full_path = LIMB_DIR . '/class/datasources/' . $class_path . '.class.php';
 		else
 		{
 			debug :: write_error('datasource not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('class_path' => $class_path));

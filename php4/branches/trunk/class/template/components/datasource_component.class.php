@@ -10,7 +10,7 @@
 ***********************************************************************************/
 
 require_once(LIMB_DIR . 'class/core/array_dataset.class.php');
-require_once(LIMB_DIR . 'class/datasource/datasource_factory.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource_factory.class.php');
 
 class datasource_component extends component 
 {
