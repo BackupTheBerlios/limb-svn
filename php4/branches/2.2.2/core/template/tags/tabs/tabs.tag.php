@@ -84,7 +84,7 @@ class tabs_tag extends compiler_directive_tag
 	  }
 	  
 	  foreach($this->tabs as $id)
-	   $js .= "tabs.register_tab_item('{$id}');\n";
+	   $js .= "var tab_data={'id':'{$id}'};\n tabs.register_tab_item(tab_data);\n";
 	   
 	   
     if ($this->use_cookie)

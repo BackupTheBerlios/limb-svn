@@ -1,27 +1,29 @@
-function tab(container, id, active_tab_class_name, normal_tab_class_name, onmousedown_handler, activate_handler, deactivate_handler)
+//function tab(container, id, active_tab_class_name, normal_tab_class_name, onmousedown_handler, activate_handler, deactivate_handler)
+function tab(container, tab_data)
 {
+  this.data = tab_data;
   this.container = container;
-  this.id = id;
-  this.label = document.getElementById(id);
+  this.id = tab_data.id;
+  this.label = document.getElementById(tab_data.id);
   this.label.tab = this;
-  this.content = document.getElementById(id + '_content');  
+  this.content = document.getElementById(tab_data.id + '_content');  
   
   this.prev_height = this.content.style.height;
   this.prev_width = this.content.style.width;
   this.prev_css = this.content.cssText;
   
-  if(!active_tab_class_name)
-    active_tab_class_name = 'tab-active';
+  if(typeof(tab_data.active_tab_class_name) == undefined || tab_data.active_tab_class_name == null)
+    tab_data.active_tab_class_name = 'tab-active';
 
-  if(!normal_tab_class_name)
-    normal_tab_class_name = 'tab';
+  if(typeof(tab_data.normal_tab_class_name) == undefined || tab_data.normal_tab_class_name == null)
+    tab_data.normal_tab_class_name = 'tab';
   
-  this.active_tab_class_name = active_tab_class_name;  
-  this.normal_tab_class_name = normal_tab_class_name;
+  this.active_tab_class_name = tab_data.active_tab_class_name;  
+  this.normal_tab_class_name = tab_data.normal_tab_class_name;
   
-  this.onmousedown_handler = onmousedown_handler;
-  this.activate_handler = activate_handler;
-  this.deactivate_handler = deactivate_handler;
+  this.onmousedown_handler = tab_data.onmousedown_handler;
+  this.activate_handler = tab_data.activate_handler;
+  this.deactivate_handler = tab_data.deactivate_handler;
   
   this.label.onmousedown = function()
   {
@@ -68,7 +70,7 @@ tab.prototype.activate = function()
 	set_cookie('active_tab', this.id)
 	
 	if(this.activate_handler)
-	  this.activate_handler();
+	  this.activate_handler(this);
 }
 
 tab.prototype.deactivate = function()
@@ -90,7 +92,7 @@ tab.prototype.deactivate = function()
 	this.label.className = this.normal_tab_class_name;
 	
 	if(this.deactivate_handler)
-	  this.deactivate_handler();
+	  this.deactivate_handler(this);
 }				
 
 function tabs_container()
@@ -99,10 +101,11 @@ function tabs_container()
    this.active_tab = null;
 }
 
-tabs_container.prototype.register_tab_item = function(id, active_tab_class_name, normal_tab_class_name, onmousedown_handler, activate_handler, deactivate_handler)
+//tabs_container.prototype.register_tab_item = function(id, active_tab_class_name, normal_tab_class_name, onmousedown_handler, activate_handler, deactivate_handler)
+tabs_container.prototype.register_tab_item = function(tab_data)
 {
-   this.normal_tab_class_name = normal_tab_class_name;
-   this.tab_items[id] = new tab(this, id, active_tab_class_name, normal_tab_class_name, onmousedown_handler, activate_handler, deactivate_handler);
+   this.normal_tab_class_name = tab_data.normal_tab_class_name;
+   this.tab_items[tab_data.id] = new tab(this, tab_data);
 }
 
 tabs_container.prototype.activate = function(tab_id)
