@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
 require_once(dirname(__FILE__) . '/../../../SimpleAuthorizer.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/permissions/User.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
 require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');

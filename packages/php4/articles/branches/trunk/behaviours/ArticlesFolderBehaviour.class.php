@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/controllers/SiteObjectController.class.php');
 
 class ArticlesFolderController extends SiteObjectController
 {
@@ -17,15 +17,15 @@ class ArticlesFolderController extends SiteObjectController
     return array();
   }
 
-  function defineDisplay($state_machine)
+  function defineDisplay(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         '/articles_folder/display.html')
-                                  array(LIMB :: STATUS_OK => 'render'));
+                                  array(LIMB_STATUS_OK => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 
   function getAdminDisplayActionProperties()
@@ -33,15 +33,15 @@ class ArticlesFolderController extends SiteObjectController
     return array();
   }
 
-  function defineAdminDisplay($state_machine)
+  function defineAdminDisplay(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         '/articles_folder/admin_display.html')
-                                  array(LIMB :: STATUS_OK => 'render'));
+                                  array(LIMB_STATUS_OK => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 
   function getCreateArticleActionProperties()
@@ -52,25 +52,25 @@ class ArticlesFolderController extends SiteObjectController
                  'img_src' => '/shared/images/new.generic.gif');
   }
 
-  function defineCreateArticle($state_machine)
+  function defineCreateArticle(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         '/article/create.html')
-                                  array(LIMB :: STATUS_OK => 'form'));
+                                  array(LIMB_STATUS_OK => 'form'));
 
     $state_machine->registerState('form',
                                   array(LIMB_ARTICLES_DIR . '/commands/create_article_form_command',
                                         'article_form'),
-                                  array(LIMB :: STATUS_FORM_SUBMITTED => 'process',
-                                        LIMB :: STATUS_FORM_DISPLAYED => 'render'));
+                                  array(LIMB_STATUS_FORM_SUBMITTED => 'process',
+                                        LIMB_STATUS_FORM_DISPLAYED => 'render'));
 
     $state_machine->registerState('process',
                                   LIMB_ARTICLES_DIR . '/commands/create_article_command',
-                                  array(LIMB :: STATUS_ERROR => 'render'));
+                                  array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 
   function getCreateArticlesFolderActionProperties()
@@ -81,25 +81,25 @@ class ArticlesFolderController extends SiteObjectController
                  'img_src' => '/shared/images/new.folder.gif');
   }
 
-  function defineCreateArticlesFolder($state_machine)
+  function defineCreateArticlesFolder(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         '/articles_folder/create.html')
-                                  array(LIMB :: STATUS_OK => 'form'));
+                                  array(LIMB_STATUS_OK => 'form'));
 
     $state_machine->registerState('form',
-                                  array(LIMB_DIR . '/class/core/commands/create_simple_folder_form_command',
+                                  array(LIMB_DIR . '/class/commands/create_simple_folder_form_command',
                                         'articles_folder_form'),
-                                  array(LIMB :: STATUS_FORM_SUBMITTED => 'process',
-                                        LIMB :: STATUS_FORM_DISPLAYED => 'render'));
+                                  array(LIMB_STATUS_FORM_SUBMITTED => 'process',
+                                        LIMB_STATUS_FORM_DISPLAYED => 'render'));
 
     $state_machine->registerState('process',
-                                  LIMB_DIR . '/class/core/commands/create_site_object_command',
-                                  array(LIMB :: STATUS_ERROR => 'render'));
+                                  LIMB_DIR . '/class/commands/create_site_object_command',
+                                  array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 
   function getEditActionProperties()
@@ -110,25 +110,25 @@ class ArticlesFolderController extends SiteObjectController
                  'img_src' => '/shared/images/edit.gif');
   }
 
-  function defineEdit($state_machine)
+  function defineEdit(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         '/articles_folder/edit.html')
-                                  array(LIMB :: STATUS_OK => 'form'));
+                                  array(LIMB_STATUS_OK => 'form'));
 
     $state_machine->registerState('form',
-                                  array(LIMB_DIR . '/class/core/commands/edit_simple_folder_form_command',
+                                  array(LIMB_DIR . '/class/commands/edit_simple_folder_form_command',
                                         'articles_folder_form'),
-                                  array(LIMB :: STATUS_FORM_SUBMITTED => 'process',
-                                        LIMB :: STATUS_FORM_DISPLAYED => 'render'));
+                                  array(LIMB_STATUS_FORM_SUBMITTED => 'process',
+                                        LIMB_STATUS_FORM_DISPLAYED => 'render'));
 
     $state_machine->registerState('process',
-                                  LIMB_DIR . '/class/core/commands/edit_site_object_command',
-                                  array(LIMB :: STATUS_ERROR => 'render'));
+                                  LIMB_DIR . '/class/commands/edit_site_object_command',
+                                  array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 }
 

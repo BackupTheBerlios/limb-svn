@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/CreateSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/class/commands/CreateSiteObjectCommand.class.php');
 
 class CreatePollAnswerCommand extends CreateSiteObjectCommand
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/class/actions/FormCreateSiteObjectAction.class.php');
 
 class CreateImageAction extends FormCreateSiteObjectAction
 {

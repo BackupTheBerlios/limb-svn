@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/controllers/SiteObjectController.class.php');
 
 class TemplateSourceController extends SiteObjectController
 {

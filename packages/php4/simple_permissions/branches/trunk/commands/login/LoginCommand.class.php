@@ -30,7 +30,7 @@ class LoginCommand// implements Command
 
     if (!$user->isLoggedIn())
     {
-      return LIMB :: STATUS_ERROR;
+      return LIMB_STATUS_ERROR;
     }
 
     $response =& $toolkit->getResponse();
@@ -38,18 +38,18 @@ class LoginCommand// implements Command
     if($redirect = $dataspace->get('redirect'))
     {
       $response->redirect($redirect);
-      return LIMB :: STATUS_OK;
+      return LIMB_STATUS_OK;
     }
 
     $referer =& $this->_getHttpReferer();
     if($referer &&  (strpos(strtolower($referer), '/root/login') === false))
     {
       $response->redirect($referer);
-      return LIMB :: STATUS_OK;
+      return LIMB_STATUS_OK;
     }
 
     $response->redirect('/');
-    return LIMB :: STATUS_OK;
+    return LIMB_STATUS_OK;
   }
 
   // for mocking

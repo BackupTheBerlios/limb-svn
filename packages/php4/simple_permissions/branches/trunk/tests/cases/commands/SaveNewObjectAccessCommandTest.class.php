@@ -10,12 +10,12 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../commands/SaveNewObjectAccessCommand.class.php');
 require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
-require_once(LIMB_DIR . '/class/core/request/Request.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/SingleObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/request/Request.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/datasources/SingleObjectDatasource.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Request');

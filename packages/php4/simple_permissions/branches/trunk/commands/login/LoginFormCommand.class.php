@@ -8,7 +8,7 @@
 * $Id: login_command.class.php 827 2004-10-23 15:00:44Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
+require_once(LIMB_DIR . '/class/commands/FormCommand.class.php');
 
 class LoginFormCommand extends FormCommand
 {

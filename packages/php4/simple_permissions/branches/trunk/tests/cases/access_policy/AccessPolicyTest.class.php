@@ -16,6 +16,11 @@ class AccessPolicyTest extends LimbTestCase
 {
   var $ac = null;
 
+  function AccessPolicyTest()
+  {
+    parent :: LimbTestCase('access policy test');
+  }
+
   function setUp()
   {
     $this->_cleanUp();
@@ -76,7 +81,7 @@ class AccessPolicyTest extends LimbTestCase
     $db_table->insert(array('id'=> 1, 'behaviour_id' => 11, 'action_name' => 'create', 'accessor_id' => 10, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
     $db_table->insert(array('id'=> 2, 'behaviour_id' => 11, 'action_name' => 'edit', 'accessor_id' => 10, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
     $db_table->insert(array('id'=> 3, 'behaviour_id' => 11, 'action_name' => 'publish', 'accessor_id' => 20, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
-
+trigger_error('Stop', E_USER_WARNING);
     $actions = $this->ac->getActionsAccess(11, ACCESS_POLICY_ACCESSOR_TYPE_USER);
     $this->assertEqual($actions, array(10 => array('create' => 1, 'edit' => 1)));
 

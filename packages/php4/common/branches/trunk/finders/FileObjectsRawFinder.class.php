@@ -9,7 +9,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/finders/OneTableObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/class/finders/OneTableObjectsRawFinder.class.php');
 
 class FileObjectsRawFinder extends OneTableObjectsRawFinder
 {

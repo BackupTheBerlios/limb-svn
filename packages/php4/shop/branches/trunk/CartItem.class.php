@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/Object.class.php');
+require_once(LIMB_DIR . '/class/Object.class.php');
 
 class CartItem extends Object
 {

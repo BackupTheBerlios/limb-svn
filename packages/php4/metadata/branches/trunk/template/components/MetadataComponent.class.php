@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/template/Component.class.php');
-require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
+require_once(LIMB_DIR . '/class/ArrayDataset.class.php');
 
 class MetadataComponent extends Component
 {

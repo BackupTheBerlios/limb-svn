@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/CartItem.class.php');
-require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
+require_once(LIMB_DIR . '/class/ArrayDataset.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
 define('CART_DEFAULT_ID', session_id());

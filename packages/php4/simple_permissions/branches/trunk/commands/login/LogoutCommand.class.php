@@ -21,7 +21,7 @@ class LogoutCommand// implements Command
 
     $response->redirect('/');
 
-    return LIMB :: STATUS_OK;
+    return LIMB_STATUS_OK;
   }
 }
 

@@ -8,7 +8,7 @@
 * $Id: edit_message_action.class.php 707 2004-09-18 14:43:42Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/FormEditSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/class/commands/FormEditSiteObjectCommand.class.php');
 
 class EditMessageFormCommand extends FormEditSiteObjectCommand
 {

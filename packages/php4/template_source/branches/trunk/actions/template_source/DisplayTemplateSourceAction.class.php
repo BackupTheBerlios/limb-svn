@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
+require_once(LIMB_DIR . '/class/actions/Action.class.php');
 require_once(LIMB_DIR . '/class/template/fileschemes/compiler_support.inc.php');
 
 @define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');

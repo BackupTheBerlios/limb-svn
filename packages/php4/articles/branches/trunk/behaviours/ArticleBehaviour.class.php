@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/controllers/SiteObjectController.class.php');
 
 class ArticleController extends SiteObjectController
 {
@@ -17,15 +17,15 @@ class ArticleController extends SiteObjectController
     return array();
   }
 
-  function defineDisplay($state_machine)
+  function defineDisplay(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         '/article/display.html')
-                                  array(LIMB :: STATUS_OK => 'render'));
+                                  array(LIMB_STATUS_OK => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 
   function getPrintVersionActionProperties()
@@ -33,15 +33,15 @@ class ArticleController extends SiteObjectController
     return array('action_name' => Strings :: get('print_version_action', 'document'));
   }
 
-  function definePrintVersion($state_machine)
+  function definePrintVersion(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         '/article/print_version.html')
-                                  array(LIMB :: STATUS_OK => 'render'));
+                                  array(LIMB_STATUS_OK => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 
   function getEditActionProperties()
@@ -52,25 +52,25 @@ class ArticleController extends SiteObjectController
                  'img_src' => '/shared/images/edit.gif');
   }
 
-  function defineEdit($state_machine)
+  function defineEdit(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         '/article/edit.html')
-                                  array(LIMB :: STATUS_OK => 'form'));
+                                  array(LIMB_STATUS_OK => 'form'));
 
     $state_machine->registerState('form',
                                   array(LIMB_ARTICLES_DIR . '/commands/edit_article_form_command',
                                         'article_form'),
-                                  array(LIMB :: STATUS_FORM_SUBMITTED => 'process',
-                                        LIMB :: STATUS_FORM_DISPLAYED => 'render'));
+                                  array(LIMB_STATUS_FORM_SUBMITTED => 'process',
+                                        LIMB_STATUS_FORM_DISPLAYED => 'render'));
 
     $state_machine->registerState('process',
                                   LIMB_ARTICLES_DIR . '/commands/edit_article_command',
-                                  array(LIMB :: STATUS_ERROR => 'render'));
+                                  array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 }
 

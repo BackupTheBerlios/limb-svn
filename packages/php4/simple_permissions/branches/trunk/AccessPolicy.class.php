@@ -16,9 +16,6 @@ define('ACCESS_POLICY_ACCESSOR_TYPE_USER', 1);
 
 class AccessPolicy
 {
-  const ACCESSOR_TYPE_GROUP = 0;
-  const ACCESSOR_TYPE_USER = 1;
-
   function getObjectsAccessByIds($ids, $accessor_type)
   {
     if (!is_array($ids) ||  !count($ids))

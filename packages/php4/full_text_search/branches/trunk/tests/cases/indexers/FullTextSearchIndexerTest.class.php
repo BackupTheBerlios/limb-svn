@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
 require_once(dirname(__FILE__) . '/../../../indexers/FullTextIndexer.class.php');
-require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
 
 Mock :: generate('SiteObject');
 Mock :: generate('SiteObjectBehaviour');

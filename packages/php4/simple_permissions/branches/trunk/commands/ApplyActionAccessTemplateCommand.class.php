@@ -16,7 +16,7 @@ class ApplyActionAccessTemplateCommand// implements Command
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
 
-    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
 
     $object = wrapWithSiteObject($datasource->fetch());
@@ -36,7 +36,7 @@ class ApplyActionAccessTemplateCommand// implements Command
   }
 
   // for mocking
-  function _getAccessPolicy()
+  function &_getAccessPolicy()
   {
     return new $access_policy;
   }

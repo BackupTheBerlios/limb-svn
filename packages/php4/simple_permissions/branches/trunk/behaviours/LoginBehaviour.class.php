@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/controllers/SiteObjectController.class.php');
 
 class LoginBehaviour extends SiteObjectController
 {
@@ -22,25 +22,25 @@ class LoginBehaviour extends SiteObjectController
     return array();
   }
 
-  function defineLogin($state_machine)
+  function defineLogin(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/core/commands/use_view_command',
+                                  array(LIMB_DIR . '/class/commands/use_view_command',
                                         'login.html')
-                                  array(LIMB :: STATUS_OK => 'form'));
+                                  array(LIMB_STATUS_OK => 'form'));
 
     $state_machine->registerState('form',
                                   array(LIMB_SIMPLE_PERMISSIONS_DIR . '/commands/login_form_command',
                                         'login_form'),
-                                  array(LIMB :: STATUS_FORM_SUBMITTED => 'process',
-                                        LIMB :: STATUS_FORM_DISPLAYED => 'render'));
+                                  array(LIMB_STATUS_FORM_SUBMITTED => 'process',
+                                        LIMB_STATUS_FORM_DISPLAYED => 'render'));
 
     $state_machine->registerState('process',
                                   LIMB_SIMPLE_PERMISSIONS_DIR . '/commands/login_command',
-                                  array(LIMB :: STATUS_ERROR => 'render'));
+                                  array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/core/commands/display_view_command');
+                                  LIMB_DIR . '/class/commands/display_view_command');
   }
 
   function getLogoutActionProperties()
@@ -48,7 +48,7 @@ class LoginBehaviour extends SiteObjectController
     return array();
   }
 
-  function defineLogout($state_machine)
+  function defineLogout(&$state_machine)
   {
     $state_machine->registerState('process', LIMB_SIMPLE_PERMISSIONS_DIR . '/commands/logout_command');
   }

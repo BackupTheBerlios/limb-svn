@@ -8,17 +8,17 @@
 * $Id: authentication_filter_test.class.php 814 2004-10-21 12:46:23Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/class/core/request/Request.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
-require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/Authenticator.interface.php');
-require_once(LIMB_DIR . '/class/core/permissions/Authorizer.interface.php');
+require_once(LIMB_DIR . '/class/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/request/Request.class.php');
+require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/class/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/permissions/Authenticator.interface.php');
+require_once(LIMB_DIR . '/class/permissions/Authorizer.interface.php');
 
 require_once(dirname(__FILE__) . '/../../../filters/SimplePermissionsAuthenticationFilter.class.php');
 

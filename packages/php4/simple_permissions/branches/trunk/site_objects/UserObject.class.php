@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/ContentObject.class.php');
+require_once(LIMB_DIR . '/class/site_objects/ContentObject.class.php');
 require_once(dirname(__FILE__) . '/../SimpleAuthenticator.class.php');
 
 class UserObject extends ContentObject

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
-require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
-require_once(LIMB_DIR . '/class/core/SysParam.class.php');
+require_once(LIMB_DIR . '/class/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/class/SysParam.class.php');
 
 class UpdateParamCommonAction extends FormAction
 {

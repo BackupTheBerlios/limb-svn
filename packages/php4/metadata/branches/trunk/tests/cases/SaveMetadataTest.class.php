@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectFactory.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObjectFactory.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 require_once(dirname(__FILE__) . '/../../MetadataManager.class.php');
 

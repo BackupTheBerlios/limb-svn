@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../commands/login/LoginCommand.class.php');
-require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/Authenticator.interface.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/permissions/Authenticator.interface.php');
+require_once(LIMB_DIR . '/class/Dataspace.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('HttpResponse');

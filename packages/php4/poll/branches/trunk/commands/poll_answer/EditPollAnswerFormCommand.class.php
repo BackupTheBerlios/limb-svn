@@ -8,7 +8,7 @@
 * $Id: edit_poll_answer_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/FormEditSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/class/commands/FormEditSiteObjectCommand.class.php');
 
 class EditPollAnswerFormCommand extends FormEditSiteObjectCommand
 {

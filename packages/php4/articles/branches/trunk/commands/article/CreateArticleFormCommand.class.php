@@ -8,7 +8,7 @@
 * $Id: edit_article_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/FormCreateSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/class/commands/FormCreateSiteObjectCommand.class.php');
 
 class CreateArticleFormCommand extends FormCreateSiteObjectCommand
 {
