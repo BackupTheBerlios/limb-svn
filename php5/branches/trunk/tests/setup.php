@@ -8,6 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 	
+if (file_exists(dirname(__FILE__) . '/constants.php'))
+	include_once(dirname(__FILE__) . '/constants.php');
+
 if(!defined('LIMB_DIR'))
   define('LIMB_DIR', dirname(__FILE__) . '/../');
   
@@ -51,11 +54,13 @@ require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');
 require_once(LIMB_DIR . '/tests/lib/test_finder.class.php');
 require_once(LIMB_DIR . '/class/lib/error/error.inc.php');
-
+require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 require_once(LIMB_DIR . '/class/core/limb.class.php');
 require_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
 
 Limb :: registerToolkit(new BaseLimbToolkit());
+
+packages_info :: instance()->load_packages();//???
 
 set_time_limit(0);
 error_reporting(E_ALL);

@@ -43,7 +43,7 @@ class BaseLimbToolkit implements LimbToolkit
   
   public function getDatasource($datasource_path)
   {
-    include_once(LIMB_DIR . '/class/datasources/datasource_factory.class.php');
+    include_once(LIMB_DIR . '/class/core/datasources/datasource_factory.class.php');
     return datasource_factory :: create($datasource_path);    
   }
   
@@ -57,12 +57,6 @@ class BaseLimbToolkit implements LimbToolkit
   {
     include_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour_factory.class.php');
     return site_object_behaviour_factory :: create($behaviour_path);       
-  }
-  
-  public function createAction($action_path)
-  {
-    include_once(LIMB_DIR . '/class/core/actions/action_factory.class.php');
-    return action_factory :: create($action_path);           
   }
   
   public function getDB()

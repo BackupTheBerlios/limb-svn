@@ -13,12 +13,14 @@ require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('request');
 Mock :: generate('requested_object_datasource');
 Mock :: generate('dataspace');
 Mock :: generate('site_object');
+Mock :: generate('site_object_behaviour');
 
 //do you miss namespaces? yeah, we too :)
 class site_object_for_create_site_object_command extends site_object
@@ -37,6 +39,7 @@ class create_site_object_command_test extends LimbTestCase
   var $datasource;
   var $dataspace;
   var $site_object;
+  var $behaviour;
 		  	
   function setUp()
   {
@@ -44,17 +47,21 @@ class create_site_object_command_test extends LimbTestCase
     $this->datasource = new Mockrequested_object_datasource($this);
     $this->dataspace = new Mockdataspace($this);
     $this->site_object = new Mocksite_object($this);
+    $this->behaviour = new Mocksite_object_behaviour($this);
     
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
+    $this->toolkit->setReturnValue('createBehaviour', 
+                                   $this->behaviour, 
+                                   array($behaviour_name = 'some_behaviour'));
     
     $this->toolkit->expectOnce('createSiteObject', array('site_object'));
      
     Limb :: registerToolkit($this->toolkit);
     
-  	$this->command = new create_site_object_command();
+  	$this->command = new create_site_object_command($behaviour_name);
   }
   
   function tearDown()
@@ -82,6 +89,11 @@ class create_site_object_command_test extends LimbTestCase
     $this->datasource->setReturnValue('fetch', array('node_id' => 100));
     
     $this->site_object->expectOnce('merge', array($data));
+    
+    $this->behaviour->expectOnce('get_id');
+    $this->behaviour->setReturnValue('get_id', $behaviour_id = 100);
+
+    $this->site_object->expectOnce('set_behaviour_id', array($behaviour_id));
     $this->site_object->expectOnce('set', array('parent_node_id', 100));
     
     $this->site_object->expectOnce('create');
@@ -107,6 +119,11 @@ class create_site_object_command_test extends LimbTestCase
     $this->datasource->expectNever('fetch');
     
     $this->site_object->expectOnce('merge', array($data));
+
+    $this->behaviour->expectOnce('get_id');
+    $this->behaviour->setReturnValue('get_id', $behaviour_id = 100);
+
+    $this->site_object->expectOnce('set_behaviour_id', array($behaviour_id));
     
     $this->site_object->expectOnce('create');
     

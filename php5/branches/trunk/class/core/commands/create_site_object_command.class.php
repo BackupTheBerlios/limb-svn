@@ -12,6 +12,13 @@ require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
 
 class create_site_object_command implements Command
 {
+  protected $behaviour_name;
+  
+  function __construct($behaviour_name)
+  {
+    $this->behaviour_name = $behaviour_name;
+  }
+  
 	public function perform()
 	{
     $object = Limb :: toolkit()->createSiteObject($this->_define_site_object_class_name()); 
@@ -43,11 +50,19 @@ class create_site_object_command implements Command
     
     $object->merge($dataspace->export());
     
+    $object->set_behaviour_id($this->_get_behaviour_id());
+    
     if (!$dataspace->get('parent_node_id'))
     {
       $parent_object_data = $this->_load_parent_object_data();
       $object->set('parent_node_id', $parent_object_data['node_id']);
     }  
+  }
+  
+  protected function _get_behaviour_id()
+  {
+    $behaviour = Limb :: toolkit()->createBehaviour($this->behaviour_name);
+    return $behaviour->get_id();
   }
 
 	protected function _load_parent_object_data()

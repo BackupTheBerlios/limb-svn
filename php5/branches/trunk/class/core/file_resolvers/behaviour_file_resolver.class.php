@@ -14,6 +14,9 @@ class behaviour_file_resolver extends file_resolver_decorator
 {
   public function resolve($class_path, $params = array())
   {
+    if(file_exists(LIMB_DIR . '/class/core/behaviours/' . $class_path . '.class.php'))
+      return LIMB_DIR . '/class/core/behaviours/' . $class_path . '.class.php';
+
     return $this->_resolver->resolve('behaviours/' . $class_path . '.class.php', $params);
   }  
 }
