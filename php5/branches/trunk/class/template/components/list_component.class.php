@@ -36,9 +36,9 @@ class list_component extends component
 	}
 	 
 	// Temporary delegation until better solution can be found
-	public function get($name)
+	public function get($name, $default_value = null)
 	{		
-		return $this->dataset->get($name);
+		return $this->dataset->get($name, $default_value);
 	} 
 
 	public function reset()

@@ -24,7 +24,7 @@ class core_block_tag extends server_component_tag
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/block_component';
 	}
 
-	public function generate_constructor(&$code)
+	public function generate_constructor($code)
 	{
 		parent::generate_constructor($code);
 		if (array_key_exists('hide', $this->attributes))
@@ -33,13 +33,13 @@ class core_block_tag extends server_component_tag
 		} 
 	} 
 
-	public function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 		$code->write_php('if (' . $this->get_component_ref_code() . '->is_visible()) {');
 	} 
 
-	public function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_php('}');
 		parent::post_generate($code);

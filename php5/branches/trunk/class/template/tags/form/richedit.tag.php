@@ -31,14 +31,14 @@ class richedit_tag extends control_tag
 		return 'textarea';
 	}
 	
-	public function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		$code->write_php($this->get_component_ref_code() . '->init_richedit();');
 		
 		parent :: pre_generate($code);
 	} 
 		
-	public function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$code->write_php($this->get_component_ref_code() . '->render_contents();');
 	}

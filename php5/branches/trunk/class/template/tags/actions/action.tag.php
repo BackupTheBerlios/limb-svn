@@ -34,7 +34,7 @@ class action_tag extends compiler_directive_tag
 		} 
 	} 
 
-	public function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$code->write_php('do { ');
 				

@@ -24,7 +24,7 @@ class actions_tag extends server_component_tag
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/actions_component';
 	}
 	
-	public function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent :: pre_generate($code);
 
@@ -47,7 +47,7 @@ class actions_tag extends server_component_tag
 		$code->write_php('if (' . $this->get_component_ref_code() . '->next()) {');
 	} 
 
-	public function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_php('}');
 	} 

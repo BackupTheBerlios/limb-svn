@@ -160,12 +160,12 @@ class metadata_component extends component
 		return $this->get('description');
 	}
 
-  public function get($name)
+  public function get($name, $default_value = null)
   {
 		if(isset($this->object_metadata[$name]))
 			return $this->object_metadata[$name];
 		else
-			return null;	
+			return $default_value;	
   }
 		
 	public function set_title_separator($separator = ' ')

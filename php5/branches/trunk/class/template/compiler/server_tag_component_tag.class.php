@@ -36,7 +36,7 @@ abstract class server_tag_component_tag extends server_component_tag
 	* plus a PHP string which renders the attributes from the runtime
 	* component.
 	*/
-	public function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 		$code->write_html('<' . $this->get_rendered_tag());
@@ -48,7 +48,7 @@ abstract class server_tag_component_tag extends server_component_tag
 	/**
 	* Writes the closing tag string to the compiled template
 	*/
-	public function post_generate(&$code)
+	public function post_generate($code)
 	{
 		if ($this->has_closing_tag)
 		{
@@ -62,7 +62,7 @@ abstract class server_tag_component_tag extends server_component_tag
 	* assigning the attributes found at compile time to the runtime component
 	* via a serialized string
 	*/
-	public function generate_constructor(&$code)
+	public function generate_constructor($code)
 	{
 		parent::generate_constructor($code);
 		$code->write_php($this->get_component_ref_code() . '->attributes = ' . var_export($this->attributes, true) . ';');

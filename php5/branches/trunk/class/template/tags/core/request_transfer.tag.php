@@ -36,12 +36,12 @@ class core_request_transfer_tag extends server_tag_component_tag
 		return PARSER_REQUIRE_PARSING;
 	}
 	
-	public function pre_generate()
+	public function pre_generate($code)
 	{
 		//we override parent behavior
 	}
 
-	public function post_generate()
+	public function post_generate($code)
 	{
 		//we override parent behavior
 	}
