@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: display_file_action.class.php 422 2004-02-10 09:50:25Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
@@ -66,3 +66,5 @@ class display_file_action extends action
 		exit;
 	}
 }
+
+?>

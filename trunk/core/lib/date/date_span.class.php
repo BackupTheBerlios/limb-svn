@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: date_span.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -26,4 +26,6 @@ class date_span
 		$this->minute = intval($this->second / 60);
 		$this->second -= $this->minute * 60;
 	} 
-} 
+}
+
+?> 
