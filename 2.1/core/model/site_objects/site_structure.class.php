@@ -25,6 +25,23 @@ class site_structure extends site_object
 			'controller_class_name' => 'site_structure_controller',
 		);
 	}
+	
+	function save_priority($params)
+	{
+		if(!count($params))
+			return true;
+
+		$db_table =& db_table_factory :: instance('sys_site_object_tree');
+			
+		foreach($params as $node_id => $value)
+		{
+			$data = array();
+			$data['priority'] = (int)$value;
+			$db_table->update_by_id($node_id, $data);
+		}				
+
+		return true;
+	}
 }
 
 ?>

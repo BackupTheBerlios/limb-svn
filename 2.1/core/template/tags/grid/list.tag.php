@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 class grid_list_tag_info
 {
 	var $tag = 'grid:LIST';
@@ -38,6 +37,12 @@ class grid_list_tag extends server_component_tag
 		
 		parent :: pre_generate($code);
 
+		if (isset($this->attributes['has_form']) && $this->attributes['has_form'])
+		{
+			$code->write_html('<form name="grid_form" id="grid_form_'. $this->get_server_id() .'" method="post">');
+			$code->write_html("<input type='hidden' name='grid_form[submitted]' value='1'>");
+		}
+
 		$code->write_php('if (' . $this->get_dataspace_ref_code() . '->get_total_row_count()){');
 	} 
 
@@ -49,6 +54,11 @@ class grid_list_tag extends server_component_tag
 			$default->generate_now($code);
 			
 		$code->write_php('}');
+
+		if (isset($this->attributes['has_form']) && $this->attributes['has_form'])
+		{
+			$code->write_html('</form>');
+		}	
 		
 		parent :: post_generate($code);
 	} 

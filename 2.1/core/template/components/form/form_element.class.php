@@ -165,18 +165,23 @@ class form_element extends tag_component
 	{
 		return preg_replace('/^([^\[\]]+)(\[.*\])*$/', "[\\1]\\2", $name);		
 	}
-	
-	function render_attributes()
+
+	function _process_name_attribute($value)
 	{
 		$form_component =& $this->find_parent_by_class('form_component');
 		
 		$form_name = $form_component->attributes['name'];
 		
+		return $form_name . $this->_make_index_name($value);
+	}
+		
+	function render_attributes()
+	{		
 		foreach ($this->attributes as $attrib_name => $value)
 		{
 			if($this->attach_form_prefix && $attrib_name == 'name')
 			{						
-				$value = $form_name . $this->_make_index_name($value);
+				$value = $this->_process_name_attribute($value);
 			}
 			
 			if (!is_null($value))

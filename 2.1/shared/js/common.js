@@ -373,8 +373,10 @@ function submit_form(form_name, form_action)
 		w = popup(LOADING_STATUS_PAGE, window_name);
 		form.target = w.name;
 	}
-
-	form.action = form_action;
+	
+	if(form_action)
+		form.action = form_action;
+		
 	form.submit();
 }
 

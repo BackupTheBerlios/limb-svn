@@ -20,6 +20,9 @@ class tree_toggle_action extends action
 	
 	function perform()
 	{
+		if(isset($_REQUEST['recursive_search_for_node']))
+			return new response();
+		
 		$tree =& tree :: instance();
 				
 		if(isset($_REQUEST['id']))

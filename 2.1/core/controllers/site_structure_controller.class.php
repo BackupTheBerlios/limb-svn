@@ -55,6 +55,11 @@ class site_structure_controller extends site_object_controller
 						'action_name' => strings :: get('select_node', 'site_structure'),
 						'template_path' => '/site_structure/node_select.html',
 				),
+				'save_priority' => array(
+						'permissions_required' => 'w',
+						'action_path' => '/site_structure/save_priority_action', 
+						'popup' => true,
+				),
 		);
  		
 

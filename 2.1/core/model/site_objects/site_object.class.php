@@ -196,6 +196,7 @@ class site_object extends object
 								ssot.id as node_id, 
 								ssot.parent_id as parent_node_id, 
 								ssot.level as level,
+								ssot.priority as priority, 
 								sso.current_version as version,
 								sys_class.id as class_id, 
 								sys_class.class_name as class_name,

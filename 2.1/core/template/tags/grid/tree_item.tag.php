@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 define('TREE_LINE_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100% style='display:inline'><tr><td background='/shared/images/t_l.gif' width=20><img src='/shared/images/1x1.gif'></td></tr></table>");
 define('TREE_SPACER_IMG', "<img src='/shared/images/0.gif' width=20>");
 define('TREE_END_IMG', 	"<table border=0 cellspacing=0 cellpadding=0 height=100% style='display:inline'><tr><td valign=top><img src='/shared/images/t_e.gif'></td></tr></table>");
