@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
-require_once(LIMB_DIR . 'class/core/dataspace.class.php');
-require_once(LIMB_DIR . 'class/validators/rules/tree_path_rule.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/tree_path_rule.class.php');
 
 class tree_path_rule_test extends single_field_rule_test
 {

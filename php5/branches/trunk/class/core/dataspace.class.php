@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 
 /**
 * The dataspace is a container for a set of named data values (variables).

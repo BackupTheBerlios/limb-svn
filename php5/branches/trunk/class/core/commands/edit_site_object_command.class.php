@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
 
 class edit_site_object_command implements Command
 {
 	public function perform()
 	{
     $object = Limb :: toolkit()->createSiteObject($this->_define_site_object_class_name()); 
-    
+
     $this->_fill_object($object);
     
     try
@@ -32,7 +32,7 @@ class edit_site_object_command implements Command
   
 	protected function _update_object_operation($object)
 	{
-		$object->update($this->_define_increase_version_flag());
+		$object->update($this->_define_increase_version_flag($object));
 	}
   
   protected function _fill_object($object)
@@ -50,9 +50,9 @@ class edit_site_object_command implements Command
 		return $toolkit->getFetcher()->fetch_requested_object($toolkit->getRequest());
 	}
 
-  function _define_increase_version_flag()
+  function _define_increase_version_flag($object)
   {
-    if (class_exists('content_object') && ($this->object instanceof content_object))
+    if (class_exists('content_object') && ($object instanceof content_object))
       return true;
     else 
       return false;

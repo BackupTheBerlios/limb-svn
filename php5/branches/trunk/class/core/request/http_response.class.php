@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/request/response.interface.php');
+require_once(LIMB_DIR . '/class/core/request/response.interface.php');
 
 class http_response implements response
 {
@@ -18,7 +18,7 @@ class http_response implements response
 		
 	public function redirect($path)
 	{  		  	
-	  include_once(LIMB_DIR . 'class/i18n/strings.class.php');
+	  include_once(LIMB_DIR . '/class/i18n/strings.class.php');
 	  
   	$message = strings :: get('redirect_message');//???
   	$message = str_replace('%path%', $path, $message);

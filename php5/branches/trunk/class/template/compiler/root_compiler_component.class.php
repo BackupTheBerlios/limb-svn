@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/template/compiler/compiler_directive_tag.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/compiler_directive_tag.class.php');
 
 /**
 * The root compile time component in the template hierarchy. Used to generate

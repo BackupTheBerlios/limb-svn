@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/template/components/form/text_area_component.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/text_area_component.class.php');
 
 if(!defined('RICHEDIT_DEFAULT_WIDTH'))
   define('RICHEDIT_DEFAULT_WIDTH', '600px');

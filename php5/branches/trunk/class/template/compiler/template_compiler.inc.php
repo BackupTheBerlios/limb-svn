@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/template/compiler/codewriter.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/utils.inc.php');
-require_once(LIMB_DIR . 'class/template/compiler/tag_dictionary.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/codewriter.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/utils.inc.php');
+require_once(LIMB_DIR . '/class/template/compiler/tag_dictionary.class.php');
 
-require_once(LIMB_DIR . 'class/template/compiler/compiler_component.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/compiler_directive_tag.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/silent_compiler_directive_tag.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/server_component_tag.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/server_tag_component_tag.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/text_node.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/root_compiler_component.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/compiler_component.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/compiler_directive_tag.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/silent_compiler_directive_tag.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/server_component_tag.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/server_tag_component_tag.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/text_node.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/root_compiler_component.class.php');
 
-require_once(LIMB_DIR . 'class/template/compiler/source_file_parser.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/codewriter.class.php');
-require_once(LIMB_DIR . 'class/template/compiler/variable_reference.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/source_file_parser.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/codewriter.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/variable_reference.class.php');
 
-require_once(LIMB_DIR . 'class/template/fileschemes/compiler_support.inc.php');
+require_once(LIMB_DIR . '/class/template/fileschemes/compiler_support.inc.php');
 require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 
 /**

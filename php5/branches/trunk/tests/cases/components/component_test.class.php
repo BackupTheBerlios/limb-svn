@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/dataspace.class.php');
-require_once(LIMB_DIR . 'class/template/component.class.php');
+require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/template/component.class.php');
 require_once(LIMB_DIR . '/tests/cases/dataspace_test.class.php');
 
 Mock::generate('component', 'mock_component');

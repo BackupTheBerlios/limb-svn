@@ -9,22 +9,11 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/site_object_manipulation_test.class.php');
-require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
-require_once(LIMB_DIR . 'class/db_tables/content_object_db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/class/db_tables/content_object_db_table.class.php');
 
-class news_object_manipulation_test extends content_object
-{			
-	function _define_class_properties()
-	{
-		return array(
-			'ordr' => 1,
-			'can_be_parent' => 1,
-			'db_table_name' => 'test_news_object',
-			'controller_class_name' => 'controller_test'
-		);
-	}
-}
+class news_object_manipulation_test extends content_object{}
 
 class test_news_object_db_table extends content_object_db_table
 {		
@@ -73,6 +62,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
+		$this->object->set_behaviour_id($this->behaviour_id);
   	$this->object->set('annotation', 'news annotation');
   	$this->object->set('content', 'news content');
   	$this->object->set('news_date', '2004-01-02 00:00:00');
@@ -104,6 +94,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
+		$this->object->set_behaviour_id($this->behaviour_id);
   	$this->object->set('annotation', 'news annotation');
   	$this->object->set('content', 'news content');
   	$this->object->set('news_date', '2004-01-02 00:00:00');
@@ -130,6 +121,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
+		$this->object->set_behaviour_id($this->behaviour_id);
   	$this->object->set('annotation', 'news annotation');
   	$this->object->set('content', 'news content');
   	$this->object->set('news_date', '2004-01-02 00:00:00');
@@ -163,6 +155,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
+		$this->object->set_behaviour_id($this->behaviour_id);
   	
   	$this->object->create();
 		

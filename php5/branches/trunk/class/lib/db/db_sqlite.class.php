@@ -8,7 +8,7 @@
 * $Id: db_sqlite.class.php 658 2004-09-15 14:21:14Z pachanga $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/db/db_module.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_module.class.php');
 
 class db_sqlite extends db_module
 {	

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
-require_once(LIMB_DIR . 'class/template/component.class.php');
-require_once(LIMB_DIR . 'class/template/fileschemes/compiler_support.inc.php');
-require_once(LIMB_DIR . 'class/template/fileschemes/runtime_support.inc.php');
+require_once(LIMB_DIR . '/class/template/component.class.php');
+require_once(LIMB_DIR . '/class/template/fileschemes/compiler_support.inc.php');
+require_once(LIMB_DIR . '/class/template/fileschemes/runtime_support.inc.php');
 
 /**
 * Instantiate global variable $template_render and $template_construct as arrays
@@ -54,13 +54,13 @@ class template extends component
 		{
 			if (get_ini_option('common.ini', 'force_compile', 'Templates'))
 			{
-			  include_once(LIMB_DIR . 'class/template/compiler/template_compiler.inc.php');
+			  include_once(LIMB_DIR . '/class/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);
 			}
 			
 			if(!file_exists($this->codefile))
 			{
-			  include_once(LIMB_DIR . 'class/template/compiler/template_compiler.inc.php');
+			  include_once(LIMB_DIR . '/class/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);
 			}
 

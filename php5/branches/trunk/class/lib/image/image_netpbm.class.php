@@ -40,7 +40,7 @@ if(!defined('NETPBM_LIB_DIR'))
   	define('NETPBM_LIB_DIR', '/usr/local/netpbm/bin/');
  }
 
-require_once(LIMB_DIR . 'class/lib/image/image_library.class.php');
+require_once(LIMB_DIR . '/class/lib/image/image_library.class.php');
 
 class image_netpbm extends image_library
 {

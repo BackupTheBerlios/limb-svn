@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/validators/validator.class.php');
-require_once(LIMB_DIR . 'class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/validator.class.php');
+require_once(LIMB_DIR . '/class/core/dataspace.class.php');
 
 Mock::generate('error_list');
 

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/session.class.php');
-require_once(LIMB_DIR . 'class/core/tree/tree_interface.interface.php');
+require_once(LIMB_DIR . '/class/core/session.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree_interface.interface.php');
 
 class tree implements tree_interface
 {
@@ -36,7 +36,7 @@ class tree implements tree_interface
 	{
 		if($this->_tree_driver === null)
 		{
-		  include_once(LIMB_DIR . 'class/core/tree/drivers/materialized_path_driver.class.php');
+		  include_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_driver.class.php');
 			$this->_tree_driver = new materialized_path_driver();
 		}
 	}

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
+require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
 
 if(!is_registered_resolver('datasource'))
 {

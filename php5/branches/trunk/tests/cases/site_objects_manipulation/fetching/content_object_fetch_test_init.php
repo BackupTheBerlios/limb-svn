@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/db_tables/content_object_db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/db_tables/content_object_db_table.class.php');
 require_once(dirname(__FILE__) . '/site_object_fetch_test_init.php');
 
 class content_object_fetch_test_init extends site_object_fetch_test_init

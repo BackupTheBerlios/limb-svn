@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php');
 
 class site_object_auto_identifier_test_version extends site_object
 {		
@@ -42,7 +42,8 @@ class site_object_auto_identifier_test extends LimbTestCase
 	var $object = null;
 	
 	var $parent_node_id = '';
-		 	
+  var $behaviour_id = 100;
+  
   function setUp()
   {
   	$this->db =& db_factory :: instance();
@@ -82,6 +83,7 @@ class site_object_auto_identifier_test extends LimbTestCase
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
+		$this->object->set_behaviour_id($this->behaviour_id);
 		
   	$id = $this->object->create();
   	
@@ -94,6 +96,7 @@ class site_object_auto_identifier_test extends LimbTestCase
 		
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
+		$this->object->set_behaviour_id($this->behaviour_id);
 		
   	$id = $this->object->create();
   	
@@ -109,6 +112,7 @@ class site_object_auto_identifier_test extends LimbTestCase
 
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
+		$this->object->set_behaviour_id($this->behaviour_id);
 		
   	$id = $this->object->create();
   	
@@ -124,6 +128,7 @@ class site_object_auto_identifier_test extends LimbTestCase
 
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
+		$this->object->set_behaviour_id($this->behaviour_id);
 		
   	$id = $this->object->create();
   	
@@ -138,6 +143,7 @@ class site_object_auto_identifier_test extends LimbTestCase
 	  $this->_create_node('4test19');
 
   	$this->object->set_parent_node_id($this->parent_node_id);
+		$this->object->set_behaviour_id($this->behaviour_id);
 		
   	$id = $this->object->create();
   	
@@ -150,6 +156,7 @@ class site_object_auto_identifier_test extends LimbTestCase
 	  $this->_create_node('119');
 
   	$this->object->set_parent_node_id($this->parent_node_id);
+		$this->object->set_behaviour_id($this->behaviour_id);
 		
   	$id = $this->object->create();
   	

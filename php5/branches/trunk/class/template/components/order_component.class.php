@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/template/component.class.php');
+require_once(LIMB_DIR . '/class/template/component.class.php');
 
 class order_component extends component
 {		

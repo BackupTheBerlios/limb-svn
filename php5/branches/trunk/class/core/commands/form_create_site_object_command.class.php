@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/commands/form_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/form_command.class.php');
 
 class form_create_site_object_command extends form_command
 {
@@ -22,8 +22,8 @@ class form_create_site_object_command extends form_command
 			$parent_node_id = $parent_object_data['parent_node_id'];
 		}
 
-		$validator->add_rule(array(LIMB_DIR . 'class/validators/rules/tree_node_id_rule', 'parent_node_id'));
-		$validator->add_rule(array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', $parent_node_id));    
+		$validator->add_rule(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id'));
+		$validator->add_rule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $parent_node_id));    
 	} 
 
 	protected function _load_parent_object_data()

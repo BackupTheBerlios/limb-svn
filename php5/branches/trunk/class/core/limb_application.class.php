@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
+require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
 
 debug :: add_timing_point('start');
   
-require_once(LIMB_DIR . 'class/core/limb.class.php');
-require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'class/core/file_resolvers/file_resolvers_registry.inc.php');
-require_once(LIMB_DIR . 'class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . 'class/etc/limb_util.inc.php');
-require_once(LIMB_DIR . 'class/etc/message_box.class.php');
+require_once(LIMB_DIR . '/class/core/limb.class.php');
+require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
+require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
+require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
+require_once(LIMB_DIR . '/class/etc/message_box.class.php');
 
 class limb_application
 {      
   protected function _load_packages()
   {
-    include_once(LIMB_DIR . 'class/core/packages_info.class.php');
+    include_once(LIMB_DIR . '/class/core/packages_info.class.php');
     packages_info :: instance()->load_packages();
   }
   
   protected function _create_toolkit()
   {
-    include_once(LIMB_DIR . 'class/core/base_limb_toolkit.class.php');
+    include_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
     return new BaseLimbToolkit();
   }
   
@@ -40,7 +40,7 @@ class limb_application
   
   protected function _register_filters($filter_chain)
   {
-    $filters_dir = LIMB_DIR . 'class/core/filters/';
+    $filters_dir = LIMB_DIR . '/class/core/filters/';
     
     $filter_chain->register_filter($filters_dir . 'output_buffering_filter');    
     $filter_chain->register_filter($filters_dir . 'session_startup_filter');

@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 //Inspired by EZpublish(http//ez.no), system class
 
-require_once(LIMB_DIR . 'class/lib/http/ip.class.php');
+require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
 
 class sys
 {

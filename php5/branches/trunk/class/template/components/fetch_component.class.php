@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/fetcher.class.php');
+require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 
 class fetch_component extends component
 {

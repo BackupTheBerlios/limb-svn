@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
 
 class close_popup_no_parent_reload_command implements Command
 {

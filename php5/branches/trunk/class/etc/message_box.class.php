@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/system/fs.class.php');
-require_once(LIMB_DIR . 'class/core/session.class.php');
+require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/class/core/session.class.php');
 
 class message_box
 {

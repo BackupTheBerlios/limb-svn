@@ -97,9 +97,9 @@ class form_edit_site_object_command_test extends LimbTestCase
   	$this->fetcher->setReturnValue('fetch_requested_object', $object_data);
     
     $this->validator->expectCallCount('add_rule', 3);
-    $this->validator->expectArgumentsAt(0, 'add_rule', array(array(LIMB_DIR . 'class/validators/rules/tree_node_id_rule', 'parent_node_id')));
-    $this->validator->expectArgumentsAt(1, 'add_rule', array(array(LIMB_DIR . 'class/validators/rules/required_rule', 'identifier')));
-    $this->validator->expectArgumentsAt(2, 'add_rule', array(array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', 100, 110)));
+    $this->validator->expectArgumentsAt(0, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id')));
+    $this->validator->expectArgumentsAt(1, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/required_rule', 'identifier')));
+    $this->validator->expectArgumentsAt(2, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', 100, 110)));
      
     $this->command->perform();
   }
@@ -117,9 +117,9 @@ class form_edit_site_object_command_test extends LimbTestCase
   	$this->fetcher->setReturnValue('fetch_requested_object', $object_data);
     
     $this->validator->expectCallCount('add_rule', 3);
-    $this->validator->expectArgumentsAt(0, 'add_rule', array(array(LIMB_DIR . 'class/validators/rules/tree_node_id_rule', 'parent_node_id')));
-    $this->validator->expectArgumentsAt(1, 'add_rule', array(array(LIMB_DIR . 'class/validators/rules/required_rule', 'identifier')));
-    $this->validator->expectArgumentsAt(2, 'add_rule', array(array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', 102, 110)));
+    $this->validator->expectArgumentsAt(0, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id')));
+    $this->validator->expectArgumentsAt(1, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/required_rule', 'identifier')));
+    $this->validator->expectArgumentsAt(2, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', 102, 110)));
      
     $this->command->perform();
   }

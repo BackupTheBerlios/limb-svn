@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/tree/drivers/nested_sets_driver.class.php');
+require_once(LIMB_DIR . '/class/core/tree/drivers/nested_sets_driver.class.php');
 
 define('NESTED_SETS_TEST_TABLE', 'test_nested_sets_tree');
 

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
-require_once(LIMB_DIR . 'class/core/fetcher.class.php');
-require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/fetcher.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(LIMB_SIMPLE_PERMISSIONS_DIR . '/simple_authenticator.class.php');
 
 class jip_filter implements intercepting_filter 

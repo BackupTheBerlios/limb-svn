@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
 require_once(LIMB_DIR . '/class/core/request/nonbuffered_response.class.php'); 
 
 class cronjob_command implements Command

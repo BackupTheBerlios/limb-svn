@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 class full_text_search

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/core/dataspace.class.php');
 
 class object
 {

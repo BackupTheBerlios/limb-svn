@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 //Inspired by EZpublish(http//ez.no), debug class
-require_once(LIMB_DIR . 'class/lib/system/sys.class.php');
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/lib/system/sys.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 if(!defined('DEBUG_HTTP_CONSOLE_DIR'))
   define('DEBUG_HTTP_CONSOLE_DIR', '/var/');
@@ -279,7 +279,7 @@ class debug
 		
 	static protected function _send_mail($debug_info)
 	{
-		include_once(LIMB_DIR . 'class/lib/mail/send_plain_mail.inc.php');
+		include_once(LIMB_DIR . '/class/lib/mail/send_plain_mail.inc.php');
 		
 		$title = '';
 		$headers = array();
@@ -411,7 +411,7 @@ class debug
   */
 	static protected function _write_file($file_name, $debug_info)
 	{
-	  include_once(LIMB_DIR . 'class/lib/util/log.class.php');
+	  include_once(LIMB_DIR . '/class/lib/util/log.class.php');
 	  
 		if (!log :: write($file_name, self :: _parse_text_debug_info($debug_info)))
 			$this->set_log_file_enabled(false, $debug_info['level']);

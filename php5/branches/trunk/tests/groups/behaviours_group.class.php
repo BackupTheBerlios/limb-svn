@@ -8,10 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_controller_tester.class.php');
-
-class content_object_controller_tester extends site_object_controller_tester 
-{ 
+class behaviours_group extends LimbGroupTest 
+{
+	function behaviours_group() 
+	{
+	  $this->LimbGroupTest('behaviours tests');
+	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/behaviours');
+	}
+	
 }
-
 ?>

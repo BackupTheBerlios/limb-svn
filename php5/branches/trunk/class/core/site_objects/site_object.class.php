@@ -8,11 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/object.class.php');
-require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
-require_once(LIMB_DIR . 'class/core/controllers/site_object_controller_factory.class.php');
-require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 class site_object extends object
 {
@@ -21,27 +20,7 @@ class site_object extends object
 
   protected  $_attributes_definition = array();
 
-  protected  $_class_properties = array();
-
   protected  $_class_id = null;
-
-  function __construct()
-  {
-    $this->_class_properties = $this->_define_class_properties();
-
-    $new_attributes_definition = $this->_define_attributes_definition();
-
-    $this->_attributes_definition['id'] = array('type' => 'numeric');
-    $this->_attributes_definition['version'] = array('type' => 'numeric');
-    $this->_attributes_definition['object_id'] = array('type' => 'numeric');
-    $this->_attributes_definition['parent_node_id'] = array('type' => 'numeric');
-    $this->_attributes_definition['title'] = array('search' => true, 'search_weight' => 50);
-    $this->_attributes_definition['identifier'] = array('search' => true, 'search_weight' => 50);
-
-    $this->_attributes_definition = complex_array :: array_merge($this->_attributes_definition, $new_attributes_definition);
-
-    parent :: __construct();
-  }
 
   public function get_locale_by_id($id)
   {
@@ -59,40 +38,6 @@ class site_object extends object
       return $this->_class_properties['auto_identifier'];
     else
       return false;
-  }
-
-  protected function _define_class_properties()
-  {
-    return array(
-      'class_ordr' => 1,
-      'can_be_parent' => 1,
-      'icon' => '/shared/images/generic.gif',
-      'controller_class_name' => 'empty_controller'
-    );
-  }
-
-  protected function _define_attributes_definition()
-  {
-    return array();
-  }
-
-  public function get_attributes_definition()
-  {
-    return $this->_attributes_definition;
-  }
-
-  public function get_definition($attribute_name)
-  {
-    $definition = $this->get_attributes_definition();
-
-    if(isset($definition[$attribute_name]))
-    {
-      if($definition[$attribute_name] == '')
-        return array();
-      else
-        return $definition[$attribute_name];
-    }
-    return false;
   }
 
   public function fetch_ids($params=array(), $sql_params=array(), $sort_ids=array())
@@ -187,15 +132,18 @@ class site_object extends object
                 ssot.children as children,
                 sso.current_version as version,
                 sys_class.id as class_id,
-                sys_class.class_name as class_name,
-                sys_class.icon as icon,
-                sys_class.class_ordr as class_ordr,
-                sys_class.can_be_parent as can_be_parent
+                sys_class.name as class_name,
+                sys_behaviour.id as behaviour_id,
+                sys_behaviour.name as behaviour,
+                sys_behaviour.icon as icon,
+                sys_behaviour.class_ordr as class_ordr,
+                sys_behaviour.can_be_parent as can_be_parent
                 FROM
-                sys_site_object as sso, sys_class,
+                sys_site_object as sso, sys_class, sys_behaviour,
                 sys_site_object_tree as ssot
                 %s
                 WHERE sys_class.id = sso.class_id
+                AND sys_behaviour.id = sso.behaviour_id
                 AND ssot.object_id = sso.id
                 %s %s",
                 $this->_add_sql($sql_params, 'columns'),
@@ -320,6 +268,9 @@ class site_object extends object
     else
       $identifier = $this->_generate_auto_identifier();
 
+    if (!$this->get_behaviour_id())
+      throw new LimbException('behaviour_id is not set');
+
     $id = $this->_create_site_object_record();
 
     $tree = Limb :: toolkit()->getTree();
@@ -371,29 +322,8 @@ class site_object extends object
 
   protected function _can_add_node_to_parent($parent_node_id)
   {
-    $tree = Limb :: toolkit()->getTree();
-
-    if (!$tree->can_add_node($parent_node_id))
-      return false;
-
-    $sql = "SELECT sys_class.class_name as class_name
-    FROM sys_site_object as sso, sys_class, sys_site_object_tree as ssot
-    WHERE ssot.id={$parent_node_id}
-    AND sso.class_id=sys_class.id
-    AND sso.id=ssot.object_id";
-
-    $db = db_factory :: instance();
-
-    $db->sql_exec($sql);
-
-    $row = $db->fetch_row();
-
-    if (!is_array($row) || !count($row))
-      return false;
-
-    $parent_object = Limb :: toolkit()->createSiteObject($row['class_name']);
-
-    return $parent_object->can_be_parent();
+    include_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
+    return site_object_behaviour :: can_accept_children($parent_node_id);
   }
 
   public function get_parent_node_id()
@@ -411,6 +341,11 @@ class site_object extends object
     return (int)$this->get('node_id');
   }
 
+  public function set_node_id($id)
+  {
+    return $this->set('node_id', $id);
+  }
+  
   public function get_identifier()
   {
     return $this->get('identifier');
@@ -431,9 +366,24 @@ class site_object extends object
     return $this->set('title', $title);
   }
 
+  public function set_id($id)
+  {
+    return $this->set('id', $id);
+  }
+
   public function get_id()
   {
     return (int)$this->get('id');
+  }
+  
+  public function set_behaviour_id($behaviour_id)
+  {
+    $this->set('behaviour_id', $behaviour_id);
+  }
+  
+  public function get_behaviour_id()
+  {
+    return (int)$this->get('behaviour_id');
   }
 
   public function get_version()
@@ -469,11 +419,11 @@ class site_object extends object
     if($this->_class_id)
       return $this->_class_id;
 
-    $type_db_table = Limb :: toolkit()->createDBTable('sys_class');
+    $db_table = Limb :: toolkit()->createDBTable('sys_class');
 
     $class_name = get_class($this);
 
-    $list = $type_db_table->get_list('class_name="'. $class_name. '"');
+    $list = $db_table->get_list('name="'. $class_name. '"');
 
     if (count($list) == 1)
     {
@@ -483,19 +433,15 @@ class site_object extends object
     elseif(count($list) > 1)
     {
       throw new LimbException('there are more than 1 type found',
-        array('class_name' => $class_name));
+        array('name' => $class_name));
     }
 
-    $insert_data = $this->get_class_properties();
     $insert_data['id'] = null;
-    $insert_data['class_name'] = $class_name;
+    $insert_data['name'] = $class_name;
 
-    if(!isset($insert_data['icon']) || !$insert_data['icon'])
-      $insert_data['icon'] = '/shared/images/generic.gif';
+    $db_table->insert($insert_data);
 
-    $type_db_table->insert($insert_data);
-
-    $this->_class_id = (int)$type_db_table->get_last_insert_id();
+    $this->_class_id = (int)$db_table->get_last_insert_id();
 
     return $this->_class_id;
   }
@@ -503,14 +449,6 @@ class site_object extends object
   public function get_class_properties()
   {
     return $this->_class_properties;
-  }
-
-  public function can_be_parent()
-  {
-    if (isset($this->_class_properties['can_be_parent']))
-      return $this->_class_properties['can_be_parent'];
-    else
-      return false;
   }
 
   protected function _create_site_object_record()
@@ -523,6 +461,7 @@ class site_object extends object
     $data['identifier'] = $this->get_identifier();
     $data['title'] = $this->get_title();
     $data['class_id'] = $this->get_class_id();
+    $data['behaviour_id'] = $this->get_behaviour_id();
     $data['current_version'] = $this->get_version();
     $data['creator_id'] = $user->get_id();
     $data['status'] = $this->get('status', 0);
@@ -555,8 +494,23 @@ class site_object extends object
 
   public function update($force_create_new_version = true)
   {
-    if(!$object_id = $this->get_id())
+    if(!$this->get_id())
       throw new LimbException('object id not set');
+    
+    if(!$this->get_node_id())
+      throw new LimbException('node id not set');
+
+    if(!$this->get_parent_node_id())
+      throw new LimbException('parent node id not set');
+    
+    if (!$this->get_class_id())
+      throw new LimbException('class id is empty'); 
+    
+    if (!$this->get_behaviour_id())
+      throw new LimbException('behaviour id not set');    
+    
+    if(!$this->get_identifier())
+      throw new LimbException('identifier is empty');    
 
     $this->_update_tree_node();
 
@@ -576,6 +530,7 @@ class site_object extends object
 
     $time = time();
     $data['current_version'] = $this->get_version();
+    $data['behaviour_id'] = $this->get_behaviour_id();
     $data['modified_date'] = $time;
     $data['identifier'] = $this->get_identifier();
     $data['title'] = $this->get_title();
@@ -586,55 +541,47 @@ class site_object extends object
 
   protected function _delete_tree_node()
   {
-    $data = $this->_attributes->export();
-
-    $tree = Limb :: toolkit()->getTree();
-
-    $tree->delete_node($data['node_id']);
+    Limb :: toolkit()->getTree()->delete_node($this->get_node_id());
   }
-
+  
+  protected function _is_object_moved_from_node($node)
+  {
+    return ($node['parent_id'] != $this->get_parent_node_id());
+  }
+  
   protected function _update_tree_node()
   {
-    $data = $this->_attributes->export();
-
+    $node_id = $this->get_node_id();
+    $parent_node_id = $this->get_parent_node_id();
+    $identifier = $this->get_identifier();
+      
     $tree = Limb :: toolkit()->getTree();
-
-    $node = $tree->get_node($data['node_id']);
-    if (isset($data['parent_node_id']) && isset($data['node_id']))
+    
+    $node = $tree->get_node($node_id);
+    
+    if ($this->_is_object_moved_from_node($node))
     {
-      if ($node['parent_id'] != $data['parent_node_id'])
+      if(!$this->_can_add_node_to_parent($parent_node_id))
+        throw new LimbException('new parent cant accept children', 
+                                array('parent_node_id' => $parent_node_id));
+      
+      if (!$tree->move_tree($node_id, $parent_node_id))
       {
-        if (!$tree->move_tree($data['node_id'], $data['parent_node_id']))
-        {
-          throw new LimbException('could not move node',
-            array(
-              'node_id' => $data['node_id'],
-              'target_id' => $data['parent_node_id'],
-            )
-          );
-        }
-      }
-    }
-
-    if (($identifier = $this->get('identifier')) && ($identifier != $node['identifier']))
-    {
-      if(!$tree->update_node($data['node_id'], array('identifier' => $identifier), true))
-      {
-        throw new LimbException('could not update node identifier',
+        throw new LimbException('could not move node',
           array(
-            'node_id' => $data['node_id'],
-            'identifier' => $identifier,
+            'node_id' => $node_id,
+            'target_id' => $parent_node_id,
           )
         );
       }
     }
+
+    if ($identifier != $node['identifier'])
+      $tree->update_node($node_id, array('identifier' => $identifier), true);
   }
 
   public function delete()
   {
-    if(!$object_id = $this->get_id())
-      throw new LimbException('object id is not set');
-
     if (!$this->can_delete())
       return;
 
@@ -651,12 +598,16 @@ class site_object extends object
 
   public function can_delete()
   {
-    $data = $this->_attributes->export();
-
-    if(!$this->_can_delete_site_object($data['id']))
+    if(!$this->get_id())
+      throw new LimbException('object id not set');
+    
+    if(!$this->get_node_id())
+      throw new LimbException('node id not set');
+    
+    if(!$this->_can_delete_site_object($this->get_id()))
       return false;
 
-    return $this->_can_delete_tree_node($data['node_id']);
+    return $this->_can_delete_tree_node($this->get_node_id());
   }
 
   protected function _can_delete_tree_node($node_id)
@@ -669,9 +620,22 @@ class site_object extends object
     return true;
   }
 
-  public function get_controller()
-  {
-    return Limb :: toolkit()->createController($this->_class_properties['controller_class_name']);
+  public function get_behaviour()
+  {    
+    $id = $this->get_behaviour_id();
+    
+    $sql = "SELECT sys_behaviour.name as behaviour_name
+            FROM sys_behaviour
+            WHERE id={$id}";
+
+    $db = db_factory :: instance();
+
+    $db->sql_exec($sql);
+
+    if($row = $db->fetch_row())
+      return Limb :: toolkit()->createBehaviour($row['behaviour_name']);
+    else
+      return null;
   }
 
   protected function _get_parent_locale_id()
@@ -696,15 +660,6 @@ class site_object extends object
       return DEFAULT_CONTENT_LOCALE_ID;
   }
 
-  public function can_accept_child_class($class_name)
-  {
-    $class_properties = $this->get_class_properties();
-
-    if (!isset($class_properties['acceptable_children']))
-      return false;
-
-    return in_array($class_name, $class_properties['acceptable_children']);
-  }
 }
 
 ?>

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/tree/tree_interface.interface.php');
+require_once(LIMB_DIR . '/class/core/tree/tree_interface.interface.php');
 
 abstract class tree_driver
 {  

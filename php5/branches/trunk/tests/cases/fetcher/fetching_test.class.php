@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/request/request.class.php');
-require_once(LIMB_DIR . 'class/lib/http/uri.class.php');
-require_once(LIMB_DIR . 'class/core/fetcher.class.php');
-require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
-require_once(LIMB_DIR . 'class/core/permissions/authorizer.interface.php');
-require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
-require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/request/request.class.php');
+require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/core/fetcher.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/authorizer.interface.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 
 Mock::generatePartial('fetcher', 'special_fetcher',
   array('_get_authorizer', '_get_site_object', '_get_tree'));

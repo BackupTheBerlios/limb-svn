@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/request/response.interface.php');
+require_once(LIMB_DIR . '/class/core/request/response.interface.php');
 
 class nonbuffered_response implements response
 {			

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
 class sys_class_db_table extends db_table
 {
@@ -16,10 +16,7 @@ class sys_class_db_table extends db_table
   {
   	return array(
   		'id' => array('type' => 'numeric'),
-      'class_name' => '',
-      'icon' => '',
-      'class_ordr' => array('type' => 'numeric'),
-      'can_be_parent' => array('type' => 'numeric'),
+      'name' => '',
     );
   }
 }

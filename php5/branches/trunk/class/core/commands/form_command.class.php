@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
 
 class form_command implements Command
 {
@@ -22,7 +22,7 @@ class form_command implements Command
   //for mocking
   protected function _get_validator()
   {
-    include_once(LIMB_DIR . 'class/validators/validator.class.php');
+    include_once(LIMB_DIR . '/class/validators/validator.class.php');
     return new validator();
   }
   				

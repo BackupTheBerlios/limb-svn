@@ -8,13 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 
 class site_object_fetch_test_init
 {
 	var $db = null;
 	var $class_id = '';
 	var $root_node_id = '';
+  var $controller_id = '';
 
   function site_object_fetch_test_init()
   {
@@ -24,6 +26,8 @@ class site_object_fetch_test_init
   function init(& $object)
   {
   	$this->class_id = $object->get_class_id();
+
+    $this->behaviour_id = site_object_behaviour :: get_id(get_class($object) . '_behaviour');
 
   	$this->_insert_sys_site_object_records();
   	$this->_insert_fake_sys_site_object_records();
@@ -47,6 +51,7 @@ class site_object_fetch_test_init
   			array(
   				'id' => $i,
   				'class_id' => $this->class_id,
+  				'behaviour_id' => $this->behaviour_id,
   				'current_version' => $version,
   				'identifier' => 'object_' . $i,
   				'title' => 'object_' . $i . '_title',
@@ -81,6 +86,7 @@ class site_object_fetch_test_init
   			array(
   				'id' => $i,
   				'class_id' => 1001,
+  				'behaviour_id' => $this->behaviour_id,
   				'identifier' => 'object_' . $i,
   				'title' => 'object_' . $i . '_title',
   				'status' => 0,

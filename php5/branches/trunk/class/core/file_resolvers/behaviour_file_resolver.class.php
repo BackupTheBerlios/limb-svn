@@ -10,14 +10,11 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
 
-class action_file_resolver extends file_resolver_decorator
+class behaviour_file_resolver extends file_resolver_decorator
 {
   public function resolve($class_path, $params = array())
   {
-   if(file_exists(LIMB_DIR . 'class/core/actions/' . $class_path . '.class.php'))
-      return LIMB_DIR . 'class/core/actions/' . $class_path . '.class.php'; 
-        
-    return $this->_resolver->resolve('actions/' . $class_path . '.class.php', $params);
+    return $this->_resolver->resolve('behaviours/' . $class_path . '.class.php', $params);
   }  
 }
 

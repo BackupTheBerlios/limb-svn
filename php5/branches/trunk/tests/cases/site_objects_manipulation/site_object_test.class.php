@@ -8,38 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
-require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 
-class site_object_test_version extends site_object
-{	
-	function _define_attributes_definition()
-	{
-		return complex_array :: array_merge(
-				parent :: _define_attributes_definition(),
-				array(
-				'title' => '',
-				'name' => array('type' => 'numeric'),
-				'search' => array('search' => true),
-				));
-	}
-	
-	function _define_class_properties()
-	{
-		return array(
-			'ordr' => 1,
-			'can_be_parent' => 1,
-			'db_table_name' => 'site_object',
-			'controller_class_name' => 'controller_test'
-		);
-	}
-}
+Mock::generate('LimbToolkit');
+Mock::generate('site_object_behaviour');
 
 Mock::generatePartial
 (
+  'site_object',
   'site_object_test_version',
-  'mocked_site_object_test_version',
   array('_can_add_node_to_parent')
 ); 
 
@@ -48,16 +29,18 @@ class controller_test{}
 
 class site_object_test extends LimbTestCase 
 { 
-	var $db = null;
-	var $object = null;
+	var $db;
+	var $object;
+  var $toolkit;
 		 	
   function setUp()
   {
-  	$this->db =& db_factory :: instance();
+  	$this->db = db_factory :: instance();
+    $this->toolkit = new MockLimbToolkit($this);
   	
   	$this->_clean_up();
   	
-  	$this->object = new mocked_site_object_test_version($this);  	
+  	$this->object = new site_object_test_version($this);  	
   	$this->object->__construct();
   	
   	user :: instance()->set('id', 10);
@@ -79,6 +62,7 @@ class site_object_test extends LimbTestCase
   	$this->db->sql_delete('sys_site_object_tree');
   	$this->db->sql_delete('sys_object_version');
   	$this->db->sql_delete('sys_class');
+    $this->db->sql_delete('sys_behaviour');
   }
 
   function test_attributes()
@@ -95,50 +79,49 @@ class site_object_test extends LimbTestCase
   	$this->assertEqual($this->object->export(), $attribs);
   	
   	$this->object->set('attrib3_name', 'attrib3_value');
-  unset($attribs['attrib_name']);
+    unset($attribs['attrib_name']);
   	$this->object->import($attribs);
   	$this->assertEqual($this->object->export(), $attribs);
-  	
   }
   
-  function test_attributes_definition()
-  {  	
-  	$this->assertIdentical($this->object->get_definition('no_such_attribute'), false);
-  	
-  	$definition = $this->object->get_definition('id');
-  	
-  	$this->assertEqual($definition['type'], 'numeric');
-  }
-  
-  function test_get_controller()
+  function test_get_behaviour()
   {
-  	$ctrl =& $this->object->get_controller();
-  	
-  	$this->assertNotNull($ctrl);
-  	$this->assertIsA($ctrl, 'controller_test');
+    Limb :: registerToolkit($this->toolkit);
+    
+    $this->db->sql_insert('sys_behaviour', array('id' => $behaviour_id = 100,
+                                                 'name' => 'test_behaviour'));
+
+     
+    $mock_behaviour = new Mocksite_object_behaviour($this);
+    
+    $this->toolkit->expectOnce('createBehaviour', array('test_behaviour'));
+    $this->toolkit->setReturnValue('createBehaviour', $mock_behaviour);
+    
+    $this->object->set_behaviour_id($behaviour_id);
+     
+  	$this->assertTrue($mock_behaviour === $this->object->get_behaviour());
+
+    Limb :: popToolkit();  	
   }
 
   function test_get_class_id()
   {
+    // autogenerate class_id
 		$id = $this->object->get_class_id();
 		
-		$this->db->sql_select('sys_class', '*', 'class_name="' . get_class($this->object) . '"');
+		$this->db->sql_select('sys_class', '*', 'name="' . get_class($this->object) . '"');
 		$arr = $this->db->fetch_row();
 		
 		$this->assertNotNull($id);
 		
 		$this->assertEqual($id, $arr['id']);
 
+    // generate class_id only once
 		$id = $this->object->get_class_id();
 		$this->db->sql_select('sys_class', '*');
 		$arr = $this->db->get_array();
 		
 		$this->assertEqual(sizeof($arr), 1);
-	}
-	
-	function test_can_be_parent()
-	{
-		$this->assertTrue($this->object->can_be_parent());
 	}
 }
 

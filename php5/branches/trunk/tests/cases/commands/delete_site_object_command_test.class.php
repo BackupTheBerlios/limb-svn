@@ -38,7 +38,7 @@ class site_object_delete_command_test_version2 extends site_object
 
 class delete_site_object_command_test extends LimbTestCase 
 {
-	var $form_command;
+	var $delete_command;
 	var $site_object;
   var $request;
   var $toolkit;

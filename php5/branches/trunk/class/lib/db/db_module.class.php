@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
-require_once(LIMB_DIR . 'class/lib/date/date.class.php');
-require_once(LIMB_DIR . 'class/i18n/locale.class.php');
+require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
+require_once(LIMB_DIR . '/class/lib/date/date.class.php');
+require_once(LIMB_DIR . '/class/i18n/locale.class.php');
 
 abstract class db_module
 {

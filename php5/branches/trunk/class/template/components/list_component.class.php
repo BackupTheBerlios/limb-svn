@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/template/component.class.php');
+require_once(LIMB_DIR . '/class/template/component.class.php');
 
 /**
 * Represents list tags at runtime, providing an API for preparing the data set
@@ -75,7 +75,7 @@ class list_component extends component
 	{
 		if (empty($this->dataset))
 		{
-		  include_once(LIMB_DIR . 'class/core/empty_dataset.class.php');
+		  include_once(LIMB_DIR . '/class/core/empty_dataset.class.php');
 			$this->register_dataset(new empty_dataset());
 		} 
 		

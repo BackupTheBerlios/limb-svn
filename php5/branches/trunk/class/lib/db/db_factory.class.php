@@ -35,7 +35,7 @@ class	db_factory
 				$db_params['name'] = get_ini_option('common.ini', 'name', 'DB');
 			}
 			
-		  include_once(LIMB_DIR . 'class/lib/db/' . $db_class_name . '.class.php');
+		  include_once(LIMB_DIR . '/class/lib/db/' . $db_class_name . '.class.php');
 		  
 		  $obj = new $db_class_name($db_params);
 		  
@@ -53,7 +53,7 @@ class	db_factory
 	{	
 		$db_class_name = 'db_' . $db_type;
 
-	  include_once(LIMB_DIR . 'class/lib/db/' . $db_class_name . '.class.php');
+	  include_once(LIMB_DIR . '/class/lib/db/' . $db_class_name . '.class.php');
 	  
 	  return new $db_class_name($db_params);
 	}

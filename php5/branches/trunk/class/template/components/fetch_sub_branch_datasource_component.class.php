@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/array_dataset.class.php');
-require_once(LIMB_DIR . 'class/datasources/datasource_factory.class.php');
-require_once(LIMB_DIR . 'class/template/components/datasource_component.class.php');
+require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
+require_once(LIMB_DIR . '/class/datasources/datasource_factory.class.php');
+require_once(LIMB_DIR . '/class/template/components/datasource_component.class.php');
 
 class fetch_sub_branch_datasource_component extends datasource_component
 {

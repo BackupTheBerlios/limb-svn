@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . 'class/core/dataspace.class.php');
-require_once(LIMB_DIR . 'class/validators/rules/invalid_value_rule.class.php');
+require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/invalid_value_rule.class.php');
 
 class invalid_value_rule_test extends single_field_rule_test
 {

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/component_test.class.php');
-require_once(LIMB_DIR . 'class/core/dataspace.class.php');
-require_once(LIMB_DIR . 'class/template/tag_component.class.php');
+require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/template/tag_component.class.php');
 require_once(LIMB_DIR . '/tests/cases/dataspace_test.class.php');
 
 class tag_component_test extends component_test

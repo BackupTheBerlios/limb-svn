@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class.php');
-require_once(LIMB_DIR . 'class/lib/date/date.class.php');
-require_once(LIMB_DIR . 'class/i18n/locale.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/lib/date/date.class.php');
+require_once(LIMB_DIR . '/class/i18n/locale.class.php');
 
 class date_component extends input_form_element
 {

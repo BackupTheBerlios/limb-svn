@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 
 class tree_sorter
 {  

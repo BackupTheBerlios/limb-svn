@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/template/components/form/options_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/options_form_element.class.php');
 
 class select_multiple_component extends options_form_element
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/request/request.class.php');
+require_once(LIMB_DIR . '/class/core/request/request.class.php');
 
 function add_url_query_items($url, $items=array())
 {

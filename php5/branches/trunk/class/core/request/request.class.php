@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/core/object.class.php');
-require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
 class request extends object
 {  

@@ -14,7 +14,7 @@ interface LimbToolkit
   public function createDBTable($table_name);
   public function createDatasource($datasource_path);
   public function createSiteObject($site_object_path);
-  public function createController($controller_path);
+  public function createBehaviour($behaviour_path);
   public function createAction($action_path);
   public function getDB();
   public function getTree();
@@ -27,6 +27,8 @@ interface LimbToolkit
   public function getLocale();
   public function getDataspace();
   public function switchDataspace($name);
+  public function setView($view);
+  public function getView();
   //public function translate();
 }
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/db/db_module.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_module.class.php');
 
 class db_mysql extends db_module
 {	

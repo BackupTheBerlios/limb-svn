@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
 
 class js_checkbox_component extends input_form_element
 {

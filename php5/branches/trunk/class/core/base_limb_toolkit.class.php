@@ -21,6 +21,7 @@ class BaseLimbToolkit implements LimbToolkit
   protected $user;
   protected $db;
   protected $tree;
+  protected $view;
   
   public function createDBTable($table_name)
   {
@@ -40,10 +41,10 @@ class BaseLimbToolkit implements LimbToolkit
     return site_object_factory :: create($site_object_path);    
   }
   
-  public function createController($controller_path)
+  public function createBehaviour($behaviour_path)
   {
-    include_once(LIMB_DIR . '/class/core/controllers/site_object_controller_factory.class.php');
-    return site_object_controller_factory :: create($controller_path);       
+    include_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour_factory.class.php');
+    return site_object_behaviour_factory :: create($behaviour_path);       
   }
   
   public function createAction($action_path)
@@ -163,6 +164,18 @@ class BaseLimbToolkit implements LimbToolkit
     
     return dataspace_registry :: get($name);
   }
+  
+  public function setView($view)
+  {
+    $this->view = $view;
+  }
+  
+  public function getView()
+  {
+    resolve_handle($this->view);
+    return $this->view;
+  }
+ 
   
 }
 
