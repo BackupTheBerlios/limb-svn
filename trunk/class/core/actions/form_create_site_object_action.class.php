@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/actions/form_site_object_action.class.php');
-require_once(LIMB_DIR . 'class/fetcher.class.php');
+require_once(LIMB_DIR . 'class/core/actions/form_site_object_action.class.php');
+require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 
 class form_create_site_object_action extends form_site_object_action
 {

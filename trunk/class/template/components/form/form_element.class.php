@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/template/tag_component.class.php');
 require_once(LIMB_DIR . '/class/validators/error_list.class.php');
-require_once(LIMB_DIR . 'class/lib/util/dataspace_registry.class.php');
+require_once(LIMB_DIR . 'class/core/dataspace_registry.class.php');
 
 /**
 * Base class for concrete form elements

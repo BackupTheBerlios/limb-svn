@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/actions/action_factory.class.php');
+require_once(LIMB_DIR . 'class/core/actions/action_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 require_once(LIMB_DIR . 'class/template/template.class.php');
 require_once(LIMB_DIR . 'class/template/empty_template.class.php');
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'class/lib/i18n/strings.class.php');
+require_once(LIMB_DIR . 'class/i18n/strings.class.php');
 	
 class site_object_controller
 {

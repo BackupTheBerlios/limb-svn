@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/util/array_dataset.class.php');
+require_once(LIMB_DIR . 'class/core/array_dataset.class.php');
 require_once(LIMB_DIR . 'class/datasource/datasource_factory.class.php');
 require_once(LIMB_DIR . 'class/template/components/datasource_component.class.php');
 

@@ -13,7 +13,7 @@ define( 'MAX_LOGROTATE_FILES', 5 );
 define( 'MAX_LOGFILE_SIZE', 500*1024 );
 
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/lib/security/user.class.php');
+require_once(LIMB_DIR . '/class/core/user.class.php');
 require_once(LIMB_DIR . '/class/lib/system/sys.class.php');
 require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
 

@@ -8,8 +8,8 @@
 * $Id: nested_sets_driver.class.php 131 2004-04-09 14:11:45Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/tree/drivers/tree_db_driver.class.php');
-require_once(LIMB_DIR . 'class/access_policy.class.php');
+require_once(LIMB_DIR . 'class/lib/tree/drivers/tree_db_driver.class.php');
+require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 
 class materialized_path_driver extends tree_db_driver
 {	

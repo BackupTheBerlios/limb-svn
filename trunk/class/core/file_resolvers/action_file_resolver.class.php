@@ -13,10 +13,10 @@ class action_file_resolver
 {
   function resolve($class_path)
   {
-		if (file_exists(LIMB_APP_DIR . '/class/actions/' . $class_path . '.class.php')) 
-			$full_path = LIMB_APP_DIR . '/class/actions/' . $class_path . '.class.php';
-		elseif(file_exists(LIMB_DIR . '/class/actions/' . $class_path . '.class.php'))
-			$full_path = LIMB_DIR . '/class/actions/' . $class_path . '.class.php';
+		if (file_exists(LIMB_APP_DIR . '/class/core/actions/' . $class_path . '.class.php')) 
+			$full_path = LIMB_APP_DIR . '/class/core/actions/' . $class_path . '.class.php';
+		elseif(file_exists(LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php'))
+			$full_path = LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php';
   	else
   	{
   	  debug :: write_error('action not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 

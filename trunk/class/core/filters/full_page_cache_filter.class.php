@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
 require_once(LIMB_DIR . '/class/cache/full_page_cache_manager.class.php');
 
 class full_page_cache_filter extends intercepting_filter 

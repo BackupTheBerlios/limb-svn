@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
-require_once(LIMB_DIR . '/class/model/search/full_text_search.class.php');
-require_once(LIMB_DIR . '/class/model/search/search_query.class.php');
+require_once(LIMB_DIR . '/class/search/full_text_search.class.php');
+require_once(LIMB_DIR . '/class/search/search_query.class.php');
 
 class search_full_text_find_test extends db_test
 {

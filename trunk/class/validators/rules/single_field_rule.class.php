@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/lib/i18n/strings.class.php');
+require_once(LIMB_DIR . '/class/i18n/strings.class.php');
 require_once(LIMB_DIR . '/class/validators/rules/rule.class.php');
 
 /**

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/util/array_dataset.class.php');
+require_once(LIMB_DIR . 'class/core/array_dataset.class.php');
 require_once(LIMB_DIR . 'class/validators/validator.class.php');
 require_once(LIMB_DIR . 'class/validators/rules/size_range_rule.class.php');
 require_once(LIMB_DIR . 'class/validators/rules/required_rule.class.php');

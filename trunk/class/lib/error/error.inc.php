@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
-require_once(LIMB_DIR . 'class/lib/security/user.class.php');
+require_once(LIMB_DIR . 'class/core/user.class.php');
 require_once(LIMB_DIR . 'class/lib/system/sys.class.php');
 
 if(!defined('ERROR_HANDLER_TYPE'))

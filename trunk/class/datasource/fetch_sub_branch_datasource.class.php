@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/fetcher.class.php');
+require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/datasource/datasource.class.php');
 
 class fetch_sub_branch_datasource extends datasource

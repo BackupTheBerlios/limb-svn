@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/model/search/normalizers/search_phone_number_normalizer.class.php');
+require_once(LIMB_DIR . '/class/search/normalizers/search_phone_number_normalizer.class.php');
 
 class search_phone_number_normalizer_test extends LimbTestCase
 {

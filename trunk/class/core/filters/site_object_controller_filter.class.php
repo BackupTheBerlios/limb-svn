@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/intercepting_filter.class.php');
-require_once(LIMB_DIR . '/class/fetcher.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 
 class site_object_controller_filter extends intercepting_filter 
 { 

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/intercepting_filter.class.php');
-require_once(LIMB_DIR . '/class/lib/session/session.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/session.class.php');
 
 class authentication_filter extends intercepting_filter
 {

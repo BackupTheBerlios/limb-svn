@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/tree/tree.class.php');
-require_once(LIMB_DIR . 'class/model/site_object_factory.class.php');
+require_once(LIMB_DIR . 'class/lib/tree/tree.class.php');
+require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/http/uri.class.php');
-require_once(LIMB_DIR . 'class/request/request.class.php');
-require_once(LIMB_DIR . 'class/access_policy.class.php');
+require_once(LIMB_DIR . 'class/core/request/request.class.php');
+require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 
 class fetcher
 {
@@ -36,7 +36,7 @@ class fetcher
 	
 	function & _get_access_policy()
 	{
-	  include_once(LIMB_DIR . 'class/access_policy.class.php');
+	  include_once(LIMB_DIR . 'class/core/access_policy.class.php');
 	  $access_policy =& access_policy :: instance();
 	  return $access_policy;
 	}

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/util/complex_array.class.php');
-require_once(LIMB_DIR . 'class/actions/form_action.class.php');
-require_once(LIMB_DIR . 'class/model/site_object_factory.class.php');
-require_once(LIMB_DIR . 'class/model/search/full_text_indexer.class.php');
+require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
+require_once(LIMB_DIR . 'class/search/full_text_indexer.class.php');
 
 class form_site_object_action extends form_action
 {

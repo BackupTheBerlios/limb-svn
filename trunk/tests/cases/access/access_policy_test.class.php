@@ -10,8 +10,8 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 
-require_once(LIMB_DIR . 'class/controllers/site_object_controller.class.php');
-require_once(LIMB_DIR . 'class/access_policy.class.php');
+require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 
 Mock::generatePartial
 (

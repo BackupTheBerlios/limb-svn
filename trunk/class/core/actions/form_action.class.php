@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/actions/action.class.php');
+require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 require_once(LIMB_DIR . 'class/validators/validator.class.php');
 
 class form_action extends action

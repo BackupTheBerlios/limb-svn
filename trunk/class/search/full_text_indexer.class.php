@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'class/model/search/search_text_normalizer_factory.class.php');
+require_once(LIMB_DIR . 'class/search/search_text_normalizer_factory.class.php');
 
 class full_text_indexer
 {

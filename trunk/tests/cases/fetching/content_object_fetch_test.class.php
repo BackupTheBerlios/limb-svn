@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/model/site_objects/content_object.class.php');
+require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
 require_once(LIMB_DIR . '/tests/cases/fetching/content_object_fetch_test_init.php');
 
 class content_object_fetch_test extends site_object_fetch_test 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/session/session.class.php');
+require_once(LIMB_DIR . 'class/core/session.class.php');
 
 class tree
 {
@@ -34,7 +34,7 @@ class tree
 	{	
 		if($driver === null)
 		{
-		  include_once(LIMB_DIR . 'class/tree/drivers/materialized_path_driver.class.php');
+		  include_once(LIMB_DIR . 'class/lib/tree/drivers/materialized_path_driver.class.php');
 			$this->_tree_driver =& new materialized_path_driver();
 		}
 		else

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/db/db_mysql.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_mysql.class.php');
 
 class db_mysql_typecast_test extends LimbTestCase
 {

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/template/components/list_component.class.php');
-require_once(LIMB_DIR . 'class/limb_util.inc.php');
+require_once(LIMB_DIR . 'class/etc/limb_util.inc.php');
 
 class actions_component extends list_component
 {

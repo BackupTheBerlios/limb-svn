@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/util/dataspace.class.php');
+require_once(LIMB_DIR . 'class/core/dataspace.class.php');
 require_once(LIMB_DIR . 'class/validators/rules/locale_date_rule.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 

@@ -15,7 +15,7 @@ else
 	die('project dir required');
 
 require_once($project_dir . '/setup.php'); 
-require_once(LIMB_DIR . '/class/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 $db =& db_factory::instance();
 

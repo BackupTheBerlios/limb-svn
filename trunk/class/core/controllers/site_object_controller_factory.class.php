@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
-require_once(LIMB_DIR . 'class/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
 
 class site_object_controller_factory
 {	
@@ -36,7 +36,7 @@ class site_object_controller_factory
 		$resolver =& get_file_resolver('common');
 		resolve_handle($resolver);
 		
-		$full_path = $resolver->resolve($class_name, '/class/controllers');
+		$full_path = $resolver->resolve($class_name, '/class/core/controllers');
 
 		include_once($full_path);
 	}

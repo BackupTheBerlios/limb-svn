@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
-require_once(LIMB_DIR . '/class/file_resolvers/file_resolvers_repository.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.php');
 
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {

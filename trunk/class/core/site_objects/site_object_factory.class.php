@@ -35,7 +35,7 @@ class site_object_factory
 		$resolver =& get_file_resolver('common');
 		resolve_handle($resolver);
 		
-		$full_path = $resolver->resolve($class_name, '/class/model/site_objects/');
+		$full_path = $resolver->resolve($class_name, '/class/core/site_objects/');
 
 		include_once($full_path);
 	}

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'class/fetcher.class.php');
-require_once(LIMB_DIR . 'class/model/search/full_text_search.class.php');
+require_once(LIMB_DIR . 'class/core/fetcher.class.php');
+require_once(LIMB_DIR . 'class/search/full_text_search.class.php');
 
 class search_fetcher extends fetcher
 {

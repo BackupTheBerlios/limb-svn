@@ -9,13 +9,13 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/class/model/stats/stats_counter.class.php');
-require_once(LIMB_DIR . '/class/model/stats/stats_ip.class.php');
-require_once(LIMB_DIR . '/class/model/stats/stats_uri.class.php');
-require_once(LIMB_DIR . '/class/model/stats/stats_referer.class.php');
-require_once(LIMB_DIR . '/class/model/stats/stats_search_phrase.class.php');
+require_once(LIMB_DIR . '/class/stats/stats_counter.class.php');
+require_once(LIMB_DIR . '/class/stats/stats_ip.class.php');
+require_once(LIMB_DIR . '/class/stats/stats_uri.class.php');
+require_once(LIMB_DIR . '/class/stats/stats_referer.class.php');
+require_once(LIMB_DIR . '/class/stats/stats_search_phrase.class.php');
 
-include(LIMB_DIR . '/class/model/stats/search_engines.setup.php');
+include(LIMB_DIR . '/class/stats/search_engines.setup.php');
 
 class stats_register
 {

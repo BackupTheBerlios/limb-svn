@@ -13,7 +13,7 @@ define('DEFAULT_USER_GROUP', 'visitors');
 
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'class/model/object.class.php');
+require_once(LIMB_DIR . 'class/core/object.class.php');
 
 class user extends object
 {
@@ -35,7 +35,7 @@ class user extends object
 	  parent :: object();
 	  
 	  //IMPORTANT!!!
-	  $this->__session_class_path = LIMB_DIR . '/class/lib/security/user.class.php';
+	  $this->__session_class_path = LIMB_DIR . '/class/core/user.class.php';
 	}
 
 	function & instance()

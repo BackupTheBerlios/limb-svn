@@ -25,8 +25,8 @@ else
 	
 require_once($project_dir . '/setup.php'); 
 
-require_once(LIMB_DIR . '/class/tree/drivers/nested_sets_driver.class.php');
-require_once(LIMB_DIR . '/class/tree/drivers/materialized_path_driver.class.php');
+require_once(LIMB_DIR . '/class/lib/tree/drivers/nested_sets_driver.class.php');
+require_once(LIMB_DIR . '/class/lib/tree/drivers/materialized_path_driver.class.php');
 
 $db = db_factory :: instance();
 $db->sql_delete($mp_table);

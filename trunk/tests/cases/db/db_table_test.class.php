@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/db/db_table_factory.class.php');
-require_once(LIMB_DIR . '/class/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
 class test1_db_table extends db_table
 {

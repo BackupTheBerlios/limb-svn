@@ -10,8 +10,8 @@
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . 'class/lib/db/db_table_factory.class.php');
-require_once(LIMB_DIR . 'class/lib/util/dataspace.class.php');
-require_once(LIMB_DIR . 'class/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . 'class/core/dataspace.class.php');
+require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 
 class content_object extends site_object
 {

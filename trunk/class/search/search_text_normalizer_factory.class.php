@@ -25,7 +25,7 @@ class search_text_normalizer_factory
 		$resolver =& get_file_resolver('common');
 		resolve_handle($resolver);
 		
-		$full_path = $resolver->resolve($class_name, '/class/model/search/normalizers/');
+		$full_path = $resolver->resolve($class_name, '/class/search/normalizers/');
 
 		include_once($full_path);
 	}	

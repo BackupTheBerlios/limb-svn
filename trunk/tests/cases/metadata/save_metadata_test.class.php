@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'class/model/site_object_factory.class.php');
+require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
 class save_metadata_test extends LimbTestCase 

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/model/site_objects/site_object.class.php');
-require_once(LIMB_DIR . 'class/model/site_object_factory.class.php');
-require_once(LIMB_DIR . 'class/actions/empty_action.class.php');
+require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
+require_once(LIMB_DIR . 'class/core/actions/empty_action.class.php');
 
 class site_object_controller_tester extends LimbTestCase 
 { 

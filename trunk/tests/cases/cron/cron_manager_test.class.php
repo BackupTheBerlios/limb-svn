@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/cron/cron_manager.class.php');
 require_once(LIMB_DIR . '/class/cron/cron_job.class.php');
-require_once(LIMB_DIR . '/class/request/response.class.php');
+require_once(LIMB_DIR . '/class/core/request/response.class.php');
 
 Mock::generate('cron_job');
 Mock::generate('response');

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/model/stats/search_engine_rules/search_engine_regex_rule.class.php');
+require_once(LIMB_DIR . '/class/stats/search_engine_rules/search_engine_regex_rule.class.php');
 require_once(LIMB_DIR . '/class/lib/http/utf8_to_win1251.inc.php');
 
 class search_engine_google_rule extends search_engine_regex_rule

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 
 
-require_once(LIMB_DIR . 'class/lib/util/dataspace.class.php');
+require_once(LIMB_DIR . 'class/core/dataspace.class.php');
 
 /** --------------------------------------------------------------------------------
 // This is a bit problematic, since not every component is a dataspace.

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/model/stats/search_engine_rules/search_engine_google_rule.class.php');
-require_once(LIMB_DIR . '/class/model/stats/search_engine_rules/search_engine_yandex_rule.class.php');
-require_once(LIMB_DIR . '/class/model/stats/search_engine_rules/search_engine_mailru_rule.class.php');
-require_once(LIMB_DIR . '/class/model/stats/search_engine_rules/search_engine_rambler_rule.class.php');
-require_once(LIMB_DIR . '/class/model/stats/search_engine_rules/search_engine_aport_rule.class.php');
+require_once(LIMB_DIR . '/class/stats/search_engine_rules/search_engine_google_rule.class.php');
+require_once(LIMB_DIR . '/class/stats/search_engine_rules/search_engine_yandex_rule.class.php');
+require_once(LIMB_DIR . '/class/stats/search_engine_rules/search_engine_mailru_rule.class.php');
+require_once(LIMB_DIR . '/class/stats/search_engine_rules/search_engine_rambler_rule.class.php');
+require_once(LIMB_DIR . '/class/stats/search_engine_rules/search_engine_aport_rule.class.php');
 
-require_once(LIMB_DIR . '/class/model/stats/stats_search_phrase.class.php');
+require_once(LIMB_DIR . '/class/stats/stats_search_phrase.class.php');
 
 $instance =& stats_search_phrase :: instance();
 

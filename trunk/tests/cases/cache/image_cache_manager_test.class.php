@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/cache/image_cache_manager.class.php');
-require_once(LIMB_DIR . '/class/request/request.class.php');
+require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
-require_once(LIMB_DIR . '/class/lib/security/user.class.php');
-require_once(LIMB_DIR . '/class/fetcher.class.php');
+require_once(LIMB_DIR . '/class/core/user.class.php');
+require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 
 Mock::generate('uri');
 Mock::generate('user');

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
 
 class logging_filter extends intercepting_filter
 {
@@ -22,7 +22,7 @@ class logging_filter extends intercepting_filter
       
       $controller = $object->get_controller(); 
       
-      include_once(LIMB_DIR . 'class/model/stats/stats_register.class.php');
+      include_once(LIMB_DIR . 'class/stats/stats_register.class.php');
       
       $stats_register = new stats_register(); 
       

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/model/stats/stats_register.class.php');
-require_once(LIMB_DIR . '/class/request/request.class.php');
+require_once(LIMB_DIR . '/class/stats/stats_register.class.php');
+require_once(LIMB_DIR . '/class/core/request/request.class.php');
 
 Mock::generatePartial
 (

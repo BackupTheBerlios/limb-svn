@@ -15,7 +15,7 @@ if(!defined('IMAGE_CACHE_WEB_DIR'))
   define('IMAGE_CACHE_WEB_DIR', '/var/images/');
   
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/lib/security/user.class.php');
+require_once(LIMB_DIR . '/class/core/user.class.php');
 
 class image_cache_manager
 {

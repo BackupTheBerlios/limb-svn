@@ -12,7 +12,7 @@ if(!defined('PAGE_CACHE_DIR'))
   define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
   
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/lib/security/user.class.php');
+require_once(LIMB_DIR . '/class/core/user.class.php');
 
 class partial_page_cache_manager
 {

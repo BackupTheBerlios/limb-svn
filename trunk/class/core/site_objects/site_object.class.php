@@ -12,11 +12,11 @@
 define('SITE_OBJECT_PUBLISHED_STATUS', 1);
 define('SITE_OBJECT_RESTRICTED_STATUS', 2);
 
-require_once(LIMB_DIR . 'class/model/object.class.php');
+require_once(LIMB_DIR . 'class/core/object.class.php');
 require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/lib/db/db_table_factory.class.php');
-require_once(LIMB_DIR . 'class/controllers/site_object_controller_factory.class.php');
-require_once(LIMB_DIR . 'class/tree/tree.class.php');
+require_once(LIMB_DIR . 'class/core/controllers/site_object_controller_factory.class.php');
+require_once(LIMB_DIR . 'class/lib/tree/tree.class.php');
 
 class site_object extends object
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.class.php');
 
 class session_startup_filter extends intercepting_filter 
 { 
@@ -16,7 +16,7 @@ class session_startup_filter extends intercepting_filter
   {
     debug :: add_timing_point('session startup filter started');
     
-    require_once(LIMB_DIR . 'class/lib/session/session.class.php');    
+    require_once(LIMB_DIR . 'class/core/session.class.php');    
     start_user_session();
               
     debug :: add_timing_point('session startup filter finished');
