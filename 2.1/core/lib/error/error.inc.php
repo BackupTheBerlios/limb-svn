@@ -20,6 +20,11 @@ else
 
 function error($description, $error_place='', $params=array()) 
 {
+	if(isset($GLOBALS['error_recursion']) && $GLOBALS['error_recursion'])
+		die();
+		
+	$GLOBALS['error_recursion'] = true;
+	
 	if(defined('DEVELOPER_ENVIROMENT'))
 	{
 		trigger_error('error', E_USER_WARNING);
