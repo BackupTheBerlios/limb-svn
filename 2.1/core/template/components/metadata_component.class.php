@@ -34,7 +34,7 @@ class metadata_component extends component
 		if (count($this->object_ids_array))
 			return $this->object_ids_array;
 	
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$node = $tree->get_node($this->get_node_id());
 		$parents = $tree->get_parents($this->get_node_id());

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: fetch_sub_branch_datasource.class.php 100 2004-03-30 12:21:26Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/fetcher.class.php');
@@ -46,7 +46,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 			if(!$node = map_url_to_node($path))
 				return $default_path;
 				
-			$tree =& limb_tree :: instance();
+			$tree =& tree :: instance();
 			if(!$path = $tree->get_path_to_node($node))
 				return $default_path;
 		}

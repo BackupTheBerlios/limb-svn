@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_ips_report.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
@@ -70,7 +70,7 @@ class stats_routes_report
 		$start_stamp = $this->start_date->get_stamp();
 		$finish_stamp = $this->finish_date->get_stamp();
 		
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		$root = $tree->get_node_by_path('/root');
 		$root_id = $root['id'];
 		

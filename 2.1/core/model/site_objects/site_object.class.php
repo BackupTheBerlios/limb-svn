@@ -200,7 +200,8 @@ class site_object extends object
 								sys_class.id as class_id, 
 								sys_class.class_name as class_name,
 								sys_class.icon as icon,
-								sys_class.class_ordr as class_ordr
+								sys_class.class_ordr as class_ordr,
+								sys_class.can_be_parent as can_be_parent
 								FROM
 								sys_site_object as sso, sys_class, 
 								sys_site_object_tree as ssot
