@@ -8,19 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../document/edit_document_action.class.php');
 
-class edit_main_page_action extends edit_document_action
-{
-	function _define_site_object_class_name()
-	{
-	  return 'main_page';
-	}  
-	  
-	function _define_dataspace_name()
-	{
-	  return 'documents_form';
-	}
-}
+$PACKAGE_NAME = 'LIMB_TEMPLATE_SOURCE';
 
 ?>
