@@ -108,13 +108,30 @@ class LimbBaseToolkit// implements LimbToolkit
     if(!is_object($conf))
       $conf = $this->getDefaultDbConfig();
 
-    if(!is_object($this->db_pool))
-    {
-      include_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
-      $this->db_pool = new LimbDbPool();
-    }
+    $db_pool =& $this->_getDbPool();
 
-    return $this->db_pool->getConnection($conf);
+    return $db_pool->getConnection($conf);
+  }
+
+  function & createDbConnection($conf = null)
+  {
+    if(!is_object($conf))
+      $conf = $this->getDefaultDbConfig();
+
+    $db_pool =& $this->_getDbPool();
+
+    return $db_pool->createConnection($conf);
+  }
+
+  function & _getDbPool()
+  {
+    if(is_object($this->db_pool))
+      return $this->db_pool;
+
+    include_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+    $this->db_pool = new LimbDbPool();
+
+    return $this->db_pool;
   }
 
   function & getTree()
