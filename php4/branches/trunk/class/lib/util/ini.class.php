@@ -12,6 +12,9 @@ require_once(LIMB_DIR . 'class/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.php');
 
+if(!is_registered_resolver('ini'))
+  register_file_resolver('ini', $r = LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver');
+
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
 	$ini =& get_ini($file_path, $use_cache);

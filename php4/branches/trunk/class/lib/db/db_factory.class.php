@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . 'class/lib/util/ini.class.php');
 
 class	db_factory
 {
