@@ -104,5 +104,31 @@ class datasource_component extends component
 	{
 		return $this->parameters;
 	}
+	
+	function setup_navigator()
+	{
+		$navigator =& $this->parent->find_child($this->get('navigator_id'));
+		if (!$navigator)
+			return;
+		
+		$limit = $navigator->get_items_per_page();
+		$this->set_parameter("limit", $limit);
+		
+		$navigator_id = 'page_' . $navigator->get_server_id();
+		if (isset($_GET[$navigator_id]))
+		{
+			$offset = ((int)$_GET[$navigator_id]-1)*$limit;
+			$this->set_parameter("offset", $offset);
+		}		
+	}
+	
+	function fill_navigator()
+	{
+		$navigator =& $this->parent->find_child($this->get('navigator_id'));
+		if (!$navigator)
+			return;
+		
+		$navigator->set_total_items($this->get_total_count());
+	}
 }
 ?>

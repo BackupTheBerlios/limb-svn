@@ -36,23 +36,10 @@ class datasource_tag extends server_component_tag
 	{
 		parent :: generate_contents($code);
 		
-		$navigator = null;
-		
 		if(isset($this->attributes['navigator']))
 		{
-			if($navigator =& $this->parent->find_child($this->attributes['navigator']))
-			{
-				$limit = $code->get_temp_variable();
-				$offset = $code->get_temp_variable();
-				
-				$code->write_php('$' . $limit . '= ' . $navigator->get_component_ref_code() . '->get_items_per_page();');
-				$code->write_php($this->get_component_ref_code() . '->set_parameter("limit", $' . $limit . ');');
-
-				$code->write_php('if(isset($_GET["page_' . $navigator->get_server_id() . '"])){');
-        $code->write_php('$' . $offset . '= ($_GET["page_' . $navigator->get_server_id() . '"]-1)*$' . $limit . ';');
-        $code->write_php($this->get_component_ref_code() . '->set_parameter("offset", $' . $offset . ');');
-				$code->write_php('}');
-			}			
+			$code->write_php($this->get_component_ref_code() . '->set("navigator_id", ' . $this->attributes['navigator'] .');');
+			$code->write_php($this->get_component_ref_code() . '->setup_navigator();');
 		}
 
 		$targets = explode(',', $this->attributes['target']);
@@ -86,9 +73,9 @@ class datasource_tag extends server_component_tag
 
 		}
 			
-		if(isset($this->attributes['navigator']) && $navigator)
+		if(isset($this->attributes['navigator']))
 		{
-			$code->write_php($navigator->get_component_ref_code() . '->set_total_items(' . $this->get_component_ref_code() . '->get_total_count());');
+			$code->write_php($this->get_component_ref_code() . '->fill_navigator();');
 		}
 	} 	
 } 
