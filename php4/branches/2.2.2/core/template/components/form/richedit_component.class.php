@@ -60,11 +60,18 @@ class richedit_component extends text_area_component
 				
 		$id = $this->get_attribute('id');
 		
-		echo "<button id='{$id}_button' class='button' onclick='toggle_richedit_textarea();window.location.reload();return false;' style='display:none'>
-		      Toggle richedit/textarea
-		      </button><br>";
+		if ($_COOKIE['use_textarea_instead_of_richedit'])
+			$caption = strings :: get('use_richedit_instead_of_textarea', 'common');
+		else
+			$caption = strings :: get('use_textarea_instead_of_richedit', 'common');
 		
-		
+		echo "<table cellpadding=0 cellspacing=0>
+					<tr>
+						<td><button id='{$id}_button' class='button' onclick='toggle_richedit_textarea();window.location.reload();return false;' style='display:none'>{$caption}</button></td>
+						<td nowrap> " . strings :: get('richedit_textarea_warning', 'common') . "</td>
+					</tr>
+				  </table>";
+
 		if ($this->get_attribute('mode') == 'light')
 		  $init_function = 'install_limb_lite_extension(editor.config);';
 		else
