@@ -362,7 +362,7 @@ class pager_component extends component
 	*/
 	function get_page_uri($page)
 	{
-		$params = $_REQUEST;
+		$params = complex_array :: array_merge($_GET, $_POST);
 		if ($page <= 1)
 		{
 			unset($params[$this->pager_variable.'_'. $this->get_server_id()]);
