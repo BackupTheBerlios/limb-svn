@@ -23,7 +23,7 @@ class full_page_cache_filter implements intercepting_filter
     
     debug :: add_timing_point('full page cache started');
   
-    $cache = new full_page_cache_manager();
+    $cache = $this->_get_full_pache_cache_manager();
     
     $cache->set_uri($request->get_uri());
     
@@ -37,9 +37,14 @@ class full_page_cache_filter implements intercepting_filter
     
     $filter_chain->next();
     
-    $cache->write($content = $response->get_response_string());    
+    $cache->write($response->get_response_string());    
 
     debug :: add_timing_point('full page cache write finished');
+  }
+  
+  protected function _get_full_pache_cache_manager()
+  {
+    return new full_page_cache_manager();
   }
   
   protected function _is_caching_enabled()

@@ -21,27 +21,31 @@ class image_cache_filter implements intercepting_filter
       return;
     }
     
-    $cache = new image_cache_manager();
+    $cache = $this->_get_image_cache_manager();
     $cache->set_uri($request->get_uri());
     
     ob_start();
     
     $filter_chain->next();
     
-    if(!$response->is_empty())
+    if($response->file_sent())
       return;
+
     debug :: add_timing_point('image cache started');
     
-    if($content = ob_get_contents())
+    if($content = $response->get_response_string())
     {
-      ob_end_clean();
-    
+      //by reference
       $cache->process_content($content);
-    
       $response->write($content);
-    }
+    }  
 
     debug :: add_timing_point('image cache write finished');    
+  }
+  
+  protected function _get_image_cache_manager()
+  {
+    return new image_cache_manager();
   }
   
   protected function _is_caching_enabled()

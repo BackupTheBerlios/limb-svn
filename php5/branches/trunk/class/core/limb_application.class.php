@@ -42,12 +42,10 @@ class limb_application
   {
     $filters_dir = LIMB_DIR . '/class/core/filters/';
     
-    $filter_chain->register_filter($filters_dir . 'output_buffering_filter');    
     $filter_chain->register_filter($filters_dir . 'session_startup_filter');
     $filter_chain->register_filter($filters_dir . 'locale_definition_filter');
     $filter_chain->register_filter($filters_dir . 'authentication_filter');
     $filter_chain->register_filter($filters_dir . 'full_page_cache_filter');
-    $filter_chain->register_filter($filters_dir . 'jip_filter');
     $filter_chain->register_filter($filters_dir . 'image_cache_filter');
     $filter_chain->register_filter($filters_dir . 'site_object_controller_filter');
   }

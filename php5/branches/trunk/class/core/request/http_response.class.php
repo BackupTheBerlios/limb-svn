@@ -113,7 +113,7 @@ class http_response implements response
 		
 	public function write($string)
 	{
-	  $this->response_string .= $string;	  
+	  $this->response_string = $string;	  
 	}
 		
 	public function commit()

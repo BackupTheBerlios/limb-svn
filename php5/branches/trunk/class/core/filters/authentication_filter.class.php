@@ -45,7 +45,6 @@ class authentication_filter implements intercepting_filter
     if(!$object_data = $datasource->fetch())
     {
   		$response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
-      $filter_chain->next();
   		return;
     }
 
