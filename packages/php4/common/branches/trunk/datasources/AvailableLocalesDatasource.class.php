@@ -8,10 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/OptionsDatasource.interface.php');
 require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
-class AvailableLocalesDatasource implements OptionsDatasource
+class AvailableLocalesDatasource// implements OptionsDatasource
 {
   function getOptionsArray()
   {

@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/CartHandlerInterface.interface.php');
 
-class CartHandler implements CartHandlerInterface
+class CartHandler// implements CartHandlerInterface
 {
   var $_cart_id = null;
   var $_items = array();

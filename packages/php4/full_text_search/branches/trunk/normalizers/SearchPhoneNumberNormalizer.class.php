@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/SearchNormalizer.interface.php');
 
-class SearchPhoneNumberNormalizer implements SearchNormalizer
+class SearchPhoneNumberNormalizer// implements SearchNormalizer
 {
   function process($content)
   {

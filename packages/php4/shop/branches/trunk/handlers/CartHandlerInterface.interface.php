@@ -9,28 +9,28 @@
 *
 ***********************************************************************************/
 
-interface CartHandlerInterface
+class CartHandlerInterface
 {
-  function reset();
+  function reset(){}
 
-  function getCartId();
+  function getCartId(){}
 
-  function setCartId($cart_id);
+  function setCartId($cart_id){}
 
-  function addItem($new_item);
+  function addItem($new_item){}
 
-  function getItem($id);
+  function getItem($id){}
 
-  function removeItem($item_id);
+  function removeItem($item_id){}
 
-  function removeItems($item_ids);
+  function removeItems($item_ids){}
 
-  function getItems();
+  function getItems(){}
 
-  function setItems($items);
+  function setItems($items){}
 
-  function countItems();
+  function countItems(){}
 
-  function clearItems();
+  function clearItems(){}
 }
 ?>

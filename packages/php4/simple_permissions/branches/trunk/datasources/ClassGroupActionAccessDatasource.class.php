@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-class ClassGroupActionAccessDatasource implements Datasource
+class ClassGroupActionAccessDatasource// implements Datasource
 {
   function getDataset(&$counter, $params = array())
   {

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-interface StatsReportInterface
+class StatsReportInterface
 {
-  function fetch($params = array());
+  function fetch($params = array()){}
 
-  function fetchCount($params = array());
+  function fetchCount($params = array()){}
 }
 
 ?>

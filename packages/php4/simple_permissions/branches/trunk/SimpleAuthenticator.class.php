@@ -8,11 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/permissions/Authenticator.interface.php');
-
 define('SIMPLE_AUTHENTICATOR_DEFAULT_USER_GROUP', 'visitors');
 
-class SimpleAuthenticator implements Authenticator
+class SimpleAuthenticator// implements Authenticator
 {
   function login($params = array())
   {

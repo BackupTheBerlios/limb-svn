@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class ApplyActionAccessTemplateCommand implements Command
+class ApplyActionAccessTemplateCommand// implements Command
 {
   function perform()
   {

@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
-
 @define('HTTP_SHARED_DIR', LIMB_DIR . '/shared/');
 @define('MEDIA_DIR', VAR_DIR . '/media/');
 @define('DAY_CACHE', 24*60*60);
 
-class DisplayRequestedImageCommand implements Command
+class DisplayRequestedImageCommand// implements Command
 {
   function perform()
   {

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-interface SearchNormalizer
+class SearchNormalizer
 {
-  function process($content);
+  function process($content){}
 }
 
 

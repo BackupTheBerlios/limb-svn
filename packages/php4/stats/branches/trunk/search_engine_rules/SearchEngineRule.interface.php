@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-interface SearchEngineRule
+class SearchEngineRule
 {
-  function match($uri);
+  function match($uri){}
 
-  function getMatchingPhrase();
+  function getMatchingPhrase(){}
 
-  function getEngineName();
+  function getEngineName(){}
 }
 
 ?>

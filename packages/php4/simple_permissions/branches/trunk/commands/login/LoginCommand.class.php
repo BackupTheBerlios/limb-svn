@@ -8,10 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 require_once(dirname(__FILE__) . '/../../SimpleAuthenticator.class.php');
 
-class LoginCommand implements Command
+class LoginCommand// implements Command
 {
   function perform()
   {

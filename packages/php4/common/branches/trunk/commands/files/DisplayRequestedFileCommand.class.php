@@ -8,14 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
-
 @define('HTTP_SHARED_DIR', LIMB_DIR . '/shared/');
 @define('MEDIA_DIR', VAR_DIR . '/media/');
 @define('HTTP_MIME_ICONS_DIR', HTTP_SHARED_DIR . 'images/mime_icons/');
 @define('DEFAULT_ICON_SIZE', 16);
 
-class DisplayRequestedFileCommand implements Command
+class DisplayRequestedFileCommand// implements Command
 {
   function perform()
   {

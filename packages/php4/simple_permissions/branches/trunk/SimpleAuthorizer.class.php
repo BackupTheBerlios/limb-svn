@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/permissions/Authorizer.interface.php');
 
-class SimpleAuthorizer implements Authorizer
+class SimpleAuthorizer// implements Authorizer
 {
   var $_cached_accessible_actions_properties = array();
   var $_cached_behaviour_actions = array();

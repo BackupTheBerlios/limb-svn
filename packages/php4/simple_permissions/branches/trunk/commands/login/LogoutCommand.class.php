@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class LogoutCommand implements Command
+class LogoutCommand// implements Command
 {
   function perform()
   {
