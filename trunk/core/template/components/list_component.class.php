@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 require_once(LIMB_DIR . 'core/template/component.class.php');
 require_once(LIMB_DIR . 'core/lib/util/empty_dataset.class.php');
 
@@ -32,6 +31,8 @@ class list_component extends component
 	* @access private 
 	*/
 	var $show_separator;
+	
+	var $offset = 0;
 	
 	/**
 	* Registers a dataset with the list component. The dataset must
@@ -71,6 +72,16 @@ class list_component extends component
 	function get_by_index_string($raw_index)
 	{
 		return $this->dataset->get_by_index_string($raw_index);
+	}
+	
+	function set_offset($offset)
+	{
+	  $this->offset = $offset;
+	}
+	
+	function get_counter()
+	{
+	  return $this->dataset->get_counter() + $this->offset + 1;
 	}
 
 	/**

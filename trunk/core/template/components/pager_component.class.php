@@ -128,7 +128,7 @@ class pager_component extends component
 
 	function has_more_than_one_page()
 	{
-		return round($this->total_items / $this->items) > 1 ? true : false;
+		return $this->total_items > $this->items;
 	} 
 
 	function set_items_per_page($items)

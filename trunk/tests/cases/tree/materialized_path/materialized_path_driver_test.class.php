@@ -726,6 +726,26 @@ class materialized_path_driver_test extends UnitTestCase
 		
 		$this->assertEqual(sizeof($nodes), 5);
 		$this->_check_result_nodes_array($nodes,  __LINE__);
+
+		$nodes = $this->driver->get_nodes_by_ids(
+			array(
+				$sub_node_id_1,
+				$sub_node_id_1_1, 
+				$sub_node_id_1_1_1,
+				-1
+			)
+		);
+		
+		$this->assertEqual(sizeof($nodes), 3);
+		$this->_check_result_nodes_array($nodes,  __LINE__);
+
+		$nodes = $this->driver->get_nodes_by_ids(
+			array()
+		);
+		
+		$this->assertEqual(sizeof($nodes), 0);
+		$this->_check_result_nodes_array($nodes,  __LINE__);
+
 	}
 	
 	function _check_result_nodes_array($nodes, $line='')

@@ -5,10 +5,9 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: item.tag.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
-
 
 class grid_iterator_tag_info
 {

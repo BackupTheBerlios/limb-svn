@@ -496,13 +496,26 @@ class materialized_path_driver extends tree_db_driver
 	
 	function & get_nodes_by_ids($ids)
 	{
-		$nodes =& $this->get_all_nodes(
-			array(
-				'append' => array(' AND ' . sql_in('id', $ids))
-			)
-		);
+		$node_set = array();
+
+		if(!sizeof($ids))
+			return $node_set;
 		
-		return $nodes;
+		$add_sql = array(
+			'append' => array(' AND ' . sql_in('id', $ids))
+		);
+
+		$root_nodes = $this->get_root_nodes();
+		foreach($root_nodes as $root_id => $rootnode)
+		{
+			if(in_array($root_id, $ids))
+				$include_parents = true;
+			else
+				$include_parents = false;
+			$node_set = $node_set + $this->get_sub_branch($root_id, -1, $include_parents, false, false, $add_sql);
+		} 
+		return $node_set;		
+
 	}
 
 	function get_max_child_identifier($parent_id)

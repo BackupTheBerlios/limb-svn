@@ -16,7 +16,7 @@ class validation_group extends GroupTest
 	{
 	  $this->GroupTest('validation tests');
 	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/validation/rules');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/validation');
 	}
 }
 ?>
