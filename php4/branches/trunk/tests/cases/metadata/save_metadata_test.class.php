@@ -32,6 +32,7 @@ class save_metadata_test extends LimbTestCase
     $metadata['id'] = 1;
     $metadata['keywords'] = 'keywords';
     $metadata['description'] = 'description';
+    $metadata['title'] = 'title';
 
     $o =& site_object_factory :: create('site_object');
 
@@ -47,10 +48,12 @@ class save_metadata_test extends LimbTestCase
     $this->assertTrue(isset($metadata_row['object_id']));
     $this->assertTrue(isset($metadata_row['keywords']));
     $this->assertTrue(isset($metadata_row['description']));
+    $this->assertTrue(isset($metadata_row['title']));
 
     $this->assertEqual($metadata_row['object_id'], 1);
     $this->assertEqual($metadata_row['keywords'], 'keywords');
     $this->assertEqual($metadata_row['description'], 'description');
+    $this->assertEqual($metadata_row['title'], 'title');
   }
 }
 ?>
