@@ -29,7 +29,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
   function setUp()
   {
     $this->mapper = new SiteObjectBehaviourMapper();
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
 
     $this->_cleanUp();
   }
@@ -92,9 +92,9 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
     $this->mapper->insert($behaviour);
 
-    $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $rs =& $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
-    $record = $this->db->fetchRow();
+    $record = $rs->getRow();
 
     $this->assertEqual($record['name'], get_class($behaviour));
   }
@@ -116,9 +116,9 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
     $this->mapper->update($behaviour);
 
-    $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $rs =& $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
-    $record = $this->db->fetchRow();
+    $record = $rs->getRow();
 
     $this->assertEqual($record['name'], get_class($behaviour));
   }
@@ -140,9 +140,9 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
     $this->mapper->delete($behaviour);
 
-    $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $rs =& $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
-    $this->assertTrue(!$this->db->fetchRow());
+    $this->assertTrue(!$rs->getRow());
   }
 
   function testGetIdsByNames()

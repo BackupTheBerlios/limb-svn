@@ -84,7 +84,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
 
     $this->_cleanUp();
   }
@@ -117,8 +117,8 @@ class SiteObjectMapperTest extends LimbTestCase
     // autogenerate class_id
     $id = $mapper->getClassId($object);
 
-    $this->db->select('sys_class', '*', 'name="' . get_class($object) . '"');
-    $arr = $this->db->fetchRow();
+    $rs = $this->db->select('sys_class', '*', array('name' => get_class($object)));
+    $arr = $rs->getRow();
 
     $this->assertNotNull($id);
 
@@ -126,8 +126,8 @@ class SiteObjectMapperTest extends LimbTestCase
 
     // generate class_id only once
     $id = $mapper->getClassId($object);
-    $this->db->select('sys_class', '*');
-    $arr = $this->db->getArray();
+    $rs =& $this->db->select('sys_class', '*');
+    $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
   }
@@ -536,15 +536,15 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $mapper->delete($this->site_object);
 
-    $this->db->select('sys_site_object', '*', 'id=' . $object_id);
-    $this->assertTrue(!$record = $this->db->fetchRow());
+    $rs = $this->db->select('sys_site_object', '*', 'id=' . $object_id);
+    $this->assertTrue(!$record = $rs->getRow());
   }
 
   function _checkSysSiteObjectRecord($site_object)
   {
-    $this->db->select('sys_site_object', '*', 'id=' . $site_object->getId());
+    $rs =& $this->db->select('sys_site_object', '*', 'id=' . $site_object->getId());
 
-    $record = $this->db->fetchRow();
+    $record = $rs->getRow();
 
     $this->assertNotNull($site_object->getIdentifier());
     $this->assertEqual($record['identifier'], $site_object->getIdentifier());

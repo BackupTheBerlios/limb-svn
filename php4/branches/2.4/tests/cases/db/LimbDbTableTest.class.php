@@ -212,6 +212,11 @@ class LimbDbTableTest extends LimbTestCase
     $this->assertEqual($record->get('description'), 'description2');
   }
 
+  function testSelectRecordByIdNotFound()
+  {
+    $this->assertNull($this->db_table_test->selectRecordById(1));
+  }
+
   function testDeleteAll()
   {
     $data = array(

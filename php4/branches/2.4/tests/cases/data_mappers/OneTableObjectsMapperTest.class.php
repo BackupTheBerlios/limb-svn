@@ -82,7 +82,7 @@ class OneTableObjectsMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
 
     $this->_cleanUp();
 
@@ -181,8 +181,8 @@ class OneTableObjectsMapperTest extends LimbTestCase
 
     $this->mapper->update($site_object);
 
-    $this->db->select('test_one_table_object');
-    $this->assertEqual(sizeof($this->db->getArray()), 1);
+    $rs =& $this->db->select('test_one_table_object');
+    $this->assertEqual(sizeof($rs->getTotalRowCount()), 1);
 
     $this->_checkLinkedTableRecord($site_object);
   }
@@ -205,8 +205,8 @@ class OneTableObjectsMapperTest extends LimbTestCase
     $this->mapper->expectOnce('_doParentDelete', array($site_object));
     $this->mapper->delete($site_object);
 
-    $this->db->select('test_one_table_object');
-    $this->assertEqual(sizeof($this->db->getArray()), 0);
+    $rs =& $this->db->select('test_one_table_object');
+    $this->assertEqual(sizeof($rs->getArray()), 0);
   }
 
   function _checkLinkedTableRecord($site_object)
@@ -214,7 +214,8 @@ class OneTableObjectsMapperTest extends LimbTestCase
     $conditions['object_id'] = $site_object->getId();
 
     $db_table = $this->mapper->getDbTable();
-    $arr = $db_table->getList($conditions, 'id');
+    $rs =& $db_table->select($conditions, 'id');
+    $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
     $record = current($arr);

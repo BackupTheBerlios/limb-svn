@@ -99,7 +99,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
 
     $this->_cleanUp();
 
@@ -183,8 +183,8 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
     $this->assertEqual($site_object->getVersion(), 2);
 
-    $this->db->select('test_one_table_object');
-    $this->assertEqual(sizeof($this->db->getArray()), 2);
+    $rs =& $this->db->select('test_one_table_object');
+    $this->assertEqual(sizeof($rs->getArray()), 2);
 
     $this->_checkLinkedTableRecord($site_object);
     $this->_checkSysObjectVersionRecord($site_object);
@@ -267,8 +267,8 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $this->mapper->expectOnce('_doParentDelete', array($site_object));
     $this->mapper->delete($site_object);
 
-    $this->db->select('sys_object_version');
-    $array = $this->db->getArray();
+    $rs =& $this->db->select('sys_object_version');
+    $array = $rs->getArray();
 
     $this->assertEqual(sizeof($array), 1);
     $this->assertEqual($array[0]['object_id'], $junk_object_id);
@@ -309,14 +309,14 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
                                'version' => 1));
     $this->mapper->trimVersions($object_id, $version = 2);
 
-    $this->db->select('sys_object_version');
-    $array = $this->db->getArray();
+    $rs =& $this->db->select('sys_object_version');
+    $array = $rs->getArray();
 
     $this->assertEqual(sizeof($array), 1);
     $this->assertEqual($array[0]['object_id'], $junk_object_id);
 
-    $this->db->select('test_one_table_object');
-    $array = $this->db->getArray();
+    $rs =& $this->db->select('test_one_table_object');
+    $array = $rs->getArray();
 
     $this->assertEqual(sizeof($array), 1);
     $this->assertEqual($array[0]['object_id'], $junk_object_id);
@@ -327,8 +327,8 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $conditions['object_id'] = $site_object->getId();
     $conditions['version'] = $site_object->getVersion();
 
-    $this->db->select('sys_object_version', '*', $conditions);
-    $record = $this->db->fetchRow();
+    $rs =& $this->db->select('sys_object_version', '*', $conditions);
+    $record = $rs->getRow();
 
     $this->assertEqual($record['object_id'], $site_object->getId());
     $this->assertEqual($record['version'], $site_object->getVersion());
@@ -343,7 +343,9 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $conditions['version'] = $site_object->getVersion();
 
     $db_table = $this->mapper->getDbTable();
-    $arr = $db_table->getList($conditions, 'id');
+    $rs =& $db_table->select($conditions, 'id');
+
+    $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
     $record = current($arr);

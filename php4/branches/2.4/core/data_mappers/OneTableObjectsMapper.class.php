@@ -14,13 +14,13 @@ class OneTableObjectsMapper extends SiteObjectMapper
 {
   var $_db_table = null;
 
-  function _getFinder()
+  function &_getFinder()
   {
     include_once(LIMB_DIR . '/core/finders/FinderFactory.class.php');
     return FinderFactory :: create('OneTableObjectsRawFinder');
   }
 
-  function getDbTable()
+  function &getDbTable()
   {
     if(!$this->_db_table)
     {
@@ -53,14 +53,14 @@ class OneTableObjectsMapper extends SiteObjectMapper
     parent :: delete($site_object);
   }
 
-  function update($site_object)
+  function update(&$site_object)
   {
     $this->_doParentUpdate($site_object);
 
     $this->_updateLinkedTableRecord($site_object);
   }
 
-  function insert($site_object)
+  function insert(&$site_object)
   {
     $id = $this->_doParentInsert($site_object);
 
@@ -69,14 +69,14 @@ class OneTableObjectsMapper extends SiteObjectMapper
     return $id;
   }
 
-  function delete($site_object)
+  function delete(&$site_object)
   {
     $this->_doParentDelete($site_object);
 
     $this->_deleteLinkedTableRecord($site_object);
   }
 
-  function _insertLinkedTableRecord($site_object)
+  function _insertLinkedTableRecord(&$site_object)
   {
     $data = $site_object->export();
     $data['object_id'] = $site_object->getId();
@@ -86,7 +86,7 @@ class OneTableObjectsMapper extends SiteObjectMapper
     $table->insert($data);
   }
 
-  function _updateLinkedTableRecord($site_object)
+  function _updateLinkedTableRecord(&$site_object)
   {
     $data = $site_object->export();
     unset($data['id']);
@@ -95,7 +95,7 @@ class OneTableObjectsMapper extends SiteObjectMapper
     $table->update($data, array('object_id' => $site_object->getId()));
   }
 
-  function _deleteLinkedTableRecord($site_object)
+  function _deleteLinkedTableRecord(&$site_object)
   {
     $db_table = $this->getDbTable();
     $db_table->delete(array('object_id' => $site_object->getId()));

@@ -149,10 +149,13 @@ class LimbDbTable
 
   function & selectRecordById($id)
   {
-    $record_set = $this->select(array($this->_primary_key_name => $id));
+    $record_set =& $this->select(array($this->_primary_key_name => $id));
     $record_set->rewind();
 
-    return $record_set->current();
+    if(!$record_set->valid())
+      return null;
+    else
+      return $record_set->current();
   }
 
   function & select($conditions = array(), $order = '')

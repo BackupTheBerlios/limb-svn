@@ -126,12 +126,12 @@ class SiteObjectMapper extends AbstractDataMapper
 
     $sys_site_object_db_table = $toolkit->createDBTable('SysSiteObject');
 
-    $sys_site_object_db_table->insert($data);
+    $id = $sys_site_object_db_table->insert($data);
 
     if(catch('Exception', $e))
       return throw($e);
 
-    return $sys_site_object_db_table->getLastInsertId();
+    return $id;
   }
 
   function update(&$site_object)
@@ -231,13 +231,17 @@ class SiteObjectMapper extends AbstractDataMapper
 
     $class_name = get_class($site_object);
 
-    $list = $db_table->getList('name="'. $class_name. '"');
+    $rs =& $db_table->select(array('name' => $class_name));
 
-    if (count($list) == 1)
+    $count = $rs->getTotalRowCount();
+
+    if ($count == 1)
     {
-      return key($list);
+      $rs->rewind();
+      $record = $rs->current();
+      return $record->get('id');
     }
-    elseif(count($list) > 1)
+    elseif($count > 1)
     {
       return throw(new LimbException('there are more than 1 type found',
         array('name' => $class_name)));
@@ -246,9 +250,7 @@ class SiteObjectMapper extends AbstractDataMapper
     $insert_data['id'] = null;
     $insert_data['name'] = $class_name;
 
-    $db_table->insert($insert_data);
-
-    return $db_table->getLastInsertId();
+    return $db_table->insert($insert_data);
   }
 
   function _isObjectMovedFromNode($parent_node_id, $node)
@@ -311,18 +313,18 @@ class SiteObjectMapper extends AbstractDataMapper
   {
     $sql = "SELECT sso.locale_id as locale_id
             FROM sys_site_object as sso, sys_site_object_tree as ssot
-            WHERE ssot.id = {$parent_node_id}
+            WHERE ssot.id = :parent_node_id
             AND sso.id = ssot.object_id";
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDbConnection();
+    $conn =& $toolkit->getDbConnection();
+    $stmt =& $conn->newStatement($sql);
+    $stmt->setInteger('parent_node_id', $parent_node_id);
 
-    $db->sqlExec($sql);
+    $record = $stmt->getOneRecord();
 
-    $parent_data = $db->fetchRow();
-
-    if (isset($parent_data['locale_id']) &&  $parent_data['locale_id'])
-      return $parent_data['locale_id'];
+    if($record)
+      return $record->get('locale_id');
     else
       return $toolkit->constant('DEFAULT_CONTENT_LOCALE_ID');
   }

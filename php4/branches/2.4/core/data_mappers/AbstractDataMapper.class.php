@@ -18,7 +18,7 @@ class AbstractDataMapper
 
   /*abstract*/ function & _getFinder(){}
 
-  /*abstract*/ function & _doLoad($result_set, $domain_object){}
+  /*abstract*/ function _doLoad($result_set, &$domain_object){}
 
   function & findById($id)
   {
@@ -43,13 +43,9 @@ class AbstractDataMapper
       $this->insert($domain_object);
   }
 
-  function insert(&$domain_object)
-  {
-  }
+  function insert(&$domain_object){}
 
-  function update(&$domain_object)
-  {
-  }
+  function update(&$domain_object){}
 
 }
 
