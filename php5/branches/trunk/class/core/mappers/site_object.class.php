@@ -8,9 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/object.class.php');
-
-class site_object extends object
+class site_object_mapper
 {
   const STATUS_PUBLISHED = 1;
   const STATUS_RESTRICTED = 2;
