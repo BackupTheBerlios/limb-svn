@@ -81,9 +81,22 @@ class phpbb_user extends object
 		$db =& db_factory :: instance();
 		return $db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
 	}
+	
+	function _delete_cookie()
+	{
+		$db =& db_factory :: instance();
+		$db->sql_select("phpbb_config", '*', array('config_name' => 'cookie_name'));
+		
+		$row = $db->fetch_row();
+		$cookiename = $row['config_value'];
+		setcookie($cookiename . '_data', '');
+		setcookie($cookiename . '_sid', '');		
+	}
 
 	function login($login, $password)
-	{
+	{	
+		$this->_delete_cookie();
+		
 		$user_ip = sys :: client_ip(true);
 		$sid = md5(uniqid($user_ip));
 		
@@ -103,6 +116,8 @@ class phpbb_user extends object
 	
 	function logout()
 	{
+		$this->_delete_cookie();
+		
 		return true;
 	}
 	
