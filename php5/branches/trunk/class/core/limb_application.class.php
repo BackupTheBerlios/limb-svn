@@ -72,7 +72,7 @@ class limb_application
     register_file_resolver('datasource',          new caching_file_resolver(new datasource_file_resolver(new package_file_resolver())));
     register_file_resolver('site_object',         new caching_file_resolver(new site_object_file_resolver(new package_file_resolver())));
   }
-    
+  
   public function run()
   {
     try
@@ -115,7 +115,7 @@ class limb_application
       	
       $this->response->write(message_box :: parse());//It definetly should be somewhere else!
     }
-        
+    
     $this->response->commit();  
   }
 }

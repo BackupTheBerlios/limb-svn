@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 class site_object_controller_filter implements intercepting_filter 
 { 
   public function run($filter_chain, $request, $response) 
-  {  
+  { 
     debug :: add_timing_point('site object controller filter started');
   
     $site_object = wrap_with_site_object(fetch_requested_object($request));
@@ -22,7 +22,7 @@ class site_object_controller_filter implements intercepting_filter
     $site_object_controller = $site_object->get_controller();
     
     $site_object_controller->get_action($request);
-            
+    
     $site_object_controller->process($request, $response);
     
     if($response->is_empty())

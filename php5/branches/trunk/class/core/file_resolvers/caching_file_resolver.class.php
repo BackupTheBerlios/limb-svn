@@ -20,11 +20,9 @@ class caching_file_resolver extends file_resolver_decorator
     parent :: __construct($resolver);
     
     $this->_load_cache();
-  }
-  
-  function __destruct()
-  {
-    $this->_save_cache();
+    
+    //destructors are buggy!!!
+    register_shutdown_function(array($this, 'save_cache'));
   }
   
   public function get_cache_file()
@@ -49,7 +47,7 @@ class caching_file_resolver extends file_resolver_decorator
       $this->_resolved_paths = array();
   }
   
-  protected function _save_cache()
+  public function save_cache()
   {
     $cache_file = $this->get_cache_file();
         

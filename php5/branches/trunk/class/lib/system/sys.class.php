@@ -108,12 +108,12 @@ class sys
 			$this->exec_mode = 'module';	
 	}
   
-  public function os_type()
+  static public function os_type()
   {    	
     return sys::instance()->os_type;
   }
 
-  public function client_ip()
+  static public function client_ip()
   {
     return sys::instance()->client_ip;
 	}
