@@ -140,8 +140,8 @@ class datasource_component extends component
 
         $navigator =& $this->_get_navigator_component();
 
-        if($navigator && ($offset = $this->get('offset')))
-          $target_component->set_offset($offset);
+        if($navigator && isset($this->parameters['offset']))
+          $target_component->set_offset($this->parameters['offset']);
       }
       else
         debug :: write_error('component target not found',

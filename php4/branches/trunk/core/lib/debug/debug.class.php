@@ -297,6 +297,9 @@ class debug
 
   function _send_mail($debug_info)
   {
+    if(!defined('DEVELOPER_EMAIL'))//???
+      return;
+
     include_once(LIMB_DIR . '/core/lib/mail/send_plain_mail.inc.php');
 
     $title = '';

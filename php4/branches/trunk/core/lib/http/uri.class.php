@@ -36,6 +36,18 @@ class uri
       $this->parse($str);
   }
 
+  function reset()
+  {
+    $this->_user        = '';
+    $this->_password    = '';
+    $this->_host        = '';
+    $this->_port        = '';
+    $this->_path        = '';
+    $this->_query_items = array();
+    $this->_anchor      = '';
+    $this->_path_elements = array();
+  }
+
   function get_protocol()
   {
     return $this->_protocol;
@@ -99,6 +111,7 @@ class uri
   function set_path($path)
   {
     $this->_path = $path;
+    $this->_path_elements = explode('/',$this->_path);
   }
 
   function set_anchor($anchor)
@@ -118,63 +131,52 @@ class uri
 
   function parse($str)
   {
-    $this->_user        = '';
-    $this->_password    = '';
-    $this->_host        = '';
-    $this->_port        = 80;
-    $this->_path        = '';
-    $this->_query_items = array();
-    $this->_anchor      = '';
+    $this->reset();
 
     // Parse the url and store the various parts
-    if (!empty($str))
+    if (empty($str))
+      return;
+
+    if(!($urlinfo = @parse_url($str)))
+      return;
+
+    foreach ($urlinfo as $key => $value)
     {
-      if(!($urlinfo = @parse_url($str)))
-        return;
-
-      // Default query_string
-      $this->_query_items = array();
-
-      foreach ($urlinfo as $key => $value)
+      switch ($key)
       {
-        switch ($key)
-        {
-          case 'scheme':
-            $this->_protocol = $value;
-          break;
+        case 'scheme':
+          $this->set_protocol($value);
+        break;
 
-          case 'user':
-            $this->_user = $value;
-          break;
+        case 'user':
+          $this->set_user($value);
+        break;
 
-          case 'host':
-            $this->_host = $value;
-          break;
+        case 'host':
+          $this->set_host($value);
+        break;
 
-          case 'port':
-            $this->_port = $value;
-          break;
+        case 'port':
+          $this->set_port($value);
+        break;
 
-          case 'pass':
-            $this->_password = $value;
-          break;
+        case 'pass':
+          $this->set_password($value);
+        break;
 
-          case 'path':
-            $this->_path = $value;
-          break;
+        case 'path':
+          $this->set_path($value);
+        break;
 
-          case 'query':
-            $this->_query_items = $this->_parse_query_string($value);
-          break;
+        case 'query':
+          $this->set_query_string($value);
+        break;
 
-          case 'fragment':
-            $this->_anchor = $value;
-          break;
-        }
+        case 'fragment':
+          $this->set_anchor($value);
+        break;
       }
     }
-
-    $this->_path_elements = explode('/',$this->_path);
   }
 
   function count_path()
@@ -287,10 +289,6 @@ class uri
     return $this->_path_elements;
   }
 
-  /**
-  * Adds a query_string item
-  *
-  */
   function add_encoded_query_item($name, $value)
   {
     $this->_query_items[$name] = $value;

@@ -247,15 +247,6 @@ class uri_test extends LimbTestCase
     $this->assertEqual($this->uri->get_query_string(), 'foo[i1]=+bar+');
   }
 
-  function test_parse_default_80_port()
-  {
-    $url = 'http://admin:test@localhost/test.php?foo=bar#23';
-
-    $this->uri->parse($url);
-
-    $this->assertEqual($this->uri->get_port(), '80');
-  }
-
   function test_compare_query_equal()
   {
     $url = 'http://admin:test@localhost2:81/test.php?bar=foo&foo=bar#23';
@@ -500,6 +491,15 @@ class uri_test extends LimbTestCase
     $this->uri->parse($url);
 
     $this->assertTrue($this->uri->is_relative());
+  }
+
+  function test_set_path()
+  {
+    $this->uri->set_path('/index.html');
+
+    $uri = new uri('http://dot.com/index.html');
+
+    $this->assertEqual($uri->get_path_elements(), $this->uri->get_path_elements());
   }
 
 }
