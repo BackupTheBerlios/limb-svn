@@ -7,14 +7,15 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-class tests_search extends GroupTest 
+***********************************************************************************/
+
+
+class object_access_group extends GroupTest 
 {
-	function tests_search() 
+	function object_access_group() 
 	{
-	  $this->GroupTest('search tests');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/full_text_search');
+	  $this->GroupTest('object access tests');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/access');
 	}
 }
 ?>

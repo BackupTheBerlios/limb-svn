@@ -7,14 +7,14 @@
 *
 * $Id$
 *
-***********************************************************************************/
-
-class tests_compiler extends GroupTest 
+***********************************************************************************/ 
+class search_group extends GroupTest 
 {
-  function tests_compiler() 
-  {
-    $this->GroupTest('compiler tests');
-    //$this->addTestFile(LIMB_DIR . '/tests/cases/test_compiler_codewriter.php');
-  }
+	function search_group() 
+	{
+	  $this->GroupTest('search tests');
+	  
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/full_text_search');
+	}
 }
 ?>

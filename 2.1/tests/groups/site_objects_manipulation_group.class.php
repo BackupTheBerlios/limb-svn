@@ -5,17 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: util.group.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 
-
-class tests_http extends GroupTest 
+class site_objects_manipulation_group extends GroupTest 
 {
-	function tests_http() 
+	function site_objects_manipulation_group() 
 	{
-	  $this->GroupTest('http tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/http');
+	  $this->GroupTest('site objects manipulation tests');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/site_objects_manipulation/');
 	}
 }
 ?>

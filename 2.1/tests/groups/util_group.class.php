@@ -9,14 +9,13 @@
 *
 ***********************************************************************************/
 
-class tests_tree extends GroupTest 
+
+class util_group extends GroupTest 
 {
-	function tests_tree() 
+	function util_group() 
 	{
-	  $this->GroupTest('tree');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/tree/materialized_path/');
-	  //TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/tree/');
+	  $this->GroupTest('util tests');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/util');
 	}
 }
 ?>

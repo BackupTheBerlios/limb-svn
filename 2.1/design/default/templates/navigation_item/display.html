@@ -9,10 +9,7 @@
 <hr>
 <fetch:SUB_BRANCH target='items'>
 	<core:PARAMETER name='loader_class_name' value='navigation_item'>
-	<core:PARAMETER name='datasource_path' value='/fetch_tree_datasource'>
-	<core:PARAMETER name='include_parent' value='0' type='boolean'>
-	<core:PARAMETER name='check_expanded_parents' value='0' type='boolean'>
-	<core:PARAMETER name='depth' value='1' type='numeric'>
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='items'>
@@ -29,9 +26,15 @@
 				<tr class='jip'>
 					<td jip='object' class='jip_object'><a href="{$path}">{$title}</a></td>
 					<td>{$url}</td>
-					<td><core:INCLUDE file="order.html"></td>
+					<td><core:INCLUDE file='/admin/priority_input.html'></td>
 					<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 				</tr>
     </grid:ITERATOR>
+				<tr>
+					<td colspan='3' align='right'>
+						<core:INCLUDE file='/admin/priority_button.html'>
+					</td>	
+					<td>&nbsp;</td>
+				</tr>
 			</table>
 </grid:LIST>

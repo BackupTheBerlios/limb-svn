@@ -10,13 +10,12 @@
 ***********************************************************************************/
 
 
-class tests_validation extends GroupTest 
+class image_library_group extends GroupTest 
 {
-	function tests_validation() 
+	function image_library_group() 
 	{
-	  $this->GroupTest('validation tests');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/validation/rules');
+	  $this->GroupTest('Image library');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/image');
 	}
 }
 ?>

@@ -9,13 +9,12 @@
 *
 ***********************************************************************************/
 
-
-class tests_fetching extends GroupTest 
+class compiler_group extends GroupTest 
 {
-	function tests_fetching() 
-	{
-	  $this->GroupTest('fetch operations');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/fetching');
-	}
+  function compiler_group() 
+  {
+    $this->GroupTest('compiler tests');
+    //$this->addTestFile(LIMB_DIR . '/tests/cases/test_compiler_codewriter.php');
+  }
 }
 ?>

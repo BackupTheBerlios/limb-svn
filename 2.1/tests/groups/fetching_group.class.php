@@ -10,12 +10,12 @@
 ***********************************************************************************/
 
 
-class tests_metadata extends GroupTest 
+class fetching_group extends GroupTest 
 {
-    function tests_metadata() 
-    {
-        $this->GroupTest('metadata tests');
-        TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/metadata');
-    }
+	function fetching_group() 
+	{
+	  $this->GroupTest('fetch operations');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/fetching');
+	}
 }
 ?>

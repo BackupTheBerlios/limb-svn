@@ -5,16 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: search.group.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-class tests_stats extends GroupTest 
+class actions_group extends GroupTest 
 {
-	function tests_stats() 
+	function actions_group() 
 	{
-	  $this->GroupTest('stats tests');
+	  $this->GroupTest('actions tests');
 	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/stats');
+ 		TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/actions');
 	}
 }
 ?>

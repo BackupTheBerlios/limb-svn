@@ -7,13 +7,15 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-class tests_controllers extends GroupTest 
+***********************************************************************************/
+
+
+class sys_params_group extends GroupTest 
 {
-	function tests_controllers() 
-	{
-	  $this->GroupTest('controllers tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/controllers');
-	}
+    function sys_params_group() 
+    {
+        $this->GroupTest('sys params tests');
+        TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/sys_params');
+    }
 }
 ?>

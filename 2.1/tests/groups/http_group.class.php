@@ -10,12 +10,12 @@
 ***********************************************************************************/
 
 
-class tests_template_components extends GroupTest 
+class http_group extends GroupTest 
 {
-  function tests_template_components() 
-  {
-    $this->GroupTest('template components tests');
-    TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/components');
-  }
+	function http_group() 
+	{
+	  $this->GroupTest('http tests');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/http');
+	}
 }
 ?>

@@ -10,12 +10,12 @@
 ***********************************************************************************/
 
 
-class tests_sys_params extends GroupTest 
+class system_group extends GroupTest 
 {
-    function tests_sys_params() 
-    {
-        $this->GroupTest('sys params tests');
-        TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/sys_params');
-    }
+	function system_group() 
+	{
+	  $this->GroupTest('system tests');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/system');
+	}
 }
 ?>

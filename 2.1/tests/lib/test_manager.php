@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/lib/system/dir.class.php');
 class TestManager
 {
 	var $_testcase_extension = '.test.php';
-	var $_grouptest_extension = '.group.php';
+	var $_grouptest_extension = '_group.class.php';
 
 	function TestManager()
 	{

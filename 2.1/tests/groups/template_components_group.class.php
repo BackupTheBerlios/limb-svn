@@ -5,16 +5,17 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: db.group.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 
-class tests_site_objects_manipulation extends GroupTest 
+
+class template_components_group extends GroupTest 
 {
-	function tests_site_objects_manipulation() 
-	{
-	  $this->GroupTest('site objects manipulation tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/site_objects_manipulation/');
-	}
+  function template_components_group() 
+  {
+    $this->GroupTest('template components tests');
+    TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/components');
+  }
 }
 ?>

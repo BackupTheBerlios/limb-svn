@@ -9,13 +9,13 @@
 *
 ***********************************************************************************/
 
-
-class tests_image_library extends GroupTest 
+class tree_group extends GroupTest 
 {
-	function tests_image_library() 
+	function tree_group() 
 	{
-	  $this->GroupTest('Image library');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/image');
+	  $this->GroupTest('tree');
+	  
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/tree/');
 	}
 }
 ?>

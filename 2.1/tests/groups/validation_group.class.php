@@ -10,12 +10,13 @@
 ***********************************************************************************/
 
 
-class tests_db extends GroupTest 
+class validation_group extends GroupTest 
 {
-	function tests_db() 
+	function validation_group() 
 	{
-	  $this->GroupTest('db tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/db');
+	  $this->GroupTest('validation tests');
+	  
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/validation/rules');
 	}
 }
 ?>

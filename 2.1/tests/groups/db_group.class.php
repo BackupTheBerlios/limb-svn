@@ -10,12 +10,12 @@
 ***********************************************************************************/
 
 
-class tests_object_access extends GroupTest 
+class db_group extends GroupTest 
 {
-	function tests_object_access() 
+	function db_group() 
 	{
-	  $this->GroupTest('object access tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/access');
+	  $this->GroupTest('db tests');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/db');
 	}
 }
 ?>

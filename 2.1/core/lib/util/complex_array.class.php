@@ -117,6 +117,7 @@ class complex_array
 		}
 	}
 	
+	//e.g, $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')
 	function & sort_array($array, $sort_params) 
 	{
 	 $array_mod = array();

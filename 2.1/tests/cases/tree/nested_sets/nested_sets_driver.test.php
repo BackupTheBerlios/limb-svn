@@ -805,7 +805,6 @@ class test_nested_sets_driver extends UnitTestCase
 				$this->assertEqual($node['r'] - $last_r, 1,
 					'there is a gap between r ' . $node['r'] . ' and r ' . $last_r . ' at line: ' . $line);
 		}
-		
 	}
 	
 	function _check_proper_nesting_recursive(&$nodes, $line, $l, $r, $c, $level_limit)

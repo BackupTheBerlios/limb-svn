@@ -13,9 +13,9 @@ require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_tester.class.php');
 require_once(LIMB_DIR . '/tests/cases/site_objects_testers/content_object_tester.class.php');
 
-class tests_project_check extends GroupTest 
+class project_check_group extends GroupTest 
 {
-	function tests_project_check() 
+	function project_check_group() 
 	{
 	  $this->GroupTest('project tests');
 	  

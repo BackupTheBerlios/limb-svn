@@ -7,15 +7,14 @@
 *
 * $Id$
 *
-***********************************************************************************/
-
-
-class tests_util extends GroupTest 
+***********************************************************************************/ 
+class stats_group extends GroupTest 
 {
-	function tests_util() 
+	function stats_group() 
 	{
-	  $this->GroupTest('util tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/util');
+	  $this->GroupTest('stats tests');
+	  
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/stats');
 	}
 }
 ?>
