@@ -1,3 +1,78 @@
+Version 2.2
+(04 May 2004, from /trunk)
+svn://svn.berlios.de/limb/2.2
+
+  --  ***WARNING***: BC break! API of controllers, actions has changed! 
+  
+  --  fixed: db_module - now column_types array passed into sql_update method
+  
+  --  initial revision of the interception filters implementation, 
+      this led to the vast refactoring of ALL actions. Have a look at root.php :)
+  --  new request class resposible for incapsulating of all request specific operations, 
+      this one should also help in future testing. You can't just use $_REQUEST['parameter'] variable any longer, 
+      use request->get_attribute('parameter') instead
+  --  new http_response class responsible for 'deferred' client responses, redirects, headers etc
+  --  optimizations of fetcher
+  --  got FINALLY rid of old confusing responses classes! The execution status is stored in request instead
+  --  new jip_filter implemented. By default the fetcher now assigns actions for the requested object only. 
+      jip_filter enables JIP if the user is logged in and he is a member of at least one of groups 
+      listed in jip_groups.ini file (stored in settings dir).
+  --  fixed: node_links_datasource bug - it caused to undefined array index error if the linked object was not fetched.
+  --  minor optimizations based on XDebug output: locale, template tags, etc
+  
+  --  all validation rules are instantiated via resolve_handle, it touched all form actions in some way
+  --  create_object function in objects_support.inc.php was refactored, it uses resolve_handle too, no eval no more!
+  --  new refactored version of the uri class
+  --  RFE: minor changes flag implemented(issue #958901)
+  --  RFE: flexible page caching(issue #970358)
+  --  RFE: IMG caching functionality(issue #977471)
+  --  new register_testing_ini function for testing purposes allowing to override ini file access inside test case
+  --  WACT output cache renamed, <core:OUTPUTCACHE> => <core:LITECACHE>, <core:OUTPUTCACHE> is used for the page partial
+      caching
+  --  ini class is heavily tested and refactored
+  --  fetch_one_by_id() global function added to 'shortcut' fetcher :: fetch_one_by_id()
+  --  added new datatype 'float' to db_module. It includes some dirty hacking - international float format 
+      transformations, e.g. using comma instead of dot separator
+  --  /core/lib/locale renamed to /core/lib/i18n
+  --  new <control_button> tag
+  --  refactored common.js: from now it will be a common practice to pass DOM element itself not its id 
+      since there maybe several DOM elements with the same id on the page
+      (which is likely not valid, yet it's not that easy to avoid :( )
+  --  dir class was renamed to fs(file system) class since it's a more appropriate name
+  --  new dataspace_registry: instance method was removed from dataspace, it makes dataspace much cleaner and 
+      will help us to use WACT implementation transparently
+  --  cron manager and cron jobs new implementation
+  --  fetcher :: flush_cache() is called in form_edit_site_object action and set_publish_status action.
+  --  response => http_response, response is just an abstract class now, 
+  --  new nonbuffered_response class added
+  --  <form> tag MUST have 'name' attribute now
+  --  search_fetcher :: fetch() now can analyze $params['restricted_classes'] && $params['allowed_classes'] and 
+      transfer their ids to full_text_search :: find() method, which returns object ids only with needed class_ids. 
+      This is useful when you want to execute full text search on site excluding several object types from result 
+      or including in result only several needed object types.
+      search_fetcher :: search_fetch_sub_branch() can't perform such restriction in easy way for now because 
+      it works directly with tree.  
+      
+  
+
+Version 2.1.1
+(16 Jun 2004, from /trunk)
+svn://svn.berlios.de/limb/2.1.1
+
+  --  ***WARNING***: BC break! API of controllers, actions has changed! 
+  --  controllers, actions are greatly refactored in order to simplify inheritance(packages preparation)
+  --  RFE: unified delete site object action (issue #959366)
+  --  new SiteObjectsTestManager allowing to run specific site object testers
+  --  russian language pack added to phpbb forum
+  --  node select component doesn't try to get mapped node id if value is not set, it's a 
+      form_create_site_object's resposibility to set it ptoperly, thus we decrease coupling, i guess...
+  --  create_link_action doesn't set non-existent node id now, there's simply no need for that(see above)  
+  --  RFE: initial revision of site objects linking functionality(#970235 issue)
+  --  RFE: it's possible to select parent node with node select component (part of the #971013 issue)
+  --  new tree_node_id_rule
+  --  added tree_node_id_rule into form_create_site_object_action and form_edit_site_object_action  
+  --  request_state component now takes its value from the $_REQUEST on the first display only   
+
 Version 2.1
 (04 May 2004, from /2.0.8)
 svn://svn.berlios.de/limb/2.1
