@@ -19,8 +19,8 @@ class content_object_db_table extends db_table
     $this->_columns['id'] = array('type' => 'numeric');
     $this->_columns['version'] = array('type' => 'numeric');
     $this->_columns['object_id'] = array('type' => 'numeric');
-    $this->_columns['identifier'] = '';
-    $this->_columns['title'] = '';
+    $this->_columns['identifier'] = array();
+    $this->_columns['title'] = array();
   }  
 }
 
