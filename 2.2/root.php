@@ -23,8 +23,6 @@ require_once(LIMB_DIR . 'core/lib/system/message_box.class.php');
 
 start_user_session();
 
-// filters include
-
 $request =& request :: instance();
 $response =& new http_response();
 
