@@ -14,7 +14,7 @@ class FormCommand implements Command
 {
   var $form_name;
 
-  function __construct($form_name)
+  function FormCommand($form_name)
   {
     $this->form_name = $form_name;
   }
@@ -55,9 +55,10 @@ class FormCommand implements Command
 
   function perform()
   {
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
-    $dataspace = Limb :: toolkit()->switchDataspace($this->form_name);
+    $dataspace =& $toolkit->switchDataspace($this->form_name);
 
     if ($this->_isFirstTime($request))
     {

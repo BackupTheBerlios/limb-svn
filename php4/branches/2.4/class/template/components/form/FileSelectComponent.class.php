@@ -28,7 +28,10 @@ class FileSelectComponent extends InputFormElement
 
     $file_node_id = $this->getValue();
 
-    if($file_node_id &&  $file_data = Limb :: toolkit()->getFetcher()->fetchOneByNodeId($file_node_id))
+    $toolkit =& Limb :: toolkit();
+    $fetcher =& $toolkit->getFetcher()
+
+    if($file_node_id &&  $file_data = $fetcher->fetchOneByNodeId($file_node_id))
     {
       $span_name = $file_data['identifier'];
       $span_description = $file_data['description'];

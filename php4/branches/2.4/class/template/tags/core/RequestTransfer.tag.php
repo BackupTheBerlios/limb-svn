@@ -19,7 +19,7 @@ registerTag(new CoreRequestTransferTagInfo());
 
 class CoreRequestTransferTag extends ServerTagComponentTag
 {
-  function __construct()
+  function CoreRequestTransferTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/request_transfer_component';
   }

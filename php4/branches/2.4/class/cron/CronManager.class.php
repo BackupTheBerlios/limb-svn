@@ -26,7 +26,9 @@ class CronManager
   {
     $this->jobs = array();
 
-    $groups = Limb :: toolkit()->getINI('cron.ini')->getAll();
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('cron.ini');
+    $groups = $ini->getAll();
 
     foreach($groups as $group => $data)
     {

@@ -123,7 +123,8 @@ class ImageCacheManager
       }
     }
 
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsByNodeIdsDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsByNodeIdsDatasource');
     $datasource->setNodeIds(array_keys($node_ids));
     $datasource->setSiteObjectClassName('ImageObject');
 
@@ -264,7 +265,8 @@ class ImageCacheManager
 
   function _isUserInGroups($groups)
   {
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     foreach	($user->get('groups', array()) as $group_name)
       if (in_array($group_name, $groups))
@@ -313,7 +315,10 @@ class ImageCacheManager
   {
     $this->rules = array();
 
-    $groups = Limb :: toolkit()->getINI('image_cache.ini')->getAll();
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('image_cache.ini');
+
+    $groups = $ini->getAll();
 
     foreach($groups as $group => $data)
     {

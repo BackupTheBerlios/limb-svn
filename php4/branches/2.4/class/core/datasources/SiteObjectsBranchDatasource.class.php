@@ -52,11 +52,13 @@ class SiteObjectsBranchDatasource extends SiteObjectsDatasource
     if ($this->object_ids)
       return $this->object_ids;
 
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $tree->getTree();
+
     if(!$nodes = $tree->getSubBranchByPath($this->path,
-                                               $this->depth,
-                                               $this->include_parent,
-                                               $this->check_expanded_parents))
+                                           $this->depth,
+                                           $this->include_parent,
+                                           $this->check_expanded_parents))
     {
       return array();
     }

@@ -662,8 +662,9 @@ class SiteObjectMapperTest extends LimbTestCase
     $this->assertNotNull($site_object->getCreatorId());
     $this->assertEqual($record['creator_id'], $site_object->getCreatorId());
 
-    $this->assertNotNull($site_object->getBehaviour()->getId());
-    $this->assertEqual($record['behaviour_id'], $site_object->getBehaviour()->getId());
+    $bhv =& $site_object->getBehaviour();
+    $this->assertNotNull($bhv->getId());
+    $this->assertEqual($record['behaviour_id'], $bhv->getId());
 
     $this->assertNotNull($site_object->getCreatedDate());
     $this->assertEqual($record['created_date'], $site_object->getCreatedDate());

@@ -16,7 +16,7 @@ class MatchRule extends SingleFieldRule
 
   var $match_field_name;
 
-  function __construct($field_name, $match_field, $match_field_name = '')
+  function MatchRule($field_name, $match_field, $match_field_name = '')
   {
     $this->match_field = $match_field;
     if (!$match_field_name)
@@ -24,7 +24,7 @@ class MatchRule extends SingleFieldRule
     else
       $this->match_field_name = $match_field_name;
 
-    parent :: __construct($field_name);
+    parent :: SingleFieldRule($field_name);
   }
 
   function validate($dataspace)

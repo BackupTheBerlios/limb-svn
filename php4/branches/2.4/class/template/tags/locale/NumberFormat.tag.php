@@ -21,7 +21,7 @@ class LocaleNumberFormatTag extends ServerComponentTag
 {
   var $field;
 
-  function __construct()
+  function LocaleNumberFormatTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/locale_number_format_component';
   }

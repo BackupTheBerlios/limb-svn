@@ -54,7 +54,7 @@ class Debug
   // The time when the script was started
   var $script_start;
 
-  function __construct()
+  function Debug()
   {
     $this->message_types = array(
       Debug :: LEVEL_NOTICE,
@@ -307,7 +307,8 @@ class Debug
 
     $message = '';
 
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     if(($user_id = $user->getId()) != User :: DEFAULT_USER_ID)
       $message .= "user id:\t"

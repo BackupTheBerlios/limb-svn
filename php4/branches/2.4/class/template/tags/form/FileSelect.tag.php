@@ -21,7 +21,7 @@ registerTag(new FileSelectTagInfo());
 
 class FileSelectTag extends ControlTag
 {
-  function __construct()
+  function FileSelectTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/file_select_component';
   }

@@ -15,9 +15,9 @@ class SizeRangeRule extends SingleFieldRule
   var $min_len;
   var $max_len;
 
-  function __construct($field_name, $min_len, $max_len = null)
+  function SizeRangeRule($field_name, $min_len, $max_len = null)
   {
-    parent :: __construct($field_name);
+    parent :: SingleFieldRule($field_name);
 
     if (is_null($max_len))
     {

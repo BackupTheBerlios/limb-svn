@@ -19,7 +19,7 @@ class ArrayDataset
 
   var $counter = 0;
 
-  function __construct($array = null)
+  function ArrayDataset($array = null)
   {
     if (is_array($array))
     {

@@ -17,12 +17,12 @@ class TreeIdentifierRule extends SingleFieldRule
   var $parent_node_id;
   var $node_id;
 
-  function __construct($field_name, $parent_node_id, $node_id = TreeIdentifierRule :: UNKNOWN_NODE_ID)
+  function TreeIdentifierRule($field_name, $parent_node_id, $node_id = TreeIdentifierRule :: UNKNOWN_NODE_ID)
   {
     $this->node_id = $node_id;
     $this->parent_node_id = $parent_node_id;
 
-    parent :: __construct($field_name);
+    parent :: SingleFieldRule($field_name);
   }
 
   function validate($dataspace)
@@ -30,7 +30,8 @@ class TreeIdentifierRule extends SingleFieldRule
     if(!$value = $dataspace->get($this->field_name))
       return;
 
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
 
     if(!$tree->isNode($this->parent_node_id))
       return;

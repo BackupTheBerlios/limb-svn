@@ -15,9 +15,9 @@ class CachingFileResolver extends FileResolverDecorator
 {
   var $_resolved_paths = array();
 
-  function __construct($resolver)
+  function CachingFileResolver($resolver)
   {
-    parent :: __construct($resolver);
+    parent :: FileResolverDecorator($resolver);
 
     $this->_loadCache();
 

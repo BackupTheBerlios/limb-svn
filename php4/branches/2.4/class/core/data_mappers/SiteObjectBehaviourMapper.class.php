@@ -14,12 +14,13 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
 {
   function findById($id)
   {
-    $table = Limb :: toolkit()->createDBTable('SysBehaviour');
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysBehaviour');
 
     if(!$row = $table->getRowById($id))
       return null;
 
-    $behaviour = Limb :: toolkit()->createBehaviour($row['name']);
+    $behaviour =& $toolkit->createBehaviour($row['name']);
     $behaviour->setId($id);
 
     return $behaviour;
@@ -27,7 +28,8 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
 
   function insert($behaviour)
   {
-    $table = Limb :: toolkit()->createDBTable('SysBehaviour');
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysBehaviour');
 
     $data['name'] = get_class($behaviour);
 
@@ -45,7 +47,8 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
     if(!$id = $behaviour->getId())
       throw new LimbException('id is not set');
 
-    $table = Limb :: toolkit()->createDBTable('SysBehaviour');
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysBehaviour');
 
     $data['name'] = get_class($behaviour);
 
@@ -57,14 +60,16 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
     if(!$id = $behaviour->getId())
       throw new LimbException('id is not set');
 
-    $table = Limb :: toolkit()->createDBTable('SysBehaviour');
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysBehaviour');
 
     $table->deleteById($id);
   }
 
   function getIdsByNames($names)
   {
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $db->sqlSelect('sys_behaviour', 'id', sqlIn('name', $names));
 

@@ -20,7 +20,8 @@ abstract class OneTableObjectsRawFinder extends SiteObjectsRawFinder
     {
       $db_table_name = $this->_defineDbTableName();
 
-      $this->_db_table = Limb :: toolkit()->createDBTable($db_table_name);
+      $toolkit =& Limb :: toolkit();
+      $this->_db_table =& $toolkit->createDBTable($db_table_name);
     }
 
     return $this->_db_table;

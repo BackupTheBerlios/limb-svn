@@ -14,15 +14,17 @@ class DisplayViewCommand implements Command
 {
   function perform()
   {
-    if(!$view = Limb :: toolkit()->getView())
-      throw new LimbException('view is null');
+    $toolkit =& Limb :: toolkit();
 
+    if(!$view =& $toolkit->getView())
+      throw new LimbException('view is null');
 
     ob_start();
 
     $view->display();
 
-    Limb :: toolkit()->getResponse()->write(ob_get_contents());
+    $response =& $toolkit->getResponse();
+    $response->write(ob_get_contents());
 
     if(ob_get_level())
       ob_end_clean();

@@ -12,7 +12,7 @@ class MimeType
 {
   var $mime_types = array();
 
-  function __construct()
+  function MimeType()
   {
     $this->mime_types = array(
         'application/msword' => array(

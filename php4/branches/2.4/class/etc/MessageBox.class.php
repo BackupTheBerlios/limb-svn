@@ -21,7 +21,9 @@ class MessageBox
 
   function messageBox()
   {
-    $this->strings = Limb :: toolkit()->getSession()->get('strings');
+    $toolkit =& Limb :: toolkit();
+    $session =& $toolkit->getSession();
+    $this->strings = $session->get('strings');
   }
 
   function reset()

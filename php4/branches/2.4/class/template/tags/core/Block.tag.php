@@ -19,7 +19,7 @@ registerTag(new CoreBlockTagInfo());
 
 class CoreBlockTag extends ServerComponentTag
 {
-  function __construct()
+  function CoreBlockTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/block_component';
   }

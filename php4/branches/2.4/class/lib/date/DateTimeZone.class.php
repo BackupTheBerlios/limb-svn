@@ -38,7 +38,7 @@ class DateTimeZone
 
   var $default; //System Default Time Zone
 
-  function __construct($id)
+  function DateTimeZone($id)
   {
     global $_DATE_TIMEZONE_DATA;
 

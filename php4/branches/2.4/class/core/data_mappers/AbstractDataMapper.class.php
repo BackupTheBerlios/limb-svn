@@ -22,7 +22,8 @@ abstract class AbstractDataMapper
 
   function findById($id)
   {
-    $result_set = $this->_getFinder()->findById($id);
+    $finder =& $this->_getFinder();
+    $result_set = $finder->findById($id);
 
     if (!$result_set)
       return null;

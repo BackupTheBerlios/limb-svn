@@ -22,7 +22,7 @@ registerTag(new CoreDataspaceTagInfo());
 */
 class CoreDataspaceTag extends ServerComponentTag
 {
-  function __construct()
+  function CoreDataspaceTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/dataspace_component';
   }

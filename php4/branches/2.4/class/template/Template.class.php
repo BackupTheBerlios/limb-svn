@@ -36,7 +36,7 @@ class Template extends Component
   */
   var $render_function;
 
-  function __construct($file, $resolve_path = true)
+  function Template($file, $resolve_path = true)
   {
     $this->file = $file;
 
@@ -52,7 +52,10 @@ class Template extends Component
 
     if (!isset($GLOBALS['template_render'][$this->codefile]))
     {
-      if (Limb :: toolkit()->getINI('common.ini')->getOption('force_compile', 'Templates'))
+      $toolkit =& Limb :: toolkit();
+      $conf =& $toolkit->getINI('common.ini');
+
+      if ($conf->getOption('force_compile', 'Templates'))
       {
         include_once(LIMB_DIR . '/class/template/compiler/template_compiler.inc.php');
         compileTemplateFile($file, $resolve_path);

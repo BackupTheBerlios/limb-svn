@@ -59,23 +59,29 @@ class AuthenticationFilter implements InterceptingFilter
 
   function initializeUser()
   {
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
     if($user->isLoggedIn())
       return;
 
-    $authenticator = Limb :: toolkit()->getAuthenticator();
+    $toolkit =& Limb :: toolkit();
+    $authenticator =& $toolkit->getAuthenticator();
     $authenticator->login(array('login' => '', 'password' => ''));
   }
 
   function getBehaviourByObjectId($object_id)
   {
     $behaviour_name = SiteObject :: findBehaviourNameById($object_id);
-    return Limb :: toolkit()->createBehaviour($behaviour_name);
+    $toolkit =& Limb :: toolkit();
+    return $toolkit->createBehaviour($behaviour_name);
   }
 
   function process404Error($request, $response)
   {
-    if($object_404_path = Limb :: toolkit()->getINI('common.ini')->getOption('404', 'ERROR_DOCUMENTS'))
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('common.ini');
+
+    if($object_404_path = $ini->getOption('404', 'ERROR_DOCUMENTS'))
       $response->redirect($object_404_path);
     else
       $response->header("HTTP/1.1 404 Not found");

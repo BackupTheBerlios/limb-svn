@@ -14,7 +14,8 @@ class IncrementSiteObjectIdentifierGenerator implements SiteObjectIdentifierGene
 {
   function generate($site_object)
   {
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
     $identifier = $tree->getMaxChildIdentifier($site_object->getParentNodeId());
 
     if($identifier === false)

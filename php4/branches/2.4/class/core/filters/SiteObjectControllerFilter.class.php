@@ -16,12 +16,13 @@ class SiteObjectControllerFilter implements InterceptingFilter
   {
     Debug :: addTimingPoint('site object controller filter started');
 
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
 
     $site_object = wrapWithSiteObject($datasource->fetch());
-
-    $site_object->getController()->process($request);
+    $ctrlr =& $site_object->getController();
+    $ctrlr->process($request);
 
     Debug :: addTimingPoint('site object controller filter finished');
 

@@ -120,7 +120,10 @@ class GridActionsTag extends CompilerDirectiveTag
     {
       $action_path = $_SERVER['PHP_SELF'];
 
-      if($node_id = Limb :: toolkit()->getRequest()->getAttribute('node_id'))
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+
+      if($node_id = $request->getAttribute('node_id'))
         $action_path .= '?node_id=' . $node_id;
     }
     else

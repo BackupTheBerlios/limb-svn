@@ -14,14 +14,15 @@ class CreateSiteObjectCommand implements Command
 {
   var $behaviour_name;
 
-  function __construct($behaviour_name)
+  function CreateSiteObjectCommand($behaviour_name)
   {
     $this->behaviour_name = $behaviour_name;
   }
 
   function perform()
   {
-    $object = Limb :: toolkit()->createSiteObject($this->_defineSiteObjectClassName());
+    $toolkit =& Limb :: toolkit();
+    $object =& $toolkit->createSiteObject($this->_defineSiteObjectClassName());
 
     $this->_fillObject($object);
 
@@ -41,12 +42,16 @@ class CreateSiteObjectCommand implements Command
   {
     $object->create();
 
-    Limb :: toolkit()->getDataspace()->set('created_site_object', $object);
+    $toolkit =& Limb :: toolkit();
+    $dataspace =& $toolkit->getDataspace();
+
+    $dataspace->set('created_site_object', $object);
   }
 
   function _fillObject($object)
   {
-    $dataspace = Limb :: toolkit()->getDataspace();
+    $toolkit =& Limb :: toolkit();
+    $dataspace =& $toolkit->getDataspace();
 
     $object->merge($dataspace->export());
 
@@ -61,7 +66,9 @@ class CreateSiteObjectCommand implements Command
 
   function _getBehaviourId()
   {
-    $behaviour = Limb :: toolkit()->createBehaviour($this->behaviour_name);
+    $toolkit =& Limb :: toolkit();
+    $behaviour =& $toolkit->createBehaviour($this->behaviour_name);
+
     return $behaviour->getId();
   }
 

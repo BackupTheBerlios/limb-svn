@@ -28,7 +28,8 @@ class TreeIdentifierRuleTest extends SingleFieldRuleTest
 
     $this->db =& DbFactory :: instance();
 
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
 
     $values['identifier'] = 'root';
     $this->node_id_root = $tree->createRootNode($values, false, true);

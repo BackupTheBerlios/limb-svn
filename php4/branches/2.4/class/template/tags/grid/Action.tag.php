@@ -46,7 +46,8 @@ class GridActionTag extends CompilerDirectiveTag
 
     if(isset($this->attributes['shortcut']))
     {
-      $conf = Limb :: toolkit()->getINI('grid_actions.ini');
+      $toolkit =& Limb :: toolkit();
+      $conf =& $toolkit->getINI('grid_actions.ini');
       $action['action'] = $conf->getOption($this->attributes['shortcut'], 'action');
       $action['path'] = $conf->getOption($this->attributes['shortcut'],  'path');
     }

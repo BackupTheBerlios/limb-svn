@@ -136,7 +136,8 @@ class OptionsFormElement extends ContainerFormElement
   function _setOptionsFromIniFile()
   {
     $ini_file = $this->getAttribute('options_ini_file');
-    $conf = Limb :: toolkit()->getINI($ini_file . '.ini');
+    $toolkit =& Limb :: toolkit();
+    $conf =& $toolkit->getINI($ini_file . '.ini');
     $this->setChoices($conf->getOption('options', 'constants'));
 
     if (!$this->getDefaultValue())
@@ -171,9 +172,10 @@ class OptionsFormElement extends ContainerFormElement
     $this->setDefaultValue($datasource->getDefaultOption());
   }
 
-  function _getDatasource()
+  function &_getDatasource()
   {
-    return Limb :: toolkit()->getDatasource($this->getAttribute('options_datasource'));
+    $toolkit =& Limb :: toolkit();
+    return $toolkit->getDatasource($this->getAttribute('options_datasource'));
   }
 }
 

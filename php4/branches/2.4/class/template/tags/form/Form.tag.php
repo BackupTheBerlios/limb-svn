@@ -22,7 +22,7 @@ registerTag(new FormTagInfo());
 */
 class FormTag extends ServerTagComponentTag
 {
-  function __construct()
+  function FormTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/form_component';
   }
@@ -92,7 +92,8 @@ class FormTag extends ServerTagComponentTag
 
     $v = '$' . $code->getTempVariable();
 
-    $code->writePhp("if({$v} = Limb :: toolkit()->getRequest()->get('node_id')){");
+    $code->writePhp("\$toolkit =& Limb :: toolkit();\$request =& \$toolkit->getRequest();");
+    $code->writePhp("if({$v} = \$request->get('node_id')){");
     $code->writePhp("echo \"<input type='hidden' name='node_id' value='{$v}'>\";}");
   }
 

@@ -16,7 +16,9 @@ class SessionStartupFilter implements InterceptingFilter
   {
     Debug :: addTimingPoint('session startup filter started');
 
-    Limb :: toolkit()->getSession()->start();
+    $toolkit =& Limb :: toolkit();
+    $session =& $toolkit->getSession();
+    $session->start();
 
     Debug :: addTimingPoint('session startup filter finished');
 

@@ -50,7 +50,7 @@ class SourceFileParser
   */
   var $variable_reference_pattern;
 
-  function __construct($sourcefile, $tag_dictionary)
+  function SourceFileParser($sourcefile, $tag_dictionary)
   {
     $this->source_file = $sourcefile;
     $this->tag_dictionary = $tag_dictionary;

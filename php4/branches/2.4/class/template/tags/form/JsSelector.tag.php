@@ -21,7 +21,7 @@ registerTag(new JsSelectorTagInfo());
 
 class JsSelectorTag extends ControlTag
 {
-  function __construct()
+  function JsSelectorTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/js_checkbox_component';
   }

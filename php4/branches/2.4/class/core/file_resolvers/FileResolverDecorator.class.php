@@ -14,7 +14,7 @@ class FileResolverDecorator implements FileResolver
 {
   var $_resolver = null;
 
-  function __construct($resolver)
+  function FileResolverDecorator($resolver)
   {
     resolveHandle($resolver);
 

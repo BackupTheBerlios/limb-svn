@@ -21,7 +21,7 @@ registerTag(new ImageSelectTagInfo());
 
 class ImageSelectTag extends ControlTag
 {
-  function __construct()
+  function ImageSelectTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/image_select_component';
   }

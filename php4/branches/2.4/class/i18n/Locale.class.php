@@ -543,7 +543,9 @@ class Locale
 
   function getAvailableLocalesData()
   {
-    $available_locales = Limb :: toolkit()->getINI('common.ini')->getOption('codes', 'Locales');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('common.ini');
+    $available_locales = $ini->getOption('codes', 'Locales');
 
     $locales_data = array();
 
@@ -558,7 +560,9 @@ class Locale
 
   function isValidLocaleId($locale_id)
   {
-    if(!$available_locales = Limb :: toolkit()->getINI('common.ini')->getOption('codes', 'Locales'))
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('common.ini');
+    if(!$available_locales = $ini->getOption('codes', 'Locales'))
       return false;
 
     return in_array($locale_id, $available_locales);

@@ -22,7 +22,7 @@ registerTag(new CorePlaceHolderTagInfo());
 */
 class CorePlaceHolderTag extends ServerComponentTag
 {
-  function __construct()
+  function CorePlaceHolderTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/placeholder_component';
   }

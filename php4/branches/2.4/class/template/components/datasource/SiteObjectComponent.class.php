@@ -14,15 +14,17 @@ class SiteObjectComponent extends Component
 {
   function fetchByPath($path)
   {
-    $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SingleObjectDatasource');
     $datasource->setPath($path);
     $this->import($datasource->fetch());
   }
 
   function fetchRequested()
   {
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
+    $request =& $toolkit->getRequest();
     $datasource->setRequest($request);
     $this->import($datasource->fetch());
   }

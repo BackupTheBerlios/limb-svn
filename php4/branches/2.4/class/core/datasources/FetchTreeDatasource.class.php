@@ -15,7 +15,8 @@ class FetchTreeDatasource extends FetchSubBranchDatasource
 {
   function fetch()
   {
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $tree->getTree();
 
     if(isset($params['order']))
     {

@@ -19,7 +19,7 @@ registerTag(new DatasourceTagInfo());
 
 class DatasourceTag extends ServerComponentTag
 {
-  function __construct()
+  function DatasourceTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/datasource_component';
   }

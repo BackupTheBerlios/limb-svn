@@ -14,7 +14,7 @@ class UseViewCommand implements Command
 {
   var $template_path;
 
-  function __construct($template_path)
+  function UseViewCommand($template_path)
   {
     $this->template_path = $template_path;
   }
@@ -23,7 +23,8 @@ class UseViewCommand implements Command
   {
     $handle = array(LIMB_DIR . '/class/template/template', $this->template_path);
 
-    Limb :: toolkit()->setView($handle);
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setView($handle);
 
     return Limb :: getSTATUS_OK();
   }

@@ -21,7 +21,7 @@ registerTag(new DateTagInfo());
 
 class DateTag extends ControlTag
 {
-  function __construct()
+  function DateTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/date_component';
   }

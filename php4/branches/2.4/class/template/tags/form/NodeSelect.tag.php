@@ -21,7 +21,7 @@ registerTag(new NodeSelectTagInfo());
 
 class NodeSelectTag extends ControlTag
 {
-  function __construct()
+  function NodeSelectTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/node_select_component';
   }

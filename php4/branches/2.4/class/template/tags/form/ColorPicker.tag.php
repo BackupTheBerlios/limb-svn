@@ -21,7 +21,7 @@ registerTag(new ColorPickerTagInfo());
 
 class ColorPickerTag extends ControlTag
 {
-  function __construct()
+  function ColorPickerTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/color_picker_component';
   }

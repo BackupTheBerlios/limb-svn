@@ -21,7 +21,7 @@ registerTag(new SysParamTagInfo());
 
 class SysParamTag extends ServerComponentTag
 {
-  function __construct()
+  function SysParamTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/sys_param_component';
   }

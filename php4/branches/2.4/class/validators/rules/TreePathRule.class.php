@@ -16,7 +16,10 @@ class TreePathRule extends SingleFieldRule
   {
     $value = $dataspace->get($this->field_name);
 
-    if(!Limb :: toolkit()->getTree()->getNodeByPath($value))
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
+
+    if(!$tree->getNodeByPath($value))
       $this->error(Strings :: get('error_invalid_tree_path', 'error'));
   }
 }

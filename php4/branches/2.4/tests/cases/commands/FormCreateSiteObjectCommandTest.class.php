@@ -50,7 +50,7 @@ class FormCreateSiteObjectCommandTest extends LimbTestCase
     Limb :: registerToolkit($this->toolkit);
 
     $this->command = new FormCreateSiteObjectCommandTestVersion($this);
-    $this->command->__construct('test_form');
+    $this->command->FormCreateSiteObjectCommand('test_form');
 
     $this->command->setReturnValue('_isFirstTime', false);
     $this->command->setReturnValue('_getValidator', $this->validator);

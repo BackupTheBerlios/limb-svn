@@ -39,7 +39,8 @@ class PackagesInfo
   {
     include_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
-    $ini = Limb :: toolkit()->getINI('packages.ini');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('packages.ini');
     $this->_packages = array();
 
     $groups = $ini->getAll();

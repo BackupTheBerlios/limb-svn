@@ -33,9 +33,10 @@ class MaterializedPathTree implements Tree
 
   var $_dumb_mode = false;
 
-  function __construct()
+  function MaterializedPathTree()
   {
-    $this->_db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->_db =& $toolkit->getDB();
   }
 
   function setDumbMode($status=true)

@@ -21,7 +21,7 @@ registerTag(new FetchSubBranchTagInfo());
 
 class FetchSubBranchTag extends DatasourceTag
 {
-  function __construct()
+  function FetchSubBranchTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/fetch_sub_branch_datasource_component';
   }

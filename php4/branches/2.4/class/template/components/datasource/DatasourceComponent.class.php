@@ -29,7 +29,8 @@ class DatasourceComponent extends Component
     if ($this->datasource)
       return $this->datasource;
 
-    $this->datasource = Limb :: toolkit()->getDatasource($this->datasource_path);
+    $toolkit =& Limb :: toolkit();
+    $this->datasource =& $toolkit->getDatasource($this->datasource_path);
 
     foreach($this->parameters as $key => $value)
     {
@@ -58,7 +59,8 @@ class DatasourceComponent extends Component
 
   function getDataset()
   {
-    if ($result = $this->_getDatasource()->fetch())
+    $ds =& $this->_getDatasource();
+    if ($result = $ds->fetch())
       return new ArrayDataset($result);
     else
       return new EmptyDataset();
@@ -135,7 +137,8 @@ class DatasourceComponent extends Component
 
     $navigator_id = 'page_' . $navigator->getServerId();
 
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
     if ($request->hasAttribute($navigator_id))
     {
@@ -143,7 +146,8 @@ class DatasourceComponent extends Component
       $this->setParameter('offset', $offset);
     }
 
-    $navigator->setTotalItems($this->_getDatasource()->countTotal());
+    $ds =& $this->_getDatasource();
+    $navigator->setTotalItems($ds->countTotal());
   }
 
   function setupTargets($targets)

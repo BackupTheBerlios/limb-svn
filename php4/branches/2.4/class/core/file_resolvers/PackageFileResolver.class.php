@@ -15,7 +15,7 @@ class PackageFileResolver implements FileResolver
 {
   var $_packages_info = null;
 
-  function __construct()
+  function PackageFileResolver()
   {
     $this->_packages_info = PackagesInfo :: instance();
   }

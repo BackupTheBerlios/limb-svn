@@ -21,7 +21,7 @@ registerTag(new RicheditTagInfo());
 
 class RicheditTag extends ControlTag
 {
-  function __construct()
+  function RicheditTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/richedit_component';
   }

@@ -40,7 +40,7 @@ class Codewriter
   var $include_list = array();
   var $temp_var_name = 1;
 
-  function __construct()
+  function Codewriter()
   {
     $this->mode = Codewriter :: CODE_WRITER_MODE_HTML;
   }

@@ -14,14 +14,15 @@ class OutputcacheComponent extends Component
 {
   var $cache_manager = null;
 
-  function __construct()
+  function OutputcacheComponent()
   {
     $this->cache_manager = new PartialPageCacheManager();
   }
 
   function prepare()
   {
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
     $this->cache_manager->setUri($request->getUri());
     $this->cache_manager->setServerId($this->getServerId());
   }

@@ -14,12 +14,13 @@ class ClosePopupNoParentReloadCommand implements Command
 {
   function perform()
   {
-    $toolkit = Limb :: toolkit();
-    $request = $toolkit->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $response =& $toolkit->getResponse();
 
     // maybe we should use some kind of template here instead of close_popup_no_parent_reload_response()
     if($request->hasAttribute('popup'))
-      $toolkit->getResponse()->write(closePopupNoParentReloadResponse();
+      $response->write(closePopupNoParentReloadResponse();
 
     return Limb :: getSTATUS_OK();
   }

@@ -14,7 +14,8 @@ class EditSiteObjectCommand implements Command
 {
   function perform()
   {
-    $object = Limb :: toolkit()->createSiteObject($this->_defineSiteObjectClassName());
+    $toolkit =& Limb :: toolkit();
+    $object =& $toolkit->createSiteObject($this->_defineSiteObjectClassName());
 
     $this->_fillObject($object);
 
@@ -37,7 +38,8 @@ class EditSiteObjectCommand implements Command
 
   function _fillObject($object)
   {
-    $dataspace = Limb :: toolkit()->getDataspace();
+    $toolkit =& Limb :: toolkit();
+    $dataspace =& $toolkit->getDataspace();
 
     $object->import($this->_loadObjectData());
 

@@ -18,10 +18,6 @@ Mock :: generate('Response');
 
 class TemplateStub extends Template
 {
-  function __construct()
-  {
-  }
-
   function display()
   {
     echo 'test template';

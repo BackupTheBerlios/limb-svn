@@ -12,7 +12,7 @@ class Object
 {
   var $dataspace;
 
-  function __construct()
+  function Object()
   {
     $this->dataspace = $this->_createDataspace();
   }

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
 
 class DbNull extends DbModule
 {
-  function __construct()
+  function DbNull()
   {
     $this->_db_connection = -1;
     $this->_sql_result = null;

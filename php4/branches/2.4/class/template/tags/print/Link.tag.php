@@ -23,7 +23,9 @@ class PrintLinkTag extends CompilerDirectiveTag
   {
     $mapped = '$' . $code->getTempVariable();
 
-    $code->writePhp("{$mapped} = Limb :: toolkit()->getFetcher()->fetchRequestedObject(Limb :: toolkit()->getRequest());");
+    $code->writePhp("\$toolkit =& Limb :: toolkit();
+                    \$fetcher =& \$toolkit->getFetcher();
+                    {$mapped} = \$fetcher->fetchRequestedObject(\$toolkit->getRequest());");
 
     $code->writePhp("if(isset({$mapped}['actions']) && array_key_exists('print_version', {$mapped}['actions'])){");
 

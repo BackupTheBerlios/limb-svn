@@ -21,7 +21,7 @@ registerTag(new ActionButtonTagInfo());
 
 class ActionButtonTag extends ButtonTag
 {
-  function __construct()
+  function ActionButtonTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
   }

@@ -26,7 +26,8 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
     {
       $db_table_name = $this->_defineDbTableName();
 
-      $this->_db_table = Limb :: toolkit()->createDBTable($db_table_name);
+      $toolkit =& Limb :: toolkit();
+      $this->_db_table =& $toolkit->createDBTable($db_table_name);
     }
 
     return $this->_db_table;
@@ -81,7 +82,8 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
     $data['object_id'] = $site_object->getId();
     unset($data['id']);
 
-    $this->getDbTable()->insert($data);
+    $table =& $this->getDbTable();
+    $table->insert($data);
   }
 
   function _updateLinkedTableRecord($site_object)
@@ -89,7 +91,8 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
     $data = $site_object->export();
     unset($data['id']);
 
-    $this->getDbTable()->update($data, array('object_id' => $site_object->getId()));
+    $table =& $this->getDbTable();
+    $table->update($data, array('object_id' => $site_object->getId()));
   }
 
   function _deleteLinkedTableRecord($site_object)

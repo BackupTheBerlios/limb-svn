@@ -24,7 +24,7 @@ class Date
   var $second = 0;
   var $tz = 0;
 
-  function __construct ($date=null, $format=DATE_SHORT_FORMAT_ISO)
+  function Date($date=null, $format=DATE_SHORT_FORMAT_ISO)
   {
     $this->tz = DateTimeZone::getDefault();
 

@@ -21,7 +21,7 @@ registerTag(new GridInputTagInfo());
 
 class GridInputTag extends ControlTag
 {
-  function __construct()
+  function GridInputTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_input_component';
   }

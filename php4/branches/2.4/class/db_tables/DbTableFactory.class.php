@@ -21,8 +21,6 @@ class DbTableFactory
 {
   var $_tables;
 
-  function __construct(){}
-
   function create($db_table_name)
   {
     if(isset(DbTableFactory :: $_tables[$db_table_name]))

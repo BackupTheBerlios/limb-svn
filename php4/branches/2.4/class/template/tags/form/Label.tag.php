@@ -22,7 +22,7 @@ registerTag(new LabelTagInfo());
 */
 class LabelTag extends ServerTagComponentTag
 {
-  function __construct()
+  function LabelTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/label_component';
   }

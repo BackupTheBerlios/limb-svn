@@ -23,14 +23,15 @@ class DbTable
 
   var $_db = null;
 
-  function __construct()
+  function DbTable()
   {
     $this->_db_table_name = $this->_defineDbTableName();
     $this->_columns = $this->_defineColumns();
     $this->_constraints = $this->_defineConstraints();
     $this->_primary_key_name = $this->_definePrimaryKeyName();
 
-    $this->_db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->_db =& $toolkit->getDB();
   }
 
   function _defineDbTableName()
@@ -205,7 +206,8 @@ class DbTable
 
         $class_name = $this->_mapTableNameToClass($table_name);
 
-        $db_table = Limb :: toolkit()->createDBTable($class_name);
+        $toolkit =& Limb :: toolkit();
+        $db_table =& $toolkit->createDBTable($class_name);
 
         if(!$db_table->hasColumn($column_name))
         {

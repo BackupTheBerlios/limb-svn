@@ -19,7 +19,7 @@ registerTag(new FormErrorsTagInfo());
 
 class FormErrorsTag extends ServerComponentTag
 {
-  function __construct()
+  function FormErrorsTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
   }

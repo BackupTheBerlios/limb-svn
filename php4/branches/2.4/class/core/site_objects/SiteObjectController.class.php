@@ -16,12 +16,12 @@ class SiteObjectController
 {
   var $behaviour;
 
-  function __construct($behaviour)
+  function SiteObjectController(&$behaviour)
   {
-    $this->behaviour = $behaviour;
+    $this->behaviour =& $behaviour;
   }
 
-  function getBehaviour()
+  function & getBehaviour()
   {
     return $this->behaviour;
   }

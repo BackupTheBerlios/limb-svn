@@ -13,11 +13,11 @@
 * Server component tags have a corresponding server component which represents
 * an API which can be used to manipulate the marked up portion of the template.
 */
-abstract class ServerComponentTag extends CompilerComponent
+class ServerComponentTag extends CompilerComponent
 {
   var $runtime_component_path = '';
 
-  function __construct()
+  function ServerComponentTag()
   {
     $this->runtime_component_path = LIMB_DIR . '/class/template/component';//???
   }

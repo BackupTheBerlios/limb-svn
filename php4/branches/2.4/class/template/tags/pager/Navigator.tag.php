@@ -22,7 +22,7 @@ registerTag(new PagerNavigatorTagInfo());
 */
 class PagerNavigatorTag extends ServerComponentTag
 {
-  function __construct()
+  function PagerNavigatorTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/pager_component';
   }

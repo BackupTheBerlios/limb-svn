@@ -17,7 +17,7 @@ class TemplateHighlightHandler
   var $template_path_history = array();
   var $tag_dictionary = null;
 
-  function __construct($tag_dictionary)
+  function TemplateHighlightHandler($tag_dictionary)
   {
     $this->tag_dictionary = $tag_dictionary;
   }

@@ -21,11 +21,11 @@ class GdLibraryTest extends ImageLibraryTest
   var $cutted_size3 = 1243;
   var $cutted_size4 = 1931;
 
-  function __construct()
+  function GdLibraryTest()
   {
     $this->library = new ImageGd();
 
-    parent :: __construct();
+    parent :: ImageLibraryTest();
   }
 }
 ?>

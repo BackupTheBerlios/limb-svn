@@ -16,7 +16,7 @@ class LocaleDateRule extends SingleFieldRule
 {
   var $locale_id = '';
 
-  function __construct($fieldname, $locale_id = '')
+  function LocaleDateRule($fieldname, $locale_id = '')
   {
     if (!$locale_id &&  !defined('CONTENT_LOCALE_ID'))
       $this->locale_id = DEFAULT_CONTENT_LOCALE_ID;
@@ -25,13 +25,14 @@ class LocaleDateRule extends SingleFieldRule
     else
       $this->locale_id = $locale_id;
 
-    parent :: __construct($fieldname);
+    parent :: SingleFieldRule($fieldname);
   }
 
   function check($value)
   {
     $date = new Date();
-    $locale = Limb :: toolkit()->getLocale($this->locale_id);
+    $toolkit =& Limb :: toolkit();
+    $locale =& $toolkit->getLocale($this->locale_id);
 
     $date->setByLocaleString($locale, $value, $locale->getShortDateFormat());
 

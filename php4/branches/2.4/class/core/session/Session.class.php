@@ -14,9 +14,9 @@ class Session implements SessionDriver
 {
   var $driver;
 
-  function __construct($driver)
+  function Session(&$driver)
   {
-    $this->driver = $driver;
+    $this->driver =& $driver;
   }
 
   function start()

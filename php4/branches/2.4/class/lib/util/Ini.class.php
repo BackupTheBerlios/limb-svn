@@ -26,7 +26,7 @@ class Ini
 
   var $charset = 'utf8';
 
-  function __construct($file_path, $use_cache = null)
+  function Ini($file_path, $use_cache = null)
   {
     if ($use_cache === null)
       $use_cache = $this->isCacheEnabled();

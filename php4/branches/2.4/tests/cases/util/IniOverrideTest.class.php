@@ -92,7 +92,7 @@ class IniOverrideTest extends LimbTestCase
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_saveCache');
 
-    $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
+    $ini_mock->Ini(VAR_DIR . 'testing2.ini', true);
 
     $ini_mock->tally();
 
@@ -120,7 +120,7 @@ class IniOverrideTest extends LimbTestCase
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_saveCache');
 
-    $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
+    $ini_mock->Ini(VAR_DIR . 'testing2.ini', true);
 
     $ini_mock->tally();
 
@@ -150,7 +150,7 @@ class IniOverrideTest extends LimbTestCase
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_saveCache');
 
-    $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
+    $ini_mock->Ini(VAR_DIR . 'testing2.ini', true);
 
     $ini_mock->tally();
 
@@ -178,7 +178,7 @@ class IniOverrideTest extends LimbTestCase
     $ini_mock->expectNever('_parse');
     $ini_mock->expectNever('_saveCache');
 
-    $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
+    $ini_mock->Ini(VAR_DIR . 'testing2.ini', true);
 
     $ini_mock->tally();
 

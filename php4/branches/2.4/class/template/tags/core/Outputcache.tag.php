@@ -19,7 +19,7 @@ registerTag(new CoreOutputcacheTagInfo());
 
 class CoreOutputcacheTag extends ServerComponentTag
 {
-  function __construct()
+  function CoreOutputcacheTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/outputcache_component';
   }

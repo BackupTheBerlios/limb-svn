@@ -14,9 +14,12 @@ class TreeNodeIdRule extends SingleFieldRule
 {
   function check($value)
   {
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
+
     if(empty($value))
       $this->error(Strings :: get('error_invalid_tree_node_id', 'error'));
-    elseif(!Limb :: toolkit()->getTree()->getNode((int)$value))
+    elseif(!$tree->getNode((int)$value))
       $this->error(Strings :: get('error_invalid_tree_node_id', 'error'));
   }
 }

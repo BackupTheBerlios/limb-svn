@@ -27,8 +27,11 @@ class NodeSelectComponent extends InputFormElement
     $id = $this->getAttribute('id');
     $md5id = substr(md5($id), 0, 5);
 
+    $toolkit =& Limb :: toolkit();
+    $fetcher =& $toolkit->getFetcher();
+
     if($node_id = $this->getValue())
-      $object_data = Limb :: toolkit()->getFetcher()->fetchOneByNodeId($node_id);
+      $object_data = $fetcher->fetchOneByNodeId($node_id);
     else
       $object_data = false;
 
@@ -66,7 +69,10 @@ class NodeSelectComponent extends InputFormElement
     $only_parents_condition = "";
     $start_path = $this->getAttribute('start_path');
     if(!$start_path)
-      $start_path = Limb :: toolkit()->getSession()->get('limb_node_select_working_path');
+    {
+      $session =& $toolkit->getSession();
+      $start_path = $session->get('limb_node_select_working_path');
+    }
     if(!$start_path)
       $start_path = '/root';
 

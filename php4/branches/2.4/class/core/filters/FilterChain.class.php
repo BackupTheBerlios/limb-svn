@@ -17,10 +17,10 @@ class FilterChain
   var $request;
   var $response;
 
-  function __construct($request, $response)
+  function FilterChain($request, $response)
   {
-    $this->request = $request;
-    $this->response = $response;
+    $this->request =& $request;
+    $this->response =& $response;
   }
 
   function registerFilter($filter)

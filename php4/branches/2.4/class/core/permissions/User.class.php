@@ -19,12 +19,12 @@ class User extends Object
   var $_is_logged_in = false;
   var $__session_class_path;
 
-  function __construct()
+  function User()
   {
     //important!!!
     $this->__session_class_path = addslashes(__FILE__);
 
-    parent :: __construct();
+    parent :: Object();
   }
 
   function & instance()

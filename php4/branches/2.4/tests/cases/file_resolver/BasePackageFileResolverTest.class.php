@@ -23,7 +23,8 @@ class BasePackageFileResolverTest extends LimbTestCase
 
   function setUp()
   {
-    Limb :: toolkit()->flushINICache();
+    $toolkit =& Limb :: toolkit();
+    $toolkit->flushINICache();
     $inst =& PackagesInfo :: instance();
     $inst->reset();
 

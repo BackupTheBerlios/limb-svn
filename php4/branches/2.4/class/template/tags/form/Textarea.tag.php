@@ -21,7 +21,7 @@ registerTag(new TextAreaTagInfo());
 
 class TextAreaTag extends ControlTag
 {
-  function __construct()
+  function TextAreaTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/text_area_component';
   }

@@ -56,7 +56,7 @@ class ImageNetpbm extends ImageLibrary
   var $current_output_file = '';
   var $current_output_file_type = '';
 
-  function __construct($lib_dir = NETPBM_LIB_DIR)
+  function ImageNetpbm($lib_dir = NETPBM_LIB_DIR)
   {
     $this->lib_dir = $lib_dir;
 

@@ -106,8 +106,9 @@ class LimbApplication
 
     $this->_loadPackages();
 
-    $request = Limb :: toolkit()->getRequest();
-    $response = Limb :: toolkit()->getResponse();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $response =& $toolkit->getResponse();
 
     $filter_chain = new FilterChain($request, $response);
 

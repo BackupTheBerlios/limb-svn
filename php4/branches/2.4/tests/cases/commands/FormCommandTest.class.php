@@ -65,7 +65,7 @@ class FormCommandTest extends LimbTestCase
 
   function testFormDisplayedStatus()
   {
-    $this->form_command->__construct('test_form');
+    $this->form_command->FormCommand('test_form');
 
     $this->request->expectOnce('get');
     $this->request->setReturnValue('get', array('submitted' => 0), array('testForm'));
@@ -78,7 +78,7 @@ class FormCommandTest extends LimbTestCase
 
   function testValidationSucceedOnSubmit()
   {
-    $this->form_command->__construct('test_form');
+    $this->form_command->FormCommand('test_form');
 
     $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('testForm'));
 
@@ -96,7 +96,7 @@ class FormCommandTest extends LimbTestCase
 
   function testValidationFailedOnSubmit()
   {
-    $this->form_command->__construct('test_form');
+    $this->form_command->FormCommand('test_form');
 
     $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('testForm'));
 

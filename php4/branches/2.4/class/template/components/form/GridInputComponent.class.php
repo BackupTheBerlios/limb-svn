@@ -16,7 +16,8 @@ class GridInputComponent extends InputFormElement
 
   function getValue()
   {
-    return $this->findParentByClass('list_component')->get($this->attributes['name']);
+    $cmp =& $this->findParentByClass('list_component');
+    return $cmp->get($this->attributes['name']);
   }
 
   function setValue($value)

@@ -97,7 +97,8 @@ class FullPageCacheManager
 
     ksort($cache_query_items);
 
-    $this->id = 'f_' . md5($this->request->getUri()->getPath() . serialize($cache_query_items));
+    $uri =& $this->request->getUri();
+    $this->id = 'f_' . md5($uri->getPath() . serialize($cache_query_items));
 
     return $this->id;
   }
@@ -110,7 +111,8 @@ class FullPageCacheManager
     $query_items = $this->request->export();
     $query_keys = array_keys($query_items);
 
-    $uri_path = $this->request->getUri()->getPath();
+    $uri =& $this->request->getUri();
+    $uri_path = $uri->getPath();
 
     $rules = $this->getRules();
 
@@ -151,7 +153,8 @@ class FullPageCacheManager
 
   function _isUserInGroups($groups)
   {
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     foreach	($user->get('groups', array()) as $group_name)
       if (in_array($group_name, $groups))
@@ -216,7 +219,9 @@ class FullPageCacheManager
   {
     $this->rules = array();
 
-    $groups = Limb :: toolkit()->getINI('full_page_cache.ini')->getAll();
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('full_page_cache.ini');
+    $groups = $ini->getAll();
 
     foreach($groups as $group => $data)
     {

@@ -21,7 +21,7 @@ registerTag(new GridSelectorTagInfo());
 
 class GridSelectorTag extends ControlTag
 {
-  function __construct()
+  function GridSelectorTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_checkbox_component';
   }

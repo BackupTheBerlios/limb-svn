@@ -21,7 +21,7 @@ registerTag(new LocaleDateFormatTagInfo());
 
 class LocaleDateFormatTag extends ServerComponentTag
 {
-  function __construct()
+  function LocaleDateFormatTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/locale_date_format_component';
   }

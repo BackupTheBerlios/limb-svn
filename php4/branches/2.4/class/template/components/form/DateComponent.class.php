@@ -110,7 +110,8 @@ class DateComponent extends InputFormElement
     if($form->isFirstTime())
     {
       $date = new Date($value);
-      $locale = Limb :: toolkit()->getLocale();
+      $toolkit =& Limb :: toolkit();
+      $locale =& $toolkit->getLocale();
 
       $value = $date->format($locale, $locale->getShortDateFormat());
     }

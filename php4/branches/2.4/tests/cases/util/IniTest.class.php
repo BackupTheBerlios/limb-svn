@@ -424,7 +424,7 @@ class IniTest extends LimbTestCase
     $ini_mock->expectNever('_parse');
     $ini_mock->expectNever('_saveCache');
 
-    $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
+    $ini_mock->Ini(VAR_DIR . 'testing.ini', true);
 
     $ini_mock->tally();
 
@@ -449,7 +449,7 @@ class IniTest extends LimbTestCase
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_saveCache');
 
-    $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
+    $ini_mock->Ini(VAR_DIR . 'testing.ini', true);
 
     $ini_mock->tally();
 
@@ -473,7 +473,7 @@ class IniTest extends LimbTestCase
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_saveCache');
 
-    $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
+    $ini_mock->Ini(VAR_DIR . 'testing.ini', true);
 
     $ini_mock->tally();
 
@@ -491,7 +491,7 @@ class IniTest extends LimbTestCase
     $ini->expectOnce('_parse');
     $ini->expectOnce('_saveCache');
 
-    $ini->__construct(VAR_DIR . 'testing.ini', true);
+    $ini->Ini(VAR_DIR . 'testing.ini', true);
 
     $ini->tally();
 
@@ -510,7 +510,7 @@ class IniTest extends LimbTestCase
     $ini->expectOnce('_parse');
     $ini->expectNever('_saveCache');
 
-    $ini->__construct(VAR_DIR . 'testing.ini', false);
+    $ini->Ini(VAR_DIR . 'testing.ini', false);
 
     $ini->tally();
   }

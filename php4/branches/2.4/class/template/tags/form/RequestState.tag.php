@@ -19,7 +19,7 @@ registerTag(new RequestStateTagInfo());
 
 class RequestStateTag extends ControlTag
 {
-  function __construct()
+  function RequestStateTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/request_state_component';
   }

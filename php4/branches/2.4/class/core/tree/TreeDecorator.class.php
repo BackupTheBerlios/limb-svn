@@ -14,7 +14,7 @@ class TreeDecorator implements Tree
 {
   var $_tree = null;
 
-  function __construct($tree)
+  function TreeDecorator($tree)
   {
     $this->_tree = $tree;
   }

@@ -14,12 +14,13 @@ class ClosePopupCommand implements Command
 {
   function perform()
   {
-    $toolkit = Limb :: toolkit();
-    $request = $toolkit->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $response =& $toolkit->getResponse();
 
     // maybe we should use some kind of template here instead of close_popup_response($request)
     if($request->hasAttribute('popup'))
-      $toolkit->getResponse()->write(closePopupResponse($request));
+      $response->write(closePopupResponse($request));
 
     return Limb :: getSTATUS_OK();
   }

@@ -19,7 +19,7 @@ registerTag(new OrderTagInfo());
 
 class OrderTag extends ServerComponentTag
 {
-  function __construct()
+  function OrderTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/order_component';
   }

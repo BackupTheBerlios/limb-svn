@@ -20,7 +20,7 @@ class HttpCache
   var $cache_time;
   var $cache_type;
 
-  function __construct()
+  function HttpCache()
   {
     $this->reset();
   }

@@ -11,7 +11,8 @@
 
 function registerTestingIni($ini_file, $content)
 {
-  Limb :: toolkit()->flushINIcache($ini_file);
+  $toolkit =& Limb :: toolkit();
+  $toolkit->flushINIcache($ini_file);
 
   if (isset($GLOBALS['testing_ini'][$ini_file]))
     die("Duplicate ini registration not allowed.");
@@ -34,7 +35,8 @@ function clearTestingIni()
     if(file_exists(VAR_DIR . '/' . $ini_file))
     {
       unlink(VAR_DIR . '/' . $ini_file);
-      Limb :: toolkit()->flushINIcache($ini_file);
+      $toolkit =& Limb :: toolkit();
+      $toolkit->flushINIcache($ini_file);
     }
   }
 

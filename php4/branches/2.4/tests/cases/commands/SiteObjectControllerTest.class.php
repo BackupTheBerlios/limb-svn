@@ -81,7 +81,7 @@ class SiteObjectControllerTest extends LimbTestCase
     $this->behaviour = new MockSiteObjectBehaviour($this);
 
     $this->controller = new SiteObjectControllerMock($this);
-    $this->controller->__construct($this->behaviour);
+    $this->controller->SiteObjectController($this->behaviour);
   }
 
   function tearDown()
@@ -128,7 +128,7 @@ class SiteObjectControllerTest extends LimbTestCase
     $behaviour = new SiteObjectBehaviourMock($this);
 
     $controller = new SiteObjectControllerMock($this);
-    $controller->__construct($behaviour);
+    $controller->SiteObjectController($behaviour);
 
     $this->request->setReturnValue('get', 'testAction', array('action'));
 
@@ -150,7 +150,7 @@ class SiteObjectControllerTest extends LimbTestCase
     $behaviour = new SiteObjectBehaviourMock($this);
 
     $controller = new SiteObjectControllerMock($this);
-    $controller->__construct($behaviour);
+    $controller->SiteObjectController($behaviour);
 
     $this->request->setReturnValue('get', 'noSuchAction', array('action'));
 

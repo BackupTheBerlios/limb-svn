@@ -89,7 +89,9 @@ class FormComponent extends TagComponent
     }
     else
     {
-      return Limb :: toolkit()->getRequest()->hasAttribute('submitted');
+      $toolkit =& Limb :: toolkit();
+      $request =& $toolkit->getRequest();
+      return $request->hasAttribute('submitted');
     }
   }
 
@@ -119,7 +121,8 @@ class FormComponent extends TagComponent
     {
       $this->attributes['action'] = $_SERVER['PHP_SELF'];
 
-      $request = Limb :: toolkit()->getRequest();
+      $toolkit =& Limb :: toolkit();
+      $request =& $toolkit->getRequest();
       if($request->hasAttribute('popup'))
         $this->attributes['action'] .= '?popup=1';
     }

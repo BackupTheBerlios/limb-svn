@@ -14,7 +14,8 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
 {
   function findByVersion($id, $version)
   {
-    $raw_data = $this->_getFinder()->findByVersion($id, $version);
+    $finder =& $this->_getFinder();
+    $raw_data = $finder->findByVersion($id, $version);
 
     if(!$raw_data)
       return null;
@@ -28,10 +29,12 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
 
   function trimVersions($object_id, $version)
   {
-    $this->getDbTable()->delete('object_id = ' . $object_id .
+    $table =& $this->getDbTable();
+    $table->delete('object_id = ' . $object_id .
                                   ' AND version <> ' . $version);
 
-    $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
+    $toolkit =& Limb :: toolkit();
+    $version_db_table =& $toolkit->createDBTable('SysObjectVersion');
     $version_db_table->delete('object_id = ' . $object_id .
                               ' AND version <> ' . $version);
   }
@@ -53,12 +56,13 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
 
   function _insertVersionRecord($site_object)
   {
-    $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
+    $toolkit =& Limb :: toolkit();
+    $version_db_table =& $toolkit->createDBTable('SysObjectVersion');
 
     $site_object->setCreatedDate(time());
     $site_object->setModifiedDate(time());
 
-    $user = Limb :: toolkit()->getUser();
+    $user =& $toolkit->getUser();
     $site_object->setCreatorId($user->getId());
 
     $data['object_id'] = $site_object->getId();
@@ -73,7 +77,8 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
 
   function _updateVersionRecord($site_object)
   {
-    $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
+    $toolkit =& Limb :: toolkit();
+    $version_db_table =& $toolkit->createDBTable('SysObjectVersion');
 
     $site_object->setModifiedDate(time());
 
@@ -122,7 +127,8 @@ abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
 
   function _deleteVersionRecords($site_object)
   {
-    $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
+    $toolkit =& Limb :: toolkit();
+    $version_db_table =& $toolkit->createDBTable('SysObjectVersion');
     $version_db_table->delete(array('object_id' => $site_object->getId()));
   }
 }

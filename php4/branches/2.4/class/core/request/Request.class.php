@@ -15,9 +15,9 @@ class Request extends Object
   var $status;
   var $uri;
 
-  function __construct()
+  function Request()
   {
-    parent :: __construct();
+    parent :: Object();
 
     global $HTTP_POST_VARS, $HTTP_GET_VARS;
 

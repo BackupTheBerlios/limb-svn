@@ -16,7 +16,7 @@ class SingleObjectDatasource extends SiteObjectsDatasource
   var $node_id;
   var $object_id;
 
-  function __construct()
+  function SingleObjectDatasource()
   {
     $this->reset();
   }
@@ -61,7 +61,9 @@ class SingleObjectDatasource extends SiteObjectsDatasource
 
   function _getObjectIdByNodeId()
   {
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $tree->getTree();
+
     $node = $tree->getNode($this->node_id);
     if (!$node)
       return null;
@@ -71,7 +73,9 @@ class SingleObjectDatasource extends SiteObjectsDatasource
 
   function _getObjectIdByPath()
   {
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $tree->getTree();
+
     $node = $tree->getNodeByPath($this->path);
     if (!$node)
       return null;

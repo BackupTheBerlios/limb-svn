@@ -14,7 +14,8 @@ class GridCheckboxComponent extends InputCheckboxComponent
 {
   function getValue()
   {
-    return $this->findParentByClass('list_component')->getByIndexString($this->_makeIndexName($this->attributes['name']));
+    $cmp =& $this->findParentByClass('list_component');
+    return $cmp->getByIndexString($this->_makeIndexName($this->attributes['name']));
   }
 
   function setValue($value)

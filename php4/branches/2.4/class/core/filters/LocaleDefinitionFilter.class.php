@@ -14,13 +14,14 @@ class LocaleDefinitionFilter implements InterceptingFilter
 {
   function run($filter_chain, $request, $response)
   {
-    $toolkit = Limb :: toolkit();
+    $toolkit =& Limb :: toolkit();
+    $locale =& $toolkit->getLocale();
 
     Debug :: addTimingPoint('locale filter started');
 
-    $toolkit->getLocale()->setlocale();
+    $locale->setlocale();
 
-    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
 
     if(!$node = $datasource->mapRequestToNode($request))
     {
@@ -36,7 +37,8 @@ class LocaleDefinitionFilter implements InterceptingFilter
     else
       $toolkit->define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
 
-    if($user_locale_id = $toolkit->getUser()->get('locale_id'))
+    $user =& $toolkit->getUser();
+    if($user_locale_id = $user->get('locale_id'))
       $toolkit->define('MANAGEMENT_LOCALE_ID', $user_locale_id);
     else
       $toolkit->define('MANAGEMENT_LOCALE_ID', $toolkit->constant('CONTENT_LOCALE_ID'));

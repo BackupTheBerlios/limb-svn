@@ -162,7 +162,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
                             array('getAccessibleObjectIds', '_getFinder'));
 
     $datasource = new SpecialDatasourceForCountTotalOk($this);
-    $datasource->__construct();
+    $datasource->SiteObjectsDatasource();
     $datasource->setReturnValue('_getFinder', $this->finder);
     $object_ids = array(1, 2);
 

@@ -11,9 +11,6 @@
 
 class ComplexArray
 {
-  function __construct(){}
-
-
   function map($map_array, $src_array, &$dest_array)
   {
     foreach($map_array as $src => $dest)

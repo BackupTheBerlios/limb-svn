@@ -27,7 +27,7 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
   var $raw_sql_params;
   var $finder;
 
-  function __construct()
+  function SiteObjectsDatasource()
   {
     $this->reset();
   }
@@ -136,7 +136,8 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
 
   function getAccessibleObjectIds()
   {
-    $cache = Limb :: toolkit()->getCache();
+    $toolkit =& Limb :: toolkit();
+    $cache =& $toolkit->getCache();
 
     $ids = $this->getObjectIds();
     $action = $this->permissions_action;
@@ -147,7 +148,8 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
     if($result !== null)
       return $result;
 
-    $authorizer = Limb :: toolkit()->getAuthorizer();
+    $toolkit =& Limb :: toolkit();
+    $authorizer =& $toolkit->getAuthorizer();
     $result = $authorizer->getAccessibleObjectIds($ids, $action);
 
     $cache->put($key, $result, SiteObjectsDatasource :: CACHE_GROUP);
@@ -173,7 +175,8 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
     $count_method = $this->fetch_method . 'Count';
 
     $key = array($sql_params, $count_method);
-    $cache = Limb :: toolkit()->getCache();
+    $toolkit =& Limb :: toolkit();
+    $cache =& $toolkit->getCache();
 
     $result = $cache->get($key, SiteObjectsDatasource :: CACHE_GROUP);
 
@@ -196,7 +199,8 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
     $fetch_method = $this->fetch_method;
 
     $key = array($params, $sql_params, $fetch_method);
-    $cache = Limb :: toolkit()->getCache();
+    $toolkit =& Limb :: toolkit();
+    $cache =& $toolkit->getCache();
 
     $result = $cache->get($key, SiteObjectsDatasource :: CACHE_GROUP);
 
@@ -217,7 +221,9 @@ class SiteObjectsDatasource /*implements Datasource, Countable*/
 
   function flushCache()
   {
-    Limb :: toolkit()->getCache()->flush(SiteObjectsDatasource :: CACHE_GROUP);
+    $toolkit =& Limb :: toolkit();
+    $cache =& $toolkit->getCache();
+    $cache->flush(SiteObjectsDatasource :: CACHE_GROUP);
   }
 
   function _getBehavioursIds()

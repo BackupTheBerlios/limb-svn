@@ -24,7 +24,7 @@ class GridListTag extends ServerComponentTag
 {
   var $has_form = false;
 
-  function __construct()
+  function GridListTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
   }

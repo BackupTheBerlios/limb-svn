@@ -50,7 +50,7 @@ class FormEditSiteObjectCommandTest extends LimbTestCase
     Limb :: registerToolkit($this->toolkit);
 
     $this->command = new FormEditSiteObjectCommandTestVersion($this);
-    $this->command->__construct('test_form');
+    $this->command->FormEditSiteObjectCommand('test_form');
 
     $this->command->setReturnValue('_getValidator', $this->validator);
     $this->validator->setReturnValue('validate', true);

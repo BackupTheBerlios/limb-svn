@@ -63,7 +63,7 @@ class PagerComponent extends Component
   */
   var $paged_dataset;
 
-  function __construct()
+  function PagerComponent()
   {
     $this->base_url = $_SERVER['REQUEST_URI'];
     $pos = strpos($this->base_url, '?');
@@ -164,7 +164,8 @@ class PagerComponent extends Component
   */
   function prepare()
   {
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
     $this->current_page = $request->get($this->pager_variable .'_'. $this->getServerId());
 

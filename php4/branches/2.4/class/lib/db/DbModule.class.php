@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
 require_once(LIMB_DIR . '/class/lib/date/Date.class.php');
 require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
-abstract class DbModule
+class DbModule
 {
   const DB_TRANSACTION_STATUS_IN = 1;
   const DB_TRANSACTION_STATUS_OUT = 0;
@@ -26,7 +26,7 @@ abstract class DbModule
 
   var $_executed_sql = array();
 
-  function __construct($db_params)
+  function DbModule($db_params)
   {
     $this->_transaction_status = DbModule :: DB_TRANSACTION_STATUS_OUT;
 
@@ -291,7 +291,8 @@ abstract class DbModule
 
   function _processDateValue($value)
   {
-    $locale = Limb :: toolkit()->getLocale($this->_locale_id);
+    $toolkit =& Limb :: toolkit();
+    $locale =& $toolkit->getLocale($this->_locale_id);
     $date = new Date($value, DATE_SHORT_FORMAT_ISO);
 
     if(!$date->isValid())
@@ -305,7 +306,8 @@ abstract class DbModule
 
   function _processDatetimeValue($value)
   {
-    $locale = Limb :: toolkit()->getLocale($this->_locale_id);
+    $toolkit =& Limb :: toolkit();
+    $locale =& $toolkit->getLocale($this->_locale_id);
     $date = new Date($value, DATE_FORMAT_ISO);
 
     if(!$date->isValid())

@@ -24,7 +24,7 @@ registerTag(new ButtonTagInfo());
 */
 class ButtonTag extends ControlTag
 {
-  function __construct()
+  function ButtonTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/button_component';
   }

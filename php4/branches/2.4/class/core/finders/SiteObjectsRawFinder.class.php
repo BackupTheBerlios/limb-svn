@@ -62,7 +62,8 @@ class SiteObjectsRawFinder implements DataFinder
     if(isset($params['order']))
       $sql .= ' ORDER BY ' . $this->_buildOrderSql($params['order']);
 
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $limit = isset($params['limit']) ? $params['limit'] : 0;
     $offset = isset($params['offset']) ? $params['offset'] : 0;
@@ -103,7 +104,8 @@ class SiteObjectsRawFinder implements DataFinder
                   $this->_addSql($sql_params, 'group')
                 );
 
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $db->sqlExec($sql);
 

@@ -19,7 +19,7 @@ registerTag(new SiteObjectRequestedTagInfo());
 
 class SiteObjectRequestedTag extends ServerComponentTag
 {
-  function __construct()
+  function SiteObjectRequestedTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/site_object_component';
   }

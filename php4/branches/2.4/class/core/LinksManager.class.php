@@ -14,7 +14,8 @@ class LinksManager
 {
   function createLinksGroup($identifier, $title)
   {
-    $group_db_table = Limb :: toolkit()->createDBTable('SysNodeLinkGroup');
+    $toolkit =& Limb :: toolkit();
+    $group_db_table =& $toolkit->createDBTable('SysNodeLinkGroup');
 
     $conditions = array(
       'identifier' => $identifier
@@ -38,7 +39,8 @@ class LinksManager
 
   function updateLinksGroup($group_id, $identifier, $title)
   {
-    $group_db_table = Limb :: toolkit()->createDBTable('SysNodeLinkGroup');
+    $toolkit =& Limb :: toolkit();
+    $group_db_table =& $toolkit->createDBTable('SysNodeLinkGroup');
 
     $group_db_table->updateById($group_id,
       array('identifier' => $identifier,
@@ -48,12 +50,15 @@ class LinksManager
 
   function deleteLinksGroup($group_id)
   {
-    Limb :: toolkit()->createDBTable('SysNodeLinkGroup')->deleteById($group_id);
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysNodeLinkGroup');
+    $table->deleteById($group_id);
   }
 
   function setGroupsPriority($priority_info)
   {
-    $group_db_table = Limb :: toolkit()->createDBTable('SysNodeLinkGroup');
+    $toolkit =& Limb :: toolkit();
+    $group_db_table =& $toolkit->createDBTable('SysNodeLinkGroup');
 
     foreach($priority_info as $group_id => $priority_value)
     {
@@ -63,12 +68,15 @@ class LinksManager
 
   function fetchGroups()
   {
-    return Limb :: toolkit()->createDBTable('SysNodeLinkGroup')->getList('', 'priority ASC');
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysNodeLinkGroup');
+    return $table->getList('', 'priority ASC');
   }
 
   function fetchGroupByIdentifier($identifier)
   {
-    $group_db_table = Limb :: toolkit()->createDBTable('SysNodeLinkGroup');
+    $toolkit =& Limb :: toolkit();
+    $group_db_table =& $toolkit->createDBTable('SysNodeLinkGroup');
 
     if($arr = $group_db_table->getList(array('identifier' => $identifier)))
       return current($arr);
@@ -78,7 +86,9 @@ class LinksManager
 
   function fetchGroup($group_id)
   {
-    return Limb :: toolkit()->createDBTable('SysNodeLinkGroup')->getRowById($group_id);
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysNodeLinkGroup');
+    return $table->getRowById($group_id);
   }
 
   function createLink($group_id, $linker_object_id, $target_object_id)
@@ -86,7 +96,8 @@ class LinksManager
     if ($this->fetchGroup($group_id) === false)
       return false;
 
-    $link_db_table = Limb :: toolkit()->createDBTable('SysNodeLink');
+    $toolkit =& Limb :: toolkit();
+    $link_db_table =& $toolkit->createDBTable('SysNodeLink');
 
     $data = array(
       'linker_node_id' => $linker_object_id,
@@ -107,7 +118,9 @@ class LinksManager
 
   function deleteLink($link_id)
   {
-    Limb :: toolkit()->createDBTable('SysNodeLink')->deleteById($link_id);
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysNodeLinkGroup');
+    $table->deleteById($link_id);
   }
 
   function fetchTargetLinksNodeIds($linker_node_id, $groups_ids = array())
@@ -119,7 +132,8 @@ class LinksManager
 
   function fetchTargetLinks($linker_node_id, $groups_ids = array())
   {
-    $link_db_table = Limb :: toolkit()->createDBTable('SysNodeLink');
+    $toolkit =& Limb :: toolkit();
+    $link_db_table =& $toolkit->createDBTable('SysNodeLink');
 
     $conditions = "linker_node_id = {$linker_node_id}";
 
@@ -138,7 +152,8 @@ class LinksManager
 
   function fetchBackLinks($target_node_id, $groups_ids = array())
   {
-    $link_db_table = Limb :: toolkit()->createDBTable('SysNodeLink');
+    $toolkit =& Limb :: toolkit();
+    $link_db_table =& $toolkit->createDBTable('SysNodeLink');
 
     $conditions = "target_node_id = {$target_node_id}";
 
@@ -150,7 +165,8 @@ class LinksManager
 
   function setLinksPriority($priority_info)
   {
-    $link_db_table = Limb :: toolkit()->createDBTable('SysNodeLink');
+    $toolkit =& Limb :: toolkit();
+    $link_db_table =& $toolkit->createDBTable('SysNodeLink');
 
     foreach($priority_info as $link_id => $priority_value)
     {

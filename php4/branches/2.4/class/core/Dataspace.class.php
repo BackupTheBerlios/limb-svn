@@ -17,7 +17,7 @@ class Dataspace
 {
   var $vars = array();//public is done for speed in compiled template
 
-  function __construct($vars = null)
+  function Dataspace($vars = null)
   {
     if(is_array($vars))
       $this->import($vars);

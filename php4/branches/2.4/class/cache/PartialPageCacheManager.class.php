@@ -58,11 +58,14 @@ class PartialPageCacheManager
 
   function _isUserInGroups($groups)
   {
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     foreach	($user->get('groups', array()) as $group_name)
+    {
       if (in_array($group_name, $groups))
         return true;
+    }
 
     return false;
   }
@@ -114,8 +117,12 @@ class PartialPageCacheManager
 
     ksort($cache_query_items);
 
+
     if (isset($matched_rule['use_path']))
-      $this->id = 'p_' . md5($matched_rule['server_id'] . $this->request->getUri()->getPath() . serialize($cache_query_items));
+    {
+      $uri =& $this->request->getUri();
+      $this->id = 'p_' . md5($matched_rule['server_id'] . $uri->getPath() . serialize($cache_query_items));
+    }
     else
       $this->id = 'p_' . md5($matched_rule['server_id'] . serialize($cache_query_items));
 
@@ -223,7 +230,9 @@ class PartialPageCacheManager
   {
     $this->rules = array();
 
-    $groups = Limb :: toolkit()->getINI('partial_page_cache.ini')->getAll();
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('partial_page_cache.ini');
+    $groups = $ini->getAll();
 
     foreach($groups as $group => $data)
     {

@@ -30,7 +30,7 @@ class Uri
 
   var $_path_elements = array();
 
-  function __construct($str='')
+  function Uri($str='')
   {
     if ($str)
       $this->parse($str);

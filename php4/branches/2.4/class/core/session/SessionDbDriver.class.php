@@ -15,10 +15,11 @@ class SessionDbDriver implements SessionDriver
   var $db;
   var $user;
 
-  function __construct()
+  function SessionDbDriver()
   {
-    $this->db = Limb :: toolkit()->getDB();
-    $this->user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
+    $this->user =& $toolkit->getUser();
   }
 
   function storageOpen()

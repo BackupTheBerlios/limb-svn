@@ -15,7 +15,7 @@ class SingleFieldRule extends Rule
 {
   var $field_name;
 
-  function __construct($field_name)
+  function SingleFieldRule($field_name)
   {
     $this->field_name = $field_name;
   }

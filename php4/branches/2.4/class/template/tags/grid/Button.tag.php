@@ -21,7 +21,7 @@ registerTag(new GridButtonTagInfo());
 
 class GridButtonTag extends ButtonTag
 {
-  function __construct()
+  function GridButtonTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_button_component';
   }

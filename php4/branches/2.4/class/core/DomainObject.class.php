@@ -14,9 +14,9 @@ class DomainObject extends Object
 {
   var $clean_hash;
 
-  function __construct()
+  function DomainObject()
   {
-    parent :: __construct();
+    parent :: Object();
 
     $this->markClean();
   }

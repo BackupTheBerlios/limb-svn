@@ -46,7 +46,8 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
 
   function mapUriToNode($uri, $recursive = false)
   {
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $tree->getTree();
 
     if(($node_id = $uri->getQueryItem('node_id')) === false)
       $node = $tree->getNodeByPath($uri->getPath(), '/', $recursive);
@@ -62,7 +63,12 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
       return $this->node_mapped_by_request;
 
     if($node_id = $request->get('node_id'))
-      $node = Limb :: toolkit()->getTree()->getNode((int)$node_id);
+    {
+      $toolkit =& Limb :: toolkit();
+      $tree =& $tree->getTree();
+
+      $node = $tree->getNode((int)$node_id);
+    }
     else
       $node = $this->mapUriToNode($request->getUri());
 

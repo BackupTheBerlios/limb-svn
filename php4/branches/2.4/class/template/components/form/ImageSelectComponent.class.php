@@ -30,7 +30,9 @@ class ImageSelectComponent extends InputFormElement
 
     $start_path = '';
 
-    if($image_node_id &&  $image_data = Limb :: toolkit()->getFetcher()->fetchOneByNodeId($image_node_id))
+    $toolkit =& Limb :: toolkit();
+    $fetcher =& $toolkit->getFetcher();
+    if($image_node_id &&  $image_data = $fetcher->fetchOneByNodeId($image_node_id))
     {
       $span_name = $image_data['identifier'];
       $start_path = '/root?action=image_select&node_id=' . $image_data['parent_node_id'];
@@ -42,7 +44,10 @@ class ImageSelectComponent extends InputFormElement
     {
       $start_path = $this->getAttribute('start_path');
       if(!$start_path)
-        $start_path = Limb :: toolkit()->getSession()->get('limb_image_select_working_path');
+      {
+        $session =& $toolkit->getSession();
+        $start_path = $session->get('limb_image_select_working_path');
+      }
       if(!$start_path)
         $start_path = '/root/images_folder';
 

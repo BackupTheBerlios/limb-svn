@@ -19,7 +19,7 @@ registerTag(new ActionsTagInfo());
 
 class ActionsTag extends ServerComponentTag
 {
-  function __construct()
+  function ActionsTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/actions_component';
   }
@@ -36,7 +36,7 @@ class ActionsTag extends ServerComponentTag
     $code->writePhp("{$node_id} = " . $this->parent->getDataspaceRefCode() . '->get("node_id");'. "\n");
 
     $code->writePhp("if(!{$node_id}){
-      {$node} = Limb :: toolkit()->getFetcher()->mapRequestToNode(Limb :: toolkit()->getRequest()); {$node_id} = {$node}['id'];}\n");
+      {$node} = \$toolkit =& Limb :: toolkit();\$fetcher =& \$toolkit->getFetcher();\$fetcher->mapRequestToNode(Limb :: toolkit()->getRequest()); {$node_id} = {$node}['id'];}\n");
 
     $code->writePhp($this->getComponentRefCode() . "->setActions({$actions_array});\n");
 

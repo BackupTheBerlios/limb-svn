@@ -18,7 +18,9 @@ class RequestStateComponent extends InputHiddenComponent
 
     if($form->isFirstTime())
     {
-      if($value = Limb :: toolkit()->getRequest()->get($this->attributes['name']))
+      $toolkit =& Limb :: toolkit();
+      $request =& $toolkit->getRequest();
+      if($value = $request->get($this->attributes['name']))
         return $value;
       else
         return '';

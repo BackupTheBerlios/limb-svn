@@ -16,7 +16,8 @@ class SysParam
 
   function sysParam()
   {
-    $this->_db_table = Limb :: toolkit()->createDBTable('SysParam');
+    $toolkit =& Limb :: toolkit();
+    $this->_db_table =& $toolkit->createDBTable('SysParam');
   }
 
   function & instance()

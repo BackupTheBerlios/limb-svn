@@ -46,7 +46,8 @@ class LocaleDateFormatComponent extends Component
 
   function setLocaleFormatType($type)
   {
-    $locale = Limb :: toolkit()->getLocale($this->locale_type);
+    $toolkit =& Limb :: toolkit();
+    $locale =& $toolkit->getLocale($this->locale_type);
 
     switch($type)
     {
@@ -84,7 +85,8 @@ class LocaleDateFormatComponent extends Component
     switch($this->date_type)
     {
       case 'string':
-        $locale = Limb :: toolkit()->getLocale($this->locale_type);
+        $toolkit =& Limb :: toolkit();
+        $locale =& $toolkit->getLocale($this->locale_type);
         $this->date->setByLocaleString($locale, $date_string, $format);
       break;
 
@@ -96,7 +98,8 @@ class LocaleDateFormatComponent extends Component
 
   function format()
   {
-    $locale = Limb :: toolkit()->getLocale($this->locale_type);
+    $toolkit =& Limb :: toolkit();
+    $locale =& $toolkit->getLocale($this->locale_type);
 
     if($this->format_string)
       $format_string = $this->format_string;

@@ -14,9 +14,9 @@ class InvalidValueRule extends SingleFieldRule
 {
   var $invalid_value;
 
-  function __construct($field_name, $invalid_value)
+  function InvalidValueRule($field_name, $invalid_value)
   {
-    parent :: __construct($field_name);
+    parent :: SingleFieldRule($field_name);
 
     $this->invalid_value = $invalid_value;
   }

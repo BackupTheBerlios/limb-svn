@@ -20,14 +20,15 @@ if(!isRegisteredResolver('ini'))
 
 function getIniOption($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
-  return getIni($file_path, $use_cache)->getOption($var_name, $group_name);
+  $ini =& getIni($file_path, $use_cache);
+  return $ini->getOption($var_name, $group_name);
 }
 
 function getIni($file_name, $use_cache = null)
 {
   if (isset($GLOBALS['testing_ini'][$file_name]))
   {
-    $resolved_file = VAR_DIR . $file_name;
+    $resolved_file = VAR_DIR . '/' . $file_name;
     $use_cache = false;
   }
   else

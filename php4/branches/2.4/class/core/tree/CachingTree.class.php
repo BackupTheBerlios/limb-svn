@@ -16,11 +16,12 @@ class CachingTree extends TreeDecorator
 
   var $cache;
 
-  function __construct($tree)
+  function CachingTree(&$tree)
   {
-    parent :: __construct($tree);
+    parent :: TreeDecorator($tree);
 
-    $this->cache = Limb :: toolkit()->getCache();
+    $toolkit =& Limb :: toolkit();
+    $this->cache =& $toolkit->getCache();
   }
 
   function getNode($id)

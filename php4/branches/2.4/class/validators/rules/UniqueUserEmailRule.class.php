@@ -14,11 +14,11 @@ class UniqueUserEmailRule extends SingleFieldRule
 {
   var $current_identifier = '';
 
-  function __construct($field_name, $current_identifier='')
+  function UniqueUserEmailRule($field_name, $current_identifier='')
   {
     $this->current_identifier = $current_identifier;
 
-    parent :: __construct($field_name);
+    parent :: SingleFieldRule($field_name);
   }
 
   function validate($dataspace)
@@ -30,7 +30,8 @@ class UniqueUserEmailRule extends SingleFieldRule
         $this->current_identifier == $value)
       return;
 
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $sql = 'SELECT *
             FROM sys_site_object as sco, user as tn

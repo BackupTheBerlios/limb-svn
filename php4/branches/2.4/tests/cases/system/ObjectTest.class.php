@@ -27,7 +27,7 @@ class ObjectTest extends LimbTestCase
 
     $this->object = new ObjectTestVersion($this);
     $this->object->setReturnValue('_createDataspace', $this->dataspace);
-    $this->object->__construct();
+    $this->object->Object();
   }
 
   function tearDown()

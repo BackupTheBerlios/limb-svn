@@ -11,7 +11,9 @@
 
 function assignPathsToSiteObjects(&$objects_array, $append = '')
 {
-  $tree = Limb :: toolkit()->getTree();
+  $toolkit =& Limb :: toolkit();
+  $tree =& $tree->getTree();
+
   $parent_paths = array();
 
   foreach($objects_array as $key => $data)
@@ -39,9 +41,11 @@ function wrapWithSiteObject($fetched_data)
   if(!is_array($fetched_data))
     return false;
 
+  $toolkit =& Limb :: toolkit();
+
   if(isset($fetched_data['class_name']))
   {
-    $site_object = Limb :: toolkit()->createSiteObject($fetched_data['class_name']);
+    $site_object =& $toolkit->createSiteObject($fetched_data['class_name']);
     $site_object->merge($fetched_data);
     return $site_object;
   }
@@ -49,7 +53,7 @@ function wrapWithSiteObject($fetched_data)
   $site_objects = array();
   foreach($fetched_data as $id => $data)
   {
-    $site_object = Limb :: toolkit()->createSiteObject($data['class_name']);
+    $site_object =& $toolkit->createSiteObject($data['class_name']);
     $site_object->merge($data);
     $site_objects[$id] = $site_object;
   }

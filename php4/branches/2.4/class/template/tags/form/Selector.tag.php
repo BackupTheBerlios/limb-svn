@@ -21,7 +21,7 @@ registerTag(new SelectorTagInfo());
 
 class SelectorTag extends ControlTag
 {
-  function __construct()
+  function SelectorTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_checkbox_component';
   }

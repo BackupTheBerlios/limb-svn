@@ -15,7 +15,9 @@ class TemplateFileResolver extends FileResolverDecorator
 {
   function resolve($file_path, $params = array())
   {
-    $tmpl_path = Limb :: toolkit()->getINI('common.ini')->getOption('path', 'Templates');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('common.ini');
+    $tmpl_path = $ini->getOption('path', 'Templates');
 
     $locale = $this->_getLocalePrefix();
 

@@ -41,8 +41,10 @@ class SiteObjectsByNodeIdsDatasource extends SiteObjectsDatasource
     if (!$this->node_ids)
       return array();
 
-    $tree = Limb :: toolkit()->getTree();
-    if (!$nodes = Limb :: toolkit()->getTree()->getNodesByIds($this->node_ids))
+    $toolkit =& Limb :: toolkit();
+    $tree =& $tree->getTree();
+
+    if (!$nodes = $tree->getNodesByIds($this->node_ids))
       return array();
 
     $this->object_ids = ComplexArray :: getColumnValues('object_id', $nodes);

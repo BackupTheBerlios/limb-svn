@@ -26,7 +26,7 @@ class Sys
   /*
    Initializes the object with settings taken from the current script run.
   */
-  function __construct()
+  function Sys()
   {
     $this->_collectSystemParams();
   }

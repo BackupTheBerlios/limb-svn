@@ -23,7 +23,7 @@ class TemplateFileResolverTest extends BasePackageFileResolverTest
   function & _defineResolver()
   {
     $resolver = new TemplateFileResolverTestVersion($this);
-    $resolver->__construct(new PackageFileResolver());
+    $resolver->TemplateFileResolver(new PackageFileResolver());
 
     $resolver->setReturnValue('_getLocalePrefix', '');
 
