@@ -1,0 +1,59 @@
+<core:WRAP file="simple_popup.html" placeholder="content">
+
+<DATASOURCE target='cart_items'>
+	<core:PARAMETER name='datasource_path' value='/cart_items_datasource'>
+</DATASOURCE>
+
+<table border='1'>
+<tr>
+<th>Метка</th>		
+<th>Наименование</th>		
+<th>Цена</th>		
+<th>Кол-во</th>		
+<th>Сумма</th>		
+<th>Примечание</th>		
+</tr>
+
+<form id='cart_form' name='cart_form'>
+<core:LITERAL>
+<input type='hidden' name='popup' value='1'>
+</core:LITERAL>
+
+<grid:LIST id='cart_items'>
+	<grid:ITERATOR>
+		<tr>
+		<td>
+			<core:LITERAL><input type='checkbox' id='cart_item_amount' name='cart_form[ids][]' value='</core:LITERAL>{$id}<core:LITERAL>'></core:LITERAL>
+		</td>		
+		<td>
+		{$description}
+		</td>		
+		<td>
+		{$price}
+		</td>		
+		<td>
+			<core:LITERAL><input type='text' id='cart_item_amount' name='cart_form[amounts][</core:LITERAL>{$id}<core:LITERAL>]' value='</core:LITERAL>{$amount}<core:LITERAL>'></core:LITERAL>
+		</td>				
+		<td>
+		{$summ}
+		</td>				
+		<td>
+			<core:LITERAL><textarea id='cart_item_note' name='cart_form[notes][</core:LITERAL>{$id}<core:LITERAL>]' rows='2' cols='20'></core:LITERAL>{$note}<core:LITERAL></textarea></core:LITERAL>
+		</td>				
+		</tr>
+	</grid:ITERATOR>
+</grid:LIST>
+<tr>
+	<td colspan='2' align='left'>
+		<action_button action="remove_items" name="delete" type="submit" id="delete" value="Удалить" class="button">
+	</td>
+	<td colspan='2' align='left'>
+		<action_button action="recount" name="recount" type="submit" id="recount" value="Пересчитать" class="button">
+	</td>
+	<td colspan='2' align='right'>
+		<action_button action="send" name="send" type="submit" id="send" value="Отослать заказ" class="button">
+	</td>
+</tr>		
+</form>
+</table>
+

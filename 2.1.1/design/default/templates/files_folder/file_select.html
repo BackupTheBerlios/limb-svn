@@ -1,0 +1,68 @@
+<html>
+<head>
+<metadata:CHARSET>
+<link rel="stylesheet" href="/shared/styles/admin.css" type="text/css">
+<script language="javascript" src="/shared/js/common.js"></script>
+<script language="javascript" src="/shared/js/form_errors.js"></script>
+</head>
+<body>
+<table width=100% border=0 cellspacing=0 cellpadding=0>
+<tr>
+	<td style='padding:0 25px 3px 0' class=path>
+	<metadata:BREADCRUMBS offset_path='/root'>
+	<grid:LIST>
+		<grid:ITERATOR>
+			<core:DEFAULT for='is_last'>
+			<a href="{$path}?action=file_select">{$title}</a> &gt;
+			</core:DEFAULT>
+			<core:OPTIONAL for='is_last'>
+			{$title}
+			</core:OPTIONAL>
+		</grid:ITERATOR>
+	</grid:LIST>
+	</metadata:BREADCRUMBS>
+	</td>
+</tr>
+<td>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/simple.html">
+</fetch:MAPPED>
+</td>
+</table>
+
+<fetch:SUB_BRANCH target="folders">
+	<core:PARAMETER name='loader_class_name' value='files_folder'>
+</fetch:SUB_BRANCH>
+
+<fetch:SUB_BRANCH navigator='pager' target="files">
+	<core:PARAMETER name='loader_class_name' value='file_object'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='folders'>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <grid:ITERATOR>
+				<tr class='jip'>
+					<td jip='object' class='jip_object'><img src='/shared/images/folder.gif' align='center'>&nbsp;<a href="{$path}?action=file_select">{$title}({$children})</a></td>
+					<td jip='action'><core:INCLUDE file="jip_actions/simple.html"></td>
+				</tr>
+    </grid:ITERATOR>
+			</table>
+</grid:LIST>
+
+<table width="100%" border="0" cellspacing="5" cellpadding="5">
+
+<grid:LIST id='files'>
+<grid:ITERATOR>
+<tr>
+<td><img src='/root?node_id={$node_id}&icon' align='center'>{$identifier}&nbsp;{$description}</td>
+<td width='1'><core:INCLUDE file="/jip_actions/simple.html"></td>
+<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_file_data(</core:LITERAL>{node_id: "{$node_id}", name: "{$identifier}", description: "{$description}", mime_type: "{$mime_type}", size: "{$size}"}<core:LITERAL>)'></core:LITERAL><locale:STRING name='select'><core:LITERAL></button></a></core:LITERAL></td>
+</tr>
+</grid:ITERATOR>
+</grid:LIST>
+
+</table>
+</body>
+</html>
