@@ -17,7 +17,7 @@ class shop_group extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
-	  return TestManager::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/../cases');
+	  return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/../cases');
 	}	
 }
 ?>

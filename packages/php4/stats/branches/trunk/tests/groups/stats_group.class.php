@@ -17,7 +17,7 @@ class stats_group extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
-	  return TestManager::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/../cases/stats');
+	  return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/../cases/stats');
 	}
 }
 ?>

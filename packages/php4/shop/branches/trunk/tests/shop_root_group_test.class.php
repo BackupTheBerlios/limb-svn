@@ -19,7 +19,7 @@ class ShopRootGroupTest extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
- 		return TestManager::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/groups');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/groups');
 	}
 }
 
