@@ -16,6 +16,7 @@ class ad_block_object_db_table extends content_object_db_table
   {
   	return array(
       'image_id' => array('type' => 'numeric'),
+      'uri' => '',
     );
   }
 }
