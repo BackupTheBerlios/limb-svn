@@ -287,12 +287,12 @@ class access_policy
     if (!count($group_template))
       $group_result = $this->copy_object_access($object_id, $parent_object_id, ACCESSOR_TYPE_GROUP);
     else
-      $group_result = $this->save_object_access(array($object_id => $group_template), array(), ACCESSOR_TYPE_GROUP);
+      $group_result = $this->save_object_access(array($object_id => $group_template), ACCESSOR_TYPE_GROUP);
 
     if (!count($user_template))
       $user_result = $this->copy_object_access($object_id, $parent_object_id, ACCESSOR_TYPE_USER);
     else
-      $user_result = $this->save_object_access(array($object_id => $user_template), array(), ACCESSOR_TYPE_USER);
+      $user_result = $this->save_object_access(array($object_id => $user_template), ACCESSOR_TYPE_USER);
 
     if (!$group_result && !$user_result)
     {
@@ -329,13 +329,13 @@ class access_policy
 
     $db_table->delete($conditions);
 
-    $this->save_object_access(array($object_id => $group_template), array(), ACCESSOR_TYPE_GROUP);
-    $this->save_object_access(array($object_id => $user_template), array(), ACCESSOR_TYPE_USER);
+    $this->save_object_access(array($object_id => $group_template),ACCESSOR_TYPE_GROUP);
+    $this->save_object_access(array($object_id => $user_template), ACCESSOR_TYPE_USER);
 
     return true;
   }
 
-  function save_object_access($policy_array, $accessor_ids = array(), $accessor_type)
+  function save_object_access($policy_array, $accessor_type, $accessor_ids = array())
   {
     $db_table	=& db_table_factory :: instance('sys_object_access');
 

@@ -72,8 +72,8 @@ var giShowOther=2;	// control the look of days in OTHER months. 1: show date & a
 var gbFocus=true;	// whether to enable the gcToggle highlight whenever mouse pointer focuses over a calendar cell.
 var gcToggle="#FFC1C1";	// the highlight color for the focused cell
 
-var gcFGToday="red";	// the font color for today 
-var gcBGToday="#FFC1C1";	// the background color for today 
+var gcFGToday="red";	// the font color for today
+var gcBGToday="#FFC1C1";	// the background color for today
 var guTodayBGImg="";	// url of image as today's background
 var giMarkToday=1; // Effects for today - 0: nothing; 1: set background color with gcBGToday; 2: draw a box with gcBGToday; 4: bold the font; 8: set font color with gcFGToday; 16: set background image with guTodayBGImg; - they can be added up to create mixed effects.
 

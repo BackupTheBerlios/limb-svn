@@ -117,7 +117,7 @@ class save_access_policy_test extends db_test
 
     );
 
-    $this->ac->save_object_access($policy, array(), ACCESSOR_TYPE_USER);
+    $this->ac->save_object_access($policy, ACCESSOR_TYPE_USER);
 
     $db_table	=& db_table_factory :: instance('sys_object_access');
 
@@ -152,7 +152,7 @@ class save_access_policy_test extends db_test
         )
     );
 
-    $this->ac->save_object_access($policy, array(), ACCESSOR_TYPE_GROUP);
+    $this->ac->save_object_access($policy, ACCESSOR_TYPE_GROUP);
 
     $db_table	=& db_table_factory :: instance('sys_object_access');
 

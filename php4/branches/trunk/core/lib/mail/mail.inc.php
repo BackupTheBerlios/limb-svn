@@ -9,22 +9,23 @@
 *
 ***********************************************************************************/
 
-function send_plain_mail($recipients, $sender, $subject, $body)
+function send_plain_mail($recipients, $sender, $subject, $body, $charset = 'windows-1251')
 {
   include_once(PHPMailer_DIR . '/class.phpmailer.php');
 
   $mail = new PHPMailer();
   $mail->IsHTML(false);
   $mail->LE = "\r\n";//we're using php mail function!!!
+  $mail->CharSet = $charset;
 
   $recipients = process_mail_recipients($recipients);
-  
+
   foreach($recipients as $recipient)
     $mail->AddAddress($recipient['address'], $recipient['name']);
 
   if(!$sender = process_mail_addressee($sender))
     return false;
-  
+
   $mail->From = $sender['address'];
   $mail->FromName = $sender['name'];
   $mail->Subject = $subject;
@@ -33,13 +34,14 @@ function send_plain_mail($recipients, $sender, $subject, $body)
   return $mail->Send();
 }
 
-function send_html_mail($recipients, $sender, $subject, $html, $text = null)
+function send_html_mail($recipients, $sender, $subject, $html, $text = null, $charset = 'windows-1251')
 {
   include_once(PHPMailer_DIR . '/class.phpmailer.php');
 
   $mail = new PHPMailer();
   $mail->IsHTML(true);
   $mail->LE = "\r\n";//we're using php mail function!!!
+  $mail->CharSet = $charset;
 
   $mail->Body = $html;
 
@@ -47,13 +49,13 @@ function send_html_mail($recipients, $sender, $subject, $html, $text = null)
     $mail->AltBody = $text;
 
   $recipients = process_mail_recipients($recipients);
-  
+
   foreach($recipients as $recipient)
     $mail->AddAddress($recipient['address'], $recipient['name']);
 
   if(!$sender = process_mail_addressee($sender))
     return false;
-    
+
   $mail->From = $sender['address'];
   $mail->FromName = $sender['name'];
   $mail->Subject = $subject;
@@ -69,8 +71,8 @@ function process_mail_recipients($recipients)
     if($recipient = process_mail_addressee($recipient))
       $result[] = $recipient;
   }
-  
-  return $result; 
+
+  return $result;
 }
 
 function process_mail_addressee($adressee)
@@ -79,8 +81,8 @@ function process_mail_addressee($adressee)
   {
     if(isset($adressee['address']) && isset($adressee['name']))
       return $adressee;
-      
-    return null; 
+
+    return null;
   }
   elseif(preg_match('~("|\')?([^"\']+)("|\')?\s+<([^>]+)>~', $adressee, $matches))
     return array('address' => $matches[4], 'name' => $matches[2]);
