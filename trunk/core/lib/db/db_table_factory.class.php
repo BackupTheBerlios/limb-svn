@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: db_table_factory.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -19,12 +19,14 @@ class db_table_factory
 		
 	function create($db_table_name)
 	{	
-  	return create_object($db_table_name . '_db_table', '/core/db_tables/');	
+		include_class($db_table_name . '_db_table', '/core/db_tables/');
+  	return create_object($db_table_name . '_db_table');	
 	}
 	
 	function & instance($db_table_name)
 	{	
-		$obj =&	instantiate_object($db_table_name . '_db_table', '/core/db_tables/');
+		include_class($db_table_name . '_db_table', '/core/db_tables/');
+		$obj =&	instantiate_object($db_table_name . '_db_table');
 		return $obj;
 	}
 

@@ -58,7 +58,8 @@ class test_site_object_template extends UnitTestCase
   	
   	debug_mock :: init($this);
   	
-		$_SESSION[user :: get_session_identifier()]['id'] = 10;
+  	$user =& user :: instance();
+  	$user->_set_id(10);
 		
   	$tree =& limb_tree :: instance();
 
@@ -75,8 +76,9 @@ class test_site_object_template extends UnitTestCase
   	$this->_clean_up();
   	
   	debug_mock :: tally();
-  	
-  	user :: logout();
+ 
+   	$user =& user :: instance();
+  	$user->logout();
   }
   
   function _clean_up()
@@ -207,13 +209,15 @@ class test_site_object_template extends UnitTestCase
 	
   function _check_sys_site_object_record()
 	{
+		$user =& user :: instance();
+		   	
   	$this->db->sql_select('sys_site_object', '*', 'id=' . $this->object->get_id());
   	$record = $this->db->fetch_row();
 		$this->assertEqual($record['identifier'], $this->object->get_identifier());
   	$this->assertEqual($record['title'], $this->object->get_title());
   	$this->assertEqual($record['current_version'], $this->object->get_version());
   	$this->assertFalse(!$record['class_id']);
-  	$this->assertEqual($record['creator_id'], user :: get_id());
+  	$this->assertEqual($record['creator_id'], $user->get_id());
   	$this->assertTrue((time() - $record['created_date']) <= 60);
   	$this->assertTrue((time() - $record['modified_date']) <= 60);
   }

@@ -40,9 +40,14 @@ class user_attribute_tag extends compiler_directive_tag
 	function generate_contents(&$code)
 	{
 		$user_methods = get_class_methods('user');
+		
+		$user = '$' . $code->get_temp_variable();
 
 		if(in_array('get_'. $this->attributes['name'], $user_methods))
-			$code->write_php("echo user :: get_{$this->attributes['name']}();");
+		{
+			$code->write_php("{$user} =& user :: instance();");
+			$code->write_php("echo {$user}->get_{$this->attributes['name']}();");
+		}
 				
 		parent :: generate_contents($code);
 	}

@@ -37,12 +37,14 @@ class checkout_cart_order_action extends form_action
 
 	function _init_dataspace()
 	{
-		if(!user::is_logged_in())
+		$user =& user :: instance();
+		
+		if(!$user->is_logged_in())
 			return;
 
 		$data = array(
-				'name' => user :: get_name() .' '. user :: get_lastname(),
-				'email' => user :: get_email(),
+				'name' => $user->get_name() . ' ' . $user->get_lastname(),
+				'email' => $user->get_email(),
 		);
 		$this->_import($data);
 	}

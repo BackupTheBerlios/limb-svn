@@ -23,33 +23,41 @@ class test_user extends test_limb_case
   
   function test_login_true()
   {
-  	$this->assertTrue(user :: login('vasa', '1'));
-  	$this->assertTrue(user :: login('sasa', '1'));
+  	$user =& user :: instance();
   	
-  	$this->assertTrue(user :: is_logged_in());
-  	$this->assertEqual(user :: get_id(), 2);
-  	$this->assertEqual(user :: get_node_id(), 3);
-  	$this->assertEqual(user :: get_login(), 'sasa');
+  	$this->assertTrue($user->login('vasa', '1'));
+  	$this->assertTrue($user->login('sasa', '1'));
+  	
+  	$this->assertTrue($user->is_logged_in());
+  	$this->assertEqual($user->get_id(), 2);
+  	$this->assertEqual($user->get_node_id(), 3);
+  	$this->assertEqual($user->get_login(), 'sasa');
   }    
   
   function test_login_failure()
   {
-  	$this->assertFalse(user :: login('vas', '1'));
-  	$this->assertFalse(user :: login('vasa', '2'));
-  	$this->assertFalse(user :: login('sasa', '2'));
-  	$this->assertFalse(user :: is_logged_in());
+  	$user =& user :: instance();
+  	
+  	$this->assertFalse($user->login('vas', '1'));
+  	$this->assertFalse($user->login('vasa', '2'));
+  	$this->assertFalse($user->login('sasa', '2'));
+  	$this->assertFalse($user->is_logged_in());
   }
   
   function test_logout()
   {
-  	user :: login('vasa', '1');
-  	user :: logout();
-  	$this->assertFalse(user :: is_logged_in());
+  	$user =& user :: instance();
+  	
+  	$user->login('vasa', '1');
+  	$user->logout();
+  	$this->assertFalse($user->is_logged_in());
   }
 
 	function test_default_visitor_group()
 	{
-		$groups = user :: get_groups();
+		$user =& user :: instance();
+		
+		$groups = $user->get_groups();
 		
 		$this->assertTrue(is_array($groups));
 		$this->assertTrue(in_array('visitors', $groups));
@@ -57,37 +65,27 @@ class test_user extends test_limb_case
 	
 	function test_user_get_groups()
 	{
-		user :: login('vasa', 1);
-		$groups = user :: get_groups();
+		$user =& user :: instance();
+		
+		$user->login('vasa', 1);
+		$groups = $user->get_groups();
 		
 		$this->assertTrue(is_array($groups));
 		$this->assertEqual(sizeof($groups), 2);
 		$this->assertTrue(in_array('visitors', $groups));
 		$this->assertTrue(in_array('admins', $groups));
 	}
-  
-  function test_session_transfer()
-  {
-  	$_SESSION[user :: get_session_identifier()]['id'] = 1;
-  	$_SESSION[user :: get_session_identifier()]['login'] = 'vasa';
   	
-  	$this->assertFalse(user :: is_logged_in());
-  	
-  	$_SESSION[user :: get_session_identifier()] = array();
-  	$_SESSION[user :: get_session_identifier()]['is_logged_in'] = true;
-  	
-  	$this->assertTrue(user :: is_logged_in());//this is a potential lack of security!
-  }
-	
-	
 	function test_user_in_groups()
 	{
-		user :: login('vasa', 1);
-		$this->assertTrue(user :: is_in_groups(array(0 => 'members', 'admins')));
-		$this->assertFalse(user :: is_in_groups(array(0 => 'members', 'operators')));
-		$this->assertFalse(user :: is_in_groups(array(0 => 'members')));
+		$user =& user :: instance();
+		
+		$user->login('vasa', 1);
+		$this->assertTrue($user->is_in_groups(array(0 => 'members', 'admins')));
+		$this->assertFalse($user->is_in_groups(array(0 => 'members', 'operators')));
+		$this->assertFalse($user->is_in_groups(array(0 => 'members')));
 
-		$this->assertTrue(user :: is_in_groups(array(0 => 'visitors')));
+		$this->assertTrue($user->is_in_groups(array(0 => 'visitors')));
 	}
 }
 ?>

@@ -87,20 +87,22 @@ class test_user_manipulation extends test_content_object_template
   function test_failed_change_own_password_no_record_in_db()
   {
  	 	$this->test_create();
-
-		$_SESSION[user :: get_session_identifier()]['login'] = 'haker_login';
-		$_SESSION[user :: get_session_identifier()]['node_id'] = $this->object->get_node_id();
-
+		
+		$user =& user :: instance();
+		$user->_set_login('haker_login');
+		$user->_set_node_id($this->object->get_node_id());
+		
 		$this->assertFalse($this->object->change_own_password('changed_password'));
   }
 
   function test_change_own_password()
   {
  	 	$this->test_create();
-
-		$_SESSION[user :: get_session_identifier()]['login'] = $this->object->get_identifier();
-		$_SESSION[user :: get_session_identifier()]['node_id'] = $this->object->get_node_id();
-
+		
+		$user =& user :: instance();
+		$user->_set_login($this->object->get_identifier());
+		$user->_set_node_id($this->object->get_node_id());
+		
 		$this->assertTrue($this->object->change_own_password('changed_password'));
 		
 		$this->_verify_user_db_record_password('changed_password');

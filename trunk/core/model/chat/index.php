@@ -21,9 +21,11 @@ $template_vars = array();
 
 $view = file_get_contents(DESIGN_DIR . 'chat/chat.html');
 
-if (user :: get_id())
+$user =& user :: instance();
+
+if ($user->is_logged_in())
 {
-	$user_data = fetch_one_by_node_id(user :: get_node_id());
+	$user_data = fetch_one_by_node_id($user->get_node_id());
 	chat_login($user_data['identifier'], $user_data['chat_color']);
 }
 

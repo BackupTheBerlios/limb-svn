@@ -8,44 +8,53 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
-define('VISITOR_USER_ID', -1);
+define('DEFAULT_USER_ID', -1);
+define('DEFAULT_USER_GROUP', 'visitors');
 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . 'core/model/object.class.php');
 
-class user
+class user extends object
 {
+	var $_id = DEFAULT_USER_ID;
+	var $_node_id = -1;
+	var $_login = '';
+	var $_password = '';
+	var $_email = '';
+	var $_name = '';
+	var $_lastname = '';
+	
+	var $_is_logged_in = false;
+	
+	var $_groups = array();
+	
 	function user()
 	{
 	}
-	
-	function get_session_identifier()
+
+	function __get_class_path()
 	{
-		return 'logged_in_user_data';
+		return LIMB_DIR . '/core/lib/security/user.class.php';
 	}
-	
+
 	function & instance()
 	{
-	  $obj = null;
-  	$object_name = 'global_logged_in_user_object';
-  	
-  	if(isset($GLOBALS[$object_name]))
-			$obj =& $GLOBALS[$object_name];
-		
-  	if(!$obj || get_class($obj) != 'user')
-  	{
-  		$obj =& new user();
-  		$GLOBALS[$object_name] =& $obj;
-  	}  	
-  	return $obj;
+		$obj =& instantiate_session_object('user');
+		return $obj;
 	}
 	
-	function _set_session_groups()
+	function _set_groups($groups)
 	{
-		if (user :: is_logged_in())
-			$groups_arr = user :: _get_groups();
+		$this->_groups = $groups;
+	}
+	
+	function _determine_groups()
+	{
+		if ($this->is_logged_in())
+			$groups_arr = $this->_get_db_groups();
 		else
-			$groups_arr = user :: _get_default_groups();
+			$groups_arr = $this->_get_default_db_groups();
 		
 		if(!$groups_arr)
 			return;
@@ -54,10 +63,10 @@ class user
 		foreach($groups_arr as $group_data)
 			$result[$group_data['object_id']] = $group_data['identifier'];
 		
-		user :: _set_session_attribute('groups', $result);
+		$this->_set_groups($result);
 	}
 	
-	function _get_groups()
+	function _get_db_groups()
 	{
 		$db =& db_factory :: instance();
 		
@@ -66,7 +75,7 @@ class user
 			FROM sys_site_object as sso, user_group as tn, user_in_group as u_i_g
 			WHERE sso.id=tn.object_id 
 			AND sso.current_version=tn.version
-			AND u_i_g.user_id='. user :: get_id() . '
+			AND u_i_g.user_id='. $this->get_id() . '
 			AND u_i_g.group_id=sso.id';
 					
 		$db->sql_exec($sql);	
@@ -74,14 +83,14 @@ class user
 		return $db->get_array();
 	}
 	
-	function _get_default_groups()
+	function _get_default_db_groups()
 	{
 		$db =& db_factory :: instance();
 	
 		$sql = 
 			'SELECT sso.*, tn.*
 			FROM sys_site_object as sso, user_group as tn
-			WHERE sso.identifier="visitors"
+			WHERE sso.identifier="' . DEFAULT_USER_GROUP . '"
 			AND sso.id=tn.object_id 
 			AND sso.current_version=tn.version';
 					
@@ -92,29 +101,30 @@ class user
 		
 	function login($login, $password)
 	{				
-		user :: logout();
+		$this->logout();
 		
-		if(!$record = user :: _get_identity_record($login, $password))
+		if(!$record = $this->_get_identity_record($login, $password))
 			return false;
-			
-		user :: _set_session_attribute('is_logged_in', true);			
-
-		user :: _set_session_attribute('id', $record['id']);
-		user :: _set_session_attribute('node_id', $record['node_id']);
-		user :: _set_session_attribute('login', $login);
-		user :: _set_session_attribute('email', $record['email']);
-		user :: _set_session_attribute('name', $record['name']);
-		user :: _set_session_attribute('lastname', $record['lastname']);
-		user :: _set_session_attribute('password', $record['password']);
 		
-		user :: _set_session_groups();		
+		$this->_set_is_logged_in();
+		
+		$this->_set_id($record['id']);
+		$this->_set_node_id($record['node_id']);
+		$this->_set_login($login);
+		$this->_set_password($record['password']);
+		
+		$this->_set_email($record['email']);
+		$this->_set_name($record['name']);
+		$this->_set_lastname($record['lastname']);
+		
+		$this->_determine_groups();		
 
 		return true;
 	}
 	
 	function &_get_identity_record($login, $password)
 	{
-		$crypted_password = user :: get_crypted_password($login, $password);
+		$crypted_password = $this->get_crypted_password($login, $password);
 		
 		$db =& db_factory :: instance();
 		
@@ -131,12 +141,14 @@ class user
 					
 		$db->sql_exec($sql);
 		
-		return current($db->get_array());
+		return $db->fetch_row();
 	}
 		
 	function logout()
-	{		
-		$_SESSION[user :: get_session_identifier()] = array();		
+	{	
+		$this->_set_id(DEFAULT_USER_ID);
+		$this->_set_is_logged_in(false);
+		$this->_set_groups(array());
 	}
 	
 	function get_crypted_password($login, $none_crypt_password)
@@ -146,57 +158,92 @@ class user
 	
 	function is_logged_in()
 	{
-		return user :: _get_session_attribute('is_logged_in', false);
+		return $this->_is_logged_in;
+	}
+	
+	function _set_is_logged_in($status = true)
+	{
+		$this->_is_logged_in = $status;
 	}
 	
 	function get_id()
 	{
-		return user :: _get_session_attribute('id', VISITOR_USER_ID);
+		return $this->_id;
+	}
+	
+	function _set_id($id)
+	{
+		$this->_id = $id;
 	}
 	
 	function get_node_id()
 	{
-		return user :: _get_session_attribute('node_id');
+		return $this->_node_id;
+	}
+
+	function _set_node_id($node_id)
+	{
+		$this->_node_id = $node_id;
 	}
 	
 	function get_login()
 	{
-		return user :: _get_session_attribute('login');
+		return $this->_login;
+	}
+
+	function _set_login($login)
+	{
+		$this->_login = $login;
 	}
 
 	function get_email()
 	{
-		return user :: _get_session_attribute('email');
+		return $this->_email;
+	}
+
+	function _set_email($email)
+	{
+		$this->_email = $email;
 	}
 
 	function get_name()
 	{
-		return user :: _get_session_attribute('name');
+		return $this->_name;
 	}
 
+	function _set_name($name)
+	{
+		$this->_name = $name;
+	}
+	
 	function get_password()
 	{
-		return user :: _get_session_attribute('password');
+		return $this->_password;
 	}
 
+	function _set_password($password)
+	{
+		$this->_password = $password;
+	}
+	
 	function get_lastname()
 	{
-		return user :: _get_session_attribute('lastname');
+		return $this->_lastname;
+	}
+	
+	function _set_lastname($lastname)
+	{
+		$this->_lastname = $lastname;
 	}
 
 	function get_groups()
 	{
-		if(!$groups = user :: _get_session_attribute('groups', array()))
-			user :: _set_session_groups();
+		if(!$this->_groups)
+			$this->_determine_groups();
 		
-		return user :: _get_session_attribute('groups', array());
+		return $this->_groups;
 	}
-	
-	function get_management_locale_id()
-	{
-		return user :: _get_session_attribute('management_locale_id', DEFAULT_MANAGEMENT_LOCALE_ID);
-	}
-	
+		
 	function generate_password()
 	{
 		$alphabet = array(
@@ -217,20 +264,7 @@ class user
 		
 		return $new_password;
 	}
-	
-	function _get_session_attribute($name, $default_value='')
-	{		
-		if(isset($_SESSION[user :: get_session_identifier()][$name]))
-			return $_SESSION[user :: get_session_identifier()][$name];
-		else
-			return $default_value;
-	}
-	
-	function _set_session_attribute($name, $value)
-	{		
-		$_SESSION[user :: get_session_identifier()][$name] = $value;		
-	}
-	
+		
 	function is_in_groups($groups_to_check)
 	{
 		if (!is_array($groups_to_check))
@@ -240,15 +274,11 @@ class user
 				return false;
 		}	
 			
-		foreach	(user :: get_groups() as $group_name)
+		foreach	($this->get_groups() as $group_name)
 			if (in_array($group_name, $groups_to_check))
 				return true; 
 		
 		return false;		
-	}
-	
-	function _get_groups_to_check_from_string($groups)
-	{
 	}
 }
 ?>

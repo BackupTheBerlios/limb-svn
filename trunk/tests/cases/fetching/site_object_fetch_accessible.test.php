@@ -48,7 +48,8 @@ class test_site_object_fetch_accessible extends UnitTestCase
   { 
   	$this->test_init->_clean_up();
   	
-  	user :: logout();
+  	$user =& user :: instance();
+  	$user->logout();
   
 		debug_mock :: tally();
   }
@@ -123,10 +124,11 @@ class test_site_object_fetch_accessible extends UnitTestCase
 
   function _login_user($id, $groups)
   {
-		$_SESSION[user :: get_session_identifier()]['id'] = $id;
-		$_SESSION[user :: get_session_identifier()]['groups'] = $groups;
+  	$user =& user :: instance();
+  	
+  	$user->_set_id($id);
+  	$user->_set_groups($groups);  	
   }
-  
 }
 
 ?>

@@ -96,11 +96,13 @@ class content_object extends site_object
 		
 		$time = time();
 		
+		$user =& user :: instance();
+		
 		$data['object_id'] = $this->get_id();
 		$data['version'] = $this->get_version();
 		$data['created_date'] = $time;
 		$data['modified_date'] = $time;
-		$data['creator_id'] = user :: get_id();
+		$data['creator_id'] = $user->get_id();
 		
 		$version_db_table->insert($data);
 		

@@ -53,7 +53,10 @@ class change_password_action extends form_edit_site_object_action
 	function _changing_own_password()
 	{
 		$object_data = $this->_load_object_data();
-		return ($object_data['id'] == user :: get_id()) ? true : false;
+		
+		$user =& user :: instance();
+		
+		return ($object_data['id'] == $user->get_id()) ? true : false;
 	}
 	
 	function _update_object_operation()

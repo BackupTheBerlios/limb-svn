@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_guestbook_message_action.class.php 564 2004-02-25 16:49:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -48,12 +48,14 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 		parent :: _init_dataspace();
 		
 		$data = $this->_export();
+	
+		$user =& user :: instance();
 		
 		if (empty($data['comment_author']))
-			$data['comment_author'] = user :: get_login();
+			$data['comment_author'] = $user->get_login();
 
 		if (empty($data['comment_author_email']))
-			$data['comment_author_email'] = user :: get_email();
+			$data['comment_author_email'] = $user->get_email();
 		
 		$this->_import($data);
 	}

@@ -65,6 +65,8 @@ class stats_register
 		$referer_register =& $this->_get_referer_register();
 		$uri_register =& $this->_get_uri_register();
 		
+		$user =& user :: instance();
+		
 		$this->db->sql_insert('sys_stat_log', 
 			array(
 				'ip' => $ip_register->get_client_ip(), 
@@ -72,7 +74,7 @@ class stats_register
 				'node_id' => $node_id,
 				'stat_referer_id' => $referer_register->get_referer_page_id(),
 				'stat_uri_id' => $uri_register->get_uri_id(),
-				'user_id' => user :: get_id(),
+				'user_id' => $user->get_id(),
 				'session_id' => session_id(),
 				'action' => $action,
 				'status' => $status_code,

@@ -35,7 +35,8 @@ class site_object_controller
 
 	function create($class_name)
 	{	
-  	return create_object($class_name, '/core/controllers/');	
+		include_class($class_name, '/core/controllers/');
+  	return create_object($class_name);
 	}
 		
 	function determine_action()

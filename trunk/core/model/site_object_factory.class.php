@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: site_object_factory.class.php 456 2004-02-16 18:52:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
@@ -18,12 +18,14 @@ class site_object_factory
 		
 	function create($class_name)
 	{	
-  	return create_object($class_name, '/core/model/site_objects/');	
+		include_class($class_name, '/core/model/site_objects/');
+  	return create_object($class_name);	
 	}
 	
 	function & instance($class_name)
 	{	
-		$obj =&	instantiate_object($class_name, '/core/model/site_objects/');
+		include_class($class_name, '/core/model/site_objects/');
+		$obj =&	instantiate_object($class_name);
 		return $obj;
 	}
 	

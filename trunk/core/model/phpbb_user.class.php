@@ -103,8 +103,10 @@ class phpbb_user extends object
 		
 		session :: set('phpbb_sid', $sid);
 		
+		$user =& user :: instance();
+		
 		$phpbb_user_data = array();
-		$phpbb_user_data['session_user_id'] = user :: get_id();
+		$phpbb_user_data['session_user_id'] = $user->get_id();
 		$phpbb_user_data['session_id'] = $sid;
 		$phpbb_user_data['session_ip'] = $user_ip;
 		$phpbb_user_data['session_logged_in'] = 1;

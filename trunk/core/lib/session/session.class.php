@@ -51,7 +51,6 @@ class session
 		
 		$db->sql_delete('sys_session', "user_id='{$user_id}'");
 	}
-	
 }
 
 function start_user_session()
@@ -83,7 +82,6 @@ function _register_session_db_functions()
 	    '_session_db_garbage_collector' );
 }
 
-// re-implementation of PHP session management using database.
 function _session_db_open()
 {
   return true;
@@ -101,7 +99,18 @@ function & _session_db_read($session_id)
 	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
 	
   if($session_res = $db->fetch_row())
+  {
+  	if(preg_match('/session_classes_paths\|([^\{]+\{[^\}]+\})/', $session_res['session_data'], $matches))
+  	{
+  		$session_class_paths = unserialize($matches[1]);
+  		foreach($session_class_paths as $path)
+  		{
+  			include_once($path);
+  		}
+  	}
+  	
   	return $session_res['session_data'];
+  }
   else
   	return false;
 }
@@ -110,7 +119,9 @@ function _session_db_write($session_id, $value)
 {
 	$db =& db_factory :: instance();
 	
-	$user_id = user :: get_id();
+	$user =& user :: instance();
+	
+	$user_id = $user->get_id();
 
 	$db->sql_select('sys_session', 'session_id', "session_id='{$session_id}'");
 	

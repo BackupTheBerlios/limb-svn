@@ -281,10 +281,12 @@ class access_policy
 	{
 		$accessor_ids = array();
 		
-		if(($user_id = user :: get_id()) != VISITOR_USER_ID)
+		$user =& user :: instance();
+		
+		if(($user_id = $user->get_id()) != DEFAULT_USER_ID)
 			$accessor_ids[] = $user_id;
 			
-		foreach(array_keys(user :: get_groups()) as $group_id)	
+		foreach(array_keys($user->get_groups()) as $group_id)	
 			$accessor_ids[] = $group_id;
 		
 		return $accessor_ids;	

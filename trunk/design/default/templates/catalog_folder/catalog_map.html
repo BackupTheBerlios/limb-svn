@@ -1,0 +1,48 @@
+<fetch:SUB_BRANCH target='catalog_left_tree'>
+	<core:PARAMETER name='loader_class_name' value='site_object'>
+	<core:PARAMETER name='data_source_path' value='alex_catalog_map_data_source'>
+	<core:PARAMETER name='include_parent' value='0' type='boolean'>
+	<core:PARAMETER name='check_expanded_parents' value='0' type='boolean'>
+	<core:PARAMETER name='depth' value='3' type='numeric'>
+	<core:PARAMETER name='path' value='/root/catalog'>
+	<core:PARAMETER name='restrict_by_class' value='0'>
+</fetch:SUB_BRANCH>
+
+
+<list:LIST id='catalog_left_tree'>
+<table  border="0" cellpadding="0" cellspacing="0" width=100%>
+<tr> 
+  <td class="title" >каталог изделий</td>
+</tr>
+<tr height="2" class="com1"> 
+  <td></td>
+</tr>
+<tr height="1" class="com2"> 
+  <td></td>
+</tr>
+<tr>
+	<td>
+		<list:ITEM>
+			<table border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+
+					<core:OPTIONAL for='level_1'>
+            <td class="title-block">{$title}</td>
+					</core:OPTIONAL>
+				
+					<core:OPTIONAL for='level_2'>
+            <td class="link-title" style='padding: 0 0 0 10px'>
+							<a href='{$path}'>{$title}</a></td>	
+					</core:OPTIONAL>
+					
+					<core:OPTIONAL for='level_3'>
+						<td class="link" style='padding: 0 0 0 20px'> 
+							<a href='{$path}'>{$title}</a></td>	
+					</core:OPTIONAL>
+				</tr>
+			</table>
+		</list:ITEM>
+	</td>	
+</tr>	
+</table>
+</list:LIST>

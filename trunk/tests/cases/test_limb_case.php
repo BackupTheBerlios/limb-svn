@@ -27,13 +27,16 @@ class test_limb_case extends test_db_case
   {
   	parent :: tearDown();
   	
-  	user :: logout();
+  	$user =& user :: instance();
+  	$user->logout();
   }
       
   function _login_user($id, $groups)
   {
-		$_SESSION[user :: get_session_identifier()]['id'] = $id;
-		$_SESSION[user :: get_session_identifier()]['groups'] = $groups;
+  	$user =& user :: instance();
+  	
+  	$user->_set_id($id);
+  	$user->_set_groups($groups);  	
   }
 }
 ?>

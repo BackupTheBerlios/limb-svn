@@ -602,6 +602,8 @@ class site_object extends object
 	{
 		$this->set_attribute('version', 1); 
 		
+		$user =& user :: instance();
+		
 		$time = time();
 		$data['identifier'] = $this->get_identifier();
 		$data['title'] = $this->get_title();
@@ -609,7 +611,7 @@ class site_object extends object
 		$data['current_version'] = $this->get_attribute('version');
 		$data['created_date'] = $time;
 		$data['modified_date'] = $time;
-		$data['creator_id'] = user :: get_id();
+		$data['creator_id'] = $user->get_id();
 		$data['status'] = $this->get_attribute('status', 0);
 
 		if ($this->get_attribute('locale_id'))

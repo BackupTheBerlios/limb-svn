@@ -75,18 +75,20 @@ class user_object extends content_object
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
 		  return false;
 		}
-
+		
+		$user =& user :: instance();
+		
 		$this->set_attribute(
 			'password', 
-			user :: get_crypted_password(
+			$user->get_crypted_password(
 				$identifier, 
 				$this->get_attribute('password')
 			)
 		);
 		
-		if($user_id == user :: get_id())
+		if($user_id == $user->get_id())
 		{
-			user :: logout();
+			$user->logout();
 			message_box :: write_warning(strings :: get('need_relogin', 'user'));
 		}
 		else
@@ -97,16 +99,18 @@ class user_object extends content_object
 
 	function validate_password($password)
 	{
-		if(!user :: is_logged_in() || !$node_id = user :: get_node_id())
+		$user =& user :: instance();
+		
+		if(!$user->is_logged_in() || !$node_id = $user->get_node_id())
 		{
 		  debug :: write_error('user not logged in or node id is not set', 
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
 		  return false;
 		}
 
-		$password = user :: get_crypted_password(user :: get_login(), $password);
+		$password = $user->get_crypted_password($user->get_login(), $password);
 		
-		if(user :: get_password() !== $password)
+		if($user->get_password() !== $password)
 			return false;
 		else 
 			return true;
@@ -114,21 +118,23 @@ class user_object extends content_object
 
 	function change_own_password($password)
 	{
-		if(!$node_id = user :: get_node_id())
+		$user =& user :: instance();
+		
+		if(!$node_id = $user->get_node_id())
 		{
 		  debug :: write_error('user not logged in - node id is not set', 
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
 		  return false;
 		}
 
-		$data['password'] = user :: get_crypted_password(user :: get_login(),	$password);
+		$data['password'] = $user->get_crypted_password($user->get_login(),	$password);
 		
 		$user_db_table =& db_table_factory :: create('user');
 
 		$this->set_attribute('password', $data['password']);
 		
-		if ($user_db_table->update($data, 'identifier="'. user :: get_login() . '"'))
-			return $this->login(user :: get_login(), $password);
+		if ($user_db_table->update($data, 'identifier="'. $user->get_login() . '"'))
+			return $this->login($user->get_login(), $password);
 		else
 			return false;
 	}
@@ -230,12 +236,14 @@ class user_object extends content_object
 
 	function login($login, $password)
 	{
-		return user :: login($login, $password);
+		$user =& user :: instance();
+		return $user->login($login, $password);
 	}
 	
 	function logout()
 	{
-		return user :: logout();
+		$user =& user :: instance();
+		return $user->logout();
 	}
 }
 

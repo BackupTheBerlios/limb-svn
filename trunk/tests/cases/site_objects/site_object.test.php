@@ -72,14 +72,16 @@ class test_site_object extends UnitTestCase
   	
   	$this->object->site_object();
   	
-		$_SESSION[user :: get_session_identifier()]['id'] = 10;
+  	$user =& user :: instance();
+  	$user->_set_id(10);
   }
   
   function tearDown()
   { 
   	$this->_clean_up();
-  	
-  	user :: logout();
+
+  	$user =& user :: instance();  	
+  	$user->logout();
 
   	$this->object->tally();
   }

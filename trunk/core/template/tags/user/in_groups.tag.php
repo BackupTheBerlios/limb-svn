@@ -38,8 +38,11 @@ class user_in_groups_tag extends compiler_directive_tag
 	function generate_contents(&$code)
 	{
 		$groups = $this->attributes['groups'];
-
-		$code->write_php("if (user :: is_logged_in() && (user :: is_in_groups('{$groups}'))) {");
+		
+		$user = '$' . $code->get_temp_variable();
+		$code->write_php("{$user} =& user :: instance();");
+		
+		$code->write_php("if ({$user}->is_logged_in() && ({$user}->is_in_groups('{$groups}'))) {");
 			parent :: generate_contents($code);
 		$code->write_php("}");
 	}

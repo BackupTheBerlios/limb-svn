@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/model/shop/cart_item.class.php');
 require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
+require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 
 define('CART_DEFAULT_ID', 1);
 
@@ -17,6 +18,11 @@ class cart
 {		
 	var $_cart_id = CART_DEFAULT_ID;
 	var $_items = array();
+	
+	function __get_class_path()
+	{
+		return LIMB_DIR . '/core/model/shop/cart.class.php';
+	}
 	
 	function cart($cart_id = CART_DEFAULT_ID)
 	{
@@ -30,21 +36,9 @@ class cart
 	}
 	
  	function & instance($cart_id = CART_DEFAULT_ID)
-  {  	
-  	$obj = null;
-  	
-  	$instance_name = "global_cart_instance_{$cart_id}";
-  	
-  	if(isset($_SESSION[$instance_name]))
-			$obj =& $_SESSION[$instance_name];
-		
-  	if(!$obj || get_class($obj) != 'cart')
-  	{
-  		$obj =& new cart($cart_id);
-  		$_SESSION[$instance_name] =& $obj;
-  	}
-  	
-  	return $obj;
+  {  
+		$obj =& instantiate_session_object('cart', array('cart_id' => $cart_id));
+		return $obj;
   }
 
 	function add_item(&$new_item)
@@ -118,6 +112,6 @@ class cart
 	function clear()
 	{
 		$this->_items = array();		
-	}
+	}	
 }
 ?>

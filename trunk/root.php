@@ -24,13 +24,11 @@ require_once(LIMB_DIR . 'core/lib/session/session.class.php');
 require_once(LIMB_DIR . 'core/lib/system/message_box.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
-require_once(LIMB_DIR . 'core/lib/security/user.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
-require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 
 start_user_session();
 
@@ -65,7 +63,9 @@ if(isset($node['only_parent_found']) && $node['only_parent_found'])
 
 if(($object_data =& fetch_one_by_node_id($node['id'])) === false)
 {
-	if (!user :: is_logged_in())
+	$user =& user :: instance();
+	
+	if (!$user->is_logged_in())
 	{
 		$tree = limb_tree :: instance();
 		reload('/root/login?redirect='. $tree->get_path_to_node($node));
@@ -88,7 +88,7 @@ if(isset($object_data['locale_id']) && $object_data['locale_id'])
 else
 	define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
 
-define('MANAGEMENT_LOCALE_ID', user :: get_management_locale_id());
+define('MANAGEMENT_LOCALE_ID', DEFAULT_MANAGEMENT_LOCALE_ID);
 
 $site_object =& site_object_factory :: instance($object_data['class_name']);
 

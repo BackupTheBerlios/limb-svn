@@ -180,8 +180,10 @@ class test_phpbb_user_test extends UnitTestCase
 
   function _login_user($id, $groups)
   {
-		$_SESSION[user :: get_session_identifier()]['id'] = $id;
-		$_SESSION[user :: get_session_identifier()]['groups'] = $groups;
+  	$user =& user :: instance();
+  	
+  	$user->_set_id($id);
+  	$user->_set_groups($groups);  	
   }
 }
 

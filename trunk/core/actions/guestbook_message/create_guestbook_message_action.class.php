@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_guestbook_message_action.class.php 564 2004-02-25 16:49:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
@@ -40,8 +40,10 @@ class create_guestbook_message_action extends form_create_site_object_action
 	{
 		$data['identifier'] = md5(rand());
 		
-		$data['sender'] = user :: get_login();
-		$data['sender_email'] = user :: get_email();
+		$user =& user :: instance();
+		
+		$data['sender'] = $user->get_login();
+		$data['sender_email'] = $user->get_email();
 		
 		$this->_import($data);
 	}

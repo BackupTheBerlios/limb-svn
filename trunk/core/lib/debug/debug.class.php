@@ -369,11 +369,13 @@ class debug
 		
 		$message = '';
 		
-		if(($user_id = user :: get_id()) != VISITOR_USER_ID)
+		$user =& user :: instance();
+		
+		if(($user_id = $user->get_id()) != DEFAULT_USER_ID)
 			$message .= "user id:\t"
 								.	"{$user_id}\n"
-								. "login:\t\t"  . user :: get_login() . "\n"
-								. "e-mail:\t\t" . user :: get_email() . "\n";
+								. "login:\t\t"  . $user->get_login() . "\n"
+								. "e-mail:\t\t" . $user->get_email() . "\n";
 
 		$message .= "ip:\t\t" . sys :: client_ip() . "\n"
 							. "request:\t" . REQUEST_URI . "\n"

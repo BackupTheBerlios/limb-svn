@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: unique_user_rule.test.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
@@ -21,18 +21,21 @@ class test_user_old_password_rule extends test_single_field_rule
   function setUp()
   {
   	parent :: setUp();
-
-		$_SESSION[user :: get_session_identifier()]['login'] = 'admin';
-		$_SESSION[user :: get_session_identifier()]['password'] = '66d4aaa5ea177ac32c69946de3731ec0';
-		$_SESSION[user :: get_session_identifier()]['node_id'] = 1;
-		$_SESSION[user :: get_session_identifier()]['is_logged_in'] = true;
+  	
+		$user =& user :: instance();
+		
+		$user->_set_login('admin');
+		$user->_set_password('66d4aaa5ea177ac32c69946de3731ec0');
+		$user->_set_node_id(1);
+		$user->_set_is_logged_in();
   }
   
   function tearDown()
   {
   	parent :: tearDown();
   	
-  	user :: logout();
+  	$user =& user :: instance();
+  	$user->logout();
   }
 
 	function test_user_old_password_rule_correct()

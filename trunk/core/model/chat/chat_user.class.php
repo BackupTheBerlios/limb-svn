@@ -57,8 +57,10 @@ class chat_user extends object
 	
 	function login($login, $password = null)
 	{
-		if(user :: is_logged_in())
-			return chat_user :: _login_to_chat(user :: get_login());
+		$user =& user :: instance();
+		
+		if($user->is_logged_in())
+			return chat_user :: _login_to_chat($user->get_login());
 			
 		$db =& db_factory :: instance();		
 		$sql = "SELECT u.identifier 
@@ -81,8 +83,10 @@ class chat_user extends object
 		$sql = "SELECT id, nickname FROM chat_user";
 		$db->sql_exec($sql);
 		$chat_users = $db->get_array('id');
-
-		if(user :: is_logged_in())
+		
+		$user =& user :: instance();
+		
+		if($user->is_logged_in())
 		{
 			foreach($chat_users as $data)
 				if($data['nickname'] == $nickname)
