@@ -390,10 +390,10 @@ class image_object extends media_object
 						AND iv.variation='{$variation}' 
 						AND iv.media_id=m.id";
 		
-		$db =& db_factory :: instance();
-		$db->sql_exec($sql);
+		$connection = & db_factory :: get_connection();
+		$connection->sql_exec($sql);
 		
-		return $db->fetch_row();
+		return $connection->fetch_row();
 	}
 	
 	function _resize_file_variation($base_media_id, $mime_type, $max_size, $output_file, &$output_file_type)
@@ -467,11 +467,11 @@ class image_object extends media_object
 				WHERE iv.media_id = m.id AND 
 				iv.image_id IN {$ids}";
 		
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
-		if(!$images_variations = $db->get_array())
+		if(!$images_variations = $connection->get_array())
 			return $records;
 			
 		foreach($images_variations as $variation_data)

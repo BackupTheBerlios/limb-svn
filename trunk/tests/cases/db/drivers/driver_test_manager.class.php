@@ -134,38 +134,22 @@ class driver_test_manager
 	/**
 	* Main worker function.  Adds any available tests to the passed in suite.
 	*/
-	function add_suite($parent_suite, $dsn)
+	function add_driver_suite_cases(& $parent_suite)
 	{
 		$self =& driver_test_manager :: instance();
-		$self->set_dsn($dsn); 
-		// initialize db
-		$self->init();
-
-		$c = db_factory::get_new_connection($dsn); 
-		// get just the first part of class name (e.g. my_sql from my_sqlconnection)
-		//$camel_driver = str_replace('connection', '', get_class($c));
-
-		//$suite = new PHPUnit_Framework_test_suite($camel_driver);
-
+		$dsn = $self->get_dsn();
+		
 		foreach($self->driver_classes as $base_class)
 		{ 
-			// include the test class, based on driver name
-			// do we want many?  Let's start by assuming that we'll fit all this in one class.
-			$classname = $camel_driver . $base_class . 'Test';
+			$path = LIMB_DIR . '/tests/cases/db/drivers/' . $dsn['phptype'] . '/' . $dsn['phptype'] . '_'. $base_class . '.test.php';
+			$class = 'test_' . $dsn['phptype'] . '_'. $base_class;
 			
-			$path = '/drivers/' . $self->dsn['phptype'] . '/' . $classname . '.php';
-			
-			if (file_exists(LIMB_DIR . '/tests/cases/db/classes/' . $path))
+			if(file_exists($path))
 			{
-				include_once(LIMB_DIR . '/tests/cases/db/classes/' . $path);
-				if (class_exists($classname))
-				{
-					//$suite->add_test_suite(new Reflection_Class($classname));
-				} 
-			} 
+				include_once($path);
+				$parent_suite->addTestCase(new $class());
+			}
 		} 
-
-		$parent_suite->add_test($suite);
 	} 
 
 	/**

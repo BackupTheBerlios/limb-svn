@@ -14,12 +14,12 @@ require_once(LIMB_DIR . 'core/lib/http/ip.class.php');
 
 class stats_event_report
 {
-	var $db = null;
+	var $connection = null;
 	var $filter_conditions = array();
 	
 	function stats_event_report()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 	}
 	
 	function set_login_filter($login)
@@ -94,9 +94,9 @@ class stats_event_report
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
 		
-		$this->db->sql_exec($sql, $limit, $offset);
+		$this->connection->sql_exec($sql, $limit, $offset);
 				
-		return $this->db->get_array('id');
+		return $this->connection->get_array('id');
 	}
 	
 	function fetch_count($params = array())
@@ -110,8 +110,8 @@ class stats_event_report
 		
 		$sql .= $this->_build_filter_condition();
 		
-		$this->db->sql_exec($sql);
-		$arr =& $this->db->fetch_row();
+		$this->connection->sql_exec($sql);
+		$arr =& $this->connection->fetch_row();
 		return (int)$arr['count'];
 	}
 

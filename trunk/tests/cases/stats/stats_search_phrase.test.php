@@ -24,13 +24,13 @@ Mock::generatePartial
 class test_stats_search_phrase extends UnitTestCase 
 {
   var $stats_referer = null;
-  var $db = null;
+  var $connection = null;
 	
   function test_stats_search_phrase() 
   {
   	parent :: UnitTestCase();
   	
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
   }
   
   function setUp()
@@ -50,7 +50,7 @@ class test_stats_search_phrase extends UnitTestCase
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_stat_search_phrase');
+  	$this->connection->sql_delete('sys_stat_search_phrase');
   }
   
   function test_get_matching_rule_ok()
@@ -103,10 +103,10 @@ class test_stats_search_phrase extends UnitTestCase
   	$date = new date();
   	$this->assertTrue($this->stats_search_phrase->register($date));
   	
-  	$db =& db_factory :: instance();
-  	$db->sql_select('sys_stat_search_phrase');
+  	$connection = & db_factory :: get_connection();
+  	$connection->sql_select('sys_stat_search_phrase');
   	
-  	$arr = $db->get_array();
+  	$arr = $connection->get_array();
   	
   	$this->assertEqual(sizeof($arr), 1);
   	$record = current($arr);

@@ -133,10 +133,7 @@ class debug
 
 	function &instance()
 	{
-		if(class_exists('debug_mock'))
-			$impl =& instantiate_object('debug_mock');
-		else
-			$impl =& instantiate_object('debug');
+		$impl =& instantiate_object('debug');
 
 		return $impl;
 	} 

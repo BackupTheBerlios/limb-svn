@@ -25,8 +25,8 @@ class file_object_tester extends site_object_tester
   	parent :: _clean_up();
   	
 		dir :: rm(MEDIA_DIR);
-		$this->db->sql_delete('file_object');
-  	$this->db->sql_delete('media');
+		$this->connection->sql_delete('file_object');
+  	$this->connection->sql_delete('media');
   }
   
   function _set_file_create_attributes()
@@ -79,9 +79,9 @@ class file_object_tester extends site_object_tester
   		
 		$this->assertTrue($this->object->create_file(), __LINE__);
 		
-		$this->db->sql_select('media');
+		$this->connection->sql_select('media');
 		
-		$arr = $this->db->get_array();
+		$arr = $this->connection->get_array();
 		
 		$media_id = $this->object->get_attribute('media_id');
 		
@@ -98,9 +98,9 @@ class file_object_tester extends site_object_tester
 	
 	function test_failed_update_file()
 	{
-		debug_mock :: expect_write_error('media id not set');
-		
 		$this->_set_file_update_attributes();
+		
+		$this->assertErrorPattern('/media id not set/');
 		
 		$this->assertFalse($this->object->update_file());
 	}
@@ -111,9 +111,9 @@ class file_object_tester extends site_object_tester
 		
 		$this->object->create_file();
 		
-		$this->db->sql_select('media');
+		$this->connection->sql_select('media');
 		
-		$row = $this->db->fetch_row();
+		$row = $this->connection->fetch_row();
 			
 		$this->_set_file_update_attributes();
 		
@@ -121,9 +121,9 @@ class file_object_tester extends site_object_tester
 		
 		$this->assertTrue($this->object->update_file(), __LINE__);
 		
-		$this->db->sql_select('media');
+		$this->connection->sql_select('media');
 		
-		$arr = $this->db->get_array();
+		$arr = $this->connection->get_array();
 		
 		$media_id = $this->object->get_attribute('media_id');
 		

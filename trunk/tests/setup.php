@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 	
 if(!defined('SIMPLE_TEST'))
-	define('SIMPLE_TEST', LIMB_DIR . '/core/lib/external/simpletest1.0beta4/');
+	define('SIMPLE_TEST', LIMB_DIR . '/tests/lib/simpletest1.0beta4/');
 
 if ( !file_exists(SIMPLE_TEST . 'unit_tester.php') ) 
 	die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
@@ -18,8 +18,6 @@ require_once(SIMPLE_TEST . 'unit_tester.php');
 require_once(SIMPLE_TEST . 'mock_objects.php');
 require_once(SIMPLE_TEST . 'web_tester.php');
 require_once(SIMPLE_TEST . 'reporter.php');
-	
-require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');
 
 set_time_limit(0);
 error_reporting(E_ALL);

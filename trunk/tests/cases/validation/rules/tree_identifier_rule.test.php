@@ -15,7 +15,7 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.ph
 
 class test_tree_identifier_rule extends test_single_field_rule
 {
-	var $db = null;
+	var $connection = null;
 	var $node_id_root;
 	var $node_id_ru;
 	var $node_id_document;
@@ -24,7 +24,7 @@ class test_tree_identifier_rule extends test_single_field_rule
 	
 	function test_tree_identifier_rule()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 		
 		parent::UnitTestCase();
 	} 
@@ -63,7 +63,7 @@ class test_tree_identifier_rule extends test_single_field_rule
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_site_object_tree');
+  	$this->connection->sql_delete('sys_site_object_tree');
   }
 	
 	function test_tree_identifier_rule_blank()

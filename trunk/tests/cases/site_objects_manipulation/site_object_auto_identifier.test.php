@@ -44,14 +44,14 @@ class site_object_auto_identifier_test_version extends site_object
 
 class test_site_object_auto_identifier extends UnitTestCase 
 { 
-	var $db = null;
+	var $connection = null;
 	var $object = null;
 	
 	var $parent_node_id = '';
 		 	
   function test_site_object_auto_identifier() 
   {
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
 
   	parent :: UnitTestCase();
   }
@@ -69,30 +69,24 @@ class test_site_object_auto_identifier extends UnitTestCase
 		$this->parent_node_id = $tree->create_root_node($values, false, true);
 		
 		$class_id = $this->object->get_class_id();
-		$this->db->sql_insert('sys_site_object', 
+		$this->connection->sql_insert('sys_site_object', 
 			array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
-
-  	debug_mock :: init($this);
   }
   
   function tearDown()
   { 
   	$this->_clean_up();
-  	
-  	debug_mock :: tally();
   }
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_site_object');
-  	$this->db->sql_delete('sys_site_object_tree');
-  	$this->db->sql_delete('sys_class');
+  	$this->connection->sql_delete('sys_site_object');
+  	$this->connection->sql_delete('sys_site_object_tree');
+  	$this->connection->sql_delete('sys_class');
   }
   	
   function test_create_first()
   {
-  	debug_mock :: expect_never_write();
-
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 		
@@ -103,8 +97,6 @@ class test_site_object_auto_identifier extends UnitTestCase
 
   function test_create_text_only()
   {
-  	debug_mock :: expect_never_write();
-
 		$this->_create_node('ru');
 		
   	$this->object->set_parent_node_id($this->parent_node_id);
@@ -117,8 +109,6 @@ class test_site_object_auto_identifier extends UnitTestCase
 
   function test_create_complex()
   {
-  	debug_mock :: expect_never_write();
-
 		$this->_create_node('10ru1');
 		$this->_create_node('10ru2');
 		$this->_create_node('10a1');
@@ -143,7 +133,7 @@ class test_site_object_auto_identifier extends UnitTestCase
 		$tree->create_sub_node($this->parent_node_id, $values);
 
 		$class_id = $this->object->get_class_id();
-		$this->db->sql_insert('sys_site_object', 
+		$this->connection->sql_insert('sys_site_object', 
 			array('id' => $object_id, 'class_id' => $class_id, 'current_version' => 1));
   }
   	      	

@@ -49,9 +49,9 @@ class image_object_tester extends site_object_tester
   	parent :: _clean_up();
   	
 		dir :: rm(MEDIA_DIR);
-		$this->db->sql_delete('image_object');
-  	$this->db->sql_delete('image_variation');
-  	$this->db->sql_delete('media');
+		$this->connection->sql_delete('image_object');
+  	$this->connection->sql_delete('image_variation');
+  	$this->connection->sql_delete('media');
   }
         
   function test_create_variations()
@@ -100,9 +100,9 @@ class image_object_tester extends site_object_tester
 		
 		$this->object->create_variations();
 								
-		$this->db->sql_select('image_variation');
+		$this->connection->sql_select('image_variation');
 		
-		$arr = $this->db->get_array();
+		$arr = $this->connection->get_array();
 		
 		$this->assertTrue(is_array($arr), __LINE__);
 		$this->assertEqual(sizeof($arr), 3, __LINE__);
@@ -114,9 +114,9 @@ class image_object_tester extends site_object_tester
 							iv.media_id=m.id AND
 							iv.image_id=100";
 
-		$this->db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 		
-		$res = $this->db->get_array('variation');
+		$res = $this->connection->get_array('variation');
 		
 		$this->assertTrue(file_exists(MEDIA_DIR . $res['original']['media_id'] . '.media'), __LINE__);
 		$this->assertEqual(filesize(MEDIA_DIR . $res['original']['media_id'] . '.media'), filesize($files['tmp_name']['original']), __LINE__);
@@ -183,9 +183,9 @@ class image_object_tester extends site_object_tester
 
 		$this->object->update_variations();
 				
-		$this->db->sql_select('image_variation');
+		$this->connection->sql_select('image_variation');
 		
-		$arr = $this->db->get_array();
+		$arr = $this->connection->get_array();
 		
 		$this->assertTrue(is_array($arr), __LINE__);
 		$this->assertEqual(sizeof($arr), 3, __LINE__);
@@ -197,9 +197,9 @@ class image_object_tester extends site_object_tester
 							iv.media_id=m.id AND
 							iv.image_id=100";
 
-		$this->db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 		
-		$res = $this->db->get_array('variation');
+		$res = $this->connection->get_array('variation');
 		
 		$this->assertTrue(file_exists(MEDIA_DIR . $res['original']['media_id'] . '.media'), __LINE__);
 		$this->assertEqual(filesize(MEDIA_DIR . $res['original']['media_id'] . '.media'), filesize($files['tmp_name']['original']), __LINE__);
@@ -256,9 +256,9 @@ class image_object_tester extends site_object_tester
 		
 		$this->object->create_variations();
 					
-		$this->db->sql_select('image_variation');
+		$this->connection->sql_select('image_variation');
 		
-		$arr = $this->db->get_array();
+		$arr = $this->connection->get_array();
 
 		$this->assertTrue(is_array($arr), __LINE__);
 		$this->assertEqual(sizeof($arr), 1, __LINE__);
@@ -270,9 +270,9 @@ class image_object_tester extends site_object_tester
 							iv.media_id=m.id AND
 							iv.image_id=100";
 
-		$this->db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 		
-		$res = $this->db->get_array('variation');
+		$res = $this->connection->get_array('variation');
 		
 		$this->assertTrue(file_exists(MEDIA_DIR . $res['original']['media_id'] . '.media'), __LINE__);
 		$this->assertEqual(filesize(MEDIA_DIR . $res['original']['media_id'] . '.media'), filesize($files['tmp_name']['original']), __LINE__);
@@ -325,9 +325,9 @@ class image_object_tester extends site_object_tester
 
 		$this->object->update_variations();
 					
-		$this->db->sql_select('image_variation');
+		$this->connection->sql_select('image_variation');
 		
-		$arr = $this->db->get_array();
+		$arr = $this->connection->get_array();
 
 		$this->assertTrue(is_array($arr), __LINE__);
 		$this->assertEqual(sizeof($arr), 2, __LINE__);
@@ -339,9 +339,9 @@ class image_object_tester extends site_object_tester
 							iv.media_id=m.id AND
 							iv.image_id=100";
 
-		$this->db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 		
-		$res = $this->db->get_array('variation');
+		$res = $this->connection->get_array('variation');
 		
 		$this->assertTrue(file_exists(MEDIA_DIR . $res['original']['media_id'] . '.media'), __LINE__);
 		$this->assertEqual(filesize(MEDIA_DIR . $res['original']['media_id'] . '.media'), filesize($files['tmp_name']['original']), __LINE__);

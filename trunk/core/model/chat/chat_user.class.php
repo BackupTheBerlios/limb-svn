@@ -62,13 +62,13 @@ class chat_user extends object
 		if($user->is_logged_in())
 			return chat_user :: _login_to_chat($user->get_login());
 			
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$sql = "SELECT u.identifier 
 						FROM user u, sys_site_object sso
 						WHERE u.object_id = sso.id AND u.version = sso.current_version";
 
-		$db->sql_exec($sql);
-		$users = $db->get_array();
+		$connection->sql_exec($sql);
+		$users = $connection->get_array();
 		
 		if(in_array($login, $users))
 			return false;
@@ -78,11 +78,11 @@ class chat_user extends object
 	
 	function _login_to_chat($nickname)
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		$time = time();
 		$sql = "SELECT id, nickname FROM chat_user";
-		$db->sql_exec($sql);
-		$chat_users = $db->get_array('id');
+		$connection->sql_exec($sql);
+		$chat_users = $connection->get_array('id');
 		
 		$user =& user :: instance();
 		
@@ -97,7 +97,7 @@ class chat_user extends object
 									host= '{$_SERVER['REMOTE_ADDR']}',
 									deleted=0
 								  WHERE id={$data['id']}";
-					$db->sql_exec($sql);
+					$connection->sql_exec($sql);
 
 					return $data['id'];
 				}
@@ -109,9 +109,9 @@ class chat_user extends object
 
 		$sql = "INSERT INTO chat_user (nickname, time, host, deleted) 
 					  values ('{$nickname}', {$time}, '{$_SERVER['REMOTE_ADDR']}', 0)";
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
-		$id = $db->get_sql_insert_id();
+		$id = $connection->get_sql_insert_id();
 		
 		chat_user :: _set_session_chat_user_id($id);
 
@@ -173,11 +173,11 @@ class chat_user extends object
 		if($data = chat_user :: _get_session_chat_user_data())
 			return $data;
 			
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		$sql = "SELECT * FROM chat_user WHERE id='{$id}'";
 
-		$db->sql_exec($sql);
-		$row = $db->fetch_row();
+		$connection->sql_exec($sql);
+		$row = $connection->fetch_row();
 		
 		chat_user :: _set_session_chat_user_data($row);
 		
@@ -191,13 +191,13 @@ class chat_user extends object
 		$color = $data['color'];
 		$time = time();
 		
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$sql = "UPDATE chat_user 
 						SET time={$time}, status = {$status},
 							color = {$color}, nickname = {$nickname},
 						WHERE id='{$chat_user_id}'";
 
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 
 		chat_user :: _set_session_chat_user_data($row);
 	}

@@ -25,7 +25,6 @@ class test_id_generator extends UnitTestCase
 	*/
 	function setUp()
 	{
-		driver_test_manager::restore();
 		$this->conn = driver_test_manager::get_connection();
 		$this->idgen = $this->conn->get_id_generator();
 	} 

@@ -23,15 +23,33 @@ class db_table
 	
 	var $_constraints = array();
 
-  var $connection = null;
-
+  var $_connection = null;
+  
+  var $_sql_builder = null;
+  
   function db_table()
   {
   	$this->_db_table_name = $this->_define_db_table_name();
     $this->_columns = $this->_define_columns();
     $this->_constraints = $this->_define_constraints();
    
-    $this->connection=& db_factory :: get_connection();
+    $this->_connection =& $this->_get_connection();
+    $this->_sql_builder =& $this->_get_sql_builder();
+  }
+  
+  function get_table_name()
+  {
+		return $this->_db_table_name;
+	}
+  
+  function & _get_connection()
+  {
+  	return db_factory :: get_connection();
+  }
+
+  function & _get_sql_builder()
+  {
+  	return sql_builder :: instance();
   }
       
   function _define_db_table_name()
@@ -53,7 +71,23 @@ class db_table
   {
   	return array();
   }
-    
+  
+  function & _filter_row($row)
+  {
+  	$filtered = array();
+  	foreach($row as $key => $value)
+  	{
+  		if($this->has_column($key))
+  			$filtered[$key] = $value;		
+  	}
+  	return $filtered;
+  }
+  
+  function use_id_generator()
+  {
+  	return true;
+  }
+      
   function has_column($name)
   {
   	return isset($this->_columns[$name]);
@@ -83,9 +117,7 @@ class db_table
   	if(!$this->has_column($column_name))
   		return false;
   		
-  	return (is_array($this->_columns[$column_name]) && isset($this->_columns[$column_name]['type'])) ? 
-  		$this->_columns[$column_name]['type'] : 
-  		'';
+  	return $this->_columns[$column_name]['type'];
   }
   
   function get_primary_key_name()
@@ -97,134 +129,83 @@ class db_table
   {
   	if (!is_array($row))
   	{
-  	  error('not array',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('row' => $row)
-    	);
+  	  error('not array', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
   	}
 		
 		$filtered_row =& $this->_filter_row($row);
 		
-    return $this->connection->sql_insert($this->_db_table_name, $filtered_row, $this->get_column_types());
+		$criteria = new criteria();
+		foreach($filtered_row as $field => $value)
+		{
+			$criteria->add($this->_db_table_name . '.' . $field, $value);
+		}
+		
+    return $this->_sql_builder->do_insert($criteria, $this->_connection);
   }
-  
-  function & _filter_row($row)
+      
+  function update($row, $select_criteria)
   {
-  	$filtered = array();
-  	foreach($row as $key => $value)
-  	{
-  		if($this->has_column($key))
-  			$filtered[$key] = $value;		
-  	}
-  	return $filtered;
-  }
-    
-  function update($row, $conditions)
-  { 
   	if (!is_array($row))
   	{
-  	  error('not array',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('row' => $row)
-    	);
+  	  error('not array', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
   	}
 
   	$filtered_row =& $this->_filter_row($row);
-  	  
-    return $this->connection->sql_update($this->_db_table_name, $filtered_row, $conditions, $this->get_column_types());
-  } 
-
-  function update_by_id($id, $data)
-  {
-		if (!$this->_primary_key_name)
+  	
+  	$update_values = new criteria();
+		foreach($filtered_row as $field => $value)
 		{
-    	error('primary id column not set',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+			$update_values->add($this->_db_table_name . '.' . $field, $value);
 		}
-
-  	return $this->update($data, "{$this->_primary_key_name}='{$id}'");
+  	
+  	return $this->_sql_builder->do_update($select_criteria, $update_values, $this->_connection);
   } 
-  
-  function get_row_by_id($id)
-  {
-		if (!$this->_primary_key_name)
-		{
-    	error('primary id column not set',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}
+        
+  function & select($criteria=null)
+	{
+  	if($criteria == null)
+  	{
+  		$criteria = new criteria();
+  	}
 
-		$data = $this->get_list($this->_primary_key_name . "='{$id}'");
+		for(($it = &$criteria->get_iterator()); $it->valid(); $it->next())
+		{
+			$c = $it->current();
+		}
 		
-		return current($data);
-  }
-  
-  function get_num_rows()
-  {
-  }
-      
-  function & get_list($conditions='', $order='', $group_by_column='', $start=0, $count=0)
-	{			
-    $this->connection->sql_select($this->_db_table_name, '*', $conditions, $order, $start, $count);
-   
-		if ($group_by_column === '')
-			$group_by_column = $this->_primary_key_name;
- 		 				
-		if($group_by_column)
-    	$result =& $this->connection->get_array($group_by_column);
-    else
-    	$result =& $this->connection->get_array();
-    	
-    return $result;
+		$criteria->clear_select_columns();
+		
+		foreach(array_keys($this->_columns) as $column_name)
+			$criteria->add_select_column($column_name);
+		
+		return $this->_sql_builder->do_select($criteria, $this->_connection);
 	}
 	
-  function delete($conditions='')
-  {  	
-		$affected_rows = $this->_prepare_affected_rows($conditions);
+  function delete($criteria=null)
+  { 
+  	if($criteria == null)
+  	{
+  		$criteria = new criteria();
+  		$criteria->add_select_column($this->_db_table_name . '.*');
+  	}
+  	 	
+		$affected_rs =& $this->_sql_builder->do_select($criteria, $this->_connection);
 		
-    $this->_delete_operation($conditions, $affected_rows);
+    $this->_delete_operation($criteria, $affected_rs);
     
-    $this->_cascade_delete($affected_rows);
+    $this->_cascade_delete($affected_rs);
     
     return true;
 	}
 	
-	function _delete_operation($conditions, $affected_rows)
+	function _delete_operation($criteria, &$affected_rs)
 	{
-		$this->connection->sql_delete($this->_db_table_name, $conditions);
+		return $this->_sql_builder->do_delete($criteria, $this->_connection);
 	}
-	
-	function delete_by_id($id)
-	{
-		if (!$this->_primary_key_name)
-		{
-    	error('primary id column not set',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}
-
-		return $this->delete(array($this->_primary_key_name => $id));
-	}
-  	  	
-  function get_last_insert_id()
-  {		
-		return $this->connection->get_sql_insert_id($this->_db_table_name, $this->_primary_key_name);
-	}
-
-  function get_max_id()
-  {			
-		return $this->connection->get_max_column_value($this->_db_table_name, $this->_primary_key_name);
-	}
-
-  function get_table_name()
-  {
-		return $this->_db_table_name;
-	}
-  	
-	function _cascade_delete($affected_rows)
-	{
-		if($this->auto_constraints_enabled())
-			return;
-			
-		if (!count($affected_rows))
+	  	
+	function _cascade_delete(&$affected_rs)
+	{			
+		if ($affected_rs->get_record_count() == 0)
 			return;
 
 		foreach($this->_constraints as $id => $constraints_array)
@@ -239,7 +220,7 @@ class db_table
 				if(!$db_table->has_column($column_name))
 				{
 		    	error('no such a column',
-		    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+		    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 		    		array(
 		    			'table' => $table_name,
 		    			'column_name' => $column_name
@@ -248,31 +229,16 @@ class db_table
 				}
 				
 				$values = array();
-				foreach($affected_rows as $data)
-					$values[] = $data[$id];
+				$affected_rs->first();
+				while($affected_rs->next())
+					$values[] = $affected_rs->get_int($id);
 				
-				$db_table->delete(
-					sql_in($column_name, $values, $db_table->get_column_type($column_name)));
+				$criteria = new criteria();
+				$criteria->add($this->_db_table_name . '.' . $column_name, $values, criteria::IN());
+				$db_table->delete($criteria);
 			}
 		}
-	}
-
-	function & _prepare_affected_rows($conditions)
-	{
-		$affected_rows = array();
-		
-		if($this->auto_constraints_enabled())
-			return $affected_rows;
-			
-		$affected_rows =& $this->get_list($conditions);
-		
-		return $affected_rows;
-	}
-		
-	function auto_constraints_enabled()
-	{
-		return (defined('DB_AUTO_CONSTRAINTS') && DB_AUTO_CONSTRAINTS == true);
-	}
+	}	
 }
 
 ?>

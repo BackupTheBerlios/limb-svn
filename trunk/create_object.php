@@ -43,9 +43,9 @@ if($_REQUEST['action'] == 'create_object' && $params_set)
 
 	debug :: add_timing_point('start');
 
-  $db =& db_factory :: instance();
+  $connection = & db_factory :: get_connection();
   
-  $db->begin();
+  $connection->begin();
   
 	define('CONTENT_LOCALE_ID', 'ru');
 	
@@ -74,7 +74,7 @@ if($_REQUEST['action'] == 'create_object' && $params_set)
 	$access_policy->save_object_access($object, $parent_object);
 
 
-  $db->commit();
+  $connection->commit();
   debug :: add_timing_point('finish');
 	if (debug :: is_console_enabled())
 		echo debug :: parse_html_console();

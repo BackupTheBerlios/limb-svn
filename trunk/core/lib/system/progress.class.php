@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: progress.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define( 'PROGRESS_MAX_MESSAGE_LIFETIME', 60*60*24);
@@ -25,12 +25,12 @@ class progress
 	var $processes_stack = array();
 	var $current_process = null;
 	
-	var $db = null;
+	var $connection = null;
 	var $session_id = null;
 	
   function progress( )
   {
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
   	$this->session_id = sys :: client_ip();
   }
   
@@ -92,7 +92,7 @@ class progress
 	  	$values['message'] = $string;
 	  	$values['time'] = time();
 	  	
-	  	$this->db->sql_insert('sys_progress', $values);
+	  	$this->connection->sql_insert('sys_progress', $values);
 	  }
   }
         
@@ -100,14 +100,14 @@ class progress
   {
   	$this =& progress::instance();
 
-  	$message_id = $this->db->escape($message_id);
+  	$message_id = $this->connection->escape($message_id);
   	  	  	  	  	
-		$this->db->sql_select('sys_progress', '*', "id>{$message_id} AND session_id='{$this->session_id}'", 'id');
+		$this->connection->sql_select('sys_progress', '*', "id>{$message_id} AND session_id='{$this->session_id}'", 'id');
 		
-		$messages = $this->db->get_array();
+		$messages = $this->connection->get_array();
 				
 		if($messages)
-			$this->db->sql_delete('sys_progress', "id>{$message_id} AND session_id='{$this->session_id}'");
+			$this->connection->sql_delete('sys_progress', "id>{$message_id} AND session_id='{$this->session_id}'");
 										
 		return $messages;
   }
@@ -115,7 +115,7 @@ class progress
   function cleanup()
   {
   	$this =& progress::instance();
-  	$this->db->sql_delete('sys_progress', "session_id='{$this->session_id}' OR (" . time(). "-time) > " . PROGRESS_MAX_MESSAGE_LIFETIME);
+  	$this->connection->sql_delete('sys_progress', "session_id='{$this->session_id}' OR (" . time(). "-time) > " . PROGRESS_MAX_MESSAGE_LIFETIME);
   }
 }
 

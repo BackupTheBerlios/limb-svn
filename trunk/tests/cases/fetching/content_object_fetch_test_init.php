@@ -73,8 +73,8 @@ class content_object_fetch_test_init extends site_object_fetch_test_init
   {
   	parent :: _clean_up();
   	
-  	$this->db->sql_delete('sys_object_version');
-  	$this->db->sql_delete('news_object');
+  	$this->connection->sql_delete('sys_object_version');
+  	$this->connection->sql_delete('news_object');
   }
 
   function _insert_content_object_records(& $object)

@@ -14,7 +14,7 @@ SimpleTestOptions::ignore('test_db_case');
 
 class test_db_case extends UnitTestCase 
 {   	 	
-	var $db = null;
+	var $connection = null;
 	
 	var $dump_file = '';
 
@@ -25,7 +25,7 @@ class test_db_case extends UnitTestCase
 	
   function test_db_case() 
   {
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
   	
   	parent :: UnitTestCase();
   }
@@ -33,7 +33,7 @@ class test_db_case extends UnitTestCase
   function _clean_up()
   {
   	foreach($this->tables_list as $table)
-  		$this->db->sql_delete($table);
+  		$this->connection->sql_delete($table);
   }
   
   function _get_dump_file_path()
@@ -85,14 +85,12 @@ class test_db_case extends UnitTestCase
   	
   	foreach($this->sql_array as $sql)
   	{    		
-  		$this->db->sql_exec($sql);
+  		$this->connection->sql_exec($sql);
   	}
   }
       
   function setUp()
   {
-  	debug_mock :: init($this);
-  	
   	$this->_load_tables_list();	
   	
   	$this->_clean_up();	
@@ -102,8 +100,6 @@ class test_db_case extends UnitTestCase
   
   function tearDown()
   {
-  	debug_mock :: tally();
-  	
   	$this->_clean_up();    	
   }    
   

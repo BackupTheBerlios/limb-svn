@@ -22,13 +22,13 @@ Mock::generatePartial
 class test_stats_referer extends UnitTestCase 
 {
   var $stats_referer = null;
-  var $db = null;
+  var $connection = null;
 	
   function test_stats_referer() 
   {
   	parent :: UnitTestCase();
   	
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
   }
   
   function setUp()
@@ -48,7 +48,7 @@ class test_stats_referer extends UnitTestCase
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_stat_referer_url');
+  	$this->connection->sql_delete('sys_stat_referer_url');
   }
   
   function test_get_referer_page_id_no_referer()
@@ -71,8 +71,8 @@ class test_stats_referer extends UnitTestCase
   	
   	$id = $this->stats_referer->get_referer_page_id();
   	
-  	$this->db->sql_select('sys_stat_referer_url');
-  	$arr = $this->db->get_array();
+  	$this->connection->sql_select('sys_stat_referer_url');
+  	$arr = $this->connection->get_array();
   	$record = current($arr);
   	
   	$this->assertEqual(sizeof($arr), 1);

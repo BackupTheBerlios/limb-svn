@@ -29,6 +29,11 @@ class criterion_iterator
 		$this->criteria_keys = $criteria->keys();
 		$this->criteria_size = count($this->criteria_keys);
 	} 
+	
+	function count()
+	{
+		return $this->criteria_size;
+	}
 
 	function rewind()
 	{

@@ -178,15 +178,15 @@ class fetcher
 	
 	function _get_object_class_name_by_id($object_id)
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$sql = "SELECT sc.class_name 
 			FROM sys_site_object as sso, sys_class as sc
 			WHERE sso.class_id = sc.id
 			AND sso.id={$object_id}";
 		
-		$db->sql_exec($sql);
-		$row = $db->fetch_row();
+		$connection->sql_exec($sql);
+		$row = $connection->fetch_row();
 		if (!isset($row['class_name']))
 		{
 			debug :: write_error('object class name not found',

@@ -64,8 +64,6 @@ class test_site_object_controller extends UnitTestCase
   	$this->site_object_controller->setReturnValue('get_actions_definitions', $this->test_actions_definition);
   	
   	$this->site_object_controller->site_object_controller();
-  	
-  	debug_mock :: init($this);
   }
   
   function tearDown()
@@ -73,8 +71,6 @@ class test_site_object_controller extends UnitTestCase
 		$this->site_object_controller->tally();
 		unset($this->site_object_controller);
 		unset($_REQUEST['action']);
-		
-		debug_mock :: tally();
   }
       
   function test_action_exists()
@@ -111,16 +107,11 @@ class test_site_object_controller extends UnitTestCase
   function test_get_empty_action_object()
   {
   	$_REQUEST['action'] = 'no_such_action';
-  	
-  	debug_mock :: expect_write_warning('action not found', 
-  		array (
-					  'class' => 'site_object_controller_test_version1',
-					  'action' => 'no_such_action',
-					  'default_action' => 'display',
-					)
-		);
-  	
+  	  	
   	$this->assertIdentical($this->site_object_controller->determine_action(), false);
+  	
+  	$this->assertErrorPattern('/action not found/');
+  	
   	$action =& $this->site_object_controller->get_action_object();
   	
   	$this->assertNotNull($action);
@@ -149,19 +140,13 @@ class test_site_object_controller extends UnitTestCase
   { 
   	$_REQUEST['action'] = 'no_such_action';
   	
-  	debug_mock :: expect_write_warning('action not found', 
-  		array (
-					  'class' => 'site_object_controller_test_version1',
-					  'action' => 'no_such_action',
-					  'default_action' => 'display',
-					)
-		);
-
   	$this->assertIdentical($this->site_object_controller->determine_action(), false);
-
-		debug_mock :: expect_write_error('template is null');
+  	
+		$this->assertErrorPattern('/action not found/');
 		
-  	$this->site_object_controller->display_view();  	
+  	$this->site_object_controller->display_view(); 
+  	
+  	$this->assertErrorPattern('/template is null/');
   }  
   
   function test_transaction_required()

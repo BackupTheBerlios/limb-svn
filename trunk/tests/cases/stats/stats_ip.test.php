@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_ip.test.php 37 2004-03-13 10:36:02Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/stats/stats_ip.class.php');
@@ -23,13 +23,13 @@ Mock::generatePartial
 class test_stats_ip extends UnitTestCase 
 {
   var $stats_ip = null;
-  var $db = null;
+  var $connection = null;
 	
   function test_stats_ip() 
   {
   	parent :: UnitTestCase();
   	
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
   }
   
   function setUp()
@@ -49,7 +49,7 @@ class test_stats_ip extends UnitTestCase
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_stat_ip');
+  	$this->connection->sql_delete('sys_stat_ip');
   }
   
   function test_new_host() 
@@ -112,8 +112,8 @@ class test_stats_ip extends UnitTestCase
 
   function _check_stats_ip_record($total_records, $ip, $date)
   {
-  	$this->db->sql_select('sys_stat_ip');
-  	$arr = $this->db->get_array('id');
+  	$this->connection->sql_select('sys_stat_ip');
+  	$arr = $this->connection->get_array('id');
 
   	$this->assertTrue(sizeof($arr), $total_records, 'ip count is wrong');
   	$this->assertTrue(isset($arr[$ip]));

@@ -62,32 +62,40 @@ function & create_object($class_name, $arguments = array())
 
 function & instantiate_object($class_name, $arguments = array())
 {
-	if(	!isset($GLOBALS['global_'. $class_name]) || 
-			get_class($GLOBALS['global_'. $class_name]) != $class_name)
+	$php_class_name = strtolower($class_name);
+	if(	!isset($GLOBALS['global_'. $php_class_name]) || 
+			get_class($GLOBALS['global_'. $php_class_name]) != $php_class_name)
 	{  		
 		$obj =& create_object($class_name, $arguments);
 		
-		$GLOBALS['global_' . $class_name] =& $obj;
+		$GLOBALS['global_' . $php_class_name] =& $obj;
 	}
 	else
-		$obj =& $GLOBALS['global_' . $class_name];
+		$obj =& $GLOBALS['global_' . $php_class_name];
 	
 	return $obj;
 }
 
 function & instantiate_session_object($class_name, $arguments = array())
 {
-	if(	!isset($_SESSION['global_'. $class_name]) || 
-			get_class($_SESSION['global_'. $class_name]) != $class_name)
+	$php_class_name = strtolower($class_name);
+	if(	!isset($_SESSION['global_'. $php_class_name]) || 
+			get_class($_SESSION['global_'. $php_class_name]) != $php_class_name)
 	{  		
 		$obj =& create_object($class_name, $arguments);
 		
-		$_SESSION['global_' . $class_name] =& $obj;
+		$_SESSION['global_' . $php_class_name] =& $obj;
 		$_SESSION['session_classes_paths'][] = $obj->__get_class_path();
 	}
 	else
-		$obj =& $_SESSION['global_' . $class_name];
+		$obj =& $_SESSION['global_' . $php_class_name];
 	
 	return $obj;
 }
+
+function register_singleton_object(&$object)
+{	
+	$GLOBALS['global_' . get_class($object)] =& $object;
+}
+
 ?>

@@ -154,10 +154,10 @@ class test_fetching extends test_limb_case
  		$this->objects = array();
  		$this->child_node_ids = array();
  		
- 		$this->db->sql_delete('sys_site_object_tree');
- 		$this->db->sql_delete('sys_site_object');
- 		$this->db->sql_delete('sys_object_access');
- 		$this->db->sql_delete('sys_action_access');
+ 		$this->connection->sql_delete('sys_site_object_tree');
+ 		$this->connection->sql_delete('sys_site_object');
+ 		$this->connection->sql_delete('sys_object_access');
+ 		$this->connection->sql_delete('sys_action_access');
   }
   
   function _add_object($object)

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: pop3.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -18,7 +18,7 @@
 
 class pop3 
 {
-	var $_connection;
+	var $connection;
 	var $_user;
 	var $_host;
 	var $_password;

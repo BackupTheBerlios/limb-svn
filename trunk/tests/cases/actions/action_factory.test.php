@@ -16,17 +16,7 @@ class test_action_factory extends UnitTestCase
   {
   	parent :: UnitTestCase();
   }
-  
-  function setUp()
-  {
-  	debug_mock :: init($this);
-  }
-  
-  function tearDown()
-  {
-  	debug_mock :: tally();
-  }
-  
+    
   function test_create_ok()
   {
   	$c =& action_factory :: create('action');
@@ -36,9 +26,9 @@ class test_action_factory extends UnitTestCase
   
   function test_create_no_such_action()
   {
-  	debug_mock :: expect_write_error('action not found', array('class_path' => 'no_such_action'));
-  	
   	$c =& action_factory :: create('no_such_action');
+  	
+  	$this->assertErrorPattern('/action not found/');
   	
   	$this->assertIsA($c, 'empty_action'); 
   }

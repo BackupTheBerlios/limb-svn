@@ -16,12 +16,12 @@ require_once(LIMB_DIR . 'core/model/search/search_text_normalizer_factory.class.
 
 class full_text_indexer
 {
-	var $db = null;
+	var $connection = null;
 	var $string_normalizer = null;
 			
 	function full_text_indexer()
 	{
-		$this->db = db_factory :: instance();
+		$this->connection= db_factory :: get_connection();
 	} 
 	
 	function & instance()
@@ -54,7 +54,7 @@ class full_text_indexer
 			
 			if($text =& $indexer->normalize_string($attributes[$attribute_name], $normalizer_name))
 			{
-				$indexer->db->sql_insert('sys_full_text_index', 
+				$indexer->connection->sql_insert('sys_full_text_index', 
 					array(
 						'body' => $text,
 						'attribute' => $attribute_name,
@@ -71,7 +71,7 @@ class full_text_indexer
 	{
 		$indexer =& full_text_indexer :: instance();
 		
-		$indexer->db->sql_delete('sys_full_text_index', array('object_id' => $site_object->get_id()));
+		$indexer->connection->sql_delete('sys_full_text_index', array('object_id' => $site_object->get_id()));
 	}
 		 
 	function & normalize_string(&$content, $normalizer_name='search_text_normalizer')

@@ -15,26 +15,22 @@ require_once(LIMB_DIR . 'core/model/sys_param.class.php');
 
 class test_sys_params extends UnitTestCase 
 {
-  var $db = null;
+  var $connection = null;
   
   function test_sys_params() 
   {
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
   	parent :: UnitTestCase();
   }
   
   function setUp()
   {
-  	debug_mock :: init($this);
-
-  	$this->db->sql_delete('sys_param');
+  	$this->connection->sql_delete('sys_param');
   }
 
   function tearDown()
   {
-  	debug_mock :: tally();
-  	
-  	$this->db->sql_delete('sys_param');
+  	$this->connection->sql_delete('sys_param');
   }
     
   function test_save_char_value()
@@ -159,16 +155,11 @@ class test_sys_params extends UnitTestCase
   function test_save_wrong_type_value()
   {
   	$sp =& sys_param :: instance();
-		
-		debug_mock :: expect_write_error(
-			'trying to save undefined type in sys_param',
-			array (
-			  'type' => 'sadnkfjhskjfd',
-			  'param' => 'param_1',
-			)
-		);
-		
+				
   	$result = $sp->save_param('param_1', 'sadnkfjhskjfd', 123.053);
+  	
+  	$this->assertErrorPattern('/trying to save undefined type in sys_param/');
+  	
   	$this->assertNotNull($result);
   	
   	$db_table =& db_table_factory :: instance('sys_param');
@@ -192,16 +183,10 @@ class test_sys_params extends UnitTestCase
   {
   	$sp =& sys_param :: instance();
 
-		debug_mock :: expect_write_error(
-			'trying to get undefined type in sys_param',
-			array (
-			  'type' => 'blabla',
-			  'param' => 'param_1',
-			)
-		);
-
 		$number = 123.053;
   	$sp->save_param('param_1', 'float', $number);
+  	
+  	$this->assertErrorPattern('/trying to save undefined type in sys_param/');
 
   	$this->assertNull($sp->get_param('param_1', 'blabla'));
   	$this->assertNull($sp->get_param('param_2'));    	

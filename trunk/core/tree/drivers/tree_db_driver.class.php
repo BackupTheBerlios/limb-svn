@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'core/tree/drivers/tree_driver.class.php');
 
 class tree_db_driver extends tree_driver
 {
-	var $_db = null;
+	var $connection = null;
 
 	/**
 	* 
@@ -45,7 +45,7 @@ class tree_db_driver extends tree_driver
 
 	function tree_db_driver()
 	{
-		$this->_db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 		
 		parent :: tree_driver();
 	}
@@ -57,8 +57,8 @@ class tree_db_driver extends tree_driver
 	
 	function & _get_result_set($sql)
 	{
-		$this->_db->sql_exec($sql);
-		$nodes =& $this->_db->get_array('id');
+		$this->connection->sql_exec($sql);
+		$nodes =& $this->connection->get_array('id');
 
 		return $nodes;
 	} 
@@ -66,8 +66,8 @@ class tree_db_driver extends tree_driver
 	function _assign_result_set(&$nodes, $sql)
 	{
 		$this->_sql = $sql;
-		$this->_db->sql_exec($sql);
-		$this->_db->assign_array($nodes, 'id');
+		$this->connection->sql_exec($sql);
+		$this->connection->assign_array($nodes, 'id');
 	} 
 	
 	/**
@@ -91,7 +91,7 @@ class tree_db_driver extends tree_driver
 		
 		$this->_verify_user_values($values);
 				
-		return $this->_db->sql_update($this->_node_table, $values, array('id' => $id));
+		return $this->connection->sql_update($this->_node_table, $values, array('id' => $id));
 	} 
 	
 	/**

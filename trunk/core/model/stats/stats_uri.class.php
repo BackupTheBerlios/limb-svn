@@ -13,12 +13,12 @@ require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
 
 class stats_uri
 {	
-	var $db = null;
+	var $connection = null;
 	var $url = null;
 	
 	function stats_uri()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 		$this->url = new uri();
 	}
 
@@ -39,9 +39,9 @@ class stats_uri
 	
 	function _get_existing_uri_record_id($uri)
 	{
-		$this->db->sql_select('sys_stat_uri', '*', 
+		$this->connection->sql_select('sys_stat_uri', '*', 
 			"uri='" . $uri . "'");
-		if ($uri_data = $this->db->fetch_row())
+		if ($uri_data = $this->connection->fetch_row())
 			return $uri_data['id'];
 		else
 			return false;	
@@ -49,9 +49,9 @@ class stats_uri
 	
 	function _insert_uri_record($uri)
 	{
-		$this->db->sql_insert('sys_stat_uri', 
+		$this->connection->sql_insert('sys_stat_uri', 
 			array('uri' => $uri));
-		return $this->db->get_sql_insert_id('sys_stat_uri');		
+		return $this->connection->get_sql_insert_id('sys_stat_uri');		
 	}
 
 	function clean_url($raw_url)

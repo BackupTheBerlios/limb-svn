@@ -11,6 +11,7 @@
 
 // we need this for the fetchmode result_set flags (constants) that are passed to execute_query()
 require_once(LIMB_DIR . '/core/lib/db/result_set.class.php');
+require_once(LIMB_DIR . '/core/lib/db/transaction.class.php');
 
 /**
 * connection is an abstract base class for DB dialect implementations, and must be

@@ -28,11 +28,11 @@ class chat_system
 	
 	function enter_chat_room($chat_user_id, $nickname, $chat_room_id)
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$sql = "UPDATE chat_user
 						SET chat_room_id='{$chat_room_id}', deleted=0
 						WHERE id='{$chat_user_id}'";
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
 		setcookie('chat_room_id', $chat_room_id, time()+365*24*3600, '/');
 		
@@ -49,13 +49,13 @@ class chat_system
 		if($chat_room_id == 0)
 			return;
 
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 
 		$sql = "UPDATE chat_user
 						SET chat_room_id=0, deleted=1
 						WHERE id='{$chat_user_id}'";
 
-		$db->sql_exec($sql);	
+		$connection->sql_exec($sql);	
 
 		$message = "system_message:".
 			sprintf(strings :: get('user_leaves_chat_room', 'chat'), $nickname);
@@ -71,7 +71,7 @@ class chat_system
 	
 	function send_message($message, $chat_room_id, $sender_id,  $recipient_id=-1, $file=null)
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$time = time();
 		$message = htmlspecialchars($message);
 		
@@ -83,7 +83,7 @@ class chat_system
 						('{$message}', '{$chat_room_id}', {$time}, '{$sender_id}', 
 							'{$recipient_id}', '{$file_id}')";
 
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 	}
 
 	function add_file($file, $chat_room_id, $sender_id)
@@ -94,7 +94,7 @@ class chat_system
 		
 		if ($file['error'] == 0)
 		{
-			$db =& db_factory :: instance();		
+			$connection = & db_factory :: get_connection();		
 			
 			$file_id = md5(uniqid(""));
 			$file_data = addslashes(file_get_contents($file['tmp_name']));
@@ -106,7 +106,7 @@ class chat_system
 							values
 							('{$file_id}', '{$file_data}', '{$file['type']}', '{$file['size']}', '{$info[0]}', '{$info[1]}')";
 			
-			$db->sql_exec($sql);
+			$connection->sql_exec($sql);
 		}
 		elseif ($file['error'] == 1 || $file['error'] == 2)
 		{
@@ -122,14 +122,14 @@ class chat_system
 
 	function get_messages_for_user($recipient_id, $chat_room_id, $last_message_id = 0)
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 
 		$sql = "SELECT ignorant_id FROM chat_ignores WHERE chat_user_id='{$recipient_id}'";
 		
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		$ignorant_ids = array();
 		
-		while($row = $db->fetch_row())
+		while($row = $connection->fetch_row())
 			$ignorant_ids[] = $row['ignorant_id'];
 
 		$ignorant_condition = '';
@@ -156,23 +156,23 @@ class chat_system
 						ORDER BY cm.id DESC
 						{$limit}";
 
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 
-		return array_reverse($db->get_array());
+		return array_reverse($connection->get_array());
 	}
 
 	function get_users_for_room($chat_room_id, $chat_user_id = '')
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		
 		$sql = "SELECT chat_user_id
 						FROM chat_ignores
 						WHERE ignorant_id='{$chat_user_id}'";
 
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		$ignorer_ids = array();
 		
-		while($row = $db->fetch_row())
+		while($row = $connection->fetch_row())
 			$ignorer_ids[] = $row['chat_user_id'];
 
 		$ignorer_condition = '';
@@ -185,8 +185,8 @@ class chat_system
 						{$ignorer_condition}
 						ORDER BY id";
 
-		$db->sql_exec($sql);
-		$users_list = $db->get_array('id');
+		$connection->sql_exec($sql);
+		$users_list = $connection->get_array('id');
 
 		if(empty($chat_user_id))
 			return $users_list;
@@ -195,8 +195,8 @@ class chat_system
 						FROM chat_ignores
 						WHERE chat_user_id = {$chat_user_id}";
 
-		$db->sql_exec($sql);
-		$ignorants = $db->get_array('ignorant_id');
+		$connection->sql_exec($sql);
+		$ignorants = $connection->get_array('ignorant_id');
 		
 		foreach($users_list as $data)
 			$users_list[$data['id']]['ignored'] = $ignorants[$data['id']] ? 1 : 0;
@@ -206,33 +206,33 @@ class chat_system
 	
 	function get_chat_file($file_id)
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		
 		$sql = "SELECT *
 						FROM chat_file
 						WHERE id ='{$file_id}'";
 
-		$db->sql_exec($sql);
-		$file = $db->fetch_row();
+		$connection->sql_exec($sql);
+		$file = $connection->fetch_row();
 		return $file;
 	}
 	
 	function update_user_time($chat_user_id)
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$time = time();
 		$sql = "UPDATE chat_user SET time={$time} WHERE id='{$chat_user_id}'";
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 	}
 	
 	function warn_inactive_users()
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$warn_time = time() - CHAT_WARN_INACTIVE_USERS_TIME;
 		$sql = "SELECT * FROM chat_user WHERE time<{$warn_time}";
 
-		$db->sql_exec($sql);
-		$users_list = $db->get_array('id');
+		$connection->sql_exec($sql);
+		$users_list = $connection->get_array('id');
 		
 		foreach($users_list as $user)
 		{
@@ -244,12 +244,12 @@ class chat_system
 	
 	function mark_deleted_users()
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$delete_time = time() - CHAT_DELETE_INACTIVE_USERS_TIME;
 		$sql = "SELECT * FROM chat_user WHERE time<{$delete_time}";
 
-		$db->sql_exec($sql);
-		$users_list = $db->get_array('id');
+		$connection->sql_exec($sql);
+		$users_list = $connection->get_array('id');
 		
 		if(!sizeof($users_list))
 			return;
@@ -266,30 +266,30 @@ class chat_system
 						SET deleted=1 
 						WHERE id IN (" . implode(', ', $inactive_users_ids) . ")";
 		
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 	}
 	
 	function clean_database()
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$delete_time = time() - CHAT_DELETE_INACTIVE_USERS_TIME;
 		$sql = "SELECT file_id FROM chat_message WHERE time<{$delete_time}";
 
-		$db->sql_exec($sql);
-		$files_list = $db->get_array('file_id');
+		$connection->sql_exec($sql);
+		$files_list = $connection->get_array('file_id');
 		if(count($files_list))
 		{
 			$sql = "DELETE FROM chat_file 
 							WHERE id IN ('". implode("','", array_keys($files_list)) . "')";
-			$db->sql_exec($sql);
+			$connection->sql_exec($sql);
 		}
 
 		$sql = "DELETE FROM chat_message WHERE time<{$delete_time}";
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
 		$sql = "SELECT DISTINCT sender_id FROM chat_message WHERE time>={$delete_time}";		
-		$db->sql_exec($sql);
-		$active_users_list = $db->get_array('sender_id');
+		$connection->sql_exec($sql);
+		$active_users_list = $connection->get_array('sender_id');
 		
 		$chat_users_condition = '';
 		$chat_ignores_condition = '';
@@ -301,10 +301,10 @@ class chat_system
 		}
 		
 		$sql = "DELETE FROM chat_user WHERE deleted=1 ". $chat_users_condition;
-		$db->sql_exec($sql);		
+		$connection->sql_exec($sql);		
 
 		$sql = "DELETE FROM chat_ignores WHERE 1 ". $chat_ignores_condition;
-		$db->sql_exec($sql);		
+		$connection->sql_exec($sql);		
 	}
 	
 	function cleanup()
@@ -316,15 +316,15 @@ class chat_system
 
 	function toggle_ignore_user($ignorer_id, $ignorer_nickname, $ignorant_id, $chat_room_id)
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		
 		$sql = "SELECT count(*) as count
 						FROM chat_ignores 
 						WHERE chat_user_id='{$ignorer_id}' AND ignorant_id='{$ignorant_id}'";
 
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
-		$row = $db->fetch_row();
+		$row = $connection->fetch_row();
 		if ($row['count'])
 		{
 			$sql = "DELETE FROM chat_ignores
@@ -346,13 +346,13 @@ class chat_system
 
 		}
 
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		chat_system :: system_message($message, $chat_room_id, $ignorant_id);
 	}
 
 	function set_user_properties($chat_user_id, $properties)
 	{
-		$db =& db_factory :: instance();		
+		$connection = & db_factory :: get_connection();		
 		$time = time();
 		$set_statement = '';
 		foreach($properties as $property => $value)
@@ -363,7 +363,7 @@ class chat_system
 						{$set_statement}
 						WHERE id = {$chat_user_id}";
 		
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 	}
 }
 ?>

@@ -24,10 +24,10 @@ class phpbb_ranks_options_datasource extends datasource
 	
 	function get_options_array()
 	{
-		$db =& db_factory :: instance();
-		$db->sql_select('phpbb_ranks');
+		$connection = & db_factory :: get_connection();
+		$connection->sql_select('phpbb_ranks');
 		
-		$rows = $db->get_array('rank_id');
+		$rows = $connection->get_array('rank_id');
 		
 		$result = array(0 => '----');
 		foreach($rows as $rank_id => $data)

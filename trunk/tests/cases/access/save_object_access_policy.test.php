@@ -64,13 +64,9 @@ class test_save_object_access_policy extends test_db_case
   	$this->parent_object->setReturnValue('get_class_id', -2);
   	$this->parent_object_controller->setReturnValue('determine_action', 'display');
   	
-  	debug_mock :: expect_write_error('parent object has no acccess records at all', 
-  		array(
-  			'parent_id' => -2
-  		)
-  	);
-  	
   	$this->assertFalse($this->ac->save_object_access($this->object, $this->parent_object));
+  	
+  	$this->assertErrorPattern('/parent object has no acccess records at all/'); 
   }    
 
   function test_save_object_access_wrong_action_no_parent_records()
@@ -80,13 +76,9 @@ class test_save_object_access_policy extends test_db_case
   	$this->parent_object->setReturnValue('get_class_id', 10);
   	$this->parent_object_controller->setReturnValue('determine_action', 'display');
   	
-  	debug_mock :: expect_write_error('parent object has no acccess records at all', 
-  		array(
-  			'parent_id' => -2
-  		)
-  	);
-  	
   	$this->assertFalse($this->ac->save_object_access($this->object, $this->parent_object));
+  	
+  	$this->assertErrorPattern('/parent object has no acccess records at all/'); 
   }    
 
   function test_save_object_access_save_group_template()

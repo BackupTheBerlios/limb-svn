@@ -52,8 +52,8 @@ class phpbb_user extends object
 		$phpbb_user_data['user_email'] = $data['email'];
   	$phpbb_user_data['username'] = $data['identifier'];
 
-		$db =& db_factory :: instance();
-		return $db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
+		$connection = & db_factory :: get_connection();
+		return $connection->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
 	}
 
 	function change_password()
@@ -63,8 +63,8 @@ class phpbb_user extends object
 		$phpbb_user_data = array();
 		$phpbb_user_data['user_password'] = $data['password'];
 
-		$db =& db_factory :: instance();
-		return $db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
+		$connection = & db_factory :: get_connection();
+		return $connection->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
 	}
 
 	function change_own_password($password)
@@ -79,16 +79,16 @@ class phpbb_user extends object
 		$phpbb_user_data = array();
 		$phpbb_user_data['user_newpasswd'] = $data['generated_password'];
 
-		$db =& db_factory :: instance();
-		return $db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
+		$connection = & db_factory :: get_connection();
+		return $connection->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
 	}
 	
 	function _delete_cookie()
 	{
-		$db =& db_factory :: instance();
-		$db->sql_select("phpbb_config", '*', array('config_name' => 'cookie_name'));
+		$connection = & db_factory :: get_connection();
+		$connection->sql_select("phpbb_config", '*', array('config_name' => 'cookie_name'));
 		
-		$row = $db->fetch_row();
+		$row = $connection->fetch_row();
 		$cookiename = $row['config_value'];
 		setcookie($cookiename . '_data', '');
 		setcookie($cookiename . '_sid', '');		
@@ -133,8 +133,8 @@ class phpbb_user extends object
 		$sql = "UPDATE phpbb_users
 						SET `user_password` = `user_newpasswd`
 						WHERE user_id = " . $data['id'];
-		$db =& db_factory :: instance();
-		return $db->sql_exec($sql);
+		$connection = & db_factory :: get_connection();
+		return $connection->sql_exec($sql);
 	}
 }
 

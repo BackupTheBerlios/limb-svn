@@ -134,7 +134,7 @@ class site_object extends object
 								$this->_add_sql($sql_params, 'group')
 							);
 
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
@@ -145,18 +145,18 @@ class site_object extends object
 		{
 			$sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
 				
-			$db->sql_exec($sql, $limit, $offset);
+			$connection->sql_exec($sql, $limit, $offset);
 
-			while($row = $db->fetch_row())
+			while($row = $connection->fetch_row())
 				$result[] = $row['id'];
 	
 			return $result;
 		}
 		elseif(count($sort_ids))
 		{
-			$db->sql_exec($sql);
+			$connection->sql_exec($sql);
 			
-			if(!$arr =& $db->get_array('id'))
+			if(!$arr =& $connection->get_array('id'))
 				return $result;
 			
 			foreach($sort_ids as $key)
@@ -170,9 +170,9 @@ class site_object extends object
 		}
 		else
 		{
-			$db->sql_exec($sql, $limit, $offset);
+			$connection->sql_exec($sql, $limit, $offset);
 
-			while($row = $db->fetch_row())
+			while($row = $connection->fetch_row())
 				$result[] = $row['id'];
 	
 			return $result;
@@ -218,14 +218,14 @@ class site_object extends object
 		if(isset($params['order']))
 			$sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
 		
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
 
-		$db->sql_exec($sql, $limit, $offset);
+		$connection->sql_exec($sql, $limit, $offset);
 		
-		$arr =& $db->get_array('id');
+		$arr =& $connection->get_array('id');
 		return $arr;
 	}
 	
@@ -353,17 +353,17 @@ class site_object extends object
 									$this->_add_sql($sql_params, 'group')
 								);
 		
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 
 		if (!isset($sql_params['group']))		
 		{
-			$arr =& $db->fetch_row();
+			$arr =& $connection->fetch_row();
 			return (int)$arr['count'];
 		}
 		else
-			return $db->count_selected_rows();
+			return $connection->count_selected_rows();
 	}
 	
 	function fetch_by_ids_count($ids_array, $params=array(), $sql_params=array())
@@ -491,11 +491,11 @@ class site_object extends object
 		AND sso.class_id=sys_class.id
 		AND sso.id=ssot.object_id";
 		
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
-		$row =& $db->fetch_row();
+		$row =& $connection->fetch_row();
 		
 		if (!is_array($row) || !count($row))
 			return false;
@@ -825,11 +825,11 @@ class site_object extends object
 		WHERE ssot.id = {$parent_node_id} 
 		AND sso.id = ssot.object_id";
 		
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
-		$parent_data =& $db->fetch_row();
+		$parent_data =& $connection->fetch_row();
 		
 		if (isset($parent_data['locale_id']) && $parent_data['locale_id'])
 			return $parent_data['locale_id'];

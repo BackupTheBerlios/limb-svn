@@ -47,13 +47,18 @@ function error($description, $error_place='', $params=array())
 	exit;
 }
 
+function is_error($e)
+{
+	return is_a($e, 'exception');
+}
+
 function get_trace_back() 
 {
 	// based on PHP manual page for debug_backtrace()
 	
 	$trace_string = '';
 	
-	if (!version_compare(PHPVERSION(), '4.3', '>='))
+	if (!version_compare(phpversion(), '4.3', '>='))
 		return $trace_string;
 		
 	$trace = debug_backtrace();

@@ -5,19 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_report.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
 class stats_ips_report
 {
-	var $db = null;
+	var $connection = null;
 	var $filter_conditions = array();
 	
 	function stats_ips_report()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 	}
 		
 	function fetch($params = array())
@@ -36,9 +36,9 @@ class stats_ips_report
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
 
-		$this->db->sql_exec($sql, $limit, $offset);
+		$this->connection->sql_exec($sql, $limit, $offset);
 		
-		return $this->db->get_array();
+		return $this->connection->get_array();
 	}
 	
 	function fetch_count($params = array())
@@ -52,8 +52,8 @@ class stats_ips_report
 		
 		$sql .= 'GROUP BY ip';
 		
-		$this->db->sql_exec($sql);
-		return $this->db->count_selected_rows();
+		$this->connection->sql_exec($sql);
+		return $this->connection->count_selected_rows();
 	}
 	
 	function fetch_total_hits()
@@ -65,8 +65,8 @@ class stats_ips_report
 
 		$sql .= $this->_build_filter_condition();
 						
-		$this->db->sql_exec($sql);
-		$record = $this->db->fetch_row();
+		$this->connection->sql_exec($sql);
+		$record = $this->connection->fetch_row();
 		
 		return $record['total'];
 	}

@@ -14,35 +14,35 @@ require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
 class test_unique_email_user_rule extends test_single_field_rule
 {
-	var $db = null;
+	var $connection = null;
 	
 	function test_unique_email_user_rule()
 	{
 		parent::UnitTestCase();
 		
- 		$this->db = db_factory :: instance();
+ 		$this->connection= db_factory :: get_connection();
   }
   
   function setUp()
   {
   	parent :: setUp();
   	
-  	$this->db->sql_delete('user');
-  	$this->db->sql_delete('sys_site_object');
+  	$this->connection->sql_delete('user');
+  	$this->connection->sql_delete('sys_site_object');
   	
-		$this->db->sql_insert('sys_site_object', array('id' => 1, 'identifier' => 'vasa', 'class_id' => '1', 'current_version' => '1'));
-		$this->db->sql_insert('sys_site_object', array('id' => 2, 'identifier' => 'sasa', 'class_id' => '1', 'current_version' => '1'));
-		$this->db->sql_insert('user', array('id' => 1, 'name' => 'Vasa',' email' => '1@1.1', 'password' => '1', 'version' => '1', 'object_id' => '1'));
-		$this->db->sql_insert('user', array('id' => 2, 'name' => 'Sasa', 'email' => '2@2.2', 'password' => '1', 'version' => '1', 'object_id' => '2'));
-		$this->db->sql_insert('user', array('id' => 3, 'name' => 'Sasa', 'email' => '3@3.3', 'password' => '1', 'version' => '2', 'object_id' => '2'));
+		$this->connection->sql_insert('sys_site_object', array('id' => 1, 'identifier' => 'vasa', 'class_id' => '1', 'current_version' => '1'));
+		$this->connection->sql_insert('sys_site_object', array('id' => 2, 'identifier' => 'sasa', 'class_id' => '1', 'current_version' => '1'));
+		$this->connection->sql_insert('user', array('id' => 1, 'name' => 'Vasa',' email' => '1@1.1', 'password' => '1', 'version' => '1', 'object_id' => '1'));
+		$this->connection->sql_insert('user', array('id' => 2, 'name' => 'Sasa', 'email' => '2@2.2', 'password' => '1', 'version' => '1', 'object_id' => '2'));
+		$this->connection->sql_insert('user', array('id' => 3, 'name' => 'Sasa', 'email' => '3@3.3', 'password' => '1', 'version' => '2', 'object_id' => '2'));
   }
   
   function tearDown()
   {
   	parent :: tearDown();
   	
-  	$this->db->sql_delete('user');
-  	$this->db->sql_delete('sys_site_object');
+  	$this->connection->sql_delete('user');
+  	$this->connection->sql_delete('sys_site_object');
   }
 
 	function test_unique_user_email_rule_correct()

@@ -20,11 +20,11 @@ class stats_counter
 	var $_hits_all;
 	var $_hosts_all;
 	
-	var $db = null;
+	var $connection = null;
 	
 	function stats_counter()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 	}
 	
 	function set_new_host($status = true)
@@ -86,9 +86,9 @@ class stats_counter
 	
 	function _get_counter_record($stamp)
 	{
-		$this->db->sql_select('sys_stat_counter');
+		$this->connection->sql_select('sys_stat_counter');
 		
-		if(($record = $this->db->fetch_row()) === false)
+		if(($record = $this->connection->fetch_row()) === false)
 		{
 			$record = array(
 				'hosts_all' => 0,
@@ -97,7 +97,7 @@ class stats_counter
 				'hits_today' => 0,
 				'time' => $stamp
 			);
-			$this->db->sql_insert('sys_stat_counter', $record);
+			$this->connection->sql_insert('sys_stat_counter', $record);
 
 			$this->_insert_new_day_counters_record($stamp);
 		}
@@ -107,8 +107,8 @@ class stats_counter
 	
 	function _get_new_day_counters_record($stamp)
 	{
-		$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->_make_day_stamp($stamp)));
-		return $this->db->fetch_row();
+		$this->connection->sql_select('sys_stat_day_counters', '*', array('time' => $this->_make_day_stamp($stamp)));
+		return $this->connection->fetch_row();
 	}
 	
 	function _insert_new_day_counters_record($stamp)
@@ -119,7 +119,7 @@ class stats_counter
 			'home_hits' => 0,
 			'time' => $this->_make_day_stamp($stamp)
 		);
-		$this->db->sql_insert('sys_stat_day_counters', $record);
+		$this->connection->sql_insert('sys_stat_day_counters', $record);
 	}
 	
 	function _make_day_stamp($stamp)
@@ -141,7 +141,7 @@ class stats_counter
 						WHERE
 						time=" . $this->_make_day_stamp($stamp);
 					
-		$this->db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 	}
 
 	function _update_counters_record($stamp, $hits_today, $hosts_today, $hits_all, $hosts_all)
@@ -152,7 +152,7 @@ class stats_counter
 		$update_array['hosts_all'] = $hosts_all;
 		$update_array['time'] = $stamp;
 		
-		$this->db->sql_update('sys_stat_counter', $update_array);
+		$this->connection->sql_update('sys_stat_counter', $update_array);
 	}
 	
 }

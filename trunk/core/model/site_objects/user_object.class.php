@@ -186,21 +186,21 @@ class user_object extends content_object
 
 	function get_user_by_email($email)
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$sql = 
 			'SELECT *, scot.id as node_id, sco.id as id FROM 
 			sys_site_object_tree as scot, 
 			sys_site_object as sco, 
 			user as tn
-			WHERE tn.email="' . $db->escape($email) . '"
+			WHERE tn.email="' . $connection->escape($email) . '"
 			AND scot.object_id=tn.object_id
 			AND sco.id=tn.object_id 
 			AND sco.current_version=tn.version';
 					
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
-		return current($db->get_array());
+		return current($connection->get_array());
 	}
 
 	function send_activate_password_email(&$user_data, $password)

@@ -39,7 +39,7 @@ class access_policy
 
     $accessor_ids = implode(',', $this->get_accessor_ids());
 			
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 			
 		$sql = "SELECT soa.object_id as id
 			FROM sys_site_object as sso, sys_object_access as soa
@@ -62,8 +62,8 @@ class access_policy
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
     		 array('permissions' => $permissions));
 	
-  	$db->sql_exec($sql);
-  	$temp =& $db->get_array('id');
+  	$connection->sql_exec($sql);
+  	$temp =& $connection->get_array('id');
   	
   	$result = array();
   	foreach($object_ids as $id)
@@ -240,7 +240,7 @@ class access_policy
 	
 	function & _load_objects_available_permissions($objects_ids)
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$in_ids = implode(',', $objects_ids);
 
@@ -252,8 +252,8 @@ class access_policy
 			AND soa.accessor_id IN ({$accessor_ids})
 			GROUP BY soa.object_id";
 	
-  	$db->sql_exec($sql);
-  	$result =& $db->get_array('id');
+  	$connection->sql_exec($sql);
+  	$result =& $connection->get_array('id');
   	
   	return $result;
 	}
@@ -264,15 +264,15 @@ class access_policy
 		
 		$in_ids = implode(',', $accessor_ids);
 
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 
 		$sql = "SELECT saa.action_name FROM sys_action_access as saa
 			WHERE saa.class_id = {$class_id} AND
 			saa.accessor_id IN ({$in_ids})
 			GROUP BY saa.action_name";
 		
-    $db->sql_exec($sql);
-    $result = $db->get_array('action_name');
+    $connection->sql_exec($sql);
+    $result = $connection->get_array('action_name');
 		
 		return $result;	
 	}
@@ -555,15 +555,15 @@ class access_policy
 	
 	function get_user_action_access_templates($class_id)
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$sql = "SELECT * FROM sys_user_object_access_template as stoat, 
 			sys_user_object_access_template_item as stoati
 			WHERE stoat.class_id = {$class_id} AND
 			stoati.template_id = stoat.id";
 		
-    $db->sql_exec($sql);
-    $all_template_records = $db->get_array();
+    $connection->sql_exec($sql);
+    $all_template_records = $connection->get_array();
 		
 		if (!count($all_template_records))
 			return array();
@@ -580,15 +580,15 @@ class access_policy
 
 	function get_group_action_access_templates($class_id)
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$sql = "SELECT * FROM sys_group_object_access_template as stoat, 
 			sys_group_object_access_template_item as stoati
 			WHERE stoat.class_id = {$class_id} AND
 			stoati.template_id = stoat.id";
 		
-    $db->sql_exec($sql);
-    $all_template_records = $db->get_array();
+    $connection->sql_exec($sql);
+    $all_template_records = $connection->get_array();
 		
 		if (!count($all_template_records))
 			return array();

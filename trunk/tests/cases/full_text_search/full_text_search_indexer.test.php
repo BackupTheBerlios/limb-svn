@@ -16,7 +16,7 @@ Mock::generate('site_object');
 
 class test_full_text_search_indexer extends UnitTestCase
 {
-	var $db = null;
+	var $connection = null;
 	var $site_object = null;
 	var $indexer = null;
 	
@@ -24,7 +24,7 @@ class test_full_text_search_indexer extends UnitTestCase
 	{
 		parent :: UnitTestCase($name);
 		
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 	} 
 	
 	function setUp()
@@ -70,7 +70,7 @@ class test_full_text_search_indexer extends UnitTestCase
 	
 	function _clean_up()
 	{
-		$this->db->sql_delete('sys_full_text_index');
+		$this->connection->sql_delete('sys_full_text_index');
 	}
 	
 	function test_index_object_no_words_in_db()
@@ -81,8 +81,8 @@ class test_full_text_search_indexer extends UnitTestCase
 
 		$this->indexer->add($this->site_object);
 		
-		$this->db->sql_select('sys_full_text_index', '*', '', 'id');
-		$arr = $this->db->get_array();
+		$this->connection->sql_select('sys_full_text_index', '*', '', 'id');
+		$arr = $this->connection->get_array();
 		
 		$this->assertNotEqual($arr, array());
 		$this->assertEqual(sizeof($arr), 3);

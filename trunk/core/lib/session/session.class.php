@@ -47,9 +47,9 @@ class session
 	
 	function destroy_user_session($user_id)
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
-		$db->sql_delete('sys_session', "user_id='{$user_id}'");
+		$connection->sql_delete('sys_session', "user_id='{$user_id}'");
 	}
 }
 
@@ -94,11 +94,11 @@ function _session_db_close()
 
 function & _session_db_read($session_id)
 {
-	$db =& db_factory :: instance();
+	$connection = & db_factory :: get_connection();
 
-	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
+	$connection->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
 	
-  if($session_res = $db->fetch_row())
+  if($session_res = $connection->fetch_row())
   {
   	if(preg_match('/session_classes_paths\|([^\{]+\{[^\}]+\})/', $session_res['session_data'], $matches))
   	{
@@ -117,20 +117,20 @@ function & _session_db_read($session_id)
 
 function _session_db_write($session_id, $value)
 {
-	$db =& db_factory :: instance();
+	$connection = & db_factory :: get_connection();
 	
 	$user =& user :: instance();
 	
 	$user_id = $user->get_id();
 
-	$db->sql_select('sys_session', 'session_id', "session_id='{$session_id}'");
+	$connection->sql_select('sys_session', 'session_id', "session_id='{$session_id}'");
 	
-  if($db->fetch_row())
-		$db->sql_update('sys_session', 
+  if($connection->fetch_row())
+		$connection->sql_update('sys_session', 
 										"last_activity_time=". time().", session_data='{$value}', user_id={$user_id}" , 
 										"session_id='{$session_id}'");
   else
-  	$db->sql_insert('sys_session',
+  	$connection->sql_insert('sys_session',
 	 										array(
 	 											'last_activity_time' => time(), 
 	 											'session_data' => "{$value}",
@@ -140,18 +140,18 @@ function _session_db_write($session_id, $value)
 
 function _session_db_destroy($session_id)
 {
-	$db =& db_factory :: instance();
+	$connection = & db_factory :: get_connection();
 
-	$db->sql_delete('sys_session', "session_id='{$session_id}'");
+	$connection->sql_delete('sys_session', "session_id='{$session_id}'");
 }
 
 function _session_db_garbage_collector($max_life_time)
 {
-	$db =& db_factory :: instance();
+	$connection = & db_factory :: get_connection();
 
 	if(defined('SESSION_DB_MAX_LIFE_TIME') && constant('SESSION_DB_MAX_LIFE_TIME'))
 		$max_life_time = constant('SESSION_DB_MAX_LIFE_TIME');
 
-	$db->sql_delete('sys_session', "last_activity_time < ". (time() - $max_life_time));
+	$connection->sql_delete('sys_session', "last_activity_time < ". (time() - $max_life_time));
 }
 ?>

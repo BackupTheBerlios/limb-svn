@@ -1,3 +1,4 @@
+<?php
 /**********************************************************************************
 * Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
 *
@@ -33,7 +34,7 @@ class transaction
 		$con = &db_factory::get_connection($db_name);
 		if (($e = $con->set_auto_commit(false)) !== true)
 		{
-			return new propel_exception(LIMB_ERROR_DB, $e);
+			return new propel_exception(DB_ERROR_DB, $e);
 		} 
 		return $con;
 	} 
@@ -56,7 +57,7 @@ class transaction
 			$e = $con->set_auto_commit(false);
 			if (is_error($e))
 			{
-				return new propel_exception(LIMB_ERROR_DB, $e);
+				return new propel_exception(DB_ERROR_DB, $e);
 			} 
 		} 
 		return $con;
@@ -75,7 +76,7 @@ class transaction
 	{
 		if ($con === null)
 		{
-			return new exception(LIMB_ERROR,
+			return new exception(DB_ERROR,
 				"connection object was null. "
 				 . "This could be due to a misconfiguration. "
 				 . "Check the logs and db_factory properties "
@@ -85,7 +86,7 @@ class transaction
 		{
 			if (($e = $con->commit()) !== true)
 			{
-				return new propel_exception(LIMB_ERROR_DB, $e);
+				return new propel_exception(DB_ERROR_DB, $e);
 			} 
 			$con->set_auto_commit(true);
 		} 
@@ -105,7 +106,7 @@ class transaction
 	{
 		if ($con === null)
 		{
-			return new exception(LIMB_ERROR,
+			return new exception(DB_ERROR,
 				"connection object was null. "
 				 . "This could be due to a misconfiguration. "
 				 . "Check the logs and db_factory properties "
@@ -119,9 +120,8 @@ class transaction
 				/*$logger->err("An attempt was made to rollback a transaction "
 					 . "but the database did not allow the operation to be "
 					 . "rolled back: " . $e->get_message());*/
-				return new propel_exception(LIMB_ERROR_DB, $e);
+				return new propel_exception(DB_ERROR_DB, $e);
 			} 
-			/*[MA]: should this be checked as well ?*/
 			$con->set_auto_commit(true);
 		} 
 	} 
@@ -140,4 +140,6 @@ class transaction
 			$logger->err("An error occured during rollback: " . $e->get_message());*/
 		} 
 	} 
-} 
+}
+
+?>

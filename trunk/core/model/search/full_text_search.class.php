@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: search.class.php 444 2004-02-14 08:42:58Z mike $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -14,13 +14,13 @@ require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
 class full_text_search
 {
-	var $db = null;
+	var $connection = null;
 	var $indexer = null;
 	var $use_boolean_mode = false;
 	
 	function full_text_search()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 		$this->indexer =& new full_text_indexer();
 		
 		$this->use_boolean_mode = $this->_check_boolean_mode();
@@ -63,8 +63,8 @@ class full_text_search
 	{
 		if(DB_TYPE == 'mysql')
 		{
-			$this->db->sql_exec('SELECT VERSION() as version');
-			$row = $this->db->fetch_row();
+			$this->connection->sql_exec('SELECT VERSION() as version');
+			$row = $this->connection->fetch_row();
 			
 			if(($pos = strpos($row['version'], '.')) !== false)
 			{
@@ -82,7 +82,7 @@ class full_text_search
 		$query_items = $query_object->get_query_items();
 		
 		foreach($query_items as $key => $data)
-			$query_items[$key] = $this->db->escape($data);
+			$query_items[$key] = $this->connection->escape($data);
 		
 		if($this->use_boolean_mode)
 		{
@@ -116,10 +116,10 @@ class full_text_search
 	
 	function _get_db_result($sql)
 	{
-		$this->db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 		
 		$result = array();
-		while($row = $this->db->fetch_row())
+		while($row = $this->connection->fetch_row())
 		{
 			if(!isset($result[$row['object_id']]))
 				$result[$row['object_id']] = $row['score'];

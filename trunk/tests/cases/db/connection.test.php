@@ -24,7 +24,6 @@ class test_connection extends UnitTestCase
 
 	function tearDown()
 	{ 
-		driver_test_manager::restore();
 	} 
 
 	/**

@@ -31,7 +31,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   {
   	parent :: _clean_up();
   	
-  	$this->db->sql_delete('sys_object_access');
+  	$this->connection->sql_delete('sys_object_access');
   }
 
   function _insert_group_site_object_access_records()
@@ -41,7 +41,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   	$data = array();
   	for($i = 1; $i <= 5; $i++)
   	{
-  		$this->db->sql_insert('sys_object_access', 
+  		$this->connection->sql_insert('sys_object_access', 
   			array(
   				'object_id' => $i,
   				'accessor_id' => 100,
@@ -51,7 +51,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   			)
   		);
 
-  		$this->db->sql_insert('sys_object_access', 
+  		$this->connection->sql_insert('sys_object_access', 
   			array(
   				'object_id' => $i,
   				'accessor_id' => 110,
@@ -70,7 +70,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   	$data = array();
   	for($i = 8; $i <= 10; $i++)
   	{
-  		$this->db->sql_insert('sys_object_access', 
+  		$this->connection->sql_insert('sys_object_access', 
   			array(
   				'object_id' => $i,
   				'accessor_id' => 200,

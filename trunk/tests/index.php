@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 ob_start();
 
+require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
 require_once(LIMB_DIR . '/core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . '/tests/lib/test_manager.php');
 

@@ -13,12 +13,12 @@ require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
 
 class stats_referer
 {	
-	var $db = null;
+	var $connection = null;
 	var $url = null;
 	
 	function stats_referer()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 		$this->url = new uri();
 	}
 
@@ -51,9 +51,9 @@ class stats_referer
 	
 	function _get_existing_referer_record_id($uri)
 	{
-		$this->db->sql_select('sys_stat_referer_url', '*', 
+		$this->connection->sql_select('sys_stat_referer_url', '*', 
 			"referer_url='" . $uri . "'");
-		if ($referer_data = $this->db->fetch_row())
+		if ($referer_data = $this->connection->fetch_row())
 			return $referer_data['id'];
 		else
 			return false;	
@@ -61,9 +61,9 @@ class stats_referer
 	
 	function _insert_referer_record($uri)
 	{
-		$this->db->sql_insert('sys_stat_referer_url', 
+		$this->connection->sql_insert('sys_stat_referer_url', 
 			array('referer_url' => $uri));
-		return $this->db->get_sql_insert_id('sys_stat_referer_url');		
+		return $this->connection->get_sql_insert_id('sys_stat_referer_url');		
 	}
 
 	function clean_url($raw_url)

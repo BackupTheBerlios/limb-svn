@@ -15,25 +15,25 @@
 
   class test_save_metadata extends UnitTestCase 
   {
-  	var $db = null;
+  	var $connection = null;
   
     function test_save_metadata() 
     {
     	parent :: UnitTestCase();
     	
-    	$this->db = db_factory :: instance();
+    	$this->connection= db_factory :: get_connection();
 
     }
     
     function setUp()
     {
-    	$this->db->sql_delete('sys_metadata');
+    	$this->connection->sql_delete('sys_metadata');
 
     }
     
     function tearDown()
     {
-    	$this->db->sql_delete('sys_metadata');
+    	$this->connection->sql_delete('sys_metadata');
     }
     
     

@@ -14,14 +14,14 @@ require_once(LIMB_DIR . 'core/model/phpbb_user.class.php');
 
 class test_phpbb_user_test extends UnitTestCase 
 { 
-	var $db = null;
+	var $connection = null;
 	var $object = null; 	
   
   function test_phpbb_user_test() 
   {
   	parent :: UnitTestCase();
   	
-  	$this->db = db_factory :: instance();
+  	$this->connection= db_factory :: get_connection();
   }
   
   function setUp()
@@ -30,8 +30,6 @@ class test_phpbb_user_test extends UnitTestCase
 		
   	parent :: setUp();
   	
-  	debug_mock :: init($this);
-
   	$this->object =& new phpbb_user();
   }
   
@@ -52,14 +50,12 @@ class test_phpbb_user_test extends UnitTestCase
   function tearDown()
   { 
   	$this->_clean_up();
-
-		debug_mock :: tally();
   }
   
   function _clean_up()
   {
-		$this->db->sql_delete('phpbb_users');
-		$this->db->sql_delete('phpbb_sessions');
+		$this->connection->sql_delete('phpbb_users');
+		$this->connection->sql_delete('phpbb_sessions');
   }
   
   

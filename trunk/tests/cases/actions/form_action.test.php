@@ -50,8 +50,6 @@ class test_form_action extends UnitTestCase
 
   function setUp()
   {
-  	debug_mock :: init($this);
-  	
   	$dataspace =& dataspace :: instance();
   	$dataspace->import(array());
 
@@ -67,8 +65,6 @@ class test_form_action extends UnitTestCase
   
   function tearDown()
   {
-  	debug_mock :: tally();
-  	
   	$dataspace =& dataspace :: instance();
   	$dataspace->import(array());
 
@@ -168,16 +164,16 @@ class test_form_action extends UnitTestCase
   	
   	$_REQUEST['submitted'] = true;
   	
-  	debug_mock :: expect_write_error('validation failed');
-  	
   	$this->assertIsA($a1->perform(), 'not_valid_response');
+  	
+  	$this->assertErrorPattern('/validation failed/');
   	
   	$_REQUEST['password'] = 'yoyoyoyo';
   	$_REQUEST['password_confirm'] = 'yoyoyoyo';
 
-  	debug_mock :: expect_write_error('validation failed');
-  	
   	$this->assertIsA($a1->perform(), 'not_valid_response', 'validation occurs only once');
+  	
+  	$this->assertErrorPattern('/validation failed/');
   	
   	$a2 =& new form_action1();
   	
@@ -196,16 +192,16 @@ class test_form_action extends UnitTestCase
   	
   	$_REQUEST['test1']['submitted'] = true;
   	
-  	debug_mock :: expect_write_error('validation failed');
-  	
   	$this->assertIsA($a1->perform(), 'not_valid_response');
+  	
+  	$this->assertErrorPattern('/validation failed/');
   	
   	$_REQUEST['test1']['password'] = 'yoyoyoyo';
   	$_REQUEST['test1']['password_confirm'] = 'yoyoyoyo';
 
-		debug_mock :: expect_write_error('validation failed');
-		
   	$this->assertIsA($a1->perform(), 'not_valid_response', 'validation occurs only once');
+  	
+  	$this->assertErrorPattern('/validation failed/');
   	
   	$a2 =& new form_action1('test1');
   	

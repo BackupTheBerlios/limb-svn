@@ -44,7 +44,7 @@ class site_object_manipulation_test extends site_object
 
 class test_site_object_manipulation extends UnitTestCase 
 { 
-	var $db = null;
+	var $connection = null;
 	var $object = null;
 	
 	var $parent_node_id = '';
@@ -52,7 +52,7 @@ class test_site_object_manipulation extends UnitTestCase
 		 	
   function test_site_object_manipulation() 
   {
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
 
   	parent :: UnitTestCase();
   }
@@ -62,8 +62,6 @@ class test_site_object_manipulation extends UnitTestCase
   	$this->_clean_up();
   	
   	$this->object = new site_object_manipulation_test();
-  	
-  	debug_mock :: init($this);
   	
   	$user =& user :: instance();
   	$user->_set_id(10);
@@ -78,21 +76,19 @@ class test_site_object_manipulation extends UnitTestCase
 		$this->parent_node_id = $tree->create_sub_node($root_node_id, $values);
 
 		$class_id = $this->object->get_class_id();
-		$this->db->sql_insert('sys_site_object', array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
+		$this->connection->sql_insert('sys_site_object', array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
 
 		$values['identifier'] = 'document';
 		$values['object_id'] = 10;
 		$this->sub_node_id = $tree->create_sub_node($this->parent_node_id, $values);
 
 		$class_id = $this->object->get_class_id();
-		$this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => $class_id, 'current_version' => 1));
+		$this->connection->sql_insert('sys_site_object', array('id' => 10, 'class_id' => $class_id, 'current_version' => 1));
   }
   
   function tearDown()
   { 
   	$this->_clean_up();
-  	
-  	debug_mock :: tally();
   	
   	$user =& user :: instance();
   	$user->logout();
@@ -100,34 +96,32 @@ class test_site_object_manipulation extends UnitTestCase
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_site_object');
-  	$this->db->sql_delete('sys_site_object_tree');
-  	$this->db->sql_delete('sys_class');
+  	$this->connection->sql_delete('sys_site_object');
+  	$this->connection->sql_delete('sys_site_object_tree');
+  	$this->connection->sql_delete('sys_class');
   }
   
   function test_failed_create()
   {
-  	debug_mock :: expect_write_error('identifier is empty');
-  	
   	$this->assertIdentical($this->object->create(), false, 'create should fail here');
+  	
+  	$this->assertErrorPattern('/identifier is empty/');
   	
 		$this->object->set_parent_node_id(10);
 		
-		debug_mock :: expect_write_error('identifier is empty');
-		
   	$this->assertIdentical($this->object->create(), false, 'create should fail here');
+  	
+  	$this->assertErrorPattern('/identifier is empty/');
   	
 		$this->object->set_identifier('test');
 		
-		debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 10));
-		
   	$this->assertIdentical($this->object->create(), false, 'create should fail here');
+  	
+  	$this->assertErrorPattern('/tree registering failed/');
   }
 	
   function test_create()
   {
-  	debug_mock :: expect_never_write();
-  	
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 		
@@ -225,8 +219,8 @@ class test_site_object_manipulation extends UnitTestCase
 	
   function _check_sys_site_object_tree_record()
 	{
-  	$this->db->sql_select('sys_site_object_tree', '*', 'object_id=' . $this->object->get_id());
-  	$record = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_site_object_tree', '*', 'object_id=' . $this->object->get_id());
+  	$record = $this->connection->fetch_row();
   	
   	$this->assertEqual($record['id'], $this->object->get_node_id());
   	$this->assertEqual($record['object_id'], $this->object->get_id());
@@ -238,8 +232,8 @@ class test_site_object_manipulation extends UnitTestCase
 	{
 		$user =& user :: instance();
 		
-  	$this->db->sql_select('sys_site_object', '*', 'id=' . $this->object->get_id());
-  	$record = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_site_object', '*', 'id=' . $this->object->get_id());
+  	$record = $this->connection->fetch_row();
 		$this->assertEqual($record['identifier'], $this->object->get_identifier());
   	$this->assertEqual($record['title'], $this->object->get_title());
   	$this->assertEqual($record['current_version'], $this->object->get_version());
@@ -251,8 +245,8 @@ class test_site_object_manipulation extends UnitTestCase
   	
   function _check_sys_class_record()
 	{
-  	$this->db->sql_select('sys_class', '*', 'class_name="' . get_class($this->object) . '"');
-  	$record = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_class', '*', 'class_name="' . get_class($this->object) . '"');
+  	$record = $this->connection->fetch_row();
   	$this->assertTrue(is_array($record));
 	}
 }

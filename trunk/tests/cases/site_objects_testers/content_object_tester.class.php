@@ -22,7 +22,7 @@ class content_object_tester extends site_object_tester
   {
   	parent :: _clean_up();
 
-  	$this->db->sql_delete('sys_object_version');
+  	$this->connection->sql_delete('sys_object_version');
 		
 		$this->_clean_content_db_table_records();		
   }
@@ -30,7 +30,7 @@ class content_object_tester extends site_object_tester
   function _clean_content_db_table_records()
   {
 		$db_table = $this->object->_get_db_table();
-  	$this->db->sql_delete($db_table->get_table_name());
+  	$this->connection->sql_delete($db_table->get_table_name());
   }
   
   function _do_test_class_properties($props)
@@ -183,8 +183,8 @@ class content_object_tester extends site_object_tester
 		$conditions['object_id'] = $this->object->get_id();
 		$conditions['version'] = $this->object->get_version();
 		
-  	$this->db->sql_select('sys_object_version', '*', $conditions);
-  	$record = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_object_version', '*', $conditions);
+  	$record = $this->connection->fetch_row();
   	
   	$user =& user :: instance();
   	

@@ -11,7 +11,6 @@
 
 require_once(LIMB_DIR . '/core/lib/db/result_set.class.php');
 
-
 /**
 * This class implements many shared or common methods needed by resultset drivers.
 * 

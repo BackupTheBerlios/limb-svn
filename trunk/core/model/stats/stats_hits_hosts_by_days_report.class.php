@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
 class stats_hits_hosts_by_days_report
 {
-	var $db = null;
+	var $connection = null;
 	var $filter_conditions = array();
 	
 	function stats_hits_hosts_by_days_report()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 	}
 		
 	function fetch($params = array())
@@ -34,9 +34,9 @@ class stats_hits_hosts_by_days_report
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
 
-		$this->db->sql_exec($sql, $limit, $offset);
+		$this->connection->sql_exec($sql, $limit, $offset);
 		
-		return $this->db->get_array();
+		return $this->connection->get_array();
 	}
 	
 	function fetch_count($params = array())
@@ -45,8 +45,8 @@ class stats_hits_hosts_by_days_report
 
 		$sql .= $this->_build_filter_condition();
 		
-		$this->db->sql_exec($sql);
-		$arr =& $this->db->fetch_row();
+		$this->connection->sql_exec($sql);
+		$arr =& $this->connection->fetch_row();
 		return (int)$arr['count'];
 	}
 	

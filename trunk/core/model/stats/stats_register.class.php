@@ -28,12 +28,12 @@ class stats_register
 	var $_referer_register = null;
 	var $_search_phrase_register = null;
 	var $_reg_date;
-	var $db = null;
+	var $connection = null;
 	
 	function stats_register()
 	{
 		$this->_reg_date = new date();		
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
 	}
 
 	function get_register_time_stamp()
@@ -67,7 +67,7 @@ class stats_register
 		
 		$user =& user :: instance();
 		
-		$this->db->sql_insert('sys_stat_log', 
+		$this->connection->sql_insert('sys_stat_log', 
 			array(
 				'ip' => $ip_register->get_client_ip(), 
 				'time' => $this->get_register_time_stamp(),
@@ -84,13 +84,13 @@ class stats_register
 
 	function clean_until($date)
 	{
-		$this->db->sql_delete('sys_stat_log', 'time < ' . $date->get_stamp());
+		$this->connection->sql_delete('sys_stat_log', 'time < ' . $date->get_stamp());
 	}
 	
 	function count_log_records()
 	{
-		$this->db->sql_exec('SELECT COUNT(id) as counter FROM sys_stat_log');
-		$row = $this->db->fetch_row();
+		$this->connection->sql_exec('SELECT COUNT(id) as counter FROM sys_stat_log');
+		$row = $this->connection->fetch_row();
 		return $row['counter'];
 	}
 	

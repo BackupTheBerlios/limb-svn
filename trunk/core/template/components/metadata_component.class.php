@@ -63,10 +63,10 @@ class metadata_component extends component
 		AND	' . sql_in('sso.id', $ids_array) . '
 		ORDER BY ssot.level';
 		
-		$db =& db_factory :: instance();
-		$db->sql_exec($sql);
+		$connection = & db_factory :: get_connection();
+		$connection->sql_exec($sql);
 		
-		$objects_data =& $db->get_array('id');
+		$objects_data =& $connection->get_array('id');
 		return $objects_data;
 	}
 	

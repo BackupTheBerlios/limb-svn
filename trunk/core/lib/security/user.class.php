@@ -68,7 +68,7 @@ class user extends object
 	
 	function _get_db_groups()
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$sql = 
 			'SELECT sso.*, tn.*
@@ -78,14 +78,14 @@ class user extends object
 			AND u_i_g.user_id='. $this->get_id() . '
 			AND u_i_g.group_id=sso.id';
 					
-		$db->sql_exec($sql);	
+		$connection->sql_exec($sql);	
 		
-		return $db->get_array();
+		return $connection->get_array();
 	}
 	
 	function _get_default_db_groups()
 	{
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 	
 		$sql = 
 			'SELECT sso.*, tn.*
@@ -94,9 +94,9 @@ class user extends object
 			AND sso.id=tn.object_id 
 			AND sso.current_version=tn.version';
 					
-		$db->sql_exec($sql);	
+		$connection->sql_exec($sql);	
 		
-		return $db->get_array();
+		return $connection->get_array();
 	}
 		
 	function login($login, $password)
@@ -126,22 +126,22 @@ class user extends object
 	{
 		$crypted_password = $this->get_crypted_password($login, $password);
 		
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$sql = 
 			'SELECT *, ssot.id as node_id, sso.id as id FROM 
 			sys_site_object_tree as ssot, 
 			sys_site_object as sso, 
 			user as tn
-			WHERE sso.identifier="' . $db->escape($login) . '"
-			AND tn.password="' . $db->escape($crypted_password) . '"
+			WHERE sso.identifier="' . $connection->escape($login) . '"
+			AND tn.password="' . $connection->escape($crypted_password) . '"
 			AND ssot.object_id=tn.object_id
 			AND sso.id=tn.object_id 
 			AND sso.current_version=tn.version';
 					
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 		
-		return $db->fetch_row();
+		return $connection->fetch_row();
 	}
 		
 	function logout()

@@ -117,10 +117,10 @@ class content_object extends site_object
 								$this->_add_sql($sql_params, 'conditions')
 							);
 		
-		$db =& db_factory :: instance();
-		$db->sql_exec($sql);
+		$connection = & db_factory :: get_connection();
+		$connection->sql_exec($sql);
 		
-		return $db->fetch_row();
+		return $connection->fetch_row();
 	}
 	
 	function & fetch_ids($params=array(), $sql_params=array(), $sort_ids = array())

@@ -63,7 +63,7 @@ Mock::generatePartial
 
 class test_stats_register extends UnitTestCase 
 {
-	var $db = null;
+	var $connection = null;
 
   var $stats_ip = null;
 
@@ -75,7 +75,7 @@ class test_stats_register extends UnitTestCase
   {
   	parent :: UnitTestCase();
   	
-  	$this->db = db_factory :: instance();
+  	$this->connection= db_factory :: get_connection();
   }
   
   function setUp()
@@ -124,11 +124,11 @@ class test_stats_register extends UnitTestCase
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_stat_log');
-  	$this->db->sql_delete('sys_stat_ip');
-  	$this->db->sql_delete('sys_stat_referer_url');
-  	$this->db->sql_delete('sys_stat_counter');
-  	$this->db->sql_delete('sys_stat_day_counters');
+  	$this->connection->sql_delete('sys_stat_log');
+  	$this->connection->sql_delete('sys_stat_ip');
+  	$this->connection->sql_delete('sys_stat_referer_url');
+  	$this->connection->sql_delete('sys_stat_counter');
+  	$this->connection->sql_delete('sys_stat_day_counters');
   }
       
   function test_register() 
@@ -188,8 +188,8 @@ class test_stats_register extends UnitTestCase
     
 	function _check_stats_register_record($total_records, $current_record, $user_id, $node_id, $action, $status, $time)
 	{
-  	$this->db->sql_select('sys_stat_log', '*', '', 'id');
-  	$arr = $this->db->get_array();
+  	$this->connection->sql_select('sys_stat_log', '*', '', 'id');
+  	$arr = $this->connection->get_array();
 
   	$this->assertTrue(sizeof($arr), $total_records);
   	reset($arr);

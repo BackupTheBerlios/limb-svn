@@ -71,8 +71,8 @@ class test_content_object_manipulation extends test_site_object_manipulation
   {
   	parent :: _clean_up();
   	
-  	$this->db->sql_delete('sys_object_version');
-  	$this->db->sql_delete('test_news_object');
+  	$this->connection->sql_delete('sys_object_version');
+  	$this->connection->sql_delete('test_news_object');
   }
   
   function test_failed_create()
@@ -210,8 +210,8 @@ class test_content_object_manipulation extends test_site_object_manipulation
 		$conditions['object_id'] = $this->object->get_id();
 		$conditions['version'] = $this->object->get_version();
 	
-  	$this->db->sql_select('sys_object_version', '*', $conditions);
-  	$record = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_object_version', '*', $conditions);
+  	$record = $this->connection->fetch_row();
   	
   	$user =& user :: instance(); 
   	

@@ -18,17 +18,7 @@ class test_ini extends UnitTestCase
   {
   	parent :: UnitTestCase();
   }
-  
-  function setUp()
-  {
-  	debug_mock :: init($this);
-  }
-  
-  function tearDown()
-  {
-  	debug_mock :: tally();
-  }
-  
+    
   function test_instance()
   {
   	$ini =& ini :: instance('ini_test.ini', LIMB_DIR . '/tests/cases/util/', false);
@@ -66,16 +56,10 @@ class test_ini extends UnitTestCase
   	
   	$val = $ini->variable('default', 'test');
   	$this->assertFalse(empty($val));
-  	
-  	debug_mock :: expect_write_notice('undefined block', 
-  		array(
-  			'ini' => $ini->file_name(),
-  			'block' => '', 
-  			'variable' => 'no_variable'
-  		)
-  	);
-  	
+  	  	
   	$this->assertEqual($ini->variable('', 'no_variable'), '');
+  	
+  	$this->assertErrorPattern('/undefined block/');
   	
   	$this->assertEqual($ini->variable('test', 'test'), 1);
   	$this->assertEqual($ini->variable('test2', 'test1'), 2);
@@ -101,13 +85,9 @@ class test_ini extends UnitTestCase
   {
   	$ini =& ini :: instance('ini_test.ini', LIMB_DIR . '/tests/cases/util/', false);
 
-  	debug_mock :: expect_write_notice('unknown block', 
-  		array(
-  			'ini' => $ini->file_name(),
-  			'block_name' => 'no_group'
-  		)
-  	);    	
-  	$this->assertNull($ini->group('no_group'));    	
+  	$this->assertNull($ini->group('no_group'));
+  	
+  	$this->assertErrorPattern('/unknown block/');
   	
   	$this->assertNotNull($ini->group('default'));
   	

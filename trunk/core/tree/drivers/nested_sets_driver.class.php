@@ -313,8 +313,8 @@ class nested_sets_driver extends tree_db_driver
 										$this->_node_table, $id,
 										$this->_add_sql($add_sql, 'append'));
 		
-		$this->_db->sql_exec($sql);
-		$dataset = $this->_db->fetch_row();
+		$this->connection->sql_exec($sql);
+		$dataset = $this->connection->fetch_row();
 		
 		return (int)$dataset['counter'];
 	}
@@ -460,9 +460,9 @@ class nested_sets_driver extends tree_db_driver
 										$this->_add_sql($sql_add, 'group')
 									);
 		
-		$this->_db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 		
-		return count($this->_db->get_array());		
+		return count($this->connection->get_array());		
 	}
 	
 	/**
@@ -578,9 +578,9 @@ class nested_sets_driver extends tree_db_driver
 										$this->_node_table,
 										$id);
 										
-		$this->_db->sql_exec($sql, 1, 0);
+		$this->connection->sql_exec($sql, 1, 0);
 		
-		if($row =& $this->_db->fetch_row())
+		if($row =& $this->connection->fetch_row())
 			return $row['identifier'];
 		else
 			return 0;
@@ -686,7 +686,7 @@ class nested_sets_driver extends tree_db_driver
 		$this->_verify_user_values($values); 
 	
 		if (!$this->_dumb_mode)
-			$values['id'] = $node_id = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
+			$values['id'] = $node_id = $this->connection->get_max_column_value($this->_node_table, 'id') + 1;
 		else
 			$node_id = $values['id'];
 	
@@ -696,7 +696,7 @@ class nested_sets_driver extends tree_db_driver
 		$values['level'] = 1;
 		$values['parent_id'] = 0;
 		
-		$this->_db->sql_insert($this->_node_table, $values);
+		$this->connection->sql_insert($this->_node_table, $values);
 				
 		return $node_id;
 	} 
@@ -763,17 +763,17 @@ class nested_sets_driver extends tree_db_driver
 
 		if (!$this->_dumb_mode)
 		{
-			$node_id = $values['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
+			$node_id = $values['id'] = $this->connection->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
 			$node_id = $values['id'];
 		} 
 		
-		$sql[] = $this->_db->make_insert_string($this->_node_table, $values);
+		$sql[] = $this->connection->make_insert_string($this->_node_table, $values);
 		
 		foreach ($sql as $query)
-			$this->_db->sql_exec($query);
+			$this->connection->sql_exec($query);
 
 		return $node_id;
 	} 
@@ -853,7 +853,7 @@ class nested_sets_driver extends tree_db_driver
 
 		if (!$this->_dumb_mode || !$node_id = isset($values['id']))
 		{
-			$node_id = $insert_data['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
+			$node_id = $insert_data['id'] = $this->connection->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
@@ -868,7 +868,7 @@ class nested_sets_driver extends tree_db_driver
 		$sql[] = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->_node_table, implode(', ', array_keys($qr)), implode(', ', $qr));
 		foreach ($sql as $qry)
 		{
-			$this->_db->sql_exec($qry);
+			$this->connection->sql_exec($qry);
 		} 
 
 		return $node_id;
@@ -937,17 +937,17 @@ class nested_sets_driver extends tree_db_driver
 				
 		if (!$this->_dumb_mode)
 		{
-			$node_id = $values['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
+			$node_id = $values['id'] = $this->connection->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
 			$node_id = $values['id'];
 		} 
 
-		$sql[] = $this->_db->make_insert_string($this->_node_table, $values);
+		$sql[] = $this->connection->make_insert_string($this->_node_table, $values);
 													
 		foreach ($sql as $query)
-			$this->_db->sql_exec($query);
+			$this->connection->sql_exec($query);
  		
 		return $node_id;
 	} 
@@ -997,7 +997,7 @@ class nested_sets_driver extends tree_db_driver
 		} 
 		
 		foreach ($sql as $qry)
-			$this->_db->sql_exec($qry);
+			$this->connection->sql_exec($qry);
 			
 		return true;
 	} 
@@ -1241,12 +1241,12 @@ class nested_sets_driver extends tree_db_driver
 
 		for($i = 0;$i < count($updates);$i++)
 		{
-			$this->_db->sql_exec($updates[$i]);
+			$this->connection->sql_exec($updates[$i]);
 		} 
 
 		for($i = 0;$i < count($parent_updates);$i++)
 		{
-			$this->_db->sql_exec($parent_updates[$i]);
+			$this->connection->sql_exec($parent_updates[$i]);
 		} 
 		
 		$this->_relations = array();
@@ -1296,9 +1296,9 @@ class nested_sets_driver extends tree_db_driver
                 id!={$s_id} AND
                 root_id=id";
                 
-				$this->_db->sql_exec($sql);
+				$this->connection->sql_exec($sql);
 				$sql = "UPDATE {$tb} SET ordr={$t_order}-1 WHERE id={$s_id}";
-				$this->_db->sql_exec($sql);
+				$this->connection->sql_exec($sql);
 			} 
 			elseif ($pos == NESE_MOVE_AFTER)
 			{
@@ -1307,10 +1307,10 @@ class nested_sets_driver extends tree_db_driver
                 id!={$s_id} AND
                 root_id=id";
                 
-				$this->_db->sql_exec($sql);
+				$this->connection->sql_exec($sql);
 
 				$sql = "UPDATE {$tb} SET ordr={$t_order} WHERE id={$s_id}";
-				$this->_db->sql_exec($sql);
+				$this->connection->sql_exec($sql);
 			} 
 		} 
 
@@ -1322,10 +1322,10 @@ class nested_sets_driver extends tree_db_driver
                 WHERE ordr BETWEEN {$t_order} AND {$s_order} AND
                 id != {$s_id} AND
                 root_id=id";
-				$this->_db->sql_exec($sql);
+				$this->connection->sql_exec($sql);
 
 				$sql = "UPDATE {$tb} SET ordr={$t_order} WHERE id={$s_id}";
-				$this->_db->sql_exec($sql);
+				$this->connection->sql_exec($sql);
 			} 
 			elseif ($pos == NESE_MOVE_AFTER)
 			{
@@ -1334,10 +1334,10 @@ class nested_sets_driver extends tree_db_driver
                 id!=$t_id AND
                 id!=$s_id AND
                 root_id=id";
-				$this->_db->sql_exec($sql);
+				$this->connection->sql_exec($sql);
 
 				$sql = "UPDATE {$tb} SET ordr={$t_order}+1 WHERE id={$s_id}";
-				$this->_db->sql_exec($sql);
+				$this->connection->sql_exec($sql);
 			} 
 		} 
 		return $s_id;
@@ -1354,7 +1354,7 @@ class nested_sets_driver extends tree_db_driver
 		foreach($values as $key => $val)
 		{
 			$k = $key; 
-			$iv = $this->_db->escape(trim($val));
+			$iv = $this->connection->escape(trim($val));
 			$arq[$k] = "'$iv'";
 		} 
 

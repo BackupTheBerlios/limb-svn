@@ -12,14 +12,14 @@ require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
 
 class stats_search_phrase
 {	
-	var $db = null;
+	var $connection = null;
 	var $url = null;
 	
 	var $engine_rules = array();
 	
 	function stats_search_phrase()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 		$this->url = new uri();
 	}
 	
@@ -38,7 +38,7 @@ class stats_search_phrase
 		if(!$rule = $this->_get_matching_search_engine_rule())
 			return false;
 		
-		$this->db->sql_insert('sys_stat_search_phrase', 
+		$this->connection->sql_insert('sys_stat_search_phrase', 
 			array(
 				'engine' => $rule->get_engine_name(), 
 				'time' => $date->get_stamp(),

@@ -56,12 +56,12 @@ class test_controller
 
 class test_site_object extends UnitTestCase 
 { 
-	var $db = null;
+	var $connection = null;
 	var $object = null;
 		 	
   function test_site_object() 
   {
-  	$this->db =& db_factory :: instance();
+  	$this->connection=& db_factory :: get_connection();
 
   	parent :: UnitTestCase();
   }
@@ -90,10 +90,10 @@ class test_site_object extends UnitTestCase
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_site_object');
-  	$this->db->sql_delete('sys_site_object_tree');
-  	$this->db->sql_delete('sys_object_version');
-  	$this->db->sql_delete('sys_class');
+  	$this->connection->sql_delete('sys_site_object');
+  	$this->connection->sql_delete('sys_site_object_tree');
+  	$this->connection->sql_delete('sys_object_version');
+  	$this->connection->sql_delete('sys_class');
   }
 
   function test_attributes()
@@ -137,16 +137,16 @@ class test_site_object extends UnitTestCase
   {
 		$id = $this->object->get_class_id();
 		
-		$this->db->sql_select('sys_class', '*', 'class_name="' . get_class($this->object) . '"');
-		$arr = $this->db->fetch_row();
+		$this->connection->sql_select('sys_class', '*', 'class_name="' . get_class($this->object) . '"');
+		$arr = $this->connection->fetch_row();
 		
 		$this->assertNotNull($id);
 		
 		$this->assertEqual($id, $arr['id']);
 
 		$id = $this->object->get_class_id();
-		$this->db->sql_select('sys_class', '*');
-		$arr = $this->db->get_array();
+		$this->connection->sql_select('sys_class', '*');
+		$arr = $this->connection->get_array();
 		
 		$this->assertEqual(sizeof($arr), 1);
 	}

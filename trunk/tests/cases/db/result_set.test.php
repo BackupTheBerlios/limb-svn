@@ -21,7 +21,6 @@ class test_result_set extends UnitTestCase
 	{
 		parent :: UnitTestCase();
 
-		driver_test_manager::restore();
 		$this->conn = driver_test_manager::get_connection();
 	}
 

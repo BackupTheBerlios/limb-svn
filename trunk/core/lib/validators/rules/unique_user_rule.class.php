@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: unique_user_rule.class.php 411 2004-02-06 15:33:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
@@ -30,17 +30,17 @@ class unique_user_rule extends single_field_rule
 				$this->current_identifier == $value)
 			return;
 
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
 		$sql = 'SELECT *
 		FROM sys_site_object as sco, user as tn
-		WHERE sco.identifier="' . $db->escape($value) . '"
+		WHERE sco.identifier="' . $connection->escape($value) . '"
 		AND sco.id=tn.object_id 
 		AND sco.current_version=tn.version';
 					
-		$db->sql_exec($sql);
+		$connection->sql_exec($sql);
 
-		$arr = $db->get_array();
+		$arr = $connection->get_array();
 
 		if(is_array($arr) && count($arr))
 			$this->error('DUPLICATE_USER');

@@ -13,13 +13,13 @@ require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 
 class test_project_db_tables extends UnitTestCase
 {
-	var $db = null;
+	var $connection = null;
 	var $db_tables = array();
 	var $db_tables_names = array();
 	
 	function test_project_db_tables($name = 'db tables test case')
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 		
 		parent :: UnitTestCase($name);
 	} 
@@ -36,15 +36,15 @@ class test_project_db_tables extends UnitTestCase
 	{
 		$project_db = str_replace('_tests', '', DB_NAME);
 		
-		$dbs = array_unique(array(DB_NAME, $project_db));
+		$connection = array_unique(array(DB_NAME, $project_db));
 		
-		foreach($dbs as $db)
+		foreach($connection as $connection
 		{
-			$this->db->select_db($db);
+			$this->connection->select_db($connection;
 			$this->_check_db_tables();
 		}
 		
-		$this->db->select_db(DB_NAME);
+		$this->connection->select_db(DB_NAME);
 	}
 	
 	function _check_db_tables()
@@ -63,15 +63,15 @@ class test_project_db_tables extends UnitTestCase
 		$primary_key_name = $db_table->get_primary_key_name();
 		$columns = $db_table->get_columns();
 		
-		$this->db->sql_exec('SHOW TABLES LIKE "' . $table_name . '"');
+		$this->connection->sql_exec('SHOW TABLES LIKE "' . $table_name . '"');
 		
-		if(!$res = $this->db->fetch_row()) //???
+		if(!$res = $this->connection->fetch_row()) //???
 			return;
 					
 		$this->assertEqual(sizeof($res), 1, $table_name . ' doesnt exist in db');
 
-		$this->db->sql_exec('SHOW COLUMNS FROM ' . $table_name);
-		$db_columns = $this->db->get_array();
+		$this->connection->sql_exec('SHOW COLUMNS FROM ' . $table_name);
+		$db_columns = $this->connection->get_array();
 		
 		$a1 = complex_array :: get_column_values('Field', $db_columns);
 		$a2 = array_keys($columns);

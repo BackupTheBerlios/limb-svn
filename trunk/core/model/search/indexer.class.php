@@ -15,11 +15,11 @@ require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 
 class indexer
 {
-	var $db = null;
+	var $connection = null;
 		
 	function indexer()
 	{
-		$this->db = db_factory :: instance();
+		$this->connection= db_factory :: get_connection();
 	} 
 	
 	function & instance()
@@ -100,9 +100,9 @@ class indexer
 	{
 		$words_string = implode('\',\'', $index_array_only_words);
 		
-		$this->db->sql_exec("SELECT * FROM sys_word WHERE word IN ( '$words_string' ) "); 
+		$this->connection->sql_exec("SELECT * FROM sys_word WHERE word IN ( '$words_string' ) "); 
 		
-		$existing_words =& $this->db->get_array();
+		$existing_words =& $this->connection->get_array();
 		
 		return $existing_words;
 	}
@@ -112,7 +112,7 @@ class indexer
 		if (count($word_ids_array) > 0)
 		{
 			$word_ids_string = implode(',', $word_ids_array);
-			$this->db->sql_exec("
+			$this->connection->sql_exec("
 				UPDATE sys_word 
 				SET object_count=(object_count+1) 
 				WHERE id IN ($word_ids_string)");
@@ -125,12 +125,12 @@ class indexer
 			return array();
 
 		$new_word_string =& implode("', '1' ), ('", $new_word_ids_array);
-		$this->db->sql_exec("INSERT INTO sys_word ( word, object_count ) VALUES ('$new_word_string', '1' )");
+		$this->connection->sql_exec("INSERT INTO sys_word ( word, object_count ) VALUES ('$new_word_string', '1' )");
 
 		$new_word_string =& implode("','", $new_word_ids_array);
-		$this->db->sql_exec("SELECT id, word FROM sys_word WHERE word IN ( '$new_word_string' ) ");
+		$this->connection->sql_exec("SELECT id, word FROM sys_word WHERE word IN ( '$new_word_string' ) ");
 		
-		return $this->db->get_array();
+		return $this->connection->get_array();
 	}
 	
 	function _insert_word_link(&$site_object, &$word_ids_array, $attribute_name)
@@ -145,7 +145,7 @@ class indexer
 		if (count($values_string_list) > 0)
 		{
 			$values_string = implode(',', $values_string_list);
-			$this->db->sql_exec("INSERT INTO sys_word_link
+			$this->connection->sql_exec("INSERT INTO sys_word_link
                       ( word_id,
                         object_id,
                         class_id,
@@ -159,11 +159,11 @@ class indexer
 	{
 		$indexer =& indexer :: instance();
 		
-		$indexer->db =& db_factory :: instance();
+		$indexer->connection=& db_factory :: get_connection();
 		$object_id = $site_object->get_id();
 		
-		$indexer->db->sql_exec("SELECT word_id FROM sys_word_link WHERE object_id='$object_id'");
-		$word_array =& $indexer->db->get_array();
+		$indexer->connection->sql_exec("SELECT word_id FROM sys_word_link WHERE object_id='$object_id'");
+		$word_array =& $indexer->connection->get_array();
 		
 		$word_ids_array = complex_array :: get_column_values('word_id', $word_array);
 		
@@ -171,10 +171,10 @@ class indexer
 		{
 			$word_id_string = implode(',', $word_ids_array);
 			if (count($word_ids_array) > 0)
-				$indexer->db->sql_exec("UPDATE sys_word SET object_count=( object_count - 1 ) WHERE id in ( $word_id_string )");
+				$indexer->connection->sql_exec("UPDATE sys_word SET object_count=( object_count - 1 ) WHERE id in ( $word_id_string )");
 				
-			$indexer->db->sql_exec("DELETE FROM sys_word WHERE object_count='0'");
-			$indexer->db->sql_exec("DELETE FROM sys_word_link WHERE object_id='$object_id'");
+			$indexer->connection->sql_exec("DELETE FROM sys_word WHERE object_count='0'");
+			$indexer->connection->sql_exec("DELETE FROM sys_word_link WHERE object_id='$object_id'");
 		} 
 	}
 	 

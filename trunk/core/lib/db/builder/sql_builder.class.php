@@ -9,15 +9,12 @@
 *
 ***********************************************************************************/
 
+define('DB_USE_DEFAULT_CONNECTION', null);
+
 require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
 
 class sql_builder
 {
-	/**
-	* * Array (hash) that contains the cached map_builders.
-	*/
-	var $map_builders = array();
-
 	/**
 	* Method to perform deletes based on values and keys in a
 	* criteria.
@@ -27,12 +24,10 @@ class sql_builder
 	* @access public 
 	* @static 
 	*/
-	function do_delete($criteria)
-	{
-		if (! is_a($criteria, 'criteria'))
-			return new exception (DB_ERROR, "parameter 1 not of type 'criteria' !");
-
-		$connection= &db_factory::get_connection();
+	function do_delete($criteria, &$connection)
+	{		
+		if($connection === DB_USE_DEFAULT_CONNECTION)
+			$connection =& db_factory::get_connection();
 		
 		// Set up a list of required tables (one DELETE statement will
 		// be executed per table)
@@ -60,14 +55,14 @@ class sql_builder
 		{
 			$where_clause = array();
 			$select_params = array();
-			$t = &$db_map->get_table($table_name);
+			$t = db_table_factory :: instance($table_name);
 
-			foreach($t->get_columns() as $col_map)
+			foreach(array_keys($t->get_columns()) as $column)
 			{
-				$key = $table_name . '.' . $col_map->get_column_name();
+				$key = $table_name . '.' . $column;
 				if ($criteria->contains_key($key))
 				{
-					$sb = "";
+					$sb = '';
 					$c = &$criteria->get_criterion($key);
 					$e = $c->append_ps_to($sb, $select_params);
 					if (is_error($e))
@@ -78,12 +73,10 @@ class sql_builder
 				} 
 			} 
 			// Execute the statement.
-			$sql_snippet = implode(" AND ", $where_clause);
-
 			if ($criteria->is_single_record())
 			{
-				$sql = "SELECT COUNT(*) FROM " . $table_name . " WHERE " . $sql_snippet;
-				$stmt = $con->prepare_statement($sql);
+				$sql = "SELECT COUNT(*) FROM " . $table_name . " WHERE " . implode(" AND ", $where_clause);
+				$stmt = $connection->prepare_statement($sql);
 
 				if (is_error($e = sql_builder::populate_stmt_values($stmt, $select_params)))
 					return $e;
@@ -102,8 +95,10 @@ class sql_builder
 				$rs->close();
 			} 
 
-			$sql = "DELETE FROM " . $table_name . " WHERE " . $sql_snippet;
-			$stmt = &$con->prepare_statement($sql);
+			$sql = "DELETE FROM " . $table_name
+			. ($where_clause ? " WHERE " . implode(" AND ", $where_clause) : '');
+			
+			$stmt = &$connection->prepare_statement($sql);
 
 			if (is_error($e = sql_builder::populate_stmt_values($stmt, $select_params)))
 				return $e;
@@ -127,21 +122,20 @@ class sql_builder
 	* If the primary key is included in criteria then that value will
 	* be used to insert the row.
 	* <p>
-	* If no primary key is included in criteria then we will try to
-	* figure out the primary key from the database map and insert the
-	* row with the next available id using util.db.IDBroker.
-	* <p>
 	* If no primary key is defined for the table the values will be
 	* inserted as specified in criteria and null will be returned.
 	* 
 	* @param criteria $criteria Object containing values to insert.
-	* @param connection $con A connection.
+	* @param connection $connection A connection.
 	* @return mixed An Object which is the id of the row that was inserted
 	* (if the table has a primary key) or null (if the table does not
 	* have a primary key) OR db_factory_exception on error.
 	*/
-	function do_insert($criteria, &$con)
+	function do_insert($criteria, &$connection)
 	{
+		if($connection === DB_USE_DEFAULT_CONNECTION)
+			$connection =& db_factory::get_connection();
+
 		// the primary key
 		$id = null; 
 		// Get the table name and method for determining the primary
@@ -155,12 +149,11 @@ class sql_builder
 
 		$table_name = $criteria->get_table_name($keys[0]);
 
-		$table_map = &$db_map->get_table($table_name);
-		$key_info = &$table_map->get_primary_key_method_info();
-		$use_id_gen = $table_map->is_use_id_generator();
-		$key_gen = &$con->get_id_generator();
+		$table =& db_table_factory :: instance($table_name);
+		$key_name = &$table->get_primary_key_name();
+		$use_id_gen = $table->use_id_generator();
+		$key_gen = &$connection->get_id_generator();
 
-		$pk = sql_builder::get_primary_key($criteria);
 		// only get a new key value if you need to
 		// the reason is that a primary key might be defined
 		// but you are still going to set its value. for example:
@@ -168,17 +161,17 @@ class sql_builder
 		// setting both columns with your own values
 		// pk will be null if there is no primary key defined for the table
 		// we're inserting into.
-		if ($pk !== null && ! $criteria->contains_key($pk->get_fully_qualified_name()))
+		if ($key_name !== null && ! $criteria->contains_key($key_name))
 		{ 
 			// If the key_method is SEQUENCE get the id before the insert.
 			if ($key_gen->is_before_insert())
 			{
-				$id = $key_gen->get_id($key_info);
+				$id = $key_gen->get_id($key_name);
 				if (is_error($id))
 				{
 					return new exception(DB_ERROR, "Unable to get sequence id.", $id);
 				} 
-				$criteria->add($pk->get_fully_qualified_name(), $id);
+				$criteria->add($key_name, $id);
 			} 
 		} 
 
@@ -194,8 +187,8 @@ class sql_builder
 		 . " (" . implode(",", $columns) . ")"
 		 . " VALUES (" . substr(str_repeat("?,", count($columns)), 0, -1) . ")";
 
-		$stmt = &$con->prepare_statement($sql);
-		$params = &sql_builder::build_params($qualified_cols, $criteria);
+		$stmt =& $connection->prepare_statement($sql);
+		$params =& sql_builder::build_params($qualified_cols, $criteria);
 
 		if (is_error($e = sql_builder::populate_stmt_values($stmt, $params)))
 		{
@@ -208,9 +201,9 @@ class sql_builder
 		} 
 		// If the primary key column is auto-incremented, get the id
 		// now.
-		if ($pk !== null && $use_id_gen && $key_gen->is_after_insert())
+		if ($key_name !== null && $use_id_gen && $key_gen->is_after_insert())
 		{
-			$id = $key_gen->get_id($key_info);
+			$id = $key_gen->get_id($key_name);
 			if (is_error($id))
 			{
 				return new exception(DB_ERROR, "Unable to get autoincrement id.", $id);
@@ -219,7 +212,7 @@ class sql_builder
 
 		return $id;
 	} 
-
+	
 	/**
 	* Method used to update rows in the DB.  Rows are selected based
 	* on selectcriteria and updated using values in update_values.
@@ -233,13 +226,14 @@ class sql_builder
 	*         clause.
 	* @param  $update_values A criteria object containing values used in set
 	*         clause.
-	* @param  $con A connection.
+	* @param  $connection A connection.
 	* @return db_factory_exception on error
 	* @static public
 	*/
-	function do_update(&$select_criteria, &$update_values, &$con)
+	function do_update(&$select_criteria, &$update_values, &$connection)
 	{
-		$connection= &db_factory::get_connection();
+		if($connection === DB_USE_DEFAULT_CONNECTION)
+			$connection =& db_factory::get_connection();
 
 		// Get list of required tables, containing all columns
 		$tables_columns = $select_criteria->get_tables_columns(); 
@@ -259,7 +253,7 @@ class sql_builder
 				if (is_error($e = $c->append_ps_to($sb, $select_params)))
 					return $e;
 
-				$where_clause[] = &$sb;
+				$where_clause[] = $sb;
 			} 
 
 			$rs = null;
@@ -271,7 +265,7 @@ class sql_builder
 			{ 
 				// Get affected records.
 				$sql = "SELECT COUNT(*) FROM " . $table_name . " WHERE " . $sql_snippet;
-				$stmt =& $con->prepare_statement($sql);
+				$stmt =& $connection->prepare_statement($sql);
 
 				if (is_error($e = sql_builder::populate_stmt_values($stmt, $select_params)))
 					return $e;
@@ -296,12 +290,12 @@ class sql_builder
 			$sql = "UPDATE " . $table_name . " SET ";
 			foreach($update_tables_columns[$table_name] as $col)
 			{
-				$sql .= substr($col, strpos($col, '.') + 1) . " = ?,";
+				$sql .= substr($col, strpos($col, '.') + 1) . '=?,';
 			} 
 
 			$sql = substr($sql, 0, -1) . " WHERE " . $sql_snippet;
 
-			$stmt =& $con->prepare_statement($sql); 
+			$stmt =& $connection->prepare_statement($sql); 
 			// Replace '?' with the actual values
 			$params =& sql_builder::build_params($update_tables_columns[$table_name], $update_values);
 
@@ -327,56 +321,38 @@ class sql_builder
 	* Executes query build by create_select_sql() and returns result_set.
 	* 
 	* @param criteria $criteria A criteria.
-	* @param connection $con A connection to use.
+	* @param connection $connection A connection to use.
 	* @return result_set The resultset or db_factory_exception on error.
 	* @see create_select_sql
 	* @protected 
 	* @static 
 	*/
-	function &do_select(&$criteria, &$con)
+	function &do_select(&$criteria, &$connection)
 	{
 		$stmt = null;
-
-		if ($con->get_auto_commit() === true)
-		{ 
-			// transaction support exists for (only?) Postgres, which must
-			// have SELECT statements that include bytea columns wrapped w/
-			// transactions.
-			$con =& transaction :: begin_optional($criteria->get_connection_name(), $criteria->is_use_transaction());
-			if (is_error($con))
-			{
-				return $con;
-			} 
-		} 
+		
+		if($connection === DB_USE_DEFAULT_CONNECTION)
+			$connection =& db_factory::get_connection();
 
 		$params = array();
-		$sql = sql_builder::create_select_sql($criteria, $params);
+		$sql = sql_builder :: create_select_sql($criteria, $params, $connection);
+		
 		if (is_error($sql))
 		{
 			return $sql;
 		} 
 
-		$stmt = &$con->prepare_statement($sql);
+		$stmt = &$connection->prepare_statement($sql);
 		$stmt->set_limit($criteria->get_limit());
 		$stmt->set_offset($criteria->get_offset());
 
 		if (is_error($e = sql_builder::populate_stmt_values($stmt, $params)))
 			return $e;
 
-		$rs = &$stmt->execute_query(result_set::FETCHMODE_NUM());
+		$rs = &$stmt->execute_query(result_set::FETCHMODE_ASSOC());
 		if (is_error($rs))
 		{
 			return new exception(DB_ERROR, "Unable to execute SELECT statement !", $rs);
-		} 
-
-		if (is_error($e = transaction::commit($con)))
-		{
-			if ($stmt) $stmt->close();
-			if (is_error($e2 = transaction::rollback($con)))
-			{
-				return $e2;
-			} 
-			return $e;
 		} 
 
 		return $rs;
@@ -423,9 +399,10 @@ class sql_builder
 	* @return string 
 	* @throws db_factory_exception Trouble creating the query string.
 	*/
-	function create_select_sql(&$criteria, &$params)
+	function create_select_sql(&$criteria, &$params, &$connection)
 	{
-		$connection = &db_factory::get_connection();
+		if($connection === DB_USE_DEFAULT_CONNECTION)
+			$connection =& db_factory::get_connection();
 		
 		// redundant definition $select_modifiers = array();
 		$select_clause = array();
@@ -437,7 +414,7 @@ class sql_builder
 		$group_by = $criteria->get_group_by_columns();
 		$ignore_case = $criteria->is_ignore_case();
 		$select = $criteria->get_select_columns();
-		$aliases = $criteria->get_as_columns(); 
+		$aliases = $criteria->get_as_columns();
 		// simple copy
 		$select_modifiers = $criteria->get_select_modifiers(); 
 		// get selected columns
@@ -487,7 +464,7 @@ class sql_builder
 		} 
 		// add the criteria to WHERE clause
 		// this will also add the table names to the FROM clause if they are not already
-		// invluded via a LEFT JOIN
+		// included via a LEFT JOIN
 		foreach($criteria->keys() as $key)
 		{
 			$criterion = &$criteria->get_criterion($key);
@@ -510,8 +487,8 @@ class sql_builder
 					$table = $table_name;
 				} 
 
-				$t = & db_table_factory :: instance($table);
-				$type = &$t->get_column_type($some_criteria[$i]->get_column());
+				$t =& db_table_factory :: instance($table);
+				$type =& $t->get_column_type($some_criteria[$i]->get_column());
 
 				$ignore_case = (
 					($criteria->is_ignore_case() || $some_criteria[$i]->is_ignore_case()) && (!$type)
@@ -522,7 +499,7 @@ class sql_builder
 
 			$criterion->set_connection($connection);
 
-			$sb = "";
+			$sb = '';
 
 			if (is_error($e = $criterion->append_ps_to($sb, $params)))
 				return $e;
@@ -565,8 +542,8 @@ class sql_builder
 					$table = $table_name;
 				} 
 
-				$t = & db_table_factory :: instance($table);
-				$type = &$t->get_column_type(substr($join2, $dot + 1));
+				$t =& db_table_factory :: instance($table);
+				$type =& $t->get_column_type(substr($join2, $dot + 1));
 
 				$ignore_case = ($criteria->is_ignore_case() && (!$type)
 					);
@@ -590,7 +567,7 @@ class sql_builder
 
 		if ($having !== null)
 		{
-			$sb = "";
+			$sb = '';
 
 			if (is_error($e = $having->append_ps_to($sb, $params)))
 				return $e;
@@ -617,7 +594,7 @@ class sql_builder
 					$column_name = substr($order_by_column, $dot_pos + 1, $space_pos - ($dot_pos + 1));
 				} 
 
-				$t = & db_table_factory :: instance($table);
+				$t =& db_table_factory :: instance($table);
 				if (!$t->get_column_type($column_name))
 				{
 					if ($space_pos === false)
@@ -639,10 +616,10 @@ class sql_builder
 		// Build the SQL from the arrays we compiled
 		$sql = "SELECT " . implode(", ", $select_clause)
 		 . " FROM " . implode(", ", $from_clause)
-		 . ($where_clause ? " WHERE " . implode(" AND ", $where_clause) : "")
-		 . ($order_by_clause ? " ORDER BY " . implode(",", $order_by_clause) : "")
-		 . ($group_by_clause ? " GROUP BY " . implode(",", $group_by_clause) : "")
-		 . ($having_string ? " HAVING " . $having_string : "");
+		 . ($where_clause ? " WHERE " . implode(" AND ", $where_clause) : '')
+		 . ($order_by_clause ? " ORDER BY " . implode(",", $order_by_clause) : '')
+		 . ($group_by_clause ? " GROUP BY " . implode(",", $group_by_clause) : '')
+		 . ($having_string ? " HAVING " . $having_string : '');
 
 		return $sql;
 	} 
@@ -694,7 +671,7 @@ class sql_builder
 			else
 			{
 				$t =& db_table_factory :: instance($table_name);
-				$affix = db_types::get_affix($t->get_column_type($column_name));
+				$affix = db_types :: get_affix($t->get_column_type($column_name));
 
 				if (is_error($affix))
 				{

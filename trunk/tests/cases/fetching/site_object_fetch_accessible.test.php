@@ -29,8 +29,6 @@ class test_site_object_fetch_accessible extends UnitTestCase
 
   function setUp()
   {
-  	debug_mock :: init($this);
-
   	$this->test_init = new $this->init_class_name();
 		
   	$this->_init_object();
@@ -50,8 +48,6 @@ class test_site_object_fetch_accessible extends UnitTestCase
   	
   	$user =& user :: instance();
   	$user->logout();
-  
-		debug_mock :: tally();
   }
   
   function test_accesssible_no_params()
@@ -92,8 +88,10 @@ class test_site_object_fetch_accessible extends UnitTestCase
   {
   	$this->_login_user(200, array(100 => 'admins', 110 => 'users'));
   	
-		debug_mock :: expect_write_error('ids array is empty');
   	$result = $this->object->fetch_accessible_by_ids(array());
+  	
+  	$this->assertErrorPattern('/ids array is empty/');
+  	
   	$this->assertEqual($result, array());
   }
   

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_register.test.php 42 2004-03-16 11:49:13Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/stats/stats_register.class.php');
@@ -23,7 +23,7 @@ Mock::generatePartial
 
 class test_stats_counter extends UnitTestCase 
 {
-	var $db = null;
+	var $connection = null;
 	
 	var $stats_counter = null;
 	
@@ -31,7 +31,7 @@ class test_stats_counter extends UnitTestCase
   {
   	parent :: UnitTestCase();
   	
-  	$this->db = db_factory :: instance();
+  	$this->connection= db_factory :: get_connection();
   }
   
   function setUp()
@@ -54,8 +54,8 @@ class test_stats_counter extends UnitTestCase
   
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_stat_counter');
-  	$this->db->sql_delete('sys_stat_day_counters');
+  	$this->connection->sql_delete('sys_stat_counter');
+  	$this->connection->sql_delete('sys_stat_day_counters');
   }
       
   function test_new_host() 
@@ -189,8 +189,8 @@ class test_stats_counter extends UnitTestCase
     
   function _check_stats_counter_record($hits_all, $hits_today, $hosts_all, $hosts_today, $date)
   {
-  	$this->db->sql_select('sys_stat_counter');
-  	$record = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_stat_counter');
+  	$record = $this->connection->fetch_row();
   	
   	$this->assertNotIdentical($record, false, 'counter record doesnt exist');
   	$this->assertEqual($record['hits_all'], $hits_all, 'all hits incorrect. Got ' . $record['hits_all'] . ', expected '. $hits_all);
@@ -203,8 +203,8 @@ class test_stats_counter extends UnitTestCase
   function _check_stats_day_counters_record($hits, $hosts, $home_hits, $audience_hosts, $date)
   {
   	
-  	$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->stats_counter->_make_day_stamp($date->get_stamp())));
-  	$record = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_stat_day_counters', '*', array('time' => $this->stats_counter->_make_day_stamp($date->get_stamp())));
+  	$record = $this->connection->fetch_row();
 		
 		$this->assertNotIdentical($record, false, 'day counters record doesnt exist');
   	$this->assertEqual($record['hits'], $hits, 'day hits incorrect. Got ' . $record['hits'] . ', expected '. $hits);
@@ -217,21 +217,21 @@ class test_stats_counter extends UnitTestCase
   {
   	$time = $date->get_stamp();
   	
-  	$this->db->sql_exec('	SELECT 
+  	$this->connection->sql_exec('	SELECT 
   												SUM(ssdc.hits) as hits_all,  
   												SUM(ssdc.hosts) as hosts_all
   												FROM
   												sys_stat_day_counters as ssdc');
-  	$record1 = $this->db->fetch_row();
+  	$record1 = $this->connection->fetch_row();
 
-  	$this->db->sql_select('sys_stat_counter');
-  	$record2 = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_stat_counter');
+  	$record2 = $this->connection->fetch_row();
   	
   	$this->assertEqual($record1['hits_all'], $record2['hits_all'], 'Counters all hits number inconsistent. ' . $record1['hits_all'] . ' not equal '. $record2['hits_all']);
   	$this->assertEqual($record1['hosts_all'], $record2['hosts_all'], 'Counters all hosts number inconsistent. ' . $record1['hosts_all'] . ' not equal '. $record2['hosts_all']);
   	
-  	$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->stats_counter->_make_day_stamp($time)));
-  	$record3 = $this->db->fetch_row();
+  	$this->connection->sql_select('sys_stat_day_counters', '*', array('time' => $this->stats_counter->_make_day_stamp($time)));
+  	$record3 = $this->connection->fetch_row();
 
   	$this->assertEqual($record3['hits'], $record2['hits_today'], 'Counters day hits number inconsistent. ' . $record3['hits'] . ' not equal '. $record2['hits_today']);
   	$this->assertEqual($record3['hosts'], $record2['hosts_today'], 'Counters day hosts number inconsistent. ' . $record3['hosts'] . ' not equal '. $record2['hosts_today']);

@@ -321,19 +321,13 @@ class	db_factory
 
 function start_user_transaction()
 {
-	$connection = & db_factory :: get_connection();
-	$connection->begin();
 }
 
 function commit_user_transaction()
 {
-	$connection = & db_factory :: get_connection();
-	$connection->commit();
 }
 
 function rollback_user_transaction()
 {
-	$connection = & db_factory :: get_connection();
-	$connection->rollback();
 }
 ?>

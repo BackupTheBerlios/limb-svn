@@ -14,9 +14,9 @@ require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
 function get_counter_record()
 {
-	$db =& db_factory :: instance();
-	$db->sql_select('sys_stat_counter', '*');
-	return $db->fetch_row();
+	$connection = & db_factory :: get_connection();
+	$connection->sql_select('sys_stat_counter', '*');
+	return $connection->fetch_row();
 }
 
 function register_client_info()

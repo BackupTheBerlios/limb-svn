@@ -119,7 +119,7 @@ class materialized_path_driver extends tree_db_driver
 										$this->_get_select_fields(),
 										$this->_add_sql($add_sql, 'columns'),
 										$this->_add_sql($add_sql, 'join'),
-										$this->_db->concat(array($this->_node_table . '.path', '"%"')),
+										$this->connection->concat(array($this->_node_table . '.path', '"%"')),
 										$this->_add_sql($add_sql, 'append')
 									);
 
@@ -235,8 +235,8 @@ class materialized_path_driver extends tree_db_driver
 										$this->_node_table, $id, 
 										$this->_add_sql($add_sql, 'append'));
 		
-		$this->_db->sql_exec($sql);
-		$dataset = $this->_db->fetch_row();
+		$this->connection->sql_exec($sql);
+		$dataset = $this->connection->fetch_row();
 		
 		return (int)$dataset['counter'];
 	}
@@ -407,9 +407,9 @@ class materialized_path_driver extends tree_db_driver
 										$this->_add_sql($add_sql, 'group')
 									);
 		
-		$this->_db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 		
-		return count($this->_db->get_array());		
+		return count($this->connection->get_array());		
 	}
 	
 	/**
@@ -518,9 +518,9 @@ class materialized_path_driver extends tree_db_driver
 										$parent['root_id'],
 										$parent['id']);
 										
-		$this->_db->sql_exec($sql, 1, 0);
+		$this->connection->sql_exec($sql, 1, 0);
 		
-		if($row =& $this->_db->fetch_row())
+		if($row =& $this->connection->fetch_row())
 			return $row['identifier'];
 		else
 			return 0;
@@ -612,7 +612,7 @@ class materialized_path_driver extends tree_db_driver
 		$this->_verify_user_values($values); 
 
 		if (!$this->_dumb_mode)
-			$values['id'] = $node_id = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
+			$values['id'] = $node_id = $this->connection->get_max_column_value($this->_node_table, 'id') + 1;
 		else
 			$node_id = $values['id'];
 
@@ -621,7 +621,7 @@ class materialized_path_driver extends tree_db_driver
 		$values['level'] = 1;
 		$values['parent_id'] = 0;
 		
-		$this->_db->sql_insert($this->_node_table, $values);
+		$this->connection->sql_insert($this->_node_table, $values);
 				
 		return $node_id;
 	} 
@@ -659,7 +659,7 @@ class materialized_path_driver extends tree_db_driver
 		
 		if (!$this->_dumb_mode)
 		{
-			$node_id = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;			
+			$node_id = $this->connection->get_max_column_value($this->_node_table, 'id') + 1;			
 			$values['id'] = $node_id;
 		} 
 		else
@@ -670,7 +670,7 @@ class materialized_path_driver extends tree_db_driver
 		$values['parent_id'] = $parent_id;			
 		$values['path'] = $parent_node['path'] . $node_id . '/';
 		
-		$this->_db->sql_insert($this->_node_table, $values);
+		$this->connection->sql_insert($this->_node_table, $values);
 
 		return $node_id;
 	} 
@@ -693,7 +693,7 @@ class materialized_path_driver extends tree_db_driver
     	return false;
 		} 
 		
-		$this->_db->sql_exec("	DELETE FROM {$this->_node_table}
+		$this->connection->sql_exec("	DELETE FROM {$this->_node_table}
 														WHERE 
 														path LIKE '{$node['path']}%' AND 
 														root_id={$node['root_id']}");
@@ -750,14 +750,14 @@ class materialized_path_driver extends tree_db_driver
 		} 
 
     $move_values = array('parent_id' => $target_id);
-    $this->_db->sql_update($this->_node_table, $move_values, array('id' => $id));
+    $this->connection->sql_update($this->_node_table, $move_values, array('id' => $id));
     
     $src_path_len = strlen($source_node['path']);
-    $sub_string = $this->_db->substr( 'path', 1, $src_path_len );
-    $sub_string2 = $this->_db->substr( 'path', $src_path_len);
+    $sub_string = $this->connection->substr( 'path', 1, $src_path_len );
+    $sub_string2 = $this->connection->substr( 'path', $src_path_len);
 
     $path_set = 
-	    $this->_db->concat( array( 
+	    $this->connection->concat( array( 
 				"'{$target_node['path']}'" , 
 				"'{$id}'", 
 				$sub_string2)
@@ -773,7 +773,7 @@ class materialized_path_driver extends tree_db_driver
             path = '{$source_node['path']}' ";
     
 		
-		$this->_db->sql_exec($sql);
+		$this->connection->sql_exec($sql);
 		
 		return true;
 	} 

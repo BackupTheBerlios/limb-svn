@@ -29,8 +29,6 @@ class test_site_object_fetch extends UnitTestCase
 
   function setUp()
   {
-  	debug_mock :: init($this);
-
   	$this->test_init = new $this->init_class_name();
 		
   	$this->_init_object();
@@ -47,8 +45,6 @@ class test_site_object_fetch extends UnitTestCase
   function tearDown()
   { 
   	$this->test_init->_clean_up();
-  
-		debug_mock :: tally();
   }
   
   function test_fetch_ids_no_params()
@@ -145,8 +141,10 @@ class test_site_object_fetch extends UnitTestCase
 
   function test_fetch_by_ids_no_ids()
   {
-		debug_mock :: expect_write_error('ids array is empty');
   	$result = $this->object->fetch_by_ids(array());
+  	
+  	$this->assertErrorPattern('/ids array is empty/');
+  	
   	$this->assertEqual($result, array());
   }
   

@@ -28,15 +28,15 @@ class project_site_objects_loader
 	{
 		$project_db = str_replace('_tests', '', DB_NAME);
 		
-		$db =& db_factory :: instance();
+		$connection = & db_factory :: get_connection();
 		
-		$db->select_db($project_db);
+		$connection->select_db($project_db);
 		
-		$db->sql_select('sys_class', '*', 'class_name != "site_object"');
+		$connection->sql_select('sys_class', '*', 'class_name != "site_object"');
 		
-		$list = $db->get_array();
+		$list = $connection->get_array();
 		
-		$db->select_db(DB_NAME);
+		$connection->select_db(DB_NAME);
 		
 		return complex_array :: get_column_values('class_name', $list);
 	}

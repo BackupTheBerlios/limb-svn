@@ -11,11 +11,11 @@
 
 class stats_ip
 {
-	var $db = null;
+	var $connection = null;
 	
 	function stats_ip()
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 	}
 
 	function is_new_host($reg_date)
@@ -42,7 +42,7 @@ class stats_ip
 
 	function _insert_stat_ip_record($stamp)
 	{
-		$this->db->sql_insert('sys_stat_ip', 
+		$this->connection->sql_insert('sys_stat_ip', 
 			array(
 				'id' => $this->get_client_ip(), 
 				'time' => $stamp
@@ -57,13 +57,13 @@ class stats_ip
 	
 	function _get_stat_ip_record()
 	{
-		$this->db->sql_select('sys_stat_ip', '*', array('id' => $this->get_client_ip()));
-		return $this->db->fetch_row();
+		$this->connection->sql_select('sys_stat_ip', '*', array('id' => $this->get_client_ip()));
+		return $this->connection->fetch_row();
 	}
 
 	function _update_stat_ip_record($stamp)
 	{
-		$this->db->sql_update('sys_stat_ip', 
+		$this->connection->sql_update('sys_stat_ip', 
 			array('time' => $stamp),
 			array('id' => $this->get_client_ip())
 		);
