@@ -8,15 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
+@define('DEBUG_OUTPUT_MESSAGE_STORE', true);
+@define('DEBUG_OUTPUT_MESSAGE_SEND', false);
+
 define('DEBUG_LEVEL_NOTICE', 1);
 define('DEBUG_LEVEL_WARNING', 2);
 define('DEBUG_LEVEL_ERROR', 3);
 define('DEBUG_TIMING_POINT', 4);
 define('DEBUG_LEVEL', 5);
-
-define('DEBUG_OUTPUT_MESSAGE_NULL', 0);
-define('DEBUG_OUTPUT_MESSAGE_STORE', 1);
-define('DEBUG_OUTPUT_MESSAGE_SEND', 2);
 
 require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
@@ -48,9 +47,6 @@ class debug
 
   // How many places behing . should be displayed when showing percentages
   var $percent_accuracy = 4;
-
-  // Determines how messages are output (screen/log/mail)
-  var $message_output = DEBUG_OUTPUT_MESSAGE_STORE;
 
   // A list of message types
   var $message_types;
@@ -297,9 +293,6 @@ class debug
 
   function _send_mail($debug_info)
   {
-    if(!defined('DEVELOPER_EMAIL'))//???
-      return;
-
     include_once(LIMB_DIR . '/core/lib/mail/mail.inc.php');
 
     $title = '';
@@ -343,22 +336,6 @@ class debug
       send_plain_mail(array(DEVELOPER_EMAIL), 'cli' , $title, $message);
     else
       send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message);
-  }
-
-  /*
-   Determines the way messages are output, the $output parameter
-   is DEBUG_OUTPUT_MESSAGE_SCREEN, DEBUG_OUTPUT_MESSAGE_STORE, DEBUG_OUTPUT_MESSAGE_SEND
-  */
-  function set_message_output($output)
-  {
-    if (!isset($this) || get_class($this) != 'debug')
-      $debug =& debug::instance();
-    else
-      $debug =& $this;
-
-    $prev_output = $debug->message_output;
-    $debug->message_output = $output;
-    return $prev_output;
   }
 
   /*
@@ -439,7 +416,7 @@ class debug
 
     $this->debug_strings[] = $debug_info;
 
-    if ($this->message_output & DEBUG_OUTPUT_MESSAGE_STORE)
+    if (defined('DEBUG_OUTPUT_MESSAGE_STORE') && constant('DEBUG_OUTPUT_MESSAGE_STORE'))
     {
       $files =& $this->log_files;
       $file_name = false;
@@ -451,7 +428,7 @@ class debug
         $this->_write_file($file_name, $debug_info);
     }
 
-    if($this->message_output & DEBUG_OUTPUT_MESSAGE_SEND)
+    if(defined('DEBUG_OUTPUT_MESSAGE_SEND')  && constant('DEBUG_OUTPUT_MESSAGE_SEND'))
     {
       $this->_send_mail($debug_info);
     }

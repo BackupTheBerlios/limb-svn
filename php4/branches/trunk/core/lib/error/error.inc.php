@@ -30,7 +30,6 @@ function error($description, $error_place='', $params=array())
 
   rollback_user_transaction();
 
-  debug :: set_message_output(DEBUG_OUTPUT_MESSAGE_STORE | DEBUG_OUTPUT_MESSAGE_SEND);
   debug :: write_error($description, $error_place, $params);
 
   if (debug :: is_console_enabled())
