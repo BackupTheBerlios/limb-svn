@@ -325,6 +325,13 @@ function & fetch_by_ids($object_ids, $loader_class_name, &$counter, $params = ar
 	return $result;
 }
 
+function & fetch_by_node_ids($node_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
+{
+	$fetcher =& fetcher :: instance();
+	$result =& $fetcher->fetch_by_node_ids($node_ids, $loader_class_name, $counter, $params, $fetch_method);
+	return $result;
+}
+
 
 function & get_mapped_controller()
 {

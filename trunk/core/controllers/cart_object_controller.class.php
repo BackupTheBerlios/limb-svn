@@ -27,6 +27,12 @@ class cart_object_controller extends site_object_controller
 						'popup' => true,
 						'action_name' => strings :: get('add_item', 'cart'),
 				),
+				'add_items' => array(
+						'permissions_required' => 'w',
+						'action_path' => '/cart/add_cart_items_action',
+						'popup' => true,
+						'action_name' => strings :: get('add_items', 'cart'),
+				),
 				'remove_items' => array(
 						'permissions_required' => 'w',
 						'action_path' => '/cart/remove_cart_items_action',

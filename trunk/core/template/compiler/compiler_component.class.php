@@ -470,7 +470,9 @@ class compiler_component
 		if (isset($this->wrapping_component))
 		{
 			$this->wrapping_component->generate_wrapper_postfix($code);
-			$code->write_html('</div>');
+			
+			if($this->is_debug_enabled())
+				$code->write_html('</div>');
 		} 
 	} 
 
