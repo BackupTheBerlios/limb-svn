@@ -18,7 +18,16 @@ class http_response
 		
 	function redirect($path)
 	{  		  	
-  	$this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white></body></html>";
+  	$this->response_string = "
+  	<html>
+  	<head><meta http-equiv=refresh content='0;url={$path}'></head>
+  	<body bgcolor=white>
+  	<font color=707070><small>
+  	<p>You're being redirected with meta tag...
+  	<p>Some browsers may not support this feature, <a href='{$path}'>click here</a> if you're not 
+  	redirected in 5 seconds.</small></font>
+  	</body>
+  	</html>";
 	}
 	
 	function & get_response_string()

@@ -25,91 +25,70 @@ class richedit_component extends text_area_component
 			$this->load_richedit();
 	}
 
-	function _load_additional_js_scripts()
+	function _load_js_script()
 	{
-		if (defined('RICHEDIT_LOAD_ADDITIONAL_SCRIPT'))
+		if (defined('HTMLAREA_SCRIPT_LOADED'))
 			return;
 			
-		define('RICHEDIT_LOAD_ADDITIONAL_SCRIPT', 1);
+		define('HTMLAREA_SCRIPT_LOADED', 1);
 
 		echo "
-		<!-- load the TableOperations plugin files -->
-		<script type='text/javascript' src='/shared/richedit/plugins/TableOperations/table-operations.js'></script>
-		<script type='text/javascript' src='/shared/richedit/plugins/TableOperations/lang/en.js'></script>
-		";
-	}
-
-	function _load_basic_js_scripts()
-	{
-		if (defined('RICHEDIT_LOAD_BASIC_SCRIPT'))
-			return;
-			
-		define('RICHEDIT_LOAD_BASIC_SCRIPT', 1);
-
-		echo "
-    <script type='text/javascript' src='/shared/richedit/htmlarea.js'></script>
-		<script type='text/javascript' src='/shared/richedit/popupwin.js'></script>
-    <script type='text/javascript' src='/shared/richedit/lang/en.js'></script>
-    <script type='text/javascript' src='/shared/richedit/dialog.js'></script>
-    <script type='text/javascript' src='/shared/richedit/popupurl.js'></script>
-    <style type='text/css'>
-      @import url(/shared/richedit/htmlarea.css);
-    </style>";
-	
+    <script type='text/javascript'>  
+      var _editor_url = '/shared/HTMLArea-3.0-rc1/';    
+    </script>
+  		
+    <script type='text/javascript' src='/shared/HTMLArea-3.0-rc1/htmlarea.js'></script>";	
 	}
 
 	function load_richedit()
 	{
-		$this->_load_basic_js_scripts();
-		$this->_load_additional_js_scripts();
+		$this->_load_js_script();
+		
 		$id = $this->get_attribute('id');
 		
     echo "
     <script type='text/javascript'>
-      var editor = null;
     
-      function init_richedit()
+      function init_richedit_{$id}()
       {
-	    	editor = new HTMLArea('{$id}');
-			  editor.registerPlugin('TableOperations');
-        editor.config.editorURL = '/shared/richedit/';
+	    	var editor = new HTMLArea('{$id}');
+        editor.config.width = '600px';
+        editor.config.height = '400px';  	    	
         editor.generate();
       }
-      add_event(window, 'load', init_richedit);
+      add_event(window, 'load', init_richedit_{$id});
     </script>";
 	}
 
 	function load_light_richedit()
 	{
-		$this->_load_basic_js_scripts();
+		$this->_load_js_script();
 
 		$id = $this->get_attribute('id');
 		
     echo "
     <script type='text/javascript'>
-      var editor_light = null;
-    
-      function init_light_richedit()
+      function init_light_richedit_{$id}()
       {
-	    	editor_light = new HTMLArea('{$id}');
+	    	var editor = new HTMLArea('{$id}');
 	    	
-	    	editor_light.config.toolbar = [
+	    	editor.config.toolbar = [
 					[ 'bold', 'italic', 'underline', 'strikethrough', 'separator',
 					  'subscript', 'superscript', 'separator',
 					  'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'separator',
 						'insertorderedlist', 'insertunorderedlist', 'outdent', 'indent', 'separator',
 						'copy', 'cut', 'paste','separator',
-					  'inserthorizontalrule', 'createlink', 'insertimage', 'insertlinkfile', 'htmlmode', 'separator',
-					  'popupeditor', 'separator', 'clear_msw'
+					  'inserthorizontalrule', 'createlink', 'htmlmode', 'separator',
+					  'popupeditor', 'separator'
 					]
 				];
 
-        editor_light.config.editorURL = '/shared/richedit/';
-        editor_light.generate();
+        editor.config.width = '600px';
+        editor.config.height = '400px';  
+        editor.generate();
       }
-      add_event(window, 'load', init_light_richedit);
+      add_event(window, 'load', init_light_richedit_{$id});
     </script>";
-
 	}
 } 
 
