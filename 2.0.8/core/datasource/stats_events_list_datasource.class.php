@@ -65,7 +65,7 @@ class stats_events_list_datasource extends datasource
 		
 		$this->_set_period_filter();
 		
-		$this->_set_object_filter();
+		$this->_set_uri_filter();
 		
 		$this->_set_status_filter();
 	}
@@ -103,10 +103,10 @@ class stats_events_list_datasource extends datasource
 			$this->stats_event_report->set_status_filter($status_mask);
 	}
 	
-	function _set_object_filter()
+	function _set_uri_filter()
 	{		
-		if (isset($_REQUEST['stats_object_path']) && $_REQUEST['stats_object_path'])	
-			$this->stats_event_report->set_object_filter($_REQUEST['stats_object_path']);
+		if (isset($_REQUEST['stats_uri']) && $_REQUEST['stats_uri'])	
+			$this->stats_event_report->set_uri_filter($_REQUEST['stats_uri']);
 	}
 	
 	function _set_period_filter()

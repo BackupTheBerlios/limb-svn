@@ -52,55 +52,15 @@ class stats_event_report
 		$this->filter_conditions[] = " AND sslog.time BETWEEN {$start_stamp} AND {$finish_stamp} ";
 	}
 	
-	function set_object_filter($objects_string)
+	function set_uri_filter($uri_string)
 	{
-		$tree =& limb_tree :: instance();
-		
-		$object_path_list = $this->_parse_input_string($objects_string);
-		
-		$object_positive_paths_list = array();
-		$object_negative_paths_list = array();
-
-		foreach($object_path_list as $path)
-		{
-			if(substr($path, 0, 1) == '!')
-			{
-				$path = substr($path, 1);
-				$object_path_list =& $object_negative_paths_list;
-			}
-			else
-				$object_path_list =& $object_positive_paths_list;
-				
-			if(substr($path, -1) == '%')
-			{
-				$path = substr($path, 0, -1);
-				
-				if(($branch = $tree->get_sub_branch_by_path($path)) !== false)
-				{
-					foreach($branch as $node)
-						$object_path_list[] = $node['id'];
-				}	
-			}
-			elseif($node = $tree->get_node_by_path($path))
-				$object_path_list[] = $node['id'];
-		}
-		
-		$positive_conditions = array();
-		foreach($object_positive_paths_list as $node_id)
-		{
-			$positive_conditions[] = $this->_build_positive_condition('sslog.node_id', $node_id);
-		}
-
-		$negative_conditions = array();
-		foreach($object_negative_paths_list as $node_id)
-		{
-			$negative_conditions[] = $this->_build_negative_condition('sslog.node_id', $node_id);
-		}
-				
-		$condition = $this->_combine_positive_negative_conditions($positive_conditions, $negative_conditions);
+		$condition = $this->_combine_positive_negative_conditions(
+			$this->_build_positive_conditions('ssu.uri', $uri_string),
+			$this->_build_negative_conditions('ssu.uri', $uri_string)
+		);
 		
 		if($condition)
-			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
+			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';				
 	}
 	
 	function set_status_filter($status_mask)

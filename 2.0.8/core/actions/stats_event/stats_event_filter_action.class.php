@@ -31,7 +31,7 @@ class stats_event_filter_action extends form_action
 		$_REQUEST['stats_finish_hour'] = $this->dataspace->get('stats_finish_hour');
 		$_REQUEST['stats_finish_minute'] = $this->dataspace->get('stats_finish_minute');
 
-		$_REQUEST['stats_object_path'] = $this->dataspace->get('stats_object_path');
+		$_REQUEST['stats_uri'] = $this->dataspace->get('stats_uri');
 		$_REQUEST['stats_status'] = $this->dataspace->get('stats_status');
 	
 		return parent :: _valid_perform();
