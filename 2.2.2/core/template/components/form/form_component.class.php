@@ -145,6 +145,22 @@ class form_component extends tag_component
 				$this->attributes['action'] .= '?popup=1';
 		}
 			
+		if(isset($this->attributes['https']) && $this->attributes['https'])
+		{
+			$host = $_SERVER['SERVER_NAME'];
+			$url = parse_url($_SERVER['PHP_SELF']);
+			
+			if (strpos($this->attributes['action'], '/') !== 0)
+			{
+				$host .= $url['path'];
+				if (strrpos($host, '/') != (strlen($host) - 1))
+					$host .= '/';
+			}
+				
+			$this->attributes['action'] = "https://{$host}{$this->attributes['action']}";
+			unset($this->attributes['https']);
+		}
+
 		parent :: render_attributes();
 	}
 
