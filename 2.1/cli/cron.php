@@ -11,6 +11,8 @@
 
 ob_start();
 
+error_reporting (E_ERROR | E_PARSE);
+
 $site_path = $argv[1];
 
 if (file_exists($site_path . '/setup_custom.php'))
