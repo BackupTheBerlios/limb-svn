@@ -222,7 +222,7 @@ class db_module
 
   function sql_update($table, $set, $where='', $column_types=array())
   {  	
-  	return $this->sql_exec($this->make_update_string($table, $set, $where));
+  	return $this->sql_exec($this->make_update_string($table, $set, $where, $column_types));
   }
 
   function sql_delete($table, $where='')
@@ -270,6 +270,9 @@ class db_module
     {
     	case 'numeric':
     		return $value*1;
+    	break;
+    	case 'float':
+    		return str_replace(',', '.', "'" . floatval($value) . "'"); // FIXX!!
     	break;
 	    case 'string':
 	    	return $this->_process_string_value($value);
@@ -418,7 +421,7 @@ class db_module
     	$implode_values = array();
     	
     	foreach($names_values as $key => $val)
-    		$implode_values[] = "$key=$val";
+    		$implode_values[] = $key . '=' . $val;
     		
       	$fields_str = implode(',', $implode_values);
     }
