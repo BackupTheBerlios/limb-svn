@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/datasources/site_objects_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/authorizer.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');

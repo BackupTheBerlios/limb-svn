@@ -10,7 +10,7 @@
 ***********************************************************************************/   
 require_once(LIMB_DIR . '/class/core/commands/state_machine.class.php');  
 require_once(LIMB_DIR . '/class/core/request/request.class.php');  
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 
 Mock :: generate('StateMachine');

@@ -104,6 +104,26 @@ class site_object_test extends LimbTestCase
 
     Limb :: popToolkit();  	
   }
+  
+  function test_get_controller()
+  {
+    Mock :: generatePartial('site_object',
+                            'site_object_get_controller_test_version',
+                            array('get_behaviour'));
+    
+    $object = new site_object_get_controller_test_version($this);
+    
+    $mock_behaviour = new Mocksite_object_behaviour($this);
+    
+    $object->expectOnce('get_behaviour');
+    $object->setReturnValue('get_behaviour', $mock_behaviour);
+    
+    $controller = $object->get_controller();
+    
+    $this->assertTrue($controller->get_behaviour() === $mock_behaviour);
+    
+    $object->tally();
+  }
 
   function test_get_class_id()
   {

@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
 require_once(LIMB_DIR . '/class/core/filters/site_object_controller_filter.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
@@ -67,10 +67,9 @@ class site_object_controller_filter_test extends LimbTestCase
     
     $this->filter_chain->expectOnce('next');
     
-    $this->filter->setReturnValue('_get_controller', $this->controller);
+    $this->site_object->setReturnValue('get_controller', $this->controller);
     
-    $this->site_object->setReturnValue('get_behaviour', $this->behaviour);
-    $this->controller->expectOnce('process', array(new IsAExpectation('Mocksite_object_behaviour')));
+    $this->controller->expectOnce('process', array(new IsAExpectation('Mockrequest')));
     
     Limb :: registerToolkit($this->toolkit);
   }

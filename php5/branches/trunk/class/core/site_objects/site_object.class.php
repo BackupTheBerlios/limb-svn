@@ -494,6 +494,12 @@ class site_object extends object
     else
       return null;
   }
+  
+  public function get_controller()
+  {
+    include_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
+    return new site_object_controller($this->get_behaviour());
+  }
 
   protected function _get_parent_locale_id()
   {

@@ -21,18 +21,16 @@ class site_object_controller_filter implements intercepting_filter
 
     $site_object = wrap_with_site_object($datasource->fetch());
 
-    $behaviour = $site_object->get_behaviour();
-    
-    $this->_get_controller()->process($behaviour);    
+    $site_object->get_controller()->process($request);    
 
     debug :: add_timing_point('site object controller filter finished');
 
     $filter_chain->next();
   }
   
-  protected function _get_controller()
+  protected function _get_controller($behaviour)
   {
-    return new site_object_controller();
+    return new site_object_controller($behaviour);
   }
 }
 ?>

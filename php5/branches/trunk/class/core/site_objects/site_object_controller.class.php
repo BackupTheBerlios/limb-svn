@@ -12,14 +12,19 @@ require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/class/i18n/strings.class.php');
 	
-abstract class site_object_controller
+class site_object_controller
 {	
-  var $behaviour;
+  protected $behaviour;
   
 	function __construct($behaviour)
 	{
 	  $this->behaviour = $behaviour;
 	}
+  
+  public function get_behaviour()
+  {
+    return $this->behaviour;
+  }
 		
 	public function get_requested_action($request)
 	{		    	  
