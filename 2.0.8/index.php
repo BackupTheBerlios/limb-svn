@@ -5,9 +5,17 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: index.php 401 2004-02-04 15:40:14Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
+require_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
+require_once(LIMB_DIR . 'core/model/response/response.class.php');
+
+$stats_register = new stats_register();
+$response = new response();
+$stats_register->register(-1, '', $response->get_status());
+
 header("Location: /root");
+exit;
 ?> 
