@@ -132,6 +132,22 @@ class sys
     	return $obj->client_ip;
 	}
 	
+	function encode_ip($ip=null)
+	{
+		if(!$ip)
+			$ip = sys :: client_ip();
+		
+		$ip_sep = explode('.', $ip);
+			
+		return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
+	}
+	
+	function decode_ip($hex_ip)
+	{
+		$hexipbang = explode('.', chunk_split($hex_ip, 2, '.'));
+		return hexdec($hexipbang[0]). '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
+	}
+	
   /*
    return the file_system type, either "win32" or "unix"
   */

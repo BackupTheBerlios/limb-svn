@@ -23,7 +23,6 @@ register_tag(new locale_date_format_tag_info());
 
 class locale_date_format_tag extends server_component_tag
 {
-
 	var $runtime_component_path = '/core/template/components/locale_date_format_component';
 	
 	function pre_generate(&$code)
@@ -33,7 +32,6 @@ class locale_date_format_tag extends server_component_tag
 
 	function generate_contents(&$code)
 	{
-			
 		if(isset($this->attributes['hash_id']))
 		{
 

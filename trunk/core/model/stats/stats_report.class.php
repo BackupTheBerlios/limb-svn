@@ -41,10 +41,10 @@ class stats_report
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
 
 		$this->db->sql_exec($sql, $limit, $offset);
-		
+				
 		return $this->db->get_array('id');
 	}
-
+	
 	function fetch_count($params = array())
 	{
 		$sql = "SELECT COUNT(id) as count FROM sys_stat_log";

@@ -52,7 +52,7 @@ class stats_ip
 
 	function get_client_ip()
 	{
-		return sys :: client_ip(true);
+		return sys :: encode_ip();
 	}
 	
 	function _get_stat_ip_record()

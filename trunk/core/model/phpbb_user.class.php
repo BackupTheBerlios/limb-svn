@@ -97,7 +97,7 @@ class phpbb_user extends object
 	{	
 		$this->_delete_cookie();
 
-		$user_ip = sys :: client_ip(true);
+		$user_ip = sys :: encode_ip();
 		$sid = md5(uniqid($user_ip));
 		
 		session :: set('phpbb_sid', $sid);

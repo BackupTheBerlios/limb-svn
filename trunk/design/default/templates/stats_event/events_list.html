@@ -32,7 +32,7 @@
 
 <td align='center'>{$id}</td>
 <td><locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'></td>
-<td>{$ip}</td>
+<td><core:IP hash_id="ip" ></td>
 <td>{$action}</td>
 <td><a href='/root?node_id={$node_id}' target='_blank'>{$identifier} : {$title}</a></td>
 <td><a href='/root/users/{$user_login}' target='_blank'>{$user_login}</a></td>
