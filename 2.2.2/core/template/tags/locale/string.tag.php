@@ -49,7 +49,7 @@ class locale_string_tag extends compiler_directive_tag
       if(defined('DEBUG_TEMPLATE_I18N_ENABLED') && constant('DEBUG_TEMPLATE_I18N_ENABLED'))
       {
         $code->write_php("
-          echo '<img src=\'/shared/images/i.gif\' title=\'&#039;{$locale_tmp}&#039; from &#039;{$file}&#039; i18n file\'>';"
+          echo '<img src=\'/shared/images/i.gif\' title=\'&#039;{$locale_tmp}&#039; from &#039;{$file}_???&#039; i18n file\'>';"
         );
       }
       
@@ -61,7 +61,7 @@ class locale_string_tag extends compiler_directive_tag
 		  if(defined('DEBUG_TEMPLATE_I18N_ENABLED') && constant('DEBUG_TEMPLATE_I18N_ENABLED'))
 		  {			
         $code->write_php("
-          echo '<img src=\'/shared/images/i.gif\' title=\'&#039;{$this->attributes['name']}&#039; from &#039;{$file}&#039; i18n file\'>';"
+          echo '<img src=\'/shared/images/i.gif\' title=\'&#039;{$this->attributes['name']}&#039; from &#039;{$file}_???&#039; i18n file\'>';"
         );
       }
 		
