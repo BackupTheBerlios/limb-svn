@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 
 SimpleTestOptions::ignore('db_test');
 
-//ugly!!! db_test class should be removed
+//ugly!!! db_test class MUST be removed
 class db_test extends LimbTestCase
 {
   var $db = null;
@@ -72,6 +72,8 @@ class db_test extends LimbTestCase
         }
       }
     }
+
+    $this->tables_list = array_unique($this->tables_list);
   }
 
   function _load_dumped_db()

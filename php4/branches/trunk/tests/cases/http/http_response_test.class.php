@@ -51,12 +51,6 @@ class http_response_test extends LimbTestCase
     $this->assertTrue($this->response->is_empty());
   }
 
-  function test_not_empty_redirect()
-  {
-    $this->response->redirect("/to/some/place?t=1&amp;t=2");
-    $this->assertFalse($this->response->is_empty());
-  }
-
   function test_not_empty_response_string()
   {
     $this->response->write("<b>wow</b>");
@@ -111,19 +105,11 @@ class http_response_test extends LimbTestCase
 
   function test_redirect()
   {
-    $path = '/to/some/place?t=1&t=2';
-    $message = strings :: get('redirect_message');
-    $message = str_replace('%path%', $path, $message);
-
-    $this->response->expectOnce('_send_string', array(new WantedPatternExpectation("~^<html><head><meta http-equiv=refresh content='0;url=" . preg_quote($path) . "'~")));
-
     $this->assertFalse($this->response->is_redirected());
 
-    $this->response->redirect($path);
+    $this->response->redirect('some path');
 
     $this->assertTrue($this->response->is_redirected());
-
-    $this->response->commit();
   }
 
   function test_write()

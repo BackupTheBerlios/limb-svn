@@ -41,7 +41,7 @@ define('LIMB_VERSION_MICRO', '0');
 /**
  * Software version patch
  */
-define('LIMB_VERSION_PATCH', 'RC1');
+define('LIMB_VERSION_PATCH', 'RC2');
 
 /**
  * Software release version

@@ -44,7 +44,7 @@ class multi_delete_action extends form_action
 
     $grid->register_dataset(new array_dataset($objects));
 
-    parent :: _first_time_perform(&$request, &$response);
+    parent :: _first_time_perform($request, $response);
   }
 
   function _valid_perform(&$request, &$response)

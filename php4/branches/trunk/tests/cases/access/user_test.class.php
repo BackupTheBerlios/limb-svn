@@ -17,6 +17,8 @@ class user_test extends db_test
 
   function tearDown()
   {
+    parent :: tearDown();
+
     $user =& user :: instance();
     $user->logout();
   }

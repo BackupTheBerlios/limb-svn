@@ -37,10 +37,18 @@ class limb_application
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/session_history_filter');
   }
 
+  function & _get_default_redirect_strategy()
+  {
+    include_once(LIMB_DIR . '/core/request/meta_redirect_strategy.class.php');
+    return new meta_redirect_strategy('/redirect_template.html');
+  }
+
   function run()
   {
     $request =& request :: instance();
     $response =& new http_response();
+
+    $response->set_redirect_strategy($this->_get_default_redirect_strategy());
 
     $filter_chain =& new filter_chain($request, $response);
 
@@ -59,6 +67,7 @@ class limb_application
 
     $response->commit();
   }
+
 }
 
 ?>

@@ -10,9 +10,6 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/i18n/strings.class.php');
 
-define('HTTP_REDIRECT', 1);
-define('HTML_REDIRECT', 2);
-
 class http_response
 {
   var $response_string = '';
@@ -20,39 +17,29 @@ class http_response
   var $headers = array();
   var $is_redirected = false;
 
-  function redirect($path, $redirect_type = HTML_REDIRECT, $redirect_template_path = '/redirect_template.html')
+  var $redirect_strategy = null;
+
+  function set_redirect_strategy(&$strategy)
   {
-    if ($redirect_type == HTML_REDIRECT)
-      $this->_html_redirect($path, $redirect_template_path);
+    $this->redirect_strategy =& $strategy;
+  }
+
+  function redirect($path)
+  {
+    if($this->redirect_strategy === null)
+      $strategy =& $this->_get_default_redirect_strategy();
     else
-      $this->_http_redirect($path);
+      $strategy =& $this->redirect_strategy;
+
+    $strategy->redirect($this, $path);
 
     $this->is_redirected = true;
   }
-  
-  function _html_redirect($path, $redirect_template_path)
-  {
-    include_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
 
-    $message = strings :: get('redirect_message');//???
-    $message = str_replace('%path%', $path, $message);
-    
-    $redirect_template_path = !empty($redirect_template_path) ? $redirect_template_path : '/redirect_template.html';
-
-    if($template = resolve_template_source_file_name($redirect_template_path))
-    {
-      $content = file_get_contents($template);
-      $content = str_replace('{$path}', $path, $content);
-      $content = str_replace('{$message}', $message, $content);
-      $this->response_string =  $content;
-    }
-    else
-      $this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white>{$message}</body></html>";
-  }
-  
-  function _http_redirect($path)
+  function &_get_default_redirect_strategy()
   {
-    $this->header("Location: {$path}");
+    include_once(dirname(__FILE__) . '/http_redirect_strategy.class.php');
+    return new http_redirect_strategy();
   }
 
   function reset()
@@ -116,10 +103,9 @@ class http_response
   {
     $status = $this->get_status();
 
-    return (
-      empty($this->response_string) &&
-      empty($this->response_file_path) &&
-      ($status != 304 && $status != 412));//???
+    return (empty($this->response_string) &&
+            empty($this->response_file_path) &&
+            ($status != 304 && $status != 412));//???
   }
 
   function headers_sent()

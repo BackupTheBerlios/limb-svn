@@ -55,18 +55,46 @@ class authentication_filter extends intercepting_filter
     if(!isset($actions[$action]))
     {
       $redirect_path = $site_object_controller->get_action_property($action, 'inaccessible_redirect');
-      $redirect_type = $site_object_controller->get_action_property($action, 'redirect_type');
-      $redirect_template_path = $site_object_controller->get_action_property($action, 'redirect_template_path');
-      
+
       if(!$redirect)
         $redirect = '/root/login';
-      
-      $response->redirect($redirect_path . '?redirect='. urlencode($_SERVER['REQUEST_URI']), $redirect_type, $redirect_template_path);
+
+      $redirect_strategy =& $this->_get_redirect_strategy($site_object_controller);
+
+      $response->set_redirect_strategy($redirect_strategy);
+
+      $response->redirect($redirect_path . '?redirect='. urlencode($_SERVER['REQUEST_URI']));
     }
 
     debug :: add_timing_point('authentication filter finished');
 
     $filter_chain->next();
+  }
+
+  function & _get_redirect_strategy($site_object_controller)
+  {
+    $redirect_type = $site_object_controller->get_action_property($action, 'redirect_type');
+
+    if(!$redirect_type || $redirect_type == 'meta')//ugly!!!
+    {
+      include_once(LIMB_DIR . '/core/request/meta_redirect_strategy.class.php');
+
+      if(!$redirect_template_path = $site_object_controller->get_action_property($action, 'redirect_template_path'))
+        $redirect_template_path = '/redirect_template.html';
+
+      $redirect_strategy = new meta_redirect_strategy($redirect_template_path);
+    }
+    elseif($redirect_type == 'http')
+    {
+      include_once(LIMB_DIR . '/core/request/http_redirect_strategy.class.php');
+      $redirect_strategy = new http_redirect_strategy();
+    }
+    else
+      error('unknown redirect strategy',
+            __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+            array('type' => $redirect_type));
+
+    return $redirect_strategy;
   }
 }
 ?>
