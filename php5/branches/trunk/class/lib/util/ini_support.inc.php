@@ -23,7 +23,7 @@ function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cac
 	return get_ini($file_path, $use_cache)->get_option($var_name, $group_name);
 } 
 
-function & get_ini($file_name, $use_cache = null)
+function get_ini($file_name, $use_cache = null)
 {
   if (isset($GLOBALS['testing_ini'][$file_name]))
   {

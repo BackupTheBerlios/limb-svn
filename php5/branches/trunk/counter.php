@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
 function get_counter_record()
 {
-	$db =& db_factory :: instance();
+	$db = db_factory :: instance();
 	$db->sql_select('sys_stat_counter', '*');
 	return $db->fetch_row();
 }

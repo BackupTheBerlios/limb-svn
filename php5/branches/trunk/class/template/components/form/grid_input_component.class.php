@@ -35,7 +35,7 @@ class grid_input_component extends input_form_element
 		
 	protected function _process_name_attribute($value)
 	{
-		$list =& $this->find_parent_by_class('list_component');
+		$list = $this->find_parent_by_class('list_component');
     
 		return 'grid_form' . $this->_make_index_name($value) . '[' . $list->get($this->hash_id) . ']';
 	}

@@ -62,7 +62,7 @@ class ini
 			return $GLOBALS[$instance_name];
 
 		$obj = new ini($file_path, $use_cache);
-		$GLOBALS[$instance_name] =& $obj;
+		$GLOBALS[$instance_name] = $obj;
 
 		return $obj;
 	} 

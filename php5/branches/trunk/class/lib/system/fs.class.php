@@ -8,6 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
+//inspired by EZpublish(http://ez.no), dir class
+
 require_once(LIMB_DIR . '/class/lib/system/sys.class.php');
 
 class fs

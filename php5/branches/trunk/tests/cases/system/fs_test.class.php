@@ -66,13 +66,27 @@ class fs_test extends LimbTestCase
 		$this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/'));
   }
   
-  function test_clean_path()
+  function test_clean_path1()
   {
   	$path = fs :: clean_path('/tmp\../tmp/wow////hey/');
   	$this->assertEqual($path, fs :: separator() . 'tmp' . fs :: separator() . 'wow' . fs :: separator() . 'hey' . fs :: separator());
   	
   	$path = fs :: clean_path('tmp\../tmp/wow////hey/');
   	$this->assertEqual($path, 'tmp' . fs :: separator() . 'wow' . fs :: separator() . 'hey' . fs :: separator());
+  }
+
+  function test_clean_path2()
+  {
+  	$path = fs :: clean_path('c:\\var\\dev\\demo\\design\\templates\\test.html');
+  	
+  	$this->assertEqual($path, 
+  	  'c:' . fs :: separator() . 
+  	  'var' . fs :: separator() . 
+  	  'dev' . fs :: separator() . 
+  	  'demo' . fs :: separator() . 
+  	  'design' . fs :: separator() . 
+  	  'templates' . fs :: separator() . 
+  	  'test.html');
   }
 
 	function test_explode_absolute_path()

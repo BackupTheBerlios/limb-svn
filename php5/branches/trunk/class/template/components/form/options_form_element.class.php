@@ -41,7 +41,7 @@ class options_form_element extends container_form_element
 	*/
 	public function set_selection($selection)
 	{
-		$form_component = &$this->find_parent_by_class('form_component');
+		$form_component = $this->find_parent_by_class('form_component');
 		$form_component->set($this->attributes['name'], $selection);
 	} 
 

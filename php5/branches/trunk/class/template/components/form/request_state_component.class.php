@@ -14,7 +14,7 @@ class request_state_component extends input_hidden_component
 { 
 	public function get_value()
 	{	
-		$form =& $this->find_parent_by_class('form_component');
+		$form = $this->find_parent_by_class('form_component');
 				
 		if($form->is_first_time())
 		{

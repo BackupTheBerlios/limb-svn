@@ -371,6 +371,14 @@ abstract class compiler_component
 			define('WS_SCRIPT_WRITTEN', true);
 		}
 		
+		if(substr($file_path, 1, 2) != fs :: separator())
+		{
+		  $items = fs :: explode_path($_SERVER['PATH_TRANSLATED']);
+		  array_pop($items);
+		  
+		  $file_path = fs :: path($items) . $file_path;
+		}		
+		
 		$file_path = addslashes(fs :: clean_path($file_path));
 		$code->write_html("<a href='#'><img onclick='run_template_editor(\"{$file_path}\");' src='/shared/images/i.gif' alt='{$file_path}' title='{$file_path}' border='0'></a>");
 	}

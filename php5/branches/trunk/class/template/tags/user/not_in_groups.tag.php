@@ -38,7 +38,7 @@ class user_not_in_groups_tag extends compiler_directive_tag
 		$groups = $this->attributes['groups'];
 		
 		$user = '$' . $code->get_temp_variable();
-		$code->write_php("{$user} =& user :: instance();");
+		$code->write_php("{$user} = user :: instance();");
 		
 		$code->write_php("if ({$user}->is_logged_in() && (!{$user}->is_in_groups('{$groups}'))) {");
 			parent :: generate_contents($code);

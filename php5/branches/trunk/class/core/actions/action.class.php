@@ -23,7 +23,7 @@ class action implements action_interface
 		$this->name = $this->_define_dataspace_name();
 		
     include_once(LIMB_DIR . 'class/core/dataspace_registry.class.php');		
-		$this->dataspace =& dataspace_registry :: get($this->name);
+		$this->dataspace = dataspace_registry :: get($this->name);
 	}
 	
 	protected function _define_dataspace_name()

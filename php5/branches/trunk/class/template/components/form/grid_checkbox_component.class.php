@@ -23,7 +23,7 @@ class grid_checkbox_component extends input_checkbox_component
 	
 	protected function _process_name_attribute($value)
 	{
-		$list =& $this->find_parent_by_class('list_component');
+		$list = $this->find_parent_by_class('list_component');
 
 		return 'grid_form' . $this->_make_index_name($value) . '[' . $list->get('node_id') . ']';
 	}
