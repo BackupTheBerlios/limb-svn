@@ -18,18 +18,20 @@ class http_response
 	
 	function redirect($path)
 	{  		  	
-    require_once(LIMB_DIR . 'core/template/template.class.php');
+    include_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
+    
   	$message = strings :: get('redirect_message');//???
   	$message = str_replace('%path%', $path, $message);
-
-    $template = new template('/redirect_template.html');
-    $template->set('message', $message);
-    $template->set('path', $path);
-
-		ob_start();
-		$template->display();
-		$this->response_string =  ob_get_contents();
-		ob_end_clean();
+    
+    if($template = resolve_template_source_file_name('/redirect_template.html'))
+    {
+      $content = file_get_contents($template);
+      $content = str_replace('{$path}', $path, $content);
+      $content = str_replace('{$message}', $message, $content);
+      $this->response_string =  $content;
+    }
+    else
+      $this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white>{$message}</body></html>";
 	}
 		
 	function reset()
