@@ -17,7 +17,6 @@ class edit_feedback_action extends form_edit_site_object_action
 		$definition = array(
 			'site_object' => 'feedback_object',
 			'datamap' => array(
-				'title' => 'title',
 				'content' => 'content',
 			)
 		);

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_period_news_action.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
@@ -18,7 +18,6 @@ class create_period_news_action extends form_create_site_object_action
 		$definition = array(
 			'site_object' => 'period_news_object',
 			'datamap' => array(
-				'title' => 'title',
 				'annotation' => 'annotation',
 				'news_content' => 'content',
 				'news_date' => 'news_date',

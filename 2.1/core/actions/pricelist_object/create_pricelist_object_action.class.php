@@ -24,11 +24,6 @@ class create_pricelist_object_action extends form_create_site_object_action
 		
 		parent :: form_create_site_object_action('pricelist_object_form', $definition);
 	}
-	
-//	function _init_validator()
-//	{
-//		parent :: _init_validator();
-//	}
 }
 
 ?>

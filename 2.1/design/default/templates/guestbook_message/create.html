@@ -1,8 +1,8 @@
 <core:WRAP file="popup.html" placeholder="content">
 <h2><locale:STRING name="message_creation" file="guestbook"></h2>
 <form method="post" name="create_guestbook_message" id="create_guestbook_message">
-	<core:INCLUDE file="form_errors.html">
   <table width="100%" border="0" cellspacing="2" cellpadding="3">
+		<core:INCLUDE file='/admin/admin_form_items/errors.html'>
 		<core:INCLUDE file="/guestbook_message/form_fields.html">
     <tr>
       <td>&nbsp;</td>

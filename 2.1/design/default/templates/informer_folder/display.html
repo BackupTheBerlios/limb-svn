@@ -7,6 +7,7 @@
 
 <fetch:SUB_BRANCH target='informers' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='informer_object'>
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">
@@ -25,8 +26,8 @@
 <td align="center">
 	<core:INCLUDE file="published_status.html">
 </td>
-<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
-<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
 </grid:ITERATOR>
 </table>

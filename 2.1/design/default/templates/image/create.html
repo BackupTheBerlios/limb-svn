@@ -3,9 +3,9 @@
 <script language="javascript" src="/shared/js/image_actions.js"></script>
 
 <form name="create_image" id="create_image" enctype="multipart/form-data" method="post">
-	<core:INCLUDE file="form_errors.html">
 	<table>
 	<col span=100 valign=bottom class=form>
+	<core:INCLUDE file='/admin/admin_form_items/errors.html'>
 	<tr>
 		<td></td>
 		<td class='text'>
@@ -101,22 +101,13 @@
 			</fieldset>
 	</td>
 	</tr>
-	
-	<tr>
-		<td><span class='req'>*</span><locale:STRING name='identifier'></td>
-		<td align='left' nowrap><input id="identifier" name="identifier" class="input" type="text" size="60"  value=''/></td>
-	</tr>
-	
-	<tr>
-		<td><locale:STRING name='title' ></td>
-		<td align='left' nowrap><input id="title" name="title" class="input" type="text" size="60"  value=''/></td>
-	</tr>
-	
+	<core:INCLUDE file='/admin/admin_form_items/identifier.html'>
+	<core:INCLUDE file='/admin/admin_form_items/title.html'>
 	<tr>
 		<td><locale:STRING name='description' file='image'></td>
 		<td align='left' nowrap><textarea name="description" class="textarea" cols='60' rows='5'></textarea></td>
 	</tr>
-	
+	<core:INCLUDE file='/admin/admin_form_items/req_info.html'>
 	<tr>
 	<td colspan='2' align=center>
 	<action_button name="create_button" class="button"  action="create_image" locale_value="create"/>

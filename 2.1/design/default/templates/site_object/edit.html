@@ -3,19 +3,12 @@
 <form name="edit_site_object" id="edit_site_object" enctype="multipart/form-data" method="post">
 	<core:INCLUDE file="form_errors.html">
 	<table>
+
+	<core:INCLUDE file='/admin/admin_form_items/identifier.html'>
+	<core:INCLUDE file='/admin/admin_form_items/title.html'>
 	
 	<tr>
-		<td><span class=req>*</span><locale:STRING name='identifier'></td>
-		<td align='left' nowrap><fetch:MAPPED>{$identifier}</fetch:MAPPED>
-		<input id="identifier" name="identifier" type="hidden"/></td>
-	</tr>
-	<tr>
-		<td><span class=req>*</span><locale:STRING name='title'></td>
-		<td align='left' nowrap><input id="title" name="title" class="input" type="text" size="60"  value=''/></td>
-	</tr>
-	
-	<tr>
-		<td colspan='2'>
+		<td colspan='2' align='center'>
 			<action_button name="edit_button" class="button"  action="edit" reload_parent="true" locale_value="update"/>
 		   &nbsp;
 		  <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">

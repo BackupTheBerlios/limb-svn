@@ -7,6 +7,7 @@
 
 <fetch:SUB_BRANCH target='informers' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='informer_object'>
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">
@@ -14,20 +15,21 @@
 <grid:LIST id='informers'>
 <table width=100%>
 <tr>
+	<th><locale:STRING name='published_status'></th>
 	<th><locale:STRING name='title'></th>
-	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
 <tr class="jip">
+<td><core:INCLUDE file="published_status.html"></td>
 <td jip='object'>{$title}</td>
-<td align="center">
-	<core:INCLUDE file="published_status.html">
-</td>
-<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
-<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
 </grid:ITERATOR>
+<tr><td colspan='4' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
 </table>
 </grid:LIST>

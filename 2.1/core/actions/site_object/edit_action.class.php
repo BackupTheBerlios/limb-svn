@@ -15,13 +15,7 @@ class edit_action extends form_edit_site_object_action
 {
 	function edit_action()
 	{
-		$definition = array(
-			'datamap' => array(
-				'title' => 'title',
-			)
-		);
-
-		parent :: form_edit_site_object_action('edit_site_object', $definition);
+		parent :: form_edit_site_object_action('edit_site_object', array());
 	}
 	
 	function _init_validator()

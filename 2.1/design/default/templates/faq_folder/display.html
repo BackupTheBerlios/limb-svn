@@ -8,6 +8,7 @@
 
 <fetch:SUB_BRANCH target='faq_questions, faq' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='faq_object' >
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 
@@ -55,6 +56,7 @@
 <fetch:SUB_BRANCH target='faq_folder' >
 	<core:PARAMETER name='loader_class_name' value='faq_folder' >
 	<core:PARAMETER name='path' value='/root/faq' >
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="/faq_folder/level_folders.html">

@@ -8,7 +8,7 @@
 
 <fetch:SUB_BRANCH target='answers'>
 	<core:PARAMETER name='loader_class_name' value='poll_answer'>
-	<core:PARAMETER name='datasource_path' value='/fetch_tree_datasource'>
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 
@@ -18,17 +18,15 @@
 	<th><locale:STRING name='poll_answers_list' file='poll'></th>
 	<th><locale:STRING name='created_date'></th>
 	<th><locale:STRING name='modified_date'></th>
-	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
 
 <grid:ITERATOR>
 	<tr class="jip">
 		<td jip='object'>{$title}</td>
-		<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
-		<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
-		<td><core:INCLUDE file="order.html"></td>
-		<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+		<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+		<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+		<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
 </grid:ITERATOR>
 </table>

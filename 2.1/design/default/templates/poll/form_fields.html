@@ -1,30 +1,33 @@
-    <tr>
-      <td><label for="title"><span class=req>*</span><locale:STRING name='poll_question' file='poll'></label></td>
-      <td><input type="text" name="title" id="title" label="Question" size="40" class='input'>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="start_date"><span class=req>*</span><locale:STRING name='start_show_date'></label></td>
-      <td><date name="start_date" type="text" id="start_date" label="Start date" class='input'>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="finish_date"><span class=req>*</span><locale:STRING name='finish_show_date'></label></td>
-      <td><date name="finish_date" type="text" id="finish_date" label="Finish date" class='input'>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="restriction_1"><locale:STRING name='not_restricted' file="poll"></label></td>
-      <td><input name="restriction" type="radio" id="restriction_1" label="Restriction_1" value="1">
-      </td>
-    </tr>
-    <tr>
-      <td><label for="restriction_2"><locale:STRING name='cookie_based_restriction' file='poll'></label></td>
-      <td><input name="restriction" type="radio" id="restriction_2" label="Restriction_2" value="2">
-      </td>
-    </tr>
-    <tr>
-      <td><label for="restriction_3"><locale:STRING name='ip_based_restriction' file='poll'></label></td>
-      <td><input name="restriction" type="radio" id="restriction_3" label="Restriction_3" value="3">
-      </td>
-    </tr>
+<core:INCLUDE file='/admin/admin_form_items/errors.html'>
+<tr>
+  <td><label for="title"><span class=req>*</span><locale:STRING name='poll_question' file='poll'></label></td>
+  <td><input type="text" name="title" id="title" label="Question" size="40" class='input'>
+  </td>
+</tr>
+<tr>
+  <td><label for="start_date"><span class=req>*</span><locale:STRING name='start_show_date'></label></td>
+  <td><date name="start_date" type="text" id="start_date" label="Start date" class='input'>
+  </td>
+</tr>
+<tr>
+  <td><label for="finish_date"><span class=req>*</span><locale:STRING name='finish_show_date'></label></td>
+  <td><date name="finish_date" type="text" id="finish_date" label="Finish date" class='input'>
+  </td>
+</tr>
+<tr>
+  <td><label for="restriction_1"><locale:STRING name='not_restricted' file="poll"></label></td>
+  <td><input name="restriction" type="radio" id="restriction_1" label="Restriction_1" value="1">
+  </td>
+</tr>
+<tr>
+  <td><label for="restriction_2"><locale:STRING name='cookie_based_restriction' file='poll'></label></td>
+  <td><input name="restriction" type="radio" id="restriction_2" label="Restriction_2" value="2">
+  </td>
+</tr>
+<tr>
+  <td><label for="restriction_3"><locale:STRING name='ip_based_restriction' file='poll'></label></td>
+  <td><input name="restriction" type="radio" id="restriction_3" label="Restriction_3" value="3">
+  </td>
+</tr>
+<core:INCLUDE file='/admin/admin_form_items/req_info.html'>
+<div id='popup_div'></div>

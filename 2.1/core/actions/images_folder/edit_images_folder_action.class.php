@@ -16,9 +16,6 @@ class edit_images_folder_action extends form_edit_site_object_action
 	{
 		$definition = array(
 			'site_object' => 'images_folder',
-			'datamap' => array(
-				'title' => 'title',
-			)
 		);
 		
 		parent :: form_edit_site_object_action('edit_images_folder', $definition);

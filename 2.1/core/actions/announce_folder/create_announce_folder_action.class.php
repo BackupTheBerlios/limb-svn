@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_announce_folder_action.class.php 251 2004-03-10 16:04:42Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
@@ -16,9 +16,6 @@ class create_announce_folder_action extends form_create_site_object_action
 	{
 		$definition = array(
 			'site_object' => 'announce_folder',
-			'datamap' => array(
-					'title' => 'title',
-			)
 		);
 		
 		parent :: form_create_site_object_action('create_announce_folder', $definition);

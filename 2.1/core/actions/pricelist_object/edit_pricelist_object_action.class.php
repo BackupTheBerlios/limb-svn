@@ -24,11 +24,6 @@ class edit_pricelist_object_action extends form_edit_site_object_action
 
 		parent :: form_edit_site_object_action('pricelist_object_form', $definition);
 	}
-	
-//	function _init_validator()
-//	{
-//		parent :: _init_validator();
-//	}
 }
 
 ?>

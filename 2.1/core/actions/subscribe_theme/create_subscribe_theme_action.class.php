@@ -17,7 +17,6 @@ class create_subscribe_theme_action extends form_create_site_object_action
 		$definition = array(
 			'site_object' => 'subscribe_theme',
 			'datamap' => array(
-				'title' => 'title',
 				'mail_template' => 'mail_template',
 			)
 		);

@@ -1,18 +1,9 @@
-		<tr class=com4>
-			<td colspan=2 class=pad4><core:INCLUDE file="form_errors.html"></td>
-		</tr>
-    <tr>
-      <td><label for="title"><span class='req'>*</span><locale:STRING name='title'></label></td>
-      <td><input type="text" name="title" id="title" label="Title" class='input' size='60'>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="annotation"><span class='req'>*</span><locale:STRING name='code' file='informer'></label></td>
-      <td><textarea class='textarea' name="code" id="code" label="Code" cols='40' rows='5'></textarea>
-      </td>
-    </tr>
-		<tr>
-	    <td class=tab-bottom><img src='/shared/images/i.gif'></td>
-	    <td width=100% class=tab-bottom><span class=desc><locale:STRING name='form_field_req'></span></td>
-		</tr>
+<core:INCLUDE file='/admin/admin_form_items/errors.html'>
+<core:INCLUDE file='/admin/admin_form_items/title.html'>
+<tr>
+  <td><label for="code"><span class='req'>*</span><locale:STRING name='code' file='informer'></label></td>
+  <td><textarea class='textarea' name="code" id="code" label="Code" cols='40' rows='5'></textarea>
+  </td>
+</tr>
+<core:INCLUDE file='/admin/admin_form_items/req_info.html'>
 <div id='popup_div'></div>

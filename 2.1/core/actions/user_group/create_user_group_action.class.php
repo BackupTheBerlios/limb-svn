@@ -16,9 +16,6 @@ class create_user_group_action extends form_create_site_object_action
 	{
 		$definition = array(
 			'site_object' => 'user_group',
-			'datamap' => array(
-				'title' => 'title',
-			)
 		);
 
 		parent :: form_create_site_object_action('create_user_group', $definition);

@@ -9,10 +9,12 @@
 
 <fetch:SUB_BRANCH target='folders'>
 	<core:PARAMETER name='loader_class_name' value='photogallery_folder'>
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <fetch:SUB_BRANCH target='photos'  navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='photogallery_object'>
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='folders'>

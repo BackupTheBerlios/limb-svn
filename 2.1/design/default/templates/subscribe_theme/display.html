@@ -8,6 +8,7 @@
 
 <fetch:SUB_BRANCH target='items' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='subscribe_mail'>
+	<core:PARAMETER name='order' value='created_date=DESC'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">

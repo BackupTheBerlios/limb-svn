@@ -16,9 +16,6 @@ class create_images_folder_action extends form_create_site_object_action
 	{
 		$definition = array(
 			'site_object' => 'images_folder',
-			'datamap' => array(
-				'title' => 'title',
-			)
 		);
 		
 		parent :: form_create_site_object_action('create_images_folder', $definition);

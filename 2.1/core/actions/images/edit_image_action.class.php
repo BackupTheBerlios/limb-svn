@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_image_action.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -18,12 +18,19 @@ class edit_image_action extends form_edit_site_object_action
 			'site_object' => 'image_object',
 			'datamap' => array(
 				'description' => 'description',
-				'title' => 'title',
 			)
 		);
 		
 		parent :: form_edit_site_object_action('edit_image', $definition);
 	}		
+
+	function _init_validator()
+	{
+		parent :: _init_validator();
+
+		$this->validator->add_rule(new required_rule('title'));
+	}
+	
 }
 
 ?>

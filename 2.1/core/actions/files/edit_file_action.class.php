@@ -23,6 +23,13 @@ class edit_file_action extends form_edit_site_object_action
 		
 		parent :: form_edit_site_object_action('edit_file', $definition);
 	}
+
+	function _init_validator()
+	{
+		parent :: _init_validator();
+
+		$this->validator->add_rule(new required_rule('title'));
+	}
 	
 	function _update_object_operation()
 	{	

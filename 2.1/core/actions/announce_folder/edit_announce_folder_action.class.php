@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_announce_folder_action.class.php 245 2004-03-05 12:11:42Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -16,9 +16,6 @@ class edit_announce_folder_action extends form_edit_site_object_action
 	{
 		$definition = array(
 			'site_object' => 'announce_folder',
-			'datamap' => array(
-				'title' => 'title',
-			)
 		);
 
 		parent :: form_edit_site_object_action('edit_announce_folder', $definition);

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: catalog_object_controller.class.php 38 2004-03-13 10:29:58Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -19,10 +19,6 @@ class pricelist_object_controller extends site_object_controller
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/pricelist_object/display.html',
-				),
-				'admin_display' => array(
-						'permissions_required' => 'rw',
-						'template_path' => '/pricelist_object/admin_display.html'
 				),
 				'edit' => array(
 						'permissions_required' => 'w',

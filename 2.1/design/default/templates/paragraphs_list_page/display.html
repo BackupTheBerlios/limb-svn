@@ -8,10 +8,12 @@
 </span> 
 <fetch:SUB_BRANCH target='paragraphs_titles, paragraphs_contents' >
 	<core:PARAMETER name='loader_class_name' value='paragraph' >
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <fetch:SUB_BRANCH target='pages'>
 	<core:PARAMETER name='loader_class_name' value='paragraphs_list_page' >
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <table width=100% border=0 cellpadding=4 > 
@@ -41,7 +43,6 @@
 			</grid:ITERATOR>
 			</table>
 			</grid:LIST>
-			
 		</td>
 
 			<grid:LIST id='pages'>

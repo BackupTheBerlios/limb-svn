@@ -18,7 +18,6 @@ class create_image_action extends form_create_site_object_action
 			'site_object' => 'image_object',
 			'datamap' => array(
 				'description' => 'description',
-				'title' => 'title',
 			)
 		);
 		
@@ -36,6 +35,13 @@ class create_image_action extends form_create_site_object_action
 
 		parent :: form_create_site_object_action('create_image', $definition);
 	}	
+
+	function _init_validator()
+	{
+		parent :: _init_validator();
+
+		$this->validator->add_rule(new required_rule('title'));
+	}
 	
 	function _init_dataspace()
 	{

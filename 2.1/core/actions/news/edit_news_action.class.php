@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_news_action.class.php 455 2004-02-16 18:43:12Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -18,7 +18,6 @@ class edit_news_action extends form_edit_site_object_action
 		$definition = array(
 			'site_object' => 'news_object',
 			'datamap' => array(
-				'title' => 'title',
 				'annotation' => 'annotation',
 				'news_content' => 'content',
 				'news_date' => 'news_date',

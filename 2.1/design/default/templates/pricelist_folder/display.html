@@ -1,7 +1,5 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
-
 <span class=jip>
 <fetch:MAPPED><core:INCLUDE file="jip_actions/normal.html"></fetch:MAPPED>
 </span><br>
@@ -9,7 +7,7 @@
 <fetch:SUB_BRANCH target='direct_objects'>
 	<core:PARAMETER name='datasource_path' value='pricelist_datasource' >
 	<core:PARAMETER name='loader_class_name' value='pricelist_object' >
-	<core:PARAMETER name='depth' value='1' >
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='direct_objects'>	
@@ -36,4 +34,3 @@
 </grid:ITERATOR>
 </table>
 </grid:LIST>
-<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->

@@ -39,12 +39,16 @@
 <grid:LIST id='files'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
   <grid:ITERATOR>
-    <thead class=jip>
-		<tr>
-			<td jip='object' class=jip-object><img src='{$path}?icon'>&nbsp;<a href='{$path}'>{$identifier}</a></td>
-			<td>
-			<core:INCLUDE file="jip_actions/normal.html">
+		<tr class="jip">
+			<td jip='object'>
+				<core:OPTIONAL for='title'>
+					<img src='{$path}?icon'>&nbsp;<a href='{$path}'>{$title}</a>
+				</core:OPTIONAL>
+				<core:DEFAULT for='title'>
+					<img src='{$path}?icon'>&nbsp;<a href='{$path}'>{$identifier}</a>
+				</core:DEFAULT>			
 			</td>
+			<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 		</tr>
   </grid:ITERATOR>
 </table>

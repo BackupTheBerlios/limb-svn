@@ -8,6 +8,7 @@
 
 <fetch:SUB_BRANCH target='user_groups' >
 	<core:PARAMETER name='loader_class_name' value='user_group'>
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='user_groups'>
@@ -16,15 +17,18 @@
 	<th><locale:STRING name='user_groups_list' file='user_group'></th>
 	<th><locale:STRING name='created_date'></th>
 	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
-	<tr class="jip">
-		<td jip='object'>{$title} ({$identifier})</td>
-		<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
-		<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
-		<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
-	</tr>
+<tr class="jip">
+<td jip='object'>{$title} ({$identifier})</td>
+<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
 </grid:ITERATOR>
+<tr><td colspan='4' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
 </table>
 </grid:LIST>

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_file_action.class.php 538 2004-02-22 16:21:08Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
@@ -22,6 +22,13 @@ class create_file_action extends form_create_site_object_action
 		);
 		
 		parent :: form_create_site_object_action('create_file', $definition);
+	}
+
+	function _init_validator()
+	{
+		parent :: _init_validator();
+
+		$this->validator->add_rule(new required_rule('title'));
 	}
 	
 	function _create_object_operation()
@@ -41,6 +48,7 @@ class create_file_action extends form_create_site_object_action
 
 		return parent :: _create_object_operation();
 	}
+	
 }
 
 ?>

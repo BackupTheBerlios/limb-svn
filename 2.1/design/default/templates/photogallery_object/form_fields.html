@@ -1,23 +1,7 @@
-		<tr class=com4>
-			<td colspan=2 class=pad4><core:INCLUDE file="form_errors.html"></td>
-		</tr>
-    <tr>
-      <td><label for="title"><span class='req'>*</span><locale:STRING name='title'></label></td>
-      <td><input type="text" name="title" id="title" label="Title" class='input'>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="image_id"><locale:STRING name='image' file='photogallery'></label></td>
-      <td><image_select name="image_id" id="image_id" label="Image">
-      </td>
-    </tr>
-    <tr>
-      <td><label for="annotation"><locale:STRING name='annotation'></label></td>
-      <td><textarea class='textarea' name="annotation" id="annotation" label="Annotation" cols='40' rows='5'></textarea>
-      </td>
-    </tr>
-		<tr>
-	    <td class=tab-bottom><img src='/shared/images/i.gif'></td>
-	    <td width=100% class=tab-bottom><span class=desc><locale:STRING name='form_field_req'></span></td>
-		</tr>
+<core:INCLUDE file='/admin/admin_form_items/errors.html'>
+<core:INCLUDE file='/admin/admin_form_items/parent_select.html'>
+<core:INCLUDE file='/admin/admin_form_items/title.html'>
+<core:INCLUDE file='/admin/admin_form_items/image_select.html'>
+<core:INCLUDE file='/admin/admin_form_items/annotation.html'>
+<core:INCLUDE file='/admin/admin_form_items/req_info.html'>
 <div id='popup_div'></div>

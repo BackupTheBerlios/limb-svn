@@ -17,7 +17,6 @@ class create_message_action extends form_create_site_object_action
 		$definition = array(
 			'site_object' => 'message',
 			'datamap' => array(
-				'title' => 'title',
 				'content' => 'content',
 			)
 		);
