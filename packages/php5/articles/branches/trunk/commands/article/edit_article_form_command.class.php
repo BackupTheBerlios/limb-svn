@@ -8,9 +8,9 @@
 * $Id: edit_article_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/form_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/form_edit_site_object_command.class.php');
 
-class article_form_command extends form_command
+class edit_article_form_command extends form_edit_site_object_command
 {
   protected function _define_datamap()
 	{
@@ -28,6 +28,8 @@ class article_form_command extends form_command
 	
 	protected function _register_validation_rules($validator, $dataspace)
 	{
+    parent :: _register_validation_rules($validator, $dataspace);
+    
     $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
     $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'author'));
     $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'article_content'));

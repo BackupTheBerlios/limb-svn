@@ -25,16 +25,15 @@ class login_command implements Command
 		  'locale_id' => $dataspace->get('locale_id')
 	  );
     
-		$this->_get_authenticator()->login($login_params);
+		$toolkit->getAuthenticator()->login($login_params);
 		
 		if (!$toolkit->getUser()->is_logged_in())
     {
       return LIMB :: STATUS_ERROR;
     }
 
-    $request = $toolkit->getRequest();
-    $request->set_status(request :: STATUS_FORM_SUBMITTED);
-		  
+ 		$response = $toolkit->getResponse();
+
     if($redirect = $dataspace->get('redirect'))
     {
       $response->redirect($redirect);
@@ -51,11 +50,6 @@ class login_command implements Command
     $response->redirect('/');
     return LIMB :: STATUS_OK;
 	}
-  
-  protected function _get_authenticator()
-  {
-    return Limb :: toolkit()->getAuthenticator();
-  }
   
   // for mocking
   protected function _get_http_referer()
