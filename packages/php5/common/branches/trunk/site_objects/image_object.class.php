@@ -8,387 +8,340 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(dirname(__FILE__) . '/media_object.class.php');
-require_once(LIMB_DIR . '/class/lib/image/image_factory.class.php');
-require_once(LIMB_DIR . '/class/etc/message_box.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
 
-class image_object extends media_object
+class image_object extends content_object
 {
-	protected $_image_library = null;
-	
-	function __construct()
-	{
-		parent :: __construct();
-				
-		$this->_image_library = image_factory :: create();
-	}
-	
-	public function create($is_root = false)
-	{				
-		$id = parent :: create($is_root);
-		
-		if($this->get('files_data'))
-			$this->_create_variations();
-							
-		return $id;
-	}
-	
-	protected function _create_variations()
-	{
-		$image_variations = $this->_get_variations_ini_list();
-				
-		foreach($image_variations as $variation => $variation_data)
-		{
-			$action = $this->get($variation . '_action');
-			
-			switch($action)
-			{
-				case 'generate':
-					$this->_create_generate_operation($variation);
-					break;
-				case 'upload':
-					$this->_create_upload_operation($variation);
-					break;
-			}
-		}
-	}
-	
-	protected function _create_generate_operation($variation)
-	{
-		$files_data = $this->get('files_data', array());
-		$output_file = tempnam(VAR_DIR, 'p');
-		
-		if(!isset($files_data['name'][$this->get($variation . '_base_variation')]))
-		{
-		  throw new LimbException('uploaded file not found', array('variation' => $variation));
-		}
-		
-		$this->_resize_operation(
-					$this->get($variation . '_base_variation'), 
-					(int)$this->get('generate_' . $variation . '_max_size'),
-					$output_file,
-					$output_file_type);
-			
-		$name_parts = explode('.', $files_data['name'][$this->get($variation . '_base_variation')]);
-		if(is_array($name_parts) && sizeof($name_parts) > 1)
-		{
-			$arr_size = sizeof($name_parts);
-			$name_parts[$arr_size] = $name_parts[$arr_size - 1];
-			$name_parts[$arr_size - 1] = $variation;
-			$fname = implode('.', $name_parts);
-		}
-		else
-			$fname = 	$fname . '.' . $variation;
-			
-	  $this->_insert_variation(
-	  	$variation, 
-	  	$output_file,
-	  	$fname,
-	  	$this->_image_library->get_mime_type($output_file_type));
-	  	
-		unlink($output_file);
-	}
-	
-	protected function _create_upload_operation($variation)
-	{
-		$files_data = $this->get('files_data', array());
+  protected $_image_library;
+  protected $_media_manager;
+  protected $_variations = array();
+  
+  public function get_variations()
+  {
+    return $this->_variations;
+  }
 
-		if(	!isset($files_data['name'][$variation]) ||
-				!isset($files_data['tmp_name'][$variation]) ||
-				!isset($files_data['type'][$variation]))
-		{
-		  throw new LimbException('uploaded file not found', array('variation' => $variation));
-		}
-		
-		$this->_insert_variation(
-			$variation, 
-			$files_data['tmp_name'][$variation], 
-			$files_data['name'][$variation], 
-			$files_data['type'][$variation]
-		);
-		
-		if(!($upload_max_size = $this->get('upload_' . $variation . '_max_size')))
-		  return;
+  public function get_variation($variation)
+  {
+    if(isset($this->_variations[$variation]))
+      $this->_variations[$variation];
+  }
 
-		$output_file = tempnam(VAR_DIR, 'p');
-		
-	  $this->_resize_operation(
-			  	$variation, 
-			  	(int)$upload_max_size,
-					$output_file,
-					$output_file_type);
-	  	
-	  $this->_update_variation(
-	  	$variation, 
-	  	$output_file,
-	  	$files_data['name'][$variation],
-	  	$this->_image_library->get_mime_type($output_file_type)
-	  );
+  protected function _get_image_library()
+  {
+    if($this->_image_library)
+      return $this->_image_library;
+    
+    include_once(LIMB_DIR . '/class/lib/image/image_factory.class.php');
+    $this->_image_library = image_factory :: create();
+    
+    return $this->_image_library;
+  }
 
-		unlink($output_file);
-	}
-	
-	function update_variations()
-	{
-		$image_variations = $this->_get_variations_ini_list();
-		
-		foreach($image_variations as $variation => $variation_data)
-		{
-			$action = $this->get($variation . '_action');
-			
-			switch($action)
-			{
-				case 'generate':
-					$this->_update_generate_operation($variation);
-					break;
-				case 'upload':
-					$this->_update_upload_operation($variation);
-					break;
-			}
-		}
-	}
+  protected function _get_media_manager()
+  {
+    if($this->_media_manager)
+      return $this->_media_manager;
+    
+    include_once(dirname(__FILE__) . '/../media_manager.class.php');
+    $this->_media_manager = new MediaManager();
 
-	protected function _update_generate_operation($variation)
-	{
-		$output_file = tempnam(VAR_DIR, 'p');
-		
-		$this->_resize_operation(
-					$this->get($variation . '_base_variation'), 
-					(int)$this->get('generate_' . $variation . '_max_size'),
-					$output_file,
-					$output_file_type);
-		
-		if($media_data = $this->_get_variation_media_data($variation))
-		{
-		  $this->_update_variation(
-		  	$variation, 
-		  	$output_file,
-		  	$media_data['file_name'],
-		  	$this->_image_library->get_mime_type($output_file_type)
-		  );
-		}
-		else
-		{
-			$media_data = $this->_get_variation_media_data($this->get($variation . '_base_variation'));
-		  
-		  $this->_insert_variation(
-		  	$variation, 
-		  	$output_file,
-		  	$media_data['file_name'],
-		  	$this->_image_library->get_mime_type($output_file_type));
-		}
+    return $this->_media_manager;    
+  }
+  
+  public function set_variation_file_path($variation, $path)
+  {
+    $this->set_by_index_string("[variations][$variation][path]", $path);
+  }
+  
+  public function get_variation_file_path($variation)
+  {
+    return $this->get_by_index_string("[variations][$variation][path]");
+  }
 
-		unlink($output_file);
-	}
-	
-	protected function _update_upload_operation($variation)
-	{
-		$files_data = $this->get('files_data');
-		
-		if(	!isset($files_data['name'][$variation]) ||
-				!isset($files_data['tmp_name'][$variation]) ||
-				!isset($files_data['type'][$variation]))
-		{
-		  throw new LimbException('uploaded file not found', array('variation' => $variation));
-		}
-		
-		if($this->_get_variation_media_data($variation))
-		{
-		  $this->_update_variation(
-		  	$variation, 
-				$files_data['tmp_name'][$variation], 
-				$files_data['name'][$variation], 
-				$files_data['type'][$variation]
-			);
-		}
-		else
-		{
-			$this->_insert_variation(
-				$variation, 
-				$files_data['tmp_name'][$variation], 
-				$files_data['name'][$variation], 
-				$files_data['type'][$variation]
-			);
-		}
-		
-		if (!($upload_max_size = $this->get('upload_' . $variation . '_max_size')))
-		  return;
+  public function set_variation_file_name($variation, $file_name)
+  {
+    $this->set_by_index_string("[variations][$variation][file_name]", $file_name);
+  }
+  
+  public function get_variation_file_name($variation)
+  {
+    return $this->get_by_index_string("[variations][$variation][file_name]");
+  }
 
-		$output_file = tempnam(VAR_DIR, 'p');
-		
-	  $this->_resize_operation(
-			  	$variation, 
-			  	(int)$upload_max_size,
-					$output_file,
-					$output_file_type);
-	  	
-	  $this->_update_variation(
-	  	$variation, 
-	  	$output_file,
-	  	$files_data['name'][$variation],
-	  	$this->_image_library->get_mime_type($output_file_type));
+  public function set_variation_mime_type($variation, $mime_type)
+  {
+    $this->set_by_index_string("[variations][$variation][mime_type]", $mime_type);
+  }
+    
+  public function get_variation_mime_type($variation)
+  {
+    return $this->get_by_index_string("[variations][$variation][mime_type]");
+  }
+      
+  public function create($is_root = false)
+  {       
+    $id = $this->_do_parent_create($is_root);
+                  
+    return $id;
+  }
+  
+  //for mocking
+  protected function _do_parent_create($is_root)
+  {
+    return parent :: create($is_root);
+  }
+  
+  protected function _validate_variation_data($variation)
+  {
+    return (!is_null($this->get_variation_file_path($variation)) && 
+            !is_null($this->get_variation_file_name($variation)) &&
+            !is_null($this->get_variation_mime_type($variation)));
+  }
+  
+  public function upload_variation($variation, $max_size = null)
+  {
+    if(!$this->_validate_variation_data($variation))
+      throw new LimbException('variation data error', array('variation' => $variation));
+    
+    $this->_create_variation_operation($variation);
+    
+    if($max_size)
+      $this->_resize_variation_operation($variation, $variation, $max_size);
+  }
+  
+  public function generate_variation($variation_src, $variation_dest, $max_size)
+  { 
+    if(!$this->_validate_variation_data($variation_src))
+      throw new LimbException('variation data error', array('variation' => $variation_src));
+    
+    $this->_resize_variation_operation($variation_src, $variation_dest, $max_size);                            
+  }  
+      
+  protected function _create_variation_operation($variation)
+  {
+    $disk_file_path = $this->get_variation_file_path($variation);
+    $file_name = $this->get_variation_file_name($variation); 
+    $mime_type = $this->get_variation_mime_type($variation);
+    
+    $this->_create_variation_from_file($variation, $disk_file_path, $file_name, $mime_type);    
+  }
+  
+  protected function _resize_variation_operation($variation_src, $variation_dest, $max_size)
+  {
+    $output_file = tempnam(VAR_DIR, 'p');
+    
+    $image_library = $this->_get_image_library();
+    
+    $media_data = $this->_get_variation_db_media_data($variation_src);
+    
+    $input_file_type = $image_library->get_image_type($media_data['mime_type']);  
+    $output_file_type = $image_library->find_type_create_support_gracefully($input_file_type);
+    
+    $input_file = MediaManager :: getMediaFilePath($media_data['id']); 
+     
+    try
+    { 
+      $image_library->set_input_file($input_file);
+      $image_library->set_input_type($input_file_type);
+      
+      $image_library->set_output_file($output_file);
+      $image_library->set_output_type($output_file_type);
+       
+      $image_library->resize(array('max_dimension' => $max_size));//ugly!!! 
+      $image_library->commit();      
+    }
+    catch(Exception $e)
+    {
+      if(file_exists($output_file))
+        unlink($output_file);
+      throw $e;
+    }
+    
+    if(!$this->_get_variation_db_media_data($variation_dest))
+    {
+      $this->_create_variation_from_file(
+        $variation_dest, 
+        $output_file,
+        $this->get_variation_file_name($variation_src),//note this
+        $image_library->get_mime_type($output_file_type)
+      );      
+    }
+    else
+    {
+      $this->_update_variation_from_file(
+        $variation_dest, 
+        $output_file,
+        $this->get_variation_file_name($variation_dest),
+        $image_library->get_mime_type($output_file_type)
+      );
+    }
 
-		unlink($output_file);
-	}
-	
-	protected function _get_variations_ini_list()
-	{
-		return Limb :: toolkit()->getINI('image_variations.ini')->get_all();
-	}
-	
-	protected function _insert_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
-	{
-		$image_id = $this->get_id();
-		
-		$media_id = $this->_create_media_record($tmp_file_path, $file_name, $mime_type);
-		
-		$size = getimagesize($tmp_file_path);
-		$image_variation_data['id'] = null;
-		$image_variation_data['image_id'] = $image_id;
-		$image_variation_data['media_id'] = $media_id;
-		$image_variation_data['width'] = $size[0];
-		$image_variation_data['height'] = $size[1];
-		$image_variation_data['variation'] = $variation_name;
-		
-		$image_variation_db_table = Limb :: toolkit()->createDBTable('image_variation');
-		
-		$image_variation_db_table->insert($image_variation_data);
-	}
-	
-	protected function _resize_operation($base_variation, $max_size=0, $output_file, &$output_file_type)
-	{
-		$base_media_data = $this->_get_variation_media_data($base_variation);
-		
-		try
-		{
-		  $this->_resize_file_variation(
-					$base_media_data['id'], 
-					$base_media_data['mime_type'], 
-					$max_size, 
-					$output_file,
-					$output_file_type);
-		}
-		catch(LimbException $e)
-		{
-		  if(file_exists($output_file))
-		    unlink($output_file);
-		  throw $e;
-		}
-	}
-		
-	protected function _get_variation_media_data($variation)
-	{
-		$image_id = $this->get_id();
-		
-		$sql = "SELECT 				
-						iv.image_id as image_id,
-						iv.media_id as media_id, 
-						iv.variation as variation, 
-						iv.width as width, 
-						iv.height as height, 
-						m.size as size, 
-						m.mime_type as mime_type, 
-						m.file_name as file_name, 
-						m.etag as etag,
-						m.id as id
-						FROM image_variation iv, media m
-						WHERE iv.image_id='{$image_id}' 
-						AND iv.variation='{$variation}' 
-						AND iv.media_id=m.id";
-		
-		$db = Limb :: toolkit()->getDB();
-		$db->sql_exec($sql);
-		
-		return $db->fetch_row();
-	}
-	
-	protected function _resize_file_variation($base_media_id, $mime_type, $max_size, $output_file, &$output_file_type)
-	{
-		$input_file = MEDIA_DIR . $base_media_id . '.media';
-		$input_file_type = $this->_image_library->get_image_type($mime_type);
-		
-		if (!$this->_image_library->set_input_file($input_file, $input_file_type))	
-		  throw new LimbException('image library error');
-		
-		$output_file_type = $input_file_type;
-		
-		if (!$this->_image_library->set_output_file($output_file, $output_file_type))
-			throw new LimbException('image library error');
-		
-		if ($max_size)
-		  $this->_image_library->resize(array('max_dimension' => $max_size));
-		
-		if(!$this->_image_library->commit())
-		  throw new LimbException('image library commit error');
-	}
-	
-	protected function _update_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
-	{
-  	$media_data = $this->_get_variation_media_data($variation_name);
-  	
-		$this->_update_media_record($media_data['id'], $tmp_file_path, $file_name, $mime_type);
-		
-		$size = getimagesize($tmp_file_path);
-		
-		$image_variation_db_table = Limb :: toolkit()->createDBTable('image_variation');
-		
-		$image_id = $this->get_id();
-		
-		$image_variation_db_table->update(
-			array('width' => $size[0], 'height' => $size[1]),
-			array('image_id' => $image_id, 'variation' => $variation_name)
-		);
-	}	
-	
-	public function fetch($params=array(), $sql_params=array())
-	{
-		if(!$records = parent :: fetch($params, $sql_params))
-			return array();
-		
-		$images_ids = array();
-		
-		foreach($records as $record)
-			$images_ids[] = "{$record['object_id']}";
-			
-		$ids = '('. implode(',', $images_ids) . ')';
-			
-		$sql = 
-				"SELECT 
-				iv.image_id as image_id,
-				iv.media_id as media_id, 
-				iv.variation as variation, 
-				iv.width as width,  
-				iv.height as height, 
-				m.size as size, 
-				m.mime_type as mime_type, 
-				m.file_name as file_name, 
-				m.etag as etag,
-				m.id as id
-				FROM image_variation iv, media m
-				WHERE iv.media_id = m.id AND 
-				iv.image_id IN {$ids}";
-		
-		$db = Limb :: toolkit()->getDB();
-		
-		$db->sql_exec($sql);
-		
-		if(!$images_variations = $db->get_array())
-			return $records;
-			
-		foreach($images_variations as $variation_data)
-		{
-			foreach($records as $id => $record)
-			{
-				if($record['object_id'] == $variation_data['image_id'])
-				{
-					$records[$id]['variations'][$variation_data['variation']] = $variation_data;
-					break;
-				}
-			}
-		}
-		
-		return $records;
-	}	
+    unlink($output_file);    
+  }
+  
+  protected function _update_variation_from_file($variation, $disk_file_path, $file_name, $mime_type)
+  {
+    $media_data = $this->_get_variation_db_media_data($variation);
+
+    $this->_media_manager->updateMediaRecord($media_data['id'], 
+                                                      $disk_file_path, 
+                                                      $file_name, 
+                                                      $mime_type);
+    
+    $size = getimagesize($disk_file_path);
+    
+    $db_table = Limb :: toolkit()->createDBTable('image_variation');
+    
+    $db_table->update(array('width' => $size[0], 
+                            'height' => $size[1]),
+                      array('image_id' => $this->get_id(), 
+                            'variation' => $variation)
+    );
+  }
+  
+  protected function _create_variation_from_file($variation, $disk_file_path, $file_name, $mime_type)
+  {
+    $media_id = $this->_get_media_manager()->createMediaRecord($disk_file_path, $file_name, $mime_type);
+    
+    $size = getimagesize($disk_file_path);
+    
+    $image_variation_data = array();
+    $image_variation_data['id'] = null;
+    $image_variation_data['image_id'] = $this->get_id();
+    $image_variation_data['media_id'] = $media_id;
+    $image_variation_data['width'] = $size[0];
+    $image_variation_data['height'] = $size[1];
+    $image_variation_data['variation'] = $variation;
+    
+    $image_variation_db_table = Limb :: toolkit()->createDBTable('image_variation');
+    
+    $image_variation_db_table->insert($image_variation_data);    
+  }    
+        
+  protected function _get_output_image_variation_file_type($variation)
+  {
+    $media_data = $this->_get_variation_db_media_data($variation);
+    
+    $current_type = $this->_image_library->get_image_type($media_data['mime_type']);
+    
+    return $this->_image_library->find_type_create_support_gracefully($current_type);    
+  }
+      
+  protected function _get_variation_db_media_data($variation)
+  {
+    $image_id = $this->get_id();
+    
+    $sql = "SELECT        
+            iv.image_id as image_id,
+            iv.media_id as media_id, 
+            iv.variation as variation, 
+            iv.width as width, 
+            iv.height as height, 
+            m.size as size, 
+            m.mime_type as mime_type, 
+            m.file_name as file_name, 
+            m.etag as etag,
+            m.id as id
+            FROM image_variation iv, media m
+            WHERE iv.image_id='{$image_id}' 
+            AND iv.variation='{$variation}' 
+            AND iv.media_id=m.id";
+    
+    $db = Limb :: toolkit()->getDB();
+    $db->sql_exec($sql);
+    
+    return $db->fetch_row();
+  }
+  
+  public function merge($attributes)
+  {
+    parent :: merge($attributes);
+    
+    $this->_reload_variations();
+  }
+
+  public function import($attributes)
+  {
+    parent :: import($attributes);
+    
+    $this->_reload_variations();
+  }
+
+  protected function _reload_variations()
+  {
+    $this->_variations = array();
+    
+    $raw_data = $this->get('variations', array());
+    
+    foreach($raw_data as $id => $data)
+    {
+      $variation = $this->_create_variation();
+      $variation->import($data);
+      $this->_variations[$id] = $variation;
+    }
+  }
+  
+  protected function _create_variation()
+  {
+    include_once(dirname(__FILE__) . '/../image_variation.class.php');
+    return new image_variation();
+  }
+  
+  public function fetch($params=array(), $sql_params=array())
+  {
+    if(!$records = $this->_do_parent_fetch($params, $sql_params))
+      return array();
+    
+    $images_ids = array();
+    
+    foreach($records as $record)
+      $images_ids[] = "{$record['object_id']}";
+      
+    $ids = '('. implode(',', $images_ids) . ')';
+      
+    $sql = "SELECT 
+            iv.image_id as image_id,
+            iv.media_id as media_id, 
+            iv.variation as variation, 
+            iv.width as width,  
+            iv.height as height, 
+            m.size as size, 
+            m.mime_type as mime_type, 
+            m.file_name as file_name, 
+            m.etag as etag,
+            m.id as id
+            FROM image_variation iv, media m
+            WHERE iv.media_id = m.id AND 
+            iv.image_id IN {$ids}";
+    
+    $db = Limb :: toolkit()->getDB();
+    
+    $db->sql_exec($sql);
+    
+    if(!$images_variations = $db->get_array())
+      return $records;
+      
+    foreach($images_variations as $variation_data)
+    {
+      foreach($records as $id => $record)
+      {
+        if($record['object_id'] == $variation_data['image_id'])
+        {
+          $records[$id]['variations'][$variation_data['variation']] = $variation_data;
+          break;
+        }
+      }
+    }
+    
+    return $records;
+  } 
+  
+  //for mocking
+  protected function _do_parent_fetch($params, $sql_params)
+  {
+    return parent :: fetch($params, $sql_params);
+  }
 }
 
 ?>
