@@ -1,0 +1,32 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='pages'>
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='pages'>
+<table width=100%>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='pages_list' file='paragraph'></td></tr>
+<core:INCLUDE file='/admin/grid_items/folder_grid_body.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
+</table>
+</grid:LIST>
+
+<fetch:SUB_BRANCH target='paragraphs' navigator="pager" >
+  <core:PARAMETER name='loader_class_name' value='paragraph' >
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="/admin/pager.html">
+
+<grid:LIST id='paragraphs'>
+<table width=100%>
+<locale:STRING name='paragraphs_list' file='paragraph'>
+<core:INCLUDE file='/admin/grid_items/final_level_grid_body.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
+</table>
+</grid:LIST>

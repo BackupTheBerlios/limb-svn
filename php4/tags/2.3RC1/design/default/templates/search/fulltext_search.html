@@ -1,0 +1,11 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<core:INCLUDE file="/search/fulltext_search_form.html">
+
+<DATASOURCE target='search_result' navigator='search_pager'>
+	<core:PARAMETER name='datasource_path' value='/search_datasource'>
+	<core:PARAMETER name='restrict_by_class' value='0' type='boolean'>
+	<core:PARAMETER name='loader_class_name' value='site_object'>
+</DATASOURCE>
+
+<core:INCLUDE file="/search/search_results.html">

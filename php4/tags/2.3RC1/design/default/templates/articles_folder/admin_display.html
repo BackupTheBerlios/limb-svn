@@ -1,0 +1,35 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='folders'navigator="pager" >
+  <core:PARAMETER name='loader_class_name' value='site_object' >
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<fetch:SUB_BRANCH target='articles' navigator="pager2" >
+  <core:PARAMETER name='loader_class_name' value='article' >
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="/admin/pager.html">
+
+<grid:LIST id='folders'>
+<table>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='article_folders_list' file='article'></td></tr>
+<core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
+</table>
+</grid:LIST>
+
+<core:INCLUDE file="/admin/pager2.html">
+
+<grid:LIST id='articles'>
+<table>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='articles_list' file='article'></td></tr>
+<core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
+</table>
+</grid:LIST>

@@ -1,0 +1,38 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='announcements'  navigator="pager" >
+  <core:PARAMETER name='loader_class_name' value='announce_object'>
+  <core:PARAMETER name='order' value='start_date=DESC'>
+  <core:PARAMETER name='fetch_method' value='fetch_valid_period'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="/admin/pager.html">
+
+<grid:LIST id='announcements'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+  <tr>
+    <th></th>
+    <th><locale:STRING name='announcement' file='announce'></th>
+    <th></th>
+  </tr>
+    <grid:ITERATOR>
+    <tr>
+      <td width='1'>
+      <core:INCLUDE file="published_status.html">
+      </td>
+      <td><locale:DATE_FORMAT hash_id="start_date" locale_format="short_date">&nbsp;
+      <core:OPTIONAL for='image_id'>
+      <img src='/root?node_id={$image_id}&icon' align='center'>&nbsp;
+      </core:OPTIONAL>
+      <a href='{$path}'>{$title}</a></td>
+      <td>
+      <core:INCLUDE file="jip_actions/dropdown.html">
+      </td>
+    </tr>
+    </grid:ITERATOR>
+</table>
+</grid:LIST>
