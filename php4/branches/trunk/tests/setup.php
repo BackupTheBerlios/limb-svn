@@ -26,6 +26,8 @@ if(!defined('DEFAULT_MANAGEMENT_LOCALE_ID'))
 if(!defined('DEFAULT_CONTENT_LOCALE_ID'))  
   define('DEFAULT_CONTENT_LOCALE_ID','en');
 
+require_once(LIMB_DIR . '/setup.php');
+
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.php');
 
 $r = array();
@@ -35,8 +37,6 @@ register_file_resolver('strings', $r[] = LIMB_DIR . '/class/core/file_resolvers/
 register_file_resolver('db_table', $r[] = LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
-
-require_once(LIMB_DIR . '/setup.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');
 require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');

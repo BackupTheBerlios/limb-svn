@@ -8,48 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-define('TEST_ACTION_RESOLVER_PACKAGE_DIR', dirname(__FILE__) . '/packages/common/');
-
 require_once(LIMB_DIR . '/class/core/file_resolvers/action_file_resolver.class.php');
 
-class action_file_resolver_test extends LimbTestCase
-{
-  var $resolver;
-  
-  function setUp()
+class action_file_resolver_test extends base_package_file_resolver_test
+{  
+  function & _define_resolver()
   {
-    debug_mock :: init($this); 
-    
-    register_testing_ini(
-      'packages.ini',
-      ' 
-      [package_1]
-       path = {TEST_ACTION_RESOLVER_PACKAGE_DIR}package1/
-      [package_2]
-       path = {TEST_ACTION_RESOLVER_PACKAGE_DIR}package2/1.0/       
-      [package_3]
-       path = {TEST_ACTION_RESOLVER_PACKAGE_DIR}package3/1.1/
-      '
-    );
+    return new action_file_resolver();
+  }  
   
-    $this->resolver =& new action_file_resolver();
-  }
-  
-  function tearDown()
-  {
-    debug_mock :: tally();
-    unset($this->resolver);
-    clear_testing_ini();    
-  }
-
   function test_resolve_action_file_in_limb()
-  {    
+  { 
     $this->assertEqual($this->resolver->resolve('action'), LIMB_DIR . 'class/core/actions/action.class.php');
   }  
     
   function test_resolve_action_file_ok()
   {    
-    $this->assertEqual($this->resolver->resolve('test_action'), TEST_ACTION_RESOLVER_PACKAGE_DIR . 'package2/1.0/actions/test_action.class.php');
+    $this->assertEqual($this->resolver->resolve('test_action'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/actions/test_action.class.php');
   }  
   
   function test_resolve_action_file_failed()

@@ -20,6 +20,11 @@ class packages_info
     return $obj;
   }
   
+  function reset()
+  {
+    $this->_packages = array();
+  }
+  
   function get_packages()
   {
     if(!$this->_packages)
@@ -36,14 +41,23 @@ class packages_info
     $this->_packages = array();
     
     $groups = $ini->get_all();
-
-    foreach($groups as $group => $data)
+    
+    $packages = $ini->get_option('packages');
+    
+    foreach($packages as $package_path)
     {
-      $data['path'] = $this->_parse_path($data['path']);
+      $package_data = array();
       
-      $this->_define_package_constant($group, $data['path']);
-            
-      $this->_packages[] = $data;
+      $package_path = $this->_parse_path($package_path);
+      
+      include($package_path . '/setup.php');
+      
+      $this->_define_package_constant($PACKAGE_NAME, $package_path);
+      
+      $package_data['path'] = $package_path;
+      $package_data['name'] = $PACKAGE_NAME;
+      
+      $this->_packages[] = $package_data;
     }
   }
   

@@ -8,39 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-define('TEST_DB_TABLE_RESOLVER_PACKAGE_DIR', dirname(__FILE__) . '/packages/common/');
-
 require_once(LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver.class.php');
 
-class db_table_file_resolver_test extends LimbTestCase
+class db_table_file_resolver_test extends base_package_file_resolver_test
 {
-  var $resolver;
-  
-  function setUp()
+  function & _define_resolver()
   {
-    debug_mock :: init($this); 
-    
-    register_testing_ini(
-      'packages.ini',
-      ' 
-      [package_1]
-       path = {TEST_DB_TABLE_RESOLVER_PACKAGE_DIR}package1/
-      [package_2]
-       path = {TEST_DB_TABLE_RESOLVER_PACKAGE_DIR}package2/1.0/       
-      [package_3]
-       path = {TEST_DB_TABLE_RESOLVER_PACKAGE_DIR}package3/1.1/
-      '
-    );
-  
-    $this->resolver =& new db_table_file_resolver();
-  }
-  
-  function tearDown()
-  {
-    debug_mock :: tally();
-    unset($this->resolver);
-    clear_testing_ini();    
-  }
+    return new db_table_file_resolver();
+  }  
 
   function test_resolve_db_table_file_from_limb()
   {    
@@ -49,7 +24,7 @@ class db_table_file_resolver_test extends LimbTestCase
     
   function test_resolve_db_table_file_ok()
   {    
-    $this->assertEqual($this->resolver->resolve('test'), TEST_DB_TABLE_RESOLVER_PACKAGE_DIR . 'package2/1.0/db_tables/test_db_table.class.php');
+    $this->assertEqual($this->resolver->resolve('test'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/db_tables/test_db_table.class.php');
   }  
   
   function test_resolve_db_table_file_failed()

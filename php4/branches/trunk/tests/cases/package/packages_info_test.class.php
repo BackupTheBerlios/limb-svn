@@ -8,8 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-define('TEST_PACKAGE_INFO_DIR1', 'path1');
-define('TEST_PACKAGE_INFO_DIR2', 'path2');
+define('TEST_PACKAGES_DIR', dirname(__FILE__) . '/packages/');
 
 require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 
@@ -37,24 +36,22 @@ class packages_info_test extends LimbTestCase
     register_testing_ini(
       'packages.ini',
       ' 
-      [TEST_PACKAGE1]
-       path = {TEST_PACKAGE_INFO_DIR1}/test1      
-      [TEST_PACKAGE2]
-       path = {TEST_PACKAGE_INFO_DIR2}/test2
+       packages[] = {TEST_PACKAGES_DIR}test1      
+       packages[] = {TEST_PACKAGES_DIR}test2
       '
     );
 
     $this->assertEqual($this->info->get_packages(), 
       array(
-        array('path' => TEST_PACKAGE_INFO_DIR1 . '/test1'),
-        array('path' => TEST_PACKAGE_INFO_DIR2 . '/test2')
+        array('path' => TEST_PACKAGES_DIR . 'test1', 'name' => 'TEST_PACKAGE1'),
+        array('path' => TEST_PACKAGES_DIR . 'test2', 'name' => 'TEST_PACKAGE2')
       )
     );
     
     $this->assertTrue(defined('TEST_PACKAGE1_DIR'));
     $this->assertTrue(defined('TEST_PACKAGE2_DIR'));
-    $this->assertEqual(constant('TEST_PACKAGE1_DIR'), TEST_PACKAGE_INFO_DIR1 . '/test1');
-    $this->assertEqual(constant('TEST_PACKAGE2_DIR'), TEST_PACKAGE_INFO_DIR2 . '/test2');
+    $this->assertEqual(constant('TEST_PACKAGE1_DIR'), TEST_PACKAGES_DIR . 'test1');
+    $this->assertEqual(constant('TEST_PACKAGE2_DIR'), TEST_PACKAGES_DIR . 'test2');
     
     clear_testing_ini();
   }   
