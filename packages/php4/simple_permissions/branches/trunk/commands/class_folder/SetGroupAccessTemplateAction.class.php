@@ -18,7 +18,7 @@ class SetGroupAccessTemplateAction extends FormAction
     return 'set_group_access_template';
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     if (!$class_id = $request->get('class_id'))
       return new LimbException('class_id not defined');

@@ -30,8 +30,8 @@ class LogoutCommandTest extends LimbTestCase
     $this->user = new MockUser($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getUser', $this->user);
-    $this->toolkit->setReturnValue('getResponse', $this->response);
+    $this->toolkit->setReturnReference('getUser', $this->user);
+    $this->toolkit->setReturnReference('getResponse', $this->response);
 
     Limb :: registerToolkit($this->toolkit);
 

@@ -17,7 +17,7 @@ class MultiDeleteAction extends FormAction
     return 'grid_form';
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     parent :: _initDataspace($request);
 

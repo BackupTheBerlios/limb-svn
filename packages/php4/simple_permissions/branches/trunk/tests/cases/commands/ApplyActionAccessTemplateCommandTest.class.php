@@ -55,11 +55,11 @@ class ApplyActionAccessTemplateCommandTest extends LimbTestCase
     $this->access_policy = new MockAccessPolicy($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
-    $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object);
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('getRequest', $this->request);
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object);
 
-    $this->site_object->setReturnValue('getController', $this->controller);
+    $this->site_object->setReturnReference('getController', $this->controller);
 
     Limb :: registerToolkit($this->toolkit);
 
@@ -93,7 +93,7 @@ class ApplyActionAccessTemplateCommandTest extends LimbTestCase
     $this->access_policy->expectOnce('applyAccessTemplates',
                                      array(new IsAExpectation('MockSiteObject'), $action));
 
-    $this->command->setReturnValue('_getAccessPolicy', $this->access_policy);
+    $this->command->setReturnReference('_getAccessPolicy', $this->access_policy);
 
     $this->assertEqual(LIMB_STATUS_OK, $this->command->perform());
   }
@@ -104,7 +104,7 @@ class ApplyActionAccessTemplateCommandTest extends LimbTestCase
 
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->command->setReturnValue('_getAccessPolicy',
+    $this->command->setReturnReference('_getAccessPolicy',
                                    new AccessPolicyForApplyActionAccessTemplateCommand());
 
     $this->assertEqual(LIMB_STATUS_ERROR, $this->command->perform());

@@ -41,10 +41,10 @@ class LoginCommandTest extends LimbTestCase
     $this->authenticator = new MockAuthenticator($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getUser', $this->user);
-    $this->toolkit->setReturnValue('getResponse', $this->response);
-    $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
-    $this->toolkit->setReturnValue('getAuthenticator', $this->authenticator);
+    $this->toolkit->setReturnReference('getUser', $this->user);
+    $this->toolkit->setReturnReference('getResponse', $this->response);
+    $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
+    $this->toolkit->setReturnReference('getAuthenticator', $this->authenticator);
 
     Limb :: registerToolkit($this->toolkit);
 

@@ -80,7 +80,7 @@ class DisplayRequestedImageCommand// implements Command
     return new HttpCache();
   }
 
-  function _getRequestedVariation($request)
+  function _getRequestedVariation(&$request)
   {
     $toolkit =& Limb :: toolkit();
     $ini =& $toolkit->getINI('image_variations.ini');

@@ -18,7 +18,7 @@ class SetMetadataAction extends FormAction
     return 'set_metadata';
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     $toolkit =& Limb :: toolkit();
 

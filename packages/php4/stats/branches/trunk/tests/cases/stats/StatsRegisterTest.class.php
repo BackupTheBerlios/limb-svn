@@ -106,10 +106,10 @@ class StatsRegisterTest extends LimbTestCase
 
     $this->stats_register = new StatsRegisterTestVersion($this);
     $this->stats_register->StatsRegister();
-    $this->stats_register->setReturnValue('_getIpRegister', $this->stats_ip);
-    $this->stats_register->setReturnValue('_getCounterRegister', $this->stats_counter);
-    $this->stats_register->setReturnValue('_getRefererRegister', $this->stats_referer);
-    $this->stats_register->setReturnValue('_getSearchPhraseRegister', $this->stats_search_phrase);
+    $this->stats_register->setReturnReference('_getIpRegister', $this->stats_ip);
+    $this->stats_register->setReturnReference('_getCounterRegister', $this->stats_counter);
+    $this->stats_register->setReturnReference('_getRefererRegister', $this->stats_referer);
+    $this->stats_register->setReturnReference('_getSearchPhraseRegister', $this->stats_search_phrase);
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();

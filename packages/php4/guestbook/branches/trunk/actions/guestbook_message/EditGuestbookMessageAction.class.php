@@ -47,8 +47,7 @@ class EditGuestbookMessageAction extends FormEditSiteObjectAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'comment_author_email'));
   }
 
-
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     parent :: _initDataspace($request);
 

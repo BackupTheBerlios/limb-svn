@@ -45,7 +45,7 @@ class SetGroupObjectsAccess extends FormAction
     $this->dataspace->set('policy', $policy);
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     parent :: _initDataspace($request);
 

@@ -26,7 +26,7 @@ class CreateArticleFormCommand extends FormCreateSiteObjectCommand
     );
   }
 
-  function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules(&$validator, &$dataspace)
   {
     parent :: _registerValidationRules($validator, $dataspace);
 

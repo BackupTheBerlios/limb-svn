@@ -52,7 +52,7 @@ class DisplayRequestedFileCommand// implements Command
     return LIMB_STATUS_OK;
   }
 
-  function _fillIconResponse($response, $request, $object_data)
+  function _fillIconResponse(&$response, &$request, $object_data)
   {
     if (!$size = $request->get('icon'))
       $size = DEFAULT_ICON_SIZE;

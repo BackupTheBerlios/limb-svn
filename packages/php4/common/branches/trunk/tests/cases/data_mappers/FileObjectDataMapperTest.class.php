@@ -42,8 +42,8 @@ class FileObjectDataMapperTest extends LimbTestCase
     $this->media_manager = new MockMediaManager($this);
 
     $this->mapper = new FileObjectMapperTestVersion($this);
-    $this->mapper->setReturnValue('_getFinder', $this->finder);
-    $this->mapper->setReturnValue('_getMediaManager', $this->media_manager);
+    $this->mapper->setReturnReference('_getFinder', $this->finder);
+    $this->mapper->setReturnReference('_getMediaManager', $this->media_manager);
 
     $this->_cleanUp();
   }

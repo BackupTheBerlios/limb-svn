@@ -56,7 +56,7 @@ class FullTextSearchIndexerTest extends LimbTestCase
     foreach($attributes_definition as $id => $definition)
       $this->behaviour->setReturnValue('getDefinition', $definition, array($id));
 
-    $this->site_object->setReturnValue('getBehaviour', $this->behaviour);
+    $this->site_object->setReturnReference('getBehaviour', $this->behaviour);
   }
 
   function tearDown()

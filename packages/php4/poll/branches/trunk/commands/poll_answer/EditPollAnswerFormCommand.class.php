@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/FormEditSiteObjectCommand.class.ph
 
 class EditPollAnswerFormCommand extends FormEditSiteObjectCommand
 {
-  function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules(&$validator, &$dataspace)
   {
     parent :: _registerValidationRules($validator, $dataspace);
 

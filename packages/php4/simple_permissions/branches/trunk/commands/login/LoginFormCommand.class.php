@@ -12,20 +12,20 @@ require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
 
 class LoginFormCommand extends FormCommand
 {
-  function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules(&$validator, &$dataspace)
   {
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'login'));
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
   }
 
-  function _mergeDataspaceWithRequest($dataspace, $request)
+  function _mergeDataspaceWithRequest(&$dataspace, &$request)
   {
     parent :: _mergeDataspaceWithRequest($dataspace, $request);
 
     $this->_transferRedirectParam($dataspace, $request);
   }
 
-  function _transferRedirectParam($dataspace, $request)
+  function _transferRedirectParam(&$dataspace, &$request)
   {
     if(!$redirect = $request->get('redirect'))
       return;
@@ -33,7 +33,7 @@ class LoginFormCommand extends FormCommand
     $dataspace->set('redirect', urldecode($this->_getRedirectString($request)));
   }
 
-  function _getRedirectString($request)
+  function _getRedirectString(&$request)
   {
     if(!$redirect = $request->get('redirect'))
       return '';

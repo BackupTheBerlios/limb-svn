@@ -52,7 +52,7 @@ class EditVariationsAction extends FormEditSiteObjectAction
     //??
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     parent :: _initDataspace($request);
 

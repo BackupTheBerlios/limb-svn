@@ -44,11 +44,11 @@ class DisplayRequestedFileCommandTest extends LimbTestCase
     $this->datasource = new MockRequestedObjectDatasource($this);
     $this->mime = new MockMimeType($this);
 
-    $this->command->setReturnValue('_getMimeType', $this->mime);
+    $this->command->setReturnReference('_getMimeType', $this->mime);
 
-    $this->toolkit->setReturnValue('getResponse', $this->response);
-    $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('getResponse', $this->response);
+    $this->toolkit->setReturnReference('getRequest', $this->request);
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
 
     $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');

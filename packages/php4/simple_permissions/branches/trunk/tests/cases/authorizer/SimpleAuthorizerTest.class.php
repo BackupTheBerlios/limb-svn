@@ -196,7 +196,7 @@ class SimpleAuthorizerTest extends LimbTestCase
                                 array('create', 'display', 'edit', 'delete'),
                                 array($behaviour_id));
 
-    $authorizer->setReturnValue('_getBehaviour', $behaviour, array('test_behaviour'));
+    $authorizer->setReturnReference('_getBehaviour', $behaviour, array('test_behaviour'));
 
     $objects_to_assign_actions = array(
       1 => array(

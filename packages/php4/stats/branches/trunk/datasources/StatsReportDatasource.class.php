@@ -13,7 +13,7 @@ class StatsReportDatasource //implements Datasource
 {
   var $_stats_report;
 
-  function _initStatsReport(){die('abstract function!')}
+  function _initStatsReport(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function StatsReportDatasource()
   {
@@ -32,8 +32,8 @@ class StatsReportDatasource //implements Datasource
     return new ArrayDataset($result);
   }
 
-  function _configureFilters(){die('abstract function!')}
+  function _configureFilters(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function _processResultArray($arr){die('abstract function!')}
+  function _processResultArray($arr){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 }
 ?>

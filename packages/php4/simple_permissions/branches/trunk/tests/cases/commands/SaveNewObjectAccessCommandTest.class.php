@@ -60,10 +60,10 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
     $this->access_policy = new MockAccessPolicy($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('SingleObjectDatasource'));
-    $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('createSiteObject', $this->parent_site_object, array('site_object'));
-    $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('SingleObjectDatasource'));
+    $this->toolkit->setReturnReference('getRequest', $this->request);
+    $this->toolkit->setReturnReference('createSiteObject', $this->parent_site_object, array('site_object'));
+    $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
 
     Limb :: registerToolkit($this->toolkit);
 
@@ -92,7 +92,7 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
                                            new IsAExpectation('MockSiteObject'),
                                            'someAction'));
 
-    $this->dataspace->setReturnValue('get', $this->site_object, array('created_site_object'));
+    $this->dataspace->setReturnReference('get', $this->site_object, array('created_site_object'));
 
     $parent_object_data = array('class_name' => 'site_object');
     $this->datasource->expectOnce('setNodeId', array($parent_node_id = 100));
@@ -100,7 +100,7 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
 
     $this->site_object->setReturnValue('getParentNodeId', $parent_node_id);
 
-    $this->parent_site_object->setReturnValue('getController', $this->controller);
+    $this->parent_site_object->setReturnReference('getController', $this->controller);
 
     $this->controller->setReturnValue('getRequestedAction',
                                       'someAction',
@@ -108,16 +108,16 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
 
     $this->controller->expectOnce('getRequestedAction', array(new IsAExpectation('MockRequest')));
 
-    $this->command->setReturnValue('_getAccessPolicy', $this->access_policy);
+    $this->command->setReturnReference('_getAccessPolicy', $this->access_policy);
 
     $this->assertEqual(LIMB_STATUS_OK, $this->command->perform());
   }
 
   function testPerformFailureAccessPolicyFailed()
   {
-    $this->dataspace->setReturnValue('get', $this->site_object, array('created_site_object'));
+    $this->dataspace->setReturnReference('get', $this->site_object, array('created_site_object'));
 
-    $this->command->setReturnValue('_getAccessPolicy',
+    $this->command->setReturnReference('_getAccessPolicy',
                                    new AccessPolicyForSaveNewObjectAccessCommand());
 
     $parent_object_data = array('class_name' => 'site_object');
@@ -125,7 +125,7 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
     $this->datasource->expectOnce('setNodeId', array($parent_node_id = 100));
     $this->datasource->setReturnValue('fetch', $parent_object_data);
 
-    $this->parent_site_object->setReturnValue('getController', $this->controller);
+    $this->parent_site_object->setReturnReference('getController', $this->controller);
 
     $this->controller->setReturnValue('getRequestedAction',
                                       'someAction',
@@ -140,7 +140,7 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
 
   function testPerformFailureNoCreatedObjectData()
   {
-    $this->command->setReturnValue('_getAccessPolicy',
+    $this->command->setReturnReference('_getAccessPolicy',
                                    new AccessPolicyForSaveNewObjectAccessCommand());
 
     $this->dataspace->setReturnValue('get', null, array('created_site_object'));

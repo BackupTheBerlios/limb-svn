@@ -34,7 +34,7 @@ class DbCartHandlerTest extends LimbTestCase
 
     $this->user = new MockUser($this);
 
-    $this->cart_handler->setReturnValue('_getUser', $this->user);
+    $this->cart_handler->setReturnReference('_getUser', $this->user);
 
     $this->_cleanUp();
   }

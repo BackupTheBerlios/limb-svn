@@ -28,7 +28,7 @@ class FileObjectTest extends LimbTestCase
 
     $this->file = new FileObjectTestVersion($this);
     $this->file->FileObject();
-    $this->file->setReturnValue('_getMediaManager', $this->media_manager);
+    $this->file->setReturnReference('_getMediaManager', $this->media_manager);
   }
 
   function tearDown()

@@ -43,7 +43,7 @@ class CreateGuestbookMessageAction extends FormCreateSiteObjectAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'sender_email'));
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     $data['identifier'] = md5(rand());
 

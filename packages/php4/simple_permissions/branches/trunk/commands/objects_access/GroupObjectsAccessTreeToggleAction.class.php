@@ -34,7 +34,7 @@ class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
     $this->_initDataspace($request);
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     $access_policy = new AccessPolicy();
 

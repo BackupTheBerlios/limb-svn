@@ -24,7 +24,7 @@ class EditCatalogObjectFormCommand extends FormEditSiteObjectCommand
     );
   }
 
-  function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules(&$validator, &$dataspace)
   {
     parent :: _registerValidationRules($validator, $dataspace);
 

@@ -17,7 +17,7 @@ class SetMembership extends FormAction
     return 'set_membership';
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     $toolkit =& Limb :: toolkit();
     $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');

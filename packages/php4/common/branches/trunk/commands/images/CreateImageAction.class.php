@@ -54,7 +54,7 @@ class CreateImageAction extends FormCreateSiteObjectAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
     parent :: _initDataspace($request);
 

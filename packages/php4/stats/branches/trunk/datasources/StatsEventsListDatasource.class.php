@@ -56,25 +56,25 @@ class StatsEventsListDatasource extends StatsReportDatasource
     $this->_setStatusFilter($request);
   }
 
-  function _setLoginFilter($request)
+  function _setLoginFilter(&$request)
   {
     if ($stats_user_login = $request->get('stats_user_login'))
       $this->_stats_report->setLoginFilter($stats_user_login);
   }
 
-  function _setActionFilter($request)
+  function _setActionFilter(&$request)
   {
     if ($stats_action_name = $request->get('stats_action_name'))
       $this->_stats_report->setActionFilter($stats_action_name);
   }
 
-  function _setIpFilter($request)
+  function _setIpFilter(&$request)
   {
     if ($stats_ip = $request->get('stats_ip'))
       $this->_stats_report->setIpFilter($stats_ip);
   }
 
-  function _setStatusFilter($request)
+  function _setStatusFilter(&$request)
   {
     if (($stats_status = $request->get('stats_status')) ||  (!is_array($stats_status)))
       return ;
@@ -89,13 +89,13 @@ class StatsEventsListDatasource extends StatsReportDatasource
       $this->_stats_report->setStatusFilter($status_mask);
   }
 
-  function _setUriFilter($request)
+  function _setUriFilter(&$request)
   {
     if ($stats_uri = $request->get('stats_uri'))
       $this->_stats_report->setUriFilter($stats_uri);
   }
 
-  function _setPeriodFilter($request)
+  function _setPeriodFilter(&$request)
   {
     $toolkit =& Limb :: toolkit();
     $locale =& $toolkit->getLocale();

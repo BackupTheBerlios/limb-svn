@@ -42,8 +42,8 @@ class ImageVariationTest extends LimbTestCase
 
     $this->variation = new ImageVariationTestVersion1($this);
     $this->variation->ImageVariation();
-    $this->variation->setReturnValue('_getImageLibrary', $this->image_library);
-    $this->variation->setReturnValue('_getMediaManager', $this->media_manager);
+    $this->variation->setReturnReference('_getImageLibrary', $this->image_library);
+    $this->variation->setReturnReference('_getMediaManager', $this->media_manager);
   }
 
   function tearDown()
@@ -69,8 +69,8 @@ class ImageVariationTest extends LimbTestCase
   {
     $this->variation = new ImageVariationTestVersion2($this);
     $this->variation->ImageVariation();
-    $this->variation->setReturnValue('_getImageLibrary', $this->image_library);
-    $this->variation->setReturnValue('_getMediaManager', $this->media_manager);
+    $this->variation->setReturnReference('_getImageLibrary', $this->image_library);
+    $this->variation->setReturnReference('_getMediaManager', $this->media_manager);
 
     $this->variation->setMimeType($mime_type = 'jpeg');
     $this->variation->setMediaFileId($media_file_id = 'sd3232cvc1op');//remember explicit calls are forbidden!!!

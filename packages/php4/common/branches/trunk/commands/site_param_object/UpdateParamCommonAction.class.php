@@ -41,9 +41,9 @@ class UpdateParamCommonAction extends FormAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'contact_email'));
   }
 
-  function _initDataspace($request)
+  function _initDataspace(&$request)
   {
-    $sys_param = SysParam :: instance();
+    $sys_param =& SysParam :: instance();
 
     $data = array();
 
