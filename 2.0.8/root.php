@@ -76,7 +76,7 @@ if(($object_data =& fetch_one_by_node_id($node['id'])) === false)
 		$tree = limb_tree :: instance();
 		
 		$response = new response();
-		$stats_register->register(-1, '', $response->get_status());
+		$stats_register->register(-1, 'redirect', $response->get_status());
 		reload('/root/login?redirect='. $tree->get_path_to_node($node));
 		exit;
 	}	

@@ -450,14 +450,37 @@ class compiler_component
 		if (isset($this->wrapping_component))
 		{
 			if($this->is_debug_enabled())
-			{
-				$code->write_html("<div style='border:dashed 1px blue;padding: 10px 10px 10px 10px;'><img src='/shared/images/i.gif' alt='{$this->wrapping_component->resolved_source_file}'>");
-				$code->write_html("<div style='border:dashed 1px green;padding: 10px 10px 10px 10px;'><img src='/shared/images/i.gif' alt='{$this->wrapping_component->source_file}'>");
+			{				
+				$code->write_html("<div style='border:dashed 1px green;padding: 10px 10px 10px 10px;'>");
+				
+				$this->_generate_debug_editor_link_html($code, $this->wrapping_component->resolved_source_file);
 			}
 
 			$this->wrapping_component->generate_wrapper_prefix($code);
-		} 
+		}
 	} 
+	
+	function _generate_debug_editor_link_html(& $code, $file_path)
+	{
+		if(!defined('WS_SCRIPT_WRITTEN'))
+		{
+
+			$code->write_html('	<SCRIPT LANGUAGE="JScript">
+													function run_shell(path)
+													{
+														full_path = "uedit32.exe " + path;
+														
+														WS = new ActiveXObject("WScript.shell");
+														WS.exec(full_path);
+													}
+													</SCRIPT>');
+		
+			define('WS_SCRIPT_WRITTEN', true);
+		}
+		
+		$file_path = dir :: clean_path($file_path, DIR_SEPARATOR_UNIX);
+		$code->write_html("<a href='#'><img onclick='run_shell(\"{$file_path}\");' src='/shared/images/i.gif' alt='{$file_path}'></a>");
+	}
 
 	/**
 	* Post generation method, calls the wrapping_component
@@ -475,7 +498,7 @@ class compiler_component
 			$this->wrapping_component->generate_wrapper_postfix($code);
 			
 			if($this->is_debug_enabled())
-				$code->write_html('</div></div>');
+				$code->write_html('</div>');
 		} 
 	} 
 

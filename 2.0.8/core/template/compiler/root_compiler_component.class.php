@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 require_once(LIMB_DIR . 'core/template/compiler/compiler_directive_tag.class.php');
 
 /**
@@ -29,8 +28,26 @@ class root_compiler_component extends compiler_directive_tag
 	function pre_generate(&$code)
 	{
 		parent::pre_generate($code);
+		
 		$code->write_php($this->get_dataspace_ref_code() . '->prepare();');
+		
+		if($this->is_debug_enabled())
+		{
+			$code->write_html("<div style='border:dashed 1px blue;padding: 10px 10px 10px 10px;'>");
+			
+			$this->_generate_debug_editor_link_html($code, $this->source_file);
+		}
 	} 
+	
+	function post_generate(&$code)
+	{
+		if($this->is_debug_enabled())
+		{
+			$code->write_html('</div>');
+		}
+		
+		parent :: post_generate($code);
+	}
 
 	/**
 	* Returns the base for building the PHP runtime component reference string
