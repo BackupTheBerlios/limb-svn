@@ -5,22 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: richedit_component.class.php 916 2004-11-23 09:14:28Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/template/components/form/text_area_component.class.php');
+require_once(LIMB_DIR . '/core/template/components/form/richedit/richedit_component.class.php');
 
-define('RICHEDIT_DEFAULT_WIDTH', '600px');
-define('RICHEDIT_DEFAULT_HEIGHT', '400px');
-define('RICHEDIT_DEFAULT_ROWS', '30');
-define('RICHEDIT_DEFAULT_COLS', '60');
-
-class richedit_component extends text_area_component
+class htmlarea_component extends richedit_component
 {
-  function render_contents()
-  {
-    echo htmlspecialchars($this->get_value(), ENT_QUOTES);
-  }
 
   function _load_js_script()
   {
@@ -56,6 +47,7 @@ class richedit_component extends text_area_component
 
   function init_richedit()
   {
+    trigger_error('Stop', E_USER_WARNING);
     $this->_load_js_script();
 
     $id = $this->get_attribute('id');
