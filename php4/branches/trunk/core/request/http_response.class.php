@@ -15,6 +15,7 @@ class http_response
   var $response_string = '';
   var $response_file_path = '';
   var $headers = array();
+  var $is_redirected = false;
 
   function redirect($path)
   {
@@ -32,6 +33,8 @@ class http_response
     }
     else
       $this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white>{$message}</body></html>";
+
+    $this->is_redirected = true;
   }
 
   function reset()
@@ -39,6 +42,12 @@ class http_response
     $this->response_string = '';
     $this->response_file_path = '';
     $this->headers = array();
+    $this->is_redirected = false;
+  }
+
+  function is_redirected()
+  {
+    return $this->is_redirected;
   }
 
   function get_status()

@@ -117,7 +117,12 @@ class http_response_test extends LimbTestCase
 
     $this->response->expectOnce('_send_string', array(new WantedPatternExpectation("~^<html><head><meta http-equiv=refresh content='0;url=" . preg_quote($path) . "'~")));
 
+    $this->assertFalse($this->response->is_redirected());
+
     $this->response->redirect($path);
+
+    $this->assertTrue($this->response->is_redirected());
+
     $this->response->commit();
   }
 

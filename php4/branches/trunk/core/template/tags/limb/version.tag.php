@@ -70,12 +70,21 @@ class limb_version_tag extends compiler_directive_tag
 
   function _start_href(&$code)
   {
-    $code->write_html('<a href="' . LIMB_HOME . '" target="_blank">');
+    if($this->_need_attach_home_page())
+      $code->write_html('<a href="' . LIMB_HOME . '" target="_blank">');
   }
 
   function _close_href(&$code)
   {
-    $code->write_html('</a>');
+    if($this->_need_attach_home_page())
+      $code->write_html('</a>');
+  }
+
+  function _need_attach_home_page()
+  {
+    return (!isset($this->attributes['attach_home_page']) ||
+            (isset($this->attributes['attach_home_page']) &&
+             ($this->attributes['attach_home_page'] == 1 || $this->attributes['attach_home_page'] == "true")));
   }
 }
 

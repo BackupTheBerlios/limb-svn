@@ -8,10 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-if(!defined('SIMPLE_TEST'))
-  define('SIMPLE_TEST', dirname(__FILE__) . '/../../../../external/php_simpletest_1.0RC1/');
+@define('SIMPLE_TEST', dirname(__FILE__) . '/../../../../external/php_simpletest_1.0RC1/');
 
-if ( !defined('SIMPLE_TEST') || !file_exists(SIMPLE_TEST . 'unit_tester.php') )
+if (!file_exists(SIMPLE_TEST . 'unit_tester.php') )
   die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
 
 require_once(SIMPLE_TEST . 'unit_tester.php');

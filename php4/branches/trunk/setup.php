@@ -7,28 +7,25 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-if(!defined('DEVELOPER_EMAIL'))
-	define('DEVELOPER_EMAIL', 'dbrain@office.bit');
-    
-define('SHARED_DIR', LIMB_DIR . '/shared/');
-define('SHARED_IMG_URL', '/shared/images/');  
+***********************************************************************************/
 
-define('VAR_DIR', PROJECT_DIR . '/var/');
+@define('DEVELOPER_EMAIL', 'dbrain@office.bit');
 
-if(!defined('VAR_WEB_DIR'))
-	define('VAR_WEB_DIR', '/var/');
+@define('SHARED_DIR', LIMB_DIR . '/shared/');
+@define('SHARED_IMG_URL', '/shared/images/');
 
-if(!defined('CACHE_DIR'))
-	define('CACHE_DIR', PROJECT_DIR . '/var/cache/');
+@define('VAR_DIR', PROJECT_DIR . '/var/');
 
-if(!defined('MEDIA_DIR')) 	 	
-	define('MEDIA_DIR', PROJECT_DIR .'/var/media/');
+@define('VAR_WEB_DIR', '/var/');
+
+@define('CACHE_DIR', PROJECT_DIR . '/var/cache/');
+
+@define('MEDIA_DIR', PROJECT_DIR .'/var/media/');
 
 if (version_compare(phpversion(), '4.2', '<'))
-	include_once(LIMB_DIR . '/core/lib/util/php42.php');
+  include_once(LIMB_DIR . '/core/lib/util/php42.php');
 
-if (version_compare(phpversion(), '4.3', '<')) 
-	include_once(LIMB_DIR . '/core/lib/util/php43.php');
+if (version_compare(phpversion(), '4.3', '<'))
+  include_once(LIMB_DIR . '/core/lib/util/php43.php');
 
 ?>
