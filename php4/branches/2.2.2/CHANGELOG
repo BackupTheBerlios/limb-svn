@@ -1,6 +1,34 @@
+Version 2.2.3
+(29 September 2004, from /php4/branches/2.2.2 r737)
+svn://svn.berlios.de/limb/php4/tags/2.2.3
+
+  --  fixed: canada zip rule test
+  --  fixed: site_object::_generate_auto_identifier() regular expression bug(issue #991978)
+  --  2 new validation rules: cc_number_rule and unique_object_attribute_rule
+  --  fixed: datasource component bug - now only one db fetch operation for multiple targets
+  --  locale_definition filter now checks for already predefined CONTENT_LOCALE_ID, MANAGEMENT_LOCALE_ID
+  --  initial revision of german locale
+  --  http response can use template for redirect page
+  --  JS: changed tab registration interface
+  --  datasource tag refactored: all pager navigator stuff moved to datasource component
+  --  datasource now interacts with pager (navigator) through runtime component code instead of generated code
+  --  added warning near toggle richedit/textarea button
+  --  JS: tabs now store active_tab_id in cookie, if use_cookie attribute of tabs tag is set to true
+  --  fedex_shipping_locator adds an attribute 'ground' to ground shipping options
+  --  JS: small adjustments of popup window dimensions calculation
+  --  JS: popup width/height calculation fixed
+  --  added fetch_one_datasource, that is useful when one need to fetch single object for certain locale
+  --  fixed: fetcher cache flushing bug (was fixed earlier in 2.2 but wasn't merged)
+  --  form tag now can access 'https' attribute
+  --  user autologin functionality added (ability to set cookie and autologin user at next session using cookie data)
+  --  fixed: Opera update form bug
+  --  added attribute 'uri' to ad_block_object
+
+  --  LOTS of minor bug fixes!
+
 Version 2.2.2 Vacation Edition
-(10 August 2004, from /2.2.2)
-svn://svn.berlios.de/limb/tags/2.2.2
+(10 August 2004, from /php4/branches/2.2.2)
+svn://svn.berlios.de/limb/php4/tags/2.2.2
 
   --  only group tests are available at the moment, confusing test cases link is removed for now
   --  compiler group removed, since it's empty and we're going to use new version of WACT
@@ -47,8 +75,8 @@ svn://svn.berlios.de/limb/tags/2.2.2
   --  debug supports 3 masks of message outputting: DEBUG_OUTPUT_MESSAGE_SEND, DEBUG_OUTPUT_MESSAGE_STORE and DEBUG_OUTPUT_MESSAGE_NULL
 
 Version 2.2.1
-(27 July 2004, from /trunk)
-svn://svn.berlios.de/limb/tags/2.2.1
+(27 July 2004, from /php4/branches/trunk)
+svn://svn.berlios.de/limb/php4/tags/2.2.1
 
   --  SimpleTest 6 beta, throws warning if mock is declared more than once, some tests were fixed 
       to conform to this nice behaviour
@@ -169,8 +197,8 @@ svn://svn.berlios.de/limb/tags/2.2.1
   --  fixed: stats_event_filter - it used non-existent merge method of the request object
 
 Version 2.2
-(29 June 2004, from /trunk)
-svn://svn.berlios.de/limb/tags/2.2
+(29 June 2004, from /php4/branches/trunk)
+svn://svn.berlios.de/limb/php4/tags/2.2
 
   --  ***WARNING***: BC break! API of controllers, actions has changed! 
   
@@ -224,8 +252,8 @@ svn://svn.berlios.de/limb/tags/2.2
       it works directly with tree.  
 
 Version 2.1.1
-(16 Jun 2004, from /trunk)
-svn://svn.berlios.de/limb/tags/2.1.1
+(16 Jun 2004, from /php4/branches/trunk)
+svn://svn.berlios.de/limb/php4/tags/2.1.1
 
   --  ***WARNING***: BC break! API of controllers, actions has changed! 
   --  controllers, actions are greatly refactored in order to simplify inheritance(packages preparation)
@@ -242,8 +270,8 @@ svn://svn.berlios.de/limb/tags/2.1.1
   --  request_state component now takes its value from the $_REQUEST on the first display only   
 
 Version 2.2
-(04 May 2004, from /trunk)
-svn://svn.berlios.de/limb/2.2
+(04 May 2004, from /php4/branches/trunk)
+svn://svn.berlios.de/limb/php4/tags/2.2
 
   --  ***WARNING***: BC break! API of controllers, actions has changed! 
   
@@ -298,8 +326,8 @@ svn://svn.berlios.de/limb/2.2
       it works directly with tree.  
 
 Version 2.1.1
-(16 Jun 2004, from /trunk)
-svn://svn.berlios.de/limb/2.1.1
+(16 Jun 2004, from /php4/branches/trunk)
+svn://svn.berlios.de/limb/php4/tags/2.1.1
 
   --  ***WARNING***: BC break! API of controllers, actions has changed! 
   --  controllers, actions are greatly refactored in order to simplify inheritance(packages preparation)
@@ -316,8 +344,8 @@ svn://svn.berlios.de/limb/2.1.1
   --  request_state component now takes its value from the $_REQUEST on the first display only   
 
 Version 2.1
-(04 May 2004, from /2.0.8)
-svn://svn.berlios.de/limb/tags/2.1
+(04 May 2004, from /php4/branches/2.0.8)
+svn://svn.berlios.de/limb/tags/php4/tags/2.1
 
   --  fixed: node select component would set its value wrong
   --  fixed: control_flow.php bug (issue #969501)
@@ -386,8 +414,8 @@ svn://svn.berlios.de/limb/tags/2.1
       inside <form> if they exist
 
 Version 2.0.8
-(12 Apr 2004, from /trunk)
-svn://svn.berlios.de/limb/tags/2.0.8
+(12 Apr 2004, from /php4/branches/trunk)
+svn://svn.berlios.de/limb/php4/tags/2.0.8
 
   --  fixed: image_object::_create_variations() method was called twice
   --  fixed: richedit, now can properly save values of multiple richedits on one page
