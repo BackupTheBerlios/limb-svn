@@ -17,23 +17,32 @@ class register_new_object_action extends form_action
     return 'register_new_object';
   }
 
+  function _init_dataspace(&$request)
+  {
+    parent :: _init_dataspace($request);
+
+    $root = fetch_one_by_path('/root');
+
+    $this->dataspace->set('parent_node_id', $root['node_id']);
+  }
+
   function _init_validator()
   {
     $v = array();
-    
+
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'class_name'));
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'class_name', 0));
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'class_name', -1));
-    
+
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'controller_name'));
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'controller_name', 0));
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/invalid_value_rule', 'controller_name', -1));
-    
+
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'identifier'));
-    
-		$this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/tree_node_id_rule', 'parent_node_id'));
+
+    $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/tree_node_id_rule', 'parent_node_id'));
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'parent_node_id'));
-    
+
     $this->validator->add_rule($v[] = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'title'));
   }
 
@@ -46,7 +55,7 @@ class register_new_object_action extends form_action
     $params['identifier'] = $this->dataspace->get('identifier');
     $params['class'] = $this->dataspace->get('class_name');
     $params['title'] = $this->dataspace->get('title');
-    $params['parent_node_id'] = $this->dataspace->get('parent_node_id');  
+    $params['parent_node_id'] = $this->dataspace->get('parent_node_id');
     $params['controller_id'] = site_object_controller :: get_id($this->dataspace->get('controller_name'));
 
     $object =& site_object_factory :: create($params['class']);
