@@ -25,7 +25,6 @@ class create_documents_folder_action extends form_create_site_object_action
 	function _init_validator()
 	{
 		parent :: _init_validator();
-
     $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
 	}
 }
