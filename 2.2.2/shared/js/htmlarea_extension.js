@@ -190,7 +190,7 @@ function insert_limb_repository_image(e, id)
     { 
       sel = editor.getParentElement();
       
-    	if (sel.tagName == 'IMG' && sel.hasAttribute('limb_attributes'))
+    	if (sel.tagName == 'IMG' && sel.getAttribute('limb_attributes'))
     	{
     		params = sel.getAttribute('limb_attributes');
     		params = params.split(':');
