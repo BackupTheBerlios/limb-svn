@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
+require_once(LIMB_DIR . 'core/tree/tree.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/http/uri.class.php');
 require_once(LIMB_DIR . 'core/model/access_policy.class.php');
@@ -50,7 +50,7 @@ class fetcher
 		
 	function & fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{		
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		$site_object =& site_object_factory :: instance($loader_class_name);
 		
 		if ($loader_class_name != 'site_object' &&
@@ -123,7 +123,7 @@ class fetcher
 	function & fetch_by_node_ids($node_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{
 		$object_ids = array();
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 
 		foreach($node_ids as $key)
 			if (!isset($object_ids[$key]))
@@ -146,7 +146,7 @@ class fetcher
 	
 	function & fetch_one_by_node_id($node_id, $assign_actions=true)
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 
 		if (!$node = $tree->get_node($node_id))
 			return false;
@@ -205,7 +205,7 @@ class fetcher
 	
 	function & fetch_one_by_path($path)
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		if (!$node = $tree->get_node_by_path($path))
 			return false;
@@ -226,7 +226,7 @@ class fetcher
 
 	function & map_url_to_node($url, $recursive = false)
 	{	
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 				
 		$uri = new uri($url);
 		
@@ -245,7 +245,7 @@ class fetcher
 			
 		if(isset($_REQUEST['node_id']))
 		{
-			$tree =& limb_tree :: instance();
+			$tree =& tree :: instance();
 			
 			$node =& $tree->get_node((int)$_REQUEST['node_id']);
 			
@@ -265,7 +265,7 @@ class fetcher
 
 	function _assign_paths(&$objects_array, $append = '')
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$parent_paths = array();
 		

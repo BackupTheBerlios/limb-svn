@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: sys_site_object_tree_db_table.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
-class sys_site_object_tree_db_table extends db_table
+class sys_materialized_path_tree_db_table extends db_table
 {
-  function sys_site_object_tree_db_table()
+  function sys_materialized_path_tree_db_table()
   {
     parent :: db_table();
   }
@@ -24,9 +24,9 @@ class sys_site_object_tree_db_table extends db_table
       'parent_id' => array('type' => 'numeric'),
       'root_id' => array('type' => 'numeric'),
       'object_id' => array('type' => 'numeric'),
-			'path' => '',
       'level' => array('type' => 'numeric'),
       'identifier' => '',
+      'path' => '',
     );
   }
   

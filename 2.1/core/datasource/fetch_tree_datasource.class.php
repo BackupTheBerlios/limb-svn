@@ -21,7 +21,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 
 	function & _fetch(&$counter, $params)
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$tree_array =& parent :: _fetch($counter, $params);	
 		

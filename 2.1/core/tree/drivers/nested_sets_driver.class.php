@@ -9,11 +9,6 @@
 *
 ***********************************************************************************/ 
 
-// Error and message codes
-define('NESE_ERROR_RECURSION', 'E100');
-define('NESE_ERROR_NOT_FOUND', 'E500');
-define('NESE_ERROR_WRONG_MPARAM', 'E2');
-
 // for moving a node before another
 define('NESE_MOVE_BEFORE', 'BE');
 
@@ -27,13 +22,10 @@ define('NESE_MOVE_BELOW', 'SUB');
 define('NESE_SORT_LEVEL', 'SLV');
 define('NESE_SORT_PREORDER', 'SPO');
 
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'core/tree/drivers/tree_db_driver.class.php');
 
-class nested_sets_driver
+class nested_sets_driver extends tree_db_driver
 {
-	var $_db = null;
-	
 	/**
 	* 
 	* @var array The field parameters of the table with the nested set.
@@ -46,13 +38,10 @@ class nested_sets_driver
 		'object_id' => 'object_id',
 		'l' => 'l',
 		'r' => 'r',
-		'ordr' => 'ordr',
 		'level' => 'level', 
 		'parent_id' => 'parent_id',
 	);
 	
-	var $_expanded_parents = array(); 
-		
 	/**
 	* 
 	* @var string The table with the actual tree data
@@ -62,76 +51,10 @@ class nested_sets_driver
 
 	/**
 	* 
-	* @var string The table to handle locking
-	* @access public 
-	*/
-	var $_lock_table = 'sys_lock';
-
-	/**
-	* Secondary order field.  Normally this is the order field, but can be changed to
-	* something else (i.e. the name field so that the tree can be shown alphabetically)
-	* 
-	* @var string 
-	* @access public 
-	*/
-	var $_secondary_sort = 'ordr';
-
-	/**
-	* The default sorting field - will be set to the table column inside the constructor
-	* 
-	* @var string 
-	* @access private 
-	*/
-	var $_default_secondary_sort = 'ordr';
-
-	/**
-	* 
-	* @var int The time to live of the lock
-	* @access public 
-	*/
-	var $_lock_ttl = 5;
-
-	/**
-	* 
-	* @var bool Lock the structure of the table?
-	* @access private 
-	*/
-	var $_structure_table_lock = false;
-
-	/**
-	* 
-	* @var bool Don't allow unlocking (used inside of moves)
-	* @access private 
-	*/
-	var $_lock_exclusive = false;
-
-	/**
-	* Specify the sortMode of the sql_exec methods
-	* NESE_SORT_LEVEL is the 'old' sorting method and sorts a tree by level
-	* all nodes of level 1, all nodes of level 2,...
-	* NESE_SORT_PREORDER will sort doing a preorder walk.
-	* So all children of node x will come right after it
-	* Note that moving a node within it's siblings will obviously not change the output
-	* in this mode
-	* 
-	* @var constant Order method (NESE_SORT_LEVEL|NESE_SORT_PREORDER)
-	* @access private 
-	*/
-	var $_sort_mode = NESE_SORT_LEVEL;
-
-	/**
-	* 
-	* @var array Available sortModes
-	* @access private 
-	*/
-	var $_sort_modes = array(NESE_SORT_LEVEL, NESE_SORT_PREORDER);
-
-	/**
-	* 
 	* @var array An array of field ids that must exist in the table
 	* @access private 
 	*/
-	var $_required_params = array('id', 'root_id', 'l', 'r', 'ordr', 'level');
+	var $_required_params = array('id', 'root_id', 'l', 'r', 'level');
 
 	/**
 	* 
@@ -139,14 +62,6 @@ class nested_sets_driver
 	* @access private 
 	*/
 	var $_relations = array();
-
-	/**
-	* Used for _internal_ tree conversion
-	* 
-	* @var bool Turn off user param verification and id generation
-	* @access private 
-	*/
-	var $_dumb_mode = false;
 
 	/**
 	* Constructor
@@ -157,34 +72,9 @@ class nested_sets_driver
 	*/
 	function nested_sets_driver()
 	{		
-		$this->_db =& db_factory :: instance();
-		
-		register_shutdown_function(array(&$this, '_nested_sets_driver'));
+		parent :: tree_db_driver();
 	} 
-	
-	function set_expanded_parents(& $expanded_parents)
-	{
-		$this->_expanded_parents =& $expanded_parents;
-				
-		$this->check_expanded_parents();
-	}
-	
-	/**
-	* Destructor
-	* Releases all locks
-	* Closes open database connections
-	* 
-	*/
-	function _nested_sets_driver()
-	{
-		$this->_release_lock(true);
-	} 
-	  
-  function set_dumb_mode($status=true)
-  {
-  	$this->_dumb_mode = $status;
-  }
-  
+			    
 	/**
 	* Fetch the whole nested set
 	* 
@@ -194,30 +84,12 @@ class nested_sets_driver
 	*/
 	function & get_all_nodes($add_sql = array())
 	{
-		if ($this->_sort_mode == NESE_SORT_LEVEL)
+		$node_set = array();
+		$rootnodes = $this->get_root_nodes(true);
+		foreach($rootnodes as $rid => $rootnode)
 		{
-			$sql = sprintf('SELECT %s %s FROM %s %s %s ORDER BY %s.level, %s.%s ASC',
-											$this->_get_select_fields(),
-											$this->_add_sql($add_sql, 'columns'),
-											$this->_node_table,
-											$this->_add_sql($add_sql, 'join'),
-											$this->_add_sql($add_sql, 'append'),
-											$this->_node_table,
-											$this->_node_table, $this->_secondary_sort);
+			$node_set = $node_set + $this->get_branch($rid, true);
 		} 
-		elseif ($this->_sort_mode == NESE_SORT_PREORDER)
-		{
-			$node_set = array();
-			$rootnodes = $this->get_root_nodes(true);
-			foreach($rootnodes AS $rid => $rootnode)
-			{
-				$node_set = $node_set + $this->get_branch($rid, true);
-			} 
-			return $node_set;
-		} 
-
-		$node_set =& $this->_get_result_set($sql);
-
 		return $node_set;
 	} 
 	/**
@@ -230,15 +102,14 @@ class nested_sets_driver
 	*/
 	function & get_root_nodes($add_sql = array())
 	{
-		$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.id=%s.root_id %s ORDER BY %s.%s ASC',
+		$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.id=%s.root_id %s',
 										$this->_get_select_fields(),
 										$this->_add_sql($add_sql, 'columns'),
 										$this->_node_table,
 										$this->_add_sql($add_sql, 'join'),
 										$this->_node_table,
 										$this->_node_table,
-										$this->_add_sql($add_sql, 'append'),
-										$this->_node_table, $this->_secondary_sort);
+										$this->_add_sql($add_sql, 'append'));
 
 		$node_set =& $this->_get_result_set($sql);
 
@@ -257,42 +128,24 @@ class nested_sets_driver
 	{
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: write_error('NESE_ERROR_NOT_FOUND',
+    	debug :: write_error('TREE_ERROR_NODE_NOT_FOUND',
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
-		if ($this->_sort_mode == NESE_SORT_LEVEL)
-		{
-			$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.root_id=%s %s ORDER BY %s.level, %s.%s ASC',
-											$this->_get_select_fields(),
-											$this->_add_sql($add_sql, 'columns'),
-											$this->_node_table,
-											$this->_add_sql($add_sql, 'join'),
-											$this->_node_table, $this_node['root_id'],
-											$this->_add_sql($add_sql, 'append'),
-											$this->_node_table,
-											$this->_node_table, $this->_secondary_sort);
-		} 
-		elseif ($this->_sort_mode == NESE_SORT_PREORDER)
-		{
-			$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.root_id=%s %s ORDER BY %s.l ASC',
-											$this->_get_select_fields(),
-											$this->_add_sql($add_sql, 'columns'),
-											$this->_node_table,
-											$this->_add_sql($add_sql, 'join'),
-											$this->_node_table, $this_node['root_id'],
-											$this->_add_sql($add_sql, 'append'),
-											$this->_node_table);
-		} 
+
+		$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.root_id=%s %s ORDER BY %s.l ASC',
+										$this->_get_select_fields(),
+										$this->_add_sql($add_sql, 'columns'),
+										$this->_node_table,
+										$this->_add_sql($add_sql, 'join'),
+										$this->_node_table, $this_node['root_id'],
+										$this->_add_sql($add_sql, 'append'),
+										$this->_node_table);
 
 		$node_set =& $this->_get_result_set($sql);
 
-		if ($this->_sort_mode == NESE_SORT_PREORDER && ($this->_secondary_sort != $this->_default_secondary_sort))
-		{
-			uasort($node_set, array($this, '_sec_sort'));
-		} 
 		return $node_set;
 	} 
 	/**
@@ -305,7 +158,7 @@ class nested_sets_driver
 	{
 		if (!($child = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -344,7 +197,7 @@ class nested_sets_driver
 	{
 		if (!($child = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -382,13 +235,13 @@ class nested_sets_driver
 	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
 	* @see _add_sql
 	* @access public 
-	* @return mixed False on error, or the parent node
+	* @return mixed False on error
 	*/
 	function & get_siblings($id, $add_sql = array())
 	{
 		if (!($sibling = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -403,9 +256,6 @@ class nested_sets_driver
 	* Fetch the children _one level_ after of a node given by id
 	* 
 	* @param int $id The node ID
-	* @param bool $force_ordr (optional) Force the result to be ordered by the ordr
-	*              param (as opposed to the value of secondary sort).  Used by the move and
-	*              add methods.
 	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
 	* @see _add_sql
 	* @access public 
@@ -413,31 +263,27 @@ class nested_sets_driver
 	*/
 	function & get_children($id, $add_sql = array())
 	{		
-		if (!($parent = $this->get_node($id)))
+		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
 			return false;
 		} 
-		if (!$parent || $parent['l'] == ($parent['r'] - 1))
+		if ($parent['l'] == ($parent['r'] - 1))
 		{
 			return false;
 		} 
 
 		$sql = sprintf('SELECT %s %s FROM %s %s
-                    WHERE %s.root_id=%s AND %s.level=%s+1 AND %s.l BETWEEN %s AND %s %s
-                    ORDER BY %s.%s ASC',
+                    WHERE %s.parent_id=%s %s',
 										$this->_get_select_fields(), 
 										$this->_add_sql($add_sql, 'columns'),
 										$this->_node_table, 
 										$this->_add_sql($add_sql, 'join'),
-										$this->_node_table, $parent['root_id'],
-										$this->_node_table, $parent['level'],
-										$this->_node_table, $parent['l'], $parent['r'],
-										$this->_add_sql($add_sql, 'append'),
-										$this->_node_table, $this->_secondary_sort);
+										$this->_node_table, $id,
+										$this->_add_sql($add_sql, 'append'));
 
 		$node_set =& $this->_get_result_set($sql);
 
@@ -446,9 +292,9 @@ class nested_sets_driver
 	
 	function count_children($id, $add_sql=array())
 	{
-		if (!($parent = $this->get_node($id)))
+		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -461,11 +307,10 @@ class nested_sets_driver
 		} 
 
 		$sql = sprintf('SELECT count(*) as counter FROM %s %s
-                    WHERE %s.root_id=%s AND %s.parent_id=%s %s',
+                    WHERE %s.parent_id=%s %s',
 										$this->_node_table,
 										$this->_add_sql($add_sql, 'join'),
-										$this->_node_table, $parent['root_id'],
-										$this->_node_table, $id, 
+										$this->_node_table, $id,
 										$this->_add_sql($add_sql, 'append'));
 		
 		$this->_db->sql_exec($sql);
@@ -486,48 +331,56 @@ class nested_sets_driver
 	* @access public 
 	* @return mixed False on error, or an array of nodes
 	*/
-	function & get_sub_branch($id, $add_sql = array(), $include_parent = false)
+	function & get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
 	{
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
-		if ($this->_sort_mode == NESE_SORT_LEVEL)
+		
+		if ($depth != -1)
+			$add_sql['append'][] = " AND {$this->_node_table}.level <=" . ($parent['level'] + $depth);
+			
+		if($only_parents)
 		{
-			$sql = sprintf('SELECT %s %s FROM %s %s
-	                    WHERE %s.l BETWEEN %s AND %s AND %s.root_id=%s AND %s.id!=%s %s
-	                    ORDER BY %s.level, %s.%s ASC',
-											$this->_get_select_fields(), 
-											$this->_add_sql($add_sql, 'columns'),
-											$this->_node_table, 
-											$this->_add_sql($add_sql, 'join'),
-											$this->_node_table, $parent['l'], $parent['r'],
-											$this->_node_table, $parent['root_id'],
-											$this->_node_table, $id,
-											$this->_add_sql($add_sql, 'append'),
-											$this->_node_table, 
-											$this->_node_table, 
-											$this->_secondary_sort);
-		} 
-		elseif ($this->_sort_mode == NESE_SORT_PREORDER)
+			if(!$this->_is_table_joined('sys_class', $add_sql))
+				$add_sql['join'][] = ', sys_class as sc';
+				
+			if(!$this->_is_table_joined('sys_site_object', $add_sql))
+				$add_sql['join'][] = ', sys_site_object as sso';
+			
+			$add_sql['append'][] = " AND {$this->_node_table}.object_id = sso.id AND sc.id = sso.class_id AND sc.can_be_parent = 1";
+		}
+		
+		if($check_expanded_parents)
 		{
-			$sql = sprintf('SELECT %s %s FROM %s %s
-	                    WHERE %s.l BETWEEN %s AND %s AND %s.root_id=%s AND %s.id!=%s %s
-	                    ORDER BY %s.l ASC',
-											$this->_get_select_fields(), 
-											$this->_add_sql($add_sql, 'columns'),
-											$this->_node_table, 
-											$this->_add_sql($add_sql, 'join'),
-											$this->_node_table, $parent['l'], $parent['r'],
-											$this->_node_table, $parent['root_id'],
-											$this->_node_table, $id,
-											$this->_add_sql($add_sql, 'append'), 
-											$this->_node_table);
-		} 
+			foreach($this->_expanded_parents as $id => $data)
+			{				
+				if(	($data['status'] == false) && 
+						($data['root_id'] == $parent['root_id']) &&
+						($data['r'] - $data['l'] > 1) && 
+						($parent['l'] <= $data['l']) &&
+						($parent['r'] >= $data['l']))
+					$sql_add['append'][] = " AND ({$this->_node_table}.l NOT BETWEEN " . ($data['l'] + 1). ' AND '  . $data['r'] . ')';
+			}
+		}
+		
+		$sql = sprintf('SELECT %s %s FROM %s %s
+                    WHERE %s.l BETWEEN %s AND %s AND %s.root_id=%s AND %s.id!=%s %s
+                    ORDER BY %s.l ASC',
+										$this->_get_select_fields(), 
+										$this->_add_sql($add_sql, 'columns'),
+										$this->_node_table, 
+										$this->_add_sql($add_sql, 'join'),
+										$this->_node_table, $parent['l'], $parent['r'],
+										$this->_node_table, $parent['root_id'],
+										$this->_node_table, $id,
+										$this->_add_sql($add_sql, 'append'), 
+										$this->_node_table);
 		
 		$node_set = array();
 		
@@ -538,44 +391,15 @@ class nested_sets_driver
 		
 		$this->_assign_result_set($node_set, $sql);
 	
-		if ($this->_secondary_sort != $this->_default_secondary_sort)
-		{
-			uasort($node_set, array($this, '_sec_sort'));
-		} 
-	
 		return $node_set;
 	} 
 
-	function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $sql_add = array())
+	function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
 	{
 		if(!$parent_node = $this->get_node_by_path($path))
 			return false;
-						
-		if ($depth != -1)
-			$sql_add['append'][] = ' AND level <=' . ($parent_node['level'] + $depth);
-		
-		if($check_expanded_parents)
-		{
-			foreach($this->_expanded_parents as $id => $data)
-			{				
-				if(	($data['status'] == false) && 
-						($data['root_id'] == $parent_node['root_id']) &&
-						($data['r'] - $data['l'] > 1) && 
-						($parent_node['l'] <= $data['l']) &&
-						($parent_node['r'] >= $data['l']))
-					$sql_add['append'][] = ' AND (l NOT BETWEEN ' . ($data['l'] + 1). ' AND '  . $data['r'] . ')';
-			}
-		}
-		
-		if($only_parents)
-		{
-			$sql_add['join'][] = ', sys_class as sc';
-			$sql_add['append'][] = ' AND sc.id = sso.class_id AND sc.can_be_parent = 1';
-		}
-		
-		$prev_mode = $this->set_sort_mode(NESE_SORT_PREORDER);	
- 		$nodes =& $this->get_sub_branch($parent_node['id'], $sql_add, $include_parent);
- 		$this->set_sort_mode($prev_mode);
+								
+ 		$nodes =& $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
   		
 		return $nodes;
 	}	
@@ -735,9 +559,9 @@ class nested_sets_driver
 
 	function get_max_child_identifier($id)
 	{
-		if (!($parent = $this->get_node($id)))
+		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -749,12 +573,10 @@ class nested_sets_driver
 		} 
 
 		$sql = sprintf('SELECT identifier FROM %s
-                    WHERE root_id=%s AND level=%s+1 AND l BETWEEN %s AND %s
+                    WHERE parent_id=%s
                     ORDER BY identifier DESC',
-										$this->_node_table, 
-										$parent['root_id'],
-										$parent['level'],
-										$parent['l'], $parent['r']);
+										$this->_node_table,
+										$id);
 										
 		$this->_db->sql_exec($sql, 1, 0);
 		
@@ -816,29 +638,7 @@ class nested_sets_driver
 			
 		return $result;
   }
-  
-  function check_expanded_parents()
-  {
-  	if(!is_array($this->_expanded_parents) || sizeof($this->_expanded_parents) == 0)
-  	{
-  		$this->reset_expanded_parents();  		
-  	}
-  	elseif(sizeof($this->_expanded_parents) > 0)
-  	{
-  		$this->update_expanded_parents();
-  	}
-  }
-  
-  function update_expanded_parents()
-  {
-  	$nodes_ids = array_keys($this->_expanded_parents);
-  	
-  	$nodes =& $this->get_nodes_by_ids($nodes_ids);
-  	
-  	foreach($nodes as $id => $node)
-  		$this->_set_expanded_parent_status($node, $this->is_node_expanded($id));
-  }
-  
+      
   function reset_expanded_parents()
   {
   	$this->_expanded_parents = array();
@@ -853,37 +653,7 @@ class nested_sets_driver
   			$this->_set_expanded_parent_status($node, false);
   	}
   }
-
-  function toggle_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)  		
-  		return false;
-		
-		$this->_set_expanded_parent_status($node, !$this->is_node_expanded($id));
-		  	
-  	return true;
-  }
   
-  function expand_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)
-  		return false;
-  	
-  	$this->_set_expanded_parent_status($node, true);
-  	  	
-  	return true;
-  }
-
-  function collapse_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)
-  		return false;
-  		
-		$this->_set_expanded_parent_status($node, false);
-		    
-  	return true;
-  }
-
   function _set_expanded_parent_status($node, $status)
   {
   	$id = (int)$node['id'];
@@ -908,116 +678,26 @@ class nested_sets_driver
 	* </pre>
 	* 
 	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @param integer $id ID of target node (the rootnode after which the node should be inserted)
-	* @param bool $first Danger: Deletes and (re)init's the hole tree - sequences are reset
-	* @param string $pos The position in which to insert the new node.
 	* @access public 
 	* @return mixed The node id or false on error
 	*/
-	function create_root_node($values, $id = false, $first = false, $pos = NESE_MOVE_AFTER)
+	function create_root_node($values)
 	{
 		$this->_verify_user_values($values); 
-		// If they specified an id, see if the parent is valid
-		if (!$first && ($id && !$parent = $this->get_node($id)))
-		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
-    	return false;
-		} 
-		elseif ($first && $id)
-		{ 
-    	debug :: write_notice('these 2 params don\'t make sense together',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('first' => $first, 'id' => $id)
-    	);
-		} 
-		elseif (!$first && !$id)
-		{ 
-			// If no id was specified, then determine order
-			$parent = array();
-			if ($pos == NESE_MOVE_BEFORE)
-			{
-				$parent['ordr'] = 1;
-			} elseif ($pos == NESE_MOVE_AFTER)
-			{ 
-				// Put it at the end of the tree
-				$qry = sprintf('SELECT MAX(ordr) as m FROM %s WHERE l=1',
-					$this->_node_table);
-					
-				$this->_db->sql_exec($qry);
-				$tmp_order = $this->_db->fetch_row(); 
-				// If null, then it's the first one
-				$parent['ordr'] = isset($tmp_order['m']) ? $tmp_order['m'] : 0;
-			} 
-		} 
-		// Try to aquire a table lock
-		$lock = $this->_set_lock();
-
-		$sql = array();
-		$insert_data = array();
-		$insert_data['level'] = 1; 
-		// Shall we delete the existing tree (reinit)
-		if ($first)
-		{
-			$this->_db->sql_delete($this->_node_table);
-			$insert_data['ordr'] = 1;
-		} 
+	
+		if (!$this->_dumb_mode)
+			$values['id'] = $node_id = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
 		else
-		{ 
-			// Let's open a gap for the new node
-			if ($pos == NESE_MOVE_AFTER)
-			{
-				$insert_data['ordr'] = $parent['ordr'] + 1;
-				$sql[] = sprintf('UPDATE %s SET ordr=ordr+1 WHERE l=1 AND ordr > %s',
-													$this->_node_table,
-													$parent['ordr']);
-			} 
-			elseif ($pos == NESE_MOVE_BEFORE)
-			{
-				$insert_data['ordr'] = $parent['ordr'];
-				$sql[] = sprintf('UPDATE %s SET ordr=ordr+1 WHERE l=1 AND ordr >= %s',
-													$this->_node_table,
-													$parent['ordr']);
-			} 
-		} 
-
-		$insert_data['parent_id'] = 0;
-		
-		// Sequence of node id (equals to root id in this case
-		if (!$this->_dumb_mode 
-				|| !isset($values['id'])
-				|| !isset($values['root_id']))
-		{
-			$insert_data['root_id'] = 
-			$insert_data['id'] = 
-			$node_id =
-			$this->_db->get_max_column_value($this->_node_table, 'id') + 1;
-		} 
-		else
-		{
 			$node_id = $values['id'];
-		} 
-		// Left/Right values for rootnodes
-		$insert_data['l'] = 1;
-		$insert_data['r'] = 2; 
-		// Transform the node data hash to a sql_exec
-		if (!$qr = $this->_values2insert_query($values, $insert_data))
-		{
-			$this->_release_lock();
-			return false;
-		} 
-		// Insert the new node
-		$sql[] = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->_node_table, implode(', ', array_keys($qr)), implode(', ', $qr));
-
-		foreach ($sql as $qry)
-		{
-			$this->_db->sql_exec($qry);
-		} 
+	
+		$values['l'] = 1;
+		$values['r'] = 2; 
+		$values['root_id'] = $node_id;
+		$values['level'] = 1;
+		$values['parent_id'] = 0;
 		
-		$this->_release_lock();
-		
+		$this->_db->sql_insert($this->_node_table, $values);
+				
 		return $node_id;
 	} 
 	
@@ -1041,31 +721,27 @@ class nested_sets_driver
 	*/
 	function create_sub_node($id, $values)
 	{
-		// invalid parent id, bail out
-		if (!($this_node = $this->get_node($id)))
+		if (!$parent = $this->get_node($id))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
+    		array('parent_id' => $id)
     	);
     	return false;
 		} 
-		// Try to aquire a table lock
-		$lock = $this->_set_lock();
 
 		$this->_verify_user_values($values); 
-		// Get the children of the target node
-		$children = $this->get_children($id); 
+		
 		// We have children here
-		if ($this_node['r']-1 != $this_node['l'])
+		if ($parent['r']-1 != $parent['l'])
 		{ 
-			// Get the last child
+			$children = $this->get_children($id);
 			$last = array_pop($children); 
 			// What we have to do is virtually an insert of a node after the last child
 			// So we don't have to proceed creating a subnode
-			$new_node = $this->create_right_node($last['id'], $values);
-			$this->_release_lock();
-			return $new_node;
+			$node_id = $this->create_right_node($last['id'], $values);
+			
+			return $node_id;
 		} 
 
 		$sql = array();
@@ -1074,42 +750,31 @@ class nested_sets_driver
 			                r=CASE WHEN (l>%s OR r>=%s) THEN r+2 ELSE r END
 			                WHERE root_id=%s',
 											$this->_node_table,
-											$this_node['l'],
-											$this_node['l'],
-											$this_node['r'],
-											$this_node['root_id']);
+											$parent['l'],
+											$parent['l'],
+											$parent['r'],
+											$parent['root_id']);
 
-		$insert_data = array();
-		$insert_data['parent_id'] = $this_node['id'];
+		$values['parent_id'] = $parent['id'];
+		$values['l'] = $parent['r'];
+		$values['r'] = $parent['r'] + 1;
+		$values['root_id'] = $parent['root_id'];
+		$values['level'] = $parent['level'] + 1;
 
-		$insert_data['l'] = $this_node['r'];
-		$insert_data['r'] = $this_node['r'] + 1;
-		$insert_data['root_id'] = $this_node['root_id'];
-		$insert_data['ordr'] = 1;
-		$insert_data['level'] = $this_node['level'] + 1;
-
-		if (!$this->_dumb_mode || !$node_id = isset($values['id']))
+		if (!$this->_dumb_mode)
 		{
-			$node_id = $insert_data['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
+			$node_id = $values['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
 			$node_id = $values['id'];
 		} 
+		
+		$sql[] = $this->_db->make_insert_string($this->_node_table, $values);
+		
+		foreach ($sql as $query)
+			$this->_db->sql_exec($query);
 
-		if (!$qr = $this->_values2insert_query($values, $insert_data))
-		{
-			$this->_release_lock();
-			return false;
-		} 
-
-		$sql[] = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->_node_table, implode(', ', array_keys($qr)), implode(', ', $qr));
-		foreach ($sql as $qry)
-		{
-			$this->_db->sql_exec($qry);
-		} 
-
-		$this->_release_lock();
 		return $node_id;
 	} 
 	
@@ -1143,15 +808,13 @@ class nested_sets_driver
 		// invalid target node, bail out
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: error(NESE_ERROR_NOT_FOUND,
+    	debug :: error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
 
-		$lock = $this->_set_lock();
-		
 		// If the target node is a rootnode we virtually want to create a new root node
 		if ($this_node['root_id'] == $this_node['id'])
 		{
@@ -1199,7 +862,6 @@ class nested_sets_driver
 
 		if (!$qr = $this->_values2insert_query($values, $insert_data))
 		{
-			$this->_release_lock();
 			return false;
 		} 
 		// Insert the new node
@@ -1209,7 +871,6 @@ class nested_sets_driver
 			$this->_db->sql_exec($qry);
 		} 
 
-		$this->_release_lock();
 		return $node_id;
 	} 
 	
@@ -1229,51 +890,33 @@ class nested_sets_driver
 	* 
 	* @param int $id Target node ID
 	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @param bool $returnID Tell the method to return a node id instead of an object.
-	*                                 ATTENTION: That the method defaults to return an object instead of the node id
-	*                                 has been overseen and is basically a bug. We have to keep this to maintain BC.
-	*                                 You will have to set $returnID to true to make it behave like the other creation methods.
-	*                                 This flaw will get fixed with the next major version.
 	* @access public 
 	* @return mixed The node id or false on error
 	*/
 	function create_right_node($id, $values)
 	{
-		$this->_verify_user_values( $values); 
-		// invalid target node, bail out
-		if (!($this_node = $this->get_node($id)))
+		if (!$node = $this->get_node($id))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
 
-		$lock = $this->_set_lock();
-		
-		// If the target node is a rootnode we virtually want to create a new root node
-		if ($this_node['root_id'] == $this_node['id'])
+		if ($node['parent_id'] == 0)
 		{
-			$nid = $this->create_root_node($values, $id);
-			$this->_release_lock();
-			return $nid;
+    	debug :: write_error('node cant be created right to root node',
+    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+    		array('id' => $id)
+    	);
+
+			return false;
 		} 
 
-		$insert_data = array();
-		$parent = $this->get_parent($id);
-		$insert_data['parent_id'] = $parent['id'];
-
-
+		$this->_verify_user_values($values);
+		
 		$sql = array();
-		$sql[] = sprintf('UPDATE %s SET ordr=ordr+1
-                      WHERE root_id=%s AND ordr > %s AND level=%s AND l BETWEEN %s AND %s',
-											$this->_node_table,
-											$this_node['root_id'],
-											$this_node['ordr'],
-											$this_node['level'],
-											$parent['l'], 
-											$parent['r']); 
 			
 		// Update all nodes which have dependent left and right values
 		$sql[] = sprintf('UPDATE %s SET
@@ -1281,45 +924,34 @@ class nested_sets_driver
 			                r=CASE WHEN r > %s THEN r+2 ELSE r END
 			                WHERE root_id=%s',
 											$this->_node_table,
-											$this_node['l'],
-											$this_node['r'],
-											$this_node['r'],
-											$this_node['root_id']);
+											$node['l'],
+											$node['r'],
+											$node['r'],
+											$node['root_id']);
 
-		$insert_data['ordr'] = $this_node['ordr'] + 1;
-		$insert_data['l'] = $this_node['r'] + 1;
-		$insert_data['r'] = $this_node['r'] + 2;
-		$insert_data['root_id'] = $this_node['root_id'];
-		$insert_data['level'] = $this_node['level'];
+		$values['parent_id'] = $node['parent_id'];
+		$values['l'] = $node['r'] + 1;
+		$values['r'] = $node['r'] + 2;
+		$values['root_id'] = $node['root_id'];
+		$values['level'] = $node['level'];
 				
-		if (!$this->_dumb_mode || !isset($values['id']))
+		if (!$this->_dumb_mode)
 		{
-			$node_id = $insert_data['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
+			$node_id = $values['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
 			$node_id = $values['id'];
 		} 
 
-		if (!$qr = $this->_values2insert_query($values, $insert_data))
-		{
-			$this->_release_lock();
-			return false;
-		} 
-		// Insert the new node
-		$sql[] = sprintf('INSERT INTO %s (%s) VALUES (%s)', 
-											$this->_node_table, 
-											implode(', ', array_keys($qr)), 
-											implode(', ', $qr));
-											
-		foreach ($sql as $qry)
-		{
-			$this->_db->sql_exec($qry);
-		} 
+		$sql[] = $this->_db->make_insert_string($this->_node_table, $values);
+													
+		foreach ($sql as $query)
+			$this->_db->sql_exec($query);
  		
-		$this->_release_lock();
 		return $node_id;
 	} 
+	
 	/**
 	* Deletes a node
 	* 
@@ -1329,29 +961,25 @@ class nested_sets_driver
 	*/
 	function delete_node($id)
 	{
-		// invalid target node, bail out
-		if (!($this_node = $this->get_node($id)))
+		if (!$node = $this->get_node($id))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
 
-		$lock = $this->_set_lock();
-
-		$parent = $this->get_parent($id);
-		$len = $this_node['r'] - $this_node['l'] + 1;
+		$len = $node['r'] - $node['l'] + 1;
 
 		$sql = array(); 
 		// Delete the node
 		$sql[] = sprintf('DELETE FROM %s WHERE l BETWEEN %s AND %s AND root_id=%s',
 											$this->_node_table,
-											$this_node['l'], $this_node['r'],
-											$this_node['root_id']);
+											$node['l'], $node['r'],
+											$node['root_id']);
 
-		if ($this_node['id'] != $this_node['root_id'])
+		if ($node['parent_id'] != 0)
 		{ 
 			// The node isn't a rootnode so close the gap
 			$sql[] = sprintf('UPDATE %s SET
@@ -1359,73 +987,21 @@ class nested_sets_driver
                         r=CASE WHEN r > %s THEN r - %s ELSE r END
                         WHERE root_id=%s AND (l > %s OR r > %s)',
 												$this->_node_table,
-												$this_node['l'],
+												$node['l'],
 												$len,
-												$this_node['l'],
+												$node['l'],
 												$len,
-												$this_node['root_id'],
-												$this_node['l'],
-												$this_node['r']); 
-			// Re-order
-			$sql[] = sprintf('UPDATE %s SET ordr=ordr-1 
-                    		WHERE root_id=%s AND level=%s AND ordr > %s AND l BETWEEN %s AND %s',
-												$this->_node_table,
-												$this_node['root_id'],
-												$this_node['level'],
-												$this_node['ordr'],
-												$parent['l'], $parent['r']);
+												$node['root_id'],
+												$node['l'],
+												$node['r']); 
 		} 
-		else
-		{ 
-			// A rootnode was deleted and we only have to close the gap inside the order
-			$sql[] = sprintf('UPDATE %s SET ordr=ordr-1 WHERE root_id=id AND ordr > %s',
-												$this->_node_table,
-												$this_node['ordr']);
-		} 
-
+		
 		foreach ($sql as $qry)
-		{
 			$this->_db->sql_exec($qry);
-		} 
-		$this->_release_lock();
+			
 		return true;
 	} 
-	
-	/**
-	* Changes the payload of a node
-	* 
-	* @param int $id Node ID
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @param bool $_intermal Internal use only. Used to skip value validation. Leave this as it is.
-	* @access public 
-	* @return bool True if the update is successful
-	*/
-	function update_node($id, $values, $internal = false)
-	{
-		$lock = $this->_set_lock();
-
-		if (!$internal)
-		{
-			$this->_verify_user_values($values);
-		} 
-
-		$insert_data = array();
-		if (!$qr = $this->_values2update_query($values, $insert_data))
-		{
-			$this->_release_lock();
-			return false;
-		} 
-
-		$sql = sprintf('UPDATE %s SET %s WHERE id=%s',
-										$this->_node_table,
-										$qr,
-										$id);
-										
-		$this->_db->sql_exec($sql);
-		$this->_release_lock();
-		return true;
-	} 
-	
+		
 	/**
 	* Wrapper for node moving and copying
 	* 
@@ -1440,7 +1016,7 @@ class nested_sets_driver
 	{
 		if ($id == $target_id && !$copy)
 		{
-    	debug :: write_error(NESE_ERROR_RECURSION,
+    	debug :: write_error(TREE_ERROR_RECURSION,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
     		 array('id' => $id, 'target_id' => $target_id)
     	);
@@ -1449,7 +1025,7 @@ class nested_sets_driver
 		// Get information about source and target
 		if (!($source = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -1458,14 +1034,12 @@ class nested_sets_driver
 
 		if (!($target = $this->get_node($target_id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('target_id' => $target_id)
     	);
     	return false;
 		} 
-
-		$lock = $this->_set_lock(true);
 
 		$this->_relations = array(); 
 
@@ -1476,9 +1050,8 @@ class nested_sets_driver
 					(($source['l'] <= $target['l']) &&
 						($source['r'] >= $target['r'])))
 			{
-				$this->_release_lock(true);
 				
-	    	debug :: write_error(NESE_ERROR_RECURSION,
+	    	debug :: write_error(TREE_ERROR_RECURSION,
 	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 	    		 array('id' => $id, 'target_id' => $target_id)
 	    	);
@@ -1490,7 +1063,6 @@ class nested_sets_driver
 			{ 
 				// We have to move a rootnode which is different from moving inside a tree
 				$nid = $this->_move_root2root($source, $target, $pos);
-				$this->_release_lock(true);
 				return $nid;
 			} 
 		} 
@@ -1498,9 +1070,7 @@ class nested_sets_driver
 						(	($source['l'] < $target['l']) &&
 							($source['r'] > $target['r'])))
 		{
-			$this->_release_lock(true);
-			
-    	debug :: write_error(NESE_ERROR_RECURSION,
+    	debug :: write_error(TREE_ERROR_RECURSION,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
     		 array('id' => $id, 'target_id' => $target_id)
     	);
@@ -1509,7 +1079,6 @@ class nested_sets_driver
 		// We have to move between different levels and maybe subtrees - let's rock ;)
 		$move_id = $this->_move_across($source, $target, $pos, true);
 		$this->_move_cleanup($copy);
-		$this->_release_lock(true);
 
 		if (!$copy)
 		{
@@ -1711,8 +1280,6 @@ class nested_sets_driver
 	*/
 	function _move_root2root($source, $target, $pos)
 	{
-		$lock = $this->_set_lock();
-
 		$tb = $this->_node_table;
 		$s_order = $source['ordr'];
 		$t_order = $target['ordr'];
@@ -1773,200 +1340,9 @@ class nested_sets_driver
 				$this->_db->sql_exec($sql);
 			} 
 		} 
-		$this->_release_lock();
 		return $s_id;
 	} 
-		
-	/**
-	* Callback for uasort used to sort siblings
-	* 
-	* @access private 
-	*/
-	function _sec_sort($node1, $node2)
-	{ 
-		// Within the same level?
-		if ($node1['level'] != $node2['level'])
-		{
-			return strnatcmp($node1['l'], $node2['l']);
-		} 
-		// Are they siblings?
-		if ($node1['parent_id'] != $node2['parent_id'])
-		{
-			return strnatcmp($node1['l'], $node2['l']);
-		} 
-		// Same field value? Use the lft value then
-		$field = $this->_secondary_sort;
-		if ($node1[$field] == $node2[$field])
-		{
-			return strnatcmp($node1['l'], $node2['l']);
-		} 
-		// Compare between siblings with different field value
-		return strnatcmp($node1[$field], $node2[$field]);
-	} 
-
-	/**
-	* Adds a specific type of SQL to a sql_exec string
-	* 
-	* @param array $add_sql The array of SQL strings to add.  Example value:
-	*                $add_sql = array(
-	*                'columns' => 'tb2.col2, tb2.col3',         // Additional tables/columns
-	*                'join' => 'LEFT JOIN tb1 USING(id)', // Join statement
-	*                'append' => 'GROUP by tb1.id');      // Group condition
-	* @param string $type The type of SQL.  Can be 'columns', 'join', or 'append'.
-	* @access private 
-	* @return string The SQL, properly formatted
-	*/
-	function _add_sql($add_sql, $type)
-	{
-		if (!isset($add_sql[$type]))
-			return '';
-
-		return implode(' ', $add_sql[$type]);
-	} 
-	/**
-	* Gets the select fields based on the params
-	* 
-	* @access private 
-	* @return string A string of sql_exec fields to select
-	*/
-	function _get_select_fields()
-	{
-		$sql_exec_fields = array();
-		foreach ($this->_params as $key => $val)
-		{
-			$tmp_field = $this->_node_table . '.' . $key . ' AS ' . $val;
-			$sql_exec_fields[] = $tmp_field;
-		} 
-
-		$fields = implode(', ', $sql_exec_fields);
-		return $fields;
-	} 
-	
-	function _get_result_set($sql)
-	{
-		$this->_db->sql_exec($sql);
-		$nodes =& $this->_db->get_array('id');
-
-		return $nodes;
-	} 
-	
-	function _assign_result_set(&$nodes, $sql)
-	{
-		$this->_sql = $sql;
-		$this->_db->sql_exec($sql);
-		$this->_db->assign_array($nodes, 'id');
-	} 
-		
-	/**
-	* This enables you to set specific options for each output method
-	* 
-	* @param constant $sort_mode 
-	* @access public 
-	* @return Current sort_mode
-	*/
-	function set_sort_mode($sort_mode)
-	{
-		if ($sort_mode && in_array($sort_mode, $this->_sort_modes))
-		{
-			$last_mode = $this->_sort_mode;
-			$this->_sort_mode = $sort_mode;
-			return $last_mode;
-		} 
-		else
-			return $this->_sort_mode;
-	} 
-			
-	function _set_lock($exclusive = false)
-	{
-		if(!$this->_structure_table_lock)
-			$this->_lock_gc();
-
-		if (!$lock_id = $this->_structure_table_lock)
-		{
-			$lock_id = $this->_structure_table_lock = uniqid('lck-');
-			$sql = sprintf('INSERT INTO %s SET lock_id="%s", lock_table="%s", lock_stamp=%s',
-											$this->_lock_table,
-											$lock_id, 
-											$this->_node_table,
-											time());
-		} 
-		else
-		{
-			$sql = sprintf('UPDATE %s SET lock_stamp=%s WHERE lock_id="%s" AND lock_table="%s"',
-											$this->_lock_table,
-											time(),
-											$lock_id, 
-											$this->_node_table);
-		} 
-
-		if ($exclusive)
-		{
-			$this->_lock_exclusive = true;
-		} 
-
-		$this->_db->sql_exec($sql);
-
-		return $lock_id;
-	} 
-	
-	function _release_lock($exclusive = false)
-	{
-		if ($exclusive)
-		{
-			$this->_lock_exclusive = false;
-		} 
-
-		if ((!$lock_id = $this->_structure_table_lock) || $this->_lock_exclusive)
-		{
-			return false;
-		} 
-
-		$sql = "DELETE FROM {$this->_lock_table}
-            WHERE lock_table='{$this->_node_table}' AND
-            lock_id='$lock_id'";
-
-		$this->_db->sql_exec($sql);
-
-		$this->_structure_table_lock = false;
-		
-		return true;
-	} 
-	
-	function _lock_gc()
-	{
-		$lock_ttl = (time() - $this->_lock_ttl);
-		
-		$sql = "DELETE FROM {$this->_lock_table}
-            WHERE lock_table='{$this->_node_table}' AND
-            lock_stamp < {$lock_ttl}";
-
-		$this->_db->sql_exec($sql);
-	} 
-	
-	function _values2update_query($values, $insert_data = false)
-	{
-		if (is_array($insert_data))
-		{
-			$values = $values + $insert_data;
-		} 
-
-		$arq = array();
-		foreach($values as $key => $val)
-		{
-			$k = trim($key); 
-			$iv = $this->_db->escape(trim($val));
-			$arq[] = "$k='$iv'";
-		} 
-
-		if (!is_array($arq) || count($arq) == 0)
-		{
-			return false;
-		} 
-
-		$sql_exec = implode(', ', $arq);
-		return $sql_exec;
-	} 
-	
+											
 	function _values2insert_query($values, $insert_data = false)
 	{
 		if (is_array($insert_data))
@@ -1989,44 +1365,6 @@ class nested_sets_driver
 
 		return $arq;
 	} 
-	/**
-	* Clean values from protected or unknown columns
-	* 
-	* @var string $caller The calling method
-	* @var string $values The values array
-	* @access private 
-	* @return void 
-	*/
-	function _verify_user_values(&$values)
-	{
-		if ($this->_dumb_mode)
-		{
-			return true;
-		} 
-		foreach($values as $field => $value)
-		{
-			if (!isset($this->_params[$field]))
-			{
-	    	debug :: write_error(NESE_ERROR_WRONG_MPARAM,
-	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-	    		 array('param' => $field)
-	    	);
-				unset($values[$field]);
-			} 
-			else
-			{
-				if (in_array($this->_params[$field], $this->_required_params))
-				{
-		    	debug :: write_error(NESE_ERROR_WRONG_MPARAM,
-		    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-	    		 array('param is autogenerated and can\'t be passed' => $field)
-		    	);
-
-					unset($values[$field]);
-				} 
-			} 
-		} 
-	} 	
 } 
 
 ?>

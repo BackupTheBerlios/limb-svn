@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: __site_object_manipulation.test.php 81 2004-03-26 13:51:05Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -68,7 +68,7 @@ class test_site_object_manipulation extends UnitTestCase
   	$user =& user :: instance();
   	$user->_set_id(10);
   	
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
 
 		$values['identifier'] = 'root';
 		$root_node_id = $tree->create_root_node($values, false, true);

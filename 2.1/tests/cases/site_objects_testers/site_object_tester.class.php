@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: __site_object_template.test.php 81 2004-03-26 13:51:05Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
@@ -62,7 +62,7 @@ class site_object_tester extends UnitTestCase
   	$user =& user :: instance();
   	$user->_set_id(10);
 		
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
 
 		$values['identifier'] = 'root';
 		$values['object_id'] = 1;
@@ -220,7 +220,7 @@ class site_object_tester extends UnitTestCase
 		$this->object->set_identifier('test');
 
   	if($this->object->is_auto_identifier())
-			debug_mock :: expect_write_error(NESE_ERROR_NOT_FOUND, array('id' => 1000000));
+			debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000000));
 		else
 			debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 1000000));
 		
@@ -362,11 +362,9 @@ class site_object_tester extends UnitTestCase
 		$this->assertEqual($record['parent_node_id'], $this->object->get_parent_node_id(), __FILE__ . ' : ' . __LINE__ . ': parent_node_id doesnt match');
 		$this->assertEqual($record['version'], $this->object->get_version(), __FILE__ . ' : ' . __LINE__ . ': version doesnt match');
 		
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$node = $tree->get_node($this->object->get_node_id());
-		$this->assertEqual($record['l'], $node['l'], __FILE__ . ' : ' . __LINE__ . ': l doesnt match');
-		$this->assertEqual($record['r'], $node['r'], __FILE__ . ' : ' . __LINE__ . ': r doesnt match');
 		$this->assertEqual($record['level'], $node['level'], __FILE__ . ' : ' . __LINE__ . ': level doesnt match');
 	}
 }

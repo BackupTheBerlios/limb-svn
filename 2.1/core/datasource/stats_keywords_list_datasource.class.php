@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_ips_list_datasource.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -42,7 +42,7 @@ class stats_keywords_list_datasource extends datasource
 
 	function _process_result_array($arr)		
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$total = $this->stats_report->fetch_total_hits();
 			

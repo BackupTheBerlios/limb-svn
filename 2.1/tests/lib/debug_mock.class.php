@@ -68,12 +68,12 @@ class debug_mock extends debug
 	{
 		$debug =& debug_mock :: instance();
 		
-		$debug->mock->expectAtLeastOnce('write', array($verbosity_level, $message, $params));
-		
 		$debug->expected_data[] = array(
 			'level' => $verbosity_level, 
 			'message' => $message, 
 			'params' => $params);
+			
+		$debug->mock->expectArgumentsAt(sizeof($this->expected_data)-1, 'write', array($verbosity_level, $message, $params));
 		
 		$debug->mock->expectCallCount('write', sizeof($this->expected_data));
 	}

@@ -14,7 +14,6 @@
 	<core:PARAMETER name='loader_class_name' value='file_object' >
 </fetch:SUB_BRANCH>
 
-
 <grid:LIST id='files_folder'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
   <grid:ITERATOR>
@@ -34,7 +33,11 @@
   </grid:ITERATOR>
 </table>
 </grid:LIST>
-
+		<tr>
+			<td colspan=2>
+				<core:INCLUDE file="pager.html">
+			</td>
+		</tr>
 <core:INCLUDE file="pager.html">
 
 <grid:LIST id='files'>

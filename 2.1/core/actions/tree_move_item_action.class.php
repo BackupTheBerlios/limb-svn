@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: tree_change_order_action.class.php 47 2004-03-19 15:59:48Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
@@ -37,7 +37,7 @@ class tree_move_item_action extends action
 		if(!$this->_check_nesting_rules($node_id, $target_node_id, $mode))
 			return new close_popup_response(RESPONSE_STATUS_FAILURE);
 
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 							
 		if($tree->move_tree($node_id, $target_node_id, $mode))
 			return new close_popup_response();
@@ -47,7 +47,7 @@ class tree_move_item_action extends action
 	
 	function _check_nesting_rules($node_id, $target_node_id, $mode)
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 			
 		if($mode == NESE_MOVE_AFTER || $mode == NESE_MOVE_BEFORE)
 		{

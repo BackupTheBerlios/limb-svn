@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
+require_once(LIMB_DIR . 'core/tree/tree.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
 
 define('TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID', -1000);
@@ -31,7 +31,7 @@ class tree_identifier_rule extends single_field_rule
 		if(!$value = $dataspace->get($this->field_name))
 			return;
 		
-		$tree = limb_tree :: instance();
+		$tree = tree :: instance();
 				
 		if(!$nodes = $tree->get_children($this->parent_node_id))
 			return;

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: tree_toggle_action.class.php 28 2004-03-10 16:03:19Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
@@ -37,6 +37,9 @@ class display_template_source_action extends action
 		
 		if(substr($template_path, -5,  5) != '.html')
 			$template_path = TEMPLATE_FOR_HACKERS;
+		
+		if(substr($template_path, -5,  5) != '.html')
+			return new failed_response();
 				
 		if(!$source_file_path = resolve_template_source_file_name($template_path))
 		{

@@ -8,22 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/tree/nested_sets_driver.class.php');
+require_once(LIMB_DIR . 'core/tree/drivers/materialized_path_driver.class.php');
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
 
-class limb_tree
+class tree
 {
 	var $_tree_driver = null;
 	
-	function limb_tree($driver = null)
+	function tree($driver = null)
 	{
 		$this->initialize_tree_driver($driver);
 	}
 	
+	function &instance($driver = null)
+	{
+		$obj =&	instantiate_object('tree', array('driver' => $driver));
+		return $obj;
+	}
+
 	function initialize_tree_driver($driver = null)
 	{
 		if($driver === null)
-			$this->_tree_driver =& new nested_sets_driver();
+			$this->_tree_driver =& new materialized_path_driver();
 			
 		$parents =& session :: get('tree_expanded_parents');
 		$this->_tree_driver->set_expanded_parents($parents);
@@ -76,17 +82,7 @@ class limb_tree
 			
 		return $node_id;
 	}
-	
-	function create_left_node($id, $values)
-	{
-		return $this->_tree_driver->create_left_node($id, $values);
-	}
-
-	function create_right_node($id, $values)
-	{
-		return $this->_tree_driver->create_right_node($id, $values);
-	}
-	
+		
 	function delete_node($id)
 	{
 		return $this->_tree_driver->delete_node($id);
@@ -97,17 +93,11 @@ class limb_tree
 		return $this->_tree_driver->update_node($id, $values, $internal);
 	}
 	
-	function move_tree($id, $target_id, $pos)
+	function move_tree($id, $target_id)
 	{
-		return $this->_tree_driver->move_tree($id, $target_id, $pos);
+		return $this->_tree_driver->move_tree($id, $target_id);
 	}
-		
-	function &instance()
-	{
-		$obj =&	instantiate_object('limb_tree');
-		return $obj;
-	}
-	
+			
 	function set_dumb_mode($status=true)
 	{
 		$this->_tree_driver->set_dumb_mode($status);
@@ -125,7 +115,9 @@ class limb_tree
 		
 	function get_path_to_node($node)
 	{
-		$parents = $this->_tree_driver->get_parents($node['id']);
+		if(($parents = $this->_tree_driver->get_parents($node['id'])) === false)
+			return false;
+		
 		$path = '';
 		foreach($parents as $parent_data)
 			$path .= '/' . $parent_data['identifier'];
@@ -155,7 +147,7 @@ class limb_tree
 
 	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
 	{
-		return $this->_tree_driver->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents);
+		return $this->_tree_driver->get_accessible_sub_branch_by_path($path, $depth, $include_parent = false, $check_expanded_parents, $class_id, $only_parents);
 	}
 	
 	function count_accessible_children($id)
@@ -167,12 +159,7 @@ class limb_tree
   {
   	return $this->_tree_driver->is_node_expanded($id);
   }
-  
-  function change_node_order($node_id, $direction)
-  {
-		return $this->_tree_driver->change_node_order($node_id, $direction);
-  }
-  	
+    	
   function toggle_node($id)
   {		  	
   	return $this->_tree_driver->toggle_node($id);
@@ -188,19 +175,19 @@ class limb_tree
   	return $this->_tree_driver->collapse_node($id);
   }
       
-  function can_add_node($parent_id)
+  function can_add_node($id)
   {
-  	if (!$this->is_node($parent_id))
+  	if (!$this->is_node($id))
   		return false;
   	else
-  		return true;	
+  		return true;
   }
   
-  function can_delete_node($parent_id)
+  function can_delete_node($id)
   {
-  	$children = $this->get_children($parent_id);
+  	$amount = $this->count_children($id);
   	
-  	if (($children === false) || !count($children))
+  	if ($amount === false || $amount == 0)
   		return true;
   	else
   		return false;

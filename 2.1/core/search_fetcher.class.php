@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: fetcher.class.php 441 2004-02-13 16:07:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -86,7 +86,7 @@ class search_fetcher extends fetcher
 	
 	function & search_fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		$site_object =& site_object_factory :: instance($loader_class_name);
 		
 		if (!isset($params['restrict_by_class']) ||

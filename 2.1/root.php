@@ -25,7 +25,7 @@ require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
-require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
+require_once(LIMB_DIR . 'core/tree/tree.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
 require_once(LIMB_DIR . 'core/model/response/response.class.php');
@@ -62,7 +62,7 @@ if(isset($node['only_parent_found']) && $node['only_parent_found'])
 	if(isset($_REQUEST['action'])) //only action significant when reload to found parent
 		$params = '?action='. $_REQUEST['action'];
 	
-	$tree = limb_tree :: instance();
+	$tree = tree :: instance();
 	reload($tree->get_path_to_node($node). $params);
 	exit;
 }
@@ -73,7 +73,10 @@ if(($object_data =& fetch_one_by_node_id($node['id'], false)) === false)
 {
 	if (!$user->is_logged_in())
 	{
-		$tree = limb_tree :: instance();
+		$tree = tree :: instance();
+		
+		$response = new response();
+		$stats_register->register(-1, '', $response->get_status());
 		
 		$response = new response();
 		$stats_register->register(-1, 'redirect', $response->get_status());
@@ -91,6 +94,7 @@ if(($object_data =& fetch_one_by_node_id($node['id'], false)) === false)
 			reload(ERROR_DOCUMENT_403);
 		else
 			header("HTTP/1.1 403 Access denied");
+			
 		exit;
 	}	
 }
