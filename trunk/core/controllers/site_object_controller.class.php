@@ -41,13 +41,7 @@ class site_object_controller
 	{
 	  return 'display';
 	}
-
-	function create($class_name)
-	{	
-		include_class($class_name, '/core/controllers/');
-  	return create_object($class_name);
-	}
-		
+	
 	function determine_action($request = null)
 	{	
 	  if($request === null)
