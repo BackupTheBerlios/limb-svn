@@ -25,7 +25,7 @@ class StatsRegister
     $this->_reg_date = new Date();
 
     $toolkit =& Limb :: toolkit();
-    $this->db_table =& $toolkit->createDBTable('StatsLog');
+    $this->db_table =& $toolkit->createDBTable('StatsHit');
   }
 
   function getRegisterTimeStamp()
@@ -72,7 +72,7 @@ class StatsRegister
 
   function cleanUntil($date)
   {
-    $this->db_table->delete('time < ' . $date->getStamp());
+    $this->db_table->delete(array('time < ' . $date->getStamp()));
   }
 
   function _updateCounters()

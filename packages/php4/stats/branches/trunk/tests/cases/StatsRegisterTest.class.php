@@ -115,11 +115,6 @@ class StatsRegisterTest extends LimbTestCase
     $this->stats_register->setReturnReference('_getRefererRegister', $this->stats_referer);
     $this->stats_register->setReturnReference('_getSearchPhraseRegister', $this->stats_search_phrase);
 
-    $toolkit =& Limb :: toolkit();
-    $user =& $toolkit->getUser();
-
-    $user->set('id', 10);
-
     $this->_cleanUp();
   }
 
@@ -135,15 +130,12 @@ class StatsRegisterTest extends LimbTestCase
 
     $this->stats_register->tally();
 
-    $inst =& User :: instance();
-    $inst->logout();
-
     $this->_cleanUp();
   }
 
   function _cleanUp()
   {
-    $this->db->delete('stats_log');
+    $this->db->delete('stats_hit');
     $this->db->delete('stats_ip');
     $this->db->delete('stats_referer_url');
     $this->db->delete('stats_counter');
@@ -171,10 +163,8 @@ class StatsRegisterTest extends LimbTestCase
     $this->_checkStatsRegisterRecord(
       $total_records = 1,
       $current_record = 1,
-      $user_id = 10,
       $node_id,
       'test',
-       LIMB_STATUS_OK,
       $this->stats_register->getRegisterTimeStamp());
   }
 
@@ -202,13 +192,13 @@ class StatsRegisterTest extends LimbTestCase
     $date->setByStamp(time() + 4*60*60*24 - 10);
     $this->stats_register->cleanUntil($date);
 
-    $rs =& $this->db->select('stats_log');
+    $rs =& $this->db->select('stats_hit');
     $this->assertEqual(3, $rs->getTotalRowCount());
   }
 
-  function _checkStatsRegisterRecord($total_records, $current_record, $user_id, $node_id, $action, $status, $time)
+  function _checkStatsRegisterRecord($total_records, $current_record, $node_id, $action, $time)
   {
-    $rs =& $this->db->select('stats_log');
+    $rs =& $this->db->select('stats_hit');
     $arr = $rs->getArray();
 
     $this->assertTrue(sizeof($arr), $total_records);
@@ -222,7 +212,6 @@ class StatsRegisterTest extends LimbTestCase
 
     $this->assertEqual($record['node_id'], $node_id);
     $this->assertEqual($record['action'], $action);
-    $this->assertEqual($record['status'], $status);
     $this->assertEqual($record['time'], $time, 'log time is incorrect');
     $this->assertEqual($record['session_id'], session_id());
   }

@@ -10,11 +10,11 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class StatsLogDbTable extends LimbDbTable
+class StatsHitDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'stats_log';
+    return 'stats_hit';
   }
 
   function _defineColumns()
