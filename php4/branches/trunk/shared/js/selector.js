@@ -12,13 +12,14 @@ DoubleSelect.prototype.replaceSelect = function()
 {
   this.select = document.getElementsByName(this.instanceName)[0];
   this.drawControl();
-  this.drawOptions();
+  this.drawOptions()
 }
 
 DoubleSelect.prototype.drawOptions = function()
 {
   this.dstSelect.options.length = 0;
   this.srcSelect.options.length = 0;
+
   for(i = 0; i < this.select.options.length; i++)
   {
     if(this.select.options[i].selected)
@@ -36,51 +37,52 @@ DoubleSelect.prototype.drawControl = function()
 {
   this.select.style.display = 'none';
   var parent = this.select.parentNode;
-  var table = this.addElement('table', parent);
-  table = this.addElement('tr', table);
+  var div = this.addElement('div', parent);
 
-  td = this.addElement('td', table);
-  this.srcSelect = this.addElement('select', td);
-  this.srcSelect.multiple = true;
-  this.srcSelect.size = '10';
-  this.srcSelect.style.width = '150px';
+  div.innerHTML = "<table><tr><td></td><td align='center' valign='middle'></td><td></td></tr></table>";
+  container = div.childNodes[0].childNodes[0].childNodes[0];
+  this.srcSelect = this.addSelector(container.childNodes[0])
+  this.addButtons(container.childNodes[1]);
+  this.dstSelect = this.addSelector(container.childNodes[2])
+}
 
-  td = this.addElement('td', table);
-  button = this.addElement('input', td);
-  button.type = 'button';
-  button.value = '>>';
+DoubleSelect.prototype.addSelector = function(parent)
+{
+  parent.innerHTML = "<select multiple style='width: 150px;' size='10'></select>"
+  return parent.firstChild;
+}
+
+DoubleSelect.prototype.addButtons = function(parent)
+{
+  button = this.addElement('button', parent);
+  button.innerHTML = '&gt;&gt;';
+  button.style.display = 'inline';
   button.onclick = this.selectAll;
   button.selector_obj = this;
 
-  this.addElement('br', td);
-  this.addElement('br', td);
-  button = this.addElement('input', td);
-  button.type = 'button';
-  button.value = ' > ';
+  this.addElement('br', parent);
+  this.addElement('br', parent);
+  button = this.addElement('button', parent);
+  button.innerHTML = '&nbsp;&gt;&nbsp;';
+  button.style.display = 'inline';
   button.onclick = this.selectItems;
   button.selector_obj = this;
 
-  this.addElement('br', td);
-  this.addElement('br', td);
-  button = this.addElement('input', td);
-  button.type = 'button';
-  button.value = ' < ';
+  this.addElement('br', parent);
+  this.addElement('br', parent);
+  button = this.addElement('button', parent);
+  button.innerHTML = '&nbsp;&lt;&nbsp;';
+  button.style.display = 'inline';
   button.onclick = this.deselectItems;
   button.selector_obj = this;
 
-  this.addElement('br', td);
-  this.addElement('br', td);
-  button = this.addElement('input', td);
-  button.type = 'button';
-  button.value = '<<';
+  this.addElement('br', parent);
+  this.addElement('br', parent);
+  button = this.addElement('button', parent);
+  button.innerHTML = '&lt;&lt;';
+  button.style.display = 'inline';
   button.onclick = this.deselectAll;
   button.selector_obj = this;
-
-  td = this.addElement('td', table);
-  this.dstSelect = this.addElement('select', td);
-  this.dstSelect.multiple = true;
-  this.dstSelect.size = '10';
-  this.dstSelect.style.width = '150px';
 }
 
 DoubleSelect.prototype.addElement = function(type, parent)
@@ -90,44 +92,13 @@ DoubleSelect.prototype.addElement = function(type, parent)
   return element;
 }
 
-DoubleSelect.prototype._moveOptions = function(id, remove, only_selected)
-{
-  var form = src.form;
-  var before = null;
-
-  for(i = 0; i < src.options.length;)
-  {
-    if(src.options[i].selected || !only_selected)
-    {
-      option = src.options[i];
-      before = null;
-      for(j = 0; j < dst.options.length; j++)
-      {
-        if(dst.options[j].text > option.text)
-        {
-           before = dst.options[j];
-           break;
-        }
-      }
-      option.selected = false;
-
-      if(dst.options.length == 0 || !before)
-        dst.appendChild(option);
-      else
-        dst.insertBefore(option, before);
-
-    }
-    else
-      i++;
-  }
-}
-
 DoubleSelect.prototype.selectAll = function()
 {
   var selector = this.selector_obj;
   for(i = 0; i < selector.select.options.length; i++)
     selector.select.options[i].selected = true;
   selector.drawOptions();
+  return false;
 }
 
 DoubleSelect.prototype.deselectAll = function()
@@ -136,18 +107,21 @@ DoubleSelect.prototype.deselectAll = function()
   for(i = 0; i < selector.select.options.length; i++)
     selector.select.options[i].selected = false;
   selector.drawOptions();
+  return false;
 }
 
 DoubleSelect.prototype.selectItems = function()
 {
   this.selector_obj.setSelection(this.selector_obj.srcSelect, this.selector_obj.select, true);
   this.selector_obj.drawOptions();
+  return false;
 }
 
 DoubleSelect.prototype.deselectItems = function()
 {
   this.selector_obj.setSelection(this.selector_obj.dstSelect, this.selector_obj.select, false);
   this.selector_obj.drawOptions();
+  return false;
 }
 
 DoubleSelect.prototype.setSelection = function(source, main, selected)
