@@ -12,12 +12,13 @@ require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
 
 class JIPProcessor
 {
-  function process(& $object)
+  function process(&$object)
   {
     if (!$actions = $object->get('actions'))
-      return $object;
+      return;
 
     $path = $object->get('path');
+    $jip_actions = array();
     foreach($actions as $key => $action)
     {
       if(!isset($action['jip']) || !$action['jip'])
@@ -25,11 +26,12 @@ class JIPProcessor
 
       $items = array('action' => $key);
       $jip_href = addUrlQueryItems($path, $items);
-      $actions[$key]['jip_href'] = $jip_href;
-      $actions[$key]['name'] = $key;
+      $jip_actions[$key] = $action;
+      $jip_actions[$key]['jip_href'] = $jip_href;
+      $jip_actions[$key]['name'] = $key;
     }
 
-    $object->set('actions', $actions);
+    $object->set('jip_actions', $jip_actions);
   }
 }
 

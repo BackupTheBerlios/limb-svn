@@ -10,11 +10,11 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
 
-class LimbJIPTagsTestCase extends LimbTestCase
+class LimbJIPDatasourceProcessorTagsTestCase extends LimbTestCase
 {
-  function LimbJIPTagsTestCase()
+  function LimbJIPDatasourceProcessorTagsTestCase()
   {
-    parent :: LimbTestCase('limb jip related tags case');
+    parent :: LimbTestCase('limb jip datasource processor tag case');
   }
 
   function tearDown()
@@ -22,25 +22,23 @@ class LimbJIPTagsTestCase extends LimbTestCase
     ClearTestingTemplates();
   }
 
-  function testUserTag()
+  function testTag()
   {
-    $toolkit =& Limb :: toolkit();
-
     $data = array('path' => $path1 = '/cms/limb/',
                   'actions' => array('create' => array('jip' => true),
                                       'edit' => array('jip' => true),
                                       'display' => array(),
                                       'delete' => array('jip' => true)));
 
-    $template = '<core:DATASOURCE id="realm"><limb:JIP/>'.
-                '<list:LIST from="actions"><list:ITEM>'.
+    $template = '<core:DATASOURCE id="realm"><limb:datasource_processor:JIP>'.
+                '<list:LIST from="jip_actions"><list:ITEM>'.
                 '<core:OPTIONAL for="jip">{$name}-{$jip_href}|</core:OPTIONAL>'.
                 '</list:ITEM></list:LIST>'.
                 '</core:DATASOURCE>';
 
-    RegisterTestingTemplate('/limb/jip.html', $template);
+    RegisterTestingTemplate('/limb/jip_datasource_processor.html', $template);
 
-    $page =& new Template('/limb/jip.html');
+    $page =& new Template('/limb/jip_datasource_processor.html');
     $component =& $page->findChild('realm');
 
     $dataspace = new Dataspace();

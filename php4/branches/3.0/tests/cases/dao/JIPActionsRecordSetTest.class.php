@@ -31,7 +31,7 @@ class JIPActionsRecordSetTest extends LimbTestCase
 
     $rs->rewind();
     $record =& $rs->current();
-    $actions = $record->get('actions');
+    $actions = $record->get('jip_actions');
     $this->assertEqual($actions['create']['jip_href'], "{$path1}?action=create");
     $this->assertEqual($actions['edit']['jip_href'], "{$path1}?action=edit");
     $this->assertEqual($actions['delete']['jip_href'], "{$path1}?action=delete");

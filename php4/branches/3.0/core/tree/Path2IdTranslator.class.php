@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+define('PATH_TO_ID', 'path_to_id_group');
 
 class Path2IdTranslator
 {
@@ -66,10 +67,40 @@ class Path2IdTranslator
 
     $tree =& $toolkit->getTree();
 
-    if(!$path = $tree->getPathToNode($row['node_id']))
+    if(!$path = $tree->getPathToNode((integer)$row['node_id']))
        return null;
 
     return $this->_applyResultingPathOffsets($path);
+  }
+
+  function getPathToObject(&$object)
+  {
+    if ($parent_node_id = $object->get('parent_node_id'))
+    {
+      $path = $this->_getPathByNode($parent_node_id);
+      return $path . '/' . $object->get('identifier');
+    }
+
+    if($node_id = $object->get('node_id'))
+      return $this->_getPathByNode($node_id);
+
+    return $this->toPath($object->get('oid'));
+  }
+
+  function _getPathByNode($node_id)
+  {
+    $toolkit =& Limb :: toolkit();
+    $cache =& $toolkit->getCache();
+
+    if(!$path = $cache->get($node_id, PATH_TO_ID))
+    {
+      $tree =& $toolkit->getTree();
+      $path = $tree->getPathToNode($node_id);
+      $path = $this->_applyResultingPathOffsets($path);
+      $cache->put($node_id, $path, PATH_TO_ID);
+    }
+
+    return $path;
   }
 
   function _applyResultingPathOffsets($path)

@@ -8,17 +8,29 @@
 * $Id: LimbPreserveState.tag.php 1159 2005-03-14 10:10:35Z pachanga $
 *
 ***********************************************************************************/
-$taginfo =& new TagInfo('limb:JIP', 'LimbJIPTag');
+$taginfo =& new TagInfo('limb:recordset_processor:PATH', 'LimbPathRecordSetProcessorTag');
+$taginfo->setEndTag(ENDTAG_FORBIDDEN);
 $taginfo->setDefaultLocation(LOCATION_SERVER);
 TagDictionary::registerTag($taginfo, __FILE__);
 
-class LimbJIPTag extends ServerComponentTag
+class LimbPathRecordSetProcessorTag extends ServerComponentTag
 {
-  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/JIPComponent.class.php';
-  var $runtimeComponentName = 'JIPComponent';
+  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/DAO/PathRecordSetProcessorComponent.class.php';
+  var $runtimeComponentName = 'PathRecordSetProcessorComponent';
+
+   function preParse()
+   {
+      $source = $this->getAttribute('source');
+      if (empty($source))
+        $this->raiseCompilerError('MISSINGREQUIREATTRIBUTE',
+                                array('attribute' => 'source'));
+
+      return PARSER_REQUIRE_PARSING;
+    }
 
   function generateContents(&$code)
   {
+    $code->writePHP($this->getComponentRefCode() . '->setSource(\'' . $this->getAttribute('source') .'\');');
     $code->writePHP($this->getComponentRefCode() . '->process();');
 
     parent :: generateContents($code);
