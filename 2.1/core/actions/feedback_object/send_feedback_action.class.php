@@ -44,7 +44,7 @@ class send_feedback_action extends form_action
 	{
 		$mail_data = $this->dataspace->export();
 
-		if(is_set($mail_data['sender_name']) )
+		if(isset($mail_data['sender_name']) )
 			$sender_name = $mail_data['sender_name'];
 		else
 			$sender_name = $mail_data['sender_firstname'] . ' ' . $mail_data['sender_lastname'];	
