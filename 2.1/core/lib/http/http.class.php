@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: http.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -23,9 +23,9 @@ class http
 
 	function http()
 	{
-		$this->_host = $GLOBALS['HTTP_HOST'];
-		$this->_referer = $GLOBALS['HTTP_REFERER'];
-		$this->_user_agent = $GLOBALS['HTTP_USER_AGENT'];
+		$this->_host = $_SERVER['HTTP_HOST'];
+		$this->_referer = isset($_SERVER['HTTP_REFERER'])? $_SERVER['HTTP_REFERER'] : '';
+		$this->_user_agent = $_SERVER['HTTP_USER_AGENT'];
 	}
 
 	function set_method($method = 'POST')
@@ -139,6 +139,7 @@ class http
 
 			fputs($sk, $request);
 
+			$data = '';
 			while(!feof($sk))
 			{
 				$data .= fread($sk, 128);
