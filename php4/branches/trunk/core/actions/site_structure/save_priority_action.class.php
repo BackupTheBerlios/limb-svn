@@ -19,7 +19,6 @@ class save_priority_action extends form_action
 
   function perform(&$request, &$response)
   {
-    trigger_error('Stop', E_USER_WARNING);
     parent :: perform($request, $response);
   }
 

@@ -47,7 +47,6 @@ class htmlarea_component extends richedit_component
 
   function init_richedit()
   {
-    trigger_error('Stop', E_USER_WARNING);
     $this->_load_js_script();
 
     $id = $this->get_attribute('id');
