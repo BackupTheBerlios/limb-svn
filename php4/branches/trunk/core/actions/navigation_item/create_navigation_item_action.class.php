@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/actions/form_create_site_object_action.class.php'
 
 class create_navigation_item_action extends form_create_site_object_action
 {
-  function _define_controller_class_name()
+  function _define_controller_name()
   {
     return 'navigation_item_controller';
   }
