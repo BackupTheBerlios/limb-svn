@@ -37,8 +37,8 @@ class search_engine_mailru_rule_test extends UnitTestCase
 
   function test_second_match_ru_true()
   {
-  	$this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/index.phtml?lfilter=yes&hl=ru&q=%EF%F0%E8%E2%E5%F2&change=2')));
-  	$this->assertEqual('привет', $this->rule->get_matching_phrase());
+  	$this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/index.phtml?lfilter=yes&hl=ru&q=%F1%E8%F1%F2%E5%EC%E0+LIMB+CMS&change=2')));
+  	$this->assertEqual('система LIMB CMS', $this->rule->get_matching_phrase());
   } 
 
   function test_match_eng_true()

@@ -16,16 +16,20 @@ class tree_navigation_datasource extends fetch_tree_datasource
 	function & _fetch(&$counter, $params)
 	{
 		$result =& parent :: _fetch($counter, $params);
-		$uri = new uri($_SERVER['PHP_SELF']);		
-
+		$requested_uri = new uri($_SERVER['REQUEST_URI']);
+    $nav_uri = new uri();		
+ 
 		foreach($result as $key => $data)
-		{
-			if(is_integer($res = $uri->compare_path(new uri($data['url']))))
-			{
-				if($res >= 0)
-					$result[$key]['in_path'] = true;
-				if($res == 0)
-					$result[$key]['selected'] = true;
+		{ 
+      $nav_uri->parse($data['url']);
+			if($requested_uri->compare_path($nav_uri) === 0 )
+			{ 
+        $result[$key]['selected'] = true;
+        
+        if($nav_uri->get_query_item('action') !== $requested_uri->get_query_item('action'))
+        {        
+          $result[$key]['selected'] = false;
+        }
 			}
 		}
 		return $result;
