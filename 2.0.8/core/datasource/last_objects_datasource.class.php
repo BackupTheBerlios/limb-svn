@@ -23,10 +23,20 @@ class last_objects_datasource extends fetch_datasource
 		
 		if (!count($result))
 			return $result;
+		
+		$this->_process_loaded_items($result);
+			
+		return $result;
+	}
+	
+	function _process_loaded_items(& $items)
+	{
+		if (!count($items))
+			return $items;
 			
 		$parent_node_ids = array();
 
-		foreach($result as $key => $data)
+		foreach($items as $key => $data)
 			if (!isset($parent_node_ids[$data['parent_node_id']]))
 			{
 				$parent_node_ids[$data['parent_node_id']] = $data['parent_node_id'];
@@ -41,14 +51,12 @@ class last_objects_datasource extends fetch_datasource
 		
 		$parents =& $fetcher->fetch_by_node_ids($parent_node_ids, 'site_object', $parents_counter, $params, 'fetch_by_ids');
 		
-		foreach($result as $key => $data)
+		foreach($items as $key => $data)
 		{
 			$parent_data = $parents[$data['parent_node_id']];
-			$result[$key]['parent_title'] = $parent_data['title'];
-			$result[$key]['parent_path'] = $parent_data['path'];
+			$items[$key]['parent_title'] = $parent_data['title'];
+			$items[$key]['parent_path'] = $parent_data['path'];
 		}	
-
-		return $result;
 	}
 }
 

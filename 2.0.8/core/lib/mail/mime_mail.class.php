@@ -58,8 +58,8 @@ class mime_mail
 			);
 
 		$locale =& locale :: instance();
-		$this->build_params['html_encoding'] = 'quoted-printable';
-		$this->build_params['text_encoding'] = '7bit';
+		$this->build_params['html_encoding'] = '8bit';
+		$this->build_params['text_encoding'] = '8bit';
 		$this->build_params['html_charset'] = $locale->get_charset();
 		$this->build_params['text_charset'] = $locale->get_charset();
 		$this->build_params['head_charset'] = $locale->get_charset();
@@ -524,6 +524,8 @@ class mime_mail
 
 	function _mail_send(&$recipients)
 	{
+		require_once(LIMB_DIR . 'core/lib/mail/mail_rfc822.class.php');
+		
 		$subject = '';
 		if (!empty($this->headers['Subject']))
 		{
@@ -534,15 +536,18 @@ class mime_mail
 		foreach ($this->headers as $name => $value)
 			$headers[] = $name . ': ' . $this->_encode_header($value, $this->build_params['head_charset']);
 
-		$to = $this->_encode_header(implode(', ', $recipients), $this->build_params['head_charset']);
+		foreach ($recipients as $recipient)
+		{
+			$addresses = mail_rfc822 :: parse_address_list($recipient);
+			$address = reset($addresses);
+			
+			$to = $this->_encode_header(sprintf('%s@%s', $address->mailbox, $address->host), $this->build_params['head_charset']);
 
-		if (!empty($this->return_path))
-			$result = mail($to, $subject, $this->output, implode(CRLF, $headers), '-f' . $this->return_path);
-		else
-			$result = mail($to, $subject, $this->output, implode(CRLF, $headers));
-
-		if ($subject !== '')
-			$this->headers['Subject'] = $subject;
+			if (!empty($this->return_path))
+				$result = mail($to, $subject, $this->output, implode(CRLF, $headers), '-f' . $this->return_path);
+			else
+				$result = mail($to, $subject, $this->output, implode(CRLF, $headers));
+		} 
 
 		return $result;
 	}

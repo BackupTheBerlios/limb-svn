@@ -1,0 +1,15 @@
+<core:WRAP file="popup.html" placeholder="content">
+<h2><locale:STRING name='subscribe_theme_edition' file='subscribe'></h2>
+<form method="post" name="edit_subscribe_theme" id="edit_subscribe_theme">
+	<core:INCLUDE file="form_errors.html">
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+		<core:INCLUDE file="/subscribe_theme/form_fields.html">
+    <tr>
+      <td>&nbsp;</td>
+      <td><action_button action="edit" name="update" type="submit" id="update" value="Update"  reload_parent="true" class="button">
+	     &nbsp;
+      <input name="cancel" type="button" id="cancel" value="Cancel" onclick='window.close();' class="button">
+      </td>
+    </tr>
+  </table>
+</form>
