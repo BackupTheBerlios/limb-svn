@@ -99,16 +99,16 @@ class control_tag extends server_tag_component_tag
 	function prepare()
 	{
 		parent :: prepare();
-
+		
 		if(isset($this->attributes['locale_type']))
 		{
 			if(strtolower($this->attributes['locale_type']) == 'content')
-				$locale_constant = CONTENT_LOCALE_ID;	
+				$locale_constant = constant('CONTENT_LOCALE_ID');	
 			else
-				$locale_constant = MANAGEMENT_LOCALE_ID;	
+				$locale_constant = constant('MANAGEMENT_LOCALE_ID');	
 		}
 		else
-			$locale_constant = MANAGEMENT_LOCALE_ID;	
+			$locale_constant = constant('MANAGEMENT_LOCALE_ID');	
 		
 		if (isset($this->attributes['locale_value']))
 		{
