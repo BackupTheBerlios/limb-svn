@@ -57,12 +57,6 @@ class LimbBaseToolkitTest extends LimbTestCase
                      'ServiceMapper');
   }
 
-  function testCreateBehaviour()
-  {
-    $this->assertIsA($this->toolkit->createBehaviour('Behaviour'),
-                     'Behaviour');
-  }
-
   function testGetDb()
   {
     $this->assertIsA($this->toolkit->getDbConnection(),

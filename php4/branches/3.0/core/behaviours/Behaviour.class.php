@@ -19,11 +19,11 @@ class Behaviour extends Object
   {
     $ini =& $this->_getIni();
 
-    if(!$ini->hasGroup($action))
+    if(!$ini->hasGroup($action) || !$ini->hasOption('command', $action))
+    {
+      include_once(LIMB_DIR . '/core/commands/NullCommand.class.php');
       return new NullCommand();
-
-    if(!$ini->hasOption('command', $action))
-      return new NullCommand();
+    }
 
     $command_handle = new LimbHandle($ini->getOption('command', $action));
 

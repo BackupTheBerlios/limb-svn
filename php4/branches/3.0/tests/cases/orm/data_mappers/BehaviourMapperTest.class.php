@@ -89,6 +89,7 @@ class BehaviourMapperTest extends LimbTestCase
   function testInsert()
   {
     $behaviour = new Behaviour();
+    $behaviour->setName($name = 'test');
 
     $this->mapper->insert($behaviour);
 
@@ -96,7 +97,7 @@ class BehaviourMapperTest extends LimbTestCase
 
     $record = $rs->getRow();
 
-    $this->assertEqual($record['name'], get_class($behaviour));
+    $this->assertEqual($record['name'], $name);
   }
 
   function testUpdateFailedNoId()
@@ -113,6 +114,7 @@ class BehaviourMapperTest extends LimbTestCase
 
     $behaviour = new Behaviour();
     $behaviour->setId($id);
+    $behaviour->setName($name = 'test');
 
     $this->mapper->update($behaviour);
 
@@ -120,7 +122,7 @@ class BehaviourMapperTest extends LimbTestCase
 
     $record = $rs->getRow();
 
-    $this->assertEqual($record['name'], get_class($behaviour));
+    $this->assertEqual($record['name'], $name);
   }
 
   function testDeleteFailedNoId()

@@ -80,12 +80,6 @@ class LimbBaseToolkit// implements LimbToolkit
     return DataMapperFactory :: create($mapper_path);
   }
 
-  function & createBehaviour($behaviour_path)
-  {
-    include_once(LIMB_DIR . '/core/behaviours/BehaviourFactory.class.php');
-    return BehaviourFactory :: create($behaviour_path);
-  }
-
   function & getDbConnection()
   {
     if(is_object($this->db))

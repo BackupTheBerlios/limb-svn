@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
+require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
 class BehaviourMapper extends AbstractDataMapper
 {
@@ -20,8 +21,9 @@ class BehaviourMapper extends AbstractDataMapper
     if(!$record = $table->selectRecordById($id))
       return null;
 
-    $behaviour =& $toolkit->createBehaviour($record->get('name'));
+    $behaviour =& new Behaviour();
     $behaviour->setId($id);
+    $behaviour->setName($record->get('name'));
 
     return $behaviour;
   }
@@ -31,7 +33,7 @@ class BehaviourMapper extends AbstractDataMapper
     $toolkit =& Limb :: toolkit();
     $table =& $toolkit->createDBTable('SysBehaviour');
 
-    $data['name'] = get_class($behaviour);
+    $data['name'] = $behaviour->getName();
 
     $id = $table->insert($data);
 
@@ -48,7 +50,7 @@ class BehaviourMapper extends AbstractDataMapper
     $toolkit =& Limb :: toolkit();
     $table =& $toolkit->createDBTable('SysBehaviour');
 
-    $data['name'] = get_class($behaviour);
+    $data['name'] = $behaviour->getName();
 
     return $table->updateById($id, $data);
   }
