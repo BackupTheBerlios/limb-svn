@@ -5,9 +5,9 @@
 <core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
 
-</span> 
+</span>
 <fetch:SUB_BRANCH target='articles_folders' >
-	<core:PARAMETER name='loader_class_name' value='articles_folder' >
+	<core:PARAMETER name='loader_class_name' value='site_object' >
 </fetch:SUB_BRANCH>
 
 
@@ -15,10 +15,10 @@
 	<core:PARAMETER name='loader_class_name' value='article' >
 </fetch:SUB_BRANCH>
 
-<table width=100% border=0 cellpadding=4 > 
+<table width=100% border=0 cellpadding=4 >
 	<tr>
 		<td width=100% >
-			<core:INCLUDE file="front_pager.html">			
+			<core:INCLUDE file="front_pager.html">
 			<grid:LIST id='articles'>
 			<table width=100% cellpadding=0 cellspacing=0>
 			<grid:ITERATOR>
@@ -37,10 +37,10 @@
 		</td>
 
 			<grid:LIST id='articles_folders'>
-		<td valign=top style="border-left:solid 1px #DEDEDE; padding: 1px 0px 0px 8px">	
+		<td valign=top style="border-left:solid 1px #DEDEDE; padding: 1px 0px 0px 8px">
 			<span class=date><locale:STRING name='subfolders' file='article'>:</span>
-			
-			
+
+
 			<table width=120 border=0 cellpadding=0 cellspacing=0>
 			<grid:ITERATOR>
 			<tr class="jip">
