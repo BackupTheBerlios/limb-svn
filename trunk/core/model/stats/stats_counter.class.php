@@ -9,34 +9,20 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/lib/date/date.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
 
-class stats_counter
+class stats_counter extends stats_supertype
 {
-	var $db = null;
-	
 	var $_hits_today;
 	var $_hosts_today;
 	var $_hits_all;
 	var $_hosts_all;
-	var $_reg_date;
 	
 	function stats_counter()
 	{
-		$this->db =& db_factory :: instance();
-		$this->reg_date = new date();		
+		parent :: stats_supertype();
 	}
 	
-	function set_register_time($stamp)
-	{
-		$this->reg_date->set_by_stamp($stamp);
-	}
-
-	function get_register_time_stamp()
-	{
-		return $this->reg_date->get_stamp();
-	}
-
 	function update($is_new_host)
 	{	
 		$record = $this->_get_counter_record();

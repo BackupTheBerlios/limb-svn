@@ -1,3 +1,4 @@
+<?php
 /**********************************************************************************
 * Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
 *
@@ -8,28 +9,72 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/lib/date/date.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_counter.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_ip.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_log.class.php');
 
-class stats_register
+class stats_register extends stats_supertype
 {
-	var $db = null;
-	var $_reg_date;
+	var $_counter = null;
+	var $_stats_log = null;
+	var $_ip_register = null;
 	
 	function stats_register()
 	{
-		$this->db =& db_factory :: instance();
-		$this->reg_date = new date();		
+		parent :: stats_supertype();
+
+		$this->_counter = new stats_counter();
 	}
 
-	function set_register_time($stamp)
+	function set_register_time($stamp = null)
 	{
-		$this->reg_date->set_by_stamp($stamp);
+		parent :: set_register_time($stamp);
+
+		$this->_counter->set_register_time($this->get_register_time_stamp());
+
+		$ip_register =& $this->_get_ip_register();
+		$ip_register->set_register_time($stamp);
+
+		$log_register =& $this->_get_log_register();
+		$log_register->set_register_time($stamp);
 	}
 
-	function get_register_time_stamp()
+	function register($node_id, $action)
 	{
-		return $this->reg_date->get_stamp();
+		$this->_update_log($node_id, $action);
+		
+		$this->_update_counters();
 	}
+	
+	function _update_log($node_id, $action)
+	{
+		$ip_register =& $this->_get_ip_register();
+		$log_register =& $this->_get_log_register();
+		$result = $log_register->update($ip_register->get_client_ip(), $node_id, $action);
+	}
+	
+	function _update_counters()
+	{	
+		$ip_register =& $this->_get_ip_register();
+		$this->_counter->update($ip_register->is_new_host());
+	}
+	
+	function & _get_log_register()
+	{
+		if (!$this->_log_register)
+			$this->_log_register = new stats_log();
+		
+		return $this->_log_register;
+	}
+
+	function & _get_ip_register()
+	{
+		if (!$this->_ip_register)
+			$this->_ip_register = new stats_ip();
+		
+		return $this->_ip_register;
+	}	
 }
 
 ?>

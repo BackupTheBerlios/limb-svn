@@ -8,18 +8,23 @@
 * $Id: dir.test.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/model/stats/stats_log.class.php');
-require_once(LIMB_DIR . '/core/model/stats/stats_ip.class.php');
-require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_register.class.php');
+
+Mock::generatePartial
+(
+  'stats_register',
+  'stats_register_test_version',
+  array(
+  	'_get_ip_register',
+  	'_get_log_register',
+  )
+);
 
 Mock::generatePartial
 (
   'stats_log',
   'stats_log_test_version',
   array(
-  	'_get_client_ip',
-  	'_get_clean_referer_page',
-  	'_get_ip_register',
   	'_get_referer_register',
   )
 ); 
@@ -54,6 +59,9 @@ class test_stats_log extends UnitTestCase
 	
 	var $stats_log1 = null;
 	var $stats_log2 = null;
+
+	var $stats_register1 = null;
+	var $stats_register2 = null;
 	
   function test_stats_log() 
   {
@@ -77,14 +85,22 @@ class test_stats_log extends UnitTestCase
    	$this->stats_referer2->stats_referer();
 
    	$this->stats_log1 = new stats_log_test_version($this);
-  	$this->stats_log1->setReturnReference('_get_ip_register', $this->stats_ip1);
   	$this->stats_log1->setReturnReference('_get_referer_register', $this->stats_referer1);
    	$this->stats_log1->stats_log();
 
    	$this->stats_log2 = new stats_log_test_version($this);
-  	$this->stats_log2->setReturnReference('_get_ip_register', $this->stats_ip2);
   	$this->stats_log2->setReturnReference('_get_referer_register', $this->stats_referer2);
    	$this->stats_log2->stats_log();
+   	
+   	$this->stats_register1 = new stats_register_test_version($this);
+   	$this->stats_register1->stats_register();
+  	$this->stats_register1->setReturnReference('_get_log_register', $this->stats_log1);
+  	$this->stats_register1->setReturnReference('_get_ip_register', $this->stats_ip1);
+   	
+   	$this->stats_register2 = new stats_register_test_version($this);
+   	$this->stats_register2->stats_register();
+  	$this->stats_register2->setReturnReference('_get_log_register', $this->stats_log2);
+  	$this->stats_register2->setReturnReference('_get_ip_register', $this->stats_ip2);
 
 		$this->_login_user(10, array());
   	
@@ -101,7 +117,10 @@ class test_stats_log extends UnitTestCase
 
   	$this->stats_log1->tally();
   	$this->stats_log2->tally();
-  	
+
+		$this->stats_register1 ->tally();
+		$this->stats_register2 ->tally();
+		
   	$this->_clean_up();
   }
   
@@ -118,8 +137,8 @@ class test_stats_log extends UnitTestCase
   	$this->stats_ip1->setReturnValue('get_client_ip', 'ffffff00');
   	$this->stats_referer1->setReturnValue('_get_clean_referer_page', 'some.referer.com');
   	
-  	$this->stats_log1->reset_register_time(time());
-  	$this->stats_log1->register(2, 'display');
+		$this->stats_register1->set_register_time(time());
+  	$this->stats_register1->register(2, 'display');
 
 		$this->_check_stats_log_record(1, 1, 10, 2, 'display', $this->stats_log1->get_register_time_stamp());
 		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
@@ -134,8 +153,8 @@ class test_stats_log extends UnitTestCase
   	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff00');
   	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.other-referer.com');
   	
-  	$this->stats_log2->reset_register_time(time()+1);
-  	$this->stats_log2->register(4, 'edit');
+		$this->stats_register2->set_register_time(time()+1);
+  	$this->stats_register2->register(4, 'edit');
 		
 		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
 		$this->_check_stats_referer_url_record(2, 2, 'some.other-referer.com');
@@ -150,8 +169,8 @@ class test_stats_log extends UnitTestCase
   	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff01');
   	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.referer.com');
   	
-  	$this->stats_log2->reset_register_time(time()+1);
-  	$this->stats_log2->register(4, 'edit');
+		$this->stats_register2->set_register_time(time()+1);
+  	$this->stats_register2->register(4, 'edit');
 		
 		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
 		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
@@ -166,8 +185,8 @@ class test_stats_log extends UnitTestCase
   	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.referer.com');
   	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff01');
   	
-  	$this->stats_log2->reset_register_time(time()+ 60*60*24 + 1);
-  	$this->stats_log2->register(4, 'edit');
+		$this->stats_register2->set_register_time(time()+ 60*60*24 + 1);
+  	$this->stats_register2->register(4, 'edit');
 		
 		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
 		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
@@ -182,8 +201,8 @@ class test_stats_log extends UnitTestCase
   	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.referer.com');
   	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff00');
   	
-  	$this->stats_log2->reset_register_time(time()+ 60*60*24 + 1);
-  	$this->stats_log2->register(4, 'edit');
+		$this->stats_register2->set_register_time(time()+ 60*60*24 + 1);
+  	$this->stats_register2->register(4, 'edit');
 		
 		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
 		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
@@ -198,8 +217,8 @@ class test_stats_log extends UnitTestCase
   	$this->stats_referer2->setReturnValue('_get_clean_referer_page', 'some.referer.com');
   	$this->stats_ip2->setReturnValue('get_client_ip', 'ffffff00');
   	
-  	$this->stats_log2->reset_register_time(time() - 2*60*60*24);
-  	$this->stats_log2->register(4, 'edit');
+		$this->stats_register2->set_register_time(time() -  2*60*60*24);
+  	$this->stats_register2->register(4, 'edit');
 		
 		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log2->get_register_time_stamp());
 		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');

@@ -9,27 +9,13 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/lib/date/date.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
 
-class stats_referer
+class stats_referer extends stats_supertype
 {
-	var $db = null;
-	var $_reg_date;
-	
 	function stats_referer()
 	{
-		$this->db =& db_factory :: instance();
-		$this->reg_date = new date();		
-	}
-
-	function set_register_time($stamp)
-	{
-		$this->reg_date->set_by_stamp($stamp);
-	}
-
-	function get_register_time_stamp()
-	{
-		return $this->reg_date->get_stamp();
+		parent :: stats_supertype();
 	}
 
 	function get_referer_page_id()

@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/core/lib/date/date.class.php');
 class stats_ip
 {
 	var $db = null;
-	var $_reg_date;
+	var $reg_date;
 	
 	function stats_ip()
 	{
