@@ -12,6 +12,8 @@ FilterDictionary::registerFilter(new FilterInfo('LimbI18NNumber', 'LimbLocaleNum
 
 class LimbLocaleNumberFilter extends CompilerFilter
 {
+  var $locale_var;
+
   function getValue()
   {
     $value = $this->base->getValue();
@@ -61,16 +63,66 @@ class LimbLocaleNumberFilter extends CompilerFilter
     return constant($locale_constant);
   }
 
-  function generateExpression(&$code)
+  function generatePreStatement(&$code)
   {
-    $code->registerInclude(LIMB_DIR . '/core/http/Ip.class.php');
+    $toolkit_var = $code->getTempVarRef();
+    $locale_value_var = $code->getTempVarRef();
+    $this->locale_var = $code->getTempVarRef();
 
-    $code->writePHP('Ip :: decode(');
-    $this->base->generateExpression($code);
-    $code->writePHP(')');
+    $code->writePHP($toolkit_var . ' =& Limb :: toolkit();' . "\n");
+    $code->writePHP($locale_value_var . ' = ');
+
+    if(isset($this->parameters[1]) && $this->parameters[1]->getValue())
+      $this->parameters[1]->generateExpression($code);
+    elseif(isset($this->parameters[0]) && $this->parameters[0]->getValue())
+    {
+      $locale_type = $this->parameters[0]->getValue();
+
+      if(strtolower($locale_type) == 'management')
+        $locale_constant = 'MANAGEMENT_LOCALE_ID';
+      else
+        $locale_constant = 'CONTENT_LOCALE_ID';
+
+      $code->writePHP(' constant("' . $locale_constant . '")');
+    }
+    else
+    {
+      $locale_constant = 'CONTENT_LOCALE_ID';
+      $code->writePHP(' constant("' . $locale_constant . '")');
+    }
+
+    $code->writePHP(';');
+
+    $code->writePHP($this->locale_var . ' =& ' . $toolkit_var . '->getLocale(' . $locale_value_var .' );' . "\n");
   }
 
+  function generateExpression(&$code)
+  {
+    $code->writePHP('number_format(');
+    $this->base->generateExpression($code);
+    $code->writePHP(',');
 
+    if(isset($this->parameters[2]) && $this->parameters[2]->getValue())
+      $this->parameters[2]->generateExpression($code);
+    else
+      $code->writePHP($this->locale_var . '->fract_digits');
+
+    $code->writePHP(',');
+
+    if(isset($this->parameters[3]) && $this->parameters[3]->getValue())
+      $this->parameters[3]->generateExpression($code);
+    else
+      $code->writePHP($this->locale_var . '->decimal_symbol');
+
+    $code->writePHP(',');
+
+    if(isset($this->parameters[4]) && $this->parameters[4]->getValue())
+      $this->parameters[4]->generateExpression($code);
+    else
+      $code->writePHP($this->locale_var . '->thousand_separator');
+
+    $code->writePHP(')');
+  }
 }
 
 ?>

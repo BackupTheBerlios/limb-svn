@@ -33,7 +33,7 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
     RegisterTestingTemplate('/limb/locale_date_default.html', $template);
 
     $page =& new Template('/limb/locale_date_default.html');
-    
+
     $this->assertEqual($page->capture(), '02/20/2002');
   }
 
@@ -77,7 +77,7 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
   function testDefinedFormat()
   {
     $date = Date ::create($year = 2005, $month = 1, $day=20, $hour=10, $minute=15, $second=30);
-    
+
     $template = '<limb:locale:DATE locale="en" value="'. $date->getStamp() .'" date_type="stamp" format="%Y %m %d"/>';
 
     RegisterTestingTemplate('/limb/locale_date_defined_format.html', $template);
@@ -108,8 +108,8 @@ class LimbLocaleDateTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), 'Thursday 20 January 2005');
   }
-  
-  // I can't test locale_type attribute since CONTENT_LOCALE_ID and MANAGEMENT_LOCALE_ID 
+
+  // I can't test locale_type attribute since CONTENT_LOCALE_ID and MANAGEMENT_LOCALE_ID
   // are equal in test environment
 }
 ?>

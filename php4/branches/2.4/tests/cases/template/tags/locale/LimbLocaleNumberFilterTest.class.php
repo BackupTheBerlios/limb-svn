@@ -17,7 +17,7 @@ class LimbLocaleNumberFilterTestCase extends LimbTestCase
 {
   function LimbLocaleNumberFilterTestCase()
   {
-    parent :: LimbTestCase('limb:locale:NUMBER filter case');
+    parent :: LimbTestCase('LimbI18NNumber filter case');
   }
 
   function tearDown()
@@ -89,6 +89,80 @@ class LimbLocaleNumberFilterTestCase extends LimbTestCase
     RegisterTestingTemplate('/limb/locale_number_filter_thousand_separator.html', $template);
 
     $page =& new Template('/limb/locale_number_filter_thousand_separator.html');
+
+    $this->assertEqual($page->capture(), '100 000.00');
+  }
+
+  function testDefaultDBE()
+  {
+    $template = '{$var|LimbI18NNumber}';
+
+    RegisterTestingTemplate('/limb/locale_number_filter_DBE.html', $template);
+
+    $page =& new Template('/limb/locale_number_filter_DBE.html');
+
+    $page->set('var', '100000');
+
+    $this->assertEqual($page->capture(), '100,000.00');
+  }
+
+  function testDBEUseOtherLocale()
+  {
+    $toolkit =& new MockLimbToolkit($this);
+
+    $real_toolkit = Limb :: toolkit();
+    $locale = $real_toolkit->getLocale('ru');
+    $locale->fract_digits = 4;
+
+    $toolkit->setReturnReference('getLocale', $locale, array('ru'));
+
+    Limb :: registerToolkit($toolkit);
+
+    $template = '{$var|LimbI18NNumber:"","ru"}';
+
+    RegisterTestingTemplate('/limb/locale_number_filter_DBE_other_locale.html', $template);
+
+    $page =& new Template('/limb/locale_number_filter_DBE_other_locale.html');
+    $page->set('var', '100000');
+
+    $this->assertEqual($page->capture(), '100,000.0000');
+
+    $toolkit->tally();
+    Limb :: popToolkit();
+  }
+
+  function testDBEUseFractDigits()
+  {
+    $template = '{$var|LimbI18NNumber:"","en","3"}';
+
+    RegisterTestingTemplate('/limb/locale_number_filter_DBE_fract_digits.html', $template);
+
+    $page =& new Template('/limb/locale_number_filter_DBE_fract_digits.html');
+    $page->set('var', '100000');
+
+    $this->assertEqual($page->capture(), '100,000.000');
+  }
+
+  function testDBEUseDecimalSymbol()
+  {
+    $template = '{$var|LimbI18NNumber:"","en","",","}';
+
+    RegisterTestingTemplate('/limb/locale_number_filter_DBE_decimal_symbol.html', $template);
+
+    $page =& new Template('/limb/locale_number_filter_DBE_decimal_symbol.html');
+    $page->set('var', '100000');
+
+    $this->assertEqual($page->capture(), '100,000,00');
+  }
+
+  function testDBEUseThousandSeparator()
+  {
+    $template = '{$var|LimbI18NNumber:"","en","",""," "}';
+
+    RegisterTestingTemplate('/limb/locale_number_filter_DBE_thousand_separator.html', $template);
+
+    $page =& new Template('/limb/locale_number_filter_DBE_thousand_separator.html');
+    $page->set('var', '100000');
 
     $this->assertEqual($page->capture(), '100 000.00');
   }
