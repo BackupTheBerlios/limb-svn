@@ -26,20 +26,9 @@ class chat_system
 	{
 	}
 	
-	function enter_chat_room($chat_user_id, $chat_room_id)
+	function enter_chat_room($chat_user_id, $nickname, $chat_room_id)
 	{
-		$db =& db_factory :: instance();
-
-		$sql = "SELECT * 
-						FROM chat_user
-						WHERE id={$chat_user_id}";
-
-		$db->sql_exec($sql);
-		$chat_user = $db->fetch_row();
-
-		if($chat_user['chat_room_id'] > 0 && $chat_user['chat_room_id'] != $chat_room_id)
-			chat_system :: leave_chat_room($chat_user_id, $chat_user['nickname'], $chat_user['chat_room_id']);
-		
+		$db =& db_factory :: instance();		
 		$sql = "UPDATE chat_user
 						SET chat_room_id='{$chat_room_id}', deleted=0
 						WHERE id='{$chat_user_id}'";
@@ -48,7 +37,7 @@ class chat_system
 		setcookie('chat_room_id', $chat_room_id, time()+365*24*3600, '/');
 		
 		$message = "system_message:". 
-			sprintf(strings :: get('user_enters_chat_room', 'chat'), $chat_user['nickname']);
+			sprintf(strings :: get('user_enters_chat_room', 'chat'), $nickname);
 		
 		chat_system :: system_message($message, $chat_room_id);
 				
@@ -71,6 +60,8 @@ class chat_system
 		$message = "system_message:".
 			sprintf(strings :: get('user_leaves_chat_room', 'chat'), $nickname);
 		chat_system :: system_message($message, $chat_room_id);
+		
+		return true;
 	}
 	
 	function system_message($message, $chat_room_id, $recipient_id = -1, $file = null)
@@ -166,16 +157,32 @@ class chat_system
 						{$limit}";
 
 		$db->sql_exec($sql);
-		
+
 		return array_reverse($db->get_array());
 	}
+
 	function get_users_for_room($chat_room_id, $chat_user_id = '')
 	{
 		$db =& db_factory :: instance();		
 		
+		$sql = "SELECT chat_user_id
+						FROM chat_ignores
+						WHERE ignorant_id='{$chat_user_id}'";
+
+		$db->sql_exec($sql);
+		$ignorer_ids = array();
+		
+		while($row = $db->fetch_row())
+			$ignorer_ids[] = $row['chat_user_id'];
+
+		$ignorer_condition = '';
+		if (sizeof($ignorer_ids))
+			$ignorer_condition = ' AND id NOT IN (' . implode(',', $ignorer_ids) . ')';
+			
 		$sql = "SELECT * 
 						FROM chat_user
 						WHERE chat_room_id='{$chat_room_id}' AND deleted = 0
+						{$ignorer_condition}
 						ORDER BY id";
 
 		$db->sql_exec($sql);
@@ -307,7 +314,7 @@ class chat_system
 		chat_system :: clean_database();
 	}
 
-	function toggle_ignore_user($ignorer_id, $ignorant_id)
+	function toggle_ignore_user($ignorer_id, $ignorer_nickname, $ignorant_id, $chat_room_id)
 	{
 		$db =& db_factory :: instance();		
 		
@@ -322,6 +329,10 @@ class chat_system
 		{
 			$sql = "DELETE FROM chat_ignores
 							WHERE chat_user_id='{$ignorer_id}' AND ignorant_id='{$ignorant_id}'";
+			
+			$message = "system_message:". 
+				sprintf(strings :: get('user_enters_chat_room', 'chat'), $ignorer_nickname);
+		
 		}
 		else
 		{
@@ -329,8 +340,29 @@ class chat_system
 							(chat_user_id, ignorant_id)
 							VALUES
 							('{$ignorer_id}', '{$ignorant_id}')";
+
+			$message = "system_message:". 
+				sprintf(strings :: get('user_leaves_chat_room', 'chat'), $ignorer_nickname);
+
 		}
 
+		$db->sql_exec($sql);
+		chat_system :: system_message($message, $chat_room_id, $ignorant_id);
+	}
+
+	function set_user_properties($chat_user_id, $properties)
+	{
+		$db =& db_factory :: instance();		
+		$time = time();
+		$set_statement = '';
+		foreach($properties as $property => $value)
+			$set_statement .= ", {$property} = '{$value}'";
+		
+		$sql = "UPDATE chat_user 
+						SET time={$time}
+						{$set_statement}
+						WHERE id = {$chat_user_id}";
+		
 		$db->sql_exec($sql);
 	}
 }

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: get_users.php 64 2004-03-23 16:17:13Z mike $
 *
 ***********************************************************************************/
 
@@ -17,12 +17,10 @@ start_user_session();
 
 $chat_user_data = chat_user :: get_chat_user_data();
 
-if ($_REQUEST['ignorant_id'] && $chat_user_data)
-	chat_system :: toggle_ignore_user(
+if ($_REQUEST['properties'] && $chat_user_data)
+	chat_system :: set_user_properties(
 		$chat_user_data['id'],
-		$chat_user_data['nickname'], 
-		$_REQUEST['ignorant_id'],
-		$chat_user_data['chat_room_id']
+		$_REQUEST['properties']
 		);
 
 
@@ -30,22 +28,4 @@ if ($_REQUEST['ignorant_id'] && $chat_user_data)
 $chat_room_id = $chat_user_data['chat_room_id'];
 $chat_users = chat_system :: get_users_for_room($chat_room_id, $chat_user_data['id']);
 
-
-if (sizeof($chat_users))
-{
-	$users = '';
-	foreach($chat_users as $chat_user)
-	{
-		$users[] = "['{$chat_user['id']}','{$chat_user['nickname']}','{$chat_user['status']}', '{$chat_user['ignored']}']";
-	}
-	
-	$users = '[' . implode(',', $users) . ']';
-	
-	$header = sprintf(strings :: get('users_header', 'chat'), count($chat_users));
-	
-	echo "<script>\n";
-	echo "top.set_active_users({$users});\n";
-	echo "top.update_active_users_header('{$header}');\n";
-	echo "</script>\n";
-}
 ?>

@@ -31,7 +31,11 @@ $last_message_ids = session :: get("last_message_ids");
 if(!$last_message_id = $last_message_ids[$chat_user_data['chat_room_id']])
 	$last_message_id = 0;
 
-$messages = chat_user :: get_messages($last_message_id);
+$messages = chat_system :: get_messages_for_user(
+	$chat_user_data['id'],
+	$chat_user_data['chat_room_id'],
+	$last_message_id
+);
 
 $date =& new date();
 $locale =& locale :: instance($this->locale_type);

@@ -3,7 +3,7 @@
 	var chat_actions = new Array();
 
 	chat_actions['init'] 								= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onfail': window.location.reload};
-	chat_actions['get_messages'] 				= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'refresh_time': 7000, 'onstart': get_messages, 'onfail': get_messages_failed};
+	chat_actions['get_messages'] 				= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'refresh_time': 5000, 'onstart': get_messages, 'onfail': get_messages_failed};
 	chat_actions['get_users'] 					= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onstart': get_users, 'onfail': get_users_failed};
 	chat_actions['send_message'] 				= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onstart': send_message, 'onfail': send_message_failed};
 	chat_actions['toggle_ignore_user'] 	= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onfail': toggle_ignore_user_failed};
@@ -13,7 +13,6 @@
 	{
 //		if (get_action_status(action) == 1)
 //			return;
-
 		current_time = new Date()
 		chat_actions[action]['status'] = 1;
 		chat_actions[action]['start_time'] = current_time.getTime();

@@ -152,17 +152,17 @@ class chat_user extends object
 		return $db->fetch_row();
 	}
 	
-	function get_messages($last_message_id = 0)
-	{
-		if (!$chat_user_data = chat_user :: get_chat_user_data())
-			return false;
-		
-		return chat_system :: get_messages_for_user(
-						$chat_user_data['id'],
-						$chat_user_data['chat_room_id'],
-						$last_message_id
-					);
-	}
+//	function get_messages($last_message_id = 0)
+//	{
+//		if (!$chat_user_data = chat_user :: get_chat_user_data())
+//			return false;
+//		
+//		return chat_system :: get_messages_for_user(
+//						$chat_user_data['id'],
+//						$chat_user_data['chat_room_id'],
+//						$last_message_id
+//					);
+//	}
 
 }
 
