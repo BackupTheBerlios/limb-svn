@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class PollTagInfo
 {
-  public $tag = 'poll';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'poll_tag';
+  var $tag = 'poll';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'poll_tag';
 }
 
 registerTag(new PollTagInfo());

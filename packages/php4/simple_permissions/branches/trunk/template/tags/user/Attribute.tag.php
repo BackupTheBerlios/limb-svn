@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class UserAttributeTagInfo
 {
-  public $tag = 'user:ATTRIBUTE';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'user_attribute_tag';
+  var $tag = 'user:ATTRIBUTE';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'user_attribute_tag';
 }
 
 registerTag(new UserAttributeTagInfo());

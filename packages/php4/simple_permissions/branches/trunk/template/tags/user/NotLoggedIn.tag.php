@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class UserNotLoggedInTagInfo
 {
-  public $tag = 'user:NOT_LOGGED_IN';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'user_not_logged_in_tag';
+  var $tag = 'user:NOT_LOGGED_IN';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'user_not_logged_in_tag';
 }
 
 registerTag(new UserNotLoggedInTagInfo());

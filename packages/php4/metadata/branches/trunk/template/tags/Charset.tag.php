@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class MetadataCharsetTagInfo
 {
-  public $tag = 'metadata:CHARSET';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'metadata_charset_tag';
+  var $tag = 'metadata:CHARSET';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'metadata_charset_tag';
 }
 
 registerTag(new MetadataCharsetTagInfo());

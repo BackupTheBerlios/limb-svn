@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class HintTitleTagInfo
 {
-  public $tag = 'hint:TITLE';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'hint_title_tag';
+  var $tag = 'hint:TITLE';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'hint_title_tag';
 }
 
 registerTag(new HintTitleTagInfo());

@@ -11,9 +11,9 @@
 
 class HintHintTagInfo
 {
-  public $tag = 'hint';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'hint_hint_tag';
+  var $tag = 'hint';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'hint_hint_tag';
 }
 
 registerTag(new HintHintTagInfo());

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class HintLinkTagInfo
 {
-  public $tag = 'hint:LINK';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'hint_link_tag';
+  var $tag = 'hint:LINK';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'hint_link_tag';
 }
 
 registerTag(new HintLinkTagInfo());

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class TabItemLabelTagInfo
 {
-  public $tag = 'tab_item:label';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'tab_item_label_tag';
+  var $tag = 'tab_item:label';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'tab_item_label_tag';
 }
 
 registerTag(new TabItemLabelTagInfo());

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class TemplateSourceTagInfo
 {
-  public $tag = 'dev:TEMPLATE_SOURCE';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'template_source_tag';
+  var $tag = 'dev:TEMPLATE_SOURCE';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'template_source_tag';
 }
 
 registerTag(new TemplateSourceTagInfo());

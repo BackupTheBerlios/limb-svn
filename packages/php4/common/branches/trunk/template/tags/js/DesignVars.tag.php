@@ -11,9 +11,9 @@
 
 class JsDesignVarsTagInfo
 {
-  public $tag = 'js:DESIGN_VARS';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'js_design_vars_tag';
+  var $tag = 'js:DESIGN_VARS';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'js_design_vars_tag';
 }
 
 registerTag(new JsDesignVarsTagInfo());

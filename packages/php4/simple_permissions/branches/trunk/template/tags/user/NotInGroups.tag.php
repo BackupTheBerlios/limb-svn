@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class UserNotInGroupsTagInfo
 {
-  public $tag = 'user:NOT_IN_GROUPS';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'user_not_in_groups_tag';
+  var $tag = 'user:NOT_IN_GROUPS';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'user_not_in_groups_tag';
 }
 
 registerTag(new UserNotInGroupsTagInfo());

@@ -11,9 +11,9 @@
 
 class PollFormTagInfo
 {
-  public $tag = 'poll:FORM';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'poll_form_tag';
+  var $tag = 'poll:FORM';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'poll_form_tag';
 }
 
 registerTag(new PollFormTagInfo());

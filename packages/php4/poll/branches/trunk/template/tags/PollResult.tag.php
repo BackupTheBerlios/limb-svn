@@ -11,9 +11,9 @@
 
 class PollResultTagInfo
 {
-  public $tag = 'poll:RESULT';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'poll_result_tag';
+  var $tag = 'poll:RESULT';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'poll_result_tag';
 }
 
 registerTag(new PollResultTagInfo());

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class UserLoggedInTagInfo
 {
-  public $tag = 'user:LOGGED_IN';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'user_logged_in_tag';
+  var $tag = 'user:LOGGED_IN';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'user_logged_in_tag';
 }
 
 registerTag(new UserLoggedInTagInfo());

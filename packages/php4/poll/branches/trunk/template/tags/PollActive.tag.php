@@ -11,9 +11,9 @@
 
 class PollActiveTagInfo
 {
-  public $tag = 'poll_active';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'poll_active_tag';
+  var $tag = 'poll_active';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'poll_active_tag';
 }
 
 registerTag(new PollActiveTagInfo());

@@ -11,9 +11,9 @@
 
 class ConstOptionalTagInfo
 {
-  public $tag = 'const:OPTIONAL';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'const_optional_tag';
+  var $tag = 'const:OPTIONAL';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'const_optional_tag';
 }
 
 registerTag(new ConstOptionalTagInfo());

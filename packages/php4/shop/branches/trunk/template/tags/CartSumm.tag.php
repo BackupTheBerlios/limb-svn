@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CartSummTagInfo
 {
-  public $tag = 'cart:SUMM';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'cart_summ_tag';
+  var $tag = 'cart:SUMM';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'cart_summ_tag';
 }
 
 registerTag(new CartSummTagInfo());

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class MetadataMetadataTagInfo
 {
-  public $tag = 'METADATA:METADATA';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'metadata_metadata_tag';
+  var $tag = 'METADATA:METADATA';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'metadata_metadata_tag';
 }
 
 registerTag(new MetadataMetadataTagInfo());

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class MetadataTitleTagInfo
 {
-  public $tag = 'METADATA:TITLE';
-  public $end_tag = ENDTAG_FORBIDDEN;
-  public $tag_class = 'metadata_title_tag';
+  var $tag = 'METADATA:TITLE';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'metadata_title_tag';
 }
 
 registerTag(new MetadataTitleTagInfo());

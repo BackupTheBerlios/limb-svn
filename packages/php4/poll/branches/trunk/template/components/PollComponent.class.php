@@ -10,7 +10,7 @@
 ***********************************************************************************/
 class PollComponent extends Component
 {
-  public $path = '';
+  var $path = '';
 
   var $_poll_container = null;
 

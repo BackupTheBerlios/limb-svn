@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class MetadataBreadcrumbsTagInfo
 {
-  public $tag = 'metadata:BREADCRUMBS';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'metadata_breadcrumbs_tag';
+  var $tag = 'metadata:BREADCRUMBS';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'metadata_breadcrumbs_tag';
 }
 
 registerTag(new MetadataBreadcrumbsTagInfo());

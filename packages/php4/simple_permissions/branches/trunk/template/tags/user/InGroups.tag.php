@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class UserInGroupsTagInfo
 {
-  public $tag = 'user:IN_GROUPS';
-  public $end_tag = ENDTAG_REQUIRED;
-  public $tag_class = 'user_in_groups_tag';
+  var $tag = 'user:IN_GROUPS';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'user_in_groups_tag';
 }
 
 registerTag(new UserInGroupsTagInfo());
