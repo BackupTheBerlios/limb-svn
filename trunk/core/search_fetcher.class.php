@@ -27,6 +27,22 @@ class search_fetcher extends fetcher
 		$this->_query_object = $query_object;
 	}
 	
+	function _get_classes_ids_from_string($classes_string)
+	{
+		$classes_ids = array();
+		$classes_names = explode(',', $classes_string);
+		foreach($classes_names as $class_name)
+		{
+			if(trim($class_name))
+			{
+				$site_object =& site_object_factory :: instance(trim($class_name));
+				$classes_ids[] = $site_object->get_class_id();
+			}
+		}
+		
+		return $classes_ids;
+	}
+
 	function & search_fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
 	{
 		if (!$this->_query_object)
@@ -40,15 +56,26 @@ class search_fetcher extends fetcher
 
 		$site_object =& site_object_factory :: instance($loader_class_name);
 
+		$restricted_classes = array();
+		$allowed_classes = array();
+		
 		if (!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
 			$class_id = $site_object->get_class_id();
 		else
+		{
 			$class_id = null;
+
+			if(isset($params['restricted_classes']))
+				$restricted_classes = $this->_get_classes_ids_from_string($params['restricted_classes']);
+			if(isset($params['allowed_classes']))
+				$allowed_classes = $this->_get_classes_ids_from_string($params['allowed_classes']);
+			
+		}
 
 		$search =& new full_text_search();
 
-		$search_result = $search->find($this->_query_object, $class_id);
+		$search_result = $search->find($this->_query_object, $class_id, $restricted_classes, $allowed_classes);
 		if (!count($search_result))
 			return array();
 		
@@ -83,7 +110,7 @@ class search_fetcher extends fetcher
 	{
 		$tree =& tree :: instance();
 		$site_object =& site_object_factory :: instance($loader_class_name);
-		
+
 		if (!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
 			$class_id = $site_object->get_class_id();

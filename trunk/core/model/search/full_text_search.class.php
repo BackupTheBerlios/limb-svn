@@ -42,7 +42,7 @@ class full_text_search
 		return false;
 	}
 	
-	function & find($query, $class_id=null)
+	function & find($query, $class_id=null, $restricted_classes_ids = array(), $allowed_classes_ids = array())
 	{	
 		if(!$this->_can_perform_fulltext_search())
 			$result = array();
@@ -56,6 +56,13 @@ class full_text_search
 			return array();
 		if($class_id !== null)
 			$sql .= " AND class_id={$class_id}";
+		else
+		{
+			if(count($restricted_classes_ids))	
+				$sql .= ' AND NOT(' . sql_in('class_id', $restricted_classes_ids) . ')';
+			if(count($allowed_classes_ids))	
+				$sql .= ' AND ' . sql_in('class_id', $allowed_classes_ids);
+		}
 		
 		$result =& $this->_get_db_result($sql);
 		
