@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/Object.class.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 
 Mock :: generate('Dataspace');
 Mock :: generatePartial('Object',

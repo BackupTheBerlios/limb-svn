@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
+require_once(WACT_ROOT . '/framework/iterator/arraydataset.inc.php');
 require_once(LIMB_DIR . '/class/template/Component.class.php');
 
 class DatasourceComponent extends Component
@@ -63,7 +63,7 @@ class DatasourceComponent extends Component
     if ($result = $ds->fetch())
       return new ArrayDataset($result);
     else
-      return new EmptyDataset();
+      return new EmptyIterator();
   }
 
   function setParameter($name, $value)

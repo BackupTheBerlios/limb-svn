@@ -49,9 +49,9 @@ class StateMachine
     while($next_state != false)
     {
       $state = $next_state;
-      $this->_processState($state);
+      $next_state = $this->_processState($state);
 
-      if(catch('LimbException', $e))
+      if(catch('Exception', $e))
          return throw($e);
     }
   }

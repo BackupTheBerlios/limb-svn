@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-//require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class CreateSiteObjectCommand// implements Command
 {
@@ -51,7 +50,7 @@ class CreateSiteObjectCommand// implements Command
 
     $object->merge($dataspace->export());
 
-    $object->setBehaviourId($this->_getBehaviourId());
+    $object->attachBehaviour($this->_getBehaviour());
 
     if (!$dataspace->get('parent_node_id'))
     {
@@ -60,12 +59,10 @@ class CreateSiteObjectCommand// implements Command
     }
   }
 
-  function _getBehaviourId()
+  function & _getBehaviour()
   {
     $toolkit =& Limb :: toolkit();
-    $behaviour =& $toolkit->createBehaviour($this->behaviour_name);
-
-    return $behaviour->getId();
+    return $toolkit->createBehaviour($this->behaviour_name);
   }
 
   function _loadParentObjectData()

@@ -8,26 +8,38 @@
 * $Id$
 *
 ***********************************************************************************/
+define('LIMB_ANY_FORM_WILDCARD', '*');
+define('LIMB_MULTI_FORM', true);
+define('LIMB_SINGLE_FORM', false);
 
 class FormCommand// implements Command
 {
-  var $form_name;
+  var $form_id;
+  var $is_multi;
 
-  function FormCommand($form_name)
+  function FormCommand($form_id, $is_multi = LIMB_SINGLE_FORM)
   {
-    $this->form_name = $form_name;
+    $this->form_id = $form_id;
+    $this->is_multi = $is_multi;
+  }
+
+  function & getFormComponent()
+  {
+    $toolkit =& Limb :: toolkit();
+    $view =& $toolkit->getView();
+    return $view->findChild($this->form_id);
   }
 
   //for mocking
   function & _getValidator()
   {
-    include_once(LIMB_DIR . '/class/validators/Validator.class.php');
+    include_once(WACT_ROOT . '/validation/validator.inc.php');
     return new Validator();
   }
 
   function _isFirstTime(&$request)
   {
-    $arr = $request->get($this->form_name);
+    $arr = $this->_getRequestData($request);
     if(isset($arr['submitted']) &&  $arr['submitted'])
       return false;
     else
@@ -49,7 +61,9 @@ class FormCommand// implements Command
 
     $this->_registerValidationRules($validator, $dataspace);
 
-    return $validator->validate($dataspace);
+    $validator->validate($dataspace);
+
+    return $validator->IsValid();
   }
 
   function perform()
@@ -57,11 +71,14 @@ class FormCommand// implements Command
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
 
-    $dataspace =& $toolkit->switchDataspace($this->form_name);
+    $dataspace =& $this->_switchDataSpace();
+    $form_component =& $this->getFormComponent();
 
-    if ($this->_isFirstTime($request))
+    if($this->_isFirstTime($request))
     {
       $this->_initFirstTimeDataspace($dataspace, $request);
+
+      $form_component->registerDataSource($dataspace);
 
       return LIMB_STATUS_FORM_DISPLAYED;
     }
@@ -69,8 +86,14 @@ class FormCommand// implements Command
     {
       $this->_mergeDataspaceWithRequest($dataspace, $request);
 
+      $form_component->registerDataSource($dataspace);
+
       if(!$this->validate($dataspace))
+      {
+        $validator =& $this->_getValidator();
+        $form_component->setErrors($validator->getErrorList());
         return LIMB_STATUS_FORM_NOT_VALID;
+      }
       else
         return LIMB_STATUS_FORM_SUBMITTED;
     }
@@ -82,9 +105,27 @@ class FormCommand// implements Command
 
   function _mergeDataspaceWithRequest(&$dataspace, &$request)
   {
-    ComplexArray :: map($this->_defineDatamap(), $request->get($this->form_name), $data = array());
+    ComplexArray :: map($this->_defineDatamap(), $this->_getRequestData($request), $data = array());
 
     $dataspace->merge($data);
+  }
+
+  function _getRequestData(&$request)
+  {
+    if($this->is_multi)
+      return $request->get($this->form_id);
+    else
+      return $request->export();
+  }
+
+  function &_switchDataSpace()
+  {
+    $toolkit =& Limb :: toolkit();
+
+    if($this->is_multi)
+      return $toolkit->switchDataspace($this->form_id);
+    else
+      return $toolkit->getDataspace();
   }
 }
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
+require_once(WACT_ROOT . '/validation/rule.inc.php');
 
 class TreeNodeIdRule extends SingleFieldRule
 {
@@ -18,9 +18,9 @@ class TreeNodeIdRule extends SingleFieldRule
     $tree =& $toolkit->getTree();
 
     if(empty($value))
-      $this->error(Strings :: get('error_invalid_tree_node_id', 'error'));
+      $this->error('ERROR_INVALID_TREE_NODE_ID');
     elseif(!$tree->getNode((int)$value))
-      $this->error(Strings :: get('error_invalid_tree_node_id', 'error'));
+      $this->error('ERROR_INVALID_TREE_NODE_ID');
   }
 }
 ?>

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
+require_once(WACT_ROOT . '/validation/rule.inc.php');
 
 class UrlRule extends SingleFieldRule
 {

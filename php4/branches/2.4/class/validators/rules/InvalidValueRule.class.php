@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
+require_once(WACT_ROOT . '/validation/rule.inc.php');
 
 class InvalidValueRule extends SingleFieldRule
 {
@@ -16,22 +16,20 @@ class InvalidValueRule extends SingleFieldRule
 
   function InvalidValueRule($field_name, $invalid_value)
   {
-    parent :: SingleFieldRule($field_name);
-
     $this->invalid_value = $invalid_value;
+
+    parent :: SingleFieldRule($field_name);
   }
 
-  function validate($dataspace)
+  function check($value)
   {
-    $value = $dataspace->get($this->field_name);
-
     $invalid_value = $this->invalid_value;
 
     settype($invalid_value, 'string');//???
 
     if ($value == $invalid_value)
     {
-      $this->error(Strings :: get('error_invalid_value', 'error'));
+      $this->error('ERROR_INVALID_VALUE');
     }
   }
 }

@@ -19,7 +19,7 @@ Mock :: generate('SiteObjectBehaviour');
 
 class SiteObjectBehaviourControllerTestVersion extends SiteObjectBehaviour
 {
-  function defineTestAction($state_machine){}
+  function defineTestAction(&$state_machine){}
 }
 
 Mock :: generatePartial

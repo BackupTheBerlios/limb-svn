@@ -8,16 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/class/validators/rules/TreePathRule.class.php');
 
-class TreePathRuleTest extends SingleFieldRuleTest
+class TreePathRuleTest extends SingleFieldRuleTestCase
 {
   var $db = null;
   var $node_id_root;
   var $node_id_document;
+
+  function TreePathRuleTest()
+  {
+    parent :: SingleFieldRuleTestCase('tree path rule test');
+  }
 
   function setUp()
   {
@@ -54,10 +59,10 @@ class TreePathRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '');
 
-    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_invalid_tree_path', 'error'), array()));
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->isValid());
+    $this->assertTrue($this->validator->isValid());
   }
 
   function testTreeIdentifierRuleNormal()
@@ -67,7 +72,7 @@ class TreePathRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '/root/document');
 
-    $this->error_list->expectNever('addError');
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());
@@ -80,7 +85,7 @@ class TreePathRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '/root/document/1');
 
-    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_invalid_tree_path', 'error'), array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_INVALID_TREE_PATH', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());

@@ -38,7 +38,7 @@ class FormEditSiteObjectCommand extends FormCommand
 
   function _loadObjectData()
   {
-    $toolkit = Limb :: toolkit();
+    $toolkit =& Limb :: toolkit();
     $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($toolkit->getRequest());
 

@@ -8,19 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
+require_once(WACT_ROOT . '/validation/rule.inc.php');
 
 class TreePathRule extends SingleFieldRule
 {
-  function validate($dataspace)
+  function check($value)
   {
-    $value = $dataspace->get($this->field_name);
-
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();
 
     if(!$tree->getNodeByPath($value))
-      $this->error(Strings :: get('error_invalid_tree_path', 'error'));
+      $this->error('ERROR_INVALID_TREE_PATH');
   }
 }
 

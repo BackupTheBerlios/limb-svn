@@ -8,14 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
+require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/class/validators/rules/UniqueUserEmailRule.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class UniqueEmailUserRuleTest extends SingleFieldRuleTest
+class UniqueEmailUserRuleTest extends SingleFieldRuleTestCase
 {
   var $db = null;
+
+  function UniqueEmailUserRuleTest()
+  {
+    parent :: SingleFieldRuleTestCase('unique email user rule test');
+  }
 
   function setUp()
   {
@@ -48,7 +53,7 @@ class UniqueEmailUserRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '3@3.3');
 
-    $this->error_list->expectNever('addError');
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());
@@ -61,7 +66,7 @@ class UniqueEmailUserRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '2@2.2');
 
-    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_duplicate_user', 'error'), array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_DUPLICATE_USER', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());
@@ -75,7 +80,7 @@ class UniqueEmailUserRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '2@2.2');
 
-    $this->error_list->expectNever('addError');
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());

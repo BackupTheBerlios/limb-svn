@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/commands/CreateSiteObjectCommand.class.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/class/core/request/Request.class.php');
 require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
 require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');

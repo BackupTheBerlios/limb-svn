@@ -15,6 +15,18 @@ class SiteObjectBehaviour extends Object
 {
   var $_actions_list = array();
 
+  function SiteObjectBehaviour()
+  {
+    parent :: Object();
+
+    $this->merge($this->_defineProperties());
+  }
+
+  function _defineProperties()
+  {
+    return array();
+  }
+
   function getId()
   {
     return (int)$this->get('id');
@@ -47,6 +59,14 @@ class SiteObjectBehaviour extends Object
   function actionExists($action)
   {
     return in_array(strtolower($action), $this->getActionsList());
+  }
+
+  function canBeParent()
+  {
+    if ($can_be_parent = $this->get('can_be_parent'))
+      return $can_be_parent;
+    else
+      return false;
   }
 }
 

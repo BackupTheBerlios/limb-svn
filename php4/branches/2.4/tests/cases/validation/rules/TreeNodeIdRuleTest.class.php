@@ -8,16 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/class/validators/rules/TreeNodeIdRule.class.php');
 
-class TreeNodeIdRuleTest extends SingleFieldRuleTest
+class TreeNodeIdRuleTest extends SingleFieldRuleTestCase
 {
   var $db = null;
   var $node_id_root;
   var $node_id_document;
+
+  function TreeNodeIdRuleTest()
+  {
+    parent :: SingleFieldRuleTestCase('tree node id rule test');
+  }
 
   function setUp()
   {
@@ -54,7 +59,7 @@ class TreeNodeIdRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '');
 
-    $this->error_list->expectNever('addError');
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());
@@ -67,7 +72,7 @@ class TreeNodeIdRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', false);
 
-    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_invalid_tree_node_id', 'error'), array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_INVALID_TREE_NODE_ID', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());
@@ -80,7 +85,7 @@ class TreeNodeIdRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', $this->node_id_document);
 
-    $this->error_list->expectNever('addError');
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());
@@ -93,7 +98,7 @@ class TreeNodeIdRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', -10000);
 
-    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_invalid_tree_node_id', 'error'), array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_INVALID_TREE_NODE_ID', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());

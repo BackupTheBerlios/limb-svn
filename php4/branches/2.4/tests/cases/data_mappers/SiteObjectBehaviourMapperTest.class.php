@@ -144,6 +144,19 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
     $this->assertTrue(!$this->db->fetchRow());
   }
+
+  function testGetIdsByNames()
+  {
+    $this->db->sqlInsert('sys_behaviour', array('id' => 10, 'name' => 'test1'));
+    $this->db->sqlInsert('sys_behaviour', array('id' => 11, 'name' => 'test2'));
+    $this->db->sqlInsert('sys_behaviour', array('id' => 12, 'name' => 'test3'));
+
+    $ids = SiteObjectBehaviourMapper :: getIdsByNames(array('test1', 'test2'));
+
+    sort($ids);
+    $this->assertEqual(sizeof($ids), 2);
+    $this->assertEqual($ids, array(10, 11));
+  }
 }
 
 ?>

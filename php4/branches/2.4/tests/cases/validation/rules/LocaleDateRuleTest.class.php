@@ -8,13 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
+require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/class/validators/rules/LocaleDateRule.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class LocaleDateRuleTest extends SingleFieldRuleTest
+class LocaleDateRuleTest extends SingleFieldRuleTestCase
 {
+  function LocaleDateRuleTest()
+  {
+    parent :: SingleFieldRuleTestCase('locale date rule test');
+  }
+
   function testLocaleDateRuleCorrect()
   {
     $this->validator->addRule(new LocaleDateRule('test', 'en'));
@@ -22,7 +27,7 @@ class LocaleDateRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '02/28/2003');
 
-    $this->error_list->expectNever('addError');
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());
@@ -35,7 +40,7 @@ class LocaleDateRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '02/29/2003');
 
-    $this->error_list->expectOnce('addError', array('test', 'INVALID_DATE', array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'INVALID_DATE', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());
@@ -48,7 +53,7 @@ class LocaleDateRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '28/12/2003');
 
-    $this->error_list->expectOnce('addError', array('test', 'INVALID_DATE', array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'INVALID_DATE', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());
@@ -61,7 +66,7 @@ class LocaleDateRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '02-29-2003');
 
-    $this->error_list->expectOnce('addError', array('test', 'INVALID_DATE', array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'INVALID_DATE', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());
@@ -74,7 +79,7 @@ class LocaleDateRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '02jjklklak/sdsdskj34-sdsdsjkjkj78');
 
-    $this->error_list->expectOnce('addError', array('test', 'INVALID_DATE', array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'INVALID_DATE', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());

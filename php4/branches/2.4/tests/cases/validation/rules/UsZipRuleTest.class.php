@@ -8,12 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
-require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
+require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/class/validators/rules/UsZipRule.class.php');
 
-class UsZipRuleTest extends SingleFieldRuleTest
+class UsZipRuleTest extends SingleFieldRuleTestCase
 {
+  function UsZipRuleTest()
+  {
+    parent :: SingleFieldRuleTestCase('usa zip rule test');
+  }
+
   function testUsZipRuleValid()
   {
     $this->validator->addRule(new UsZipRule('test'));
@@ -21,7 +26,7 @@ class UsZipRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '49007');
 
-    $this->error_list->expectNever('addError');
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());
@@ -34,7 +39,7 @@ class UsZipRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '49007 1234');
 
-    $this->error_list->expectNever('addError');
+    $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());
@@ -47,7 +52,7 @@ class UsZipRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '490078');
 
-    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_invalid_zip_format', 'error'), array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_INVALID_ZIP_FORMAT', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());
@@ -60,7 +65,7 @@ class UsZipRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '49007 23234');
 
-    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_invalid_zip_format', 'error'), array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_INVALID_ZIP_FORMAT', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());
@@ -73,7 +78,7 @@ class UsZipRuleTest extends SingleFieldRuleTest
     $data = new Dataspace();
     $data->set('test', '4t007 12d4');
 
-    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_invalid_zip_format', 'error'), array()));
+    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_INVALID_ZIP_FORMAT', array('Field' => 'test'), NULL));
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());

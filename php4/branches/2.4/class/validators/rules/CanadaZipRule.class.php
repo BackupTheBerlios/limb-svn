@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
+require_once(WACT_ROOT . '/validation/rule.inc.php');
 
 class CanadaZipRule extends SingleFieldRule
 {
@@ -19,7 +19,7 @@ class CanadaZipRule extends SingleFieldRule
     $value = "$value";
 
     if(!preg_match("~^[a-zA-Z]\d[a-zA-Z]\s\d[a-zA-Z]\d$~", $value))
-      $this->error(Strings :: get('error_invalid_zip_format', 'error'));
+      $this->error('ERROR_INVALID_ZIP_FORMAT');
   }
 }
 ?>

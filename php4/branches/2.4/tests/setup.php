@@ -12,6 +12,7 @@ if (file_exists(dirname(__FILE__) . '/setup.override.php'))
   include_once(dirname(__FILE__) . '/setup.override.php');
 
 @define('LIMB_DIR', dirname(__FILE__) . '/../');
+@define('WACT_ROOT', dirname(__FILE__) . '/../../../../external/wact/framework/');
 @define('VAR_DIR', dirname(__FILE__) . '/var/');
 @define('CONTENT_LOCALE_ID', 'en');
 @define('MANAGEMENT_LOCALE_ID', 'en');

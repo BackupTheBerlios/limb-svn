@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
+require_once(WACT_ROOT . '/validation/rule.inc.php');
 
 class UniqueUserRule extends SingleFieldRule
 {
@@ -21,11 +21,8 @@ class UniqueUserRule extends SingleFieldRule
     parent :: SingleFieldRule($field_name);
   }
 
-  function validate($dataspace)
+  function check($value)
   {
-    if(!$value = $dataspace->get($this->field_name))
-      return;
-
     if(	$this->current_identifier &&
         $this->current_identifier == $value)
       return;
@@ -44,7 +41,7 @@ class UniqueUserRule extends SingleFieldRule
     $arr = $db->getArray();
 
     if(is_array($arr) &&  count($arr))
-      $this->error(Strings :: get('error_duplicate_user', 'error'));
+      $this->error('ERROR_DUPLICATE_USER');
   }
 }
 

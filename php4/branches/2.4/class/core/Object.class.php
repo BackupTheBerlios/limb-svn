@@ -19,7 +19,7 @@ class Object
 
   function & _createDataspace()
   {
-    include_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+    include_once(WACT_ROOT . '/datasource/dataspace.inc.php');
     return new Dataspace();
   }
 

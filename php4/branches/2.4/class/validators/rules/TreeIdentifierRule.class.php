@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
+require_once(WACT_ROOT . '/validation/rule.inc.php');
 
 define('TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID', -1000);
 
@@ -25,11 +25,8 @@ class TreeIdentifierRule extends SingleFieldRule
     parent :: SingleFieldRule($field_name);
   }
 
-  function validate($dataspace)
+  function check($value)
   {
-    if(!$value = $dataspace->get($this->field_name))
-      return;
-
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();
 
@@ -46,12 +43,12 @@ class TreeIdentifierRule extends SingleFieldRule
 
       if($this->node_id == TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID)
       {
-        $this->error(Strings :: get('error_duplicate_tree_identifier', 'error'));
+        $this->error('ERROR_DUPLICATE_TREE_IDENTIFIER');
         break;
       }
       elseif($id != $this->node_id)
       {
-        $this->error(Strings :: get('error_duplicate_tree_identifier', 'error'));
+        $this->error('ERROR_DUPLICATE_TREE_IDENTIFIER');
         break;
       }
     }
