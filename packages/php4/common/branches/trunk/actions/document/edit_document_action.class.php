@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.php');
 
 class edit_document_action extends form_edit_site_object_action
 {
