@@ -19,8 +19,8 @@
 <input type='hidden' name='popup' value='1'>
 </core:LITERAL>
 
-<list:LIST id='cart_items'>
-	<list:ITEM>
+<grid:LIST id='cart_items'>
+	<grid:ITERATOR>
 		<tr>
 		<td>
 			<core:LITERAL><input type='checkbox' id='cart_item_amount' name='cart_form[ids][]' value='</core:LITERAL>{$id}<core:LITERAL>'></core:LITERAL>
@@ -41,8 +41,8 @@
 			<core:LITERAL><textarea id='cart_item_note' name='cart_form[notes][</core:LITERAL>{$id}<core:LITERAL>]' rows='2' cols='20'></core:LITERAL>{$note}<core:LITERAL></textarea></core:LITERAL>
 		</td>				
 		</tr>
-	</list:ITEM>
-</list:LIST>
+	</grid:ITERATOR>
+</grid:LIST>
 <tr>
 	<td colspan='2' align='left'>
 		<action_button action="remove_items" name="delete" type="submit" id="delete" value="Удалить" class="button">

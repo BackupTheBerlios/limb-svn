@@ -4,11 +4,11 @@
 <DATA_SOURCE target='class'>
 		<core:PARAMETER name='data_source_path' value='class_data_source' >
 </DATA_SOURCE>
-<list:LIST id='class'>
-<list:ITEM>
+<grid:LIST id='class'>
+<grid:ITERATOR>
 <h2>{$class_name}</h2>
-</list:ITEM>
-</list:LIST>
+</grid:ITERATOR>
+</grid:LIST>
 <br>
 
 
@@ -27,13 +27,13 @@
 </fetch:SUB_BRANCH>
 
 
-<list:LIST id="groups">
-	<list:ITEM>
+<grid:LIST id="groups">
+	<grid:ITERATOR>
 	<th>
 	{$identifier}
 	</th>
-	</list:ITEM>
-</list:LIST>
+	</grid:ITERATOR>
+</grid:LIST>
 </tr>
 
 <DATA_SOURCE target='classes'>
@@ -41,15 +41,16 @@
 </DATA_SOURCE>
 
 <grid:LIST id='classes'>
+<grid:ITERATOR>
 <tr>
-<td><grid:ITEM><small>{$action_name}({$permissions_required})</small></grid:ITEM></td>
-<core:DATASET hash_id='groups' child_id='checkers'>
-	<list:LIST id='checkers'>
-		<list:ITEM>
+<td><small>{$action_name}({$permissions_required})</small></td>
+<core:DATA_TRANSFER hash_id='groups' target='checkers'>
+	<grid:LIST id='checkers'>
+		<grid:ITERATOR>
 		<td align="center"><selector class="checkbox"></td>
-		</list:ITEM>
-	</list:LIST>
-</core:DATASET>
+		</grid:ITERATOR>
+	</grid:LIST>
+</grid:ITERATOR>
 </grid:LIST>
 </tr>
 <tr>

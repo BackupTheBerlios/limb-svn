@@ -13,9 +13,9 @@
 	<core:PARAMETER name='loader_class_name' value='faq_folder' >
 </fetch:SUB_BRANCH>
 
-<list:LIST id='faq_folder'>
+<grid:LIST id='faq_folder'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
-  <list:ITEM>
+  <grid:ITERATOR>
 		<tr class='jip'>
 			<td width='1'><core:INCLUDE file="published_status.html"></td>
 			<td jip='object' class='jip_object' >
@@ -25,6 +25,6 @@
 				<core:INCLUDE file="jip_actions/normal.html">
 			</td>
 		</tr>
-  </list:ITEM>
+  </grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>

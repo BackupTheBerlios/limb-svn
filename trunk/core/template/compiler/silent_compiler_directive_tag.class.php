@@ -41,7 +41,7 @@ class silent_compiler_directive_tag extends compiler_component
 	*/
 	function generate_now(&$code)
 	{
-		return parent::generate($code);
+		return parent :: generate($code);
 	} 
 } 
 

@@ -34,41 +34,24 @@ class grid_list_tag extends server_component_tag
 	*/
 	function pre_generate(&$code)
 	{
-		parent::pre_generate($code);
-		
 		$code->write_php($this->get_component_ref_code() . '->prepare();');
+		
+		parent :: pre_generate($code);
 
-		$code->write_php('if (' . $this->get_component_ref_code() . '->next()) {');
-	} 
-	
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_contents(&$code)
-	{				
-		$code->write_php('do { ');
-		
-		parent :: generate_contents($code);
-		
-		$code->write_php('} while (' . $this->get_dataspace_ref_code() . '->next());');
+		$code->write_php('if (' . $this->get_dataspace_ref_code() . '->get_total_row_count()){');
 	} 
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
 	function post_generate(&$code)
 	{
+		$code->write_php('} else {');
+		
+		if ($default = &$this->find_immediate_child_by_class('grid_default_tag'))
+			$default->generate_now($code);
+			
 		$code->write_php('}');
 		
-		parent::post_generate($code);
+		parent :: post_generate($code);
 	} 
-
 	/**
 	* 
 	* @return list _list_tag this instance

@@ -17,8 +17,8 @@
 <core:INCLUDE file="pager.html">
 
 <table width="100%" border="1" cellspacing="0" cellpadding="8" bordercolor="#cccccc">
-<list:LIST id='messages'>
-    <list:ITEM>
+<grid:LIST id='messages'>
+    <grid:ITERATOR>
 		  <thead class=jip>
 				<tr>
 					<td jip='object' class=jip-object>
@@ -41,8 +41,8 @@
 				</tr>
 				<tr><td><core:INCLUDE file="jip_actions/normal.html"></td></tr>
 			</thead>
-    </list:ITEM>
-</list:LIST>
+    </grid:ITERATOR>
+</grid:LIST>
 </table>
 
 			<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->

@@ -10,7 +10,7 @@
 	<core:PARAMETER name='loader_class_name' value='user_group'>
 </fetch:SUB_BRANCH>
 
-<list:LIST id='user_groups'>
+<grid:LIST id='user_groups'>
 <table width=100%>
 <tr>
 	<th><locale:STRING name='user_groups_list' file='user_group'></th>
@@ -19,13 +19,13 @@
 	<th><locale:STRING name='actions'></th>
 </tr>
 
-<list:ITEM>
+<grid:ITERATOR>
 	<tr class="jip">
 		<td jip='object'>{$title} ({$identifier})</td>
 		<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
 		<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 		<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
-</list:ITEM>
+</grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>

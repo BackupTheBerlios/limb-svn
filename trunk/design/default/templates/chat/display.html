@@ -25,9 +25,9 @@
 			<core:INCLUDE file='chat/chat_login_form.html'>
 			</chat:NOT_LOGGED_IN>
 
-<list:LIST id='chat_rooms'>
+<grid:LIST id='chat_rooms'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
-    <list:ITEM>
+    <grid:ITERATOR>
 		<tr>
 			<td class=jip >
 				<table border=0 jip='action'>
@@ -48,9 +48,9 @@
 				</table>
 			</td>
 		</tr>
-    </list:ITEM>
+    </grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>
 <div id='popup_div'></div>
 </body>
 </html>

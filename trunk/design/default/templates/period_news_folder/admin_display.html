@@ -19,8 +19,8 @@
 	<th><locale:STRING name='publish_period'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
-<list:LIST id='list'>
-<list:ITEM>
+<grid:LIST id='list'>
+<grid:ITERATOR>
 <tr class="jip">
 <td jip='object'><a href="{$path}" target="_blank">{$title}</a></td>
 <td align="center"><core:INCLUDE file="published_status.html"></td>
@@ -28,6 +28,6 @@
 <td align="center"><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
 <td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
-</list:ITEM>
-</list:LIST>
+</grid:ITERATOR>
+</grid:LIST>
 </table>

@@ -7,11 +7,11 @@
 </DATA_SOURCE>
 
 
-<list:LIST id='class'>
-<list:ITEM>
+<grid:LIST id='class'>
+<grid:ITERATOR>
 <h2>{$class_name}</h2>
-</list:ITEM>
-</list:LIST>
+</grid:ITERATOR>
+</grid:LIST>
 <br>
 
 <form method="post" name="set_group_access_template" id="set_group_access_template">
@@ -25,11 +25,11 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="5">
 
 <tr><td>&nbsp;</td>
-<list:LIST id='actions'>
-<list:ITEM>
+<grid:LIST id='actions'>
+<grid:ITERATOR>
 <td align="center">{$action_name}<br>r & w</td>
-</list:ITEM>
-</list:LIST>
+</grid:ITERATOR>
+</grid:LIST>
 </tr>
 
 <DATA_SOURCE target='classes'>
@@ -39,15 +39,14 @@
 <grid:LIST id='classes'>
 <tr>
 <td>{$group_name}</td>
-<core:DATASET hash_id='actions' child_id='checkers'>
-	<list:LIST id='checkers'>
-		<list:ITEM>
+<core:DATA_TRANSFER hash_id='actions' target='checkers'>
+	<grid:LIST id='checkers'>
+		<grid:ITERATOR>
 			<td align="center">
 			<selector class="checkbox" selector_name='read_selector_name'>&nbsp;&nbsp;<selector class="checkbox" selector_name='write_selector_name'>
 			</td>
-		</list:ITEM>
-	</list:LIST>
-</core:DATASET>
+		</grid:ITERATOR>
+	</grid:LIST>
 </tr>
 </grid:LIST>
 <tr>

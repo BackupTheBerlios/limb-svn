@@ -17,8 +17,8 @@
 <core:INCLUDE file="pager.html">
 
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
-<list:LIST id='files_folder'>
-    <list:ITEM>
+<grid:LIST id='files_folder'>
+    <grid:ITERATOR>
     <thead class=jip>
 		<tr>
 			<td jip='object' class=jip-object><a href='{$path}'>{$identifier}</a></td>
@@ -27,11 +27,11 @@
 			</td>
 		</tr>
 		</thead>
-  	</list:ITEM>
-</list:LIST>
+  	</grid:ITERATOR>
+</grid:LIST>
 
-<list:LIST id='files'>
-    <list:ITEM>
+<grid:LIST id='files'>
+    <grid:ITERATOR>
     <thead class=jip>
 		<tr>
 			<td jip='object' class=jip-object><img src='{$path}?icon'><a href='{$path}'>{$identifier}</a></td>
@@ -40,6 +40,6 @@
 			</td>
 		</tr>
 		</thead>
-  	</list:ITEM>
-</list:LIST>
+  	</grid:ITERATOR>
+</grid:LIST>
 </table>

@@ -12,14 +12,14 @@
 
 <core:INCLUDE file="pager.html">
 
-<list:LIST id='ad_block_objects'>
+<grid:LIST id='ad_block_objects'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
 	<tr>
 		<th></th>
 		<th><locale:STRING name='title'></th>
 		<th></th>
 	</tr>
-    <list:ITEM>
+    <grid:ITERATOR>
 		<tr class='jip'>
 			<td width='1'>
 			<core:INCLUDE file="published_status.html">
@@ -29,6 +29,6 @@
 				<core:INCLUDE file="jip_actions/normal.html">
 			</td>
 		</tr>
-    </list:ITEM>
+    </grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>

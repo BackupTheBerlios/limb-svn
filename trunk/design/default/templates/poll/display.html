@@ -11,7 +11,7 @@
 </fetch:SUB_BRANCH>
 
 
-<list:LIST id='answers'>
+<grid:LIST id='answers'>
 <table width=100%>
 <tr>
 	<th><locale:STRING name='poll_answers_list' file='poll'></th>
@@ -20,13 +20,13 @@
 	<th><locale:STRING name='actions'></th>
 </tr>
 
-<list:ITEM>
+<grid:ITERATOR>
 	<tr class="jip">
 		<td jip='object'>{$title}</td>
 		<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
 		<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 		<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
-</list:ITEM>
+</grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>

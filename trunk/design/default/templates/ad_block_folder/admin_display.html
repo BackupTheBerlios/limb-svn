@@ -17,13 +17,13 @@
 	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
-<list:LIST id='ad_block_objects'>
-<list:ITEM>
+<grid:LIST id='ad_block_objects'>
+<grid:ITERATOR>
 <tr class="jip">
 <td jip='object'>{$title}</td>
 <td align="center"><core:INCLUDE file="published_status.html"></td>
 <td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
-</list:ITEM>
-</list:LIST>
+</grid:ITERATOR>
+</grid:LIST>
 </table>

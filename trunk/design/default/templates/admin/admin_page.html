@@ -11,9 +11,9 @@
 	<core:PARAMETER name='restrict_by_class' value='0' type='boolean'>
 </fetch:SUB_BRANCH>
 
-<list:LIST id='objects'>
+<grid:LIST id='objects'>
  	<table width="100%" border="0" cellspacing="0" cellpadding="8" bordercolor="#cccccc">
-    <list:ITEM>
+    <grid:ITERATOR>
 			<tr class=jip>
 				<td jip='object' class=jip-object>
 					<a href="{$path}">{$title}</a>
@@ -22,6 +22,6 @@
 					<core:INCLUDE file="jip_actions/normal.html">
 				</td>
 			</tr>
-    </list:ITEM>
+    </grid:ITERATOR>
 	</table>
-</list:LIST>
+</grid:LIST>

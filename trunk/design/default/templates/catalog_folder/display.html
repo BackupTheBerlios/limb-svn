@@ -11,17 +11,17 @@
 	<core:PARAMETER name='depth' value='1' type='numeric'>
 </fetch:SUB_BRANCH>
 
-	<list:LIST id='folders'>
+	<grid:LIST id='folders'>
 		<table width=100% border=0 cellspacing=0 cellpadding=0 bgcolor="DFE4F7">
-	    <list:ITEM>
+	    <grid:ITERATOR>
 			<tr>
 		    <td colspan=100 bgcolor="DFE4F7" style="padding: 2px, 0, 3px, 10px">
 		    	<h3><a href='{$path}'>{$title}</a></h3>
 		    </td>
 			</tr>
-    </list:ITEM>
+    </grid:ITERATOR>
    </table>
-	</list:LIST>
+	</grid:LIST>
 
 
 <fetch:SUB_BRANCH target='direct_objects'>
@@ -33,12 +33,12 @@
 	<tr>
 
 <grid:LIST id='direct_objects'>	
+<grid:ITERATOR>
 
 		<grid:SEPARATOR count='2'>
 		</tr><tr>
 		</grid:SEPARATOR>
 		
-		<grid:ITEM>
 			<td  jip='object' class=jip bgcolor="white" valign=top>
 				<core:INCLUDE file="published_status.html">
 				<span jip='action'><core:INCLUDE file="jip_actions/normal.html"></span><br>
@@ -61,8 +61,8 @@
       	</table>
 			
 			</td>
-		</grid:ITEM>
-
+		
+</grid:ITERATOR>
 </grid:LIST>
 		</tr>
 </table>

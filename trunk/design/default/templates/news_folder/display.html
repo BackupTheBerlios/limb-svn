@@ -16,12 +16,12 @@
 
 <core:INCLUDE file="front_pager.html">
 
-<list:LIST id='news'>
+<grid:LIST id='news'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
-    <list:ITEM>
+    <grid:ITERATOR>
 		<core:INCLUDE file="/news_object/news_item.html">
-    </list:ITEM>
+    </grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>
 
 			<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->

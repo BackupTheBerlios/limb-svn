@@ -4,14 +4,14 @@
 			<core:PARAMETER name='path' value='/root/navigation/main' >
 		</fetch:SUB_BRANCH>
 
-<list:LIST id='menu'>
+<grid:LIST id='menu'>
 <table width="587" border="0" cellspacing="0" cellpadding="0" class="menu" style='padding: 0 0 6px 0'>
 <tr>
-<list:ITEM>
+<grid:ITERATOR>
 
-	<list:SEPARATOR>
+	<grid:SEPARATOR>
   <td><img src="/design/main/images/menu-spase.gif" width="15" height="11"></td>
-	</list:SEPARATOR>
+	</grid:SEPARATOR>
 	<td nowrap class=menu>
 		<core:OPTIONAL for="in_path">
 			{$title}
@@ -20,7 +20,7 @@
 			<a href='{$url}'>{$title}</a>
 		</core:DEFAULT>
 	</td>
-</list:ITEM>
+</grid:ITERATOR>
 </tr>
 </table>
-</list:LIST>
+</grid:LIST>

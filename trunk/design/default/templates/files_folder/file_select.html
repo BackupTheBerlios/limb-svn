@@ -9,16 +9,16 @@
 <tr>
 	<td style='padding:0 25px 3px 0' class=path>
 	<metadata:BREADCRUMBS offset_path='/root'>
-	<list:LIST>
-		<list:ITEM>
-			<list:BREADCRUMBS common>
+	<grid:LIST>
+		<grid:ITERATOR>
+			<core:DEFAULT for='is_last'>
 			<a href="{$path}?action=file_select">{$title}</a> &gt;
-			</list:BREADCRUMBS>
-			<list:BREADCRUMBS id='breadcrumbs_title' last>
+			</core:DEFAULT>
+			<core:OPTIONAL for='is_last'>
 			{$title}
-			</list:BREADCRUMBS>
-		</list:ITEM>
-	</list:LIST>
+			</core:OPTIONAL>
+		</grid:ITERATOR>
+	</grid:LIST>
 	</metadata:BREADCRUMBS>
 	</td>
 </tr>
@@ -39,25 +39,27 @@
 
 <core:INCLUDE file="pager.html">
 
-<list:LIST id='folders'>
+<grid:LIST id='folders'>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <list:ITEM>
+    <grid:ITERATOR>
 				<tr class='jip'>
 					<td jip='object' class='jip_object'><img src='/shared/images/folder.gif' align='center'>&nbsp;<a href="{$path}?action=image_select">{$title}</a></td>
 					<td jip='action'><core:INCLUDE file="jip_actions/simple.html"></td>
 				</tr>
-    </list:ITEM>
+    </grid:ITERATOR>
 			</table>
-</list:LIST>
+</grid:LIST>
 
 <table width="100%" border="0" cellspacing="5" cellpadding="5">
 
 <grid:LIST id='files'>
+<grid:ITERATOR>
 <tr>
-<td><grid:ITEM><img src='/root?node_id={$node_id}&icon' align='center'>{$identifier}&nbsp;{$description}</grid:ITEM></td>
+<td><img src='/root?node_id={$node_id}&icon' align='center'>{$identifier}&nbsp;{$description}</td>
 <td width='1'><core:INCLUDE file="/jip_actions/simple.html"></td>
-<td>&nbsp;<grid:ITEM><core:LITERAL><button class='button' onclick='parent.update_file_data(</core:LITERAL>{node_id: "{$node_id}", name: "{$identifier}", description: "{$description}", mime_type: "{$mime_type}", size: "{$size}"}<core:LITERAL>)'>Select</button></core:LITERAL><core:LITERAL></a></core:LITERAL></grid:ITEM></td>
+<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_file_data(</core:LITERAL>{node_id: "{$node_id}", name: "{$identifier}", description: "{$description}", mime_type: "{$mime_type}", size: "{$size}"}<core:LITERAL>)'>Select</button></core:LITERAL><core:LITERAL></a></core:LITERAL></td>
 </tr>
+</grid:ITERATOR>
 </grid:LIST>
 
 </table>

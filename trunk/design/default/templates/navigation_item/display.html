@@ -15,7 +15,7 @@
 	<core:PARAMETER name='depth' value='1' type='numeric'>
 </fetch:SUB_BRANCH>
 
-<list:LIST id='items'>
+<grid:LIST id='items'>
     <table width="100%" border="0" cellspacing="0" cellpadding="8">
 			<tr>
 				<th><locale:STRING name='title'></th>
@@ -25,13 +25,13 @@
 				</th>
 				<th><locale:STRING name='actions'></th>
 			</tr>
-    <list:ITEM>
+    <grid:ITERATOR>
 				<tr class='jip'>
 					<td jip='object' class='jip_object'><a href="{$path}">{$title}</a></td>
 					<td>{$url}</td>
 					<td><core:INCLUDE file="order.html"></td>
 					<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 				</tr>
-    </list:ITEM>
+    </grid:ITERATOR>
 			</table>
-</list:LIST>
+</grid:LIST>

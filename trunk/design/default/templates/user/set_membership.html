@@ -13,10 +13,12 @@
 	<core:PARAMETER name='data_source_path' value='user_membership_data_source'>
 </DATA_SOURCE> 
 <grid:LIST id='groups'>
+<grid:ITERATOR>
 <tr>
-	<td><grid:ITEM><small>{$identifier}</small></grid:ITEM></td>
-	<td><grid:ITEM><selector class="checkbox"></grid:ITEM></td>
+	<td><small>{$identifier}</small></td>
+	<td><selector class="checkbox"></td>
 </tr>
+</grid:ITERATOR>
 </grid:LIST>
 <tr>
 <td colspan=2 align=center>

@@ -19,9 +19,9 @@
 	<tr>
 		<td width=100% >
 			<core:INCLUDE file="front_pager.html">			
-			<list:LIST id='documents'>
+			<grid:LIST id='documents'>
 			<table width=100% cellpadding=0 cellspacing=0>
-			<list:ITEM>
+			<grid:ITERATOR>
 			<tr class="jip">
 				<td jip='object' class=h2><a href='{$path}'>{$title}</a></td>
 			</tr>
@@ -31,26 +31,26 @@
 			<tr>
 				<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 			</tr>
-			</list:ITEM>
+			</grid:ITERATOR>
 			</table>
-			</list:LIST>
+			</grid:LIST>
 		</td>
 
-			<list:LIST id='documents_folders'>
+			<grid:LIST id='documents_folders'>
 		<td valign=top style="border-left:solid 1px #DEDEDE; padding: 1px 0px 0px 8px">	
 			<span class=date>Subfolders:</span>
 			
 			
 			<table width=120 border=0 cellpadding=0 cellspacing=0>
-			<list:ITEM>
+			<grid:ITERATOR>
 			<tr class="jip">
 				<td jip='object' class=h2><a href='{$path}'>{$title}</a></td>
 				<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 			</tr>
-			</list:ITEM>
+			</grid:ITERATOR>
 			</table>
 		</td>
-			</list:LIST>
+			</grid:LIST>
 	</tr>
 </table>
 

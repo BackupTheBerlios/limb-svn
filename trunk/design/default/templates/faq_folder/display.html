@@ -15,9 +15,9 @@
 
 <core:INCLUDE file="pager.html">
 
-<list:LIST id='faq_questions'>
+<grid:LIST id='faq_questions'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
-    <list:ITEM>
+    <grid:ITERATOR>
 		<tr>
 			<td width=1>
 			<core:INCLUDE file="published_status.html">
@@ -26,17 +26,17 @@
 			<a href='#{$identifier}'>{$question}</a>
 			</td>
 		</tr>
-    </list:ITEM>
+    </grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>
 
 <fetch:SUB_BRANCH target='faq' >
 	<core:PARAMETER name='loader_class_name' value='faq_object' >
 </fetch:SUB_BRANCH>
 
-<list:LIST id='faq'>
+<grid:LIST id='faq'>
   <table width="100%" border="0" cellspacing="0" cellpadding="8" >
-  <list:ITEM>
+  <grid:ITERATOR>
 	<tr>
 		<td>
 			<table width=100% border=0 cellspacing=0 cellpadding=0 class='jip'>
@@ -54,9 +54,9 @@
 			</table>
 		</td>
 	</tr>			
-  </list:ITEM>
+  </grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>
 
 <fetch:SUB_BRANCH target='faq_folder' >
 	<core:PARAMETER name='loader_class_name' value='faq_folder' >

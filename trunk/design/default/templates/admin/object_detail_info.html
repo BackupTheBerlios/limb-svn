@@ -19,17 +19,17 @@
 			<core:PARAMETER name='data_source_path' value='object_versions_data_source'>
 		</DATA_SOURCE>
 		
-		<list:LIST id='versions'>
+		<grid:LIST id='versions'>
 		<table width="100%" border="0" cellspacing="0" cellpadding="5">
-		<list:ITEM>
+		<grid:ITERATOR>
 		<tr>
 		<td align="center">{$version}</td>
 		<td align="center">{$creator_name} {$creator_lastname} <a href='mailto:{$creator_email}'>@</a></td>
 		<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp'></td>
 		</tr>
-		</list:ITEM>
+		</grid:ITERATOR>
 		</table>
-		</list:LIST>
+		</grid:LIST>
 		
 	</td>
 </tr>

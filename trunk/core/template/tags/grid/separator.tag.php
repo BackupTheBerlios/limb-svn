@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: optional.tag.php 440 2004-02-12 16:56:15Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 class grid_separator_tag_info
@@ -21,18 +21,34 @@ class grid_separator_tag extends compiler_directive_tag
 {
 	var $count;
 
-	function pre_parse()
+	/**
+	* 
+	* @return void 
+	* @access private 
+	*/
+	function check_nesting_level()
 	{
-		$count = $this->attributes['count'];
-		if (empty($count))
+		if ($this->find_parent_by_class('grid_separator_tag'))
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'attribute' => 'count',
+			error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
-
-		$this->count = $count;
+		if (!is_a($this->parent, 'grid_iterator_tag'))
+		{
+			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+					'enclosing_tag' => 'grid:ITERATOR',
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
+		} 
+	}
+	
+	function pre_parse()
+	{
+		if (!isset($this->attributes['count']))
+			$this->count = 1;
+		else	
+			$this->count = $this->attributes['count'];
 
 		return PARSER_REQUIRE_PARSING;
 	} 
@@ -41,11 +57,14 @@ class grid_separator_tag extends compiler_directive_tag
 	{
 		parent::pre_generate($code);
 
-		$counter = $code->get_temp_variable();
+		$counter = '$' . $code->get_temp_variable();
 		
-		$code->write_php('$' . $counter . ' = trim(' . $this->get_dataspace_ref_code() . '->get_counter());');
+		$code->write_php($counter . ' = trim(' . $this->get_dataspace_ref_code() . '->get_counter());');
 	
-		$code->write_php('if (($' . $counter .') && ($' . $counter . '%' . $this->count . ' == 0)) {');
+		$code->write_php(
+				"if (	($counter > 0) && 
+							($counter < " . $this->get_dataspace_ref_code() . "->get_total_row_count()) &&
+						 	($counter % " . $this->count . " == 0)) {");
 	} 
 
 	function post_generate(&$code)

@@ -3,16 +3,16 @@
 	<tr>
 		<td style='padding:0 25px 3px 0' class=path>
 		<metadata:BREADCRUMBS>
-		<list:LIST>
-			<list:ITEM>
-				<list:BREADCRUMBS common>
+		<grid:LIST>
+			<grid:ITERATOR>
+				<core:DEFAULT for='is_last'>
 				<a href="{$path}?action=admin_display">{$title}</a>  &raquo; 
-				</list:BREADCRUMBS>
-				<list:BREADCRUMBS last>
+				</core:DEFAULT>
+				<core:OPTIONAL for='is_last'>
 				{$title}
-				</list:BREADCRUMBS>
-			</list:ITEM>
-		</list:LIST>
+				</core:OPTIONAL>
+			</grid:ITERATOR>
+		</grid:LIST>
 		</metadata:BREADCRUMBS>
 		</td>
 	</tr>

@@ -1,4 +1,4 @@
-<list:LIST id='users'>
+<grid:LIST id='users'>
 <table width=100%>
 	<tr>
 		<th><locale:STRING name='login' file='user'></th>
@@ -7,7 +7,7 @@
 		<th><locale:STRING name='modified_date'></th>
 		<th><locale:STRING name='actions'></th>
 	</tr>
-	<list:ITEM>
+	<grid:ITERATOR>
 	<tr class="jip">
 		<td jip='object' class='jip_object'>{$identifier}</td>
 		<td jip='object' class='jip_object'><a href='mailto:{$email}'>{$email}</a></td>
@@ -15,6 +15,6 @@
 		<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 		<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
-	</list:ITEM>
+	</grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>

@@ -19,14 +19,16 @@
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:LIST id='documents'>
+<grid:ITERATOR>
 <tr class=jip>
-<td jip=object class=jip-object><grid:ITEM><a href="{$path}">{$question}</a></grid:ITEM></td>
-<td align="center"><grid:ITEM>
+<td jip=object class=jip-object><a href="{$path}">{$question}</a></td>
+<td align="center">
 					<core:INCLUDE file="published_status.html">
-</grid:ITEM></td>
-<td align="center"><grid:ITEM><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></grid:ITEM></td>
-<td align="center"><grid:ITEM><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></grid:ITEM></td>
+</td>
+<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 <td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
+</grid:ITERATOR>
 </grid:LIST>
 </table>

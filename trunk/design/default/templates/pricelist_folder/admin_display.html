@@ -11,7 +11,7 @@
 	<core:PARAMETER name='depth' value='1' type='numeric'>
 </fetch:SUB_BRANCH>
 
-<list:LIST id='pricelist_objects'>
+<grid:LIST id='pricelist_objects'>
 <table width=100%>
 <tr>
 	<th><locale:STRING name='pricelist_object' file='pricelist'></th>
@@ -20,7 +20,7 @@
 	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
-<list:ITEM>
+<grid:ITERATOR>
 <tr class="jip">
 <td jip='object'><a href='{$path}?action=admin_display'>{$title}</a></td>
 <td><core:INCLUDE file="published_status.html"></td>
@@ -28,6 +28,6 @@
 <td><core:INCLUDE file="order.html"></td>
 <td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
-</list:ITEM>
+</grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>

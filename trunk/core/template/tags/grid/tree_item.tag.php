@@ -22,7 +22,7 @@ define('TREE_CROSS_M_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=1
 class grid_tree_item_tag_info
 {
 	var $tag = 'grid:TREE_ITEM';
-	var $end_tag = ENDTAG_REQUIRED;
+	var $end_tag = ENDTAG_FORBIDDEN;
 	var $tag_class = 'grid_tree_item_tag';
 } 
 
@@ -32,10 +32,10 @@ class grid_tree_item_tag extends compiler_directive_tag
 {
 	function check_nesting_level()
 	{
-		if (!is_a($this->parent, 'grid_list_tag'))
+		if (!is_a($this->parent, 'grid_iterator_tag'))
 		{
 			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'enclosing_tag' => 'grid:TREE_ITEM',
+					'enclosing_tag' => 'grid:ITERATOR',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 

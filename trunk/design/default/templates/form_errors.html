@@ -1,3 +1,5 @@
+			<form:ERRORS target='errors'>
+			
 			<form:STATUS>
 				<form:SUCCESS_STATUS>
 				<img src='/shared/images/success.gif'>
@@ -10,17 +12,19 @@
 				</form:ERROR_STATUS>
 			</form:STATUS>
 			
-			<errors>
+			<grid:LIST id='errors'>
+			<grid:DEFAULT>
+			</grid:DEFAULT>
 				<table width=100% border=0 cellspacing=0 cellpadding=0 class=error-block>
 				<tr>
 					<td>
 						<locale:STRING name='form_had_errors'>
 						<ol>
-					  <list:ITEM>
+					  <grid:ITERATOR>
 					    <li><locale:STRING hash_id='label'> ({$label}): <font color="red">{$error_message}</font></li>
-					  </list:ITEM>
+					  </grid:ITERATOR>
 					  </ol>
 					</td>
 				</tr>
 				</table>	
-				</errors>
+			</grid:LIST>

@@ -16,9 +16,9 @@
 				<core:PARAMETER name='order' value='created_date=DESC'>
 			</DATA_SOURCE>
 			
-				<list:LIST id='questions'>
+				<grid:LIST id='questions'>
 			    	<table border=0 cellspacing=0 cellpadding=1> 
-				    <list:ITEM>
+				    <grid:ITERATOR>
 								<tr class="jip">
 									<td><core:INCLUDE file="published_status.html"></td>
 									<td><img class=icon src='/design/main/images/icons/v.gif'></td>
@@ -34,9 +34,10 @@
 									<td align=right>Всего ответов:</td>
 									<td><b>{$total_count}</b></td>
 								</tr>
-							<core:DATASET hash_id='answers' child_id='answers'>
-							<list:LIST id='answers'>
-								<list:ITEM>
+							<core:DATA_TRANSFER hash_id='answers' target='answers'>
+							
+							<grid:LIST id='answers'>
+								<grid:ITERATOR>
 								<tr class=jip>
 									<td></td>
 									<td></td>
@@ -45,15 +46,14 @@
 									<td width=1><nobr>{$count} ({$rounded_percentage}%)</nobr></td>
 									<td><core:INCLUDE file="jip_actions/normal.html"></td>
 								</tr>
-								</list:ITEM>
-						</list:LIST>
-						</core:DATASET>
+								</grid:ITERATOR>
+						</grid:LIST>
 						<tr>
 							<td height=10></td>
 						</tr>
-			    </list:ITEM>
+			    </grid:ITERATOR>
 						</table>
-			</list:LIST>
+			</grid:LIST>
 		</td>
 	</tr>
 	</table>

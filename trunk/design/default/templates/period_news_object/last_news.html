@@ -15,15 +15,15 @@
     <td>
 			<table width="100%" border=0 cellspacing="7" cellpadding="0" class="table">
 			<col class="date">
-				<list:LIST id='last_news'>
-			  <list:ITEM>
+				<grid:LIST id='last_news'>
+			  <grid:ITERATOR>
 			  <tr>
 					<td><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date'></td>
 					<td width=100%>
 						<a href="{$path}" class="link">{$title}</a></td>
 			  </tr>
-			  </list:ITEM>
-			</list:LIST>
+			  </grid:ITERATOR>
+			</grid:LIST>
 			</table>
 	</td>
   </tr>

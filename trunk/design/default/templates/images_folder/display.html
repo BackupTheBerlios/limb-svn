@@ -18,8 +18,8 @@
 
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
 
-<list:LIST id='images_folder'>
-  <list:ITEM>
+<grid:LIST id='images_folder'>
+  <grid:ITERATOR>
   <thead class=jip>
 	<tr>
 		<td jip='object' class=jip-object><a href='{$path}'>{$identifier}</a></td>
@@ -28,11 +28,11 @@
 		</td>
 	</tr>
 </thead>
-  </list:ITEM>
-</list:LIST>
+  </grid:ITERATOR>
+</grid:LIST>
 
-<list:LIST id='images'>
-  <list:ITEM>
+<grid:LIST id='images'>
+  <grid:ITERATOR>
     <thead class=jip>
 		<tr>
 			<td jip='object' class=jip-object><img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a></td>
@@ -41,6 +41,6 @@
 			</td>
 		</tr>
 		</thead>
-  </list:ITEM>
-</list:LIST>
+  </grid:ITERATOR>
+</grid:LIST>
 </table>

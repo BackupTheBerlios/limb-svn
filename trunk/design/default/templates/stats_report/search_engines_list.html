@@ -18,20 +18,20 @@
 <th>%</th>
 </tr>
 
-<list:LIST id='table'>
-<list:ITEM>
-<list:STRIPE odd>
+<grid:LIST id='table'>
+<grid:ITERATOR>
+<grid:STRIPE odd>
 <tr bgcolor='#f0f0f0'>
-</list:STRIPE>
+</grid:STRIPE>
 
-<list:STRIPE even>
+<grid:STRIPE even>
 <tr>
-</list:STRIPE>
+</grid:STRIPE>
 
 <td>{$engine}</td>
 <td>{$hits}</td>
 <td>{$percentage}</td>
 </tr>
-</list:ITEM>
-</list:LIST>
+</grid:ITERATOR>
+</grid:LIST>
 </table>

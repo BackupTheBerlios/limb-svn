@@ -31,12 +31,14 @@
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='tree'>
+<grid:ITERATOR>
 <tr>
-<td height=100%><grid:TREE_ITEM></grid:TREE_ITEM></td>
-<td><grid:ITEM><small>{$class_name}</small></grid:ITEM></td>
+<td height=100%><grid:TREE_ITEM></td>
+<td><small>{$class_name}</small></td>
 <td><core:INCLUDE file="order.html"></td>
 <td><core:INCLUDE file="/jip_actions/simple.html"></td>
 </tr>
+</grid:ITERATOR>
 </grid:LIST>
 
 </table>

@@ -5,24 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: stripe.tag.php 21 2004-03-05 11:43:13Z server $
 *
 ***********************************************************************************/
 
 
-class list_stripe_tag_info
+class grid_stripe_tag_info
 {
-	var $tag = 'list:STRIPE';
+	var $tag = 'grid:STRIPE';
 	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'list_stripe_tag';
+	var $tag_class = 'grid_stripe_tag';
 } 
 
-register_tag(new list_stripe_tag_info());
+register_tag(new grid_stripe_tag_info());
 
-/**
-* Compile time component for seperators in a list
-*/
-class list_stripe_tag extends compiler_directive_tag
+class grid_stripe_tag extends compiler_directive_tag
 {
 	/**
 	* 
@@ -31,16 +28,16 @@ class list_stripe_tag extends compiler_directive_tag
 	*/
 	function check_nesting_level()
 	{
-		if ($this->find_parent_by_class('list_stripe_tag'))
+		if ($this->find_parent_by_class('grid_stripe_tag'))
 		{
 			error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
-		if (!is_a($this->parent, 'list_item_tag'))
+		if (!is_a($this->parent, 'grid_iterator_tag'))
 		{
 			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'enclosing_tag' => 'list:ITEM',
+					'enclosing_tag' => 'grid:ITERATOR',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 

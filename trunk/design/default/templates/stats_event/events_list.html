@@ -24,15 +24,15 @@
 <th><locale:STRING name='user' file='user'></th>
 </tr>
 
-<list:LIST id='events'>
-<list:ITEM>
-<list:STRIPE odd>
+<grid:LIST id='events'>
+<grid:ITERATOR>
+<grid:STRIPE odd>
 <tr bgcolor='#f0f0f0'>
-</list:STRIPE>
+</grid:STRIPE>
 
-<list:STRIPE even>
+<grid:STRIPE even>
 <tr>
-</list:STRIPE>
+</grid:STRIPE>
 
 <td align='center'>{$id}</td>
 <td><locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'></td>
@@ -65,6 +65,6 @@
 <td>{$uri}</td>
 <td><a href='/root/users/{$user_login}' target='_blank'>{$user_login}</a></td>
 </tr>
-</list:ITEM>
-</list:LIST>
+</grid:ITERATOR>
+</grid:LIST>
 </table>

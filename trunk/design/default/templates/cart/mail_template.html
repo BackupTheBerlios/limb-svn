@@ -21,7 +21,7 @@
 </table>
 
 <locale:STRING name='order_contents' file='cart'>
-<list:LIST id='cart_items'>
+<grid:LIST id='cart_items'>
 <table border=0>
 <tr>
 <th><locale:STRING name='order_item' file='cart'></th>
@@ -30,7 +30,7 @@
 <th><locale:STRING name='summ' file='cart'></th>
 <th><locale:STRING name='notes' file='cart'></th>
 </tr>
-<list:ITEM>
+<grid:ITERATOR>
 <tr>
 <td>{$description}</td>
 <td>{$price}</td>
@@ -38,8 +38,8 @@
 <td>{$summ}</td>
 <td>{$note}</td>
 </tr>
-</list:ITEM>
+</grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>
 </body>
 </html>

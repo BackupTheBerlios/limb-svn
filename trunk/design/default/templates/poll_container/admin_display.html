@@ -13,7 +13,7 @@
 
 <core:INCLUDE file="pager.html">
 
-<list:LIST id='folders'>
+<grid:LIST id='folders'>
 <table width=100%>
 <tr>
 	<th><locale:STRING name='poll_questions_list' file='poll'></th>
@@ -23,7 +23,7 @@
 	<th><locale:STRING name='actions'></th>
 </tr>
 
-<list:ITEM>
+<grid:ITERATOR>
 	<tr class="jip">
 		<td jip='object'><a href="{$path}">{$title}</a></td>
 		<td align="center"><core:INCLUDE file="published_status.html"></td>
@@ -31,6 +31,6 @@
 		<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 		<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
-</list:ITEM>
+</grid:ITERATOR>
 </table>
-</list:LIST>
+</grid:LIST>
