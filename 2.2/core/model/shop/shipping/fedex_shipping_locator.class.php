@@ -56,10 +56,20 @@ class fedex_shipping_locator
       $weight_unit, 
       $is_residence);
     
-    $express_options = $this->_parse_html_options($express_html);
-    $ground_options = $this->_parse_html_options($ground_html);
+    if($express_html === false)
+      $express_options = array();
+    else
+      $express_options = $this->_parse_html_options($express_html);
     
+    if($ground_html === false)
+      $ground_options = array();
+    else
+      $ground_options = $this->_parse_html_options($ground_html);
+        
     $options = array_merge($express_options, $ground_options);
+    
+    if(empty($options))
+      return false;
     
     $options = complex_array :: sort_array($options, array('price' => 'ASC'), false);
     
