@@ -82,20 +82,35 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->assertEqual($object->get('identifier'), $identifier);
   }
 
-  function testFailedInsertTreeNodeParentIdNotSet()
+  function testFailedInsertCantGenerateIdentifier()
   {
-    $mapper = new TreeNodeDataMapper();
+    $mapper = new TreeNodeDataMapperTestVersion($this);
+    $generator = new MockIdentifierGenerator($this);
+
+    $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
     $object = new Object();
+    $object->set('parent_node_id', $parent_node_id = 10);
+
+    $this->tree->expectNever('canAddNode');
+
+    $generator->expectOnce('generate', array($object));
+    $generator->setReturnValue('generate', false, array($object));
 
     $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'tree parent node is empty');
+    $this->assertEqual($e->getMessage(), 'failed to generate identifier');
+
+    $generator->tally();
   }
 
   function testFailedInsertTreeNodeCantRegisterNode()
   {
-    $mapper = new TreeNodeDataMapper();
+    $mapper = new TreeNodeDataMapperTestVersion($this);
+    $generator = new MockIdentifierGenerator($this);
+    $generator->setReturnValue('generate', $identifier = 'identifier');
+
+    $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
     $object = new Object();
     $object->set('parent_node_id', $parent_node_id = 10);
@@ -109,28 +124,6 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->assertEqual($e->getAdditionalParams(), array('parent_node_id' => 10));
   }
 
-  function testFailedInsertCantGenerateIdentifier()
-  {
-    $mapper = new TreeNodeDataMapperTestVersion($this);
-    $generator = new MockIdentifierGenerator($this);
-
-    $mapper->setReturnReference('_getIdentifierGenerator', $generator);
-
-    $object = new Object();
-    $object->set('parent_node_id', $parent_node_id = 10);
-
-    $this->tree->expectOnce('canAddNode', array($parent_node_id));
-    $this->tree->setReturnValue('canAddNode', true);
-
-    $generator->expectOnce('generate', array($object));
-    $generator->setReturnValue('generate', false, array($object));
-
-    $mapper->insert($object);
-    $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'failed to generate identifier');
-
-    $generator->tally();
-  }
 
   function testFailedInsertCantMakeTreeNode()
   {
@@ -159,7 +152,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $generator->tally();
   }
 
-  function testInsertTreeNodeOk()
+  function testInsertChildTreeNodeOk()
   {
     $mapper = new TreeNodeDataMapperTestVersion($this);
     $generator = new MockIdentifierGenerator($this);
@@ -182,6 +175,30 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper->insert($object);
 
     $this->assertEqual($object->get('node_id'), $node_id);
+    $this->assertEqual($object->get('identifier'), $identifier);
+
+    $generator->tally();
+  }
+
+  function testInsertRootTreeNodeOk()
+  {
+    $mapper = new TreeNodeDataMapperTestVersion($this);
+    $generator = new MockIdentifierGenerator($this);
+
+    $mapper->setReturnReference('_getIdentifierGenerator', $generator);
+
+    $object = new Object();
+
+    $generator->expectOnce('generate', array($object));
+    $generator->setReturnValue('generate', $identifier = 'identifier', array($object));
+
+    $expected = array(array('identifier' => $identifier));
+    $this->tree->expectOnce('createRootNode', $expected);
+    $this->tree->setReturnValue('createRootNode', $root_node_id = 100, $expected);
+
+    $mapper->insert($object);
+
+    $this->assertEqual($object->get('node_id'), $root_node_id);
     $this->assertEqual($object->get('identifier'), $identifier);
 
     $generator->tally();

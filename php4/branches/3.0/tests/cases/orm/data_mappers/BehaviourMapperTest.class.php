@@ -63,7 +63,7 @@ class BehaviourMapperTest extends LimbTestCase
   {
     $mapper = new BehaviourMapperTestVersion($this);
 
-    $behaviour = new Behaviour();
+    $behaviour = new Behaviour('whatever');
 
     $mapper->expectOnce('insert', array($behaviour));
 
@@ -76,7 +76,7 @@ class BehaviourMapperTest extends LimbTestCase
   {
     $mapper = new BehaviourMapperTestVersion($this);
 
-    $behaviour = new Behaviour();
+    $behaviour = new Behaviour('whatever');
     $behaviour->setId(100);
 
     $mapper->expectOnce('update', array($behaviour));
@@ -88,8 +88,7 @@ class BehaviourMapperTest extends LimbTestCase
 
   function testInsert()
   {
-    $behaviour = new Behaviour();
-    $behaviour->setName($name = 'test');
+    $behaviour = new Behaviour($name = 'test');
 
     $this->mapper->insert($behaviour);
 
@@ -102,7 +101,7 @@ class BehaviourMapperTest extends LimbTestCase
 
   function testUpdateFailedNoId()
   {
-    $behaviour = new Behaviour();
+    $behaviour = new Behaviour('whatever');
 
     $this->mapper->update($behaviour);
     $this->assertTrue(catch('Exception', $e));
@@ -112,9 +111,8 @@ class BehaviourMapperTest extends LimbTestCase
   {
     $this->db->insert('sys_behaviour', array('id' => $id = 100));
 
-    $behaviour = new Behaviour();
+    $behaviour = new Behaviour($name = 'test');
     $behaviour->setId($id);
-    $behaviour->setName($name = 'test');
 
     $this->mapper->update($behaviour);
 
@@ -127,7 +125,7 @@ class BehaviourMapperTest extends LimbTestCase
 
   function testDeleteFailedNoId()
   {
-    $behaviour = new Behaviour();
+    $behaviour = new Behaviour('whatever');
 
     $this->mapper->delete($behaviour);
     $this->assertTrue(catch('Exception', $e));
@@ -137,7 +135,7 @@ class BehaviourMapperTest extends LimbTestCase
   {
     $this->db->insert('sys_behaviour', array('id' => $id = 100));
 
-    $behaviour = new Behaviour();
+    $behaviour = new Behaviour('whatever');
     $behaviour->setId($id);
 
     $this->mapper->delete($behaviour);

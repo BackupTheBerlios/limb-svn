@@ -15,6 +15,13 @@ class Behaviour extends Object
 {
   var $ini;
 
+  function Behaviour($name)
+  {
+    parent :: Object();
+
+    $this->set('name', $name);
+  }
+
   function & getActionCommand($action)
   {
     $ini =& $this->_getIni();
@@ -91,7 +98,6 @@ class Behaviour extends Object
     return $ini->getOption('default_action');
   }
 
-
   function getId()
   {
     return (int)$this->get('id');
@@ -100,11 +106,6 @@ class Behaviour extends Object
   function setId($id)
   {
     $this->set('id', (int)$id);
-  }
-
-  function setName($name)
-  {
-    $this->set('name', $name);
   }
 
   function getName()

@@ -21,9 +21,8 @@ class BehaviourMapper extends AbstractDataMapper
     if(!$record = $table->selectRecordById($id))
       return null;
 
-    $behaviour =& new Behaviour();
+    $behaviour =& new Behaviour($record->get('name'));
     $behaviour->setId($id);
-    $behaviour->setName($record->get('name'));
 
     return $behaviour;
   }

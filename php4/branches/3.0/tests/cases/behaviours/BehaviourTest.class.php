@@ -34,8 +34,7 @@ class BehaviourTest extends LimbTestCase
       '
     );
 
-    $behaviour = new Behaviour();
-    $behaviour->setName('test');
+    $behaviour = new Behaviour('test');
     $this->assertEqual(array('action1', 'action2'),
                        $behaviour->getActionsList());
   }
@@ -52,8 +51,7 @@ class BehaviourTest extends LimbTestCase
       '
     );
 
-    $behaviour = new Behaviour();
-    $behaviour->setName('test');
+    $behaviour = new Behaviour('test');
     $this->assertTrue($behaviour->actionExists('action1'));
     $this->assertFalse($behaviour->actionExists('no_such_action'));
   }
@@ -70,8 +68,7 @@ class BehaviourTest extends LimbTestCase
       '
     );
 
-    $behaviour = new Behaviour();
-    $behaviour->setName('test');
+    $behaviour = new Behaviour('test');
     $this->assertTrue($behaviour->canBeParent());
   }
 
@@ -88,8 +85,7 @@ class BehaviourTest extends LimbTestCase
       '
     );
 
-    $behaviour = new Behaviour();
-    $behaviour->setName('test');
+    $behaviour = new Behaviour('test');
     $this->assertTrue($behaviour->getDefaultAction(), 'admin_display');
   }
 }

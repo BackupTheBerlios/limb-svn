@@ -62,7 +62,7 @@ class SQLBasedDAOTest extends LimbTestCase
     Limb :: restoreToolkit();
   }
 
-  function testProcess()
+  function testFetch()
   {
     $criteria1 = new MockCriteria($this);
     $criteria2 = new MockCriteria($this);
@@ -83,11 +83,23 @@ class SQLBasedDAOTest extends LimbTestCase
     $this->stmt->setReturnValue('getRecordSet', $rs = 'anything');
 
     $this->assertEqual($this->dao->fetch(), $rs);
+
+    $criteria1->tally();
+    $criteria2->tally();
   }
 
-  function testFindById()
+  function testFetchById()
   {
     $id = "10";
+
+    $criteria1 = new MockCriteria($this);
+    $criteria2 = new MockCriteria($this);
+
+    $this->dao->addCriteria($criteria1);
+    $this->dao->addCriteria($criteria2);
+
+    $criteria1->expectOnce('process', array(new IsAExpectation('MockComplexSelectSQL')));
+    $criteria2->expectOnce('process', array(new IsAExpectation('MockComplexSelectSQL')));
 
     $this->sql->expectOnce('addCondition', array('oid=10'));
     $this->sql->expectOnce('toString');
@@ -103,6 +115,9 @@ class SQLBasedDAOTest extends LimbTestCase
     $this->stmt->setReturnValue('getRecordSet', $rs = new ArrayDataSet(array($row)));
 
     $this->assertEqual($this->dao->fetchById($id), $record);
+
+    $criteria1->tally();
+    $criteria2->tally();
   }
 }
 

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: SQLBasedDAO.class.php 1073 2005-01-29 15:01:02Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
@@ -65,6 +65,8 @@ class SQLBasedDAO
 
   function & fetchById($id)
   {
+    $this->_processCriterias();
+
     $sql =& $this->getSQL();
     $sql->addCondition($this->_defineIdName() . '=' . (int)$id);
 
@@ -84,7 +86,10 @@ class SQLBasedDAO
     $sql =& $this->getSQL();
 
     foreach(array_keys($this->criterias) as $key)
-      $this->criterias[$key]->process($sql);
+    {
+      $criteria =& Handle :: resolve($this->criterias[$key]);
+      $criteria->process($sql);
+    }
   }
 
   function _initCriterias(){}

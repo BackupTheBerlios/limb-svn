@@ -8,10 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
-class CompositeMapper
+class CompositeMapper extends AbstractDataMapper
 {
   var $mappers;
+
+  function CompositeMapper()
+  {
+  }
 
   function registerMapper(&$mapper)
   {
@@ -21,25 +26,37 @@ class CompositeMapper
   function load(&$record, &$domain_object)
   {
     foreach(array_keys($this->mappers) as $key)
+    {
+      $this->mappers[$key] =& Handle :: resolve($this->mappers[$key]);
       $this->mappers[$key]->load($record, $domain_object);
+    }
   }
 
   function update(&$domain_object)
   {
     foreach(array_keys($this->mappers) as $key)
+    {
+      $this->mappers[$key] =& Handle :: resolve($this->mappers[$key]);
       $this->mappers[$key]->update($domain_object);
+    }
   }
 
   function insert(&$domain_object)
   {
     foreach(array_keys($this->mappers) as $key)
+    {
+      $this->mappers[$key] =& Handle :: resolve($this->mappers[$key]);
       $this->mappers[$key]->insert($domain_object);
+    }
   }
 
   function delete(&$domain_object)
   {
     foreach(array_keys($this->mappers) as $key)
+    {
+      $this->mappers[$key] =& Handle :: resolve($this->mappers[$key]);
       $this->mappers[$key]->delete($domain_object);
+    }
   }
 
 }

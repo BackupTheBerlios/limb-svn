@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: ServiceMapper.class.php 1085 2005-02-02 16:04:20Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
@@ -19,7 +19,6 @@ class ObjectMapper extends AbstractDataMapper
 
   function load(&$record, &$object)
   {
-    $object->__class_name = $record->get('class_name');
     $object->set('oid', $record->get('oid'));
     $object->set('class_id', $record->get('class_id'));
   }

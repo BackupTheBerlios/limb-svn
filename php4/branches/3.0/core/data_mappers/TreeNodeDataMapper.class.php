@@ -21,15 +21,6 @@ class TreeNodeDataMapper extends AbstractDataMapper
 
   function insert(&$object)
   {
-    if(!($parent_node_id = $object->get('parent_node_id')))
-      return throw(new LimbException('tree parent node is empty'));
-
-    $toolkit =& Limb :: toolkit();
-    $tree =& $toolkit->getTree();
-
-    if(!$tree->canAddNode($parent_node_id))
-      return throw(new LimbException('tree registering failed', array('parent_node_id' => $parent_node_id)));
-
     $gntr =& $this->_getIdentifierGenerator();
 
     if(!$identifier = $gntr->generate($object))
@@ -37,8 +28,22 @@ class TreeNodeDataMapper extends AbstractDataMapper
 
     $values['identifier'] = $identifier;
 
-    if (!$node_id = $tree->createSubNode($parent_node_id, $values))
-      return throw(new LimbException('could not create tree node'));
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
+
+    if(!$parent_node_id = $object->get('parent_node_id'))
+    {
+      if (!$node_id = $tree->createRootNode($values))
+        return throw(new LimbException('could not create root tree node'));
+    }
+    else
+    {
+      if(!$tree->canAddNode($parent_node_id))
+        return throw(new LimbException('tree registering failed', array('parent_node_id' => $parent_node_id)));
+
+      if (!$node_id = $tree->createSubNode($parent_node_id, $values))
+        return throw(new LimbException('could not create tree node'));
+    }
 
     $object->set('identifier', $identifier);
     $object->set('node_id', $node_id);

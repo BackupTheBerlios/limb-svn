@@ -12,6 +12,19 @@ require_once(LIMB_DIR . '/core/Limb.class.php');
 
 class UIDGenerator
 {
+  function current()
+  {
+    $toolkit =& Limb :: toolkit();
+    $conn =& $toolkit->getDBConnection();
+
+    $stmt = $conn->newStatement('SELECT MAX(id) FROM sys_uid');
+
+    if(!$uid = $stmt->getOneValue())
+      return false;
+
+    return $uid;
+  }
+
   function next()
   {
     $toolkit =& Limb :: toolkit();

@@ -50,6 +50,17 @@ class UIDGeneratorTest extends LimbTestCase
     $uid = UIDGenerator :: next();
     $this->assertEqual($uid, 1001);
   }
+
+  function testCurrent()
+  {
+    $this->assertFalse(UIDGenerator :: current());
+
+    UIDGenerator :: next();
+    UIDGenerator :: next();
+    UIDGenerator :: next();
+
+    $this->assertEqual(UIDGenerator :: current(), 3);
+  }
 }
 
 ?>
