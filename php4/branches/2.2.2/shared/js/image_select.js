@@ -14,7 +14,7 @@ image_select.prototype.generate = function()
 		else
 	  	this.img.src = '/root?node_id=' + this.id_container.value;
 		
-		optimize_window();
+//		optimize_window();
 	}
 }
 

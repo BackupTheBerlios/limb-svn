@@ -162,48 +162,54 @@ function optimize_window()
 	var x_ratio = 0.85;
 	var y_ratio = 0.85;
 	
+	top_opener = window
+	while(typeof(top_opener.top.opener) != 'undefined' && top_opener.top.opener != null)
+	{
+		top_opener = top_opener.top.opener;
+	}
+	
   if (is_ie)
 	{
-		opener_width = w.opener.document.body.clientWidth;
-		opener_height = w.opener.document.body.clientHeight;
+		opener_width = top_opener.document.body.clientWidth;
+		opener_height = top_opener.document.body.clientHeight;
 	}
 	else if(is_gecko)
 	{
-		opener_width = w.opener.outerWidth;
-		opener_height = w.opener.outerHeight;
+		opener_width = top_opener.innerWidth;
+		opener_height = top_opener.innerHeight;
 	}
 	else
 	{
-		opener_width = w.opener.document.body.clientWidth;
-		opener_height = w.opener.document.body.clientHeight;
+		opener_width = top_opener.document.body.clientWidth;
+		opener_height = top_opener.document.body.clientHeight;
 	}
-
+	
 	if(window.WINDOW_WIDTH)
   {
-   	deltaX = window.WINDOW_WIDTH;
+   	newWidth = window.WINDOW_WIDTH;
   }
   else
   {
-  	deltaX = opener_width*x_ratio;
-  	if (w.document.body.scrollWidth > deltaX )
+  	newWidth = opener_width*x_ratio;
+  	if (w.document.body.scrollWidth > newWidth )
   	{
   	  x_ratio = 1;
-  	  deltaX = opener_width;
+  	  newWidth = opener_width;
   	} 
   }	
 
 	if(window.WINDOW_HEIGHT)
   {
-   	deltaY = window.WINDOW_HEIGHT;
+   	newHeight = window.WINDOW_HEIGHT;
   }
   else
   {
-  	deltaY = opener_height*y_ratio;
+  	newHeight = opener_height*y_ratio;
 
-  	if (w.document.body.scrollHeight > deltaY )
+  	if (w.document.body.scrollHeight > newHeight )
   	{
   	  y_ratio = 1;
-  	  deltaY = opener_height;
+  	  newHeight = opener_height;
   	} 
   }	
   
@@ -223,11 +229,13 @@ function optimize_window()
 		openerTop = w.opener.screenTop;
 	}
 
-	newLeft = (w.screen.width - deltaX)/2 - 20;
-	newTop = (w.screen.height - deltaY)/2 - 30;
-		
+	newLeft = (w.screen.width - newWidth)/2 - 20;
+	newTop = (w.screen.height - newHeight)/2 - 30;
+	if(is_opera)
+		newTop -= 50;
+	
 	w.moveTo(newLeft, newTop);
-	w.resizeTo(deltaX, deltaY);
+	w.resizeTo(newWidth, newHeight);
 }
 
 function process_popup()
