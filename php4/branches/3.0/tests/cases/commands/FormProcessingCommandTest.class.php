@@ -21,10 +21,7 @@ require_once(WACT_ROOT . '/validation/errorlist.inc.php');
 Mock :: generatePartial(
   'FormProcessingCommand',
   'FormProcessingCommandTestVersion',
-  array('_getValidator',
-        '_registerValidationRules',
-        '_initFirstTimeDataspace',
-        '_defineDatamap',
+  array('_defineDatamap',
         'getFormComponent')
 );
 
@@ -63,7 +60,7 @@ class FormProcessingCommandTest extends LimbTestCase
     Limb :: registerToolkit($this->toolkit);
 
     $this->form_command = new FormProcessingCommandTestVersion($this);
-    $this->form_command->setReturnReference('_getValidator', $this->validator);
+    $this->form_command->setValidator($this->validator);
     $this->form_command->setReturnReference('getFormComponent', $this->form_component);
   }
 
@@ -87,10 +84,6 @@ class FormProcessingCommandTest extends LimbTestCase
 
     $this->request->expectOnce('get');
     $this->request->setReturnValue('get', array('submitted' => 0), array('test_form'));
-    $this->form_command->expectOnce('_initFirstTimeDataspace',
-                                    array(new IsAExpectation('MockDataspace'),
-                                          new IsAExpectation('MockRequest')
-                                          ));
 
     $this->form_component->expectOnce('registerDataSource', array(new IsAExpectation('MockDataspace')));
 
@@ -105,10 +98,6 @@ class FormProcessingCommandTest extends LimbTestCase
 
     $this->request->expectOnce('export');
     $this->request->setReturnValue('export', array('submitted' => 0));
-    $this->form_command->expectOnce('_initFirstTimeDataspace',
-                                    array(new IsAExpectation('MockDataspace'),
-                                          new IsAExpectation('MockRequest')
-                                          ));
 
     $this->form_component->expectOnce('registerDataSource', array(new IsAExpectation('MockDataspace')));
 
@@ -126,8 +115,6 @@ class FormProcessingCommandTest extends LimbTestCase
     $this->form_command->setReturnValue('_defineDatamap', array('test' => 'test2'));
 
     $this->dataspace->expectOnce('merge', array(array('test2' => 1)));
-
-    $this->form_command->expectOnce('_registerValidationRules');
 
     $this->form_component->expectOnce('registerDataSource', array(new IsAExpectation('MockDataspace')));
     $this->form_component->expectNever('setErrors');
@@ -151,8 +138,6 @@ class FormProcessingCommandTest extends LimbTestCase
 
     $this->dataspace->expectOnce('merge', array(array('test2' => 1)));
 
-    $this->form_command->expectOnce('_registerValidationRules');
-
     $this->form_component->expectOnce('registerDataSource', array(new IsAExpectation('MockDataspace')));
     $this->form_component->expectNever('setErrors');
 
@@ -174,8 +159,6 @@ class FormProcessingCommandTest extends LimbTestCase
     $this->form_command->setReturnValue('_defineDatamap', array('test' => 'test2'));
 
     $this->dataspace->expectOnce('merge', array(array('test2' => 1)));
-
-    $this->form_command->expectOnce('_registerValidationRules');
 
     $this->form_component->expectOnce('registerDataSource', array(new IsAExpectation('MockDataspace')));
 

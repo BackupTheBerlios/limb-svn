@@ -26,6 +26,49 @@ class FormProcessingCommand// implements Command
     $this->is_multi = $is_multi;
   }
 
+  function perform()
+  {
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+
+    $dataspace =& $this->_switchDataSpace();
+    $form_component =& $this->getFormComponent();
+
+    if($this->_isFirstTime($request))
+    {
+      $result = $this->_initializeDataspace($dataspace);
+      $form_component->registerDataSource($dataspace);
+      return $result;
+    }
+    else
+    {
+      $this->_mergeDataspaceWithRequest($dataspace, $request);
+      $form_component->registerDataSource($dataspace);
+      return $this->_validate(&$dataspace);
+    }
+  }
+
+  function _initializeDataspace(&$dataspace)
+  {
+    return LIMB_STATUS_FORM_DISPLAYED;
+  }
+
+  function _validate(&$dataspace)
+  {
+    $validator =& $this->getValidator($dataspace);
+
+    $validator->validate($dataspace);
+
+    if(!$validator->IsValid())
+    {
+      $form_component =& $this->getFormComponent();
+      $form_component->setErrors($validator->getErrorList());
+      return LIMB_STATUS_FORM_NOT_VALID;
+    }
+    else
+      return LIMB_STATUS_FORM_SUBMITTED;
+  }
+
   function & getFormComponent()
   {
     $toolkit =& Limb :: toolkit();
@@ -33,15 +76,22 @@ class FormProcessingCommand// implements Command
     return $view->findChild($this->form_id);
   }
 
-  //for mocking
-  function & _getValidator()
+  function & getValidator(&$dataspace)
   {
     if(is_object($this->validator))
       return $this->validator;
 
     include_once(WACT_ROOT . '/validation/validator.inc.php');
     $this->validator = new Validator();
+
+    $this->_registerValidationRules($this->validator, $dataspace);
+
     return $this->validator;
+  }
+
+  function setValidator(&$validator)
+  {
+    $this->validator =& $validator;
   }
 
   function _isFirstTime(&$request)
@@ -60,54 +110,6 @@ class FormProcessingCommand// implements Command
   function _defineDatamap()
   {
     return array();
-  }
-
-  function validate(&$dataspace)
-  {
-    $validator =& $this->_getValidator();
-
-    $this->_registerValidationRules($validator, $dataspace);
-
-    $validator->validate($dataspace);
-
-    return $validator->IsValid();
-  }
-
-  function perform()
-  {
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-
-    $dataspace =& $this->_switchDataSpace();
-    $form_component =& $this->getFormComponent();
-
-    if($this->_isFirstTime($request))
-    {
-      $this->_initFirstTimeDataspace($dataspace, $request);
-
-      $form_component->registerDataSource($dataspace);
-
-      return LIMB_STATUS_FORM_DISPLAYED;
-    }
-    else
-    {
-      $this->_mergeDataspaceWithRequest($dataspace, $request);
-
-      $form_component->registerDataSource($dataspace);
-
-      if(!$this->validate($dataspace))
-      {
-        $validator =& $this->_getValidator();
-        $form_component->setErrors($validator->getErrorList());
-        return LIMB_STATUS_FORM_NOT_VALID;
-      }
-      else
-        return LIMB_STATUS_FORM_SUBMITTED;
-    }
-  }
-
-  function _initFirstTimeDataspace(&$dataspace, &$request)
-  {
   }
 
   function _mergeDataspaceWithRequest(&$dataspace, &$request)
@@ -133,6 +135,14 @@ class FormProcessingCommand// implements Command
       return $toolkit->switchDataspace($this->form_id);
     else
       return $toolkit->getDataspace();
+  }
+
+  function _htmlspecialcharsDataspaceValue(&$dataspace, $name)
+  {
+    if(!$value = $dataspace->get($name))
+      return;
+
+    $this->dataspace->set($name, htmlspecialchars($value));
   }
 }
 
