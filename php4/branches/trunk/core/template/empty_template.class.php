@@ -10,19 +10,35 @@
 ***********************************************************************************/ 
 class empty_template
 {
-	function empty_template()
-	{
-	} 
+  function empty_template()
+  {
+  } 
 
-	function &get_child($server_id)
-	{
-		return null;
-	} 
+  function find_parent_by_class($class)
+  {
+    return null;
+  }
+  
+  function find_child_by_class($class)
+  {
+    return null;
+  }
+  
+  function find_child($server_id)
+  {
+    return null;
+  }
+  
+  
+  function &get_child($server_id)
+  {
+    return null;
+  } 
 
-	function display()
-	{
-		debug :: write_error('template is null', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-	} 
+  function display()
+  {
+    debug :: write_error('template is null', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+  } 
 } 
 
 ?>

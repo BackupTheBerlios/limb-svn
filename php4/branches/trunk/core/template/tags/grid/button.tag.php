@@ -42,7 +42,8 @@ class grid_button_tag extends button_tag
 		
 		$this->attributes['type'] = 'button';
 		
-		$this->attributes['onclick'] = '';
+    if (!isset($this->attributes['onclick']))
+		  $this->attributes['onclick'] = '';
 		
 		if(isset($this->attributes['form_submitted']) && (boolean)$this->attributes['form_submitted'])
 		{

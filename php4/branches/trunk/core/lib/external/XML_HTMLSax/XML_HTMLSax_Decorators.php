@@ -19,12 +19,12 @@
 // | Authors: Many @ Sitepointforums Advanced PHP Forums                  |
 // +----------------------------------------------------------------------+
 //
-// $Id: XML_HTMLSax_Decorators.php,v 1.6 2003/12/04 23:35:20 harryf Exp $
+// $Id$
 //
 /**
 * Decorators for dealing with parser options
 * @package XML_HTMLSax
-* @version $Id: XML_HTMLSax_Decorators.php,v 1.6 2003/12/04 23:35:20 harryf Exp $
+* @version $Id$
 * @see XML_HTMLSax::set_option
 */
 /**

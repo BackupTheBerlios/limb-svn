@@ -29,7 +29,10 @@ class add_cart_item_action extends action
 		$object =& site_object_factory :: create($object_data['class_name']);
 
 		if(!method_exists($object, 'get_cart_item'))
+    {
+      $request->set_status(REQUEST_STATUS_FAILURE);
   		return;
+    }  
 		
 		$object->import_attributes($object_data);
 
