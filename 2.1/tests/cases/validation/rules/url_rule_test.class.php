@@ -13,13 +13,12 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/url_rule.class.php');
 
 class url_rule_test extends single_field_rule_test
 {
-
 	function test_url_rule_valid()
 	{
 		$this->validator->add_rule(new url_rule('test'));
 
 		$data =& new dataspace();
-		$data->set('test', 'http://wow.com.dot/this/a/valid/url');
+		$data->set('test', 'https://wow.com.dot:81/this/a/valid/url?hey=wow&test');
 
 		$this->error_list->expectNever('add_error');
 
@@ -39,7 +38,6 @@ class url_rule_test extends single_field_rule_test
 		$this->validator->validate($data);
 		$this->assertFalse($this->validator->is_valid());
 	}
-
 } 
 
 ?>

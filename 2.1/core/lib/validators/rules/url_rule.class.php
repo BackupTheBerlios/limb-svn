@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: domain_rule.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
@@ -22,8 +22,34 @@ class url_rule extends single_field_rule
 
 	function check($value)
 	{ 
-		//very primitive check, full check will be implemented later
-		if (!preg_match("~^(https?://[a-zA-Z\.]+)?/?([a-zA-Z\.]+/?)+(\??[^\?]*)#?[^#]*$~i", $value))
+		$regex = "
+			\b
+			(
+				(ftp|https?)://[-\w]+(\.\w[-\w]*)+
+				|
+				(?i: [a-z0-9] (?:[-a-z0-9]*[-a-z0-9])? \. )+
+				(?-i: com\b
+						|	edu\b
+						|	biz\b
+						|	gov\b
+						|	in(?:t|fo)\b
+						| mil\b
+						|	net\b
+						|	org\b
+						|	[a-z][a-z]\b
+				)
+			)
+			( : \d+ )?
+			(
+				/
+				[^;\"'<>()\[\]{}\s\x7F-\xFF]*
+				(?:
+					[..?]+ [^;\"'<>()\[\]{}\s\x7F-\xFF]
+				)*
+			)?			
+		";
+		
+		if (!preg_match("~{$regex}~x", $value))
 		{
 			$this->error('BAD_URL');
 		} 
