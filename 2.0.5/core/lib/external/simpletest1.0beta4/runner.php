@@ -3,7 +3,7 @@
      *	base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: runner.php,v 1.25 2004/02/08 08:38:19 jsweat Exp $
+     *	@version	$Id$
      */
     
     /**

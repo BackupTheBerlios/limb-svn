@@ -1,5 +1,5 @@
 <?php
-    // $Id: query_string_test.php,v 1.3 2004/01/21 23:35:10 lastcraft Exp $
+    // $Id$
     
     if (!defined("SIMPLE_TEST")) {
         define("SIMPLE_TEST", "../");

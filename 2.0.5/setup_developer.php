@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: setup_developer.php 468 2004-02-18 12:03:43Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define('DEVELOPER_ENVIROMENT', true);

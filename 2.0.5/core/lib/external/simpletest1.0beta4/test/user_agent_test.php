@@ -1,5 +1,5 @@
 <?php
-    // $Id: user_agent_test.php,v 1.1 2004/02/18 22:12:04 lastcraft Exp $
+    // $Id$
     
     if (!defined('SIMPLE_TEST')) {
         define('SIMPLE_TEST', '../');

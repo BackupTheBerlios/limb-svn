@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_tail.php,v 1.1 2003/07/04 18:37:59 pacha Exp $
+ *   $Id$
  *
  *
  ***************************************************************************/

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: template.class.php 513 2004-02-20 15:10:42Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define('TMPL_IMPORT', 'import');

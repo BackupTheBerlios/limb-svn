@@ -3,7 +3,7 @@
      *	base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: expectation.php,v 1.22 2004/02/07 20:41:28 jsweat Exp $
+     *	@version	$Id$
      */
     
 	/**

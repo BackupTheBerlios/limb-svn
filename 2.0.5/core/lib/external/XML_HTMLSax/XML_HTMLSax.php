@@ -19,12 +19,12 @@
 // | Authors: Many @ Sitepointforums Advanced PHP Forums                  |
 // +----------------------------------------------------------------------+
 //
-// $Id: XML_HTMLSax.php,v 1.15 2003/12/04 23:35:18 harryf Exp $
+// $Id$
 //
 /**
 * Main parser components
 * @package XML_HTMLSax
-* @version $Id: XML_HTMLSax.php,v 1.15 2003/12/04 23:35:18 harryf Exp $
+* @version $Id$
 */
 /**
 * Required classes

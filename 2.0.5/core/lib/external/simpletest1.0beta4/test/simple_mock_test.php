@@ -1,5 +1,5 @@
 <?php
-    // $Id: simple_mock_test.php,v 1.33 2004/02/08 05:31:30 jsweat Exp $
+    // $Id$
     
     class TestOfWildcardExpectation extends UnitTestCase {
         function TestOfWildcardExpectation() {

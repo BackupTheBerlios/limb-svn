@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: optional.tag.php 440 2004-02-12 16:56:15Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 class core_attributeal_tag_info

@@ -6,7 +6,7 @@
    *   copyright            : (C) 2001 The phpBB Group
    *   email                : supportphpbb.com
    *
-   *   $Id: postgres7.php,v 1.1 2003/07/04 18:37:48 pacha Exp $
+   *   $Id$
    *
    ***************************************************************************/
 

@@ -3,7 +3,7 @@
      *	base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: xml.php,v 1.14 2004/02/07 06:13:07 jsweat Exp $
+     *	@version	$Id$
      */
     
 	/**

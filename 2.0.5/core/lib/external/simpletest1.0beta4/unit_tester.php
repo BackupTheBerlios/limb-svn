@@ -3,7 +3,7 @@
      *	base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: unit_tester.php,v 1.13 2004/02/08 08:38:19 jsweat Exp $
+     *	@version	$Id$
      */
     
     /**

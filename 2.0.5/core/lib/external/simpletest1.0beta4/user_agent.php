@@ -3,7 +3,7 @@
      *	Base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	WebTester
-     *	@version	$Id: user_agent.php,v 1.1 2004/02/18 22:12:03 lastcraft Exp $
+     *	@version	$Id$
      */
     
     /**

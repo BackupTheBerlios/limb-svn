@@ -2,7 +2,7 @@
     /**
      *	base include file for SimpleTest
      *	@package	SimpleTest
-     *	@version	$Id: options.php,v 1.9 2004/02/10 12:14:04 jsweat Exp $
+     *	@version	$Id$
      */
     
 	/**

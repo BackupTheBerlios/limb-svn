@@ -1,5 +1,5 @@
 <?php
-    // $Id: socket_test.php,v 1.10 2003/07/04 22:29:54 lastcraft Exp $
+    // $Id$
     
     if (!defined("SIMPLE_TEST")) {
         define("SIMPLE_TEST", "../");
