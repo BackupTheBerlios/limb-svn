@@ -17,7 +17,7 @@
 					{$title}
 				</core:OPTIONAL>
 				<core:DEFAULT for='is_last'>
-					<a href="/root/admin/site_structure?action=parent_select&path={$path}">{$title}</a> &raquo; 
+					<a href="/root/admin/site_structure?action=parent_select&path={$path}&only_parents={#only_parents}">{$title}</a> &raquo; 
 				</core:DEFAULT>
 			</grid:ITERATOR>
 		</grid:LIST>
@@ -44,7 +44,17 @@
 </tr>
 <grid:ITERATOR>
 <tr>
-	<td><img src='{$icon}' align='center'></td>
+	<td>
+	<core:OPTIONAL for='icon'>
+	<img src='{$icon}' align='center'>
+	</core:OPTIONAL>
+	<core:DEFAULT for='icon'>
+	<img src='/shared/images/generic.gif' align='center'>
+	</core:DEFAULT>
+
+
+	
+	</td>
 	<td>
 	<a href='/root/admin/site_structure?action=parent_select&path={$path}'>{$identifier}   ({$title})</a>
 	</td>

@@ -23,7 +23,8 @@ class period_news_object extends period_object
 				parent :: _define_attributes_definition(),
 				array(
 				'content' => array('search' => true, 'search_weight' => 1),
-				'annotation' => array('search' => true, 'search_weight' => 5)
+				'annotation' => array('search' => true, 'search_weight' => 5),
+				'identifier' => array('search' => false)								
 				));
 	}
 	
@@ -33,6 +34,7 @@ class period_news_object extends period_object
 			'class_ordr' => 2,
 			'can_be_parent' => 0,
 			'controller_class_name' => 'period_news_object_controller',
+			'auto_identifier' => true			
 		);
 	}
 }
