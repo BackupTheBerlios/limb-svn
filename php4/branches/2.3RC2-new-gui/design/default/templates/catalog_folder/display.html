@@ -1,0 +1,53 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='folders'>
+  <core:PARAMETER name='loader_class_name' value='site_object'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='folders'>
+<table width=100% border=0 cellspacing=0 cellpadding=0>
+  <grid:ITERATOR>
+  <tr>
+    <td colspan=100 style="padding: 2px, 0, 3px, 10px">
+      <h3><a href='{$path}'>{$title}</a></h3>
+    </td>
+  </tr>
+</grid:ITERATOR>
+</table>
+</grid:LIST>
+
+<fetch:SUB_BRANCH target='direct_objects'>
+  <core:PARAMETER name='loader_class_name' value='catalog_object' >
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='direct_objects'>
+<table width=100% border=0 cellspacing=10 cellpadding=0 >
+  <tr>
+    <grid:ITERATOR>
+
+    <grid:SEPARATOR count='2'>
+    </tr><tr>
+    </grid:SEPARATOR>
+
+      <td class=jip bgcolor="white" valign=top>
+        <core:INCLUDE file="published_status.html">
+        <core:INCLUDE file="jip_actions/dropdown.html"><br>
+        <core:OPTIONAL for='image_id'>
+        <table align=left cellspacing=0 cellpadding=3 >
+          <tr>
+            <td>
+              <a href='{$path}'><img src='/root?node_id={$image_id}&thumbnail' align='center' border=0></a></td>
+          </tr>
+        </table>
+        </core:OPTIONAL>
+        <a href='{$path}'>{$title}</a><br>
+        {$annotation}<br>
+      </td>
+    </grid:ITERATOR>
+    </tr>
+</table>
+</grid:LIST>

@@ -1,0 +1,73 @@
+<core:WRAP file="admin/site_management_page.html" placeholder="content">
+
+<core:INCLUDE file="/stats_event/events_filter_form.html"><br>
+
+<br>
+
+<DATASOURCE target='events' navigator='pager'>
+  <core:PARAMETER name='datasource_path' value='stats_events_list_datasource'>
+  <core:PARAMETER name='order' value='time=DESC'>
+</DATASOURCE>
+
+<pager:navigator id="pager" items="60">
+<core:INCLUDE file="/admin/pager_contents.html">
+</pager:navigator>
+
+<table width="100%" border="0" cellspacing="1" cellpadding="2">
+<tr>
+<th><locale:STRING name='event_code' file='stats'></th>
+<th><locale:STRING name='date'></th>
+<th>IP</th>
+<th><locale:STRING name='action'></th>
+<th><locale:STRING name='object'></th>
+<th>URI</th>
+<th><locale:STRING name='user' file='user'></th>
+</tr>
+
+<grid:LIST id='events'>
+<grid:ITERATOR>
+<grid:STRIPE odd>
+<tr bgcolor='#f0f0f0'>
+</grid:STRIPE>
+
+<grid:STRIPE even>
+<tr>
+</grid:STRIPE>
+
+<td align='center'>{$id}</td>
+<td><small><locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'></small></td>
+<td><b><core:IP hash_id="ip" ></b></td>
+<td>
+<core:OPTIONAL for='SUCCESS'>
+<span style='color:black'>
+</core:OPTIONAL>
+<core:OPTIONAL for='FORM_SUBMITTED'>
+<span style='color:green'>
+</core:OPTIONAL>
+<core:OPTIONAL for='FORM_DISPLAYED'>
+<span style='color:#408080'>
+</core:OPTIONAL>
+<core:OPTIONAL for='FORM_NOT_VALID'>
+<span style='color:orange'>
+</core:OPTIONAL>
+<core:OPTIONAL for='FAILURE'>
+<span style='color:red'>
+</core:OPTIONAL>
+<core:OPTIONAL for='DEFAULT'>
+<span>
+</core:OPTIONAL>
+{$action}
+</span>
+</td>
+<core:OPTIONAL for='identifier'>
+<td><a href='/root?node_id={$node_id}' target='_blank'>{$title}</a></td>
+</core:OPTIONAL>
+<core:DEFAULT for='identifier'>
+<td></td>
+</core:DEFAULT>
+<td>{$uri}</td>
+<td><a href='/root/admin/users/{$user_login}' target='_blank'>{$user_login}</a></td>
+</tr>
+</grid:ITERATOR>
+</grid:LIST>
+</table>

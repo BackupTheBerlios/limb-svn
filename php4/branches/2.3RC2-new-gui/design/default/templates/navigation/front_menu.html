@@ -1,0 +1,27 @@
+		<fetch:SUB_BRANCH target="menu" >
+			<core:PARAMETER name='loader_class_name' value='navigation_item' >
+			<core:PARAMETER name='datasource_path' value='simple_navigation_datasource' >
+			<core:PARAMETER name='path' value='/root/navigation/main' >
+			<core:PARAMETER name='order' value='priority=ASC'>
+		</fetch:SUB_BRANCH>
+
+<grid:LIST id='menu'>
+<table width="587" border="0" cellspacing="0" cellpadding="0" class="menu" style='padding: 0 0 6px 0'>
+<tr>
+<grid:ITERATOR>
+
+	<grid:SEPARATOR>
+  <td><img src="/design/main/images/menu-spase.gif" width="15" height="11"></td>
+	</grid:SEPARATOR>
+	<td nowrap class=menu>
+		<core:OPTIONAL for="in_path">
+			{$title}
+		</core:OPTIONAL>
+		<core:DEFAULT for="in_path">
+			<a href='{$url}'>{$title}</a>
+		</core:DEFAULT>
+	</td>
+</grid:ITERATOR>
+</tr>
+</table>
+</grid:LIST>

@@ -1,0 +1,42 @@
+<?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
+require_once(LIMB_DIR . '/core/lib/validators/rules/single_field_rule.class.php');
+
+class us_zip_rule extends single_field_rule
+{
+  function us_zip_rule($fieldname)
+  {
+    parent :: single_field_rule($fieldname);
+  }
+
+  function check($value)
+  {
+    $value = "$value";
+
+    if(strlen($value) == 5)
+    {
+      if(!preg_match("~^\d{5}$~", $value))
+        $this->error(strings :: get('error_invalid_zip_format', 'error'));
+      else
+        return;
+    }
+    elseif(strlen($value) == 10)
+    {
+      if(!preg_match("~^\d{5}\s\d{4}$~", $value))
+        $this->error(strings :: get('error_invalid_zip_format', 'error'));
+      else
+        return;
+    }
+    else
+      $this->error(strings :: get('error_invalid_zip_format', 'error'));
+  }
+}
+?>

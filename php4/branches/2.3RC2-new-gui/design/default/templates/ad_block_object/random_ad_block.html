@@ -1,0 +1,11 @@
+<fetch:SUB_BRANCH target='random_ad_block' >
+	<core:PARAMETER name='datasource_path' value='random_objects_datasource' >
+	<core:PARAMETER name='loader_class_name' value='ad_block_object' >
+	<core:PARAMETER name='limit' value='1'>
+	<core:PARAMETER name='fetch_method' value='fetch_accessible' >
+	<core:PARAMETER name='path' value='/root/ad' >
+</fetch:SUB_BRANCH>
+
+<core:DATASPACE id='random_ad_block'>
+<img src='/root?node_id={$image_id}&original'>
+</core:DATASPACE>
