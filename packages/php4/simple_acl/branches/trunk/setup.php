@@ -8,6 +8,9 @@
 * $Id: setup.php 913 2004-11-22 12:32:48Z pachanga $
 *
 ***********************************************************************************/
+require_once(dirname(__FILE__) . '/SimpleACLBaseToolkit.class.php');
+
+Limb :: registerToolkit(new SimpleACLBaseToolkit(), 'SimpleACL');
 
 $PACKAGE_NAME = 'LIMB_SIMPLE_ACL';
 

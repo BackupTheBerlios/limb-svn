@@ -11,7 +11,6 @@
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 require_once(dirname(__FILE__) . '/../../../DAO/SimpleACLActionsRecordSet.class.php');
 require_once(dirname(__FILE__) . '/../../../SimpleACLAuthorizer.class.php');
-require_once(dirname(__FILE__) . '/../../../SimpleACLBaseToolkit.class.php');
 
 Mock :: generate('SimpleACLAuthorizer');
 
@@ -20,16 +19,6 @@ class SimpleACLActionsRecordSetTest extends LimbTestCase
   function SimpleACLActionsRecordSetTest()
   {
     parent :: LimbTestCase('simple ACL actions record set test');
-  }
-
-  function setUp()
-  {
-    Limb :: registerToolkit(new SimpleACLBaseToolkit(), 'SimpleACL');
-  }
-
-  function tearDown()
-  {
-    Limb :: popToolkit('SimpleACL');
   }
 
   function testEmpty()
