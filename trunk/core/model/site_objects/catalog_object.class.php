@@ -30,7 +30,7 @@ class catalog_object extends content_object
 
 	function & get_cart_item()
 	{
-		$cart_item = new cart_item($this->get_id());
+		$cart_item = new cart_item($this->get_node_id());
 		
 		$cart_item->set_description($this->get_title());
 		$cart_item->set_attribute('image_id', $this->get_attribute('image_id'));
