@@ -16,17 +16,17 @@ class locale_number_format_component extends component
 	{
 	  $locale =& locale :: instance();
 	  
-	  if(!$this->attributes['fract_digits'])
+	  if(!isset($this->attributes['fract_digits']) || !$this->attributes['fract_digits'])
 	    $fract_digits = $locale->fract_digits;
 	  else
 	    $fract_digits = (int)$this->attributes['fract_digits'];
 	  
-	  if(!$this->attributes['decimal_symbol'])
+	  if(!isset($this->attributes['decimal_symbol']) || !$this->attributes['decimal_symbol'])
 	    $decimal_symbol = $locale->decimal_symbol;
 	  else
 	    $decimal_symbol = $this->attributes['dec_point'];
 
-	  if(!$this->attributes['thousand_separator'])
+	  if(!isset($this->attributes['thousand_separator']) || !$this->attributes['thousand_separator'])
 	    $thousand_separator = $locale->thousand_separator;
 	  else
 	    $thousand_separator = $this->attributes['thousand_separator'];

@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . '/core/template/compiler/compiler_directive_tag.class.php');
 
 class locale_string_tag_info
@@ -26,7 +24,6 @@ class locale_string_tag extends compiler_directive_tag
 
 	function generate_contents(&$code)
 	{
-
 		$file = 'common';
 		
 		if(isset($this->attributes['file']))
@@ -48,12 +45,20 @@ class locale_string_tag extends compiler_directive_tag
 			
 			$code->write_php(
 				"{$locale_tmp} = " . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '");');
-
+      
+      $code->write_php("if(defined('DEBUG_TEMPLATE_I18N_ENABLED') && constant('DEBUG_TEMPLATE_I18N_ENABLED'))
+                          echo '<img src=\'/shared/images/i.gif\' title=\'&#039;{$locale_tmp}&#039; from &#039;{$file}&#039; i18n file\'>';"
+                      );
+      
 			$code->write_php("echo strings :: get({$locale_tmp}, '{$file}', constant('{$locale_constant}'));");
 							
 		}
 		elseif(isset($this->attributes['name']))
 		{			
+      $code->write_php("if(defined('DEBUG_TEMPLATE_I18N_ENABLED') && constant('DEBUG_TEMPLATE_I18N_ENABLED'))
+                          echo '<img src=\'/shared/images/i.gif\' title=\'&#039;{$this->attributes['name']}&#039; from &#039;{$file}&#039; i18n file\'>';"
+                      );
+		
 			$code->write_php("echo strings :: get('{$this->attributes['name']}', '{$file}', constant('{$locale_constant}'));");
 		}
 		
