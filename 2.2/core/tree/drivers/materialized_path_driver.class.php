@@ -531,18 +531,19 @@ class materialized_path_driver extends tree_db_driver
 		} 
 		
 		$sql = sprintf('SELECT identifier FROM %s
-                    WHERE root_id=%s AND parent_id=%s
-                    ORDER BY identifier DESC',
+                    WHERE root_id=%s AND parent_id=%s',
 										$this->_node_table, 
 										$parent['root_id'],
 										$parent['id']);
 										
-		$this->_db->sql_exec($sql, 1, 0);
-		
-		if($row =& $this->_db->fetch_row())
-			return $row['identifier'];
+		$this->_db->sql_exec($sql);		
+		if($arr = array_keys($this->_db->get_array('identifier')))
+		{
+		  uasort($arr, 'strnatcmp');
+		  return end($arr);
+		}
 		else
-			return 0;
+		  return 0;
 	}
 	
 	function is_node($id)

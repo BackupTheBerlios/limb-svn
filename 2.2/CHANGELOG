@@ -20,7 +20,6 @@ svn://svn.berlios.de/limb/2.2
       listed in jip_groups.ini file (stored in settings dir).
   --  fixed: node_links_datasource bug - it caused to undefined array index error if the linked object was not fetched.
   --  minor optimizations based on XDebug output: locale, template tags, etc
-  
   --  all validation rules are instantiated via resolve_handle, it touched all form actions in some way
   --  create_object function in objects_support.inc.php was refactored, it uses resolve_handle too, no eval no more!
   --  new refactored version of the uri class
@@ -53,8 +52,6 @@ svn://svn.berlios.de/limb/2.2
       or including in result only several needed object types.
       search_fetcher :: search_fetch_sub_branch() can't perform such restriction in easy way for now because 
       it works directly with tree.  
-      
-  
 
 Version 2.1.1
 (16 Jun 2004, from /trunk)

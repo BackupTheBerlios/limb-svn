@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
@@ -119,7 +118,24 @@ class site_object_auto_identifier_test extends UnitTestCase
 		
   	$id = $this->object->create();
   	
-  	$this->assertEqual($this->object->get_identifier(), '10ru3');
+  	$this->assertEqual($this->object->get_identifier(), 1001);
+  }
+
+  function test_create_complex2()
+  {
+  	debug_mock :: expect_never_write();
+
+		$this->_create_node('test');
+		$this->_create_node('test8');
+		$this->_create_node('test9');
+		$this->_create_node('test10');
+
+  	$this->object->set_parent_node_id($this->parent_node_id);
+  	$this->object->set_identifier('node_test');
+		
+  	$id = $this->object->create();
+  	
+  	$this->assertEqual($this->object->get_identifier(), 'test11');
   }
   
   function _create_node($identifier)
