@@ -11,7 +11,11 @@
 require_once(LIMB_DIR . '/core/system/Sys.class.php');
 require_once(LIMB_DIR . '/core/system/Fs.class.php');
 
-define('TEST_DIR_ABSOLUTE_PATH', LIMB_DIR . '/tests/var/');
+if(Sys :: osType() == 'win32')
+  define('TEST_DIR_ABSOLUTE_PATH', LIMB_DIR . '/tests/var/');
+else
+  define('TEST_DIR_ABSOLUTE_PATH', '/tmp/');
+
 define('TEST_DIR_RELATIVE_PATH', 'var');
 
 class SpecialDirWalker
@@ -367,7 +371,7 @@ class FsTest extends LimbTestCase
     $this->_createFileSystem();
 
     $res = Fs :: recursiveFind(TEST_DIR_ABSOLUTE_PATH . '/tmp/', 'test\d_1');
-  sort($res);
+    sort($res);
 
     $this->assertEqual(
       $res,
