@@ -69,7 +69,7 @@ class FakemailDaemon
   {
      $names = $this->_getRecipientFileNames($recipient);
      foreach($names as $name)
-       unlink($this->path .'/'. $name);
+       unlink($this->mail_path .'/'. $name);
   }
 
   function getRecipientMailCount($recipient)
