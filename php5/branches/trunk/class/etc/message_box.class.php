@@ -26,9 +26,9 @@ class message_box
   	$this->strings = session :: get('strings');
   }
 
-  public function reset()
+  public static function reset()
   {
-    $this->strings = array();
+    self :: instance()->strings = array();
   }
   
 	static function instance()
@@ -110,7 +110,7 @@ class message_box
 						//-->
 						</script>";
     
-    $message_box->reset();
+    message_box :: reset();
     
     return $js;
   }
