@@ -46,7 +46,7 @@ class FakemailDaemon
     $cmd = "perl ". $this->fakemail ." --background --path={$this->mail_path} --port={$this->port} --host={$this->host}" ;
 
     if($this->log_path)
-      $cmd .= " --log_path={$this->log_path}";
+      $cmd .= " --log={$this->log_path}";
 
     $this->pid = exec($cmd, $out);
 
