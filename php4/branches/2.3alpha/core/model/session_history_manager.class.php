@@ -26,25 +26,23 @@ class session_history_manager
   function save()
   {
     $request =& request :: instance();
+    $uri =& $request->get_uri();
+
+    if(session_history_manager :: _is_restricted_uri($uri))
+      return;
+
     $tab_id = session_history_manager :: datermine_tab_id();
 
     $history = session :: get('session_history');
     if(!isset($history[$tab_id]))
       $history[$tab_id] = array();
 
-    if($request->uri)
-      $uri =& $request->uri;
-    else
-      $uri =& new uri($_SERVER['PHP_SELF']);
 
     $uri->remove_query_item('rn');
-    if($uri->get_query_item('popup'))
-      return;
 
-    $object_data = fetch_requested_object();
+    $object_data =& fetch_requested_object();
     if($object_data['class_name'] == 'control_panel')
       return;
-
     $history_item = array('title' => $object_data['title'], 'href' => $uri->to_string());
 
     $first = end($history[$tab_id]);
@@ -56,6 +54,7 @@ class session_history_manager
         return;
     }
 
+
     if(count($history[$tab_id]) >= 10)
     {
       $history[$tab_id] = array_reverse($history[$tab_id]);
@@ -65,6 +64,17 @@ class session_history_manager
 
     array_push($history[$tab_id], $history_item );
     session :: set('session_history', $history);
+  }
+
+  function _is_restricted_uri(&$uri)
+  {
+    if($uri->get_query_item('popup'))
+      return true;
+
+    if($uri->get_query_item('action') == 'image_select')
+      return true;
+
+    return false;
   }
 
   function fetch()
