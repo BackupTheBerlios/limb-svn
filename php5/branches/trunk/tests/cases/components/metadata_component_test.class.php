@@ -38,7 +38,7 @@ class metadata_component_test extends db_test
   	$this->metadata_component =& new metadata_component_test_version($this);
   	$this->metadata_component->__construct();
   	
-  	$this->controller =& new Mocksite_object_controller($this);
+  	$this->controller = new Mocksite_object_controller($this);
   	
   	$this->metadata_component->setReturnReference('_get_mapped_controller', $this->controller);
   	

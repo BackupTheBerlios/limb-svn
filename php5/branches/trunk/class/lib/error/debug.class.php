@@ -174,7 +174,8 @@ class debug
 		
 		if (!is_array($errnames))
 		{
-			$errnames = array(E_ERROR => 'E_ERROR',
+			$errnames = array(
+			  E_ERROR => 'E_ERROR',
 				E_PARSE => 'E_PARSE',
 				E_CORE_ERROR => 'E_CORE_ERROR',
 				E_COMPILE_ERROR => 'E_COMPILE_ERROR',
@@ -211,13 +212,14 @@ class debug
 			  self :: write_warning($str, 'PHP');
 			} 
 			break;
-
+      
 			case E_USER_NOTICE:
 			case E_NOTICE:
 			{
 			  self :: write_notice($str, 'PHP');
 			} 
 			break;
+			
 		} 
 	} 
 

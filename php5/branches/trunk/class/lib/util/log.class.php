@@ -39,7 +39,7 @@ class log
     
     if ($log_file)
     {
-      $time = strftime("%b %d %Y %H:%M:%S", strtotime('now'));
+      $time = gmstrftime("%b %d %Y %H:%M:%S", time());
   		
   		$notice = '[ ' . $time . " ]\n";
   		

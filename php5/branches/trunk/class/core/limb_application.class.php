@@ -23,10 +23,10 @@ require_once(LIMB_DIR . 'class/etc/message_box.class.php');
 
 class limb_application
 {
-  private $request;
-  private $response;
+  protected $request;
+  protected $response;
     
-  public function limb_application()
+  public function __construct()
   {
     $this->request = request :: instance();
     $this->response = new http_response();  
@@ -34,46 +34,41 @@ class limb_application
   
   protected function _load_packages()
   {
-    $p =& packages_info :: instance();
-    $p->load_packages();
+    packages_info :: instance()->load_packages();
   }
   
   protected function _register_filters($filter_chain)
   {
-    $f = array();
-    
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/output_buffering_filter');    
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/session_startup_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/locale_definition_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/authentication_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/full_page_cache_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/jip_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/image_cache_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/site_object_controller_filter');
+    $filter_chain->register_filter(LIMB_DIR . 'class/core/filters/output_buffering_filter');    
+    $filter_chain->register_filter(LIMB_DIR . 'class/core/filters/session_startup_filter');
+    $filter_chain->register_filter(LIMB_DIR . 'class/core/filters/locale_definition_filter');
+    $filter_chain->register_filter(LIMB_DIR . 'class/core/filters/authentication_filter');
+    $filter_chain->register_filter(LIMB_DIR . 'class/core/filters/full_page_cache_filter');
+    $filter_chain->register_filter(LIMB_DIR . 'class/core/filters/jip_filter');
+    $filter_chain->register_filter(LIMB_DIR . 'class/core/filters/image_cache_filter');
+    $filter_chain->register_filter(LIMB_DIR . 'class/core/filters/site_object_controller_filter');
   }
   
   protected function _register_file_resolvers()
   {
-    $r = array();
-    
-    register_file_resolver('intercepting_filter', $r[] = LIMB_DIR . '/class/core/file_resolvers/intercepting_filter_file_resolver');
-    register_file_resolver('ini',                 $r[] = LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver');
-    register_file_resolver('action',              $r[] = LIMB_DIR . '/class/core/file_resolvers/action_file_resolver');
-    register_file_resolver('strings',             $r[] = LIMB_DIR . '/class/core/file_resolvers/strings_file_resolver');
-    register_file_resolver('template',            $r[] = LIMB_DIR . '/class/core/file_resolvers/template_file_resolver');
-    register_file_resolver('controller',          $r[] = LIMB_DIR . '/class/core/file_resolvers/controller_file_resolver');
-    register_file_resolver('db_table',            $r[] = LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
-    register_file_resolver('datasource',          $r[] = LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver');
-    register_file_resolver('site_object',         $r[] = LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver');
+    register_file_resolver('intercepting_filter', LIMB_DIR . '/class/core/file_resolvers/intercepting_filter_file_resolver');
+    register_file_resolver('ini',                 LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver');
+    register_file_resolver('action',              LIMB_DIR . '/class/core/file_resolvers/action_file_resolver');
+    register_file_resolver('strings',             LIMB_DIR . '/class/core/file_resolvers/strings_file_resolver');
+    register_file_resolver('template',            LIMB_DIR . '/class/core/file_resolvers/template_file_resolver');
+    register_file_resolver('controller',          LIMB_DIR . '/class/core/file_resolvers/controller_file_resolver');
+    register_file_resolver('db_table',            LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
+    register_file_resolver('datasource',          LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver');
+    register_file_resolver('site_object',         LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver');
   }
     
   public function run()
   {
-    $this->_load_packages();
-    
     $this->_register_file_resolvers();
     
-    $filter_chain =& new filter_chain($this->request, $this->response);
+    $this->_load_packages();
+    
+    $filter_chain = new filter_chain($this->request, $this->response);
     
     $this->_register_filters($filter_chain);
     

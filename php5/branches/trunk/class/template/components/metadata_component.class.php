@@ -261,7 +261,7 @@ class metadata_component extends component
 		}
 	}
 	
-	private function _get_mapped_controller()
+	protected function _get_mapped_controller()
 	{
 	  return wrap_with_site_object(fetch_requested_object())->get_controller();
 	}

@@ -25,13 +25,7 @@ class component_test extends dataspace_test
 	{
 		unset ($this->dataspace);
 	} 
-	
-	function test_get_rerver_id()
-	{
-		$this->dataspace->id = 'TestId';
-		$this->assertEqual($this->dataspace->get_server_id(), 'TestId');
-	} 
-	
+		
 	function test_find_child()
 	{
 		$child = &new mock_component($this);
@@ -57,10 +51,10 @@ class component_test extends dataspace_test
 		$this->assertFalse($this->dataspace->find_child_by_class('component_test'));
 	} 
 	
-	function test_find_parent_by_chilld()
+	function test_find_parent_by_child()
 	{
 		$component = &new component();
-		$component->id = 'TestParent';
+		$component->set_server_id('TestParent');
 		$component->add_child($this->dataspace, 'component_test');
 		$this->assertIsA($this->dataspace->find_parent_by_class('component'), 'component');
 	} 

@@ -41,6 +41,11 @@ class component extends dataspace
 	{
 		return $this->id;
 	} 
+	
+	public function set_server_id($id)
+	{
+	  $this->id = $id;
+	}
 
 	/**
 	* Returns a child component given it's ID.<br />

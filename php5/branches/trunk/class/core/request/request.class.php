@@ -72,7 +72,7 @@ class request extends object
     return self :: $instance;	
 	}
     
-  protected function get_uri()
+  public function get_uri()
   {
     if($this->uri === null)
       $this->_init_uri();
