@@ -40,20 +40,20 @@
 					<table>
 					<tr>
 						<td class='text'>
-						
+
 						<fetch:MAPPED>
 						<a href="{$path}?original" target="_blank"><locale:STRING name='click_original' file='image'></a><br>
 					  Height:{$variations['original']['height']} Width:{$variations['original']['width']} Size:{$variations['original']['size']}
 					  </fetch:MAPPED>
-					  
+
 							<div id='original_nothing_div' class='text' >
 							</div>
-	
+
 						  <div id='original_upload_div' class='text' style='display:none'>
 							  <input type="file" name='original' class="input" size="25" ><br>
 		    				<nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type="text" name="upload_original_max_size" class="input" size="3"/> <locale:STRING name='pixels' file='image'></nobr>
 							</div>
-	
+
 							<div id='original_generate_div' class='text' style='display:none'>
 							  <locale:STRING name='generate_from' file='image'> <select name='original_base_variation' class='input'>
 							  		<option value='original'><locale:STRING name='original' file='image'></option>
@@ -84,20 +84,20 @@
 					<table>
 					<tr>
 						<td class='text'>
-						
+
 						<fetch:MAPPED>
 						<a href="{$path}?thumbnail" target="_blank"><locale:STRING name='click_thumbnail' file='image'></a><br>
 					  Height:{$variations['thumbnail']['height']} Width:{$variations['thumbnail']['width']} Size:{$variations['thumbnail']['size']}
 					  </fetch:MAPPED>
-	
+
 							<div id='original_nothing_div' class='text' >
 							</div>
-	
+
 						  <div id='thumbnail_upload_div' class='text' style='display:none'>
 							  <input type=file name='thumbnail' class=input size=25 ><br>
 		  				  <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='upload_thumbnail_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
 							</div>
-						  
+
 							<div id='thumbnail_generate_div' class='text' style='display:none'>
 							  <locale:STRING name='generate_from' file='image'> <select name='thumbnail_base_variation' class='input'>
 							  		<option value='original'><locale:STRING name='original' file='image'></option>
@@ -128,20 +128,20 @@
 					<table>
 					<tr>
 						<td class='text'>
-	
+
 							<fetch:MAPPED>
 							<a href="{$path}?icon" target="_blank"><locale:STRING name='click_icon' file='image'></a><br>
 						  Height:{$variations['icon']['height']} Width:{$variations['icon']['width']} Size:{$variations['icon']['size']}
 						  </fetch:MAPPED>
-	
+
 							<div id='original_nothing_div' class='text' >
 							</div>
-	
+
 						  <div id='icon_upload_div' class='text' style='display:none'>
 							  <input type=file name='icon' class=input size=25 /><br>
 		  				  <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='upload_icon_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
 							</div>
-						  
+
 							<div id='icon_generate_div' class='text' style='display:none'>
 							  <locale:STRING name='generate_from' file='image'> <select name='icon_base_variation' class='input'>
 							  		<option value='original'><locale:STRING name='original' file='image'></option>
@@ -157,13 +157,16 @@
 				</fieldset>
 		</td>
 		</tr>
-	
+
 		<tr>
 		<td colspan='2'>
 			<action_button name="edit_variations_button" class="button"  action="edit_variations" locale_value="update"/>
+	   &nbsp;
+	   <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+
 		</td>
 		</tr>
-	
+
 	</table>
 </td>
 </tr>
