@@ -22,7 +22,8 @@ class set_group_objects_access extends form_action
 	
 	public function perform($request, $response)
 	{
-		Limb :: toolkit()->getTree()->initialize_expanded_parents();				
+		$parents =& Limb :: toolkit()->getSession()->get_reference('tree_expanded_parents');
+		Limb :: toolkit()->getTree()->set_expanded_parents($parents);				
 
 		if ($filter_groups = Limb :: toolkit()->getSession()->get('filter_groups'))
 			$this->dataspace->set('filter_groups', $filter_groups);	

@@ -16,10 +16,10 @@ class tree_toggle_action extends action
 	{
 		if($request->has_attribute('recursive_search_for_node'))
 			return;
-		
-		$tree = Limb :: toolkit()->getTree();
-		$tree->initialize_expanded_parents();
-				
+
+		$parents =& Limb :: toolkit()->getSession()->get_reference('tree_expanded_parents');
+		Limb :: toolkit()->getTree()->set_expanded_parents($parents);
+						
 		if(!$id = $request->get('id'))
 			$id = get_mapped_id();
 			

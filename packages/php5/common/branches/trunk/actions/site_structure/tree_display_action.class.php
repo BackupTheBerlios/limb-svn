@@ -13,8 +13,9 @@ require_once(LIMB_DIR . '/class/core/actions/action.class.php');
 class tree_display_action extends action
 {
 	public function perform($request, $response)
-	{		
-		Limb :: toolkit()->getTree()->initialize_expanded_parents();				
+	{
+		$parents =& Limb :: toolkit()->getSession()->get_reference('tree_expanded_parents');
+		Limb :: toolkit()->getTree()->set_expanded_parents($parents);
 	}
 }
 

@@ -76,7 +76,7 @@ class simple_authorizer implements authorizer
 			if (!isset($behaviour_actions[$behaviour_name]))
 			{
 				$behaviour = $this->_get_behaviour($behaviour_name);
-				$behaviour_actions[$behaviour_name] = $site_object_controller->get_actions_list();
+				$behaviour_actions[$behaviour_name] = $behaviour->get_actions_list();
 			}	
 
 			$accessible_actions = $this->_get_behaviour_accessible_actions($behaviour_name);
