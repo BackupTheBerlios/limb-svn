@@ -27,7 +27,7 @@ class authentication_filter extends intercepting_filter
       		$response->header("HTTP/1.1 404 Not found");
       	return;
       }
-  		$response->redirect('/root/login?redirect='. $_SERVER['REQUEST_URI']);
+  		$response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
   		return;
     }
     
@@ -54,7 +54,7 @@ class authentication_filter extends intercepting_filter
     
     if(!isset($actions[$action]))
     {    		
-      $response->redirect('/root/login?redirect='. $_SERVER['REQUEST_URI']);
+      $response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
     }
 
     debug :: add_timing_point('authentication filter finished');
