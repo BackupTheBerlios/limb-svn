@@ -159,6 +159,9 @@ function optimize_window()
 {	
 	w = window;
 	
+	if(!w.opener)
+	  return;
+	
 	var x_ratio = 0.85;
 	var y_ratio = 0.85;
 	
