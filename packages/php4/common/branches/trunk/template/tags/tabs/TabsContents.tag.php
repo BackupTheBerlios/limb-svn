@@ -21,7 +21,7 @@ class TabsContentsTag extends CompilerDirectiveTag
 {
   function checkNestingLevel()
   {
-    if (!$this->parent instanceof TabsTag)
+    if (!is_a($this->parent, 'TabsTag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
