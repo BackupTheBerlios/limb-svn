@@ -81,6 +81,11 @@ class options_form_element extends container_form_element
 	{
 		$this->_set_options();
 		
+		if (empty($this->option_renderer))
+		{
+			$this->option_renderer = new option_renderer();
+		} 		
+		
 		$this->_render_options();
 	} 
 	
@@ -141,12 +146,7 @@ class options_form_element extends container_form_element
 	function _render_options()
 	{
 		$value = $this->get_value();
-		
-		if (empty($this->option_renderer))
-		{
-			$this->option_renderer = new option_renderer();
-		} 
-		
+				
 		foreach($this->choice_list as $key => $contents)
 		{
 			$this->option_renderer->render_attribute($key, $contents, $key == $value);
