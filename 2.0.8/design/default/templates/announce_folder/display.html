@@ -26,7 +26,11 @@
 			<td width='1'>
 			<core:INCLUDE file="published_status.html">
 			</td>
-			<td jip='object'><locale:DATE_FORMAT hash_id="start_date" locale_format="short_date">&nbsp;<img src='/root?node_id={$image_id}&icon' align='center'>&nbsp;<a href='{$path}'>{$title}</a></td>
+			<td jip='object'><locale:DATE_FORMAT hash_id="start_date" locale_format="short_date">&nbsp;
+			<core:OPTIONAL for='image_id'>
+			<img src='/root?node_id={$image_id}&icon' align='center'>&nbsp;
+			</core:OPTIONAL>
+			<a href='{$path}'>{$title}</a></td>
 			<td>
 			<core:INCLUDE file="jip_actions/normal.html">
 			</td>
