@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/tree/tree.class.php');
+require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/http/uri.class.php');
 require_once(LIMB_DIR . 'class/core/request/request.class.php');

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/tree/tree.class.php');
+require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
 require_once(LIMB_DIR . 'class/template/component.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_table_factory.class.php');

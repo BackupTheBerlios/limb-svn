@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/lib/tree/drivers/tree_driver.class.php');
+require_once(LIMB_DIR . 'class/core/tree/drivers/tree_driver.class.php');
 
 class tree_db_driver extends tree_driver
 {

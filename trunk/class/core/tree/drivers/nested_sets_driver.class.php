@@ -22,7 +22,7 @@ define('NESE_MOVE_BELOW', 'SUB');
 define('NESE_SORT_LEVEL', 'SLV');
 define('NESE_SORT_PREORDER', 'SPO');
 
-require_once(LIMB_DIR . 'class/lib/tree/drivers/tree_db_driver.class.php');
+require_once(LIMB_DIR . 'class/core/tree/drivers/tree_db_driver.class.php');
 
 class nested_sets_driver extends tree_db_driver
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/tree/tree.class.php');
+require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
 require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class tree_node_id_rule extends single_field_rule
