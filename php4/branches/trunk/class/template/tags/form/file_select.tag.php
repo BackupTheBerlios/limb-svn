@@ -22,7 +22,10 @@ register_tag(new file_select_tag_info());
 
 class file_select_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/file_select_component';
+  function file_select_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/file_select_component';
+	}
 	
 	function get_rendered_tag()
 	{

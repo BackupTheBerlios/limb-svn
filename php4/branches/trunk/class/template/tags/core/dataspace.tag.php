@@ -23,7 +23,10 @@ register_tag(new core_dataspace_tag_info());
 */
 class core_dataspace_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/dataspace_component';
+  function core_dataspace_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/dataspace_component';
+	}
 
 	/**
 	* 

@@ -23,7 +23,10 @@ register_tag(new sys_param_tag_info());
 
 class sys_param_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/sys_param_component';
+  function sys_param_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/sys_param_component';
+	}
 	
 	function generate_contents(&$code)
 	{

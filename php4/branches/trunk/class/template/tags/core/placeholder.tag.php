@@ -24,7 +24,10 @@ register_tag(new core_place_holder_tag_info());
 */
 class core_place_holder_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/placeholder_component';
+  function core_place_holder_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/placeholder_component';
+	}
 
 	/**
 	* 

@@ -21,9 +21,11 @@ register_tag(new actions_tag_info());
 
 class actions_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/actions_component';
-
-
+  function actions_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/actions_component';
+	}
+	
 	function pre_generate(&$code)
 	{
 		parent :: pre_generate($code);

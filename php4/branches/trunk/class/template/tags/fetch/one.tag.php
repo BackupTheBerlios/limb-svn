@@ -21,7 +21,10 @@ register_tag(new fetch_one_tag_info());
 
 class fetch_one_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/fetch_component';
+  function fetch_one_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/fetch_component';
+	}
 		
 	function pre_generate(&$code)
 	{

@@ -15,6 +15,13 @@
 */
 class server_component_tag extends compiler_component
 {
+  var $runtime_component_path = '';
+  
+  function server_component_tag()
+  {
+    $this->runtime_component_path = LIMB_DIR . '/class/template/component';//???
+  }
+  
 	/**
 	* Returns a string of PHP code identifying the component in the hierarchy.
 	* 
@@ -38,10 +45,8 @@ class server_component_tag extends compiler_component
 	*/
 	function generate_constructor(&$code)
 	{
-		if (file_exists(LIMB_APP_DIR . $this->runtime_component_path.'.class.php'))
-			$code->register_include(LIMB_APP_DIR . $this->runtime_component_path.'.class.php');
-		elseif(file_exists(LIMB_DIR . $this->runtime_component_path.'.class.php'))
-			$code->register_include(LIMB_DIR . $this->runtime_component_path.'.class.php');
+		if (file_exists($this->runtime_component_path . '.class.php'))
+			$code->register_include($this->runtime_component_path . '.class.php');
 		else
 			error('run time component file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 		

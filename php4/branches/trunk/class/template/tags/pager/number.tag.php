@@ -21,8 +21,6 @@ register_tag(new pager_number_tag_info());
 
 class pager_number_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/component';
-	
 	/**
 	* 
 	* @return void 

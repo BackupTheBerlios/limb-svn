@@ -23,8 +23,11 @@ register_tag(new pager_navigator_tag_info());
 */
 class pager_navigator_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/pager_component';
-
+  function pager_navigator_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/pager_component';
+	}
+	
 	/**
 	* 
 	* @param code $ _writer

@@ -21,7 +21,10 @@ register_tag(new richedit_tag_info());
 
 class richedit_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/richedit_component';
+  function richedit_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/richedit_component';
+	}
 	
 	function get_rendered_tag()
 	{

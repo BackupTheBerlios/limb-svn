@@ -40,34 +40,34 @@ class input_tag extends control_tag
 		switch ($type)
 		{
 			case 'text':
-				$this->runtime_component_path = '/class/template/components/form/input_text_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_text_component';
 				break;
 			case 'password':
-				$this->runtime_component_path = '/class/template/components/form/input_password_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_password_component';
 				break;
 			case 'checkbox':
-				$this->runtime_component_path = '/class/template/components/form/input_checkbox_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_checkbox_component';
 				break;
 			case 'submit':
-				$this->runtime_component_path = '/class/template/components/form/input_submit_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
 				break;
 			case 'radio':
-				$this->runtime_component_path = '/class/template/components/form/input_radio_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_radio_component';
 				break;
 			case 'reset':
-				$this->runtime_component_path = '/class/template/components/form/input_reset_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_reset_component';
 				break;
 			case 'file':
-				$this->runtime_component_path = '/class/template/components/form/input_file_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_file_component';
 				break;
 			case 'hidden':
-				$this->runtime_component_path = '/class/template/components/form/input_hidden_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_hidden_component';
 				break;
 			case 'image':
-				$this->runtime_component_path = '/class/template/components/form/input_image_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_image_component';
 				break;
 			case 'button':
-				$this->runtime_component_path = '/class/template/components/form/input_button_component';
+				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_button_component';
 				break;
 			default:
 				error('UNKNOWNINPUTYPE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 

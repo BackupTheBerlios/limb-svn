@@ -26,54 +26,59 @@ require_once(LIMB_DIR . 'class/template/compiler/codewriter.class.php');
 require_once(LIMB_DIR . 'class/template/compiler/variable_reference.class.php');
 
 require_once(LIMB_DIR . 'class/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 
 /**
 * Create the tag_dictionary global variable
 */
 $GLOBALS['tag_dictionary'] =& new tag_dictionary();
 
-function load_tags($tag_dir)  
-{ 
-	if(is_dir($tag_dir))  
-	{  
-		if  ($dir = opendir($tag_dir))  
+function load_tags_from_directory($tags_repository_dir)  
+{
+  if(!is_dir($tags_repository_dir))
+    return;
+  
+  $repository_dir = opendir($tags_repository_dir);
+ 
+  while(($tag_dir = readdir($repository_dir)) !== false)
+  {
+  	if(!is_dir($tags_repository_dir . $tag_dir))
+  	  continue;
+  	
+		if(($dir = opendir($tags_repository_dir . $tag_dir)) == false)
+		  continue;
+
+		while(($tag_file = readdir($dir)) !== false) 
 		{  
-			while(($tag_file = readdir($dir)) !== false) 
-			{  
-				if  (substr($tag_file, -8,  8) == '.tag.php')  
-				{
-					include_once($tag_dir . '/' . $tag_file); 
-				} 
+			if  (substr($tag_file, -8,  8) == '.tag.php')  
+			{
+				include_once($tags_repository_dir . $tag_dir . '/' . $tag_file); 
 			} 
-			closedir($dir); 
 		} 
-	}
+		closedir($dir); 
+  }
+  closedir($repository_dir);
 } 
 
-function load_system_tags()
+function load_core_tags()
 {
-	$path = get_ini_option('compiler.ini', 'path', 'tags');
-	foreach ($path as $tagpath)
+  load_tags_from_directory(LIMB_DIR . '/class/template/tags/');
+}
+
+load_core_tags();
+
+function load_packages_tags()
+{
+  $info = packages_info :: instance();
+  $packages = $info->get_packages();
+  
+  foreach($packages as $package)
 	{
-		load_tags(LIMB_DIR . 'class/template/tags/' . $tagpath);
+		load_tags_from_directory($package['path'] . '/template/tags/');
 	} 
 }
 
-load_system_tags();
-
-function load_project_tags()
-{
-	$path = get_ini_option('config.ini', 'path', 'project_tags');
-	if (!$path)
-		return;
-		
-	foreach ($path as $tagpath)
-	{
-		load_tags(LIMB_APP_DIR . 'class/template/tags/' . $tagpath);
-	} 
-}
-
-load_project_tags();
+load_packages_tags();
 
 /**
 * Compiles a template file. Uses the file scheme to location the source,

@@ -23,7 +23,10 @@ register_tag(new text_area_tag_info());
 
 class text_area_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/text_area_component';
+  function text_area_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/text_area_component';
+	}
 		
 	function generate_contents(&$code)
 	{

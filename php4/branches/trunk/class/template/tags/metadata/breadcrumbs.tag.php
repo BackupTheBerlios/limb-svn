@@ -19,8 +19,11 @@ register_tag(new metadata_breadcrumbs_tag_info());
 
 class metadata_breadcrumbs_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/metadata_component';
-	
+  function metadata_breadcrumbs_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/metadata_component';
+	}
+		
 	function generate_constructor(&$code)
 	{
 		parent :: generate_constructor($code);

@@ -24,7 +24,10 @@ register_tag(new control_button_tag_info());
 */
 class control_button_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/control_button_component';	
+  function control_button_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/control_button_component';
+	}
 	
 	function check_nesting_level()
 	{

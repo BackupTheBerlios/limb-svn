@@ -24,7 +24,10 @@ register_tag(new label_tag_info());
 */
 class label_tag extends server_tag_component_tag
 {
-	var $runtime_component_path = '/class/template/components/form/label_component';
+  function label_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/label_component';
+	}
 
 	/**
 	* 

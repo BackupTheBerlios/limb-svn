@@ -23,7 +23,6 @@ register_tag(new pager_total_count_tag_info());
 */
 class pager_total_count_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/component';
 	/**
 	* 
 	* @return void 

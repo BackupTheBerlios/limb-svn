@@ -20,7 +20,10 @@ register_tag(new core_request_transfer_tag_info());
 
 class core_request_transfer_tag extends server_tag_component_tag
 {
-	var $runtime_component_path = '/class/template/components/request_transfer_component'; 
+  function core_request_transfer_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/request_transfer_component';
+	}
 	
 	function pre_parse()
 	{

@@ -22,7 +22,10 @@ register_tag(new action_button_tag_info());
 
 class action_button_tag extends button_tag
 {
-	var $runtime_component_path = '/class/template/components/form/input_submit_component';
+  function action_button_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
+	}
 	
 	function check_nesting_level()
 	{

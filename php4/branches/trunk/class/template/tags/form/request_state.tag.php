@@ -20,7 +20,10 @@ register_tag(new request_state_tag_info());
 
 class request_state_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/request_state_component';
+  function request_state_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/request_state_component';
+	}
 	
 	function prepare()
 	{

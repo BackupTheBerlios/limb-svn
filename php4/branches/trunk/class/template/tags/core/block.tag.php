@@ -21,13 +21,11 @@ register_tag(new core_block_tag_info());
 
 class core_block_tag extends server_component_tag
 {
-	/**
-	* File to include at runtime
-	* 
-	* @var string path to runtime component relative to LIMB_DIR
-	* @access private 
-	*/
-	var $runtime_component_path = '/class/template/components/block_component';
+  
+  function core_block_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/block_component';
+	}
 	/**
 	* 
 	* @param code_writer $ 

@@ -22,7 +22,10 @@ register_tag(new date_tag_info());
 
 class date_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/date_component';
+  function date_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/date_component';
+	}
 	
 	function get_rendered_tag()
 	{

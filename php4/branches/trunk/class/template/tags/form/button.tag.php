@@ -25,7 +25,10 @@ register_tag(new button_tag_info());
 */
 class button_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/button_component';	
+  function button_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/button_component';
+	}
 } 
 
 ?>

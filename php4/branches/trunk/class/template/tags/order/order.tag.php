@@ -21,7 +21,10 @@ register_tag(new order_tag_info());
 
 class order_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/order_component';
+  function order_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/order_component';
+	}
 
 	function pre_generate(&$code)
 	{

@@ -37,10 +37,10 @@ class select_tag extends control_tag
 		if (array_key_exists('multiple', $this->attributes))
 		{
 		  $this->attributes['multiple'] = 1;		  
-			$this->runtime_component_path = '/class/template/components/form/select_multiple_component';
+			$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/select_multiple_component';
 		} 
 		else
-			$this->runtime_component_path = '/class/template/components/form/select_single_component';
+			$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/select_single_component';
 	} 
 
 	/**

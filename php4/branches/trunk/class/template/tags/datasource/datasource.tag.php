@@ -19,7 +19,10 @@ register_tag(new datasource_tag_info());
 
 class datasource_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/datasource_component';
+  function datasource_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/datasource_component';
+	}
 	
 	function check_nesting_level()
 	{

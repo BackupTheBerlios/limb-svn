@@ -22,7 +22,10 @@ register_tag(new grid_input_tag_info());
 
 class grid_input_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/grid_input_component';
+  function grid_input_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_input_component';
+	}
 		
 	function check_nesting_level()
 	{

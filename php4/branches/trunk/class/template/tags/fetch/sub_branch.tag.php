@@ -21,7 +21,10 @@ register_tag(new fetch_sub_branch_tag_info());
 
 class fetch_sub_branch_tag extends datasource_tag
 {	
-	var $runtime_component_path = '/class/template/components/fetch_sub_branch_datasource_component';
+  function fetch_sub_branch_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/fetch_sub_branch_datasource_component';
+	}
 } 
 
 ?>

@@ -23,9 +23,12 @@ register_tag(new grid_list_tag_info());
 */
 class grid_list_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/list_component';
-	
 	var $has_form = false;
+	
+  function grid_list_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
+	}	
 	
 	/**
 	* 

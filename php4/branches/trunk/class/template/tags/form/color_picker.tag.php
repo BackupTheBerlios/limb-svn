@@ -22,7 +22,10 @@ register_tag(new color_picker_tag_info());
 
 class color_picker_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/color_picker_component';
+  function color_picker_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/color_picker_component';
+	}
 	
 	function get_rendered_tag()
 	{

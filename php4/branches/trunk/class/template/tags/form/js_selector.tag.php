@@ -22,7 +22,10 @@ register_tag(new js_selector_tag_info());
 
 class js_selector_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/js_checkbox_component';
+  function js_selector_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/js_checkbox_component';
+	}
 
 	function prepare()
 	{

@@ -22,8 +22,11 @@ register_tag(new grid_selector_tag_info());
 
 class grid_selector_tag extends control_tag
 {
-	var $runtime_component_path = '/class/template/components/form/grid_checkbox_component';
-		
+  function grid_selector_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_checkbox_component';
+	}	
+			
 	function check_nesting_level()
 	{
 		if (!$this->find_parent_by_class('grid_iterator_tag'))

@@ -22,7 +22,6 @@ register_tag(new pager_prev_tag_info());
 */
 class pager_prev_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/component';
 	/**
 	* Switched to TRUE if hide_for_current_page attribute found in tag
 	* 

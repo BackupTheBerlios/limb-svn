@@ -19,7 +19,10 @@ register_tag(new template_source_tag_info());
 
 class template_source_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/template_source_component';
+  function template_source_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/template_source_component';
+	}
 	
 	function generate_contents(&$code)
 	{

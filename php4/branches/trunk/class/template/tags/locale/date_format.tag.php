@@ -21,8 +21,11 @@ register_tag(new locale_date_format_tag_info());
 
 class locale_date_format_tag extends server_component_tag
 {
-	var $runtime_component_path = '/class/template/components/locale_date_format_component';
-	
+  function locale_date_format_tag()
+  {
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/locale_date_format_component';
+	}	
+		
 	function pre_generate(&$code)
 	{
     $code->write_php($this->get_component_ref_code() . '->prepare();');
