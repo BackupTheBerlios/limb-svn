@@ -9,28 +9,6 @@
 *
 ***********************************************************************************/ 
 
-function include_class($class_name, $include_dir='')
-{
-	if(class_exists($class_name))
-		return;
-	
-	$dir = PROJECT_DIR . $include_dir;
-		
-	if(!file_exists($dir . $class_name . '.class.php'))
-		$dir = LIMB_DIR . $include_dir;	
-	
- 	if(!file_exists($dir . $class_name . '.class.php'))
-		error("class not found", 
-			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-			array(
-				'class_name' => $class_name,
-				'include_dir' => $include_dir
-			)
-		);
-
-	include_once($dir . $class_name . '.class.php');
-}
-
 function & create_object($class_name, $arguments = array())
 {
   $handle =& $arguments;

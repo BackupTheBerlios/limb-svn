@@ -17,7 +17,7 @@ class all_site_objects_loader extends site_objects_loader
 	{
 	  $contents = array_merge(
   	  fs :: ls(LIMB_DIR . '/core/model/site_objects/'),
-  	  fs :: ls(PROJECT_DIR . '/core/model/site_objects/')
+  	  fs :: ls(LIMB_APP_DIR . '/core/model/site_objects/')
 	  );
     
     $classes_list = array();

@@ -69,6 +69,13 @@ class db_module
   		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
   	);
   }
+
+  function _disconnect_db_operation($db_params)
+  {
+  	error('abstract method',
+  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
+  	);
+  }
   
   function _select_db_operation($db_name)
   {

@@ -70,7 +70,7 @@ function load_project_tags()
 		
 	foreach ($path as $tagpath)
 	{
-		load_tags(PROJECT_DIR . 'core/template/tags/' . $tagpath);
+		load_tags(LIMB_APP_DIR . 'core/template/tags/' . $tagpath);
 	} 
 }
 

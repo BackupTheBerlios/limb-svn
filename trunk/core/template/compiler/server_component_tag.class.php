@@ -38,8 +38,8 @@ class server_component_tag extends compiler_component
 	*/
 	function generate_constructor(&$code)
 	{
-		if (file_exists(PROJECT_DIR . $this->runtime_component_path.'.class.php'))
-			$code->register_include(PROJECT_DIR . $this->runtime_component_path.'.class.php');
+		if (file_exists(LIMB_APP_DIR . $this->runtime_component_path.'.class.php'))
+			$code->register_include(LIMB_APP_DIR . $this->runtime_component_path.'.class.php');
 		elseif(file_exists(LIMB_DIR . $this->runtime_component_path.'.class.php'))
 			$code->register_include(LIMB_DIR . $this->runtime_component_path.'.class.php');
 		else

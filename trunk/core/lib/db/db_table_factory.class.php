@@ -15,16 +15,31 @@ class db_table_factory
 {		
 	function create($db_table_name)
 	{	
-		include_class($db_table_name . '_db_table', '/core/db_tables/');
+	  db_table_factory :: _include_class_file($db_table_name);
+
   	return create_object($db_table_name . '_db_table');	
 	}
 	
 	function & instance($db_table_name)
 	{	
-		include_class($db_table_name . '_db_table', '/core/db_tables/');
+	  db_table_factory :: _include_class_file($db_table_name);
+
 		$obj =&	instantiate_object($db_table_name . '_db_table');
 		return $obj;
 	}
+
+	function _include_class_file($db_table_name)
+	{
+	  if(class_exists($db_table_name . '_db_table'))
+	    return;
+	  
+		$resolver =& get_file_resolver('common');
+		resolve_handle($resolver);
+		
+		$full_path = $resolver->resolve($db_table_name . '_db_table', '/core/db_tables/');
+
+		include_once($full_path);
+	}	
 
 }
 ?>

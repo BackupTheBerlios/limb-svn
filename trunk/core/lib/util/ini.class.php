@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_repository.php');
 
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
@@ -20,23 +21,21 @@ function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cac
 
 function & get_ini($file_name, $use_cache = null)
 {
-	if (isset($GLOBALS['testing_ini'][$file_name]))
-	{
-	  $dir = VAR_DIR;
-	  $use_cache = false;
-	}
-	elseif (file_exists(PROJECT_DIR . 'core/settings/' . $file_name))
-		$dir = PROJECT_DIR . 'core/settings/';
-	elseif (file_exists(LIMB_DIR . 'core/settings/' . $file_name))
-		$dir = LIMB_DIR . 'core/settings/';
-	else
-		error('ini file not found', 
-		  __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 
-		  array('file' => $file_name));
-
-	if (!($ini =& ini::instance($dir . $file_name, $use_cache)))
+  if (isset($GLOBALS['testing_ini'][$file_name]))
+  {
+  	$resolved_file = VAR_DIR . $file_name;
+    $use_cache = false;
+  }
+  else
+  {
+    $resolver =& get_file_resolver('ini');
+    resolve_handle($resolver);
+    $resolved_file = $resolver->resolve($file_name);  
+  }  
+  
+	if (!($ini =& ini::instance($resolved_file, $use_cache)))
 		error('couldnt retrieve ini instance', __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 
-		array('file' => $dir . $file_name));
+		array('file' => $resolved_file));
 
 	return $ini;
 } 
@@ -61,10 +60,18 @@ class ini
 
 		$this->file_path = $file_path;
 		$this->use_cache = $use_cache;
-		$this->cache_dir = CACHE_DIR;
+		$this->cache_dir = VAR_DIR . '/cache/';
 
 		$this->load();
 	} 
+	
+	function get_override_file()
+	{
+	  if(file_exists($this->file_path . '.override'))
+	    return $this->file_path . '.override';
+	  else
+	    return false;
+	}
 	
 	function get_cache_file()
 	{
@@ -113,7 +120,7 @@ class ini
 		if ($this->use_cache)
 			$this->_load_cache();
 		else
-			$this->_parse();
+			$this->_parse($this->file_path);
 	} 
 
 	/*
@@ -134,8 +141,7 @@ class ini
 
 		$this->cache_file = $this->cache_dir . md5($this->file_path) . '.php';
 
-		if (file_exists($this->cache_file) && 
-		    filemtime($this->cache_file) > filemtime($this->file_path))
+		if ($this->_is_cache_valid())
 		{
 			$charset = null;
 			$group_values = array();
@@ -152,6 +158,21 @@ class ini
 			$this->_save_cache();
 	  }
 	} 
+	
+	function _is_cache_valid()
+	{
+		if (file_exists($this->cache_file) && 
+		    filemtime($this->cache_file) > filemtime($this->file_path))
+		{
+		  if(($override_file = $this->get_override_file()) && 
+		    filemtime($this->cache_file) < filemtime($override_file))
+		    return false;
+		  else
+		    return true;
+		} 
+	  
+	  return false;
+	}
 
 	/*
    Stores the content of the INI object to the cache file
@@ -184,12 +205,20 @@ class ini
 	function _parse()
 	{
 		$this->reset();
-			
-		$fp = @fopen($this->file_path, 'r');
+		
+		$this->_parse_file_contents($this->file_path);
+		
+		if($override_file = $this->get_override_file())
+		  $this->_parse_file_contents($override_file);
+	} 
+	
+	function _parse_file_contents($file_path)
+	{
+		$fp = @fopen($file_path, 'r');
 		if (!$fp)
 			return false;
 
-		$size = filesize($this->file_path);
+		$size = filesize($file_path);
 		
 		if($size == 0)
 		    return;
@@ -197,8 +226,8 @@ class ini
 		$contents =& fread($fp, $size);
 		fclose($fp);
 
-		$this->_parse_string($contents);
-	} 
+		$this->_parse_string($contents);	
+	}
 
 	function _parse_string(&$contents)
 	{

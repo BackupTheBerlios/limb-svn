@@ -11,25 +11,25 @@
 
 class	db_factory
 {
-	function &instance($db_type='', $db_params='', $force_new_instance=false)
-	{	
-		if(!$db_type && defined('DB_TYPE'))
-			$db_type = DB_TYPE;
-	  elseif(!$db_type)
-	    $db_type = 'fake';
-		
+	function &instance($db_type='', $db_params=array(), $force_new_instance=false)
+	{
+		if(!$db_type)
+			$db_type = get_ini_option('common.ini', 'type', 'DB');
+		elseif(!$db_type)
+	    $db_type = 'null';
+	  
 		$db_class_name = 'db_' . $db_type;
 
 		$obj	=& $GLOBALS['global_db_handler'];
 		
 		if (get_class( $obj ) != $db_class_name || $force_new_instance)
 		{
-			if(!$db_params)
+			if(!$db_params && $db_type !== 'null')
 			{
-				$db_params['host'] = DB_HOST;
-				$db_params['login'] = DB_LOGIN;
-				$db_params['password'] = DB_PASSWORD;
-				$db_params['name'] = DB_NAME;
+				$db_params['host'] = get_ini_option('common.ini', 'host', 'DB');
+				$db_params['login'] = get_ini_option('common.ini', 'login', 'DB');
+				$db_params['password'] = get_ini_option('common.ini', 'password', 'DB');
+				$db_params['name'] = get_ini_option('common.ini', 'name', 'DB');
 			}
 			
 		  include_once(LIMB_DIR . 'core/lib/db/' . $db_class_name . '.class.php');

@@ -81,7 +81,7 @@ class litecache_component extends component
 
 		$attributes['life_time'] = $expires;
 		
-		$attributes['cache_dir'] = CACHE_DIR;
+		$attributes['cache_dir'] = VAR_DIR . '/cache/';
 
 		$this->cache =& new cache_lite($attributes);
 		$this->cacheby = $cacheby;

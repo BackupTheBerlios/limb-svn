@@ -39,11 +39,11 @@ class TestManager
 			include_once($test_group_file);
 			
 			$group_classes = $manager->_getGroupTestClassNames($test_group_file);
-			
 			foreach($group_classes as $group_class)
+			{
 				$test->addTestCase(new $group_class());
+		  }
 		}
-		
 		$test->run($reporter);
 	} 
 

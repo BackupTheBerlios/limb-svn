@@ -18,11 +18,11 @@ function resolve_template_source_file_name($file)
 	else
 		$locale = '_' . DEFAULT_CONTENT_LOCALE_ID . '/';
 	
-  if(file_exists(PROJECT_DIR . '/design/main/templates/' . $locale. $file))	//fix this!!!
-  	return PROJECT_DIR . '/design/main/templates/' . $locale. $file;
+  if(file_exists(LIMB_APP_DIR . '/design/main/templates/' . $locale. $file))	//fix this!!!
+  	return LIMB_APP_DIR . '/design/main/templates/' . $locale. $file;
   
-  if(file_exists(PROJECT_DIR . '/design/main/templates/' . $file))
-  	return PROJECT_DIR . '/design/main/templates/' . $file;
+  if(file_exists(LIMB_APP_DIR . '/design/main/templates/' . $file))
+  	return LIMB_APP_DIR . '/design/main/templates/' . $file;
   	
 	if(file_exists(LIMB_DIR . '/design/main/templates/' . $locale. $file))
 		return LIMB_DIR . '/design/main/templates/' . $locale. $file;

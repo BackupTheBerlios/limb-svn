@@ -11,34 +11,18 @@
 if(!defined('LIMB_DIR'))
   define('LIMB_DIR', dirname(__FILE__) . '/../');
   
-if(!defined('PROJECT_DIR'))
-  define('PROJECT_DIR', LIMB_DIR);
-  
-define('VAR_DIR', dirname(__FILE__) . '/var/');
+if(!defined('VAR_DIR'))  
+  define('VAR_DIR', dirname(__FILE__) . '/var/');
+
+define('DB_TYPE','mysql');
+define('DB_HOST','192.168.0.6');
+define('DB_LOGIN','root');
+define('DB_PASSWORD','test');
+define('DB_NAME','limb_trunk_tests');
 
 if($_SERVER['SERVER_PORT'] == 81)
 	define('ERROR_HANDLER_TYPE', DEBUG_HANDLE_NATIVE);
-    
-require_once(PROJECT_DIR . 'setup.php');
-
-if(!defined('DB_TYPE'))
-  define('DB_TYPE', 'mysql');
-
-if(!defined('DB_HOST'))
-  define('DB_HOST', '192.168.0.6');
-
-if(!defined('DB_LOGIN'))
-  define('DB_LOGIN', 'root');
-
-if(!defined('DB_PASSWORD'))
-  define('DB_PASSWORD', 'test');
-
-if(!defined('DB_NAME'))
-  define('DB_NAME', 'limb_trunk_tests');
-
-if(!defined('SIMPLE_TEST'))
-	define('SIMPLE_TEST', 'c:/var/external/php_simple_test_1.0RC1/');
-
+	    
 if(!defined('CONTENT_LOCALE_ID'))
   define('CONTENT_LOCALE_ID', 'en');
   
@@ -50,14 +34,19 @@ if(!defined('DEFAULT_MANAGEMENT_LOCALE_ID'))
   
 if(!defined('DEFAULT_CONTENT_LOCALE_ID'))  
   define('DEFAULT_CONTENT_LOCALE_ID','en');
-  	
-if ( !file_exists(SIMPLE_TEST . 'unit_tester.php') ) 
-	die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
 
-require_once(SIMPLE_TEST . 'unit_tester.php');
-require_once(SIMPLE_TEST . 'mock_objects.php');
-require_once(SIMPLE_TEST . 'reporter.php');
 
+require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_repository.php');
+
+$r = array();
+register_file_resolver('ini',    $r[] = LIMB_DIR . '/core/file_resolvers/tests_ini_file_resolver');
+register_file_resolver('action', $r[] = LIMB_DIR . '/core/file_resolvers/tests_action_file_resolver');
+register_file_resolver('strings', $r[] = LIMB_DIR . '/core/file_resolvers/tests_strings_file_resolver');
+register_file_resolver('common', $r[] = LIMB_DIR . '/core/file_resolvers/tests_common_file_resolver');
+
+require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
+
+require_once(LIMB_DIR . '/setup.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');
 require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');

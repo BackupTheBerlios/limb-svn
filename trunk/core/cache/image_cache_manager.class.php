@@ -12,7 +12,7 @@ if(!defined('IMAGE_CACHE_DIR'))
   define('IMAGE_CACHE_DIR', VAR_DIR . 'images/');
   
 if(!defined('IMAGE_CACHE_WEB_DIR'))
-  define('IMAGE_CACHE_WEB_DIR', VAR_WEB_DIR . 'images/');
+  define('IMAGE_CACHE_WEB_DIR', '/var/images/');
   
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');

@@ -10,19 +10,23 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_module.class.php');
 
-class db_fake extends db_module
+class db_null extends db_module
 {	  
-  function _connect_db_operation($db_params)
+  function db_null()
   {
-  	return false;
+	  $this->_db_connection = -1;
+	 	$this->_sql_result = null;  
   }
   
-  function _select_db_operation($db_name)
+  function connect_db($db_params)
   {
-  	return false;
   }
-  
-  function _disconnect_db_operation($db_params)
+
+  function select_db($db_name)
+  {  	
+  }
+    
+  function disconnect_db($db_params)
   {
   }
 

@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 
-define('TEST_DIR_ABSOLUTE_PATH', PROJECT_DIR . '/var/');
+define('TEST_DIR_ABSOLUTE_PATH', LIMB_DIR . '/var/');
 define('TEST_DIR_RELATIVE_PATH', 'var');
 
 class dir_walker

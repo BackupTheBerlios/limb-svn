@@ -8,6 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
+if(!defined('DEVELOPER_EMAIL'))
+	define('DEVELOPER_EMAIL', 'limb@0x00.ru');
+	
 define('DEBUG_LEVEL_NOTICE', 1);
 define('DEBUG_LEVEL_WARNING', 2);
 define('DEBUG_LEVEL_ERROR', 3);
@@ -515,8 +518,8 @@ class debug
 	/*
     fetches the debug report
   */
-	function &parse_html_console($server_file_path = VAR_WEB_DIR)
-	{
+	function &parse_html_console()
+	{	  
 		if (!debug::is_debug_enabled())
 			return '';
 
@@ -528,13 +531,15 @@ class debug
 						<script language='javascript'>
 						<!-- hide this script from old browsers
 						
-						function show_debug( file_name, title )
+						function show_debug(file_name, title)
 						{
+            	debug_path = window.location.pathname.replace(/\/[^\/]*$/, '/') + 'var/';
+            	
 							rn = Math.random();
-						  debug_window = window.open( file_name + '?rn=' + rn, title, 'top=370,left=550,height=300,width=400,scrollbars,resizable');
+						  debug_window = window.open(debug_path + file_name + '?rn=' + rn, title, 'top=370,left=550,height=300,width=400,scrollbars,resizable');
 						}
 						
-						show_debug('{$server_file_path}{$ip}-debug.html', 'debug');
+						show_debug('{$ip}-debug.html', 'debug');
 															
 						//-->
 						</script>";

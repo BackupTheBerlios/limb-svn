@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(XML_HTMLSAX3 . '/HTMLSax3.php');
 require_once(LIMB_DIR . '/core/model/shop/shipping/fedex_sax_handler.class.php');
 
 class fedex_sax_handler_test extends LimbTestCase

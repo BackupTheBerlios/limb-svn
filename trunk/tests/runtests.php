@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/setup.php');
+require_once(dirname(__FILE__) . '/lib/limb_cli_reporter.class.php');
 
 function usage()
 {
@@ -100,7 +101,7 @@ if ($opt_list)
 /* run a test case */
 if ($opt_casefile !== false)
 {
-	TestManager::runTestCase($opt_casefile, new TextReporter());
+	TestManager::runTestCase($opt_casefile, new LimbCLIReporter());
 	echo debug :: parse_cli_console();
 	exit(0);
 } 
@@ -110,13 +111,13 @@ if ($opt_groupfile !== false)
   $groups = TestManager::getGroupTestList(LIMB_DIR . '/tests/groups');
   if(isset($groups[$opt_groupfile]))
   {
-	  TestManager::runGroupTest($groups[$opt_groupfile], new TextReporter());
+	  TestManager::runGroupTest($groups[$opt_groupfile], new LimbCLIReporter());
 	  echo debug :: parse_cli_console();	
 	}
 	exit(0);
 } 
 /* run all tests */
-TestManager::runAllTests(LIMB_DIR . '/tests/groups', new TextReporter());
+TestManager::runAllTests(LIMB_DIR . '/tests/groups', new LimbCLIReporter());
 echo debug :: parse_cli_console();
 exit(0);
 

@@ -38,12 +38,7 @@ class db_test extends LimbTestCase
   
   function _get_dump_file_path()
   {
-		$file = PROJECT_DIR . '/tests/sql/' . $this->dump_file;
-		
-		if(!file_exists($file))
-			$file = LIMB_DIR . '/tests/sql/' . $this->dump_file;
-			
-		return $file;
+		return LIMB_DIR . '/tests/sql/' . $this->dump_file;
   }
   
   function _load_tables_list()

@@ -25,7 +25,7 @@ class project_db_tables_test extends LimbTestCase
 	
 	function test_db_tables()
 	{
-		$this->_load_db_tables(PROJECT_DIR . '/core/db_tables/');
+		$this->_load_db_tables(LIMB_APP_DIR . '/core/db_tables/');
 		$this->_load_db_tables(LIMB_DIR . '/core/db_tables/');
 		
 		$this->_check_all_data_bases();

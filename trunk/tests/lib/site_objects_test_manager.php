@@ -27,9 +27,9 @@ class SiteObjectsTestManager
 	    $tester_postfix = '_' . $tester_postfix;
 	  } 
 
-		if(file_exists(PROJECT_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester.class.php'))
+		if(file_exists(LIMB_APP_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester.class.php'))
 		{
-			include_once(PROJECT_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester.class.php');
+			include_once(LIMB_APP_DIR . '/tests/cases/site_objects_testers/' . $site_object_class . $tester_postfix . '_tester.class.php');
 			$tester_name = $site_object_class . $tester_postfix . '_tester';
 			$test_case =& new $tester_name($site_object_class);
 		}

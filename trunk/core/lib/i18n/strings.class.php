@@ -62,26 +62,16 @@ class strings
 		return $value;
 	}
 		
-	function _get_path($filename='common', $locale_id)
+	function _get_path($file_name, $locale_id)
 	{					  
-
-		if(isset($this->_path_cache[$filename][$locale_id]))
-			return $this->_path_cache[$filename][$locale_id];	  
-		
-		if(file_exists(PROJECT_DIR . '/core/strings/' . $filename . '_' . $locale_id . '.ini'))
-  		$dir = PROJECT_DIR . '/core/strings/';
-  	elseif(file_exists(LIMB_DIR . '/core/strings/' . $filename . '_' . $locale_id . '.ini'))
-  		$dir = LIMB_DIR . '/core/strings/';
-  	else
-  		error('strings file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  			array(
-  				'filename' => $filename,
-  				'locale_id' => $locale_id
-  			));
-  		
-	  $path = $dir . $filename . '_' . $locale_id . '.ini';
-	  
-	  $this->_path_cache[$filename][$locale_id] = $path;
+		if(isset($this->_path_cache[$file_name][$locale_id]))
+			return $this->_path_cache[$file_name][$locale_id];	  
+			
+    $resolver =& get_file_resolver('strings');
+    resolve_handle($resolver);
+    $path = $resolver->resolve($file_name, $locale_id);
+			
+	  $this->_path_cache[$file_name][$locale_id] = $path;
 	  
 	  return $path;
 	}

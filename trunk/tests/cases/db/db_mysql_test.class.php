@@ -19,9 +19,9 @@ class db_mysql_test extends LimbTestCase
 		
 	function setUp()
 	{ 
-		if (!mysql_connect(DB_HOST, DB_LOGIN, DB_PASSWORD))
+		if (!mysql_connect(get_ini_option('common.ini', 'host', 'DB'), get_ini_option('common.ini', 'login', 'DB'), get_ini_option('common.ini', 'password', 'DB')))
 			die ('Could not connect: ' . mysql_errno() . ' - ' . mysql_error());
-		if (!mysql_select_db(DB_NAME))
+		if (!mysql_select_db(get_ini_option('common.ini', 'name', 'DB')))
 			die ('Could not connect: ' . mysql_errno() . ' - ' . mysql_error());
 			
 		if (!mysql_query("DROP TABLE IF EXISTS founding_fathers;"))
