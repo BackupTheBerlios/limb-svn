@@ -15,14 +15,23 @@ class http_response
 	var $response_string = '';
 	var $response_file_path = '';
 	var $headers = array();
-		
+	
 	function redirect($path)
 	{  		  	
+    require_once(LIMB_DIR . 'core/template/template.class.php');
   	$message = strings :: get('redirect_message');//???
   	$message = str_replace('%path%', $path, $message);
-  	$this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white><font color=707070><small>{$message}</small></font></body></html>";
+
+    $template = new template('/redirect_template.html');
+    $template->set('message', $message);
+    $template->set('path', $path);
+
+		ob_start();
+		$template->display();
+		$this->response_string =  ob_get_contents();
+		ob_end_clean();
 	}
-	
+		
 	function reset()
 	{
 	  $this->response_string = '';
