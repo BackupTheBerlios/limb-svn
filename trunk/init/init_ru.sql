@@ -6,6 +6,22 @@ Server version 4.0.12-nt
 */
 
 /*
+Table struture for cart
+*/
+
+drop table if exists `cart`;
+CREATE TABLE `cart` (                                                                                                                                                                                                                                                                                                                       
+  `id` int(11) NOT NULL auto_increment,                                                                                                                                                                                                                                                                                                     
+  `cart_id` varchar(32) NOT NULL default '',                                                                                                                                                                                                                                                                                                
+  `user_id` int(11) NOT NULL default '0',                                                                                                                                                                                                                                                                                                   
+  `last_activity_time` int(11) NOT NULL default '0',                                                                                                                                                                                                                                                                                        
+  `cart_items` blob NOT NULL,                                                                                                                                                                                                                                                                                                               
+  PRIMARY KEY  (`id`),                                                                                                                                                                                                                                                                                                                      
+  UNIQUE KEY `cart_id` (`cart_id`),                                                                                                                                                                                                                                                                                                         
+  KEY `user_id` (`user_id`)                                                                                                                                                                                                                                                                                                                 
+  ) TYPE=InnoDB; 
+
+/*
 Table struture for document
 */
 
@@ -136,6 +152,7 @@ CREATE TABLE `navigation_item` (
   `title` varchar(100) NOT NULL default '',
   `url` varchar(255) NOT NULL default '',
   `identifier` varchar(50) NOT NULL default '',
+  `new_window` tinyint(4) default '0',
   PRIMARY KEY  (`id`),
   KEY `v` (`version`),
   KEY `o` (`object_id`)
@@ -146,24 +163,24 @@ Table data for temp_ru.navigation_item
 */
 
 INSERT INTO `navigation_item` VALUES 
-(1,1,15,'Навигация','','navigation'),
-(2,1,33,'Навигация','','navigation'),
-(3,1,37,'Администрирование','/root/admin','admin'),
-(4,1,38,'Структура сайта','/root/admin/site_structure','site_structure'),
-(5,1,39,'Навигация','/root/navigation','navigation'),
-(6,2,33,'Навигация','/root/navigation','navigation'),
-(7,2,38,'Управление сайтом','/root/admin','site_management'),
-(8,2,39,'Управление контентом','/root/admin','content_management'),
-(9,1,40,'Навигация','/root/navigation','navigation'),
-(10,1,41,'Структура сайта','/root/admin/site_structure','site_structure'),
-(11,1,42,'Доступ к объектам','/root/admin/objects_access','objects_access'),
-(12,1,43,'Типы объектов','/root/admin/classes','classes'),
-(13,1,44,'Пользователи','/root/users','users'),
-(14,1,45,'Группы пользователей','/root/user_groups','user_groups'),
-(15,1,46,'Служебные сообщения','/root/messages','messages'),
-(16,1,47,'Файлы','/root/files_folder','files'),
-(17,1,48,'Изображения','/root/images_folder','images'),
-(18,1,49,'Меню пользователя','/root','main');
+(1,1,15,'Навигация','','navigation',0),
+(2,1,33,'Навигация','','navigation',0),
+(3,1,37,'Администрирование','/root/admin','admin',0),
+(4,1,38,'Структура сайта','/root/admin/site_structure','site_structure',0),
+(5,1,39,'Навигация','/root/navigation','navigation',0),
+(6,2,33,'Навигация','/root/navigation','navigation',0),
+(7,2,38,'Управление сайтом','/root/admin','site_management',0),
+(8,2,39,'Управление контентом','/root/admin','content_management',0),
+(9,1,40,'Навигация','/root/navigation','navigation',0),
+(10,1,41,'Структура сайта','/root/admin/site_structure','site_structure',0),
+(11,1,42,'Доступ к объектам','/root/admin/objects_access','objects_access',0),
+(12,1,43,'Типы объектов','/root/admin/classes','classes',0),
+(13,1,44,'Пользователи','/root/users','users',0),
+(14,1,45,'Группы пользователей','/root/user_groups','user_groups',0),
+(15,1,46,'Служебные сообщения','/root/messages','messages',0),
+(16,1,47,'Файлы','/root/files_folder','files',0),
+(17,1,48,'Изображения','/root/images_folder','images',0),
+(18,1,49,'Меню пользователя','/root','main',0);
 
 /*
 Table struture for sys_action_access

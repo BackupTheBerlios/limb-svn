@@ -6,6 +6,22 @@ Server version 4.0.12-nt
 */
 
 /*
+Table struture for cart
+*/
+
+drop table if exists `cart`;
+CREATE TABLE `cart` (                                                                                                                                                                                                                                                                                                                       
+  `id` int(11) NOT NULL auto_increment,                                                                                                                                                                                                                                                                                                     
+  `cart_id` varchar(32) NOT NULL default '',                                                                                                                                                                                                                                                                                                
+  `user_id` int(11) NOT NULL default '0',                                                                                                                                                                                                                                                                                                   
+  `last_activity_time` int(11) NOT NULL default '0',                                                                                                                                                                                                                                                                                        
+  `cart_items` blob NOT NULL,                                                                                                                                                                                                                                                                                                               
+  PRIMARY KEY  (`id`),                                                                                                                                                                                                                                                                                                                      
+  UNIQUE KEY `cart_id` (`cart_id`),                                                                                                                                                                                                                                                                                                         
+  KEY `user_id` (`user_id`)                                                                                                                                                                                                                                                                                                                 
+  ) TYPE=InnoDB;
+
+/*
 Table struture for document
 */
 
@@ -126,6 +142,7 @@ CREATE TABLE `navigation_item` (
   `title` varchar(100) NOT NULL default '',
   `url` varchar(255) NOT NULL default '',
   `identifier` varchar(50) NOT NULL default '',
+  `new_window` tinyint(4) default '0',
   PRIMARY KEY  (`id`),
   KEY `v` (`version`),
   KEY `o` (`object_id`)
