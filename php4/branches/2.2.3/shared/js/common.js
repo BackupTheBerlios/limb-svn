@@ -778,7 +778,7 @@ function apply_behavior()
 	for(var v in arr)
 	{
 		
-		if(CLASS_MAP[arr[v].className])
+		if(typeof(arr[v]) != 'undefined' && CLASS_MAP[arr[v].className])
 		{
 			try
 			{
