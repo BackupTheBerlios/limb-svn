@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 class display_file_action extends action
 {	
 	public function perform($request, $response)
-	{trigger_error('Stop', E_USER_WARNING);
+	{
 		$object_data = fetch_requested_object($request);
 		
 		if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
