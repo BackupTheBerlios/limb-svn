@@ -76,7 +76,21 @@ class LimbApplication
 
   function run()
   {
-    $this->_doRun();
+    $this->_registerFileResolvers();
+
+    $this->_registerToolkit();
+
+    $this->_loadPackages();
+
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $response =& $toolkit->getResponse();
+
+    $filter_chain = new FilterChain($request, $response);
+
+    $this->_registerFilters($filter_chain);
+
+    $filter_chain->process();
 
     if(catch('LimbException', $e))
     {
@@ -92,33 +106,14 @@ class LimbApplication
       echo  'Report this error to the LIMB developers, please.';
       exit;
     }
-  }
-
-  function _doRun()
-  {
-    $this->_registerFileResolvers();
-
-    $this->_registerToolkit();
-
-    $this->_loadPackages();
-
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-    $response =& $toolkit->getResponse();
-
-    $filter_chain = new FilterChain(&$request, &$response);
-
-    $this->_registerFilters($filter_chain);
-
-    $filter_chain->process();
 
     if( $response->getContentType() == 'text/html' &&
         $response->getStatus() == 200)//only 200?
     {
       if (Debug :: isConsoleEnabled())
-        $response->write(Debug :: parseHtmlConsole());
+        $response->append(Debug :: parseHtmlConsole());
 
-      $response->write(MessageBox :: parse());//It definitely should be somewhere else!
+      $response->append(MessageBox :: parse());//It definitely should be somewhere else!
     }
 
     $response->commit();

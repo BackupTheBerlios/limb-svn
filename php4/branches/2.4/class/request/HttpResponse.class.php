@@ -115,6 +115,11 @@ class HttpResponse// implements Response
     $this->response_string = $string;
   }
 
+  function append($string)
+  {
+    $this->response_string .= $string;
+  }
+
   function commit()
   {
     foreach($this->headers as $header)

@@ -33,20 +33,7 @@ Mock :: generatePartial
 (
   'SiteObjectController',
   'SiteObjectControllerMock',
-  array('_getStateMachine',
-        '_startTransaction',
-        '_commitTransaction',
-        '_rollbackTransaction')
-);
-
-Mock :: generatePartial
-(
-  'SiteObjectController',
-  'SiteObjectControllerMock2',
-  array('_performAction',
-        '_startTransaction',
-        '_commitTransaction',
-        '_rollbackTransaction')
+  array('_getStateMachine')
 );
 
 class SiteObjectControllerPerformTestVersion extends SiteObjectController
@@ -166,30 +153,6 @@ class SiteObjectControllerTest extends LimbTestCase
 
     $controller->tally();
     $behaviour->tally();
-  }
-
-  function testTransactionCalls()
-  {
-    $controller = new SiteObjectControllerMock2($this);
-
-    $controller->expectOnce('_startTransaction');
-    $controller->expectOnce('_commitTransaction');
-    $controller->process($this->request);
-
-    $controller->tally();
-  }
-
-  function testTransactionRollback()
-  {
-    $controller = new SiteObjectControllerMock3($this);
-
-    $controller->expectOnce('_startTransaction');
-    $controller->expectOnce('_rollbackTransaction');
-
-    $controller->process($this->request);
-    $this->assertTrue(catch('Exception', $e));
-
-    $controller->tally();
   }
 }
 ?>
