@@ -66,7 +66,7 @@ class required_rule_test extends single_field_rule_test
 		$this->assertTrue($this->validator->is_valid());
 	}
 	 
-	function testrequired_rule_zero_length_string()
+	function test_required_rule_zero_length_string()
 	{
 		$this->validator->add_rule(new required_rule('testfield'));
 
