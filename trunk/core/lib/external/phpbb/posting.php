@@ -347,7 +347,7 @@ if ( !$is_auth[$is_auth_type] )
 	}
 
 	$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-	header($header_location . append_sid("login.php?redirect=posting.php&" . $redirect, true));
+	header($header_location . append_sid("/root/login?redirect=posting.php&" . $redirect, true));
 	exit;
 }
 

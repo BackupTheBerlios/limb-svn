@@ -182,7 +182,7 @@ else if ( $mode == 'read' )
 	if ( !$userdata['session_logged_in'] )
 	{
 		$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-		header($header_location . append_sid("login.php?redirect=privmsg.php&folder=$folder&mode=$mode&" . POST_POST_URL . "=$privmsgs_id", true));
+		header($header_location . append_sid("/root/login?redirect=privmsg.php&folder=$folder&mode=$mode&" . POST_POST_URL . "=$privmsgs_id", true));
 		exit;
 	}
 
@@ -631,7 +631,7 @@ else if ( ( $delete && $mark_list ) || $delete_all )
 	if ( !$userdata['session_logged_in'] )
 	{
 		$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-		header($header_location . append_sid("login.php?redirect=privmsg.php&folder=inbox", true));
+		header($header_location . append_sid("/root/login?redirect=privmsg.php&folder=inbox", true));
 		exit;
 	}
 	if ( isset($mark_list) && !is_array($mark_list) )
@@ -830,7 +830,7 @@ else if ( $save && $mark_list && $folder != 'savebox' && $folder != 'outbox' )
 	if ( !$userdata['session_logged_in'] )
 	{
 		$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-		header($header_location . append_sid("login.php?redirect=privmsg.php&folder=inbox", true));
+		header($header_location . append_sid("/root/login?redirect=privmsg.php&folder=inbox", true));
 		exit;
 	}
 
@@ -920,7 +920,7 @@ else if ( $submit || $refresh || $mode != '' )
 	{
 		$user_id = ( isset($HTTP_GET_VARS[POST_USERS_URL]) ) ? '&' . POST_USERS_URL . '=' . intval($HTTP_GET_VARS[POST_USERS_URL]) : '';
 		$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-		header($header_location . append_sid("login.php?redirect=privmsg.php&folder=$folder&mode=$mode" . $user_id, true));
+		header($header_location . append_sid("/root/login?redirect=privmsg.php&folder=$folder&mode=$mode" . $user_id, true));
 		exit;
 	}
 
@@ -1642,7 +1642,7 @@ else if ( $submit || $refresh || $mode != '' )
 if ( !$userdata['session_logged_in'] )
 {
 	$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-	header($header_location . append_sid("login.php?redirect=privmsg.php&folder=inbox", true));
+	header($header_location . append_sid("/root/login?redirect=privmsg.php&folder=inbox", true));
 	exit;
 }
 

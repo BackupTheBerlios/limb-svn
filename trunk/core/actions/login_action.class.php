@@ -28,6 +28,40 @@ class login_action extends form_site_object_action
 		$this->validator->add_rule(new required_rule('password'));
 	}
 	
+	function _init_dataspace()
+	{
+		parent :: _init_dataspace();
+		
+		$this->_transfer_redirect_param();
+	}	
+	
+	function _transfer_redirect_param()
+	{
+		if (!isset($_REQUEST['redirect']) || !$_REQUEST['redirect'])
+			return ;
+
+		$this->dataspace->set('redirect', $this->_get_redirect_string());
+	}
+	
+	function _get_redirect_string()
+	{
+		$forward_to = $_SERVER['QUERY_STRING'];
+
+		if(!preg_match("/^redirect=([a-z0-9\.#\/\?&=\+\-_]+)/si", $forward_to, $forward_matches) )
+			return '';
+			
+		$forward_match = explode('&', $forward_matches[1]);
+	
+		$redirect_url = $forward_match[0];
+		
+		if(count($forward_match) <= 1)
+			return $redirect_url;
+		
+		unset($forward_match[0]);	
+	
+		return $redirect_url . '? '. explode('&', $forward_match);
+	}
+	
 	function _valid_perform()
 	{
 		$login = $this->_get('login');
@@ -37,7 +71,12 @@ class login_action extends form_site_object_action
 		$is_logged = $user_object->login($login, $password);
 		
 		if($is_logged)
-			reload('/');
+		{
+			if($redirect = $this->_get('redirect'))
+				reload($redirect);
+			else
+				reload('/');
+		}	
 			
 		return $is_logged;
 	}

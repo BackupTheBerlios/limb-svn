@@ -118,6 +118,8 @@ class phpbb_user extends object
 	{
 		$this->_delete_cookie();
 		
+		session :: destroy('phpbb_sid');
+		
 		return true;
 	}
 	
