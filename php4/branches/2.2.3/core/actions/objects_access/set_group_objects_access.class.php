@@ -52,15 +52,15 @@ class set_group_objects_access extends form_action
 	function _valid_perform(&$request, &$response)
 	{
 		$data = $this->dataspace->export();
+
+	  if($groups = $this->dataspace->get('filter_groups'))
+	  	session :: set('filter_groups', $groups);
 		
 		if(isset($data['update']) && isset($data['policy']))
 		{
 			$access_policy =& access_policy :: instance();
-			$access_policy->save_group_object_access($data['policy']);
+			$access_policy->save_group_object_access($data['policy'], $groups);
 		}
-
-	  if($groups = $this->dataspace->get('filter_groups'))
-	  	session :: set('filter_groups', $groups);
 
 		$this->_set_template_tree();
  		
