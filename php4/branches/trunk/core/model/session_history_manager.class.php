@@ -12,21 +12,22 @@ require_once(LIMB_DIR . '/core/lib/session/session.class.php');
 require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
 
 class session_history_manager
-{  
+{
   function datermine_tab_id()
   {
-    $tab_name = $_COOKIE["active_tab"]; 
-    if(!$tab_name)
+    if(isset($_COOKIE["active_tab"]))
+      $tab_name = $_COOKIE["active_tab"];
+    else
       $tab_name = 'tab';
 
     return $tab_name;
   }
-  
+
   function save()
   {
     $request =& request :: instance();
     $tab_id = session_history_manager :: datermine_tab_id();
-    
+
     $history = session :: get('session_history');
     if(!isset($history[$tab_id]))
       $history[$tab_id] = array();
@@ -35,7 +36,7 @@ class session_history_manager
       $uri =& $request->uri;
     else
       $uri =& new uri($_SERVER['PHP_SELF']);
-    
+
     $uri->remove_query_item('rn');
     if($uri->get_query_item('popup'))
       return;
@@ -54,7 +55,7 @@ class session_history_manager
       if($uri->compare($latest_uri))
         return;
     }
-    
+
     if(count($history[$tab_id]) >= 10)
     {
       $history[$tab_id] = array_reverse($history[$tab_id]);
@@ -69,11 +70,11 @@ class session_history_manager
   function fetch()
   {
     $tab_id = session_history_manager :: datermine_tab_id();
-    
+
     $history = session :: get('session_history');
     if(!isset($history[$tab_id]))
       $history[$tab_id] = array();
-    
+
     return  array_reverse($history[$tab_id]);
   }
 
