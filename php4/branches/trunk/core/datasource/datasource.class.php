@@ -8,6 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/lib/util/array_dataset.class.php');
+require_once(LIMB_DIR . '/core/fetcher.class.php');
+
 class datasource
 {
   function datasource()
