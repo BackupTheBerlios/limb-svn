@@ -11,14 +11,24 @@
 
 class site_object_mapper
 {
+  protected function _create_domain_object()
+  {
+    include_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+    return new site_object();
+  }
+  
   public function find_by_id($id)
   {
     $raw_data = $this->_get_finder()->find(array(), array('conditions' => array('sso.id=' . $id)));
-    $site_object = new site_object();
     
-    $this->_do_load($raw_data, $site_object);
+    if (!$raw_data)
+      return null;
     
-    return $site_object;
+    $domain_object = $this->_create_domain_object();
+    
+    $this->_do_load($raw_data, $domain_object);
+    
+    return $domain_object;
   }
   
   protected function _get_finder()
@@ -31,9 +41,14 @@ class site_object_mapper
   {
     $site_object->import($raw_data);
     
+    $this->_do_load_behaviour($raw_data, $site_object);
+  }
+  
+  protected function _do_load_behaviour($raw_data, $site_object)
+  {
     $behaviour = $this->_get_behaviour_mapper()->find_by_id($raw_data['behaviour_id']);
 
-    $site_object->attach_behaviour($behaviour);    
+    $site_object->attach_behaviour($behaviour);        
   }
   
   protected function _get_behaviour_mapper()

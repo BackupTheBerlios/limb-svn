@@ -179,6 +179,17 @@ class site_object_mapper_test extends LimbTestCase
     $this->assertEqual($mapper->get_parent_locale_id($parent_node_id), $locale_id);
   }
   
+  function test_find_by_id_failed()
+  {
+    $finder = new Mocksite_objects_raw_finder($this);
+    $parameters = array(array(), array('conditions' => array('sso.id=' . $id = 10)));
+    $finder->setReturnValue('find', array(), $parameters);
+
+    $mapper = new site_object_mapper_test_version0($this);
+    $mapper->setReturnValue('_get_finder', $finder);    
+    $this->assertNull($mapper->find_by_id($id));
+  }
+  
   function test_find_by_id()
   {
     $finder = new Mocksite_objects_raw_finder($this);

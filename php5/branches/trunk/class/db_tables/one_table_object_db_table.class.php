@@ -9,8 +9,9 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 
-class content_object_db_table extends db_table
+class one_table_object_db_table extends db_table
 {
   protected function _define_columns() 
   {

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/finders/one_table_objects_raw_finder.class.php');
+require_once(LIMB_DIR . '/class/core/finders/versioned_one_table_objects_raw_finder.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('db_table');
 
-class test_one_table_objects_raw_finder extends one_table_objects_raw_finder
+class test_versioned_one_table_objects_raw_finder extends versioned_one_table_objects_raw_finder
 {
   protected function _define_db_table_name()
   {
@@ -22,12 +22,12 @@ class test_one_table_objects_raw_finder extends one_table_objects_raw_finder
   }
 }
 
-Mock :: generatePartial('test_one_table_objects_raw_finder',
-                        'one_table_objects_raw_finder_test_version',
+Mock :: generatePartial('test_versioned_one_table_objects_raw_finder',
+                        'versioned_one_table_objects_raw_finder_test_version',
                         array('_do_parent_find',
                               '_do_parent_count'));
 
-class one_table_objects_raw_finder_test extends LimbTestCase
+class versioned_one_table_objects_raw_finder_test extends LimbTestCase
 {
 	var $finder;
 	var $toolkit;
@@ -35,7 +35,7 @@ class one_table_objects_raw_finder_test extends LimbTestCase
   
   function setUp()
   {
-    $this->finder = new one_table_objects_raw_finder_test_version($this);
+    $this->finder = new versioned_one_table_objects_raw_finder_test_version($this);
     $this->db_table = new Mockdb_table($this);
     $this->toolkit = new MockLimbToolkit($this);
     
@@ -57,16 +57,9 @@ class one_table_objects_raw_finder_test extends LimbTestCase
   {
     $params['limit'] = 5;
     $sql_params['conditions'][] = 'some condition';
-    
-    $this->db_table->expectOnce('get_columns_for_select', array('tn', array('id')));
-    $this->db_table->setReturnValue('get_columns_for_select', 'tn.field1, tn.field2');
-    $this->db_table->expectOnce('get_table_name');
-    $this->db_table->setReturnValue('get_table_name', 'table1');
-    
+
     $expected_sql_params = $sql_params;
-    $expected_sql_params['columns'][] = ' tn.field1, tn.field2,';
-    $expected_sql_params['tables'][] = ',table1 as tn';
-    $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id';
+    $expected_sql_params['conditions'][] = ' AND sso.current_version=tn.version';
     
     $this->finder->expectOnce('_do_parent_find', array(new EqualExpectation($params), 
                                                         new EqualExpectation($expected_sql_params)));
@@ -75,16 +68,25 @@ class one_table_objects_raw_finder_test extends LimbTestCase
     $this->assertEqual($this->finder->find($params, $sql_params), $result);
   }
 
+  function test_find_by_version()
+  {
+    $expected_sql_params = array();
+    $expected_sql_params['conditions'][] = ' AND sso.id=' . $object_id = 100;
+    $expected_sql_params['conditions'][] = ' AND tn.version=' . $version = 1000;
+    
+    $this->finder->expectOnce('_do_parent_find', array(array(), 
+                                                        new EqualExpectation($expected_sql_params)));
+    $this->finder->setReturnValue('_do_parent_find', $result = 'some result');
+     
+    $this->assertEqual($this->finder->find_by_version($object_id, $version), $result);
+  }
+  
   function test_count()
   {
     $sql_params['conditions'][] = 'some condition';
-    
-    $this->db_table->expectOnce('get_table_name');
-    $this->db_table->setReturnValue('get_table_name', 'table1');
-    
     $expected_sql_params = $sql_params;
-    $expected_sql_params['tables'][] = ',table1 as tn';
-    $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id';
+    
+    $expected_sql_params['conditions'][] = ' AND sso.current_version=tn.version';
     
     $this->finder->expectOnce('_do_parent_count', 
                               array(new EqualExpectation($expected_sql_params)));
@@ -93,6 +95,7 @@ class one_table_objects_raw_finder_test extends LimbTestCase
      
     $this->assertEqual($this->finder->count($sql_params), $result);
   }
+  
 }
 
 ?>
