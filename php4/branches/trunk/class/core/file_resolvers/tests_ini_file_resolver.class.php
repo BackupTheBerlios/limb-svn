@@ -15,8 +15,8 @@ class tests_ini_file_resolver
   {
   	if (file_exists(LIMB_DIR . 'tests/settings/' . $file_name))
   		$dir = LIMB_DIR . 'tests/settings/';
-  	elseif (file_exists(LIMB_DIR . 'class/settings/' . $file_name))
-  		$dir = LIMB_DIR . 'class/settings/';
+  	elseif (file_exists(LIMB_DIR . '/settings/' . $file_name))
+  		$dir = LIMB_DIR . '/settings/';
   	else
   		error('ini file not found', 
 		  __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 
