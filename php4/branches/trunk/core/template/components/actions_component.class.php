@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/template/components/list_component.class.php');
-require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
-require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
+require_once(LIMB_DIR . '/core/template/components/list_component.class.php');
+require_once(LIMB_DIR . '/core/lib/http/control_flow.inc.php');
+require_once(LIMB_DIR . '/core/lib/util/array_dataset.class.php');
 class actions_component extends list_component
 {
   var $all_actions = array();

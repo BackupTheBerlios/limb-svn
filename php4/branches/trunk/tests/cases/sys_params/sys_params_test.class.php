@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php'); 
-require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
-require_once(LIMB_DIR . 'core/model/sys_param.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php'); 
+require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . '/core/model/sys_param.class.php');
 
 class sys_params_test extends UnitTestCase 
 {

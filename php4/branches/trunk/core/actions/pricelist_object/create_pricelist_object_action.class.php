@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_create_site_object_action.class.php');
 
 class create_pricelist_object_action extends form_create_site_object_action
 {

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/model/shop/handlers/cart_handler.class.php');
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/lib/security/user.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . '/core/model/shop/handlers/cart_handler.class.php');
+require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/lib/security/user.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
 
 class db_cart_handler extends cart_handler
 {

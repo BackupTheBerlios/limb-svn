@@ -10,7 +10,7 @@
 ***********************************************************************************/
 
 
-require_once(LIMB_DIR . 'core/template/component.class.php');
+require_once(LIMB_DIR . '/core/template/component.class.php');
 
 class order_component extends component
 {		

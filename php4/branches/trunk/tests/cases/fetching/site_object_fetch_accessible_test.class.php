@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
-require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . '/tests/cases/fetching/site_object_fetch_accessible_test_init.php');
 
 class site_object_fetch_accessible_test extends UnitTestCase 

@@ -13,7 +13,7 @@ define('WEB_SPIDER_ITERATION_LIMIT', 100000);
 //define('WEB_SPIDER_ITERATION_LIMIT', 10);//for test purposes
 define('WEB_SPIDER_TIME_LIMIT', 30000);
 
-require_once(LIMB_DIR . 'core/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
 
 class web_spider
 {

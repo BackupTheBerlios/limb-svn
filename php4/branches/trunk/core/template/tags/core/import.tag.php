@@ -10,7 +10,7 @@
 ***********************************************************************************/
 
 
-require_once(LIMB_DIR . 'core/template/compiler/var_file_compiler.inc.php');
+require_once(LIMB_DIR . '/core/template/compiler/var_file_compiler.inc.php');
 
 class core_import_tag_info
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/action.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');
 
 class action_test extends UnitTestCase 
 {

@@ -9,15 +9,15 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/lib/session/session.class.php');
-require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
-require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
-require_once(LIMB_DIR . 'core/lib/date/date.class.php');
-require_once(LIMB_DIR . 'core/lib/util/mime_type.class.php');
+require_once(LIMB_DIR . '/core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/strings.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . '/core/lib/date/date.class.php');
+require_once(LIMB_DIR . '/core/lib/util/mime_type.class.php');
 
-require_once(LIMB_DIR . 'core/model/chat/chat_user.class.php');
-require_once(LIMB_DIR . 'core/model/chat/chat_system.class.php');
-require_once(LIMB_DIR . 'core/model/chat/smiles.class.php');
+require_once(LIMB_DIR . '/core/model/chat/chat_user.class.php');
+require_once(LIMB_DIR . '/core/model/chat/chat_system.class.php');
+require_once(LIMB_DIR . '/core/model/chat/smiles.class.php');
 
 start_user_session();
 

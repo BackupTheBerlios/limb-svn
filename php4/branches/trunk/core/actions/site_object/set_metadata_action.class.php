@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 
 class set_metadata_action extends form_action
 {

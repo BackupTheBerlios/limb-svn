@@ -17,8 +17,8 @@ define( 'PROCESS_LEVEL', 4 );
 define( 'PROCESS_STARTED', -1 );
 define( 'PROCESS_END', 0 );
 
-require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 
 class progress
 {

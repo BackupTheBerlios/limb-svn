@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/tree/drivers/tree_driver.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/tree/drivers/tree_driver.class.php');
 
 class tree_db_driver extends tree_driver
 {

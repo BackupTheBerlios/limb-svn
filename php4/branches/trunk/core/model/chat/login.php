@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/session/session.class.php');
-require_once(LIMB_DIR . 'core/model/chat/chat_user.class.php');
-require_once(LIMB_DIR . 'core/request/response.class.php');
-require_once(LIMB_DIR . 'core/lib/system/message_box.class.php');
+require_once(LIMB_DIR . '/core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/model/chat/chat_user.class.php');
+require_once(LIMB_DIR . '/core/request/response.class.php');
+require_once(LIMB_DIR . '/core/lib/system/message_box.class.php');
 
 start_user_session();
 

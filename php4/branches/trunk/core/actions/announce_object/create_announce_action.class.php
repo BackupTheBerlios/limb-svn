@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_create_site_object_action.class.php');
 
 class create_announce_action extends form_create_site_object_action
 {
@@ -40,11 +40,11 @@ class create_announce_action extends form_create_site_object_action
 	{
 		parent :: _init_validator();
 
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'annotation'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'start_date'));
-    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/locale_date_rule', 'start_date'));
-    $this->validator->add_rule($v4 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'finish_date'));
-    $this->validator->add_rule($v5 = array(LIMB_DIR . 'core/lib/validators/rules/locale_date_rule', 'finish_date'));
+    $this->validator->add_rule($v1 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'annotation'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'start_date'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . '/core/lib/validators/rules/locale_date_rule', 'start_date'));
+    $this->validator->add_rule($v4 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'finish_date'));
+    $this->validator->add_rule($v5 = array(LIMB_DIR . '/core/lib/validators/rules/locale_date_rule', 'finish_date'));
 	}
 }
 

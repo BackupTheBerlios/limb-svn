@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 
 class set_group_access_template_action extends form_action
 {

@@ -18,10 +18,10 @@ define('DEBUG_OUTPUT_MESSAGE_NULL', 0);
 define('DEBUG_OUTPUT_MESSAGE_STORE', 1);
 define('DEBUG_OUTPUT_MESSAGE_SEND', 2);
 
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
-require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
-require_once(LIMB_DIR . 'core/lib/util/log.class.php');
+require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
+require_once(LIMB_DIR . '/core/lib/util/log.class.php');
 
 class debug
 { 
@@ -297,7 +297,7 @@ class debug
 	
 	function _send_mail($debug_info)
 	{
-		include_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
+		include_once(LIMB_DIR . '/core/lib/mail/send_plain_mail.inc.php');
 		
 		$title = '';
 		$headers = array();

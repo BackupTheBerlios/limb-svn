@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/model/shop/cart_item.class.php');
-require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/model/shop/cart_item.class.php');
+require_once(LIMB_DIR . '/core/lib/util/array_dataset.class.php');
+require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
 
 define('CART_DEFAULT_ID', session_id());
 

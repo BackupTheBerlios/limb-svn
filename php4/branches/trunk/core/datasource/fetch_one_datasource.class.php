@@ -8,8 +8,8 @@
 * $Id: js_navigation_datasource.class.php 7 2004-07-09 08:32:32Z mike $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
-require_once(LIMB_DIR . 'core/tree/tree_sorter.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/tree/tree_sorter.class.php');
 
 class fetch_one_datasource extends datasource
 {

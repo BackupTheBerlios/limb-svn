@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
-require_once(LIMB_DIR . 'core/model/stats/stats_ips_report.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_ips_report.class.php');
 
 class stats_ips_list_datasource extends datasource
 {		

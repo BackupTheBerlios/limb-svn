@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
+require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_tester.class.php');
 
 class file_object_tester extends site_object_tester

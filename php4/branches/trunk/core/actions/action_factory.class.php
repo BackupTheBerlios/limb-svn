@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
-require_once(LIMB_DIR . 'core/actions/empty_action.class.php');
+require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . '/core/actions/empty_action.class.php');
 
 class action_factory
 {

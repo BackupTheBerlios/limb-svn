@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
 
 class controller_group_action_access_datasource extends datasource
 {

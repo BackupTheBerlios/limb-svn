@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 
 class register_new_object_action extends form_action
 {

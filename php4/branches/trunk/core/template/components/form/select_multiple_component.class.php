@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/template/components/form/options_form_element.class.php');
+require_once(LIMB_DIR . '/core/template/components/form/options_form_element.class.php');
 
 class select_multiple_component extends options_form_element
 {

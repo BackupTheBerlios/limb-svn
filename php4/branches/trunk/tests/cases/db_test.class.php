@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 
 SimpleTestOptions::ignore('db_test');
 

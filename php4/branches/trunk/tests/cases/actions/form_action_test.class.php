@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/size_range_rule.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
-require_once(LIMB_DIR . 'core/lib/util/dataspace_registry.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/rules/size_range_rule.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/rules/required_rule.class.php');
+require_once(LIMB_DIR . '/core/lib/util/dataspace_registry.class.php');
 
-require_once(LIMB_DIR . 'core/request/request.class.php');
-require_once(LIMB_DIR . 'core/request/response.class.php');
+require_once(LIMB_DIR . '/core/request/request.class.php');
+require_once(LIMB_DIR . '/core/request/response.class.php');
 
 class form_action_stub extends form_action
 {

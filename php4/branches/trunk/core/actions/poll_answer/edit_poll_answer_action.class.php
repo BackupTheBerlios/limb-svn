@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_edit_site_object_action.class.php');
 
 class edit_poll_answer_action extends form_edit_site_object_action
 {

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
-require_once(LIMB_DIR . 'core/model/search/full_text_indexer.class.php');
+require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
+require_once(LIMB_DIR . '/core/model/search/full_text_indexer.class.php');
 
 class form_site_object_action extends form_action
 {

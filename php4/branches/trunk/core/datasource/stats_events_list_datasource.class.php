@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
-require_once(LIMB_DIR . 'core/model/stats/stats_event_report.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_event_report.class.php');
 
 class stats_events_list_datasource extends datasource
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/fetch_sub_branch_datasource.class.php');
 
 class simple_orders_list_datasource extends fetch_sub_branch_datasource
 {

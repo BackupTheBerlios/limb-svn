@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 
 class stats_routes_report_action extends form_action
 {

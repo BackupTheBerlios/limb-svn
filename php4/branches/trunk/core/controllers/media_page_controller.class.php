@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
-require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
+require_once(LIMB_DIR . '/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/strings.class.php');
 	
 class media_page_controller extends site_object_controller
 {

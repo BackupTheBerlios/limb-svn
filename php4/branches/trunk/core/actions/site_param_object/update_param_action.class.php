@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/site_param_object/update_param_common_action.class.php');
+require_once(LIMB_DIR . '/core/actions/site_param_object/update_param_common_action.class.php');
 
 class update_param_action extends update_param_common_action
 {

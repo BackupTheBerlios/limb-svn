@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/core/controllers/site_object_controller.class.php');
 
 class paragraphs_list_page_controller extends site_object_controller
 {

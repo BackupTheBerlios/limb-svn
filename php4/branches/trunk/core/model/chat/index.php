@@ -13,7 +13,7 @@ require_once('../setup.php');
 require_once('chat_setup.php');
 require_once('smiles.php');
 
-require_once(LIMB_DIR . 'core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/lib/session/session.class.php');
 
 start_user_session();
 

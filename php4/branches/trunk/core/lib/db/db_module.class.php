@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
-require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
-require_once(LIMB_DIR . 'core/lib/date/date.class.php');
-require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . '/core/lib/error/error.inc.php');
+require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . '/core/lib/date/date.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
 
 define('DB_TRANSACTION_STATUS_IN', 1);
 define('DB_TRANSACTION_STATUS_OUT', 0);

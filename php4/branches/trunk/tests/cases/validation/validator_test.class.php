@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/validator.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/size_range_rule.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
+require_once(LIMB_DIR . '/core/lib/util/array_dataset.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/validator.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/rules/size_range_rule.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/rules/required_rule.class.php');
 
 Mock::generate('error_list');
 

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/cache/full_page_cache_manager.class.php');
-require_once(LIMB_DIR . 'core/cache/partial_page_cache_manager.class.php');
-require_once(LIMB_DIR . 'core/cache/image_cache_manager.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');
+require_once(LIMB_DIR . '/core/cache/full_page_cache_manager.class.php');
+require_once(LIMB_DIR . '/core/cache/partial_page_cache_manager.class.php');
+require_once(LIMB_DIR . '/core/cache/image_cache_manager.class.php');
 
 class flush_image_cache_action extends action
 {

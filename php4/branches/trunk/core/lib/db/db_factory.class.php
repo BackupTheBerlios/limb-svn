@@ -30,7 +30,7 @@ class	db_factory
 				$db_params['name'] = DB_NAME;
 			}
 			
-		  include_once(LIMB_DIR . 'core/lib/db/' . $db_class_name . '.class.php');
+		  include_once(LIMB_DIR . '/core/lib/db/' . $db_class_name . '.class.php');
 		  
 		  $obj =& new $db_class_name($db_params);
 		  
@@ -49,7 +49,7 @@ class	db_factory
 	{	
 		$db_class_name = 'db_' . $db_type;
 
-	  include_once(LIMB_DIR . 'core/lib/db/' . $db_class_name . '.class.php');
+	  include_once(LIMB_DIR . '/core/lib/db/' . $db_class_name . '.class.php');
 	  
 	  return new $db_class_name($db_params);
 	}

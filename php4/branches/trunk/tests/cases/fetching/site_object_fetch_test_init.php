@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 
 class site_object_fetch_test_version extends site_object
 {		

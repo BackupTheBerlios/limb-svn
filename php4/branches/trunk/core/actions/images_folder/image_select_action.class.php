@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/action.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');
 
 class image_select_action extends action
 {

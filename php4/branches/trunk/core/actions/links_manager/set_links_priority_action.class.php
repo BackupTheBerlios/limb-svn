@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/links_manager.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/model/links_manager.class.php');
 
 class set_links_priority_action extends form_action
 {

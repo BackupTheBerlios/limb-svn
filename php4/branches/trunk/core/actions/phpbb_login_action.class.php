@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/login_action.class.php');
+require_once(LIMB_DIR . '/core/actions/login_action.class.php');
 
 class phpbb_login_action extends login_action
 {

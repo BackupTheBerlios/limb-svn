@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');
+require_once(LIMB_DIR . '/core/model/shop/cart.class.php');
 
 class add_cart_item_action extends action
 {	

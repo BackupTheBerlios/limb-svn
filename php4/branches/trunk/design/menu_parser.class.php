@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-	include_once(LIMB_DIR . 'core/lib/xml/sax_parser.class.php');
+	include_once(LIMB_DIR . '/core/lib/xml/sax_parser.class.php');
 	
 	class menu_parser extends sax_parser
 	{

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/site_object.class.php');
 
 class site_object_test_version extends site_object
 {	

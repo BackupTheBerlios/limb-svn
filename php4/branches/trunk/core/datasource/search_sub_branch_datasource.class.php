@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/datasource/search_datasource.class.php');
-require_once(LIMB_DIR . 'core/search_fetcher.class.php');
+require_once(LIMB_DIR . '/core/datasource/search_datasource.class.php');
+require_once(LIMB_DIR . '/core/search_fetcher.class.php');
 
 class search_sub_branch_datasource extends search_datasource
 {

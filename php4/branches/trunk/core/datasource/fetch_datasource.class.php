@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/fetcher.class.php');
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/fetcher.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
 
 class fetch_datasource extends datasource
 {

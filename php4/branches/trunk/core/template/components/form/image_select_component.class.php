@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/core/template/components/form/input_form_element.class.php');
 
 class image_select_component extends input_form_element
 {

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/tree/tree.class.php');
-require_once(LIMB_DIR . 'core/template/component.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
-require_once(LIMB_DIR . 'core/fetcher.class.php');
+require_once(LIMB_DIR . '/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/core/template/component.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . '/core/fetcher.class.php');
 require_once(LIMB_DIR . '/core/lib/util/array_dataset.class.php');
 
 class metadata_component extends component

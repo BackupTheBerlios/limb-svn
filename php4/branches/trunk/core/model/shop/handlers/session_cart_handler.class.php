@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/model/shop/handlers/cart_handler.class.php');
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/model/shop/handlers/cart_handler.class.php');
+require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/lib/session/session.class.php');
 
 class session_cart_handler extends cart_handler
 {			

@@ -8,7 +8,7 @@
 * $Id: member_subscribe_params_data_source.class.php 239 2004-02-29 19:00:20Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
 
 class member_subscribe_params_datasource extends datasource
 {

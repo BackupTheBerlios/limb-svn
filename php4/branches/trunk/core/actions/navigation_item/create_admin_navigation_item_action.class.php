@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/navigation_item/create_navigation_item_action.class.php');
+require_once(LIMB_DIR . '/core/actions/navigation_item/create_navigation_item_action.class.php');
 
 class create_admin_navigation_item_action extends create_navigation_item_action
 {

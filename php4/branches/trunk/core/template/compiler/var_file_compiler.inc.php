@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
 
 // Line breaks in the file must match the line breaks used by the host OS
 // Now that this is done at compile time, many other attributes are available.

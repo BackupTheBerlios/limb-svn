@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
-require_once(LIMB_DIR . 'core/template/template_highlight_handler.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');
+require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/core/template/template_highlight_handler.class.php');
 require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
 
 define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');
@@ -75,7 +75,7 @@ class display_template_source_action extends action
 	
 	function _process_template_content($template_contents)
 	{
-	  include_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
+	  include_once(LIMB_DIR . '/core/template/compiler/template_compiler.inc.php');
 	  		
 		global $tag_dictionary; //fixx
 		

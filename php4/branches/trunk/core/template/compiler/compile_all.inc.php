@@ -5,12 +5,12 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: compile_all.inc.php 513 2004-02-20 15:10:42Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
-require_once(LIMB_DIR . 'core/template/compiler/var_file_compiler.inc.php');
-require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/core/template/compiler/template_compiler.inc.php');
+require_once(LIMB_DIR . '/core/template/compiler/var_file_compiler.inc.php');
+require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
 
 /**
 * Invokes compiling of all templates below the directory where the function

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/site_objects_testers/content_object_tester.class.php');
-require_once(LIMB_DIR . 'core/model/site_objects/subscribe_mail.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/subscribe_mail.class.php');
 
 Mock::generatePartial
 (

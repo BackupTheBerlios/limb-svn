@@ -8,7 +8,7 @@
 * $Id: subscribe_member_db_table.class.php 239 2004-02-29 19:00:20Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
 class subscribe_member_db_table extends db_table
 {  

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_edit_site_object_action.class.php');
 
 class edit_informer_action extends form_edit_site_object_action
 {
@@ -36,7 +36,7 @@ class edit_informer_action extends form_edit_site_object_action
 	{
 		parent :: _init_validator();
 		
-    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'code'));
+    $this->validator->add_rule($v = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'code'));
 	}
 }
 

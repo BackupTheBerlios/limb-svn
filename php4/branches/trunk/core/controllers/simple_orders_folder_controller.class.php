@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/core/controllers/site_object_controller.class.php');
 
 class simple_orders_folder_controller extends site_object_controller
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/datasource/tree_navigation_datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/tree_navigation_datasource.class.php');
 
 class pictured_tree_navigation_datasource extends tree_navigation_datasource
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/media_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/media_object.class.php');
 require_once(LIMB_DIR . '/core/lib/image/image_factory.class.php');
 require_once(LIMB_DIR . '/core/lib/system/message_box.class.php');
 

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
-require_once(LIMB_DIR . 'core/model/session_history_manager.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/model/session_history_manager.class.php');
 
 class session_history_datasource extends datasource
 {	

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/tree/tree.class.php');
-require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/core/lib/util/dataspace.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/rules/tree_identifier_rule.class.php');
 
 class tree_identifier_rule_test extends single_field_rule_test
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/period_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/period_object.class.php');
 
 class announce_object extends period_object
 {

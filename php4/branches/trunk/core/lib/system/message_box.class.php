@@ -13,8 +13,8 @@ define( 'MESSAGE_LEVEL_WARNING', 2 );
 define( 'MESSAGE_LEVEL_ERROR', 3 );
 define( 'MESSAGE_LEVEL', 4 );
 
-require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
-require_once(LIMB_DIR . 'core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/core/lib/session/session.class.php');
 
 class message_box
 {

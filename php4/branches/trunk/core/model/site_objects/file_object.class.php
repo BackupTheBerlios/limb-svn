@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/media_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/media_object.class.php');
 
 class file_object extends media_object
 {	

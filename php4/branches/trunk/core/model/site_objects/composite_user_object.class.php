@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/user_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/user_object.class.php');
 
 class composite_user_object extends user_object
 {

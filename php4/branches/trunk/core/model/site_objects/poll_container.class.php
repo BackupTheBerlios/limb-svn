@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/site_object.class.php');
 
 class poll_container extends site_object
 {

@@ -16,7 +16,7 @@ class session_startup_filter extends intercepting_filter
   {
     debug :: add_timing_point('session startup filter started');
     
-    require_once(LIMB_DIR . 'core/lib/session/session.class.php');    
+    require_once(LIMB_DIR . '/core/lib/session/session.class.php');    
     start_user_session();
               
     debug :: add_timing_point('session startup filter finished');

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/cart/cart_form_action.class.php');
+require_once(LIMB_DIR . '/core/actions/cart/cart_form_action.class.php');
 
 class send_cart_order_action extends cart_form_action
 {

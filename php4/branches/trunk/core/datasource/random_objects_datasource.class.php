@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/fetch_datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/fetch_datasource.class.php');
 
 define ('DEFAULT_RANDOM_LIMIT', 3);
 

@@ -8,7 +8,7 @@
 * $Id: subscribe_controller.class.php 245 2004-03-05 12:11:42Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/core/controllers/site_object_controller.class.php');
 
 class subscribe_controller extends site_object_controller
 {

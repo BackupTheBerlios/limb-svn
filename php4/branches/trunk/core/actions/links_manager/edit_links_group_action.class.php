@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
-require_once(LIMB_DIR . 'core/model/links_manager.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/rules/required_rule.class.php');
+require_once(LIMB_DIR . '/core/model/links_manager.class.php');
 
 class edit_links_group_action extends form_action
 {
@@ -23,9 +23,9 @@ class edit_links_group_action extends form_action
 	{
 		parent :: _init_validator();
 
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'identifier'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
-    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'group_id'));
+    $this->validator->add_rule($v1 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'identifier'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'title'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'group_id'));
 	}
 
 	function _init_dataspace(&$request)

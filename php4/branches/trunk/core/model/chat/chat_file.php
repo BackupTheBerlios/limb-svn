@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/lib/session/session.class.php');
-require_once(LIMB_DIR . 'core/model/chat/chat_system.class.php');
+require_once(LIMB_DIR . '/core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/model/chat/chat_system.class.php');
 
 start_user_session();
 

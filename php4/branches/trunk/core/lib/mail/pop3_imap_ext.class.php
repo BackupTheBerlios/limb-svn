@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: pop3_imap_ext.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -16,7 +16,7 @@
 *  +----------------------------------------------------------------------+
 */
 
-require_once(LIMB_DIR . 'core/lib/mail/pop3.class.php');
+require_once(LIMB_DIR . '/core/lib/mail/pop3.class.php');
 
 class pop3_imap_ext extends pop3
 {

@@ -8,7 +8,7 @@
 * $Id: admin_page_controller.class.php 347 2004-06-25 11:43:53Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/core/controllers/site_object_controller.class.php');
 
 class control_panel_controller extends site_object_controller
 {

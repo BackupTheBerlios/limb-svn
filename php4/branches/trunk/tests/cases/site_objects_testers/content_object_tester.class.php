@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_tester.class.php');
-require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/content_object.class.php');
 
 class content_object_tester extends site_object_tester 
 { 

@@ -5,12 +5,12 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: sys_param_component.class.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 
 
-require_once(LIMB_DIR . 'core/model/sys_param.class.php');
+require_once(LIMB_DIR . '/core/model/sys_param.class.php');
 
 
 class sys_param_component extends component

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/cache/cache_lite.class.php');
+require_once(LIMB_DIR . '/core/lib/cache/cache_lite.class.php');
 
 /**
 * The block tag can be used to show or hide the contents of the block.

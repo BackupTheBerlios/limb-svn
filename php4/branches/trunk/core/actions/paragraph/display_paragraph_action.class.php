@@ -8,7 +8,7 @@
 * $Id: create_paragraph_action.class.php 202 2004-04-28 17:45:07Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/action.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');
 
 class display_paragraph_action extends action
 {

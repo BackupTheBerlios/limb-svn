@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/datasource/fetch_datasource.class.php');
-require_once(LIMB_DIR . 'core/search_fetcher.class.php');
-require_once(LIMB_DIR . 'core/model/search/search_query.class.php');
-require_once(LIMB_DIR . 'core/model/search/normalizers/search_text_normalizer.class.php');
+require_once(LIMB_DIR . '/core/datasource/fetch_datasource.class.php');
+require_once(LIMB_DIR . '/core/search_fetcher.class.php');
+require_once(LIMB_DIR . '/core/model/search/search_query.class.php');
+require_once(LIMB_DIR . '/core/model/search/normalizers/search_text_normalizer.class.php');
 
 class search_datasource extends fetch_datasource
 {

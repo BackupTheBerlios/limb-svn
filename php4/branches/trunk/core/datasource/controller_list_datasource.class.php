@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
 
 class controller_list_datasource extends datasource
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/content_object.class.php');
 
 class user_object extends content_object
 {
@@ -201,7 +201,7 @@ class user_object extends content_object
 
 	function send_activate_password_email(&$user_data, $password)
 	{
-		require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
+		require_once(LIMB_DIR . '/core/lib/mail/send_plain_mail.inc.php');
 		global $_SERVER;
 		$http_host = $_SERVER['HTTP_HOST'];
 

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
-require_once(LIMB_DIR . 'core/model/stats/stats_hits_hosts_by_days_report.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_hits_hosts_by_days_report.class.php');
 
 class stats_hits_hosts_list_datasource extends datasource
 {		

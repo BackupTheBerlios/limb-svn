@@ -11,11 +11,11 @@
 define('TMPL_IMPORT', 'import');
 define('TMPL_INCLUDE', 'include');
 
-require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
-require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
-require_once(LIMB_DIR . 'core/template/component.class.php');
-require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
-require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/runtime_support.inc.php');
+require_once(LIMB_DIR . '/core/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/core/lib/error/error.inc.php');
+require_once(LIMB_DIR . '/core/template/component.class.php');
+require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/runtime_support.inc.php');
 
 /**
 * Instantiate global variable $template_render and $template_construct as arrays
@@ -74,13 +74,13 @@ class template extends component
 		{
 			if (get_ini_option('config.ini', 'force_compile', 'templates'))
 			{
-			  include_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
+			  include_once(LIMB_DIR . '/core/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);
 			}
 			
 			if(!file_exists($this->codefile))
 			{
-			  include_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
+			  include_once(LIMB_DIR . '/core/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);
 			}
 			

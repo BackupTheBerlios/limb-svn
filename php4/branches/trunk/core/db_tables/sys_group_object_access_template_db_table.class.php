@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
 class sys_group_object_access_template_db_table extends db_table
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/core/controllers/site_object_controller.class.php');
 
 class image_select_controller extends site_object_controller
 {

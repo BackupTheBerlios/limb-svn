@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/chat/chat_user.class.php');
-require_once(LIMB_DIR . 'core/model/chat/chat_system.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');
+require_once(LIMB_DIR . '/core/model/chat/chat_user.class.php');
+require_once(LIMB_DIR . '/core/model/chat/chat_system.class.php');
 
 class display_chat_room_action extends action
 {

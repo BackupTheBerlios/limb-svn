@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_edit_site_object_action.class.php');
 
 class user_settings_action extends form_action
 {

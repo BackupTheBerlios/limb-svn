@@ -8,7 +8,7 @@
 * $Id: user_membership_datasource.class.php 324 2004-06-11 13:05:50Z pachanga $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
 
 class objects_access_groups_list_datasource extends datasource
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/core/lib/util/ini.class.php');
 
 Mock :: generatePartial(
   'ini',

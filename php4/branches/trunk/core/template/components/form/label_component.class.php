@@ -10,7 +10,7 @@
 ***********************************************************************************/
 
 
-require_once(LIMB_DIR . 'core/template/tag_component.class.php');
+require_once(LIMB_DIR . '/core/template/tag_component.class.php');
 
 class label_component extends tag_component
 {

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/model/object.class.php');
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/core/model/object.class.php');
+require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 
 define('REQUEST_STATUS_DONT_TRACK', 0);
 

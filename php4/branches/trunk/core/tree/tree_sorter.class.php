@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 
 class tree_sorter
 {  

@@ -8,7 +8,7 @@
 * $Id: unique_user_rule.class.php 431 2004-07-26 16:01:46Z pachanga $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/rules/single_field_rule.class.php');
 
 class unique_object_attribute_rule extends single_field_rule
 {

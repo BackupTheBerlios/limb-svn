@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/sys_param.class.php');
+require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/model/sys_param.class.php');
 
 class update_param_common_action extends form_action
 {
@@ -38,7 +38,7 @@ class update_param_common_action extends form_action
 	
 	function _init_validator()
 	{
-    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/email_rule', 'contact_email')); 
+    $this->validator->add_rule($v = array(LIMB_DIR . '/core/lib/validators/rules/email_rule', 'contact_email')); 
 	}
 
 	function _init_dataspace(&$request)

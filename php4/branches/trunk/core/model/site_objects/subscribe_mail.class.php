@@ -8,8 +8,8 @@
 * $Id: subscribe_mail.class.php 239 2004-02-29 19:00:20Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
-require_once(LIMB_DIR . 'core/lib/mail/send_html_mail.inc.php');
+require_once(LIMB_DIR . '/core/model/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/core/lib/mail/send_html_mail.inc.php');
 
 class subscribe_mail extends content_object
 {

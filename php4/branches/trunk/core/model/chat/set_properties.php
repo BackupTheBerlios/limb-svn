@@ -5,13 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: get_users.php 64 2004-03-23 16:17:13Z mike $
+* $Id$
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/lib/session/session.class.php');
-require_once(LIMB_DIR . 'core/model/chat/chat_system.class.php');
-require_once(LIMB_DIR . 'core/model/chat/chat_user.class.php');
+require_once(LIMB_DIR . '/core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/model/chat/chat_system.class.php');
+require_once(LIMB_DIR . '/core/model/chat/chat_user.class.php');
 
 start_user_session();
 

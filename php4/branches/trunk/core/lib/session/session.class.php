@@ -8,15 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 
 class session
 {
-	function session()
-	{
-	}
-
 	function & get($name)
 	{
 		if(!isset($_SESSION[$name]))
@@ -95,16 +91,15 @@ function & _session_db_read($session_id)
 {
 	$db =& db_factory :: instance();
 
-	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
+	$db->sql_select('sys_session', 'session_data', array('session_id' => $session_id));
 	
   if($session_res = $db->fetch_row())
   {
   	if(preg_match_all('/"__session_class_path";s:\d+:"([^"]+)"/', $session_res['session_data'], $matches))
   	{
-  		foreach($matches as $match)
-  		{
-  		  if(isset($match[1]))
-  			  include_once($match[1]);
+  		foreach($matches[1] as $match)
+  		{  		  
+        include_once($match);
   		}
   	}
   	
@@ -122,7 +117,7 @@ function _session_db_write($session_id, $value)
 	
 	$user_id = $user->get_id();
 
-	$db->sql_select('sys_session', 'session_id', "session_id='{$session_id}'");
+	$db->sql_select('sys_session', 'session_id', array('session_id' => $session_id));
 	
   if($db->fetch_row())
 		$db->sql_update('sys_session', 
@@ -141,7 +136,7 @@ function _session_db_destroy($session_id)
 {
 	$db =& db_factory :: instance();
 
-	$db->sql_delete('sys_session', "session_id='{$session_id}'");
+	$db->sql_delete('sys_session', array('session_id' => $session_id));
 }
 
 function _session_db_garbage_collector($max_life_time)

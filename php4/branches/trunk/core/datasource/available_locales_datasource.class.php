@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
-require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
-require_once(LIMB_DIR . 'core/lib/security/user.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 
 class available_locales_datasource extends datasource
 {	

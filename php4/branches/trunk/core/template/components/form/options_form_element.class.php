@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/template/components/form/container_form_element.class.php');
-require_once(LIMB_DIR . 'core/template/components/form/option_renderer.class.php');
-require_once(LIMB_DIR . 'core/datasource/datasource_factory.class.php');
+require_once(LIMB_DIR . '/core/template/components/form/container_form_element.class.php');
+require_once(LIMB_DIR . '/core/template/components/form/option_renderer.class.php');
+require_once(LIMB_DIR . '/core/datasource/datasource_factory.class.php');
 
 class options_form_element extends container_form_element
 {

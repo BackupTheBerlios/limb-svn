@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: calendar.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -15,8 +15,8 @@
 if (!defined('DATE_CALC_BEGIN_WEEKDAY'))
     define('DATE_CALC_BEGIN_WEEKDAY', 1);
     
-require_once(LIMB_DIR . 'core/lib/date/date.class.php');
-require_once(LIMB_DIR . 'core/lib/date/date_span.class.php');
+require_once(LIMB_DIR . '/core/lib/date/date.class.php');
+require_once(LIMB_DIR . '/core/lib/date/date_span.class.php');
 
 class calendar
 {

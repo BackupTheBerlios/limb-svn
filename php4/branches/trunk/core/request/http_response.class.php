@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/strings.class.php');
 
 class http_response
 {
@@ -18,7 +18,7 @@ class http_response
 	
 	function redirect($path)
 	{  		  	
-    include_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
+    include_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
     
   	$message = strings :: get('redirect_message');//???
   	$message = str_replace('%path%', $path, $message);

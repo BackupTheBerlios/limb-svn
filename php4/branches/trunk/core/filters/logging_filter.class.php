@@ -22,7 +22,7 @@ class logging_filter extends intercepting_filter
       
       $controller = $object->get_controller(); 
       
-      include_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
+      include_once(LIMB_DIR . '/core/model/stats/stats_register.class.php');
       
       $stats_register = new stats_register(); 
       

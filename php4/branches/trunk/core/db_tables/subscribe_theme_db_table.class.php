@@ -8,7 +8,7 @@
 * $Id: subscribe_theme_db_table.class.php 239 2004-02-29 19:00:20Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
+require_once(LIMB_DIR . '/core/db_tables/content_object_db_table.class.php');
 
 class subscribe_theme_db_table extends content_object_db_table
 {  

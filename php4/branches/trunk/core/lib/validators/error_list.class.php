@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: error_list.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 /**
@@ -30,7 +30,7 @@ class error_list
 
   	if(get_class($obj) != $class_name)
   	{
-  		include_once(LIMB_DIR . 'core/lib/validators/error_list.class.php');
+  		include_once(LIMB_DIR . '/core/lib/validators/error_list.class.php');
   		
   		$obj = & new $class_name();
   		$GLOBALS['global_' . $class_name] =& $obj;

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/core/actions/form_create_site_object_action.class.php');
 
 class create_guestbook_message_action extends form_create_site_object_action
 {
@@ -38,9 +38,9 @@ class create_guestbook_message_action extends form_create_site_object_action
 	{
 		parent :: _init_validator();
 
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'message'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'sender'));
-    $this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/email_rule', 'sender_email'));
+    $this->validator->add_rule($v1 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'message'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'sender'));
+    $this->validator->add_rule($v3 = array(LIMB_DIR . '/core/lib/validators/rules/email_rule', 'sender_email'));
 	}
 
 	function _init_dataspace(&$request)

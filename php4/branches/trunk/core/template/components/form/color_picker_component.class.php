@@ -5,11 +5,11 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: image_select_component.class.php 46 2004-03-19 12:45:55Z server $
+* $Id$
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/core/template/components/form/input_form_element.class.php');
 
 class color_picker_component extends input_form_element
 {

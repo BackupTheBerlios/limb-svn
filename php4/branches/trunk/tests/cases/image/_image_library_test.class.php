@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 if (!defined('PHP_IMAGE_DIR_C'))
-  define('PHP_IMAGE_DIR_C', LIMB_DIR . 'core/lib/image/');
+  define('PHP_IMAGE_DIR_C', LIMB_DIR . '/core/lib/image/');
 
 SimpleTestOptions::ignore('image_library_test');
 
@@ -144,7 +144,8 @@ class image_library_test extends UnitTestCase
     
     $this->assertEqual(filesize($this->output_file), $this->rotated_size);
     clearstatcache();
-  }*/
+  }
+*/
   
   function test_flip()
   {

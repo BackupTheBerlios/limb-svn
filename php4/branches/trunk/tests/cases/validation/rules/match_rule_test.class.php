@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/match_rule.class.php');
+require_once(LIMB_DIR . '/core/lib/util/dataspace.class.php');
+require_once(LIMB_DIR . '/core/lib/validators/rules/match_rule.class.php');
 
 class match_rule_test extends single_field_rule_test
 {	 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/site_object/create_action.class.php');
+require_once(LIMB_DIR . '/core/actions/site_object/create_action.class.php');
 
 class create_documents_folder_action extends create_action
 {

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
-require_once(LIMB_DIR . 'core/lib/util/mime_type.class.php');
+require_once(LIMB_DIR . '/core/datasource/fetch_sub_branch_datasource.class.php');
+require_once(LIMB_DIR . '/core/lib/util/mime_type.class.php');
 
 class pricelist_datasource extends fetch_sub_branch_datasource
 {

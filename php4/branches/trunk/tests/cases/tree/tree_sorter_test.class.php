@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/tree/tree_sorter.class.php');
+require_once(LIMB_DIR . '/core/tree/tree_sorter.class.php');
 
 class tree_sorter_test extends UnitTestCase
 {

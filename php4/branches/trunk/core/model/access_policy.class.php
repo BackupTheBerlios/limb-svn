@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
-require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 
 define('ACCESSOR_TYPE_GROUP', 0);
 define('ACCESSOR_TYPE_USER', 1);

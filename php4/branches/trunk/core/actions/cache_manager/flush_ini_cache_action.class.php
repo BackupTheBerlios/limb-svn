@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');
+require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 
 class flush_ini_cache_action extends action
 {

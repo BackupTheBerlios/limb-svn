@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
-require_once(LIMB_DIR . 'core/template/compiler/codewriter.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/utils.inc.php');
-require_once(LIMB_DIR . 'core/template/compiler/utils.inc.php');
-require_once(LIMB_DIR . 'core/template/compiler/tag_dictionary.class.php');
+require_once(LIMB_DIR . '/core/lib/error/error.inc.php');
+require_once(LIMB_DIR . '/core/template/compiler/codewriter.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/utils.inc.php');
+require_once(LIMB_DIR . '/core/template/compiler/utils.inc.php');
+require_once(LIMB_DIR . '/core/template/compiler/tag_dictionary.class.php');
 
-require_once(LIMB_DIR . 'core/template/compiler/compiler_component.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/compiler_directive_tag.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/silent_compiler_directive_tag.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/server_component_tag.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/server_tag_component_tag.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/text_node.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/root_compiler_component.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/compiler_component.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/compiler_directive_tag.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/silent_compiler_directive_tag.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/server_component_tag.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/server_tag_component_tag.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/text_node.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/root_compiler_component.class.php');
 
-require_once(LIMB_DIR . 'core/template/compiler/source_file_parser.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/codewriter.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/variable_reference.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/source_file_parser.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/codewriter.class.php');
+require_once(LIMB_DIR . '/core/template/compiler/variable_reference.class.php');
 
-require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
 
 /**
 * Create the tag_dictionary global variable
@@ -56,7 +56,7 @@ function load_system_tags()
 	$path = get_ini_option('compiler.ini', 'path', 'tags');
 	foreach ($path as $tagpath)
 	{
-		load_tags(LIMB_DIR . 'core/template/tags/' . $tagpath);
+		load_tags(LIMB_DIR . '/core/template/tags/' . $tagpath);
 	} 
 }
 

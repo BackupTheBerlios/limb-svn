@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
 
 class locale_number_format_component extends component
 {

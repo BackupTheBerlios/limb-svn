@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
-require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
-require_once(LIMB_DIR . 'core/actions/empty_action.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
+require_once(LIMB_DIR . '/core/actions/empty_action.class.php');
 
 class mock_root_object extends site_object
 {

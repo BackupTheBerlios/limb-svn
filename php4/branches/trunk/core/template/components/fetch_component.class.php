@@ -10,7 +10,7 @@
 ***********************************************************************************/
 
 
-require_once(LIMB_DIR . 'core/fetcher.class.php');
+require_once(LIMB_DIR . '/core/fetcher.class.php');
 
 class fetch_component extends component
 {

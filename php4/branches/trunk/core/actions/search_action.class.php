@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . '/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
 
 define('DEFAULT_SEARCH_ITEMS_PER_PAGE', 10);
 

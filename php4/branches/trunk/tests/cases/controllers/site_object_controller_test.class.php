@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/   
-require_once(LIMB_DIR . 'core/actions/action.class.php');  
-require_once(LIMB_DIR . 'core/request/response.class.php');  
-require_once(LIMB_DIR . 'core/request/request.class.php');  
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/core/actions/action.class.php');  
+require_once(LIMB_DIR . '/core/request/response.class.php');  
+require_once(LIMB_DIR . '/core/request/request.class.php');  
+require_once(LIMB_DIR . '/core/controllers/site_object_controller.class.php');
 
 Mock::generate('template');
 Mock::generate('action');

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/object.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
-require_once(LIMB_DIR . 'core/lib/session/session.class.php');
-require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
+require_once(LIMB_DIR . '/core/model/object.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . '/core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 
 class phpbb_user extends object
 {

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
-require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
 
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
@@ -27,8 +27,8 @@ function & get_ini($file_name, $use_cache = null)
 	}
 	elseif (file_exists(PROJECT_DIR . 'core/settings/' . $file_name))
 		$dir = PROJECT_DIR . 'core/settings/';
-	elseif (file_exists(LIMB_DIR . 'core/settings/' . $file_name))
-		$dir = LIMB_DIR . 'core/settings/';
+	elseif (file_exists(LIMB_DIR . '/core/settings/' . $file_name))
+		$dir = LIMB_DIR . '/core/settings/';
 	else
 		error('ini file not found', 
 		  __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 
