@@ -117,6 +117,20 @@ class complex_array
 		}
 	}
 	
+	function array_map_recursive($in_func, &$in_array)
+	{
+    foreach (array_keys($in_array) as $key) 
+    {       
+      $value =& $in_array[$key];
+     
+      if (is_array($value))
+        complex_array :: array_map_recursive($in_func, $value);
+      else 
+        $value = call_user_func_array($in_func, array($value));
+    }
+    return $in_array;
+  }	
+	
 	//e.g, $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')
 	function & sort_array($array, $sort_params) 
 	{

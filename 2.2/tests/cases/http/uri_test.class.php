@@ -201,6 +201,17 @@ class uri_test extends UnitTestCase
     $this->uri->add_query_item('bar', 1);
     $this->assertEqual($this->uri->get_query_string(), 'foo[i1]=bar&bar=1');
   }  
+
+  function test_add_query_item4()
+  {
+    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    
+    $this->uri->parse($url);
+    
+    $this->uri->add_query_item('foo', array('i1' => array('i2' => 'bar')));
+    $this->uri->add_query_item('bar', 1);
+    $this->assertEqual($this->uri->get_query_string(), 'foo[i1][i2]=bar&bar=1');
+  }  
   
   function test_add_query_item_urlencode()
   {
