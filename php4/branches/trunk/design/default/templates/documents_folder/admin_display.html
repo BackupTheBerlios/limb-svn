@@ -12,7 +12,7 @@
 <table width=100%>
 <tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='document_folders_list' file='document'></td></tr>
 <core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
-<core:INCLUDE file='/admin/full_grid_footer.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
 </table>
 </grid:LIST>
 
@@ -21,12 +21,12 @@
   <core:PARAMETER name='order' value='priority=ASC' >
 </fetch:SUB_BRANCH>
 
-<core:INCLUDE file="pager.html">
+<core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='documents'>
 <table width=100%>
 <tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='documents_list' file='document'></td></tr>
 <core:INCLUDE file='/admin/grid_items/common_grid_body.html'>
-<core:INCLUDE file='/admin/full_grid_footer.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
 </table>
 </grid:LIST>

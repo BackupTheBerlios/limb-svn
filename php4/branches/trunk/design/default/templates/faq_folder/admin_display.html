@@ -9,7 +9,7 @@
   <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
-<core:INCLUDE file="pager.html">
+<core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='items'>
 <table>
@@ -17,16 +17,16 @@
 <core:INCLUDE file='admin/grid_items/common_grid_header.html'>
 <grid:ITERATOR>
 <tr>
-  <td><core:INCLUDE file="/admin/selector.html"></td>
-  <td><core:INCLUDE file='/admin/priority_input.html'></td>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
   <td><core:INCLUDE file="published_status.html"></td>
   <td>
-    <core:INCLUDE file="/admin/list_item_hint.html">
+    <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
     {$question}
   </td>
   <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<core:INCLUDE file='/admin/full_grid_footer.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
 </table>
 </grid:LIST>

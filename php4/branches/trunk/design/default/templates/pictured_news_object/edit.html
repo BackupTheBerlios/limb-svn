@@ -1,22 +1,22 @@
-<core:WRAP file="popup.html" placeholder="content">
+<core:WRAP file="/admin/popup.html" placeholder="content">
 
 <form method="post" name="pictured_news_form" id="pictured_news_form">
-	<table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
-	<tr>
-		<td colspan=2 class=table-title><locale:STRING name='newsline_editing' file='newsline'> <h1>"<fetch:MAPPED>{$title}</fetch:MAPPED>"</h1></td>
-	</tr>
-	<tr>
-		<td colspan=2 height=100% valign=top class=com4>
-				<core:INCLUDE file="/pictured_news_object/form_fields.html">
-		</td>
-	</tr>
-	<core:INCLUDE file='/admin/admin_form_items/req_info.html'>
+  <table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
+  <tr>
+    <td colspan=2 class=table-title><locale:STRING name='newsline_editing' file='newsline'> <h1>"<fetch:MAPPED>{$title}</fetch:MAPPED>"</h1></td>
+  </tr>
+  <tr>
+    <td colspan=2 height=100% valign=top class=com4>
+        <core:INCLUDE file="/pictured_news_object/form_fields.html">
+    </td>
+  </tr>
+  <core:INCLUDE file='/admin/admin_form_items/req_info.html'>
   <tr>
     <td colspan=2 align=center height=30><action_button action="edit" name="update" type="submit" id="update" locale_value="update"  reload_parent="true" class="button">
     &nbsp;
     <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
     </td>
   </tr>
-	</table>	
+  </table>
 </form>
 

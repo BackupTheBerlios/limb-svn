@@ -1,40 +1,41 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+
 <fetch:MAPPED>
 <table width=100% border=0 cellspacing=0 cellpadding=10>
 <tr>
-	<td>
-		<core:WRAP file="popup.html" placeholder="content">
-		<b><locale:STRING name='identifier'>: {$identifier}</b><br>
-		<locale:STRING name='object_type'>: {$class_name}<br>
-		<locale:STRING name='title'>: {$title}<br>
-		<locale:STRING name='version'>: {$version}<br>
-		<locale:STRING name='language'>: {$locale_id}<br>
-		<locale:STRING name='status'>: <core:INCLUDE file="published_status.html"><br>
-		<locale:STRING name='created_date'>: <locale:DATE_FORMAT hash_id='created_date' type='stamp'><br>
-		<locale:STRING name='modified_date'>: <locale:DATE_FORMAT hash_id='modified_date' type='stamp'><br>
-		<br>
-		<h2><locale:STRING name='versions'></h2>		
-		
-		<DATASOURCE target='versions' >
-			<core:PARAMETER name='datasource_path' value='object_versions_datasource'>
-		</DATASOURCE>
-		
-		<grid:LIST id='versions'>
-		<table width="100%" border="0" cellspacing="0" cellpadding="5">
-		<grid:ITERATOR>
-		<tr>
-		<td align="center">{$version}</td>
-		<td align="center">{$creator_name} {$creator_lastname} <a href='mailto:{$creator_email}'>@</a></td>
-		<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp'></td>
-		<td align="center" nowrap>
-			<a href='{^path}?version={$version}' target='_blank'><locale:STRING name='display_original_state' file='version'></a>
-			<a href='/root/tools/version?version={$version}&version_node_id={^node_id}' target='_blank'><locale:STRING name='display_all_data' file='version'></a>
-			<a href='/root/tools/version?action=recover&version={$version}&version_node_id={^node_id}&popup=1' onclick="return click_href(this.href);"><locale:STRING name='recover_version' file='version'></a>
-		</td>
-		</tr>
-		</grid:ITERATOR>
-		</table>
-		</grid:LIST>
-	</td>
+  <td>
+    <b><locale:STRING name='identifier'>: {$identifier}</b><br>
+    <locale:STRING name='object_type'>: {$class_name}<br>
+    <locale:STRING name='title'>: {$title}<br>
+    <locale:STRING name='version'>: {$version}<br>
+    <locale:STRING name='language'>: {$locale_id}<br>
+    <locale:STRING name='status'>: <core:INCLUDE file="published_status.html"><br>
+    <locale:STRING name='created_date'>: <locale:DATE_FORMAT hash_id='created_date' type='stamp'><br>
+    <locale:STRING name='modified_date'>: <locale:DATE_FORMAT hash_id='modified_date' type='stamp'><br>
+    <br>
+    <h2><locale:STRING name='versions'></h2>
+
+    <DATASOURCE target='versions' >
+      <core:PARAMETER name='datasource_path' value='object_versions_datasource'>
+    </DATASOURCE>
+
+    <grid:LIST id='versions'>
+    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+    <grid:ITERATOR>
+    <tr>
+    <td align="center">{$version}</td>
+    <td align="center">{$creator_name} {$creator_lastname} <a href='mailto:{$creator_email}'>@</a></td>
+    <td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp'></td>
+    <td align="center" nowrap>
+      <a href='{^path}?version={$version}' target='_blank'><locale:STRING name='display_original_state' file='version'></a>
+      <a href='/root/tools/version?version={$version}&version_node_id={^node_id}' target='_blank'><locale:STRING name='display_all_data' file='version'></a>
+      <a href='/root/tools/version?action=recover&version={$version}&version_node_id={^node_id}&popup=1' onclick="return click_href(this.href);"><locale:STRING name='recover_version' file='version'></a>
+    </td>
+    </tr>
+    </grid:ITERATOR>
+    </table>
+    </grid:LIST>
+  </td>
 </tr>
-</table>	
-	</fetch:MAPPED>
+</table>
+  </fetch:MAPPED>

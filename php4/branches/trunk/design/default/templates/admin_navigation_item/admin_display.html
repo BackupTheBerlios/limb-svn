@@ -21,16 +21,16 @@
 </tr>
 <grid:ITERATOR>
 <tr>
-  <td><core:INCLUDE file="/admin/selector.html"></td>
-  <td><core:INCLUDE file='/admin/priority_input.html'></td>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
   <td>
-    <core:INCLUDE file="/admin/list_item_hint.html">
+    <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
     <a href="{$path}">{$title}({$children})</a>
   </td>
   <td><a href='{$url}' target='_blank'><img src='/shared/images/arrow.gif' border='0'  alt='{$url}' title='{$url}'></a></td>
   <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<core:INCLUDE file='/admin/full_grid_footer.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
 </table>
 </grid:LIST>

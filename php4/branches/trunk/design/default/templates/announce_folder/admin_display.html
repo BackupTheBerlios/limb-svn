@@ -5,24 +5,24 @@
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='announcements' navigator="pager" >
-	<core:PARAMETER name='loader_class_name' value='announce_object'>
+  <core:PARAMETER name='loader_class_name' value='announce_object'>
 </fetch:SUB_BRANCH>
 
-<core:INCLUDE file="pager.html">
+<core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='announcements'>
 <table width=100%>
 <tr><td colspan='5' class='btitle1' height='3'><locale:STRING name='announcements_list' file='announce'></td></tr>
-<core:INCLUDE file='/admin/grid_items/common_grid_header.html'> 
+<core:INCLUDE file='/admin/grid_items/common_grid_header.html'>
 <grid:ITERATOR>
 <tr>
-<td><core:INCLUDE file="/admin/selector.html"></td>
+<td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
 <td><core:INCLUDE file="published_status.html"></td>
 <td><a href="{$path}" target='_blank'>{$title}</a></td>
 <td><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
 <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<core:INCLUDE file='/admin/no_move_grid_footer.html'> 
+<core:INCLUDE file='/admin/grid_items/no_move_grid_footer.html'>
 </table>
 </grid:LIST>

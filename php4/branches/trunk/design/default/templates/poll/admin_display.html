@@ -5,8 +5,8 @@
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='answers'>
-	<core:PARAMETER name='loader_class_name' value='poll_answer'>
-	<core:PARAMETER name='order' value='priority=ASC'>
+  <core:PARAMETER name='loader_class_name' value='poll_answer'>
+  <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='answers'>
@@ -14,6 +14,6 @@
 <tr><td colspan='5' class='btitle1' height='3'></td></tr>
 <tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='poll_answers_list' file='poll'></td></tr>
 <core:INCLUDE file='/admin/grid_items/final_level_grid_body.html'>
-<core:INCLUDE file='/admin/no_move_grid_footer.html'>
+<core:INCLUDE file='/admin/grid_items/no_move_grid_footer.html'>
 </table>
 </grid:LIST>

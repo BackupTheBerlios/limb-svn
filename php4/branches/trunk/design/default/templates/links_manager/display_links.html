@@ -1,10 +1,10 @@
-<core:WRAP file="popup.html" placeholder="content">
+<core:WRAP file="/admin/popup.html" placeholder="content">
 
 <fetch:MAPPED>
 <locale:STRING name='links_management_for' file='links'>:<h2>{$title}</h2><br><br>
 
 <DATASOURCE target='groups'>
-	<core:PARAMETER name='datasource_path' value='/node_links_datasource'>
+  <core:PARAMETER name='datasource_path' value='/node_links_datasource'>
 </DATASOURCE>
 
 <grid:LIST id='groups'>
@@ -35,10 +35,10 @@
   </tr>
   </grid:ITERATOR>
   <tr>
-  	<td colspan='5' align='right'>
+    <td colspan='5' align='right'>
       <grid:BUTTON class='button' path='/root/admin/links_manager' action='set_links_priority&popup=1' locale_value='change_order' reload_parent='1' form_submitted='1' >
-  	</td>
-  	<td></td>
+    </td>
+    <td></td>
   </tr>
   </table>
   </grid:LIST>
@@ -48,13 +48,13 @@
 </fetch:MAPPED>
 
 <form method="post" name="catalog_object_form" id="catalog_object_form">
-	<table width=100% border=0 cellspacing=0 cellpadding=0>
+  <table width=100% border=0 cellspacing=0 cellpadding=0>
   <tr>
     <td colspan=2 align=center height=30>
     <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
     </td>
   </tr>
-	</table>	
+  </table>
 </form>
 
 

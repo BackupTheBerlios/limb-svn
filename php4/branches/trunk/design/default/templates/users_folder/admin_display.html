@@ -5,10 +5,10 @@
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='users' navigator='pager' >
-	<core:PARAMETER name='loader_class_name' value='user_object'>
-	<core:PARAMETER name='order' value='sso.identifier=ASC'>
+  <core:PARAMETER name='loader_class_name' value='user_object'>
+  <core:PARAMETER name='order' value='sso.identifier=ASC'>
 </fetch:SUB_BRANCH>
 
-<core:INCLUDE file="pager.html">
+<core:INCLUDE file="/admin/pager.html">
 
 <core:INCLUDE file="/users_folder/users_list.html">

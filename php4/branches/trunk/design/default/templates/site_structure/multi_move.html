@@ -1,4 +1,4 @@
-<core:WRAP file="popup.html" placeholder="content">
+<core:WRAP file="/admin/popup.html" placeholder="content">
 
 <form name="grid_form" id="grid_form" method="post">
   <core:INCLUDE file="form_errors.html">
@@ -19,7 +19,7 @@
       </tr>
       <grid:ITERATOR>
       <tr>
-      <td><core:INCLUDE file="/admin/selector.html"></td>
+      <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
       <td>{$title}</td>
       <td>{$identifier}</td>
       <td>{$class_name}</td>

@@ -5,8 +5,8 @@
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='folders'>
-	<core:PARAMETER name='loader_class_name' value='subscribe_theme'>
-	<core:PARAMETER name='order' value='priority=ASC'>
+  <core:PARAMETER name='loader_class_name' value='subscribe_theme'>
+  <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='folders'>
@@ -15,21 +15,21 @@
 <core:INCLUDE file='/admin/grid_items/common_grid_header.html'>
 <grid:ITERATOR>
 <tr>
-	<td><core:INCLUDE file="/admin/selector.html"></td>
-	<td><core:INCLUDE file='/admin/priority_input.html'></td>
-	<td><core:INCLUDE file="published_status.html"></td>
-	<td>
-		<table width=100% border=0 cellspacing=0 cellpadding=2>
-		<tr>
-			<td width=1><a href="{$path}"><img src='/shared/images/subscribe.gif'></a></td>
-			<td><a href="{$path}">{$title}</a></td>
-		</tr>
-		</table>	
-	</td>
-	<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
+  <td><core:INCLUDE file="published_status.html"></td>
+  <td>
+    <table width=100% border=0 cellspacing=0 cellpadding=2>
+    <tr>
+      <td width=1><a href="{$path}"><img src='/shared/images/subscribe.gif'></a></td>
+      <td><a href="{$path}">{$title}</a></td>
+    </tr>
+    </table>
+  </td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<core:INCLUDE file='/admin/no_move_grid_footer.html'>
+<core:INCLUDE file='/admin/grid_items/no_move_grid_footer.html'>
 </table>
 </grid:LIST>
 

@@ -5,29 +5,29 @@
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='ad_block_objects' navigator="pager" >
-	<core:PARAMETER name='loader_class_name' value='ad_block_object'>
-	<core:PARAMETER name='order' value='priority=ASC'>
+  <core:PARAMETER name='loader_class_name' value='ad_block_object'>
+  <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
-<core:INCLUDE file="pager.html">
+<core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='ad_block_objects'>
 <table width=100%>
 <tr><td colspan='5' class='btitle1' height='3'><locale:STRING name='ab_block_objects_list' file='ad'></td></tr>
-<core:INCLUDE file='/admin/grid_items/common_grid_header.html'> 
+<core:INCLUDE file='/admin/grid_items/common_grid_header.html'>
 <grid:ITERATOR>
 <tr>
-	<td><core:INCLUDE file="/admin/selector.html"></td>
-	<td><core:INCLUDE file='/admin/priority_input.html'></td>
-	<td><core:INCLUDE file="published_status.html"></td>
-	<td>
-	<img src='/root?node_id={$image_id}&icon' alt='{$title}' title='{$title}'> 
-  {$title}<core:INCLUDE file="/admin/list_item_hint.html">
-	<core:OPTIONAL for='uri'><br><a href='{$uri}' target='_blank'>{$uri}</a></core:OPTIONAL>
-	</td>
-	<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
+  <td><core:INCLUDE file="published_status.html"></td>
+  <td>
+  <img src='/root?node_id={$image_id}&icon' alt='{$title}' title='{$title}'>
+  {$title}<core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+  <core:OPTIONAL for='uri'><br><a href='{$uri}' target='_blank'>{$uri}</a></core:OPTIONAL>
+  </td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<core:INCLUDE file='/admin/no_move_grid_footer.html'>
+<core:INCLUDE file='/admin/grid_items/no_move_grid_footer.html'>
 </table>
 </grid:LIST>

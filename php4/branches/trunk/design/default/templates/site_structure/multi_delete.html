@@ -1,16 +1,16 @@
-<core:WRAP file="popup.html" placeholder="content">
+<core:WRAP file="/admin/popup.html" placeholder="content">
 
 <grid:LIST id='multi_delete'>
 <table width=100%>
 <tr>
-	<th><grid:SELECTORS_TOGGLER></th>
-	<th><locale:STRING name='title'></th>
-	<th><locale:STRING name='identifier'></th>
-	<th><locale:STRING name='class_name'></th>
-	<th><locale:STRING name='status'></th>
+  <th><grid:SELECTORS_TOGGLER></th>
+  <th><locale:STRING name='title'></th>
+  <th><locale:STRING name='identifier'></th>
+  <th><locale:STRING name='class_name'></th>
+  <th><locale:STRING name='status'></th>
 </tr>
 <grid:ITERATOR>
-<td><core:INCLUDE file="/admin/selector.html"></td>
+<td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
 <td>{$title}</td>
 <td>{$identifier}</td>
 <td>{$class_name}</td>
@@ -24,12 +24,12 @@
 </tr>
 </grid:ITERATOR>
 <tr>
-	<td colspan='6' align='center'>
-		<grid:BUTTON class='button' path='/root/admin/site_structure' action='multi_delete' reload_parent='1' locale_value='delete' form_submitted='1' >&nbsp;&nbsp;
-		<core:LITERAL>
-		<input type="button" id="cancel" value="</core:LITERAL><locale:STRING name='close'><core:LITERAL>" onclick="window.close();" class="button">
-		</core:LITERAL>
-	</td>
+  <td colspan='6' align='center'>
+    <grid:BUTTON class='button' path='/root/admin/site_structure' action='multi_delete' reload_parent='1' locale_value='delete' form_submitted='1' >&nbsp;&nbsp;
+    <core:LITERAL>
+    <input type="button" id="cancel" value="</core:LITERAL><locale:STRING name='close'><core:LITERAL>" onclick="window.close();" class="button">
+    </core:LITERAL>
+  </td>
 </tr>
 </table>
 </grid:LIST>

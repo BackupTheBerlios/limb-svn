@@ -5,12 +5,12 @@
 <br>
 
 <DATASOURCE target='events' navigator='pager'>
-	<core:PARAMETER name='datasource_path' value='stats_events_list_datasource'>
-	<core:PARAMETER name='order' value='time=DESC'>
+  <core:PARAMETER name='datasource_path' value='stats_events_list_datasource'>
+  <core:PARAMETER name='order' value='time=DESC'>
 </DATASOURCE>
 
 <pager:navigator id="pager" items="60">
-<core:INCLUDE file="pager_contents.html">
+<core:INCLUDE file="/admin/pager_contents.html">
 </pager:navigator>
 
 <table width="100%" border="0" cellspacing="1" cellpadding="2">
@@ -66,7 +66,7 @@
 <td></td>
 </core:DEFAULT>
 <td>{$uri}</td>
-<td><a href='/root/users/{$user_login}' target='_blank'>{$user_login}</a></td>
+<td><a href='/root/admin/users/{$user_login}' target='_blank'>{$user_login}</a></td>
 </tr>
 </grid:ITERATOR>
 </grid:LIST>
