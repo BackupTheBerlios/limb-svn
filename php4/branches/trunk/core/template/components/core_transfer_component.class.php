@@ -12,7 +12,7 @@ class core_transfer_component extends component
 {
 	function make_transfer($hash_id, $target_name)
 	{ 
-    $data =& $this->parent->get($hash_id);
+    $data = $this->parent->get($hash_id);
       
     if ($target_component =& $this->parent->find_child($target_name))
     {
