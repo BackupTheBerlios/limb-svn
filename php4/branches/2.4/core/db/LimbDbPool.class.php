@@ -8,6 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');//for conevenience
+
 class LimbDbConnectionConfiguration
 {
   function get($name)

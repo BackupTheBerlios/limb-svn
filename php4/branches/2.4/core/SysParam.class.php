@@ -28,6 +28,23 @@ class SysParam
     return $GLOBALS['SysParamGlobalInstance'];
   }
 
+  function _typeCast($value, $type)
+  {
+    switch($type)
+    {
+      case 'int':
+        return intval($value);
+      break;
+
+      case 'float':
+        return floatval($value);
+      break;
+
+      default:
+        return $value;//???
+    }
+  }
+
   function saveParam($identifier, $type, $value, $force_new = true)
   {
     if(!in_array($type, $this->_types))
@@ -36,20 +53,11 @@ class SysParam
         array('type' => $type, 'param' => $identifier)));
     }
 
-    $params = $this->_db_table->getList("identifier='{$identifier}'", '', '', 0, 1);
+    $rs =& $this->_db_table->select(array('identifier' => "{$identifier}"));
+    $value = $this->_typeCast($value, $type);
 
-    if(empty($value))//?
+    if($param = $rs->getRow())
     {
-      if ($type == 'int' ||  $type == 'float')
-        $value = (int) $value;
-      else
-        $value = (string) $value;
-    }
-
-    if(is_array($params) &&  count($params))
-    {
-      $param = current($params);
-
       $data = array(
           'type' => $type,
           "{$type}_value" => $value,
@@ -74,12 +82,12 @@ class SysParam
           "{$type}_value" => $value,
       );
 
-      $this->_db_table->insert($data);
+      $id = $this->_db_table->insert($data);
 
       if(catch('Exception', $e))
         return throw($e);
 
-      return $this->_db_table->getLastInsertId();
+      return $id;
     }
   }
 
@@ -91,12 +99,11 @@ class SysParam
         array('type' => $type, 'param' => $identifier)));
     }
 
-    $params = $this->_db_table->getList("identifier='{$identifier}'", '', '', 0, 1);
+    $rs =& $this->_db_table->select(array('identifier' => "{$identifier}"));
+    $param = $rs->getRow();
 
-    if(!is_array($params) ||  !count($params))
+    if(!$param)
       return null;
-
-    $param = current($params);
 
     if (empty($type))
       $type = $param['type'];

@@ -38,11 +38,25 @@ class SimpleQueryBuilderTest extends LimbTestCase
     $this->assertEqual($sql, 'SELECT t1, t2 FROM test');
   }
 
-  function testBuildSelectFilteredColumnsSQL()
+  function testBuildSelectArrayFilteredColumnsSQL()
   {
     $sql = SimpleQueryBuilder :: buildSelectSQL('test', '*', array('c1', 'c2'));
 
     $this->assertEqual($sql, 'SELECT * FROM test WHERE ((c1=:c1) AND (c2=:c2))');
+  }
+
+  function testBuildSelectMixedArrayFilteredColumnsSQL()
+  {
+    $sql = SimpleQueryBuilder :: buildSelectSQL('test', '*', array('c1' => 'whatever', 'c2'));
+
+    $this->assertEqual($sql, 'SELECT * FROM test WHERE ((c1=:c1) AND (c2=:c2))');
+  }
+
+  function testBuildSelectRawFilteredColumnsSQL()
+  {
+    $sql = SimpleQueryBuilder :: buildSelectSQL('test', '*', '(c1 > c2)');
+
+    $this->assertEqual($sql, 'SELECT * FROM test WHERE (c1 > c2)');
   }
 
   function testBuildSelectOrderedSQL()
@@ -67,12 +81,28 @@ class SimpleQueryBuilderTest extends LimbTestCase
     $this->assertEqual($sql, "UPDATE test SET id=:{$prefix}id, name=:{$prefix}name, title=:{$prefix}title");
   }
 
-  function testBuildUpdateFilteredSQL()
+  function testBuildUpdateArrayFilteredSQL()
   {
     $sql = SimpleQueryBuilder :: buildUpdateSQL('test', array('id', 'name', 'title'), array('c1', 'c2'));
     $prefix = SimpleQueryBuilder :: getUpdatePrefix();
 
     $this->assertEqual($sql, "UPDATE test SET id=:{$prefix}id, name=:{$prefix}name, title=:{$prefix}title WHERE ((c1=:c1) AND (c2=:c2))");
+  }
+
+  function testBuildUpdateMixedArrayFilteredSQL()
+  {
+    $sql = SimpleQueryBuilder :: buildUpdateSQL('test', array('id', 'name', 'title'), array('c1', 'c2' => 'value'));
+    $prefix = SimpleQueryBuilder :: getUpdatePrefix();
+
+    $this->assertEqual($sql, "UPDATE test SET id=:{$prefix}id, name=:{$prefix}name, title=:{$prefix}title WHERE ((c1=:c1) AND (c2=:c2))");
+  }
+
+  function testBuildUpdateRawFilteredSQL()
+  {
+    $sql = SimpleQueryBuilder :: buildUpdateSQL('test', array('id', 'name', 'title'), 'c1 = c2');
+    $prefix = SimpleQueryBuilder :: getUpdatePrefix();
+
+    $this->assertEqual($sql, "UPDATE test SET id=:{$prefix}id, name=:{$prefix}name, title=:{$prefix}title WHERE c1 = c2");
   }
 
   function testBuildDeleteAllSQL()
@@ -82,11 +112,25 @@ class SimpleQueryBuilderTest extends LimbTestCase
     $this->assertEqual($sql, 'DELETE FROM test');
   }
 
-  function testBuildDeleteFilteredSQL()
+  function testBuildDeleteArrayFilteredSQL()
   {
     $sql = SimpleQueryBuilder :: buildDeleteSQL('test', array('c1', 'c2'));
 
     $this->assertEqual($sql, 'DELETE FROM test WHERE ((c1=:c1) AND (c2=:c2))');
+  }
+
+  function testBuildDeleteMixedArrayFilteredSQL()
+  {
+    $sql = SimpleQueryBuilder :: buildDeleteSQL('test', array('c1' => 'value', 'c2'));
+
+    $this->assertEqual($sql, 'DELETE FROM test WHERE ((c1=:c1) AND (c2=:c2))');
+  }
+
+  function testBuildDeleteRawFilteredSQL()
+  {
+    $sql = SimpleQueryBuilder :: buildDeleteSQL('test', 'c1 = c2');
+
+    $this->assertEqual($sql, 'DELETE FROM test WHERE c1 = c2');
   }
 
   function testAndCondition()

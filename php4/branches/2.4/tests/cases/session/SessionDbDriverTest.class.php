@@ -21,6 +21,11 @@ class SessionDbDriverTest extends LimbTestCase
   var $driver;
   var $user;
 
+  function SessionDbDriverTest()
+  {
+    parent :: LimbTestCase('session db driver test');
+  }
+
   function setUp()
   {
     $this->user = new MockUser($this);
@@ -28,8 +33,9 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->toolkit->setReturnReference('getUser', $this->user);
 
-    $this->db =& LimbDbPool :: getConnection();
-    $this->toolkit->setReturnReference('getDbConnection', $this->db);
+    $conn =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb($conn);
+    $this->toolkit->setReturnReference('getDbConnection', $conn);
 
     Limb :: registerToolkit($this->toolkit);
 
@@ -100,8 +106,8 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageWrite($id, $value);
 
-    $this->db->select('sys_session');
-    $arr = $this->db->getArray();
+    $rs = $this->db->select('sys_session');
+    $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
 
@@ -125,8 +131,8 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageWrite($id, $value);
 
-    $this->db->select('sys_session');
-    $arr = $this->db->getArray();
+    $rs =& $this->db->select('sys_session');
+    $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
 
@@ -145,8 +151,8 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageWrite($id, $value);
 
-    $this->db->select('sys_session');
-    $record = $this->db->fetchRow();
+    $rs = $this->db->select('sys_session');
+    $record = $rs->getRow();
 
     $this->assertEqual($record['session_id'], $id);
     $this->assertEqual($record['session_data'], $value);
@@ -160,8 +166,8 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageWrite($id, $value);
 
-    $this->db->select('sys_session');
-    $record = $this->db->fetchRow();
+    $rs =& $this->db->select('sys_session');
+    $record = $rs->getRow();
 
     $this->assertEqual($record['session_id'], $id);
     $this->assertEqual($record['session_data'], $value);
@@ -179,8 +185,8 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageDestroy($id);
 
-    $this->db->select('sys_session');
-    $arr = $this->db->getArray();
+    $rs =& $this->db->select('sys_session');
+    $arr = $rs->getArray();
 
     $this->assertEqual(1, sizeof($arr));
     $this->assertEqual($arr[0]['session_id'], 'junk');
@@ -195,8 +201,8 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageGc(300);
 
-    $this->db->select('sys_session');
-    $this->assertTrue(!$this->db->fetchRow());
+    $rs =& $this->db->select('sys_session');
+    $this->assertTrue(!$rs->getRow());
   }
 
   function testStorageGcFalse()
@@ -208,8 +214,8 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageGc(300);
 
-    $this->db->select('sys_session');
-    $this->assertFalse(!$this->db->fetchRow());
+    $rs =& $this->db->select('sys_session');
+    $this->assertFalse(!$rs->getRow());
   }
 
   function testStorageDestroyUser()
@@ -226,8 +232,8 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageDestroyUser($user_id);
 
-    $this->db->select('sys_session');
-    $arr = $this->db->getArray();
+    $rs =& $this->db->select('sys_session');
+    $arr = $rs->getArray();
 
     $this->assertEqual(1, sizeof($arr));
     $this->assertEqual($arr[0]['user_id'], 200);

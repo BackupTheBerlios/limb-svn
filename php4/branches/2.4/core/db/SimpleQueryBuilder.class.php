@@ -16,12 +16,22 @@ class SimpleQueryBuilder
     return '_';
   }
 
+  function _buildWhere($conditions)
+  {
+    if(!empty($conditions))
+    {
+      if(is_array($conditions))
+        return 'WHERE (' . SimpleQueryBuilder :: andCondition($conditions) . ')';
+      else
+        return 'WHERE ' . $conditions;
+    }
+    else
+      return '';
+  }
+
   function buildSelectSQL($table, $fields = '*', $conditions = array(), $order = '')
   {
-    if($conditions)
-      $where = 'WHERE (' . SimpleQueryBuilder :: andCondition($conditions) . ')';
-    else
-      $where = '';
+    $where = SimpleQueryBuilder :: _buildWhere($conditions);
 
     if($order != '')
       $order = 'ORDER BY ' . $order;
@@ -45,10 +55,7 @@ class SimpleQueryBuilder
 
   function buildUpdateSQL($table, $names, $conditions = array())
   {
-    if($conditions)
-      $where = 'WHERE (' . SimpleQueryBuilder :: andCondition($conditions) . ')';
-    else
-      $where = '';
+    $where = SimpleQueryBuilder :: _buildWhere($conditions);
 
     $prefix = SimpleQueryBuilder :: getUpdatePrefix();
 
@@ -64,10 +71,7 @@ class SimpleQueryBuilder
 
   function buildDeleteSQL($table, $conditions = array())
   {
-    if($conditions)
-      $where = 'WHERE (' . SimpleQueryBuilder :: andCondition($conditions) . ')';
-    else
-      $where = '';
+    $where = SimpleQueryBuilder :: _buildWhere($conditions);
 
     return trim("DELETE FROM {$table} {$where}");
   }
@@ -83,8 +87,16 @@ class SimpleQueryBuilder
   {
     $implode_values = array();
 
-    foreach($conditions as $key)
-      $implode_values[] = "({$key}=:{$key})";
+    foreach($conditions as $key => $value)
+    {
+      //we need to accept arrays like array('value') and
+      //array('c1' => 'value'), the only way to make difference IMHO is
+      //by analyzing the key
+      if(is_string($key))
+        $implode_values[] = "({$key}=:{$key})";
+      else
+        $implode_values[] = "({$value}=:{$value})";
+    }
 
     return implode(' AND ', $implode_values);
   }

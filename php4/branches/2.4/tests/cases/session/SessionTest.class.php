@@ -18,6 +18,11 @@ class SessionTest extends LimbTestCase
   var $session;
   var $session_driver;
 
+  function SessionTest()
+  {
+    parent :: LimbTestCase('session test');
+  }
+
   function setUp()
   {
     $this->session_driver = new MockSessionDriver($this);

@@ -20,15 +20,19 @@ class SimpleDb
     $this->conn =& $conn;
   }
 
+  function & getConnection()
+  {
+    return $this->conn;
+  }
+
   function & select($table, $fields = '*', $conditions = array(), $order = '')
   {
     $stmt =& $this->conn->newStatement(SimpleQueryBuilder :: buildSelectSQL($table,
                                                                             $fields,
-                                                                            array_keys($conditions),
+                                                                            $conditions,
                                                                             $order));
     $this->_fillStatementVariables($stmt, $conditions);
-    $rs =& $stmt->getRecordSet();
-    return new SimpleDbDataset($rs);
+    return new SimpleDbDataset($stmt->getRecordSet());
   }
 
   function insert($table, $values)
@@ -43,7 +47,7 @@ class SimpleDb
   {
     $stmt =& $this->conn->newStatement(SimpleQueryBuilder :: buildUpdateSQL($table,
                                                                             array_keys($values),
-                                                                            array_keys($conditions)));
+                                                                            $conditions));
     $prefix = SimpleQueryBuilder :: getUpdatePrefix();
     foreach($values as $key => $value)
       $prefixed_values[$prefix . $key] = $value;
@@ -57,7 +61,7 @@ class SimpleDb
   function delete($table, $conditions = array())
   {
     $stmt =& $this->conn->newStatement(SimpleQueryBuilder :: buildDeleteSQL($table,
-                                                                            array_keys($conditions)));
+                                                                            $conditions));
     $this->_fillStatementVariables($stmt, $conditions);
     $stmt->execute();
     return $stmt->getAffectedRowCount();
@@ -66,6 +70,9 @@ class SimpleDb
 
   function _fillStatementVariables(&$stmt, $values)
   {
+    if(!is_array($values))
+      return;
+
     foreach($values as $key => $value)
       $stmt->set($key, $value);
   }

@@ -19,7 +19,7 @@ class SysParamsTest extends LimbTestCase
 
   function sysParamsTest()
   {
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
     parent :: LimbTestCase();
   }
 
@@ -46,7 +46,8 @@ class SysParamsTest extends LimbTestCase
     $this->assertNotNull($result);
 
     $db_table =& LimbDbTableFactory :: create('SysParam');
-    $list = $db_table->getList();
+    $rs = $db_table->select();
+    $list = $rs->getArray();
     $this->assertEqual(count($list) , 1);
 
     $record = current($list);
@@ -67,7 +68,8 @@ class SysParamsTest extends LimbTestCase
     $this->assertNotNull($result);
 
     $db_table =& LimbDbTableFactory :: create('SysParam');
-    $list = $db_table->getList();
+    $rs = $db_table->select();
+    $list = $rs->getArray();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -87,7 +89,8 @@ class SysParamsTest extends LimbTestCase
     $this->assertNotNull($result);
 
     $db_table =& LimbDbTableFactory :: create('SysParam');
-    $list = $db_table->getList();
+    $rs = $db_table->select();
+    $list = $rs->getArray();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -107,7 +110,8 @@ class SysParamsTest extends LimbTestCase
     $this->assertNotNull($result);
 
     $db_table =& LimbDbTableFactory :: create('SysParam');
-    $list = $db_table->getList();
+    $rs = $db_table->select();
+    $list = $rs->getArray();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -125,11 +129,11 @@ class SysParamsTest extends LimbTestCase
     $result = $sp->saveParam('param_1', 'float', 123.053);
     $this->assertNotNull($result);
     $result = $sp->saveParam('param_1', 'int', 123.053);
-
     $this->assertNotNull($result);
 
     $db_table =& LimbDbTableFactory :: create('SysParam');
-    $list = $db_table->getList();
+    $rs = $db_table->select();
+    $list = $rs->getArray();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -143,7 +147,8 @@ class SysParamsTest extends LimbTestCase
 
     $this->assertNotNull($result);
 
-    $list = $db_table->getList();
+    $rs = $db_table->select();
+    $list = $rs->getArray();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 

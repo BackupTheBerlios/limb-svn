@@ -168,7 +168,7 @@ class LimbDbTable
 
     $this->_fillStatementVariables($conditions);
 
-    return $this->_stmt->getRecordSet();
+    return new SimpleDbDataset($this->_stmt->getRecordSet());
   }
 
   function delete($conditions = array())
