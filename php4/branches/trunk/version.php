@@ -31,17 +31,17 @@ define('LIMB_VERSION_MAJOR', '2');
 /**
  * Minor software version
  */
-define('LIMB_VERSION_MINOR', '2');
+define('LIMB_VERSION_MINOR', '3');
 
 /**
  * Micro software version
  */
-define('LIMB_VERSION_MICRO', '3');
+define('LIMB_VERSION_MICRO', '0');
 
 /**
  * Software version patch
  */
-define('LIMB_VERSION_PATCH', '');
+define('LIMB_VERSION_PATCH', 'RC1');
 
 /**
  * Software release version
@@ -53,6 +53,10 @@ define('LIMB_RELEASE_NAME', '');
  */
 define('LIMB_VERSION_DATE', 'September 29, 2004');
 
+/**
+ * Software logo
+ */
+define('LIMB_LOGO', '/shared/images/logo.version.gif');
 
 // --- Do not change from here ----------------------------------------
 
@@ -64,10 +68,11 @@ define('LIMB_VERSION_STAMP', strtotime(LIMB_VERSION_DATE));
 /**
  * Complete software version string
  */
-define('LIMB_VERSION', LIMB_VERSION_MAJOR . '.'
-                         . LIMB_VERSION_MINOR . '.'
-                         . LIMB_VERSION_MICRO
-                         . LIMB_VERSION_PATCH);
+define('LIMB_VERSION', LIMB_VERSION_MAJOR . '.' .
+                       LIMB_VERSION_MINOR . '.' .
+                       LIMB_VERSION_MICRO .
+                       LIMB_VERSION_PATCH .
+                       LIMB_RELEASE_NAME);
 
 /**
  * Complete software name string

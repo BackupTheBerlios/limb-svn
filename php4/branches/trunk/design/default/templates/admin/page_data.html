@@ -1,29 +1,29 @@
-	<!--начало: путь-->					
-	<table width=100% border=0 cellspacing=0 cellpadding=0>
-	<tr>
-		<td style='padding:0 25px 3px 0' class=path>
-		<metadata:BREADCRUMBS>
-		<grid:LIST>
-			<grid:ITERATOR>
-				<core:DEFAULT for='is_last'>
-				<a href="{$path}?action=admin_display">{$title}</a>  &raquo; 
-				</core:DEFAULT>
-				<core:OPTIONAL for='is_last'>
-				{$title}
-				</core:OPTIONAL>
-			</grid:ITERATOR>
-		</grid:LIST>
-		</metadata:BREADCRUMBS>
-		</td>
-	</tr>
-	</table>
-	<!--конец: путь-->
-	<fetch:MAPPED>
-	<!--начало: заголовок-->
-	<table width=100% border=0 cellspacing=0 cellpadding=0>
-	<tr>
-		<td style='padding:0 25px 3px 0'><h1>{$title}</h1></td>
-	</tr>
-	</table>
-	<!--конец: заголовок-->
-	</fetch:MAPPED>
+  <!--BEGIN: path-->
+  <table width=100% border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td style='padding:0 25px 3px 0' class=path>
+    <metadata:BREADCRUMBS>
+    <grid:LIST>
+      <grid:ITERATOR>
+        <core:DEFAULT for='is_last'>
+        <a href="{$path}?action=admin_display">{$title}</a>  &raquo;
+        </core:DEFAULT>
+        <core:OPTIONAL for='is_last'>
+        {$title}
+        </core:OPTIONAL>
+      </grid:ITERATOR>
+    </grid:LIST>
+    </metadata:BREADCRUMBS>
+    </td>
+  </tr>
+  </table>
+  <!--END: path-->
+  <fetch:MAPPED>
+  <!--BEGIN: title-->
+  <table width=100% border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td style='padding:0 25px 3px 0'><h1>{$title}</h1></td>
+  </tr>
+  </table>
+  <!--END: title-->
+  </fetch:MAPPED>
