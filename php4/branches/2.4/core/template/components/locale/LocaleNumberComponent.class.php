@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/i18n/Locale.class.php');
 
-class LocaleNumberFormatComponent extends Component
+class LocaleNumberComponent extends Component
 {
   var $locale;
 

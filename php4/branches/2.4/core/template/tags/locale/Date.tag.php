@@ -16,8 +16,8 @@ require_once(LIMB_DIR . '/core/date/Date.class.php');
 
 class LimbLocaleDateTag extends ServerComponentTag
 {
-  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/LocaleDateFormatComponent.class.php';
-  var $runtimeComponentName = 'LocaleDateFormatComponent';
+  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/locale/LocaleDateComponent.class.php';
+  var $runtimeComponentName = 'LocaleDateComponent';
 
   function preParse()
   {

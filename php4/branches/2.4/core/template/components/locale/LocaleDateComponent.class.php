@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/core/date/Date.class.php');
 require_once(LIMB_DIR . '/core/i18n/Locale.class.php');
 
-class LocaleDateFormatComponent extends Component
+class LocaleDateComponent extends Component
 {
   var $date = null;
 
@@ -46,7 +46,7 @@ class LocaleDateFormatComponent extends Component
   {
     $this->date_locale = $locale;
   }
-  
+
   function setFormatType($type)
   {
     $toolkit =& Limb :: toolkit();
@@ -96,7 +96,7 @@ class LocaleDateFormatComponent extends Component
         $locale =& $toolkit->getLocale($this->date_locale);
         $this->date->setByLocaleString($locale, $value, $format);
       break;
-      
+
       case 'stamp':
         $this->date->setByStamp((int)$value);
       break;

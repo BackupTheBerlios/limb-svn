@@ -16,8 +16,8 @@ require_once(LIMB_DIR . '/core/i18n/Locale.class.php');
 
 class LimbLocaleNumberTag extends ServerComponentTag
 {
-  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/locale/LocaleNumberFormatComponent.class.php';
-  var $runtimeComponentName = 'LocaleNumberFormatComponent';
+  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/locale/LocaleNumberComponent.class.php';
+  var $runtimeComponentName = 'LocaleNumberComponent';
 
   function preParse()
   {
@@ -47,31 +47,6 @@ class LimbLocaleNumberTag extends ServerComponentTag
     $value = $this->_getValue();
 
     $code->writePhp('echo' . $this->getComponentRefCode() . '->format("'. $value .'");');
-
-    /*
-    $locale =& $this->_getLocale();
-
-    if(!$fract_digits = $this->getAttribute('fract_digits'))
-      $fract_digits = $locale->fract_digits;
-
-    if(!$decimal_symbol = $this->getAttribute('decimal_symbol'))
-      $decimal_symbol = $locale->decimal_symbol;
-
-    if(!$thousand_separator = $this->getAttribute('thousand_separator'))
-    {
-      $thousand_separator = $locale->thousand_separator;
-    }
-
-    if($text_node = $this->findChildByClass('TextNode'))
-    {
-      $content =& $text_node->contents;
-
-      $code->writeHTML( number_format($content, $fract_digits, $decimal_symbol, $thousand_separator));
-    }
-    elseif($value = $this->getAttribute('value'))
-    {
-      $code->writeHTML( number_format($value, $fract_digits, $decimal_symbol, $thousand_separator));
-    }*/
 
     $this->removeChildren();
   }
