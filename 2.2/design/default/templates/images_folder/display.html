@@ -31,7 +31,7 @@
 	<td><core:INCLUDE file="/admin/selector.html"></td>
 	<td jip='object' class=jip-object valign='bottom'>
 		<core:OPTIONAL for='title'>
-		<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$title}</a>
+		<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$title}({$children})</a>
 		</core:OPTIONAL>
 		<core:DEFAULT for='title'>
 		<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$identifier}</a>

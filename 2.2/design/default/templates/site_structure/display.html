@@ -3,15 +3,11 @@
 <tr><td height=1 colspan=100 bgcolor=#c0c0c0></td></tr>
 <col valign=top style='padding:0 0px 0 0px'>
 <tr height=30 valign=middle class=com7>
-<th>
-<locale:STRING name='tree_element'>
-</th>
-<th>
-<locale:STRING name='tree_element_class'>
-</th>
-<th>
-<locale:STRING name='actions'>
-</th>
+<th><locale:STRING name='tree_element'></th>
+<th>#ID</th>
+<th><locale:STRING name='tree_element_class'></th>
+<th><locale:STRING name='published_status' ></th>
+<th><locale:STRING name='actions'></th>
 </tr>
 <tr><td height=1 colspan=100 bgcolor=#c0c0c0></td></tr>
 <tr>
@@ -32,7 +28,9 @@
 <grid:ITERATOR>
 <tr class=row>
 <td height=100%><grid:TREE_ITEM></td>
+<td height=100%>#<b>{$node_id}</b></td>
 <td><small>{$class_name}</small></td>
+<td align="center"><core:INCLUDE file="published_status.html"></td>
 <td><core:INCLUDE file="/jip_actions/simple.html"></td>
 </tr>
 </grid:ITERATOR>

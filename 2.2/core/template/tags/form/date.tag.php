@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 require_once(LIMB_DIR . '/core/template/tags/form/control_tag.class.php');
 
 class date_tag_info

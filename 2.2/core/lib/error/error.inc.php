@@ -43,7 +43,7 @@ function error($description, $error_place='', $params=array())
 	if (debug :: is_console_enabled())
 	{
 		debug :: write_error($description, $error_place, $params);
-		echo debug :: parse_html_console();
+		echo debug :: parse_console();
 	}
 		
 	ob_end_flush();
