@@ -1,0 +1,27 @@
+<?php
+  require_once('test_image_library.php');
+  require_once(LIMB_DIR . 'core/lib/image/image_netpbm.class.php');
+ 
+  class test_netpbm_library extends test_image_library 
+  {
+    var $netpbm_dir = '';
+    var $rotated_size = 5576;
+    var $hflipped_size = 3861;
+    var $wflipped_size = 3908;
+    var $cutted_size1 = 1339;
+    var $cutted_size2 = 4652;
+    var $cutted_size3 = 1177;
+    var $cutted_size4 = 1867;
+    
+    
+    function test_netpbm_library() 
+    {
+    	$this->netpbm_dir = TEST_CASES_DIR . '/image/netpbm/';
+    	
+    	$this->library =& new image_netpbm($this->netpbm_dir);
+
+    	parent :: test_image_library();
+    }
+    
+  }
+?>

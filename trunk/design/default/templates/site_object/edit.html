@@ -1,0 +1,26 @@
+<core:WRAP file="popup.html" placeholder="content">
+
+<form name="edit_site_object" id="edit_site_object" enctype="multipart/form-data" method="post">
+	<core:INCLUDE file="form_errors.html">
+	<table>
+	
+	<tr>
+		<td><locale:STRING name='identifier'><span class=req>*</span></td>
+		<td align='left' nowrap><fetch:MAPPED>{$identifier}</fetch:MAPPED>
+		<input id="identifier" name="identifier" type="hidden"/></td>
+	</tr>
+	<tr>
+		<td><locale:STRING name='title'><span class=req>*</span></td>
+		<td align='left' nowrap><input id="title" name="title" class="input" type="text" size="60"  value=''/></td>
+	</tr>
+	
+	<tr>
+		<td colspan='2'>
+			<action_button name="edit_button" class="button"  action="edit" reload_parent="true" value="Update"/>
+		   &nbsp;
+		  <input name="cancel" type="button" id="cancel" value="Cancel" onclick='window.close();' class="button">
+		</td>
+	</tr>
+</table>
+
+</form>

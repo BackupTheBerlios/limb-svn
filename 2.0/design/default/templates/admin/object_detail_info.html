@@ -1,0 +1,38 @@
+<table width=100% border=0 cellspacing=0 cellpadding=10>
+<tr>
+	<td>
+		<core:WRAP file="popup.html" placeholder="content">
+		<fetch:MAPPED>
+		<b><locale:STRING name='identifier'>: {$identifier}</b><br>
+		<locale:STRING name='object_type'>: {$class_name}<br>
+		<locale:STRING name='title'>: {$title}<br>
+		<locale:STRING name='version'>: {$version}<br>
+		<locale:STRING name='language'>: {$locale_id}<br>
+		<locale:STRING name='status'>: <core:INCLUDE file="published_status.html"><br>
+		<locale:STRING name='created_date'>: <locale:DATE_FORMAT hash_id='created_date' type='stamp'><br>
+		<locale:STRING name='modified_date'>: <locale:DATE_FORMAT hash_id='modified_date' type='stamp'><br>
+		</fetch:MAPPED>
+		<br>
+		<h2><locale:STRING name='versions'></h2>		
+		
+		<DATA_SOURCE target='versions' >
+			<core:PARAMETER name='data_source_path' value='object_versions_data_source'>
+		</DATA_SOURCE>
+		
+		<list:LIST id='versions'>
+		<table width="100%" border="0" cellspacing="0" cellpadding="5">
+		<list:ITEM>
+		<tr>
+		<td align="center">{$version}</td>
+		<td align="center">{$creator_name} {$creator_lastname} <a href='mailto:{$creator_email}'>@</a></td>
+		<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp'></td>
+		</tr>
+		</list:ITEM>
+		</table>
+		</list:LIST>
+		
+	</td>
+</tr>
+</table>	
+		
+		

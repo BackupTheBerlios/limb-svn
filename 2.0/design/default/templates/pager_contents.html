@@ -1,0 +1,21 @@
+<pager:total>Всего элементов: <b>{$number}</b></pager:total>
+<table border=0 cellspacing=10 cellpadding=0 class=pager>
+<tr>
+	<td><pager:first><a href={$href}>&lt;&lt;</a></pager:first></td>
+	<td><pager:prev><a href={$href}>&lt;</a></pager:prev></td>
+  
+	<td>
+		<pager:list>
+		<pager:current><a style='color:red' href='{$href}'><b>{$number}</b></a></pager:current>
+		<pager:number><a href='{$href}'>{$number}</a></pager:number>
+		<pager:section> <a href={$href}>[{$number_begin} - {$number_end}]</a> </pager:section>
+		<pager:separator> - </pager:separator>
+		</pager:list>
+	</td>
+  
+	<td><pager:next>
+	<a href={$href}>&gt;</a>
+	</pager:next></td>
+	<td><pager:last><a href={$href}>&gt;&gt;</a></pager:last></td>
+</tr>
+</table>

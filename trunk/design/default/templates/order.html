@@ -1,0 +1,12 @@
+<user>
+<core:BLOCK id='in_groups' groups='admins, operators, content_admins'>
+	<order>
+	<core:OPTIONAL for='order_up_href'>
+	<a href='{$order_up_href}&popup=1#{$node_id}' onclick="return click_href(this.href);"><img src='/shared/images/arrow_up.gif' alt='{$order_up_alt}'></a>
+	</core:OPTIONAL>
+	<core:OPTIONAL for='order_down_href'>
+	<a href='{$order_down_href}&popup=1#{$node_id}' onclick="return click_href(this.href);"><img src='/shared/images/arrow_down.gif' alt='{$order_down_alt}'></a>
+	</core:OPTIONAL>
+	</order>
+</core:BLOCK>
+</user>

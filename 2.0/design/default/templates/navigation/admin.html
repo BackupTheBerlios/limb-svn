@@ -1,0 +1,42 @@
+				<table width=100% border=0 cellspacing=0 cellpadding=0>
+				<tr class=com4>
+					<td class=btitle1><img src='/shared/images/admin/titles/content.gif'></td>
+				</tr>
+				<tr>
+					<td class=com1>
+						<core:BLOCK id='admin_menu_block1'>
+						
+						<fetch:SUB_BRANCH target="menu" >
+							<core:PARAMETER name='loader_class_name' value='navigation_item' >
+							<core:PARAMETER name='data_source_path' value='simple_navigation_data_source' >
+							<core:PARAMETER name='path' value='/root/navigation/admin/content_management' >
+						</fetch:SUB_BRANCH>
+
+					
+						<core:INCLUDE file="/navigation/menu.html">
+						</core:BLOCK>
+					</td>
+				</tr>
+				</table>
+
+				<table width=100% border=0 cellspacing=0 cellpadding=0>
+				<tr class=com4>
+					<td class=btitle1 ><img src='/shared/images/admin/titles/site_management.gif'></td>
+				</tr>
+
+				<tr>
+					<td class=com1>
+						<core:BLOCK id='admin_menu_block2'>
+						
+						<fetch:SUB_BRANCH target="menu" >
+							<core:PARAMETER name='loader_class_name' value='navigation_item' >
+							<core:PARAMETER name='data_source_path' value='simple_navigation_data_source' >
+							<core:PARAMETER name='path' value='/root/navigation/admin/site_management' >
+						</fetch:SUB_BRANCH>
+
+					
+						<core:INCLUDE file="/navigation/menu.html">
+						</core:BLOCK>
+					</td>
+				</tr>
+				</table>

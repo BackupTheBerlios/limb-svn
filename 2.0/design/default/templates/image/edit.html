@@ -1,0 +1,29 @@
+<core:WRAP file="popup.html" placeholder="content">
+
+<form name="edit_image" id="edit_image" method="post">
+	<core:INCLUDE file="form_errors.html">
+	<table>
+	<tr>
+		<td>Идентификатор</td>
+		<td align='left' nowrap><input id="identifier" name="identifier" class="input" type="text" size="60"  value=''/></td>
+	</tr>
+
+	<tr>
+		<td>Заголовок</td>
+		<td align='left' nowrap><input id="title" name="title" class="input" type="text" size="60"  value=''/></td>
+	</tr>
+	
+	<tr>
+		<td>Описание</td>
+		<td align='left' nowrap><textarea name="description" class="textarea" cols='60' rows='5'></textarea></td>
+	</tr>
+	
+	<tr>
+	<td colspan='2'>
+	<action_button name="edit_button" class="button" action="edit" reload_parent="true" value="Update"/>
+	</td>
+	</tr>
+
+</table>
+
+</form>

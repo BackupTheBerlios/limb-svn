@@ -1,0 +1,68 @@
+<html>
+<head>
+<link rel="stylesheet" href="/shared/styles/admin.css" type="text/css">
+<script language="javascript" src="/shared/js/common.js"></script>
+<script language="javascript" src="/shared/js/form_errors.js"></script>
+</head>
+<body>
+<table width=100% border=0 cellspacing=0 cellpadding=0>
+<tr>
+	<td style='padding:0 25px 3px 0' class=path>
+	<metadata:BREADCRUMBS offset_path='/root'>
+	<list:LIST>
+		<list:ITEM>
+			<list:BREADCRUMBS common>
+			<a href="{$path}?action=image_select">{$title}</a> &gt;
+			</list:BREADCRUMBS>
+			<list:BREADCRUMBS id='breadcrumbs_title' last>
+			{$title}
+			</list:BREADCRUMBS>
+		</list:ITEM>
+	</list:LIST>
+	</metadata:BREADCRUMBS>
+	</td>
+</tr>
+<tr>
+<td>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/simple.html">
+</fetch:MAPPED>
+</td>
+</tr>
+</table>
+
+<fetch:SUB_BRANCH target='folders'>
+	<core:PARAMETER name='loader_class_name' value='images_folder'>
+</fetch:SUB_BRANCH>
+
+
+<fetch:SUB_BRANCH navigator='pager' target='images'>
+	<core:PARAMETER name='loader_class_name' value='image_object'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<list:LIST id='folders'>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <list:ITEM>
+				<tr class='jip'>
+					<td jip='object' class='jip_object'><img src='/shared/images/folder.gif' align='center'>&nbsp;<a href="{$path}?action=image_select">{$title}</a></td>
+					<td jip='action'><core:INCLUDE file="jip_actions/simple.html"></td>
+				</tr>
+    </list:ITEM>
+			</table>
+</list:LIST>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+<grid:LIST id='images'>
+<tr>
+<td><grid:ITEM><img src='/root?node_id={$node_id}&icon' align='center'>&nbsp;{$identifier}</grid:ITEM></td>
+<td width='1'><core:INCLUDE file="/jip_actions/simple.html"></td>
+<td>&nbsp;<grid:ITEM><core:LITERAL><button class='button' onclick='parent.update_image_data(</core:LITERAL>{node_id: "{$node_id}", name: "{$identifier}", description: "{$description}", variations: {original: {width: "{$variations['original']['width']}", height: "{$variations['original']['height']}", size: "{$variations['original']['size']}"}, thumbnail: {width: "{$variations['thumbnail']['width']}", height: "{$variations['thumbnail']['height']}", size: "{$variations['thumbnail']['size']}"}, icon: {width: "{$variations['icon']['width']}", height: "{$variations['icon']['height']}", size: "{$variations['icon']['size']}"}}}<core:LITERAL>)'>Select</button></core:LITERAL><core:LITERAL></a></core:LITERAL></grid:ITEM></td>
+</tr>
+</grid:LIST>
+
+</table>
+</body>
+</html>

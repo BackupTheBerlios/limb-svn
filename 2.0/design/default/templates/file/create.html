@@ -1,0 +1,30 @@
+<core:WRAP file="popup.html" placeholder="content">
+<h2><locale:STRING name='file_creation' file='file'></h2>
+<form name="create_file" id="create_file" enctype="multipart/form-data" method="post">
+	<core:INCLUDE file="form_errors.html">
+	<table>
+	
+	<tr>
+		<td>Идентификатор</td>
+		<td align='left' nowrap><input id="identifier" name="identifier" class="input" type="text" size="60"  value=''/></td>
+	</tr>
+	
+	<tr>
+		<td>Файл</td>
+		<td align='left' nowrap><input id="file" name="file" class="input" type="file"/></td>
+	</tr>
+	
+	<tr>
+		<td>Описание</td>
+		<td align='left' nowrap><textarea name="description" class="textarea" cols='60' rows='5'></textarea></td>
+	</tr>
+	
+	<tr>
+	<td colspan='2'>
+	<action_button name="create_button" class="button"  action="create_file" value="Create"/>
+	</td>
+	</tr>
+
+</table>
+
+</form>
