@@ -273,6 +273,7 @@ class image_object extends media_object
 		$media_id = $this->_create_media_record($tmp_file_path, $file_name, $mime_type);
 		
 		$size = getimagesize($tmp_file_path);
+		$image_variation_data['id'] = null;
 		$image_variation_data['image_id'] = $image_id;
 		$image_variation_data['media_id'] = $media_id;
 		$image_variation_data['width'] = $size[0];
@@ -310,16 +311,16 @@ class image_object extends media_object
 		$image_id = $this->get_id();
 		
 		$sql = "SELECT 				
-						iv.image_id,
-						iv.media_id, 
-						iv.variation, 
-						iv.width, 
-						iv.height, 
-						m.size, 
-						m.mime_type, 
-						m.file_name, 
-						m.etag,
-						m.id
+						iv.image_id as image_id,
+						iv.media_id as media_id, 
+						iv.variation as variation, 
+						iv.width as width, 
+						iv.height as height, 
+						m.size as size, 
+						m.mime_type as mime_type, 
+						m.file_name as file_name, 
+						m.etag as etag,
+						m.id as id
 						FROM image_variation iv, media m
 						WHERE iv.image_id='{$image_id}' 
 						AND iv.variation='{$variation}' 
@@ -383,16 +384,16 @@ class image_object extends media_object
 			
 		$sql = 
 				"SELECT 
-				iv.image_id,
-				iv.media_id, 
-				iv.variation, 
-				iv.width, 
-				iv.height, 
-				m.size, 
-				m.mime_type, 
-				m.file_name, 
-				m.etag,
-				m.id
+				iv.image_id as image_id,
+				iv.media_id as media_id, 
+				iv.variation as variation, 
+				iv.width as width,  
+				iv.height as height, 
+				m.size as size, 
+				m.mime_type as mime_type, 
+				m.file_name as file_name, 
+				m.etag as etag,
+				m.id as id
 				FROM image_variation iv, media m
 				WHERE iv.media_id = m.id AND 
 				iv.image_id IN {$ids}";

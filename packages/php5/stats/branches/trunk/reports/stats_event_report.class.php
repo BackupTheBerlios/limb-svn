@@ -135,7 +135,7 @@ class stats_event_report implements stats_report_interface
 	public function fetch($params = array())
 	{
 		$sql = "SELECT 
-						sslog.*, ssu.uri,
+						sslog.*, ssu.uri as uri,
 						sso.id as object_id, 
 						sso.identifier as identifier,
 						sso.title as title,

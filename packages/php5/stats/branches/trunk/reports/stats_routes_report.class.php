@@ -73,7 +73,7 @@ class stats_routes_report implements stats_report_interface
 		$root = tree :: instance()->get_node_by_path('/root');
 		$root_id = $root['id'];
 		
-		$sql = "SELECT sslog.time, sslog.action, sslog.session_id, ssu.uri
+		$sql = "SELECT sslog.time as time, sslog.action as action, sslog.session_id as session_id, ssu.uri as uri
 						FROM sys_stat_log sslog, sys_stat_uri ssu
 						WHERE 
 						sslog.stat_uri_id = ssu.id AND 

@@ -86,6 +86,7 @@ class db_cart_handler extends cart_handler
 	  $user = $this->_get_user();	  
 
     $cart_data = array(
+      'id' => null,
       'user_id' => $user->get_id(),
       'last_activity_time' => time(),
       'cart_items' => serialize($this->get_items()),

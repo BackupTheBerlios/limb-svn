@@ -24,7 +24,7 @@ class stats_referers_report implements stats_report_interface
 	public function fetch($params = array())
 	{
 		$sql = 'SELECT
-						stat_referer_id, ssru.referer_url,
+						stat_referer_id, ssru.referer_url as referer_url,
 						COUNT(stat_referer_id) as hits 
 						FROM 
 						sys_stat_log as sslog, sys_stat_referer_url as ssru';

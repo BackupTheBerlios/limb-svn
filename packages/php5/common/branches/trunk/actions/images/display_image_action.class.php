@@ -14,6 +14,7 @@ class display_image_action extends action
 {	
 	public function perform($request, $response)
 	{	
+		trigger_error('Stop', E_USER_WARNING);
 	  $object_data = fetch_requested_object($request);
 		$variation = $this->_get_variation();
 		$image = $object_data['variations'][$variation];

@@ -43,6 +43,7 @@ class stats_search_phrase
 		
 		$this->db->sql_insert('sys_stat_search_phrase', 
 			array(
+				'id' => null, 
 				'engine' => $rule->get_engine_name(), 
 				'time' => $date->get_stamp(),
 				'phrase' => stripslashes(strip_tags($rule->get_matching_phrase())),
