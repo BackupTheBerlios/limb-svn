@@ -42,7 +42,7 @@ class datasource_tag extends server_component_tag
 			$code->write_php($this->get_component_ref_code() . '->setup_navigator();');
 		}
 
-		$code->write_php($this->get_component_ref_code() . '->set("target", ' . $this->attributes['target'] .');');
+		$code->write_php($this->get_component_ref_code() . '->set("target", "' . $this->attributes['target'] .'");');
 		$code->write_php($this->get_component_ref_code() . '->setup_target();');
 
 		if(isset($this->attributes['navigator']))
