@@ -8,6 +8,7 @@
 * $Id: poll_component.class.php 45 2004-03-18 16:26:13Z server $
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 
 class cart_summ_component extends component
 {

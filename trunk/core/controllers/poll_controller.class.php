@@ -58,7 +58,6 @@ class poll_controller extends site_object_controller
 						'template_path' => '/news_object/display.html',
 						'can_have_access_template' => true,
 				),
-
 				'delete' => array(
 						'permissions_required' => 'w',
 						'JIP' => true,

@@ -90,11 +90,13 @@ class test_project_db_tables extends UnitTestCase
 			if($db_column['Key'] == 'PRI')
 				$db_primary_key_name = $db_column['Field'];
 			
-			$this->assertTrue(in_array($db_column['Field'], array_keys($columns)));
+			$status_string = 'db table:"' . $table_name . '"  field definition:"' . $db_column['Field'] . ' does not exist in class';
+			
+			$this->assertTrue(in_array($db_column['Field'], array_keys($columns)), $status_string);
 			
 			$type = $db_table->get_column_type($db_column['Field']);
 			
-			$status_string = 'db table:"' . $table_name . '"  column:"' . $db_column['Field'] . '"  db type: "' . $db_column['Type'] . '" expected: ';
+			$status_string = 'db table:"' . $table_name . '"  column:"' . $db_column['Field']. '"  db type: "' . $db_column['Type'] . '" expected: ';
 			
 			switch($type)
 			{

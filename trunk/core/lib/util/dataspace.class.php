@@ -218,6 +218,11 @@ class dataspace
 			unset($this->vars[$name]);
 		} 
 	}
+	
+	function reset()
+	{
+		$this->vars = array();
+	}
 } 
 
 ?>

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: user_object.class.php 470 2004-02-18 13:04:56Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
@@ -46,6 +46,12 @@ class object
 	{
 		$this->_attributes->destroy($name);
 	}
+
+	function reset_attributes()
+	{
+		$this->_attributes->reset();
+	}
+	
 }
 
 ?>
