@@ -13,11 +13,14 @@ require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 
 class add_cart_items_action extends form_action
 {
-	var $_catalog_object_class_name = 'catalog_object';
-	
 	function _define_dataspace_name()
 	{
 	  return 'order_form';
+	}
+	
+	function _define_catalog_object()
+	{
+	  return 'catalog_object';
 	}
 	
 	function _valid_perform(&$request, &$response)
@@ -34,7 +37,7 @@ class add_cart_items_action extends form_action
 			
 		$objects_data =& fetch_by_node_ids(
 													array_keys($objects_amounts), 
-													$this->_catalog_object_class_name,
+													$this->_define_catalog_object(),
 													$counter);
 	
 		if(!$objects_data)
@@ -47,7 +50,7 @@ class add_cart_items_action extends form_action
   		return;
 		}
 			
-		$object =& site_object_factory :: create($this->_catalog_object_class_name);
+		$object =& site_object_factory :: create($this->_define_catalog_object());
 
 		if(!method_exists($object, 'get_cart_item'))
 		{
@@ -71,7 +74,6 @@ class add_cart_items_action extends form_action
 		
 		$response->redirect('/root/cart?popup=1');
 	}
-	
 }
 
 ?>

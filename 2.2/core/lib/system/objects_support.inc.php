@@ -64,7 +64,6 @@ function & instantiate_session_object($class_name, $arguments = array())
 		$obj =& create_object($class_name, $arguments);
 		
 		$_SESSION['global_' . $class_name] =& $obj;
-		$_SESSION['session_classes_paths'][] = $obj->__get_class_path();
 	}
 	else
 		$obj =& $_SESSION['global_' . $class_name];

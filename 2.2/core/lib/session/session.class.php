@@ -99,12 +99,11 @@ function & _session_db_read($session_id)
 	
   if($session_res = $db->fetch_row())
   {
-  	if(preg_match('/session_classes_paths\|([^\{]+\{[^\}]+\})/', $session_res['session_data'], $matches))
+  	if(preg_match_all('/"__session_class_path";s:\d+:"([^"]+)"/', $session_res['session_data'], $matches))
   	{
-  		$session_class_paths = unserialize($matches[1]);
-  		foreach($session_class_paths as $path)
+  		foreach($matches as $match)
   		{
-  			include_once($path);
+  			include_once($match[1]);
   		}
   	}
   	

@@ -32,11 +32,8 @@ class user extends object
 	
 	function user()
 	{
-	}
-
-	function __get_class_path()
-	{
-		return LIMB_DIR . '/core/lib/security/user.class.php';
+	  //IMPORTANT!!!
+	  $this->__session_class_path = LIMB_DIR . '/core/lib/security/user.class.php';
 	}
 
 	function & instance()
