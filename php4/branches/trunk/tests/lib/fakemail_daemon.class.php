@@ -8,21 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
+@define('FAKEMAIL_SCRIPT', './fakemail');
 @define('FAKEMAIL_PORT', 25);
 @define('FAKEMAIL_HOST', 'localhost');
 @define('FAKEMAIL_PATH', '.');
-@define('FAKEMAIL_SCRIPT', './fakemail');
 
 class FakemailDaemon
 {
   var $pid = null;
+  var $fakemail = null;
   var $mail_path = null;
   var $port = null;
   var $host = null;
   var $log_path  = null;
 
-  function FakemailDaemon($mail_path = null, $port = null, $host = null)
+  function FakemailDaemon($fakemail = null, $mail_path = null, $port = null, $host = null)
   {
+    $this->fakemail = is_null($fakemail) ?  FAKEMAIL_SCRIPT : $fakemail;
     $this->mail_path = is_null($mail_path) ?  FAKEMAIL_PATH : $mail_path;
     $this->port = is_null($port) ?  FAKEMAIL_PORT : $port;
     $this->host = is_null($host) ?  FAKEMAIL_HOST : $host;
@@ -35,10 +37,13 @@ class FakemailDaemon
 
   function start()
   {
-    if(!file_exists($this->mail_path) || !is_dir($this->mail_path))
-      die('Directory for fake mails \"'. $this->mail_path .'\" not found' );
+    if(!file_exists($this->fakemail))
+      die('fakemail script "'. $this->fakemail .'" not found');
 
-    $cmd = "perl ". FAKEMAIL_SCRIPT ." --background --path={$this->mail_path} --port={$this->port} --host={$this->host}" ;
+    if(!file_exists($this->mail_path) || !is_dir($this->mail_path))
+      die('Directory for fake mails "'. $this->mail_path .'" not found' );
+
+    $cmd = "perl ". $this->fakemail ." --background --path={$this->mail_path} --port={$this->port} --host={$this->host}" ;
 
     if($this->log_path)
       $cmd .= " --log_path={$this->log_path}";
