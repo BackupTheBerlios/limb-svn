@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 require_once(LIMB_DIR . 'core/cache/full_page_cache_manager.class.php');
 require_once(LIMB_DIR . 'core/cache/partial_page_cache_manager.class.php');
+require_once(LIMB_DIR . 'core/cache/image_cache_manager.class.php');
 
 class display_cache_manager_action extends action
 {
@@ -20,12 +21,16 @@ class display_cache_manager_action extends action
     
     $full_page_cache_manager = new full_page_cache_manager();
     $partial_page_cache_manager = new partial_page_cache_manager();
+    $image_cache_manager = new image_cache_manager();
     
     $full_page_cache_size = number_format($full_page_cache_manager->get_cache_size()/1024)." KB";
     $this->view->set('full_page_cache_size', $full_page_cache_size);
 
     $partial_page_cache_size = number_format($partial_page_cache_manager->get_cache_size()/1024)." KB";
     $this->view->set('partial_page_cache_size', $partial_page_cache_size);
+
+    $image_cache_size = number_format($image_cache_manager->get_cache_size()/1024)." KB";
+    $this->view->set('image_cache_size', $image_cache_size);
 
     $template_cache_size = number_format($this->_get_template_cache_size()/1024)." KB";
     $this->view->set('template_cache_size', $template_cache_size);

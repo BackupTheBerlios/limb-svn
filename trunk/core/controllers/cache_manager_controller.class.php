@@ -33,6 +33,12 @@ class cache_manager_controller extends site_object_controller
 						'action_path' => '/cache_manager/flush_partial_page_cache_action', 
 						'popup' => true
 				),
+				'flush_image_cache' => array(
+						'permissions_required' => 'r',
+						'action_path' => '/cache_manager/flush_image_cache_action', 
+						'action_name' => strings :: get('flush_image_cache', 'cache_manager'),  
+						'popup' => true
+				),
 				'flush_ini_cache' => array(
 						'permissions_required' => 'r',
 						'action_name' => strings :: get('flush_ini_cache', 'cache_manager'),  

@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/cache/partial_page_cache_manager.class.php');
 require_once(LIMB_DIR . '/core/cache/full_page_cache_manager.class.php');
+require_once(LIMB_DIR . '/core/cache/image_cache_manager.class.php');
 
 class page_cache_flush_job
 {
@@ -26,6 +27,13 @@ class page_cache_flush_job
     
     $partial_cache_mgr = new partial_page_cache_manager();
     $partial_cache_mgr->flush();
+    
+    $response->write("done\n");
+
+    $response->write("Flushing images cache...");
+    
+    $image_cache_mgr = new image_cache_manager();
+    $image_cache_mgr->flush();
     
     $response->write("done\n");
   }
