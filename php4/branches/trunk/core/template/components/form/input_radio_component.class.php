@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -14,25 +14,25 @@ require_once(LIMB_DIR . '/core/template/components/form/form_element.class.php')
 
 class input_radio_component extends form_element
 {
-	/**
-	* Overrides then calls with the parent render_attributes() method dealing
-	* with the special case of the checked attribute
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function render_attributes()
-	{
-		$value = $this->get_value();
-		if ($value == $this->attributes['value'])
-		{
-			$this->attributes['checked'] = 1;
-		} 
-		else
-		{
-			unset($this->attributes['checked']);
-		} 
-		parent::render_attributes();
-	} 
-} 
+  /**
+  * Overrides then calls with the parent render_attributes() method dealing
+  * with the special case of the checked attribute
+  *
+  * @return void
+  * @access protected
+  */
+  function render_attributes()
+  {
+    $value = $this->get_value();
+    if ($value == $this->attributes['value'])
+    {
+      $this->attributes['checked'] = 1;
+    }
+    else
+    {
+      unset($this->attributes['checked']);
+    }
+    parent::render_attributes();
+  }
+}
 ?>

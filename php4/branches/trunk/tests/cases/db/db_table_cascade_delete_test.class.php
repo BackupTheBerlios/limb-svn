@@ -1,49 +1,49 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 
 require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
 class test_image_db_table extends db_table
-{    
+{
   function _define_columns()
   {
-  	return array(
-  		'id' => array('type' => 'numeric'),
+    return array(
+      'id' => array('type' => 'numeric'),
       'description' => '',
       'title' => '',
     );
   }
-  
+
   function _define_constraints()
   {
     return array(
-    	'id' =>	array(
-	    		0 => array(
-						'table_name' => 'test_image_variation',
-						'field' => 'image_id',
-					),
-			),
-    );   
+      'id' =>	array(
+          0 => array(
+            'table_name' => 'test_image_variation',
+            'field' => 'image_id',
+          ),
+      ),
+    );
   }
 }
 
 
 class test_image_variation_db_table extends db_table
-{    
+{
   function _define_columns()
   {
-  	return array(
-  		'id' => array('type' => 'numeric'),
+    return array(
+      'id' => array('type' => 'numeric'),
       'image_id' => array('type' => 'numeric'),
       'media_id' => '',
       'width' => '',
@@ -51,66 +51,66 @@ class test_image_variation_db_table extends db_table
       'variation' => ''
     );
   }
-  
+
   function _define_constraints()
   {
     return array(
-    	'media_id' =>	array(
-	    		0 => array(
-						'table_name' => 'test_media',
-						'field' => 'id',
-					),
-			),
-    );   
+      'media_id' =>	array(
+          0 => array(
+            'table_name' => 'test_media',
+            'field' => 'id',
+          ),
+      ),
+    );
   }
 }
 
 class test_media_db_table extends db_table
-{    
+{
   function _define_columns()
   {
-  	return array(
-  		'id' => '',
+    return array(
+      'id' => '',
       'file_name' => '',
       'mime_type' => '',
       'size' => '',
       'etag' => '',
     );
-  }  
+  }
 }
 class db_table_cascade_delete_test extends db_test
 {
-	var $image = null;
-	var $image_variation = null;
-	var $media = null;
-	
-	var $dump_file = 'cascade_delete.sql'; 
-	
-	function setUp()
-	{
-		$this->image =& db_table_factory :: instance('test_image');
-		$this->image_variation =& db_table_factory :: instance('test_image_variation');
-		$this->media =& db_table_factory :: instance('test_media');
-		
-		parent :: setUp();
-	}
+  var $image = null;
+  var $image_variation = null;
+  var $media = null;
 
-	function test_cascade_delete()
-	{
-		$this->image_variation->delete(array('id' => 16));
-		
-		$this->assertEqual(sizeof($this->image_variation->get_list()), 11);
-		$this->assertEqual(sizeof($this->media->get_list()), 11);
-	}
-	
-	function test_nested_cascade_delete()
-	{
-		$this->image->delete(array('id' => 12));
-		
-		$this->assertEqual(sizeof($this->image->get_list()), 4);
-		$this->assertEqual(sizeof($this->image_variation->get_list()), 9);
-		$this->assertEqual(sizeof($this->media->get_list()), 9);
-	}
-			
-} 
+  var $dump_file = 'cascade_delete.sql';
+
+  function setUp()
+  {
+    $this->image =& db_table_factory :: instance('test_image');
+    $this->image_variation =& db_table_factory :: instance('test_image_variation');
+    $this->media =& db_table_factory :: instance('test_media');
+
+    parent :: setUp();
+  }
+
+  function test_cascade_delete()
+  {
+    $this->image_variation->delete(array('id' => 16));
+
+    $this->assertEqual(sizeof($this->image_variation->get_list()), 11);
+    $this->assertEqual(sizeof($this->media->get_list()), 11);
+  }
+
+  function test_nested_cascade_delete()
+  {
+    $this->image->delete(array('id' => 12));
+
+    $this->assertEqual(sizeof($this->image->get_list()), 4);
+    $this->assertEqual(sizeof($this->image_variation->get_list()), 9);
+    $this->assertEqual(sizeof($this->media->get_list()), 9);
+  }
+
+}
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/core/model/stats/search_engine_rules/search_engine_reg
 require_once(LIMB_DIR . '/core/lib/http/utf8_to_win1251.inc.php');
 
 class search_engine_google_rule extends search_engine_regex_rule
-{	
+{
 
-	function search_engine_google_rule()
-	{
-		parent :: search_engine_regex_rule('google', '/^.*google\..*?q=(cache:[^\s]*\s)?([^&]*).*$/', 2);
-	}
-	
-	function get_matching_phrase()
-	{
-		return utf8_to_win1251(parent :: get_matching_phrase());
-	}
+  function search_engine_google_rule()
+  {
+    parent :: search_engine_regex_rule('google', '/^.*google\..*?q=(cache:[^\s]*\s)?([^&]*).*$/', 2);
+  }
+
+  function get_matching_phrase()
+  {
+    return utf8_to_win1251(parent :: get_matching_phrase());
+  }
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -16,46 +16,46 @@
 */
 class block_component extends component
 {
-	/**
-	* Whether the block is visible or not
-	* 
-	* @var boolean 
-	* @access private 
-	*/
-	var $visible = true;
-	/**
-	* Called within the compiled template render function to determine
-	* whether block should be displayed.
-	* 
-	* @return boolean current state of the block
-	* @access protected 
-	*/
-	function is_visible()
-	{
-		return $this->visible;
-	} 
+  /**
+  * Whether the block is visible or not
+  *
+  * @var boolean
+  * @access private
+  */
+  var $visible = true;
+  /**
+  * Called within the compiled template render function to determine
+  * whether block should be displayed.
+  *
+  * @return boolean current state of the block
+  * @access protected
+  */
+  function is_visible()
+  {
+    return $this->visible;
+  }
 
-	/**
-	* Changes the block state to visible
-	* 
-	* @return void 
-	* @access public 
-	*/
-	function show()
-	{
-		$this->visible = true;
-	} 
+  /**
+  * Changes the block state to visible
+  *
+  * @return void
+  * @access public
+  */
+  function show()
+  {
+    $this->visible = true;
+  }
 
-	/**
-	* Changes the block state to invisible
-	* 
-	* @return void 
-	* @access public 
-	*/
-	function hide()
-	{
-		$this->visible = false;
-	} 
-} 
+  /**
+  * Changes the block state to invisible
+  *
+  * @return void
+  * @access public
+  */
+  function hide()
+  {
+    $this->visible = false;
+  }
+}
 
 ?>

@@ -1,13 +1,13 @@
-<?php 
+<?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/validators/rules/domain_rule.class.php');
 
 /**
@@ -20,12 +20,12 @@ class dns_domain_rule extends domain_rule
   function dns_domain_rule($fieldname)
   {
     parent :: domain_rule($fieldname);
-  } 
+  }
 
   /**
   * Performs validation of a single value
-  * 
-  * @access protected 
+  *
+  * @access protected
   */
   function check($value)
   {
@@ -35,9 +35,9 @@ class dns_domain_rule extends domain_rule
       if (!checkdnsrr($value, 'A'))
       {
         $this->error('BAD_DOMAIN_DNS');
-      } 
-    } 
-  } 
-} 
-} 
+      }
+    }
+  }
+}
+}
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -79,7 +79,8 @@ class fs
     for ($i=$index; $i < count($path_elements); $i++)
     {
       $offset_path .= $path_elements[$i] . $separator;
-    
+
+
       if (!fs :: _do_mkdir($offset_path, $perm))
         return false;
     }

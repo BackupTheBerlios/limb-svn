@@ -1,13 +1,13 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/template/compiler/template_compiler.inc.php');
 require_once(LIMB_DIR . '/core/template/compiler/var_file_compiler.inc.php');
 require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
@@ -16,9 +16,9 @@ require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.
 * Invokes compiling of all templates below the directory where the function
 * is called from. This simply calls the compile_entire_file_scheme function
 */
-function compile_all() 
+function compile_all()
 {
-	compile_entire_file_scheme();
+  compile_entire_file_scheme();
 }
 
 ?>

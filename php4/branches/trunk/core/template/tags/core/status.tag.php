@@ -1,19 +1,19 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 class core_status_tag_info
 {
-	var $tag = 'core:STATUS';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_status_tag';
-} 
+  var $tag = 'core:STATUS';
+  var $end_tag = ENDTAG_REQUIRED;
+  var $tag_class = 'core_status_tag';
+}
 
 register_tag(new core_status_tag_info());
 
@@ -23,58 +23,58 @@ register_tag(new core_status_tag_info());
 */
 class core_status_tag extends compiler_directive_tag
 {
-	var $const;
+  var $const;
 
-	/**
-	* 
-	* @return int PARSER_REQUIRE_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
-	{
-		if (!isset($this->attributes['name']))
-		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'attribute' => 'name',
-					'file' => $this->source_file,
-					'line' => $this->starting_line_no));
-		} 
-		
-		$this->const = $this->attributes['name'];
+  /**
+  *
+  * @return int PARSER_REQUIRE_PARSING
+  * @access protected
+  */
+  function pre_parse()
+  {
+    if (!isset($this->attributes['name']))
+    {
+      error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+          'attribute' => 'name',
+          'file' => $this->source_file,
+          'line' => $this->starting_line_no));
+    }
 
-		return PARSER_REQUIRE_PARSING;
-	} 
+    $this->const = $this->attributes['name'];
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function pre_generate(&$code)
-	{
-		parent::pre_generate($code);
-		
-		$value = 'true';
-		if (isset($this->attributes['value']) && !(boolean)$this->attributes['value'])
-			$value = 'false';
+    return PARSER_REQUIRE_PARSING;
+  }
 
-		$tempvar = $code->get_temp_variable();
-		$code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
-		$code->write_php('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
-	} 
+  /**
+  *
+  * @param code $ _writer
+  * @return void
+  * @access protected
+  */
+  function pre_generate(&$code)
+  {
+    parent::pre_generate($code);
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function post_generate(&$code)
-	{
-		$code->write_php('}');
-		parent::post_generate($code);
-	} 
-} 
+    $value = 'true';
+    if (isset($this->attributes['value']) && !(boolean)$this->attributes['value'])
+      $value = 'false';
+
+    $tempvar = $code->get_temp_variable();
+    $code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
+    $code->write_php('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
+  }
+
+  /**
+  *
+  * @param code $ _writer
+  * @return void
+  * @access protected
+  */
+  function post_generate(&$code)
+  {
+    $code->write_php('}');
+    parent::post_generate($code);
+  }
+}
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,10 +12,10 @@
 
 class core_set_tag_info
 {
-	var $tag = 'core:SET';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'core_set_tag';
-} 
+  var $tag = 'core:SET';
+  var $end_tag = ENDTAG_FORBIDDEN;
+  var $tag_class = 'core_set_tag';
+}
 
 register_tag(new core_set_tag_info());
 
@@ -25,32 +25,32 @@ register_tag(new core_set_tag_info());
 */
 class core_set_tag extends silent_compiler_directive_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
-	{
-		if ($this->find_parent_by_class('core_set_tag'))
-		{
-			error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'file' => $this->source_file,
-					'line' => $this->starting_line_no));
-		} 
-	} 
-	
-	/**
-	* 
-	* @return int PARSER_FORBID_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
-	{
-		$dataspace = &$this->get_dataspace();
-		$dataspace->vars += $this->attributes;
-		return PARSER_FORBID_PARSING;
-	} 
-} 
+  /**
+  *
+  * @return void
+  * @access protected
+  */
+  function check_nesting_level()
+  {
+    if ($this->find_parent_by_class('core_set_tag'))
+    {
+      error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+          'file' => $this->source_file,
+          'line' => $this->starting_line_no));
+    }
+  }
+
+  /**
+  *
+  * @return int PARSER_FORBID_PARSING
+  * @access protected
+  */
+  function pre_parse()
+  {
+    $dataspace = &$this->get_dataspace();
+    $dataspace->vars += $this->attributes;
+    return PARSER_FORBID_PARSING;
+  }
+}
 
 ?>

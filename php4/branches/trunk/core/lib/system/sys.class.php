@@ -1,14 +1,14 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');  
+***********************************************************************************/
+require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/core/lib/util/log.class.php');
 require_once(LIMB_DIR . '/core/lib/http/ip.class.php');
 
@@ -56,43 +56,43 @@ class sys
       $this->env_separator = ':';
       $this->backup_filename = '~';
     }
-    
+
     $request_uri = sys::server_variable('REQUEST_URI');
 
     // Remove url parameters
     if ( ereg( "([^?]+)", $request_uri, $regs ) )
-    	$request_uri = $regs[1];
+      $request_uri = $regs[1];
 
     // Remove internal links
     if ( ereg( "([^#]+)", $request_uri, $regs ) )
-    	$request_uri = $regs[1];
+      $request_uri = $regs[1];
 
     $this->request_uri = $request_uri;
-    
+
     if(isset($_SERVER['REMOTE_ADDR']))
     {
-    	$client_ip = $_SERVER['REMOTE_ADDR'];
-    
-			if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-			{
-				if ( preg_match("/^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/", $_SERVER['HTTP_X_FORWARDED_FOR'], $ip_list))
-				{
-					$private_ip = array('/^0\./', '/^127\.0\.0\.1/', '/^192\.168\..*/', '/^172\.16\..*/', '/^10..*/', '/^224..*/', '/^240..*/');
-					$client_ip = preg_replace($private_ip, $client_ip, $ip_list[1]);
-				}
-			}
+      $client_ip = $_SERVER['REMOTE_ADDR'];
 
-			$this->client_ip = $client_ip;
-		}
-		
-		if(php_sapi_name() == 'cli')
-			$this->exec_mode = 'cli';
-		elseif(substr(php_sapi_name(),0,3) == 'cgi')
-			$this->exec_mode = 'cgi';
-		elseif($_SERVER['GATEWAY_INTERFACE'])
-			$this->exec_mode = 'module';
+      if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+      {
+        if ( preg_match("/^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/", $_SERVER['HTTP_X_FORWARDED_FOR'], $ip_list))
+        {
+          $private_ip = array('/^0\./', '/^127\.0\.0\.1/', '/^192\.168\..*/', '/^172\.16\..*/', '/^10..*/', '/^224..*/', '/^240..*/');
+          $client_ip = preg_replace($private_ip, $client_ip, $ip_list[1]);
+        }
+      }
+
+      $this->client_ip = $client_ip;
+    }
+
+    if(php_sapi_name() == 'cli')
+      $this->exec_mode = 'cli';
+    elseif(substr(php_sapi_name(),0,3) == 'cgi')
+      $this->exec_mode = 'cgi';
+    elseif($_SERVER['GATEWAY_INTERFACE'])
+      $this->exec_mode = 'module';
   }
-  
+
    /*
    Returns the only legal instance of the sys class.
   */
@@ -102,41 +102,41 @@ class sys
   }
 
   /*
-  	return the os type, either "win32", "unix" or "mac"
+    return the os type, either "win32", "unix" or "mac"
   */
   function os_type()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
-    	
+      $obj =& $this;
+
     return $obj->os_type;
   }
 
   /*
-  	return the client ip
-  */  
+    return the client ip
+  */
   function client_ip()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
-    
+      $obj =& $this;
+
     return $obj->client_ip;
-	}
-			
+  }
+
   /*
    return the file_system type, either "win32" or "unix"
   */
   function file_system_type()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
-    	
+      $obj =& $this;
+
     return $obj->file_system_type;
   }
 
@@ -145,11 +145,11 @@ class sys
   */
   function file_separator()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
-    	
+      $obj =& $this;
+
     return $obj->file_separator;
   }
 
@@ -158,11 +158,11 @@ class sys
   */
   function backup_filename()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
-    	
+      $obj =& $this;
+
     return $obj->backup_filename;
   }
 
@@ -171,11 +171,11 @@ class sys
   */
   function line_separator()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
-    	
+      $obj =& $this;
+
     return $obj->line_separator;
   }
 
@@ -184,11 +184,11 @@ class sys
   */
   function env_separator()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
-    	
+      $obj =& $this;
+
     return $obj->env_separator;
   }
 
@@ -197,7 +197,7 @@ class sys
   */
   function hostname()
   {
-  	return sys::server_variable( 'HTTP_HOST' );
+    return sys::server_variable( 'HTTP_HOST' );
   }
 
   /*
@@ -225,7 +225,7 @@ class sys
   */
   function &path( $quiet = false )
   {
-  	return sys::server_variable( 'PATH', $quiet );
+    return sys::server_variable( 'PATH', $quiet );
   }
 
   /*
@@ -235,7 +235,7 @@ class sys
   {
     if ( !isset( $_ENV[$name] ) )
       return null;
-         
+
     return $_ENV[$name];
   }
 
@@ -247,15 +247,15 @@ class sys
   {
     $_ENV[$name] = $value;
   }
-  
+
   function exec_mode()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
+      $obj =& $this;
 
-  	return $obj->exec_mode;
+    return $obj->exec_mode;
   }
 
   /*
@@ -263,11 +263,11 @@ class sys
   */
   function request_uri()
   {
-  	if ( !isset( $this ) || get_class( $this ) != 'sys' )
-    	$obj =& sys::instance();
+    if ( !isset( $this ) || get_class( $this ) != 'sys' )
+      $obj =& sys::instance();
     else
-    	$obj =& $this;
-    	
+      $obj =& $this;
+
     return $obj->request_uri;
   }
 

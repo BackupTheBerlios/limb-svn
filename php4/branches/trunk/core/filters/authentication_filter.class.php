@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -21,14 +21,14 @@ class authentication_filter extends intercepting_filter
     {
       if(!$node = map_request_to_node($request))
       {
-      	if(defined('ERROR_DOCUMENT_404'))
-      		$response->redirect(ERROR_DOCUMENT_404);
-      	else
-      		$response->header("HTTP/1.1 404 Not found");
-      	return;
+        if(defined('ERROR_DOCUMENT_404'))
+          $response->redirect(ERROR_DOCUMENT_404);
+        else
+          $response->header("HTTP/1.1 404 Not found");
+        return;
       }
-  		$response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
-  		return;
+      $response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
+      return;
     }
 
     $object =& wrap_with_site_object($object_data);
@@ -37,17 +37,17 @@ class authentication_filter extends intercepting_filter
 
     if(($action = $site_object_controller->determine_action($request)) === false)
     {
-    	debug :: write_error('"'. $action . '" action not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+      debug :: write_error('"'. $action . '" action not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 
-    	if(defined('ERROR_DOCUMENT_404'))
-    		$response->redirect(ERROR_DOCUMENT_404);
-    	else
-    		$response->header("HTTP/1.1 404 Not found");
+      if(defined('ERROR_DOCUMENT_404'))
+        $response->redirect(ERROR_DOCUMENT_404);
+      else
+        $response->header("HTTP/1.1 404 Not found");
 
       debug :: add_timing_point('authentication filter finished');
 
-    	$filter_chain->next();
-    	return;
+      $filter_chain->next();
+      return;
     }
 
     $actions = $object->get_attribute('actions');
