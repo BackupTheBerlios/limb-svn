@@ -32,7 +32,7 @@ class email_rule extends domain_rule
 	*/
 	function check_user($value)
 	{
-		if (!preg_match('/^[a-z0-9]+([_.-][a-z0-9_]+)*$/', $value))
+		if (!preg_match('/^[a-z0-9]{1}([-a-z0-9_.]+)*$/', $value))
 		{
 			$this->error(strings :: get('invalid_email', 'error'));
 		} 
