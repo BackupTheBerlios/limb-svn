@@ -41,6 +41,11 @@ class action_file_resolver_test extends LimbTestCase
     unset($this->resolver);
     clear_testing_ini();    
   }
+
+  function test_resolve_action_file_in_limb()
+  {    
+    $this->assertEqual($this->resolver->resolve('action'), LIMB_DIR . 'class/core/actions/action.class.php');
+  }  
     
   function test_resolve_action_file_ok()
   {    
