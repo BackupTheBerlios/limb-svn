@@ -11,7 +11,7 @@
 
 class search_phone_number_normalizer
 {	
-	function process($content)
+	public function process($content)
 	{
     $content = preg_replace("#[^\d\(\)\+]+#", '', $content);
     $content = preg_replace("#[\(\)\+]+#", ' ', $content);

@@ -11,7 +11,7 @@
 
 class search_text_normalizer
 {	
-	function process($content)
+	public function process($content)
 	{
 		$content = strtolower($content);
     $content = str_replace("\n", ' ', $content );

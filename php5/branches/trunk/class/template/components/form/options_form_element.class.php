@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 require_once(LIMB_DIR . 'class/template/components/form/container_form_element.class.php');
 require_once(LIMB_DIR . 'class/template/components/form/option_renderer.class.php');
 require_once(LIMB_DIR . 'class/datasources/datasource_factory.class.php');

@@ -11,7 +11,7 @@
 define('TMPL_IMPORT', 'import');
 define('TMPL_INCLUDE', 'include');
 
-require_once(LIMB_DIR . 'class/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/template/component.class.php');
 require_once(LIMB_DIR . 'class/template/fileschemes/simpleroot/compiler_support.inc.php');

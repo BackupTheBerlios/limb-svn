@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 class template_file_resolver extends package_file_resolver
 {

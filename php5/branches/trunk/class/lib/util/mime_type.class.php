@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class mime_type
 {
-	var $mime_types = array();
+	protected $mime_types = array();
 
-	function mime_type()
+	function __construct()
 	{
 		$this->mime_types = array(
 				'application/msword' => array(
@@ -106,21 +106,21 @@ class mime_type
 		);
 	}
 
-	function get_type_icon($mime_type, $image_size = 16)
+	public function get_type_icon($mime_type, $image_size = 16)
 	{
 		if(!array_key_exists($mime_type, $this->mime_types))
 			$mime_type = 'default' ;
 
-		return '/shared/images/mime_icons/'. $this->mime_types[$mime_type]['icon'].'.'.$image_size.'.gif' ;
+		return '/shared/images/mime_icons/'. $this->mime_types[$mime_type]['icon'].'.'.$image_size.'.gif';
 	}
 
-	function get_type_extension($mime_type)
+	public function get_type_extension($mime_type)
 	{
 		
 		if(!array_key_exists($mime_type, $this->mime_types))
 			$mime_type = 'default' ;
 
-		return  $this->mime_types[$mime_type]['extension'] ;
+		return  $this->mime_types[$mime_type]['extension'];
 	}
 
 }

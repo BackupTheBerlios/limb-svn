@@ -150,7 +150,7 @@ class image_library_test extends LimbTestCase
   {
     $info1 = getimagesize($this->input_file);
      
-    $this->library->flip(FLIP_HORIZONTAL);
+    $this->library->flip(image_library :: FLIP_HORIZONTAL);
     $this->library->commit();
     
     $info2 = getimagesize($this->output_file);
@@ -159,7 +159,7 @@ class image_library_test extends LimbTestCase
 //      $this->assertEqual(filesize($this->output_file), $this->hflipped_size);
     clearstatcache();
 
-    $this->library->flip(FLIP_VERTICAL);
+    $this->library->flip(image_library :: FLIP_VERTICAL);
     $this->library->commit();
     
     $info2 = getimagesize($this->output_file);

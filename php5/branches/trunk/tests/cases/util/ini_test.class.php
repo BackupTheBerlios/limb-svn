@@ -31,13 +31,13 @@ class ini_test extends LimbTestCase
   
   function test_same_instance()
   {
-  	$ini =& ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
+  	$ini = ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
   	
   	$this->assertIsA($ini, 'ini');
   	
-  	$ini2 =& ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
+  	$ini2 = ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
   	
-  	$this->assertReference($ini, $ini2); 
+  	$this->assertTrue($ini === $ini2); 
   }
   
   function test_file_path()
@@ -435,7 +435,7 @@ class ini_test extends LimbTestCase
     $ini_mock->expectNever('_parse');
     $ini_mock->expectNever('_save_cache');
     
-    $ini_mock->ini(VAR_DIR . 'testing.ini', true);
+    $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
         
     $ini_mock->tally();
     
@@ -460,7 +460,7 @@ class ini_test extends LimbTestCase
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_save_cache');
     
-    $ini_mock->ini(VAR_DIR . 'testing.ini', true);
+    $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
         
     $ini_mock->tally();
     
@@ -484,7 +484,7 @@ class ini_test extends LimbTestCase
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_save_cache');
     
-    $ini_mock->ini(VAR_DIR . 'testing.ini', true);
+    $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
         
     $ini_mock->tally();
     
@@ -502,7 +502,7 @@ class ini_test extends LimbTestCase
     $ini->expectOnce('_parse');
     $ini->expectOnce('_save_cache');
     
-    $ini->ini(VAR_DIR . 'testing.ini', true);
+    $ini->__construct(VAR_DIR . 'testing.ini', true);
         
     $ini->tally();
     
@@ -521,7 +521,7 @@ class ini_test extends LimbTestCase
     $ini->expectOnce('_parse');
     $ini->expectNever('_save_cache');
     
-    $ini->ini(VAR_DIR . 'testing.ini', false);
+    $ini->__construct(VAR_DIR . 'testing.ini', false);
         
     $ini->tally();
   }      

@@ -669,7 +669,7 @@ class locale
 		$file_name = $locale . '.ini';
     
 		if (file_exists($directory . '/' . $file_name))
-			return ini::instance($directory . '/' . $file_name);
+			return ini :: instance($directory . '/' . $file_name);
 		else
 			return null;
 	} 

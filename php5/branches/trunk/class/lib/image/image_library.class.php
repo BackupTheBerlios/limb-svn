@@ -176,13 +176,13 @@ abstract class image_library
 		return array($dst_width, $dst_height);
   }
   
-  abstract public function flip();
+  abstract public function flip($params);
   
-	abstract public function cut();
+	abstract public function cut($x, $y, $w, $h, $bg_color);
 
-	abstract public function resize();
+	abstract public function resize($params);
 
-	abstract public function rotate();
+	abstract public function rotate($angle, $bg_color);
 
 	protected function _hex_color_to_X11($color)
 	{

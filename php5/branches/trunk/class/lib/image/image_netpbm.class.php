@@ -9,6 +9,29 @@
 *
 ***********************************************************************************/ 
 
+// Read utilities
+define('JPEGTOPNM', 'jpegtopnm');
+define('GIFTOPNM', 'giftopnm');
+define('PNGTOPNM', 'pngtopnm');
+define('BMPTOPNM', 'bmptopnm');
+define('TIFFTOPNM', 'tifftopnm');
+
+// Write utilities
+define('PNMTOJPEG', 'pnmtojpeg');
+define('PNMTOGIF', 'ppmtogif');
+define('PNMTOPNG', 'pnmtopng');
+define('PNMTOBMP', 'ppmtobmp');
+define('PNMTOTIFF', 'pnmtotiff');
+
+// Editor utilities
+define('PNMSCALE', 'pnmscale');
+define('PNMCUT', 'pamcut');
+define('PNMFLIP', 'pnmflip');
+define('PNMROTATE', 'pnmrotate');
+define('PNMQUANT', 'ppmquant');
+define('PNMMAKE', 'ppmmake');
+define('PNMCOMP', 'pnmpaste');
+
 if(!defined('NETPBM_LIB_DIR'))
 {
   if(sys :: os_type() == 'win32')
@@ -21,29 +44,6 @@ require_once(LIMB_DIR . 'class/lib/image/image_library.class.php');
 
 class image_netpbm extends image_library
 {
-  // Read utilities
-  const JPEGTOPNM = 'jpegtopnm';
-  const GIFTOPNM = 'giftopnm';
-  const PNGTOPNM = 'pngtopnm';
-  const BMPTOPNM = 'bmptopnm';
-  const TIFFTOPNM = 'tifftopnm';
-  
-  // Write utilities
-  const PNMTOJPEG = 'pnmtojpeg';
-  const PNMTOGIF = 'ppmtogif';
-  const PNMTOPNG = 'pnmtopng';
-  const PNMTOBMP = 'ppmtobmp';
-  const PNMTOTIFF = 'pnmtotiff';
-  
-  // Editor utilities
-  const PNMSCALE = 'pnmscale';
-  const PNMCUT = 'pamcut';
-  const PNMFLIP = 'pnmflip';
-  const PNMROTATE = 'pnmrotate';
-  const PNMQUANT = 'ppmquant';
-  const PNMMAKE = 'ppmmake';
-  const PNMCOMP = 'pnmpaste';
-
 	protected $lib_dir = '';
 	protected $os = '';
 	protected $ext = '';
@@ -56,7 +56,7 @@ class image_netpbm extends image_library
 	protected $current_output_file = '';
 	protected $current_output_file_type = '';
 
-	function __construct($lib_dir = self :: NETPBM_LIB_DIR)
+	function __construct($lib_dir = NETPBM_LIB_DIR)
 	{
 	  $this->lib_dir = $lib_dir;
 
@@ -79,37 +79,37 @@ class image_netpbm extends image_library
   
   protected function _determine_read_types()
   {
-	  if (file_exists($this->lib_dir . self :: JPEGTOPNM . $this->ext))
+	  if (file_exists($this->lib_dir . JPEGTOPNM . $this->ext))
 	    $this->read_types[] = 'JPEG';
 	  
-	  if (file_exists($this->lib_dir . self :: GIFTOPNM . $this->ext))
+	  if (file_exists($this->lib_dir . GIFTOPNM . $this->ext))
 	    $this->read_types[] = 'GIF';
 	  
-	  if (file_exists($this->lib_dir . self :: PNGTOPNM . $this->ext))
+	  if (file_exists($this->lib_dir . PNGTOPNM . $this->ext))
 	    $this->read_types[] = 'PNG';
 	  
-	  if (file_exists($this->lib_dir . self :: BMPTOPNM . $this->ext))
+	  if (file_exists($this->lib_dir . BMPTOPNM . $this->ext))
 	    $this->read_types[] = 'BMP';
 	  
-	  if (file_exists($this->lib_dir . self :: TIFFTOPNM . $this->ext))
+	  if (file_exists($this->lib_dir . TIFFTOPNM . $this->ext))
 	    $this->read_types[] = 'TIFF';
   }
     
   protected function _determine_write_types()
   {
-	  if (file_exists($this->lib_dir . self :: PNMTOJPEG . $this->ext))
+	  if (file_exists($this->lib_dir . PNMTOJPEG . $this->ext))
 	    $this->create_types[] = 'JPEG';
 	  
-	  if (file_exists($this->lib_dir . self :: PNMTOGIF . $this->ext))
+	  if (file_exists($this->lib_dir . PNMTOGIF . $this->ext))
 	    $this->create_types[] = 'GIF';
 	  
-	  if (file_exists($this->lib_dir . self :: PNMTOPNG . $this->ext))
+	  if (file_exists($this->lib_dir . PNMTOPNG . $this->ext))
 	    $this->create_types[] = 'PNG';
 	  
-	  if (file_exists($this->lib_dir . self :: PNMTOBMP . $this->ext))
+	  if (file_exists($this->lib_dir . PNMTOBMP . $this->ext))
 	    $this->create_types[] = 'BMP';
 	  
-	  if (file_exists($this->lib_dir . self :: PNMTOTIFF . $this->ext))
+	  if (file_exists($this->lib_dir . PNMTOTIFF . $this->ext))
 	    $this->create_types[] = 'TIFF';
 	}
 	
@@ -127,7 +127,7 @@ class image_netpbm extends image_library
     $this->from_pnm = '';
 
 	if (strtoupper($type) == 'GIF')
-      $this->from_pnm = self :: PNMQUANT . ' 256 | ';
+      $this->from_pnm = PNMQUANT . ' 256 | ';
     
 	$this->from_pnm .= constant(strtoupper('PNMTO' . $type)) . " > $file_name";
 	}
@@ -172,7 +172,7 @@ class image_netpbm extends image_library
 
 		list($dst_width, $dst_height) = $this->get_dst_dimensions($src_width, $src_height, $params);
 		
-		$this->cmd_array[] = self :: PNMSCALE . " -width={$dst_width} -height={$dst_height}";
+		$this->cmd_array[] = PNMSCALE . " -width={$dst_width} -height={$dst_height}";
   }
 
 	public function rotate($angle, $bg_color = '')
@@ -180,7 +180,7 @@ class image_netpbm extends image_library
 		if (!$this->library_installed)
 			return false;
 		
-		$this->cmd_array[] = self :: PNMROTATE . " {$angle}";
+		$this->cmd_array[] = PNMROTATE . " {$angle}";
   }
 
 	public function flip($params)
@@ -194,7 +194,7 @@ class image_netpbm extends image_library
 	  if ($params == self :: FLIP_VERTICAL)
   		$args = '-topbottom';
 		
-		$this->cmd_array[] = self :: PNMFLIP . " {$args}";
+		$this->cmd_array[] = PNMFLIP . " {$args}";
   }
   
   protected function _to_pnm()
@@ -298,13 +298,13 @@ class image_netpbm extends image_library
 
 		$tmp_file = tempnam(VAR_DIR, 'netpbm');
 
-		$cmd = $this->_to_pnm() . ' | ' . self :: PNMCUT . " $cx $cy $cw $ch > {$tmp_file}";
+		$cmd = $this->_to_pnm() . ' | ' . PNMCUT . " $cx $cy $cw $ch > {$tmp_file}";
 		
     $this->_run_cmd($cmd);
 
 		$cx = ($x < 0) ? -$x : 0;
 		$cy = ($y < 0) ? -$y : 0;
-		$cmd = self :: PNMMAKE . " " . $this->_hex_color_to_X11($bg_color) . " {$w} {$h} | " . self :: PNMCOMP . " {$tmp_file} {$cx} {$cy}" . ' | ' . $this->_from_pnm();
+		$cmd = PNMMAKE . " " . $this->_hex_color_to_X11($bg_color) . " {$w} {$h} | " . PNMCOMP . " {$tmp_file} {$cx} {$cy}" . ' | ' . $this->_from_pnm();
 		
     $this->_run_cmd($cmd);
 
