@@ -14,7 +14,7 @@ class sys_action_access_db_table extends db_table
 {
   protected function _define_columns()
   {
-  	return array(
+    return array(
       'id' => array('type' => 'numeric'),
       'class_id' => array('type' => 'numeric'),
       'accessor_id' => array('type' => 'numeric'),
