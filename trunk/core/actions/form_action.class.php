@@ -107,7 +107,7 @@ class form_action extends action
 		if ($arr = $request->get_attribute($this->name))
 			$this->dataspace->import($arr);
 		else
-			$this->dataspace->import($request->export());
+			$this->dataspace->import($request->export_attributes());
 	}
 
 	function _process_transfered_dataspace()

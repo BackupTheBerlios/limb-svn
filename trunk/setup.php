@@ -23,8 +23,8 @@ define('SHARED_IMG_URL', '/shared/images/');
 
 define('VAR_DIR', PROJECT_DIR . 'var/');
 
-if(!defined('VAR_URL'))
-	define('VAR_URL', '/var/');
+if(!defined('VAR_WEB_DIR'))
+	define('VAR_WEB_DIR', '/var/');
 
 if(!defined('CACHE_DIR'))
 	define('CACHE_DIR', PROJECT_DIR . 'var/cache/');

@@ -19,7 +19,7 @@ class edit_file_action extends form_edit_site_object_action
 	  
 	function _define_dataspace_name()
 	{
-	  return 'create_file';
+	  return 'edit_file';
 	}
   
   function _define_datamap()

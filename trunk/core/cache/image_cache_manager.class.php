@@ -11,6 +11,9 @@
 if(!defined('IMAGE_CACHE_DIR'))
   define('IMAGE_CACHE_DIR', VAR_DIR . 'images/');
   
+if(!defined('IMAGE_CACHE_WEB_DIR'))
+  define('IMAGE_CACHE_WEB_DIR', VAR_WEB_DIR . 'images/');
+  
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 
@@ -21,6 +24,8 @@ class image_cache_manager
   var $rules = array();
   var $matched_rule;
   var $fetcher;
+  var $found_images = array();
+  var $wild_card;
   
   function image_cache_manager()
   {
@@ -55,38 +60,142 @@ class image_cache_manager
     if(!$this->is_cacheable())
       return false;
     
-    $content = $this->_rewrite_images($content);
+    $content = $this->_replace_images($content);    
     
     return true;
   }
   
-  function _rewrite_images(&$content)
+  function _replace_images(&$content)
   {
     if(empty($content))
       return '';
     
-    return preg_replace_callback(
+    $this->found_images = array();
+    $this->wild_card = md5(mt_srand());
+    
+    $content = preg_replace_callback(
       $this->_define_replace_regex_array(),
-      array($this, '_replace_callback'),
+      array(&$this, '_mark_images_callback'),
       $content
     );
+    
+    $not_cached_images = $this->_get_not_cached_images();
+    $cached_images = $this->_get_cached_images();
+    
+    $images = array_merge($cached_images, $not_cached_images);
+    
+    $replace = array();
+    foreach($this->found_images as $node_id => $variations)
+    {
+      foreach(array_keys($variations) as $variation)
+      {
+        if (isset($cached_images[$node_id]))
+          $image = $cached_images[$node_id];
+        elseif(isset($not_cached_images[$node_id]))  
+          $image = $not_cached_images[$node_id];
+        else
+        {        
+          $replace[$this->_get_wildcard_hash($node_id, $variation)] = 
+            '/root?node_id=' . $node_id . '&' . $variation;
+            
+          continue;
+        }
+  
+        $cache_name = $node_id . $variation . $image['extension'];
+        $replace[$this->_get_wildcard_hash($node_id, $variation)] = IMAGE_CACHE_WEB_DIR . $cache_name;
+      }  
+    }
+        
+    if($replace)
+      return strtr($content, $replace);
+    else
+      return $content;
+  }
+    
+  function _get_wildcard_hash($node_id, $variation)
+  {
+    return "<{$this->wild_card}{$node_id}-{$variation}{$this->wild_card}>";
   }
   
-  function _replace_callback($matches)
+  function _get_not_cached_images()
   {
+    $node_ids = array();
+    foreach($this->found_images as $node_id => $variations)
+    {
+      foreach(array_keys($variations) as $variation)
+      {
+        if(!$this->_is_image_cached($node_id, $variation))
+          $node_ids[$node_id] = 1;
+      }    
+    }
+    
     $fetcher =& $this->_get_fetcher();
+    $images = $fetcher->fetch_by_node_ids(array_keys($node_ids), 'image_object', $counter = 0);
     
-    $object_data = $fetcher->fetch_one_by_node_id((int)$matches[3]);
-    
-    if(!empty($matches[5]))
-      $image = $object_data['variations'][$matches[5]];
-    else
-      $image = $object_data['variations']['thumbnail'];
+    $result = array();
+    foreach($images as $node_id => $image)
+    { 
+      $variations = $this->found_images[$node_id];
+      foreach(array_keys($variations) as $variation)
+      {
+        $variation_data = $image['variations'][$variation];
         
-    $rewritten_path = '/var/images/' . $image['media_id'];
+        $extension = $this->_get_mime_extension($variation_data['mime_type']);
+        $result[$node_id] = array(
+          'variation' => $variation,
+          'extension' => $extension
+         );
+  
+        $cache_name = $node_id . $variation . $extension;
+        $this->_cache_media_file($variation_data['media_id'], $cache_name);    
+      }  
+    }
     
+    return $result;
+  }
+
+  function _get_cached_images()
+  {
+    $result = array();
+    foreach($this->found_images as $node_id => $variations)
+    {
+      foreach(array_keys($variations) as $variation)
+      {
+        if($extension = $this->_get_cached_image_extension($node_id, $variation))
+        {
+          $result[$node_id] = array(
+            'variation' => $variation,
+            'extension' => $extension
+           );
+        }
+      }  
+    }
+    
+    return $result;
+  }
+  
+  function _is_image_cached($node_id, $variation)
+  {
+    return ($this->_get_cached_image_extension($node_id, $variation) !== false);
+  }
+  
+  function _get_cached_image_extension($node_id, $variation)
+  {
+    $cache = $node_id . '-' . $variation;
+    
+    foreach(array('.jpg', '.gif', '.png') as $extension)
+    {
+      if(file_exists($cache . $extension))
+        return $extension;
+    }
+    
+    return false;
+  }
+  
+  function _get_mime_extension($mime_type)
+  {
     $extension = '';
-    switch($image['mime_type'])
+    switch($mime_type)
     {
       case 'image/jpeg':
       case 'image/jpg':
@@ -101,17 +210,27 @@ class image_cache_manager
         break;      
     }
     
-    $this->_cache_media_file($image['media_id'], $extension);
-    
-    return "{$matches[1]}'{$rewritten_path}{$extension}'{$matches[7]}";
+    return $extension;  
   }
   
-  function _cache_media_file($media_id, $extension)
+  function _mark_images_callback($matches)
+  {
+    if(!empty($matches[5]))
+      $variation = $matches[5];
+    else
+      $variation = 'thumbnail';
+    
+    $this->found_images[$matches[3]][$variation] = 1;
+    
+    return $matches[1] . "'" . $this->_get_wildcard_hash($matches[3], $variation) . "'" . $matches[7];
+  }
+  
+  function _cache_media_file($media_id, $cache_name)
   {
     fs :: mkdir(IMAGE_CACHE_DIR);
     
-    if(file_exists(MEDIA_DIR . $media_id . '.media'))
-      copy(MEDIA_DIR . $media_id . '.media', IMAGE_CACHE_DIR . $media_id . $extension);
+    if(file_exists(MEDIA_DIR . $media_id . '.media') && !file_exists(IMAGE_CACHE_DIR . $cache_name))
+      copy(MEDIA_DIR . $media_id . '.media', IMAGE_CACHE_DIR . $cache_name);
   }
   
   function & _get_fetcher()
@@ -164,6 +283,8 @@ class image_cache_manager
      
   function flush()
   {
+    fs :: mkdir(IMAGE_CACHE_DIR);
+  
     $files = fs :: find_subitems(IMAGE_CACHE_DIR, 'f');
 
     foreach($files as $file)
@@ -174,6 +295,8 @@ class image_cache_manager
   
   function get_cache_size()
   {
+    fs :: mkdir(IMAGE_CACHE_DIR);
+  
     $files = fs :: find_subitems(IMAGE_CACHE_DIR, 'f');
     
     $size = 0;

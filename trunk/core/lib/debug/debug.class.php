@@ -562,7 +562,7 @@ class debug
 	/*
     fetches the debug report
   */
-	function &parse_html_console($server_file_path = VAR_URL)
+	function &parse_html_console($server_file_path = VAR_WEB_DIR)
 	{
 		if (!debug::is_debug_enabled())
 			return '';

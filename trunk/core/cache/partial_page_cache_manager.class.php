@@ -178,6 +178,8 @@ class partial_page_cache_manager
   
   function flush()
   {
+    fs :: mkdir(PAGE_CACHE_DIR);
+
     $files = fs :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^p]~');
 
     foreach($files as $file)
@@ -188,6 +190,8 @@ class partial_page_cache_manager
 
   function get_cache_size()
   {
+    fs :: mkdir(PAGE_CACHE_DIR);
+  
     $files = fs :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^p]~');
     
     $size = 0;
