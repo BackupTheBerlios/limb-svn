@@ -14,7 +14,7 @@ class simple_authorizer implements authorizer
 {
   protected $_cached_class_accessible_actions = array();
 
-  public function get_accessible_object_ids($object_ids, $action = 'disp lay')
+  public function get_accessible_object_ids($object_ids, $action = 'display')
   {
 		if (!count($object_ids))
 			return array();

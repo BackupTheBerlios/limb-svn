@@ -35,7 +35,7 @@ class simple_authenticator implements authenticator
 		
 		$this->_determine_groups();		
 
-		if (isset($params['locale_id']) && locale::is_valid_locale_id($params['locale_id']))
+		if (isset($params['locale_id']) && Limb :: toolkit()->getLocale()->is_valid_locale_id($params['locale_id']))
 		  $user->set('locale_id', $params['locale_id']);
   }
   

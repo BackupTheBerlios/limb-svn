@@ -35,14 +35,14 @@ class access_templates_test extends LimbTestCase
     $db->sql_delete('sys_object_access');
   }
 
-  function test_get_access_templates1()
+  function test_get_access_templates()
   {
     $db_table = db_table_factory :: create('sys_action_access_template');
     $item_db_table = db_table_factory :: create('sys_action_access_template_item');
 
-    $db_table->insert(array('id'=> 1, 'action_name' => 'create', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
-    $db_table->insert(array('id'=> 2, 'action_name' => 'publish', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
-    $db_table->insert(array('id'=> 3, 'action_name' => 'edit', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP));
+    $db_table->insert(array('id'=> 1, 'action_name' => 'create', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
+    $db_table->insert(array('id'=> 2, 'action_name' => 'publish', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
+    $db_table->insert(array('id'=> 3, 'action_name' => 'edit', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP));
 
     $item_db_table->insert(array('template_id' => 1, 'accessor_id' => 200, 'access' => 1));
     $item_db_table->insert(array('template_id' => 1, 'accessor_id' => 210, 'access' => 1));
@@ -50,7 +50,7 @@ class access_templates_test extends LimbTestCase
     $item_db_table->insert(array('template_id' => 2, 'accessor_id' => 210, 'access' => 0));
     $item_db_table->insert(array('template_id' => 3, 'accessor_id' => 200, 'access' => 1));
 
-    $template = $this->ac->get_access_templates($class_id = 11, access_policy :: ACCESSOR_TYPE_USER);
+    $template = $this->ac->get_access_templates($behaviour_id = 11, access_policy :: ACCESSOR_TYPE_USER);
 
     $this->assertEqual(sizeof($template), 2);
 
@@ -71,9 +71,9 @@ class access_templates_test extends LimbTestCase
   function test_get_actions_access()
   {
     $db_table = db_table_factory :: create('sys_action_access');
-    $db_table->insert(array('id'=> 1, 'class_id' => 11, 'action_name' => 'create', 'accessor_id' => 10, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
-    $db_table->insert(array('id'=> 2, 'class_id' => 11, 'action_name' => 'edit', 'accessor_id' => 10, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
-    $db_table->insert(array('id'=> 3, 'class_id' => 11, 'action_name' => 'publish', 'accessor_id' => 20, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP));
+    $db_table->insert(array('id'=> 1, 'behaviour_id' => 11, 'action_name' => 'create', 'accessor_id' => 10, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
+    $db_table->insert(array('id'=> 2, 'behaviour_id' => 11, 'action_name' => 'edit', 'accessor_id' => 10, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
+    $db_table->insert(array('id'=> 3, 'behaviour_id' => 11, 'action_name' => 'publish', 'accessor_id' => 20, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP));
 
     $actions = $this->ac->get_actions_access(11, access_policy :: ACCESSOR_TYPE_USER);
     $this->assertEqual($actions, array(10 => array('create' => 1, 'edit' => 1)));
@@ -126,8 +126,8 @@ class access_templates_test extends LimbTestCase
     $items_db_table = db_table_factory :: create('sys_action_access_template_item');
 
     //garbage
-    $db_table->insert(array('id'=> 1, 'action_name' => 'edit', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
-    $db_table->insert(array('id'=> 2, 'action_name' => 'create', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP));
+    $db_table->insert(array('id'=> 1, 'action_name' => 'edit', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
+    $db_table->insert(array('id'=> 2, 'action_name' => 'create', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP));
 
     $template = array(
         'create' => array(
@@ -140,7 +140,7 @@ class access_templates_test extends LimbTestCase
         )
     );
 
-    $this->ac->save_access_templates($class_id = 11, $template, access_policy :: ACCESSOR_TYPE_USER);
+    $this->ac->save_access_templates($behaviour_id = 11, $template, access_policy :: ACCESSOR_TYPE_USER);
 
     $templates_rows = $db_table->get_list('', 'id', null);
     $items_rows = $items_db_table->get_list('', 'id', null);
@@ -153,9 +153,9 @@ class access_templates_test extends LimbTestCase
 
     $this->assertEqual($templates_rows,
       array(
-        array('id' => $templates_rows[0]['id'], 'action_name' => 'create', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
-        array('id' => $templates_rows[1]['id'], 'action_name' => 'create', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
-        array('id' => $templates_rows[2]['id'], 'action_name' => 'publish', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+        array('id' => $templates_rows[0]['id'], 'action_name' => 'create', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+        array('id' => $templates_rows[1]['id'], 'action_name' => 'create', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+        array('id' => $templates_rows[2]['id'], 'action_name' => 'publish', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
       )
     );
 
@@ -173,8 +173,8 @@ class access_templates_test extends LimbTestCase
     $db_table = db_table_factory :: create('sys_action_access');
 
     //garbage
-    $db_table->insert(array('id'=> 1, 'class_id' => 11, 'action_name' => 'create', 'accessor_id' => 10, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
-    $db_table->insert(array('id'=> 2, 'class_id' => 11, 'action_name' => 'edit', 'accessor_id' => 20, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP));
+    $db_table->insert(array('id'=> 1, 'behaviour_id' => 11, 'action_name' => 'create', 'accessor_id' => 10, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER));
+    $db_table->insert(array('id'=> 2, 'behaviour_id' => 11, 'action_name' => 'edit', 'accessor_id' => 20, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP));
 
     $access = array(
       10 => array(
@@ -192,10 +192,10 @@ class access_templates_test extends LimbTestCase
     $access_rows = $db_table->get_list('', 'id', null);
     $this->assertEqual($access_rows,
       array(
-        array('id' => $access_rows[0]['id'], 'accessor_id' => 20, 'action_name' => 'edit', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
-        array('id' => $access_rows[1]['id'], 'accessor_id' => 10, 'action_name' => 'edit', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
-        array('id' => $access_rows[2]['id'], 'accessor_id' => 10, 'action_name' => 'publish', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
-        array('id' => $access_rows[3]['id'], 'accessor_id' => 11, 'action_name' => 'edit', 'class_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+        array('id' => $access_rows[0]['id'], 'accessor_id' => 20, 'action_name' => 'edit', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_GROUP),
+        array('id' => $access_rows[1]['id'], 'accessor_id' => 10, 'action_name' => 'edit', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+        array('id' => $access_rows[2]['id'], 'accessor_id' => 10, 'action_name' => 'publish', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
+        array('id' => $access_rows[3]['id'], 'accessor_id' => 11, 'action_name' => 'edit', 'behaviour_id' => 11, 'accessor_type' => access_policy :: ACCESSOR_TYPE_USER),
       )
     );
   }

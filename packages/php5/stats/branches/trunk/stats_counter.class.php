@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/fetcher.class.php');
-
 class stats_counter
 {
 	protected $_is_new_host = false;

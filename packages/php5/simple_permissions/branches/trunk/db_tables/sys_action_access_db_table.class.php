@@ -16,7 +16,7 @@ class sys_action_access_db_table extends db_table
   {
     return array(
       'id' => array('type' => 'numeric'),
-      'class_id' => array('type' => 'numeric'),
+      'behaviour_id' => array('type' => 'numeric'),
       'accessor_id' => array('type' => 'numeric'),
       'action_name' => '',
       'accessor_type' => array('type' => 'numeric'),

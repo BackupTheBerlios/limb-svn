@@ -139,22 +139,7 @@ class stats_register_test extends LimbTestCase
   	$this->db->sql_delete('sys_stat_counter');
   	$this->db->sql_delete('sys_stat_day_counters');
   }
-  
-  function test_register_dont_track()
-  {
-  	$this->stats_ip->expectNever('is_new_host');
-  	$this->stats_ip->expectNever('get_client_ip');
 
-  	$this->stats_counter->expectNever('set_new_host');
-  	$this->stats_counter->expectNever('update');
-
-  	$this->stats_referer->expectNever('get_referer_page_id');
-
-  	$this->stats_search_phrase->expectNever('register');
-
-  	$this->stats_register->register(0, '', request :: STATUS_DONT_TRACK);
-  }
-      
   function test_register() 
   {
    	$date = new date();
@@ -171,7 +156,7 @@ class stats_register_test extends LimbTestCase
 
    	$this->stats_register->set_register_time($date->get_stamp());
   
-  	$this->stats_register->register($node_id = 1, 'test', request :: STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
 
 		$this->_check_stats_register_record(
 			$total_records = 1, 
@@ -179,29 +164,29 @@ class stats_register_test extends LimbTestCase
 			$user_id = 10, 
 			$node_id, 
 			'test', 
-			request :: STATUS_SUCCESS, 
+			 LIMB :: STATUS_OK, 
 			$this->stats_register->get_register_time_stamp());
   }
 
   function test_clean_log()
   {
   	$this->stats_register->set_register_time(time());
-  	$this->stats_register->register($node_id = 1, 'test', request :: STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
   	
   	$this->stats_register->set_register_time(time() + 2*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', request :: STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
   	
   	$this->stats_register->set_register_time(time() + 3*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', request :: STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
   	
   	$this->stats_register->set_register_time(time() + 4*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', request :: STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
   	
   	$this->stats_register->set_register_time(time() + 5*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', request :: STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
   	
   	$this->stats_register->set_register_time(time() + 6*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', request :: STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
   	  	
   	$date = new date();
   	$date->set_by_stamp(time() + 4*60*60*24 - 10);

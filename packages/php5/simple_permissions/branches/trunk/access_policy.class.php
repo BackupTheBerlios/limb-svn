@@ -36,11 +36,11 @@ class access_policy
     return $result;
   }
 
-  public function get_actions_access($class_id, $accessor_type)
+  public function get_actions_access($behaviour_id, $accessor_type)
   {
     $db_table = Limb :: toolkit()->createDBTable('sys_action_access');
 
-    $condition = 'class_id ='. $class_id . ' AND accessor_type=' . $accessor_type;
+    $condition = 'behaviour_id ='. $behaviour_id . ' AND accessor_type=' . $accessor_type;
 
     $arr = $db_table->get_list($condition);
 
@@ -51,10 +51,10 @@ class access_policy
     return $result;
   }
 
-  public function save_actions_access($class_id, $policy_array, $accessor_type)
+  public function save_actions_access($behaviour_id, $policy_array, $accessor_type)
   {
     $db_table = Limb :: toolkit()->createDBTable('sys_action_access');
-    $conditions['class_id'] = $class_id;
+    $conditions['behaviour_id'] = $behaviour_id;
     $conditions['accessor_type'] = $accessor_type;
 
     $db_table->delete($conditions);
@@ -68,7 +68,7 @@ class access_policy
 
         $data = array();
         $data['accessor_id'] = $accessor_id;
-        $data['class_id'] = $class_id;
+        $data['behaviour_id'] = $behaviour_id;
         $data['action_name'] = $action_name;
         $data['accessor_type'] = $accessor_type;
 
@@ -81,12 +81,12 @@ class access_policy
 
   public function save_new_object_access($object, $parent_object, $action)
   {
-    $class_id = $parent_object->get_class_id();
+    $behaviour_id = $parent_object->get_behaviour_id();
     $object_id = $object->get_id();
     $parent_object_id = $parent_object->get_id();
 
-    $group_template = $this->get_access_template($class_id, $action, self :: ACCESSOR_TYPE_GROUP);
-    $user_template = $this->get_access_template($class_id, $action, self :: ACCESSOR_TYPE_USER);
+    $group_template = $this->get_access_template($behaviour_id, $action, self :: ACCESSOR_TYPE_GROUP);
+    $user_template = $this->get_access_template($behaviour_id, $action, self :: ACCESSOR_TYPE_USER);
 
     if (!count($group_template))
       $group_result = $this->copy_objects_access($object_id, $parent_object_id, self :: ACCESSOR_TYPE_GROUP);
@@ -110,11 +110,11 @@ class access_policy
 
   public function apply_access_templates($object, $action)
   {
-    $class_id = $object->get_class_id();
+    $behaviour_id = $object->get_behaviour_id();
     $object_id = $object->get_id();
 
-    $user_templates = $this->get_access_templates($class_id, self :: ACCESSOR_TYPE_USER);
-    $group_templates = $this->get_access_templates($class_id, self :: ACCESSOR_TYPE_GROUP);
+    $user_templates = $this->get_access_templates($behaviour_id, self :: ACCESSOR_TYPE_USER);
+    $group_templates = $this->get_access_templates($behaviour_id, self :: ACCESSOR_TYPE_GROUP);
 
     if(!isset($user_templates[$action]) && !isset($group_templates[$action]))
     {
@@ -190,12 +190,12 @@ class access_policy
     return true;
   }
 
-  public function save_access_templates($class_id, $template_array, $accessor_type)
+  public function save_access_templates($behaviour_id, $template_array, $accessor_type)
   {
     $db_table = Limb :: toolkit()->createDBTable('sys_action_access_template');
     $item_db_table= Limb :: toolkit()->createDBTable('sys_action_access_template_item');
 
-    $conditions['class_id'] = $class_id;
+    $conditions['behaviour_id'] = $behaviour_id;
     $conditions['accessor_type'] = $accessor_type;
     $db_table->delete($conditions);
 
@@ -203,7 +203,7 @@ class access_policy
     {
       $data = array();
 
-      $data['class_id'] = $class_id;
+      $data['behaviour_id'] = $behaviour_id;
       $data['action_name'] = $action_name;
       $data['accessor_type'] = $accessor_type;
       $db_table->insert($data);
@@ -225,19 +225,19 @@ class access_policy
     return true;
   }
 
-  public function get_access_templates($class_id, $accessor_type)
+  public function get_access_templates($behaviour_id, $accessor_type)
   {
     $db = Limb :: toolkit()->getDB();
 
     $sql = "SELECT
             saat.action_name as action_name,
-            saat.class_id as class_id,
+            saat.behaviour_id as behaviour_id,
             saati.template_id as template_id,
             saati.accessor_id as accessor_id,
             saati.access as access
             FROM sys_action_access_template as saat,
             sys_action_access_template_item as saati
-            WHERE saat.class_id = {$class_id} AND
+            WHERE saat.behaviour_id = {$behaviour_id} AND
             saati.template_id = saat.id AND saat.accessor_type = " . $accessor_type;
 
     $db->sql_exec($sql);

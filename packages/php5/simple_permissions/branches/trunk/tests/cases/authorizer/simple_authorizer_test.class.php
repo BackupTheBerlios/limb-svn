@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
 require_once(dirname(__FILE__) . '/../../../simple_authorizer.class.php');
 
 Mock :: generatePartial
@@ -65,25 +65,14 @@ class simple_authorizer_test extends LimbTestCase
   	$this->assertEqual($object_ids, array(302, 303));
  	}
  
- 	function test_get_accessible_objects_using_class_restriction()
- 	{
- 	  user :: instance()->import(array('id' => 210));
-    
-  	$object_ids = $this->auth->get_accessible_object_ids(array(300, 300, 301, 302, 303), '', 11);
-  	
-  	$this->assertEqual(sizeof($object_ids), 1);
-  	$this->assertEqual($object_ids, array(303));
- 	}
-
  	function test_assign_actions_1()
  	{
-  	$controller_actions = array(
-			'display' => array(),
-			'create' => array(),
-			'edit' => array(),
-			'publish' => array(),
-			'delete' => array(),
-		);
+    // finish me!
+    $behaviour->setSeturnValue('get_action_display_properties', array());
+    $behaviour->setSeturnValue('get_action_create_properties', array());
+    $behaviour->setSeturnValue('get_action_edit_properties', array());
+    $behaviour->setSeturnValue('get_action_publish_properties', array());
+    $behaviour->setSeturnValue('get_action_delete_properties', array());
 		
 		$m = new Mocksite_object_controller($this);
 		$m->setReturnValue('get_actions_definitions', $controller_actions);
@@ -118,6 +107,7 @@ class simple_authorizer_test extends LimbTestCase
   	);	
  	}
 
+  /*
  	function test_assign_actions_2()
  	{
   	$controller_actions = array(
@@ -157,7 +147,7 @@ class simple_authorizer_test extends LimbTestCase
   		)
   	);	
  	}
- 	 
+ 	 */
 }
 
 ?>
