@@ -60,6 +60,7 @@ class edit_variations_action extends form_edit_site_object_action
 	
 	function _update_object_operation()
 	{	
+		trigger_error('Stop', E_USER_WARNING);
 		$this->object->set_attribute('files_data', $_FILES[$this->name]);
 		
 		$this->object->update_variations();
