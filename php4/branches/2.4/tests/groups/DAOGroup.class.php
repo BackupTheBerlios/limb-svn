@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class DatasourceGroup extends LimbGroupTest
+class DAOGroup extends LimbGroupTest
 {
-  function datasourceGroup()
+  function DAOGroup()
   {
-    $this->limbGroupTest('datasource tests');
+    parent :: LimbGroupTest('DAO tests');
   }
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/datasource');
+    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/DAO');
   }
 }
 ?>

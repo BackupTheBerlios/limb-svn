@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/core/datasources/SiteObjectsRawSQL.class.php');
+require_once(LIMB_DIR . '/core/dao/SiteObjectsRawSQL.class.php');
 require_once(LIMB_DIR . '/core/db_tables/LimbDbTableFactory.class.php');
 require_once(LIMB_DIR . '/core/tree/MaterializedPathTree.class.php');
 

@@ -8,19 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/ComplexSelectSQLDecorator.class.php');
 
-class OneTableObjectsSQL extends ComplexSelectSQLDecorator
+class OneTableObjectsCriteria
 {
-  function OneTableObjectsSQL(&$sql, $db_table_name)
+  var $db_table_name;
+
+  function OneTableObjectsCriteria($db_table_name)
   {
-    parent :: ComplexSelectSQLDecorator($sql);
+    $this->db_table_name = $db_table_name;
+  }
 
-    $db_table =& $this->getDbTable($db_table_name);
+  function process(&$sql)
+  {
+    $db_table =& $this->getDbTable($this->db_table_name);
 
-    $this->addField($db_table->getColumnsForSelectAsString('tn', array('id')));
-    $this->addTable($db_table->getTableName() . ' AS tn');
-    $this->addCondition('sso.id=tn.object_id');
+    $sql->addField($db_table->getColumnsForSelectAsString('tn', array('id')));
+    $sql->addTable($db_table->getTableName() . ' AS tn');
+    $sql->addCondition('sso.id=tn.object_id');
   }
 
   function & getDbTable($db_table_name)

@@ -5,18 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: OneTableObjectsSQL.class.php 1068 2005-01-28 14:01:40Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/ComplexSelectSQLDecorator.class.php');
-
-class VersionedOneTableObjectsSQL extends ComplexSelectSQLDecorator
+class VersionedOneTableObjectsCriteria
 {
-  function VersionedOneTableObjectsSQL(&$sql)
+  function process(&$sql)
   {
-    parent :: ComplexSelectSQLDecorator($sql);
-
-    $this->addCondition('sso.current_version=tn.version');
+    $sql->addCondition('sso.current_version=tn.version');
   }
 }
 

@@ -5,26 +5,31 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: OneTableObjectsSQLTest.class.php 1068 2005-01-28 14:01:40Z pachanga $
+* $Id: OneTableObjectsCriteriaTest.class.php 1068 2005-01-28 14:01:40Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/datasources/OneTableObjectsSQL.class.php');
-require_once(LIMB_DIR . '/core/datasources/VersionedOneTableObjectsSQL.class.php');
+require_once(LIMB_DIR . '/core/dao/SiteObjectsDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/OneTableObjectsCriteria.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/VersionedOneTableObjectsCriteria.class.php');
 require_once(dirname(__FILE__) . '/SiteObjectsSQLBaseTest.class.php');
 require_once(dirname(__FILE__) . '/DocumentTestDBTable.class.php');
 
-class VersionedOneTableObjectsSQLTest extends SiteObjectsSQLBaseTest
+class VersionedOneTableObjectsCriteriaTest extends SiteObjectsSQLBaseTest
 {
-  function VersionedOneTableObjectsSQLTest()
+  var $dao;
+
+  function VersionedOneTableObjectsCriteriaTest()
   {
-    parent :: SiteObjectsSQLBaseTest('versioned objects sql tests');
+    parent :: SiteObjectsSQLBaseTest('versioned objects criteria tests');
   }
 
   function setUp()
   {
     parent :: setUp();
 
-    $this->sql =& new VersionedOneTableObjectsSQL(new OneTableObjectsSQL(new SiteObjectsRawSQL(), 'DocumentTest'));
+    $this->dao = new SiteObjectsDAO();
+    $this->dao->addCriteria(new OneTableObjectsCriteria('DocumentTest'));
+    $this->dao->addCriteria(new VersionedOneTableObjectsCriteria('DocumentTest'));
 
     $this->_insertExtraTableRecords();
 
@@ -40,8 +45,7 @@ class VersionedOneTableObjectsSQLTest extends SiteObjectsSQLBaseTest
 
   function testCorrectLink()
   {
-    $stmt =& $this->conn->newStatement($this->sql->toString());
-    $rs =& new SimpleDbDataset($stmt->getRecordSet());
+    $rs =& new SimpleDbDataset($this->dao->fetch());
 
     $this->assertEqual($rs->getTotalRowCount(), 5);
 
