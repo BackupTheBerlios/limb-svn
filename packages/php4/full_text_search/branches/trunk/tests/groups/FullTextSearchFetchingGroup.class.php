@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class FullTextSearchFetchingGroup extends LimbGroupTest
 {
-  function fullTextSearchFetchingGroup()
+  function FullTextSearchFetchingGroup()
   {
-    $this->limbGroupTest('full text search fetching tests');
+    parent :: LimbGroupTest('full text search fetching tests');
   }
 
   function getTestCasesHandles()

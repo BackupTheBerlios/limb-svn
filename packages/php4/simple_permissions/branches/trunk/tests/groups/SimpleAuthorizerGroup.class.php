@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class SimpleAuthorizerGroup extends LimbGroupTest
 {
-  function simpleAuthorizerGroup()
+  function SimpleAuthorizerGroup()
   {
-    $this->limbGroupTest('simple permissions authorizer tests');
+    parent :: LimbGroupTest('simple permissions authorizer tests');
   }
 
   function getTestCasesHandles()

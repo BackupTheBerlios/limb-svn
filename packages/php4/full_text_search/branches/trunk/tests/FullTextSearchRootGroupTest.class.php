@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
 
 class FullTextSearchRootGroupTest extends LimbGroupTest
 {
-  function fullTextSearchRootGroupTest()
+  function FullTextSearchRootGroupTest()
   {
-    $this->limbGroupTest('full text search package tests');
+    parent :: LimbGroupTest('full text search package tests');
   }
 
   function getTestCasesHandles()

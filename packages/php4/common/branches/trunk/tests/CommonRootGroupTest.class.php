@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
 
 class CommonRootGroupTest extends LimbGroupTest
 {
-  function commonRootGroupTest()
+  function CommonRootGroupTest()
   {
-    $this->limbGroupTest('common package tests');
+    parent :: LimbGroupTest('common package tests');
   }
 
   function getTestCasesHandles()

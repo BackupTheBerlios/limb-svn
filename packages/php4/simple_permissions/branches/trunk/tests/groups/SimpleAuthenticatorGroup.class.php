@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class SimpleAuthenticatorGroup extends LimbGroupTest
 {
-  function simpleAuthenticatorGroup()
+  function SimpleAuthenticatorGroup()
   {
-    $this->limbGroupTest('simple permissions authenticator tests');
+    parent :: LimbGroupTest('simple permissions authenticator tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CommonMediaGroup extends LimbGroupTest
 {
-  function commonMediaGroup()
+  function CommonMediaGroup()
   {
-    $this->limbGroupTest('media tests');
+    parent :: LimbGroupTest('media tests');
   }
 
   function getTestCasesHandles()

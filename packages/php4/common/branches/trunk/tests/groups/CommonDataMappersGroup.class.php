@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CommonDataMappersGroup extends LimbGroupTest
 {
-  function commonDataMappersGroup()
+  function CommonDataMappersGroup()
   {
-    $this->limbGroupTest('common data mappers tests');
+    parent :: LimbGroupTest('common data mappers tests');
   }
 
   function getTestCasesHandles()

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
 
 class SimplePermissionsRootGroupTest extends LimbGroupTest
 {
-  function simplePermissionsRootGroupTest()
+  function SimplePermissionsRootGroupTest()
   {
-    $this->limbGroupTest('simple permissions package tests');
+    parent :: LimbGroupTest('simple permissions package tests');
   }
 
   function getTestCasesHandles()

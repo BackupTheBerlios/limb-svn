@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
 
 class StatsRootGroupTest extends LimbGroupTest
 {
-  function statsRootGroupTest()
+  function StatsRootGroupTest()
   {
-    $this->limbGroupTest('stats package tests');
+    parent :: LimbGroupTest('stats package tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class ShopGroup extends LimbGroupTest
 {
-  function shopGroup()
+  function ShopGroup()
   {
-    $this->limbGroupTest('shop tests');
+    parent :: LimbGroupTest('shop tests');
   }
 
   function getTestCasesHandles()

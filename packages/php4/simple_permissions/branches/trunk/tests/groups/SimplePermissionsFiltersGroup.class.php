@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class SimplePermissionsFiltersGroup extends LimbGroupTest
 {
-  function simplePermissionsFiltersGroup()
+  function SimplePermissionsFiltersGroup()
   {
-    $this->limbGroupTest('simple permissions filters tests');
+    parent :: LimbGroupTest('simple permissions filters tests');
   }
 
   function getTestCasesHandles()

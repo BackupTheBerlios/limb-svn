@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class StatsGroup extends LimbGroupTest
 {
-  function statsGroup()
+  function StatsGroup()
   {
-    $this->limbGroupTest('stats tests');
+    parent :: LimbGroupTest('stats tests');
   }
 
   function getTestCasesHandles()

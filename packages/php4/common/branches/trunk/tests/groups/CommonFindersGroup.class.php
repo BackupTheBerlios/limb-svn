@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CommonFindersGroup extends LimbGroupTest
 {
-  function commonFindersGroup()
+  function CommonFindersGroup()
   {
-    $this->limbGroupTest('common finders tests');
+    parent :: LimbGroupTest('common finders tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class SimpleAccessPolicyGroup extends LimbGroupTest
 {
-  function simpleAccessPolicyGroup()
+  function SimpleAccessPolicyGroup()
   {
-    $this->limbGroupTest('simple permissions access policy tests');
+    parent :: LimbGroupTest('simple permissions access policy tests');
   }
 
   function getTestCasesHandles()

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class FullTextSearchIndexersGroup extends LimbGroupTest
 {
-  function fullTextSearchIndexersGroup()
+  function FullTextSearchIndexersGroup()
   {
-    $this->limbGroupTest('full text search indexers tests');
+    parent :: LimbGroupTest('full text search indexers tests');
   }
 
   function getTestCasesHandles()

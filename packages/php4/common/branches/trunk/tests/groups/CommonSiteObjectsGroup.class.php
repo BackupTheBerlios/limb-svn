@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CommonSiteObjectsGroup extends LimbGroupTest
 {
-  function commonSiteObjectsGroup()
+  function CommonSiteObjectsGroup()
   {
-    $this->limbGroupTest('site objects tests');
+    parent :: LimbGroupTest('site objects tests');
   }
 
   function getTestCasesHandles()

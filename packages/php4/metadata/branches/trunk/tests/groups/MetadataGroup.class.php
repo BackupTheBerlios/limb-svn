@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class MetadataGroup extends LimbGroupTest
 {
-  function metadataGroup()
+  function MetadataGroup()
   {
-    $this->limbGroupTest('metadata tests');
+    parent :: LimbGroupTest('metadata tests');
   }
 
   function getTestCasesHandles()

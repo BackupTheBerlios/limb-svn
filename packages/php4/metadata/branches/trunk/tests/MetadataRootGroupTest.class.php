@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
 
 class MetadataRootGroupTest extends LimbGroupTest
 {
-  function metadataRootGroupTest()
+  function MetadataRootGroupTest()
   {
-    $this->limbGroupTest('metadata package tests');
+    parent :: LimbGroupTest('metadata package tests');
   }
 
   function getTestCasesHandles()

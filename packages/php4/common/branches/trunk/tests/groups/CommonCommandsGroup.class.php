@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class CommonCommandsGroup extends LimbGroupTest
 {
-  function commonCommandsGroup()
+  function CommonCommandsGroup()
   {
-    $this->limbGroupTest('commands tests');
+    parent :: LimbGroupTest('commands tests');
   }
 
   function getTestCasesHandles()

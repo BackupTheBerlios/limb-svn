@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class FullTextSearchNormalizersGroup extends LimbGroupTest
 {
-  function fullTextSearchNormalizersGroup()
+  function FullTextSearchNormalizersGroup()
   {
-    $this->limbGroupTest('full text search normalizers tests');
+    parent :: LimbGroupTest('full text search normalizers tests');
   }
 
   function getTestCasesHandles()
