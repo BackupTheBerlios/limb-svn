@@ -17,7 +17,7 @@ class fetch_one_datasource implements datasource
 		$item = array();
 
 		if (isset($params['path']))
-			$item = fetcher :: instance()->fetch_one_by_path($params['path']);
+			$item = LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_path($params['path']);
 
 		return new array_dataset(array($item));
 	}

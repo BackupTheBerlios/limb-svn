@@ -19,7 +19,7 @@ class form_delete_site_object_action extends form_site_object_action
 
 	protected function _valid_perform($request, $response)
 	{
-		$object = wrap_with_site_object(fetcher :: instance()->fetch_requested_object());
+		$object = wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request));
 
 		try
 		{

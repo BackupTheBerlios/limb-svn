@@ -44,11 +44,8 @@ abstract class site_object_controller
 	  return 'display';
 	}
 	
-	public function get_action($request = null)
-	{	
-	  if($request === null)
-	    $request = request :: instance();
-	    
+	public function get_action($request)
+	{		    
 	  if($this->_request === $request && $this->_current_action)
 	    return $this->_current_action;
 	    

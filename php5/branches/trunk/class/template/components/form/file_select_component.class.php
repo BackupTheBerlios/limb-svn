@@ -28,7 +28,7 @@ class file_select_component extends input_form_element
 
   	$file_node_id = $this->get_value();
 
-  	if($file_node_id && $file_data = fetcher :: instance()->fetch_one_by_node_id($file_node_id))
+  	if($file_node_id && $file_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_node_id($file_node_id))
   	{
 			$span_name = $file_data['identifier'];
 			$span_description = $file_data['description'];

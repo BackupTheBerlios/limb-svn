@@ -67,7 +67,7 @@ class site_object_test extends LimbTestCase
   { 
   	$this->_clean_up();
 
-  	$user =& user :: instance();  	
+  	$user = user :: instance();  	
   	$user->logout();
 
   	$this->object->tally();

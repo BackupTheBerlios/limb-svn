@@ -16,7 +16,7 @@ else
 require_once($project_dir . '/setup.php'); 
 require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
 
-$tree = tree :: instance();
+$tree = new tree();
 $driver = $tree->get_driver();
 $tree_table = $driver->get_node_table();
 

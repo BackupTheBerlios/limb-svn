@@ -27,7 +27,7 @@ require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 set_time_limit(3000);
 
-$tree = tree :: instance();
+$tree = new tree();
 $indexer = new full_text_indexer();
 $db = db_factory::instance();
 
@@ -57,7 +57,7 @@ foreach($nodes as $node)
 		continue;
 	}
 	
-	$site_object = site_object_factory :: create($row['class_name']);
+	$site_object = LimbToolsBox :: getToolkit()->createSiteObject($row['class_name']);
 	
 	$object_data = current($site_object->fetch_by_ids(array($node['object_id'])));
 	

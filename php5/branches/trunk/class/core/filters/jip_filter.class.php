@@ -12,6 +12,7 @@ require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php')
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
+require_once(LIMB_SIMPLE_PERMISSIONS_DIR . '/simple_authenticator.class.php');
 
 class jip_filter implements intercepting_filter 
 { 
@@ -19,15 +20,15 @@ class jip_filter implements intercepting_filter
   {
     debug :: add_timing_point('jip filter started');
 
-    $fetcher = fetcher :: instance();
+    $fetcher = LimbToolsBox :: getToolkit()->getFetcher();
         
     $fetcher->set_jip_status(false);
     
-    if (user :: instance()->is_logged_in())
+    if (LimbToolsBox :: getToolkit()->getUser()->is_logged_in())
     {
       $ini = get_ini('jip_groups.ini');
       
-      if(user :: instance()->is_in_groups(array_keys($ini->get_group('groups'))))
+      if(simple_authenticator :: is_user_in_groups(array_keys($ini->get_group('groups'))))
         $fetcher->set_jip_status(true);
     }
 

@@ -28,7 +28,7 @@ class node_select_component extends input_form_element
   	$md5id = substr(md5($id), 0, 5);
 
   	if($node_id = $this->get_value())
-	  	$object_data = fetcher :: instance()->fetch_one_by_node_id($node_id);
+	  	$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_node_id($node_id);
 	  else
 	    $object_data = false;
 

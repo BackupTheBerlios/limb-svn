@@ -118,7 +118,7 @@ function _session_db_write($session_id, $value)
 	$session_data = array(
 										  'last_activity_time' => time(),
 										  'session_data' => "{$value}",
-										  'user_id' => user :: instance()->get_id()
+										  'user_id' => LimbToolsBox :: getToolkit()->getUser()->get_id()
 										 );
 	
   if($db->fetch_row())

@@ -23,7 +23,7 @@ class print_link_tag extends compiler_directive_tag
 	{
 		$mapped = '$' . $code->get_temp_variable();
 
-		$code->write_php("{$mapped} = fetcher :: instance()->fetch_requested_object();");
+		$code->write_php("{$mapped} = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object(LimbToolsBox :: getToolkit()->getRequest());");
 
 		$code->write_php("if(isset({$mapped}['actions']) && array_key_exists('print_version', {$mapped}['actions'])){");
 

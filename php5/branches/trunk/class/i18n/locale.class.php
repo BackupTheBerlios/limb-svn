@@ -543,14 +543,11 @@ class locale
 
 	public function get_available_locales_data()
 	{
-	  $ini = get_ini('common.ini');
+	  $available_locales = get_ini_option('common.ini', 'codes', 'Locales');
 	  
-		if (!$available_locales = $ini->get_group('Locales'))
-		  return array();
-
 		$locales_data = array();
 
-		foreach(array_keys($available_locales) as $locale_id)
+		foreach($available_locales as $locale_id)
 		{
 			$locale_data = self :: instance($locale_id);
 			$locales_data[$locale_id] = $locale_data->get_language_name() ? $locale_data->get_language_name() : $locale_id;

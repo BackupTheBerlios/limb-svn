@@ -16,7 +16,7 @@ class request_test extends LimbTestCase
   
   function setUp()
   {
-    $this->request = request :: instance();
+    $this->request = LimbToolsBox :: getToolkit()->getRequest();
   }
   
   function tearDown()

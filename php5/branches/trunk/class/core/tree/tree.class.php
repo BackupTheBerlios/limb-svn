@@ -22,14 +22,6 @@ class tree implements tree_interface
 	  $this->_initialize_tree_driver();
 	}
 
-	static public function instance()
-	{
-    if (!self :: $_instance)
-      self :: $_instance = new tree();
-
-    return self :: $_instance;	
-	}
-
 	public function set_driver($driver)
 	{
 	  $this->_tree_driver = $driver;
@@ -168,11 +160,6 @@ class tree implements tree_interface
 	public function get_root_nodes()
 	{
 		return $this->_tree_driver->get_root_nodes();
-	}
-
-	public function count_accessible_children($id)
-	{
-		return $this->_tree_driver->count_accessible_children($id);
 	}
 
   public function is_node_expanded($id)

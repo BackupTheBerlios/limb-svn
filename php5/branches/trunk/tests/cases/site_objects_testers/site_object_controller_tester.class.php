@@ -28,7 +28,7 @@ class site_object_controller_tester extends LimbTestCase
   	parent :: LimbTestCase();
   }
   
-  function &_create_site_object()
+  function _create_site_object()
   {
   	return site_object_factory :: create($this->class_name);
   }

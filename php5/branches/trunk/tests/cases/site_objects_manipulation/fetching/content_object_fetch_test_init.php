@@ -25,7 +25,7 @@ class content_object_fetch_test_init extends site_object_fetch_test_init
   {
   	$db_table =& $object->get_db_table();
 
-  	$sys_db_table =& db_table_factory :: create('sys_site_object');
+  	$sys_db_table = db_table_factory :: create('sys_site_object');
 
   	$data = array();
   	$version_data = array();
@@ -51,7 +51,7 @@ class content_object_fetch_test_init extends site_object_fetch_test_init
 
   function _insert_object_version_records($object_id, $version_max)
   {
-  	$version_db_table =& db_table_factory :: create('sys_object_version');
+  	$version_db_table = db_table_factory :: create('sys_object_version');
 
   	for($i = 1; $i <= $version_max; $i++)
   	{

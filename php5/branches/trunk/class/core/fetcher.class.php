@@ -23,33 +23,22 @@ class fetcher
 
 	protected $_is_jip_enabled = true;
 
-	static public function instance()
-	{
-    if (!self :: $_instance)
-      self :: $_instance = new fetcher();
-
-    return self :: $_instance;
-	}
-
   //for mocking
 	protected function _get_authorizer()
 	{
-	  include_once(LIMB_DIR . 'class/core/permissions/authorizer.class.php');
-	  return authorizer :: instance();
+	  return LimbToolsBox :: getToolkit()->getAuthorizer();
 	}
 
   //for mocking
 	protected function _get_tree()
 	{
-	  include_once(LIMB_DIR . 'class/core/tree/tree.class.php');
-	  return tree :: instance();
+	  return LimbToolsBox :: getToolkit()->getTree();
 	}
 
   //for mocking
   protected function _get_site_object($class_name)
   {
-    include_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
-    return site_object_factory :: create($class_name);
+    return LimbToolsBox :: getToolkit()->createSiteObject($class_name);
   }
 
 	public function is_jip_enabled()
@@ -215,7 +204,7 @@ class fetcher
   //for mocking
 	protected function _get_object_class_name_by_id($object_id)
 	{
-	  return site_object :: _get_object_class_name_by_id($object_id);
+	  return site_object :: get_object_class_name_by_id($object_id);
 	}
 
 	public function fetch_one_by_path($path)
@@ -229,11 +218,8 @@ class fetcher
 		return $this->fetch_one_by_id($node['object_id']);
 	}
 
-	public function fetch_requested_object($request = null)
+	public function fetch_requested_object($request)
 	{
-	  if($request === null)
-	    $request = request :: instance();
-
 		if(!$node = $this->map_request_to_node($request))
 			return array();
 
@@ -258,13 +244,10 @@ class fetcher
 		return $node;
 	}
 
-	public function map_request_to_node($request = null)
+	public function map_request_to_node($request)
 	{
 		if($this->_node_mapped_by_request)
 			return $this->_node_mapped_by_request;
-
-	  if($request === null)
-	    $request = request :: instance();
 
 		if($node_id = $request->get('node_id'))
 			$node = $this->_get_tree()->get_node((int)$node_id);
@@ -309,7 +292,7 @@ function wrap_with_site_object($fetched_data)
 
 	if(isset($fetched_data['class_name']))
 	{
-		$site_object = site_object_factory :: create($fetched_data['class_name']);
+		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($fetched_data['class_name']);
 		$site_object->merge($fetched_data);
 		return $site_object;
 	}
@@ -317,7 +300,7 @@ function wrap_with_site_object($fetched_data)
 	$site_objects = array();
 	foreach($fetched_data as $id => $data)
 	{
-		$site_object = site_object_factory :: create($data['class_name']);
+		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($data['class_name']);
 		$site_object->merge($data);
 		$site_objects[$id] = $site_object;
 	}

@@ -15,7 +15,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 {
 	protected function _fetch(&$counter, $params)
 	{
-		$tree = tree :: instance();
+		$tree = LimbToolsBox :: getToolkit()->getTree();
 
 		if(isset($params['order']))
 		{
@@ -48,7 +48,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 				if($parent_node_id == 0)
 					$parent_data[$parent_node_id]['children_amount'] = 1;
 				else
-					$parent_data[$parent_node_id]['children_amount'] = $tree->count_accessible_children($parent_node_id);
+					$parent_data[$parent_node_id]['children_amount'] = $tree->count_children($parent_node_id);
 					
 				$parent_data[$parent_node_id]['counter'] = 0;
 			}

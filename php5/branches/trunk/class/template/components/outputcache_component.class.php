@@ -21,7 +21,7 @@ class outputcache_component extends component
 	
 	public function prepare()
 	{
-	  $request = request :: instance();
+	  $request = LimbToolsBox :: getToolkit()->getRequest();
 		$this->cache_manager->set_uri($request->get_uri());		
 		$this->cache_manager->set_server_id($this->get_server_id());	
 	}

@@ -36,7 +36,7 @@ class search_fetcher extends fetcher
 		{
 			if(trim($class_name))
 			{
-				$site_object = site_object_factory :: create(trim($class_name));
+				$site_object = LimbToolsBox :: getToolkit()->createSiteObject(trim($class_name));
 				$classes_ids[] = $site_object->get_class_id();
 			}
 		}
@@ -49,7 +49,7 @@ class search_fetcher extends fetcher
 		if (!$this->_query_object)
     	return array();
 
-		$site_object = site_object_factory :: create($loader_class_name);
+		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($loader_class_name);
 
 		$restricted_classes = array();
 		$allowed_classes = array();
@@ -92,8 +92,7 @@ class search_fetcher extends fetcher
 			}
 		}
 
-		$access_policy = access_policy :: instance();
-		$access_policy->assign_actions_to_objects($result);
+		LimbToolsBox :: getToolkit()->getAuthorizer()->assign_actions_to_objects($result);
 
 		$this->_assign_paths($result);
 		$this->_assign_search_paths($result, isset($params['offset']) ? $params['offset'] : 0);
@@ -103,8 +102,8 @@ class search_fetcher extends fetcher
 
 	public function search_fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
 	{
-		$tree = tree :: instance();
-		$site_object = site_object_factory :: create($loader_class_name);
+		$tree = LimbToolsBox :: getToolkit()->getTree();
+		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($loader_class_name);
 
 		if (!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
@@ -149,7 +148,7 @@ class search_fetcher extends fetcher
 		$counter = 0;
 		$count_method = $fetch_method . '_count';
 
-		$site_object = site_object_factory :: create($loader_class_name);
+		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($loader_class_name);
 		$counter = $site_object->$count_method(array_keys($search_result), $params);
 		$fetched_objects = $site_object->$fetch_method(array_keys($search_result),$params);
 
@@ -163,8 +162,7 @@ class search_fetcher extends fetcher
 				$result[$key]['score'] = $score;
 			}
 
-		$access_policy = access_policy :: instance();
-		$access_policy->assign_actions_to_objects($result);
+		LimbToolsBox :: getToolkit()->getAuthorizer()->assign_actions_to_objects($result);
 
 		$this->_assign_paths($result);
 		$this->_assign_search_paths($result, isset($params['offset']) ? $params['offset'] : 0);

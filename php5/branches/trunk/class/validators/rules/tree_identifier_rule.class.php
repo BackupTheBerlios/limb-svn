@@ -31,7 +31,7 @@ class tree_identifier_rule extends single_field_rule
 		if(!$value = $dataspace->get($this->field_name))
 			return;
 		
-		$tree = tree :: instance();
+		$tree = LimbToolsBox :: getToolkit()->getTree();
 		
 		if(!$tree->is_node($this->parent_node_id))
 			return;

@@ -90,12 +90,10 @@ class form_tag extends server_tag_component_tag
 	{
 		parent :: generate_contents($code);
 		
-		$v1 = '$' . $code->get_temp_variable();
-		$v2 = '$' . $code->get_temp_variable();
+		$v = '$' . $code->get_temp_variable();
 		
-		$code->write_php($v1 . ' = request :: instance();');
-		$code->write_php("if({$v2} = {$v1}->get('node_id')){");
-		$code->write_php("echo \"<input type='hidden' name='node_id' value='{$v2}'>\";}");
+		$code->write_php("if({$v} = LimbToolsBox :: getToolkit()->getRequest()->get('node_id')){");
+		$code->write_php("echo \"<input type='hidden' name='node_id' value='{$v}'>\";}");
 	}
 			
 	public function get_dataspace()

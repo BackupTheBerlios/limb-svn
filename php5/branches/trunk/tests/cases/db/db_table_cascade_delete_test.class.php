@@ -86,9 +86,9 @@ class db_table_cascade_delete_test extends LimbTestCase
 	
 	function setUp()
 	{
-		$this->image =& db_table_factory :: create('test_image');
-		$this->image_variation =& db_table_factory :: create('test_image_variation');
-		$this->media =& db_table_factory :: create('test_media');
+		$this->image = db_table_factory :: create('test_image');
+		$this->image_variation = db_table_factory :: create('test_image_variation');
+		$this->media = db_table_factory :: create('test_media');
 		
 		load_testing_db_dump(dirname(__FILE__) . '/../../sql/cascade_delete.sql');
 	}

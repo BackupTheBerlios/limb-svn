@@ -16,10 +16,12 @@ class authentication_filter implements intercepting_filter
   public function run($filter_chain, $request, $response)
   {
     debug :: add_timing_point('authentication filter started');
-
-    if(!$object_data = fetcher :: instance()->fetch_requested_object($request))
+    
+    $this->_initialize_user();
+    
+    if(!$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request))
     {
-      if(!$node = fetcher :: instance()->map_request_to_node($request))
+      if(!$node = LimbToolsBox :: getToolkit()->getFetcher()->map_request_to_node($request))
       {
       	if(defined('ERROR_DOCUMENT_404'))
       		$response->redirect(ERROR_DOCUMENT_404);
@@ -64,6 +66,16 @@ class authentication_filter implements intercepting_filter
     debug :: add_timing_point('authentication filter finished');
 
     $filter_chain->next();
+  }
+  
+  protected function _initialize_user()
+  {
+    $user = LimbToolsBox :: getToolkit()->getUser();
+    if($user->is_logged_in())
+      return;
+    
+    $authenticator = LimbToolsBox :: getToolkit()->getAuthenticator();
+    $authenticator->login(array('login' => '', 'password' => ''));
   }
 }
 ?>

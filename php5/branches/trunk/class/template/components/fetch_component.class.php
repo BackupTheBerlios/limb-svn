@@ -19,19 +19,18 @@ class fetch_component extends component
 		if(!$path)
 			$path = $this->get_path();
 		
-		$arr = fetcher :: instance()->fetch_one_by_path($path);
+		$arr = LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_path($path);
 		$this->import($arr);
 	}
 		
 	public function fetch_requested_object()
 	{
-		$object_arr = fetcher :: instance()->fetch_requested_object();
-
-		$request = request :: instance();
+    $request = LimbToolsBox :: getToolkit()->getRequest();
+		$object_arr = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
 
 		if ($version = $request->get('version'))
 		{
-			$site_object = site_object_factory :: create($object_arr['class_name']);
+			$site_object = LimbToolsBox :: getToolkit()->createSiteObject($object_arr['class_name']);
 			$site_object->merge($object_arr);
 			$object_arr = $site_object->fetch_version((int)$version);
 		}
@@ -48,7 +47,8 @@ class fetch_component extends component
 	{
 		if(!$this->path)
 		{
-			$object_arr = fetcher :: instance()->fetch_requested_object();
+      $request = LimbToolsBox :: getToolkit()->getRequest();
+			$object_arr = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
 			$this->path = $object_arr['path'];
 		}	
 

@@ -309,13 +309,13 @@ class debug
 		
 		$message = '';
 		
-		$user = user :: instance();
+		$user = LimbToolsBox :: getToolkit()->getUser();
 		
 		if(($user_id = $user->get_id()) != user :: DEFAULT_USER_ID)
 			$message .= "user id:\t"
 								.	"{$user_id}\n"
 								. "login:\t\t"  . $user->get_login() . "\n"
-								. "e-mail:\t\t" . $user->get_email() . "\n";
+								. "e-mail:\t\t" . $user->get('email', '') . "\n";
     
     if(sys :: exec_mode() == 'cli')
       $request_uri = 'cli';

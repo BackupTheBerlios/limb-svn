@@ -18,7 +18,7 @@ class site_objects_loader
 		$site_objects = array();
 		foreach($this->get_classes_list() as $class)
 		{
-			$site_objects[] =& site_object_factory :: create($class);
+			$site_objects[] = site_object_factory :: create($class);
 		}
 		
 		return $site_objects;

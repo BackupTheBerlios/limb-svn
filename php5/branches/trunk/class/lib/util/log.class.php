@@ -42,10 +42,10 @@ class log
   		
   		$notice = '[ ' . $time . " ]\n";
   		
-  		$user = user :: instance();
+  		$user = LimbToolsBox :: getToolkit()->getUser();
   		
 			if(($user_id = $user->get_id()) != user :: DEFAULT_USER_ID)
-				$notice .= '[ ' . $user_id . ' ] [ '  . $user->get_login() . ' ] [ ' . $user->get('email') . ' ] ';
+				$notice .= '[ ' . $user_id . ' ] [ '  . $user->get_login() . ' ] [ ' . $user->get('email', '') . ' ] ';
 
       $notice .= '[' . sys::client_ip() . '] [' . (isset($_SERVER['REQUEST_URI']) ?  $_SERVER['REQUEST_URI'] : '') . "]\n" . $string . "\n\n";
       

@@ -12,17 +12,13 @@ require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'class/core/object.class.php');
 
-//This class requires serious refactoring since it "knows" too much - it shouldn't make login 
-// and logout operations, it should be just a container!
-
 class user extends object
 {
   const DEFAULT_USER_ID = -1;
   protected static $_instance = null;
   
-  protected
-    $_is_logged_in = false,	
-	  $__session_class_path;
+  protected $_is_logged_in = false;	
+	protected $__session_class_path;
 	
 	function __construct()
 	{

@@ -200,7 +200,7 @@ class db_table
 				$table_name = $constraint_params['table_name'];
 				$column_name = $constraint_params['field'];
 				
-				$db_table = db_table_factory :: create($table_name);
+				$db_table = LimbToolsBox :: getToolkit()->createDBTable($table_name);
 				
 				if(!$db_table->has_column($column_name))
 				{

@@ -284,61 +284,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
  		return $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
 	}	
 	
-	public function get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
-	{
-		$sql_add['columns'][] = ', soa.object_id';
-		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
-		$sql_add['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
-	
-		$access_policy = access_policy :: instance();
-    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
-			
-		if ($class_id)
-			$sql_add['append'][] = " AND sso.class_id = {$class_id}";
-			
-		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
-
-		return $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $sql_add);
-	}
-	
-	public function count_accessible_children($id)
-	{
-		if (!($parent = $this->get_node($id)))
-		{
-			return false;
-		} 
-		
-		if ($parent['l'] == ($parent['r'] - 1))
-		{
-			return 0;
-		} 
-
-		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
-		$sql_add['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
-	
-		$access_policy = access_policy :: instance();
-    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
-			
-		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
-		$sql_add['group'][] = ' GROUP BY ' . $this->_node_table . '.id';
-		
-		$sql = sprintf('SELECT count(*) as counter FROM %s %s
-                    WHERE %s.root_id=%s AND %s.parent_id=%s %s %s',
-										$this->_node_table,
-										$this->_add_sql($sql_add, 'join'),
-										$this->_node_table, 
-										$parent['root_id'],
-										$this->_node_table, 
-										$id, 
-										$this->_add_sql($sql_add, 'append'),
-										$this->_add_sql($sql_add, 'group')
-									);
-		
-		$this->_db->sql_exec($sql);
-		
-		return count($this->_db->get_array());		
-	}
-	
 	/**
 	* Fetch the data of a node with the given id
 	*/

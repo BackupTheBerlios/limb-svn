@@ -19,7 +19,7 @@ class locale_definition_filter implements intercepting_filter
   {
     debug :: add_timing_point('locale filter started');
 
-    if(!$node = fetcher :: instance()->map_request_to_node($request))
+    if(!$node = LimbToolsBox :: getToolkit()->getFetcher()->map_request_to_node($request))
     {
     	define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
     	define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
@@ -35,7 +35,7 @@ class locale_definition_filter implements intercepting_filter
     else
       define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
 
-    if($user_locale_id = user :: instance()->get_locale_id())
+    if($user_locale_id = LimbToolsBox :: getToolkit()->getUser()->get('locale_id'))
     	define('MANAGEMENT_LOCALE_ID', $user_locale_id);
     else
       define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);

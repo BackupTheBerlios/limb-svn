@@ -23,7 +23,6 @@ class image_cache_manager
   protected $uri;
   protected $rules = array();
   protected $matched_rule;
-  protected $fetcher;
   protected $found_images = array();
   protected $wild_card;
 
@@ -230,16 +229,12 @@ class image_cache_manager
 
   protected function _get_fetcher()
   {
-    if($this->fetcher)
-      return $this->fetcher;
-
-    $this->fetcher = fetcher :: instance();
-    return $this->fetcher;
+    return LimbToolsBox :: getToolkit()->getFetcher();
   }
 
   protected function _get_user()
   {
-    return user :: instance();
+    return LimbToolsBox :: getToolkit()->getUser();
   }
 
   public function is_cacheable()
@@ -276,7 +271,7 @@ class image_cache_manager
 
   protected function _is_user_in_groups($groups)
   {
-    $user = user :: instance();
+    $user = LimbToolsBox :: getToolkit()->getUser();
 
 		foreach	($user->get('groups', array()) as $group_name)
 			if (in_array($group_name, $groups))

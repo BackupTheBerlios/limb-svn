@@ -57,7 +57,7 @@ class site_object_manipulation_test extends LimbTestCase
   	
   	user :: instance()->set('id', 10);
   	
-  	$tree =& tree :: instance();
+  	$tree = new tree();
 
 		$values['identifier'] = 'root';
 		$values['object_id'] = 100;
@@ -85,7 +85,7 @@ class site_object_manipulation_test extends LimbTestCase
   	
   	debug_mock :: tally();
   	
-  	$user =& user :: instance();
+  	$user = user :: instance();
   	$user->logout();
   }
   
@@ -214,9 +214,9 @@ class site_object_manipulation_test extends LimbTestCase
   	
   	$this->object->delete();
   	
-  	$sys_site_object_db_table =& db_table_factory :: create('sys_site_object');
-  	$sys_site_object_tree_db_table =& db_table_factory :: create('sys_site_object_tree');
-  	$sys_site_object_version_db_table =& db_table_factory :: create('sys_object_version');
+  	$sys_site_object_db_table = db_table_factory :: create('sys_site_object');
+  	$sys_site_object_tree_db_table = db_table_factory :: create('sys_site_object_tree');
+  	$sys_site_object_version_db_table = db_table_factory :: create('sys_object_version');
   	
   	$arr = $sys_site_object_db_table->get_row_by_id($this->object->get_id());
   	$this->assertIdentical($arr, false);
@@ -241,7 +241,7 @@ class site_object_manipulation_test extends LimbTestCase
 	
   function _check_sys_site_object_record()
 	{
-		$user =& user :: instance();
+		$user = user :: instance();
 		
   	$this->db->sql_select('sys_site_object', '*', 'id=' . $this->object->get_id());
   	$record = $this->db->fetch_row();

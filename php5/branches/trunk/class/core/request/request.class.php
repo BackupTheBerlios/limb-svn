@@ -64,14 +64,6 @@ class request extends object
   	return $result;
   } 
   
-	static public function instance()
-	{
-    if (!self :: $instance)
-      self :: $instance = new request();
-
-    return self :: $instance;	
-	}
-    
   public function get_uri()
   {
     if($this->uri === null)

@@ -30,7 +30,7 @@ class image_select_component extends input_form_element
 
   	$start_path = '';
 
-  	if($image_node_id && $image_data = fetcher :: instance()->fetch_one_by_node_id($image_node_id))
+  	if($image_node_id && $image_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_node_id($image_node_id))
   	{
 			$span_name = $image_data['identifier'];
 			$start_path = '/root?action=image_select&node_id=' . $image_data['parent_node_id'];

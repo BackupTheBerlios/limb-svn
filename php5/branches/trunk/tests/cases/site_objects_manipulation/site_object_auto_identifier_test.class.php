@@ -51,7 +51,7 @@ class site_object_auto_identifier_test extends LimbTestCase
   	
   	$this->object = new site_object_auto_identifier_test_version();
   	
-  	$tree =& tree :: instance();
+  	$tree = new tree();
   	
 		$values['identifier'] = 'root';
 		$values['object_id'] = 1;
@@ -160,7 +160,7 @@ class site_object_auto_identifier_test extends LimbTestCase
   {
   	static $object_id = 1;
   	
-  	$tree =& tree :: instance();
+  	$tree = new tree();
   	
 		$values['identifier'] = $identifier;
 		$values['object_id'] = ++$object_id;

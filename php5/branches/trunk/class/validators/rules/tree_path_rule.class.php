@@ -17,7 +17,7 @@ class tree_path_rule extends single_field_rule
 	{
 		$value = $dataspace->get($this->field_name);
 		
-		if(!tree :: instance()->get_node_by_path($value))
+		if(!LimbToolsBox :: getToolkit()->getTree()->get_node_by_path($value))
 			$this->error(strings :: get('error_invalid_tree_path', 'error'));
 	} 
 } 

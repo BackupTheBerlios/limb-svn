@@ -262,44 +262,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
  		return $this->get_sub_branch($parent_node['id'], $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
 	}
 
-	public function count_accessible_children($id, $add_sql=array())
-	{
-		if (!($parent = $this->get_node($id)))
-		{
-			return false;
-		}
-
-		if(!$this->_is_table_joined('sys_site_object', $add_sql))
-			$add_sql['join'][] = ', sys_site_object as sso ';
-
-		if(!$this->_is_table_joined('sys_object_access', $add_sql))
-			$add_sql['join'][] = ', sys_object_access as soa ';
-
-		$add_sql['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
-
-		$access_policy = access_policy :: instance();
-    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
-			
-		$add_sql['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
-		$add_sql['group'][] = ' GROUP BY ' . $this->_node_table . '.id';
-		
-		$sql = sprintf('SELECT count(*) as counter FROM %s %s
-                    WHERE %s.root_id=%s AND %s.parent_id=%s %s %s',
-										$this->_node_table,
-										$this->_add_sql($add_sql, 'join'),
-										$this->_node_table,
-										$parent['root_id'],
-										$this->_node_table,
-										$id, 
-										$this->_add_sql($add_sql, 'append'),
-										$this->_add_sql($add_sql, 'group')
-									);
-
-		$this->_db->sql_exec($sql);
-		
-		return count($this->_db->get_array());
-	}
-	
 	/**
 	* Fetch the data of a node with the given id
 	*/

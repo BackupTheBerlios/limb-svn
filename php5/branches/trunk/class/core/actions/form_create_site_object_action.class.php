@@ -19,7 +19,7 @@ abstract class form_create_site_object_action extends form_site_object_action
 
     if (($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
     {
-      $parent_object_data = $this->_load_parent_object_data();
+      $parent_object_data = $this->_load_parent_object_data($request);
       $this->dataspace->set('parent_node_id', $parent_object_data['node_id']);
     }
   }
@@ -81,13 +81,14 @@ abstract class form_create_site_object_action extends form_site_object_action
 	{
 		$parent_data = $this->_load_parent_object_data();
 
-		$parent_object = site_object_factory :: create($parent_data['class_name']);
+		$parent_object = LimbToolsBox :: getToolkit()->createSiteObject($parent_data['class_name']);
 
 		$parent_object->merge($parent_data);
 
 		$action = $parent_object->get_controller()->determine_action();
 
-		access_policy :: instance()->save_new_object_access($this->object, $parent_object, $action);
+    $access_policy = new access_policy();
+		$access_policy->save_new_object_access($this->object, $parent_object, $action);
 	}
 
 	protected function _valid_perform_prepare_data(&$data)
@@ -95,9 +96,9 @@ abstract class form_create_site_object_action extends form_site_object_action
 		complex_array :: map($this->datamap, $this->dataspace->export(), $data);
 	}
 
-	protected function _load_parent_object_data()
+	protected function _load_parent_object_data($request)
 	{
-		return fetcher :: instance()->fetch_requested_object();
+		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
 	}
 }
 ?>

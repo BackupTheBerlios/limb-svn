@@ -41,7 +41,7 @@ class site_object_tester extends LimbTestCase
   	parent :: LimbTestCase($test_name . ' : ' . $class_name);
   }
   
-  function &_create_site_object()
+  function _create_site_object()
   {
   	return site_object_factory :: create($this->class_name);
   }
@@ -54,10 +54,10 @@ class site_object_tester extends LimbTestCase
   	
   	debug_mock :: init($this);
   	
-  	$user =& user :: instance();
+  	$user = user :: instance();
   	$user->_set_id(10);
 		
-  	$tree =& tree :: instance();
+  	$tree = new tree();
 
 		$values['identifier'] = 'root';
 		$values['object_id'] = 1;
@@ -73,7 +73,7 @@ class site_object_tester extends LimbTestCase
   	
   	debug_mock :: tally();
  
-   	$user =& user :: instance();
+   	$user = user :: instance();
   	$user->logout();
   }
   
@@ -282,9 +282,9 @@ class site_object_tester extends LimbTestCase
   	
   	$this->assertTrue($result);
   	
-  	$sys_site_object_db_table =& db_table_factory :: create('sys_site_object');
-  	$sys_site_object_tree_db_table =& db_table_factory :: create('sys_site_object_tree');
-  	$sys_site_object_version_db_table =& db_table_factory :: create('sys_object_version');
+  	$sys_site_object_db_table = db_table_factory :: create('sys_site_object');
+  	$sys_site_object_tree_db_table = db_table_factory :: create('sys_site_object_tree');
+  	$sys_site_object_version_db_table = db_table_factory :: create('sys_object_version');
   	
   	$arr = $sys_site_object_db_table->get_row_by_id($this->object->get_id());
   	$this->assertIdentical($arr, false);
@@ -309,7 +309,7 @@ class site_object_tester extends LimbTestCase
 	
   function _check_sys_site_object_record()
 	{
-		$user =& user :: instance();
+		$user = user :: instance();
 		   	
   	$this->db->sql_select('sys_site_object', '*', 'id=' . $this->object->get_id());
   	$record = $this->db->fetch_row();
@@ -353,7 +353,7 @@ class site_object_tester extends LimbTestCase
 		$this->assertEqual($record['parent_node_id'], $this->object->get_parent_node_id(), 'parent_node_id doesnt match');
 		$this->assertEqual($record['version'], $this->object->get_version(), 'version doesnt match');
 		
-		$tree =& tree :: instance();
+		$tree = new tree();
 		
 		$node = $tree->get_node($this->object->get_node_id());
 		$this->assertEqual($record['level'], $node['level'], 'level doesnt match');

@@ -191,7 +191,7 @@ class content_object_manipulation_test extends site_object_manipulation_test
   	$this->db->sql_select('sys_object_version', '*', $conditions);
   	$record = $this->db->fetch_row();
   	
-  	$user =& user :: instance(); 
+  	$user = user :: instance(); 
   	
   	$this->assertEqual($record['object_id'], $this->object->get_id());
   	$this->assertEqual($record['version'], $this->object->get_version());

@@ -32,7 +32,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
 
 	protected function _init_validator()
 	{
-		if(!$object_data = fetcher :: instance()->fetch_requested_object())
+		if(!$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object(LimbToolsBox :: getToolkit()->getRequest()))
 			return;
 
 		if($this->object->is_auto_identifier())
@@ -49,7 +49,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
 
 	protected function _init_dataspace($request)
 	{
-		$object_data = $this->_load_object_data();
+		$object_data = $this->_load_object_data($request);
 
 		$data = array();
 		complex_array :: map(array_flip($this->datamap), $object_data, $data);
@@ -59,7 +59,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
 
 	protected function _valid_perform($request, $response)
 	{
-		$object_data = $this->_load_object_data();
+		$object_data = $this->_load_object_data($request);
 
 		$data_to_import['id'] = $object_data['id'];
 		$data_to_import['node_id'] = $object_data['node_id'];
@@ -85,7 +85,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
 
 	  $request->set_status(request :: STATUS_FORM_SUBMITTED);
 
-	  fetcher :: instance()->flush_cache();
+	  LimbToolsBox :: getToolkit()->getFetcher()->flush_cache();
 	}
 
 	protected function _update_object_operation()
@@ -105,9 +105,9 @@ abstract class form_edit_site_object_action extends form_site_object_action
 	{
 	}
 
-	protected function _load_object_data()
+	protected function _load_object_data($request)
 	{
-		return fetcher :: instance()->fetch_requested_object();
+		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
 	}
 }
 ?>

@@ -29,7 +29,7 @@ class tree_identifier_rule_test extends single_field_rule_test
 		
 		$this->db =& db_factory :: instance();
 		
-  	$tree =& tree :: instance();
+  	$tree = new tree();
 
 		$values['identifier'] = 'root';
 		$this->node_id_root = $tree->create_root_node($values, false, true);

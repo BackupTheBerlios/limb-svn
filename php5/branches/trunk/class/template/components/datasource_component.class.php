@@ -92,7 +92,7 @@ class datasource_component extends component
 		if ($this->datasource)
 			return $this->datasource;
 		
-		$this->datasource = datasource_factory :: create($this->parameters['datasource_path']);
+		$this->datasource = LimbToolsBox :: getToolkit()->createDatasource($this->parameters['datasource_path']);
 		
 		return $this->datasource;
 	}

@@ -47,7 +47,7 @@ class db_table_test extends LimbTestCase
 	function setUp()
 	{
 		$this->db =& db_factory :: instance();
-		$this->db_table_test =& db_table_factory :: create('test1');
+		$this->db_table_test = db_table_factory :: create('test1');
  		
 		$this->_clean_up();
 	} 
