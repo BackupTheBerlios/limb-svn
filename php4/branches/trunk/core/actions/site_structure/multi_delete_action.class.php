@@ -90,9 +90,6 @@ class multi_delete_action extends form_action
 
     $objects =& fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
 
-    $result = array();
-    $tree = tree :: instance();
-
     foreach($objects as $id => $item)
     {
       if (!isset($item['actions']['delete']))

@@ -722,6 +722,23 @@ class materialized_path_driver extends tree_db_driver
     return true;
   }
 
+  function can_move_tree($id, $target_id)//should return error codes not simply false...
+  {
+    if ($id == $target_id)
+      return false;
+
+    if (!$source_node = $this->get_node($id))
+      return false;
+
+    if (!$target_node = $this->get_node($target_id))
+      return false;
+
+    if (strstr($target_node['path'], $source_node['path']) !== false)
+      return false;
+
+    return true;
+  }
+
   /**
   * Wrapper for node moving and copying
   *

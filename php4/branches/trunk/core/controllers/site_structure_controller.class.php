@@ -50,6 +50,11 @@ class site_structure_controller extends site_object_controller
             'action_path' => '/site_structure/save_priority_action',
             'popup' => true,
         ),
+        'multi_move' => array(
+            'action_path' => '/site_structure/multi_move_action',
+            'template_path' => '/site_structure/multi_move.html',
+            'popup' => true,
+        ),
         'multi_delete' => array(
             'action_path' => '/site_structure/multi_delete_action',
             'template_path' => '/site_structure/multi_delete.html',

@@ -105,6 +105,11 @@ class tree
     return $this->_tree_driver->update_node($id, $values, $internal);
   }
 
+  function can_move_tree($id, $target_id)
+  {
+    return $this->_tree_driver->can_move_tree($id, $target_id);
+  }
+
   function move_tree($id, $target_id)
   {
     return $this->_tree_driver->move_tree($id, $target_id);
