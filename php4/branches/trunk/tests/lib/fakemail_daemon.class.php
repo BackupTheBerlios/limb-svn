@@ -83,7 +83,7 @@ class FakemailDaemon
 
   function _getRecipientFileNames($recipient)
   {
-    $saved_wroking_dir = getcwd();
+    $saved_working_dir = getcwd();
     $recipient_files = array();
 
     if (is_dir($this->mail_path))
@@ -101,7 +101,7 @@ class FakemailDaemon
       closedir($handle);
     }
 
-    chdir($saved_wroking_dir);
+    chdir($saved_working_dir);
     return $recipient_files;
   }
 }
