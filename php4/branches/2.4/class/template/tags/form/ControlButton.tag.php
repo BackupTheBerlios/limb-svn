@@ -33,11 +33,11 @@ class ControlButtonTag extends ControlTag
   {
     if (!isset($this->attributes['action']))
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'action',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     return PARSER_REQUIRE_PARSING;

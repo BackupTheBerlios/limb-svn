@@ -48,7 +48,7 @@ class PackagesInfo
     $packages = $ini->getOption('packages');
 
     if (!count($packages))
-      return new LimbException('no packages in package.ini!');
+      return throw(new LimbException('no packages in package.ini!'));
 
     foreach($packages as $package_path)
     {

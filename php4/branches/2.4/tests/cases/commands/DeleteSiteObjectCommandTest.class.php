@@ -23,7 +23,7 @@ class SiteObjectDeleteCommandTestVersion1 extends SiteObject
 {
   function delete()
   {
-    return new LimbException('catch me!');
+    return throw(new LimbException('catch me!'));
   }
 }
 
@@ -31,7 +31,7 @@ class SiteObjectDeleteCommandTestVersion2 extends SiteObject
 {
   function delete()
   {
-    return new SQLException('catch me!');
+    return throw(new SQLException('catch me!'));
   }
 }
 
@@ -111,7 +111,8 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->assertTrue(Limb :: isError($this->delete_command->perform()));
+    $this->delete_command->perform();
+    $this->assertTrue(catch('Exception', $e));
   }
 
 }

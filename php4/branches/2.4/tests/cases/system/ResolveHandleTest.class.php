@@ -73,8 +73,8 @@ class ResolveHandleTest extends LimbTestCase
   function testLoadClassFileException()
   {
     $handle = array(dirname(__FILE__) . '/TestHandleClass', 1, 2, 3, 4, 5);
-
-    $this->assertTrue(Limb :: isError(resolveHandle($handle)));
+    resolveHandle($handle);
+    $this->assertTrue(catch('Exception', $e));
   }
 
   function testConstructor()

@@ -23,11 +23,11 @@ class GridItemTag extends CompilerDirectiveTag
   {
     if (!is_a($this->parent, 'GridListTag'))
     {
-      return new WactException('missing enclosure',
+      return throw(new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'grid:LIST',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
 }

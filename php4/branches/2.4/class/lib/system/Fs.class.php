@@ -70,7 +70,7 @@ class Fs
 
     if($index === false)
     {
-      return new IOException('cant find first existent path', array('dir' => $dir));
+      return throw(new IOException('cant find first existent path', array('dir' => $dir)));
     }
 
     $offset_path = '';
@@ -125,7 +125,7 @@ class Fs
     if(!mkdir($dir, $perm))
     {
       umask($oldumask);
-      return new IOException('failed to create directory', array('dir' => $dir));
+      return throw(new IOException('failed to create directory', array('dir' => $dir)));
     }
 
     umask($oldumask);
@@ -196,7 +196,7 @@ class Fs
     $dest = Fs :: cleanPath($dest);
 
     if (!is_dir($src))
-      return new IOException('no such a directory', array('dir' => $src));
+      return throw(new IOException('no such a directory', array('dir' => $src)));
 
     Fs :: mkdir($dest);
 

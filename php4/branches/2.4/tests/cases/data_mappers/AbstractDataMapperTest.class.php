@@ -30,6 +30,11 @@ class AbstractDataMapperTest extends LimbTestCase
   var $object;
   var $finder;
 
+  function AbstractDataMapperTest()
+  {
+    parent :: LimbTestCase('abstract mapper test');
+  }
+
   function setUp()
   {
     $this->object = new MockDomainObject($this);

@@ -26,7 +26,8 @@ class SiteObjectFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveSiteObjectFileFailed()
   {
-    $this->assertTrue(Limb :: isError($this->resolver->resolve('no_such_site_object')));
+    $this->resolver->resolve('no_such_site_object');
+    $this->assertTrue(catch('Exception', $e));
   }
 
 }

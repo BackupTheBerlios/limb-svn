@@ -57,7 +57,7 @@ class Dataspace
   function getByIndexString($raw_index, $default_value = null)
   {
     if(!$index = $this->_processIndexString($raw_index))
-      return new Exception('invalid string index');
+      return throw(new Exception('invalid string index'));
 
     eval('$res = isset($this->vars' . $index . ') ? $this->vars' . $index . ' : null;');
 

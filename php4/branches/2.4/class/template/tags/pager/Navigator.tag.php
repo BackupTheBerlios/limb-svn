@@ -57,11 +57,11 @@ class PagerNavigatorTag extends ServerComponentTag
       if($mirrored_pager = $this->parent->findChild($this->attributes['mirror_of']))
         return $mirrored_pager->getComponentRefCode();
       else
-        return new WactException('mirrowed component for pager not found',
+        return throw(new WactException('mirrowed component for pager not found',
           array('tag' => $this->tag,
           'mirror_of' => $this->attributes['mirror_of'],
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
     else
       return parent :: getComponentRefCode();

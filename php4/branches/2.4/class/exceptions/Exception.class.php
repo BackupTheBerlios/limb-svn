@@ -1,16 +1,15 @@
 <?php
 
-//register_shutdown_function('writeUnhandledExceptions');
+register_shutdown_function('writeUnhandledExceptions');
 
 function writeUnhandledExceptions()
 {
-  if(sizeof($GLOBALS['exceptions_stack']) == 0)
+  if(!isset($GLOBALS['global_exception']))
     return;
 
   include_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
 
-  foreach($GLOBALS['exceptions_stack'] as $e)
-    Debug :: writeException($e);
+  Debug :: writeException($GLOBALS['global_exception']);
 }
 
 class Exception
@@ -26,7 +25,7 @@ class Exception
 
   var $backtrace;
 
-  function Exception($code, $message, $backtrace = null)
+  function Exception($message, $code = 0, $backtrace = null)
   {
     $this->code = $code;
     $this->message = $message;
@@ -36,19 +35,7 @@ class Exception
     $this->file = @$bc['file'];
     $this->line = @$bc['line'];
     $this->class = @$bc['class'];
-    $this->method= @$bc['function'];
-
-    if(isset($GLOBALS['exception_possible_recursion']))
-      die("Exception recursion detected(probably exception is not properly caught)!!!\n" .
-          var_dump($this->backtrace) .
-          $this->toString());
-
-    if(!isset($GLOBALS['exceptions_stack']))
-      $GLOBALS['exceptions_stack'] = array();
-
-    $GLOBALS['exceptions_stack'][] = $this;
-
-    $GLOBALS['exception_possible_recursion'] = 1;
+    $this->method = @$bc['function'];
   }
 
   function getMessage()
@@ -166,6 +153,39 @@ class Exception
 
     return $str;
   }
+}
 
+//idea taken from binarycloud
+function throw(&$exception)
+{
+  if (isset($GLOBALS['global_exception']))
+  {
+    if ($GLOBALS['global_exception'] !== null)
+    {
+      // take drastic actions, will be handled better in php5
+      printf('Trying to throw an Exception (%s) though last exception (%s) was not caught',
+             $exception->toString(),
+             $GLOBALS['global_exception']->toString());
+
+      print $GLOBALS['global_exception']->getBacktrace();
+      die();//???
+    }
+  }
+
+  $GLOBALS['global_exception'] =& $exception;
+}
+
+function catch($type, &$result)
+{
+  if (!isset($GLOBALS['global_exception']) || $GLOBALS['global_exception'] === null)
+    return false;
+
+  if (!is_a($GLOBALS['global_exception'], $type))
+    return false;
+  else
+    $result = $GLOBALS['global_exception'];
+
+  $GLOBALS['global_exception'] = null;
+  return true;
 }
 

@@ -31,18 +31,6 @@ class Limb
     return $GLOBALS['LimbGlobalInstance'];
   }
 
-  function isError($obj)
-  {
-    if(is_a($obj, 'Exception'))
-    {
-      unset($GLOBALS['exception_possible_recursion']);
-      array_pop($GLOBALS['exceptions_stack']);
-      return true;
-    }
-    else
-      return false;
-  }
-
   function registerToolkit(&$toolkit)
   {
     $limb =& Limb :: instance();

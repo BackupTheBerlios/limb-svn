@@ -26,11 +26,11 @@ class PagerTotalCountTag extends ServerComponentTag
   {
     if (!$this->findParentByClass('pager_navigator_tag'))
     {
-      return new WactException('missing enclosure',
+      return throw(new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'pager:navigator',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
 

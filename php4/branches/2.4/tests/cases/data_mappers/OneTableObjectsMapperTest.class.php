@@ -75,6 +75,11 @@ class OneTableObjectsMapperTest extends LimbTestCase
   var $db;
   var $mapper;
 
+  function OneTableObjectsMapperTest()
+  {
+    parent :: LimbTestCase('one table object mapper test');
+  }
+
   function setUp()
   {
     $this->db =& DbFactory :: instance();

@@ -168,11 +168,14 @@ class DataspaceTest extends LimbTestCase
     $array = array('rainbow' => array('color' => 'red'));
     $this->dataspace->import($array);
 
-    $this->assertTrue(Limb :: isError($this->dataspace->getByIndexString('""hkljkscc')));
+    $this->dataspace->getByIndexString('""hkljkscc');
+    $this->assertTrue(catch('Exception', $e));
 
-    $this->assertTrue(Limb :: isError($this->dataspace->getByIndexString('["rainbow][color]')));
+    $this->dataspace->getByIndexString('["rainbow][color]');
+    $this->assertTrue(catch('Exception', $e));
 
-    $this->assertTrue(Limb :: isError($this->dataspace->getByIndexString('[rainbow["color"]]')));
+    $this->dataspace->getByIndexString('[rainbow["color"]]');
+    $this->assertTrue(catch('Exception', $e));
 
     $this->assertNull($this->dataspace->getByIndexString('[rainbow][sound]'), 'undefined index');
 

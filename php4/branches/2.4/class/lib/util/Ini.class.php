@@ -75,7 +75,7 @@ class Ini
   function load()
   {
     if(!file_exists($this->file_path))
-      return new FileNotFoundException('ini file not found', $this->file_path);
+      return throw(new FileNotFoundException('ini file not found', $this->file_path));
 
     if ($this->use_cache)
       $this->_loadCache();
@@ -93,18 +93,16 @@ class Ini
 
     $cache_dir = $this->cache_dir;
 
-    if(Limb :: isError($res = Fs :: mkdir($cache_dir)))
-    {
-      if(is_a($res, 'IOException'))
-      {
-        Debug :: writeWarning('could not create cache directory for ini',
-        __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-        array('cache_dir' => $cache_dir));
+    Fs :: mkdir($cache_dir);
 
-        $this->_parse();
-        return;
-      }
-      return $res;
+    if(catch('IOException', $e))
+    {
+      Debug :: writeWarning('could not create cache directory for ini',
+      __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+      array('cache_dir' => $cache_dir));
+
+      $this->_parse();
+      return;
     }
 
     if($override_file = $this->getOverrideFile())

@@ -157,14 +157,14 @@ class SiteObjectsDatasource //implements Datasource, Countable
     return $result;
   }
 
-  function _getFinder()
+  function & _getFinder()
   {
     if ($this->finder)
       return $this->finder;
 
     include_once(LIMB_DIR . '/class/core/finders/FinderFactory.class.php');
 
-    $this->finder = FinderFactory :: create($this->finder_name);
+    $this->finder =& FinderFactory :: create($this->finder_name);
 
     return $this->finder;
   }
@@ -183,7 +183,7 @@ class SiteObjectsDatasource //implements Datasource, Countable
     if($result !== null)
       return $result;
 
-    $finder = $this->_getFinder();
+    $finder =& $this->_getFinder();
 
     $result = $finder->$count_method($sql_params);
 
@@ -207,10 +207,10 @@ class SiteObjectsDatasource //implements Datasource, Countable
     if($result !== null)
       return $result;
 
-    $finder = $this->_getFinder();
+    $finder =& $this->_getFinder();
 
     if (!method_exists($finder, $fetch_method))
-      return new LimbException($fetch_method .' is not supported by finder');
+      return throw(new LimbException($fetch_method .' is not supported by finder'));
 
     $result = $finder->$fetch_method($params, $sql_params);
 

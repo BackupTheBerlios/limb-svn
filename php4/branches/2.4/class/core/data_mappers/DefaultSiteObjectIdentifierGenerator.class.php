@@ -11,7 +11,7 @@
 
 class DefaultSiteObjectIdentifierGenerator// implements SiteObjectIdentifierGenerator
 {
-  function generate($site_object)
+  function generate(&$site_object)
   {
     return $site_object->getIdentifier();
   }

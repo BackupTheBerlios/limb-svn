@@ -36,7 +36,7 @@ class ImageLibrary
   function setInputType($type)
   {
     if (!$this->isTypeReadSupported($type))
-      return new Exception('type not supported');
+      return throw(new Exception('type not supported'));
 
     $this->input_file_type = $type;
   }
@@ -51,7 +51,7 @@ class ImageLibrary
   function setOutputType($type)
   {
     if (!$this->isTypeCreateSupported($type))
-      return new Exception('type not supported');
+      return throw(new Exception('type not supported'));
 
     $this->output_file_type = $type;
   }
@@ -67,7 +67,7 @@ class ImageLibrary
     if ($this->isTypeCreateSupported('JPEG'))
       return 'JPEG';
 
-    return new Exception('no file type supported');
+    return throw(new Exception('no file type supported'));
   }
 
   function getImageType($str)

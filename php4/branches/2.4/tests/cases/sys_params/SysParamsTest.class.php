@@ -158,7 +158,8 @@ class SysParamsTest extends LimbTestCase
   {
     $sp =& SysParam :: instance();
 
-    $this->assertTrue(Limb :: isError($e = $result = $sp->saveParam('param_1', 'sadnkfjhskjfd', 123.053)));
+    $sp->saveParam('param_1', 'sadnkfjhskjfd', 123.053);
+    $this->assertTrue(catch('Exception', $e));
 
     $this->assertEqual($e->getMessage(), 'trying to save undefined type in sys_param');
     $this->assertEqual($e->getAdditionalParams(),
@@ -187,7 +188,8 @@ class SysParamsTest extends LimbTestCase
     $number = 123.053;
     $sp->saveParam('param_1', 'float', $number);
 
-    $this->assertTrue(Limb :: isError($e = $sp->getParam('param_1', 'blabla')));
+    $sp->getParam('param_1', 'blabla');
+    $this->assertTrue(catch('Exception', $e));
 
     $this->assertEqual($e->getMessage(), 'trying to get undefined type in sys_param');
     $this->assertEqual($e->getAdditionalParams(),

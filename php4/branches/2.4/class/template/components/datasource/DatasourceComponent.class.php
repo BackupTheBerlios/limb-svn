@@ -163,8 +163,8 @@ class DatasourceComponent extends Component
       }
       else
       {
-        return new WactException('target component not found',
-                                array('target' => $target));
+        return throw(new WactException('target component not found',
+                                array('target' => $target)));
       }
     }
   }

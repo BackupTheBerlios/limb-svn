@@ -92,6 +92,11 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
   var $mapper;
   var $toolkit;
 
+  function VersionedOneTableObjectsMapperTest()
+  {
+    parent :: LimbTestCase('versioned one table object mapper test');
+  }
+
   function setUp()
   {
     $this->db =& DbFactory :: instance();

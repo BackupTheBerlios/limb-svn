@@ -28,7 +28,7 @@ class SiteObjectForCreateSiteObjectCommand extends SiteObject
 {
   function create($is_root = false)
   {
-    return new LimbException('catch me!');
+    return throw(new LimbException('catch me!'));
   }
 }
 

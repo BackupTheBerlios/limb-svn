@@ -89,8 +89,10 @@ class StateMachineTest extends LimbTestCase
   {
     $command = new MockCommand($this);
 
-    $this->assertFalse(Limb :: isError($this->state_machine->registerState('some_state', $command)));
-    $this->assertTrue(Limb :: isError($this->state_machine->registerState('some_state', $command)));
+    $this->state_machine->registerState('some_state', $command);
+    $this->assertFalse(catch('Exception', $e));
+    $this->state_machine->registerState('some_state', $command);
+    $this->assertTrue(catch('Exception', $e));
   }
 
   function testSeveralStatusesFlow()
@@ -154,7 +156,8 @@ class StateMachineTest extends LimbTestCase
     $command2 = new MockCommand($this);
     $this->state_machine->registerState('next_state', $command2);
 
-    $this->assertTrue(Limb :: isError($this->state_machine->run()));
+    $this->state_machine->run();
+    $this->assertTrue(catch('Exception', $e));
   }
 
   function testCatchCircularFlow()

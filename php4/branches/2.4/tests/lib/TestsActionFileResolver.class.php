@@ -16,7 +16,7 @@ class TestsActionFileResolver// implements FileResolver
     if(file_exists(LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php'))
       $full_path = LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php';
     else
-      return new FileNotFoundException('action not found', $class_path);
+      return throw(new FileNotFoundException('action not found', $class_path));
 
     return $full_path;
   }

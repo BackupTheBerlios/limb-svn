@@ -14,10 +14,10 @@ class Object
 
   function Object()
   {
-    $this->dataspace = $this->_createDataspace();
+    $this->dataspace =& $this->_createDataspace();
   }
 
-  function _createDataspace()
+  function & _createDataspace()
   {
     include_once(LIMB_DIR . '/class/core/Dataspace.class.php');
     return new Dataspace();

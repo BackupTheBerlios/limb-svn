@@ -25,7 +25,7 @@ class SiteObjectForEditSiteObjectCommand extends SiteObject
 {
   function update($force_create_new_version = true)
   {
-    return new LimbException('catch me!');
+    return throw(new LimbException('catch me!'));
   }
 }
 

@@ -27,7 +27,9 @@ class TemplateFileResolver extends FileResolverDecorator
     if(file_exists($tmpl_path . $file_path))
       return $tmpl_path . $file_path;
 
-    if(Limb :: isError($res = $this->_resolver->resolve('design/' . $locale . $file_path, $params)))
+    $res = $this->_resolver->resolve('design/' . $locale . $file_path, $params);
+
+    if(catch('Exception', $e))
       $res = $this->_resolver->resolve('design/'  . $file_path, $params);
 
     return $res;

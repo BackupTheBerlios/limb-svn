@@ -45,7 +45,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
   function update($behaviour)
   {
     if(!$id = $behaviour->getId())
-      return new LimbException('id is not set');
+      return throw(new LimbException('id is not set'));
 
     $toolkit =& Limb :: toolkit();
     $table =& $toolkit->createDBTable('SysBehaviour');
@@ -58,7 +58,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
   function delete($behaviour)
   {
     if(!$id = $behaviour->getId())
-      return new LimbException('id is not set');
+      return throw(new LimbException('id is not set'));
 
     $toolkit =& Limb :: toolkit();
     $table =& $toolkit->createDBTable('SysBehaviour');

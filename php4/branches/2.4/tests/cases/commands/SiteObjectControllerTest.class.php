@@ -53,7 +53,7 @@ class SiteObjectControllerPerformTestVersion extends SiteObjectController
 {
   function _performAction(&$request)
   {
-    return new LimbException('catch me!');
+    return throw(new LimbException('catch me!'));
   }
 }
 
@@ -161,7 +161,8 @@ class SiteObjectControllerTest extends LimbTestCase
 
     $controller->expectNever('_getStateMachine');
 
-    $this->assertTrue(Limb :: isError($controller->process($this->request)));
+    $controller->process($this->request);
+    $this->assertTrue(catch('Exception', $e));
 
     $controller->tally();
     $behaviour->tally();
@@ -185,7 +186,8 @@ class SiteObjectControllerTest extends LimbTestCase
     $controller->expectOnce('_startTransaction');
     $controller->expectOnce('_rollbackTransaction');
 
-    $this->assertTrue(Limb :: isError($controller->process($this->request)));
+    $controller->process($this->request);
+    $this->assertTrue(catch('Exception', $e));
 
     $controller->tally();
   }

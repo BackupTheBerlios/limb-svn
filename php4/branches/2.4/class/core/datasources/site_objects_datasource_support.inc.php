@@ -12,7 +12,7 @@
 function assignPathsToSiteObjects(&$objects_array, $append = '')
 {
   $toolkit =& Limb :: toolkit();
-  $tree =& $tree->getTree();
+  $tree =& $toolkit->getTree();
 
   $parent_paths = array();
 

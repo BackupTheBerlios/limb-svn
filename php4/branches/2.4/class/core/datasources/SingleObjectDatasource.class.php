@@ -62,7 +62,7 @@ class SingleObjectDatasource extends SiteObjectsDatasource
   function _getObjectIdByNodeId()
   {
     $toolkit =& Limb :: toolkit();
-    $tree =& $tree->getTree();
+    $tree =& $toolkit->getTree();
 
     $node = $tree->getNode($this->node_id);
     if (!$node)
@@ -74,7 +74,7 @@ class SingleObjectDatasource extends SiteObjectsDatasource
   function _getObjectIdByPath()
   {
     $toolkit =& Limb :: toolkit();
-    $tree =& $tree->getTree();
+    $tree =& $toolkit->getTree();
 
     $node = $tree->getNodeByPath($this->path);
     if (!$node)

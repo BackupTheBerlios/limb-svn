@@ -77,7 +77,8 @@ class TemplateFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveTemplateFileFailed()
   {
-    $this->assertTrue(Limb :: isError($this->resolver->resolve('no_such_template.html')));
+    $this->resolver->resolve('no_such_template.html');
+    $this->assertTrue(catch('Exception', $e));
   }
 
 }

@@ -41,16 +41,15 @@ class SiteObjectController
   {
     $this->_startTransaction();
 
-    if(Limb :: isError($res =& $this->_performAction($request)))
+    $this->_performAction($request);
+
+    if(catch('LimbException', $e))
     {
-      if(is_a($res, 'LimbException'))
-      {
-        $this->_rollbackTransaction();
-        return $res;
-      }
+      $this->_rollbackTransaction();
+      return throw($e);
     }
-    else
-      $this->_commitTransaction();
+
+    $this->_commitTransaction();
   }
 
   function &_getStateMachine()
@@ -62,9 +61,9 @@ class SiteObjectController
   function _performAction(&$request)
   {
     if(!$action = $this->getRequestedAction($request))
-      return new LimbException('action not defined in state machine',
+      return throw(new LimbException('action not defined in state machine',
                               array('action' => $action,
-                                    'class' => get_class($this->behaviour)));
+                                    'class' => get_class($this->behaviour))));
 
     $state_machine =& $this->_getStateMachine();
 

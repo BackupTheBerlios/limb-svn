@@ -23,10 +23,10 @@ class SuccessStatusTag extends CompilerDirectiveTag
   {
     if (!$this->findParentByClass('form_status_tag'))
     {
-      return new WactException('bad self nesting',
+      return throw(new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
 }

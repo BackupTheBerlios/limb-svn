@@ -92,7 +92,7 @@ function compileTemplateFile($filename, $resolve_path = true)
   if($resolve_path)
   {
     if(!$sourcefile = resolveTemplateSourceFileName($filename))
-      return new FileNotFoundException('template file not found', $filename);
+      return throw(new FileNotFoundException('template file not found', $filename));
   }
   else
     $sourcefile = $filename;
@@ -101,7 +101,7 @@ function compileTemplateFile($filename, $resolve_path = true)
 
   if (empty($sourcefile))
   {
-    return new FileNotFoundException('compiled template file not found', $filename);
+    return throw(new FileNotFoundException('compiled template file not found', $filename));
   }
 
   $code = new Codewriter();

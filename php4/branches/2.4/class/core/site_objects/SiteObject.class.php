@@ -14,14 +14,14 @@ class SiteObject extends DomainObject
 {
   var $behaviour;
 
-  function getBehaviour()
+  function & getBehaviour()
   {
     return $this->behaviour;
   }
 
-  function attachBehaviour($behaviour)
+  function attachBehaviour(&$behaviour)
   {
-    return $this->behaviour = $behaviour;
+    return $this->behaviour =& $behaviour;
   }
 
   function getParentNodeId()
@@ -124,7 +124,7 @@ class SiteObject extends DomainObject
     $this->set('status', (int)$status);
   }
 
-  function getController()
+  function & getController()
   {
     include_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
     return new SiteObjectController($this->getBehaviour());

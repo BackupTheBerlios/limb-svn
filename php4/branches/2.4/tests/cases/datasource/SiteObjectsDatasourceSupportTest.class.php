@@ -116,7 +116,7 @@ class SiteObjectsDatasourceSupportTest extends LimbTestCase
 
     $this->site_object->expectOnce('merge', array($fetched_data));
 
-    $this->assertTrue(wrapWithSiteObject($fetched_data) === $this->site_object);
+    $this->assertIsA(wrapWithSiteObject($fetched_data), get_class($this->site_object));
   }
 
   function testWrapWithSiteObjectMultiple()
@@ -131,8 +131,11 @@ class SiteObjectsDatasourceSupportTest extends LimbTestCase
     $this->site_object->expectArgumentsAt(0, 'merge', array($data1));
     $this->site_object->expectArgumentsAt(1, 'merge', array($data2));
 
-    $this->assertTrue(wrapWithSiteObject($fetched_data) === array($this->site_object, $this->site_object));
+    $arr  = wrapWithSiteObject($fetched_data);
 
+    $this->assertEqual(sizeof($arr), 2);
+    $this->assertIsA($arr[0], get_class($this->site_object));
+    $this->assertIsA($arr[1], get_class($this->site_object));
   }
 
 }

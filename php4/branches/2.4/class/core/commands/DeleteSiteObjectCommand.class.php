@@ -24,13 +24,12 @@ class DeleteSiteObjectCommand// implements Command
   {
     $object = $this->_getObjectToDelete();
 
-    if(Limb :: isError($res = $object->delete()))
-    {
-      if(is_a($res, 'SQLException'))
-        return $res;
-      elseif(is_a($res, 'LimbException'))
-        return LIMB_STATUS_ERROR;
-    }
+    $object->delete();
+
+    if(catch('SQLException', $e))
+      return throw($e);
+    elseif(catch('LimbException', $e))
+      return LIMB_STATUS_ERROR;
 
     return LIMB_STATUS_OK;
   }

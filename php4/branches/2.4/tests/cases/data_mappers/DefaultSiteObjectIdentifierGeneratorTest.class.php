@@ -18,6 +18,11 @@ class DefaultSiteObjectIdentifierGeneratorTest extends LimbTestCase
   var $object;
   var $generator;
 
+  function DefaultSiteObjectIdentifierGeneratorTest()
+  {
+    parent :: LimbTestCase('default identifier generator test');
+  }
+
   function setUp()
   {
     $this->object = new MockSiteObject($this);

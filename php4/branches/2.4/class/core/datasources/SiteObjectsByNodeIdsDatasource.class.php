@@ -42,7 +42,7 @@ class SiteObjectsByNodeIdsDatasource extends SiteObjectsDatasource
       return array();
 
     $toolkit =& Limb :: toolkit();
-    $tree =& $tree->getTree();
+    $tree =& $toolkit->getTree();
 
     if (!$nodes = $tree->getNodesByIds($this->node_ids))
       return array();

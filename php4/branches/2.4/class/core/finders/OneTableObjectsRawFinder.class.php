@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/core/finders/SiteObjectsRawFinder.class.php');
 
 class OneTableObjectsRawFinder extends SiteObjectsRawFinder
 {
-  protected  $_db_table = null;
+  var $_db_table = null;
 
-  function getDbTable()
+  function & getDbTable()
   {
     if(!$this->_db_table)
     {
@@ -31,7 +31,7 @@ class OneTableObjectsRawFinder extends SiteObjectsRawFinder
 
   function find($params=array(), $sql_params=array())
   {
-    $db_table = $this->getDbTable();
+    $db_table =& $this->getDbTable();
 
     $sql_params['columns'][] = ' ' . $db_table->getColumnsForSelect('tn', array('id')) . ',';
 
@@ -61,7 +61,7 @@ class OneTableObjectsRawFinder extends SiteObjectsRawFinder
 
   function findCount($sql_params=array())
   {
-    $db_table = $this->getDbTable();
+    $db_table =& $this->getDbTable();
     $table_name = $db_table->getTableName();
     $sql_params['tables'][] = ",{$table_name} as tn";
 

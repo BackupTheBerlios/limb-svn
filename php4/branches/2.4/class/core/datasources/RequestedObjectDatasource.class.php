@@ -41,13 +41,13 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
       return array($this->object_id);
     }
     else
-      return new LimbException('request is null');
+      return throw(new LimbException('request is null'));
   }
 
   function mapUriToNode($uri, $recursive = false)
   {
     $toolkit =& Limb :: toolkit();
-    $tree =& $tree->getTree();
+    $tree =& $toolkit->getTree();
 
     if(($node_id = $uri->getQueryItem('node_id')) === false)
       $node = $tree->getNodeByPath($uri->getPath(), '/', $recursive);
@@ -65,7 +65,7 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
     if($node_id = $request->get('node_id'))
     {
       $toolkit =& Limb :: toolkit();
-      $tree =& $tree->getTree();
+      $tree =& $toolkit->getTree();
 
       $node = $tree->getNode((int)$node_id);
     }

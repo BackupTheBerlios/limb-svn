@@ -25,19 +25,19 @@ class GridSeparatorTag extends CompilerDirectiveTag
   {
     if ($this->findParentByClass('grid_separator_tag'))
     {
-      return new WactException('bad self nesting',
+      return throw(new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     if (!is_a($this->parent, 'GridIteratorTag'))
     {
-      return new WactException('missing enclosure',
+      return throw(new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'grid:ITERATOR',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
 

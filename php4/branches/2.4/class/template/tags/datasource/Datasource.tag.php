@@ -28,20 +28,20 @@ class DatasourceTag extends ServerComponentTag
   {
     if (!isset($this->attributes['target']))
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'target',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     if (!isset($this->attributes['datasource_path']))
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'datasource_path',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     $this->_checkOrderParameter();
@@ -64,11 +64,11 @@ class DatasourceTag extends ServerComponentTag
         continue;
 
       if(strtolower($arr[1]) != 'asc' &&  strtolower($arr[1]) != 'desc' &&  !strtolower($arr[1]) == 'rand()')
-        return new WactException('wrong order type',
+        return throw(new WactException('wrong order type',
           array('tag' => $this->tag,
           'order_value' => $arr[1],
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
   function generateContents($code)

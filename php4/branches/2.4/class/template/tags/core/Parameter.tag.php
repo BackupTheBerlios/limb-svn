@@ -23,20 +23,20 @@ class CoreParameterTag extends CompilerDirectiveTag
   {
     if (!isset($this->attributes['name']))
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'name',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     if (!isset($this->attributes['value']))
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'value',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     return PARSER_FORBID_PARSING;
@@ -46,11 +46,11 @@ class CoreParameterTag extends CompilerDirectiveTag
   {
     if (!is_a($this->parent, 'ServerComponentTag'))
     {
-      return new WactException('wrong parent tag',
+      return throw(new WactException('wrong parent tag',
           array('tag' => $this->tag,
           'parent_class' => get_class($this->parent),
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
 

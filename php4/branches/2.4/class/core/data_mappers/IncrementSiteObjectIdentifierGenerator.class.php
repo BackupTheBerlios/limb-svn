@@ -11,7 +11,7 @@
 
 class IncrementSiteObjectIdentifierGenerator// implements SiteObjectIdentifierGenerator
 {
-  function generate($site_object)
+  function generate(&$site_object)
   {
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();

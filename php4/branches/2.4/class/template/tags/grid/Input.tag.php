@@ -30,11 +30,11 @@ class GridInputTag extends ControlTag
   {
     if (!$this->findParentByClass('grid_iterator_tag'))
     {
-      return new WactException('missing enclosure',
+      return throw(new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'grid:ITERATOR',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
 
@@ -42,11 +42,11 @@ class GridInputTag extends ControlTag
   {
     if (!isset($this->attributes['name']))
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'name',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     return PARSER_REQUIRE_PARSING;

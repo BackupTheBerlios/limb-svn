@@ -43,7 +43,7 @@ class Template extends Component
     if($resolve_path)
     {
       if(!$srcfile = resolveTemplateSourceFileName($file))
-        return new FileNotFoundException('template file not found', $file);
+        return throw(new FileNotFoundException('template file not found', $file));
     }
     else
       $srcfile = $file;
@@ -90,9 +90,9 @@ class Template extends Component
     $result = $this->findChild($server_id);
     if (!is_object($result))
     {
-      return new WactException('component not found',
+      return throw(new WactException('component not found',
           array('file' => $this->file,
-          'server_id' => $server_id));
+          'server_id' => $server_id)));
     }
     return $result;
   }

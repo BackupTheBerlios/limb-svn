@@ -108,7 +108,8 @@ class RequestedObjectDatasourceTest extends LimbTestCase
 
   function testGetObjectIdsNoRequest()
   {
-    $this->assertTrue(Limb :: isError($this->datasource->getObjectIds()));
+    $this->datasource->getObjectIds();
+    $this->assertTrue(catch('Exception', $e));
   }
 
   function testGetObjectIds()

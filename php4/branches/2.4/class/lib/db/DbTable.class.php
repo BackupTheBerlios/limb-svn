@@ -204,13 +204,13 @@ class DbTable
 
         if(!$db_table->hasColumn($column_name))
         {
-          return new SQLException('column not found while cascade deleting',
+          return throw(new SQLException('column not found while cascade deleting',
             null,
             array(
               'table' => $table_name,
               'column_name' => $column_name
             )
-          );
+          ));
         }
 
         $values = array();

@@ -19,8 +19,8 @@ class StateMachine
   function registerState($state_name, &$command, $transitions_matrix = array())
   {
     if (isset($this->states[$state_name]))
-      return new LimbException('state has already been registered',
-                              array('state_name' => $state_name));
+      return throw(new LimbException('state has already been registered',
+                              array('state_name' => $state_name)));
 
     $this->states[$state_name]['command'] =& $command;
     $this->states[$state_name]['transitions'] = $transitions_matrix;
@@ -49,8 +49,10 @@ class StateMachine
     while($next_state != false)
     {
       $state = $next_state;
-      if(Limb :: isError($next_state = $this->_processState($state)))
-         return $next_state;
+      $this->_processState($state);
+
+      if(catch('LimbException', $e))
+         return throw($e);
     }
   }
 
@@ -58,8 +60,8 @@ class StateMachine
   {
     if (!isset($this->states[$state_name]))
     {
-      return new LimbException('illegal state',
-                            array('state_name' => $state_name));
+      return throw(new LimbException('illegal state',
+                            array('state_name' => $state_name)));
     }
 
     $state_data =& $this->states[$state_name];

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectMapper.class.php');
 
 class OneTableObjectsMapper extends SiteObjectMapper
 {
-  protected  $_db_table = null;
+  var $_db_table = null;
 
   function _getFinder()
   {

@@ -32,8 +32,8 @@ class SysParam
   {
     if(!in_array($type, $this->_types))
     {
-      return new LimbException('trying to save undefined type in sys_param',
-        array('type' => $type, 'param' => $identifier));
+      return throw(new LimbException('trying to save undefined type in sys_param',
+        array('type' => $type, 'param' => $identifier)));
     }
 
     $params = $this->_db_table->getList("identifier='{$identifier}'", '', '', 0, 1);
@@ -74,8 +74,10 @@ class SysParam
           "{$type}_value" => $value,
       );
 
-      if(Limb :: isError($res = $this->_db_table->insert($data)))
-        return $res;
+      $this->_db_table->insert($data);
+
+      if(catch('Exception', $e))
+        return throw($e);
 
       return $this->_db_table->getLastInsertId();
     }
@@ -85,8 +87,8 @@ class SysParam
   {
     if(!empty($type) &&  !in_array($type, $this->_types))
     {
-      return new LimbException('trying to get undefined type in sys_param',
-        array('type' => $type, 'param' => $identifier));
+      return throw(new LimbException('trying to get undefined type in sys_param',
+        array('type' => $type, 'param' => $identifier)));
     }
 
     $params = $this->_db_table->getList("identifier='{$identifier}'", '', '', 0, 1);

@@ -78,7 +78,7 @@ function resolveHandle(&$handle)
       break;
     default:
       // Too many arguments for this cobbled together implemenentation.  :(
-      return new Exception('too many arguments for resolve handle');
+      return throw(new Exception('too many arguments for resolve handle'));
   }
 }
 

@@ -23,11 +23,11 @@ class LocaleLocaleTag extends CompilerDirectiveTag
   {
     if (!isset($this->attributes['name']) ||  !$this->attributes['name'])
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'name',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     return PARSER_REQUIRE_PARSING;

@@ -24,6 +24,11 @@ class IncrementSiteObjectIdentifierGeneratorTest extends LimbTestCase
   var $tree;
   var $toolkit;
 
+  function IncrementSiteObjectIdentifierGeneratorTest()
+  {
+    parent :: LimbTestCase('incremental identifier generator test');
+  }
+
   function setUp()
   {
     $this->object = new MockSiteObject($this);

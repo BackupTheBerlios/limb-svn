@@ -18,13 +18,10 @@ class EditSiteObjectCommand// implements Command
 
     $this->_fillObject($object);
 
-     if(Limb :: isError($res = $this->_updateObjectOperation($object)))
-    {
-      if(is_a($res, 'LimbException'))
-        return LIMB_STATUS_ERROR;
-      else
-        return $res;
-    }
+    $this->_updateObjectOperation($object);
+
+    if(catch('LimbException', $e))
+      return LIMB_STATUS_ERROR;
 
     return LIMB_STATUS_OK;
   }

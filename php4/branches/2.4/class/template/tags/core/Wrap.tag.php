@@ -32,10 +32,10 @@ class CoreWrapTag extends CompilerDirectiveTag
   {
     if ($this->findParentByClass('core_wrap_tag'))
     {
-      return new WactException('bad self nesting',
+      return throw(new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
 
@@ -45,20 +45,20 @@ class CoreWrapTag extends CompilerDirectiveTag
     $file = $this->attributes['file'];
     if (!isset($this->attributes['file']) ||  !$this->attributes['file'])
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'file',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     if (!$this->resolved_source_file = resolveTemplateSourceFileName($file))
     {
-      return new WactException('missing file',
+      return throw(new WactException('missing file',
           array('tag' => $this->tag,
           'srcfile' => $file,
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     $sfp = new SourceFileParser($this->resolved_source_file, $tag_dictionary);

@@ -19,36 +19,8 @@ require_once(LIMB_DIR . '/class/core/tree/TreeDecorator.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
 
 Mock :: generatePartial('BaseLimbToolkit',
-                      'SiteObjectToolkitMock', array());
-
-class SiteObjectManipulationTestToolkit extends SiteObjectToolkitMock
-{
-  var $_mocked_methods = array('getTree', 'getUser', 'constant', 'createDataMapper');
-
-  function getTree()
-  {
-    $args = func_get_args();
-    return $this->_mock->_invoke('getTree', $args);
-  }
-
-  function getUser()
-  {
-    $args = func_get_args();
-    return $this->_mock->_invoke('getUser', $args);
-  }
-
-  function createDataMapper($path)
-  {
-    $args = func_get_args();
-    return $this->_mock->_invoke('createDataMapper', $args);
-  }
-
-  function constant($name)
-  {
-    $args = func_get_args();
-    return $this->_mock->_invoke('constant', $args);
-  }
-}
+                      'SiteObjectManipulationTestToolkit',
+                      array('getTree', 'getUser', 'constant', 'createDataMapper'));
 
 Mock :: generate('TreeDecorator');
 Mock :: generate('User');
@@ -87,6 +59,11 @@ class SiteObjectMapperTest extends LimbTestCase
   var $toolkit;
   var $tree;
   var $user;
+
+  function SiteObjectMapperTest()
+  {
+    parent :: LimbTestCase('site object mapper test');
+  }
 
   function setUp()
   {
@@ -201,7 +178,8 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $this->assertEqual($site_object->getId(), $id);
     $this->assertEqual($site_object->getIdentifier(), $identifier);
-    $this->assertTrue($site_object->getBehaviour() === $this->behaviour);
+
+    $this->assertIsA($site_object->getBehaviour(), get_class($this->behaviour));
 
     $finder->tally();
     $mapper->tally();
@@ -215,7 +193,8 @@ class SiteObjectMapperTest extends LimbTestCase
     $this->site_object->expectOnce('getIdentifier');
     $this->site_object->setReturnValue('getIdentifier', null);
 
-    $this->assertTrue(Limb :: isError($mapper->insert($this->site_object)));
+    $mapper->insert($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $mapper->tally();
   }
 
@@ -228,7 +207,8 @@ class SiteObjectMapperTest extends LimbTestCase
     $this->site_object->expectOnce('getBehaviour');
     $this->site_object->setReturnValue('getBehaviour', null);
 
-    $this->assertTrue(Limb :: isError($e = $mapper->insert($this->site_object)));
+    $mapper->insert($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'behaviour is not attached');
 
     $mapper->tally();
@@ -269,7 +249,8 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $this->site_object->setReturnValue('getId', $object_id);
 
-    $this->assertTrue(Limb :: isError($e = $mapper->insert($this->site_object)));
+    $mapper->insert($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'tree parent node is empty');
 
     $mapper->tally();
@@ -288,7 +269,8 @@ class SiteObjectMapperTest extends LimbTestCase
     $mapper->expectOnce('_canAddNodeToParent', array($parent_node_id));
     $mapper->setReturnValue('_canAddNodeToParent', false);
 
-    $this->assertTrue(Limb :: isError($e = $mapper->insert($this->site_object)));
+    $mapper->insert($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'tree registering failed');
     $this->assertEqual($e->getAdditionalParams(), array('parent_node_id' => 10));
   }
@@ -320,7 +302,8 @@ class SiteObjectMapperTest extends LimbTestCase
     $mapper = new SiteObjectMapperTestVersion1($this);
     $this->site_object->expectOnce('getId');
 
-    $this->assertTrue(Limb :: isError($e = $mapper->update($this->site_object)));
+    $mapper->update($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'object id not set');
 
     $mapper->tally();
@@ -334,7 +317,8 @@ class SiteObjectMapperTest extends LimbTestCase
     $this->site_object->expectOnce('getBehaviour');
     $this->site_object->setReturnValue('getBehaviour', null);
 
-    $this->assertTrue(Limb :: isError($e = $mapper->update($this->site_object)));
+    $mapper->update($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'behaviour id not attached');
 
     $mapper->tally();
@@ -346,7 +330,8 @@ class SiteObjectMapperTest extends LimbTestCase
     $this->site_object->setReturnValue('getId', 125);
     $this->site_object->setReturnValue('getIdentifier', null);
 
-    $this->assertTrue(Limb :: isError($e = $mapper->update($this->site_object)));
+    $mapper->update($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'identifier is empty');
 
     $mapper->tally();
@@ -383,7 +368,8 @@ class SiteObjectMapperTest extends LimbTestCase
   {
     $mapper = new SiteObjectMapperTestVersion2($this);
 
-    $this->assertTrue(Limb :: isError($e = $mapper->update($this->site_object)));
+    $mapper->update($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'node id not set');
   }
 
@@ -393,7 +379,8 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $this->site_object->setReturnValue('getNodeId', 10);
 
-    $this->assertTrue(Limb :: isError($e = $mapper->update($this->site_object)));
+    $mapper->update($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'parent node id not set');
   }
 
@@ -411,7 +398,8 @@ class SiteObjectMapperTest extends LimbTestCase
     $this->tree->expectOnce('moveTree');
     $this->tree->setReturnValue('moveTree', false, array($node_id, $parent_node_id));
 
-    $this->assertTrue(Limb :: isError($e = $mapper->update($this->site_object)));
+    $mapper->update($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'could not move node');
 
     $mapper->tally();
@@ -430,7 +418,8 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $this->tree->expectNever('moveTree');
 
-    $this->assertTrue(Limb :: isError($e = $mapper->update($this->site_object)));
+    $mapper->update($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'new parent cant accept children');
   }
 
@@ -481,7 +470,8 @@ class SiteObjectMapperTest extends LimbTestCase
   {
     $mapper = new SiteObjectMapper();
 
-    $this->assertTrue(Limb :: isError($e = $mapper->canDelete($this->site_object)));
+    $mapper->canDelete($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'object id not set');
   }
 
@@ -490,7 +480,8 @@ class SiteObjectMapperTest extends LimbTestCase
     $mapper = new SiteObjectMapper();
     $this->site_object->setReturnValue('getId', 10);
 
-    $this->assertTrue(Limb :: isError($e = $mapper->canDelete($this->site_object)));
+    $mapper->canDelete($this->site_object);
+    $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'node id not set');
   }
 

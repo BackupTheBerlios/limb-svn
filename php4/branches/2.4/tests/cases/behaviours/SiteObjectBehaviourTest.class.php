@@ -202,7 +202,8 @@ class SiteObjectBehaviourTest extends LimbTestCase
 
   function testGetBehaviourNameByIdFailed()
   {
-    $this->assertTrue(Limb :: isError(SiteObjectBehaviour :: findBehaviourNameById(100)));
+    SiteObjectBehaviour :: findBehaviourNameById(100);
+    $this->assertTrue(catch('Exception', $e));
   }
 }
 
