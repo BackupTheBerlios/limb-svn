@@ -15,11 +15,9 @@
 </fetch:SUB_BRANCH>
 
 
-<table border=0 cellspacing=0 cellpadding=4 width=100%>
-
 <grid:LIST id='images_folder'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
   <grid:ITERATOR>
-  <thead class=jip>
 	<tr>
 		<td jip='object' class=jip-object valign='bottom'>
 			<core:OPTIONAL for='title'>
@@ -33,19 +31,15 @@
 		<core:INCLUDE file="jip_actions/normal.html">
 		</td>
 	</tr>
-</thead>
   </grid:ITERATOR>
+</table>
 </grid:LIST>
 
-		<tr>
-			<td colspan=2>
-				<core:INCLUDE file="pager.html">
-			</td>
-		</tr>
+<core:INCLUDE file="pager.html">
 
 <grid:LIST id='images'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
   <grid:ITERATOR>
-    <thead class=jip>
 		<tr>
 			<td jip='object' class=jip-object>
 			<core:OPTIONAL for='title'>
@@ -60,7 +54,6 @@
 			<core:INCLUDE file="jip_actions/normal.html">
 			</td>
 		</tr>
-		</thead>
   </grid:ITERATOR>
-</grid:LIST>
 </table>
+</grid:LIST>

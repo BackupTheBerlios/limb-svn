@@ -125,9 +125,9 @@ class site_object extends object
 		$sql = 
 			sprintf( "SELECT sso.id 
 								FROM 
-								sys_site_object as sso
+								sys_site_object as sso, sys_site_object_tree as ssot
 								%s
-								WHERE 1=1 
+								WHERE sso.id=ssot.object_id 
 								%s %s",
 								$this->_add_sql($sql_params, 'tables'),
 								$this->_add_sql($sql_params, 'conditions'),
