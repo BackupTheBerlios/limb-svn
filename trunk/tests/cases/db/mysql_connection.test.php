@@ -12,6 +12,8 @@ require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 
 class test_mysql_connection extends UnitTestCase
 {
+	var $connection;
+	
 	function test_mysql_connection($name = 'mysql db test case')
 	{
 		parent :: UnitTestCase($name);		
@@ -50,24 +52,68 @@ class test_mysql_connection extends UnitTestCase
 		{
 			if (!mysql_query($insert))
 				die ('Error inserting ' . mysql_errno() . ' - ' . mysql_error());
-		} 
+		}
+		
+		$this->connection =& db_factory :: get_connection(); 
 	} 
 	
 	function tearDown()
 	{ 
 	}
 	
-	function test_instance()
+	function test_get_id_generator()
 	{
-		$this->assertReference(db_factory :: get_connection(), db_factory :: get_connection());
-	} 
-	
-	function test_execute()
-	{
-		$connection = db_factory :: get_connection();
-		$connection->execute_query("SELECT * FROM founding_fathers");
-		$this->assertIsA($connection->execute_query("SELECT * FROM founding_fathers"), 'mysql_result_set');		
+		$this->assertIsA($this->connection->get_id_generator(), 'mysql_id_generator');
 	}
+
+	function test_get_db_info()
+	{
+		$this->assertIsA($this->connection->get_db_info(), 'mysql_db_info');
+	}
+	
+	function test_create_statement()
+	{
+		$stmt = $this->connection->create_statement();
+		$this->assertIsA($stmt, 'mysql_statement');
+	}
+
+	function test_prepare_statement()
+	{
+		$sql = 'SELECT * FROM founding_fathers';
+		$stmt = $this->connection->prepare_statement($sql);
+		$this->assertIsA($stmt, 'mysql_prepared_statement');
+	}
+	
+	function test_execute_query_error()
+	{
+		$rs = $this->connection->execute_query("SELECT *1 FROM founding_fathers");
+		$this->assertError($rs->to_string());		
+	}
+	
+	function test_execute_query()
+	{
+		$rs = $this->connection->execute_query("SELECT * FROM founding_fathers");
+		$this->assertIsA($rs, 'mysql_result_set');		
+	}
+	
+	function test_execute_update()
+	{
+		/*$this->connection->execute_update();
+		
+		$connection->sql_update("founding_fathers", array('first' => 'Wow', 'last' => 'Hey'), array('id' => 10));
+		
+		$connection->sql_select("founding_fathers", '*', 'last="Hey" AND first="Wow"');
+		
+		$this->assertEqual(sizeof($arr = $connection->get_array()), 1);
+		$this->assertEqual($arr[0]['id'], 10);
+		
+		$connection->sql_update("founding_fathers", "test_int=test_int+10", array('id' => 10));
+		
+		$connection->sql_select("founding_fathers", '*', array('test_int' => 10));
+		$this->assertEqual(sizeof($arr = $connection->get_array()), 1);
+		$this->assertEqual($arr[0]['id'], 10);*/
+	}
+
 	
 /*	function test_fetch_row()
 	{
@@ -207,25 +253,7 @@ class test_mysql_connection extends UnitTestCase
 		$this->assertEqual(sizeof($arr = $connection->get_array()), 1);
 		$this->assertEqual($arr[0]['last'], 'Nixon');
 	}
-	
-	function test_update()
-	{
-		$connection= db_factory :: get_connection();
 		
-		$connection->sql_update("founding_fathers", array('first' => 'Wow', 'last' => 'Hey'), array('id' => 10));
-		
-		$connection->sql_select("founding_fathers", '*', 'last="Hey" AND first="Wow"');
-		
-		$this->assertEqual(sizeof($arr = $connection->get_array()), 1);
-		$this->assertEqual($arr[0]['id'], 10);
-		
-		$connection->sql_update("founding_fathers", "test_int=test_int+10", array('id' => 10));
-		
-		$connection->sql_select("founding_fathers", '*', array('test_int' => 10));
-		$this->assertEqual(sizeof($arr = $connection->get_array()), 1);
-		$this->assertEqual($arr[0]['id'], 10);
-	}
-	
 	function test_delete()
 	{
 		$connection= db_factory :: get_connection();

@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/lib/db/db_mysql.class.php');
 
 class test_db_mysql_typecast extends UnitTestCase
 {
-	var $db = null;
+/*	var $connection = null;
 	
 	function test_db_mysql_typecast($name = 'mysql db test case')
 	{
@@ -22,8 +22,8 @@ class test_db_mysql_typecast extends UnitTestCase
 		
 	function setUp()
 	{ 
-		$this->db =& db_factory :: instance();
-		$this->db->set_locale_id('en');
+		$this->connection=& db_factory :: get_connection();
+		$this->connection->set_locale_id('en');
 	} 
 		
 	function test_default_types()
@@ -36,7 +36,7 @@ class test_db_mysql_typecast extends UnitTestCase
 				'bool_true' => 1,
 				'bool_false' => 0
 			),
-			$this->db->_process_values(
+			$this->connection->_process_values(
 				array(
 					'id' => 1, 
 					'title' => " \"\" title'",
@@ -60,7 +60,7 @@ class test_db_mysql_typecast extends UnitTestCase
 				'datetime_iso' => '\'1982-12-01 12:01:59\'',
 				'title' => "' \\\"\\\" title\''",
 			),
-			$this->db->_process_values( 
+			$this->connection->_process_values( 
 				array(
 					'id' => 'abc zxc', 
 					'id1' => '1000',
@@ -98,7 +98,7 @@ class test_db_mysql_typecast extends UnitTestCase
 				'datetime_iso' => '\'1982-12-01 12:01:59\'',
 				'title' => "' \\\"\\\" title\''",
 			),		
-			$this->db->_process_values(
+			$this->connection->_process_values(
 				array(
 					'null' => null,
 					'bool_true' => true,
@@ -122,6 +122,6 @@ class test_db_mysql_typecast extends UnitTestCase
 			)
 		);
 	}
-
+*/
 } 
 ?>

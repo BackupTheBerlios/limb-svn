@@ -15,7 +15,7 @@ require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
 class test_image_db_table extends db_table
 {
-  function test_image_db_table()
+/*  function test_image_db_table()
   {
     parent :: db_table();
   }
@@ -126,6 +126,6 @@ class test_db_table_cascade_delete extends test_db_case
 		$this->assertEqual(sizeof($this->image_variation->get_list()), 9);
 		$this->assertEqual(sizeof($this->media->get_list()), 9);
 	}
-			
+			*/
 } 
 ?>

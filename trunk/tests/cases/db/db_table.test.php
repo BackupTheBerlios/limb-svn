@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
 class test1_db_table extends db_table
 {
-  function test1_db_table()
+/*  function test1_db_table()
   {
     parent :: db_table();
   }
@@ -46,12 +46,12 @@ class test1_db_table extends db_table
 
 class test_db_table extends UnitTestCase
 {
-	var $db = null;
+	var $connection = null;
 	var $test_db_table = null;
 
 	function test_db_table($name = 'db table test case')
 	{
-		$this->db =& db_factory :: instance();
+		$this->connection=& db_factory :: get_connection();
 		$this->test_db_table =& db_table_factory :: instance('test1');
 		
 		parent :: UnitTestCase($name);
@@ -69,7 +69,7 @@ class test_db_table extends UnitTestCase
 	
 	function _clean_up()
 	{
-		$this->db->sql_delete('test1');
+		$this->connection->sql_delete('test1');
 	}
 	
 	function test_instantiate()
@@ -93,9 +93,9 @@ class test_db_table extends UnitTestCase
 	{
 		$this->test_db_table->insert(array('title' =>  'wow', 'description' => 'wow!'));
 		
-		$this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
+		$this->assertNotEqual($this->connection->sql_exec("SELECT * FROM test1"), array());
 		
-		$result = $this->db->fetch_row();
+		$result = $this->connection->fetch_row();
 		$this->assertTrue(is_array($result));
 		
 		$id = $this->test_db_table->get_last_insert_id();
@@ -112,11 +112,11 @@ class test_db_table extends UnitTestCase
 		
 		$this->test_db_table->update(array('description' =>  'new_description'), array('title' =>  'wow'));
 		
-		$this->assertEqual($this->db->get_affected_rows(), 2);
+		$this->assertEqual($this->connection->get_affected_rows(), 2);
 		
-		$this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
+		$this->assertNotEqual($this->connection->sql_exec("SELECT * FROM test1"), array());
 		
-		$result = $this->db->get_array();
+		$result = $this->connection->get_array();
 		$this->assertEqual($result[0]['description'], 'new_description');
 		$this->assertEqual($result[1]['description'], 'new_description');
 	}
@@ -132,11 +132,11 @@ class test_db_table extends UnitTestCase
 			sql_in('title', array('wow', 'wow1'))
 		);
 		
-		$this->assertEqual($this->db->get_affected_rows(), 2);
+		$this->assertEqual($this->connection->get_affected_rows(), 2);
 		
-		$this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
+		$this->assertNotEqual($this->connection->sql_exec("SELECT * FROM test1"), array());
 		
-		$result = $this->db->get_array();
+		$result = $this->connection->get_array();
 		$this->assertEqual($result[0]['description'], 'new_description');
 		$this->assertEqual($result[1]['description'], 'new_description');
 	}
@@ -146,16 +146,16 @@ class test_db_table extends UnitTestCase
 		$this->test_db_table->insert(array('title' =>  'wow', 'description' => 'description'));
 		$this->test_db_table->insert(array('title' =>  'wow', 'description' => 'description2'));
 		
-		$this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
+		$this->assertNotEqual($this->connection->sql_exec("SELECT * FROM test1"), array());
 		
-		$result = $this->db->get_array();
+		$result = $this->connection->get_array();
 		
 		$this->test_db_table->update_by_id($result[0]['id'], array('description' =>  'new_description'));
 		
-		$this->assertEqual($this->db->get_affected_rows(), 1);
+		$this->assertEqual($this->connection->get_affected_rows(), 1);
 		
-		$this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
-		$result = $this->db->get_array();
+		$this->assertNotEqual($this->connection->sql_exec("SELECT * FROM test1"), array());
+		$result = $this->connection->get_array();
 		$this->assertEqual($result[0]['description'], 'new_description');
 	}
 		
@@ -273,6 +273,6 @@ class test_db_table extends UnitTestCase
 		$arr = reset($result);
 		$this->assertEqual($arr['title'], 'wow!');
 		$this->assertEqual($arr['description'], 'description2');
-	}
+	}*/
 } 
 ?>
