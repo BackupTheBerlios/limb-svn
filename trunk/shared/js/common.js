@@ -1,4 +1,10 @@
-var active_tab = null
+var agt = navigator.userAgent.toLowerCase(); 
+var is_ie	= (agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1);
+var is_gecko = navigator.product == "Gecko"; 
+var is_opera  = (agt.indexOf("opera") != -1);
+var is_mac	  = (agt.indexOf("mac") != -1);
+var is_mac_ie = (is_ie && is_mac);
+var is_win_ie = (is_ie && !is_mac); 
 
 var LOADING_STATUS_PAGE = '/shared/loading.html';
 var PROGRESS_PAGE = '/shared/progress.html';
@@ -152,35 +158,47 @@ function toggle_obj_display(obj)
 function optimize_window()
 {	
 	w = window;
-	div = document.getElementById('popup_div');
-	if(typeof(div) == 'object')
+	
+	if (is_ie)
 	{
-		var xper = 0.1
-		var yper = 0.1
-		var wper = 0.8
-		var hper = 0.8
-		w.moveTo(window.screen.width*xper, window.screen.height*yper);
-		w.resizeTo(window.screen.width*wper, window.screen.height*hper);
-		return
+		opener_width = w.opener.document.body.clientWidth;
+		opener_height = w.opener.document.body.clientHeight;
+	}
+	else if(is_gecko)
+	{
+		opener_width = w.opener.outerWidth;
+		opener_height = w.opener.outerHeight;
+	}
+	else
+	{
+		opener_width = w.opener.document.body.clientWidth;
+		opener_height = w.opener.document.body.clientHeight;
 	}
 	
-	deltaX = w.document.body.scrollWidth - w.document.body.clientWidth;
-	deltaY = w.document.body.scrollHeight - w.document.body.clientHeight;
+	deltaX = opener_width*0.8;
+	deltaY = opener_height*0.8;
 
-	max_width = w.screen.width - 200;
-	max_height = w.screen.height - 250;
+	if (is_ie)
+	{
+		newLeft = w.opener.screenLeft;
+		newTop = w.opener.screenTop;
+	}
+	else if((is_gecko)	|| (is_opera))
+	{
+		newLeft = w.opener.screenX;
+		newTop = w.opener.screenY;
+	}	
+	else
+	{
+		newLeft = w.opener.screenLeft;
+		newTop = w.opener.screenTop;
+	}
 	
-	if (w.document.body.scrollWidth > max_width)
-		deltaX = max_width - w.document.body.clientWidth;
-
-	if (w.document.body.scrollHeight > max_height)
-		deltaY = max_height - w.document.body.clientHeight;
-
-	newLeft = (w.screen.width - w.document.body.clientWidth - deltaX)/2 - 20;
-	newTop = (w.screen.height - w.document.body.clientHeight - deltaY)/2 - 30;
-
+	newLeft = newLeft + opener_width*0.2/2
+	newTop = newTop + opener_height*0.2/2
+	
 	w.moveTo(newLeft, newTop);
-	w.resizeBy(deltaX, deltaY);
+	w.resizeTo(deltaX, deltaY);
 }
 
 function process_popup()
