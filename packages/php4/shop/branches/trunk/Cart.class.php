@@ -55,7 +55,7 @@ class Cart
         break;
 
         default:
-          throw new LimbException('unknown default cart handler type', array('type' => CART_DEFAULT_HANDLER_TYPE));
+          return new LimbException('unknown default cart handler type', array('type' => CART_DEFAULT_HANDLER_TYPE));
       }
 
       $this->_cart_handler->reset();

@@ -83,27 +83,24 @@ class ImageVariation extends DomainObject
     $input_file_type = $image_library->getImageType($this->getMimeType());
     $output_file_type = $image_library->fallBackToAnySupportedType($input_file_type);
 
-    try
-    {
-      $image_library->setInputFile($input_file);
-      $image_library->setInputType($input_file_type);
+    $image_library->setInputFile($input_file);
+    $image_library->setInputType($input_file_type);
 
-      $image_library->setOutputFile($output_file);
-      $image_library->setOutputType($output_file_type);
-      $image_library->resize(array('max_dimension' => $max_size));//ugly!!!
-      $image_library->commit();
+    $image_library->setOutputFile($output_file);
+    $image_library->setOutputType($output_file_type);
+    $image_library->resize(array('max_dimension' => $max_size));//ugly!!!
 
-      $this->_updateDimensionsUsingFile($output_file);
-      $media_file_id = $media_manager->store($output_file);
-
-      $this->setMediaFileId($media_file_id);
-    }
-    catch(Exception $e)
+    if(Limb :: isError($e = $image_library->commit()))//even more ugly :(
     {
       if(file_exists($output_file))
         $this->_unlinkTempFile($output_file);
-      throw $e;
+      return $e;
     }
+
+    $this->_updateDimensionsUsingFile($output_file);
+    $media_file_id = $media_manager->store($output_file);
+
+    $this->setMediaFileId($media_file_id);
 
     $this->_unlinkTempFile($output_file);
   }

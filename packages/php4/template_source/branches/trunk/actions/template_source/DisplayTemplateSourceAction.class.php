@@ -33,24 +33,21 @@ class DisplayTemplateSourceAction extends Action
     if(substr($template_path, -5,  5) != '.html')
       $request->setStatus(Request :: STATUS_FAILURE);
 
-    try
+    if(Limb :: isError($res = resolveTemplateSourceFileName($template_path)))
     {
-      $source_file_path = resolveTemplateSourceFileName($template_path);
-    }
-    catch(LimbException $e)
-    {
-      try
+      if(is_a($res, 'LimbException'))
       {
-        $source_file_path = resolveTemplateSourceFileName(TEMPLATE_FOR_HACKERS);
+        if(Limb :: isError($res = resolveTemplateSourceFileName(TEMPLATE_FOR_HACKERS)))
+        {
+          if(is_a($res, 'LimbException'))
+            $request->setStatus(Request :: STATUS_FAILURE);
+            return;
+        }
       }
-      catch(LimbException $final_e)
-      {
-        $request->setStatus(Request :: STATUS_FAILURE);
-        return;
-      }
+      return $e;
     }
 
-    $template_contents = file_get_contents($source_file_path);
+    $template_contents = file_get_contents($res);
 
     if(sizeof($this->history) > 1)
     {

@@ -49,11 +49,11 @@ class UpdateParamCommonAction extends FormAction
 
     foreach($this->params_type as $param_name => $param_type)
     {
-      try
+      if(!Limb :: isError($res = $sys_param->getParam($param_name, $param_type)))
       {
-        $data[$param_name] = $sys_param->getParam($param_name, $param_type);
+        $data[$param_name] = $res;
       }
-      catch(LimbException $e)
+      elseif(is_a($res, 'LimbException'))
       {
         $data[$param_name] = '';
 
@@ -64,7 +64,10 @@ class UpdateParamCommonAction extends FormAction
             'param_type' => $param_type,
           )
         );
-
+      }
+      else
+      {
+        return $res;
       }
     }
 
@@ -78,15 +81,12 @@ class UpdateParamCommonAction extends FormAction
 
     foreach($this->params_type as $param_name => $param_type)
     {
-      try
-      {
-        $sys_param->saveParam($param_name, $param_type, $data[$param_name]);
-      }
-      catch(SQLException $e)
-      {
-        throw $e;
-      }
-      catch(LimbException $e)
+      if(!Limb :: isError($e = $sys_param->saveParam($param_name, $param_type, $data[$param_name])))
+        continue;
+
+      if(is_a($e, 'SQLException'))
+        return $e;
+      elseif(is_a($e, 'LimbException'))
       {
         Debug :: writeWarning('couldnt save sys parameter',
            __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
@@ -96,7 +96,6 @@ class UpdateParamCommonAction extends FormAction
           )
         );
       }
-
     }
 
     $request->setStatus(Request :: STATUS_FORM_SUBMITTED);

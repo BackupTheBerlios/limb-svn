@@ -21,7 +21,7 @@ class SetGroupAccessTemplateAction extends FormAction
   function _initDataspace($request)
   {
     if (!$class_id = $request->get('class_id'))
-      throw new LimbException('class_id not defined');
+      return new LimbException('class_id not defined');
 
     $access_policy = new AccessPolicy();
     $data['template'] = $access_policy->getAccessTemplates($class_id, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
@@ -32,7 +32,7 @@ class SetGroupAccessTemplateAction extends FormAction
   function _validPerform(&$request, &$response)
   {
     if (!$class_id = $request->get('class_id'))
-      throw new LimbException('class_id not defined');
+      return new LimbException('class_id not defined');
 
     $data = $this->dataspace->export();
 

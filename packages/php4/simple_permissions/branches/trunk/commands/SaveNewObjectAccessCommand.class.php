@@ -17,7 +17,7 @@ class SaveNewObjectAccessCommand// implements Command
 
     $dataspace = $toolkit->getDataspace();
     if (!$object = $dataspace->get('created_site_object'))
-      throw new LimbException('can\'t find created site object in dataspace');
+      return new LimbException('can\'t find created site object in dataspace');
 
     $parent_id = $object->getParentNodeId();
 
@@ -28,17 +28,14 @@ class SaveNewObjectAccessCommand// implements Command
     $ctrl =& $parent_object->getController();
     $action = $ctrl->getRequestedAction($toolkit->getRequest());
 
-    try
-    {
-      $access_policy =& $this->_getAccessPolicy();
-      $access_policy->saveNewObjectAccess($object, $parent_object, $action);
-    }
-    catch(LimbException $e)
-    {
-      return LIMB_STATUS_ERROR;
-    }
+    $access_policy =& $this->_getAccessPolicy();
+    if(!Limb :: isError($e = $access_policy->saveNewObjectAccess($object, $parent_object, $action)))
+      return LIMB_STATUS_OK;
 
-    return LIMB_STATUS_OK;
+    if(is_a($e, 'LimbException'))
+      return LIMB_STATUS_ERROR;
+    else
+      return $e;
   }
 
   // for mocking

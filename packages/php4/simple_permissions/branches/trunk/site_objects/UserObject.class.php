@@ -50,10 +50,10 @@ class UserObject extends ContentObject
   function changePassword()
   {
     if(!$user_id = $this->getId())
-      throw new LimbException('user id not set');
+      return new LimbException('user id not set');
 
     if(!$identifier = $this->getIdentifier())
-      throw new LimbException('user identifier not set');
+      return new LimbException('user identifier not set');
 
     $this->set(
       'password',

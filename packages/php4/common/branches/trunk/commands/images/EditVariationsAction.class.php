@@ -75,17 +75,14 @@ class EditVariationsAction extends FormEditSiteObjectAction
   {
     $this->object->set('files_data', $_FILES[$this->name]);
 
-    try
+    if(Limb :: isError($e = $this->object->updateVariations()))
     {
-      $this->object->updateVariations();
-    }
-    catch(SQLException $e)
-    {
-      throw $e;
-    }
-    catch(LimbException $e)
-    {
-      MessageBox :: writeNotice('Some variations were not resized');
+      if(is_a($e, 'SQLException'))
+        return $e;
+      elseif(is_a($e, 'LimbException'))
+        MessageBox :: writeNotice('Some variations were not resized');
+      else
+        return $e;
     }
   }
 

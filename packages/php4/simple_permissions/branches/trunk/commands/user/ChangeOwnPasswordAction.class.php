@@ -32,17 +32,14 @@ class ChangeOwnPasswordAction extends FormAction
 
     $data = $this->dataspace->export();
 
-    try
+    if(Limb :: isError($e = $user_object->changeOwnPassword($data['password'])))
     {
-      $user_object->changeOwnPassword($data['password']);
-    }
-    catch(SQLException $e)
-    {
-      throw $e;
-    }
-    catch(LimbException $e)
-    {
-      $request->setStatus(Request :: STATUS_FAILED);
+      if(is_a($e, 'SQLException'))
+        return $e;
+      elseif(is_a($e, 'LimbException'))
+        $request->setStatus(Request :: STATUS_FAILED);
+      else
+        return $e;
     }
 
     $request->setStatus(Request :: STATUS_FORM_SUBMITTED);

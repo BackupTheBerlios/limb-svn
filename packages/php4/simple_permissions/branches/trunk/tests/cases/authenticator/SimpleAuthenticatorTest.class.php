@@ -41,26 +41,12 @@ class SimpleAuthenticatorTest extends LimbTestCase
 
   function testLoginRequired()
   {
-    try
-    {
-      $this->auth->login(array('password' => 1));
-      $this->assertTrue(false);
-    }
-    catch(LimbException $e)
-    {
-    }
+    $this->assertTrue(Limb :: isError($this->auth->login(array('password' => 1))));
   }
 
   function testPasswordRequired()
   {
-    try
-    {
-      $this->auth->login(array('login' => 1));
-      $this->assertTrue(false);
-    }
-    catch(LimbException $e)
-    {
-    }
+    $this->assertTrue(Limb :: isError($this->auth->login(array('login' => 1))))
   }
 
   function testLogout()

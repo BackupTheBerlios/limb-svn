@@ -70,15 +70,14 @@ class RegisterNewObjectAction extends FormAction
 
     $object->merge($params);
 
-    try
+    if(Limb :: isError($e = $object->create($is_root)))
     {
-       $object->create($is_root);
-    }
-    catch(LimbException $e)
-    {
-      MessageBox :: writeNotice('object wasn\'t registered!');
-      $request->setStatus(Request :: STATUS_FAILURE);
-      throw $e;
+      if(is_a($e, 'LimbException'))
+      {
+        MessageBox :: writeNotice('object wasn\'t registered!');
+        $request->setStatus(Request :: STATUS_FAILURE);
+      }
+      return $e;
     }
 
     if (!$is_root)

@@ -32,7 +32,7 @@ class AccessPolicyForApplyActionAccessTemplateCommand extends AccessPolicy
 {
   function applyAccessTemplates($object, $action)
   {
-    throw new LimbException('catch me!');
+    return new LimbException('catch me!');
   }
 }
 

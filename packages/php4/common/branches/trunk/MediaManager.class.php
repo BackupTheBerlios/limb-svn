@@ -23,7 +23,7 @@ class MediaManager
   function store($disk_file_path)
   {
     if(!file_exists($disk_file_path))
-      throw new FileNotFoundException('file not found', $disk_file_path);
+      return new FileNotFoundException('file not found', $disk_file_path);
 
     srand(time());
     $media_id = md5(uniqid(rand()));
@@ -34,7 +34,7 @@ class MediaManager
 
     if (!copy($disk_file_path, $media_file))
     {
-      throw new IOException('copy failed',
+      return new IOException('copy failed',
         array(
           'dst' => $media_file,
           'src' => $disk_file_path

@@ -23,7 +23,7 @@ class TabsLabelsTag extends CompilerDirectiveTag
   {
     if (!is_a($this->parent, 'TabsTag'))
     {
-      throw new WactException('missing enclosure',
+      return new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'tabs',
           'file' => $this->source_file,
