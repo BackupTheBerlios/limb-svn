@@ -14,11 +14,6 @@ require_once(LIMB_DIR . 'core/search_fetcher.class.php');
 
 class search_sub_branch_datasource extends search_datasource
 {
-	function search_sub_branch_datasource()
-	{
-		parent :: search_datasource();		
-	}
-
 	function & _fetch(&$counter, $params)
 	{
 		if (!isset($params['path']))

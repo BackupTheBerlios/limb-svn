@@ -15,12 +15,7 @@ require_once(LIMB_DIR . 'core/model/search/full_text_search.class.php');
 class search_fetcher extends fetcher
 {
 	var $_query_object = null;
-	
-	function search_fetcher()
-	{
-		parent :: fetcher();
-	}
-	
+		
 	function &instance()
 	{
 		$obj =&	instantiate_object('search_fetcher');
@@ -167,17 +162,13 @@ class search_fetcher extends fetcher
 	{
 		$query = $this->_query_object->to_string();
 		
-		$counter = 0;
 		foreach($objects_array as $key => $data)
 		{
-			$counter++;
-			
 			if(!isset($objects_array[$key]['title']) || !$objects_array[$key]['title'])
 				$objects_array[$key]['title'] = $objects_array[$key]['path'];
 			
 			$objects_array[$key]['search_path'] = $objects_array[$key]['path'] . '?h=' . urlencode($query);
 			$objects_array[$key]['search_full_path'] = 'http://' . $_SERVER['HTTP_HOST'] . $objects_array[$key]['path'];
-			$objects_array[$key]['search_counter'] = $offset + $counter;
 		}
 	}
 }
