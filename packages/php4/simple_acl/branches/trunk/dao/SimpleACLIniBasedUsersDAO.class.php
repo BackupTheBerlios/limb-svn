@@ -12,17 +12,6 @@ require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 
 class SimpleACLIniBasedUsersDAO
 {
-  function setUp()
-  {
-    $ds =& Limb :: switchDataspace('acl-tests');
-    $ds->import(array());
-  }
-
-  function tearDown()
-  {
-    Limb :: switchDataspace('default');
-  }
-
   function & findByLogin($login)
   {
     $toolkit =& Limb :: toolkit();

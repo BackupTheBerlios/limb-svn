@@ -44,7 +44,7 @@ class SimpleACLLoginCommandTest extends LimbTestCase
     registerTestingIni('acl.ini',
                        'users[] = test:' . md5($password = 'test') . ':bill:test@dot.com:test');
 
-    $toolkit = Limb :: toolkit();
+    $toolkit =& Limb :: toolkit();
     $ds =& $toolkit->getDataspace();
     $ds->set('password', $password);
     $ds->set('login', 'test');

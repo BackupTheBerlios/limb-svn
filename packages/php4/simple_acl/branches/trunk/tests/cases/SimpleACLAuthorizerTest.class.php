@@ -24,6 +24,25 @@ class SimpleACLAuthorizerTest extends LimbTestCase
   function setUp()
   {
     $this->authorizer = new SimpleACLAuthorizer();
+
+    registerTestingIni(
+      'SimpleACLAuthorizerTestBehaviour.behaviour.ini',
+      '
+      [read]
+      access = 1
+      [edit]
+      access = 2
+      [create]
+      access = 4
+      [delete]
+      access = 128
+      '
+    );
+  }
+
+  function tearDown()
+  {
+    clearTestingIni();
   }
 
   function testAssignActionsWithPathExactMatchingAccess()

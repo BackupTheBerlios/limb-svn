@@ -20,6 +20,8 @@ class SimpleACLActionsRecordSet extends IteratorDbDecorator
 
     $authorizer =& $this->getAuthorizer();
     $authorizer->assignActions($record);
+
+    return $record;
   }
 
   function setAuthorizer(&$authorizer)

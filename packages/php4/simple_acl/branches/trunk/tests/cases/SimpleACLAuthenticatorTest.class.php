@@ -47,10 +47,14 @@ class SimpleACLAuthenticatorTest extends LimbTestCase
     $users_dao->expectOnce('findByLogin', array($login = 'test'));
     $password = 'test_password';
     $groups = 'some_groups';
+    $name = 'some_name';
+    $email = 'some_email';
 
     $user_data = new DataSpace();
     $user_data->import(array('password' => md5($password),
-                              'groups' => $groups));
+                              'groups' => $groups,
+                              'name' => $name,
+                              'email' => $email));
 
     $users_dao->setReturnReference('findByLogin', $user_data);
 
@@ -62,6 +66,8 @@ class SimpleACLAuthenticatorTest extends LimbTestCase
     $this->assertTrue($user->isLoggedIn());
     $this->assertEqual($user->getGroups(), $groups);
     $this->assertEqual($user->getLogin(), $login);
+    $this->assertEqual($user->get('name'), $name);
+    $this->assertEqual($user->get('email'), $email);
 
     $users_dao->tally();
   }

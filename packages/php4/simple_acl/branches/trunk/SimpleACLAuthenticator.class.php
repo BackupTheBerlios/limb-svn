@@ -45,6 +45,8 @@ class SimpleACLAuthenticator// implements Authenticator
 
     $user->setGroups($user_data->get('groups'));
     $user->setLogin($login);
+    $user->set('name', $user_data->get('name'));
+    $user->set('email', $user_data->get('email'));
   }
 }
 ?>

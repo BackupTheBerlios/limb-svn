@@ -8,6 +8,7 @@
 * $Id: SimpleAuthorizer.class.php 1032 2005-01-18 15:43:46Z pachanga $
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
 class SimpleACLAuthorizer// implements Authorizer
 {
@@ -43,8 +44,7 @@ class SimpleACLAuthorizer// implements Authorizer
 
     foreach($actions as $action)
     {
-      $method = 'get' . ucfirst($action) . 'ActionProperties';
-      $action_propery = $behaviour->$method();
+      $action_propery = $behaviour->getActionProperties($action);
 
       if ($action_propery['access'] <= $access)
         $accessible_actions[$action] = $action_propery;
