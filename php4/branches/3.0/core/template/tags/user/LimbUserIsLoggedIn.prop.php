@@ -29,9 +29,9 @@ class LimbUserIsLoggedInProperty extends CompilerProperty
     $code->writePHP($user_var . " =& ". $toolkit_var . "->getUser();\n");
 
     $code->writePHP('if ('. $user_var . "->isLoggedIn())\n");
-    $code->writePHP($this->tempvar . " = 1;\n");
+    $code->writePHP($this->tempvar . " = true;\n");
     $code->writePHP("else\n");
-    $code->writePHP($this->tempvar . " = 0;\n");
+    $code->writePHP($this->tempvar . " = false;\n");
   }
 
   function generateExpression(&$code)

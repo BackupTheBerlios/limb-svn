@@ -11,7 +11,7 @@
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/DAO/DAO.class.php');
+require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
 
 Mock :: generate('LimbBaseToolkit');
 Mock :: generate('SQLBasedDAO');

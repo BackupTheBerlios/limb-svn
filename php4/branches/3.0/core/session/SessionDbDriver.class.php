@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
 
 class SessionDbDriver// implements SessionDriver
 {

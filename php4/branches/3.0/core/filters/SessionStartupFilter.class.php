@@ -13,13 +13,10 @@ class SessionStartupFilter// implements InterceptingFilter
 {
   function run(&$filter_chain, &$request, &$response)
   {
-    Debug :: addTimingPoint('session startup filter started');
-
     $toolkit =& Limb :: toolkit();
+
     $session =& $toolkit->getSession();
     $session->start();
-
-    Debug :: addTimingPoint('session startup filter finished');
 
     $filter_chain->next();
   }

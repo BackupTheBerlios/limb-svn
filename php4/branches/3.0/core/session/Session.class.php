@@ -22,12 +22,12 @@ class Session// implements SessionDriver
   {
     session_set_save_handler
     (
-       array($this, 'storage_open'),
-       array($this, 'storage_close'),
-       array($this, 'storage_read'),
-       array($this, 'storage_write'),
-       array($this, 'storage_destroy'),
-       array($this, 'storage_gc')
+       array($this, 'storageOpen'),
+       array($this, 'storageClose'),
+       array($this, 'storageRead'),
+       array($this, 'storageWrite'),
+       array($this, 'storageDestroy'),
+       array($this, 'storageGc')
     );
 
     session_start();

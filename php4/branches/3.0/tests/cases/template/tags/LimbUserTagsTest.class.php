@@ -38,11 +38,27 @@ class LimbUserTagsTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), 'test_login-test_name');
   }
 
-  function testIsLoggedIn()
+  function testIsNotLoggedIn()
   {
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
     $user->logout();
+
+    $template = '<limb:USER><core:OPTIONAL for="UserIsLoggedIn">logged!</core:OPTIONAL>' .
+                '<core:DEFAULT for="UserIsLoggedIn">not logged!</core:DEFAULT></limb:USER>';
+
+    RegisterTestingTemplate('/limb/user_is_not_logged_in.html', $template);
+
+    $page =& new Template('/limb/user_is_not_logged_in.html');
+
+    $this->assertEqual($page->capture(), 'not logged!');
+  }
+
+  function testIsLoggedIn()
+  {
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+    $user->login();
 
     $template = '<limb:USER><core:OPTIONAL for="UserIsLoggedIn">logged!</core:OPTIONAL>' .
                 '<core:DEFAULT for="UserIsLoggedIn">not logged!</core:DEFAULT></limb:USER>';
