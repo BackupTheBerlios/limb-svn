@@ -16,7 +16,7 @@ class SearchEngineGoogleRuleTest extends LimbTestCase
 
   function searchEngineGoogleRuleTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('google rule test');
   }
 
   function setUp()

@@ -33,7 +33,7 @@ class AccessPolicyForSaveNewObjectAccessCommand extends AccessPolicy
 {
   function saveNewObjectAccess($object, $parent_object, $action)
   {
-    return new LimbException('catch me!');
+    return throw(new LimbException('catch me!'));
   }
 }
 
@@ -145,7 +145,8 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
 
     $this->dataspace->setReturnValue('get', null, array('created_site_object'));
 
-    $this->assertTrue(Limb :: isError($this->command->perform()));
+    $this->command->perform();
+    $this->assertTrue(catch('Exception', $e));
   }
 }
 

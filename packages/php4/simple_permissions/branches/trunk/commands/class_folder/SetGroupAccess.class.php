@@ -25,7 +25,7 @@ class SetGroupAccessCommand extends FormCommand
     $request =& $toolkit->getRequest();
 
     if (!$class_id = $request->get('class_id'))
-      return new LimbException('class_id not defined');
+      return throw(new LimbException('class_id not defined'));
 
     $access_policy =& $this->_getAccessPolicy();
     $policy = $access_policy->getActionsAccess($class_id, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
@@ -40,7 +40,7 @@ class SetGroupAccessCommand extends FormCommand
     $request =& $toolkit->getRequest();
 
     if (!$class_id = $request->get('class_id'))
-      return new LimbException('class_id not defined');
+      return throw(new LimbException('class_id not defined'));
 
     $access_policy =& $this->_getAccessPolicy();
     $access_policy->saveActionsAccess($class_id,

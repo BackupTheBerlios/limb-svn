@@ -26,6 +26,11 @@ class StatsUriTest extends LimbTestCase
   var $db = null;
   var $server = array();
 
+  function StatsUriTest()
+  {
+    parent :: LimbTestCase('stats uri test');
+  }
+
   function setUp()
   {
     $this->server = $_SERVER;

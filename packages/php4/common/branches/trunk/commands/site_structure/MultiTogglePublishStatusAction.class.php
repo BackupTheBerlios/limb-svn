@@ -73,13 +73,12 @@ class MultiTogglePublishStatusAction extends FormAction
   function _applyAccessPolicy($object, $action)
   {
     $access_policy = new AccessPolicy();
-    if(!Limb :: isError($e = $access_policy->applyAccessTemplates($object, $action)))
-      return;
+    $access_policy->applyAccessTemplates($object, $action);
 
-    if(is_a($e, 'LimbException'))
+    if(catch('LimbException', $e))
       MessageBox :: writeNotice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
-    else
-      return $e;
+    elseif(catch('Exception', $e))
+      return throw($e);
   }
 }
 

@@ -66,8 +66,12 @@ class SetPublishStatusAction extends Action
   function _applyAccessPolicy($object, $action)
   {
     $access_policy = new AccessPolicy();
-    $this->assertTrue(Limb :: isError($e = $access_policy->applyAccessTemplates($object, $action)));
-    MessageBox :: writeNotice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
+    $access_policy->applyAccessTemplates($object, $action);
+
+    if(catch('LimbException', $e));
+      MessageBox :: writeNotice("Access template of " .
+                                get_class($object) .
+                                " for action '{$action}' not defined!!!");
   }
 }
 

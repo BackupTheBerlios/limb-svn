@@ -15,10 +15,10 @@ class SimpleAuthenticator// implements Authenticator
   function login($params = array())
   {
     if(!isset($params['login']))
-      return new LimbException('login attribute required!');
+      return throw(new LimbException('login attribute required!'));
 
     if(!isset($params['password']))
-      return new LimbException('password attribute required!');
+      return throw(new LimbException('password attribute required!'));
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();

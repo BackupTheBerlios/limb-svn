@@ -90,11 +90,13 @@ class ImageVariation extends DomainObject
     $image_library->setOutputType($output_file_type);
     $image_library->resize(array('max_dimension' => $max_size));//ugly!!!
 
-    if(Limb :: isError($e = $image_library->commit()))//even more ugly :(
+    $image_library->commit();
+
+    if(catch('Exception', $e))//even more ugly :(
     {
       if(file_exists($output_file))
         $this->_unlinkTempFile($output_file);
-      return $e;
+      return throw($e);
     }
 
     $this->_updateDimensionsUsingFile($output_file);

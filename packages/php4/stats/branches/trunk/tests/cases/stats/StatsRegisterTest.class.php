@@ -10,6 +10,8 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../StatsRegister.class.php');
 require_once(dirname(__FILE__) . '/../../../StatsCounter.class.php');
+require_once(dirname(__FILE__) . '/../../../StatsIp.class.php');
+require_once(dirname(__FILE__) . '/../../../StatsReferer.class.php');
 require_once(LIMB_DIR . '/class/core/request/Request.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
@@ -77,7 +79,7 @@ class StatsRegisterTest extends LimbTestCase
 
   function statsRegisterTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('stats register test');
 
     $this->db =& DbFactory :: instance();
   }
@@ -162,7 +164,7 @@ class StatsRegisterTest extends LimbTestCase
 
     $this->stats_register->setRegisterTime($date->getStamp());
 
-    $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
 
     $this->_checkStatsRegisterRecord(
       $total_records = 1,
@@ -170,29 +172,29 @@ class StatsRegisterTest extends LimbTestCase
       $user_id = 10,
       $node_id,
       'test',
-       LIMB :: STATUS_OK,
+       LIMB_STATUS_OK,
       $this->stats_register->getRegisterTimeStamp());
   }
 
   function testCleanLog()
   {
     $this->stats_register->setRegisterTime(time());
-    $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
 
     $this->stats_register->setRegisterTime(time() + 2*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
 
     $this->stats_register->setRegisterTime(time() + 3*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
 
     $this->stats_register->setRegisterTime(time() + 4*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
 
     $this->stats_register->setRegisterTime(time() + 5*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
 
     $this->stats_register->setRegisterTime(time() + 6*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
 
     $date = new Date();
     $date->setByStamp(time() + 4*60*60*24 - 10);

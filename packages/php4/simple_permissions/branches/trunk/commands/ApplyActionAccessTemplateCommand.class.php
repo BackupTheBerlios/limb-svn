@@ -25,13 +25,14 @@ class ApplyActionAccessTemplateCommand// implements Command
     $action = $ctrl->getRequestedAction($request);
 
     $access_policy =& $this->_getAccessPolicy();
-    if(!Limb :: isError($e = $access_policy->applyAccessTemplates($object, $action)))
-      return LIMB_STATUS_OK;
+    $access_policy->applyAccessTemplates($object, $action);
 
-    if(is_a($e, 'LimbException'))
+    if(catch('LimbException', $e))
       return LIMB_STATUS_ERROR;
-    else
-      return $e;
+    elseif(catch('Exception', $e))
+      return throw($e);
+
+    return LIMB_STATUS_OK;
   }
 
   // for mocking

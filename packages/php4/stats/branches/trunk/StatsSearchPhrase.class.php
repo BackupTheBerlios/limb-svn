@@ -33,9 +33,9 @@ class StatsSearchPhrase
     return $GLOBALS['StatsSearchPhraseGlobalInstance'];
   }
 
-  function registerSearchEngineRule($engine_rule)
+  function registerSearchEngineRule(&$engine_rule)
   {
-    $this->engine_rules[] = $engine_rule;
+    $this->engine_rules[] =& $engine_rule;
   }
 
   function register($date)
@@ -55,7 +55,7 @@ class StatsSearchPhrase
     return true;
   }
 
-  function getMatchingSearchEngineRule()
+  function & getMatchingSearchEngineRule()
   {
     $uri = urldecode($this->_getHttpReferer());
 

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../StatsSearchPhrase.class.php');
+require_once(dirname(__FILE__) . '/../../../search_engine_rules/SearchEngineRegexRule.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
 Mock :: generate('SearchEngineRegexRule');
@@ -29,7 +30,7 @@ class StatsSearchPhraseTest extends LimbTestCase
 
   function StatsSearchPhraseTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('stats search prase test');
 
     $this->db = DbFactory :: instance();
   }

@@ -28,6 +28,11 @@ class StatsCounterTest extends LimbTestCase
 
   var $stats_counter = null;
 
+  function StatsCounterTest()
+  {
+    parent :: LimbTestCase('stats counter test');
+  }
+
   function setUp()
   {
     $this->db =& DbFactory :: instance();

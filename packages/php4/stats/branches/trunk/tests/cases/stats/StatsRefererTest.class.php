@@ -26,6 +26,11 @@ class StatsRefererTest extends LimbTestCase
   var $db = null;
   var $server = array();
 
+  function StatsRefererTest()
+  {
+    parent :: LimbTestCase('stats referer test');
+  }
+
   function setUp()
   {
     $this->server = $_SERVER;

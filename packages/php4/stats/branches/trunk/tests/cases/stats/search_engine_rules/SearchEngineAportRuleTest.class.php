@@ -16,7 +16,7 @@ class SearchEngineAportRuleTest extends LimbTestCase
 
   function searchEngineAportRuleTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('aport rule test');
   }
 
   function setUp()

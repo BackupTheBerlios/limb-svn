@@ -28,11 +28,11 @@ class UserNotInGroupsTag extends ServerComponentTag
   {
     if (!isset($this->attributes['groups']) ||  !$this->attributes['groups'])
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'groups',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     return PARSER_REQUIRE_PARSING;

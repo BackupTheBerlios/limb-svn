@@ -16,7 +16,7 @@ class SearchEngineMailruRuleTest extends LimbTestCase
 
   function searchEngineMailruRuleTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('mail.ru rule test');
   }
 
   function setUp()

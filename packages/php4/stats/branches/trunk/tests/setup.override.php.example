@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-define('LIMB_SHARED_PACKAGES_DIR', 'c:/var/dev/limb2/limb-packages/packages/php5/');
-define('LIMB_DIR', 'c:/var/dev/limb2-php5/trunk/');
+define('LIMB_SHARED_PACKAGES_DIR', 'c:/var/dev/limb2/packages/');
+define('LIMB_DIR', 'c:/var/dev/limb2/2.4/');
 define('VAR_DIR', dirname(__FILE__) . '/var/');
 define('DEBUG_HTTP_CONSOLE_DIR', 'var/');
 

@@ -16,7 +16,7 @@ class SearchEngineRamblerRuleTest extends LimbTestCase
 
   function searchEngineRamblerRuleTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('rambler rule test');
   }
 
   function setUp()

@@ -105,9 +105,9 @@ class AccessPolicy
 
     if (!$group_result &&  !$user_result)
     {
-       return new LimbException('parent object has no acccess records at all',
+       return throw(new LimbException('parent object has no acccess records at all',
         array('parent_id' => $parent_object_id)
-      );
+      ));
     }
     else
       return true;
@@ -123,8 +123,8 @@ class AccessPolicy
 
     if(!isset($user_templates[$action]) &&  !isset($group_templates[$action]))
     {
-       return new LimbException('access template is not set',
-        array('action' => $action, 'class_name' => get_class($object))
+       return throw(new LimbException('access template is not set',
+        array('action' => $action, 'class_name' => get_class($object)))
       );
     }
 

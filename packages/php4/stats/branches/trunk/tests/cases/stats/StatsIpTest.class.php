@@ -28,7 +28,7 @@ class StatsIpTest extends LimbTestCase
 
   function statsIpTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('stats ip test');
 
     $this->db =& DbFactory :: instance();
   }

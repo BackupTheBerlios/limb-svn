@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
 class SetGroupObjectsAccess extends FormAction
 {
-  protected  $objects_ids = array();
+  var $objects_ids = array();
 
   function _defineDataspaceName()
   {

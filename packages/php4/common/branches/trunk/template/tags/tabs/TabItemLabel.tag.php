@@ -23,11 +23,11 @@ class TabItemLabelTag extends CompilerDirectiveTag
   {
     if (!is_a($this->parent, 'TabsLabelsTag'))
     {
-      return new WactException('missing enclosure',
+      return throw(new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'tabs:labels',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
   }
 
@@ -35,11 +35,11 @@ class TabItemLabelTag extends CompilerDirectiveTag
   {
     if (!isset($this->attributes['tab_id']) ||  !$this->attributes['tab_id'])
     {
-      return new WactException('missing required attribute',
+      return throw(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'tab_id',
           'file' => $this->source_file,
-          'line' => $this->starting_line_no));
+          'line' => $this->starting_line_no)));
     }
 
     $this->parent->parent->tabs[] = $this->attributes['tab_id'];
