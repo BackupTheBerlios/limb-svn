@@ -67,7 +67,7 @@ class login_action extends form_action
 		{
 			if($redirect = $this->dataspace->get('redirect'))
 				return $this->_login_redirect($redirect);
-			elseif(isset($_SERVER['HTTP_REFERER']))
+			elseif(isset($_SERVER['HTTP_REFERER']) && strpos(strtolower($_SERVER['HTTP_REFERER']), '/root/login') === false)
 				return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, $_SERVER['HTTP_REFERER']);
 			else
 				return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, '/');
