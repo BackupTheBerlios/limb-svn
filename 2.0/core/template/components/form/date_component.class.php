@@ -104,7 +104,10 @@ class date_component extends input_form_element
 	function get_value()
 	{
 		$value = parent :: get_value();
-		
+
+		if(empty($value))
+			$value = $this->get_attribute('default_value');
+
 		$form =& $this->find_parent_by_class('form_component');
 		
 		if($form->is_first_time())
