@@ -682,7 +682,7 @@ class Locale
   function getLocaleIni($with_variation = false)
   {
     $type = $with_variation ? 'variation' : 'default';
-    if (get_class($this->locale_ini[$type]) != 'ini')
+    if (!is_a($this->locale_ini[$type], 'Ini'))
       $this->locale_ini[$type] = $this->_getIni($with_variation, LOCALE_DIR);
 
     return $this->locale_ini[$type];
@@ -695,7 +695,7 @@ class Locale
   function getCountryIni($with_variation = false)
   {
     $type = $with_variation ? 'variation' : 'default';
-    if (get_class($this->country_ini[$type]) != 'ini')
+    if (!is_a($this->country_ini[$type], 'Ini'))
       $this->country_ini[$type] = $this->_getIni($with_variation, LOCALE_DIR . 'country/');
 
     return $this->country_ini[$type];
@@ -708,7 +708,7 @@ class Locale
   function getLanguageIni($with_variation = false)
   {
     $type = $with_variation ? 'variation' : 'default';
-    if (get_class($this->language_ini[$type]) != 'ini')
+    if (!is_a($this->language_ini[$type], 'Ini'))
       $this->language_ini[$type] = $this->_getIni($with_variation, LOCALE_DIR . 'language/');
 
     return $this->language_ini[$type];

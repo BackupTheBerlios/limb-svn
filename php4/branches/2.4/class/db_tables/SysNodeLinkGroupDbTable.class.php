@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysNodeLinkGroupDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_node_link_group';
+  }
+
   function _defineColumns()
   {
     return array(

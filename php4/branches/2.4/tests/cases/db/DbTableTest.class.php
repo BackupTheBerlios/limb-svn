@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class Test1DbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'test1';
+  }
+
   function _defineColumns()
   {
     return array(
@@ -43,6 +48,11 @@ class DbTableTest extends LimbTestCase
 {
   var $db = null;
   var $db_table_test = null;
+
+  function DbTableTest()
+  {
+    parent :: LimbTestCase('db table tests');
+  }
 
   function setUp()
   {

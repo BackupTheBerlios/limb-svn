@@ -21,12 +21,22 @@ class DatasourceFactory
 {
   var $datasources = array();
 
-  function create($class_path)
+  function & instance()
+  {
+    if (!isset($GLOBALS['DatasourceFactoryGlobalInstance']) || !is_a($GLOBALS['DatasourceFactoryGlobalInstance'], 'DatasourceFactory'))
+      $GLOBALS['DatasourceFactoryGlobalInstance'] =& new DatasourceFactory();
+
+    return $GLOBALS['DatasourceFactoryGlobalInstance'];
+  }
+
+  function & create($class_path)
   {
     $class_name = end(explode('/', $class_path));
 
-    if(isset(DatasourceFactory :: $datasources[$class_name]))
-      return DatasourceFactory :: $datasources[$class_name];
+    $factory =& DatasourceFactory :: instance();
+
+    if(isset($factory->datasources[$class_name]))
+      return $factory->datasources[$class_name];
 
     if(!class_exists($class_name))
     {
@@ -38,9 +48,9 @@ class DatasourceFactory
       include_once($full_path);
     }
 
-    $datasource = new $class_name();
+    $datasource =& new $class_name();
 
-    DatasourceFactory :: $datasources[$class_name] = $datasource;
+    $factory->datasources[$class_name] =& $datasource;
 
     return $datasource;
   }

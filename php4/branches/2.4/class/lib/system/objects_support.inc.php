@@ -12,7 +12,7 @@
 function instantiateSessionObject($class_name, &$arguments)
 {
   if(	!isset($_SESSION['global_session_singleton_'. $class_name]) ||
-      get_class($_SESSION['global_session_singleton_'. $class_name]) != $class_name)
+      !is_a($_SESSION['global_session_singleton_'. $class_name], $class_name))
   {
     $handle =& $arguments;
     array_unshift($handle, $class_name);

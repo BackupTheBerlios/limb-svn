@@ -21,18 +21,28 @@ class DbTableFactory
 {
   var $_tables;
 
-  function create($db_table_name)
+  function & instance()
   {
-    if(isset(DbTableFactory :: $_tables[$db_table_name]))
-      return DbTableFactory :: $_tables[$db_table_name];
+    if (!isset($GLOBALS['DbTableFactoryGlobalInstance']) || !is_a($GLOBALS['DbTableFactoryGlobalInstance'], 'DbTableFactory'))
+      $GLOBALS['DbTableFactoryGlobalInstance'] =& new DbTableFactory();
+
+    return $GLOBALS['DbTableFactoryGlobalInstance'];
+  }
+
+  function & create($db_table_name)
+  {
+    $factory =& DbTableFactory :: instance();
+
+    if(isset($factory->_tables[$db_table_name]))
+      return $factory->_tables[$db_table_name];
 
     DbTableFactory :: _includeClassFile($db_table_name);
 
     $class_name = $db_table_name . 'DbTable';
 
-    $object = new $class_name();
+    $object =& new $class_name();
 
-    DbTableFactory :: $_tables[$db_table_name] = $object;
+    $factory->_tables[$db_table_name] =& $object;
 
     return $object;
   }

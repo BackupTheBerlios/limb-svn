@@ -28,7 +28,7 @@ class Date
   {
     $this->tz = DateTimeZone::getDefault();
 
-    if (is_object($date) &&  (get_class($date) == 'date'))
+    if (is_a($date, 'Date'))
       $this->copy($date);
     elseif(is_numeric($date))
       $this->setByDays($date);

@@ -16,10 +16,7 @@ class DbMysqlTest extends LimbTestCase
   function dbMysqlTest($name = 'mysql db test case')
   {
     parent :: LimbTestCase($name);
-  }
 
-  function setUp()
-  {
     if (!mysql_connect(getIniOption('common.ini', 'host', 'DB'), getIniOption('common.ini', 'login', 'DB'), getIniOption('common.ini', 'password', 'DB')))
       die ('Could not connect: ' . mysql_errno() . ' - ' . mysql_errno());
     if (!mysql_select_db(getIniOption('common.ini', 'name', 'DB')))
@@ -39,6 +36,11 @@ class DbMysqlTest extends LimbTestCase
 
     if (!mysql_query($sql))
       die ('Error creating table: ' . mysql_errno() . ' - ' . mysql_errno());
+  }
+
+  function setUp()
+  {
+    mysql_query("DELETE FROM founding_fathers;");
 
     $inserts = array(
       "INSERT INTO founding_fathers VALUES (1, 'George', 'Washington', '', 0);",
@@ -56,6 +58,7 @@ class DbMysqlTest extends LimbTestCase
 
   function tearDown()
   {
+    mysql_query("DELETE FROM founding_fathers;");
   }
 
   function testInstance()

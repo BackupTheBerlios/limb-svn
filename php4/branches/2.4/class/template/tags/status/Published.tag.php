@@ -37,7 +37,7 @@ class StatusPublishedTag extends CompilerDirectiveTag
 
     $code->writePhp('if (isset($' . $actions_tempvar . '["publish"]) && isset($' . $actions_tempvar . '["unpublish"])) {');
     $code->writePhp('$' . $tempvar . ' = trim(' . $this->getDataspaceRefCode() . '->get("status"));');
-    $code->writePhp('if ((boolean)(site_object :: STATUS_PUBLISHED & $' . $tempvar . ') === ' . $value . ') {');
+    $code->writePhp('if ((boolean)(STATUS_PUBLISHED & $' . $tempvar . ') === ' . $value . ') {');//!!!
   }
 
   function postGenerate($code)

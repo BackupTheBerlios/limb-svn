@@ -36,14 +36,7 @@ class DbTable
 
   function _defineDbTableName()
   {
-    $class_name = get_class($this);
-
-    if(($pos = strpos($class_name, 'DbTable')) !== false)
-      $class_name = substr($class_name, 0, $pos);
-
-    $table_name = to_under_scores($class_name);
-
-    return $table_name;
+    die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
   }
 
   function _definePrimaryKeyName()

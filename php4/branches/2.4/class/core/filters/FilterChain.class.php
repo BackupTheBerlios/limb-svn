@@ -33,7 +33,7 @@ class FilterChain
     foreach(array_keys($this->filters) as $key)
     {
       resolveHandle($this->filters[$key]);
-      if(get_class($this->filters[$key]) == $filter_class)
+      if(get_class($this->filters[$key]) == strtolower($filter_class))
         return true;
     }
 

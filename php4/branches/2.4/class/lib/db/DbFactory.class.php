@@ -25,7 +25,7 @@ class	DbFactory
     if (isset($GLOBALS['global_db_handler']))
       $obj =& $GLOBALS['global_db_handler'];
 
-    if (get_class($obj) != $db_class_name ||  $force_new_instance)
+    if (!is_a($obj, $db_class_name) ||  $force_new_instance)
     {
       if(!$db_params &&  $db_type !== 'null')
       {
@@ -42,6 +42,7 @@ class	DbFactory
 
       $GLOBALS['global_db_handler'] =& $obj;
     }
+
     return $obj;
   }
 

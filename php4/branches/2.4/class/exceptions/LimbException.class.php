@@ -15,7 +15,7 @@ class LimbException extends Exception
 
   function LimbException($message, $params = array())
   {
-    parent :: Exception($message);
+    parent :: Exception(-1, $message);
 
     if (is_array($params) &&  sizeof($params))
       $this->_setAdditionalParams($params);

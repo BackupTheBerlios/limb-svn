@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class TestImageDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'test_image';
+  }
+
   function _defineColumns()
   {
     return array(
@@ -38,6 +43,11 @@ class TestImageDbTable extends DbTable
 
 class TestImageVariationDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'test_image_variation';
+  }
+
   function _defineColumns()
   {
     return array(
@@ -65,6 +75,11 @@ class TestImageVariationDbTable extends DbTable
 
 class TestMediaDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'test_media';
+  }
+
   function _defineColumns()
   {
     return array(
@@ -83,6 +98,11 @@ class DbTableCascadeDeleteTest extends LimbTestCase
   var $media = null;
 
   var $dump_file = 'cascade_delete.sql';
+
+  function DbTableCascadeDeleteTest()
+  {
+    parent :: LimbTestCase('cascade delete db table tests');
+  }
 
   function setUp()
   {

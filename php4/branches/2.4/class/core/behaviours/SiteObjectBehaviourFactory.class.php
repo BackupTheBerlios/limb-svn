@@ -13,15 +13,26 @@ class SiteObjectBehaviourFactory
 {
   var $_behaviours = array();
 
-  function create($class_name)
+  function & instance()
   {
-    if(isset(SiteObjectBehaviourFactory :: $_behaviours[$class_name]))
-      return SiteObjectBehaviourFactory :: $_behaviours[$class_name];
+    if (!isset($GLOBALS['SiteObjectBehaviourFactoryGlobalInstance']) || !is_a($GLOBALS['SiteObjectBehaviourFactoryGlobalInstance'], 'SiteObjectBehaviourFactory'))
+      $GLOBALS['SiteObjectBehaviourFactoryGlobalInstance'] =& new SiteObjectBehaviourFactory();
+
+    return $GLOBALS['SiteObjectBehaviourFactoryGlobalInstance'];
+  }
+
+  function & create($class_name)
+  {
+    $factory =& SiteObjectBehaviourFactory :: instance();
+
+    if(isset($factory->_behaviours[$class_name]))
+      return $factory->_behaviours[$class_name];
 
     SiteObjectBehaviourFactory :: _includeClassFile($class_name);
 
-    SiteObjectBehaviourFactory :: $_behaviours[$class_name] = new $class_name();
-    return SiteObjectBehaviourFactory :: $_behaviours[$class_name];
+    $bhvr =& new $class_name();
+    $factory->_behaviours[$class_name] =& $bhvr;
+    return $bhvr;
   }
 
   function _includeClassFile($class_name)

@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysParamDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_param';
+  }
+
   function _defineColumns()
   {
     return  array(

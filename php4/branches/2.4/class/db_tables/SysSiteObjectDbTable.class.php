@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysSiteObjectDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_site_object';
+  }
+
   function _defineColumns()
   {
     return array(
