@@ -376,7 +376,7 @@ abstract class compiler_component
 		  $items = fs :: explode_path($_SERVER['PATH_TRANSLATED']);
 		  array_pop($items);
 		  
-		  $file_path = fs :: path($items) . $file_path;
+		  $file_path = fs :: path($items) . fs :: separator() . $file_path;
 		}		
 		
 		$file_path = addslashes(fs :: clean_path($file_path));
