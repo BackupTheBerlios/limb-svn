@@ -1,28 +1,35 @@
 <grid:LIST id='users'>
 <table>
-	<tr>
-		<th><grid:SELECTORS_TOGGLER></th>
-		<th><locale:STRING name='login' file='user'></th>
-		<th><locale:STRING name='email'></th>
-		<th><locale:STRING name='name' file='user'></th>
-		<th><locale:STRING name='lastname' file='user'></th>
-		<th><locale:STRING name='actions'></th>
-	</tr>
-	<grid:ITERATOR>
-	<tr class="jip">
-		<td><core:INCLUDE file="/admin/selector.html"></td>
-		<td jip='object' class='jip_object'>
-		<core:INCLUDE file="/admin/list_item_hint.html">
-		{$identifier}
+  <tr><td colspan='8' class='btitle1' height='3'></td></tr>
+  <tr>
+    <th><grid:SELECTORS_TOGGLER></th>
+    <th><locale:STRING name='login' file='user'></th>
+    <th><locale:STRING name='email'></th>
+    <th><locale:STRING name='name' file='user'></th>
+    <th><locale:STRING name='lastname' file='user'></th>
+    <th><locale:STRING name='actions'></th>
+  </tr>
+  <grid:ITERATOR>
+  <tr class="jip">
+    <td><core:INCLUDE file="/admin/selector.html"></td>
+    <td jip='object' class='jip_object'>
+    <core:INCLUDE file="/admin/list_item_hint.html">
+    {$identifier}
     </td>
-		<td><a href='mailto:{$email}'>{$email}</a></td>
-		<td>{$name}</td>
-		<td>{$lastname}</td>
-		<td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
-	</tr>
-	</grid:ITERATOR>
-	<tr>
-		<td colspan='8' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
-	</tr>
+    <td><a href='mailto:{$email}'>{$email}</a></td>
+    <td>{$name}</td>
+    <td>{$lastname}</td>
+    <td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
+  </tr>
+  </grid:ITERATOR>
+  <tr><td colspan='8' class='btitle1' height='3'></td></tr>
+  <tr>
+    <td colspan='8'>
+    <grid:actions select_class='select' button_class='button' locale_value='do'>
+      <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+    </grid:actions>
+    </td>
+  </tr>
+
 </table>
 </grid:LIST>
