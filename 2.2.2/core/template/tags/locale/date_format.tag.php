@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . '/core/template/compiler/server_component_tag.class.php');
 
 class locale_date_format_tag_info
