@@ -83,7 +83,7 @@ hr{height:1; color:#D7D7D7}
 
 /*form*/
 input, textArea{color:#0447CA}
-.button{font:bold 8pt Tahoma, sans; color:#ffffff; border:solid 0px; background-color:#E96060}
+.button{font:bold 8pt Tahoma, sans; color:#ffffff; border:ridge 1px; background-color:#E96060}
 .input{font:8pt Verdana, sans; border:solid 1px #3278ED; height:18px}
 .input-changed{font:8pt Verdana, sans; border:dotted 1px #3278ED; height:18px}
 .textArea-changed{font:8pt Verdana, sans; border:dotted 1px #3278ED;}

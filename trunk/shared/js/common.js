@@ -159,7 +159,10 @@ function optimize_window()
 {	
 	w = window;
 	
-	if (is_ie)
+	var x_ratio = 0.85;
+	var y_ratio = 0.85;
+	
+  if (is_ie)
 	{
 		opener_width = w.opener.document.body.clientWidth;
 		opener_height = w.opener.document.body.clientHeight;
@@ -174,29 +177,55 @@ function optimize_window()
 		opener_width = w.opener.document.body.clientWidth;
 		opener_height = w.opener.document.body.clientHeight;
 	}
-	
-	deltaX = opener_width*0.8;
-	deltaY = opener_height*0.8;
 
+	if(window.WINDOW_WIDTH)
+  {
+   	deltaX = window.WINDOW_WIDTH;
+  }
+  else
+  {
+  	deltaX = opener_width*x_ratio;
+  	if (w.document.body.scrollWidth > deltaX )
+  	{
+  	  x_ratio = 1;
+  	  deltaX = opener_width;
+  	} 
+  }	
+
+	if(window.WINDOW_HEIGHT)
+  {
+   	deltaY = window.WINDOW_HEIGHT;
+  }
+  else
+  {
+  	deltaY = opener_height*y_ratio;
+
+  	if (w.document.body.scrollHeight > deltaY )
+  	{
+  	  y_ratio = 1;
+  	  deltaY = opener_height;
+  	} 
+  }	
+  
 	if (is_ie)
 	{
-		newLeft = w.opener.screenLeft;
-		newTop = w.opener.screenTop;
+		openerLeft = w.opener.screenLeft;
+		openerTop = w.opener.screenTop;
 	}
 	else if((is_gecko)	|| (is_opera))
 	{
-		newLeft = w.opener.screenX;
-		newTop = w.opener.screenY;
+		openerLeft = w.opener.screenX;
+		openerTop = w.opener.screenY;
 	}	
 	else
 	{
-		newLeft = w.opener.screenLeft;
-		newTop = w.opener.screenTop;
+		openerLeft = w.opener.screenLeft;
+		openerTop = w.opener.screenTop;
 	}
-	
-	newLeft = newLeft + opener_width*0.2/2
-	newTop = newTop + opener_height*0.2/2
-	
+
+	newLeft = (w.screen.width - deltaX)/2 - 20;
+	newTop = (w.screen.height - deltaY)/2 - 30;
+		
 	w.moveTo(newLeft, newTop);
 	w.resizeTo(deltaX, deltaY);
 }
