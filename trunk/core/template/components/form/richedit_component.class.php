@@ -25,9 +25,24 @@ class richedit_component extends text_area_component
 			return;
 			
 		define('RICHEDIT_LOAD_SCRIPT', 1);
+    $light_script = "";
+    
+    $html_area_config = "
+    	editor = new HTMLArea('" . $this->get_attribute('id') . "',HTMLArea.Config());
+		  editor.registerPlugin('TableOperations');
+			  // register the TableOperations plugin with our editor    	
+    ";
+    
+    if ($this->get_attribute('mode') === 'light')
+    {
+    	$light_script = "<script type='text/javascript' src='/shared/richedit/light_richedit.js'></script> ";  
+    	
+    	$html_area_config = "light_editor = new HTMLAreaLight.Config(); editor = new HTMLArea('" . $this->get_attribute('id') . "',light_editor)";
+    }
 		
 		echo "
     <script type='text/javascript' src='/shared/richedit/htmlarea.js'></script>
+		{$light_script}
 		<!-- load the TableOperations plugin files -->
 		<script type='text/javascript' src='/shared/richedit/plugins/TableOperations/table-operations.js'></script>
 		<script type='text/javascript' src='/shared/richedit/plugins/TableOperations/lang/en.js'></script>
@@ -44,16 +59,13 @@ class richedit_component extends text_area_component
     </style>
     <script type='text/javascript'>
       var editor = null;
-
+    
       function init_richedit()
       {
-        editor = new HTMLArea('" . $this->get_attribute('id') . "');
+       {$html_area_config}
         editor.config.editorURL = '/shared/richedit/';
-			  editor.registerPlugin('TableOperations');
         editor.generate();
-			  // register the TableOperations plugin with our editor
       }
-      
       add_event(window, 'load', init_richedit);
     </script>";
 
