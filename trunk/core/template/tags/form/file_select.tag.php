@@ -5,24 +5,24 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: image_select.tag.php 21 2004-03-05 11:43:13Z server $
 *
 ***********************************************************************************/
 
 require_once(LIMB_DIR . '/core/template/tags/form/control_tag.class.php');
 
-class image_select_tag_info
+class file_select_tag_info
 {
-	var $tag = 'image_select';
+	var $tag = 'file_select';
 	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'image_select_tag';
+	var $tag_class = 'file_select_tag';
 } 
 
-register_tag(new image_select_tag_info());
+register_tag(new file_select_tag_info());
 
-class image_select_tag extends control_tag
+class file_select_tag extends control_tag
 {
-	var $runtime_component_path = '/core/template/components/form/image_select_component';
+	var $runtime_component_path = '/core/template/components/form/file_select_component';
 	
 	function get_rendered_tag()
 	{
@@ -33,7 +33,7 @@ class image_select_tag extends control_tag
 	{
 		$this->attributes['type'] = 'hidden';
 			
-		$code->write_php($this->get_component_ref_code() . '->init_image_select();');
+		$code->write_php($this->get_component_ref_code() . '->init_file_select();');
 		
 		parent :: pre_generate($code);
 	}
@@ -42,7 +42,7 @@ class image_select_tag extends control_tag
 	{
 		parent :: generate_contents($code);
 		
-		$code->write_php($this->get_component_ref_code() . '->render_image_select();');
+		$code->write_php($this->get_component_ref_code() . '->render_file_select();');
 	}
 } 
 

@@ -20,9 +20,12 @@ class image_select_component extends input_form_element
 			return;
 					
 		echo "<script type='text/javascript' src='/shared/js/image_select.js'></script>";
-    echo "<script type='text/javascript' src='/shared/richedit/popupurl.js'></script>";
+		
+		if (!defined('RICHEDIT_POPURL_SCRIPT'))
+    	echo "<script type='text/javascript' src='/shared/richedit/popupurl.js'></script>";
 			
 		define('IMAGE_SELECT_LOAD_SCRIPT',1);
+		define('RICHEDIT_POPURL_SCRIPT',1);
 	}
 	
 	function render_image_select()
@@ -63,18 +66,6 @@ class image_select_component extends input_form_element
 	  echo '&nbsp;';
 	  echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='Reset'>";
 	}
-	
-	function get_value()
-	{
-		$value = parent :: get_value();
-		
-		$form =& $this->find_parent_by_class('form_component');
-		
-		if($form->is_first_time())
-		{				
-		}
-			
-		return $value;
-	}
+
 } 
 ?>

@@ -54,7 +54,7 @@
 
 <grid:LIST id='files'>
 <tr>
-<td><grid:ITEM><img src='/root?node_id={$node_id}&icon' align='center'>&nbsp;{$description}</grid:ITEM></td>
+<td><grid:ITEM><img src='/root?node_id={$node_id}&icon' align='center'>{$identifier}&nbsp;{$description}</grid:ITEM></td>
 <td width='1'><core:INCLUDE file="/jip_actions/simple.html"></td>
 <td>&nbsp;<grid:ITEM><core:LITERAL><button class='button' onclick='parent.update_file_data(</core:LITERAL>{node_id: "{$node_id}", name: "{$identifier}", description: "{$description}", mime_type: "{$mime_type}", size: "{$size}"}<core:LITERAL>)'>Select</button></core:LITERAL><core:LITERAL></a></core:LITERAL></grid:ITEM></td>
 </tr>

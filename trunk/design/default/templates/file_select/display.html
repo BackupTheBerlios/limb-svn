@@ -56,12 +56,18 @@
 
 		if (typeof(file) == 'object' && file != null)
 		{
-			if (file.node_id)
+			if (file.node_id != 0)
 			{
 				preview_obj.src = '/root?node_id=' + file.node_id + '&icon';
 				insert_button_obj.disabled = false;
 			}
+			else
+			{
+				preview_obj.src = '/shared/images/no_img.gif';
+				insert_button_obj.disabled = false;
+			}
 			
+			preview_caption_obj.nodeValue = file.name;
 			preview_description_obj.nodeValue = file.description;
 		}
 		
