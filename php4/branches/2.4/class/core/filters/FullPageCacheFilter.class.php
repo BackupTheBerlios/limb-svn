@@ -22,7 +22,7 @@ class FullPageCacheFilter// implements InterceptingFilter
 
     Debug :: addTimingPoint('full page cache started');
 
-    $cache = $this->_getFullPacheCacheManager();
+    $cache =& $this->_getFullPacheCacheManager();
 
     $cache->setRequest($request);
 
@@ -41,7 +41,7 @@ class FullPageCacheFilter// implements InterceptingFilter
     Debug :: addTimingPoint('full page cache write finished');
   }
 
-  function _getFullPacheCacheManager()
+  function & _getFullPacheCacheManager()
   {
     return new FullPageCacheManager();
   }

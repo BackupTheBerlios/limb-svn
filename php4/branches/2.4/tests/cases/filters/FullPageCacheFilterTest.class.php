@@ -75,12 +75,12 @@ class FullPageCacheFilterTest extends LimbTestCase
     $this->filter->setReturnValue('_isCachingEnabled', true);
 
     $cache_manager = new MockFullPageCacheManager($this);
-    $this->filter_chain->expectOnce('next');
-    $this->filter->setReturnReference('_getFullPacheCacheManager', $cache_manager);
-
     $cache_manager->expectOnce('setRequest');
     $cache_manager->expectOnce('get');
     $cache_manager->setReturnValue('get', $result = 'someCachedResult');
+
+    $this->filter_chain->expectOnce('next');
+    $this->filter->setReturnReference('_getFullPacheCacheManager', $cache_manager);
 
     $this->response->expectOnce('write', array($result));
     $this->filter_chain->expectNever('next');

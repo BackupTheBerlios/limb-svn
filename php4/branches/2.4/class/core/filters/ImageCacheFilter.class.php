@@ -20,7 +20,7 @@ class ImageCacheFilter// implements InterceptingFilter
       return;
     }
 
-    $cache = $this->_getImageCacheManager();
+    $cache =& $this->_getImageCacheManager();
     $cache->setUri($request->getUri());
 
     ob_start();
@@ -42,7 +42,7 @@ class ImageCacheFilter// implements InterceptingFilter
     Debug :: addTimingPoint('image cache write finished');
   }
 
-  function _getImageCacheManager()
+  function &_getImageCacheManager()
   {
     return new ImageCacheManager();
   }

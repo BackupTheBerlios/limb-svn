@@ -23,9 +23,9 @@ class FilterChain
     $this->response =& $response;
   }
 
-  function registerFilter($filter)
+  function registerFilter(&$filter)
   {
-    $this->filters[] = $filter;
+    $this->filters[] =& $filter;
   }
 
   function hasFilter($filter_class)

@@ -21,7 +21,7 @@ class SpecialInterceptingFilter extends MockInterceptingFilter
 {
   var $captured = array();
 
-  function specialInterceptingFilter($test)
+  function specialInterceptingFilter(&$test)
   {
     parent :: mockinterceptingFilter($test);
   }
@@ -78,7 +78,7 @@ class OutputFilter2 extends MockInterceptingFilter
 
 class OutputFilter3 extends MockInterceptingFilter
 {
-  function outputFilter3($test)
+  function outputFilter3(&$test)
   {
     parent :: mockinterceptingFilter($test);
   }
@@ -131,9 +131,9 @@ class FilterChainTest extends LimbTestCase
 
     $this->fc->process();
 
-    $this->assertTrue($mock_filter->captured['filter_chain'] === $this->fc);
-    $this->assertTrue($mock_filter->captured['request'] === $this->request);
-    $this->assertTrue($mock_filter->captured['response'] === $this->response);
+    $this->assertIsA($mock_filter->captured['filter_chain'], 'FilterChain');
+    $this->assertIsA($mock_filter->captured['request'], 'MockRequest');
+    $this->assertIsA($mock_filter->captured['response'], 'MockHttpResponse');
 
     $mock_filter->tally();
   }

@@ -134,14 +134,18 @@ class BaseLimbToolkitTest extends LimbTestCase
 
   function testSwitchDataspace()
   {
-    $d1 = $this->toolkit->getDataspace();
-    $d2 = $this->toolkit->switchDataspace('test-dataspace');
+    $d1 =& $this->toolkit->getDataspace();
+    $d2 =& $this->toolkit->switchDataspace('test-dataspace');
 
-    $this->assertTrue($d1 !== $d2);
+    $d1->set('test', 0);
+    $d2->set('test', 1);
 
-    $d3 = $this->toolkit->switchDataspace('default');
+    $this->assertTrue($d1->get('test') != $d2->get('test'));
 
-    $this->assertTrue($d1 === $d3);
+    $d3 =& $this->toolkit->switchDataspace('default');
+
+    $this->assertReference($d1, $d3);
+    $this->assertTrue($d1->get('test') == $d3->get('test'));
   }
 
   function testSetGetView()
