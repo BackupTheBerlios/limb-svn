@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/actions/action.class.php');
-require_once(LIMB_DIR . '/class/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/class/template/fileschemes/compiler_support.inc.php');
 
 if (!defined('TEMPLATE_FOR_HACKERS'))
   define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');

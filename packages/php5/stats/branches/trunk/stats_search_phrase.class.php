@@ -31,9 +31,9 @@ class stats_search_phrase
     return self :: $instance;	
 	}
 			
-	public function register_search_engine_rule(&$engine_rule)
+	public function register_search_engine_rule($engine_rule)
 	{
-		$this->engine_rules[] =& $engine_rule;
+		$this->engine_rules[] = $engine_rule;
 	}
 	
 	public function register($date)

@@ -8,27 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class poll_component extends component
 {
-	var $path = '';
+	public $path = '';
 	
-	var $_poll_container = null;
+	protected $_poll_container = null;
 			
-	function can_vote()
+	public function can_vote()
 	{
 		return $this->_poll_container->can_vote();
 	}
 		
-	function prepare()
+	public function prepare()
 	{	
-		$this->_poll_container =& site_object_factory :: create('poll_container');
+		$this->_poll_container = site_object_factory :: create('poll_container');
 		
 		$this->import($this->_poll_container->get_active_poll());
 	}
 
-	function poll_exists()
+	public function poll_exists()
 	{
 		return sizeof($this->_poll_container->get_active_poll());
 	}

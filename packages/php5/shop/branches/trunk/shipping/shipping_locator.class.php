@@ -16,7 +16,7 @@ if (!defined('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME'))
 
 class shipping_locator
 {
-  var $cache_result = true;
+  private $cache_result = true;
   private $cache_life_time;
  
   private $cache; 

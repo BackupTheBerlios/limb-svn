@@ -21,7 +21,7 @@ class tab_item_label_tag extends compiler_directive_tag
 {  
 	public function check_nesting_level()
 	{
-		if (!is_a($this->parent, 'tabs_labels_tag'))
+		if (!$this->parent instanceof tabs_labels_tag)
 		{
 			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
 			array('tag' => $this->tag,

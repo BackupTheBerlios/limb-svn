@@ -25,7 +25,7 @@ class stats_ip
 			return true;
 		}
 		
-		$ip_date =& new date();
+		$ip_date = new date();
 		$ip_date->set_by_stamp($record['time']);
 		
 		if($ip_date->date_to_days() < $reg_date->date_to_days())

@@ -60,12 +60,12 @@ class stats_register
 	
 	public function _update_log($node_id, $action, $status_code)
 	{
-		$ip_register =& $this->_get_ip_register();
+		$ip_register = $this->_get_ip_register();
 
-		$referer_register =& $this->_get_referer_register();
-		$uri_register =& $this->_get_uri_register();
+		$referer_register = $this->_get_referer_register();
+		$uri_register = $this->_get_uri_register();
 		
-		$user =& user :: instance();
+		$user = user :: instance();
 		
 		$this->db->sql_insert('sys_stat_log', 
 			array(
@@ -96,8 +96,8 @@ class stats_register
 	
 	private function _update_counters()
 	{	
-		$ip_register =& $this->_get_ip_register();
-		$counter_register =& $this->_get_counter_register();
+		$ip_register = $this->_get_ip_register();
+		$counter_register = $this->_get_counter_register();
 		
 		$counter_register->set_new_host($ip_register->is_new_host($this->_reg_date));
 		$counter_register->update($this->_reg_date);
@@ -105,7 +105,7 @@ class stats_register
 	
 	private function _update_search_referers()
 	{	
-		$phrase_register =& $this->_get_search_phrase_register();
+		$phrase_register = $this->_get_search_phrase_register();
 		$phrase_register->register($this->_reg_date);
 	}
 	

@@ -10,9 +10,9 @@
 ***********************************************************************************/ 
 class cart_summ_tag_info
 {
-	var $tag = 'cart:SUMM';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'cart_summ_tag';
+	public $tag = 'cart:SUMM';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'cart_summ_tag';
 } 
 
 register_tag(new cart_summ_tag_info());
@@ -24,7 +24,7 @@ class cart_summ_tag extends server_component_tag
 	  $this->runtime_component_path = dirname(__FILE__) . '/../components/cart_summ_component';
 	}
 	
-	protected function generate_contents($code)
+	public function generate_contents($code)
 	{
 		$code->write_php('echo '. $this->get_component_ref_code() . '->get_cart_summ();');
 	} 	

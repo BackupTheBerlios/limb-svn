@@ -36,7 +36,7 @@ class stats_counter
 		$reg_stamp = $reg_date->get_stamp();
 		$record = $this->_get_counter_record($reg_stamp);
 		
-		$counters_date =& new date();
+		$counters_date = new date();
 		$counters_date->set_by_stamp($record['time']);
 		
 		if($counters_date->date_to_days() < $reg_date->date_to_days())
@@ -138,7 +138,7 @@ class stats_counter
 						home_hits=home_hits+{$home_hit},
 						audience=audience+{$audience}
 						WHERE
-						time=" . $this->_make_day_stamp($stamp);
+						time=" . $this->make_day_stamp($stamp);
 					
 		$this->db->sql_exec($sql);
 	}
