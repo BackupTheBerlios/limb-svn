@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/request/request.class.php');
+require_once(LIMB_DIR . '/class/request/request.class.php');
 
 class request_test extends LimbTestCase
 {

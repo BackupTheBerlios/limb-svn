@@ -14,7 +14,7 @@ else
 	die('project dir required');
 	
 require_once($project_dir . '/setup.php'); 
-require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . '/tests/lib/project_site_objects_loader.class.php');
 
 $site_objects = array();

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 class db_mysql_test extends LimbTestCase
 {

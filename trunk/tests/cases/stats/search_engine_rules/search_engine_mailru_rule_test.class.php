@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/model/stats/search_engine_rules/search_engine_mailru_rule.class.php');
+require_once(LIMB_DIR . '/class/model/stats/search_engine_rules/search_engine_mailru_rule.class.php');
 
 class search_engine_mailru_rule_test extends LimbTestCase 
 {

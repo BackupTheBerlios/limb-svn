@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
+require_once(LIMB_DIR . '/class/model/stats/stats_referer.class.php');
 
 Mock::generatePartial
 (

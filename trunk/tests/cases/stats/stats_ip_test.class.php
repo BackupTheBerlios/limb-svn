@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/model/stats/stats_ip.class.php');
-require_once(LIMB_DIR . '/core/lib/http/ip.class.php');
+require_once(LIMB_DIR . '/class/model/stats/stats_ip.class.php');
+require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
 
 Mock::generatePartial
 (

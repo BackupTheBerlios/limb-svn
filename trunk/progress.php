@@ -5,13 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: progress.php 401 2004-02-04 15:40:14Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 ob_start();
 
 require_once('setup.php');
-require_once(LIMB_DIR . '/core/lib/util/progress.class.php');
+require_once(LIMB_DIR . '/class/lib/util/progress.class.php');
 
 if (!isset($_GET['last_message_id'])) 
 	$last_message_id = -1;

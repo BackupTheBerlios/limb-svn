@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/us_zip_rule.class.php');
+require_once(LIMB_DIR . 'core/validators/rules/us_zip_rule.class.php');
 
 class us_zip_rule_test extends single_field_rule_test
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
 
 class TestManager
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . 'core/validators/rules/single_field_rule.class.php');
 
 class single_field_rule_test extends rule_test 
 {  	          

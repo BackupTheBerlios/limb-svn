@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/model/stats/stats_search_phrase.class.php');
+require_once(LIMB_DIR . '/class/model/stats/stats_search_phrase.class.php');
 
 Mock::generate('search_engine_regex_rule');
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 
 class uri_test extends LimbTestCase
 {

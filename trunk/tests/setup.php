@@ -36,13 +36,13 @@ if(!defined('DEFAULT_CONTENT_LOCALE_ID'))
   define('DEFAULT_CONTENT_LOCALE_ID','en');
 
 
-require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_repository.php');
+require_once(LIMB_DIR . '/class/file_resolvers/file_resolvers_repository.php');
 
 $r = array();
-register_file_resolver('ini',    $r[] = LIMB_DIR . '/core/file_resolvers/tests_ini_file_resolver');
-register_file_resolver('action', $r[] = LIMB_DIR . '/core/file_resolvers/tests_action_file_resolver');
-register_file_resolver('strings', $r[] = LIMB_DIR . '/core/file_resolvers/tests_strings_file_resolver');
-register_file_resolver('common', $r[] = LIMB_DIR . '/core/file_resolvers/tests_common_file_resolver');
+register_file_resolver('ini',    $r[] = LIMB_DIR . '/class/file_resolvers/tests_ini_file_resolver');
+register_file_resolver('action', $r[] = LIMB_DIR . '/class/file_resolvers/tests_action_file_resolver');
+register_file_resolver('strings', $r[] = LIMB_DIR . '/class/file_resolvers/tests_strings_file_resolver');
+register_file_resolver('common', $r[] = LIMB_DIR . '/class/file_resolvers/tests_common_file_resolver');
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 
@@ -51,7 +51,7 @@ require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');
 require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');
 require_once(LIMB_DIR . '/tests/lib/test_manager.php');
-require_once(LIMB_DIR . '/core/lib/error/error.inc.php');
+require_once(LIMB_DIR . '/class/lib/error/error.inc.php');
 
 set_time_limit(0);
 error_reporting(E_ALL);

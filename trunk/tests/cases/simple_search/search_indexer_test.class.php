@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/core/model/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/core/model/search/indexer.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/model/search/indexer.class.php');
 
 Mock::generate('site_object');
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/request/http_response.class.php');
+require_once(LIMB_DIR . '/class/request/http_response.class.php');
 
 Mock::generatePartial(
   'http_response',

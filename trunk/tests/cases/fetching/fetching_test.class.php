@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'core/request/request.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
-require_once(LIMB_DIR . 'core/model/access_policy.class.php');
+require_once(LIMB_DIR . 'core/access_policy.class.php');
 
 Mock::generate('request');
 

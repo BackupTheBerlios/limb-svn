@@ -15,11 +15,11 @@ if(!defined('MEDIA_DIR'))
   define('MEDIA_DIR', VAR_DIR . 'media/');
 
 if (version_compare(phpversion(), '4.2', '<'))
-	include_once(LIMB_DIR . '/core/lib/util/php42.php');
+	include_once(LIMB_DIR . '/class/lib/util/php42.php');
 
 if (version_compare(phpversion(), '4.3', '<')) 
-	include_once(LIMB_DIR . '/core/lib/util/php43.php');
+	include_once(LIMB_DIR . '/class/lib/util/php43.php');
 	
-require_once(LIMB_DIR . '/core/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
 
 ?>

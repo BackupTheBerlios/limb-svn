@@ -11,7 +11,7 @@
 $site_path = $argv[1];
 require_once($site_path . '/setup.php');
 
-require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . 'core/lib/error/debug.class.php');
 require_once(LIMB_DIR . 'core/request/nonbuffered_response.class.php');
 require_once(LIMB_DIR . 'core/lib/cron/cron_manager.class.php');
 
