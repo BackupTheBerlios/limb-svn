@@ -22,7 +22,7 @@
 							</tr>
 							<tr>
 								<td align=center>
-									<iframe name='image_select_frame' src='/root/images_folder?action=image_select' width=400 height=300></iframe>
+									<iframe name='image_select_frame' id='image_select_frame' width=400 height=300></iframe>
 									</td>
 							</tr>
 							</table>	
@@ -229,8 +229,12 @@
 	function get_image()
 	{
 		h = get_init_popup_handler();
-		img = h(window.name);
-		
+		img = h();
+    
+    window.focus();//Mozilla somehow loses focus ofter getting the image :(
+    
+    start_path = '/root/images_folder?action=image_select';
+    
 		if (img && typeof(img) == 'object')
 		{
 			if (img.node_id)
@@ -251,15 +255,12 @@
 			if(img.name) //the case when we don't have image identifier in richedit
 			  preview_caption_obj.nodeValue = img.name;
 			  
-  		start_path = img.start_path;
-  		if(!start_path)
-  			start_path = '/root/images_folder?action=image_select';
-  
-  		image_select_frame.location = start_path;			  
+  		if(!img.start_path)
+  		  start_path = img.start_path;	
 		}
 		
-		render_properties();
-		process_popup();
+    image_select_frame.location = start_path;		
+		render_properties();		
 	}
 	
 	function render_properties()

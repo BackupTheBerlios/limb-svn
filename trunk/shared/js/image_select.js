@@ -20,6 +20,9 @@ image_select.prototype.generate = function()
 
 image_select.prototype.get_image = function()
 {
+  if(this.id_container.value == 0)
+    return null;
+  
 	img = {
 		node_id: this.id_container.value, 
 		name: this.name.innerHTML,

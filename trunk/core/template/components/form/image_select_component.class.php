@@ -39,7 +39,6 @@ class image_select_component extends input_form_element
 		else
 			$span_name = '';
 
-  	$start_path_condition = "";
   	if(!$start_path)
   	{
 	 		$start_path = $this->get_attribute('start_path');
@@ -51,8 +50,6 @@ class image_select_component extends input_form_element
 			$start_path .= '?action=image_select';
 		}
 
-  	$start_path_condition = "image_select_{$md5id}.set_start_path('{$start_path}');";
-  	  	  	
   	echo "<span id='{$md5id}_name'>{$span_name}</span><br><img id='{$md5id}_img' src='/shared/images/1x1.gif'/>
 	    <script type='text/javascript'>
 	    	var image_select_{$md5id};
@@ -60,7 +57,7 @@ class image_select_component extends input_form_element
 	      function init_image_select_{$md5id}()
 	      {
 	        image_select_{$md5id} = new image_select('{$id}', '{$md5id}');
-	        {$start_path_condition}
+	        image_select_{$md5id}.set_start_path('{$start_path}');
 	        image_select_{$md5id}.generate();
 	      }
 	      
@@ -70,7 +67,7 @@ class image_select_component extends input_form_element
 	      }
 
 	      function image_select_{$md5id}_get_image()
-	      {
+	      {	        
 	      	return image_select_{$md5id}.get_image();
 	      }
 	      

@@ -240,6 +240,22 @@ function process_popup()
 		opener.location.reload();
 }
 
+function trim(value) 
+{
+   var temp = value;
+   var obj = /^(\s*)([\W\w]*)(\b\s*$)/;
+   
+   if (obj.test(temp))
+    temp = temp.replace(obj, '$2');
+    
+   var obj = / +/g;
+   temp = temp.replace(obj, " ");
+   if (temp == " ")
+    temp = "";
+    
+   return temp;
+}
+
 function get_cookie(name)
 {
   var a_cookie = document.cookie.split("; ");
@@ -335,6 +351,8 @@ function jump_change_get(get, w)
 //makes popup window at href address
 function popup(href, window_name, window_params, dont_set_focus, on_close_handler, on_init_handler)
 {	
+  href = set_http_get_parameter(href, 'popup', 1);
+  
 	if (typeof(window_name) == 'undefined' || window_name == null) 
 		window_name = '_generate';
 
@@ -364,8 +382,6 @@ function popup(href, window_name, window_params, dont_set_focus, on_close_handle
 	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);	
 	if (href != LOADING_STATUS_PAGE)
 	 w.location.href = href;
-	
-	//w = window.open(href, window_name, window_params);	
 	
 	if(!dont_set_focus)
 		w.focus();

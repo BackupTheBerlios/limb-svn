@@ -34,6 +34,9 @@ file_select.prototype.generate = function()
 
 file_select.prototype.get_file = function()
 {
+  if(this.id_container.value == 0)
+    return null;
+  
 	file = {
 					node_id: this.id_container.value, 
 					name: this.name.innerHTML, 

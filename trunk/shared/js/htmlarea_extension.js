@@ -1,13 +1,21 @@
 function install_limb_full_extension(config)
 {
-  config.toolbar = 
-  [
-		[ "fontname", "space",
+  upper_toolbar = [ "fontname", "space",
 		  "fontsize", "space",
 		  "formatblock", "space",
 		  "bold", "italic", "underline", "strikethrough", "separator",
 		  "subscript", "superscript", "separator",
-		  "copy", "cut", "paste", "space", "undo", "redo" ],
+		  "copy", "cut", "paste", "space"];
+  
+  if(HTMLArea.is_gecko)
+  {
+    upper_toolbar[upper_toolbar.length] = "undo";
+    upper_toolbar[upper_toolbar.length] = "redo";
+  }
+  
+  config.toolbar = 
+  [
+    upper_toolbar,
 
 		[ "justifyleft", "justifycenter", "justifyright", "justifyfull", "separator",
 		  "lefttoright", "righttoleft", "separator",
@@ -77,8 +85,7 @@ function register_css(config)
 function insert_limb_repository_image(e, id)
 {
   var editor = e;
-  
-	popup("/root/image_select", null, null, false,  
+	popup("/root/image_select?popup=1", null, null, false,  
 	
     function(image) 
     {
@@ -180,8 +187,9 @@ function insert_limb_repository_image(e, id)
     }	  
 	  ,
     function()
-    {      
+    { 
       sel = editor.getParentElement();
+      
     	if (sel.tagName == 'IMG' && sel.hasAttribute('limb_attributes'))
     	{
     		params = sel.getAttribute('limb_attributes');
@@ -198,7 +206,10 @@ function insert_limb_repository_image(e, id)
   						 link_to: params[2]};
   			return img;
     	}
-      return null;
+      else
+      {
+        return null;
+      }
     }
 	);
 }
@@ -207,7 +218,7 @@ function insert_limb_repository_file(e, id)
 {
   var editor = e;
   
-	popup("/root/file_select", null, null, false, 
+	popup("/root/file_select?popup=1", null, null, false, 
 	
   	function (file)
     {
