@@ -404,7 +404,7 @@ function submit_form(form, form_action)
 	
 	if(form_action)
 		form.action = form_action;
-		
+	
 	form.submit();
 }
 

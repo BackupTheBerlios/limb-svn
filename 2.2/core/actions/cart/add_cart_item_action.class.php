@@ -37,6 +37,9 @@ class add_cart_item_action extends action
 		
 		$cart =& cart :: instance();
 		
+		if ($quantity = $request->get_attribute('quantity'))
+			$cart_item->set_amount($quantity);
+			
 		$cart->add_item($cart_item);
 		
 		$request->set_status(REQUEST_STATUS_SUCCESS);
