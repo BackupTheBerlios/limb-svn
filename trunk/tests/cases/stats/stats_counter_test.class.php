@@ -20,7 +20,7 @@ Mock::generatePartial
   )
 );
 
-class stats_counter_test extends UnitTestCase 
+class stats_counter_test extends LimbTestCase 
 {
 	var $db = null;
 	

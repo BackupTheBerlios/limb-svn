@@ -33,7 +33,7 @@ class special_dir_walker extends mock_dir_walker
 	}
 }
 
-class fs_test extends UnitTestCase 
+class fs_test extends LimbTestCase 
 {  
   function _create_file_system()
   {

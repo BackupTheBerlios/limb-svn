@@ -28,7 +28,7 @@ Mock::generatePartial(
   array('is_cacheable', 'cache_exists', 'get_cache_id')
 );
 
-class full_page_cache_manager_test extends UnitTestCase
+class full_page_cache_manager_test extends LimbTestCase
 {
   var $cache_manager;
   var $uri;

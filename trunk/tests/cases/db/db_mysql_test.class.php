@@ -10,11 +10,11 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 
-class db_mysql_test extends UnitTestCase
+class db_mysql_test extends LimbTestCase
 {
 	function db_mysql_test($name = 'mysql db test case')
 	{
-		parent :: UnitTestCase($name);		
+		parent :: LimbTestCase($name);		
 	} 
 		
 	function setUp()

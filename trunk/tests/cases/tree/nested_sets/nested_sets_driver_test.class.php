@@ -17,7 +17,7 @@ class nested_sets_driver_test_version extends nested_sets_driver
 	var $_node_table = NESTED_SETS_TEST_TABLE;	
 }
 
-class nested_sets_driver_test extends UnitTestCase
+class nested_sets_driver_test extends LimbTestCase
 {
 	var $db = null;
 	var $driver = null;

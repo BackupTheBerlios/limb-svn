@@ -13,7 +13,7 @@ if (!defined('PHP_IMAGE_DIR_C'))
 
 SimpleTestOptions::ignore('image_library_test');
 
-class image_library_test extends UnitTestCase 
+class image_library_test extends LimbTestCase 
 {
   var $library = null;
   var $input_file = '';

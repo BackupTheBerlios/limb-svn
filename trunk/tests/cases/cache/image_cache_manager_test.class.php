@@ -36,7 +36,7 @@ Mock::generatePartial(
   array('is_cacheable', '_get_fetcher')
 );
 
-class image_cache_manager_test extends UnitTestCase
+class image_cache_manager_test extends LimbTestCase
 {
   var $cache_manager;
   var $cache_manager2;
@@ -326,7 +326,6 @@ class image_cache_manager_test extends UnitTestCase
     );
     
     $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
-    $this->cache_manager2->setReturnValue('_filter_not_cached_images', array(1 => 'thumbnail'));
     $this->cache_manager2->process_content($c);
     
     $this->assertEqual($c, 

@@ -32,9 +32,7 @@ if(isset($_GET['all']))
 
 if (isset($_GET['group']))
 {
-	TestManager::runGroupTest(ucfirst($_GET['group']),
-		$_GET['group'],
-		new HTMLReporter());
+	TestManager::runGroupTest($_GET['group'], new HTMLReporter());
 
 	echo "<p><a href='" . $_SERVER['PHP_SELF'] . "'>Run more tests</a></p>";
 	echo debug :: parse_html_console();
@@ -56,13 +54,11 @@ echo "<h1>Unit Test Suite</h1>\n";
 if (isset($_GET['show']) && $_GET['show'] == 'cases')
 {
 	echo HTMLTestManager::getGroupTestList(LIMB_DIR . '/tests/cases');
-	echo HTMLTestManager::getGroupTestList(PROJECT_DIR . '/tests/cases');
 } 
 else
 {
 	/* no group specified, so list them all */
 	echo HTMLTestManager::getGroupTestList(LIMB_DIR . '/tests/groups');
-	echo HTMLTestManager::getGroupTestList(PROJECT_DIR . '/tests/groups');
 } 
 
 ob_end_flush();

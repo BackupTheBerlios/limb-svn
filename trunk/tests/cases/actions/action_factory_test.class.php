@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action_factory.class.php');
 
-class action_factory_test extends UnitTestCase 
+class action_factory_test extends LimbTestCase 
 {  	  
   function setUp()
   {

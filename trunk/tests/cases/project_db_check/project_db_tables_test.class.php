@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 
-class project_db_tables_test extends UnitTestCase
+class project_db_tables_test extends LimbTestCase
 {
 	var $db = null;
 	var $db_tables = array();
@@ -20,7 +20,7 @@ class project_db_tables_test extends UnitTestCase
 	function project_db_tables_test($name = 'db tables test case')
 	{
 		$this->db =& db_factory :: instance();
-		parent :: UnitTestCase($name);
+		parent :: LimbTestCase($name);
 	} 
 	
 	function test_db_tables()

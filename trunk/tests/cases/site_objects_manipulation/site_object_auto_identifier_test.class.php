@@ -36,7 +36,7 @@ class site_object_auto_identifier_test_version extends site_object
 	}
 }
 
-class site_object_auto_identifier_test extends UnitTestCase 
+class site_object_auto_identifier_test extends LimbTestCase 
 { 
 	var $db = null;
 	var $object = null;

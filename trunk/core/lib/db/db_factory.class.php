@@ -13,8 +13,10 @@ class	db_factory
 {
 	function &instance($db_type='', $db_params='', $force_new_instance=false)
 	{	
-		if(!$db_type)
+		if(!$db_type && defined('DB_TYPE'))
 			$db_type = DB_TYPE;
+	  elseif(!$db_type)
+	    $db_type = 'fake';
 		
 		$db_class_name = 'db_' . $db_type;
 

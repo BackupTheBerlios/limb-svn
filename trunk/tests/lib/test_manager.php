@@ -62,7 +62,7 @@ class TestManager
 		$test->run($reporter);
 	} 
 
-	function runGroupTest($group_test_name, $group_test_directory, &$reporter)
+	function runGroupTest($group_test_name, &$reporter)
 	{
 		$manager = &new TestManager();
 
@@ -73,7 +73,7 @@ class TestManager
 		} 
 
 		require_once($group_test_name);
-		$test = &new GroupTest($group_test_name . ' group test');
+		$test = &new GroupTest("\n==== " . $group_test_name . " group test =====\n");
 		
 		foreach ($manager->_getGroupTestClassNames($group_test_name) as $group_test)
 		{
@@ -199,9 +199,9 @@ class CLITestManager extends TestManager
 		$group_tests = &$manager->_getTestGroupList($directory);
 
 		$buffer = "Available grouptests in {$directory}:\n";
-		foreach ($group_tests as $group_test)
+		foreach ($group_tests as $index => $group_test)
 		{
-			$buffer .= "  " . $group_test . "\n";
+			$buffer .= $index . ")  " . $group_test . "\n";
 		} 
 		return $buffer . "\n";
 	} 

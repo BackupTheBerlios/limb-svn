@@ -37,7 +37,7 @@ class site_object_manipulation_test_version extends site_object
 	}
 }
 
-class site_object_manipulation_test extends UnitTestCase 
+class site_object_manipulation_test extends LimbTestCase 
 { 
 	var $db = null;
 	var $object = null;

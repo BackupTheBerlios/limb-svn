@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/core/model/search/full_text_indexer.class.php');
 
 Mock::generate('site_object');
 
-class full_text_search_indexer_test extends UnitTestCase
+class full_text_search_indexer_test extends LimbTestCase
 {
 	var $db = null;
 	var $site_object = null;

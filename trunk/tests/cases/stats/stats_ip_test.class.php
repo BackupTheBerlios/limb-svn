@@ -20,14 +20,14 @@ Mock::generatePartial
   )
 );
 
-class stats_ip_test extends UnitTestCase 
+class stats_ip_test extends LimbTestCase 
 {
   var $stats_ip = null;
   var $db = null;
 	
   function stats_ip_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   	
   	$this->db =& db_factory :: instance();
   }

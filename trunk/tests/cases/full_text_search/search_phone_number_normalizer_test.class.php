@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/search/normalizers/search_phone_number_normalizer.class.php');
 
-class search_phone_number_normalizer_test extends UnitTestCase
+class search_phone_number_normalizer_test extends LimbTestCase
 {
 	var $normalizer = null;
 
@@ -18,7 +18,7 @@ class search_phone_number_normalizer_test extends UnitTestCase
 	{
 		$this->normalizer = new search_phone_number_normalizer();
 		
-		parent :: UnitTestCase($name);
+		parent :: LimbTestCase($name);
 	} 
 		
 	function test_process()

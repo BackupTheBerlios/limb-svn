@@ -28,7 +28,7 @@ class mock_root_object extends site_object
 	}
 }
 
-class site_object_tester extends UnitTestCase 
+class site_object_tester extends LimbTestCase 
 { 
 	var $db = null;
 	var $class_name = '';
@@ -43,7 +43,7 @@ class site_object_tester extends UnitTestCase
   	
   	$this->class_name = $class_name;
 
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
   
   function &_create_site_object()

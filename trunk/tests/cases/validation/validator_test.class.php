@@ -22,7 +22,7 @@ Mock::generatePartial(
 
 Mock :: generate('rule');
 
-class validator_test extends UnitTestCase 
+class validator_test extends LimbTestCase 
 {
   var $error_list = null;
   var $validator = null;

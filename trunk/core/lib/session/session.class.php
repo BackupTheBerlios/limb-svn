@@ -62,8 +62,7 @@ function start_user_session()
 	if(defined('SESSION_USE_DB') && constant('SESSION_USE_DB'))
 		_register_session_db_functions();
 	
-	if(sys :: exec_mode() != 'cli')	
-		@session_start();
+	session_start();
 		
 	$has_started = true;
 	return true;

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/setup.php');
+require_once(dirname(__FILE__) . '/setup.php');
 require_once(LIMB_DIR . '/tests/lib/test_manager.php');
 require_once(LIMB_DIR . '/core/lib/error/error.inc.php');
 
@@ -16,16 +16,14 @@ function usage()
 {
 	$usage = <<<EOD
 Usage: ./runtests.php [OPTION]...
-Run the WACT unit tests. If ALL of the test cases pass a count of total
+Run the LIMB unit tests. If ALL of the test cases pass a count of total
 passes is printed on STDOUT. If ANY of the test cases fail (or raise
 errors) details are printed on STDERR and this script returns a non-zero
 exit code.
-  -f  --file=NAME         specify a test case file
-  -g  --group=NAME        specify a grouptest. If no grouptest is
+  -f  --file=NUMBER         specify a test case number
+  -g  --group=NUMBER        specify a grouptest number. If no grouptest is
                           specified, all test cases will be run.
   -l  --list              list available grouptests/test case files
-  -s, --separator=SEP     set the character(s) used to separate fail
-                          details to SEP
   -p, --path              path to SimpleTest installation
   -h, --help              display this help and exit
 
@@ -95,38 +93,32 @@ if (class_exists('Console_Getopt'))
 	} 
 } 
 
-if (!@ include_once(SIMPLE_TEST . 'runner.php'))
-{
-	error('runtime', 'LIBRARY_REQUIRED', array('library' => 'Simple Test',
-			'path' => SIMPLE_TEST));
-} 
-
-require_once(LIMB_DIR . '/tests/lib/cli_reporter.php');
-
 /* list grouptests */
 if ($opt_list)
 {
-	echo CLITestManager::getGroupTestList(TEST_GROUPS_DIR);
-	echo CLITestManager::getTestCaseList(TEST_CASES_DIR);
+	echo CLITestManager::getGroupTestList(LIMB_DIR . '/tests/groups');
 	exit(0);
 } 
 /* run a test case */
-if ($opt_casefile)
+if ($opt_casefile !== false)
 {
-	TestManager::runTestCase($opt_casefile, new CLIReporter($opt_separator));
+	TestManager::runTestCase($opt_casefile, new TextReporter());
 	echo debug :: parse_cli_console();
 	exit(0);
 } 
 /* run a grouptest */
-if ($opt_groupfile)
-{
-	TestManager::runGroupTest($opt_groupfile, TEST_GROUPS_DIR,
-		new CLIReporter($opt_separator));
-	echo debug :: parse_cli_console();	
+if ($opt_groupfile !== false)
+{  
+  $groups = TestManager::getGroupTestList(LIMB_DIR . '/tests/groups');
+  if(isset($groups[$opt_groupfile]))
+  {
+	  TestManager::runGroupTest($groups[$opt_groupfile], new TextReporter());
+	  echo debug :: parse_cli_console();	
+	}
 	exit(0);
 } 
 /* run all tests */
-TestManager::runAllTests(new CLIReporter($opt_separator));
+TestManager::runAllTests(LIMB_DIR . '/tests/groups', new TextReporter());
 echo debug :: parse_cli_console();
 exit(0);
 

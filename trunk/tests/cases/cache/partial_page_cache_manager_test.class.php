@@ -29,7 +29,7 @@ Mock::generatePartial(
 );
 
 
-class partial_page_cache_manager_test extends UnitTestCase
+class partial_page_cache_manager_test extends LimbTestCase
 {
   var $cache_manager;
   var $uri;

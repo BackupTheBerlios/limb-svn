@@ -35,7 +35,7 @@ Mock::generatePartial
   '_create_action')
 ); 
 
-class site_object_controller_test extends UnitTestCase 
+class site_object_controller_test extends LimbTestCase 
 { 
 	var $site_object_controller = null;
 	var $request = null;

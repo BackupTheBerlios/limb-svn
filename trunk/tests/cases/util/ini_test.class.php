@@ -16,7 +16,7 @@ Mock :: generatePartial(
   array('_parse', '_save_cache')
 );
 
-class ini_test extends UnitTestCase 
+class ini_test extends LimbTestCase 
 { 
   function setUp()
   {

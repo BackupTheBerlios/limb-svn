@@ -10,11 +10,11 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/error_list.class.php');
 	
-class error_list_test extends UnitTestCase 
+class error_list_test extends LimbTestCase 
 {  	
   function error_list_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
   
   function setUp()

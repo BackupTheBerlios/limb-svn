@@ -40,7 +40,7 @@ Mock::generate(
   'response'
 );
 
-class form_action_test extends UnitTestCase 
+class form_action_test extends LimbTestCase 
 {
 	var $debug = null;
 	var $form_action = null;

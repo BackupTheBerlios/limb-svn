@@ -12,14 +12,14 @@
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/model/phpbb_user.class.php');
 
-class phpbb_user_test extends UnitTestCase 
+class phpbb_user_test extends LimbTestCase 
 { 
 	var $db = null;
 	var $object = null; 	
   
   function phpbb_user_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   	
   	$this->db = db_factory :: instance();
   }

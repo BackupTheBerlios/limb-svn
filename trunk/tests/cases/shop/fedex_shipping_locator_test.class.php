@@ -19,7 +19,7 @@ Mock :: generatePartial(
     '_get_ground_shipping_options_html')
 );
 
-class fedex_shipping_locator_test extends UnitTestCase
+class fedex_shipping_locator_test extends LimbTestCase
 {
   var $mock_locator;
   var $locator;

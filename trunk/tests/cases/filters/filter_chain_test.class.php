@@ -95,7 +95,7 @@ class output_filter3 extends Mockintercepting_filter
   }
 }
 
-class filter_chain_test extends UnitTestCase
+class filter_chain_test extends LimbTestCase
 {
   var $fc;
   var $request;

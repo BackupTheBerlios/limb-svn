@@ -10,13 +10,13 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/search/search_query.class.php');
 
-class search_query_test extends UnitTestCase
+class search_query_test extends LimbTestCase
 {
 	var $query_object = null;
 
 	function search_query_test($name = 'search query test case')
 	{
-		parent :: UnitTestCase($name);
+		parent :: LimbTestCase($name);
 	} 
 	
 	function setUp()

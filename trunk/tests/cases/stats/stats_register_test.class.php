@@ -61,7 +61,7 @@ Mock::generatePartial
   )
 ); 
 
-class stats_register_test extends UnitTestCase 
+class stats_register_test extends LimbTestCase 
 {
 	var $db = null;
 
@@ -71,15 +71,20 @@ class stats_register_test extends UnitTestCase
 	
 	var $stats_register = null;
 	
+	var $server = array();
+	
   function stats_register_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   	
   	$this->db = db_factory :: instance();
   }
   
   function setUp()
   {
+    $this->server = $_SERVER;    
+    $_SERVER['HTTP_HOST'] = 'test';
+  
    	$this->stats_counter = new stats_counter();
   
    	$this->stats_ip = new stats_ip_test_version($this);
@@ -111,6 +116,8 @@ class stats_register_test extends UnitTestCase
   
   function tearDown()
   {
+    $_SERVER = $this->server;
+    
   	$this->stats_ip->tally();
 
   	$this->stats_referer->tally();

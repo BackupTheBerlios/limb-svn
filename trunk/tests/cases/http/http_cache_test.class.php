@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/request/http_cache.class.php');
 
 Mock::generate('http_response');
 
-class http_cache_test extends UnitTestCase
+class http_cache_test extends LimbTestCase
 {
   var $response;
   var $cache;

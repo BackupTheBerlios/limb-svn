@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
 SimpleTestOptions::ignore('db_test');
 
-class db_test extends UnitTestCase 
+class db_test extends LimbTestCase 
 {   	 	
 	var $db = null;
 	
@@ -27,7 +27,7 @@ class db_test extends UnitTestCase
   {
   	$this->db =& db_factory :: instance();
   	
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
   
   function _clean_up()

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
 
-class uri_test extends UnitTestCase
+class uri_test extends LimbTestCase
 {
   var $uri;
   

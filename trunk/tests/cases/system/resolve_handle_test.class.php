@@ -25,7 +25,7 @@ class declared_in_same_file
     }
 }
 
-class resolve_handle_test extends UnitTestCase 
+class resolve_handle_test extends LimbTestCase 
 {  
   function test_null_handle() 
   {

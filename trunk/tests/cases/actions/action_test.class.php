@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 
-class action_test extends UnitTestCase 
+class action_test extends LimbTestCase 
 {
 	var $a = null;
   	  

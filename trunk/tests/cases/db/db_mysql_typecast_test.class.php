@@ -11,13 +11,13 @@
 require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/core/lib/db/db_mysql.class.php');
 
-class db_mysql_typecast_test extends UnitTestCase
+class db_mysql_typecast_test extends LimbTestCase
 {
 	var $db = null;
 	
 	function db_mysql_typecast_test($name = 'mysql db test case')
 	{
-		parent :: UnitTestCase($name);
+		parent :: LimbTestCase($name);
 	} 
 		
 	function setUp()

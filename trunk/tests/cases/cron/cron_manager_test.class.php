@@ -27,7 +27,7 @@ Mock::generatePartial(
   array('get_jobs', '_get_time')
 );
 
-class cron_manager_test extends UnitTestCase
+class cron_manager_test extends LimbTestCase
 {
   var $cron_manager;
   var $response;

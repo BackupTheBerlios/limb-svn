@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
 require_once(LIMB_DIR . '/core/model/shop/shipping/fedex_sax_handler.class.php');
 
-class fedex_sax_handler_test extends UnitTestCase
+class fedex_sax_handler_test extends LimbTestCase
 {
   var $handler;
   var $parser;

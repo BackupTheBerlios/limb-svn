@@ -20,7 +20,7 @@ Mock::generatePartial(
 
 SimpleTestOptions::ignore('rule_test');
     
-class rule_test extends UnitTestCase
+class rule_test extends LimbTestCase
 {
 	var $validator = null;
 	var $error_list = null;

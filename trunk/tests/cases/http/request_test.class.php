@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/request/request.class.php');
 
-class request_test extends UnitTestCase
+class request_test extends LimbTestCase
 {
   var $request;
   

@@ -21,7 +21,7 @@ Mock::generate('Filter', 'MockFilter');
 
 SimpleTestOptions::ignore('dataspace_test');
 
-class dataspace_test extends UnitTestCase
+class dataspace_test extends LimbTestCase
 {
 	var $dataspace;
 	var $filter;

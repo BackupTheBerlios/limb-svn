@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/links_manager.class.php');
 
-class links_manager_test extends UnitTestCase 
+class links_manager_test extends LimbTestCase 
 {
   var $links_manager = null;
   var $db = null;

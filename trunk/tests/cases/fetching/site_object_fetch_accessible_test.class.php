@@ -14,7 +14,7 @@ require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . '/tests/cases/fetching/site_object_fetch_accessible_test_init.php');
 
-class site_object_fetch_accessible_test extends UnitTestCase 
+class site_object_fetch_accessible_test extends LimbTestCase 
 { 
 	var $init_class_name = 'site_object_fetch_accessible_test_init';
 	var $test_init = null;
@@ -24,7 +24,7 @@ class site_object_fetch_accessible_test extends UnitTestCase
 	
   function site_object_fetch_accessible_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
 
   function setUp()

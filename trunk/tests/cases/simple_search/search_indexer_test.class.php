@@ -15,14 +15,14 @@ require_once(LIMB_DIR . '/core/model/search/indexer.class.php');
 
 Mock::generate('site_object');
 
-class search_indexer_test extends UnitTestCase
+class search_indexer_test extends LimbTestCase
 {
 	var $db = null;
 	var $site_object = null;
 	
 	function search_indexer_test($name = 'search indexer test case')
 	{
-		parent :: UnitTestCase($name);
+		parent :: LimbTestCase($name);
 		
 		$this->db =& db_factory :: instance();
 	} 

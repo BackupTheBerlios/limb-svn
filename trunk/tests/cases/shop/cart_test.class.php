@@ -15,7 +15,7 @@ Mock :: generate('cart');
 Mock :: generate('cart_handler');
 Mock :: generate('cart_item');
 
-class cart_test extends UnitTestCase
+class cart_test extends LimbTestCase
 {
   var $cart;
   var $cart_item;

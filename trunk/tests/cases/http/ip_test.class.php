@@ -10,13 +10,13 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/http/ip.class.php');
 
-class ip_test extends UnitTestCase 
+class ip_test extends LimbTestCase 
 {
 	var $ip = null;
 	
   function ip_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
 
   function setUp()

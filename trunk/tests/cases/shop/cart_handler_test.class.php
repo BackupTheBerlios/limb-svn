@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/core/model/shop/handlers/cart_handler.class.php');
 Mock :: generate('cart_handler');
 Mock :: generate('cart_item');
 
-class cart_handler_test extends UnitTestCase
+class cart_handler_test extends LimbTestCase
 {
   var $cart_handler;
   

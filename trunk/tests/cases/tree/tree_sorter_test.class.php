@@ -11,11 +11,11 @@
 
 require_once(LIMB_DIR . 'core/tree/tree_sorter.class.php');
 
-class tree_sorter_test extends UnitTestCase
+class tree_sorter_test extends LimbTestCase
 {
   function tree_sorter_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
     
   function test_sort()

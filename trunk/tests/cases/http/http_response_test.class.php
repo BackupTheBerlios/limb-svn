@@ -16,7 +16,7 @@ Mock::generatePartial(
   array('_send_header', '_send_string', '_send_file', '_exit')
 );
 
-class http_response_test extends UnitTestCase
+class http_response_test extends LimbTestCase
 {
   var $response;
   

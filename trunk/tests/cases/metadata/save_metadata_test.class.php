@@ -12,7 +12,7 @@
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
-class save_metadata_test extends UnitTestCase 
+class save_metadata_test extends LimbTestCase 
 {
 	var $db = null;
   

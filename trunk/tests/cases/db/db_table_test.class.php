@@ -44,7 +44,7 @@ class test1_db_table extends db_table
 }
 
 
-class db_table_test extends UnitTestCase
+class db_table_test extends LimbTestCase
 {
 	var $db = null;
 	var $db_table_test = null;

@@ -19,13 +19,17 @@ Mock::generatePartial
   )
 );
 
-class stats_uri_test extends UnitTestCase 
+class stats_uri_test extends LimbTestCase 
 {
   var $stats_uri = null;
   var $db = null;
+  var $server = array();
 	  
   function setUp()
   {
+    $this->server = $_SERVER;    
+    $_SERVER['HTTP_HOST'] = 'test';
+  
   	$this->db =& db_factory :: instance();
   	
    	$this->stats_uri = new stats_uri_self_test_version($this);
@@ -36,6 +40,8 @@ class stats_uri_test extends UnitTestCase
   
   function tearDown()
   {
+    $_SERVER = $this->server;
+    
   	$this->stats_uri->tally();
   	
   	$this->_clean_up();

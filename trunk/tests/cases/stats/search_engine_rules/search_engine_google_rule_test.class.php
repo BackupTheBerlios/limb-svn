@@ -10,13 +10,13 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/stats/search_engine_rules/search_engine_google_rule.class.php');
 
-class search_engine_google_rule_test extends UnitTestCase 
+class search_engine_google_rule_test extends LimbTestCase 
 {
   var $rule = null;
 	
   function search_engine_google_rule_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
   
   function setUp()

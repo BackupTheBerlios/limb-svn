@@ -21,14 +21,14 @@ Mock::generatePartial
   )
 );
 
-class stats_search_phrase_test extends UnitTestCase 
+class stats_search_phrase_test extends LimbTestCase 
 {
   var $stats_referer = null;
   var $db = null;
 	
   function stats_search_phrase_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   	
   	$this->db =& db_factory :: instance();
   }

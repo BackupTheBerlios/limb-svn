@@ -10,11 +10,11 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/util/log.class.php');
 
-class log_test extends UnitTestCase 
+class log_test extends LimbTestCase 
 {
   function log_test() 
   {
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
   
   function test_writing_to_file() 

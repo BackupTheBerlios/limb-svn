@@ -13,14 +13,14 @@ require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . 'core/model/sys_param.class.php');
 
-class sys_params_test extends UnitTestCase 
+class sys_params_test extends LimbTestCase 
 {
   var $db = null;
   
   function sys_params_test() 
   {
   	$this->db =& db_factory :: instance();
-  	parent :: UnitTestCase();
+  	parent :: LimbTestCase();
   }
   
   function setUp()

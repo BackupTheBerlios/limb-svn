@@ -291,6 +291,7 @@ class db_module
     	case 'float':
     		return str_replace(',', '.', "'" . floatval($value) . "'"); // FIXX!!
     	break;
+    	case 'clob':
 	    case 'string':
 	    	return $this->_process_string_value($value);
 	    break;

@@ -19,7 +19,7 @@ Mock :: generatePartial(
   array('_get_user')
 );
 
-class db_cart_handler_test extends UnitTestCase
+class db_cart_handler_test extends LimbTestCase
 {
   var $cart_handler;
   var $db;

@@ -17,7 +17,7 @@ class materialized_path_driver_test_version extends materialized_path_driver
 	var $_node_table = MATERIALIZED_PATH_TEST_TABLE;	
 }
 
-class materialized_path_driver_test extends UnitTestCase
+class materialized_path_driver_test extends LimbTestCase
 {
 	var $db = null;
 	var $driver = null;
