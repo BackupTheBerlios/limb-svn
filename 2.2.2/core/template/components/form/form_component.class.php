@@ -147,7 +147,9 @@ class form_component extends tag_component
 			
 		if(isset($this->attributes['https']) && $this->attributes['https'])
 		{
-			$host = $_SERVER['SERVER_NAME'];
+			preg_match('~(http://)?([\w\.]*)(:[\d]*)?(.*)~', $_SERVER['HTTP_HOST'], $matches);
+			$host = $matches[2];
+
 			$url = parse_url($_SERVER['PHP_SELF']);
 			
 			if (strpos($this->attributes['action'], '/') !== 0)
