@@ -31,10 +31,14 @@ class richedit_component extends text_area_component
 
 		echo "
     <script type='text/javascript'>  
-      var _editor_url = '/shared/HTMLArea-3.0-rc1/';    
+      var _editor_url = '/shared/HTMLArea-3.0-rc1/';   
+      var _editor_lang = 'en'; 
     </script>
   	
     <script type='text/javascript' src='/shared/HTMLArea-3.0-rc1/htmlarea.js'></script>
+    <script type='text/javascript'>  
+      HTMLArea.loadPlugin('TableOperations');
+    </script>
     <script type='text/javascript' src='/shared/js/htmlarea_extension.js'></script>";	
 	}
 
@@ -45,9 +49,9 @@ class richedit_component extends text_area_component
 		$id = $this->get_attribute('id');
 		
 		if ($this->get_attribute('mode') == 'light')
-		  $init_function = 'install_limb_lite_extension(editor.config)';
+		  $init_function = 'install_limb_lite_extension(editor.config);';
 		else
-		  $init_function = 'install_limb_full_extension(editor.config)';
+		  $init_function = 'install_limb_full_extension(editor.config);editor.registerPlugin(TableOperations);';
 		  
 		if(!$this->get_attribute('rows'))
 		  $this->set_attribute('rows', RICHEDIT_DEFAULT_ROWS);

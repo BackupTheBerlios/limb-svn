@@ -18,6 +18,7 @@ function install_limb_full_extension(config)
 	];
 	
 	register_limb_buttons(config);	
+	register_css(config);
 }
 
 function install_limb_lite_extension(config)
@@ -33,6 +34,7 @@ function install_limb_lite_extension(config)
 		];
 		
 	register_limb_buttons(config);
+	register_css(config);
 }
 
 function register_limb_buttons(config)
@@ -62,6 +64,14 @@ function register_limb_buttons(config)
                   alert('implement me!');
                 }
   });	  
+}
+
+function register_css(config)
+{
+  if(window.RICHEDIT_IMPORT_CSS)
+    config.pageStyle = "@import url(" + RICHEDIT_IMPORT_CSS + ");";
+  else
+    config.pageStyle = "@import url(/design/main/styles/main.css);";
 }
 
 function insert_limb_repository_image(e, id)
