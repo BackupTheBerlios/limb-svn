@@ -38,6 +38,7 @@ class controllers_classes_options_datasource extends datasource
   {
     $items = fs :: find_subitems(LIMB_DIR . '/core/controllers/', 'f', '~site_object_controller~', false);
 
+    sort($items);
     foreach($items as $item)
     {
       $class = $this->_clean_class_path($item);
@@ -49,6 +50,7 @@ class controllers_classes_options_datasource extends datasource
   {
     $items = fs :: find_subitems(PROJECT_DIR . '/core/controllers/', 'f', '', false);
 
+    sort($items);
     foreach($items as $item)
     {
       $class = $this->_clean_class_path($item);
