@@ -13,11 +13,16 @@ require_once(LIMB_DIR . '/core/lib/i18n/strings.class.php');
 
 class subscribe_mail_controller extends site_object_controller
 {
+  function _define_default_action()
+  {
+    return 'admin_display';
+  }
+   
   function _define_actions()
   {
     return array(
-        'display' => array(
-            'template_path' => '/subscribe_mail/display.html',
+        'admin_display' => array(
+            'template_path' => '/subscribe_mail/admin_display.html',
         ),
         'delete' => array(
             'JIP' => true,

@@ -1,8 +1,8 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<span class=jip>
-<fetch:MAPPED><core:INCLUDE file="jip_actions/normal.html"></fetch:MAPPED>
-</span><br>
+<fetch:MAPPED>
+  <core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='direct_objects'>
 	<core:PARAMETER name='datasource_path' value='pricelist_datasource' >
@@ -12,8 +12,6 @@
 
 <grid:LIST id='direct_objects'>	
 <table width=100% border=0 cellspacing=1 cellpadding=0 >
-	
-
 <grid:ITERATOR>
 <tr>
 	<td>
@@ -25,9 +23,9 @@
 			( <img src='{$file_icon}'> {$file_size} bytes)</td>
 		</core:OPTIONAL>
 	</td>
-	<td  jip='object' class=jip bgcolor="white" valign=top>
+	<td>
 		<core:INCLUDE file="published_status.html">
-		<span jip='action'><core:INCLUDE file="jip_actions/normal.html"></span><br>
+		<core:INCLUDE file="jip_actions/dropdown.html"><br>
 	</td>
 
 </tr>

@@ -1,16 +1,13 @@
 <core:WRAP file="page.html" placeholder="content">
 
 <fetch:MAPPED>
-<span class=jip>
-<core:INCLUDE file="jip_actions/normal.html">
-</span>
+<core:INCLUDE file="jip_actions/dropdown.html">
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='faq_questions, faq' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='faq_object' >
 	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
-
 
 <core:INCLUDE file="pager.html">
 

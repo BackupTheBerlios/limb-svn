@@ -1,13 +1,10 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
-<span class=jip>
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/extended.html">
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
-</span>
 
-<fetch:SUB_BRANCH target='images_folder'  navigator="pager">
-	<core:PARAMETER name='loader_class_name' value='site_object'>
+<fetch:SUB_BRANCH target='images_folder'>
 	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
@@ -15,7 +12,6 @@
 	<core:PARAMETER name='loader_class_name' value='image_object' >
 	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
-
 
 <grid:LIST id='images_folder'>
 <table border=0 cellspacing=2 cellpadding=0>
@@ -27,25 +23,17 @@
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
-<tr class="row">
+<tr>
 	<td><core:INCLUDE file="/admin/selector.html"></td>
 	<td><core:INCLUDE file='/admin/priority_input.html'></td>
-	<td valign='bottom'>
+	<td>
     <core:INCLUDE file="/admin/list_item_hint.html">
 		<img src='/shared/images/folder.gif' align='center'>&nbsp;<a href='{$path}'>{$title}({$children})</a>
 	</td>
-	<td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
+	<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr><td colspan='4' class='btitle1' height='3'></td></tr>
-<tr>
-	<td colspan='4'>
-	<grid:actions select_class='select' button_class='button' locale_value='do'>
-		<grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
-		<grid:action shortcut='save_priority'  locale_value='change_order' form_submitted='1'>
-	</grid:actions>
-	</td>
-</tr>
+<core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>
 
@@ -61,10 +49,10 @@
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
-<tr class="row">
+<tr>
 	<td><core:INCLUDE file="/admin/selector.html"></td>
 	<td><core:INCLUDE file='/admin/priority_input.html'></td>
-	<td jip='object' class=jip-object>
+	<td>
     <core:INCLUDE file="/admin/list_item_hint.html">
 		<core:OPTIONAL for='title'>
 		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
@@ -73,16 +61,9 @@
 		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
 		</core:DEFAULT>
 	</td>
-	<td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
+	<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr><td colspan='4' class='btitle1' height='3'></td></tr>
-<tr>
-	<td colspan='4'>
-	<grid:actions select_class='select' button_class='button' locale_value='do'>
-		<grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
-		<grid:action shortcut='save_priority'  locale_value='change_order' form_submitted='1'>
-	</grid:actions>
-	</td>
-</tr></table>
+<core:INCLUDE file='/admin/full_grid_footer.html'>
+</table>
 </grid:LIST>

@@ -1,15 +1,12 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<span class=jip>
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/normal.html">
+<core:INCLUDE file="jip_actions/dropdown.html">
 </fetch:MAPPED>
 
-</span>
 <fetch:SUB_BRANCH target='documents_folders' >
   <core:PARAMETER name='loader_class_name' value='site_object' >
 </fetch:SUB_BRANCH>
-
 
 <fetch:SUB_BRANCH target='documents' navigator='pager'>
   <core:PARAMETER name='loader_class_name' value='document' >
@@ -22,14 +19,14 @@
       <grid:LIST id='documents'>
       <table width=100% cellpadding=0 cellspacing=0>
       <grid:ITERATOR>
-      <tr class="jip">
-        <td jip='object' class=h2><a href='{$path}'>{$title}</a></td>
+      <tr>
+        <td><a href='{$path}'>{$title}</a></td>
       </tr>
       <tr>
-        <td jip='object'class=text width=100% style='padding-left:40px; padding-top: 0px'>{$annotation}</a></td>
+        <td width=100% style='padding-left:40px; padding-top: 0px'>{$annotation}</a></td>
       </tr>
       <tr>
-        <td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+        <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
       </tr>
       </grid:ITERATOR>
       </table>
@@ -37,15 +34,14 @@
     </td>
 
       <grid:LIST id='documents_folders'>
-    <td valign=top style="border-left:solid 1px #DEDEDE; padding: 1px 0px 0px 8px">
+      <td>
       <span class=date>Subfolders:</span>
-
 
       <table width=120 border=0 cellpadding=0 cellspacing=0>
       <grid:ITERATOR>
-      <tr class="jip">
-        <td jip='object' class=h2><a href='{$path}'>{$title}</a></td>
-        <td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+      <tr>
+        <td ><a href='{$path}'>{$title}</a></td>
+        <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
       </tr>
       </grid:ITERATOR>
       </table>

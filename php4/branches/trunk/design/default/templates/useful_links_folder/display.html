@@ -1,9 +1,7 @@
 <core:WRAP file="page.html" placeholder="content">
 
 <fetch:MAPPED>
-<span class='jip'>
-<core:INCLUDE file="jip_actions/extended.html">
-</span>
+<core:INCLUDE file="jip_actions/dropdown.html">
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='useful_links'  navigator="pager" >
@@ -21,17 +19,17 @@
 		<th><locale:STRING name='link' file='useful_link'></th>
 	</tr>
     <grid:ITERATOR>
-		<tr class='jip'>
+		<tr>
 			<td width='1'>
 			<core:INCLUDE file="published_status.html">
 			</td>
-			<td jip='object'>
+			<td>
 				<core:OPTIONAL for='image_id'>
 				<img src='/root?node_id={$image_id}&icon' align='center'>
 				</core:OPTIONAL>
 				<a href='{$uri}'>{$title}</a></td>
 			<td>
-			<core:INCLUDE file="jip_actions/normal.html">
+			<core:INCLUDE file="jip_actions/dropdown.html">
 			</td>
 		</tr>
     </grid:ITERATOR>

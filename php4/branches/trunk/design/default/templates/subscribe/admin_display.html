@@ -1,10 +1,8 @@
-<core:WRAP file="admin/page.html" placeholder="content">
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
 <fetch:MAPPED>
-<span class='jip'>
-<core:INCLUDE file="jip_actions/extended.html">
-</span>
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
-<br/>
 
 <fetch:SUB_BRANCH target='folders'>
 	<core:PARAMETER name='loader_class_name' value='subscribe_theme'>
@@ -15,16 +13,17 @@
 <table border=0 cellspacing=2 cellpadding=2 width=100%>
 <tr>
 	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='subscribe_themes' file='subscribe'></th>
-	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
-<tr class=jip>
+<tr>
 	<td><core:INCLUDE file="/admin/selector.html"></td>
+	<td><core:INCLUDE file='/admin/priority_input.html'></td>
 	<td><core:INCLUDE file="published_status.html"></td>
-	<td jip='object' class=jip-object>
+	<td>
 		<table width=100% border=0 cellspacing=0 cellpadding=2>
 		<tr>
 			<td width=1><a href="{$path}"><img src='/shared/images/subscribe.gif'></a></td>
@@ -32,15 +31,10 @@
 		</tr>
 		</table>	
 	</td>
-	<td><core:INCLUDE file='/admin/priority_input.html'></td>
-	<td><core:INCLUDE file="jip_actions/normal.html"></td>
+	<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr>
-	<td colspan='2' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
-	<td colspan='2' align='right'><core:INCLUDE file='/admin/priority_button.html'></td>
-	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
-</tr>    
+<core:INCLUDE file='/admin/no_move_grid_footer.html'>
 </table>
 </grid:LIST>
 

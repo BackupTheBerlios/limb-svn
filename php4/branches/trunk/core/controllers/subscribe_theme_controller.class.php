@@ -12,11 +12,16 @@ require_once(LIMB_DIR . '/core/controllers/site_object_controller.class.php');
 
 class subscribe_theme_controller extends site_object_controller
 {
+  function _define_default_action()
+  {
+    return 'admin_display';
+  }
+   
   function _define_actions()
   {
     return array(
-        'display' => array(
-            'template_path' => '/subscribe_theme/display.html'
+        'admin_display' => array(
+            'template_path' => '/subscribe_theme/admin_display.html'
         ),
         'admin_detail' => array(
             'template_path' => '/admin/object_detail_info.html',

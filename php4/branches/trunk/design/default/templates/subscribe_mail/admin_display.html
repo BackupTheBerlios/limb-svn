@@ -1,9 +1,7 @@
-<core:WRAP file="/admin/page.html" placeholder="content">
+<core:WRAP file="/admin/content_management_page.html" placeholder="content">
 
 <fetch:MAPPED>
-<span class='jip'>
-<core:INCLUDE file="jip_actions/extended.html">
-</span>
+<core:INCLUDE file="jip_actions/normal.html">
 <br>
 <table width=100% border=0 cellspacing=2 cellpadding=2>
 <tr>
@@ -16,5 +14,4 @@
 		{$content}
 	</td>
 </tr>
-
 </fetch:MAPPED>

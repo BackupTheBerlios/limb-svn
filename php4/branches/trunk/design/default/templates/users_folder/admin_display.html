@@ -1,10 +1,8 @@
 <core:WRAP file="admin/site_management_page.html" placeholder="content">
 
-<span class=jip>
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/extended.html">
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
-</span>
 
 <fetch:SUB_BRANCH target='users' navigator='pager' >
 	<core:PARAMETER name='loader_class_name' value='user_object'>

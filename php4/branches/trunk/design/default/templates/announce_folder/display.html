@@ -1,9 +1,7 @@
 <core:WRAP file="page.html" placeholder="content">
 
 <fetch:MAPPED>
-<span class='jip'>
-<core:INCLUDE file="jip_actions/extended.html">
-</span>
+<core:INCLUDE file="jip_actions/dropdown.html">
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='announcements'  navigator="pager" >
@@ -22,17 +20,17 @@
 		<th></th>
 	</tr>
     <grid:ITERATOR>
-		<tr class='jip'>
+		<tr>
 			<td width='1'>
 			<core:INCLUDE file="published_status.html">
 			</td>
-			<td jip='object'><locale:DATE_FORMAT hash_id="start_date" locale_format="short_date">&nbsp;
+			<td><locale:DATE_FORMAT hash_id="start_date" locale_format="short_date">&nbsp;
 			<core:OPTIONAL for='image_id'>
 			<img src='/root?node_id={$image_id}&icon' align='center'>&nbsp;
 			</core:OPTIONAL>
 			<a href='{$path}'>{$title}</a></td>
 			<td>
-			<core:INCLUDE file="jip_actions/normal.html">
+			<core:INCLUDE file="jip_actions/dropdown.html">
 			</td>
 		</tr>
     </grid:ITERATOR>

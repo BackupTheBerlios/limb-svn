@@ -19,6 +19,9 @@ class guestbook_message_controller extends site_object_controller
         'display' => array(
             'template_path' => '/guestbook_message/display.html',
         ),
+        'admin_display' => array(
+            'template_path' => '/guestbook_message/admin_display.html',
+        ),
         'edit' => array(
             'popup' => true,
             'JIP' => true,

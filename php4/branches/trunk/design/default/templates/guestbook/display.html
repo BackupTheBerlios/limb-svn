@@ -15,7 +15,7 @@
     <grid:ITERATOR>
 		  <thead class=jip>
 				<tr>
-					<td jip='object' class=jip-object>
+					<td>
 						<core:INCLUDE file="published_status.html"><locale:DATE_FORMAT hash_id="created_date" type='stamp' locale_format="short_date_time">
 						<u>{$title}</u>
 						<br>{$message}
@@ -33,7 +33,7 @@
 						</core:OPTIONAL>
 					</td>
 				</tr>
-				<tr><td><core:INCLUDE file="jip_actions/normal.html"></td></tr>
+				<tr><td><core:INCLUDE file="jip_actions/dropdown.html"></td></tr>
 			</thead>
     </grid:ITERATOR>
 </grid:LIST>

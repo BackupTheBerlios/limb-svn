@@ -1,25 +1,24 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<span class=jip>
-<fetch:MAPPED><core:INCLUDE file="jip_actions/normal.html"></fetch:MAPPED>
-</span><br>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+</fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='folders'>
   <core:PARAMETER name='loader_class_name' value='site_object'>
 </fetch:SUB_BRANCH>
 
-  <grid:LIST id='folders'>
-    <table width=100% border=0 cellspacing=0 cellpadding=0>
-      <grid:ITERATOR>
-      <tr>
-        <td colspan=100 style="padding: 2px, 0, 3px, 10px">
-          <h3><a href='{$path}'>{$title}</a></h3>
-        </td>
-      </tr>
-    </grid:ITERATOR>
-   </table>
-  </grid:LIST>
-
+<grid:LIST id='folders'>
+<table width=100% border=0 cellspacing=0 cellpadding=0>
+  <grid:ITERATOR>
+  <tr>
+    <td colspan=100 style="padding: 2px, 0, 3px, 10px">
+      <h3><a href='{$path}'>{$title}</a></h3>
+    </td>
+  </tr>
+</grid:ITERATOR>
+</table>
+</grid:LIST>
 
 <fetch:SUB_BRANCH target='direct_objects'>
   <core:PARAMETER name='loader_class_name' value='catalog_object' >
@@ -34,11 +33,11 @@
     </tr><tr>
     </grid:SEPARATOR>
 
-      <td jip='object' class=jip bgcolor="white" valign=top>
+      <td class=jip bgcolor="white" valign=top>
         <core:INCLUDE file="published_status.html">
-        <span jip='action'><core:INCLUDE file="jip_actions/normal.html"></span><br>
+        <core:INCLUDE file="jip_actions/dropdown.html"><br>
         <core:OPTIONAL for='image_id'>
-        <table style='border: solid 1px D6C4C4' align=left cellspacing=0 cellpadding=3 >
+        <table align=left cellspacing=0 cellpadding=3 >
           <tr>
             <td>
               <a href='{$path}'><img src='/root?node_id={$image_id}&thumbnail' align='center' border=0></a></td>

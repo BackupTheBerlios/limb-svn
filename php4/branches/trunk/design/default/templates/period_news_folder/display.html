@@ -1,10 +1,8 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<span class=jip>
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/extended.html">
+<core:INCLUDE file="jip_actions/dropdown.html">
 </fetch:MAPPED>
-</span>
 
 <fetch:SUB_BRANCH target='news' navigator='pager' >
 	<core:PARAMETER name='loader_class_name' value='period_news_object'>

@@ -1,10 +1,8 @@
-<core:WRAP file="admin/page.html" placeholder="content">
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
 <fetch:MAPPED>
-<span class='jip'>
-<core:INCLUDE file="jip_actions/extended.html">
-</span>
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
-<br>
 
 <fetch:SUB_BRANCH target='items' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='subscribe_mail'>
@@ -23,9 +21,9 @@
 </tr>
 <tr><td colspan=10 height=2 class=com1></td></tr>
 <grid:ITERATOR>
-	<tr  class=jip>
+	<tr>
 	<td><core:INCLUDE file="/admin/selector.html"></td>
-	<td jip='object' class=jip-object>
+	<td>
 	<table width=100% border=0 cellspacing=0 cellpadding=2>
 	<tr>
 		<td width=1><a href="{$path}"><img src='/shared/images/s.gif'></a></td>
@@ -36,11 +34,16 @@
 	<td>
 	<locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'>
 	</td>
-	<td><core:INCLUDE file="jip_actions/normal.html"></td>
+	<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 	</tr>
 </grid:ITERATOR>
+<tr><td colspan='100' class='btitle1' height='3'></td></tr>
 <tr>
-	<td colspan='4' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
-</tr>    
-</table>
+  <td colspan='100'>
+  <grid:actions select_class='select' button_class='button' locale_value='do'>
+    <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+  </grid:actions>
+  </td>
+</tr>
+ </table>
 </grid:LIST>

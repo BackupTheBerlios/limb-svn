@@ -1,12 +1,12 @@
 <core:WRAP file="page.html" placeholder="content">
 
 <fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+<br>
 <table width=100% border=0 cellspacing=2 cellpadding=0 class=jip>
 <tr>
-<td jip='object' class=jip-object colspan=2>
-
+<td colspan=2>
 <core:INCLUDE file="/faq_folder/item.html">
-
 </td>
 </tr>
 <tr>
@@ -14,7 +14,6 @@
 <core:INCLUDE file="published_status.html">
 </td>
 <td width=100%>
-<core:INCLUDE file="jip_actions/normal.html">
 </td>
 </tr>
 </table>

@@ -35,8 +35,8 @@ function make_homepage(obj)
 {
   if(document.all)
   {
-    this.event.srcElement.style.behavior='url(#default#homepage)';
-    this.event.srcElement.setHomePage(window.location);
+    obj.event.srcElement.style.behavior='url(#default#homepage)';
+    obj.event.srcElement.setHomePage(window.location);
   }
 }
 

@@ -1,12 +1,8 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
-<span class=jip>
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/extended.html">
-</fetch:MAPPED>
-</span>
+<core:INCLUDE file="jip_actions/normal.html">
 <br>
-<fetch:MAPPED>
 {$content}
 </fetch:MAPPED>
 <br>
@@ -22,29 +18,21 @@
 <tr><td colspan='4' class='btitle1' height='3'></td></tr>
 <tr>
 	<th><grid:SELECTORS_TOGGLER></th>
-	<th><locale:STRING name='messages_list' file='message'></th>
 	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='messages_list' file='message'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
-<tr class="jip">
+<tr>
   <td><core:INCLUDE file="/admin/selector.html"></td>
+  <td><core:INCLUDE file='/admin/priority_input.html'></td>
   <td>
     <core:INCLUDE file="/admin/list_item_hint.html">
     <a href="{$path}">{$title}</a>
   </td>
-  <td><core:INCLUDE file='/admin/priority_input.html'></td>
-  <td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr><td colspan='4' class='btitle1' height='3'></td></tr>
-<tr>
-	<td colspan='4'>
-	<grid:actions select_class='select' button_class='button' locale_value='do'>
-		<grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
-		<grid:action shortcut='save_priority'  locale_value='change_order' form_submitted='1'>
-	</grid:actions>
-	</td>
-</tr>
+<core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>

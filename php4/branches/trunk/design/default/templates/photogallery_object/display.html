@@ -14,9 +14,11 @@
 
 <body>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
-<tr class='jip'>
-<td jip='object'>
+<tr>
+<td>
 <fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+<br>
 <locale:DATE_FORMAT hash_id="start_date" locale_format="short_date"><p>
 <img src='/root?node_id={$image_id}&original' align='center'><br>
 <core:OPTIONAL for='annotation'>
@@ -24,8 +26,6 @@
 </core:OPTIONAL>
 </td>
 <td>
-<core:INCLUDE file="jip_actions/normal.html">
-
 </fetch:MAPPED>
 </td>
 </tr>

@@ -1,16 +1,4 @@
 <core:WRAP file="/admin/site_management_page.html" placeholder="content">
-<table border=0 cellspacing=0 cellpadding=0 >
-<tr><td colspan='100' class='btitle1' height='3'></td></tr>
-<tr height=30 valign='middle'>
-  <th><locale:STRING name='tree_element'></th>
-  <th>#ID</th>
-  <th><locale:STRING name='published_status' ></th>
-  <th><locale:STRING name='actions'></th>
-  <th><locale:STRING name='controller_class_name'></th>
-</tr>
-<tr>
-  <td height=10 background='/shared/images/t_l.gif' class=bgr_no_rep></td>
-</tr>
 
 <fetch:SUB_BRANCH target='tree'>
   <core:PARAMETER name='datasource_path' value='/fetch_tree_datasource'>
@@ -22,9 +10,25 @@
   <core:PARAMETER name='order' value='class_ordr=ASC,identifier=ASC' >
 </fetch:SUB_BRANCH>
 
+
 <grid:LIST id='tree'>
+<table border=0 cellspacing=0 cellpadding=0 >
+<tr><td colspan='100' class='btitle1' height='3'></td></tr>
+<tr height=30 valign='middle'>
+  <th><grid:SELECTORS_TOGGLER></th>
+  <th><locale:STRING name='tree_element'></th>
+  <th>#ID</th>
+  <th><locale:STRING name='published_status' ></th>
+  <th><locale:STRING name='actions'></th>
+  <th><locale:STRING name='controller_class_name'></th>
+</tr>
+<tr>
+  <td height=10 background='/shared/images/t_l.gif' class=bgr_no_rep></td>
+</tr>
+
 <grid:ITERATOR>
 <tr class=row>
+<td><core:INCLUDE file="/admin/selector.html"></td>
 <td height=100%><grid:TREE_ITEM></td>
 <td height=100%>
   <core:INCLUDE file="/admin/list_item_hint.html">
@@ -35,6 +39,14 @@
 <td><a title='<locale:STRING name="change_controller" file="site_structure">' href="{^path}?action=change_controller&id={$node_id}&popup=1" onclick="return click_href(this.href);" ><img src='/shared/images/configure.gif'></a><small>&nbsp;{$controller_name}</small></td>
 </tr>
 </grid:ITERATOR>
-</grid:LIST>
 <tr><td colspan='100' class='btitle1' height='3'></td></tr>
+<tr>
+  <td colspan='6'>
+  <grid:actions select_class='select' button_class='button' locale_value='do'>
+    <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+    <grid:action shortcut='move' locale_value='move' form_submitted='0'>
+  </grid:actions>
+  </td>
+</tr>
 </table>
+</grid:LIST>

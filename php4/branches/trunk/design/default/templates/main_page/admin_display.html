@@ -1,9 +1,8 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
-<span class='jip'>
+
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/dropdown.html">
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
-</span>
 
 <fetch:SUB_BRANCH target="admin_wide_menu" >
   <core:PARAMETER name='loader_class_name' value='navigation_item' >
@@ -12,4 +11,5 @@
   <core:PARAMETER name='order' value='priority=ASC'>
   <core:PARAMETER name='depth' value='2'>
 </fetch:SUB_BRANCH>
+
 <core:INCLUDE file="/navigation/admin_wide_menu.html">

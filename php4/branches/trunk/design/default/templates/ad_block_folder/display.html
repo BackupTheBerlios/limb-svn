@@ -1,16 +1,14 @@
 <core:WRAP file="page.html" placeholder="content">
 
 <fetch:MAPPED>
-<span class='jip'>
-<core:INCLUDE file="jip_actions/extended.html">
-</span>
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='ad_block_objects' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='ad_block_object'>
 </fetch:SUB_BRANCH>
 
-<core:INCLUDE file="pager.html">
+<core:INCLUDE file="front_pager.html">
 
 <grid:LIST id='ad_block_objects'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
@@ -20,13 +18,13 @@
 		<th></th>
 	</tr>
     <grid:ITERATOR>
-		<tr class='jip'>
+		<tr>
 			<td width='1'>
 			<core:INCLUDE file="published_status.html">
 			</td>
-			<td jip='object'><img src='/root?node_id={$image_id}&icon' align='center'>&nbsp;<a href='{$path}'>{$title}</a></td>
+			<td><img src='/root?node_id={$image_id}&icon' align='center'>&nbsp;<a href='{$path}'>{$title}</a></td>
 			<td>
-				<core:INCLUDE file="jip_actions/normal.html">
+				<core:INCLUDE file="jip_actions/dropdown.html">
 			</td>
 		</tr>
     </grid:ITERATOR>

@@ -1,12 +1,12 @@
 <core:WRAP file="page.html" placeholder="content">
 
 <fetch:MAPPED>
-<table width=100% border=0 cellspacing=2 cellpadding=2 jip='object' class=jip>
+<table width=100% border=0 cellspacing=2 cellpadding=2>
 <tr>
-	<td width=100% jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+	<td width=100%><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 <tr>
-	<td jip='object'>{$content}</td>
+	<td>{$content}</td>
 </tr>
 <core:OPTIONAL for='author'>
 <tr>

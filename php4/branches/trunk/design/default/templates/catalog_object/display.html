@@ -1,35 +1,31 @@
 <core:WRAP file="page.html" placeholder="content">
 
-
 <fetch:MAPPED>
-<span class=jip>
 <table width=100% border=0 cellspacing=2 cellpadding=2 >
 <tr>
-	<td jip='action'>
-		<core:INCLUDE file="jip_actions/normal.html">
+  <td>
+    <core:INCLUDE file="jip_actions/dropdown.html">
 	</td>
 </tr>
-<tr class=jip>
-  <td align="center" valign="top" jip='object'> 
-    <table width="100%" style="border:solid 1px #DFE4F7" cellpadding="0" cellspacing="1" bgcolor="#DFE4F7">
+<tr>
+  <td align="center" valign="top"> 
+    <table width="100%" cellpadding="0" cellspacing="1">
       <tr> 
-        <td colspan="2" class="title-block" bgcolor="DFE4F7" style="padding: 2px, 0, 3px, 10px"> 
+        <td colspan="2"> 
           <core:INCLUDE file="published_status.html">
           {$title}
         </td>
       </tr>
       <tr > 
-        <td width="100%" valign="top"  style="padding: 10px, 5px, 5px 10px" bgcolor=white>
-        	
+        <td width="100%" valign="top"  style="padding: 10px, 5px, 5px 10px">
         	<core:OPTIONAL for='image_id'>
-          	<table style='border: solid 1px D6C4C4' cellspacing=0 cellpadding=3 align=right>
+          	<table cellspacing=0 cellpadding=3 align=right>
 							<tr>
 								<td>
 								 	<img src="/root?node_id={$image_id}&original" border="0" ></td>
 							</tr>
 						</table>
           </core:OPTIONAL>
-
           {$content}
 				</td>
       </tr>
@@ -37,5 +33,4 @@
    </td>
 </tr>
 </table>	
-</span>
 </fetch:MAPPED>

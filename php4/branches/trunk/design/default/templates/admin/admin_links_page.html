@@ -1,9 +1,7 @@
 <core:WRAP file="/admin/site_management_page.html" placeholder="content">
 
 <fetch:MAPPED>
-<span class='jip'>
-<core:INCLUDE file="jip_actions/extended.html">
-</span>
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='objects'>
@@ -14,8 +12,8 @@
 <grid:LIST id='objects'>
  	<table width="100%" border="0" cellspacing="0" cellpadding="8" bordercolor="#cccccc">
     <grid:ITERATOR>
-			<tr class=jip>
-				<td jip='object' class=jip-object>
+			<tr>
+				<td>
 					<a href="{$path}?action=admin_display">{$title}</a>
 				</td>
 				<td>

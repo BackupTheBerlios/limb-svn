@@ -2,10 +2,8 @@
 
 <!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
 <fetch:MAPPED>
-<span class='jip'>
-    <core:INCLUDE file="published_status.html">
-    <core:INCLUDE file="jip_actions/dropdown.html">
-</span>
+<core:INCLUDE file="published_status.html">
+<core:INCLUDE file="jip_actions/dropdown.html">
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='folders'>
@@ -45,17 +43,13 @@
 			</tr>
 			<tr>
 		</grid:SEPARATOR>
-
-
-			<td class='jip' jip='object' valign=top width=33% jip='action'>
+			<td valign=top width=33%>
 				<a href='/root?node_id={$image_id}&original' target='_blank'><img src='/root?node_id={$image_id}&thumbnail' align='left' border=0 style='margin-bottom:0px'></a>
 				<span class=h2>{$title}</span><br>
         <core:INCLUDE file="published_status.html">
         <core:INCLUDE file="jip_actions/dropdown.html">
 				{$annotation}
-
 			</td>
-
 </grid:ITERATOR>
 </grid:LIST>
 </tr>

@@ -1,9 +1,8 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
-<span class=jip>
+
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/extended.html">
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
-</span>
 
 <fetch:SUB_BRANCH target='list' navigator="pager">
 	<core:PARAMETER name='loader_class_name' value='period_news_object'>
@@ -12,6 +11,7 @@
 
 <core:INCLUDE file="pager.html">
 
+<grid:LIST id='list'>
 <table width=100%>
 <tr>
 	<th><locale:STRING name='published_status'></th>
@@ -20,15 +20,19 @@
 	<th><locale:STRING name='publish_period'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
-<grid:LIST id='list'>
 <grid:ITERATOR>
-<tr class="jip">
-<td><core:INCLUDE file="published_status.html"></td>
-<td jip='object'><a href="{$path}" target="_blank">{$title}</a></td>
-<td><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date'></td>
-<td><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
-<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+<tr>
+  <td><core:INCLUDE file="published_status.html"></td>
+  <td>
+    <core:INCLUDE file="/admin/list_item_hint.html">
+    <a href="{$path}" target="_blank">{$title}</a>
+  </td>
+  <td><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date'></td>
+  <td><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-</grid:LIST>
+<core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
+</grid:LIST>
+

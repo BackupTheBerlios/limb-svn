@@ -1,10 +1,8 @@
 <core:WRAP file="admin/content_management_page.html" placeholder="content">
 
-<span class=jip>
 <fetch:MAPPED>
-<core:INCLUDE file="jip_actions/extended.html">
+<core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
-</span>
 
 <fetch:SUB_BRANCH target='files_folder'>
   <core:PARAMETER name='loader_class_name' value='site_object'>
@@ -29,7 +27,7 @@
 <tr>
   <td><core:INCLUDE file="/admin/selector.html"></td>
   <td><core:INCLUDE file='/admin/priority_input.html'></td>
-  <td jip='object' class=jip-object>
+  <td>
     <core:INCLUDE file="/admin/list_item_hint.html">
     <img src='/shared/images/folder.gif' align='center'>&nbsp;
     <a href='{$path}'>{$title}({$children})</a>
@@ -37,15 +35,7 @@
   <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr><td colspan='4' class='btitle1' height='3'></td></tr>
-<tr>
-  <td colspan='4'>
-  <grid:actions select_class='select' button_class='button' locale_value='do'>
-    <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
-    <grid:action shortcut='save_priority'  locale_value='change_order' form_submitted='1'>
-  </grid:actions>
-  </td>
-</tr>
+<core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>
 
@@ -61,24 +51,16 @@
   <th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
-  <tr class="jip">
+  <tr>
     <td><core:INCLUDE file="/admin/selector.html"></td>
     <td><core:INCLUDE file='/admin/priority_input.html'></td>
-    <td jip='object'>
+    <td>
       <core:INCLUDE file="/admin/list_item_hint.html">
       <img src='{$path}?icon'>&nbsp;<a href='{$path}'>{$title}</a>
     </td>
-    <td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
+    <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
   </tr>
 </grid:ITERATOR>
-<tr><td colspan='4' class='btitle1' height='3'></td></tr>
-<tr>
-  <td colspan='4'>
-  <grid:actions select_class='select' button_class='button' locale_value='do'>
-    <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
-    <grid:action shortcut='save_priority'  locale_value='change_order' form_submitted='1'>
-  </grid:actions>
-  </td>
-</tr>
+<core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>
