@@ -5,23 +5,23 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: last_objects_datasource.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/datasource/fetch_datasource.class.php');
+require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
 
-class simple_orders_list_datasource extends fetch_datasource
+class simple_orders_list_datasource extends fetch_sub_branch_datasource
 {
 	function simple_orders_list_datasource()
 	{
-		parent :: fetch_datasource();
+		parent :: fetch_sub_branch_datasource();
 	}
 
 	function & _fetch(&$counter, $params)
 	{
 		if(!$result =& parent :: _fetch($counter, $params))
 			return $result;
-
+		
 		$user_ids = complex_array :: get_column_values('user_id', $result);
 
 		$fetcher =& fetcher :: instance();
@@ -35,6 +35,9 @@ class simple_orders_list_datasource extends fetch_datasource
 
 		foreach($result as $key => $data)
 		{
+			if (!isset($users[$data['user_id']]))
+				continue;
+				
 			$customer_data = $users[$data['user_id']];
 			$result[$key]['user_name'] = $customer_data['name'];
 			$result[$key]['user_lastname'] = $customer_data['lastname'];

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: search.class.php 444 2004-02-14 08:42:58Z mike $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -25,16 +25,35 @@ class full_text_search
 		
 		$this->use_boolean_mode = $this->_check_boolean_mode();
 	}
-				
+	
+
+	function _can_perform_fulltext_search()
+	{
+		if(DB_TYPE == 'mysql')
+		{
+			$this->db->sql_exec('SELECT VERSION() as version');
+			$row = $this->db->fetch_row();
+			
+			$version = explode('.', $row['version']);
+			
+			if((int)$version[0] > 3 || ((int)$version[0] == 3 && (int)$version[1] >= 23))
+				return true;
+		}	
+		return false;
+	}
+	
 	function & find($query, $class_id=null)
 	{	
-		$result = array();
+		if(!$this->_can_perform_fulltext_search())
+			$result = array();
 		
 		if($query->is_empty())
 			return $result;
 		
 		$sql = $this->_get_search_sql($query);
 		
+		if (!$sql)
+			return array();
 		if($class_id !== null)
 			$sql .= " AND class_id={$class_id}";
 		
@@ -79,6 +98,8 @@ class full_text_search
 	
 	function _process_query($query_object)
 	{
+		$query = '';
+		
 		$query_items = $query_object->get_query_items();
 		
 		foreach($query_items as $key => $data)
@@ -88,6 +109,10 @@ class full_text_search
 		{
 			$query = implode('* ', $query_items) . '*';
 		}
+		else
+		{
+			$query = implode(' ', $query_items);
+		}
 		
 		return $query;
 	}
@@ -95,6 +120,9 @@ class full_text_search
 	function _get_search_sql($query_object)
 	{
 		$query = $this->_process_query($query_object);
+		
+		if(!$query)
+			return '';
 		
 		$boolean_mode = '';		
 		if($this->use_boolean_mode)
