@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/tree_toggle_action.class.php');
+require_once(LIMB_DIR . 'core/actions/site_structure/tree_toggle_action.class.php');
 
 class group_objects_access_tree_toggle_action extends tree_toggle_action
 {

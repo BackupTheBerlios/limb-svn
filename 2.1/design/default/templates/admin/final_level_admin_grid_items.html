@@ -17,6 +17,7 @@
 <grid:LIST id='grid_items'>
 <table width=100%>
 <tr>
+	<th><grid:SELECTORS_TOGGLER></th>
 	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='object'></th>
 	<th><locale:STRING name='created_date'></th>
@@ -26,6 +27,7 @@
 </tr>
 <grid:ITERATOR>
 <tr class="jip">
+<td><core:INCLUDE file="/admin/selector.html"></td>
 <td align="center"><core:INCLUDE file="published_status.html"></td>
 <td jip='object'><a href="{$path}" target='_blank'>{$title}</a> ({$identifier})</td>
 <td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
@@ -35,10 +37,9 @@
 </tr>
 </grid:ITERATOR>
 <tr>
-	<td colspan='5' align='right'>
-		<core:INCLUDE file='/admin/priority_button.html'>
-	</td>	
-	<td>&nbsp;</td>
+	<td colspan='5' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
 </tr>
 </table>
 </grid:LIST>

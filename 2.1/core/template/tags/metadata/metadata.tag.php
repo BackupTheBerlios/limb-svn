@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 class metadata_metadata_tag_info
 {
 	var $tag = 'METADATA:METADATA';

@@ -34,7 +34,7 @@ class pricelist_object_controller extends site_object_controller
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('publish'),
-						'action_path' => '/doc_flow_object/publish_action',
+						'action_path' => '/doc_flow_object/set_publish_status_action',
 						'img_src' => '/shared/images/publish.gif',
 						'can_have_access_template' => true,
 				),
@@ -43,7 +43,7 @@ class pricelist_object_controller extends site_object_controller
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('unpublish'),
-						'action_path' => '/doc_flow_object/unpublish_action',
+						'action_path' => '/doc_flow_object/set_publish_status_action',
 						'img_src' => '/shared/images/unpublish.gif',
 						'can_have_access_template' => true,
 				),
@@ -55,12 +55,6 @@ class pricelist_object_controller extends site_object_controller
 						'action_path' => '/pricelist_object/delete_pricelist_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
-				),
-				'order' => array(
-						'permissions_required' => 'r',
-						'action_path' => 'tree_change_order_action', 
-						'display_in_breadcrumbs' => false,
-						'popup' => true,
 				),
 		);
  		

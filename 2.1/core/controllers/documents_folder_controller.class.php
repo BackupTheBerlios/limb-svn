@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: documents_folder_controller.class.php 33 2004-03-10 16:05:12Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -67,7 +67,7 @@ class documents_folder_controller extends site_object_controller
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('publish'),
-						'action_path' => '/doc_flow_object/publish_action',
+						'action_path' => '/doc_flow_object/set_publish_status_action',
 						'img_src' => '/shared/images/publish.gif',
 						'can_have_access_template' => true,
 				),
@@ -76,7 +76,7 @@ class documents_folder_controller extends site_object_controller
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('unpublish'),
-						'action_path' => '/doc_flow_object/unpublish_action',
+						'action_path' => '/doc_flow_object/set_publish_status_action',
 						'img_src' => '/shared/images/unpublish.gif',
 						'can_have_access_template' => true,
 				),

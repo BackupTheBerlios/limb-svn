@@ -25,20 +25,12 @@ class site_structure_controller extends site_object_controller
 				'toggle' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/site_structure/display.html',						
-						'action_path' => 'tree_toggle_action', 
-						'display_in_breadcrumbs' => false,
-				),
-				'order' => array(
-						'permissions_required' => 'w',
-						'action_path' => 'tree_change_order_action', 
-						'display_in_breadcrumbs' => false,
-						'popup' => true,
+						'action_path' => '/site_structure/tree_toggle_action', 
 				),
 				'move' => array(
 						'permissions_required' => 'w',
 						'template_path' => '/site_structure/display.html',						
-						'action_path' => 'tree_move_item_action', 
-						'display_in_breadcrumbs' => false,
+						'action_path' => '/site_structure/tree_move_item_action', 
 						'popup' => true,
 				),
 				'edit' => array(

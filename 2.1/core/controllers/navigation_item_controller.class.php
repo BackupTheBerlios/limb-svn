@@ -49,11 +49,6 @@ class navigation_item_controller extends site_object_controller
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
-				'order' => array(
-						'permissions_required' => 'r',
-						'action_path' => 'tree_change_order_action', 
-						'popup' => true,
-				),
 		);
  		
 
