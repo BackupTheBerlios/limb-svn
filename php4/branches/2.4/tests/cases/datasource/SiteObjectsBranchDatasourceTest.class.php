@@ -21,6 +21,11 @@ class SiteObjectsBrachDatasourceTest extends LimbTestCase
   var $tree;
   var $toolkit;
 
+  function SiteObjectsBrachDatasourceTest()
+  {
+    parent :: LimbTestCase('site objects branch ds test');
+  }
+
   function setUp()
   {
     $this->datasource = new SiteObjectsBranchDatasource();

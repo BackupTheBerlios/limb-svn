@@ -25,6 +25,11 @@ class SiteObjectsByNodeIdsDatasourceTest extends LimbTestCase
   var $tree;
   var $toolkit;
 
+  function SiteObjectsByNodeIdsDatasourceTest()
+  {
+    parent :: LimbTestCase('site objects by node ids ds test');
+  }
+
   function setUp()
   {
     $this->datasource = new SiteObjectsByNodeIdsTestVersionDatasource($this);

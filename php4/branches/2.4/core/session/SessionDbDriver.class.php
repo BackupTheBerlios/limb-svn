@@ -69,11 +69,6 @@ class SessionDbDriver// implements SessionDriver
     $this->db->delete('sys_session', "last_activity_time < " . (time() - $max_life_time));
   }
 
-  //$conn =& $this->db->getConnection();
-  //$stmt = $conn->newStatement('DELETE FROM sys_session WHERE last_activity_time < :time');
-  //$stmt->setInteger('time', time() - $max_life_time);
-  //$stmt->execute();
-
   function storageDestroyUser($user_id)
   {
     $this->db->delete('sys_session', array('user_id' => (int)$user_id));

@@ -28,19 +28,19 @@ class UniqueUserRule extends SingleFieldRule
       return;
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDbConnection();
+    $conn =& $toolkit->getDbConnection();
 
     $sql = 'SELECT *
             FROM sys_site_object as sco, user as tn
-            WHERE sco.identifier="' . $db->escape($value) . '"
+            WHERE sco.identifier=:identifier
             AND sco.id=tn.object_id
             AND sco.current_version=tn.version';
 
-    $db->sqlExec($sql);
+    $stmt = $conn->newStatement($sql);
+    $stmt->setVarChar('identifier', $value);
+    $rs =& $stmt->getRecordSet();
 
-    $arr = $db->getArray();
-
-    if(is_array($arr) &&  count($arr))
+    if($rs->getTotalRowCount() > 0)
       $this->error('ERROR_DUPLICATE_USER');
   }
 }

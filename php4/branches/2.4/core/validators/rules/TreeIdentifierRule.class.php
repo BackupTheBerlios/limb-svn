@@ -33,12 +33,12 @@ class TreeIdentifierRule extends SingleFieldRule
     if(!$tree->isNode($this->parent_node_id))
       return;
 
-    if(!$nodes = $tree->getChildren($this->parent_node_id))
-      return;
+    $rs =& $tree->getChildren($this->parent_node_id);
 
-    foreach($nodes as $id => $node)
+    for($rs->rewind();$rs->valid();$rs->next())//$nodes as $id => $node)
     {
-      if($node['identifier'] != $value)
+      $node = $rs->current();
+      if($node->get('identifier') != $value)
         continue;
 
       if($this->node_id == TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID)
@@ -46,7 +46,7 @@ class TreeIdentifierRule extends SingleFieldRule
         $this->error('ERROR_DUPLICATE_TREE_IDENTIFIER');
         break;
       }
-      elseif($id != $this->node_id)
+      elseif($node->get('id') != $this->node_id)
       {
         $this->error('ERROR_DUPLICATE_TREE_IDENTIFIER');
         break;

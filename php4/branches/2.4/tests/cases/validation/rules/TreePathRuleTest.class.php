@@ -28,7 +28,7 @@ class TreePathRuleTest extends SingleFieldRuleTestCase
   {
     parent :: setUp();
 
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
 
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();

@@ -21,6 +21,11 @@ class SingleObjectDatasourceTest extends LimbTestCase
   var $tree;
   var $datasource;
 
+  function SingleObjectDatasourceTest()
+  {
+    parent :: LimbTestCase('single object ds test');
+  }
+
   function setUp()
   {
     $this->tree = new MockTree($this);

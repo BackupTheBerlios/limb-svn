@@ -76,13 +76,6 @@ class SimpleQueryBuilder
     return trim("DELETE FROM {$table} {$where}");
   }
 
-  function inCondition($column_name, $names)
-  {
-    $in = ':' . implode(', :', $names);
-
-    return $column_name . ' IN (' . $in . ')';
-  }
-
   function andCondition($conditions)
   {
     $implode_values = array();
@@ -99,6 +92,13 @@ class SimpleQueryBuilder
     }
 
     return implode(' AND ', $implode_values);
+  }
+
+  function inCondition($column_name, $names)
+  {
+    $in = ':' . implode(', :', $names);
+
+    return $column_name . ' IN (' . $in . ')';
   }
 }
 

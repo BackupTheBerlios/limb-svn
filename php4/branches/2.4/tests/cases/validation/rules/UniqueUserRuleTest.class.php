@@ -26,7 +26,7 @@ class UniqueUserRuleTest extends SingleFieldRuleTestCase
   {
     parent :: setUp();
 
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
     $this->db->delete('user');
     $this->db->delete('sys_site_object');
 

@@ -23,6 +23,11 @@ class SiteObjectsDatasourceSupportTest extends LimbTestCase
   var $tree;
   var $toolkit;
 
+  function SiteObjectsDatasourceSupportTest()
+  {
+    parent :: LimbTestCase('site objects ds support test');
+  }
+
   function setUp()
   {
     $this->site_object = new MockSiteObject($this);

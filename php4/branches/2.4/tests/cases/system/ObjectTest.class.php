@@ -117,25 +117,6 @@ class ObjectTest extends LimbTestCase
     $this->object->set($property, $value);
   }
 
-  function testGetByIndexString()
-  {
-    $value = 'test';
-
-    $this->dataspace->setReturnValue('getByIndexString', $value, array($index = '[test]', null));
-
-    $this->assertEqual($this->object->getByIndexString($index), $value);
-  }
-
-  function testSetByIndexString()
-  {
-    $path = '[path]';
-    $value = 'test';
-
-    $this->dataspace->expectOnce('setByIndexString', array($path, $value));
-
-    $this->object->setByIndexString($path, $value);
-  }
-
   function testRemove()
   {
     $this->dataspace->expectOnce('remove', array($property = 'test'));
@@ -143,11 +124,11 @@ class ObjectTest extends LimbTestCase
     $this->object->remove($property);
   }
 
-  function testReset()
+  function testRemoveAll()
   {
-    $this->dataspace->expectOnce('reset');
+    $this->dataspace->expectOnce('removeAll');
 
-    $this->object->reset();
+    $this->object->removeAll();
   }
 }
 

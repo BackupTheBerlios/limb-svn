@@ -27,6 +27,11 @@ class RequestedObjectDatasourceTest extends LimbTestCase
   var $tree;
   var $datasource;
 
+  function RequestedObjectDatasourceTest()
+  {
+    parent :: LimbTestCase('requested object ds test');
+  }
+
   function setUp()
   {
     $this->tree = new MockTree($this);

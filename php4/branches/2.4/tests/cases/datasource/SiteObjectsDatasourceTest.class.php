@@ -39,6 +39,11 @@ class SiteObjectsDatasourceTest extends LimbTestCase
   var $cache;
   var $toolkit;
 
+  function SiteObjectsDatasourceTest()
+  {
+    parent :: LimbTestCase('site objects ds test');
+  }
+
   function setUp()
   {
     $this->db =& LimbDbPool :: getConnection();

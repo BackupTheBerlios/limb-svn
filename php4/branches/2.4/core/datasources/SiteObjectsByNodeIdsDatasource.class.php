@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/SiteObjectsDatasource.class.php');
+require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
 
 class SiteObjectsByNodeIdsDatasource extends SiteObjectsDatasource
 {

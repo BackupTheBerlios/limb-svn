@@ -8,6 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
+//we put here useful stuff which hasn't been refactored and placed somewhere else...
+
+function sqlIn($column_name, $values)
+{
+  //it quotes values by default
+  $in_ids = implode("' , '", $values);
+
+  return "{$column_name} IN ('$in_ids')";
+}
 
 function toStudlyCaps($str, $ucfirst = true)
 {

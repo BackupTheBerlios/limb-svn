@@ -73,9 +73,9 @@ class Object
     $this->dataspace->remove($name);
   }
 
-  function reset()
+  function removeAll()
   {
-    $this->dataspace->reset();
+    $this->dataspace->removeAll();
   }
 
 }
