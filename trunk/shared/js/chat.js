@@ -5,12 +5,15 @@
 	chat_actions['init'] 								= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onfail': window.location.reload};
 	chat_actions['get_messages'] 				= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'refresh_time': 5000, 'onstart': get_messages, 'onfail': get_messages_failed};
 	chat_actions['get_users'] 					= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onstart': get_users, 'onfail': get_users_failed};
-	chat_actions['send_message'] 				= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onfail': send_message_failed};
+	chat_actions['send_message'] 				= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onstart': send_message, 'onfail': send_message_failed};
 	chat_actions['toggle_ignore_user'] 	= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onfail': toggle_ignore_user_failed};
 	chat_actions['exit'] 								= {'status': 0, 'start_time': 0, 'finish_time': 0, 'max_time': 10000, 'onstart': exit, 'onfail': exit};
 	
 	function start_action(action)
 	{
+//		if (get_action_status(action) == 1)
+//			return;
+		
 		current_time = new Date()
 		chat_actions[action]['status'] = 1;
 		chat_actions[action]['start_time'] = current_time.getTime();
@@ -201,7 +204,7 @@
 		
 		all_option = document.createElement('OPTION');
 		all_option.value = -1;
-		all_option.appendChild(document.createTextNode('Всем'));
+		all_option.appendChild(document.createTextNode('To all'));
 		
 		users_combobox.appendChild(all_option);
 	}
@@ -226,7 +229,7 @@
 		else
 			alt = 'block'
 		
-		img = "<a href='javascript:top.toggle_ignore_user(\"" +user[0]+ "\")'><img src='/shared/images/user_" + gender + ".gif' align='center' border='0' alt='" + alt + "'></a>";
+		img = "<a href='javascript:top.toggle_ignore_user(\"" +user[0]+ "\")'><img src='/shared/images/user_" + gender + ".gif' align='center' border='0' alt='" + alt + "' title='"+ alt +"'></a>";
 
 		user_span.id = 'chat_user_' + user[0];
 		user_span.innerHTML = 
@@ -246,8 +249,9 @@
 		users_combobox.appendChild(user_option);
 	}
 	
-	function send_message(mform)
+	function send_message()
 	{
+		mform = document.getElementById('message_form');
 		mform.message.value = mform._message.value;
 		mform._message.value = '';
 		mform.submit();
@@ -283,11 +287,17 @@
 		
 		chat_messages_frame.scroll(0, 1000000);
 		
-		if (update_chat_users && get_action_status('get_users') != 1)
+		if (update_chat_users)
 		{
 			start_action('get_users');
 			update_chat_users = null;
 		}
+	}
+	
+	function send_message_finished()
+	{
+		finish_action('send_message');
+		start_action('get_messages');
 	}
 	
 	function toggle_ignore_user(ignorant_id)

@@ -32,3 +32,6 @@ $chat_system->send_message($_POST['message'],
 														$_POST['recipient_id'], 
 														$file);
 ?>
+<script>
+	top.send_message_finished();
+</script>
