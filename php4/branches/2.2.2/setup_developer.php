@@ -17,6 +17,6 @@ if(!defined('ERROR_HANDLER_TYPE') && isset($_SERVER['SERVER_PORT']))
 		define('ERROR_HANDLER_TYPE', DEBUG_HANDLE_NATIVE);
 
 if(!defined('MEDIA_DIR'))
-	define('MEDIA_DIR', '\\\\server\\media_repository\\'. $matches[2] .'\\');			
+	define('MEDIA_DIR', '\\\\pinggy\\media\\'. $matches[1] .'\\');			
 
 ?>
