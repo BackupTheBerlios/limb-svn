@@ -95,7 +95,7 @@ class user extends object
 	
 	protected function _get_default_db_groups()
 	{
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 	
 		$sql = 
 			'SELECT sso.*, tn.*

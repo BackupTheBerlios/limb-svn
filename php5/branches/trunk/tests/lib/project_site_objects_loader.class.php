@@ -16,7 +16,7 @@ class project_site_objects_loader extends site_objects_loader
 	{
 		$project_db = str_replace('_tests', '', DB_NAME);
 		
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$db->select_db($project_db);
 		
