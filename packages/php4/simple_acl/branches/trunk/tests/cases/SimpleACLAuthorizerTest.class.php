@@ -30,7 +30,7 @@ class SimpleACLAuthorizerTest extends LimbTestCase
   {
     $object = new Service();
     $object->set('path', $path = '/root');
-    $object->attachBehaviour(new SimpleACLAuthorizerTestBehaviour());
+    $object->set('behaviour_name', 'SimpleACLAuthorizerTestBehaviour');
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
@@ -48,7 +48,7 @@ class SimpleACLAuthorizerTest extends LimbTestCase
   {
     $object = new Service();
     $object->set('path', $path = '/root/docs/some_doc');
-    $object->attachBehaviour(new SimpleACLAuthorizerTestBehaviour());
+    $object->set('behaviour_name', 'SimpleACLAuthorizerTestBehaviour');
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
@@ -67,7 +67,7 @@ class SimpleACLAuthorizerTest extends LimbTestCase
   {
     $object = new Service();
     $object->set('path', $path = '/root/docs/some_doc');
-    $object->attachBehaviour(new SimpleACLAuthorizerTestBehaviour());
+    $object->set('behaviour_name', 'SimpleACLAuthorizerTestBehaviour');
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();

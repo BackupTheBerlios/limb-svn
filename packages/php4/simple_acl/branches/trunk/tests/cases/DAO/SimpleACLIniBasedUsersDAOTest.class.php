@@ -23,10 +23,10 @@ class SimpleACLIniBasedUsersDAOTest extends LimbTestCase
   function setUp()
   {
     registerTestingIni(
-      'users.acl.ini',
+      'acl.ini',
       '
-        vasa = vasa:0ef9e88d20d59114a89dad73c2bc0625:Vasa Pupkin:test@example.com:visitors
-        admin = admin:0ef9e88d20d59114a89dad73c2bc0625:Super Admin:admin@test.com:admins
+      users[] = vasa:0ef9e88d20d59114a89dad73c2bc0625:Vasa Pupkin:test@example.com:visitors
+      users[] = admin:0ef9e88d20d59114a89dad73c2bc0625:Super Admin:admin@test.com:admins
         '
     );
 

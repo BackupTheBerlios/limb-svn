@@ -32,7 +32,9 @@ class SimpleACLAuthorizer// implements Authorizer
     if($actions = $service->get('actions'))
       return;
 
-    $behaviour =& $service->getBehaviour();
+    $toolkit =& Limb :: toolkit();
+    $behaviour =& $toolkit->createBehaviour($service->get('behaviour_name'));
+
     $actions = $behaviour->getActionsList();
 
     $path = $service->get('path');

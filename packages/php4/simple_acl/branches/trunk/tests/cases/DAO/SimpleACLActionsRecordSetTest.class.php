@@ -9,16 +9,16 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-require_once(dirname(__FILE__) . '/../../../DAO/SimpleACLAccessRecordSet.class.php');
+require_once(dirname(__FILE__) . '/../../../DAO/SimpleACLActionsRecordSet.class.php');
 require_once(dirname(__FILE__) . '/../../../SimpleACLAuthorizer.class.php');
 
 Mock :: generate('SimpleACLAuthorizer');
 
-class SimpleACLAccessRecordSetTest extends LimbTestCase
+class SimpleACLActionsRecordSetTest extends LimbTestCase
 {
-  function SimpleACLAccessRecordSetTest()
+  function SimpleACLActionsRecordSetTest()
   {
-    parent :: LimbTestCase('simple ACL access record set test');
+    parent :: LimbTestCase('simple ACL actions record set test');
   }
 
   function setUp()
@@ -31,7 +31,7 @@ class SimpleACLAccessRecordSetTest extends LimbTestCase
 
   function testEmpty()
   {
-    $rs = new SimpleACLAccessRecordSet(new PagedArrayDataset(array()));
+    $rs = new SimpleACLActionsRecordSet(new PagedArrayDataset(array()));
 
     $authorizer = new MockSimpleACLAuthorizer($this);
     $rs->setAuthorizer($authorizer);
@@ -45,26 +45,19 @@ class SimpleACLAccessRecordSetTest extends LimbTestCase
     $services = array($service1 = array('whatever1'),
                      $service2 = array('whatever2'));
 
-    $rs = new SimpleACLAccessRecordSet(new PagedArrayDataSet($services));
-    $rs->setAction($action = 'delete');
+    $rs = new SimpleACLActionsRecordSet(new PagedArrayDataSet($services));
 
     $authorizer = new MockSimpleACLAuthorizer($this);
     $rs->setAuthorizer($authorizer);
 
-    $authorizer->setReturnValueAt(0, 'canDo', true, array($action, new IsAExpectation('DataSpace')));
-    $authorizer->setReturnValueAt(1, 'canDo', false, array($action, new IsAExpectation('DataSpace')));
-
-    $this->assertEqual($rs->getRowCount(), 2);
-    $this->assertEqual($rs->getTotalRowCount(), 2);
+    $authorizer->expectArgumentsAt(0, 'assignActions', array(new IsAExpectation('DataSpace')));
+    $authorizer->expectCallCount('assignActions', 2);
 
     $rs->rewind();
 
-    $record = $rs->current();
-    $this->assertEqual($record->get('is_accessible'), true);
-
+    $rs->current();
     $rs->next();
-    $record = $rs->current();
-    $this->assertEqual($record->get('is_accessible'), false);
+    $rs->current();
 
     $authorizer->tally();
   }
