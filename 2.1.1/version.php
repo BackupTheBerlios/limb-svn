@@ -36,7 +36,7 @@ define('LIMB_VERSION_MINOR', '1');
 /**
  * Micro software version
  */
-define('LIMB_VERSION_MICRO', '0');
+define('LIMB_VERSION_MICRO', '1');
 
 /**
  * Software version patch
@@ -77,6 +77,6 @@ define('LIMB_FULL_NAME', LIMB_NAME . ' ' . LIMB_VERSION);
 /**
  * The URL of the home of this software
  */
-define('LIMB_HOME', 'http://0x00.ru');
+define('LIMB_HOME', 'http://limb-project.com/');
 
 ?>
