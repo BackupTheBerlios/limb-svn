@@ -40,7 +40,6 @@ class FormProcessingCommand// implements Command
     else
     {
       $this->_mergeDataspaceWithRequest($dataspace, $request);
-
       return LIMB_STATUS_FORM_SUBMITTED;
     }
   }
