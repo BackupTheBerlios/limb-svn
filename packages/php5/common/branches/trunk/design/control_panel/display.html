@@ -13,7 +13,10 @@
 	{
 		var frm = get_frame(tab.id)
 		if (frm.location.href == 'about:blank' || frm.location.href == '')
-			frm.location.href = tab.data.src;
+			if (last_tab_url = get_cookie(tab.id + '_last_url'))
+				frm.location.href = last_tab_url;
+			else
+				frm.location.href = tab.data.src;
 	}
 
 	function go_home(tab_id)

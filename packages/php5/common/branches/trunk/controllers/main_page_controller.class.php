@@ -22,7 +22,7 @@ class main_page_controller extends site_object_controller
 				),
 				'admin_display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/admin/admin_page.html',
+						'template_path' => '/document/admin_display.html',
 						'transaction' => false,
 				),
 				'create_document' => array(

@@ -12,12 +12,18 @@ require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php
 	
 class images_folder_controller extends site_object_controller
 {
+  protected function _define_default_action()
+  {
+		return 'admin_display';
+	} 
+	
+
 	protected function _define_actions()
 	{
 		return array(
-				'display' => array(
+				'admin_display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/images_folder/display.html'
+						'template_path' => '/images_folder/admin_display.html'
 				),
 				'create_image' => array(
 						'permissions_required' => 'w',

@@ -12,10 +12,15 @@ require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php
 	
 class objects_access_controller extends site_object_controller
 {
+  protected function _define_default_action()
+  {
+		return 'admin_display';
+	} 
+	
 	protected function _define_actions()
 	{
 		return array(
-				'display' => array(
+				'admin_display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/objects_access/set_group_access.html',
 						'action_path' => '/objects_access/set_group_objects_access',

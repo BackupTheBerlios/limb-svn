@@ -12,12 +12,17 @@ require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php
 	
 class user_group_controller extends site_object_controller
 {
+  protected function _define_default_action()
+  {
+		return 'admin_display';
+	} 
+	
 	protected function _define_actions()
 	{
 		return array(
-				'display' => array(
+				'admin_display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/user_group/display.html',
+						'template_path' => '/user_group/admin_display.html',
 				),
 				'edit' => array(
 						'permissions_required' => 'w',

@@ -12,11 +12,16 @@ require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php
 	
 class user_controller extends site_object_controller
 {
+  protected function _define_default_action()
+  {
+		return 'admin_display';
+	} 
+	
 	protected function _define_actions()
 	{
 		return array(
-				'display' => array(
-						'template_path' => '/user/display.html',
+				'admin_display' => array(
+						'template_path' => '/user/admin_display.html',
 						'permissions_required' => 'r',
 				),
 				'edit' => array(

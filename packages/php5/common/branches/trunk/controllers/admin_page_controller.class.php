@@ -12,14 +12,14 @@ require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php
 	
 class admin_page_controller extends site_object_controller
 {
+  protected function _define_default_action()
+  {
+		return 'admin_display';
+	} 
+	
 	protected function _define_actions()
 	{
 		return array(
-				'display' => array(
-						'permissions_required' => 'r',
-						'template_path' => '/admin/admin_page.html',
-						'transaction' => false,
-				),
 				'admin_display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/admin/admin_page.html',
