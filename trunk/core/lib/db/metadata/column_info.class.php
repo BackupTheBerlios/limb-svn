@@ -71,8 +71,7 @@ class column_info
 	{
 		if (! is_a($table, 'table_info'))
 		{
-			debug :: write_warning("parameter 1 not of type 'table_info"',
-			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+			trigger_error("parameter 1 not of type 'table_info'", E_USER_WARNING);
 		} 
 
 		$this->table = &$table;

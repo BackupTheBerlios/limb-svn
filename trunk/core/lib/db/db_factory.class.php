@@ -67,6 +67,8 @@ class	db_factory
   );
   
   var $connection = null;
+  
+  var $db_map = null;
 
   /*
   * @private
@@ -200,6 +202,31 @@ class	db_factory
   	
   	return $self->connection;
   }
+  
+  function get_database_map()
+  {
+  	$self =& db_factory::instance();
+  	
+  	if($this->db_map === null)
+  	{
+  		$this->init_database_map();
+  	}
+  		
+  	return $this->db_map;
+  }
+  
+  function init_database_map()
+  {
+    $self =& db_factory::instance();
+    
+    $conn = $self->get_connection();
+    $dsn = $conn->get_dsn();
+    
+    $self->db_map =& new db_map($dsn['database']);
+    
+    return $map;
+  }
+
 	
   /**
    * Create a new db connection object and connect to the specified

@@ -15,10 +15,6 @@
 */
 class table_info
 { 
-	// FIXME
-	// - Currently all member attributes are public.  This should be fixed
-	// when PHP's magic __sleep() and __wakeup() functions & serialization support
-	// handles protected/private members. (if ever)
 	var $name;
 	var $columns = array();
 	var $foreign_keys = array();
@@ -64,8 +60,7 @@ class table_info
 	{
 		if (! is_a($database, 'db_info'))
 		{
-			debug :: write_warning("parameter 1 not of type 'db_info"',
-			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+			trigger_error("parameter 1 not of type 'db_info'", E_USER_WARNING);
 		} 
 		$this->database = &$database;
 		$this->name = $name;
@@ -76,14 +71,14 @@ class table_info
 
 	/**
 	* This "magic" method is invoked upon serialize().
-	* Because the Info class hierarchy is recursive, we must handle
+	* Because the info class hierarchy is recursive, we must handle
 	* the serialization and unserialization of this object.
 	* 
 	* @return array The class variables that should be serialized (all must be public!).
 	*/
 	function __sleep()
 	{
-		return array('name', 'columns', 'foreignKeys', 'indexes', 'primaryKey');
+		return array('name', 'columns', 'foreign_keys', 'indexes', 'primary_key');
 	} 
 
 	/**
@@ -107,7 +102,7 @@ class table_info
 	function init_columns()
 	{
 		error('abstract function',
-		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,);
+		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	} 
 
 	/**
@@ -118,7 +113,7 @@ class table_info
 	function init_primary_key()
 	{
 		error('abstract function',
-		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,);
+		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	} 
 
 	/**
@@ -129,7 +124,7 @@ class table_info
 	function init_foreign_keys()
 	{
 		error('abstract function',
-		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,);
+		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	} 
 
 	/**
@@ -140,7 +135,7 @@ class table_info
 	function init_indexes()
 	{
 		error('abstract function',
-		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,);
+		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	} 
 
 	/**
@@ -315,7 +310,7 @@ class table_info
 	{
 		if (! is_a($column, 'column_info'))
 		{
-			debug :: write_warning("parameter 1 not of type 'column_info"',
+			debug :: write_warning("parameter 1 not of type 'column_info'",
 			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 		} 
 		$this->columns[$column->get_name()] = &$column;

@@ -23,7 +23,7 @@ class mysql_db_info extends db_info
 	*/
 	function init_tables()
 	{
-		include_once(LIMB_DIR . '/core/lib/db/drivers/metadata/mysql_table_info.class.php');
+		include_once(LIMB_DIR . '/core/lib/db/drivers/mysql/metadata/mysql_table_info.class.php');
 
 		$result = mysql_list_tables($this->dbname, $this->dblink);
 
@@ -34,7 +34,7 @@ class mysql_db_info extends db_info
 
 		while ($row = mysql_fetch_row($result))
 		{
-			$this->tables[strtoupper($row[0])] = &new mysql_table_info($this, $row[0]);
+			$this->tables[strtoupper($row[0])] =& new mysql_table_info($this, $row[0]);
 		} 
 
 		return true;
