@@ -27,8 +27,8 @@
 		<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp'></td>
 		<td align="center" nowrap>
 			<a href='{^path}?version={$version}' target='_blank'><locale:STRING name='display_original_state' file='version'></a>
-			<a href='/root/version?version={$version}&version_node_id={^node_id}' target='_blank'><locale:STRING name='display_all_data' file='version'></a>
-			<a href='/root/version?action=recover&version={$version}&version_node_id={^node_id}&popup=1' onclick="return click_href(this.href);"><locale:STRING name='recover_version' file='version'></a>
+			<a href='/root/tools/version?version={$version}&version_node_id={^node_id}' target='_blank'><locale:STRING name='display_all_data' file='version'></a>
+			<a href='/root/tools/version?action=recover&version={$version}&version_node_id={^node_id}&popup=1' onclick="return click_href(this.href);"><locale:STRING name='recover_version' file='version'></a>
 		</td>
 		</tr>
 		</grid:ITERATOR>

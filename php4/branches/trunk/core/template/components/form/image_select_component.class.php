@@ -45,7 +45,7 @@ class image_select_component extends input_form_element
 	  	if(!$start_path)
 	  		$start_path = session :: get('limb_image_select_working_path');
 	  	if(!$start_path)
-				$start_path = '/root/images_folder';
+				$start_path = '/root/media/images';
 
 			$start_path .= '?action=image_select';
 		}
@@ -80,7 +80,7 @@ class image_select_component extends input_form_element
 	      add_event(window, 'load', init_image_select_{$md5id});
 	    </script>";
 	    
-	  echo "<br><br><input class='button' type='button' onclick='popup(\"/root/image_select?properties=0\", null, null, false, image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='" . strings :: get('select_image', 'image') . "'>";
+	  echo "<br><br><input class='button' type='button' onclick='popup(\"/root/media/image_select?properties=0\", null, null, false, image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='" . strings :: get('select_image', 'image') . "'>";
 	  echo '&nbsp;';
 	  echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='" . strings :: get('reset') . "'>";
 	}

@@ -85,7 +85,7 @@ function register_css(config)
 function insert_limb_repository_image(e, id)
 {
   var editor = e;
-	popup("/root/image_select?popup=1", null, null, false,  
+	popup("/root/media/image_select?popup=1", null, null, false,  
 	
     function(image) 
     {
@@ -218,7 +218,7 @@ function insert_limb_repository_file(e, id)
 {
   var editor = e;
   
-	popup("/root/file_select?popup=1", null, null, false, 
+	popup("/root/media/file_select?popup=1", null, null, false, 
 	
   	function (file)
     {

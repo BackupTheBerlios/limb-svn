@@ -104,7 +104,7 @@ class node_select_component extends input_form_element
 		      add_event(window, 'load', init_node_select_{$md5id});
 		    </script>";
 	    
-	  echo "<input class='button' type='button' onclick='popup(\"/root/node_select\", null, null, false, node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value=' ... '>";
+	  echo "<input class='button' type='button' onclick='popup(\"/root/tools/node_select\", null, null, false, node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value=' ... '>";
 
 		if($this->get_attribute('reset_button'))
 		{

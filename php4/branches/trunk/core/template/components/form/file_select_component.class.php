@@ -80,7 +80,7 @@ class file_select_component extends input_form_element
 		      add_event(window, 'load', init_file_select_{$md5id});
 		    </script>";
 	    
-	  echo "<input class='button' type='button' onclick='popup(\"/root/file_select\", null, null, false, file_select_{$md5id}_insert_file, file_select_{$md5id}_get_file)' value='" . strings :: get('select_file', 'file') . "'>";
+	  echo "<input class='button' type='button' onclick='popup(\"/root/media/file_select\", null, null, false, file_select_{$md5id}_insert_file, file_select_{$md5id}_get_file)' value='" . strings :: get('select_file', 'file') . "'>";
 	  echo '&nbsp;';
 	  echo "<input class='button' type='button' onclick='file_reset_{$md5id}()' value='" . strings :: get('reset') . "'>";
 	}
