@@ -8,7 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
+//store erros in log files
 @define('DEBUG_OUTPUT_MESSAGE_STORE', true);
+//send erros to DEVELOPER_EMAIL address
 @define('DEBUG_OUTPUT_MESSAGE_SEND', false);
 
 define('DEBUG_LEVEL_NOTICE', 1);
@@ -416,24 +418,34 @@ class debug
 
     $this->debug_strings[] = $debug_info;
 
-    if (defined('DEBUG_OUTPUT_MESSAGE_STORE') && constant('DEBUG_OUTPUT_MESSAGE_STORE'))
+    if(debug :: _should_log_errors())
     {
       $files =& $this->log_files;
       $file_name = false;
 
-      if (isset($files[$verbosity_level]))
+      if(isset($files[$verbosity_level]))
         $file_name = $files[$verbosity_level];
 
-      if ($file_name !== false && $this->is_log_file_enabled($verbosity_level))
+      if($file_name !== false && $this->is_log_file_enabled($verbosity_level))
         $this->_write_file($file_name, $debug_info);
     }
 
-    if(defined('DEBUG_OUTPUT_MESSAGE_SEND')  && constant('DEBUG_OUTPUT_MESSAGE_SEND'))
+    if(debug :: _should_send_errors())
     {
       $this->_send_mail($debug_info);
     }
 
     unset($GLOBALS['debug_recursion']);
+  }
+
+  function _should_log_errors()
+  {
+    return defined('DEBUG_OUTPUT_MESSAGE_STORE') && constant('DEBUG_OUTPUT_MESSAGE_STORE');
+  }
+
+  function _should_send_errors()
+  {
+    return defined('DEBUG_OUTPUT_MESSAGE_SEND') && constant('DEBUG_OUTPUT_MESSAGE_SEND');
   }
 
   /*

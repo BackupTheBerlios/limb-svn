@@ -1,3 +1,56 @@
+Version 2.3RC3
+(22 January 2005, from /php4/branches/trunk r1049)
+svn://svn.berlios.de/limb/php4/tags/2.3RC3
+
+  --  debug::set_message_output() removed, use DEBUG_OUTPUT_MESSAGE_SEND and DEBUG_OUTPUT_MESSAGE_STORE constants instead for sending errors via e-mail and storing them in log files(the latter is 'on' by default)
+  --  much more flexible .htaccess for mod_rewrite(LIMB_DIR/.project-htaccess-if-rewrite):
+  --  there's no need for root-rewrite.php and mod_rewrite_fix.php now, all you have to do is to copy project root into root.php
+  --  init sqls removed(moved to empty-project)
+  --  fixed: recover version action reloads parent now
+  --  fixed: articles_folder/admin_display.html uses final_level_grid_body.html for articles display
+  --  $_SERVER['PHP_SELF'] and $_SERVER['QUERY_STRING'] are set using $_SERVER['REQUEST_URI'] in setup.php, 'cos $_SERVER['REQUEST_URI'] is always passed from the server while others sometimes not
+  --  'title' attribute became default sys_metadata_attribute
+  --  external package update: XML_HTMLSax3-3.0.0RC1.tgz included
+  --  removed priority (High, Low) of email sent by debug.class due to mailing service change to PHPMailer
+  --  now it's possible to switch off default full text indexer setting
+        define('FULL_TEXT_INDEXER_ENABLED', false);
+      somewhere in setup, by default it's switched on. Actually it's a very quick'n'dirty solution of the fundamental problem which should be solved in 3.0 something...
+  --  simple_navigation_datasource a bit improved:
+        * we're trimming trailing slashes: thus /root/about == /root/about/
+  --  access_policy::save_object_access() arguments order changed:
+        save_object_access($policy_array, $accessor_type, $accessor_ids = array())
+      instead:
+        save_object_access($policy_array, $accessor_ids = array(), $accessor_type)
+  --  charset attribute added to send_plain_mail, send_html_mail functions
+  --  send_html_mail.inc.php, send_plain_mail.inc.php merged into one mail.inc.php
+  --  now you can pass array of recipients to mail functions in several formats:
+      * array(array('adress@example.com'))
+      * array(array('address' => 'adress@example.com', 'name' => 'Someone'))
+      * array(array('"Someone" <adress@example.com>'))
+  --  added sorting arrays of controllers and classes in controllers_classes_options_datasource site_objects_classes_options_datasource for usability issues;
+  --  less fat: /core/lib/cache/cache_lite removed(PEAR::LiteCache will be probably used)
+  --  less fat: XML_HTMLSax removed from /core/lib/external in favour of XML_HTMLSax3
+  --  now you have to define path to XML_HTMLSax if you need one via XML_HTMLSAX3 constant somewhere, and include library via this constant also!
+  --  HTMLSax3.tgz added to /external
+  --  fixed: "\r\n" is used as a line separator since we're using php mail function in send_*_mail.inc.php functions
+  --  added external directory where all(important) external packages will be stored as archives, this way it'll be more convenient for end user to install LIMB
+  --  phpmailer-1.72.tgz added to external
+  --  php_simpletest_1.0RC1.tgz added to external
+  --  /core/lib/mail cleaning: all PEAR stuff removed from there in favor of phpMailer(http://phpmailer.sourceforge.net/) which will be used as an external package
+  --  new version of send_plain_mail.inc.php and send_html_mail.inc.php that use phpMailer, you have to define PHPMailer_DIR somewhere in the project(setup.php or setup.override.php)!!!
+  --  new <search:DATASOURCE> tag which can use arbitrary datasource for searching and later beautifying search results
+  --  uri::reset() method added
+  --  fixed: bug with float values processing in db_module
+  --  got rid of $_GET in image and file display actions in favor of request class usage
+  --  minor bug in create_documents_folder_action. Method name typo - _define_controller_name()
+  --  uri class improvements:
+        * default 'guessing' and normalization removed, you can omit some parts of uri and set them later with setters
+        * normalize_path is now public method not a static one
+        * query items are sorted by keys when output string is built, this way it becomes easier to use it as some sort of hash
+  --  3 new functions were added to common.js: containsDOM, checkMouseEnter and checkMouseLeave. These functions provide workaround when one needs to handle onmouseenter and onmouseleave events for block elements (code was taken from http://www.faqts.com/knowledge_base/view.phtml/aid/1606);
+  --  fixed: a bug with core_transfer_component - in some cases it can damage data in component dataset
+  --  fixed: a bug with redirect method of response class. It was possible to call this method several times and this lead to several redirect notices on the redirect page using metadata redirect strategy. Now response can be redirected only once. All other attempts are ignored.
+
 Version 2.3RC2
 (5 December 2004, from /php4/branches/trunk r944)
 svn://svn.berlios.de/limb/php4/tags/2.3RC2
