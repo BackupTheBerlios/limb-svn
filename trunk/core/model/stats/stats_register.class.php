@@ -63,7 +63,8 @@ class stats_register
 		$ip_register =& $this->_get_ip_register();
 		$counter_register =& $this->_get_counter_register();
 		
-		$counter_register->update($this->_reg_date, $ip_register->is_new_host($this->_reg_date));
+		$counter_register->set_new_host($ip_register->is_new_host($this->_reg_date));
+		$counter_register->update($this->_reg_date);
 	}
 	
 	function & _get_log_register()

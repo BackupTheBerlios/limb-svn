@@ -53,7 +53,7 @@ class limb_tree extends nested_db_tree
 		
 		return $nodes;
 	}
-	
+		
 	function get_path_to_node($node)
 	{
 		$parents = $this->get_parents($node['id']);

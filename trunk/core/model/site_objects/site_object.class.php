@@ -511,12 +511,12 @@ class site_object extends object
 
 	function set_parent_node_id($parent_node_id)
 	{
-		$this->set_attribute('parent_node_id', $parent_node_id);
+		$this->set_attribute('parent_node_id', (int)$parent_node_id);
 	}
 	
 	function get_node_id()
 	{
-		return $this->get_attribute('node_id');
+		return (int)$this->get_attribute('node_id');
 	}
 	
 	function get_identifier()

@@ -13,6 +13,8 @@ require_once(LIMB_DIR . 'core/fetcher.class.php');
 
 class stats_counter
 {
+	var $_is_new_host = false;
+	
 	var $_hits_today;
 	var $_hosts_today;
 	var $_hits_all;
@@ -25,7 +27,12 @@ class stats_counter
 		$this->db =& db_factory :: instance();
 	}
 	
-	function update($reg_date, $is_new_host)
+	function set_new_host($status = true)
+	{
+		$this->_is_new_host = $status;
+	}
+	
+	function update($reg_date)
 	{	
 		$reg_stamp = $reg_date->get_stamp();
 		$record = $this->_get_counter_record($reg_stamp);
@@ -42,7 +49,7 @@ class stats_counter
 		elseif($counters_date->date_to_days() > $reg_date->date_to_days()) //this shouldn't normally happen
 			return;
 		
-		if ($is_new_host)
+		if ($this->_is_new_host)
 		{
 			$record['hosts_today']++;
 			$record['hosts_all']++;
@@ -62,6 +69,11 @@ class stats_counter
 			$reg_stamp,
 			$record['hits_today'], 
 			$record['hosts_today']);	
+	}
+	
+	function _is_new_audience()
+	{
+		return (!isset($_SERVER['HTTP_REFERER']));
 	}
 	
 	function _is_home_hit()
@@ -119,11 +131,13 @@ class stats_counter
 	function _update_day_counters_record($stamp, $hits_today, $hosts_today)
 	{
 		$home_hit = ($this->_is_home_hit()) ? 1 : 0;
+		$audience = ($this->_is_new_host && $this->_is_new_audience()) ? 1 : 0;
 				
 		$sql = "UPDATE sys_stat_day_counters 
 						SET hosts={$hosts_today}, 
 						hits={$hits_today},
-						home_hits=home_hits+{$home_hit}
+						home_hits=home_hits+{$home_hit},
+						audience=audience+{$audience}
 						WHERE
 						time=" . $this->_make_day_stamp($stamp);
 					

@@ -10,15 +10,15 @@
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . 'core/data_source/data_source.class.php');
-require_once(LIMB_DIR . 'core/model/stats/stats_hits_hosts_by_days_report.class.php');
+require_once(LIMB_DIR . 'core/model/stats/stats_pages_report.class.php');
 
-class stats_hits_hosts_list_data_source extends data_source
+class stats_pages_list_data_source extends data_source
 {		
-	var $stats_hits_hosts_report = null;
+	var $stats_pages_report = null;
 	
-	function stats_hits_hosts_list_data_source()
+	function stats_pages_list_data_source()
 	{
-		$this->stats_report =& new stats_hits_hosts_by_days_report();
+		$this->stats_report =& new stats_pages_report();
 		
 		parent :: data_source();		
 	}
@@ -31,36 +31,32 @@ class stats_hits_hosts_list_data_source extends data_source
 		$arr = $this->stats_report->fetch($params);
 		
 		$arr = $this->_process_result_array($arr);
-		
 		return new array_dataset($arr);
 	}
-	
-	function _process_result_array($arr)
+
+	function _process_result_array($arr)		
 	{
-		if(complex_array :: get_max_column_value('hosts', $arr, $index) !== false)
-			$arr[$index]['max_hosts'] = 1;
-
-		if(complex_array :: get_max_column_value('hits', $arr, $index) !== false)
-			$arr[$index]['max_hits'] = 1;
-
-		if(complex_array :: get_max_column_value('home_hits', $arr, $index) !== false)
-			$arr[$index]['max_home_hits'] = 1;
-
-		if(complex_array :: get_max_column_value('audience', $arr, $index) !== false)
-			$arr[$index]['max_audience'] = 1;
+		$tree =& limb_tree :: instance();
 		
+		$total = $this->stats_report->fetch_total_hits();
+			
 		$result = array();
 		foreach($arr as $index => $data)
 		{
-			if(date('w', $data['time']+60*60*24) == 1)
-				$data['new_week'] = 1;
-			
+			if($node = $tree->get_node($data['node_id']))
+				$data['path'] = $tree->get_path_to_node($node);
+			else
+				$data['page_deleted'] = 1;
+				
+			$data['percentage'] = round($data['hits'] / $total * 100, 2);
+				
 			$result[$index] = $data;
 		}
 			
 		return $result;
-	}
-	
+		
+	}		
+		
 	function _configure_filters()
 	{
 		$this->_set_period_filter();

@@ -1,13 +1,13 @@
 <core:WRAP file="admin/page.html" placeholder="content">
 
+<core:INCLUDE file="/stats_report/hits_hosts_form.html"><br>
 <br>
 
 <DATA_SOURCE target='table' navigator='pager'>
 	<core:PARAMETER name='data_source_path' value='stats_hits_hosts_list_data_source'>
-	<core:PARAMETER name='order' value='time=DESC'>
 </DATA_SOURCE>
 
-<pager:navigator id="pager" items="60">
+<pager:navigator id="pager" items="30">
 	<core:INCLUDE file="pager_contents.html">
 </pager:navigator>
 
@@ -15,6 +15,7 @@
 <tr>
 <th><locale:STRING name='date'></th>
 <th>hosts</th>
+<th>audience</th>
 <th>hits/home hits</th>
 </tr>
 
@@ -28,9 +29,33 @@
 <tr>
 </list:STRIPE>
 
-<td><locale:DATE_FORMAT hash_id='time' locale_format='short_date' type='stamp'></td>
-<td>{$hosts}</td>
-<td>{$hits}/{$home_hits}</td>
+<td>
+	<core:OPTIONAL for='new_week'>
+		<span style='color:red'>
+			<locale:DATE_FORMAT hash_id='time' locale_format='short_date' type='stamp'>
+		<span>
+	</core:OPTIONAL>
+	<core:DEFAULT for='new_week'>
+		<locale:DATE_FORMAT hash_id='time' locale_format='short_date' type='stamp'>
+	</core:DEFAULT>
+</td>
+
+<td>
+	<core:OPTIONAL for='max_hosts'><b>{$hosts}</b></core:OPTIONAL>
+	<core:DEFAULT for='max_hosts'>{$hosts}</core:DEFAULT>
+</td>
+
+<td>
+	<core:OPTIONAL for='max_audience'><b>{$audience}</b></core:OPTIONAL>
+	<core:DEFAULT for='max_audience'>{$audience}</core:DEFAULT>
+</td>
+
+<td>
+	<core:OPTIONAL for='max_hits'><b>{$hits}</b></core:OPTIONAL>
+	<core:DEFAULT for='max_hits'>{$hits}</core:DEFAULT>/
+	<core:OPTIONAL for='max_home_hits'><b>{$home_hits}</b></core:OPTIONAL>
+	<core:DEFAULT for='max_home_hits'>{$home_hits}</core:DEFAULT>
+</td>
 </tr>
 </list:ITEM>
 </list:LIST>

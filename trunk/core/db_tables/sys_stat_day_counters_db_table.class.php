@@ -24,7 +24,8 @@ class sys_stat_day_counters_db_table extends db_table
   		'time' => array('type' => 'numeric'),
   		'hosts' => array('type' => 'numeric'),
   		'hits' => array('type' => 'numeric'),
-  		'home_hits' => array('type' => 'numeric')
+  		'home_hits' => array('type' => 'numeric'),
+  		'audience' => array('type' => 'numeric'),
     );
   }
 }

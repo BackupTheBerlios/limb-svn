@@ -10,11 +10,11 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
-class stats_hits_hosts_report_action extends form_action
+class stats_pages_report_action extends form_action
 {
-	function stats_hits_hosts_report_action()
+	function stats_pages_report_action()
 	{
-		parent :: form_action('hits_hosts_form');
+		parent :: form_action('pages_form');
 	}
 	
 	function _valid_perform()

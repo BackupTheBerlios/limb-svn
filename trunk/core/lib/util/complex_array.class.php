@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: complex_array.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -74,6 +74,34 @@ class complex_array
 			$result[] = $item[$column_name];
 			
 		return $result;
+	}
+	
+	function get_max_column_value($column_name, $array, &$index)
+	{
+		$index = 0;
+		
+		if(!$values = complex_array :: get_column_values($column_name, $array))
+			return false;
+			
+		$max = max($values);
+		
+		$index = array_search($max, $values);
+		
+		return $max;
+	}
+
+	function get_min_column_value($column_name, $array, &$index)
+	{
+		$index = 0;
+		
+		if(!$values = get_column_values($column_name, $array))
+			return false;
+			
+		$min = min($values);
+		
+		$index = array_search($min, $values);
+		
+		return $min;
 	}
 	
 	function to_flat_array($array, &$result, $prefix='')

@@ -12,16 +12,26 @@ require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class stats_report_controller extends site_object_controller
 {
-	var $_default_action = 'hits_hosts_report'; 
-	
 	function stats_report_controller()
 	{
 		$this->_actions = array(
+				'display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/stats_report/reports_list.html',
+				),
+				'pages_report' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/stats_report/pages_list.html',
+						'action_name' => strings :: get('show_pages_report', 'stats'),
+						'action_path' => '/stats_report/stats_pages_report_action',
+						'display_in_breadcrumbs' => true
+				),
 				'hits_hosts_report' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/stats_report/hits_hosts_list.html',
 						'action_name' => strings :: get('show_hits_hosts_report', 'stats'),
 						'action_path' => '/stats_report/stats_hits_hosts_report_action',
+						'display_in_breadcrumbs' => true
 				),
 		);
  		
