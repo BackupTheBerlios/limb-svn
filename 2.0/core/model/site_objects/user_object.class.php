@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: user_object.class.php 470 2004-02-18 13:04:56Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
@@ -161,7 +161,7 @@ class user_object extends content_object
 			sys_site_object as sco, 
 			user as tn
 			WHERE tn.email="' . $db->escape($email) . '"
-			AND scot.id=tn.object_id
+			AND scot.object_id=tn.object_id
 			AND sco.id=tn.object_id 
 			AND sco.current_version=tn.version';
 					
