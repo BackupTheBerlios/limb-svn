@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
-class class_list_datasource extends datasource
+class controller_list_datasource extends datasource
 {
 	function & get_dataset($params = array())
 	{
@@ -19,7 +19,6 @@ class class_list_datasource extends datasource
 		
 		$db_table =& db_table_factory :: instance('sys_controller');
 		$controllers = $db_table->get_list('', 'name');
-		
 		$result = array();
 		$params = array();
 
@@ -33,7 +32,7 @@ class class_list_datasource extends datasource
 			foreach($arr['actions'] as $action_name => $action_params)
 				$arr['actions'][$action_name]['extra'] = $params;
 
-			$result[$class_id]['actions'] = $arr['actions'];
+			$result[$controller_id]['actions'] = $arr['actions'];
 		}
 		
 		return new array_dataset($result);

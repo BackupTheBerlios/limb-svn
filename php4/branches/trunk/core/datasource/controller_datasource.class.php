@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
-class class_datasource extends datasource
+class controller_datasource extends datasource
 {
 	function & get_dataset(&$counter, $params=array())
 	{
@@ -18,16 +18,16 @@ class class_datasource extends datasource
 		
 	  $request = request :: instance();
 	  
-		if(!$class_id = $request->get_attribute('class_id'))
+		if(!$controller_id = $request->get_attribute('controller_id'))
 			return new array_dataset();
 			
-		$db_table =& db_table_factory :: instance('sys_class');
-		$class_data = $db_table->get_row_by_id($class_id);
+		$db_table =& db_table_factory :: instance('sys_controller');
+		$controller_data = $db_table->get_row_by_id($controller_id);
 		
-		if ($class_data)
+		if ($controller_data)
 		{
 			$counter = 1;
-			return new array_dataset(array(0 => $class_data));
+			return new array_dataset(array(0 => $controller_data));
 		}
 		else
 			return new array_dataset(array());

@@ -14,10 +14,6 @@ define('DEBUG_LEVEL_ERROR', 3);
 define('DEBUG_TIMING_POINT', 4);
 define('DEBUG_LEVEL', 5);
 
-define('DEBUG_HANDLE_NATIVE', 0);
-define('DEBUG_HANDLE_CUSTOM', 1);
-define('DEBUG_HANDLE_TRIGGER_ERROR', 2);
-
 define('DEBUG_OUTPUT_MESSAGE_NULL', 0);
 define('DEBUG_OUTPUT_MESSAGE_STORE', 1);
 define('DEBUG_OUTPUT_MESSAGE_SEND', 2);
@@ -39,7 +35,7 @@ class debug
 	var $time_accumulator_list = array(); 
 		
 	// Determines what to do with php errors, ignore, fetch or output
-	var $handle_type = DEBUG_HANDLE_NATIVE; 
+	var $handle_type = 'native'; 
 	
 	// An array of the output_formats for the different debug levels
 	var $output_format; 
@@ -109,7 +105,7 @@ class debug
 			DEBUG_LEVEL => true
 		);
 
-		$this->handle_type = DEBUG_HANDLE_NATIVE;
+		$this->handle_type = 'native';
 		$this->old_handler = false;
 		$this->script_start = debug :: _time_to_float(microtime());
 		$this->time_accumulator_list = array();
@@ -140,10 +136,10 @@ class debug
 	}	
 
 	/*
-   Determines how PHP errors are handled. If $type is DEBUG_HANDLE_TRIGGER_ERROR all error messages
-   is sent to PHP using trigger_error(), if $type is DEBUG_HANDLE_CUSTOM all error messages
+   Determines how PHP errors are handled. If $type is 'trigger' all error messages
+   is sent to PHP using trigger_error(), if $type is 'custom' all error messages
    from PHP is fetched using a custom error handler and output as a usual debug message.
-   If $type is DEBUG_HANDLE_NATIVE there is no error exchange between PHP and debug.
+   If $type is 'native' there is no error exchange between PHP and debug.
   */
 	function set_handle_type($type)
 	{
@@ -152,26 +148,26 @@ class debug
 		else
 			$debug =& $this;
 
-		if ($type != DEBUG_HANDLE_TRIGGER_ERROR && $type != DEBUG_HANDLE_CUSTOM)
-			$type = DEBUG_HANDLE_NATIVE;
+		if ($type != 'trigger' && $type != 'custom')
+			$type = 'native';
 
 		if ($type == $debug->handle_type)
 			return;
 
-		if ($debug->handle_type == DEBUG_HANDLE_CUSTOM)
+		if ($debug->handle_type == 'custom')
 			restore_error_handler();
 
 		switch ($type)
 		{
-			case DEBUG_HANDLE_CUSTOM:
+			case 'custom':
 				set_error_handler('debug_error_handler');
 			break;
 
-			case DEBUG_HANDLE_TRIGGER_ERROR:
+			case 'trigger':
 				restore_error_handler();
 			break;
 
-			case DEBUG_HANDLE_NATIVE:
+			case 'native':
 		} 
 		$debug->handle_type = $type;
 	} 
@@ -248,7 +244,7 @@ class debug
 			return;
 
 		$debug =& debug::instance();
-		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
+		if ($debug->handle_type == 'trigger')
 			trigger_error($string, E_USER_NOTICE);
 		else
 			$debug->write(DEBUG_LEVEL_NOTICE, $string, $code_line, $params);
@@ -263,7 +259,7 @@ class debug
 			return;
 
 		$debug =& debug::instance();
-		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
+		if ($debug->handle_type == 'trigger')
 			trigger_error($string, E_USER_WARNING);
 		else
 			$debug->write(DEBUG_LEVEL_WARNING, $string, $code_line, $params);
@@ -278,7 +274,7 @@ class debug
 			return;
 
 		$debug =& debug::instance();
-		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
+		if ($debug->handle_type == 'trigger')
 			trigger_error($string, E_USER_ERROR);
 		else
 			$debug->write(DEBUG_LEVEL_ERROR, $string, $code_line, $params);
@@ -293,7 +289,7 @@ class debug
 			return;
 
 		$debug =& debug::instance();
-		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
+		if ($debug->handle_type == 'trigger')
 			trigger_error($string, E_USER_NOTICE);
 		else
 			$debug->write(DEBUG_LEVEL, $string, $code_line, $params);

@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
-class class_folder extends site_object
+class controller_folder extends site_object
 {
 	function _define_class_properties()
 	{

@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
-class class_template_actions_list_datasource extends datasource
+class controller_group_access_template_datasource extends datasource
 {
 	function & get_dataset($params = array())
 	{
@@ -18,7 +18,7 @@ class class_template_actions_list_datasource extends datasource
 	  
 		if(!$controller_id = $request->get_attribute('controller_id'))
 			return new array_dataset();
-			
+		
 		$db_table =& db_table_factory :: instance('sys_controller');
 		$controller_data = $db_table->get_row_by_id($controller_id);
 		
@@ -29,16 +29,26 @@ class class_template_actions_list_datasource extends datasource
 		
 		$actions = $site_object_controller->get_actions_definitions();
 		
+		$user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter);
+		
 		$result = array();
-		foreach($actions as $action => $action_params)
+			
+		foreach($user_groups as $group_id => $group_data)
 		{
-			if (!isset($action_params['can_have_access_template']) || !$action_params['can_have_access_template'])
-				continue;
-
-			if(isset($action_params['action_name']))
-				$result[$action]['action_name'] = $action_params['action_name'];
-			else
-				$result[$action]['action_name'] = str_replace('_', ' ', strtoupper($action{0}) . substr($action, 1));				
+			foreach($actions as $action => $action_params)
+			{
+				if (!isset($action_params['can_have_access_template']) || !$action_params['can_have_access_template'])
+					continue;
+					
+				if(isset($action_params['action_name']))
+					$result[$group_id]['actions'][$action]['action_name'] = $action_params['action_name'];
+				else
+					$result[$group_id]['actions'][$action]['action_name'] = str_replace('_', ' ', strtoupper($action{0}) . substr($action, 1));				
+					
+				$result[$group_id]['group_name'] = $group_data['identifier'];
+				$result[$group_id]['actions'][$action]['read_selector_name'] = 'template[' . $action . '][' . $group_id . '][r]';
+				$result[$group_id]['actions'][$action]['write_selector_name'] = 'template[' . $action . '][' . $group_id . '][w]';
+			}
 		}
 		
 		return new array_dataset($result);

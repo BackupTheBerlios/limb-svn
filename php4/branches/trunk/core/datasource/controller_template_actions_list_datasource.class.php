@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/datasource.class.php');
 
-class class_group_action_access_datasource extends datasource
+class controller_template_actions_list_datasource extends datasource
 {
 	function & get_dataset($params = array())
 	{
@@ -18,7 +18,7 @@ class class_group_action_access_datasource extends datasource
 	  
 		if(!$controller_id = $request->get_attribute('controller_id'))
 			return new array_dataset();
-		
+			
 		$db_table =& db_table_factory :: instance('sys_controller');
 		$controller_data = $db_table->get_row_by_id($controller_id);
 		
@@ -29,22 +29,16 @@ class class_group_action_access_datasource extends datasource
 		
 		$actions = $site_object_controller->get_actions_definitions();
 		
-		$user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter);
-		
 		$result = array();
 		foreach($actions as $action => $action_params)
 		{
+			if (!isset($action_params['can_have_access_template']) || !$action_params['can_have_access_template'])
+				continue;
+
 			if(isset($action_params['action_name']))
 				$result[$action]['action_name'] = $action_params['action_name'];
 			else
-				$result[$action]['action_name'] = str_replace('_', ' ', strtoupper($action{0}) . substr($action, 1));
-				
-			$result[$action]['permissions_required'] = $action_params['permissions_required'];
-			
-			foreach($user_groups as $group_id => $group_data)
-			{
-				$result[$action]['groups'][$group_id]['selector_name'] = 'policy[' . $group_id . '][' . $action . ']';
-			}
+				$result[$action]['action_name'] = str_replace('_', ' ', strtoupper($action{0}) . substr($action, 1));				
 		}
 		
 		return new array_dataset($result);

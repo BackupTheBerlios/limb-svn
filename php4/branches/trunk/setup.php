@@ -8,13 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
-if(	preg_match('|^(.*?)\.(.*?)\.(.*?)$|', $_SERVER['SERVER_NAME'], $matches) && 
-		$matches[3] == 'bit')
-	include_once(LIMB_DIR . 'setup_developer.php');
-
-set_time_limit(300);
-
 if(!defined('DEVELOPER_EMAIL'))
 	define('DEVELOPER_EMAIL', 'dbrain@office.bit');
     
