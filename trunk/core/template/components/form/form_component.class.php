@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
 require_once(LIMB_DIR . 'core/template/tag_component.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/error_list.class.php');
@@ -138,7 +136,7 @@ class form_component extends tag_component
 		{
 			$this->attributes['action'] = $_SERVER['PHP_SELF'];
 			
-			if(isset($_REQUEST["popup"]))
+			if(isset($_REQUEST['popup']))
 				$this->attributes['action'] .= '?popup=1';
 		}
 			

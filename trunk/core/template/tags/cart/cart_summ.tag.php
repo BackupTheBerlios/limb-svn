@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: data_source.tag.php 2 2004-02-29 19:06:22Z server $
+* $Id: datasource.tag.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
 class sart_summ_tag_info

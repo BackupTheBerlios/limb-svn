@@ -77,7 +77,7 @@ class input_tag extends control_tag
 						'type' => $type));
 		} 
 
-		parent::prepare();
+		parent :: prepare();
 	} 
 } 
 

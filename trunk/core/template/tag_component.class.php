@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 /**
 * Base class for runtime components that output XML tags
 * 

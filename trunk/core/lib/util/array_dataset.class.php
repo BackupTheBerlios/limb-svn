@@ -33,7 +33,7 @@ class array_dataset
 	*/
 	var $first = true;
 	/**
-	* Constructs array_data_set
+	* Constructs array_dataset
 	* 
 	* @param array $ (an array of arrays)
 	* @access public 
@@ -63,7 +63,7 @@ class array_dataset
 		} 
 	} 
 	/**
-	* Saves the current, modified, record back into the array_data_set.
+	* Saves the current, modified, record back into the array_dataset.
 	* 
 	* @access private 
 	* @return void 
@@ -74,7 +74,7 @@ class array_dataset
 		$this->data[key($this->data)] = &$record;
 	} 
 	/**
-	* Returns to start of array_data_set
+	* Returns to start of array_dataset
 	* 
 	* @return void 
 	* @access public 
@@ -85,7 +85,7 @@ class array_dataset
 		$this->counter = 0;
 	} 
 	/**
-	* Iterates through the array_data_set, setting $this->record to the current
+	* Iterates through the array_dataset, setting $this->record to the current
 	* record.
 	* Returns TRUE if there was another record to iterator over
 	* Returns false if it's reached the end of the array
@@ -132,7 +132,7 @@ class array_dataset
 			return $this->record[$name];
 	} 
 	/**
-	* Places an element in the current record of the array_data_set
+	* Places an element in the current record of the array_dataset
 	* 
 	* @param string $ name of element
 	* @param mixed $ value of element
@@ -235,7 +235,7 @@ class array_dataset
 		} 
 	} 
 	/**
-	* Add an array to the current array_data_set. Keys are replaced with the next
+	* Add an array to the current array_dataset. Keys are replaced with the next
 	* available index for $this->data - duplicate keys will NOT be overwritten.
 	* 
 	* @return void 

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 /**
 * Ancester tag class for input controls
 */
@@ -80,31 +79,34 @@ class control_tag extends server_tag_component_tag
 	*/
 	function generate_constructor(&$code)
 	{
-		parent::generate_constructor($code);
-				
-		if (array_key_exists('error_class', $this->attributes))
-		{
-			$code->write_php($this->get_component_ref_code() . '->error_class = \'' . $this->attributes['error_class'] . '\';');
-			unset($this->attributes['error_class']);
-		} 
-		if (array_key_exists('error_style', $this->attributes))
-		{
-			$code->write_php($this->get_component_ref_code() . '->error_style = \'' . $this->attributes['error_style'] . '\';');
-			unset($this->attributes['error_style']);
-		} 
+		parent :: generate_constructor($code);
+						
 		if (array_key_exists('display_name', $this->attributes))
 		{
 			$code->write_php($this->get_component_ref_code() . '->display_name = \'' . $this->attributes['display_name'] . '\';');
 			unset($this->attributes['display_name']);
 		} 
 	} 
-	
+		
 	function post_generate(&$code)
 	{
 		parent :: post_generate($code);
 		
 		$code->write_php($this->get_component_ref_code() . '->render_js_validation();');
 		$code->write_php($this->get_component_ref_code() . '->render_errors();');
+	}
+	
+	function prepare()
+	{
+		parent :: prepare();
+		
+		if (isset($this->attributes['locale_value']))
+		{
+			if(isset($this->attributes['locale_file']))
+				$this->attributes['value'] = strings :: get($this->attributes['locale_value'], $this->attributes['locale_file']);
+			else
+				$this->attributes['value'] = strings :: get($this->attributes['locale_value']);
+		}
 	}
 } 
 

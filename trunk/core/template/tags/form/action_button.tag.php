@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/core/template/tags/form/button.tag.php');
 
 class action_button_tag_info
 {
@@ -20,7 +20,7 @@ class action_button_tag_info
 
 register_tag(new action_button_tag_info());
 
-class action_button_tag extends control_tag
+class action_button_tag extends button_tag
 {
 	var $runtime_component_path = '/core/template/components/form/input_submit_component';
 	
@@ -37,6 +37,8 @@ class action_button_tag extends control_tag
 	
 	function prepare()
 	{
+		parent :: prepare();
+		
 		$form_tag =& $this->find_parent_by_class('form_tag');
 		
 		if(!isset($this->attributes['type']))

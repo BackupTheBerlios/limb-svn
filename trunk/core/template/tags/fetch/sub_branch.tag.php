@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/template/tags/data_source/data_source.tag.php');
+require_once(LIMB_DIR . 'core/template/tags/datasource/datasource.tag.php');
 
 class fetch_sub_branch_tag_info
 {
@@ -19,9 +19,9 @@ class fetch_sub_branch_tag_info
 
 register_tag(new fetch_sub_branch_tag_info());
 
-class fetch_sub_branch_tag extends data_source_tag
+class fetch_sub_branch_tag extends datasource_tag
 {	
-	var $runtime_component_path = '/core/template/components/fetch_sub_branch_data_source_component';
+	var $runtime_component_path = '/core/template/components/fetch_sub_branch_datasource_component';
 } 
 
 ?>

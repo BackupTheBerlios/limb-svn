@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 require_once(LIMB_DIR . '/core/template/tags/form/control_tag.class.php');
 
 class button_tag_info
@@ -26,7 +25,7 @@ register_tag(new button_tag_info());
 */
 class button_tag extends control_tag
 {
-	var $runtime_component_path = '/core/template/components/form/button_component';
+	var $runtime_component_path = '/core/template/components/form/button_component';	
 } 
 
 ?>

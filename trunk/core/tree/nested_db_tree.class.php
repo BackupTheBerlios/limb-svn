@@ -469,9 +469,9 @@ class nested_db_tree
 										$this->_add_sql($add_sql, 'append'));
 		
 		$this->db->sql_exec($sql);
-		$data_set = $this->db->fetch_row();
+		$dataset = $this->db->fetch_row();
 		
-		return (int)$data_set['counter'];
+		return (int)$dataset['counter'];
 	}
 	
 	/**

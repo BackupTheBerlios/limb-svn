@@ -5,12 +5,12 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: select_single_component.class.php 5 2004-03-01 17:22:45Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/template/components/form/container_form_element.class.php');
 require_once(LIMB_DIR . 'core/template/components/form/option_renderer.class.php');
-require_once(LIMB_DIR . 'core/data_source/data_source_factory.class.php');
+require_once(LIMB_DIR . 'core/datasource/datasource_factory.class.php');
 
 class options_form_element extends container_form_element
 {
@@ -117,7 +117,7 @@ class options_form_element extends container_form_element
 		{
 			$this->_set_options_from_strings_file();
 		}
-		elseif ($this->_use_data_source_options())
+		elseif ($this->_use_datasource_options())
 		{
 			$this->_set_options_from_datasource();
 		}
@@ -133,7 +133,7 @@ class options_form_element extends container_form_element
 		return $this->get_attribute('options_ini_file') && !$this->get_attribute('use_ini');
 	}
 	
-	function _use_data_source_options()
+	function _use_datasource_options()
 	{
 		return $this->get_attribute('options_datasource');
 	}
@@ -173,17 +173,17 @@ class options_form_element extends container_form_element
 	
 	function _set_options_from_datasource()
 	{
-		$data_source = $this->_get_data_source();
+		$datasource = $this->_get_datasource();
 		
-		$this->set_choices($data_source->get_options_array());
+		$this->set_choices($datasource->get_options_array());
 		
-		$this->set_default_value($data_source->get_default_option());
+		$this->set_default_value($datasource->get_default_option());
 	}
 	
-	function & _get_data_source()
+	function & _get_datasource()
 	{
-		$data_source_path = $this->get_attribute('options_datasource');		
-		return data_source_factory :: create($data_source_path);
+		$datasource_path = $this->get_attribute('options_datasource');		
+		return datasource_factory :: create($datasource_path);
 	}
 } 
 
