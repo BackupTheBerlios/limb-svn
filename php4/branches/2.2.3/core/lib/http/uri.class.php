@@ -180,9 +180,9 @@ class uri
   function compare($uri)
   {   		  	
     if (  
-          $this->_protocol !== $uri->get_protocol() ||
-      		$this->_host !== $uri->get_host() ||
-      		$this->_port !== $uri->get_port() ||
+          $this->_protocol != $uri->get_protocol() ||
+      		$this->_host != $uri->get_host() ||
+      		$this->_port != $uri->get_port() ||
       		$this->_user !== $uri->get_user() ||
       		$this->_password !== $uri->get_password()
     		)

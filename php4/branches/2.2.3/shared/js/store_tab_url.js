@@ -3,7 +3,6 @@
 		wname = window.name;
 		tab_name = 'tab_' + wname.substr(7);
 		set_cookie(tab_name + '_last_url', escape(window.location.href));
-		set_cookie('active_tab',wname.substr(7));
 	}
 	
 	function refresh_location_bar()
