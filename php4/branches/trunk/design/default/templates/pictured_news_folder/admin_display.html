@@ -36,6 +36,7 @@
     <core:INCLUDE file="/admin/list_item_hint.html">
     <a href="{$path}" target="_blank">{$title}</a>
   </td>
+  <td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date'></td>
   <td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
