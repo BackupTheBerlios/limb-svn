@@ -40,22 +40,28 @@ class HTMLTestRunner extends TestRunner
   }
  
   function _displayPerform($path, &$root_group, &$current_group)
-  {  
-    echo '<p><a href="' . $this->getBaseURL() . '?browse=' . $path . '">More tests</a></p>';
+  {    
+    if(isset($_GET['back']))  
+      $postfix = '';
+    else
+      $postfix = '/..';
+      
+    echo '<p><a href="' . $this->getBaseURL() . '?browse=' . $path . $postfix . '">Back</a></p>';
     
     echo debug :: parse_html_console();
   }
   
   function _displayBrowse($path, &$root_group, &$current_group)
   {
-    echo '<p><a href="' . $this->getBaseURL() . '?browse=' . $path . '/..">One level up</a></p>';
+    if($root_group != $current_group)
+      echo '<p><a href="' . $this->getBaseURL() . '?browse=' . $path . '/..">Back</a></p>';
     
     if (is_a($current_group, 'LimbGroupTest'))
 		  $group_tests = $current_group->getTestCasesHandles();
 		else  
 		  $group_tests = array();
 
-    $buffer = "<br><a href='" . $this->getBaseURL() . "?perform={$path}'>Run all tests from this group</a>\n";
+    $buffer = "<br><a href='" . $this->getBaseURL() . "?perform={$path}&back=1'>Run all tests from this group</a>\n";
     
 		$buffer .= "<p>Available test groups in '" . $current_group->getLabel() . "':</p>\n";
 		
@@ -68,11 +74,11 @@ class HTMLTestRunner extends TestRunner
   		  
   		  if(!is_a($group_test, 'LimbGroupTest'))
   			{
-  			  $buffer .= "<li><a href='" . $this->getBaseURL() . "?perform={$path}/{$index}'>" . $group_test->getLabel() . "</a></li>\n";
+  			  $buffer .= "<li><a href='" . $this->getBaseURL() . "?perform={$path}/{$index}'>P</a> " . $group_test->getLabel() . "</li>\n";
   			}
   			else
   			{
-  			  $buffer .= "<li><a href='" . $this->getBaseURL() . "?browse={$path}/{$index}'>" . $group_test->getLabel() . "</a></li>\n";
+  			  $buffer .= "<li><a href='" . $this->getBaseURL() . "?perform={$path}/{$index}'>P</a> <a href='" . $this->getBaseURL() . "?browse={$path}/{$index}'>B</a> " . $group_test->getLabel() . "</li>\n";
   			}  
   		} 
   		$buffer .= "</ul>\n";
