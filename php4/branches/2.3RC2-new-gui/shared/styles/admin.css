@@ -43,8 +43,8 @@ hr{height:1px; color:#0D2F89;padding:0;margin:0}
 .datatable .odd{background-color:#ffffff}
 .datatable .even{background-color:#F8FFF2}
 
-.action{border-left:solid 1px #C0C0C0;}
-.action .arr{padding:0 10px 0 10px}
+.action{border-left:solid 1px #C0C0C0;right:-10;bottom:-1;top:-1}
+.action .arr{padding:0 0px 0 0px}
 .pic{text-align:center;padding:2px}
 .pic div{border:solid 1px #C0C0C0;padding:1px 5px 1px 5px; background-color:#ffffff;width:1px}
 .pic img{border:solid 1px #E40302;}
@@ -102,9 +102,12 @@ hr{height:1px; color:#0D2F89;padding:0;margin:0}
 
 
 /*behaviour*/
-.datatable .htc_odd_tr{background-color:#ffffff}
-.datatable .htc_even_tr{background-color:#F8FFF2}
-.htc_ddm_span{}
+.datatable .odd_row{background-color:#ffffff}
+.datatable .even_row{background-color:#F8FFF2}
+
+.dd_content{display:none}
+.dd-action-container{background-color:#ffffff;border:solid 1px #586599;background-image:URL('/shared/images/bgr/3.gif'); background-repeat:repeat-y}
+.dd-action-container td{padding:4px 7px 4px 7px}
 
 /*debug*/
 .debug-tmpl-container{border:dotted 4px #f00000;padding: 2px;margin:2px}

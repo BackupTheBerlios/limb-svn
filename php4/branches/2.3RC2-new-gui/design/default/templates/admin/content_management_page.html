@@ -5,41 +5,49 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
 <tr>
   <td height="100%" valign="top">
-    <!--BEGIN:[ left ]-->
-        <div id="left_menu" style='display: block;'>
-          <core:INCLUDE file="/navigation/content_management_admin.html">
-        </div>
+  <span id="menu_left_body">
+        <img src='/shared/images/1x1.gif' width='160px' height='1px'>
+        <core:INCLUDE file="/navigation/content_management_admin.html">
+  </span>
   </td>
-  <td height="100%">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" background="/shared/images/bgr/2.gif">
-    <tr><td style="padding:10px 0 0 0"><img alt=""src="/shared/images/marker/3.gif"></td></tr>
-    <tr><td height="50%"></td></tr>
-    <tr><td><img alt=""src="/shared/images/marker/3.gif"></td></tr>
-    <tr><td height="50%"></td></tr>
-    <tr><td style="padding:0 0 10px 0"><img alt=""src="/shared/images/marker/3.gif"></td></tr>
-    </table>
+  <td height=100%>
+    <span behavior="CShowHide" id="menu_left" style="display:block;height:100%">
+      <span id="menu_left_minus" style="display:block;height:100%">
+        <table border="0" background="/shared/images/bgr/2.gif" cellpadding="0" cellspacing="0" width="100%" height="100%">
+        <tr><td style="padding:10px 0 0 0"><img alt="" src="/shared/images/marker/3minus.gif"></td></tr>
+        <tr><td height="50%"></td></tr>
+        <tr><td><img alt="" src="/shared/images/marker/3minus.gif"></td></tr>
+        <tr><td height="50%"></td></tr>
+        <tr><td style="padding:0 0 10px 0"><img alt="" src="/shared/images/marker/3minus.gif"></td></tr>
+        </table>
+      </span>
+    </span>
   </td>
 
   <td style="padding:5px" valign="top" width="100%">
       <core:INCLUDE file="/admin/include/page_data.html">
       <core:PLACEHOLDER id="content">
-
   </td>
 
-  <td height="100%">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" background="/shared/images/bgr/2.gif">
-    <tr><td style="padding:10px 0 0 0"><img alt=""src="/shared/images/marker/3_.gif"></td></tr>
-    <tr><td height="50%"></td></tr>
-    <tr><td><img alt=""src="/shared/images/marker/3_.gif"></td></tr>
-    <tr><td height="50%"></td></tr>
-    <tr><td style="padding:0 0 10px 0"><img alt=""src="/shared/images/marker/3_.gif"></td></tr>
-    </table>
+  <td height=100%>
+    <span behavior="CShowHide" id="menu_right" style="display:block;height:100%">
+      <span id="menu_right_minus" style="display:block;height:100%">
+        <table border="0" background="/shared/images/bgr/2.gif" cellpadding="0" cellspacing="0" width="100%" height="100%">
+        <tr><td style="padding:10px 0 0 0"><img alt="" src="/shared/images/marker/3plus.gif"></td></tr>
+        <tr><td height="50%"></td></tr>
+        <tr><td><img alt="" src="/shared/images/marker/3plus.gif"></td></tr>
+        <tr><td height="50%"></td></tr>
+        <tr><td style="padding:0 0 10px 0"><img alt="" src="/shared/images/marker/3plus.gif"></td></tr>
+        </table>
+      </span>
+    </span>
   </td>
+
   <td valign="top">
-      <div id="right_menu" style='display: block;'>
+  <span id="menu_right_body">
         <img src='/shared/images/1x1.gif' width='160px' height='1px'>
         <core:INCLUDE file="/admin/include/session_history.html">
-      </div>
+  </span>
   </td>
 </tr>
 </table>

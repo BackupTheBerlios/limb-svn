@@ -4,14 +4,15 @@
       <core:PARAMETER name='datasource_path' value='session_history_datasource' >
     </DATASOURCE>
     <grid:LIST id='history'>
+    <span behavior="CShowHide">
     <table border="0" cellpadding="0" cellspacing="5" class="panel" width="100%">
     <tr>
-      <td class="icon"><img alt="history" onclick='toggle_submenu("history_div");' src="/shared/images/icon/menu/context/history.gif"><br><img alt="" src="images/1x1.gif" class="sep"></td>
+      <td class="icon"><img title="{$title}" alt="{$title}" src="/shared/images/icon/menu/context/history.gif"><br><img alt="" src="images/1x1.gif" class="sep"></td>
       <td width="100%">
         <table border="0" cellpadding="0" cellspacing="0" class="label" width="100%">
         <tr>
           <td width="100%">History</td>
-          <td><img id='img_history_div' src='/shared/images/marker/minus.gif' onclick='toggle_submenu("history_div");' alt='Show/Hide' title='Show/Hide'></td>
+          <td><span id="minus"><img src='/shared/images/marker/minus.gif'></span></td>
         </tr>
         </table>
       </td>
@@ -19,14 +20,15 @@
     <tr>
       <td></td>
       <td>
-      <div id="history_div" style='display: block;'>
-      <grid:ITERATOR>
-      <a href="{$href}"> {$title} &raquo; </a><br>
-      </grid:ITERATOR>
-      </div>
-      </td>
-    </tr>
-    </table>
+        <span id="body">
+
+        <grid:ITERATOR>
+          <a href="{$href}"> {$title} &raquo; </a><br>
+          </grid:ITERATOR>
+          </td>
+      </tr>
+      </table>
+    </span>
 
     </grid:LIST>
 
