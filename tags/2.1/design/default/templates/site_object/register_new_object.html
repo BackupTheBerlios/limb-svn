@@ -1,0 +1,31 @@
+<core:WRAP file="popup.html" placeholder="content">
+
+<form name="register_new_object" id="register_new_object" method="post">
+	<core:INCLUDE file="form_errors.html">
+	<table>
+	
+	<tr>
+		<td><label for="class_name"><span class='req'>*</span><locale:STRING name='class_name'></label>
+		<td><input type='text' name='class_name' id='class_name' label="Class name" class='input'></td>
+	</tr>
+	<tr>
+		<td><label for="parent_path"><span class='req'>*</span><locale:STRING name='parent'></label>
+		<td><input type='text' name='parent_path' id='parent_path' label="Parent element" class='input'></td>
+	</tr>
+	
+	<core:INCLUDE file='/admin/admin_form_items/identifier.html'>	
+	<core:INCLUDE file='/admin/admin_form_items/title.html'>
+	
+	<core:INCLUDE file='/admin/admin_form_items/req_info.html'>
+	
+	<div id='popup_div'></div>	
+	<tr>
+		<td colspan='2' align='center'>
+			<action_button name="create_button" class="button"  action="register_new_object" reload_parent="true" locale_value="create"/>
+		   &nbsp;
+		  <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+		</td>
+	</tr>
+</table>
+
+</form>

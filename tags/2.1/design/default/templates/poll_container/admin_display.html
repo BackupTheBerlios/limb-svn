@@ -1,0 +1,41 @@
+<core:WRAP file="admin/admin_display_page.html" placeholder="content">
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+<br>
+
+<fetch:SUB_BRANCH target='folders' navigator='pager'>
+	<core:PARAMETER name='loader_class_name' value='poll'>
+	<core:PARAMETER name='order' value='start_date=DESC'>
+</fetch:SUB_BRANCH>
+
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='folders'>
+<table width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='published_status' ></th>
+	<th><locale:STRING name='poll_questions_list' file='poll'></th>
+	<th><locale:STRING name='publish_period'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+
+<grid:ITERATOR>
+	<tr class="jip">
+		<td><core:INCLUDE file="/admin/selector.html"></td>
+		<td><core:INCLUDE file="published_status.html"></td>
+		<td jip='object'><a href="{$path}">{$title}</a></td>
+		<td><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
+		<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+		<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+	</tr>
+</grid:ITERATOR>
+<tr><td colspan='5' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+<td align='right'><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td></tr>
+</table>
+</grid:LIST>

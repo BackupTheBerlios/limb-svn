@@ -1,0 +1,36 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<span class=jip>
+<fetch:MAPPED><core:INCLUDE file="jip_actions/normal.html"></fetch:MAPPED>
+</span><br>
+
+<fetch:SUB_BRANCH target='direct_objects'>
+	<core:PARAMETER name='datasource_path' value='pricelist_datasource' >
+	<core:PARAMETER name='loader_class_name' value='pricelist_object' >
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='direct_objects'>	
+<table width=100% border=0 cellspacing=1 cellpadding=0 >
+	
+
+<grid:ITERATOR>
+<tr>
+	<td>
+		<a href='{$path}'>{$title}</a>
+	</td>
+	<td>
+		<core:OPTIONAL for='file_id'>
+			<a href='/root?node_id={$file_id}'><locale:STRING name='download' file='pricelist'></a>
+			( <img src='{$file_icon}'> {$file_size} bytes)</td>
+		</core:OPTIONAL>
+	</td>
+	<td  jip='object' class=jip bgcolor="white" valign=top>
+		<core:INCLUDE file="published_status.html">
+		<span jip='action'><core:INCLUDE file="jip_actions/normal.html"></span><br>
+	</td>
+
+</tr>
+</grid:ITERATOR>
+</table>
+</grid:LIST>

@@ -1,0 +1,121 @@
+--------------------------------------------------------------------------------
+LIMB - Lithesome Interactive Media Builder -  $Id: INSTALL 257 2004-05-17 09:30:34Z server $
+--------------------------------------------------------------------------------
+http://limb.sourceforge.net
+
+--------------------------------------------------------------------------------
+ !!!WARNING!!!
+--------------------------------------------------------------------------------
+This is the pre-alfa of the first public release of the LIMB  based  project. These
+instructions contain ***only*** necessary information on how to get LIMB based project
+working.
+You're strongly required to be able to configure Apache, MySQL.
+If you're stuck and need help, please feel free to contact the developers over email: 
+limb@0x00.ru
+
+***This package doesn't contain tests yet, they will be included later***
+
+--------------------------------------------------------------------------------
+	SYSTEM REQUIREMENTS
+--------------------------------------------------------------------------------
+OS : OS independent
+
+Web Server: Apache  1.3+ (configured  with  AllowOverride  All for directory where 
+you plan to place your project) with php installed as a module(important!)
+
+Development Environment: PHP 4.2+  
+
+Preferred Database: MySQL 4.0+ 
+(LIMB will work on 3.23+ with InnoDB support, however LIMB uses full text search 
+capabilities of 4.0+ version)
+
+--------------------------------------------------------------------------------
+	PROJECT SETUP  
+--------------------------------------------------------------------------------
+1.	Unpack the downloaded archive
+2.	Edit the project settings in YOUR_PROJECT_DIRECTORY/setup_custom.php
+3.	Load database dump with structure and initial data from sql.sql, you can find it
+		in YOUR_PROJECT_DIRECTORY/init/ directory
+
+--------------------------------------------------------------------------------
+	APACHE SETUP 
+--------------------------------------------------------------------------------
+If you use your web server to host only 1 website you need to set your DocumentRoot option 
+to point to your project's root directory, i.e.
+DocumentRoot YOUR_PROJECT_DIRECTORY
+
+You also have either to copy contents from YOUR_PROJECT_DIRECTORY/limb/shared/ to 
+YOUR_PROJECT_DIRECTORY/shared/ or make an alias to that directory, i.e.
+Alias /shared YOUR_PROJECT_DIRECTORY/limb/shared/
+
+If you host many website on your web server you can make changes to Virtual Hosts section 
+of httpd.conf file. Here's a valid example of the virtual host setup:
+
+NameVirtualHost 192.168.0.6
+
+<VirtualHost 192.168.0.6>
+    DocumentRoot YOUR_PROJECT_DIRECTORY
+    ServerName YOUR_PROJECT
+    ErrorLog logs/YOUR_PROJECT-error_log
+    CustomLog logs/YOUR_PROJECT-access_log common
+		Alias /shared YOUR_PROJECT_DIRECTORY/limb/shared/
+</VirtualHost>
+
+Please note that you need to write an alias for shared directory in the apache 
+project virtual host section. You may skip this step by simply copying 
+YOUR_PROJECT_DIRECTORY/limb/shared/ contents to YOUR_PROJECT_DIRECTORY/shared/ directory.
+
+--------------------------------------------------------------------------------
+	SETTING PERMISSIONS
+--------------------------------------------------------------------------------
+Your PHP installation will need write access to the YOUR_PROJECT_DIRECTORY/var directory.
+Usually this directory contains several subdirectories: 'compiled', 'cache', 'media', 'log'
+(they're created automatically provided YOUR_PROJECT_DIRECTORY/var has appropriate permissions). 
+
+YOUR_PROJECT_DIRECTORY
+|
++-var
+	|
+	+-compiled
+	|
+	+-cache
+	|
+	+-log
+	|
+	+-media
+	
+Also if you want to run tests you will have to duplicate 'var' directory in
+'YOUR_PROJECT_DIRECTORY/tests/' and set the same permissions(currently tests are not included).
+
+YOUR_PROJECT_DIRECTORY
+|
++-tests
+	|
+	+-var
+
+
+After installation use /root/admin address to get access to the administration zone.
+To log in use 'admin' as a login and 'test' as a password.
+
+--------------------------------------------------------------------------------
+	config.ini
+--------------------------------------------------------------------------------
+Every project has config.ini file in /core/settings directory.
+
+By default it contains only one valuable parameter:
+force_compile = 1
+
+This parameter forces the WACT template engine to recompile the template every time 
+it is requested, this is useful for development. For speed purposes on production environments 
+you will definitely want it to be set to 0.
+
+--------------------------------------------------------------------------------
+ TEMPLATE FILE NAME RESOLVING 
+--------------------------------------------------------------------------------
+Templates can be found in YOUR_PROJECT_DIRECTORY/design/main/templates/
+directory or in YOUR_PROJECT_DIRECTORY/limb/design/default/templates/ directory.
+
+Template engine first looks up the requested template in
+YOUR_PROJECT_DIRECTORY/design/main/templates/ 
+if not found, it tries
+YOUR_PROJECT_DIRECTORY/limb/design/default/templates/.
