@@ -418,6 +418,11 @@ class debug
   */
   function write($verbosity_level, $string, $code_line = '', $params = array())
   {
+    if(isset($GLOBALS['debug_recursion']) && $GLOBALS['debug_recursion'])
+      die($string . ' - (debug recursion!!!)');
+
+    $GLOBALS['debug_recursion'] = 1;
+
     if (!debug::is_debug_enabled())
       return;
 
@@ -450,6 +455,8 @@ class debug
     {
       $this->_send_mail($debug_info);
     }
+
+    unset($GLOBALS['debug_recursion']);
   }
 
   /*

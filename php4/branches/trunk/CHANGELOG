@@ -19,6 +19,7 @@ svn://svn.berlios.de/limb/php4/tags/2.3RC1
   --  fixed: fs::mkdir() wouldn't create relative directory if upper directory is missing
   --  error message in case of recursive error is more detailed now(blank screen problem when db params are invalid)
   --  db_module now doesn't connect and select database in constructor, instead db_factory is a more appropriate place for this
+  --  debug :: write() tries to detect debug recursions and fires die() if any
   --  cart stuff removed
   --  critical session class bug fix: db update could fail under some conditions
   --  session_history_manager little refactoring
