@@ -1,0 +1,9 @@
+    <script>
+    arr_actions['{$controller_id}'] = {
+        'display_original_state':{'href':'{^path}?version={$version}&popup=1', 'img': '<action:ICON identifier="display_original_state">', 'name': '<locale:STRING name="display_original_state" file="version">'},
+        'display_all_data':{'href':'/root/tools/version?version={$version}&version_node_id={^node_id}&popup=1', 'img': '<action:ICON identifier="display_all_data">', 'name': '<locale:STRING name="display_all_data" file="version">'},
+        'recover_version':{'href':'/root/tools/version?action=recover&version={$version}&version_node_id={^node_id}&popup=1', 'img': '<action:ICON identifier="recover_version">', 'name': '<locale:STRING name="recover_version" file="version">'},
+    }
+    </script>
+    <span id="{$controller_id}" behavior="CDDAction" ddalign="hbr"><img src='/shared/images/marker/action_minus.gif'></span>
+

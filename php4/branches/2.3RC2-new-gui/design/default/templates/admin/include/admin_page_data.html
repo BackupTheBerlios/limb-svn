@@ -30,10 +30,22 @@
         <!--BEGIN:[ PAGE INFO ]-->
           <div class="info"><div class="info-text">Небольшое но очень информативное описание данного раздела. Небольшое но очень информативное описание данного раздела. Небольшое но очень информативное описание данного раздела.</div></div>
         <!--END:[ PAGE INFO ]-->
-        <!--BEGIN:[ PAGE ACTIONS ]-->
-        <core:INCLUDE file="jip_actions/normal.html">
-        <!--END:[ PAGE ACTIONS ]-->
-        <core:INCLUDE file="published_status.html">
+        <table>
+          <tr>
+            <td>
+              <!--BEGIN:[ PAGE ACTIONS ]-->
+              <core:INCLUDE file="jip_actions/normal.html">
+              <!--END:[ PAGE ACTIONS ]-->
+            </td>
+            <td>
+              <core:INCLUDE file="published_status.html">
+            </td>
+            <td>
+              <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+            </td>
+          </tr>
+        </table>
+
       </td>
     <tr>
     </table>

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/object_detail_info_datasource.class.php');
 
-class object_versions_datasource extends datasource
+class object_versions_datasource extends object_detail_info_datasource
 {
   function & get_dataset(&$counter, $params=array())
   {
-    $object_data = fetch_requested_object();
+    $object_data = $this->_fetch_object_data();
 
     if (!count($object_data))
       return new array_dataset(array());

@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
+require_once(LIMB_DIR . '/core/datasource/object_controller_datasource.class.php');
 
-class controller_group_access_template_datasource extends datasource
+class controller_group_access_template_datasource extends object_controller_datasource
 {
   function & get_dataset($params = array())
   {
-    $request = request :: instance();
-
-    if(!$controller_id = $request->get_attribute('controller_id'))
+    if(!$controller_id = $this->_get_controller_id())
       return new array_dataset();
 
     $db_table =& db_table_factory :: instance('sys_controller');

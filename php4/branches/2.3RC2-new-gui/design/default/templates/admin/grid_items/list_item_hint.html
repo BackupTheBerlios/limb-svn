@@ -2,24 +2,13 @@
 <img src="/shared/images/icon/i.gif">
   <span id="content" style="display:none;">
     <table class="hint-table-css">
-    <tr><td class="hint-title-css"> <img src="/shared/images/icon/i1.gif"> <locale:STRING name="detail_info"></td></tr>
+    <tr><td class="hint-title-css"> <img src="/shared/images/icon/i1.gif"><a href='/root/tools/detail_info?object_id={$object_id}&popup=1' onclick='return click_href(this.href);'><locale:STRING name="detail_info"></a></td></tr>
     <tr><td><table><tr><td><locale:STRING name="identifier"></td><td>{$identifier}</td></tr>
     <tr><td><locale:STRING name="title"></td><td><b>{$title}</b></td></tr>
     <tr><td><locale:STRING name="created_date"></td><td><locale:DATE_FORMAT hash_id="created_date" type="stamp" locale_format="short_date_time"></td></tr>
     <tr><td><locale:STRING name="modified_date"></td><td><locale:DATE_FORMAT hash_id="modified_date" type="stamp" locale_format="short_date_time"></td></tr>
     <tr><td><locale:STRING name="controller_class_name"></td><td>{$controller_name}
-<!--
-    <a href='/root/admin/site_structure?action=change_controller&id={$node_id}&popup=1' onclick='click_href(this.href); return false;'><img alt='' src='<action:ICON identifier="configure">'> <locale:STRING name="change_controller" file="site_structure"></a>
- -->
-    <script>
-    arr_actions['controllers_{$id}'] = {
-        'change_controller':{'href':'/root/admin/site_structure?action=change_controller&id={$node_id}&popup=1', 'img': '<action:ICON identifier="configure">', 'name': '<locale:STRING name="change_controller" file="site_structure">'},
-        'group_access':{'href':'/root/admin/controllers?popup=1&action=set_group_access&controller_id={$controller_id}', 'img': '<action:ICON identifier="access_manage">', 'name': 'Set group access'},
-        'group_access_template':{'href':'/root/admin/controllers?popup=1&action=set_group_access_template&controller_id={$controller_id}', 'img': '<action:ICON identifier="access_template_manage">', 'name': 'Set group access template'},
-    }
-    </script>
-    <span id="controllers_{$id}" behavior="CDDAction" ddalign="hbr"><img src='/shared/images/marker/action_minus.gif'></span>
-
+      <core:INCLUDE file='/admin/actions/controller_actions.html'>
     </td></tr>
     <tr><td><locale:STRING name="class_name"></td><td>{$class_name}</td></tr>
     <tr><td><locale:STRING name="version"></td><td>{$version}</td></tr>

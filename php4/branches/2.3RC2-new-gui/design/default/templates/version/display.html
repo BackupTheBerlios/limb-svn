@@ -4,10 +4,18 @@
   <core:PARAMETER name='datasource_path' value='/version_datasource'>
 </DATASOURCE>
 <grid:LIST id='attributes'>
-<table>
+<table border=0 width=100% class='datatable'>
+  <tr>
+    <th><locale:STRING name='attribute'></th>
+    <th><locale:STRING name='value'></th>
+    <th></th>
+  </tr>
 <grid:ITERATOR>
-<tr>
-<td>{$attribute}</td><td>{$value}</td>
+  <grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
+  <grid:STRIPE odd><tr class="odd_row"></grid:STRIPE>
+  <grid:STRIPE even><tr class="even_row"></grid:STRIPE>
+  <td width='5%'><span behavior='CRow' target='-2'><b>{$attribute}</b></td>
+  <td>{$value}</td>
 </tr>
 </grid:ITERATOR>
 <tr>

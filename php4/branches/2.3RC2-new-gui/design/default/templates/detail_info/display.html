@@ -1,9 +1,17 @@
 <core:WRAP file="/admin/popup.html" placeholder="content">
 <fetch:MAPPED>
+  <h1>{$title}</h1>
+</fetch:MAPPED>
+
+<DATASOURCE target='object_detail'>
+  <core:PARAMETER name='datasource_path' value='object_detail_info_datasource'>
+</DATASOURCE>
 <table>
   <tr>
     <td valign='top'>
-     <table>
+    <core:DATASPACE id='object_detail'>
+    <core:INCLUDE file='/jip_actions/dropdown.html'>
+    <table>
       <tr><td><locale:STRING name="identifier"></td><td>{$identifier}</td></tr>
       <tr><td><locale:STRING name="title"></td><td><b>{$title}</b></td></tr>
       <tr><td><locale:STRING name="created_date"></td><td><locale:DATE_FORMAT hash_id="created_date" type="stamp" locale_format="short_date_time"></td></tr>
@@ -15,6 +23,7 @@
       <tr><td><locale:STRING name="version"></td><td>{$version}</td></tr>
       <tr><td><locale:STRING name="language"></td><td>{$locale_id}</td></tr>
       </table>
+      </core:DATASPACE>
     </td>
     <td valign='top'>
       <DATASOURCE target='versions' >
@@ -61,4 +70,3 @@
 </tr>
 </table>
 
-</fetch:MAPPED>

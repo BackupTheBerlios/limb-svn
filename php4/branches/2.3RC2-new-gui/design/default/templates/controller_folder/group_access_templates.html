@@ -1,0 +1,32 @@
+<DATASOURCE target='actions_templates'>
+    <core:PARAMETER name='datasource_path' value='controller_template_actions_list_datasource' >
+</DATASOURCE>
+<DATASOURCE target='controllers_templates'>
+    <core:PARAMETER name='datasource_path' value='controller_group_access_template_datasource' >
+</DATASOURCE>
+<tr>
+  <th>&nbsp;</th>
+  <grid:LIST id='actions_templates'>
+    <grid:ITERATOR>
+      <th>{$action_name}</th>
+    </grid:ITERATOR>
+  </grid:LIST>
+</tr>
+<grid:LIST id='controllers_templates'>
+  <grid:ITERATOR>
+    <grid:SEPARATOR><tr><td class="col6" colspan="6" height="1"></td></tr></grid:SEPARATOR>
+    <grid:STRIPE odd><tr class="odd_row"></grid:STRIPE>
+    <grid:STRIPE even><tr class="even_row"></grid:STRIPE>
+    <td align='right'><span behavior='CRow' target='-2'></span>{$group_name}</td>
+    <core:DATA_TRANSFER hash_id='actions' target='checkers'>
+      <grid:LIST id='checkers'>
+        <grid:ITERATOR>
+          <td align="center">
+          <selector class="checkbox">
+          </td>
+        </grid:ITERATOR>
+      </grid:LIST>
+    </tr>
+    </grid:ITERATOR>
+  </grid:LIST>
+
