@@ -155,7 +155,7 @@ class limb_tree
 
 	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
 	{
-		return $this->_tree_driver->get_accessible_sub_branch_by_path($path, $depth, $include_parent = false, $check_expanded_parents, $class_id, $only_parents);
+		return $this->_tree_driver->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents);
 	}
 	
 	function count_accessible_children($id)
