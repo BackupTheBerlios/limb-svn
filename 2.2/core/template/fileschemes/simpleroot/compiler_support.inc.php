@@ -46,43 +46,6 @@ function resolve_template_source_file_name($file)
 } 
 
 /**
-* Compiles all source templates below the source scheme directory
-* including subdirectories
-* 
-* @param string $ root directory name
-* @param string $ path relative to root
-* @return void 
-* @access protected 
-*/
-function recursive_compile_all($root, $path)
-{
-	if ($dh = opendir($root . $path))
-	{
-		while (($file = readdir($dh)) !== false)
-		{
-			if (substr($file, 0, 1) == '.')
-			{
-				continue;
-			} 
-			if (is_dir($root . $path . $file))
-			{
-				recursive_compile_all($root, $path . $file . '/');
-				continue;
-			} 
-			if (substr($file, -5, 5) == '.html')
-			{
-				compile_template_file($path . $file);
-			} 
-			else if (substr($file, -5, 5) == '.vars')
-			{
-				compile_var_file($path . $file);
-			} 
-		} 
-		closedir($dh);
-	} 
-} 
-
-/**
 * Writes a compiled template file
 * 
 * @param string $ filename

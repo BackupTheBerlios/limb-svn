@@ -14,7 +14,12 @@
 */
 function resolve_template_compiled_file_name($sourcefile)
 {	
-	return VAR_DIR . '/compiled/' . md5($sourcefile) . '.php';
+	if (defined('CONTENT_LOCALE_ID'))
+		$locale = '_' . CONTENT_LOCALE_ID . '/';
+	else
+		$locale = '_' . DEFAULT_CONTENT_LOCALE_ID . '/';
+
+	return VAR_DIR . '/compiled/' . md5($sourcefile . $locale) . '.php';
 } 
 
 /**
