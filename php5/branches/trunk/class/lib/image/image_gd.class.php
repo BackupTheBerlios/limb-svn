@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/class/lib/image/image_library.class.php');
 
 class image_gd extends image_library
 {
-	protected $image = null;
-	protected $gd_version = null;
+	protected $image;
+	protected $gd_version;
 	protected $option_re = '/(<tr.*%s.*<\/tr>)/Ui';
 	protected $create_func = '';
 	protected $resize_func = '';
@@ -103,23 +103,28 @@ class image_gd extends image_library
 		preg_match($re, $str, $matches);
 		return (float)$matches[1];
 	}
-
-	public function set_input_file($file_name, $type = '')
-	{
-	  if (empty($type))
+  
+  protected function _get_image()
+  { 
+    if($this->image)
+      return $this->image;
+    
+	  if (!$this->input_file_type)
 	  {
-	    $info = getimagesize($file_name);
-	    $type = $this->image_types[$info[2]];
+	    $info = getimagesize($this->input_file);
+	    $this->input_file_type = $this->image_types[$info[2]];
 	  }
-	  
-		if (!parent :: set_input_file($file_name, $type))
-			return false;
-			
-		$create_func = "ImageCreateFrom{$type}";
+	  			
+		$create_func = "ImageCreateFrom{$this->input_file_type}";
 		$this->image = $create_func($this->input_file);
-		
-		return true;
-	}
+    
+    return $this->image;
+  }
+  
+  protected function _set_image($image)
+  {
+    $this->image = $image;
+  }
 	
 	public function parse_hex_color($hex)
 	{
@@ -132,29 +137,25 @@ class image_gd extends image_library
 	
 	public function reset()
 	{
-	  $this->set_input_file($this->input_file, $this->input_file_type);
+	  $this->image = null;
 	}
 
 	public function commit()
 	{
-		if (!$this->library_installed)
-			return false;
-		
+    $image = $this->_get_image();
+    
 		$create_func = "Image{$this->output_file_type}";
-		$create_func($this->image, $this->output_file);
-		
-		$this->reset();
-		
-		return true;
+		$create_func($image, $this->output_file);
+
+    $this->reset();    
   }
 
 	public function resize($params)
-	{
-		if (!$this->library_installed)
-			return false;
+	{    
+    $image = $this->_get_image();
 		
-		$src_width = ImageSX($this->image);
-		$src_height = ImageSY($this->image);
+		$src_width = ImageSX($image);
+		$src_height = ImageSY($image);
 
 		list($dst_width, $dst_height) = $this->get_dst_dimensions($src_width, $src_height, $params);
 		
@@ -162,29 +163,28 @@ class image_gd extends image_library
     $resize_func = $this->resize_func;
 		
 		$dest_image = $create_func($dst_width, $dst_height);
-		$resize_func($dest_image, $this->image, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
+		$resize_func($dest_image, $image, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
 		
-		ImageDestroy($this->image);
-		$this->image = $dest_image;
+		ImageDestroy($image);
+    
+		$this->_set_image($dest_image);
 	}
 	
 	public function rotate($angle, $bg_color)
 	{
-		if (!$this->library_installed)
-			return false;
-	  
+    $image = $this->_get_image();
+    
 	  $color = $this->parse_hex_color($bg_color);
-    $background_color = imagecolorallocate($this->image, $color['red'], $color['green'], $color['blue']);
-    $this->image = imagerotate($this->image, $angle, $background_color);
+    $background_color = imagecolorallocate($image, $color['red'], $color['green'], $color['blue']);
+    $this->_set_image(imagerotate($image, $angle, $background_color));
 	}
 	
 	public function flip($params)
 	{
-		if (!$this->library_installed)
-			return false;
-		
-		$x = imagesx($this->image);
-		$y = imagesy($this->image);
+    $image = $this->_get_image();
+    
+		$x = imagesx($image);
+		$y = imagesy($image);
 
     $create_func = $this->create_func;
     $resize_func = $this->resize_func;
@@ -192,32 +192,31 @@ class image_gd extends image_library
 		$dest_image = $create_func($x, $y);
 		
 	  if ($params == self :: FLIP_HORIZONTAL)
-  		$resize_func($dest_image, $this->image, 0, 0, $x, 0, $x, $y, -$x, $y);
+  		$resize_func($dest_image, $image, 0, 0, $x, 0, $x, $y, -$x, $y);
 
 	  if ($params == self :: FLIP_VERTICAL)
-  		$resize_func($dest_image, $this->image, 0, 0, 0, $y, $x, $y, $x, -$y);
+  		$resize_func($dest_image, $image, 0, 0, 0, $y, $x, $y, $x, -$y);
 		
-		ImageDestroy($this->image);
-		$this->image = $dest_image;
+		ImageDestroy($image);
+		$this->_set_image($dest_image);
 	}
 	
 	public function cut($x, $y, $w, $h, $bg_color)
 	{
-		if (!$this->library_installed)
-			return false;
-		
+    $image = $this->_get_image();
+    
 	  $color = $this->parse_hex_color($bg_color);
-    $background_color = imagecolorallocate($this->image, $color['red'], $color['green'], $color['blue']);
-    imagefill($this->image, 0, 0, $background_color);
+    $background_color = imagecolorallocate($image, $color['red'], $color['green'], $color['blue']);
+    imagefill($image, 0, 0, $background_color);
     
     $create_func = $this->create_func;
     $resize_func = $this->resize_func;
 		
 		$dest_image = $create_func($w, $h);
-		$resize_func($dest_image, $this->image, 0, 0, $x, $y, $w, $h, $w, $h);
+		$resize_func($dest_image, $image, 0, 0, $x, $y, $w, $h, $w, $h);
 		
-		ImageDestroy($this->image);
-		$this->image = $dest_image;
+		ImageDestroy($image);
+		$this->_set_image($dest_image);
 	}
 }
 ?>

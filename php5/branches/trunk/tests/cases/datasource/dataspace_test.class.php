@@ -59,7 +59,22 @@ class dataspace_test extends LimbTestCase
 		$this->dataspace->set('foo', $first);
 		$this->dataspace->append('foo', $second);
 		$this->assertIdentical($this->dataspace->get('foo'), $first . $second);
-	} 
+	}
+  
+	function test_get_reference()
+	{		
+		$foo =& $this->dataspace->get_reference('foo');
+		$foo = 'whatever';
+    $this->assertEqual($this->dataspace->get('foo'), $foo);
+	}  
+
+	function test_get_reference_default_value()
+	{		
+		$foo =& $this->dataspace->get_reference('foo', array());
+    $this->assertIdentical($foo, array());
+		$foo['test1'] = 'whatever';
+    $this->assertEqual($this->dataspace->get('foo'), $foo);
+	}  
 	
 	function test_get_set_append_mixed_type()
 	{
@@ -153,9 +168,26 @@ class dataspace_test extends LimbTestCase
 		$array = array('rainbow' => array('color' => 'red'));
 		$this->dataspace->import($array);
 		
-		$this->assertNull($this->dataspace->get_by_index_string('""hkljkscc'), 'invalid index string');
-		$this->assertNull($this->dataspace->get_by_index_string('["rainbow][color]', 'wrong quotation nesting'));
-		$this->assertNull($this->dataspace->get_by_index_string('[rainbow["color"]]', 'wrong brackets nesting'));
+    try
+    {
+      $this->dataspace->get_by_index_string('""hkljkscc');
+      $this->assertTrue(false);
+    }
+    catch(Exception $e){}
+    
+    try
+    {    
+      $this->dataspace->get_by_index_string('["rainbow][color]');
+      $this->assertTrue(false);
+    }
+    catch(Exception $e){}
+    
+    try
+    {        
+      $this->dataspace->get_by_index_string('[rainbow["color"]]');
+      $this->assertTrue(false);
+    }
+    catch(Exception $e){}
 
 		$this->assertNull($this->dataspace->get_by_index_string('[rainbow][sound]'), 'undefined index');
 

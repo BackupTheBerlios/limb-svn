@@ -8,55 +8,88 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-
 class object
 {
-	protected $_attributes = null;
+	protected $dataspace;
+  protected $clean_hash;
 	
 	function __construct()
 	{
-    $this->_attributes = new dataspace();
+    $this->dataspace = $this->_create_dataspace();
+    $this->undirty();
 	}
+  
+  protected function _create_dataspace()
+  {
+    include_once(LIMB_DIR . '/class/core/dataspace.class.php');
+    return new dataspace();
+  }
+  
+  public function is_dirty()
+  {
+    return ($this->clean_hash != $this->dataspace->get_hash());
+  }
+  
+  public function undirty()
+  {
+    $this->clean_hash = $this->dataspace->get_hash();
+  }
 
-	public function merge($attributes)
+	public function merge($values)
 	{		
-	  $this->_attributes->merge($attributes);
+	  $this->dataspace->merge($values);
 	}
 	
-	public function import($attributes)
+	public function import($values)
 	{
-	  $this->_attributes->import($attributes);
+	  $this->dataspace->import($values);
+    
+    $this->undirty();
 	}
 		
 	public function export()
 	{
-		return $this->_attributes->export();
+		return $this->dataspace->export();
 	}
 	
-	public function has_attribute($name)
+	public function has_attribute($name)//rename later
 	{
-	  return $this->_attributes->get($name) !== null;
+	  return $this->dataspace->get($name) !== null;
 	}
-		
+  
 	public function get($name, $default_value=null)
 	{
-		return $this->_attributes->get($name, $default_value);
+		return $this->dataspace->get($name, $default_value);
 	}
+
+	public function & get_reference($name)
+	{
+		return $this->dataspace->get_reference($name);
+	}
+  
+  public function get_by_index_string($raw_index, $default_value = null)
+  {
+    return $this->dataspace->get_by_index_string($raw_index, $default_value);
+  }
 	
 	public function set($name, $value)
 	{
-		$this->_attributes->set($name, $value);
+		$this->dataspace->set($name, $value);
 	}
 
+  public function set_by_index_string($raw_index, $value)
+  {
+    $this->dataspace->set_by_index_string($raw_index, $value);
+  }  
+  
 	public function destroy($name)
 	{
-		$this->_attributes->destroy($name);
+		$this->dataspace->destroy($name);
 	}
 
 	public function reset()
 	{
-		$this->_attributes->reset();
+		$this->dataspace->reset();
 	}
 	
 }

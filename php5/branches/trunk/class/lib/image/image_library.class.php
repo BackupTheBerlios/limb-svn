@@ -14,10 +14,10 @@ abstract class image_library
   const FLIP_HORIZONTAL = 1;
   const FLIP_VERTICAL = 2;
 
-	protected $input_file = null;
-	protected $input_file_type = null;
-	protected $output_file = null;
-	protected $output_file_type = null;
+	protected $input_file;
+	protected $input_file_type;
+	protected $output_file;
+	protected $output_file_type;
 	protected $read_types = array();
 	protected $create_types = array();
 	protected $library_installed = false;
@@ -27,43 +27,46 @@ abstract class image_library
 		return $this->library_installed;
 	}
 
-	public function set_input_file($file_name, $type = '')
-	{
-		if (!$this->library_installed)
-			return false;
-		
-		if (!file_exists($file_name))
-			return false;
-		
+	public function set_input_file($file_path)
+	{						
+		$this->input_file = $file_path;
+	}
+  
+  public function set_input_type($type)
+  {
 		if (!$this->is_type_read_supported($type))
-			return false;
-		
-		$this->input_file = $file_name;
-		$this->input_file_type = $type;
-
-		return true;
-	}
+			throw new Exception('type not supported');
+    
+    $this->input_file_type = $type;
+  }
 	
-	public function set_output_file($file_name, &$type)
+	public function set_output_file($file_path)
 	{
-		if (!$this->library_installed)
-			return false;
-		
-		if (!$this->is_type_create_supported($type))
-			if (!$this->is_type_create_supported('PNG'))
-				if (!$this->is_type_create_supported('JPEG'))
-					return false;
-				else
-					$type = 'JPEG';
-			else
-				$type = 'PNG';
-		
-		$this->output_file = $file_name;
-		$this->output_file_type = $type;
-		
-		return true;
+		$this->output_file = $file_path;
 	}
-	
+  
+  public function set_output_type($type)
+  {
+		if (!$this->is_type_create_supported($type))
+      throw new Exception('type not supported');
+    
+    $this->output_file_type = $type;
+  }  
+  
+  public function fall_back_to_any_supported_type($type)
+  {
+		if ($this->is_type_create_supported($type))
+      return $type;
+    
+    if ($this->is_type_create_supported('PNG'))
+      return 'PNG';
+    
+    if ($this->is_type_create_supported('JPEG'))
+      return 'JPEG';
+    
+    throw new Exception('no file type supported');
+  }
+  	
 	public function get_image_type($str)
 	{
 		if (preg_match("/bmp/i", $str))

@@ -22,6 +22,11 @@ class dataspace
 		if(is_array($vars))
 			$this->import($vars);
 	}
+  
+  public function get_hash()
+  {
+    return md5(serialize($this->vars));
+  }
 	
 	public function get($name, $default_value = null)
 	{ 
@@ -29,6 +34,14 @@ class dataspace
 			return $this->vars[$name];
 		else
 		  return $default_value;
+	} 
+
+	public function & get_reference($name, $default_value = '')
+	{ 
+		if (!isset($this->vars[$name]))
+			$this->vars[$name] = $default_value;
+
+		return $this->vars[$name];
 	} 
 	
 	protected function _process_index_string($index)
@@ -41,12 +54,15 @@ class dataspace
 		return $index;
 	}
 	
-	public function get_by_index_string($raw_index)
+	public function get_by_index_string($raw_index, $default_value = null)
 	{
 		if(!$index = $this->_process_index_string($raw_index))
-			return null;
+			throw new Exception('invalid string index');
 								
 		eval('$res = isset($this->vars' . $index . ') ? $this->vars' . $index . ' : null;');
+    
+    if($res === null)
+      return $default_value;
 		
 		return $res;
 	}
