@@ -27,12 +27,14 @@ class StatsSearchPhraseTest extends LimbTestCase
 {
   var $stats_referer = null;
   var $db = null;
+  var $conn = null;
 
   function StatsSearchPhraseTest()
   {
     parent :: LimbTestCase('stats search prase test');
 
-    $this->db = LimbDbPool :: getConnection();
+    $this->conn =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb($this->conn);
   }
 
   function setUp()
@@ -52,7 +54,7 @@ class StatsSearchPhraseTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_stat_search_phrase');
+    $this->db->delete('stats_search_phrase');
   }
 
   function testGetMatchingRuleOk()
@@ -105,10 +107,9 @@ class StatsSearchPhraseTest extends LimbTestCase
     $date = new Date();
     $this->assertTrue($this->stats_search_phrase->register($date));
 
-    $db =& LimbDbPool :: getConnection();
-    $db->sqlSelect('sys_stat_search_phrase');
+    $rs =& $this->db->select('stats_search_phrase');
 
-    $arr = $db->getArray();
+    $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
     $record = current($arr);

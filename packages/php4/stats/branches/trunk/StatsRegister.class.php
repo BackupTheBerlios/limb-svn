@@ -25,7 +25,7 @@ class StatsRegister
     $this->_reg_date = new Date();
 
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDbConnection();
+    $this->db_table =& $toolkit->createDBTable('StatsLog');
   }
 
   function getRegisterTimeStamp()
@@ -41,50 +41,38 @@ class StatsRegister
     $this->_reg_date->setByStamp($stamp);
   }
 
-  function register($node_id, $action, $status_code)
+  function register($node_id, $action)
   {
-    $this->_updateLog($node_id, $action, $status_code);
+    $this->_updateLog($node_id, $action);
 
     $this->_updateCounters();
 
     $this->_updateSearchReferers();
   }
 
-  function _updateLog($node_id, $action, $status_code)
+  function _updateLog($node_id, $action)
   {
     $ip_register =& $this->_getIpRegister();
 
     $referer_register =& $this->_getRefererRegister();
     $uri_register =& $this->_getUriRegister();
 
-    $toolkit =& Limb :: toolkit();
-    $user =& $toolkit->getUser();
-
-    $this->db->sqlInsert('sys_stat_log',
+    $this->db_table->insert(
       array(
         'ip' => $ip_register->getClientIp(),
         'time' => $this->getRegisterTimeStamp(),
         'node_id' => $node_id,
         'stat_referer_id' => $referer_register->getRefererPageId(),
         'stat_uri_id' => $uri_register->getUriId(),
-        'user_id' => $user->getId(),
         'session_id' => session_id(),
         'action' => $action,
-        'status' => $status_code,
       )
     );
   }
 
   function cleanUntil($date)
   {
-    $this->db->sqlDelete('sys_stat_log', 'time < ' . $date->getStamp());
-  }
-
-  function countLogRecords()
-  {
-    $this->db->sqlExec('SELECT COUNT(id) as counter FROM sys_stat_log');
-    $row = $this->db->fetchRow();
-    return $row['counter'];
+    $this->db_table->delete('time < ' . $date->getStamp());
   }
 
   function _updateCounters()

@@ -10,18 +10,20 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class SysStatRefererUrlDbTable extends LimbDbTable
+class StatsSearchPhraseDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'sys_stat_referer_url';
+    return 'stats_search_phrase';
   }
 
   function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
-      'referer_url' => '',
+      'phrase' => '',
+      'engine' => '',
+      'time' => array('type' => 'numeric'),
     );
   }
 }

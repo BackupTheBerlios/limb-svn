@@ -18,7 +18,7 @@ class StatsIp
   function StatsIp()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db_table =& $toolkit->createDBTable('StatIp');
+    $this->db_table =& $toolkit->createDBTable('StatsIp');
   }
 
   function isNewHost($reg_date)

@@ -26,8 +26,8 @@ class StatsCounter
   function StatsCounter()
   {
     $toolkit =& Limb :: toolkit();
-    $this->counter_db_table =& $toolkit->createDBTable('StatCounter');
-    $this->day_counters_db_table =& $toolkit->createDBTable('StatDayCounters');
+    $this->counter_db_table =& $toolkit->createDBTable('StatsCounter');
+    $this->day_counters_db_table =& $toolkit->createDBTable('StatsDayCounters');
   }
 
   function setNewHost($status = true)

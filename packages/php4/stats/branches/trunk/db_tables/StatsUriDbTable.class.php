@@ -10,18 +10,18 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class StatIpDbTable extends LimbDbTable
+class StatsUriDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'stat_ip';
+    return 'stats_uri';
   }
 
   function _defineColumns()
   {
     return array(
-      'id' => '',
-      'time' => array('type' => 'numeric')
+      'id' => array('type' => 'numeric'),
+      'uri' => '',
     );
   }
 }

@@ -52,7 +52,7 @@ class StatsIpTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('stat_ip');
+    $this->db->delete('stats_ip');
   }
 
   function testNewHost()
@@ -115,7 +115,7 @@ class StatsIpTest extends LimbTestCase
 
   function _checkStatsIpRecord($total_records, $ip, $date)
   {
-    $rs =& $this->db->select('stat_ip');
+    $rs =& $this->db->select('stats_ip');
     $arr = $rs->getArray('id');
 
     $this->assertTrue(sizeof($arr), $total_records, 'ip count is wrong');

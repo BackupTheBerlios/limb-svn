@@ -24,6 +24,7 @@ class StatsRefererTest extends LimbTestCase
 {
   var $stats_referer = null;
   var $db = null;
+  var $conn = null;
   var $server = array();
 
   function StatsRefererTest()
@@ -36,7 +37,9 @@ class StatsRefererTest extends LimbTestCase
     $this->server = $_SERVER;
     $_SERVER['HTTP_HOST'] = 'test';
 
-    $this->db =& LimbDbPool :: getConnection();
+    $this->conn =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb($this->conn);
+
     $this->stats_referer = new StatsRefererSelfTestVersion($this);
     $this->stats_referer->StatsReferer();
 
@@ -54,7 +57,7 @@ class StatsRefererTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_stat_referer_url');
+    $this->db->delete('stats_referer_url');
   }
 
   function testGetRefererPageIdNoReferer()
@@ -77,8 +80,8 @@ class StatsRefererTest extends LimbTestCase
 
     $id = $this->stats_referer->getRefererPageId();
 
-    $this->db->sqlSelect('sys_stat_referer_url');
-    $arr = $this->db->getArray();
+    $rs = $this->db->select('stats_referer_url');
+    $arr = $rs->getArray();
     $record = current($arr);
 
     $this->assertEqual(sizeof($arr), 1);
@@ -95,7 +98,7 @@ class StatsRefererTest extends LimbTestCase
   function testCleanUrl()
   {
     $this->assertEqual(
-      'http://wow.com.bit/some/path?yo=1&haba',
+      'http://wow.com.bit/some/path/?haba&yo=1',
       $this->stats_referer->cleanUrl('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
 

@@ -10,11 +10,11 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class SysStatLogDbTable extends LimbDbTable
+class StatsLogDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'sys_stat_log';
+    return 'stats_log';
   }
 
   function _defineColumns()
@@ -28,8 +28,6 @@ class SysStatLogDbTable extends LimbDbTable
       'ip' => '',
       'action' => '',
       'session_id' => '',
-      'user_id' => array('type' => 'numeric'),
-      'status' => array('type' => 'numeric'),
     );
   }
 }

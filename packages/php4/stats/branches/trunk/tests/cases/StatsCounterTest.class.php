@@ -41,8 +41,8 @@ class StatsCounterTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('stat_counter');
-    $this->db->delete('stat_day_counters');
+    $this->db->delete('stats_counter');
+    $this->db->delete('stats_day_counters');
   }
 
   function testNewHost()
@@ -184,7 +184,7 @@ class StatsCounterTest extends LimbTestCase
 
   function _checkStatsCounterRecord($hits_all, $hits_today, $hosts_all, $hosts_today, $date)
   {
-    $rs =& $this->db->select('stat_counter', '*');
+    $rs =& $this->db->select('stats_counter', '*');
 
     $record = $rs->getRow();
 
@@ -198,7 +198,7 @@ class StatsCounterTest extends LimbTestCase
 
   function _checkStatsDayCountersRecord($hits, $hosts, $home_hits, $audience_hosts, $date)
   {
-    $rs =& $this->db->select('stat_day_counters',
+    $rs =& $this->db->select('stats_day_counters',
                       '*',
                       array('time' => $this->stats_counter->makeDayStamp($date->getStamp())));
 
@@ -215,13 +215,13 @@ class StatsCounterTest extends LimbTestCase
   {
     $time = $date->getStamp();
 
-    $sql = 'SELECT SUM(hits) as hits_all, SUM(hosts) as hosts_all FROM stat_day_counters';
+    $sql = 'SELECT SUM(hits) as hits_all, SUM(hosts) as hosts_all FROM stats_day_counters';
 
     $stmt =& $this->conn->newStatement($sql);
     $rs = new SimpleDbDataset($stmt->getRecordSet());
     $record1 = $rs->getRow();
 
-    $rs =& $this->db->select('stat_counter', '*');
+    $rs =& $this->db->select('stats_counter', '*');
     $record2 = $rs->getRow();
 
     $this->assertEqual($record1['hits_all'],
@@ -232,7 +232,7 @@ class StatsCounterTest extends LimbTestCase
                        $record2['hosts_all'],
                        'Counters all hosts number inconsistent. ' . $record1['hosts_all'] . ' not equal '. $record2['hosts_all']);
 
-    $rs = $this->db->select('stat_day_counters',
+    $rs = $this->db->select('stats_day_counters',
                          '*',
                          array('time' => $this->stats_counter->makeDayStamp($time)));
 

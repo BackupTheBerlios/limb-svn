@@ -12,13 +12,13 @@ require_once(LIMB_DIR . '/core/http/Uri.class.php');
 
 class StatsUri
 {
-  var $db = null;
+  var $db_table = null;
   var $url = null;
 
   function StatsUri()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDbConnection();
+    $this->db_table =& $toolkit->createDBTable('StatsUri');
 
     $this->url = new Uri();
   }
@@ -40,9 +40,8 @@ class StatsUri
 
   function _getExistingUriRecordId($uri)
   {
-    $this->db->sqlSelect('sys_stat_uri', '*',
-      "uri='" . $uri . "'");
-    if ($uri_data = $this->db->fetchRow())
+    $rs =& $this->db_table->select(array("uri" => $uri));
+    if ($uri_data = $rs->getRow())
       return $uri_data['id'];
     else
       return false;
@@ -50,9 +49,7 @@ class StatsUri
 
   function _insertUriRecord($uri)
   {
-    $this->db->sqlInsert('sys_stat_uri',
-      array('id' => null, 'uri' => $uri));
-    return $this->db->getSqlInsertId('sys_stat_uri');
+    return $this->db_table->insert(array('id' => null, 'uri' => $uri));
   }
 
   function cleanUrl($raw_url)

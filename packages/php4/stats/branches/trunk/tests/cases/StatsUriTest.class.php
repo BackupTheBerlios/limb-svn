@@ -24,6 +24,7 @@ class StatsUriTest extends LimbTestCase
 {
   var $stats_uri = null;
   var $db = null;
+  var $conn = null;
   var $server = array();
 
   function StatsUriTest()
@@ -36,7 +37,8 @@ class StatsUriTest extends LimbTestCase
     $this->server = $_SERVER;
     $_SERVER['HTTP_HOST'] = 'test';
 
-    $this->db =& LimbDbPool :: getConnection();
+    $this->conn =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb($this->conn);
 
     $this->stats_uri = new StatsUriSelfTestVersion($this);
     $this->stats_uri->StatsUri();
@@ -55,7 +57,7 @@ class StatsUriTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_stat_uri');
+    $this->db->delete('stats_uri');
   }
 
   function testNewInnerUri()
@@ -64,8 +66,8 @@ class StatsUriTest extends LimbTestCase
 
     $id = $this->stats_uri->getUriId();
 
-    $this->db->sqlSelect('sys_stat_uri');
-    $arr = $this->db->getArray();
+    $rs =& $this->db->select('stats_uri');
+    $arr = $rs->getArray();
     $record = current($arr);
 
     $this->assertEqual(sizeof($arr), 1);
@@ -80,8 +82,8 @@ class StatsUriTest extends LimbTestCase
 
     $id = $this->stats_uri->getUriId();
 
-    $this->db->sqlSelect('sys_stat_uri');
-    $arr = $this->db->getArray();
+    $rs =& $this->db->select('stats_uri');
+    $arr = $rs->getArray();
     $record = current($arr);
 
     $this->assertEqual(sizeof($arr), 1);
@@ -99,7 +101,7 @@ class StatsUriTest extends LimbTestCase
   function testCleanOuterUri()
   {
     $this->assertEqual(
-      'http://wow.com.bit/some/path',
+      'http://wow.com.bit/some/path/',
       $this->stats_uri->cleanUrl('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
 

@@ -8,18 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/core/http/Uri.class.php');
 
 class StatsReferer
 {
-  var $db = null;
+  var $db_table = null;
   var $url = null;
 
   function StatsReferer()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDbConnection();
+    $this->db_table =& $toolkit->createDBTable('StatsRefererUrl');
     $this->url = new Uri();
   }
 
@@ -57,9 +56,8 @@ class StatsReferer
 
   function _getExistingRefererRecordId($uri)
   {
-    $this->db->sqlSelect('sys_stat_referer_url', '*',
-      "referer_url='" . $uri . "'");
-    if ($referer_data = $this->db->fetchRow())
+    $rs =& $this->db_table->select("referer_url='" . $uri . "'");
+    if ($referer_data = $rs->getRow())
       return $referer_data['id'];
     else
       return false;
@@ -67,9 +65,7 @@ class StatsReferer
 
   function _insertRefererRecord($uri)
   {
-    $this->db->sqlInsert('sys_stat_referer_url',
-      array('id' => null, 'referer_url' => $uri));
-    return $this->db->getSqlInsertId('sys_stat_referer_url');
+    return $this->db_table->insert(array('id' => null, 'referer_url' => $uri));
   }
 
   function cleanUrl($raw_url)

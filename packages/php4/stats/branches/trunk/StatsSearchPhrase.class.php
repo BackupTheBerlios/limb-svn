@@ -9,10 +9,11 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/http/Uri.class.php');
+require_once(LIMB_DIR . '/core/date/Date.class.php');
 
 class StatsSearchPhrase
 {
-  var $db = null;
+  var $db_table = null;
   var $url = null;
 
   var $engine_rules = array();
@@ -20,7 +21,7 @@ class StatsSearchPhrase
   function StatsSearchPhrase()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDbConnection();
+    $this->db_table =& $toolkit->createDBTable('StatsSearchPhrase');
 
     $this->url = new Uri();
   }
@@ -43,14 +44,11 @@ class StatsSearchPhrase
     if(!$rule =& $this->getMatchingSearchEngineRule())
       return false;
 
-    $this->db->sqlInsert('sys_stat_search_phrase',
-      array(
-        'id' => null,
-        'engine' => $rule->getEngineName(),
-        'time' => $date->getStamp(),
-        'phrase' => stripslashes(strip_tags($rule->getMatchingPhrase())),
-      )
-    );
+    $this->db_table->insert(array(
+                              'id' => null,
+                              'engine' => $rule->getEngineName(),
+                              'time' => $date->getStamp(),
+                              'phrase' => stripslashes(strip_tags($rule->getMatchingPhrase()))));
 
     return true;
   }

@@ -68,6 +68,7 @@ Mock :: generatePartial
 class StatsRegisterTest extends LimbTestCase
 {
   var $db = null;
+  var $conn = null;
 
   var $stats_ip = null;
 
@@ -81,7 +82,8 @@ class StatsRegisterTest extends LimbTestCase
   {
     parent :: LimbTestCase('stats register test');
 
-    $this->db =& LimbDbPool :: getConnection();
+    $this->conn =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb($this->conn);
   }
 
   function setUp()
@@ -93,7 +95,7 @@ class StatsRegisterTest extends LimbTestCase
 
     $this->stats_ip = new StatsIpTestVersion($this);
     $this->stats_ip->StatsIp();
-    $this->stats_ip->setReturnValue('getClientIp', Ip :: encodeIp('127.0.0.1'));
+    $this->stats_ip->setReturnValue('getClientIp', Ip :: encode('127.0.0.1'));
 
     $this->stats_counter = new StatsCounterTestVersion2($this);
     $this->stats_counter->StatsCounter();
@@ -141,11 +143,11 @@ class StatsRegisterTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_stat_log');
-    $this->db->sqlDelete('sys_stat_ip');
-    $this->db->sqlDelete('sys_stat_referer_url');
-    $this->db->sqlDelete('sys_stat_counter');
-    $this->db->sqlDelete('sys_stat_day_counters');
+    $this->db->delete('stats_log');
+    $this->db->delete('stats_ip');
+    $this->db->delete('stats_referer_url');
+    $this->db->delete('stats_counter');
+    $this->db->delete('stats_day_counters');
   }
 
   function testRegister()
@@ -164,7 +166,7 @@ class StatsRegisterTest extends LimbTestCase
 
     $this->stats_register->setRegisterTime($date->getStamp());
 
-    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test');
 
     $this->_checkStatsRegisterRecord(
       $total_records = 1,
@@ -179,34 +181,35 @@ class StatsRegisterTest extends LimbTestCase
   function testCleanLog()
   {
     $this->stats_register->setRegisterTime(time());
-    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test');
 
     $this->stats_register->setRegisterTime(time() + 2*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test');
 
     $this->stats_register->setRegisterTime(time() + 3*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test');
 
     $this->stats_register->setRegisterTime(time() + 4*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test');
 
     $this->stats_register->setRegisterTime(time() + 5*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test');
 
     $this->stats_register->setRegisterTime(time() + 6*60*60*24);
-    $this->stats_register->register($node_id = 1, 'test', LIMB_STATUS_OK);
+    $this->stats_register->register($node_id = 1, 'test');
 
     $date = new Date();
     $date->setByStamp(time() + 4*60*60*24 - 10);
     $this->stats_register->cleanUntil($date);
 
-    $this->assertEqual(3, $this->stats_register->countLogRecords());
+    $rs =& $this->db->select('stats_log');
+    $this->assertEqual(3, $rs->getTotalRowCount());
   }
 
   function _checkStatsRegisterRecord($total_records, $current_record, $user_id, $node_id, $action, $status, $time)
   {
-    $this->db->sqlSelect('sys_stat_log', '*', '', 'id');
-    $arr = $this->db->getArray();
+    $rs =& $this->db->select('stats_log');
+    $arr = $rs->getArray();
 
     $this->assertTrue(sizeof($arr), $total_records);
     reset($arr);
@@ -217,7 +220,6 @@ class StatsRegisterTest extends LimbTestCase
       next($arr);
     }
 
-    $this->assertEqual($record['user_id'], $user_id);
     $this->assertEqual($record['node_id'], $node_id);
     $this->assertEqual($record['action'], $action);
     $this->assertEqual($record['status'], $status);
