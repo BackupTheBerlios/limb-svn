@@ -88,7 +88,7 @@ hr{height:1px; color:#0D2F89;padding:0;margin:0}
 .bgr_bot_right{background-position:right bottom; background-repeat:no-repeat;}
 
 /*form*/
- .input{border:solid 1px #0D2F89; font:8pt Tahoma; color:#000000}
+ .input{font:8pt Tahoma; color:#000000}
  .select{border:solid 0px #A5ACB2; font:8pt Tahoma; color:#000000}
  .button{border:1; background-color:#0D2F89; color:#ffffff; font:bold 9pt Tahoma; height:20px; padding: 1px 5px 1px 5px;}
  .form-error {color:red;font:bold;}

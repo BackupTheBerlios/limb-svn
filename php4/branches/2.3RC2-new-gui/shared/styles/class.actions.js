@@ -6,7 +6,7 @@ CDDAction = function(parent)
 {
   this._super(parent)
 }
-object_inherit(CDDAction, CDropDown)
+_extends(CDDAction, CDropDown)
 CDDAction.prototype.get_content = function()
 {
   var arr = arr_actions[this.init_obj.id]
@@ -30,7 +30,7 @@ CDDGridAction = function(parent)
 {
   this._super(parent)
 }
-object_inherit(CDDGridAction, CDropDown)
+_extends(CDDGridAction, CDropDown)
 CDDGridAction.prototype.get_content = function()
 {
   var arr = arr_actions[this.init_obj.id]
@@ -56,7 +56,7 @@ CDDCommon = function(parent)
 {
   this._super(parent)
 }
-object_inherit(CDDCommon, CDropDown)
+_extends(CDDCommon, CDropDown)
 CDDCommon.prototype.get_content = function()
 {
   var content_obj = get_obj_by_id(this.getElementsByTagName('span'),'content')
