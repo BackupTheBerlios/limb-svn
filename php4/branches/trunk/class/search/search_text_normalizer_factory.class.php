@@ -25,7 +25,7 @@ class search_text_normalizer_factory
 	  if(class_exists($class_name))
 	    return;
 	    
-		include_once(LIMB_DIR . '/class/search/normalizers/' . $class_name);
+		include_once(LIMB_DIR . '/class/search/normalizers/' . $class_name . '.class.php');
 	}	
 }
 ?>
