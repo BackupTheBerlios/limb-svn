@@ -47,7 +47,7 @@ a:hover{text-decoration:underline}
 .pager a{font:bold 10pt Arial, sans;}
 
 /*design*/
-.btitle1{background-image:URL('/shared/images/admin/btitle.gif'); text-align:right; padding:7px 10px 6px 3px;}
+.btitle1{background-image:URL('/shared/images/admin/btitle.gif'); text-align:right; padding:5px 10px 6px 3px; color: #FFFFFF; font-weight: bold}
 .btitle2{background-image:URL('/shared/images/admin/btitle.gif'); padding:7px 10px 6px 30px;}
 .border1{border:solid 1px #E4E4E4; background-color:#FBFBFB;}
 .border2{border:solid 1px #F3F3F3}

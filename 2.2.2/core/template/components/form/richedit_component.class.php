@@ -58,12 +58,12 @@ class richedit_component extends text_area_component
 	{
 		$this->_load_js_script();
 				
-		echo '<button class="button" onclick="toggle_richedit_textarea();window.location.reload();return false;">
-		      Toggle richedit/textarea
-		      </button><br>';
-		
-		
 		$id = $this->get_attribute('id');
+		
+		echo "<button id='{$id}_button' class='button' onclick='toggle_richedit_textarea();window.location.reload();return false;' style='display:none'>
+		      Toggle richedit/textarea
+		      </button><br>";
+		
 		
 		if ($this->get_attribute('mode') == 'light')
 		  $init_function = 'install_limb_lite_extension(editor.config);';
@@ -89,16 +89,23 @@ class richedit_component extends text_area_component
       {
 	    	var editor = new HTMLArea('{$id}');
 	    	
+	    	if(typeof(editor.config) == 'undefined')
+	    		return;
+
 	    	{$init_function}
 	    	
         editor.config.width = '{$width}';
         editor.config.height = '{$height}';  	    	
-        editor.generate();
+
+	      c = get_cookie('use_textarea_instead_of_richedit');
+	
+	      if(c != 1)
+	        editor.generate();
+        
+        document.getElementById('{$id}_button').style.display = 'block';
       }
       
-      c = get_cookie('use_textarea_instead_of_richedit');
-      if(c != 1)
-        add_event(window, 'load', init_richedit_{$id});      
+      add_event(window, 'load', init_richedit_{$id});      
       
     </script>";
 	}

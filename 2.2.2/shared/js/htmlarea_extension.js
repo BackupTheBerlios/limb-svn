@@ -30,7 +30,7 @@ function install_limb_full_extension(config)
 }
 
 function install_limb_lite_extension(config)
-{		
+{	
   config.toolbar = [
 			[ 'bold', 'italic', 'underline', 'strikethrough', 'separator',
 			  'subscript', 'superscript', 'separator',

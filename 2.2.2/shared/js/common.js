@@ -745,3 +745,32 @@ function binl2b64(binarray)
   }
   return str;
 }
+
+function var_dump(obj, level)
+{
+	if(level>10) return '';
+
+	var res = '';
+	var shift = "";
+	
+	for(i=0; i<level*2; i++) 
+		shift+="\t\t";
+	
+	if(typeof(obj)=='object')
+	{
+		try
+		{
+			for(key in obj)
+			{
+				if(obj[key] == 'none' || obj[key] == '' || obj[key]==null) continue;
+					
+				if(typeof(obj[key]) == 'unknown' || typeof(obj[key]) == 'undefined') continue;
+				
+				res += shift + key + ' = ' + obj[key] + '\n';
+				res += var_dump(obj[key], level++);
+			}
+		}
+		catch(e){}
+	}
+	return res;
+}
