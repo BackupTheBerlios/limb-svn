@@ -52,7 +52,7 @@ class js_selector_tag extends control_tag
 		$code->write_php("
 		
 		if ({$name} = {$parent}->get('" . $this->attributes['name']. "'))
-			{$ref}->set('name', {$name});
+			{$ref}->set_attribute('name', {$name});
 		");	
 		
 		parent :: pre_generate($code);
