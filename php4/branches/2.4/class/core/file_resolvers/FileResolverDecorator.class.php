@@ -14,14 +14,14 @@ class FileResolverDecorator// implements FileResolver
 {
   var $_resolver = null;
 
-  function FileResolverDecorator($resolver)
+  function FileResolverDecorator(&$resolver)
   {
     resolveHandle($resolver);
 
-    if(!is_a($resolver, 'FileResolver') &&  is_a($resolver, 'SimpleMock'))
+    if(!is_object($resolver))
       die('invalid wrapped resolver! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 
-    $this->_resolver = $resolver;
+    $this->_resolver =& $resolver;
   }
 
   function resolve($file_path, $params = array())

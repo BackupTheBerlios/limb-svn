@@ -119,7 +119,7 @@ class LinksManager
   function deleteLink($link_id)
   {
     $toolkit =& Limb :: toolkit();
-    $table =& $toolkit->createDBTable('SysNodeLinkGroup');
+    $table =& $toolkit->createDBTable('SysNodeLink');
     $table->deleteById($link_id);
   }
 

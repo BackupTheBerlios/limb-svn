@@ -76,11 +76,13 @@ class CachingFileResolverTest extends LimbTestCase
 
     ?>';
 
-    file_put_contents($this->cache_file, $php);
-
-    $local_resolver = new CachingFileResolver($this->wrapped_resolver);
+    $fh = fopen($this->cache_file, 'w');
+    fwrite($fh, $php, strlen($php));
+    fclose($fh);
 
     $this->wrapped_resolver->expectNever('resolve');
+
+    $local_resolver = new CachingFileResolver($this->wrapped_resolver);
 
     $this->assertEqual($local_resolver->resolve('path-to-file'), 'resolved-path-to-file');
 
