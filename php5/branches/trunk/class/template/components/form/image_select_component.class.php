@@ -18,19 +18,19 @@ class image_select_component extends input_form_element
 		{
 			echo "<script type='text/javascript' src='/shared/js/image_select.js'></script>";
 			define('IMAGE_SELECT_LOAD_SCRIPT',1);
-		}	
+		}
 	}
-	
+
 	public function render_image_select()
-	{ 
-		$id = $this->get_attribute('id');	
+	{
+		$id = $this->get_attribute('id');
   	$md5id = substr(md5($id), 0, 5);
 
   	$image_node_id = $this->get_value();
 
   	$start_path = '';
 
-  	if($image_node_id && $image_data = fetch_one_by_node_id($image_node_id))
+  	if($image_node_id && $image_data = fetcher :: instance()->fetch_one_by_node_id($image_node_id))
   	{
 			$span_name = $image_data['identifier'];
 			$start_path = '/root?action=image_select&node_id=' . $image_data['parent_node_id'];
@@ -52,36 +52,36 @@ class image_select_component extends input_form_element
   	echo "<span id='{$md5id}_name'>{$span_name}</span><br><img id='{$md5id}_img' src='/shared/images/1x1.gif'/>
 	    <script type='text/javascript'>
 	    	var image_select_{$md5id};
-	    	
+
 	      function init_image_select_{$md5id}()
 	      {
 	        image_select_{$md5id} = new image_select('{$id}', '{$md5id}');
 	        image_select_{$md5id}.set_start_path('{$start_path}');
 	        image_select_{$md5id}.generate();
 	      }
-	      
+
 	      function image_select_{$md5id}_insert_image(image)
 	      {
 	      	image_select_{$md5id}.insert_image(image);
 	      }
 
 	      function image_select_{$md5id}_get_image()
-	      {	        
+	      {
 	      	return image_select_{$md5id}.get_image();
 	      }
-	      
+
 	      function image_reset_{$md5id}()
 	      {
 	      	image_select_{$md5id}.id_container.value = 0;
 	      	init_image_select_{$md5id}();
 	      }
-	     
+
 	      add_event(window, 'load', init_image_select_{$md5id});
 	    </script>";
-	    
+
 	  echo "<br><br><input class='button' type='button' onclick='popup(\"/root/image_select?properties=0\", null, null, false, image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='" . strings :: get('select_image', 'image') . "'>";
 	  echo '&nbsp;';
 	  echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='" . strings :: get('reset') . "'>";
 	}
-} 
+}
 ?>

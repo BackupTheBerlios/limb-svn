@@ -8,16 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/datasources/fetch_datasource.class.php');
 
-class fetch_sub_branch_datasource extends fetch_datasource
+interface authenticator
 {
-	protected function _fetch(&$counter, $params)
-	{
-		return fetcher :: instance()->fetch_sub_branch($params['path'], $params['loader_class_name'], $counter, $params, $params['fetch_method']);
-	}
+  public function login($params = array());
+  
+  public function logout($params = array());
 }
-
-
-
 ?>

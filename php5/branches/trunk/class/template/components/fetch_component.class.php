@@ -19,16 +19,16 @@ class fetch_component extends component
 		if(!$path)
 			$path = $this->get_path();
 		
-		$arr = fetch_one_by_path($path);
+		$arr = fetcher :: instance()->fetch_one_by_path($path);
 		$this->import($arr);
 	}
 		
 	public function fetch_requested_object()
 	{
-		$object_arr = fetch_requested_object();
-		
+		$object_arr = fetcher :: instance()->fetch_requested_object();
+
 		$request = request :: instance();
-		
+
 		if ($version = $request->get('version'))
 		{
 			$site_object = site_object_factory :: create($object_arr['class_name']);
@@ -48,7 +48,7 @@ class fetch_component extends component
 	{
 		if(!$this->path)
 		{
-			$object_arr = fetch_requested_object();
+			$object_arr = fetcher :: instance()->fetch_requested_object();
 			$this->path = $object_arr['path'];
 		}	
 

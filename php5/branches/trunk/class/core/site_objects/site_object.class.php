@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/core/object.class.php');
 require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . 'class/core/controllers/site_object_controller_factory.class.php');
 require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
-require_once(LIMB_DIR . 'class/core/user.class.php');
+require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
 
 class site_object extends object
 {

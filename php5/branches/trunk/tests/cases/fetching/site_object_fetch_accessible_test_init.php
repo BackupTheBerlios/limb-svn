@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/site_object_fetch_test.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/core/access_policy.class.php');
+require_once(LIMB_DIR . 'class/core/permissions/access_policy.class.php');
 
 class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
 { 

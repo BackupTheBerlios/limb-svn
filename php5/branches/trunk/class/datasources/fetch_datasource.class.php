@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
@@ -20,7 +20,7 @@ class fetch_datasource implements datasource
 
 	protected function _fetch(&$counter, $params)
 	{
-		return fetch($params['loader_class_name'], $counter, $params, $params['fetch_method']);
+		return fetcher :: instance()->fetch($params['loader_class_name'], $counter, $params, $params['fetch_method']);
 	}
 }
 

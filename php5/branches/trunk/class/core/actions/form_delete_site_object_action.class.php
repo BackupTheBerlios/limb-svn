@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/actions/form_site_object_action.class.php');
 
 class form_delete_site_object_action extends form_site_object_action
@@ -19,9 +19,9 @@ class form_delete_site_object_action extends form_site_object_action
 
 	protected function _valid_perform($request, $response)
 	{
-		$object = wrap_with_site_object(fetch_requested_object());
-		
-		try 
+		$object = wrap_with_site_object(fetcher :: instance()->fetch_requested_object());
+
+		try
 		{
 		  $object->delete();
 		}
@@ -35,9 +35,9 @@ class form_delete_site_object_action extends form_site_object_action
 			$request->set_status(request :: STATUS_FAILURE);
 			return;
 		}
-		
+
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
-		
+
 		if($request->has_attribute('popup'))
 			$response->write(close_popup_response($request, RELOAD_SELF_URL, true));
 	}

@@ -14,12 +14,12 @@ require_once(LIMB_DIR . '/class/core/session.class.php');
 class authentication_filter implements intercepting_filter
 {
   public function run($filter_chain, $request, $response)
-  { 
+  {
     debug :: add_timing_point('authentication filter started');
-  	
-    if(!$object_data = fetch_requested_object($request))
+
+    if(!$object_data = fetcher :: instance()->fetch_requested_object($request))
     {
-      if(!$node = map_request_to_node($request))
+      if(!$node = fetcher :: instance()->map_request_to_node($request))
       {
       	if(defined('ERROR_DOCUMENT_404'))
       		$response->redirect(ERROR_DOCUMENT_404);
@@ -30,40 +30,40 @@ class authentication_filter implements intercepting_filter
   		$response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
   		return;
     }
-    
-    $object = wrap_with_site_object($object_data); 
+
+    $object = wrap_with_site_object($object_data);
 
     $site_object_controller = $object->get_controller();
-    
-    try 
+
+    try
     {
       $action = $site_object_controller->get_action($request);
     }
     catch(LimbException $e)
     {
     	debug :: write_exception($e);
-    
+
     	if(defined('ERROR_DOCUMENT_404'))
     		$response->redirect(ERROR_DOCUMENT_404);
     	else
     		$response->header("HTTP/1.1 404 Not found");
 
       debug :: add_timing_point('authentication filter finished');
-    	
+
     	$filter_chain->next();
     	return;
     }
-        
+
     $actions = $object->get('actions');
-    
+
     if(!isset($actions[$action]))
-    {    		
+    {
       $response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
     }
 
     debug :: add_timing_point('authentication filter finished');
-		
-    $filter_chain->next();        
+
+    $filter_chain->next();
   }
 }
 ?>

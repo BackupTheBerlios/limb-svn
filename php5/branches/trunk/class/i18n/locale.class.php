@@ -561,11 +561,10 @@ class locale
 
 	public function is_valid_locale_id($locale_id)
 	{
-	  $ini = get_ini('common.ini');
+	  if(!$available_locales = get_ini_option('common.ini', 'codes', 'Locales'))
+	    return false;
 	  
-		$available_locales = $ini->get_group('Locales');
-
-		return (array_search($locale_id, array_keys($available_locales)) !== false);
+		return in_array($locale_id, $available_locales);
 	} 
 
 	/*

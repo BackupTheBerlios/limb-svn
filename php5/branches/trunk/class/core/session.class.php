@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/system/sys.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/core/user.class.php');
+require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
 
 class session
 {

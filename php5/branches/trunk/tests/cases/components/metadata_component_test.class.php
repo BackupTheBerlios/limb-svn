@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/user.class.php');
+require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
 require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'class/template/components/metadata_component.class.php');
 
@@ -69,14 +69,6 @@ class metadata_component_test extends LimbTestCase
   	$this->metadata_component->tally();
   	$this->controller->tally();
   }
-  
-  function _login_user($id, $groups)
-  {
-  	$user =& user :: instance();
-  	
-  	$user->_set_id($id);
-  	$user->_set_groups($groups);  	
-  }  
   
   function test_get_complete_metadata_component_metadata()
   {

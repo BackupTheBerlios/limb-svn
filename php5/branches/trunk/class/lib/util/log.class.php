@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/core/user.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(LIMB_DIR . '/class/lib/system/sys.class.php');
 
 if(!defined('MAX_LOGROTATE_FILES'))
@@ -45,7 +45,7 @@ class log
   		$user = user :: instance();
   		
 			if(($user_id = $user->get_id()) != user :: DEFAULT_USER_ID)
-				$notice .= '[ ' . $user_id . ' ] [ '  . $user->get_login() . ' ] [ ' . $user->get_email() . ' ] ';
+				$notice .= '[ ' . $user_id . ' ] [ '  . $user->get_login() . ' ] [ ' . $user->get('email') . ' ] ';
 
       $notice .= '[' . sys::client_ip() . '] [' . (isset($_SERVER['REQUEST_URI']) ?  $_SERVER['REQUEST_URI'] : '') . "]\n" . $string . "\n\n";
       

@@ -11,17 +11,16 @@
 require_once(LIMB_DIR . '/class/cache/image_cache_manager.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
-require_once(LIMB_DIR . '/class/core/user.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 
 Mock::generate('uri');
-Mock::generate('user');
 Mock::generate('fetcher');
 
 Mock::generatePartial(
   'image_cache_manager', 
   'image_cache_manager_test_version', 
-  array('get_rules', '_set_matched_rule', '_get_matched_rule', '_get_user')
+  array('get_rules', '_set_matched_rule', '_get_matched_rule', '_is_user_in_groups')
 );
 
 Mock::generatePartial(
@@ -41,18 +40,15 @@ class image_cache_manager_test extends LimbTestCase
   var $cache_manager;
   var $cache_manager2;
   var $uri;
-  var $user;
   var $fetcher;
   
   function setUp()
   {
     $this->uri = new Mockuri($this);
-    $this->user = new Mockuser($this);
     $this->fetcher = new Mockfetcher($this);
     
     $this->cache_manager = new image_cache_manager_test_version($this);
     $this->cache_manager->set_uri($this->uri);    
-    $this->cache_manager->setReturnReference('_get_user', $this->user);
     
     $this->cache_manager2 = new image_cache_manager_test_version2($this);
     $this->cache_manager2->setReturnValue('is_cacheable', true);
@@ -64,7 +60,6 @@ class image_cache_manager_test extends LimbTestCase
     $this->cache_manager->tally();
     $this->cache_manager2->tally();
     $this->uri->tally();
-    $this->user->tally();
     $this->fetcher->tally();
   }
   
@@ -107,7 +102,7 @@ class image_cache_manager_test extends LimbTestCase
   {         
     $this->uri->setReturnValue('get_path', '/root/test');
     
-    $this->user->setReturnValueAt(0, 'is_in_groups', true, array(array('members', 'visitors')));
+    $this->cache_manager->setReturnValueAt(0, '_is_user_in_groups', true, array(array('members', 'visitors')));
     
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -127,7 +122,7 @@ class image_cache_manager_test extends LimbTestCase
   {         
     $this->uri->setReturnValue('get_path', '/root/test');
     
-    $this->user->setReturnValueAt(0, 'is_in_groups', false, array(array('members')));
+    $this->cache_manager->setReturnValueAt(0, '_is_user_in_groups', false, array(array('members')));
     
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',

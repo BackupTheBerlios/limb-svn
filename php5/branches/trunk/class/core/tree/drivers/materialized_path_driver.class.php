@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/core/tree/drivers/tree_db_driver.class.php');
-require_once(LIMB_DIR . 'class/core/access_policy.class.php');
+require_once(LIMB_DIR . 'class/core/permissions/access_policy.class.php');
 
 class materialized_path_driver extends tree_db_driver implements tree_interface
 {	

@@ -55,8 +55,7 @@ class site_object_manipulation_test extends LimbTestCase
   	
   	debug_mock :: init($this);
   	
-  	$user =& user :: instance();
-  	$user->_set_id(10);
+  	user :: instance()->set('id', 10);
   	
   	$tree =& tree :: instance();
 

@@ -12,7 +12,7 @@ if(!defined('PAGE_CACHE_DIR'))
   define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
   
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/core/user.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 class partial_page_cache_manager
 {
@@ -57,9 +57,15 @@ class partial_page_cache_manager
     return false;
   }
   
-  protected function _get_user()
+  protected function _is_user_in_groups($groups)
   {
-    return user :: instance();
+    $user = user :: instance();
+    			
+		foreach	($user->get('groups', array()) as $group_name)
+			if (in_array($group_name, $groups))
+				return true; 
+		
+		return false;    
   }
   
   public function write($content)
@@ -127,8 +133,6 @@ class partial_page_cache_manager
     
     $rules = $this->get_rules();
     
-    $user = $this->_get_user();
-    
     foreach($rules as $rule)
     {
       if($rule['server_id'] != $this->server_id)
@@ -136,7 +140,7 @@ class partial_page_cache_manager
       
       if(isset($rule['groups']))
       {
-        if(!$user->is_in_groups($rule['groups']))
+        if(!$this->_is_user_in_groups($rule['groups']))
           continue;
       }
       

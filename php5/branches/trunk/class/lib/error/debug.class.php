@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 //Inspired by EZpublish(http//ez.no), debug class
 require_once(LIMB_DIR . 'class/lib/system/sys.class.php');
-require_once(LIMB_DIR . 'class/core/user.class.php');
+require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
 
 if(!defined('DEBUG_HTTP_CONSOLE_DIR'))
   define('DEBUG_HTTP_CONSOLE_DIR', '/var/');
@@ -481,7 +481,7 @@ class debug
 						
 						function show_debug(file_name, title)
 						{
-            	debug_path = " . DEBUG_HTTP_CONSOLE_DIR . ";
+            	var debug_path = '" . DEBUG_HTTP_CONSOLE_DIR . "';
 							rn = Math.random();
 						  debug_window = window.open(debug_path + file_name + '?rn=' + rn, title, 'top=370,left=550,height=300,width=400,scrollbars,resizable');
 						}

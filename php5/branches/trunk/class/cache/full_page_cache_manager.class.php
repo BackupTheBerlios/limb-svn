@@ -12,7 +12,7 @@ if(!defined('PAGE_CACHE_DIR'))
   define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
   
 require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/core/user.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 class full_page_cache_manager
 {
@@ -20,7 +20,7 @@ class full_page_cache_manager
   protected $uri;
   protected $rules = array();
   protected $matched_rule;
-    
+  
   protected function _set_matched_rule($rule)
   {
     $this->matched_rule = $rule;
@@ -50,13 +50,7 @@ class full_page_cache_manager
     
     return false;
   }
-  
-  //for mocking
-  protected function _get_user()
-  {
-    return user :: instance();
-  }
-  
+    
   public function write($content)
   {      
     if(!$id = $this->get_cache_id())
@@ -121,8 +115,6 @@ class full_page_cache_manager
     
     $rules = $this->get_rules();
     
-    $user = $this->_get_user();
-    
     foreach($rules as $rule)
     {
       if(!preg_match($rule['path_regex'], $uri_path))
@@ -130,7 +122,7 @@ class full_page_cache_manager
     
       if(isset($rule['groups']))
       {
-        if(!$user->is_in_groups($rule['groups']))
+        if(!$this->_is_user_in_groups($rule['groups']))
           continue;
       }
       
@@ -156,6 +148,17 @@ class full_page_cache_manager
     }
     
     return false;
+  }
+  
+  protected function _is_user_in_groups($groups)
+  {
+    $user = user :: instance();
+    
+		foreach	($user->get('groups', array()) as $group_name)
+			if (in_array($group_name, $groups))
+				return true; 
+		
+		return false;    
   }
     
   public function cache_exists()

@@ -76,8 +76,9 @@ function load_testing_db_dump($dump_path)
 	$GLOBALS['testing_db_tables'] = $tables;
 	
 	foreach($sql_array as $sql)
-	{    		
-		$db->sql_exec($sql);
+	{ 
+	  if(trim($sql))
+		  $db->sql_exec($sql);
 	}
 }
 

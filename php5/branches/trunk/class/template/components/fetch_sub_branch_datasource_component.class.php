@@ -20,9 +20,9 @@ class fetch_sub_branch_datasource_component extends datasource_component
 			$this->parameters['datasource_path'] = '/fetch_sub_branch_datasource';
 			
 		$ds = parent :: _get_datasource();
-		
+
 		if(!$ds instanceof fetch_sub_branch_datasource)
-      throw new WactException('ot allowed type of datasource, should be inherited from fetch_sub_branch_datasource class', 
+      throw new WactException('ot allowed type of datasource, should be inherited from fetch_sub_branch_datasource class',
                                 array('datasource' => get_class($ds)));
 		return $ds;
 	}
@@ -33,9 +33,9 @@ class fetch_sub_branch_datasource_component extends datasource_component
 		
 		if(!isset($params['path']) || !$params['path'])
 		{
-			$object_arr = fetch_requested_object();
+			$object_arr = fetcher :: instance()->fetch_requested_object();
 			$params['path'] = $object_arr['path'];
-		}				
+		}
 		
 		if (!isset($params['loader_class_name']))
 			$params['loader_class_name'] = 'site_object';

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/user.class.php');
+require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 
@@ -60,8 +60,7 @@ class site_object_test extends LimbTestCase
   	$this->object = new mocked_site_object_test_version($this);  	
   	$this->object->__construct();
   	
-  	$user =& user :: instance();
-  	$user->_set_id(10);
+  	user :: instance()->set('id', 10);
   }
   
   function tearDown()

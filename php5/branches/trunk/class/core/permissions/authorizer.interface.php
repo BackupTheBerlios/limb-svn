@@ -8,16 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/datasources/fetch_datasource.class.php');
 
-class fetch_sub_branch_datasource extends fetch_datasource
+interface authorizer
 {
-	protected function _fetch(&$counter, $params)
-	{
-		return fetcher :: instance()->fetch_sub_branch($params['path'], $params['loader_class_name'], $counter, $params, $params['fetch_method']);
-	}
+  public function get_accessible_object_ids($ids, $action = 'display', $class_id = null);
+
+  public function assign_actions_to_objects(&$objects_data);
 }
-
-
-
 ?>

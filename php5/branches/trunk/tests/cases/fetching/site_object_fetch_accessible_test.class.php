@@ -48,15 +48,14 @@ class site_object_fetch_accessible_test extends LimbTestCase
   { 
   	$this->test_init->_clean_up();
   	
-  	$user =& user :: instance();
-  	$user->logout();
+  	user :: instance()->logout();
   
 		debug_mock :: tally();
   }
   
   function test_accesssible_no_params()
   {
-  	$this->_login_user(200, array(100 => 'admins', 110 => 'users'));
+    user :: instance()->import(array('id' => 200, 'groups' => array(100 => 'admins', 110 => 'users')));
   
   	$result = $this->object->fetch_accessible();
   	
@@ -82,7 +81,7 @@ class site_object_fetch_accessible_test extends LimbTestCase
 
   function test_accesssible_count_no_params()
   {
-  	$this->_login_user(200, array(100 => 'admins', 110 => 'users'));
+    user :: instance()->import(array('id' => 200, 'groups' => array(100 => 'admins', 110 => 'users')));
   
   	$result = $this->object->fetch_accessible_count();
  		$this->assertEqual($result, 8);
@@ -90,7 +89,7 @@ class site_object_fetch_accessible_test extends LimbTestCase
   
   function test_accessible_by_ids_no_ids()
   {
-  	$this->_login_user(200, array(100 => 'admins', 110 => 'users'));
+    user :: instance()->import(array('id' => 200, 'groups' => array(100 => 'admins', 110 => 'users')));
   	
   	$result = $this->object->fetch_accessible_by_ids(array());
   	$this->assertEqual($result, array());
@@ -98,7 +97,7 @@ class site_object_fetch_accessible_test extends LimbTestCase
   
   function test_accesssible_by_ids_no_params()
   {
-  	$this->_login_user(200, array(100 => 'admins', 110 => 'users'));
+    user :: instance()->import(array('id' => 200, 'groups' => array(100 => 'admins', 110 => 'users')));
   	
   	for($i = 1; $i <= 20; $i++)
   		$ids_array[] = $i;
@@ -113,7 +112,7 @@ class site_object_fetch_accessible_test extends LimbTestCase
 
   function test_accesssible_by_ids_count_no_params()
   {
-  	$this->_login_user(200, array(100 => 'admins', 110 => 'users'));
+    user :: instance()->import(array('id' => 200, 'groups' => array(100 => 'admins', 110 => 'users')));
   	
   	for($i = 1; $i <= 20; $i++)
   		$ids_array[] = $i;
@@ -121,14 +120,6 @@ class site_object_fetch_accessible_test extends LimbTestCase
   	$result = $this->object->fetch_accessible_by_ids_count($ids_array);
   	
   	$this->assertEqual($result, 8);
-  }
-
-  function _login_user($id, $groups)
-  {
-  	$user =& user :: instance();
-  	
-  	$user->_set_id($id);
-  	$user->_set_groups($groups);  	
   }
 }
 
