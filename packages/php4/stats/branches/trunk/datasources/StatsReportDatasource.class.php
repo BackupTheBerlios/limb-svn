@@ -32,8 +32,8 @@ class StatsReportDatasource //implements Datasource
     return new ArrayDataset($result);
   }
 
-  abstract function _configureFilters();
+  function _configureFilters(){die('abstract function!')}
 
-  abstract function _processResultArray($arr);
+  function _processResultArray($arr){die('abstract function!')}
 }
 ?>
