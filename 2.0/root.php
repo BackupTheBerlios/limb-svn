@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: root.php 547 2004-02-24 13:07:21Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -18,6 +18,7 @@ ob_start('process_output');
 
 debug :: add_timing_point('start');
 
+require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.php');
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
@@ -29,6 +30,7 @@ require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
+
 
 start_user_session();
 debug :: add_timing_point('require_done');

@@ -1,0 +1,16 @@
+<?php
+	require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
+
+	function send_plain_mail($recipients, $sender, $subject, $body, $headers = array())
+	{
+		$mail = new mime_mail();
+		$mail->set_text($body);
+		$mail->set_subject($subject);
+		$mail->set_from($sender);
+		
+		foreach($headers as $key => $value)
+			$mail->set_header($key, $value);
+		
+		return $mail->send($recipients);
+	}
+?>

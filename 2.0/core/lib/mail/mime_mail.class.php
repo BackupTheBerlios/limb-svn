@@ -1,6 +1,6 @@
 <?php
-
 require_once(LIMB_DIR . 'core/lib/mail/mime_mail_part.class.php');
+require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
 
 class mime_mail
 {
@@ -48,11 +48,12 @@ class mime_mail
 			'swf' => 'application/x-shockwave-flash'
 			);
 
+		$locale =& locale :: instance();
 		$this->build_params['html_encoding'] = 'quoted-printable';
 		$this->build_params['text_encoding'] = '7bit';
-		$this->build_params['html_charset'] = 'ISO-8859-1';
-		$this->build_params['text_charset'] = 'ISO-8859-1';
-		$this->build_params['head_charset'] = 'ISO-8859-1';
+		$this->build_params['html_charset'] = $locale->get_charset();
+		$this->build_params['text_charset'] = $locale->get_charset();
+		$this->build_params['head_charset'] = $locale->get_charset();
 		$this->build_params['text_wrap'] = 998;
 
 		if (!empty($GLOBALS['HTTP_SERVER_VARS']['HTTP_HOST']))
@@ -484,7 +485,7 @@ class mime_mail
 		return $input;
 	} 
 
-	function send($recipients, $type = 'mail')
+	function send($recipients)
 	{
 		if (!defined('CRLF'))
 			$this->set_crlf($type == 'mail' ? "\n" : "\r\n");
@@ -492,7 +493,7 @@ class mime_mail
 		if (!$this->is_built)
 			$this->build_message();
 
-		switch ($type)
+		switch (MAIL_TYPE)
 		{
 			case 'smtp':
 				return $this->_smtp_send($recipients);
@@ -535,7 +536,9 @@ class mime_mail
 	{
 		require_once(LIMB_DIR . 'core/lib/mail/smtp.class.php');
 		require_once(LIMB_DIR . 'core/lib/mail/mail_rfc822.class.php');
-trigger_error("Stop",E_USER_WARNING);	
+
+		$this->set_smtp_params(SMTP_HOST, SMTP_PORT, SMTP_HELO, SMTP_AUTH, SMTP_USER, SMTP_PASSWORD);
+		
 		$smtp =& smtp :: connect($this->smtp_params);
 
 		foreach ($recipients as $recipient)
@@ -576,7 +579,7 @@ trigger_error("Stop",E_USER_WARNING);
 		} 
 		else
 			$send_params['from'] = 'postmaster@' . $this->smtp_params['helo'];
-trigger_error("Stop",E_USER_WARNING);	
+
 		if (!$smtp->send($send_params))
 		{
 			$this->errors = $smtp->errors;

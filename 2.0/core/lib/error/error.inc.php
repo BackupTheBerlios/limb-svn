@@ -5,14 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: error.inc.php 468 2004-02-18 12:03:43Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
 require_once(LIMB_DIR . 'core/lib/security/user.class.php');
 require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
-require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
 
 if(!defined('ERROR_HANDLER_TYPE'))
 	debug :: set_handle_type(DEBUG_HANDLE_CUSTOM);
@@ -44,11 +43,12 @@ function error($description, $error_place='', $params=array())
 			$message .= "user id:\t$user_id\nlogin:\t\t"  . user :: get_login() . "\ne-mail:\t\t" . user :: get_email() . "\n";
 
 		$message .= "ip:\t\t" . sys::client_ip() . "\nrequest:\t" . REQUEST_URI . "\nerror:\t\t$title\ndescription:\t$msg";
-				
-		$mail = new mime_mail();
-		$mail->set_body($message);
-		$mail->build_message();
-		$mail->send('developer', DEVELOPER_EMAIL, '', WEBSITE_EMAIL, $_SERVER['HTTP_HOST'] . ' internal error!');
+		
+		send_plain_mail(array(DEVELOPER_EMAIL),
+							WEBSITE_EMAIL, 
+							$_SERVER['HTTP_HOST'] . ' internal error!',
+							$message 
+							);
 	}
 	ob_end_flush();
 			

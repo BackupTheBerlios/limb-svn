@@ -14,7 +14,6 @@ require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
-require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
 
 class send_feedback_action extends form_action
 {
@@ -46,16 +45,15 @@ class send_feedback_action extends form_action
 												$mail_data['subject'],
 												$_SERVER['HTTP_HOST']);
 		
-		$mail = new mime_mail();
-		$mail->set_body($body);
-		$mail->build_message();
-		
 		$recipient_email = constant('ADMINISTRATOR_EMAIL');
-		if(!$recipient_email || !$mail->send('administrator', 
-										$recipient_email, 
-										$mail_data['sender_name'], 
+		
+		if(!$recipient_email ||
+			 !send_plain_mail(array($recipient_email), 
 										$mail_data['sender_email'], 
-										$subject))
+										$subject,
+										$body
+										)
+				)
 		{
 			message_box :: write_error(strings :: get('mail_not_sent', 'feedback'));
 			return false;

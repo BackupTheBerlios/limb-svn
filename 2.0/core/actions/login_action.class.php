@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: login_action.class.php 401 2004-02-04 15:40:14Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
@@ -32,10 +32,24 @@ class login_action extends form_action
 		$is_logged = user :: login($login, $password);
 		
 		if($is_logged)
+		{
+			$this->_process_logged_user();
 			reload('/');
+		}
+		else
+			$this->_process_not_logged_user();
 			
 		return $is_logged;
 	}
+
+	function _process_logged_user()
+	{
+	}
+
+	function _process_not_logged_user()
+	{
+	}
+
 }
 
 ?>
