@@ -766,10 +766,18 @@ HTMLArea.prototype.onsize = function()
 	window.onresize = function()
 	{
 		try{
-			var obj = document.getElementById(this.active_tab_id)
-			obj._iframe.style.height = obj.parentElement.parentElement.offsetHeight - obj._toolbar.offsetHeight - obj._statusBar.offsetHeight
+			if(this.active_tab_id)
+			{
+				var obj = document.getElementById(this.active_tab_id);
+				obj._iframe.style.height = obj.parentElement.parentElement.offsetHeight - obj._toolbar.offsetHeight - obj._statusBar.offsetHeight;
+			}
+			else
+			{
+				this.this_obj._iframe.style.height = this.this_obj._textArea.parentElement.offsetHeight - this.this_obj._toolbar.offsetHeight -this.this_obj._statusBar.offsetHeight;
+			}
 		}catch(ex){}
 	}
+	
 
 
 	// the editor including the toolbar now have the same size as the

@@ -17,7 +17,7 @@ class user_membership_datasource extends datasource
 		parent :: datasource();
 	}
 
-	function & get_dataset($params = array())
+	function & get_dataset(&$counter, $params = array())
 	{
 		$user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter);
 		

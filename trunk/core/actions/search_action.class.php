@@ -18,9 +18,9 @@ class search_action extends form_action
 {
 	var $search_pager_id = 'search_pager';
 	
-	function search_action()
+	function search_action($name = 'search_form')
 	{
-		parent :: form_action('search_form');
+		parent :: form_action($name);
 	}
 	
 	function _init_dataspace()
