@@ -275,33 +275,13 @@ class TreeDecoratorTest extends LimbTestCase
     $this->assertTrue($this->decorator->canDeleteNode($id));
   }
 
-  function testGetPathToNodeFalse()
-  {
-    $node = array('id' => 100);
-
-    $this->tree->expectOnce('getParents', array(100));
-    $this->tree->setReturnValue('getParents', false);
-
-    $this->assertIdentical(false, $this->decorator->getPathToNode($node));
-  }
-
   function testGetPathToNode()
   {
     $node = array('id' => 100, 'identifier' => '3');
 
-    $this->tree->expectOnce('getParents', array(100));
-    $this->tree->setReturnValue('getParents', array(array('identifier' => '1'),
-                                                       array('identifier' => '2')));
-    $this->assertEqual('/1/2/3', $this->decorator->getPathToNode($node));
-  }
-
-  function testGetPathToNode2()
-  {
-    $node = array('id' => 100, 'identifier' => '3');
-
-    $this->tree->expectOnce('getParents', array(100));
-    $this->tree->setReturnValue('getParents', array());
-    $this->assertEqual('/3', $this->decorator->getPathToNode($node));
+    $this->tree->expectOnce('getPathToNode', array($node, '/'));
+    $this->tree->setReturnValue('getPathToNode', $path = '/1/2/3');
+    $this->assertEqual($path, $this->decorator->getPathToNode($node));
   }
 }
 

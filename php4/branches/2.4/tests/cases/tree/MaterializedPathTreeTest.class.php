@@ -647,6 +647,28 @@ class MaterializedPathTreeTest extends LimbTestCase
     $this->_checkResultNodesArray($node,  __LINE__);
   }
 
+  function testGetPathToNode()
+  {
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root'));
+    $sub_node_id_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test1'));
+    $sub_node_id_1_1 = $this->driver->createSubNode($sub_node_id_1, array('identifier' => 'test1'));
+    $sub_node_id_1_1_1 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test1'));
+    $sub_node_id_1_1_2 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test2'));
+
+    $path = $this->driver->getPathToNode($root_id, '|');
+    $this->assertEqual($path, '|root');
+
+    $path = $this->driver->getPathToNode(array('id' => $sub_node_id_1_1,
+                                               'identifier' => 'test1'));
+    $this->assertEqual($path, '/root/test1/test1');
+
+    $path = $this->driver->getPathToNode($sub_node_id_1_1_2);
+    $this->assertEqual($path, '/root/test1/test1/test2');
+
+    $path = $this->driver->getPathToNode(-1000000);
+    $this->assertNull($path);
+  }
+
   function testGetSubBranchByPathFailed()
   {
     $this->assertFalse($this->driver->getSubBranch(1));

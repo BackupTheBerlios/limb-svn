@@ -339,6 +339,26 @@ class MaterializedPathTree// implements Tree
     return null;
   }
 
+  function getPathToNode($node, $delimeter = '/')
+  {
+    if(!is_array($node))
+    {
+      if(!$node = $this->getNode($node))
+        return null;
+    }
+
+    $parents =& $this->getParents($node['id']);
+
+    $path = '';
+    for($parents->rewind();$parents->valid();$parents->next())
+    {
+      $r = $parents->current();
+      $path .= $delimeter . $r->get('identifier');
+    }
+
+    return $path .= $delimeter . $node['identifier'];
+  }
+
   function & getNodesByIds($ids)
   {
     $sql = "SELECT " . $this->_getSelectFields() . "

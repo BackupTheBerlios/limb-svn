@@ -95,14 +95,7 @@ class TreeDecorator// implements Tree
 
   function getPathToNode($node, $delimeter = '/')
   {
-    if(($parents = $this->_tree->getParents($node['id'])) === false)
-      return false;
-
-    $path = '';
-    foreach($parents as $parent_data)
-      $path .= $delimeter . $parent_data['identifier'];
-
-    return $path .= $delimeter . $node['identifier'];
+    return $this->_tree->getPathToNode($node, $delimeter);
   }
 
   function getMaxChildIdentifier($id)
