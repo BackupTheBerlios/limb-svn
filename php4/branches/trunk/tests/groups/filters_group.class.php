@@ -8,13 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/ 
-class filters_group extends GroupTest 
+class filters_group extends LimbGroupTest 
 {
 	function filters_group() 
 	{
-	  $this->GroupTest('filters tests');
-	  
- 		TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/filters');
+	  $this->LimbGroupTest('filters tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/filters');
+	} 	
 }
 ?>

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
+require_once(dirname(__FILE__) . '/site_object_manipulation_test.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
 require_once(LIMB_DIR . 'class/db_tables/content_object_db_table.class.php');

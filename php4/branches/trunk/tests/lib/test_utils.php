@@ -14,6 +14,11 @@ function register_testing_ini($ini_file, $content)
   if (isset($GLOBALS['testing_ini'][$ini_file])) 
     die("Duplicate ini registration not allowed.");
   
+  $instance_name = 'global_ini_instance_' . md5(VAR_DIR .  $ini_file);
+    
+  if(isset($GLOBALS[$instance_name]))
+	 unset($GLOBALS[$instance_name]);    
+  
   $GLOBALS['testing_ini'][$ini_file] = 1;
   
   $f = fopen(VAR_DIR . '/' . $ini_file, 'w');

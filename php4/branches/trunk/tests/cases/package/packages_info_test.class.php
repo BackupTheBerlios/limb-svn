@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-define('TEST_PACKAGES_DIR', dirname(__FILE__) . '/packages/');
+define('PACKAGES_DIR_FOR_PACKAGES_INFO_TEST', dirname(__FILE__) . '/packages/');
 
 require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 
@@ -23,6 +23,7 @@ class packages_info_test extends LimbTestCase
   
   function tearDown()
   {
+    $this->info->reset();
     unset($this->info);
   }
   
@@ -36,22 +37,22 @@ class packages_info_test extends LimbTestCase
     register_testing_ini(
       'packages.ini',
       ' 
-       packages[] = {TEST_PACKAGES_DIR}test1      
-       packages[] = {TEST_PACKAGES_DIR}test2
+       packages[] = {PACKAGES_DIR_FOR_PACKAGES_INFO_TEST}test1      
+       packages[] = {PACKAGES_DIR_FOR_PACKAGES_INFO_TEST}test2
       '
     );
 
     $this->assertEqual($this->info->get_packages(), 
       array(
-        array('path' => TEST_PACKAGES_DIR . 'test1', 'name' => 'TEST_PACKAGE1'),
-        array('path' => TEST_PACKAGES_DIR . 'test2', 'name' => 'TEST_PACKAGE2')
+        array('path' => PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test1', 'name' => 'PACKAGE1_FOR_PACKAGES_INFO_TEST'),
+        array('path' => PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test2', 'name' => 'PACKAGE2_FOR_PACKAGES_INFO_TEST')
       )
     );
     
-    $this->assertTrue(defined('TEST_PACKAGE1_DIR'));
-    $this->assertTrue(defined('TEST_PACKAGE2_DIR'));
-    $this->assertEqual(constant('TEST_PACKAGE1_DIR'), TEST_PACKAGES_DIR . 'test1');
-    $this->assertEqual(constant('TEST_PACKAGE2_DIR'), TEST_PACKAGES_DIR . 'test2');
+    $this->assertTrue(defined('PACKAGE1_FOR_PACKAGES_INFO_TEST_DIR'));
+    $this->assertTrue(defined('PACKAGE2_FOR_PACKAGES_INFO_TEST_DIR'));
+    $this->assertEqual(constant('PACKAGE1_FOR_PACKAGES_INFO_TEST_DIR'), PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test1');
+    $this->assertEqual(constant('PACKAGE2_FOR_PACKAGES_INFO_TEST_DIR'), PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test2');
     
     clear_testing_ini();
   }   

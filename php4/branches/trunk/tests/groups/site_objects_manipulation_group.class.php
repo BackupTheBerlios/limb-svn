@@ -8,13 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-class site_objects_manipulation_group extends GroupTest 
+class site_objects_manipulation_group extends LimbGroupTest 
 {
 	function site_objects_manipulation_group() 
 	{
-	  $this->GroupTest('site objects manipulation tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/site_objects_manipulation/');
+	  $this->LimbGroupTest('site objects manipulation tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/site_objects_manipulation');
+	}		
 }
 ?>

@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(dirname(__FILE__) . '/rule_test.class.php');
 require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 class single_field_rule_test extends rule_test 

@@ -19,10 +19,9 @@ Run the LIMB unit tests. If ALL of the test cases pass a count of total
 passes is printed on STDOUT. If ANY of the test cases fail (or raise
 errors) details are printed on STDERR and this script returns a non-zero
 exit code.
-  -f  --file=NUMBER         specify a test case number
-  -g  --group=NUMBER        specify a grouptest number. If no grouptest is
+  -g  --group=PATH        specify a grouptest path. If no grouptest is
                           specified, all test cases will be run.
-  -l  --list              list available grouptests/test case files
+  -l  --list=PATH         list available grouptests files
   -p, --path              path to SimpleTest installation
   -h, --help              display this help and exit
 
@@ -32,10 +31,9 @@ EOD;
 } 
 
 /* test options */
-$opt_separator = '->';
-$opt_list = false;
+$opt_list_path = false;
 $opt_casefile = false;
-$opt_groupfile = false;
+$opt_group_path = false;
 
 /* only allow cmd line options if PEAR Console_Getopt is available */
 require_once ('Console/Getopt.php');
@@ -65,17 +63,13 @@ if (class_exists('Console_Getopt'))
 			case '--help':
 				usage();
 				break;
-			case 'f':
-			case '--file':
-				$opt_casefile = $option[1];
-				break;
 			case 'g':
 			case '--group':
-				$opt_groupfile = $option[1];
+				$opt_group_path = $option[1];
 				break;
 			case 'l':
 			case 'list':
-				$opt_list = true;
+				$opt_list_path = $option[1];
 				break;
 			case 's':
 			case 'separator':
@@ -92,10 +86,14 @@ if (class_exists('Console_Getopt'))
 	} 
 } 
 
+$global_group = new GlobalGroupTest();
 /* list grouptests */
-if ($opt_list)
+if ($opt_list_path)
 {
-	echo CLITestManager::getGroupTestList(LIMB_DIR . '/tests/groups');
+  $current_group = CLITestManager::getGroupTestList($opt_list_path, $global_group);
+  $cases = $current_group->getTestCasesHandles();
+  
+	echo CLITestManager::getGroupTestList(TEST_GROUPS_DIR);
 	exit(0);
 } 
 /* run a test case */
@@ -106,18 +104,18 @@ if ($opt_casefile !== false)
 	exit(0);
 } 
 /* run a grouptest */
-if ($opt_groupfile !== false)
+if ($opt_group_path !== false)
 {  
-  $groups = TestManager::getGroupTestList(LIMB_DIR . '/tests/groups');
-  if(isset($groups[$opt_groupfile]))
+  $groups = TestManager::getGroupTestList(TEST_GROUPS_DIR);
+  if(isset($groups[$opt_group_path]))
   {
-	  TestManager::runGroupTest($groups[$opt_groupfile], new LimbCLIReporter());
+	  TestManager::runGroupTest($groups[$opt_group_path], new LimbCLIReporter());
 	  echo debug :: parse_cli_console();	
 	}
 	exit(0);
 } 
 /* run all tests */
-TestManager::runAllTests(LIMB_DIR . '/tests/groups', new LimbCLIReporter());
+TestManager::runAllTests(TEST_GROUPS_DIR, new LimbCLIReporter());
 echo debug :: parse_cli_console();
 exit(0);
 

@@ -8,14 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
-class fetching_group extends GroupTest 
+class fetching_group extends LimbGroupTest 
 {
 	function fetching_group() 
 	{
-	  $this->GroupTest('fetch operations');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/fetching');
+	  $this->LimbGroupTest('fetch operations');
+	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/fetching');
 	}
 }
 ?>

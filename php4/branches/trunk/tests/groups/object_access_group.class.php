@@ -8,14 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
-class object_access_group extends GroupTest 
+class object_access_group extends LimbGroupTest 
 {
 	function object_access_group() 
 	{
-	  $this->GroupTest('object access tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/access');
+	  $this->LimbGroupTest('object access tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/access');
+	} 	
 }
 ?>

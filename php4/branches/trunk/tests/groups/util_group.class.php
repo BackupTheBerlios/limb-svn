@@ -8,14 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
-class util_group extends GroupTest 
+class util_group extends LimbGroupTest 
 {
 	function util_group() 
 	{
-	  $this->GroupTest('util tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/util');
+	  $this->LimbGroupTest('util tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/util');
+	}	
 }
 ?>

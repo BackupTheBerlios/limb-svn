@@ -8,13 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-
-class cache_group extends GroupTest 
+class cache_group extends LimbGroupTest 
 {
 	function cache_group() 
 	{
-	  $this->GroupTest('cache tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/cache');
+	  $this->LimbGroupTest('cache tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/cache');
+	}
+	
 }
 ?>

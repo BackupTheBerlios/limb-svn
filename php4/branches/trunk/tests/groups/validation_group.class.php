@@ -8,15 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
-class validation_group extends GroupTest 
+class validation_group extends LimbGroupTest 
 {
 	function validation_group() 
 	{
-	  $this->GroupTest('validation tests');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/validation');
+	  $this->LimbGroupTest('validation tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/validation');
+	}		
 }
 ?>

@@ -8,14 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-class node_links_group extends GroupTest 
+class node_links_group extends LimbGroupTest 
 {
 	function node_links_group() 
 	{
-	  $this->GroupTest('nodes links tests');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/node_links/');
+	  $this->LimbGroupTest('nodes links tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/node_links');
+	} 	
 }
 ?>

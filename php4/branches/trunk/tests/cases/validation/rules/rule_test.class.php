@@ -36,8 +36,8 @@ class rule_test extends LimbTestCase
 	{
 		$this->error_list->tally();
 		$this->validator->tally();
-	unset($this->validator);
-	unset($this->error_list);
+	  unset($this->validator);
+	  unset($this->error_list);
 	} 
 } 
 

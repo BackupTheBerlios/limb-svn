@@ -8,13 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-
-class db_group extends GroupTest 
+class db_group extends LimbGroupTest 
 {
 	function db_group() 
 	{
-	  $this->GroupTest('db tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/db');
+	  $this->LimbGroupTest('db tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/db');
+	}
+	
 }
 ?>

@@ -8,14 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
-class template_components_group extends GroupTest 
+class template_components_group extends LimbGroupTest 
 {
   function template_components_group() 
   {
-    $this->GroupTest('template components tests');
-    TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/components');
+    $this->LimbGroupTest('template components tests');
   }
+  
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/components');
+	}  
 }
 ?>

@@ -8,14 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-class tree_group extends GroupTest 
+class tree_group extends LimbGroupTest
 {
 	function tree_group() 
 	{
-	  $this->GroupTest('tree');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/tree/');
+	  $this->LimbGroupTest('tree');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/tree');
+	} 	
 }
 ?>

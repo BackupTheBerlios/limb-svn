@@ -8,14 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
-class metadata_group extends GroupTest 
+class metadata_group extends LimbGroupTest 
 {
-    function metadata_group() 
-    {
-        $this->GroupTest('metadata tests');
-        TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/metadata');
-    }
+  function metadata_group() 
+  {
+    $this->LimbGroupTest('metadata tests');
+  }
+    
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/metadata');
+	}    
 }
 ?>

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
+require_once(dirname(__FILE__) . '/site_object_fetch_test.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 

@@ -8,14 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
-class sys_params_group extends GroupTest 
+class sys_params_group extends LimbGroupTest 
 {
-    function sys_params_group() 
-    {
-        $this->GroupTest('sys params tests');
-        TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/sys_params');
-    }
+  function sys_params_group() 
+  {
+    $this->LimbGroupTest('sys params tests');
+  }
+    
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/sys_params');
+	}    
 }
 ?>

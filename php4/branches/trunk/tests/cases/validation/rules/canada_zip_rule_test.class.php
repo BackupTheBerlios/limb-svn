@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
 require_once(LIMB_DIR . 'class/core/dataspace.class.php');
 require_once(LIMB_DIR . 'class/validators/rules/canada_zip_rule.class.php');
 

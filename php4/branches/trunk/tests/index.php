@@ -9,8 +9,9 @@
 *
 ***********************************************************************************/ 
 ob_start();
-
 require_once(dirname(__FILE__) . '/setup.php');
+require_once(LIMB_DIR . '/tests/lib/html_test_manager.class.php');
+require_once(LIMB_DIR . '/tests/cases/limb_group_test.class.php');
 
 if (!include_once(SIMPLE_TEST . 'reporter.php'))
 {
@@ -18,48 +19,57 @@ if (!include_once(SIMPLE_TEST . 'reporter.php'))
 			'path' => SIMPLE_TEST));
 } 
 
-if(isset($_GET['all']))
+class GlobalGroupTest extends LimbGroupTest
 {
-	TestManager::runAllTests($_GET['all'], new HTMLReporter());
+	function GlobalGroupTest() 
+	{
+	  $this->LimbGroupTest('all tests');
+	}
 	
-	echo "<p><a href='" . $_SERVER['PHP_SELF'] . "'>Run more tests</a></p>";
-	
-	echo debug :: parse_html_console();	
-	ob_end_flush();
-	exit(0);
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/groups');
+	}
 }
 
-if (isset($_GET['group']))
+$global_group =& new GlobalGroupTest();
+$test_manager = new HTMLTestManager();
+
+if(isset($_GET['run']))
 {
-	TestManager::runGroupTest($_GET['group'], new HTMLReporter());
-
-	echo "<p><a href='" . $_SERVER['PHP_SELF'] . "'>Run more tests</a></p>";
-	echo debug :: parse_html_console();
-	ob_end_flush();
-	exit(0);
-} 
-
-if (isset($_GET['case']))
+  $path = $_GET['run'];
+  run_tests($path, $test_manager, $global_group);
+}  
+  
+if(isset($_GET['list']))
 {
-	TestManager::runTestCase($_GET['case'], new HTMLReporter());
-	echo "<p><a href='" . $_SERVER['PHP_SELF'] . "?show=cases'>Run more tests</a></p>";
-	echo debug :: parse_html_console();
-	ob_end_flush();
-	exit(0);
-} 
+  $path = $_GET['list'];
+  list_tests($path, $test_manager, $global_group);
+}
+elseif(!isset($_GET['run']))
+  list_tests('', $test_manager, $global_group);
 
-echo "<h1>Unit Test Suite</h1>\n";
-
-if (isset($_GET['show']) && $_GET['show'] == 'cases')
+function run_tests($path, &$test_manager, &$global_group)
 {
-	echo HTMLTestManager::getGroupTestList(LIMB_DIR . '/tests/cases');
-} 
-else
-{
-	/* no group specified, so list them all */
-	echo HTMLTestManager::getGroupTestList(LIMB_DIR . '/tests/groups');
-} 
+  $current_group = $test_manager->getCaseByPath($path, $global_group);
+  
+  $reporter = new HTMLReporter();
+  
+  $test_manager->run($current_group, $reporter);
 
+  echo '<p><a href="' . $test_manager->getBaseURL() . '?list=' . $test_manager->normalizeTestsPath($path) . '">More tests</a></p>';
+}
+
+function list_tests($path, &$test_manager, &$global_group)
+{
+  $current_group = $test_manager->getCaseByPath($path, $global_group);
+
+  echo '<p><a href="' . $test_manager->getBaseURL() . '?list=' . $test_manager->normalizeTestsPath($path) . '/..">One level up</a></p>';
+
+  $test_manager->displayTestCases($current_group, $test_manager->normalizeTestsPath($path));
+}  
+
+echo debug :: parse_html_console();	
 ob_end_flush();
 
 ?>

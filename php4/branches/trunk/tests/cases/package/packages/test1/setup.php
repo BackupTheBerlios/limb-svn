@@ -9,6 +9,6 @@
 *
 ***********************************************************************************/
 
-$PACKAGE_NAME = 'TEST_PACKAGE1';
+$PACKAGE_NAME = 'PACKAGE1_FOR_PACKAGES_INFO_TEST';
 
 ?>

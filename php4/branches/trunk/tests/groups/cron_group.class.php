@@ -8,13 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-
-class cron_group extends GroupTest 
+class cron_group extends LimbGroupTest 
 {
 	function cron_group() 
 	{
-	  $this->GroupTest('cron tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/cron');
+	  $this->LimbGroupTest('cron tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/cron');
+	}
+	
 }
 ?>

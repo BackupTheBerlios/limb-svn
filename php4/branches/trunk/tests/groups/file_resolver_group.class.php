@@ -8,13 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/ 
-class file_resolver_group extends GroupTest 
+class file_resolver_group extends LimbGroupTest 
 {
 	function file_resolver_group() 
 	{
-	  $this->GroupTest('file resolvers tests');
-	  
- 		TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/file_resolver');
+	  $this->LimbGroupTest('file resolvers tests');
 	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestManager::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/file_resolver');
+	}	
 }
 ?>
