@@ -55,6 +55,7 @@ class fetcher
 
   function flush_cache()
   {
+    $this->_node_mapped_by_request = null; 
     $this->_cached_objects = array('path' => array(), 'node_id' => array(), 'id' => array());
   }
 
