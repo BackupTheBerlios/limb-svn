@@ -20,6 +20,7 @@ class register_new_object_action extends form_action
 	function _init_validator()
 	{
     $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'class_name')); 
+    $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'controller_name')); 
     $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'identifier')); 
     $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'parent_path')); 
     $this->validator->add_rule($v[] = array(LIMB_DIR . 'core/lib/validators/rules/tree_path_rule', 'parent_path')); 

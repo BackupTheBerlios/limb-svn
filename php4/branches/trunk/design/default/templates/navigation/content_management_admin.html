@@ -1,19 +1,11 @@
-<table width=160 border=0 cellspacing=0 cellpadding=0>
-<tr class=com4>
-	<td class=btitle1>Content management</td>
-</tr>
-<tr>
-	<td valign='top'>
+
 		<core:BLOCK id='admin_menu_block1'>
-		
-		<fetch:SUB_BRANCH target="menu" >
+		<fetch:SUB_BRANCH target="admin_menu" >
 			<core:PARAMETER name='loader_class_name' value='navigation_item' >
-			<core:PARAMETER name='datasource_path' value='simple_navigation_datasource' >
-			<core:PARAMETER name='path' value='/root/navigation/admin/content_management' >
+			<core:PARAMETER name='datasource_path' value='tree_navigation_datasource' >
+			<core:PARAMETER name='path' value='/root/admin/navigation/content_management' >
 			<core:PARAMETER name='order' value='priority=ASC'>
+			<core:PARAMETER name='depth' value='2'>
 		</fetch:SUB_BRANCH>
-		<core:INCLUDE file="/navigation/menu.html">
+		<core:INCLUDE file="/navigation/admin_menu.html">
 		</core:BLOCK>
-	</td>
-</tr>
-</table>
