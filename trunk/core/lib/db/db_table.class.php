@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: db_table.class.php 423 2004-02-10 15:03:21Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -22,7 +22,7 @@ class db_table
 	
 	var $_constraints = array();
 
-  var $_db = null;
+  var $connection = null;
 
   function db_table()
   {
@@ -30,7 +30,7 @@ class db_table
     $this->_columns = $this->_define_columns();
     $this->_constraints = $this->_define_constraints();
    
-    $this->_db =& db_factory :: instance();
+    $this->connection=& db_factory :: get_connection();
   }
       
   function _define_db_table_name()
@@ -104,7 +104,7 @@ class db_table
 		
 		$filtered_row =& $this->_filter_row($row);
 		
-    return $this->_db->sql_insert($this->_db_table_name, $filtered_row, $this->get_column_types());
+    return $this->connection->sql_insert($this->_db_table_name, $filtered_row, $this->get_column_types());
   }
   
   function & _filter_row($row)
@@ -130,7 +130,7 @@ class db_table
 
   	$filtered_row =& $this->_filter_row($row);
   	  
-    return $this->_db->sql_update($this->_db_table_name, $filtered_row, $conditions, $this->get_column_types());
+    return $this->connection->sql_update($this->_db_table_name, $filtered_row, $conditions, $this->get_column_types());
   } 
 
   function update_by_id($id, $data)
@@ -163,15 +163,15 @@ class db_table
       
   function & get_list($conditions='', $order='', $group_by_column='', $start=0, $count=0)
 	{			
-    $this->_db->sql_select($this->_db_table_name, '*', $conditions, $order, $start, $count);
+    $this->connection->sql_select($this->_db_table_name, '*', $conditions, $order, $start, $count);
    
 		if ($group_by_column === '')
 			$group_by_column = $this->_primary_key_name;
  		 				
 		if($group_by_column)
-    	$result =& $this->_db->get_array($group_by_column);
+    	$result =& $this->connection->get_array($group_by_column);
     else
-    	$result =& $this->_db->get_array();
+    	$result =& $this->connection->get_array();
     	
     return $result;
 	}
@@ -189,7 +189,7 @@ class db_table
 	
 	function _delete_operation($conditions, $affected_rows)
 	{
-		$this->_db->sql_delete($this->_db_table_name, $conditions);
+		$this->connection->sql_delete($this->_db_table_name, $conditions);
 	}
 	
 	function delete_by_id($id)
@@ -205,12 +205,12 @@ class db_table
   	  	
   function get_last_insert_id()
   {		
-		return $this->_db->get_sql_insert_id($this->_db_table_name, $this->_primary_key_name);
+		return $this->connection->get_sql_insert_id($this->_db_table_name, $this->_primary_key_name);
 	}
 
   function get_max_id()
   {			
-		return $this->_db->get_max_column_value($this->_db_table_name, $this->_primary_key_name);
+		return $this->connection->get_max_column_value($this->_db_table_name, $this->_primary_key_name);
 	}
 
   function get_table_name()
