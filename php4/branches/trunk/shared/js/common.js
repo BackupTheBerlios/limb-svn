@@ -160,13 +160,26 @@ function optimize_window()
 	w = window;
 	
 	var x_ratio = 0.85;
-	var y_ratio = 0.85;
+	var y_ratio = 0.90;
 	
-	top_opener = window
-	while(typeof(top_opener.top.opener) != 'undefined' && top_opener.top.opener != null)
+	top_opener = window;
+	
+	do
 	{
-		top_opener = top_opener.top.opener;
+	  iterate = false;
+	  if (top_opener.opener)
+	  {
+	    top_opener = top_opener.opener;
+	    iterate = true;
+	  }
+	  else
+	    if (top_opener.top && top_opener != top_opener.top)
+	    {
+	      top_opener = top_opener.top
+  	    iterate = true;
+  	  }
 	}
+	while (iterate)
 	
   if (is_ie)
 	{

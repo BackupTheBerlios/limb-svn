@@ -11,6 +11,9 @@ add_event(document, 'mousemove', hint_mouse_move_handler);
 
 function hint_mouse_move_handler(e)
 {
+  if (is_ie)
+    e = window.event;
+  
   if (dom)
   {
     current_hint_x = e.clientX;   
