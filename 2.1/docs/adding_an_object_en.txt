@@ -10,20 +10,13 @@ It's a pretty depricated and ugly tool to be replaced with packaging mechanism i
 To create a new object input its class name, identifier, title and
 path to the parent node. You can set parent path to '/' to create
 completely new branch in site tree like /root (e.g. /en, /ru). This
-is useful when you try to create multilanguage sites. If the object was
+is useful when you try to create multilanguage sites. If the object is
 successfully registered you should see a message above the form.
 
-NOTE: create_object.php script doesn't check identifier uniqueness among the selected node children. 
-It's your responsibility for now.
+NOTE: create_object.php script doesn't check identifier uniqueness among the selected parent children. 
+It's your responsibility for now to assign proper identifier.
 
-When a new object is created (and it's the first object of class)
-you will probably want to set actions permissions and actions access
-templates. Also you will probably want to set object's permissions for groups.
+When a new object is created you will probably want to check'n'set object's permissions for groups and
+you will surely want to check'n'set actions access and actions access templates. 
+
 To know more about LIMB access policy visit this page http://limb/documents/AccessPolicy.
-
-After settings permissions you can start working with object. Usually 
-we create a navigation links like /path_to_object?action=admin_display
-for admin pages and /path_to_object for common pages for quick access 
-if object acts as a parent object for some functionality such as news or catalog etc.
-
-
