@@ -20,7 +20,7 @@ class StatsCounterRegister
   var $counter_db_table = null;
   var $day_counters_db_table = null;
 
-  var $ip_register = null;
+  var $stats_ip = null;
 
   function StatsCounterRegister()
   {
@@ -39,8 +39,8 @@ class StatsCounterRegister
     $counters_date = new Date();
     $counters_date->setByStamp($record['time']);
 
-    $ip_register =& $this->getIpRegister();
-    $is_new_host = $ip_register->isNewToday($stats_request->getClientIp());
+    $stats_ip =& $this->getStatsIp();
+    $is_new_host = $stats_ip->isNewToday($stats_request->getClientIp());
 
     if($counters_date->dateToDays() < $reg_date->dateToDays())
     {
@@ -151,20 +151,20 @@ class StatsCounterRegister
     $this->counter_db_table->update($update_array);
   }
 
-  function setIpRegister(&$ip_register)
+  function setStatsIp(&$ip)
   {
-    $this->ip_register =& $ip_register;
+    $this->stats_ip =& $ip;
   }
 
-  function & getIpRegister()
+  function & getStatsIp()
   {
-    if (is_object($this->ip_register))
-      return $this->ip_register;
+    if (is_object($this->stats_ip))
+      return $this->stats_ip;
 
     include_once(dirname(__FILE__) . '/StatsIp.class.php');
-    $this->ip_register = new StatsIp();
+    $this->stats_ip = new StatsIp();
 
-    return $this->ip_register;
+    return $this->stats_ip;
   }
 }
 ?>

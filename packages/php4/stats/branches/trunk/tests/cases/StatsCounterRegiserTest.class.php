@@ -36,7 +36,7 @@ class StatsCounterRegisterTest extends LimbTestCase
     $this->ip_register = new MockStatsIp($this);
 
     $this->register = new StatsCounterRegister();
-    $this->register->setIpRegister($this->ip_register);
+    $this->register->setStatsIp($this->ip_register);
 
     $this->_cleanUp();
   }
@@ -206,7 +206,7 @@ class StatsCounterRegisterTest extends LimbTestCase
   {
     $register = new StatsCounterRegister();
 
-    $this->assertTrue(is_a($register->getIpRegister(), 'StatsIp'));
+    $this->assertTrue(is_a($register->getStatsIp(), 'StatsIp'));
 
   }
 

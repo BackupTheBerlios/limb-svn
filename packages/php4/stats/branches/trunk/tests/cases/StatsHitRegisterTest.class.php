@@ -43,8 +43,8 @@ class StatsHitRegisterTest extends LimbTestCase
     $this->stats_referer = new MockStatsReferer($this);
     $this->stats_uri = new MockStatsUri($this);
 
-    $this->register->setRefererRegister($this->stats_referer);
-    $this->register->setUriRegister($this->stats_uri);
+    $this->register->setStatsReferer($this->stats_referer);
+    $this->register->setStatsUri($this->stats_uri);
 
     $this->_cleanUp();
   }

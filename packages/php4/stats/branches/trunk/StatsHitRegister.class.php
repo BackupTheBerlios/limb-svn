@@ -11,8 +11,8 @@
 class StatsHitRegister
 {
   var $db = null;
-  var $referer_register;
-  var $uri_register;
+  var $stats_referer;
+  var $stats_uri;
 
   function StatsHitRegister()
   {
@@ -22,15 +22,15 @@ class StatsHitRegister
 
   function register(&$stats_request)
   {
-    $referer_register =& $this->getRefererRegister();
-    $uri_register =& $this->getUriRegister();
+    $stats_referer =& $this->getStatsReferer();
+    $stats_uri =& $this->getStatsUri();
 
     $this->db_table->insert(
       array(
         'ip' => Ip :: decode($stats_request->getClientIp()),
         'time' => $stats_request->getTime(),
-        'stats_referer_id' => $referer_register->getId($stats_request->getRefererUri()),
-        'stats_uri_id' => $uri_register->getId($stats_request->getUri()),
+        'stats_referer_id' => $stats_referer->getId($stats_request->getRefererUri()),
+        'stats_uri_id' => $stats_uri->getId($stats_request->getUri()),
         'session_id' => session_id(),
         'action' => $stats_request->getAction(),
       )
@@ -42,36 +42,36 @@ class StatsHitRegister
     $this->db_table->delete(array('time < ' . $time));
   }
 
-  function setRefererRegister(&$referer)
+  function setStatsReferer(&$referer)
   {
-    $this->referer_register =& $referer;
+    $this->stats_referer =& $referer;
   }
 
-  function setUriRegister(&$uri)
+  function setStatsUri(&$uri)
   {
-    $this->uri_register =& $uri;
+    $this->stats_uri =& $uri;
   }
 
-  function & getRefererRegister()
+  function & getStatsReferer()
   {
-    if (is_object($this->referer_register))
-      return $this->referer_register;
+    if (is_object($this->stats_referer))
+      return $this->stats_referer;
 
     include_once(dirname(__FILE__) . '/StatsReferer.class.php');
-    $this->referer_register = new StatsReferer();
+    $this->stats_referer = new StatsReferer();
 
-    return $this->referer_register;
+    return $this->stats_referer;
   }
 
-  function & getUriRegister()
+  function & getStatsUri()
   {
-    if (is_object($this->uri_register))
-      return $this->uri_register;
+    if (is_object($this->stats_uri))
+      return $this->stats_uri;
 
     include_once(dirname(__FILE__) . '/StatsUri.class.php');
-    $this->uri_register = new StatsUri();
+    $this->stats_uri = new StatsUri();
 
-    return $this->uri_register;
+    return $this->stats_uri;
   }
 }
 
