@@ -8,78 +8,37 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(WACT_ROOT . '/util/delegate.inc.php');
 
-function instantiateSessionObject($class_name, &$arguments)
+class LimbHandle extends Handle
+{
+  function LimbHandle($class, $args = array())
+  {
+    parent :: Handle(LimbHandle :: _processClass($class), $args);
+  }
+
+  function _processClass($class)
+  {
+    if(preg_match('~(\\\|/)([^\\\/.|]+)$~', $class, $matches))
+      return $class . '.class.php|' . $matches[2];
+    else
+      return $class;
+  }
+}
+
+function & instantiateSessionObject($class_name, &$arguments)
 {
   if(	!isset($_SESSION['global_session_singleton_'. $class_name]) ||
       !is_a($_SESSION['global_session_singleton_'. $class_name], $class_name))
   {
-    $handle =& $arguments;
-    array_unshift($handle, $class_name);
+    $object =& Handle :: resolve(new LimbHandle($class_name, $arguments));
 
-    resolveHandle($handle);
-
-    $_SESSION['global_session_singleton_' . $class_name] = $handle;
+    $_SESSION['global_session_singleton_' . $class_name] =& $object;
   }
   else
-    $handle = $_SESSION['global_session_singleton_' . $class_name];
+    $object =& $_SESSION['global_session_singleton_' . $class_name];
 
-  return $handle;
-}
-
-//Original idea by Jeff Moore, http://wact.sourceforge.net/index.php/ResolveHandle
-function resolveHandle(&$handle)
-{
-  if (is_object($handle) ||  is_null($handle))
-    return;
-
-  if (is_array($handle))
-  {
-    $class = array_shift($handle);
-    $construction_args = $handle;
-  }
-  else
-  {
-    $construction_args = array();
-    $class = $handle;
-  }
-
-  if (is_integer($pos = strpos($class, '|')))
-  {
-    $file = substr($class, 0, $pos);
-    $class = substr($class, $pos + 1);
-    include_once($file);
-  }
-  elseif(is_integer($pos = strrpos($class, '/')))
-  {
-    $file = $class;
-    $class = substr($class, $pos + 1);
-    include_once($file . '.class.php');
-  }
-
-  switch (count($construction_args))
-  {
-    case 0:
-      $handle = new $class();
-      break;
-    case 1:
-      $handle = new $class(array_shift($construction_args));
-      break;
-    case 2:
-      $handle = new $class(
-          array_shift($construction_args),
-          array_shift($construction_args));
-      break;
-    case 3:
-      $handle = new $class(
-          array_shift($construction_args),
-          array_shift($construction_args),
-          array_shift($construction_args));
-      break;
-    default:
-      // Too many arguments for this cobbled together implemenentation.  :(
-      return throw(new Exception('too many arguments for resolve handle'));
-  }
+  return $object;
 }
 
 ?>

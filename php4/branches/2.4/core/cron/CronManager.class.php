@@ -91,7 +91,7 @@ class CronManager
 
       if($time_diff == -1 ||  !isset($job['interval']) ||  $time_diff > $job['interval'])
       {
-        $handle = $job['handle'];
+        $handle = new LimbHandle($job['handle']);
 
         $response->write("handle {$handle} starting\n");
 
@@ -111,8 +111,7 @@ class CronManager
 
   function &_createJobObject(&$handle)
   {
-    resolveHandle($handle);
-    return $handle;
+    return Handle :: resolve($handle);
   }
 
   function _setJobLastTime($key, $time)

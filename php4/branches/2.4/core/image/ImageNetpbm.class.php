@@ -188,10 +188,10 @@ class ImageNetpbm extends ImageLibrary
     if (!$this->library_installed)
       return false;
 
-    if ($params == ImageNetpbm :: FLIP_HORIZONTAL)
+    if ($params == FLIP_HORIZONTAL)
       $args = '-leftright';
 
-    if ($params == ImageNetpbm :: FLIP_VERTICAL)
+    if ($params == FLIP_VERTICAL)
       $args = '-topbottom';
 
     $this->cmd_array[] = PNMFLIP . " {$args}";

@@ -52,7 +52,7 @@ class LimbDbTableFactory
     if(class_exists($db_table_name . 'DbTable'))
       return;
 
-    resolveHandle($resolver =& getFileResolver('db_table'));
+    $resolver =& Handle :: resolve(getFileResolver('db_table'));
 
     $full_path = $resolver->resolve($db_table_name);
 

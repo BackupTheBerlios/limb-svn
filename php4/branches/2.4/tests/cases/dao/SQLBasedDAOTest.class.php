@@ -46,7 +46,7 @@ class SQLBasedDAOTest extends LimbTestCase
     $this->dao = new SQLBasedDAOTestVersion($this);
     $this->dao->setReturnReference('_initSQL', $this->sql);
 
-    $this->dao->DAO();
+    $this->dao->SQLBasedDAO();
 
     Limb :: registerToolkit($toolkit);
   }

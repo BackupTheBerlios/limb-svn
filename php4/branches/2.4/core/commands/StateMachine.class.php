@@ -65,7 +65,7 @@ class StateMachine
     }
 
     $state_data =& $this->states[$state_name];
-    resolveHandle($command =& $state_data['command']);
+    $command =& Handle :: resolve($state_data['command']);
     $result = $command->perform();
 
     if (isset($state_data['transitions'][$result]))

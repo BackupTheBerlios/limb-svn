@@ -33,7 +33,7 @@ class SessionDbDriver// implements SessionDriver
 
   function storageRead($session_id)
   {
-    $rs =& $this->db->select('sys_session', 'session_data', array('session_id' => "{$session_id}"));
+    $rs =& $this->db->select('sys_session', array('session_data'), array('session_id' => "{$session_id}"));
 
     if($data = $rs->getValue())
       return $data;
@@ -43,7 +43,7 @@ class SessionDbDriver// implements SessionDriver
 
   function storageWrite($session_id, $value)
   {
-    $rs =& $this->db->select('sys_session', 'session_id', array('session_id' => "{$session_id}"));
+    $rs =& $this->db->select('sys_session', array('session_id'), array('session_id' => "{$session_id}"));
 
     $session_data = array('last_activity_time' => time(),
                           'session_data' => "{$value}");

@@ -12,10 +12,13 @@ define('LIMB_ANY_FORM_WILDCARD', '*');
 define('LIMB_MULTI_FORM', true);
 define('LIMB_SINGLE_FORM', false);
 
+require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
+
 class FormCommand// implements Command
 {
   var $form_id;
   var $is_multi;
+  var $validator;
 
   function FormCommand($form_id, $is_multi = LIMB_SINGLE_FORM)
   {
@@ -33,8 +36,12 @@ class FormCommand// implements Command
   //for mocking
   function & _getValidator()
   {
+    if($this->validator)
+      return $this->validator;
+
     include_once(WACT_ROOT . '/validation/validator.inc.php');
-    return new Validator();
+    $this->validator = new Validator();
+    return $this->validator;
   }
 
   function _isFirstTime(&$request)

@@ -59,7 +59,7 @@ class TestFinder
       $class_names = $this->_getTestClassNames($file);
 
       foreach($class_names as $class_name)
-        array_push($cases_handles, $file . '|' . $class_name);
+        array_push($cases_handles, new Handle($file . '|' . $class_name));
     }
 
     return $cases_handles;

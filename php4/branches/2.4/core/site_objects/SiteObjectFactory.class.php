@@ -31,7 +31,7 @@ class SiteObjectFactory
     if(class_exists($class_name))
       return;
 
-    resolveHandle($resolver =& getFileResolver('site_object'));
+    $resolver =& Handle :: resolve(getFileResolver('site_object'));
 
     $full_path = $resolver->resolve($class_name);
 

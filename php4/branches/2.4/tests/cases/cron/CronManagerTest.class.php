@@ -99,8 +99,8 @@ class CronManagerTest extends LimbTestCase
 
   function testPerformThereIsNoJobsLastTimeFile()
   {
-    $job1 = array('handle' => 'test1.php', 'interval' => 10);
-    $job2 = array('handle' => 'test2.php', 'interval' => 10);
+    $job1 = array('handle' => 'test1', 'interval' => 10);
+    $job2 = array('handle' => 'test2', 'interval' => 10);
 
     $this->cron_manager->setReturnValue('getJobs',
       array(
@@ -115,8 +115,8 @@ class CronManagerTest extends LimbTestCase
 
     $this->cron_manager->setReturnValue('_getTime', 1);
 
-    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
-    $this->cron_manager->expectArgumentsAt(1, '_createJobObject', array('test2.php'));
+    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array(new LimbHandle('test1')));
+    $this->cron_manager->expectArgumentsAt(1, '_createJobObject', array(new LimbHandle('test2')));
 
     $this->cron_manager->perform($this->response);
 
@@ -129,8 +129,8 @@ class CronManagerTest extends LimbTestCase
   {
     $this->_writeJobsLastTime("cron-job1 = 1 \n cron-job2 = 11");
 
-    $job1 = array('handle' => 'test1.php', 'interval' => 10);
-    $job2 = array('handle' => 'test2.php', 'interval' => 10);
+    $job1 = array('handle' => 'test1', 'interval' => 10);
+    $job2 = array('handle' => 'test2', 'interval' => 10);
 
     $this->cron_manager->setReturnValue('getJobs',
       array(
@@ -146,7 +146,7 @@ class CronManagerTest extends LimbTestCase
     $this->cron_manager->setReturnValue('_getTime', 12);
 
     $this->cron_manager->expectCallCount('_createJobObject', 1);
-    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
+    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array(new LimbHandle('test1')));
 
     $this->cron_manager->perform($this->response);
 
@@ -159,8 +159,8 @@ class CronManagerTest extends LimbTestCase
   {
     $this->_writeJobsLastTime("cron-job1 = 1");
 
-    $job1 = array('handle' => 'test1.php', 'interval' => 10);
-    $job2 = array('handle' => 'test2.php', 'interval' => 10);
+    $job1 = array('handle' => 'test1', 'interval' => 10);
+    $job2 = array('handle' => 'test2', 'interval' => 10);
 
     $this->cron_manager->setReturnValue('getJobs',
       array(
@@ -174,8 +174,8 @@ class CronManagerTest extends LimbTestCase
     $this->cron_manager->setReturnReference('_createJobObject', $this->cron_job);
 
     $this->cron_manager->setReturnValue('_getTime', 12);
-    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
-    $this->cron_manager->expectArgumentsAt(1, '_createJobObject', array('test2.php'));
+    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array(new LimbHandle('test1')));
+    $this->cron_manager->expectArgumentsAt(1, '_createJobObject', array(new LimbHandle('test2')));
 
     $this->cron_manager->perform($this->response);
 
@@ -188,7 +188,7 @@ class CronManagerTest extends LimbTestCase
   {
     $this->_writeJobsLastTime("cron-job1 = 1");
 
-    $job1 = array('handle' => 'test1.php');
+    $job1 = array('handle' => 'test1');
 
     $this->cron_manager->setReturnValue('getJobs',
       array(
@@ -201,7 +201,7 @@ class CronManagerTest extends LimbTestCase
     $this->cron_manager->setReturnReference('_createJobObject', $this->cron_job);
 
     $this->cron_manager->setReturnValue('_getTime', 12);
-    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
+    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array(new LimbHandle('test1')));
 
     $this->cron_manager->perform($this->response);
 

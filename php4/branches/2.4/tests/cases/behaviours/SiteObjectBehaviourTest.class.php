@@ -31,6 +31,11 @@ class SiteObjectBehaviourTest extends LimbTestCase
 {
   var $behaviour;
 
+  function SiteObjectBehaviourTest()
+  {
+    parent :: LimbTestCase('site object behaviour tests');
+  }
+
   function setUp()
   {
     $this->behaviour = new SiteObjectBehaviourTestVersion();

@@ -31,7 +31,7 @@ class DataMapperFactory
     if(class_exists($class_name))
       return;
 
-    resolveHandle($resolver =& getFileResolver('mapper'));
+    $resolver =& Handle :: resolve(getFileResolver('mapper'));
 
     $full_path = $resolver->resolve($class_name);
 

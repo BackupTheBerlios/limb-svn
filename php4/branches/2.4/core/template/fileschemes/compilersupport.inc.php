@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_registry.inc.php');
 
 function ResolveTemplateSourceFileName($file, $operation = TMPL_INCLUDE, $context = NULL)
 {
-  resolveHandle($resolver =& getFileResolver('template'));
+  $resolver =& Handle :: resolve(getFileResolver('template'));
 
   return $resolver->resolve($file);
 }

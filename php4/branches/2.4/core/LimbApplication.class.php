@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/core/error/Debug.class.php');
 
 Debug :: addTimingPoint('start');
 
-require_once(LIMB_DIR . '/core/Limb.class.php');
 require_once(LIMB_DIR . '/core/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/Limb.class.php');
 require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_registry.inc.php');
 require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
 require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
@@ -43,12 +43,11 @@ class LimbApplication
   {
     $filters_dir = LIMB_DIR . '/core/filters/';
 
-    $filter_chain->registerFilter($filters_dir . 'session_startup_filter');
-    $filter_chain->registerFilter($filters_dir . 'locale_definition_filter');
-    $filter_chain->registerFilter($filters_dir . 'authentication_filter');
-    $filter_chain->registerFilter($filters_dir . 'full_page_cache_filter');
-    $filter_chain->registerFilter($filters_dir . 'image_cache_filter');
-    $filter_chain->registerFilter($filters_dir . 'site_object_controller_filter');
+    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'SessionStartupFilter.class.php|SessionStartupFilter'));
+    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'LocaleDefinitionFilter.class.php|LocaleDefinitionFilter'));
+    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'AuthenticationFilter.class.php|AuthenticationFilter'));
+    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'FullPageCacheFilter.class.php|FullPageCacheFilter'));
+    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'SiteObjectControllerFilter.class.php|SiteObjectControllerFilter'));
   }
 
   function _registerFileResolvers()

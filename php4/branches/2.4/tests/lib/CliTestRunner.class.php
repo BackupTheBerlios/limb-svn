@@ -104,8 +104,7 @@ EOD;
     {
       foreach ($group_tests as $index => $group_test)
       {
-        resolveHandle($group_test);
-
+        $group_test =& Handle :: resolve($group_test);
         $buffer .= $path . '/' . $index . ' ' . $group_test->getLabel() . "\n";
       }
       $buffer .= "\n";

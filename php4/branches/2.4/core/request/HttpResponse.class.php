@@ -17,11 +17,7 @@ class HttpResponse// implements Response
 
   function redirect($path)
   {
-    include_once(LIMB_DIR . '/core/i18n/Strings.class.php');
-
-    $message = Strings :: get('redirect_message');//???
-    $message = str_replace('%path%', $path, $message);
-    $this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white><font color=707070><small>{$message}</small></font></body></html>";
+    $this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white></body></html>";
   }
 
   function reset()

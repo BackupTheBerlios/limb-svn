@@ -33,7 +33,7 @@ function getIni($file_name, $use_cache = null)
   }
   else
   {
-    resolveHandle($resolver =& getFileResolver('ini'));
+    $resolver =& Handle :: resolve(getFileResolver('ini'));
     $resolved_file = $resolver->resolve($file_name);
   }
 

@@ -33,7 +33,6 @@ class OneTableObjectMapper extends AbstractDataMapper
   function load(&$record, &$domain_object)
   {
     $raw_data = $record->export();
-    unset($raw_data['id']);
 
     $raw_data = $this->_filterInputData($raw_data);
 
@@ -58,7 +57,7 @@ class OneTableObjectMapper extends AbstractDataMapper
     $data = $domain_object->export();
 
     $table =& $this->getDbTable();
-    $table->update($data, array('object_id' => $domain_object->getId()));
+    $table->update($data, array('id' => $domain_object->getId()));
   }
 
   function insert(&$domain_object)
@@ -78,7 +77,7 @@ class OneTableObjectMapper extends AbstractDataMapper
   function delete(&$domain_object)
   {
     $db_table =& $this->getDbTable();
-    $db_table->delete(array('object_id' => $domain_object->getId()));
+    $db_table->delete(array('id' => $domain_object->getId()));
   }
 }
 

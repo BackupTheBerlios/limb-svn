@@ -16,7 +16,7 @@ class FileResolverDecorator// implements FileResolver
 
   function FileResolverDecorator(&$resolver)
   {
-    resolveHandle($resolver);
+    $resolver =& Handle :: resolve($resolver);
 
     if(!is_object($resolver))
       die('invalid wrapped resolver! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);

@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
 
 class LimbPagerComponent extends Component
@@ -91,7 +92,7 @@ class LimbPagerComponent extends Component
   //implementing WACT pager interface
   function getStartingItem()
   {
-    return $this->getDisplayedPageBeginItem();
+    return $this->getDisplayedPageBeginItem() - 1;
   }
 
   function setPagedDataSet(&$dataset)

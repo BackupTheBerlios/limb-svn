@@ -5,26 +5,29 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: FormCommand.class.php 1028 2005-01-18 11:06:55Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/image/ImageNetpbm.class.php');
 
-class NetpbmLibraryTest extends ImageLibraryTest
+class RedirectCommand// implements Command
 {
-  var $rotated_size = 5576;
-  var $hflipped_size = 3861;
-  var $wflipped_size = 3908;
-  var $cutted_size1 = 1339;
-  var $cutted_size2 = 4652;
-  var $cutted_size3 = 1177;
-  var $cutted_size4 = 1867;
+  var $path;
 
-  function netpbmLibraryTest()
+  function RedirectCommand($path)
   {
-    $this->library = new ImageNetpbm();
+    $this->path = $path;
+  }
 
-    parent :: imageLibraryTest();
+  function perform()
+  {
+    $toolkit =& Limb :: toolkit();
+    $response =& $toolkit->getResponse();
+
+    $response->redirect($this->path);
+
+    return LIMB_STATUS_OK;
   }
 }
+
+
 ?>

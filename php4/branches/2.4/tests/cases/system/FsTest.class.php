@@ -30,6 +30,11 @@ class SpecialDirWalker
 
 class FsTest extends LimbTestCase
 {
+  function FsTest()
+  {
+    parent :: LimbTestCase('fs tests');
+  }
+
   function _createFileSystem()
   {
     Fs :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/');

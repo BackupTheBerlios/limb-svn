@@ -95,7 +95,7 @@ class LimbListTagTestCase extends LimbTestCase
 
     $dataset = new PagedArrayDataSet($this->names);
     $pager = new MockPageNavigatorComponent($this);
-    $pager->setReturnValue('getStartingItem', 3);
+    $pager->setReturnValue('getStartingItem', 2);
     $pager->setReturnValue('getItemsPerPage', 4);
     $dataset->paginate($pager);
 

@@ -21,6 +21,11 @@ class ObjectTest extends LimbTestCase
   var $object;
   var $dataspace;
 
+  function ObjectTest()
+  {
+    parent :: LimbTestCase('object tests');
+  }
+
   function setUp()
   {
     $this->dataspace = new MockDataspace($this);

@@ -17,7 +17,7 @@ class ImageLibraryGroup extends LimbGroupTest
 
   function getTestCasesHandles()
   {
-    return array(LIMB_DIR . '/tests/cases/image/GdLibraryTest');
+    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/image');
   }
 }
 ?>

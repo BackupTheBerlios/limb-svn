@@ -225,7 +225,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getView()
   {
-    resolveHandle($this->view);
+    $this->view =& Handle :: resolve($this->view);
     return $this->view;
   }
 

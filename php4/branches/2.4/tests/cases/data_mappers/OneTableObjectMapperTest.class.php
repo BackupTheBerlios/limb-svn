@@ -95,11 +95,11 @@ class OneTableObjectMapperTest extends LimbTestCase
 
     $mapper->load($record, $domain_object);
 
+    $this->assertEqual($domain_object->getId(), $id);
     $this->assertEqual($domain_object->getContent(), $content);
     $this->assertEqual($domain_object->getAnnotation(), $annotation);
     $this->assertEqual($domain_object->getNewsDate(), $news_date);
 
-    $this->assertIdentical($domain_object->getId(), 0);//it's typecasted to int
     $this->assertNull($domain_object->get('junk'));
   }
 
@@ -158,10 +158,17 @@ class OneTableObjectMapperTest extends LimbTestCase
                            'content' => 'news content',
                            'news_date' => '2000-01-02 00:00:00'));
 
+    // this record must stay
+    $this->db->insert('test_one_table_object',
+                      array('id' => 102,
+                           'annotation' => 'news annotation2',
+                           'content' => 'news content2',
+                           'news_date' => '2000-01-03 00:00:00'));
+
     $mapper->delete($domain_object);
 
     $rs =& $this->db->select('test_one_table_object');
-    $this->assertEqual(sizeof($rs->getArray()), 0);
+    $this->assertEqual(sizeof($rs->getArray()), 1);
   }
 
   function _checkLinkedTableRecord($domain_object, $db_table)

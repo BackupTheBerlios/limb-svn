@@ -33,7 +33,7 @@ class LimbListRowNumberProperty extends CompilerProperty
 
     $code->writePHP('if (!empty(' . $this->context->getComponentRefCode() . '->dataSet->pager))' . "\n");
     $code->writePHP($this->tempvar . ' = ' .
-                    $this->context->getComponentRefCode() . '->dataSet->pager->getStartingItem() - 1;' . "\n");
+                    $this->context->getComponentRefCode() . '->dataSet->pager->getStartingItem();' . "\n");
     $code->writePHP('else' . "\n");
     $code->writePHP($this->tempvar . ' = 0;');
   }

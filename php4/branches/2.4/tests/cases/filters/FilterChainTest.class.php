@@ -21,9 +21,9 @@ class SpecialInterceptingFilter extends MockInterceptingFilter
 {
   var $captured = array();
 
-  function specialInterceptingFilter(&$test)
+  function SpecialInterceptingFilter(&$test)
   {
-    parent :: mockinterceptingFilter($test);
+    parent :: MockinterceptingFilter($test);
   }
 
   function run(&$fc, &$request, &$response)
@@ -40,9 +40,9 @@ class SpecialInterceptingFilter extends MockInterceptingFilter
 
 class OutputFilter1 extends MockInterceptingFilter
 {
-  function outputFilter1($test)
+  function OutputFilter1($test)
   {
-    parent :: mockinterceptingFilter($test);
+    parent :: MockinterceptingFilter($test);
   }
 
   function run(&$fc, &$request, &$response)
@@ -59,9 +59,9 @@ class OutputFilter1 extends MockInterceptingFilter
 
 class OutputFilter2 extends MockInterceptingFilter
 {
-  function outputFilter2($test)
+  function OutputFilter2($test)
   {
-    parent :: mockinterceptingFilter($test);
+    parent :: MockinterceptingFilter($test);
   }
 
   function run(&$fc, &$request, &$response)
@@ -78,9 +78,9 @@ class OutputFilter2 extends MockInterceptingFilter
 
 class OutputFilter3 extends MockInterceptingFilter
 {
-  function outputFilter3(&$test)
+  function OutputFilter3(&$test)
   {
-    parent :: mockinterceptingFilter($test);
+    parent :: MockinterceptingFilter($test);
   }
 
   function run(&$fc, &$request, &$response)
@@ -101,6 +101,11 @@ class FilterChainTest extends LimbTestCase
   var $request;
   var $response;
 
+  function FilterChainTest()
+  {
+    parent :: LimbTestCase('filter chain tests');
+  }
+
   function setUp()
   {
     $this->request = new MockRequest($this);
@@ -114,7 +119,7 @@ class FilterChainTest extends LimbTestCase
 
   function testRegisterFilter()
   {
-    $ref = array('MockInterceptingFilter', $this);
+    $ref = new LimbHandle('MockInterceptingFilter', array($this));
     $this->fc->registerFilter($ref);
 
     $this->assertTrue($this->fc->hasFilter('MockInterceptingFilter'));

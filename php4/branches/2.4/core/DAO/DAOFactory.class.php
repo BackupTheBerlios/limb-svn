@@ -40,7 +40,7 @@ class DAOFactory
 
     if(!class_exists($class_name))
     {
-      resolveHandle($resolver =& getFileResolver('dao'));
+      $resolver =& Handle :: resolve(getFileResolver('dao'));
 
       if(!$full_path = $resolver->resolve($class_path))
         return null;

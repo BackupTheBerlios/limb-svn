@@ -32,7 +32,7 @@ class FilterChain
   {
     foreach(array_keys($this->filters) as $key)
     {
-      resolveHandle($this->filters[$key]);
+      $this->filters[$key] =& Handle :: resolve($this->filters[$key]);
       if(get_class($this->filters[$key]) == strtolower($filter_class))
         return true;
     }
@@ -46,7 +46,7 @@ class FilterChain
 
     if(isset($this->filters[$this->counter]))
     {
-      resolveHandle($this->filters[$this->counter]);
+      $this->filters[$this->counter] =& Handle :: resolve($this->filters[$this->counter]);
       $this->filters[$this->counter]->run($this, $this->request, $this->response);
     }
   }
@@ -57,7 +57,7 @@ class FilterChain
 
     if(sizeof($this->filters) > 0)
     {
-      resolveHandle($this->filters[0]);
+      $this->filters[0] =& Handle :: resolve($this->filters[0]);
       $this->filters[0]->run($this, $this->request, $this->response);
     }
   }

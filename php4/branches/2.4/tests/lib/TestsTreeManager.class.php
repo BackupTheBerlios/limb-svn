@@ -65,7 +65,7 @@ class TestsTreeManager
       return $group;
 
     $test_case =& $test_cases[$case_index];
-    resolveHandle($test_case);
+    $test_case =& Handle :: resolve($test_case);
 
     if(sizeof($path_array) > 0)
       return $this->_getCaseByPathRecursive($path_array, $test_case);
@@ -78,7 +78,7 @@ class TestsTreeManager
     $test_cases =& $group->getTestCasesHandles();
     foreach(array_keys($test_cases) as $key)
     {
-      resolveHandle($test_cases[$key]);
+      $test_cases[$key] =& Handle :: resolve($test_cases[$key]);
 
       if(is_a($test_cases[$key], 'LimbGroupTest'))
         $this->_fillTestGroup($test_cases[$key]);

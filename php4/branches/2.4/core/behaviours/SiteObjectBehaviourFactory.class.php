@@ -43,7 +43,7 @@ class SiteObjectBehaviourFactory
     if(class_exists($class_name))
       return;
 
-    resolveHandle($resolver =& getFileResolver('behaviour'));
+    $resolver =& Handle :: resolve(getFileResolver('behaviour'));
 
     $full_path = $resolver->resolve($class_name);
 

@@ -37,24 +37,25 @@ include_once(LIMB_DIR . '/core/file_resolvers/DAOFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/SiteObjectFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/TemplateFileResolver.class.php');
 
-registerFileResolver('ini',         LIMB_DIR . '/tests/lib/TestsIniFileResolver');
-registerFileResolver('action',      LIMB_DIR . '/tests/lib/TestsActionFileResolver');
-registerFileResolver('strings',     LIMB_DIR . '/tests/lib/TestsStringsFileResolver');
+registerFileResolver('ini',         new LimbHandle(LIMB_DIR . '/tests/lib/TestsIniFileResolver'));
+registerFileResolver('action',      new LimbHandle(LIMB_DIR . '/tests/lib/TestsActionFileResolver'));
+registerFileResolver('strings',     new LimbHandle(LIMB_DIR . '/tests/lib/TestsStringsFileResolver'));
 registerFileResolver('db_table',    new DbTableFileResolver(new PackageFileResolver()));
 registerFileResolver('template',    new TemplateFileResolver(new PackageFileResolver()));
 registerFileResolver('behaviour',   new BehaviourFileResolver(new PackageFileResolver()));
 registerFileResolver('dao',  new DAOFileResolver(new PackageFileResolver()));
 registerFileResolver('site_object', new SiteObjectFileResolver(new PackageFileResolver()));
 
-require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
-require_once(LIMB_DIR . '/tests/cases/LimbTestCase.class.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
 require_once(LIMB_DIR . '/core/error/error.inc.php');
 require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 Limb :: registerToolkit(new LimbBaseToolkit());
+
+require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
+require_once(LIMB_DIR . '/tests/cases/LimbTestCase.class.php');
 
 $inst =& PackagesInfo :: instance();
 $inst->loadPackages();//???

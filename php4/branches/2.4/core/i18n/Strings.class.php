@@ -64,7 +64,7 @@ class Strings
     if(isset($this->_path_cache[$file_name][$locale_id]))
       return $this->_path_cache[$file_name][$locale_id];
 
-    resolveHandle($resolver =& getFileResolver('strings'));
+    $resolver =& Handle :: resolve(getFileResolver('strings'));
     $path = $resolver->resolve($file_name, array($locale_id));
 
     $this->_path_cache[$file_name][$locale_id] = $path;

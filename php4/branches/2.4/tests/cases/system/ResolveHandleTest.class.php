@@ -10,11 +10,6 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/system/objects_support.inc.php');
 
-class UnaffectedObject
-{
-  var $test_var = 'default';
-}
-
 class DeclaredInSameFile
 {
     var $test_var = 'default';
@@ -27,64 +22,32 @@ class DeclaredInSameFile
 
 class ResolveHandleTest extends LimbTestCase
 {
-  function testNullHandle()
+  function ResolveHandleTest()
   {
-    $handle = null;
-    resolveHandle($handle);
-    $this->assertNull($handle);
-  }
-
-  function testObjectUnaffected()
-  {
-    $handle = new UnaffectedObject();
-    $obj =& $handle;
-    $obj->test_var = 'changed';
-    resolveHandle($handle);
-    $this->assertIsA($handle, 'UnaffectedObject');
-    $this->assertIdentical($handle, $obj);
-    $this->assertEqual($handle->test_var, 'changed');
+    parent :: LimbTestCase('LIMB handle tests');
   }
 
   function testClassDeclaredInSameFile()
   {
-    $handle = 'DeclaredInSameFile';
-    resolveHandle($handle);
-    $this->assertIsA($handle, 'DeclaredInSameFile');
+    $handle = new LimbHandle('DeclaredInSameFile');
+    $this->assertIsA(Handle :: resolve($handle), 'DeclaredInSameFile');
   }
 
   function testLoadClassFile1()
   {
     $this->assertFalse(class_exists('LoadedHandleClass'));
-    $handle = dirname(__FILE__) . '/handle.inc.php|LoadedHandleClass';
-    resolveHandle($handle);
-    $this->assertIsA($handle, 'LoadedHandleClass');
+    $handle = new LimbHandle(dirname(__FILE__) . '/handle.inc.php|LoadedHandleClass');
+    $this->assertIsA(Handle :: resolve($handle), 'LoadedHandleClass');
     $this->assertTrue(class_exists('LoadedHandleClass'));
   }
 
   function testLoadClassFile2()
   {
     $this->assertFalse(class_exists('TestHandleClass'));
-    $handle = dirname(__FILE__) . '/TestHandleClass';
-    resolveHandle($handle);
-    $this->assertIsA($handle, 'TestHandleClass');
+    $handle = new LimbHandle(dirname(__FILE__) . '/TestHandleClass');
+    $this->assertIsA(Handle :: resolve($handle), 'TestHandleClass');
     $this->assertTrue(class_exists('TestHandleClass'));
   }
-
-  function testLoadClassFileException()
-  {
-    $handle = array(dirname(__FILE__) . '/TestHandleClass', 1, 2, 3, 4, 5);
-    resolveHandle($handle);
-    $this->assertTrue(catch('Exception', $e));
-  }
-
-  function testConstructor()
-  {
-    $handle = array('DeclaredInSameFile', 'construction_parameter');
-    resolveHandle($handle);
-    $this->assertIsA($handle, 'DeclaredInSameFile');
-    $this->assertEqual($handle->test_var, 'construction_parameter');
-  }
-
 
 }
 ?>
