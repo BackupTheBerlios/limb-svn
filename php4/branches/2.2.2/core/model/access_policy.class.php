@@ -415,30 +415,30 @@ class access_policy
 		return true;	
 	}
 
-	function save_user_object_access($policy_array)
+	function save_user_object_access($policy_array, $accessor_ids = array())
 	{
-		return $this->_save_object_access($policy_array, ACCESSOR_TYPE_USER);
+		return $this->_save_object_access($policy_array, ACCESSOR_TYPE_USER, $accessor_ids);
 	}
 
-	function save_group_object_access($policy_array)
+	function save_group_object_access($policy_array, $accessor_ids = array())
 	{
-		return $this->_save_object_access($policy_array, ACCESSOR_TYPE_GROUP);
+		return $this->_save_object_access($policy_array, ACCESSOR_TYPE_GROUP, $accessor_ids);
 	}
 
-	function _save_object_access($policy_array, $accessor_type)
+	function _save_object_access($policy_array, $accessor_type, $accessor_ids = array())
 	{
 		$db_table	=& db_table_factory :: instance('sys_object_access');
-
+		
 		foreach($policy_array as $object_id => $access_data)
 		{
-			$conditions['object_id'] = $object_id;
-			$conditions['accessor_type'] = $accessor_type;
+		  $conditions = 'object_id='. 1*$object_id . ' AND accessor_type=' . $accessor_type;
+		  if (count($accessor_ids))
+		    $conditions .= ' AND '. sql_in('accessor_id', $accessor_ids);
+      
+			$db_table->delete($conditions);
 
 			foreach($access_data as $accessor_id => $rights)
 			{
-				$conditions['accessor_id'] = $accessor_id;
-				$db_table->delete($conditions);
-			
 				$data = array();
 				
 				if (isset($rights['r']) && $rights['r'])
