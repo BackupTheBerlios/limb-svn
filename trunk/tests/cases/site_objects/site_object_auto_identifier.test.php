@@ -91,7 +91,7 @@ class test_site_object_auto_identifier extends UnitTestCase
   {
   	debug_mock :: expect_never_write();
 
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 		
   	$id = $this->object->create();
@@ -105,7 +105,7 @@ class test_site_object_auto_identifier extends UnitTestCase
 
 		$this->_create_node('ru');
 		
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 		
   	$id = $this->object->create();
@@ -122,7 +122,7 @@ class test_site_object_auto_identifier extends UnitTestCase
 		$this->_create_node('10a1');
 		$this->_create_node(1000);
 
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 		
   	$id = $this->object->create();

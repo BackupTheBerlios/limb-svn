@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: fetch_tree_data_source.class.php 447 2004-02-14 11:43:21Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -39,25 +39,25 @@ class fetch_tree_data_source extends fetch_sub_branch_data_source
 
 		foreach($tree_array as $id => $tree_item)
 		{	
-			$parent_id = $tree_item['parent_id'];
-			if(!isset($parent_data[$parent_id]))
+			$parent_node_id = $tree_item['parent_node_id'];
+			if(!isset($parent_data[$parent_node_id]))
 			{
-				if($parent_id == 0)
-					$parent_data[$parent_id]['children_amount'] = 1;
+				if($parent_node_id == 0)
+					$parent_data[$parent_node_id]['children_amount'] = 1;
 				else
-					$parent_data[$parent_id]['children_amount'] = $tree->count_accessible_children($parent_id);
+					$parent_data[$parent_node_id]['children_amount'] = $tree->count_accessible_children($parent_node_id);
 					
-				$parent_data[$parent_id]['counter'] = 0;
+				$parent_data[$parent_node_id]['counter'] = 0;
 			}
 			
-			$parent_data[$parent_id]['counter']++;
+			$parent_data[$parent_node_id]['counter']++;
 			
-			if ($parent_data[$parent_id]['counter'] == 1)
+			if ($parent_data[$parent_node_id]['counter'] == 1)
 				$is_first_child = true;
 			else	
 				$is_first_child = false;
 
-			if($parent_data[$parent_id]['counter'] == $parent_data[$parent_id]['children_amount'])
+			if($parent_data[$parent_node_id]['counter'] == $parent_data[$parent_node_id]['children_amount'])
 				$is_last_child = true;
 			else
 				$is_last_child = false;

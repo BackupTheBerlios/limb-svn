@@ -92,7 +92,7 @@ class test_site_object_template extends UnitTestCase
   	
   	$this->assertIdentical($this->object->create(), false);
   	
-		$this->object->set_parent_id(1000000);
+		$this->object->set_parent_node_id(1000000);
 		
 		debug_mock :: expect_write_error('identifier is empty');
 		
@@ -100,7 +100,7 @@ class test_site_object_template extends UnitTestCase
   	
 		$this->object->set_identifier('test');
 		
-		debug_mock :: expect_write_error('tree registering failed', array('parent_id' => 1000000));
+		debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 1000000));
 		
   	$this->assertIdentical($this->object->create(), false);
   }
@@ -109,7 +109,7 @@ class test_site_object_template extends UnitTestCase
   {
   	debug_mock :: expect_never_write();
   	
-  	$this->object->set_parent_id($this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_site_object');
 		
   	$id = $this->object->create();
@@ -137,7 +137,7 @@ class test_site_object_template extends UnitTestCase
 	
   function _test_update($versioned = false)
   {
-  	$this->object->set_parent_id($this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_site_object');
 
   	$id = $this->object->create();
@@ -162,7 +162,7 @@ class test_site_object_template extends UnitTestCase
 
   function test_delete()
   {
-  	$this->object->set_parent_id($this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_site_object');
 		
   	$id = $this->object->create();
@@ -218,7 +218,7 @@ class test_site_object_template extends UnitTestCase
 	
 	function test_fetch()
 	{
-  	$this->object->set_parent_id($this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_site_object');
 		
   	$id = $this->object->create();
@@ -244,7 +244,7 @@ class test_site_object_template extends UnitTestCase
 		$this->assertEqual($record['class_name'], get_class($this->object), __FILE__ . ' : ' . __LINE__ . ': class name doesnt match');
 		$this->assertEqual($record['identifier'], $this->object->get_identifier(), __FILE__ . ' : ' . __LINE__ . ': identifier doesnt match');
 		$this->assertEqual($record['title'], $this->object->get_title(), __FILE__ . ' : ' . __LINE__ . ': title doesnt match');
-		$this->assertEqual($record['parent_id'], $this->object->get_parent_id(), __FILE__ . ' : ' . __LINE__ . ': parent_node_id doesnt match');
+		$this->assertEqual($record['parent_node_id'], $this->object->get_parent_node_id(), __FILE__ . ' : ' . __LINE__ . ': parent_node_id doesnt match');
 		$this->assertEqual($record['version'], $this->object->get_version(), __FILE__ . ' : ' . __LINE__ . ': version doesnt match');
 		
 		$tree =& limb_tree :: instance();

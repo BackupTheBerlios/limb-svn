@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: form_create_site_object_action.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
@@ -55,7 +55,7 @@ class form_create_site_object_action extends form_site_object_action
 	{
 		$parent_object_data =& $this->_load_parent_object_data();
 		
-		$data['parent_id'] = $parent_object_data['node_id'];
+		$data['parent_node_id'] = $parent_object_data['node_id'];
 		
 		$this->_valid_perform_prepare_data($data);
 		

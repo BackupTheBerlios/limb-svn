@@ -96,7 +96,7 @@ class test_content_object_template extends test_site_object_template
   {
   	$this->_set_object_initial_attributes();
   	
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 
   	$id = $this->object->create();

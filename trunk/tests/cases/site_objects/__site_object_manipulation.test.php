@@ -107,7 +107,7 @@ class test_site_object_manipulation extends UnitTestCase
   	
   	$this->assertIdentical($this->object->create(), false);
   	
-		$this->object->set_attribute('parent_id', 10);
+		$this->object->set_parent_node_id(10);
 		
 		debug_mock :: expect_write_error('identifier is empty');
 		
@@ -115,7 +115,7 @@ class test_site_object_manipulation extends UnitTestCase
   	
 		$this->object->set_identifier('test');
 		
-		debug_mock :: expect_write_error('tree registering failed', array('parent_id' => 10));
+		debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 10));
 		
   	$this->assertIdentical($this->object->create(), false);
   }
@@ -124,7 +124,7 @@ class test_site_object_manipulation extends UnitTestCase
   {
   	debug_mock :: expect_never_write();
   	
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 		
   	$id = $this->object->create();
@@ -142,7 +142,7 @@ class test_site_object_manipulation extends UnitTestCase
   
   function test_versioned_update()
   {
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 
   	$id = $this->object->create();
@@ -161,7 +161,7 @@ class test_site_object_manipulation extends UnitTestCase
 
   function test_unversioned_update()
   {
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
   	
   	$id = $this->object->create();

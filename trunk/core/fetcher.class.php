@@ -260,18 +260,18 @@ class fetcher
 		
 		foreach($objects_array as $key => $data)
 		{
-			$parent_id = $data['parent_id'];
-			if (!isset($parent_paths[$parent_id]))
+			$parent_node_id = $data['parent_node_id'];
+			if (!isset($parent_paths[$parent_node_id]))
 			{
 				$parents = $tree->get_parents($data['node_id']);
 				$path = '';
 				foreach($parents as $parent_data)
 					$path .= '/' . $parent_data['identifier'];
 				
-				$parent_paths[$parent_id] = $path;	
+				$parent_paths[$parent_node_id] = $path;	
 			}
 
-			$objects_array[$key]['path'] = $parent_paths[$parent_id] . '/' . $data['identifier'] . $append;
+			$objects_array[$key]['path'] = $parent_paths[$parent_node_id] . '/' . $data['identifier'] . $append;
 		}
 	}
 }

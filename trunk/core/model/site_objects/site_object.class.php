@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: site_object.class.php 358 2004-01-27 15:44:19Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -187,7 +187,7 @@ class site_object extends object
 								sso.identifier as identifier,
 								sso.id as id, 
 								ssot.id as node_id, 
-								ssot.parent_id as parent_id, 
+								ssot.parent_id as parent_node_id, 
 								ssot.level as level,
 								ssot.l as l,
 								ssot.r as r,
@@ -421,22 +421,22 @@ class site_object extends object
 		}
 		else
 		{
-			if(!($parent_id = $this->get_parent_id()))
+			if(!($parent_node_id = $this->get_parent_node_id()))
 			{
 			  debug :: write_error('tree parent node is empty', 
 				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 			  return false;
 			}
 
-			if(!$this->_can_add_node_to_parent($parent_id))
+			if(!$this->_can_add_node_to_parent($parent_node_id))
 			{
 			  debug :: write_error('tree registering failed', 
 				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-				  array('parent_id' => $parent_id));
+				  array('parent_node_id' => $parent_node_id));
 			  return false;
 			}
 			
-			if (!$tree_node_id = $tree->create_sub_node($parent_id, $values))
+			if (!$tree_node_id = $tree->create_sub_node($parent_node_id, $values))
 			{
 			  debug :: write_error('could not create tree node', 
 				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
@@ -454,7 +454,7 @@ class site_object extends object
 	{
 		$tree =& limb_tree :: instance();
 		
-		if(!$identifier = $tree->get_max_child_identifier($this->get_parent_id()))
+		if(!$identifier = $tree->get_max_child_identifier($this->get_parent_node_id()))
 			$new_identifier = 1;
 		else
 		{
@@ -469,16 +469,16 @@ class site_object extends object
 		return $new_identifier;
 	}
 	
-	function _can_add_node_to_parent($parent_id)
+	function _can_add_node_to_parent($parent_node_id)
 	{
 		$tree =& limb_tree :: instance();
 		
-		if (!$tree->can_add_node($parent_id))
+		if (!$tree->can_add_node($parent_node_id))
 			return false;
 			
 		$sql = "SELECT sys_class.class_name
 		FROM sys_site_object as sso, sys_class, sys_site_object_tree as ssot
-		WHERE ssot.id={$parent_id} 
+		WHERE ssot.id={$parent_node_id} 
 		AND sso.class_id=sys_class.id
 		AND sso.id=ssot.object_id";
 		
@@ -496,14 +496,14 @@ class site_object extends object
 		return $parent_object->can_be_parent();
 	}
 	
-	function get_parent_id()
+	function get_parent_node_id()
 	{
-		return (int)$this->get_attribute('parent_id');
+		return (int)$this->get_attribute('parent_node_id');
 	}
 
-	function set_parent_id($parent_id)
+	function set_parent_node_id($parent_node_id)
 	{
-		return $this->set_attribute('parent_id', $parent_id);
+		$this->set_attribute('parent_node_id', $parent_node_id);
 	}
 	
 	function get_node_id()
@@ -674,17 +674,17 @@ class site_object extends object
 		
 		$node = $tree->get_node($data['node_id']);
 		
-		if (isset($data['parent_id']) && isset($data['node_id']))
+		if (isset($data['parent_node_id']) && isset($data['node_id']))
 		{
-			if ($node['parent_id'] != $data['parent_id'])
+			if ($node['parent_id'] != $data['parent_node_id'])
 			{
-				if (!$tree->move_tree($data['node_id'], $data['parent_id'], NESE_MOVE_BEFORE))
+				if (!$tree->move_tree($data['node_id'], $data['parent_node_id'], NESE_MOVE_BEFORE))
 				{
 				 	error('could not move node',
 	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
 	    			array(
 	    				'node_id' => $data['node_id'],
-	    				'target_id' => $data['parent_id'],
+	    				'target_id' => $data['parent_node_id'],
 	  	  		)
 		    	);
 				}
@@ -806,12 +806,12 @@ class site_object extends object
 	
 	function _get_parent_locale_id()
 	{
-		if (!$parent_id = $this->get_attribute('parent_id'))
+		if (!$parent_node_id = $this->get_parent_node_id())
 			return DEFAULT_CONTENT_LOCALE_ID;
 		
 		$sql = "SELECT sso.locale_id	
 		FROM sys_site_object as sso, sys_site_object_tree as ssot
-		WHERE ssot.id = {$parent_id} 
+		WHERE ssot.id = {$parent_node_id} 
 		AND sso.id = ssot.object_id";
 		
 		$db =& db_factory :: instance();

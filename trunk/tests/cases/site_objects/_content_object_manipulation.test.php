@@ -97,7 +97,7 @@ class test_content_object_manipulation extends test_site_object_manipulation
   	$this->object->set_attribute('content', 'news content');
   	$this->object->set_attribute('news date', '2004-01-02');
 
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
 
   	$id = $this->object->create();
@@ -123,7 +123,7 @@ class test_content_object_manipulation extends test_site_object_manipulation
 
   function test_unversioned_update()
   {
-  	$this->object->set_attribute('parent_id', $this->parent_node_id);
+  	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
   	
   	$id = $this->object->create();

@@ -98,7 +98,7 @@ class test_fetching extends test_limb_case
   	$this->root_node_id = $obj1->get_node_id();
   	$this->_add_object($obj1);
   	
-  	$obj1->set_parent_id($this->root_node_id);
+  	$obj1->set_parent_node_id($this->root_node_id);
   	$obj1->set_identifier('articles');
   	$obj1->set_title('Articles');  	
   	$obj1->create();
@@ -107,7 +107,7 @@ class test_fetching extends test_limb_case
   	
   	$this->articles_object = $obj1;
   	
-  	$obj2->set_parent_id($obj1->get_node_id());
+  	$obj2->set_parent_node_id($obj1->get_node_id());
   	$obj2->set_identifier('article1');
   	$obj2->set_title('Article1');
   	$obj2->create();
@@ -117,7 +117,7 @@ class test_fetching extends test_limb_case
 
   	$this->article_object = $obj2;
 
-  	$obj2->set_parent_id($obj1->get_node_id());
+  	$obj2->set_parent_node_id($obj1->get_node_id());
   	$obj2->set_identifier('article2');
   	$obj2->set_title('Article2');
   	$obj2->create();
@@ -125,7 +125,7 @@ class test_fetching extends test_limb_case
   	$this->child_node_ids[] = $obj2->get_node_id();
   	$this->_add_object($obj2);
 
-  	$obj2->set_parent_id($obj1->get_node_id());
+  	$obj2->set_parent_node_id($obj1->get_node_id());
   	$obj2->set_identifier('article3');
   	$obj2->set_title('Article3');
   	$obj2->create();

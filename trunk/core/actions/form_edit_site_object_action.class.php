@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: form_edit_site_object_action.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
@@ -47,7 +47,7 @@ class form_edit_site_object_action extends form_site_object_action
 			$this->validator->add_rule(new required_rule('identifier'));
 			
 			if($object_data)
-				$this->validator->add_rule(new tree_identifier_rule('identifier', $object_data['parent_id'], $object_data['identifier']));
+				$this->validator->add_rule(new tree_identifier_rule('identifier', $object_data['parent_node_id'], $object_data['identifier']));
 		}
 	}
 
