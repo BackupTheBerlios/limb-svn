@@ -32,7 +32,9 @@ class form_create_site_object_action extends form_site_object_action
 	{		
 		if (($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
 		{
-		  $parent_object_data =& $this->_load_parent_object_data();
+		  if(!$parent_object_data =& $this->_load_parent_object_data())
+		  	return;
+		  	
 			$parent_node_id = $parent_object_data['parent_node_id'];		
 		}	
 		

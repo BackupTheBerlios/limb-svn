@@ -53,7 +53,7 @@ class links_manager_page_controller extends site_object_controller
 						'action_path' => '/links_manager/delete_link_action',
 						'popup' => true,
 				),
-				'set_groups_priority' => array(
+/*				'set_groups_priority' => array(
 						'permissions_required' => 'w',
 						'action_path' => '/links_manager/set_groups_priority_action',
 						'popup' => true,
@@ -62,7 +62,7 @@ class links_manager_page_controller extends site_object_controller
 						'permissions_required' => 'w',
 						'action_path' => '/links_manager/set_links_priority_action',
 						'popup' => true,
-				),
+				),*/
 		);
 	}
 }
