@@ -1,6 +1,7 @@
 <grid:LIST id='users'>
 <table width=100%>
 	<tr>
+		<th><grid:SELECTORS_TOGGLER></th>
 		<th><locale:STRING name='login' file='user'></th>
 		<th><locale:STRING name='email'></th>
 		<th><locale:STRING name='name' file='user'></th>
@@ -11,6 +12,7 @@
 	</tr>
 	<grid:ITERATOR>
 	<tr class="jip">
+		<td><core:INCLUDE file="/admin/selector.html"></td>
 		<td jip='object' class='jip_object'>{$identifier}</td>
 		<td><a href='mailto:{$email}'>{$email}</a></td>
 		<td>{$name}</td>
@@ -20,5 +22,8 @@
 		<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
 	</grid:ITERATOR>
+	<tr>
+		<td colspan='8' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	</tr>
 </table>
 </grid:LIST>

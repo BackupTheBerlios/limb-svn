@@ -16,6 +16,7 @@
 <grid:LIST id='documents'>
 <table width=100%>
 <tr>
+	<th><grid:SELECTORS_TOGGLER></th>
 	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='document' file='document'></th>
 	<th><locale:STRING name='modified_date'></th>
@@ -24,6 +25,7 @@
 </tr>
 <grid:ITERATOR>
 <tr class="jip">
+<td><core:INCLUDE file="/admin/selector.html"></td>
 <td><core:INCLUDE file="published_status.html"></td>
 <td jip='object'><a href="{$path}" target="_blank">{$title}</a></td>
 <td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
@@ -31,7 +33,11 @@
 <td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr><td colspan='4' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
+<tr>
+	<td colspan='4' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>
 </table>
 </grid:LIST>
 

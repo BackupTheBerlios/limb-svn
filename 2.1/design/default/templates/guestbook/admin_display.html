@@ -16,6 +16,7 @@
 <grid:LIST id='messages'>
 <table width=100%>
 <tr>
+	<th><grid:SELECTORS_TOGGLER></th>
 	<th><locale:STRING name='published_status'></th>
 	<th><locale:STRING name='messages_list' file='guestbook'></th>
 	<th><locale:STRING name='name' file='guestbook'></th>
@@ -25,6 +26,7 @@
 
 <grid:ITERATOR>
 	<tr class="jip">
+		<td><core:INCLUDE file="/admin/selector.html"></td>
 		<td><core:INCLUDE file="published_status.html"></td>
 		<td jip='object'><a href="{$path}">{$title}</a></td>
 		<td>
@@ -39,5 +41,9 @@
 		<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
 </grid:ITERATOR>
+<tr>
+	<td colspan='5' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>
 </table>
 </grid:LIST>

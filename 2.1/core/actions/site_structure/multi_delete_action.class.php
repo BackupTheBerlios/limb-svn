@@ -23,7 +23,10 @@ class multi_delete_action extends form_action
 		parent :: _init_dataspace();
 		
 		$this->_transfer_dataspace();
-
+	}
+	
+	function _first_time_perform()
+	{
 		$data = $this->dataspace->export();
 		
 		if(!isset($data['ids']) || !is_array($data['ids']))
@@ -34,6 +37,8 @@ class multi_delete_action extends form_action
 		$grid =& $this->view->find_child('multi_delete');
 		
 		$grid->register_dataset(new array_dataset($objects));
+	
+		return parent :: _first_time_perform();
 	}
 	
 	function _valid_perform()
@@ -42,7 +47,7 @@ class multi_delete_action extends form_action
 		
 		if(!isset($data['ids']) || !is_array($data['ids']))
 			return new close_popup_response(RESPONSE_STATUS_FAILURE);
-			
+		
 		$objects = $this->_get_objects_to_delete(array_keys($data['ids']));
 		
 		foreach($objects as $id => $item)
