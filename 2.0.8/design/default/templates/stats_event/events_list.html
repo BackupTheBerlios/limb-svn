@@ -13,14 +13,14 @@
 <core:INCLUDE file="pager_contents.html">
 </pager:navigator>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table width="100%" border="0" cellspacing="1" cellpadding="2">
 <tr>
 <th><locale:STRING name='event_code' file='stats'></th>
 <th><locale:STRING name='date'></th>
-<th>ip</th>
+<th>IP</th>
 <th><locale:STRING name='action'></th>
 <th><locale:STRING name='object'></th>
-<th>url</th>
+<th>URI</th>
 <th><locale:STRING name='user' file='user'></th>
 </tr>
 
@@ -57,7 +57,7 @@
 </span>
 </td>
 <core:OPTIONAL for='identifier'>
-<td><a href='/root?node_id={$node_id}' target='_blank'>{$identifier} : {$title}</a></td>
+<td><a href='/root?node_id={$node_id}' target='_blank'>{$title}</a></td>
 </core:OPTIONAL>
 <core:DEFAULT for='identifier'>
 <td></td>

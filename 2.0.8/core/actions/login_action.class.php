@@ -59,10 +59,11 @@ class login_action extends form_action
 	{
 		$login = $this->dataspace->get('login');
 		$password = $this->dataspace->get('password');
+		$locale_id = $this->dataspace->get('locale_id');
 		
 		$user_object =& site_object_factory :: create($this->user_object_class_name);
 
-		if($user_object->login($login, $password))
+		if($user_object->login($login, $password, $locale_id))
 		{
 			if($redirect = $this->dataspace->get('redirect'))
 				return $this->_login_redirect($redirect);

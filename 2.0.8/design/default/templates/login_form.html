@@ -15,6 +15,10 @@
       <td><input name="password" type="password" id="password" label="Password" size="10"  class='input'></td>
     </tr>
     <tr>
+      <td><label for='locale'><locale:STRING name='locale' file='user'></label></td>
+      <td><select id='locale_id' name='locale_id' class='input' options_datasource='available_locales_datasource' class='input'></select></td>
+    </tr>
+    <tr>
       <td>&nbsp;</td>
       <td><input name="submit" type="submit" id="submit" locale_value='login' locale_file='user' class='button'></td>
     </tr>

@@ -122,5 +122,8 @@ select{font:8pt Verdana, sans; border:solid 1px #3278ED; height:18px}
 .action{behavior:url(/shared/htcs/action.htc);border: 0px solid #ffffff}
 .error-block{border:dashed 1px #e00000; padding:3px 20px 0 20px}
 
+.hint-table-css{background-color: #FFFFFF; border: 1px solid #999999;}
+.hint-title-css{background-color: #F8F8F8; font-weight: bold;}
+
 
 //.row{behavior:url('/shared/htcs/row.htc');}

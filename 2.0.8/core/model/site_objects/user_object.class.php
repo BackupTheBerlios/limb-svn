@@ -243,10 +243,10 @@ class user_object extends content_object
 			return true;	
 	}
 
-	function login($login, $password)
+	function login($login, $password, $locale_id = '')
 	{
 		$user =& user :: instance();
-		return $user->login($login, $password);
+		return  $user->login($login, $password, $locale_id);
 	}
 	
 	function logout()

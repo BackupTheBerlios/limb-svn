@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: locale.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -559,6 +559,28 @@ class locale
   	return $this->is_monday_first;
   }
 
+  function get_available_locales_data()
+  {
+		global $AVAILABLE_LOCALES;
+		
+		$locales_data = array();
+		
+		foreach($AVAILABLE_LOCALES as $locale_id)
+		{
+			$locale_data =& locale :: instance($locale_id);			
+			$locales_data[$locale_id] = $locale_data->get_language_name() ? $locale_data->get_language_name() : $locale_id;
+		}
+		
+		return $locales_data;
+  }
+  
+  function is_valid_locale_id($locale_id)
+  {
+  	global $AVAILABLE_LOCALES;
+  	
+  	return (array_search($locale_id, $AVAILABLE_LOCALES) !== false);
+  }
+  
   /*
    Returns an array with the days of the week according to locale information.
    Each entry in the array can be supplied to the short_day_name() and long_day_name() functions.

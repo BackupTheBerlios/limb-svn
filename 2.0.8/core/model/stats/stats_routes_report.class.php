@@ -84,13 +84,12 @@ class stats_routes_report
 						ORDER BY sslog.session_id, sslog.time ASC";
 						
 		$this->db->sql_exec($sql);
-		$records = $this->db->get_array();
 		
 		$session_events = array();
 		$session_routes = array();
 		$prev_session_id = -1;
 		
-		foreach($records as $record)
+		while($record = $this->db->fetch_row())
 		{
 			$session_id = $record['session_id'];
 			

@@ -24,6 +24,7 @@ class user extends object
 	var $_email = '';
 	var $_name = '';
 	var $_lastname = '';
+	var $_locale_id = '';
 	
 	var $_is_logged_in = false;
 	
@@ -99,7 +100,7 @@ class user extends object
 		return $db->get_array();
 	}
 		
-	function login($login, $password)
+	function login($login, $password, $locale_id = '')
 	{				
 		$this->logout();
 		
@@ -118,6 +119,9 @@ class user extends object
 		$this->_set_lastname($record['lastname']);
 		
 		$this->_determine_groups();		
+
+		if ($locale_id && locale::is_valid_locale_id($locale_id))
+			$this->set_locale_id($locale_id);
 
 		return true;
 	}
@@ -214,6 +218,16 @@ class user extends object
 	function _set_name($name)
 	{
 		$this->_name = $name;
+	}
+	
+	function get_locale_id()
+	{
+		return $this->_locale_id;
+	}
+	
+	function set_locale_id($locale_id)
+	{
+		$this->_locale_id = $locale_id;
 	}
 	
 	function get_password()

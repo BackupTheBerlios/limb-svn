@@ -181,13 +181,23 @@ class access_policy
 	{
 		$controllers = array();
 		$permitted_actions = array();
-		$available_permissions = $this->_load_objects_available_permissions(complex_array :: get_column_values('id', $objects));
 		
-		foreach($objects as $key => $data)
+		if(isset($objects['id']))
+		{
+			$available_permissions = $this->_load_objects_available_permissions(array($objects['id']));
+			$arr[] =& $objects;
+		}
+		else
+		{
+			$available_permissions = $this->_load_objects_available_permissions(complex_array :: get_column_values('id', $objects));
+			$arr =& $objects;
+		}
+		
+		foreach($arr as $key => $data)
 		{
 			$class_id = $data['class_id'];
 			
-			$objects[$key]['actions'] = array();
+			$arr[$key]['actions'] = array();
 						
 			if (!isset($actions_definitions[$class_id]))
 			{
@@ -224,12 +234,12 @@ class access_policy
 				 || ($action_params['permissions_required'] == 'rw' && ($object_available_permissions['w'] > 0 && $object_available_permissions['r'] > 0)))
 				&& (isset($permitted_type_actions[$action_name])))
 				{
-					$objects[$key]['actions'][$action_name] = $action_params;
+					$arr[$key]['actions'][$action_name] = $action_params;
 				}	
 			}			
 		}
 	}
-	
+		
 	//for mocking
 	function &_get_controller($class_name)
 	{

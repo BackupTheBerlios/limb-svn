@@ -144,7 +144,7 @@ class fetcher
 		return $result;
 	}
 	
-	function & fetch_one_by_node_id($node_id)
+	function & fetch_one_by_node_id($node_id, $assign_actions=true)
 	{
 		$tree =& limb_tree :: instance();
 
@@ -161,12 +161,14 @@ class fetcher
 		if ($class_name = $this->_get_object_class_name_by_id($object_id))
 		{
 			$site_object =& site_object_factory :: instance($class_name);
-			$result =& $site_object->fetch_by_ids(array($object_id));
 			
+			$result =& $site_object->fetch_by_ids(array($object_id));
+						
 			if (!count($result))
 				return false;
-
-			$access_policy->assign_actions_to_objects($result);
+						
+			if($assign_actions)
+				$access_policy->assign_actions_to_objects($result);
 	
 			$this->_assign_paths($result);
 	
@@ -175,7 +177,7 @@ class fetcher
 		else
 			return false;	
 	}
-	
+		
 	function _get_object_class_name_by_id($object_id)
 	{
 		$db =& db_factory :: instance();

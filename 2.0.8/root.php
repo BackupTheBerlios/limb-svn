@@ -67,10 +67,10 @@ if(isset($node['only_parent_found']) && $node['only_parent_found'])
 	exit;
 }
 
-if(($object_data =& fetch_one_by_node_id($node['id'])) === false)
+$user =& user :: instance();
+
+if(($object_data =& fetch_one_by_node_id($node['id'], false)) === false)
 {
-	$user =& user :: instance();
-	
 	if (!$user->is_logged_in())
 	{
 		$tree = limb_tree :: instance();
@@ -91,7 +91,6 @@ if(($object_data =& fetch_one_by_node_id($node['id'])) === false)
 			reload(ERROR_DOCUMENT_403);
 		else
 			header("HTTP/1.1 403 Access denied");
-
 		exit;
 	}	
 }
@@ -101,7 +100,10 @@ if(isset($object_data['locale_id']) && $object_data['locale_id'])
 else
 	define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
 
-define('MANAGEMENT_LOCALE_ID', DEFAULT_MANAGEMENT_LOCALE_ID);
+if($locale_id = $user->get_locale_id())
+	define('MANAGEMENT_LOCALE_ID', $locale_id);
+else
+	define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
 
 $site_object =& site_object_factory :: instance($object_data['class_name']);
 
@@ -123,6 +125,9 @@ if(($action = $site_object_controller->determine_action()) === false)
 	
 	exit;
 }
+
+$access_policy = access_policy :: instance();
+$access_policy->assign_actions_to_objects($object_data);
 
 $actions = $object_data['actions'];
 

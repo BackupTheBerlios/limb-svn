@@ -57,7 +57,7 @@ class image_object extends media_object
 	{				
 		if(($id = parent :: create()) === false)
 			return false;
-			
+		
 		if($this->get_attribute('files_data'))
 		{
 			if(!$this->create_variations())

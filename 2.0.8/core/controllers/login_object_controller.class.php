@@ -37,7 +37,12 @@ class login_object_controller extends site_object_controller
 						'template_path' => '/site_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
-
+				'change_user_locale' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'action_name' => strings :: get('change_locale', 'user'),
+						'action_path' => '/user/change_user_locale_action',
+				),
 		);
 		
 		parent :: site_object_controller();
