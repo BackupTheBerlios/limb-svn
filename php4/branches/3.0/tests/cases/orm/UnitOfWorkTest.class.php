@@ -269,6 +269,21 @@ class UnitOfWorkTest extends LimbTestCase
     $this->assertTrue($this->uow->isRegistered($obj1));
     $this->assertFalse($this->uow->isRegistered($obj2));
   }
+
+  function testIsDeleted()
+  {
+    $obj = new UOWTestObject();
+    $obj->set('id', $id = 1);
+
+    $this->uow->register($obj);
+
+    $this->assertFalse($this->uow->isDeleted($obj));
+
+    $this->uow->delete($obj);
+
+    $this->assertTrue($this->uow->isDeleted($obj));
+  }
+
 }
 
 ?>

@@ -53,7 +53,27 @@ class UnitOfWork
     }
   }
 
-  //stolen from SimpleTest
+  function _findDeletedObjectIndex(&$obj)
+  {
+    foreach(array_keys($this->deleted) as $key)
+    {
+      if($this->_isReference($this->deleted[$key], $obj))
+        return $key;
+    }
+    return false;
+  }
+
+  function _findNewObjectIndex(&$obj)
+  {
+    foreach(array_keys($this->new) as $key)
+    {
+      if($this->_isReference($this->new[$key], $obj))
+        return $key;
+    }
+    return false;
+  }
+
+  //idea taken from SimpleTest :)
   function _isReference(&$first, &$second)
   {
     if (version_compare(phpversion(), '5', '>=') && is_object($first))
@@ -74,14 +94,15 @@ class UnitOfWork
     }
     else
     {
-      foreach(array_keys($this->new) as $key)
-      {
-        if($this->_isReference($this->new[$key], $obj))
-          return true;
-      }
+      return $this->_findNewObjectIndex($obj) !== false;
     }
 
     return false;
+  }
+
+  function isDeleted(&$obj)
+  {
+    return $this->_findDeletedObjectIndex($obj) !== false;
   }
 
   function evict(&$obj)
@@ -93,21 +114,13 @@ class UnitOfWork
       if(isset($this->existing[$id]))
         unset($this->existing[$id]);
 
-      //???
-      foreach(array_keys($this->deleted) as $key)
-      {
-        if($this->_isReference($this->deleted[$key], $obj))
-          unset($this->deleted[$key]);
-      }
+      if(($key = $this->_findDeletedObjectIndex($obj)) !== false)
+        unset($this->deleted[$key]);
     }
     else
     {
-      //???
-      foreach(array_keys($this->new) as $key)
-      {
-        if($this->_isReference($this->new[$key], $obj))
-          unset($this->new[$key]);
-      }
+      if(($key = $this->_findNewObjectIndex($obj)) !== false)
+        unset($this->new[$key]);
     }
   }
 
