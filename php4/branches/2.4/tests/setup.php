@@ -20,7 +20,8 @@ if (file_exists(dirname(__FILE__) . '/setup.override.php'))
 
 //WACT init
 @define('WACT_CONFIG_DIRECTORY', dirname(__FILE__) . '/settings/');
-require_once(dirname(__FILE__) . '/../../../../external/wact/framework/common.inc.php');
+@define('WACT_ROOT', dirname(__FILE__) . '/../../../../external/wact/framework/');
+require_once(WACT_ROOT . '/common.inc.php');
 restore_error_handler();
 @define('TMPL_FILESCHEME_PATH', WACT_ROOT . '/../tests/filescheme/');
 
