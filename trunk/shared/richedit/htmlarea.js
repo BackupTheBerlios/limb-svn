@@ -725,6 +725,11 @@ HTMLArea.prototype.generate = function ()
 			 });
 		editor.updateToolbar();
 	};
+
+	textarea._iframe = this._iframe
+	textarea._toolbar = this._toolbar
+	textarea._statusBar = this._statusBar
+
 	setTimeout(initIframe, HTMLArea.is_gecko ? 10 : 0);
 };
 
@@ -761,9 +766,11 @@ HTMLArea.prototype.onsize = function()
 	window.onresize = function()
 	{
 		try{
-			this.this_obj._iframe.style.height = this.this_obj._textArea.parentElement.offsetHeight - this.this_obj._toolbar.offsetHeight -this.this_obj._statusBar.offsetHeight
+			var obj = document.getElementById(this.active_tab_id)
+			obj._iframe.style.height = obj.parentElement.parentElement.offsetHeight - obj._toolbar.offsetHeight - obj._statusBar.offsetHeight
 		}catch(ex){}
 	}
+
 
 	// the editor including the toolbar now have the same size as the
 	// original textarea.. which means that we need to reduce that a bit.
