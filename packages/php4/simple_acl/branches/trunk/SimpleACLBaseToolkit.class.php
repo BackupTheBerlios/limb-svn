@@ -9,10 +9,16 @@
 *
 ***********************************************************************************/
 
-class SimpleACLBaseToolkit// implements SimpleACLToolkit
+class SimpleACLBaseToolkit// implements LimbToolkit
 {
   var $authorizer;
   var $authenticator;
+
+  function reset()
+  {
+    $this->authorizer = null;
+    $this->authenticator = null;
+  }
 
   function & getAuthorizer()
   {

@@ -11,13 +11,13 @@
 require_once(dirname(__FILE__) . '/../../../commands/SaveNewObjectAccessCommand.class.php');
 require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
 require_once(LIMB_DIR . '/core/Dataspace.class.php');
 require_once(LIMB_DIR . '/core/datasources/SingleObjectDatasource.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Request');
 Mock :: generate('SingleObjectDatasource');
 Mock :: generate('SiteObject');
@@ -72,7 +72,7 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
 
   function tearDown()
   {
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
 
     $this->request->tally();
     $this->dataspace->tally();

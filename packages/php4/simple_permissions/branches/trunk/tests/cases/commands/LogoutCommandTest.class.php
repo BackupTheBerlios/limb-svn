@@ -10,10 +10,10 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../commands/login/LogoutCommand.class.php');
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/permissions/User.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('HttpResponse');
 Mock :: generate('User');
 
@@ -40,7 +40,7 @@ class LogoutCommandTest extends LimbTestCase
 
   function tearDown()
   {
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
 
     $this->response->tally();
     $this->user->tally();

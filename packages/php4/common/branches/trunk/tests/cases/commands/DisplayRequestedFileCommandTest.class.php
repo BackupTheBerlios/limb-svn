@@ -9,13 +9,13 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../commands/files/DisplayRequestedFileCommand.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
 include_once(LIMB_DIR . '/core/util/MimeType.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('HttpResponse');
 Mock :: generate('Request');
 Mock :: generate('MimeType');
@@ -64,7 +64,7 @@ class DisplayRequestedFileCommandTest extends LimbTestCase
     $this->datasource->tally();
     $this->mime->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testPerformObjectNotFetched()

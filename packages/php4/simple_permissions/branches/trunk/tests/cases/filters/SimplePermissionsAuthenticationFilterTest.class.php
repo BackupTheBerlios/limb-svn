@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
 require_once(LIMB_DIR . '/core/permissions/User.class.php');
@@ -22,7 +22,7 @@ require_once(LIMB_DIR . '/core/permissions/Authorizer.interface.php');
 
 require_once(dirname(__FILE__) . '/../../../filters/SimplePermissionsAuthenticationFilter.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('FilterChain');
 Mock :: generate('HttpResponse');
 Mock :: generate('RequestedObjectDatasource');
@@ -70,7 +70,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
 
     $this->toolkit->tally();
 
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
   }
 
   function testRunNodeNotFound()

@@ -12,11 +12,11 @@ require_once(dirname(__FILE__) . '/../../../commands/ApplyActionAccessTemplateCo
 require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
 
-Mock :: generate('LimbToolkit');
+Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Request');
 Mock :: generate('RequestedObjectDatasource');
 Mock :: generate('SiteObject');
@@ -68,7 +68,7 @@ class ApplyActionAccessTemplateCommandTest extends LimbTestCase
 
   function tearDown()
   {
-    Limb :: popToolkit();
+    Limb :: restoreToolkit();
 
     $this->request->tally();
     $this->datasource->tally();
