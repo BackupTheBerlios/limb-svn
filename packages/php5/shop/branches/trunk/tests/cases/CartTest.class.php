@@ -151,10 +151,10 @@ class CartTest extends LimbTestCase
     $item2->setReturnValue('getSumm', 40);
 
     $item1->expectOnce('export');
-    $item1->setReturnValue('export', array('id' => 'someId1'));
+    $item1->setReturnValue('export', array('id' => 'some_id1'));
 
     $item2->expectOnce('export');
-    $item2->setReturnValue('export', array('id' => 'someId2'));
+    $item2->setReturnValue('export', array('id' => 'some_id2'));
 
     $this->cart_handler->expectOnce('getItems');
     $this->cart_handler->setReturnValue('getItems', $arr = array($item1, $item2));

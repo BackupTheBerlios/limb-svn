@@ -84,7 +84,7 @@ class ApplyActionAccessTemplateCommandTest extends LimbTestCase
     $object_data = array('class_name' => 'site_object');
 
     $this->controller->expectOnce('getRequestedAction', array(new IsAExpectation('MockRequest')));
-    $this->controller->setReturnValue('getRequestedAction', $action = 'someAction');
+    $this->controller->setReturnValue('getRequestedAction', $action = 'some action');
 
     $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');

@@ -61,7 +61,7 @@ class StatsRefererTest extends LimbTestCase
 
   function testGetRefererPageIdInnerReferer()
   {
-    $this->stats_referer->setReturnValue('_getHttpReferer', 'http://' . $_SERVER['hTTPHOST'] . '/test');
+    $this->stats_referer->setReturnValue('_getHttpReferer', 'http://' . $_SERVER['HTTP_HOST'] . '/test');
 
     $this->assertEqual(-1, $this->stats_referer->getRefererPageId());
   }

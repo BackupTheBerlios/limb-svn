@@ -55,7 +55,7 @@ class StatsUriTest extends LimbTestCase
 
   function testNewInnerUri()
   {
-    $this->stats_uri->setReturnValue('_getHttpUri', 'http://' . $_SERVER['hTTPHOST'] . '/test');
+    $this->stats_uri->setReturnValue('_getHttpUri', 'http://' . $_SERVER['HTTP_HOST'] . '/test');
 
     $id = $this->stats_uri->getUriId();
 

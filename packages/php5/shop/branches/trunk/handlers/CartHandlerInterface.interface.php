@@ -8,7 +8,6 @@
 * $Id: cart_handler.class.php 566 2004-09-03 14:06:08Z pachanga $
 *
 ***********************************************************************************/
-require_once dirname(__FILE__) . '/cart_handler_interface.interface.php';
 
 interface CartHandlerInterface
 {

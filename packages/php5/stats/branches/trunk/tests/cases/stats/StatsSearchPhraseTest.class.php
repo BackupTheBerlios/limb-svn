@@ -27,9 +27,9 @@ class StatsSearchPhraseTest extends LimbTestCase
   var $stats_referer = null;
   var $db = null;
 
-  function statsSearchPhraseTest()
+  function __construct()
   {
-    parent :: limbTestCase();
+    parent :: __construct();
 
     $this->db = DbFactory :: instance();
   }
@@ -97,7 +97,7 @@ class StatsSearchPhraseTest extends LimbTestCase
     $rule_match = new MockSearchEngineRegexRule($this);
     $rule_match->setReturnValue('match', true);
     $rule_match->setReturnValue('getMatchingPhrase', 'test');
-    $rule_match->setReturnValue('getEngineName', 'engineName');
+    $rule_match->setReturnValue('getEngineName', 'engine_name');
 
     $this->stats_search_phrase->registerSearchEngineRule($rule_match);
 

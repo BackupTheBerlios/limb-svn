@@ -93,7 +93,7 @@ class SimpleAuthorizer implements Authorizer
     {
       if (in_array($action, $actions))
       {
-        $method = 'get_' . $action . '_action_properties';
+        $method = 'get' . ucfirst($action) . 'ActionProperties';
         $result[$action] = $behaviour->$method();
       }
     }

@@ -21,7 +21,6 @@ Mock :: generatePartial(
   )
 );
 
-
 class SimpleAuthenticatorTest extends LimbTestCase
 {
   var $auth;
@@ -78,7 +77,7 @@ class SimpleAuthenticatorTest extends LimbTestCase
     $this->auth->expectOnce('_getDbGroups');
     $this->auth->expectNever('_getDefaultDbGroups');
     $this->auth->setReturnValue('_getIdentityRecord', array('id' => 10, 'title' => 'user'));
-    $this->auth->setReturnValue('_getDbGroups', array(0 => array('objectId' => 1, 'identifier' => 'visitors')));
+    $this->auth->setReturnValue('_getDbGroups', array(0 => array('object_id' => 1, 'identifier' => 'visitors')));
 
     $this->auth->login(array('login' => 'some_user', 'password' => 'test', 'locale_id' => 'en'));
 
@@ -86,7 +85,7 @@ class SimpleAuthenticatorTest extends LimbTestCase
     $groups = $user->get('groups');
     $this->assertEqual(sizeof($groups), 1);
     $this->assertTrue(in_array('visitors', $groups));
-    $this->assertEqual($user->get('title'), 'User');
+    $this->assertEqual($user->get('title'), 'user');
     $this->assertEqual($user->get('locale_id'), 'en');
     $this->assertEqual($user->getId(), 10);
   }
@@ -97,7 +96,7 @@ class SimpleAuthenticatorTest extends LimbTestCase
     $this->auth->expectOnce('_getDefaultDbGroups');
     $this->auth->expectNever('_getDbGroups');
     $this->auth->setReturnValue('_getIdentityRecord', false);
-    $this->auth->setReturnValue('_getDefaultDbGroups', array(0 => array('objectId' => 1, 'identifier' => 'visitors')));
+    $this->auth->setReturnValue('_getDefaultDbGroups', array(0 => array('object_id' => 1, 'identifier' => 'visitors')));
 
     $this->auth->login(array('login' => 'some_user', 'password' => 'test', 'locale_id' => 'en'));
 
@@ -112,7 +111,7 @@ class SimpleAuthenticatorTest extends LimbTestCase
     $this->auth->expectOnce('_getDbGroups');
     $this->auth->expectNever('_getDefaultDbGroups');
     $this->auth->setReturnValue('_getIdentityRecord', array('someData'));
-    $this->auth->setReturnValue('_getDbGroups', array(0 => array('objectId' => 1, 'identifier' => 'admins')));
+    $this->auth->setReturnValue('_getDbGroups', array(0 => array('object_id' => 1, 'identifier' => 'admins')));
 
     $this->auth->login(array('login' => 'some_user', 'password' => 'test', 'locale_id' => 'en'));
 

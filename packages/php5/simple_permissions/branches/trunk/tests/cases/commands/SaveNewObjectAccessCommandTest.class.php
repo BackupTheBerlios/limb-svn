@@ -25,10 +25,9 @@ Mock :: generate('SiteObjectController');
 Mock :: generate('AccessPolicy');
 Mock :: generate('Dataspace');
 
-Mock :: generatePartial(
-                      'SaveNewObjectAccessCommand',
-                      'SaveNewObjectAccessCommandTestVersion',
-                      array('_getAccessPolicy'));
+Mock :: generatePartial('SaveNewObjectAccessCommand',
+                        'SaveNewObjectAccessCommandTestVersion',
+                        array('_getAccessPolicy'));
 
 class AccessPolicyForSaveNewObjectAccessCommand extends AccessPolicy
 {
@@ -61,7 +60,7 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
     $this->access_policy = new MockAccessPolicy($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('single_object_datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('SingleObjectDatasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('createSiteObject', $this->parent_site_object, array('site_object'));
     $this->toolkit->setReturnValue('getDataspace', $this->dataspace);

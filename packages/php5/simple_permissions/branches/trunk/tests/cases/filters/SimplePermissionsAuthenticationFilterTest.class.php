@@ -99,7 +99,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
                                    array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
-                                      array('objectId' => $object_id = 100),
+                                      array('object_id' => $object_id = 100),
                                       array(new IsAExpectation('MockRequest')));
 
     $controller = new MockSiteObjectController($this);
@@ -129,7 +129,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
                                    array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
-                                      array('objectId' => $object_id = 100),
+                                      array('object_id' => $object_id = 100),
                                       array(new IsAExpectation('MockRequest')));
 
     $controller = new MockSiteObjectController($this);
@@ -141,7 +141,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
                                   $controller,
                                   array(new IsAExpectation('MockSiteObjectBehaviour')));
 
-    $controller->setReturnValue('getRequestedAction', $action = 'someActin');
+    $controller->setReturnValue('getRequestedAction', $action = 'some action');
 
     $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
 
@@ -164,7 +164,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
                                    array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
-                                      array('objectId' => $object_id = 100),
+                                      array('object_id' => $object_id = 100),
                                       array(new IsAExpectation('MockRequest')));
 
     $controller = new MockSiteObjectController($this);
@@ -176,11 +176,11 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
                                   $controller,
                                   array(new IsAExpectation('MockSiteObjectBehaviour')));
 
-    $controller->setReturnValue('getRequestedAction', $action = 'someActin');
+    $controller->setReturnValue('getRequestedAction', $action = 'some action');
 
     $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
 
-    $object_data = array('actions' => array(), 'behaviour' => 'some_behaviour');
+    $object_data = array('actions' => array(), 'behaviour' => 'some behaviour');
     $this->datasource->setReturnValue('fetch', $object_data);
 
     $authorizer = new MockAuthorizer($this);
@@ -205,7 +205,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
                                    array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
-                                      array('objectId' => $object_id = 100),
+                                      array('object_id' => $object_id = 100),
                                       array(new IsAExpectation('MockRequest')));
 
     $controller = new MockSiteObjectController($this);
@@ -217,11 +217,11 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
                                   $controller,
                                   array(new IsAExpectation('MockSiteObjectBehaviour')));
 
-    $controller->setReturnValue('getRequestedAction', $action = 'someAction');
+    $controller->setReturnValue('getRequestedAction', $action = 'some_action');
 
     $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
 
-    $object_data = array('actions' => array('some_action' => array()), 'behaviour' => 'some_behaviour');
+    $object_data = array('actions' => array($action => array()), 'behaviour' => 'some_behaviour');
     $this->datasource->setReturnValue('fetch', $object_data);
 
     $authorizer = new MockAuthorizer($this);
