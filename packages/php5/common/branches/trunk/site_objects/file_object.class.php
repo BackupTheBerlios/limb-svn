@@ -23,21 +23,16 @@ class file_object extends media_object
 	
 	public function create()
 	{
-		if(!$this->_create_file())
-			return false;
+		$this->_create_file();
 				
-		if(($id = parent :: create()) === false)
-			return false;
-							
-		return $id;
+		return parent :: create();
 	}
 	
 	public function update($force_create_new_version = true)
-	{
-		if($this->get('tmp_file_path') && !$this->_update_file())
-			return false;
+	{		
+		$this->_update_file();
 			
-		return parent :: update($force_create_new_version);
+		parent :: update($force_create_new_version);
 	}
 	
 	protected function _create_file()
@@ -46,12 +41,9 @@ class file_object extends media_object
 		$file_name = $this->get('file_name');
 		$mime_type = $this->get('mime_type');
 		
-		if(($media_id = $this->_create_media_record($tmp_file_path, $file_name, $mime_type)) === false)
-		  return false;
+		$media_id = $this->_create_media_record($tmp_file_path, $file_name, $mime_type);
 		
 		$this->set('media_id', $media_id);
-		
-		return true;
 	}
 	
 	protected function _update_file()
@@ -61,17 +53,9 @@ class file_object extends media_object
 		$mime_type = $this->get('mime_type');
 		
 		if(!$media_id = $this->get('media_id'))
-		{
-		  debug :: write_error('media id not set', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
-			  );
-		  return false;
-		}
+   	  throw new LimbException('media id not set');
 
-		if(!$this->_update_media_record($media_id, $tmp_file_path, $file_name, $mime_type))
-		  return false;
-		
-		return true;
+	  $this->_update_media_record($media_id, $tmp_file_path, $file_name, $mime_type);
 	}
 	
 	public function fetch($params=array(), $sql_params=array())

@@ -24,12 +24,7 @@ abstract class media_object extends content_object
 	protected function _create_media_record($tmp_file_path, $file_name, $mime_type)
 	{
 		if(!file_exists($tmp_file_path))
-		{
-		  debug :: write_error('tmp file not found', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			  array('tmp_file' => $tmp_file_path));
-		  return false;
-		}
+		  throw new FileNotFoundException('tmp file not found', $tmp_file_path);
 
 		srand(time());
 		$media_id = md5(uniqid(rand()));
@@ -38,13 +33,12 @@ abstract class media_object extends content_object
 	
 		if (!copy($tmp_file_path, MEDIA_DIR . $media_id . '.media'))
 		{
-		  debug :: write_error('copy failed', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+		  throw new IOException('copy failed', 
 			  array(
 			  	'dst' => MEDIA_DIR . $media_id . '.media',
 			  	'src' => $tmp_file_path
-			  	));
-		  return false;
+			  	)
+			);
 		}
 
 		if (function_exists('md5_file'))
@@ -76,12 +70,7 @@ abstract class media_object extends content_object
 	protected function _update_media_record($id, $tmp_file_path, $file_name, $mime_type)
 	{
 		if(!file_exists($tmp_file_path))
-		{
-		  debug :: write_error('file doesnt exist', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			  array('tmp' => $tmp_file_path));
-		  return false;
-		}
+		  throw new FileNotFoundException('tmp file not found', $tmp_file_path);
 			
 		if (function_exists('md5_file'))
 		{
@@ -99,13 +88,12 @@ abstract class media_object extends content_object
 		
 		if(!copy($tmp_file_path, MEDIA_DIR . $id .'.media'))
 		{
-			debug :: write_error('temporary file copy failed', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array(
-				'src' => $tmp_file_path,
-				'dst' => MEDIA_DIR . $id .'.media',
-			));
-			
-			return false;
+		  throw new IOException('copy failed', 
+			  array(
+			  	'dst' => MEDIA_DIR . $media_id . '.media',
+			  	'src' => $tmp_file_path
+			  	)
+			);
 		}
 
 		$media_db_table = db_table_factory :: create('media');
@@ -120,8 +108,6 @@ abstract class media_object extends content_object
   		));
   		
   	$this->set('etag', $etag);
-  		
-		return true;
 	}				
 }
 

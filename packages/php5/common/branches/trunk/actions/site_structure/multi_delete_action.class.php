@@ -68,15 +68,18 @@ class multi_delete_action extends form_action
 			
 			$site_object = wrap_with_site_object($item);
 			
-			if(!$site_object->delete())
+			try 
 			{
-				debug :: write_error("object couldn't be deleted",
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array('node_id' => $id));
-
-  			return;
+			  $site_object->delete();
 			}
-		}	
+			catch(LimbException $e)  
+			{
+   	    message_box :: write_notice("object {$id} - {$item['title']} couldn't be deleted!");
+  	    $request->set_status(request :: STATUS_FAILURE);
+  	    throw $e; 
+			}
+		}
+			
 	  $request->set_status(request :: STATUS_SUCCESS);
 	
 		$response->write(close_popup_response($request));

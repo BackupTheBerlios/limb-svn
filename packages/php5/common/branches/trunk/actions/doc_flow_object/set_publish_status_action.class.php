@@ -23,7 +23,7 @@ class set_publish_status_action extends action
   		return;
 		
 		$site_object_controller = $object->get_controller();
-		$action = $site_object_controller->determine_action($request);
+		$action = $site_object_controller->get_action($request);
 
 		switch ($action)
 		{
@@ -61,13 +61,15 @@ class set_publish_status_action extends action
 	}
 		
 	protected function _apply_access_policy($object, $action)
-	{		
-		if(!access_policy :: instance()->save_object_access_for_action($object, $action))
-		{
-			error('access template for action not defined',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array('action' => $action));
-		}	
+	{
+	  try
+	  {
+	    access_policy :: instance()->save_object_access_for_action($object, $action)
+	  }
+	  catch(LimbException $e)
+	  {
+	    message_box :: write_notice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
+	  }
 	}
 }
 

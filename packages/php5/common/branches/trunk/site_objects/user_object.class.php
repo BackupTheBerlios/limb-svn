@@ -60,45 +60,25 @@ class user_object extends content_object
 			$data['group_id'] = (int)$group_id;
 			$db_table->insert($data);
 		}				
-
-		return true;
 	}
 	
 	public function change_password()
 	{
 		if(!$user_id = $this->get_id())
-		{
-		  debug :: write_error('user id not set', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
-		  return false;
-		}
+   	  throw new LimbException('user id not set');
 
 		if(!$identifier = $this->get_identifier())
-		{
-		  debug :: write_error('user identifier not set', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
-		  return false;
-		}
-		
-		$user = user :: instance();
+   	  throw new LimbException('user identifier not set');
 		
 		$this->set(
 			'password', 
-			$user->get_crypted_password(
+			user :: get_crypted_password(
 				$identifier, 
 				$this->get('password')
 			)
 		);
 		
-		if($user_id == $user->get_id())
-		{
-			$user->logout();
-			message_box :: write_warning(strings :: get('need_relogin', 'user'));
-		}
-		else
-			session :: destroy_user_session($user_id);
-		
-		return $this->update(false);
+		$this->update(false);
 	}
 
 	public function validate_password($password)
@@ -106,11 +86,7 @@ class user_object extends content_object
 		$user = user :: instance();
 		
 		if(!$user->is_logged_in() || !$node_id = $user->get_node_id())
-		{
-		  debug :: write_error('user not logged in or node id is not set', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
 		  return false;
-		}
 
 		$password = $user->get_crypted_password($user->get_login(), $password);
 		
@@ -124,12 +100,7 @@ class user_object extends content_object
 	{
 		$user = user :: instance();
 		
-		if(!$node_id = $user->get_node_id())
-		{
-		  debug :: write_error('user not logged in - node id is not set', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
-		  return false;
-		}
+		$node_id = $user->get_node_id();
 
 		$data['password'] = $user->get_crypted_password($user->get_login(),	$password);
 		
@@ -137,10 +108,8 @@ class user_object extends content_object
 
 		$this->set('password', $data['password']);
 		
-		if ($user_db_table->update($data, 'identifier="'. $user->get_login() . '"'))
-			return $this->login($user->get_login(), $password);
-		else
-			return false;
+		$user_db_table->update($data, 'identifier="'. $user->get_login() . '"');
+		return $this->login($user->get_login(), $password);
 	}
 
 	public function generate_password($email, &$new_non_crypted_password)
@@ -154,10 +123,8 @@ class user_object extends content_object
 		$crypted_password = user :: get_crypted_password($user_data['identifier'], $new_non_crypted_password);
 		$this->set('generated_password', $crypted_password);
 		
-		if($result = $this->update(false))
-			$this->send_activate_password_email($user_data, $new_non_crypted_password);
-			
-		return $result;
+		$this->update(false);
+		return true;
 	}
 
 	public function activate_password()
@@ -177,8 +144,10 @@ class user_object extends content_object
 		$this->merge($user_data);
 		$this->set('password', $user_data['generated_password']);
 		$this->set('generated_password', '');
-
-		return $this->update(false);
+		
+    $this->update(false);
+    
+		return true;
 	}
 
 	public function get_user_by_email($email)
@@ -198,47 +167,6 @@ class user_object extends content_object
 		$db->sql_exec($sql);
 		
 		return current($db->get_array());
-	}
-
-	public function send_activate_password_email($user_data, $password)
-	{
-		require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
-		global $_SERVER;
-		$http_host = $_SERVER['HTTP_HOST'];
-
-		$filename = LIMB_DIR . '/design/default/templates/user/generated_password_mail.html';
-		
-		if(!file_exists($filename))
-		  error('template file for password notification email not found!', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('file_name' => $filename)); 
-		
-		$fd = fopen ($filename, "r");
-		$contents = fread ($fd, filesize ($filename));
-		fclose ($fd); 		
-
-		$contents = str_replace('%website_name%', $http_host, $contents);
-		$contents = str_replace('%user_name%', $user_data['name']. ' '. $user_data['lastname'], $contents);
-		$contents = str_replace('%new_password%', $password, $contents);
-		$contents = str_replace('%website_href%', $http_host, $contents);
-		$contents = str_replace('%website_email%', ADMINISTRATOR_EMAIL, $contents);
-
-		$activate_href = 'http://'. $http_host. '/root/activate_password?user='. $user_data['email'] .'&id='. $user_data['password']; 
-		$contents = str_replace('%activate_href%', $activate_href, $contents);
-		
-		if(!send_plain_mail(
-									array($user_data['email']),
-									ADMINISTRATOR_EMAIL, 
-									strings :: get('generate_password_theme', 'user'),
-									$contents
-									)
-			)
-		{
-		  debug :: write_error('error while sending password notification email', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
-		  return false;
-		}
-		else
-			return true;	
 	}
 
 	public function login($login, $password, $locale_id = '')

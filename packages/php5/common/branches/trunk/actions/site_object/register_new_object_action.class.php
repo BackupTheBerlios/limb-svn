@@ -50,8 +50,11 @@ class register_new_object_action extends form_action
 			if ($params['parent_path'] == '/')
 				$is_root = true;
 			else
-			 error("parent wasn't retrieved",
-		    __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+			{
+  	    message_box :: write_notice('parent wasn\'t retrieved by path ' . $params['parent_path']);
+  	    $request->set_status(request :: STATUS_FAILURE);
+  	    return;
+  	  }  
 		}
 		
 		if (!$is_root)
@@ -61,18 +64,23 @@ class register_new_object_action extends form_action
 			
 		$object->merge($params);
 	
-		if(!$object->create($is_root))
+	  try
+	  {
+		   $object->create($is_root);
+		}
+		catch(LimbException $e)
 		{
-			error("object wasn't registered",
-			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}	
+ 	    message_box :: write_notice('object wasn\'t registered!');
+	    $request->set_status(request :: STATUS_FAILURE);
+	    throw $e; 
+		}
 		
 		if (!$is_root)
 		{
 			$parent_object = site_object_factory :: create($parent_data['class_name']);
 			$parent_object->merge($parent_data);
-		
-			access_policy :: instance()->save_object_access($object, $parent_object);
+
+      access_policy :: instance()->save_object_access($object, $parent_object);
 		}	
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);

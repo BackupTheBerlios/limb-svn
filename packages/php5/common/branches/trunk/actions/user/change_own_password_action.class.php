@@ -30,11 +30,24 @@ class change_own_password_action extends form_action
 		$user_object = site_object_factory :: create('user_object');
 		
 		$data = $this->dataspace->export();
+    
+    try 
+    {
+      $user_object->change_own_password($data['password']);
+    }
+    catch(SQLException $e)
+    {
+      throw $e;
+    }
+    catch(LimbException $e)
+    {
+      $request->set_status(request :: STATUS_FAILED);
+    }
+    
+    $request->set_status(request :: STATUS_FORM_SUBMITTED);
 
-		if($user_object->change_own_password($data['password']))
-		  $request->set_status(request :: STATUS_FORM_SUBMITTED);
-		else
-		  $request->set_status(request :: STATUS_FAILED);
+		user :: instance()->logout();
+		message_box :: write_warning(strings :: get('need_relogin', 'user'));
 	}
 }
 

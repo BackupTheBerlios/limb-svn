@@ -28,7 +28,7 @@ class logging_filter implements intercepting_filter
     
     $stats_register->register(
       $object->get_node_id(), 
-      $controller->determine_action(), 
+      $controller->get_action(), 
       $request->get_status()
     );
       

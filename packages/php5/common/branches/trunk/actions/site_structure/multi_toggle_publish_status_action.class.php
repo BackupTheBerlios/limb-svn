@@ -72,16 +72,14 @@ class multi_toggle_publish_status_action extends form_action
 
 	protected function _apply_access_policy($object, $action)
 	{		
-		if(!access_policy :: instance()->save_object_access_for_action($object, $action))
-		{
-			error('access template for action not defined',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array(
-					'action' => $action,
-					'class_name' => get_class($object),
-				)
-			);
-		}	
+	  try
+	  {
+	    access_policy :: instance()->save_object_access_for_action($object, $action)
+	  }
+	  catch(LimbException $e)
+	  {
+	    message_box :: write_notice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
+	  }
 	}
 }
 

@@ -72,10 +72,18 @@ class create_image_action extends form_create_site_object_action
 	{
 		$this->object->set('files_data', $_FILES[$this->name]);
 		
-		if(($id = parent :: _create_object_operation()) === false)
-			return false;
-						
-		return $id;
+		try
+		{
+		  return parent :: _create_object_operation();
+		}
+	  catch(SQLException $e)
+	  {
+	    throw $e;
+	  }
+	  catch(LimbException $e)
+	  {
+	    message_box :: write_notice('Some variations were not resized');
+	  }
 	}
 }
 

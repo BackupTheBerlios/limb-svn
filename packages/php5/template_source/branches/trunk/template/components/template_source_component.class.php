@@ -17,7 +17,7 @@ class template_source_component extends component
 		
 		$site_object_controller = $site_object->get_controller();
 		
-		if(($action = $site_object_controller->determine_action()) === false)
+		if(($action = $site_object_controller->get_action()) === false)
 			return '';
 			
 		if(!$template_path = $site_object_controller->get_action_property($action, 'template_path'))

@@ -73,9 +73,18 @@ class edit_variations_action extends form_edit_site_object_action
 	{	
 		$this->object->set('files_data', $_FILES[$this->name]);
 		
-		$this->object->update_variations();
-							
-		return true;
+	  try
+	  {
+	    $this->object->update_variations();
+	  }
+	  catch(SQLException $e)
+	  {
+	    throw $e;
+	  }
+	  catch(LimbException $e)
+	  {
+	    message_box :: write_notice('Some variations were not resized');
+	  }
 	}
 
 }

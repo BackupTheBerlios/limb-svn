@@ -45,8 +45,13 @@ class change_password_action extends form_edit_site_object_action
 	{
 	  parent :: perform($request, $response);
 	  
-		if (!$this->_changing_own_password())
-		  return;
+		if ($this->_changing_own_password())
+		{
+			user :: instance()->logout();
+			message_box :: write_warning(strings :: get('need_relogin', 'user'));
+		}
+		else
+		  session :: destroy_user_session($user_id);
 
 		if ($request->get_status() == request :: STATUS_SUCCESS)
 		{			  
