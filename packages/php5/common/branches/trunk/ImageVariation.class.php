@@ -8,206 +8,206 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/domain_object.class.php');
+require_once(LIMB_DIR . '/class/core/DomainObject.class.php');
 
-class image_variation extends domain_object
+class ImageVariation extends DomainObject
 {
   protected $_media_manager;
   protected $_image_library;
 
-  protected function _get_media_manager()
+  protected function _getMediaManager()
   {
     if($this->_media_manager)
       return $this->_media_manager;
 
-    include_once(dirname(__FILE__) . '/media_manager.class.php');
-    $this->_media_manager = new media_manager();
+    include_once(dirname(__FILE__) . '/MediaManager.class.php');
+    $this->_media_manager = new MediaManager();
 
     return $this->_media_manager;
   }
 
-  protected function _get_image_library()
+  protected function _getImageLibrary()
   {
     if($this->_image_library)
       return $this->_image_library;
 
-    include_once(LIMB_DIR . '/class/lib/image/image_factory.class.php');
-    $this->_image_library = image_factory :: create();
+    include_once(LIMB_DIR . '/class/lib/image/ImageFactory.class.php');
+    $this->_image_library = ImageFactory :: create();
 
     return $this->_image_library;
   }
 
-  public function get_media_file()
+  public function getMediaFile()
   {
-    return $this->_get_media_manager()->get_media_file_path($this->get_media_file_id());
+    return $this->_getMediaManager()->getMediaFilePath($this->getMediaFileId());
   }
 
-  public function get_media_file_type()
+  public function getMediaFileType()
   {
-    return $this->_get_image_library()->get_image_type($this->get_mime_type());
+    return $this->_getImageLibrary()->getImageType($this->getMimeType());
   }
 
-  public function load_from_file($file)
+  public function loadFromFile($file)
   {
-    $media_file_id = $this->_get_media_manager()->store($file);
-    $this->set_media_file_id($media_file_id);
+    $media_file_id = $this->_getMediaManager()->store($file);
+    $this->setMediaFileId($media_file_id);
 
-    $this->_update_dimensions_using_file($file);
+    $this->_updateDimensionsUsingFile($file);
   }
 
   //for mocking, refactor and use fs?
-  protected function _generate_temp_file()
+  protected function _generateTempFile()
   {
     return tempnam(VAR_DIR, 'p');
   }
 
   //for mocking, refactor and use fs?
-  protected function _unlink_temp_file($temp_file)
+  protected function _unlinkTempFile($temp_file)
   {
     unlink($temp_file);
   }
 
   public function resize($max_size)
   {
-    $image_library = $this->_get_image_library();
-    $media_manager = $this->_get_media_manager();
+    $image_library = $this->_getImageLibrary();
+    $media_manager = $this->_getMediaManager();
 
-    $media_file_id = $this->get_media_file_id();
+    $media_file_id = $this->getMediaFileId();
 
-    $input_file = $media_manager->get_media_file_path($media_file_id);
-    $output_file = $this->_generate_temp_file();
+    $input_file = $media_manager->getMediaFilePath($media_file_id);
+    $output_file = $this->_generateTempFile();
 
-    $input_file_type = $image_library->get_image_type($this->get_mime_type());
-    $output_file_type = $image_library->fall_back_to_any_supported_type($input_file_type);
+    $input_file_type = $image_library->getImageType($this->getMimeType());
+    $output_file_type = $image_library->fallBackToAnySupportedType($input_file_type);
 
     try
     {
-      $image_library->set_input_file($input_file);
-      $image_library->set_input_type($input_file_type);
+      $image_library->setInputFile($input_file);
+      $image_library->setInputType($input_file_type);
 
-      $image_library->set_output_file($output_file);
-      $image_library->set_output_type($output_file_type);
+      $image_library->setOutputFile($output_file);
+      $image_library->setOutputType($output_file_type);
       $image_library->resize(array('max_dimension' => $max_size));//ugly!!!
       $image_library->commit();
 
-      $this->_update_dimensions_using_file($output_file);
+      $this->_updateDimensionsUsingFile($output_file);
       $media_file_id = $media_manager->store($output_file);
 
-      $this->set_media_file_id($media_file_id);
+      $this->setMediaFileId($media_file_id);
     }
     catch(Exception $e)
     {
       if(file_exists($output_file))
-        $this->_unlink_temp_file($output_file);
+        $this->_unlinkTempFile($output_file);
       throw $e;
     }
 
-    $this->_unlink_temp_file($output_file);
+    $this->_unlinkTempFile($output_file);
   }
 
-  protected function _update_dimensions_using_file($file)
+  protected function _updateDimensionsUsingFile($file)
   {
     $size = getimagesize($file);
-    $this->set_width($size[0]);
-    $this->set_height($size[1]);
+    $this->setWidth($size[0]);
+    $this->setHeight($size[1]);
   }
 
-  public function get_etag()
+  public function getEtag()
   {
     return $this->get('etag');
   }
 
-  public function set_etag($etag)
+  public function setEtag($etag)
   {
     $this->set('etag', $etag);
   }
 
-  public function get_name()
+  public function getName()
   {
     return $this->get('name');
   }
 
-  public function set_name($name)
+  public function setName($name)
   {
     $this->set('name', $name);
   }
 
-  public function get_width()
+  public function getWidth()
   {
     return (int)$this->get('width');
   }
 
-  public function set_width($width)
+  public function setWidth($width)
   {
     $this->set('width', (int)$width);
   }
 
-  public function get_height()
+  public function getHeight()
   {
     return (int)$this->get('height');
   }
 
-  public function set_height($height)
+  public function setHeight($height)
   {
     $this->set('height', (int)$height);
   }
 
-  public function get_mime_type()
+  public function getMimeType()
   {
     return $this->get('mime_type');
   }
 
-  public function set_mime_type($mime_type)
+  public function setMimeType($mime_type)
   {
     $this->set('mime_type', $mime_type);
   }
 
-  public function get_file_name()
+  public function getFileName()
   {
     return $this->get('file_name');
   }
 
-  public function set_file_name($file_name)
+  public function setFileName($file_name)
   {
     $this->set('file_name', $file_name);
   }
 
-  public function get_image_id()
+  public function getImageId()
   {
     return (int)$this->get('image_id');
   }
 
-  public function set_image_id($image_id)
+  public function setImageId($image_id)
   {
     $this->set('image_id', (int)$image_id);
   }
 
-  public function get_media_file_id()
+  public function getMediaFileId()
   {
     return $this->get('media_file_id');
   }
 
-  public function set_media_file_id($media_file_id)
+  public function setMediaFileId($media_file_id)
   {
     $this->set('media_file_id', $media_file_id);
   }
 
-  public function get_media_id()
+  public function getMediaId()
   {
     return (int)$this->get('media_id');
   }
 
-  public function set_media_id($media_id)
+  public function setMediaId($media_id)
   {
     $this->set('media_id', (int)$media_id);
   }
 
-  public function get_size()
+  public function getSize()
   {
     return (int)$this->get('size');
   }
 
-  public function set_size($size)
+  public function setSize($size)
   {
     $this->set('size', (int)$size);
   }

@@ -9,16 +9,16 @@
 *
 ***********************************************************************************/
 
-class poll_form_tag_info
+class PollFormTagInfo
 {
   public $tag = 'poll:FORM';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'poll_form_tag';
 }
 
-register_tag(new poll_form_tag_info());
+registerTag(new PollFormTagInfo());
 
-class poll_form_tag extends compiler_directive_tag
+class PollFormTag extends CompilerDirectiveTag
 {
 }
 

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class save_new_object_access_command implements Command
+class SaveNewObjectAccessCommand implements Command
 {
   public function perform()
   {
@@ -20,18 +20,18 @@ class save_new_object_access_command implements Command
     if (!$object = $dataspace->get('created_site_object'))
       throw new LimbException('can\'t find created site object in dataspace');
 
-    $parent_id = $object->get_parent_node_id();
+    $parent_id = $object->getParentNodeId();
 
-    $datasource = $toolkit->getDatasource('single_object_datasource');
-    $datasource->set_node_id($parent_id);
-    $parent_object = wrap_with_site_object($datasource->fetch());
+    $datasource = $toolkit->getDatasource('SingleObjectDatasource');
+    $datasource->setNodeId($parent_id);
+    $parent_object = wrapWithSiteObject($datasource->fetch());
 
-    $action = $parent_object->get_controller()->get_requested_action($toolkit->getRequest());
+    $action = $parent_object->getController()->getRequestedAction($toolkit->getRequest());
 
     try
     {
-      $access_policy = $this->_get_access_policy();
-      $access_policy->save_new_object_access($object, $parent_object, $action);
+      $access_policy = $this->_getAccessPolicy();
+      $access_policy->saveNewObjectAccess($object, $parent_object, $action);
     }
     catch(LimbException $e)
     {
@@ -42,7 +42,7 @@ class save_new_object_access_command implements Command
   }
 
   // for mocking
-  protected function _get_access_policy()
+  protected function _getAccessPolicy()
   {
     return new $access_policy;
   }

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class documents_folder_controller extends site_object_controller
+class DocumentsFolderController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -20,12 +20,12 @@ class documents_folder_controller extends site_object_controller
         ),
         'admin_display' => array(
             'template_path' => '/documents_folder/admin_display.html',
-            'action_name' => strings :: get('admin_display'),
+            'action_name' => Strings :: get('admin_display'),
         ),
         'set_metadata' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('set_metadata'),
+            'action_name' => Strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
             'img_src' => '/shared/images/configure.gif'
@@ -35,7 +35,7 @@ class documents_folder_controller extends site_object_controller
             'action_path' => '/document/create_document_action',
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('create_document', 'document'),
+            'action_name' => Strings :: get('create_document', 'document'),
             'img_src' => '/shared/images/new.generic.gif',
             'can_have_access_template' => true,
         ),
@@ -44,14 +44,14 @@ class documents_folder_controller extends site_object_controller
             'action_path' => '/documents_folder/create_documents_folder_action',
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('create_document_folder', 'document'),
+            'action_name' => Strings :: get('create_document_folder', 'document'),
             'img_src' => '/shared/images/new.folder.gif',
             'can_have_access_template' => true,
         ),
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -59,7 +59,7 @@ class documents_folder_controller extends site_object_controller
         'publish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('publish'),
+            'action_name' => Strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/publish.gif',
             'can_have_access_template' => true,
@@ -67,7 +67,7 @@ class documents_folder_controller extends site_object_controller
         'unpublish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('unpublish'),
+            'action_name' => Strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/unpublish.gif',
             'can_have_access_template' => true,
@@ -75,7 +75,7 @@ class documents_folder_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

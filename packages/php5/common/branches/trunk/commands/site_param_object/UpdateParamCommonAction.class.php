@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
-require_once(LIMB_DIR . '/class/core/sys_param.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/class/core/SysParam.class.php');
 
-class update_param_common_action extends form_action
+class UpdateParamCommonAction extends FormAction
 {
   protected $params_type = array();
 
@@ -20,15 +20,15 @@ class update_param_common_action extends form_action
   {
     parent :: __construct();
 
-    $this->params_type = $this->_define_params_type();
+    $this->params_type = $this->_defineParamsType();
   }
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'site_param_form';
   }
 
-  protected function _define_params_type()
+  protected function _defineParamsType()
   {
     return array(
       'site_title' => 'char',
@@ -36,14 +36,14 @@ class update_param_common_action extends form_action
     );
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'contact_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'contact_email'));
   }
 
-  protected function _init_dataspace($request)
+  protected function _initDataspace($request)
   {
-    $sys_param = sys_param :: instance();
+    $sys_param = SysParam :: instance();
 
     $data = array();
 
@@ -51,13 +51,13 @@ class update_param_common_action extends form_action
     {
       try
       {
-        $data[$param_name] = $sys_param->get_param($param_name, $param_type);
+        $data[$param_name] = $sys_param->getParam($param_name, $param_type);
       }
       catch(LimbException $e)
       {
         $data[$param_name] = '';
 
-        debug :: write_warning('couldnt get sys parameter',
+        Debug :: writeWarning('couldnt get sys parameter',
            __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
           array(
             'param_name' => $param_name,
@@ -71,16 +71,16 @@ class update_param_common_action extends form_action
     $this->dataspace->import($data);
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
-    $sys_param = sys_param :: instance();
+    $sys_param = SysParam :: instance();
 
     foreach($this->params_type as $param_name => $param_type)
     {
       try
       {
-        $sys_param->save_param($param_name, $param_type, $data[$param_name]);
+        $sys_param->saveParam($param_name, $param_type, $data[$param_name]);
       }
       catch(SQLException $e)
       {
@@ -88,7 +88,7 @@ class update_param_common_action extends form_action
       }
       catch(LimbException $e)
       {
-        debug :: write_warning('couldnt save sys parameter',
+        Debug :: writeWarning('couldnt save sys parameter',
            __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
           array(
             'param_name' => $param_name,
@@ -99,7 +99,7 @@ class update_param_common_action extends form_action
 
     }
 
-    $request->set_status(request :: STATUS_FORM_SUBMITTED);
+    $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
   }
 }
 ?>

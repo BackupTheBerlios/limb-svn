@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/fetch_sub_branch_datasource.class.php');
+require_once(LIMB_DIR . '/class/datasources/FetchSubBranchDatasource.class.php');
 
-class node_select_datasource extends fetch_sub_branch_datasource
+class NodeSelectDatasource extends FetchSubBranchDatasource
 {
-  function get_dataset(&$counter, $params = array())
+  function getDataset(&$counter, $params = array())
   {
     $params['depth'] = 1;
 
@@ -22,12 +22,12 @@ class node_select_datasource extends fetch_sub_branch_datasource
       $params['only_parents'] = true;
 
     $params['restrict_by_class'] = false;
-    $params['path'] = $this->_process_path();
+    $params['path'] = $this->_processPath();
 
-    return parent :: get_dataset($counter, $params);
+    return parent :: getDataset($counter, $params);
   }
 
-  function _process_path()
+  function _processPath()
   {
     $default_path = '/root/';
 
@@ -36,7 +36,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 
     if(strpos($path, '?') !== false)
     {
-      if(!$path = Limb :: toolkit()->getTree()->get_node_by_path($path))
+      if(!$path = Limb :: toolkit()->getTree()->getNodeByPath($path))
         return $default_path;
     }
     return $path;

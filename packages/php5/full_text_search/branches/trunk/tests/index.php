@@ -10,8 +10,8 @@
 ***********************************************************************************/
 ob_start();
 require_once(dirname(__FILE__) . '/setup.php');
-require_once(dirname(__FILE__) . '/full_text_search_root_group_test.class.php');
-require_once(LIMB_DIR . '/tests/lib/html_test_runner.class.php');
+require_once(dirname(__FILE__) . '/FullTextSearchRootGroupTest.class.php');
+require_once(LIMB_DIR . '/tests/lib/HtmlTestRunner.class.php');
 
 $root_group = new FullTextSearchRootGroupTest();
 $test_runner = new HTMLTestRunner();

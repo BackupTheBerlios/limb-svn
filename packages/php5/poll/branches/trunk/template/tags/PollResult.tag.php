@@ -9,16 +9,16 @@
 *
 ***********************************************************************************/
 
-class poll_result_tag_info
+class PollResultTagInfo
 {
   public $tag = 'poll:RESULT';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'poll_result_tag';
 }
 
-register_tag(new poll_result_tag_info());
+registerTag(new PollResultTagInfo());
 
-class poll_result_tag extends compiler_directive_tag
+class PollResultTag extends CompilerDirectiveTag
 {
 }
 

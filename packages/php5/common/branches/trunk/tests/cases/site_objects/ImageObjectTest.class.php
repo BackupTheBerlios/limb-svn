@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../site_objects/image_object.class.php');
-require_once(dirname(__FILE__) . '/../../../image_variation.class.php');
-require_once(dirname(__FILE__) . '/../../../media_manager.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../../site_objects/ImageObject.class.php');
+require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
+require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
-Mock :: generate('image_variation');
+Mock :: generate('ImageVariation');
 
-class image_object_test extends LimbTestCase
+class ImageObjectTest extends LimbTestCase
 {
   var $variation;
   var $image_object;
 
   function setUp()
   {
-    $this->variation = new Mockimage_variation($this);
-    $this->image_object = new image_object();
+    $this->variation = new MockImageVariation($this);
+    $this->image_object = new ImageObject();
   }
 
   function tearDown()
@@ -31,26 +31,26 @@ class image_object_test extends LimbTestCase
     $this->variation->tally();
   }
 
-  function test_get_variations_empty()
+  function testGetVariationsEmpty()
   {
-    $this->assertTrue(!$this->image_object->get_variations());
+    $this->assertTrue(!$this->image_object->getVariations());
   }
 
-  function test_get_variation_failed()
+  function testGetVariationFailed()
   {
-    $this->assertNull($this->image_object->get_variation('original'));
+    $this->assertNull($this->image_object->getVariation('original'));
   }
 
-  function test_attach_variation()
+  function testAttachVariation()
   {
-    $this->variation->expectOnce('get_name');
-    $this->variation->setReturnValue('get_name', $name = 'original');
+    $this->variation->expectOnce('getName');
+    $this->variation->setReturnValue('getName', $name = 'original');
 
-    $this->image_object->attach_variation($this->variation);
+    $this->image_object->attachVariation($this->variation);
 
-    $this->assertTrue($this->image_object->get_variation($name) === $this->variation);
+    $this->assertTrue($this->image_object->getVariation($name) === $this->variation);
 
-    $this->assertTrue($this->image_object->get_variations() === array($name => $this->variation));
+    $this->assertTrue($this->image_object->getVariations() === array($name => $this->variation));
   }
 }
 

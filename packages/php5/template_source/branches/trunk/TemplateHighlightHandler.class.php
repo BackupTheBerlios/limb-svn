@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-class template_highlight_handler
+class TemplateHighlightHandler
 {
   protected $html = '';
   protected $current_tag = '';
@@ -20,12 +20,12 @@ class template_highlight_handler
     $this->tag_dictionary = $tag_dictionary;
   }
 
-  public function set_template_path_history($history)
+  public function setTemplatePathHistory($history)
   {
     $this->template_path_history = $history;
   }
 
-  public function write_attributes($attributes)
+  public function writeAttributes($attributes)
   {
     if (is_array($attributes))
     {
@@ -34,13 +34,13 @@ class template_highlight_handler
         $name_html = $name;
         $value_html = $value;
 
-        if($this->tag_dictionary->get_tag_info($this->current_tag))
+        if($this->tag_dictionary->getTagInfo($this->current_tag))
         {
           $name_html = "<span style='color:red;'>{$name}</span>";
           $value_html = "<span style='color:brown;'>{$value}</span>";
         }
 
-        if($this->current_tag == 'core:wrap' || $this->current_tag == 'core:include')
+        if($this->current_tag == 'core:wrap' ||  $this->current_tag == 'core:include')
         {
           if($name == 'file')
           {
@@ -61,40 +61,40 @@ class template_highlight_handler
     }
   }
 
-  public function open_handler($parser, $name, $attrs)
+  public function openHandler($parser, $name, $attrs)
   {
     $this->current_tag = strtolower($name);
 
-    if($this->tag_dictionary->get_tag_info($name))
+    if($this->tag_dictionary->getTagInfo($name))
       $this->html .= '&lt;<span style="color:orange;font-weight:bold;">' . $name . '</span>';
     else
       $this->html .= '&lt;<span style="color:blue">' . $name . '</span>';
 
-    $this->write_attributes($attrs);
+    $this->writeAttributes($attrs);
 
     $this->html .= '&gt;';
   }
 
-  public function close_handler($parser, $name)
+  public function closeHandler($parser, $name)
   {
-    if($this->tag_dictionary->get_tag_info($name))
+    if($this->tag_dictionary->getTagInfo($name))
       $this->html .= '&lt;/<span style="color:orange;font-weight:bold;">' . $name . '</span>&gt;';
     else
       $this->html .= '&lt;/<span style="color:blue">' . $name . '</span>&gt;';
   }
 
-  public function data_handler($parser, $data)
+  public function dataHandler($parser, $data)
   {
     $data = str_replace("\t", '  ', $data);
     $this->html .= $data;
   }
 
-  public function escape_handler($parser, $data)
+  public function escapeHandler($parser, $data)
   {
     $this->html .= '<span style="color:green;font-style:italic;">&lt;!--' . $data . '--&gt;</span>';
   }
 
-  public function get_html()
+  public function getHtml()
   {
     $this->html = preg_replace('~(\{(\$|\^|#)[^\}]+\})~', "<span style='background-color:lightgreen;font-weight:bold;'>\\1</span>", $this->html);
 

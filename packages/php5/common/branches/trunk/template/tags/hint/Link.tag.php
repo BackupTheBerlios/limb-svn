@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class hint_link_tag_info
+class HintLinkTagInfo
 {
   public $tag = 'hint:LINK';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'hint_link_tag';
 }
 
-register_tag(new hint_link_tag_info());
+registerTag(new HintLinkTagInfo());
 
-class hint_link_tag extends compiler_directive_tag
+class HintLinkTag extends CompilerDirectiveTag
 {
 }
 

@@ -8,43 +8,43 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php');
 
-class edit_file_action extends form_edit_site_object_action
+class EditFileAction extends FormEditSiteObjectAction
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'file_object';
   }
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'edit_file';
   }
 
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
-    return complex_array :: array_merge(
-        parent :: _define_datamap(),
+    return ComplexArray :: array_merge(
+        parent :: _defineDatamap(),
         array(
           'description' => 'description',
         )
     );
   }
 
-  protected function _define_increase_version_flag()
+  protected function _defineIncreaseVersionFlag()
   {
     return false;
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    parent :: _init_validator();
+    parent :: _initValidator();
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  protected function _update_object_operation()
+  protected function _updateObjectOperation()
   {
     if(isset($_FILES[$this->name]['tmp_name']['file']))
     {
@@ -54,8 +54,8 @@ class edit_file_action extends form_edit_site_object_action
       }
 
       $request = Limb :: toolkit()->getRequest();
-      $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-      $datasource->set_request($request);
+      $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+      $datasource->setRequest($request);
 
       $object_data = $datasource->fetch();
 
@@ -65,7 +65,7 @@ class edit_file_action extends form_edit_site_object_action
       $this->object->set('mime_type', $_FILES[$this->name]['type']['file']);
     }
 
-    parent :: _update_object_operation();
+    parent :: _updateObjectOperation();
   }
 }
 

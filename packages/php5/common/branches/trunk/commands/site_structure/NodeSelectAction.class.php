@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
-class node_select_action extends action
+class NodeSelectAction extends Action
 {
   public function perform($request, $response)
   {
-    $request->set_status(request :: STATUS_DONT_TRACK);
+    $request->setStatus(Request :: STATUS_DONT_TRACK);
 
     if(!$path = $request->get('path'))
       return;
 
-    $datasource = Limb :: toolkit()->getDatasource('single_object_datasource');
-    $datasource->set_path($path);
+    $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
+    $datasource->setPath($path);
 
     if(!$object_data = $datasource->fetch())
       return;
 
     Limb :: toolkit()->getSession()->set('limb_node_select_working_path', $path);
-    $dataspace = $this->view->find_child('parent_node_data');
+    $dataspace = $this->view->findChild('parent_node_data');
 
     $dataspace->import($object_data);
   }

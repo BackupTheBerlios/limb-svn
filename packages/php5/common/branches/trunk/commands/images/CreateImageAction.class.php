@@ -8,21 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.php');
 
-class create_image_action extends form_create_site_object_action
+class CreateImageAction extends FormCreateSiteObjectAction
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'image_object';
   }
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'create_image';
   }
 
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
     $datamap = array(
       'description' => 'description',
@@ -30,7 +30,7 @@ class create_image_action extends form_create_site_object_action
 
     $ini = Limb :: toolkit()->getINI('image_variations.ini');
 
-    $image_variations = $ini->get_all();
+    $image_variations = $ini->getAll();
 
     foreach($image_variations as $variation => $variation_data)
     {
@@ -40,26 +40,26 @@ class create_image_action extends form_create_site_object_action
       $datamap[$variation . '_base_variation'] = $variation . '_base_variation';
     }
 
-    return complex_array :: array_merge(
-        parent :: _define_datamap(),
+    return ComplexArray :: array_merge(
+        parent :: _defineDatamap(),
         $datamap
     );
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    parent :: _init_validator();
+    parent :: _initValidator();
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  protected function _init_dataspace($request)
+  protected function _initDataspace($request)
   {
-    parent :: _init_dataspace($request);
+    parent :: _initDataspace($request);
 
     $ini = Limb :: toolkit()->getINI('image_variations.ini');
 
-    $image_variations = $ini->get_all();
+    $image_variations = $ini->getAll();
 
     foreach($image_variations as $variation => $variation_data)
     {
@@ -68,13 +68,13 @@ class create_image_action extends form_create_site_object_action
     }
   }
 
-  protected function _create_object_operation()
+  protected function _createObjectOperation()
   {
     $this->object->set('files_data', $_FILES[$this->name]);
 
     try
     {
-      return parent :: _create_object_operation();
+      return parent :: _createObjectOperation();
     }
     catch(SQLException $e)
     {
@@ -82,7 +82,7 @@ class create_image_action extends form_create_site_object_action
     }
     catch(LimbException $e)
     {
-      message_box :: write_notice('Some variations were not resized');
+      MessageBox :: writeNotice('Some variations were not resized');
     }
   }
 }

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
-class stats_event_filter_action extends form_action
+class StatsEventFilterAction extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'events_filter_form';
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $request->merge($this->dataspace->export());
 
-    parent :: _valid_perform($request, $response);
+    parent :: _validPerform($request, $response);
   }
 }
 

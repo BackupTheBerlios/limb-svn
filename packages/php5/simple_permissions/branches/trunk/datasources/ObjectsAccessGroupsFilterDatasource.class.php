@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/options_datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/OptionsDatasource.interface.php');
 
-class objects_access_groups_filter_datasource implements options_datasource
+class ObjectsAccessGroupsFilterDatasource implements OptionsDatasource
 {
-  public function get_options_array()
+  public function getOptionsArray()
   {
     $params['order'] = array('priority' => 'ASC');
-    $user_groups = $this->_get_user_groups();
+    $user_groups = $this->_getUserGroups();
 
     $options_array = array();
 
@@ -25,17 +25,17 @@ class objects_access_groups_filter_datasource implements options_datasource
     return $options_array;
   }
 
-  protected function _get_user_groups()
+  protected function _getUserGroups()
   {
-    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
-    $datasource->set_path('/root/user_groups');
-    $datasource->set_site_object_class_name('user_group');
-    $datasource->set_restrict_by_class();
+    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $datasource->setPath('/root/user_groups');
+    $datasource->setSiteObjectClassName('user_group');
+    $datasource->setRestrictByClass();
 
     return $datasource->fetch();
   }
 
-  public function get_default_option()
+  public function getDefaultOption()
   {
     return null;
   }

@@ -8,33 +8,33 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-class class_template_actions_list_datasource implements datasource
+class ClassTemplateActionsListDatasource implements Datasource
 {
-  public function get_dataset(&$counter, $params = array())
+  public function getDataset(&$counter, $params = array())
   {
     $request = Limb :: toolkit()->getRequest();
 
     if(!$class_id = $request->get('class_id'))
-      return new array_dataset();
+      return new ArrayDataset();
 
-    $db_table = Limb :: toolkit()->createDBTable('sys_class');
-    $class_data = $db_table->get_row_by_id($class_id);
+    $db_table = Limb :: toolkit()->createDBTable('SysClass');
+    $class_data = $db_table->getRowById($class_id);
 
     if (!$class_data)
-      return new array_dataset();
+      return new ArrayDataset();
 
-    $site_object = Limb :: toolkit()->createSiteObject($class_data['class_name']);
+    $site_object = Limb :: toolkit()->createSiteObject($class_data['ClassName']);
 
-    $site_object_controller = $site_object->get_controller();
+    $site_object_controller = $site_object->getController();
 
-    $actions = $site_object_controller->get_actions_definitions();
+    $actions = $site_object_controller->getActionsDefinitions();
 
     $result = array();
     foreach($actions as $action => $action_params)
     {
-      if (!isset($action_params['can_have_access_template']) || !$action_params['can_have_access_template'])
+      if (!isset($action_params['can_have_access_template']) ||  !$action_params['can_have_access_template'])
         continue;
 
       if(isset($action_params['action_name']))
@@ -44,7 +44,7 @@ class class_template_actions_list_datasource implements datasource
     }
 
     $counter = sizeof($result);
-    return new array_dataset($result);
+    return new ArrayDataset($result);
   }
 }
 

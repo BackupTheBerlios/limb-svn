@@ -8,11 +8,11 @@
 * $Id: create_article_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/create_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/CreateSiteObjectCommand.class.php');
 
-class create_article_command extends create_site_object_command
+class CreateArticleCommand extends CreateSiteObjectCommand
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'article';
   }

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 if(!defined('HTTP_SHARED_DIR'))
   define('HTTP_SHARED_DIR', LIMB_DIR . '/shared/');
@@ -16,7 +16,7 @@ if(!defined('HTTP_SHARED_DIR'))
 if(!defined('MEDIA_DIR'))
   define('MEDIA_DIR', VAR_DIR . '/media/');
 
-class display_requested_image_command implements command
+class DisplayRequestedImageCommand implements Command
 {
   const DAY_CACHE = 86400;
 
@@ -24,14 +24,14 @@ class display_requested_image_command implements command
   {
     $request = Limb :: toolkit()->getRequest();
     $response = Limb :: toolkit()->getResponse();
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
 
-    $datasource->set_request($request);
+    $datasource->setRequest($request);
 
     if(!$object_data = $datasource->fetch())
       return Limb :: STATUS_ERROR;
 
-    $variation = $this->_get_requested_variation($request);
+    $variation = $this->_getRequestedVariation($request);
 
     if(!isset($object_data['variations'][$variation]))
     {
@@ -60,11 +60,11 @@ class display_requested_image_command implements command
       return;//for tests, fix!!!
     }
 
-    $http_cache = $this->_get_http_cache();
-    $http_cache->set_last_modified_time($object_data['modified_date']);
-    $http_cache->set_cache_time(self :: DAY_CACHE);
+    $http_cache = $this->_getHttpCache();
+    $http_cache->setLastModifiedTime($object_data['modified_date']);
+    $http_cache->setCacheTime(self :: DAY_CACHE);
 
-    if(!$http_cache->check_and_write($response))
+    if(!$http_cache->checkAndWrite($response))
     {
       $response->header("Content-Disposition: filename={$image['file_name']}");
       $response->readfile(MEDIA_DIR. $image['media_id'] .'.media');
@@ -79,22 +79,22 @@ class display_requested_image_command implements command
     return;//for tests, fix!!!
   }
 
-  protected function _get_http_cache()
+  protected function _getHttpCache()
   {
-    include_once(LIMB_DIR . '/class/core/request/http_cache.class.php');
-    return new http_cache();
+    include_once(LIMB_DIR . '/class/core/request/HttpCache.class.php');
+    return new HttpCache();
   }
 
-  protected function _get_requested_variation($request)
+  protected function _getRequestedVariation($request)
   {
     $ini = Limb :: toolkit()->getINI('image_variations.ini');
 
     $variation = 'thumbnail';
-    $image_variations = $ini->get_all();
+    $image_variations = $ini->getAll();
 
     foreach($image_variations as $key => $value)
     {
-      if ($request->has_attribute($key))
+      if ($request->hasAttribute($key))
       {
         $variation = $key;
         break;

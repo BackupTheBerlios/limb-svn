@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class full_text_search_indexers_group extends LimbGroupTest
+class FullTextSearchIndexersGroup extends LimbGroupTest
 {
-  function full_text_search_indexers_group()
+  function fullTextSearchIndexersGroup()
   {
-    $this->LimbGroupTest('full text search indexers tests');
+    $this->limbGroupTest('full text search indexers tests');
   }
 
   function getTestCasesHandles()

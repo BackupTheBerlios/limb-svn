@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class catalog_folder_controller extends site_object_controller
+class CatalogFolderController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -24,7 +24,7 @@ class catalog_folder_controller extends site_object_controller
         'set_metadata' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('set_metadata'),
+            'action_name' => Strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
             'img_src' => '/shared/images/configure.gif'
@@ -35,7 +35,7 @@ class catalog_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.folder.gif',
-            'action_name' => strings :: get('create_catalog_folder', 'catalog'),
+            'action_name' => Strings :: get('create_catalog_folder', 'catalog'),
             'can_have_access_template' => true,
         ),
         'create_catalog_object' => array(
@@ -44,7 +44,7 @@ class catalog_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.generic.gif',
-            'action_name' => strings :: get('create_catalog_object', 'catalog'),
+            'action_name' => Strings :: get('create_catalog_object', 'catalog'),
             'can_have_access_template' => true,
         ),
         'edit' => array(
@@ -53,12 +53,12 @@ class catalog_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/edit.gif',
-            'action_name' => strings :: get('edit_catalog_folder', 'catalog'),
+            'action_name' => Strings :: get('edit_catalog_folder', 'catalog'),
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('publish'),
+            'action_name' => Strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/publish.gif',
             'can_have_access_template' => true,
@@ -66,7 +66,7 @@ class catalog_folder_controller extends site_object_controller
         'unpublish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('unpublish'),
+            'action_name' => Strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/unpublish.gif',
             'can_have_access_template' => true,
@@ -74,7 +74,7 @@ class catalog_folder_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete_catalog_folder', 'catalog'),
+            'action_name' => Strings :: get('delete_catalog_folder', 'catalog'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

@@ -9,20 +9,20 @@
 *
 ***********************************************************************************/
 
-class const_optional_tag_info
+class ConstOptionalTagInfo
 {
   public $tag = 'const:OPTIONAL';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'const_optional_tag';
 }
 
-register_tag(new const_optional_tag_info());
+registerTag(new ConstOptionalTagInfo());
 
-class const_optional_tag extends compiler_directive_tag
+class ConstOptionalTag extends CompilerDirectiveTag
 {
   protected $const;
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -38,21 +38,21 @@ class const_optional_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     $value = 'true';
-    if (isset($this->attributes['value']) && !(boolean)$this->attributes['value'])
+    if (isset($this->attributes['value']) &&  !(boolean)$this->attributes['value'])
       $value = 'false';
 
-    $code->write_php('if (defined("' . $this->const . '") && (constant("' . $this->const . '")) === ' . $value . ') {');
+    $code->writePhp('if (defined("' . $this->const . '") && (constant("' . $this->const . '")) === ' . $value . ') {');
 
-    parent::pre_generate($code);
+    parent::preGenerate($code);
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    parent::post_generate($code);
-    $code->write_php('}');
+    parent::postGenerate($code);
+    $code->writePhp('}');
   }
 }
 

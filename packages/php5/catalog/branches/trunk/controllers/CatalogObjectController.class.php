@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class catalog_object_controller extends site_object_controller
+class CatalogObjectController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -24,7 +24,7 @@ class catalog_object_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit_catalog_object', 'catalog'),
+            'action_name' => Strings :: get('edit_catalog_object', 'catalog'),
             'action_path' => '/catalog_object/edit_catalog_object_action',
             'template_path' => '/catalog_object/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -32,7 +32,7 @@ class catalog_object_controller extends site_object_controller
         'publish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('publish'),
+            'action_name' => Strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/publish.gif',
             'can_have_access_template' => true,
@@ -40,7 +40,7 @@ class catalog_object_controller extends site_object_controller
         'unpublish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('unpublish'),
+            'action_name' => Strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/unpublish.gif',
             'can_have_access_template' => true,
@@ -48,7 +48,7 @@ class catalog_object_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete_catalog_object', 'catalog'),
+            'action_name' => Strings :: get('delete_catalog_object', 'catalog'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

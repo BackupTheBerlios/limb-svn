@@ -8,62 +8,62 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../stats_register.class.php');
-require_once(dirname(__FILE__) . '/../../../stats_counter.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../../StatsRegister.class.php');
+require_once(dirname(__FILE__) . '/../../../StatsCounter.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
 Mock :: generatePartial
 (
-  'stats_register',
-  'stats_register_test_version',
+  'StatsRegister',
+  'StatsRegisterTestVersion',
   array(
-    '_get_ip_register',
-    '_get_counter_register',
-    '_get_referer_register',
-    '_get_search_phrase_register',
+    '_getIpRegister',
+    '_getCounterRegister',
+    '_getRefererRegister',
+    '_getSearchPhraseRegister',
   )
 );
 
 Mock :: generatePartial
 (
-  'stats_counter',
-  'stats_counter_test_version2',
+  'StatsCounter',
+  'StatsCounterTestVersion2',
   array(
-    'set_new_host',
+    'setNewHost',
     'update'
   )
 );
 
 Mock :: generatePartial
 (
-  'stats_ip',
-  'stats_ip_test_version',
+  'StatsIp',
+  'StatsIpTestVersion',
   array(
-    'get_client_ip',
-    'is_new_host',
+    'getClientIp',
+    'isNewHost',
   )
 );
 
 Mock :: generatePartial
 (
-  'stats_referer',
-  'stats_referer_test_version',
+  'StatsReferer',
+  'StatsRefererTestVersion',
   array(
-    'get_referer_page_id'
+    'getRefererPageId'
   )
 );
 
 Mock :: generatePartial
 (
-  'stats_search_phrase',
-  'stats_search_phrase_test_version',
+  'StatsSearchPhrase',
+  'StatsSearchPhraseTestVersion',
   array(
     'register'
   )
 );
 
-class stats_register_test extends LimbTestCase
+class StatsRegisterTest extends LimbTestCase
 {
   var $db = null;
 
@@ -75,11 +75,11 @@ class stats_register_test extends LimbTestCase
 
   var $server = array();
 
-  function stats_register_test()
+  function statsRegisterTest()
   {
-    parent :: LimbTestCase();
+    parent :: limbTestCase();
 
-    $this->db = db_factory :: instance();
+    $this->db = DbFactory :: instance();
   }
 
   function setUp()
@@ -87,33 +87,33 @@ class stats_register_test extends LimbTestCase
     $this->server = $_SERVER;
     $_SERVER['HTTP_HOST'] = 'test';
 
-    $this->stats_counter = new stats_counter();
+    $this->stats_counter = new StatsCounter();
 
-    $this->stats_ip = new stats_ip_test_version($this);
+    $this->stats_ip = new StatsIpTestVersion($this);
     $this->stats_ip->__construct();
-    $this->stats_ip->setReturnValue('get_client_ip', ip :: encode_ip('127.0.0.1'));
+    $this->stats_ip->setReturnValue('getClientIp', Ip :: encodeIp('127.0.0.1'));
 
-    $this->stats_counter = new stats_counter_test_version2($this);
+    $this->stats_counter = new StatsCounterTestVersion2($this);
     $this->stats_counter->__construct();
 
-    $this->stats_referer = new stats_referer_test_version($this);
+    $this->stats_referer = new StatsRefererTestVersion($this);
     $this->stats_referer->__construct();
-    $this->stats_referer->setReturnValue('get_referer_page_id', 10);
+    $this->stats_referer->setReturnValue('getRefererPageId', 10);
 
-    $this->stats_search_phrase = new stats_search_phrase_test_version($this);
+    $this->stats_search_phrase = new StatsSearchPhraseTestVersion($this);
     $this->stats_search_phrase->__construct();
     $this->stats_search_phrase->setReturnValue('register', true);
 
-    $this->stats_register = new stats_register_test_version($this);
+    $this->stats_register = new StatsRegisterTestVersion($this);
     $this->stats_register->__construct();
-    $this->stats_register->setReturnReference('_get_ip_register', $this->stats_ip);
-    $this->stats_register->setReturnReference('_get_counter_register', $this->stats_counter);
-    $this->stats_register->setReturnReference('_get_referer_register', $this->stats_referer);
-    $this->stats_register->setReturnReference('_get_search_phrase_register', $this->stats_search_phrase);
+    $this->stats_register->setReturnValue('_getIpRegister', $this->stats_ip);
+    $this->stats_register->setReturnValue('_getCounterRegister', $this->stats_counter);
+    $this->stats_register->setReturnValue('_getRefererRegister', $this->stats_referer);
+    $this->stats_register->setReturnValue('_getSearchPhraseRegister', $this->stats_search_phrase);
 
     Limb :: toolkit()->getUser()->set('id', 10);
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
@@ -128,79 +128,79 @@ class stats_register_test extends LimbTestCase
 
     $this->stats_register->tally();
 
-    user :: instance()->logout();
+    User :: instance()->logout();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('sys_stat_log');
-    $this->db->sql_delete('sys_stat_ip');
-    $this->db->sql_delete('sys_stat_referer_url');
-    $this->db->sql_delete('sys_stat_counter');
-    $this->db->sql_delete('sys_stat_day_counters');
+    $this->db->sqlDelete('sys_stat_log');
+    $this->db->sqlDelete('sys_stat_ip');
+    $this->db->sqlDelete('sys_stat_referer_url');
+    $this->db->sqlDelete('sys_stat_counter');
+    $this->db->sqlDelete('sys_stat_day_counters');
   }
 
-  function test_register()
+  function testRegister()
   {
-    $date = new date();
+    $date = new Date();
 
-    $this->stats_ip->expectOnce('is_new_host');
-    $this->stats_ip->expectOnce('get_client_ip');
+    $this->stats_ip->expectOnce('isNewHost');
+    $this->stats_ip->expectOnce('getClientIp');
 
-    $this->stats_counter->expectOnce('set_new_host');
+    $this->stats_counter->expectOnce('setNewHost');
     $this->stats_counter->expectOnce('update', array($date));
 
-    $this->stats_referer->expectOnce('get_referer_page_id');
+    $this->stats_referer->expectOnce('getRefererPageId');
 
     $this->stats_search_phrase->expectOnce('register', array($date));
 
-    $this->stats_register->set_register_time($date->get_stamp());
+    $this->stats_register->setRegisterTime($date->getStamp());
 
     $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
 
-    $this->_check_stats_register_record(
+    $this->_checkStatsRegisterRecord(
       $total_records = 1,
       $current_record = 1,
       $user_id = 10,
       $node_id,
       'test',
        LIMB :: STATUS_OK,
-      $this->stats_register->get_register_time_stamp());
+      $this->stats_register->getRegisterTimeStamp());
   }
 
-  function test_clean_log()
+  function testCleanLog()
   {
-    $this->stats_register->set_register_time(time());
+    $this->stats_register->setRegisterTime(time());
     $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
 
-    $this->stats_register->set_register_time(time() + 2*60*60*24);
+    $this->stats_register->setRegisterTime(time() + 2*60*60*24);
     $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
 
-    $this->stats_register->set_register_time(time() + 3*60*60*24);
+    $this->stats_register->setRegisterTime(time() + 3*60*60*24);
     $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
 
-    $this->stats_register->set_register_time(time() + 4*60*60*24);
+    $this->stats_register->setRegisterTime(time() + 4*60*60*24);
     $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
 
-    $this->stats_register->set_register_time(time() + 5*60*60*24);
+    $this->stats_register->setRegisterTime(time() + 5*60*60*24);
     $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
 
-    $this->stats_register->set_register_time(time() + 6*60*60*24);
+    $this->stats_register->setRegisterTime(time() + 6*60*60*24);
     $this->stats_register->register($node_id = 1, 'test', LIMB :: STATUS_OK);
 
-    $date = new date();
-    $date->set_by_stamp(time() + 4*60*60*24 - 10);
-    $this->stats_register->clean_until($date);
+    $date = new Date();
+    $date->setByStamp(time() + 4*60*60*24 - 10);
+    $this->stats_register->cleanUntil($date);
 
-    $this->assertEqual(3, $this->stats_register->count_log_records());
+    $this->assertEqual(3, $this->stats_register->countLogRecords());
   }
 
-  function _check_stats_register_record($total_records, $current_record, $user_id, $node_id, $action, $status, $time)
+  function _checkStatsRegisterRecord($total_records, $current_record, $user_id, $node_id, $action, $status, $time)
   {
-    $this->db->sql_select('sys_stat_log', '*', '', 'id');
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect('sys_stat_log', '*', '', 'id');
+    $arr = $this->db->getArray();
 
     $this->assertTrue(sizeof($arr), $total_records);
     reset($arr);

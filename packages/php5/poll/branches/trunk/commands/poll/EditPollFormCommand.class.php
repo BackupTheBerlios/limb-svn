@@ -8,14 +8,14 @@
 * $Id: edit_poll_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/form_edit_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/FormEditSiteObjectCommand.class.php');
 
-class edit_poll_form_command extends form_edit_site_object_command
+class EditPollFormCommand extends FormEditSiteObjectCommand
 {
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
-    return complex_array :: array_merge(
-        parent :: _define_datamap(),
+    return ComplexArray :: array_merge(
+        parent :: _defineDatamap(),
         array(
           'start_date' => 'start_date',
           'finish_date' => 'finish_date',
@@ -24,13 +24,13 @@ class edit_poll_form_command extends form_edit_site_object_command
     );
   }
 
-  protected function _register_validation_rules($validator, $dataspace)
+  protected function _registerValidationRules($validator, $dataspace)
   {
-    parent :: _register_validation_rules($validator, $dataspace);
+    parent :: _registerValidationRules($validator, $dataspace);
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'start_date'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'finish_date'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'restriction'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'start_date'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'finish_date'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'restriction'));
   }
 }
 

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/search_engine_rules/search_engine_google_rule.class.php');
-require_once(dirname(__FILE__) . '/search_engine_rules/search_engine_yandex_rule.class.php');
-require_once(dirname(__FILE__) . '/search_engine_rules/search_engine_mailru_rule.class.php');
-require_once(dirname(__FILE__) . '/search_engine_rules/search_engine_rambler_rule.class.php');
-require_once(dirname(__FILE__) . '/search_engine_rules/search_engine_aport_rule.class.php');
+require_once(dirname(__FILE__) . '/search_engine_rules/SearchEngineGoogleRule.class.php');
+require_once(dirname(__FILE__) . '/search_engine_rules/SearchEngineYandexRule.class.php');
+require_once(dirname(__FILE__) . '/search_engine_rules/SearchEngineMailruRule.class.php');
+require_once(dirname(__FILE__) . '/search_engine_rules/SearchEngineRamblerRule.class.php');
+require_once(dirname(__FILE__) . '/search_engine_rules/SearchEngineAportRule.class.php');
 
-require_once(dirname(__FILE__) . '/stats_search_phrase.class.php');
+require_once(dirname(__FILE__) . '/StatsSearchPhrase.class.php');
 
-$instance = stats_search_phrase :: instance();
+$instance = StatsSearchPhrase :: instance();
 
-$instance->register_search_engine_rule( new search_engine_google_rule());
-$instance->register_search_engine_rule( new search_engine_yandex_rule());
-$instance->register_search_engine_rule( new search_engine_rambler_rule());
-$instance->register_search_engine_rule( new search_engine_mailru_rule());
-$instance->register_search_engine_rule( new search_engine_aport_rule());
+$instance->registerSearchEngineRule( new SearchEngineGoogleRule());
+$instance->registerSearchEngineRule( new SearchEngineYandexRule());
+$instance->registerSearchEngineRule( new SearchEngineRamblerRule());
+$instance->registerSearchEngineRule( new SearchEngineMailruRule());
+$instance->registerSearchEngineRule( new SearchEngineAportRule());
 
 ?>

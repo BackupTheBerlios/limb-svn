@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class tabs_contents_tag_info
+class TabsContentsTagInfo
 {
   public $tag = 'tabs:contents';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'tabs_contents_tag';
 }
 
-register_tag(new tabs_contents_tag_info());
+registerTag(new TabsContentsTagInfo());
 
-class tabs_contents_tag extends compiler_directive_tag
+class TabsContentsTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof tabs_tag)
+    if (!$this->parent instanceof TabsTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -31,28 +31,28 @@ class tabs_contents_tag extends compiler_directive_tag
     }
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    $code->write_html("
+    $code->writeHtml("
       <table>
       <tr>
         <td height=100% valign=top>
     ");
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
     $tab_class = $this->parent->tab_class;
 
-    $code->write_html("
+    $code->writeHtml("
       </td>
     </tr>
     </table>
     ");
 
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
   }
 }
 

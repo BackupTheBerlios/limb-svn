@@ -9,40 +9,40 @@
 *
 ***********************************************************************************/
 include_once(LIMB_COMMON_DIR . '/setup_HTMLSax.inc.php');
-require_once(dirname(__FILE__) . '/../../shipping/fedex_sax_handler.class.php');
+require_once(dirname(__FILE__) . '/../../shipping/FedexSaxHandler.class.php');
 
-class fedex_sax_handler_test extends LimbTestCase
+class FedexSaxHandlerTest extends LimbTestCase
 {
   var $handler;
   var $parser;
 
   function setUp()
   {
-    $this->parser = new XML_HTMLSax3();
-    $this->handler = new fedex_sax_handler();
+    $this->parser = new XMLHTMLSax3();
+    $this->handler = new FedexSaxHandler();
 
-    $this->parser->set_object($this->handler);
+    $this->parser->setObject($this->handler);
 
-    $this->parser->set_element_handler('open_handler','close_handler');
-    $this->parser->set_data_handler('data_handler');
-    $this->parser->set_escape_handler('escape_handler');
+    $this->parser->setElementHandler('open_handler','close_handler');
+    $this->parser->setDataHandler('data_handler');
+    $this->parser->setEscapeHandler('escape_handler');
   }
 
-  function test_get_options_failed()
+  function testGetOptionsFailed()
   {
     $this->parser->parse('');
 
-    $options = $this->handler->get_options();
+    $options = $this->handler->getOptions();
 
     $this->assertEqual(sizeof($options), 0);
   }
 
-  function test_get_options()
+  function testGetOptions()
   {
     $html = file_get_contents(dirname(__FILE__) . '/fedex_express.html');
     $this->parser->parse($html);
 
-    $options = $this->handler->get_options();
+    $options = $this->handler->getOptions();
 
     $this->assertEqual($options,
       array(

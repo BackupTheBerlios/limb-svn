@@ -8,15 +8,15 @@
 * $Id: create_poll_answer_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/form_create_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/FormCreateSiteObjectCommand.class.php');
 
-class create_poll_answer_form_command extends form_create_site_object_command
+class CreatePollAnswerFormCommand extends FormCreateSiteObjectCommand
 {
-  protected function _register_validation_rules($validator, $dataspace)
+  protected function _registerValidationRules($validator, $dataspace)
   {
-    parent :: _register_validation_rules($validator, $dataspace);
+    parent :: _registerValidationRules($validator, $dataspace);
 
-    $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 }
 

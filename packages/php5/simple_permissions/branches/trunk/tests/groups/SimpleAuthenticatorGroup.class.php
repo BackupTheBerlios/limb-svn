@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class simple_authenticator_group extends LimbGroupTest
+class SimpleAuthenticatorGroup extends LimbGroupTest
 {
-  function simple_authenticator_group()
+  function simpleAuthenticatorGroup()
   {
-    $this->LimbGroupTest('simple permissions authenticator tests');
+    $this->limbGroupTest('simple permissions authenticator tests');
   }
 
   function getTestCasesHandles()

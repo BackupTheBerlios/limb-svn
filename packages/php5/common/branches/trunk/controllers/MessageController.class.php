@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class message_controller extends site_object_controller
+class MessageController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -29,13 +29,13 @@ class message_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.generic.gif',
-            'action_name' => strings :: get('create_message','message'),
+            'action_name' => Strings :: get('create_message','message'),
             'can_have_access_template' => true,
         ),
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit_message','message'),
+            'action_name' => Strings :: get('edit_message','message'),
             'action_path' => '/message/edit_message_action',
             'template_path' => '/message/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -43,7 +43,7 @@ class message_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

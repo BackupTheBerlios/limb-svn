@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-interface search_normalizer
+interface SearchNormalizer
 {
   public function process($content);
 }

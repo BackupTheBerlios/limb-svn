@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__). '\update_param_common_action.class.php');
+require_once(dirname(__FILE__). '\updateParamCommonAction.class.php');
 
-class update_param_action extends update_param_common_action
+class UpdateParamAction extends UpdateParamCommonAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'site_param_form';
   }

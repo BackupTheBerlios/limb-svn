@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
-require_once(dirname(__FILE__) . '/../../template/components/metadata_component.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
+require_once(dirname(__FILE__) . '/../../template/components/MetadataComponent.class.php');
 
 Mock :: generatePartial(
-  'metadata_component',
-  'metadata_component_test_version',
-  array('_get_mapped_controller')
+  'MetadataComponent',
+  'MetadataComponentTestVersion',
+  array('_getMappedController')
 );
 
-Mock :: generate('site_object_controller');
+Mock :: generate('SiteObjectController');
 
-class metadata_component_test extends LimbTestCase
+class MetadataComponentTest extends LimbTestCase
 {
   var $metadata_component = null;
   var $controller = null;
@@ -31,85 +31,85 @@ class metadata_component_test extends LimbTestCase
 
   function setUp()
   {
-    load_testing_db_dump(dirname(__FILE__) . '/../sql/metadata.sql');
+    loadTestingDbDump(dirname(__FILE__) . '/../sql/metadata.sql');
 
-    $this->metadata_component = new metadata_component_test_version($this);
+    $this->metadata_component = new MetadataComponentTestVersion($this);
     $this->metadata_component->__construct();
 
-    $this->controller = new Mocksite_object_controller($this);
+    $this->controller = new MockSiteObjectController($this);
 
-    $this->metadata_component->setReturnReference('_get_mapped_controller', $this->controller);
+    $this->metadata_component->setReturnValue('_getMappedController', $this->controller);
 
     $tree = Limb :: toolkit()->getTree();
 
     $values['identifier'] = 'object_300';
     $values['object_id'] = 300;
-    $root_node_id = $tree->create_root_node($values, false, true);
+    $root_node_id = $tree->createRootNode($values, false, true);
 
     $values['identifier'] = 'object_301';
     $values['object_id'] = 301;
-    $this->parent_node_id = $tree->create_sub_node($root_node_id, $values);
+    $this->parent_node_id = $tree->createSubNode($root_node_id, $values);
 
     $values['identifier'] = 'object_302';
     $values['object_id'] = 302;
-    $this->sub_node_id = $tree->create_sub_node($this->parent_node_id, $values);
+    $this->sub_node_id = $tree->createSubNode($this->parent_node_id, $values);
 
     $values['identifier'] = 'object_303';
     $values['object_id'] = 303;
-    $this->sub_node_id2 = $tree->create_sub_node($root_node_id, $values);
+    $this->sub_node_id2 = $tree->createSubNode($root_node_id, $values);
   }
 
   function tearDown()
   {
-    clear_testing_db_tables();
+    clearTestingDbTables();
 
-    $user = user :: instance();
+    $user = User :: instance();
     $user->logout();
 
     $this->metadata_component->tally();
     $this->controller->tally();
   }
 
-  function test_get_complete_metadata_component_metadata()
+  function testGetCompleteMetadataComponentMetadata()
   {
-    $this->metadata_component->set_node_id($this->sub_node_id);
-    $this->metadata_component->load_metadata();
-    $this->assertEqual($this->metadata_component->get_keywords(), 'object_302_keywords');
-    $this->assertEqual($this->metadata_component->get_description(), 'object_302_description');
+    $this->metadata_component->setNodeId($this->sub_node_id);
+    $this->metadata_component->loadMetadata();
+    $this->assertEqual($this->metadata_component->getKeywords(), 'object_302_keywords');
+    $this->assertEqual($this->metadata_component->getDescription(), 'object_302_description');
   }
 
-  function test_get_partial_object_metadata()
+  function testGetPartialObjectMetadata()
   {
-    $this->metadata_component->set_node_id($this->parent_node_id);
-    $this->metadata_component->load_metadata();
-    $this->assertEqual($this->metadata_component->get_keywords(), 'object_301_keywords');
-    $this->assertEqual($this->metadata_component->get_description(), 'object_300_description');
+    $this->metadata_component->setNodeId($this->parent_node_id);
+    $this->metadata_component->loadMetadata();
+    $this->assertEqual($this->metadata_component->getKeywords(), 'object_301_keywords');
+    $this->assertEqual($this->metadata_component->getDescription(), 'object_300_description');
   }
 
-  function test_get_parent_object_metadata()
+  function testGetParentObjectMetadata()
   {
-    $this->metadata_component->set_node_id($this->sub_node_id2);
-    $this->metadata_component->load_metadata();
-    $this->assertEqual($this->metadata_component->get_keywords(), 'object_300_keywords');
-    $this->assertEqual($this->metadata_component->get_description(), 'object_300_description');
+    $this->metadata_component->setNodeId($this->sub_node_id2);
+    $this->metadata_component->loadMetadata();
+    $this->assertEqual($this->metadata_component->getKeywords(), 'object_300_keywords');
+    $this->assertEqual($this->metadata_component->getDescription(), 'object_300_description');
   }
 
-  function test_get_title()
+  function testGetTitle()
   {
-    $this->metadata_component->set_node_id($this->sub_node_id);
-    $this->metadata_component->set_title_separator(' - ');
+    $this->metadata_component->setNodeId($this->sub_node_id);
+    $this->metadata_component->setTitleSeparator(' - ');
 
-    $this->assertEqual($this->metadata_component->get_title(), 'object_302_title - object_301_title - object_300_title');
+    $this->assertEqual($this->metadata_component->getTitle(), 'object_302_title - object_301_title - object_300_title');
   }
 
-  function test_get_breadcrums()
+  function testGetBreadcrums()
   {
-    $this->controller->expectOnce('get_action');
-    $this->controller->setReturnValue('get_action', false);
-    $this->controller->expectNever('get_action_property');
+    $this->controller->expectOnce('getAction');
+    $this->controller->setReturnValue('getAction', false);
+    $this->controller->expectNever('getActionProperty');
 
-    $this->metadata_component->set_node_id($this->sub_node_id);
-    $breadcrumbs = $this->metadata_component->get_breadcrumbs_dataset();
+    $this->metadata_component->setNodeId($this->sub_node_id);
+    $breadcrumbs = $this->metadata_component->getBreadcrumbsDataset();
 
     $this->assertNull($breadcrumbs->get('is_last'));
 
@@ -117,57 +117,57 @@ class metadata_component_test extends LimbTestCase
     $path = '/';
     $breadcrumbs->reset();
 
-    for($i=1; $i <= $breadcrumbs->get_total_row_count(); $i++)
+    for($i=1; $i <= $breadcrumbs->getTotalRowCount(); $i++)
     {
       $breadcrumbs->next();
       $path .= current($paths) . '/';
       next($paths);
       $this->assertEqual($breadcrumbs->get('path'), $path);
 
-      if ($i == $breadcrumbs->get_total_row_count())
+      if ($i == $breadcrumbs->getTotalRowCount())
         $this->assertTrue($breadcrumbs->get('is_last'));
     }
   }
 
-  function test_get_breadcrums_offset_path()
+  function testGetBreadcrumsOffsetPath()
   {
-    $this->controller->expectOnce('get_action');
-    $this->controller->setReturnValue('get_action', false);
-    $this->controller->expectNever('get_action_property');
+    $this->controller->expectOnce('getAction');
+    $this->controller->setReturnValue('getAction', false);
+    $this->controller->expectNever('getActionProperty');
 
-    $this->metadata_component->set_node_id($this->sub_node_id);
-    $this->metadata_component->set_offset_path('/object_300/object_301/');
+    $this->metadata_component->setNodeId($this->sub_node_id);
+    $this->metadata_component->setOffsetPath('/object_300/object_301/');
 
-    $breadcrumbs = $this->metadata_component->get_breadcrumbs_dataset();
+    $breadcrumbs = $this->metadata_component->getBreadcrumbsDataset();
 
     $paths = array('object_302');
     $path = '/object_300/object_301/';
     $breadcrumbs->reset();
 
-    for($i=1; $i <= $breadcrumbs->get_total_row_count(); $i++)
+    for($i=1; $i <= $breadcrumbs->getTotalRowCount(); $i++)
     {
       $breadcrumbs->next();
       $path .= current($paths) . '/';
       next($paths);
       $this->assertEqual($breadcrumbs->get('path'), $path);
 
-      if ($i == $breadcrumbs->get_total_row_count())
+      if ($i == $breadcrumbs->getTotalRowCount())
         $this->assertTrue($breadcrumbs->get('is_last'));
     }
   }
 
-  function test_get_breadcrums_with_action()
+  function testGetBreadcrumsWithAction()
   {
-    $this->controller->expectOnce('get_action');
-    $this->controller->setReturnValue('get_action', 'action_test');
-    $this->controller->setReturnValue('get_action_property', true, array('action_test', 'display_in_breadcrumbs'));
-    $this->controller->expectOnce('get_default_action');
-    $this->controller->setReturnValue('get_default_action', 'default_action_test');
-    $this->controller->expectOnce('get_action_name');
-    $this->controller->setReturnValue('get_action_name', 'Action Name', array('action_test'));
+    $this->controller->expectOnce('getAction');
+    $this->controller->setReturnValue('getAction', 'actionTest');
+    $this->controller->setReturnValue('getActionProperty', true, array('action_test', 'display_in_breadcrumbs'));
+    $this->controller->expectOnce('getDefaultAction');
+    $this->controller->setReturnValue('getDefaultAction', 'defaultActionTest');
+    $this->controller->expectOnce('getActionName');
+    $this->controller->setReturnValue('getActionName', 'action Name', array('actionTest'));
 
-    $this->metadata_component->set_node_id($this->sub_node_id);
-    $breadcrumbs = $this->metadata_component->get_breadcrumbs_dataset();
+    $this->metadata_component->setNodeId($this->sub_node_id);
+    $breadcrumbs = $this->metadata_component->getBreadcrumbsDataset();
 
     $breadcrumbs->reset();
     while($breadcrumbs->next())
@@ -180,29 +180,29 @@ class metadata_component_test extends LimbTestCase
     $this->assertEqual('Action Name', $title);
   }
 
-  function test_get_breadcrums_with_no_default_action()
+  function testGetBreadcrumsWithNoDefaultAction()
   {
-    $this->controller->expectOnce('get_action');
-    $this->controller->setReturnValue('get_action', 'action_test');
-    $this->controller->setReturnValue('get_action_property', true, array('action_test', 'display_in_breadcrumbs'));
-    $this->controller->expectOnce('get_default_action');
-    $this->controller->setReturnValue('get_default_action', 'action_test');
-    $this->controller->expectNever('get_action_name');
+    $this->controller->expectOnce('getAction');
+    $this->controller->setReturnValue('getAction', 'actionTest');
+    $this->controller->setReturnValue('getActionProperty', true, array('action_test', 'display_in_breadcrumbs'));
+    $this->controller->expectOnce('getDefaultAction');
+    $this->controller->setReturnValue('getDefaultAction', 'actionTest');
+    $this->controller->expectNever('getActionName');
 
-    $this->metadata_component->set_node_id($this->sub_node_id);
-    $breadcrumbs = $this->metadata_component->get_breadcrumbs_dataset();
+    $this->metadata_component->setNodeId($this->sub_node_id);
+    $breadcrumbs = $this->metadata_component->getBreadcrumbsDataset();
   }
 
-  function test_get_breadcrums_with_no_action()
+  function testGetBreadcrumsWithNoAction()
   {
-    $this->controller->expectOnce('get_action');
-    $this->controller->setReturnValue('get_action', 'action_test');
-    $this->controller->setReturnValue('get_action_property', false, array('action_test', 'display_in_breadcrumbs'));
-    $this->controller->expectNever('get_default_action');
-    $this->controller->expectNever('get_action_name');
+    $this->controller->expectOnce('getAction');
+    $this->controller->setReturnValue('getAction', 'actionTest');
+    $this->controller->setReturnValue('getActionProperty', false, array('action_test', 'display_in_breadcrumbs'));
+    $this->controller->expectNever('getDefaultAction');
+    $this->controller->expectNever('getActionName');
 
-    $this->metadata_component->set_node_id($this->sub_node_id);
-    $breadcrumbs = $this->metadata_component->get_breadcrumbs_dataset();
+    $this->metadata_component->setNodeId($this->sub_node_id);
+    $breadcrumbs = $this->metadata_component->getBreadcrumbsDataset();
   }
 }
 

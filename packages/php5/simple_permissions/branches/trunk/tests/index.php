@@ -10,8 +10,8 @@
 ***********************************************************************************/
 ob_start();
 require_once(dirname(__FILE__) . '/setup.php');
-require_once(dirname(__FILE__) . '/simple_permissions_root_group_test.class.php');
-require_once(LIMB_DIR . '/tests/lib/html_test_runner.class.php');
+require_once(dirname(__FILE__) . '/SimplePermissionsRootGroupTest.class.php');
+require_once(LIMB_DIR . '/tests/lib/HtmlTestRunner.class.php');
 
 $root_group = new SimplePermissionsRootGroupTest();
 $test_runner = new HTMLTestRunner();

@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/search_engine_regex_rule.class.php');
+require_once(dirname(__FILE__) . '/SearchEngineRegexRule.class.php');
 
-class search_engine_yahoo_rule extends search_engine_regex_rule
+class SearchEngineYahooRule extends SearchEngineRegexRule
 {
   public function __construct()
   {
     parent :: __construct('yahoo', '/^.*search\.yahoo.*\?p=([^&]*).*$/', 1);
   }
 
-  public function get_matching_phrase()
+  public function getMatchingPhrase()
   {
-    return utf8_to_win1251(parent :: get_matching_phrase());
+    return utf8ToWin1251(parent :: getMatchingPhrase());
   }
 }
 

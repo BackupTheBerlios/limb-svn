@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../cart.class.php');
-require_once(dirname(__FILE__) . '/../../handlers/cart_handler.class.php');
+require_once(dirname(__FILE__) . '/../../Cart.class.php');
+require_once(dirname(__FILE__) . '/../../handlers/CartHandler.class.php');
 
-Mock :: generate('cart');
-Mock :: generate('cart_handler');
-Mock :: generate('cart_item');
+Mock :: generate('Cart');
+Mock :: generate('CartHandler');
+Mock :: generate('CartItem');
 
-class cart_test extends LimbTestCase
+class CartTest extends LimbTestCase
 {
   var $cart;
   var $cart_item;
@@ -23,12 +23,12 @@ class cart_test extends LimbTestCase
 
   function setUp()
   {
-    $this->cart_handler = new Mockcart_handler($this);
-    $this->cart_handler->expectOnce('set_cart_id', array(1));
+    $this->cart_handler = new MockCartHandler($this);
+    $this->cart_handler->expectOnce('setCartId', array(1));
     $this->cart_handler->expectOnce('reset');
 
-    $this->cart = new cart(1, $h = null);
-    $this->cart->set_cart_handler($this->cart_handler);
+    $this->cart = new Cart(1, $h = null);
+    $this->cart->setCartHandler($this->cart_handler);
   }
 
   function tearDown()
@@ -36,165 +36,165 @@ class cart_test extends LimbTestCase
     $this->cart_handler->tally();
   }
 
-  function test_instance()
+  function testInstance()
   {
-    $this->assertTrue(cart :: instance(10) === cart :: instance(10));
+    $this->assertTrue(Cart :: instance(10) === Cart :: instance(10));
   }
 
-  function test_get_default_card_id()
+  function testGetDefaultCardId()
   {
-    $cart = new cart(null, $h = null);
-    $this->assertEqual($cart->get_cart_id(), session_id());
+    $cart = new Cart(null, $h = null);
+    $this->assertEqual($cart->getCartId(), session_id());
   }
 
-  function test_get_default_card_handler()
+  function testGetDefaultCardHandler()
   {
-    $cart = new cart(1, $h = null);
-    $h = $cart->get_cart_handler();
+    $cart = new Cart(1, $h = null);
+    $h = $cart->getCartHandler();
 
-    $this->assertIsA($h, CART_DEFAULT_HANDLER_TYPE . '_cart_handler');
+    $this->assertIsA($h, CART_DEFAULT_HANDLER_TYPE . 'CartHandler');
 
-    $this->assertEqual($h->get_cart_id(), 1);
+    $this->assertEqual($h->getCartId(), 1);
   }
 
-  function test_initialize_cart_handler()
+  function testInitializeCartHandler()
   {
-    $cart_handler = new Mockcart_handler($this);
-    $cart_handler->expectOnce('set_cart_id', array(1));
+    $cart_handler = new MockCartHandler($this);
+    $cart_handler->expectOnce('setCartId', array(1));
     $cart_handler->expectOnce('reset');
-    $cart = new cart(1, $cart_handler);
+    $cart = new Cart(1, $cart_handler);
     $cart_handler->tally();
   }
 
-  function test_set_cart_id()
+  function testSetCartId()
   {
   }
 
-  function test_get_card_id()
+  function testGetCardId()
   {
-    $this->assertEqual($this->cart->get_cart_id(), 1);
+    $this->assertEqual($this->cart->getCartId(), 1);
   }
 
-  function test_get_card_handler()
+  function testGetCardHandler()
   {
-    $this->assertIsA($this->cart->get_cart_handler(), 'Mockcart_handler');
+    $this->assertIsA($this->cart->getCartHandler(), 'MockCartHandler');
   }
 
-  function test_add_item()
+  function testAddItem()
   {
-    $item = new Mockcart_item($this);
-    $this->cart_handler->expectOnce('add_item', array(new IsAExpectation('Mockcart_item')));
-    $this->cart->add_item($item);
+    $item = new MockCartItem($this);
+    $this->cart_handler->expectOnce('addItem', array(new IsAExpectation('MockCartItem')));
+    $this->cart->addItem($item);
   }
 
-  function test_get_item()
+  function testGetItem()
   {
-    $this->cart_handler->expectOnce('get_item', array($item_id = 100));
-    $this->cart->get_item($item_id);
+    $this->cart_handler->expectOnce('getItem', array($item_id = 100));
+    $this->cart->getItem($item_id);
   }
 
-  function test_get_total_summ()
+  function testGetTotalSumm()
   {
-    $item1 = new Mockcart_item($this);
-    $item2 = new Mockcart_item($this);
+    $item1 = new MockCartItem($this);
+    $item2 = new MockCartItem($this);
 
-    $item1->expectOnce('get_summ');
-    $item1->setReturnValue('get_summ', 10);
+    $item1->expectOnce('getSumm');
+    $item1->setReturnValue('getSumm', 10);
 
-    $item2->expectOnce('get_summ');
-    $item2->setReturnValue('get_summ', 40);
+    $item2->expectOnce('getSumm');
+    $item2->setReturnValue('getSumm', 40);
 
-    $this->cart_handler->expectOnce('get_items');
-    $this->cart_handler->setReturnReference('get_items', $arr = array(&$item1, &$item2));
+    $this->cart_handler->expectOnce('getItems');
+    $this->cart_handler->setReturnValue('getItems', $arr = array($item1, $item2));
 
-    $this->assertEqual($this->cart->get_total_summ(), 50);
+    $this->assertEqual($this->cart->getTotalSumm(), 50);
 
     $item1->tally();
     $item2->tally();
   }
 
-  function test_get_total_summ_no_items()
+  function testGetTotalSummNoItems()
   {
-    $this->cart_handler->expectOnce('get_items');
-    $this->cart_handler->setReturnReference('get_items', $arr = array());
+    $this->cart_handler->expectOnce('getItems');
+    $this->cart_handler->setReturnValue('getItems', $arr = array());
 
-    $this->assertEqual($this->cart->get_total_summ(), 0);
+    $this->assertEqual($this->cart->getTotalSumm(), 0);
   }
 
-  function test_remove_item()
+  function testRemoveItem()
   {
-    $this->cart_handler->expectOnce('remove_item', array($item_id = 100));
-    $this->cart->remove_item($item_id);
+    $this->cart_handler->expectOnce('removeItem', array($item_id = 100));
+    $this->cart->removeItem($item_id);
   }
 
-  function test_remove_items()
+  function testRemoveItems()
   {
-    $this->cart_handler->expectOnce('remove_items', array(array($item_id1 = 100, $item_id2 = 100)));
-    $this->cart->remove_items(array($item_id1, $item_id2));
+    $this->cart_handler->expectOnce('removeItems', array(array($item_id1 = 100, $item_id2 = 100)));
+    $this->cart->removeItems(array($item_id1, $item_id2));
   }
 
-  function test_get_items()
+  function testGetItems()
   {
-    $this->cart_handler->expectOnce('get_items');
-    $this->cart->get_items();
+    $this->cart_handler->expectOnce('getItems');
+    $this->cart->getItems();
   }
 
-  function test_get_items_array_dataset()
+  function testGetItemsArrayDataset()
   {
-    $item1 = new Mockcart_item($this);
-    $item2 = new Mockcart_item($this);
+    $item1 = new MockCartItem($this);
+    $item2 = new MockCartItem($this);
 
-    $item1->expectOnce('get_summ');
-    $item1->setReturnValue('get_summ', 10);
+    $item1->expectOnce('getSumm');
+    $item1->setReturnValue('getSumm', 10);
 
-    $item2->expectOnce('get_summ');
-    $item2->setReturnValue('get_summ', 40);
+    $item2->expectOnce('getSumm');
+    $item2->setReturnValue('getSumm', 40);
 
     $item1->expectOnce('export');
-    $item1->setReturnValue('export', array('id' => 'some_id1'));
+    $item1->setReturnValue('export', array('id' => 'someId1'));
 
     $item2->expectOnce('export');
-    $item2->setReturnValue('export', array('id' => 'some_id2'));
+    $item2->setReturnValue('export', array('id' => 'someId2'));
 
-    $this->cart_handler->expectOnce('get_items');
-    $this->cart_handler->setReturnReference('get_items', $arr = array(&$item1, &$item2));
+    $this->cart_handler->expectOnce('getItems');
+    $this->cart_handler->setReturnValue('getItems', $arr = array($item1, $item2));
 
-    $result_array_dataset = new array_dataset(array(
+    $result_array_dataset = new ArrayDataset(array(
         array('id' => 'some_id1', 'summ' => 10),
         array('id' => 'some_id2', 'summ' => 40),
         )
     );
 
-    $this->assertEqual($this->cart->get_items_array_dataset(), $result_array_dataset);
+    $this->assertEqual($this->cart->getItemsArrayDataset(), $result_array_dataset);
 
     $item1->tally();
     $item2->tally();
   }
 
-  function test_count_items()
+  function testCountItems()
   {
-    $this->cart_handler->expectOnce('count_items');
-    $this->cart->count_items();
+    $this->cart_handler->expectOnce('countItems');
+    $this->cart->countItems();
   }
 
-  function test_clear()
+  function testClear()
   {
-    $this->cart_handler->expectOnce('clear_items');
+    $this->cart_handler->expectOnce('clearItems');
     $this->cart->clear();
   }
 
-  function test_merge()
+  function testMerge()
   {
-    $item1 = new Mockcart_item($this);
-    $item2 = new Mockcart_item($this);
+    $item1 = new MockCartItem($this);
+    $item2 = new MockCartItem($this);
 
-    $cart = new Mockcart($this);
+    $cart = new MockCart($this);
 
-    $cart->expectOnce('get_items');
-    $cart->setReturnReference('get_items', $arr = array(&$item1, &$item2));
+    $cart->expectOnce('getItems');
+    $cart->setReturnValue('getItems', $arr = array($item1, $item2));
 
-    $this->cart_handler->expectArgumentsAt(0, 'add_item', array(new IsAExpectation('Mockcart_item')));
-    $this->cart_handler->expectArgumentsAt(1, 'add_item', array(new IsAExpectation('Mockcart_item')));
+    $this->cart_handler->expectArgumentsAt(0, 'addItem', array(new IsAExpectation('MockCartItem')));
+    $this->cart_handler->expectArgumentsAt(1, 'addItem', array(new IsAExpectation('MockCartItem')));
 
     $this->cart->merge($cart);
   }

@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-class metadata_charset_tag_info
+class MetadataCharsetTagInfo
 {
   public $tag = 'metadata:CHARSET';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'metadata_charset_tag';
 }
 
-register_tag(new metadata_charset_tag_info());
+registerTag(new MetadataCharsetTagInfo());
 
-class metadata_charset_tag extends compiler_directive_tag
+class MetadataCharsetTag extends CompilerDirectiveTag
 {
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $locale = '$' . $code->get_temp_variable();
+    $locale = '$' . $code->getTempVariable();
 
-    $code->write_php($locale . ' = Limb :: toolkit()->getLocale(CONTENT_LOCALE_ID);');
-    $code->write_php("echo '<meta http-equiv=\"Content-Type\" content=\"text/html; charset=' . {$locale}->get_charset() . '\">';");
+    $code->writePhp($locale . ' = Limb :: toolkit()->getLocale(CONTENT_LOCALE_ID);');
+    $code->writePhp("echo '<meta http-equiv=\"Content-Type\" content=\"text/html; charset=' . {$locale}->get_charset() . '\">';");
   }
 }
 

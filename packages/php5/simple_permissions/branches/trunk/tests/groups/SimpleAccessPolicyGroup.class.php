@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class simple_access_policy_group extends LimbGroupTest
+class SimpleAccessPolicyGroup extends LimbGroupTest
 {
-  function simple_access_policy_group()
+  function simpleAccessPolicyGroup()
   {
-    $this->LimbGroupTest('simple permissions access policy tests');
+    $this->limbGroupTest('simple permissions access policy tests');
   }
 
   function getTestCasesHandles()

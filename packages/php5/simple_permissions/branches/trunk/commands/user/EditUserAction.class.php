@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php');
 
-class edit_user_action extends form_edit_site_object_action
+class EditUserAction extends FormEditSiteObjectAction
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'user_object';
   }
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'edit_user';
   }
 
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
-    return complex_array :: array_merge(
-        parent :: _define_datamap(),
+    return ComplexArray :: array_merge(
+        parent :: _defineDatamap(),
         array(
           'name' => 'name',
           'lastname' => 'lastname',
@@ -34,29 +34,29 @@ class edit_user_action extends form_edit_site_object_action
     );
   }
 
-  protected function _define_increase_version_flag()
+  protected function _defineIncreaseVersionFlag()
   {
     return false;
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    parent :: _init_validator();
+    parent :: _initValidator();
 
     $request = Limb :: toolkit()->getRequest();
 
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
     if ($object_data = $datasource->fetch())
     {
-      $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/unique_user_rule', 'identifier', $object_data['identifier']));
-      $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/unique_user_email_rule', 'email', $object_data['email']));
+      $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/unique_user_rule', 'identifier', $object_data['identifier']));
+      $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/unique_user_email_rule', 'email', $object_data['email']));
     }
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'name'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'email'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'email'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'name'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'email'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'email'));
   }
 }
 

@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php');
 
-class change_password_action extends form_edit_site_object_action
+class ChangePasswordAction extends FormEditSiteObjectAction
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'user_object';
   }
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'change_password';
   }
 
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
-    return complex_array :: array_merge(
-        parent :: _define_datamap(),
+    return ComplexArray :: array_merge(
+        parent :: _defineDatamap(),
         array(
           'identifier' => 'identifier',
           'password' => 'password',
@@ -34,45 +34,45 @@ class change_password_action extends form_edit_site_object_action
     );
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'second_password'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'second_password'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
   }
 
-  public function _valid_perform($request, $response)
+  public function _validPerform($request, $response)
   {
-    parent :: _valid_perform($request, $response);
+    parent :: _validPerform($request, $response);
 
-    if ($this->_changing_own_password())
+    if ($this->_changingOwnPassword())
     {
       Limb :: toolkit()->getUser()->logout();
-      message_box :: write_warning(strings :: get('need_relogin', 'user'));
+      MessageBox :: writeWarning(Strings :: get('need_relogin', 'user'));
     }
     else
     {
-      $object_data = $this->_load_object_data();
-      Limb :: toolkit()->getSession()->storage_destroy_user($object_data['id']);
+      $object_data = $this->_loadObjectData();
+      Limb :: toolkit()->getSession()->storageDestroyUser($object_data['id']);
     }
 
-    if ($request->get_status() == request :: STATUS_SUCCESS)
+    if ($request->getStatus() == Request :: STATUS_SUCCESS)
     {
-      if($request->has_attribute('popup'))
-        $response->write(close_popup_response($request, '/'));
+      if($request->hasAttribute('popup'))
+        $response->write(closePopupResponse($request, '/'));
     }
   }
 
-  protected function _changing_own_password()
+  protected function _changingOwnPassword()
   {
-    $object_data = $this->_load_object_data();
+    $object_data = $this->_loadObjectData();
 
-    return ($object_data['id'] == Limb :: toolkit()->getUser()->get_id()) ? true : false;
+    return ($object_data['id'] == Limb :: toolkit()->getUser()->getId()) ? true : false;
   }
 
-  protected function _update_object_operation()
+  protected function _updateObjectOperation()
   {
-    $this->object->change_password();
+    $this->object->changePassword();
   }
 }
 

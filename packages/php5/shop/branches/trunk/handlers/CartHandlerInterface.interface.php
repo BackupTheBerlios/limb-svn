@@ -10,28 +10,28 @@
 ***********************************************************************************/
 require_once dirname(__FILE__) . '/cart_handler_interface.interface.php';
 
-interface cart_handler_interface
+interface CartHandlerInterface
 {
   public function reset();
 
-  public function get_cart_id();
+  public function getCartId();
 
-  public function set_cart_id($cart_id);
+  public function setCartId($cart_id);
 
-  public function add_item($new_item);
+  public function addItem($new_item);
 
-  public function get_item($id);
+  public function getItem($id);
 
-  public function remove_item($item_id);
+  public function removeItem($item_id);
 
-  public function remove_items($item_ids);
+  public function removeItems($item_ids);
 
-  public function get_items();
+  public function getItems();
 
-  public function set_items($items);
+  public function setItems($items);
 
-  public function count_items();
+  public function countItems();
 
-  public function clear_items();
+  public function clearItems();
 }
 ?>

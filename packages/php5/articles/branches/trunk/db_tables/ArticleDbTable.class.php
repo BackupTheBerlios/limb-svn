@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/one_table_object_db_table.class.php');
+require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
 
-class article_db_table extends one_table_object_db_table
+class ArticleDbTable extends OneTableObjectDbTable
 {
-  function _define_columns()
+  function _defineColumns()
   {
-    return complex_array :: array_merge(
-      parent :: _define_columns(),
+    return ComplexArray :: array_merge(
+      parent :: _defineColumns(),
       array(
         'annotation' => '',
         'content' => '',

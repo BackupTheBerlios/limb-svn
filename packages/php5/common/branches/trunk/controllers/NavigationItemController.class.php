@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class navigation_item_controller extends site_object_controller
+class NavigationItemController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -30,13 +30,13 @@ class navigation_item_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.generic.gif',
-            'action_name' => strings :: get('create_menu_item','navigation'),
+            'action_name' => Strings :: get('create_menu_item','navigation'),
             'can_have_access_template' => true,
         ),
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit_menu_item', 'navigation'),
+            'action_name' => Strings :: get('edit_menu_item', 'navigation'),
             'action_path' => '/navigation_item/edit_navigation_item_action',
             'template_path' => '/navigation_item/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -44,7 +44,7 @@ class navigation_item_controller extends site_object_controller
         'publish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('publish'),
+            'action_name' => Strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/publish.gif',
             'can_have_access_template' => true,
@@ -52,7 +52,7 @@ class navigation_item_controller extends site_object_controller
         'unpublish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('unpublish'),
+            'action_name' => Strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/unpublish.gif',
             'can_have_access_template' => true,
@@ -60,7 +60,7 @@ class navigation_item_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete_menu_item', 'navigation'),
+            'action_name' => Strings :: get('delete_menu_item', 'navigation'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

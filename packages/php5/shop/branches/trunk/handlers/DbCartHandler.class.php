@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/cart_handler.class.php');
+require_once(dirname(__FILE__) . '/CartHandler.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
-class db_cart_handler extends cart_handler
+class DbCartHandler extends CartHandler
 {
   protected $cart_db_table = null;
 
@@ -19,54 +19,54 @@ class db_cart_handler extends cart_handler
   {
     parent :: __construct($cart_id);
 
-    $this->cart_db_table = Limb :: toolkit()->createDBTable('cart');
+    $this->cart_db_table = Limb :: toolkit()->createDBTable('Cart');
 
     register_shutdown_function(array($this, '_db_cart_handler'));
   }
 
   public function reset()
   {
-    $this->clear_items();
+    $this->clearItems();
 
-    $this->_load_items_for_visitor();
+    $this->_loadItemsForVisitor();
 
-    $user = $this->_get_user();
-    if($user->is_logged_in())
+    $user = $this->_getUser();
+    if($user->isLoggedIn())
     {
-      $this->_load_items_for_user();
+      $this->_loadItemsForUser();
     }
   }
 
-  protected function _load_items_for_user()
+  protected function _loadItemsForUser()
   {
-    $user = $this->_get_user();
+    $user = $this->_getUser();
 
-    $conditions = 'user_id = ' . $user->get_id() . ' AND cart_id <> "'. $this->_cart_id . '"';
+    $conditions = 'user_id = ' . $user->getId() . ' AND cart_id <> "'. $this->_cart_id . '"';
 
-    if (!$this->_load_items_by_conditions($conditions))
+    if (!$this->_loadItemsByConditions($conditions))
       return;
 
     $this->cart_db_table->delete($conditions);
   }
 
-  protected function _load_items_for_visitor()
+  protected function _loadItemsForVisitor()
   {
     $conditions = array(
       'cart_id' => $this->_cart_id
     );
 
-    return $this->_load_items_by_conditions($conditions);
+    return $this->_loadItemsByConditions($conditions);
   }
 
-  protected function _load_items_by_conditions($conditions)
+  protected function _loadItemsByConditions($conditions)
   {
-    if($arr = $this->cart_db_table->get_list($conditions))
+    if($arr = $this->cart_db_table->getList($conditions))
     {
       $record = reset($arr);
       $items = unserialize($record['cart_items']);
 
       foreach(array_keys($items) as $key)
-        $this->add_item($items[$key]);
+        $this->addItem($items[$key]);
 
       return true;
     }
@@ -74,24 +74,24 @@ class db_cart_handler extends cart_handler
     return false;
   }
 
-  protected function _get_user()
+  protected function _getUser()
   {
     return Limb :: toolkit()->getUser();
   }
 
-  public function _db_cart_handler()
+  public function _dbCartHandler()
   {
-    $user = $this->_get_user();
+    $user = $this->_getUser();
 
     $cart_data = array(
-      'user_id' => $user->get_id(),
+      'user_id' => $user->getId(),
       'last_activity_time' => time(),
-      'cart_items' => serialize($this->get_items()),
+      'cart_items' => serialize($this->getItems()),
       'cart_id' => $this->_cart_id,
     );
 
     $conditions['cart_id'] = $this->_cart_id;
-    $records = $this->cart_db_table->get_list($conditions);
+    $records = $this->cart_db_table->getList($conditions);
 
     if (!count($records))
     {
@@ -100,7 +100,7 @@ class db_cart_handler extends cart_handler
     else
     {
       $record = reset($records);
-      $this->cart_db_table->update_by_id($record['id'], $cart_data);
+      $this->cart_db_table->updateById($record['id'], $cart_data);
     }
   }
 }

@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
-class tree_display_action extends action
+class TreeDisplayAction extends Action
 {
   public function perform($request, $response)
   {
-    $parents =& Limb :: toolkit()->getSession()->get_reference('tree_expanded_parents');
-    Limb :: toolkit()->getTree()->set_expanded_parents($parents);
+    $parents =& Limb :: toolkit()->getSession()->getReference('tree_expanded_parents');
+    Limb :: toolkit()->getTree()->setExpandedParents($parents);
   }
 }
 

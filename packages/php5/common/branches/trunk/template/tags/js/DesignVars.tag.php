@@ -9,23 +9,23 @@
 *
 ***********************************************************************************/
 
-class js_design_vars_tag_info
+class JsDesignVarsTagInfo
 {
   public $tag = 'js:DESIGN_VARS';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'js_design_vars_tag';
 }
 
-register_tag(new js_design_vars_tag_info());
+registerTag(new JsDesignVarsTagInfo());
 
-class js_design_vars_tag extends compiler_directive_tag
+class JsDesignVarsTag extends CompilerDirectiveTag
 {
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_html("<script language='javascript'>\n");
-    $code->write_php('echo "var HTTP_SHARED_DIR = \'" . addslashes(fs :: clean_path(constant("HTTP_SHARED_DIR"))) . "\';";');
-    $code->write_php('echo "var LOCAL_DESIGN_DIR = \'" . addslashes(fs :: clean_path(constant("LIMB_APP_DIR") . "/design/")) . "\';";');
-    $code->write_html("\n</script>");
+    $code->writeHtml("<script language='javascript'>\n");
+    $code->writePhp('echo "var HTTP_SHARED_DIR = \'" . addslashes(fs :: clean_path(constant("HTTP_SHARED_DIR"))) . "\';";');
+    $code->writePhp('echo "var LOCAL_DESIGN_DIR = \'" . addslashes(fs :: clean_path(constant("LIMB_APP_DIR") . "/design/")) . "\';";');
+    $code->writeHtml("\n</script>");
   }
 }
 

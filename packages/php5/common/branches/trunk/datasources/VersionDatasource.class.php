@@ -8,36 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-class version_datasource implements datasource
+class VersionDatasource implements Datasource
 {
-  public function get_dataset(&$counter, $params=array())
+  public function getDataset(&$counter, $params=array())
   {
     $counter = 0;
 
     $request = Limb :: toolkit()->getRequest();
 
     if (!$version = $request->get('version'))
-      return new empty_dataset();
+      return new EmptyDataset();
 
     if (!$node_id = $request->get('version_node_id'))
-      return new empty_dataset();
+      return new EmptyDataset();
 
     $version = (int)$version;
     $node_id = (int)$node_id;
 
-    $datasource = Limb :: toolkit()->getDatasource('single_object_datasource');
-    $datasource->set_node_id($node_id);
+    $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
+    $datasource->setNodeId($node_id);
 
-    if(!$site_object = wrap_with_site_object($datasource->fetch()))
-      return new empty_dataset();
+    if(!$site_object = wrapWithSiteObject($datasource->fetch()))
+      return new EmptyDataset();
 
-    if(!is_subclass_of($site_object, 'content_object'))
-      return new empty_dataset();
+    if(!is_subclass_of($site_object, 'ContentObject'))
+      return new EmptyDataset();
 
-    if(($version_data = $site_object->fetch_version($version)) === false)
-      return new empty_dataset();
+    if(($version_data = $site_object->fetchVersion($version)) === false)
+      return new EmptyDataset();
 
     $result = array();
 
@@ -48,7 +48,7 @@ class version_datasource implements datasource
       $result[] = $data;
     }
 
-    return new array_dataset($result);
+    return new ArrayDataset($result);
   }
 }
 

@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-class class_datasource implements datasource
+class ClassDatasource implements Datasource
 {
-  public function get_dataset(&$counter, $params=array())
+  public function getDataset(&$counter, $params=array())
   {
     $counter = 0;
 
     if(!$class_id = Limb :: toolkit()->getRequest()->get('class_id'))
-      return new array_dataset();
+      return new ArrayDataset();
 
-    $db_table = Limb :: toolkit()->createDBTable('sys_class');
-    $class_data = $db_table->get_row_by_id($class_id);
+    $db_table = Limb :: toolkit()->createDBTable('SysClass');
+    $class_data = $db_table->getRowById($class_id);
 
     if ($class_data)
     {
       $counter = 1;
-      return new array_dataset(array(0 => $class_data));
+      return new ArrayDataset(array(0 => $class_data));
     }
     else
-      return new array_dataset(array());
+      return new ArrayDataset(array());
   }
 }
 

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-class poll_all_results_datasource implements datasource
+class PollAllResultsDatasource implements Datasource
 {
-  public function get_dataset(&$counter, $params = array())
+  public function getDataset(&$counter, $params = array())
   {
-    $questions = $this->_load_all_questions();
+    $questions = $this->_loadAllQuestions();
 
     if(!count($questions))
-      return new array_dataset(array());
+      return new ArrayDataset(array());
 
     foreach($questions as $key => $data)
     {
-      $questions[$key]['answers'] = $this->_load_answers($data['path']);
+      $questions[$key]['answers'] = $this->_loadAnswers($data['path']);
 
       $questions[$key]['total_count'] = 0;
 
@@ -50,25 +50,25 @@ class poll_all_results_datasource implements datasource
     }
 
     $counter = sizeof($questions);
-    return new array_dataset($questions);
+    return new ArrayDataset($questions);
   }
 
-  protected function _load_all_questions()
+  protected function _loadAllQuestions()
   {
-    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
-    $datasource->set_path('root/polls');
-    $datasource->set_site_object_class_name('poll');
-    $datasource->set_restrict_by_class();
+    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $datasource->setPath('root/polls');
+    $datasource->setSiteObjectClassName('poll');
+    $datasource->setRestrictByClass();
 
     return $datasource->fetch();
   }
 
-  protected function _load_answers($question_path)
+  protected function _loadAnswers($question_path)
   {
-    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
-    $datasource->set_path($question_path);
-    $datasource->set_site_object_class_name('poll_answer');
-    $datasource->set_restrict_by_class();
+    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $datasource->setPath($question_path);
+    $datasource->setSiteObjectClassName('poll_answer');
+    $datasource->setRestrictByClass();
 
     return $datasource->fetch();
   }

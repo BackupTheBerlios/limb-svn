@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class common_site_objects_group extends LimbGroupTest
+class CommonSiteObjectsGroup extends LimbGroupTest
 {
-  function common_site_objects_group()
+  function commonSiteObjectsGroup()
   {
-    $this->LimbGroupTest('site objects tests');
+    $this->limbGroupTest('site objects tests');
   }
 
   function getTestCasesHandles()

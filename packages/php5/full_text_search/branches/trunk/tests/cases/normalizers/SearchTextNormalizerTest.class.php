@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../normalizers/search_text_normalizer.class.php');
+require_once(dirname(__FILE__) . '/../../../normalizers/SearchTextNormalizer.class.php');
 
-class search_text_normalizer_test extends LimbTestCase
+class SearchTextNormalizerTest extends LimbTestCase
 {
   var $normalizer = null;
 
-  function search_text_normalizer_test($name = 'text search normalizer test case')
+  function searchTextNormalizerTest($name = 'text search normalizer test case')
   {
-    $this->normalizer = new search_text_normalizer();
+    $this->normalizer = new SearchTextNormalizer();
 
-    parent :: LimbTestCase($name);
+    parent :: limbTestCase($name);
   }
 
-  function test_process()
+  function testProcess()
   {
     $result = $this->normalizer->process('"mysql"
       wow-it\'s JUST \'so\' `cool` i can\'t believe it <b>root</b>"he-he"');

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class user_groups_folder_controller extends site_object_controller
+class UserGroupsFolderController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -29,13 +29,13 @@ class user_groups_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.folder.gif',
-            'action_name' => strings :: get('create_user_group', 'user_group'),
+            'action_name' => Strings :: get('create_user_group', 'user_group'),
 
         ),
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
             'img_src' => '/shared/images/edit.gif'

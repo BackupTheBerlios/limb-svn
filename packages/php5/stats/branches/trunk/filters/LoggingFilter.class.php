@@ -8,34 +8,34 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
+require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 
-class logging_filter implements intercepting_filter
+class LoggingFilter implements InterceptingFilter
 {
   public function run($filter_chain, $request, $response)
   {
     $filter_chain->next();
 
-    debug :: add_timing_point('logging filter started');
+    Debug :: addTimingPoint('logging filter started');
 
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
-    $object = wrap_with_site_object($datasource->fetch());
+    $object = wrapWithSiteObject($datasource->fetch());
 
-    $controller = $object->get_controller();
+    $controller = $object->getController();
 
-    include_once(dirname(__FIlE__) . '/../stats_register.class.php');
+    include_once(dirname(__FIlE__) . '/../StatsRegister.class.php');
 
-    $stats_register = new stats_register();
+    $stats_register = new StatsRegister();
 
     $stats_register->register(
-      $object->get_node_id(),
-      $controller->get_action($request),
-      $request->get_status()
+      $object->getNodeId(),
+      $controller->getAction($request),
+      $request->getStatus()
     );
 
-    debug :: add_timing_point('logging filter finished');
+    Debug :: addTimingPoint('logging filter finished');
   }
 }
 ?>

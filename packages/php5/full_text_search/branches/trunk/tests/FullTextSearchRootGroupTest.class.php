@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/tests/cases/limb_group_test.class.php');
+require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
 
 class FullTextSearchRootGroupTest extends LimbGroupTest
 {
-  function FullTextSearchRootGroupTest()
+  function fullTextSearchRootGroupTest()
   {
-    $this->LimbGroupTest('full text search package tests');
+    $this->limbGroupTest('full text search package tests');
   }
 
   function getTestCasesHandles()

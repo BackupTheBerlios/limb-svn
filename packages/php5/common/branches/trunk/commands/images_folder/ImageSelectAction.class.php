@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
-class image_select_action extends action
+class ImageSelectAction extends Action
 {
   public function perform($request, $response)
   {
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
     $object = $datasource->fetch();
 

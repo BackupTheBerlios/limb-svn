@@ -8,38 +8,38 @@
 * $Id$
 *
 ***********************************************************************************/
-class metadata_metadata_tag_info
+class MetadataMetadataTagInfo
 {
   public $tag = 'METADATA:METADATA';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'metadata_metadata_tag';
 }
 
-register_tag(new metadata_metadata_tag_info());
+registerTag(new MetadataMetadataTagInfo());
 
-class metadata_metadata_tag extends server_component_tag
+class MetadataMetadataTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/metadata_component';
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $ref = $this->get_component_ref_code();
-    $code->write_php("{$ref}->load_metadata();\n");
+    $ref = $this->getComponentRefCode();
+    $code->writePhp("{$ref}->load_metadata();\n");
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code();
+    return $this->getComponentRefCode();
   }
 }
 

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-class user_membership_datasource implements datasource
+class UserMembershipDatasource implements Datasource
 {
-  public function get_dataset(&$counter, $params = array())
+  public function getDataset(&$counter, $params = array())
   {
-    $user_groups = $this->_get_user_groups();
+    $user_groups = $this->_getUserGroups();
 
     $result = array();
     foreach($user_groups as $id => $group_data)
@@ -24,15 +24,15 @@ class user_membership_datasource implements datasource
     }
 
     $counter = sizeof($result);
-    return new array_dataset($result);
+    return new ArrayDataset($result);
   }
 
-  protected function _get_user_groups()
+  protected function _getUserGroups()
   {
-    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
-    $datasource->set_path('/root/user_groups');
-    $datasource->set_site_object_class_name('user_group');
-    $datasource->set_restrict_by_class();
+    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $datasource->setPath('/root/user_groups');
+    $datasource->setSiteObjectClassName('user_group');
+    $datasource->setRestrictByClass();
 
     return $datasource->fetch();
   }

@@ -9,23 +9,23 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
-class access_policy
+class AccessPolicy
 {
   const ACCESSOR_TYPE_GROUP = 0;
   const ACCESSOR_TYPE_USER = 1;
 
-  public function get_objects_access_by_ids($ids, $accessor_type)
+  public function getObjectsAccessByIds($ids, $accessor_type)
   {
-    if (!is_array($ids) || !count($ids))
+    if (!is_array($ids) ||  !count($ids))
       return array();
 
-    $db_table = Limb :: toolkit()->createDBTable('sys_object_access');
+    $db_table = Limb :: toolkit()->createDBTable('SysObjectAccess');
 
     $ids_sql = 'object_id IN ('. implode(',', $ids) . ') AND accessor_type=' . $accessor_type;
 
-    $arr = $db_table->get_list($ids_sql);
+    $arr = $db_table->getList($ids_sql);
 
     $result = array();
     foreach($arr as $id => $data)
@@ -34,13 +34,13 @@ class access_policy
     return $result;
   }
 
-  public function get_actions_access($behaviour_id, $accessor_type)
+  public function getActionsAccess($behaviour_id, $accessor_type)
   {
-    $db_table = Limb :: toolkit()->createDBTable('sys_action_access');
+    $db_table = Limb :: toolkit()->createDBTable('SysActionAccess');
 
     $condition = 'behaviour_id ='. $behaviour_id . ' AND accessor_type=' . $accessor_type;
 
-    $arr = $db_table->get_list($condition);
+    $arr = $db_table->getList($condition);
 
     $result = array();
     foreach($arr as $id => $data)
@@ -49,9 +49,9 @@ class access_policy
     return $result;
   }
 
-  public function save_actions_access($behaviour_id, $policy_array, $accessor_type)
+  public function saveActionsAccess($behaviour_id, $policy_array, $accessor_type)
   {
-    $db_table = Limb :: toolkit()->createDBTable('sys_action_access');
+    $db_table = Limb :: toolkit()->createDBTable('SysActionAccess');
     $conditions['behaviour_id'] = $behaviour_id;
     $conditions['accessor_type'] = $accessor_type;
 
@@ -77,26 +77,26 @@ class access_policy
     return true;
   }
 
-  public function save_new_object_access($object, $parent_object, $action)
+  public function saveNewObjectAccess($object, $parent_object, $action)
   {
-    $behaviour_id = $parent_object->get_behaviour_id();
-    $object_id = $object->get_id();
-    $parent_object_id = $parent_object->get_id();
+    $behaviour_id = $parent_object->getBehaviourId();
+    $object_id = $object->getId();
+    $parent_object_id = $parent_object->getId();
 
-    $group_template = $this->get_access_template($behaviour_id, $action, self :: ACCESSOR_TYPE_GROUP);
-    $user_template = $this->get_access_template($behaviour_id, $action, self :: ACCESSOR_TYPE_USER);
+    $group_template = $this->getAccessTemplate($behaviour_id, $action, self :: ACCESSOR_TYPE_GROUP);
+    $user_template = $this->getAccessTemplate($behaviour_id, $action, self :: ACCESSOR_TYPE_USER);
 
     if (!count($group_template))
-      $group_result = $this->copy_objects_access($object_id, $parent_object_id, self :: ACCESSOR_TYPE_GROUP);
+      $group_result = $this->copyObjectsAccess($object_id, $parent_object_id, self :: ACCESSOR_TYPE_GROUP);
     else
-      $group_result = $this->save_objects_access(array($object_id => $group_template), self :: ACCESSOR_TYPE_GROUP);
+      $group_result = $this->saveObjectsAccess(array($object_id => $group_template), self :: ACCESSOR_TYPE_GROUP);
 
     if (!count($user_template))
-      $user_result = $this->copy_objects_access($object_id, $parent_object_id, self :: ACCESSOR_TYPE_USER);
+      $user_result = $this->copyObjectsAccess($object_id, $parent_object_id, self :: ACCESSOR_TYPE_USER);
     else
-      $user_result = $this->save_objects_access(array($object_id => $user_template), self :: ACCESSOR_TYPE_USER);
+      $user_result = $this->saveObjectsAccess(array($object_id => $user_template), self :: ACCESSOR_TYPE_USER);
 
-    if (!$group_result && !$user_result)
+    if (!$group_result &&  !$user_result)
     {
        throw new LimbException('parent object has no acccess records at all',
         array('parent_id' => $parent_object_id)
@@ -106,42 +106,42 @@ class access_policy
       return true;
   }
 
-  public function apply_access_templates($object, $action)
+  public function applyAccessTemplates($object, $action)
   {
-    $behaviour_id = $object->get_behaviour_id();
-    $object_id = $object->get_id();
+    $behaviour_id = $object->getBehaviourId();
+    $object_id = $object->getId();
 
-    $user_templates = $this->get_access_templates($behaviour_id, self :: ACCESSOR_TYPE_USER);
-    $group_templates = $this->get_access_templates($behaviour_id, self :: ACCESSOR_TYPE_GROUP);
+    $user_templates = $this->getAccessTemplates($behaviour_id, self :: ACCESSOR_TYPE_USER);
+    $group_templates = $this->getAccessTemplates($behaviour_id, self :: ACCESSOR_TYPE_GROUP);
 
-    if(!isset($user_templates[$action]) && !isset($group_templates[$action]))
+    if(!isset($user_templates[$action]) &&  !isset($group_templates[$action]))
     {
        throw new LimbException('access template is not set',
         array('action' => $action, 'class_name' => get_class($object))
       );
     }
 
-    $db_table = Limb :: toolkit()->createDBTable('sys_object_access');
+    $db_table = Limb :: toolkit()->createDBTable('SysObjectAccess');
 
     $conditions['object_id'] = $object_id;
 
     $db_table->delete($conditions);
 
-    $this->save_objects_access(array($object_id => $group_templates[$action]), self :: ACCESSOR_TYPE_GROUP);
-    $this->save_objects_access(array($object_id => $user_templates[$action]), self :: ACCESSOR_TYPE_USER);
+    $this->saveObjectsAccess(array($object_id => $group_templates[$action]), self :: ACCESSOR_TYPE_GROUP);
+    $this->saveObjectsAccess(array($object_id => $user_templates[$action]), self :: ACCESSOR_TYPE_USER);
 
     return true;
   }
 
-  public function save_objects_access($policy_array, $accessor_type, $accessor_ids = array())
+  public function saveObjectsAccess($policy_array, $accessor_type, $accessor_ids = array())
   {
-    $db_table = Limb :: toolkit()->createDBTable('sys_object_access');
+    $db_table = Limb :: toolkit()->createDBTable('SysObjectAccess');
 
     foreach($policy_array as $object_id => $access_data)
     {
       $conditions = 'object_id='. (int)$object_id . ' AND accessor_type=' . $accessor_type;
       if (count($accessor_ids))
-        $conditions .= ' AND '. sql_in('accessor_id', $accessor_ids);
+        $conditions .= ' AND '. sqlIn('accessor_id', $accessor_ids);
 
       $db_table->delete($conditions);
 
@@ -163,9 +163,9 @@ class access_policy
     return true;
   }
 
-  public function copy_object_access($object_id, $source_id, $accessor_type)
+  public function copyObjectAccess($object_id, $source_id, $accessor_type)
   {
-    $db_table = Limb :: toolkit()->createDBTable('sys_object_access');
+    $db_table = Limb :: toolkit()->createDBTable('SysObjectAccess');
 
     $conditions['object_id'] = $object_id;
     $conditions['accessor_type'] = $accessor_type;
@@ -174,7 +174,7 @@ class access_policy
 
     $conditions['object_id'] = $source_id;
 
-    $rows = $db_table->get_list($conditions);
+    $rows = $db_table->getList($conditions);
     if(!count($rows))
       return false;
 
@@ -188,10 +188,10 @@ class access_policy
     return true;
   }
 
-  public function save_access_templates($behaviour_id, $template_array, $accessor_type)
+  public function saveAccessTemplates($behaviour_id, $template_array, $accessor_type)
   {
-    $db_table = Limb :: toolkit()->createDBTable('sys_action_access_template');
-    $item_db_table= Limb :: toolkit()->createDBTable('sys_action_access_template_item');
+    $db_table = Limb :: toolkit()->createDBTable('SysActionAccessTemplate');
+    $item_db_table= Limb :: toolkit()->createDBTable('SysActionAccessTemplateItem');
 
     $conditions['behaviour_id'] = $behaviour_id;
     $conditions['accessor_type'] = $accessor_type;
@@ -205,7 +205,7 @@ class access_policy
       $data['action_name'] = $action_name;
       $data['accessor_type'] = $accessor_type;
       $db_table->insert($data);
-      $template_id = $db_table->get_last_insert_id();
+      $template_id = $db_table->getLastInsertId();
 
       foreach($access_data as $accessor_id => $access)
       {
@@ -223,7 +223,7 @@ class access_policy
     return true;
   }
 
-  public function get_access_templates($behaviour_id, $accessor_type)
+  public function getAccessTemplates($behaviour_id, $accessor_type)
   {
     $db = Limb :: toolkit()->getDB();
 
@@ -238,8 +238,8 @@ class access_policy
             WHERE saat.behaviour_id = {$behaviour_id} AND
             saati.template_id = saat.id AND saat.accessor_type = " . $accessor_type;
 
-    $db->sql_exec($sql);
-    $all_template_records = $db->get_array();
+    $db->sqlExec($sql);
+    $all_template_records = $db->getArray();
 
     if (!count($all_template_records))
       return array();
@@ -251,7 +251,7 @@ class access_policy
     return $result;
   }
 
-  function save_object_access_for_action($object, $action)
+  function saveObjectAccessForAction($object, $action)
   {
   }
 }

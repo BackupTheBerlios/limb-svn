@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class admin_page_controller extends site_object_controller
+class AdminPageController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -27,7 +27,7 @@ class admin_page_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -35,7 +35,7 @@ class admin_page_controller extends site_object_controller
         'register_new_object' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('register_new_object'),
+            'action_name' => Strings :: get('register_new_object'),
             'action_path' => '/site_object/register_new_object_action',
             'template_path' => '/site_object/register_new_object.html',
             'img_src' => '/shared/images/activate.gif'

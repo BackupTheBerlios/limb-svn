@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/search_engine_rule.interface.php');
+require_once(dirname(__FILE__) . '/SearchEngineRule.interface.php');
 
-class search_engine_regex_rule implements search_engine_rule
+class SearchEngineRegexRule implements SearchEngineRule
 {
   protected $engine_name = '';
   protected $regex = '';
@@ -32,12 +32,12 @@ class search_engine_regex_rule implements search_engine_rule
     return preg_match($this->regex, $this->uri, $this->matches);
   }
 
-  public function get_matching_phrase()
+  public function getMatchingPhrase()
   {
     return $this->matches[$this->match_phrase_index];
   }
 
-  public function get_engine_name()
+  public function getEngineName()
   {
     return $this->engine_name;
   }

@@ -8,49 +8,49 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../../search_engine_rules/search_engine_mailru_rule.class.php');
+require_once(dirname(__FILE__) . '/../../../../search_engine_rules/SearchEngineMailruRule.class.php');
 
-class search_engine_mailru_rule_test extends LimbTestCase
+class SearchEngineMailruRuleTest extends LimbTestCase
 {
   var $rule = null;
 
-  function search_engine_mailru_rule_test()
+  function searchEngineMailruRuleTest()
   {
-    parent :: LimbTestCase();
+    parent :: limbTestCase();
   }
 
   function setUp()
   {
-    $this->rule = new search_engine_mailru_rule();
+    $this->rule = new SearchEngineMailruRule();
   }
 
-  function test_name()
+  function testName()
   {
-    $this->assertEqual('mail.ru', $this->rule->get_engine_name());
+    $this->assertEqual('mail.ru', $this->rule->getEngineName());
   }
 
-  function test_match_ru_true()
+  function testMatchRuTrue()
   {
     $this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/?qs=1&lfilter=yes&words=%EF%F0%E8%E2%E5%F2&change=2')));
-    $this->assertEqual('привет', $this->rule->get_matching_phrase());
+    $this->assertEqual('привет', $this->rule->getMatchingPhrase());
   }
 
-  function test_second_match_ru_true()
+  function testSecondMatchRuTrue()
   {
     $this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/index.phtml?lfilter=yes&hl=ru&q=%EF%F0%E8%E2%E5%F2&change=2')));
-    $this->assertEqual('привет', $this->rule->get_matching_phrase());
+    $this->assertEqual('привет', $this->rule->getMatchingPhrase());
   }
 
-  function test_match_eng_true()
+  function testMatchEngTrue()
   {
     $this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/?qs=1&lfilter=yes&words=wow&change=2')));
-    $this->assertEqual('wow', $this->rule->get_matching_phrase());
+    $this->assertEqual('wow', $this->rule->getMatchingPhrase());
   }
 
-  function test_second_match_eng_true()
+  function testSecondMatchEngTrue()
   {
     $this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/index.phtml?lfilter=yes&hl=ru&q=wow&change=2')));
-    $this->assertEqual('wow', $this->rule->get_matching_phrase());
+    $this->assertEqual('wow', $this->rule->getMatchingPhrase());
   }
 }
 

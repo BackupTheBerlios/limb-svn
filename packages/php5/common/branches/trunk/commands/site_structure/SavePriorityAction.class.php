@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
-class save_priority_action extends form_action
+class SavePriorityAction extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'grid_form';
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
-    $object = Limb :: toolkit()->createSiteObject('site_structure');
+    $object = Limb :: toolkit()->createSiteObject('SiteStructure');
 
     if(isset($data['priority']))
-      $object->save_priority($data['priority']);
+      $object->savePriority($data['priority']);
 
-    $request->set_status(request :: STATUS_SUCCESS);
+    $request->setStatus(Request :: STATUS_SUCCESS);
 
-    if($request->has_attribute('popup'))
-      $response->write(close_popup_response($request));
+    if($request->hasAttribute('popup'))
+      $response->write(closePopupResponse($request));
   }
 }
 

@@ -8,32 +8,32 @@
 * $Id: login_command.class.php 827 2004-10-23 15:00:44Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/form_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
 
-class login_form_command extends form_command
+class LoginFormCommand extends FormCommand
 {
-  protected function _register_validation_rules($validator, $dataspace)
+  protected function _registerValidationRules($validator, $dataspace)
   {
-    $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'login'));
-    $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
+    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'login'));
+    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
   }
 
-  protected function _merge_dataspace_with_request($dataspace, $request)
+  protected function _mergeDataspaceWithRequest($dataspace, $request)
   {
-    parent :: _merge_dataspace_with_request($dataspace, $request);
+    parent :: _mergeDataspaceWithRequest($dataspace, $request);
 
-    $this->_transfer_redirect_param($dataspace, $request);
+    $this->_transferRedirectParam($dataspace, $request);
   }
 
-  protected function _transfer_redirect_param($dataspace, $request)
+  protected function _transferRedirectParam($dataspace, $request)
   {
     if(!$redirect = $request->get('redirect'))
       return;
 
-    $dataspace->set('redirect', urldecode($this->_get_redirect_string($request)));
+    $dataspace->set('redirect', urldecode($this->_getRedirectString($request)));
   }
 
-  protected function _get_redirect_string($request)
+  protected function _getRedirectString($request)
   {
     if(!$redirect = $request->get('redirect'))
       return '';

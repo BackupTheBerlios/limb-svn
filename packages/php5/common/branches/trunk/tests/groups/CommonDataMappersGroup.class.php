@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class common_data_mappers_group extends LimbGroupTest
+class CommonDataMappersGroup extends LimbGroupTest
 {
-  function common_data_mappers_group()
+  function commonDataMappersGroup()
   {
-    $this->LimbGroupTest('common data mappers tests');
+    $this->limbGroupTest('common data mappers tests');
   }
 
   function getTestCasesHandles()

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class user_controller extends site_object_controller
+class UserController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -26,7 +26,7 @@ class user_controller extends site_object_controller
         'edit' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('edit_user', 'user'),
+            'action_name' => Strings :: get('edit_user', 'user'),
             'action_path' => '/user/edit_user_action',
             'template_path' => '/user/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -34,7 +34,7 @@ class user_controller extends site_object_controller
         'set_membership' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('membership', 'user'),
+            'action_name' => Strings :: get('membership', 'user'),
             'action_path' => '/user/set_membership',
             'template_path' => '/user/set_membership.html',
             'img_src' => '/shared/images/membership.gif'
@@ -42,7 +42,7 @@ class user_controller extends site_object_controller
         'change_password' => array(
             'action_path' => '/user/change_password_action',
             'template_path' => '/user/change_password.html',
-            'action_name' => strings :: get('change_password', 'user'),
+            'action_name' => Strings :: get('change_password', 'user'),
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/password_manage.gif'
@@ -50,14 +50,14 @@ class user_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete_user','user'),
+            'action_name' => Strings :: get('delete_user','user'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'
         ),
         'change_user_locale' => array(
             'popup' => true,
-            'action_name' => strings :: get('change_locale', 'user'),
+            'action_name' => Strings :: get('change_locale', 'user'),
             'action_path' => '/user/change_user_locale_action',
         ),
     );

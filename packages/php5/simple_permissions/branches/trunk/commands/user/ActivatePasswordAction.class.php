@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
-class activate_password_action extends action
+class ActivatePasswordAction extends Action
 {
   public function perform($request, $response)
   {
-    $object = Limb :: toolkit()->createSiteObject('user_object');
-    if(!$object->activate_password())
+    $object = Limb :: toolkit()->createSiteObject('UserObject');
+    if(!$object->activatePassword())
     {
-      message_box :: write_notice('Password activation failed!');
+      MessageBox :: writeNotice('Password activation failed!');
 
-      $request->set_status(request :: STATUS_FAILED);
+      $request->setStatus(Request :: STATUS_FAILED);
       $response->redirect('/');
     }
   }

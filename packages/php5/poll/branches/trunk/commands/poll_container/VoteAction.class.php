@@ -8,30 +8,30 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
-class vote_action extends form_action
+class VoteAction extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'vote_action';
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
-    $object = Limb :: toolkit()->createSiteObject('poll_container');
+    $object = Limb :: toolkit()->createSiteObject('PollContainer');
     $data = $this->dataspace->export();
 
-    $request->set_status(request :: STATUS_FAILURE);
+    $request->setStatus(Request :: STATUS_FAILURE);
 
     if (!isset($data['answer']))
     {
-      message_box :: write_notice(strings :: get('no_answer', 'poll'));
+      MessageBox :: writeNotice(Strings :: get('no_answer', 'poll'));
       return;
     }
 
-    $object->register_answer($data['answer']);
-    $request->set_status(request :: STATUS_FORM_SUBMITTED);
+    $object->registerAnswer($data['answer']);
+    $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
   }
 }
 

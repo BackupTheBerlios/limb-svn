@@ -8,41 +8,41 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
-require_once(dirname(__FILE__) . '/../../access_policy.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
+require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
-class set_group_access_template_action extends form_action
+class SetGroupAccessTemplateAction extends FormAction
 {
-	protected function _define_dataspace_name()
+	protected function _defineDataspaceName()
 	{
 	  return 'set_group_access_template';
 	}
 	
-	protected function _init_dataspace($request)
+	protected function _initDataspace($request)
 	{
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
     
-    $access_policy = new access_policy();
-		$data['template'] = $access_policy->get_access_templates($class_id, access_policy :: ACCESSOR_TYPE_GROUP);
+    $access_policy = new AccessPolicy();
+		$data['template'] = $access_policy->getAccessTemplates($class_id, AccessPolicy :: ACCESSOR_TYPE_GROUP);
 
 		$this->dataspace->merge($data);
 	}
 	
-	protected function _valid_perform($request, $response)
+	protected function _validPerform($request, $response)
 	{
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
 
 		$data = $this->dataspace->export();
 
-    $access_policy = new access_policy();
-		$access_policy->save_access_templates($class_id, $data['template'], access_policy :: ACCESSOR_TYPE_GROUP);
+    $access_policy = new AccessPolicy();
+		$access_policy->saveAccessTemplates($class_id, $data['template'], AccessPolicy :: ACCESSOR_TYPE_GROUP);
 
-		$request->set_status(request :: STATUS_FORM_SUBMITTED);
+		$request->setStatus(Request :: STATUS_FORM_SUBMITTED);
 
-		if($request->has_attribute('popup'))
-			$response->write(close_popup_no_parent_reload_response());
+		if($request->hasAttribute('popup'))
+			$response->write(closePopupNoParentReloadResponse());
 	}
 }
 ?>

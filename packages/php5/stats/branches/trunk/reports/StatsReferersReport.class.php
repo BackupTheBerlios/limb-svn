@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(dirname(__FILE__) . '/stats_report_interface.interface.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(dirname(__FILE__) . '/StatsReportInterface.interface.php');
 
-class stats_referers_report implements stats_report_interface
+class StatsReferersReport implements StatsReportInterface
 {
   protected $db;
   protected $filter_conditions = array();
@@ -30,7 +30,7 @@ class stats_referers_report implements stats_report_interface
             sys_stat_log as sslog, sys_stat_referer_url as ssru';
 
 
-    $sql .= $this->_build_filter_condition();
+    $sql .= $this->_buildFilterCondition();
     $sql .= ' AND sslog.stat_referer_id = ssru.id ';
 
     $sql .= '	GROUP BY stat_referer_id
@@ -39,50 +39,50 @@ class stats_referers_report implements stats_report_interface
     $limit = isset($params['limit']) ? $params['limit'] : 0;
     $offset = isset($params['offset']) ? $params['offset'] : 0;
 
-    $this->db->sql_exec($sql, $limit, $offset);
+    $this->db->sqlExec($sql, $limit, $offset);
 
-    return $this->db->get_array();
+    return $this->db->getArray();
   }
 
-  public function fetch_count($params = array())
+  public function fetchCount($params = array())
   {
     $sql = 'SELECT
             stat_referer_id
             FROM
             sys_stat_log';
 
-    $sql .= $this->_build_filter_condition();
+    $sql .= $this->_buildFilterCondition();
 
     $sql .= 'GROUP BY stat_referer_id';
 
-    $this->db->sql_exec($sql);
-    return $this->db->count_selected_rows();
+    $this->db->sqlExec($sql);
+    return $this->db->countSelectedRows();
   }
 
-  public function fetch_total_hits()
+  public function fetchTotalHits()
   {
     $sql = 'SELECT
             COUNT(id) as total
             FROM
             sys_stat_log';
 
-    $sql .= $this->_build_filter_condition();
+    $sql .= $this->_buildFilterCondition();
 
-    $this->db->sql_exec($sql);
-    $record = $this->db->fetch_row();
+    $this->db->sqlExec($sql);
+    $record = $this->db->fetchRow();
 
     return $record['total'];
   }
 
-  public function set_period_filter($start_date, $finish_date)
+  public function setPeriodFilter($start_date, $finish_date)
   {
-    $start_stamp = $start_date->get_stamp();
-    $finish_stamp = $finish_date->get_stamp();
+    $start_stamp = $start_date->getStamp();
+    $finish_stamp = $finish_date->getStamp();
 
     $this->filter_conditions[] = " AND time BETWEEN {$start_stamp} AND {$finish_stamp} ";
   }
 
-  protected function _build_filter_condition()
+  protected function _buildFilterCondition()
   {
     return ' WHERE stat_referer_id <> -1 ' . implode(' ', $this->filter_conditions);
   }

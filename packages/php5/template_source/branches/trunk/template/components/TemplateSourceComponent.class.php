@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-class template_source_component extends component
+class TemplateSourceComponent extends Component
 {
-  public function get_current_template_source_link()
+  public function getCurrentTemplateSourceLink()
   {
     $request = Limb :: toolkit()->getRequest();
 
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
-    if(!$site_object = wrap_with_site_object($datasource->fetch()))
+    if(!$site_object = wrapWithSiteObject($datasource->fetch()))
       return '';
 
-    $site_object_controller = $site_object->get_controller();
+    $site_object_controller = $site_object->getController();
 
-    if(($action = $site_object_controller->get_action($request)) === false)
+    if(($action = $site_object_controller->getAction($request)) === false)
       return '';
 
-    if(!$template_path = $site_object_controller->get_action_property($action, 'template_path'))
+    if(!$template_path = $site_object_controller->getActionProperty($action, 'template_path'))
       return '';
 
     return '/root/template_source?t[]=' . $template_path;

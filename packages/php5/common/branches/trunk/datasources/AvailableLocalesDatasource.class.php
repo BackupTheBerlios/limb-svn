@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/options_datasource.interface.php');
-require_once(LIMB_DIR . '/class/i18n/locale.class.php');
+require_once(LIMB_DIR . '/class/datasources/OptionsDatasource.interface.php');
+require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
-class available_locales_datasource implements options_datasource
+class AvailableLocalesDatasource implements OptionsDatasource
 {
-  public function get_options_array()
+  public function getOptionsArray()
   {
-    return locale :: get_available_locales_data();
+    return Locale :: getAvailableLocalesData();
   }
 
-  public function get_default_option()
+  public function getDefaultOption()
   {
     return MANAGEMENT_LOCALE_ID;
   }

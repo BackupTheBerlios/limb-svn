@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/component.class.php');
-require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
+require_once(LIMB_DIR . '/class/template/Component.class.php');
+require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
 
-class metadata_component extends component
+class MetadataComponent extends Component
 {
   protected $node_id = '';
 
@@ -28,19 +28,19 @@ class metadata_component extends component
   protected $metadata_db_table_name = 'sys_metadata';
   protected $needed_metadata = array('keywords', 'description');
 
-  protected function _get_path_objects_ids_array()
+  protected function _getPathObjectsIdsArray()
   {
     if (count($this->object_ids_array))
       return $this->object_ids_array;
 
     $tree = Limb :: toolkit()->getTree();
 
-    $node = $tree->get_node($this->get_node_id());
-    $parents = $tree->get_parents($this->get_node_id());
+    $node = $tree->getNode($this->getNodeId());
+    $parents = $tree->getParents($this->getNodeId());
 
     $result = array();
 
-    if (is_array($parents) && count($parents))
+    if (is_array($parents) &&  count($parents))
       foreach($parents as $parent_node)
       {
         $result[$parent_node['object_id']] = $parent_node['object_id'];
@@ -52,9 +52,9 @@ class metadata_component extends component
     return $this->object_ids_array = $result;
   }
 
-  protected function  _get_path_objects_array()
+  protected function  _getPathObjectsArray()
   {
-    $ids_array = $this->_get_path_objects_ids_array();
+    $ids_array = $this->_getPathObjectsIdsArray();
 
     $sql =
     'SELECT
@@ -70,35 +70,35 @@ class metadata_component extends component
     sso.title as title
     FROM sys_site_object as sso, sys_site_object_tree as ssot
     WHERE ssot.object_id=sso.id
-    AND	' . sql_in('sso.id', $ids_array) . '
+    AND	' . sqlIn('sso.id', $ids_array) . '
     ORDER BY ssot.level';
 
     $db = Limb :: toolkit()->getDB();
-    $db->sql_exec($sql);
+    $db->sqlExec($sql);
 
-    return $db->get_array('id');
+    return $db->getArray('id');
   }
 
-  public function load_metadata()
+  public function loadMetadata()
   {
-    $ids_array = $this->_get_path_objects_ids_array();
+    $ids_array = $this->_getPathObjectsIdsArray();
 
     if (!count($ids_array))
       return false;
     $ids_array = array_reverse($ids_array);
 
     $metadata_db_table	= Limb :: toolkit()->createDBTable($this->metadata_db_table_name);
-    $objects_metadata = $metadata_db_table->get_list(sql_in('object_id', $ids_array), '', 'object_id');
+    $objects_metadata = $metadata_db_table->getList(sqlIn('object_id', $ids_array), '', 'object_id');
 
     if (!count($objects_metadata))
       return false;
 
-    $this->_process_loaded_metadata($ids_array, $objects_metadata);
+    $this->_processLoadedMetadata($ids_array, $objects_metadata);
 
     return true;
   }
 
-  protected function _process_loaded_metadata($ids_array, $objects_metadata)
+  protected function _processLoadedMetadata($ids_array, $objects_metadata)
   {
     foreach($this->needed_metadata as $metadata_name)
       $metadata_loaded[$metadata_name] = false;
@@ -107,13 +107,13 @@ class metadata_component extends component
     {
       $can_stop_search = true;
       foreach($this->needed_metadata as $metadata_name)
-        $can_stop_search = $can_stop_search && $metadata_loaded[$metadata_name];
+        $can_stop_search = $can_stop_search &&  $metadata_loaded[$metadata_name];
 
       if ($can_stop_search)
         break;
 
       foreach($this->needed_metadata as $metadata_name)
-        if (!$metadata_loaded[$metadata_name] && !empty($objects_metadata[$object_id][$metadata_name]))
+        if (!$metadata_loaded[$metadata_name] &&  !empty($objects_metadata[$object_id][$metadata_name]))
         {
           $this->object_metadata[$metadata_name] = $objects_metadata[$object_id][$metadata_name];
           $metadata_loaded[$metadata_name] = true;
@@ -121,12 +121,12 @@ class metadata_component extends component
     }
   }
 
-  public function set_node_id($node_id)
+  public function setNodeId($node_id)
   {
     $this->node_id = $node_id;
   }
 
-  public function get_node_id()
+  public function getNodeId()
   {
     if ($this->node_id)
       return $this->node_id;
@@ -137,13 +137,13 @@ class metadata_component extends component
     if($this->request_path)
     {
       $node_path = $request->get($this->request_path);
-      $node = $toolkit->getTree()->get_node_by_path($node_path);
+      $node = $toolkit->getTree()->getNodeByPath($node_path);
     }
     else
     {
-      $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-      $datasource->set_request($request);
-      $node = $datasource->map_request_to_node($request);
+      $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+      $datasource->setRequest($request);
+      $node = $datasource->mapRequestToNode($request);
     }
 
     $this->node_id = $node['id'];
@@ -151,12 +151,12 @@ class metadata_component extends component
     return $this->node_id;
   }
 
-  public function get_keywords()
+  public function getKeywords()
   {
     return $this->get('keywords');
   }
 
-  public function get_description()
+  public function getDescription()
   {
     return $this->get('description');
   }
@@ -169,21 +169,21 @@ class metadata_component extends component
       return $default_value;
   }
 
-  public function set_title_separator($separator = ' ')
+  public function setTitleSeparator($separator = ' ')
   {
     $this->separator = $separator;
   }
 
-  public function get_title()
+  public function getTitle()
   {
-    $result = $this->_apply_offset_path($this->_get_path_objects_array());
+    $result = $this->_applyOffsetPath($this->_getPathObjectsArray());
 
-    if (!is_array($result) || !count($result))
+    if (!is_array($result) ||  !count($result))
       return null;
 
     $titles = array();
 
-    $objects_ids_array = array_reverse($this->_get_path_objects_ids_array());
+    $objects_ids_array = array_reverse($this->_getPathObjectsIdsArray());
     foreach($objects_ids_array as $object_id)
       if (!empty($result[$object_id]['title']))
         $titles[] = $result[$object_id]['title'];
@@ -194,16 +194,16 @@ class metadata_component extends component
     return implode($this->separator, $titles);
   }
 
-  public function get_breadcrumbs_dataset()
+  public function getBreadcrumbsDataset()
   {
-    $objects_data = $this->_get_path_objects_array();
+    $objects_data = $this->_getPathObjectsArray();
 
-    if (!is_array($objects_data) || !count($objects_data))
-      return new array_dataset();
+    if (!is_array($objects_data) ||  !count($objects_data))
+      return new ArrayDataset();
 
-    $results = $this->_apply_offset_path($objects_data);
+    $results = $this->_applyOffsetPath($objects_data);
 
-    $this->_add_object_action_path($results);
+    $this->_addObjectActionPath($results);
 
     $record = end($results);
     array_pop($results);
@@ -211,10 +211,10 @@ class metadata_component extends component
     $record['is_last'] = true;
     $results[-1] = $record;//???
 
-    return new array_dataset($results);
+    return new ArrayDataset($results);
   }
 
-  protected function _apply_offset_path($objects_data)
+  protected function _applyOffsetPath($objects_data)
   {
     $path = '/';
 
@@ -235,7 +235,7 @@ class metadata_component extends component
         'title' => $data['title'] ? $data['title'] : $data['identifier']
       );
 
-      if($this->offset_path && current($offset_arr))
+      if($this->offset_path &&  current($offset_arr))
       {
         if($data['identifier'] == current($offset_arr))
         {
@@ -250,40 +250,40 @@ class metadata_component extends component
     return $results;
   }
 
-  protected function _add_object_action_path(&$results)
+  protected function _addObjectActionPath(&$results)
   {
     $data = end($results);
     $path = $data['path'];
 
-    $controller = $this->_get_mapped_controller();
+    $controller = $this->_getMappedController();
     $request = Limb :: toolkit()->getRequest();
-    $action = $controller->get_action($request);
+    $action = $controller->getAction($request);
 
-    if ($action !== false &&
-        $controller->get_action_property($action, 'display_in_breadcrumbs') === true)
+    if ($action !== false && 
+        $controller->getActionProperty($action, 'display_in_breadcrumbs') === true)
     {
-      if($controller->get_default_action() != $action)
+      if($controller->getDefaultAction() != $action)
       {
         $results[] = array(
           'path' => $path .= '?action=' . $action,
-          'title' => $controller->get_action_name($action)
+          'title' => $controller->getActionName($action)
         );
       }
     }
   }
 
-  protected function _get_mapped_controller()
+  protected function _getMappedController()
   {
     $request = Limb :: toolkit()->getRequest();
-    return wrap_with_site_object(Limb :: toolkit()->getFetcher()->fetch_requested_object($request))->get_controller();
+    return wrapWithSiteObject(Limb :: toolkit()->getFetcher()->fetchRequestedObject($request))->getController();
   }
 
-  public function set_offset_path($path)
+  public function setOffsetPath($path)
   {
     $this->offset_path = $path;
   }
 
-  public function set_request_path($path)
+  public function setRequestPath($path)
   {
     $this->request_path = $path;
   }

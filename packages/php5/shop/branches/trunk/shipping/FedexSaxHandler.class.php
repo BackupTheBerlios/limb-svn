@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class fedex_sax_handler
+class FedexSaxHandler
 {
   protected $tags_list = array();
   protected $options = array();
@@ -24,48 +24,48 @@ class fedex_sax_handler
   protected $service_description_expected = false;
   protected $service_price_expected = false;
 
-  public function open_handler($parser, $name, $attrs)
+  public function openHandler($parser, $name, $attrs)
   {
-    if($this->service_name_expected || $this->service_description_expected || $this->service_price_expected)
+    if($this->service_name_expected ||  $this->service_description_expected ||  $this->service_price_expected)
       $this->tags_list[] = strtolower($name);
 
     if($this->service_name_began)
     {
       $this->options[$this->total_options]['name'] .= '<' . $name;
-      $this->options[$this->total_options]['name'] .= $this->write_attributes($attrs);
+      $this->options[$this->total_options]['name'] .= $this->writeAttributes($attrs);
       $this->options[$this->total_options]['name'] .= '>';
     }
 
     if($this->service_description_began)
     {
       $this->options[$this->total_options]['description'] .= '<' . $name;
-      $this->options[$this->total_options]['description'] .= $this->write_attributes($attrs);
+      $this->options[$this->total_options]['description'] .= $this->writeAttributes($attrs);
       $this->options[$this->total_options]['description'] .= '>';
     }
 
     if($this->service_price_began)
     {
       $this->options[$this->total_options]['price'] .= '<' . $name;
-      $this->options[$this->total_options]['price'] .= $this->write_attributes($attrs);
+      $this->options[$this->total_options]['price'] .= $this->writeAttributes($attrs);
       $this->options[$this->total_options]['price'] .= '>';
     }
 
     if($this->services_began)
     {
-      if($this->service_name_expected && $this->tags_list == array('td', 'table', 'tr', 'td'))
+      if($this->service_name_expected &&  $this->tags_list == array('td', 'table', 'tr', 'td'))
         $this->service_name_began = true;
 
-      if($this->service_description_expected && $this->tags_list == array('td', 'table', 'tr', 'td'))
+      if($this->service_description_expected &&  $this->tags_list == array('td', 'table', 'tr', 'td'))
         $this->service_description_began = true;
 
-      if($this->service_price_expected && $this->tags_list == array('td', 'table', 'tr', 'td'))
+      if($this->service_price_expected &&  $this->tags_list == array('td', 'table', 'tr', 'td'))
       {
         $this->service_price_began = true;
       }
     }
   }
 
-  public function close_handler($parser, $name)
+  public function closeHandler($parser, $name)
   {
     $tag = strtolower($name);
 
@@ -106,7 +106,7 @@ class fedex_sax_handler
     }
   }
 
-  public function data_handler($parser, $data)
+  public function dataHandler($parser, $data)
   {
     if($this->service_name_began)
     {
@@ -125,7 +125,7 @@ class fedex_sax_handler
 
   }
 
-  public function escape_handler($parser, $data)
+  public function escapeHandler($parser, $data)
   {
     switch(trim($data))
     {
@@ -171,12 +171,12 @@ class fedex_sax_handler
     }
   }
 
-  public function get_options()
+  public function getOptions()
   {
     return $this->options;
   }
 
-  public function write_attributes($attributes)
+  public function writeAttributes($attributes)
   {
     if(!is_array($attributes))
       return '';

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class metadata_group extends LimbGroupTest
+class MetadataGroup extends LimbGroupTest
 {
-  function metadata_group()
+  function metadataGroup()
   {
-    $this->LimbGroupTest('metadata tests');
+    $this->limbGroupTest('metadata tests');
   }
 
   function getTestCasesHandles()

@@ -8,11 +8,11 @@
 * $Id: edit_article_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/edit_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/EditSiteObjectCommand.class.php');
 
-class edit_article_command extends edit_site_object_command
+class EditArticleCommand extends EditSiteObjectCommand
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'article';
   }

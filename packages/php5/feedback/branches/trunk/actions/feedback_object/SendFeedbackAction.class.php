@@ -8,42 +8,42 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
-require_once(LIMB_DIR . '/class/core/sys_param.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/class/core/SysParam.class.php');
 
-class send_feedback_action extends form_action
+class SendFeedbackAction extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'feedback_form';
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    parent :: _init_validator();
+    parent :: _initValidator();
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'subject'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'sender_email'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'sender_email'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'body'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'subject'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'sender_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'sender_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'body'));
   }
 
-  protected function _get_email()
+  protected function _getEmail()
   {
-    if(!$email = sys_param :: instance()->get_param('contact_email', 'char'))
+    if(!$email = SysParam :: instance()->getParam('contact_email', 'char'))
       $email = constant('ADMINISTRATOR_EMAIL');
 
     return $email;
   }
 
-  protected function _get_mail_subject()
+  protected function _getMailSubject()
   {
-    return sprintf(strings :: get('message_subject', 'feedback'),
+    return sprintf(Strings :: get('message_subject', 'feedback'),
                         $this->dataspace->get('subject'),
                         $_SERVER['HTTP_HOST']);
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $mail_data = $this->dataspace->export();
 
@@ -52,43 +52,43 @@ class send_feedback_action extends form_action
     else
       $sender_name = $mail_data['sender_firstname'] . ' ' . $mail_data['sender_lastname'];
 
-    $body = sprintf(strings :: get('body_template', 'feedback'),
+    $body = sprintf(Strings :: get('body_template', 'feedback'),
                     $sender_name,
                     $mail_data['sender_email'],
                     $mail_data['body']);
 
     $body = str_replace('<br>', "\n", $body);
 
-    $subject = $this->_get_mail_subject();
+    $subject = $this->_getMailSubject();
 
-    $recipient_email = $this->_get_email();
+    $recipient_email = $this->_getEmail();
 
-    $mailer = $this->_get_mailer();
+    $mailer = $this->_getMailer();
 
     $headers['From']    = $mail_data['sender_email'];
     $headers['To']      = $recipient_email;
     $headers['Subject'] = $subject;
 
-    if(!$recipient_email ||
+    if(!$recipient_email || 
        !$mailer->send($recipient_email,
                     $headers,
                     $body
                     )
         )
     {
-      message_box :: write_notice(strings :: get('mail_not_sent', 'feedback'));
+      MessageBox :: writeNotice(Strings :: get('mail_not_sent', 'feedback'));
 
-      $request->set_status(request :: STATUS_FAILUER);
+      $request->setStatus(Request :: STATUS_FAILUER);
       return;
     }
 
-    message_box :: write_notice(strings :: get('message_was_sent', 'feedback'));
+    MessageBox :: writeNotice(Strings :: get('message_was_sent', 'feedback'));
 
-    $request->set_status(request :: STATUS_FORM_SUBMITTED);
+    $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
     $response->redirect($_SERVER['PHP_SELF']);
   }
 
-  protected function _get_mailer()
+  protected function _getMailer()
   {
     include_once('Mail.php');
 

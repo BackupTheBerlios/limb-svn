@@ -8,68 +8,68 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/core/Object.class.php');
 
-class cart_item extends object
+class CartItem extends Object
 {
   public function __construct($id)
   {
     parent :: __construct();
 
-    $this->_set_id($id);
+    $this->_setId($id);
 
     //important!!!
     $this->__session_class_path = addslashes(__FILE__);
   }
 
-  protected function _set_id($id)
+  protected function _setId($id)
   {
     $this->set('id', $id);
   }
 
-  public function get_id()
+  public function getId()
   {
     return (int)$this->get('id');
   }
 
-  public function get_price()
+  public function getPrice()
   {
     return 1*$this->get('price', 0);
   }
 
-  public function set_price($price)
+  public function setPrice($price)
   {
     $this->set('price', $price);
   }
 
-  public function get_amount()
+  public function getAmount()
   {
     return 1*$this->get('amount', 0);
   }
 
-  public function set_amount($amount)
+  public function setAmount($amount)
   {
     $this->set('amount', $amount);
   }
 
-  public function get_description()
+  public function getDescription()
   {
     return $this->get('description');
   }
 
-  public function set_description($description)
+  public function setDescription($description)
   {
     $this->set('description', $description);
   }
 
-  public function get_summ()
+  public function getSumm()
   {
-    return $this->get_amount() * $this->get_price();
+    return $this->getAmount() * $this->getPrice();
   }
 
-  public function summ_amount($item)
+  public function summAmount($item)
   {
-    $this->set_amount($this->get_amount() + $item->get_amount());
+    $this->setAmount($this->getAmount() + $item->getAmount());
   }
 }
 

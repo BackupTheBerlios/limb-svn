@@ -8,26 +8,26 @@
 * $Id: edit_message_action.class.php 707 2004-09-18 14:43:42Z pachanga $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/commands/form_create_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/FormCreateSiteObjectCommand.class.php');
 
-class create_message_form_command extends form_create_site_object_command
+class CreateMessageFormCommand extends FormCreateSiteObjectCommand
 {
-  protected function _define_datamap()
+  protected function _defineDatamap()
 	{
-	  return complex_array :: array_merge(
-	      parent :: _define_datamap(),
+	  return ComplexArray :: array_merge(
+	      parent :: _defineDatamap(),
 	      array(
   				'content' => 'content',
 	      )
 	  );     
 	}  
 	
-	protected function _register_validation_rules($validator, $dataspace)
+	protected function _registerValidationRules($validator, $dataspace)
 	{
-    parent :: _register_validation_rules($validator, $dataspace);
+    parent :: _registerValidationRules($validator, $dataspace);
     
-    $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
-    $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'content'));
+    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'content'));
 	}
 }
 

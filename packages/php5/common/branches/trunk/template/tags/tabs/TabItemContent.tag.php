@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class tab_item_content_tag_info
+class TabItemContentTagInfo
 {
   public $tag = 'tab_item:content';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'tab_item_content_tag';
 }
 
-register_tag(new tab_item_content_tag_info());
+registerTag(new TabItemContentTagInfo());
 
-class tab_item_content_tag extends compiler_directive_tag
+class TabItemContentTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof tabs_contents_tag)
+    if (!$this->parent instanceof TabsContentsTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -31,7 +31,7 @@ class tab_item_content_tag extends compiler_directive_tag
     }
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['tab_id']))
     {
@@ -54,20 +54,20 @@ class tab_item_content_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     $id = $this->attributes['tab_id'];
 
-    $code->write_html("<div id='{$id}_content'>");
+    $code->writeHtml("<div id='{$id}_content'>");
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_html("</div>");
+    $code->writeHtml("</div>");
 
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
   }
 }
 

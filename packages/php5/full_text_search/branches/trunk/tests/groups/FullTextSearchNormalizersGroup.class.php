@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class full_text_search_normalizers_group extends LimbGroupTest
+class FullTextSearchNormalizersGroup extends LimbGroupTest
 {
-  function full_text_search_normalizers_group()
+  function fullTextSearchNormalizersGroup()
   {
-    $this->LimbGroupTest('full text search normalizers tests');
+    $this->limbGroupTest('full text search normalizers tests');
   }
 
   function getTestCasesHandles()

@@ -8,65 +8,65 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
-class multi_delete_action extends form_action
+class MultiDeleteAction extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'grid_form';
   }
 
-  protected function _init_dataspace($request)
+  protected function _initDataspace($request)
   {
-    parent :: _init_dataspace($request);
+    parent :: _initDataspace($request);
 
-    $this->_transfer_dataspace($request);
+    $this->_transferDataspace($request);
   }
 
-  protected function _first_time_perform($request, $response)
+  protected function _firstTimePerform($request, $response)
   {
     $data = $this->dataspace->export();
 
-    if(!isset($data['ids']) || !is_array($data['ids']))
+    if(!isset($data['ids']) ||  !is_array($data['ids']))
     {
-      $request->set_status(request :: STATUS_FAILURE);
+      $request->setStatus(Request :: STATUS_FAILURE);
 
-      if($request->has_attribute('popup'))
-        $response->write(close_popup_response($request));
+      if($request->hasAttribute('popup'))
+        $response->write(closePopupResponse($request));
 
       return;
     }
 
-    $objects = $this->_get_objects_to_delete(array_keys($data['ids']));
+    $objects = $this->_getObjectsToDelete(array_keys($data['ids']));
 
-    $grid = $this->view->find_child('multi_delete');
+    $grid = $this->view->findChild('multi_delete');
 
-    $grid->register_dataset(new array_dataset($objects));
+    $grid->registerDataset(new ArrayDataset($objects));
 
-    parent :: _first_time_perform($request, $response);
+    parent :: _firstTimePerform($request, $response);
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
 
-    $request->set_status(request :: STATUS_FAILURE);
+    $request->setStatus(Request :: STATUS_FAILURE);
 
-    if($request->has_attribute('popup'))
-      $response->write(close_popup_response($request));
+    if($request->hasAttribute('popup'))
+      $response->write(closePopupResponse($request));
 
-    if(!isset($data['ids']) || !is_array($data['ids']))
+    if(!isset($data['ids']) ||  !is_array($data['ids']))
       return;
 
-    $objects = $this->_get_objects_to_delete(array_keys($data['ids']));
+    $objects = $this->_getObjectsToDelete(array_keys($data['ids']));
 
     foreach($objects as $id => $item)
     {
       if($item['delete_status'] !== 0 )
         continue;
 
-      $site_object = wrap_with_site_object($item);
+      $site_object = wrapWithSiteObject($item);
 
       try
       {
@@ -74,21 +74,21 @@ class multi_delete_action extends form_action
       }
       catch(LimbException $e)
       {
-        message_box :: write_notice("object {$id} - {$item['title']} couldn't be deleted!");
-        $request->set_status(request :: STATUS_FAILURE);
+        MessageBox :: writeNotice("object {$id} - {$item['title']} couldn't be deleted!");
+        $request->setStatus(Request :: STATUS_FAILURE);
         throw $e;
       }
     }
 
-    $request->set_status(request :: STATUS_SUCCESS);
+    $request->setStatus(Request :: STATUS_SUCCESS);
 
-    $response->write(close_popup_response($request));
+    $response->write(closePopupResponse($request));
   }
 
-  protected function _get_objects_to_delete($node_ids)
+  protected function _getObjectsToDelete($node_ids)
   {
-    $datasource = Limb :: toolkit()->getDatasource('site_objects_by_node_ids_datasource');
-    $datasource->set_node_ids($node_ids);
+    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsByNodeIdsDatasource');
+    $datasource->setNodeIds($node_ids);
 
     $objects = $datasource->fetch();
 
@@ -99,19 +99,19 @@ class multi_delete_action extends form_action
       if (!isset($item['actions']['delete']))
       {
         $objects[$id]['delete_status'] = 1;
-        $objects[$id]['delete_reason'] = strings :: get('delete_action_not_accessible', 'error');
+        $objects[$id]['delete_reason'] = Strings :: get('delete_action_not_accessible', 'error');
         continue;
       }
 
-      $site_object = wrap_with_site_object($item);
-      if (!$site_object->can_delete())
+      $site_object = wrapWithSiteObject($item);
+      if (!$site_object->canDelete())
       {
         $objects[$id]['delete_status'] = 1;
-        $objects[$id]['delete_reason'] = strings :: get('cant_be_deleted', 'error');
+        $objects[$id]['delete_reason'] = Strings :: get('cant_be_deleted', 'error');
         continue;
       }
 
-      $objects[$id]['delete_reason'] = strings :: get('ok');
+      $objects[$id]['delete_reason'] = Strings :: get('ok');
       $objects[$id]['delete_status'] = 0;
       $objects[$id]['ids'][$item['node_id']] = 1;
     }

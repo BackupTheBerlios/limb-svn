@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class images_folder_controller extends site_object_controller
+class ImagesFolderController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -30,7 +30,7 @@ class images_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.generic.gif',
-            'action_name' => strings :: get('create_image', 'image'),
+            'action_name' => Strings :: get('create_image', 'image'),
             'can_have_access_template' => true,
         ),
         'create_images_folder' => array(
@@ -39,7 +39,7 @@ class images_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.folder.gif',
-            'action_name' => strings :: get('create_images_folder', 'image'),
+            'action_name' => Strings :: get('create_images_folder', 'image'),
             'can_have_access_template' => true,
         ),
         'edit_images_folder' => array(
@@ -48,7 +48,7 @@ class images_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/edit.gif',
-            'action_name' => strings :: get('edit_images_folder', 'image'),
+            'action_name' => Strings :: get('edit_images_folder', 'image'),
         ),
         'delete' => array(
             'template_path' => '/site_object/delete.html',
@@ -56,10 +56,10 @@ class images_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/rem.gif',
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
         ),
         'image_select' => array(
-            'action_name' => strings :: get('select_image', 'image'),
+            'action_name' => Strings :: get('select_image', 'image'),
             'action_path' => '/images_folder/image_select_action',
             'template_path' => '/images_folder/image_select.html',
             'trasaction' => false,

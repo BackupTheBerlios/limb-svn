@@ -10,7 +10,7 @@
 ***********************************************************************************/
 include(dirname(__FILE__) . '/search_engines.setup.php');//ugly ???
 
-class stats_register
+class StatsRegister
 {
   protected $_counter_register = null;
   protected $_ip_register = null;
@@ -22,47 +22,47 @@ class stats_register
 
   public function __construct()
   {
-    $this->_reg_date = new date();
+    $this->_reg_date = new Date();
     $this->db = Limb :: toolkit()->getDB();
   }
 
-  function get_register_time_stamp()
+  function getRegisterTimeStamp()
   {
-    return $this->_reg_date->get_stamp();
+    return $this->_reg_date->getStamp();
   }
 
-  public function set_register_time($stamp = null)
+  public function setRegisterTime($stamp = null)
   {
     if(!$stamp)
       $stamp = time();
 
-    $this->_reg_date->set_by_stamp($stamp);
+    $this->_reg_date->setByStamp($stamp);
   }
 
   public function register($node_id, $action, $status_code)
   {
-    $this->_update_log($node_id, $action, $status_code);
+    $this->_updateLog($node_id, $action, $status_code);
 
-    $this->_update_counters();
+    $this->_updateCounters();
 
-    $this->_update_search_referers();
+    $this->_updateSearchReferers();
   }
 
-  protected function _update_log($node_id, $action, $status_code)
+  protected function _updateLog($node_id, $action, $status_code)
   {
-    $ip_register = $this->_get_ip_register();
+    $ip_register = $this->_getIpRegister();
 
-    $referer_register = $this->_get_referer_register();
-    $uri_register = $this->_get_uri_register();
+    $referer_register = $this->_getRefererRegister();
+    $uri_register = $this->_getUriRegister();
 
-    $this->db->sql_insert('sys_stat_log',
+    $this->db->sqlInsert('sys_stat_log',
       array(
-        'ip' => $ip_register->get_client_ip(),
-        'time' => $this->get_register_time_stamp(),
+        'ip' => $ip_register->getClientIp(),
+        'time' => $this->getRegisterTimeStamp(),
         'node_id' => $node_id,
-        'stat_referer_id' => $referer_register->get_referer_page_id(),
-        'stat_uri_id' => $uri_register->get_uri_id(),
-        'user_id' => Limb :: toolkit()->getUser()->get_id(),
+        'stat_referer_id' => $referer_register->getRefererPageId(),
+        'stat_uri_id' => $uri_register->getUriId(),
+        'user_id' => Limb :: toolkit()->getUser()->getId(),
         'session_id' => session_id(),
         'action' => $action,
         'status' => $status_code,
@@ -70,84 +70,84 @@ class stats_register
     );
   }
 
-  public function clean_until($date)
+  public function cleanUntil($date)
   {
-    $this->db->sql_delete('sys_stat_log', 'time < ' . $date->get_stamp());
+    $this->db->sqlDelete('sys_stat_log', 'time < ' . $date->getStamp());
   }
 
-  public function count_log_records()
+  public function countLogRecords()
   {
-    $this->db->sql_exec('SELECT COUNT(id) as counter FROM sys_stat_log');
-    $row = $this->db->fetch_row();
+    $this->db->sqlExec('SELECT COUNT(id) as counter FROM sys_stat_log');
+    $row = $this->db->fetchRow();
     return $row['counter'];
   }
 
-  protected function _update_counters()
+  protected function _updateCounters()
   {
-    $ip_register = $this->_get_ip_register();
-    $counter_register = $this->_get_counter_register();
+    $ip_register = $this->_getIpRegister();
+    $counter_register = $this->_getCounterRegister();
 
-    $counter_register->set_new_host($ip_register->is_new_host($this->_reg_date));
+    $counter_register->setNewHost($ip_register->isNewHost($this->_reg_date));
     $counter_register->update($this->_reg_date);
   }
 
-  protected function _update_search_referers()
+  protected function _updateSearchReferers()
   {
-    $phrase_register = $this->_get_search_phrase_register();
+    $phrase_register = $this->_getSearchPhraseRegister();
     $phrase_register->register($this->_reg_date);
   }
 
-  protected function _get_ip_register()
+  protected function _getIpRegister()
   {
     if ($this->_ip_register)
       return $this->_ip_register;
 
-    include_once(dirname(__FILE__) . '/stats_ip.class.php');
-    $this->_ip_register = new stats_ip();
+    include_once(dirname(__FILE__) . '/StatsIp.class.php');
+    $this->_ip_register = new StatsIp();
 
     return $this->_ip_register;
   }
 
-  protected function _get_counter_register()
+  protected function _getCounterRegister()
   {
     if ($this->_counter_register)
       return $this->_counter_register;
 
-    include_once(dirname(__FILE__) . '/stats_counter.class.php');
-    $this->_counter_register = new stats_counter();
+    include_once(dirname(__FILE__) . '/StatsCounter.class.php');
+    $this->_counter_register = new StatsCounter();
 
     return $this->_counter_register;
   }
 
-  protected function _get_referer_register()
+  protected function _getRefererRegister()
   {
     if ($this->_referer_register)
       return $this->_referer_register;
 
-    include_once(dirname(__FILE__) . '/stats_referer.class.php');
-    $this->_referer_register = new stats_referer();
+    include_once(dirname(__FILE__) . '/StatsReferer.class.php');
+    $this->_referer_register = new StatsReferer();
 
     return $this->_referer_register;
   }
 
-  protected function _get_uri_register()
+  protected function _getUriRegister()
   {
     if ($this->_uri_register)
       return $this->_uri_register;
 
-    include_once(dirname(__FILE__) . '/stats_uri.class.php');
-    $this->_uri_register = new stats_uri();
+    include_once(dirname(__FILE__) . '/StatsUri.class.php');
+    $this->_uri_register = new StatsUri();
 
     return $this->_uri_register;
   }
 
-  protected function _get_search_phrase_register()
+  protected function _getSearchPhraseRegister()
   {
     if ($this->_search_phrase_register)
       return $this->_search_phrase_register;
 
-    include_once(dirname(__FILE__) . '/stats_search_phrase.class.php');
-    $this->_search_phrase_register = stats_search_phrase :: instance();
+    include_once(dirname(__FILE__) . '/StatsSearchPhrase.class.php');
+    $this->_search_phrase_register = StatsSearchPhrase :: instance();
 
     return $this->_search_phrase_register;
   }

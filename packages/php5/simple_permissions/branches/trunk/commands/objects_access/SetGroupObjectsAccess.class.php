@@ -8,69 +8,69 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
-require_once(dirname(__FILE__) . '/../../access_policy.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
+require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
-class set_group_objects_access extends form_action
+class SetGroupObjectsAccess extends FormAction
 {
   protected  $objects_ids = array();
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'set_group_access';
   }
 
   public function perform($request, $response)
   {
-    $parents =& Limb :: toolkit()->getSession()->get_reference('tree_expanded_parents');
-    Limb :: toolkit()->getTree()->set_expanded_parents($parents);
+    $parents =& Limb :: toolkit()->getSession()->getReference('tree_expanded_parents');
+    Limb :: toolkit()->getTree()->setExpandedParents($parents);
 
     if ($filter_groups = Limb :: toolkit()->getSession()->get('filter_groups'))
       $this->dataspace->set('filter_groups', $filter_groups);
 
     parent :: perform($request, $response);
 
-    $this->_fill_policy();
+    $this->_fillPolicy();
   }
 
-  protected function _fill_policy()
+  protected function _fillPolicy()
   {
-    $access_policy = new access_policy();
-    $policy = $access_policy->get_objects_access_by_ids($this->object_ids, access_policy :: ACCESSOR_TYPE_GROUP);
+    $access_policy = new AccessPolicy();
+    $policy = $access_policy->getObjectsAccessByIds($this->object_ids, AccessPolicy :: ACCESSOR_TYPE_GROUP);
 
     $this->dataspace->set('policy', $policy);
   }
 
-  protected function _init_dataspace($request)
+  protected function _initDataspace($request)
   {
-    parent :: _init_dataspace($request);
+    parent :: _initDataspace($request);
 
-    $this->_set_template_tree();
+    $this->_setTemplateTree();
 
-    $this->_fill_policy();
+    $this->_fillPolicy();
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
 
     if($groups = $this->dataspace->get('filter_groups'))
       Limb :: toolkit()->getSession()->set('filter_groups', $groups);
 
-    if(isset($data['update']) && isset($data['policy']))
+    if(isset($data['update']) &&  isset($data['policy']))
     {
-      $access_policy = new access_policy();
-      $access_policy->save_objects_access($data['policy'], access_policy :: ACCESSOR_TYPE_GROUP, $groups);
+      $access_policy = new AccessPolicy();
+      $access_policy->saveObjectsAccess($data['policy'], AccessPolicy :: ACCESSOR_TYPE_GROUP, $groups);
     }
 
-    $this->_set_template_tree();
+    $this->_setTemplateTree();
 
-    $request->set_status(request :: STATUS_FORM_SUBMITTED);
+    $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
   }
 
-  protected function _set_template_tree()
+  protected function _setTemplateTree()
   {
-    $datasource = Limb :: toolkit()->getDatasource('group_object_access_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('GroupObjectAccessDatasource');
     $params = array(
       'path' => '/root',
       'depth' => -1,
@@ -83,7 +83,7 @@ class set_group_objects_access extends form_action
 
     );
     $count = null;
-    $dataset = $datasource->get_dataset($count, $params);
+    $dataset = $datasource->getDataset($count, $params);
 
     $this->object_ids = array();
     $dataset->reset();
@@ -94,8 +94,8 @@ class set_group_objects_access extends form_action
     }
 
     $dataset->reset();
-    $access_tree = $this->view->find_child('access');
-    $access_tree->register_dataset($dataset);
+    $access_tree = $this->view->findChild('access');
+    $access_tree->registerDataset($dataset);
   }
 }
 

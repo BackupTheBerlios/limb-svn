@@ -8,32 +8,32 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
-class register_new_object_action extends form_action
+class RegisterNewObjectAction extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'register_new_object';
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'class_name'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'identifier'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'parent_path'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/tree_path_rule', 'parent_path'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'class_name'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'identifier'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'parent_path'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_path_rule', 'parent_path'));
 
     if($path = $this->dataspace->get('parent_path'))
     {
-      if($node = Limb :: toolkit()->getTree()->get_node_by_path($path))
-        $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $node['id']));
+      if($node = Limb :: toolkit()->getTree()->getNodeByPath($path))
+        $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $node['id']));
     }
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $params = array();
 
@@ -42,10 +42,10 @@ class register_new_object_action extends form_action
     $params['class'] = $this->dataspace->get('class_name');
     $params['title'] = $this->dataspace->get('title');
 
-    $object = Limb :: toolkit()->createSiteObject($params['class']);
+    $object = Limb :: toolkit()->createSiteObject($params['Class']);
 
-    $datasource = Limb :: toolkit()->getDatasource('single_object_datasource');
-    $datasource->set_path($params['parent_path']);
+    $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
+    $datasource->setPath($params['parent_path']);
 
     $is_root = false;
     if(!$parent_data = $datasource->fetch())
@@ -54,8 +54,8 @@ class register_new_object_action extends form_action
         $is_root = true;
       else
       {
-        message_box :: write_notice('parent wasn\'t retrieved by path ' . $params['parent_path']);
-        $request->set_status(request :: STATUS_FAILURE);
+        MessageBox :: writeNotice('parent wasn\'t retrieved by path ' . $params['parent_path']);
+        $request->setStatus(Request :: STATUS_FAILURE);
         return;
       }
     }
@@ -73,26 +73,26 @@ class register_new_object_action extends form_action
     }
     catch(LimbException $e)
     {
-      message_box :: write_notice('object wasn\'t registered!');
-      $request->set_status(request :: STATUS_FAILURE);
+      MessageBox :: writeNotice('object wasn\'t registered!');
+      $request->setStatus(Request :: STATUS_FAILURE);
       throw $e;
     }
 
     if (!$is_root)
     {
-      $parent_object = Limb :: toolkit()->createSiteObject($parent_data['class_name']);
+      $parent_object = Limb :: toolkit()->createSiteObject($parent_data['ClassName']);
       $parent_object->merge($parent_data);
 
-      $action = $parent_object->get_controller()->determine_action();
+      $action = $parent_object->getController()->determineAction();
 
-      $access_policy = new access_policy();
-      $access_policy->save_new_object_access($object, $parent_object, $action);
+      $access_policy = new AccessPolicy();
+      $access_policy->saveNewObjectAccess($object, $parent_object, $action);
     }
 
-    $request->set_status(request :: STATUS_FORM_SUBMITTED);
+    $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
 
-    if($request->has_attribute('popup'))
-      $response->write(close_popup_response($request));
+    if($request->hasAttribute('popup'))
+      $response->write(closePopupResponse($request));
   }
 }
 

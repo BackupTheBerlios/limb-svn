@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
-class stats_referer
+class StatsReferer
 {
   protected $db = null;
   protected $url = null;
@@ -19,65 +19,65 @@ class stats_referer
   public function __construct()
   {
     $this->db = Limb :: toolkit()->getDB();
-    $this->url = new uri();
+    $this->url = new Uri();
   }
 
-  public function get_referer_page_id()
+  public function getRefererPageId()
   {
-    if(!$clean_uri = $this->_get_clean_referer_page())
+    if(!$clean_uri = $this->_getCleanRefererPage())
       return -1;
 
-    if($this->_is_inner_url())
+    if($this->_isInnerUrl())
       return -1;
 
-    if ($result = $this->_get_existing_referer_record_id($clean_uri))
+    if ($result = $this->_getExistingRefererRecordId($clean_uri))
       return $result;
 
-    return $this->_insert_referer_record($clean_uri);
+    return $this->_insertRefererRecord($clean_uri);
   }
 
-  protected function _is_inner_url()
+  protected function _isInnerUrl()
   {
-    return ($this->url->get_host() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
+    return ($this->url->getHost() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
   }
 
-  protected function _get_clean_referer_page()
+  protected function _getCleanRefererPage()
   {
-    if ($referer = $this->_get_http_referer())
-      return $this->clean_url($referer);
+    if ($referer = $this->_getHttpReferer())
+      return $this->cleanUrl($referer);
 
     return false;
   }
 
-  protected function _get_http_referer()
+  protected function _getHttpReferer()
   {
     return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
   }
 
-  protected function _get_existing_referer_record_id($uri)
+  protected function _getExistingRefererRecordId($uri)
   {
-    $this->db->sql_select('sys_stat_referer_url', '*',
+    $this->db->sqlSelect('sys_stat_referer_url', '*',
       "referer_url='" . $uri . "'");
-    if ($referer_data = $this->db->fetch_row())
+    if ($referer_data = $this->db->fetchRow())
       return $referer_data['id'];
     else
       return false;
   }
 
-  protected function _insert_referer_record($uri)
+  protected function _insertRefererRecord($uri)
   {
-    $this->db->sql_insert('sys_stat_referer_url',
+    $this->db->sqlInsert('sys_stat_referer_url',
       array('id' => null, 'referer_url' => $uri));
-    return $this->db->get_sql_insert_id('sys_stat_referer_url');
+    return $this->db->getSqlInsertId('sys_stat_referer_url');
   }
 
-  public function clean_url($raw_url)
+  public function cleanUrl($raw_url)
   {
     $this->url->parse($raw_url);
 
-    $this->url->remove_query_item('PHPSESSID');
+    $this->url->removeQueryItem('PHPSESSID');
 
-    return $this->url->to_string(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
+    return $this->url->toString(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
   }
 }
 

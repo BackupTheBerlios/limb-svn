@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
 
-class site_structure extends site_object
+class SiteStructure extends SiteObject
 {
-  public function save_priority($params)
+  public function savePriority($params)
   {
     if(!count($params))
       return true;
 
-    $db_table = Limb :: toolkit()->createDBTable('sys_site_object_tree');
+    $db_table = Limb :: toolkit()->createDBTable('SysSiteObjectTree');
 
     foreach($params as $node_id => $value)
     {
       $data = array();
       $data['priority'] = (int)$value;
-      $db_table->update_by_id($node_id, $data);
+      $db_table->updateById($node_id, $data);
     }
 
     return true;

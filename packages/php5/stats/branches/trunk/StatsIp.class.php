@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-class stats_ip
+class StatsIp
 {
   protected $db = null;
 
@@ -17,54 +17,54 @@ class stats_ip
     $this->db = Limb :: toolkit()->getDB();
   }
 
-  public function is_new_host($reg_date)
+  public function isNewHost($reg_date)
   {
-    if(($record = $this->_get_stat_ip_record()) === false)
+    if(($record = $this->_getStatIpRecord()) === false)
     {
-      $this->_insert_stat_ip_record($reg_date->get_stamp());
+      $this->_insertStatIpRecord($reg_date->getStamp());
       return true;
     }
 
-    $ip_date = new date();
-    $ip_date->set_by_stamp($record['time']);
+    $ip_date = new Date();
+    $ip_date->setByStamp($record['time']);
 
-    if($ip_date->date_to_days() < $reg_date->date_to_days())
+    if($ip_date->dateToDays() < $reg_date->dateToDays())
     {
-      $this->_update_stat_ip_record($reg_date->get_stamp());
+      $this->_updateStatIpRecord($reg_date->getStamp());
       return true;
     }
-    elseif($ip_date->date_to_days() > $reg_date->date_to_days()) //this shouldn't happen normally...
+    elseif($ip_date->dateToDays() > $reg_date->dateToDays()) //this shouldn't happen normally...
       return false;
 
     return false;
   }
 
-  protected function _insert_stat_ip_record($stamp)
+  protected function _insertStatIpRecord($stamp)
   {
-    $this->db->sql_insert('sys_stat_ip',
+    $this->db->sqlInsert('sys_stat_ip',
       array(
-        'id' => $this->get_client_ip(),
+        'id' => $this->getClientIp(),
         'time' => $stamp
       )
     );
   }
 
-  public function get_client_ip()
+  public function getClientIp()
   {
-    return ip :: encode_ip(sys :: client_ip());
+    return Ip :: encodeIp(Sys :: clientIp());
   }
 
-  protected function _get_stat_ip_record()
+  protected function _getStatIpRecord()
   {
-    $this->db->sql_select('sys_stat_ip', '*', array('id' => $this->get_client_ip()));
-    return $this->db->fetch_row();
+    $this->db->sqlSelect('sys_stat_ip', '*', array('id' => $this->getClientIp()));
+    return $this->db->fetchRow();
   }
 
-  protected function _update_stat_ip_record($stamp)
+  protected function _updateStatIpRecord($stamp)
   {
-    $this->db->sql_update('sys_stat_ip',
+    $this->db->sqlUpdate('sys_stat_ip',
       array('time' => $stamp),
-      array('id' => $this->get_client_ip())
+      array('id' => $this->getClientIp())
     );
   }
 }

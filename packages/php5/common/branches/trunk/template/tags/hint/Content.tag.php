@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class hint_content_tag_info
+class HintContentTagInfo
 {
   public $tag = 'hint:CONTENT';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'hint_content_tag';
 }
 
-register_tag(new hint_content_tag_info());
+registerTag(new HintContentTagInfo());
 
-class hint_content_tag extends compiler_directive_tag
+class HintContentTag extends CompilerDirectiveTag
 {
 }
 

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
-class stats_uri
+class StatsUri
 {
   protected $db = null;
   protected $url = null;
@@ -18,56 +18,56 @@ class stats_uri
   public function __construct()
   {
     $this->db = Limb :: toolkit()->getDB();
-    $this->url = new uri();
+    $this->url = new Uri();
   }
 
-  public function get_uri_id()
+  public function getUriId()
   {
-    $uri = $this->clean_url($this->_get_http_uri());
+    $uri = $this->cleanUrl($this->_getHttpUri());
 
-    if ($result = $this->_get_existing_uri_record_id($uri))
+    if ($result = $this->_getExistingUriRecordId($uri))
       return $result;
 
-    return $this->_insert_uri_record($uri);
+    return $this->_insertUriRecord($uri);
   }
 
-  protected function _get_http_uri()
+  protected function _getHttpUri()
   {
     return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
   }
 
-  protected function _get_existing_uri_record_id($uri)
+  protected function _getExistingUriRecordId($uri)
   {
-    $this->db->sql_select('sys_stat_uri', '*',
+    $this->db->sqlSelect('sys_stat_uri', '*',
       "uri='" . $uri . "'");
-    if ($uri_data = $this->db->fetch_row())
+    if ($uri_data = $this->db->fetchRow())
       return $uri_data['id'];
     else
       return false;
   }
 
-  protected function _insert_uri_record($uri)
+  protected function _insertUriRecord($uri)
   {
-    $this->db->sql_insert('sys_stat_uri',
+    $this->db->sqlInsert('sys_stat_uri',
       array('id' => null, 'uri' => $uri));
-    return $this->db->get_sql_insert_id('sys_stat_uri');
+    return $this->db->getSqlInsertId('sys_stat_uri');
   }
 
-  public function clean_url($raw_url)
+  public function cleanUrl($raw_url)
   {
     $this->url->parse($raw_url);
 
-    $this->url->remove_query_items();
+    $this->url->removeQueryItems();
 
-    if($this->_is_inner_url())
-      return $this->url->to_string(array('path', 'query'));
+    if($this->_isInnerUrl())
+      return $this->url->toString(array('path', 'query'));
     else
-      return $this->url->to_string(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
+      return $this->url->toString(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
   }
 
-  protected function _is_inner_url()
+  protected function _isInnerUrl()
   {
-    return ($this->url->get_host() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
+    return ($this->url->getHost() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
   }
 }
 

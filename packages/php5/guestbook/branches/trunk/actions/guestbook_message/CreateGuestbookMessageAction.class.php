@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.php');
 
-class create_guestbook_message_action extends form_create_site_object_action
+class CreateGuestbookMessageAction extends FormCreateSiteObjectAction
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'guestbook_message';
   }
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'create_guestbook_message';
   }
 
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
-    return complex_array :: array_merge(
-        parent :: _define_datamap(),
+    return ComplexArray :: array_merge(
+        parent :: _defineDatamap(),
         array(
           'message' => 'message',
           'sender' => 'sender',
@@ -34,33 +34,33 @@ class create_guestbook_message_action extends form_create_site_object_action
     );
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    parent :: _init_validator();
+    parent :: _initValidator();
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'message'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'sender'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'sender_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'message'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'sender'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'sender_email'));
   }
 
-  protected function _init_dataspace($request)
+  protected function _initDataspace($request)
   {
     $data['identifier'] = md5(rand());
 
     $user = Limb :: toolkit()->getUser();
 
-    $data['sender'] = $user->get_login();
+    $data['sender'] = $user->getLogin();
     $data['sender_email'] = $user->get('email', '');
 
     $this->dataspace->import($data);
   }
 
-  protected function _process_transfered_dataspace()
+  protected function _processTransferedDataspace()
   {
-    $this->_htmlspecialchars_dataspace_value('message');
-    $this->_htmlspecialchars_dataspace_value('sender_email');
-    $this->_htmlspecialchars_dataspace_value('title');
-    $this->_htmlspecialchars_dataspace_value('sender');
+    $this->_htmlspecialcharsDataspaceValue('message');
+    $this->_htmlspecialcharsDataspaceValue('sender_email');
+    $this->_htmlspecialcharsDataspaceValue('title');
+    $this->_htmlspecialcharsDataspaceValue('sender');
   }
 
 }

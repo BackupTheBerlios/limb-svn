@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class site_param_object_controller extends site_object_controller
+class SiteParamObjectController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -26,7 +26,7 @@ class site_param_object_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -34,7 +34,7 @@ class site_param_object_controller extends site_object_controller
         'update' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('set_params', 'site_param'),
+            'action_name' => Strings :: get('set_params', 'site_param'),
             'action_path' => '/site_param_object/update_param_action',
             'template_path' => '/site_param_object/update.html',
             'img_src' => '/shared/images/details.gif'
@@ -42,7 +42,7 @@ class site_param_object_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class stats_event_controller extends site_object_controller
+class StatsEventController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'events_list';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'events_list' => array(
             'template_path' => '/stats_event/events_list.html',
-            'action_name' => strings :: get('show_events_list', 'stats'),
+            'action_name' => Strings :: get('show_events_list', 'stats'),
             'action_path' => '/stats_event/stats_event_filter_action',
         ),
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -36,7 +36,7 @@ class stats_event_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

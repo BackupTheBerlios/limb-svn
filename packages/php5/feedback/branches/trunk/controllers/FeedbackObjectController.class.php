@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class feedback_object_controller extends site_object_controller
+class FeedbackObjectController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -25,7 +25,7 @@ class feedback_object_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit_feedback_content', 'feedback'),
+            'action_name' => Strings :: get('edit_feedback_content', 'feedback'),
             'action_path' => '/feedback_object/edit_feedback_action',
             'template_path' => '/feedback_object/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -33,7 +33,7 @@ class feedback_object_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

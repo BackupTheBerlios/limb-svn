@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../shipping/fedex_shipping_locator.class.php');
+require_once(dirname(__FILE__) . '/../../shipping/FedexShippingLocator.class.php');
 
 Mock :: generatePartial(
-  'fedex_shipping_locator',
-  'special_fedex_shipping_locator',
+  'FedexShippingLocator',
+  'SpecialFedexShippingLocator',
   array(
-    '_browse_to_home_page',
-    '_get_express_shipping_options_html',
-    '_get_ground_shipping_options_html')
+    '_browseToHomePage',
+    '_getExpressShippingOptionsHtml',
+    '_getGroundShippingOptionsHtml')
 );
 
-class fedex_shipping_locator_test extends LimbTestCase
+class FedexShippingLocatorTest extends LimbTestCase
 {
   var $mock_locator;
   var $locator;
@@ -27,21 +27,21 @@ class fedex_shipping_locator_test extends LimbTestCase
 
   function setUp()
   {
-    $this->mock_locator = new special_fedex_shipping_locator($this);
-    $this->mock_locator->use_cache(false);
+    $this->mock_locator = new SpecialFedexShippingLocator($this);
+    $this->mock_locator->useCache(false);
 
-    $this->locator = new fedex_shipping_locator();
-    $this->locator->use_cache(false);
+    $this->locator = new FedexShippingLocator();
+    $this->locator->useCache(false);
 
-    $this->shipping_configuration = new shipping_configuration();
-    $this->shipping_configuration->set_zip_from('L5V 1A7');
-    $this->shipping_configuration->set_zip_to('02478');
-    $this->shipping_configuration->set_country_from('CA');
-    $this->shipping_configuration->set_country_to('US');
-    $this->shipping_configuration->set_declared_value(0);
-    $this->shipping_configuration->set_weight(10);
-    $this->shipping_configuration->set_weight_unit(SHIPPING_FEDEX_WEIGHT_UNIT_LB);
-    $this->shipping_configuration->set_residence(false);
+    $this->shipping_configuration = new ShippingConfiguration();
+    $this->shipping_configuration->setZipFrom('L5V 1A7');
+    $this->shipping_configuration->setZipTo('02478');
+    $this->shipping_configuration->setCountryFrom('CA');
+    $this->shipping_configuration->setCountryTo('US');
+    $this->shipping_configuration->setDeclaredValue(0);
+    $this->shipping_configuration->setWeight(10);
+    $this->shipping_configuration->setWeightUnit(SHIPPING_FEDEX_WEIGHT_UNIT_LB);
+    $this->shipping_configuration->setResidence(false);
   }
 
   function tearDown()
@@ -49,20 +49,20 @@ class fedex_shipping_locator_test extends LimbTestCase
     $this->mock_locator->tally();
   }
 
-  function test_get_shipping_options_mock_connect()
+  function testGetShippingOptionsMockConnect()
   {
-    $this->mock_locator->setReturnValue('_get_express_shipping_options_html', file_get_contents(dirname(__FILE__) . '/fedex_express.html'));
-    $this->mock_locator->setReturnValue('_get_ground_shipping_options_html', file_get_contents(dirname(__FILE__) . '/fedex_ground.html'));
+    $this->mock_locator->setReturnValue('_getExpressShippingOptionsHtml', file_get_contents(dirname(__FILE__) . '/fedex_express.html'));
+    $this->mock_locator->setReturnValue('_getGroundShippingOptionsHtml', file_get_contents(dirname(__FILE__) . '/fedex_ground.html'));
 
-    $this->mock_locator->expectOnce('_get_express_shipping_options_html',
+    $this->mock_locator->expectOnce('_getExpressShippingOptionsHtml',
       array($this->shipping_configuration)
     );
 
-    $this->mock_locator->expectOnce('_get_ground_shipping_options_html',
+    $this->mock_locator->expectOnce('_getGroundShippingOptionsHtml',
       array($this->shipping_configuration)
     );
 
-    $options = $this->mock_locator->get_shipping_options($this->shipping_configuration);
+    $options = $this->mock_locator->getShippingOptions($this->shipping_configuration);
 
     $id1 = md5('<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>');
     $id2 = md5('<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>');
@@ -99,59 +99,59 @@ class fedex_shipping_locator_test extends LimbTestCase
     );
   }
 
-  function test_cache_shipping_options()
+  function testCacheShippingOptions()
   {
-    $this->mock_locator->use_cache();
+    $this->mock_locator->useCache();
 
-    $this->mock_locator->setReturnValue('_get_express_shipping_options_html', file_get_contents(dirname(__FILE__) . '/fedex_express.html'));
-    $this->mock_locator->setReturnValue('_get_ground_shipping_options_html', file_get_contents(dirname(__FILE__) . '/fedex_ground.html'));
+    $this->mock_locator->setReturnValue('_getExpressShippingOptionsHtml', file_get_contents(dirname(__FILE__) . '/fedex_express.html'));
+    $this->mock_locator->setReturnValue('_getGroundShippingOptionsHtml', file_get_contents(dirname(__FILE__) . '/fedex_ground.html'));
 
-    $this->mock_locator->expectOnce('_get_express_shipping_options_html',
+    $this->mock_locator->expectOnce('_getExpressShippingOptionsHtml',
       array($this->shipping_configuration)
     );
 
-    $this->mock_locator->expectOnce('_get_ground_shipping_options_html',
+    $this->mock_locator->expectOnce('_getGroundShippingOptionsHtml',
       array($this->shipping_configuration)
     );
 
-    $options1 = $this->mock_locator->get_shipping_options($this->shipping_configuration);
+    $options1 = $this->mock_locator->getShippingOptions($this->shipping_configuration);
 
-    $cache = $this->mock_locator->get_cache();
+    $cache = $this->mock_locator->getCache();
     touch($cache->_file, time() + 1);//for sure
     clearstatcache();
 
-    $options2 = $this->mock_locator->get_shipping_options($this->shipping_configuration);
+    $options2 = $this->mock_locator->getShippingOptions($this->shipping_configuration);
 
     $this->assertEqual($options1, $options2);
-    $this->mock_locator->flush_cache();
+    $this->mock_locator->flushCache();
   }
 
-  function test_get_shipping_options_mock_connect_false()
+  function testGetShippingOptionsMockConnectFalse()
   {
-    $this->mock_locator->setReturnValue('_get_express_shipping_options_html', false);
-    $this->mock_locator->setReturnValue('_get_ground_shipping_options_html', false);
+    $this->mock_locator->setReturnValue('_getExpressShippingOptionsHtml', false);
+    $this->mock_locator->setReturnValue('_getGroundShippingOptionsHtml', false);
 
-    $options = $this->mock_locator->get_shipping_options($this->shipping_configuration);
+    $options = $this->mock_locator->getShippingOptions($this->shipping_configuration);
 
     $this->assertFalse($options);
   }
 
-  function test_get_shipping_options_false()//integration test ???
+  function testGetShippingOptionsFalse()//integration test ???
   {
     return;
 
-    $this->shipping_configuration->set_weight(0);//error
+    $this->shipping_configuration->setWeight(0);//error
 
-    $options = $this->locator->get_shipping_options($this->shipping_configuration);
+    $options = $this->locator->getShippingOptions($this->shipping_configuration);
 
     $this->assertFalse($options);
   }
 
-  function test_get_shipping_options()//integration test ???
+  function testGetShippingOptions()//integration test ???
   {
     return;
 
-    $options = $this->locator->get_shipping_options($this->shipping_configuration);
+    $options = $this->locator->getShippingOptions($this->shipping_configuration);
 
     $id1 = md5('<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>');
     $id2 = md5('<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>');

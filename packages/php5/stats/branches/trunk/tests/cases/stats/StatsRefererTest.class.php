@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../stats_referer.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../../StatsReferer.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
 Mock :: generatePartial
 (
-  'stats_referer',
-  'stats_referer_self_test_version',
+  'StatsReferer',
+  'StatsRefererSelfTestVersion',
   array(
-    '_get_http_referer'
+    '_getHttpReferer'
   )
 );
 
-class stats_referer_test extends LimbTestCase
+class StatsRefererTest extends LimbTestCase
 {
   var $stats_referer = null;
   var $db = null;
@@ -31,11 +31,11 @@ class stats_referer_test extends LimbTestCase
     $this->server = $_SERVER;
     $_SERVER['HTTP_HOST'] = 'test';
 
-    $this->db = db_factory :: instance();
-    $this->stats_referer = new stats_referer_self_test_version($this);
+    $this->db = DbFactory :: instance();
+    $this->stats_referer = new StatsRefererSelfTestVersion($this);
     $this->stats_referer->__construct();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
@@ -44,36 +44,36 @@ class stats_referer_test extends LimbTestCase
 
     $this->stats_referer->tally();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('sys_stat_referer_url');
+    $this->db->sqlDelete('sys_stat_referer_url');
   }
 
-  function test_get_referer_page_id_no_referer()
+  function testGetRefererPageIdNoReferer()
   {
-    $this->stats_referer->setReturnValue('_get_http_referer', '');
+    $this->stats_referer->setReturnValue('_getHttpReferer', '');
 
-    $this->assertEqual(-1, $this->stats_referer->get_referer_page_id());
+    $this->assertEqual(-1, $this->stats_referer->getRefererPageId());
   }
 
-  function test_get_referer_page_id_inner_referer()
+  function testGetRefererPageIdInnerReferer()
   {
-    $this->stats_referer->setReturnValue('_get_http_referer', 'http://' . $_SERVER['HTTP_HOST'] . '/test');
+    $this->stats_referer->setReturnValue('_getHttpReferer', 'http://' . $_SERVER['hTTPHOST'] . '/test');
 
-    $this->assertEqual(-1, $this->stats_referer->get_referer_page_id());
+    $this->assertEqual(-1, $this->stats_referer->getRefererPageId());
   }
 
-  function test_get_referer_page_id()
+  function testGetRefererPageId()
   {
-    $this->stats_referer->setReturnValue('_get_http_referer', 'http://wow.com/test/referer');
+    $this->stats_referer->setReturnValue('_getHttpReferer', 'http://wow.com/test/referer');
 
-    $id = $this->stats_referer->get_referer_page_id();
+    $id = $this->stats_referer->getRefererPageId();
 
-    $this->db->sql_select('sys_stat_referer_url');
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect('sys_stat_referer_url');
+    $arr = $this->db->getArray();
     $record = current($arr);
 
     $this->assertEqual(sizeof($arr), 1);
@@ -81,17 +81,17 @@ class stats_referer_test extends LimbTestCase
     $this->assertEqual($record['id'], $id);
   }
 
-  function test_get_referer_page_id_same_id()
+  function testGetRefererPageIdSameId()
   {
-    $this->test_get_referer_page_id();
-    $this->test_get_referer_page_id();
+    $this->testGetRefererPageId();
+    $this->testGetRefererPageId();
   }
 
-  function test_clean_url()
+  function testCleanUrl()
   {
     $this->assertEqual(
       'http://wow.com.bit/some/path?yo=1&haba',
-      $this->stats_referer->clean_url('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
+      $this->stats_referer->cleanUrl('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
 
 }

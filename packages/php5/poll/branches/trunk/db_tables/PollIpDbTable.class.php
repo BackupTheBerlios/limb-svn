@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class poll_ip_db_table extends db_table
+class PollIpDbTable extends DbTable
 {
-  protected function _define_columns()
+  protected function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class tab_item_label_tag_info
+class TabItemLabelTagInfo
 {
   public $tag = 'tab_item:label';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'tab_item_label_tag';
 }
 
-register_tag(new tab_item_label_tag_info());
+registerTag(new TabItemLabelTagInfo());
 
-class tab_item_label_tag extends compiler_directive_tag
+class TabItemLabelTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof tabs_labels_tag)
+    if (!$this->parent instanceof TabsLabelsTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -31,9 +31,9 @@ class tab_item_label_tag extends compiler_directive_tag
     }
   }
 
-  public function pre_parse()
+  public function preParse()
   {
-    if (!isset($this->attributes['tab_id']) || !$this->attributes['tab_id'])
+    if (!isset($this->attributes['tab_id']) ||  !$this->attributes['tab_id'])
     {
       throw new WactException('missing required attribute',
           array('tag' => $this->tag,
@@ -47,27 +47,27 @@ class tab_item_label_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     $id = $this->attributes['tab_id'];
 
-    $code->write_html("<td id={$id}>
+    $code->writeHtml("<td id={$id}>
           <table border='0' cellspacing='0' cellpadding='0' style='height:100%'>
           <tr>
             <td nowrap {$this->parent->parent->tab_class}><a href='JavaScript:void(0);'>");
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_html("</a></td>
+    $code->writeHtml("</a></td>
           </tr>
           </table>
         </td>
     ");
 
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
   }
 }
 

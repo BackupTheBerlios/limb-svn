@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
-class stats_search_phrase
+class StatsSearchPhrase
 {
   static protected $instance = null;
 
@@ -22,42 +22,42 @@ class stats_search_phrase
   public function __construct()
   {
     $this->db = Limb :: toolkit()->getDB();
-    $this->url = new uri();
+    $this->url = new Uri();
   }
 
   static public function instance()
   {
     if (!self :: $instance)
-      self :: $instance = new stats_search_phrase();
+      self :: $instance = new StatsSearchPhrase();
 
     return self :: $instance;
   }
 
-  public function register_search_engine_rule($engine_rule)
+  public function registerSearchEngineRule($engine_rule)
   {
     $this->engine_rules[] = $engine_rule;
   }
 
   public function register($date)
   {
-    if(!$rule = $this->get_matching_search_engine_rule())
+    if(!$rule = $this->getMatchingSearchEngineRule())
       return false;
 
-    $this->db->sql_insert('sys_stat_search_phrase',
+    $this->db->sqlInsert('sys_stat_search_phrase',
       array(
         'id' => null,
-        'engine' => $rule->get_engine_name(),
-        'time' => $date->get_stamp(),
-        'phrase' => stripslashes(strip_tags($rule->get_matching_phrase())),
+        'engine' => $rule->getEngineName(),
+        'time' => $date->getStamp(),
+        'phrase' => stripslashes(strip_tags($rule->getMatchingPhrase())),
       )
     );
 
     return true;
   }
 
-  public function get_matching_search_engine_rule()
+  public function getMatchingSearchEngineRule()
   {
-    $uri = urldecode($this->_get_http_referer());
+    $uri = urldecode($this->_getHttpReferer());
 
     foreach(array_keys($this->engine_rules) as $id)
     {
@@ -67,7 +67,7 @@ class stats_search_phrase
     return null;
   }
 
-  protected function _get_http_referer()
+  protected function _getHttpReferer()
   {
     return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
   }

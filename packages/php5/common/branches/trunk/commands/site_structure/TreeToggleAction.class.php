@@ -8,30 +8,30 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
-class tree_toggle_action extends action
+class TreeToggleAction extends Action
 {
   public function perform($request, $response)
   {
-    if($request->has_attribute('recursive_search_for_node'))
+    if($request->hasAttribute('recursive_search_for_node'))
       return;
 
-    $parents =& Limb :: toolkit()->getSession()->get_reference('tree_expanded_parents');
-    Limb :: toolkit()->getTree()->set_expanded_parents($parents);
+    $parents =& Limb :: toolkit()->getSession()->getReference('tree_expanded_parents');
+    Limb :: toolkit()->getTree()->setExpandedParents($parents);
 
     if(!$id = $request->get('id'))
-      $id = get_mapped_id();
+      $id = getMappedId();
 
-    if($request->has_attribute('expand'))
-      $result = $tree->expand_node($id);
-    elseif($request->has_attribute('collapse'))
-      $result = $tree->collapse_node($id);
+    if($request->hasAttribute('expand'))
+      $result = $tree->expandNode($id);
+    elseif($request->hasAttribute('collapse'))
+      $result = $tree->collapseNode($id);
     else
-      $result = $tree->toggle_node($id);
+      $result = $tree->toggleNode($id);
 
     if(!$result)
-      $request->set_status(request :: STATUS_FAILURE);
+      $request->setStatus(Request :: STATUS_FAILURE);
   }
 }
 

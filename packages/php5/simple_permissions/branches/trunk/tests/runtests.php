@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/setup.php');
-require_once(dirname(__FILE__) . '/simple_permissions_root_group_test.class.php');
-require_once(LIMB_DIR . '/tests/lib/cli_test_runner.class.php');
+require_once(dirname(__FILE__) . '/SimplePermissionsRootGroupTest.class.php');
+require_once(LIMB_DIR . '/tests/lib/CliTestRunner.class.php');
 
 $root_group = new SimplePermissionsRootGroupTest();
 $test_runner = new CLITestRunner();

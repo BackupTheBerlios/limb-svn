@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class guestbook_message_controller extends site_object_controller
+class GuestbookMessageController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -21,7 +21,7 @@ class guestbook_message_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit_message', 'guestbook'),
+            'action_name' => Strings :: get('edit_message', 'guestbook'),
             'action_path' => '/guestbook_message/edit_guestbook_message_action',
             'template_path' => '/guestbook_message/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -29,7 +29,7 @@ class guestbook_message_controller extends site_object_controller
         'publish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('publish'),
+            'action_name' => Strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/publish.gif',
             'can_have_access_template' => true,
@@ -37,7 +37,7 @@ class guestbook_message_controller extends site_object_controller
         'unpublish' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('unpublish'),
+            'action_name' => Strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
             'img_src' => '/shared/images/unpublish.gif',
             'can_have_access_template' => true,
@@ -45,7 +45,7 @@ class guestbook_message_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete_message', 'guestbook'),
+            'action_name' => Strings :: get('delete_message', 'guestbook'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

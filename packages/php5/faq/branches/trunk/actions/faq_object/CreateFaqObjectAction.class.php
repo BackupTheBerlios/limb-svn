@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.php');
 
-class create_faq_object_action extends form_create_site_object_action
+class CreateFaqObjectAction extends FormCreateSiteObjectAction
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'faq_object';
   }
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'create_faq_object';
   }
 
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
-    return complex_array :: array_merge(
-        parent :: _define_datamap(),
+    return ComplexArray :: array_merge(
+        parent :: _defineDatamap(),
         array(
           'question' => 'question',
           'question_author' => 'question_author',
@@ -37,14 +37,14 @@ class create_faq_object_action extends form_create_site_object_action
     );
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    parent :: _init_validator();
+    parent :: _initValidator();
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'question'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'answer'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'question_author_email'));
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'answer_author_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'question'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'answer'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'question_author_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'answer_author_email'));
   }
 }
 

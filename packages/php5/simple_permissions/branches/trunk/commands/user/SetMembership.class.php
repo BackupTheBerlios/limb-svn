@@ -8,42 +8,42 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
-class set_membership extends form_action
+class SetMembership extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'set_membership';
   }
 
-  protected function _init_dataspace($request)
+  protected function _initDataspace($request)
   {
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
     $object_data = $datasource->fetch();
 
-    $object = Limb :: toolkit()->createSiteObject('user_object');
+    $object = Limb :: toolkit()->createSiteObject('UserObject');
 
-    $data['membership'] = $object->get_membership($object_data['id']);
+    $data['membership'] = $object->getMembership($object_data['id']);
 
     $this->dataspace->import($data);
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
     $object_data = $datasource->fetch();
 
     $data = $this->dataspace->export();
-    $object = Limb :: toolkit()->createSiteObject('user_object');
+    $object = Limb :: toolkit()->createSiteObject('UserObject');
 
-    $object->save_membership($object_data['id'], $data['membership']);
+    $object->saveMembership($object_data['id'], $data['membership']);
 
-    $request->set_status(request :: STATUS_FORM_SUBMITTED);
+    $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
   }
 
 }

@@ -8,21 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/fetch_tree_datasource.class.php');
+require_once(LIMB_DIR . '/class/datasources/FetchTreeDatasource.class.php');
 
-class group_object_access_datasource extends fetch_tree_datasource
+class GroupObjectAccessDatasource extends FetchTreeDatasource
 {
   protected function _fetch(&$counter, $params)
   {
     $tree_array = parent :: _fetch($counter, $params);
 
     $group_params['order'] = array('priority' => 'ASC');
-    $user_groups = $this->_get_user_groups();
+    $user_groups = $this->_getUserGroups();
 
-    $dataspace = dataspace_registry :: get('set_group_access');
+    $dataspace = DataspaceRegistry :: get('set_group_access');
     $groups = $dataspace->get('filter_groups');
 
-    if (!is_array($groups) || !count($groups))
+    if (!is_array($groups) ||  !count($groups))
       return $tree_array;
 
     foreach(array_keys($user_groups) as $key)
@@ -41,12 +41,12 @@ class group_object_access_datasource extends fetch_tree_datasource
     return $tree_array;
   }
 
-  protected function _get_user_groups()
+  protected function _getUserGroups()
   {
-    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
-    $datasource->set_path('/root/user_groups');
-    $datasource->set_site_object_class_name('user_group');
-    $datasource->set_restrict_by_class();
+    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $datasource->setPath('/root/user_groups');
+    $datasource->setSiteObjectClassName('user_group');
+    $datasource->setRestrictByClass();
 
     return $datasource->fetch();
   }

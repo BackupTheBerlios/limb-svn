@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class apply_action_access_template_command implements Command
+class ApplyActionAccessTemplateCommand implements Command
 {
   public function perform()
   {
     $toolkit = Limb :: toolkit();
     $request = $toolkit->getRequest();
 
-    $datasource = $toolkit->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
-    $object = wrap_with_site_object($datasource->fetch());
+    $object = wrapWithSiteObject($datasource->fetch());
 
-    $action = $object->get_controller()->get_requested_action($request);
+    $action = $object->getController()->getRequestedAction($request);
 
     try
     {
-      $access_policy = $this->_get_access_policy();
-      $access_policy->apply_access_templates($object, $action);
+      $access_policy = $this->_getAccessPolicy();
+      $access_policy->applyAccessTemplates($object, $action);
     }
     catch(LimbException $e)
     {
@@ -38,7 +38,7 @@ class apply_action_access_template_command implements Command
   }
 
   // for mocking
-  protected function _get_access_policy()
+  protected function _getAccessPolicy()
   {
     return new $access_policy;
   }

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class class_folder_controller extends site_object_controller
+class ClassFolderController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -29,7 +29,7 @@ class class_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/access_manage.gif',
-            'action_name' => strings :: get('set_group_access'),
+            'action_name' => Strings :: get('set_group_access'),
         ),
         'set_group_access_template' => array(
             'template_path' => '/class_folder/set_group_access_template.html',
@@ -37,12 +37,12 @@ class class_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/access_template_manage.gif',
-            'action_name' => strings :: get('set_group_access_template'),
+            'action_name' => Strings :: get('set_group_access_template'),
         ),
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
             'img_src' => '/shared/images/edit.gif'

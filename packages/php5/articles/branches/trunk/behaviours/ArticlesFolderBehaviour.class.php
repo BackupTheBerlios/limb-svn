@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class articles_folder_controller extends site_object_controller
+class ArticlesFolderController extends SiteObjectController
 {
-  public function get_display_action_properties()
+  public function getDisplayActionProperties()
   {
     return array();
   }
 
-  public function define_display($state_machine)
+  public function defineDisplay($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -28,12 +28,12 @@ class articles_folder_controller extends site_object_controller
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function get_admin_display_action_properties()
+  public function getAdminDisplayActionProperties()
   {
     return array();
   }
 
-  public function define_admin_display($state_machine)
+  public function defineAdminDisplay($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -44,15 +44,15 @@ class articles_folder_controller extends site_object_controller
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function get_create_article_action_properties()
+  public function getCreateArticleActionProperties()
   {
     return array('popup' => true,
                  'JIP' => true,
-                 'action_name' => strings :: get('create_article', 'article'),
+                 'action_name' => Strings :: get('create_article', 'article'),
                  'img_src' => '/shared/images/new.generic.gif');
   }
 
-  public function define_create_article($state_machine)
+  public function defineCreateArticle($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -73,15 +73,15 @@ class articles_folder_controller extends site_object_controller
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function get_create_articles_folder_action_properties()
+  public function getCreateArticlesFolderActionProperties()
   {
     return array('popup' => true,
                  'JIP' => true,
-                 'action_name' => strings :: get('create_articles_folder', 'article'),
+                 'action_name' => Strings :: get('create_articles_folder', 'article'),
                  'img_src' => '/shared/images/new.folder.gif');
   }
 
-  public function define_create_articles_folder($state_machine)
+  public function defineCreateArticlesFolder($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -102,15 +102,15 @@ class articles_folder_controller extends site_object_controller
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function get_edit_action_properties()
+  public function getEditActionProperties()
   {
     return array('popup' => true,
                  'JIP' => true,
-                 'action_name' => strings :: get('edit_articles_folder', 'article'),
+                 'action_name' => Strings :: get('edit_articles_folder', 'article'),
                  'img_src' => '/shared/images/edit.gif');
   }
 
-  public function define_edit($state_machine)
+  public function defineEdit($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',

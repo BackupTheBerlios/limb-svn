@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR  . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR  . '/class/lib/db/DbTable.class.php');
 
-class user_in_group_db_table extends db_table
+class UserInGroupDbTable extends DbTable
 {
-  protected function _define_db_table_name()
+  protected function _defineDbTableName()
   {
     return 'user_in_group';
   }
 
-  protected function _define_columns()
+  protected function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),

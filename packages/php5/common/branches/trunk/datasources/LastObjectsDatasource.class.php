@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/fetch_datasource.class.php');
+require_once(LIMB_DIR . '/class/datasources/FetchDatasource.class.php');
 
-class last_objects_datasource extends fetch_datasource
+class LastObjectsDatasource extends FetchDatasource
 {
   protected function _fetch(&$counter, $params)
   {
@@ -19,12 +19,12 @@ class last_objects_datasource extends fetch_datasource
     if (!count($result))
       return $result;
 
-    $this->_process_loaded_items($result);
+    $this->_processLoadedItems($result);
 
     return $result;
   }
 
-  protected function _process_loaded_items(&$items)
+  protected function _processLoadedItems(&$items)
   {
     if (!count($items))
       return $items;
@@ -37,9 +37,9 @@ class last_objects_datasource extends fetch_datasource
         $parent_node_ids[$data['parent_node_id']] = $data['parent_node_id'];
       }
 
-    $datasource = Limb :: toolkit()->getDatasource('single_objects_by_node_ids_datasource');
-    $datasource->set_use_node_ids_as_keys();
-    $datasource->set_node_ids($parent_node_ids);
+    $datasource = Limb :: toolkit()->getDatasource('SingleObjectsByNodeIdsDatasource');
+    $datasource->setUseNodeIdsAsKeys();
+    $datasource->setNodeIds($parent_node_ids);
 
     $parents = $datasource->fetch();
 

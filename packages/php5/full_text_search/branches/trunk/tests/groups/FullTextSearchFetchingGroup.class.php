@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class full_text_search_fetching_group extends LimbGroupTest
+class FullTextSearchFetchingGroup extends LimbGroupTest
 {
-  function full_text_search_fetching_group()
+  function fullTextSearchFetchingGroup()
   {
-    $this->LimbGroupTest('full text search fetching tests');
+    $this->limbGroupTest('full text search fetching tests');
   }
 
   function getTestCasesHandles()

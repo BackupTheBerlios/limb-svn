@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-class objects_access_groups_list_datasource implements datasource
+class ObjectsAccessGroupsListDatasource implements Datasource
 {
-  public function get_dataset(&$counter, $params = array())
+  public function getDataset(&$counter, $params = array())
   {
     $params['order'] = array('priority' => 'ASC');
-    $groups = $this->_get_user_groups();
+    $groups = $this->_getUserGroups();
 
-    $dataspace = dataspace_registry :: get('set_group_access');
+    $dataspace = DataspaceRegistry :: get('set_group_access');
     $filter_groups = $dataspace->get('filter_groups');
 
-    if (!is_array($filter_groups) || !count($filter_groups))
+    if (!is_array($filter_groups) ||  !count($filter_groups))
       return false;
 
     foreach(array_keys($groups) as $key)
@@ -29,15 +29,15 @@ class objects_access_groups_list_datasource implements datasource
         unset($groups[$key]);
     }
 
-    return new array_dataset($groups);
+    return new ArrayDataset($groups);
   }
 
-  protected function _get_user_groups()
+  protected function _getUserGroups()
   {
-    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
-    $datasource->set_path('/root/user_groups');
-    $datasource->set_site_object_class_name('user_group');
-    $datasource->set_restrict_by_class();
+    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $datasource->setPath('/root/user_groups');
+    $datasource->setSiteObjectClassName('user_group');
+    $datasource->setRestrictByClass();
 
     return $datasource->fetch();
   }

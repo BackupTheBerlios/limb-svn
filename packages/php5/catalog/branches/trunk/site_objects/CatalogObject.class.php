@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
-require_once(LIMB_SHOP_DIR . 'cart_item.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/ContentObject.class.php');
+require_once(LIMB_SHOP_DIR . 'CartItem.class.php');
 
-class catalog_object extends content_object
+class CatalogObject extends ContentObject
 {
-  public function get_cart_item()
+  public function getCartItem()
   {
-    $cart_item = new cart_item($this->get_node_id());
+    $cart_item = new CartItem($this->getNodeId());
 
-    $cart_item->set_description($this->get_title());
-    $cart_item->set_attribute('image_id', $this->get_attribute('image_id'));
+    $cart_item->setDescription($this->getTitle());
+    $cart_item->setAttribute('image_id', $this->getAttribute('image_id'));
 
     return $cart_item;
   }

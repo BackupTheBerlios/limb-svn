@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-class fake_shipping_locator
+class FakeShippingLocator
 {
-  public function get_shipping_options($config)
+  public function getShippingOptions($config)
   {
     $options = array(
         array(

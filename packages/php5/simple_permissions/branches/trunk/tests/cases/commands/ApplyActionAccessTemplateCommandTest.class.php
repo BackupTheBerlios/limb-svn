@@ -8,35 +8,35 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../commands/apply_action_access_template_command.class.php');
-require_once(dirname(__FILE__) . '/../../../access_policy.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
+require_once(dirname(__FILE__) . '/../../../commands/ApplyActionAccessTemplateCommand.class.php');
+require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('request');
-Mock :: generate('requested_object_datasource');
-Mock :: generate('site_object');
-Mock :: generate('site_object_controller');
-Mock :: generate('access_policy');
+Mock :: generate('Request');
+Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('SiteObject');
+Mock :: generate('SiteObjectController');
+Mock :: generate('AccessPolicy');
 
 Mock :: generatePartial(
-                      'apply_action_access_template_command',
-                      'apply_action_access_template_command_test_version',
-                      array('_get_access_policy'));
+                      'ApplyActionAccessTemplateCommand',
+                      'ApplyActionAccessTemplateCommandTestVersion',
+                      array('_getAccessPolicy'));
 
-class access_policy_for_apply_action_access_template_command extends access_policy
+class AccessPolicyForApplyActionAccessTemplateCommand extends AccessPolicy
 {
-  public function apply_access_templates($object, $action)
+  public function applyAccessTemplates($object, $action)
   {
     throw new LimbException('catch me!');
   }
 }
 
-class apply_action_access_template_command_test extends LimbTestCase
+class ApplyActionAccessTemplateCommandTest extends LimbTestCase
 {
   var $command;
   var $request;
@@ -48,22 +48,22 @@ class apply_action_access_template_command_test extends LimbTestCase
 
   function setUp()
   {
-    $this->request = new Mockrequest($this);
-    $this->datasource = new Mockrequested_object_datasource($this);
-    $this->site_object = new Mocksite_object($this);
-    $this->controller = new Mocksite_object_controller($this);
-    $this->access_policy = new Mockaccess_policy($this);
+    $this->request = new MockRequest($this);
+    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->site_object = new MockSiteObject($this);
+    $this->controller = new MockSiteObjectController($this);
+    $this->access_policy = new MockAccessPolicy($this);
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object);
 
-    $this->site_object->setReturnValue('get_controller', $this->controller);
+    $this->site_object->setReturnValue('getController', $this->controller);
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->command = new apply_action_access_template_command_test_version($this);
+    $this->command = new ApplyActionAccessTemplateCommandTestVersion($this);
   }
 
   function tearDown()
@@ -79,33 +79,33 @@ class apply_action_access_template_command_test extends LimbTestCase
     $this->command->tally();
   }
 
-  function test_perform_ok()
+  function testPerformOk()
   {
     $object_data = array('class_name' => 'site_object');
 
-    $this->controller->expectOnce('get_requested_action', array(new IsAExpectation('Mockrequest')));
-    $this->controller->setReturnValue('get_requested_action', $action = 'some_action');
+    $this->controller->expectOnce('getRequestedAction', array(new IsAExpectation('MockRequest')));
+    $this->controller->setReturnValue('getRequestedAction', $action = 'someAction');
 
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->access_policy->expectOnce('apply_access_templates',
-                                     array(new IsAExpectation('Mocksite_object'), $action));
+    $this->access_policy->expectOnce('applyAccessTemplates',
+                                     array(new IsAExpectation('MockSiteObject'), $action));
 
-    $this->command->setReturnValue('_get_access_policy', $this->access_policy);
+    $this->command->setReturnValue('_getAccessPolicy', $this->access_policy);
 
     $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
   }
 
-  function test_perform_failure()
+  function testPerformFailure()
   {
     $object_data = array('class_name' => 'site_object');
 
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->command->setReturnValue('_get_access_policy',
-                                   new access_policy_for_apply_action_access_template_command());
+    $this->command->setReturnValue('_getAccessPolicy',
+                                   new AccessPolicyForApplyActionAccessTemplateCommand());
 
     $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
   }

@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-class cart_summ_tag_info
+class CartSummTagInfo
 {
   public $tag = 'cart:SUMM';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'cart_summ_tag';
 }
 
-register_tag(new cart_summ_tag_info());
+registerTag(new CartSummTagInfo());
 
-class cart_summ_tag extends server_component_tag
+class CartSummTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/cart_summ_component';
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php('echo '. $this->get_component_ref_code() . '->get_cart_summ();');
+    $code->writePhp('echo '. $this->getComponentRefCode() . '->get_cart_summ();');
   }
 }
 

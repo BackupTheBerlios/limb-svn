@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../site_objects/image_object.class.php');
-require_once(dirname(__FILE__) . '/../../../finders/image_objects_raw_finder.class.php');
-require_once(dirname(__FILE__) . '/../../../data_mappers/image_object_mapper.class.php');
-require_once(dirname(__FILE__) . '/../../../image_variation.class.php');
-require_once(dirname(__FILE__) . '/../../../media_manager.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../../site_objects/ImageObject.class.php');
+require_once(dirname(__FILE__) . '/../../../finders/ImageObjectsRawFinder.class.php');
+require_once(dirname(__FILE__) . '/../../../data_mappers/ImageObjectMapper.class.php');
+require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
+require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
-Mock :: generatePartial('image_object_mapper',
-                        'image_object_mapper_test_version',
-                        array('_get_finder',
-                              '_do_parent_insert',
-                              '_do_parent_update',
-                              '_get_media_manager'));
+Mock :: generatePartial('ImageObjectMapper',
+                        'ImageObjectMapperTestVersion',
+                        array('_getFinder',
+                              '_doParentInsert',
+                              '_doParentUpdate',
+                              '_getMediaManager'));
 
-Mock :: generate('media_manager');
-Mock :: generate('image_objects_raw_finder');
+Mock :: generate('MediaManager');
+Mock :: generate('ImageObjectsRawFinder');
 
-class image_object_data_mapper_test extends LimbTestCase
+class ImageObjectDataMapperTest extends LimbTestCase
 {
   var $db;
   var $finder;
@@ -35,34 +35,34 @@ class image_object_data_mapper_test extends LimbTestCase
 
   function setUp()
   {
-    $this->db = db_factory :: instance();
+    $this->db = DbFactory :: instance();
 
-    $this->finder = new Mockimage_objects_raw_finder($this);
-    $this->media_manager = new Mockmedia_manager($this);
+    $this->finder = new MockImageObjectsRawFinder($this);
+    $this->media_manager = new MockMediaManager($this);
 
-    $this->mapper = new image_object_mapper_test_version($this);
-    $this->mapper->setReturnValue('_get_finder', $this->finder);
-    $this->mapper->setReturnValue('_get_media_manager', $this->media_manager);
+    $this->mapper = new ImageObjectMapperTestVersion($this);
+    $this->mapper->setReturnValue('_getFinder', $this->finder);
+    $this->mapper->setReturnValue('_getMediaManager', $this->media_manager);
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
 
     $this->mapper->tally();
     $this->finder->tally();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('image_object');
-    $this->db->sql_delete('image_variation');
-    $this->db->sql_delete('media');
+    $this->db->sqlDelete('image_object');
+    $this->db->sqlDelete('image_variation');
+    $this->db->sqlDelete('media');
   }
 
-  function test_find_by_id()
+  function testFindById()
   {
     $variations_data = array('original' => array('id' => $id1 = 200,
                                                               'name' => $name1 = 'original',
@@ -94,54 +94,54 @@ class image_object_data_mapper_test extends LimbTestCase
 
     );
 
-    $this->finder->expectOnce('find_by_id', array($id));
-    $this->finder->setReturnValue('find_by_id', $result, array($id));
+    $this->finder->expectOnce('findById', array($id));
+    $this->finder->setReturnValue('findById', $result, array($id));
 
-    $image = $this->mapper->find_by_id($id);
+    $image = $this->mapper->findById($id);
 
-    $this->assertEqual($image->get_id(), $id);
-    $this->assertEqual($image->get_description(), $description);
+    $this->assertEqual($image->getId(), $id);
+    $this->assertEqual($image->getDescription(), $description);
 
-    $this->_check_image_object_variations($image, $variations_data);
+    $this->_checkImageObjectVariations($image, $variations_data);
   }
 
-  function test_insert()
+  function testInsert()
   {
-    $image = new image_object();
-    $image->set_description($description = 'some description');
+    $image = new ImageObject();
+    $image->setDescription($description = 'some description');
 
-    $image_variation1 = new image_variation();
-    $image_variation1->set_width($width1 = 50);
-    $image_variation1->set_height($height1 = 100);
-    $image_variation1->set_media_file_id($media_file_id1 = 'dsada');
-    $image_variation1->set_name($name1 = 'original');
-    $image_variation1->set_etag($etag1 = 'dsajadhk');
-    $image_variation1->set_mime_type($mime_type1 = 'jpeg');
-    $image_variation1->set_size($size1 = 500);
-    $image_variation1->set_file_name($file_name1 = 'some file');
+    $image_variation1 = new ImageVariation();
+    $image_variation1->setWidth($width1 = 50);
+    $image_variation1->setHeight($height1 = 100);
+    $image_variation1->setMediaFileId($media_file_id1 = 'dsada');
+    $image_variation1->setName($name1 = 'original');
+    $image_variation1->setEtag($etag1 = 'dsajadhk');
+    $image_variation1->setMimeType($mime_type1 = 'jpeg');
+    $image_variation1->setSize($size1 = 500);
+    $image_variation1->setFileName($file_name1 = 'some file');
 
-    $image->attach_variation($image_variation1);
+    $image->attachVariation($image_variation1);
 
-    $image_variation2 = new image_variation();
-    $image_variation2->set_width($width2 = 100);
-    $image_variation2->set_height($height2 = 200);
-    $image_variation2->set_media_file_id($media_file_id2 = 'dsfsdf');
-    $image_variation2->set_name($name2 = 'icon');
-    $image_variation2->set_etag($etag2 = 'dsajrwek');
-    $image_variation2->set_mime_type($mime_type2 = 'png');
-    $image_variation2->set_size($size2 = 500);
-    $image_variation2->set_file_name($file_name2 = 'some file2');
+    $image_variation2 = new ImageVariation();
+    $image_variation2->setWidth($width2 = 100);
+    $image_variation2->setHeight($height2 = 200);
+    $image_variation2->setMediaFileId($media_file_id2 = 'dsfsdf');
+    $image_variation2->setName($name2 = 'icon');
+    $image_variation2->setEtag($etag2 = 'dsajrwek');
+    $image_variation2->setMimeType($mime_type2 = 'png');
+    $image_variation2->setSize($size2 = 500);
+    $image_variation2->setFileName($file_name2 = 'some file2');
 
-    $image->attach_variation($image_variation2);
+    $image->attachVariation($image_variation2);
 
-    $this->mapper->expectOnce('_do_parent_insert', array($image));
+    $this->mapper->expectOnce('_doParentInsert', array($image));
     $this->mapper->insert($image);
 
-    $this->db->sql_select('media');
-    $media_rows = $this->db->get_array();
+    $this->db->sqlSelect('media');
+    $media_rows = $this->db->getArray();
 
     $media1 = reset($media_rows);
-    $this->assertEqual($media1['id'], $image_variation1->get_media_id());
+    $this->assertEqual($media1['id'], $image_variation1->getMediaId());
     $this->assertEqual($media1['media_file_id'], $media_file_id1);
     $this->assertEqual($media1['file_name'], $file_name1);
     $this->assertEqual($media1['mime_type'], $mime_type1);
@@ -149,41 +149,41 @@ class image_object_data_mapper_test extends LimbTestCase
     $this->assertEqual($media1['etag'], $etag1);
 
     $media2 = next($media_rows);
-    $this->assertEqual($media2['id'], $image_variation2->get_media_id());
+    $this->assertEqual($media2['id'], $image_variation2->getMediaId());
     $this->assertEqual($media2['media_file_id'], $media_file_id2);
     $this->assertEqual($media2['file_name'], $file_name2);
     $this->assertEqual($media2['mime_type'], $mime_type2);
     $this->assertEqual($media2['size'], $size2);
     $this->assertEqual($media2['etag'], $etag2);
 
-    $this->db->sql_select('image_variation');
-    $variation_rows = $this->db->get_array();
+    $this->db->sqlSelect('image_variation');
+    $variation_rows = $this->db->getArray();
     $variation_data1 = reset($variation_rows);
-    $this->assertEqual($variation_data1['image_id'], $image->get_id());
-    $this->assertEqual($variation_data1['media_id'], $image_variation1->get_media_id());
+    $this->assertEqual($variation_data1['image_id'], $image->getId());
+    $this->assertEqual($variation_data1['media_id'], $image_variation1->getMediaId());
     $this->assertEqual($variation_data1['width'], $width1);
     $this->assertEqual($variation_data1['height'], $height1);
     $this->assertEqual($variation_data1['variation'], $name1);
 
     $variation_data2 = next($variation_rows);
-    $this->assertEqual($variation_data2['image_id'], $image->get_id());
-    $this->assertEqual($variation_data2['media_id'], $image_variation2->get_media_id());
+    $this->assertEqual($variation_data2['image_id'], $image->getId());
+    $this->assertEqual($variation_data2['media_id'], $image_variation2->getMediaId());
     $this->assertEqual($variation_data2['width'], $width2);
     $this->assertEqual($variation_data2['height'], $height2);
     $this->assertEqual($variation_data2['variation'], $name2);
   }
 
-  function test_update()
+  function testUpdate()
   {
-    $this->db->sql_insert('image_object', array('id' => $id = 1000,
+    $this->db->sqlInsert('image_object', array('id' => $id = 1000,
                                                 'description' => 'Description'));
 
-    $this->db->sql_insert('image_variation', array('id' => $variation_id = 1000,
+    $this->db->sqlInsert('image_variation', array('id' => $variation_id = 1000,
                                                    'media_id' => $media_id = 101,
                                                    'image_id' => $id = 100,
                                                    'variation' => 'whatever'));
 
-    $this->db->sql_insert('media', array('id' => $media_id,
+    $this->db->sqlInsert('media', array('id' => $media_id,
                                          'media_file_id' => $old_media_file_id = 'sdFjfskd23923sds',
                                          'file_name' => 'file1',
                                          'mime_type' => 'type1',
@@ -191,43 +191,43 @@ class image_object_data_mapper_test extends LimbTestCase
                                          'etag' => 'etag1'));
 
 
-    $image = new image_object();
-    $image->set_id($id);
-    $image->set_description($description = 'some description');
+    $image = new ImageObject();
+    $image->setId($id);
+    $image->setDescription($description = 'some description');
 
-    $image_variation1 = new image_variation();
-    $image_variation1->set_id($variation_id);
-    $image_variation1->set_media_id($media_id);
-    $image_variation1->set_width($width1 = 50);
-    $image_variation1->set_height($height1 = 100);
-    $image_variation1->set_media_file_id($media_file_id1 = 'dsada');//note it's a new one!!!
-    $image_variation1->set_name($name1 = 'original');
-    $image_variation1->set_etag($etag1 = 'dsajadhk');
-    $image_variation1->set_mime_type($mime_type1 = 'jpeg');
-    $image_variation1->set_size($size1 = 500);
-    $image_variation1->set_file_name($file_name1 = 'some file');
+    $image_variation1 = new ImageVariation();
+    $image_variation1->setId($variation_id);
+    $image_variation1->setMediaId($media_id);
+    $image_variation1->setWidth($width1 = 50);
+    $image_variation1->setHeight($height1 = 100);
+    $image_variation1->setMediaFileId($media_file_id1 = 'dsada');//note it's a new one!!!
+    $image_variation1->setName($name1 = 'original');
+    $image_variation1->setEtag($etag1 = 'dsajadhk');
+    $image_variation1->setMimeType($mime_type1 = 'jpeg');
+    $image_variation1->setSize($size1 = 500);
+    $image_variation1->setFileName($file_name1 = 'some file');
 
-    $image->attach_variation($image_variation1);
+    $image->attachVariation($image_variation1);
 
-    $this->media_manager->expectOnce('unlink_media', array($old_media_file_id));
+    $this->media_manager->expectOnce('unlinkMedia', array($old_media_file_id));
 
-    $image_variation2 = new image_variation();
-    $image_variation2->set_width($width2 = 100);
-    $image_variation2->set_height($height2 = 200);
-    $image_variation2->set_media_file_id($media_file_id2 = 'dsfsdf');
-    $image_variation2->set_name($name2 = 'icon');
-    $image_variation2->set_etag($etag2 = 'dsajrwek');
-    $image_variation2->set_mime_type($mime_type2 = 'png');
-    $image_variation2->set_size($size2 = 500);
-    $image_variation2->set_file_name($file_name2 = 'some file2');
+    $image_variation2 = new ImageVariation();
+    $image_variation2->setWidth($width2 = 100);
+    $image_variation2->setHeight($height2 = 200);
+    $image_variation2->setMediaFileId($media_file_id2 = 'dsfsdf');
+    $image_variation2->setName($name2 = 'icon');
+    $image_variation2->setEtag($etag2 = 'dsajrwek');
+    $image_variation2->setMimeType($mime_type2 = 'png');
+    $image_variation2->setSize($size2 = 500);
+    $image_variation2->setFileName($file_name2 = 'some file2');
 
-    $image->attach_variation($image_variation2);
+    $image->attachVariation($image_variation2);
 
-    $this->mapper->expectOnce('_do_parent_update', array($image));
+    $this->mapper->expectOnce('_doParentUpdate', array($image));
     $this->mapper->update($image);
 
-    $this->db->sql_select('media');
-    $media_rows = $this->db->get_array();
+    $this->db->sqlSelect('media');
+    $media_rows = $this->db->getArray();
 
     $this->assertEqual(sizeof($media_rows), 2);
 
@@ -240,39 +240,39 @@ class image_object_data_mapper_test extends LimbTestCase
     $this->assertEqual($media1['etag'], $etag1);
 
     $media2 = next($media_rows);
-    $this->assertEqual($media2['id'], $image_variation2->get_media_id());
+    $this->assertEqual($media2['id'], $image_variation2->getMediaId());
     $this->assertEqual($media2['media_file_id'], $media_file_id2);
     $this->assertEqual($media2['file_name'], $file_name2);
     $this->assertEqual($media2['mime_type'], $mime_type2);
     $this->assertEqual($media2['size'], $size2);
     $this->assertEqual($media2['etag'], $etag2);
 
-    $this->db->sql_select('image_variation');
+    $this->db->sqlSelect('image_variation');
 
-    $variation_rows = $this->db->get_array();
+    $variation_rows = $this->db->getArray();
 
     $this->assertEqual(sizeof($variation_rows), 2);
 
     $variation_data1 = reset($variation_rows);
-    $this->assertEqual($variation_data1['image_id'], $image->get_id());
+    $this->assertEqual($variation_data1['image_id'], $image->getId());
     $this->assertEqual($variation_data1['media_id'], $media_id);
     $this->assertEqual($variation_data1['width'], $width1);
     $this->assertEqual($variation_data1['height'], $height1);
     $this->assertEqual($variation_data1['variation'], $name1);
 
     $variation_data2 = next($variation_rows);
-    $this->assertEqual($variation_data2['image_id'], $image->get_id());
-    $this->assertEqual($variation_data2['media_id'], $image_variation2->get_media_id());
+    $this->assertEqual($variation_data2['image_id'], $image->getId());
+    $this->assertEqual($variation_data2['media_id'], $image_variation2->getMediaId());
     $this->assertEqual($variation_data2['width'], $width2);
     $this->assertEqual($variation_data2['height'], $height2);
     $this->assertEqual($variation_data2['variation'], $name2);
   }
 
-  function _check_image_object_variations($image, $check_array)
+  function _checkImageObjectVariations($image, $check_array)
   {
     foreach($check_array as $variation_name => $data)
     {
-      $variation = $image->get_variation($variation_name);
+      $variation = $image->getVariation($variation_name);
 
       foreach($data as $field => $value)
       {

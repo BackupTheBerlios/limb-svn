@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 if(!defined('HTTP_SHARED_DIR'))
   define('HTTP_SHARED_DIR', LIMB_DIR . '/shared/');
@@ -19,7 +19,7 @@ if(!defined('MEDIA_DIR'))
 if(!defined('HTTP_MIME_ICONS_DIR'))
   define('HTTP_MIME_ICONS_DIR', HTTP_SHARED_DIR . 'images/mime_icons/');
 
-class display_requested_file_command implements command
+class DisplayRequestedFileCommand implements Command
 {
   const DEFAULT_ICON_SIZE = 16;
 
@@ -27,9 +27,9 @@ class display_requested_file_command implements command
   {
     $request = Limb :: toolkit()->getRequest();
     $response = Limb :: toolkit()->getResponse();
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
 
-    $datasource->set_request($request);
+    $datasource->setRequest($request);
 
     if(!$object_data = $datasource->fetch())
       return Limb :: STATUS_ERROR;
@@ -38,16 +38,16 @@ class display_requested_file_command implements command
     {
       $response->header("HTTP/1.1 404 Not found");
 
-      if(!$request->has_attribute('icon'))
+      if(!$request->hasAttribute('icon'))
         return Limb :: STATUS_ERROR;
 
       $response->commit(); //for speed
       return;//for tests, fix!!!
     }
 
-    if ($request->has_attribute('icon'))
+    if ($request->hasAttribute('icon'))
     {
-      $this->_fill_icon_response($response, $request, $object_data);
+      $this->_fillIconResponse($response, $request, $object_data);
       $response->commit();//for speed
       return;//for tests, fix!!!
     }
@@ -59,12 +59,12 @@ class display_requested_file_command implements command
     return Limb :: STATUS_OK;
   }
 
-  protected function _fill_icon_response($response, $request, $object_data)
+  protected function _fillIconResponse($response, $request, $object_data)
   {
     if (!$size = $request->get('icon'))
       $size = self :: DEFAULT_ICON_SIZE;
 
-    $icon = $this->_get_mime_type()->get_type_icon($object_data['mime_type']);
+    $icon = $this->_getMimeType()->getTypeIcon($object_data['mime_type']);
 
     $file_path = HTTP_MIME_ICONS_DIR . "{$icon}.{$size}.gif";
 
@@ -75,10 +75,10 @@ class display_requested_file_command implements command
     $response->readfile($file_path);
   }
 
-  protected function _get_mime_type()
+  protected function _getMimeType()
   {
-    include_once(LIMB_DIR . '/class/lib/util/mime_type.class.php');
-    return new mime_type();
+    include_once(LIMB_DIR . '/class/lib/util/MimeType.class.php');
+    return new MimeType();
   }
 }
 

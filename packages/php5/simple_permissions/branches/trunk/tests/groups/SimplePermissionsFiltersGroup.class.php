@@ -8,11 +8,11 @@
 * $Id: simple_authorizer_group.class.php 783 2004-10-09 12:23:48Z pachanga $
 *
 ***********************************************************************************/
-class simple_permissions_filters_group extends LimbGroupTest
+class SimplePermissionsFiltersGroup extends LimbGroupTest
 {
-  function simple_permissions_filters_group()
+  function simplePermissionsFiltersGroup()
   {
-    $this->LimbGroupTest('simple permissions filters tests');
+    $this->limbGroupTest('simple permissions filters tests');
   }
 
   function getTestCasesHandles()

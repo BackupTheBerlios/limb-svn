@@ -13,6 +13,6 @@ if (file_exists(dirname(__FILE__) . '/constants.php'))
 
 require_once(LIMB_DIR . '/tests/setup.php');
 
-register_file_resolver('ini',    $r = array(LIMB_DIR . '/tests/lib/package_tests_ini_file_resolver', dirname(__FILE__) . '/../'));
+registerFileResolver('ini',    $r = array(LIMB_DIR . '/tests/lib/package_tests_ini_file_resolver', dirname(__FILE__) . '/../'));
 
 ?>

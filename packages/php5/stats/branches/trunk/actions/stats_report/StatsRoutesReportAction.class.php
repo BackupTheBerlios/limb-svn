@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
-class stats_routes_report_action extends form_action
+class StatsRoutesReportAction extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'routes_form';
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $request->import($this->dataspace->export());
 
-    parent :: _valid_perform($request, $response);
+    parent :: _validPerform($request, $response);
   }
 
 }

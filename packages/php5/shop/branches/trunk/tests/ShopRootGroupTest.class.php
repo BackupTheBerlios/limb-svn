@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/tests/cases/limb_group_test.class.php');
+require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
 
 class ShopRootGroupTest extends LimbGroupTest
 {
-  function ShopRootGroupTest()
+  function shopRootGroupTest()
   {
-    $this->LimbGroupTest('shop package tests');
+    $this->limbGroupTest('shop package tests');
   }
 
   function getTestCasesHandles()

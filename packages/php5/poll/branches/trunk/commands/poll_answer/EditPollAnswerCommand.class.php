@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/edit_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/EditSiteObjectCommand.class.php');
 
-class edit_poll_answer_command extends edit_site_object_command
+class EditPollAnswerCommand extends EditSiteObjectCommand
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'poll_answer';
   }

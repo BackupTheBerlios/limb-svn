@@ -8,33 +8,33 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-abstract class stats_report_datasource implements datasource
+abstract class StatsReportDatasource implements Datasource
 {
   protected $_stats_report;
 
-  abstract protected function _init_stats_report();
+  abstract protected function _initStatsReport();
 
   public function __construct()
   {
-    $this->_init_stats_report();
+    $this->_initStatsReport();
   }
 
-  public function get_dataset(&$counter, $params=array())
+  public function getDataset(&$counter, $params=array())
   {
-    $this->_configure_filters();
+    $this->_configureFilters();
 
-    $counter = $this->_stats_report->fetch_count($params);
+    $counter = $this->_stats_report->fetchCount($params);
     $raw_data = $this->_stats_report->fetch($params);
 
-    $result = $this->_process_result_array($raw_data);
+    $result = $this->_processResultArray($raw_data);
 
-    return new array_dataset($result);
+    return new ArrayDataset($result);
   }
 
-  abstract protected function _configure_filters();
+  abstract protected function _configureFilters();
 
-  abstract protected function _process_result_array($arr);
+  abstract protected function _processResultArray($arr);
 }
 ?>

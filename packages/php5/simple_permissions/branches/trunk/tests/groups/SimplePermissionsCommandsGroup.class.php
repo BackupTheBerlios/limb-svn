@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class simple_permissions_commands_group extends LimbGroupTest
+class SimplePermissionsCommandsGroup extends LimbGroupTest
 {
-  function simple_permissions_commands_group()
+  function simplePermissionsCommandsGroup()
   {
-    $this->LimbGroupTest('simple permissions commands tests');
+    $this->limbGroupTest('simple permissions commands tests');
   }
 
   function getTestCasesHandles()

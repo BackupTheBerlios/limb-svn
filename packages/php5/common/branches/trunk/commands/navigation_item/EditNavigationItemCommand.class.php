@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/edit_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/EditSiteObjectCommand.class.php');
 
-class edit_navigation_item_command extends edit_site_object_command
+class EditNavigationItemCommand extends EditSiteObjectCommand
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'navigation_item';
   }
 
-  protected function _define_increase_version_flag()
+  protected function _defineIncreaseVersionFlag()
   {
     return false;
   }

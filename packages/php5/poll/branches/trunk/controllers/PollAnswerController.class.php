@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class poll_answer_controller extends site_object_controller
+class PollAnswerController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -21,7 +21,7 @@ class poll_answer_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit_poll_answer','poll'),
+            'action_name' => Strings :: get('edit_poll_answer','poll'),
             'action_path' => '/poll_answer/edit_poll_answer_action',
             'template_path' => '/poll_answer/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -29,7 +29,7 @@ class poll_answer_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete_poll_answer','poll'),
+            'action_name' => Strings :: get('delete_poll_answer','poll'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

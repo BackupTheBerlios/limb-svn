@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(dirname(__FILE__) . '/stats_report_interface.interface.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(dirname(__FILE__) . '/StatsReportInterface.interface.php');
 
-class stats_routes_report implements stats_report_interface
+class StatsRoutesReport implements StatsReportInterface
 {
   protected $db;
   protected $start_date = null;
@@ -27,7 +27,7 @@ class stats_routes_report implements stats_report_interface
 
   public function fetch($params = array())
   {
-    $records = $this->_retrieve_routes();
+    $records = $this->_retrieveRoutes();
 
     $limit = isset($params['limit']) ? $params['limit'] : 0;
     $offset = isset($params['offset']) ? $params['offset'] : 0;
@@ -37,19 +37,19 @@ class stats_routes_report implements stats_report_interface
     return $records;
   }
 
-  public function fetch_count($params = array())
+  public function fetchCount($params = array())
   {
-    return sizeof($this->_retrieve_routes());
+    return sizeof($this->_retrieveRoutes());
   }
 
-  public function set_period_filter($start_date, $finish_date)
+  public function setPeriodFilter($start_date, $finish_date)
   {
     static $prev_start_date = null;
     static $prev_finish_date = null;
 
-    if($prev_start_date && $prev_finish_date)
+    if($prev_start_date &&  $prev_finish_date)
     {
-      if(!$start_date->is_equal($prev_start_date) || !$finish_date->is_equal($prev_funish_date))
+      if(!$start_date->isEqual($prev_start_date) ||  !$finish_date->isEqual($prev_funish_date))
         $this->condition_changed = true;
       else
         $this->condition_changed = false;
@@ -62,15 +62,15 @@ class stats_routes_report implements stats_report_interface
     $this->finish_date = $finish_date;
   }
 
-  protected function _retrieve_routes()
+  protected function _retrieveRoutes()
   {
     if(!$this->condition_changed)
       return $this->routes_array;
 
-    $start_stamp = $this->start_date->get_stamp();
-    $finish_stamp = $this->finish_date->get_stamp();
+    $start_stamp = $this->start_date->getStamp();
+    $finish_stamp = $this->finish_date->getStamp();
 
-    $root = Limb :: toolkit()->getTree()->get_node_by_path('/root');
+    $root = Limb :: toolkit()->getTree()->getNodeByPath('/root');
     $root_id = $root['id'];
 
     $sql = "SELECT sslog.time as time, sslog.action as action, sslog.session_id as session_id, ssu.uri as uri
@@ -82,13 +82,13 @@ class stats_routes_report implements stats_report_interface
             sslog.user_id = -1
             ORDER BY sslog.session_id, sslog.time ASC";
 
-    $this->db->sql_exec($sql);
+    $this->db->sqlExec($sql);
 
     $session_events = array();
     $session_routes = array();
     $prev_session_id = -1;
 
-    while($record = $this->db->fetch_row())
+    while($record = $this->db->fetchRow())
     {
       $session_id = $record['session_id'];
 
@@ -104,7 +104,7 @@ class stats_routes_report implements stats_report_interface
       if($counter > 10)
         continue;
 
-      if(($prev_record['uri'] != $record['uri'] || $prev_record['action'] != $record['action']))
+      if(($prev_record['uri'] != $record['uri'] ||  $prev_record['action'] != $record['action']))
       {
         $session_events[$session_id][] = $record;
         $prev_record = $record;

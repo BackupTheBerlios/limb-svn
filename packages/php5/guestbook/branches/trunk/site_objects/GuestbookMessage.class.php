@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/ContentObject.class.php');
 
-class guestbook_message extends content_object
+class GuestbookMessage extends ContentObject
 {
 }
 

@@ -9,47 +9,47 @@
 *
 ***********************************************************************************/
 
-class poll_active_tag_info
+class PollActiveTagInfo
 {
   public $tag = 'poll_active';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'poll_active_tag';
 }
 
-register_tag(new poll_active_tag_info());
+registerTag(new PollActiveTagInfo());
 
 /**
 * The parent compile time component for lists
 */
-class poll_active_tag extends server_component_tag
+class PollActiveTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/poll_component';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
-    $code->write_php($this->get_component_ref_code() . '->prepare();');
+    $code->writePhp($this->getComponentRefCode() . '->prepare();');
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php('if (' . $this->get_component_ref_code() . '->poll_exists()) {');
-    parent :: generate_contents($code);
-    $code->write_php('}');
+    $code->writePhp('if (' . $this->getComponentRefCode() . '->poll_exists()) {');
+    parent :: generateContents($code);
+    $code->writePhp('}');
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code();
+    return $this->getComponentRefCode();
   }
 }
 

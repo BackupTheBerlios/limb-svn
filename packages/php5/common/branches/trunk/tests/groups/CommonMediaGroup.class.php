@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class common_media_group extends LimbGroupTest
+class CommonMediaGroup extends LimbGroupTest
 {
-  function common_media_group()
+  function commonMediaGroup()
   {
-    $this->LimbGroupTest('media tests');
+    $this->limbGroupTest('media tests');
   }
 
   function getTestCasesHandles()

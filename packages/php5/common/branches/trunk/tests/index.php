@@ -10,8 +10,8 @@
 ***********************************************************************************/
 ob_start();
 require_once(dirname(__FILE__) . '/setup.php');
-require_once(dirname(__FILE__) . '/common_root_group_test.class.php');
-require_once(LIMB_DIR . '/tests/lib/html_test_runner.class.php');
+require_once(dirname(__FILE__) . '/CommonRootGroupTest.class.php');
+require_once(LIMB_DIR . '/tests/lib/HtmlTestRunner.class.php');
 
 $root_group = new CommonRootGroupTest();
 $test_runner = new HTMLTestRunner();

@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_COMMON_DIR . '/actions/site_structure/tree_toggle_action.class.php');
-require_once(dirname(__FILE__) . '/../../access_policy.class.php');
+require_once(LIMB_COMMON_DIR . '/actions/site_structure/TreeToggleAction.class.php');
+require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
-class group_objects_access_tree_toggle_action extends tree_toggle_action
+class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
 {
   protected $objects_ids = array();
 
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'set_group_access';
   }
@@ -27,22 +27,22 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 
     parent :: perform($request, $response);
 
-    $this->_set_template_tree();
-    $this->_init_dataspace($request);
+    $this->_setTemplateTree();
+    $this->_initDataspace($request);
   }
 
-  protected function _init_dataspace($request)
+  protected function _initDataspace($request)
   {
-    $access_policy = new access_policy();
+    $access_policy = new AccessPolicy();
 
-    $policy = $access_policy->get_objects_access_by_ids($this->object_ids, access_policy :: ACCESSOR_TYPE_GROUP);
+    $policy = $access_policy->getObjectsAccessByIds($this->object_ids, AccessPolicy :: ACCESSOR_TYPE_GROUP);
 
     $this->dataspace->set('policy', $policy);
   }
 
-  protected function _set_template_tree()
+  protected function _setTemplateTree()
   {
-    $datasource = Limb :: toolkit()->getDatasource('group_object_access_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('GroupObjectAccessDatasource');
     $params = array(
       'path' => '/root',
       'depth' => -1,
@@ -55,7 +55,7 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 
     );
     $count = null;
-    $dataset = $datasource->get_dataset($count, $params);
+    $dataset = $datasource->getDataset($count, $params);
 
     $this->object_ids = array();
     $dataset->reset();
@@ -66,8 +66,8 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
     }
 
     $dataset->reset();
-    $access_tree = $this->view->find_child('access');
-    $access_tree->register_dataset($dataset);
+    $access_tree = $this->view->findChild('access');
+    $access_tree->registerDataset($dataset);
   }
 }
 

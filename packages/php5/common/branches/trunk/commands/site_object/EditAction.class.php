@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php');
 
-class edit_action extends form_edit_site_object_action
+class EditAction extends FormEditSiteObjectAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'edit_site_object';
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    parent :: _init_validator();
+    parent :: _initValidator();
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 }
 

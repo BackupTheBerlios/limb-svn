@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
-require_once(dirname(__FILE__) . '/../../handlers/db_cart_handler.class.php');
-require_once(dirname(__FILE__) . '/../../cart_item.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+require_once(dirname(__FILE__) . '/../../handlers/DbCartHandler.class.php');
+require_once(dirname(__FILE__) . '/../../CartItem.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
-Mock :: generate('user');
+Mock :: generate('User');
 Mock :: generatePartial(
-  'db_cart_handler',
-  'special_db_cart_handler',
-  array('_get_user')
+  'DbCartHandler',
+  'SpecialDbCartHandler',
+  array('_getUser')
 );
 
-class db_cart_handler_test extends LimbTestCase
+class DbCartHandlerTest extends LimbTestCase
 {
   var $cart_handler;
   var $db;
@@ -28,143 +28,143 @@ class db_cart_handler_test extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& db_factory :: instance();
-    $this->cart_handler = new special_db_cart_handler($this);
+    $this->db =& DbFactory :: instance();
+    $this->cart_handler = new SpecialDbCartHandler($this);
     $this->cart_handler->__construct(10);
 
-    $this->user = new Mockuser($this);
+    $this->user = new MockUser($this);
 
-    $this->cart_handler->setReturnReference('_get_user', $this->user);
+    $this->cart_handler->setReturnValue('_getUser', $this->user);
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('cart');
+    $this->db->sqlDelete('cart');
   }
 
-  function test_reset_not_logged_in_user()
+  function testResetNotLoggedInUser()
   {
     $items = array();
 
-    $items[1] = new cart_item(1);
-    $items[2] = new cart_item(2);
+    $items[1] = new CartItem(1);
+    $items[2] = new CartItem(2);
 
-    $items[1]->set_amount(10);
-    $items[2]->set_amount(20);
+    $items[1]->setAmount(10);
+    $items[2]->setAmount(20);
 
-    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => -1, 'cart_items' => serialize($items)));
+    $this->db->sqlInsert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => -1, 'cart_items' => serialize($items)));
 
-    $this->user->setReturnValue('is_logged_in', false);
+    $this->user->setReturnValue('isLoggedIn', false);
 
     $this->cart_handler->reset();
 
-    $this->assertEqual($this->cart_handler->get_items(), $items);
+    $this->assertEqual($this->cart_handler->getItems(), $items);
   }
 
-  function test_reset_not_logged_in_user_no_db_data()
+  function testResetNotLoggedInUserNoDbData()
   {
     $items = array();
-    $items[1] = new cart_item(1);
-    $items[1]->set_amount(10);
+    $items[1] = new CartItem(1);
+    $items[1]->setAmount(10);
 
-    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 1, 'user_id' => -1, 'cart_items' => serialize($items)));
+    $this->db->sqlInsert('cart', array('id' => null, 'cart_id' => 1, 'user_id' => -1, 'cart_items' => serialize($items)));
 
-    $this->user->setReturnValue('is_logged_in', false);
+    $this->user->setReturnValue('isLoggedIn', false);
 
     $this->cart_handler->reset();
 
-    $this->assertEqual($this->cart_handler->get_items(), array());
+    $this->assertEqual($this->cart_handler->getItems(), array());
   }
 
-  function test_reset_logged_in_user_no_visitor_db_data()
+  function testResetLoggedInUserNoVisitorDbData()
   {
     $items = array();
-    $items[1] = new cart_item(1);
-    $items[1]->set_amount(10);
+    $items[1] = new CartItem(1);
+    $items[1]->setAmount(10);
 
-    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 20, 'user_id' => 1000, 'cart_items' => serialize($items)));
+    $this->db->sqlInsert('cart', array('id' => null, 'cart_id' => 20, 'user_id' => 1000, 'cart_items' => serialize($items)));
 
-    $this->user->setReturnValue('is_logged_in', true);
-    $this->user->setReturnValue('get_id', 1000);
+    $this->user->setReturnValue('isLoggedIn', true);
+    $this->user->setReturnValue('getId', 1000);
 
     $this->cart_handler->reset();
 
-    $this->assertEqual($this->cart_handler->get_items(), $items);
+    $this->assertEqual($this->cart_handler->getItems(), $items);
   }
 
-  function test_reset_logged_in_user_db_data()
+  function testResetLoggedInUserDbData()
   {
     $items = array();
-    $items[1] = new cart_item(1);
-    $items[1]->set_amount(10);
+    $items[1] = new CartItem(1);
+    $items[1]->setAmount(10);
 
-    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => 1000, 'cart_items' => serialize($items)));
+    $this->db->sqlInsert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => 1000, 'cart_items' => serialize($items)));
 
-    $this->user->setReturnValue('is_logged_in', true);
-    $this->user->setReturnValue('get_id', 1000);
+    $this->user->setReturnValue('isLoggedIn', true);
+    $this->user->setReturnValue('getId', 1000);
 
     $this->cart_handler->reset();
 
-    $this->assertEqual($this->cart_handler->get_items(), $items);
+    $this->assertEqual($this->cart_handler->getItems(), $items);
   }
 
-  function test_reset_merge_logged_in_user_db_data()
+  function testResetMergeLoggedInUserDbData()
   {
     $items1 = array();
-    $items1[1] = new cart_item(1);
-    $items1[1]->set_amount(10);
+    $items1[1] = new CartItem(1);
+    $items1[1]->setAmount(10);
 
     $items2 = array();
-    $items2[1] = new cart_item(1);
-    $items2[1]->set_amount(20);
-    $items2[2] = new cart_item(2);
-    $items2[2]->set_amount(35);
+    $items2[1] = new CartItem(1);
+    $items2[1]->setAmount(20);
+    $items2[2] = new CartItem(2);
+    $items2[2]->setAmount(35);
 
-    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => -1, 'cart_items' => serialize($items1)));
-    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 20, 'user_id' => 1000, 'cart_items' => serialize($items2)));
+    $this->db->sqlInsert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => -1, 'cart_items' => serialize($items1)));
+    $this->db->sqlInsert('cart', array('id' => null, 'cart_id' => 20, 'user_id' => 1000, 'cart_items' => serialize($items2)));
 
-    $this->user->setReturnValue('is_logged_in', true);
-    $this->user->setReturnValue('get_id', 1000);
+    $this->user->setReturnValue('isLoggedIn', true);
+    $this->user->setReturnValue('getId', 1000);
 
     $this->cart_handler->reset();
 
-    $items1[1]->set_amount(30);
+    $items1[1]->setAmount(30);
     $result_array[1] = $items1[1];
     $result_array[2] = $items2[2];
 
-    $this->assertEqual($this->cart_handler->get_items(), $result_array);
+    $this->assertEqual($this->cart_handler->getItems(), $result_array);
 
-    $this->db->sql_select('cart', '*', array('user_id' => 1000));
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect('cart', '*', array('user_id' => 1000));
+    $arr = $this->db->getArray();
     $this->assertTrue(empty($arr));
   }
 
-  function test_shutdown()
+  function testShutdown()
   {
-    $item1 = new cart_item(1);
-    $item2 = new cart_item(2);
+    $item1 = new CartItem(1);
+    $item2 = new CartItem(2);
 
-    $item1->set_amount(10);
-    $item2->set_amount(20);
+    $item1->setAmount(10);
+    $item2->setAmount(20);
 
-    $this->cart_handler->add_item($item1);
-    $this->cart_handler->add_item($item2);
+    $this->cart_handler->addItem($item1);
+    $this->cart_handler->addItem($item2);
 
     $time = time();
 
-    $this->user->setReturnValue('get_id', 1000);
+    $this->user->setReturnValue('getId', 1000);
 
-    $this->cart_handler->_db_cart_handler();
+    $this->cart_handler->_dbCartHandler();
 
-    $this->db->sql_select('cart');
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect('cart');
+    $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
 
@@ -173,7 +173,7 @@ class db_cart_handler_test extends LimbTestCase
     $this->assertEqual($record['user_id'], 1000);
     $this->assertEqual($record['cart_id'], 10);//???
     $this->assertTrue($record['last_activity_time'] >= $time);
-    $this->assertEqual($record['cart_items'], serialize($this->cart_handler->get_items()));
+    $this->assertEqual($record['cart_items'], serialize($this->cart_handler->getItems()));
   }
 }
 

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/search_normalizer.interface.php');
+require_once(dirname(__FILE__) . '/SearchNormalizer.interface.php');
 
-class search_text_normalizer implements search_normalizer
+class SearchTextNormalizer implements SearchNormalizer
 {
   public function process($content)
   {

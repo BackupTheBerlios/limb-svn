@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/stats_report_datasource.class.php');
-require_once(dirname(__FILE__) . '/../reports/stats_hits_hosts_by_days_report.class.php');
+require_once(dirname(__FILE__) . '/StatsReportDatasource.class.php');
+require_once(dirname(__FILE__) . '/../reports/StatsHitsHostsByDaysReport.class.php');
 
-class stats_hits_hosts_list_datasource extends stats_report_datasource
+class StatsHitsHostsListDatasource extends StatsReportDatasource
 {
-  protected function _init_stats_report()
+  protected function _initStatsReport()
   {
-    $this->_stats_report = new stats_hits_hosts_by_days_report();
+    $this->_stats_report = new StatsHitsHostsByDaysReport();
   }
 
-  protected function _process_result_array($arr)
+  protected function _processResultArray($arr)
   {
-    if(complex_array :: get_max_column_value('hosts', $arr, $index) !== false)
+    if(ComplexArray :: getMaxColumnValue('hosts', $arr, $index) !== false)
       $arr[$index]['max_hosts'] = 1;
 
-    if(complex_array :: get_max_column_value('hits', $arr, $index) !== false)
+    if(ComplexArray :: getMaxColumnValue('hits', $arr, $index) !== false)
       $arr[$index]['max_hits'] = 1;
 
-    if(complex_array :: get_max_column_value('home_hits', $arr, $index) !== false)
+    if(ComplexArray :: getMaxColumnValue('home_hits', $arr, $index) !== false)
       $arr[$index]['max_home_hits'] = 1;
 
-    if(complex_array :: get_max_column_value('audience', $arr, $index) !== false)
+    if(ComplexArray :: getMaxColumnValue('audience', $arr, $index) !== false)
       $arr[$index]['max_audience'] = 1;
 
     $result = array();
@@ -44,31 +44,31 @@ class stats_hits_hosts_list_datasource extends stats_report_datasource
     return $result;
   }
 
-  protected function _configure_filters()
+  protected function _configureFilters()
   {
-    $this->_set_period_filter(Limb :: toolkit()->getRequest());
+    $this->_setPeriodFilter(Limb :: toolkit()->getRequest());
   }
 
-  protected function _set_period_filter($request)
+  protected function _setPeriodFilter($request)
   {
     $locale = Limb :: toolkit()->getLocale();
-    $start_date = new date();
-    $start_date->set_hour(0);
-    $start_date->set_minute(0);
-    $start_date->set_second(0);
+    $start_date = new Date();
+    $start_date->setHour(0);
+    $start_date->setMinute(0);
+    $start_date->setSecond(0);
 
     if ($stats_start_date = $request->get('stats_start_date'))
-      $start_date->set_by_locale_string($locale, $stats_start_date, $locale->get_short_date_time_format());
+      $start_date->setByLocaleString($locale, $stats_start_date, $locale->getShortDateTimeFormat());
 
-    $finish_date = new date();
+    $finish_date = new Date();
     if ($stats_finish_date = $request->get('stats_finish_date'))
-      $finish_date->set_by_locale_string($locale, $stats_finish_date, $locale->get_short_date_time_format());
+      $finish_date->setByLocaleString($locale, $stats_finish_date, $locale->getShortDateTimeFormat());
 
-    $finish_date->set_hour(23);
-    $finish_date->set_minute(59);
-    $finish_date->set_second(59);
+    $finish_date->setHour(23);
+    $finish_date->setMinute(59);
+    $finish_date->setSecond(59);
 
-    $this->_stats_report->set_period_filter($start_date, $finish_date);
+    $this->_stats_report->setPeriodFilter($start_date, $finish_date);
   }
 }
 ?>

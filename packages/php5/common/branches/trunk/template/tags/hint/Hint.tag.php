@@ -9,18 +9,18 @@
 *
 ***********************************************************************************/
 
-class hint_hint_tag_info
+class HintHintTagInfo
 {
   public $tag = 'hint';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'hint_hint_tag';
 }
 
-register_tag(new hint_hint_tag_info());
+registerTag(new HintHintTagInfo());
 
-class hint_hint_tag extends compiler_directive_tag
+class HintHintTag extends CompilerDirectiveTag
 {
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
 
 $js = <<<JS
@@ -34,9 +34,9 @@ var current_hint_x = -1, current_hint_y = -1;
 var current_hint_id = null;
 
 //document.onmousemove = hint_mouse_move_handler;
-add_event(document, 'mousemove', hint_mouse_move_handler);
+addEvent(document, 'mousemove', hint_mouse_move_handler);
 
-function hint_mouse_move_handler(e)
+function hintMouseMoveHandler(e)
 {
   if (dom)
   {
@@ -60,10 +60,10 @@ function hint_mouse_move_handler(e)
 function on_hint_mouse_move()
 {
   if(current_hint_id)
-    move_hint(current_hint_id, current_hint_x+10, current_hint_y+10);
+    moveHint(current_hint_id, current_hint_x+10, current_hint_y+10);
 }
 
-function show_hint(id)
+function showHint(id)
 {
   if (dom)
   {
@@ -82,14 +82,14 @@ function show_hint(id)
   }
 }
 
-function hide_hint(id)
+function hideHint(id)
 {
   if (dom) document.getElementById(id).style.visibility = "hidden";
   else if (ie4) document.all[id].style.visibility = "hidden";
   else if (nn4) document.hints[id].visibility = "hide";
 }
 
-function move_hint(id,x,y)
+function moveHint(id,x,y)
 {
   if (dom)
   {
@@ -109,48 +109,47 @@ function move_hint(id,x,y)
   }
 }
 
-function start_hint(id)
+function startHint(id)
 {
   if(current_hint_id)
-    hide_hint(current_hint_id);
+    hideHint(current_hint_id);
 
   current_hint_id = id;
 
-  move_hint(current_hint_id, current_hint_x+10, current_hint_y+10);
-  show_hint(current_hint_id);
+  moveHint(current_hint_id, current_hint_x+10, current_hint_y+10);
+  showHint(current_hint_id);
 }
 
 function stop_hint()
 {
-  hide_hint(current_hint_id);
+  hideHint(current_hint_id);
   current_hint_id = null;
 }
 </script>
 JS;
-
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
 
     if (!defined('HINT_SCRIPT_INCLUDED'))
     {
-      $code->write_html($js);
+      $code->writeHtml($js);
       define('HINT_SCRIPT_INCLUDED', true);
     }
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $link = $this->find_child_by_class('hint_link_tag');
-    $title = $this->find_child_by_class('hint_title_tag');
-    $content = $this->find_child_by_class('hint_content_tag');
+    $link = $this->findChildByClass('hint_link_tag');
+    $title = $this->findChildByClass('hint_title_tag');
+    $content = $this->findChildByClass('hint_content_tag');
 
-    $id = $this->get_server_id();
+    $id = $this->getServerId();
 
-    if($link && isset($link->attributes['class']))
+    if($link &&  isset($link->attributes['class']))
       $hint_link_css = 'class="' . $link->attributes['class'] . '"';
     else
       $hint_link_css = 'class="hint-link-css"';
 
-    if($link && isset($link->attributes['style']))
+    if($link &&  isset($link->attributes['style']))
       $hint_link_style = 'style="' . $link->attributes['style'] . '"';
     else
       $hint_link_style = '';
@@ -165,12 +164,12 @@ JS;
     else
       $hint_table_style = '';
 
-    if($title && isset($title->attributes['class']))
+    if($title &&  isset($title->attributes['class']))
       $hint_title_css = 'class="' . $title->attributes['class'] . '"';
     else
       $hint_title_css = 'class="hint-title-css"';
 
-    if($title && isset($title->attributes['style']))
+    if($title &&  isset($title->attributes['style']))
       $hint_title_style = 'style="' . $title->attributes['style'] . '"';
     else
       $hint_title_style = '';
@@ -180,40 +179,40 @@ JS;
     else
       $hint_width = '250px';
 
-    $code->write_html("<span {$hint_link_css} {$hint_link_style} onmouseover='this.style.cursor = \"default\"; start_hint(\"{$id}\");' onmouseout='stop_hint();'>");
+    $code->writeHtml("<span {$hint_link_css} {$hint_link_style} onmouseover='this.style.cursor = \"default\"; startHint(\"{$id}\");' onmouseout='stop_hint();'>");
 
     if($link)
       $link->generate($code);
     else
-      $code->write_html('<img src="/shared/images/i.gif">');
+      $code->writeHtml('<img src="/shared/images/i.gif">');
 
-    $code->write_html("</span>");
+    $code->writeHtml("</span>");
 
-    $code->write_html("
+    $code->writeHtml("
       <div id='{$id}' style='z-index: 1; position: absolute; visibility: hidden; width: {$hint_width};'>
       <table {$hint_table_css} {$hint_table_style} width='100%' cellpadding='6px' cellspacing='0'>");
 
-    $code->write_html("<tr><td {$hint_title_css} {$hint_title_style} >");
+    $code->writeHtml("<tr><td {$hint_title_css} {$hint_title_style} >");
 
     if($title)
       $title->generate($code);
     else
-      $code->write_html("?");
+      $code->writeHtml("?");
 
-    $code->write_html("</td></tr><tr><td>");
+    $code->writeHtml("</td></tr><tr><td>");
 
     if($content)
       $content->generate($code);
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_html('
+    $code->writeHtml('
       </td></tr>
       </table>
     </div>');
 
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
   }
 }
 

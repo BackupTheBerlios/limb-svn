@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class media_manager
+class MediaManager
 {
-  public function get_media_file_path($media_id)
+  public function getMediaFilePath($media_id)
   {
     return MEDIA_DIR . $media_id . '.media';
   }
 
-  public function unlink_media($media_id)
+  public function unlinkMedia($media_id)
   {
-    unlink($this->get_media_file_path($media_id));
+    unlink($this->getMediaFilePath($media_id));
   }
 
   public function store($disk_file_path)
@@ -28,9 +28,9 @@ class media_manager
     srand(time());
     $media_id = md5(uniqid(rand()));
 
-    fs :: mkdir(MEDIA_DIR);
+    Fs :: mkdir(MEDIA_DIR);
 
-    $media_file = $this->get_media_file_path($media_id);
+    $media_file = $this->getMediaFilePath($media_id);
 
     if (!copy($disk_file_path, $media_file))
     {

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class image_object_controller extends site_object_controller
+class ImageObjectController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -21,7 +21,7 @@ class image_object_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/images/edit_image_action',
             'template_path' => '/image/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -29,7 +29,7 @@ class image_object_controller extends site_object_controller
         'edit_variations' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit_variations', 'image'),
+            'action_name' => Strings :: get('edit_variations', 'image'),
             'action_path' => '/images/edit_variations_action',
             'template_path' => '/image/edit_variations.html',
             'img_src' => '/shared/images/look_group.gif'
@@ -38,7 +38,7 @@ class image_object_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/rem.gif',
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
         ),

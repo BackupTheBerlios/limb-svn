@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../simple_authenticator.class.php');
+require_once(dirname(__FILE__) . '/../../SimpleAuthenticator.class.php');
 
-class simple_authenticator_component extends component
+class SimpleAuthenticatorComponent extends Component
 {
-  public function is_user_in_groups($groups)
+  public function isUserInGroups($groups)
   {
-    if ((Limb :: toolkit()->getUser()->is_logged_in()) && simple_authenticator :: is_user_in_groups($groups))
+    if ((Limb :: toolkit()->getUser()->isLoggedIn()) &&  SimpleAuthenticator :: isUserInGroups($groups))
       return true;
   }
 

@@ -8,36 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/media_object.class.php');
+require_once(dirname(__FILE__) . '/MediaObject.class.php');
 
-class file_object extends media_object
+class FileObject extends MediaObject
 {
   public function create($is_root = false)
   {
-    $this->_create_file();
+    $this->_createFile();
 
     return parent :: create($is_root);
   }
 
   public function update($force_create_new_version = true)
   {
-    $this->_update_file();
+    $this->_updateFile();
 
     parent :: update($force_create_new_version);
   }
 
-  protected function _create_file()
+  protected function _createFile()
   {
     $tmp_file_path = $this->get('tmp_file_path');
     $file_name = $this->get('file_name');
     $mime_type = $this->get('mime_type');
 
-    $media_id = $this->_create_media_record($tmp_file_path, $file_name, $mime_type);
+    $media_id = $this->_createMediaRecord($tmp_file_path, $file_name, $mime_type);
 
     $this->set('media_id', $media_id);
   }
 
-  protected function _update_file()
+  protected function _updateFile()
   {
     $tmp_file_path = $this->get('tmp_file_path');
     $file_name = $this->get('file_name');
@@ -46,7 +46,7 @@ class file_object extends media_object
     if(!$media_id = $this->get('media_id'))
       throw new LimbException('media id not set');
 
-    $this->_update_media_record($media_id, $tmp_file_path, $file_name, $mime_type);
+    $this->_updateMediaRecord($media_id, $tmp_file_path, $file_name, $mime_type);
   }
 
   public function fetch($params=array(), $sql_params=array())

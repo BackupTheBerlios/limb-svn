@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/cart_handler.class.php');
+require_once(dirname(__FILE__) . '/CartHandler.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
-class session_cart_handler extends cart_handler
+class SessionCartHandler extends CartHandler
 {
   public function reset()
   {
     $session = LIMB :: toolkit()->getSession();
 
-    $this->_items =& $session->get_reference('session_cart_' . $this->_cart_id . '_items');
+    $this->_items =& $session->getReference('session_cart_' . $this->_cart_id . '_items');
 
     if(!is_array($this->_items))
-      $this->clear_items();
+      $this->clearItems();
   }
 }
 ?>

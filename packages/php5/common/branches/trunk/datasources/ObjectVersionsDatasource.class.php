@@ -8,29 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
+require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
-class object_versions_datasource implements datasource
+class ObjectVersionsDatasource implements Datasource
 {
-  public function get_dataset(&$counter, $params=array())
+  public function getDataset(&$counter, $params=array())
   {
     $request = Limb :: toolkit()->getRequest();
 
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
     $object_data = $datasource->fetch();
 
     if (!count($object_data))
-      return new array_dataset(array());
+      return new ArrayDataset(array());
 
-    $db_table	= Limb :: toolkit()->createDBTable('sys_object_version');
+    $db_table	= Limb :: toolkit()->createDBTable('SysObjectVersion');
 
-    $arr = $db_table->get_list('object_id='. $object_data['id'], 'version DESC');
+    $arr = $db_table->getList('object_id='. $object_data['id'], 'version DESC');
 
     $result = array();
 
-    $users = $this->_get_users();
+    $users = $this->_getUsers();
 
     foreach($arr as $data)
     {
@@ -57,15 +57,15 @@ class object_versions_datasource implements datasource
       $result[]	= $record;
     }
 
-    return new array_dataset($result);
+    return new ArrayDataset($result);
   }
 
-  protected function _get_users()
+  protected function _getUsers()
   {
-    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
-    $datasource->set_path('/root/users');
-    $datasource->set_site_object_class_name('user_object');
-    $datasource->set_restrict_by_class();
+    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $datasource->setPath('/root/users');
+    $datasource->setSiteObjectClassName('user_object');
+    $datasource->setRestrictByClass();
 
     return $datasource->fetch();
   }

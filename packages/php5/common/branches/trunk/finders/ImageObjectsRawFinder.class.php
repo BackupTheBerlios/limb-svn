@@ -9,23 +9,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/finders/one_table_objects_raw_finder.class.php');
+require_once(LIMB_DIR . '/class/core/finders/OneTableObjectsRawFinder.class.php');
 
-class image_objects_raw_finder extends one_table_objects_raw_finder
+class ImageObjectsRawFinder extends OneTableObjectsRawFinder
 {
-  protected function _define_db_table_name()
+  protected function _defineDbTableName()
   {
     return 'image_object';
   }
 
-  protected function _do_parent_find($params, $sql_params)
+  protected function _doParentFind($params, $sql_params)
   {
     return parent :: find($params, $sql_params);
   }
 
   public function find($params=array(), $sql_params=array())
   {
-    if(!$records = $this->_do_parent_find($params, $sql_params))
+    if(!$records = $this->_doParentFind($params, $sql_params))
       return array();
 
     $images_ids = array();
@@ -53,9 +53,9 @@ class image_objects_raw_finder extends one_table_objects_raw_finder
 
     $db = Limb :: toolkit()->getDB();
 
-    $db->sql_exec($sql);
+    $db->sqlExec($sql);
 
-    if(!$images_variations = $db->get_array())
+    if(!$images_variations = $db->getArray())
       return $records;
 
     foreach($images_variations as $variation_data)

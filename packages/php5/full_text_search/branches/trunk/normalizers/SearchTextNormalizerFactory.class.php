@@ -10,18 +10,18 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
-class search_text_normalizer_factory
+class SearchTextNormalizerFactory
 {
   protected function __construct(){}
 
   static public function create($class_name)
   {
-    self :: _include_class_file($class_name);
+    self :: _includeClassFile($class_name);
 
     return new $class_name();
   }
 
-  static protected function _include_class_file($class_name)
+  static protected function _includeClassFile($class_name)
   {
     if(class_exists($class_name))
       return;

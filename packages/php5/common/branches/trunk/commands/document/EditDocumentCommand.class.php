@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/edit_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/EditSiteObjectCommand.class.php');
 
-class edit_document_command extends edit_site_object_command
+class EditDocumentCommand extends EditSiteObjectCommand
 {
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'document';
   }

@@ -8,11 +8,11 @@
 * $Id: stats_ip.class.php 659 2004-09-15 14:26:45Z pachanga $
 *
 ***********************************************************************************/
-class metadata_manager
+class MetadataManager
 {
-  static public function save_metadata($object_id, $keywords, $description)
+  static public function saveMetadata($object_id, $keywords, $description)
   {
-    $sys_metadata_db_table = Limb :: toolkit()->createDBTable('sys_metadata');
+    $sys_metadata_db_table = Limb :: toolkit()->createDBTable('SysMetadata');
 
     $sys_metadata_db_table->delete('object_id=' . $object_id);
 
@@ -22,13 +22,13 @@ class metadata_manager
     $metadata['description'] = $description;
 
     $sys_metadata_db_table->insert($metadata);
-    return $sys_metadata_db_table->get_last_insert_id();
+    return $sys_metadata_db_table->getLastInsertId();
   }
 
-  static public function get_metadata($object_id)
+  static public function getMetadata($object_id)
   {
-    $sys_metadata_db_table = Limb :: toolkit()->createDBTable('sys_metadata');
-    $arr = $sys_metadata_db_table->get_list('object_id=' . $object_id);
+    $sys_metadata_db_table = Limb :: toolkit()->createDBTable('SysMetadata');
+    $arr = $sys_metadata_db_table->getList('object_id=' . $object_id);
 
     if (!count($arr))
       return array();

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class user_attribute_tag_info
+class UserAttributeTagInfo
 {
   public $tag = 'user:ATTRIBUTE';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'user_attribute_tag';
 }
 
-register_tag(new user_attribute_tag_info());
+registerTag(new UserAttributeTagInfo());
 
-class user_attribute_tag extends compiler_directive_tag
+class UserAttributeTag extends CompilerDirectiveTag
 {
-  public function pre_parse()
+  public function preParse()
   {
-    if (!isset($this->attributes['name']) || !$this->attributes['name'])
+    if (!isset($this->attributes['name']) ||  !$this->attributes['name'])
     {
       throw new WactException('missing required attribute',
           array('tag' => $this->tag,
@@ -33,11 +33,11 @@ class user_attribute_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php("echo Limb :: toolkit()->getUser()->get('{$this->attributes['name']}');");
+    $code->writePhp("echo Limb :: toolkit()->getUser()->get('{$this->attributes['name']}');");
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 }
 

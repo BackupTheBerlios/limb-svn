@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class user_group_controller extends site_object_controller
+class UserGroupController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -26,7 +26,7 @@ class user_group_controller extends site_object_controller
         'edit' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('edit_user_group', 'user_group'),
+            'action_name' => Strings :: get('edit_user_group', 'user_group'),
             'action_path' => '/user_group/edit_user_group_action',
             'template_path' => '/user_group/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -34,7 +34,7 @@ class user_group_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete_user_group', 'user_group'),
+            'action_name' => Strings :: get('delete_user_group', 'user_group'),
             'action_path' => '/form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/search/full_text_search.class.php');
+require_once(LIMB_DIR . '/class/search/FullTextSearch.class.php');
 
-class search_fetcher
+class SearchFetcher
 {
   protected static $_instance;
   protected $_query_object;
@@ -18,17 +18,17 @@ class search_fetcher
   static public function instance()
   {
     if (!self :: $_instance)
-      self :: $_instance = new search_fetcher();
+      self :: $_instance = new SearchFetcher();
 
     return self :: $_instance;
   }
 
-  public function set_search_query_object($query_object)
+  public function setSearchQueryObject($query_object)
   {
     $this->_query_object = $query_object;
   }
 
-  protected function _get_classes_ids_from_string($classes_string)
+  protected function _getClassesIdsFromString($classes_string)
   {
     $classes_ids = array();
     $classes_names = explode(',', $classes_string);
@@ -37,14 +37,14 @@ class search_fetcher
       if(trim($class_name))
       {
         $site_object = Limb :: toolkit()->createSiteObject(trim($class_name));
-        $classes_ids[] = $site_object->get_class_id();
+        $classes_ids[] = $site_object->getClassId();
       }
     }
 
     return $classes_ids;
   }
 
-  public function search_fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
+  public function searchFetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
   {
     if (!$this->_query_object)
       return array();
@@ -54,21 +54,21 @@ class search_fetcher
     $restricted_classes = array();
     $allowed_classes = array();
 
-    if (!isset($params['restrict_by_class']) ||
-        (isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
-      $class_id = $site_object->get_class_id();
+    if (!isset($params['restrict_by_class']) || 
+        (isset($params['restrict_by_class']) &&  (bool)$params['restrict_by_class']))
+      $class_id = $site_object->getClassId();
     else
     {
       $class_id = null;
 
       if(isset($params['restricted_classes']))
-        $restricted_classes = $this->_get_classes_ids_from_string($params['restricted_classes']);
+        $restricted_classes = $this->_getClassesIdsFromString($params['restricted_classes']);
       if(isset($params['allowed_classes']))
-        $allowed_classes = $this->_get_classes_ids_from_string($params['allowed_classes']);
+        $allowed_classes = $this->_getClassesIdsFromString($params['allowed_classes']);
 
     }
 
-    $search = new full_text_search();
+    $search = new FullTextSearch();
 
     $search_result = $search->find($this->_query_object, $class_id, $restricted_classes, $allowed_classes);
     if (!count($search_result))
@@ -92,22 +92,22 @@ class search_fetcher
       }
     }
 
-    Limb :: toolkit()->getAuthorizer()->assign_actions_to_objects($result);
+    Limb :: toolkit()->getAuthorizer()->assignActionsToObjects($result);
 
-    $this->_assign_paths($result);
-    $this->_assign_search_paths($result, isset($params['offset']) ? $params['offset'] : 0);
+    $this->_assignPaths($result);
+    $this->_assignSearchPaths($result, isset($params['offset']) ? $params['offset'] : 0);
 
     return $result;
   }
 
-  public function search_fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
+  public function searchFetchSubBranch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
   {
     $tree = Limb :: toolkit()->getTree();
     $site_object = Limb :: toolkit()->createSiteObject($loader_class_name);
 
-    if (!isset($params['restrict_by_class']) ||
-        (isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
-      $class_id = $site_object->get_class_id();
+    if (!isset($params['restrict_by_class']) || 
+        (isset($params['restrict_by_class']) &&  (bool)$params['restrict_by_class']))
+      $class_id = $site_object->getClassId();
     else
       $class_id = null;
 
@@ -123,24 +123,24 @@ class search_fetcher
 
     $depth = isset($params['depth']) ? $params['depth'] : 1;
 
-    if(!$nodes = $tree->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id))
+    if(!$nodes = $tree->getAccessibleSubBranchByPath($path, $depth, $include_parent, $check_expanded_parents, $class_id))
       return array();
 
-    $object_ids = complex_array :: get_column_values('object_id', $nodes);
+    $object_ids = ComplexArray :: getColumnValues('object_id', $nodes);
 
     if (!count($object_ids))
       return array();
 
-    return $this->search_fetch_by_ids($object_ids, $loader_class_name, $counter, $params, $fetch_method);
+    return $this->searchFetchByIds($object_ids, $loader_class_name, $counter, $params, $fetch_method);
   }
 
-  public function search_fetch_by_ids($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
+  public function searchFetchByIds($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
   {
     if (!$this->_query_object)
       return array();
 
-    $search = new full_text_search();
-    $search_result = $search->find_by_ids($object_ids, $this->_query_object);
+    $search = new FullTextSearch();
+    $search_result = $search->findByIds($object_ids, $this->_query_object);
 
     if(!count($search_result))
       return array();
@@ -162,21 +162,21 @@ class search_fetcher
         $result[$key]['score'] = $score;
       }
 
-    Limb :: toolkit()->getAuthorizer()->assign_actions_to_objects($result);
+    Limb :: toolkit()->getAuthorizer()->assignActionsToObjects($result);
 
-    $this->_assign_paths($result);
-    $this->_assign_search_paths($result, isset($params['offset']) ? $params['offset'] : 0);
+    $this->_assignPaths($result);
+    $this->_assignSearchPaths($result, isset($params['offset']) ? $params['offset'] : 0);
 
     return $result;
   }
 
-  protected function _assign_search_paths(& $objects_array, $offset = 0)
+  protected function _assignSearchPaths(& $objects_array, $offset = 0)
   {
-    $query = $this->_query_object->to_string();
+    $query = $this->_query_object->toString();
 
     foreach($objects_array as $key => $data)
     {
-      if(!isset($objects_array[$key]['title']) || !$objects_array[$key]['title'])
+      if(!isset($objects_array[$key]['title']) ||  !$objects_array[$key]['title'])
         $objects_array[$key]['title'] = $objects_array[$key]['path'];
 
       $objects_array[$key]['search_path'] = $objects_array[$key]['path'] . '?h=' . urlencode($query);

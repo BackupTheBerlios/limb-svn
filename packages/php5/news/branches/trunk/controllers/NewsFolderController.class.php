@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class news_folder_controller extends site_object_controller
+class NewsFolderController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -27,7 +27,7 @@ class news_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.generic.gif',
-            'action_name' => strings :: get('create_newsline', 'newsline'),
+            'action_name' => Strings :: get('create_newsline', 'newsline'),
             'can_have_access_template' => true,
         ),
         'edit' => array(
@@ -36,7 +36,7 @@ class news_folder_controller extends site_object_controller
             'popup' => true,
             'JIP' => true,
             'img_src' => '/shared/images/edit.gif',
-            'action_name' => strings :: get('edit_news_folder', 'newsline'),
+            'action_name' => Strings :: get('edit_news_folder', 'newsline'),
         ),
     );
   }

@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.php');
 
-class create_user_group_action extends form_create_site_object_action
+class CreateUserGroupAction extends FormCreateSiteObjectAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'create_user_group';
   }
 
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'user_group';
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    parent :: _init_validator();
+    parent :: _initValidator();
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 }
 

@@ -8,38 +8,38 @@
 * $Id$
 *
 ***********************************************************************************/
-class metadata_title_tag_info
+class MetadataTitleTagInfo
 {
   public $tag = 'METADATA:TITLE';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'metadata_title_tag';
 }
 
-register_tag(new metadata_title_tag_info());
+registerTag(new MetadataTitleTagInfo());
 
-class metadata_title_tag extends server_component_tag
+class MetadataTitleTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/metadata_component';
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $ref = $this->get_component_ref_code();
+    $ref = $this->getComponentRefCode();
 
     if(isset($this->attributes['separator']))
     {
-      $code->write_php("{$ref}->set_title_separator(\"". $this->attributes['separator'] ."\");\n");
+      $code->writePhp("{$ref}->setTitleSeparator(\"". $this->attributes['separator'] ."\");\n");
     }
 
     if(isset($this->attributes['offset_path']))
-      $code->write_php($this->get_component_ref_code() . '->set_offset_path("' . $this->attributes['offset_path'] . '");');
+      $code->writePhp($this->getComponentRefCode() . '->set_offset_path("' . $this->attributes['offset_path'] . '");');
 
-    $ref = $this->get_component_ref_code();
-    $code->write_php("echo {$ref}->get_title();\n");
+    $ref = $this->getComponentRefCode();
+    $code->writePhp("echo {$ref}->get_title();\n");
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 }
 

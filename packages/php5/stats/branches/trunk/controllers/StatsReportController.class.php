@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class stats_report_controller extends site_object_controller
+class StatsReportController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -25,50 +25,50 @@ class stats_report_controller extends site_object_controller
         ),
         'pages_report' => array(
             'template_path' => '/stats_report/pages_list.html',
-            'action_name' => strings :: get('show_pages_report', 'stats'),
+            'action_name' => Strings :: get('show_pages_report', 'stats'),
             'action_path' => '/stats_report/stats_pages_report_action',
             'display_in_breadcrumbs' => true
         ),
         'referers_report' => array(
             'template_path' => '/stats_report/referers_list.html',
-            'action_name' => strings :: get('show_referers_report', 'stats'),
+            'action_name' => Strings :: get('show_referers_report', 'stats'),
             'action_path' => '/stats_report/stats_referers_report_action',
             'display_in_breadcrumbs' => true
         ),
         'hits_hosts_report' => array(
             'template_path' => '/stats_report/hits_hosts_list.html',
-            'action_name' => strings :: get('show_hits_hosts_report', 'stats'),
+            'action_name' => Strings :: get('show_hits_hosts_report', 'stats'),
             'action_path' => '/stats_report/stats_hits_hosts_report_action',
             'display_in_breadcrumbs' => true
         ),
         'ips_report' => array(
             'template_path' => '/stats_report/ips_list.html',
-            'action_name' => strings :: get('show_ips_report', 'stats'),
+            'action_name' => Strings :: get('show_ips_report', 'stats'),
             'action_path' => '/stats_report/stats_ips_report_action',
             'display_in_breadcrumbs' => true
         ),
         'keywords_report' => array(
             'template_path' => '/stats_report/keywords_list.html',
-            'action_name' => strings :: get('show_keywords_report', 'stats'),
+            'action_name' => Strings :: get('show_keywords_report', 'stats'),
             'action_path' => '/stats_report/stats_keywords_report_action',
             'display_in_breadcrumbs' => true
         ),
         'search_engines_report' => array(
             'template_path' => '/stats_report/search_engines_list.html',
-            'action_name' => strings :: get('show_search_engines_report', 'stats'),
+            'action_name' => Strings :: get('show_search_engines_report', 'stats'),
             'action_path' => '/stats_report/stats_search_engines_report_action',
             'display_in_breadcrumbs' => true
         ),
         'routes_report' => array(
             'template_path' => '/stats_report/routes_list.html',
-            'action_name' => strings :: get('show_routes_report', 'stats'),
+            'action_name' => Strings :: get('show_routes_report', 'stats'),
             'action_path' => '/stats_report/stats_routes_report_action',
             'display_in_breadcrumbs' => true
         ),
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
             'img_src' => '/shared/images/edit.gif'
@@ -76,7 +76,7 @@ class stats_report_controller extends site_object_controller
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
             'img_src' => '/shared/images/rem.gif'

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class main_page_controller extends site_object_controller
+class MainPageController extends SiteObjectController
 {
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'display' => array(
@@ -28,14 +28,14 @@ class main_page_controller extends site_object_controller
             'action_path' => '/document/create_document_action',
             'JIP' => true,
             'popup' => true,
-            'action_name' => strings :: get('create_document', 'document'),
+            'action_name' => Strings :: get('create_document', 'document'),
             'img_src' => '/shared/images/new.generic.gif',
             'can_have_access_template' => true,
         ),
         'set_metadata' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('set_metadata'),
+            'action_name' => Strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
             'img_src' => '/shared/images/configure.gif'
@@ -43,7 +43,7 @@ class main_page_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/main_page/edit_main_page_action',
             'template_path' => '/main_page/edit.html',
             'img_src' => '/shared/images/edit.gif'

@@ -8,91 +8,91 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/core/Object.class.php');
 
-class shipping_configuration extends object
+class ShippingConfiguration extends Object
 {
-  public function get_hash()
+  public function getHash()
   {
     return md5(serialize($this->_attributes->export()));
   }
 
-  public function get_zip_from()
+  public function getZipFrom()
   {
     return $this->get('zip_from');
   }
 
-  public function set_zip_from($zip)
+  public function setZipFrom($zip)
   {
     return $this->set('zip_from', $zip);
   }
 
-  public function get_zip_to()
+  public function getZipTo()
   {
     return $this->get('zip_to');
   }
 
-  public function set_zip_to($zip)
+  public function setZipTo($zip)
   {
     return $this->set('zip_to', $zip);
   }
 
-  public function get_country_from()
+  public function getCountryFrom()
   {
     return $this->get('country_from');
   }
 
-  public function set_country_from($country)
+  public function setCountryFrom($country)
   {
     return $this->set('country_from', $country);
   }
 
-  public function get_country_to()
+  public function getCountryTo()
   {
     return $this->get('country_to');
   }
 
-  public function set_country_to($country)
+  public function setCountryTo($country)
   {
     return $this->set('country_to', $country);
   }
 
-  public function get_declared_value()
+  public function getDeclaredValue()
   {
     return 1*$this->get('declared_value');
   }
 
-  public function set_declared_value($declared_value)
+  public function setDeclaredValue($declared_value)
   {
     return $this->set('declared_value', 1*$declared_value);
   }
 
-  public function get_weight()
+  public function getWeight()
   {
     return 1*$this->get('weight');
   }
 
-  public function set_weight($weight)
+  public function setWeight($weight)
   {
     return $this->set('weight', 1*$weight);
   }
 
-  public function get_weight_unit()
+  public function getWeightUnit()
   {
     return $this->get('weight_unit');
   }
 
-  public function set_weight_unit($unit)
+  public function setWeightUnit($unit)
   {
     return $this->set('weight_unit', $unit);
   }
 
-  public function get_residence()
+  public function getResidence()
   {
     return (bool)$this->get('residence');
   }
 
-  public function set_residence($status = true)
+  public function setResidence($status = true)
   {
     return $this->set('residence', (bool)$status);
   }

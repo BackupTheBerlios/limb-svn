@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-class user_logged_in_tag_info
+class UserLoggedInTagInfo
 {
   public $tag = 'user:LOGGED_IN';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'user_logged_in_tag';
 }
 
-register_tag(new user_logged_in_tag_info());
+registerTag(new UserLoggedInTagInfo());
 
-class user_logged_in_tag extends compiler_directive_tag
+class UserLoggedInTag extends CompilerDirectiveTag
 {
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php("if (Limb :: toolkit()->getUser()->is_logged_in()) {");
-      parent :: generate_contents($code);
-    $code->write_php("}");
+    $code->writePhp("if (Limb :: toolkit()->getUser()->is_logged_in()) {");
+      parent :: generateContents($code);
+    $code->writePhp("}");
   }
 }
 

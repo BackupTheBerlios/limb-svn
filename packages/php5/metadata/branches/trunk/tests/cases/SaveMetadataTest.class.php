@@ -8,33 +8,33 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(dirname(__FILE__) . '/../../metadata_manager.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(dirname(__FILE__) . '/../../MetadataManager.class.php');
 
-class save_metadata_test extends LimbTestCase
+class SaveMetadataTest extends LimbTestCase
 {
   var $db = null;
 
   function setUp()
   {
-    $this->db = db_factory :: instance();
-    $this->db->sql_delete('sys_metadata');
+    $this->db = DbFactory :: instance();
+    $this->db->sqlDelete('sys_metadata');
   }
 
   function tearDown()
   {
-    $this->db->sql_delete('sys_metadata');
+    $this->db->sqlDelete('sys_metadata');
   }
 
-  function test_save()
+  function testSave()
   {
-    $result_id = metadata_manager :: save_metadata(1, 'keywords', 'description');
+    $result_id = MetadataManager :: saveMetadata(1, 'keywords', 'description');
 
     $this->assertNotNull($result_id);
 
-    $sys_metadata_db_table = db_table_factory :: create('sys_metadata');
-    $metadata_row = $sys_metadata_db_table->get_row_by_id($result_id);
+    $sys_metadata_db_table = DbTableFactory :: create('SysMetadata');
+    $metadata_row = $sys_metadata_db_table->getRowById($result_id);
 
     $this->assertTrue(is_array($metadata_row));
     $this->assertTrue(isset($metadata_row['object_id']));

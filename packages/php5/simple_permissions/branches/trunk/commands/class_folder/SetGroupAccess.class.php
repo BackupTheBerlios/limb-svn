@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/commans/form_command.class.php');
-require_once(dirname(__FILE__) . '/../../access_policy.class.php');
+require_once(LIMB_DIR . '/class/core/commans/FormCommand.class.php');
+require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
-class set_group_access_command extends form_command
+class SetGroupAccessCommand extends FormCommand
 {
 	protected function __construct()
 	{
     parent :: __construct('set_group_access');
 	}
    
-	protected function _init_dataspace()
+	protected function _initDataspace()
 	{
     $dataspace = Limb :: toolkit()->getDataspace();
     $request = Limb :: toolkit()->getRequest();
@@ -26,8 +26,8 @@ class set_group_access_command extends form_command
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
 
-    $access_policy = $this->_get_access_policy();
-		$policy = $access_policy->get_actions_access($class_id, access_policy :: ACCESSOR_TYPE_GROUP);
+    $access_policy = $this->_getAccessPolicy();
+		$policy = $access_policy->getActionsAccess($class_id, AccessPolicy :: ACCESSOR_TYPE_GROUP);
 
 		$dataspace->set('policy', $policy);
 	}
@@ -40,18 +40,18 @@ class set_group_access_command extends form_command
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
 		
-    $access_policy = $this->_get_access_policy();
-		$access_policy->save_actions_access($class_id,
+    $access_policy = $this->_getAccessPolicy();
+		$access_policy->saveActionsAccess($class_id,
                                         $dataspace->get('policy'),
-                                        access_policy :: ACCESSOR_TYPE_GROUP);
+                                        AccessPolicy :: ACCESSOR_TYPE_GROUP);
 
 		return Limb :: STATUS_OK;
 	}
   
   // for mocking
-  protected function _get_access_policy()
+  protected function _getAccessPolicy()
   {
-    return new access_policy();
+    return new AccessPolicy();
   }
 
 }

@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-class poll_component extends component
+class PollComponent extends Component
 {
   public $path = '';
 
   protected $_poll_container = null;
 
-  public function can_vote()
+  public function canVote()
   {
-    return $this->_poll_container->can_vote();
+    return $this->_poll_container->canVote();
   }
 
   public function prepare()
   {
-    $this->_poll_container = Limb :: toolkit()->createSiteObject('poll_container');
+    $this->_poll_container = Limb :: toolkit()->createSiteObject('PollContainer');
 
-    $this->import($this->_poll_container->get_active_poll());
+    $this->import($this->_poll_container->getActivePoll());
   }
 
-  public function poll_exists()
+  public function pollExists()
   {
-    return sizeof($this->_poll_container->get_active_poll());
+    return sizeof($this->_poll_container->getActivePoll());
   }
 
 

@@ -12,11 +12,11 @@ if (file_exists(dirname(__FILE__) . '/constants.php'))
   include_once(dirname(__FILE__) . '/constants.php');
 
 require_once(LIMB_DIR . '/tests/setup.php');
-require_once(LIMB_DIR . '/class/core/packages_info.class.php');
+require_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
 
-register_file_resolver('ini',    $r = array(LIMB_DIR . '/tests/lib/package_tests_ini_file_resolver', dirname(__FILE__) . '/../'));
+registerFileResolver('ini',    $r = array(LIMB_DIR . '/tests/lib/package_tests_ini_file_resolver', dirname(__FILE__) . '/../'));
 
-$info =& packages_info :: instance();
-$info->load_packages();
+$info =& PackagesInfo :: instance();
+$info->loadPackages();
 
 ?>

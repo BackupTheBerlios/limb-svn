@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/permissions/authenticator.interface.php');
+require_once(LIMB_DIR . '/class/core/permissions/Authenticator.interface.php');
 
-class simple_authenticator implements authenticator
+class SimpleAuthenticator implements Authenticator
 {
   const DEFAULT_USER_GROUP = 'visitors';
 
@@ -25,7 +25,7 @@ class simple_authenticator implements authenticator
     $user = Limb :: toolkit()->getUser();
     $user->logout();
 
-    if($record = $this->_get_identity_record($params['login'], $params['password']))
+    if($record = $this->_getIdentityRecord($params['login'], $params['password']))
     {
       $user->login();
 
@@ -33,20 +33,20 @@ class simple_authenticator implements authenticator
       $user->import($record);
     }
 
-    $this->_determine_groups();
+    $this->_determineGroups();
 
-    if (isset($params['locale_id']) && Limb :: toolkit()->getLocale()->is_valid_locale_id($params['locale_id']))
+    if (isset($params['locale_id']) &&  Limb :: toolkit()->getLocale()->isValidLocaleId($params['locale_id']))
       $user->set('locale_id', $params['locale_id']);
   }
 
-  protected function _determine_groups()
+  protected function _determineGroups()
   {
     $user = Limb :: toolkit()->getUser();
 
-    if ($user->is_logged_in())
-      $groups_arr = $this->_get_db_groups();
+    if ($user->isLoggedIn())
+      $groups_arr = $this->_getDbGroups();
     else
-      $groups_arr = $this->_get_default_db_groups();
+      $groups_arr = $this->_getDefaultDbGroups();
 
     if(!$groups_arr)
       return;
@@ -58,7 +58,7 @@ class simple_authenticator implements authenticator
     $user->set('groups', $result);
   }
 
-  protected function _get_default_db_groups()
+  protected function _getDefaultDbGroups()
   {
     $db = Limb :: toolkit()->getDB();
 
@@ -80,12 +80,12 @@ class simple_authenticator implements authenticator
             AND sso.id=tn.object_id
             AND sso.current_version=tn.version";
 
-    $db->sql_exec($sql);
+    $db->sqlExec($sql);
 
-    return $db->get_array();
+    return $db->getArray();
   }
 
-  protected function _get_db_groups()
+  protected function _getDbGroups()
   {
     $user = Limb :: toolkit()->getUser();
 
@@ -107,17 +107,17 @@ class simple_authenticator implements authenticator
             FROM sys_site_object as sso, user_group as tn, user_in_group as u_i_g
             WHERE sso.id=tn.object_id
             AND sso.current_version=tn.version
-            AND u_i_g.user_id=". $user->get_id() . "
+            AND u_i_g.user_id=". $user->getId() . "
             AND u_i_g.group_id=sso.id";
 
-    $db->sql_exec($sql);
+    $db->sqlExec($sql);
 
-    return $db->get_array();
+    return $db->getArray();
   }
 
-  protected function _get_identity_record($login, $password)
+  protected function _getIdentityRecord($login, $password)
   {
-    $crypted_password = self :: get_crypted_password($login, $password);
+    $crypted_password = self :: getCryptedPassword($login, $password);
 
     $db = Limb :: toolkit()->getDB();
 
@@ -148,12 +148,12 @@ class simple_authenticator implements authenticator
             AND sso.id=tn.object_id
             AND sso.current_version=tn.version";
 
-    $db->sql_exec($sql);
+    $db->sqlExec($sql);
 
-    return $db->fetch_row();
+    return $db->fetchRow();
   }
 
-  static public function get_crypted_password($login, $none_crypt_password)
+  static public function getCryptedPassword($login, $none_crypt_password)
   {
     return md5($login.$none_crypt_password);
   }
@@ -162,10 +162,10 @@ class simple_authenticator implements authenticator
   {
     Limb :: toolkit()->getUser()->logout();
 
-    $this->_determine_groups();
+    $this->_determineGroups();
   }
 
-  static public function is_user_in_groups($groups_to_check)
+  static public function isUserInGroups($groups_to_check)
   {
     if (!is_array($groups_to_check))
     {
@@ -181,7 +181,7 @@ class simple_authenticator implements authenticator
     return false;
   }
 
-  static public function generate_password()
+  static public function generatePassword()
   {
     $alphabet = array(
         array('b','c','d','f','g','h','g','k','l','m','n','p','q','r','s','t','v','w','x','z',

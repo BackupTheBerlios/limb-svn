@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/one_table_object_db_table.class.php');
+require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
 
-class catalog_object_db_table extends one_table_object_db_table
+class CatalogObjectDbTable extends OneTableObjectDbTable
 {
-  protected function _define_columns()
+  protected function _defineColumns()
   {
     return array(
       'image_id' => array('type' => 'numeric'),

@@ -8,21 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class login_behaviour extends site_object_controller
+class LoginBehaviour extends SiteObjectController
 {
-  public function get_default_action()
+  public function getDefaultAction()
   {
     return 'login';
   }
 
-  public function get_login_action_properties()
+  public function getLoginActionProperties()
   {
     return array();
   }
 
-  public function define_login($state_machine)
+  public function defineLogin($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -43,12 +43,12 @@ class login_behaviour extends site_object_controller
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function get_logout_action_properties()
+  public function getLogoutActionProperties()
   {
     return array();
   }
 
-  public function define_logout($state_machine)
+  public function defineLogout($state_machine)
   {
     $state_machine->registerState('process', LIMB_SIMPLE_PERMISSIONS_DIR . '/commands/logout_command');
   }

@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/fetch_sub_branch_datasource.class.php');
+require_once(LIMB_DIR . '/class/datasources/FetchSubBranchDatasource.class.php');
 
-class simple_navigation_datasource extends fetch_sub_branch_datasource
+class SimpleNavigationDatasource extends FetchSubBranchDatasource
 {
   protected function _fetch(&$counter, $params)
   {
     $result = parent :: _fetch($counter, $params);
-    $uri = new uri($_SERVER['PHP_SELF']);
+    $uri = new Uri($_SERVER['PHP_SELF']);
 
     foreach($result as $key => $data)
     {
-      $nav_uri = new uri($data['url']);
+      $nav_uri = new Uri($data['url']);
 
-      if ($uri->get_host() != $nav_uri->get_host())
+      if ($uri->getHost() != $nav_uri->getHost())
         continue;
 
-      if(is_integer($res = $uri->compare_path($nav_uri)))
+      if(is_integer($res = $uri->comparePath($nav_uri)))
       {
         if($res >= 0)
           $result[$key]['in_path'] = true;

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class stats_group extends LimbGroupTest
+class StatsGroup extends LimbGroupTest
 {
-  function stats_group()
+  function statsGroup()
   {
-    $this->LimbGroupTest('stats tests');
+    $this->limbGroupTest('stats tests');
   }
 
   function getTestCasesHandles()

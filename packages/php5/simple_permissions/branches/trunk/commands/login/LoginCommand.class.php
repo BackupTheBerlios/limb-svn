@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
-require_once(dirname(__FILE__) . '/../../simple_authenticator.class.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
+require_once(dirname(__FILE__) . '/../../SimpleAuthenticator.class.php');
 
-class login_command implements Command
+class LoginCommand implements Command
 {
   public function perform()
   {
@@ -27,7 +27,7 @@ class login_command implements Command
 
     $toolkit->getAuthenticator()->login($login_params);
 
-    if (!$toolkit->getUser()->is_logged_in())
+    if (!$toolkit->getUser()->isLoggedIn())
     {
       return LIMB :: STATUS_ERROR;
     }
@@ -40,8 +40,8 @@ class login_command implements Command
       return LIMB :: STATUS_OK;
     }
 
-    $referer = $this->_get_http_referer();
-    if($referer && (strpos(strtolower($referer), '/root/login') === false))
+    $referer = $this->_getHttpReferer();
+    if($referer &&  (strpos(strtolower($referer), '/root/login') === false))
     {
       $response->redirect($referer);
       return LIMB :: STATUS_OK;
@@ -52,7 +52,7 @@ class login_command implements Command
   }
 
   // for mocking
-  protected function _get_http_referer()
+  protected function _getHttpReferer()
   {
     return $_SERVER['HTTP_REFERER'];
   }

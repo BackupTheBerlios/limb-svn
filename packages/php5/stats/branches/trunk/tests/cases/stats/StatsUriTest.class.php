@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../stats_uri.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../../StatsUri.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
 Mock :: generatePartial
 (
-  'stats_uri',
-  'stats_uri_self_test_version',
+  'StatsUri',
+  'StatsUriSelfTestVersion',
   array(
-    '_get_http_uri'
+    '_getHttpUri'
   )
 );
 
-class stats_uri_test extends LimbTestCase
+class StatsUriTest extends LimbTestCase
 {
   var $stats_uri = null;
   var $db = null;
@@ -31,12 +31,12 @@ class stats_uri_test extends LimbTestCase
     $this->server = $_SERVER;
     $_SERVER['HTTP_HOST'] = 'test';
 
-    $this->db = db_factory :: instance();
+    $this->db = DbFactory :: instance();
 
-    $this->stats_uri = new stats_uri_self_test_version($this);
+    $this->stats_uri = new StatsUriSelfTestVersion($this);
     $this->stats_uri->__construct();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
@@ -45,22 +45,22 @@ class stats_uri_test extends LimbTestCase
 
     $this->stats_uri->tally();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('sys_stat_uri');
+    $this->db->sqlDelete('sys_stat_uri');
   }
 
-  function test_new_inner_uri()
+  function testNewInnerUri()
   {
-    $this->stats_uri->setReturnValue('_get_http_uri', 'http://' . $_SERVER['HTTP_HOST'] . '/test');
+    $this->stats_uri->setReturnValue('_getHttpUri', 'http://' . $_SERVER['hTTPHOST'] . '/test');
 
-    $id = $this->stats_uri->get_uri_id();
+    $id = $this->stats_uri->getUriId();
 
-    $this->db->sql_select('sys_stat_uri');
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect('sys_stat_uri');
+    $arr = $this->db->getArray();
     $record = current($arr);
 
     $this->assertEqual(sizeof($arr), 1);
@@ -69,14 +69,14 @@ class stats_uri_test extends LimbTestCase
     $this->assertEqual($record['uri'], '/test');
   }
 
-  function test_new_outer_uri()
+  function testNewOuterUri()
   {
-    $this->stats_uri->setReturnValue('_get_http_uri', 'http://wow.com/test');
+    $this->stats_uri->setReturnValue('_getHttpUri', 'http://wow.com/test');
 
-    $id = $this->stats_uri->get_uri_id();
+    $id = $this->stats_uri->getUriId();
 
-    $this->db->sql_select('sys_stat_uri');
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect('sys_stat_uri');
+    $arr = $this->db->getArray();
     $record = current($arr);
 
     $this->assertEqual(sizeof($arr), 1);
@@ -85,24 +85,24 @@ class stats_uri_test extends LimbTestCase
     $this->assertEqual($record['uri'], 'http://wow.com/test');
   }
 
-  function test_same_uri()
+  function testSameUri()
   {
-    $this->test_new_outer_uri();
-    $this->test_new_outer_uri();
+    $this->testNewOuterUri();
+    $this->testNewOuterUri();
   }
 
-  function test_clean_outer_uri()
+  function testCleanOuterUri()
   {
     $this->assertEqual(
       'http://wow.com.bit/some/path',
-      $this->stats_uri->clean_url('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
+      $this->stats_uri->cleanUrl('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
 
-  function test_clean_inner_uri()
+  function testCleanInnerUri()
   {
     $this->assertEqual(
       '/test',
-      $this->stats_uri->clean_url('http://' . $_SERVER['HTTP_HOST'] . '/test?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
+      $this->stats_uri->cleanUrl('http://' . $_SERVER['HTTP_HOST'] . '/test?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
 
 }

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class files_folder_controller extends site_object_controller
+class FilesFolderController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -25,7 +25,7 @@ class files_folder_controller extends site_object_controller
         ),
         'create_file' => array(
             'template_path' => '/file/create.html',
-            'action_name' => strings :: get('create_new_file', 'file'),
+            'action_name' => Strings :: get('create_new_file', 'file'),
             'action_path' => '/files/create_file_action',
             'img_src' => '/shared/images/new.generic.gif',
             'JIP' => true,
@@ -38,7 +38,7 @@ class files_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/new.folder.gif',
-            'action_name' => strings :: get('create_files_folder', 'file'),
+            'action_name' => Strings :: get('create_files_folder', 'file'),
             'can_have_access_template' => true,
         ),
         'edit_files_folder' => array(
@@ -47,7 +47,7 @@ class files_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/edit.gif',
-            'action_name' => strings :: get('edit_files_folder', 'file'),
+            'action_name' => Strings :: get('edit_files_folder', 'file'),
         ),
         'delete' => array(
             'template_path' => '/site_object/delete.html',
@@ -55,7 +55,7 @@ class files_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/rem.gif',
-            'action_name' => strings :: get('delete'),
+            'action_name' => Strings :: get('delete'),
         ),
         'file_select' => array(
             'template_path' => '/files_folder/file_select.html',

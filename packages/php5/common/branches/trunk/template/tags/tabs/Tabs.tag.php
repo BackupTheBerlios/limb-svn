@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class tabs_tag_info
+class TabsTagInfo
 {
   public $tag = 'tabs';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'tabs_tag';
 }
 
-register_tag(new tabs_tag_info());
+registerTag(new TabsTagInfo());
 
-class tabs_tag extends compiler_directive_tag
+class TabsTag extends CompilerDirectiveTag
 {
   public
     $tabs = array(),
@@ -48,24 +48,24 @@ class tabs_tag extends compiler_directive_tag
     parent :: prepare();
   }
 
-  public function _load_tabs_js_script($code)
+  public function _loadTabsJsScript($code)
   {
     if (defined('TABS_SCRIPT_LOADED'))
       return;
 
     define('TABS_SCRIPT_LOADED', 1);
 
-    $code->write_html("<script type='text/javascript' src='/shared/js/tabs.js'></script>");
+    $code->writeHtml("<script type='text/javascript' src='/shared/js/tabs.js'></script>");
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    $this->_load_tabs_js_script($code);
+    $this->_loadTabsJsScript($code);
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
     $js = '';
 
@@ -74,7 +74,7 @@ class tabs_tag extends compiler_directive_tag
     else
       $active_tab = reset($this->tabs);
 
-    if(!$this->tabs || !$active_tab || !in_array($active_tab, $this->tabs))
+    if(!$this->tabs ||  !$active_tab ||  !in_array($active_tab, $this->tabs))
     {
       throw new WactException('invalid tabs declaration. Check your tabs settings',
           array('tag' => $this->tag,
@@ -83,7 +83,7 @@ class tabs_tag extends compiler_directive_tag
     }
 
     foreach($this->tabs as $id)
-     $js .= "var tab_data={'id':'{$id}'};\n tabs.register_tab_item(tab_data);\n";
+     $js .= "var tab_data={'id':'{$id}'};\n tabs.registerTabItem(tab_data);\n";
 
 
     if ($this->use_cookie)
@@ -94,13 +94,13 @@ class tabs_tag extends compiler_directive_tag
     else
     $js .= "tabs.activate('{$active_tab}');\n";
 
-    $code->write_html("
+    $code->writeHtml("
       <script type='text/javascript'>
         var tabs = new tabs_container();
         {$js}
       </script>");
 
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
   }
 }
 

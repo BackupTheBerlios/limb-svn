@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../normalizers/search_phone_number_normalizer.class.php');
+require_once(dirname(__FILE__) . '/../../../normalizers/SearchPhoneNumberNormalizer.class.php');
 
-class search_phone_number_normalizer_test extends LimbTestCase
+class SearchPhoneNumberNormalizerTest extends LimbTestCase
 {
   var $normalizer = null;
 
-  function search_phone_number_normalizer_test($name = 'phone number search normalizer test case')
+  function searchPhoneNumberNormalizerTest($name = 'phone number search normalizer test case')
   {
-    $this->normalizer = new search_phone_number_normalizer();
+    $this->normalizer = new SearchPhoneNumberNormalizer();
 
-    parent :: LimbTestCase($name);
+    parent :: limbTestCase($name);
   }
 
-  function test_process()
+  function testProcess()
   {
     $result = $this->normalizer->process('тел.+7
       (8412)<b>5689-456-67</b>');
@@ -29,14 +29,14 @@ class search_phone_number_normalizer_test extends LimbTestCase
     $this->assertEqual($result, '78412568945667 8412568945667 568945667');
   }
 
-  function test_process_one_number()
+  function testProcessOneNumber()
   {
     $result = $this->normalizer->process('234');
 
     $this->assertEqual($result, '234');
   }
 
-  function test_process_empty()
+  function testProcessEmpty()
   {
     $result = $this->normalizer->process('<b>nothing at all</b>');
 

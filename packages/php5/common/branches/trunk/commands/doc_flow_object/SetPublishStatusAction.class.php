@@ -8,32 +8,32 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/action.class.php');
+require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
-class set_publish_status_action extends action
+class SetPublishStatusAction extends Action
 {
   public function perform($request, $response)
   {
-    $request->set_status(request :: STATUS_SUCCESS);
+    $request->setStatus(Request :: STATUS_SUCCESS);
 
-    if($request->has_attribute('popup'))
-      $response->write(close_popup_response($request));
+    if($request->hasAttribute('popup'))
+      $response->write(closePopupResponse($request));
 
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
-    if(!$object = wrap_with_site_object($datasource->fetch()))
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
+    if(!$object = wrapWithSiteObject($datasource->fetch()))
       return;
 
-    $site_object_controller = $object->get_controller();
-    $action = $site_object_controller->get_action($request);
+    $site_object_controller = $object->getController();
+    $action = $site_object_controller->getAction($request);
 
     switch ($action)
     {
       case 'publish':
-        $status = $this->get_publish_status($object);
+        $status = $this->getPublishStatus($object);
       break;
       case 'unpublish':
-        $status = $this->get_unpublish_status($object);
+        $status = $this->getUnpublishStatus($object);
       break;
       default:
         return ;
@@ -43,35 +43,35 @@ class set_publish_status_action extends action
     $object->set('status', $status);
     $object->update(false);
 
-    $this->_apply_access_policy($object, $action);
+    $this->_applyAccessPolicy($object, $action);
 
-    $datasource->flush_cache();
+    $datasource->flushCache();
   }
 
-  public function get_publish_status($object)
+  public function getPublishStatus($object)
   {
     $current_status = $object->get('status');
-    $current_status |= site_object :: STATUS_PUBLISHED;
+    $current_status |= SiteObject :: STATUS_PUBLISHED;
     return $current_status;
   }
 
-  public function get_unpublish_status($object)
+  public function getUnpublishStatus($object)
   {
     $current_status = $object->get('status');
-    $current_status = $current_status & (~site_object :: STATUS_PUBLISHED);
+    $current_status = $current_status & (~SiteObject :: STATUS_PUBLISHED);
     return $current_status;
   }
 
-  protected function _apply_access_policy($object, $action)
+  protected function _applyAccessPolicy($object, $action)
   {
     try
     {
-      $access_policy = new access_policy();
-      $access_policy->apply_access_templates($object, $action);
+      $access_policy = new AccessPolicy();
+      $access_policy->applyAccessTemplates($object, $action);
     }
     catch(LimbException $e)
     {
-      message_box :: write_notice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
+      MessageBox :: writeNotice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
     }
   }
 }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/search_engine_regex_rule.class.php');
+require_once(dirname(__FILE__) . '/SearchEngineRegexRule.class.php');
 
-class search_engine_aport_rule extends search_engine_regex_rule
+class SearchEngineAportRule extends SearchEngineRegexRule
 {
   public function __construct()
   {

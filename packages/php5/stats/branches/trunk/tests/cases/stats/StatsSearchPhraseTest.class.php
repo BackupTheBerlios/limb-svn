@@ -8,113 +8,113 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../stats_search_phrase.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../../StatsSearchPhrase.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
-Mock :: generate('search_engine_regex_rule');
+Mock :: generate('SearchEngineRegexRule');
 
 Mock :: generatePartial
 (
-  'stats_search_phrase',
-  'stats_search_phrase_self_test_version',
+  'StatsSearchPhrase',
+  'StatsSearchPhraseSelfTestVersion',
   array(
-    '_get_http_referer',
+    '_getHttpReferer',
   )
 );
 
-class stats_search_phrase_test extends LimbTestCase
+class StatsSearchPhraseTest extends LimbTestCase
 {
   var $stats_referer = null;
   var $db = null;
 
-  function stats_search_phrase_test()
+  function statsSearchPhraseTest()
   {
-    parent :: LimbTestCase();
+    parent :: limbTestCase();
 
-    $this->db = db_factory :: instance();
+    $this->db = DbFactory :: instance();
   }
 
   function setUp()
   {
-    $this->stats_search_phrase = new stats_search_phrase_self_test_version($this);
+    $this->stats_search_phrase = new StatsSearchPhraseSelfTestVersion($this);
     $this->stats_search_phrase->__construct();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
   {
     $this->stats_search_phrase->tally();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('sys_stat_search_phrase');
+    $this->db->sqlDelete('sys_stat_search_phrase');
   }
 
-  function test_get_matching_rule_ok()
+  function testGetMatchingRuleOk()
   {
-    $this->stats_search_phrase->setReturnValue('_get_http_referer', 'test');
+    $this->stats_search_phrase->setReturnValue('_getHttpReferer', 'test');
 
-    $rule_no_match = new Mocksearch_engine_regex_rule($this);
+    $rule_no_match = new MockSearchEngineRegexRule($this);
     $rule_no_match->expectOnce('match');
     $rule_no_match->setReturnValue('match', false);
 
-    $rule_match = new Mocksearch_engine_regex_rule($this);
+    $rule_match = new MockSearchEngineRegexRule($this);
     $rule_match->expectOnce('match');
     $rule_match->setReturnValue('match', true);
-    $rule_match->setReturnValue('get_matching_phrase', 'test');
+    $rule_match->setReturnValue('getMatchingPhrase', 'test');
 
-    $this->stats_search_phrase->register_search_engine_rule($rule_no_match);
-    $this->stats_search_phrase->register_search_engine_rule($rule_match);
+    $this->stats_search_phrase->registerSearchEngineRule($rule_no_match);
+    $this->stats_search_phrase->registerSearchEngineRule($rule_match);
 
-    $match_rule = $this->stats_search_phrase->get_matching_search_engine_rule();
-    $this->assertEqual($match_rule->get_matching_phrase(), 'test');
+    $match_rule = $this->stats_search_phrase->getMatchingSearchEngineRule();
+    $this->assertEqual($match_rule->getMatchingPhrase(), 'test');
 
     $rule_match->tally();
     $rule_no_match->tally();
   }
 
-  function test_get_matching_rule_null()
+  function testGetMatchingRuleNull()
   {
-    $this->stats_search_phrase->setReturnValue('_get_http_referer', 'test');
+    $this->stats_search_phrase->setReturnValue('_getHttpReferer', 'test');
 
-    $rule_no_match = new Mocksearch_engine_regex_rule($this);
+    $rule_no_match = new MockSearchEngineRegexRule($this);
     $rule_no_match->expectOnce('match');
     $rule_no_match->setReturnValue('match', false);
 
-    $this->stats_search_phrase->register_search_engine_rule($rule_no_match);
+    $this->stats_search_phrase->registerSearchEngineRule($rule_no_match);
 
-    $this->assertNull(null, $this->stats_search_phrase->get_matching_search_engine_rule());
+    $this->assertNull(null, $this->stats_search_phrase->getMatchingSearchEngineRule());
 
     $rule_no_match->tally();
   }
 
-  function test_register()
+  function testRegister()
   {
-    $rule_match = new Mocksearch_engine_regex_rule($this);
+    $rule_match = new MockSearchEngineRegexRule($this);
     $rule_match->setReturnValue('match', true);
-    $rule_match->setReturnValue('get_matching_phrase', 'test');
-    $rule_match->setReturnValue('get_engine_name', 'engine_name');
+    $rule_match->setReturnValue('getMatchingPhrase', 'test');
+    $rule_match->setReturnValue('getEngineName', 'engineName');
 
-    $this->stats_search_phrase->register_search_engine_rule($rule_match);
+    $this->stats_search_phrase->registerSearchEngineRule($rule_match);
 
-    $date = new date();
+    $date = new Date();
     $this->assertTrue($this->stats_search_phrase->register($date));
 
-    $db = db_factory :: instance();
-    $db->sql_select('sys_stat_search_phrase');
+    $db = DbFactory :: instance();
+    $db->sqlSelect('sys_stat_search_phrase');
 
-    $arr = $db->get_array();
+    $arr = $db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
     $record = current($arr);
 
     $this->assertEqual($record['phrase'], 'test');
     $this->assertEqual($record['engine'], 'engine_name');
-    $this->assertEqual($record['time'], $date->get_stamp());
+    $this->assertEqual($record['time'], $date->getStamp());
   }
 }
 

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php');
 
-class objects_access_controller extends site_object_controller
+class ObjectsAccessController extends SiteObjectController
 {
-  protected function _define_default_action()
+  protected function _defineDefaultAction()
   {
     return 'admin_display';
   }
 
-  protected function _define_actions()
+  protected function _defineActions()
   {
     return array(
         'admin_display' => array(
@@ -29,7 +29,7 @@ class objects_access_controller extends site_object_controller
             'action_path' => '/objects_access/set_group_objects_access',
             'JIP' => true,
             'img_src' => '/shared/images/access_manage.gif',
-            'action_name' => strings :: get('set_group_access'),
+            'action_name' => Strings :: get('set_group_access'),
         ),
         'toggle' => array(
             'template_path' => '/objects_access/set_group_access.html',
@@ -38,7 +38,7 @@ class objects_access_controller extends site_object_controller
         'edit' => array(
             'popup' => true,
             'JIP' => true,
-            'action_name' => strings :: get('edit'),
+            'action_name' => Strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
             'img_src' => '/shared/images/edit.gif'

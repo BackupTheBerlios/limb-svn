@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/stats_report_datasource.class.php');
-require_once(dirname(__FILE__) . '/../reports/stats_event_report.class.php');
+require_once(dirname(__FILE__) . '/StatsReportDatasource.class.php');
+require_once(dirname(__FILE__) . '/../reports/StatsEventReport.class.php');
 
-class stats_events_list_datasource extends stats_report_datasource
+class StatsEventsListDatasource extends StatsReportDatasource
 {
   protected $response_map = array(
-        request :: STATUS_SUCCESS => 'STATUS_SUCCESS',
-        request :: STATUS_FORM_DISPLAYED => 'STATUS_FORM_DISPLAYED',
-        request :: STATUS_FORM_SUBMITTED => 'STATUS_FORM_SUBMITTED',
-        request :: STATUS_FAILURE => 'STATUS_FAILURE',
-        request :: STATUS_FORM_NOT_VALID => 'STATUS_FORM_NOT_VALID'
+        Request :: STATUS_SUCCESS => 'STATUS_SUCCESS',
+        Request :: STATUS_FORM_DISPLAYED => 'STATUS_FORM_DISPLAYED',
+        Request :: STATUS_FORM_SUBMITTED => 'STATUS_FORM_SUBMITTED',
+        Request :: STATUS_FAILURE => 'STATUS_FAILURE',
+        Request :: STATUS_FORM_NOT_VALID => 'STATUS_FORM_NOT_VALID'
       );
 
-  protected function _init_stats_report()
+  protected function _initStatsReport()
   {
-    $this->_stats_report = new stats_event_report();
+    $this->_stats_report = new StatsEventReport();
   }
 
-  protected function _process_result_array($arr)
+  protected function _processResultArray($arr)
   {
     $result = array();
     foreach($arr as $index => $data)
@@ -38,44 +38,44 @@ class stats_events_list_datasource extends stats_report_datasource
     return $result;
   }
 
-  protected function _configure_filters()
+  protected function _configureFilters()
   {
     $request = Limb :: toolkit()->getRequest();
 
-    $this->_set_ip_filter($request);
+    $this->_setIpFilter($request);
 
-    $this->_set_login_filter($request);
+    $this->_setLoginFilter($request);
 
-    $this->_set_action_filter($request);
+    $this->_setActionFilter($request);
 
-    $this->_set_period_filter($request);
+    $this->_setPeriodFilter($request);
 
-    $this->_set_uri_filter($request);
+    $this->_setUriFilter($request);
 
-    $this->_set_status_filter($request);
+    $this->_setStatusFilter($request);
   }
 
-  protected function _set_login_filter($request)
+  protected function _setLoginFilter($request)
   {
     if ($stats_user_login = $request->get('stats_user_login'))
-      $this->_stats_report->set_login_filter($stats_user_login);
+      $this->_stats_report->setLoginFilter($stats_user_login);
   }
 
-  protected function _set_action_filter($request)
+  protected function _setActionFilter($request)
   {
     if ($stats_action_name = $request->get('stats_action_name'))
-      $this->_stats_report->set_action_filter($stats_action_name);
+      $this->_stats_report->setActionFilter($stats_action_name);
   }
 
-  protected function _set_ip_filter($request)
+  protected function _setIpFilter($request)
   {
     if ($stats_ip = $request->get('stats_ip'))
-      $this->_stats_report->set_ip_filter($stats_ip);
+      $this->_stats_report->setIpFilter($stats_ip);
   }
 
-  protected function _set_status_filter($request)
+  protected function _setStatusFilter($request)
   {
-    if (($stats_status = $request->get('stats_status')) || (!is_array($stats_status)))
+    if (($stats_status = $request->get('stats_status')) ||  (!is_array($stats_status)))
       return ;
 
     $status_mask = 0;
@@ -85,47 +85,47 @@ class stats_events_list_datasource extends stats_report_datasource
         $status_mask = $status_mask | $response_keys[$index];
 
     if ($status_mask)
-      $this->_stats_report->set_status_filter($status_mask);
+      $this->_stats_report->setStatusFilter($status_mask);
   }
 
-  protected function _set_uri_filter($request)
+  protected function _setUriFilter($request)
   {
     if ($stats_uri = $request->get('stats_uri'))
-      $this->_stats_report->set_uri_filter($stats_uri);
+      $this->_stats_report->setUriFilter($stats_uri);
   }
 
-  protected function _set_period_filter($request)
+  protected function _setPeriodFilter($request)
   {
     $locale = Limb :: toolkit()->getLocale();
-    $start_date = new date();
-    $start_date->set_hour(0);
-    $start_date->set_minute(0);
-    $start_date->set_second(0);
+    $start_date = new Date();
+    $start_date->setHour(0);
+    $start_date->setMinute(0);
+    $start_date->setSecond(0);
 
     if ($stats_start_date = $request->get('stats_start_date'))
-      $start_date->set_by_locale_string($locale, $stats_start_date, $locale->get_short_date_time_format());
+      $start_date->setByLocaleString($locale, $stats_start_date, $locale->getShortDateTimeFormat());
 
     if ($stats_start_hour = $request->get('stats_start_hour'))
-      $start_date->set_hour($stats_start_hour);
+      $start_date->setHour($stats_start_hour);
 
     if ($stats_start_minute = $request->get('stats_start_minute'))
-      $start_date->set_minute($stats_start_minute);
+      $start_date->setMinute($stats_start_minute);
 
-    $finish_date = new date();
+    $finish_date = new Date();
     if ($stats_finish_date = $request->get('stats_finish_date'))
-      $finish_date->set_by_locale_string($locale, $stats_finish_date, $locale->get_short_date_time_format());
+      $finish_date->setByLocaleString($locale, $stats_finish_date, $locale->getShortDateTimeFormat());
 
-    $finish_date->set_hour(23);
-    $finish_date->set_minute(59);
-    $finish_date->set_second(59);
+    $finish_date->setHour(23);
+    $finish_date->setMinute(59);
+    $finish_date->setSecond(59);
 
     if ($stats_finish_hour = $request->get('stats_finish_hour'))
-      $finish_date->set_hour($stats_finish_hour);
+      $finish_date->setHour($stats_finish_hour);
 
     if ($stats_finish_minute = $request->get('stats_finish_minute'))
-      $finish_date->set_minute($stats_finish_minute);
+      $finish_date->setMinute($stats_finish_minute);
 
-    $this->_stats_report->set_period_filter($start_date, $finish_date);
+    $this->_stats_report->setPeriodFilter($start_date, $finish_date);
   }
 }
 ?>

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class search_query
+class SearchQuery
 {
   protected $items = array();
 
@@ -18,17 +18,17 @@ class search_query
     $this->items[] = $item;
   }
 
-  public function to_string()
+  public function toString()
   {
     return implode(' ', $this->items);
   }
 
-  public function get_query_items()
+  public function getQueryItems()
   {
     return $this->items;
   }
 
-  public function is_empty()
+  public function isEmpty()
   {
     return (sizeof($this->items) == 0);
   }

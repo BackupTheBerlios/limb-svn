@@ -8,15 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../cart.class.php');
+require_once(dirname(__FILE__) . '/../../Cart.class.php');
 
-class cart_summ_component extends component
+class CartSummComponent extends Component
 {
-  public function get_cart_summ()
+  public function getCartSumm()
   {
     $locale = Limb :: toolkit()->getLocale();
 
-    return number_format(cart :: instance()->get_total_summ(),
+    return number_format(Cart :: instance()->getTotalSumm(),
                          $locale->fract_digits,
                          $locale->decimal_symbol,
                          $locale->thousand_separator);

@@ -8,40 +8,40 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/required_rule.class.php');
+require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/RequiredRule.class.php');
 
-class change_user_locale_action extends form_action
+class ChangeUserLocaleAction extends FormAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'change_locale_form';
   }
 
-  protected function _init_validator()
+  protected function _initValidator()
   {
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'locale_id'));
+    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'locale_id'));
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
     $locale_id = $this->dataspace->get('locale_id');
 
-    if($request->has_attribute('popup'))
-      $response->write(close_popup_response($request));
+    if($request->hasAttribute('popup'))
+      $response->write(closePopupResponse($request));
     elseif(isset($_SERVER['HTTP_REFERER']))
       $response->redirect($_SERVER['HTTP_REFERER']);
     else
       $response->redirect('/');
 
-    if (!locale :: is_valid_locale_id($locale_id))
+    if (!Locale :: isValidLocaleId($locale_id))
     {
-      $request->set_status(request :: STATUS_FAILURE);
+      $request->setStatus(Request :: STATUS_FAILURE);
     }
 
     Limb :: toolkit()->getUser()->set('locale_id', $locale_id);
 
-    $request->set_status(request :: STATUS_SUCCESS);
+    $request->setStatus(Request :: STATUS_SUCCESS);
   }
 }
 

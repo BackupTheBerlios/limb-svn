@@ -8,117 +8,117 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../stats_ip.class.php');
-require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../../StatsIp.class.php');
+require_once(LIMB_DIR . '/class/lib/http/Ip.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
 Mock :: generatePartial
 (
-  'stats_ip',
-  'stats_ip_self_test_version',
+  'StatsIp',
+  'StatsIpSelfTestVersion',
   array(
-    'get_client_ip'
+    'getClientIp'
   )
 );
 
-class stats_ip_test extends LimbTestCase
+class StatsIpTest extends LimbTestCase
 {
   var $stats_ip = null;
   var $db = null;
 
-  function stats_ip_test()
+  function statsIpTest()
   {
-    parent :: LimbTestCase();
+    parent :: limbTestCase();
 
-    $this->db = db_factory :: instance();
+    $this->db = DbFactory :: instance();
   }
 
   function setUp()
   {
-    $this->stats_ip = new stats_ip_self_test_version($this);
+    $this->stats_ip = new StatsIpSelfTestVersion($this);
     $this->stats_ip->__construct();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
   {
     $this->stats_ip->tally();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('sys_stat_ip');
+    $this->db->sqlDelete('sys_stat_ip');
   }
 
-  function test_new_host()
+  function testNewHost()
   {
-    $date = new date();
-    $ip = ip :: encode_ip('192.168.0.5');
-    $this->stats_ip->setReturnValue('get_client_ip', $ip);
+    $date = new Date();
+    $ip = Ip :: encodeIp('192.168.0.5');
+    $this->stats_ip->setReturnValue('getClientIp', $ip);
 
-    $this->assertTrue($this->stats_ip->is_new_host($date));
+    $this->assertTrue($this->stats_ip->isNewHost($date));
 
-    $this->_check_stats_ip_record($total_records = 1, $ip, $date);
+    $this->_checkStatsIpRecord($total_records = 1, $ip, $date);
   }
 
-  function test_second_new_host()
+  function testSecondNewHost()
   {
-    $date = new date();
-    $ip = ip :: encode_ip('192.168.0.5');
-    $this->stats_ip->setReturnValue('get_client_ip', $ip);
+    $date = new Date();
+    $ip = Ip :: encodeIp('192.168.0.5');
+    $this->stats_ip->setReturnValue('getClientIp', $ip);
 
-    $date = new date();
-    $ip = ip :: encode_ip('192.168.0.6');
-    $this->stats_ip->setReturnValueAt(1, 'get_client_ip', $ip);
+    $date = new Date();
+    $ip = Ip :: encodeIp('192.168.0.6');
+    $this->stats_ip->setReturnValueAt(1, 'getClientIp', $ip);
 
-    $this->assertTrue($this->stats_ip->is_new_host($date));
+    $this->assertTrue($this->stats_ip->isNewHost($date));
   }
 
-  function test_same_host_new_day()
+  function testSameHostNewDay()
   {
-    $date = new date();
-    $ip = ip :: encode_ip('192.168.0.5');
-    $this->stats_ip->setReturnValue('get_client_ip', $ip);
+    $date = new Date();
+    $ip = Ip :: encodeIp('192.168.0.5');
+    $this->stats_ip->setReturnValue('getClientIp', $ip);
 
-    $this->stats_ip->is_new_host($date);
+    $this->stats_ip->isNewHost($date);
 
-    $date = new date();
-    $date->set_by_days($date->date_to_days() + 1);
-    $this->stats_ip->setReturnValueAt(1, 'get_client_ip', $ip);
+    $date = new Date();
+    $date->setByDays($date->dateToDays() + 1);
+    $this->stats_ip->setReturnValueAt(1, 'getClientIp', $ip);
 
-    $this->assertTrue($this->stats_ip->is_new_host($date));
+    $this->assertTrue($this->stats_ip->isNewHost($date));
 
-    $this->_check_stats_ip_record($total_records = 1, $ip, $date);
+    $this->_checkStatsIpRecord($total_records = 1, $ip, $date);
   }
 
-  function test_same_host_wrong_day()
+  function testSameHostWrongDay()
   {
-    $date1 = new date();
-    $ip = ip :: encode_ip('192.168.0.5');
-    $this->stats_ip->setReturnValue('get_client_ip', $ip);
+    $date1 = new Date();
+    $ip = Ip :: encodeIp('192.168.0.5');
+    $this->stats_ip->setReturnValue('getClientIp', $ip);
 
-    $this->stats_ip->is_new_host($date1);
+    $this->stats_ip->isNewHost($date1);
 
-    $date2 = new date();
-    $date2->set_by_days($date1->date_to_days() - 2);
-    $this->stats_ip->setReturnValueAt(1, 'get_client_ip', $ip);
+    $date2 = new Date();
+    $date2->setByDays($date1->dateToDays() - 2);
+    $this->stats_ip->setReturnValueAt(1, 'getClientIp', $ip);
 
-    $this->assertFalse($this->stats_ip->is_new_host($date2));
+    $this->assertFalse($this->stats_ip->isNewHost($date2));
 
-    $this->_check_stats_ip_record($total_records = 1, $ip, $date1);
+    $this->_checkStatsIpRecord($total_records = 1, $ip, $date1);
   }
 
-  function _check_stats_ip_record($total_records, $ip, $date)
+  function _checkStatsIpRecord($total_records, $ip, $date)
   {
-    $this->db->sql_select('sys_stat_ip');
-    $arr = $this->db->get_array('id');
+    $this->db->sqlSelect('sys_stat_ip');
+    $arr = $this->db->getArray('id');
 
     $this->assertTrue(sizeof($arr), $total_records, 'ip count is wrong');
     $this->assertTrue(isset($arr[$ip]));
-    $this->assertEqual($arr[$ip]['time'], $date->get_stamp(), 'ip time is incorrect');
+    $this->assertEqual($arr[$ip]['time'], $date->getStamp(), 'ip time is incorrect');
   }
 }
 

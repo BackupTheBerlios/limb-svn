@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once dirname(__FILE__) . '/cart_handler_interface.interface.php';
 
-class cart_handler implements cart_handler_interface
+class CartHandler implements CartHandlerInterface
 {
   protected $_cart_id = null;
   protected $_items = array();
@@ -22,33 +22,33 @@ class cart_handler implements cart_handler_interface
 
   public function reset()
   {
-    $this->clear_items();
+    $this->clearItems();
   }
 
-  public function get_cart_id()
+  public function getCartId()
   {
     return $this->_cart_id;
   }
 
-  public function set_cart_id($cart_id)
+  public function setCartId($cart_id)
   {
     $this->_cart_id = $cart_id;
   }
 
-  public function add_item($new_item)
+  public function addItem($new_item)
   {
-    $id = $new_item->get_id();
+    $id = $new_item->getId();
 
-    if ($new_item->get_amount() <= 0)
-      $new_item->set_amount(1);
+    if ($new_item->getAmount() <= 0)
+      $new_item->setAmount(1);
 
     if (isset($this->_items[$id]))
-      $new_item->summ_amount($this->_items[$id]);
+      $new_item->summAmount($this->_items[$id]);
 
     $this->_items[$id] = $new_item;
   }
 
-  public function get_item($id)
+  public function getItem($id)
   {
     if(isset($this->_items[$id]))
       return $this->_items[$id];
@@ -56,29 +56,29 @@ class cart_handler implements cart_handler_interface
       return false;
   }
 
-  public function remove_item($item_id)
+  public function removeItem($item_id)
   {
     if (isset($this->_items[$item_id]))
       unset($this->_items[$item_id]);
   }
 
-  public function remove_items($item_ids)
+  public function removeItems($item_ids)
   {
     foreach($item_ids as $id)
-      $this->remove_item($id);
+      $this->removeItem($id);
   }
 
-  public function get_items()
+  public function getItems()
   {
     return $this->_items;
   }
 
-  public function set_items($items)
+  public function setItems($items)
   {
     $this->_items = $items;
   }
 
-  public function count_items()
+  public function countItems()
   {
     if (is_array($this->_items))
       return count($this->_items);
@@ -86,7 +86,7 @@ class cart_handler implements cart_handler_interface
       return 0;
   }
 
-  public function clear_items()
+  public function clearItems()
   {
     $this->_items = array();
   }

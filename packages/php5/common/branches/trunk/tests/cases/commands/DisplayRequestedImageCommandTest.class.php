@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../commands/images/display_requested_image_command.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/request/http_cache.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+require_once(dirname(__FILE__) . '/../../../commands/images/DisplayRequestedImageCommand.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/request/HttpCache.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('http_response');
-Mock :: generate('request');
-Mock :: generate('http_cache');
-Mock :: generate('ini');
-Mock :: generate('requested_object_datasource');
+Mock :: generate('HttpResponse');
+Mock :: generate('Request');
+Mock :: generate('HttpCache');
+Mock :: generate('Ini');
+Mock :: generate('RequestedObjectDatasource');
 
-Mock :: generatePartial('display_requested_image_command',
-                        'display_image_command_test_version',
-                        array('_get_http_cache'));
+Mock :: generatePartial('DisplayRequestedImageCommand',
+                        'DisplayImageCommandTestVersion',
+                        array('_getHttpCache'));
 
-class display_requested_image_command_test extends LimbTestCase
+class DisplayRequestedImageCommandTest extends LimbTestCase
 {
   var $command;
   var $toolkit;
@@ -39,26 +39,26 @@ class display_requested_image_command_test extends LimbTestCase
 
   function setUp()
   {
-    $this->command = new display_image_command_test_version($this);
+    $this->command = new DisplayImageCommandTestVersion($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->response = new Mockhttp_response($this);
-    $this->cache = new Mockhttp_cache($this);
-    $this->request = new Mockrequest($this);
-    $this->ini = new Mockini($this);
-    $this->datasource = new Mockrequested_object_datasource($this);
+    $this->response = new MockHttpResponse($this);
+    $this->cache = new MockHttpCache($this);
+    $this->request = new MockRequest($this);
+    $this->ini = new MockIni($this);
+    $this->datasource = new MockRequestedObjectDatasource($this);
 
-    $this->command->setReturnValue('_get_http_cache', $this->cache);
+    $this->command->setReturnValue('_getHttpCache', $this->cache);
 
     $this->toolkit->setReturnValue('getResponse', $this->response);
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
     $this->toolkit->setReturnValue('getINI', $this->ini, array('image_variations.ini'));
 
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
 
-    $this->ini->setReturnValue('get_all', array('original' => array(),
+    $this->ini->setReturnValue('getAll', array('original' => array(),
                                                 'thumbnail' => array(),
                                                 'icon' => array()));
 
@@ -77,79 +77,79 @@ class display_requested_image_command_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_perform_object_not_fetched()
+  function testPerformObjectNotFetched()
   {
     $this->datasource->setReturnValue('fetch', array());
-    $this->ini->expectNever('get_all');
+    $this->ini->expectNever('getAll');
 
     $this->response->expectNever('commit');
 
     $this->assertEqual($this->command->perform(), Limb :: STATUS_ERROR);
   }
 
-  function test_perform_no_such_variation_original()
+  function testPerformNoSuchVariationOriginal()
   {
     $this->datasource->setReturnValue('fetch', $object_data = array('id' => 100));
 
-    $this->ini->expectOnce('get_all');
+    $this->ini->expectOnce('getAll');
 
-    $this->request->expectOnce('has_attribute', array('original'));
-    $this->request->setReturnValue('has_attribute', true, array('original'));
+    $this->request->expectOnce('hasAttribute', array('original'));
+    $this->request->setReturnValue('hasAttribute', true, array('original'));
 
     $this->response->expectNever('commit');
 
     $this->assertEqual($this->command->perform(), Limb :: STATUS_ERROR);
   }
 
-  function test_perform_no_such_variation_not_original()
+  function testPerformNoSuchVariationNotOriginal()
   {
     $this->datasource->setReturnValue('fetch', $object_data = array('id' => 100));
 
-    $this->ini->expectOnce('get_all');
+    $this->ini->expectOnce('getAll');
 
-    $this->request->setReturnValue('has_attribute', true, array('icon'));
+    $this->request->setReturnValue('hasAttribute', true, array('icon'));
 
-    $this->response->expectOnce('header', array('Content-type: image/gif'));
+    $this->response->expectOnce('header', array('content-type: image/gif'));
     $this->response->expectOnce('readfile', array(HTTP_SHARED_DIR . 'images/1x1.gif'));
     $this->response->expectOnce('commit');
 
     $this->command->perform();
   }
 
-  function test_perform_no_media_file_original()
+  function testPerformNoMediaFileOriginal()
   {
     $object_data = array('id' => 100,
                          'variations' => array('original' => array('media_id' => 'fxfxfxfx')));
 
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->ini->expectOnce('get_all');
+    $this->ini->expectOnce('getAll');
 
-    $this->request->setReturnValue('has_attribute', true, array('original'));
+    $this->request->setReturnValue('hasAttribute', true, array('original'));
 
     $this->response->expectNever('commit');
 
     $this->assertEqual($this->command->perform(), Limb :: STATUS_ERROR);
   }
 
-  function test_perform_no_media_file_not_original()
+  function testPerformNoMediaFileNotOriginal()
   {
     $object_data = array('id' => 100,
                          'variations' => array('icon' => array('media_id' => 'fxfxfxfx')));
 
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->ini->expectOnce('get_all');
+    $this->ini->expectOnce('getAll');
 
-    $this->request->setReturnValue('has_attribute', true, array('icon'));
+    $this->request->setReturnValue('hasAttribute', true, array('icon'));
 
-    $this->response->expectOnce('header', array('HTTP/1.1 404 Not found'));
+    $this->response->expectOnce('header', array('hTTP/1.1 404 Not found'));
     $this->response->expectOnce('commit');
 
     $this->command->perform();
   }
 
-  function test_perform_http_cache_hit_original()
+  function testPerformHttpCacheHitOriginal()
   {
     $object_data = array('id' => 100,
                          'modified_date' => $time = time(),
@@ -158,25 +158,25 @@ class display_requested_image_command_test extends LimbTestCase
 
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->request->setReturnValue('has_attribute', true, array('original'));
+    $this->request->setReturnValue('hasAttribute', true, array('original'));
 
-    $this->cache->expectOnce('set_last_modified_time', array($time));
-    $this->cache->expectOnce('set_cache_time', array(display_requested_image_command :: DAY_CACHE));
-    $this->cache->expectOnce('check_and_write', array(new IsAExpectation('Mockhttp_response')));
-    $this->cache->setReturnValue('check_and_write', true);
+    $this->cache->expectOnce('setLastModifiedTime', array($time));
+    $this->cache->expectOnce('setCacheTime', array(DisplayRequestedImageCommand :: DAY_CACHE));
+    $this->cache->expectOnce('checkAndWrite', array(new IsAExpectation('MockHttpResponse')));
+    $this->cache->setReturnValue('checkAndWrite', true);
 
     $this->response->expectNever('readfile');
     $this->response->expectOnce('header', array("Content-type: {$mime_type}"));
     $this->response->expectNever('commit');
 
-    $this->_create_tmp_media($media_id);
+    $this->_createTmpMedia($media_id);
 
     $this->assertEqual($this->command->perform(), Limb :: STATUS_OK);
 
-    $this->_remove_tmp_media($media_id);
+    $this->_removeTmpMedia($media_id);
   }
 
-  function test_perform_http_cache_hit_not_original()
+  function testPerformHttpCacheHitNotOriginal()
   {
     $object_data = array('id' => 100,
                          'modified_date' => $time = time(),
@@ -185,25 +185,25 @@ class display_requested_image_command_test extends LimbTestCase
 
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->request->setReturnValue('has_attribute', true, array('icon'));
+    $this->request->setReturnValue('hasAttribute', true, array('icon'));
 
-    $this->cache->expectOnce('set_last_modified_time', array($time));
-    $this->cache->expectOnce('set_cache_time', array(display_requested_image_command :: DAY_CACHE));
-    $this->cache->expectOnce('check_and_write', array(new IsAExpectation('Mockhttp_response')));
-    $this->cache->setReturnValue('check_and_write', true);
+    $this->cache->expectOnce('setLastModifiedTime', array($time));
+    $this->cache->expectOnce('setCacheTime', array(DisplayRequestedImageCommand :: DAY_CACHE));
+    $this->cache->expectOnce('checkAndWrite', array(new IsAExpectation('MockHttpResponse')));
+    $this->cache->setReturnValue('checkAndWrite', true);
 
     $this->response->expectNever('readfile');
     $this->response->expectOnce('header', array("Content-type: {$mime_type}"));
     $this->response->expectOnce('commit');
 
-    $this->_create_tmp_media($media_id);
+    $this->_createTmpMedia($media_id);
 
     $this->command->perform();
 
-    $this->_remove_tmp_media($media_id);
+    $this->_removeTmpMedia($media_id);
   }
 
-  function test_perform_http_cache_miss()
+  function testPerformHttpCacheMiss()
   {
     $object_data = array('id' => 100,
                          'modified_date' => $time = time(),
@@ -213,32 +213,32 @@ class display_requested_image_command_test extends LimbTestCase
 
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->request->setReturnValue('has_attribute', true, array('icon'));
+    $this->request->setReturnValue('hasAttribute', true, array('icon'));
 
-    $this->cache->expectOnce('set_last_modified_time', array($time));
-    $this->cache->expectOnce('set_cache_time', array(display_requested_image_command :: DAY_CACHE));
-    $this->cache->expectOnce('check_and_write', array(new IsAExpectation('Mockhttp_response')));
-    $this->cache->setReturnValue('check_and_write', false);
+    $this->cache->expectOnce('setLastModifiedTime', array($time));
+    $this->cache->expectOnce('setCacheTime', array(DisplayRequestedImageCommand :: DAY_CACHE));
+    $this->cache->expectOnce('checkAndWrite', array(new IsAExpectation('MockHttpResponse')));
+    $this->cache->setReturnValue('checkAndWrite', false);
 
     $this->response->expectOnce('readfile', array(MEDIA_DIR. $media_id .'.media'));
     $this->response->expectArgumentsAt(0, 'header', array("Content-Disposition: filename={$file_name}"));
     $this->response->expectArgumentsAt(1, 'header', array("Content-type: {$mime_type}"));
     $this->response->expectOnce('commit');
 
-    $this->_create_tmp_media($media_id);
+    $this->_createTmpMedia($media_id);
 
     $this->command->perform();
 
-    $this->_remove_tmp_media($media_id);
+    $this->_removeTmpMedia($media_id);
   }
 
-  function _create_tmp_media($media_id)
+  function _createTmpMedia($media_id)
   {
-    fs :: mkdir(MEDIA_DIR);
+    Fs :: mkdir(MEDIA_DIR);
     touch(MEDIA_DIR. $media_id . '.media');
   }
 
-  function _remove_tmp_media($media_id)
+  function _removeTmpMedia($media_id)
   {
     unlink(MEDIA_DIR. $media_id . '.media');
   }

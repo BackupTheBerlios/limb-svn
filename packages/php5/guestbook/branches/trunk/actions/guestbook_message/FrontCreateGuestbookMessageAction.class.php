@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/create_guestbook_message_action.class.php');
+require_once(dirname(__FILE__) . '/CreateGuestbookMessageAction.class.php');
 
-class front_create_guestbook_message_action extends create_guestbook_message_action
+class FrontCreateGuestbookMessageAction extends CreateGuestbookMessageAction
 {
-  protected function _define_dataspace_name()
+  protected function _defineDataspaceName()
   {
     return 'display';
   }
 
-  protected function _valid_perform($request, $response)
+  protected function _validPerform($request, $response)
   {
-    parent :: _valid_perform($request, $response);
+    parent :: _validPerform($request, $response);
 
-    if ($request->is_success())
+    if ($request->isSuccess())
       $response->reload();
   }
 }

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/one_table_object_db_table.class.php');
+require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
 
-class user_group_db_table extends one_table_object_db_table
+class UserGroupDbTable extends OneTableObjectDbTable
 {
-  protected function _define_constraints()
+  protected function _defineConstraints()
   {
     return array(
       'object_id' =>	array(

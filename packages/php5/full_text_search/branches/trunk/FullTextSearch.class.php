@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
-class full_text_search
+class FullTextSearch
 {
   protected $db;
   protected $use_boolean_mode = false;
@@ -20,21 +20,21 @@ class full_text_search
   {
     $this->db = Limb :: toolkit()->getDB();
 
-    $this->use_boolean_mode = $this->_check_boolean_mode();
+    $this->use_boolean_mode = $this->_checkBooleanMode();
   }
 
-  protected function _can_perform_fulltext_search()
+  protected function _canPerformFulltextSearch()
   {
-    $db_type = Limb :: toolkit()->getINI('common.ini')->get_option('type', 'DB');
+    $db_type = Limb :: toolkit()->getINI('common.ini')->getOption('type', 'DB');
 
     if($db_type == 'mysql')
     {
-      $this->db->sql_exec('SELECT VERSION() as version');
-      $row = $this->db->fetch_row();
+      $this->db->sqlExec('SELECT VERSION() as version');
+      $row = $this->db->fetchRow();
 
       $version = explode('.', $row['version']);
 
-      if((int)$version[0] > 3 || ((int)$version[0] == 3 && (int)$version[1] >= 23))
+      if((int)$version[0] > 3 ||  ((int)$version[0] == 3 &&  (int)$version[1] >= 23))
         return true;
     }
     return false;
@@ -42,13 +42,13 @@ class full_text_search
 
   public function find($query, $class_id=null, $restricted_classes_ids = array(), $allowed_classes_ids = array())
   {
-    if(!$this->_can_perform_fulltext_search())
+    if(!$this->_canPerformFulltextSearch())
       $result = array();
 
-    if($query->is_empty())
+    if($query->isEmpty())
       return $result;
 
-    $sql = $this->_get_search_sql($query);
+    $sql = $this->_getSearchSql($query);
 
     if (!$sql)
       return array();
@@ -57,36 +57,36 @@ class full_text_search
     else
     {
       if(count($restricted_classes_ids))
-        $sql .= ' AND NOT(' . sql_in('class_id', $restricted_classes_ids) . ')';
+        $sql .= ' AND NOT(' . sqlIn('class_id', $restricted_classes_ids) . ')';
       if(count($allowed_classes_ids))
-        $sql .= ' AND ' . sql_in('class_id', $allowed_classes_ids);
+        $sql .= ' AND ' . sqlIn('class_id', $allowed_classes_ids);
     }
 
-    return $this->_get_db_result($sql);
+    return $this->_getDbResult($sql);
   }
 
-  public function find_by_ids($ids, $query)
+  public function findByIds($ids, $query)
   {
     $result = array();
 
-    if($query->is_empty())
+    if($query->isEmpty())
       return $result;
 
-    $sql = $this->_get_search_sql($query);
+    $sql = $this->_getSearchSql($query);
 
-    $sql .= " AND " . sql_in('object_id', $ids);
+    $sql .= " AND " . sqlIn('object_id', $ids);
 
-    return $this->_get_db_result($sql);
+    return $this->_getDbResult($sql);
   }
 
-  protected function _check_boolean_mode()
+  protected function _checkBooleanMode()
   {
-    $db_type = Limb :: toolkit()->getINI('common.ini')->get_option('type', 'DB');
+    $db_type = Limb :: toolkit()->getINI('common.ini')->getOption('type', 'DB');
 
     if($db_type == 'mysql')
     {
-      $this->db->sql_exec('SELECT VERSION() as version');
-      $row = $this->db->fetch_row();
+      $this->db->sqlExec('SELECT VERSION() as version');
+      $row = $this->db->fetchRow();
 
       if(($pos = strpos($row['version'], '.')) !== false)
       {
@@ -99,11 +99,11 @@ class full_text_search
     return false;
   }
 
-  protected function _process_query($query_object)
+  protected function _processQuery($query_object)
   {
     $query = '';
 
-    $query_items = $query_object->get_query_items();
+    $query_items = $query_object->getQueryItems();
 
     foreach($query_items as $key => $data)
       $query_items[$key] = $this->db->escape($data);
@@ -120,9 +120,9 @@ class full_text_search
     return $query;
   }
 
-  protected function _get_search_sql($query_object)
+  protected function _getSearchSql($query_object)
   {
-    $query = $this->_process_query($query_object);
+    $query = $this->_processQuery($query_object);
 
     if(!$query)
       return '';
@@ -145,12 +145,12 @@ class full_text_search
     return $sql;
   }
 
-  protected function _get_db_result($sql)
+  protected function _getDbResult($sql)
   {
-    $this->db->sql_exec($sql);
+    $this->db->sqlExec($sql);
 
     $result = array();
-    while($row = $this->db->fetch_row())
+    while($row = $this->db->fetchRow())
     {
       if(!isset($result[$row['object_id']]))
         $result[$row['object_id']] = $row['score'];

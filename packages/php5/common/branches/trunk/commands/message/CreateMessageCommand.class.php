@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/commands/create_site_object_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/CreateSiteObjectCommand.class.php');
 
-class create_message_command extends create_site_object_command
+class CreateMessageCommand extends CreateSiteObjectCommand
 {
-	protected function _define_site_object_class_name()
+	protected function _defineSiteObjectClassName()
 	{
 	  return 'message';
 	}  

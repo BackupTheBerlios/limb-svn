@@ -8,23 +8,23 @@
 * $Id: save_new_object_access_command_test.class.php 818 2004-10-22 09:31:58Z seregalimb $
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../commands/login/login_command.class.php');
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/authenticator.interface.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(dirname(__FILE__) . '/../../../commands/login/LoginCommand.class.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/Authenticator.interface.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('http_response');
-Mock :: generate('user');
-Mock :: generate('authenticator');
+Mock :: generate('HttpResponse');
+Mock :: generate('User');
+Mock :: generate('Authenticator');
 
-Mock :: generatePartial('login_command',
-                         'login_command_test_version',
-                         array('_get_http_referer'));
+Mock :: generatePartial('LoginCommand',
+                         'LoginCommandTestVersion',
+                         array('_getHttpReferer'));
 
-class login_command_test extends LimbTestCase
+class LoginCommandTest extends LimbTestCase
 {
   var $command;
   var $response;
@@ -35,10 +35,10 @@ class login_command_test extends LimbTestCase
 
   function setUp()
   {
-    $this->response = new Mockhttp_response($this);
-    $this->user = new Mockuser($this);
-    $this->dataspace = new dataspace();
-    $this->authenticator = new Mockauthenticator($this);
+    $this->response = new MockHttpResponse($this);
+    $this->user = new MockUser($this);
+    $this->dataspace = new Dataspace();
+    $this->authenticator = new MockAuthenticator($this);
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getUser', $this->user);
@@ -48,7 +48,7 @@ class login_command_test extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->command = new login_command_test_version($this);
+    $this->command = new LoginCommandTestVersion($this);
   }
 
   function tearDown()
@@ -61,7 +61,7 @@ class login_command_test extends LimbTestCase
     $this->authenticator->tally();
   }
 
-  function test_perform_failed()
+  function testPerformFailed()
   {
     $login_data = array('login' => 'test_login',
                         'password' => 'test_password',
@@ -70,13 +70,13 @@ class login_command_test extends LimbTestCase
     $this->dataspace->import($login_data);
 
     $this->authenticator->expectOnce('login', array($login_data));
-    $this->user->expectOnce('is_logged_in');
-    $this->user->setReturnValue('is_logged_in', false);
+    $this->user->expectOnce('isLoggedIn');
+    $this->user->setReturnValue('isLoggedIn', false);
 
     $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
   }
 
-  function test_perform_ok_redirect_to_root()
+  function testPerformOkRedirectToRoot()
   {
     $login_data = array('login' => 'test_login',
                         'password' => 'test_password',
@@ -85,16 +85,16 @@ class login_command_test extends LimbTestCase
     $this->dataspace->import($login_data);
 
     $this->authenticator->expectOnce('login', array($login_data));
-    $this->user->expectOnce('is_logged_in');
-    $this->user->setReturnValue('is_logged_in', true);
+    $this->user->expectOnce('isLoggedIn');
+    $this->user->setReturnValue('isLoggedIn', true);
 
     $this->response->expectOnce('redirect', array('/'));
-    $this->command->setReturnValue('_get_http_referer', '');
+    $this->command->setReturnValue('_getHttpReferer', '');
 
     $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
   }
 
-  function test_perform_ok_redirect_to_root_but_login()
+  function testPerformOkRedirectToRootButLogin()
   {
     $login_data = array('login' => 'test_login',
                         'password' => 'test_password',
@@ -103,17 +103,17 @@ class login_command_test extends LimbTestCase
     $this->dataspace->import($login_data);
 
     $this->authenticator->expectOnce('login', array($login_data));
-    $this->user->expectOnce('is_logged_in');
-    $this->user->setReturnValue('is_logged_in', true);
+    $this->user->expectOnce('isLoggedIn');
+    $this->user->setReturnValue('isLoggedIn', true);
 
     $this->response->expectOnce('redirect', array('/'));
-    $this->command->setReturnValue('_get_http_referer', '/root/login');
+    $this->command->setReturnValue('_getHttpReferer', '/root/login');
 
     $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
   }
 
 
-  function test_perform_ok_redirect_to_referer()
+  function testPerformOkRedirectToReferer()
   {
     $login_data = array('login' => 'test_login',
                         'password' => 'test_password',
@@ -122,17 +122,17 @@ class login_command_test extends LimbTestCase
     $this->dataspace->import($login_data);
 
     $this->authenticator->expectOnce('login', array($login_data));
-    $this->user->expectOnce('is_logged_in');
-    $this->user->setReturnValue('is_logged_in', true);
+    $this->user->expectOnce('isLoggedIn');
+    $this->user->setReturnValue('isLoggedIn', true);
 
-    $this->command->setReturnValue('_get_http_referer', $refer = 'some_referer');
+    $this->command->setReturnValue('_getHttpReferer', $refer = 'someReferer');
 
     $this->response->expectOnce('redirect', array($refer));
 
     $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
   }
 
-  function test_perform_ok_redirect_to_redirect_param()
+  function testPerformOkRedirectToRedirectParam()
   {
     $login_data = array('login' => 'test_login',
                         'password' => 'test_password',
@@ -143,10 +143,10 @@ class login_command_test extends LimbTestCase
     $this->dataspace->set('redirect', $some_redirect = 'some_redirect');
 
     $this->authenticator->expectOnce('login', array($login_data));
-    $this->user->expectOnce('is_logged_in');
-    $this->user->setReturnValue('is_logged_in', true);
+    $this->user->expectOnce('isLoggedIn');
+    $this->user->setReturnValue('isLoggedIn', true);
 
-    $this->command->expectNever('_get_http_referer');
+    $this->command->expectNever('_getHttpReferer');
 
     $this->response->expectOnce('redirect', array($some_redirect));
 

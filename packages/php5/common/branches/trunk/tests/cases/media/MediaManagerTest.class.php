@@ -8,34 +8,34 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../media_manager.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
-class media_manager_test extends LimbTestCase
+class MediaManagerTest extends LimbTestCase
 {
   var $manager;
 
   function setUp()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
 
-    $this->manager = new media_manager();
+    $this->manager = new MediaManager();
   }
 
   function tearDown()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    fs :: rm(MEDIA_DIR);
+    Fs :: rm(MEDIA_DIR);
   }
 
-  function test_get_media_file_path()
+  function testGetMediaFilePath()
   {
     $id = 'test';
-    $this->assertEqual($this->manager->get_media_file_path($id),
+    $this->assertEqual($this->manager->getMediaFilePath($id),
                        MEDIA_DIR . $id . '.media');
   }
 }

@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/search_engine_regex_rule.class.php');
+require_once(dirname(__FILE__) . '/SearchEngineRegexRule.class.php');
 
-class search_engine_yandex_rule extends search_engine_regex_rule
+class SearchEngineYandexRule extends SearchEngineRegexRule
 {
   public function __construct()
   {
     parent :: __construct('yandex', '/^.*yand.*text=([^&]*).*$/', 1);
   }
 
-  public function get_matching_phrase()
+  public function getMatchingPhrase()
   {
-    $phrase = parent :: get_matching_phrase();
+    $phrase = parent :: getMatchingPhrase();
 
     if(strpos($this->uri, 'yandpage') !== false)
       $phrase = convert_cyr_string(urldecode($phrase), 'k', 'w');

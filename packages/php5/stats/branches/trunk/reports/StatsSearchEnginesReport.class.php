@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
-class stats_search_engines_report
+class StatsSearchEnginesReport
 {
   protected $db = null;
   protected $filter_conditions = array();
@@ -28,7 +28,7 @@ class stats_search_engines_report
             FROM
             sys_stat_search_phrase';
 
-    $sql .= $this->_build_filter_condition();
+    $sql .= $this->_buildFilterCondition();
 
     $sql .= '	GROUP BY engine
               ORDER BY hits DESC';
@@ -36,50 +36,50 @@ class stats_search_engines_report
     $limit = isset($params['limit']) ? $params['limit'] : 0;
     $offset = isset($params['offset']) ? $params['offset'] : 0;
 
-    $this->db->sql_exec($sql, $limit, $offset);
+    $this->db->sqlExec($sql, $limit, $offset);
 
-    return $this->db->get_array();
+    return $this->db->getArray();
   }
 
-  public function fetch_count($params = array())
+  public function fetchCount($params = array())
   {
     $sql = 'SELECT
             engine
             FROM
             sys_stat_search_phrase';
 
-    $sql .= $this->_build_filter_condition();
+    $sql .= $this->_buildFilterCondition();
 
     $sql .= 'GROUP BY engine';
 
-    $this->db->sql_exec($sql);
-    return $this->db->count_selected_rows();
+    $this->db->sqlExec($sql);
+    return $this->db->countSelectedRows();
   }
 
-  public function fetch_total_hits()
+  public function fetchTotalHits()
   {
     $sql = 'SELECT
             COUNT(id) as total
             FROM
             sys_stat_search_phrase';
 
-    $sql .= $this->_build_filter_condition();
+    $sql .= $this->_buildFilterCondition();
 
-    $this->db->sql_exec($sql);
-    $record = $this->db->fetch_row();
+    $this->db->sqlExec($sql);
+    $record = $this->db->fetchRow();
 
     return $record['total'];
   }
 
-  public function set_period_filter($start_date, $finish_date)
+  public function setPeriodFilter($start_date, $finish_date)
   {
-    $start_stamp = $start_date->get_stamp();
-    $finish_stamp = $finish_date->get_stamp();
+    $start_stamp = $start_date->getStamp();
+    $finish_stamp = $finish_date->getStamp();
 
     $this->filter_conditions[] = " AND time BETWEEN {$start_stamp} AND {$finish_stamp} ";
   }
 
-  protected function _build_filter_condition()
+  protected function _buildFilterCondition()
   {
     return ' WHERE 1=1 ' . implode(' ', $this->filter_conditions);
   }
