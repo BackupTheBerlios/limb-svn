@@ -13,14 +13,24 @@ require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 debug :: add_timing_point('start');
 
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . 'class/core/file_resolvers/file_resolvers_repository.php');
 require_once(LIMB_DIR . 'class/core/filters/filter_chain.class.php');
 require_once(LIMB_DIR . 'class/core/request/http_response.class.php');
 require_once(LIMB_DIR . 'class/core/request/request.class.php');
 require_once(LIMB_DIR . 'class/etc/limb_util.inc.php');
-require_once(LIMB_DIR . 'class/lib/system/message_box.class.php');
+require_once(LIMB_DIR . 'class/etc/message_box.class.php');
 
 class limb_application
-{  
+{
+  var $request;
+  var $response;
+    
+  function limb_application()
+  {
+    $this->request =& request :: instance();
+    $this->response =& new http_response();  
+  }
+  
   function _register_filters(&$filter_chain)
   {
     $f = array();
@@ -35,28 +45,41 @@ class limb_application
     $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/image_cache_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . 'class/core/filters/site_object_controller_filter');
   }
+  
+  function _register_file_resolvers()
+  {
+    $r = array();
+    
+    register_file_resolver('ini',         $r[] = LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver');
+    register_file_resolver('action',      $r[] = LIMB_DIR . '/class/core/file_resolvers/action_file_resolver');
+    register_file_resolver('strings',     $r[] = LIMB_DIR . '/class/core/file_resolvers/strings_file_resolver');
+    register_file_resolver('template',    $r[] = LIMB_DIR . '/class/core/file_resolvers/template_file_resolver');
+    register_file_resolver('controller',  $r[] = LIMB_DIR . '/class/core/file_resolvers/controller_file_resolver');
+    register_file_resolver('db_table',    $r[] = LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
+    register_file_resolver('datasource',  $r[] = LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver');
+    register_file_resolver('site_object', $r[] = LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver');
+  }
     
   function run()
   {
-    $request =& request :: instance();
-    $response =& new http_response();
+    $this->_register_file_resolvers();
     
-    $filter_chain =& new filter_chain($request, $response);
+    $filter_chain =& new filter_chain($this->request, $this->response);
     
     $this->_register_filters($filter_chain);
     
     $filter_chain->process();
     
-    if( $response->get_content_type() == 'text/html' && 
-        $response->get_status() == 200)//only 200?
+    if( $this->response->get_content_type() == 'text/html' && 
+        $this->response->get_status() == 200)//only 200?
     {
       if (debug :: is_console_enabled())
-      	$response->write(debug :: parse_html_console());
+      	$this->response->write(debug :: parse_html_console());
       	
-      $response->write(message_box :: parse());//It definetly should be somewhere else!
+      $this->response->write(message_box :: parse());//It definetly should be somewhere else!
     }
         
-    $response->commit();      
+    $this->response->commit();      
   }
 }
 

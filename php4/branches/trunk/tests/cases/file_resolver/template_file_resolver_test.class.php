@@ -30,11 +30,11 @@ class template_file_resolver_test extends LimbTestCase
     register_testing_ini(
       'packages.ini',
       ' 
-      [package-1]
+      [package_1]
        path = {TEST_TEMPLATE_RESOLVER_PACKAGE_DIR}package1/
-      [package-2]
+      [package_2]
        path = {TEST_TEMPLATE_RESOLVER_PACKAGE_DIR}package2/1.0/       
-      [package-3]
+      [package_3]
        path = {TEST_TEMPLATE_RESOLVER_PACKAGE_DIR}package3/1.1/
       '
     );
@@ -48,6 +48,8 @@ class template_file_resolver_test extends LimbTestCase
     );    
   
     $this->resolver =& new template_file_resolver_test_version($this);
+    $this->resolver->template_file_resolver();
+    
     $this->resolver->setReturnValue('_get_locale_prefix', '');
   }
   

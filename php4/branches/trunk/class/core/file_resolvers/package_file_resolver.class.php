@@ -8,11 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 
 class package_file_resolver
 {
-  var $_packages = array();
+  var $_packages_info = null;
   var $_resolved_file_paths = array();
+  
+  function package_file_resolver()
+  {
+    $this->_packages_info =& packages_info :: instance();
+  }
     
   function resolve($file_path)
   {
@@ -30,28 +36,7 @@ class package_file_resolver
   {
     return $this->_find_file_in_packages($file_path);
   }
-  
-/*  function _write_cache()
-  {
-		if (!count($this->_resolved_file_paths))
-		  return;
     
-    $cache_file = VAR_DIR . 'cache/' . get_class($this) . '.php';
-    
-		$fp = @fopen($cache_file, 'w+');
-		if ($fp === false)
-		{
-			debug::write_error("Couldn't create cache file '{$cache_file}', perhaps wrong permissions", __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
-			return;
-		} 
-
-		fwrite($fp, "<?php\n");
-		fwrite($fp, '$resolved_file_paths = ' . var_export($this->_resolved_file_paths, true) . ";\n");
-
-		fwrite($fp, "\n?>");
-		fclose($fp);
-  }*/
-  
   function _find_file_in_packages($file_path)
   {
     $packages = $this->get_packages();
@@ -71,34 +56,9 @@ class package_file_resolver
   
   function get_packages()
   {
-    if(!$this->_packages)
-      $this->_load_packages();
-    
-    return $this->_packages;
+    return $this->_packages_info->get_packages();
   }
 
-  function _load_packages()
-  {
-    include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
-    
-    $ini =& get_ini('packages.ini');
-    $this->_packages = array();
-    
-    $groups = $ini->get_all();
-
-    foreach($groups as $group => $data)
-    {
-      $data['path'] = $this->_parse_path($data['path']);
-      
-      if(strpos($group, 'package') === 0)
-        $this->_packages[] = $data;
-    }
-  }
-  
-  function _parse_path($path)
-  {
-    return preg_replace('~\{([^\}]+)\}~e', "constant('\\1')", $path);
-  }  
 }
 
 ?>

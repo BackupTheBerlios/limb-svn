@@ -8,9 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/limb_application.class.php');
-
-$app =& new limb_application();
-$app->run();
-
+class package_group extends GroupTest 
+{
+	function package_group() 
+	{
+	  $this->GroupTest('package tests');
+	  
+ 		TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/package');
+	}
+}
 ?>

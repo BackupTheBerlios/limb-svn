@@ -22,12 +22,10 @@ class search_text_normalizer_factory
 
 	function _include_class_file($class_name)
 	{
-		$resolver =& get_file_resolver('common');
-		resolve_handle($resolver);
-		
-		$full_path = $resolver->resolve($class_name, '/class/search/normalizers/');
-
-		include_once($full_path);
+	  if(class_exists($class_name))
+	    return;
+	    
+		include_once(LIMB_DIR . '/class/search/normalizers/' . $class_name);
 	}	
 }
 ?>

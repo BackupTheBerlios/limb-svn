@@ -23,11 +23,11 @@ class strings_file_resolver_test extends LimbTestCase
     register_testing_ini(
       'packages.ini',
       ' 
-      [package-1]
+      [package_1]
        path = {TEST_STRINGS_RESOLVER_PACKAGE_DIR}package1/
-      [package-2]
+      [package_2]
        path = {TEST_STRINGS_RESOLVER_PACKAGE_DIR}package2/1.0/       
-      [package-3]
+      [package_3]
        path = {TEST_STRINGS_RESOLVER_PACKAGE_DIR}package3/1.1/
       '
     );

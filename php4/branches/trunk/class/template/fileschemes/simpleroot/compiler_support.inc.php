@@ -8,35 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.php'); 
+
 /**
 * Determines the full path to a source template file.
 */
 function resolve_template_source_file_name($file)
 {
-	if (defined('CONTENT_LOCALE_ID'))
-		$locale = '_' . CONTENT_LOCALE_ID . '/';
-	else
-		$locale = '_' . DEFAULT_CONTENT_LOCALE_ID . '/';
-	
-  if(file_exists(LIMB_APP_DIR . '/design/main/templates/' . $locale. $file))	//fix this!!!
-  	return LIMB_APP_DIR . '/design/main/templates/' . $locale. $file;
-  
-  if(file_exists(LIMB_APP_DIR . '/design/main/templates/' . $file))
-  	return LIMB_APP_DIR . '/design/main/templates/' . $file;
-  	
-	if(file_exists(LIMB_DIR . '/design/main/templates/' . $locale. $file))
-		return LIMB_DIR . '/design/main/templates/' . $locale. $file;
-
-	if(file_exists(LIMB_DIR . '/design/main/templates/' . $file))
-		return LIMB_DIR . '/design/main/templates/' . $file;
-
-	if(file_exists(LIMB_DIR . '/design/default/templates/' . $locale. $file))
-		return LIMB_DIR . '/design/default/templates/' . $locale. $file;
-
-	if(file_exists(LIMB_DIR . '/design/default/templates/' . $file))
-		return LIMB_DIR . '/design/default/templates/' . $file;
-	
-	return null;	
+  $resolver =& get_file_resolver('template');
+	resolve_handle($resolver);
+		  
+  return $resolver->resolve($file);
 } 
 
 /**

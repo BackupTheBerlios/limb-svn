@@ -32,10 +32,10 @@ class site_object_factory
 	  if(class_exists($class_name))
 	    return;
 	
-		$resolver =& get_file_resolver('common');
+		$resolver =& get_file_resolver('site_object');
 		resolve_handle($resolver);
 		
-		$full_path = $resolver->resolve($class_name, '/class/core/site_objects/');
+		$full_path = $resolver->resolve($class_name);
 
 		include_once($full_path);
 	}

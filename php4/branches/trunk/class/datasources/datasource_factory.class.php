@@ -12,30 +12,28 @@ require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 
 class datasource_factory
 {
-	function datasource_factory()
-	{
-	}
-		
-	function & create($class_path)
+	function _extract_class_name($class_path)
 	{
 		$pos = strrpos($class_path, '/');
 		
 		if($pos !== false)
-			$class_name = substr($class_path, $pos + 1);
+			return substr($class_path, $pos + 1);
 		else
-			$class_name = $class_path;
+			return $class_path;	
+	}
 		
-		if (file_exists(LIMB_APP_DIR . '/class/datasources/' . $class_path . '.class.php')) 
-			$full_path = LIMB_APP_DIR . '/class/datasources/' . $class_path . '.class.php';
-		elseif(file_exists(LIMB_DIR . '/class/datasources/' . $class_path . '.class.php'))
-			$full_path = LIMB_DIR . '/class/datasources/' . $class_path . '.class.php';
-		else
-		{
-			debug :: write_error('datasource not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('class_path' => $class_path));
-			return null;
-		}
-			
+	function & create($class_path)
+	{
+		$class_name = datasource_factory :: _extract_class_name($class_path);
+		
+		$resolver =& get_file_resolver('datasource');
+		resolve_handle($resolver);
+		
+		if(!$full_path = $resolver->resolve($class_path))
+		  return null;
+
 		include_once($full_path);
+		
 	  $datasource =& new $class_name();
 	  
 	  return $datasource;

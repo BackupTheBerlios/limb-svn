@@ -17,9 +17,9 @@ define('DEBUG_LEVEL_ERROR', 3);
 define('DEBUG_TIMING_POINT', 4);
 define('DEBUG_LEVEL', 5);
 
-define('DEBUG_HANDLE_NATIVE', 0);
-define('DEBUG_HANDLE_CUSTOM', 1);
-define('DEBUG_HANDLE_TRIGGER_ERROR', 2);
+define('DEBUG_HANDLE_NATIVE', 'native');
+define('DEBUG_HANDLE_CUSTOM', 'custom');
+define('DEBUG_HANDLE_TRIGGER_ERROR', 'trigger_error');
 
 define('DEBUG_OUTPUT_MESSAGE_NULL', 0);
 define('DEBUG_OUTPUT_MESSAGE_STORE', 1);

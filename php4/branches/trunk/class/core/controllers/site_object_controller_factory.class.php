@@ -33,10 +33,10 @@ class site_object_controller_factory
 	  if(class_exists($class_name))
 	    return;
 	
-		$resolver =& get_file_resolver('common');
+		$resolver =& get_file_resolver('controller');
 		resolve_handle($resolver);
 		
-		$full_path = $resolver->resolve($class_name, '/class/core/controllers');
+		$full_path = $resolver->resolve($class_name);
 
 		include_once($full_path);
 	}

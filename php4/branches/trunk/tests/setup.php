@@ -14,15 +14,6 @@ if(!defined('LIMB_DIR'))
 if(!defined('VAR_DIR'))  
   define('VAR_DIR', dirname(__FILE__) . '/var/');
 
-define('DB_TYPE','mysql');
-define('DB_HOST','192.168.0.6');
-define('DB_LOGIN','root');
-define('DB_PASSWORD','test');
-define('DB_NAME','limb_trunk_tests');
-
-if($_SERVER['SERVER_PORT'] == 81)
-	define('ERROR_HANDLER_TYPE', DEBUG_HANDLE_NATIVE);
-	    
 if(!defined('CONTENT_LOCALE_ID'))
   define('CONTENT_LOCALE_ID', 'en');
   
@@ -35,14 +26,13 @@ if(!defined('DEFAULT_MANAGEMENT_LOCALE_ID'))
 if(!defined('DEFAULT_CONTENT_LOCALE_ID'))  
   define('DEFAULT_CONTENT_LOCALE_ID','en');
 
-
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.php');
 
 $r = array();
 register_file_resolver('ini',    $r[] = LIMB_DIR . '/class/core/file_resolvers/tests_ini_file_resolver');
 register_file_resolver('action', $r[] = LIMB_DIR . '/class/core/file_resolvers/tests_action_file_resolver');
 register_file_resolver('strings', $r[] = LIMB_DIR . '/class/core/file_resolvers/tests_strings_file_resolver');
-register_file_resolver('common', $r[] = LIMB_DIR . '/class/core/file_resolvers/tests_common_file_resolver');
+register_file_resolver('db_table', $r[] = LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 

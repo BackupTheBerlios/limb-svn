@@ -20,6 +20,7 @@ if (version_compare(phpversion(), '4.2', '<'))
 if (version_compare(phpversion(), '4.3', '<')) 
 	include_once(LIMB_DIR . '/class/lib/util/php43.php');
 	
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
-
+if($_SERVER['SERVER_PORT'] == 81)
+	define('ERROR_HANDLER_TYPE', 'native');	
+	
 ?>

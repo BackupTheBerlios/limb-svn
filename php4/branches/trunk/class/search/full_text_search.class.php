@@ -29,7 +29,9 @@ class full_text_search
 
 	function _can_perform_fulltext_search()
 	{
-		if(DB_TYPE == 'mysql')
+	  $db_type = get_ini_option('common.ini', 'type', 'DB');
+	  
+		if($db_type == 'mysql')
 		{
 			$this->db->sql_exec('SELECT VERSION() as version');
 			$row = $this->db->fetch_row();
@@ -87,7 +89,9 @@ class full_text_search
 	
 	function _check_boolean_mode()
 	{
-		if(DB_TYPE == 'mysql')
+	  $db_type = get_ini_option('common.ini', 'type', 'DB');
+	  
+		if($db_type == 'mysql')
 		{
 			$this->db->sql_exec('SELECT VERSION() as version');
 			$row = $this->db->fetch_row();

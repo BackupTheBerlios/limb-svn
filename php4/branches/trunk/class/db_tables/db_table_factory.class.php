@@ -33,10 +33,10 @@ class db_table_factory
 	  if(class_exists($db_table_name . '_db_table'))
 	    return;
 	  
-		$resolver =& get_file_resolver('common');
+		$resolver =& get_file_resolver('db_table');
 		resolve_handle($resolver);
 		
-		$full_path = $resolver->resolve($db_table_name . '_db_table', '/class/db_tables/');
+		$full_path = $resolver->resolve($db_table_name);
 
 		include_once($full_path);
 	}	
