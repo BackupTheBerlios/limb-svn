@@ -12,7 +12,6 @@ require_once(LIMB_DIR . '/core/error/Debug.class.php');
 
 Debug :: addTimingPoint('start');
 
-require_once(LIMB_DIR . '/core/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/core/Limb.class.php');
 require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_registry.inc.php');
 require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');

@@ -13,24 +13,23 @@ class CacheRegistry
 {
   var $cache = array();
 
-  function _encodeKey($key)
+  function put($key, &$value, $group = 'default')
   {
-    return md5(serialize($key));
+    $this->cache[$group][$key] =& $value;
   }
 
-  function put($key, $value, $group = 'default')
+  function & get($key, $group = 'default')
   {
-    $this->cache[$group][$this->_encodeKey($key)] = $value;
-  }
-
-  function get($key, $group = 'default')
-  {
-    $raw_key = $this->_encodeKey($key);
-
-    if(isset($this->cache[$group][$raw_key]))
-      return $this->cache[$group][$raw_key];
+    if(isset($this->cache[$group][$key]))
+      return $this->cache[$group][$key];
     else
       return null;
+  }
+
+  function purge($key, $group = 'default')
+  {
+    if(isset($this->cache[$group][$key]))
+      unset($this->cache[$group][$key]);
   }
 
   function flush($group = null)

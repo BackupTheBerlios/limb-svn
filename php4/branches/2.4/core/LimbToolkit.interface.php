@@ -31,6 +31,7 @@ class LimbToolkit
   function getLocale(){}
   function getDataspace(){}
   function getCache(){}
+  function getUOW(){}
   function switchDataspace($name){}
   function setView($view){}
   function getView(){}

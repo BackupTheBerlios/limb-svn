@@ -137,6 +137,12 @@ class LimbBaseToolkitTest extends LimbTestCase
                      'Dataspace');
   }
 
+  function testGetUOW()
+  {
+    $this->assertIsA($this->toolkit->getUOW(),
+                     'UnitOfWork');
+  }
+
   function testSwitchDataspace()
   {
     $d1 =& $this->toolkit->getDataspace();

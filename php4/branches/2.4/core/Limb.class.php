@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
 define('LIMB_STATUS_SUCCESS_MASK', 15);
 define('LIMB_STATUS_PROBLEM_MASK', 240);
 

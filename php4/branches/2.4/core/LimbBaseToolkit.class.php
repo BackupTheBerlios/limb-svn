@@ -23,6 +23,7 @@ class LimbBaseToolkit// implements LimbToolkit
   var $tree;
   var $view;
   var $cache;
+  var $uow;
   var $ini_cache = array();
 
   function define($key, $value)
@@ -151,6 +152,19 @@ class LimbBaseToolkit// implements LimbToolkit
 
     return $this->authorizer;
   }
+
+  function & getUOW()
+  {
+    if($this->uow)
+      return $this->uow;
+
+    include_once(LIMB_DIR . '/core/UnitOfWork.class.php');
+
+    $this->uow = new UnitOfWork();
+
+    return $this->uow;
+  }
+
 
   function & getRequest()
   {
