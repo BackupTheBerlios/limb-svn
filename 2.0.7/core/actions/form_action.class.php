@@ -129,6 +129,4 @@ class form_action extends action
 		return $this->validator;
 	}
 } 
-
-
 ?>

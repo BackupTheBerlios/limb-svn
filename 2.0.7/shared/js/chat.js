@@ -116,16 +116,21 @@
 //		count_chars();
 	}	
 	
-	function add_message_default_design(time, id, name, message, message_color, span_class, image)
+	function add_message_default_design(time, id, name, recipient_name, message, message_color, span_class, image)
 	{
 		message_span = chat_messages_frame.document.createElement("SPAN");
 		message_span.className = span_class;
+
+		if(recipient_name)
+			name += ' &gt;&gt; ' + recipient_name;
 		
 		image_text = '';
 		if (image)
 		{
 			image_text = "<a href='/chat/chat_file.php?id=" + image[0] + "' target='_blank'><img src='" + image[1] + "' border='0' align='center'></a>&nbsp;";
-			image_text += image[2] + "&nbsp;bytes&nbsp;[" + image[3] + "x" + image[4] + "]<br>";
+			image_text += image[2] + "&nbsp;bytes&nbsp;";
+			if(image[3] > 0)
+				image_text += "[" + image[3] + "x" + image[4] + "]<br>";
 		}
 
 		message_text = '[' + time + '] ' + name + ':<br>' ;
@@ -255,11 +260,13 @@
 		mform.message.value = mform._message.value;
 		mform._message.value = '';
 		mform.submit();
-/*		file = document.getElementById('file_input');
-		file_parent = file.parentNode;
-		file_parent.removeChild(file);
-		file_parent.innerHTML = "<input id='file_input' type='file' name='file' size=20>";*/
-		
+		file = document.getElementById('file_input');
+		if(file)
+		{
+			file_parent = file.parentNode;
+			file_parent.removeChild(file);
+			file_parent.innerHTML = "<input id='file_input' type='file' name='file' size=20>";
+		}		
 	//	count_chars();
 	}
 	

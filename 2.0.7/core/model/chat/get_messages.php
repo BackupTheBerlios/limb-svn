@@ -51,6 +51,7 @@ foreach($messages as $message)
 	$message_text = str_replace("\n", "<br>", $message_text);
 	$message_color = $message['color'];
 	$sender_name = $message['nickname'];
+	$recipient_name = $message['recipient_name'];
 	
 	$date->set_by_stamp($message['time']);
 	$message_date =		$date->format($format_string); 
@@ -61,28 +62,28 @@ foreach($messages as $message)
 			list($message_type, $string) = explode(':', $message['message'], 2);
 			if ($message_type == 'system_message')
 			{
-				echo "top.add_system_message('{$message_date}', {$message['id']}, '{$string}');\n";
+				echo "top.add_system_message('{$message_date}', {$message['id']}, '{$string}', '{$recipient_name}');\n";
 				echo "top.chat_user_event();";
 			}
 			elseif ($message_type == 'warning_message')
 			{
 				$string = '<img src="/shared/images/error.gif" align="center">' . $string;
-				echo "top.add_warning_message('{$message_date}', {$message['id']}, '{$string}');\n";
+				echo "top.add_warning_message('{$message_date}', {$message['id']}, '{$string}', '{$recipient_name}');\n";
 			}
 		break;
 
 		case ($message['recipient_id'] == $chat_user_data['id']):
 			$file_data = get_message_file_data($message);
-			echo "top.add_private_incoming_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\", '{$message_color}' {$file_data});\n";
+			echo "top.add_private_incoming_message('{$message_date}', {$message['id']}, '{$sender_name}', '{$recipient_name}',  \"{$message_text}\", '{$message_color}' {$file_data});\n";
 		break;
 
 		case ($message['sender_id'] == $chat_user_data['id']) && ($message['recipient_id'] > 0): 
 			$file_data = get_message_file_data($message);
-			echo "top.add_private_outgoing_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\", '{$message_color}' {$file_data});\n";
+			echo "top.add_private_outgoing_message('{$message_date}', {$message['id']}, '{$sender_name}', '{$recipient_name}', \"{$message_text}\", '{$message_color}' {$file_data});\n";
 		break;
 		default:
 			$file_data = get_message_file_data($message);
-			echo "top.add_common_message('{$message_date}', {$message['id']}, '{$sender_name}', \"{$message_text}\",'{$message_color}' {$file_data});\n";
+			echo "top.add_common_message('{$message_date}', {$message['id']}, '{$sender_name}', '{$recipient_name}', \"{$message_text}\",'{$message_color}' {$file_data});\n";
 
 	}	
 	

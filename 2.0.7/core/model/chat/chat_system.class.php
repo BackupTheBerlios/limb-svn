@@ -140,13 +140,15 @@ class chat_system
 			$limit = "LIMIT 100";
 		
 		$sql = "SELECT cm.*, cu.nickname as nickname, cu.color as color,
+										cur.nickname as recipient_name,
 										cf.id as file_id, cf.size as file_size,
 										cf.height as image_height, cf.width as image_width,
 										cf.mime_type as mime_type
 						FROM chat_message cm
 						LEFT JOIN chat_file cf ON cm.file_id = cf.id
-						LEFT JOIN chat_user cu
-						ON cu.id = cm.sender_id
+						LEFT JOIN chat_user cu ON cu.id = cm.sender_id
+						LEFT JOIN chat_user cur ON cur.id = cm.recipient_id
+						
 						WHERE (cm.recipient_id=-1 OR
 									cm.recipient_id='{$recipient_id}' OR
 									cm.sender_id='{$recipient_id}') 
