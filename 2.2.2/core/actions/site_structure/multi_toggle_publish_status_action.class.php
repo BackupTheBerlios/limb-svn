@@ -19,7 +19,6 @@ class multi_toggle_publish_status_action extends form_action
 
 	function _valid_perform(&$request, &$response)
 	{
-		trigger_error('Stop', E_USER_WARNING);
 		if($request->has_attribute('popup'))
 		  $response->write(close_popup_response($request));
 	
