@@ -170,7 +170,7 @@ class BaseLimbToolkit implements LimbToolkit
     
     include_once(LIMB_DIR . '/class/core/session/session.class.php');
     include_once(LIMB_DIR . '/class/core/session/session_db_driver.class.php');    
-    $this->sessions = new session(new session_db_driver());
+    $this->session = new session(new session_db_driver());
     
     return $this->session;    
   }    
