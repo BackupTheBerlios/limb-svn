@@ -1,5 +1,5 @@
 /*page*/
-body{ padding:1; margin:0;border:0;}
+body{ padding:0; margin:0;}
 body, table{font:8pt Verdana, sans; color:#696969;}
 
 /*search*/
@@ -8,14 +8,14 @@ body, table{font:8pt Verdana, sans; color:#696969;}
 /*text*/
 h1{font:14pt Verdana, sans; color:#E60000; display:inline}
 h2{font:13pt Verdana, sans; color:#0443C6; display:inline}
-th{text-align: left; padding:0px 5px 0px 5px; background-color:#F3F3F3;border:solid 1px #E4E4E4;}
+th{text-align: left; padding:4px 5px 4px 5px}
 .text-small, .date{font:7pt Verdana, sans;}
 .req{color: #E60000; padding:0px 4px 0 4px}
 .author{font:8pt Verdana, sans; text-align:right; padding:10px 20px 10px 20px}
 .content{font:8pt Verdana, sans; padding:0px 20px 10px 20px}
 .pager{font:bold 9pt Arial, sans;color:#999999}
 .desc{font:8pt Verdana, sans;color:#848484}
-.labels{font:9pt Verdana, sans; color:#6484D3;}
+.labels{font:9pt Verdana, sans; color:#0447CA;}
 .alert{color:#e60000}
 
 .textbold, .textbold td{font:bold 9pt Tahoma, sans;}
@@ -24,8 +24,8 @@ th{text-align: left; padding:0px 5px 0px 5px; background-color:#F3F3F3;border:so
 .path{color:#E00000}
 .block_title{font:bold 10pt Arial, sans; color:#FF8C00;}
 .title{font:15pt Compact, Verdana, sans; color:#6171AD}
-
 /*list*/
+
 li{list-style-image:url(../images/marker1.gif);padding:0 0 10px 0}
 ul, ol{margin:0 0 0 25px;}
 ul.list{margin:0 0 0 10px;font:bold 9pt Arial, sans;}
@@ -47,10 +47,8 @@ a:hover{text-decoration:underline}
 .pager a{font:bold 10pt Arial, sans;}
 
 /*design*/
-.cp-header{border-bottom:0;border-top:dashed 3px #d0d0d0;}
-.btitle1{padding:2px 10px 2px 10px; color: #FFFFFF; background-color:#6484D3;text-align:center}
-.btitle1 a{color:#ffffff;text-transform:uppercase}
-.btitle2{padding:7px 10px 6px 30px;}
+.btitle1{background-image:URL('/shared/images/admin/btitle.gif'); text-align:right; padding:5px 10px 6px 3px; color: #FFFFFF; font-weight: bold}
+.btitle2{background-image:URL('/shared/images/admin/btitle.gif'); padding:7px 10px 6px 30px;}
 .border1{border:solid 1px #E4E4E4; background-color:#FBFBFB;}
 .border2{border:solid 1px #F3F3F3}
 .border3{border:solid 1px #CACEDB}
@@ -67,13 +65,12 @@ hr{height:1; color:#D7D7D7}
 .tabulator{}
 .tabulator a{text-decoration:none}
 .tabulator a:hover{text-decoration:none}
-.tab{padding:4px 4px 0px 4px; border-bottom:solid 3px #6484D3;}
+.tab{padding:4px 4px 0px 4px; border-bottom:solid 1px #0447CA;}
 .tab-bottom{padding:4px 4px 0px 4px; border-top:solid 2px #AEAEAE;}
 .tab-active{height:100%; background-color:#ffffff}
-.tab td{cursor:hand;color:#6484D3;font:bold 9pt Arial;background-color:#f9f9f9;border:solid 1px #c0c0c0;border-bottom:0; padding:2px 14px 1px 14px;}
+.tab td{cursor:hand;color:#0447CA;font:bold 9pt Arial;background-color:#DEE9FC;border:solid 1px #3278ED;border-bottom:0; padding:2px 14px 1px 14px;}
 
-.tab-active td{cursor:default;color:#6484D3;font:bold 9pt Arial;border:solid 3px #3278ED;border-bottom:0; padding:2px 16px 1px 16px}
-.tab-empty{border-bottom:solid 3px #3278ED;}
+.tab-active td{cursor:default;color:#0447CA;font:bold 9pt Arial;border:solid 1px #3278ED;border-bottom:0; padding:2px 16px 1px 16px}
 
 /*layout*/
 .bgr_no_rep, .norepeat{background-repeat:no-repeat;}
@@ -85,11 +82,10 @@ hr{height:1; color:#D7D7D7}
 .bgr_middle{background-position:center middle; background-repeat:no-repeat;}
 
 /*form*/
-input, textArea{color:#6484D3}
-.button{font: 8pt Verdana, sans; color:#445A90; background-color:#DEE9FC; border:solid 1px #3278ED;}
-.button-jip-action{font: 8pt Arial, sans; color:#904800; background-color:#FFE2C4; height:22px; border:solid 1px #FF9933;background-repeat:no-repeat; background-position:1px center;padding:0 0 0 20px}
-.input{font:8pt Verdana, sans; border:solid 1px #3278ED;}
-.input-changed{font:8pt Verdana, sans; border:dotted 1px #3278ED;}
+input, textArea{color:#0447CA}
+.button{font:bold 8pt Tahoma, sans; color:#ffffff; border-top: 1px solid #cecece; border-bottom: 2px solid #4a4a4a; border-left: 1px solid #cecece; border-right: 2px solid #727272; background-color:#E96060}
+.input{font:8pt Verdana, sans; border:solid 1px #3278ED; height:18px}
+.input-changed{font:8pt Verdana, sans; border:dotted 1px #3278ED; height:18px}
 .textArea-changed{font:8pt Verdana, sans; border:dotted 1px #3278ED;}
 .textArea{font:8pt Verdana, sans; border:solid 1px #3278ED;}
 .textArea-mono{font:8pt Curier, sans; border:solid 1px #3278ED;}
@@ -98,14 +94,12 @@ select{font:8pt Verdana, sans; border:solid 1px #3278ED}
 
 /*colors*/
 .com1{background-color:#F3F3F3}
-.com2{background-color:#E4E4E4}
+.com2{background-color:#B3CBF6}
 .com3{background-color:#000000}
 .com4{background-color:#ffffff}
 .com5{background-color:#E8EEFB}
 .com6{background-color:#043ABE}
 .com7{background-color:#F7F7F7}
-.com8{background-color:#6484D3}
-
 
 /*text colors*/
 
@@ -118,25 +112,19 @@ select{font:8pt Verdana, sans; border:solid 1px #3278ED}
 .cal-other{color:#888888;}
 
 /*admin*/
-.row{page:row;}
-.jip{page:actions;border:solid 1px #ffffff;}
+.jip{behavior:url(/shared/htcs/actions.htc);border:solid 1px #ffffff;}
 .jip-object{border:solid 1px #ffffff;}
 .jip-object-active{border:dotted 1px #7095ED;}
 
-.jip-actions{border:solid 1px #63D465; background-color:#E6FAE6;}
-.jip-actions-active{}
+.jip-actions{filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1) progid:DXImageTransform.Microsoft.Alpha(opacity=50)}
+.jip-actions-active{filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=0) progid:DXImageTransform.Microsoft.Alpha(opacity=100)}
 
-.jip-td{}
+.jip-td{border:solid 1px #858585; border-left:0; border-right:0; background-color:#ECECEC}
 
-.action{page:action;background-repeat:no-repeat;background-position:center center;}
+.action{behavior:url(/shared/htcs/action.htc);border: 0px solid #ffffff}
 .error-block{border:dashed 1px #e00000; padding:3px 20px 0 20px}
 
 .hint-table-css{background-color: #FFFFFF; border: 1px solid #999999;}
 .hint-title-css{background-color: #F8F8F8; font-weight: bold;}
 
-/*debug*/
-.debug-tmpl-container{border:dotted 4px #f00000;padding: 2px;margin:2px}
-.debug-tmpl-main{border:dashed 2px #0000f0;padding: 2px;margin:2px}
-.debug-tmpl-include{border:dotted 1px #c0c0c0;padding:2px;margin:2px}
-.debug-info-img{page:debug_info}
-.debug-empty{}
+//.row{behavior:url('/shared/htcs/row.htc');}

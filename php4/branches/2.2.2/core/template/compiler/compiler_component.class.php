@@ -451,7 +451,7 @@ class compiler_component
 		{
 			if($this->is_debug_enabled())
 			{				
-				$code->write_html("<div class='debug-tmpl-container'>");
+				$code->write_html("<div style='border:dashed 1px green;padding: 10px 10px 10px 10px;'>");
 				
 				$this->_generate_debug_editor_link_html($code, $this->wrapping_component->resolved_source_file);
 			}
@@ -462,22 +462,22 @@ class compiler_component
 	
 	function _generate_debug_editor_link_html(& $code, $file_path)
 	{
-//		if(!defined('WS_SCRIPT_WRITTEN'))
-//		{
-//
-//			$code->write_html('	<SCRIPT LANGUAGE="JScript">
-//													function run_template_editor(path)
-//													{
-//														WS = new ActiveXObject("WScript.shell");
-//														WS.exec("uedit32.exe " + path);
-//													}
-//													</SCRIPT>');
-//		
-//			define('WS_SCRIPT_WRITTEN', true);
-//		}
+		if(!defined('WS_SCRIPT_WRITTEN'))
+		{
+
+			$code->write_html('	<SCRIPT LANGUAGE="JScript">
+													function run_template_editor(path)
+													{
+														WS = new ActiveXObject("WScript.shell");
+														WS.exec("uedit32.exe " + path);
+													}
+													</SCRIPT>');
+		
+			define('WS_SCRIPT_WRITTEN', true);
+		}
 		
 		$file_path = addslashes(fs :: clean_path($file_path));
-		$code->write_html("<a href='#'><img class='debug-info-img' src='/shared/images/i.gif' alt='{$file_path}' title='{$file_path}' border='0'></a>");
+		$code->write_html("<a href='#'><img onclick='run_template_editor(\"{$file_path}\");' src='/shared/images/i.gif' alt='{$file_path}' title='{$file_path}' border='0'></a>");
 	}
 
 	/**

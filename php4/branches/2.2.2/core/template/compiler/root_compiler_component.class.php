@@ -33,7 +33,7 @@ class root_compiler_component extends compiler_directive_tag
 		
 		if($this->is_debug_enabled())
 		{
-			$code->write_html("<div class='debug-tmpl-main'>");
+			$code->write_html("<div style='border:dashed 1px blue;padding: 10px 10px 10px 10px;'>");
 			
 			$this->_generate_debug_editor_link_html($code, $this->source_file);
 		}

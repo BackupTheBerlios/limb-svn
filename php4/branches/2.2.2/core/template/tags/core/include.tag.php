@@ -71,7 +71,7 @@ class core_include_tag extends compiler_directive_tag
 	{
 		if($this->is_debug_enabled())
 		{
-			$code->write_html("<div class='debug-tmpl-include'>");
+			$code->write_html("<div style='border:dashed 1px red;padding:10px 10px 10px 10px;'>");
 			
 			$this->_generate_debug_editor_link_html($code, $this->resolved_source_file);			
 		}
