@@ -1,0 +1,64 @@
+Every LIMB site_object has it's status. You can use 
+status of any object class whatever you need. For example,
+for documents flow or some special restrictions.
+All operations with status should be accomplished
+using binary logic. Status could be changed by special
+action (for example publish action) or just by some flag
+At the moment we use status to know if an object is 
+published or not (for several classes like document, article, 
+poll etc).
+
+Status and flexible access policy permits (that's our 
+opinion) to create complex doc flow systems on LIMB easily.
+Although we don't have a chance to create systems with
+objects then need to be checked by several groups
+of users to be published, we made a site there
+documents are created by content operators and published
+by editors and it was not a strong task with LIMB.
+
+Let's pay a little attention to documents flow. As mentioned
+common LIMB objects implements one step doc flow - 
+create -> publish. We suppose that there is no need
+to make simple things too complex. To understand LIMB
+doc flow principles you have to understand LIMB access 
+policy and especially access templates for actions.
+In LIMB terms, doc flow is just changing objects status
+and applying of access templates. So article publishing
+is just setting status to 1 and writing new access rights
+for the object. For example, site administrator could
+set the following access template for publish and unpublish 
+actions: when object is published read permissions for visitors 
+and full access for admins are set and when it is 
+unpublished. So object will invisible for
+visitors. Site administrator should just set all 
+access templates and permissions for all 
+actions for object classes that concerned doc flow.
+
+This simple scheme permits implementing a complex chain 
+of responsibilities for some type of objects. For example,
+a journalist creates an article and hits "move to check by editor" action.
+The article becomes accessible for editors for writing and
+editing and gets NEED_EDITOR_APPROVAL_STATUS (4). After that
+any editor checks the article and hits 'move to check by boss' action.
+The article becomes accessible for bosses for writing and
+no more accessible for journalists for writing and gets
+NEED_BOSS_APPROVAL_STATUS. The boss could publish the article.
+The article becomes accessible for reading for visitors and
+no more accessible for journalists or editors for writing, bosses
+have full access for article. Article gets SITE_OBJECT_PUBLISHED_STATUS.
+To implement such scheme you will need to create special
+article class + controller + actions to change status +
+templates to display articles for different actions. Also
+you'll need to set access polity properly. That's it.
+This could take from 1 day to 1 week depends on your
+LIMB understanding.
+
+If you have some questions on this topic, please feel
+tree to contact use through email or forum of SF. Describe
+you problem and we will be glad to help you (even free)
+if you can seems interesting for LIMB future development.
+
+
+
+
+

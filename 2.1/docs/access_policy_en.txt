@@ -1,88 +1,99 @@
 Access policy principles.
 
 LIMB uses 2 tier permissions system:
-1) Object access. Access system determines what type of access the user 
-or group has for an object: read or write
-2) Actions permissions. Access system determines what action 
-user of group could perform
+1) Object access. The access system determines the user's permissions for the requested object: read, write or both
+2) Actions access. The access system determines whether the user is allowed to perform the requested action over the object.
+ 
+These steps are sequent and tightly connected. An action requires a set of object permissions to be accessible by user. So it's not enough for a user to have an action access only - the user must have specific permissions for the requested object too. Sounds a bit complicated, a good example should make everything clear hopefully.
 
 Lets start with some general conceptions used in LIMB access policy.
 
-USER GROUPS - general content object. Stored in common tree, 
-usually at /root/user_groups and follow all the right allied to
-site objects.
+USER GROUP content object(usually at /root/user_groups).
 
-USER - is just another site object stored in common tree at 
-/root/users. Users could belong to several groups at the same 
-time.
+USER content object(usually at /root/users)
+Users can belong to several USER GROUP at the same time.
 
-LIMB uses only resolving (positive) access records. So user accumulate 
-permissions from all the groups he participate in and his own
-permissions. So where is no way to restrict any user to have
-access to some object if any group that user participate in has
+LIMB uses only resolving (positive) access records. So user accumulates 
+permissions from all the groups he participates in with his own
+permissions. Currently there is no way to restrict any user to have
+access to some object if any group that user participates in has
 access to that object.
 
-Access to objects. User or group can have 2 level of rights to object:
-to read and to write (or both). If user doesn't has read permissions
-to object then is most cases the object doesn't exist to user.
-The only possible way to see such objects is to directly use
-fetch method of site_object (without using fetcher class). 
-You can see user groups permissions to objects 
+Objects access. User or group can have 2 types of permissions to the object:
+to read and to write (or both). If user doesn't have read permissions
+for the object then in most cases the user is not aware of the object existence at all.
+The only possible way to see such objects is to directly use site_object::fetch() method. 
+You can browse and set user permissions(group based) for objects 
 at http://limbdemo.0x00.ru/root/admin/objects_access
 
-Access to actions. Action - any a set of operations that could be applied
-to any object of some class(not very strict definition, 
-action can be whatever you want). To perform an action the user 
-must has permission to execute it. The set of actions that could be 
-performed over an object of some class is defined by class controller
-(SomeSiteObjectController). For the moment we have only one site object
-to set actions permissions for groups - class_folder. 
-You can see it here: http://limbdemo.0x00.ru/root/admin/classes (use
-'Display groups permissions to actions' or 
-'Set group permissions to actions' action - depends of your rights).
-So admin can set what actions are accessible to different groups of users.
-As mentioned LIMB doesn't has interface to set actions permission to 
-individual users. We have not meet any use case that required such interface 
-in our practice so far. But we plan to implement such interface some day
-anyway. 
-Each action has level of required permissions. Action option 
-'permissions_required' defines what type of the permission the user 
-should have to the site object to perform an action
-('r' read or 'w' write or 'rw' for both). So to perform any action
-the user must has permission to execute an action and appropriate
-permission level to object he works with.
+Actions access. Action is a set of any operations. Defined in the site object controller actions may apply directly to the site object or..perform whatever you need. To perform an action the user 
+must has a permission to execute it. At the moment we have the only instrument to set actions permissions for groups - class_folder. 
+You can see it here: http://limbdemo.0x00.ru/root/admin/classes
+The administrator sets what actions are accessible by user groups.
+As mentioned above LIMB doesn't has a GUI to set actions permission for 
+individual users. We have not faced any use case that required such functionality 
+in our practice so far, yet it's not a problem to implement one.
 
+Each action requires the certain set of object access permissions described in the site object controller.
 Lets look into one small example to make everything clear:
 
-Suppose we have some class of objects say article. Its support only 2 actions:
-display and delete like this:
+Suppose we have some object class, say article. 
 
-	$this->_actions = array(
-    'display' => array(
-     'permissions_required' => 'r',
-    ),
-   'delete' => array(
-     'permissions_required' => 'w',
-    ),
-	);
+class article extends content_object
+{	
+	function _define_class_properties()
+	{
+		return array(
+			'class_ordr' => 1,
+			'can_be_parent' => 0,
+			'controller_class_name' => 'article_controller',
+		);
+	}
+}
 
-Then lets imagine we have 3 objects in out system: article1, article2
-and article3 - all of article class. 
-Our user is a member of 2 groups: visitor and admins.
-User groups have the following permissions to actions:
-				display		delete
-visitor   1 				0
-admins		1					1
+It supports only 2 actions: display and delete.
 
-Objects permissions that user groups have are:
+class article_controller extends site_object_controller
+{
+	function article_controller()
+	{
+		$this->_actions = array(
+	    'display' => array(
+	     'permissions_required' => 'r',
+	    ),
+	   'delete' => array(
+	     'permissions_required' => 'w',
+	    ),
+		);
+		
+		parent :: site_object_controller();
+	}
+}
+
+Note 'permissions_required' attribute, it defines what type of the permission the user 
+must have for the site object to perform an action('r' - read, 'w' - write or 'rw' for both). 
+So to perform any action the user must has permission to execute an action and appropriate
+permission level for the requested object.
+
+Ok, let's imagine we have 3 article objects in out system: article1, article2
+and article3. 
+
+Our user is a member of 2 groups: visitors and admins.
+
+Objects permissions that user groups have for objects are:
+
 					article1		article2	article3
 visitors                 r        r
 admins      rw           r        w
 
-So our user can display all articles (as soon as user is a member
-of visitors and admin groups), can delete article1 and article3 
-(he has only r permission to article2 - that's not enough to 
-execute delete action).
+And user groups actions access as follows:
+
+				display		delete
+visitor   1 				0
+admins		1					1
+
+It means that our user is allowed to display all articles (since the user is a member
+of visitors and admin groups), can delete article1 and article3 and not article2
+(he has only r permission for article2 - that's not enough to execute delete action as required by action definition).
 
 ѕлюс нужно иметь описание шаблонов прав доступа.
-
