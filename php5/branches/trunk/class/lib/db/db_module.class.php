@@ -291,13 +291,13 @@ abstract class db_module
 
   protected function _process_date_value($value)
   {
-  	$locale = locale :: instance($this->_locale_id);
+  	$locale = Limb :: toolkit()->getLocale($this->_locale_id);
   	$date = new date($value, DATE_SHORT_FORMAT_ISO);
   	
   	if(!$date->is_valid())
   	{
-  		$date->set_by_string($value, $locale->get_short_date_format());
-  		$value = $date->format(DATE_SHORT_FORMAT_ISO);
+  		$date->set_by_locale_string($locale, $value, $locale->get_short_date_format());
+  		$value = $date->format($locale, DATE_SHORT_FORMAT_ISO);
   	}
   	
   	return "'" . $value . "'";
@@ -305,13 +305,13 @@ abstract class db_module
 
   protected function _process_datetime_value($value)
   {
-  	$locale = locale :: instance($this->_locale_id);
+  	$locale = Limb :: toolkit()->getLocale($this->_locale_id);
   	$date = new date($value, DATE_FORMAT_ISO);
   	
   	if(!$date->is_valid())
   	{
-  		$date->set_by_string($value, $locale->get_short_date_time_format());
-  		$value = $date->format(DATE_FORMAT_ISO);
+  		$date->set_by_locale_string($locale, $value, $locale->get_short_date_time_format());
+  		$value = $date->format($locale, DATE_FORMAT_ISO);
   	}
   	
   	return "'" . $value . "'";

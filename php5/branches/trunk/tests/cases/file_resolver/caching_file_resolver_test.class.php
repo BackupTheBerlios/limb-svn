@@ -62,7 +62,7 @@ class caching_file_resolver_test extends LimbTestCase
     
     include($this->cache_file);
     
-    $this->assertEqual($cache_resolved_paths, array('path-to-file' => 'resolved-path-to-file'));
+    $this->assertEqual($cache_resolved_paths, array('path-to-file' . md5(serialize(array())) => 'resolved-path-to-file'));
     
     unlink($this->cache_file);
   }
@@ -72,7 +72,7 @@ class caching_file_resolver_test extends LimbTestCase
     $php = '
     <?php
     
-        $cache_resolved_paths = array("path-to-file" => "resolved-path-to-file");
+        $cache_resolved_paths = array("path-to-file' . md5(serialize(array())). '" => "resolved-path-to-file");
         
     ?>';
     

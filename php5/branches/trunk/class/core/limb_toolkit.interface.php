@@ -24,6 +24,8 @@ interface LimbToolkit
   public function getAuthenticator();
   public function getRequest();
   public function getResponse();
+  public function getLocale();
+  //public function translate();
 }
 
 ?> 

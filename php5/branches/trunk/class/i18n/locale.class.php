@@ -716,20 +716,20 @@ class locale
    specified the default local string in site.ini is used.
    Use this instead of newing locale to benefit from speed and unified access.
   */
-	static public function & instance($locale_string = '')
+	static public function instance($locale_id = '')
 	{
-		if (!$locale_string && defined('CONTENT_LOCALE_ID'))
-			$locale_string = CONTENT_LOCALE_ID;
-		elseif (!$locale_string && !defined('CONTENT_LOCALE_ID'))
-			$locale_string = DEFAULT_CONTENT_LOCALE_ID;
+		if (!$locale_id && defined('CONTENT_LOCALE_ID'))
+			$locale_id = CONTENT_LOCALE_ID;
+		elseif (!$locale_id && !defined('CONTENT_LOCALE_ID'))
+			$locale_id = DEFAULT_CONTENT_LOCALE_ID;
 
-		if (isset($GLOBALS['global_locale_' . $locale_string]))
+		if (isset($GLOBALS['global_locale_' . $locale_id]))
 		{
-			return $GLOBALS['global_locale_' . $locale_string];
+			return $GLOBALS['global_locale_' . $locale_id];
 		} 
 
-		$obj = new locale($locale_string);
-		$GLOBALS['global_locale_' . $locale_string] =& $obj;
+		$obj = new locale($locale_id);
+		$GLOBALS['global_locale_' . $locale_id] = $obj;
 
 		return $obj;
 	} 

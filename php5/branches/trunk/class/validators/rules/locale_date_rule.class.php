@@ -31,8 +31,9 @@ class locale_date_rule extends single_field_rule
 	protected function check($value)
 	{
 		$date = new date();
-		
-		$date->set_by_string($value, locale :: instance($this->locale_id)->get_short_date_format());
+    $locale = Limb :: toolkit()->getLocale($this->locale_id);
+    
+		$date->set_by_locale_string($locale, $value, $locale->get_short_date_format());
 		
 		if(!$date->is_valid())
 			$this->error('INVALID_DATE');

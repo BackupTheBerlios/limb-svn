@@ -8,12 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/cron/cronjobs/cronjob_command.class.php');
 
-class testing_cron_job
+class testing_cron_job extends cronjob_command
 {
-  function perform(&$response)
+  function perform()
   {
-    $response->write('I was performed');
+    $this->response->write('I was performed');
   }
 }
 

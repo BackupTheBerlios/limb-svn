@@ -141,6 +141,12 @@ class BaseLimbToolkit implements LimbToolkit
     
     return $this->response;    
   }
+  
+  public function getLocale($locale_id = '')
+  {
+    include_once(LIMB_DIR . '/class/i18n/locale.class.php');
+    return locale :: instance($locale_id);
+  }
 }
 
 ?> 

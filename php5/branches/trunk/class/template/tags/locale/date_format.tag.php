@@ -48,8 +48,12 @@ class locale_date_format_tag extends server_component_tag
 					$this->get_component_ref_code() . '->set_date_type("' . $this->attributes['type'] . '");');
 			}
 			
-			$code->write_php(
-				$this->get_component_ref_code() . '->set_date(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"));');
+      if(!isset($this->attributes['date_format']))
+        $code->write_php(
+          $this->get_component_ref_code() . '->set_date(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"), DATE_SHORT_FORMAT_ISO);');
+      else 
+        $code->write_php(
+          $this->get_component_ref_code() . '->set_date(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"), "' . $this->attributes['date_format'] . '");');
 				
 			if(isset($this->attributes['locale_format']))
 			{

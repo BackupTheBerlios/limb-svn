@@ -14,7 +14,7 @@ class locale_number_format_component extends component
 {
 	public function format($value)
 	{
-	  $locale = locale :: instance();
+	  $locale = Limb :: toolkit()->getLocale();
 	  
 	  if(!isset($this->attributes['fract_digits']) || !$this->attributes['fract_digits'])
 	    $fract_digits = $locale->fract_digits;

@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/cron/cron_manager.class.php');
-require_once(LIMB_DIR . '/class/core/actions/command.interface.php');
+require_once(LIMB_DIR . '/class/cron/cronjobs/cronjob_command.class.php');
 require_once(LIMB_DIR . '/class/core/request/response.interface.php');
 
-Mock::generate('command');
+Mock::generate('cronjob_command');
 Mock::generate('response');
 
 Mock::generatePartial(
@@ -37,7 +37,7 @@ class cron_manager_test extends LimbTestCase
   {
     $this->cron_manager = new cron_manager_test_version($this);
     $this->response = new Mockresponse($this);
-    $this->cron_job = new Mockcommand($this);
+    $this->cron_job = new Mockcronjob_command($this);
   }
   
   function tearDown()
@@ -107,7 +107,8 @@ class cron_manager_test extends LimbTestCase
       )    
     );
 
-    $this->cron_job->expectAtLeastOnce('perform', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('set_response', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('perform');
     $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
         
     $this->cron_manager->setReturnValue('_get_time', 1);
@@ -136,7 +137,8 @@ class cron_manager_test extends LimbTestCase
       )    
     );
     
-    $this->cron_job->expectOnce('perform', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectOnce('set_response', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectOnce('perform');
     $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
     
     $this->cron_manager->setReturnValue('_get_time', 12);
@@ -165,7 +167,8 @@ class cron_manager_test extends LimbTestCase
       )    
     );
 
-    $this->cron_job->expectAtLeastOnce('perform', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('set_response', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('perform');
     $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
     
     $this->cron_manager->setReturnValue('_get_time', 12);
@@ -191,7 +194,8 @@ class cron_manager_test extends LimbTestCase
       )    
     );
 
-    $this->cron_job->expectAtLeastOnce('perform', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('set_response', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('perform');
     $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
     
     $this->cron_manager->setReturnValue('_get_time', 12);

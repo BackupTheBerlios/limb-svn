@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 //inspired by PEAR::Date package
-require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 require_once(LIMB_DIR . 'class/lib/date/date_time_zone.class.php');
 
 define('DATE_FORMAT_ISO', "%Y-%m-%d %T"); //YYYY-MM-DD HH:MM:SS
@@ -31,10 +30,10 @@ class date
     
    	if (is_object($date) && (get_class($date) == 'date'))
     	$this->copy($date);
-    elseif(is_string($date))
-    	$this->set_by_string($date, $format);
     elseif(is_numeric($date))
     	$this->set_by_days($date);
+    elseif(is_string($date))
+    	$this->set_by_string($date);    
     else
     	$this->set_by_stamp();
   }
@@ -73,6 +72,8 @@ class date
   
   public function set_by_string($string, $format=DATE_SHORT_FORMAT_ISO)
   {
+    $this->reset();
+    
     switch ($format) 
     {
       case DATE_SHORT_FORMAT_ISO:
@@ -81,9 +82,6 @@ class date
           $this->year   = (int)$regs[1];
           $this->month  = (int)$regs[2];
           $this->day    = (int)$regs[3];
-          $this->hour   = 0;
-          $this->minute = 0;
-          $this->second = 0;
         } 
         break;
       case DATE_FORMAT_ISO:
@@ -97,17 +95,21 @@ class date
           $this->second = (int)$regs[6];
         }
         break;
-      default:
-      	$arr = $this->_parse_time_string($string, $format);
-      	
-        $this->year   = $arr['year'];
-        $this->month  = $arr['month'];
-        $this->day    = $arr['day'];
-        $this->hour   = $arr['hour'];
-        $this->minute = $arr['minute'];
-        $this->second = $arr['second'];
-      	break;
     }
+  }
+  
+  function set_by_locale_string($locale, $string, $format)
+  {
+    $this->reset();
+    
+    $arr = $this->_parse_time_string($locale, $string, $format);
+    
+    $this->year   = $arr['year'];
+    $this->month  = $arr['month'];
+    $this->day    = $arr['day'];
+    $this->hour   = $arr['hour'];
+    $this->minute = $arr['minute'];
+    $this->second = $arr['second'];    
   }
   
   /*
@@ -115,7 +117,7 @@ class date
   	Returns an array('hour','minute','second','month','day','year')
   	At this moment only most common tags are supported.
   */
-  protected function _parse_time_string($time_string, $fmt)
+  protected function _parse_time_string($locale, $time_string, $fmt)
   {
   	$hour = 0;
   	$minute = 0; 
@@ -126,8 +128,6 @@ class date
 
   	if(!($time_array = $this->_explode_time_string_by_format($time_string, $fmt)))
   		return -1;
-  	
-  	$locale =& locale :: instance();
   	
   	foreach($time_array as $time_char => $value)
   	{
@@ -271,6 +271,8 @@ class date
 
   public function set_by_days($days)
   {
+    $this->reset();
+    
   	$days    -= 1721119;
     $century =  floor(( 4 * $days - 1) / 146097);
     $days    =  floor(4 * $days - 1 - 146097 * $century);
@@ -353,11 +355,9 @@ class date
    *  %Y    year as decimal including century (range 0000 to 9999) 
    *  %%    literal '%' 
    */
-  public function format($format=DATE_SHORT_FORMAT_ISO)
+  public function format($locale, $format=DATE_SHORT_FORMAT_ISO)
   {
     $output = '';
-		
-		$locale = locale :: instance();
 		
     for($strpos = 0; $strpos < strlen($format); $strpos++) 
     {

@@ -96,7 +96,8 @@ class cron_manager
         
         $object = $this->_create_job_object($handle);
         
-        $object->perform($response);
+        $object->set_response($response);
+        $object->perform();
         
         $response->write("script done\n");
         

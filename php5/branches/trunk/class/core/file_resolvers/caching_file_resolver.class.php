@@ -77,13 +77,15 @@ class caching_file_resolver extends file_resolver_decorator
   }
     
   public function resolve($file_path, $params = array())
-  {    
-    if(isset($this->_resolved_paths[$file_path]))
-      return $this->_resolved_paths[$file_path];
-      
-    $this->_resolved_paths[$file_path] = $this->_resolver->resolve($file_path, $params);
+  {
+    $hash = $file_path . md5(serialize($params));
     
-    return $this->_resolved_paths[$file_path];
+    if(isset($this->_resolved_paths[$hash]))
+      return $this->_resolved_paths[$hash];
+      
+    $this->_resolved_paths[$hash] = $this->_resolver->resolve($file_path, $params);
+    
+    return $this->_resolved_paths[$hash];
   }  
 
 }

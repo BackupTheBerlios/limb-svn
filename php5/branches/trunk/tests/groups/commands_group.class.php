@@ -8,19 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions/action_interface.interface.php');
-
-class empty_action implements action_interface
+class commands_group extends LimbGroupTest 
 {
-	public function set_view($view)
+	function commands_group() 
 	{
+	  $this->LimbGroupTest('commands tests');
 	}
-		
-	public function perform($request, $response)
+	
+	function getTestCasesHandles()
 	{
-	  $request->set_status(request :: STATUS_SUCCESS);
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/commands');
 	}
-} 
-
+}
 
 ?>

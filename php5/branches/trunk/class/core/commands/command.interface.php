@@ -7,18 +7,11 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-class actions_group extends LimbGroupTest 
+***********************************************************************************/
+
+interface Command
 {
-	function actions_group() 
-	{
-	  $this->LimbGroupTest('actions tests');
-	}
-	
-	function getTestCasesHandles()
-	{
- 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/actions');
-	}
+  public function perform();
 }
 
 ?>

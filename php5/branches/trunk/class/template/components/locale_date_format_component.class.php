@@ -46,7 +46,7 @@ class locale_date_format_component extends component
 	
 	public function set_locale_format_type($type)
 	{		
-		$locale = locale :: instance($this->locale_type);
+		$locale = Limb :: toolkit()->getLocale($this->locale_type);
 
 		switch($type)
 		{			
@@ -79,12 +79,13 @@ class locale_date_format_component extends component
 		}
 	}
 	
-	public function set_date($date_string)
+	public function set_date($date_string, $format=DATE_SHORT_FORMAT_ISO)
 	{
 		switch($this->date_type)
 		{
 			case 'string':
-				$this->date->set_by_string($date_string);
+        $locale = Limb :: toolkit()->getLocale($this->locale_type);
+				$this->date->set_by_locale_string($locale, $date_string, $format);
 			break;
 			
 			case 'stamp':
@@ -95,15 +96,14 @@ class locale_date_format_component extends component
 	
 	public function format()
 	{
+    $locale = Limb :: toolkit()->getLocale($this->locale_type);
+    
 		if($this->format_string)
 			$format_string = $this->format_string;
 		else
-		{
-			$locale = locale :: instance($this->locale_type);
 			$format_string = $locale->get_short_date_format();
-		}	
 		
-		echo $this->date->format($format_string);
+		echo $this->date->format($locale, $format_string);
 	}
 	
 } 

@@ -24,7 +24,7 @@ class locale_definition_filter implements intercepting_filter
     	define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
     	define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
 
-    	locale :: instance()->setlocale();
+    	Limb :: toolkit()->getLocale()->setlocale();
 
       $filter_chain->next();
       return;
@@ -42,7 +42,7 @@ class locale_definition_filter implements intercepting_filter
 
     debug :: add_timing_point('locale filter finished');
 
-  	locale :: instance()->setlocale();
+  	Limb :: toolkit()->getLocale()->setlocale();
 
     $filter_chain->next();
   }

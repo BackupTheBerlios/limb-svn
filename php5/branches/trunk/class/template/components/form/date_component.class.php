@@ -110,8 +110,9 @@ class date_component extends input_form_element
 		if($form->is_first_time())
 		{				
 			$date = new date($value);
-			
-			$value = $date->format(locale :: instance()->get_short_date_format());
+			$locale = Limb :: toolkit()->getLocale();
+      
+			$value = $date->format($locale, $locale->get_short_date_format());
 		}
 			
 		return $value;
