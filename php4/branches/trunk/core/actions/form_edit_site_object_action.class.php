@@ -32,7 +32,7 @@ class form_edit_site_object_action extends form_site_object_action
 
   function _init_validator()
   {
-    if(!$object_data = fetch_requested_object())
+    if(!$object_data = $this->_load_object_data())
       return;
 
     if($this->object->is_auto_identifier())

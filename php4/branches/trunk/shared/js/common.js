@@ -396,7 +396,7 @@ function jump_change_get(get, w)
   is_get = href.indexOf('?');
 
   if(is_get > -1)
-    href = href.substring(0, get_begin);
+    href = href.substring(0, '?')//get_begin);
 
   jump(href + '?' + get, w);
 }
