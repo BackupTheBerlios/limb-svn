@@ -79,6 +79,15 @@ class dir
   {
   	if(is_dir($dir))
   		return true;
+  	
+  	if(dir :: _has_win32_net_prefix($dir))
+  	{
+  		debug :: write_notice('win32 net path - cant check if it exists',
+		 	__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+			array('dir' => $dir));
+
+  		return true;
+  	}
   	  	  	
     $oldumask = umask(0);
     if(!mkdir($dir, $perm))
