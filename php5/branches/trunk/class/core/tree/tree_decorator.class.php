@@ -61,10 +61,7 @@ class tree_decorator implements tree
 
 	public function create_sub_node($id, $values)
 	{
-		if($node_id = $this->_tree->create_sub_node($id, $values))
-			$this->_tree->expand_node($id);
-
-		return $node_id;
+		return $this->_tree->create_sub_node($id, $values);
 	}
 
 	public function delete_node($id)

@@ -102,7 +102,16 @@ class tree_decorator_test extends LimbTestCase
     $this->tree->setReturnValue('create_root_node', $res = 'whatever');
     $this->assertEqual($res, $this->decorator->create_root_node($values));
 	}
- 
+
+  function test_create_sub_node()
+	{
+    $values = array('identifier' => 'test');
+    $id = 100;
+    $this->tree->expectOnce('create_sub_node', array($id, $values));
+    $this->tree->setReturnValue('create_sub_node', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->create_sub_node($id, $values));
+	}
+
 	function test_delete_node()
 	{
     $id = 100;
