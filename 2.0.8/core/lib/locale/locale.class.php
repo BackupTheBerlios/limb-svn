@@ -568,7 +568,7 @@ class locale
 		
 		$locales_data = array();
 		
-		foreach($AVAILABLE_LOCALES as $locale_id)
+		foreach($available_locales as $locale_id)
 		{
 			$locale_data =& locale :: instance($locale_id);			
 			$locales_data[$locale_id] = $locale_data->get_language_name() ? $locale_data->get_language_name() : $locale_id;
