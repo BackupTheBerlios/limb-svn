@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/FormCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/FormProcessingCommand.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
@@ -19,8 +19,8 @@ require_once(WACT_ROOT . '/validation/validator.inc.php');
 require_once(WACT_ROOT . '/validation/errorlist.inc.php');
 
 Mock :: generatePartial(
-  'FormCommand',
-  'FormCommandTestVersion',
+  'FormProcessingCommand',
+  'FormProcessingCommandTestVersion',
   array('_getValidator',
         '_registerValidationRules',
         '_initFirstTimeDataspace',
@@ -36,7 +36,7 @@ Mock :: generate('Dataspace');
 Mock :: generate('Component');
 Mock :: generate('FormComponent');
 
-class FormCommandTest extends LimbTestCase
+class FormProcessingCommandTest extends LimbTestCase
 {
   var $form_command;
   var $form_component;
@@ -45,7 +45,7 @@ class FormCommandTest extends LimbTestCase
   var $toolkit;
   var $validator;
 
-  function FormCommandTest()
+  function FormProcessingCommandTest()
   {
     parent :: LimbTestCase('form cmd test');
   }
@@ -62,7 +62,7 @@ class FormCommandTest extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->form_command = new FormCommandTestVersion($this);
+    $this->form_command = new FormProcessingCommandTestVersion($this);
     $this->form_command->setReturnReference('_getValidator', $this->validator);
     $this->form_command->setReturnReference('getFormComponent', $this->form_component);
   }
@@ -81,7 +81,7 @@ class FormCommandTest extends LimbTestCase
 
   function testMultiFormDisplayedStatus()
   {
-    $this->form_command->FormCommand('test_form', LIMB_MULTI_FORM);
+    $this->form_command->FormProcessingCommand('test_form', LIMB_MULTI_FORM);
 
     $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array('test_form'));
 
@@ -99,7 +99,7 @@ class FormCommandTest extends LimbTestCase
 
   function testSingleFormDisplayedStatus()
   {
-    $this->form_command->FormCommand('test_form', LIMB_SINGLE_FORM);
+    $this->form_command->FormProcessingCommand('test_form', LIMB_SINGLE_FORM);
 
     $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
 
@@ -119,7 +119,7 @@ class FormCommandTest extends LimbTestCase
   {
     $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array('test_form'));
 
-    $this->form_command->FormCommand('test_form', LIMB_MULTI_FORM);
+    $this->form_command->FormProcessingCommand('test_form', LIMB_MULTI_FORM);
 
     $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('test_form'));
 
@@ -143,7 +143,7 @@ class FormCommandTest extends LimbTestCase
   {
     $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
 
-    $this->form_command->FormCommand('test_form', LIMB_SINGLE_FORM);
+    $this->form_command->FormProcessingCommand('test_form', LIMB_SINGLE_FORM);
 
     $this->request->setReturnValue('export', $request = array('test' => 1, 'submitted' => 1));
 
@@ -167,7 +167,7 @@ class FormCommandTest extends LimbTestCase
   {
     $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array('test_form'));
 
-    $this->form_command->FormCommand('test_form', LIMB_MULTI_FORM);
+    $this->form_command->FormProcessingCommand('test_form', LIMB_MULTI_FORM);
 
     $this->request->setReturnValue('get', $request = array('test' => 1, 'submitted' => 1), array('test_form'));
 
@@ -191,7 +191,7 @@ class FormCommandTest extends LimbTestCase
 
   function testGetFormComponent()
   {
-    $form_command = new FormCommand($form_id = 'test_form');
+    $form_command = new FormProcessingCommand($form_id = 'test_form');
 
     $view =& new MockComponent($this);
 

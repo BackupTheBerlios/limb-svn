@@ -14,13 +14,13 @@ define('LIMB_SINGLE_FORM', false);
 
 require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
 
-class FormCommand// implements Command
+class FormProcessingCommand// implements Command
 {
   var $form_id;
   var $is_multi;
   var $validator;
 
-  function FormCommand($form_id, $is_multi = LIMB_SINGLE_FORM)
+  function FormProcessingCommand($form_id, $is_multi = LIMB_SINGLE_FORM)
   {
     $this->form_id = $form_id;
     $this->is_multi = $is_multi;
