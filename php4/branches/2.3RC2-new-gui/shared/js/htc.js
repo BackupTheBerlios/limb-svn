@@ -11,27 +11,28 @@ window.onload = function()
 function apply_behavior()
 {
   CLASS_MAP = build_class_map(document)
-  var arr = document.getElementsByTagName('*')
-  for(var v in arr)
+  for(var v in CLASS_MAP)
   {
-
-    if(typeof(arr[v]) != 'undefined' && CLASS_MAP[arr[v].className])
-    {
-      try
+      var tagName = v.substr(v.lastIndexOf('_')+1)
+      if(!tagName)continue
+      var arrTags = document.getElementsByTagName(tagName)
+      var className = v
+      for(var i in arrTags)
       {
-        var clss = window[CLASS_MAP[arr[v].className]].prototype
-
+        if(arrTags[i].className == className)
+        {
+          var cl = CLASS_MAP[className]
+          if(cl)
+          {
+            for(var j in cl.prototype)
+            {
+              arrTags[i][j] = cl.prototype[j]
+            }
+            arrTags[i].constructor = cl
+            arrTags[i].constructor()
+          }
+        }
       }
-      catch(ex)
-      {
-        confirm('apply_behavior() - NO CLASS DEFINED: ' + CLASS_MAP[arr[v].className])
-        break
-      }
-      for(var j in clss)
-      {
-        arr[v][j] = clss[j]
-      }
-    }
   }
 }
 function build_class_map(doc)
@@ -44,124 +45,16 @@ function build_class_map(doc)
 
     for(var j = 0; j<rules.length; j++)
     {
-      var rule = rules[j];
-      if(rule.style.page)
+      var rule = rules[j]
+      if(rule.selectorText.indexOf('htc_')!=-1)
       {
-        arr[rule.selectorText.substr(1)] = rule.style.page
+        var name = rule.selectorText.substr(1)
+        if(name.indexOf(' ')!=-1) name = name.substr(name.indexOf(' ')+2)
+        if(window[name]) arr[name] = window[name]
       }
     }
   }
 
   return arr
-}
-
-//=======================
-//  ACTIONS
-//=======================
-
-function debug_info(){}
-debug_info.prototype.onclick = function()
-{
-//  alert(this.alt)
-	WS = new ActiveXObject("WScript.shell");
-	WS.exec("uedit32.exe " + this.alt);
-}
-
-
-function action(){}
-action.prototype.onmouseover = function()
-{
-  this.style.backgroundImage = "url(/shared/images/rect.gif)"
-
-}
-action.prototype.onmouseout = function()
-{
-  this.style.backgroundImage = ""
-}
-
-function row(){}
-row.prototype.onmouseover = function()
-{
-  this.style.backgroundColor='#F7F7F7'
-}
-row.prototype.onmouseout = function()
-{
-    this.style.backgroundColor=''
-}
-
-//
-//
-//
-function actions(){}
-actions.prototype.onmouseover = function()
-{
-  this.style.backgroundColor='#F7F7F7'
-
-//  if(this.isHover)return
-//  this.set_active()
-//  this.isHover = true
-}
-actions.prototype.onmouseout = function()
-{
-  this.style.backgroundColor=''
-
-//  if(this.HT()) return
-//  this.set_normal()
-//  this.isHover = false
-
-}
-actions.prototype.set_active = function()
-{
-  try{
-  var acts = this.get_jip_element('actions')
-  if(acts == null) return
-  acts.className = 'jip-actions-active'
-  var obj = this.get_jip_element('object')
-  obj.className = 'jip-object-active'
-
-  this.get_jip_element('l').src = '/shared/images/actl.gif'
-  this.get_jip_element('r').src = '/shared/images/actr.gif'
-  }
-  catch(ex)
-  {
-//    alert('JIP ACTION: initialization fail')
-  }
-}
-actions.prototype.set_normal = function()
-{
-  try{
-  var acts = this.get_jip_element('actions')
-  if(acts == null) return
-  acts.className = 'jip-actions'
-
-  this.get_jip_element('object').className = 'jip-object'
-
-  this.get_jip_element('l').src = '/shared/images/act1.gif'
-  this.get_jip_element('r').src = '/shared/images/act3.gif'
-  }
-  catch(ex)
-  {
-//    alert('JIP ACTION: initialization fail')
-  }
-}
-//
-// [ service]
-//
-actions.prototype.get_jip_element = function(jip_name)
-{
-  var arr = this.all
-  for(var i=0;i<arr.length; i++)
-    if(arr[i].jip == jip_name) return arr[i]
-  return null
-}
-actions.prototype.HT = function()
-{
-  var obj = this.document.elementFromPoint(event.x, event.y)
-  while(obj != null)
-  {
-    if(obj == this)return true
-    obj = obj.parentElement
-  }
-  return false
 }
 
