@@ -38,20 +38,23 @@
 <td><small><locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'></small></td>
 <td><b><core:IP hash_id="ip" ></b></td>
 <td>
-<core:OPTIONAL for='RESPONSE_STATUS_SUCCESS'>
+<core:OPTIONAL for='SUCCESS'>
 <span style='color:black'>
 </core:OPTIONAL>
-<core:OPTIONAL for='RESPONSE_STATUS_FORM_SUBMITTED'>
+<core:OPTIONAL for='FORM_SUBMITTED'>
 <span style='color:green'>
 </core:OPTIONAL>
-<core:OPTIONAL for='RESPONSE_STATUS_FORM_DISPLAYED'>
+<core:OPTIONAL for='FORM_DISPLAYED'>
 <span style='color:#408080'>
 </core:OPTIONAL>
-<core:OPTIONAL for='RESPONSE_STATUS_FORM_NOT_VALID'>
+<core:OPTIONAL for='FORM_NOT_VALID'>
 <span style='color:orange'>
 </core:OPTIONAL>
-<core:OPTIONAL for='RESPONSE_STATUS_FAILURE'>
+<core:OPTIONAL for='FAILURE'>
 <span style='color:red'>
+</core:OPTIONAL>
+<core:OPTIONAL for='DEFAULT'>
+<span>
 </core:OPTIONAL>
 {$action}
 </span>

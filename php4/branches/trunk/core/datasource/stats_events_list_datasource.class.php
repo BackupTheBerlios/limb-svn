@@ -14,12 +14,12 @@ require_once(LIMB_DIR . '/core/model/stats/stats_event_report.class.php');
 
 class stats_events_list_datasource extends datasource
 {
-	var $response_map = array(
-				REQUEST_STATUS_SUCCESS => 'REQUEST_STATUS_SUCCESS', 
-				REQUEST_STATUS_FORM_DISPLAYED => 'REQUEST_STATUS_FORM_DISPLAYED',
-				REQUEST_STATUS_FORM_SUBMITTED => 'REQUEST_STATUS_FORM_SUBMITTED',
-				REQUEST_STATUS_FAILURE => 'REQUEST_STATUS_FAILURE',
-				REQUEST_STATUS_FORM_NOT_VALID => 'REQUEST_STATUS_FORM_NOT_VALID'
+	var $status_map = array(
+				REQUEST_STATUS_SUCCESS => 'SUCCESS', 
+				REQUEST_STATUS_FORM_DISPLAYED => 'FORM_DISPLAYED',
+				REQUEST_STATUS_FORM_SUBMITTED => 'FORM_SUBMITTED',
+				REQUEST_STATUS_FAILURE => 'FAILURE',
+				REQUEST_STATUS_FORM_NOT_VALID => 'FORM_NOT_VALID'
 			);
 		
 	var $stats_event_report = null;
@@ -38,21 +38,20 @@ class stats_events_list_datasource extends datasource
 		$counter = $this->stats_event_report->fetch_count($params);
 		$arr = $this->stats_event_report->fetch($params);
 		
-		$arr = $this->_process_result_array($arr);
-		
+		$this->_assign_status_hints_to_result_array($arr);
+		 
 		return new array_dataset($arr);
 	}
 	
-	function _process_result_array($arr)
-	{
-		$result = array();
+	function _assign_status_hints_to_result_array(&$arr)
+	{ 
 		foreach($arr as $index => $data)
 		{
-			$data[$this->response_map[$data['status']]] = 1;
-			$result[$index] = $data;
+      if(isset($this->status_map[$data['status']]))
+        $arr[$index][$this->status_map[$data['status']]] = 1;
+      else
+        $arr[$index]['DEFAULT'] = 1;
 		}
-			
-		return $result;
 	}
 	
 	function _configure_stats_event_report_filter()
@@ -61,7 +60,7 @@ class stats_events_list_datasource extends datasource
 	
 		$this->_set_ip_filter($request);
 		
-		$this->_set_login_filter($request);
+		$this->_set_user_filter($request);
 		
 		$this->_set_action_filter($request);
 		
@@ -72,10 +71,10 @@ class stats_events_list_datasource extends datasource
 		$this->_set_status_filter($request);
 	}
 	
-	function _set_login_filter(&$request)
+	function _set_user_filter(&$request)
 	{
 	  if ($stats_user_login = $request->get_attribute('stats_user_login'))
-			$this->stats_event_report->set_login_filter($stats_user_login);
+			$this->stats_event_report->set_user_filter($stats_user_login);
 	}
 
 	function _set_action_filter(&$request)
@@ -91,12 +90,14 @@ class stats_events_list_datasource extends datasource
 	}
 	
 	function _set_status_filter(&$request)
-	{
-	  if (($stats_status = $request->get_attribute('stats_status')) || (!is_array($stats_status)))
+	{ 
+    $stats_status = $request->get_attribute('stats_status');
+    
+	  if (!$stats_status || !is_array($stats_status))
 			return ;
 		
 		$status_mask = 0;
-		$response_keys = array_keys($this->response_map);
+		$response_keys = array_keys($this->status_map);
 		foreach($stats_status as $index => $on)
 			if (isset($response_keys[$index]))
 				$status_mask = $status_mask | $response_keys[$index];
