@@ -21,12 +21,21 @@ class form_delete_site_object_action extends form_site_object_action
 	{
 		$object = wrap_with_site_object(fetch_requested_object());
 		
-		if(!$object->delete())
+		try 
+		{
+		  $object->delete();
+		}
+		catch (SQLException $sql_e)
+		{
+		  throw $sql_e;
+		}
+		catch(LimbException $e)
 		{
 			message_box :: write_notice(strings :: get('cant_be_deleted', 'error'));
 			$request->set_status(request :: STATUS_FAILURE);
 			return;
 		}
+		
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 		
 		if($request->has_attribute('popup'))
