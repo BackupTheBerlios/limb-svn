@@ -1,0 +1,24 @@
+<core:WRAP file="print_version_page.html" placeholder="content">
+
+<table width=100% border=0 cellspacing=0 cellpadding=0  height=100% >
+<tr>
+	<td width=100% valign=top >
+
+			<fetch:MAPPED>
+
+			<table width=100% border=0 cellspacing=2 cellpadding=2>
+			<tr>
+				<td colspan=2 class=text>{$content}</td>
+			</tr>
+			<core:OPTIONAL for='author'>
+			<tr>
+				<td colspan=2 class=author><locale:STRING name='author' file='document' locale_type='content'>:<b>{$author}</b></td>
+			</tr>
+			</core:OPTIONAL>
+			</table>	
+			</span>
+			</fetch:MAPPED>
+	</td>
+</tr>
+</table>
+
