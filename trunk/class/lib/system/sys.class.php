@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');  
-require_once(LIMB_DIR . 'core/lib/util/log.class.php');
-require_once(LIMB_DIR . 'core/lib/http/ip.class.php');
+require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');  
+require_once(LIMB_DIR . 'class/lib/util/log.class.php');
+require_once(LIMB_DIR . 'class/lib/http/ip.class.php');
 
 class sys
 {

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/fetcher.class.php');
+require_once(LIMB_DIR . 'class/fetcher.class.php');
 
 class stats_counter
 {

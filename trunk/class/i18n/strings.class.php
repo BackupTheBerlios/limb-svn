@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
-require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
+require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
+require_once(LIMB_DIR . 'class/lib/util/ini.class.php');
 
 class strings
 {

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/model/search/full_text_indexer.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'class/model/search/full_text_indexer.class.php');
+require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
 class full_text_search
 {

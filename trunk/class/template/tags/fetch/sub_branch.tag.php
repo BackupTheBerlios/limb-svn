@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/template/tags/datasource/datasource.tag.php');
+require_once(LIMB_DIR . 'class/template/tags/datasource/datasource.tag.php');
 
 class fetch_sub_branch_tag_info
 {

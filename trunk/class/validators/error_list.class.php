@@ -30,7 +30,7 @@ class error_list
 
   	if(get_class($obj) != $class_name)
   	{
-  		include_once(LIMB_DIR . 'core/validators/error_list.class.php');
+  		include_once(LIMB_DIR . 'class/validators/error_list.class.php');
   		
   		$obj = & new $class_name();
   		$GLOBALS['global_' . $class_name] =& $obj;

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
-require_once(LIMB_DIR . 'core/template/tag_component.class.php');
-require_once(LIMB_DIR . 'core/validators/error_list.class.php');
-require_once(LIMB_DIR . 'core/lib/util/dataspace_registry.class.php');
+require_once(LIMB_DIR . 'class/lib/util/array_dataset.class.php');
+require_once(LIMB_DIR . 'class/template/tag_component.class.php');
+require_once(LIMB_DIR . 'class/validators/error_list.class.php');
+require_once(LIMB_DIR . 'class/lib/util/dataspace_registry.class.php');
 
 /**
 * The form_component provide a runtime API for control the behavior of a form

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
-require_once(LIMB_DIR . 'core/access_policy.class.php');
+require_once(LIMB_DIR . 'class/access_policy.class.php');
 
 class load_access_policy_test extends db_test 
 {  	

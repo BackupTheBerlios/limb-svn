@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/template/components/form/input_hidden_component.class.php');
+require_once(LIMB_DIR . 'class/template/components/form/input_hidden_component.class.php');
 
 class request_state_component extends input_hidden_component
 { 

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 
 
-require_once(LIMB_DIR . 'core/template/components/form/container_form_element.class.php');
+require_once(LIMB_DIR . 'class/template/components/form/container_form_element.class.php');
 
 class text_area_component extends container_form_element
 {

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/model/object.class.php');
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . 'class/model/object.class.php');
+require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 
 define('REQUEST_STATUS_DONT_TRACK', 0);
 

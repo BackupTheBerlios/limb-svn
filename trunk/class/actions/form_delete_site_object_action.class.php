@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
+require_once(LIMB_DIR . 'class/actions/form_site_object_action.class.php');
 
 class form_delete_site_object_action extends form_site_object_action
 {

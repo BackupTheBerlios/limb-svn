@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
+require_once(LIMB_DIR . 'class/lib/mail/mime_mail.class.php');
 
 function send_plain_mail($recipients, $sender, $subject, $body, $headers = array())
 {

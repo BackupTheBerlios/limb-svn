@@ -16,7 +16,7 @@ define('PARSER_REQUIRE_PARSING', true);
 define('PARSER_FORBID_PARSING', false);
 define('PARSER_ALLOW_PARSING', null);
 
-require_once (LIMB_DIR . 'core/template/compiler/xml_pull.inc.php');
+require_once (LIMB_DIR . 'class/template/compiler/xml_pull.inc.php');
 
 /**
 * The source template parser which uses the xml_pull parser

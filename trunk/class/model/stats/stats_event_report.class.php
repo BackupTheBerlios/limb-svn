@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/lib/http/ip.class.php');
+require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
+require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'class/lib/http/ip.class.php');
 
 class stats_event_report
 {

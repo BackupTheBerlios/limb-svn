@@ -15,8 +15,8 @@
 if (!defined('DATE_CALC_BEGIN_WEEKDAY'))
     define('DATE_CALC_BEGIN_WEEKDAY', 1);
     
-require_once(LIMB_DIR . 'core/lib/date/date.class.php');
-require_once(LIMB_DIR . 'core/lib/date/date_span.class.php');
+require_once(LIMB_DIR . 'class/lib/date/date.class.php');
+require_once(LIMB_DIR . 'class/lib/date/date_span.class.php');
 
 class calendar
 {

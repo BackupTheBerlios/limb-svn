@@ -11,9 +11,9 @@
 define('DEFAULT_USER_ID', -1);
 define('DEFAULT_USER_GROUP', 'visitors');
 
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/model/object.class.php');
+require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . 'class/model/object.class.php');
 
 class user extends object
 {

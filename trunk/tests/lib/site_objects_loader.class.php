@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/model/site_object_factory.class.php');
 
 class site_objects_loader

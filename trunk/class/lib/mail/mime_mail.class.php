@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/mail/mime_mail_part.class.php');
-require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . 'class/lib/mail/mime_mail_part.class.php');
+require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 
 class mime_mail
 {
-
 	var $html;
 
 	var $text;
@@ -524,7 +523,7 @@ class mime_mail
 
 	function _mail_send(&$recipients)
 	{
-		require_once(LIMB_DIR . 'core/lib/mail/mail_rfc822.class.php');
+		require_once(LIMB_DIR . 'class/lib/mail/mail_rfc822.class.php');
 		
 		$subject = '';
 		if (!empty($this->headers['Subject']))
@@ -554,8 +553,8 @@ class mime_mail
 	
 	function _smtp_send(&$recipients)
 	{
-		require_once(LIMB_DIR . 'core/lib/mail/smtp.class.php');
-		require_once(LIMB_DIR . 'core/lib/mail/mail_rfc822.class.php');
+		require_once(LIMB_DIR . 'class/lib/mail/smtp.class.php');
+		require_once(LIMB_DIR . 'class/lib/mail/mail_rfc822.class.php');
 
 		$this->set_smtp_params(SMTP_HOST, SMTP_PORT, SMTP_HELO, SMTP_AUTH, SMTP_USER, SMTP_PASSWORD);
 		

@@ -10,9 +10,9 @@
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
-require_once(LIMB_DIR . 'core/access_policy.class.php');
-require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . 'class/access_policy.class.php');
+require_once(LIMB_DIR . 'class/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . 'class/controllers/site_object_controller.class.php');
 
 Mock :: generate('site_object');
 Mock :: generate('site_object_controller');

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/filters/intercepting_filter.class.php');
-require_once(LIMB_DIR . 'core/fetcher.class.php');
-require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . 'class/fetcher.class.php');
+require_once(LIMB_DIR . 'class/model/site_objects/site_object.class.php');
 
 class jip_filter extends intercepting_filter 
 { 

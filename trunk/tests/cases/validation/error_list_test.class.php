@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/validators/error_list.class.php');
+require_once(LIMB_DIR . 'class/validators/error_list.class.php');
 	
 class error_list_test extends LimbTestCase 
 {  	

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/fetcher.class.php');
-require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
-require_once(LIMB_DIR . 'core/tree/tree_sorter.class.php');
+require_once(LIMB_DIR . 'class/fetcher.class.php');
+require_once(LIMB_DIR . 'class/datasource/fetch_sub_branch_datasource.class.php');
+require_once(LIMB_DIR . 'class/tree/tree_sorter.class.php');
 
 class fetch_tree_datasource extends fetch_sub_branch_datasource
 {

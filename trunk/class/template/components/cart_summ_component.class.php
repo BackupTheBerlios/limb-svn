@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
+require_once(LIMB_DIR . 'class/model/shop/cart.class.php');
 
 class cart_summ_component extends component
 {

@@ -16,7 +16,7 @@
 *  +----------------------------------------------------------------------+
 */
 
-require_once(LIMB_DIR . 'core/lib/mail/pop3.class.php');
+require_once(LIMB_DIR . 'class/lib/mail/pop3.class.php');
 
 class pop3_imap_ext extends pop3
 {

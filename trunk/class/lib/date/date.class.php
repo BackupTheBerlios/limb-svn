@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
-require_once(LIMB_DIR . 'core/lib/date/date_time_zone.class.php');
+require_once(LIMB_DIR . 'class/i18n/locale.class.php');
+require_once(LIMB_DIR . 'class/lib/date/date_time_zone.class.php');
 
 define('DATE_FORMAT_ISO', "%Y-%m-%d %T"); //YYYY-MM-DD HH:MM:SS
 define('DATE_SHORT_FORMAT_ISO', "%Y-%m-%d"); //YYYY-MM-DD

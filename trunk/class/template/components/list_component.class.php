@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/template/component.class.php');
-require_once(LIMB_DIR . 'core/lib/util/empty_dataset.class.php');
+require_once(LIMB_DIR . 'class/template/component.class.php');
+require_once(LIMB_DIR . 'class/lib/util/empty_dataset.class.php');
 
 /**
 * Represents list tags at runtime, providing an API for preparing the data set

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/cache/partial_page_cache_manager.class.php');
+require_once(LIMB_DIR . 'class/cache/partial_page_cache_manager.class.php');
 
 class outputcache_component extends component
 {

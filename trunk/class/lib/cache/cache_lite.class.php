@@ -11,8 +11,8 @@
 define('CACHE_LITE_ERROR_RETURN', 1);
 define('CACHE_LITE_ERROR_DIE', 8);
 
-require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
-require_once(LIMB_DIR . 'core/lib/error/debug.class.php');
+require_once(LIMB_DIR . 'class/lib/system/fs.class.php');
+require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 
 class cache_lite
 {

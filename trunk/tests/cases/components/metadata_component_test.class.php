@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
-require_once(LIMB_DIR . 'core/template/components/metadata_component.class.php');
+require_once(LIMB_DIR . 'class/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . 'class/template/components/metadata_component.class.php');
 
 Mock :: generatePartial(
   'metadata_component',

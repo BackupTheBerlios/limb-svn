@@ -38,7 +38,7 @@ if(sys :: os_type() == 'win32')
 else
 	define('NETPBM_LIB_DIR', '/usr/local/netpbm/bin/');
 
-require_once(LIMB_DIR . 'core/lib/image/image_library.class.php');
+require_once(LIMB_DIR . 'class/lib/image/image_library.class.php');
 
 class image_netpbm extends image_library
 {

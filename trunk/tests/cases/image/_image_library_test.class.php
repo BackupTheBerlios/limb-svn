@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 if (!defined('PHP_IMAGE_DIR_C'))
-  define('PHP_IMAGE_DIR_C', LIMB_DIR . 'core/lib/image/');
+  define('PHP_IMAGE_DIR_C', LIMB_DIR . 'class/lib/image/');
 
 SimpleTestOptions::ignore('image_library_test');
 

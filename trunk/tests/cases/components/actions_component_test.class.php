@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/template/components/actions_component.class.php');
-require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
+require_once(LIMB_DIR . 'class/template/components/actions_component.class.php');
+require_once(LIMB_DIR . 'class/lib/i18n/strings.class.php');
 
 class actions_component_test extends LimbTestCase 
 {    

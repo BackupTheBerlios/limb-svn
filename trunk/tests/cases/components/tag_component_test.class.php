@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
-require_once(LIMB_DIR . 'core/template/tag_component.class.php');
+require_once(LIMB_DIR . 'class/lib/util/dataspace.class.php');
+require_once(LIMB_DIR . 'class/template/tag_component.class.php');
 
 if (! class_exists('dataspace_test_case'))
 	require_once(LIMB_DIR . '/tests/cases/dataspace_test.class.php');

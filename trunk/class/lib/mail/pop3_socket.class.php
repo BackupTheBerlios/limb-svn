@@ -15,8 +15,8 @@
 *  +----------------------------------------------------------------------+
 */
 
-require_once(LIMB_DIR . 'core/lib/mail/pop3.class.php');
-require_once(LIMB_DIR . 'core/lib/util/socket.class.php');
+require_once(LIMB_DIR . 'class/lib/mail/pop3.class.php');
+require_once(LIMB_DIR . 'class/lib/util/socket.class.php');
 
 
 class pop3_socket extends pop3

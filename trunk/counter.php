@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once('setup.php');
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
 function get_counter_record()
 {

@@ -30,7 +30,7 @@ currency/funds are specified by the ISO 4217
 http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90.xalter
 */
 
-require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
+require_once(LIMB_DIR . 'class/lib/util/ini.class.php');
 
 if(!defined('LOCALE_DIR'))
   define('LOCALE_DIR', LIMB_DIR . '/class/i18n/locale');

@@ -13,10 +13,10 @@ class ini_file_resolver
 {
   function resolve($file_name)
   {
-  	if (file_exists(LIMB_APP_DIR . 'core/settings/' . $file_name))
-  		$dir = LIMB_APP_DIR . 'core/settings/';
-  	elseif (file_exists(LIMB_DIR . 'core/settings/' . $file_name))
-  		$dir = LIMB_DIR . 'core/settings/';
+  	if (file_exists(LIMB_APP_DIR . 'class/settings/' . $file_name))
+  		$dir = LIMB_APP_DIR . 'class/settings/';
+  	elseif (file_exists(LIMB_DIR . 'class/settings/' . $file_name))
+  		$dir = LIMB_DIR . 'class/settings/';
   	else
   		error('ini file not found', 
 		  __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 

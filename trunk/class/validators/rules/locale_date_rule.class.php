@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/validators/rules/domain_rule.class.php');
-require_once(LIMB_DIR . '/class/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . '/class/i18n/locale.class.php');
 require_once(LIMB_DIR . '/class/lib/date/date.class.php');
 
 class locale_date_rule extends single_field_rule 

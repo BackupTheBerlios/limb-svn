@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . 'class/validators/rules/single_field_rule.class.php');
 
 /**
 * For fields which must be supplied a value by the user

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/error/debug.class.php');
+require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 
 debug :: add_timing_point('start');
 
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . 'core/request/http_response.class.php');
-require_once(LIMB_DIR . 'core/request/request.class.php');
-require_once(LIMB_DIR . 'core/limb_util.inc.php');
-require_once(LIMB_DIR . 'core/lib/system/message_box.class.php');
+require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . 'class/filters/filter_chain.class.php');
+require_once(LIMB_DIR . 'class/request/http_response.class.php');
+require_once(LIMB_DIR . 'class/request/request.class.php');
+require_once(LIMB_DIR . 'class/limb_util.inc.php');
+require_once(LIMB_DIR . 'class/lib/system/message_box.class.php');
 
 class limb_application
 {  
@@ -25,15 +25,15 @@ class limb_application
   {
     $f = array();
     
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/output_buffering_filter');    
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/session_startup_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/locale_definition_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/authentication_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/logging_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/full_page_cache_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/jip_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/image_cache_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . 'core/filters/site_object_controller_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/output_buffering_filter');    
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/session_startup_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/locale_definition_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/authentication_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/logging_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/full_page_cache_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/jip_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/image_cache_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . 'class/filters/site_object_controller_filter');
   }
     
   function run()

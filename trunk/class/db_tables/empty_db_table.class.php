@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
+require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 
 class empty_db_table extends db_table
 {
