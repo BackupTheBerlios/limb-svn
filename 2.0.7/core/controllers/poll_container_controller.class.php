@@ -35,7 +35,6 @@ class poll_container_controller extends site_object_controller
 				),
 				'vote' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/poll_container/display_active_poll.html',
 						'action_path' => '/poll_container/vote_action',
 				),
 		);
