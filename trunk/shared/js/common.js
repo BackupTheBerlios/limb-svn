@@ -288,7 +288,7 @@ function show_progress()
 	PROGRESS_IS_SHOWN = true;
 }
 
-function click_href(href)
+function click_href(href, window_name)
 {
 	has_progress = href.indexOf('progress=1');
 	if(has_progress > -1)
@@ -296,7 +296,7 @@ function click_href(href)
 
 	is_popup = href.indexOf('popup=1');
 	if(is_popup > -1)
-		popup(href);
+		popup(href, window_name);
 	
 	return !((has_progress > -1) || (is_popup > -1));
 }
