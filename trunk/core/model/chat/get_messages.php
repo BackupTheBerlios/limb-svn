@@ -40,6 +40,7 @@ $messages = chat_system :: get_messages_for_user(
 $date =& new date();
 $locale =& locale :: instance($this->locale_type);
 $format_string = $locale->get_short_date_time_format();
+$mime_type = new mime_type();
 		
 echo "<html>
 			<script>";
@@ -82,7 +83,7 @@ foreach($messages as $message)
 			$file_data = "";
 			if ($message['file_id'])
 			{
-				$icon = mime_type :: get_type_icon($message['mime_type']);
+				$icon = $mime_type->get_type_icon($message['mime_type']);
 				$file_data = ", ['{$message['file_id']}', '{$icon}', '{$message['file_size']}', '{$message['image_width']}', '{$message['image_height']}']";
 			}
 
