@@ -30,7 +30,9 @@ function & get_ini($file_name, $use_cache = null)
 	elseif (file_exists(LIMB_DIR . 'core/settings/' . $file_name))
 		$dir = LIMB_DIR . 'core/settings/';
 	else
-		error('ini file not found', __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, array('file' => $file_path));
+		error('ini file not found', 
+		  __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 
+		  array('file' => $file_name));
 
 	if (!($ini =& ini::instance($dir . $file_name, $use_cache)))
 		error('couldnt retrieve ini instance', __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 

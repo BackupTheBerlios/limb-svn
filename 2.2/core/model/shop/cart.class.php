@@ -124,6 +124,11 @@ class cart
 		return $this->_cart_handler->get_items();
 	}
 	
+	function set_items(&$items)
+	{
+	  return $this->_cart_handler->set_items($items);
+	}
+	
 	function get_items_array_dataset()
 	{
 	  $items =& $this->_cart_handler->get_items();

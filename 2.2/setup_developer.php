@@ -5,10 +5,12 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: setup_developer.php 468 2004-02-18 12:03:43Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define('DEVELOPER_ENVIROMENT', true);
+
+require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
 
 if(!defined('ERROR_HANDLER_TYPE') && isset($_SERVER['SERVER_PORT']))
 	if($_SERVER['SERVER_PORT'] == 81)

@@ -20,41 +20,19 @@ define('SHIPPING_FEDEX_SERVER_TIMEOUT', 60);
 define('SHIPPING_FEDEX_SERVER_COOKIE_FILE', tempnam(VAR_DIR, 'cookie'));
 define('SHIPPING_FEDEX_SERVER_USERAGENT', 'Mozilla/4.0 (compatible; MSIE 5.5; Windows 98)');
 
-class fedex_shipping_locator
+require_once(LIMB_DIR . '/core/model/shop/shipping/shipping_locator.class.php'); 
+
+class fedex_shipping_locator extends shipping_locator
 {
-  function get_shipping_options(
-            $orig_zip_code, 
-            $dest_zip_code, 
-            $orig_country_code, 
-            $dest_country_code, 
-            $declared_value, 
-            $weight, 
-            $weight_unit = SHIPPING_FEDEX_WEIGHT_UNIT_LB, 
-            $is_residence = false)
-  {
+  function _do_get_shipping_options($shipping_configuration)
+  {        
     $this->_clean_cookie();
     
     $this->_browse_to_home_page();
     
-    $express_html = $this->_get_express_shipping_options_html(
-      $orig_zip_code, 
-      $dest_zip_code, 
-      $orig_country_code, 
-      $dest_country_code, 
-      $declared_value, 
-      $weight, 
-      $weight_unit, 
-      $is_residence);
+    $express_html = $this->_get_express_shipping_options_html($shipping_configuration);
       
-    $ground_html = $this->_get_ground_shipping_options_html(
-      $orig_zip_code, 
-      $dest_zip_code, 
-      $orig_country_code, 
-      $dest_country_code, 
-      $declared_value, 
-      $weight, 
-      $weight_unit, 
-      $is_residence);
+    $ground_html = $this->_get_ground_shipping_options_html($shipping_configuration);
     
     if($express_html === false)
       $express_options = array();
@@ -105,6 +83,7 @@ class fedex_shipping_locator
 		  if(!isset($data['price']) || empty($data['price']))
 		    continue;
 		  
+		  $data['id'] = md5($data['name']);
 		  $data['price'] = str_replace('&nbsp;', '', $data['price']);
 		  $data['price'] *= 1; //???
 		   
@@ -120,16 +99,16 @@ class fedex_shipping_locator
       unlink(SHIPPING_FEDEX_SERVER_COOKIE_FILE);    
   }
   
-  function _get_express_shipping_options_html($orig_zip_code, $dest_zip_code, $orig_country_code, $dest_country_code, $declared_value, $weight, $weight_unit, $is_residence)
+  function _get_express_shipping_options_html($shipping_configuration)
   {
     $data = array();
     $data['shipDate'] = strftime("%m%d%Y");
     $data['packageCount'] = 1;
-    $data['origCountry'] = $orig_country_code;
-    $data['destCountry'] = $dest_country_code;
-    $data['origZip'] = $orig_zip_code;
-    $data['destZip'] = $dest_zip_code;
-    $data['shipToResidence'] = $is_residence ? 1 : 0;
+    $data['origCountry'] = $shipping_configuration->get_country_from();
+    $data['destCountry'] = $shipping_configuration->get_country_to();
+    $data['origZip'] = $shipping_configuration->get_zip_from();
+    $data['destZip'] = $shipping_configuration->get_zip_to();
+    $data['shipToResidence'] = $shipping_configuration->get_residence() ? 1 : 0;
     $data['companyType'] = 'Express';
     $data['cc'] = 'US';
     $data['language'] = 'en';
@@ -168,15 +147,15 @@ class fedex_shipping_locator
     curl_close($ch);
     
     $data = array();
-    $data['packageForm.packageList[0].weightUnit'] = $weight_unit;
+    $data['packageForm.packageList[0].weightUnit'] = $shipping_configuration->get_weight_unit();
     $data['packageForm.packageList[0].dimUnit'] = 'in';
     $data['packageForm.packageList[0].currencyCode'] = 'USD';
-    $data['packageForm.packageList[0].weight'] = $weight;
+    $data['packageForm.packageList[0].weight'] = $shipping_configuration->get_weight();
     $data['packageForm.packageList[0].packageType'] = '1';
     $data['packageForm.packageList[0].dimLength'] = 'L';
     $data['packageForm.packageList[0].dimWidth'] = 'W';
     $data['packageForm.packageList[0].dimHeight'] = 'H';
-    $data['packageForm.packageList[0].declaredValue'] = $declared_value;
+    $data['packageForm.packageList[0].declaredValue'] = $shipping_configuration->get_declared_value();
     $data['optionsList[0].optionCode'] = '999';
     $data['optionsList[1].optionCode'] = '4';
     $data['optionsList[2].optionCode'] = '6';
@@ -223,16 +202,16 @@ class fedex_shipping_locator
     return $html;    
   }
 
-  function _get_ground_shipping_options_html($orig_zip_code, $dest_zip_code, $orig_country_code, $dest_country_code, $declared_value, $weight, $weight_unit, $is_residence)
+  function _get_ground_shipping_options_html($shipping_configuration)
   {
     $data = array();
     $data['shipDate'] = strftime("%m%d%Y");
     $data['packageCount'] = 1;
-    $data['origCountry'] = $orig_country_code;
-    $data['destCountry'] = $dest_country_code;
-    $data['origZip'] = $orig_zip_code;
-    $data['destZip'] = $dest_zip_code;
-    $data['shipToResidence'] = $is_residence ? 1 : 0;
+    $data['origCountry'] = $shipping_configuration->get_country_from();
+    $data['destCountry'] = $shipping_configuration->get_country_to();
+    $data['origZip'] = $shipping_configuration->get_zip_from();
+    $data['destZip'] = $shipping_configuration->get_zip_to();
+    $data['shipToResidence'] = $shipping_configuration->get_residence() ? 1 : 0;
     $data['companyType'] = 'Ground';
     $data['cc'] = 'US';
     $data['language'] = 'en';
@@ -271,15 +250,15 @@ class fedex_shipping_locator
     curl_close($ch);
     
     $data = array();
-    $data['packageForm.packageList[0].weightUnit'] = $weight_unit;
+    $data['packageForm.packageList[0].weightUnit'] = $shipping_configuration->get_weight_unit();
     $data['packageForm.packageList[0].dimUnit'] = 'in';
     $data['packageForm.packageList[0].currencyCode'] = 'USD';
-    $data['packageForm.packageList[0].weight'] = $weight;
+    $data['packageForm.packageList[0].weight'] = $shipping_configuration->get_weight();
     $data['packageForm.packageList[0].packageType'] = '1';
     $data['packageForm.packageList[0].dimLength'] = 'L';
     $data['packageForm.packageList[0].dimWidth'] = 'W';
     $data['packageForm.packageList[0].dimHeight'] = 'H';
-    $data['packageForm.packageList[0].declaredValue'] = $declared_value;
+    $data['packageForm.packageList[0].declaredValue'] = $shipping_configuration->get_declared_value();
     $data['optionsList[0].optionCode'] = 'USAOD';
     $data['optionsList[1].optionCode'] = 'USAPOD';
     $data['optionsList[2].optionCode'] = 'USCT';

@@ -14,7 +14,7 @@ Mock :: generatePartial(
   'fedex_shipping_locator',
   'special_fedex_shipping_locator',
   array(
-    '_browse_to_the_home_page', 
+    '_browse_to_home_page', 
     '_get_express_shipping_options_html', 
     '_get_ground_shipping_options_html')
 );
@@ -23,11 +23,25 @@ class fedex_shipping_locator_test extends UnitTestCase
 {
   var $mock_locator;
   var $locator;
+  var $shipping_configuration;
     
   function setUp()
   {    
-    $this->mock_locator = new special_fedex_shipping_locator($this);    
+    $this->mock_locator = new special_fedex_shipping_locator($this);
+    $this->mock_locator->use_cache(false);
+    
     $this->locator = new fedex_shipping_locator();
+    $this->locator->use_cache(false);
+    
+    $this->shipping_configuration = new shipping_configuration();
+    $this->shipping_configuration->set_zip_from('L5V 1A7');
+    $this->shipping_configuration->set_zip_to('02478');
+    $this->shipping_configuration->set_country_from('CA');
+    $this->shipping_configuration->set_country_to('US');
+    $this->shipping_configuration->set_declared_value(0);
+    $this->shipping_configuration->set_weight(10);
+    $this->shipping_configuration->set_weight_unit(SHIPPING_FEDEX_WEIGHT_UNIT_LB);
+    $this->shipping_configuration->set_residence(false);
   }
   
   function tearDown()
@@ -37,73 +51,41 @@ class fedex_shipping_locator_test extends UnitTestCase
   
   function test_get_shipping_options_mock_connect()
   {
-    $orig_zip_code = 'L5V 1A7';
-    $dest_zip_code = '02478';
-    
-    $orig_country_code = 'CA';
-    $dest_country_code = 'US';
-    
-    $declared_value = 0;
-    $weight = 10;
-    $weight_unit = SHIPPING_FEDEX_WEIGHT_UNIT_LB;
-    $is_residence = false;
-    
     $this->mock_locator->setReturnValue('_get_express_shipping_options_html', file_get_contents(dirname(__FILE__) . '/fedex_express.html'));
     $this->mock_locator->setReturnValue('_get_ground_shipping_options_html', file_get_contents(dirname(__FILE__) . '/fedex_ground.html'));    
     
     $this->mock_locator->expectOnce('_get_express_shipping_options_html', 
-      array(
-        $orig_zip_code, 
-        $dest_zip_code, 
-        $orig_country_code, 
-        $dest_country_code,
-        $declared_value,
-        $weight,
-        $weight_unit,
-        $is_residence)
+      array($this->shipping_configuration)
     );
 
     $this->mock_locator->expectOnce('_get_ground_shipping_options_html', 
-      array(
-        $orig_zip_code, 
-        $dest_zip_code, 
-        $orig_country_code, 
-        $dest_country_code,
-        $declared_value,
-        $weight,
-        $weight_unit,
-        $is_residence)
+      array($this->shipping_configuration)
     );
     
-    $options = $this->mock_locator->get_shipping_options(
-      $orig_zip_code, 
-      $dest_zip_code, 
-      $orig_country_code, 
-      $dest_country_code,
-      $declared_value,
-      $weight,
-      $weight_unit,
-      $is_residence
-    );
+    $options = $this->mock_locator->get_shipping_options($this->shipping_configuration);
 
     $this->assertEqual($options, 
       array(
         array(
+          'id' => md5('<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>'),
           'name' => '<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>',
           'description' => "Delivery in&nbsp;\n5&nbsp;business days",
           'price' => 16.02,          
         ),
         array(
+          'id' => md5('<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>'),
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>',
           'description' => 'Time definite delivery in 2 business days',
           'price' => 72.62,          
         ),
         array(
+          'id' => md5('<a href="http://www.fedex.com/us/services/waystoship/intlexpress/priority.html?link=4">FedEx International Priority<SUP>&reg;</SUP></a>'),
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/priority.html?link=4">FedEx International Priority<SUP>&reg;</SUP></a>',
           'description' => 'Reach major business centers in 24 to 48 hours',
           'price' => 113.68,  
         ),        
         array(
+          'id' => md5('<a href="http://www.fedex.com/us/services/waystoship/intlexpress/first.html?link=4">FedEx International First<SUP>&reg;</SUP></a>'),
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/first.html?link=4">FedEx International First<SUP>&reg;</SUP></a>',
           'description' => 'Overseas delivery by 8 a.m. to major cities',
           'price' => 169.31,
@@ -112,113 +94,89 @@ class fedex_shipping_locator_test extends UnitTestCase
     );    
   }
   
+  function test_cache_shipping_options()
+  { 
+    $this->mock_locator->use_cache();
+       
+    $this->mock_locator->setReturnValue('_get_express_shipping_options_html', file_get_contents(dirname(__FILE__) . '/fedex_express.html'));
+    $this->mock_locator->setReturnValue('_get_ground_shipping_options_html', file_get_contents(dirname(__FILE__) . '/fedex_ground.html'));
+    
+    $this->mock_locator->expectOnce('_get_express_shipping_options_html', 
+      array($this->shipping_configuration)
+    );
+
+    $this->mock_locator->expectOnce('_get_ground_shipping_options_html', 
+      array($this->shipping_configuration)
+    );
+    
+    $options1 = $this->mock_locator->get_shipping_options($this->shipping_configuration);
+    
+    $cache = $this->mock_locator->get_cache();
+    touch($cache->get_last_cached_file(), time() + 1);//for sure
+    clearstatcache();
+    
+    $options2 = $this->mock_locator->get_shipping_options($this->shipping_configuration);
+    
+    $this->assertEqual($options1, $options2);
+    $this->mock_locator->flush_cache();  
+  }
+
   function test_get_shipping_options_mock_connect_false()
-  {
-    $orig_zip_code = 'L5V 1A7';
-    $dest_zip_code = '02478';
-    
-    $orig_country_code = 'CA';
-    $dest_country_code = 'US';
-    
-    $declared_value = 0;
-    $weight = 10;
-    $weight_unit = SHIPPING_FEDEX_WEIGHT_UNIT_LB;
-    $is_residence = false;
-    
+  {    
     $this->mock_locator->setReturnValue('_get_express_shipping_options_html', false);
     $this->mock_locator->setReturnValue('_get_ground_shipping_options_html', false);    
         
-    $options = $this->mock_locator->get_shipping_options(
-      $orig_zip_code, 
-      $dest_zip_code, 
-      $orig_country_code, 
-      $dest_country_code,
-      $declared_value,
-      $weight,
-      $weight_unit,
-      $is_residence
-    );
+    $options = $this->mock_locator->get_shipping_options($this->shipping_configuration);
 
     $this->assertFalse($options);    
+  }
+    
+  function test_get_shipping_options_false()//integration test ???
+  {
+    return;
+    
+    $this->shipping_configuration->set_weight(0);//error
   
+    $options = $this->locator->get_shipping_options($this->shipping_configuration);
+    
+    $this->assertFalse($options);  
   }
   
-//  function test_get_shipping_options_false()
-//  {
-//    $orig_zip_code = 'L5V 1A7';
-//    $dest_zip_code = '02478';
-//    
-//    $orig_country_code = 'CA';
-//    $dest_country_code = 'US';
-//    
-//    $declared_value = 0;
-//    $weight = 0; //error
-//    $weight_unit = SHIPPING_FEDEX_WEIGHT_UNIT_LB;
-//    $is_residence = false;
-//  
-//    $options = $this->locator->get_shipping_options(
-//      $orig_zip_code, 
-//      $dest_zip_code, 
-//      $orig_country_code, 
-//      $dest_country_code,
-//      $declared_value,
-//      $weight,
-//      $weight_unit,
-//      $is_residence
-//    );  
-//    
-//    $this->assertFalse($options);  
-//  }
-  
-//  function test_get_shipping_options()
-//  {
-//    $orig_zip_code = 'L5V 1A7';
-//    $dest_zip_code = '02478';
-//    
-//    $orig_country_code = 'CA';
-//    $dest_country_code = 'US';
-//    
-//    $declared_value = 0;
-//    $weight = 10;
-//    $weight_unit = SHIPPING_FEDEX_WEIGHT_UNIT_LB;
-//    $is_residence = false;
-//    
-//    $options = $this->locator->get_shipping_options(
-//      $orig_zip_code, 
-//      $dest_zip_code, 
-//      $orig_country_code, 
-//      $dest_country_code,
-//      $declared_value,
-//      $weight,
-//      $weight_unit,
-//      $is_residence
-//    );
-//
-//    $this->assertEqual($options, 
-//      array(
-//        array(
-//          'name' => '<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>',
-//          'description' => "Delivery in&nbsp;\n5&nbsp;business days",
-//          'price' => 16.02,          
-//        ),
-//        array(
-//          'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>',
-//          'description' => 'Time definite delivery in 2 business days',
-//          'price' => 72.62,          
-//        ),
-//        array(
-//          'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/priority.html?link=4">FedEx International Priority<SUP>&reg;</SUP></a>',
-//          'description' => 'Reach major business centers in 24 to 48 hours',
-//          'price' => 113.68,  
-//        ),        
-//        array(
-//          'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/first.html?link=4">FedEx International First<SUP>&reg;</SUP></a>',
-//          'description' => 'Overseas delivery by 8 a.m. to major cities',
-//          'price' => 169.31,
-//        ),
-//      )
-//    );    
-//  }
+  function test_get_shipping_options()//integration test ???
+  { 
+    return;
+       
+    $options = $this->locator->get_shipping_options($this->shipping_configuration);
+
+    $this->assertEqual($options, 
+      array(
+        array(
+          'id' => md5('<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>'),
+          'name' => '<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>',
+          'description' => "Delivery in&nbsp;\n5&nbsp;business days",
+          'price' => 16.02,          
+        ),
+        array(
+          'id' => md5('<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>'),
+          'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>',
+          'description' => 'Time definite delivery in 2 business days',
+          'price' => 72.62,          
+        ),
+        array(
+          'id' => md5('<a href="http://www.fedex.com/us/services/waystoship/intlexpress/priority.html?link=4">FedEx International Priority<SUP>&reg;</SUP></a>'),
+          'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/priority.html?link=4">FedEx International Priority<SUP>&reg;</SUP></a>',
+          'description' => 'Reach major business centers in 24 to 48 hours',
+          'price' => 113.68,  
+        ),        
+        array(
+          'id' => md5('<a href="http://www.fedex.com/us/services/waystoship/intlexpress/first.html?link=4">FedEx International First<SUP>&reg;</SUP></a>'),
+          'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/first.html?link=4">FedEx International First<SUP>&reg;</SUP></a>',
+          'description' => 'Overseas delivery by 8 a.m. to major cities',
+          'price' => 169.31,
+        ),
+      )
+    );    
+  }
 }
 
 ?>

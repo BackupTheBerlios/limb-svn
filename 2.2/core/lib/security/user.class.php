@@ -126,7 +126,7 @@ class user extends object
 	function &_get_identity_record($login, $password)
 	{
 		$crypted_password = $this->get_crypted_password($login, $password);
-		
+
 		$db =& db_factory :: instance();
 		
 		$sql = 
