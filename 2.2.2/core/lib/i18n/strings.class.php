@@ -20,6 +20,14 @@ class strings
 	function get($key, $filename='common', $locale_id=null)
 	{
 		$strings =& strings :: instance();
+		
+  	if(!$locale_id)
+  	{
+	  	if(defined('MANAGEMENT_LOCALE_ID'))
+	  		$locale_id = MANAGEMENT_LOCALE_ID;
+	  	else
+	  		$locale_id = DEFAULT_MANAGEMENT_LOCALE_ID;
+	  }		
 			  
 	  return $strings->_get_recursive($key, $filename, $locale_id);
 	}
@@ -54,16 +62,8 @@ class strings
 		return $value;
 	}
 		
-	function _get_path($filename='common', $locale_id=null)
-	{				
-  	if(!$locale_id)
-  	{
-	  	if(defined('MANAGEMENT_LOCALE_ID'))
-	  		$locale_id = MANAGEMENT_LOCALE_ID;
-	  	else
-	  		$locale_id = DEFAULT_MANAGEMENT_LOCALE_ID;
-	  }
-	  
+	function _get_path($filename='common', $locale_id)
+	{					  
 		if(isset($this->_path_cache[$filename][$locale_id]))
 			return $this->_path_cache[$filename][$locale_id];	  
 		
