@@ -1,59 +1,30 @@
-	<table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
-	<tr>
-		<td height=1%>
-			<!--BEGIN: табулятор-->
-			<table width=100% border=0 cellspacing=0 cellpadding=0 id=tabulator active=param_req class=tabulator>
-			<col span=100 valign=bottom class=form>
-			<tr>
-				<td class=tab>&nbsp;</td>
-				<td id=param_req_box class=tab-active>
-					<table border=0 cellspacing=0 cellpadding=0 height=100%>
-					<tr>
-						<td nowrap class=label-active id=param_req><a href='JavaScript:void(0);'><locale:STRING name='properties'></a></td>
-					</tr>
-					</table>	
-				</td>
-				<td class=tab id=param_text_box>
-					<table border=0 cellspacing=0 cellpadding=0 height=100%>
-					<tr>
-						<td nowrap class=label id=param_text><a href='JavaScript:void(0);'><locale:STRING name='content'></a></td>
-					</tr>
-					</table>	
-				</td>
-				<td class=tab width=100%>&nbsp;</td>
-			</tr>
-			</table>	
-			<!--END: табулятор-->
-		</td>
-	</tr>
+<tabs active_tab="tab1" class="tabulator">
+	
+  <tabs:labels>
+    <tab_item:label tab_id="tab1"><locale:STRING name='properties'></tab_item:label>
+    <tab_item:label tab_id="tab2"><locale:STRING name='content'></tab_item:label>
+  </tabs:labels>
+  <table>
 	<core:INCLUDE file='/admin/admin_form_items/errors.html'>
-	<tr>
-		<td height=100% valign=top>
-		
-					<!--BEGIN: вкладка №1-->
+	</table>
+	
+  <tabs:contents> 
+		<tab_item:content tab_id="tab1">
 				  <table width="100%" border="0" cellspacing="0" cellpadding="0" style='padding:5px 10px 1px 5px;' id=param_req_content>
-				  	<col align=right width=200 class=labels>
 						<core:INCLUDE file='/admin/admin_form_items/identifier.html'>
 						<core:INCLUDE file='/admin/admin_form_items/title.html'>
 						<core:INCLUDE file='/admin/admin_form_items/annotation.html'>
 				  </table>
-					<!--END: вкладка №1-->
+		</tab_item:content>
 
-					<!--BEGIN: вкладка №2-->
+		<tab_item:content tab_id="tab2">
 				  <table width="100%" border="0" cellspacing="3" cellpadding="0" height=100% id=param_text_content>
 			    <tr>
 			      <td align=left colspan=20 valign=top><richedit name="document_content" id="document_content" label="Content" rows="20" style='width:100%;'></richedit></td>
 			    </tr>
 				  </table>
-					<!--END: вкладка №2-->
+  	</tab_item:content>  	
+  </tabs:contents>  
+</tabs>
 
-		</td>
-	</tr>
-	</table>	
-<script>
-	init_tab('param_req',	'tabulator', 'label', 'tab')
-	init_tab('param_text',	'tabulator', 'label', 'tab','window.onresize()')
-</script>
-
-	<div id='popup_div'></div>
- 
+<div id='popup_div'></div> 
