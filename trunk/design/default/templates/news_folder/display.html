@@ -1,7 +1,5 @@
 <core:WRAP file="page.html" placeholder="content">
 
-				<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
-
 <span class=jip>
 <fetch:MAPPED>
 <core:INCLUDE file="jip_actions/extended.html">
@@ -10,7 +8,6 @@
 
 <fetch:SUB_BRANCH target='news' navigator='pager' >
 	<core:PARAMETER name='loader_class_name' value='news_object'>
-	<core:PARAMETER name='datasource_path' value='fetch_sub_branch_datasource'>
 	<core:PARAMETER name='order' value='news_date=DESC'>
 </fetch:SUB_BRANCH>
 
@@ -23,5 +20,3 @@
     </grid:ITERATOR>
 </table>
 </grid:LIST>
-
-			<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->

@@ -1,12 +1,6 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<table width=100% border=0 cellspacing=0 cellpadding=0  height=100% >
-<tr>
-	<td width=100% valign=top style='padding:10px 20px 30px 20px'>
-				<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
-
-					<core:INCLUDE file="page_data.html">
-					<core:INCLUDE file="/guestbook_message/create_form.html">
+<core:INCLUDE file="/guestbook_message/create_form.html">
 
 <fetch:SUB_BRANCH target='messages' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='guestbook_message' >
@@ -44,9 +38,3 @@
     </grid:ITERATOR>
 </grid:LIST>
 </table>
-
-			<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->
-	</td>
-</tr>
-</table>
-

@@ -20,7 +20,8 @@ class guestbook_controller extends site_object_controller
 				'display' => array(
 						'permissions_required' => 'r',
 						'action_path' => '/guestbook_message/front_create_guestbook_message_action',
-						'template_path' => '/guestbook/display.html'
+						'template_path' => '/guestbook/display.html',
+						'can_have_access_template' => true,
 				),
 				'admin_display' => array(
 						'permissions_required' => 'r',

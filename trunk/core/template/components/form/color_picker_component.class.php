@@ -24,7 +24,7 @@ class color_picker_component extends input_form_element
 		if(!$this->get_attribute('size'))
 			$this->set_attribute('size', "10");
 			
-		define('FILE_SELECT_LOAD_SCRIPT',1);
+		define('COLOR_PICKER_LOAD_SCRIPT',1);
 	}
 	
 	function render_color_picker()

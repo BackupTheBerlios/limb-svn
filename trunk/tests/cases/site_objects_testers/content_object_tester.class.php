@@ -83,7 +83,7 @@ class content_object_tester extends site_object_tester
   
   function _generate_number()
   {
-  	return mt_rand(1, 1000);
+  	return mt_rand(1, 100);
   }
   
   function _generate_test_attributes()

@@ -255,25 +255,25 @@ CREATE TABLE `sys_class` (
 Table data for temp.sys_class
 */
 
-INSERT INTO `sys_class` VALUES (1,'main_page','/shared/images/folder.gif',0);
-INSERT INTO `sys_class` VALUES (2,'admin_page','',0);
-INSERT INTO `sys_class` VALUES (3,'site_structure','',1);
-INSERT INTO `sys_class` VALUES (4,'class_folder','/shared/images/folder.gif',0);
-INSERT INTO `sys_class` VALUES (5,'objects_access','',0);
-INSERT INTO `sys_class` VALUES (6,'users_folder','/shared/images/folder.gif',0);
-INSERT INTO `sys_class` VALUES (7,'user_object','',1);
-INSERT INTO `sys_class` VALUES (8,'user_groups_folder','/shared/images/folder.gif',0);
-INSERT INTO `sys_class` VALUES (9,'user_group','',1);
-INSERT INTO `sys_class` VALUES (10,'login_object','',0);
-INSERT INTO `sys_class` VALUES (11,'user_activate_password','',0);
-INSERT INTO `sys_class` VALUES (12,'user_change_password','',0);
-INSERT INTO `sys_class` VALUES (13,'user_generate_password','',0);
-INSERT INTO `sys_class` VALUES (14,'navigation_item','',1);
-INSERT INTO `sys_class` VALUES (15,'message','',0);
-INSERT INTO `sys_class` VALUES (16,'images_folder','/shared/images/folder.gif',0);
-INSERT INTO `sys_class` VALUES (17,'files_folder','/shared/images/folder.gif',0);
-INSERT INTO `sys_class` VALUES (18,'file_object','',1);
-INSERT INTO `sys_class` VALUES (19,'image_object','',1);
+INSERT INTO `sys_class` VALUES (1,'main_page','/shared/images/folder.gif',0, 1);
+INSERT INTO `sys_class` VALUES (2,'admin_page','',0, 1);
+INSERT INTO `sys_class` VALUES (3,'site_structure','',1, 0);
+INSERT INTO `sys_class` VALUES (4,'class_folder','/shared/images/folder.gif',0, 0);
+INSERT INTO `sys_class` VALUES (5,'objects_access','',0, 0);
+INSERT INTO `sys_class` VALUES (6,'users_folder','/shared/images/folder.gif',0, 1);
+INSERT INTO `sys_class` VALUES (7,'user_object','',1, 0);
+INSERT INTO `sys_class` VALUES (8,'user_groups_folder','/shared/images/folder.gif',0, 1);
+INSERT INTO `sys_class` VALUES (9,'user_group','',1, 0);
+INSERT INTO `sys_class` VALUES (10,'login_object','',0, 0);
+INSERT INTO `sys_class` VALUES (11,'user_activate_password','',0, 0);
+INSERT INTO `sys_class` VALUES (12,'user_change_password','',0, 0);
+INSERT INTO `sys_class` VALUES (13,'user_generate_password','',0, 0);
+INSERT INTO `sys_class` VALUES (14,'navigation_item','',1, 1);
+INSERT INTO `sys_class` VALUES (15,'message','',0, 1);
+INSERT INTO `sys_class` VALUES (16,'images_folder','/shared/images/folder.gif',0, 1);
+INSERT INTO `sys_class` VALUES (17,'files_folder','/shared/images/folder.gif',0, 1);
+INSERT INTO `sys_class` VALUES (18,'file_object','',1, 0);
+INSERT INTO `sys_class` VALUES (19,'image_object','',1, 0);
 
 /*
 Table struture for sys_full_text_index
