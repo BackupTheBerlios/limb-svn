@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_feedback_action extends form_edit_site_object_action
 {
-	function edit_feedback_action()
+	function edit_feedback_action($name = 'edit_feedback_content', $merge_definition = array())
 	{
 		$definition = array(
 			'site_object' => 'feedback_object',
@@ -22,7 +22,10 @@ class edit_feedback_action extends form_edit_site_object_action
 			)
 		);
 
-		parent :: form_edit_site_object_action('edit_feedback_content', $definition);
+		parent :: form_edit_site_object_action(
+					$name, 
+					complex_array :: array_merge($definition, $merge_definition)
+		);
 	}
 	
 	function _init_validator()

@@ -29,6 +29,9 @@ class pricelist_datasource extends fetch_sub_branch_datasource
 			if($data['file_id'] > 0)
 				$file_ids[$data['file_id']] = $data['file_id'];
 		
+		if(!$file_ids)
+			return new array_dataset($pricelists_array);
+
 		$files_counter = null;
 		$file_data = fetch_by_node_ids($file_ids, 'file_object', $files_counter);
 

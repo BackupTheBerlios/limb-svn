@@ -25,8 +25,7 @@ class feedback_object_controller extends site_object_controller
 				),
 				'admin_display' => array(
 						'permissions_required' => 'r',
-						'action_path' => '/feedback_object/send_feedback_action',
-						'template_path' => '/feedback_object/display.html'
+						'template_path' => '/admin/page.html'
 				),
 				'edit' => array(
 						'permissions_required' => 'w',
