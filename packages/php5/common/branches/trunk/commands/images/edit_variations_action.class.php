@@ -28,7 +28,7 @@ class edit_variations_action extends form_edit_site_object_action
 			'_FILES_' => 'files_data'
 		);
 		
-		$ini = get_ini('image_variations.ini');
+		$ini = Limb :: toolkit()->getINI('image_variations.ini');
 		
 		$image_variations = $ini->get_all();
 
@@ -55,7 +55,7 @@ class edit_variations_action extends form_edit_site_object_action
 	{
 		parent :: _init_dataspace($request);
 		
-		$ini = get_ini('image_variations.ini');
+		$ini = Limb :: toolkit()->getINI('image_variations.ini');
 		
 		$image_variations = $ini->get_all();
 		

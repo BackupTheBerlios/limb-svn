@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 if(!$HTMLSax_dir = get_ini_option('external.ini', 'library_path', 'XML_HTMLSAX'))
   $HTMLSax_dir = '../external/pear/XML/';

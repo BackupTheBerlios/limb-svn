@@ -30,7 +30,8 @@ class login_behaviour extends site_object_controller
                                   array(LIMB :: STATUS_OK => 'form'));
 
     $state_machine->registerState('form', 
-                                  LIMB_SIMPLE_PERMISSIONS_DIR . '/commands/login_form_command',
+                                  array(LIMB_SIMPLE_PERMISSIONS_DIR . '/commands/login_form_command', 
+                                        'login_form'),
                                   array(LIMB :: STATUS_FORM_SUBMITTED => 'process',
                                         LIMB :: STATUS_FORM_DISPLAYED => 'render'));
 

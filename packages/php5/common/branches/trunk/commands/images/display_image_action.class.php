@@ -77,7 +77,7 @@ class display_image_action extends action
 
 	protected function _get_variation()
 	{
-		$ini = get_ini('image_variations.ini');
+		$ini = Limb :: toolkit()->getINI('image_variations.ini');
 
 		$image_variations = $ini->get_all();
 

@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 class full_text_search
 {
-	protected $db = null;
+	protected $db;
 	protected $use_boolean_mode = false;
 	
 	function __construct()
@@ -25,7 +25,7 @@ class full_text_search
 	
 	protected function _can_perform_fulltext_search()
 	{
-	  $db_type = get_ini_option('common.ini', 'type', 'DB');
+	  $db_type = Limb :: toolkit()->getINI('common.ini')->get_option('type', 'DB');
 	  
 		if($db_type == 'mysql')
 		{
@@ -81,7 +81,7 @@ class full_text_search
 	
 	protected function _check_boolean_mode()
 	{
-	  $db_type = get_ini_option('common.ini', 'type', 'DB');
+	  $db_type = Limb :: toolkit()->getINI('common.ini')->get_option('type', 'DB');
 	  
 		if($db_type == 'mysql')
 		{

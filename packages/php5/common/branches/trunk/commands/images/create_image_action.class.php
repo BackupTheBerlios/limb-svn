@@ -28,7 +28,7 @@ class create_image_action extends form_create_site_object_action
 			'description' => 'description',
 		);
 		
-		$ini = get_ini('image_variations.ini');
+		$ini = Limb :: toolkit()->getINI('image_variations.ini');
 		
 		$image_variations = $ini->get_all();
 
@@ -57,7 +57,7 @@ class create_image_action extends form_create_site_object_action
 	{
 		parent :: _init_dataspace($request);
 		
-		$ini = get_ini('image_variations.ini');
+		$ini = Limb :: toolkit()->getINI('image_variations.ini');
 		
 		$image_variations = $ini->get_all();
 		

@@ -233,7 +233,7 @@ class image_object extends media_object
 	
 	protected function _get_variations_ini_list()
 	{
-		return get_ini('image_variations.ini')->get_all();
+		return Limb :: toolkit()->getINI('image_variations.ini')->get_all();
 	}
 	
 	protected function _insert_variation($variation_name, $tmp_file_path, $file_name, $mime_type)

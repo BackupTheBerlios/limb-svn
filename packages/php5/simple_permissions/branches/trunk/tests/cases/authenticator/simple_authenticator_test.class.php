@@ -80,7 +80,7 @@ class simple_authenticator_test extends LimbTestCase
 	  $this->auth->setReturnValue('_get_identity_record', array('id' => 10, 'title' => 'User'));
 	  $this->auth->setReturnValue('_get_db_groups', array(0 => array('object_id' => 1, 'identifier' => 'visitors')));
 	  
-	  $this->auth->login(array('login' => 'some_user', 'password' => 'test', 'locale_id' => 'en'));
+    $this->auth->login(array('login' => 'some_user', 'password' => 'test', 'locale_id' => 'en'));
 		
 		$user = user :: instance();
 		$groups = $user->get('groups');
