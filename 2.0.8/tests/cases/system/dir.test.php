@@ -11,6 +11,9 @@
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 require_once(LIMB_DIR . '/core/lib/system/dir.class.php');
 
+define('ABSOLUTE_PATH', PROJECT_DIR . '/var/');
+define('RELATIVE_PATH', 'var');
+
 class test_dir extends UnitTestCase 
 {
   function test_dir() 
@@ -20,31 +23,50 @@ class test_dir extends UnitTestCase
   
   function setUp()
   {
-  	if(!is_dir(VAR_DIR . '/tmp'))
-  		mkdir(VAR_DIR . '/tmp');	
+  	$this->_clean_up();
   }
   
   function tearDown()
   {
-  	if(is_dir(VAR_DIR . '/tmp/wow/hey'))
-  		rmdir(VAR_DIR . '/tmp/wow/hey');	
-
-  	if(is_dir(VAR_DIR . '/tmp/wow'))
-  		rmdir(VAR_DIR . '/tmp/wow');	
-
-  	if(is_dir(VAR_DIR . '/tmp'))
-  		rmdir(VAR_DIR . '/tmp');	
+  	$this->_clean_up();
   }
-      
-  function test_mkdir_windows() 
+  
+  function _clean_up()
   {
-  	if(sys :: os_type() != 'win32')
-  		return;
+  	if(is_dir(ABSOLUTE_PATH . '/tmp/wow/hey'))
+  		rmdir(ABSOLUTE_PATH . '/tmp/wow/hey');	
+
+  	if(is_dir(ABSOLUTE_PATH . '/tmp/wow'))
+  		rmdir(ABSOLUTE_PATH . '/tmp/wow');	
+
+  	if(is_dir(ABSOLUTE_PATH . '/tmp'))
+  		rmdir(ABSOLUTE_PATH . '/tmp');
+  		
+  	if(is_dir(RELATIVE_PATH . '/tmp/wow/hey'))
+  		rmdir(RELATIVE_PATH . '/tmp/wow/hey');	
+
+  	if(is_dir(RELATIVE_PATH . '/tmp/wow'))
+  		rmdir(RELATIVE_PATH . '/tmp/wow');	
+
+  	if(is_dir(RELATIVE_PATH . '/tmp'))
+  		rmdir(RELATIVE_PATH . '/tmp');
+
+  }
+        
+  function test_mkdir_absolute_path() 
+  {  	
+  	dir :: mkdir(ABSOLUTE_PATH . '/./tmp\../tmp/wow////hey/', 0777);
   	
-  	dir :: mkdir(VAR_DIR . '/./tmp\../tmp/wow////hey/', 0777, true);
-  	
-  	$this->assertTrue(is_dir(VAR_DIR . '/tmp/wow/hey/'));
+  	$this->assertTrue(is_dir(ABSOLUTE_PATH . '/tmp/wow/hey/'));
   }    
+  
+  function test_mkdir_relative_path() 
+  { 
+  	dir :: mkdir(RELATIVE_PATH . '/./tmp\../tmp/wow////hey/', 0777);
+  	
+  	$this->assertTrue(is_dir(RELATIVE_PATH . '/tmp/wow/hey/'));
+  }    
+
 }
 
 ?>

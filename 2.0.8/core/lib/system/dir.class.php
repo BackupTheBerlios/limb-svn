@@ -40,12 +40,22 @@ class dir
     if (count($dir_elements) == 0)
     	return true;
     
-    $current_dir = '';
-      	
-    for ($i=1; $i < count( $dir_elements ); ++$i )
+    if(!$dir_elements[0])
     {
-      $dir_element = $dir_elements[$i];
-      $current_dir .= $separator . $dir_element;
+    	array_shift($dir_elements);
+    	$current_dir .= array_shift($dir_elements);
+    }
+    else
+    {
+    	$current_dir = array_shift($dir_elements);
+    }
+    
+    if(!dir :: _do_mkdir($current_dir, $perm))
+    	return false;
+          	
+    for ($i = 0; $i < count( $dir_elements ); $i++ )
+    {
+      $current_dir .= $separator . $dir_elements[$i];
 			
       if (!dir :: _do_mkdir($current_dir, $perm))
       {	
@@ -54,6 +64,24 @@ class dir
     }
 
   	return true;
+  }
+  
+  /*
+   Creates the directory $dir with permission $perm.
+  */
+  function _do_mkdir($dir, $perm)
+  {
+  	if(is_dir($dir))
+  		return true;
+  	  	  	
+    $oldumask = umask(0);
+    if(!mkdir($dir, $perm))
+    {
+      umask($oldumask);
+      return false;
+    }
+    umask($oldumask);
+    return true;
   }
   
   function explode_path($path)
@@ -136,24 +164,6 @@ class dir
 		}
 		return explode("\n", $files);
 	}
-
-  /*
-   Creates the directory $dir with permission $perm.
-  */
-  function _do_mkdir($dir, $perm)
-  {
-  	if(is_dir($dir))
-  		return true;
-  	  	  	
-    $oldumask = umask(0);
-    if(!mkdir($dir, $perm))
-    {
-      umask($oldumask);
-      return false;
-    }
-    umask($oldumask);
-    return true;
-  }
 
   /*
    return the separator used between directories and files according to $type.
