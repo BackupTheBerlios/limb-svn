@@ -5,7 +5,8 @@ svn://svn.berlios.de/limb/2.2
   --  ***WARNING***: BC break! API of controllers, actions has changed! 
   
   --  fixed: db_module - now column_types array passed into sql_update method
-  --  fixed: template source display action crashed with force_compile flag set to 0
+  --  fixed: template source display action crashed with force_compile flag set to 0(issue #981986)
+  --  fixed: materialized_path::get_max_child_identifier() error value(issue #982675)
   
   --  initial revision of the interception filters implementation, 
       this led to the vast refactoring of ALL actions. Have a look at root.php :)
