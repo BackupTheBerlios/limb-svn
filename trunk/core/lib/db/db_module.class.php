@@ -184,18 +184,17 @@ class db_module
     
     return $result_array;
   }
-
-  function sql_insert($table, $row, $column_types=array())
-  {
-  	if(is_array($row))
-  		$row = $this->_process_values($row, $column_types);
-  	
-    return $this->sql_exec($this->_sql_string_insert($table, $row));
-  }
   
   function escape($sql)
   {
   	return $sql;
+  }
+  
+  function concat($value1, $value2)
+  {
+  	error('abstract method',
+  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__
+  	);
   }
   
   function null()
@@ -206,20 +205,22 @@ class db_module
 	//$count $start not supported by default!
   function sql_select($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
-    return $this->sql_exec($this->_sql_string_select($table, $fields, $where, $order, $count, $start));
+    return $this->sql_exec($this->make_select_string($table, $fields, $where, $order, $count, $start));
+  }
+
+  function sql_insert($table, $row, $column_types=array())
+  {  	
+    return $this->sql_exec($this->make_insert_string($table, $row, $column_types));
   }
 
   function sql_update($table, $set, $where='', $column_types=array())
-  {
-  	if(is_array($set))
-  		$set = $this->_process_values($set, $column_types);
-  	
-  	return $this->sql_exec($this->_sql_string_update($table, $set, $where));
+  {  	
+  	return $this->sql_exec($this->make_update_string($table, $set, $where));
   }
 
   function sql_delete($table, $where='')
   {  	
-    return $this->sql_exec($this->_sql_string_delete($table, $where));
+    return $this->sql_exec($this->make_delete_string($table, $where));
   }
    
   function parse_batch_sql(&$ret, $sql, $release)
@@ -361,10 +362,10 @@ class db_module
   	);  
 	}
 	
-  function _sql_string_insert($table, $names_values)
+  function make_insert_string($table, $names_values, $column_types=array())
   {
-    if(!$table)
-    	debug ::write_error('empty $table', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+  	if(is_array($names_values))
+  		$names_values = $this->_process_values($names_values, $column_types);
     	
 		$keys = array_keys($names_values);
 		$values = array_values($names_values);
@@ -375,11 +376,8 @@ class db_module
     return "INSERT INTO $table $str_names VALUES $str_values";
   }
 
-  function _sql_string_select($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  function make_select_string($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
-    if(!$table) 
-    	debug ::write_error('empty $table', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-
     if(is_array($where))
     	$where = ' WHERE (' . $this->sql_and($where) . ')';
     elseif ($where != '')
@@ -397,40 +395,34 @@ class db_module
     return "SELECT $fields_str FROM $table $where $order";
   }
 
-  function _sql_string_update($table, $fields_values, $where='')
-  {
-    if(!$table)
-    	debug ::write_error('empty $table', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-    	
-    if(!$fields_values)
-    	debug ::write_error('empty $fields_values', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-    	   
+  function make_update_string($table, $names_values, $where='', $column_types=array())
+  { 
+  	if(is_array($names_values))
+  		$names_values = $this->_process_values($names_values, $column_types);
+   	    	   
 		if(is_array($where))
 			$where = ' WHERE (' . $this->sql_and($where) . ')';
     elseif($where)
       $where = ' WHERE (' . $where . ')';
 
     $fields_str = '';
-    if(is_array($fields_values))
+    if(is_array($names_values))
     {
     	$implode_values = array();
     	
-    	foreach($fields_values as $key => $val)
+    	foreach($names_values as $key => $val)
     		$implode_values[] = "$key=$val";
     		
       	$fields_str = implode(',', $implode_values);
     }
     else
-      $fields_str = $fields_values;
+      $fields_str = $names_values;
 
     return "UPDATE $table SET $fields_str $where";
   }
 
-  function _sql_string_delete($table, $where='')
+  function make_delete_string($table, $where='')
   {
-    if(!$table)
-    	debug ::write_error('empty $table', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-
     if(is_array($where))
     	$where = ' WHERE (' . $this->sql_and($where) . ')';
     elseif($where)

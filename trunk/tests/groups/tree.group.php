@@ -15,7 +15,7 @@ class tests_tree extends GroupTest
 	{
 	  $this->GroupTest('tree');
 	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/tree');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/tree/materialized_path/');
 	}
 }
 ?>

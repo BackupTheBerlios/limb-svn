@@ -55,17 +55,20 @@ class shared_data_space_test_case extends UnitTestCase
 	{
 		$this->assertNull($this->dataspace->get('foo'));
 	} 
+	
 	function test_get_set_variable()
 	{
 		$this->dataspace->set('foo', 'bar');
 		$this->assertIdentical($this->dataspace->get('foo'), 'bar');
 	} 
+	
 	function test_get_set_array()
 	{
 		$array = array('red', 'blue', 'green');
 		$this->dataspace->set('foo', $array);
 		$this->assertIdentical($this->dataspace->get('foo'), $array);
 	} 
+	
 	function test_get_set_object()
 	{
 		$foo = new NullClass();
@@ -73,6 +76,7 @@ class shared_data_space_test_case extends UnitTestCase
 		$this->dataspace->set('foo', $foo);
 		$this->assertIdentical($this->dataspace->get('foo'), $foo);
 	} 
+	
 	function test_get_set_append()
 	{
 		$first = 'Hello';
@@ -81,6 +85,7 @@ class shared_data_space_test_case extends UnitTestCase
 		$this->dataspace->append('foo', $second);
 		$this->assertIdentical($this->dataspace->get('foo'), $first . $second);
 	} 
+	
 	function test_get_set_append_mixed_type()
 	{
 		$first = 'Hello';
@@ -89,17 +94,20 @@ class shared_data_space_test_case extends UnitTestCase
 		$this->dataspace->append('foo', $second);
 		$this->assertIdentical($this->dataspace->get('foo'), $first . $second);
 	} 
+	
 	function test_export_empty()
 	{
 		$foo = array();
 		$this->assertIdentical($this->dataspace->export(), $foo);
 	} 
+	
 	function test_export()
 	{
 		$this->dataspace->set('foo', 'bar');
 		$expected = array('foo' => 'bar');
 		$this->assertIdentical($this->dataspace->export(), $expected);
-	} 
+	}
+	 
 	function test_export_import()
 	{
 		$numbers = array(1, 2, 3);
@@ -110,6 +118,7 @@ class shared_data_space_test_case extends UnitTestCase
 		$this->assertIdentical($exported['color'], 'red');
 		$this->assertIdentical($exported['numbers'], $numbers);
 	} 
+	
 	function test_export_import_append()
 	{
 		$numbers = array(1, 2, 3);

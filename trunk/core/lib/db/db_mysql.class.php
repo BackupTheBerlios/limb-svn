@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: db_mysql.class.php 441 2004-02-13 16:07:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -50,9 +50,9 @@ class db_mysql extends db_module
 		return mysql_query($sql, $this->_db_connection);
 	}
 	  
-  function _sql_string_select($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  function make_select_string($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {  		
-  	$sql = parent :: _sql_string_select($table, $fields, $where, $order, $count, $start);
+  	$sql = parent :: make_select_string($table, $fields, $where, $order, $count, $start);
   	
 		if ($count)
 			$sql .= "\nLIMIT $start, $count";
@@ -218,6 +218,12 @@ class db_mysql extends db_module
 	function escape($sql)
   {
   	return mysql_escape_string($sql);
+  }
+  
+  function concat($values)
+  {
+  	$str = implode(',' , $values);
+  	return " CONCAT({$str}) ";
   }
   
   function count_selected_rows()

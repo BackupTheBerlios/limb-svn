@@ -220,7 +220,7 @@ class site_object_tester extends UnitTestCase
 		$this->object->set_identifier('test');
 
   	if($this->object->is_auto_identifier())
-			debug_mock :: expect_write_error(NESE_ERROR_NOT_FOUND, array('id' => 1000000));
+			debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000000));
 		else
 			debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 1000000));
 		

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/tree/nested_sets_driver.class.php');
+require_once(LIMB_DIR . 'core/tree/drivers/nested_sets_driver.class.php');
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
 
 class limb_tree
@@ -20,6 +20,12 @@ class limb_tree
 		$this->initialize_tree_driver($driver);
 	}
 	
+	function &instance()
+	{
+		$obj =&	instantiate_object('limb_tree');
+		return $obj;
+	}
+
 	function initialize_tree_driver($driver = null)
 	{
 		if($driver === null)
@@ -101,13 +107,7 @@ class limb_tree
 	{
 		return $this->_tree_driver->move_tree($id, $target_id, $pos);
 	}
-		
-	function &instance()
-	{
-		$obj =&	instantiate_object('limb_tree');
-		return $obj;
-	}
-	
+			
 	function set_dumb_mode($status=true)
 	{
 		$this->_tree_driver->set_dumb_mode($status);
@@ -188,19 +188,19 @@ class limb_tree
   	return $this->_tree_driver->collapse_node($id);
   }
       
-  function can_add_node($parent_id)
+  function can_add_node($id)
   {
-  	if (!$this->is_node($parent_id))
+  	if (!$this->is_node($id))
   		return false;
   	else
-  		return true;	
+  		return true;
   }
   
-  function can_delete_node($parent_id)
+  function can_delete_node($id)
   {
-  	$children = $this->get_children($parent_id);
+  	$amount = $this->count_children($id);
   	
-  	if (($children === false) || !count($children))
+  	if ($amount === false || $amount == 0)
   		return true;
   	else
   		return false;

@@ -11,8 +11,6 @@
 
 // Error and message codes
 define('NESE_ERROR_RECURSION', 'E100');
-define('NESE_ERROR_NOT_FOUND', 'E500');
-define('NESE_ERROR_WRONG_MPARAM', 'E2');
 
 // for moving a node before another
 define('NESE_MOVE_BEFORE', 'BE');
@@ -27,10 +25,10 @@ define('NESE_MOVE_BELOW', 'SUB');
 define('NESE_SORT_LEVEL', 'SLV');
 define('NESE_SORT_PREORDER', 'SPO');
 
-require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . 'core/tree/drivers/tree_driver.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
-class nested_sets_driver
+class nested_sets_driver extends tree_driver
 {
 	var $_db = null;
 	
@@ -51,8 +49,6 @@ class nested_sets_driver
 		'parent_id' => 'parent_id',
 	);
 	
-	var $_expanded_parents = array(); 
-		
 	/**
 	* 
 	* @var string The table with the actual tree data
@@ -60,12 +56,6 @@ class nested_sets_driver
 	*/
 	var $_node_table = 'sys_site_object_tree';
 
-	/**
-	* 
-	* @var string The table to handle locking
-	* @access public 
-	*/
-	var $_lock_table = 'sys_lock';
 
 	/**
 	* Secondary order field.  Normally this is the order field, but can be changed to
@@ -83,27 +73,6 @@ class nested_sets_driver
 	* @access private 
 	*/
 	var $_default_secondary_sort = 'ordr';
-
-	/**
-	* 
-	* @var int The time to live of the lock
-	* @access public 
-	*/
-	var $_lock_ttl = 5;
-
-	/**
-	* 
-	* @var bool Lock the structure of the table?
-	* @access private 
-	*/
-	var $_structure_table_lock = false;
-
-	/**
-	* 
-	* @var bool Don't allow unlocking (used inside of moves)
-	* @access private 
-	*/
-	var $_lock_exclusive = false;
 
 	/**
 	* Specify the sortMode of the sql_exec methods
@@ -141,14 +110,6 @@ class nested_sets_driver
 	var $_relations = array();
 
 	/**
-	* Used for _internal_ tree conversion
-	* 
-	* @var bool Turn off user param verification and id generation
-	* @access private 
-	*/
-	var $_dumb_mode = false;
-
-	/**
 	* Constructor
 	* 
 	* @param array $params Database column fields which should be returned
@@ -159,32 +120,9 @@ class nested_sets_driver
 	{		
 		$this->_db =& db_factory :: instance();
 		
-		register_shutdown_function(array(&$this, '_nested_sets_driver'));
+		parent :: tree_driver();
 	} 
-	
-	function set_expanded_parents(& $expanded_parents)
-	{
-		$this->_expanded_parents =& $expanded_parents;
-				
-		$this->check_expanded_parents();
-	}
-	
-	/**
-	* Destructor
-	* Releases all locks
-	* Closes open database connections
-	* 
-	*/
-	function _nested_sets_driver()
-	{
-		$this->_release_lock(true);
-	} 
-	  
-  function set_dumb_mode($status=true)
-  {
-  	$this->_dumb_mode = $status;
-  }
-  
+			    
 	/**
 	* Fetch the whole nested set
 	* 
@@ -257,7 +195,7 @@ class nested_sets_driver
 	{
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: write_error('NESE_ERROR_NOT_FOUND',
+    	debug :: write_error('TREE_ERROR_NODE_NOT_FOUND',
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -305,7 +243,7 @@ class nested_sets_driver
 	{
 		if (!($child = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -344,7 +282,7 @@ class nested_sets_driver
 	{
 		if (!($child = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -388,7 +326,7 @@ class nested_sets_driver
 	{
 		if (!($sibling = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -415,7 +353,7 @@ class nested_sets_driver
 	{		
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -448,7 +386,7 @@ class nested_sets_driver
 	{
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -490,7 +428,7 @@ class nested_sets_driver
 	{
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -737,7 +675,7 @@ class nested_sets_driver
 	{
 		if (!($parent = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -816,29 +754,7 @@ class nested_sets_driver
 			
 		return $result;
   }
-  
-  function check_expanded_parents()
-  {
-  	if(!is_array($this->_expanded_parents) || sizeof($this->_expanded_parents) == 0)
-  	{
-  		$this->reset_expanded_parents();  		
-  	}
-  	elseif(sizeof($this->_expanded_parents) > 0)
-  	{
-  		$this->update_expanded_parents();
-  	}
-  }
-  
-  function update_expanded_parents()
-  {
-  	$nodes_ids = array_keys($this->_expanded_parents);
-  	
-  	$nodes =& $this->get_nodes_by_ids($nodes_ids);
-  	
-  	foreach($nodes as $id => $node)
-  		$this->_set_expanded_parent_status($node, $this->is_node_expanded($id));
-  }
-  
+      
   function reset_expanded_parents()
   {
   	$this->_expanded_parents = array();
@@ -853,37 +769,7 @@ class nested_sets_driver
   			$this->_set_expanded_parent_status($node, false);
   	}
   }
-
-  function toggle_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)  		
-  		return false;
-		
-		$this->_set_expanded_parent_status($node, !$this->is_node_expanded($id));
-		  	
-  	return true;
-  }
   
-  function expand_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)
-  		return false;
-  	
-  	$this->_set_expanded_parent_status($node, true);
-  	  	
-  	return true;
-  }
-
-  function collapse_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)
-  		return false;
-  		
-		$this->_set_expanded_parent_status($node, false);
-		    
-  	return true;
-  }
-
   function _set_expanded_parent_status($node, $status)
   {
   	$id = (int)$node['id'];
@@ -920,7 +806,7 @@ class nested_sets_driver
 		// If they specified an id, see if the parent is valid
 		if (!$first && ($id && !$parent = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -952,8 +838,6 @@ class nested_sets_driver
 				$parent['ordr'] = isset($tmp_order['m']) ? $tmp_order['m'] : 0;
 			} 
 		} 
-		// Try to aquire a table lock
-		$lock = $this->_set_lock();
 
 		$sql = array();
 		$insert_data = array();
@@ -1005,7 +889,6 @@ class nested_sets_driver
 		// Transform the node data hash to a sql_exec
 		if (!$qr = $this->_values2insert_query($values, $insert_data))
 		{
-			$this->_release_lock();
 			return false;
 		} 
 		// Insert the new node
@@ -1015,8 +898,6 @@ class nested_sets_driver
 		{
 			$this->_db->sql_exec($qry);
 		} 
-		
-		$this->_release_lock();
 		
 		return $node_id;
 	} 
@@ -1044,14 +925,12 @@ class nested_sets_driver
 		// invalid parent id, bail out
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
-		// Try to aquire a table lock
-		$lock = $this->_set_lock();
 
 		$this->_verify_user_values($values); 
 		// Get the children of the target node
@@ -1064,7 +943,7 @@ class nested_sets_driver
 			// What we have to do is virtually an insert of a node after the last child
 			// So we don't have to proceed creating a subnode
 			$new_node = $this->create_right_node($last['id'], $values);
-			$this->_release_lock();
+			
 			return $new_node;
 		} 
 
@@ -1099,7 +978,6 @@ class nested_sets_driver
 
 		if (!$qr = $this->_values2insert_query($values, $insert_data))
 		{
-			$this->_release_lock();
 			return false;
 		} 
 
@@ -1109,7 +987,6 @@ class nested_sets_driver
 			$this->_db->sql_exec($qry);
 		} 
 
-		$this->_release_lock();
 		return $node_id;
 	} 
 	
@@ -1143,15 +1020,13 @@ class nested_sets_driver
 		// invalid target node, bail out
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: error(NESE_ERROR_NOT_FOUND,
+    	debug :: error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
 
-		$lock = $this->_set_lock();
-		
 		// If the target node is a rootnode we virtually want to create a new root node
 		if ($this_node['root_id'] == $this_node['id'])
 		{
@@ -1199,7 +1074,6 @@ class nested_sets_driver
 
 		if (!$qr = $this->_values2insert_query($values, $insert_data))
 		{
-			$this->_release_lock();
 			return false;
 		} 
 		// Insert the new node
@@ -1209,7 +1083,6 @@ class nested_sets_driver
 			$this->_db->sql_exec($qry);
 		} 
 
-		$this->_release_lock();
 		return $node_id;
 	} 
 	
@@ -1243,20 +1116,17 @@ class nested_sets_driver
 		// invalid target node, bail out
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
 
-		$lock = $this->_set_lock();
-		
 		// If the target node is a rootnode we virtually want to create a new root node
 		if ($this_node['root_id'] == $this_node['id'])
 		{
 			$nid = $this->create_root_node($values, $id);
-			$this->_release_lock();
 			return $nid;
 		} 
 
@@ -1303,7 +1173,6 @@ class nested_sets_driver
 
 		if (!$qr = $this->_values2insert_query($values, $insert_data))
 		{
-			$this->_release_lock();
 			return false;
 		} 
 		// Insert the new node
@@ -1317,7 +1186,6 @@ class nested_sets_driver
 			$this->_db->sql_exec($qry);
 		} 
  		
-		$this->_release_lock();
 		return $node_id;
 	} 
 	/**
@@ -1332,14 +1200,12 @@ class nested_sets_driver
 		// invalid target node, bail out
 		if (!($this_node = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
     	return false;
 		} 
-
-		$lock = $this->_set_lock();
 
 		$parent = $this->get_parent($id);
 		$len = $this_node['r'] - $this_node['l'] + 1;
@@ -1387,7 +1253,6 @@ class nested_sets_driver
 		{
 			$this->_db->sql_exec($qry);
 		} 
-		$this->_release_lock();
 		return true;
 	} 
 	
@@ -1402,8 +1267,6 @@ class nested_sets_driver
 	*/
 	function update_node($id, $values, $internal = false)
 	{
-		$lock = $this->_set_lock();
-
 		if (!$internal)
 		{
 			$this->_verify_user_values($values);
@@ -1412,7 +1275,6 @@ class nested_sets_driver
 		$insert_data = array();
 		if (!$qr = $this->_values2update_query($values, $insert_data))
 		{
-			$this->_release_lock();
 			return false;
 		} 
 
@@ -1422,7 +1284,6 @@ class nested_sets_driver
 										$id);
 										
 		$this->_db->sql_exec($sql);
-		$this->_release_lock();
 		return true;
 	} 
 	
@@ -1449,7 +1310,7 @@ class nested_sets_driver
 		// Get information about source and target
 		if (!($source = $this->get_node($id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('id' => $id)
     	);
@@ -1458,14 +1319,12 @@ class nested_sets_driver
 
 		if (!($target = $this->get_node($target_id)))
 		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
     		array('target_id' => $target_id)
     	);
     	return false;
 		} 
-
-		$lock = $this->_set_lock(true);
 
 		$this->_relations = array(); 
 
@@ -1476,7 +1335,6 @@ class nested_sets_driver
 					(($source['l'] <= $target['l']) &&
 						($source['r'] >= $target['r'])))
 			{
-				$this->_release_lock(true);
 				
 	    	debug :: write_error(NESE_ERROR_RECURSION,
 	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
@@ -1490,7 +1348,6 @@ class nested_sets_driver
 			{ 
 				// We have to move a rootnode which is different from moving inside a tree
 				$nid = $this->_move_root2root($source, $target, $pos);
-				$this->_release_lock(true);
 				return $nid;
 			} 
 		} 
@@ -1498,8 +1355,6 @@ class nested_sets_driver
 						(	($source['l'] < $target['l']) &&
 							($source['r'] > $target['r'])))
 		{
-			$this->_release_lock(true);
-			
     	debug :: write_error(NESE_ERROR_RECURSION,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
     		 array('id' => $id, 'target_id' => $target_id)
@@ -1509,7 +1364,6 @@ class nested_sets_driver
 		// We have to move between different levels and maybe subtrees - let's rock ;)
 		$move_id = $this->_move_across($source, $target, $pos, true);
 		$this->_move_cleanup($copy);
-		$this->_release_lock(true);
 
 		if (!$copy)
 		{
@@ -1711,8 +1565,6 @@ class nested_sets_driver
 	*/
 	function _move_root2root($source, $target, $pos)
 	{
-		$lock = $this->_set_lock();
-
 		$tb = $this->_node_table;
 		$s_order = $source['ordr'];
 		$t_order = $target['ordr'];
@@ -1773,7 +1625,6 @@ class nested_sets_driver
 				$this->_db->sql_exec($sql);
 			} 
 		} 
-		$this->_release_lock();
 		return $s_id;
 	} 
 		
@@ -1875,74 +1726,7 @@ class nested_sets_driver
 		else
 			return $this->_sort_mode;
 	} 
-			
-	function _set_lock($exclusive = false)
-	{
-		if(!$this->_structure_table_lock)
-			$this->_lock_gc();
-
-		if (!$lock_id = $this->_structure_table_lock)
-		{
-			$lock_id = $this->_structure_table_lock = uniqid('lck-');
-			$sql = sprintf('INSERT INTO %s SET lock_id="%s", lock_table="%s", lock_stamp=%s',
-											$this->_lock_table,
-											$lock_id, 
-											$this->_node_table,
-											time());
-		} 
-		else
-		{
-			$sql = sprintf('UPDATE %s SET lock_stamp=%s WHERE lock_id="%s" AND lock_table="%s"',
-											$this->_lock_table,
-											time(),
-											$lock_id, 
-											$this->_node_table);
-		} 
-
-		if ($exclusive)
-		{
-			$this->_lock_exclusive = true;
-		} 
-
-		$this->_db->sql_exec($sql);
-
-		return $lock_id;
-	} 
-	
-	function _release_lock($exclusive = false)
-	{
-		if ($exclusive)
-		{
-			$this->_lock_exclusive = false;
-		} 
-
-		if ((!$lock_id = $this->_structure_table_lock) || $this->_lock_exclusive)
-		{
-			return false;
-		} 
-
-		$sql = "DELETE FROM {$this->_lock_table}
-            WHERE lock_table='{$this->_node_table}' AND
-            lock_id='$lock_id'";
-
-		$this->_db->sql_exec($sql);
-
-		$this->_structure_table_lock = false;
-		
-		return true;
-	} 
-	
-	function _lock_gc()
-	{
-		$lock_ttl = (time() - $this->_lock_ttl);
-		
-		$sql = "DELETE FROM {$this->_lock_table}
-            WHERE lock_table='{$this->_node_table}' AND
-            lock_stamp < {$lock_ttl}";
-
-		$this->_db->sql_exec($sql);
-	} 
-	
+						
 	function _values2update_query($values, $insert_data = false)
 	{
 		if (is_array($insert_data))
@@ -2007,7 +1791,7 @@ class nested_sets_driver
 		{
 			if (!isset($this->_params[$field]))
 			{
-	    	debug :: write_error(NESE_ERROR_WRONG_MPARAM,
+	    	debug :: write_error(TREE_ERROR_NODE_WRONG_PARAM,
 	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
 	    		 array('param' => $field)
 	    	);
@@ -2017,7 +1801,7 @@ class nested_sets_driver
 			{
 				if (in_array($this->_params[$field], $this->_required_params))
 				{
-		    	debug :: write_error(NESE_ERROR_WRONG_MPARAM,
+		    	debug :: write_error(TREE_ERROR_NODE_WRONG_PARAM,
 		    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
 	    		 array('param is autogenerated and can\'t be passed' => $field)
 		    	);
