@@ -190,6 +190,10 @@ class ini
 			return false;
 
 		$size = filesize($this->file_path);
+		
+		if($size == 0)
+		    return;
+		
 		$contents =& fread($fp, $size);
 		fclose($fp);
 

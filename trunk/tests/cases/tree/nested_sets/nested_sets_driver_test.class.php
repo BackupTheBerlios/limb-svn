@@ -313,6 +313,19 @@ class nested_sets_driver_test extends UnitTestCase
 		$this->assertEqual('test3', $this->driver->get_max_child_identifier($root_id));
 	}
 
+	function test_get_max_identifier_natural_sort()
+	{
+		$root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+		
+		$this->assertEqual(0, $this->driver->get_max_child_identifier($root_id));
+		
+		$sub_node_id_1_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test8', 'object_id' => 20));
+		$sub_node_id_1_2 = $this->driver->create_sub_node($root_id, array('identifier' => 'test9', 'object_id' => 10));
+		$sub_node_id_1_3 = $this->driver->create_sub_node($root_id, array('identifier' => 'test10', 'object_id' => 10));
+		
+		$this->assertEqual('test10', $this->driver->get_max_child_identifier($root_id));
+	}	
+
 	function test_delete_node_failed()
 	{
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 100000));

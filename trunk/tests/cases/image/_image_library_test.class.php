@@ -134,7 +134,7 @@ class image_library_test extends UnitTestCase
   	$this->assertEqual($info2[1], $height);
   }
 
-  function test_rotate()
+/*  function test_rotate()
   {
     return;    
     $angle = 30;
@@ -144,7 +144,7 @@ class image_library_test extends UnitTestCase
     
     $this->assertEqual(filesize($this->output_file), $this->rotated_size);
     clearstatcache();
-  }
+  }*/
   
   function test_flip()
   {

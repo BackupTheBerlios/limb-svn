@@ -64,6 +64,7 @@ CREATE TABLE `file_object` (
   KEY `v` (`version`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 7168 kB; InnoDB free: 114688 kB; InnoDB free: 1';
 
+
 /*
 Table struture for image_object
 */
@@ -80,6 +81,7 @@ CREATE TABLE `image_object` (
   KEY `oid` (`object_id`),
   KEY `v` (`version`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 9216 kB; InnoDB free: 114688 kB; InnoDB free: 1';
+
 
 /*
 Table struture for image_variation
@@ -99,6 +101,7 @@ CREATE TABLE `image_variation` (
   KEY `v` (`variation`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 9216 kB; InnoDB free: 114688 kB; InnoDB free: 1';
 
+
 /*
 Table struture for media
 */
@@ -113,6 +116,7 @@ CREATE TABLE `media` (
   PRIMARY KEY  (`id`),
   KEY `id` (`id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 9216 kB; InnoDB free: 114688 kB; InnoDB free: 1';
+
 
 /*
 Table struture for message
@@ -194,6 +198,7 @@ CREATE TABLE `sys_action_access` (
   `accessor_id` int(11) NOT NULL default '0',
   `accessor_type` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
+  UNIQUE KEY `as` (`class_id`,`action_name`,`accessor_id`),
   KEY `accessor_id` (`accessor_id`),
   KEY `accessor_type` (`accessor_type`),
   KEY `class_id` (`class_id`)
@@ -501,6 +506,7 @@ CREATE TABLE `sys_lock` (
   PRIMARY KEY  (`lock_id`,`lock_table`)
 ) TYPE=InnoDB COMMENT='Table locks for NestedSet; InnoDB free: 114688 kB; InnoDB fr';
 
+
 /*
 Table struture for sys_metadata
 */
@@ -558,8 +564,8 @@ CREATE TABLE `sys_object_access` (
   `w` tinyint(4) NOT NULL default '0',
   `accessor_type` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
+  UNIQUE KEY `ora` (`object_id`,`accessor_id`,`r`,`w`),
   KEY `accessor_id` (`accessor_id`),
-  KEY `ora` (`object_id`,`r`,`accessor_id`),
   KEY `accessor_type` (`accessor_type`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
@@ -687,7 +693,7 @@ CREATE TABLE `sys_object_version` (
   `created_date` int(11) NOT NULL default '0',
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `oid` (`object_id`),
+  UNIQUE KEY `object_id` (`object_id`,`version`),
   KEY `cid` (`creator_id`),
   KEY `md` (`modified_date`),
   KEY `cd` (`created_date`),
@@ -740,6 +746,7 @@ CREATE TABLE `sys_param` (
   UNIQUE KEY `id_u` (`identifier`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
+
 /*
 Table struture for sys_session
 */
@@ -753,6 +760,7 @@ CREATE TABLE `sys_session` (
   PRIMARY KEY  (`session_id`),
   KEY `user_id` (`user_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
+
 
 /*
 Table struture for sys_site_object
@@ -771,7 +779,7 @@ CREATE TABLE `sys_site_object` (
   `title` varchar(255) NOT NULL default '',
   `identifier` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `idccv` (`id`,`locale_id`,`current_version`,`class_id`),
+  UNIQUE KEY `idccv` (`class_id`,`id`,`current_version`,`locale_id`),
   KEY `md` (`modified_date`),
   KEY `cd` (`created_date`),
   KEY `cid` (`creator_id`),
@@ -837,6 +845,9 @@ CREATE TABLE `sys_site_object_tree` (
   `path` varchar(255) NOT NULL default '',
   `children` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
+  UNIQUE KEY `op` (`object_id`,`id`,`path`),
+  UNIQUE KEY `ipl` (`identifier`,`path`,`level`),
+  UNIQUE KEY `path_level` (`path`,`level`),
   KEY `root_id` (`root_id`),
   KEY `identifier` (`identifier`),
   KEY `level` (`level`),
@@ -904,13 +915,6 @@ CREATE TABLE `sys_stat_counter` (
 ) TYPE=InnoDB;
 
 /*
-Table data for sys_stat_counter
-*/
-
-INSERT INTO `sys_stat_counter` VALUES 
-(1,8,238,1,50,1086440739);
-
-/*
 Table struture for sys_stat_day_counters
 */
 
@@ -936,6 +940,7 @@ CREATE TABLE `sys_stat_ip` (
   `time` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
+
 
 /*
 Table struture for sys_stat_log
@@ -970,6 +975,7 @@ CREATE TABLE `sys_stat_referer_url` (
   KEY `url` (`referer_url`)
 ) TYPE=InnoDB;
 
+
 /*
 Table struture for sys_stat_search_phrase
 */
@@ -982,6 +988,7 @@ CREATE TABLE `sys_stat_search_phrase` (
   `time` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
+
 
 /*
 Table struture for sys_stat_uri
@@ -1009,6 +1016,7 @@ CREATE TABLE `sys_user_object_access_template` (
   KEY `class_id` (`class_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
+
 /*
 Table struture for sys_user_object_access_template_item
 */
@@ -1024,6 +1032,7 @@ CREATE TABLE `sys_user_object_access_template_item` (
   KEY `template_id` (`template_id`),
   KEY `user_id` (`user_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
+
 
 /*
 Table struture for user
@@ -1042,6 +1051,7 @@ CREATE TABLE `user` (
   `title` varchar(50) NOT NULL default '',
   `identifier` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id`),
+  UNIQUE KEY `object_id` (`object_id`,`version`),
   KEY `pwd` (`password`),
   KEY `gpwd` (`generated_password`),
   KEY `v` (`version`),
@@ -1099,4 +1109,3 @@ Table data for user_in_group
 
 INSERT INTO `user_in_group` VALUES 
 (1,25,28);
-

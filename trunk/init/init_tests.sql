@@ -1,6 +1,6 @@
 /* 
 SQLyog v3.63
-Host - localhost : Database - demo_tests
+Host - localhost : Database - temp_tests
 **************************************************************
 Server version 4.0.12-nt
 */
@@ -148,6 +148,7 @@ CREATE TABLE `navigation_item` (
   KEY `o` (`object_id`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
+
 /*
 Table struture for sys_action_access
 */
@@ -290,6 +291,7 @@ CREATE TABLE `sys_node_link_group` (
 ) TYPE=InnoDB;
 
 /*
+
 Table struture for sys_object_access
 */
 
@@ -329,7 +331,7 @@ CREATE TABLE `sys_object_version` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for demo_tests.sys_object_version
+Table data for temp_tests.sys_object_version
 */
 
 INSERT INTO `sys_object_version` VALUES (31,104,10,1084278749,1084278749,1);
