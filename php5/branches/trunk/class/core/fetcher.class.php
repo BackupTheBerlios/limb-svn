@@ -215,10 +215,8 @@ class fetcher
 			return false;
 		
 		$object_id = reset($object_ids);
-		if (!$class_name = $this->_get_object_class_name_by_id($object_id))
-		  return false;
 
-		$site_object = site_object_factory :: create($class_name);
+		$site_object = site_object_factory :: create($this->_get_object_class_name_by_id($object_id));
 		
 		$result = $site_object->fetch_by_ids(array($object_id));
 					
@@ -264,13 +262,11 @@ class fetcher
 		$row = $db->fetch_row();
 		if (!isset($row['class_name']))
 		{
-			debug :: write_error('object class name not found',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+			throw new LimbException('object class name not found',
     		array(
     			'object_id' => $object_id
     		)
     	);
-			return false;
 		}
 		else
 			return $row['class_name'];

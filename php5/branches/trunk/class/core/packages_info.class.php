@@ -49,12 +49,7 @@ class packages_info
     $packages = $ini->get_option('packages');
     
     if (!count($packages))
-    {
-   		debug :: write_error('no packages in package.ini!',
-  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-
-      return false;
-    }
+   		throw new LimbException('no packages in package.ini!');
     
     foreach($packages as $package_path)
     {

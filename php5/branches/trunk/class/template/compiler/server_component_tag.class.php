@@ -41,12 +41,13 @@ abstract class server_component_tag extends compiler_component
 		if (file_exists($this->runtime_component_path . '.class.php'))
 			$code->register_include($this->runtime_component_path . '.class.php');
 		else
-			error('run time component file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+		  throw new FileNotFoundException('run time component file not found', $this->runtime_component_path);
 		
 		$component_class_name = end(explode('/', $this->runtime_component_path));
 		
 		if(!$component_class_name)
-			error('empty component class name', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+		  throw new WactException('run time component file doesn\'t contains component class name', 
+		                            array('file_path' => $this->runtime_component_path));
 		
 		$code->write_php($this->parent->get_component_ref_code() . '->add_child(new ' . $component_class_name . '(), \'' . $this->get_server_id() . '\');' . "\n");
 	

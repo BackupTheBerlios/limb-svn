@@ -39,20 +39,7 @@ class action_factory
   		include_once($full_path);
   	}
   	
-	  $action = new $class_name();
-	  
-	  if (!is_object($action))
-		{
-			debug :: write_error('action object not created',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				 array(
-				 	'class_path' => $class_path
-			 	)
-			);
-			return new empty_action();
-		}
-	  
-	  return $action;
+	  return new $class_name();
 	}	
 }
 

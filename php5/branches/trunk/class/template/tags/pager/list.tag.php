@@ -26,13 +26,15 @@ class pager_list_tag extends compiler_directive_tag
 	{
 		if ($this->find_parent_by_class('pager_list_tag'))
 		{
-			error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('bad self nesting', 
+					array('tag' => $this->tag,
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
 		if (!$this->find_parent_by_class('pager_navigator_tag'))
 		{
-			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
 					'enclosing_tag' => 'pager:navigator',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

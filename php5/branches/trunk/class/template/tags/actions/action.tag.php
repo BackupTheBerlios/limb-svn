@@ -26,9 +26,9 @@ class action_tag extends compiler_directive_tag
 	{
 		if (!$this->parent instanceof actions_tag)
 		{
-			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
-					'enclosing_tag' => 'actions',
+			throw new WactException('wrong parent tag', 
+					array('tag' => $this->tag,
+					'parent_class' => get_class($this->parent),
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 

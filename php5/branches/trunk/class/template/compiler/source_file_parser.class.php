@@ -192,10 +192,13 @@ class source_file_parser
 		
 		if ($tree->find_child($server_id))
 		{
-			error('DUPLICATEID', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('server_id' => $server_id,
-					'tag' => $component->tag,
-					'file' => $component->source_file,
-					'line' => $component->starting_line_no));
+      throw new WactException('dublicated component found', 
+					array(
+					  'server_id' => $server_id,
+					  'tag' => $component->tag,
+					  'file' => $component->source_file,
+					  'line' => $component->starting_line_no
+					));		
 		} 
 	} 
 	// --------------------------------------------------------------------------------
@@ -219,10 +222,13 @@ class source_file_parser
 				{
 					if ($tag != $parent_component->tag)
 					{
-						error('UNEXPECTEDCLOSE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $tag,
-								'expect_tag' => $parent_component->tag,
-								'file' => $this->source_file,
-								'line' => $this->cur_line_no));
+            throw new WactException('unexpected close', 
+      					array(
+      					  'tag' => $tag,
+      					  'expect_tag' => $parent_component->tag,
+      					  'file' => $this->source_file,
+      					  'line' => $this->cur_line_no
+      					));		
 					} 
 					else
 					{
@@ -231,9 +237,12 @@ class source_file_parser
 				} 
 				else
 				{
-					error('UNEXPECTEDCLOSE2', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $tag,
-							'file' => $this->source_file,
-							'line' => $this->cur_line_no));
+          throw new WactException('unexpected close', 
+    					array(
+    					  'tag' => $tag,
+    					  'file' => $this->source_file,
+    					  'line' => $this->cur_line_no
+    					));		
 				} 
 			} 
 			else
@@ -252,10 +261,12 @@ class source_file_parser
 						
 					if (!$this->match_text('/^\/?>/', $start_maches))
 					{
-						error('EXPECTING_>', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-							array('file' => $this->source_file,
-										'line' => $this->cur_line_no,
-										'tag' => $component->tag));
+            throw new WactException('expecting >', 
+      					array(
+      					  'tag' => $component->tag,
+      					  'file' => $this->source_file,
+      					  'line' => $this->cur_line_no
+      					));		
 					} 
 				} 
 
@@ -275,9 +286,12 @@ class source_file_parser
 						} 
 						else
 						{
-							error('MISSINGCLOSE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $component->tag,
-									'file' => $this->source_file,
-									'line' => $this->cur_line_no));
+              throw new WactException('missing close tag', 
+        					array(
+        					  'tag' => $component->tag,
+        					  'file' => $this->source_file,
+        					  'line' => $this->cur_line_no
+        					));		
 						} 
 					} 
 					else

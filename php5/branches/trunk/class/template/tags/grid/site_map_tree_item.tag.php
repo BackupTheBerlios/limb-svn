@@ -23,8 +23,9 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
 	{
 		if (!$this->parent instanceof grid_iterator_tag)
 		{
-			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'enclosing_tag' => 'grid:SITE_MAP_TREE_ITEM',
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
+					'enclosing_tag' => 'grid:ITERATOR',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 

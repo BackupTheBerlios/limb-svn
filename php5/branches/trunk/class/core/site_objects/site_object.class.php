@@ -25,8 +25,6 @@ class site_object extends object
 	
 	protected  $_class_id = null;
 
-	protected  $_controller = null;
-	
 	function __construct()
 	{
     $this->_class_properties = $this->_define_class_properties();
@@ -394,33 +392,17 @@ class site_object extends object
 	public function create($is_root = false)
 	{
 		if (!$class_id = $this->get_class_id())
-		{
-		  debug :: write_error('class id is empty', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		  return false;
-		}
+		  throw new LimbException('class id is empty');
 		
 		if(!$this->is_auto_identifier())
 		{
 			if(!($identifier = $this->get_identifier()))
-			{
-			  debug :: write_error('identifier is empty', 
-				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-			  return false;
-			}
+		    throw new LimbException('identifier is empty');
 		}
 		else
-		{
-			if(($identifier = $this->_generate_auto_identifier()) === false)
-				return false;
-		}
+			$identifier = $this->_generate_auto_identifier();
 		
-		if (!$id = $this->_create_site_object_record())
-		{
-		  debug :: write_error('create site object record failed', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-			return false;
-		}	
+		$id = $this->_create_site_object_record();
 
 		$tree = tree :: instance();
 
@@ -430,35 +412,18 @@ class site_object extends object
 		if($is_root)
 		{
 			if (!$tree_node_id = $tree->create_root_node($values, false, true))
-			{
-			  debug :: write_error('could not create root tree node', 
-				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-			  return false;
-			}		
+			  throw new LimbException('could not create root tree node');
 		}
 		else
 		{
 			if(!($parent_node_id = $this->get_parent_node_id()))
-			{
-			  debug :: write_error('tree parent node is empty', 
-				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-			  return false;
-			}
+			  throw new LimbException('tree parent node is empty');
 
 			if(!$this->_can_add_node_to_parent($parent_node_id))
-			{
-			  debug :: write_error('tree registering failed', 
-				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-				  array('parent_node_id' => $parent_node_id));
-			  return false;
-			}
+			  throw new LimbException('tree registering failed', array('parent_node_id' => $parent_node_id));
 			
 			if (!$tree_node_id = $tree->create_sub_node($parent_node_id, $values))
-			{
-			  debug :: write_error('could not create tree node', 
-				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-			  return false;
-			}
+			  throw new LimbException('could not create tree node');
 		}
 								
 		$this->set('id', $id); 
@@ -474,7 +439,7 @@ class site_object extends object
 		$identifier = $tree->get_max_child_identifier($this->get_parent_node_id());
 		
 		if($identifier === false)
-			return false;
+   	  throw new LimbException('couldnt generate identifier');
 			
 		if(preg_match('/^(.*)(\d+)$/', $identifier, $matches))
 			$new_identifier = $matches[1] . ($matches[2] + 1);
@@ -576,8 +541,7 @@ class site_object extends object
 		}
 		elseif(count($list) > 1)
 		{
-		  error('there are more than 1 type found', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+		  throw new LimbException('there are more than 1 type found', 
 			  array('class_name' => $class_name));
 		}			
 		
@@ -649,22 +613,11 @@ class site_object extends object
 	public function update($force_create_new_version = true)
 	{
 		if(!$object_id = $this->get_id())
-		{
-		  debug :: write_error('object id not set', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
-		  return false;
-		}
+		  throw new LimbException('object id not set');
 
-		if(!$this->_update_tree_node())
-		{
-		  debug :: write_error('tree update failed', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		  return false;
-		}
-
-		$this->_update_site_object_record($force_create_new_version);
+		$this->_update_tree_node();
 		
-		return true;
+		$this->_update_site_object_record($force_create_new_version);
 	}
 	
 	protected function _update_site_object_record($force_create_new_version = true)
@@ -685,7 +638,7 @@ class site_object extends object
 		$data['title'] = $this->get_title();
 		$data['status'] = $this->get('status', 0);
 		
-		return $sys_site_object_db_table->update_by_id($this->get_id(), $data);
+		$sys_site_object_db_table->update_by_id($this->get_id(), $data);
 	}
 	
 	protected function _delete_tree_node()
@@ -712,8 +665,7 @@ class site_object extends object
 			{
 				if (!$tree->move_tree($data['node_id'], $data['parent_node_id']))
 				{
-				 	error('could not move node',
-	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+				 	throw new LimbException('could not move node',
 	    			array(
 	    				'node_id' => $data['node_id'],
 	    				'target_id' => $data['parent_node_id'],
@@ -727,8 +679,7 @@ class site_object extends object
 		{
 			if(!$tree->update_node($data['node_id'], array('identifier' => $identifier), true))
 			{
-			 	error('could not update node identifier',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+			 	throw new LimbException('could not update node identifier',
     			array(
     				'node_id' => $data['node_id'],
     				'identifier' => $identifier,
@@ -736,8 +687,6 @@ class site_object extends object
 	    	);
 			}
 		}	
-		
-		return true;
 	}
 	
 	public function delete()
@@ -798,11 +747,7 @@ class site_object extends object
 		
 	public function get_controller()
 	{
-	  if ($this->_controller)
-	    return $this->_controller;
-	   
-		$this->_controller = site_object_controller_factory :: create($this->_class_properties['controller_class_name']);
-		return $this->_controller;
+		return site_object_controller_factory :: create($this->_class_properties['controller_class_name']);
 	}
 	
 	public function save_metadata()

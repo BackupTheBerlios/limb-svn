@@ -21,10 +21,10 @@ class user_attribute_tag extends compiler_directive_tag
 {
 	public function pre_parse()
 	{
-		$name = $this->attributes['name'];
-		if (empty($name))
+		if (!isset($this->attributes['name']) || !$this->attributes['name'])
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'name',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

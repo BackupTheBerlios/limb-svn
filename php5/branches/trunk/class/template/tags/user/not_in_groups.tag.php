@@ -21,10 +21,10 @@ class user_not_in_groups_tag extends compiler_directive_tag
 {
 	public function pre_parse()
 	{
-		$groups = $this->attributes['groups'];
-		if (empty($groups))
+		if (!isset($this->attributes['groups']) || !$this->attributes['groups'])
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'groups',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

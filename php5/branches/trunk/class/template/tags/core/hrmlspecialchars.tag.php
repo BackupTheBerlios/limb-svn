@@ -24,11 +24,11 @@ class htmlspecialchars_tag extends compiler_directive_tag
 		if (! array_key_exists('hash_id', $this->attributes) ||
 				empty($this->attributes['hash_id']))
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-				array('tag' => $this->tag,
-							'attribute' => 'hash_id',
-							'file' => $this->source_file,
-							'line' => $this->starting_line_no));
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
+					'attribute' => 'hash_id',
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
 		} 
 		return PARSER_FORBID_PARSING; 
 	}  

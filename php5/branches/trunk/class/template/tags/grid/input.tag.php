@@ -30,7 +30,8 @@ class grid_input_tag extends control_tag
 	{
 		if (!$this->find_parent_by_class('grid_iterator_tag'))
 		{
-			error('INVALIDNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
 					'enclosing_tag' => 'grid:ITERATOR',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
@@ -38,7 +39,8 @@ class grid_input_tag extends control_tag
 
 		if (!isset($this->attributes['name']))
 		{
-			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'name',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

@@ -23,7 +23,8 @@ class core_data_transfer_tag extends compiler_directive_tag
 	{
 		if (!isset($this->attributes['target']))
 		{
-			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'target',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

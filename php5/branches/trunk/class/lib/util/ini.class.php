@@ -90,6 +90,10 @@ class ini
   */
 	protected function load()
 	{
+	  if(!file_exists($this->file_path))
+	    throw new FileNotFoundException('ini file not found', $this->file_path);
+	  
+	  
 		if ($this->use_cache)
 			$this->_load_cache();
 		else

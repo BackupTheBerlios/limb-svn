@@ -35,9 +35,13 @@ class authentication_filter implements intercepting_filter
 
     $site_object_controller = $object->get_controller();
     
-    if(($action = $site_object_controller->determine_action($request)) === false)
+    try 
     {
-    	debug :: write_error('"'. $action . '" action not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+      $action = $site_object_controller->get_action($request);
+    }
+    catch(LimbException $e)
+    {
+    	debug :: write_exception($e);
     
     	if(defined('ERROR_DOCUMENT_404'))
     		$response->redirect(ERROR_DOCUMENT_404);

@@ -18,9 +18,8 @@ function & get_file_resolver($resolver_name)
   if(isset($LIMB_FILE_RESOLVERS[$resolver_name]))
     return $LIMB_FILE_RESOLVERS[$resolver_name];
   else
-    error('unknown file resolver',
-		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-		array('resolver' => $resolver_name));
+    throw new LimbException('unknown file resolver',
+		  array('resolver' => $resolver_name));
 }
 
 function register_file_resolver($resolver_name, $resolver)

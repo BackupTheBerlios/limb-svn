@@ -27,11 +27,11 @@ class core_request_transfer_tag extends server_tag_component_tag
 	public function pre_parse()
 	{
 		if (! array_key_exists('attributes', $this->attributes) || empty($this->attributes['attributes'])) 
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-						array('tag' => $this->tag,
-									'attribute' => 'attributes',
-									'file' => $this->source_file,
-									'line' => $this->starting_line_no));
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
+					'attribute' => 'attributes',
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
 									
 		return PARSER_REQUIRE_PARSING;
 	}

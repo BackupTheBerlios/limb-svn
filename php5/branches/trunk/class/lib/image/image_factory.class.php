@@ -27,8 +27,7 @@ class image_factory
 		  $dir = ($dir == '') ? LIMB_DIR . '/class/lib/image/' : $dir;
 		  
 		  if(!file_exists($dir . $image_class_name . '.class.php'))
-			  	error('image library not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  							array('library' => $library, 'dir' => $dir));
+			  	throw new FileNotFoundException('image library not found', $dir . $image_class_name . '.class.php');
 		  
 		  include_once($dir . $image_class_name . '.class.php');
 		  

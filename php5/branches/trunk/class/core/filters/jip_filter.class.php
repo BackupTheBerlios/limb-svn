@@ -17,9 +17,9 @@ class jip_filter implements intercepting_filter
   public function run($filter_chain, $request, $response) 
   {
     debug :: add_timing_point('jip filter started');
-    
+
     $fetcher = fetcher :: instance();
-    
+        
     $fetcher->set_jip_status(false);
     
     if (user :: instance()->is_logged_in())

@@ -155,8 +155,6 @@ class content_object extends site_object
 		$data['creator_id'] = user :: instance()->get_id();
 		
 		$version_db_table->insert($data);
-		
-		return true;
 	}
 			
 	protected function _create_versioned_content_record()
@@ -171,8 +169,6 @@ class content_object extends site_object
 		
 		$record_id = $db_table->get_last_insert_id();
 		$this->set('record_id', $record_id);
-		
-		return true;
 	}
 	
 	protected function _update_versioned_content_record()
@@ -185,50 +181,32 @@ class content_object extends site_object
 		$row = current($db_table->get_list($data));
 		
 		if($row === false)
-		{
-			debug :: write_error('content record not found',
-	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-	    		$data);
-	    	
-	    return false;
-	   }
+			throw new LimbException('content record not found', 
+			        array(
+			          'version' => $data['version'],
+			          'object_id' => $data['object_id'],
+			          'class_name' => get_class($this)));
 		
 		$id = $row['id'];
 
 		$data = $this->_attributes->export();
 	  unset($data['id']);
 
-		if($db_table->update_by_id($id, $data))
-			return $id;
-		else
-		{
-    	debug :: write_error('update failed',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id));
-			return false;
-		}
+		$db_table->update_by_id($id, $data);
 	}
 	
 	public function update($force_create_new_version = true)
 	{
-		if(!parent :: update($force_create_new_version))
-			return false;
+		parent :: update($force_create_new_version);
 		
 		if ($force_create_new_version)
 		{
-			if(!$this->_create_version_record())
-				return false;
+			$this->_create_version_record();
 		
-			if($this->_create_versioned_content_record() !== false)
-				return true;
-			
-			 debug :: write_error('creation of versioned record failed',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-    		
-    	return false;
+			$this->_create_versioned_content_record();
 		}
 		
-		return $this->_update_versioned_content_record();
+		$this->_update_versioned_content_record();
 	}
 	
 	public function create($is_root = false)
@@ -236,8 +214,7 @@ class content_object extends site_object
 		if(($id = parent :: create($is_root)) === false)
 			return false;
 			
-		if (!$this->_create_version_record())
-			return false;
+		$this->_create_version_record();
 		
 		if(!$this->_create_versioned_content_record())
 			return false;

@@ -20,12 +20,7 @@ class datasource_file_resolver extends package_file_resolver
     if($resolved_path = $this->_find_file_in_packages('datasources/' . $class_path . '.class.php'))
       return $resolved_path;  
     else
-  	{
-  	  debug :: write_error('datasource not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  	    array('class_path' => $class_path));
-  	    
-  	  return false;
-  	}      
+  	  throw new FileNotFoundException('datasource not found', $class_path);
   }   
 }
 

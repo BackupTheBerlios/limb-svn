@@ -15,16 +15,7 @@ class strings_file_resolver extends package_file_resolver
   public function resolve($file_name, $locale_id)  
   {  
     if(!$resolved_path = parent :: resolve('i18n/' . $file_name . '_' . $locale_id . '.ini'))    
-  	{
-  		debug :: write_error('strings file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  			array(
-  				'file_name' => $file_name,
-  				'locale_id' => $locale_id
-  			)
-  	  );
-  	    
-  	  return false;
-  	}
+  	  throw new FileNotFoundException('strings file not found', $file_name, array('locale_id' => $locale_id));
   		  
 		return $resolved_path;  
   }  

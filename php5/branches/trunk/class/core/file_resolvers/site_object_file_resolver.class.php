@@ -18,12 +18,7 @@ class site_object_file_resolver extends package_file_resolver
       return LIMB_DIR . 'class/core/site_objects/' . $class_path . '.class.php';    
       
     if(!$resolved_path = $this->_find_file_in_packages('site_objects/' . $class_path . '.class.php'))    
-  	{
-  	  debug :: write_error('site object not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  	    array('class_path' => $class_path));
-  	    
-  	  return false;
-  	}
+  	  throw new FileNotFoundException('site object not found', $class_path);
   		  
 		return $resolved_path;
   }  

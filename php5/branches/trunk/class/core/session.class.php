@@ -89,7 +89,6 @@ function _session_db_read($session_id)
 {
   $db = db_factory :: instance();
   
-  $session_id = $db->escape($session_id);
 	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
 	
   if($session_res = $db->fetch_row())
@@ -113,7 +112,6 @@ function _session_db_write($session_id, $value)
 {
 	$db = db_factory :: instance();	
 	
-	$session_id = $db->escape($session_id);
 	$db->sql_select('sys_session', 'session_id', "session_id='{$session_id}'");
 	
 	$session_data = array(
@@ -126,12 +124,12 @@ function _session_db_write($session_id, $value)
 		$db->sql_update('sys_session', $session_data, "session_id='{$session_id}'");
   else
   {
-    $session_data['session_id'] = $session_id;
+    $session_data['session_id'] = "{$session_id}";
   	$db->sql_insert('sys_session', $session_data);
 	}
 }
 
-function _session_db_unset($session_id)
+function _session_db_destroy($session_id)
 {
 	db_factory :: instance()->sql_delete('sys_session', "session_id='{$session_id}'");
 }

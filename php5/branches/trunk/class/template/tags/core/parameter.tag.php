@@ -23,8 +23,8 @@ class core_parameter_tag extends compiler_directive_tag
 	{
 		if (!isset($this->attributes['name']))
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'name',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
@@ -32,8 +32,8 @@ class core_parameter_tag extends compiler_directive_tag
 		
 		if (!isset($this->attributes['value']))
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'value',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
@@ -44,10 +44,10 @@ class core_parameter_tag extends compiler_directive_tag
 	
 	public function check_nesting_level()
 	{
-		if (!is_subclass_of($this->parent, 'server_component_tag'))
+		if (!$this->parent instanceof server_component_tag))
 		{
-			error('WRONGPARENTCLASSNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('wrong parent tag', 
+					array('tag' => $this->tag,
 					'parent_class' => get_class($this->parent),
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

@@ -25,6 +25,8 @@ abstract class site_object_controller
 	
 	protected $_view = null;
 	
+	protected $_request = null;
+	
 	function __construct()
 	{
 	  $this->_actions = $this->_define_actions();
@@ -42,25 +44,28 @@ abstract class site_object_controller
 	  return 'display';
 	}
 	
-	public function determine_action($request = null)
+	public function get_action($request = null)
 	{	
 	  if($request === null)
 	    $request = request :: instance();
+	    
+	  if($this->_request === $request && $this->_current_action)
+	    return $this->_current_action;
+	    
+	  $this->_request = $request;
 	  
 		if (!$action = $request->get('action'))
 			$action = $this->_default_action;
 		
 		if (!$this->action_exists($action))
 		{
-			debug :: write_warning(
-				'action not found', 
-				__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array(
-					'class' => get_class($this),
-					'action' => $action,
-					'default_action' => $this->_default_action
-				));
-			return false;
+		  throw new LimbException('action not found', 
+          				array(
+          					'class' => get_class($this),
+          					'action' => $action,
+          					'default_action' => $this->_default_action
+          				)
+          			);
 		}
 		
 		$this->_current_action = $action;
@@ -84,21 +89,11 @@ abstract class site_object_controller
 		return isset($actions[$action]);
 	}
 	
-	public function get_permissions_required()
+	public function get_permissions_required($request = null)
 	{	
-		return $this->get_current_action_property('permissions_required');
+		return $this->get_current_action_property('permissions_required', $request);
 	}
-	
-	public function set_action($action)
-	{
-		$this->_current_action = $action;
-	}
-	
-	public function get_action()
-	{
-		return $this->_current_action;
-	}
-	
+			
 	public function get_action_name($action)
 	{
 		if(!$name = $this->get_action_property($action, 'action_name'))
@@ -108,66 +103,64 @@ abstract class site_object_controller
 	}
 	
 	public function process($request, $response)
-	{
-		if(!$this->_current_action)
-		{
-			debug :: write_error('current action not defined', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-			return;
-		}
-			
-		$this->_start_transaction();
+	{			
+		$this->_start_transaction($request);
 		
-		$this->_perform_action($request, $response);
-				
-		$this->_end_transaction($request);
+		try
+		{
+		  $this->_perform_action($request, $response);
+		  $this->_commit_transaction($request);
+		}
+		catch(SQLException $e)
+		{
+		  $this->_roll_back_transaction($request);
+		}
 	}
 	
 	protected function _perform_action($request, $response)
 	{
-		$action = $this->get_action_object();
+		$action = $this->get_action_object($request);
 		
-		if($view = $this->get_view())
+		if($view = $this->get_view($request))
 			$action->set_view($view);
 
 		$action->perform($request, $response);
 		
 		debug :: add_timing_point('action performed');
-		
-		if($request->is_problem())
-		{
-			debug :: write_error('action failed', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}
 	}
 	
-	public function display_view()
+	public function display_view($request = null)
 	{
-		$view = $this->get_view();
+		$view = $this->get_view($request);
 		
 		$view->display();
 		
 		debug :: add_timing_point('template executed');
 	}
 	
-	protected function _start_transaction()
+	protected function _start_transaction($request = null)
 	{
-		if($this->is_transaction_required())	
+		if($this->is_transaction_required($request))	
 			start_user_transaction();
 	}
 	
-	protected function _end_transaction($request)
+	protected function _commit_transaction($request = null)
 	{
-		if(!$this->is_transaction_required())
+		if(!$this->is_transaction_required($request))
 			return;
-
-		if($request->is_success())
-			commit_user_transaction();
-		else
-			rollback_user_transaction();
+			
+		commit_user_transaction();
 	}
-				
-	public function is_transaction_required()
+	
+  protected function _rollback_transaction($request = null)
+  {
+		if($this->is_transaction_required($request))	
+      rollback_user_transaction();
+  }
+  				
+	public function is_transaction_required($request = null)
 	{
-		$requires_transaction = $this->get_current_action_property('transaction');
+		$requires_transaction = $this->get_current_action_property('transaction', $request);
 		
 		if ($requires_transaction === false)
 			return false;
@@ -175,46 +168,49 @@ abstract class site_object_controller
 			return true;
 	}
 	
-	public function get_action_object()
+	public function get_action_object($request = null)
 	{
-		if (!$action_path = $this->get_current_action_property('action_path'))
-			$action_path = 'empty_action';
+	  if(!$action_path = $this->get_current_action_property('action_path', $request))
+	    $action_path = 'empty_action';
 		
 		return $this->_create_action($action_path);
 	}
 	
 	protected function _create_action($action_path)
 	{
-		$action = action_factory :: create($action_path);
-		return $action;
+		return action_factory :: create($action_path);
 	}
 	
-	public function get_view()
+	public function get_view($request = null)
 	{
 		if($this->_view)
 			return $this->_view;
 				
-		$this->_view = $this->_create_template();
+		$this->_view = $this->_create_template($request);
 
 	  debug :: add_timing_point('template created');
 		
 		return $this->_view;
 	}
 	
-	protected function _create_template()
+	protected function _create_template($request = null)
 	{
-		if($template_path = $this->get_current_action_property('template_path'))
+		if($template_path = $this->get_current_action_property('template_path', $request))
 			return new template($template_path);
 		else
 			return new empty_template();
 	}
 	
-	public function get_current_action_property($property_name)
-	{
-		if (!$this->_current_action)
-			return null;		
-			
-		return $this->get_action_property($this->_current_action, $property_name);
+	public function get_current_action_property($property_name, $request = null)
+	{	
+	  try
+	  {		
+		  return $this->get_action_property($this->get_action($request), $property_name);
+		}
+		catch(LimbException $e)
+		{
+		  return null;
+		}
 	}
 	
 	public function get_action_property($action, $property_name)

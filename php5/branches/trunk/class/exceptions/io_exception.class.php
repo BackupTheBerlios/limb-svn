@@ -7,18 +7,8 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-class empty_template
-{
-	public function get_child($server_id)
-	{
-		return null;
-	} 
-
-	public function display()
-	{
-	  throw new LimbException('template is empty');		
-	} 
-} 
+***********************************************************************************/
+ 
+class IOException extends LimbException{}
 
 ?>

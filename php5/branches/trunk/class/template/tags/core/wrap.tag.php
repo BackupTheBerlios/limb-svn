@@ -32,7 +32,8 @@ class core_wrap_tag extends compiler_directive_tag
 	{
 		if ($this->find_parent_by_class('core_wrap_tag'))
 		{
-			error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('bad self nesting', 
+					array('tag' => $this->tag,
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
@@ -42,18 +43,19 @@ class core_wrap_tag extends compiler_directive_tag
 	{
 		global $tag_dictionary;
 		$file = $this->attributes['file'];
-		if (empty($file))
+		if (!isset($this->attributes['file']) || !$this->attributes['file'])
 		{
-			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'file',
-					'enclosing_tag' => 'pager:navigator',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
 	
 		if (!$this->resolved_source_file = resolve_template_source_file_name($file))
 		{
-			error('MISSINGFILE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing file', 
+					array('tag' => $this->tag,
 					'srcfile' => $file,
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

@@ -93,9 +93,7 @@ function compile_template_file($filename, $resolve_path = true)
 	if($resolve_path)
 	{
 		if(!$sourcefile = resolve_template_source_file_name($filename))
-			error('template file not found', 
-						__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-						array('file' => $filename));
+      throw new FileNotFoundException('template file not found', $filename);
 	}
 	else
 		$sourcefile = $filename;
@@ -104,7 +102,7 @@ function compile_template_file($filename, $resolve_path = true)
 	
 	if (empty($sourcefile))
 	{
-		error('MISSINGFILE2', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('srcfile' => $filename));
+    throw new FileNotFoundException('compiled template file not found', $filename);
 	} 
 
 	$code = new codewriter();

@@ -23,7 +23,9 @@ class error_status_tag extends compiler_directive_tag
 	{
 		if (!$this->find_parent_by_class('form_status_tag'))
 		{
-			error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
+					'enclosing_tag' => 'form_status',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 

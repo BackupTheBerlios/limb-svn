@@ -64,6 +64,28 @@ class limb_application
     
   public function run()
   {
+    try
+    {
+      $this->_do_run();
+    }
+    catch(LimbException $e)
+    {
+      debug :: write_exception($e);
+    }
+    catch(Exception $e)
+    {
+      echo  'Unexpected PHP exception in ' . $e->getFile() . ' in line ' . $e->getLine();
+      echo  '<br>';
+      echo  '<pre>';
+      echo    $e->getTraceAsString();
+      echo  '</pre>';
+      echo  'Report this error to the LIMB developers, please.';
+      exit;
+    }
+  }
+  
+  protected function _do_run()
+  {
     $this->_register_file_resolvers();
     
     $this->_load_packages();
@@ -83,7 +105,7 @@ class limb_application
       $this->response->write(message_box :: parse());//It definetly should be somewhere else!
     }
         
-    $this->response->commit();      
+    $this->response->commit();  
   }
 }
 

@@ -62,16 +62,12 @@ class site_object_controller_test extends LimbTestCase
   	$this->site_object_controller =& new site_object_controller_test_version1($this);
   	$this->site_object_controller->setReturnValue('get_actions_definitions', $this->actions_definition_test);
   	$this->site_object_controller->__construct();
-  	
-  	debug_mock :: init($this);
   }
   
   function tearDown()
   {
 		$this->site_object_controller->tally();
 	  unset($this->site_object_controller);
-		
-		debug_mock :: tally();
 		
 		$this->request->tally();
 		$this->response->tally();
@@ -83,45 +79,48 @@ class site_object_controller_test extends LimbTestCase
   	$this->assertFalse($this->site_object_controller->action_exists('no_such_action_test'));
   }
   
-  function test_determine_action()
+  function test_get_action()
   { 
   	$this->request->setReturnValue('get', 'action_test', array('action'));
   
-  	$this->assertNotIdentical($this->site_object_controller->determine_action($this->request), false);
-  	$this->assertEqual($this->site_object_controller->get_action(), 'action_test');
+  	$this->assertEqual($this->site_object_controller->get_action($this->request), 'action_test');
   }
   
-  function test_default_determine_action()
+  function test_default_get_action()
   {
-  	$this->assertNotIdentical($this->site_object_controller->determine_action($this->request), false);
-  	$this->assertEqual($this->site_object_controller->get_action(), 'display');
+  	$this->assertEqual($this->site_object_controller->get_action($this->request), 'display');
   }
   
   function test_get_action_object()
   {
   	$this->request->setReturnValue('get', 'action_test', array('action'));
 
-  	$this->assertNotIdentical($this->site_object_controller->determine_action($this->request), false);
-  	$action =& $this->site_object_controller->get_action_object();
+  	$action =& $this->site_object_controller->get_action_object($this->request);
   	
   	$this->assertNotNull($action);
   	$this->assertIsA($action, 'action');
+  }
+  
+  function test_get_no_such_action()
+  {
+  	$this->request->setReturnValue('get', 'no_such_action', array('action'));
+
+  	try
+  	{
+  	  $action =& $this->site_object_controller->get_action($this->request);
+  	  $this->assertTrue(false);
+  	} 
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'action not found');
+  	}
   }
   
   function test_get_empty_action_object()
   {
   	$this->request->setReturnValue('get', 'no_such_action', array('action'));
 
-  	debug_mock :: expect_write_warning('action not found', 
-  		array (
-					  'class' => 'site_object_controller_test_version1',
-					  'action' => 'no_such_action',
-					  'default_action' => 'display',
-					)
-		);
-  	
-  	$this->assertIdentical($this->site_object_controller->determine_action($this->request), false);
-  	$action =& $this->site_object_controller->get_action_object();
+  	$action = $this->site_object_controller->get_action_object($this->request);
   	
   	$this->assertNotNull($action);
   	$this->assertIsA($action, 'empty_action');
@@ -136,13 +135,13 @@ class site_object_controller_test extends LimbTestCase
   	
   	$this->request->setReturnValue('get', 'action_test', array('action'));
   	
-  	$this->assertEqual($site_object_controller->determine_action($this->request), 'action_test');
+  	$this->assertEqual($site_object_controller->get_action($this->request), 'action_test');
 
   	$site_object_controller->expectOnce('_create_template');
   	$site_object_controller->setReturnReference('_create_template', $template);
   	
   	$template->expectOnce('display');
-  	$site_object_controller->display_view();
+  	$site_object_controller->display_view($this->request);
   	
   	$site_object_controller->tally();
   	$template->tally();
@@ -152,35 +151,29 @@ class site_object_controller_test extends LimbTestCase
   { 
   	$this->request->setReturnValue('get', 'no_such_action', array('action'));
   	
-  	debug_mock :: expect_write_warning('action not found', 
-  		array (
-					  'class' => 'site_object_controller_test_version1',
-					  'action' => 'no_such_action',
-					  'default_action' => 'display',
-					)
-		);
-
-  	$this->assertIdentical($this->site_object_controller->determine_action($this->request), false);
-
-		debug_mock :: expect_write_error('template is null');
-		
-  	$this->site_object_controller->display_view();  	
+  	try
+  	{
+  	  $this->site_object_controller->display_view($this->request);
+  	  $this->assertTrue(false);
+  	}
+  	catch(LimbException $e)
+  	{
+  	  $this->assertEqual($e->getMessage(), 'template is empty');
+  	}
   }  
   
   function test_transaction_required()
   {
   	$this->request->setReturnValue('get', 'action_test', array('action'));
   
-  	$this->site_object_controller->determine_action($this->request);
-  	$this->assertTrue($this->site_object_controller->is_transaction_required());
+  	$this->assertTrue($this->site_object_controller->is_transaction_required($this->request));
   }
   
   function test_transaction_not_required()
   {
   	$this->request->setReturnValue('get', 'publish', array('action'));
   	
-  	$this->site_object_controller->determine_action($this->request);
-  	$this->assertFalse($this->site_object_controller->is_transaction_required());
+  	$this->assertFalse($this->site_object_controller->is_transaction_required($this->request));
   }
     
   function test_process()
@@ -194,8 +187,8 @@ class site_object_controller_test extends LimbTestCase
 
   	$this->request->setReturnValue('get', 'action_test', array('action'));
  	
-  	$this->assertNotIdentical($site_object_controller->determine_action($this->request), false);
-  	$this->assertEqual($site_object_controller->determine_action($this->request), 'action_test');
+  	$this->assertNotIdentical($site_object_controller->get_action($this->request), false);
+  	$this->assertEqual($site_object_controller->get_action($this->request), 'action_test');
  
   	$site_object_controller->expectOnce('_create_action', array('action'));
   	$site_object_controller->setReturnReference('_create_action', $action);

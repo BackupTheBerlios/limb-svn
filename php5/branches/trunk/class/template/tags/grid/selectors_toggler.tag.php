@@ -23,7 +23,8 @@ class grid_selectors_toggler_tag extends compiler_directive_tag
 	{
 		if (!$this->find_parent_by_class('grid_list_tag'))
 		{
-			error('INVALIDNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
 					'enclosing_tag' => 'grid:LIST',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

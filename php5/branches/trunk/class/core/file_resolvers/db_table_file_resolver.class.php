@@ -20,12 +20,7 @@ class db_table_file_resolver extends package_file_resolver
     if($resolved_path = $this->_find_file_in_packages('db_tables/' . $class_path . '_db_table.class.php'))
       return $resolved_path;  
     else
-  	{
-  	  debug :: write_error('db_table not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  	    array('class_path' => $class_path));
-  	    
-  	  return false;
-  	}      
+  	  throw new FileNotFoundException('db_table not found', $class_path);
   }   
 }
 

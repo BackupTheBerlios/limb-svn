@@ -31,13 +31,16 @@ class label_tag extends server_tag_component_tag
 	{
 		if ($this->find_parent_by_class('label_tag'))
 		{
-			error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('bad self nesting', 
+					array('tag' => $this->tag,
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
+
 		if (!$this->find_parent_by_class('form_tag'))
 		{
-			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
 					'enclosing_tag' => 'form',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

@@ -31,7 +31,8 @@ class core_place_holder_tag extends server_component_tag
 	{
 		if ($this->find_parent_by_class('core_place_holder_tag'))
 		{
-			error('BADSELFNESTING', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('bad self nesting', 
+					array('tag' => $this->tag,
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 

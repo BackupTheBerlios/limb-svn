@@ -239,9 +239,6 @@ class debug
 			$debug->write(self :: LEVEL_NOTICE, $string, $code_line, $params);
 	} 
 
-	/*
-    writes a debug warning.
-  */
 	static public function write_warning($string, $code_line = '', $params = array())
 	{
 		if (!self :: is_debug_enabled())
@@ -267,6 +264,14 @@ class debug
 		else
 			$debug->write(self :: LEVEL_ERROR, $string, $code_line, $params);
 	} 
+		
+	static public function write_exception($e)
+	{
+	  if($e instanceof LimbException)
+      debug :: write_error($e->getMessage(), $e->getFile() . ' : ' . $e->getLine(), $e->getAdditionalParams());
+    else
+      debug :: write_error($e->getMessage(), $e->getFile() . ' : ' . $e->getLine());
+	}
 		
 	static protected function _send_mail($debug_info)
 	{

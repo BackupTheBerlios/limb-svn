@@ -21,7 +21,7 @@ class site_object_controller_filter implements intercepting_filter
      
     $site_object_controller = $site_object->get_controller();
     
-    $site_object_controller->determine_action($request);
+    $site_object_controller->get_action($request);
             
     $site_object_controller->process($request, $response);
     

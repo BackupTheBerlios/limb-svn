@@ -52,15 +52,23 @@ abstract class db_module
   public function connect_db($db_params)
   {
   	if(!$this->_db_connection = $this->_connect_db_operation($db_params))
-  		error("couldnt connect to db at host {$db_params['host']}, check db params", 
-  			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);  	
+  		throw new SQLException('couldnt connect to database at host, check db params', 
+    		          $this->get_last_error(), 
+    		          array(
+    		            'host' => $db_params['host'],
+    		            'database' => $db_params['name'],
+    		            'login' => $db_params['login']
+    		          )
+  		          );
   }
 
   public function select_db($db_name)
   {  	
   	if(!$this->_select_db_operation($db_name))
-  		error("couldnt select db '{$db_name}', check db params", 
-  			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+  		throw new SQLException('couldnt select database, check db params', 
+    		          $this->get_last_error(), 
+    		          array('database' => $db_name)
+    		        );  	
   }
   
   abstract protected function _connect_db_operation($db_params);
@@ -116,9 +124,10 @@ abstract class db_module
   	
   	if (!$this->_sql_result)
   	{
-  		error(
-  			$this->_sql_exec_error($sql), 
-  			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+  		throw new SQLException('query error', 
+    		          $this->get_last_error(), 
+    		          array('sql' => $sql)
+    		        );  	  	
   	}
 
     return $this->_sql_result;
@@ -126,11 +135,6 @@ abstract class db_module
   
   abstract protected function _sql_exec_operation($sql);
   
-  protected function _sql_exec_error($sql)
-  {
-  	 return $this->get_last_error() . "\n" . $sql;
-  }
-
   public function sql_exec_batch($sql='')
   {
   	$sqls = array();
@@ -313,10 +317,7 @@ abstract class db_module
   	return strval($value);
   }
   	
-	public function get_last_error()
-	{
-		return 'undefined error';
-	}
+	abstract public function get_last_error();
 	
 	abstract public function get_sql_insert_id();
 	

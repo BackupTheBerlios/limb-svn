@@ -62,8 +62,7 @@ class access_policy
 		elseif ($permissions == 'rw')
 			$sql .=" AND soa.w = 1 AND soa.r = 1";
 		else
-			error('permissions are not allowed',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+			throw new LimbException('permissions are not allowed',
     		 array('permissions' => $permissions));
 	
   	$db->sql_exec($sql);
@@ -207,8 +206,7 @@ class access_policy
 			{
 				if (!isset($action_params['permissions_required']))
 				{
-			   	error('action permissions not set',
-		    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+			   	throw new LimbException('action permissions not set',
 		    		array(
 		    			'site_object_controller' => $controller_class_name,
 		    			'action' => $action_name,
@@ -332,7 +330,7 @@ class access_policy
 		if(empty($action))
 		{
 			$parent_controller = $parent_object->get_controller();
-			$action = $parent_controller->determine_action();
+			$action = $parent_controller->get_action();
 		}
 
 		$class_id = $parent_object->get_class_id();
@@ -354,11 +352,9 @@ class access_policy
 		
 		if (!$group_result && !$user_result)	
 		{
-			 debug ::	write_error('parent object has no acccess records at all',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+       throw new LimbException('parent object has no acccess records at all',
     		array('parent_id' => $parent_object_id)
     	);
-			return false;
 		}	
 		else
 			return true;	
@@ -374,11 +370,9 @@ class access_policy
 
 		if(!$user_template && !$group_template)
 		{
-			 debug ::	write_error('Access template is not set',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+			 throw new LimbException('access template is not set',
     		array('action' => $action, 'class_name' => get_class($object))
     	);
-			return false;
 		}
 
 		$db_table	= db_table_factory :: create('sys_object_access');

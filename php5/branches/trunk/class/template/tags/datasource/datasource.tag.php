@@ -28,7 +28,8 @@ class datasource_tag extends server_component_tag
 	{
 		if (!isset($this->attributes['target']))
 		{
-			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'target',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
@@ -83,10 +84,8 @@ class datasource_tag extends server_component_tag
 				}
 			}
 			else
-				debug :: write_error('component target not found',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array('target' => $target));
-
+  			throw new WactException('target component not found', 
+					array('target' => $target));
 		}
 			
 		if(isset($this->attributes['navigator']) && $navigator)

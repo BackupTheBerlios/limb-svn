@@ -30,21 +30,21 @@ class core_include_tag extends compiler_directive_tag
 		if (! array_key_exists('file', $this->attributes) ||
 				empty($this->attributes['file']))
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-				array('tag' => $this->tag,
-							'attribute' => 'file',
-							'file' => $this->source_file,
-							'line' => $this->starting_line_no));
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
+					'attribute' => 'file',
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
 		} 
 		$file = $this->attributes['file'];
 
 		if (!$this->resolved_source_file = resolve_template_source_file_name($file))
 		{
-			error('MISSINGFILE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-				array('tag' => $this->tag,
-							'srcfile' => $file,
-							'file' => $this->source_file,
-							'line' => $this->starting_line_no));
+			throw new WactException('missing file', 
+					array('tag' => $this->tag,
+				  'srcfile' => $file,
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
 		} 
 
 		if (array_key_exists('literal', $this->attributes))

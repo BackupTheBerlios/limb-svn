@@ -47,13 +47,7 @@ class search_fetcher extends fetcher
 	public function search_fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
 	{
 		if (!$this->_query_object)
-		{
-			 debug :: write_error('search_query is empty',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array()
-    	);
     	return array();
-    }	
 
 		$site_object = site_object_factory :: create($loader_class_name);
 
@@ -144,13 +138,7 @@ class search_fetcher extends fetcher
 	public function search_fetch_by_ids($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{
 		if (!$this->_query_object)
-		{
-			 debug :: write_error('search_query is empty',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array()
-    	);
     	return array();
-    }	
 
 		$search = new full_text_search();
 		$search_result = $search->find_by_ids($object_ids, $this->_query_object);

@@ -33,7 +33,8 @@ class control_button_tag extends control_tag
 	{
 		if (!isset($this->attributes['action']))
 		{
-			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'action',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

@@ -34,10 +34,8 @@ class sys_param
 	{
 		if(!in_array($type, $this->_types))
 		{
-		  debug :: write_error('trying to save undefined type in sys_param', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+		  throw new LimbException('trying to save undefined type in sys_param', 
 			  array('type' => $type, 'param' => $identifier));
-			return false;
 		}
 
 		$params = $this->_db_table->get_list("identifier='{$identifier}'", '', '', 0, 1);
@@ -87,10 +85,8 @@ class sys_param
 	{
 		if(!empty($type) && !in_array($type, $this->_types))
 		{
-		  debug :: write_error('trying to get undefined type in sys_param', 
-			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+		  throw new LimbException('trying to get undefined type in sys_param', 
 			  array('type' => $type, 'param' => $identifier));
-			return null;
 		}
 
 		$params = $this->_db_table->get_list("identifier='{$identifier}'", '', '', 0, 1);

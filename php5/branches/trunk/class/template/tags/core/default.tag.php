@@ -30,7 +30,8 @@ class core_default_tag extends compiler_directive_tag
 		$field = $this->attributes['for'];
 		if (empty($field))
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'for',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));

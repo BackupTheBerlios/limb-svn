@@ -98,15 +98,7 @@ class db_table
   }
   
   public function insert($row)
-  {
-  	if (!is_array($row))
-  	{
-  	  error('not array',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('row' => $row)
-    	);
-  	}
-		
+  {		
 		$filtered_row = $this->_filter_row($row);
 		
     return $this->_db->sql_insert($this->_db_table_name, $filtered_row, $this->get_column_types());
@@ -114,6 +106,9 @@ class db_table
   
   protected function _filter_row($row)
   {
+    if (!is_array($row))
+      return array();
+      
   	$filtered = array();
   	foreach($row as $key => $value)
   	{
@@ -125,14 +120,6 @@ class db_table
     
   public function update($row, $conditions)
   { 
-  	if (!is_array($row))
-  	{
-  	  error('not array',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('row' => $row)
-    	);
-  	}
-
   	$filtered_row = $this->_filter_row($row);
   	  
     return $this->_db->sql_update($this->_db_table_name, $filtered_row, $conditions, $this->get_column_types());
@@ -140,23 +127,11 @@ class db_table
 
   public function update_by_id($id, $data)
   {
-		if (!$this->_primary_key_name)
-		{
-    	error('primary id column not set',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}
-
   	return $this->update($data, "{$this->_primary_key_name}='{$id}'");
   } 
   
   public function get_row_by_id($id)
   {
-		if (!$this->_primary_key_name)
-		{
-    	error('primary id column not set',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}
-
 		$data = $this->get_list($this->_primary_key_name . "='{$id}'");
 		
 		return current($data);
@@ -193,12 +168,6 @@ class db_table
 	
 	public function delete_by_id($id)
 	{
-		if (!$this->_primary_key_name)
-		{
-    	error('primary id column not set',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}
-
 		return $this->delete(array($this->_primary_key_name => $id));
 	}
   	  	
@@ -236,8 +205,8 @@ class db_table
 				
 				if(!$db_table->has_column($column_name))
 				{
-		    	error('no such a column',
-		    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+		    	throw new SQLException('column not found while cascade deleting',
+		    	  null,
 		    		array(
 		    			'table' => $table_name,
 		    			'column_name' => $column_name

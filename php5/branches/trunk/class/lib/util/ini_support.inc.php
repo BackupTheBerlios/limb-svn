@@ -32,11 +32,7 @@ function & get_ini($file_name, $use_cache = null)
     $resolved_file = $resolver->resolve($file_name);  
   }  
   
-	if (!($ini =& ini::instance($resolved_file, $use_cache)))
-		error('couldnt retrieve ini instance', __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 
-		array('file' => $resolved_file));
-
-	return $ini;
+	return ini::instance($resolved_file, $use_cache);
 } 
 
 ?>

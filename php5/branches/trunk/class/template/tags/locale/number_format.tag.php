@@ -28,16 +28,14 @@ class locale_number_format_tag extends server_component_tag
 	
 	public function pre_parse()
 	{
-		$field = $this->attributes['hash_id'];
-		if (empty($field))
+		if (!isset($this->attributes['hash_id']) || !$this->attributes['hash_id'])
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'hash_id',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
-
-		$this->field = $field;
 
 		return PARSER_REQUIRE_PARSING;
 	} 
@@ -45,7 +43,7 @@ class locale_number_format_tag extends server_component_tag
 	public function generate_contents($code)
 	{
 		$code->write_php(
-			'echo ' . $this->get_component_ref_code() . '->format(' . $this->get_dataspace_ref_code() . '->get("' . $this->field . '"));');
+			'echo ' . $this->get_component_ref_code() . '->format(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['field'] . '"));');
 	}  
 } 
 

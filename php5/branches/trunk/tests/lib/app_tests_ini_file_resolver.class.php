@@ -22,9 +22,7 @@ class app_tests_ini_file_resolver
   	elseif (file_exists(LIMB_DIR . '/settings/' . $file_name))
   		$dir = LIMB_DIR . '/settings/';
   	else
-  		error('ini file not found', 
-		  __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__, 
-		  array('file' => $file_name));
+      throw new FileNotFoundException('ini file not found', $file_name);
 		  
 		return $dir . $file_name;
   }  

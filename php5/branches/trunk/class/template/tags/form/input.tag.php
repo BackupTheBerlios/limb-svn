@@ -66,11 +66,11 @@ class input_tag extends control_tag
 				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_button_component';
 				break;
 			default:
-				error('UNKNOWNINPUTYPE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-				array(
-						'file' => $this->source_file,
-						'line' => $this->starting_line_no,
-						'type' => $type));
+  			throw new WactException('unknown input type', 
+					array('tag' => $this->tag,
+					'type' => $type,
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
 		} 
 
 		parent :: prepare();

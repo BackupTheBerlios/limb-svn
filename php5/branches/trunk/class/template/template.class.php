@@ -44,9 +44,7 @@ class template extends component
 		if($resolve_path)
 		{
 			if(!$srcfile = resolve_template_source_file_name($file))
-				error('template file not found', 
-							__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-							array('file' => $file));
+				throw new FileNotFoundException('template file not found', $file);
 		}
 		else
 			$srcfile = $file;				
@@ -83,7 +81,7 @@ class template extends component
 		$result = $this->find_child($server_id);
 		if (!is_object($result))
 		{
-			error('COMPONENTNOTFOUND', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+			throw new WactException('component not found', 
 					array('file' => $this->file,
 					'server_id' => $server_id));
 		} 

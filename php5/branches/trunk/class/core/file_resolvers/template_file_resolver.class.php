@@ -34,13 +34,7 @@ class template_file_resolver extends package_file_resolver
       return $resolved_path;
     }
     else
-    {
-  	  debug :: write_error('template not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  	    array('file_path' => $file_path));
-  	    
-  	  return false;
-    
-    }
+  	  throw new FileNotFoundException('template not found', $file_path);
   }
   
   protected function _get_locale_prefix()

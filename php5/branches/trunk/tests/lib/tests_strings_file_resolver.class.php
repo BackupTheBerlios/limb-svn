@@ -16,12 +16,7 @@ class tests_strings_file_resolver
   	if(file_exists(LIMB_DIR . '/tests/i18n/' . $file_name . '_' . $locale_id . '.ini'))
   		$dir = LIMB_DIR . '/tests/i18n/';
   	else
-  		error('strings file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-  			array(
-  				'file_name' => $file_name,
-  				'locale_id' => $locale_id
-  			)
-  	);
+      throw new FileNotFoundException('strings file not found', $file_name, array('locale_id' => $locale_id));
   	
   	return $dir . $file_name . '_' . $locale_id . '.ini';
   }  

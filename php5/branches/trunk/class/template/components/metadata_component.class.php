@@ -246,7 +246,7 @@ class metadata_component extends component
 		
 		$controller = $this->_get_mapped_controller();
 		
-		$action = $controller->determine_action();
+		$action = $controller->get_action();
 		
 		if ($action !== false && 
 				$controller->get_action_property($action, 'display_in_breadcrumbs') === true)
