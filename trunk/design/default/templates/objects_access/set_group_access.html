@@ -1,16 +1,15 @@
 <core:WRAP file="admin/page.html" placeholder="content">
 <form method="post" name="set_group_access" id="set_group_access">
+<core:INCLUDE file='/objects_access/groups_filter_form.html'>
 <input name="type" type="hidden" id="type">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <th>
 <locale:STRING name='object'>
 </th>
-<fetch:SUB_BRANCH target="groups" >
-	<core:PARAMETER name='loader_class_name' value='user_group'>
-	<core:PARAMETER name='path' value='/root'>
-	<core:PARAMETER name='depth' value='-1' type='numeric'>
-</fetch:SUB_BRANCH>
+<DATASOURCE target='groups'>
+	<core:PARAMETER name='datasource_path' value='objects_access_groups_list_datasource'>
+</DATASOURCE>
 
 <grid:LIST id="groups">
 	<grid:ITERATOR>
@@ -20,7 +19,6 @@
 	</th>
 </grid:ITERATOR>
 </grid:LIST>
-
 </tr>
 
 <grid:LIST id='access'>

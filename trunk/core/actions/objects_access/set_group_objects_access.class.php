@@ -23,31 +23,50 @@ class set_group_objects_access extends form_action
 	{
 		$tree =& tree :: instance();		
 		$tree->initialize_expanded_parents();				
-	
-		$this->_set_template_tree();
+
+		if ($filter_groups = session :: get('filter_groups'))
+			$this->dataspace->set('filter_groups', $filter_groups);	
 		
 		parent :: perform($request, $response);
+
+		$this->_fill_policy();
 	}
 
-	function _init_dataspace(&$request)
+	function _fill_policy()
 	{
 		$access_policy =& access_policy :: instance();
 		$data['policy'] = $access_policy->get_group_object_access_by_ids($this->object_ids);
 
-		$this->dataspace->import($data);
+		$this->dataspace->merge($data);
+	}
+	
+	function _init_dataspace(&$request)
+	{
+		parent :: _init_dataspace($request);
+
+		$this->_set_template_tree();
+		
+		$this->_fill_policy();
 	}
 	
 	function _valid_perform(&$request, &$response)
 	{
 		$data = $this->dataspace->export();
 		
-		$access_policy =& access_policy :: instance();
+		if(isset($data['update']) && isset($data['policy']))
+		{
+			$access_policy =& access_policy :: instance();
+			$access_policy->save_group_object_access($data['policy']);
+		}
 
-		$access_policy->save_group_object_access($data['policy']);
-		
+	  if($groups = $this->dataspace->get('filter_groups'))
+	  	session :: set('filter_groups', $groups);
+
+		$this->_set_template_tree();
+ 		
 		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	}
-
+	
 	function _set_template_tree()
 	{
 		$datasource =& datasource_factory :: create('group_object_access_datasource');
@@ -76,7 +95,7 @@ class set_group_objects_access extends form_action
 		$dataset->reset();		
 		$access_tree =& $this->view->find_child('access');
 		$access_tree->register_dataset($dataset);
-	}		
+	}
 }
 
 ?>

@@ -427,11 +427,12 @@ class access_policy
 		{
 			$conditions['object_id'] = $object_id;
 			$conditions['accessor_type'] = $accessor_type;
-		
-			$db_table->delete($conditions);
-			
+
 			foreach($access_data as $accessor_id => $rights)
 			{
+				$conditions['accessor_id'] = $accessor_id;
+				$db_table->delete($conditions);
+			
 				$data = array();
 				
 				if (isset($rights['r']) && $rights['r'])

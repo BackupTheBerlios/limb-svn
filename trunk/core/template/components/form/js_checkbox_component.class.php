@@ -13,6 +13,11 @@ require_once(LIMB_DIR . 'core/template/components/form/input_form_element.class.
 
 class js_checkbox_component extends input_form_element
 {
+	function render_attributes()
+	{
+		unset($this->attributes['value']);
+		parent :: render_attributes();
+	}
 	
 	function render_js_checkbox()
 	{ 
@@ -24,7 +29,7 @@ class js_checkbox_component extends input_form_element
 		else	
 			$checked = '';		
 		
-		$js = "onclick='this.form.{$name}.value = 1*this.checked'";
+		$js = "onclick=\"this.form.elements['{$name}'].value = 1*this.checked\"";
 		
 		echo "<input type='checkbox' id='{$id}_checkbox' {$checked} {$js}>";
 

@@ -24,11 +24,11 @@ class input_form_element extends form_element
 	function render_attributes()
 	{
 		$value = $this->get_value();
-		
+
 		if (!is_null($value))
 		{
 			$this->attributes['value'] = $value;
-		} 
+		}
 		 
 		parent :: render_attributes();
 	} 

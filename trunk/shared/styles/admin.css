@@ -89,7 +89,7 @@ input, textArea{color:#0447CA}
 .textArea-changed{font:8pt Verdana, sans; border:dotted 1px #3278ED;}
 .textArea{font:8pt Verdana, sans; border:solid 1px #3278ED;}
 .textArea-mono{font:8pt Curier, sans; border:solid 1px #3278ED;}
-select{font:8pt Verdana, sans; border:solid 1px #3278ED; height:18px}
+select{font:8pt Verdana, sans; border:solid 1px #3278ED}
 .form{background-color:#F5F5F5}
 
 /*colors*/

@@ -21,8 +21,11 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 	
 	function perform(&$request, &$response)
 	{				
+		if ($filter_groups = session :: get('filter_groups'))
+			$this->dataspace->set('filter_groups', $filter_groups);	
+
 		parent :: perform($request, $response);
-		
+
 		$this->_set_template_tree();
 		$this->_init_dataspace($request);
 	}
@@ -32,7 +35,7 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 		$access_policy =& access_policy :: instance();
 		$data['policy'] = $access_policy->get_group_object_access_by_ids($this->object_ids);
 
-		$this->dataspace->import($data);
+		$this->dataspace->merge($data);
 	}
 
 	function _set_template_tree()
