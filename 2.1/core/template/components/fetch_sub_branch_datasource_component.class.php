@@ -29,8 +29,11 @@ class fetch_sub_branch_datasource_component extends datasource_component
 		$params = $this->parameters;
 		
 		if(!isset($params['path']) || !$params['path'])
-			$params['path'] = $_SERVER['PHP_SELF'];
-			
+		{
+			$object_arr =& fetch_mapped_by_url();
+			$params['path'] = $object_arr['path'];
+		}				
+		
 		if (!isset($params['loader_class_name']))
 			$params['loader_class_name'] = 'site_object';
 

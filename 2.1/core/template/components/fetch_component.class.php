@@ -47,7 +47,10 @@ class fetch_component extends component
 	function get_path()
 	{
 		if(!$this->path)
-			$this->path = $_SERVER['PHP_SELF'];
+		{
+			$object_arr =& fetch_mapped_by_url();
+			$this->path = $object_arr['path'];
+		}	
 
 		return $this->path;				
 	}

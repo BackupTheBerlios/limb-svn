@@ -25,6 +25,8 @@ class grid_list_tag extends server_component_tag
 {
 	var $runtime_component_path = '/core/template/components/list_component';
 	
+	var $has_form = false;
+	
 	/**
 	* 
 	* @param code $ _writer
@@ -37,7 +39,7 @@ class grid_list_tag extends server_component_tag
 		
 		parent :: pre_generate($code);
 
-		if (isset($this->attributes['has_form']) && $this->attributes['has_form'])
+		if ($this->has_form)
 		{
 			$code->write_html('<form name="grid_form" id="grid_form_'. $this->get_server_id() .'" method="post">');
 			$code->write_html("<input type='hidden' name='grid_form[submitted]' value='1'>");
@@ -55,7 +57,7 @@ class grid_list_tag extends server_component_tag
 			
 		$code->write_php('}');
 
-		if (isset($this->attributes['has_form']) && $this->attributes['has_form'])
+		if ($this->has_form)
 		{
 			$code->write_html('</form>');
 		}	
@@ -81,6 +83,11 @@ class grid_list_tag extends server_component_tag
 	{
 		return $this->get_component_ref_code() . '->dataset';
 	} 
+	
+	function set_form_required($status=true)
+	{
+		$this->has_form = $status;
+	}
 } 
 
 ?>

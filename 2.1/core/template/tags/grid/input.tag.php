@@ -47,6 +47,9 @@ class grid_input_tag extends control_tag
 	{
 		$this->attributes['type'] = 'text';
 		
+		$grid_tag =& $this->find_parent_by_class('grid_list_tag');
+		$grid_tag->set_form_required();
+		
 		parent :: prepare();
 	}
 		

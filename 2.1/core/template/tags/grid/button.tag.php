@@ -36,10 +36,9 @@ class grid_button_tag extends button_tag
 
 	function prepare()
 	{
-		parent :: prepare();
-		
 		$grid_tag =& $this->find_parent_by_class('grid_list_tag');
-		
+		$grid_tag->set_form_required();
+
 		$this->attributes['type'] = 'button';
 		
 		$action_path = '';
@@ -53,6 +52,11 @@ class grid_button_tag extends button_tag
 			$action_path .= 'action=' . $this->attributes['action'];
 		
 		$this->attributes['onclick'] = "submit_form('grid_form_{$grid_tag->attributes['id']}', '{$action_path}&reload_parent=1')";
+		
+		parent :: prepare();
+		
+		unset($this->attributes['path']);
+		unset($this->attributes['action']);
 	}
 	
 	function get_rendered_tag()
