@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class.php');
 
 class input_file_component extends input_form_element
@@ -22,7 +20,7 @@ class input_file_component extends input_form_element
 	* portion of the $_FILES array, allowing initial validation of uploaded
 	* files.
 	*/
-	function get_value()
+	public function get_value()
 	{
 		return;
 	} 

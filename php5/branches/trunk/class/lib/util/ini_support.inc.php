@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.inc.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
 
 if(!is_registered_resolver('ini'))
   register_file_resolver('ini', LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver');

@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'class/template/component.class.php');
 
 class order_component extends component
 {		
-	function prepare()
+	public function prepare()
 	{
 		$params = array();
 		$params['id'] = $this->get('node_id');
@@ -43,8 +41,5 @@ class order_component extends component
 		
 		return parent :: prepare();	
 	} 
-
-
 } 
-
 ?>

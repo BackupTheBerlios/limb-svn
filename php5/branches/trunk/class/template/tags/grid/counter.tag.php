@@ -8,19 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class grid_counter_tag_info
 {
-	var $tag = 'grid:COUNTER';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'grid_counter_tag';
+	public $tag = 'grid:COUNTER';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'grid_counter_tag';
 } 
 
 register_tag(new grid_counter_tag_info());
 
 class grid_counter_tag extends compiler_directive_tag
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'grid_iterator_tag'))
 		{
@@ -31,7 +30,7 @@ class grid_counter_tag extends compiler_directive_tag
 		} 
 	} 
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 	  $grid = $this->find_parent_by_class('grid_list_tag');
 	   

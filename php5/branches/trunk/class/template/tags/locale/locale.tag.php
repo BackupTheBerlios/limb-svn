@@ -8,21 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class locale_locale_tag_info
 {
-	var $tag = 'locale:LOCALE';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'locale_locale_tag';
+	public $tag = 'locale:LOCALE';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'locale_locale_tag';
 } 
 
 register_tag(new locale_locale_tag_info());
 
-
 class locale_locale_tag extends compiler_directive_tag
 {
-	var $name;
+	public $name;
 
 	function pre_parse()
 	{
@@ -40,7 +37,7 @@ class locale_locale_tag extends compiler_directive_tag
 		return PARSER_REQUIRE_PARSING;
 	} 
 
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 
@@ -56,14 +53,12 @@ class locale_locale_tag extends compiler_directive_tag
 
 		$code->write_php('if ("' . $this->name. '" == constant("'. $locale_constant .'")) {');
 	} 
-	
 
-	function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_php('}');
 		parent::post_generate($code);
 	} 
-	
 } 
 
 ?>

@@ -8,26 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/class/template/tags/form/button.tag.php');
 
 class grid_button_tag_info
 {
-	var $tag = 'grid:BUTTON';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'grid_button_tag';
+	public $tag = 'grid:BUTTON';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'grid_button_tag';
 } 
 
 register_tag(new grid_button_tag_info());
 
 class grid_button_tag extends button_tag
 {
-  function grid_button_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_button_component';
 	}
 		
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!$this->find_parent_by_class('grid_list_tag'))
 		{
@@ -38,7 +37,7 @@ class grid_button_tag extends button_tag
 		}
 	}
 
-	function prepare()
+	public function prepare()
 	{
 		$grid_tag =& $this->find_parent_by_class('grid_list_tag');
 		$grid_tag->set_form_required();
@@ -56,7 +55,7 @@ class grid_button_tag extends button_tag
 		parent :: prepare();		
 	}
 	
-	function get_rendered_tag()
+	public function get_rendered_tag()
 	{
 		return 'input';
 	}	

@@ -14,7 +14,7 @@ require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 
 class date_component extends input_form_element
 {
-	function init_date()
+	public function init_date()
 	{
 		if (defined('DATEBOX_LOAD_SCRIPT'))
 			return;
@@ -28,7 +28,7 @@ class date_component extends input_form_element
 		define('DATEBOX_LOAD_SCRIPT',1);
 	}
 	
-	function _get_frame_id()
+	private function _get_frame_id()
 	{
 		//default-month:theme-name[:agenda-file[:context-name[:plugin-file]]]
 
@@ -78,10 +78,9 @@ class date_component extends input_form_element
 		}
 		
 		return implode(':', $params);
-		
 	}
 	
-	function render_date()
+	public function render_date()
 	{
 		$form_id = $this->parent->get_attribute('id');
   	$id = $this->get_attribute('id');
@@ -99,9 +98,9 @@ class date_component extends input_form_element
 		echo "<a href='javascript:void(0)' onclick='gfPop.". $function .";return false;' HIDEFOCUS><img name='popcal' align='absbottom' src='". $button ."' width='34' height='22' border='0' alt=''></a>";
 	}
 	
-	function get_value()
+	public function get_value()
 	{		
-		$form =& $this->find_parent_by_class('form_component');
+		$form = $this->find_parent_by_class('form_component');
 		
 		$value = parent :: get_value();
 
@@ -110,10 +109,9 @@ class date_component extends input_form_element
 		
 		if($form->is_first_time())
 		{				
-			$locale =& locale :: instance();
-			$date =& new date($value);
+			$date = new date($value);
 			
-			$value = $date->format($locale->get_short_date_format());
+			$value = $date->format(locale :: instance()->get_short_date_format());
 		}
 			
 		return $value;

@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.inc.php'); 
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php'); 
 
 /**
 * Determines the full path to a source template file.
 */
 function resolve_template_source_file_name($file)
 {
-  $resolver =& get_file_resolver('template');
+  $resolver = get_file_resolver('template');
 	resolve_handle($resolver);
 		  
   return $resolver->resolve($file);

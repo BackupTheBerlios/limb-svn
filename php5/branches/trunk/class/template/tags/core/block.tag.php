@@ -8,31 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class core_block_tag_info
 {
-	var $tag = 'core:BLOCK';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_block_tag';
+	public $tag = 'core:BLOCK';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'core_block_tag';
 } 
 
 register_tag(new core_block_tag_info());
 
 class core_block_tag extends server_component_tag
 {
-  
-  function core_block_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/block_component';
 	}
-	/**
-	* 
-	* @param code_writer $ 
-	* @return void 
-	* @access protected 
-	*/
-	function generate_constructor(&$code)
+
+	public function generate_constructor(&$code)
 	{
 		parent::generate_constructor($code);
 		if (array_key_exists('hide', $this->attributes))
@@ -40,24 +32,14 @@ class core_block_tag extends server_component_tag
 			$code->write_php($this->get_component_ref_code() . '->visible = false;');
 		} 
 	} 
-	/**
-	* 
-	* @param code_writer $ 
-	* @return void 
-	* @access protected 
-	*/
-	function pre_generate(&$code)
+
+	public function pre_generate(&$code)
 	{
 		parent::pre_generate($code);
 		$code->write_php('if (' . $this->get_component_ref_code() . '->is_visible()) {');
 	} 
-	/**
-	* 
-	* @param code_writer $ 
-	* @return void 
-	* @access protected 
-	*/
-	function post_generate(&$code)
+
+	public function post_generate(&$code)
 	{
 		$code->write_php('}');
 		parent::post_generate($code);

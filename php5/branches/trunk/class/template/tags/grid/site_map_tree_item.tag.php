@@ -8,20 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class grid_site_map_tree_item_tag_info
 {
-	var $tag = 'grid:SITE_MAP_TREE_ITEM';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'grid_site_map_tree_item_tag';
+	public $tag = 'grid:SITE_MAP_TREE_ITEM';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'grid_site_map_tree_item_tag';
 } 
 
 register_tag(new grid_site_map_tree_item_tag_info());
 
 class grid_site_map_tree_item_tag extends compiler_directive_tag 
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'grid_iterator_tag'))
 		{
@@ -32,7 +30,7 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
 		} 
 	} 
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$ref = $this->get_component_ref_code();
 			

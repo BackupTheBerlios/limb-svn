@@ -31,7 +31,7 @@ require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 /**
 * Create the tag_dictionary global variable
 */
-$GLOBALS['tag_dictionary'] =& new tag_dictionary();
+$GLOBALS['tag_dictionary'] = new tag_dictionary();
 
 function load_tags_from_directory($tags_repository_dir)  
 {
@@ -85,12 +85,6 @@ load_packages_tags();
 * instantiates the code_writer and root_compiler_component (as the root) component then
 * instantiates the source_file_parser to parse the template.
 * Creates the initialize and render functions in the compiled template.
-* 
-* @see root_compiler_component
-* @see code_writer
-* @see source_file_parser
-* @param string $ name of source template
-* @return void 
 */
 function compile_template_file($filename, $resolve_path = true)
 {
@@ -113,22 +107,22 @@ function compile_template_file($filename, $resolve_path = true)
 		error('MISSINGFILE2', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('srcfile' => $filename));
 	} 
 
-	$code =& new codewriter();
+	$code = new codewriter();
 	$code->set_function_prefix(md5($destfile));
 
-	$tree =& new root_compiler_component();
+	$tree = new root_compiler_component();
 	$tree->source_file = $sourcefile;
 
-	$sfp =& new source_file_parser($sourcefile, $tag_dictionary);
+	$sfp = new source_file_parser($sourcefile, $tag_dictionary);
 	$sfp->parse($tree);
 	
 	$tree->prepare();
 
-	$render_function = $code->begin_function('(&$dataspace)');
+	$render_function = $code->begin_function('($dataspace)');
 	$tree->generate($code);
 	$code->end_function();
 
-	$construct_function = $code->begin_function('(&$dataspace)');
+	$construct_function = $code->begin_function('($dataspace)');
 	$tree->generate_constructor($code);
 	$code->end_function();
 

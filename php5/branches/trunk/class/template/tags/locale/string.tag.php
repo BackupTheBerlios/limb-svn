@@ -12,17 +12,16 @@ require_once(LIMB_DIR . '/class/template/compiler/compiler_directive_tag.class.p
 
 class locale_string_tag_info
 {
-	var $tag = 'locale:STRING';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'locale_string_tag';
+	public $tag = 'locale:STRING';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'locale_string_tag';
 } 
 
 register_tag(new locale_string_tag_info());
 
 class locale_string_tag extends compiler_directive_tag
 {
-
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$file = 'common';
 		
@@ -67,12 +66,9 @@ class locale_string_tag extends compiler_directive_tag
 		
 			$code->write_php("echo strings :: get('{$this->attributes['name']}', '{$file}', constant('{$locale_constant}'));");
 		}
-		
 				
 		parent :: generate_contents($code);
 	}
-	
-
 } 
 
 ?>

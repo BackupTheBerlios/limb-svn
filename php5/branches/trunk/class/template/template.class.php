@@ -8,9 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-define('TMPL_IMPORT', 'import');
-define('TMPL_INCLUDE', 'include');
-
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/template/component.class.php');
@@ -26,35 +23,21 @@ $template_construct = array();
 /**
 * Public facade for handling templates, dealing with loading, compiling and
 * displaying
-* 
-* @access public
 */
 class template extends component
 {
 	/**
 	* Stored the name of the compiled template file
-	* 
-	* @var string 
-	* @access private 
 	*/
-	var $codefile;
+	protected $codefile;
 
-	var $file;
+	protected $file;
 	/**
 	* Name of function in compiled template which outputs display to screen
-	* 
-	* @var string 
-	* @access private 
 	*/
-	var $render_function;
+	protected $render_function;
 
-	/**
-	* Constructs template
-	* 
-	* @param string $ name of (source) template file (relative or full path)
-	* @access public 
-	*/
-	function template($file, $resolve_path = true)
+	function __construct($file, $resolve_path = true)
 	{
 		$this->file = $file;
 		
@@ -68,7 +51,7 @@ class template extends component
 		else
 			$srcfile = $file;				
 
-		$this->codefile = resolve_template_compiled_file_name($srcfile, TMPL_INCLUDE);
+		$this->codefile = resolve_template_compiled_file_name($srcfile);
 		
 		if (!isset($GLOBALS['template_render'][$this->codefile]))
 		{
@@ -95,9 +78,9 @@ class template extends component
 		$func($this);
 	} 
 
-	function &get_child($server_id)
+	public function get_child($server_id)
 	{
-		$result = &$this->find_child($server_id);
+		$result = $this->find_child($server_id);
 		if (!is_object($result))
 		{
 			error('COMPONENTNOTFOUND', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
@@ -109,11 +92,8 @@ class template extends component
 
 	/**
 	* Outputs the template, calling the compiled templates render function
-	* 
-	* @return void 
-	* @access public 
 	*/
-	function display()
+	public function display()
 	{
 		$func = $this->render_function;
 		$func($this);

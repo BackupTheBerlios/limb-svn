@@ -8,34 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'class/template/tag_component.class.php');
 
 class label_component extends tag_component
 {
 	/**
 	* CSS class attribute to display on error
-	* 
-	* @var string 
-	* @access private 
 	*/
-	var $error_class;
+	private $error_class;
 	/**
 	* CSS style attribute to display on error
-	* 
-	* @var string 
-	* @access private 
 	*/
-	var $error_style;
+	private $error_style;
 
 	/**
 	* If either are set, assigns the attributes for error class or style
-	* 
-	* @return void 
-	* @access protected 
 	*/
-	function set_error()
+	public function set_error()
 	{
 		if (isset($this->error_class))
 		{

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/template/components/form/form_element.class.php')
 
 class control_button_component extends form_element
 {
-	function render_attributes()
+	public function render_attributes()
 	{
 		if (!isset($this->attributes['path']) || !$this->attributes['path'])
 		{
@@ -37,7 +37,7 @@ class control_button_component extends form_element
 		if (isset($this->attributes['reload_parent']) && $this->attributes['reload_parent'])
 		{
 			$action_path .= '&reload_parent=1';
-		unset($this->attributes['reload_parent']);
+		  unset($this->attributes['reload_parent']);
 		}
     
     if(!isset($this->attributes['onclick']))
@@ -45,8 +45,8 @@ class control_button_component extends form_element
       
 		$this->attributes['onclick'] .= "submit_form(this.form, '{$action_path}')";
 
-	unset($this->attributes['path']);
-	unset($this->attributes['action']);
+	  unset($this->attributes['path']);
+	  unset($this->attributes['action']);
 		
 		parent :: render_attributes();
 	}

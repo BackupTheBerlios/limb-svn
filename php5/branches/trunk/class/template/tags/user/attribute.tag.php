@@ -8,22 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class user_attribute_tag_info
 {
-	var $tag = 'user:ATTRIBUTE';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'user_attribute_tag';
+	public $tag = 'user:ATTRIBUTE';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'user_attribute_tag';
 } 
 
 register_tag(new user_attribute_tag_info());
 
 class user_attribute_tag extends compiler_directive_tag
 {
-	var $name;
-
-	function pre_parse()
+	public function pre_parse()
 	{
 		$name = $this->attributes['name'];
 		if (empty($name))
@@ -37,7 +33,7 @@ class user_attribute_tag extends compiler_directive_tag
 		return PARSER_REQUIRE_PARSING;
 	} 
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$user_methods = get_class_methods('user');
 		
@@ -45,7 +41,7 @@ class user_attribute_tag extends compiler_directive_tag
 
 		if(in_array('get_'. $this->attributes['name'], $user_methods))
 		{
-			$code->write_php("{$user} =& user :: instance();");
+			$code->write_php("{$user} = user :: instance();");
 			$code->write_php("echo {$user}->get_{$this->attributes['name']}();");
 		}
 				

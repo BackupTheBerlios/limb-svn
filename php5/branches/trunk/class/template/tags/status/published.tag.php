@@ -10,9 +10,9 @@
 ***********************************************************************************/ 
 class status_published_tag_info
 {
-	var $tag = 'status:PUBLISHED';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'status_published_tag';
+	public $tag = 'status:PUBLISHED';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'status_published_tag';
 } 
 
 register_tag(new status_published_tag_info());
@@ -23,7 +23,7 @@ register_tag(new status_published_tag_info());
 */
 class status_published_tag extends compiler_directive_tag
 {
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 		
@@ -40,7 +40,7 @@ class status_published_tag extends compiler_directive_tag
 		$code->write_php('if ((boolean)(constant("site_object :: STATUS_PUBLISHED") & $' . $tempvar . ') === ' . $value . ') {');
 	} 
 
-	function post_generate(&$code)
+  public function post_generate($code)
 	{
 		$code->write_php('}');
 		$code->write_php('}');

@@ -18,90 +18,52 @@ class pager_component extends component
 	/**
 	* Used while displaying a page number list to determine when a separator
 	* should be shown between two page numbers
-	* 
-	* @var boolean 
-	* @access protected 
 	*/
-	var $show_separator;
-
+	protected $show_separator;
 	/**
 	* Used while displaying a page number list to the page number being displayed
-	* 
-	* @var integer 
-	* @access protected 
 	*/
-	var $page;
-
-
+	protected $page;	
 	/**
 	* The page number of the last page in the list.
-	* 
-	* @var integer 
-	* @access protected 
 	*/
-	var $last_page;
-
+	protected $last_page;
 	/**
 	* The page number of the current page in the list.
-	* 
-	* @var integer 
-	* @access protected 
 	*/
-	var $current_page = 0;
+	protected $current_page = 0;
 
-	var $current_section = 0;
+	protected $current_section = 0;
 
-	var $section = 0;
+	protected $section = 0;
 
-	var $pages_per_section = 10;
+	protected $pages_per_section = 10;
 	
-	var $section_has_changed = false;
+	protected $section_has_changed = false;
 	/**
 	* number of items to display on each page of the list.
 	* This is set via the items attribute of the pager:navigator tag.
-	* 
-	* @var integer 
-	* @access protected 
 	*/
-	var $items = 20;
-
+	protected $items = 20;
 	/**
 	* The total number of items in this list.
-	* 
-	* @var integer 
-	* @access protected 
 	*/
-	var $total_items = 0;
-
+	protected $total_items = 0;
 	/**
 	* The variable used to carry the current page in the URL.
-	* 
-	* @access protected 
 	*/
-	var $pager_variable = 'page';
-
+	protected $pager_variable = 'page';
 	/**
 	* The Url used to display individual pages of the list.
-	* 
-	* @access protected 
 	*/
-	var $base_url;
-
+	protected $base_url;
 	/**
 	* A paged dataset reference.  Used for determining the total number
 	* of items the pager should navagate across.
-	* 
-	* @access protected 
 	*/
-	var $paged_dataset;
+	protected $paged_dataset;
 	
-	
-	/**
-	* Initialize this class
-	* 
-	* @access public 
-	*/
-	function pager_component()
+	function __construct()
 	{
 		$this->base_url = $_SERVER['REQUEST_URI'];
 		$pos = strpos($this->base_url, '?');
@@ -111,51 +73,40 @@ class pager_component extends component
 		} 
 	} 
 	
-	/**
-	* Set the total number of items in the list.
-	* 
-	* @access protected 
-	*/
-	function set_total_items($items)
+	public function set_total_items($items)
 	{
 		$this->total_items = $items;
 	} 
 	
-	function get_total_items()
+	public function get_total_items()
 	{
 		return $this->total_items;
 	} 
 
-	function has_more_than_one_page()
+	public function has_more_than_one_page()
 	{
 		return $this->total_items > $this->items;
 	} 
 
-	function set_items_per_page($items)
+	public function set_items_per_page($items)
 	{
 		$this->items = $items;
 	} 
 
 	/**
 	* Set the database which this pager controls.
-	* 
-	* @param object $ dataset
-	* @access public 
 	*/
-	function register_dataset(&$dataset)
+	public function register_dataset($dataset)
 	{
-		$this->paged_dataset = &$dataset;
+		$this->paged_dataset = $dataset;
 	} 
 
 	/**
 	* Get the item number of the first item in the list.
 	* Usually called by the paged_dataset to determine where to
 	* begin query.
-	* 
-	* @return integer 
-	* @access public 
 	*/
-	function get_starting_item()
+	public function get_starting_item()
 	{
 		return $this->items * ($this->current_page - 1);
 	} 
@@ -164,60 +115,45 @@ class pager_component extends component
 	* Get the item number of the first item in the list.
 	* Usually called by the paged_dataset to determine how many
 	* items are on a page.
-	* 
-	* @return integer 
-	* @access public 
 	*/
-	function get_items_per_page()
+	public function get_items_per_page()
 	{
 		return $this->items;
 	} 
 	
-	function get_pages_count()
+	public function get_pages_count()
 	{
 	  return $this->last_page;
 	}
 
 	/**
 	* Is the current page being displayed the first page in the page list?
-	* 
-	* @return boolean 
-	* @access public 
 	*/
-	function is_first()
+	public function is_first()
 	{
 		return ($this->current_page == 1);
 	} 
 
 	/**
 	* Is there a page available to display before the current page being displayed?
-	* 
-	* @return boolean 
-	* @access public 
 	*/
-	function has_prev()
+	public function has_prev()
 	{
 		return ($this->current_page > 1);
 	} 
 
 	/**
 	* Is there a page available to display after the current page being displayed?
-	* 
-	* @return boolean 
-	* @access public 
 	*/
-	function has_next()
+	public function has_next()
 	{
 		return ($this->current_page < $this->last_page);
 	} 
 
 	/**
 	* Is the current page being displayed the last page in the page list?
-	* 
-	* @return boolean 
-	* @access public 
 	*/
-	function is_last()
+	public function is_last()
 	{
 		return ($this->current_page == $this->last_page);
 	} 
@@ -225,11 +161,8 @@ class pager_component extends component
 	/**
 	* Initialize values used by this component.
 	* This is called automatically from the compiled template.
-	* 
-	* @return void 
-	* @access protected 
 	*/
-	function prepare()
+	public function prepare()
 	{
 	  $request = request :: instance();
 	  
@@ -261,11 +194,8 @@ class pager_component extends component
 	* Advance the page list cursor to the next page.
 	* This is called automatically from the compiled template and should
 	* not be called directly.
-	* 
-	* @return boolean false if there are no more pages.
-	* @access protected 
 	*/
-	function next()
+	public function next()
 	{
 		$this->page++;
 
@@ -286,11 +216,8 @@ class pager_component extends component
 	* Get the page number of the page being displayed in the page number list.
 	* This is called automatically from the compiled template and should
 	* not be called directly.
-	* 
-	* @return integer 
-	* @access protected 
 	*/
-	function get_page_number()
+	public function get_page_number()
 	{
 		return $this->page;
 	} 
@@ -300,16 +227,13 @@ class pager_component extends component
 	* the current page being displayed in the browser?
 	* This is called automatically from the compiled template and should
 	* not be called directly.
-	* 
-	* @return boolean 
-	* @access protected 
 	*/
-	function is_current_page()
+	public function is_current_page()
 	{
 		return $this->page == $this->current_page;
 	} 
 
-	function is_display_page()
+	public function is_display_page()
 	{
 		if ($this->section != $this->current_section)
 			return false;
@@ -317,7 +241,7 @@ class pager_component extends component
 			return true;	
 	} 
 	
-	function has_section_changed()
+	public function has_section_changed()
 	{
 		if($this->section_has_changed)
 			$this->page += $this->pages_per_section - 1;
@@ -325,12 +249,12 @@ class pager_component extends component
 		return $this->section_has_changed;
 	}
 	
-	function get_current_section_begin_number()
+	public function get_current_section_begin_number()
 	{
 		return ($this->section - 1) * $this->pages_per_section + 1;
 	}
 
-	function get_current_section_uri()
+	public function get_current_section_uri()
 	{
 		if ($this->section > $this->current_section)
 			return $this->get_page_uri(($this->section - 1) * $this->pages_per_section + 1);
@@ -338,7 +262,7 @@ class pager_component extends component
 			return $this->get_page_uri($this->section * $this->pages_per_section);
 	}
 
-	function get_current_section_end_number()
+	public function get_current_section_end_number()
 	{
 		$result = $this->section * $this->pages_per_section;
 		if ($result >= $this->last_page)
@@ -351,22 +275,16 @@ class pager_component extends component
 	* The URI of the page that is being displayed in the page number list
 	* This is called automatically from the compiled template and should
 	* not be called directly.
-	* 
-	* @return string 
-	* @access protected 
 	*/
-	function get_current_page_uri()
+	public function get_current_page_uri()
 	{
 		return $this->get_page_uri($this->page);
 	} 
 
 	/**
 	* Return the URI to a specific page in the list.
-	* 
-	* @return string 
-	* @access public 
 	*/
-	function get_page_uri($page)
+	public function get_page_uri($page)
 	{
 		$params = complex_array :: array_merge($_GET, $_POST);
 		if ($page <= 1)
@@ -401,44 +319,32 @@ class pager_component extends component
 
 	/**
 	* Return the URI to the first page in the list.
-	* 
-	* @return string 
-	* @access public 
 	*/
-	function get_first_page_uri()
+	public function get_first_page_uri()
 	{
 		return $this->get_page_uri(1);
 	} 
 
 	/**
 	* Return the URI to the previous page in the list.
-	* 
-	* @return string 
-	* @access public 
 	*/
-	function get_prev_page_uri()
+	public function get_prev_page_uri()
 	{
 		return $this->get_page_uri($this->current_page - 1);
 	} 
 
 	/**
 	* Return the URI to the last page in the list.
-	* 
-	* @return string 
-	* @access public 
 	*/
-	function get_last_page_uri()
+	public function get_last_page_uri()
 	{
 		return $this->get_page_uri($this->last_page);
 	} 
 
 	/**
 	* Return the URI to the next page in the list.
-	* 
-	* @return string 
-	* @access public 
 	*/
-	function get_next_page_uri()
+	public function get_next_page_uri()
 	{
 		return $this->get_page_uri($this->current_page + 1);
 	} 

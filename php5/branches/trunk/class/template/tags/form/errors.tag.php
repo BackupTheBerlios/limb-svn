@@ -8,29 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class form_errors_tag_info
 {
-	var $tag = 'form:ERRORS';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'form_errors_tag';
+	public $tag = 'form:ERRORS';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'form_errors_tag';
 } 
 
 register_tag(new form_errors_tag_info());
 
 class form_errors_tag extends server_component_tag
 {
-  function form_errors_tag()
+  function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
 	}
 	
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!$this->find_parent_by_class('form_tag'))
 		{
@@ -48,24 +42,17 @@ class form_errors_tag extends server_component_tag
 		} 
 	} 
 	
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
-		$parent_form =& $this->find_parent_by_class('form_tag');
+		$parent_form = $this->find_parent_by_class('form_tag');
 		
-		$target =& $this->parent->find_child($this->attributes['target']);
+		$target = $this->parent->find_child($this->attributes['target']);
 		
 		$code->write_php($target->get_component_ref_code() . '->register_dataset(' .
 			$parent_form->get_component_ref_code() . '->get_error_dataset());');	
 			
 		parent :: generate_contents($code);
 	} 
-	
 } 
 
 ?>

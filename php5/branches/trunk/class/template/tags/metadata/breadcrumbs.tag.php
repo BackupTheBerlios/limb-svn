@@ -10,28 +10,23 @@
 ***********************************************************************************/
 class metadata_breadcrumbs_tag_info
 {
-	var $tag = 'metadata:BREADCRUMBS';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'metadata_breadcrumbs_tag';
+	public $tag = 'metadata:BREADCRUMBS';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'metadata_breadcrumbs_tag';
 } 
 
 register_tag(new metadata_breadcrumbs_tag_info());
 
 class metadata_breadcrumbs_tag extends server_component_tag
 {
-  function metadata_breadcrumbs_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/metadata_component';
 	}
 		
-	function generate_constructor(&$code)
+	public function generate_contents($code)
 	{
-		parent :: generate_constructor($code);
-	} 
-	
-	function generate_contents(&$code)
-	{
-		$child_list =& $this->find_immediate_child_by_class('grid_list_tag');
+		$child_list = $this->find_immediate_child_by_class('grid_list_tag');
 
 		if(isset($this->attributes['request_path_attribute']))	
 			$code->write_php($this->get_component_ref_code() . '->set_request_path("' . $this->attributes['request_path_attribute']. '");');

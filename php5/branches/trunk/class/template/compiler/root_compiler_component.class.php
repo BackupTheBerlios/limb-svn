@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/compiler/compiler_directive_tag.class.php');
 
 /**
@@ -20,16 +19,10 @@ class root_compiler_component extends compiler_directive_tag
 	/**
 	* Calls the parent pre_generate() method then writes
 	* "$dataspace->prepare();" to the compiled template.
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
 	*/
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
-		
-		$code->write_php($this->get_dataspace_ref_code() . '->prepare();');
 		
 		if($this->is_debug_enabled())
 		{
@@ -39,7 +32,7 @@ class root_compiler_component extends compiler_directive_tag
 		}
 	} 
 	
-	function post_generate(&$code)
+	public function post_generate($code)
 	{
 		if($this->is_debug_enabled())
 		{
@@ -51,35 +44,24 @@ class root_compiler_component extends compiler_directive_tag
 
 	/**
 	* Returns the base for building the PHP runtime component reference string
-	* 
-	* @param code $ _writer
-	* @return string $dataspace
-	* @access protected 
 	*/
-	function get_component_ref_code()
+	public function get_component_ref_code()
 	{
 		return '$dataspace';
 	} 
 
 	/**
 	* Returns $dataspace
-	* 
-	* @param code $ _writer
-	* @return string $dataspace
-	* @access protected 
 	*/
-	function get_dataspace_ref_code()
+	public function get_dataspace_ref_code()
 	{
 		return '$dataspace';
 	} 
 
 	/**
 	* Returns this instance of root_compiler_component
-	* 
-	* @return component _tree this instance
-	* @access protected 
 	*/
-	function &get_dataspace()
+	public function get_dataspace()
 	{
 		return $this;
 	} 

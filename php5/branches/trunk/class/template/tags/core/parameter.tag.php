@@ -10,21 +10,16 @@
 ***********************************************************************************/ 
 class core_parameter_tag_info
 {
-	var $tag = 'core:PARAMETER';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'core_parameter_tag';
+	public $tag = 'core:PARAMETER';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'core_parameter_tag';
 } 
 
 register_tag(new core_parameter_tag_info());
 
 class core_parameter_tag extends compiler_directive_tag
 {
-	/**
-	* 
-	* @return int PARSER_FORBID_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
+	public function pre_parse()
 	{
 		if (!isset($this->attributes['name']))
 		{
@@ -47,7 +42,7 @@ class core_parameter_tag extends compiler_directive_tag
 		return PARSER_FORBID_PARSING;
 	} 
 	
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!is_subclass_of($this->parent, 'server_component_tag'))
 		{
@@ -59,7 +54,7 @@ class core_parameter_tag extends compiler_directive_tag
 		} 
 	}
 	
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		if(!isset($this->attributes['type']))
 			$this->attributes['type'] = 'string';
@@ -67,7 +62,7 @@ class core_parameter_tag extends compiler_directive_tag
 		parent::pre_generate($code);
 	} 
 	
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$value = $this->_typecast_value();
 		
@@ -78,7 +73,7 @@ class core_parameter_tag extends compiler_directive_tag
 		parent::generate_contents($code);
 	}
 	
-	function _typecast_value()
+	private function _typecast_value()
 	{
 		$value = $this->attributes['value'];
     switch(strtolower($this->attributes['type'])) 
@@ -96,7 +91,6 @@ class core_parameter_tag extends compiler_directive_tag
 	    	return $value;
     }
 	}
-
 } 
 
 ?>

@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class core_set_tag_info
 {
-	var $tag = 'core:SET';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'core_set_tag';
+	public $tag = 'core:SET';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'core_set_tag';
 } 
 
 register_tag(new core_set_tag_info());
@@ -25,12 +23,7 @@ register_tag(new core_set_tag_info());
 */
 class core_set_tag extends silent_compiler_directive_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('core_set_tag'))
 		{
@@ -40,14 +33,9 @@ class core_set_tag extends silent_compiler_directive_tag
 		} 
 	} 
 	
-	/**
-	* 
-	* @return int PARSER_FORBID_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
+	public function pre_parse()
 	{
-		$dataspace = &$this->get_dataspace();
+		$dataspace = $this->get_dataspace();
 		$dataspace->vars += $this->attributes;
 		return PARSER_FORBID_PARSING;
 	} 

@@ -8,26 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
 
 class grid_input_tag_info
 {
-	var $tag = 'grid:INPUT';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'grid_input_tag';
+	public $tag = 'grid:INPUT';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'grid_input_tag';
 } 
 
 register_tag(new grid_input_tag_info());
 
 class grid_input_tag extends control_tag
 {
-  function grid_input_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_input_component';
 	}
 		
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!$this->find_parent_by_class('grid_iterator_tag'))
 		{
@@ -46,17 +45,17 @@ class grid_input_tag extends control_tag
 		} 		
 	}
 
-	function prepare()
+	public function prepare()
 	{
 		$this->attributes['type'] = 'text';
 		
-		$grid_tag =& $this->find_parent_by_class('grid_list_tag');
+		$grid_tag = $this->find_parent_by_class('grid_list_tag');
 		$grid_tag->set_form_required();
 		
 		parent :: prepare();
 	}
 		
-	function get_rendered_tag()
+	public function get_rendered_tag()
 	{
 		return 'input';
 	}	

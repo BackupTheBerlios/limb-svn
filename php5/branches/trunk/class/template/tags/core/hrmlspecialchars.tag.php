@@ -10,17 +10,16 @@
 ***********************************************************************************/
 class htmlspecialchars_tag_info
 {
-	var $tag = 'core:HTMLSPECIALCHARS';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'htmlspecialchars_tag';
+	public $tag = 'core:HTMLSPECIALCHARS';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'htmlspecialchars_tag';
 } 
 
 register_tag(new htmlspecialchars_tag_info());
 
 class htmlspecialchars_tag extends compiler_directive_tag
 {
-
-	function pre_parse()
+	public function pre_parse()
 	{
 		if (! array_key_exists('hash_id', $this->attributes) ||
 				empty($this->attributes['hash_id']))
@@ -34,7 +33,7 @@ class htmlspecialchars_tag extends compiler_directive_tag
 		return PARSER_FORBID_PARSING; 
 	}  
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		if(isset($this->attributes['hash_id']))
 		{

@@ -8,19 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class core_data_repeat_tag_info
 {
-	var $tag = 'core:REPEAT';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_data_repeat_tag';
+	public $tag = 'core:REPEAT';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'core_data_repeat_tag';
 } 
 
 register_tag(new core_data_repeat_tag_info());
 
 class core_data_repeat_tag extends compiler_directive_tag
 {
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$dataspace = $this->get_dataspace_ref_code();
 		
@@ -44,7 +43,6 @@ class core_data_repeat_tag extends compiler_directive_tag
 		parent :: generate_contents($code);
 		
 		$code->write_php('}');
-		
 	} 
 } 
 

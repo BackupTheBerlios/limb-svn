@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class.php');
 
 class file_select_component extends input_form_element
 {
-	function init_file_select()
+	public function init_file_select()
 	{
 		if (!defined('FILE_SELECT_LOAD_SCRIPT'))
 		{
@@ -22,7 +21,7 @@ class file_select_component extends input_form_element
 		}	
 	}
 	
-	function render_file_select()
+	public function render_file_select()
 	{ 
 		$id = $this->get_attribute('id');
   	$md5id = substr(md5($id), 0, 5);
@@ -84,6 +83,5 @@ class file_select_component extends input_form_element
 	  echo '&nbsp;';
 	  echo "<input class='button' type='button' onclick='file_reset_{$md5id}()' value='" . strings :: get('reset') . "'>";
 	}
-	
 } 
 ?>

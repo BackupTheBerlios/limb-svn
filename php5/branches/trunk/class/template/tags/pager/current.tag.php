@@ -8,25 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class pager_current_tag_info
 {
-	var $tag = 'pager:current';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'pager_current_tag';
+	public $tag = 'pager:current';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'pager_current_tag';
 } 
 
 register_tag(new pager_current_tag_info());
 
 class pager_current_tag extends server_component_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access private 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('pager_current_tag'))
 		{
@@ -42,17 +35,12 @@ class pager_current_tag extends server_component_tag
 					'line' => $this->starting_line_no));
 		} 
 	} 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_contents(&$code)
+
+	public function generate_contents($code)
 	{
-		$parent = &$this->find_parent_by_class('pager_navigator_tag');
+		$parent = $this->find_parent_by_class('pager_navigator_tag');
 		
-		$parent = &$this->find_parent_by_class('pager_navigator_tag');
+		$parent = $this->find_parent_by_class('pager_navigator_tag');
 		
 		$code->write_php('if (' . $parent->get_component_ref_code() . '->is_current_page()) {');
 
@@ -64,12 +52,12 @@ class pager_current_tag extends server_component_tag
 		$code->write_php('}');
 	} 
 	
-	function &get_dataspace()
+	public function get_dataspace()
 	{
 		return $this;
 	}
 	
-	function get_dataspace_ref_code()
+	public function get_dataspace_ref_code()
 	{
 		return $this->get_component_ref_code();
 	} 

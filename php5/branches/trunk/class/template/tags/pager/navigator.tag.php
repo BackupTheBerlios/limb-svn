@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class pager_navigator_tag_info
 {
-	var $tag = 'pager:NAVIGATOR';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'pager_navigator_tag';
+	public $tag = 'pager:NAVIGATOR';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'pager_navigator_tag';
 } 
 
 register_tag(new pager_navigator_tag_info());
@@ -23,31 +22,19 @@ register_tag(new pager_navigator_tag_info());
 */
 class pager_navigator_tag extends server_component_tag
 {
-  function pager_navigator_tag()
+  function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/pager_component';
 	}
 	
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 
 		$code->write_php($this->get_component_ref_code() . '->prepare();');
 	} 
 	
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_constructor(&$code)
+	public function generate_constructor($code)
 	{
 		parent::generate_constructor($code);
 
@@ -63,11 +50,11 @@ class pager_navigator_tag extends server_component_tag
 		} 
 	}
 	
-	function get_component_ref_code()
+	public function get_component_ref_code()
 	{
 		if (isset($this->attributes['mirror_of']))
 		{
-			if($mirrored_pager =& $this->parent->find_child($this->attributes['mirror_of']))
+			if($mirrored_pager = $this->parent->find_child($this->attributes['mirror_of']))
 				return $mirrored_pager->get_component_ref_code();
 			else
 				debug :: write_error('mirror_of pager component not found',

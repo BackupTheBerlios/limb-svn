@@ -8,17 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/options_form_element.class.php');
 
 class select_multiple_component extends options_form_element
 {
-	function _process_name_attribute($value)
+	protected function _process_name_attribute($value)
 	{		
 		return parent :: _process_name_attribute($value) . '[]';
 	}
 	
-	function _render_options()
+	protected function _render_options()
 	{
 		$values = $this->get_value();
 		
@@ -31,7 +30,7 @@ class select_multiple_component extends options_form_element
 		} 
 	}	
 	
-	function get_value()
+	public function get_value()
 	{
 	  return container_form_element :: get_value();
 	}

@@ -8,41 +8,40 @@
 * $Id: selector.tag.php 21 2004-03-05 11:43:13Z server $
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
 
 class js_selector_tag_info
 {
-	var $tag = 'js_selector';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'js_selector_tag';
+	public $tag = 'js_selector';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'js_selector_tag';
 } 
 
 register_tag(new js_selector_tag_info());
 
 class js_selector_tag extends control_tag
 {
-  function js_selector_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/js_checkbox_component';
 	}
 
-	function prepare()
+	public function prepare()
 	{
 		if(!isset($this->attributes['selector_name']))
 			$this->attributes['name'] = 'selector_name';
 		else
 			$this->attributes['name'] = $this->attributes['selector_name'];
 			
-	unset($this->attributes['selector_name']);
+	  unset($this->attributes['selector_name']);
 	}
 		
-	function get_rendered_tag()
+	public function get_rendered_tag()
 	{
 		return 'input';
 	}
 	
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		$this->attributes['type'] = 'hidden';
 
@@ -59,7 +58,7 @@ class js_selector_tag extends control_tag
 		parent :: pre_generate($code);
 	}
 	
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		parent :: generate_contents($code);
 		

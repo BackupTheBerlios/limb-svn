@@ -10,9 +10,9 @@
 ***********************************************************************************/ 
 class core_status_tag_info
 {
-	var $tag = 'core:STATUS';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_status_tag';
+	public $tag = 'core:STATUS';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'core_status_tag';
 } 
 
 register_tag(new core_status_tag_info());
@@ -23,14 +23,9 @@ register_tag(new core_status_tag_info());
 */
 class core_status_tag extends compiler_directive_tag
 {
-	var $const;
+	private $const;
 
-	/**
-	* 
-	* @return int PARSER_REQUIRE_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
+	public function pre_parse()
 	{
 		if (!isset($this->attributes['name']))
 		{
@@ -45,13 +40,7 @@ class core_status_tag extends compiler_directive_tag
 		return PARSER_REQUIRE_PARSING;
 	} 
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 		
@@ -64,13 +53,7 @@ class core_status_tag extends compiler_directive_tag
 		$code->write_php('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
 	} 
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_php('}');
 		parent::post_generate($code);

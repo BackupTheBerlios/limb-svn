@@ -8,25 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class grid_stripe_tag_info
 {
-	var $tag = 'grid:STRIPE';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'grid_stripe_tag';
+	public $tag = 'grid:STRIPE';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'grid_stripe_tag';
 } 
 
 register_tag(new grid_stripe_tag_info());
 
 class grid_stripe_tag extends compiler_directive_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access private 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('grid_stripe_tag'))
 		{
@@ -43,7 +36,7 @@ class grid_stripe_tag extends compiler_directive_tag
 		} 
 	}
 	
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{	
 		if (array_key_exists('even', $this->attributes))
 		{
@@ -57,7 +50,6 @@ class grid_stripe_tag extends compiler_directive_tag
 			parent :: generate_contents($code);
 			$code->write_php('}');
 		}
-		
 	} 
 } 
 

@@ -8,14 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
 
 class select_tag_info
 {
-	var $tag = 'select';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'select_tag';
+	public $tag = 'select';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'select_tag';
 } 
 
 register_tag(new select_tag_info());
@@ -25,14 +24,7 @@ register_tag(new select_tag_info());
 */
 class select_tag extends control_tag
 {
-	var $runtime_component_path;
-
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function prepare()
+	public function prepare()
 	{
 		if (array_key_exists('multiple', $this->attributes))
 		{
@@ -45,12 +37,8 @@ class select_tag extends control_tag
 
 	/**
 	* Ignore the compiler time contents and generate the contents at run time.
-	* 
-	* @return void 
-	* @access protected 
 	*/
-	// Ignore the compiler time contents and generate the contents at run time.
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{	
 		if(isset($this->attributes['default_value']))
 			$code->write_php($this->get_component_ref_code() . '->set_default_value("' . $this->attributes['default_value'] . '");');

@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class pager_separator_tag_info
 {
-	var $tag = 'pager:SEPARATOR';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'pager_separator_tag';
+	public $tag = 'pager:SEPARATOR';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'pager_separator_tag';
 } 
 
 register_tag(new pager_separator_tag_info());
@@ -24,12 +22,7 @@ register_tag(new pager_separator_tag_info());
 */
 class pager_separator_tag extends silent_compiler_directive_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access private 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('pager_separator_tag'))
 		{

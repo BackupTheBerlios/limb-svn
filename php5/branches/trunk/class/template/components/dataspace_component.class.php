@@ -15,7 +15,7 @@
 */
 class dataspace_component extends component 
 {
-	function register_dataset(&$dataset)
+	public function register_dataset($dataset)
 	{
 		$this->import($dataset->export());
 	}

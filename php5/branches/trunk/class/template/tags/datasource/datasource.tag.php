@@ -10,21 +10,21 @@
 ***********************************************************************************/ 
 class datasource_tag_info
 {
-	var $tag = 'DATASOURCE';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'datasource_tag';
+	public $tag = 'DATASOURCE';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'datasource_tag';
 } 
 
 register_tag(new datasource_tag_info());
 
 class datasource_tag extends server_component_tag
 {
-  function datasource_tag()
+  function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/datasource_component';
 	}
 	
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!isset($this->attributes['target']))
 		{
@@ -35,7 +35,7 @@ class datasource_tag extends server_component_tag
 		} 
 	}
 		
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		parent :: generate_contents($code);
 		
@@ -43,7 +43,7 @@ class datasource_tag extends server_component_tag
 		
 		if(isset($this->attributes['navigator']))
 		{
-			if($navigator =& $this->parent->find_child($this->attributes['navigator']))
+			if($navigator = $this->parent->find_child($this->attributes['navigator']))
 			{
 				$limit = $code->get_temp_variable();
 				$offset = $code->get_temp_variable();
@@ -67,7 +67,7 @@ class datasource_tag extends server_component_tag
 		  
 		  if(!$target_component)
 		  {
-		    $root =& $this->get_root_dataspace();
+		    $root = $this->get_root_dataspace();
 		    $target_component = $root->find_child($target);
 		  }
 		    

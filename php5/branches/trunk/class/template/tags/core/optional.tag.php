@@ -8,35 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/ 
-class core_attributeal_tag_info
+class core_optional_tag_info
 {
-	var $tag = 'core:OPTIONAL';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_attributeal_tag';
+	public $tag = 'core:OPTIONAL';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'core_optional_tag';
 } 
 
-register_tag(new core_attributeal_tag_info());
+register_tag(new core_optional_tag_info());
 
 /**
 * Defines an action take, should a dataspace variable have been set at runtime.
 * The opposite of the core_default_tag
 */
-class core_attributeal_tag extends compiler_directive_tag
+class core_optional_tag extends compiler_directive_tag
 {
-	/**
-	* The dataspace variable name
-	* 
-	* @var string 
-	* @access private 
-	*/
-	var $field;
+	private $field;
 
-	/**
-	* 
-	* @return int PARSER_REQUIRE_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
+	public function pre_parse()
 	{
 		$field = $this->attributes['for'];
 		if (empty($field))
@@ -52,13 +41,7 @@ class core_attributeal_tag extends compiler_directive_tag
 		return PARSER_REQUIRE_PARSING;
 	} 
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 
@@ -67,13 +50,7 @@ class core_attributeal_tag extends compiler_directive_tag
 		$code->write_php('if (!empty($' . $tempvar . ')) {');
 	} 
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_php('}');
 		parent::post_generate($code);

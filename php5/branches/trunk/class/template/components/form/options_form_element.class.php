@@ -15,45 +15,31 @@ require_once(LIMB_DIR . 'class/datasources/datasource_factory.class.php');
 
 class options_form_element extends container_form_element
 {
-	var $default_value;
+	protected $default_value;
 	
 	/**
 	* A associative array of choices to build the option list with
-	* 
-	* @var array 
-	* @access private 
 	*/
-	var $choice_list = array();
+	protected $choice_list = array();
 	/**
 	* The object responsible for rendering the option tags
-	* 
-	* @var object 
-	* @access private 
 	*/
-	var $option_renderer;
+	protected $option_renderer;
 	
 	/**
 	* Sets the choice list. Passed an associative array, the keys become the
 	* contents of the option value attributes and the values in the array
 	* become the text contents of the option tag
-	* 
-	* @param array $ 
-	* @return void 
-	* @access protected 
 	*/
-	function set_choices($choice_list)
+	public function set_choices($choice_list)
 	{
 		$this->choice_list = $choice_list;
 	} 
 
 	/**
 	* Sets a single option to be displayed as selected
-	* 
-	* @param string $ value which is selected
-	* @return void 
-	* @access public 
 	*/
-	function set_selection($selection)
+	public function set_selection($selection)
 	{
 		$form_component = &$this->find_parent_by_class('form_component');
 		$form_component->set($this->attributes['name'], $selection);
@@ -61,12 +47,8 @@ class options_form_element extends container_form_element
 
 	/**
 	* Sets object responsible for rendering the attributes
-	* 
-	* @param object $ e.g. option_renderer
-	* @return void 
-	* @access protected 
 	*/
-	function set_renderer($option_renderer)
+	protected function set_renderer($option_renderer)
 	{
 		$this->option_renderer = $option_renderer;
 	} 
@@ -74,11 +56,8 @@ class options_form_element extends container_form_element
 	/**
 	* Renders the contents of the the select tag, option tags being built by
 	* the option handler. Called from with a compiled template render function.
-	* 
-	* @return void 
-	* @access protected 
 	*/
-	function render_contents()
+	public function render_contents()
 	{
 		$this->_set_options();
 		
@@ -90,17 +69,17 @@ class options_form_element extends container_form_element
 		$this->_render_options();
 	} 
 	
-	function set_default_value($value)
+	public function set_default_value($value)
 	{
 		$this->default_value = $value;
 	}
 
-	function get_default_value()
+	public function get_default_value()
 	{
 		return $this->default_value;
 	}
 
-	function get_value()
+	public function get_value()
 	{
 		$value = parent :: get_value();
 			
@@ -113,7 +92,7 @@ class options_form_element extends container_form_element
 			return $value;	
 	}	
 	
-	function _set_options()
+	protected function _set_options()
 	{
 		if($this->_use_ini_options())
 		{
@@ -129,22 +108,22 @@ class options_form_element extends container_form_element
 		}
 	}
 		
-	function _use_ini_options()
+	protected function _use_ini_options()
 	{
 		return $this->get_attribute('options_ini_file') && $this->get_attribute('use_ini');
 	}
 	
-	function _use_strings_options()
+	protected function _use_strings_options()
 	{
 		return $this->get_attribute('options_ini_file') && !$this->get_attribute('use_ini');
 	}
 	
-	function _use_datasource_options()
+	protected function _use_datasource_options()
 	{
 		return $this->get_attribute('options_datasource');
 	}
 	
-	function _render_options()
+	protected function _render_options()
 	{
 		$value = $this->get_value();
 				
@@ -154,7 +133,7 @@ class options_form_element extends container_form_element
 		} 
 	}
 	
-	function _set_options_from_ini_file()
+	protected function _set_options_from_ini_file()
 	{
 		$ini_file = $this->get_attribute('options_ini_file');
 		
@@ -163,7 +142,7 @@ class options_form_element extends container_form_element
 			$this->set_default_value(get_ini_option($ini_file . '.ini', 'default_option', 'constants'));
 	}
 
-	function _set_options_from_strings_file()
+	protected function _set_options_from_strings_file()
 	{
 		if($locale_type = $this->get_attribute('locale_type'))
 		{
@@ -182,7 +161,7 @@ class options_form_element extends container_form_element
 		$this->set_default_value(strings :: get('default_option', $ini_file, constant($locale_constant)));
 	}
 	
-	function _set_options_from_datasource()
+	protected function _set_options_from_datasource()
 	{
 		$datasource = $this->_get_datasource();
 		
@@ -191,10 +170,9 @@ class options_form_element extends container_form_element
 		$this->set_default_value($datasource->get_default_option());
 	}
 	
-	function & _get_datasource()
+	protected function _get_datasource()
 	{
-		$datasource_path = $this->get_attribute('options_datasource');		
-		return datasource_factory :: create($datasource_path);
+		return datasource_factory :: create($this->get_attribute('options_datasource'));
 	}
 } 
 

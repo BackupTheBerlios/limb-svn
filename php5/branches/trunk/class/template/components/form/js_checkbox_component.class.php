@@ -8,18 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class.php');
 
 class js_checkbox_component extends input_form_element
 {
-	function render_attributes()
+	public function render_attributes()
 	{
-	unset($this->attributes['value']);
+	  unset($this->attributes['value']);
 		parent :: render_attributes();
 	}
 	
-	function render_js_checkbox()
+	public function render_js_checkbox()
 	{ 
 		$id = $this->get_attribute('id');
 		$name = $this->get_attribute('name');

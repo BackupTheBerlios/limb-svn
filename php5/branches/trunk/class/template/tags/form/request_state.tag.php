@@ -8,34 +8,33 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class request_state_tag_info
 {
-	var $tag = 'request_state';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'request_state_tag';
+	public $tag = 'request_state';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'request_state_tag';
 } 
 
 register_tag(new request_state_tag_info());
 
 class request_state_tag extends control_tag
 {
-  function request_state_tag()
+  function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/request_state_component';
 	}
 	
-	function prepare()
+	public function prepare()
 	{
 		$this->attributes['type'] = 'hidden';		
 	}
 	
-	function get_rendered_tag()
+	public function get_rendered_tag()
 	{
 		return 'input';
 	}	
 	
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 	  if(isset($this->attributes['attach_form_prefix']))
 	    $code->write_php($this->get_component_ref_code() . '->attach_form_prefix(true);');

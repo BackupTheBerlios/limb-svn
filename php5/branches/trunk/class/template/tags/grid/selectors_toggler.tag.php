@@ -10,21 +10,16 @@
 ***********************************************************************************/ 
 class grid_selectors_toggler_tag_info
 {
-	var $tag = 'grid:SELECTORS_TOGGLER';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'grid_selectors_toggler_tag';
+	public $tag = 'grid:SELECTORS_TOGGLER';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'grid_selectors_toggler_tag';
 } 
 
 register_tag(new grid_selectors_toggler_tag_info());
 
 class grid_selectors_toggler_tag extends compiler_directive_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access private 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!$this->find_parent_by_class('grid_list_tag'))
 		{
@@ -35,7 +30,7 @@ class grid_selectors_toggler_tag extends compiler_directive_tag
 		} 
 	}
 	
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
   	$md5id = substr(md5($this->get_server_id()), 0, 5);
   	

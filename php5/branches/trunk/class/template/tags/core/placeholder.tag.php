@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class core_place_holder_tag_info
 {
-	var $tag = 'core:PLACEHOLDER';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'core_place_holder_tag';
+	public $tag = 'core:PLACEHOLDER';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'core_place_holder_tag';
 } 
 
 register_tag(new core_place_holder_tag_info());
@@ -24,17 +22,12 @@ register_tag(new core_place_holder_tag_info());
 */
 class core_place_holder_tag extends server_component_tag
 {
-  function core_place_holder_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/placeholder_component';
 	}
 
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('core_place_holder_tag'))
 		{

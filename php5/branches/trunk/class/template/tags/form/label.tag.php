@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class label_tag_info
 {
-	var $tag = 'label';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'label_tag';
+	public $tag = 'label';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'label_tag';
 } 
 
 register_tag(new label_tag_info());
@@ -24,17 +22,12 @@ register_tag(new label_tag_info());
 */
 class label_tag extends server_tag_component_tag
 {
-  function label_tag()
+  function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/label_component';
 	}
 
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('label_tag'))
 		{
@@ -51,13 +44,7 @@ class label_tag extends server_tag_component_tag
 		} 
 	} 
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_constructor(&$code)
+	public function generate_constructor($code)
 	{
 		parent::generate_constructor($code);
 		if (array_key_exists('error_class', $this->attributes))
@@ -71,7 +58,6 @@ class label_tag extends server_tag_component_tag
 		unset($this->attributes['error_style']);
 		} 
 	} 
-	
 } 
 
 ?>

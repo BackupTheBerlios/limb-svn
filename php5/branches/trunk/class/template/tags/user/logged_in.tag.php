@@ -8,20 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class user_logged_in_tag_info
 {
-	var $tag = 'user:LOGGED_IN';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'user_logged_in_tag';
+	public $tag = 'user:LOGGED_IN';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'user_logged_in_tag';
 } 
 
 register_tag(new user_logged_in_tag_info());
 
 class user_logged_in_tag extends compiler_directive_tag
 {
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$user = '$' . $code->get_temp_variable();
 		$code->write_php("{$user} =& user :: instance();");

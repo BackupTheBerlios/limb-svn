@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
 
 class control_button_tag_info
 {
-	var $tag = 'control_button';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'control_button_tag';
+	public $tag = 'control_button';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'control_button_tag';
 } 
 
 register_tag(new control_button_tag_info());
@@ -24,12 +24,12 @@ register_tag(new control_button_tag_info());
 */
 class control_button_tag extends control_tag
 {
-  function control_button_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/control_button_component';
 	}
 	
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!isset($this->attributes['action']))
 		{
@@ -40,11 +40,10 @@ class control_button_tag extends control_tag
 		} 
 	}
 	
-	function get_rendered_tag()
+	public function get_rendered_tag()
 	{
 		return 'button';
 	}	
-		
 } 
 
 ?>

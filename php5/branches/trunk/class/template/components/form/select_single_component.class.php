@@ -12,8 +12,6 @@ require_once(LIMB_DIR . 'class/template/components/form/options_form_element.cla
 require_once(LIMB_DIR . 'class/template/components/form/option_renderer.class.php');
 require_once(LIMB_DIR . 'class/datasources/datasource_factory.class.php');
 
-class select_single_component extends options_form_element
-{
-} 
+class select_single_component extends options_form_element{} 
 
 ?>

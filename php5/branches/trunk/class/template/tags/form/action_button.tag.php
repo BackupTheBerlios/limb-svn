@@ -8,26 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/class/template/tags/form/button.tag.php');
 
 class action_button_tag_info
 {
-	var $tag = 'action_button';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'action_button_tag';
+	public $tag = 'action_button';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'action_button_tag';
 } 
 
 register_tag(new action_button_tag_info());
 
 class action_button_tag extends button_tag
 {
-  function action_button_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
 	}
 	
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!isset($this->attributes['action']))
 		{
@@ -38,7 +37,7 @@ class action_button_tag extends button_tag
 		} 
 	}
 	
-	function prepare()
+	public function prepare()
 	{
 		parent :: prepare();
 		
@@ -53,10 +52,10 @@ class action_button_tag extends button_tag
 		unset($this->attributes['reload_parent']);
 		}
 		
-	unset($this->attributes['action']);
+	  unset($this->attributes['action']);
 	}
 	
-	function get_rendered_tag()
+	public function get_rendered_tag()
 	{
 		return 'input';
 	}	

@@ -8,26 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
 
 class selector_tag_info
 {
-	var $tag = 'selector';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'selector_tag';
+	public $tag = 'selector';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'selector_tag';
 } 
 
 register_tag(new selector_tag_info());
 
 class selector_tag extends control_tag
 {
-  function selector_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_checkbox_component';
 	}
 	
-	function prepare()
+	public function prepare()
 	{
 		$this->attributes['type'] = 'checkbox';
 		
@@ -39,12 +38,12 @@ class selector_tag extends control_tag
 	unset($this->attributes['selector_name']);
 	}
 	
-	function get_rendered_tag()
+	public function get_rendered_tag()
 	{
 		return 'input';
 	}
 	
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		$name = '$' . $code->get_temp_variable();
 		$parent = $this->get_dataspace_ref_code();

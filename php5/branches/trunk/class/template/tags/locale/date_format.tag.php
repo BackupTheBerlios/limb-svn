@@ -12,26 +12,26 @@ require_once(LIMB_DIR . '/class/template/compiler/server_component_tag.class.php
 
 class locale_date_format_tag_info
 {
-	var $tag = 'locale:DATE_FORMAT';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'locale_date_format_tag';
+	public $tag = 'locale:DATE_FORMAT';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'locale_date_format_tag';
 } 
 
 register_tag(new locale_date_format_tag_info());
 
 class locale_date_format_tag extends server_component_tag
 {
-  function locale_date_format_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/locale_date_format_component';
 	}	
 		
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
     $code->write_php($this->get_component_ref_code() . '->prepare();');
   }
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		if(isset($this->attributes['hash_id']))
 		{
@@ -68,8 +68,6 @@ class locale_date_format_tag extends server_component_tag
 		
 		parent :: generate_contents($code);
 	}
-	
-
 } 
 
 ?>

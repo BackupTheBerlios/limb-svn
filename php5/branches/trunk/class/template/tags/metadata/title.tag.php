@@ -8,24 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class metadata_title_tag_info
 {
-	var $tag = 'METADATA:TITLE';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'metadata_title_tag';
+	public $tag = 'METADATA:TITLE';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'metadata_title_tag';
 } 
 
 register_tag(new metadata_title_tag_info());
 
 class metadata_title_tag extends server_component_tag
 {
-  function metadata_title_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/metadata_component';
 	}
 		
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{				
 		$ref = $this->get_component_ref_code();
 		
@@ -41,7 +40,6 @@ class metadata_title_tag extends server_component_tag
 		$code->write_php("echo {$ref}->get_title();\n");
 			
 		parent :: generate_contents($code);
-		
 	} 
 } 
 

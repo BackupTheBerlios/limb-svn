@@ -10,19 +10,23 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/template/components/form/text_area_component.class.php');
 
-define('RICHEDIT_DEFAULT_WIDTH', '600px');
-define('RICHEDIT_DEFAULT_HEIGHT', '400px');
-define('RICHEDIT_DEFAULT_ROWS', '30');
-define('RICHEDIT_DEFAULT_COLS', '60');
+if(!defined('RICHEDIT_DEFAULT_WIDTH'))
+  define('RICHEDIT_DEFAULT_WIDTH', '600px');
+if(!defined('RICHEDIT_DEFAULT_HEIGHT'))  
+  define('RICHEDIT_DEFAULT_HEIGHT', '400px');
+if(!defined('RICHEDIT_DEFAULT_ROWS'))  
+  define('RICHEDIT_DEFAULT_ROWS', '30');
+if(!defined('RICHEDIT_DEFAULT_COLS'))  
+  define('RICHEDIT_DEFAULT_COLS', '60');
 
 class richedit_component extends text_area_component
 {
-	function render_contents()
+	public function render_contents()
 	{
 		echo htmlspecialchars($this->get_value(), ENT_QUOTES);
 	} 
 	
-	function _load_js_script()
+	private function _load_js_script()
 	{
 		if (defined('HTMLAREA_SCRIPT_LOADED'))
 			return;
@@ -54,7 +58,7 @@ class richedit_component extends text_area_component
 		</script>";
 	}
 
-	function init_richedit()
+	public function init_richedit()
 	{
 		$this->_load_js_script();
 				

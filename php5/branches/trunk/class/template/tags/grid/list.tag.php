@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class grid_list_tag_info
 {
-	var $tag = 'grid:LIST';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'grid_list_tag';
+	public $tag = 'grid:LIST';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'grid_list_tag';
 } 
 
 register_tag(new grid_list_tag_info());
@@ -23,20 +22,14 @@ register_tag(new grid_list_tag_info());
 */
 class grid_list_tag extends server_component_tag
 {
-	var $has_form = false;
+	private $has_form = false;
 	
-  function grid_list_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
 	}	
 	
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		$code->write_php($this->get_component_ref_code() . '->prepare();');
 		
@@ -50,11 +43,11 @@ class grid_list_tag extends server_component_tag
 		$code->write_php('if (' . $this->get_dataspace_ref_code() . '->get_total_row_count()){');
 	} 
 
-	function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_php('} else {');
 		
-		if ($default = &$this->find_immediate_child_by_class('grid_default_tag'))
+		if ($default = $this->find_immediate_child_by_class('grid_default_tag'))
 			$default->generate_now($code);
 			
 		$code->write_php('}');
@@ -66,27 +59,18 @@ class grid_list_tag extends server_component_tag
 		
 		parent :: post_generate($code);
 	} 
-	/**
-	* 
-	* @return list _list_tag this instance
-	* @access protected 
-	*/
-	function &get_dataspace()
+
+	public function get_dataspace()
 	{
 		return $this;
 	} 
 
-	/**
-	* 
-	* @return string PHP runtime variable reference to component
-	* @access protected 
-	*/
-	function get_dataspace_ref_code()
+	public function get_dataspace_ref_code()
 	{
 		return $this->get_component_ref_code() . '->dataset';
 	} 
 	
-	function set_form_required($status=true)
+	public function set_form_required($status=true)
 	{
 		$this->has_form = $status;
 	}	

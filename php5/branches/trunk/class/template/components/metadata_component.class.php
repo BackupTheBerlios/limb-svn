@@ -10,34 +10,33 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
 require_once(LIMB_DIR . 'class/template/component.class.php');
-require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
 require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
 
 class metadata_component extends component
 {
-	var $node_id = '';
+	private $node_id = '';
 	
-	var $request_path = '';
+	private $request_path = '';
 	
-	var $object_ids_array = array();
+	private $object_ids_array = array();
 
-	var $object_metadata = array();
+	private $object_metadata = array();
 	
-	var $separator = ' - ';
+	private $separator = ' - ';
 	
-	var $offset_path = '';
+	private $offset_path = '';
 	
-	var $metadata_db_table_name = 'sys_metadata';
-	var $needed_metadata = array('keywords', 'description');
+	private $metadata_db_table_name = 'sys_metadata';
+	private $needed_metadata = array('keywords', 'description');
 
-	function _get_path_objects_ids_array()
+	private function _get_path_objects_ids_array()
 	{		
 		if (count($this->object_ids_array))
 			return $this->object_ids_array;
 	
-		$tree =& tree :: instance();
+		$tree = tree :: instance();
 		
 		$node = $tree->get_node($this->get_node_id());
 		$parents = $tree->get_parents($this->get_node_id());
@@ -56,7 +55,7 @@ class metadata_component extends component
 		return $this->object_ids_array = $result;
 	}
 	
-	function & _get_path_objects_array()
+	private function  _get_path_objects_array()
 	{
 		$ids_array = $this->_get_path_objects_ids_array();
 				
@@ -67,14 +66,13 @@ class metadata_component extends component
 		AND	' . sql_in('sso.id', $ids_array) . '
 		ORDER BY ssot.level';
 		
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		$db->sql_exec($sql);
 		
-		$objects_data =& $db->get_array('id');
-		return $objects_data;
+		return $db->get_array('id');
 	}
 	
-	function load_metadata()
+	public function load_metadata()
 	{
 		$ids_array = $this->_get_path_objects_ids_array();
 
@@ -82,7 +80,7 @@ class metadata_component extends component
 			return false;
 		$ids_array = array_reverse($ids_array);		
 					
-		$metadata_db_table	=& db_table_factory :: create($this->metadata_db_table_name);
+		$metadata_db_table	= db_table_factory :: create($this->metadata_db_table_name);
 		$objects_metadata = $metadata_db_table->get_list(sql_in('object_id', $ids_array), '', 'object_id');
 		
 		if (!count($objects_metadata))		
@@ -93,7 +91,7 @@ class metadata_component extends component
 		return true;		
 	}
 	
-	function _process_loaded_metadata(&$ids_array, &$objects_metadata)
+	private function _process_loaded_metadata($ids_array, $objects_metadata)
 	{
 		foreach($this->needed_metadata as $metadata_name)
 			$metadata_loaded[$metadata_name] = false;
@@ -116,12 +114,12 @@ class metadata_component extends component
 		}
 	}
 	
-	function set_node_id($node_id)
+	public function set_node_id($node_id)
 	{
 		$this->node_id = $node_id;
 	}
 	
-	function get_node_id()
+	public function get_node_id()
 	{
 		if (!$this->node_id)
 		{
@@ -142,17 +140,17 @@ class metadata_component extends component
 		return $this->node_id;
 	}
 	
-	function get_keywords()
+	public function get_keywords()
 	{
 		return $this->get('keywords');
 	}
 	
-	function get_description()
+	public function get_description()
 	{
 		return $this->get('description');
 	}
 
-  function get($name)
+  public function get($name)
   {
 		if(isset($this->object_metadata[$name]))
 			return $this->object_metadata[$name];
@@ -160,15 +158,14 @@ class metadata_component extends component
 			return null;	
   }
 		
-	function set_title_separator($separator = ' ')
+	public function set_title_separator($separator = ' ')
 	{
 		$this->separator = $separator;
 	}
 	
-	function get_title()
+	public function get_title()
 	{	
-		$objects_data =& $this->_get_path_objects_array();
-		$result =& $this->_apply_offset_path($objects_data);		
+		$result = $this->_apply_offset_path($this->_get_path_objects_array());		
 
 		if (!is_array($result) || !count($result))
 			return null;
@@ -186,14 +183,14 @@ class metadata_component extends component
 		return implode($this->separator, $titles);
 	}
 	
-	function & get_breadcrumbs_dataset()
+	public function get_breadcrumbs_dataset()
 	{
-		$objects_data =& $this->_get_path_objects_array();
+		$objects_data = $this->_get_path_objects_array();
 		
 		if (!is_array($objects_data) || !count($objects_data))
 			return new array_dataset();
 
-		$results =& $this->_apply_offset_path($objects_data);
+		$results = $this->_apply_offset_path($objects_data);
 		
 		$this->_add_object_action_path($results);
 		
@@ -206,7 +203,7 @@ class metadata_component extends component
 		return new array_dataset($results);
 	}
 	
-	function & _apply_offset_path($objects_data)
+	private function _apply_offset_path($objects_data)
 	{
 		$path = '/';
 		
@@ -242,13 +239,12 @@ class metadata_component extends component
 		return $results;
 	}
 
-
-	function _add_object_action_path(&$results)
+	private function _add_object_action_path(&$results)
 	{
 		$data = end($results);
 		$path = $data['path'];
 		
-		$controller =& $this->_get_mapped_controller();
+		$controller = $this->_get_mapped_controller();
 		
 		$action = $controller->determine_action();
 		
@@ -265,23 +261,20 @@ class metadata_component extends component
 		}
 	}
 	
-	function &_get_mapped_controller()
+	private function _get_mapped_controller()
 	{
-	  $object =& wrap_with_site_object(fetch_requested_object());
-		$controller =& $object->get_controller();
-		return $controller;
+	  return wrap_with_site_object(fetch_requested_object())->get_controller();
 	}
 			
-	function set_offset_path($path)
+	public function set_offset_path($path)
 	{
 		$this->offset_path = $path;
 	}
 	
-	function set_request_path($path)
+	public function set_request_path($path)
 	{
 		$this->request_path = $path;
 	}
-	
 } 
 
 ?>

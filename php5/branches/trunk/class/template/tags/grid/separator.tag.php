@@ -10,23 +10,18 @@
 ***********************************************************************************/ 
 class grid_separator_tag_info
 {
-	var $tag = 'grid:SEPARATOR';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'grid_separator_tag';
+	public $tag = 'grid:SEPARATOR';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'grid_separator_tag';
 } 
 
 register_tag(new grid_separator_tag_info());
 
 class grid_separator_tag extends compiler_directive_tag
 {
-	var $count;
+	private $count;
 
-	/**
-	* 
-	* @return void 
-	* @access private 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('grid_separator_tag'))
 		{
@@ -43,7 +38,7 @@ class grid_separator_tag extends compiler_directive_tag
 		} 
 	}
 	
-	function pre_parse()
+	public function pre_parse()
 	{
 		if (!isset($this->attributes['count']))
 			$this->count = 1;
@@ -53,7 +48,7 @@ class grid_separator_tag extends compiler_directive_tag
 		return PARSER_REQUIRE_PARSING;
 	} 
 
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 
@@ -67,7 +62,7 @@ class grid_separator_tag extends compiler_directive_tag
 						 	($counter % " . $this->count . " == 0)) {");
 	} 
 
-	function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_php('}');
 		parent::post_generate($code);

@@ -10,25 +10,17 @@
 ***********************************************************************************/ 
 class metadata_charset_tag_info
 {
-	var $tag = 'metadata:CHARSET';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'metadata_charset_tag';
+	public $tag = 'metadata:CHARSET';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'metadata_charset_tag';
 } 
 
 register_tag(new metadata_charset_tag_info());
 
 class metadata_charset_tag extends compiler_directive_tag
 {
-
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
-		//<meta http-equiv="Content-Type" content="text/html; charset=' . locale . '">
 		$locale = '$' . $code->get_temp_variable();
 		
 		$code->write_php($locale . ' =& locale :: instance(CONTENT_LOCALE_ID);');

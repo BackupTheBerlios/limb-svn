@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class form_status_tag_info
 {
-	var $tag = 'form:STATUS';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'form_status_tag';
+	public $tag = 'form:STATUS';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'form_status_tag';
 } 
 
 register_tag(new form_status_tag_info());
@@ -24,7 +22,7 @@ register_tag(new form_status_tag_info());
 */
 class form_status_tag extends compiler_directive_tag
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!$this->find_parent_by_class('form_tag'))
 		{
@@ -35,10 +33,10 @@ class form_status_tag extends compiler_directive_tag
 		} 
 	}
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{		
-		$error_child =& $this->find_child_by_class('error_status_tag');
-		$success_child =& $this->find_child_by_class('success_status_tag');
+		$error_child = $this->find_child_by_class('error_status_tag');
+		$success_child = $this->find_child_by_class('success_status_tag');
 		
 		$code->write_php('if (!' . $this->get_component_ref_code() . '->is_first_time()) {');
 		

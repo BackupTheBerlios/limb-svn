@@ -13,21 +13,21 @@ require_once(LIMB_DIR . 'class/etc/limb_util.inc.php');
 
 class actions_component extends list_component
 {
-	var $all_actions = array();
+	private $all_actions = array();
 
-	var $node_id = '';
+	private $node_id;
 	
-	function set_actions($all_actions)
+	public function set_actions($all_actions)
 	{
 		$this->all_actions = $all_actions;
 	}	
 
-	function set_node_id($node_id)
+	public function set_node_id($node_id)
 	{
 		$this->node_id = $node_id;
 	}
 		
-	function prepare()
+	public function prepare()
 	{
 		$actions = $this->get_actions();
 
@@ -37,7 +37,7 @@ class actions_component extends list_component
 		return parent :: prepare();	
 	} 
 		
-	function get_actions()
+	public function get_actions()
 	{
 		if (!count($this->all_actions))
 			return array();

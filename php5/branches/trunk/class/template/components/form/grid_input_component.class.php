@@ -8,35 +8,32 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class.php');
 
 class grid_input_component extends input_form_element
 {
-  var $hash_id = 'node_id';
+  private $hash_id = 'node_id';
   
-	function get_value()
+	public function get_value()
 	{
-		$list =& $this->find_parent_by_class('list_component');
-
-		return $list->get($this->attributes['name']);
+		return $this->find_parent_by_class('list_component')->get($this->attributes['name']);
 	}
 	
-	function set_value($value)
+	public function set_value($value)
 	{
 	}
 
-	function render_attributes()
+	public function render_attributes()
 	{ 
 	  if (isset($this->attributes['hash_id']))
 	    $this->hash_id = $this->attributes['hash_id'];
 	    
-	 unset($this->attributes['hash_id']);
+	  unset($this->attributes['hash_id']);
 	  
 	  parent :: render_attributes();
 	}
 		
-	function _process_name_attribute($value)
+	protected function _process_name_attribute($value)
 	{
 		$list =& $this->find_parent_by_class('list_component');
     

@@ -8,20 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class grid_item_tag_info
 {
-	var $tag = 'grid:ITEM';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'grid_item_tag';
+	public $tag = 'grid:ITEM';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'grid_item_tag';
 } 
 
 register_tag(new grid_item_tag_info());
 
 class grid_item_tag extends compiler_directive_tag
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'grid_list_tag'))
 		{

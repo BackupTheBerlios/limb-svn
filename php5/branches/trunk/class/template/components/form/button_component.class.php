@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/form_element.class.php');
 
 class button_component extends form_element

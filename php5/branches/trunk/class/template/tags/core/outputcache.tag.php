@@ -10,21 +10,21 @@
 ***********************************************************************************/ 
 class core_outputcache_tag_info
 {
-	var $tag = 'core:OUTPUTCACHE';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_outputcache_tag';
+	public $tag = 'core:OUTPUTCACHE';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'core_outputcache_tag';
 } 
 
 register_tag(new core_outputcache_tag_info());
 
 class core_outputcache_tag extends server_component_tag
 {
-  function core_outputcache_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/outputcache_component';
 	}
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$v = '$' . $code->get_temp_variable();
 

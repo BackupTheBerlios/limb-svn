@@ -8,20 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'class/core/sys_param.class.php');
-
 
 class sys_param_component extends component
 {
-
-	function get_param($name, $type)
+	public function get_param($name, $type)
 	{
-		$sys_param =& sys_param :: instance();
-		echo $sys_param->get_param($name, $type);
+		echo sys_param :: instance()->get_param($name, $type);
 	}
-	
 } 
 
 ?>

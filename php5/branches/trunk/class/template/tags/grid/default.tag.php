@@ -8,19 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class grid_default_tag_info
 {
-	var $tag = 'grid:DEFAULT';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'grid_default_tag';
+	public $tag = 'grid:DEFAULT';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'grid_default_tag';
 } 
 
 register_tag(new grid_default_tag_info());
 
 class grid_default_tag extends silent_compiler_directive_tag
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('grid_default_tag'))
 		{

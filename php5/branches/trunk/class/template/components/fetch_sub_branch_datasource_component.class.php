@@ -14,12 +14,12 @@ require_once(LIMB_DIR . 'class/template/components/datasource_component.class.ph
 
 class fetch_sub_branch_datasource_component extends datasource_component
 {
-	function & _get_datasource()
+	protected function _get_datasource()
 	{
 		if (!isset($this->parameters['datasource_path']))
 			$this->parameters['datasource_path'] = '/fetch_sub_branch_datasource';
 			
-		$ds =& parent :: _get_datasource();
+		$ds = parent :: _get_datasource();
 		
 		if(!is_a($ds, 'fetch_sub_branch_datasource'))
 			error('not allowed type of datasource, should be inherited from fetch_sub_branch_datasource class',
@@ -29,13 +29,13 @@ class fetch_sub_branch_datasource_component extends datasource_component
 		return $ds;
 	}
 						
-	function _get_params_array()
+	protected function _get_params_array()
 	{
 		$params = $this->parameters;
 		
 		if(!isset($params['path']) || !$params['path'])
 		{
-			$object_arr =& fetch_requested_object();
+			$object_arr = fetch_requested_object();
 			$params['path'] = $object_arr['path'];
 		}				
 		

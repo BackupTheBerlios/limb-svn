@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class core_include_tag_info
 {
-	var $tag = 'core:INCLUDE';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'core_include_tag';
+	public $tag = 'core:INCLUDE';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'core_include_tag';
 } 
 
 register_tag(new core_include_tag_info());
@@ -23,15 +22,9 @@ register_tag(new core_include_tag_info());
 */
 class core_include_tag extends compiler_directive_tag
 {
+	private $resolved_source_file;
 	
-	var $resolved_source_file;
-	
-	/**
-	* 
-	* @return int PARSER_FORBID_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
+	public function pre_parse()
 	{
 		global $tag_dictionary;
 		if (! array_key_exists('file', $this->attributes) ||
@@ -56,18 +49,18 @@ class core_include_tag extends compiler_directive_tag
 
 		if (array_key_exists('literal', $this->attributes))
 		{
-			$literal_component =& new text_node(read_template_file($this->resolved_source_file));
+			$literal_component = new text_node(read_template_file($this->resolved_source_file));
 			$this->add_child($literal_component);
 		} 
 		else
 		{
-			$sfp =& new source_file_parser($this->resolved_source_file, $tag_dictionary);
+			$sfp = new source_file_parser($this->resolved_source_file, $tag_dictionary);
 			$sfp->parse($this);
 		} 
 		return PARSER_FORBID_PARSING;
 	} 
 	
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		if($this->is_debug_enabled())
 		{

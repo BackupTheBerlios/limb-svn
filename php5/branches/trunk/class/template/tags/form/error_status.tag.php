@@ -8,20 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class form_error_status_tag_info
 {
-	var $tag = 'form:ERROR_STATUS';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'error_status_tag';
+	public $tag = 'form:ERROR_STATUS';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'error_status_tag';
 } 
 
 register_tag(new form_error_status_tag_info());
 
 class error_status_tag extends compiler_directive_tag
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!$this->find_parent_by_class('form_status_tag'))
 		{

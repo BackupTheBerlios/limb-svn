@@ -8,19 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class print_link_tag_info
 {
-	var $tag = 'print:LINK';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'print_link_tag';
+	public $tag = 'print:LINK';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'print_link_tag';
 } 
 
 register_tag(new print_link_tag_info());
 
 class print_link_tag extends compiler_directive_tag
 {
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$mapped = '$' . $code->get_temp_variable();
 		

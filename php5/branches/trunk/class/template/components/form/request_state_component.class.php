@@ -8,20 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/input_hidden_component.class.php');
 
 class request_state_component extends input_hidden_component
 { 
-	function get_value()
+	public function get_value()
 	{	
 		$form =& $this->find_parent_by_class('form_component');
 				
 		if($form->is_first_time())
 		{
-		  $request = request :: instance();
-		  
-		  if($value = $request->get($this->attributes['name']))
+		  if($value = request :: instance()->get($this->attributes['name']))
 		    return $value;
 		  else
 		    return '';

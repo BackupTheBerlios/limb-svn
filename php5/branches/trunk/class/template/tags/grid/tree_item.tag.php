@@ -20,16 +20,16 @@ define('TREE_CROSS_M_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=1
 
 class grid_tree_item_tag_info
 {
-	var $tag = 'grid:TREE_ITEM';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'grid_tree_item_tag';
+	public $tag = 'grid:TREE_ITEM';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'grid_tree_item_tag';
 } 
 
 register_tag(new grid_tree_item_tag_info());
 
 class grid_tree_item_tag extends compiler_directive_tag 
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'grid_iterator_tag'))
 		{
@@ -40,7 +40,7 @@ class grid_tree_item_tag extends compiler_directive_tag
 		} 
 	} 
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$ref = $this->get_component_ref_code();
 			

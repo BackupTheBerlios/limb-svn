@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'class/template/components/form/form_element.class.php');
 
 class input_radio_component extends form_element
@@ -17,11 +15,8 @@ class input_radio_component extends form_element
 	/**
 	* Overrides then calls with the parent render_attributes() method dealing
 	* with the special case of the checked attribute
-	* 
-	* @return void 
-	* @access protected 
 	*/
-	function render_attributes()
+	public function render_attributes()
 	{
 		$value = $this->get_value();
 		

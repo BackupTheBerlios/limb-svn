@@ -20,47 +20,32 @@ class form_component extends tag_component
 {
 	/**
 	* Switch to identify whether the form has errors or not
-	* 
-	* @var boolean TRUE means no errors
-	* @access private 
 	*/
-	var $is_valid = true;
+	protected $is_valid = true;
 	/**
 	* An indexed array of variable names used to build hidden form fields which
 	* are passed on in the next POST request
-	* 
-	* @var array 
-	* @access private 
 	*/
-	var $state_vars = array();
-
+	protected $state_vars = array();
 	/**
 	* Determined whether the form has errors.
-	* 
-	* @return boolean TRUE if the form has errros
-	* @access public 
 	*/
-	function is_valid()
+	public function is_valid()
 	{
 		return $this->is_valid;
 	} 
 	
-	function set_valid_status($status)
+	public function set_valid_status($status)
 	{
 		$this->is_valid = $status;
 	}
 
 	/**
 	* Returns the error_list if it exists or an empty_error_list if not
-	* 
-	* @return object 
-	* @access public 
 	*/
-	function &get_error_dataset()
+	public function get_error_dataset()
 	{
-		$error_list =& error_list :: instance();
-		
-		$errors = $error_list->export();
+		$errors = error_list :: instance()->export();
 		
 		if (!sizeof($errors))
 			return new empty_dataset();
@@ -70,7 +55,7 @@ class form_component extends tag_component
 		{
 			foreach($errors_array as $error)
 			{
-				if($child =& $this->find_child($field_name))
+				if($child = $this->find_child($field_name))
 				{
 					if(!$label = $child->get_attribute('label'))
 						$label = $child->get_server_id();
@@ -86,21 +71,17 @@ class form_component extends tag_component
 	/**
 	* Identify a variable stored in the dataspace of the component, which
 	* should be passed as a hidden form field in the form post.
-	* 
-	* @param string $ name of variable
-	* @return void 
-	* @access public 
 	*/
-	function preserve_state($variable, $value=null)
+	public function preserve_state($variable, $value=null)
 	{
 		$this->state_vars[$variable] = $value;
 	} 
 	
-	function is_first_time()
+	public function is_first_time()
 	{
 		if(isset($this->attributes['name']))
 		{
-			$dataspace =& dataspace_registry :: get($this->attributes['name']);
+			$dataspace = dataspace_registry :: get($this->attributes['name']);
 			
 			return $dataspace->get('submitted') ? false : true;
 		}	
@@ -113,11 +94,8 @@ class form_component extends tag_component
 
 	/**
 	* Renders the hidden fields for variables which should be preserved
-	* 
-	* @return void 
-	* @access public 
 	*/
-	function render_state()
+	public function render_state()
 	{		
 		foreach ($this->state_vars as $var => $value)
 		{
@@ -134,7 +112,7 @@ class form_component extends tag_component
 		} 
 	} 
 	
-	function render_attributes()
+	public function render_attributes()
 	{
 		if(!isset($this->attributes['action']))
 		{

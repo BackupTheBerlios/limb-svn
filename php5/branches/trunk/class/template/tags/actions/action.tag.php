@@ -10,9 +10,9 @@
 ***********************************************************************************/
 class action_tag_info
 {
-	var $tag = 'actions:ITEM';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'action_tag';
+	public $tag = 'actions:ITEM';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'action_tag';
 } 
 
 register_tag(new action_tag_info());
@@ -22,12 +22,7 @@ register_tag(new action_tag_info());
 */
 class action_tag extends compiler_directive_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'actions_tag'))
 		{
@@ -39,13 +34,7 @@ class action_tag extends compiler_directive_tag
 		} 
 	} 
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_contents(&$code)
+	public function generate_contents(&$code)
 	{
 		$code->write_php('do { ');
 				

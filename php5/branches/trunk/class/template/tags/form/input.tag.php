@@ -8,14 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
 
 class input_tag_info
 {
-	var $tag = 'input';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'input_tag';
+	public $tag = 'input';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'input_tag';
 } 
 
 register_tag(new input_tag_info());
@@ -29,11 +28,8 @@ class input_tag extends control_tag
 	/**
 	* Sets the runtime_component_path property, depending on the type of
 	* Input tag
-	* 
-	* @return void 
-	* @access protected 
 	*/
-	function prepare()
+	public function prepare()
 	{
 		$type = strtolower($this->attributes['type']);
 

@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class core_wrap_tag_info
 {
-	var $tag = 'core:WRAP';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'core_wrap_tag';
+	public $tag = 'core:WRAP';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'core_wrap_tag';
 } 
 
 register_tag(new core_wrap_tag_info());
@@ -25,22 +24,11 @@ register_tag(new core_wrap_tag_info());
 */
 class core_wrap_tag extends compiler_directive_tag
 {
-	var $resolved_source_file;
+	private $resolved_source_file;
 	
-	/**
-	* List of tag names of the children of the wrap tag
-	* 
-	* @var array 
-	* @access private 
-	*/
-	var $keylist;
+	private $keylist;
 
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('core_wrap_tag'))
 		{
@@ -50,12 +38,7 @@ class core_wrap_tag extends compiler_directive_tag
 		} 
 	} 
 	
-	/**
-	* 
-	* @return int PARSER_FORBID_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
+	public function pre_parse()
 	{
 		global $tag_dictionary;
 		$file = $this->attributes['file'];
@@ -76,36 +59,26 @@ class core_wrap_tag extends compiler_directive_tag
 					'line' => $this->starting_line_no));
 		} 
 	
-		$sfp =& new source_file_parser($this->resolved_source_file, $tag_dictionary);
+		$sfp = new source_file_parser($this->resolved_source_file, $tag_dictionary);
 		$sfp->parse($this);
 		return PARSER_FORBID_PARSING;
 	} 
 	
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function prepare()
+	public function prepare()
 	{
-		$this->parent->wrapping_component =& $this;
+		$this->parent->wrapping_component = $this;
 		
 		parent :: prepare();
 	} 
 	
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function generate_wrapper_prefix(&$code)
+	public function generate_wrapper_prefix($code)
 	{
 		$this->keylist = array_keys($this->children);
 		$name = $this->attributes['placeholder'];
 		reset($this->keylist);
 		while (list(, $key) = each($this->keylist))
 		{
-			$child = &$this->children[$key];
+			$child = $this->children[$key];
 			if ($child->get_server_id() == $name)
 			{
 				break;
@@ -114,13 +87,7 @@ class core_wrap_tag extends compiler_directive_tag
 		} 
 	} 
 	
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_wrapper_postfix(&$code)
+	public function generate_wrapper_postfix($code)
 	{
 		while (list(, $key) = each($this->keylist))
 		{
@@ -131,12 +98,8 @@ class core_wrap_tag extends compiler_directive_tag
 	/**
 	* By the time this is called we have already called generate
 	* on all of our children, so does nothing
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
 	*/
-	function generate(&$code)
+	public function generate($code)
 	{ 
 		// By the time this is called we have already called generate
 		// on all of our children.

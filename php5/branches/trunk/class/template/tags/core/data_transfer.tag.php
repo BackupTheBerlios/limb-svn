@@ -8,19 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class core_data_transfer_tag_info
 {
-	var $tag = 'core:DATA_TRANSFER';
-	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'core_data_transfer_tag';
+	public $tag = 'core:DATA_TRANSFER';
+	public $end_tag = ENDTAG_FORBIDDEN;
+	public $tag_class = 'core_data_transfer_tag';
 } 
 
 register_tag(new core_data_transfer_tag_info());
 
 class core_data_transfer_tag extends compiler_directive_tag
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!isset($this->attributes['target']))
 		{
@@ -31,13 +30,13 @@ class core_data_transfer_tag extends compiler_directive_tag
 		} 
 	}
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$dataspace = $this->get_dataspace_ref_code();
 		
 		if (isset($this->attributes['hash_id']) && isset($this->attributes['target']))
 		{
-			if($target =& $this->parent->find_child($this->attributes['target']))
+			if($target = $this->parent->find_child($this->attributes['target']))
 			{			
 				$code->write_php($target->get_component_ref_code() . '->register_dataset(new array_dataset(' . $dataspace . '->get("' . $this->attributes['hash_id'] . '")))');
 			}

@@ -8,19 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class grid_iterator_tag_info
 {
-	var $tag = 'grid:ITERATOR';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'grid_iterator_tag';
+	public $tag = 'grid:ITERATOR';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'grid_iterator_tag';
 } 
 
 register_tag(new grid_iterator_tag_info());
 
 class grid_iterator_tag extends compiler_directive_tag
 {
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'grid_list_tag'))
 		{
@@ -31,14 +30,14 @@ class grid_iterator_tag extends compiler_directive_tag
 		} 
 	} 
 
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 		
 		$code->write_php('if (' . $this->get_component_ref_code() . '->next()) {');
 	} 
 
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{				
 		$code->write_php('do { ');
 		
@@ -47,7 +46,7 @@ class grid_iterator_tag extends compiler_directive_tag
 		$code->write_php('} while (' . $this->get_dataspace_ref_code() . '->next());');
 	} 
 
-	function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_php('}');
 		

@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class.php');
 
 class color_picker_component extends input_form_element
 {
-	function init_color_picker()
+	public function init_color_picker()
 	{
 		if (defined('COLOR_PICKER_LOAD_SCRIPT'))
 			return;
@@ -27,7 +26,7 @@ class color_picker_component extends input_form_element
 		define('COLOR_PICKER_LOAD_SCRIPT',1);
 	}
 	
-	function render_color_picker()
+	public function render_color_picker()
 	{ 
 		$id = $this->get_attribute('id');
 		

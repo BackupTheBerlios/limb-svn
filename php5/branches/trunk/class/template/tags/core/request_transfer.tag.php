@@ -8,24 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class core_request_transfer_tag_info
 {
-	var $tag = 'core:REQUEST_TRANSFER';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_request_transfer_tag';
+	public $tag = 'core:REQUEST_TRANSFER';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'core_request_transfer_tag';
 } 
 
 register_tag(new core_request_transfer_tag_info());
 
 class core_request_transfer_tag extends server_tag_component_tag
 {
-  function core_request_transfer_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/request_transfer_component';
 	}
 	
-	function pre_parse()
+	public function pre_parse()
 	{
 		if (! array_key_exists('attributes', $this->attributes) || empty($this->attributes['attributes'])) 
 			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
@@ -37,17 +36,17 @@ class core_request_transfer_tag extends server_tag_component_tag
 		return PARSER_REQUIRE_PARSING;
 	}
 	
-	function pre_generate()
+	public function pre_generate()
 	{
 		//we override parent behavior
 	}
 
-	function post_generate()
+	public function post_generate()
 	{
 		//we override parent behavior
 	}
 	
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$content = '$' . $code->get_temp_variable();
 		

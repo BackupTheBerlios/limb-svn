@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/core/array_dataset.class.php');
 require_once(LIMB_DIR . 'class/datasources/datasource_factory.class.php');
 
 class datasource_component extends component 
 {
-	var $parameters = array();
-	var $datasource = null;
+	protected $parameters = array();
+	protected $datasource = null;
 	
-	var $total_count = 0;
+	protected $total_count = 0;
 	
-	function & get_dataset()
+	public function get_dataset()
 	{
-		$datasource =& $this->_get_datasource();
+		$datasource = $this->_get_datasource();
+		
 		if (!is_a($datasource, 'datasource'))
 		{
 			 debug :: write_error('data source not created',
@@ -33,17 +33,15 @@ class datasource_component extends component
 			return new empty_dataset();
 		}
 
-		$dataset =& $datasource->get_dataset($this->total_count, $this->_get_params_array());
-		
-		return $dataset;
+		return $datasource->get_dataset($this->total_count, $this->_get_params_array());
 	}
 
-	function get_total_count()
+	public function get_total_count()
 	{
 		return $this->total_count;
 	}
 			
-	function set_parameter($name, $value)
+	public function set_parameter($name, $value)
 	{
 		if($name == 'order')
 			$this->_set_order_parameters($value);
@@ -53,7 +51,7 @@ class datasource_component extends component
 			$this->parameters[$name] = $value;
 	}
 	
-	function _set_limit_parameters($limit_string)
+	protected function _set_limit_parameters($limit_string)
 	{
 		$arr = explode(',', $limit_string);
 					
@@ -63,7 +61,7 @@ class datasource_component extends component
 			$this->parameters['offset'] = $arr[1];
 	}
 	
-	function _set_order_parameters($order_string)
+	protected function _set_order_parameters($order_string)
 	{
 		$order_items = explode(',', $order_string);
 		$order_pairs = array();
@@ -90,17 +88,17 @@ class datasource_component extends component
 			$this->parameters['order'] = $order_pairs;
 	}
 	
-	function & _get_datasource()
+	protected function _get_datasource()
 	{
 		if ($this->datasource)
 			return $this->datasource;
 		
-		$this->datasource =& datasource_factory :: create($this->parameters['datasource_path']);
+		$this->datasource = datasource_factory :: create($this->parameters['datasource_path']);
 		
 		return $this->datasource;
 	}
 	
-	function _get_params_array()
+	protected function _get_params_array()
 	{
 		return $this->parameters;
 	}

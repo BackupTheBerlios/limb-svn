@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 
 class fetch_component extends component
 {
-	var $path = '';
+	private $path = '';
 			
-	function fetch($path=null)
+	public function fetch($path=null)
 	{
 		if(!$path)
 			$path = $this->get_path();
@@ -25,7 +23,7 @@ class fetch_component extends component
 		$this->import($arr);
 	}
 		
-	function fetch_requested_object()
+	public function fetch_requested_object()
 	{
 		$object_arr = fetch_requested_object();
 		
@@ -41,16 +39,16 @@ class fetch_component extends component
 		$this->import($object_arr);
 	}
 	
-	function set_path($path)
+	public function set_path($path)
 	{
 		$this->path = $path;
 	}
 	
-	function get_path()
+	public function get_path()
 	{
 		if(!$this->path)
 		{
-			$object_arr =& fetch_requested_object();
+			$object_arr = fetch_requested_object();
 			$this->path = $object_arr['path'];
 		}	
 

@@ -8,25 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class order_tag_info
 {
-	var $tag = 'order';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'order_tag';
+	public $tag = 'order';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'order_tag';
 } 
 
 register_tag(new order_tag_info());
 
 class order_tag extends server_component_tag
 {
-  function order_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/order_component';
 	}
 
-	function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 				
@@ -35,12 +33,12 @@ class order_tag extends server_component_tag
 		$code->write_php($this->get_component_ref_code() . '->prepare();'."\n");
 	} 
 
-	function &get_dataspace()
+	public function get_dataspace()
 	{
 		return $this;
 	} 
 
-	function get_dataspace_ref_code()
+	public function get_dataspace_ref_code()
 	{
 		return $this->get_component_ref_code();
 	} 

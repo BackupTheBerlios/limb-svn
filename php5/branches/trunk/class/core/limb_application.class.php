@@ -14,7 +14,7 @@ debug :: add_timing_point('start');
 
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'class/core/packages_info.class.php');
-require_once(LIMB_DIR . 'class/core/file_resolvers/file_resolvers_repository.inc.php');
+require_once(LIMB_DIR . 'class/core/file_resolvers/file_resolvers_registry.inc.php');
 require_once(LIMB_DIR . 'class/core/filters/filter_chain.class.php');
 require_once(LIMB_DIR . 'class/core/request/http_response.class.php');
 require_once(LIMB_DIR . 'class/core/request/request.class.php');

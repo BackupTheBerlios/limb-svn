@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/form_element.class.php');
 
 class container_form_element extends form_element
 {
-	function render_contents()
+	public function render_contents()
 	{
 	} 
 } 

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/template/components/form/input_form_element.class
 
 class node_select_component extends input_form_element
 {
-	function init_node_select()
+	public function init_node_select()
 	{
 		if (defined('NODE_SELECT_LOAD_SCRIPT'))
 			return;
@@ -22,7 +22,7 @@ class node_select_component extends input_form_element
 		define('NODE_SELECT_LOAD_SCRIPT', 1);		
 	}
 	
-	function render_node_select()
+	public function render_node_select()
 	{ 
 		$id = $this->get_attribute('id');
   	$md5id = substr(md5($id), 0, 5);
@@ -111,8 +111,6 @@ class node_select_component extends input_form_element
 		  echo '&nbsp;';
 		  echo "<input class='button' type='button' onclick='node_reset_{$md5id}()' value='" . strings :: get('reset'). "'>";
 		}
-
 	}
-	
 } 
 ?>

@@ -8,20 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/template/components/form/form_element.class.php');
 
-class input_form_element extends form_element
+abstract class input_form_element extends form_element
 {
 	/**
 	* Overrides then calls with the parent render_attributes() method. Makes
 	* sure there is always a value attribute, even if it's empty.
 	* Called from within a compiled template render function.
-	* 
-	* @return void 
-	* @access protected 
 	*/
-	function render_attributes()
+	public function render_attributes()
 	{
 		$value = $this->get_value();
 

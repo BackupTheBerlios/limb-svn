@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class pager_list_tag_info
 {
-	var $tag = 'pager:LIST';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'pager_list_tag';
+	public $tag = 'pager:LIST';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'pager_list_tag';
 } 
 
 register_tag(new pager_list_tag_info());
@@ -24,12 +22,7 @@ register_tag(new pager_list_tag_info());
 */
 class pager_list_tag extends compiler_directive_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access private 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('pager_list_tag'))
 		{
@@ -45,30 +38,20 @@ class pager_list_tag extends compiler_directive_tag
 					'line' => $this->starting_line_no));
 		} 
 	} 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function pre_generate(&$code)
+
+	public function pre_generate($code)
 	{
 		parent::pre_generate($code);
 
-		$parent = &$this->find_parent_by_class('pager_navigator_tag');
+		$parent = $this->find_parent_by_class('pager_navigator_tag');
 		$code->write_php('if (' . $parent->get_component_ref_code() . '->next()) {');
 	} 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function post_generate(&$code)
+
+  public function post_generate($code)
 	{
 		$code->write_php('}');
 
-		$emptychild = &$this->find_child_by_class('list_default_tag');
+		$emptychild = $this->find_child_by_class('list_default_tag');
 		if ($emptychild)
 		{
 			$code->write_php(' else { ');
@@ -77,20 +60,15 @@ class pager_list_tag extends compiler_directive_tag
 		} 
 		parent::post_generate($code);
 	} 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function generate_contents(&$code)
+
+	public function generate_contents($code)
 	{
-		$sep_child = &$this->find_child_by_class('pager_separator_tag');
-		$current_child = &$this->find_child_by_class('pager_current_tag');
-		$number_child = &$this->find_child_by_class('pager_number_tag');
-		$section_child = &$this->find_child_by_class('pager_section_tag');
+		$sep_child = $this->find_child_by_class('pager_separator_tag');
+		$current_child = $this->find_child_by_class('pager_current_tag');
+		$number_child = $this->find_child_by_class('pager_number_tag');
+		$section_child = $this->find_child_by_class('pager_section_tag');
 		
-		$parent = &$this->find_parent_by_class('pager_navigator_tag');
+		$parent = $this->find_parent_by_class('pager_navigator_tag');
 
 		$code->write_php('do { ');
 

@@ -8,13 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class core_literal_tag_info
 {
-	var $tag = 'core:LITERAL';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_literal_tag';
+	public $tag = 'core:LITERAL';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'core_literal_tag';
 } 
 
 register_tag(new core_literal_tag_info());
@@ -25,12 +23,7 @@ register_tag(new core_literal_tag_info());
 */
 class core_literal_tag extends compiler_directive_tag
 {
-	/**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if ($this->find_parent_by_class('core_literal_tag'))
 		{
@@ -40,12 +33,7 @@ class core_literal_tag extends compiler_directive_tag
 		} 
 	} 
 	
-	/**
-	* 
-	* @return int PARSER_FORBID_PARSING
-	* @access protected 
-	*/
-	function pre_parse()
+	public function pre_parse()
 	{
 		return PARSER_FORBID_PARSING;
 	} 
