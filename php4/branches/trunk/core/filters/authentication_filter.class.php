@@ -59,7 +59,7 @@ class authentication_filter extends intercepting_filter
       if(!$redirect_path)
         $redirect_path = '/root/login';
 
-      $redirect_strategy =& $this->_get_redirect_strategy($site_object_controller);
+      $redirect_strategy =& $this->_get_redirect_strategy($site_object_controller, $action);
 
       $response->set_redirect_strategy($redirect_strategy);
 
@@ -71,7 +71,7 @@ class authentication_filter extends intercepting_filter
     $filter_chain->next();
   }
 
-  function & _get_redirect_strategy($site_object_controller)
+  function & _get_redirect_strategy($site_object_controller, $action)
   {
     $redirect_type = $site_object_controller->get_action_property($action, 'redirect_type');
 
