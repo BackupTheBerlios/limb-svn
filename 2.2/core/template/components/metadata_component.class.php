@@ -168,16 +168,17 @@ class metadata_component extends component
 	function get_title()
 	{	
 		$objects_data =& $this->_get_path_objects_array();
-		
-		if (!is_array($objects_data) || !count($objects_data))
+		$result =& $this->_apply_offset_path($objects_data);		
+
+		if (!is_array($result) || !count($result))
 			return null;
 			
 		$titles = array();
-		
+
 		$objects_ids_array = array_reverse($this->_get_path_objects_ids_array());
 		foreach($objects_ids_array as $object_id)
-			if (!empty($objects_data[$object_id]['title']))
-				$titles[] = $objects_data[$object_id]['title'];
+			if (!empty($result[$object_id]['title']))
+				$titles[] = $result[$object_id]['title'];
 		
 		if (!count($titles))			
 			return null;
@@ -191,7 +192,18 @@ class metadata_component extends component
 		
 		if (!is_array($objects_data) || !count($objects_data))
 			return new array_dataset();
-			
+		
+		$results =& $this->_apply_offset_path($objects_data);
+		
+		$this->_add_object_action_path($results);
+		
+		$results[sizeof($results)-1]['is_last'] = true;
+		
+		return new array_dataset($results);
+	}
+	
+	function & _apply_offset_path($objects_data)
+	{
 		$path = '/';
 		
 		if($this->offset_path)
@@ -205,7 +217,7 @@ class metadata_component extends component
 		foreach($objects_data as $data)
 		{			
 			$path .= $data['identifier'] . '/';
-			$results[] = array(
+			$results[$data['id']] = array(
 				'path' => $path,
 				'title' => $data['title'] ? $data['title'] : $data['identifier']
 			);
@@ -219,14 +231,10 @@ class metadata_component extends component
 				}
 			}
 		}
-		
-		$this->_add_object_action_path($results);
-		
-		$results[sizeof($results)-1]['is_last'] = true;
-		
-		return new array_dataset($results);
+		return $results;
 	}
-	
+
+
 	function _add_object_action_path(&$results)
 	{
 		$data = end($results);
