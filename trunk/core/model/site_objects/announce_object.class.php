@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: announce_object.class.php 239 2004-02-29 19:00:20Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/period_object.class.php');
@@ -24,6 +24,15 @@ class announce_object extends period_object
 			'can_be_parent' => 0,
 			'controller_class_name' => 'announce_object_controller',
 		);
+	}
+	
+	function _define_attributes_definition()
+	{
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+				'identifier' => array('search' => false, 'auto_identifier' => true)
+				));
 	}
 }
 

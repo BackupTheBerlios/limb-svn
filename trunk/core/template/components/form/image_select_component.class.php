@@ -15,16 +15,17 @@ class image_select_component extends input_form_element
 {
 	function init_image_select()
 	{
-		if (defined('IMAGE_SELECT_LOAD_SCRIPT'))
-			return;
-					
-		echo "<script type='text/javascript' src='/shared/js/image_select.js'></script>";
+		if (!defined('IMAGE_SELECT_LOAD_SCRIPT'))
+		{
+			echo "<script type='text/javascript' src='/shared/js/image_select.js'></script>";
+			define('IMAGE_SELECT_LOAD_SCRIPT',1);
+		}	
 		
 		if (!defined('RICHEDIT_POPURL_SCRIPT'))
+		{
     	echo "<script type='text/javascript' src='/shared/richedit/popupurl.js'></script>";
-			
-		define('IMAGE_SELECT_LOAD_SCRIPT',1);
-		define('RICHEDIT_POPURL_SCRIPT',1);
+    	define('RICHEDIT_POPURL_SCRIPT',1);
+    }	
 	}
 	
 	function render_image_select()

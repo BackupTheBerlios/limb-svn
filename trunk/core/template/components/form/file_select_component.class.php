@@ -15,16 +15,17 @@ class file_select_component extends input_form_element
 {
 	function init_file_select()
 	{
-		if (defined('FILE_SELECT_LOAD_SCRIPT'))
-			return;
-					
-		echo "<script type='text/javascript' src='/shared/js/file_select.js'></script>";
-		
-		if (!defined('RICHEDIT_POPURL_SCRIPT'))
-    	echo "<script type='text/javascript' src='/shared/richedit/popupurl.js'></script>";
+		if (!defined('FILE_SELECT_LOAD_SCRIPT'))
+		{
+			echo "<script type='text/javascript' src='/shared/js/file_select.js'></script>";
+			define('FILE_SELECT_LOAD_SCRIPT',1);
+		}	
 			
-		define('FILE_SELECT_LOAD_SCRIPT',1);
-		define('RICHEDIT_POPURL_SCRIPT',1);
+		if (!defined('RICHEDIT_POPURL_SCRIPT'))
+		{
+    	echo "<script type='text/javascript' src='/shared/richedit/popupurl.js'></script>";
+    	define('RICHEDIT_POPURL_SCRIPT',1);
+    }	
 	}
 	
 	function render_file_select()
