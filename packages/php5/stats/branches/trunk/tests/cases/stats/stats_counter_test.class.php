@@ -197,7 +197,7 @@ class stats_counter_test extends LimbTestCase
   function _check_stats_day_counters_record($hits, $hosts, $home_hits, $audience_hosts, $date)
   {
   	
-  	$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->stats_counter->_make_day_stamp($date->get_stamp())));
+  	$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->stats_counter->make_day_stamp($date->get_stamp())));
   	$record = $this->db->fetch_row();
 		
 		$this->assertNotIdentical($record, false, 'day counters record doesnt exist');
@@ -224,7 +224,7 @@ class stats_counter_test extends LimbTestCase
   	$this->assertEqual($record1['hits_all'], $record2['hits_all'], 'Counters all hits number inconsistent. ' . $record1['hits_all'] . ' not equal '. $record2['hits_all']);
   	$this->assertEqual($record1['hosts_all'], $record2['hosts_all'], 'Counters all hosts number inconsistent. ' . $record1['hosts_all'] . ' not equal '. $record2['hosts_all']);
   	
-  	$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->stats_counter->_make_day_stamp($time)));
+  	$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->stats_counter->make_day_stamp($time)));
   	$record3 = $this->db->fetch_row();
 
   	$this->assertEqual($record3['hits'], $record2['hits_today'], 'Counters day hits number inconsistent. ' . $record3['hits'] . ' not equal '. $record2['hits_today']);

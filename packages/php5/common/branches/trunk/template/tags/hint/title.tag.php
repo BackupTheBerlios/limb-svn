@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class hint_title_tag_info
 {
-	var $tag = 'hint:TITLE';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'hint_title_tag';
+	public $tag = 'hint:TITLE';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'hint_title_tag';
 } 
 
 register_tag(new hint_title_tag_info());

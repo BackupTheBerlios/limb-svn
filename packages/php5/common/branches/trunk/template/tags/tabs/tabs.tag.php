@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class tabs_tag_info
 {
-	var $tag = 'tabs';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'tabs_tag';
+	public $tag = 'tabs';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'tabs_tag';
 } 
 
 register_tag(new tabs_tag_info());
@@ -25,7 +24,7 @@ class tabs_tag extends compiler_directive_tag
 	private $tab_class = 'class="tab"';
 	private $active_tab_class = 'class="active-tab"';
 
-  protected function prepare()
+  public function prepare()
   {
 	  if(isset($link->attributes['active_tab']))
 	    $this->active_tab = $link->attributes['active_tab'];
@@ -44,7 +43,7 @@ class tabs_tag extends compiler_directive_tag
     parent :: prepare();
   }
     	
-	protected function _load_tabs_js_script($code)
+	public function _load_tabs_js_script($code)
 	{
 		if (defined('TABS_SCRIPT_LOADED'))
 			return;
@@ -54,14 +53,14 @@ class tabs_tag extends compiler_directive_tag
 		$code->write_html("<script type='text/javascript' src='/shared/js/tabs.js'></script>");
 	}	
 	
-	protected function pre_generate($code)
+	public function pre_generate($code)
 	{	  	  
 	  $this->_load_tabs_js_script($code);
 	  
 	  parent :: pre_generate($code);
 	}
 	
-	protected function post_generate($code)
+	public function post_generate($code)
 	{
 		$js = '';
 

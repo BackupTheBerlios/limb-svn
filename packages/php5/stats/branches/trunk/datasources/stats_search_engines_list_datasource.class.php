@@ -8,44 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(dirname(__FILE__) . '/stats_report_datasource.class.php');
 require_once(dirname(__FILE__) . '/../reports/stats_search_engines_report.class.php');
 
-class stats_search_engines_list_datasource extends datasource
+class stats_search_engines_list_datasource extends stats_report_datasource
 {		
-	var $stats_report = null;
-	
-	function stats_search_engines_list_datasource()
+	protected function _init_stats_report()
 	{
-		$this->stats_report =& new stats_search_engines_report();
-		
-		parent :: datasource();		
+		$this->_stats_report = new stats_search_engines_report();
 	}
 
-	function & get_dataset(&$counter, $params=array())
-	{		
-		$this->_configure_filters();
-		
-		$counter = $this->stats_report->fetch_count($params);
-		$arr = $this->stats_report->fetch($params);
-
-		$arr = $this->_process_result_array($arr);
-		
-		return new array_dataset($arr);
+	protected function _configure_filters()
+	{
+		$this->_set_period_filter(request :: instance());
 	}
 
-	function _configure_filters()
+	protected function _process_result_array($arr)		
 	{
-	  $request = request :: instance();
-	
-		$this->_set_period_filter($request);
-	}
-
-	function _process_result_array($arr)		
-	{
-		$tree =& tree :: instance();
-		
-		$total = $this->stats_report->fetch_total_hits();
+		$total = $this->_stats_report->fetch_total_hits();
 			
 		$result = array();
 		foreach($arr as $index => $data)
@@ -57,9 +37,9 @@ class stats_search_engines_list_datasource extends datasource
 		return $result;
 	}		
 		
-	function _set_period_filter(&$request)
+	private function _set_period_filter($request)
 	{
-		$locale =& locale :: instance();
+		$locale = locale :: instance();
 		$start_date = new date();
 		$start_date->set_hour(0);
 		$start_date->set_minute(0);
@@ -77,7 +57,7 @@ class stats_search_engines_list_datasource extends datasource
 		$finish_date->set_minute(59);
 		$finish_date->set_second(59);
 		
-		$this->stats_report->set_period_filter($start_date, $finish_date);
+		$this->_stats_report->set_period_filter($start_date, $finish_date);
 	}
 }
 ?>

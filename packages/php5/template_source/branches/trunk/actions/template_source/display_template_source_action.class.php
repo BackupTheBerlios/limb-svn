@@ -11,13 +11,14 @@
 require_once(LIMB_DIR . '/class/core/actions/action.class.php');
 require_once(LIMB_DIR . '/class/template/fileschemes/simpleroot/compiler_support.inc.php');
 
-define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');
+if (!defined('TEMPLATE_FOR_HACKERS'))
+  define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');
 
 class display_template_source_action extends action
 {
-	var $history = array();
+	private $history = array();
 	
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
 		if(($t = $request->get('t')) && is_array($t) && sizeof($t) > 0)
 		{
@@ -61,17 +62,17 @@ class display_template_source_action extends action
 		$this->view->set('template_content', $this->_process_template_content($template_contents));
 	}
 	
-	function _get_template_path_from_node($node_id)
+	private function _get_template_path_from_node($node_id)
 	{
-		if(!$site_object =& wrap_with_site_object(fetch_one_by_node_id($node_id)))
+		if(!$site_object = wrap_with_site_object(fetch_one_by_node_id($node_id)))
 			return null;
 			
-		$controller =& $site_object->get_controller();
+		$controller = $site_object->get_controller();
 		
 		return $controller->get_action_property($controller->get_default_action(), 'template_path');
 	}
 	
-	function _process_template_content($template_contents)
+	private function _process_template_content($template_contents)
 	{
 	  include_once(LIMB_DIR . 'class/template/compiler/template_compiler.inc.php');
     include_once(dirname(__FILE__) . '/../../template_highlight_handler.class.php');
@@ -79,9 +80,9 @@ class display_template_source_action extends action
 	  		
 		global $tag_dictionary; //fixx
 		
-  	$parser =& new XML_HTMLSax3();
+  	$parser = new XML_HTMLSax3();
   	
-  	$handler =& new template_highlight_handler($tag_dictionary);
+  	$handler = new template_highlight_handler($tag_dictionary);
   	
   	$handler->set_template_path_history($this->history);
   	

@@ -24,7 +24,7 @@ require_once(dirname(__FILE__) . '/shipping_locator.class.php');
 
 class fedex_shipping_locator extends shipping_locator
 {
-  function _do_get_shipping_options($shipping_configuration)
+  protected function _do_get_shipping_options($shipping_configuration)
   {        
     $this->_clean_cookie();
     
@@ -52,15 +52,15 @@ class fedex_shipping_locator extends shipping_locator
     return $options;
   }
   
-  function _parse_html_options($html)
+  private function _parse_html_options($html)
   {
     include_once(LIMB_COMMON_DIR . '/setup_HTMLSax.inc.php');
     include_once(dirname(__FILE__) . '/fedex_sax_handler.class.php');
     
     $options = array();
     
-    $parser =& new XML_HTMLSax3();
-    $handler =& new fedex_sax_handler();
+    $parser = new XML_HTMLSax3();
+    $handler = new fedex_sax_handler();
     
     $parser->set_object($handler);
     
@@ -73,7 +73,7 @@ class fedex_shipping_locator extends shipping_locator
 		return $this->_process_raw_options($handler->get_options());
   }
   
-  function _process_raw_options($raw_options)
+  private function _process_raw_options($raw_options)
   {
 		$processed_options = array();
 		foreach($raw_options as $data)
@@ -91,13 +91,13 @@ class fedex_shipping_locator extends shipping_locator
 		return $processed_options;
   }    
       
-  function _clean_cookie()
+  private function _clean_cookie()
   {
     if(is_file(SHIPPING_FEDEX_SERVER_COOKIE_FILE))
       unlink(SHIPPING_FEDEX_SERVER_COOKIE_FILE);    
   }
   
-  function _get_express_shipping_options_html($shipping_configuration)
+  protected function _get_express_shipping_options_html($shipping_configuration)
   {
     $data = array();
     $data['shipDate'] = strftime("%m%d%Y");
@@ -200,7 +200,7 @@ class fedex_shipping_locator extends shipping_locator
     return $html;    
   }
 
-  function _get_ground_shipping_options_html($shipping_configuration)
+  protected function _get_ground_shipping_options_html($shipping_configuration)
   {
     $data = array();
     $data['shipDate'] = strftime("%m%d%Y");
@@ -304,7 +304,7 @@ class fedex_shipping_locator extends shipping_locator
     return $html;    
   }
   
-  function _browse_to_home_page()
+  protected function _browse_to_home_page()
   {
     $ch = curl_init();    
     

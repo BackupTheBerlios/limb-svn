@@ -9,22 +9,23 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/stats_report.interface.php');
 
-class stats_routes_report
+class stats_routes_report implements stats_report
 {
-	var $db = null;
-	var $start_date = null;
-	var $finish_date = null;
+	private $db;
+	private $start_date = null;
+	private $finish_date = null;
 	
-	var $routes_array = array();
-	var $condition_changed = true;
+	private $routes_array = array();
+	private $condition_changed = true;
 	
-	function stats_routes_report()
+	public function __construct()
 	{
-		$this->db =& db_factory :: instance();
+		$this->db = db_factory :: instance();
 	}
 		
-	function fetch($params = array())
+	public function fetch($params = array())
 	{
 		$records = $this->_retrieve_routes();
 								
@@ -36,12 +37,12 @@ class stats_routes_report
 		return $records;
 	}
 	
-	function fetch_count($params = array())
+	public function fetch_count($params = array())
 	{
 		return sizeof($this->_retrieve_routes());
 	}
 		
-	function set_period_filter($start_date, $finish_date)
+	public function set_period_filter($start_date, $finish_date)
 	{
 		static $prev_start_date = null;
 		static $prev_finish_date = null;
@@ -61,7 +62,7 @@ class stats_routes_report
 		$this->finish_date = $finish_date;
 	}
 	
-	function _retrieve_routes()
+	private function _retrieve_routes()
 	{
 		if(!$this->condition_changed)
 			return $this->routes_array;
@@ -69,8 +70,7 @@ class stats_routes_report
 		$start_stamp = $this->start_date->get_stamp();
 		$finish_stamp = $this->finish_date->get_stamp();
 		
-		$tree =& tree :: instance();
-		$root = $tree->get_node_by_path('/root');
+		$root = tree :: instance()->get_node_by_path('/root');
 		$root_id = $root['id'];
 		
 		$sql = "SELECT sslog.time, sslog.action, sslog.session_id, ssu.uri

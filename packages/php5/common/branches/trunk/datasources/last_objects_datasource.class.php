@@ -24,7 +24,7 @@ class last_objects_datasource extends fetch_datasource
 		return $result;
 	}
 	
-	protected function _process_loaded_items(& $items)
+	protected function _process_loaded_items(&$items)
 	{
 		if (!count($items))
 			return $items;

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
-class poll_all_results_datasource extends datasource
+class poll_all_results_datasource implements datasource
 {
-	public function get_dataset(& $counter, $params = array())
+	public function get_dataset(&$counter, $params = array())
 	{
 		$questions = $this->_load_all_questions($params);
 		
@@ -48,7 +48,8 @@ class poll_all_results_datasource extends datasource
 				}
 			}	
 		}	
-
+    
+    $counter = sizeof($questions);
 		return new array_dataset($questions);
 	}
 	

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
-class class_template_actions_list_datasource extends datasource
+class class_template_actions_list_datasource implements datasource
 {
-	public function get_dataset($params = array())
+	public function get_dataset(&$counter, $params = array())
 	{
 	  $request = request :: instance();
 	  
@@ -43,6 +43,7 @@ class class_template_actions_list_datasource extends datasource
 				$result[$action]['action_name'] = str_replace('_', ' ', strtoupper($action{0}) . substr($action, 1));				
 		}
 		
+		$counter = sizeof($result);
 		return new array_dataset($result);
 	}
 }

@@ -37,8 +37,8 @@ class edit_document_action extends form_edit_site_object_action
 	{
 		parent :: _init_validator();
 		
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'document_content'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'document_content'));
 	}
 }
 

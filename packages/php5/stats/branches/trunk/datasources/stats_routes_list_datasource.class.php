@@ -8,47 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(dirname(__FILE__) . '/stats_report_datasource.class.php');
 require_once(dirname(__FILE__) . '/../reports/stats_routes_report.class.php');
 
-class stats_routes_list_datasource extends datasource
+class stats_routes_list_datasource extends stats_report_datasource
 {		
-	var $stats_routes_report = null;
-	
-	function stats_routes_list_datasource()
+	protected function _init_stats_report()
 	{
-		$this->stats_report =& new stats_routes_report();
-		
-		parent :: datasource();		
+		$this->_stats_report = new stats_routes_report();
 	}
 
-	function & get_dataset(&$counter, $params=array())
-	{		
-		$this->_configure_filters();
-		
-		$counter = $this->stats_report->fetch_count($params);
-		$arr = $this->stats_report->fetch($params);
-		
-		$arr = $this->_process_result_array($arr);
-		
-		return new array_dataset($arr);
-	}
-	
-	function _process_result_array($arr)		
+	protected function _process_result_array($arr)		
 	{
 		return $arr;
 	}	
 	
-	function _configure_filters()
+	protected function _configure_filters()
 	{
-	  $request = request :: instance();
-	
-		$this->_set_period_filter($request);
+		$this->_set_period_filter(request :: instance());
 	}
 		
-	function _set_period_filter(&$request)
+	private function _set_period_filter($request)
 	{
-		$locale =& locale :: instance();
+		$locale = locale :: instance();
 		$start_date = new date();
 		$start_date->set_hour(0);
 		$start_date->set_minute(0);
@@ -66,7 +48,7 @@ class stats_routes_list_datasource extends datasource
 		$finish_date->set_minute(59);
 		$finish_date->set_second(59);
 		
-		$this->stats_report->set_period_filter($start_date, $finish_date);
+		$this->_stats_report->set_period_filter($start_date, $finish_date);
 	}
 }
 ?>

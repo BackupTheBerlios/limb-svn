@@ -10,21 +10,26 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
-class user_membership_datasource implements datasource
-{
-	public function get_dataset(&$counter, $params = array())
-	{
-		$user_groups = fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+abstract class stats_report_datasource implements datasource
+{		
+	protected $_stats_report;
+	
+	abstract protected function _init_stats_report();
+
+	public function get_dataset(&$counter, $params=array())
+	{		
+		$this->_configure_filters();
 		
-		$result = array();
-		foreach($user_groups as $id => $group_data)
-		{
-			$result[$group_data['id']] = $group_data;
-			$result[$group_data['id']]['selector_name'] = 'membership[' . $group_data['id'] . ']';
-		}	
+		$counter = $this->_stats_report->fetch_count($params);
+		$raw_data = $this->_stats_report->fetch($params);
+
+		$result = $this->_process_result_array($raw_data);
 		
-		$counter = sizeof($result);
 		return new array_dataset($result);
 	}
+
+	abstract protected function _configure_filters();
+
+	abstract protected function _process_result_array($arr);
 }
 ?>

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
-class version_datasource extends datasource
+class version_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params=array())
 	{

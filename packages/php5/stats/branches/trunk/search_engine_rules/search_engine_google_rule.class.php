@@ -13,13 +13,12 @@ require_once(LIMB_DIR . '/class/lib/http/utf8_to_win1251.inc.php');
 
 class search_engine_google_rule extends search_engine_regex_rule
 {	
-
-	function search_engine_google_rule()
+	public function __construct()
 	{
-		parent :: search_engine_regex_rule('google', '/^.*google\..*?q=(cache:[^\s]*\s)?([^&]*).*$/', 2);
+		parent :: __construct('google', '/^.*google\..*?q=(cache:[^\s]*\s)?([^&]*).*$/', 2);
 	}
 	
-	function get_matching_phrase()
+	public function get_matching_phrase()
 	{
 		return utf8_to_win1251(parent :: get_matching_phrase());
 	}

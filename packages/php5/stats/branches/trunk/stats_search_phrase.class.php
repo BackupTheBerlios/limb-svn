@@ -8,32 +8,35 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
-
 class stats_search_phrase
 {	
-	var $db = null;
-	var $url = null;
+  static private $instance = null;
+  
+	protected $db = null;
+	protected $url = null;
 	
-	var $engine_rules = array();
+	protected $engine_rules = array();
 	
-	function stats_search_phrase()
+	public function __construct()
 	{
-		$this->db =& db_factory :: instance();
+		$this->db = db_factory :: instance();
 		$this->url = new uri();
 	}
 	
-	function & instance()
+	static public function instance()
 	{
-		return instantiate_object('stats_search_phrase');
+    if (!self :: $instance)
+      self :: $instance = new stats_search_phrase();
+
+    return self :: $instance;	
 	}
-		
-	function register_search_engine_rule(&$engine_rule)
+			
+	public function register_search_engine_rule(&$engine_rule)
 	{
 		$this->engine_rules[] =& $engine_rule;
 	}
 	
-	function register($date)
+	public function register($date)
 	{
 		if(!$rule = $this->_get_matching_search_engine_rule())
 			return false;
@@ -49,7 +52,7 @@ class stats_search_phrase
 		return true;
 	}
 	
-	function _get_matching_search_engine_rule()
+	private function _get_matching_search_engine_rule()
 	{
 		$uri = urldecode($this->_get_http_referer());
 		
@@ -61,7 +64,7 @@ class stats_search_phrase
 		return null;
 	}	
 	
-	function _get_http_referer()
+	protected function _get_http_referer()
 	{
 		return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 	}

@@ -19,8 +19,8 @@ class generate_password_action extends form_action
 	
 	protected function _init_validator()
 	{
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'email'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/email_rule', 'email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/email_rule', 'email'));
 	}
 	
 	protected function _valid_perform($request, $response)

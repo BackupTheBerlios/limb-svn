@@ -46,21 +46,21 @@ class set_publish_status_action extends action
 	  fetcher :: flush_cache();
 	}
 	
-	function get_publish_status($object)
+	public function get_publish_status($object)
 	{
 		$current_status = $object->get('status');
 		$current_status |= SITE_OBJECT_PUBLISHED_STATUS;
 		return $current_status;
 	}
 	
-	function get_unpublish_status($object)
+	public function get_unpublish_status($object)
 	{
 		$current_status = $object->get('status');
 		$current_status = $current_status & (~SITE_OBJECT_PUBLISHED_STATUS);
 		return $current_status;
 	}
 		
-	function _apply_access_policy($object, $action)
+	protected function _apply_access_policy($object, $action)
 	{		
 		if(!access_policy :: instance()->save_object_access_for_action($object, $action))
 		{

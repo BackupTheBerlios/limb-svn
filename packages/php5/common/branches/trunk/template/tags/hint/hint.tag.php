@@ -11,16 +11,16 @@
 
 class hint_hint_tag_info
 {
-	var $tag = 'hint';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'hint_hint_tag';
+	public $tag = 'hint';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'hint_hint_tag';
 } 
 
 register_tag(new hint_hint_tag_info());
 
 class hint_hint_tag extends compiler_directive_tag
 {
-	protected function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 	
 $js = <<<JS
@@ -137,7 +137,7 @@ JS;
 		}
 	} 
 	
-	protected function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		$link =& $this->find_child_by_class('hint_link_tag');
 		$title =& $this->find_child_by_class('hint_title_tag');
@@ -206,7 +206,7 @@ JS;
 			$content->generate($code);
 	}
 
-	protected function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_html('
 			</td></tr>

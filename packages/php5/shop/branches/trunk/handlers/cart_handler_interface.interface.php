@@ -12,26 +12,26 @@ require_once dirname(__FILE__) . '/cart_handler_interface.interface.php';
 
 interface cart_handler_interface
 {		
-	abstract public function reset();
+	public function reset();
 		
-	abstract public function get_cart_id();
+	public function get_cart_id();
 	
-	abstract public function set_cart_id($cart_id);
+	public function set_cart_id($cart_id);
 	
-	abstract public function add_item($new_item);
+	public function add_item($new_item);
 	
-	abstract public function get_item($id);
+	public function get_item($id);
 		
-	abstract public function remove_item($item_id);
+	public function remove_item($item_id);
 	
-	abstract public function remove_items($item_ids);
+	public function remove_items($item_ids);
 	
-	abstract public function get_items();
+	public function get_items();
 	
-	private public function set_items($items);
+	public function set_items($items);
 	
-	abstract public function count_items();
+	public function count_items();
 
-	abstract public function clear_items();
+	public function clear_items();
 }
 ?>

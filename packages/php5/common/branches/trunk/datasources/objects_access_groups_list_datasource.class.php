@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
-class objects_access_groups_list_datasource extends datasource
+class objects_access_groups_list_datasource implements datasource
 {
-	protected function get_dataset(&$counter, $params = array())
+	public function get_dataset(&$counter, $params = array())
 	{
 		$params['order'] = array('priority' => 'ASC');
 		$user_groups = fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);

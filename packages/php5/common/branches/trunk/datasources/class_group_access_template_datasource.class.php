@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
-class class_group_access_template_datasource extends datasource
+class class_group_access_template_datasource implements datasource
 {
-	public function get_dataset($params = array())
+	public function get_dataset(&$counter, $params = array())
 	{
 		if(!$class_id = request :: instance()->get('class_id'))
 			return new array_dataset();
@@ -51,6 +51,7 @@ class class_group_access_template_datasource extends datasource
 			}
 		}
 		
+		$counter = sizeof($result);
 		return new array_dataset($result);
 	}
 }

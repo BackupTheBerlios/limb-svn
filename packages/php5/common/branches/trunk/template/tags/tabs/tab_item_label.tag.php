@@ -8,24 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class tab_item_label_tag_info
 {
-	var $tag = 'tab_item:label';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'tab_item_label_tag';
+	public $tag = 'tab_item:label';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'tab_item_label_tag';
 } 
 
 register_tag(new tab_item_label_tag_info());
 
 class tab_item_label_tag extends compiler_directive_tag
 {  
-  /**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	protected function check_nesting_level()
+	public function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'tabs_labels_tag'))
 		{
@@ -48,7 +42,7 @@ class tab_item_label_tag extends compiler_directive_tag
 		$this->parent->parent->tabs[] = $this->attributes['tab_id'];
 	} 
 	
-	protected function pre_generate(&$code)
+	public function pre_generate($code)
 	{
 	  $id = $this->attributes['tab_id'];
 	  
@@ -60,7 +54,7 @@ class tab_item_label_tag extends compiler_directive_tag
 		parent :: pre_generate($code);
 	}
 	
-	protected function post_generate(&$code)
+	public function post_generate($code)
 	{
 		$code->write_html("</a></td>
 					</tr>

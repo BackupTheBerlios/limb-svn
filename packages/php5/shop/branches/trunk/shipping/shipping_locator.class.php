@@ -17,16 +17,16 @@ if (!defined('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME'))
 class shipping_locator
 {
   var $cache_result = true;
-  var $cache_life_time;
+  private $cache_life_time;
  
-  var $cache; 
+  private $cache; 
   
-  function shipping_locator()
+  function __construct()
   {
     $this->cache_life_time = SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME;
   }
     
-  function & get_cache()
+  public function get_cache()
   {
     if($this->cache)  
       return $this->cache;
@@ -41,33 +41,32 @@ class shipping_locator
       'lifeTime' => $this->cache_life_time
     );
         
-    $this->cache =& new Cache_Lite($options);  
+    $this->cache = new Cache_Lite($options);  
      
     return $this->cache;    
   }
   
-  function use_cache($status = true)
+  public function use_cache($status = true)
   {
     $this->cache_result = $status;
   }
   
-  function flush_cache()
+  public function flush_cache()
   {
-    $cache =& $this->get_cache();
-    $cache->clean();
+    $this->get_cache()->clean();
   }
   
-  function set_cache_life_time($time)
+  public function set_cache_life_time($time)
   {
     $this->cache_life_time = $time;
   }
   
-  function get_cache_life_time()
+  public function get_cache_life_time()
   {
     return $this->cache_life_time;
   }
   
-  function get_shipping_options($shipping_configuration)
+  public function get_shipping_options($shipping_configuration)
   {
     if($this->cache_result)
     {
@@ -86,14 +85,14 @@ class shipping_locator
     return $options;
   }
       
-  function _save_cached_options($shipping_configuration, $options)
+  protected function _save_cached_options($shipping_configuration, $options)
   {
     $cache =& $this->get_cache();
     
     $cache->save(serialize($options), $shipping_configuration->get_hash());
   }
 
-  function _get_cached_options($shipping_configuration)
+  protected function _get_cached_options($shipping_configuration)
   {
     $cache =& $this->get_cache();
     
@@ -103,7 +102,7 @@ class shipping_locator
       return false;
   }
   
-  function _do_get_shipping_options($shipping_configuration)
+  protected function _do_get_shipping_options($shipping_configuration)
   {
     return array();
   }

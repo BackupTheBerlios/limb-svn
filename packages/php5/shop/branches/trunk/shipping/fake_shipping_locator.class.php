@@ -10,9 +10,8 @@
 ***********************************************************************************/
 class fake_shipping_locator
 {
-  function get_shipping_options($config)
+  public function get_shipping_options($config)
   {
-    
     $options = array(
         array(
           'id' => 1,

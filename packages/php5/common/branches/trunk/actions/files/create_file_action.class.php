@@ -36,7 +36,7 @@ class create_file_action extends form_create_site_object_action
 	{
 		parent :: _init_validator();
 
-    $this->validator->add_rule($v = array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
 	}
 	
 	protected function _create_object_operation()

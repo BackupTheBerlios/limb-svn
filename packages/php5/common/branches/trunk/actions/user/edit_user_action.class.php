@@ -34,24 +34,24 @@ class edit_user_action extends form_edit_site_object_action
 	  );     
 	}  
 
-	function _define_increase_version_flag()
+	protected function _define_increase_version_flag()
 	{
 	  return false;
 	}  
 	
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 		
 		if ($object_data = fetch_requested_object())
 		{
-      $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/unique_user_rule', 'identifier', $object_data['identifier']));
-      $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/unique_user_email_rule', 'email', $object_data['email']));
+      $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/unique_user_rule', 'identifier', $object_data['identifier']));
+      $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/unique_user_email_rule', 'email', $object_data['email']));
 		}	
 
-    $this->validator->add_rule($v3 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'name'));
-    $this->validator->add_rule($v4 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'email'));
-    $this->validator->add_rule($v5 = array(LIMB_DIR . 'class/validators/rules/email_rule', 'email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'name'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/email_rule', 'email'));
 	}
 }
 

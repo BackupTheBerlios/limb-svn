@@ -8,21 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 
 class stats_uri
 {	
-	var $db = null;
-	var $url = null;
+	private $db = null;
+	private $url = null;
 	
-	function stats_uri()
+	public function __construct()
 	{
 		$this->db =& db_factory :: instance();
 		$this->url = new uri();
 	}
 
-	function get_uri_id()
+	public function get_uri_id()
 	{
 		$uri = $this->clean_url($this->_get_http_uri());
 		
@@ -32,12 +31,12 @@ class stats_uri
 		return $this->_insert_uri_record($uri);
 	}	
 	
-	function _get_http_uri()
+	protected function _get_http_uri()
 	{
 		return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 	}
 	
-	function _get_existing_uri_record_id($uri)
+	private function _get_existing_uri_record_id($uri)
 	{
 		$this->db->sql_select('sys_stat_uri', '*', 
 			"uri='" . $uri . "'");
@@ -47,14 +46,14 @@ class stats_uri
 			return false;	
 	}
 	
-	function _insert_uri_record($uri)
+	private function _insert_uri_record($uri)
 	{
 		$this->db->sql_insert('sys_stat_uri', 
 			array('uri' => $uri));
 		return $this->db->get_sql_insert_id('sys_stat_uri');		
 	}
 
-	function clean_url($raw_url)
+	public function clean_url($raw_url)
 	{
 		$this->url->parse($raw_url);
 		
@@ -66,7 +65,7 @@ class stats_uri
 			return $this->url->to_string(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
 	}	
 
-	function _is_inner_url()
+	private function _is_inner_url()
 	{
     return ($this->url->get_host() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
 	}

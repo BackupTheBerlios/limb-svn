@@ -11,20 +11,20 @@
 
 class fedex_sax_handler 
 {
-  var $tags_list = array();
-  var $options = array();
-  var $total_options = 0;
-  var $services_began = false;
+  private $tags_list = array();
+  private $options = array();
+  private $total_options = 0;
+  private $services_began = false;
   
-  var $service_name_began = false;
-  var $service_description_began = false;
-  var $service_price_began = false;
+  private $service_name_began = false;
+  private $service_description_began = false;
+  private $service_price_began = false;
   
-  var $service_name_expected = false;
-  var $service_description_expected = false;
-  var $service_price_expected = false;
+  private $service_name_expected = false;
+  private $service_description_expected = false;
+  private $service_price_expected = false;
 	 	  
-  function open_handler(& $parser, $name, $attrs) 
+  public function open_handler($parser, $name, $attrs) 
   {	
     if($this->service_name_expected || $this->service_description_expected || $this->service_price_expected)
   	  $this->tags_list[] = strtolower($name);
@@ -65,7 +65,7 @@ class fedex_sax_handler
   	}  	
   }
   
-  function close_handler(& $parser, $name) 
+  public function close_handler($parser, $name) 
   { 
     $tag = strtolower($name);
        
@@ -106,7 +106,7 @@ class fedex_sax_handler
     }    
   }
 
-  function data_handler(& $parser, $data) 
+  public function data_handler($parser, $data) 
   {
     if($this->service_name_began)
     {
@@ -125,7 +125,7 @@ class fedex_sax_handler
     
   }
 
-  function escape_handler(& $parser, $data) 
+  public function escape_handler($parser, $data) 
   {
     switch(trim($data))
     {
@@ -171,12 +171,12 @@ class fedex_sax_handler
     }
   }
 
-  function get_options() 
+  public function get_options() 
   { 
   	return $this->options;
   }
   
-  function write_attributes($attributes)
+  public function write_attributes($attributes)
   {
     if(!is_array($attributes))
       return '';

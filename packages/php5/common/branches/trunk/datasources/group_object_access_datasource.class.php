@@ -43,7 +43,6 @@ class group_object_access_datasource extends fetch_tree_datasource
 		
 		return $tree_array;
 	}
-	
 }
 
 

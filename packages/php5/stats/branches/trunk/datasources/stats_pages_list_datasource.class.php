@@ -8,34 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(dirname(__FILE__) . '/stats_report_datasource.class.php');
 require_once(dirname(__FILE__) . '/../reports/stats_pages_report.class.php');
 
-class stats_pages_list_datasource extends datasource
+class stats_pages_list_datasource extends stats_report_datasource
 {		
-	private $_stats_report = null;
-	
-	function __construct()
+	protected function _init_stats_report()
 	{
 		$this->_stats_report = new stats_pages_report();
-		
-		parent :: __construct();		
 	}
 
-	public function get_dataset(&$counter, $params=array())
-	{		
-		$this->_configure_filters();
-		
-		$counter = $this->_stats_report->fetch_count($params);
-		$arr = $this->_stats_report->fetch($params);
-		
-		$arr = $this->_process_result_array($arr);
-		return new array_dataset($arr);
-	}
-
-	private function _process_result_array($arr)		
+	protected function _process_result_array($arr)		
 	{
-		$total = $this->stats_report->fetch_total_hits();
+		$total = $this->_stats_report->fetch_total_hits();
 			
 		$result = array();
 		foreach($arr as $index => $data)
@@ -48,15 +33,14 @@ class stats_pages_list_datasource extends datasource
 		return $result;
 	}		
 		
-	private function _configure_filters()
+	protected function _configure_filters()
 	{
-		$this->_set_period_filter();
+		$this->_set_period_filter(request :: instance());
 	}
 		
-	private function _set_period_filter()
+	private function _set_period_filter($request)
 	{
-		$request = request :: instance();
-		$locale =& locale :: instance();
+		$locale = locale :: instance();
 		$start_date = new date();
 		$start_date->set_hour(0);
 		$start_date->set_minute(0);

@@ -8,21 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/http/ip.class.php');
+require_once(dirname(__FILE__) . '/stats_report.interface.php');
 
-class stats_event_report
+class stats_event_report implements stats_report
 {
-	var $db = null;
-	var $filter_conditions = array();
+	private $db;
+	private $filter_conditions = array();
 	
-	function stats_event_report()
+	public function __construct()
 	{
-		$this->db =& db_factory :: instance();
+		$this->db = db_factory :: instance();
 	}
 	
-	function set_login_filter($login_string)
+	public function set_login_filter($login_string)
 	{
 		$condition = $this->_combine_positive_negative_conditions(
 			$this->_build_positive_conditions('user.identifier', $login_string),
@@ -33,7 +33,7 @@ class stats_event_report
 			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
 	}
 
-	function set_action_filter($action_string)
+	public function set_action_filter($action_string)
 	{
 		$condition = $this->_combine_positive_negative_conditions(
 			$this->_build_positive_conditions('sslog.action', $action_string),
@@ -44,7 +44,7 @@ class stats_event_report
 			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
 	}
 	
-	function set_period_filter($start_date, $finish_date)
+	public function set_period_filter($start_date, $finish_date)
 	{
 		$start_stamp = $start_date->get_stamp();
 		$finish_stamp = $finish_date->get_stamp();
@@ -52,7 +52,7 @@ class stats_event_report
 		$this->filter_conditions[] = " AND sslog.time BETWEEN {$start_stamp} AND {$finish_stamp} ";
 	}
 	
-	function set_uri_filter($uri_string)
+	public function set_uri_filter($uri_string)
 	{
 		$condition = $this->_combine_positive_negative_conditions(
 			$this->_build_positive_conditions('ssu.uri', $uri_string),
@@ -63,12 +63,12 @@ class stats_event_report
 			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';				
 	}
 	
-	function set_status_filter($status_mask)
+	public function set_status_filter($status_mask)
 	{
 		$this->filter_conditions[] = "AND (sslog.status & {$status_mask}) = sslog.status";
 	}
 	
-	function set_ip_filter($ip_string)
+	public function set_ip_filter($ip_string)
 	{	
 		$ip_positive_hex_list = array();
 		$ip_negative_hex_list = array();
@@ -127,12 +127,12 @@ class stats_event_report
 			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
 	}
 		
-	function _build_filter_condition()
+	private function _build_filter_condition()
 	{
 		return ' WHERE ssu.id = sslog.stat_uri_id ' . implode(' ', $this->filter_conditions);
 	}
 	
-	function fetch($params = array())
+	public function fetch($params = array())
 	{
 		$sql = "SELECT 
 						sslog.*, ssu.uri,
@@ -159,7 +159,7 @@ class stats_event_report
 		return $this->db->get_array('id');
 	}
 	
-	function fetch_count($params = array())
+	public function fetch_count($params = array())
 	{
 		$sql = "SELECT COUNT(sslog.id) as count 
 						FROM
@@ -175,7 +175,7 @@ class stats_event_report
 		return (int)$arr['count'];
 	}
 
-	function _build_order_sql($order_array)
+	private function _build_order_sql($order_array)
 	{
 		$columns = array();
 		
@@ -185,7 +185,7 @@ class stats_event_report
 		return implode(', ', $columns);
 	}	
 	
-	function _parse_input_string($input_string)
+	private function _parse_input_string($input_string)
 	{
 		if(!$input_string = trim(str_replace('*', '%', $input_string)))
 			return false;
@@ -197,7 +197,7 @@ class stats_event_report
 		return $items;
 	}
 		
-	function _build_negative_conditions($field_name, $condition_string)
+	private function _build_negative_conditions($field_name, $condition_string)
 	{		
 		if(($conditions = $this->_parse_input_string($condition_string)) === false)
 			return '';
@@ -215,7 +215,7 @@ class stats_event_report
 		return $negative_conditions;
 	}
 	
-	function _build_positive_conditions($field_name, $condition_string)
+	private function _build_positive_conditions($field_name, $condition_string)
 	{
 		if(($conditions = $this->_parse_input_string($condition_string)) === false)
 			return '';
@@ -231,7 +231,7 @@ class stats_event_report
 		return $positive_conditions;
 	}	
 	
-	function _build_negative_condition($field_name, $value)
+	private function _build_negative_condition($field_name, $value)
 	{
 		if(strpos($value, '%') !== false)
 			$negative_condition = "{$field_name} NOT LIKE '{$value}'";	
@@ -241,7 +241,7 @@ class stats_event_report
 		return $negative_condition;
 	}
 
-	function _build_positive_condition($field_name, $value)
+	private function _build_positive_condition($field_name, $value)
 	{
 		if(strpos($value, '%') !== false)
 			$negative_condition = "{$field_name} LIKE '{$value}'";	
@@ -251,7 +251,7 @@ class stats_event_report
 		return $negative_condition;
 	}
 	
-	function _combine_positive_negative_conditions($positive_conditions, $negative_conditions)
+	private function _combine_positive_negative_conditions($positive_conditions, $negative_conditions)
 	{
 		$sql_condition = '';
 		

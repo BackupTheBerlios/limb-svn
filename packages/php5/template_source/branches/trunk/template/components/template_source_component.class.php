@@ -8,10 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class template_source_component extends component
 {
-	function get_current_template_source_link()
+	public function get_current_template_source_link()
 	{
 		if(!$site_object = wrap_with_site_object(fetch_requested_object()))
 			return '';

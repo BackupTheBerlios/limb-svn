@@ -9,18 +9,19 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/stats_report.interface.php');
 
-class stats_pages_report
+class stats_pages_report implements stats_report
 {
-	var $db = null;
-	var $filter_conditions = array();
+	private $db;
+	private $filter_conditions = array();
 	
-	function stats_pages_report()
+	public function __construct()
 	{
-		$this->db =& db_factory :: instance();
+		$this->db = db_factory :: instance();
 	}
 		
-	function fetch($params = array())
+	public function fetch($params = array())
 	{
 		$sql = 'SELECT
 						stat_uri_id, ssu.uri,
@@ -43,7 +44,7 @@ class stats_pages_report
 		return $this->db->get_array();
 	}
 	
-	function fetch_count($params = array())
+	public function fetch_count($params = array())
 	{
 		$sql = 'SELECT
 						stat_uri_id
@@ -58,7 +59,7 @@ class stats_pages_report
 		return $this->db->count_selected_rows();
 	}
 	
-	function fetch_total_hits()
+	public function fetch_total_hits()
 	{
 		$sql = 'SELECT
 						COUNT(id) as total
@@ -73,7 +74,7 @@ class stats_pages_report
 		return $record['total'];
 	}
 	
-	function set_period_filter($start_date, $finish_date)
+	public function set_period_filter($start_date, $finish_date)
 	{
 		$start_stamp = $start_date->get_stamp();
 		$finish_stamp = $finish_date->get_stamp();
@@ -81,7 +82,7 @@ class stats_pages_report
 		$this->filter_conditions[] = " AND time BETWEEN {$start_stamp} AND {$finish_stamp} ";
 	}
 
-	function _build_filter_condition()
+	private function _build_filter_condition()
 	{
 		return ' WHERE 1=1 ' . implode(' ', $this->filter_conditions);
 	}

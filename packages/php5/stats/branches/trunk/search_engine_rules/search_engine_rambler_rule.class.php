@@ -12,9 +12,9 @@ require_once(dirname(__FILE__) . '/search_engine_regex_rule.class.php');
 
 class search_engine_rambler_rule extends search_engine_regex_rule
 {	
-	function search_engine_rambler_rule()
+	public function __construct()
 	{
-		parent :: search_engine_regex_rule('rambler', '/^.*rambler.*words=([^&]*).*$/', 1);
+		parent :: __construct('rambler', '/^.*rambler.*words=([^&]*).*$/', 1);
 	}
 }
 

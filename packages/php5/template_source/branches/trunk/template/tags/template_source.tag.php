@@ -10,21 +10,21 @@
 ***********************************************************************************/ 
 class template_source_tag_info
 {
-	var $tag = 'dev:TEMPLATE_SOURCE';
-	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'template_source_tag';
+	public $tag = 'dev:TEMPLATE_SOURCE';
+	public $end_tag = ENDTAG_REQUIRED;
+	public $tag_class = 'template_source_tag';
 } 
 
 register_tag(new template_source_tag_info());
 
 class template_source_tag extends server_component_tag
 {
-  function template_source_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../components/template_source_component';
 	}
 	
-	function generate_contents(&$code)
+	public function generate_contents($code)
 	{
 		if(isset($this->attributes['target']))
 			$target = 'target=' . $this->attributes['target'];

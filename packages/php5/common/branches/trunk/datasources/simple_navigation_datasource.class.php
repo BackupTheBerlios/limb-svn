@@ -17,7 +17,6 @@ class simple_navigation_datasource extends fetch_sub_branch_datasource
 		$result = parent :: _fetch($counter, $params);
 		$uri = new uri($_SERVER['PHP_SELF']);		
 
-
 		foreach($result as $key => $data)
 		{
 			$nav_uri = new uri($data['url']);
@@ -35,7 +34,6 @@ class simple_navigation_datasource extends fetch_sub_branch_datasource
 		}
 		return $result;
 	}
-
 }
 
 

@@ -17,7 +17,7 @@ class stats_hits_hosts_report_action extends form_action
 	  return 'hits_hosts_form';
 	}
 	
-	protected function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 	  $request->import($this->dataspace->export());
 

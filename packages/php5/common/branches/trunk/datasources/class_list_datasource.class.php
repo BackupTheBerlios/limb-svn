@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
-class class_list_datasource extends datasource
+class class_list_datasource implements datasource
 {
-	public function get_dataset($params = array())
+	public function get_dataset(&$counter, $params = array())
 	{
 		if(!$arr = fetch_requested_object())
 			return new array_dataset();
@@ -36,6 +36,7 @@ class class_list_datasource extends datasource
 			$result[$class_id]['actions'] = $arr['actions'];
 		}
 		
+		$counter = sizeof($result);
 		return new array_dataset($result);
 	}
 }

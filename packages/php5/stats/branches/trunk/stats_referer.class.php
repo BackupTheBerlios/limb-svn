@@ -13,10 +13,10 @@ require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 
 class stats_referer
 {	
-	protected $db = null;
-	protected $url = null;
+	private $db = null;
+	private $url = null;
 	
-	function __construct()
+	public function __construct()
 	{
 		$this->db = db_factory :: instance();
 		$this->url = new uri();
@@ -36,12 +36,12 @@ class stats_referer
 		return $this->_insert_referer_record($clean_uri);
 	}
 	
-	protected function _is_inner_url()
+	private function _is_inner_url()
 	{
     return ($this->url->get_host() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
 	}
 	
-	protected function _get_clean_referer_page()
+	private function _get_clean_referer_page()
 	{
 		if ($referer = $this->_get_http_referer())
 			return $this->clean_url($referer);
@@ -49,7 +49,7 @@ class stats_referer
 		return false;
 	}
 	
-	protected function _get_http_referer()
+	private function _get_http_referer()
 	{
 		return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 	}

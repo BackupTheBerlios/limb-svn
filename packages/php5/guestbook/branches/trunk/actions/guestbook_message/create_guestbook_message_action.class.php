@@ -38,9 +38,9 @@ class create_guestbook_message_action extends form_create_site_object_action
 	{
 		parent :: _init_validator();
 
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'message'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'sender'));
-    $this->validator->add_rule($v3 = array(LIMB_DIR . 'class/validators/rules/email_rule', 'sender_email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'message'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'sender'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/email_rule', 'sender_email'));
 	}
 
 	protected function _init_dataspace($request)

@@ -41,7 +41,7 @@ class edit_file_action extends form_edit_site_object_action
 	{
 		parent :: _init_validator();
 
-    $this->validator->add_rule($v = array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
 	}
 	
 	protected function _update_object_operation()

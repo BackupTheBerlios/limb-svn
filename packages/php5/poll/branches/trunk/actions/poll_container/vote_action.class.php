@@ -33,7 +33,6 @@ class vote_action extends form_action
 		$object->register_answer($data['answer']);
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 	}
-
 }
 
 ?>

@@ -12,12 +12,12 @@ require_once(dirname(__FILE__) . '/search_engine_regex_rule.class.php');
 
 class search_engine_yahoo_rule extends search_engine_regex_rule
 {	
-	function search_engine_yahoo_rule()
+	public function __construct()
 	{
-		parent :: search_engine_regex_rule('yahoo', '/^.*search\.yahoo.*\?p=([^&]*).*$/', 1);
+		parent :: __construct('yahoo', '/^.*search\.yahoo.*\?p=([^&]*).*$/', 1);
 	}
 
-	function get_matching_phrase()
+	public function get_matching_phrase()
 	{
 		return utf8_to_win1251(parent :: get_matching_phrase());
 	}

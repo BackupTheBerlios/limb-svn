@@ -15,7 +15,7 @@ class faq_object_db_table extends content_object_db_table
   protected function _define_columns()
   {
   	return complex_array :: array_merge(
-			parent :: _define_colums(),
+			parent :: _define_columns(),
 			array(
 	      'question' => '',
 	      'question_author' => '',

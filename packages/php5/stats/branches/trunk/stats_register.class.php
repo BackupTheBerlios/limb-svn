@@ -19,18 +19,18 @@ include(dirname(__FILE__) . '/search_engines.setup.php');
 
 class stats_register
 {
-	var $_counter_register = null;
-	var $_ip_register = null;
-	var $_uri_register = null;
-	var $_referer_register = null;
-	var $_search_phrase_register = null;
-	var $_reg_date;
-	var $db = null;
+	private $_counter_register = null;
+	private $_ip_register = null;
+	private $_uri_register = null;
+	private $_referer_register = null;
+	private $_search_phrase_register = null;
+	private $_reg_date;
+	private $db = null;
 	
-	function stats_register()
+	public function __construct()
 	{
 		$this->_reg_date = new date();		
-  	$this->db =& db_factory :: instance();
+  	$this->db = db_factory :: instance();
 	}
 
 	function get_register_time_stamp()
@@ -38,7 +38,7 @@ class stats_register
 		return $this->_reg_date->get_stamp();
 	}
 
-	function set_register_time($stamp = null)
+	public function set_register_time($stamp = null)
 	{
 		if(!$stamp)
 			$stamp = time();
@@ -46,7 +46,7 @@ class stats_register
 		$this->_reg_date->set_by_stamp($stamp);
 	}
 
-	function register($node_id, $action, $status_code)
+	public function register($node_id, $action, $status_code)
 	{
 		if($status_code === request :: STATUS_DONT_TRACK)
 			return;
@@ -58,7 +58,7 @@ class stats_register
 		$this->_update_search_referers();
 	}
 	
-	function _update_log($node_id, $action, $status_code)
+	public function _update_log($node_id, $action, $status_code)
 	{
 		$ip_register =& $this->_get_ip_register();
 
@@ -82,19 +82,19 @@ class stats_register
 		);	
 	}
 
-	function clean_until($date)
+	public function clean_until($date)
 	{
 		$this->db->sql_delete('sys_stat_log', 'time < ' . $date->get_stamp());
 	}
 	
-	function count_log_records()
+	public function count_log_records()
 	{
 		$this->db->sql_exec('SELECT COUNT(id) as counter FROM sys_stat_log');
 		$row = $this->db->fetch_row();
 		return $row['counter'];
 	}
 	
-	function _update_counters()
+	private function _update_counters()
 	{	
 		$ip_register =& $this->_get_ip_register();
 		$counter_register =& $this->_get_counter_register();
@@ -103,13 +103,13 @@ class stats_register
 		$counter_register->update($this->_reg_date);
 	}
 	
-	function _update_search_referers()
+	private function _update_search_referers()
 	{	
 		$phrase_register =& $this->_get_search_phrase_register();
 		$phrase_register->register($this->_reg_date);
 	}
 	
-	function & _get_ip_register()
+	protected function _get_ip_register()
 	{
 		if (!$this->_ip_register)
 			$this->_ip_register = new stats_ip();
@@ -117,7 +117,7 @@ class stats_register
 		return $this->_ip_register;
 	}	
 
-	function & _get_counter_register()
+	protected function _get_counter_register()
 	{
 		if (!$this->_counter_register)
 			$this->_counter_register = new stats_counter();
@@ -125,7 +125,7 @@ class stats_register
 		return $this->_counter_register;
 	}	
 	
-	function & _get_referer_register()
+	protected function _get_referer_register()
 	{
 		if (!$this->_referer_register)
 			$this->_referer_register = new stats_referer();
@@ -133,7 +133,7 @@ class stats_register
 		return $this->_referer_register;
 	}
 	
-	function & _get_uri_register()
+	protected function _get_uri_register()
 	{
 		if (!$this->_uri_register)
 			$this->_uri_register = new stats_uri();
@@ -141,10 +141,10 @@ class stats_register
 		return $this->_uri_register;
 	}
 	
-	function & _get_search_phrase_register()
+	protected function _get_search_phrase_register()
 	{
 		if (!$this->_search_phrase_register)
-			$this->_search_phrase_register =& stats_search_phrase :: instance();
+			$this->_search_phrase_register = stats_search_phrase :: instance();
 		
 		return $this->_search_phrase_register;
 	}

@@ -23,13 +23,13 @@ class send_feedback_action extends form_action
 	{
 	  parent :: _init_validator();
 	  
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'subject'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'sender_email'));
-    $this->validator->add_rule($v3 = array(LIMB_DIR . 'class/validators/rules/email_rule', 'sender_email'));
-    $this->validator->add_rule($v4 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'body'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'subject'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'sender_email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/email_rule', 'sender_email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'body'));
 	}
 
-	protected function _get_email()
+	private function _get_email()
 	{
 		if(!$email = sys_param :: instance()->get_param('contact_email', 'char'))
 			$email = constant('ADMINISTRATOR_EMAIL');		
@@ -37,7 +37,7 @@ class send_feedback_action extends form_action
 		return $email;
 	}
 
-	protected function _get_mail_subject()
+	private function _get_mail_subject()
 	{
 		return sprintf(strings :: get('message_subject', 'feedback'), 
 												$this->dataspace->get('subject'),

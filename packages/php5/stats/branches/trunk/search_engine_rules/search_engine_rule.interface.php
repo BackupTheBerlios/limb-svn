@@ -8,17 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-class hint_link_tag_info
-{
-	public $tag = 'hint:LINK';
-	public $end_tag = ENDTAG_REQUIRED;
-	public $tag_class = 'hint_link_tag';
-} 
+interface search_engine_rule
+{	
+	public function match($uri);
+	
+	public function get_matching_phrase();
 
-register_tag(new hint_link_tag_info());
-
-class hint_link_tag extends compiler_directive_tag
-{
-} 
+	public function get_engine_name();
+}
 
 ?>

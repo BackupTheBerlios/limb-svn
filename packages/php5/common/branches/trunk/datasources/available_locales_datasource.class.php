@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/options_datasource.interface.php'); 
 require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 
-class available_locales_datasource extends datasource
+class available_locales_datasource implements options_datasource
 {	
 	public function get_options_array()
 	{

@@ -41,10 +41,10 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 	{
 		parent :: _init_validator();
 
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'message'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'sender'));
-    $this->validator->add_rule($v3 = array(LIMB_DIR . 'class/validators/rules/email_rule', 'sender_email'));
-    $this->validator->add_rule($v4 = array(LIMB_DIR . 'class/validators/rules/email_rule', 'comment_author_email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'message'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'sender'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/email_rule', 'sender_email'));
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/email_rule', 'comment_author_email'));
 	}
 
 

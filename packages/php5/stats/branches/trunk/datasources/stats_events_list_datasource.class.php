@@ -8,41 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(dirname(__FILE__) . '/stats_report_datasource.class.php');
 require_once(dirname(__FILE__) . '/../reports/stats_event_report.class.php');
 
-class stats_events_list_datasource extends datasource
+class stats_events_list_datasource extends stats_report_datasource
 {
-	var $response_map = array(
-				request :: STATUS_SUCCESS => 'request :: STATUS_SUCCESS', 
-				request :: STATUS_FORM_DISPLAYED => 'request :: STATUS_FORM_DISPLAYED',
-				request :: STATUS_FORM_SUBMITTED => 'request :: STATUS_FORM_SUBMITTED',
-				request :: STATUS_FAILURE => 'request :: STATUS_FAILURE',
-				request :: STATUS_FORM_NOT_VALID => 'request :: STATUS_FORM_NOT_VALID'
+	private $response_map = array(
+				request :: STATUS_SUCCESS => 'STATUS_SUCCESS', 
+				request :: STATUS_FORM_DISPLAYED => 'STATUS_FORM_DISPLAYED',
+				request :: STATUS_FORM_SUBMITTED => 'STATUS_FORM_SUBMITTED',
+				request :: STATUS_FAILURE => 'STATUS_FAILURE',
+				request :: STATUS_FORM_NOT_VALID => 'STATUS_FORM_NOT_VALID'
 			);
 		
-	var $stats_event_report = null;
-	
-	function stats_events_list_datasource()
+	protected function _init_stats_report()
 	{
-		$this->stats_event_report =& new stats_event_report();
-		
-		parent :: datasource();		
-	}
-
-	function & get_dataset(&$counter, $params=array())
-	{		
-		$this->_configure_stats_event_report_filter();
-		
-		$counter = $this->stats_event_report->fetch_count($params);
-		$arr = $this->stats_event_report->fetch($params);
-		
-		$arr = $this->_process_result_array($arr);
-		
-		return new array_dataset($arr);
+		$this->_stats_report = new stats_event_report();
 	}
 	
-	function _process_result_array($arr)
+	protected function _process_result_array($arr)
 	{
 		$result = array();
 		foreach($arr as $index => $data)
@@ -54,7 +38,7 @@ class stats_events_list_datasource extends datasource
 		return $result;
 	}
 	
-	function _configure_stats_event_report_filter()
+	protected function _configure_filters()
 	{
 	  $request = request :: instance();
 	
@@ -71,25 +55,25 @@ class stats_events_list_datasource extends datasource
 		$this->_set_status_filter($request);
 	}
 	
-	function _set_login_filter(&$request)
+	private function _set_login_filter($request)
 	{
 	  if ($stats_user_login = $request->get('stats_user_login'))
-			$this->stats_event_report->set_login_filter($stats_user_login);
+			$this->_stats_report->set_login_filter($stats_user_login);
 	}
 
-	function _set_action_filter(&$request)
+	private function _set_action_filter($request)
 	{
 	  if ($stats_action_name = $request->get('stats_action_name'))
-			$this->stats_event_report->set_action_filter($stats_action_name);
+			$this->_stats_report->set_action_filter($stats_action_name);
 	}
 	
-	function _set_ip_filter(&$request)
+	private function _set_ip_filter($request)
 	{
 	  if ($stats_ip = $request->get('stats_ip'))
-			$this->stats_event_report->set_ip_filter($stats_ip);
+			$this->_stats_report->set_ip_filter($stats_ip);
 	}
 	
-	function _set_status_filter(&$request)
+	private function _set_status_filter($request)
 	{
 	  if (($stats_status = $request->get('stats_status')) || (!is_array($stats_status)))
 			return ;
@@ -101,18 +85,18 @@ class stats_events_list_datasource extends datasource
 				$status_mask = $status_mask | $response_keys[$index];
 
 		if ($status_mask)
-			$this->stats_event_report->set_status_filter($status_mask);
+			$this->_stats_report->set_status_filter($status_mask);
 	}
 	
-	function _set_uri_filter(&$request)
+	private function _set_uri_filter($request)
 	{		
 	  if ($stats_uri = $request->get('stats_uri'))
-			$this->stats_event_report->set_uri_filter($stats_uri);
+			$this->_stats_report->set_uri_filter($stats_uri);
 	}
 	
-	function _set_period_filter(&$request)
+	private function _set_period_filter($request)
 	{
-		$locale =& locale :: instance();
+		$locale = locale :: instance();
 		$start_date = new date();
 		$start_date->set_hour(0);
 		$start_date->set_minute(0);
@@ -141,7 +125,7 @@ class stats_events_list_datasource extends datasource
 	  if ($stats_finish_minute = $request->get('stats_finish_minute'))
 			$finish_date->set_minute($stats_finish_minute);
 
-		$this->stats_event_report->set_period_filter($start_date, $finish_date);
+		$this->_stats_report->set_period_filter($start_date, $finish_date);
 	}
 }
 ?>

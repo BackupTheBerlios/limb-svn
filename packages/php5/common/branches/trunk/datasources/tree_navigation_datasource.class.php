@@ -28,9 +28,9 @@ class tree_navigation_datasource extends fetch_tree_datasource
 					$result[$key]['selected'] = true;
 			}
 		}
+		
 		return $result;
 	}
-
 }
 
 

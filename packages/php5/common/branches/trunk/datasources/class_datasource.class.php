@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/datasource.interface.php'); 
 
-class class_datasource extends datasource
+class class_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params=array())
 	{
 		$counter = 0;
-		
+
 		if(!$class_id = request :: instance()->get('class_id'))
 			return new array_dataset();
 			

@@ -10,22 +10,22 @@
 ***********************************************************************************/
 class template_highlight_handler 
 {
-  var $html = '';
-  var $current_tag = '';
-  var $template_path_history = array();
-  var $tag_dictionary = null;
+  private $html = '';
+  private $current_tag = '';
+  private $template_path_history = array();
+  private $tag_dictionary = null;
 
-  function template_highlight_handler($tag_dictionary)
+  public function __construct($tag_dictionary)
   {
   	$this->tag_dictionary = $tag_dictionary;
   }
   
-  function set_template_path_history($history)
+  public function set_template_path_history($history)
   {
   	$this->template_path_history = $history;
   }
   	
-	function write_attributes($attributes)
+	public function write_attributes($attributes)
 	{
 		if (is_array($attributes)) 
 		{
@@ -61,7 +61,7 @@ class template_highlight_handler
 		}
 	}
 	  
-  function open_handler(& $parser, $name, $attrs) 
+  public function open_handler($parser, $name, $attrs) 
   {	
   	$this->current_tag = strtolower($name);
 
@@ -75,7 +75,7 @@ class template_highlight_handler
     $this->html .= '&gt;';
   }
 
-  function close_handler(& $parser, $name) 
+  public function close_handler($parser, $name) 
   {
   	if($this->tag_dictionary->get_tag_info($name))
   		$this->html .= '&lt;/<span style="color:orange;font-weight:bold;">' . $name . '</span>&gt;';
@@ -83,18 +83,18 @@ class template_highlight_handler
   		$this->html .= '&lt;/<span style="color:blue">' . $name . '</span>&gt;';
   }
 
-  function data_handler(& $parser, $data) 
+  public function data_handler($parser, $data) 
   {
   	$data = str_replace("\t", '  ', $data);
   	$this->html .= $data;
   }
 
-  function escape_handler(& $parser, $data) 
+  public function escape_handler($parser, $data) 
   {
    	$this->html .= '<span style="color:green;font-style:italic;">&lt;!--' . $data . '--&gt;</span>';
   }
 
-  function get_html() 
+  public function get_html() 
   {
   	$this->html = preg_replace('~(\{(\$|\^|#)[^\}]+\})~', "<span style='background-color:lightgreen;font-weight:bold;'>\\1</span>", $this->html);
   	

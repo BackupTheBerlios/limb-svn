@@ -19,18 +19,18 @@ class register_new_object_action extends form_action
 	
 	protected function _init_validator()
 	{
-    $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'class_name')); 
-    $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'identifier')); 
-    $this->validator->add_rule($v3 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'parent_path')); 
-    $this->validator->add_rule($v4 = array(LIMB_DIR . 'class/validators/rules/tree_path_rule', 'parent_path')); 
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'class_name')); 
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'identifier')); 
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'parent_path')); 
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/tree_path_rule', 'parent_path')); 
 	
 		if($path = $this->dataspace->get('parent_path'))
 		{
 			if($node = tree :: instance()->get_node_by_path($path))
-        $this->validator->add_rule($v5 = array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', $node['id'])); 
+        $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', $node['id'])); 
 		}
 		
-    $this->validator->add_rule($v6 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'title')); 
+    $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'title')); 
 	}
 	
 	protected function _valid_perform($request, $response)

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
+require_once(LIMB_DIR . 'class/datasources/options_datasource.interface.php');
 
-class objects_access_groups_filter_datasource extends datasource
+class objects_access_groups_filter_datasource implements options_datasource
 {
 	public function get_options_array()
 	{

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/core/object.class.php');
 
 class cart_item extends object
 {
-	function __construct($id)
+	public function __construct($id)
 	{
 		parent :: __construct();
 		

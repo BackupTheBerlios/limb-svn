@@ -36,7 +36,7 @@ class stats_search_phrase_test extends LimbTestCase
   function setUp()
   {
    	$this->stats_search_phrase = new stats_search_phrase_self_test_version($this);
-   	$this->stats_search_phrase->stats_search_phrase();
+   	$this->stats_search_phrase->__construct();
    	
    	$this->_clean_up();
   }

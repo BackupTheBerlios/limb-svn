@@ -8,10 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-
 class stats_ip
 {
-	protected $db = null;
+	private $db = null;
 	
 	function __construct()
 	{
