@@ -91,7 +91,6 @@ class sys_param
 		}
 	}
 	
-	
 	function get_param($identifier, $type='')
 	{
 		if(!empty($type) && !in_array($type, $this->_types))

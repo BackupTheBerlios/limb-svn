@@ -16,7 +16,7 @@ require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/filters/filter_chain.class.php');
 require_once(LIMB_DIR . 'core/request/http_response.class.php');
 require_once(LIMB_DIR . 'core/request/request.class.php');
-require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
+require_once(LIMB_DIR . 'core/limb_util.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/message_box.class.php');
 
 class limb_application

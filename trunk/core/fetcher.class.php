@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'core/tree/tree.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/http/uri.class.php');
 require_once(LIMB_DIR . 'core/request/request.class.php');
-require_once(LIMB_DIR . 'core/model/access_policy.class.php');
+require_once(LIMB_DIR . 'core/access_policy.class.php');
 
 class fetcher
 {
@@ -36,7 +36,7 @@ class fetcher
 	
 	function & _get_access_policy()
 	{
-	  include_once(LIMB_DIR . 'core/model/access_policy.class.php');
+	  include_once(LIMB_DIR . 'core/access_policy.class.php');
 	  $access_policy =& access_policy :: instance();
 	  return $access_policy;
 	}
