@@ -13,7 +13,7 @@ image_select.prototype.generate = function()
 			this.img.src = '/shared/images/no_img.gif';
 		else
 	  	this.img.src = '/root?node_id=' + this.id_container.value;
-		
+
 //		optimize_window();
 	}
 }
@@ -21,14 +21,16 @@ image_select.prototype.generate = function()
 image_select.prototype.get_image = function()
 {
   if(this.id_container.value == 0)
-    return null;
-  
-	img = {
-		node_id: this.id_container.value, 
-		name: this.name.innerHTML,
-		start_path: this.start_path
+	  img = {
+  		start_path: this.start_path
 		};
-	
+  else
+    img = {
+  		node_id: this.id_container.value,
+  		name: this.name.innerHTML,
+  		start_path: this.start_path
+		};
+
 	return img;
 }
 
@@ -36,7 +38,7 @@ image_select.prototype.insert_image = function(image)
 {
 	this.id_container.value = image.node_id;
 	this.name.innerHTML = image.name;
-	
+
 	this.generate();
 }
 
