@@ -1,0 +1,25 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
+
+<fetch:MAPPED>
+		<table width=100% border='0' cellspacing='0' cellpadding='0'>
+		<tr>
+				<td ><core:INCLUDE file="published_status.html"></td>
+				<td jip='action' ><core:INCLUDE file="jip_actions/simple.html"></td>
+		</tr>
+		<tr><td colspan='2' ><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date'></td></tr>
+		<tr>
+			<td colspan='2' style='padding:4px' valign='top'>
+				<core:OPTIONAL for='content'>
+				{$content}
+				</core:OPTIONAL>
+				<core:DEFAULT for='content'>
+				{$annotation}
+				</core:DEFAULT>
+			</td>
+		</tr>
+		</table>	
+</fetch:MAPPED>
+
+<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->

@@ -1,0 +1,21 @@
+<PUBLIC:COMPONENT>
+<PUBLIC:ATTACH EVENT="onmouseout" ONEVENT="fnOnMouseOut()" />
+
+<script language="javascript">
+function fnOnMouseOver()
+{
+}
+function fnOnMouseOut()
+{
+	if(typeof(top.currentDDBorder)!='object')return
+
+	if(window.event.srcElement.tagName=='TABLE'||window.event.srcElement.className=='ddframe')
+	{
+
+		try{
+			top.currentDDBorder.setNormal()
+		}catch(e){}
+	}
+}
+</script>
+</PUBLIC:COMPONENT>
