@@ -51,6 +51,7 @@ class session
 		
 		$db->sql_delete('sys_session', "user_id='{$user_id}'");
 	}
+	
 }
 
 function start_user_session()
