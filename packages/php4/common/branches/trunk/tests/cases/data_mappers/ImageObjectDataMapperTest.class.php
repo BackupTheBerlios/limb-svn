@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../site_objects/ImageObject.class.php');
+require_once(dirname(__FILE__) . '/../../../ImageObject.class.php');
 require_once(dirname(__FILE__) . '/../../../data_mappers/ImageObjectMapper.class.php');
 require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');

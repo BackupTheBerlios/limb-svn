@@ -8,15 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/core/DomainObject.class.php');
 
-class ImageObject extends SiteObject
+class ImageObject extends DomainObject
 {
   var $_variations = array();
 
-  function attachVariation($variation)
+  function getTitle()
   {
-    $this->_variations[$variation->getName()] = $variation;
+    return $this->get('title');
+  }
+
+  function setTitle($title)
+  {
+    $this->set('title', $title);
+  }
+
+  function attachVariation(&$variation)
+  {
+    $this->_variations[$variation->getName()] =& $variation;
   }
 
   function getVariations()
@@ -24,7 +34,7 @@ class ImageObject extends SiteObject
     return $this->_variations;
   }
 
-  function getVariation($variation)
+  function & getVariation($variation)
   {
     if(isset($this->_variations[$variation]))
       return $this->_variations[$variation];

@@ -9,13 +9,9 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../dao/criteria/FileObjectsCriteria.class.php');
-require_once(LIMB_DIR . '/tests/cases/dao/SiteObjectsSQLBaseTest.class.php');
-require_once(LIMB_DIR . '/core/dao/SiteObjectsDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
-
-Mock :: generatePartial('FileObjectsRawFinder',
-                        'FileObjectsRawFinderTestVersion',
-                        array('_doParentFind'));
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class FileObjectsCriteriaTest extends LimbTestCase
 {
@@ -44,6 +40,7 @@ class FileObjectsCriteriaTest extends LimbTestCase
   {
     $this->db->delete('file_object');
     $this->db->delete('media');
+    $this->db->delete('sys_object');
   }
 
   function testCorrectLink()
@@ -55,22 +52,23 @@ class FileObjectsCriteriaTest extends LimbTestCase
                                      'size' => $size1 = 20,
                                      'etag' => $etag1 = 'etag1'));
 
-    $this->db->insert('file_object', array('id' => $file_id1 = 1,
+    $this->db->insert('file_object', array('oid' => $file_id1 = 1,
                                     'media_id' => $media_id1));
 
-    $dao = new SiteObjectsDAO();
-    $dao->addCriteria(new FileObjectsCriteria());
+    $this->db->insert('sys_object', array('oid' => $file_id1,
+                                    'class_id' => 1000));
 
-    $sql =& new ComplexSelectSQL("SELECT %fields% FROM file_object as tn %tables% %where% %group% %order%");
-    $sql->addField('tn.id as id');
-    $sql->addField('tn.media_id as media_id');
+    $dao = new SQLBasedDAO();
+
+    $sql =& new ComplexSelectSQL("SELECT sys_object.oid %fields% FROM sys_object %tables% %where% %group% %order%");
 
     $dao->setSQL($sql);
+    $dao->addCriteria(new FileObjectsCriteria());
 
     $rs =& new SimpleDbDataset($dao->fetch());
     $record = $rs->getRow();
 
-    $this->assertEqual($record['id'], $file_id1);
+    $this->assertEqual($record['oid'], $file_id1);
     $this->assertEqual($record['media_id'], $media_id1);
     $this->assertEqual($record['file_name'], $file_name1);
     $this->assertEqual($record['media_file_id'], $media_file_id1);

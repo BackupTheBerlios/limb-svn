@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
+require_once(LIMB_DIR . '/tests/lib/LimbGroupTest.class.php');
 
 class ShopRootGroupTest extends LimbGroupTest
 {

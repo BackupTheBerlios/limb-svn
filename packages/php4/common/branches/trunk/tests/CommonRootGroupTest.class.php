@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/tests/cases/LimbGroupTest.class.php');
+require_once(LIMB_DIR . '/tests/lib/LimbGroupTest.class.php');
 
 class CommonRootGroupTest extends LimbGroupTest
 {
@@ -19,7 +19,7 @@ class CommonRootGroupTest extends LimbGroupTest
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/groups');
+    return TestFinder::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/cases');
   }
 }
 

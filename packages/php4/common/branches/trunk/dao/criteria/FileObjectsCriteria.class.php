@@ -13,8 +13,13 @@ class FileObjectsCriteria
 {
   function process(&$sql)
   {
+    $sql->addTable('file_object');
+    $sql->addField('file_object.id as file_object_id');
+    $sql->addField('file_object.media_id as media_id');
+    $sql->addCondition('file_object.oid = sys_object.oid');
+
     $sql->addTable('media as m');
-    $sql->addCondition('tn.media_id = m.id');
+    $sql->addCondition('file_object.media_id = m.id');
     $sql->addField('m.media_file_id as media_file_id');
     $sql->addField('m.file_name as file_name');
     $sql->addField('m.mime_type as mime_type');

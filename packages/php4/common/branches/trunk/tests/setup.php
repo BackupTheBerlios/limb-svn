@@ -14,8 +14,8 @@ if (file_exists(dirname(__FILE__) . '/setup.override.php'))
 require_once(LIMB_DIR . '/tests/setup.php');
 require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
 
-registerFileResolver('ini',    $r = array(LIMB_DIR . '/tests/lib/PackageTestsIniFileResolver',
-                                          dirname(__FILE__) . '/../'));
+registerFileResolver('ini', new LimbHandle(LIMB_DIR . '/tests/lib/PackageTestsIniFileResolver',
+                                            array(dirname(__FILE__) . '/../')));
 
 $info =& PackagesInfo :: instance();
 $info->loadPackages();

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../site_objects/FileObject.class.php');
+require_once(dirname(__FILE__) . '/../../../FileObject.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
 
 Mock :: generatePartial('FileObject',

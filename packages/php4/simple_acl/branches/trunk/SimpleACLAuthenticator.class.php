@@ -20,12 +20,12 @@ class SimpleACLAuthenticator// implements Authenticator
 
   function & getUsersDAO()
   {
-    if ($this->users_dao)
+    if($this->users_dao)
       return $this->users_dao;
 
-   require_once(dirname(__FILE__) . '/DAO/SimpleACLIniBasedUsersDAO.class.php');
+   include_once(dirname(__FILE__) . '/DAO/SimpleACLIniBasedUsersDAO.class.php');
 
-   $this->users_dao = new users_dao();
+   $this->users_dao = new SimpleACLIniBasedUsersDAO();
 
    return $this->users_dao;
   }

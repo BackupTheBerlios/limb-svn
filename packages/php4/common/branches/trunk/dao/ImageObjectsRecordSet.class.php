@@ -12,33 +12,33 @@ require_once(LIMB_DIR . '/core/db/IteratorDbDecorator.class.php');
 
 class ImageObjectsRecordSet extends IteratorDbDecorator
 {
-  var $array_dataset;
+  var $cached_dataset;
 
   function valid()
   {
-    return $this->array_dataset->valid();
+    return $this->cached_dataset->valid();
   }
 
   function next()
   {
-    $this->array_dataset->next();
+    $this->cached_dataset->next();
   }
 
   function & current()
   {
-    return $this->array_dataset->current();
+    return $this->cached_dataset->current();
   }
 
   function rewind()
   {
     parent :: rewind();
     $this->_loadVariations();
-    $this->array_dataset->rewind();
+    $this->cached_dataset->rewind();
   }
 
   function _loadVariations()
   {
-    $this->array_dataset = new ArrayDataset(array());
+    $this->cached_dataset = new ArrayDataset(array());
     $cached_records = array();
 
     $ids = '';
@@ -93,7 +93,7 @@ class ImageObjectsRecordSet extends IteratorDbDecorator
       }
     }
 
-    $this->array_dataset->importDataSetAsArray($cached_records);
+    $this->cached_dataset->importDataSetAsArray($cached_records);
   }
 }
 
