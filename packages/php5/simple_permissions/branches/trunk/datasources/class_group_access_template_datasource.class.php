@@ -14,22 +14,22 @@ class class_group_access_template_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params = array())
 	{
-		if(!$class_id = LimbToolsBox :: getToolkit()->getRequest()->get('class_id'))
+		if(!$class_id = Limb :: toolkit()->getRequest()->get('class_id'))
 			return new array_dataset();
 
-		$db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_class');
+		$db_table = Limb :: toolkit()->createDBTable('sys_class');
 		$class_data = $db_table->get_row_by_id($class_id);
 
 		if (!$class_data)
 			return new array_dataset();
 
-		$site_object = LimbToolsBox :: getToolkit()->createSiteObject($class_data['class_name']);
+		$site_object = Limb :: toolkit()->createSiteObject($class_data['class_name']);
 
 		$site_object_controller = $site_object->get_controller();
 
 		$actions = $site_object_controller->get_actions_definitions();
 
-		$user_groups = LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter);
+		$user_groups = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter);
 
 		$result = array();
 

@@ -91,10 +91,10 @@ class multi_delete_action extends form_action
 			'restrict_by_class' => false
 		);
 
-		$objects = LimbToolsBox :: getToolkit()->getFetcher()->fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
+		$objects = Limb :: toolkit()->getFetcher()->fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
 
 		$result = array();
-		$tree = LimbToolsBox :: getToolkit()->getTree();
+		$tree = Limb :: toolkit()->getTree();
 
 		foreach($objects as $id => $item)
 		{

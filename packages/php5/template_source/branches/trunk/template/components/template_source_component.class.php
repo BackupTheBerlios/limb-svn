@@ -12,9 +12,9 @@ class template_source_component extends component
 {
 	public function get_current_template_source_link()
 	{
-    $request = LimbToolsBox :: getToolkit()->getRequest();
+    $request = Limb :: toolkit()->getRequest();
     
-		if(!$site_object = wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request)))
+		if(!$site_object = wrap_with_site_object(Limb :: toolkit()->getFetcher()->fetch_requested_object($request)))
 			return '';
 
 		$site_object_controller = $site_object->get_controller();

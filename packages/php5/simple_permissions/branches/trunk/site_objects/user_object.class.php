@@ -42,14 +42,14 @@ class user_object extends content_object
 	
 	public function get_membership($user_id)
 	{
-		$db_table	= LimbToolsBox :: getToolkit()->createDBTable('user_in_group');
+		$db_table	= Limb :: toolkit()->createDBTable('user_in_group');
 		$groups = $db_table->get_list('user_id='. $user_id, '', 'group_id');		
 		return $groups;
 	}
 	
 	public function save_membership($user_id, $membership)
 	{
-		$db_table	= LimbToolsBox :: getToolkit()->createDBTable('user_in_group');
+		$db_table	= Limb :: toolkit()->createDBTable('user_in_group');
 		$db_table->delete('user_id='. $user_id);		
 
 		foreach($membership as $group_id => $is_set)
@@ -86,7 +86,7 @@ class user_object extends content_object
 
 	public function validate_password($password)
 	{
-		$user = LimbToolsBox :: getToolkit()->getUser();
+		$user = Limb :: toolkit()->getUser();
 		
 		if(!$user->is_logged_in() || !$node_id = $user->get('node_id'))
 		  return false;
@@ -101,13 +101,13 @@ class user_object extends content_object
 
 	public function change_own_password($password)
 	{
-		$user = LimbToolsBox :: getToolkit()->getUser();
+		$user = Limb :: toolkit()->getUser();
 		
 		$node_id = $user->get('node_id');
 
 		$data['password'] = simple_authenticator :: get_crypted_password($user->get_login(),	$password);
 		
-		$user_db_table = LimbToolsBox :: getToolkit()->createDBTable('user');
+		$user_db_table = Limb :: toolkit()->createDBTable('user');
 
 		$this->set('password', $data['password']);
 		
@@ -132,7 +132,7 @@ class user_object extends content_object
 
 	public function activate_password()
 	{
-	  $request = LimbToolsBox :: getToolkit()->getRequest();
+	  $request = Limb :: toolkit()->getRequest();
 	  
 	  if(!$email = $request->get('user'))
 			return false;

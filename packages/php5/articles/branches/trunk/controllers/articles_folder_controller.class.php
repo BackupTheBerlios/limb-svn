@@ -16,15 +16,12 @@ class articles_folder_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/articles_folder/display.html'
 				),
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/articles_folder/admin_display.html'
 				),
 				'set_metadata' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('set_metadata'),
@@ -33,7 +30,6 @@ class articles_folder_controller extends site_object_controller
 						'img_src' => '/shared/images/configure.gif'
 				),
 				'create_article' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/article/create.html',
 						'action_path' => '/article/create_article_action',
 						'JIP' => true,
@@ -43,7 +39,6 @@ class articles_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'create_articles_folder' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/articles_folder/create.html',
 						'action_path' => '/articles_folder/create_articles_folder_action',
 						'JIP' => true,
@@ -53,7 +48,6 @@ class articles_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),
@@ -62,7 +56,6 @@ class articles_folder_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'publish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('publish'),
@@ -71,7 +64,6 @@ class articles_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'unpublish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('unpublish'),
@@ -80,7 +72,6 @@ class articles_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),

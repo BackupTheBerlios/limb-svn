@@ -19,10 +19,10 @@ class node_select_action extends action
 	  if(!$path = $request->get('path'))
 	    return;
 
-	 if(!$node = LimbToolsBox :: getToolkit()->getFetcher()->map_uri_to_node(new uri($path)))
+	 if(!$node = Limb :: toolkit()->getFetcher()->map_uri_to_node(new uri($path)))
 	    return;
 
-	  if(!$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_node_id($node['id']))
+	  if(!$object_data = Limb :: toolkit()->getFetcher()->fetch_one_by_node_id($node['id']))
 	    return;
 
 	  session :: set('limb_node_select_working_path', $path);

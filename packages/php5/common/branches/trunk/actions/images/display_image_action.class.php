@@ -14,7 +14,7 @@ class display_image_action extends action
 {
 	public function perform($request, $response)
 	{
-	  $object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
+	  $object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 		$variation = $this->_get_variation();
 		$image = $object_data['variations'][$variation];
 

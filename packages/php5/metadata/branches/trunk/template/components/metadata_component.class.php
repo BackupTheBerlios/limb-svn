@@ -36,7 +36,7 @@ class metadata_component extends component
 		if (count($this->object_ids_array))
 			return $this->object_ids_array;
 
-		$tree = LimbToolsBox :: getToolkit()->getTree();
+		$tree = Limb :: toolkit()->getTree();
 
 		$node = $tree->get_node($this->get_node_id());
 		$parents = $tree->get_parents($this->get_node_id());
@@ -90,7 +90,7 @@ class metadata_component extends component
 			return false;
 		$ids_array = array_reverse($ids_array);
 
-		$metadata_db_table	= LimbToolsBox :: getToolkit()->createDBTable($this->metadata_db_table_name);
+		$metadata_db_table	= Limb :: toolkit()->createDBTable($this->metadata_db_table_name);
 		$objects_metadata = $metadata_db_table->get_list(sql_in('object_id', $ids_array), '', 'object_id');
 
 		if (!count($objects_metadata))
@@ -131,7 +131,7 @@ class metadata_component extends component
 
 	public function get_node_id()
 	{
-    $toolkit = LimbToolsBox :: getToolkit();
+    $toolkit = Limb :: toolkit();
     
 		if (!$this->node_id)
 		{
@@ -258,7 +258,7 @@ class metadata_component extends component
 		$path = $data['path'];
 
 		$controller = $this->_get_mapped_controller();
-    $request = LimbToolsBox :: getToolkit()->getRequest();
+    $request = Limb :: toolkit()->getRequest();
 		$action = $controller->get_action($request);
 
 		if ($action !== false &&
@@ -276,8 +276,8 @@ class metadata_component extends component
 
 	protected function _get_mapped_controller()
 	{
-    $request = LimbToolsBox :: getToolkit()->getRequest();
-	  return wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request))->get_controller();
+    $request = Limb :: toolkit()->getRequest();
+	  return wrap_with_site_object(Limb :: toolkit()->getFetcher()->fetch_requested_object($request))->get_controller();
 	}
 
 	public function set_offset_path($path)

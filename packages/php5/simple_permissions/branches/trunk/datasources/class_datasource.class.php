@@ -16,10 +16,10 @@ class class_datasource implements datasource
 	{
 		$counter = 0;
 
-		if(!$class_id = LimbToolsBox :: getToolkit()->getRequest()->get('class_id'))
+		if(!$class_id = Limb :: toolkit()->getRequest()->get('class_id'))
 			return new array_dataset();
 			
-		$db_table = LimbToolsBox :: getToolkit()->createDBTable('sys_class');
+		$db_table = Limb :: toolkit()->createDBTable('sys_class');
 		$class_data = $db_table->get_row_by_id($class_id);
 		
 		if ($class_data)

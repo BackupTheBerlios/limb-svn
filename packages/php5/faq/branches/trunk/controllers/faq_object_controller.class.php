@@ -16,11 +16,9 @@ class faq_object_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/faq_object/display.html',
 				),
 				'admin_detail' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/admin/object_detail_info.html',
 						'popup' => true,
 						'JIP' => true,
@@ -28,7 +26,6 @@ class faq_object_controller extends site_object_controller
 						'action_name' => strings :: get('detail_info'),
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit_faq_question', 'faq'),
@@ -37,7 +34,6 @@ class faq_object_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'publish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('publish'),
@@ -47,7 +43,6 @@ class faq_object_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'unpublish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('unpublish'),
@@ -57,7 +52,6 @@ class faq_object_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_faq_question','faq'),

@@ -16,7 +16,6 @@ class file_select_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/file_select/display.html',
 						'popup' => true,
 				),

@@ -19,7 +19,7 @@ class vote_action extends form_action
 	
 	protected function _valid_perform($request, $response)
 	{
-		$object = LimbToolsBox :: getToolkit()->createSiteObject('poll_container');
+		$object = Limb :: toolkit()->createSiteObject('poll_container');
 		$data = $this->dataspace->export();
 		
 		$request->set_status(request :: STATUS_FAILURE);

@@ -14,7 +14,7 @@ class user_membership_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params = array())
 	{
-		$user_groups = LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$user_groups = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
 
 		$result = array();
 		foreach($user_groups as $id => $group_data)

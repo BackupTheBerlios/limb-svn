@@ -149,7 +149,7 @@ class access_templates_test extends LimbTestCase
     $this->assertEqual(count($templates_rows), 3);
 
     $this->assertTrue(is_array($items_rows));
-    $this->assertEqual(count($items_rows), 4);
+    $this->assertEqual(count($items_rows), 3);
 
     $this->assertEqual($templates_rows,
       array(

@@ -21,11 +21,9 @@ class user_group_controller extends site_object_controller
 	{
 		return array(
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/user_group/admin_display.html',
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('edit_user_group', 'user_group'),
@@ -34,7 +32,6 @@ class user_group_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_user_group', 'user_group'),

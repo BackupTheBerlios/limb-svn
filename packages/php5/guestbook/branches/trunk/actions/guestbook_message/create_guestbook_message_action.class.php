@@ -48,7 +48,7 @@ class create_guestbook_message_action extends form_create_site_object_action
 	{
 		$data['identifier'] = md5(rand());
 		
-		$user = LimbToolsBox :: getToolkit()->getUser();
+		$user = Limb :: toolkit()->getUser();
 		
 		$data['sender'] = $user->get_login();
 		$data['sender_email'] = $user->get('email', '');

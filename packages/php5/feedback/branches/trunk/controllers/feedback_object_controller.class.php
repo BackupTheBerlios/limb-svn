@@ -16,16 +16,13 @@ class feedback_object_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'action_path' => '/feedback_object/send_feedback_action',
 						'template_path' => '/feedback_object/display.html'
 				),
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/feedback_object/admin_display.html'
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit_feedback_content', 'feedback'),
@@ -34,7 +31,6 @@ class feedback_object_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),

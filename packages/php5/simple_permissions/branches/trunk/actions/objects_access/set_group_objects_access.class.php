@@ -22,7 +22,7 @@ class set_group_objects_access extends form_action
 	
 	public function perform($request, $response)
 	{
-		LimbToolsBox :: getToolkit()->getTree()->initialize_expanded_parents();				
+		Limb :: toolkit()->getTree()->initialize_expanded_parents();				
 
 		if ($filter_groups = session :: get('filter_groups'))
 			$this->dataspace->set('filter_groups', $filter_groups);	
@@ -35,10 +35,9 @@ class set_group_objects_access extends form_action
 	protected function _fill_policy()
 	{
     $access_policy = new access_policy();
-	
 		$policy = $access_policy->get_objects_access_by_ids($this->object_ids, access_policy :: ACCESSOR_TYPE_GROUP);
 
-		$this->dataspace->get('policy', $policy);
+		$this->dataspace->set('policy', $policy);
 	}
 	
 	protected function _init_dataspace($request)
@@ -54,14 +53,14 @@ class set_group_objects_access extends form_action
 	{
 		$data = $this->dataspace->export();
 
+ 	  if($groups = $this->dataspace->get('filter_groups'))
+	  	session :: set('filter_groups', $groups);
+
 		if(isset($data['update']) && isset($data['policy']))
 		{
       $access_policy = new access_policy();
-			$access_policy->save_objects_access($data['policy'], access_policy :: ACCESSOR_TYPE_GROUP);
+			$access_policy->save_objects_access($data['policy'], access_policy :: ACCESSOR_TYPE_GROUP, $groups);
 		}
-
-	  if($groups = $this->dataspace->get('filter_groups'))
-	  	session :: set('filter_groups', $groups);
 
 		$this->_set_template_tree();
  		
@@ -70,7 +69,7 @@ class set_group_objects_access extends form_action
 	
 	protected function _set_template_tree()
 	{
-		$datasource = LimbToolsBox :: getToolkit()->createDatasource('group_object_access_datasource');
+		$datasource = Limb :: toolkit()->createDatasource('group_object_access_datasource');
 		$params = array(
 			'path' => '/root',
 			'depth' => -1,
@@ -93,7 +92,7 @@ class set_group_objects_access extends form_action
 			$this->object_ids[$object['id']] = $object['id'];
 		}
 
-		$dataset->reset();		
+		$dataset->reset();	
 		$access_tree = $this->view->find_child('access');
 		$access_tree->register_dataset($dataset);
 	}

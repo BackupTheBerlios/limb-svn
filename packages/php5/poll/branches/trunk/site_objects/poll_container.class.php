@@ -118,7 +118,7 @@ class poll_container extends site_object
 
 	protected function _add_vote_to_answer($record_id)
 	{
-		$poll_answer_db_table = LimbToolsBox :: getToolkit()->createDBTable('poll_answer');
+		$poll_answer_db_table = Limb :: toolkit()->createDBTable('poll_answer');
 
 		$data = $poll_answer_db_table->get_row_by_id($record_id);
 		if (!$data)
@@ -133,7 +133,7 @@ class poll_container extends site_object
 
 	protected function _register_new_ip($poll_id, $ip)
 	{
-		$poll_ip_db_table = LimbToolsBox :: getToolkit()->createDBTable('poll_ip');
+		$poll_ip_db_table = Limb :: toolkit()->createDBTable('poll_ip');
 		$data['id'] = null;
 		$data['ip'] = $ip;
 		$data['poll_id'] = $poll_id;
@@ -142,7 +142,7 @@ class poll_container extends site_object
 
 	protected function _poll_ip_exists($poll_id, $ip)
 	{
-		$poll_ip_db_table = LimbToolsBox :: getToolkit()->createDBTable('poll_ip');
+		$poll_ip_db_table = Limb :: toolkit()->createDBTable('poll_ip');
 		$where['poll_id'] = $poll_id;
 		$where['ip'] = $ip;
 
@@ -206,12 +206,12 @@ class poll_container extends site_object
 
 		$params = complex_array :: array_merge($params, $new_params);
 
-		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/polls', 'poll', $counter, $params);
+		return Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/polls', 'poll', $counter, $params);
 	}
 
 	protected function _load_answers($question_path)
 	{
-		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch($question_path, 'poll_answer', $counter);
+		return Limb :: toolkit()->getFetcher()->fetch_sub_branch($question_path, 'poll_answer', $counter);
 	}
 
 }

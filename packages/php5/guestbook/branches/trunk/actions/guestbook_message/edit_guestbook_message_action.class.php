@@ -55,7 +55,7 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 		
 		$data = $this->dataspace->export();
 	
-		$user = LimbToolsBox :: getToolkit()->getUser();
+		$user = Limb :: toolkit()->getUser();
 		
 		if (empty($data['comment_author']))
 			$data['comment_author'] = $user->get_login();

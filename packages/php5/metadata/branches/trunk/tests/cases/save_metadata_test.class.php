@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
+require_once(dirname(__FILE__) . '/../../metadata_manager.class.php');
 
 class save_metadata_test extends LimbTestCase 
 {
@@ -29,14 +29,7 @@ class save_metadata_test extends LimbTestCase
   
   function test_save()
   {
-  	$metadata['id'] = 1;
-  	$metadata['keywords'] = 'keywords';
-  	$metadata['description'] = 'description';
-  	
-  	$o = site_object_factory :: create('site_object');
-  	
-  	$o->merge($metadata);
-  	$result_id = $o->save_metadata();
+  	$result_id = metadata_manager :: save_metadata(1, 'keywords', 'description');
   	
   	$this->assertNotNull($result_id);
   	

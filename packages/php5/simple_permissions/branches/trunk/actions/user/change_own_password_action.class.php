@@ -28,7 +28,7 @@ class change_own_password_action extends form_action
 
 	protected function _valid_perform($request, $response)
 	{
-		$user_object = LimbToolsBox :: getToolkit()->createSiteObject('user_object');
+		$user_object = Limb :: toolkit()->createSiteObject('user_object');
 		
 		$data = $this->dataspace->export();
     
@@ -47,7 +47,7 @@ class change_own_password_action extends form_action
     
     $request->set_status(request :: STATUS_FORM_SUBMITTED);
 
-		LimbToolsBox :: getToolkit()->getUser()->logout();
+		Limb :: toolkit()->getUser()->logout();
 		message_box :: write_warning(strings :: get('need_relogin', 'user'));
 	}
 }

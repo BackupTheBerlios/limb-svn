@@ -19,9 +19,9 @@ class set_membership extends form_action
 
 	protected function _init_dataspace($request)
 	{
-		$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
+		$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 
-		$object = LimbToolsBox :: getToolkit()->createSiteObject('user_object');
+		$object = Limb :: toolkit()->createSiteObject('user_object');
 
 		$data['membership'] = $object->get_membership($object_data['id']);
 
@@ -30,10 +30,10 @@ class set_membership extends form_action
 
 	protected function _valid_perform($request, $response)
 	{
-		$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
+		$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 
 		$data = $this->dataspace->export();
-		$object = LimbToolsBox :: getToolkit()->createSiteObject('user_object');
+		$object = Limb :: toolkit()->createSiteObject('user_object');
 
 		$object->save_membership($object_data['id'], $data['membership']);
 

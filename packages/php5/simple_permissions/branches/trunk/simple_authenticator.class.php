@@ -22,7 +22,7 @@ class simple_authenticator implements authenticator
     if(!isset($params['password']))
       throw new LimbException('password attribute required!');
 
-    $user = LimbToolsBox :: getToolkit()->getUser();
+    $user = Limb :: toolkit()->getUser();
 		$user->logout();
 		
 		if($record = $this->_get_identity_record($params['login'], $params['password']))
@@ -41,7 +41,7 @@ class simple_authenticator implements authenticator
   
 	protected function _determine_groups()
 	{
-	  $user = LimbToolsBox :: getToolkit()->getUser();
+	  $user = Limb :: toolkit()->getUser();
 	  
 		if ($user->is_logged_in())
 			$groups_arr = $this->_get_db_groups();
@@ -85,10 +85,9 @@ class simple_authenticator implements authenticator
 		return $db->get_array();
 	}
 	
-
 	protected function _get_db_groups()
 	{
-	  $user = LimbToolsBox :: getToolkit()->getUser();
+	  $user = Limb :: toolkit()->getUser();
 	  
 		$db = db_factory :: instance();
 		
@@ -161,7 +160,7 @@ class simple_authenticator implements authenticator
 
   public function logout($params = array())
   {
-    LimbToolsBox :: getToolkit()->getUser()->logout();
+    Limb :: toolkit()->getUser()->logout();
     
     $this->_determine_groups();
   }
@@ -175,7 +174,7 @@ class simple_authenticator implements authenticator
 				return false;
 		}	
 			
-		foreach	(LimbToolsBox :: getToolkit()->getUser()->get('groups', array()) as $group_name)
+		foreach	(Limb :: toolkit()->getUser()->get('groups', array()) as $group_name)
 			if (in_array($group_name, $groups_to_check))
 				return true; 
 		

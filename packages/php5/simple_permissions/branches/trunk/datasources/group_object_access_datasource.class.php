@@ -17,7 +17,7 @@ class group_object_access_datasource extends fetch_tree_datasource
 		$tree_array = parent :: _fetch($counter, $params);
 
 		$group_params['order'] = array('priority' => 'ASC');
-		$user_groups = LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $group_params);
+		$user_groups = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $group_params);
 
 		$dataspace = dataspace_registry :: get('set_group_access');
 		$groups = $dataspace->get('filter_groups');
@@ -30,7 +30,7 @@ class group_object_access_datasource extends fetch_tree_datasource
 			if (!in_array($key, $groups))
 				unset($user_groups[$key]);
 		}
-
+    
 		foreach($tree_array as $id => $node)
 		{
 			$object_id = $node['id'];

@@ -14,19 +14,19 @@ class object_versions_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params=array())
 	{
-    $request = LimbToolsBox :: getToolkit()->getRequest();
-		$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
+    $request = Limb :: toolkit()->getRequest();
+		$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 
 		if (!count($object_data))
 			return new array_dataset(array());
 
-		$db_table	= LimbToolsBox :: getToolkit()->createDBTable('sys_object_version');
+		$db_table	= Limb :: toolkit()->createDBTable('sys_object_version');
 
 		$arr = $db_table->get_list('object_id='. $object_data['id'], 'version DESC');
 
 		$result = array();
 
-		$users = LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/users', 'user_object', $counter);
+		$users = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/users', 'user_object', $counter);
 
 		foreach($arr as $data)
 		{

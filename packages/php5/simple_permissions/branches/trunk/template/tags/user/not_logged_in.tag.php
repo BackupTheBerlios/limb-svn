@@ -21,7 +21,7 @@ class user_not_logged_in_tag extends compiler_directive_tag
 {
 	public function generate_contents($code)
 	{
-		$code->write_php("if (!LimbToolsBox :: getToolkit()->getUser()->is_logged_in()) {");
+		$code->write_php("if (!Limb :: toolkit()->getUser()->is_logged_in()) {");
 			parent :: generate_contents($code);
 		$code->write_php("}");
 	}

@@ -63,7 +63,7 @@ class login_action extends form_action
     
 		$authenticator->login($login_params);
 		
-		if (LimbToolsBox :: getToolkit()->getUser()->is_logged_in())
+		if (Limb :: toolkit()->getUser()->is_logged_in())
 		{
   			
   		$request->set_status(request :: STATUS_FORM_SUBMITTED);

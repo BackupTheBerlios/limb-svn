@@ -67,7 +67,7 @@ class multi_toggle_publish_status_action extends form_action
 			'restrict_by_class' => false
 		);
 
-		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
+		return Limb :: toolkit()->getFetcher()->fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
 	}
 
 	protected function _apply_access_policy($object, $action)

@@ -21,16 +21,13 @@ class login_object_controller extends site_object_controller
 	{
 		return array(
 				'login' => array(
-						'permissions_required' => 'r',
 						'action_path' => 'login_action',
 						'template_path' => 'login.html'
 				),
 				'logout' => array(
-						'permissions_required' => 'r',
 						'action_path' => 'logout_action',
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),
@@ -39,7 +36,6 @@ class login_object_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'change_user_locale' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'action_name' => strings :: get('change_locale', 'user'),
 						'action_path' => '/user/change_user_locale_action',

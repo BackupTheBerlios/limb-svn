@@ -72,7 +72,7 @@ class display_template_source_action extends action
 
 	protected function _get_template_path_from_node($node_id)
 	{
-		if(!$site_object = wrap_with_site_object(LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_node_id($node_id)))
+		if(!$site_object = wrap_with_site_object(Limb :: toolkit()->getFetcher()->fetch_one_by_node_id($node_id)))
 			return null;
 
 		$controller = $site_object->get_controller();

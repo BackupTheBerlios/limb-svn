@@ -14,7 +14,7 @@ class activate_password_action extends action
 {
 	public function perform($request, $response)
 	{
-		$object = LimbToolsBox :: getToolkit()->createSiteObject('user_object');
+		$object = Limb :: toolkit()->createSiteObject('user_object');
 		if(!$object->activate_password())
 		{
 			message_box :: write_notice('Password activation failed!');

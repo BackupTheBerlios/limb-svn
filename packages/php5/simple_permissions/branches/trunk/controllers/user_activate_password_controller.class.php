@@ -21,13 +21,11 @@ class user_activate_password_controller extends site_object_controller
 	{
 		return array(
 				'activate_password' => array(
-					'permissions_required' => 'r',
 					'action_path' => '/user/activate_password_action',
 					'template_path' => '/user/activate_password.html',
 					'action_name' => strings :: get('activate_password', 'user'),
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),

@@ -72,7 +72,7 @@ class stats_register
 				'node_id' => $node_id,
 				'stat_referer_id' => $referer_register->get_referer_page_id(),
 				'stat_uri_id' => $uri_register->get_uri_id(),
-				'user_id' => LimbToolsBox :: getToolkit()->getUser()->get_id(),
+				'user_id' => Limb :: toolkit()->getUser()->get_id(),
 				'session_id' => session_id(),
 				'action' => $action,
 				'status' => $status_code,

@@ -53,7 +53,7 @@ class simple_authorizer implements authorizer
 	{
 		$accessor_ids = array();
 		
-		$user = LimbToolsBox :: getToolkit()->getUser();
+		$user = Limb :: toolkit()->getUser();
 		
 		if(($user_id = $user->get_id()) != user :: DEFAULT_USER_ID)
 			$accessor_ids[] = $user_id;
@@ -65,7 +65,6 @@ class simple_authorizer implements authorizer
 		return $accessor_ids;	
 	}
   
-
   public function assign_actions_to_objects(&$objects_data)
   {
 		if(isset($objects_data['id']))//hack which allows to accept objects arrays and single objects
@@ -101,7 +100,7 @@ class simple_authorizer implements authorizer
 	//for mocking
 	protected function _get_controller($class_name)
 	{
-		return LimbToolsBox :: getToolkit()->createSiteObject($class_name)->get_controller();
+		return Limb :: toolkit()->createSiteObject($class_name)->get_controller();
 	}
 
 	protected function _get_class_accessible_actions($class_id)

@@ -39,11 +39,10 @@
 <DATASOURCE target='classes'>
 		<core:PARAMETER name='datasource_path' value='class_group_action_access_datasource' >
 </DATASOURCE>
-
 <grid:LIST id='classes'>
 <grid:ITERATOR>
 <tr>
-<td><small>{$action_name}({$permissions_required})</small></td>
+<td><small>{$action_name}</small></td>
 <core:DATA_TRANSFER hash_id='groups' target='checkers'>
 	<grid:LIST id='checkers'>
 		<grid:ITERATOR>

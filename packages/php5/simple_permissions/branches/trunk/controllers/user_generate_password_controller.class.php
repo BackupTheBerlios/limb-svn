@@ -21,13 +21,11 @@ class user_generate_password_controller extends site_object_controller
 	{
 		return array(
 				'generate_password' => array(
-					'permissions_required' => 'r',
 					'action_path' => '/user/generate_password_action',
 					'template_path' => '/user/generate_password.html',
 					'action_name' => strings :: get('generate_password', 'user'),
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),

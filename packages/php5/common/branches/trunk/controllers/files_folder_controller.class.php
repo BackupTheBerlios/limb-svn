@@ -21,11 +21,9 @@ class files_folder_controller extends site_object_controller
 	{
 		return array(
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/files_folder/admin_display.html'
 				),
 				'create_file' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/file/create.html',
 						'action_name' => strings :: get('create_new_file', 'file'),
 						'action_path' => '/files/create_file_action',
@@ -35,7 +33,6 @@ class files_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'create_files_folder' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/files_folder/create.html',
 						'action_path' => '/files_folder/create_files_folder_action',
 						'JIP' => true,
@@ -45,7 +42,6 @@ class files_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'edit_files_folder' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/files_folder/edit.html',
 						'action_path' => '/files_folder/edit_files_folder_action',
 						'JIP' => true,
@@ -54,7 +50,6 @@ class files_folder_controller extends site_object_controller
 						'action_name' => strings :: get('edit_files_folder', 'file'),
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/site_object/delete.html',
 						'action_path' => 'form_delete_site_object_action',
 						'JIP' => true,
@@ -63,7 +58,6 @@ class files_folder_controller extends site_object_controller
 						'action_name' => strings :: get('delete'),
 				),
 				'file_select' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/files_folder/file_select.html',
 						'trasaction' => false,
 				),

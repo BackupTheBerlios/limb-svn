@@ -22,10 +22,8 @@ class user_controller extends site_object_controller
 		return array(
 				'admin_display' => array(
 						'template_path' => '/user/admin_display.html',
-						'permissions_required' => 'r',
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('edit_user', 'user'),
@@ -34,7 +32,6 @@ class user_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'set_membership' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('membership', 'user'),
@@ -43,7 +40,6 @@ class user_controller extends site_object_controller
 						'img_src' => '/shared/images/membership.gif'
 				),
 				'change_password' => array(
-						'permissions_required' => 'w',
 						'action_path' => '/user/change_password_action',
 						'template_path' => '/user/change_password.html',
 						'action_name' => strings :: get('change_password', 'user'),
@@ -52,7 +48,6 @@ class user_controller extends site_object_controller
 						'img_src' => '/shared/images/password_manage.gif'
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_user','user'),

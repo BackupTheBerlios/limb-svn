@@ -21,11 +21,9 @@ class message_controller extends site_object_controller
 	{
 		return array(
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/message/admin_display.html'
 				),
 				'create_message' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/message/create.html',
 						'action_path' => '/message/create_message_action',
 						'JIP' => true,
@@ -35,7 +33,6 @@ class message_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit_message','message'),
@@ -44,7 +41,6 @@ class message_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),

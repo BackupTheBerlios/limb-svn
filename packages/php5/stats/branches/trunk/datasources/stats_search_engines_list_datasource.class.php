@@ -20,7 +20,7 @@ class stats_search_engines_list_datasource extends stats_report_datasource
 
 	protected function _configure_filters()
 	{
-		$this->_set_period_filter(LimbToolsBox :: getToolkit()->getRequest());
+		$this->_set_period_filter(Limb :: toolkit()->getRequest());
 	}
 
 	protected function _process_result_array($arr)		

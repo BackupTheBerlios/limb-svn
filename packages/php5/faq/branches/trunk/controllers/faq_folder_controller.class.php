@@ -16,15 +16,12 @@ class faq_folder_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/faq_folder/display.html'
 				),
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/faq_folder/admin_display.html'
 				),
 				'admin_detail' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/admin/object_detail_info.html',
 						'popup' => true,
 						'JIP' => true,
@@ -32,7 +29,6 @@ class faq_folder_controller extends site_object_controller
 						'action_name' => strings :: get('detail_info'),
 				),
 				'create_faq_object' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/faq_object/create.html',
 						'action_path' => '/faq_object/create_faq_object_action',
 						'JIP' => true,
@@ -42,7 +38,6 @@ class faq_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit_faq_folder','faq'),
@@ -51,7 +46,6 @@ class faq_folder_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'publish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('publish'),
@@ -61,7 +55,6 @@ class faq_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'unpublish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('unpublish'),
@@ -71,7 +64,6 @@ class faq_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_faq_folder','faq'),

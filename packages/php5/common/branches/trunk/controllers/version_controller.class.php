@@ -16,11 +16,9 @@ class version_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/version/display.html',
 				),
 				'recover' => array(
-						'permissions_required' => 'r',
 						'action_path' => '/version/recover_version_action', 
 						'popup' => true
 				)

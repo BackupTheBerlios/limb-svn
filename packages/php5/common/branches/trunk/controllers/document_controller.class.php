@@ -16,16 +16,13 @@ class document_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/document/display.html',
 				),
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/document/admin_display.html',
 						'action_name' => strings :: get('admin_display'),
 				),
 				'set_metadata' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('set_metadata'),
@@ -34,7 +31,6 @@ class document_controller extends site_object_controller
 						'img_src' => '/shared/images/configure.gif'
 				),
 				'admin_detail' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/admin/object_detail_info.html',
 						'popup' => true,
 						'JIP' => true,
@@ -42,7 +38,6 @@ class document_controller extends site_object_controller
 						'action_name' => strings :: get('detail_info'),
 				),
 				'create_document' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/document/create.html',
 						'action_path' => '/document/create_document_action',
 						'JIP' => true,
@@ -52,13 +47,11 @@ class document_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'print_version' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/document/print_version.html',
 						'action_name' => strings :: get('print_version_action', 'document'),
 						'display_in_breadcrumbs' => false,
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit_document', 'document'),
@@ -67,7 +60,6 @@ class document_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'publish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('publish'),
@@ -76,7 +68,6 @@ class document_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'unpublish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('unpublish'),
@@ -85,7 +76,6 @@ class document_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_document', 'document'),

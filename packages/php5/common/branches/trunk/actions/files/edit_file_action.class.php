@@ -53,8 +53,8 @@ class edit_file_action extends form_edit_site_object_action
 			  throw new LimbException('uploaded file size exceeds limit');
 			}
       
-      $request = LimbToolsBox :: getToolkit()->getRequest();
-			$object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request);
+      $request = Limb :: toolkit()->getRequest();
+			$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 
 			$this->object->set('media_id', $object_data['media_id']);
 			$this->object->set('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);

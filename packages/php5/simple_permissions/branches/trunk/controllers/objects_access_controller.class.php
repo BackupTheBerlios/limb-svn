@@ -21,12 +21,10 @@ class objects_access_controller extends site_object_controller
 	{
 		return array(
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/objects_access/set_group_access.html',
 						'action_path' => '/objects_access/set_group_objects_access',
 				),
 				'set_group_access' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/objects_access/set_group_access.html',
 						'action_path' => '/objects_access/set_group_objects_access',
 						'JIP' => true,
@@ -34,12 +32,10 @@ class objects_access_controller extends site_object_controller
 						'action_name' => strings :: get('set_group_access'),
 				),
 				'toggle' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/objects_access/set_group_access.html',
 						'action_path' => '/objects_access/group_objects_access_tree_toggle_action', 
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),

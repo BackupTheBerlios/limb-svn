@@ -35,7 +35,7 @@ class user_attribute_tag extends compiler_directive_tag
 
 	public function generate_contents($code)
 	{
-		$code->write_php("echo LimbToolsBox :: getToolkit()->getUser()->get('{$this->attributes['name']}');");
+		$code->write_php("echo Limb :: toolkit()->getUser()->get('{$this->attributes['name']}');");
 				
 		parent :: generate_contents($code);
 	}

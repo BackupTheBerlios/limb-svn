@@ -43,9 +43,9 @@ class edit_user_action extends form_edit_site_object_action
 	{
 		parent :: _init_validator();
     
-    $request = LimbToolsBox :: getToolkit()->getRequest();
+    $request = Limb :: toolkit()->getRequest();
     
-		if ($object_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_requested_object($request))
+		if ($object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request))
 		{
       $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/unique_user_rule', 'identifier', $object_data['identifier']));
       $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/unique_user_email_rule', 'email', $object_data['email']));

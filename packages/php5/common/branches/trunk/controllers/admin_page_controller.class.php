@@ -21,12 +21,10 @@ class admin_page_controller extends site_object_controller
 	{
 		return array(
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/admin/admin_page.html',
 						'transaction' => false,
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),
@@ -35,7 +33,6 @@ class admin_page_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'register_new_object' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('register_new_object'),

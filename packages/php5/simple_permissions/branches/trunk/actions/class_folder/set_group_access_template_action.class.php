@@ -22,7 +22,7 @@ class set_group_access_template_action extends form_action
 	{
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
-
+    
     $access_policy = new access_policy();
 		$data['template'] = $access_policy->get_access_templates($class_id, access_policy :: ACCESSOR_TYPE_GROUP);
 

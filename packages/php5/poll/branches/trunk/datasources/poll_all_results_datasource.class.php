@@ -61,7 +61,7 @@ class poll_all_results_datasource implements datasource
 
 		$params = complex_array :: array_merge($params, $new_params);
 
-		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch('/root/polls', 'poll', $params);
+		return Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/polls', 'poll', $params);
 	}
 
 	protected function _load_answers($question_path)
@@ -70,7 +70,7 @@ class poll_all_results_datasource implements datasource
 			'depth' => 1
 		);
 
-		return LimbToolsBox :: getToolkit()->getFetcher()->fetch_sub_branch($question_path, 'poll_answer', $params);
+		return Limb :: toolkit()->getFetcher()->fetch_sub_branch($question_path, 'poll_answer', $params);
 	}
 }
 

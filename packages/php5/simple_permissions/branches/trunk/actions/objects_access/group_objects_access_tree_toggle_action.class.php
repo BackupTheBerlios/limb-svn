@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(dirname(__FILE__) . '/../site_structure/tree_toggle_action.class.php');
+require_once(LIMB_COMMON_DIR . '/actions/site_structure/tree_toggle_action.class.php');
 require_once(dirname(__FILE__) . '/../../access_policy.class.php');
 
 class group_objects_access_tree_toggle_action extends tree_toggle_action
@@ -37,12 +37,12 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 	
 		$policy = $access_policy->get_objects_access_by_ids($this->object_ids, access_policy :: ACCESSOR_TYPE_GROUP);
 
-		$this->dataspace->get('policy', $policy);
+		$this->dataspace->set('policy', $policy);
 	}
 
 	protected function _set_template_tree()
 	{
-		$datasource = LimbToolsBox :: getToolkit()->createDatasource('group_object_access_datasource');
+		$datasource = Limb :: toolkit()->createDatasource('group_object_access_datasource');
 		$params = array(
 			'path' => '/root',
 			'depth' => -1,

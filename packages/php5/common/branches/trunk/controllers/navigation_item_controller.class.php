@@ -22,11 +22,9 @@ class navigation_item_controller extends site_object_controller
 	{
 		return array(
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/navigation_item/admin_display.html',
 				),
 				'create_navigation_item' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/navigation_item/create.html',
 						'action_path' => '/navigation_item/create_navigation_item_action',
 						'JIP' => true,
@@ -36,7 +34,6 @@ class navigation_item_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit_menu_item', 'navigation'),
@@ -45,7 +42,6 @@ class navigation_item_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'publish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('publish'),
@@ -54,7 +50,6 @@ class navigation_item_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'unpublish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('unpublish'),
@@ -63,7 +58,6 @@ class navigation_item_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_menu_item', 'navigation'),

@@ -14,7 +14,7 @@ class tree_display_action extends action
 {
 	public function perform($request, $response)
 	{		
-		LimbToolsBox :: getToolkit()->getTree()->initialize_expanded_parents();				
+		Limb :: toolkit()->getTree()->initialize_expanded_parents();				
 	}
 }
 

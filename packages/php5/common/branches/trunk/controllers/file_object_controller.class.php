@@ -16,11 +16,9 @@ class file_object_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'action_path' => '/files/display_file_action',
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),
@@ -29,7 +27,6 @@ class file_object_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),

@@ -70,7 +70,7 @@ class stats_routes_report implements stats_report_interface
 		$start_stamp = $this->start_date->get_stamp();
 		$finish_stamp = $this->finish_date->get_stamp();
 		
-		$root = LimbToolsBox :: getToolkit()->getTree()->get_node_by_path('/root');
+		$root = Limb :: toolkit()->getTree()->get_node_by_path('/root');
 		$root_id = $root['id'];
 		
 		$sql = "SELECT sslog.time as time, sslog.action as action, sslog.session_id as session_id, ssu.uri as uri

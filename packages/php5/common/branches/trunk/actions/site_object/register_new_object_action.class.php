@@ -26,7 +26,7 @@ class register_new_object_action extends form_action
 	
 		if($path = $this->dataspace->get('parent_path'))
 		{
-			if($node = LimbToolsBox :: getToolkit()->getTree()->get_node_by_path($path))
+			if($node = Limb :: toolkit()->getTree()->get_node_by_path($path))
         $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', $node['id'])); 
 		}
 		
@@ -42,10 +42,10 @@ class register_new_object_action extends form_action
 		$params['class'] = $this->dataspace->get('class_name');
 		$params['title'] = $this->dataspace->get('title');
 		
-		$object = LimbToolsBox :: getToolkit()->createSiteObject($params['class']);
+		$object = Limb :: toolkit()->createSiteObject($params['class']);
 		
 		$is_root = false;
-		if(!$parent_data = LimbToolsBox :: getToolkit()->getFetcher()->fetch_one_by_path($params['parent_path']))
+		if(!$parent_data = Limb :: toolkit()->getFetcher()->fetch_one_by_path($params['parent_path']))
 		{
 			if ($params['parent_path'] == '/')
 				$is_root = true;
@@ -77,7 +77,7 @@ class register_new_object_action extends form_action
 		
 		if (!$is_root)
 		{
-			$parent_object = LimbToolsBox :: getToolkit()->createSiteObject($parent_data['class_name']);
+			$parent_object = Limb :: toolkit()->createSiteObject($parent_data['class_name']);
 			$parent_object->merge($parent_data);
 
 	  	$action = $parent_object->get_controller()->determine_action();

@@ -16,7 +16,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 	{
 		$params['depth'] = 1;
 
-		if(LimbToolsBox :: getToolkit()->getRequest()->get('only_parents') == 'false')
+		if(Limb :: toolkit()->getRequest()->get('only_parents') == 'false')
 			$params['only_parents'] = false;
 		else
 			$params['only_parents'] = true;
@@ -31,15 +31,15 @@ class node_select_datasource extends fetch_sub_branch_datasource
 	{
 		$default_path = '/root/';
 
-		if(!$path = LimbToolsBox :: getToolkit()->getRequest()->get('path'))
+		if(!$path = Limb :: toolkit()->getRequest()->get('path'))
 			return $default_path;
 
 		if(strpos($path, '?') !== false)
 		{
-			if(!$node = LimbToolsBox :: getToolkit()->getFetcher()->map_uri_to_node(new uri($path)))
+			if(!$node = Limb :: toolkit()->getFetcher()->map_uri_to_node(new uri($path)))
 				return $default_path;
 
-			if(!$path = LimbToolsBox :: getToolkit()->getTree()->get_path_to_node($node))
+			if(!$path = Limb :: toolkit()->getTree()->get_path_to_node($node))
 				return $default_path;
 		}
 		return $path;

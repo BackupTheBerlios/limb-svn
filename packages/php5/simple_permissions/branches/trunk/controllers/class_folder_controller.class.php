@@ -21,11 +21,9 @@ class class_folder_controller extends site_object_controller
 	{
 		return array(
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/class_folder/admin_display.html',
 				),
 				'set_group_access' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/class_folder/set_group_access.html',
 						'action_path' => '/class_folder/set_group_access',
 						'JIP' => true,
@@ -34,7 +32,6 @@ class class_folder_controller extends site_object_controller
 						'action_name' => strings :: get('set_group_access'),
 				),
 				'set_group_access_template' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/class_folder/set_group_access_template.html',
 						'action_path' => '/class_folder/set_group_access_template_action',
 						'JIP' => true,
@@ -43,7 +40,6 @@ class class_folder_controller extends site_object_controller
 						'action_name' => strings :: get('set_group_access_template'),
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),

@@ -22,11 +22,9 @@ class images_folder_controller extends site_object_controller
 	{
 		return array(
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/images_folder/admin_display.html'
 				),
 				'create_image' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/image/create.html',
 						'action_path' => '/images/create_image_action',
 						'JIP' => true,
@@ -36,7 +34,6 @@ class images_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'create_images_folder' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/images_folder/create.html',
 						'action_path' => '/images_folder/create_images_folder_action',
 						'JIP' => true,
@@ -46,7 +43,6 @@ class images_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'edit_images_folder' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/images_folder/edit.html',
 						'action_path' => '/images_folder/edit_images_folder_action',
 						'JIP' => true,
@@ -55,7 +51,6 @@ class images_folder_controller extends site_object_controller
 						'action_name' => strings :: get('edit_images_folder', 'image'),
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'template_path' => '/site_object/delete.html',
 						'action_path' => 'form_delete_site_object_action',
 						'JIP' => true,
@@ -64,7 +59,6 @@ class images_folder_controller extends site_object_controller
 						'action_name' => strings :: get('delete'),
 				),
 				'image_select' => array(
-						'permissions_required' => 'r',
 						'action_name' => strings :: get('select_image', 'image'),
 						'action_path' => '/images_folder/image_select_action',
 						'template_path' => '/images_folder/image_select.html',

@@ -25,7 +25,7 @@ class stats_routes_list_datasource extends stats_report_datasource
 	
 	protected function _configure_filters()
 	{
-		$this->_set_period_filter(LimbToolsBox :: getToolkit()->getRequest());
+		$this->_set_period_filter(Limb :: toolkit()->getRequest());
 	}
 		
 	protected function _set_period_filter($request)

@@ -16,16 +16,13 @@ class documents_folder_controller extends site_object_controller
 	{
 		return array(
 				'display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/documents_folder/display.html'
 				),
 				'admin_display' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/documents_folder/admin_display.html',
 						'action_name' => strings :: get('admin_display'),
 				),
 				'set_metadata' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('set_metadata'),
@@ -34,7 +31,6 @@ class documents_folder_controller extends site_object_controller
 						'img_src' => '/shared/images/configure.gif'
 				),
 				'create_document' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/document/create.html',
 						'action_path' => '/document/create_document_action',
 						'JIP' => true,
@@ -44,7 +40,6 @@ class documents_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'create_documents_folder' => array(
-						'permissions_required' => 'r',
 						'template_path' => '/documents_folder/create.html',
 						'action_path' => '/documents_folder/create_documents_folder_action',
 						'JIP' => true,
@@ -54,7 +49,6 @@ class documents_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'edit' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),
@@ -63,7 +57,6 @@ class documents_folder_controller extends site_object_controller
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'publish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('publish'),
@@ -72,7 +65,6 @@ class documents_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'unpublish' => array(
-						'permissions_required' => 'w',
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('unpublish'),
@@ -81,7 +73,6 @@ class documents_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 				'delete' => array(
-						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),
