@@ -20,7 +20,7 @@ class display_file_action extends action
     {
       $response->header("HTTP/1.1 404 Not found");
 
-      if(isset($_GET['icon']))
+      if($request->has_attribute('icon'))
         $response->commit(); //for speed
       else
       {
@@ -29,11 +29,11 @@ class display_file_action extends action
       }
     }
 
-    if (isset($_GET['icon']))
+    if ($request->has_attribute('icon'))
     {
       $size = 16;
-      if (!empty($_GET['icon']))
-        $size = $_GET['icon'];
+      if (!empty($request->get_attribute('icon')))
+        $size = $request->get_attribute('icon');
 
       $mime_type = $object_data['mime_type'];
 

@@ -15,7 +15,7 @@ class display_image_action extends action
   function perform(&$request, &$response)
   {
     $object_data =& fetch_requested_object($request);
-    $variation = $this->_get_variation();
+    $variation = $this->_get_variation($request);
     $image = $object_data['variations'][$variation];
 
     if(!$image)
@@ -72,7 +72,7 @@ class display_image_action extends action
     return $cache;
   }
 
-  function _get_variation()
+  function _get_variation(&$request)
   {
     $ini =& get_ini('image_variations.ini');
 
@@ -80,7 +80,7 @@ class display_image_action extends action
 
     foreach($image_variations as $key => $value)
     {
-      if (array_key_exists($key, $_GET))
+      if ($request->has_attribute($key))
       {
         $variation = $key;
         break;
