@@ -6,7 +6,7 @@
 </fetch:MAPPED>
 </span>
 
-<fetch:SUB_BRANCH target='images_folder'  navigator="pager">
+<fetch:SUB_BRANCH target='images_folder'>
 	<core:PARAMETER name='loader_class_name' value='images_folder'>
 	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
@@ -35,7 +35,7 @@
 		</core:OPTIONAL>
 		<core:DEFAULT for='title'>
 		<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$identifier}</a>
-		</core:DEFAULT>		
+		</core:DEFAULT>
 	</td>
 	<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 	<td><core:INCLUDE file='/admin/priority_input.html'></td>
@@ -70,7 +70,7 @@
 		</core:OPTIONAL>
 		<core:DEFAULT for='title'>
 		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
-		</core:DEFAULT>		
+		</core:DEFAULT>
 	</td>
 	<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 	<td><core:INCLUDE file='/admin/priority_input.html'></td>
