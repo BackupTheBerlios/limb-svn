@@ -1,10 +1,6 @@
-<?
-	reload('/root/chat/main');
-?>
-
 <html>
 <head>
-	<title><metadata:TITLE separator=' :: ' />::Official Shweir Secondary School</title>
+	<title><metadata:TITLE separator=' :: ' /> :: Official Shweir Secondary School</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
 	<link href="/design/main/styles/main.css" rel="stylesheet" type="text/css">
 	<script language="javascript" src="/shared/js/common.js"></script>
@@ -16,22 +12,42 @@
 	</metadata:METADATA>
 </head>
 <body>
+<core:INCLUDE file="front_breadcrumbs.html">
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='chat_rooms'>
 	<core:PARAMETER name='loader_class_name' value='chat_room'>
 	<core:PARAMETER name='data_source_path' value='fetch_sub_branch_data_source'>
 </fetch:SUB_BRANCH>
+			<chat:NOT_LOGGED_IN>
+			<core:INCLUDE file='chat/chat_login_form.html'>
+			</chat:NOT_LOGGED_IN>
 
 <list:LIST id='chat_rooms'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
     <list:ITEM>
 		<tr>
-		<td>
-			<a href='{$path}'>{$title}</a>
-		</td>
+			<td class=jip >
+				<table border=0 jip='action'>
+				<tr>
+				<td><core:INCLUDE file="published_status.html"></td>
+				<td><core:INCLUDE file="jip_actions/normal.html"></td>
+				<tr>
+				</table>
+				<table jip='object' width=100%>
+					<tr>
+						<td width=30% valign=top>
+							<a href='{$path}'>{$title}</a><br>
+						</td>
+						<td valign=top>
+							{$annotation}
+						</td>
+					</tr>
+				</table>
+			</td>
 		</tr>
-
-
     </list:ITEM>
 </table>
 </list:LIST>
