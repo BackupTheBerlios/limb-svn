@@ -40,7 +40,7 @@ class shipping_locator
       'lifeTime' => $this->cache_life_time
     );
         
-    $this->cache =& new Cache_Lite($options);      
+    $this->cache =& new Cache_Lite($options);  
      
     return $this->cache;    
   }
