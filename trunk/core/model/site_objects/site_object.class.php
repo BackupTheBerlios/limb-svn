@@ -230,7 +230,7 @@ class site_object extends object
 		$arr =& $db->get_array('id');
 		return $arr;
 	}
-				
+	
 	function & fetch_by_ids($ids_array, $params=array(), $sql_params=array())
 	{
 		if (!count($ids_array))
@@ -608,7 +608,7 @@ class site_object extends object
 		$data['identifier'] = $this->get_identifier();
 		$data['title'] = $this->get_title();
 		$data['class_id'] = $this->get_class_id();
-		$data['current_version'] = $this->get_attribute('version');
+		$data['current_version'] = $this->get_version();
 		$data['created_date'] = $time;
 		$data['modified_date'] = $time;
 		$data['creator_id'] = $user->get_id();
@@ -837,6 +837,16 @@ class site_object extends object
 			return $parent_data['locale_id'];
 		else
 			return DEFAULT_CONTENT_LOCALE_ID;
+	}
+	
+	function can_accept_child_class($class_name)
+	{
+		$class_properties = $this->get_class_properties();
+		
+		if (!isset($class_properties['acceptable_children']))
+			return false;
+		
+		return in_array($class_name, $class_properties['acceptable_children']);
 	}
 }
 

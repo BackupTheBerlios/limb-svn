@@ -29,8 +29,15 @@ class site_structure_controller extends site_object_controller
 						'display_in_breadcrumbs' => false,
 				),
 				'order' => array(
-						'permissions_required' => 'r',
+						'permissions_required' => 'w',
 						'action_path' => 'tree_change_order_action', 
+						'display_in_breadcrumbs' => false,
+						'popup' => true,
+				),
+				'move' => array(
+						'permissions_required' => 'w',
+						'template_path' => '/admin/site_structure.html',
+						'action_path' => 'tree_move_item_action', 
 						'display_in_breadcrumbs' => false,
 						'popup' => true,
 				),

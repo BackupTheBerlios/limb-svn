@@ -29,6 +29,13 @@ class fetch_component extends component
 	{
 		$object_arr = fetch_mapped_by_url();
 		
+		if (isset($_REQUEST['version']))
+		{
+			$site_object = site_object_factory :: create($object_arr['class_name']);
+			$site_object->import_attributes($object_arr);
+			$object_arr = $site_object->fetch_version($_REQUEST['version']);
+		}
+		
 		$this->import($object_arr);
 	}
 	

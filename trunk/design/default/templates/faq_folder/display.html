@@ -8,7 +8,7 @@
 </span>
 </fetch:MAPPED>
 
-<fetch:SUB_BRANCH target='faq_questions' navigator="pager" >
+<fetch:SUB_BRANCH target='faq_questions, faq' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='faq_object' >
 </fetch:SUB_BRANCH>
 
@@ -29,10 +29,6 @@
     </grid:ITERATOR>
 </table>
 </grid:LIST>
-
-<fetch:SUB_BRANCH target='faq' >
-	<core:PARAMETER name='loader_class_name' value='faq_object' >
-</fetch:SUB_BRANCH>
 
 <grid:LIST id='faq'>
   <table width="100%" border="0" cellspacing="0" cellpadding="8" >

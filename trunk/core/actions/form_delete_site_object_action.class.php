@@ -30,9 +30,6 @@ class form_delete_site_object_action extends form_site_object_action
 	
 		$object =& site_object_factory :: create($this->definition['site_object']);
 		$object->import_attributes($object_data);
-
-		if(!$object->can_delete())
-			message_box :: write_notice('Can not be deleted!');
 	}
 	
 	function _valid_perform()

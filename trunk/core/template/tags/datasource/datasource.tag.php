@@ -34,6 +34,8 @@ class datasource_tag extends server_component_tag
 		
 	function generate_contents(&$code)
 	{
+		parent :: generate_contents($code);
+		
 		if(isset($this->attributes['navigator']))
 		{
 			if($navigator =& $this->parent->find_child($this->attributes['navigator']))
@@ -47,14 +49,17 @@ class datasource_tag extends server_component_tag
 				$code->write_php('}');
 			}			
 		}
-		
-		$target =& $this->parent->find_child($this->attributes['target']);
-		
-		parent :: generate_contents($code);
-		
-		if($target)
+
+		$targets = explode(',', $this->attributes['target']);
+		foreach($targets as $target)
 		{
-			$code->write_php($target->get_component_ref_code() . '->register_dataset(' . $this->get_component_ref_code() . '->get_dataset());');
+			if($target_component =& $this->parent->find_child(trim($target)))
+				$code->write_php($target_component->get_component_ref_code() . '->register_dataset(' . $this->get_component_ref_code() . '->get_dataset());');
+			else
+				debug :: write_error('component target not found',
+				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+				array('target' => $target));
+
 		}
 			
 		if(isset($this->attributes['navigator']) && $navigator)

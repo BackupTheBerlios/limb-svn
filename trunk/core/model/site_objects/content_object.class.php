@@ -78,6 +78,53 @@ class content_object extends site_object
 		return $result;
 	}
 	
+	function recover_version($version)
+	{
+		if(!$version_data = $this->fetch_version($version))
+			return false;
+			
+		$this->import_attributes($version_data);
+		
+		return $this->update();
+	}
+
+	function & fetch_version($version, $sql_params=array())
+	{
+		$db_table =& $this->_get_db_table();
+		$table_name = $db_table->get_table_name();
+		$id = $this->get_id();
+		
+		$sql = 
+			sprintf( "SELECT
+								%s
+								ssot.id as node_id, 
+								ssot.parent_id as parent_node_id, 
+								ssot.level as level,
+								ssot.l as l,
+								ssot.r as r,
+								tn.*,
+								tn.id as record_id,
+								tn.object_id as id
+								FROM 
+								sys_site_object_tree as ssot,
+								{$table_name} as tn
+								%s
+								WHERE 
+								ssot.object_id = {$id} AND 
+								tn.object_id = {$id} AND
+								tn.version = {$version}
+								%s",
+								$this->_add_sql($sql_params, 'columns'),
+								$this->_add_sql($sql_params, 'tables'),
+								$this->_add_sql($sql_params, 'conditions')
+							);
+		
+		$db =& db_factory :: instance();
+		$db->sql_exec($sql);
+		
+		return $db->fetch_row();
+	}
+	
 	function & fetch_ids($params=array(), $sql_params=array(), $sort_ids = array())
 	{
 		$db_table =& $this->_get_db_table();

@@ -332,6 +332,30 @@ function & fetch_by_node_ids($node_ids, $loader_class_name, &$counter, $params =
 	return $result;
 }
 
+function & wrap_with_site_object($fetched_data)
+{
+	if(!$fetched_data)
+		return false;
+		
+	if(!is_array($fetched_data))
+		return false;
+		
+	if(isset($fetched_data['class_name']))
+	{
+		$site_object =& site_object_factory :: instance($fetched_data['class_name']);
+		$site_object->import_attributes($fetched_data);
+		return $site_object;
+	}
+	
+	$site_objects = array();
+	foreach($fetched_data as $id => $data)
+	{
+		$site_object =& site_object_factory :: instance($data['class_name']);
+		$site_object->import_attributes($data);
+		$site_objects[$id] =& $site_object;
+	}
+	return $site_objects;	
+}
 
 function & get_mapped_controller()
 {

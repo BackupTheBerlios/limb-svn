@@ -109,19 +109,19 @@ class test_site_object_manipulation extends UnitTestCase
   {
   	debug_mock :: expect_write_error('identifier is empty');
   	
-  	$this->assertIdentical($this->object->create(), false);
+  	$this->assertIdentical($this->object->create(), false, 'create should fail here');
   	
 		$this->object->set_parent_node_id(10);
 		
 		debug_mock :: expect_write_error('identifier is empty');
 		
-  	$this->assertIdentical($this->object->create(), false);
+  	$this->assertIdentical($this->object->create(), false, 'create should fail here');
   	
 		$this->object->set_identifier('test');
 		
 		debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 10));
 		
-  	$this->assertIdentical($this->object->create(), false);
+  	$this->assertIdentical($this->object->create(), false, 'create should fail here');
   }
 	
   function test_create()
@@ -168,15 +168,13 @@ class test_site_object_manipulation extends UnitTestCase
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_node');
   	
-  	$id = $this->object->create();
-  	$node_id = $this->object->get_node_id();
+  	$this->object->create();
+  	$this->object->get_node_id();
 		
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test');
   	
-  	$result = $this->object->update(false);
-  	
-  	$this->assertTrue($result, 'update operation failed');
+  	$this->assertTrue($this->object->update(false), 'update operation failed');
 
   	$this->_check_sys_site_object_tree_record();
   	
@@ -199,9 +197,8 @@ class test_site_object_manipulation extends UnitTestCase
   	$data['id'] = 10;
   	$data['node_id'] = $this->sub_node_id;
   	$this->object->import_attributes($data);
-  	$result = $this->object->can_delete();
   	
-  	$this->assertTrue($result);
+  	$this->assertTrue($this->object->can_delete(), 'object can be deleted');
   }
 	      
   function test_delete()
@@ -209,9 +206,8 @@ class test_site_object_manipulation extends UnitTestCase
   	$data['id'] = 10;
   	$data['node_id'] = $this->sub_node_id;
   	$this->object->import_attributes($data);
-  	$result = $this->object->delete();
   	
-  	$this->assertTrue($result);
+  	$this->assertTrue($this->object->delete(), 'delete operation failed');
   	
   	$sys_site_object_db_table =& db_table_factory :: instance('sys_site_object');
   	$sys_site_object_tree_db_table =& db_table_factory :: instance('sys_site_object_tree');
