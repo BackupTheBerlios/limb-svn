@@ -30,6 +30,16 @@ class send_feedback_action extends form_action
 		$this->validator->add_rule(new required_rule('body'));
 	}
 
+	function _get_email()
+	{
+		$sys_param =& sys_param :: instance();
+
+		if(!$email = $sys_param->get_param('contact_email', 'char'))
+			$email = constant('ADMINISTRATOR_EMAIL');		
+
+		return $email;
+	}
+	
 	function _valid_perform()
 	{
 		$mail_data = $this->dataspace->export();
@@ -44,7 +54,7 @@ class send_feedback_action extends form_action
 												$mail_data['subject'],
 												$_SERVER['HTTP_HOST']);
 		
-		$recipient_email = constant('ADMINISTRATOR_EMAIL');
+		$recipient_email = $this->_get_email();
 		
 		if(!$recipient_email ||
 			 !send_plain_mail(array($recipient_email), 

@@ -49,6 +49,16 @@ class checkout_cart_order_action extends form_action
 		$this->_import($data);
 	}
 	
+	function _get_email()
+	{
+		$sys_param =& sys_param :: instance();
+
+		if(!$email = $sys_param->get_param('contact_email', 'char'))
+			$email = constant('ADMINISTRATOR_EMAIL');		
+
+		return $email;
+	}
+	
 	function _valid_perform()
 	{
 		//$html_body = $this->_get_mail_body('/cart/mail_template.html');
@@ -56,7 +66,8 @@ class checkout_cart_order_action extends form_action
 
 		$subject = sprintf(strings :: get('message_subject', 'cart'), $_SERVER['HTTP_HOST']);
 		
-		if(!send_plain_mail(array(ADMINISTRATOR_EMAIL), 
+		$recipient_email = $this->_get_email();
+		if(!send_plain_mail(array($recipient_email), 
 												$_SERVER['SERVER_ADMIN']. '<' . $_SERVER['HTTP_HOST'] . '> ', 
 												$subject, 
 												$text_body))

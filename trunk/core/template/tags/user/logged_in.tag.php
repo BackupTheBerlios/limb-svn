@@ -26,7 +26,7 @@ class user_logged_in_tag extends compiler_directive_tag
 		$user = '$' . $code->get_temp_variable();
 		$code->write_php("{$user} =& user :: instance();");
 
-		$code->write_php('if ({$user}->is_logged_in()) {');
+		$code->write_php("if ({$user}->is_logged_in()) {");
 			parent :: generate_contents($code);
 		$code->write_php("}");
 	}

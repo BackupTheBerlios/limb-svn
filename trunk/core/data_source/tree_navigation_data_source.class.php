@@ -5,16 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: simple_navigation_data_source.class.php 92 2004-03-29 08:29:10Z mike $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/data_source/fetch_sub_branch_data_source.class.php');
+require_once(LIMB_DIR . 'core/data_source/fetch_tree_data_source.class.php');
 
-class simple_navigation_data_source extends fetch_sub_branch_data_source
+class tree_navigation_data_source extends fetch_tree_data_source
 {
-	function simple_navigation_data_source()
+	function tree_navigation_data_source()
 	{
-		parent :: fetch_sub_branch_data_source();
+		parent :: fetch_tree_data_source();
 	}
 
 	function & _fetch(&$counter, $params)
