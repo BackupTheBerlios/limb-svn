@@ -36,7 +36,7 @@ define('LIMB_VERSION_MINOR', '2');
 /**
  * Micro software version
  */
-define('LIMB_VERSION_MICRO', '1');
+define('LIMB_VERSION_MICRO', '2');
 
 /**
  * Software version patch
@@ -46,12 +46,12 @@ define('LIMB_VERSION_PATCH', '');
 /**
  * Software release version
  */
-define('LIMB_RELEASE_NAME', '');
+define('LIMB_RELEASE_NAME', 'Vacation Edition');
 
 /**
  * Software build (full) date
  */
-define('LIMB_VERSION_DATE', 'July 27, 2004');
+define('LIMB_VERSION_DATE', 'August 8, 2004');
 
 
 // --- Do not change from here ----------------------------------------
