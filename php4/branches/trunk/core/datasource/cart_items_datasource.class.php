@@ -19,8 +19,6 @@ class cart_items_datasource extends datasource
 
     $dataset =& $cart->get_items_array_dataset();
 
-    $counter = $dataset->get_total_row_count();
-
     return $dataset;
   }
 }

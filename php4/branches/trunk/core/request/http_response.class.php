@@ -10,6 +10,9 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/i18n/strings.class.php');
 
+define('HTTP_REDIRECT', 1);
+define('HTML_REDIRECT', 2);
+
 class http_response
 {
   var $response_string = '';
@@ -17,14 +20,26 @@ class http_response
   var $headers = array();
   var $is_redirected = false;
 
-  function redirect($path)
+  function redirect($path, $redirect_type = HTML_REDIRECT, $redirect_template_path = '/redirect_template.html')
+  {
+    if ($redirect_type == HTML_REDIRECT)
+      $this->_html_redirect($path, $redirect_template_path);
+    else
+      $this->_http_redirect($path);
+
+    $this->is_redirected = true;
+  }
+  
+  function _html_redirect($path, $redirect_template_path)
   {
     include_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
 
     $message = strings :: get('redirect_message');//???
     $message = str_replace('%path%', $path, $message);
+    
+    $redirect_template_path = !empty($redirect_template_path) ? $redirect_template_path : '/redirect_template.html';
 
-    if($template = resolve_template_source_file_name('/redirect_template.html'))
+    if($template = resolve_template_source_file_name($redirect_template_path))
     {
       $content = file_get_contents($template);
       $content = str_replace('{$path}', $path, $content);
@@ -33,8 +48,11 @@ class http_response
     }
     else
       $this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white>{$message}</body></html>";
-
-    $this->is_redirected = true;
+  }
+  
+  function _http_redirect($path)
+  {
+    $this->header("Location: {$path}");
   }
 
   function reset()
