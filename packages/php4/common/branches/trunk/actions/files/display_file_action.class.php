@@ -42,10 +42,10 @@ class display_file_action extends action
 			elseif($mime_type == 'application/x-shockwave-flash')
 				$mime_type = 'application/swf';
 			
-			$file_name = SHARED_DIR . 'images/mime_icons/' . str_replace('/', '_' , $mime_type) . '.' . $size . '.gif';
+			$file_name = HTTP_SHARED_DIR . 'images/mime_icons/' . str_replace('/', '_' , $mime_type) . '.' . $size . '.gif';
 
 			if (!file_exists($file_name))
-				$file_name = SHARED_DIR . "images/mime_icons/file.{$size}.gif";
+				$file_name = HTTP_SHARED_DIR . "images/mime_icons/file.{$size}.gif";
 			
 			$response->header("Date: " . gmdate("D, d M Y H:i:s") . " GMT");
 			$response->header("Etag: {$etag}");			

@@ -21,7 +21,7 @@ class display_image_action extends action
 		if(!$image)
 		{
 			$response->header("Content-type: image/gif");
-			$response->readfile(SHARED_DIR . 'images/1x1.gif');
+			$response->readfile(HTTP_SHARED_DIR . 'images/1x1.gif');
 			
 			if($variation == 'original')
 			{
