@@ -91,6 +91,7 @@ class template extends component
 
     }
     $this->render_function = $GLOBALS['template_render'][$this->codefile];
+    $this->root = & $this;
     $func = $GLOBALS['template_construct'][$this->codefile];
     $func($this);
   }

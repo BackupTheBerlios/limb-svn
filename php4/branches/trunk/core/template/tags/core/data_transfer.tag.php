@@ -18,33 +18,31 @@ class core_data_transfer_tag_info
 
 register_tag(new core_data_transfer_tag_info());
 
-class core_data_transfer_tag extends compiler_directive_tag
+class core_data_transfer_tag extends server_component_tag
 {
-  function check_nesting_level()
-  {
-    if (!isset($this->attributes['target']))
-    {
-      error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-          'attribute' => 'target',
-          'file' => $this->source_file,
-          'line' => $this->starting_line_no));
-    }
-  }
+	var $runtime_component_path = '/core/template/components/core_transfer_component';
+   
+	function check_nesting_level()
+	{
+		if (!isset($this->attributes['target']))
+		{
+			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+					'attribute' => 'target',
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
+		} 
+	}
 
-  function generate_contents(&$code)
-  {
-    $dataspace = $this->get_dataspace_ref_code();
-
-    if (isset($this->attributes['hash_id']) && isset($this->attributes['target']))
-    {
-      if($target =& $this->parent->find_child($this->attributes['target']))
-      {
-        $code->write_php($target->get_component_ref_code() . '->register_dataset(new array_dataset(' . $dataspace . '->get("' . $this->attributes['hash_id'] . '")))');
-      }
-    }
-
-    parent :: generate_contents($code);
-  }
-}
-
+	function generate_contents(&$code)
+	{
+		if (isset($this->attributes['hash_id']) && isset($this->attributes['target']))
+		{
+			$code->write_php($this->get_component_ref_code() . 
+                       '->make_transfer(\'' .$this->attributes['hash_id'] . '\', \''.
+                                        $this->attributes['target'] . '\')');
+		}
+		
+		parent :: generate_contents($code);
+	} 
+} 
 ?>

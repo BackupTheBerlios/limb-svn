@@ -157,10 +157,11 @@ class component extends dataspace
       $genid++;
     }
 
-    $child->parent = &$this;
-    $child->id = $server_id;
-    $this->children[$server_id] = &$child;
-  }
-}
+		$child->parent = &$this;
+		$child->root = &$this->root;
+		$child->id = $server_id;
+		$this->children[$server_id] = &$child;
+	} 
+} 
 
 ?>
