@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/data_mappers/content_objects_raw_finder.class.php');
+require_once(LIMB_DIR . '/class/core/finders/content_objects_raw_finder.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
 Mock :: generate('LimbToolkit');

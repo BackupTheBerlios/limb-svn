@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_module.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/site_objects_raw_finder.class.php');
+require_once(LIMB_DIR . '/class/core/finders/site_objects_raw_finder.class.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
 

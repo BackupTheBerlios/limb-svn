@@ -10,15 +10,15 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
 
-class data_mapper_file_resolver extends file_resolver_decorator
+class finder_file_resolver extends file_resolver_decorator
 {
   public function resolve($class_path, $params = array())
   {
-    if(file_exists(LIMB_DIR . '/class/core/data_mappers/' . $class_path . '.class.php'))
-      return LIMB_DIR . '/class/core/data_mappers/' . $class_path . '.class.php';    
+    if(file_exists(LIMB_DIR . '/class/core/finders/' . $class_path . '.class.php'))
+      return LIMB_DIR . '/class/core/finders/' . $class_path . '.class.php';    
       
-    return $this->_resolver->resolve('data_mappers/' . $class_path . '.class.php', $params);   
-  }                                      
+    return $this->_resolver->resolve('finders/' . $class_path . '.class.php', $params);   
+  }  
 }
 
 ?>

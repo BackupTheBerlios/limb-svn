@@ -10,7 +10,7 @@
 ***********************************************************************************/
 class finders_group extends LimbGroupTest 
 {
-	function data_mappers_group() 
+	function finders_group() 
 	{
 	  $this->LimbGroupTest('finders tests');
 	}
