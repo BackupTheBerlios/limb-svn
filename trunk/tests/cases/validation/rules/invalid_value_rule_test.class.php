@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/invalid_value_rule.class.php'
 
 class invalid_value_rule_test extends single_field_rule_test
 {
-	function test_invalid_value_rule_ok()
+	function test_invalid_value_rule_ok_int()
 	{
 		$this->validator->add_rule(new invalid_value_rule('testfield', 0));
 
@@ -25,8 +25,22 @@ class invalid_value_rule_test extends single_field_rule_test
 		$this->validator->validate($data);
 		$this->assertTrue($this->validator->is_valid());
 	} 
+	
+	function test_invalid_value_rule_ok_int2()
+	{
+		$this->validator->add_rule(new invalid_value_rule('testfield', 0));
 
-	function test_invalid_value_rule_ok2()
+		$data = &new dataspace();
+		$data->set('testfield', 'whatever');
+
+		$this->error_list->expectNever('add_error');
+		
+		$this->validator->validate($data);
+		$this->assertTrue($this->validator->is_valid());
+	}
+	
+
+	function test_invalid_value_rule_ok_null()
 	{
 		$this->validator->add_rule(new invalid_value_rule('testfield', null));
 
@@ -39,7 +53,7 @@ class invalid_value_rule_test extends single_field_rule_test
 		$this->assertTrue($this->validator->is_valid());
 	}
 
-	function test_invalid_value_rule_ok3()
+	function test_invalid_value_rule_ok_bool()
 	{
 		$this->validator->add_rule(new invalid_value_rule('testfield', false));
 

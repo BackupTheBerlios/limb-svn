@@ -32,6 +32,8 @@ class user extends object
 	
 	function user()
 	{
+	  parent :: object();
+	  
 	  //IMPORTANT!!!
 	  $this->__session_class_path = LIMB_DIR . '/core/lib/security/user.class.php';
 	}
@@ -126,7 +128,7 @@ class user extends object
 	function &_get_identity_record($login, $password)
 	{
 		$crypted_password = $this->get_crypted_password($login, $password);
-		
+
 		$db =& db_factory :: instance();
 		
 		$sql = 

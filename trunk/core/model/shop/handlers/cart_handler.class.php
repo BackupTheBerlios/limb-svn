@@ -72,6 +72,11 @@ class cart_handler
 		return $this->_items;		
 	}
 	
+	function set_items(&$items)
+	{
+	  $this->_items =& $items;
+	}
+	
 	function count_items()
 	{
 		if (is_array($this->_items))

@@ -27,26 +27,8 @@ class authentication_filter extends intercepting_filter
       		$response->header("HTTP/1.1 404 Not found");
       	return;
       }
-      
-      
-      $user =& user :: instance();
-    	if (!$user->is_logged_in())
-    	{
-    		$tree = tree :: instance();
-    		
-    		$response->redirect('/root/login?redirect='. $tree->get_path_to_node($node));
-    		return;
-    	}	
-    	else
-    	{
-    		debug :: write_error('content object not allowed or retrieved', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-    		        	
-    		if(defined('ERROR_DOCUMENT_403'))
-    			$response->redirect(ERROR_DOCUMENT_403);
-    		else
-    			$response->header("HTTP/1.1 403 Access denied");
-    		return;
-    	}	
+  		$response->redirect('/root/login?redirect='. $_SERVER['REQUEST_URI']);
+  		return;
     }
     
     $object =& wrap_with_site_object($object_data); 
@@ -71,17 +53,8 @@ class authentication_filter extends intercepting_filter
     $actions = $object->get_attribute('actions');
     
     if(!isset($actions[$action]))
-    {
-    	debug :: write_error('"'. $action . '" action is not accessible', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-    	
-    	if (debug :: is_console_enabled())
-    		echo debug :: parse_html_console();
-    		
-    	if(defined("ERROR_DOCUMENT_403"))
-    		$response->redirect(ERROR_DOCUMENT_403);
-    	else
-    		$response->header("HTTP/1.1 403 Access denied");
-    	return;
+    {    		
+      $response->redirect('/root/login?redirect='. $_SERVER['REQUEST_URI']);
     }
 
     debug :: add_timing_point('authentication filter finished');

@@ -25,6 +25,7 @@ class node_select_action extends action
 	  if(!$object = fetch_one_by_node_id($node['id']))
 	    return;
 	    
+	  session :: set('limb_node_select_working_path', $path);
 	  $dataspace =& $this->view->find_child('parent_node_data');
 	  
 	  $dataspace->import($object);

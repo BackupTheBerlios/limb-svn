@@ -132,7 +132,7 @@ class complex_array
   }	
 	
 	//e.g, $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')
-	function & sort_array($array, $sort_params) 
+	function & sort_array($array, $sort_params, $preserve_keys = true) 
 	{
 	 $array_mod = array();
 	 foreach ($array as $key => $value)
@@ -159,7 +159,12 @@ class complex_array
 	 
 	 $array = array();
 	 foreach ($array_mod as $key => $value)
-	   $array[ substr($key, 1) ] = $value;
+	 {
+	   if($preserve_keys)
+	    $array[ substr($key, 1) ] = $value;
+	   else
+	    $array[] = $value;
+	 }
 	   
 	 return $array;
 	}

@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 define('CACHE_LITE_ERROR_RETURN', 1);
 define('CACHE_LITE_ERROR_DIE', 8);
 
@@ -178,9 +177,6 @@ class cache_lite
 	function cache_lite($attributes = array(null))
 	{
 		$this->import_attributes($attributes);
-
-		if (!is_dir(CACHE_DIR))
-			fs :: mkdir(CACHE_DIR, 0777, true);
 	} 
 
 	/**
@@ -210,11 +206,29 @@ class cache_lite
 			if (strpos('>' . $available_attributes, '{' . $key . '}'))
 			{
 				$property = '_' . $key;
-				$this->$property = $value;
+				
+				if($key == 'life_time')
+		      $this->set_life_time($value);
+		    elseif($key == 'cache_dir')
+		      $this->set_cache_dir($value);
+				else
+				  $this->$property = $value;
 			} 
-		} 
+		}
 	} 
-
+	
+  /**
+  * Set a new life time
+  *
+  * @param int $newLifeTime new life time (in seconds)
+  * @access public
+  */
+  function set_life_time($new_life_time)
+  {
+    $this->_life_time = $new_life_time;
+    $this->_refresh_time = time() - $new_life_time;
+  }
+	
 	function is_cache_enabled()
 	{
 		return (!defined('CACHING_ENABLED') || (defined('CACHING_ENABLED') && constant('CACHING_ENABLED')));
@@ -252,14 +266,15 @@ class cache_lite
 			{
 				if (file_exists($this->_file))
 					$data = $this->_read();
-			} elseif ($this->_file_last_modified > -1)
+			} 
+			elseif ($this->_file_last_modified > -1)
 			{
 				if (file_exists($this->_file) && $this->_file_last_modified <= filemtime($this->_file))
 					$data = $this->_read();
 			} 
 			else
 			{
-				if (file_exists($this->_file) && filemtime($this->_file) > time())
+				if (file_exists($this->_file) && filemtime($this->_file) >= $this->_refresh_time)
 					$data = $this->_read();
 			} 
 			if (($data) && ($this->_memory_caching))
@@ -357,43 +372,22 @@ class cache_lite
 			if ($this->_only_memory_caching)
 				return true;
 		} 
-
-		if (!($dh = opendir($this->_cache_dir)))
-		{
-			debug::write_error('Unable to open cache directory !', __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
-			return false;
-		} 
-
-		while ($file = readdir($dh))
-		{
-			if (($file != '.') && ($file != '..'))
-			{
-				$file = $this->_cache_dir . $file;
-				if (is_file($file))
-				{
-					if (strpos($file, $motif, 0))
-					{
-						if (!@unlink($file))
-						{
-							debug::write_error('Unable to remove cache !', __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
-							return false;
-						} 
-					} 
-				} 
-			} 
-		} 
+    
+    $items = fs :: find_subitems($this->_cache_dir, 'f');
+    foreach($items as $file)
+    {
+  		if (strpos($file, $motif) !== false)
+  		{
+  			if (!@unlink($file))
+  			{
+  				debug::write_error('Unable to remove cache !', __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
+  				return false;
+  			} 
+  		}     
+    }
+		
+		clearstatcache();		
 		return true;
-	} 
-
-	/**
-	* Set a new life time
-	* 
-	* @param int $new_life_time new life time (in seconds)
-	* @access public 
-	*/
-	function set_life_time($new_life_time)
-	{
-		$this->_life_time = $new_life_time;
 	} 
 
 	/**
@@ -405,6 +399,7 @@ class cache_lite
 	function set_cache_dir($cache_dir)
 	{
 		$this->_cache_dir = $cache_dir;
+		fs :: mkdir($this->_cache_dir);
 	} 
 
 	/**
@@ -475,10 +470,15 @@ class cache_lite
 	function _set_file_name($id, $group)
 	{
 		if ($this->_file_name_protection)
-			$this->_file = ($this->_cache_dir . md5($group . $id));
+			$this->_file = fs :: clean_path($this->_cache_dir . '/cache_' . md5($group) . '_' . md5($id));
 		else
-			$this->_file = $this->_cache_dir . 'cache_' . $group . '_' . $id;
+			$this->_file = fs :: clean_path($this->_cache_dir . '/cache_' . $group . '_' . $id);
 	} 
+	
+	function get_last_cached_file()
+	{
+	  return $this->_file;
+	}
 
 	/**
 	* Read the cache file and return the content
@@ -562,8 +562,6 @@ class cache_lite
 
 			if ($this->_file_last_modified > -1)
 				@touch($this->_file, $this->_file_last_modified);
-			else
-				@touch($this->_file, time() + $this->_life_time);
 
 			if ($this->is_debug_enabled())
 				debug::write_notice("cache '{$this->_id}' group '{$this->_group}' written", 'cache_lite::_write()');

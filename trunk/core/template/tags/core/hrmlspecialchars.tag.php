@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: ip.tag.php 37 2004-03-13 10:36:02Z server $
+* $Id$
 *
 ***********************************************************************************/
 class htmlspecialchars_tag_info
@@ -39,7 +39,7 @@ class htmlspecialchars_tag extends compiler_directive_tag
 		if(isset($this->attributes['hash_id']))
 		{
 			$code->write_php(
-				'echo htmlspecialchars(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"));');
+				'echo htmlspecialchars(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"), ENT_QUOTES);');
 		}
 	} 
 } 

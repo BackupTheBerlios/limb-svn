@@ -22,6 +22,7 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 	function perform(&$request, &$response)
 	{				
 		parent :: perform($request, $response);
+		
 		$this->_set_template_tree();
 		$this->_init_dataspace($request);
 	}

@@ -18,6 +18,7 @@ class tree_toggle_action extends action
 			return;
 		
 		$tree =& tree :: instance();
+		$tree->initialize_expanded_parents();
 				
 		if(!$id = $request->get_attribute('id'))
 			$id = get_mapped_id();

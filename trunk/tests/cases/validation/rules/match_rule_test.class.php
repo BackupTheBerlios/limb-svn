@@ -73,7 +73,7 @@ class match_rule_test extends single_field_rule_test
 		$data->set('testfield', 'peaches');
 		$data->set('testmatch', 'cream');
 
-		$this->error_list->expectOnce('add_error', array('testfield', 'NO_MATCH', array('match_field' => 'testmatch')));
+		$this->error_list->expectOnce('add_error', array('testfield', strings :: get('error_no_match', 'error'), array('match_field' => 'testmatch')));
 		
 		$this->validator->validate($data);
 		$this->assertFalse($this->validator->is_valid());

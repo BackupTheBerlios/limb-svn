@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: image_select_component.class.php 46 2004-03-19 12:45:55Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -24,7 +24,7 @@ class js_checkbox_component extends input_form_element
 		else	
 			$checked = '';		
 		
-		$js = "onclick='document.forms[this.form.name][\"{$name}\"].value = 1*this.checked'";
+		$js = "onclick='this.form.{$name}.value = 1*this.checked'";
 		
 		echo "<input type='checkbox' id='{$id}_checkbox' {$checked} {$js}>";
 

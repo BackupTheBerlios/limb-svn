@@ -21,7 +21,11 @@ class set_group_objects_access extends form_action
 	
 	function perform(&$request, &$response)
 	{
+		$tree =& tree :: instance();		
+		$tree->initialize_expanded_parents();				
+	
 		$this->_set_template_tree();
+		
 		parent :: perform($request, $response);
 	}
 

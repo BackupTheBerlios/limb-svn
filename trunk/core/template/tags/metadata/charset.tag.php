@@ -31,7 +31,7 @@ class metadata_charset_tag extends compiler_directive_tag
 		//<meta http-equiv="Content-Type" content="text/html; charset=' . locale . '">
 		$locale = '$' . $code->get_temp_variable();
 		
-		$code->write_php($locale . ' =& locale :: instance(MANAGEMENT_LOCALE_ID);');
+		$code->write_php($locale . ' =& locale :: instance(CONTENT_LOCALE_ID);');
 		$code->write_php("echo '<meta http-equiv=\"Content-Type\" content=\"text/html; charset=' . {$locale}->get_charset() . '\">';");
 	} 
 } 

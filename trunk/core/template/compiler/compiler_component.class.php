@@ -366,7 +366,7 @@ class compiler_component
 	} 
 
 	/**
-	* Gets a root database
+	* Gets a root dataspace
 	* 
 	* @return mixed object compile time data component if exists or void
 	* @access protected 
@@ -477,7 +477,7 @@ class compiler_component
 		}
 		
 		$file_path = addslashes(fs :: clean_path($file_path));
-		$code->write_html("<a href='#'><img onclick='run_template_editor(\"{$file_path}\");' src='/shared/images/i.gif' alt='{$file_path}'></a>");
+		$code->write_html("<a href='#'><img onclick='run_template_editor(\"{$file_path}\");' src='/shared/images/i.gif' alt='{$file_path}' title='{$file_path}' border='0'></a>");
 	}
 
 	/**

@@ -37,9 +37,14 @@ class tree
 		  include_once(LIMB_DIR . 'core/tree/drivers/materialized_path_driver.class.php');
 			$this->_tree_driver =& new materialized_path_driver();
 		}
-
+		else
+		  $this->_tree_driver =& $driver;    		
+	}
+	
+	function initialize_expanded_parents()
+	{
 		$parents =& session :: get('tree_expanded_parents');
-		$this->_tree_driver->set_expanded_parents($parents);
+		$this->_tree_driver->set_expanded_parents($parents);	
 	}
 	
 	function is_node($id)
@@ -137,9 +142,9 @@ class tree
 		return $this->_tree_driver->get_max_child_identifier($id);
 	}
 			
-	function & get_node_by_path($path, $delimiter='/', $recursive = false)
+	function & get_node_by_path($path, $delimiter='/')
 	{
-  	return $this->_tree_driver->get_node_by_path($path, $delimiter, $recursive);	
+  	return $this->_tree_driver->get_node_by_path($path, $delimiter);	
 	}
 	
 	function & get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)

@@ -205,7 +205,7 @@ class user_object extends content_object
 		global $_SERVER;
 		$http_host = $_SERVER['HTTP_HOST'];
 
-		$filename = TEMPLATES_DIR . '/user/generated_password_mail.html';
+		$filename = LIMB_DIR . '/design/default/templates/user/generated_password_mail.html';
 		
 		if(!file_exists($filename))
 		  error('template file for password notification email not found!', 

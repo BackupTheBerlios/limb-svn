@@ -47,7 +47,7 @@ class tree_driver
   {
   	if(!is_array($this->_expanded_parents) || sizeof($this->_expanded_parents) == 0)
   	{
-  		$this->reset_expanded_parents();  		
+  		$this->reset_expanded_parents(); 		
   	}
   	elseif(sizeof($this->_expanded_parents) > 0)
   	{

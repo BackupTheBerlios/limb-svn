@@ -40,6 +40,9 @@ class access_policy
 		$in_ids = implode(',', $object_ids);
 
     $accessor_ids = implode(',', $this->get_accessor_ids());
+    
+    if (!$accessor_ids)
+      return array();
 			
 		$db =& db_factory :: instance();
 			

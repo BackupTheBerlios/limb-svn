@@ -30,6 +30,9 @@ class metadata_title_tag extends server_component_tag
 		{
 			$code->write_php("{$ref}->set_title_separator(\"". $this->attributes['separator'] ."\");\n");
 		}	
+
+		if(isset($this->attributes['offset_path']))	
+			$code->write_php($this->get_component_ref_code() . '->set_offset_path("' . $this->attributes['offset_path'] . '");');
 		
 		$ref = $this->get_component_ref_code();
 		$code->write_php("echo {$ref}->get_title();\n");

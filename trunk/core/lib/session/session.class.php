@@ -103,7 +103,8 @@ function & _session_db_read($session_id)
   	{
   		foreach($matches as $match)
   		{
-  			include_once($match[1]);
+  		  if(isset($match[1]))
+  			  include_once($match[1]);
   		}
   	}
   	

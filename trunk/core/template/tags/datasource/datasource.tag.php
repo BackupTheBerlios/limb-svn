@@ -58,7 +58,17 @@ class datasource_tag extends server_component_tag
 		$targets = explode(',', $this->attributes['target']);
 		foreach($targets as $target)
 		{
-			if($target_component =& $this->parent->find_child(trim($target)))
+		  $target = trim($target);
+		  
+		  $target_component = $this->parent->find_child($target);
+		  
+		  if(!$target_component)
+		  {
+		    $root =& $this->get_root_dataspace();
+		    $target_component = $root->find_child($target);
+		  }
+		    
+			if($target_component)
 			{
 				$code->write_php($target_component->get_component_ref_code() . '->register_dataset(' . $this->get_component_ref_code() . '->get_dataset());');
 				

@@ -237,14 +237,18 @@ class codewriter
 	function get_temp_variable()
 	{
 		$var = $this->temp_var_name++;
-		if ($var > 26)
+		if ($var > 675) 
 		{
-			return chr(64 + $var % 26) . chr(64 + $var / 26);
+			return chr(65 + ($var/26)/26) . chr(65 + ($var/26)%26) . chr(65 + $var%26);
 		} 
-		else
+		elseif ($var > 26) 
+		{
+			return chr(65 + ($var/26)%26) . chr(65 + $var%26);
+		} 
+		else 
 		{
 			return chr(64 + $var);
-		} 
+		}
 	} 
 } 
 

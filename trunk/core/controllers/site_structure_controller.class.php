@@ -18,7 +18,8 @@ class site_structure_controller extends site_object_controller
 		return array(
 				'display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/site_structure/display.html',						
+						'template_path' => '/site_structure/display.html',
+						'action_path' => '/site_structure/tree_display_action',
 				),
 				'toggle' => array(
 						'permissions_required' => 'r',

@@ -22,7 +22,6 @@ define('DEBUG_OUTPUT_MESSAGE_SCREEN', 1);
 define('DEBUG_OUTPUT_MESSAGE_STORE', 2);
 define('DEBUG_OUTPUT_MESSAGE_SEND', 4);
 
-require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
@@ -307,7 +306,7 @@ class debug
 		$title = '';
 		$headers = array();
 		$description = debug :: _parse_text_debug_info($debug_info);
-		$verbosity_level = $debug_info['verbosity_level'];
+		$verbosity_level = $debug_info['level'];
 		
 		switch ($verbosity_level)
 		{
@@ -468,7 +467,7 @@ class debug
 	function _write_file($file_name, $debug_info)
 	{
 		if (!log::write($file_name, debug :: _parse_text_debug_info($debug_info)))
-			$this->set_log_file_enabled(false, $debug_info['verbosity_level']);
+			$this->set_log_file_enabled(false, $debug_info['level']);
 	} 
 
 	/*
