@@ -12,6 +12,7 @@
 	<core:PARAMETER name='loader_class_name' value='period_news_object'>
 	<core:PARAMETER name='datasource_path' value='fetch_sub_branch_datasource'>
 	<core:PARAMETER name='order' value='news_date=DESC'>
+	<core:PARAMETER name='fetch_method' value='fetch_valid_period_by_ids'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="front_pager.html">
@@ -19,7 +20,7 @@
 <grid:LIST id='news'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
     <grid:ITERATOR>
-		<core:INCLUDE file="/news_object/news_item.html">
+		<core:INCLUDE file="/period_news_object/news_item.html">
     </grid:ITERATOR>
 </table>
 </grid:LIST>

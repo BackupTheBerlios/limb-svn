@@ -22,7 +22,8 @@ class faq_object extends content_object
 		return complex_array :: array_merge(
 				parent :: _define_attributes_definition(),
 				array(
-				'identifier' => array('search' => true)
+				'question' => array('search' => true)
+				'answer' => array('search' => true)
 				));
 	}
 	

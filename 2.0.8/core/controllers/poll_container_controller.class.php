@@ -33,6 +33,15 @@ class poll_container_controller extends site_object_controller
 						'action_name' => strings :: get('create_poll_question','poll'),
 						'can_have_access_template' => true,
 				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete'),
+						'action_path' => '/site_object/delete_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				),
 				'vote' => array(
 						'permissions_required' => 'r',
 						'action_path' => '/poll_container/vote_action',

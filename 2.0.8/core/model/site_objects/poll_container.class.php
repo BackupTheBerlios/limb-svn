@@ -29,6 +29,7 @@ class poll_container extends site_object
 	
 	function can_vote()
 	{
+		trigger_error('', E_USER_WARNING);
 		if(!$poll_data = $this->get_active_poll())
 			return false;
 			

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_faq_folder_action.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
@@ -16,9 +16,6 @@ class create_faq_folder_action extends form_create_site_object_action
 	{
 		$definition = array(
 			'site_object' => 'faq_folder',
-			'datamap' => array(
-				'title' => 'title',
-			)
 		);
 		
 		parent :: form_create_site_object_action('create_faq_folder', $definition);
