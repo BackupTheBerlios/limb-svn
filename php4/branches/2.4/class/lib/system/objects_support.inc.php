@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-function instantiateSessionObject($class_name, &$arguments = array())
+function instantiateSessionObject($class_name, &$arguments)
 {
   if(	!isset($_SESSION['global_session_singleton_'. $class_name]) ||
       get_class($_SESSION['global_session_singleton_'. $class_name]) != $class_name)

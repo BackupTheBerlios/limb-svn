@@ -30,7 +30,7 @@ class User extends Object
   function & instance()
   {
     if (!isset($GLOBALS['UserGlobalInstance']) || !is_a($GLOBALS['UserGlobalInstance'], 'User'))
-      $GLOBALS['UserGlobalInstance'] =& instantiateSessionObject('User');
+      $GLOBALS['UserGlobalInstance'] =& instantiateSessionObject('User', $a = array());
 
     return $GLOBALS['UserGlobalInstance'];
   }

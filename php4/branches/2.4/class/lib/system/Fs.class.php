@@ -14,6 +14,7 @@ require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
 define('FS_SEPARATOR_LOCAL', 1);
 define('FS_SEPARATOR_UNIX', 2);
 define('FS_SEPARATOR_DOS',  3);
+define('FS_WIN32_NET_PREFIX', '\\\\');
 
 class Fs
 {
@@ -145,7 +146,7 @@ class Fs
     {
       array_shift($dir_elements);
       array_shift($dir_elements);
-      $dir_elements[0] = Fs :: WIN32_NET_PREFIX . $dir_elements[0];
+      $dir_elements[0] = FS_WIN32_NET_PREFIX . $dir_elements[0];
     }
 
     return $dir_elements;
@@ -357,7 +358,7 @@ class Fs
   {
     if(Sys :: osType() == 'win32' &&  strlen($path) > 2)
     {
-      return (substr($path, 0, 2) == '\\\\');
+      return (substr($path, 0, 2) == FS_WIN32_NET_PREFIX);
     }
     return false;
   }

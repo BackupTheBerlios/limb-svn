@@ -27,24 +27,33 @@ class DebugMock extends Debug
   function expectWriteException($e)
   {
     if(is_a($e, 'LimbException'))
-      DebugMock :: _expectWrite(DebugMock :: LEVEL_ERROR, $e->getMessage(), $e->getAdditionalParams());
+      DebugMock :: _expectWrite(DEBUG_LEVEL_ERROR,
+                                $e->getMessage(),
+                                $e->getAdditionalParams());
     else
-      DebugMock :: _expectWrite(DebugMock :: LEVEL_ERROR, $e->getMessage());
+      DebugMock :: _expectWrite(DEBUG_LEVEL_ERROR,
+                                $e->getMessage());
   }
 
   function expectWriteError($message='', $params=array())
   {
-    DebugMock :: _expectWrite(DebugMock :: LEVEL_ERROR, $message, $params);
+    DebugMock :: _expectWrite(DEBUG_LEVEL_ERROR,
+                              $message,
+                              $params);
   }
 
   function expectWriteWarning($message='', $params=array())
   {
-    DebugMock :: _expectWrite(DebugMock :: LEVEL_WARNING, $message, $params);
+    DebugMock :: _expectWrite(DEBUG_LEVEL_WARNING,
+                              $message,
+                              $params);
   }
 
   function expectWriteNotice($message='', $params=array())
   {
-    DebugMock :: _expectWrite(DebugMock :: LEVEL_NOTICE, $message, $params);
+    DebugMock :: _expectWrite(DEBUG_LEVEL_NOTICE,
+                              $message,
+                              $params);
   }
 
   function _expectWrite($verbosity_level, $message, $params)
@@ -63,7 +72,7 @@ class DebugMock extends Debug
 
   function tally()
   {
-    $debug = DebugMock :: instance();
+    $debug =& DebugMock :: instance();
 
     $debug->mock->tally();
     $debug->expected_data = array();
@@ -73,7 +82,7 @@ class DebugMock extends Debug
   {
     if(!$this->mock)
     {
-      if($verbosity_level != DebugMock :: TIMING_POINT)
+      if($verbosity_level != DEBUG_TIMING_POINT)
         parent :: write($verbosity_level, $string, $code_line, $params);
       else
         parent :: write($verbosity_level, $string);
@@ -81,7 +90,7 @@ class DebugMock extends Debug
       return;
     }
 
-    if($verbosity_level != DebugMock :: TIMING_POINT)
+    if($verbosity_level != DEBUG_TIMING_POINT)
     {
       $this->mock->_invoke('write', array($verbosity_level, $string, $params));
 

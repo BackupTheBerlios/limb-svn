@@ -18,6 +18,7 @@ if (file_exists(dirname(__FILE__) . '/setup.override.php'))
 @define('DEFAULT_MANAGEMENT_LOCALE_ID', 'en');
 @define('DEFAULT_CONTENT_LOCALE_ID','en');
 
+require_once(LIMB_DIR . '/class/core/Limb.class.php');
 require_once(LIMB_DIR . '/setup.php');
 require_once(LIMB_DIR . '/tests/lib/DebugMock.class.php');//don't move this line!!!
 
@@ -44,7 +45,6 @@ require_once(LIMB_DIR . '/tests/cases/LimbTestCase.class.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
 require_once(LIMB_DIR . '/class/lib/error/error.inc.php');
 require_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
-require_once(LIMB_DIR . '/class/core/Limb.class.php');
 require_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
 
 Limb :: registerToolkit(new BaseLimbToolkit());

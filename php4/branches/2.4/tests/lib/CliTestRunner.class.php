@@ -21,7 +21,8 @@ Usage: ./runtests.php [OPTION]...
   -b, --browse=PATH       list available tests cases at specified node
   -t, --test=PATH         test specified test cases node
   -h, --help              display this help and exit
-EOD;    echo $usage;
+EOD;
+    echo $usage;
     exit(0);
   }
 
