@@ -57,8 +57,7 @@ class core_import_tag extends silent_compiler_directive_tag
 					'line' => $this->starting_line_no));
 		} 
 		$file = $this->attributes['file'];
-		$sourcefile = resolve_template_source_file_name($file, TMPL_IMPORT, $this->source_file);
-		if (empty($sourcefile))
+		if (!$sourcefile = resolve_template_source_file_name($file))
 		{
 			error('MISSINGFILE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
 					'srcfile' => $file,

@@ -86,7 +86,12 @@ function compile_template_file($filename, $resolve_path = true)
 	global $tag_dictionary;
 	
 	if($resolve_path)
-		$sourcefile = resolve_template_source_file_name($filename, TMPL_INCLUDE);
+	{
+		if(!$sourcefile = resolve_template_source_file_name($filename))
+			error('template file not found', 
+						__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+						array('file' => $filename));
+	}
 	else
 		$sourcefile = $filename;
 		

@@ -5,13 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: compiler_support.inc.php 570 2004-02-26 12:37:31Z server $
+* $Id$
 *
 ***********************************************************************************/
 /**
 * Determines the full path to a source template file.
 */
-function resolve_template_source_file_name($file, $operation = TMPL_INCLUDE, $context = null)
+function resolve_template_source_file_name($file)
 {
 	if (defined('CONTENT_LOCALE_ID'))
 		$locale = '_' . CONTENT_LOCALE_ID . '/';
@@ -41,8 +41,8 @@ function resolve_template_source_file_name($file, $operation = TMPL_INCLUDE, $co
 
 	if (file_exists(dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . $file))
 		return dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . $file;
-		
-	error('template file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('file' => $file));
+	
+	return null;	
 } 
 
 /**
@@ -100,28 +100,6 @@ function write_template_file($file, $data)
 	{
 		fclose($fp);
 	} 
-} 
-
-/**
-* Compiles all templates in the scheme
-* 
-* @return void 
-* @access protected 
-*/
-function compile_entire_file_scheme()
-{ 
-	// Need to add support for accumulating error messages.
-	$root = (get_ini_option('config.ini', 'filescheme', 'templateroot'));
-	if (isset($root))
-	{
-		$source_root = $root . '/source';
-	} 
-	else
-	{
-		$source_root = dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/source';
-	} 
-
-	recursive_compile_all($source_root, '/');
 } 
 
 ?>

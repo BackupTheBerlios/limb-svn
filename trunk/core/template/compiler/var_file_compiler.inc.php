@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: var_file_compiler.inc.php 513 2004-02-20 15:10:42Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
@@ -47,8 +47,7 @@ function parse_var_file($filename)
 function compile_var_file($filename)
 {
 	$destfile = resolve_template_compiled_file_name($filename, TMPL_IMPORT);
-	$sourcefile = resolve_template_source_file_name($filename, TMPL_IMPORT);
-	if (empty($sourcefile))
+	if (!$sourcefile = resolve_template_source_file_name($filename))
 	{
 		error('MISSINGFILE2', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('srcfile' => $filename));
 	} 

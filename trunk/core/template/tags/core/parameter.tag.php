@@ -75,7 +75,7 @@ class core_parameter_tag extends compiler_directive_tag
 			. '->set_parameter("' . $this->attributes['name'] . '", ' 
 			. var_export($value, true) . ')');
 		
-		parent::generate_contents(&$code);
+		parent::generate_contents($code);
 	}
 	
 	function _typecast_value()

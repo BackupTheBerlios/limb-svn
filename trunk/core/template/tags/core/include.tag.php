@@ -45,8 +45,7 @@ class core_include_tag extends compiler_directive_tag
 		} 
 		$file = $this->attributes['file'];
 
-		$this->resolved_source_file = resolve_template_source_file_name($file, TMPL_INCLUDE, $this->source_file);
-		if (empty($this->resolved_source_file))
+		if (!$this->resolved_source_file = resolve_template_source_file_name($file))
 		{
 			error('MISSINGFILE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
 				array('tag' => $this->tag,

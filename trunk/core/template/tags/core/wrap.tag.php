@@ -68,8 +68,7 @@ class core_wrap_tag extends compiler_directive_tag
 					'line' => $this->starting_line_no));
 		} 
 	
-		$this->resolved_source_file = resolve_template_source_file_name($file, TMPL_INCLUDE, $this->source_file);
-		if (empty($this->resolved_source_file))
+		if (!$this->resolved_source_file = resolve_template_source_file_name($file))
 		{
 			error('MISSINGFILE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
 					'srcfile' => $file,

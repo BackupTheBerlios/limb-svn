@@ -60,7 +60,12 @@ class template extends component
 		$this->file = $file;
 		
 		if($resolve_path)
-			$srcfile = resolve_template_source_file_name($file, TMPL_INCLUDE);
+		{
+			if(!$srcfile = resolve_template_source_file_name($file))
+				error('template file not found', 
+							__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+							array('file' => $file));
+		}
 		else
 			$srcfile = $file;				
 
