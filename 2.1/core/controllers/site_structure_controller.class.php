@@ -66,6 +66,11 @@ class site_structure_controller extends site_object_controller
 						'template_path' => '/site_structure/multi_delete.html',
 						'popup' => true,
 				),
+				'multi_toggle_publish_status' => array(
+						'permissions_required' => 'w',
+						'action_path' => '/site_structure/multi_toggle_publish_status_action', 
+						'popup' => true,
+				),
 		);
  		
 

@@ -48,12 +48,6 @@ class grid_button_tag extends button_tag
 		$grid_tag =& $this->find_parent_by_class('grid_list_tag');
 		$grid_tag->set_form_required();
 		
-		if(isset($this->attributes['form_submitted']))
-		{
-			$grid_tag->set_form_submitted((boolean)$this->attributes['form_submitted']);
-			unset($this->attributes['form_submitted']);
-		}
-
 		$this->attributes['type'] = 'button';
 		
 		$action_path = $this->attributes['path'] . '?';
@@ -67,7 +61,15 @@ class grid_button_tag extends button_tag
 			unset($this->attributes['reload_parent']);
 		}
 		
-		$this->attributes['onclick'] = "submit_form('grid_form_{$grid_tag->attributes['id']}', '{$action_path}')";
+		$this->attributes['onclick'] = '';
+		
+		if(isset($this->attributes['form_submitted']) && (boolean)$this->attributes['form_submitted'])
+		{
+			$this->attributes['onclick'] .= "add_form_hidden_parameter('grid_form_{$grid_tag->attributes['id']}', 'grid_form[submitted]', 1);";
+			unset($this->attributes['form_submitted']);
+		}
+		
+		$this->attributes['onclick'] .= "submit_form('grid_form_{$grid_tag->attributes['id']}', '{$action_path}')";
 		
 		parent :: prepare();
 		

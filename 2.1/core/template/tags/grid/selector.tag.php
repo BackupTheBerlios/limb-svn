@@ -11,16 +11,16 @@
 
 require_once(LIMB_DIR . '/core/template/tags/form/control_tag.class.php');
 
-class grid_select_tag_info
+class grid_selector_tag_info
 {
-	var $tag = 'grid:SELECT';
+	var $tag = 'grid:SELECTOR';
 	var $end_tag = ENDTAG_FORBIDDEN;
-	var $tag_class = 'grid_select_tag';
+	var $tag_class = 'grid_selector_tag';
 } 
 
-register_tag(new grid_select_tag_info());
+register_tag(new grid_selector_tag_info());
 
-class grid_select_tag extends control_tag
+class grid_selector_tag extends control_tag
 {
 	var $runtime_component_path = '/core/template/components/form/grid_checkbox_component';
 		

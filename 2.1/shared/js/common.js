@@ -347,11 +347,20 @@ function add_form_hidden_parameter(form_name, parameter, val)
 {
 	if(document.forms[form_name])
 	{
-		action = document.createElement('INPUT');
-		action.type = 'hidden';
-		action.name = parameter;
-		action.value = val;
-		document.forms[form_name].appendChild(action);
+		hidden = document.getElementById(parameter);
+		if(hidden)
+		{
+			hidden.value = val;
+		}
+		else
+		{
+			hidden = document.createElement('INPUT');
+			hidden.type = 'hidden';
+			hidden.id = parameter;
+			hidden.name = parameter;
+			hidden.value = val;
+			document.forms[form_name].appendChild(hidden);
+		}
 	}
 }
 
