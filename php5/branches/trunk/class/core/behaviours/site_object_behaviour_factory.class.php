@@ -13,7 +13,7 @@ abstract class site_object_behaviour_factory
 {	
   static protected $_behaviours = array();
   
-	static function create($class_name)
+	static public function create($class_name)
 	{
 	  if(isset(self :: $_behaviours[$class_name]))
 	    return self :: $_behaviours[$class_name];

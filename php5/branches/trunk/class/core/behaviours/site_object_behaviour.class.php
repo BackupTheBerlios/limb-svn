@@ -23,12 +23,12 @@ class site_object_behaviour
     $this->_properties = $this->_define_properties();
   }
   
-  function get_default_action()
+  public function get_default_action()
   {
     return 'display';
   }
   
-  function get_actions_list()
+  public function get_actions_list()
   {
     if($this->_actions_list)
       return $this->_actions_list;
@@ -42,7 +42,7 @@ class site_object_behaviour
     return $this->_actions_list;
   }
   
-  function action_exists($action)
+  public function action_exists($action)
   {
     return in_array($action, $this->get_actions_list());
   }
