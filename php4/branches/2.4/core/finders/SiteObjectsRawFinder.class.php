@@ -56,7 +56,7 @@ class SiteObjectsRawFinder// implements DataFinder
     %s %s";
   }
 
-  function find($params = array(), $sql_params=array())//refactor!!!
+  function & find($params = array(), $sql_params = array())//refactor!!!
   {
     $sql = sprintf($this->_defineRawSelectSTMT(),
                    $this->_addSql($sql_params, 'columns'),
@@ -68,17 +68,14 @@ class SiteObjectsRawFinder// implements DataFinder
       $sql .= ' ORDER BY ' . $this->_buildOrderSql($params['order']);
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDbConnection();
+    $conn =& $toolkit->getDbConnection();
 
-    $limit = isset($params['limit']) ? $params['limit'] : 0;
-    $offset = isset($params['offset']) ? $params['offset'] : 0;
+    $stmt =& $conn->newStatement($sql);
 
-    $db->sqlExec($sql, $limit, $offset);
-
-    return $db->getArray('id');
+    return new SimpleDbDataset($stmt->getRecordSet());
   }
 
-  function findById($id)
+  function & findById($id)
   {
     return $this->find(array(), array('conditions' => array(' AND sso.id=' . $id)));
   }

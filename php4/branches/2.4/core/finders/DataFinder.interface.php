@@ -10,9 +10,7 @@
 ***********************************************************************************/
 class DataFinder
 {
-  function find($params = array(), $sql_params = array()){}//refactor!!!
-
-  function findCount($sql_params=array()){}//refactor!!!
+  function & find($params = array(), $sql_params = array()){}//refactor!!!
 
   function findById($id){}
 }

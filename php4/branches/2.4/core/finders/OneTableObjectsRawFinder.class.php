@@ -53,22 +53,6 @@ class OneTableObjectsRawFinder extends SiteObjectsRawFinder
   {
     return parent :: find($params, $sql_params);
   }
-
-  function _doParentFindCount($sql_params)
-  {
-    return parent :: findCount($sql_params);
-  }
-
-  function findCount($sql_params=array())
-  {
-    $db_table =& $this->getDbTable();
-    $table_name = $db_table->getTableName();
-    $sql_params['tables'][] = ",{$table_name} as tn";
-
-    $sql_params['conditions'][] = 'AND sso.id=tn.object_id';
-
-    return $this->_doParentFindCount($sql_params);
-  }
 }
 
 ?>

@@ -34,10 +34,15 @@ class OneTableObjectsRawFinderTest extends LimbTestCase
   var $toolkit;
   var $db_table;
 
+  function OneTableObjectsRawFinderTest()
+  {
+    parent :: LimbTestCase('one table objects raw');
+  }
+
   function setUp()
   {
     $this->finder = new OneTableObjectsRawFinderTestVersion($this);
-    $this->db_table = new MockDbTable($this);
+    $this->db_table = new MockLimbDbTable($this);
     $this->toolkit = new MockLimbToolkit($this);
 
     $this->toolkit->setReturnReference('createDBTable', $this->db_table);
@@ -70,7 +75,7 @@ class OneTableObjectsRawFinderTest extends LimbTestCase
     $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id';
 
     $this->finder->expectOnce('_doParentFind', array(new EqualExpectation($params),
-                                                        new EqualExpectation($expected_sql_params)));
+                                                     new EqualExpectation($expected_sql_params)));
     $this->finder->setReturnValue('_doParentFind', $result = 'some result');
 
     $this->assertEqual($this->finder->find($params, $sql_params), $result);
@@ -94,25 +99,6 @@ class OneTableObjectsRawFinderTest extends LimbTestCase
     $this->finder->setReturnValue('_doParentFind', $result = 'some result');
 
     $this->assertEqual($this->finder->findById($id), $result);
-  }
-
-  function testFindCount()
-  {
-    $sql_params['conditions'][] = 'some condition';
-
-    $this->db_table->expectOnce('getTableName');
-    $this->db_table->setReturnValue('getTableName', 'table1');
-
-    $expected_sql_params = $sql_params;
-    $expected_sql_params['tables'][] = ',table1 as tn';
-    $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id';
-
-    $this->finder->expectOnce('_doParentFindCount',
-                              array(new EqualExpectation($expected_sql_params)));
-
-    $this->finder->setReturnValue('_doParentFindCount', $result = 'some result');
-
-    $this->assertEqual($this->finder->findCount($sql_params), $result);
   }
 }
 

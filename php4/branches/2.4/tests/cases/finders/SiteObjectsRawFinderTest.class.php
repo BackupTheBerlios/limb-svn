@@ -8,14 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/db_tables/LimbDbTableFactory.class.php');
-require_once(LIMB_DIR . '/core/db/DbModule.class.php');
 require_once(LIMB_DIR . '/core/finders/SiteObjectsRawFinder.class.php');
 require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
 require_once(LIMB_DIR . '/core/tree/MaterializedPathTree.class.php');
 
-Mock :: generate('DbModule');
+require_once(WACT_ROOT . '/db/drivers/mysql/driver.inc.php');
+
+Mock :: generate('MySqlConnection', 'MockDbConnection');
+Mock :: generate('MySqlQueryStatement', 'MockDbStatement');
 Mock :: generate('LimbToolkit');
 
 Mock :: generatePartial('SiteObjectsRawFinder',
@@ -26,7 +29,7 @@ class SiteObjectsRawFinderFindTestVersion extends SiteObjectsRawFinderFindVersio
 {
   var $_mocked_methods = array('find');
 
-  function find($params = array(), $sql_params = array())
+  function & find($params = array(), $sql_params = array())
   {
     $args = func_get_args();
     return $this->_mock->_invoke('find', $args);
@@ -41,9 +44,14 @@ class SiteObjectsRawFinderTest extends LimbTestCase
   var $root_node_id;
   var	$behaviour_id;
 
+  function SiteObjectsRawFinderTest()
+  {
+    parent :: LimbTestCase('site object raw finder test');
+  }
+
   function setUp()
   {
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
 
     $this->_cleanUp();
 
@@ -72,8 +80,8 @@ class SiteObjectsRawFinderTest extends LimbTestCase
   function testFindRequiredFields()
   {
     $sql_params['conditions'][] = ' AND sso.id = 1';
-    $objects_data = $this->finder->find(array(), $sql_params);
-    $record = reset($objects_data);
+    $rs =& $this->finder->find(array(), $sql_params);
+    $record = $rs->getRow();
 
     $this->assertEqual($record['identifier'], 'object_1');
     $this->assertEqual($record['title'], 'object_1_title');
@@ -100,10 +108,11 @@ class SiteObjectsRawFinderTest extends LimbTestCase
 
   function testFindSql()
   {
-    $db_mock = new MockDbModule($this);
+    $mock_connection = new MockDbConnection($this);
+    $mock_stmt = new MockDbStatement($this);
     $toolkit = new MockLimbToolkit($this);
 
-    $toolkit->setReturnReference('getDbConnection', $db_mock);
+    $toolkit->setReturnReference('getDbConnection', $mock_connection);
 
     Limb :: registerToolkit($toolkit);
 
@@ -111,8 +120,6 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $sql_params = array();
 
     $params['order'] = array('col1' => 'DESC', 'col2' => 'ASC');
-    $params['limit'] = 10;
-    $params['offset'] = 5;
 
     $sql_params['columns'][] = 'test-column1,';
     $sql_params['columns'][] = 'test-column2,';
@@ -128,75 +135,16 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $expectation = new WantedPatternExpectation(
     "~^SELECT.*sso\.locale_id as locale_id,.*test-column1, test-column2,.*sso\.title as title,.* sys_site_object_tree as ssot.*,test-table1 ,test-table2.*WHERE sys_class\.id = sso\.class_id.*AND ssot\.object_id = sso\.id.*OR test-condition1 AND test-condition2 GROUP BY test-group ORDER BY col1 DESC, col2 ASC$~s");
 
-    $db_mock->expectOnce('sqlExec', array($expectation, 10, 5));
-    $db_mock->expectOnce('getArray', array('id'));
+    $mock_connection->expectOnce('newStatement', array($expectation));
+    $mock_connection->setReturnReference('newStatement', $mock_stmt, array($expectation));
+    $mock_stmt->expectOnce('getRecordSet');
 
     $this->finder->find($params, $sql_params);
 
     Limb :: popToolkit();
 
-    $db_mock->tally();
-  }
-
-  function testFindCountSqlWithGroup()
-  {
-    $db_mock = new MockDbModule($this);
-    $toolkit = new MockLimbToolkit($this);
-
-    $toolkit->setReturnReference('getDbConnection', $db_mock);
-
-    Limb :: registerToolkit($toolkit);
-
-    $sql_params['tables'][] = ',table1';
-    $sql_params['tables'][] = ',table2';
-
-    $sql_params['conditions'][] = 'OR cond1';
-    $sql_params['conditions'][] = 'AND cond2';
-
-    $sql_params['group'][] = 'GROUP BY test-group';
-
-    $expectation = new WantedPatternExpectation(
-    "~^SELECT COUNT\(sso\.id\) as count.*FROM sys_site_object as sso ,table1 ,table2.*WHERE sso\.id OR cond1 AND cond2 GROUP BY test-group~s");
-
-    $db_mock->expectOnce('sqlExec', array($expectation));
-    $db_mock->expectOnce('countSelectedRows');
-    $db_mock->setReturnValue('countSelectedRows', $result = 10);
-
-    $this->assertEqual($result, $this->finder->findCount($sql_params));
-
-    Limb :: popToolkit();
-
-    $db_mock->tally();
-  }
-
-  function testFindCountSqlNoGroup()
-  {
-    $db_mock = new MockDbModule($this);
-    $toolkit = new MockLimbToolkit($this);
-
-    $toolkit->setReturnReference('getDbConnection', $db_mock);
-
-    Limb :: registerToolkit($toolkit);
-
-    $sql_params['tables'][] = ',table1';
-    $sql_params['tables'][] = ',table2';
-
-    $sql_params['conditions'][] = 'OR cond1';
-    $sql_params['conditions'][] = 'AND cond2';
-
-    $expectation = new WantedPatternExpectation(
-    "~^SELECT COUNT\(sso\.id\) as count.*FROM sys_site_object as sso ,table1 ,table2.*WHERE sso\.id OR cond1 AND cond2~s");
-
-    $db_mock->expectOnce('sqlExec', array($expectation));
-    $db_mock->expectNever('countSelectedRows');
-    $db_mock->expectOnce('fetchRow');
-    $db_mock->setReturnValue('fetchRow', array('count' => 10));
-
-    $this->assertEqual(10, $this->finder->findCount($sql_params));
-
-    Limb :: popToolkit();
-
-    $db_mock->tally();
+    $mock_stmt->tally();
+    $mock_connection->tally();
   }
 
   function testFindById()
@@ -213,62 +161,27 @@ class SiteObjectsRawFinderTest extends LimbTestCase
 
   function testFindNoParams()
   {
-    $result = $this->finder->find();
+    $rs =& $this->finder->find();
 
-    for($i = 1; $i <=5; $i++)
+    for($i = 0,$rs->rewind();$rs->valid();$rs->next())
     {
-      $this->assertEqual($result[$i]['identifier'], 'object_' . $i);
-      $this->assertEqual($result[$i]['title'], 'object_' . $i . '_title');
+      $i++;
+      $record = $rs->current();
+      $this->assertEqual($record->get('identifier'), 'object_' . $i);
+      $this->assertEqual($record->get('title'), 'object_' . $i . '_title');
     }
-  }
-
-  function testFindLimitOffset()
-  {
-    $params['limit'] = $limit = 3;
-    $params['offset'] = $limit = 2;
-    $result = $this->finder->find($params);
-
-    for($i = 3; $i <= 5; $i++)
-    {
-      $this->assertEqual($result[$i]['identifier'], 'object_' . $i);
-      $this->assertEqual($result[$i]['title'], 'object_' . $i . '_title');
-    }
-  }
-
-  function testFindLimitOffsetOrder()
-  {
-    $params['limit'] = $limit = 3;
-    $params['offset'] = 2;
-    $params['order'] = array('title' => 'DESC');
-    $result = $this->finder->find($params);
-
-    for($i = 7; $i >=5; $i--)
-    {
-      $this->assertEqual($result[$i]['identifier'], 'object_' . $i);
-      $this->assertEqual($result[$i]['title'], 'object_' . $i . '_title');
-    }
-  }
-
-  function testCount()
-  {
-    $result = $this->finder->findCount();
-    $this->assertEqual($result, 10);
   }
 
   function _insertSysClassRecord()
   {
     $db_table = LimbDbTableFactory :: create('SysClass');
-    $db_table->insert(array('name' => 'site_object'));
-
-    $this->class_id = $db_table->getLastInsertId();
+    $this->class_id = $db_table->insert(array('name' => 'site_object'));
   }
 
   function _insertSysBehaviourRecord()
   {
     $db_table = LimbDbTableFactory :: create('SysBehaviour');
-    $db_table->insert(array('name' => 'site_object_behaviour'));
-
-    $this->behaviour_id = $db_table->getLastInsertId();
+    $this->behaviour_id = $db_table->insert(array('name' => 'site_object_behaviour'));
   }
 
   function _insertSysSiteObjectRecords()

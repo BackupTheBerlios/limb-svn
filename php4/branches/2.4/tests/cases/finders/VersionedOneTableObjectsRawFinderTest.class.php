@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/finders/VersionedOneTableObjectsRawFinder.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('LimbDbTable');
@@ -33,10 +34,15 @@ class VersionedOneTableObjectsRawFinderTest extends LimbTestCase
   var $toolkit;
   var $db_table;
 
+  function VersionedOneTableObjectsRawFinderTest()
+  {
+    parent :: LimbTestCase('versioned one table objects finder test');
+  }
+
   function setUp()
   {
     $this->finder = new VersionedOneTableObjectsRawFinderTestVersion($this);
-    $this->db_table = new MockDbTable($this);
+    $this->db_table = new MockLimbDbTable($this);
     $this->toolkit = new MockLimbToolkit($this);
 
     $this->toolkit->setReturnReference('createDBTable', $this->db_table);
@@ -80,22 +86,6 @@ class VersionedOneTableObjectsRawFinderTest extends LimbTestCase
 
     $this->assertEqual($this->finder->findByVersion($object_id, $version), $result);
   }
-
-  function testFindCount()
-  {
-    $sql_params['conditions'][] = 'some condition';
-    $expected_sql_params = $sql_params;
-
-    $expected_sql_params['conditions'][] = ' AND sso.current_version=tn.version';
-
-    $this->finder->expectOnce('_doParentFindCount',
-                              array(new EqualExpectation($expected_sql_params)));
-
-    $this->finder->setReturnValue('_doParentFindCount', $result = 'some result');
-
-    $this->assertEqual($this->finder->findCount($sql_params), $result);
-  }
-
 }
 
 ?>
