@@ -42,37 +42,9 @@ class datasource_tag extends server_component_tag
 			$code->write_php($this->get_component_ref_code() . '->setup_navigator();');
 		}
 
-		$targets = explode(',', $this->attributes['target']);
-		foreach($targets as $target)
-		{
-		  $target = trim($target);
-		  
-		  $target_component = $this->parent->find_child($target);
-		  
-		  if(!$target_component)
-		  {
-		    $root =& $this->get_root_dataspace();
-		    $target_component = $root->find_child($target);
-		  }
-		    
-			if($target_component)
-			{
-				$code->write_php($target_component->get_component_ref_code() . '->register_dataset(' . $this->get_component_ref_code() . '->get_dataset());');
-				
-				if($navigator)
-				{
-				  $code->write_php('if(isset($' . $offset. ')){');
-				  $code->write_php($target_component->get_component_ref_code() . '->set_offset($' . $offset . ');');
-				  $code->write_php('}');
-				}
-			}
-			else
-				debug :: write_error('component target not found',
-				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array('target' => $target));
+		$code->write_php($this->get_component_ref_code() . '->set("target", ' . $this->attributes['target'] .');');
+		$code->write_php($this->get_component_ref_code() . '->setup_target();');
 
-		}
-			
 		if(isset($this->attributes['navigator']))
 		{
 			$code->write_php($this->get_component_ref_code() . '->fill_navigator();');
