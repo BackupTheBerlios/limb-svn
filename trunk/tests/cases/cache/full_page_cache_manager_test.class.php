@@ -374,7 +374,7 @@ class full_page_cache_manager_test extends UnitTestCase
 
     $this->assertEqual(
       $this->cache_manager->get_cache_id(), 
-      md5('/root/test' . serialize($query_items))
+      'f_' . md5('/root/test' . serialize($query_items))
     ); 
   }
   
@@ -412,7 +412,7 @@ class full_page_cache_manager_test extends UnitTestCase
 
     $this->assertEqual(
       $this->cache_manager->get_cache_id(), 
-      md5('/root/test' . serialize(array()))
+      'f_' . md5('/root/test' . serialize(array()))
     ); 
   }
 
@@ -427,7 +427,7 @@ class full_page_cache_manager_test extends UnitTestCase
 
     $this->assertEqual(
       $this->cache_manager->get_cache_id(), 
-      md5('/root/test' . serialize(array('action' => 1, 'pager' => 1)))
+      'f_' . md5('/root/test' . serialize(array('action' => 1, 'pager' => 1)))
     ); 
   }
 
@@ -544,7 +544,7 @@ class full_page_cache_manager_test extends UnitTestCase
       
   function _write_cache($path, $attributes, $contents='test')
   {
-    $file_id = md5($path . serialize($attributes));
+    $file_id = 'f_' . md5($path . serialize($attributes));
     $this->_write_simple_cache($file_id, $contents);
   }
   
@@ -569,7 +569,7 @@ class full_page_cache_manager_test extends UnitTestCase
   
   function _clean_cache($path, $attributes)
   {
-    $file_id = md5($path . serialize($attributes));
+    $file_id = 'f_' . md5($path . serialize($attributes));
     $this->_clean_simple_cache($file_id);
   }
 }

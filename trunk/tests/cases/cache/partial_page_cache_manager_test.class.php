@@ -58,7 +58,7 @@ class partial_page_cache_manager_test extends UnitTestCase
     $cache_manager = new partial_page_cache_manager();
     
     register_testing_ini(
-      'template_cache.ini',
+      'partial_page_cache.ini',
       ' 
       [rule1]
        server_id = test1
@@ -298,7 +298,7 @@ class partial_page_cache_manager_test extends UnitTestCase
 
     $this->assertEqual(
       $this->cache_manager->get_cache_id(), 
-      md5( 'last_news' . serialize($query_items))
+      'p_' . md5( 'last_news' . serialize($query_items))
     ); 
   }
   
@@ -334,7 +334,7 @@ class partial_page_cache_manager_test extends UnitTestCase
 
     $this->assertEqual(
       $this->cache_manager->get_cache_id(), 
-      md5('last_news' . '/root/test' . serialize($query_items))
+      'p_' . md5('last_news' . '/root/test' . serialize($query_items))
     ); 
   }
 
@@ -348,7 +348,7 @@ class partial_page_cache_manager_test extends UnitTestCase
 
     $this->assertEqual(
       $this->cache_manager->get_cache_id(), 
-      md5( 'last_news' . serialize(array('action' => 1)))
+      'p_' . md5( 'last_news' . serialize(array('action' => 1)))
     ); 
   }
 
@@ -362,7 +362,7 @@ class partial_page_cache_manager_test extends UnitTestCase
 
     $this->assertEqual(
       $this->cache_manager->get_cache_id(), 
-      md5('last_news' . serialize(array()))
+      'p_' . md5('last_news' . serialize(array()))
     ); 
   }
 
@@ -457,9 +457,9 @@ class partial_page_cache_manager_test extends UnitTestCase
   function _write_cache($server_id, $attributes, $contents='test', $path = '')
   {
     if ($path)
-      $file_id = md5($server_id . $path . serialize($attributes));
+      $file_id = 'p_' . md5($server_id . $path . serialize($attributes));
     else
-      $file_id = md5($server_id . serialize($attributes));
+      $file_id = 'p_' . md5($server_id . serialize($attributes));
       
     $this->_write_simple_cache($file_id, $contents);
   }
@@ -486,9 +486,9 @@ class partial_page_cache_manager_test extends UnitTestCase
   function _clean_cache($server_id, $attributes, $path = '')
   {
     if ($path)
-      $file_id = md5($server_id . $path . serialize($attributes));
+      $file_id = 'p_' . md5($server_id . $path . serialize($attributes));
     else  
-      $file_id = md5($server_id . serialize($attributes));
+      $file_id = 'p_' . md5($server_id . serialize($attributes));
     
     $this->_clean_simple_cache($file_id);
   }

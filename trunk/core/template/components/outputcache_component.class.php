@@ -9,14 +9,13 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/lib/cache/cache_lite.class.php');
 require_once(LIMB_DIR . 'core/cache/partial_page_cache_manager.class.php');
 
-class limb_cache_component extends component
+class outputcache_component extends component
 {
   var $cache_manager = null;
   
-	function limb_cache_component()
+	function outputcache_component()
 	{
 		$this->cache_manager =& new partial_page_cache_manager();
 	}

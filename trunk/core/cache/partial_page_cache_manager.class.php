@@ -114,9 +114,9 @@ class partial_page_cache_manager
     ksort($cache_query_items);
     
     if (isset($matched_rule['use_path']))
-      $this->id = md5($matched_rule['server_id'] . $this->uri->get_path() . serialize($cache_query_items));
+      $this->id = 'p_' . md5($matched_rule['server_id'] . $this->uri->get_path() . serialize($cache_query_items));
     else
-      $this->id = md5($matched_rule['server_id'] . serialize($cache_query_items));
+      $this->id = 'p_' . md5($matched_rule['server_id'] . serialize($cache_query_items));
     
     return $this->id;
   }
@@ -196,7 +196,7 @@ class partial_page_cache_manager
   {
     include_once(LIMB_DIR . '/core/lib/util/ini.class.php');
     
-    $ini =& get_ini('template_cache.ini');
+    $ini =& get_ini('partial_page_cache.ini');
     $this->rules = array();
     
     $groups = $ini->get_named_array();

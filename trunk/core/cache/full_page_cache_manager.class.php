@@ -106,7 +106,8 @@ class full_page_cache_manager
     }
     
     ksort($cache_query_items);
-    $this->id = md5($this->uri->get_path() . serialize($cache_query_items));
+    
+    $this->id = 'f_' . md5($this->uri->get_path() . serialize($cache_query_items));
     
     return $this->id;
   }

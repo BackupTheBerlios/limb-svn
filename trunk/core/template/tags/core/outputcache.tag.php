@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/ 
-class core_limb_cache_tag_info
+class core_outputcache_tag_info
 {
-	var $tag = 'core:LIMB_CACHE';
+	var $tag = 'core:OUTPUTCACHE';
 	var $end_tag = ENDTAG_REQUIRED;
-	var $tag_class = 'core_limb_cache_tag';
+	var $tag_class = 'core_outputcache_tag';
 } 
 
-register_tag(new core_limb_cache_tag_info());
+register_tag(new core_outputcache_tag_info());
 
-class core_limb_cache_tag extends server_component_tag
+class core_outputcache_tag extends server_component_tag
 {
-	var $runtime_component_path = '/core/template/components/limb_cache_component';
+	var $runtime_component_path = '/core/template/components/outputcache_component';
 
 	function generate_contents(&$code)
 	{
