@@ -27,7 +27,7 @@ class change_own_password_action extends form_action
 
 	protected function _valid_perform($request, $response)
 	{
-		$user_object = site_object_factory :: instance('user_object');
+		$user_object = site_object_factory :: create('user_object');
 		
 		$data = $this->dataspace->export();
 

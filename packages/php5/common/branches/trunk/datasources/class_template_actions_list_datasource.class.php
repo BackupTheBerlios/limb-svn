@@ -25,7 +25,7 @@ class class_template_actions_list_datasource implements datasource
 		if (!$class_data)
 			return new array_dataset();
 
-		$site_object = site_object_factory :: instance($class_data['class_name']);	
+		$site_object = site_object_factory :: create($class_data['class_name']);	
 		
 		$site_object_controller = $site_object->get_controller();
 		

@@ -23,7 +23,7 @@ class class_group_access_template_datasource implements datasource
 		if (!$class_data)
 			return new array_dataset();
 
-		$site_object = site_object_factory :: instance($class_data['class_name']);	
+		$site_object = site_object_factory :: create($class_data['class_name']);	
 		
 		$site_object_controller = $site_object->get_controller();			
 		

@@ -69,11 +69,10 @@ class register_new_object_action extends form_action
 		
 		if (!$is_root)
 		{
-			$parent_object = site_object_factory :: instance($parent_data['class_name']);
+			$parent_object = site_object_factory :: create($parent_data['class_name']);
 			$parent_object->merge($parent_data);
 		
-			$access_policy = access_policy :: instance();
-			$access_policy->save_object_access($object, $parent_object);
+			access_policy :: instance()->save_object_access($object, $parent_object);
 		}	
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
