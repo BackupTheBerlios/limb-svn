@@ -1,7 +1,9 @@
 <PUBLIC:COMPONENT>
+<PUBLIC:ATTACH EVENT="ondrag" ONEVENT="fnOnDrag()" />
 <PUBLIC:ATTACH EVENT="onmouseover" ONEVENT="fnOnMouseOver()" />
 <PUBLIC:ATTACH EVENT="onmouseout" ONEVENT="fnOnMouseOut()" />
 <PUBLIC:ATTACH EVENT="ondragstart" ONEVENT="fnOnDragStart()" />
+<PUBLIC:ATTACH EVENT="ondragend" ONEVENT="fnOnDragEnd()" />
 <PUBLIC:ATTACH EVENT="ondragover" ONEVENT="fnOnDragOver()" />
 <PUBLIC:ATTACH EVENT="ondragenter" ONEVENT="fnOnDragEnter()" />
 <PUBLIC:ATTACH EVENT="ondragleave" ONEVENT="fnOnDragLeave()" />
@@ -24,6 +26,13 @@ var is_over = false
 
 function fnOnDragStart()
 {
+		element.transp_elem = mainDoc.createElement('div')
+		element.transp_elem.innerHTML = '<table  border=0 cellspacing=0 cellpadding=0><tr>' + element.innerHTML + '</tr></table>'
+		element.transp_elem.style.position = 'absolute'
+		element.transp_elem.style.left = event.x
+		element.transp_elem.style.top = event.y
+		mainDoc.body.appendChild(element.transp_elem)
+		
 	try
 	{
 		var data = document.parentWindow.event.dataTransfer
@@ -33,18 +42,27 @@ function fnOnDragStart()
 		data.setData("text", moved_id)
 	
 		data.effectAllowed = "copy"
+		
 	}
 	catch(e){}
 
+}
+function fnOnDragEnd()
+{
+	element.transp_elem.innerHTML = ''
+}
+function fnOnDrag()
+{
+		element.transp_elem.style.left = event.x
+		element.transp_elem.style.top = event.y
 }
 function fnOnDragOver()
 {
 	var data = document.parentWindow.event.dataTransfer
 	
-	document.parentWindow.cancel_default_action()
+//	document.parentWindow.cancel_default_action()
 	
 	data.dropEffect = "copy"
-
 	if(!is_over)
 	{
 		if(isInCenter())
@@ -54,8 +72,8 @@ function fnOnDragOver()
 		}
 		else
 		{
-			mainDoc.all['dd_line_obj'].style.width = element.parentElement.parentElement.offsetWidth - 7
-			mainDoc.all['dd_line_obj'].style.left = element.getClientRects().item(0).left + mainDoc.body.scrollLeft
+			mainDoc.all['dd_line_obj'].style.width = element.parentElement.parentElement.offsetWidth - 2
+			mainDoc.all['dd_line_obj'].style.left = element.getClientRects().item(0).left + mainDoc.body.scrollLeft - 2
 			mainDoc.all['dd_line_obj'].style.top  = element.getClientRects().item(0).top + mainDoc.body.scrollTop
 			mainDoc.all['dd_line_obj'].style.display = 'block'
 			
@@ -65,7 +83,7 @@ function fnOnDragOver()
 	}
 	else
 	{
-		element.style.backgroundColor = "#F0F2FC"
+//		element.style.backgroundColor = "#F0F2FC"
 		data.dropEffect = "none"
 	}
 
