@@ -26,7 +26,7 @@ class poll_container_controller extends site_object_controller
             'action_path' => '/poll/create_poll_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'img_src' => '/shared/images/actions/new.generic.gif',
             'action_name' => strings :: get('create_poll_question','poll'),
             'can_have_access_template' => true,
         ),
@@ -36,7 +36,7 @@ class poll_container_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'img_src' => '/shared/images/actions/delete.gif'
         ),
         'vote' => array(
             'action_path' => '/poll_container/vote_action',

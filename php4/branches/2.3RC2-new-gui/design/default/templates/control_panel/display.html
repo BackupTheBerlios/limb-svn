@@ -1,8 +1,12 @@
-<html>
+<!-- Powered by LIMB | http://www.limb-project.com/ -->
+<!-- Designed by BIT | http://www.bit-creative.com/ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title><metadata:TITLE separator=' :: ' offset_path='/root'/> :: <core:SYS_PARAM name='site_title' type='char'></title>
-  <meta http-equiv='Content-Type' content='text/html; charset=windows-1251'>
-  <link rel='stylesheet' type="text/css" href="/shared/styles/admin.css">
+  <meta content="text/html; charset=windows-1251" http-equiv="Content-Type">
+  <link href="/shared/styles/admin.css" rel="stylesheet" type="text/css">
+
   <script language="javascript" src="/shared/js/common.js"></script>
   <script language="javascript" src="/shared/js/tabs.js"></script>
   <script language="javascript" src="/shared/js/hint.js"></script>
@@ -59,18 +63,9 @@
     frm.location.href = href;
   }
 </script>
+
 <body>
-<table width=100% border=0 cellspacing=0 cellpadding=0 class=cp-header>
-<tr>
-  <td class=com1>
- <table width=100% border=0 cellspacing=0 cellpadding=0>
-    <tr>
-      <td align=left style='padding:4px 10px 0 12px'><img src='/shared/images/logo.limb.gif'>
-      <br><img src='/shared/images/1x1.gif' width=168 height=1></td>
-      <td width=100% ><core:INCLUDE file="admin/include/user_services.html"></td>
-      <td valign=middle width='1%' nowrap></td>
-    </tr>
-  </table>
+
   <fetch:SUB_BRANCH target="tabs_header, tabs_body" >
     <core:PARAMETER name='loader_class_name' value='navigation_item' >
     <core:PARAMETER name='path' value='/root/admin/navigation' >
@@ -78,87 +73,117 @@
     <core:PARAMETER name='depth' value='1'>
   </fetch:SUB_BRANCH>
 
-
-  <grid:LIST id='tabs_header'>
-  <table width='100%' border='0' cellspacing='0' cellpadding='0' class="tabulator">
-  <tr>
-    <td class="tab" style='padding:0 0 0 10px' nowrap align=left>
-    <b><locale:STRING name='limb_cp'></b>
-    <br><img src='/shared/images/1x1.gif' width=168 height=1>
-    </td>
-    <grid:ITERATOR>
-      <td id='tab_{$identifier}'>
-        <table border='0' cellspacing='0' cellpadding='0' style='height:100%'>
+<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+<tr>
+  <td class="bgr" height="25" valign="bottom">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td style="padding:3px 12px 3Px 12px"><img alt="LIMB" src="/shared/images/logo.limb.1.gif"></td>
+      <td valign="bottom" width="100%">
+        <!--BEGIN:[ tabulator ]-->
+        <table border="0" cellpadding="0" cellspacing="0" class="tabulator" width="100%">
         <tr>
-          <td nowrap class="tab">
-          <a href='JavaScript:void(0);'>{$title}</a>
-          <a href="JavaScript:go_home('tab_{$identifier}')"><img src='/shared/images/icons/home.gif' alt='Home page of this tab' title='Home page of this tab'></a>
-          <a href="JavaScript:reload('tab_{$identifier}');"><img src='/shared/images/icons/reload.gif' alt='Reload this tab' title='Reload this tab'></a>
+
+          <grid:LIST id='tabs_header'>
+            <grid:ITERATOR>
+              <grid:SEPARATOR><td><img alt="" src="/shared/images/1x1.gif" class="sep"></td></grid:SEPARATOR>
+              <td  valign="bottom" >
+                <table border="0" cellpadding="0" cellspacing="0" id="tab_{$identifier}">
+                <tr>
+                  <td class="label"><nobr>{$title}</nobr></td>
+                  <td class="arr">
+                  <img src='/shared/images/marker/1.gif'>
+                  <!--
+                      <a href="JavaScript:go_home('tab_{$identifier}')"><img src='/shared/images/icons/home.gif' alt='Home page of this tab' title='Home page of this tab'></a>
+                      <a href="JavaScript:reload('tab_{$identifier}');"><img src='/shared/images/icons/reload.gif' alt='Reload this tab' title='Reload this tab'></a>
+                   -->
+                  </td>
+                </tr>
+                </table>
+              </td>
+
+            </grid:ITERATOR>
+          </grid:LIST>
+
+          <td width="100%"></td>
+          <td><img alt="" src="images/1x1.gif" class="sep"></td>
+          <td>
+            <table border="0" cellpadding="0" cellspacing="0" class="tab-user">
+            <tr>
+              <td class="label">
+              <nobr>[ Admin Name ]</nobr>
+              </td>
+              <td class="arr"><img alt="" src="/shared/images/marker/1.gif"></td>
+            </tr>
+            </table>
           </td>
+          <td><img alt="" src="/shared/images/1x1.gif" class="sep"></td>
         </tr>
         </table>
+        <!--END:[ tabulator ]-->
       </td>
-    </grid:ITERATOR>
-    <td class=tab width=100%>&nbsp;</td>
-  </tr>
-  </table>
-  </grid:LIST>
+    </tr>
+    </table>
+  </td>
+</tr>
+<tr><td class="col1" height="5"></td></tr>
+<tr>
+  <td height="100%" valign="top">
+  <!--BEGIN:[ middle ]-->
+    <grid:LIST id='tabs_body'>
+      <grid:ITERATOR>
+        <div id="tab_{$identifier}_content" style="width:100%; height: 100%;">
+          <iframe frameborder="0" height="100%" id="iframe_{$identifier}" name="iframe_{$identifier}" src="about:blank" width="100%"></iframe>
+        </div>
+        <script type='text/javascript'>
+          tab_data = {'id': 'tab_{$identifier}', 'activate_handler': activate_tab, 'src': '{$url}', 'iframe_name': 'iframe_{$identifier}'}
+          tabs.register_tab_item(tab_data);
+        </script>
+
+     </grid:ITERATOR>
+    <script type='text/javascript'>
+      if (active_tab = get_cookie('active_tab'))
+        tabs.activate(active_tab);
+      else
+        tabs.activate('');
+    </script>
+    </grid:LIST>
+  <!--END:[ middle ]-->
+  </td>
+</tr>
+<tr><td class="col1" height="5"></td></tr>
+<tr>
+  <td class="bgr">
+  <!--BEGIN:[ footer ]-->
+    <table border="0" cellpadding="0" cellspacing="2" width="100%">
+    <tr>
+      <td>
+      <core:LITERAL>
+        <form onsubmit='goto_address();return false;'>
+        <table>
+          <tr>
+            <td>
+              <input type='text' id='active_iframe_url' name='active_iframe_url' class='input' size='60'>
+            </td>
+            <td>
+              <input class="button" type="submit" value="  GO!  ">
+            </td>
+          </tr>
+        </table>
+        </form>
+      </core:LITERAL>
+      </td>
+      <td width="100%"></td>
+      <td style="padding:0 10	px 0 10px">
+      <nobr>&copy; <a href='http://bit-creative.com'>BIT</a> 2005 <LIMB:VERSION type='logo'></nobr>
+      </td>
+    </tr>
+    </table>
+  <!--END:[ footer ]-->
   </td>
 </tr>
 </table>
 
-
-
-<grid:LIST id='tabs_body'>
-  <grid:ITERATOR>
-
-    <div id='tab_{$identifier}_content'>
-      <iframe src='about:blank' id='iframe_{$identifier}' name='iframe_{$identifier}' width='100%' height='83%' frameborder=0></iframe>
-    </div>
-    <script type='text/javascript'>
-      tab_data = {'id': 'tab_{$identifier}', 'activate_handler': activate_tab, 'src': '{$url}', 'iframe_name': 'iframe_{$identifier}'}
-      tabs.register_tab_item(tab_data);
-    </script>
-
-  </grid:ITERATOR>
-
-<script type='text/javascript'>
-  if (active_tab = get_cookie('active_tab'))
-    tabs.activate(active_tab);
-  else
-    tabs.activate('');
-
-//  var debug_body_onkeypress = document.body.onkeydown
-//  document.body.onkeydown = function()
-//  {
-//    if(window.event.shiftKey)
-//    if(window.event.keyCode == 192)
-//    {
-//      if(typeof(is_debug_info_enabled)=='undefined') is_debug_info_enabled = 1
-//      show_hide_debug_info_all_frames(is_debug_info_enabled)
-//      is_debug_info_enabled = !is_debug_info_enabled
-//    }
-//
-//    debug_body_onkeypress()
-//  }
-
-</script>
-</grid:LIST>
-<table border='0' cellspacing='4' cellpadding='0' align=center width=100%>
-  <tr><td bgcolor='#6484D3' height='3' colspan='2'></td></tr>
-  <tr'>
-    <td width='100%' valign='middle'>
-      <core:LITERAL>
-        <div id='location_bar'>
-        <form onsubmit='goto_address();return false;'>
-        <input type='text' id='active_iframe_url' name='active_iframe_url' class='input' size='60'>
-        <input type='submit' class='button' value='GO!'>
-        </form>
-        </div>
-      </core:LITERAL>
-    </td>
-    <td align="center"><nobr>Copyright &copy; 2004 <a href='http://bit-creative.com'>BIT</a></nobr></td>
-  </tr>
-</table>
 </body>
 </html>
+

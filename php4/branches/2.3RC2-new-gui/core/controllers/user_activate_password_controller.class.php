@@ -32,7 +32,7 @@ class user_activate_password_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'img_src' => '/shared/images/actions/edit.gif'
         ),
     );
   }

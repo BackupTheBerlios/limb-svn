@@ -28,7 +28,7 @@ class subscribe_controller extends site_object_controller
             'action_path' => '/subscribe_theme/create_subscribe_theme_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.folder.gif',
+            'img_src' => '/shared/images/actions/new.folder.gif',
             'action_name' => strings :: get('create_subscribe_theme', 'subscribe'),
             'can_have_access_template' => true,
         ),
@@ -38,7 +38,7 @@ class subscribe_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'img_src' => '/shared/images/actions/edit.gif'
         ),
     );
   }

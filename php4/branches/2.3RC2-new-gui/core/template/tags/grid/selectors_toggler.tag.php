@@ -55,7 +55,7 @@ class grid_selectors_toggler_tag extends compiler_directive_tag
     if(isset($this->attributes['img_src']))
       $img_src = $this->attributes['img_src'];
     else
-      $img_src = '/shared/images/selected.gif';
+      $img_src = '/shared/images/icon/check_all.gif';
 
     $js = "
     <script language='javascript'>

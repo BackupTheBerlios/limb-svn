@@ -36,8 +36,8 @@ var giDCStyle=0;	// the style of month-controls in top section.	0: 3D; 1: flat; 
 var gsCalTitle="gMonths[gCurMonth[1]-1]+' '+gCurMonth[0]";	// dynamic statement to be eval-ed as the title when giDCStyle>0.
 var gbDCSeq=true;	// (effective only when giDCStyle is 0) true: show month box before year box; false: vice-versa;
 var gsYearInBox="i";	// dynamic statement to be eval-ed as the text shown in the year box. e.g. "'A.D.'+i" will show "A.D.2001"
-var gsNavPrev="<img src='/shared/images/arr_prev.gif' border=0 width=11 height=11 onclick='fPrevMonth();this.blur();'>";	// the content of the left month navigator
-var gsNavNext="<img src='/shared/images/arr_next.gif' border=0 width=11 height=11 onclick='fNextMonth();this.blur();'>";	// the content of the right month navigator
+var gsNavPrev="<img src='/shared/images/marker/arr_prev.gif' border=0 width=11 height=11 onclick='fPrevMonth();this.blur();'>";	// the content of the left month navigator
+var gsNavNext="<img src='/shared/images/marker/arr_next.gif' border=0 width=11 height=11 onclick='fNextMonth();this.blur();'>";	// the content of the right month navigator
 
 var gbHideBottom=false;	// true: hide the bottom section; false: show it with gsBottom.
 var gsBottom="<A href='javascript:void(0)' class='Today' onclick='if(!NN4)this.blur();if(!fSetDate(gToday[0],gToday[1],gToday[2]))alert(\"Нельзя выбрать эту дату!\");return false;' onmouseover='return true;' title='Today'>Сегодня : "+gToday[2]+" "+gMonths[gToday[1]-1]+" "+gToday[0]+"</A>";	// the content of the bottom section.
@@ -72,8 +72,8 @@ var giShowOther=2;	// control the look of days in OTHER months. 1: show date & a
 var gbFocus=true;	// whether to enable the gcToggle highlight whenever mouse pointer focuses over a calendar cell.
 var gcToggle="#FFC1C1";	// the highlight color for the focused cell
 
-var gcFGToday="red";	// the font color for today 
-var gcBGToday="#FFC1C1";	// the background color for today 
+var gcFGToday="red";	// the font color for today
+var gcBGToday="#FFC1C1";	// the background color for today
 var guTodayBGImg="";	// url of image as today's background
 var giMarkToday=1; // Effects for today - 0: nothing; 1: set background color with gcBGToday; 2: draw a box with gcBGToday; 4: bold the font; 8: set font color with gcFGToday; 16: set background image with guTodayBGImg; - they can be added up to create mixed effects.
 

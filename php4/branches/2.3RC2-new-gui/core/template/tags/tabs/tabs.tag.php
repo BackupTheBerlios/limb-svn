@@ -23,7 +23,7 @@ class tabs_tag extends compiler_directive_tag
   var $tabs = array();
   var $tabulator_class = 'class="tabulator"';
   var $tab_class = 'class="tab"';
-  var $active_tab_class = 'class="active-tab"';
+  var $active_tab_class = 'class="tab-active"';
   var $use_cookie = false;
 
   function prepare()

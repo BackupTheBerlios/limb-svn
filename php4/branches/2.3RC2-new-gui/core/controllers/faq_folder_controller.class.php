@@ -25,7 +25,7 @@ class faq_folder_controller extends site_object_controller
             'template_path' => '/admin/object_detail_info.html',
             'popup' => true,
             'JIP' => true,
-            'img_src' => '/shared/images/details.gif',
+            'img_src' => '/shared/images/actions/details.gif',
             'action_name' => strings :: get('detail_info'),
         ),
         'create_faq_object' => array(
@@ -33,7 +33,7 @@ class faq_folder_controller extends site_object_controller
             'action_path' => '/faq_object/create_faq_object_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'img_src' => '/shared/images/actions/new.generic.gif',
             'action_name' => strings :: get('create_faq_question','faq'),
             'can_have_access_template' => true,
         ),
@@ -43,14 +43,14 @@ class faq_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit_faq_folder','faq'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/full_edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'img_src' => '/shared/images/actions/edit.gif'
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/publish.gif',
+            'img_src' => '/shared/images/actions/publish.gif',
             'template_path' => '/news_object/display.html',
             'can_have_access_template' => true,
         ),
@@ -59,7 +59,7 @@ class faq_folder_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/unpublish.gif',
+            'img_src' => '/shared/images/actions/unpublish.gif',
             'template_path' => '/news_object/display.html',
             'can_have_access_template' => true,
         ),
@@ -69,7 +69,7 @@ class faq_folder_controller extends site_object_controller
             'action_name' => strings :: get('delete_faq_folder','faq'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'img_src' => '/shared/images/actions/delete.gif'
         ),
     );
   }

@@ -485,7 +485,7 @@ class compiler_component
     }
 
     $file_path = addslashes(fs :: clean_path($file_path));
-    $code->write_html("<a href='#'><img onclick='run_template_editor(this.title)' class='debug-info-img' src='/shared/images/i.gif' alt='i' title='{$file_path}' border='0'></a>");
+    $code->write_html("<a href='$file_path' onclick='return false;'><img onclick='run_template_editor(this.title)' class='debug-info-img' src='/shared/images/i.gif' alt='i' title='{$file_path}' border='0'></a>");
   }
 
   /**

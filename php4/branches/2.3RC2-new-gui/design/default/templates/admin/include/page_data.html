@@ -1,8 +1,9 @@
-  <!--BEGIN: path-->
-  <table width=100% border=0 cellspacing=0 cellpadding=0>
+  <!--BEGIN:[ PATH ]-->
+  <table border="0" cellpadding="0" cellspacing="5" width="100%">
   <tr>
-    <td style='padding:0 25px 3px 0' class=path>
-    <metadata:BREADCRUMBS>
+    <td>Path:</td>
+    <td width="100%">
+    <metadata:BREADCRUMBS offset_path='/root'>
     <grid:LIST>
       <grid:ITERATOR>
         <core:DEFAULT for='is_last'>
@@ -17,13 +18,20 @@
     </td>
   </tr>
   </table>
-  <!--END: path-->
+  <!--END:[ PATH ]-->
   <fetch:MAPPED>
-  <!--BEGIN: title-->
-  <table width=100% border=0 cellspacing=0 cellpadding=0>
-  <tr>
-    <td style='padding:0 25px 3px 0'><h1>{$title}</h1></td>
-  </tr>
-  </table>
-  <!--END: title-->
+    <table border="0" cellpadding="0" cellspacing="0" class="page-info" width="100%">
+    <tr>
+      <td class="icon"><img alt="{$title}" src="/shared/images/icon/menu/48/{$identifier}.gif"></td>
+      <td>
+        <h1 class="title">{$title}</h1>
+        <!--BEGIN:[ PAGE INFO ]-->
+          <div class="info"><div class="info-text">Небольшое но очень информативное описание данного раздела. Небольшое но очень информативное описание данного раздела. Небольшое но очень информативное описание данного раздела.</div></div>
+        <!--END:[ PAGE INFO ]-->
+        <!--BEGIN:[ PAGE ACTIONS ]-->
+        <core:INCLUDE file="jip_actions/normal.html">
+        <!--END:[ PAGE ACTIONS ]-->
+      </td>
+    <tr>
+    </table>
   </fetch:MAPPED>

@@ -30,7 +30,7 @@ class site_param_object_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'img_src' => '/shared/images/actions/edit.gif'
         ),
         'update' => array(
             'popup' => true,
@@ -38,7 +38,7 @@ class site_param_object_controller extends site_object_controller
             'action_name' => strings :: get('set_params', 'site_param'),
             'action_path' => '/site_param_object/update_param_action',
             'template_path' => '/site_param_object/update.html',
-            'img_src' => '/shared/images/details.gif'
+            'img_src' => '/shared/images/actions/details.gif'
         ),
         'delete' => array(
             'JIP' => true,
@@ -46,7 +46,7 @@ class site_param_object_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'img_src' => '/shared/images/actions/delete.gif'
         ),
     );
   }

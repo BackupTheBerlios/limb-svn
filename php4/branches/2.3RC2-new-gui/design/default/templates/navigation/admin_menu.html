@@ -1,37 +1,48 @@
 <grid:LIST id='admin_menu'>
-<grid:ITERATOR>
-    <div class='btitle1' width='100%'>
-    <table width='100%' cellpadding='0' cellspacing='0'>
-      <tr>
-        <td width='100%' align='center'><b>{$title}</b></td>
-        <td align='right'><img id='img_{$id}' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("{$id}");' alt='Show/Hide' title='Show/Hide'></td>
-      </tr>
-    </table>
-    </div>
+<table border="0" cellpadding="0" cellspacing="0" width="190">
+<tr>
+  <td>
+  <grid:ITERATOR>
+    <table border="0" cellpadding="0" cellspacing="5" class="panel" width="100%">
+    <tr>
+      <td class="icon"><img title="{$title}" alt="{$title}" onclick='toggle_submenu("{$id}");' src="/shared/images/icon/menu/context/{$identifier}.gif"><br><img alt="" src="images/1x1.gif" class="sep"></td>
+      <td width="100%">
+        <table border="0" cellpadding="0" cellspacing="0" class="label" width="100%">
+        <tr>
+          <td width="100%">{$title}</td>
+          <td>
+          <img id='img_{$id}' src='/shared/images/marker/minus.gif' onclick='toggle_submenu("{$id}");' alt='Show/Hide' title='Show/Hide'>
+          </td>
+        </tr>
+        </table>
+      </td>
+    </tr>
     <core:DATA_TRANSFER hash_id='child_items' target='navi_children'>
     <grid:LIST id='navi_children'>
-      <div id="{^id}" style='display: block;'>
-      <table width='100%' border=0 cellspacing=0 cellpadding=0>
-      <grid:ITERATOR>
-      <tr>
-        <td align='right' width='100%'><a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a></td>
-        <core:OPTIONAL for="selected">
-          <td><img src='/shared/images/arr1.gif'></td>
-        </core:OPTIONAL>
-        <core:DEFAULT for="in_path">
-          <td>&nbsp;</td>
-        </core:DEFAULT>
-        </tr>
-        <tr>
-          <td align='center' colspan='3'><img src='/shared/images/1x1.gif' class=com2 width=80% height=1></td>
-        </tr>
-      </grid:ITERATOR>
-      <tr>
-      <td colspan='2'></td>
-      <td><img src='/shared/images/1x1.gif' width=12 height=0></td>
+    <tr>
+      <td></td>
+      <td>
+        <div id="{^id}" style='display: block;'>
+        <table border="0" cellpadding="0" cellspacing="0" class="menu" width="100%">
+          <grid:ITERATOR>
+            <grid:SEPARATOR>
+              <tr><td></td><td class="col5" height="1"></td></tr>
+            </grid:SEPARATOR>
+              <tr>
+                <td><img alt="" src="/shared/images/marker/2.gif"></td>
+                <td class="item" width="100%">
+                  <a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a>
+                </td>
+              </tr>
+          </grid:ITERATOR>
+          </table>
+          </div>
+        </td>
       </tr>
-      </table>
-      </div>
       </grid:LIST>
+  </table>
   </grid:ITERATOR>
+</td>
+</tr>
+</table>
 </grid:LIST>

@@ -30,7 +30,7 @@ class main_page_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('create_document', 'document'),
-            'img_src' => '/shared/images/new.generic.gif',
+            'img_src' => '/shared/images/actions/new.generic.gif',
             'can_have_access_template' => true,
         ),
         'set_metadata' => array(
@@ -39,7 +39,7 @@ class main_page_controller extends site_object_controller
             'action_name' => strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
-            'img_src' => '/shared/images/configure.gif'
+            'img_src' => '/shared/images/actions/configure.gif'
         ),
         'edit' => array(
             'popup' => true,
@@ -47,7 +47,7 @@ class main_page_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/main_page/edit_main_page_action',
             'template_path' => '/main_page/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'img_src' => '/shared/images/actions/edit.gif'
         ),
     );
   }

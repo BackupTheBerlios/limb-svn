@@ -25,7 +25,7 @@ class template_source_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'img_src' => '/shared/images/actions/delete.gif'
         ),
     );
   }
