@@ -123,6 +123,7 @@ Table data for init_ru2.message
 */
 
 INSERT INTO `message` VALUES (19,5,87,'Не найдено','<p>Страница не найдена.</p>','404');
+INSERT INTO `message` VALUES (20,1,34,'Сообщения','<p>Служебные сообщения здесь.</p>','messages');
 
 /*
 Table struture for navigation_item
