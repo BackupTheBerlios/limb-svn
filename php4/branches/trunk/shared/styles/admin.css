@@ -138,5 +138,5 @@ select{font:8pt Verdana, sans; border:solid 1px #3278ED}
 .debug-tmpl-container{border:dotted 4px #f00000;padding: 2px;margin:2px}
 .debug-tmpl-main{border:dashed 2px #0000f0;padding: 2px;margin:2px}
 .debug-tmpl-include{border:dotted 1px #c0c0c0;padding:2px;margin:2px}
-.debug-info-img{page:debug_info}
+.debug-info-img{page:debug_info;}
 .debug-empty{}

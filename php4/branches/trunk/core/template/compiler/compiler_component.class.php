@@ -460,24 +460,32 @@ class compiler_component
     }
   }
 
-  function _generate_debug_editor_link_html(& $code, $file_path)
+  function _generate_debug_editor_link_html(&$code, $file_path)
   {
-//		if(!defined('WS_SCRIPT_WRITTEN'))
-//		{
-//
-//			$code->write_html('	<SCRIPT LANGUAGE="JScript">
-//													function run_template_editor(path)
-//													{
-//														WS = new ActiveXObject("WScript.shell");
-//														WS.exec("uedit32.exe " + path);
-//													}
-//													</SCRIPT>');
-//
-//			define('WS_SCRIPT_WRITTEN', true);
-//		}
+    if(!defined('WS_SCRIPT_WRITTEN'))
+    {
+      if(defined('TEMPLATE_EDITOR_PATH'))
+        $editor_path = TEMPLATE_EDITOR_PATH;
+      else
+        $editor_path = 'notepad.exe %s';
+
+      $code->write_html("	<SCRIPT LANGUAGE='JScript'>
+                          function run_template_editor(path)
+                          {
+                            WS = new ActiveXObject('WScript.shell');
+                            if(!WS) return;
+                            editor = '{$editor_path}';
+                            re = /%s/i;
+                            editor = editor.replace(re, path);
+                            WS.exec(editor);
+                          }
+                          </SCRIPT>");
+
+      define('WS_SCRIPT_WRITTEN', true);
+    }
 
     $file_path = addslashes(fs :: clean_path($file_path));
-    $code->write_html("<a href='#'><img class='debug-info-img' src='/shared/images/i.gif' alt='{$file_path}' title='{$file_path}' border='0'></a>");
+    $code->write_html("<a href='#'><img onclick='run_template_editor(this.title)' class='debug-info-img' src='/shared/images/i.gif' alt='i' title='{$file_path}' border='0'></a>");
   }
 
   /**

@@ -26,6 +26,8 @@ $AVAILABLE_LOCALES = explode(',', AVAILABLE_LOCALES);//!!!refactor
 
 @define('MEDIA_DIR', PROJECT_DIR .'/media/');
 
+@define('TEMPLATE_EDITOR_PATH', 'uedit32.exe %s');
+
 if (version_compare(phpversion(), '4.2', '<'))
   include_once(LIMB_DIR . '/core/lib/util/php42.php');
 
