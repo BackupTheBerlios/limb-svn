@@ -1,0 +1,87 @@
+Objects version control
+
+Any LIMB content object supports versioning. That meens that when a user
+changes an content object (like article, document), objects version number
+increases and the full object copy saves in data base the same way as
+the old one. Unfortunately we didn't implement 'minor changes' flag
+in edit templates in case if no need to create a new version. 
+Update method of the content object take a flag if he needs to 
+create new version (content_object :: update((bool) $new_version)).
+For now the only way to set up if a content object needs to create a 
+new version while editing is to rewrite _update_object_operation in
+edit action like this:
+
+class edit_user_action extends form_edit_site_object_action
+{
+	// … some code here
+	function _update_object_operation()
+	{
+		if(!$this->object->update(false))
+			return false;
+		else
+			return true;
+	}
+}
+
+To look the list of versions of an object and to be able to see
+the object's state for any version you need to add an extra action 
+to object controller:
+
+class document_controller extends site_object_controller
+{
+	function document_controller()
+	{
+		$this->_actions = array(
+				// some more actions here
+				'admin_detail' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/admin/object_detail_info.html',
+						'popup' => true,
+						'JIP' => true,
+						'img_src' => '/shared/images/admin_detail.gif',
+						'action_name' => strings :: get('detail_info'),
+				),
+		);
+
+		parent :: site_object_controller();
+	}
+}
+
+object_detail_info.html template displays all objects system 
+informations and the list of versions.
+
+To be able to recover version or to look for all object's attributes
+for any version you need to have access to site_object of 
+version_site_object class (usually at /root/version). You must
+have access to display and recover actions of that object.
+
+class version_controller extends site_object_controller
+{
+	function version_controller()
+	{
+		$this->_actions = array(
+				'display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/version/display.html',
+				),
+				'recover' => array(
+						'permissions_required' => 'r',
+						'action_path' => '/version/recover_version_action', 
+						'popup' => true
+				)
+		);
+ 		
+
+		parent :: site_object_controller();
+	}
+} 
+
+/version/display.html template shows the list of object's attributes
+for indicated version.
+
+Recover_version_action – creates a news version of an object from
+indicated one.
+
+We sure that objects versioning in LIMB is at initial stage. Even
+the db table changes will be possible in future. We ready to discuss
+versioning with all who concerned this topic.
