@@ -1,49 +1,43 @@
-How to create new site object
+HOW TO CREATE NEW SITE OBJECT FROM SCRATCH
 
-To create new site object you may need to accomplish to following list:
-1) Plan your new site_object: attributes and functionality
-2) Create site_object class for it
-3) Create db_table class if you are creating a content object
-4) Create site_object_controller for it. 
-5) Create ini-files with localized strings
-6) Create action classes to implement functionality
-7) Create template files for listing, editing, creating.
-8) Register new object using parent object's action or 
-	register object action of site_structure object.
+In order to create new site object you may need to accomplish the following steps:
+1) Plan your new site object: whether it's a site object or a content object, probable attributes and required functionality
+2) Create a class for it(inherit from site_object or content_object base class)
+3) Create a db_table class if you are creating a content object
+4) Create a site object controller class for it. 
+5) Create action classes to implement functionality
+6) Create template files for actions with GUI(good candidates are display, edit, create actions).
+7) Register the new site object in the object tree using admin_page's register_new_object action.
+8) Assign appropriate access permissions 
+9) Create ini-files with localized strings(optional)
 
 PLANNING
 
-Let's imagine we need to support special catalog on some site. The catalog
-will looks like a set of hierarchically linked folders. Every folder can 
-contains catalog objects. To implement this we need 2 site objects:
-say some_catalog_object and some_catalog_folder. This document describes
-how to create all necessary classes and templates to implement the catalog
-step by step. Unfortunately we not going to put all file content here.
-But LIMB comes with common catalog bundled so if you want to look 
-at all classes	and templates see for the corresponding files in your LIMB_DIR.
+Let's imagine we need a sort of very specific catalog. Suppose our catalog
+has form of hierarchically linked folders. Every folder 
+contains catalog folders as well as catalog objects. To implement this we need 2 types of the new site objects: some_catalog_object and some_catalog_folder. 
+Below we'll try to create all necessary classes and templates to implement our catalog
+step by step.
 
-some_catalog_folder will be a common site_object as far as it doesn't has
-any additional attributes then identifier and title.
-some_catalog_object is a content object, it has the following attributes:
-1) identifier
-2) title
-3) description
-4) price
-5) image_id
+some_catalog_folder will be a common site_object as far as it doesn't have
+any additional attributes other than 'identifier' and 'title'.
+some_catalog_object is a content object since it would be nice for it to support versioning, it has the following attributes:
+1) identifier - VARCHAR
+2) title - VARCHAR
+3) description - VARCHAR
+4) price - FLOAT
+5) image_id - INTEGER, id of the image from the LIMB media repository
 
-CREATING SITE_OBJECTS CLASSES
+CREATING SITE OBJECT CLASSES
 
-some_catalog_folder class will be looks like this:
+some_catalog_folder class has the following code, we place it in PROJECT_DIR/core/model/site_objects/some_catalog_folder.class.php:
+
+<?php
 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
 class some_catalog_folder extends site_object
-{
-	function some_catalog_folder ()
-	{
-		parent :: site_object();
-	}
-	
+{	
 	function _define_class_properties()
 	{
 		return array(
@@ -55,97 +49,98 @@ class some_catalog_folder extends site_object
 	}
 }
 
-some_catalog_object class are looks like this:
+?>
+
+some_catalog_object class has the following code, we place it in PROJECT_DIR/core/model/site_objects/some_catalog_object.class.php:
+
+<?php
 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 require_once(LIMB_DIR . 'core/model/shop/cart_item.class.php');
 
 class some_catalog_object extends content_object
 {
-	function some_catalog_object()
-	{
-		parent :: content_object();
-	}
-
 	function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(
 				parent :: _define_attributes_definition(),
 				array(
-					'description’ => array('search' => true, 'search_weight' => 1),
+					'description' => array('search' => true, 'search_weight' => 1), // tells to the LIMB search engine to index some_catalog_object by 'description' attribute and use 'search_weight' for relevant sorting
 				));
 	}
 
 	function _define_class_properties()
 	{
 		return array(
-			'ordr' => 1,
-			'can_be_parent' => 0,
-			'controller_class_name' => 'catalog_object_controller',
-      'auto_identifier' => true
+			'ordr' => 1, //used for sorting in the tree, e.g. folders usually have this one set to 0, it allows to implement 'folders first' sorting
+			'can_be_parent' => 0, //whether it can be a folder
+			'controller_class_name' => 'catalog_object_controller', //assign it to 
+      'auto_identifier' => true //there will be no need to set identifier manually
 		);
 	}
 }
 
-NOTE: some_catalog_object class properties have auto_identifier property and it
-means that there is no need to set identifier manually. Identifier for
-some_catalog_object will be assigned automatically.
+?>
 
 CREATING DB_TABLE CLASSES
 
-Since some_catalog_object is inherited from content_object class it
-keeps all the additional attributes in one db table (some_catalog_object e.g.).
-Some db_table class is used for carrying-out fetching/creating/deleting 
-operations over that table. some_catalog_object_db_table is used by
-default. You can set db_table class name for content object by
-db_table_name property (do not append '_db_table' postfix).
+Since some_catalog_object is inherited from the content_object base class it
+keeps all attributes in one db table by default.
+Appropriate db_table class is used for carrying-out fetching/creating/deleting. some_catalog_object_db_table is used by default. 
 
-some_catalog_object_db_table looks like this:
+NOTE: You can override db_table class name for the object by db_table_name property (do not append '_db_table' postfix), e.g. 
+	function _define_class_properties()
+	{
+		return array(
+			[...]
+      'db_table_name' => 'some_table_name'
+		);
+	}
 
+some_catalog_object_db_table has the following code, we place it in PROJECT_DIR/core/db_tables/some_catalog_object_db_table.class.php:
+
+<?php
 require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
 
 class some_catalog_object_db_table extends content_object_db_table
-{
-  function some_catalog_object_db_table()
-  {
-    parent :: content_object_db_table();
-  }
-  
+{  
   function _define_columns()
   {
 	  return array(
       'image_id' => array('type' => 'numeric'),
-      'description' => '',
+      'description' => '', //similar to array('type' => 'string')
       'price' => array('type' => 'numeric'),
     );
   }
 }
+?>
 
 Columns definitions are useful in type casting and filtering. 
 String type used if the definition for a column is empty. The list of 
-supported types:
+supported types at the moment:
 * numeric
 * string
 * boolean
 * date
 * datetime
 
-some_catalog_object_db_table class we work with some_catalog_object
-table by default. You can redefine db_table name:
+some_catalog_object_db_table class is used by default by some_catalog_object. 
+You can override name of the table in the data base, placing some_catalog_object_db_table :: _define_db_table_name() method:
 
   function _define_db_table_name()
   {
   	return 'some_other_name';
   }
  
-CREATING CONTROLLERS.
+CREATING CONTROLLERS
 
-Controllers defines objects functionality. Our some_catalog_folder
-will be able to display itself in 2 lists (admin_display + display),
-create child objects and folders, edit and delete itself. some_catalog_object
-doesn't support publishing.
+The controller defines its site object functionality. Our some_catalog_folder
+is able to display itself in 2 lists (admin_display + display),
+create child objects and folders, edit and delete itself.
 
-OK, now some_catalog_folder_controller:
+Ok, here goes some_catalog_folder_controller, we place it in PROJECT_DIR/core/controllers/some_catalog_folder_controller.class.php:
+
+<?php
 
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
@@ -205,17 +200,23 @@ class some_catalog_folder_controller extends site_object_controller
 		parent :: site_object_controller();
 	}
 }
+?>
 
 Let's clarify some actions attributes:
 
-permissions_required tell the necessary permissions level user must have to 
-execute the action.
-JIP flag means that the action will be displayed in actions list of an object.
-action_path tell the relative path to object which will used to implement action.
-popup flag means that a new windows will be opened to perform action.
-template_path point to template file to visualize the action.
+* 'permissions_required' option tells the necessary permission level a user must have to execute the action.
+* 'JIP' flag means whether the action is to be displayed in the template Just In Place controls.
+* 'action_name' holds the localized full name of this action.
+* 'action_path' option tells the relative path to the action object.
+* 'popup' flag means that action should be performed in the popup window.
+* 'template_path' points to the relative template file to display the action result.
+* 'img_src' is used to display an icon for this action.
 
-Next comes some_catalog_object controller
+It's a turn for the some_catalog_object controller, we place it in PROJECT_DIR/core/controllers/some_catalog_object_controller.class.php:
+
+<?php
+
+require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 
 class some_catalog_object_controller extends site_object_controller
 {
@@ -271,32 +272,31 @@ class some_catalog_object_controller extends site_object_controller
 		parent :: site_object_controller();
 	}
 }
+?>
 
-LOCALIZED STRINGS INI-FILES
+LOCALIZED *.INI FILES
 
-As you may realize from controllers we not going to create new ini-files with
-localized strings to display messages. The existing catalog
-ini-files from LIMB_DIR are used instead. 
-New ini-file could looks like this:
+As you may have realized from controllers definition we use strings :: get([...]) calls to get the localized values.
+Our catalog.ini file might be as follows:
 
 [extends]
 
-filename=catalog
+filename = common
 
 [constants]
-catalog_object= Some catalog object
-catalog_folder=Some catalog folder
+catalog_object = Some catalog object
+catalog_folder = Some catalog folder
 image = Image
-description=Description
-price=Price
-// some more string here
-
-You'll need to create a file for every locale you use at your site e.g.
-some_catalog_en.ini for English, some_catalog_ru for Russian.
+description = Description
+price = Price
 
 CREATING ACTION CLASSES
 
-Action class for creating new some_catalog_folder looks like this:
+Let's implement some actions defined in our some_catalog_folder controller.
+
+First goes the 'create' action, we place it in PROJECT_DIR/core/actions/some_catalog_folder/create_some_catalog_folder_action.class.php:
+
+<?php
 
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
 
@@ -319,9 +319,15 @@ class create_some_catalog_folder_action extends form_create_site_object_action
 	}
 }
 
-We think it's simple enough not to comment anything.
+?>
 
-Action class for deleting some_catalog_folder:
+Validating code is the most interesting part: you define rules in _init_validator() method.
+You can find a bunch of different rules in LIMB_DIR/core/lib/validators/rules directory.
+The code above should be self-explanatory yet you'll definitely want to dig the form_create_site_object_action base class :)
+
+The 'delete' action, we place it in PROJECT_DIR/core/actions/some_catalog_folder/delete_some_catalog_folder_action.class.php:
+
+<?php
 
 require_once(LIMB_DIR . 'core/actions/form_delete_site_object_action.class.php');
 
@@ -333,9 +339,13 @@ class delete_some_catalog_folder_action extends form_delete_site_object_action
 	}
 }
 
+?>
 
-Action class for creating new some_catalog_object a little bit complicated:
+Should be clear enough too.
 
+The 'create' action, we place it in PROJECT_DIR/core/actions/some_catalog_object/create_some_catalog_object_action.class.php:
+
+<?php
 
 class create_some_catalog_object_action extends form_create_site_object_action
 {
@@ -363,20 +373,17 @@ class create_some_catalog_object_action extends form_create_site_object_action
 	}
 }
 
-datamap property tells what request variables should be collected and
-how these variable should be moved into object's attributes.
+?>
 
-We not going to show the rest of the actions classes since you can look 
-for them in LIMB_DIR/core/action/catalog_folder and LIMB_DIR/core/action/catalog_object.
+Looks like we have more validating rules around!
+Please note that a 'datamap' option in the $definition array defines how request variables should be mapped into site object's attributes.
 
 CREATING TEMPLATE FILES
 
-Action classes are used if there is need to write something to database.
-LIMB templates are active. All extractive operations performed by 
-datasources. That why creating good templates are essential part of the site 
-development process.
+LIMB templates are active. Usually all db fetching operations are performed by 
+templates datasources(not a mandatory behaviour though).
 
-Here is a template for admin_display action of some_catalog_folder:
+Here is the template for the 'admin_display' action of some_catalog_folder site object, we place it in PROJECT_DIR/design/main/templates/some_catalog_folder/admin_display.html:
 
 <core:WRAP file="admin/admin_display_page.html" placeholder="content">
 
@@ -453,12 +460,12 @@ Here is a template for admin_display action of some_catalog_folder:
 
 This template contains 2 tables to display child folders and objects.
 <fetch:SUB_BRANCH> gets a bunch of child some_catalog_folders at depth=1 by default and
-put it to target component.
-<grid:LIST> used to display tabular data. <grid:LIST> and <grid:ITERATOR>
+assigns them to target 'folders' component.
+<grid:LIST> is used to display tabular data. <grid:LIST> and <grid:ITERATOR>
 make output only if the data set has at least one record (<grid:DEFAULT> tag
 can be in case of empty data set).
 
-Next comes create templates for creating new some_catalog_folder object:
+Let's implement template for the 'create' action of the some_catalog_folder site object, we place it in PROJECT_DIR/design/main/templates/some_catalog_folder/create.html:
 
 <core:WRAP file="popup.html" placeholder="content">
 <h2><locale:STRING name='catalog_folder_creation' file='catalog'></h2>
@@ -474,11 +481,7 @@ Next comes create templates for creating new some_catalog_folder object:
   </table>
 </form>
 
-Let's say this is a default template for any folder. 
-/admin/admin_form_items/folder_form_fields.html contains all necessary fields
-like identifier, title, form validation errors etc.
-
-And the last is /some_catalog_object/create.html
+And the last is one is the template for the 'create' action of the some_catalog_object site object, we place it in PROJECT_DIR/design/main/templates/some_catalog_object/create.html:
 
 <core:WRAP file="popup.html" placeholder="content">
 
@@ -502,7 +505,8 @@ And the last is /some_catalog_object/create.html
 	</table>	
 </form>
 
-/some_catalog_object/form_fields.html
+As long as the form fields are similar for creating and editing it's convenient to share them, that's why we include them with <core:INCLUDE file="/some_catalog_object/form_fields.html"> tag.
+Here's the contents of PROJECT_DIR/design/main/templates/some_catalog_object/form_fields.html:
 
 	<table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
 	<tr>
@@ -544,7 +548,7 @@ And the last is /some_catalog_object/create.html
 							<core:INCLUDE file='/admin/admin_form_items/image_select.html'>
 
 <tr>
-  <td><label for="price"><span class='req'>*</span><locale:STRING name=' price ' file=’catalog’></label></td>
+  <td><label for="price"><span class='req'>*</span><locale:STRING name=' price ' file='catalog'></label></td>
   <td><input type="text" name="price" id="price" label="price" class='input' size='10'>
   </td>
 </tr>
@@ -568,11 +572,4 @@ And the last is /some_catalog_object/create.html
 	init_tab('param_text',	'tabulator', 'label', 'tab','window.onresize()')
 </script>
 
-	<div id='popup_div'></div>
-	
-A little bit awful but we got used to that.
-
-Over templates could be found in LIMB_DIR/design/main/templates/catalog_folder
-and LIMB_DIR/design/main/templates/catalog_object.
-
-If you have any questions please email us.
+<div id='popup_div'></div>
