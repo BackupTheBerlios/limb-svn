@@ -65,7 +65,7 @@ class site_object_fetch_test_init
   {
   	$db_table =& db_table_factory :: instance('sys_site_object');
   	
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
 		$values['identifier'] = 'root';
 		$this->root_node_id = $tree->create_root_node($values, false, true);
 
@@ -104,7 +104,7 @@ class site_object_fetch_test_init
   	
   	$db_table =& db_table_factory :: instance('sys_site_object');
 
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
   	
   	$data = array();
   	for($i = 11; $i <= 20 ; $i++)

@@ -62,7 +62,7 @@ class test_site_object_auto_identifier extends UnitTestCase
   	
   	$this->object = new site_object_auto_identifier_test_version();
   	
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
   	
 		$values['identifier'] = 'root';
 		$values['object_id'] = 1;
@@ -136,7 +136,7 @@ class test_site_object_auto_identifier extends UnitTestCase
   {
   	static $object_id = 1;
   	
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
   	
 		$values['identifier'] = $identifier;
 		$values['object_id'] = ++$object_id;

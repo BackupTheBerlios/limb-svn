@@ -42,7 +42,7 @@ class stats_keywords_list_datasource extends datasource
 
 	function _process_result_array($arr)		
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$total = $this->stats_report->fetch_total_hits();
 			

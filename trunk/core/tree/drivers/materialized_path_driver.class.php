@@ -8,14 +8,10 @@
 * $Id: nested_sets_driver.class.php 131 2004-04-09 14:11:45Z server $
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . 'core/tree/drivers/tree_db_driver.class.php');
 
-require_once(LIMB_DIR . 'core/tree/drivers/tree_driver.class.php');
-require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-
-class materialized_path_driver extends tree_driver
-{
-	var $_db = null;
-	
+class materialized_path_driver extends tree_db_driver
+{	
 	/**
 	* 
 	* @var array The field parameters of the table with the nested set.
@@ -32,28 +28,13 @@ class materialized_path_driver extends tree_driver
 	);
 	
 	var $_expanded_parents = array(); 
-		
-	/**
-	* 
-	* @var string The table with the actual tree data
-	* @access public 
-	*/
-	var $_node_table = 'sys_site_object_tree';
-
+	
 	/**
 	* 
 	* @var array An array of field ids that must exist in the table
 	* @access private 
 	*/
 	var $_required_params = array('id', 'root_id', 'path', 'level');
-
-	/**
-	* Used for _internal_ tree conversion
-	* 
-	* @var bool Turn off user param verification and id generation
-	* @access private 
-	*/
-	var $_dumb_mode = false;
 
 	/**
 	* Constructor
@@ -64,11 +45,9 @@ class materialized_path_driver extends tree_driver
 	*/
 	function materialized_path_driver()
 	{		
-		$this->_db =& db_factory :: instance();
-		
-		parent :: tree_driver();
+		parent :: tree_db_driver();
 	} 
-			    
+				    
 	/**
 	* Fetch the whole nested set
 	* 
@@ -369,7 +348,13 @@ class materialized_path_driver extends tree_driver
 	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
 	{
 		$add_sql['columns'][] = ', soa.object_id';
-		$add_sql['join'][] = ', sys_site_object as sso, sys_object_access as soa';
+		
+		if(!$this->_is_table_joined('sys_site_object', $add_sql))
+			$add_sql['join'][] = ', sys_site_object as sso ';
+
+		if(!$this->_is_table_joined('sys_object_access', $add_sql))
+			$add_sql['join'][] = ', sys_object_access as soa ';
+		
 		$add_sql['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
 	
 		$access_policy =& access_policy :: instance();
@@ -396,7 +381,12 @@ class materialized_path_driver extends tree_driver
 			return false;
 		} 
 		
-		$add_sql['join'][] = ', sys_site_object as sso, sys_object_access as soa';
+		if(!$this->_is_table_joined('sys_site_object', $add_sql))
+			$add_sql['join'][] = ', sys_site_object as sso ';
+
+		if(!$this->_is_table_joined('sys_object_access', $add_sql))
+			$add_sql['join'][] = ', sys_object_access as soa ';
+		
 		$add_sql['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
 	
 		$access_policy =& access_policy :: instance();
@@ -510,24 +500,23 @@ class materialized_path_driver extends tree_driver
 		return $nodes;
 	}
 
-	function get_max_child_identifier($id)
+	function get_max_child_identifier($parent_id)
 	{
-		if (!($parent = $this->get_node($id)))
+		if (!($parent = $this->get_node($parent_id)))
 		{
     	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
+    		array('id' => $parent_id)
     	);
 			return false;
 		} 
 		
 		$sql = sprintf('SELECT identifier FROM %s
-                    WHERE root_id=%s AND level=%s+1 AND l BETWEEN %s AND %s
+                    WHERE root_id=%s AND parent_id=%s
                     ORDER BY identifier DESC',
 										$this->_node_table, 
 										$parent['root_id'],
-										$parent['level'],
-										$parent['l'], $parent['r']);
+										$parent['id']);
 										
 		$this->_db->sql_exec($sql, 1, 0);
 		
@@ -711,31 +700,7 @@ class materialized_path_driver extends tree_driver
 
 		return true;
 	} 
-	
-	/**
-	* Changes the payload of a node
-	* 
-	* @param int $id Node ID
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @access public 
-	* @return bool True if the update is successful
-	*/
-	function update_node($id, $values)
-	{
-		if(!$this->is_node($id))
-		{
-    	debug :: write_error(TREE_ERROR_NODE_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
-    	return false;
-		} 
 		
-		$this->_verify_user_values($values);
-				
-		return $this->_db->sql_update($this->_node_table, $values, array('id' => $id));
-	} 
-	
 	/**
 	* Wrapper for node moving and copying
 	* 
@@ -812,108 +777,7 @@ class materialized_path_driver extends tree_driver
 		
 		return true;
 	} 
-	
-	/**
-	* Adds a specific type of SQL to a sql_exec string
-	* 
-	* @param array $add_sql The array of SQL strings to add.  Example value:
-	*                $add_sql = array(
-	*                'columns' => 'tb2.col2, tb2.col3',         // Additional tables/columns
-	*                'join' => 'LEFT JOIN tb1 USING(id)', // Join statement
-	*                'append' => 'GROUP by tb1.id');      // Group condition
-	* @param string $type The type of SQL.  Can be 'columns', 'join', or 'append'.
-	* @access private 
-	* @return string The SQL, properly formatted
-	*/
-	function _add_sql($add_sql, $type)
-	{
-		if (!isset($add_sql[$type]))
-			return '';
-
-		return implode(' ', $add_sql[$type]);
-	} 
-	
-	function _is_table_joined($table_name, $add_sql)
-	{
-		if(!isset($add_sql['join']))
-			return false;
-			
-		foreach($add_sql['join'] as $sql)
-		{
-			if(strpos($sql, $table_name) !== false)
-				return true;
-		}
-		return false;
-	}
-	
-	/**
-	* Gets the select fields based on the params
-	* 
-	* @access private 
-	* @return string A string of sql_exec fields to select
-	*/
-	function _get_select_fields()
-	{
-		$sql_exec_fields = array();
-		foreach ($this->_params as $key => $val)
-		{
-			$sql_exec_fields[] = $this->_node_table . '.' . $key . ' AS ' . $val;
-		} 
-
-		return implode(', ', $sql_exec_fields);
-	} 
-	
-	function & _get_result_set($sql)
-	{
-		$this->_db->sql_exec($sql);
-		$nodes =& $this->_db->get_array('id');
-
-		return $nodes;
-	} 
-	
-	function _assign_result_set(&$nodes, $sql)
-	{
-		$this->_sql = $sql;
-		$this->_db->sql_exec($sql);
-		$this->_db->assign_array($nodes, 'id');
-	} 
-						
-	/**
-	* Clean values from protected or unknown columns
-	* 
-	* @var string $caller The calling method
-	* @var string $values The values array
-	* @access private 
-	* @return void 
-	*/
-	function _verify_user_values(&$values)
-	{
-		if ($this->_dumb_mode)
-			return true;
-
-		foreach($values as $field => $value)
-		{
-			if (!isset($this->_params[$field]))
-			{
-	    	debug :: write_error(TREE_ERROR_NODE_WRONG_PARAM,
-	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-	    		 array('param' => $field)
-	    	);
-				unset($values[$field]);
-				continue;
-			}
-			 
-			if (in_array($this->_params[$field], $this->_required_params))
-			{
-	    	debug :: write_error(TREE_ERROR_NODE_WRONG_PARAM,
-	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		 array('value' => $field)
-	    	);
-
-				unset($values[$field]);
-			} 
-		} 
-	} 	
+									
 } 
 
 ?>

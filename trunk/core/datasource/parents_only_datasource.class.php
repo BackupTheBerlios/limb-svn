@@ -44,7 +44,7 @@ class parents_only_datasource extends fetch_sub_branch_datasource
 			if(!$node = map_url_to_node($path))
 				return false;
 				
-			$tree =& limb_tree :: instance();
+			$tree =& tree :: instance();
 			if(!$path = $tree->get_path_to_node($node))
 				return false;
 		}

@@ -68,7 +68,7 @@ class test_site_object_manipulation extends UnitTestCase
   	$user =& user :: instance();
   	$user->_set_id(10);
   	
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
 
 		$values['identifier'] = 'root';
 		$root_node_id = $tree->create_root_node($values, false, true);

@@ -111,7 +111,7 @@ class stats_events_list_datasource extends datasource
 		if (!isset($_REQUEST['stats_object_path']) || !$_REQUEST['stats_object_path'])
 			return ;
 
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		if($node = $tree->get_node_by_path($_REQUEST['stats_object_path']))
 			$this->stats_event_report->set_object_filter($node['id']);
 		else

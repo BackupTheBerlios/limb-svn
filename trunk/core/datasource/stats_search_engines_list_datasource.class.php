@@ -42,7 +42,7 @@ class stats_search_engines_list_datasource extends datasource
 
 	function _process_result_array($arr)		
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$total = $this->stats_report->fetch_total_hits();
 			

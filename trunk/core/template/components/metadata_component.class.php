@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
+require_once(LIMB_DIR . 'core/tree/tree.class.php');
 require_once(LIMB_DIR . 'core/template/component.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
@@ -33,7 +33,7 @@ class metadata_component extends component
 		if (count($this->object_ids_array))
 			return $this->object_ids_array;
 	
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$node = $tree->get_node($this->get_node_id());
 		$parents = $tree->get_parents($this->get_node_id());

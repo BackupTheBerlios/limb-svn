@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'core/tree/drivers/nested_sets_driver.class.php');
 
 class nested_sets_driver_test_version extends nested_sets_driver
 {	
-	var $_node_table = 'test_nested_tree1';
+	var $_node_table = 'test_nested_sets_tree';
 	var $_lock_ttl = 5;
 	
 	function nested_sets_driver_test_version()
@@ -45,7 +45,7 @@ class test_nested_sets_driver extends UnitTestCase
 	{
 		debug_mock :: tally();
 		
-		$this->db->sql_delete('test_nested_tree1');		
+		$this->db->sql_delete('test_nested_sets_tree');		
 	} 
 	
 	function _move_tree_across($branches, $mvt, $nodecount)
@@ -158,7 +158,7 @@ class test_nested_sets_driver extends UnitTestCase
 				$nid[$i] = $this->_tree->create_root_node($values, $nid[$i-1]);
 			} 
 			
-			$this->db->sql_select('test_nested_tree1', '*', 'root_id='. $nid[$i]);
+			$this->db->sql_select('test_nested_sets_tree', '*', 'root_id='. $nid[$i]);
 			$new_root_node = $this->db->fetch_row();
 			
 			$this->assertEqual($new_root_node['root_id'], $nid[$i], "Root node $i: creation failed");

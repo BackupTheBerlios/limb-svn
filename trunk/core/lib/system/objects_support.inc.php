@@ -36,13 +36,16 @@ function & create_object($class_name, $arguments = array())
   $evaled_arguments = array(); 
   foreach($arguments as $key => $value) 
   { 
-	  switch(gettype($value)) 
+	  switch(strtolower(gettype($value))) 
 	  { 
-	    case "object": 
+	    case 'object': 
 	    	eval("\$" . $key . " =& \$arguments['" . $key . "'];"); 
 	    break; 
-	    case "string": 
+	    case 'string': 
 	    	eval("\$" . $key . " = '" . $value . "';"); 
+	    break;
+	    case 'null':
+	    	eval("\$" . $key . " = null;"); 
 	    break;
 	    default: 
 	    	eval("\$" . $key . " = " . $value . ";"); 

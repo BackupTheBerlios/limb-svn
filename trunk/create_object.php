@@ -51,7 +51,7 @@ if($_REQUEST['action'] == 'create_object' && $params_set)
 	
  	define('MANAGEMENT_LOCALE_ID', 'ru');
 
-  $tree =& limb_tree :: instance();
+  $tree =& tree :: instance();
 	
 	$object =& site_object_factory :: create($params['class']);
 

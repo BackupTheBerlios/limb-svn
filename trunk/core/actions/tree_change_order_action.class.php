@@ -21,7 +21,7 @@ class tree_change_order_action extends action
 	
 	function perform()
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		if(isset($_REQUEST['id']))
 			$node_id = (int)$_REQUEST['id'];

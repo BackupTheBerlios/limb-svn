@@ -100,8 +100,6 @@ class content_object extends site_object
 								ssot.id as node_id, 
 								ssot.parent_id as parent_node_id, 
 								ssot.level as level,
-								ssot.l as l,
-								ssot.r as r,
 								tn.*,
 								tn.id as record_id,
 								tn.object_id as id

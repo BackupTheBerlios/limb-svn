@@ -20,7 +20,7 @@ class tree_toggle_action extends action
 	
 	function perform()
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 				
 		if(isset($_REQUEST['id']))
 			$id = (int)$_REQUEST['id'];

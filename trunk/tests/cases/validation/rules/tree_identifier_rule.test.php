@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
+require_once(LIMB_DIR . 'core/tree/tree.class.php');
 require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
 
@@ -33,7 +33,7 @@ class test_tree_identifier_rule extends test_single_field_rule
 	{
 		parent :: setUp();
 		
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
 
 		$values['identifier'] = 'root';
 		$this->node_id_root = $tree->create_root_node($values, false, true);

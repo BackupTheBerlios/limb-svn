@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/tree/drivers/nested_sets_driver.class.php');
+require_once(LIMB_DIR . 'core/tree/drivers/materialized_path_driver.class.php');
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
 
-class limb_tree
+class tree
 {
 	var $_tree_driver = null;
 	
-	function limb_tree($driver = null)
+	function tree($driver = null)
 	{
 		$this->initialize_tree_driver($driver);
 	}
 	
-	function &instance()
+	function &instance($driver = null)
 	{
-		$obj =&	instantiate_object('limb_tree');
+		$obj =&	instantiate_object('tree', array('driver' => $driver));
 		return $obj;
 	}
 
 	function initialize_tree_driver($driver = null)
 	{
 		if($driver === null)
-			$this->_tree_driver =& new nested_sets_driver();
+			$this->_tree_driver =& new materialized_path_driver();
 			
 		$parents =& session :: get('tree_expanded_parents');
 		$this->_tree_driver->set_expanded_parents($parents);
@@ -115,7 +115,9 @@ class limb_tree
 		
 	function get_path_to_node($node)
 	{
-		$parents = $this->_tree_driver->get_parents($node['id']);
+		if(($parents = $this->_tree_driver->get_parents($node['id'])) === false)
+			return false;
+		
 		$path = '';
 		foreach($parents as $parent_data)
 			$path .= '/' . $parent_data['identifier'];

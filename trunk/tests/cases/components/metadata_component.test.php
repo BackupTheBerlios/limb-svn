@@ -47,7 +47,7 @@ class test_metadata_component extends test_limb_case
   	
   	$this->object->setReturnReference('_get_mapped_controller', $this->controller);
   	
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
   	
 		$values['identifier'] = 'object_300';
 		$values['object_id'] = 300;
@@ -216,7 +216,7 @@ class test_metadata_component extends test_limb_case
   	
   	$node_id = $this->object->get_node_id();
   	
-  	$tree =& limb_tree :: instance();
+  	$tree =& tree :: instance();
   	$node =& $tree->get_node_by_path($_SERVER['PHP_SELF']);
   	$this->assertEqual($node_id, $node['id']);
 

@@ -79,6 +79,25 @@ class test_materialized_path_driver extends UnitTestCase
 		$this->assertEqual($node, $this->driver->get_node(10));
 	}
 	
+	function test_get_max_identifier_failed()
+	{
+		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000));
+		$this->assertIdentical(false, $this->driver->get_max_child_identifier(1000));
+	}
+	
+	function test_get_max_identifier()
+	{
+		$root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+		
+		$this->assertEqual(0, $this->driver->get_max_child_identifier($root_id));
+		
+		$sub_node_id_1_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test1', 'object_id' => 20));
+		$sub_node_id_1_2 = $this->driver->create_sub_node($root_id, array('identifier' => 'test3', 'object_id' => 10));
+		$sub_node_id_1_3 = $this->driver->create_sub_node($root_id, array('identifier' => 'test2', 'object_id' => 10));
+		
+		$this->assertEqual('test3', $this->driver->get_max_child_identifier($root_id));
+	}
+	
 	function test_get_parent_failed()
 	{
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_NOT_FOUND, array('id' => 1000));
@@ -306,6 +325,8 @@ class test_materialized_path_driver extends UnitTestCase
 		$nodes = $this->driver->get_parents($sub_node_id2);
 		
 		$this->assertEqual(sizeof($nodes), 2);
+		$this->_check_proper_nesting($nodes, __LINE__);
+		$this->_check_result_nodes_array($nodes, __LINE__);
 		
 		$row = reset($nodes);
 		
@@ -322,6 +343,8 @@ class test_materialized_path_driver extends UnitTestCase
 		$nodes = $this->driver->get_parents($sub_node_id1);
 		
 		$this->assertEqual(sizeof($nodes), 1);
+		$this->_check_proper_nesting($nodes, __LINE__);
+		$this->_check_result_nodes_array($nodes, __LINE__);
 	}
 	
 	function test_get_children_failed()
@@ -340,6 +363,7 @@ class test_materialized_path_driver extends UnitTestCase
 		$nodes = $this->driver->get_children($parent_node_id);
 		
 		$this->assertEqual(sizeof($nodes), 2);
+		$this->_check_result_nodes_array($nodes, __LINE__);
 		
 		$row = reset($nodes);
 		
@@ -515,7 +539,8 @@ class test_materialized_path_driver extends UnitTestCase
 		//getting all		
 		$branch = $this->driver->get_sub_branch($sub_node_id_1);
 		$this->assertEqual(3, sizeof($branch));
-		$this->_check_result_nodes_array($branch, 'at line: ' . __LINE__);
+		$this->_check_result_nodes_array($branch, __LINE__);
+		$this->_check_proper_nesting($branch, __LINE__);
 
 		$node = current($branch);
 		$this->assertEqual($node['id'], $sub_node_id_1_1, 'invalid parameter: id');
@@ -523,41 +548,48 @@ class test_materialized_path_driver extends UnitTestCase
 		//getting at unlimited depth, including node
 		$branch = $this->driver->get_sub_branch($sub_node_id_1, -1, true);
 		$this->assertEqual(4, sizeof($branch));
-		$this->_check_result_nodes_array($branch, 'at line: ' . __LINE__);
+		$this->_check_result_nodes_array($branch, __LINE__);
+		$this->_check_proper_nesting($branch, __LINE__);
 		
 		//getting at depth = 1
 		$branch = $this->driver->get_sub_branch($sub_node_id_1, 1);
 		$this->assertEqual(1, sizeof($branch));
-		$this->_check_result_nodes_array($branch, 'at line: ' . __LINE__);
+		$this->_check_result_nodes_array($branch,  __LINE__);
+		$this->_check_proper_nesting($branch, __LINE__);
 		
 		//getting at depth = 1, including node
 		$branch = $this->driver->get_sub_branch($sub_node_id_1, 1, true);
 		$this->assertEqual(2, sizeof($branch));
-		$this->_check_result_nodes_array($branch, 'at line: ' . __LINE__);		
+		$this->_check_result_nodes_array($branch,  __LINE__);
+		$this->_check_proper_nesting($branch, __LINE__);
 	}
 	
 	function test_get_sub_branch_only_parents()
 	{
-		$root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-		$sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 10));
-		$sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 20));
-		$sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
-		$sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
-
 		$this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => 100));
 		$this->db->sql_insert('sys_site_object', array('id' => 20, 'class_id' => 200));
 		$this->db->sql_insert('sys_class', array('id' => 100, 'can_be_parent' => 1));
 		$this->db->sql_insert('sys_class', array('id' => 200, 'can_be_parent' => 0));
+
+		$root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+		$sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 10));
+		$sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 10));
+		$sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
+		$sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
+		$sub_node_id_2 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 20));
+		$sub_node_id_1_2 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 20));
 		
 		//getting at depth = 1, including node, not checking expanded parents, only parents
 		$branch = $this->driver->get_sub_branch($root_id, 1, true, false, true); 
 		$this->assertEqual(2, sizeof($branch));
-		$this->_check_result_nodes_array($branch, 'at line: ' . __LINE__);
+		$this->_check_result_nodes_array($branch, __LINE__);
+		$this->_check_proper_nesting($branch, __LINE__);
 		
 		//getting at unlimited depth, including node, not checking expanded parents, only parents
 		$branch = $this->driver->get_sub_branch($root_id, -1, true, false, true); 
-		$this->assertEqual(4, sizeof($branch));
-		$this->_check_result_nodes_array($branch, 'at line: ' . __LINE__);		
+		$this->assertEqual(3, sizeof($branch));
+		$this->_check_result_nodes_array($branch, __LINE__);
+		$this->_check_proper_nesting($branch, __LINE__);
 	}
 	
 	function test_get_sub_branch_check_expanded_parents()
@@ -580,7 +612,8 @@ class test_materialized_path_driver extends UnitTestCase
 		//getting at unlimited depth, including node, checking expanded parents
 		$branch = $this->driver->get_sub_branch($root_id, -1, true, true); 
 		$this->assertEqual(3, sizeof($branch));
-		$this->_check_result_nodes_array($branch, 'at line: ' . __LINE__);
+		$this->_check_result_nodes_array($branch, __LINE__);
+		$this->_check_proper_nesting($branch, __LINE__);
 		
 		$this->driver->collapse_node($root_id);
 		$this->driver->expand_node($sub_node_id_1_1);
@@ -588,7 +621,8 @@ class test_materialized_path_driver extends UnitTestCase
 		//getting at unlimited depth, including node, checking expanded parents
 		$branch = $this->driver->get_sub_branch($root_id, -1, true, true); 
 		$this->assertEqual(1, sizeof($branch));
-		$this->_check_result_nodes_array($branch, 'at line: ' . __LINE__);
+		$this->_check_result_nodes_array($branch, __LINE__);
+		$this->_check_proper_nesting($branch, __LINE__);
 	}
 	
 	function test_get_node_by_path_failed()
@@ -618,19 +652,19 @@ class test_materialized_path_driver extends UnitTestCase
 
 		$node = $this->driver->get_node_by_path('/root/');
 		$this->assertEqual($node['id'], $root_id);
-		$this->_check_result_nodes_array($node);
+		$this->_check_result_nodes_array($node, __LINE__);
 
 		$node = $this->driver->get_node_by_path('/root/test1/test1/');
 		$this->assertEqual($node['id'], $sub_node_id_1_1);
-		$this->_check_result_nodes_array($node);
+		$this->_check_result_nodes_array($node,  __LINE__);
 		
 		$node = $this->driver->get_node_by_path('/root/test1/test1/test2');
 		$this->assertEqual($node['id'], $sub_node_id_1_1_2);
-		$this->_check_result_nodes_array($node);
+		$this->_check_result_nodes_array($node,  __LINE__);
 		
 		$node = $this->driver->get_node_by_path('/root/test1/test1/test1/');
 		$this->assertEqual($node['id'], $sub_node_id_1_1_1);
-		$this->_check_result_nodes_array($node);
+		$this->_check_result_nodes_array($node,  __LINE__);
 	}
 
 	function test_get_sub_branch_by_path_failed()
@@ -659,16 +693,44 @@ class test_materialized_path_driver extends UnitTestCase
 		);
 		
 		$this->assertEqual(sizeof($nodes), 5);
-		$this->_check_result_nodes_array($nodes);
+		$this->_check_result_nodes_array($nodes,  __LINE__);
 	}
 	
-	function _check_result_nodes_array($nodes, $comment=null)
+	function _check_result_nodes_array($nodes, $line='')
 	{
 		if(isset($nodes['object_id']))
-			$this->assertEqual($this->driver->get_node($nodes['id']), $nodes, $comment);
+			$this->assertEqual($this->driver->get_node($nodes['id']), $nodes, 'at line: ' . $line);
 		else
 			foreach($nodes as $id => $node)
-				$this->assertEqual($this->driver->get_node($id), $node, $comment);
+				$this->assertEqual($this->driver->get_node($id), $node, 'at line: ' . $line);
+	}
+	
+	function _check_proper_nesting($nodes, $line='')
+	{
+		$paths[] = complex_array :: get_min_column_value('path', $nodes, $index);
+		
+		$counter = 0;
+		foreach($nodes as $id => $node)
+		{
+			if($counter == 0)
+			{
+				$this->assertEqual($node['path'], $paths[0], 
+					'first element path is invalid: ' . $node['path'] . ' , expected : ' . $paths[0] . ' at line: ' . $line);
+			}
+			elseif(preg_match('~^(.*/)[^/]+/$~', $node['path'], $matches))
+			{
+				$prev_path = $matches[1];
+				$this->assertTrue(in_array($prev_path, $paths), 
+					'path is improperly nested: ' . $node['path'] . ' , expected parent not found: ' . $prev_path . ' at line: ' . $line);
+			}
+			else
+			{
+				$this->assertFalse(true, 'path is invalid: ' . $node['path'] . ' at line: ' . $line);
+			}
+			
+			$paths[] = $node['path'];
+			$counter++;
+		}
 	}
 	
 } 

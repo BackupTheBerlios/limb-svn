@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'core/model/object.class.php');
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
-require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
+require_once(LIMB_DIR . 'core/tree/tree.class.php');
 
 class site_object extends object
 {
@@ -197,8 +197,6 @@ class site_object extends object
 								ssot.id as node_id, 
 								ssot.parent_id as parent_node_id, 
 								ssot.level as level,
-								ssot.l as l,
-								ssot.r as r,
 								sso.current_version as version,
 								sys_class.id as class_id, 
 								sys_class.class_name as class_name,
@@ -416,7 +414,7 @@ class site_object extends object
 			return false;
 		}	
 
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 
 		$values['identifier'] = $identifier;
 		$values['object_id'] = $id;
@@ -463,7 +461,7 @@ class site_object extends object
 	
 	function _generate_auto_identifier()
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$identifier = $tree->get_max_child_identifier($this->get_parent_node_id());
 		
@@ -482,7 +480,7 @@ class site_object extends object
 	
 	function _can_add_node_to_parent($parent_node_id)
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		if (!$tree->can_add_node($parent_node_id))
 			return false;
@@ -672,7 +670,7 @@ class site_object extends object
 	{
 		$data = $this->_attributes->export();
 
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$tree->delete_node($data['node_id']);
 				
@@ -683,7 +681,7 @@ class site_object extends object
 	{
 		$data = $this->_attributes->export();
 
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		$node = $tree->get_node($data['node_id']);
 		
@@ -767,7 +765,7 @@ class site_object extends object
 	
 	function _can_delete_tree_node($node_id)
 	{
-		$tree =& limb_tree :: instance();
+		$tree =& tree :: instance();
 		
 		return $tree->can_delete_node($node_id);
 	}
