@@ -17,9 +17,6 @@ class cart_item extends object
     parent :: object();
 
     $this->_set_id($id);
-
-    //IMPORTANT!!!
-    $this->__session_class_path = LIMB_DIR . '/core/model/shop/cart_item.class.php';
   }
 
   function _set_id($id)
