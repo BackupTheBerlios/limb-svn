@@ -20,7 +20,7 @@ class SysParamsTest extends LimbTestCase
   function sysParamsTest()
   {
     $this->db =& DbFactory :: instance();
-    parent :: limbTestCase();
+    parent :: LimbTestCase();
   }
 
   function setUp()

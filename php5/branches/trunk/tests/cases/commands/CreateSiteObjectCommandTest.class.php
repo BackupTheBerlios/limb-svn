@@ -137,10 +137,10 @@ class CreateSiteObjectCommandTest extends LimbTestCase
   function testPerformFailed()
   {
     $this->dataspace->expectOnce('export');
-    $this->dataspace->setReturnValue('export', array('identifier' => 'test',
-                                                     'title' => 'test',
-                                                     'parent_node_id' => 200
-                                                     ));
+    $this->dataspace->setReturnValue('export',
+                                     array('identifier' => 'test',
+                                           'title' => 'test',
+                                           'parent_node_id' => 200));
 
     $this->dataspace->expectOnce('get', array('parent_node_id'));
     $this->dataspace->setReturnValue('get', 200, array('parent_node_id'));

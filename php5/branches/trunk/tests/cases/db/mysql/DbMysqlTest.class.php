@@ -15,7 +15,7 @@ class DbMysqlTest extends LimbTestCase
 {
   function dbMysqlTest($name = 'mysql db test case')
   {
-    parent :: limbTestCase($name);
+    parent :: LimbTestCase($name);
   }
 
   function setUp()

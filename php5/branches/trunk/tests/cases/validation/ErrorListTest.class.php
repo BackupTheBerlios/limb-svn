@@ -14,7 +14,7 @@ class ErrorListTest extends LimbTestCase
 {
   function errorListTest()
   {
-    parent :: limbTestCase();
+    parent :: LimbTestCase();
   }
 
   function setUp()

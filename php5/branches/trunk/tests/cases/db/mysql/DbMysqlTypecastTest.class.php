@@ -17,7 +17,7 @@ class DbMysqlTypecastTest extends LimbTestCase
 
   function dbMysqlTypecastTest($name = 'mysql typecast db test case')
   {
-    parent :: limbTestCase($name);
+    parent :: LimbTestCase($name);
   }
 
   function setUp()

@@ -16,7 +16,7 @@ class SearchQueryTest extends LimbTestCase
 
   function searchQueryTest($name = 'search query test case')
   {
-    parent :: limbTestCase($name);
+    parent :: LimbTestCase($name);
   }
 
   function setUp()

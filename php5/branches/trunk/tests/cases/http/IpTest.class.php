@@ -16,7 +16,7 @@ class IpTest extends LimbTestCase
 
   function ipTest()
   {
-    parent :: limbTestCase();
+    parent :: LimbTestCase();
   }
 
   function setUp()

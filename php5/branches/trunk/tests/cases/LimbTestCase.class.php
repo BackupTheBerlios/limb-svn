@@ -11,9 +11,9 @@
 
 class LimbTestCase extends UnitTestCase
 {
-  function limbTestCase($label = false)
+  function LimbTestCase($label = false)
   {
-    parent :: unitTestCase($label);
+    parent :: UnitTestCase($label);
   }
 
   function &_createRunner(&$reporter)

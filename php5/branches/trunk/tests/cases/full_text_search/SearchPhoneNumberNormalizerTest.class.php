@@ -18,7 +18,7 @@ class SearchPhoneNumberNormalizerTest extends LimbTestCase
   {
     $this->normalizer = new SearchPhoneNumberNormalizer();
 
-    parent :: limbTestCase($name);
+    parent :: LimbTestCase($name);
   }
 
   function testProcess()

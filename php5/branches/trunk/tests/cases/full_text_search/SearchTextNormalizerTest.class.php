@@ -18,7 +18,7 @@ class SearchTextNormalizerTest extends LimbTestCase
   {
     $this->normalizer = new SearchTextNormalizer();
 
-    parent :: limbTestCase($name);
+    parent :: LimbTestCase($name);
   }
 
   function testProcess()
