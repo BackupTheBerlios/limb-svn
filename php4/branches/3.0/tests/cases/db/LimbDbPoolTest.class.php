@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/core/db/DbConnectionConfig.class.php');
+require_once(LIMB_DIR . '/core/db/DbConfig.class.php');
 require_once(LIMB_DIR . '/core/util/ini_support.inc.php');
 
-Mock :: generate('DbConnectionConfig');
+Mock :: generate('DbConfig');
 
 class LimbDbPoolTest extends LimbTestCase
 {
@@ -25,7 +25,7 @@ class LimbDbPoolTest extends LimbTestCase
   {
     $ini =& getIni('common.ini');
 
-    $conf = new MockDbConnectionConfig($this);
+    $conf = new MockDbConfig($this);
 
     $conf->expectCallCount('get', 7);
 

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/DbConnectionConfig.class.php');
+require_once(LIMB_DIR . '/core/db/DbConfig.class.php');
 
-class IniBasedDbConnectionConfig extends DbConnectionConfig
+class IniBasedDbConfig extends DbConfig
 {
-  function IniBasedDbConnectionConfig($name)
+  function IniBasedDbConfig($name)
   {
-    parent :: DbConnectionConfig($name);
+    parent :: DbConfig($name);
 
     $ini =& getIni('common.ini');
 

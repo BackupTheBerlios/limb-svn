@@ -8,27 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/db/DbConfig.class.php');
 
-class DbConnectionConfig
+class ConstantBasedDbConfig extends DbConfig
 {
-  //used to uniquely identify db config
-  var $name;
-
-  var $driver;
-  var $host;
-  var $database;
-  var $user;
-  var $password;
-
-  function DbConnectionConfig($name)
+  function ConstantBasedDbConfig($name)
   {
-    $this->name = $name;
-  }
+    parent :: DbConfig($name);
 
-  //implements WACT db config
-  function get($key)
-  {
-    return isset($this->$key) ? $this->$key : false;
+    $this->driver = DB_DRIVER;
+    $this->host = DB_HOST;
+    $this->database = DB_NAME;
+    $this->user = DB_USER;
+    $this->password = DB_PASSWORD;
   }
 }
 

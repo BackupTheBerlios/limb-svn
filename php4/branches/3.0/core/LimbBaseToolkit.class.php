@@ -81,18 +81,18 @@ class LimbBaseToolkit// implements LimbToolkit
     return DataMapperFactory :: create($mapper_path);
   }
 
-  function setDefaultDbConnectionConfig(&$conf)
+  function setDefaultDbConfig(&$conf)
   {
     $this->default_db_config =& $conf;
   }
 
-  function & getDefaultDbConnectionConfig()
+  function & getDefaultDbConfig()
   {
     if(is_object($this->default_db_config))
       return $this->default_db_config;
 
-    include_once(LIMB_DIR . '/core/db/IniBasedDbConnectionConfig.class.php');
-    $this->default_db_config = new IniBasedDbConnectionConfig('default');
+    include_once(LIMB_DIR . '/core/db/IniBasedDbConfig.class.php');
+    $this->default_db_config = new IniBasedDbConfig('default');
 
     return $this->default_db_config;
   }
@@ -100,7 +100,7 @@ class LimbBaseToolkit// implements LimbToolkit
   function & getDbConnection($conf = null)
   {
     if(!is_object($conf))
-      $conf = $this->getDefaultDbConnectionConfig();
+      $conf = $this->getDefaultDbConfig();
 
     if(!is_object($this->db_pool))
     {
