@@ -15,9 +15,9 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/user_old_password_rule.class.
 
 class change_own_password_action extends form_action
 {
-	function change_own_password_action($name = 'change_own_password')
+	function _define_dataspace_name()
 	{
-		parent :: form_action($name);
+	  return 'change_own_password';
 	}
 
 	function _init_validator()

@@ -5,18 +5,18 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_ips_report_action.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
 class stats_search_engines_report_action extends form_action
 {
-	function stats_search_engines_report_action()
+	function _define_dataspace_name()
 	{
-		parent :: form_action('search_engines_form');
+	  return 'search_engines_form';
 	}
-	
+
 	function _valid_perform()
 	{
 		$_REQUEST['stats_start_date'] = $this->dataspace->get('stats_start_date');

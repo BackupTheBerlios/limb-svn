@@ -14,11 +14,6 @@ class phpbb_topics_db_table extends db_table
 {
 	var $_primary_key_name = 'topic_id';
 	
-  function phpbb_topics_db_table()
-  {
-    parent :: db_table();    
-  }
-
   function _define_columns()
   {
   	return array(

@@ -14,9 +14,9 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 
 class generate_password_action extends form_action
 {
-	function generate_password_action($name = 'generate_password')
+	function _define_dataspace_name()
 	{
-		parent :: form_action($name);
+	  return 'generate_password';
 	}
 	
 	function _init_validator()

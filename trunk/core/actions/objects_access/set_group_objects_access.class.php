@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
 class set_group_objects_access extends form_action
 {
-	function set_group_objects_access($name = 'set_group_access')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'set_group_access';
 	}
 	
 	function _init_dataspace()

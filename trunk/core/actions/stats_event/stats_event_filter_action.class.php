@@ -12,11 +12,11 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
 class stats_event_filter_action extends form_action
 {
-	function stats_event_filter_action()
+	function _define_dataspace_name()
 	{
-		parent :: form_action('events_filter_form');
+	  return 'events_filter_form';
 	}
-
+ 
 	function _valid_perform()
 	{
 		$_REQUEST['stats_ip'] = $this->dataspace->get('stats_ip');

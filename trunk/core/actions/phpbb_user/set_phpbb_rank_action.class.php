@@ -12,15 +12,16 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
 class set_phpbb_rank_action extends form_action
 {
-	function set_phpbb_rank_action($name = 'set_phpbb_rank', $merge_definition=array())
-	{		
-		$definition = array(
-			'site_object' => 'user_object'
-		);
-		
-		parent :: form_action($name, complex_array :: array_merge($definition, $merge_definition));
+	function _define_site_object_class_name()
+	{
+	  return 'user_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'set_phpbb_rank';
 	}
-	
+  
 	function _init_dataspace()
 	{
 		$object_data =& fetch_mapped_by_url();

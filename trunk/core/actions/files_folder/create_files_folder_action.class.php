@@ -12,16 +12,16 @@ require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php')
 
 class create_files_folder_action extends form_create_site_object_action
 {
-	function create_files_folder_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'files_folder',
-		);
-		
-		parent :: form_create_site_object_action('create_files_folder', $definition);
+	  return 'files_folder';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'create_files_folder';
 	}
-	
-	
+
 	function _init_validator()
 	{
 		parent :: _init_validator();

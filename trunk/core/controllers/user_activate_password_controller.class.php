@@ -8,17 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class user_activate_password_controller extends site_object_controller
 {
-	function user_activate_password_controller()
+  function _define_default_action()
+  {
+		return 'activate_password';
+	}
+	
+	function _define_actions()
 	{
-		$this->_default_action = 'activate_password';
-
-		$this->_actions = array(
+		return array(
 				'activate_password' => array(
 					'permissions_required' => 'r',
 					'action_path' => '/user/activate_password_action',
@@ -34,10 +36,7 @@ class user_activate_password_controller extends site_object_controller
 						'template_path' => '/site_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
-
 		); 		
-
-		parent :: site_object_controller();
 	}
 }
 

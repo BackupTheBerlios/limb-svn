@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class display_paragraph_action extends action
 {
-	function display_paragraph_action()
-	{
-		parent :: action();
-	}
-
 	function perform()
 	{
 		$object_data = fetch_mapped_by_url();

@@ -8,13 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_delete_site_object_action.class.php');
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
 
-class delete_catalog_object_action extends form_delete_site_object_action
+class site_objects_loader
 {
-	function delete_catalog_object_action($name='delete_form')
-	{		
-		parent :: form_delete_site_object_action($name, array('site_object' => 'catalog_object'));
+	function & get_site_objects()
+	{
+		$site_objects = array();
+		foreach($this->get_classes_list() as $class)
+		{
+			$site_objects[] =& site_object_factory :: create($class);
+		}
+		
+		return $site_objects;
+	}
+	
+	function get_classes_list()
+	{
+	  return array();
 	}
 }
 

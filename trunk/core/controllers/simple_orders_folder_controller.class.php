@@ -5,23 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: news_folder_controller.class.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class simple_orders_folder_controller extends site_object_controller
 {
-	function simple_orders_folder_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/simple_orders_folder/admin_display.html'
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

@@ -18,12 +18,17 @@ class action
 	var $dataspace = null;
 	
 	var $view = null;
-
-	function action($name='')
+	
+	function action()
 	{
-		$this->name = $name;
+		$this->name = $this->_define_dataspace_name();
 		
-		$this->dataspace =& dataspace :: instance($name);
+		$this->dataspace =& dataspace :: instance($this->name);
+	}
+	
+	function _define_dataspace_name()
+	{
+	  return '';
 	}
 	
 	function set_view(&$view)

@@ -13,21 +13,29 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/locale_date_rule.class.php');
 
 class create_period_news_action extends form_create_site_object_action
 {
-	function create_period_news_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'period_news_object',
-			'datamap' => array(
-				'annotation' => 'annotation',
-				'news_content' => 'content',
-				'news_date' => 'news_date',
-				'start_date' => 'start_date',
-				'finish_date' => 'finish_date',
-			)
-		);
-		
-		parent :: form_create_site_object_action('news_form', $definition);
+	  return 'period_news_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'news_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'annotation' => 'annotation',
+  				'news_content' => 'content',
+  				'news_date' => 'news_date',
+  				'start_date' => 'start_date',
+  				'finish_date' => 'finish_date',
+	      )
+	  );     
+	}   
 	
 	function _init_validator()
 	{

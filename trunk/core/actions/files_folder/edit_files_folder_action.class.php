@@ -12,16 +12,16 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_files_folder_action extends form_edit_site_object_action
 {
-	function edit_files_folder_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'files_folder',
-		);
-		
-		parent :: form_edit_site_object_action('edit_files_folder', $definition);
+	  return 'files_folder';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_files_folder';
 	}
-	
-	
+
 	function _init_validator()
 	{
 		parent :: _init_validator();

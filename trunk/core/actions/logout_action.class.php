@@ -16,11 +16,6 @@ class logout_action extends action
 {
 	var $_site_object_name = 'user_object';
 	
-	function logout_action($name='')
-	{
-		parent :: action($name);
-	}
-	
 	function perform()
 	{
 		$user_object =& site_object_factory :: create($this->_site_object_name);

@@ -11,18 +11,17 @@
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class period_object extends content_object
-{
-	function period_object()
-	{
-		parent :: content_object();
-	}
-	
+{	
 	function _define_class_properties()
 	{
 		return complex_array :: array_merge(
-					parent :: _define_attributes_definition(),
-					array('abstract_class' => true)
-				);
+					parent :: _define_class_properties(),
+					array(
+					  'abstract_class' => true, 
+					  'db_table_name' => 'empty',
+					  'controller_class_name' => 'empty_controller' 
+					)
+		);
 	}
 		
 	function & fetch_valid_period_by_ids($ids_array, $params=array(), $sql_params=array())

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_informer_action.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -13,18 +13,26 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/locale_date_rule.class.php');
 
 class edit_informer_action extends form_edit_site_object_action
 {
-	function edit_informer_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'informer_object',
-			'datamap' => array(
-				'code' => 'code',
-			)
-		);
-
-		parent :: form_edit_site_object_action('informer_form', $definition);
+	  return 'informer_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'informer_form';
 	}
-	
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'code' => 'code',
+	      )
+	  );     
+	}  
+
 	function _init_validator()
 	{
 		parent :: _init_validator();

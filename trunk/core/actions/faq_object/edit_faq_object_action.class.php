@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_faq_object_action.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -13,22 +13,30 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 
 class edit_faq_object_action extends form_edit_site_object_action
 {
-	function edit_faq_object_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'faq_object',
-			'datamap' => array(
-				'question' => 'question',
-				'question_author' => 'question_author',
-				'question_author_email' => 'question_author_email',
-				'answer' => 'answer',
-				'answer_author' => 'answer_author',
-				'answer_author_email' => 'answer_author_email',
-			)
-		);
-
-		parent :: form_edit_site_object_action('edit_faq_object', $definition);
+	  return 'faq_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_faq_object';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'question' => 'question',
+  				'question_author' => 'question_author',
+  				'question_author_email' => 'question_author_email',
+  				'answer' => 'answer',
+  				'answer_author' => 'answer_author',
+  				'answer_author_email' => 'answer_author_email',
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

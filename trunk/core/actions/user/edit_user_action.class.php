@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_user_action.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -15,19 +15,27 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/unique_user_email_rule.class.
 
 class edit_user_action extends form_edit_site_object_action
 {
-	function edit_user_action($name = 'edit_user', $merge_definition=array())
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'user_object',
-			'datamap' => array(
-				'name' => 'name',
-				'lastname' => 'lastname',
-				'email' => 'email',
-			)
-		);
-		
-		parent :: form_edit_site_object_action($name, complex_array :: array_merge($definition, $merge_definition));
+	  return 'user_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_user';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'name' => 'name',
+  				'lastname' => 'lastname',
+  				'email' => 'email',
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

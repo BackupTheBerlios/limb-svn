@@ -15,18 +15,26 @@ require_once(LIMB_DIR . 'core/model/sys_param.class.php');
 
 class update_param_common_action extends form_action
 {
-	var $definition = array(
-		'params_type' => array(
+	var $params_type = array();
+
+	function update_param_common_action()
+	{
+	  parent :: form_action();
+    
+    $this->params_type = $this->_define_params_type();
+	}
+	
+	function _define_dataspace_name()
+	{
+	  return 'site_param_form';
+	}
+	
+	function _define_params_type()
+	{
+	  return array(
 			'site_title' => 'char',
 			'contact_email' => 'char',
-		),
-	);
-	
-	function update_param_common_action($name='site_param_form',$merge_definition=array())
-	{
-		$this->definition = complex_array :: array_merge($this->definition, $merge_definition);
-		
-		parent :: form_action($name);
+		);
 	}
 	
 	function _init_validator()
@@ -39,7 +47,7 @@ class update_param_common_action extends form_action
 		$sys_param =& sys_param :: instance();
 
 		$data = array();
-		foreach($this->definition['params_type'] as $param_name => $param_type)
+		foreach($this->params_type as $param_name => $param_type)
 			$data[$param_name] = $sys_param->get_param($param_name, $param_type);
 		
 		$this->dataspace->import($data);		
@@ -50,7 +58,7 @@ class update_param_common_action extends form_action
 		$data = $this->dataspace->export();
 		$sys_param =& sys_param :: instance();
 
-		foreach($this->definition['params_type'] as $param_name => $param_type)
+		foreach($this->params_type as $param_name => $param_type)
 			$sys_param->save_param($param_name, $param_type, $data[$param_name]);
 
 		return new response(RESPONSE_STATUS_FORM_SUBMITTED);

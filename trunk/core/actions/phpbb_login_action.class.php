@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'core/actions/login_action.class.php');
 
 class phpbb_login_action extends login_action
 {
-	function phpbb_login_action($name = 'login_form')
+	function _define_dataspace_name()
 	{
-		parent :: login_action($name);
+	  return 'login_form';
 	}
 		
 	function _login_redirect($redirect)

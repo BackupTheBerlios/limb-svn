@@ -14,11 +14,6 @@ require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class activate_password_action extends action
 {
-	function activate_password_action($name='')
-	{
-		parent :: action($name);
-	}
-	
 	function perform()
 	{
 		$object =& site_object_factory :: create('user_object');

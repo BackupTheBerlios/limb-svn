@@ -12,13 +12,20 @@ require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php')
 
 class create_image_action extends form_create_site_object_action
 {
-	function create_image_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'image_object',
-			'datamap' => array(
-				'description' => 'description',
-			)
+	  return 'image_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'create_image';
+	}
+  
+  function _define_datamap()
+	{
+		$datamap = array(
+			'description' => 'description',
 		);
 		
 		$ini =& get_ini('image_variations.ini');
@@ -27,13 +34,16 @@ class create_image_action extends form_create_site_object_action
 
 		foreach($image_variations as $variation => $variation_data)
 		{
-			$definition['datamap']['upload_' . $variation . '_max_size'] = 'upload_' . $variation . '_max_size';
-			$definition['datamap']['generate_' . $variation . '_max_size'] = 'generate_' . $variation . '_max_size';
-			$definition['datamap'][$variation . '_action'] = $variation . '_action';
-			$definition['datamap'][$variation . '_base_variation'] = $variation . '_base_variation';
+			$datamap['upload_' . $variation . '_max_size'] = 'upload_' . $variation . '_max_size';
+			$datamap['generate_' . $variation . '_max_size'] = 'generate_' . $variation . '_max_size';
+			$datamap[$variation . '_action'] = $variation . '_action';
+			$datamap[$variation . '_base_variation'] = $variation . '_base_variation';
 		}
 
-		parent :: form_create_site_object_action('create_image', $definition);
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      $datamap
+	  );     
 	}	
 
 	function _init_validator()

@@ -8,17 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class stats_event_controller extends site_object_controller
 {
-	var $_default_action = 'events_list'; 
+  function _define_default_action()
+  {
+	  return 'events_list';
+	}
 	
-	function stats_event_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'events_list' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/stats_event/events_list.html',
@@ -39,13 +40,11 @@ class stats_event_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),
-						'action_path' => '/site_object/delete_action',
+						'action_path' => 'form_delete_site_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

@@ -13,11 +13,11 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/locale_date_rule.class.php');
 
 class edit_action extends form_edit_site_object_action
 {
-	function edit_action()
+	function _define_dataspace_name()
 	{
-		parent :: form_edit_site_object_action('edit_site_object', array());
+	  return 'edit_site_object';
 	}
-	
+  
 	function _init_validator()
 	{
 		parent :: _init_validator();

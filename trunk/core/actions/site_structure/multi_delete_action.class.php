@@ -13,11 +13,11 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class multi_delete_action extends form_action
 {
-	function multi_delete_action($name='grid_form')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'grid_form';
 	}
-	
+
 	function _init_dataspace()
 	{
 		parent :: _init_dataspace();

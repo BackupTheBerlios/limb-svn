@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class subscribe_controller extends site_object_controller
 {
-	function subscribe_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/subscribe/display.html'
@@ -30,8 +30,6 @@ class subscribe_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

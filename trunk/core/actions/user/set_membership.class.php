@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
 class set_membership extends form_action
 {
-	function set_membership($name='set_membership')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'set_membership';
 	}
 	
 	function _init_dataspace()

@@ -12,14 +12,15 @@ require_once(LIMB_DIR . 'core/actions/document/edit_document_action.class.php');
 
 class edit_main_page_action extends edit_document_action
 {
-	function edit_main_page_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'main_page',
-		);
-		parent :: edit_document_action('documents_form', $definition);
+	  return 'main_page';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'documents_form';
 	}
-	
 }
 
 ?>

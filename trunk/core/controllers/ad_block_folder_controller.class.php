@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: document_controller.class.php 33 2004-03-10 16:05:12Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class ad_block_folder_controller extends site_object_controller
 {
-	function ad_block_folder_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/ad_block_folder/display.html',
@@ -37,9 +37,6 @@ class ad_block_folder_controller extends site_object_controller
 						'can_have_access_template' => true,
 				),
 		);
- 		
-
-		parent :: site_object_controller();
 	}
 }
 

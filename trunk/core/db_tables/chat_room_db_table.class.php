@@ -11,12 +11,7 @@
 require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
 
 class chat_room_db_table extends content_object_db_table
-{
-  function chat_room_db_table()
-  {
-    parent :: content_object_db_table();
-  }
-  
+{  
   function _define_columns()
   {
   	return array(

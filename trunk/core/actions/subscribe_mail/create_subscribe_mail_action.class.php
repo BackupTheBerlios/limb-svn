@@ -12,18 +12,26 @@ require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php')
 
 class create_subscribe_mail_action extends form_create_site_object_action
 {
-	function create_subscribe_mail_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'subscribe_mail',
-			'datamap' => array(
-				'subscribe_mail_content' => 'content',
-				'author' => 'author',
-			)
-		);
-		
-		parent :: form_create_site_object_action('create_subscribe_mail', $definition);
+	  return 'subscribe_mail';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'create_subscribe_mail';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'subscribe_mail_content' => 'content',
+  				'author' => 'author',
+	      )
+	  );     
+	}   
 	
 	function _init_validator()
 	{

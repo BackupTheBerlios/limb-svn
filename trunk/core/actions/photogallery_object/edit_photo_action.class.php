@@ -5,25 +5,33 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_photo_action.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_photo_action extends form_edit_site_object_action
 {
-	function edit_photo_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'photogallery_object',
-			'datamap' => array(
-				'annotation' => 'annotation',
-				'image_id' => 'image_id',
-			)
-		);
-
-		parent :: form_edit_site_object_action('photo_form', $definition);
+	  return 'photogallery_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'photo_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'annotation' => 'annotation',
+  				'image_id' => 'image_id',
+	      )
+	  );     
+	} 
 }
 
 ?>

@@ -170,7 +170,7 @@ class project_db_tables_test extends UnitTestCase
 		{  
 			while(($object_file = readdir($dir)) !== false) 
 			{  
-				if  (substr($object_file, -10,  10) == '.class.php')
+				if (substr($object_file, -10,  10) == '.class.php')
 				{
 					$class_name = substr($object_file, 0, strpos($object_file, '.'));
 					

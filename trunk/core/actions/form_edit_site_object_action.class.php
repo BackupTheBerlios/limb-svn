@@ -11,34 +11,10 @@
 require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
-require_once(LIMB_DIR . 'core/model/search/full_text_indexer.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 
 class form_edit_site_object_action extends form_site_object_action
 {
-	var $definition = array(
-		'site_object' => 'site_object',
-		'datamap' => array(
-			'parent_node_id' => 'parent_node_id',
-			'identifier' => 'identifier',
-			'title' => 'title'
-		)
-	);
-	
-	var $indexer = null;	
-	
-	function form_edit_site_object_action($name='', $merge_definition=array())
-	{		
-		$this->indexer =& $this->_get_site_object_indexer();
-		
-		parent :: form_site_object_action($name ,$merge_definition);
-	}
-	
-	function & _get_site_object_indexer()
-	{
-		return new full_text_indexer();
-	}
-	
 	function _init_validator()
 	{
 		if($this->object->is_auto_identifier())

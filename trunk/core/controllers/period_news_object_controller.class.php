@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class period_news_object_controller extends site_object_controller
 {
-	function period_news_object_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/period_news_object/display.html',
@@ -52,14 +52,11 @@ class period_news_object_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_newsline', 'newsline'),
-						'action_path' => '/period_news/delete_period_news_action',
+						'action_path' => 'form_delete_site_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
 		);
- 		
-
-		parent :: site_object_controller();
 	}
 }
 

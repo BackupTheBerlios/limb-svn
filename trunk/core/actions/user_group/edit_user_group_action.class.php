@@ -12,13 +12,14 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_user_group_action extends form_edit_site_object_action
 {
-	function edit_user_group_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'user_group',
-		);
-		
-		parent :: form_edit_site_object_action('edit_user_group', $definition);
+	  return 'user_group';
+	}  
+	  
+ 	function _define_dataspace_name()
+	{
+	  return 'edit_user_group';
 	}
 }
 

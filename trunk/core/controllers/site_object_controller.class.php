@@ -23,7 +23,7 @@ class site_object_controller
 	
 	var $_current_action = '';
 
-	var $_default_action = 'display';
+	var $_default_action = '';
 	
 	var $_view = null;
 	
@@ -31,6 +31,19 @@ class site_object_controller
 
 	function site_object_controller()
 	{
+	  $this->_actions = $this->_define_actions();
+	  
+	  $this->_default_action = $this->_define_default_action();
+	}
+	
+	function _define_actions()
+	{
+	  return array();
+	}
+	
+	function _define_default_action()
+	{
+	  return 'display';
 	}
 
 	function create($class_name)

@@ -8,17 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class login_object_controller extends site_object_controller
 {
-	var $_default_action = 'login';
+  function _define_default_action()
+  {
+		return 'login';
+	}
 	
-	function login_object_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'login' => array(
 						'permissions_required' => 'r',
 						'action_path' => 'login_action',
@@ -44,8 +45,6 @@ class login_object_controller extends site_object_controller
 						'action_path' => '/user/change_user_locale_action',
 				),
 		);
-		
-		parent :: site_object_controller();
 	}
 }
 

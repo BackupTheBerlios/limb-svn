@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class news_folder_controller extends site_object_controller
 {
-	function news_folder_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/news_folder/display.html'
@@ -45,8 +43,6 @@ class news_folder_controller extends site_object_controller
 						'action_name' => strings :: get('edit_news_folder', 'newsline'),
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

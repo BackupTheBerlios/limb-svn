@@ -14,11 +14,6 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class tree_move_item_action extends action
 {
-	function tree_move_item_action($name='')
-	{
-		parent :: action($name);
-	}
-	
 	function perform()
 	{
 		if(($mode = $this->_get_mode_from_request()) === false)

@@ -226,7 +226,10 @@ class dir
 	
 	function ls($path)
 	{
-		$files = array();
+		if(!is_dir($path))
+		  return array();
+
+    $files = array();		
 		$path = dir :: clean_path($path);
 		if($handle = opendir($path))
 		{

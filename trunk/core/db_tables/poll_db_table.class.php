@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: poll_db_table.class.php 564 2004-02-25 16:49:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
 
 class poll_db_table extends content_object_db_table
 {
-  function poll_db_table()
-  {
-    parent :: content_object_db_table();
-  }
-
   function _define_columns()
   {
   	return array(

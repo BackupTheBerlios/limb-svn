@@ -62,6 +62,20 @@ function load_system_tags()
 
 load_system_tags();
 
+function load_project_tags()
+{
+	$path = get_ini_option('config.ini', 'project_tags', 'path');
+	if (!$path)
+		return;
+		
+	foreach ($path as $tagpath)
+	{
+		load_tags(PROJECT_DIR . 'core/template/tags/' . $tagpath);
+	} 
+}
+
+load_project_tags();
+
 /**
 * Compiles a template file. Uses the file scheme to location the source,
 * instantiates the code_writer and root_compiler_component (as the root) component then

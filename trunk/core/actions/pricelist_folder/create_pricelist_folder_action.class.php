@@ -5,22 +5,22 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_pricelist_folder_action.class.php 36 2004-02-29 18:57:15Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
 
 class create_pricelist_folder_action extends form_create_site_object_action
 {
-	function create_pricelist_folder_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'pricelist_folder',
-		);
-		
-		parent :: form_create_site_object_action('create_pricelist_folder', $definition);
+	  return 'pricelist_folder';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'create_pricelist_folder';
 	}
-	
 	
 	function _init_validator()
 	{

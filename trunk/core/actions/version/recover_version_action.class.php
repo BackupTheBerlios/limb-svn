@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_group_access.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
@@ -14,11 +14,6 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_no_reload_response.clas
 
 class recover_version_action extends action
 {
-	function recover_version_action()
-	{		
-		parent :: action();
-	}
-	
 	function perform()
 	{
 		if(!isset($_REQUEST['version']))
@@ -41,7 +36,6 @@ class recover_version_action extends action
 		else
 			return new close_popup_no_reload_response(RESPONSE_STATUS_FAILURE);
 	}
-
 }
 
 ?>

@@ -5,16 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: delete_informer_action.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_delete_site_object_action.class.php');
-
-class delete_informer_action extends form_delete_site_object_action
+require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+	
+class empty_controller extends site_object_controller
 {
-	function delete_informer_action($name='delete_form')
-	{		
-		parent :: form_delete_site_object_action($name, array('site_object' => 'informer_object'));
+	function _define_actions()
+	{
+		return array();
+	}
+	
+	function _define_default_action()
+	{
+	  return '';
 	}
 }
 

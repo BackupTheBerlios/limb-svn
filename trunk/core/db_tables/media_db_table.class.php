@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: media_db_table.class.php 423 2004-02-10 15:03:21Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
 class media_db_table extends db_table
 {
-  function media_db_table()
-  {
-    parent :: db_table();
-  }
-
   function _define_columns()
   {
   	return array(

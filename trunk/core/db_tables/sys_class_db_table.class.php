@@ -12,11 +12,6 @@ require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
 class sys_class_db_table extends db_table
 {
-  function sys_class_db_table()
-  {
-    parent :: db_table();
-  }
-
   function _define_columns()
   {
   	return array(

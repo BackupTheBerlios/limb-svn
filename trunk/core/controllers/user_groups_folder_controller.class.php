@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class user_groups_folder_controller extends site_object_controller
 {
-	function user_groups_folder_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/user_groups_folder/display.html'
@@ -40,10 +38,7 @@ class user_groups_folder_controller extends site_object_controller
 						'template_path' => '/site_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
-		
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: poll_ip_db_table.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
 class poll_ip_db_table extends db_table
 {
-  function poll_ip_db_table()
-  {
-    parent :: db_table();
-  }
-
   function _define_columns()
   {
   	return array(

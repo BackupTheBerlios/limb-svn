@@ -12,13 +12,20 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_variations_action extends form_edit_site_object_action
 {
-	function edit_variations_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'image_object',
-			'datamap' => array(
-				'_FILES_' => 'files_data'
-			)
+	  return 'image_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_variations';
+	}
+  
+  function _define_datamap()
+	{
+		$datamap = array(
+			'_FILES_' => 'files_data'
 		);
 		
 		$ini =& get_ini('image_variations.ini');
@@ -27,17 +34,21 @@ class edit_variations_action extends form_edit_site_object_action
 
 		foreach($image_variations as $variation => $variation_data)
 		{
-			$definition['datamap']['upload_' . $variation . '_max_size'] = 'upload_' . $variation . '_max_size';
-			$definition['datamap']['generate_' . $variation . '_max_size'] = 'generate_' . $variation . '_max_size';
-			$definition['datamap'][$variation . '_action'] = $variation . '_action';
-			$definition['datamap'][$variation . '_base_variation'] = $variation . '_base_variation';
+			$datamap['upload_' . $variation . '_max_size'] = 'upload_' . $variation . '_max_size';
+			$datamap['generate_' . $variation . '_max_size'] = 'generate_' . $variation . '_max_size';
+			$datamap[$variation . '_action'] = $variation . '_action';
+			$datamap[$variation . '_base_variation'] = $variation . '_base_variation';
 		}
-		
-		parent :: form_edit_site_object_action('edit_variations', $definition);
+
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      $datamap
+	  );     
 	}
 	
 	function _init_validator()
 	{
+	  //??
 	}
 	
 	function _init_dataspace()

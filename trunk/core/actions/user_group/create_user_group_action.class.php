@@ -12,15 +12,16 @@ require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php')
 
 class create_user_group_action extends form_create_site_object_action
 {
-	function create_user_group_action()
+ 	function _define_dataspace_name()
 	{
-		$definition = array(
-			'site_object' => 'user_group',
-		);
-
-		parent :: form_create_site_object_action('create_user_group', $definition);
+	  return 'create_user_group';
 	}
-	
+
+  function _define_site_object_class_name()
+	{
+	  return 'user_group';
+	} 
+  
 	function _init_validator()
 	{
 		parent :: _init_validator();

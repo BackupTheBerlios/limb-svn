@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'core/actions/action.class.php');
 
 class tree_toggle_action extends action
 {
-	function tree_toggle_action($name='')
-	{
-		parent :: action($name);
-	}
-	
 	function perform()
 	{
 		if(isset($_REQUEST['recursive_search_for_node']))

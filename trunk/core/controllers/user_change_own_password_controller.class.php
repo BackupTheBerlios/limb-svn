@@ -8,18 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class user_change_own_password_controller extends site_object_controller
 {
-	
-	function user_change_own_password_controller()
+  function _define_default_action()
+  {
+		return 'change_own_password';
+  }
+  
+	function _define_actions()
 	{
-		$this->_default_action = 'change_own_password';
-
-		$this->_actions = array(
+		return array(
 			'change_own_password' => array(
 					'permissions_required' => 'r',
 					'action_path' => '/user/change_own_password_action',
@@ -35,10 +36,7 @@ class user_change_own_password_controller extends site_object_controller
 					'template_path' => '/site_object/edit.html',
 					'img_src' => '/shared/images/edit.gif'
 			),
-
 		);
-
-		parent :: site_object_controller();
 	}
 }
 

@@ -16,9 +16,9 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class register_new_object_action extends form_action
 {
-	function register_new_object_action()
+	function _define_dataspace_name()
 	{
-		parent :: form_action('register_new_object', array());
+	  return 'register_new_object';
 	}
 	
 	function _init_validator()

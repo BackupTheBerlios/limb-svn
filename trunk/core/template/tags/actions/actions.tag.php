@@ -31,7 +31,6 @@ class actions_tag extends server_component_tag
 		$actions_array = '$' . $code->get_temp_variable();
 		$node_id = '$' . $code->get_temp_variable();
 		$node = '$' . $code->get_temp_variable();
-		
 		$code->write_php("{$actions_array} = ".  $this->parent->get_dataspace_ref_code() . '->get("actions");'."\n");
 		
 		$code->write_php("{$node_id} = " . $this->parent->get_dataspace_ref_code() . '->get("node_id");'. "\n");

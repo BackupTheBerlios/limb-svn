@@ -12,19 +12,27 @@ require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php')
 
 class create_catalog_object_action extends form_create_site_object_action
 {
-	function create_catalog_object_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'catalog_object',
-			'datamap' => array(
-				'annotation' => 'annotation',
-				'object_content' => 'content',
-				'image_id' => 'image_id'
-			)
-		);
-		
-		parent :: form_create_site_object_action('catalog_object_form', $definition);
+	  return 'catalog_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'catalog_object_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'annotation' => 'annotation',
+  				'object_content' => 'content',
+  				'image_id' => 'image_id'
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

@@ -5,22 +5,23 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_catalog_folder_action.class.php 36 2004-02-29 18:57:15Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_catalog_folder_action extends form_edit_site_object_action
 {
-	function edit_catalog_folder_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'catalog_folder',
-		);
-
-		parent :: form_edit_site_object_action('edit_catalog_folder', $definition);
+	  return 'catalog_folder';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_catalog_folder';
 	}
-	
+
 	function _init_validator()
 	{
 		parent :: _init_validator();

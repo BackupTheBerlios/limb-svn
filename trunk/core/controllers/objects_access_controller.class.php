@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class objects_access_controller extends site_object_controller
 {
-	function objects_access_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/objects_access/set_group_access.html',
@@ -46,8 +44,6 @@ class objects_access_controller extends site_object_controller
 				),
 
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

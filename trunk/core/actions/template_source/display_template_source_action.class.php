@@ -20,11 +20,6 @@ class display_template_source_action extends action
 {
 	var $history = array();
 	
-	function display_template_source_action($name='')
-	{
-		parent :: action($name);
-	}
-	
 	function perform()
 	{
 		if(isset($_REQUEST['t']) && is_array($_REQUEST['t']) && sizeof($_REQUEST['t']) > 0)

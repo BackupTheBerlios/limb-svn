@@ -12,18 +12,26 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_subscribe_theme_action extends form_edit_site_object_action
 {
-	function edit_subscribe_theme_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'subscribe_theme',
-			'datamap' => array(
-				'mail_template' => 'mail_template',
-			)
-		);
-
-		parent :: form_edit_site_object_action('edit_subscribe_theme', $definition);
+	  return 'subscribe_theme';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_subscribe_theme';
 	}
-	
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'mail_template' => 'mail_template',
+	      )
+	  );     
+	}  
+
 	function _init_validator()
 	{
 		parent :: _init_validator();

@@ -12,17 +12,25 @@ require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php')
 
 class create_message_action extends form_create_site_object_action
 {
-	function create_message_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'message',
-			'datamap' => array(
-				'content' => 'content',
-			)
-		);
-		
-		parent :: form_create_site_object_action('create_message', $definition);
+	  return 'message';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'create_message';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'content' => 'content',
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

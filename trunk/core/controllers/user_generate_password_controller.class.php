@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class user_generate_password_controller extends site_object_controller
 {
-	
-	function user_generate_password_controller()
+  function _define_default_action()
+  {
+    return 'generate_password';
+  }
+  
+	function _define_actions()
 	{
-		$this->_default_action = 'generate_password';
-
-		$this->_actions = array(
+		return array(
 				'generate_password' => array(
 					'permissions_required' => 'r',
 					'action_path' => '/user/generate_password_action',
@@ -38,9 +38,6 @@ class user_generate_password_controller extends site_object_controller
 				),
 
 		);
- 		
-
-		parent :: site_object_controller();
 	}
 }
 

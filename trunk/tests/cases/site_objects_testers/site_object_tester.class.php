@@ -167,7 +167,7 @@ class site_object_tester extends UnitTestCase
 				!is_subclass_of($action, 'form_edit_site_object_action'))
 		return;		
 
-		$definition = $action->get_definition();
+		$datamap = $action->get_datamap();
 
 		$action->_init_validator(); //this is not a very good idea...
 		$validator = $action->get_validator();
@@ -177,7 +177,7 @@ class site_object_tester extends UnitTestCase
 		
 		$attributes_definition = $site_object->get_attributes_definition();
 		
-		foreach($definition['datamap'] as $src_field => $dst_field)
+		foreach($datamap as $src_field => $dst_field)
 		{
 			$this->assertTrue(isset($attributes_definition[$dst_field]),
 			'no such field in site_object "' . get_class($site_object) . '" attributes definition "' . $dst_field. '" defined in action "' . get_class($action) . '"' );
@@ -190,7 +190,7 @@ class site_object_tester extends UnitTestCase
 				
 			$field_name = $rule->get_field_name();
 			
-			$this->assertTrue(isset($definition['datamap'][$field_name]),
+			$this->assertTrue(isset($datamap[$field_name]),
 				'no such field in datamap(validator rule) "' . $field_name. '" in "' . get_class($action) . '"' );
 		}
   }

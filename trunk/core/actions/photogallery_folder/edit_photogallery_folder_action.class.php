@@ -5,20 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_photogallery_folder_action.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_photogallery_folder_action extends form_edit_site_object_action
 {
-	function edit_photogallery_folder_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'photogallery_folder',
-		);
-
-		parent :: form_edit_site_object_action('edit_photogallery_folder', $definition);
+	  return 'photogallery_folder';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_photogallery_folder';
 	}
 	
 	function _init_validator()

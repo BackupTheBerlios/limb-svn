@@ -12,18 +12,25 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_chat_room_action extends form_edit_site_object_action
 {
-	function edit_chat_room_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'chat_room',
-			'datamap' => array(
-				'title' => 'title',
-				'annotation' => 'annotation',
-			)
-		);
-
-		parent :: form_edit_site_object_action('chat_room_form', $definition);
+	  return 'chat_room';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'chat_room_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'annotation' => 'annotation',
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

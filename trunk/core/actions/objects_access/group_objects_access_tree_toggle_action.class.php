@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'core/actions/site_structure/tree_toggle_action.class.ph
 
 class group_objects_access_tree_toggle_action extends tree_toggle_action
 {
-	function group_objects_access_tree_toggle_action($name='set_group_access')
+	function _define_dataspace_name()
 	{
-		parent :: tree_toggle_action($name);
+	  return 'set_group_access';
 	}
 	
 	function perform()

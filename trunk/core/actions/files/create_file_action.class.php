@@ -12,17 +12,25 @@ require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php')
 
 class create_file_action extends form_create_site_object_action
 {
-	function create_file_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'file_object',
-			'datamap' => array(
-				'description' => 'description',
-			)
-		);
-		
-		parent :: form_create_site_object_action('create_file', $definition);
+	  return 'file_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'create_file';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'description' => 'description',
+	      )
+	  );     
+	}  
 
 	function _init_validator()
 	{

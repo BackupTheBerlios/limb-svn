@@ -5,20 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_photogallery_folder_action.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
 
 class create_paragraphs_list_page_action extends form_create_site_object_action
 {
-	function create_paragraphs_list_page_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'paragraphs_list_page',
-		);
-		
-		parent :: form_create_site_object_action('paragraphs_list_page_form', $definition);
+	  return 'paragraphs_list_page';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'paragraphs_list_page_form';
 	}
 	
 	function _init_validator()

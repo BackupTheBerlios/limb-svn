@@ -8,16 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class admin_page_controller extends site_object_controller
 {
-	function admin_page_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/admin/admin_page.html',
@@ -47,8 +45,6 @@ class admin_page_controller extends site_object_controller
 						'img_src' => '/shared/images/activate.gif'				
 				)
 		);
-
-		parent :: site_object_controller();
 	}
 }
 

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
 class stats_routes_report_action extends form_action
 {
-	function stats_routes_report_action()
+	function _define_dataspace_name()
 	{
-		parent :: form_action('routes_form');
+	  return 'routes_form';
 	}
 	
 	function _valid_perform()

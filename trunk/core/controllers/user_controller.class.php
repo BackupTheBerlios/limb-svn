@@ -8,15 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class user_controller extends site_object_controller
 {
-	function user_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'template_path' => '/user/display.html',
 						'permissions_required' => 'r',
@@ -53,13 +52,11 @@ class user_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_user','user'),
-						'action_path' => '/user/delete_user_action',
+						'action_path' => 'form_delete_site_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
 		);
-
-		parent :: site_object_controller();
 	}
 }
 

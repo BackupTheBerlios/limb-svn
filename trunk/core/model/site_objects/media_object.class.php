@@ -11,17 +11,16 @@
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class media_object extends content_object
-{
-	function media_object()
-	{
-		parent :: content_object();
-	}
-	
+{	
 	function _define_class_properties()
 	{
-		return array('abstract_class' => true);
+		return array(
+		  'abstract_class' => true,
+		  'db_table_name' => 'empty',
+      'controller_class_name' => 'empty_controller' 		  
+		);
 	}
-	
+		
 	function _create_media_record($tmp_file_path, $file_name, $mime_type)
 	{
 		if(!file_exists($tmp_file_path))

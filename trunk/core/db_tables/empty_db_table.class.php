@@ -5,17 +5,18 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: delete_photogallery_folder_action.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_delete_site_object_action.class.php');
+require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
-class delete_paragraphs_list_page_action extends form_delete_site_object_action
+class empty_db_table extends db_table
 {
-	function delete_paragraphs_list_page_action($name='delete_form')
-	{		
-		parent :: form_delete_site_object_action($name, array('site_object' => 'paragraphs_list_page'));
-	}
+  function _define_columns()
+  {
+  	return array();
+  }
 }
+
 
 ?>

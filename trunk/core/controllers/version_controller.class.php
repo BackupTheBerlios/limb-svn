@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: site_structure_controller.class.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class version_controller extends site_object_controller
 {
-	function version_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/version/display.html',
@@ -26,9 +26,6 @@ class version_controller extends site_object_controller
 						'popup' => true
 				)
 		);
- 		
-
-		parent :: site_object_controller();
 	}
 }
 

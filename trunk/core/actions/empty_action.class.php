@@ -5,17 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: action.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/response/response.class.php');
 
 class empty_action
 {
-	function empty_action($name = '')
-	{
-	}
-	
 	function set_view(&$view)
 	{
 	}

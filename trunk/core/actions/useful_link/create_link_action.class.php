@@ -13,19 +13,27 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/url_rule.class.php');
 
 class create_link_action extends form_create_site_object_action
 {
-	function create_link_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'useful_link',
-			'datamap' => array(
-				'annotation' => 'annotation',
-				'image_id' => 'image_id',
-				'uri' => 'uri',
-			)
-		);
-		
-		parent :: form_create_site_object_action('useful_link_form', $definition);
+	  return 'useful_link';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'useful_link_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'annotation' => 'annotation',
+  				'image_id' => 'image_id',
+  				'uri' => 'uri',
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

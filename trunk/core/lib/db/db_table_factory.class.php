@@ -12,11 +12,7 @@
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 
 class db_table_factory
-{
-	function db_table_factory()
-	{
-	}
-		
+{		
 	function create($db_table_name)
 	{	
 		include_class($db_table_name . '_db_table', '/core/db_tables/');

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_chat_room_action.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/model/response/response.class.php');
 
 class user_settings_action extends form_action
 {
-	function user_settings_action()
+	function _define_dataspace_name()
 	{
-		parent :: form_action('user_settings_form');
+	  return 'user_settings_form';
 	}
 	
 	function _init_dataspace()

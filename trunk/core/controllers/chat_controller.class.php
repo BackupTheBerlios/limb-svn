@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class chat_controller extends site_object_controller
 {
-	function chat_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/chat/display.html',
@@ -50,8 +50,6 @@ class chat_controller extends site_object_controller
 						'action_name' => strings :: get('update_user_settings', 'chat'),
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

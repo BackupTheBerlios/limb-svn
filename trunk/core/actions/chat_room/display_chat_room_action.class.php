@@ -14,11 +14,6 @@ require_once(LIMB_DIR . 'core/model/chat/chat_system.class.php');
 
 class display_chat_room_action extends action
 {
-	function display_chat_room_action()
-	{
-		parent :: action();
-	}
-	
 	function perform()
 	{
 		$chat_room_data =& fetch_mapped_by_url();

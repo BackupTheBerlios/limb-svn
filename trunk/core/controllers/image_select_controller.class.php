@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class image_select_controller extends site_object_controller
 {
-	function image_select_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/image_select/display.html',
@@ -24,8 +22,6 @@ class image_select_controller extends site_object_controller
 						'trasaction' => false
 				),
 		); 		
-
-		parent :: site_object_controller();
 	}
 }
 

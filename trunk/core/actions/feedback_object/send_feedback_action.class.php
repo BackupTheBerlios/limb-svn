@@ -17,9 +17,9 @@ require_once(LIMB_DIR . 'core/model/sys_param.class.php');
 
 class send_feedback_action extends form_action
 {
-	function send_feedback_action($name='feedback_form', $merge_definition=array())
+	function _define_dataspace_name()
 	{
-		parent :: form_action($name);
+	  return 'feedback_form';
 	}
 	
 	function _init_validator()

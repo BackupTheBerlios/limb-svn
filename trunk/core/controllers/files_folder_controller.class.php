@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class files_folder_controller extends site_object_controller
 {
-	function files_folder_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/files_folder/display.html'
@@ -53,7 +51,7 @@ class files_folder_controller extends site_object_controller
 				'delete' => array(
 						'permissions_required' => 'w',
 						'template_path' => '/site_object/delete.html',
-						'action_path' => '/files_folder/delete_files_folder_action',
+						'action_path' => 'form_delete_site_object_action',
 						'JIP' => true,
 						'popup' => true,
 						'img_src' => '/shared/images/rem.gif',
@@ -65,8 +63,6 @@ class files_folder_controller extends site_object_controller
 						'trasaction' => false,
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

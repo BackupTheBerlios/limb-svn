@@ -13,24 +13,30 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 
 class edit_guestbook_message_action extends form_edit_site_object_action
 {
-	function edit_guestbook_message_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'guestbook_message',
-			'datamap' => array(
-				'message' => 'message',
-				'sender' => 'sender',
-				'sender_email' => 'sender_email',
-				'comment' => 'comment',
-				'comment_author' => 'comment_author',
-				'comment_author_email' => 'comment_author_email',
-				
-			)
-		);
-
-		parent :: form_edit_site_object_action('edit_guestbook_message', $definition);
+	  return 'guestbook_message';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_guestbook_message';
 	}
-	
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'message' => 'message',
+  				'sender' => 'sender',
+  				'sender_email' => 'sender_email',
+  				'comment' => 'comment',
+  				'comment_author' => 'comment_author',
+  				'comment_author_email' => 'comment_author_email',
+	      )
+	  );     
+	}  
 
 	function _init_validator()
 	{

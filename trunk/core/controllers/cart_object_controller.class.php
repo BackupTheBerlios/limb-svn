@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class cart_object_controller extends site_object_controller
 {
-	function cart_object_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/cart/display.html',
@@ -59,9 +59,6 @@ class cart_object_controller extends site_object_controller
 						'action_name' => strings :: get('checkout', 'cart'),
 				)
 		);
- 		
-
-		parent :: site_object_controller();
 	}
 }
 

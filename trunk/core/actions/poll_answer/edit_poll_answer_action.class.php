@@ -5,20 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_poll_answer_action.class.php 467 2004-02-18 10:16:31Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_poll_answer_action extends form_edit_site_object_action
 {
-	function edit_poll_answer_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'poll_answer',
-		);
-
-		parent :: form_edit_site_object_action('edit_poll_answer', $definition);
+	  return 'poll_answer';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_poll_answer';
 	}
 }
 

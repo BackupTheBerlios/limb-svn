@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class users_folder_controller extends site_object_controller
 {
-	function users_folder_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/users_folder/display.html'
@@ -42,8 +40,6 @@ class users_folder_controller extends site_object_controller
 				),
 
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

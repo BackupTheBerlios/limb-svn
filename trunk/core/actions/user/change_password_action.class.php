@@ -14,20 +14,28 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class change_password_action extends form_edit_site_object_action
 {
-	function change_password_action($name = 'change_password', $merge_definition=array())
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'user_object',
-			'datamap' => array(
-				'identifier' => 'identifier',
-				'password' => 'password',
-				'second_password' => 'second_password',
-			)
-		);
-
-		parent :: form_edit_site_object_action($name, complex_array :: array_merge($definition, $merge_definition));
+	  return 'user_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'change_password';
 	}
-	
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'identifier' => 'identifier',
+  				'password' => 'password',
+  				'second_password' => 'second_password',
+	      )
+	  );     
+	}  
+
 	function _init_validator()
 	{
 		$this->validator->add_rule(new required_rule('password'));

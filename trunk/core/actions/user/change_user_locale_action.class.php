@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: change_password_action.class.php 81 2004-03-26 13:51:05Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -14,9 +14,9 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class change_user_locale_action extends form_action
 {
-	function change_user_locale_action()
+	function _define_dataspace_name()
 	{
-		parent :: form_action('change_locale_form');
+	  return 'change_locale_form';
 	}
 	
 	function _init_validator()

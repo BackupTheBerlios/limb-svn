@@ -12,19 +12,27 @@ require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php')
 
 class create_poll_action extends form_create_site_object_action
 {
-	function create_poll_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'poll',
-			'datamap' => array(
-				'start_date' => 'start_date',
-				'finish_date' => 'finish_date',
-				'restriction' => 'restriction',
-			)
-		);
-		
-		parent :: form_create_site_object_action('create_poll', $definition);
+	  return 'poll';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'create_poll';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'start_date' => 'start_date',
+  				'finish_date' => 'finish_date',
+  				'restriction' => 'restriction',
+	      )
+	  );     
+	}   
 	
 	function _init_validator()
 	{

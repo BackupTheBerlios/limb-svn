@@ -12,18 +12,26 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_pricelist_object_action extends form_edit_site_object_action
 {
-	function edit_pricelist_object_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'pricelist_object',
-			'datamap' => array(
-				'object_content' => 'content',
-				'file_id' => 'file_id'
-			)
-		);
-
-		parent :: form_edit_site_object_action('pricelist_object_form', $definition);
+	  return 'pricelist_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'pricelist_object_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'object_content' => 'content',
+  				'file_id' => 'file_id'
+	      )
+	  );     
+	}  
 }
 
 ?>

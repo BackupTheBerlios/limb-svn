@@ -5,18 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: sys_group_object_access_template_db_table.class.php 423 2004-02-10 15:03:21Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
 class sys_group_object_access_template_db_table extends db_table
-{
-  function sys_group_object_access_template_db_table()
-  {
-    parent :: db_table();
-  }
-  
+{  
   function _define_columns()
   {
   	return array(

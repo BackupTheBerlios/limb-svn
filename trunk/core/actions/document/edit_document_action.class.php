@@ -12,21 +12,26 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_document_action extends form_edit_site_object_action
 {
-	function edit_document_action($name = 'documents_form', $merge_definition = array())
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'document',
-			'datamap' => array(
-				'document_content' => 'content',
-				'annotation' => 'annotation',
-			)
-		);
-
-		parent :: form_edit_site_object_action(
-					$name, 
-					complex_array :: array_merge($definition, $merge_definition)
-		);
+	  return 'document';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'documents_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'document_content' => 'content',
+  				'annotation' => 'annotation',
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

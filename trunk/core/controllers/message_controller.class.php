@@ -8,15 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class message_controller extends site_object_controller
 {
-	function message_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/message/display.html'
@@ -45,13 +43,11 @@ class message_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),
-						'action_path' => '/message/delete_message_action',
+						'action_path' => 'form_delete_site_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class paragraphs_list_page_controller extends site_object_controller
 {
-	function paragraphs_list_page_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/paragraphs_list_page/display.html'
@@ -84,14 +84,12 @@ class paragraphs_list_page_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_paragraphs_list_page', 'paragraph'),
-						'action_path' => '/paragraphs_list_page/delete_paragraphs_list_page_action',
+						'action_path' => 'form_delete_site_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
 
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

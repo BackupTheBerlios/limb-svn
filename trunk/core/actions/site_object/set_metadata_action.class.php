@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 
 class set_metadata_action extends form_action
 {
-	function set_metadata_action($name='set_metadata')
+	function _define_dataspace_name()
 	{
-		parent :: form_action($name);
+	  return 'set_metadata';
 	}
 	
 	function _init_dataspace()
@@ -37,7 +37,7 @@ class set_metadata_action extends form_action
 
 		$data['id'] = $object_data['id'];
 		
-		$object =& site_object_factory :: create('content_object');
+		$object =& site_object_factory :: create('site_object');
 		$object->import_attributes($data);
 		
 		if(!$object->save_metadata())

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: phpbb_users_db_table.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
@@ -14,11 +14,6 @@ class phpbb_sessions_db_table extends db_table
 {
 	var $_primary_key_name = 'session_id';
 	
-  function phpbb_sessions_db_table()
-  {
-    parent :: db_table();
-  }
-
   function _define_columns()
   {
   	return array(

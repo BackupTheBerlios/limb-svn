@@ -15,30 +15,14 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class form_delete_site_object_action extends form_site_object_action
 {
-	var $definition = array(
-		'site_object' => 'site_object',
-	);
-	
-	function form_delete_site_object_action($name='', $merge_definition=array())
+	function _define_dataspace_name()
 	{
-		parent :: form_site_object_action($name, $merge_definition);
+	  return 'delete_form';
 	}
-	
-	function _init_dataspace()
-	{
-		$object_data =& fetch_mapped_by_url();
-	
-		$object =& site_object_factory :: create($this->definition['site_object']);
-		$object->import_attributes($object_data);
-	}
-	
+
 	function _valid_perform()
 	{
-		$object_data =& fetch_mapped_by_url();
-	
-		$object =& site_object_factory :: create($this->definition['site_object']);
-		
-		$object->import_attributes($object_data);
+		$object =& wrap_with_site_object(fetch_mapped_by_url());
 		
 		if(!$object->delete())
 		{
@@ -46,8 +30,6 @@ class form_delete_site_object_action extends form_site_object_action
 			return new failed_response();
 		}
 
-		$parent_object_data = fetch_one_by_node_id($object_data['parent_node_id']);
-		
 		return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED, RELOAD_SELF_URL, true);
 	}
 

@@ -21,11 +21,11 @@ class form_action extends action
 
 	var $valid = false;
 	
-	function form_action($name='')
+	function form_action()
 	{
 		$this->validator =& new validator();
 				
-		parent :: action($name);
+		parent :: action();
 	}
 				
 	function is_first_time()

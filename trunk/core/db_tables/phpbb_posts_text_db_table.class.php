@@ -14,11 +14,6 @@ class phpbb_posts_text_db_table extends db_table
 {
 	var $_primary_key_name = 'post_id';
 	
-  function phpbb_posts_text_db_table()
-  {
-    parent :: db_table();
-  }
-
   function _define_columns()
   {
   	return array(

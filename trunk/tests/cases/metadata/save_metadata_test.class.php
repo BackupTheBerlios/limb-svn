@@ -33,7 +33,7 @@ class save_metadata_test extends UnitTestCase
   	$metadata['keywords'] = 'keywords';
   	$metadata['description'] = 'description';
   	
-  	$o =& site_object_factory :: create('content_object');
+  	$o =& site_object_factory :: create('site_object');
   	
   	$o->import_attributes($metadata);
   	$result_id = $o->save_metadata();

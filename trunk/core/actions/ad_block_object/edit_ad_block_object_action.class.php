@@ -5,24 +5,33 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_document_action.class.php 36 2004-02-29 18:57:15Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_ad_block_object_action extends form_edit_site_object_action
 {
-	function edit_ad_block_object_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'ad_block_object',
-			'datamap' => array(
-				'image_id' => 'image_id',
-			)
-		);
-
-		parent :: form_edit_site_object_action('ad_block_form', $definition);
+	  return 'ad_block_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'ad_block_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+				  'image_id' => 'image_id',
+	      )
+	  );     
+	}  
+	
 	
 	function _init_validator()
 	{

@@ -13,11 +13,11 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class multi_toggle_publish_status_action extends form_action
 {
-	function multi_toggle_publish_status_action($name='grid_form')
-	{	
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'grid_form';
 	}
-	
+
 	function _valid_perform()
 	{
 		$data = $this->dataspace->export();

@@ -8,22 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
+require_once(LIMB_DIR . '/tests/lib/site_objects_loader.class.php');
 
-class project_site_objects_loader
-{
-	function & get_site_objects()
-	{
-		$site_objects = array();
-		foreach($this->get_classes_list() as $class)
-		{
-			$site_objects[] =& site_object_factory :: create($class);
-		}
-		
-		return $site_objects;
-	}
-	
+class project_site_objects_loader extends site_objects_loader
+{	
 	function get_classes_list()
 	{
 		$project_db = str_replace('_tests', '', DB_NAME);

@@ -5,24 +5,32 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_photo_action.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
 
 class create_paragraph_action extends form_create_site_object_action
 {
-	function create_paragraph_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'paragraph',
-			'datamap' => array(
-				'paragraph_content' => 'content',
-			)
-		);
-		
-		parent :: form_create_site_object_action('paragraph_form', $definition);
+	  return 'paragraph';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'paragraph_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'paragraph_content' => 'content',
+	      )
+	  );     
+	}  
 
 	function _init_validator()
 	{

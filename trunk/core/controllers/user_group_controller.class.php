@@ -8,16 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class user_group_controller extends site_object_controller
 {
-	function user_group_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/user_group/display.html',
@@ -36,14 +34,11 @@ class user_group_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_user_group', 'user_group'),
-						'action_path' => '/user_group/delete_user_group_action',
+						'action_path' => '/form_delete_site_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
 		);
- 		
-
-		parent :: site_object_controller();
 	}
 }
 

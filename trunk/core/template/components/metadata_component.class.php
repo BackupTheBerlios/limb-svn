@@ -29,6 +29,9 @@ class metadata_component extends component
 	
 	var $offset_path = '';
 	
+	var $metadata_db_table_name = 'sys_metadata';
+	var $needed_metadata = array('keywords', 'description');
+
 	function _get_path_objects_ids_array()
 	{		
 		if (count($this->object_ids_array))
@@ -74,39 +77,43 @@ class metadata_component extends component
 	function load_metadata()
 	{
 		$ids_array = $this->_get_path_objects_ids_array();
-		
+
 		if (!count($ids_array))
 			return false;
-			
-		$sys_metadata_db_table	=& db_table_factory :: instance('sys_metadata');
-		$objects_metadata = $sys_metadata_db_table->get_list(sql_in('object_id', $ids_array), '', 'object_id');
+		$ids_array = array_reverse($ids_array);		
+					
+		$metadata_db_table	=& db_table_factory :: instance($this->metadata_db_table_name);
+		$objects_metadata = $metadata_db_table->get_list(sql_in('object_id', $ids_array), '', 'object_id');
 		
 		if (!count($objects_metadata))		
 			return false;
-		
-		$ids_array = array_reverse($ids_array);
-		$got_keywords = false;
-		$got_description = false;
+
+		$this->_process_loaded_metadata($ids_array, $objects_metadata);
+	
+		return true;		
+	}
+	
+	function _process_loaded_metadata(&$ids_array, &$objects_metadata)
+	{
+		foreach($this->needed_metadata as $metadata_name)
+			$metadata_loaded[$metadata_name] = false;
 		
 		foreach($ids_array as $object_id)
 		{
-			if ($got_keywords && $got_description)
-				break;
-				
-			if (!$got_keywords && !empty($objects_metadata[$object_id]['keywords']))
-			{
-				$this->object_metadata['keywords'] = $objects_metadata[$object_id]['keywords'];
-				$got_keywords = true;
-			}	
+			$can_stop_search = true;
+			foreach($this->needed_metadata as $metadata_name)
+				$can_stop_search = $can_stop_search && $metadata_loaded[$metadata_name];
 
-			if (!$got_description && !empty($objects_metadata[$object_id]['description']))
-			{
-				$this->object_metadata['description'] = $objects_metadata[$object_id]['description'];
-				$got_description = true;
-			}	
+			if ($can_stop_search)
+				break;
+			
+			foreach($this->needed_metadata as $metadata_name)
+				if (!$metadata_loaded[$metadata_name] && !empty($objects_metadata[$object_id][$metadata_name]))
+				{
+					$this->object_metadata[$metadata_name] = $objects_metadata[$object_id][$metadata_name];
+					$metadata_loaded[$metadata_name] = true;
+				}	
 		}
-		
-		return true;		
 	}
 	
 	function set_node_id($node_id)

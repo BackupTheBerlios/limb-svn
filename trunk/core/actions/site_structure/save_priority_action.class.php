@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class save_priority_action extends form_action
 {
-	function save_priority_action($name='grid_form')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'grid_form';
 	}
 	
 	function _valid_perform()

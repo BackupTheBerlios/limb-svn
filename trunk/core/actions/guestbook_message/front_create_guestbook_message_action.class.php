@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class front_create_guestbook_message_action extends create_guestbook_message_action
 {
-	function front_create_guestbook_message_action()
+	function _define_dataspace_name()
 	{
-		parent :: create_guestbook_message_action('display');
+	  return 'display';
 	}
 
 	function _valid_perform()

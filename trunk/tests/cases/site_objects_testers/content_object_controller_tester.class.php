@@ -5,17 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: delete_poll_action.class.php 427 2004-02-11 09:03:24Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/form_delete_site_object_action.class.php');
+require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_controller_tester.class.php');
 
-class delete_poll_action extends form_delete_site_object_action
-{
-	function delete_poll_action($name='delete_form')
-	{		
-		parent :: form_delete_site_object_action($name, array('site_object' => 'poll'));
-	}
+class content_object_controller_tester extends site_object_controller_tester 
+{ 
 }
 
 ?>

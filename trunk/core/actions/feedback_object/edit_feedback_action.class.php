@@ -12,20 +12,25 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_feedback_action extends form_edit_site_object_action
 {
-	function edit_feedback_action($name = 'edit_feedback_content', $merge_definition = array())
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'feedback_object',
-			'datamap' => array(
-				'content' => 'content',
-			)
-		);
-
-		parent :: form_edit_site_object_action(
-					$name, 
-					complex_array :: array_merge($definition, $merge_definition)
-		);
+	  return 'feedback_object';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_feedback_content';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'content' => 'content',
+	      )
+	  );     
+	}   
 	
 	function _init_validator()
 	{

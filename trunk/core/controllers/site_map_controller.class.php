@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class site_map_controller extends site_object_controller
 {
-	function site_map_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/site_map/site_map.html',
@@ -34,13 +34,11 @@ class site_map_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),
-						'action_path' => '/site_object/delete_action',
+						'action_path' => 'form_delete_site_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

@@ -5,16 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: announce_folder_controller.class.php 59 2004-03-22 13:54:41Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class useful_links_folder_controller extends site_object_controller
 {
-	function useful_links_folder_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/useful_links_folder/display.html'
@@ -45,15 +45,13 @@ class useful_links_folder_controller extends site_object_controller
 				'delete' => array(
 						'permissions_required' => 'w',
 						'template_path' => '/site_object/delete.html',
-						'action_path' => '/site_object/delete_action',
+						'action_path' => 'form_delete_site_object_action',
 						'JIP' => true,
 						'popup' => true,
 						'img_src' => '/shared/images/rem.gif',
 						'action_name' => strings :: get('delete'),
 				),
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 

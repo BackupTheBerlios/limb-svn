@@ -12,17 +12,25 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_message_action extends form_edit_site_object_action
 {
-	function edit_message_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'message',
-			'datamap' => array(
-				'content' => 'content',
-			)
-		);
-
-		parent :: form_edit_site_object_action('edit_message', $definition);
+	  return 'message';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_message';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'content' => 'content',
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

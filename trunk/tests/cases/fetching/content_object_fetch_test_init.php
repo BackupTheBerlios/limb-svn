@@ -19,7 +19,7 @@ class news_object_fetch_test_db_table extends content_object_db_table
 {	
 	function _define_db_table_name()
 	{
-		return 'news_object';
+		return 'test_news_object';
 	}
 	
   function _define_columns()
@@ -59,7 +59,7 @@ class content_object_fetch_test_init extends site_object_fetch_test_init
   	parent :: _clean_up();
   	
   	$this->db->sql_delete('sys_object_version');
-  	$this->db->sql_delete('news_object');
+  	$this->db->sql_delete('test_news_object');
   }
 
   function _insert_content_object_records(& $object)

@@ -16,9 +16,9 @@ class login_action extends form_action
 {
 	var $user_object_class_name = 'user_object';
 
-	function login_action($name='login_form')
+	function _define_dataspace_name()
 	{
-		parent :: form_action($name);
+	  return 'login_form';
 	}
 
 	function _init_validator()

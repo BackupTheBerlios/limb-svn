@@ -12,10 +12,9 @@ require_once(LIMB_DIR . 'core/actions/site_param_object/update_param_common_acti
 
 class update_param_action extends update_param_common_action
 {
-	
-	function update_action($name='site_param_form')
+	function _define_dataspace_name()
 	{
-		parent :: update_param_common_action($name);
+	  return 'site_param_form';
 	}
 }
 ?>

@@ -5,28 +5,36 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_document_action.class.php 72 2004-03-25 10:13:19Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_article_action extends form_edit_site_object_action
 {
-	function edit_article_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'article',
-			'datamap' => array(
-				'article_content' => 'content',
-				'annotation' => 'annotation',
-				'author' => 'author',
-				'source' => 'source',
-				'uri' => 'uri',
-			)
-		);
-
-		parent :: form_edit_site_object_action('article_form', $definition);
+	  return 'article';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'article_form';
 	}
+  
+  function _define_datamap()
+	{
+	  return complex_array :: array_merge(
+	      parent :: _define_datamap(),
+	      array(
+  				'article_content' => 'content',
+  				'annotation' => 'annotation',
+  				'author' => 'author',
+  				'source' => 'source',
+  				'uri' => 'uri',
+	      )
+	  );     
+	}  
 	
 	function _init_validator()
 	{

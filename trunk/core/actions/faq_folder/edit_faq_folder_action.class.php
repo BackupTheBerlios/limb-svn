@@ -12,15 +12,16 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_faq_folder_action extends form_edit_site_object_action
 {
-	function edit_faq_folder_action()
+	function _define_site_object_class_name()
 	{
-		$definition = array(
-			'site_object' => 'faq_folder',
-		);
-
-		parent :: form_edit_site_object_action('edit_faq_folder', $definition);
+	  return 'faq_folder';
+	}  
+	  
+	function _define_dataspace_name()
+	{
+	  return 'edit_faq_folder';
 	}
-	
+
 	function _init_validator()
 	{
 		parent :: _init_validator();

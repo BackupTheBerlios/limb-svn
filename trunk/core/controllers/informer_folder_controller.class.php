@@ -5,16 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: informer_folder_controller.class.php 109 2004-04-01 15:25:23Z mike $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class informer_folder_controller extends site_object_controller
 {
-	function informer_folder_controller()
+	function _define_actions()
 	{
-		$this->_actions = array(
+		return array(
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/informer_folder/display.html'
@@ -47,14 +47,11 @@ class informer_folder_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete'),
-						'action_path' => '/site_object/delete_action',
+						'action_path' => 'form_delete_site_object_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
-
 		);
- 		
-		parent :: site_object_controller();
 	}
 }
 
