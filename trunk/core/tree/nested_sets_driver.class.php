@@ -11,12 +11,6 @@
 
 // Error and message codes
 define('NESE_ERROR_RECURSION', 'E100');
-define('NESE_ERROR_NODRIVER', 'E200');
-define('NESE_ERROR_NOHANDLER', 'E300');
-define('NESE_ERROR_TBLOCKED', 'E010');
-define('NESE_MESSAGE_UNKNOWN', 'E0');
-define('NESE_ERROR_NOTSUPPORTED', 'E1');
-define('NESE_ERROR_PARAM_MISSING', 'E400');
 define('NESE_ERROR_NOT_FOUND', 'E500');
 define('NESE_ERROR_WRONG_MPARAM', 'E2');
 
@@ -36,9 +30,9 @@ define('NESE_SORT_PREORDER', 'SPO');
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
-class nested_db_tree
+class nested_sets_driver
 {
-	var $db = null;
+	var $_db = null;
 	
 	/**
 	* 
@@ -48,12 +42,16 @@ class nested_db_tree
 	var $_params = array(
 		'id' => 'id',
 		'root_id' => 'root_id',
+		'identifier' => 'identifier',
+		'object_id' => 'object_id',
 		'l' => 'l',
 		'r' => 'r',
 		'ordr' => 'ordr',
 		'level' => 'level', 
 		'parent_id' => 'parent_id',
-	); 
+	);
+	
+	var $_expanded_parents = array(); 
 		
 	/**
 	* 
@@ -157,29 +155,31 @@ class nested_db_tree
 	* @access private 
 	* @return void 
 	*/
-	function nested_db_tree()
+	function nested_sets_driver()
 	{		
-		$this->db =& db_factory :: instance();
+		$this->_db =& db_factory :: instance();
 		
-		register_shutdown_function(array(&$this, '_nested_db_tree'));
+		register_shutdown_function(array(&$this, '_nested_sets_driver'));
 	} 
+	
+	function set_expanded_parents(& $expanded_parents)
+	{
+		$this->_expanded_parents =& $expanded_parents;
+				
+		$this->check_expanded_parents();
+	}
+	
 	/**
 	* Destructor
 	* Releases all locks
 	* Closes open database connections
 	* 
 	*/
-	function _nested_db_tree()
+	function _nested_sets_driver()
 	{
 		$this->_release_lock(true);
 	} 
-	
-  function & instance()
-  {
-		$obj =&	instantiate_object('nested_db_tree');
-		return $obj;
-  }
-  
+	  
   function set_dumb_mode($status=true)
   {
   	$this->_dumb_mode = $status;
@@ -468,8 +468,8 @@ class nested_db_tree
 										$this->_node_table, $id, 
 										$this->_add_sql($add_sql, 'append'));
 		
-		$this->db->sql_exec($sql);
-		$dataset = $this->db->fetch_row();
+		$this->_db->sql_exec($sql);
+		$dataset = $this->_db->fetch_row();
 		
 		return (int)$dataset['counter'];
 	}
@@ -537,14 +537,110 @@ class nested_db_tree
 		}
 		
 		$this->_assign_result_set($node_set, $sql);
-
+	
 		if ($this->_secondary_sort != $this->_default_secondary_sort)
 		{
 			uasort($node_set, array($this, '_sec_sort'));
 		} 
-		
+	
 		return $node_set;
 	} 
+
+	function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $sql_add = array())
+	{
+		if(!$parent_node = $this->get_node_by_path($path))
+			return false;
+						
+		if ($depth != -1)
+			$sql_add['append'][] = ' AND level <=' . ($parent_node['level'] + $depth);
+		
+		if($check_expanded_parents)
+		{
+			foreach($this->_expanded_parents as $id => $data)
+			{				
+				if(	($data['status'] == false) && 
+						($data['root_id'] == $parent_node['root_id']) &&
+						($data['r'] - $data['l'] > 1) && 
+						($parent_node['l'] <= $data['l']) &&
+						($parent_node['r'] >= $data['l']))
+					$sql_add['append'][] = ' AND (l NOT BETWEEN ' . ($data['l'] + 1). ' AND '  . $data['r'] . ')';
+			}
+		}
+		
+		if($only_parents)
+		{
+			$sql_add['join'][] = ', sys_class as sc';
+			$sql_add['append'][] = ' AND sc.id = sso.class_id AND sc.can_be_parent = 1';
+		}
+		
+		$prev_mode = $this->set_sort_mode(NESE_SORT_PREORDER);	
+ 		$nodes =& $this->get_sub_branch($parent_node['id'], $sql_add, $include_parent);
+ 		$this->set_sort_mode($prev_mode);
+  		
+		return $nodes;
+	}	
+	
+	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
+	{
+		$sql_add['columns'][] = ', soa.object_id';
+		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
+		$sql_add['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
+	
+		$access_policy =& access_policy :: instance();
+    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
+			
+		if ($class_id)
+			$sql_add['append'][] = " AND sso.class_id = {$class_id}";
+			
+		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
+
+		$result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $sql_add);
+		
+		return $result;
+	}
+	
+	function count_accessible_children($id)
+	{
+		if (!($parent = $this->get_node($id)))
+		{
+    	debug :: write_error('node not found',
+    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+    		array('id' => $id)
+    	);
+			return false;
+		} 
+		
+		if ($parent['l'] == ($parent['r'] - 1))
+		{
+			return 0;
+		} 
+
+		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
+		$sql_add['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
+	
+		$access_policy =& access_policy :: instance();
+    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
+			
+		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
+		$sql_add['group'][] = ' GROUP BY ' . $this->_node_table . '.id';
+		
+		$sql = sprintf('SELECT count(*) as counter FROM %s %s
+                    WHERE %s.root_id=%s AND %s.parent_id=%s %s %s',
+										$this->_node_table,
+										$this->_add_sql($sql_add, 'join'),
+										$this->_node_table, 
+										$parent['root_id'],
+										$this->_node_table, 
+										$id, 
+										$this->_add_sql($sql_add, 'append'),
+										$this->_add_sql($sql_add, 'group')
+									);
+		
+		$this->_db->sql_exec($sql);
+		
+		return count($this->_db->get_array());		
+	}
+	
 	/**
 	* Fetch the data of a node with the given id
 	* 
@@ -568,42 +664,236 @@ class nested_db_tree
 		$node_set =& $this->_get_result_set($sql);
 
 		return current($node_set);
-	} 
+	}
+	
+	function & get_node_by_path($path, $delimiter='/', $recursive = false)
+	{
+  	$arr = explode($delimiter, $path);
+
+  	array_shift($arr);
+  	
+  	if(end($arr) == '')
+  		array_pop($arr);
+  		
+  	if(!count($arr))
+  		return false;
+
+  	$nodes = $this->get_all_nodes(
+  		array(
+  			'append' => 
+  				array('WHERE identifier IN("' . implode('" , "', $arr) . '") AND level <= ' . sizeof($arr))
+  		)
+  	);
+  	
+  	if(!$nodes)
+  		return false;
+  	
+  	$curr_level = 0;
+  	$result_node_id = -1;
+  	$parent_id = 0;
+  	$path_to_node = '';
+  	
+  	foreach($nodes as $node)
+  	{
+  		if ($node['level'] < $curr_level)
+  			continue;
+  			
+  		if($node['identifier'] == $arr[$curr_level] && $node['parent_id'] == $parent_id)
+  		{
+	  		$parent_id = $node['id'];
+
+  			$curr_level++;
+  			$result_node_id = $node['id'];
+  			$path_to_node .= $delimiter . $node['identifier'];
+  			if ($curr_level == sizeof($arr))
+  				break;
+  		}
+  	}
+
+  	if ($curr_level == sizeof($arr))
+  		return isset($nodes[$result_node_id]) ? $nodes[$result_node_id] : false;
+  	elseif ($recursive && isset($nodes[$result_node_id]))
+  	{
+  		$nodes[$result_node_id]['only_parent_found'] = true;
+  		$nodes[$result_node_id]['path'] = $path_to_node;
+  		return $nodes[$result_node_id];
+  	}
+  	else
+  		return false;	
+	}
+	
+	function & get_nodes_by_ids($ids)
+	{
+		$nodes =& $this->get_all_nodes(
+			array(
+				'append' => array('WHERE ' . sql_in('id', $ids))
+			)
+		);
+		
+		return $nodes;
+	}
+
+	function get_max_child_identifier($id)
+	{
+		if (!($parent = $this->get_node($id)))
+		{
+    	debug :: write_error(NESE_ERROR_NOT_FOUND,
+    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+    		array('id' => $id)
+    	);
+			return false;
+		} 
+		if ($parent['l'] == ($parent['r'] - 1))
+		{
+			return 0;
+		} 
+
+		$sql = sprintf('SELECT identifier FROM %s
+                    WHERE root_id=%s AND level=%s+1 AND l BETWEEN %s AND %s
+                    ORDER BY identifier DESC',
+										$this->_node_table, 
+										$parent['root_id'],
+										$parent['level'],
+										$parent['l'], $parent['r']);
+										
+		$this->_db->sql_exec($sql, 1, 0);
+		
+		if($row =& $this->_db->fetch_row())
+			return $row['identifier'];
+		else
+			return 0;
+	}
 	
 	function is_node($id)
 	{
 		return ($this->get_node($id) !== false);
 	}
 	
-	/**
-	* See if a given node is a parent of another given node
-	* 
-	* A node is considered to be a parent if it resides above the child
-	* So it doesn't mean that the node has to be an immediate parent.
-	* To get this information simply compare the levels of the two nodes
-	* after you know that you have a parent relation.
-	* 
-	* @param mixed $parent The parent node as array or object
-	* @param mixed $child The child node as array or object
-	* @access public 
-	* @return bool True if it's a parent
-	*/
-	function is_parent($parent_node, $child_node)
-	{
-		$p_root_id = $parent_node['root_id'];
-		$p_l = $parent_node['l'];
-		$p_r = $parent_node['r'];
+  function is_node_expanded($id)
+  {
+  	if(isset($this->_expanded_parents[$id]))
+  		return $this->_expanded_parents[$id]['status'];
+  	else
+  		return false;
+  }
+  
+  function change_node_order($node_id, $direction)
+  {
+  	if(!$node = $this->get_node($node_id))
+  	{
+    	debug :: write_error('node not found',
+    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+    		array(
+    			'node_id' => $node_id
+    		)
+    	);
+  		return false;
+  	}
+  	  	  	
+  	if($node['parent_id'] == 0)
+  		$children = array($node_id => $node);
+  	else
+  		$children = $this->get_children($node['parent_id'], true);
+  	
+  	$children_keys = array_keys($children);
+  	$pos = array_search($node_id, $children_keys);
+  	
+  	$result = false;
+  	
+  	if($direction == 'up' && $pos > 0)
+  	{
+  		$target_item = $children[$children_keys[$pos-1]];
+  		$result = $this->move_tree($node_id, $target_item['id'], NESE_MOVE_BEFORE);
+  	}
+  	elseif($direction == 'down' && $pos < (sizeof($children_keys) - 1))	
+  	{
+  		$target_item = $children[$children_keys[$pos+1]];
+  		$result = $this->move_tree($node_id, $target_item['id'], NESE_MOVE_AFTER);
+  	}
+  	
+		if($result)
+			$this->check_expanded_parents();
+			
+		return $result;
+  }
+  
+  function check_expanded_parents()
+  {
+  	if(!is_array($this->_expanded_parents) || sizeof($this->_expanded_parents) == 0)
+  	{
+  		$this->reset_expanded_parents();  		
+  	}
+  	elseif(sizeof($this->_expanded_parents) > 0)
+  	{
+  		$this->update_expanded_parents();
+  	}
+  }
+  
+  function update_expanded_parents()
+  {
+  	$nodes_ids = array_keys($this->_expanded_parents);
+  	
+  	$nodes =& $this->get_nodes_by_ids($nodes_ids);
+  	
+  	foreach($nodes as $id => $node)
+  		$this->_set_expanded_parent_status($node, $this->is_node_expanded($id));
+  }
+  
+  function reset_expanded_parents()
+  {
+  	$this->_expanded_parents = array();
+  	
+  	$parent_nodes = $this->get_all_nodes(array('append' => array(' WHERE r > (l+1) ')));
+  	
+  	foreach($parent_nodes as $node)
+  	{
+  		if($node['parent_id'] == 0)
+  			$this->_set_expanded_parent_status($node, true);
+  		else
+  			$this->_set_expanded_parent_status($node, false);
+  	}
+  }
 
-		$c_root_id = $child_node['root_id'];
-		$c_l = $child_node['l'];
-		$c_r = $child_node['r'];
+  function toggle_node($id)
+  {
+  	if(($node = $this->get_node($id)) === false)  		
+  		return false;
+		
+		$this->_set_expanded_parent_status($node, !$this->is_node_expanded($id));
+		  	
+  	return true;
+  }
+  
+  function expand_node($id)
+  {
+  	if(($node = $this->get_node($id)) === false)
+  		return false;
+  	
+  	$this->_set_expanded_parent_status($node, true);
+  	  	
+  	return true;
+  }
 
-		if (($p_root_id == $c_root_id) && ($p_l < $c_l && $p_r > $c_r))
-			return true;
+  function collapse_node($id)
+  {
+  	if(($node = $this->get_node($id)) === false)
+  		return false;
+  		
+		$this->_set_expanded_parent_status($node, false);
+		    
+  	return true;
+  }
 
-		return false;
-	} 
-	
+  function _set_expanded_parent_status($node, $status)
+  {
+  	$id = (int)$node['id'];
+		$this->_expanded_parents[$id]['l'] = (int)$node['l'];
+		$this->_expanded_parents[$id]['r'] = (int)$node['r'];
+		$this->_expanded_parents[$id]['root_id'] = (int)$node['root_id'];
+		
+		$this->_expanded_parents[$id]['status'] = $status;
+  }
+		
 	/**
 	* Creates a new root node.  If no id is specified then it is either
 	* added to the beginning/end of the tree based on the $pos.
@@ -656,8 +946,8 @@ class nested_db_tree
 				$qry = sprintf('SELECT MAX(ordr) as m FROM %s WHERE l=1',
 					$this->_node_table);
 					
-				$this->db->sql_exec($qry);
-				$tmp_order = $this->db->fetch_row(); 
+				$this->_db->sql_exec($qry);
+				$tmp_order = $this->_db->fetch_row(); 
 				// If null, then it's the first one
 				$parent['ordr'] = isset($tmp_order['m']) ? $tmp_order['m'] : 0;
 			} 
@@ -671,7 +961,7 @@ class nested_db_tree
 		// Shall we delete the existing tree (reinit)
 		if ($first)
 		{
-			$this->db->sql_delete($this->_node_table);
+			$this->_db->sql_delete($this->_node_table);
 			$insert_data['ordr'] = 1;
 		} 
 		else
@@ -703,7 +993,7 @@ class nested_db_tree
 			$insert_data['root_id'] = 
 			$insert_data['id'] = 
 			$node_id =
-			$this->db->get_max_column_value($this->_node_table, 'id') + 1;
+			$this->_db->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
@@ -723,7 +1013,7 @@ class nested_db_tree
 
 		foreach ($sql as $qry)
 		{
-			$this->db->sql_exec($qry);
+			$this->_db->sql_exec($qry);
 		} 
 		
 		$this->_release_lock();
@@ -800,7 +1090,7 @@ class nested_db_tree
 
 		if (!$this->_dumb_mode || !$node_id = isset($values['id']))
 		{
-			$node_id = $insert_data['id'] = $this->db->get_max_column_value($this->_node_table, 'id') + 1;
+			$node_id = $insert_data['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
@@ -816,7 +1106,7 @@ class nested_db_tree
 		$sql[] = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->_node_table, implode(', ', array_keys($qr)), implode(', ', $qr));
 		foreach ($sql as $qry)
 		{
-			$this->db->sql_exec($qry);
+			$this->_db->sql_exec($qry);
 		} 
 
 		$this->_release_lock();
@@ -900,7 +1190,7 @@ class nested_db_tree
 
 		if (!$this->_dumb_mode || !$node_id = isset($values['id']))
 		{
-			$node_id = $insert_data['id'] = $this->db->get_max_column_value($this->_node_table, 'id') + 1;
+			$node_id = $insert_data['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
@@ -916,7 +1206,7 @@ class nested_db_tree
 		$sql[] = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->_node_table, implode(', ', array_keys($qr)), implode(', ', $qr));
 		foreach ($sql as $qry)
 		{
-			$this->db->sql_exec($qry);
+			$this->_db->sql_exec($qry);
 		} 
 
 		$this->_release_lock();
@@ -1004,7 +1294,7 @@ class nested_db_tree
 				
 		if (!$this->_dumb_mode || !isset($values['id']))
 		{
-			$node_id = $insert_data['id'] = $this->db->get_max_column_value($this->_node_table, 'id') + 1;
+			$node_id = $insert_data['id'] = $this->_db->get_max_column_value($this->_node_table, 'id') + 1;
 		} 
 		else
 		{
@@ -1024,7 +1314,7 @@ class nested_db_tree
 											
 		foreach ($sql as $qry)
 		{
-			$this->db->sql_exec($qry);
+			$this->_db->sql_exec($qry);
 		} 
  		
 		$this->_release_lock();
@@ -1095,7 +1385,7 @@ class nested_db_tree
 
 		foreach ($sql as $qry)
 		{
-			$this->db->sql_exec($qry);
+			$this->_db->sql_exec($qry);
 		} 
 		$this->_release_lock();
 		return true;
@@ -1110,11 +1400,11 @@ class nested_db_tree
 	* @access public 
 	* @return bool True if the update is successful
 	*/
-	function update_node($id, $values, $_internal = false)
+	function update_node($id, $values, $internal = false)
 	{
 		$lock = $this->_set_lock();
 
-		if (!$_internal)
+		if (!$internal)
 		{
 			$this->_verify_user_values($values);
 		} 
@@ -1131,10 +1421,11 @@ class nested_db_tree
 										$qr,
 										$id);
 										
-		$this->db->sql_exec($sql);
+		$this->_db->sql_exec($sql);
 		$this->_release_lock();
 		return true;
 	} 
+	
 	/**
 	* Wrapper for node moving and copying
 	* 
@@ -1381,12 +1672,12 @@ class nested_db_tree
 
 		for($i = 0;$i < count($updates);$i++)
 		{
-			$this->db->sql_exec($updates[$i]);
+			$this->_db->sql_exec($updates[$i]);
 		} 
 
 		for($i = 0;$i < count($parent_updates);$i++)
 		{
-			$this->db->sql_exec($parent_updates[$i]);
+			$this->_db->sql_exec($parent_updates[$i]);
 		} 
 		
 		$this->_relations = array();
@@ -1438,9 +1729,9 @@ class nested_db_tree
                 id!={$s_id} AND
                 root_id=id";
                 
-				$this->db->sql_exec($sql);
+				$this->_db->sql_exec($sql);
 				$sql = "UPDATE {$tb} SET ordr={$t_order}-1 WHERE id={$s_id}";
-				$this->db->sql_exec($sql);
+				$this->_db->sql_exec($sql);
 			} 
 			elseif ($pos == NESE_MOVE_AFTER)
 			{
@@ -1449,10 +1740,10 @@ class nested_db_tree
                 id!={$s_id} AND
                 root_id=id";
                 
-				$this->db->sql_exec($sql);
+				$this->_db->sql_exec($sql);
 
 				$sql = "UPDATE {$tb} SET ordr={$t_order} WHERE id={$s_id}";
-				$this->db->sql_exec($sql);
+				$this->_db->sql_exec($sql);
 			} 
 		} 
 
@@ -1464,10 +1755,10 @@ class nested_db_tree
                 WHERE ordr BETWEEN {$t_order} AND {$s_order} AND
                 id != {$s_id} AND
                 root_id=id";
-				$this->db->sql_exec($sql);
+				$this->_db->sql_exec($sql);
 
 				$sql = "UPDATE {$tb} SET ordr={$t_order} WHERE id={$s_id}";
-				$this->db->sql_exec($sql);
+				$this->_db->sql_exec($sql);
 			} 
 			elseif ($pos == NESE_MOVE_AFTER)
 			{
@@ -1476,16 +1767,16 @@ class nested_db_tree
                 id!=$t_id AND
                 id!=$s_id AND
                 root_id=id";
-				$this->db->sql_exec($sql);
+				$this->_db->sql_exec($sql);
 
 				$sql = "UPDATE {$tb} SET ordr={$t_order}+1 WHERE id={$s_id}";
-				$this->db->sql_exec($sql);
+				$this->_db->sql_exec($sql);
 			} 
 		} 
 		$this->_release_lock();
 		return $s_id;
 	} 
-	
+		
 	/**
 	* Callback for uasort used to sort siblings
 	* 
@@ -1499,9 +1790,7 @@ class nested_db_tree
 			return strnatcmp($node1['l'], $node2['l']);
 		} 
 		// Are they siblings?
-		$p1 = $this->get_parent($node1);
-		$p2 = $this->get_parent($node2);
-		if ($p1['id'] != $p2['id'])
+		if ($node1['parent_id'] != $node2['parent_id'])
 		{
 			return strnatcmp($node1['l'], $node2['l']);
 		} 
@@ -1509,12 +1798,12 @@ class nested_db_tree
 		$field = $this->_secondary_sort;
 		if ($node1[$field] == $node2[$field])
 		{
-			return strnatcmp($node1['l'], $node2[l]);
+			return strnatcmp($node1['l'], $node2['l']);
 		} 
 		// Compare between siblings with different field value
 		return strnatcmp($node1[$field], $node2[$field]);
 	} 
-	
+
 	/**
 	* Adds a specific type of SQL to a sql_exec string
 	* 
@@ -1555,8 +1844,8 @@ class nested_db_tree
 	
 	function _get_result_set($sql)
 	{
-		$this->db->sql_exec($sql);
-		$nodes =& $this->db->get_array('id');
+		$this->_db->sql_exec($sql);
+		$nodes =& $this->_db->get_array('id');
 
 		return $nodes;
 	} 
@@ -1564,8 +1853,8 @@ class nested_db_tree
 	function _assign_result_set(&$nodes, $sql)
 	{
 		$this->_sql = $sql;
-		$this->db->sql_exec($sql);
-		$this->db->assign_array($nodes, 'id');
+		$this->_db->sql_exec($sql);
+		$this->_db->assign_array($nodes, 'id');
 	} 
 		
 	/**
@@ -1615,7 +1904,7 @@ class nested_db_tree
 			$this->_lock_exclusive = true;
 		} 
 
-		$this->db->sql_exec($sql);
+		$this->_db->sql_exec($sql);
 
 		return $lock_id;
 	} 
@@ -1636,7 +1925,7 @@ class nested_db_tree
             WHERE lock_table='{$this->_node_table}' AND
             lock_id='$lock_id'";
 
-		$this->db->sql_exec($sql);
+		$this->_db->sql_exec($sql);
 
 		$this->_structure_table_lock = false;
 		
@@ -1651,7 +1940,7 @@ class nested_db_tree
             WHERE lock_table='{$this->_node_table}' AND
             lock_stamp < {$lock_ttl}";
 
-		$this->db->sql_exec($sql);
+		$this->_db->sql_exec($sql);
 	} 
 	
 	function _values2update_query($values, $insert_data = false)
@@ -1662,10 +1951,10 @@ class nested_db_tree
 		} 
 
 		$arq = array();
-		foreach($values AS $key => $val)
+		foreach($values as $key => $val)
 		{
 			$k = trim($key); 
-			$iv = $this->db->escape(trim($val));
+			$iv = $this->_db->escape(trim($val));
 			$arq[] = "$k='$iv'";
 		} 
 
@@ -1686,10 +1975,10 @@ class nested_db_tree
 		} 
 
 		$arq = array();
-		foreach($values AS $key => $val)
+		foreach($values as $key => $val)
 		{
 			$k = $key; 
-			$iv = $this->db->escape(trim($val));
+			$iv = $this->_db->escape(trim($val));
 			$arq[$k] = "'$iv'";
 		} 
 

@@ -8,41 +8,98 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
-require_once(LIMB_DIR . 'core/tree/nested_db_tree.class.php');
+require_once(LIMB_DIR . 'core/tree/nested_sets_driver.class.php');
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
 
-class limb_tree extends nested_db_tree
+class limb_tree
 {
-	var $_params = array(
-		'id' => 'id',
-		'root_id' => 'root_id',
-		'identifier' => 'identifier',
-		'object_id' => 'object_id',
-		'l' => 'l',
-		'r' => 'r',
-		'ordr' => 'ordr',
-		'level' => 'level', 
-		'parent_id' => 'parent_id',
-	); 
-
-  var $_expanded_parents = array();
-  
-	function limb_tree()
+	var $_tree_driver = null;
+	
+	function limb_tree($driver = null)
 	{
-		parent :: nested_db_tree();
-		
-  	$this->_expanded_parents =& session :: get('tree_expanded_parents');
-  	
-  	$this->check_expanded_parents();
+		$this->initialize_tree_driver($driver);
+	}
+	
+	function initialize_tree_driver($driver = null)
+	{
+		if($driver === null)
+			$this->_tree_driver =& new nested_sets_driver();
+			
+		$parents =& session :: get('tree_expanded_parents');
+		$this->_tree_driver->set_expanded_parents($parents);
+	}
+	
+	function is_node($id)
+	{
+		return $this->_tree_driver->is_node($id);
+	}
+	
+	function & get_node($id)
+	{
+		return $this->_tree_driver->get_node($id);
+	}
+	
+	function & get_parent($id)
+	{
+		return $this->_tree_driver->get_parent($id);
+	}
+	
+	function & get_parents($id)
+	{
+		return $this->_tree_driver->get_parents($id);
+	}
+	
+	function & get_siblings($id)
+	{
+		return $this->_tree_driver->get_siblings($id);
+	}
+	
+	function & get_children($id)
+	{
+		return $this->_tree_driver->get_children($id);
+	}
+	
+	function count_children($id)
+	{
+		return $this->_tree_driver->count_children($id);
+	}
+	
+	function create_root_node($values, $id = false)
+	{
+		return $this->_tree_driver->create_root_node($values, $id);
 	}
 	
 	function create_sub_node($id, $values)
 	{
-		if($node_id = parent :: create_sub_node($id, $values))
-			$this->expand_node($id);
+		if($node_id = $this->_tree_driver->create_sub_node($id, $values))
+			$this->_tree_driver->expand_node($id);
 			
 		return $node_id;
+	}
+	
+	function create_left_node($id, $values)
+	{
+		return $this->_tree_driver->create_left_node($id, $values);
+	}
+
+	function create_right_node($id, $values)
+	{
+		return $this->_tree_driver->create_right_node($id, $values);
+	}
+	
+	function delete_node($id)
+	{
+		return $this->_tree_driver->delete_node($id);
+	}
+	
+	function update_node($id, $values, $internal = false)
+	{
+		return $this->_tree_driver->update_node($id, $values, $internal);
+	}
+	
+	function move_tree($id, $target_id, $pos)
+	{
+		return $this->_tree_driver->move_tree($id, $target_id, $pos);
 	}
 		
 	function &instance()
@@ -51,20 +108,24 @@ class limb_tree extends nested_db_tree
 		return $obj;
 	}
 	
-	function & get_nodes_by_ids($ids)
+	function set_dumb_mode($status=true)
 	{
-		$nodes =& $this->get_all_nodes(
-			array(
-				'append' => array('WHERE ' . sql_in('id', $ids))
-			)
-		);
-		
-		return $nodes;
+		$this->_tree_driver->set_dumb_mode($status);
+	}
+	
+	function & get_all_nodes()
+	{
+		return $this->_tree_driver->get_all_nodes();
+	}
+	
+	function & get_nodes_by_ids($ids_array)
+	{
+		return $this->_tree_driver->get_nodes_by_ids($ids_array);
 	}
 		
 	function get_path_to_node($node)
 	{
-		$parents = $this->get_parents($node['id']);
+		$parents = $this->_tree_driver->get_parents($node['id']);
 		$path = '';
 		foreach($parents as $parent_data)
 			$path .= '/' . $parent_data['identifier'];
@@ -74,310 +135,59 @@ class limb_tree extends nested_db_tree
 	
 	function get_max_child_identifier($id)
 	{
-		if (!($parent = $this->get_node($id)))
-		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
-			return false;
-		} 
-		if (!$parent || $parent['l'] == ($parent['r'] - 1))
-		{
-			return 0;
-		} 
-
-		$sql = sprintf('SELECT identifier FROM %s
-                    WHERE root_id=%s AND level=%s+1 AND l BETWEEN %s AND %s
-                    ORDER BY identifier DESC',
-										$this->_node_table, 
-										$parent['root_id'],
-										$parent['level'],
-										$parent['l'], $parent['r']);
-										
-		$this->db->sql_exec($sql, 1, 0);
-		
-		if($row =& $this->db->fetch_row())
-			return $row['identifier'];
-		else
-			return 0;
+		return $this->_tree_driver->get_max_child_identifier($id);
 	}
-		
-	function get_node_by_path($path, $delimiter='/', $recursive = false)
+			
+	function & get_node_by_path($path, $delimiter='/', $recursive = false)
 	{
-  	$arr = explode($delimiter, $path);
-
-  	array_shift($arr);
-  	
-  	if(end($arr) == '')
-  		array_pop($arr);
-  		
-  	if(!count($arr))
-  		return false;
-
-  	$nodes = $this->get_all_nodes(
-  		array(
-  			'append' => array('WHERE identifier IN("' . implode('" , "', $arr) . '") AND level <= ' . sizeof($arr))
-  		)
-  	);
-  	
-  	if(!$nodes)
-  		return false;
-  	
-  	$curr_level = 0;
-  	$result_node_id = -1;
-  	$parent_id = 0;
-  	$path_to_node = '';
-  	
-  	foreach($nodes as $node)
-  	{
-  		if ($node['level'] < $curr_level)
-  			continue;
-  			
-  		if($node['identifier'] == $arr[$curr_level] && $node['parent_id'] == $parent_id)
-  		{
-	  		$parent_id = $node['id'];
-
-  			$curr_level++;
-  			$result_node_id = $node['id'];
-  			$path_to_node .= $delimiter . $node['identifier'];
-  			if ($curr_level == sizeof($arr))
-  				break;
-  		}
-  	}
-
-  	if ($curr_level == sizeof($arr))
-  		return isset($nodes[$result_node_id]) ? $nodes[$result_node_id] : false;
-  	elseif ($recursive && isset($nodes[$result_node_id]))
-  	{
-  		$nodes[$result_node_id]['only_parent_found'] = true;
-  		$nodes[$result_node_id]['path'] = $path_to_node;
-  		return $nodes[$result_node_id];
-  	}
-  	else
-  		return false;	
+  	return $this->_tree_driver->get_node_by_path($path, $delimiter, $recursive);	
 	}
 	
-	function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $sql_add = array())
+	function & get_sub_branch($id, $include_parent = false)
 	{
-		if(!$parent_node = $this->get_node_by_path($path))
-			return false;
-						
-		if ($depth != -1)
-			$sql_add['append'][] = ' AND level <=' . ($parent_node['level'] + $depth);
-		
-		if($check_expanded_parents)
-		{
-			foreach($this->_expanded_parents as $id => $data)
-			{				
-				if(	($data['status'] == false) && 
-						($data['root_id'] == $parent_node['root_id']) &&
-						($data['r'] - $data['l'] > 1) && 
-						($parent_node['l'] <= $data['l']) &&
-						($parent_node['r'] >= $data['l']))
-					$sql_add['append'][] = ' AND (l NOT BETWEEN ' . ($data['l'] + 1). ' AND '  . $data['r'] . ')';
-			}
-		}
-		
-		if($only_parents)
-		{
-			$sql_add['join'][] = ', sys_class as sc';
-			$sql_add['append'][] = ' AND sc.id = sso.class_id AND sc.can_be_parent = 1';
-		}
-		
-		$prev_mode = $this->set_sort_mode(NESE_SORT_PREORDER);	
- 		$nodes =& $this->get_sub_branch($parent_node['id'], $sql_add, $include_parent);
- 		$this->set_sort_mode($prev_mode);
-  		
-		return $nodes;
+		$this->_tree_driver->get_sub_branch($id, array(), $include_parent);
 	}
 	
+	function & get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
+	{
+		return $this->_tree_driver->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents);
+	}
+
 	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
 	{
-		$sql_add['columns'][] = ', soa.object_id';
-		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
-		$sql_add['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
-	
-		$access_policy =& access_policy :: instance();
-    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
-			
-		if ($class_id)
-			$sql_add['append'][] = " AND sso.class_id = {$class_id}";
-			
-		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
-
-		$result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $sql_add);
-		
-		return $result;
+		return $this->_tree_driver->get_accessible_sub_branch_by_path($path, $depth, $include_parent = false, $check_expanded_parents, $class_id, $only_parents);
 	}
 	
 	function count_accessible_children($id)
 	{
-		if (!($parent = $this->get_node($id)))
-		{
-    	debug :: write_error(NESE_ERROR_NOT_FOUND,
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('id' => $id)
-    	);
-			return false;
-		} 
-		
-		if ($parent['l'] == ($parent['r'] - 1))
-		{
-			return 0;
-		} 
-
-		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
-		$sql_add['append'][] = ' AND sso.id = ' . $this->_node_table . '.object_id AND sso.id = soa.object_id AND soa.r = 1';
-	
-		$access_policy =& access_policy :: instance();
-    $accessor_ids = implode(',', $access_policy->get_accessor_ids());
-			
-		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
-		$sql_add['group'][] = ' GROUP BY ' . $this->_node_table . '.id';
-		
-		$sql = sprintf('SELECT count(*) as counter FROM %s %s
-                    WHERE %s.root_id=%s AND %s.parent_id=%s %s %s',
-										$this->_node_table,
-										$this->_add_sql($sql_add, 'join'),
-										$this->_node_table, 
-										$parent['root_id'],
-										$this->_node_table, 
-										$id, 
-										$this->_add_sql($sql_add, 'append'),
-										$this->_add_sql($sql_add, 'group')
-									);
-		
-		$this->db->sql_exec($sql);
-		
-		return count($this->db->get_array());		
+		return $this->_tree_driver->count_accessible_children($id);
 	}
 	
   function is_node_expanded($id)
   {
-  	if(isset($this->_expanded_parents[$id]))
-  		return $this->_expanded_parents[$id]['status'];
-  	else
-  		return false;
+  	return $this->_tree_driver->is_node_expanded($id);
   }
   
   function change_node_order($node_id, $direction)
   {
-  	if(!$node = $this->get_node($node_id))
-  	{
-    	debug :: write_error('node not found',
-    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array(
-    			'node_id' => $node_id
-    		)
-    	);
-  		return false;
-  	}
-  	  	  	
-  	if($node['parent_id'] == 0)
-  		$children = array($node_id => $node);
-  	else
-  		$children = $this->get_children($node['parent_id'], true);
-  	
-  	$children_keys = array_keys($children);
-  	$pos = array_search($node_id, $children_keys);
-  	
-  	$result = false;
-  	
-  	if($direction == 'up' && $pos > 0)
-  	{
-  		$target_item = $children[$children_keys[$pos-1]];
-  		$result = $this->move_tree($node_id, $target_item['id'], NESE_MOVE_BEFORE);
-  	}
-  	elseif($direction == 'down' && $pos < (sizeof($children_keys) - 1))	
-  	{
-  		$target_item = $children[$children_keys[$pos+1]];
-  		$result = $this->move_tree($node_id, $target_item['id'], NESE_MOVE_AFTER);
-  	}
-  	
-		if($result)
-			$this->check_expanded_parents();
-			
-		return $result;
+		return $this->_tree_driver->change_node_order($node_id, $direction);
   }
-  
-  function check_expanded_parents()
-  {
-  	if(!is_array($this->_expanded_parents) || sizeof($this->_expanded_parents) == 0)
-  	{
-  		$this->reset_expanded_parents();  		
-  	}
-  	elseif(sizeof($this->_expanded_parents) > 0)
-  	{
-  		$this->update_expanded_parents();
-  	}
-  }
-  
-  function update_expanded_parents()
-  {
-  	$nodes_ids = array_keys($this->_expanded_parents);
   	
-  	$nodes =& $this->get_nodes_by_ids($nodes_ids);
-  	
-  	foreach($nodes as $id => $node)
-  		$this->_set_expanded_parent_status($node, $this->is_node_expanded($id));
-  }
-	
   function toggle_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)  		
-  		return false;
-		
-		$this->_set_expanded_parent_status($node, !$this->is_node_expanded($id));
-		  	
-  	return true;
+  {		  	
+  	return $this->_tree_driver->toggle_node($id);
   }
   
   function expand_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)
-  		return false;
-  	
-  	$this->_set_expanded_parent_status($node, true);
-  	  	
-  	return true;
+  {  	  	
+  	return $this->_tree_driver->expand_node($id);
   }
 
   function collapse_node($id)
-  {
-  	if(($node = $this->get_node($id)) === false)
-  		return false;
-  		
-		$this->_set_expanded_parent_status($node, false);
-		    
-  	return true;
+  {		    
+  	return $this->_tree_driver->collapse_node($id);
   }
-  
-  function reset_expanded_parents()
-  {
-  	$this->_expanded_parents = array();
-  	
-  	$parent_nodes = $this->get_all_nodes(array('append' => array(' WHERE r > (l+1) ')));
-  	
-  	foreach($parent_nodes as $node)
-  	{
-  		if($node['parent_id'] == 0)
-  			$this->_set_expanded_parent_status($node, true);
-  		else
-  			$this->_set_expanded_parent_status($node, false);
-  	}
-  }
-  
-  function _set_expanded_parent_status($node, $status)
-  {
-  	$id = (int)$node['id'];
-		$this->_expanded_parents[$id]['l'] = (int)$node['l'];
-		$this->_expanded_parents[$id]['r'] = (int)$node['r'];
-		$this->_expanded_parents[$id]['root_id'] = (int)$node['root_id'];
-		
-		$this->_expanded_parents[$id]['status'] = $status;
-  }
-  
+      
   function can_add_node($parent_id)
   {
   	if (!$this->is_node($parent_id))

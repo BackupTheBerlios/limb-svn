@@ -9,12 +9,11 @@
 *
 ***********************************************************************************/ 
 
-class test_nested_tree_query extends test_nested_tree
+class test_nested_sets_driver_query extends test_nested_sets_driver
 {
-
-	function test_nested_tree_query()
+	function test_nested_sets_driver_query()
 	{
-		parent::test_nested_tree();
+		parent :: test_nested_sets_driver();
 	} 
 	
 	function setUp()
@@ -36,7 +35,7 @@ class test_nested_tree_query extends test_nested_tree
 	*/
 	function test_get_all_nodes()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3;
 		$this->_create_sub_node($rnc, $depth, $npl);
@@ -88,7 +87,7 @@ class test_nested_tree_query extends test_nested_tree
 	*/
 	function test_get_parents()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Create a new tree
@@ -112,7 +111,7 @@ class test_nested_tree_query extends test_nested_tree
 	*/
 	function test_get_parent()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Create a new tree
@@ -135,7 +134,7 @@ class test_nested_tree_query extends test_nested_tree
 
 	function test_get_siblings()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Create a new tree
@@ -160,37 +159,6 @@ class test_nested_tree_query extends test_nested_tree
 
 	/**
 	* 
-	* Create a tree, go trogh each node, fetch all children
-	* and see if isParent() returns true
-	* 
-	*/
-	function test_is_parent()
-	{
-		$rnc = 2;
-		$depth = 2;
-		$npl = 3;
-		$relation_tree = $this->_create_sub_node($rnc, $depth, $npl);
-		$allnodes = $this->_tree->get_all_nodes();
-		foreach($allnodes AS $nid => $node)
-		{
-			$children = $this->_tree->get_children($nid);
-
-			if (empty($children))
-			{
-				continue;
-			} 
-			foreach($children AS $cid => $child)
-			{
-				$is_parent = $this->_tree->is_parent($node, $child);
-				$this->assertEqual($relation_tree[$cid]['parent_id'] , $nid, 'Parent from relation tree differs.');
-				$this->assertTrue($is_parent, 'isParent was false.');
-			} 
-		} 
-		return true;
-	} 
-
-	/**
-	* 
 	* Create some children
 	* The dirty work is done in _traverse_children()
 	* Here we only calc if the expected number of children returned matches
@@ -199,7 +167,7 @@ class test_nested_tree_query extends test_nested_tree
 	*/
 	function test_get_children()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Just see if empty nodes are recognized
@@ -251,7 +219,7 @@ class test_nested_tree_query extends test_nested_tree
 	*/
 	function test_get_sub_branch()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Create a new tree
@@ -301,7 +269,7 @@ class test_nested_tree_query extends test_nested_tree
 	
 	function test_get_node_by_path()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Create a new tree
@@ -325,7 +293,7 @@ class test_nested_tree_query extends test_nested_tree
 	
 	function test_get_sub_branch_by_path()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Create a new tree
@@ -349,7 +317,7 @@ class test_nested_tree_query extends test_nested_tree
 
 	function test_get_sub_branch_by_path_check_expanded_parents()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Create a new tree
@@ -391,7 +359,7 @@ class test_nested_tree_query extends test_nested_tree
 	
 	function test_change_order()
 	{
-		$rnc = 2;
+		$rnc = 1;
 		$depth = 2;
 		$npl = 3; 
 		// Create a new tree

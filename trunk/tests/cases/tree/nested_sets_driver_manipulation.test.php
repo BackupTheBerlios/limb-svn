@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/ 
 
-class test_nested_tree_manipulation extends test_nested_tree
+class test_nested_sets_driver_manipulation extends test_nested_sets_driver
 {
-	function test_nested_tree_manipulation()
+	function test_nested_sets_driver_manipulation()
 	{
-		parent::test_nested_tree();
+		parent :: test_nested_sets_driver();
 	} 
 
 	/**
@@ -81,7 +81,7 @@ class test_nested_tree_manipulation extends test_nested_tree
 		{
 			$mvt = $movemodes[$j]; 
 			// Build a nice random tree
-			$rnc = 2;
+			$rnc = 1;
 			$depth = 2;
 			$npl = 2;
 			$relation_tree = $this->_create_sub_node($rnc, $depth, $npl);

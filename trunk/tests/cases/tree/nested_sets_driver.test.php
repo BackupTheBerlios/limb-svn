@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
+require_once(LIMB_DIR . 'core/tree/nested_sets_driver.class.php');
 
-class nested_db_tree_test extends limb_tree
+class nested_sets_driver_test_version extends nested_sets_driver
 {	
 	var $_node_table = 'test_nested_tree1';
 	var $_lock_ttl = 5;
 	
-	function nested_db_tree_test()
+	function nested_sets_driver_test_version()
 	{
-		parent :: nested_db_tree();
+		parent :: nested_sets_driver();
 	}
 }
 
-SimpleTestOptions::ignore('test_nested_tree');
+SimpleTestOptions::ignore('test_nested_sets_driver');
 
-class test_nested_tree extends UnitTestCase
+class test_nested_sets_driver extends UnitTestCase
 {
 	var $db = null;
 	
-  function test_nested_tree() 
+  function test_nested_sets_driver() 
   {
   	parent :: UnitTestCase();
   	
@@ -38,7 +38,7 @@ class test_nested_tree extends UnitTestCase
 	{
 		debug_mock :: init($this);
 		
-		$this->_tree = new nested_db_tree_test();
+		$this->_tree = new nested_sets_driver_test_version();
 	} 
 
 	function tearDown()
@@ -553,7 +553,7 @@ class test_nested_tree extends UnitTestCase
 			} 
 		} 
 		return $relation_nodes;
-	} 
+	}
 } 
 
 ?>

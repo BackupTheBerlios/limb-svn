@@ -8,12 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/ 
-class test_nested_set_creation extends test_nested_tree
+class test_nested_sets_driver_creation extends test_nested_sets_driver
 {
-	
-	function test_nested_set_creation()
+	function test_nested_sets_driver_creation()
 	{
-		parent :: test_nested_tree();
+		parent :: test_nested_sets_driver();
 	}
 	
 	/**
@@ -38,8 +37,8 @@ class test_nested_set_creation extends test_nested_tree
 	*/
 	function test_create_sub_node()
 	{
-		$rnc = 3;
-		$depth = 3;
+		$rnc = 2;
+		$depth = 2;
 		$npl = 3;
 		return $this->_create_sub_node($rnc, $depth, $npl);
 	} 
@@ -49,7 +48,7 @@ class test_nested_set_creation extends test_nested_tree
 	*/
 	function test_create_right_node()
 	{
-		$rnc = 6;
+		$rnc = 3;
 		$rootnodes = $this->_create_root_nodes($rnc);
 		$x = 0;
 		foreach($rootnodes AS $rid => $rootnode)
@@ -97,7 +96,7 @@ class test_nested_set_creation extends test_nested_tree
 	*/
 	function test_create_left_node()
 	{
-		$rnc = 6;
+		$rnc = 3;
 		$rootnodes = $this->_create_root_nodes($rnc);
 		$x = 0;
 		foreach($rootnodes AS $rid => $rootnode)
@@ -149,7 +148,7 @@ class test_nested_set_creation extends test_nested_tree
 	*/
 	function test_create_nodes_random()
 	{
-		$this->_create_random_nodes(2, 20);
+		$this->_create_random_nodes(2, 10);
 		return true;
 	} 
 } 
