@@ -7,22 +7,22 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_action extends form_edit_site_object_action
 {
-	function _define_dataspace_name()
-	{
-	  return 'edit_site_object';
-	}
-  
-	function _init_validator()
-	{
-		parent :: _init_validator();
+  function _define_dataspace_name()
+  {
+    return 'edit_site_object';
+  }
+
+  function _init_validator()
+  {
+    parent :: _init_validator();
 
     $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
-	}
+  }
 }
 
 ?>
