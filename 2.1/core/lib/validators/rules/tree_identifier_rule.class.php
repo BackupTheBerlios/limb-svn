@@ -46,12 +46,12 @@ class tree_identifier_rule extends single_field_rule
 						
 			if($this->node_id == TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID)
 			{				
-				$this->error('DUPLICATE_TREE_IDENTIFIER');
+				$this->error(strings :: get('error_duplicate_tree_identifier', 'error'));
 				break;
 			}
 			elseif($id != $this->node_id)
 			{
-				$this->error('DUPLICATE_TREE_IDENTIFIER');
+				$this->error(strings :: get('error_duplicate_tree_identifier', 'error'));
 				break;
 			}
 		}

@@ -37,9 +37,16 @@ class admin_page_controller extends site_object_controller
 						'template_path' => '/site_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
-		
+				'register_new_object' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('register_new_object'),
+						'action_path' => '/site_object/register_new_object_action',
+						'template_path' => '/site_object/register_new_object.html',
+						'img_src' => '/shared/images/activate.gif'				
+				)
 		);
- 		
 
 		parent :: site_object_controller();
 	}
