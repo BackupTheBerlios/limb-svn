@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
 
 class user_object extends content_object
 {
-	function _define_attributes_definition()
+	protected function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(
 				parent :: _define_attributes_definition(),
@@ -21,7 +21,7 @@ class user_object extends content_object
 				));
 	}
 		
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'class_ordr' => 1,
@@ -31,23 +31,23 @@ class user_object extends content_object
 		);
 	}
 	
-	function create($is_root = false)
+	public function create($is_root = false)
 	{
 		$crypted_password = user :: get_crypted_password($this->get_identifier(), $this->get('password'));
 		$this->set('password', $crypted_password);
 		return parent :: create($is_root);
 	}
 	
-	function get_membership($user_id)
+	public function get_membership($user_id)
 	{
-		$db_table	=& db_table_factory :: instance('user_in_group');
+		$db_table	= db_table_factory :: instance('user_in_group');
 		$groups = $db_table->get_list('user_id='. $user_id, '', 'group_id');		
 		return $groups;
 	}
 	
-	function save_membership($user_id, $membership)
+	public function save_membership($user_id, $membership)
 	{
-		$db_table	=  & db_table_factory :: instance('user_in_group');
+		$db_table	= db_table_factory :: instance('user_in_group');
 		$db_table->delete('user_id='. $user_id);		
 
 		foreach($membership as $group_id => $is_set)
@@ -64,7 +64,7 @@ class user_object extends content_object
 		return true;
 	}
 	
-	function change_password()
+	public function change_password()
 	{
 		if(!$user_id = $this->get_id())
 		{
@@ -80,7 +80,7 @@ class user_object extends content_object
 		  return false;
 		}
 		
-		$user =& user :: instance();
+		$user = user :: instance();
 		
 		$this->set(
 			'password', 
@@ -101,9 +101,9 @@ class user_object extends content_object
 		return $this->update(false);
 	}
 
-	function validate_password($password)
+	public function validate_password($password)
 	{
-		$user =& user :: instance();
+		$user = user :: instance();
 		
 		if(!$user->is_logged_in() || !$node_id = $user->get_node_id())
 		{
@@ -120,9 +120,9 @@ class user_object extends content_object
 			return true;
 	}
 
-	function change_own_password($password)
+	public function change_own_password($password)
 	{
-		$user =& user :: instance();
+		$user = user :: instance();
 		
 		if(!$node_id = $user->get_node_id())
 		{
@@ -133,7 +133,7 @@ class user_object extends content_object
 
 		$data['password'] = $user->get_crypted_password($user->get_login(),	$password);
 		
-		$user_db_table =& db_table_factory :: create('user');
+		$user_db_table = db_table_factory :: create('user');
 
 		$this->set('password', $data['password']);
 		
@@ -143,7 +143,7 @@ class user_object extends content_object
 			return false;
 	}
 
-	function generate_password($email, &$new_non_crypted_password)
+	public function generate_password($email, &$new_non_crypted_password)
 	{
 		if(!$user_data = $this->get_user_by_email($email))
 			return false;
@@ -160,7 +160,7 @@ class user_object extends content_object
 		return $result;
 	}
 
-	function activate_password()
+	public function activate_password()
 	{
 	  $request = request :: instance();
 	  
@@ -181,9 +181,9 @@ class user_object extends content_object
 		return $this->update(false);
 	}
 
-	function get_user_by_email($email)
+	public function get_user_by_email($email)
 	{
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$sql = 
 			'SELECT *, scot.id as node_id, sco.id as id FROM 
@@ -200,7 +200,7 @@ class user_object extends content_object
 		return current($db->get_array());
 	}
 
-	function send_activate_password_email(&$user_data, $password)
+	public function send_activate_password_email($user_data, $password)
 	{
 		require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
 		global $_SERVER;
@@ -241,16 +241,14 @@ class user_object extends content_object
 			return true;	
 	}
 
-	function login($login, $password, $locale_id = '')
+	public function login($login, $password, $locale_id = '')
 	{
-		$user =& user :: instance();
-		return  $user->login($login, $password, $locale_id);
+		return  user :: instance()->login($login, $password, $locale_id);
 	}
 	
-	function logout()
+	public function logout()
 	{
-		$user =& user :: instance();
-		return $user->logout();
+		return user :: instance()->logout();
 	}
 }
 

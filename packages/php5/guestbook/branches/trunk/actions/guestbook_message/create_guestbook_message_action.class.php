@@ -12,17 +12,17 @@ require_once(LIMB_DIR . 'class/core/actions/form_create_site_object_action.class
 
 class create_guestbook_message_action extends form_create_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'guestbook_message';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'create_guestbook_message';
 	}
   
-  function _define_datamap()
+  protected function _define_datamap()
 	{
 	  return complex_array :: array_merge(
 	      parent :: _define_datamap(),
@@ -34,7 +34,7 @@ class create_guestbook_message_action extends form_create_site_object_action
 	  );     
 	}  
 
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 
@@ -43,11 +43,11 @@ class create_guestbook_message_action extends form_create_site_object_action
     $this->validator->add_rule($v3 = array(LIMB_DIR . 'class/validators/rules/email_rule', 'sender_email'));
 	}
 
-	function _init_dataspace(&$request)
+	protected function _init_dataspace($request)
 	{
 		$data['identifier'] = md5(rand());
 		
-		$user =& user :: instance();
+		$user = user :: instance();
 		
 		$data['sender'] = $user->get_login();
 		$data['sender_email'] = $user->get_email();
@@ -55,7 +55,7 @@ class create_guestbook_message_action extends form_create_site_object_action
 		$this->dataspace->import($data);
 	}
 	
-	function _process_transfered_dataspace()
+	protected function _process_transfered_dataspace()
 	{	
 		$this->_htmlspecialchars_dataspace_value('message');
 		$this->_htmlspecialchars_dataspace_value('sender_email');

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 
 class poll_container extends site_object
 {
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'class_ordr' => 0,
@@ -22,7 +22,7 @@ class poll_container extends site_object
 		);
 	}
 	
-	function can_vote()
+	public function can_vote()
 	{
 		if(!$poll_data = $this->get_active_poll())
 			return false;
@@ -65,7 +65,7 @@ class poll_container extends site_object
 		return true;
 	}
 
-	function register_answer($answer_id)
+	public function register_answer($answer_id)
 	{
 		if (!$answer_id)
 			return false;
@@ -116,9 +116,9 @@ class poll_container extends site_object
 		return true;
 	}
 	
-	function _add_vote_to_answer($record_id)
+	private function _add_vote_to_answer($record_id)
 	{
-		$poll_answer_db_table = & db_table_factory :: instance('poll_answer');
+		$poll_answer_db_table = db_table_factory :: instance('poll_answer');
 		
 		$data = $poll_answer_db_table->get_row_by_id($record_id);
 		if (!$data)
@@ -131,17 +131,17 @@ class poll_container extends site_object
 	}
 
 	
-	function _register_new_ip($poll_id, $ip)
+	private function _register_new_ip($poll_id, $ip)
 	{
-		$poll_ip_db_table = & db_table_factory :: instance('poll_ip');
+		$poll_ip_db_table = db_table_factory :: instance('poll_ip');
 		$data['ip'] = $ip;
 		$data['poll_id'] = $poll_id;
 		$poll_ip_db_table->insert($data);
 	}
 	
-	function _poll_ip_exists($poll_id, $ip)
+	private function _poll_ip_exists($poll_id, $ip)
 	{
-		$poll_ip_db_table = & db_table_factory :: instance('poll_ip');
+		$poll_ip_db_table = db_table_factory :: instance('poll_ip');
 		$where['poll_id'] = $poll_id;
 		$where['ip'] = $ip;
 		
@@ -151,7 +151,7 @@ class poll_container extends site_object
 			return false;
 	}
 
-	function get_active_poll()
+	public function get_active_poll()
 	{
 		if(!$questions = $this->_load_all_questions())
 			return array();
@@ -167,13 +167,13 @@ class poll_container extends site_object
 		if (!count($questions))
 			return array();
 		
-		$record =& reset($questions);
+		$record = reset($questions);
 		$this->_process_question($record);
 
 		return $record;
 	}
 
-	function _process_question(& $poll_data)
+	private function _process_question(& $poll_data)
 	{
 		$poll_data['answers'] = $this->_load_answers($poll_data['path']);
 
@@ -194,7 +194,7 @@ class poll_container extends site_object
 			}	
 	}
 
-	function & _load_all_questions($new_params = array())
+	private function _load_all_questions($new_params = array())
 	{
 		$params = array(
 			'depth' => -1,
@@ -205,14 +205,12 @@ class poll_container extends site_object
 		
 		$params = complex_array :: array_merge($params, $new_params);
 		
-		$result =& fetch_sub_branch('/root/polls', 'poll', $counter, $params);
-		return $result;
+		return fetch_sub_branch('/root/polls', 'poll', $counter, $params);
 	}
 	
-	function & _load_answers($question_path)
+	private function _load_answers($question_path)
 	{
-		$result =& fetch_sub_branch($question_path, 'poll_answer', $counter);
-		return $result;
+		return fetch_sub_branch($question_path, 'poll_answer', $counter);
 	}
 		
 }

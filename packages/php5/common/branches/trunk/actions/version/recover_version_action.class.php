@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class recover_version_action extends action
 {
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
 		if($request->has_attribute('popup'))
 		  $response->write(close_popup_no_parent_reload_response());
 	
-	  $request->set_status(REQUEST_STATUS_FAILURE);
+	  $request->set_status(request :: STATUS_FAILURE);
 	  
 		if(!$version = $request->get('version'))
 			return;
@@ -37,7 +37,7 @@ class recover_version_action extends action
 		if($request->has_attribute('popup'))
 		  $response->write(close_popup_response($request));
 	
-	  $request->set_status(REQUEST_STATUS_SUCCESS);
+	  $request->set_status(request :: STATUS_SUCCESS);
 	}
 }
 

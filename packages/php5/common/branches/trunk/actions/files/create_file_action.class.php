@@ -12,17 +12,17 @@ require_once(LIMB_DIR . 'class/core/actions/form_create_site_object_action.class
 
 class create_file_action extends form_create_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'file_object';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'create_file';
 	}
   
-  function _define_datamap()
+  protected function _define_datamap()
 	{
 	  return complex_array :: array_merge(
 	      parent :: _define_datamap(),
@@ -32,14 +32,14 @@ class create_file_action extends form_create_site_object_action
 	  );     
 	}  
 
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 
     $this->validator->add_rule($v = array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
 	}
 	
-	function _create_object_operation()
+	protected function _create_object_operation()
 	{	
 		if(isset($_FILES[$this->name]['tmp_name']['file']))
 		{	
@@ -56,7 +56,6 @@ class create_file_action extends form_create_site_object_action
 
 		return parent :: _create_object_operation();
 	}
-	
 }
 
 ?>

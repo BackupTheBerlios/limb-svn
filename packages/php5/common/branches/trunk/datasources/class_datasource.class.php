@@ -12,16 +12,14 @@ require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
 
 class class_datasource extends datasource
 {
-	function & get_dataset(&$counter, $params=array())
+	public function get_dataset(&$counter, $params=array())
 	{
 		$counter = 0;
 		
-	  $request = request :: instance();
-	  
-		if(!$class_id = $request->get('class_id'))
+		if(!$class_id = request :: instance()->get('class_id'))
 			return new array_dataset();
 			
-		$db_table =& db_table_factory :: instance('sys_class');
+		$db_table = db_table_factory :: instance('sys_class');
 		$class_data = $db_table->get_row_by_id($class_id);
 		
 		if ($class_data)

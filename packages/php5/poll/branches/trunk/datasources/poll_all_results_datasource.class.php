@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
 
 class poll_all_results_datasource extends datasource
 {
-	function & get_dataset(& $counter, $params = array())
+	public function get_dataset(& $counter, $params = array())
 	{
-		$questions =& $this->_load_all_questions($params);
+		$questions = $this->_load_all_questions($params);
 		
 		if(!count($questions))
 			return new array_dataset(array());
@@ -52,7 +52,7 @@ class poll_all_results_datasource extends datasource
 		return new array_dataset($questions);
 	}
 	
-	function & _load_all_questions($new_params = array())
+	private function _load_all_questions($new_params = array())
 	{
 		$params = array(
 			'depth' => -1
@@ -63,7 +63,7 @@ class poll_all_results_datasource extends datasource
 		return fetch_sub_branch('/root/polls', 'poll', $params);
 	}
 	
-	function _load_answers($question_path)
+	private function _load_answers($question_path)
 	{
 		$params = array(
 			'depth' => 1

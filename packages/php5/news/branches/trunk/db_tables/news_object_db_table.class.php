@@ -14,10 +14,13 @@ class news_object_db_table extends content_object_db_table
 {
   function _define_columns()
   {
-  	return array(
-      'annotation' => '',
-      'content' => '',
-      'news_date' => array('type' => 'date'),
+  	return complex_array :: array_merge(
+  		parent :: _define_colums(),
+  		array(
+	      'annotation' => '',
+	      'content' => '',
+	      'news_date' => array('type' => 'date')
+	    )  
     );
   }
 }

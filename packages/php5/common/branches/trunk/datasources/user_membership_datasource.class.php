@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
 
 class user_membership_datasource extends datasource
 {
-	function & get_dataset(&$counter, $params = array())
+	public function get_dataset(&$counter, $params = array())
 	{
-		$user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$user_groups = fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
 		
 		foreach($user_groups as $id => $group_data)
 		{

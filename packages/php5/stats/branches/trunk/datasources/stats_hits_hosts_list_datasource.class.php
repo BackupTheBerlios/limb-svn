@@ -13,28 +13,28 @@ require_once(dirname(__FILE__) . '/../reports/stats_hits_hosts_by_days_report.cl
 
 class stats_hits_hosts_list_datasource extends datasource
 {		
-	var $stats_hits_hosts_report = null;
+	private $_stats_report;
 	
-	function stats_hits_hosts_list_datasource()
+	function __construct()
 	{
-		$this->stats_report =& new stats_hits_hosts_by_days_report();
+		$this->_stats_report = new stats_hits_hosts_by_days_report();
 		
-		parent :: datasource();		
+		parent :: __construct();		
 	}
 
-	function & get_dataset(&$counter, $params=array())
+	public function get_dataset(&$counter, $params=array())
 	{		
 		$this->_configure_filters();
 		
-		$counter = $this->stats_report->fetch_count($params);
-		$arr = $this->stats_report->fetch($params);
+		$counter = $this->_stats_report->fetch_count($params);
+		$arr = $this->_stats_report->fetch($params);
 		
 		$arr = $this->_process_result_array($arr);
 		
 		return new array_dataset($arr);
 	}
 	
-	function _process_result_array($arr)
+	private function _process_result_array($arr)
 	{
 		if(complex_array :: get_max_column_value('hosts', $arr, $index) !== false)
 			$arr[$index]['max_hosts'] = 1;
@@ -60,15 +60,15 @@ class stats_hits_hosts_list_datasource extends datasource
 		return $result;
 	}
 	
-	function _configure_filters()
+	private function _configure_filters()
+	{
+		$this->_set_period_filter();
+	}
+		
+	private function _set_period_filter()
 	{
 	  $request = request :: instance();
 	
-		$this->_set_period_filter($request);
-	}
-		
-	function _set_period_filter(&$request)
-	{
 		$locale =& locale :: instance();
 		$start_date = new date();
 		$start_date->set_hour(0);
@@ -86,7 +86,7 @@ class stats_hits_hosts_list_datasource extends datasource
 		$finish_date->set_minute(59);
 		$finish_date->set_second(59);
 		
-		$this->stats_report->set_period_filter($start_date, $finish_date);
+		$this->_stats_report->set_period_filter($start_date, $finish_date);
 	}
 }
 ?>

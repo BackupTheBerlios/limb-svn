@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'class/lib/http/uri.class.php');
 
 class tree_navigation_datasource extends fetch_tree_datasource
 {
-	function & _fetch(&$counter, $params)
+	function _fetch(&$counter, $params)
 	{
-		$result =& parent :: _fetch($counter, $params);
+		$result = parent :: _fetch($counter, $params);
 		$uri = new uri($_SERVER['PHP_SELF']);		
 
 		foreach($result as $key => $data)

@@ -12,13 +12,12 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class image_select_action extends action
 {
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
-	  $request->set_status(REQUEST_STATUS_DONT_TRACK);
-		$object =& fetch_requested_object();
+	  $request->set_status(request :: STATUS_DONT_TRACK);
+		$object = fetch_requested_object();
 		
 	  session :: set('limb_image_select_working_path', $object['path']);
-
 	}
 }
 ?>

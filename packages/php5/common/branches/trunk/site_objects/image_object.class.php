@@ -14,18 +14,18 @@ require_once(LIMB_DIR . 'class/etc/message_box.class.php');
 
 class image_object extends media_object
 {
-	var $_image_library = null;
+	protected $_image_library = null;
 	
-	function image_object()
+	function __construct()
 	{
-		parent :: media_object();
+		parent :: __construct();
 				
 		$this->_image_library = image_factory :: create();
 	}
 	
-	function _define_attributes_definition()
+	protected function _define_attributes_definition()
 	{
-		$ini =& get_ini('image_variations.ini');
+		$ini = get_ini('image_variations.ini');
 		
 		$image_variations = $ini->get_all();
 		
@@ -44,7 +44,7 @@ class image_object extends media_object
 		return complex_array :: array_merge(parent :: _define_attributes_definition(), $definition);
 	}
 	
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'class_ordr' => 1,
@@ -53,21 +53,21 @@ class image_object extends media_object
 		);
 	}
 	
-	function create()
+	public function create()
 	{				
 		if(($id = parent :: create()) === false)
 			return false;
 		
 		if($this->get('files_data'))
 		{
-			if(!$this->create_variations())
+			if(!$this->_create_variations())
 				return false;
 		}
 							
 		return $id;
 	}
 	
-	function create_variations()
+	private function _create_variations()
 	{
 		$image_variations = $this->_get_variations_ini_list();
 		$result = array();
@@ -92,7 +92,7 @@ class image_object extends media_object
 		return true;//???
 	}
 	
-	function _create_generate_operation($variation, &$result)
+	private function _create_generate_operation($variation, &$result)
 	{
 		$files_data = $this->get('files_data', array());
 		$output_file = tempnam(VAR_DIR, 'p');
@@ -139,7 +139,7 @@ class image_object extends media_object
 	  return true;
 	}
 	
-	function _create_upload_operation($variation, &$result)
+	private function _create_upload_operation($variation, &$result)
 	{
 		$files_data = $this->get('files_data', array());
 
@@ -219,7 +219,7 @@ class image_object extends media_object
 		$this->_check_result($result);
 	}
 
-	function _update_generate_operation($variation, &$result)
+	private function _update_generate_operation($variation, &$result)
 	{
 		$output_file = tempnam(VAR_DIR, 'p');
 		
@@ -235,7 +235,7 @@ class image_object extends media_object
 		  return;
 		}
 		
-		if($media_data = $this->get_variation_media_data($variation))
+		if($media_data = $this->_get_variation_media_data($variation))
 		{
 		  $this->_update_variation(
 		  	$variation, 
@@ -246,7 +246,7 @@ class image_object extends media_object
 		}
 		else
 		{
-			$media_data = $this->get_variation_media_data($this->get($variation . '_base_variation'));
+			$media_data = $this->_get_variation_media_data($this->get($variation . '_base_variation'));
 		  
 		  $this->_insert_variation(
 		  	$variation, 
@@ -260,7 +260,7 @@ class image_object extends media_object
 	  return;
 	}
 	
-	function _update_upload_operation($variation, &$result)
+	private function _update_upload_operation($variation, &$result)
 	{
 		$files_data = $this->get('files_data');
 		
@@ -277,7 +277,7 @@ class image_object extends media_object
 		  return;
 		}
 		
-		if($this->get_variation_media_data($variation))
+		if($this->_get_variation_media_data($variation))
 		{
 		  $this->_update_variation(
 		  	$variation, 
@@ -328,14 +328,14 @@ class image_object extends media_object
 	  return;
 	}
 	
-	function _get_variations_ini_list()
+	private function _get_variations_ini_list()
 	{
-		$ini =& get_ini('image_variations.ini');
+		$ini = get_ini('image_variations.ini');
 		
 		return $ini->get_all();
 	}
 	
-	function _insert_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
+	private function _insert_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
 	{
 		$image_id = $this->get_id();
 		
@@ -349,16 +349,16 @@ class image_object extends media_object
 		$image_variation_data['height'] = $size[1];
 		$image_variation_data['variation'] = $variation_name;
 		
-		$image_variation_db_table =& db_table_factory :: instance('image_variation');
+		$image_variation_db_table = db_table_factory :: instance('image_variation');
 		
 		$image_variation_db_table->insert($image_variation_data);
 		
 		return true;
 	}
 	
-	function _resize_operation($base_variation, $max_size=0, $output_file, &$output_file_type)
+	private function _resize_operation($base_variation, $max_size=0, $output_file, &$output_file_type)
 	{
-		if(!$base_media_data = $this->get_variation_media_data($base_variation))
+		if(!$base_media_data = $this->_get_variation_media_data($base_variation))
 			return false;
 		
 		return $this->_resize_file_variation(
@@ -369,7 +369,7 @@ class image_object extends media_object
 					$output_file_type);
 	}
 		
-	function get_variation_media_data($variation)
+	private function _get_variation_media_data($variation)
 	{
 		$image_id = $this->get_id();
 		
@@ -389,13 +389,13 @@ class image_object extends media_object
 						AND iv.variation='{$variation}' 
 						AND iv.media_id=m.id";
 		
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		$db->sql_exec($sql);
 		
 		return $db->fetch_row();
 	}
 	
-	function _resize_file_variation($base_media_id, $mime_type, $max_size, $output_file, &$output_file_type)
+	private function _resize_file_variation($base_media_id, $mime_type, $max_size, $output_file, &$output_file_type)
 	{
 		$input_file = MEDIA_DIR . $base_media_id . '.media';
 		$input_file_type = $this->_image_library->get_image_type($mime_type);
@@ -414,9 +414,9 @@ class image_object extends media_object
 		return $this->_image_library->commit();
 	}
 	
-	function _update_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
+	private function _update_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
 	{
-  	$media_data = $this->get_variation_media_data($variation_name);
+  	$media_data = $this->_get_variation_media_data($variation_name);
   	
 		if(!$this->_update_media_record($media_data['id'], $tmp_file_path, $file_name, $mime_type))
 		{
@@ -426,7 +426,7 @@ class image_object extends media_object
 		
 		$size = getimagesize($tmp_file_path);
 		
-		$image_variation_db_table =& db_table_factory :: instance('image_variation');
+		$image_variation_db_table = db_table_factory :: instance('image_variation');
 		
 		$image_id = $this->get_id();
 		
@@ -438,7 +438,7 @@ class image_object extends media_object
 		return true;
 	}	
 	
-	function & fetch($params=array(), $sql_params=array())
+	public function fetch($params=array(), $sql_params=array())
 	{
 		if(!$records = parent :: fetch($params, $sql_params))
 			return array();
@@ -466,7 +466,7 @@ class image_object extends media_object
 				WHERE iv.media_id = m.id AND 
 				iv.image_id IN {$ids}";
 		
-		$db =& db_factory :: instance();
+		$db = db_factory :: instance();
 		
 		$db->sql_exec($sql);
 		
@@ -488,7 +488,7 @@ class image_object extends media_object
 		return $records;
 	}
 	
-	function _check_result($result)//it's not really the place for it...
+	private function _check_result($result)//it's not really the place for it...
 	{
 		$image_variations = $this->_get_variations_ini_list();
 		

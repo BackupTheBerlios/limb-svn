@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 
 class site_structure extends site_object
 {
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'class_ordr' => 1,
@@ -21,12 +21,12 @@ class site_structure extends site_object
 		);
 	}
 	
-	function save_priority($params)
+	public function save_priority($params)
 	{
 		if(!count($params))
 			return true;
 
-		$db_table =& db_table_factory :: instance('sys_site_object_tree');
+		$db_table = db_table_factory :: instance('sys_site_object_tree');
 			
 		foreach($params as $node_id => $value)
 		{

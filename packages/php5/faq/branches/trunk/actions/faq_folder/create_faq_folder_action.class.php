@@ -12,17 +12,17 @@ require_once(LIMB_DIR . 'class/core/actions/form_create_site_object_action.class
 
 class create_faq_folder_action extends form_create_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'faq_folder';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'create_faq_folder';
 	}
 	
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/datasources/fetch_sub_branch_datasource.class.php
 
 class node_select_datasource extends fetch_sub_branch_datasource
 {
-	function & get_dataset(&$counter, $params = array())
+	function get_dataset(&$counter, $params = array())
 	{
 		$params['depth'] = 1;
 
@@ -43,8 +43,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 			if(!$node = map_url_to_node($path))
 				return $default_path;
 				
-			$tree =& tree :: instance();
-			if(!$path = $tree->get_path_to_node($node))
+			if(!$path = tree :: instance()->get_path_to_node($node))
 				return $default_path;
 		}
 		return $path;

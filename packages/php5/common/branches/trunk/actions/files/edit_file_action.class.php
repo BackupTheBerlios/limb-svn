@@ -12,17 +12,17 @@ require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.p
 
 class edit_file_action extends form_edit_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'file_object';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'edit_file';
 	}
   
-  function _define_datamap()
+  protected function _define_datamap()
 	{
 	  return complex_array :: array_merge(
 	      parent :: _define_datamap(),
@@ -32,19 +32,19 @@ class edit_file_action extends form_edit_site_object_action
 	  );     
 	}
 	
-	function _define_increase_version_flag()
+	protected function _define_increase_version_flag()
 	{
 	  return false;
 	}  
 
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 
     $this->validator->add_rule($v = array(LIMB_DIR . 'class/validators/rules/required_rule', 'title'));
 	}
 	
-	function _update_object_operation()
+	protected function _update_object_operation()
 	{	
 		if(isset($_FILES[$this->name]['tmp_name']['file']))
 		{	
@@ -54,7 +54,7 @@ class edit_file_action extends form_edit_site_object_action
 				return false;
 			}
 			
-			$object_data =& fetch_requested_object();
+			$object_data = fetch_requested_object();
 			
 			$this->object->set('media_id', $object_data['media_id']);
 			$this->object->set('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);

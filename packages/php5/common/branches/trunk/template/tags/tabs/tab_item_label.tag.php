@@ -25,7 +25,7 @@ class tab_item_label_tag extends compiler_directive_tag
 	* @return void 
 	* @access protected 
 	*/
-	function check_nesting_level()
+	protected function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'tabs_labels_tag'))
 		{
@@ -48,7 +48,7 @@ class tab_item_label_tag extends compiler_directive_tag
 		$this->parent->parent->tabs[] = $this->attributes['tab_id'];
 	} 
 	
-	function pre_generate(&$code)
+	protected function pre_generate(&$code)
 	{
 	  $id = $this->attributes['tab_id'];
 	  
@@ -60,7 +60,7 @@ class tab_item_label_tag extends compiler_directive_tag
 		parent :: pre_generate($code);
 	}
 	
-	function post_generate(&$code)
+	protected function post_generate(&$code)
 	{
 		$code->write_html("</a></td>
 					</tr>
@@ -70,7 +70,6 @@ class tab_item_label_tag extends compiler_directive_tag
 		
 		parent :: post_generate($code);
 	}
-	
 } 
 
 ?>

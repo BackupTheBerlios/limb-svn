@@ -13,12 +13,12 @@ require_once(LIMB_DIR . 'class/i18n/locale.class.php');
 
 class available_locales_datasource extends datasource
 {	
-	function get_options_array()
+	public function get_options_array()
 	{
 		return locale :: get_available_locales_data();
 	}
 	
-	function get_default_option()
+	public function get_default_option()
 	{
 		return MANAGEMENT_LOCALE_ID;
 	}

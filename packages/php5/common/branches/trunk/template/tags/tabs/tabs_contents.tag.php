@@ -20,12 +20,7 @@ register_tag(new tabs_contents_tag_info());
 
 class tabs_contents_tag extends compiler_directive_tag
 {  
-  /**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	protected function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'tabs_tag'))
 		{
@@ -37,7 +32,7 @@ class tabs_contents_tag extends compiler_directive_tag
 		} 
 	} 
 	
-	function pre_generate(&$code)
+	protected function pre_generate($code)
 	{
     $code->write_html("
     	<table>
@@ -48,7 +43,7 @@ class tabs_contents_tag extends compiler_directive_tag
 		parent :: pre_generate($code);
 	}
 	
-	function post_generate(&$code)
+	protected function post_generate($code)
 	{
 	  $tab_class = $this->parent->tab_class;
 	  

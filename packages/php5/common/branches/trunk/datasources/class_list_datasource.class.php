@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
 
 class class_list_datasource extends datasource
 {
-	function & get_dataset($params = array())
+	public function get_dataset($params = array())
 	{
 		if(!$arr = fetch_requested_object())
 			return new array_dataset();
 		
-		$db_table =& db_table_factory :: instance('sys_class');
+		$db_table = db_table_factory :: instance('sys_class');
 		$classes = $db_table->get_list('', 'class_name');
 		
 		$result = array();

@@ -20,12 +20,7 @@ register_tag(new tabs_labels_tag_info());
 
 class tabs_labels_tag extends compiler_directive_tag
 {  
-  /**
-	* 
-	* @return void 
-	* @access protected 
-	*/
-	function check_nesting_level()
+	protected function check_nesting_level()
 	{
 		if (!is_a($this->parent, 'tabs_tag'))
 		{
@@ -37,7 +32,7 @@ class tabs_labels_tag extends compiler_directive_tag
 		} 
 	} 
 	
-	function pre_generate(&$code)
+	protected function pre_generate(&$code)
 	{
 	  $tabulator_class = $this->parent->tabulator_class;
 	  $tab_class = $this->parent->tab_class;
@@ -49,7 +44,7 @@ class tabs_labels_tag extends compiler_directive_tag
 		  <td {$tab_class}>&nbsp;</td>");
 	}
 	
-	function post_generate(&$code)
+	protected function post_generate(&$code)
 	{
 	  $tab_class = $this->parent->tab_class;
 	  

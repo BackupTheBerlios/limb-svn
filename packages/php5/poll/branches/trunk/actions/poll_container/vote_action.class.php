@@ -12,17 +12,17 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class vote_action extends form_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'vote_action';
 	}
 	
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
-		$object =& site_object_factory :: create('poll_container');
+		$object = site_object_factory :: create('poll_container');
 		$data = $this->dataspace->export();
 		
-		$request->set_status(REQUEST_STATUS_FAILURE);
+		$request->set_status(request :: STATUS_FAILURE);
 
 		if (!isset($data['answer']))
 		{
@@ -31,7 +31,7 @@ class vote_action extends form_action
 		}
 		
 		$object->register_answer($data['answer']);
-		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 	}
 
 }

@@ -12,27 +12,27 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class login_action extends form_action
 {
-	var $user_object_class_name = 'user_object';
+	protected $user_object_class_name = 'user_object';
 
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'login_form';
 	}
 
-	function _init_validator()
+	protected function _init_validator()
 	{
 		$this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'login'));
 		$this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'password'));
 	}
 	
-	function _init_dataspace(&$request)
+	protected function _init_dataspace($request)
 	{
 		parent :: _init_dataspace($request);
 		
 		$this->_transfer_redirect_param($request);
 	}	
 	
-	function _transfer_redirect_param(&$request)
+	protected function _transfer_redirect_param($request)
 	{
 		if(!$redirect = $request->get('redirect'))
 			return;
@@ -40,7 +40,7 @@ class login_action extends form_action
 		$this->dataspace->set('redirect', urldecode($this->_get_redirect_string($request)));
 	}
 	
-	function _get_redirect_string(&$request)
+	protected function _get_redirect_string($request)
 	{
 		if(!$redirect = $request->get('redirect'))
 			return '';
@@ -51,24 +51,23 @@ class login_action extends form_action
 		return $redirect;
 	}
 	
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 		$login = $this->dataspace->get('login');
 		$password = $this->dataspace->get('password');
 		$locale_id = $this->dataspace->get('locale_id');
 		$autologin = $this->dataspace->get('autologin');
 
-		$user_object =& site_object_factory :: create($this->user_object_class_name);
+		$user_object = site_object_factory :: create($this->user_object_class_name);
 
 		if($user_object->login($login, $password, $locale_id))
 		{
   		if($autologin)
   		{
-  			$user =& user :: instance();
-  			$user->configure_autologin();
+  			user :: instance()->$user->configure_autologin();
   		}
   			
-  		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+  		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 		  
 			if($redirect = $this->dataspace->get('redirect'))
 			{
@@ -87,10 +86,10 @@ class login_action extends form_action
 			}	
 		}
 		
-		$request->set_status(REQUEST_STATUS_FAILURE);
+		$request->set_status(request :: STATUS_FAILURE);
 	}
 	
-	function _login_redirect($redirect, &$response)
+	protected function _login_redirect($redirect, $response)
 	{
 		$response->redirect($redirect);
 	}

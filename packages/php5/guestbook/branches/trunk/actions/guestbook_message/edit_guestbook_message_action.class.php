@@ -12,17 +12,17 @@ require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.p
 
 class edit_guestbook_message_action extends form_edit_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'guestbook_message';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'edit_guestbook_message';
 	}
   
-  function _define_datamap()
+  protected function _define_datamap()
 	{
 	  return complex_array :: array_merge(
 	      parent :: _define_datamap(),
@@ -37,7 +37,7 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 	  );     
 	}  
 
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 
@@ -48,13 +48,13 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 	}
 
 
-	function _init_dataspace(&$request)
+	protected function _init_dataspace($request)
 	{
 		parent :: _init_dataspace($request);
 		
 		$data = $this->dataspace->export();
 	
-		$user =& user :: instance();
+		$user = user :: instance();
 		
 		if (empty($data['comment_author']))
 			$data['comment_author'] = $user->get_login();
@@ -65,7 +65,7 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 		$this->dataspace->import($data);
 	}
 	
-	function _process_transfered_dataspace()
+	protected function _process_transfered_dataspace()
 	{	
 		$this->_htmlspecialchars_dataspace_value('message');
 		$this->_htmlspecialchars_dataspace_value('sender_email');

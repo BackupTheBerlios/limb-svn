@@ -12,17 +12,17 @@ require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.p
 
 class edit_feedback_action extends form_edit_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'feedback_object';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'feedback_form';
 	}
   
-  function _define_datamap()
+  protected function _define_datamap()
 	{
 	  return complex_array :: array_merge(
 	      parent :: _define_datamap(),
@@ -32,7 +32,7 @@ class edit_feedback_action extends form_edit_site_object_action
 	  );     
 	}   
 	
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 

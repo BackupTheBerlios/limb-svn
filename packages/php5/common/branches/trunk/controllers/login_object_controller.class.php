@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php
 	
 class login_object_controller extends site_object_controller
 {
-  function _define_default_action()
+  protected function _define_default_action()
   {
 		return 'login';
 	}
 	
-	function _define_actions()
+	protected function _define_actions()
 	{
 		return array(
 				'login' => array(

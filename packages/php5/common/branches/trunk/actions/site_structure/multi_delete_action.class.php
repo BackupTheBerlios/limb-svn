@@ -12,25 +12,25 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class multi_delete_action extends form_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'grid_form';
 	}
 
-	function _init_dataspace(&$request)
+	protected function _init_dataspace($request)
 	{
 		parent :: _init_dataspace($request);
 		
 		$this->_transfer_dataspace($request);
 	}
 	
-	function _first_time_perform(&$request, &$response)
+	protected function _first_time_perform($request, $response)
 	{
 		$data = $this->dataspace->export();
 		
 		if(!isset($data['ids']) || !is_array($data['ids']))
 		{
-		  $request->set_status(REQUEST_STATUS_FAILURE);
+		  $request->set_status(request :: STATUS_FAILURE);
 		  		  
 			if($request->has_attribute('popup'))
 			  $response->write(close_popup_response($request));
@@ -40,18 +40,18 @@ class multi_delete_action extends form_action
 			
 		$objects = $this->_get_objects_to_delete(array_keys($data['ids']));
 
-		$grid =& $this->view->find_child('multi_delete');
+		$grid = $this->view->find_child('multi_delete');
 		
 		$grid->register_dataset(new array_dataset($objects));
 	
-		parent :: _first_time_perform(&$request, &$response);
+		parent :: _first_time_perform($request, $response);
 	}
 	
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 		$data = $this->dataspace->export();
 
-	  $request->set_status(REQUEST_STATUS_FAILURE);
+	  $request->set_status(request :: STATUS_FAILURE);
 	  		  
 		if($request->has_attribute('popup'))
 		  $response->write(close_popup_response($request));
@@ -66,7 +66,7 @@ class multi_delete_action extends form_action
 			if($item['delete_status'] !== 0 )
 				continue;
 			
-			$site_object =& wrap_with_site_object($item);
+			$site_object = wrap_with_site_object($item);
 			
 			if(!$site_object->delete())
 			{
@@ -77,18 +77,18 @@ class multi_delete_action extends form_action
   			return;
 			}
 		}	
-	  $request->set_status(REQUEST_STATUS_SUCCESS);
+	  $request->set_status(request :: STATUS_SUCCESS);
 	
 		$response->write(close_popup_response($request));
 	}
 	
-	function _get_objects_to_delete($node_ids)
+	protected function _get_objects_to_delete($node_ids)
 	{
 		$params = array(
 			'restrict_by_class' => false
 		);
 		
-		$objects =& fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
+		$objects = fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
 		
 		$result = array();
 		$tree = tree :: instance();
@@ -102,7 +102,7 @@ class multi_delete_action extends form_action
 				continue;
 			}
 			
-			$site_object =& wrap_with_site_object($item);
+			$site_object = wrap_with_site_object($item);
 			if (!$site_object->can_delete())
 			{
 				$objects[$id]['delete_status'] = 1;

@@ -12,14 +12,14 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class activate_password_action extends action
 {
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
-		$object =& site_object_factory :: create('user_object');
+		$object = site_object_factory :: create('user_object');
 		if(!$object->activate_password())
 		{
 			message_box :: write_notice('Password activation failed!');
 			
-			$request->set_status(REQUEST_STATUS_FAILED);
+			$request->set_status(request :: STATUS_FAILED);
 			$response->redirect('/');
 		}
 	}

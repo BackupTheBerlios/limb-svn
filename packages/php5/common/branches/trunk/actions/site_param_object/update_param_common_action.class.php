@@ -14,21 +14,21 @@ require_once(LIMB_DIR . 'core/model/sys_param.class.php');
 
 class update_param_common_action extends form_action
 {
-	var $params_type = array();
+	protected $params_type = array();
 
-	function update_param_common_action()
+	function __construct()
 	{
-	  parent :: form_action();
+	  parent :: __construct();
     
     $this->params_type = $this->_define_params_type();
 	}
 	
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'site_param_form';
 	}
 	
-	function _define_params_type()
+	protected function _define_params_type()
 	{
 	  return array(
 			'site_title' => 'char',
@@ -36,14 +36,14 @@ class update_param_common_action extends form_action
 		);
 	}
 	
-	function _init_validator()
+	protected function _init_validator()
 	{
     $this->validator->add_rule($v = array(LIMB_DIR . 'class/validators/rules/email_rule', 'contact_email')); 
 	}
 
-	function _init_dataspace(&$request)
+	protected function _init_dataspace($request)
 	{
-		$sys_param =& sys_param :: instance();
+		$sys_param = sys_param :: instance();
 
 		$data = array();
 		foreach($this->params_type as $param_name => $param_type)
@@ -52,15 +52,15 @@ class update_param_common_action extends form_action
 		$this->dataspace->import($data);		
 	}
 
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 		$data = $this->dataspace->export();
-		$sys_param =& sys_param :: instance();
+		$sys_param = sys_param :: instance();
 
 		foreach($this->params_type as $param_name => $param_type)
 			$sys_param->save_param($param_name, $param_type, $data[$param_name]);
 
-		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 	}
 }
 ?>

@@ -12,16 +12,19 @@ require_once(LIMB_DIR . 'class/db_tables/content_object_db_table.class.php');
 
 class poll_db_table extends content_object_db_table
 {
-  function _define_columns()
+  protected function _define_columns()
   {
-  	return array(
-      'restriction' => array('type' => 'numeric'),
-      'start_date' => array('type' => 'date'),
-      'finish_date' => array('type' => 'date'),
+  	return complex_array :: array_merge(
+  		parent :: _define_colums(),
+  		array(
+	      'restriction' => array('type' => 'numeric'),
+	      'start_date' => array('type' => 'date'),
+	      'finish_date' => array('type' => 'date')
+	    )  
     );
   }
 
-  function _define_constraints()
+  protected function _define_constraints()
   {
   	return array(
     	'id' =>	array(

@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'class/core/actions/form_edit_site_object_action.class.p
 
 class edit_poll_answer_action extends form_edit_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'poll_answer';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'edit_poll_answer';
 	}

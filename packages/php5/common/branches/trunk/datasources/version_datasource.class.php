@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
 
 class version_datasource extends datasource
 {
-	function & get_dataset(&$counter, $params=array())
+	public function get_dataset(&$counter, $params=array())
 	{
 		$counter = 0;
 		

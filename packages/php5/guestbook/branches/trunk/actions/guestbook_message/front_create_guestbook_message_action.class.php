@@ -12,12 +12,12 @@ require_once(dirname(__FILE__) . '/create_guestbook_message_action.class.php');
 
 class front_create_guestbook_message_action extends create_guestbook_message_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'display';
 	}
 
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 		parent :: _valid_perform($request, $response);
 		

@@ -19,12 +19,12 @@ register_tag(new cart_summ_tag_info());
 
 class cart_summ_tag extends server_component_tag
 {
-  function cart_summ_tag()
+  public function __construct()
   {
 	  $this->runtime_component_path = dirname(__FILE__) . '/../components/cart_summ_component';
 	}
 	
-	function generate_contents(&$code)
+	protected function generate_contents($code)
 	{
 		$code->write_php('echo '. $this->get_component_ref_code() . '->get_cart_summ();');
 	} 	

@@ -12,10 +12,9 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class tree_display_action extends action
 {
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{		
-		$tree =& tree :: instance();		
-		$tree->initialize_expanded_parents();				
+		tree :: instance()->initialize_expanded_parents();				
 	}
 }
 

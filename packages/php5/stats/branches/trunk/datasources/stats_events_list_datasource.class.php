@@ -14,11 +14,11 @@ require_once(dirname(__FILE__) . '/../reports/stats_event_report.class.php');
 class stats_events_list_datasource extends datasource
 {
 	var $response_map = array(
-				REQUEST_STATUS_SUCCESS => 'REQUEST_STATUS_SUCCESS', 
-				REQUEST_STATUS_FORM_DISPLAYED => 'REQUEST_STATUS_FORM_DISPLAYED',
-				REQUEST_STATUS_FORM_SUBMITTED => 'REQUEST_STATUS_FORM_SUBMITTED',
-				REQUEST_STATUS_FAILURE => 'REQUEST_STATUS_FAILURE',
-				REQUEST_STATUS_FORM_NOT_VALID => 'REQUEST_STATUS_FORM_NOT_VALID'
+				request :: STATUS_SUCCESS => 'request :: STATUS_SUCCESS', 
+				request :: STATUS_FORM_DISPLAYED => 'request :: STATUS_FORM_DISPLAYED',
+				request :: STATUS_FORM_SUBMITTED => 'request :: STATUS_FORM_SUBMITTED',
+				request :: STATUS_FAILURE => 'request :: STATUS_FAILURE',
+				request :: STATUS_FORM_NOT_VALID => 'request :: STATUS_FORM_NOT_VALID'
 			);
 		
 	var $stats_event_report = null;

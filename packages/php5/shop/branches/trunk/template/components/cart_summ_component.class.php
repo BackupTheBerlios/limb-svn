@@ -12,12 +12,14 @@ require_once(dirname(__FILE__) . '/../../cart.class.php');
 
 class cart_summ_component extends component
 {
-	function get_cart_summ()
+	public function get_cart_summ()
 	{
-		$cart =& cart :: instance();
 		$locale = locale :: instance();
 		
-		return number_format($cart->get_total_summ(), $locale->fract_digits, $locale->decimal_symbol, $locale->thousand_separator);
+		return number_format(cart :: instance()->get_total_summ(), 
+												 $locale->fract_digits,
+												 $locale->decimal_symbol,
+												 $locale->thousand_separator);
 	}
 } 
 

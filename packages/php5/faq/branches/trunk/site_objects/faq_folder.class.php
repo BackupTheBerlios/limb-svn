@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 
 class faq_folder extends site_object
 {
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'class_ordr' => 1,

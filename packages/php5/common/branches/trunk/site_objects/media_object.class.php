@@ -10,9 +10,9 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/site_objects/content_object.class.php');
 
-class media_object extends content_object
+abstract class media_object extends content_object
 {	
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 		  'abstract_class' => true,
@@ -21,7 +21,7 @@ class media_object extends content_object
 		);
 	}
 		
-	function _create_media_record($tmp_file_path, $file_name, $mime_type)
+	protected function _create_media_record($tmp_file_path, $file_name, $mime_type)
 	{
 		if(!file_exists($tmp_file_path))
 		{
@@ -73,7 +73,7 @@ class media_object extends content_object
 		return $media_id;
 	}
 
-	function _update_media_record($id, $tmp_file_path, $file_name, $mime_type)
+	protected function _update_media_record($id, $tmp_file_path, $file_name, $mime_type)
 	{
 		if(!file_exists($tmp_file_path))
 		{

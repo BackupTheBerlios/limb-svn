@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
 class media_db_table extends db_table
 {
-  function _define_columns()
+  protected function _define_columns()
   {
   	return array(
       'id' => '',
@@ -23,13 +23,13 @@ class media_db_table extends db_table
     );
   }  
   
-  function _delete_media_files($ids)
+  protected function _delete_media_files($ids)
   {
 		foreach($ids as $id)
 			unlink(MEDIA_DIR . $id . '.media');
   }
   	
-	function _delete_operation($conditions, $affected_rows)
+	protected function _delete_operation($conditions, $affected_rows)
 	{
 		parent :: _delete_operation($conditions, $affected_rows);
 		

@@ -12,15 +12,15 @@ require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
 
 class objects_access_groups_list_datasource extends datasource
 {
-	function & get_dataset(&$counter, $params = array())
+	protected function get_dataset(&$counter, $params = array())
 	{
 		$params['order'] = array('priority' => 'ASC');
-		$user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$user_groups = fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
 		
 		$group_params['order'] = array('priority' => 'ASC');
-		$groups =& fetch('user_group', $counter, $group_params, 'fetch');
+		$groups = fetch('user_group', $counter, $group_params, 'fetch');
 		
-		$dataspace =& dataspace_registry :: get('set_group_access');
+		$dataspace = dataspace_registry :: get('set_group_access');
 		$filter_groups = $dataspace->get('filter_groups');
 
 		if (!is_array($filter_groups) || !count($filter_groups))

@@ -18,27 +18,31 @@ if(!defined('CART_DEFAULT_HANDLER_TYPE'))
   define('CART_DEFAULT_HANDLER_TYPE', 'session');
 
 class cart
-{		
-	var $_cart_id = null;
-	var $_cart_handler = null;
-		
-	function cart($cart_id, &$handler)
+{	
+	private static $_instance = null;
+	
+	private $_cart_id = null;
+	private $_cart_handler = null;
+
+	private function __construct($cart_id, $handler)
 	{
 	  if($cart_id === null)
 		  $this->_cart_id = CART_DEFAULT_ID;
 		else
 		  $this->_cart_id = $cart_id;
 		
-		$this->initialize_cart_handler($handler);
+		$this->_initialize_cart_handler($handler);
 	}
 
- 	function & instance($cart_id = null, $handler = null)
-  {  
-		$obj =& instantiate_object('cart', array($cart_id, $handler));
-		return $obj;
-  }
-  	
-	function initialize_cart_handler(&$handler)
+	static public function instance($cart_id = null, $handler = null)
+	{
+    if (!self :: $_instance)
+      self :: $_instance = new cart($cart_id, $handler);
+
+    return self :: $_instance;
+	}
+		
+	private function _initialize_cart_handler($handler)
 	{
 	  if($handler === null)
 	  {
@@ -71,34 +75,34 @@ class cart
 	  }
 	}
 
-  function set_cart_handler(&$handler)
+  public function set_cart_handler($handler)
   {
-    $this->_cart_handler =& $handler;
+    $this->_cart_handler = $handler;
     $this->_cart_handler->set_cart_id($this->_cart_id);
     $this->_cart_handler->reset();
   }
 	
-	function get_cart_id()	
+	public function get_cart_id()	
 	{
 		return $this->_cart_id;
 	}
 	
-	function & get_cart_handler()
+	public function get_cart_handler()
 	{
 	  return $this->_cart_handler;
 	}
 	
-	function add_item(&$new_item)
+	public function add_item(&$new_item)
 	{
 	  $this->_cart_handler->add_item($new_item); 
 	}
 	
-	function & get_item($item_id)
+	public function get_item($item_id)
 	{
 	  return $this->_cart_handler->get_item($item_id); 	  
 	}
 		
-	function get_total_summ()
+	public function get_total_summ()
 	{
 	  $items =& $this->_cart_handler->get_items();
 		$summ = 0;
@@ -109,27 +113,27 @@ class cart
 		return $summ;
 	}
 
-	function remove_item($item_id)
+	public function remove_item($item_id)
 	{
 	  $this->_cart_handler->remove_item($item_id); 	  
 	}
 	
-	function remove_items($item_ids)
+	public function remove_items($item_ids)
 	{
 	  $this->_cart_handler->remove_items($item_ids);
 	}
 	
-	function get_items()
+	public function get_items()
 	{
 		return $this->_cart_handler->get_items();
 	}
 	
-	function set_items(&$items)
+	public function set_items(&$items)
 	{
 	  return $this->_cart_handler->set_items($items);
 	}
 	
-	function get_items_array_dataset()
+	public function get_items_array_dataset()
 	{
 	  $items =& $this->_cart_handler->get_items();
 	
@@ -143,19 +147,19 @@ class cart
 		return new array_dataset($result_array);
 	}
 
-	function count_items()
+	public function count_items()
 	{
 	  return $this->_cart_handler->count_items();
 	}
 
-	function clear()
+	public function clear()
 	{
 	  $this->_cart_handler->clear();
 	}
 	
-	function merge(&$cart)
+	public function merge($cart)
 	{
-	  $items =& $cart->get_items();
+	  $items = $cart->get_items();
 	  
 	  foreach(array_keys($items) as $key)
 	    $this->add_item($items[$key]);

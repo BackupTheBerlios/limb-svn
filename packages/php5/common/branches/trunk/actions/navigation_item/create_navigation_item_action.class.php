@@ -12,17 +12,17 @@ require_once(LIMB_DIR . 'class/core/actions/form_create_site_object_action.class
 
 class create_navigation_item_action extends form_create_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'navigation_item';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'create_navigation_item';
 	}
   
-  function _define_datamap()
+  protected function _define_datamap()
 	{
 	  return complex_array :: array_merge(
 	      parent :: _define_datamap(),
@@ -33,12 +33,12 @@ class create_navigation_item_action extends form_create_site_object_action
 	  );     
 	}  
 
-	function _define_increase_version_flag()
+	protected function _define_increase_version_flag()
 	{
 	  return false;
 	}  
 
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 

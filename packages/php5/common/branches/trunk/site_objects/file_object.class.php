@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/media_object.class.php');
 
 class file_object extends media_object
 {	
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'class_ordr' => 1,
@@ -21,9 +21,9 @@ class file_object extends media_object
 		);
 	}
 	
-	function create()
+	public function create()
 	{
-		if(!$this->create_file())
+		if(!$this->_create_file())
 			return false;
 				
 		if(($id = parent :: create()) === false)
@@ -32,15 +32,15 @@ class file_object extends media_object
 		return $id;
 	}
 	
-	function update($force_create_new_version = true)
+	public function update($force_create_new_version = true)
 	{
-		if($this->get('tmp_file_path') && !$this->update_file())
+		if($this->get('tmp_file_path') && !$this->_update_file())
 			return false;
 			
 		return parent :: update($force_create_new_version);
 	}
 	
-	function create_file()
+	private function _create_file()
 	{
 		$tmp_file_path = $this->get('tmp_file_path');
 		$file_name = $this->get('file_name');
@@ -54,7 +54,7 @@ class file_object extends media_object
 		return true;
 	}
 	
-	function update_file()
+	private function _update_file()
 	{
 		$tmp_file_path = $this->get('tmp_file_path');
 		$file_name = $this->get('file_name');
@@ -74,7 +74,7 @@ class file_object extends media_object
 		return true;
 	}
 	
-	function & fetch($params=array(), $sql_params=array())
+	public function fetch($params=array(), $sql_params=array())
 	{
 		$sql_params['columns'][] = ', m.file_name, m.mime_type, m.etag, m.size ';
 		$sql_params['tables'][] = ', media as m ';

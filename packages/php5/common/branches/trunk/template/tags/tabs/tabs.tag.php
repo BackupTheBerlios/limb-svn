@@ -20,12 +20,12 @@ register_tag(new tabs_tag_info());
 
 class tabs_tag extends compiler_directive_tag
 {
-  var $tabs = array();
-	var $tabulator_class = 'class="tabulator"';
-	var $tab_class = 'class="tab"';
-	var $active_tab_class = 'class="active-tab"';
+  private $tabs = array();
+	private $tabulator_class = 'class="tabulator"';
+	private $tab_class = 'class="tab"';
+	private $active_tab_class = 'class="active-tab"';
 
-  function prepare()
+  protected function prepare()
   {
 	  if(isset($link->attributes['active_tab']))
 	    $this->active_tab = $link->attributes['active_tab'];
@@ -44,7 +44,7 @@ class tabs_tag extends compiler_directive_tag
     parent :: prepare();
   }
     	
-	function _load_tabs_js_script(&$code)
+	protected function _load_tabs_js_script($code)
 	{
 		if (defined('TABS_SCRIPT_LOADED'))
 			return;
@@ -54,14 +54,14 @@ class tabs_tag extends compiler_directive_tag
 		$code->write_html("<script type='text/javascript' src='/shared/js/tabs.js'></script>");
 	}	
 	
-	function pre_generate(&$code)
+	protected function pre_generate($code)
 	{	  	  
 	  $this->_load_tabs_js_script($code);
 	  
 	  parent :: pre_generate($code);
 	}
 	
-	function post_generate(&$code)
+	protected function post_generate($code)
 	{
 		$js = '';
 

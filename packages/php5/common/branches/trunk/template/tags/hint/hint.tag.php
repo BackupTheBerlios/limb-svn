@@ -20,7 +20,7 @@ register_tag(new hint_hint_tag_info());
 
 class hint_hint_tag extends compiler_directive_tag
 {
-	function pre_generate(&$code)
+	protected function pre_generate(&$code)
 	{
 	
 $js = <<<JS
@@ -137,7 +137,7 @@ JS;
 		}
 	} 
 	
-	function generate_contents(&$code)
+	protected function generate_contents(&$code)
 	{
 		$link =& $this->find_child_by_class('hint_link_tag');
 		$title =& $this->find_child_by_class('hint_title_tag');
@@ -206,16 +206,15 @@ JS;
 			$content->generate($code);
 	}
 
-	function post_generate(&$code)
+	protected function post_generate(&$code)
 	{
 		$code->write_html('
 			</td></tr>
 			</table>
 		</div>');
 		
-		parent::post_generate($code);
+		parent :: post_generate($code);
 	} 
-	
 } 
 
 ?>

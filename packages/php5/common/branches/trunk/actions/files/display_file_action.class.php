@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class display_file_action extends action
 {	
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
-		$object_data =& fetch_requested_object($request);
+		$object_data = fetch_requested_object($request);
 		
 		if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
 		{
@@ -24,7 +24,7 @@ class display_file_action extends action
 				$response->commit(); //for speed
 			else
 			{
-			  $request->set_status(REQUEST_STATUS_FAILURE);
+			  $request->set_status(request :: STATUS_FAILURE);
 				return;
 			}
 		}

@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class tree_toggle_action extends action
 {
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{
 		if($request->has_attribute('recursive_search_for_node'))
 			return;
 		
-		$tree =& tree :: instance();
+		$tree = tree :: instance();
 		$tree->initialize_expanded_parents();
 				
 		if(!$id = $request->get('id'))
@@ -31,7 +31,7 @@ class tree_toggle_action extends action
 			$result = $tree->toggle_node($id);
 			
 		if(!$result)
-		  $request->set_status(REQUEST_STATUS_FAILURE);
+		  $request->set_status(request :: STATUS_FAILURE);
 	}
 }
 

@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class stats_ips_report_action extends form_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'ips_form';
 	}
 	
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 	  $request->import($this->dataspace->export());
 	

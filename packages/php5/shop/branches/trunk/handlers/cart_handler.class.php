@@ -8,33 +8,34 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once dirname(__FILE__) . '/cart_handler_interface.interface.php';
 
-class cart_handler
+abstract class cart_handler implements cart_handler_interface
 {		
-	var $_cart_id = null;
-	var $_items = array();
+	private $_cart_id = null;
+	protected $_items = array();
 		
-	function cart_handler($cart_id)
+	function __construct($cart_id)
 	{
 		$this->_cart_id = $cart_id;
 	}
 	
-	function reset()
+	public function reset()
 	{
-	  $this->_items = array();
+	  $this->clear_items();
 	}
 		
-	function get_cart_id()	
+	public function get_cart_id()	
 	{
 		return $this->_cart_id;
 	}
 	
-	function set_cart_id($cart_id)
+	public function set_cart_id($cart_id)
 	{
 	  $this->_cart_id = $cart_id;
 	}
 	
-	function add_item(&$new_item)
+	public function add_item($new_item)
 	{
 		$id = $new_item->get_id();
 
@@ -44,10 +45,10 @@ class cart_handler
 		if (isset($this->_items[$id]))
 		  $new_item->summ_amount($this->_items[$id]);
 
-		$this->_items[$id] =& $new_item;
+		$this->_items[$id] = $new_item;
 	}
 	
-	function & get_item($id)
+	public function get_item($id)
 	{
 		if(isset($this->_items[$id]))
 			return $this->_items[$id];
@@ -55,29 +56,29 @@ class cart_handler
 			return false;
 	}
 		
-	function remove_item($item_id)
+	public function remove_item($item_id)
 	{
 		if (isset($this->_items[$item_id]))
 			unset($this->_items[$item_id]);
 	}
 	
-	function remove_items($item_ids)
+	public function remove_items($item_ids)
 	{
 		foreach($item_ids as $id)
 			$this->remove_item($id);
 	}
 	
-	function get_items()
+	public function get_items()
 	{
 		return $this->_items;		
 	}
 	
-	function set_items(&$items)
+	public function set_items($items)
 	{
-	  $this->_items =& $items;
+	  $this->_items = $items;
 	}
 	
-	function count_items()
+	public function count_items()
 	{
 		if (is_array($this->_items))
 			return count($this->_items);	
@@ -85,7 +86,7 @@ class cart_handler
 			return 0;	
 	}
 
-	function clear()
+	public function clear_items()
 	{
 		$this->_items = array();		
 	}	

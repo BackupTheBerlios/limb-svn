@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
 class image_variation_db_table extends db_table
 {  
-  function _define_columns()
+  protected function _define_columns()
   {
   	return array(
   		'id' => array('type' => 'numeric'),
@@ -24,7 +24,7 @@ class image_variation_db_table extends db_table
     );
   }
   
-  function _define_constraints()
+  protected function _define_constraints()
   {
   	return array(
     	'media_id' =>	array(

@@ -8,22 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions//form_create_site_object_action.class.php');
-require_once(LIMB_DIR . 'class/validators/rules/locale_date_rule.class.php');
+require_once(LIMB_DIR . 'class/core/actions/form_create_site_object_action.class.php');
 
 class create_news_action extends form_create_site_object_action
 {
-	function _define_site_object_class_name()
+	protected function _define_site_object_class_name()
 	{
 	  return 'news_object';
 	}  
 	  
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'news_form';
 	}
   
-  function _define_datamap()
+  protected function _define_datamap()
 	{
 	  return complex_array :: array_merge(
 	      parent :: _define_datamap(),
@@ -35,7 +34,7 @@ class create_news_action extends form_create_site_object_action
 	  );     
 	}  
 	
-	function _init_validator()
+	protected function _init_validator()
 	{
 		parent :: _init_validator();
 

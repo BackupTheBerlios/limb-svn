@@ -11,7 +11,8 @@
 require_once(dirname(__FILE__) . '/shipping_configuration.class.php'); 
 require_once(LIMB_DIR . 'class/lib/system/fs.class.php'); 
 
-define('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME', 60*60*24*7);
+if (!defined('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME'))
+	define('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME', 60*60*24*7);
 
 class shipping_locator
 {

@@ -12,22 +12,22 @@ require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
 
 class class_template_actions_list_datasource extends datasource
 {
-	function & get_dataset($params = array())
+	public function get_dataset($params = array())
 	{
 	  $request = request :: instance();
 	  
 		if(!$class_id = $request->get('class_id'))
 			return new array_dataset();
 			
-		$db_table =& db_table_factory :: instance('sys_class');
+		$db_table = db_table_factory :: instance('sys_class');
 		$class_data = $db_table->get_row_by_id($class_id);
 		
 		if (!$class_data)
 			return new array_dataset();
 
-		$c =& site_object_factory :: instance($class_data['class_name']);	
+		$site_object = site_object_factory :: instance($class_data['class_name']);	
 		
-		$site_object_controller =& $c->get_controller();
+		$site_object_controller = $site_object->get_controller();
 		
 		$actions = $site_object_controller->get_actions_definitions();
 		

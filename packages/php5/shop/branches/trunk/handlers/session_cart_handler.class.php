@@ -14,17 +14,12 @@ require_once(LIMB_DIR . 'class/core/session.class.php');
 
 class session_cart_handler extends cart_handler
 {			
-	function session_cart_handler($cart_id)
-	{
-	  parent :: cart_handler($cart_id);		
-	}
-	
-	function reset()
+	public function reset()
 	{
 		$this->_items =& session :: get('session_cart_' . $this->_cart_id . '_items');
 		
 		if(!is_array($this->_items))
-		  $this->_items = array();	
+		  $this->clear_items();
 	}
 }
 ?>

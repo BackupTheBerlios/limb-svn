@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class register_new_object_action extends form_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'register_new_object';
 	}
 	
-	function _init_validator()
+	protected function _init_validator()
 	{
     $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'class_name')); 
     $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'identifier')); 
@@ -26,18 +26,15 @@ class register_new_object_action extends form_action
 	
 		if($path = $this->dataspace->get('parent_path'))
 		{
-			$tree = tree :: instance();
-			if($node = $tree->get_node_by_path($path))
+			if($node = tree :: instance()->get_node_by_path($path))
         $this->validator->add_rule($v5 = array(LIMB_DIR . 'class/validators/rules/tree_identifier_rule', 'identifier', $node['id'])); 
 		}
 		
     $this->validator->add_rule($v6 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'title')); 
 	}
 	
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
-	  $tree =& tree :: instance();
-		
 		$params = array();
 		
 		$params['identifier'] = $this->dataspace->get('identifier');
@@ -45,7 +42,7 @@ class register_new_object_action extends form_action
 		$params['class'] = $this->dataspace->get('class_name');
 		$params['title'] = $this->dataspace->get('title');
 		
-		$object =& site_object_factory :: create($params['class']);
+		$object = site_object_factory :: create($params['class']);
 		
 		$is_root = false;
 		if(!$parent_data = fetch_one_by_path($params['parent_path']))
@@ -72,14 +69,14 @@ class register_new_object_action extends form_action
 		
 		if (!$is_root)
 		{
-			$parent_object =& site_object_factory :: instance($parent_data['class_name']);
+			$parent_object = site_object_factory :: instance($parent_data['class_name']);
 			$parent_object->merge($parent_data);
 		
-			$access_policy =& access_policy :: instance();
+			$access_policy = access_policy :: instance();
 			$access_policy->save_object_access($object, $parent_object);
 		}	
 
-		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 
 		if($request->has_attribute('popup'))
 			$response->write(close_popup_response($request));

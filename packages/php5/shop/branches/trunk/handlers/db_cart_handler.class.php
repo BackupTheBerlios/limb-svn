@@ -15,45 +15,43 @@ require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
 
 class db_cart_handler extends cart_handler
 {
-  var $cart_db_table = null;
+  protected $cart_db_table = null;
   
-	function db_cart_handler($cart_id)
+	function __construct($cart_id)
 	{
-	  parent :: cart_handler($cart_id);
+	  parent :: __construct($cart_id);
 	  
-	  $this->cart_db_table =& db_table_factory :: instance('cart');
+	  $this->cart_db_table = db_table_factory :: instance('cart');
 	  
-	  register_shutdown_function(array(&$this, '_db_cart_handler'));
+	  register_shutdown_function(array($this, '_db_cart_handler'));
 	}
 	
-	function reset()
+	public function reset()
 	{
-	  $user =& $this->_get_user();
-	  $this->_items = array();
+	  $this->clear_items();
 	  	  	  
 	  $this->_load_items_for_visitor();
 	  
+	  $user = $this->_get_user();
 	  if($user->is_logged_in())
 	  {	    
 	    $this->_load_items_for_user();
 	  }
 	}
 	
-	function _load_items_for_user()
+	private function _load_items_for_user()
 	{
-	  $user =& $this->_get_user();
+	  $user = $this->_get_user();
 
     $conditions = 'user_id = ' . $user->get_id() . ' AND cart_id <> "'. $this->_cart_id . '"';
     
-    $result = $this->_load_items_by_conditions($conditions);
-    
-    if (!$result)
+    if (!$this->_load_items_by_conditions($conditions))
       return;
     
-     $this->cart_db_table->delete($conditions); 
+    $this->cart_db_table->delete($conditions); 
 	}
 	
-	function _load_items_for_visitor()
+	private function _load_items_for_visitor()
 	{
     $conditions = array(
       'cart_id' => $this->_cart_id
@@ -62,7 +60,7 @@ class db_cart_handler extends cart_handler
     return $this->_load_items_by_conditions($conditions);
 	}
 	
-	function _load_items_by_conditions($conditions)
+	private function _load_items_by_conditions($conditions)
 	{
     if($arr = $this->cart_db_table->get_list($conditions))
     {
@@ -78,14 +76,14 @@ class db_cart_handler extends cart_handler
     return false;
 	}
 	
-	function &_get_user()
+	private function _get_user()
 	{
 	  return user :: instance();
 	}
 	
-	function _db_cart_handler()
+	public function _db_cart_handler()
 	{
-	  $user =& $this->_get_user();	  
+	  $user = $this->_get_user();	  
 
     $cart_data = array(
       'user_id' => $user->get_id(),

@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class multi_toggle_publish_status_action extends form_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'grid_form';
 	}
 
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 		if($request->has_attribute('popup'))
 		  $response->write(close_popup_response($request));
@@ -26,7 +26,7 @@ class multi_toggle_publish_status_action extends form_action
 		
 		if(!isset($data['ids']) || !is_array($data['ids']))
 		{
-  	  $request->set_status(REQUEST_STATUS_FAILURE);
+  	  $request->set_status(request :: STATUS_FAILURE);
   		return;			
 		}
 			
@@ -58,24 +58,21 @@ class multi_toggle_publish_status_action extends form_action
 			$this->_apply_access_policy($object, $action);
 		}	
 
-	  $request->set_status(REQUEST_STATUS_SUCCESS);
+	  $request->set_status(request :: STATUS_SUCCESS);
 	}
 	
-	function _get_objects($node_ids)
+	protected function _get_objects($node_ids)
 	{
 		$params = array(
 			'restrict_by_class' => false
 		);
 		
-		$objects =& fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
-		return $objects;
+		return fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
 	}
 
-	function _apply_access_policy($object, $action)
+	protected function _apply_access_policy($object, $action)
 	{		
-		$access_policy =& access_policy :: instance();
-		
-		if(!$access_policy->save_object_access_for_action($object, $action))
+		if(!access_policy :: instance()->save_object_access_for_action($object, $action))
 		{
 			error('access template for action not defined',
 				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,

@@ -12,10 +12,10 @@ require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
 
 class objects_access_groups_filter_datasource extends datasource
 {
-	function get_options_array()
+	public function get_options_array()
 	{
 		$params['order'] = array('priority' => 'ASC');
-		$user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$user_groups = fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
 
 		$options_array = array();
 		
@@ -25,7 +25,7 @@ class objects_access_groups_filter_datasource extends datasource
 		return $options_array;
 	}
 	
-	function get_default_option()
+	public function get_default_option()
 	{
 		return null;
 	}	

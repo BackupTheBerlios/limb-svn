@@ -12,27 +12,27 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class generate_password_action extends form_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'generate_password';
 	}
 	
-	function _init_validator()
+	protected function _init_validator()
 	{
     $this->validator->add_rule($v1 = array(LIMB_DIR . 'class/validators/rules/required_rule', 'email'));
     $this->validator->add_rule($v2 = array(LIMB_DIR . 'class/validators/rules/email_rule', 'email'));
 	}
 	
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 		$data = $this->dataspace->export();
-		$object =& site_object_factory :: create('user_object');
+		$object = site_object_factory :: create('user_object');
 		
 		$new_non_crypted_password = '';
 		if($object->generate_password($data['email'], $new_non_crypted_password))
-		  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		  $request->set_status(request :: STATUS_FORM_SUBMITTED);
 		else
-		  $request->set_status(REQUEST_STATUS_FAILED);
+		  $request->set_status(request :: STATUS_FAILED);
 			
 	}
 }

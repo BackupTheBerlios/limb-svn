@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'class/core/actions/site_param_object/update_param_commo
 
 class update_param_action extends update_param_common_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'site_param_form';
 	}

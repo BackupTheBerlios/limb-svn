@@ -12,9 +12,9 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class display_image_action extends action
 {	
-	function perform(&$request, &$response)
+	public function perform($request, $response)
 	{	
-	  $object_data =& fetch_requested_object($request);
+	  $object_data = fetch_requested_object($request);
 		$variation = $this->_get_variation();
 		$image = $object_data['variations'][$variation];
 		
@@ -25,7 +25,7 @@ class display_image_action extends action
 			
 			if($variation == 'original')
 			{
-			  $request->set_status(REQUEST_STATUS_FAILURE);
+			  $request->set_status(request :: STATUS_FAILURE);
 				return;
 			}
 			else
@@ -38,7 +38,7 @@ class display_image_action extends action
 			
 			if($variation == 'original')
 			{
-			  $request->set_status(REQUEST_STATUS_FAILURE);
+			  $request->set_status(request :: STATUS_FAILURE);
 				return;
 			}
 			else
@@ -65,16 +65,15 @@ class display_image_action extends action
 			$response->commit();//for speed
 	}
 	
-	function &get_http_cache()
+	public function get_http_cache()
 	{
 	  include_once(LIMB_DIR . '/class/core/request/http_cache.class.php');
-	  $cache =& new http_cache();
-	  return $cache;
+	  return new http_cache();
 	}
 	
-	function _get_variation()
+	protected function _get_variation()
 	{
-		$ini =& get_ini('image_variations.ini');
+		$ini = get_ini('image_variations.ini');
 		
 		$image_variations = $ini->get_all();
 		

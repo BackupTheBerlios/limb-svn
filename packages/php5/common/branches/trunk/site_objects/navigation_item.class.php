@@ -12,17 +12,18 @@ require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
 
 class navigation_item extends content_object
 {
-	function _define_attributes_definition()
+	protected function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(
 				parent :: _define_attributes_definition(),
 				array(
 					'identifier' => array('search' => true, 'search_weight' => 1),
 					'title' => array('search' => true, 'search_weight' => 1),
-				));
+				)
+		);
 	} 
 	
-	function _define_class_properties()
+	protected function _define_class_properties()
 	{
 		return array(
 			'class_ordr' => 1,

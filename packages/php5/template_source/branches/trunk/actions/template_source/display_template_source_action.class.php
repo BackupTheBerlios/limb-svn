@@ -31,7 +31,7 @@ class display_template_source_action extends action
 			$template_path = TEMPLATE_FOR_HACKERS;
 		
 		if(substr($template_path, -5,  5) != '.html')
-		  $request->set_status(REQUEST_STATUS_FAILURE);
+		  $request->set_status(request :: STATUS_FAILURE);
 				
 		if(!$source_file_path = resolve_template_source_file_name($template_path))
 		{

@@ -12,20 +12,20 @@ require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class save_priority_action extends form_action
 {
-	function _define_dataspace_name()
+	protected function _define_dataspace_name()
 	{
 	  return 'grid_form';
 	}
 	
-	function _valid_perform(&$request, &$response)
+	protected function _valid_perform($request, $response)
 	{
 		$data = $this->dataspace->export();
-		$object =& site_object_factory :: create('site_structure');
+		$object = site_object_factory :: create('site_structure');
 		
 		if(isset($data['priority']))
 			$object->save_priority($data['priority']);
     
-    $request->set_status(REQUEST_STATUS_SUCCESS);
+    $request->set_status(request :: STATUS_SUCCESS);
     
 		if($request->has_attribute('popup'))
 		  $response->write(close_popup_response($request));
