@@ -5,18 +5,18 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: LimbDAO.tag.php 1095 2005-02-08 13:13:22Z pachanga $
 *
 ***********************************************************************************/
-$taginfo =& new TagInfo('limb:DATASOURCE', 'LimbDatasourceTag');
+$taginfo =& new TagInfo('limb:DATASOURCE_DAO', 'LimbDatasourceDAOTag');
 $taginfo->setDefaultLocation(LOCATION_SERVER);
 $taginfo->setCompilerAttributes(array('target', 'class'));
 TagDictionary::registerTag($taginfo, __FILE__);
 
-class LimbDatasourceTag extends ServerComponentTag
+class LimbDatasourceDAOTag extends ServerComponentTag
 {
-  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/datasource/LimbDatasourceComponent.class.php';
-  var $runtimeComponentName = 'LimbDatasourceComponent';
+  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/dao/LimbDatasourceDAOComponent.class.php';
+  var $runtimeComponentName = 'LimbDatasourceDAOComponent';
 
   function preParse()
   {
@@ -42,12 +42,6 @@ class LimbDatasourceTag extends ServerComponentTag
     parent :: generateContents($code);
 
     $code->writePhp($this->getComponentRefCode() . '->setClassPath("' . $this->getAttribute('class') .'");');
-
-    $navigator = $this->getAttribute('navigator');
-    if(!empty($navigator))
-    {
-      $code->writePhp($this->getComponentRefCode() . '->setNavigator("' . $navigator .'");');
-    }
 
     $code->writePhp($this->getComponentRefCode() . '->setTargets("' . $this->getAttribute('target') .'");');
     $code->writePhp($this->getComponentRefCode() . '->process();');
