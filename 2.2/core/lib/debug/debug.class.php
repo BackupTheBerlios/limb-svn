@@ -306,7 +306,7 @@ class debug
 		$title = '';
 		$headers = array();
 		$description = debug :: _parse_text_debug_info($debug_info);
-		$verbosity_level = $debug_info['verbosity_level'];
+		$verbosity_level = $debug_info['level'];
 		
 		switch ($verbosity_level)
 		{
@@ -462,7 +462,7 @@ class debug
 	function _write_file($file_name, $debug_info)
 	{
 		if (!log::write($file_name, debug :: _parse_text_debug_info($debug_info)))
-			$this->set_log_file_enabled(false, $debug_info['verbosity_level']);
+			$this->set_log_file_enabled(false, $debug_info['level']);
 	} 
 
 	/*
