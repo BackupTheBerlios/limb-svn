@@ -64,7 +64,7 @@ class richedit_component extends text_area_component
 				
 		$id = $this->get_attribute('id');
 		
-		if ($_COOKIE['use_textarea_instead_of_richedit'])
+		if (isset($_COOKIE['use_textarea_instead_of_richedit']) && $_COOKIE['use_textarea_instead_of_richedit'])
 			$caption = strings :: get('use_richedit_instead_of_textarea', 'common');
 		else
 			$caption = strings :: get('use_textarea_instead_of_richedit', 'common');
@@ -108,15 +108,15 @@ class richedit_component extends text_area_component
         editor.config.width = '{$width}';
         editor.config.height = '{$height}';  	    	
       
-      c = get_cookie('use_textarea_instead_of_richedit');
+        c = get_cookie('use_textarea_instead_of_richedit');
 	
-      if(c != 1)
+        if(c != 1)
 	        editor.generate();
         
         document.getElementById('{$id}_button').style.display = 'block';
       }
       
-        add_event(window, 'load', init_richedit_{$id});      
+      add_event(window, 'load', init_richedit_{$id});      
       
     </script>";
 	}

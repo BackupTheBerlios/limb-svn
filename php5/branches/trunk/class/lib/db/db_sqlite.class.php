@@ -75,7 +75,7 @@ class db_sqlite extends db_module
 
   public function get_last_error()
 	{
-		return sqlite_last_error();
+		return sqlite_last_error($this->_db_connection);
 	}
   
   public function parse_batch_sql(&$ret, $sql, $release)

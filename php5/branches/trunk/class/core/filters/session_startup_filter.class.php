@@ -10,12 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 
-class TestWERTY
-{
-  protected $R = 1;
-}
-
-class session_startup_filter extends intercepting_filter 
+class session_startup_filter implements intercepting_filter 
 { 
   public function run($filter_chain, $request, $response) 
   {

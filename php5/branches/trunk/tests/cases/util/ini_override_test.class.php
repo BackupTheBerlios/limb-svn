@@ -35,6 +35,7 @@ class ini_override_test extends LimbTestCase
       'testing2.ini',
       '
         [Templates]
+        conf = 1
         force_compile = 0
         path = design/templates/      '
     );
@@ -43,12 +44,14 @@ class ini_override_test extends LimbTestCase
       'testing2.ini.override',
       '
         [Templates]
+        conf = 
         force_compile = 1
       '
     );
         
     $ini = new ini (VAR_DIR . 'testing2.ini', false);
-          	
+    
+    $this->assertEqual($ini->get_option('conf', 'Templates'), null); 	
 		$this->assertEqual($ini->get_option('path', 'Templates'), 'design/templates/');
 		$this->assertEqual($ini->get_option('force_compile', 'Templates'), 1);
   }
