@@ -58,7 +58,7 @@ class fs
     if(!fs :: _do_mkdir($current_dir, $perm))
     	return false;
           	
-    for ($i = 0; $i < count( $dir_elements ); $i++ )
+    for ($i=0; $i < count($dir_elements); $i++ )
     {
       $current_dir .= $separator . $dir_elements[$i];
 			
@@ -374,7 +374,7 @@ class fs
 		
 		$params['separator'] = $separator;
 				
-		fs :: _do_walk_dir($dir, $separator, $function_def, &$return_params, $params);
+		fs :: _do_walk_dir($dir, $separator, $function_def, $return_params, $params);
 		
 		return $return_params;
 	}
@@ -392,7 +392,7 @@ class fs
 					call_user_func_array($function_def, array('dir' => $dir, 'file' => $file, 'params' => $params, 'return_params' => &$return_params));
 					
 					if (is_dir($dir . $separator . $file))
-						fs :: _do_walk_dir($dir . $separator . $file, $separator, $function_def, &$return_params, $params);
+						fs :: _do_walk_dir($dir . $separator . $file, $separator, $function_def, $return_params, $params);
 				}
 			}
 			closedir($handle); 
