@@ -65,13 +65,13 @@ class BaseLimbToolkit// implements LimbToolkit
     return SiteObjectBehaviourFactory :: create($behaviour_path);
   }
 
-  function getDB()
+  function & getDB()
   {
     if($this->db)
       return $this->db;
 
     include_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     return $this->db;
   }
@@ -89,13 +89,13 @@ class BaseLimbToolkit// implements LimbToolkit
     return $this->tree;
   }
 
-  function getUser()
+  function & getUser()
   {
     if($this->user)
       return $this->user;
 
     include_once(LIMB_DIR . '/class/core/permissions/User.class.php');
-    $this->user = User :: instance();
+    $this->user =& User :: instance();
 
     return $this->user;
   }

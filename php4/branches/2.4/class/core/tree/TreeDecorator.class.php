@@ -13,9 +13,9 @@ class TreeDecorator// implements Tree
 {
   var $_tree = null;
 
-  function TreeDecorator($tree)
+  function TreeDecorator(&$tree)
   {
-    $this->_tree = $tree;
+    $this->_tree =& $tree;
   }
 
   function isNode($id)

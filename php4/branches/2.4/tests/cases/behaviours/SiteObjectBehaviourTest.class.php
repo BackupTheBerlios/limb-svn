@@ -41,7 +41,7 @@ class SiteObjectBehaviourTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnReference('getDB', $this->db);
 

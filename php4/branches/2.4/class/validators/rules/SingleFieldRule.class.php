@@ -33,7 +33,7 @@ class SingleFieldRule extends Rule
       $this->error_list->addError($this->field_name, $error, $params);
   }
 
-  function validate($dataspace)
+  function validate(&$dataspace)
   {
     $this->is_valid = true;
     $value = $dataspace->get($this->field_name);

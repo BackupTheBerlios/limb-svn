@@ -21,7 +21,7 @@ class UniqueEmailUserRuleTest extends SingleFieldRuleTest
   {
     parent :: setUp();
 
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     $this->db->sqlDelete('user');
     $this->db->sqlDelete('sys_site_object');

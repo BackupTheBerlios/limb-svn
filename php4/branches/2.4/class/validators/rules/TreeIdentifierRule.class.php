@@ -10,14 +10,14 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
+define('TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID', -1000);
+
 class TreeIdentifierRule extends SingleFieldRule
 {
-  const UNKNOWN_NODE_ID = -1000;
-
   var $parent_node_id;
   var $node_id;
 
-  function TreeIdentifierRule($field_name, $parent_node_id, $node_id = TreeIdentifierRule :: UNKNOWN_NODE_ID)
+  function TreeIdentifierRule($field_name, $parent_node_id, $node_id = TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID)
   {
     $this->node_id = $node_id;
     $this->parent_node_id = $parent_node_id;
@@ -44,7 +44,7 @@ class TreeIdentifierRule extends SingleFieldRule
       if($node['identifier'] != $value)
         continue;
 
-      if($this->node_id == TreeIdentifierRule :: UNKNOWN_NODE_ID)
+      if($this->node_id == TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID)
       {
         $this->error(Strings :: get('error_duplicate_tree_identifier', 'error'));
         break;

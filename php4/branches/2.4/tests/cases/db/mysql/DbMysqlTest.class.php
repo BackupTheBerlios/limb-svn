@@ -65,13 +65,13 @@ class DbMysqlTest extends LimbTestCase
 
   function testExecute()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
     $this->assertNotNull($db->sqlExec("SELECT * FROM founding_fathers"));
   }
 
   function testFetchRow()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
     $this->assertNotEqual($db->sqlExec("SELECT * FROM founding_fathers"), array());
 
     $result = $db->fetchRow();
@@ -94,7 +94,7 @@ class DbMysqlTest extends LimbTestCase
 
   function testGetArray()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
     $db->sqlExec("SELECT * FROM founding_fathers");
 
     $result = $db->getArray();
@@ -112,7 +112,7 @@ class DbMysqlTest extends LimbTestCase
 
   function testGetArrayFancyIndexed()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
     $db->sqlExec("SELECT * FROM founding_fathers");
 
     $result = $db->getArray('id');
@@ -140,7 +140,7 @@ class DbMysqlTest extends LimbTestCase
 
   function testSelect()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
     $db->sqlSelect("founding_fathers");
 
     $result = $db->getArray();
@@ -158,7 +158,7 @@ class DbMysqlTest extends LimbTestCase
 
   function testSelectFancyConditions()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
 
     $db->sqlSelect("founding_fathers", '*', 'first="Benjamin" AND last="Franklin" AND dog_name=NULL');
 
@@ -178,7 +178,7 @@ class DbMysqlTest extends LimbTestCase
 
   function testCountSelectedRows()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
     $this->assertNotEqual($db->sqlExec("SELECT * FROM founding_fathers"), array());
 
     $this->assertEqual($db->countSelectedRows(), 4);
@@ -195,7 +195,7 @@ class DbMysqlTest extends LimbTestCase
     if (!mysql_query('TRUNCATE founding_fathers'))
       die ('Error creating table: ' . mysql_errno() . ' - ' . mysql_errno());
 
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
 
     $db->sqlInsert("founding_fathers", array('id' => 2, 'first' => 'Wow', 'last' => 'Hey'));
     $db->sqlInsert("founding_fathers", array('id' => 3, 'first' => 'Richard', 'last' => 'Nixon', 'dog_name' => null));
@@ -210,7 +210,7 @@ class DbMysqlTest extends LimbTestCase
 
   function testUpdate()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
 
     $db->sqlUpdate("founding_fathers", array('first' => 'Wow', 'last' => 'Hey'), array('id' => 10));
 
@@ -228,7 +228,7 @@ class DbMysqlTest extends LimbTestCase
 
   function testDelete()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
 
     $db->sqlInsert("founding_fathers", array('first' => 'Wow', 'last' => 'Hey'));
     $db->sqlDelete("founding_fathers", array('last' => 'Hey', 'first' => 'Wow'));

@@ -16,9 +16,9 @@ class DebugMock extends Debug
   var $test = null;
   var $mock = null;
 
-  function init($test, $wildcard = MOCK_WILDCARD)
+  function init(&$test, $wildcard = MOCK_WILDCARD)
   {
-    $debug = DebugMock :: instance();
+    $debug =& DebugMock :: instance();
 
     $debug->test = $test;
     $debug->mock = new SimpleMock($test, $wildcard, false);
@@ -58,7 +58,7 @@ class DebugMock extends Debug
 
   function _expectWrite($verbosity_level, $message, $params)
   {
-    $debug = DebugMock :: instance();
+    $debug =& DebugMock :: instance();
 
     $debug->expected_data[] = array(
       'level' => $verbosity_level,

@@ -23,7 +23,7 @@ class TreePathRuleTest extends SingleFieldRuleTest
   {
     parent :: setUp();
 
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();

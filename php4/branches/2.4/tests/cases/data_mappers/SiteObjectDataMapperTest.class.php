@@ -107,7 +107,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     $this->_cleanUp();
   }

@@ -125,7 +125,7 @@ class FormElement extends TagComponent
 
   function renderErrors()
   {
-    $error_list = ErrorList :: instance();
+    $error_list =& ErrorList :: instance();
 
     if($errors = $error_list->getErrors($this->id))
     {

@@ -19,9 +19,9 @@ class Rule
     return $this->is_valid;
   }
 
-  function setErrorList($error_list)
+  function setErrorList(&$error_list)
   {
-    $this->error_list = $error_list;
+    $this->error_list =& $error_list;
   }
 
   function error($error, $params=array()){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}

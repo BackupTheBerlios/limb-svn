@@ -24,7 +24,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
   function setUp()
   {
     $this->mapper = new SiteObjectBehaviourMapper();
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     $this->_cleanUp();
   }

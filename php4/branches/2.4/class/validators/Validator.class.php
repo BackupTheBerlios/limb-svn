@@ -16,12 +16,12 @@ class Validator
 
   var $is_valid = true;
 
-  function addRule($rule)
+  function addRule(&$rule)
   {
-    $this->rules[] = $rule;
+    $this->rules[] =& $rule;
   }
 
-  function _getErrorList()
+  function &_getErrorList()
   {
     return ErrorList :: instance();
   }
@@ -31,7 +31,7 @@ class Validator
     return $this->is_valid;
   }
 
-  function validate($dataspace)
+  function validate(&$dataspace)
   {
     foreach($this->rules as $key => $rule)
     {
@@ -44,7 +44,7 @@ class Validator
     return $this->is_valid;
   }
 
-  function getRules()
+  function & getRules()
   {
     return $this->rules;
   }

@@ -17,7 +17,7 @@ else
 require_once($project_dir . '/setup.php');
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
-$db = DbFactory::instance();
+$db =& DbFactory::instance();
 
 $db->sqlDelete('sys_stat_log');
 $db->sqlDelete('sys_stat_counter');

@@ -68,7 +68,7 @@ loadCoreTags();
 
 function loadPackagesTags()
 {
-  $info = PackagesInfo :: instance();
+  $info =& PackagesInfo :: instance();
   $packages = $info->getPackages();
 
   foreach($packages as $package)

@@ -132,7 +132,7 @@ class Debug
   */
   function setHandleType($type)
   {
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     if ($type != 'trigger' &&  $type != 'custom')
       $type = 'native';
@@ -232,7 +232,7 @@ class Debug
     if (!Debug :: isDebugEnabled())
       return;
 
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     if ($debug->handle_type == 'trigger')
       trigger_error($string, E_USER_NOTICE);
@@ -245,7 +245,7 @@ class Debug
     if (!Debug :: isDebugEnabled())
       return;
 
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     if ($debug->handle_type == 'trigger')
       trigger_error($string, E_USER_WARNING);
@@ -258,7 +258,7 @@ class Debug
     if (!Debug :: isDebugEnabled())
       return;
 
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     if ($debug->handle_type == 'trigger')
       trigger_error($string, E_USER_ERROR);
@@ -338,7 +338,7 @@ class Debug
     if (!Debug :: isDebugEnabled())
       return;
 
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     $time = microtime();
     $memory = 0;
@@ -549,7 +549,7 @@ class Debug
     if ($name == '' ||  $name === false)
       $name = $key;
 
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     if (!array_key_exists($key, $debug->time_accumulator_list))
       $debug->time_accumulator_list[$key] = array('name' => $name, 'time' => 0, 'count' => 0, 'is_group' => true, 'in_group' => false);
@@ -571,7 +571,7 @@ class Debug
     if ($name == '' ||  $name === false)
       $name = $key;
 
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     $is_group = false;
     if (array_key_exists($key, $debug->time_accumulator_list) &&
@@ -603,7 +603,7 @@ class Debug
     if (!Debug :: isDebugEnabled())
       return;
 
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     if (! array_key_exists($key, $debug->time_accumulator_list))
       $debug->createAccumulator($key, $in_group, $name);
@@ -620,7 +620,7 @@ class Debug
     if (!Debug :: isDebugEnabled())
       return;
 
-    $debug = Debug :: instance();
+    $debug =& Debug :: instance();
 
     $stop_time = $debug->_timeToFloat(microtime());
     if (! array_key_exists($key, $debug->time_accumulator_list))

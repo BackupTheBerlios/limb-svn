@@ -43,7 +43,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     $this->_cleanUp();
 
