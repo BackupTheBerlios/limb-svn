@@ -123,6 +123,7 @@ class datasource_component extends component
 	{
 		$targets = explode(',', $this->get('target'));
 		
+		$dataset = $this->get_dataset();
 		foreach($targets as $target)
 		{
 		  $target = trim($target);
@@ -131,7 +132,7 @@ class datasource_component extends component
 		    
 			if($target_component)
 			{
-				$target_component->register_dataset($this->get_dataset());
+				$target_component->register_dataset($dataset);
 				
 				$navigator = $this->_get_navigator_component();
 
