@@ -77,7 +77,7 @@ class StatsRegisterTest extends LimbTestCase
 
   function statsRegisterTest()
   {
-    parent :: limbTestCase();
+    parent :: LimbTestCase();
 
     $this->db = DbFactory :: instance();
   }

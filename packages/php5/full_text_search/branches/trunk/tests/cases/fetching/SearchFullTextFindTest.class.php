@@ -18,7 +18,7 @@ class SearchFullTextFindTest extends LimbTestCase
 
   function searchFullTextFindTest($name = 'full text search find test case')
   {
-    parent :: limbTestCase($name);
+    parent :: LimbTestCase($name);
   }
 
   function setUp()

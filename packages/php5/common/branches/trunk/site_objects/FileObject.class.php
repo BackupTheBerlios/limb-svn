@@ -8,58 +8,93 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/MediaObject.class.php');
+require_once(LIMB_DIR . '/class/core/DomainObject.class.php');
 
-class FileObject extends MediaObject
+class FileObject extends DomainObject
 {
-  public function create($is_root = false)
-  {
-    $this->_createFile();
+  protected $_media_manager;
 
-    return parent :: create($is_root);
+  protected function _getMediaManager()
+  {
+    if($this->_media_manager)
+      return $this->_media_manager;
+
+    include_once(dirname(__FILE__) . '/MediaManager.class.php');
+    $this->_media_manager = new MediaManager();
+
+    return $this->_media_manager;
   }
 
-  public function update($force_create_new_version = true)
+  public function getMediaFile()
   {
-    $this->_updateFile();
-
-    parent :: update($force_create_new_version);
+    return $this->_getMediaManager()->getMediaFilePath($this->getMediaFileId());
   }
 
-  protected function _createFile()
+  public function loadFromFile($file)
   {
-    $tmp_file_path = $this->get('tmp_file_path');
-    $file_name = $this->get('file_name');
-    $mime_type = $this->get('mime_type');
-
-    $media_id = $this->_createMediaRecord($tmp_file_path, $file_name, $mime_type);
-
-    $this->set('media_id', $media_id);
+    $media_file_id = $this->_getMediaManager()->store($file);
+    $this->setMediaFileId($media_file_id);
   }
 
-  protected function _updateFile()
+  public function getEtag()
   {
-    $tmp_file_path = $this->get('tmp_file_path');
-    $file_name = $this->get('file_name');
-    $mime_type = $this->get('mime_type');
-
-    if(!$media_id = $this->get('media_id'))
-      throw new LimbException('media id not set');
-
-    $this->_updateMediaRecord($media_id, $tmp_file_path, $file_name, $mime_type);
+    return $this->get('etag');
   }
 
-  public function fetch($params=array(), $sql_params=array())
+  public function setEtag($etag)
   {
-    $sql_params['columns'][] = ' m.file_name as file_name, m.mime_type as mime_type, m.etag as etag, m.size as size, ';
-    $sql_params['tables'][] = ', media as m ';
-    $sql_params['conditions'][] = ' AND tn.media_id=m.id ';
-
-    $records = parent :: fetch($params, $sql_params);
-
-    return $records;
+    $this->set('etag', $etag);
   }
 
+  public function getName()
+  {
+    return $this->get('name');
+  }
+
+  public function setName($name)
+  {
+    $this->set('name', $name);
+  }
+
+  public function getFileName()
+  {
+    return $this->get('file_name');
+  }
+
+  public function setFileName($file_name)
+  {
+    $this->set('file_name', $file_name);
+  }
+
+  public function getMimeType()
+  {
+    return $this->get('mime_type');
+  }
+
+  public function setMimeType($mime_type)
+  {
+    $this->set('mime_type', $mime_type);
+  }
+
+  public function getMediaFileId()
+  {
+    return $this->get('media_file_id');
+  }
+
+  public function setMediaFileId($media_file_id)
+  {
+    $this->set('media_file_id', $media_file_id);
+  }
+
+  public function getMediaId()
+  {
+    return (int)$this->get('media_id');
+  }
+
+  public function setMediaId($media_id)
+  {
+    $this->set('media_id', (int)$media_id);
+  }
 }
 
 ?>

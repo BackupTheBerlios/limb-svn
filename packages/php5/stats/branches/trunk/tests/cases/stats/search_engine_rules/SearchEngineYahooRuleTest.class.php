@@ -16,7 +16,7 @@ class SearchEngineYahooRuleTest extends LimbTestCase
 
   function searchEngineYahooRuleTest()
   {
-    parent :: limbTestCase();
+    parent :: LimbTestCase();
   }
 
   function setUp()

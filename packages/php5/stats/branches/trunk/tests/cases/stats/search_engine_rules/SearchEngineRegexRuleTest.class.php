@@ -16,7 +16,7 @@ class SearchEngineRegexRuleTest extends LimbTestCase
 
   function searchEngineRegexRuleTest()
   {
-    parent :: limbTestCase();
+    parent :: LimbTestCase();
   }
 
   function setUp()
