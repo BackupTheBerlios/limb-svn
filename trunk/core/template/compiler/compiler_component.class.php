@@ -449,6 +449,9 @@ class compiler_component
 	{
 		if (isset($this->wrapping_component))
 		{
+			if($this->is_debug_enabled())
+				$code->write_html("<div style='border:dashed 1px red;'><img src='/shared/images/i.gif' alt='{$this->wrapping_component->resolved_source_file}'><br>");
+
 			$this->wrapping_component->generate_wrapper_prefix($code);
 		} 
 	} 
@@ -467,6 +470,7 @@ class compiler_component
 		if (isset($this->wrapping_component))
 		{
 			$this->wrapping_component->generate_wrapper_postfix($code);
+			$code->write_html('</div>');
 		} 
 	} 
 

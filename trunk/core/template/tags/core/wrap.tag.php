@@ -26,6 +26,8 @@ register_tag(new core_wrap_tag_info());
 */
 class core_wrap_tag extends compiler_directive_tag
 {
+	var $resolved_source_file;
+	
 	/**
 	* List of tag names of the children of the wrap tag
 	* 
@@ -67,8 +69,8 @@ class core_wrap_tag extends compiler_directive_tag
 					'line' => $this->starting_line_no));
 		} 
 	
-		$sourcefile = resolve_template_source_file_name($file, TMPL_INCLUDE, $this->source_file);
-		if (empty($sourcefile))
+		$this->resolved_source_file = resolve_template_source_file_name($file, TMPL_INCLUDE, $this->source_file);
+		if (empty($this->resolved_source_file))
 		{
 			error('MISSINGFILE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
 					'srcfile' => $file,
@@ -76,7 +78,7 @@ class core_wrap_tag extends compiler_directive_tag
 					'line' => $this->starting_line_no));
 		} 
 	
-		$sfp =& new source_file_parser($sourcefile, $tag_dictionary);
+		$sfp =& new source_file_parser($this->resolved_source_file, $tag_dictionary);
 		$sfp->parse($this);
 		return PARSER_FORBID_PARSING;
 	} 

@@ -43,7 +43,7 @@ class checkout_cart_order_action extends form_action
 		if(!send_plain_mail(array(ADMINISTRATOR_EMAIL), 
 												$_SERVER['SERVER_ADMIN']. '<' . $_SERVER['HTTP_HOST'] . '> ', 
 												$subject, 
-												$body)
+												$body))
 		{
 			message_box :: write_error(strings :: get('mail_not_sent', 'cart'));
 			return new close_popup_response(RESPONSE_STATUS_FAILURE);
