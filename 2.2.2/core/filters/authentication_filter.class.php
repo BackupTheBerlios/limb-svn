@@ -30,7 +30,7 @@ class authentication_filter extends intercepting_filter
   		$response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
   		return;
     }
-    
+
     $object =& wrap_with_site_object($object_data); 
 
     $site_object_controller =& $object->get_controller();

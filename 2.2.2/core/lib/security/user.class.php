@@ -98,31 +98,66 @@ class user extends object
 		
 		return $db->get_array();
 	}
-		
-	function login($login, $password, $locale_id = '')
-	{				
-		$this->logout();
-		
-		if(!$record = $this->_get_identity_record($login, $password))
-			return false;
-		
+	
+	function _set_logged_user_data(&$user_data, $locale_id = '')
+	{
 		$this->_set_is_logged_in();
 		
-		$this->_set_id($record['id']);
-		$this->_set_node_id($record['node_id']);
-		$this->_set_login($login);
-		$this->_set_password($record['password']);
+		$this->_set_id($user_data['id']);
+		$this->_set_node_id($user_data['node_id']);
+		$this->_set_login($user_data['identifier']);
+		$this->_set_password($user_data['password']);
 		
-		$this->_set_email($record['email']);
-		$this->_set_name($record['name']);
-		$this->_set_lastname($record['lastname']);
+		$this->_set_email($user_data['email']);
+		$this->_set_name($user_data['name']);
+		$this->_set_lastname($user_data['lastname']);
 		
 		$this->_determine_groups();		
 
 		if ($locale_id && locale::is_valid_locale_id($locale_id))
 			$this->set_locale_id($locale_id);
 
+	}
+		
+	function login($login, $password, $locale_id = '')
+	{				
+		$this->logout();
+
+		if(!$record = $this->_get_identity_record($login, $password))
+			return false;
+		
+		$this->_set_logged_user_data($record, $locale_id);
+
 		return true;
+	}
+
+	function try_autologin()
+	{				
+		if($this->is_logged_in())
+			return false;
+
+		$cookie = $_COOKIE;
+		if(empty($cookie['user_id']) || empty($cookie['password']))
+			return false;
+		
+		if(!$record = $this->_get_identity_record_by_id($cookie['user_id'], $cookie['password']))
+			return false;
+		
+		$this->_set_logged_user_data($record, $locale_id);
+
+		return true;
+	}
+
+	function configure_autologin($time = null)
+	{
+		if(!$this->is_logged_in())
+			return false;
+		$one_week = 7 * 24 * 60 * 60;
+		if($time === null)
+			$time = $one_week;
+
+		setcookie('user_id', $this->get_id(), time() + $time, '/');
+		setcookie('password', $this->get_password(), time() + $time, '/');
 	}
 	
 	function &_get_identity_record($login, $password)
@@ -147,11 +182,39 @@ class user extends object
 		return $db->fetch_row();
 	}
 		
+	function &_get_identity_record_by_id($user_id, $crypted_password)
+	{
+		$db =& db_factory :: instance();
+		
+		$sql = 
+			'SELECT *, ssot.id as node_id, sso.id as id FROM 
+			sys_site_object_tree as ssot, 
+			sys_site_object as sso, 
+			user as tn
+			WHERE tn.object_id="' . $user_id . '"
+			AND tn.password="' . $db->escape($crypted_password) . '"
+			AND ssot.object_id=tn.object_id
+			AND sso.id=tn.object_id 
+			AND sso.current_version=tn.version';
+					
+		$db->sql_exec($sql);
+		
+		return $db->fetch_row();
+	}
+
 	function logout()
 	{	
 		$this->_set_id(DEFAULT_USER_ID);
 		$this->_set_is_logged_in(false);
 		$this->_set_groups(array());
+
+		$cookie = $_COOKIE;
+		if(empty($cookie['user_id']) || empty($cookie['password']))
+			return;
+
+		setcookie('user_id', 0, time() - 1, '/');
+		setcookie('password', 0, time() - 1, '/');
+
 	}
 	
 	function get_crypted_password($login, $none_crypt_password)

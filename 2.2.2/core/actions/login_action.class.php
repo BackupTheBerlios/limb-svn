@@ -56,11 +56,18 @@ class login_action extends form_action
 		$login = $this->dataspace->get('login');
 		$password = $this->dataspace->get('password');
 		$locale_id = $this->dataspace->get('locale_id');
-		
+		$autologin = $this->dataspace->get('autologin');
+
 		$user_object =& site_object_factory :: create($this->user_object_class_name);
 
 		if($user_object->login($login, $password, $locale_id))
 		{
+  		if($autologin)
+  		{
+  			$user =& user :: instance();
+  			$user->configure_autologin();
+  		}
+  			
   		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 		  
 			if($redirect = $this->dataspace->get('redirect'))

@@ -32,7 +32,6 @@ class user_test extends db_test
   function test_login_true()
   {
   	$user =& user :: instance();
-  	
   	$this->assertTrue($user->login('vasa', '1'));
   	$this->assertTrue($user->login('sasa', '1'));
   	
