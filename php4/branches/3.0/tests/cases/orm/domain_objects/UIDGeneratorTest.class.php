@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/UIDGenerator.class.php');
+require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
 
 class UIDGeneratorTest extends LimbTestCase
 {

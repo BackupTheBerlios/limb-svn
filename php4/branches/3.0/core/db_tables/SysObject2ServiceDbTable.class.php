@@ -10,22 +10,22 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class SysServiceDbTable extends LimbDbTable
+class SysObject2ServiceDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'sys_service';
+    return 'sys_object_to_service';
   }
 
   function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
-      'name' => '',
-      'icon' => '',
-      'sort_order' => array('type' => 'numeric'),
-      'can_be_parent' => array('type' => 'numeric'),
+      'oid' => array('type' => 'numeric'),
+      'service_id' => array('type' => 'numeric'),
+      'title' => '',
     );
+
   }
 }
 

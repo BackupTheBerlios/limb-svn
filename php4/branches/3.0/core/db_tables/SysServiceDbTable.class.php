@@ -12,11 +12,6 @@ require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
 class SysServiceDbTable extends LimbDbTable
 {
-  function _definePrimaryKeyName()
-  {
-    return 'service_id';
-  }
-
   function _defineDbTableName()
   {
     return 'sys_service';
@@ -25,11 +20,10 @@ class SysServiceDbTable extends LimbDbTable
   function _defineColumns()
   {
     return array(
-      'service_id' => array('type' => 'numeric'),
-      'oid' => array('type' => 'numeric'),
-      'service_id' => array('type' => 'numeric'),
-      'title' => '',
+      'id' => array('type' => 'numeric'),
+      'name' => '',
     );
+
   }
 }
 

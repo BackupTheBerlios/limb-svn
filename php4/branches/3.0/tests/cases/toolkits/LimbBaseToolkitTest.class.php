@@ -53,8 +53,8 @@ class LimbBaseToolkitTest extends LimbTestCase
 
   function testCreateDataMapper()
   {
-    $this->assertIsA($this->toolkit->createDataMapper('ServiceMapper'),
-                     'ServiceMapper');
+    $this->assertIsA($this->toolkit->createDataMapper('AbstractDataMapper'),
+                     'AbstractDataMapper');
   }
 
   function testGetDb()

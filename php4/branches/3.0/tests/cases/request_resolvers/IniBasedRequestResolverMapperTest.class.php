@@ -48,7 +48,6 @@ class IniBasedRequestResolverMapperTest extends LimbTestCase
     $uri->setPath('/');
 
     $mapper = new IniBasedRequestResolverMapper();
-
     $this->assertNull($mapper->map($request));
   }
 

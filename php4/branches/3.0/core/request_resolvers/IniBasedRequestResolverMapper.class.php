@@ -39,11 +39,14 @@ class IniBasedRequestResolverMapper // implements RequestResolverMapper
       return Handle :: resolve($handle);
     }
 
-    if(!$default = $ini->getOption('default_handle'))
+    if($ini->hasOption('default_handle'))
+    {
+      $default = $ini->getOption('default_handle');
+      $handle = new LimbHandle($default);
+      return Handle :: resolve($handle);
+    }
+    else
       return null;
-
-    $handle = new LimbHandle($default);
-    return Handle :: resolve($handle);
   }
 }
 

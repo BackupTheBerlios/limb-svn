@@ -50,6 +50,7 @@ require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
 require_once(LIMB_DIR . '/core/error/error.inc.php');
 require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
+require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/LimbTestCase.class.php');
