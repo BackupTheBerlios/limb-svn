@@ -50,10 +50,10 @@ class site_structure_controller extends site_object_controller
 						'template_path' => '/site_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
-				'parent_select' => array(
+				'node_select' => array(
 						'permissions_required' => 'r',
-						'action_name' => strings :: get('select_parent', 'site_structure'),
-						'template_path' => '/site_structure/parent_select.html',
+						'action_name' => strings :: get('select_node', 'site_structure'),
+						'template_path' => '/site_structure/node_select.html',
 				),
 		);
  		

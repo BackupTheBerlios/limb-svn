@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: image_select_component.class.php 46 2004-03-19 12:45:55Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -60,8 +60,9 @@ class node_select_component extends input_form_element
   	echo "	<img id='{$md5id}_icon' align='center' src='{$icon}'/>&nbsp;
 	 					<b><span id='{$md5id}_path'>{$path}</span></b>
   					<span style='display:none;'>
-    				<span id='{$md5id}_identifier'>{$identifier}</span>
+    				<span id='{$md5id}_node_id'>{$node_id}</span>
     				<span id='{$md5id}_parent_node_id'>{$parent_node_id}</span>
+    				<span id='{$md5id}_identifier'>{$identifier}</span>
   					<span id='{$md5id}_title'>{$title}</span>
   					<span id='{$md5id}_class_name'>{$class_name}</span>
   					</span>";
@@ -103,7 +104,7 @@ class node_select_component extends input_form_element
 		      add_event(window, 'load', init_node_select_{$md5id});
 		    </script>";
 	    
-	  echo "<input class='button' type='button' onclick='popup(\"/root/parent_select\", null, null, false, node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value=' ... '>";
+	  echo "<input class='button' type='button' onclick='popup(\"/root/node_select\", null, null, false, node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value=' ... '>";
 
 		if($this->get_attribute('reset_button'))
 		{

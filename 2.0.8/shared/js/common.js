@@ -9,6 +9,11 @@ if(get_query_item(location.href, 'popup'))
 	add_event(window, 'load', process_popup);
 }
 
+function add_page_to_favourities()
+{
+	window.external.addFavorite(window.location, window.document.title);
+}
+
 function add_event(elm, evType, fn, useCapture) 
 { 
  if (elm.addEventListener)

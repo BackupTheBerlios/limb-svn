@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: image_select.tag.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/template/tags/form/control_tag.class.php');
@@ -30,7 +30,8 @@ class node_select_tag extends control_tag
 	
 	function pre_generate(&$code)
 	{
-		$this->attributes['type'] = 'hidden';
+		if(!isset($this->attributes['type']))
+			$this->attributes['type'] = 'hidden';
 			
 		$code->write_php($this->get_component_ref_code() . '->init_node_select();');
 		

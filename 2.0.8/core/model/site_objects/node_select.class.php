@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: file_select.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
-class parent_select extends site_object
+class node_select extends site_object
 {
-	function parent_select()
+	function node_select()
 	{
 		parent :: site_object();
 	}
@@ -22,7 +22,7 @@ class parent_select extends site_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'parent_select_controller',
+			'controller_class_name' => 'node_select_controller',
 		);
 	}
 }

@@ -10,6 +10,9 @@
 	<tr>
 
 		<td style='padding:0 25px 3px 0' class=path>
+		
+		<core:REQUEST_TRANSFER attributes="only_parents">
+		
 		<metadata:BREADCRUMBS request_path_attribute='path'>
 		<grid:LIST>
 			<grid:ITERATOR>
@@ -17,11 +20,14 @@
 					{$title}
 				</core:OPTIONAL>
 				<core:DEFAULT for='is_last'>
-					<a href="/root/admin/site_structure?action=parent_select&path={$path}&only_parents={#only_parents}">{$title}</a> &raquo; 
+					<a href="/root/admin/site_structure?action=node_select&path={$path}">{$title}</a> &raquo; 
 				</core:DEFAULT>
 			</grid:ITERATOR>
 		</grid:LIST>
 		</metadata:BREADCRUMBS>
+		
+		</core:REQUEST_TRANSFER>
+		
 		</td>
 	</tr>
 	</table>
@@ -35,6 +41,7 @@
 
 <table width="100%" border="0" cellspacing="5" cellpadding="5">
 
+<core:REQUEST_TRANSFER attributes="only_parents">
 <grid:LIST id='nodes'>
 <tr>
 	<th></th>
@@ -51,12 +58,9 @@
 	<core:DEFAULT for='icon'>
 	<img src='/shared/images/generic.gif' align='center'>
 	</core:DEFAULT>
-
-
-	
 	</td>
 	<td>
-	<a href='/root/admin/site_structure?action=parent_select&path={$path}'>{$identifier}   ({$title})</a>
+		<a href='/root/admin/site_structure?action=node_select&path={$path}'>{$identifier}   ({$title})</a>
 	</td>
 	<td>{$class_name}</td>
 	<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "{$title}", path: "{$path}",
@@ -65,7 +69,7 @@
 </tr>
 </grid:ITERATOR>
 </grid:LIST>
-
+</core:REQUEST_TRANSFER>
 </table>
 </body>
 </html>

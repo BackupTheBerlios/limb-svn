@@ -11,6 +11,30 @@
 	
 	var node_obj = new Object();
 	
+	function init_preview_objects()
+	{
+		obj = document.getElementById('_preview_identifier');
+		preview_identifier_obj = obj.firstChild;
+
+		obj = document.getElementById('_preview_title');
+		preview_title_obj = obj.firstChild;
+
+		preview_icon_obj = document.getElementById('_preview_icon');
+		
+		obj = document.getElementById('_preview_class_name');
+		preview_class_name_obj = obj.firstChild;
+
+		obj = document.getElementById('_preview_path');
+		preview_path_obj = obj.firstChild;
+
+		obj = document.getElementById('_preview_parent_node_id');
+		preview_parent_node_id_obj = obj.firstChild;
+		
+		obj = document.getElementsByName('_insert_button');
+		insert_button_obj = obj[0];
+		
+	}
+
 	function update_node_data(node_data)
 	{		
 		preview_parent_node_id_obj.nodeValue = node_data.parent_node_id;
@@ -42,26 +66,8 @@
 	{
 		h = get_init_popup_handler();
 		node = h(window.name);
-
-		obj = document.getElementById('_preview_identifier');
-		preview_identifier_obj = obj.firstChild;
-
-		obj = document.getElementById('_preview_title');
-		preview_title_obj = obj.firstChild;
-
-		preview_icon_obj = document.getElementById('_preview_icon');
 		
-		obj = document.getElementById('_preview_class_name');
-		preview_class_name_obj = obj.firstChild;
-
-		obj = document.getElementById('_preview_path');
-		preview_path_obj = obj.firstChild;
-
-		obj = document.getElementById('_preview_parent_node_id');
-		preview_parent_node_id_obj = obj.firstChild;
-		
-		obj = document.getElementsByName('_insert_button');
-		insert_button_obj = obj[0];
+		init_preview_objects();
 		
 		start_path = '/root';
 		only_parents = '';
@@ -84,7 +90,7 @@
 				only_parents = '&only_parents=' + node.only_parents;
 		}
 		
-		parent_select_frame.location = '/root/admin/site_structure?action=parent_select&path=' + start_path + only_parents;
+		node_select_frame.location = '/root/admin/site_structure?action=node_select&path=' + start_path + only_parents;
 		
 		process_popup();
 	}
@@ -113,7 +119,7 @@
 							</tr>
 							<tr>
 								<td align=center>
-									<iframe id='parent_select_frame' name='parent_select_frame' width=450 height=400 ></iframe>
+									<iframe id='node_select_frame' name='node_select_frame' width=450 height=400 ></iframe>
 									</td>
 							</tr>
 							</table>	
