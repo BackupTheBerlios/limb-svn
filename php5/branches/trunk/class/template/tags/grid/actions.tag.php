@@ -56,7 +56,7 @@ class grid_actions_tag extends compiler_directive_tag
 		$code->write_html("
 		<select id='{$selector_id}'>
         <option value=''>");
-		$code->write_php("echo strings :: get('choose_any')");        
+		$code->write_php("echo strings :: get('choose_action_for_selected_rows')");        
     $code->write_html("</option>");
 
 		foreach($this->_actions as $option)
