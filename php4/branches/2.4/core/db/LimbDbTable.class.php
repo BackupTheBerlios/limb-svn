@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/core/db/SimpleQueryBuilder.class.php');
 require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
 
 class LimbDbTable
@@ -112,9 +111,13 @@ class LimbDbTable
   {
     $filtered_row = $this->_filterRow($row);
 
-    $sql = SimpleQueryBuilder :: buildInsertSQL($this->_db_table_name, array_keys($filtered_row));
+    include_once(LIMB_DIR . '/core/db/SimpleInsertSQL.class.php');
 
-    $this->_stmt =& $this->_db->newStatement($sql);
+    $sql = new SimpleInsertSQL($this->_db_table_name);
+    foreach($filtered_row as $key => $value)
+      $sql->addField($key , ':'. $key);
+
+    $this->_stmt =& $this->_db->newStatement($sql->toString());
 
     $this->_fillStatementVariables($filtered_row);
 
@@ -126,15 +129,21 @@ class LimbDbTable
     $row = $this->_filterRow($row);
     $conditions = $this->_filterRow($conditions);
 
-    $sql = SimpleQueryBuilder :: buildUpdateSQL($this->_db_table_name,
-                                                array_keys($row),
-                                                array_keys($conditions));
+    include_once(LIMB_DIR . '/core/db/SimpleUpdateSQL.class.php');
 
-    $this->_stmt =& $this->_db->newStatement($sql);
+    $sql = new SimpleUpdateSQL($this->_db_table_name);
 
-    $prefix = SimpleQueryBuilder :: getUpdatePrefix();
+    $prefixed_row = array();
     foreach($row as $key => $value)
-      $prefixed_row[$prefix . $key] = $value;
+    {
+      $sql->addField($key . '=:_'. $key);
+      $prefixed_row['_' . $key] = $value;
+    }
+
+    foreach($conditions as $key => $value)
+      $sql->addCondition($key . '=:' . $key);
+
+    $this->_stmt =& $this->_db->newStatement($sql->toString());
 
     $this->_fillStatementVariables($prefixed_row);
     $this->_fillStatementVariables($conditions);
@@ -162,12 +171,20 @@ class LimbDbTable
   {
     $conditions = $this->_filterRow($conditions);
 
-    $sql = SimpleQueryBuilder :: buildSelectSQL($this->_db_table_name,
-                                                $this->getColumnsForSelect(),
-                                                array_keys($conditions),
-                                                $order);
+    include_once(LIMB_DIR . '/core/db/SimpleSelectSQL.class.php');
 
-    $this->_stmt =& $this->_db->newStatement($sql);
+    $sql = new SimpleSelectSQL($this->_db_table_name);
+
+    foreach($this->getColumns() as $field => $desc)
+      $sql->addField($field);
+
+    foreach($conditions as $key => $value)
+      $sql->addCondition($key . '=:' . $key);
+
+    if($order)
+      $sql->addOrder($order);
+
+    $this->_stmt =& $this->_db->newStatement($sql->toString());
 
     $this->_fillStatementVariables($conditions);
 
@@ -187,10 +204,13 @@ class LimbDbTable
 
   function _deleteOperation($conditions, &$affected_rows)
   {
-    $sql = SimpleQueryBuilder :: buildDeleteSQL($this->_db_table_name,
-                                                array_keys($conditions));
+    include_once(LIMB_DIR . '/core/db/SimpleDeleteSQL.class.php');
 
-    $this->_stmt =& $this->_db->newStatement($sql);
+    $sql = new SimpleDeleteSQL($this->_db_table_name);
+    foreach($conditions as $key => $value)
+      $sql->addCondition($key . '=:' . $key);
+
+    $this->_stmt =& $this->_db->newStatement($sql->toString());
     $this->_fillStatementVariables($conditions);
 
     $this->_stmt->execute();
