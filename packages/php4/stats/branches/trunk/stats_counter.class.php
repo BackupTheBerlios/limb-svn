@@ -91,6 +91,7 @@ class stats_counter
 		if(($record = $this->db->fetch_row()) === false)
 		{
 			$record = array(
+				'id' => null, 
 				'hosts_all' => 0,
 				'hits_all' => 0,
 				'hosts_today' => 0,
@@ -114,6 +115,7 @@ class stats_counter
 	function _insert_new_day_counters_record($stamp)
 	{
 		$record = array(
+			'id' => null, 
 			'hosts' => 0,
 			'hits' => 0,
 			'home_hits' => 0,

@@ -59,7 +59,7 @@ class db_cart_handler_test extends LimbTestCase
     $items[1]->set_amount(10);
     $items[2]->set_amount(20);
     
-    $this->db->sql_insert('cart', array('cart_id' => 10, 'user_id' => -1, 'cart_items' => serialize($items)));
+    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => -1, 'cart_items' => serialize($items)));
     
     $this->user->setReturnValue('is_logged_in', false);
     
@@ -74,7 +74,7 @@ class db_cart_handler_test extends LimbTestCase
     $items[1] = new cart_item(1);    
     $items[1]->set_amount(10);
     
-    $this->db->sql_insert('cart', array('cart_id' => 1, 'user_id' => -1, 'cart_items' => serialize($items)));
+    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 1, 'user_id' => -1, 'cart_items' => serialize($items)));
     
     $this->user->setReturnValue('is_logged_in', false);
     
@@ -89,7 +89,7 @@ class db_cart_handler_test extends LimbTestCase
     $items[1] = new cart_item(1);    
     $items[1]->set_amount(10);
     
-    $this->db->sql_insert('cart', array('cart_id' => 20, 'user_id' => 1000, 'cart_items' => serialize($items)));
+    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 20, 'user_id' => 1000, 'cart_items' => serialize($items)));
     
     $this->user->setReturnValue('is_logged_in', true);
     $this->user->setReturnValue('get_id', 1000);
@@ -105,7 +105,7 @@ class db_cart_handler_test extends LimbTestCase
     $items[1] = new cart_item(1);    
     $items[1]->set_amount(10);
     
-    $this->db->sql_insert('cart', array('cart_id' => 10, 'user_id' => 1000, 'cart_items' => serialize($items)));
+    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => 1000, 'cart_items' => serialize($items)));
     
     $this->user->setReturnValue('is_logged_in', true);
     $this->user->setReturnValue('get_id', 1000);
@@ -127,8 +127,8 @@ class db_cart_handler_test extends LimbTestCase
     $items2[2] = new cart_item(2);    
     $items2[2]->set_amount(35);
     
-    $this->db->sql_insert('cart', array('cart_id' => 10, 'user_id' => -1, 'cart_items' => serialize($items1)));
-    $this->db->sql_insert('cart', array('cart_id' => 20, 'user_id' => 1000, 'cart_items' => serialize($items2)));
+    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 10, 'user_id' => -1, 'cart_items' => serialize($items1)));
+    $this->db->sql_insert('cart', array('id' => null, 'cart_id' => 20, 'user_id' => 1000, 'cart_items' => serialize($items2)));
 
     $this->user->setReturnValue('is_logged_in', true);
     $this->user->setReturnValue('get_id', 1000);

@@ -50,7 +50,7 @@ class stats_uri
 	function _insert_uri_record($uri)
 	{
 		$this->db->sql_insert('sys_stat_uri', 
-			array('uri' => $uri));
+			array('id' => null, 'uri' => $uri));
 		return $this->db->get_sql_insert_id('sys_stat_uri');		
 	}
 

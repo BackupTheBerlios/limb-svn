@@ -56,6 +56,7 @@ class user_object extends content_object
 				continue;
 				
 			$data = array();
+	    $data['id'] = null;
 			$data['user_id'] = (int)$user_id;
 			$data['group_id'] = (int)$group_id;
 			$db_table->insert($data);

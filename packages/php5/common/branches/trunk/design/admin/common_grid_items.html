@@ -16,28 +16,26 @@
 
 <table border=0 cellspacing=2 cellpadding=0>
 <tr>
-	<td colspan=5 class=btitle1>Site management's table header: common grid items</td>
+	<td colspan=3 class=btitle1><locale:STRING name='table_header' file='admin_page'></td>
 </tr>
 <tr>
 	<th><grid:SELECTORS_TOGGLER></th>
-	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='object'></th>
-	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
 <tr class="jip">
 	<td><core:INCLUDE file="/admin/selector.html"></td>
-	<td><core:INCLUDE file="published_status.html"></td>
 	<td><a href="{$path}" title='identifier:{$identifier}    class_name:{$class_name}'>{$title}</a></td>
-	<td><core:INCLUDE file='/admin/priority_input.html'></td>
 	<td><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr><td colspan=5 class=btitle1 height=3></td></tr>
+<tr><td colspan='3' class=btitle1 height=3></td></tr>
 <tr>
-	<td colspan='5' align='left'>
-		<core:INCLUDE file='/admin/grid_actions.html'>
+	<td colspan='3' align='left'>
+  	<grid:actions select_class='select' button_class='button' locale_value='do'>
+  		<grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+  	</grid:actions>
 	</td>
 </tr>
 </table>

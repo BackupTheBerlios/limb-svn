@@ -134,6 +134,7 @@ class poll_container extends site_object
 	function _register_new_ip($poll_id, $ip)
 	{
 		$poll_ip_db_table = & db_table_factory :: instance('poll_ip');
+    $data['id'] = null;
 		$data['ip'] = $ip;
 		$data['poll_id'] = $poll_id;
 		$poll_ip_db_table->insert($data);

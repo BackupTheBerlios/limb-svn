@@ -23,7 +23,7 @@ class stats_pages_report
 	function fetch($params = array())
 	{
 		$sql = 'SELECT
-						stat_uri_id, ssu.uri,
+						stat_uri_id, ssu.uri as uri,
 						COUNT(stat_uri_id) as hits 
 						FROM 
 						sys_stat_log as sslog, sys_stat_uri as ssu';
