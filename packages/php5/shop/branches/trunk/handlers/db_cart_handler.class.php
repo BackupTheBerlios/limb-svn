@@ -86,7 +86,6 @@ class db_cart_handler extends cart_handler
 	  $user = $this->_get_user();	  
 
     $cart_data = array(
-      'id' => null,
       'user_id' => $user->get_id(),
       'last_activity_time' => time(),
       'cart_items' => serialize($this->get_items()),
@@ -97,7 +96,9 @@ class db_cart_handler extends cart_handler
 	  $records = $this->cart_db_table->get_list($conditions);
 	  
 	  if (!count($records))
+	  {
 	    $this->cart_db_table->insert($cart_data);
+	  }
 	  else
 	  {
 	    $record = reset($records);
