@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
 require_once(dirname(__FILE__) . '/../simple_authenticator.class.php');
 
-class login_action extends form_action
+class login_command extends form_command
 {
 	protected function _define_dataspace_name()
 	{
