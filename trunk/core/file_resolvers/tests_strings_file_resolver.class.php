@@ -13,8 +13,8 @@ class tests_strings_file_resolver
 {
   function resolve($file_name, $locale_id)
   {  
-  	if(file_exists(LIMB_DIR . '/core/strings/' . $file_name . '_' . $locale_id . '.ini'))
-  		$dir = LIMB_DIR . '/core/strings/';
+  	if(file_exists(LIMB_DIR . '/core/i18n/strings/' . $file_name . '_' . $locale_id . '.ini'))
+  		$dir = LIMB_DIR . '/core/i18n/strings/';
   	else
   		error('strings file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
   			array(
