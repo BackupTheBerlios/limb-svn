@@ -138,6 +138,32 @@ class site_object_auto_identifier_test extends UnitTestCase
   	$this->assertEqual($this->object->get_identifier(), 'test11');
   }
   
+  function test_create_complex3()
+  {
+	  $this->_create_node('1test15');
+	  $this->_create_node('2test17');
+	  $this->_create_node('3test18');
+	  $this->_create_node('4test19');
+
+  	$this->object->set_parent_node_id($this->parent_node_id);
+		
+  	$id = $this->object->create();
+  	
+  	$this->assertEqual($this->object->get_identifier(), '4test20');
+  }
+
+  function test_create_simple()
+  {
+	  $this->_create_node('118');
+	  $this->_create_node('119');
+
+  	$this->object->set_parent_node_id($this->parent_node_id);
+		
+  	$id = $this->object->create();
+  	
+  	$this->assertEqual($this->object->get_identifier(), '120');
+  }  
+  
   function _create_node($identifier)
   {
   	static $object_id = 1;

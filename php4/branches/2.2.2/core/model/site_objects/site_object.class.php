@@ -487,7 +487,7 @@ class site_object extends object
 		if($identifier === false)
 			return false;
 			
-		if(preg_match('/^(.*)(\d+)$/', $identifier, $matches))
+		if(preg_match('/(.*?)(\d+)$/', $identifier, $matches))
 			$new_identifier = $matches[1] . ($matches[2] + 1);
 		else
 			$new_identifier = $identifier . '1';
