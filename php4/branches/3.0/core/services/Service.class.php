@@ -8,18 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/i18n/Strings.class.php');
-require_once(LIMB_DIR . '/core/Object.class.php');
 
-class Behaviour extends Object
+class Service
 {
+  var $name;
   var $ini;
+  var $current_action;
 
-  function Behaviour($name)
+  function Service($name)
   {
-    parent :: Object();
-
-    $this->set('name', $name);
+    $this->name = $name;
   }
 
   function & getActionCommand($action)
@@ -44,11 +42,8 @@ class Behaviour extends Object
     if(is_object($this->ini))
       return $this->ini;
 
-    if (!$name = $this->getName())
-      $name = 'default';
-
     $toolkit =& Limb :: toolkit();
-    $this->ini =& $toolkit->getIni($name . '.behaviour.ini', 'behaviour');
+    $this->ini =& $toolkit->getIni($this->name . '.service.ini', 'service');
     return $this->ini;
   }
 
@@ -80,15 +75,6 @@ class Behaviour extends Object
     return $ini->hasGroup($action);
   }
 
-  function canBeParent()
-  {
-    $ini =& $this->_getIni();
-    if(!$ini->hasOption('can_be_parent'))
-      return false;
-
-    return (bool)$ini->getOption('can_be_parent');
-  }
-
   function getDefaultAction()
   {
     $ini =& $this->_getIni();
@@ -98,19 +84,19 @@ class Behaviour extends Object
     return $ini->getOption('default_action');
   }
 
-  function getId()
+  function getCurrentAction()
   {
-    return (int)$this->get('id');
+    return $this->current_action;
   }
 
-  function setId($id)
+  function setCurrentAction($action)
   {
-    $this->set('id', (int)$id);
+    $this->current_action = $action;
   }
 
   function getName()
   {
-    return $this->get('name');
+    return $this->name;
   }
 }
 

@@ -70,7 +70,7 @@ class ServicesCriteriaTest extends LimbTestCase
     $this->assertEqual($record['service_id'], 103);
     $this->assertEqual($record['oid'], 3);
     $this->assertEqual($record['title'], 'service_3_title');
-    $this->assertEqual($record['behaviour_id'], 503);
+    $this->assertEqual($record['service_id'], 503);
   }
 
   function _insertObjectRecords()
@@ -96,7 +96,7 @@ class ServicesCriteriaTest extends LimbTestCase
           'service_id' => $i+100,
           'oid' => $i,
           'title' => 'service_' . $i . '_title',
-          'behaviour_id' => $i+500,
+          'service_id' => $i+500,
         )
       );
     }

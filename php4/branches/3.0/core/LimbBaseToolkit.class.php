@@ -24,6 +24,7 @@ class LimbBaseToolkit// implements LimbToolkit
   var $uow;
   var $processed_object;
   var $mapped_object;
+  var $request_resolver;
   var $path2id_translator;
   var $ini_cache = array();
   var $dataspace_registry;
@@ -43,15 +44,19 @@ class LimbBaseToolkit// implements LimbToolkit
     $this->uow = null;
     $this->processed_object = null;
     $this->mapped_object = null;
+    $this->request_resolver = null;
     $this->path2id_translator = null;
     $this->ini_cache = array();
+    $this->dataspace_registry = null;
   }
 
+  //used for system calls mocking
   function define($key, $value)
   {
     define($key, $value);
   }
 
+  //used for system calls mocking
   function constant($key)
   {
     return constant($key);
@@ -296,6 +301,16 @@ class LimbBaseToolkit// implements LimbToolkit
   function & getMappedObject()
   {
     return $this->mapped_object;
+  }
+
+  function setRequestResolver(&$service)
+  {
+    $this->request_resolver =& $service;
+  }
+
+  function & getRequestResolver()
+  {
+    return $this->request_resolver;
   }
 
   function & getPath2IdTranslator()

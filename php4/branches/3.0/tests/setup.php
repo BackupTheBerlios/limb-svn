@@ -32,7 +32,7 @@ require_once(LIMB_DIR . '/tests/lib/DebugMock.class.php');//don't move this line
 require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_registry.inc.php');
 include_once(LIMB_DIR . '/core/file_resolvers/PackageFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/DbTableFileResolver.class.php');
-include_once(LIMB_DIR . '/core/file_resolvers/BehaviourFileResolver.class.php');
+include_once(LIMB_DIR . '/core/file_resolvers/ServiceFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/DAOFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/ObjectFileResolver.class.php');
 include_once(LIMB_DIR . '/core/file_resolvers/TemplateFileResolver.class.php');
@@ -42,7 +42,7 @@ registerFileResolver('action',      new LimbHandle(LIMB_DIR . '/tests/lib/TestsA
 registerFileResolver('strings',     new LimbHandle(LIMB_DIR . '/tests/lib/TestsStringsFileResolver'));
 registerFileResolver('db_table',    new DbTableFileResolver(new PackageFileResolver()));
 registerFileResolver('template',    new TemplateFileResolver(new PackageFileResolver()));
-registerFileResolver('behaviour',   new BehaviourFileResolver(new PackageFileResolver()));
+registerFileResolver('service',   new ServiceFileResolver(new PackageFileResolver()));
 registerFileResolver('dao',  new DAOFileResolver(new PackageFileResolver()));
 registerFileResolver('object', new ObjectFileResolver(new PackageFileResolver()));
 
@@ -50,9 +50,6 @@ require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
 require_once(LIMB_DIR . '/core/error/error.inc.php');
 require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
-require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-
-Limb :: registerToolkit(new LimbBaseToolkit());
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/LimbTestCase.class.php');

@@ -18,6 +18,8 @@ define('LIMB_STATUS_FORM_DISPLAYED', 4);
 define('LIMB_STATUS_FORM_NOT_VALID', 16);
 define('LIMB_STATUS_ERROR', 32);
 
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
+
 class Limb
 {
   var $toolkits = array(array());
@@ -65,5 +67,7 @@ class Limb
     Limb :: registerToolkit($toolkit, $name);
   }
 }
+
+Limb :: registerToolkit(new LimbBaseToolkit());//???
 
 ?>

@@ -5,20 +5,12 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: Service.class.php 1191 2005-03-25 14:04:13Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/file_resolvers/FileResolverDecorator.class.php');
-
-class ServiceFileResolver extends FileResolverDecorator
+class RequestResolverMapper
 {
-  function resolve($path, $params = array())
-  {
-    if(file_exists(LIMB_DIR . '/core/services/' . $path))
-      return LIMB_DIR . '/core/services/' . $path;
-
-    return $this->_resolver->resolve('services/' . $path, $params);
-  }
+  function map(&$request){}
 }
 
 ?>

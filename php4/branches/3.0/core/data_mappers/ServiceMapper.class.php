@@ -20,8 +20,8 @@ class ServiceMapper extends AbstractDataMapper
   function defineDataMap()
   {
     return array('service_id' => 'service_id',
-                 'behaviour_id' => 'behaviour_id',
-                 'behaviour_name' => 'behaviour_name',
+                 'service_id' => 'service_id',
+                 'service_name' => 'service_name',
                  'title' => 'title',
                  'oid' => 'oid');
   }
@@ -32,21 +32,21 @@ class ServiceMapper extends AbstractDataMapper
 
     $service->merge($raw_data);
 
-    $this->_doLoadBehaviour($record, $service);
+    $this->_doLoadService($record, $service);
   }
 
-  function _doLoadBehaviour($record, &$service)
+  function _doLoadService($record, &$service)
   {
-    $mapper =& $this->_getBehaviourMapper();
-    $behaviour =& $mapper->findById($record->get('behaviour_id'));
+    $mapper =& $this->_getServiceMapper();
+    $service =& $mapper->findById($record->get('service_id'));
 
-    $service->attachBehaviour($behaviour);
+    $service->attachService($service);
   }
 
-  function &_getBehaviourMapper()
+  function &_getServiceMapper()
   {
     $toolkit =& Limb :: toolkit();
-    return $toolkit->createDataMapper('BehaviourMapper');
+    return $toolkit->createDataMapper('ServiceMapper');
   }
 
   function insert(&$service)
@@ -60,18 +60,18 @@ class ServiceMapper extends AbstractDataMapper
 
   function _insertServiceRecord(&$service)
   {
-    if (!$service->getBehaviour())
-      return throw(new LimbException('behaviour is not attached'));
+    if (!$service->getService())
+      return throw(new LimbException('service is not attached'));
 
     $toolkit =& Limb :: toolkit();
 
-    $mapper =& $this->_getBehaviourMapper();
-    $mapper->save($service->getBehaviour());
+    $mapper =& $this->_getServiceMapper();
+    $mapper->save($service->getService());
 
     ComplexArray :: map(array_flip($this->defineDataMap()), $service->export(), $raw_data);
 
-    $bhvr =& $service->getBehaviour();
-    $raw_data['behaviour_id'] = $bhvr->getId();
+    $bhvr =& $service->getService();
+    $raw_data['service_id'] = $bhvr->getId();
 
     $db_table = $toolkit->createDBTable('SysService');
 
@@ -88,16 +88,16 @@ class ServiceMapper extends AbstractDataMapper
     if(!$service->getServiceId())
       return throw(new LimbException('service id not set'));
 
-    if (!$service->getBehaviour())
-      return throw(new LimbException('behaviour not attached'));
+    if (!$service->getService())
+      return throw(new LimbException('service not attached'));
 
-    $mapper =& $this->_getBehaviourMapper();
-    $mapper->save($service->getBehaviour());
+    $mapper =& $this->_getServiceMapper();
+    $mapper->save($service->getService());
 
     ComplexArray :: map(array_flip($this->defineDataMap()), $service->export(), $raw_data);
 
-    $bhvr =& $service->getBehaviour();
-    $raw_data['behaviour_id'] = $bhvr->getId();
+    $bhvr =& $service->getService();
+    $raw_data['service_id'] = $bhvr->getId();
 
     $toolkit =& Limb :: toolkit();
     $db_table =& $toolkit->createDBTable('SysService');

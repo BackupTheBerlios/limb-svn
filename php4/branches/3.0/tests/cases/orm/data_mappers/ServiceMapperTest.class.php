@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/ServiceMapper.class.php');
-require_once(LIMB_DIR . '/core/data_mappers/BehaviourMapper.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/ServiceMapper.class.php');
 require_once(LIMB_DIR . '/core/Service.class.php');
-require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
+require_once(LIMB_DIR . '/core/services/Service.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 Mock :: generatePartial('LimbBaseToolkit',
@@ -19,14 +19,14 @@ Mock :: generatePartial('LimbBaseToolkit',
                       array('createDataMapper'));
 
 Mock :: generate('Service');
-Mock :: generate('Behaviour');
-Mock :: generate('BehaviourMapper');
+Mock :: generate('Service');
+Mock :: generate('ServiceMapper');
 
 class ServiceMapperTest extends LimbTestCase
 {
   var $db;
-  var $behaviour;
-  var $behaviour_mapper;
+  var $service;
+  var $service_mapper;
   var $service;
   var $toolkit;
 
@@ -38,14 +38,14 @@ class ServiceMapperTest extends LimbTestCase
   function setUp()
   {
     $this->toolkit = new ServiceMapperTestToolkit($this);
-    $this->behaviour_mapper = new MockBehaviourMapper($this);
+    $this->service_mapper = new MockServiceMapper($this);
     $this->service = new MockService($this);
 
     $this->toolkit->setReturnReference('createDataMapper',
-                                   $this->behaviour_mapper,
-                                   array('BehaviourMapper'));
+                                   $this->service_mapper,
+                                   array('ServiceMapper'));
 
-    $this->behaviour = new MockBehaviour($this);
+    $this->service = new MockService($this);
 
     Limb :: registerToolkit($this->toolkit);
 
@@ -60,8 +60,8 @@ class ServiceMapperTest extends LimbTestCase
 
     $this->toolkit->tally();
     $this->service->tally();
-    $this->behaviour->tally();
-    $this->behaviour_mapper->tally();
+    $this->service->tally();
+    $this->service_mapper->tally();
 
     Limb :: restoreToolkit();
   }
@@ -69,21 +69,21 @@ class ServiceMapperTest extends LimbTestCase
   function _cleanUp()
   {
     $this->db->delete('sys_service');
-    $this->db->delete('sys_behaviour');
+    $this->db->delete('sys_service');
   }
 
   function testLoad()
   {
     $record = new Dataspace();
     $record->import(array('service_id' => $service_id = 10,
-                          'behaviour_id' => $behaviour_id = 100,
-                          'behaviour_name' => $behaviour_name = 'TestBehaviour',
+                          'service_id' => $service_id = 100,
+                          'service_name' => $service_name = 'TestService',
                           'title' => $title = 'title'));
 
     $mapper = new ServiceMapper();
 
-    $this->behaviour_mapper->expectOnce('findById', array($behaviour_id));
-    $this->behaviour_mapper->setReturnReference('findById', $this->behaviour, array($behaviour_id));
+    $this->service_mapper->expectOnce('findById', array($service_id));
+    $this->service_mapper->setReturnReference('findById', $this->service, array($service_id));
 
     $service = new Service();
 
@@ -91,12 +91,12 @@ class ServiceMapperTest extends LimbTestCase
 
     $this->assertEqual($service->getServiceId(), $service_id);
     $this->assertEqual($service->getTitle(), $title);
-    $this->assertEqual($service->get('behaviour_name'), $behaviour_name);
+    $this->assertEqual($service->get('service_name'), $service_name);
 
-    $this->assertIsA($service->getBehaviour(), get_class($this->behaviour));
+    $this->assertIsA($service->getService(), get_class($this->service));
   }
 
-  function testFailedInsertServiceRecordNoBehaviourAttached()
+  function testFailedInsertServiceRecordNoServiceAttached()
   {
     $service = new Service();
 
@@ -104,7 +104,7 @@ class ServiceMapperTest extends LimbTestCase
 
     $mapper->insert($service);
     $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'behaviour is not attached');
+    $this->assertEqual($e->getMessage(), 'service is not attached');
   }
 
   function testInsertServiceRecordOk()
@@ -114,10 +114,10 @@ class ServiceMapperTest extends LimbTestCase
     $service = new Service();
     $service->set('oid', $oid = 100);//note 'id' becomes 'oid' in db!!!
     $service->setTitle($title = 'test');
-    $service->attachBehaviour($this->behaviour);
-    $this->behaviour->setReturnValue('getId', $behaviour_id = 25);
+    $service->attachService($this->service);
+    $this->service->setReturnValue('getId', $service_id = 25);
 
-    $this->behaviour_mapper->expectOnce('save', array(new IsAExpectation('MockBehaviour')));
+    $this->service_mapper->expectOnce('save', array(new IsAExpectation('MockService')));
 
     $mapper->insert($service);
 
@@ -129,7 +129,7 @@ class ServiceMapperTest extends LimbTestCase
     $this->assertEqual($service->getServiceId(), $services[0]['service_id']);
     $this->assertEqual($oid, $services[0]['oid']);
     $this->assertEqual($title, $services[0]['title']);
-    $this->assertEqual($behaviour_id, $services[0]['behaviour_id']);
+    $this->assertEqual($service_id, $services[0]['service_id']);
   }
 
   function testUpdateNoId()
@@ -142,7 +142,7 @@ class ServiceMapperTest extends LimbTestCase
     $this->assertEqual($e->getMessage(), 'service id not set');
   }
 
-  function  testUpdateFailedNoBehaviourId()
+  function  testUpdateFailedNoServiceId()
   {
     $mapper = new ServiceMapper();
     $service = new Service();
@@ -150,13 +150,13 @@ class ServiceMapperTest extends LimbTestCase
 
     $mapper->update($service);
     $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'behaviour not attached');
+    $this->assertEqual($e->getMessage(), 'service not attached');
   }
 
   function testUpdateServiceRecordOk()
   {
     $old_row = array('service_id' => $service_id = 1,
-                     'behaviour_id' => $behaviour_id = 10,
+                     'service_id' => $service_id = 10,
                      'oid' => $oid = 100,
                      'title' => $title = 'title');
 
@@ -168,10 +168,10 @@ class ServiceMapperTest extends LimbTestCase
     $service->set('oid', $new_oid = 101);
     $service->setServiceId($service_id);
     $service->setTitle($new_title = 'test2');
-    $service->attachBehaviour($this->behaviour);
-    $this->behaviour->setReturnValue('getId', $new_behaviour_id = 25);
+    $service->attachService($this->service);
+    $this->service->setReturnValue('getId', $new_service_id = 25);
 
-    $this->behaviour_mapper->expectOnce('save', array(new IsAExpectation('MockBehaviour')));
+    $this->service_mapper->expectOnce('save', array(new IsAExpectation('MockService')));
 
     $mapper->update($service);
 
@@ -182,7 +182,7 @@ class ServiceMapperTest extends LimbTestCase
     $this->assertEqual($service_id, $services[0]['service_id']);
     $this->assertEqual($new_title, $services[0]['title']);
     $this->assertEqual($new_oid, $services[0]['oid']);
-    $this->assertEqual($new_behaviour_id, $services[0]['behaviour_id']);
+    $this->assertEqual($new_service_id, $services[0]['service_id']);
 
   }
 

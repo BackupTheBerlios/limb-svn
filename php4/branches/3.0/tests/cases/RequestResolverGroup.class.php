@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/file_resolvers/FileResolverDecorator.class.php');
-
-class ServiceFileResolver extends FileResolverDecorator
+class RequestResolverGroup extends LimbGroupTest
 {
-  function resolve($path, $params = array())
+  function RequestResolverGroup()
   {
-    if(file_exists(LIMB_DIR . '/core/services/' . $path))
-      return LIMB_DIR . '/core/services/' . $path;
-
-    return $this->_resolver->resolve('services/' . $path, $params);
+    parent :: LimbGroupTest('request resolver tests');
   }
-}
 
+  function getTestCasesHandles()
+  {
+    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/request_resolvers');
+  }
+
+}
 ?>

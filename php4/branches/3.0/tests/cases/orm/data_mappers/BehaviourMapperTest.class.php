@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/BehaviourMapper.class.php');
-require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/ServiceMapper.class.php');
+require_once(LIMB_DIR . '/core/services/Service.class.php');
 require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
 
-Mock :: generatePartial('BehaviourMapper',
-                        'BehaviourMapperTestVersion',
+Mock :: generatePartial('ServiceMapper',
+                        'ServiceMapperTestVersion',
                         array('insert', 'update'));
 
-class BehaviourMapperTest extends LimbTestCase
+class ServiceMapperTest extends LimbTestCase
 {
   var $db;
   var $mapper;
 
-  function BehaviourMapperTest()
+  function ServiceMapperTest()
   {
-    parent :: LimbTestCase('behaviour mapper test');
+    parent :: LimbTestCase('service mapper test');
   }
 
   function setUp()
   {
-    $this->mapper = new BehaviourMapper();
+    $this->mapper = new ServiceMapper();
     $toolkit =& Limb :: toolkit();
     $this->db =& new SimpleDb($toolkit->getDbConnection());
 
@@ -42,7 +42,7 @@ class BehaviourMapperTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('sys_behaviour');
+    $this->db->delete('sys_service');
   }
 
   function testFindByIdNull()
@@ -52,48 +52,48 @@ class BehaviourMapperTest extends LimbTestCase
 
   function testFindById()
   {
-    $this->db->insert('sys_behaviour', array('id' => $id = 100, 'name' => 'Behaviour'));
+    $this->db->insert('sys_service', array('id' => $id = 100, 'name' => 'Service'));
 
-    $behaviour = $this->mapper->findById($id);
+    $service = $this->mapper->findById($id);
 
-    $this->assertIsA($behaviour, 'Behaviour');
-    $this->assertEqual($id, $behaviour->getId());
+    $this->assertIsA($service, 'Service');
+    $this->assertEqual($id, $service->getId());
   }
 
   function testSaveInsert()
   {
-    $mapper = new BehaviourMapperTestVersion($this);
+    $mapper = new ServiceMapperTestVersion($this);
 
-    $behaviour = new Behaviour('whatever');
+    $service = new Service('whatever');
 
-    $mapper->expectOnce('insert', array($behaviour));
+    $mapper->expectOnce('insert', array($service));
 
-    $mapper->save($behaviour);
+    $mapper->save($service);
 
     $mapper->tally();
   }
 
   function testSaveUpdate()
   {
-    $mapper = new BehaviourMapperTestVersion($this);
+    $mapper = new ServiceMapperTestVersion($this);
 
-    $behaviour = new Behaviour('whatever');
-    $behaviour->setId(100);
+    $service = new Service('whatever');
+    $service->setId(100);
 
-    $mapper->expectOnce('update', array($behaviour));
+    $mapper->expectOnce('update', array($service));
 
-    $mapper->save($behaviour);
+    $mapper->save($service);
 
     $mapper->tally();
   }
 
   function testInsert()
   {
-    $behaviour = new Behaviour($name = 'test');
+    $service = new Service($name = 'test');
 
-    $this->mapper->insert($behaviour);
+    $this->mapper->insert($service);
 
-    $rs =& $this->db->select('sys_behaviour', '*', array('id' => $behaviour->getId()));
+    $rs =& $this->db->select('sys_service', '*', array('id' => $service->getId()));
 
     $record = $rs->getRow();
 
@@ -102,37 +102,37 @@ class BehaviourMapperTest extends LimbTestCase
 
   function testDoNotInsertTheSameRecortTwice()
   {
-    $this->db->insert('sys_behaviour', array('id' => $id = 10,
+    $this->db->insert('sys_service', array('id' => $id = 10,
                                              'name' => $name = 'test'));
 
-    $behaviour = new Behaviour($name);
+    $service = new Service($name);
 
-    $this->mapper->insert($behaviour);
+    $this->mapper->insert($service);
 
-    $rs =& $this->db->select('sys_behaviour', '*');
+    $rs =& $this->db->select('sys_service', '*');
 
     $this->assertEqual($rs->getTotalRowCount(), 1);
-    $this->assertEqual($behaviour->getId(), $id);
+    $this->assertEqual($service->getId(), $id);
   }
 
   function testUpdateFailedNoId()
   {
-    $behaviour = new Behaviour('whatever');
+    $service = new Service('whatever');
 
-    $this->mapper->update($behaviour);
+    $this->mapper->update($service);
     $this->assertTrue(catch('Exception', $e));
   }
 
   function testUpdate()
   {
-    $this->db->insert('sys_behaviour', array('id' => $id = 100));
+    $this->db->insert('sys_service', array('id' => $id = 100));
 
-    $behaviour = new Behaviour($name = 'test');
-    $behaviour->setId($id);
+    $service = new Service($name = 'test');
+    $service->setId($id);
 
-    $this->mapper->update($behaviour);
+    $this->mapper->update($service);
 
-    $rs =& $this->db->select('sys_behaviour', '*',  array('id' => $behaviour->getId()));
+    $rs =& $this->db->select('sys_service', '*',  array('id' => $service->getId()));
 
     $record = $rs->getRow();
 
@@ -141,33 +141,33 @@ class BehaviourMapperTest extends LimbTestCase
 
   function testDeleteFailedNoId()
   {
-    $behaviour = new Behaviour('whatever');
+    $service = new Service('whatever');
 
-    $this->mapper->delete($behaviour);
+    $this->mapper->delete($service);
     $this->assertTrue(catch('Exception', $e));
   }
 
   function testDelete()
   {
-    $this->db->insert('sys_behaviour', array('id' => $id = 100));
+    $this->db->insert('sys_service', array('id' => $id = 100));
 
-    $behaviour = new Behaviour('whatever');
-    $behaviour->setId($id);
+    $service = new Service('whatever');
+    $service->setId($id);
 
-    $this->mapper->delete($behaviour);
+    $this->mapper->delete($service);
 
-    $rs =& $this->db->select('sys_behaviour', '*',  array('id' => $behaviour->getId()));
+    $rs =& $this->db->select('sys_service', '*',  array('id' => $service->getId()));
 
     $this->assertTrue(!$rs->getRow());
   }
 
   function testGetIdsByNames()
   {
-    $this->db->insert('sys_behaviour', array('id' => 10, 'name' => 'test1'));
-    $this->db->insert('sys_behaviour', array('id' => 11, 'name' => 'test2'));
-    $this->db->insert('sys_behaviour', array('id' => 12, 'name' => 'test3'));
+    $this->db->insert('sys_service', array('id' => 10, 'name' => 'test1'));
+    $this->db->insert('sys_service', array('id' => 11, 'name' => 'test2'));
+    $this->db->insert('sys_service', array('id' => 12, 'name' => 'test3'));
 
-    $ids = BehaviourMapper :: getIdsByNames(array('test1', 'test2'));
+    $ids = ServiceMapper :: getIdsByNames(array('test1', 'test2'));
 
     sort($ids);
     $this->assertEqual(sizeof($ids), 2);

@@ -27,7 +27,7 @@ class SysServiceDbTable extends LimbDbTable
     return array(
       'service_id' => array('type' => 'numeric'),
       'oid' => array('type' => 'numeric'),
-      'behaviour_id' => array('type' => 'numeric'),
+      'service_id' => array('type' => 'numeric'),
       'title' => '',
     );
   }

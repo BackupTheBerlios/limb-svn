@@ -17,7 +17,8 @@ class IniBasedDbConfig extends DbConfig
   {
     parent :: DbConfig($name);
 
-    $ini =& getIni('common.ini');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getIni('common.ini');
 
     $this->driver = $ini->getOption('driver', 'DB');
     $this->host = $ini->getOption('host', 'DB');

@@ -9,30 +9,30 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
-require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
+require_once(LIMB_DIR . '/core/services/Service.class.php');
 
-class BehaviourMapper extends AbstractDataMapper
+class ServiceMapper extends AbstractDataMapper
 {
   function & findById($id)
   {
     $toolkit =& Limb :: toolkit();
-    $table =& $toolkit->createDBTable('SysBehaviour');
+    $table =& $toolkit->createDBTable('SysService');
 
     if(!$record = $table->selectRecordById($id))
       return null;
 
-    $behaviour =& new Behaviour($record->get('name'));
-    $behaviour->setId($id);
+    $service =& new Service($record->get('name'));
+    $service->setId($id);
 
-    return $behaviour;
+    return $service;
   }
 
-  function insert(&$behaviour)
+  function insert(&$service)
   {
     $toolkit =& Limb :: toolkit();
-    $table =& $toolkit->createDBTable('SysBehaviour');
+    $table =& $toolkit->createDBTable('SysService');
 
-    $data['name'] = $behaviour->getName();
+    $data['name'] = $service->getName();
 
     $rs =& $table->select(array('name' => $data['name']));
     $rs->rewind();
@@ -45,31 +45,31 @@ class BehaviourMapper extends AbstractDataMapper
     else
       $id = $table->insert($data);
 
-    $behaviour->setId($id);
+    $service->setId($id);
 
     return $id;
   }
 
-  function update(&$behaviour)
+  function update(&$service)
   {
-    if(!$id = $behaviour->getId())
+    if(!$id = $service->getId())
       return throw(new LimbException('id is not set'));
 
     $toolkit =& Limb :: toolkit();
-    $table =& $toolkit->createDBTable('SysBehaviour');
+    $table =& $toolkit->createDBTable('SysService');
 
-    $data['name'] = $behaviour->getName();
+    $data['name'] = $service->getName();
 
     return $table->updateById($id, $data);
   }
 
-  function delete(&$behaviour)
+  function delete(&$service)
   {
-    if(!$id = $behaviour->getId())
+    if(!$id = $service->getId())
       return throw(new LimbException('id is not set'));
 
     $toolkit =& Limb :: toolkit();
-    $table =& $toolkit->createDBTable('SysBehaviour');
+    $table =& $toolkit->createDBTable('SysService');
 
     return $table->deleteById($id);
   }
@@ -79,7 +79,7 @@ class BehaviourMapper extends AbstractDataMapper
     $toolkit =& Limb :: toolkit();
     $db =& new SimpleDb($toolkit->getDbConnection());
 
-    $rs =& $db->select('sys_behaviour', array('id'), sqlIn('name', $names));
+    $rs =& $db->select('sys_service', array('id'), sqlIn('name', $names));
 
     $result = array();
     for($rs->rewind();$rs->valid();$rs->next())

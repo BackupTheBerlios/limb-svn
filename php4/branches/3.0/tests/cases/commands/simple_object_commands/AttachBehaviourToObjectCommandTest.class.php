@@ -8,15 +8,15 @@
 * $Id: CreateSimpleObjectCommandTest.class.php 1165 2005-03-16 14:28:14Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/AttachBehaviourToObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/AttachServiceToObjectCommand.class.php');
 require_once(dirname(__FILE__) . '/simple_object.inc.php');
 require_once(LIMB_DIR . '/core/Service.class.php');
 
-class AttachBehaviourToObjectCommandTest extends LimbTestCase
+class AttachServiceToObjectCommandTest extends LimbTestCase
 {
-  function AttachBehaviourToObjectCommandTest()
+  function AttachServiceToObjectCommandTest()
   {
-    parent :: LimbTestCase('attach behaviour to object command test');
+    parent :: LimbTestCase('attach service to object command test');
   }
 
   function testPerform()
@@ -26,12 +26,12 @@ class AttachBehaviourToObjectCommandTest extends LimbTestCase
     $object = new Service();
     $toolkit->setProcessedObject($object);
 
-    $command = new AttachBehaviourToObjectCommand($behaviour_name = 'Test');
+    $command = new AttachServiceToObjectCommand($service_name = 'Test');
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
-    $behaviour =& $object->getBehaviour();
-    $this->assertEqual($behaviour->getName(), $behaviour_name);
+    $service =& $object->getService();
+    $this->assertEqual($service->getName(), $service_name);
   }
 
   function testPerformFailedObjectIsNotAService()
@@ -41,7 +41,7 @@ class AttachBehaviourToObjectCommandTest extends LimbTestCase
     $object = new Object();
     $toolkit->setProcessedObject($object);
 
-    $command = new AttachBehaviourToObjectCommand($behaviour_name = 'Test');
+    $command = new AttachServiceToObjectCommand($service_name = 'Test');
 
     $this->assertEqual($command->perform(), LIMB_STATUS_ERROR);
   }

@@ -8,13 +8,13 @@
 * $Id: EditSimpleObjectCommand.class.php 1186 2005-03-23 09:47:34Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
+require_once(LIMB_DIR . '/core/services/Service.class.php');
 
-class AttachBehaviourToObjectCommand
+class AttachServiceToObjectCommand
 {
   var $name;
 
-  function AttachBehaviourToObjectCommand($name)
+  function AttachServiceToObjectCommand($name)
   {
     $this->name = $name;
   }
@@ -27,7 +27,7 @@ class AttachBehaviourToObjectCommand
     if(!is_a($object, 'Service'))
       return LIMB_STATUS_ERROR;
 
-    $object->attachBehaviour(new Behaviour($this->name));
+    $object->attachService(new Service($this->name));
 
     return LIMB_STATUS_OK;
   }

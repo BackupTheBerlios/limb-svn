@@ -130,14 +130,14 @@ class ComplexArray
   //e.g, $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')
   function & sortArray($array, $sort_params, $preserve_keys = true)
   {
-   $array_mod = array();
-   foreach ($array as $key => $value)
+    $array_mod = array();
+    foreach ($array as $key => $value)
      $array_mod['_' . $key] = $value;
 
-   $i = 0;
-   $multi_sort_line = "return array_multisort( ";
-   foreach ($sort_params as $name => $sort_type)
-   {
+    $i = 0;
+    $multi_sort_line = "return array_multisort( ";
+    foreach ($sort_params as $name => $sort_type)
+    {
      $i++;
      foreach ($array_mod as $row_key => $row)
       $sort_values[$i][] = $row[$name];
@@ -148,21 +148,21 @@ class ComplexArray
       $sort_args[$i] = SORT_ASC;
 
      $multi_sort_line .= '$sort_values[' . $i . '], $sort_args[' . $i . '], ';
-   }
-   $multi_sort_line .= '$array_mod );';
+    }
+    $multi_sort_line .= '$array_mod );';
 
-   eval($multi_sort_line);
+    eval($multi_sort_line);
 
-   $array = array();
-   foreach ($array_mod as $key => $value)
-   {
+    $array = array();
+    foreach($array_mod as $key => $value)
+    {
      if($preserve_keys)
-      $array[ substr($key, 1) ] = $value;
+      $array[substr($key, 1)] = $value;
      else
       $array[] = $value;
-   }
+    }
 
-   return $array;
+    return $array;
   }
 }
 

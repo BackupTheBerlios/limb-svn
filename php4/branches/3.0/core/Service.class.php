@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: Service.class.php 1085 2005-02-02 16:04:20Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/Object.class.php');
 
 class Service extends Object
 {
-  var $behaviour;
+  var $service;
 
   function getServiceId()
   {
@@ -24,14 +24,14 @@ class Service extends Object
     $this->set('service_id', (int)$service_id);
   }
 
-  function & getBehaviour()
+  function & getService()
   {
-    return $this->behaviour;
+    return $this->service;
   }
 
-  function attachBehaviour(&$behaviour)
+  function attachService(&$service)
   {
-    return $this->behaviour =& $behaviour;
+    return $this->service =& $service;
   }
 
   function getTitle()
@@ -47,7 +47,7 @@ class Service extends Object
   function & getController()
   {
     include_once(LIMB_DIR . '/core/ServiceController.class.php');
-    return new ServiceController($this->getBehaviour());
+    return new ServiceController($this->getService());
   }
 
 }

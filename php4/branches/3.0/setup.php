@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-@define('VAR_DIR', LIMB_APP_DIR . 'var/');
-@define('MEDIA_DIR', VAR_DIR . 'media/');
+@define('VAR_DIR', LIMB_APP_DIR . '/var/');
+@define('MEDIA_DIR', VAR_DIR . '/media/');
 
 if(isset($_SERVER['SERVER_PORT']) &&  $_SERVER['SERVER_PORT'] == 81)
   define('ERROR_HANDLER_TYPE', 'native');

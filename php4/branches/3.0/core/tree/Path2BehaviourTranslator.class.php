@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-class Path2BehaviourTranslator
+class Path2ServiceTranslator
 {
-  function & toBehaviour($path)
+  function & toService($path)
   {
     $to_id_translator =& $this->_getPath2IdTranslator();
     if(!$id = $to_id_translator->toId($path))
@@ -20,15 +20,15 @@ class Path2BehaviourTranslator
     $toolkit = Limb :: toolkit();
     $conn =& $toolkit->getDBConnection();
 
-    $stmt =& $conn->newStatement('SELECT sys_behaviour.name FROM sys_service, sys_behaviour '.
-                                 'WHERE sys_service.behaviour_id = sys_behaviour.id '.
+    $stmt =& $conn->newStatement('SELECT sys_service.name FROM sys_service, sys_service '.
+                                 'WHERE sys_service.service_id = sys_service.id '.
                                  ' AND sys_service.oid = ' . $id);
 
 
     if ($name = $stmt->getOneValue())
     {
-      include_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
-      return new Behaviour($name);
+      include_once(LIMB_DIR . '/core/services/Service.class.php');
+      return new Service($name);
     }
     else
       return null;

@@ -10,11 +10,11 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class SysBehaviourDbTable extends LimbDbTable
+class SysServiceDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'sys_behaviour';
+    return 'sys_service';
   }
 
   function _defineColumns()

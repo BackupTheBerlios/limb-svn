@@ -5,20 +5,26 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: Service.class.php 1191 2005-03-25 14:04:13Z seregalimb $
 *
 ***********************************************************************************/
-class BehavioursGroup extends LimbGroupTest
+class NotFoundRequestResolver //implements RequestResolver
 {
-  function BehavioursGroup()
+  function & getRequestedService(&$request)
   {
-    parent :: LimbGroupTest('behaviours tests');
+    include_once(LIMB_DIR . '/core/services/Service.class.php');
+    return new Service('404');
   }
 
-  function getTestCasesHandles()
+  function getRequestedAction(&$request)
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/behaviours');
+    return 'display';
   }
 
+  function getRequestedEntity(&$request)
+  {
+    return new Object();
+  }
 }
+
 ?>

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: Separator.tag.php 985 2004-12-22 16:05:51Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 $taginfo =& new TagInfo('limb:list:SEPARATOR', 'LimbListSeparatorTag');
@@ -13,7 +13,7 @@ $taginfo->setDefaultLocation(LOCATION_SERVER);
 TagDictionary::registerTag($taginfo, __FILE__);
 
 // Limb list separator works different than WACT generic list separator.
-// It's behaviour depends on it's position.
+// It's service depends on it's position.
 // You MUST place separator at the END of the list item tag content.
 // Step attribute is 1 by default
 

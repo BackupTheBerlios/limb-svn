@@ -5,32 +5,28 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: InterceptingFilter.interface.php 981 2004-12-21 15:51:00Z pachanga $
 *
 ***********************************************************************************/
 
-class ServiceControllerFilter// implements InterceptingFilter
+class CommandProcessingFilter//implements InterceptingFilter
 {
   function run(&$filter_chain, &$request, &$response)
   {
-    Debug :: addTimingPoint('site object controller filter started');
-
     $toolkit =& Limb :: toolkit();
-    $dao =& $toolkit->createDAO('RequestedObjectDAO');
-    $dao->setRequest($request);
+    $service =& $toolkit->getRequestResolver();
 
-    $object = wrapWithService($dao->fetch());
-    $ctrlr =& $object->getController();
-    $ctrlr->process($request);
+    $uow =& $toolkit->getUOW();
 
-    Debug :: addTimingPoint('site object controller filter finished');
+    $uow->start();
+
+    $command =& $service->getActionCommand($service->getCurrentAction());
+    $command->perform();
+
+    $uow->commit();
 
     $filter_chain->next();
   }
-
-  function _getController($behaviour)
-  {
-    return new ServiceController($behaviour);
-  }
 }
+
 ?>
