@@ -26,6 +26,8 @@ class db_module
   
   var $_locale_id = '';
   
+  var $_executed_sql = array();
+  
   function db_module($db_params)
   {
 		$this->_transaction_status = DB_TRANSACTION_STATUS_OUT;
@@ -101,7 +103,23 @@ class db_module
   	  	 	
   	if($this->is_debug_enabled())
   	{
-  		debug :: write_debug($sql);
+  	  $md5 = md5($sql);
+  	  
+  	  if(isset($this->_executed_sql[$md5]))
+  	  {
+  	    $this->_executed_sql[$md5]['times']++;
+  	    
+  	    debug :: write_debug('same SQL query at: ' .   	    
+  	      '<a href=#' . $this->_executed_sql[$md5]['pos'] . '><b>' . $this->_executed_sql[$md5]['pos'] . '</b></a>' .    	     
+  	      ' already executed for ' . $this->_executed_sql[$md5]['times'] . ' times'
+  	    );
+  	  }
+  	  else
+  	  {
+  	    debug :: write_debug($sql);
+  	    $this->_executed_sql[$md5] = array('pos' => debug :: sizeof(), 'times' => 0);
+  	  }
+  		
   		debug :: accumulator_start('db', 'sql_exec');
   	}
   	
@@ -447,7 +465,7 @@ class db_module
 		foreach($values as $value)
 			$implode_values[] = $this->_process_value($value, $type);
 		
-		$in_ids = implode(',', $implode_values);
+		$in_ids = implode(' , ', $implode_values);
 		
 		return $column_name . ' IN (' . $in_ids . ')';
   }

@@ -258,7 +258,7 @@ class site_object extends object
 			return array();
 		}	
 	
-		$ids = '('. implode(',', $ids_array) . ')';
+		$ids = '('. implode(' , ', $ids_array) . ')';
 		
 		if(isset($params['limit']))
 		{
@@ -278,7 +278,7 @@ class site_object extends object
 			$sql_params['conditions'] = array();
 		}
 		
-		$ids = '('. implode(',', $ids_array) . ')';
+		$ids = '('. implode(' , ', $ids_array) . ')';
 		$sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 
 		$arr =& $this->fetch($params, $sql_params);
@@ -395,7 +395,7 @@ class site_object extends object
 			return array();
 		}	
 	
-		$ids = '('. implode(',', $ids_array) . ')';
+		$ids = '('. implode(' , ', $ids_array) . ')';
 		
 		$sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 		
