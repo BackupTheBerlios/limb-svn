@@ -1,0 +1,75 @@
+<html>
+<head>
+<metadata:CHARSET>
+<link rel="stylesheet" href="/shared/styles/admin.css" type="text/css">
+<script language="javascript" src="/shared/js/common.js"></script>
+<script language="javascript" src="/shared/js/form_errors.js"></script>
+</head>
+<body>
+	<table width=100% border=0 cellspacing=0 cellpadding=0>
+	<tr>
+
+		<td style='padding:0 25px 3px 0' class=path>
+		
+		<core:REQUEST_TRANSFER attributes="only_parents">
+		
+		<metadata:BREADCRUMBS request_path_attribute='path'>
+		<grid:LIST>
+			<grid:ITERATOR>
+				<core:OPTIONAL for='is_last'>
+					{$title}
+				</core:OPTIONAL>
+				<core:DEFAULT for='is_last'>
+					<a href="/root/admin/site_structure?action=node_select&path={$path}">{$title}</a> &raquo; 
+				</core:DEFAULT>
+			</grid:ITERATOR>
+		</grid:LIST>
+		</metadata:BREADCRUMBS>
+		
+		</core:REQUEST_TRANSFER>
+		
+		</td>
+	</tr>
+	</table>
+
+
+<fetch:SUB_BRANCH target="nodes" navigator='pager'>
+	<core:PARAMETER name='datasource_path' value='node_select_datasource'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<table width="100%" border="0" cellspacing="5" cellpadding="5">
+
+<core:REQUEST_TRANSFER attributes="only_parents">
+<grid:LIST id='nodes'>
+<tr>
+	<th></th>
+	<th><locale:STRING name='title'></th>
+	<th><locale:STRING name='class_name'></th>
+	<th></th>
+</tr>
+<grid:ITERATOR>
+<tr>
+	<td>
+	<core:OPTIONAL for='icon'>
+	<img src='{$icon}' align='center'>
+	</core:OPTIONAL>
+	<core:DEFAULT for='icon'>
+	<img src='/shared/images/generic.gif' align='center'>
+	</core:DEFAULT>
+	</td>
+	<td>
+		<a href='/root/admin/site_structure?action=node_select&path={$path}'>{$identifier}   ({$title})</a>
+	</td>
+	<td>{$class_name}</td>
+	<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "{$title}", path: "{$path}",
+	 icon: "{$icon}", parent_node_id: "{$parent_node_id}"}<core:LITERAL>)'>Select</button></core:LITERAL>
+	 </td>
+</tr>
+</grid:ITERATOR>
+</grid:LIST>
+</core:REQUEST_TRANSFER>
+</table>
+</body>
+</html>

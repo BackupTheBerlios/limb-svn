@@ -1,0 +1,47 @@
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='grid_items' navigator='grid_items_pager'>
+	<core:PARAMETER name='loader_class_name' value='site_object' >
+	<core:PARAMETER name='restrict_by_class' value='0'>
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<pager:navigator id="grid_items_pager" items="50">
+<core:INCLUDE file="pager_contents.html">
+</pager:navigator>
+
+<grid:LIST id='grid_items'>
+<table width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='published_status' ></th>
+	<th><locale:STRING name='object'></th>
+	<th><locale:STRING name='identifier'></th>
+	<th><locale:STRING name='class_name'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+<td><core:INCLUDE file="/admin/selector.html"></td>
+<td><core:INCLUDE file="published_status.html"></td>
+<td jip='object'><a href="{$path}">{$title}</a></td>
+<td>{$identifier}</td>
+<td>{$class_name}</td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='6' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>
+</table>
+</grid:LIST>
