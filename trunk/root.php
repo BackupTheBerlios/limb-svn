@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: root.php 533 2004-02-21 13:26:17Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -38,7 +38,6 @@ if (isset($_REQUEST['recursive_search_for_node']) && $_REQUEST['recursive_search
 	$recursive = true;
 
 $node =& map_url_to_node('', $recursive);
-
 if(!$node)
 {
 	debug :: write_error('node not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
@@ -54,20 +53,30 @@ if(isset($node['only_parent_found']) && $node['only_parent_found'])
 {
 	if(isset($_REQUEST['action'])) //only action significant when reload to found parent
 		$params = '?action='. $_REQUEST['action'];
-
-	reload($node['path']. $params);
+	
+	$tree = limb_tree :: instance();
+	reload($tree->get_path_to_node($node). $params);
 }
 
 if(!$object_data =& fetch_one_by_node_id($node['id']))
 {
-	debug :: write_error('content object not allowed or retrieved', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-	ob_end_clean();
-	if (debug :: is_console_enabled())
-		echo debug :: parse_html_console();
-
-	header("HTTP/1.1 403 Access denied");
-	exit;  
+	if (!user :: is_logged_in())
+	{
+		$tree = limb_tree :: instance();
+		reload('/root/login?redirect='. $tree->get_path_to_node($node));
+	}	
+	else
+	{
+		debug :: write_error('content object not allowed or retrieved', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+		ob_end_clean();
+		if (debug :: is_console_enabled())
+			echo debug :: parse_html_console();
+	
+		header("HTTP/1.1 403 Access denied");
+		exit;
+	}	
 }
+
 
 if(isset($object_data['locale_id']) && $object_data['locale_id'])
 	define('CONTENT_LOCALE_ID', $object_data['locale_id']);

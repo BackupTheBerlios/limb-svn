@@ -54,6 +54,16 @@ class limb_tree extends nested_db_tree
 		return $nodes;
 	}
 	
+	function get_path_to_node($node)
+	{
+		$parents = $this->get_parents($node['id']);
+		$path = '';
+		foreach($parents as $parent_data)
+			$path .= '/' . $parent_data['identifier'];
+		
+		return $path .= '/' . $node['identifier'];
+	}
+	
 	function get_max_child_identifier($id)
 	{
 		if (!($parent = $this->get_node($id)))
