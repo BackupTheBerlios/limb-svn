@@ -20,6 +20,8 @@ interface LimbToolkit
   public function getDB();
   public function getTree();
   public function getUser();
+  public function getINI($ini_path);
+  public function flushINIcache();
   public function getAuthorizer();
   public function getAuthenticator();
   public function getRequest();

@@ -29,10 +29,11 @@ class	db_factory
 		{
 			if(!$db_params && $db_type !== 'null')
 			{
-				$db_params['host'] = get_ini_option('common.ini', 'host', 'DB');
-				$db_params['login'] = get_ini_option('common.ini', 'login', 'DB');
-				$db_params['password'] = get_ini_option('common.ini', 'password', 'DB');
-				$db_params['name'] = get_ini_option('common.ini', 'name', 'DB');
+        $conf = get_ini('common.ini');
+				$db_params['host'] = $conf->get_option('host', 'DB');
+				$db_params['login'] = $conf->get_option('login', 'DB');
+				$db_params['password'] = $conf->get_option('password', 'DB');
+				$db_params['name'] = $conf->get_option('name', 'DB');
 			}
 			
 		  include_once(LIMB_DIR . '/class/lib/db/' . $db_class_name . '.class.php');

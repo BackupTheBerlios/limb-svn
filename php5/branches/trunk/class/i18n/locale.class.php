@@ -543,7 +543,7 @@ class locale
 
 	public function get_available_locales_data()
 	{
-	  $available_locales = get_ini_option('common.ini', 'codes', 'Locales');
+	  $available_locales = Limb :: toolkit()->getINI('common.ini')->get_option('codes', 'Locales');
 	  
 		$locales_data = array();
 
@@ -558,7 +558,7 @@ class locale
 
 	public function is_valid_locale_id($locale_id)
 	{
-	  if(!$available_locales = get_ini_option('common.ini', 'codes', 'Locales'))
+	  if(!$available_locales = Limb :: toolkit()->getINI('common.ini')->get_option('codes', 'Locales'))
 	    return false;
 	  
 		return in_array($locale_id, $available_locales);
@@ -665,9 +665,9 @@ class locale
 				$locale .= '@' . $country_variation;
 		} 
 		$file_name = $locale . '.ini';
-    
+
 		if (file_exists($directory . '/' . $file_name))
-			return ini :: instance($directory . '/' . $file_name);
+			return new ini($directory . '/' . $file_name);
 		else
 			return null;
 	} 

@@ -19,6 +19,7 @@ require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php'
 require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/authenticator.interface.php');
+require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('filter_chain');
@@ -30,6 +31,7 @@ Mock :: generate('site_object_behaviour');
 Mock :: generate('response');
 Mock :: generate('user');
 Mock :: generate('authenticator');
+Mock :: generate('ini');
 
 Mock :: generatePartial('authentication_filter',
                         'authentication_filter_test_version',
@@ -46,12 +48,17 @@ class authentication_filter_test extends LimbTestCase
   var $datasource;
   var $toolkit;
   var $response;
+  var $ini;
   
   function setUp()
   {
     $this->filter = new authentication_filter_test_version($this);
     
     $this->toolkit = new MockLimbToolkit($this);
+    $this->ini = new Mockini($this);
+    
+    $this->toolkit->setReturnValue('getINI', $this->ini);
+    
     $this->datasource = new Mockrequested_object_datasource($this);
     $this->request = new Mockrequest($this);
     $this->filter_chain = new Mockfilter_chain($this);
@@ -63,9 +70,11 @@ class authentication_filter_test extends LimbTestCase
   function tearDown()
   {
     $this->request->tally();
-    $this->response->tally();  
-
+    $this->response->tally();
     $this->toolkit->tally();
+    $this->ini->tally();
+    $this->filter->tally();
+    $this->filter_chain->tally();    
 
     Limb :: popToolkit();    
   }
@@ -116,22 +125,25 @@ class authentication_filter_test extends LimbTestCase
   
   function test_process_404_error_from_ini()
   {
-    register_testing_ini(
-      'common.ini',
-      '[ERROR_DOCUMENTS]
-      404 = /root/404'
-    );
+    $this->ini->expectOnce('get_option', array('404', 'ERROR_DOCUMENTS'));
+    $this->ini->setReturnValue('get_option', $error_path = '/root/404');
     
     $filter = new authentication_filter();
     
-    $this->response->expectOnce('redirect', array('/root/404'));
+    $this->response->expectOnce('redirect', array($error_path));
     $this->response->expectNever('header');
     
     $filter->process_404_error($this->request, $this->response);
+  }
+
+  function test_process_404_error_not_found()
+  {    
+    $filter = new authentication_filter();
     
-    $this->response->tally();
+    $this->response->expectNever('redirect');
+    $this->response->expectOnce('header', array("HTTP/1.1 404 Not found"));
     
-    clear_testing_ini();
+    $filter->process_404_error($this->request, $this->response);
   }
   
   function test_run_node_not_found()
@@ -148,9 +160,6 @@ class authentication_filter_test extends LimbTestCase
     $this->filter_chain->expectOnce('next');
     
     $this->filter->run($this->filter_chain, $this->request, $this->response);
-    
-    $this->filter->tally();
-    $this->filter_chain->tally();
   }
 
   function test_run_no_such_action()
@@ -177,10 +186,7 @@ class authentication_filter_test extends LimbTestCase
     $this->filter->expectOnce('process_404_error');
     $this->filter_chain->expectOnce('next');
     
-    $this->filter->run($this->filter_chain, $this->request, $this->response);
-    
-    $this->filter->tally();
-    $this->filter_chain->tally();
+    $this->filter->run($this->filter_chain, $this->request, $this->response);    
   }
 
   function test_run_object_is_not_accessible()
@@ -214,9 +220,6 @@ class authentication_filter_test extends LimbTestCase
     $this->filter_chain->expectNever('next');
     
     $this->filter->run($this->filter_chain, $this->request, $this->response);
-    
-    $this->filter->tally();
-    $this->filter_chain->tally();
   }
 
   function test_run_ok()
@@ -250,9 +253,6 @@ class authentication_filter_test extends LimbTestCase
     $this->filter_chain->expectOnce('next');
     
     $this->filter->run($this->filter_chain, $this->request, $this->response);
-    
-    $this->filter->tally();
-    $this->filter_chain->tally();
   }
 }
 

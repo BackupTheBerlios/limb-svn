@@ -136,10 +136,11 @@ class options_form_element extends container_form_element
 	protected function _set_options_from_ini_file()
 	{
 		$ini_file = $this->get_attribute('options_ini_file');
-		
-		$this->set_choices(get_ini_option($ini_file . '.ini', 'options', 'constants'));
+		$conf = Limb :: toolkit()->getINI($ini_file . '.ini');
+		$this->set_choices($conf->get_option('options', 'constants'));
+    
 		if (!$this->get_default_value())
-			$this->set_default_value(get_ini_option($ini_file . '.ini', 'default_option', 'constants'));
+			$this->set_default_value($conf->get_option('default_option', 'constants'));
 	}
 
 	protected function _set_options_from_strings_file()

@@ -46,8 +46,9 @@ class grid_action_tag extends compiler_directive_tag
 
 		if(isset($this->attributes['shortcut']))
 		{
-			$action['action'] = get_ini_option('grid_actions.ini', $this->attributes['shortcut'], 'action');
-			$action['path'] = get_ini_option('grid_actions.ini', $this->attributes['shortcut'],  'path');
+      $conf = Limb :: toolkit()->getINI('grid_actions.ini');
+			$action['action'] = $conf->get_option($this->attributes['shortcut'], 'action');
+			$action['path'] = $conf->get_option($this->attributes['shortcut'],  'path');
 		}
 		else
 		{

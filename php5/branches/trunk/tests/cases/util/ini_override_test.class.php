@@ -58,7 +58,7 @@ class ini_override_test extends LimbTestCase
     
   function test_override_use_real_file()
   {
-    $ini =& ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test2.ini', false);
+    $ini = new ini(LIMB_DIR . '/tests/cases/util/ini_test2.ini', false);
         
   	$this->assertTrue($ini->has_group('test1'));
   	$this->assertTrue($ini->has_group('test2'));

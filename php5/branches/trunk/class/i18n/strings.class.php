@@ -50,7 +50,7 @@ final class strings
 			$ini = $this->_ini_objects[$path];
 		else
 		{
-		  $ini = ini :: instance($path);
+		  $ini = new ini($path);
 			$this->_ini_objects[$path] = $ini;
 		}
 		

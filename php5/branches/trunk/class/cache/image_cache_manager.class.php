@@ -311,11 +311,9 @@ class image_cache_manager
 
   protected function _load_rules()
   {
-    include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
-
     $this->rules = array();
-
-    $groups = get_ini('image_cache.ini')->get_all();
+ 
+    $groups = Limb :: toolkit()->getINI('image_cache.ini')->get_all();
 
     foreach($groups as $group => $data)
     {

@@ -91,7 +91,11 @@ class image_cache_manager_test extends LimbTestCase
        path_regex = /root/test3
       '
     );
-
+    
+    $this->toolkit->setReturnValue('getINI', 
+                                   get_ini('image_cache.ini'), 
+                                   array('image_cache.ini'));    
+ 
     $this->assertEqual($cache_manager->get_rules(), 
       array(
         array('path_regex' => '/root/test1'),

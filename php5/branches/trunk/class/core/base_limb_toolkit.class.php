@@ -24,6 +24,7 @@ class BaseLimbToolkit implements LimbToolkit
   protected $tree;
   protected $view;
   protected $cache;
+  protected $ini_cache = array();
   
   public function define($key, $value)
   {
@@ -92,6 +93,25 @@ class BaseLimbToolkit implements LimbToolkit
     $this->user = user :: instance();
     
     return $this->user;
+  }
+
+  public function getINI($ini_path)
+  {
+    if(isset($this->ini_cache[$ini_path]))
+      return $this->ini_cache[$ini_path];
+    
+    include_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
+    
+    $ini = get_ini($ini_path);
+    
+    $this->ini_cache[$ini_path] = $ini;
+    
+    return $ini;
+  }
+  
+  public function flushINIcache()
+  {
+    $this->ini_cache = array();
   }
   
   public function getAuthenticator()

@@ -78,7 +78,7 @@ class full_page_cache_filter_test extends LimbTestCase
     $this->filter_chain->expectOnce('next');
     $this->filter->setReturnValue('_get_full_pache_cache_manager', $cache_manager);
     
-    $cache_manager->expectOnce('set_uri');
+    $cache_manager->expectOnce('set_request');
     $cache_manager->expectOnce('get');
     $cache_manager->setReturnValue('get', $result = 'some_cached_result');
     
@@ -98,7 +98,7 @@ class full_page_cache_filter_test extends LimbTestCase
     $this->filter_chain->expectOnce('next');
     $this->filter->setReturnValue('_get_full_pache_cache_manager', $cache_manager);
     
-    $cache_manager->expectOnce('set_uri');
+    $cache_manager->expectOnce('set_request');
     $cache_manager->expectOnce('get');
     $cache_manager->setReturnValue('get', null);
     

@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
 
 class cron_manager
 {
@@ -27,7 +26,7 @@ class cron_manager
   {
     $this->jobs = array();
     
-    $groups = get_ini('cron.ini')->get_all();
+    $groups = Limb :: toolkit()->getINI('cron.ini')->get_all();
 
     foreach($groups as $group => $data)
     {

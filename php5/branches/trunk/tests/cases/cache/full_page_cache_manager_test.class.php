@@ -12,6 +12,7 @@ require_once(LIMB_DIR . '/class/cache/full_page_cache_manager.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 
+Mock :: generate('request');
 Mock :: generate('uri');
 
 Mock :: generatePartial(
@@ -29,19 +30,24 @@ Mock :: generatePartial(
 class full_page_cache_manager_test extends LimbTestCase
 {
   var $cache_manager;
+  var $request;
   var $uri;
   
   function setUp()
   {
+    $this->request = new Mockrequest($this);    
     $this->uri = new Mockuri($this);
     
+    $this->request->setReturnValue('get_uri', $this->uri);
+    
     $this->cache_manager = new full_page_cache_manager_test_version($this);
-    $this->cache_manager->set_uri($this->uri);
+    $this->cache_manager->set_request($this->request);
   }
   
   function tearDown()
   {
     $this->cache_manager->tally();
+    $this->request->tally();
     $this->uri->tally();
   }
   
@@ -84,7 +90,7 @@ class full_page_cache_manager_test extends LimbTestCase
 
   function test_is_cacheable_required_attributes()
   {         
-    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1));
+    $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $rule = array(
@@ -103,7 +109,7 @@ class full_page_cache_manager_test extends LimbTestCase
     
   function test_is_cacheable_optional_attributes()
   {         
-    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->request->setReturnValue('export', array('action' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $rule = array(
@@ -122,7 +128,7 @@ class full_page_cache_manager_test extends LimbTestCase
   
   function test_is_cacheable_groups_match()
   {         
-    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1));
+    $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->cache_manager->setReturnValueAt(0, '_is_user_in_groups', true, array(array('members', 'visitors')));
@@ -144,7 +150,7 @@ class full_page_cache_manager_test extends LimbTestCase
   
   function test_is_not_cacheable_groups_dont_match()
   {         
-    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1));
+    $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->cache_manager->setReturnValueAt(0, '_is_user_in_groups', false, array(array('members')));
@@ -175,7 +181,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule)    
     );
         
-    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1));
+    $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->assertTrue($this->cache_manager->is_cacheable());
@@ -194,7 +200,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule)    
     );
         
-    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1));
+    $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->assertFalse($this->cache_manager->is_cacheable()); 
@@ -213,7 +219,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule)    
     );
       
-    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1, 'extra' => 1));
+    $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1, 'extra' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->assertTrue($this->cache_manager->is_cacheable());
@@ -232,7 +238,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule)    
     );
     
-    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->request->setReturnValue('export', array('action' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->assertFalse($this->cache_manager->is_cacheable());
@@ -251,7 +257,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule)    
     );
     
-    $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager1' => 1));
+    $this->request->setReturnValue('export', array('action' => 1, 'pager1' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->assertFalse($this->cache_manager->is_cacheable());
@@ -270,7 +276,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule)    
     );
           
-    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->request->setReturnValue('export', array('action' => 1));
     $this->uri->setReturnValue('get_path', '/root/tesx');
     
     $this->assertFalse($this->cache_manager->is_cacheable());
@@ -300,7 +306,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule1, $rule2, $rule3)    
     );
 
-    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->request->setReturnValue('export', array('action' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->assertTrue($this->cache_manager->is_cacheable());
@@ -325,7 +331,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule1, $rule2)    
     );
               
-    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->request->setReturnValue('export', array('action' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->assertFalse($this->cache_manager->is_cacheable());
@@ -343,7 +349,7 @@ class full_page_cache_manager_test extends LimbTestCase
       array($rule)    
     );
     
-    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->request->setReturnValue('export', array('action' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
     
     $this->assertTrue($this->cache_manager->is_cacheable());
@@ -360,7 +366,7 @@ class full_page_cache_manager_test extends LimbTestCase
   {
     $rule = array('optional' => array('pager', 'prop'), 'required' => array('action'));
     
-    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'pager' => 2));
+    $this->request->setReturnValue('export', $query_items = array('action' => 1, 'pager' => 2));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
@@ -375,7 +381,7 @@ class full_page_cache_manager_test extends LimbTestCase
   {
     $rule = array('optional' => array('pager', 'prop'), 'required' => array('action'));
     
-    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'pager' => 2));
+    $this->request->setReturnValue('export', $query_items = array('action' => 1, 'pager' => 2));
 
     $this->uri->setReturnValue('get_path', '/root/test');
 
@@ -383,7 +389,7 @@ class full_page_cache_manager_test extends LimbTestCase
 
     $cache_id = $this->cache_manager->get_cache_id();
     
-    $this->uri->setReturnValue('get_query_items', $query_items = array('junky' => 1, 'pager' => 2, 'action' => 1));
+    $this->request->setReturnValue('export', $query_items = array('junky' => 1, 'pager' => 2, 'action' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
@@ -398,7 +404,7 @@ class full_page_cache_manager_test extends LimbTestCase
   {
     $rule = array();
     
-    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1));
+    $this->request->setReturnValue('export', $query_items = array('action' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
@@ -413,7 +419,7 @@ class full_page_cache_manager_test extends LimbTestCase
   {
     $rule = array('optional' => array('pager'), 'required' => array('action'));
     
-    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'pager' => 1, 'extra' => 1));
+    $this->request->setReturnValue('export', $query_items = array('action' => 1, 'pager' => 1, 'extra' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
@@ -435,7 +441,7 @@ class full_page_cache_manager_test extends LimbTestCase
     $this->_write_cache($path = '/root/test', $attributes = array('action' => 1));
     
     $this->uri->setReturnValue('get_path', $path);
-    $this->uri->setReturnValue('get_query_items', $attributes);
+    $this->request->setReturnValue('export', $attributes);
     $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
     
     $this->assertTrue($this->cache_manager->cache_exists());
@@ -448,7 +454,7 @@ class full_page_cache_manager_test extends LimbTestCase
     $this->_write_cache($path = '/root/test', $attributes = array('action' => 2));
     
     $this->uri->setReturnValue('get_path', '/root/test');   
-    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->request->setReturnValue('export', array('action' => 1));
             
     $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
     
@@ -462,7 +468,7 @@ class full_page_cache_manager_test extends LimbTestCase
     $this->_write_cache($path = '/root/test', $attributes = array('action' => 1, 'page' => 1));
     
     $this->uri->setReturnValue('get_path', '/root/test');   
-    $this->uri->setReturnValue('get_query_items', array('action' => 1));
+    $this->request->setReturnValue('export', array('action' => 1));
             
     $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
     
@@ -480,7 +486,7 @@ class full_page_cache_manager_test extends LimbTestCase
   function test_get()
   {
     $cache_manager = new full_page_cache_manager_test_version2($this);
-    $cache_manager->set_uri($this->uri);
+    $cache_manager->set_request($this->request);
     
     $this->_write_simple_cache($cache_id = 1, $contents = 'test-test');
     
@@ -504,7 +510,7 @@ class full_page_cache_manager_test extends LimbTestCase
   function test_write()
   {
     $cache_manager = new full_page_cache_manager_test_version2($this);
-    $cache_manager->set_uri($this->uri);
+    $cache_manager->set_request($this->request);
     
     $contents = 'test-test';
     
@@ -523,7 +529,7 @@ class full_page_cache_manager_test extends LimbTestCase
     $this->_write_simple_cache($cache_id = 1, $contents = 'test-overwrite');
     
     $cache_manager = new full_page_cache_manager_test_version2($this);
-    $cache_manager->set_uri($this->uri);
+    $cache_manager->set_request($this->request);
     
     $contents = 'test-test';
     

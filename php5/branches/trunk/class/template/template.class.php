@@ -52,7 +52,7 @@ class template extends component
 		
 		if (!isset($GLOBALS['template_render'][$this->codefile]))
 		{
-			if (get_ini_option('common.ini', 'force_compile', 'Templates'))
+			if (Limb :: toolkit()->getINI('common.ini')->get_option('force_compile', 'Templates'))
 			{
 			  include_once(LIMB_DIR . '/class/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);

@@ -36,7 +36,7 @@ function get_ini($file_name, $use_cache = null)
     $resolved_file = $resolver->resolve($file_name);  
   }  
   
-	return ini::instance($resolved_file, $use_cache);
+	return new ini($resolved_file, $use_cache);
 } 
 
 ?>

@@ -67,6 +67,14 @@ class base_limb_toolkit_test extends LimbTestCase
   {
     $this->assertEqual(get_class($this->toolkit->getUser()), 'user');
   }
+
+  function test_get_config()
+  {
+    register_testing_ini('test-config.ini', 'test = 1');
+    
+    $conf = $this->toolkit->getINI('test-config.ini');
+    $this->assertEqual($conf->get_option('test'), 1);
+  }
   
   function test_get_authenticator()
   { 

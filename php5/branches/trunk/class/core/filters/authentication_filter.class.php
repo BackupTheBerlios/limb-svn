@@ -75,7 +75,7 @@ class authentication_filter implements intercepting_filter
 
   public function process_404_error($request, $response)
   { 
-    if($object_404_path = get_ini_option('common.ini', '404', 'ERROR_DOCUMENTS'))
+    if($object_404_path = Limb :: toolkit()->getINI('common.ini')->get_option('404', 'ERROR_DOCUMENTS'))
       $response->redirect($object_404_path);
     else
       $response->header("HTTP/1.1 404 Not found");

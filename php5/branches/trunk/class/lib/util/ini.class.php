@@ -50,23 +50,7 @@ class ini
 	{
 	  return $this->cache_file;
 	}
-	
-	// Returns the current instance of the given .ini file
-	static public function instance($file_path, $use_cache = null)
-	{
-		$obj = null;
-
-		$instance_name = 'global_ini_instance_' . md5($file_path);
-
-		if (isset($GLOBALS[$instance_name]))
-			return $GLOBALS[$instance_name];
-
-		$obj = new ini($file_path, $use_cache);
-		$GLOBALS[$instance_name] = $obj;
-
-		return $obj;
-	} 
-	
+		
 	public function get_charset()
 	{
 	  return $this->charset;

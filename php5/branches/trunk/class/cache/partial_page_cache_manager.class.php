@@ -17,7 +17,7 @@ class partial_page_cache_manager
 {
   protected $id;
   protected $server_id;
-  protected $uri;
+  protected $request;
   protected $rules = array();
   protected $matched_rule;
     
@@ -31,10 +31,10 @@ class partial_page_cache_manager
     return $this->matched_rule;
   }
   
-  public function set_uri($uri)
+  public function set_request($request)
   {
     $this->id = null;
-    $this->uri = $uri;
+    $this->request = $request;
   }
   
   public function set_server_id($id)
@@ -44,7 +44,7 @@ class partial_page_cache_manager
   
   public function get()
   {
-    if(!$this->uri)
+    if(!$this->request)
       return false;
     
     if($this->is_cacheable())
@@ -87,7 +87,7 @@ class partial_page_cache_manager
   
   public function get_cache_id()
   {
-    if(!$this->uri)
+    if(!$this->request)
       return null;
 
     if(is_null($matched_rule = $this->_get_matched_rule()))
@@ -96,7 +96,7 @@ class partial_page_cache_manager
     if($this->id)
       return $this->id;
                         
-    $query_items = $this->uri->get_query_items();
+    $query_items = $this->request->export();
     $cache_query_items = array();
     $attributes = array();
     
@@ -115,7 +115,7 @@ class partial_page_cache_manager
     ksort($cache_query_items);
     
     if (isset($matched_rule['use_path']))
-      $this->id = 'p_' . md5($matched_rule['server_id'] . $this->uri->get_path() . serialize($cache_query_items));
+      $this->id = 'p_' . md5($matched_rule['server_id'] . $this->request->get_uri()->get_path() . serialize($cache_query_items));
     else
       $this->id = 'p_' . md5($matched_rule['server_id'] . serialize($cache_query_items));
     
@@ -124,10 +124,10 @@ class partial_page_cache_manager
   
   public function is_cacheable()
   {
-    if(!$this->uri)
+    if(!$this->request)
       return false;
     
-    $query_items = $this->uri->get_query_items();
+    $query_items = $this->request->export();
     $query_keys = array_keys($query_items);
     
     $rules = $this->get_rules();
@@ -221,11 +221,9 @@ class partial_page_cache_manager
   
   protected function _load_rules()
   {
-    include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
-    
     $this->rules = array();
     
-    $groups = get_ini('partial_page_cache.ini')->get_all();
+    $groups = Limb :: toolkit()->getINI('partial_page_cache.ini')->get_all();
 
     foreach($groups as $group => $data)
     {

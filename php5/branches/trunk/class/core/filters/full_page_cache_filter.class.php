@@ -25,7 +25,7 @@ class full_page_cache_filter implements intercepting_filter
   
     $cache = $this->_get_full_pache_cache_manager();
     
-    $cache->set_uri($request->get_uri());
+    $cache->set_request($request);
     
     if($contents = $cache->get())
     {

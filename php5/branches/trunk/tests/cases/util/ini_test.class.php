@@ -28,21 +28,10 @@ class ini_test extends LimbTestCase
   	debug_mock :: tally();
   	clear_testing_ini();
   }
-  
-  function test_same_instance()
-  {
-  	$ini = ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
-  	
-  	$this->assertIsA($ini, 'ini');
-  	
-  	$ini2 = ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
-  	
-  	$this->assertTrue($ini === $ini2); 
-  }
-  
+    
   function test_file_path()
   {
-    $ini =& ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
+    $ini = new ini(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
     $this->assertEqual($ini->get_original_file(), LIMB_DIR . '/tests/cases/util/ini_test.ini');
   }
 
@@ -53,7 +42,7 @@ class ini_test extends LimbTestCase
       ''
     );
     
-    $ini =& get_ini('testing.ini');    
+    $ini = get_ini('testing.ini');    
     $this->assertEqual($ini->get_charset(), 'utf8');  
   }
     
@@ -64,7 +53,7 @@ class ini_test extends LimbTestCase
       '#charset = iso-8859-1'
     );
     
-    $ini =& get_ini('testing.ini');    
+    $ini = get_ini('testing.ini');    
     $this->assertEqual($ini->get_charset(), 'iso-8859-1');  
   }
 
@@ -75,7 +64,7 @@ class ini_test extends LimbTestCase
       '#charset=iso-8859-1 '
     );
     
-    $ini =& get_ini('testing.ini');    
+    $ini = get_ini('testing.ini');    
     $this->assertEqual($ini->get_charset(), 'iso-8859-1');  
   }  
   
@@ -91,7 +80,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_all(), 
       array(
@@ -115,7 +104,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_all(), 
       array(
@@ -138,7 +127,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_all(), 
       array(
@@ -162,7 +151,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_all(), 
       array(
@@ -185,7 +174,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
         
     $this->assertFalse($ini->has_group('default'));  
   }  
@@ -201,7 +190,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_all(), 
       array(
@@ -223,7 +212,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_all(), 
       array('group1' => array('value' => null))
@@ -245,7 +234,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_all(), 
       array('group1' => array('value' => array(null, 1, null, 2)))
@@ -266,7 +255,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_all(), 
       array('group1' => array('value' => 
@@ -292,7 +281,7 @@ class ini_test extends LimbTestCase
         test = '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
 
   	$this->assertFalse($ini->has_group(''));
   	$this->assertTrue($ini->has_group('default'));
@@ -329,7 +318,7 @@ class ini_test extends LimbTestCase
         test[hey] = 2'
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
 
   	$this->assertEqual($ini->get_option('unassigned'), '');  	
   	$this->assertEqual($ini->get_option('test'), 1);
@@ -376,7 +365,7 @@ class ini_test extends LimbTestCase
       '
     );
     
-    $ini =& get_ini('testing.ini');
+    $ini = get_ini('testing.ini');
     
     $this->assertEqual($ini->get_group('default'), array('unassigned' => '', 'test' => 1));
     $this->assertEqual($ini->get_group('test'), array('test' => 1));
@@ -404,7 +393,7 @@ class ini_test extends LimbTestCase
       '
     );
   
-  	$ini =& get_ini('testing.ini');
+  	$ini = get_ini('testing.ini');
 
   	$this->assertTrue($ini->assign_option($test, 'unassigned'));
   	$this->assertEqual($test, '');
@@ -528,7 +517,7 @@ class ini_test extends LimbTestCase
   
   function test_parse_real_file()
   {
-  	$ini =& ini :: instance(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
+  	$ini = new ini(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
   	$this->assertEqual($ini->get_all(), array('test' => array('test' => 1)));  	
   }          
 }
