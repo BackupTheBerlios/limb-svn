@@ -13,15 +13,15 @@ require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
 class LimbDatasourceComponent extends Component
 {
-  var $datasource_path;
+  var $class_path;
   var $datasource;
   var $targets;
   var $navigator_id;
   var $parameters = array();
 
-  function setDatasourcePath($datasource_path)
+  function setClassPath($class_path)
   {
-    $this->datasource_path = $datasource_path;
+    $this->class_path = $class_path;
   }
 
   function &_getDatasource()
@@ -30,7 +30,7 @@ class LimbDatasourceComponent extends Component
       return $this->datasource;
 
     $toolkit =& Limb :: toolkit();
-    $this->datasource =& $toolkit->getDatasource($this->datasource_path);
+    $this->datasource =& $toolkit->getDatasource($this->class_path);
 
     foreach($this->parameters as $key => $value)
     {
@@ -60,10 +60,7 @@ class LimbDatasourceComponent extends Component
   function &getDataset()
   {
     $ds =& $this->_getDatasource();
-    if ($result = $ds->fetch())
-      return new ArrayDataset($result);
-    else
-      return new EmptyIterator();
+    return $ds->fetch();
   }
 
   function setParameter($name, $value)

@@ -10,7 +10,8 @@
 ***********************************************************************************/
 class Datasource
 {
-  function fetch(){}
+  //MUST return Iterator
+  function & fetch(){}
 }
 
 

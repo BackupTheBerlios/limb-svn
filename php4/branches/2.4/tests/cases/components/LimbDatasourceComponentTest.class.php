@@ -165,7 +165,7 @@ class LimbDatasourceComponentTest extends LimbTestCase
     $this->request->expectOnce('get', array('page_' . $pager_id));
     $this->request->setReturnValue('get', 10, array('page_' . $pager_id));
 
-    $this->component->setDatasourcePath('test-datasource');
+    $this->component->setClassPath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
     $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
 
@@ -197,7 +197,7 @@ class LimbDatasourceComponentTest extends LimbTestCase
     $this->request->setReturnValue('hasAttribute', false, array('page_' . $pager_id));
     $this->request->expectNever('get');
 
-    $this->component->setDatasourcePath('test-datasource');
+    $this->component->setClassPath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
     $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
 
@@ -219,7 +219,7 @@ class LimbDatasourceComponentTest extends LimbTestCase
     $this->component->setParameter('order', 'col1=ASC');
     $this->component->setParameter('junky', 'trash');
 
-    $this->component->setDatasourcePath('test-datasource');
+    $this->component->setClassPath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
     $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
 
@@ -228,8 +228,8 @@ class LimbDatasourceComponentTest extends LimbTestCase
     $this->datasource->expectOnce('setOrder', array(array('col1' => 'ASC')));
 
     $this->datasource->expectOnce('fetch');
-    $this->datasource->setReturnValue('fetch', $result = array('whatever'));
-    $this->assertEqual(new ArrayDataset($result), $this->component->getDataset());
+    $this->datasource->setReturnValue('fetch', $result = 'whatever');
+    $this->assertEqual($result, $this->component->getDataset());
   }
 
   function testSetupTargets()
