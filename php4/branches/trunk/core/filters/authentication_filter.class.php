@@ -56,8 +56,8 @@ class authentication_filter extends intercepting_filter
     {
       $redirect_path = $site_object_controller->get_action_property($action, 'inaccessible_redirect');
 
-      if(!$redirect)
-        $redirect = '/root/login';
+      if(!$redirect_path)
+        $redirect_path = '/root/login';
 
       $redirect_strategy =& $this->_get_redirect_strategy($site_object_controller);
 
