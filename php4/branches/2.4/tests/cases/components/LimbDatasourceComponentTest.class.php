@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/template/components/datasource/LimbDatasourceComponent.class.php');
 require_once(WACT_ROOT . '/template/components/list/list.inc.php');
-require_once(LIMB_DIR . '/class/template/components/PagerComponent.class.php');
+require_once(LIMB_DIR . '/class/template/components/LimbPagerComponent.class.php');
 require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 require_once(LIMB_DIR . '/class/datasources/Countable.interface.php');
 require_once(LIMB_DIR . '/class/request/Request.class.php');
@@ -29,7 +29,7 @@ Mock :: generate('LimbToolkit');
 Mock :: generate('Component');
 Mock :: generate('ListComponent');
 Mock :: generate('LimbDatasourceComponentTestVersion');
-Mock :: generate('PagerComponent');
+Mock :: generate('LimbPagerComponent');
 Mock :: generate('Request');
 
 Mock :: generatePartial('LimbDatasourceComponent',
@@ -131,39 +131,26 @@ class LimbDatasourceComponentTest extends LimbTestCase
 
   function testSetupNavigatorNoNavigator()
   {
-    $pager = new MockPagerComponent($this);
-
     $this->parent->expectOnce('findChild', array($pager_id = 'test-nav'));
     $this->parent->setReturnValue('findChild', null, array($pager_id));
-
-    $this->request->expectNever('hasAttribute');
 
     $this->component->setupNavigator($pager_id);
 
     $this->assertNull($this->component->getParameter('limit'));
     $this->assertNull($this->component->getParameter('offset'));
-
-    $pager->tally();
   }
 
   function testSetupNavigatorWithParamsInRequest()
   {
-    $pager = new MockPagerComponent($this);
+    $pager = new MockLimbPagerComponent($this);
 
     $this->parent->expectOnce('findChild', array($pager_id = 'test-nav'));
     $this->parent->setReturnReference('findChild', $pager, array($pager_id));
 
     $pager->expectOnce('getItemsPerPage');
-    $pager->setReturnValue('getItemsPerPage', 100);
+    $pager->setReturnValue('getItemsPerPage', $limit = 100);
 
-    $pager->expectOnce('getServerId');
-    $pager->setReturnValue('getServerId', $pager_id);
-
-    $this->request->expectOnce('hasAttribute', array('page_' . $pager_id));
-    $this->request->setReturnValue('hasAttribute', true, array('page_' . $pager_id));
-
-    $this->request->expectOnce('get', array('page_' . $pager_id));
-    $this->request->setReturnValue('get', 10, array('page_' . $pager_id));
+    $pager->setReturnValue('getCurrentPageBeginItemNumber', $offset = 200);
 
     $this->component->setClassPath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
@@ -175,40 +162,8 @@ class LimbDatasourceComponentTest extends LimbTestCase
 
     $this->component->setupNavigator($pager_id);
 
-    $this->assertEqual($this->component->getParameter('limit'), 100);
-    $this->assertEqual($this->component->getParameter('offset'), (10-1)*100);
-
-    $pager->tally();
-  }
-
-  function testSetupNavigatorNoParamsInRequest()
-  {
-    $pager = new MockPagerComponent($this);
-
-    $this->parent->expectOnce('findChild', array($pager_id = 'test-nav'));
-    $this->parent->setReturnReference('findChild', $pager, array($pager_id));
-
-    $pager->expectOnce('getItemsPerPage');
-    $pager->expectOnce('getServerId');
-    $pager->setReturnValue('getItemsPerPage', 100);
-    $pager->setReturnValue('getServerId', $pager_id);
-
-    $this->request->expectOnce('hasAttribute', array('page_' . $pager_id));
-    $this->request->setReturnValue('hasAttribute', false, array('page_' . $pager_id));
-    $this->request->expectNever('get');
-
-    $this->component->setClassPath('test-datasource');
-    $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
-    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
-
-    $this->datasource->expectOnce('countTotal');
-    $this->datasource->setReturnValue('countTotal', $count = 13);
-    $pager->expectOnce('setTotalItems', array($count));
-
-    $this->component->setupNavigator($pager_id);
-
-    $this->assertEqual($this->component->getParameter('limit'), 100);
-    $this->assertNull($this->component->getParameter('offset'));
+    $this->assertEqual($this->component->getParameter('limit'), $limit);
+    $this->assertEqual($this->component->getParameter('offset'), $offset);
 
     $pager->tally();
   }

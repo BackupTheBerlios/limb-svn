@@ -129,19 +129,8 @@ class LimbDatasourceComponent extends Component
     if(!$navigator =& $this->_getNavigatorComponent())
       return null;
 
-    $limit = $navigator->getItemsPerPage();
-    $this->setParameter('limit', $limit);
-
-    $navigator_id = 'page_' . $navigator->getServerId();
-
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-
-    if ($request->hasAttribute($navigator_id))
-    {
-      $offset = ((int)$request->get($navigator_id)-1)*$limit;
-      $this->setParameter('offset', $offset);
-    }
+    $this->setParameter('limit', $navigator->getItemsPerPage());
+    $this->setParameter('offset', $navigator->getCurrentPageBeginItemNumber());
 
     $ds =& $this->_getDatasource();
     $navigator->setTotalItems($ds->countTotal());
