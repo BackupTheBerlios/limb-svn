@@ -15,10 +15,7 @@ class http_response
 	var $headers = array();
 		
 	function redirect($path)
-	{  		
-  	$path = str_replace('&amp;', '&', $path);
-  	$path = str_replace('//', '/', $path);
-  	
+	{  		  	
   	$this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white></body></html>";
 	}
 	

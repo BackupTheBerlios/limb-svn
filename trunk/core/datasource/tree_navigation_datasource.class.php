@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/datasource/fetch_tree_datasource.class.php');
+require_once(LIMB_DIR . 'core/lib/http/uri.class.php');
 
 class tree_navigation_datasource extends fetch_tree_datasource
 {
@@ -19,7 +20,7 @@ class tree_navigation_datasource extends fetch_tree_datasource
 
 		foreach($result as $key => $data)
 		{
-			if(is_integer($res = $uri->compare_path(new url($data['url']))))
+			if(is_integer($res = $uri->compare_path(new uri($data['url']))))
 			{
 				if($res >= 0)
 					$result[$key]['in_path'] = true;

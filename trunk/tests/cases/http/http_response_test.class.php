@@ -76,7 +76,7 @@ class http_response_test extends UnitTestCase
     $this->response->expectOnce('_pre_commit');
     $this->response->expectOnce('_post_commit');   
     
-    $this->response->redirect("/to/some/place?t=1&amp;t=2");
+    $this->response->redirect("/to/some/place?t=1&t=2");
     $this->response->commit();
   }
     
