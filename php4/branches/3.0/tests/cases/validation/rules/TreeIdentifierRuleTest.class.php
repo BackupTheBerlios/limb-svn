@@ -10,16 +10,17 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
+require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 require_once(LIMB_DIR . '/core/validators/rules/TreeIdentifierRule.class.php');
+require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
+
+Mock :: generate('LimbBaseToolkit');
+Mock :: generate('Tree');
 
 class TreeIdentifierRuleTest extends SingleFieldRuleTestCase
 {
-  var $db = null;
-  var $node_id_root;
-  var $node_id_ru;
-  var $node_id_document;
-  var $node_id_doc1;
-  var $node_id_doc2;
+  var $tree;
+  var $toolkit;
 
   function TreeIdentifierRuleTest()
   {
@@ -30,49 +31,33 @@ class TreeIdentifierRuleTest extends SingleFieldRuleTestCase
   {
     parent :: setUp();
 
-    $toolkit =& Limb :: toolkit();
+    $this->tree = & new MockTree($this);
 
-    $this->db =& new SimpleDb($toolkit->getDbConnection());
+    $this->toolkit =& new MockLimbBaseToolkit($this);
+    $this->toolkit->setReturnReference('getTree', $this->tree);
 
-    $tree =& $toolkit->getTree();
-
-    $values['identifier'] = 'root';
-    $this->node_id_root = $tree->createRootNode($values, false, true);
-
-    $values['identifier'] = 'ru';
-    $values['object_id'] = 1;
-    $this->node_id_ru = $tree->createSubNode($this->node_id_root, $values);
-
-    $values['identifier'] = 'document';
-    $values['object_id'] = 10;
-    $this->node_id_document = $tree->createSubNode($this->node_id_ru, $values);
-
-    $values['identifier'] = 'doc1';
-    $values['object_id'] = 20;
-    $this->node_id_doc1 = $tree->createSubNode($this->node_id_ru, $values);
-
-    $values['identifier'] = 'doc2';
-    $values['object_id'] = 30;
-    $this->node_id_doc2 = $tree->createSubNode($this->node_id_ru, $values);
+    Limb :: registerToolkit($this->toolkit);
   }
 
   function tearDown()
   {
+    $this->toolkit->tally();
+    $this->tree->tally();
+
+    Limb :: restoreToolkit();
+
     parent :: tearDown();
-    $this->_cleanUp();
   }
 
-  function _cleanUp()
+  function testValidNoSuchParentNode()
   {
-    $this->db->delete('sys_tree');
-  }
+    $this->tree->expectOnce('isNode', array($parent_node_id  = 10));
+    $this->tree->setReturnValue('isNode', false);
 
-  function testTreeIdentifierRuleBlank()
-  {
-    $this->validator->addRule(new TreeIdentifierRule('test', $this->node_id_ru, $this->node_id_document));
+    $this->validator->addRule(new TreeIdentifierRule('test', $parent_node_id));
 
     $data = new Dataspace();
-    $data->set('test', '');
+    $data->set('test', 'test');
 
     $this->ErrorList->expectNever('addError');
 
@@ -80,12 +65,20 @@ class TreeIdentifierRuleTest extends SingleFieldRuleTestCase
     $this->assertTrue($this->validator->isValid());
   }
 
-  function testTreeIdentifierRuleNormal()
+  function testValidNoChildren()
   {
-    $this->validator->addRule(new TreeIdentifierRule('test', $this->node_id_ru, $this->node_id_document));
+    $this->tree->expectOnce('isNode', array($parent_node_id  = 10));
+    $this->tree->setReturnValue('isNode', true);
+
+    $this->tree->expectOnce('getChildren', array($parent_node_id  = 10));
+
+    $rs = new ArrayDataSet(array());
+    $this->tree->setReturnReference('getChildren', $rs);
+
+    $this->validator->addRule(new TreeIdentifierRule('test', $parent_node_id));
 
     $data = new Dataspace();
-    $data->set('test', 'id_test');
+    $data->set('test', 'test');
 
     $this->ErrorList->expectNever('addError');
 
@@ -93,43 +86,47 @@ class TreeIdentifierRuleTest extends SingleFieldRuleTestCase
     $this->assertTrue($this->validator->isValid());
   }
 
-  function testTreeIdentifierRuleError()
+  function testNotValid()
   {
-    $this->validator->addRule(new TreeIdentifierRule('test', $this->node_id_ru, $this->node_id_document));
+    $this->tree->expectOnce('isNode', array($parent_node_id  = 10));
+    $this->tree->setReturnValue('isNode', true);
+
+    $this->tree->expectOnce('getChildren', array($parent_node_id  = 10));
+
+    $rs = new ArrayDataSet(array(array('identifier' => $identifier = 'test')));
+    $this->tree->setReturnReference('getChildren', $rs);
+
+    $this->validator->addRule(new TreeIdentifierRule('test', $parent_node_id));
 
     $data = new Dataspace();
-    $data->set('test', 'doc1');
+    $data->set('test', $identifier);
 
-    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_DUPLICATE_TREE_IDENTIFIER', array('Field' => 'test'), NULL));
+    $this->ErrorList->expectOnce('addError');
 
     $this->validator->validate($data);
     $this->assertFalse($this->validator->isValid());
   }
 
-  function testTreeIdentifierSameNodeChangedIdentifier()
+  function testValidSinceTheSameObject()
   {
-    $this->validator->addRule(new TreeIdentifierRule('test', $this->node_id_ru, $this->node_id_doc1));
+    $this->tree->expectOnce('isNode', array($parent_node_id  = 10));
+    $this->tree->setReturnValue('isNode', true);
+
+    $this->tree->expectOnce('getChildren', array($parent_node_id  = 10));
+
+    $rs = new ArrayDataSet(array(array('identifier' => $identifier = 'test',
+                                       'id' => $node_id = 100)));
+    $this->tree->setReturnReference('getChildren', $rs);
+
+    $this->validator->addRule(new TreeIdentifierRule('test', $parent_node_id, $node_id));
 
     $data = new Dataspace();
-    $data->set('test', 'doc1');
+    $data->set('test', $identifier);
 
     $this->ErrorList->expectNever('addError');
 
     $this->validator->validate($data);
     $this->assertTrue($this->validator->isValid());
-  }
-
-  function testTreeIdentifierNodeIdNotSetError()
-  {
-    $this->validator->addRule(new TreeIdentifierRule('test', $this->node_id_ru));
-
-    $data = new Dataspace();
-    $data->set('test', 'doc1');
-
-    $this->ErrorList->expectOnce('addError', array('validation', 'ERROR_DUPLICATE_TREE_IDENTIFIER', array('Field' => 'test'), NULL));
-
-    $this->validator->validate($data);
-    $this->assertFalse($this->validator->isValid());
   }
 }
 

@@ -5,22 +5,20 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: CanadaZipRule.class.php 1006 2005-01-10 15:48:07Z pachanga $
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/validation/rule.inc.php');
 
-class TreeNodeIdRule extends SingleFieldRule
+class IdentifierRule extends SingleFieldRule
 {
+  //identifier should contain only letters and digits
   function check($value)
   {
-    $toolkit =& Limb :: toolkit();
-    $tree =& $toolkit->getTree();
+    $value = "$value";
 
-    if(empty($value))
-      $this->error('INVALID');
-    elseif(!$tree->getNode((int)$value))
-      $this->error('INVALID');
+    if (!preg_match("/^[a-zA-Z0-9.-]+$/i", $value))
+        $this->Error('INVALID');
   }
 }
 ?>

@@ -21,6 +21,7 @@ class ServiceMapper extends AbstractDataMapper
   {
     return array('service_id' => 'service_id',
                  'behaviour_id' => 'behaviour_id',
+                 'behaviour_name' => 'behaviour_name',
                  'title' => 'title',
                  'oid' => 'oid');
   }

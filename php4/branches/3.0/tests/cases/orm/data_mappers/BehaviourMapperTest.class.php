@@ -100,6 +100,21 @@ class BehaviourMapperTest extends LimbTestCase
     $this->assertEqual($record['name'], $name);
   }
 
+  function testDoNotInsertTheSameRecortTwice()
+  {
+    $this->db->insert('sys_behaviour', array('id' => $id = 10,
+                                             'name' => $name = 'test'));
+
+    $behaviour = new Behaviour($name);
+
+    $this->mapper->insert($behaviour);
+
+    $rs =& $this->db->select('sys_behaviour', '*');
+
+    $this->assertEqual($rs->getTotalRowCount(), 1);
+    $this->assertEqual($behaviour->getId(), $id);
+  }
+
   function testUpdateFailedNoId()
   {
     $behaviour = new Behaviour('whatever');

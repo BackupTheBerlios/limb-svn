@@ -34,7 +34,16 @@ class BehaviourMapper extends AbstractDataMapper
 
     $data['name'] = $behaviour->getName();
 
-    $id = $table->insert($data);
+    $rs =& $table->select(array('name' => $data['name']));
+    $rs->rewind();
+
+    if($rs->valid())
+    {
+      $record =& $rs->current();
+      $id = $record->get('id');
+    }
+    else
+      $id = $table->insert($data);
 
     $behaviour->setId($id);
 

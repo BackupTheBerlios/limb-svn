@@ -77,6 +77,7 @@ class ServiceMapperTest extends LimbTestCase
     $record = new Dataspace();
     $record->import(array('service_id' => $service_id = 10,
                           'behaviour_id' => $behaviour_id = 100,
+                          'behaviour_name' => $behaviour_name = 'TestBehaviour',
                           'title' => $title = 'title'));
 
     $mapper = new ServiceMapper();
@@ -90,6 +91,7 @@ class ServiceMapperTest extends LimbTestCase
 
     $this->assertEqual($service->getServiceId(), $service_id);
     $this->assertEqual($service->getTitle(), $title);
+    $this->assertEqual($service->get('behaviour_name'), $behaviour_name);
 
     $this->assertIsA($service->getBehaviour(), get_class($this->behaviour));
   }

@@ -41,14 +41,9 @@ class TreeIdentifierRule extends SingleFieldRule
       if($node->get('identifier') != $value)
         continue;
 
-      if($this->node_id == TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID)
+      if($node->get('id') != $this->node_id)
       {
-        $this->error('ERROR_DUPLICATE_TREE_IDENTIFIER');
-        break;
-      }
-      elseif($node->get('id') != $this->node_id)
-      {
-        $this->error('ERROR_DUPLICATE_TREE_IDENTIFIER');
+        $this->error('INVALID');
         break;
       }
     }
