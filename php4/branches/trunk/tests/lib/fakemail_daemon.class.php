@@ -69,7 +69,7 @@ class FakemailDaemon
   {
      $names = $this->_getRecipientFileNames($recipient);
      foreach($names as $name)
-       $contents[] = unlink($this->mail_path .'/'. $name);
+       unlink($this->path .'/'. $name);
   }
 
   function getRecipientMailCount($recipient)
@@ -100,13 +100,15 @@ class FakemailDaemon
         if ($file == "." || $file == ".." || $file == '.svn' || is_dir($file))
           continue;
 
-        if (is_file($file) && strpos($file, $recipient .'.') !== false)
+        if (is_file($file) && strpos($file, $recipient . '.') !== false)
           $recipient_files[] = $file;
+
       }
       closedir($handle);
     }
 
     chdir($saved_working_dir);
+    array_multisort($recipient_files, SORT_ASC, SORT_STRING);
     return $recipient_files;
   }
 }
