@@ -88,7 +88,7 @@ class phpbb_user extends object
 		$sid = md5(uniqid($user_ip));
 		
 		session :: set('phpbb_sid', $sid);
-
+		
 		$phpbb_user_data = array();
 		$phpbb_user_data['session_user_id'] = user :: get_id();
 		$phpbb_user_data['session_id'] = $sid;
