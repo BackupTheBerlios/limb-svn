@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/IteratorDbDecorator.class.php');
 
-class StatsHitsReportRecordSet extends IteratorDbDecorator
+class StatsCountersReportRecordSet extends IteratorDbDecorator
 {
   var $array_dataset;
 

@@ -9,22 +9,22 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-require_once(LIMB_STATS_DIR . '/DAO/StatsHitsReportRecordSet.class.php');
+require_once(LIMB_STATS_DIR . '/DAO/StatsCountersReportRecordSet.class.php');
 
 Mock :: generatePartial('PagedArrayDataSet',
-                        'MockPagedArrayDataSetStatsHitTestVersion',
+                        'MockPagedArrayDataSetStatsCountersReportRecordSetTestVersion',
                         array('getTotalRowCount'));
 
-class StatsHitsReportRecordSetTest extends LimbTestCase
+class StatsCountersReportRecordSetTest extends LimbTestCase
 {
-  function StatsHitsReportRecordSetTest()
+  function StatsCountersReportRecordSetTest()
   {
-    parent :: LimbTestCase('stats hits report record set test');
+    parent :: LimbTestCase('stats counters report record set test');
   }
 
   function testRecordSet()
   {
-    $base_record_set = new MockPagedArrayDataSetStatsHitTestVersion($this);
+    $base_record_set = new MockPagedArrayDataSetStatsCountersReportRecordSetTestVersion($this);
     $base_record_set->setReturnValue('getTotalRowCount', $total = 300);
 
     $time = mktime(6, 0, 0, 3, 6, 2005);
@@ -37,7 +37,7 @@ class StatsHitsReportRecordSetTest extends LimbTestCase
 
     $base_record_set->PagedArrayDataSet($records);
 
-    $rs = new StatsHitsReportRecordSet($base_record_set);
+    $rs = new StatsCountersReportRecordSet($base_record_set);
     $this->assertEqual($rs->getTotalRowCount(), $total);
 
     $rs->rewind();

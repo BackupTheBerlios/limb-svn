@@ -8,10 +8,9 @@
 * $Id: StatsHitsHostsByDaysReport.class.php 1032 2005-01-18 15:43:46Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
 
-class StatsHitsReportDAO extends SQLBasedDAO
+class StatsCountersReportDAO extends SQLBasedDAO
 {
   function & _initSQL()
   {
@@ -27,11 +26,11 @@ class StatsHitsReportDAO extends SQLBasedDAO
 
   function & fetch()
   {
-    include_once(dirname(__FILE__) . '/criteria/StatsPeriodCriteria.class.php');
+    include_once(LIMB_STATS_DIR . '/DAO/criteria/StatsPeriodCriteria.class.php');
     $this->addCriteria(new StatsPeriodCriteria());
 
-    include_once(dirname(__FILE__) . '/StatsHitsReportRecordSet.class.php');
-    return new StatsHitsReportRecordSet(parent :: fetch());
+    include_once(LIMB_STATS_DIR . '/DAO/StatsCountersReportRecordSet.class.php');
+    return new StatsCountersReportRecordSet(parent :: fetch());
   }
 }
 

@@ -8,13 +8,14 @@
 * $Id: StatsIpTest.class.php 1145 2005-03-05 13:09:48Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_STATS_DIR . '/DAO/StatsHitsReportDAO.class.php');
+require_once(LIMB_STATS_DIR . '/DAO/StatsCountersReportDAO.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
-class StatsHitsReportDAOTest extends LimbTestCase
+class StatsCountersReportDAOTest extends LimbTestCase
 {
-  function StatsHitsReportDAOTest()
+  function StatsCountersReportDAOTest()
   {
-    parent :: LimbTestCase('stats hits report DAO test');
+    parent :: LimbTestCase('stats counters report DAO test');
   }
 
   var $db = null;
@@ -80,10 +81,10 @@ class StatsHitsReportDAOTest extends LimbTestCase
     $request->set('finish_date', date('Y-m-d', $time4));
     // Must find three records only
 
-    $dao = new StatsHitsReportDAO();
+    $dao = new StatsCountersReportDAO();
     $rs =& $dao->fetch();
 
-    $this->assertTrue(is_a($rs, 'StatsHitsReportRecordSet'));
+    $this->assertTrue(is_a($rs, 'StatsCountersReportRecordSet'));
     $this->assertEqual($rs->getRowCount(), 3);
   }
 }
