@@ -22,11 +22,13 @@ class SimpleACLLoginCommandTest extends LimbTestCase
   function setUp()
   {
     $this->cmd = new SimpleACLLoginCommand();
+    Limb :: saveToolkit();
   }
 
   function tearDown()
   {
     clearTestingIni();
+    Limb :: restoreToolkit();
   }
 
   function testLoginFailed()
