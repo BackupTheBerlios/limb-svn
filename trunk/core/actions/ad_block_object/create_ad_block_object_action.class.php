@@ -17,7 +17,7 @@ class create_ad_block_object_action extends form_create_site_object_action
 		$definition = array(
 			'site_object' => 'ad_block_object',
 			'datamap' => array(
-				'image_id' => 'image_id1',
+				'image_id' => 'image_id',
 			)
 		);
 		
