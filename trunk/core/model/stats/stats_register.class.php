@@ -26,6 +26,7 @@ class stats_register
 	var $_ip_register = null;
 	var $_uri_register = null;
 	var $_referer_register = null;
+	var $_search_phrase_register = null;
 	var $_reg_date;
 	var $db = null;
 	
