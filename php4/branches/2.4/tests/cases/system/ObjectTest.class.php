@@ -136,11 +136,11 @@ class ObjectTest extends LimbTestCase
     $this->object->setByIndexString($path, $value);
   }
 
-  function testDestroy()
+  function testRemove()
   {
-    $this->dataspace->expectOnce('destroy', array($property = 'test'));
+    $this->dataspace->expectOnce('remove', array($property = 'test'));
 
-    $this->object->destroy($property);
+    $this->object->remove($property);
   }
 
   function testReset()

@@ -35,7 +35,7 @@ class Ip
         $ip_2_counter = 255;
         $ip_2_fragment = 255;
 
-        $ip_list[] = Ip :: encodeIp("{$ip_1_counter}.255.255.255");
+        $ip_list[] = Ip :: encode("{$ip_1_counter}.255.255.255");
       }
 
       while ( $ip_2_counter <= $ip_2_end )
@@ -48,7 +48,7 @@ class Ip
           $ip_3_counter = 255;
           $ip_3_fragment = 255;
 
-          $ip_list[] = Ip :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.255.255");
+          $ip_list[] = Ip :: encode("{$ip_1_counter}.{$ip_2_counter}.255.255");
         }
 
         while ( $ip_3_counter <= $ip_3_end )
@@ -61,12 +61,12 @@ class Ip
             $ip_4_counter = 255;
             $ip_4_fragment = 255;
 
-            $ip_list[] = Ip :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.255");
+            $ip_list[] = Ip :: encode("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.255");
           }
 
           while ( $ip_4_counter <= $ip_4_end )
           {
-            $ip_list[] = Ip :: encodeIp("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.{$ip_4_counter}");
+            $ip_list[] = Ip :: encode("{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.{$ip_4_counter}");
             $ip_4_counter++;
           }
           $ip_3_counter++;
@@ -79,14 +79,14 @@ class Ip
     return $ip_list;
   }
 
-  function encodeIp($ip)
+  function encode($ip)
   {
     $ip_sep = explode('.', $ip);
 
     return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
   }
 
-  function decodeIp($hex_ip)
+  function decode($hex_ip)
   {
     $hexipbang = explode('.', chunk_split($hex_ip, 2, '.'));
 

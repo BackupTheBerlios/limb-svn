@@ -156,7 +156,7 @@ class LimbDatasourceComponent extends Component
     {
       if($target_component =& $this->parent->findChild($target))
       {
-        $target_component->registerDataset($dataset);
+        $target_component->registerDataSet($dataset);
       }
       else
       {

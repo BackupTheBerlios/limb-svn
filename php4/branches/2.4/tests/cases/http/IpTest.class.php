@@ -28,8 +28,8 @@ class IpTest extends LimbTestCase
   {
     $ip_list = $this->ip->encodeIpRange('192.168.0.1', '192.168.10.10');
 
-    $this->assertNotIdentical(false, array_search($this->ip->encodeIp('192.168.0.1'), $ip_list));
-    $this->assertNotIdentical(false, array_search($this->ip->encodeIp('192.168.10.10'), $ip_list));
+    $this->assertNotIdentical(false, array_search($this->ip->encode('192.168.0.1'), $ip_list));
+    $this->assertNotIdentical(false, array_search($this->ip->encode('192.168.10.10'), $ip_list));
   }
 }
 

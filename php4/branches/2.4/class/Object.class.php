@@ -68,9 +68,9 @@ class Object
     $this->dataspace->setByIndexString($raw_index, $value);
   }
 
-  function destroy($name)
+  function remove($name)
   {
-    $this->dataspace->destroy($name);
+    $this->dataspace->remove($name);
   }
 
   function reset()
