@@ -1232,14 +1232,14 @@ HTMLArea.prototype.getSelectedHTML = function()
 HTMLArea.prototype._insertImage = function()
 {
 	var editor = this;	// for nested functions
-	PopupURL(editor, "/root/image_select", richedit_insert_image, richedit_get_image);
+	popup("/root/image_select", null, null, false,  richedit_insert_image, richedit_get_image);
 };
 
 // Called when the user clicks on "InsertImage" button
 HTMLArea.prototype._insertLinkFile = function()
 {
 	var editor = this;	// for nested functions
-	PopupURL(editor, "/root/file_select", richedit_insert_filelink, richedit_get_filelink);
+	popup("/root/file_select", null, null, false, richedit_insert_filelink, richedit_get_filelink);
 };
 
 // Called when the user clicks the Insert Table button
