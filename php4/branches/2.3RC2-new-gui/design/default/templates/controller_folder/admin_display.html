@@ -23,10 +23,17 @@
   <grid:STRIPE even><tr class="even_row"></grid:STRIPE>
   <td><span behavior='CRow' target='-2'><small>{$name}</small></td>
   <td>
+  <!--
     <a href='{^path}?popup=1&action=set_group_access&controller_id={$id}' onclick="return click_href(this.href);"><img alt="" src="/shared/images/access_manage.gif">Set group access</a>
-  </td>
-  <td>
     <a href='{^path}?popup=1&action=set_group_access_template&controller_id={$id}' onclick="return click_href(this.href);"><img alt="" src="/shared/images/access_template_manage.gif">Set group access template</a>
+   -->
+  <script type="text/javascript" language="javascript">
+  arr_actions['controllers_{$id}'] = {
+      'group_access':{'href':'{^path}?popup=1&action=set_group_access&controller_id={$id}', 'img': '<action:ICON identifier="access_manage">', 'name': 'Set group access'},
+      'group_access_template':{'href':'{^path}?popup=1&action=set_group_access_template&controller_id={$id}', 'img': '<action:ICON identifier="access_template_manage">', 'name': 'Set group access template'},
+  }
+  </script>
+  <span id="controllers_{$id}" behavior="CDDAction" ddalign="hbr"><img src='/shared/images/marker/action_minus.gif'></span>
   </td>
 </tr>
 </grid:ITERATOR>

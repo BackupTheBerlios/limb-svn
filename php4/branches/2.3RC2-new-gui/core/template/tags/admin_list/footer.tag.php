@@ -29,13 +29,14 @@ class  admin_list_footer_tag extends compiler_directive_tag
             <td>
     ");
   }
-  
+
   function post_generate(& $code)
   {
     $code->write_html("
             </td>
           </tr>
           </table>
+          </span>
     ");
   }
 

@@ -10,13 +10,13 @@
 ***********************************************************************************/
 
 define('TREE_LINE_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100% style='display:inline'><tr><td background='/shared/images/t_l.gif' width=20><img src='/shared/images/1x1.gif'></td></tr></table>");
-define('TREE_SPACER_IMG', "<img src='/shared/images/0.gif' width=20>");
-define('TREE_END_IMG', 	"<table border=0 cellspacing=0 cellpadding=0 height=100% style='display:inline'><tr><td valign=top><img src='/shared/images/t_e.gif'></td></tr></table>");
-define('TREE_END_P_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td><a href='%s'><img src='/shared/images/t_e_p.gif'></a></td></tr><tr><td height=100%%></td></tr></table>");
-define('TREE_END_M_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td><a href='%s'><img src='/shared/images/t_e_m.gif' border=0></a></td></tr><tr><td height=100%%></td></tr></table>");
-define('TREE_CROSS_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td background='/shared/images/t_l.gif' valign=top><img src='/shared/images/t_c.gif' border=0></td></tr></table>");
-define('TREE_CROSS_P_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td background='/shared/images/t_l.gif' valign=top><a href='%s'><img src='/shared/images/t_c_p.gif' border=0></a></td></tr></table>");
-define('TREE_CROSS_M_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td background='/shared/images/t_l.gif' valign=top><a href='%s'><img src='/shared/images/t_c_m.gif' border=0></a></td></tr></table>");
+define('TREE_SPACER_IMG', "<img src='/shared/images/icon/tree/0.gif' width=20>");
+define('TREE_END_IMG', 	"<table border=0 cellspacing=0 cellpadding=0 height=100% style='display:inline'><tr><td valign=top><img src='/shared/images/icon/tree/t_e.gif'></td></tr></table>");
+define('TREE_END_P_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td><a href='%s'><img src='/shared/images/icon/tree/t_e_p.gif'></a></td></tr><tr><td height=100%%></td></tr></table>");
+define('TREE_END_M_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td><a href='%s'><img src='/shared/images/icon/tree/t_e_m.gif' border=0></a></td></tr><tr><td height=100%%></td></tr></table>");
+define('TREE_CROSS_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td background='/shared/images/icon/tree/t_l.gif' valign=top><img src='/shared/images/icon/tree/t_c.gif' border=0></td></tr></table>");
+define('TREE_CROSS_P_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td background='/shared/images/icon/tree/t_l.gif' valign=top><a href='%s'><img src='/shared/images/icon/tree/t_c_p.gif' border=0></a></td></tr></table>");
+define('TREE_CROSS_M_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100%% style='display:inline'><tr><td background='/shared/images/icon/tree/t_l.gif' valign=top><a href='%s'><img src='/shared/images/icon/tree/t_c_m.gif' border=0></a></td></tr></table>");
 
 class grid_tree_item_tag_info
 {
@@ -139,9 +139,7 @@ class grid_tree_item_tag extends compiler_directive_tag
       \"<img alt='{$img_alt}' border='0' align='middle' src='\" . {$ref}->get('icon') . \"'>\";
     ");
 
-    $code->write_php("echo
-      \"</td></tr>\";
-    ");
+    $code->write_html("</td></tr>");
     $code->write_php("
       echo \"<tr><td height=100% \";
 
@@ -155,7 +153,7 @@ class grid_tree_item_tag extends compiler_directive_tag
 
       echo \"></td></tr>\";
     ");
-    $code->write_php("echo \"</table>\";");
+    $code->write_html("</table>");
     $code->write_html("</td><td valign=top style='padding:6px 3px 3px 2px'>");
 
     if(!array_key_exists('nolink', $this->attributes))

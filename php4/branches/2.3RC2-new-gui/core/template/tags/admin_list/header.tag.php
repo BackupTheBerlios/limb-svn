@@ -24,7 +24,10 @@ class  admin_list_header_tag extends compiler_directive_tag
   {
     $title =& $this->find_child_by_class('admin_list_title_tag');
     $filter =& $this->find_child_by_class('admin_list_filter_tag');
-
+    $code->write_html("<span");
+    if($filter)
+      $code->write_html(" behavior='CShowHide'");
+    $code->write_html(">");
     $code->write_html("
           <table border='0' cellspacing='0' cellpadding='0' class='datatable'>
           <tr>
@@ -41,15 +44,16 @@ class  admin_list_header_tag extends compiler_directive_tag
     $code->write_html("</td>");
     if($filter)
     {
-      $filter->generate($code);
       $code->write_html("
                <td style='padding:4px 4px 0 4px' class='bgr' valign='bottom'>
+                  <span id='minus'>
                   <table width='100%' border='0' cellspacing='0' cellpadding='0' class='filter'>
                   <tr>
-                    <td style='padding:2px 1px 2px 5px'><img src='/shared/images/icon/on.gif'></td>
-                    <td style='padding:2px 5px 2px 4px'></td>
+                    <td style='padding:2px 1px 2px 5px'><img src='/shared/images/marker/minus.gif'></td>
+                    <td style='padding:2px 5px 2px 4px'>" . strings :: get('filter'). "</td>
                   </tr>
                   </table>
+                  </span>
                 </td>
       ");
     }
@@ -60,9 +64,14 @@ class  admin_list_header_tag extends compiler_directive_tag
             </td>
           </tr>
           <tr>
-            <td style='padding:5px'>    
+            <td style='padding:5px'>
     ");
-
+    if($filter)
+    {
+      $code->write_html("<span id='body'>");
+      $filter->generate($code);
+      $code->write_html("</span>");
+    }
   }
 
 }

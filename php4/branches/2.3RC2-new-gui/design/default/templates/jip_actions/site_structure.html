@@ -1,0 +1,11 @@
+<script type="text/javascript" language="javascript">
+<actions>
+arr_actions['{^id}'] = {
+  <actions:ITEM>
+    '{$action}':{'href':'{$action_href}','img': '<action:ICON>', 'name': '{$action_name}'},
+  </actions:ITEM>
+    'change_controller':{'href':'{^path}?action=change_controller&id={$node_id}&popup=1','img': '<action:ICON identifier="configure">', 'name': '<locale:STRING name="change_controller" file="site_structure">'}
+}
+</actions>
+</script>
+<span id="{$id}" behavior="CDDAction" ddalign="hbr"><img src='/shared/images/marker/action_minus.gif'></span>

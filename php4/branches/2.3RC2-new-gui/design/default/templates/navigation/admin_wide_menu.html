@@ -29,7 +29,8 @@
           <grid:ITERATOR>
             <grid:SEPARATOR count='3'></tr><tr></grid:SEPARATOR>
             <td align="center" width="33%">
-              <limb:CONTEXT_ICON>
+              <core:OPTIONAL for="new_window"><a href='{$url}' target="_blank"><limb:CONTEXT_ICON></a></core:OPTIONAL>
+              <core:DEFAULT for="new_window"><a href='{$url}'><limb:CONTEXT_ICON></a></core:DEFAULT>
               <br>
               <core:OPTIONAL for="new_window"><a href='{$url}' target="_blank">{$title}</a></core:OPTIONAL>
               <core:DEFAULT for="new_window"><a href='{$url}'>{$title}</a></core:DEFAULT>

@@ -25,7 +25,7 @@ class action_icon_tag extends server_component_tag
     $ref = $this->get_component_ref_code();
 
     if(isset($this->attributes['identifier']))
-      $code->write_php("{$ref}->set(\"identifier\", \"". $this->attributes['id'] ."\");\n");
+      $code->write_php("{$ref}->set(\"identifier\", \"". $this->attributes['identifier'] ."\");\n");
     else
       $code->write_php("{$ref}->set(\"identifier\", " . $this->parent->get_dataspace_ref_code() ."->get('icon'));\n");
 
