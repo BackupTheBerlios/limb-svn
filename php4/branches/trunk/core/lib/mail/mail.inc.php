@@ -55,7 +55,10 @@ function send_plain_mail($recipients, $sender, $subject, $body, $charset = 'wind
   $mail->Subject = $subject;
   $mail->Body    = $body;
 
-  return $mail->Send();
+  if(!$res = $mail->Send())
+    debug :: write_error('mail send error', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, $recipient);
+
+  return $res;
 }
 
 function send_html_mail($recipients, $sender, $subject, $html, $text = null, $charset = 'windows-1251')
@@ -81,7 +84,10 @@ function send_html_mail($recipients, $sender, $subject, $html, $text = null, $ch
   $mail->FromName = $sender['name'];
   $mail->Subject = $subject;
 
-  return $mail->Send();
+  if(!$res = $mail->Send())
+    debug :: write_error('mail send error', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, $recipient);
+
+  return $res;
 }
 
 function process_mail_recipients($recipients)
