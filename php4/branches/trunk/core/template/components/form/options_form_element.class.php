@@ -148,7 +148,10 @@ class options_form_element extends container_form_element
 
     foreach($this->choice_list as $key => $contents)
     {
-      $this->option_renderer->render_attribute($key, $contents, $key == $value);
+      $this->option_renderer->render_attribute($key,
+                                               $contents,
+                                               //we have to convert values to strings, since 'a' == 0 !!!
+                                               "{$key}" == "{$value}");
     }
   }
 

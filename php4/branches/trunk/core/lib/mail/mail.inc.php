@@ -60,6 +60,7 @@ function send_html_mail($recipients, $sender, $subject, $html, $text = null, $ch
   $mail->FromName = $sender['name'];
   $mail->Subject = $subject;
 
+//  $mail->isSMTP();
   return $mail->Send();
 }
 
