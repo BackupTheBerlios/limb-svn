@@ -29,7 +29,7 @@ class controller_group_action_access_datasource extends datasource
 
     $actions = $site_object_controller->get_actions_definitions();
 
-    $user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter);
+    $user_groups =& fetch_sub_branch('/root/admin/user_groups', 'user_group', $counter);
 
     $result = array();
     foreach($actions as $action => $action_params)

@@ -21,12 +21,8 @@ class admin_page_controller extends site_object_controller
   function _define_actions()
   {
     return array(
-        'display' => array(
-            'template_path' => '/admin/admin_page.html',
-            'transaction' => false,
-        ),
         'admin_display' => array(
-            'template_path' => '/admin/admin_page.html',
+            'template_path' => '/admin_page/admin_display.html',
             'transaction' => false,
         ),
         'edit' => array(

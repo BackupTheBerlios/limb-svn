@@ -16,7 +16,7 @@ class group_object_access_datasource extends fetch_tree_datasource
   {
     $tree_array = parent :: _fetch($counter, $params);
     $group_params['order'] = array('priority' => 'ASC');
-    $user_groups =& fetch_sub_branch('/root/user_groups', 'user_group', $counter, $group_params);
+    $user_groups =& fetch_sub_branch('/root/admin/user_groups', 'user_group', $counter, $group_params);
 
     $dataspace =& dataspace_registry :: get('set_group_access');
 
