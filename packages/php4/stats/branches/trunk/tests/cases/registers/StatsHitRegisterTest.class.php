@@ -8,10 +8,10 @@
 * $Id: StatsRegisterTest.class.php 1135 2005-03-03 10:25:19Z seregalimb $
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../StatsHitRegister.class.php');
-require_once(dirname(__FILE__) . '/../../StatsRequest.class.php');
-require_once(dirname(__FILE__) . '/../../StatsReferer.class.php');
-require_once(dirname(__FILE__) . '/../../StatsUri.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsHitRegister.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsRequest.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsReferer.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsUri.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 

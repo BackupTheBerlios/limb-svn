@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../StatsSearchPhraseRegister.class.php');
-require_once(dirname(__FILE__) . '/../../StatsRequest.class.php');
-require_once(dirname(__FILE__) . '/../../search_engine_rules/SearchEngineRegexRule.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsSearchPhraseRegister.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsRequest.class.php');
+require_once(LIMB_STATS_DIR . '/search_engine_rules/SearchEngineRegexRule.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generate('SearchEngineRegexRule');

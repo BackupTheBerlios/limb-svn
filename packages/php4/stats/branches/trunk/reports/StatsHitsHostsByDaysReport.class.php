@@ -40,17 +40,6 @@ class StatsHitsHostsByDaysReport //implements StatsReportInterface
     return $this->db->getArray();
   }
 
-  function fetchCount($params = array())
-  {
-    $sql = "SELECT COUNT(id) as count FROM sys_stat_day_counters as ssdc";
-
-    $sql .= $this->_buildFilterCondition();
-
-    $this->db->sqlExec($sql);
-    $arr = $this->db->fetchRow();
-    return (int)$arr['count'];
-  }
-
   function setPeriodFilter($start_date, $finish_date)
   {
     $start_stamp = $start_date->getStamp();

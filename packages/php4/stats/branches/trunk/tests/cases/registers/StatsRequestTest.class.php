@@ -8,7 +8,7 @@
 * $Id: StatsRegisterTest.class.php 1135 2005-03-03 10:25:19Z seregalimb $
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../StatsRequest.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsRequest.class.php');
 require_once(LIMB_DIR . '/core/http/Uri.class.php');
 
 class StatsRequestTest extends LimbTestCase

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../StatsIp.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsIp.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class StatsIpTest extends LimbTestCase

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../StatsUri.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsUri.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generatePartial

@@ -5,25 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: StatsGroup.class.php 1075 2005-01-29 15:50:12Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/actions/FormAction.class.php');
-
-class StatsKeywordsReportAction extends FormAction
+class StatsReportsDAOGroup extends LimbGroupTest
 {
-  function _defineDataspaceName()
+  function StatsReportsDAOGroup()
   {
-    return 'keywords_form';
+    parent :: LimbGroupTest('stats reports DAO tests');
   }
 
-  function _validPerform(&$request, &$response)
+  function getTestCasesHandles()
   {
-    $request->import($this->dataspace->export());
-
-    parent :: _validPerform(&$request, &$response);
+    return TestFinder::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/DAO/');
   }
-
 }
-
 ?>

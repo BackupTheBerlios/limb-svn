@@ -11,13 +11,8 @@
 require_once(dirname(__FILE__) . '/StatsReportDatasource.class.php');
 require_once(dirname(__FILE__) . '/../reports/StatsHitsHostsByDaysReport.class.php');
 
-class StatsHitsHostsListDatasource extends StatsReportDatasource
+class StatsHitsHostsListDatasource
 {
-  function _initStatsReport()
-  {
-    $this->_stats_report = new StatsHitsHostsByDaysReport();
-  }
-
   function _processResultArray($arr)
   {
     if(ComplexArray :: getMaxColumnValue('hosts', $arr, $index) !== false)
@@ -35,41 +30,13 @@ class StatsHitsHostsListDatasource extends StatsReportDatasource
     $result = array();
     foreach($arr as $index => $data)
     {
-      if(date('w', $data['time']+60*60*24) == 1)
+      if(date('w', $data['time'] + 60*60*24) == 1)
         $data['new_week'] = 1;
 
       $result[$index] = $data;
     }
 
     return $result;
-  }
-
-  function _configureFilters()
-  {
-    $toolkit =& Limb :: toolkit();
-
-    $this->_setPeriodFilter($toolkit->getRequest(), $toolkit->getLocale());
-  }
-
-  function _setPeriodFilter(&$request, &$locale)
-  {
-    $start_date = new Date();
-    $start_date->setHour(0);
-    $start_date->setMinute(0);
-    $start_date->setSecond(0);
-
-    if ($stats_start_date = $request->get('stats_start_date'))
-      $start_date->setByLocaleString($locale, $stats_start_date, $locale->getShortDateTimeFormat());
-
-    $finish_date = new Date();
-    if ($stats_finish_date = $request->get('stats_finish_date'))
-      $finish_date->setByLocaleString($locale, $stats_finish_date, $locale->getShortDateTimeFormat());
-
-    $finish_date->setHour(23);
-    $finish_date->setMinute(59);
-    $finish_date->setSecond(59);
-
-    $this->_stats_report->setPeriodFilter($start_date, $finish_date);
   }
 }
 ?>

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../StatsRegisterManager.class.php');
-require_once(dirname(__FILE__) . '/../../StatsRequest.class.php');
-require_once(dirname(__FILE__) . '/../../StatsRegister.interface.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsRegisterManager.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsRequest.class.php');
+require_once(LIMB_STATS_DIR . '/registers/StatsRegister.interface.php');
 
 Mock :: generate('StatsRegister');
 
