@@ -8,7 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+
+function toStudlyCaps($str, $ucfirst = true)
+{
+  $res = preg_replace('~([a-zA-Z])?_([a-zA-Z])~e',
+                      "'\\1'.strtoupper('\\2')",
+                      $str);
+
+  return ($ucfirst) ? ucfirst($res) : $res;
+
+}
+
+function to_under_scores($str)
+{
+  return ltrim(preg_replace('~([a-z])?([A-Z])~e', "'\\1_'.strtolower('\\2')", $str),
+               '_');
+}
 
 function addUrlQueryItems($url, $items=array())
 {

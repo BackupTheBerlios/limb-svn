@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
 
 class DbTable
 {
@@ -39,8 +40,7 @@ class DbTable
     if(($pos = strpos($class_name, 'DbTable')) !== false)
       $class_name = substr($class_name, 0, $pos);
 
-    $table_name = ltrim(preg_replace('~([a-z])?([A-Z])~e', "'\\1_'.strtolower('\\2')", $class_name),
-                        '_');
+    $table_name = to_under_scores($class_name);
 
     return $table_name;
   }
@@ -231,9 +231,7 @@ class DbTable
   protected function _mapTableNameToClass($table_name)
   {
     //this probably should be moved to toolkit...
-    return ucfirst(preg_replace('~([a-zA-Z])?_([a-zA-Z])~e',
-                         "'\\1'.strtoupper('\\2')",
-                         $table_name));
+    return toStudlyCaps($table_name);
 
   }
 
