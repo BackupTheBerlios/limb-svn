@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: date.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -482,9 +482,9 @@ class date
     return $output;
   }
 
-  function get_unix_stamp()
+  function get_stamp()
   {
-  	return $this->get_date(DATE_FORMAT_UNIXTIME);
+  	return mktime($this->hour, $this->minute, $this->second, $this->month, $this->day, $this->year);
   }
 
   function set_time_zone($tz)
@@ -555,10 +555,14 @@ class date
    * Compares object with $d date object.
    * return int 0 if the dates are equal, -1 if is before, 1 if is after than $d
    */
-  function compare($d)
+  function compare($d, $use_time_zone=false)
   {
-    $this->convert_to_time_zone(new date_time_zone('UTC'));
-    $d->convert_to_time_zone(new date_time_zone('UTC'));
+  	if($use_time_zone)
+  	{
+	    $this->convert_to_time_zone(new date_time_zone('UTC'));
+	    $d->convert_to_time_zone(new date_time_zone('UTC'));
+	  }
+	  
     $days1 = $this->date_to_days();
     $days2 = $d->date_to_days();
     if ($days1 < $days2) return -1;
@@ -572,25 +576,25 @@ class date
     return 0;
   }
 
-  function is_before($when)
+  function is_before($when, $use_time_zone=false)
   {
-    if ($this->compare($when) == -1)
+    if ($this->compare($when, $use_time_zone) == -1)
     	return true;
     else
     	return false;
   }
 
-  function is_after($when)
+  function is_after($when, $use_time_zone=false)
   {
-    if ($this->compare($when) == 1)
+    if ($this->compare($when, $use_time_zone) == 1)
     	return true;
     else
     	return false;
   }
 
-  function is_equal($when)
+  function is_equal($when, $use_time_zone=false)
   {
-    if ($this->compare($when) == 0)
+    if ($this->compare($when, $use_time_zone) == 0)
     	return true;
     else
     	return false;

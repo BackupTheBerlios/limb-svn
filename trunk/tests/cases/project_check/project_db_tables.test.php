@@ -164,7 +164,7 @@ class test_project_db_tables extends UnitTestCase
 	
 	function _load_db_tables($dir_name)
 	{
-		if ($dir = opendir($dir_name))
+		if ($dir = @opendir($dir_name))
 		{  
 			while(($object_file = readdir($dir)) !== false) 
 			{  

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: date_time_zone.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -149,7 +149,7 @@ class date_time_zone
 			$env_tz = getenv('TZ');
 
 		putenv('TZ=' . $this->id);
-		$ltime = localtime($date->get_unix_stamp(), true);
+		$ltime = localtime($date->get_stamp(), true);
 		putenv('TZ=' . $env_tz);
 		return $ltime['tm_isdst'];
 	} 
