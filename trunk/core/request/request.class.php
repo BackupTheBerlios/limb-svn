@@ -26,6 +26,7 @@ define('REQUEST_STATUS_FAILURE', 32);
 class request extends object
 {
   var $status;
+  var $uri;
   
   function request()
   {
@@ -63,6 +64,19 @@ class request extends object
   {
 		$obj =& instantiate_object('request');
 		return $obj;  
+  }
+  
+  function & get_uri()
+  {
+    if($this->uri === null)
+      $this->_init_uri();
+    
+    return $this->uri;
+  }
+  
+  function _init_uri()
+  {
+    $this->uri = new uri($_SERVER['REQUEST_URI']);
   }
   
   function set_status($status)

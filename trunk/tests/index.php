@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 ob_start();
 
+require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/test_manager.php');
 
 if (!include_once(SIMPLE_TEST . 'reporter.php'))

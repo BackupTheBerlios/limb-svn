@@ -9,12 +9,12 @@
 *
 ***********************************************************************************/
 
-class db_group extends GroupTest 
+class cache_group extends GroupTest 
 {
-	function db_group() 
+	function cache_group() 
 	{
-	  $this->GroupTest('db tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/db');
+	  $this->GroupTest('cache tests');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/cache');
 	}
 }
 ?>

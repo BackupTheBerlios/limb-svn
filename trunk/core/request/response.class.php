@@ -34,6 +34,11 @@ class response
   	$this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white></body></html>";
 	}
 	
+	function & get_response_string()
+	{
+	  return $this->response_string;
+	}
+	
 	function is_empty()
 	{
 	  return $this->response_string == '';

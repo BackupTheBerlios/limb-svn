@@ -29,10 +29,11 @@ $filter_chain =& new filter_chain($request, $response);
 
 $filter_chain->register_filter($f1 = LIMB_DIR . 'core/filters/locale_definition_filter');
 $filter_chain->register_filter($f2 = LIMB_DIR . 'core/filters/authentication_filter');
-$filter_chain->register_filter($f3 = LIMB_DIR . 'core/filters/jip_filter');
-$filter_chain->register_filter($f4 = LIMB_DIR . 'core/filters/logging_filter');
-$filter_chain->register_filter($f5 = LIMB_DIR . 'core/filters/output_buffering_filter');
-$filter_chain->register_filter($f6 = LIMB_DIR . 'core/filters/site_object_controller_filter');
+$filter_chain->register_filter($f3 = LIMB_DIR . 'core/filters/logging_filter');
+$filter_chain->register_filter($f4 = LIMB_DIR . 'core/filters/full_page_cache_filter');
+$filter_chain->register_filter($f5 = LIMB_DIR . 'core/filters/jip_filter');
+$filter_chain->register_filter($f6 = LIMB_DIR . 'core/filters/output_buffering_filter');
+$filter_chain->register_filter($f7 = LIMB_DIR . 'core/filters/site_object_controller_filter');
 
 $filter_chain->process();
 

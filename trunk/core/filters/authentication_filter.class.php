@@ -15,6 +15,8 @@ class authentication_filter extends intercepting_filter
 {
   function run(&$filter_chain, &$request, &$response)
   { 
+    debug :: add_timing_point('authentication filter started');
+  
     start_user_session();
     
     if(!$object_data = fetch_requested_object($request))
@@ -51,8 +53,6 @@ class authentication_filter extends intercepting_filter
     
     $object =& wrap_with_site_object($object_data); 
 
-    debug :: add_timing_point('object fetched');
-    
     $site_object_controller =& $object->get_controller();
     
     if(($action = $site_object_controller->determine_action($request)) === false)
@@ -63,6 +63,8 @@ class authentication_filter extends intercepting_filter
     		$response->redirect(ERROR_DOCUMENT_404);
     	else
     		$response->header("HTTP/1.1 404 Not found");
+
+      debug :: add_timing_point('authentication filter finished');
     	
     	$filter_chain->next();
     	return;
@@ -83,7 +85,9 @@ class authentication_filter extends intercepting_filter
     		$response->header("HTTP/1.1 403 Access denied");
     	return;
     }
-            
+
+    debug :: add_timing_point('authentication filter finished');
+          
     $filter_chain->next();        
   }
 }

@@ -9,31 +9,32 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/filters/intercepting_filter.class.php');
-require_once(LIMB_DIR . 'core/fetcher.class.php');
-require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/core/cache/full_page_cache_manager.class.php');
 
-class jip_filter extends intercepting_filter 
+class full_page_cache_filter extends intercepting_filter 
 { 
   function run(&$filter_chain, &$request, &$response) 
   {
-    debug :: add_timing_point('jip filter started');
+    debug :: add_timing_point('full page cache started');
   
-    $fetcher =& fetcher :: instance();
-    $fetcher->set_jip_status(false);
+    $cache = new full_page_cache_manager();
     
-    $user =& user :: instance();
+    $cache->set_uri($request->get_uri());
     
-    if ($user->is_logged_in())
+    if($contents =& $cache->get())
     {
-      $ini =& get_ini('jip_groups.ini');
-      
-      if($user->is_in_groups(array_keys($ini->group('groups'))))
-        $fetcher->set_jip_status(true);
+      debug :: add_timing_point('full page cache read finished');
+    
+      $response->write_response_string($contents);
+      return;
     }
 
-    debug :: add_timing_point('jip filter done');
-
+    
     $filter_chain->next();
+    
+    $cache->write($content =& $response->get_response_string());    
+
+    debug :: add_timing_point('full page cache write finished');
   }   
 } 
 ?>

@@ -297,6 +297,11 @@ class uri
     	
 		return false;
   }
+  
+  function get_query_items()
+  {
+    return $this->_query_items;
+  }
 
   /**
   * Removes a query_string item
@@ -330,24 +335,24 @@ class uri
   */
   function get_query_string()
   {
-    if (!empty($this->_query_items)) 
+    $query_string = ''; 
+    $query_items = array();
+
+    foreach ($this->_query_items as $name => $value) 
     {
-      foreach ($this->_query_items as $name => $value) 
+      if (is_array($value)) 
       {
-        if (is_array($value)) 
-        {
-          foreach ($value as $k => $v)
-          	$query_string[] = sprintf('%s[%s]=%s', $name, $k, $v);
-        } 
-        elseif ($value != '' || is_null($value))
-        	$query_string[] = $name . '=' . $value;
-        else
-        	$query_string[] = $name;
-      }
-      $query_string = implode('&', $query_string);	        
-    } 
-    else
-    	$query_string = '';
+        foreach ($value as $k => $v)
+        	$query_items[] = sprintf('%s[%s]=%s', $name, $k, $v);
+      } 
+      elseif ($value != '' || is_null($value))
+      	$query_items[] = $name . '=' . $value;
+      else
+      	$query_items[] = $name;
+    }
+    
+    if($query_items)
+      $query_string = implode('&', $query_items);	        
 
     return $query_string;
   }

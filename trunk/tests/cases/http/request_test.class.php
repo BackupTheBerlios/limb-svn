@@ -45,7 +45,7 @@ class request_test extends UnitTestCase
   {
     $this->request->set_status(REQUEST_STATUS_FORM_SUBMITTED | REQUEST_STATUS_FORM_DISPLAYED);
     $this->assertTrue($this->request->is_success());
-  }
+  }  
 }
 
 ?>

@@ -16,6 +16,8 @@ class logging_filter extends intercepting_filter
     {      
       $filter_chain->next();
       
+      debug :: add_timing_point('logging filter started');
+      
       $object = wrap_with_site_object(fetch_requested_object($request));
       
       $controller = $object->get_controller(); 
@@ -28,6 +30,8 @@ class logging_filter extends intercepting_filter
         $object->get_node_id(), 
         $controller->get_action(), 
         $request->get_status());
+        
+      debug :: add_timing_point('logging filter finished');        
       
     }
 }

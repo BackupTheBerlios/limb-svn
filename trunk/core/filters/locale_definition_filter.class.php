@@ -16,6 +16,8 @@ class locale_definition_filter extends intercepting_filter
 { 
   function run(&$filter_chain, &$request, &$response) 
   {
+    debug :: add_timing_point('locale filter started');
+  
     if(!$node = map_request_to_node($request))
     {
     	define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
@@ -36,7 +38,7 @@ class locale_definition_filter extends intercepting_filter
     else
       define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
               
-    debug :: add_timing_point('node mapped');
+    debug :: add_timing_point('locale filter finished');
     
     $filter_chain->next();
   }   
