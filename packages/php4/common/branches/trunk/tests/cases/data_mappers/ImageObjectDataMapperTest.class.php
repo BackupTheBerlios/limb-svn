@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../site_objects/ImageObject.class.php');
-require_once(dirname(__FILE__) . '/../../../finders/ImageObjectsRawFinder.class.php');
 require_once(dirname(__FILE__) . '/../../../data_mappers/ImageObjectMapper.class.php');
 require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
@@ -18,10 +17,7 @@ require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
 
 Mock :: generatePartial('ImageObjectMapper',
                         'ImageObjectMapperTestVersion',
-                        array('_getFinder',
-                              '_doParentInsert',
-                              '_doParentUpdate',
-                              '_getMediaManager'));
+                        array('_getMediaManager'));
 
 Mock :: generate('MediaManager');
 Mock :: generate('ImageObjectsRawFinder');
@@ -29,20 +25,22 @@ Mock :: generate('ImageObjectsRawFinder');
 class ImageObjectDataMapperTest extends LimbTestCase
 {
   var $db;
-  var $finder;
   var $mapper;
   var $media_manager;
   var $image;
 
+  function ImageObjectDataMapperTest()
+  {
+    parent :: LimbTestCase('image object data mapper test');
+  }
+
   function setUp()
   {
-    $this->db =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDB(LimbDbPool :: getConnection());
 
-    $this->finder = new MockImageObjectsRawFinder($this);
     $this->media_manager = new MockMediaManager($this);
 
     $this->mapper = new ImageObjectMapperTestVersion($this);
-    $this->mapper->setReturnReference('_getFinder', $this->finder);
     $this->mapper->setReturnReference('_getMediaManager', $this->media_manager);
 
     $this->_cleanUp();
@@ -53,17 +51,16 @@ class ImageObjectDataMapperTest extends LimbTestCase
     $this->_cleanUp();
 
     $this->mapper->tally();
-    $this->finder->tally();
   }
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('image_object');
-    $this->db->sqlDelete('image_variation');
-    $this->db->sqlDelete('media');
+    $this->db->delete('image_object');
+    $this->db->delete('image_variation');
+    $this->db->delete('media');
   }
 
-  function testFindById()
+  function testLoad()
   {
     $variations_data = array('original' => array('id' => $id1 = 200,
                                                 'name' => $name1 = 'original',
@@ -89,10 +86,11 @@ class ImageObjectDataMapperTest extends LimbTestCase
                     'description' => $description = 'Description',
                     'variations' => $variations_data);
 
-    $this->finder->expectOnce('findById', array($id));
-    $this->finder->setReturnValue('findById', $result, array($id));
+    $record = new Dataspace();
+    $record->import($result);
 
-    $image =& $this->mapper->findById($id);
+    $image = new ImageObject();
+    $this->mapper->load($record, $image);
 
     $this->assertEqual($image->getId(), $id);
     $this->assertEqual($image->getDescription(), $description);
@@ -129,11 +127,18 @@ class ImageObjectDataMapperTest extends LimbTestCase
 
     $image->attachVariation($image_variation2);
 
-    $this->mapper->expectOnce('_doParentInsert', array($image));
     $this->mapper->insert($image);
 
-    $this->db->sqlSelect('media');
-    $media_rows = $this->db->getArray();
+    $rs = $this->db->select('image_object');
+    $image_rows = $rs->getArray();
+    $this->assertEqual(sizeof($image_rows), 1);
+    $record = reset($image_rows);
+    $this->assertEqual($record['id'], $image->getId());
+    $this->assertEqual($record['title'], $image->getTitle());
+    $this->assertEqual($record['description'], $image->getDescription());
+
+    $rs = $this->db->select('media');
+    $media_rows = $rs->getArray();
 
     $media1 = reset($media_rows);
     $this->assertEqual($media1['id'], $image_variation1->getMediaId());
@@ -151,8 +156,8 @@ class ImageObjectDataMapperTest extends LimbTestCase
     $this->assertEqual($media2['size'], $size2);
     $this->assertEqual($media2['etag'], $etag2);
 
-    $this->db->sqlSelect('image_variation');
-    $variation_rows = $this->db->getArray();
+    $rs = $this->db->select('image_variation');
+    $variation_rows = $rs->getArray();
     $variation_data1 = reset($variation_rows);
     $this->assertEqual($variation_data1['image_id'], $image->getId());
     $this->assertEqual($variation_data1['media_id'], $image_variation1->getMediaId());
@@ -170,20 +175,20 @@ class ImageObjectDataMapperTest extends LimbTestCase
 
   function testUpdate()
   {
-    $this->db->sqlInsert('image_object', array('id' => $id = 1000,
-                                               'description' => 'Description'));
+    $this->db->insert('image_object', array('id' => $id = 1000,
+                                            'description' => 'Description'));
 
-    $this->db->sqlInsert('image_variation', array('id' => $variation_id = 1000,
-                                                  'media_id' => $media_id = 101,
-                                                  'image_id' => $id = 100,
-                                                  'variation' => 'whatever'));
+    $this->db->insert('image_variation', array('id' => $variation_id = 1000,
+                                               'media_id' => $media_id = 101,
+                                               'image_id' => $id = 100,
+                                               'variation' => 'whatever'));
 
-    $this->db->sqlInsert('media', array('id' => $media_id,
-                                        'media_file_id' => $old_media_file_id = 'sdFjfskd23923sds',
-                                        'file_name' => 'file1',
-                                        'mime_type' => 'type1',
-                                        'size' => 20,
-                                        'etag' => 'etag1'));
+    $this->db->insert('media', array('id' => $media_id,
+                                     'media_file_id' => $old_media_file_id = 'sdFjfskd23923sds',
+                                     'file_name' => 'file1',
+                                     'mime_type' => 'type1',
+                                     'size' => 20,
+                                     'etag' => 'etag1'));
 
 
     $image = new ImageObject();
@@ -218,11 +223,10 @@ class ImageObjectDataMapperTest extends LimbTestCase
 
     $image->attachVariation($image_variation2);
 
-    $this->mapper->expectOnce('_doParentUpdate', array($image));
     $this->mapper->update($image);
 
-    $this->db->sqlSelect('media');
-    $media_rows = $this->db->getArray();
+    $rs = $this->db->select('media');
+    $media_rows = $rs->getArray();
 
     $this->assertEqual(sizeof($media_rows), 2);
 
@@ -242,9 +246,8 @@ class ImageObjectDataMapperTest extends LimbTestCase
     $this->assertEqual($media2['size'], $size2);
     $this->assertEqual($media2['etag'], $etag2);
 
-    $this->db->sqlSelect('image_variation');
-
-    $variation_rows = $this->db->getArray();
+    $rs = $this->db->select('image_variation');
+    $variation_rows = $rs->getArray();
 
     $this->assertEqual(sizeof($variation_rows), 2);
 
@@ -276,7 +279,6 @@ class ImageObjectDataMapperTest extends LimbTestCase
       }
     }
   }
-
 }
 
 ?>

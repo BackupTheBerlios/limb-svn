@@ -8,24 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db_tables/OneTableObjectDbTable.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class ImageObjectDbTable extends OneTableObjectDbTable
+class ImageObjectDbTable extends LimbDbTable
 {
+  function _defineDbTableName()
+  {
+    return 'image_object';
+  }
+
   function _defineColumns()
   {
-    return ComplexArray :: array_merge(
-      parent :: _defineColumns(),
-      array(
+    return array(
+        'id' => array('type' => 'int'),
+        'title' => '',
         'description' => ''
-      )
-    );
+      );
   }
 
   function _defineConstraints()
   {
     return array(
-      'object_id' =>	array(
+      'id' =>	array(
           0 => array(
             'table_name' => 'image_variation',
             'field' => 'image_id',
