@@ -15,8 +15,9 @@ function send_html_mail($recipients, $sender, $subject, $html, $text = null)
 
   $mail = new PHPMailer();
   $mail->IsHTML(true);
+  $mail->LE = "\r\n";//we're using php mail function!!!
 
-  $mail->Body    = $html;
+  $mail->Body = $html;
 
   if(!is_null($text))
     $mail->AltBody = $text;
@@ -26,7 +27,6 @@ function send_html_mail($recipients, $sender, $subject, $html, $text = null)
 
   $mail->From = $sender;
   $mail->Subject = $subject;
-  $mail->Body    = $body;
 
   return $mail->Send();
 }
