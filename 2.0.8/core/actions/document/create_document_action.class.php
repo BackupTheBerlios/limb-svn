@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_document_action.class.php 36 2004-02-29 18:57:15Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
 
 class create_document_action extends form_create_site_object_action
 {
-	function create_document_action()
+	function create_document_action($name = 'documents_form', $merge_definition = array())
 	{
 		$definition = array(
 			'site_object' => 'document',
@@ -21,8 +21,11 @@ class create_document_action extends form_create_site_object_action
 				'annotation' => 'annotation',
 			)
 		);
-		
-		parent :: form_create_site_object_action('documents_form', $definition);
+
+		parent :: form_create_site_object_action(
+					$name, 
+					complex_array :: array_merge($definition, $merge_definition)
+		);
 	}
 	
 	function _init_validator()

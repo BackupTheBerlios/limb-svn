@@ -169,7 +169,7 @@ JS;
 		if($link)
 			$link->generate($code);
 		else
-			$code->write_html('[?]');
+			$code->write_html('<img src="/shared/images/i.gif">');
 		
 		$code->write_html("</span>");
 			

@@ -23,7 +23,7 @@ class edit_document_action extends form_edit_site_object_action
 		);
 
 		parent :: form_edit_site_object_action(
-					'documents_form', 
+					$name, 
 					complex_array :: array_merge($definition, $merge_definition)
 		);
 	}
