@@ -10,6 +10,11 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/template/components/form/text_area_component.class.php');
 
+define('RICHEDIT_DEFAULT_WIDTH', '600px');
+define('RICHEDIT_DEFAULT_HEIGHT', '400px');
+define('RICHEDIT_DEFAULT_ROWS', '30');
+define('RICHEDIT_DEFAULT_COLS', '60');
+
 class richedit_component extends text_area_component
 {
 	function render_contents()
@@ -43,6 +48,18 @@ class richedit_component extends text_area_component
 		  $init_function = 'install_limb_lite_extension(editor.config)';
 		else
 		  $init_function = 'install_limb_full_extension(editor.config)';
+		  
+		if(!$this->get_attribute('rows'))
+		  $this->set_attribute('rows', RICHEDIT_DEFAULT_ROWS);
+
+		if(!$this->get_attribute('cols'))
+		  $this->set_attribute('cols', RICHEDIT_DEFAULT_COLS);
+
+		if(!$width = $this->get_attribute('width'))
+		  $width = RICHEDIT_DEFAULT_WIDTH;
+
+		if(!$height = $this->get_attribute('height'))
+		  $height = RICHEDIT_DEFAULT_HEIGHT;
 		
     echo "
     <script type='text/javascript'>
@@ -53,8 +70,8 @@ class richedit_component extends text_area_component
 	    	
 	    	{$init_function}
 	    	
-        editor.config.width = '600px';
-        editor.config.height = '400px';  	    	
+        editor.config.width = '{$width}';
+        editor.config.height = '{$height}';  	    	
         editor.generate();
       }
       add_event(window, 'load', init_richedit_{$id});

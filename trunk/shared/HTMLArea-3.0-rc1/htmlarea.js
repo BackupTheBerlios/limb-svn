@@ -2054,7 +2054,7 @@ HTMLArea.prototype.stripBaseURL = function(string) {
 	baseurl = baseurl.replace(/[^\/]+$/, '');
 	var basere = new RegExp(baseurl);
 	string = string.replace(basere, "");
-
+  
 	// strip host-part of URL which is added by MSIE to links relative to server root
 	baseurl = baseurl.replace(/^(https?:\/\/[^\/]+)(.*)$/, '$1');
 	basere = new RegExp(baseurl);

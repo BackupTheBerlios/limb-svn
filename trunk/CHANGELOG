@@ -267,7 +267,6 @@ svn://svn.berlios.de/limb/2.1.1
   --  added tree_node_id_rule into form_create_site_object_action and form_edit_site_object_action  
   --  request_state component now takes its value from the $_REQUEST on the first display only   
 
->>>>>>> .merge-right.r371
 Version 2.1
 (04 May 2004, from /2.0.8)
 svn://svn.berlios.de/limb/tags/2.1
