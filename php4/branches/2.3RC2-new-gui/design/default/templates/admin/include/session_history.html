@@ -7,27 +7,31 @@
     <span behavior="CShowHide">
     <table border="0" cellpadding="0" cellspacing="5" class="panel" width="100%">
     <tr>
-      <td class="icon"><img title="{$title}" alt="{$title}" src="/shared/images/icon/menu/context/history.gif"><br><img alt="" src="images/1x1.gif" class="sep"></td>
+      <td class="icon">
+      <limb:CONTEXT_ICON identifier='history' variation='context'>
+      </td>
       <td width="100%">
+        <span id="minus">
         <table border="0" cellpadding="0" cellspacing="0" class="label" width="100%">
         <tr>
           <td width="100%">History</td>
-          <td><span id="minus"><img src='/shared/images/marker/minus.gif'></span></td>
+          <td><img src='/shared/images/marker/minus.gif'></td>
         </tr>
         </table>
+        </span>
       </td>
     </tr>
     <tr>
       <td></td>
       <td>
         <span id="body">
-
         <grid:ITERATOR>
-          <a href="{$href}"> {$title} &raquo; </a><br>
-          </grid:ITERATOR>
-          </td>
-      </tr>
-      </table>
+          <a href="{$href}"> {$title}&nbsp;&raquo; </a><br>
+        </grid:ITERATOR>
+        </span>
+      </td>
+    </tr>
+    </table>
     </span>
 
     </grid:LIST>

@@ -75,7 +75,7 @@ hr{height:1px; color:#0D2F89;padding:0;margin:0}
 .tab-user .arr{padding:1px 10px 3px 0px;}
 
 /*panels*/
-.panel .icon{text-align:center}
+.panel .icon{text-align:center;}
 .panel .icon .sep{width:25px; height:0;}
 .panel .label{border:solid 1px #929292; background-color:#F3F3F3}
 .panel .label td{border-top:solid 2px #ffffff; padding:0 5px 2px 5px; font:bold 9pt Tahoma; color:#929292}
@@ -106,6 +106,8 @@ hr{height:1px; color:#0D2F89;padding:0;margin:0}
 .datatable .even_row{background-color:#F8FFF2}
 
 .dd_content{display:none}
+.dd-container{background-color:#ffffff;border:solid 1px #586599;}
+.dd-container td{padding:4px 7px 4px 7px}
 .dd-action-container{background-color:#ffffff;border:solid 1px #586599;background-image:URL('/shared/images/bgr/3.gif'); background-repeat:repeat-y}
 .dd-action-container td{padding:4px 7px 4px 7px}
 

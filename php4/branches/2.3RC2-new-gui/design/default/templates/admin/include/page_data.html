@@ -22,7 +22,9 @@
   <fetch:MAPPED>
     <table border="0" cellpadding="0" cellspacing="0" class="page-info" width="100%">
     <tr>
-      <td class="icon"><img alt="{$title}" src="/shared/images/icon/menu/48/{$identifier}.gif"></td>
+      <td class="icon">
+        <limb:CONTEXT_ICON resolve_by='path' level='2'>
+      </td>
       <td>
         <h1 class="title">{$title}</h1>
         <!--BEGIN:[ PAGE INFO ]-->

@@ -88,7 +88,7 @@ function get_query_items(uri)
 
   for(index in arr)
   {
-    if(arr[index])
+    if(arr[index] && index != '_extends')
     {
       key_value = arr[index].split('=');
       if(!key_value[1])
@@ -157,16 +157,16 @@ function toggle_obj_display(obj)
 
 function _optimize_window()
 {
-	var body = document.body;
+  var body = document.body;
 
-	if (is_gecko)
+  if (is_gecko)
     window.sizeToContent();
 
   var clientWidth = body.clientWidth;
   var clientHeight = body.clientHeight;
   var scrollWidth = body.scrollWidth;
   var scrollHeight = body.scrollHeight;
-	window.resizeBy(scrollWidth - clientWidth, scrollHeight - clientHeight + 30);
+  window.resizeBy(scrollWidth - clientWidth, scrollHeight - clientHeight + 30);
 }
 
 function optimize_window()

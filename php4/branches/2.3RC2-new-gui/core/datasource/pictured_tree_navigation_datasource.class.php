@@ -15,24 +15,9 @@ class pictured_tree_navigation_datasource extends tree_navigation_datasource
   function & _fetch(&$counter, $params)
   {
     $tree =& parent :: _fetch($counter, $params);
+    
     foreach($tree as $key => $data)
     {
-      if(file_exists(PROJECT_DIR. 'design/main/images/menu_icons/'. $data['identifier'] .'.32.gif'))
-      {
-        $tree[$key]['image_path'] = '/design/main/images/menu_icons/';
-        $tree[$key]['image_name'] = $data['identifier'];
-      }
-      else if(file_exists(SHARED_DIR. 'images/menu_icons/'. $data['identifier'] .'.32.gif'))
-      {
-        $tree[$key]['image_path'] = SHARED_IMG_URL . 'menu_icons/';
-        $tree[$key]['image_name'] = $data['identifier'];
-      }
-      else
-      {
-        $tree[$key]['image_path'] = SHARED_IMG_URL .'menu_icons/';
-        $tree[$key]['image_name'] = 'default';
-      }
-
       if($data['level'] == 1)
       {
         $result[$key] = $tree[$key];

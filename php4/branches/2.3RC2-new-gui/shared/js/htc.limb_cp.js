@@ -57,7 +57,7 @@ function CDropDown(parent)
   if(!this.parent.level)this.level = 1
   else this.level = this.parent.level + 1
 
-  this.div = behavior('CContainer', top.document.createElement('div'), this)
+  this.div = behavior('CContainer', document.createElement('div'), this)
 }
 CDropDown.prototype.onmouseover = function(ev)
 {
@@ -204,7 +204,7 @@ CContainer = function(parent)
   this.style.width = this.style.height = 0
   if(!top.zIndex)top.zIndex = 1000; else top.zIndex += 10
   this.style.zIndex = top.zIndex++
-  top.document.body.appendChild(this)
+  document.body.appendChild(this)
   this.parent = parent
 
   this.create_iframe()
@@ -219,12 +219,12 @@ CContainer.prototype.create_iframe = function()
   if(!CContainer.arr_ifrs)CContainer.arr_ifrs = []
   if(!CContainer.arr_ifrs[this.parent.level])
   {
-    var ifr = top.document.createElement('iframe')
+    var ifr = document.createElement('iframe')
     var ifs = ifr.style
     ifs.cssText = 'position:absolute; width:0;height:0;'
     ifr.scrolling = 'no'
     ifr.frameBorder = 0
-    top.document.body.appendChild(ifr)
+    document.body.appendChild(ifr)
     CContainer.arr_ifrs[this.parent.level] = ifr
   }
   this.ifr = CContainer.arr_ifrs[this.parent.level]
