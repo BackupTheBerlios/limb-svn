@@ -22,7 +22,6 @@ define('DEBUG_OUTPUT_MESSAGE_SCREEN', 1);
 define('DEBUG_OUTPUT_MESSAGE_STORE', 2);
 define('DEBUG_OUTPUT_MESSAGE_SEND', 4);
 
-require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
