@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -14,74 +14,74 @@ require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 class db_cart_handler extends cart_handler
 {
   protected $cart_db_table = null;
-  
-	function __construct($cart_id)
-	{
-	  parent :: __construct($cart_id);
-	  
-	  $this->cart_db_table = Limb :: toolkit()->createDBTable('cart');
-	  
-	  register_shutdown_function(array($this, '_db_cart_handler'));
-	}
-	
-	public function reset()
-	{
-	  $this->clear_items();
-	  	  	  
-	  $this->_load_items_for_visitor();
-	  
-	  $user = $this->_get_user();
-	  if($user->is_logged_in())
-	  {	    
-	    $this->_load_items_for_user();
-	  }
-	}
-	
-	protected function _load_items_for_user()
-	{
-	  $user = $this->_get_user();
+
+  function __construct($cart_id)
+  {
+    parent :: __construct($cart_id);
+
+    $this->cart_db_table = Limb :: toolkit()->createDBTable('cart');
+
+    register_shutdown_function(array($this, '_db_cart_handler'));
+  }
+
+  public function reset()
+  {
+    $this->clear_items();
+
+    $this->_load_items_for_visitor();
+
+    $user = $this->_get_user();
+    if($user->is_logged_in())
+    {
+      $this->_load_items_for_user();
+    }
+  }
+
+  protected function _load_items_for_user()
+  {
+    $user = $this->_get_user();
 
     $conditions = 'user_id = ' . $user->get_id() . ' AND cart_id <> "'. $this->_cart_id . '"';
-    
+
     if (!$this->_load_items_by_conditions($conditions))
       return;
-    
-    $this->cart_db_table->delete($conditions); 
-	}
-	
-	protected function _load_items_for_visitor()
-	{
+
+    $this->cart_db_table->delete($conditions);
+  }
+
+  protected function _load_items_for_visitor()
+  {
     $conditions = array(
       'cart_id' => $this->_cart_id
     );
-	  
+
     return $this->_load_items_by_conditions($conditions);
-	}
-	
-	protected function _load_items_by_conditions($conditions)
-	{
+  }
+
+  protected function _load_items_by_conditions($conditions)
+  {
     if($arr = $this->cart_db_table->get_list($conditions))
     {
       $record = reset($arr);
       $items = unserialize($record['cart_items']);
-      
+
       foreach(array_keys($items) as $key)
         $this->add_item($items[$key]);
-      
-      return true;  
+
+      return true;
     }
-    
+
     return false;
-	}
-	
-	protected function _get_user()
-	{
-	  return Limb :: toolkit()->getUser();
-	}
-	
-	public function _db_cart_handler()
-	{
-	  $user = $this->_get_user();	  
+  }
+
+  protected function _get_user()
+  {
+    return Limb :: toolkit()->getUser();
+  }
+
+  public function _db_cart_handler()
+  {
+    $user = $this->_get_user();
 
     $cart_data = array(
       'user_id' => $user->get_id(),
@@ -89,19 +89,19 @@ class db_cart_handler extends cart_handler
       'cart_items' => serialize($this->get_items()),
       'cart_id' => $this->_cart_id,
     );
-	  
-	  $conditions['cart_id'] = $this->_cart_id;
-	  $records = $this->cart_db_table->get_list($conditions);
-	  
-	  if (!count($records))
-	  {
-	    $this->cart_db_table->insert($cart_data);
-	  }
-	  else
-	  {
-	    $record = reset($records);
-	    $this->cart_db_table->update_by_id($record['id'], $cart_data);
-	  }
-	}
+
+    $conditions['cart_id'] = $this->_cart_id;
+    $records = $this->cart_db_table->get_list($conditions);
+
+    if (!count($records))
+    {
+      $this->cart_db_table->insert($cart_data);
+    }
+    else
+    {
+      $record = reset($records);
+      $this->cart_db_table->update_by_id($record['id'], $cart_data);
+    }
+  }
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,62 +12,62 @@ require_once(LIMB_DIR . '/class/datasources/datasource.interface.php');
 
 class object_versions_datasource implements datasource
 {
-	public function get_dataset(&$counter, $params=array())
-	{
+  public function get_dataset(&$counter, $params=array())
+  {
     $request = Limb :: toolkit()->getRequest();
 
     $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
 
-		$object_data = $datasource->fetch();
-    
-		if (!count($object_data))
-			return new array_dataset(array());
+    $object_data = $datasource->fetch();
 
-		$db_table	= Limb :: toolkit()->createDBTable('sys_object_version');
+    if (!count($object_data))
+      return new array_dataset(array());
 
-		$arr = $db_table->get_list('object_id='. $object_data['id'], 'version DESC');
+    $db_table	= Limb :: toolkit()->createDBTable('sys_object_version');
 
-		$result = array();
+    $arr = $db_table->get_list('object_id='. $object_data['id'], 'version DESC');
 
-		$users = $this->_get_users();
+    $result = array();
 
-		foreach($arr as $data)
-		{
-			$record = $data;
-			$user = '';
+    $users = $this->_get_users();
 
-			if (count($users))
-				foreach($users as $user_data)
-				{
-					if ($user_data['id'] == $data['creator_id'])
-					{
-						$user = $user_data;
-						break;
-					}
-				}
+    foreach($arr as $data)
+    {
+      $record = $data;
+      $user = '';
 
-			if ($user)
-			{
-				$record['creator_identifier'] = $user['identifier'];
-				$record['creator_email'] = $user['email'];
-				$record['creator_name'] = $user['name'];
-				$record['creator_lastname'] = isset($user['lastname']) ? $user['lastname'] : '';
-			}
-			$result[]	= $record;
-		}
+      if (count($users))
+        foreach($users as $user_data)
+        {
+          if ($user_data['id'] == $data['creator_id'])
+          {
+            $user = $user_data;
+            break;
+          }
+        }
 
-		return new array_dataset($result);
-	}
-  
+      if ($user)
+      {
+        $record['creator_identifier'] = $user['identifier'];
+        $record['creator_email'] = $user['email'];
+        $record['creator_name'] = $user['name'];
+        $record['creator_lastname'] = isset($user['lastname']) ? $user['lastname'] : '';
+      }
+      $result[]	= $record;
+    }
+
+    return new array_dataset($result);
+  }
+
   protected function _get_users()
   {
     $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
     $datasource->set_path('/root/users');
     $datasource->set_site_object_class_name('user_object');
     $datasource->set_restrict_by_class();
-    
-		return $datasource->fetch();
+
+    return $datasource->fetch();
   }
 }
 

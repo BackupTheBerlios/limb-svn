@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -23,18 +23,18 @@ class fedex_sax_handler_test extends LimbTestCase
 
     $this->parser->set_object($this->handler);
 
-		$this->parser->set_element_handler('open_handler','close_handler');
-		$this->parser->set_data_handler('data_handler');
-		$this->parser->set_escape_handler('escape_handler');
+    $this->parser->set_element_handler('open_handler','close_handler');
+    $this->parser->set_data_handler('data_handler');
+    $this->parser->set_escape_handler('escape_handler');
   }
 
   function test_get_options_failed()
   {
     $this->parser->parse('');
 
-		$options = $this->handler->get_options();
+    $options = $this->handler->get_options();
 
-		$this->assertEqual(sizeof($options), 0);
+    $this->assertEqual(sizeof($options), 0);
   }
 
   function test_get_options()
@@ -42,7 +42,7 @@ class fedex_sax_handler_test extends LimbTestCase
     $html = file_get_contents(dirname(__FILE__) . '/fedex_express.html');
     $this->parser->parse($html);
 
-		$options = $this->handler->get_options();
+    $options = $this->handler->get_options();
 
     $this->assertEqual($options,
       array(

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -9,12 +9,12 @@
 *
 ***********************************************************************************/
 interface search_engine_rule
-{	
-	public function match($uri);
-	
-	public function get_matching_phrase();
+{
+  public function match($uri);
 
-	public function get_engine_name();
+  public function get_matching_phrase();
+
+  public function get_engine_name();
 }
 
 ?>

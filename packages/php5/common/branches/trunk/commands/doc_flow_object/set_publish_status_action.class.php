@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,68 +12,68 @@ require_once(LIMB_DIR . '/class/core/actions/action.class.php');
 
 class set_publish_status_action extends action
 {
-	public function perform($request, $response)
-	{
-		$request->set_status(request :: STATUS_SUCCESS);
+  public function perform($request, $response)
+  {
+    $request->set_status(request :: STATUS_SUCCESS);
 
-		if($request->has_attribute('popup'))
-			$response->write(close_popup_response($request));
-    
+    if($request->has_attribute('popup'))
+      $response->write(close_popup_response($request));
+
     $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
-		if(!$object = wrap_with_site_object($datasource->fetch()))
-  		return;
+    if(!$object = wrap_with_site_object($datasource->fetch()))
+      return;
 
-		$site_object_controller = $object->get_controller();
-		$action = $site_object_controller->get_action($request);
+    $site_object_controller = $object->get_controller();
+    $action = $site_object_controller->get_action($request);
 
-		switch ($action)
-		{
-			case 'publish':
-				$status = $this->get_publish_status($object);
-			break;
-			case 'unpublish':
-				$status = $this->get_unpublish_status($object);
-			break;
-			default:
-				return ;
-			break;
-		}
+    switch ($action)
+    {
+      case 'publish':
+        $status = $this->get_publish_status($object);
+      break;
+      case 'unpublish':
+        $status = $this->get_unpublish_status($object);
+      break;
+      default:
+        return ;
+      break;
+    }
 
-		$object->set('status', $status);
-		$object->update(false);
+    $object->set('status', $status);
+    $object->update(false);
 
-		$this->_apply_access_policy($object, $action);
+    $this->_apply_access_policy($object, $action);
 
-	  $datasource->flush_cache();
-	}
+    $datasource->flush_cache();
+  }
 
-	public function get_publish_status($object)
-	{
-		$current_status = $object->get('status');
-		$current_status |= site_object :: STATUS_PUBLISHED;
-		return $current_status;
-	}
+  public function get_publish_status($object)
+  {
+    $current_status = $object->get('status');
+    $current_status |= site_object :: STATUS_PUBLISHED;
+    return $current_status;
+  }
 
-	public function get_unpublish_status($object)
-	{
-		$current_status = $object->get('status');
-		$current_status = $current_status & (~site_object :: STATUS_PUBLISHED);
-		return $current_status;
-	}
+  public function get_unpublish_status($object)
+  {
+    $current_status = $object->get('status');
+    $current_status = $current_status & (~site_object :: STATUS_PUBLISHED);
+    return $current_status;
+  }
 
-	protected function _apply_access_policy($object, $action)
-	{
-	  try
-	  {
+  protected function _apply_access_policy($object, $action)
+  {
+    try
+    {
       $access_policy = new access_policy();
-	    $access_policy->apply_access_templates($object, $action);
-	  }
-	  catch(LimbException $e)
-	  {
-	    message_box :: write_notice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
-	  }
-	}
+      $access_policy->apply_access_templates($object, $action);
+    }
+    catch(LimbException $e)
+    {
+      message_box :: write_notice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
+    }
+  }
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -10,26 +10,26 @@
 ***********************************************************************************/
 class template_source_component extends component
 {
-	public function get_current_template_source_link()
-	{
+  public function get_current_template_source_link()
+  {
     $request = Limb :: toolkit()->getRequest();
-    
+
     $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
-    
-		if(!$site_object = wrap_with_site_object($datasource->fetch()))
-			return '';
 
-		$site_object_controller = $site_object->get_controller();
+    if(!$site_object = wrap_with_site_object($datasource->fetch()))
+      return '';
 
-		if(($action = $site_object_controller->get_action($request)) === false)
-			return '';
+    $site_object_controller = $site_object->get_controller();
 
-		if(!$template_path = $site_object_controller->get_action_property($action, 'template_path'))
-			return '';
-		
-		return '/root/template_source?t[]=' . $template_path;
-	}
-} 
+    if(($action = $site_object_controller->get_action($request)) === false)
+      return '';
+
+    if(!$template_path = $site_object_controller->get_action_property($action, 'template_path'))
+      return '';
+
+    return '/root/template_source?t[]=' . $template_path;
+  }
+}
 
 ?>

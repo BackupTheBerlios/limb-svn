@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
 
 class stats_event_filter_action extends form_action
 {
-	protected function _define_dataspace_name()
-	{
-	  return 'events_filter_form';
-	}
- 
-	protected function _valid_perform($request, $response)
-	{
-	  $request->merge($this->dataspace->export());
-	
-		parent :: _valid_perform($request, $response);
-	}
+  protected function _define_dataspace_name()
+  {
+    return 'events_filter_form';
+  }
+
+  protected function _valid_perform($request, $response)
+  {
+    $request->merge($this->dataspace->export());
+
+    parent :: _valid_perform($request, $response);
+  }
 }
 
 ?>

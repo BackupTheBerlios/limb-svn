@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -11,27 +11,27 @@
 require_once dirname(__FILE__) . '/cart_handler_interface.interface.php';
 
 interface cart_handler_interface
-{		
-	public function reset();
-		
-	public function get_cart_id();
-	
-	public function set_cart_id($cart_id);
-	
-	public function add_item($new_item);
-	
-	public function get_item($id);
-		
-	public function remove_item($item_id);
-	
-	public function remove_items($item_ids);
-	
-	public function get_items();
-	
-	public function set_items($items);
-	
-	public function count_items();
+{
+  public function reset();
 
-	public function clear_items();
+  public function get_cart_id();
+
+  public function set_cart_id($cart_id);
+
+  public function add_item($new_item);
+
+  public function get_item($id);
+
+  public function remove_item($item_id);
+
+  public function remove_items($item_ids);
+
+  public function get_items();
+
+  public function set_items($items);
+
+  public function count_items();
+
+  public function clear_items();
 }
 ?>

@@ -1,131 +1,131 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(dirname(__FILE__) . '/stats_report_datasource.class.php');
 require_once(dirname(__FILE__) . '/../reports/stats_event_report.class.php');
 
 class stats_events_list_datasource extends stats_report_datasource
 {
-	protected $response_map = array(
-				request :: STATUS_SUCCESS => 'STATUS_SUCCESS', 
-				request :: STATUS_FORM_DISPLAYED => 'STATUS_FORM_DISPLAYED',
-				request :: STATUS_FORM_SUBMITTED => 'STATUS_FORM_SUBMITTED',
-				request :: STATUS_FAILURE => 'STATUS_FAILURE',
-				request :: STATUS_FORM_NOT_VALID => 'STATUS_FORM_NOT_VALID'
-			);
-		
-	protected function _init_stats_report()
-	{
-		$this->_stats_report = new stats_event_report();
-	}
-	
-	protected function _process_result_array($arr)
-	{
-		$result = array();
-		foreach($arr as $index => $data)
-		{
-			$data[$this->response_map[$data['status']]] = 1;
-			$result[$index] = $data;
-		}
-			
-		return $result;
-	}
-	
-	protected function _configure_filters()
-	{
-	  $request = Limb :: toolkit()->getRequest();
-	
-		$this->_set_ip_filter($request);
-		
-		$this->_set_login_filter($request);
-		
-		$this->_set_action_filter($request);
-		
-		$this->_set_period_filter($request);
-		
-		$this->_set_uri_filter($request);
-		
-		$this->_set_status_filter($request);
-	}
-	
-	protected function _set_login_filter($request)
-	{
-	  if ($stats_user_login = $request->get('stats_user_login'))
-			$this->_stats_report->set_login_filter($stats_user_login);
-	}
+  protected $response_map = array(
+        request :: STATUS_SUCCESS => 'STATUS_SUCCESS',
+        request :: STATUS_FORM_DISPLAYED => 'STATUS_FORM_DISPLAYED',
+        request :: STATUS_FORM_SUBMITTED => 'STATUS_FORM_SUBMITTED',
+        request :: STATUS_FAILURE => 'STATUS_FAILURE',
+        request :: STATUS_FORM_NOT_VALID => 'STATUS_FORM_NOT_VALID'
+      );
 
-	protected function _set_action_filter($request)
-	{
-	  if ($stats_action_name = $request->get('stats_action_name'))
-			$this->_stats_report->set_action_filter($stats_action_name);
-	}
-	
-	protected function _set_ip_filter($request)
-	{
-	  if ($stats_ip = $request->get('stats_ip'))
-			$this->_stats_report->set_ip_filter($stats_ip);
-	}
-	
-	protected function _set_status_filter($request)
-	{
-	  if (($stats_status = $request->get('stats_status')) || (!is_array($stats_status)))
-			return ;
-		
-		$status_mask = 0;
-		$response_keys = array_keys($this->response_map);
-		foreach($stats_status as $index => $on)
-			if (isset($response_keys[$index]))
-				$status_mask = $status_mask | $response_keys[$index];
+  protected function _init_stats_report()
+  {
+    $this->_stats_report = new stats_event_report();
+  }
 
-		if ($status_mask)
-			$this->_stats_report->set_status_filter($status_mask);
-	}
-	
-	protected function _set_uri_filter($request)
-	{		
-	  if ($stats_uri = $request->get('stats_uri'))
-			$this->_stats_report->set_uri_filter($stats_uri);
-	}
-	
-	protected function _set_period_filter($request)
-	{
-		$locale = Limb :: toolkit()->getLocale();
-		$start_date = new date();
-		$start_date->set_hour(0);
-		$start_date->set_minute(0);
-		$start_date->set_second(0);
+  protected function _process_result_array($arr)
+  {
+    $result = array();
+    foreach($arr as $index => $data)
+    {
+      $data[$this->response_map[$data['status']]] = 1;
+      $result[$index] = $data;
+    }
 
-	  if ($stats_start_date = $request->get('stats_start_date'))
-			$start_date->set_by_locale_string($locale, $stats_start_date, $locale->get_short_date_time_format());
+    return $result;
+  }
 
-	  if ($stats_start_hour = $request->get('stats_start_hour'))
-			$start_date->set_hour($stats_start_hour);
+  protected function _configure_filters()
+  {
+    $request = Limb :: toolkit()->getRequest();
 
-	  if ($stats_start_minute = $request->get('stats_start_minute'))
-			$start_date->set_minute($stats_start_minute);
-		
-		$finish_date = new date();
-	  if ($stats_finish_date = $request->get('stats_finish_date'))
-			$finish_date->set_by_locale_string($locale, $stats_finish_date, $locale->get_short_date_time_format());
+    $this->_set_ip_filter($request);
 
-		$finish_date->set_hour(23);
-		$finish_date->set_minute(59);
-		$finish_date->set_second(59);
+    $this->_set_login_filter($request);
 
-	  if ($stats_finish_hour = $request->get('stats_finish_hour'))
-			$finish_date->set_hour($stats_finish_hour);
+    $this->_set_action_filter($request);
 
-	  if ($stats_finish_minute = $request->get('stats_finish_minute'))
-			$finish_date->set_minute($stats_finish_minute);
+    $this->_set_period_filter($request);
 
-		$this->_stats_report->set_period_filter($start_date, $finish_date);
-	}
+    $this->_set_uri_filter($request);
+
+    $this->_set_status_filter($request);
+  }
+
+  protected function _set_login_filter($request)
+  {
+    if ($stats_user_login = $request->get('stats_user_login'))
+      $this->_stats_report->set_login_filter($stats_user_login);
+  }
+
+  protected function _set_action_filter($request)
+  {
+    if ($stats_action_name = $request->get('stats_action_name'))
+      $this->_stats_report->set_action_filter($stats_action_name);
+  }
+
+  protected function _set_ip_filter($request)
+  {
+    if ($stats_ip = $request->get('stats_ip'))
+      $this->_stats_report->set_ip_filter($stats_ip);
+  }
+
+  protected function _set_status_filter($request)
+  {
+    if (($stats_status = $request->get('stats_status')) || (!is_array($stats_status)))
+      return ;
+
+    $status_mask = 0;
+    $response_keys = array_keys($this->response_map);
+    foreach($stats_status as $index => $on)
+      if (isset($response_keys[$index]))
+        $status_mask = $status_mask | $response_keys[$index];
+
+    if ($status_mask)
+      $this->_stats_report->set_status_filter($status_mask);
+  }
+
+  protected function _set_uri_filter($request)
+  {
+    if ($stats_uri = $request->get('stats_uri'))
+      $this->_stats_report->set_uri_filter($stats_uri);
+  }
+
+  protected function _set_period_filter($request)
+  {
+    $locale = Limb :: toolkit()->getLocale();
+    $start_date = new date();
+    $start_date->set_hour(0);
+    $start_date->set_minute(0);
+    $start_date->set_second(0);
+
+    if ($stats_start_date = $request->get('stats_start_date'))
+      $start_date->set_by_locale_string($locale, $stats_start_date, $locale->get_short_date_time_format());
+
+    if ($stats_start_hour = $request->get('stats_start_hour'))
+      $start_date->set_hour($stats_start_hour);
+
+    if ($stats_start_minute = $request->get('stats_start_minute'))
+      $start_date->set_minute($stats_start_minute);
+
+    $finish_date = new date();
+    if ($stats_finish_date = $request->get('stats_finish_date'))
+      $finish_date->set_by_locale_string($locale, $stats_finish_date, $locale->get_short_date_time_format());
+
+    $finish_date->set_hour(23);
+    $finish_date->set_minute(59);
+    $finish_date->set_second(59);
+
+    if ($stats_finish_hour = $request->get('stats_finish_hour'))
+      $finish_date->set_hour($stats_finish_hour);
+
+    if ($stats_finish_minute = $request->get('stats_finish_minute'))
+      $finish_date->set_minute($stats_finish_minute);
+
+    $this->_stats_report->set_period_filter($start_date, $finish_date);
+  }
 }
 ?>

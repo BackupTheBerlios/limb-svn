@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,145 +12,145 @@ include(dirname(__FILE__) . '/search_engines.setup.php');//ugly ???
 
 class stats_register
 {
-	protected $_counter_register = null;
-	protected $_ip_register = null;
-	protected $_uri_register = null;
-	protected $_referer_register = null;
-	protected $_search_phrase_register = null;
-	protected $_reg_date;
-	protected $db = null;
-	
-	public function __construct()
-	{
-		$this->_reg_date = new date();		
-  	$this->db = Limb :: toolkit()->getDB();
-	}
+  protected $_counter_register = null;
+  protected $_ip_register = null;
+  protected $_uri_register = null;
+  protected $_referer_register = null;
+  protected $_search_phrase_register = null;
+  protected $_reg_date;
+  protected $db = null;
 
-	function get_register_time_stamp()
-	{
-		return $this->_reg_date->get_stamp();
-	}
+  public function __construct()
+  {
+    $this->_reg_date = new date();
+    $this->db = Limb :: toolkit()->getDB();
+  }
 
-	public function set_register_time($stamp = null)
-	{
-		if(!$stamp)
-			$stamp = time();
-			
-		$this->_reg_date->set_by_stamp($stamp);
-	}
+  function get_register_time_stamp()
+  {
+    return $this->_reg_date->get_stamp();
+  }
 
-	public function register($node_id, $action, $status_code)
-	{
-		$this->_update_log($node_id, $action, $status_code);
-		
-		$this->_update_counters();
-		
-		$this->_update_search_referers();
-	}
-	
-	protected function _update_log($node_id, $action, $status_code)
-	{
-		$ip_register = $this->_get_ip_register();
+  public function set_register_time($stamp = null)
+  {
+    if(!$stamp)
+      $stamp = time();
 
-		$referer_register = $this->_get_referer_register();
-		$uri_register = $this->_get_uri_register();
-		
-		$this->db->sql_insert('sys_stat_log', 
-			array(
-				'ip' => $ip_register->get_client_ip(), 
-				'time' => $this->get_register_time_stamp(),
-				'node_id' => $node_id,
-				'stat_referer_id' => $referer_register->get_referer_page_id(),
-				'stat_uri_id' => $uri_register->get_uri_id(),
-				'user_id' => Limb :: toolkit()->getUser()->get_id(),
-				'session_id' => session_id(),
-				'action' => $action,
-				'status' => $status_code,
-			)
-		);	
-	}
+    $this->_reg_date->set_by_stamp($stamp);
+  }
 
-	public function clean_until($date)
-	{
-		$this->db->sql_delete('sys_stat_log', 'time < ' . $date->get_stamp());
-	}
-	
-	public function count_log_records()
-	{
-		$this->db->sql_exec('SELECT COUNT(id) as counter FROM sys_stat_log');
-		$row = $this->db->fetch_row();
-		return $row['counter'];
-	}
-	
-	protected function _update_counters()
-	{	
-		$ip_register = $this->_get_ip_register();
-		$counter_register = $this->_get_counter_register();
-		
-		$counter_register->set_new_host($ip_register->is_new_host($this->_reg_date));
-		$counter_register->update($this->_reg_date);
-	}
-	
-	protected function _update_search_referers()
-	{	
-		$phrase_register = $this->_get_search_phrase_register();
-		$phrase_register->register($this->_reg_date);
-	}
-	
-	protected function _get_ip_register()
-	{
-		if ($this->_ip_register)
+  public function register($node_id, $action, $status_code)
+  {
+    $this->_update_log($node_id, $action, $status_code);
+
+    $this->_update_counters();
+
+    $this->_update_search_referers();
+  }
+
+  protected function _update_log($node_id, $action, $status_code)
+  {
+    $ip_register = $this->_get_ip_register();
+
+    $referer_register = $this->_get_referer_register();
+    $uri_register = $this->_get_uri_register();
+
+    $this->db->sql_insert('sys_stat_log',
+      array(
+        'ip' => $ip_register->get_client_ip(),
+        'time' => $this->get_register_time_stamp(),
+        'node_id' => $node_id,
+        'stat_referer_id' => $referer_register->get_referer_page_id(),
+        'stat_uri_id' => $uri_register->get_uri_id(),
+        'user_id' => Limb :: toolkit()->getUser()->get_id(),
+        'session_id' => session_id(),
+        'action' => $action,
+        'status' => $status_code,
+      )
+    );
+  }
+
+  public function clean_until($date)
+  {
+    $this->db->sql_delete('sys_stat_log', 'time < ' . $date->get_stamp());
+  }
+
+  public function count_log_records()
+  {
+    $this->db->sql_exec('SELECT COUNT(id) as counter FROM sys_stat_log');
+    $row = $this->db->fetch_row();
+    return $row['counter'];
+  }
+
+  protected function _update_counters()
+  {
+    $ip_register = $this->_get_ip_register();
+    $counter_register = $this->_get_counter_register();
+
+    $counter_register->set_new_host($ip_register->is_new_host($this->_reg_date));
+    $counter_register->update($this->_reg_date);
+  }
+
+  protected function _update_search_referers()
+  {
+    $phrase_register = $this->_get_search_phrase_register();
+    $phrase_register->register($this->_reg_date);
+  }
+
+  protected function _get_ip_register()
+  {
+    if ($this->_ip_register)
       return $this->_ip_register;
-    
-    include_once(dirname(__FILE__) . '/stats_ip.class.php');
-		$this->_ip_register = new stats_ip();
-		
-		return $this->_ip_register;
-	}	
 
-	protected function _get_counter_register()
-	{
-		if ($this->_counter_register)      
+    include_once(dirname(__FILE__) . '/stats_ip.class.php');
+    $this->_ip_register = new stats_ip();
+
+    return $this->_ip_register;
+  }
+
+  protected function _get_counter_register()
+  {
+    if ($this->_counter_register)
       return $this->_counter_register;
-    
+
     include_once(dirname(__FILE__) . '/stats_counter.class.php');
-		$this->_counter_register = new stats_counter();
-		
-		return $this->_counter_register;
-	}	
-	
-	protected function _get_referer_register()
-	{
-		if ($this->_referer_register)
-			return $this->_referer_register;
-    
+    $this->_counter_register = new stats_counter();
+
+    return $this->_counter_register;
+  }
+
+  protected function _get_referer_register()
+  {
+    if ($this->_referer_register)
+      return $this->_referer_register;
+
     include_once(dirname(__FILE__) . '/stats_referer.class.php');
     $this->_referer_register = new stats_referer();
-		
-		return $this->_referer_register;
-	}
-	
-	protected function _get_uri_register()
-	{
-		if ($this->_uri_register)
-			return $this->_uri_register;
-    
+
+    return $this->_referer_register;
+  }
+
+  protected function _get_uri_register()
+  {
+    if ($this->_uri_register)
+      return $this->_uri_register;
+
     include_once(dirname(__FILE__) . '/stats_uri.class.php');
     $this->_uri_register = new stats_uri();
-		
-		return $this->_uri_register;
-	}
-	
-	protected function _get_search_phrase_register()
-	{
-		if ($this->_search_phrase_register)
-			return $this->_search_phrase_register;
-    
+
+    return $this->_uri_register;
+  }
+
+  protected function _get_search_phrase_register()
+  {
+    if ($this->_search_phrase_register)
+      return $this->_search_phrase_register;
+
     include_once(dirname(__FILE__) . '/stats_search_phrase.class.php');
     $this->_search_phrase_register = stats_search_phrase :: instance();
-		
-		return $this->_search_phrase_register;
-	}
+
+    return $this->_search_phrase_register;
+  }
 }
 
 ?>

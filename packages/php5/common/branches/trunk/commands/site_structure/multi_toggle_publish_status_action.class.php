@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,75 +12,75 @@ require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
 
 class multi_toggle_publish_status_action extends form_action
 {
-	protected function _define_dataspace_name()
-	{
-	  return 'grid_form';
-	}
+  protected function _define_dataspace_name()
+  {
+    return 'grid_form';
+  }
 
-	protected function _valid_perform($request, $response)
-	{
-		if($request->has_attribute('popup'))
-		  $response->write(close_popup_response($request));
+  protected function _valid_perform($request, $response)
+  {
+    if($request->has_attribute('popup'))
+      $response->write(close_popup_response($request));
 
-		$data = $this->dataspace->export();
+    $data = $this->dataspace->export();
 
-		if(!isset($data['ids']) || !is_array($data['ids']))
-		{
-  	  $request->set_status(request :: STATUS_FAILURE);
-  		return;
-		}
+    if(!isset($data['ids']) || !is_array($data['ids']))
+    {
+      $request->set_status(request :: STATUS_FAILURE);
+      return;
+    }
 
-		$objects = $this->_get_objects(array_keys($data['ids']));
+    $objects = $this->_get_objects(array_keys($data['ids']));
 
-		foreach($objects as $id => $item)
-		{
-			if (!isset($item['actions']['publish']) || !isset($item['actions']['unpublish']))
-				continue;
+    foreach($objects as $id => $item)
+    {
+      if (!isset($item['actions']['publish']) || !isset($item['actions']['unpublish']))
+        continue;
 
-			$object = wrap_with_site_object($item);
-			$status = $object->get('status');
+      $object = wrap_with_site_object($item);
+      $status = $object->get('status');
 
-			if ($status & SITE_OBJECT_PUBLISHED_STATUS)
-			{
+      if ($status & SITE_OBJECT_PUBLISHED_STATUS)
+      {
 
-				$status &= ~SITE_OBJECT_PUBLISHED_STATUS;
-				$action = 'unpublish';
-			}
-			else
-			{
-				$status |= SITE_OBJECT_PUBLISHED_STATUS;
-				$action = 'publish';
-			}
+        $status &= ~SITE_OBJECT_PUBLISHED_STATUS;
+        $action = 'unpublish';
+      }
+      else
+      {
+        $status |= SITE_OBJECT_PUBLISHED_STATUS;
+        $action = 'publish';
+      }
 
-			$object->set('status', $status);
-			$object->update(false);
+      $object->set('status', $status);
+      $object->update(false);
 
-			$this->_apply_access_policy($object, $action);
-		}
+      $this->_apply_access_policy($object, $action);
+    }
 
-	  $request->set_status(request :: STATUS_SUCCESS);
-	}
+    $request->set_status(request :: STATUS_SUCCESS);
+  }
 
-	protected function _get_objects($node_ids)
-	{
+  protected function _get_objects($node_ids)
+  {
     $datasource = Limb :: toolkit()->getDatasource('site_objects_by_node_ids_datasource');
     $datasource->set_node_ids($node_ids);
-    
-		return $datasource->fetch();
-	}
 
-	protected function _apply_access_policy($object, $action)
-	{
-	  try
-	  {
+    return $datasource->fetch();
+  }
+
+  protected function _apply_access_policy($object, $action)
+  {
+    try
+    {
       $access_policy = new access_policy();
-	    $access_policy->apply_access_templates($object, $action);
-	  }
-	  catch(LimbException $e)
-	  {
-	    message_box :: write_notice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
-	  }
-	}
+      $access_policy->apply_access_templates($object, $action);
+    }
+    catch(LimbException $e)
+    {
+      message_box :: write_notice("Access template of " . get_class($object) . " for action '{$action}' not defined!!!");
+    }
+  }
 }
 
 ?>

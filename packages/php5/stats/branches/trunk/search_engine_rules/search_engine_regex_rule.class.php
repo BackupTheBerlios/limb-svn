@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -11,36 +11,36 @@
 require_once(dirname(__FILE__) . '/search_engine_rule.interface.php');
 
 class search_engine_regex_rule implements search_engine_rule
-{	
-	protected $engine_name = '';
-	protected $regex = '';
-	protected $matches = array();
-	protected $uri = '';
-	
-	protected $match_phrase_index;
-	
-	function __construct($engine_name, $regex, $match_phrase_index)
-	{
-		$this->engine_name = $engine_name;
-		$this->regex = $regex;
-		$this->match_phrase_index = $match_phrase_index;
-	}
-	
-	public function match($uri)
-	{	
-		$this->uri = $uri;
-		return preg_match($this->regex, $this->uri, $this->matches);
-	}	
-	
-	public function get_matching_phrase()
-	{
-		return $this->matches[$this->match_phrase_index];
-	}
+{
+  protected $engine_name = '';
+  protected $regex = '';
+  protected $matches = array();
+  protected $uri = '';
 
-	public function get_engine_name()
-	{
-		return $this->engine_name;
-	}
+  protected $match_phrase_index;
+
+  function __construct($engine_name, $regex, $match_phrase_index)
+  {
+    $this->engine_name = $engine_name;
+    $this->regex = $regex;
+    $this->match_phrase_index = $match_phrase_index;
+  }
+
+  public function match($uri)
+  {
+    $this->uri = $uri;
+    return preg_match($this->regex, $this->uri, $this->matches);
+  }
+
+  public function get_matching_phrase()
+  {
+    return $this->matches[$this->match_phrase_index];
+  }
+
+  public function get_engine_name()
+  {
+    return $this->engine_name;
+  }
 }
 
 ?>

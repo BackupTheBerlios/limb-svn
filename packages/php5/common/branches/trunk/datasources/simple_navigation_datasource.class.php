@@ -1,39 +1,39 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/datasources/fetch_sub_branch_datasource.class.php');
 
 class simple_navigation_datasource extends fetch_sub_branch_datasource
 {
-	protected function _fetch(&$counter, $params)
-	{
-		$result = parent :: _fetch($counter, $params);
-		$uri = new uri($_SERVER['PHP_SELF']);		
+  protected function _fetch(&$counter, $params)
+  {
+    $result = parent :: _fetch($counter, $params);
+    $uri = new uri($_SERVER['PHP_SELF']);
 
-		foreach($result as $key => $data)
-		{
-			$nav_uri = new uri($data['url']);
+    foreach($result as $key => $data)
+    {
+      $nav_uri = new uri($data['url']);
 
-	  	if ($uri->get_host() != $nav_uri->get_host())
-	  		continue;
-			
-			if(is_integer($res = $uri->compare_path($nav_uri)))
-			{
-				if($res >= 0)
-					$result[$key]['in_path'] = true;
-				if($res == 0)
-					$result[$key]['selected'] = true;
-			}
-		}
-		return $result;
-	}
+      if ($uri->get_host() != $nav_uri->get_host())
+        continue;
+
+      if(is_integer($res = $uri->compare_path($nav_uri)))
+      {
+        if($res >= 0)
+          $result[$key]['in_path'] = true;
+        if($res == 0)
+          $result[$key]['selected'] = true;
+      }
+    }
+    return $result;
+  }
 }
 
 

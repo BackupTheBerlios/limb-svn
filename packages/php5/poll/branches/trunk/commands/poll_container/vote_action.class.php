@@ -1,38 +1,38 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
 
 class vote_action extends form_action
 {
-	protected function _define_dataspace_name()
-	{
-	  return 'vote_action';
-	}
-	
-	protected function _valid_perform($request, $response)
-	{
-		$object = Limb :: toolkit()->createSiteObject('poll_container');
-		$data = $this->dataspace->export();
-		
-		$request->set_status(request :: STATUS_FAILURE);
+  protected function _define_dataspace_name()
+  {
+    return 'vote_action';
+  }
 
-		if (!isset($data['answer']))
-		{
-			message_box :: write_notice(strings :: get('no_answer', 'poll'));
-			return;
-		}
-		
-		$object->register_answer($data['answer']);
-		$request->set_status(request :: STATUS_FORM_SUBMITTED);
-	}
+  protected function _valid_perform($request, $response)
+  {
+    $object = Limb :: toolkit()->createSiteObject('poll_container');
+    $data = $this->dataspace->export();
+
+    $request->set_status(request :: STATUS_FAILURE);
+
+    if (!isset($data['answer']))
+    {
+      message_box :: write_notice(strings :: get('no_answer', 'poll'));
+      return;
+    }
+
+    $object->register_answer($data['answer']);
+    $request->set_status(request :: STATUS_FORM_SUBMITTED);
+  }
 }
 
 ?>

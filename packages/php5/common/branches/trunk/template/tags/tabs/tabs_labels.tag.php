@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -10,47 +10,47 @@
 ***********************************************************************************/
 class tabs_labels_tag_info
 {
-	public $tag = 'tabs:labels';
-	public $end_tag = ENDTAG_REQUIRED;
-	public $tag_class = 'tabs_labels_tag';
-} 
+  public $tag = 'tabs:labels';
+  public $end_tag = ENDTAG_REQUIRED;
+  public $tag_class = 'tabs_labels_tag';
+}
 
 register_tag(new tabs_labels_tag_info());
 
 class tabs_labels_tag extends compiler_directive_tag
-{  
-	public function check_nesting_level()
-	{
-		if (!$this->parent instanceof tabs_tag)
-		{
-			throw new WactException('missing enclosure', 
-					array('tag' => $this->tag,
-					'enclosing_tag' => 'tabs',
-					'file' => $this->source_file,
-					'line' => $this->starting_line_no));
-		} 
-	} 
+{
+  public function check_nesting_level()
+  {
+    if (!$this->parent instanceof tabs_tag)
+    {
+      throw new WactException('missing enclosure',
+          array('tag' => $this->tag,
+          'enclosing_tag' => 'tabs',
+          'file' => $this->source_file,
+          'line' => $this->starting_line_no));
+    }
+  }
 
-	public function pre_generate($code)
-	{
-	  $tabulator_class = $this->parent->tabulator_class;
-	  $tab_class = $this->parent->tab_class;
-	  
+  public function pre_generate($code)
+  {
+    $tabulator_class = $this->parent->tabulator_class;
+    $tab_class = $this->parent->tab_class;
+
     $code->write_html("
-		<table width=100% border=0 cellspacing=0 cellpadding=0 {$tabulator_class}>
-		<tr>    
+    <table width=100% border=0 cellspacing=0 cellpadding=0 {$tabulator_class}>
     <tr>
-		  <td {$tab_class}>&nbsp;</td>");
-	}
-	
-	public function post_generate($code)
-	{
-	  $tab_class = $this->parent->tab_class;
-	  
+    <tr>
+      <td {$tab_class}>&nbsp;</td>");
+  }
+
+  public function post_generate($code)
+  {
+    $tab_class = $this->parent->tab_class;
+
     $code->write_html("<td class=tab width=100%>&nbsp;</td>
-			</tr>
-			</table>");
-	}	
-} 
+      </tr>
+      </table>");
+  }
+}
 
 ?>
