@@ -11,26 +11,28 @@
 
 class ComplexSelectSQL
 {
-  var $_raw_sql;
-  var $_joins;
+  var $_template_sql;
+  var $_processed_sql;
   var $_fields;
+  var $_tables;
   var $_constraints;
-  var $_join_constraints;
+  var $_left_join_constraints;
   var $_order;
   var $_group_by;
 
-  function ComplexSelectSQL($raw_sql)
+  function ComplexSelectSQL($template_sql)
   {
-    $this->_raw_sql = $raw_sql;
+    $this->_template_sql = $template_sql;
     $this->reset();
   }
 
   function reset()
   {
-    $this->_joins = array();
+    $this->_processed_sql = $this->_template_sql;
     $this->_fields = array();
+    $this->_tables = array();
     $this->_constraints = array();
-    $this->_join_constraints = array();
+    $this->_left_join_constraints = array();
     $this->_order = array();
     $this->_group_by = array();
   }
@@ -38,6 +40,11 @@ class ComplexSelectSQL
   function addField($field)
   {
     $this->_fields[] = $field;
+  }
+
+  function addTable($table)
+  {
+    $this->_tables[] = $table;
   }
 
   function addOrder($field, $type='ASC')
@@ -55,6 +62,11 @@ class ComplexSelectSQL
     $this->_join_constraints[$table] = $connect_by;
   }
 
+  function addLeftJoin($table, $connect_by)
+  {
+    $this->_left_join_constraints[$table] = $connect_by;
+  }
+
   function addCondition($condition)
   {
     $this->_constraints[] = $condition;
@@ -63,33 +75,32 @@ class ComplexSelectSQL
   function toString()
   {
     $replace = array('%fields%' => $this->_createFieldsClause(),
-                     '%join%' => $this->_createJoinClause(),
+                     '%tables%' => $this->_createTablesClause(),
+                     '%left_join%' => $this->_createLeftJoinClause(),
                      '%where%' => $this->_createWhereClause(),
                      '%order%' => $this->_createOrderClause(),
                      '%group_by%' => $this->_createGroupClause());
 
-    return trim(strtr($this->_raw_sql, $replace));
+    return trim(strtr($this->_processed_sql, $replace));
   }
 
-  function _getCleanSQL()
+  function _getNoTagsSQL()
   {
     $replace = array('%fields%' => '',
-                     '%join%' => '',
+                     '%tables%' => '',
+                     '%left_join%' => '',
                      '%where%' => '',
                      '%order%' => '',
                      '%group_by%' => '');
 
-    return strtr($this->_raw_sql, $replace);
+    return strtr($this->_template_sql, $replace);
   }
 
   function _createFieldsClause()
   {
-    $sql = $this->_getCleanSQL();
     $fields = implode(',', $this->_fields);
 
-    //primitive check if select fields were already in sql
-    //!!!make it better later
-    if(preg_match('~^select\s+[a-zA-Z].*?from~i', $sql))
+    if($this->_selectFieldsExist())
     {
       if(count($this->_fields))
         return ',' . $fields;
@@ -102,10 +113,18 @@ class ComplexSelectSQL
       return $fields;
   }
 
-  function _createJoinClause()
+  function _createTablesClause()
+  {
+    if (count($this->_tables) == 0)
+      return '';
+
+    return ',' . implode(',', $this->_tables);
+  }
+
+  function _createLeftJoinClause()
   {
     $join = array();
-    foreach ($this->_join_constraints as $table => $connect_by)
+    foreach ($this->_left_join_constraints as $table => $connect_by)
     {
       $foreign_key = key($connect_by);
       $alias_key = reset($connect_by);
@@ -122,11 +141,7 @@ class ComplexSelectSQL
 
     $where = '(' . implode(') AND (', $this->_constraints) . ')';
 
-    $sql = $this->_getCleanSQL();
-
-    //primitive check if WHERE was already in sql
-    //!!!make it better later
-    if(preg_match('~(?<=from).+where\s~i', $sql))
+    if($this->_whereClauseExists())
       return $where;
     else
       return 'WHERE ' . $where;
@@ -139,14 +154,10 @@ class ComplexSelectSQL
 
     $group = implode(',', $this->_group_by);
 
-    $sql = $this->_getCleanSQL();
-
-    //primitive check if GROUP BY was already in sql
-    //!!!make it better later
-    if(preg_match('~(?<=from).+group\s+by\s(.*)$~i', $sql, $matches))
+    if($this->_groupByClauseExists($group_by_args))
     {
       //primitive check if comma is required
-      if(trim($matches[1]) != '')
+      if($group_by_args)
         return ',' . $group;
       else
         return $group;
@@ -162,20 +173,53 @@ class ComplexSelectSQL
 
     $order = implode(',', $this->_order);
 
-    $sql = $this->_getCleanSQL();
-
-    //primitive check if ORDER BY was already in sql
-    //!!!make it better later
-    if(preg_match('~(?<=from).+order\s+by\s(.*)$~i', $sql, $matches))
+    if($this->_orderByClauseExists($order_by_args))
     {
       //primitive check if comma is required
-      if(trim($matches[1]) != '')
+      if($order_by_args)
         return ',' . $order;
       else
         return $order;
     }
     else
       return 'ORDER BY ' . $order;
+  }
+
+  function _orderByClauseExists(&$args)
+  {
+    //!!!make it better later
+    if(preg_match('~(?<=from).+order\s+by\s(.*)$~i', $this->_getNoTagsSQL(), $matches))
+    {
+      $args = trim($matches[1]);
+      return true;
+    }
+
+    return false;
+  }
+
+  function _groupByClauseExists(&$args)
+  {
+    //!!!make it better later
+    if(preg_match('~(?<=from).+group\s+by\s(.*)$~i', $this->_getNoTagsSQL(), $matches))
+    {
+      $args = trim($matches[1]);
+      return true;
+    }
+
+    return false;
+  }
+
+  function _selectFieldsExist()
+  {
+    //!!!make it better later
+    return preg_match('~^select\s+[a-zA-Z].*?from~i', $this->_getNoTagsSQL());
+  }
+
+  function _whereClauseExists()
+  {
+    //primitive check if WHERE was already in sql
+    //!!!make it better later
+    return preg_match('~(?<=from).+where\s~i', $this->_getNoTagsSQL());
   }
 }
 ?>

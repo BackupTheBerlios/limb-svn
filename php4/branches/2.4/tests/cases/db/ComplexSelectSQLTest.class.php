@@ -58,20 +58,28 @@ class ComplexSelectSQLTest extends LimbTestCase
     $this->assertEqual($sql->toString(), 'SELECT t1,t2 FROM test');
   }
 
-  function testNoJoin()
+  function testNoAddTable()
   {
-    $sql = new ComplexSelectSQL('SELECT * FROM test %join%');
+    $sql = new ComplexSelectSQL('SELECT * FROM test %tables%');
 
-    $expected = 'SELECT * FROM test';
-
-    $this->assertEqual($sql->toString(), $expected);
+    $this->assertEqual($sql->toString(), 'SELECT * FROM test');
   }
 
-  function testAddJoin()
+  function testAddTable()
   {
-    $sql = new ComplexSelectSQL('SELECT * FROM test %join%');
+    $sql = new ComplexSelectSQL('SELECT * FROM test %tables%');
 
-    $sql->addJoin('article', array('test.article_id' => 'article.id'));
+    $sql->addTable('test2 AS t2');
+    $sql->addTable('test3');
+
+    $this->assertEqual($sql->toString(), 'SELECT * FROM test ,test2 AS t2,test3');
+  }
+
+  function testAddLeftJoin()
+  {
+    $sql = new ComplexSelectSQL('SELECT * FROM test %left_join%');
+
+    $sql->addLeftJoin('article', array('test.article_id' => 'article.id'));
 
     $expected = 'SELECT * FROM test LEFT JOIN article ON test.article_id=article.id';
 
