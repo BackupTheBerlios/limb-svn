@@ -16,17 +16,14 @@ class guestbook_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'action_path' => '/guestbook_message/front_create_guestbook_message_action',
             'template_path' => '/guestbook/display.html',
             'can_have_access_template' => true,
         ),
         'admin_display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/guestbook/admin_display.html'
         ),
         'create_guestbook_message' => array(
-            'permissions_required' => 'w',
             'template_path' => '/guestbook_message/create.html',
             'action_path' => '/guestbook_message/create_guestbook_message_action',
             'JIP' => true,
@@ -36,7 +33,6 @@ class guestbook_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),
@@ -45,7 +41,6 @@ class guestbook_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete'),

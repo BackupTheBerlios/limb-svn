@@ -16,11 +16,9 @@ class subscribe_theme_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/subscribe_theme/display.html'
         ),
         'admin_detail' => array(
-            'permissions_required' => 'r',
             'template_path' => '/admin/object_detail_info.html',
             'popup' => true,
             'JIP' => true,
@@ -28,7 +26,6 @@ class subscribe_theme_controller extends site_object_controller
             'action_name' => strings :: get('detail_info'),
         ),
         'create_subscribe_mail' => array(
-            'permissions_required' => 'w',
             'template_path' => '/subscribe_mail/create.html',
             'action_path' => '/subscribe_mail/create_subscribe_mail_action',
             'JIP' => true,
@@ -38,7 +35,6 @@ class subscribe_theme_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_path' => '/subscribe_theme/edit_subscribe_theme_action',
@@ -47,7 +43,6 @@ class subscribe_theme_controller extends site_object_controller
             'action_name' => strings :: get('edit_subscribe_theme', 'subscribe'),
         ),
         'publish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
@@ -57,7 +52,6 @@ class subscribe_theme_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
@@ -67,7 +61,6 @@ class subscribe_theme_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete_subscribe_theme', 'subscribe'),

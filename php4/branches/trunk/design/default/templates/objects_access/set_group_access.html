@@ -8,15 +8,14 @@
 <locale:STRING name='object'>
 </th>
 <DATASOURCE target='groups'>
-	<core:PARAMETER name='datasource_path' value='objects_access_groups_list_datasource'>
+  <core:PARAMETER name='datasource_path' value='objects_access_groups_list_datasource'>
 </DATASOURCE>
 
 <grid:LIST id="groups">
-	<grid:ITERATOR>
-	<th>
-	{$identifier}<br>
-	(read/write)
-	</th>
+  <grid:ITERATOR>
+  <th>
+  {$identifier}
+  </th>
 </grid:ITERATOR>
 </grid:LIST>
 </tr>
@@ -26,13 +25,13 @@
 <tr>
 <td><grid:TREE_ITEM></td>
 <core:DATA_TRANSFER hash_id='groups' target='checkers'>
-	<grid:LIST id='checkers'>
-		<grid:ITERATOR>
-		<td align="center">
-			<js_selector class="checkbox" selector_name='read_selector_name'>&nbsp;&nbsp;<js_selector class="checkbox" selector_name='write_selector_name'>
-		</td>
-		</grid:ITERATOR>
-	</grid:LIST>
+  <grid:LIST id='checkers'>
+    <grid:ITERATOR>
+    <td align="center">
+      <js_selector class="checkbox">
+    </td>
+    </grid:ITERATOR>
+  </grid:LIST>
 </tr>
 </grid:ITERATOR>
 </grid:LIST>

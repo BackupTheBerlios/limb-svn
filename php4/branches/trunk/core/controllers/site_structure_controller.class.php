@@ -22,17 +22,14 @@ class site_structure_controller extends site_object_controller
   {
     return array(
         'admin_display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/site_structure/admin_display.html',
             'action_path' => '/site_structure/tree_display_action',
         ),
         'toggle' => array(
-            'permissions_required' => 'r',
             'template_path' => '/site_structure/admin_display.html',
             'action_path' => '/site_structure/tree_toggle_action',
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),
@@ -41,29 +38,24 @@ class site_structure_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'node_select' => array(
-            'permissions_required' => 'r',
             'action_name' => strings :: get('select_node', 'site_structure'),
             'action_path' => '/site_structure/node_select_action',
             'template_path' => '/site_structure/node_select.html',
         ),
         'save_priority' => array(
-            'permissions_required' => 'w',
             'action_path' => '/site_structure/save_priority_action',
             'popup' => true,
         ),
         'multi_delete' => array(
-            'permissions_required' => 'w',
             'action_path' => '/site_structure/multi_delete_action',
             'template_path' => '/site_structure/multi_delete.html',
             'popup' => true,
         ),
         'multi_toggle_publish_status' => array(
-            'permissions_required' => 'w',
             'action_path' => '/site_structure/multi_toggle_publish_status_action',
             'popup' => true,
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete'),

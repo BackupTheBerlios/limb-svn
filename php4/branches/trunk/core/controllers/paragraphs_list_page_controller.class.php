@@ -16,15 +16,12 @@ class paragraphs_list_page_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/paragraphs_list_page/display.html'
         ),
         'admin_display' => array(
-            'permissions_required' => 'rw',
             'template_path' => '/paragraphs_list_page/admin_display.html'
         ),
         'set_metadata' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('set_metadata'),
@@ -33,7 +30,6 @@ class paragraphs_list_page_controller extends site_object_controller
             'img_src' => '/shared/images/configure.gif'
         ),
         'create_paragraph' => array(
-            'permissions_required' => 'w',
             'template_path' => '/paragraph/create.html',
             'action_path' => '/paragraph/create_paragraph_action',
             'JIP' => true,
@@ -43,7 +39,6 @@ class paragraphs_list_page_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'create_paragraphs_list_page' => array(
-            'permissions_required' => 'w',
             'template_path' => '/paragraphs_list_page/create.html',
             'action_path' => '/paragraphs_list_page/create_paragraphs_list_page_action',
             'JIP' => true,
@@ -53,7 +48,6 @@ class paragraphs_list_page_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit_paragraphs_list_page', 'paragraph'),
@@ -62,7 +56,6 @@ class paragraphs_list_page_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'publish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
@@ -71,7 +64,6 @@ class paragraphs_list_page_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
@@ -80,7 +72,6 @@ class paragraphs_list_page_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete_paragraphs_list_page', 'paragraph'),

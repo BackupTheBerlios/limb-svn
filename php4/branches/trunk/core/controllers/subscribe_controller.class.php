@@ -16,11 +16,9 @@ class subscribe_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/subscribe/display.html'
         ),
         'create_subscribe_theme' => array(
-            'permissions_required' => 'w',
             'template_path' => '/subscribe_theme/create.html',
             'action_path' => '/subscribe_theme/create_subscribe_theme_action',
             'JIP' => true,
@@ -30,7 +28,6 @@ class subscribe_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),

@@ -16,11 +16,9 @@ class pictured_news_object_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/pictured_news_object/display.html',
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit_newsline', 'newsline'),
@@ -29,7 +27,6 @@ class pictured_news_object_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'publish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
@@ -38,7 +35,6 @@ class pictured_news_object_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
@@ -47,7 +43,6 @@ class pictured_news_object_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete_newsline', 'newsline'),

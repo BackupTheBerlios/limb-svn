@@ -7,19 +7,18 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
 class sys_object_access_db_table extends db_table
 {
   function _define_columns()
   {
-  	return array(
+    return array(
       'id' => array('type' => 'numeric'),
       'object_id' => array('type' => 'numeric'),
       'accessor_id' => array('type' => 'numeric'),
-      'r' => array('type' => 'numeric'),
-      'w' => array('type' => 'numeric'),
+      'access' => array('type' => 'numeric'),
       'accessor_type' => array('type' => 'numeric'),
     );
   }

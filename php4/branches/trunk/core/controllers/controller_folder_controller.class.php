@@ -21,33 +21,26 @@ class controller_folder_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/controller_folder/admin_display.html',
         ),
         'admin_display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/controller_folder/admin_display.html',
         ),
         'set_group_access' => array(
-            'permissions_required' => 'w',
             'template_path' => '/controller_folder/set_group_access.html',
             'action_path' => '/controller_folder/set_group_access',
-            'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/access_manage.gif',
             'action_name' => strings :: get('set_group_access'),
         ),
         'set_group_access_template' => array(
-            'permissions_required' => 'w',
             'template_path' => '/controller_folder/set_group_access_template.html',
             'action_path' => '/controller_folder/set_group_access_template_action',
-            'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/access_template_manage.gif',
             'action_name' => strings :: get('set_group_access_template'),
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),

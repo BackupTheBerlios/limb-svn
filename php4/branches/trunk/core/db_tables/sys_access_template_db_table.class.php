@@ -10,13 +10,14 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
-class sys_user_object_access_template_db_table extends db_table
+class sys_access_template_db_table extends db_table
 {
   function _define_columns()
   {
     return array(
       'id' => array('type' => 'numeric'),
       'controller_id' => array('type' => 'numeric'),
+      'accessor_type' => array('type' => 'numeric'),
       'action_name' => '',
     );
   }
@@ -26,7 +27,7 @@ class sys_user_object_access_template_db_table extends db_table
     return array(
       'id' => array(
         0 => array(
-          'table_name' => 'sys_user_object_access_template_item',
+          'table_name' => 'sys_access_template_item',
           'field' => 'template_id'
         ),
       ),

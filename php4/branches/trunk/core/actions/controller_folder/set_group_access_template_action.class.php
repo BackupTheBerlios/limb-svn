@@ -7,48 +7,47 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 
 class set_group_access_template_action extends form_action
 {
-	function _define_dataspace_name()
-	{
-	  return 'set_group_access_template';
-	}
-	
-	function _init_dataspace(&$request)
-	{
-		if (!$controller_id = $request->get_attribute('controller_id'))
-		{
-			error('controller_id not defined',
-			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}
+  function _define_dataspace_name()
+  {
+    return 'set_group_access_template';
+  }
 
-		$access_policy =& access_policy :: instance();
+  function _init_dataspace(&$request)
+  {
+    if (!$controller_id = $request->get_attribute('controller_id'))
+    {
+      error('controller_id not defined',
+       __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+    }
 
-		$data['template'] = $access_policy->get_group_action_access_templates($controller_id);
+    $access_policy =& access_policy :: instance();
 
-		$this->dataspace->import($data);
-	}
-	
-	function _valid_perform(&$request, &$response)
-	{
-		if (!$controller_id = $request->get_attribute('controller_id'))
-		{
-			error('controller_id not defined',
-			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-		}
+    $data['template'] = $access_policy->get_action_access_templates($controller_id, ACCESSOR_TYPE_GROUP);
 
-		$data = $this->dataspace->export();
-		$access_policy =& access_policy :: instance();
+    $this->dataspace->import($data);
+  }
 
-		$access_policy->save_group_action_access_template($controller_id, $data['template']);
+  function _valid_perform(&$request, &$response)
+  {
+    if (!$controller_id = $request->get_attribute('controller_id'))
+    {
+      error('controller_id not defined',
+       __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+    }
 
-		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+    $data = $this->dataspace->export();
+    $access_policy =& access_policy :: instance();
+    $access_policy->save_action_access_template($controller_id, $data['template'], ACCESSOR_TYPE_GROUP);
 
-		if($request->has_attribute('popup'))
-			$response->write(close_popup_no_parent_reload_response());
-	}
+    $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+
+    if($request->has_attribute('popup'))
+      $response->write(close_popup_no_parent_reload_response());
+  }
 }
 ?>

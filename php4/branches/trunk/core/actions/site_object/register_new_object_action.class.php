@@ -78,7 +78,7 @@ class register_new_object_action extends form_action
     $parent_object->import_attributes($parent_data);
 
     $access_policy =& access_policy :: instance();
-    $access_policy->save_object_access($object, $parent_object);
+    $access_policy->save_initial_object_access($object, $parent_object);
 
     $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 

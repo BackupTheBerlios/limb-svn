@@ -17,17 +17,14 @@ class ad_block_folder_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/ad_block_folder/display.html',
             'popup' => true
         ),
         'admin_display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/ad_block_folder/admin_display.html',
             'action_name' => strings :: get('admin_display'),
         ),
         'create_ad_block' => array(
-            'permissions_required' => 'r',
             'template_path' => '/ad_block_object/create.html',
             'action_path' => '/ad_block_object/create_ad_block_object_action',
             'JIP' => true,
@@ -37,7 +34,6 @@ class ad_block_folder_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),
@@ -46,7 +42,6 @@ class ad_block_folder_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete'),

@@ -112,11 +112,6 @@ class site_object_controller
     return isset($actions[$action]);
   }
 
-  function get_permissions_required()
-  {
-    return $this->get_current_action_property('permissions_required');
-  }
-
   function set_action($action)
   {
     $this->_current_action = $action;

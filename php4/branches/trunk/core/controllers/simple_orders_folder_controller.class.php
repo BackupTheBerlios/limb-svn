@@ -16,7 +16,6 @@ class simple_orders_folder_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/simple_orders_folder/admin_display.html'
         ),
     );

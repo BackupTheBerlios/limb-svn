@@ -21,11 +21,9 @@ class users_folder_controller extends site_object_controller
   {
     return array(
         'admin_display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/users_folder/admin_display.html'
         ),
         'create_user' => array(
-            'permissions_required' => 'w',
             'template_path' => '/user/create.html',
             'action_path' => '/user/create_user_action',
             'JIP' => true,
@@ -35,7 +33,6 @@ class users_folder_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),

@@ -22,11 +22,9 @@ class site_param_object_controller extends site_object_controller
   {
     return array(
         'admin_display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/site_param_object/admin_display.html',
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),
@@ -35,7 +33,6 @@ class site_param_object_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'update' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('set_params', 'site_param'),
@@ -44,7 +41,6 @@ class site_param_object_controller extends site_object_controller
             'img_src' => '/shared/images/details.gif'
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete'),

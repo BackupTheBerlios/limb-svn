@@ -17,11 +17,9 @@ class image_object_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'action_path' => '/images/display_image_action',
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),
@@ -30,7 +28,6 @@ class image_object_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'edit_variations' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit_variations', 'image'),
@@ -39,7 +36,6 @@ class image_object_controller extends site_object_controller
             'img_src' => '/shared/images/look_group.gif'
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'img_src' => '/shared/images/rem.gif',

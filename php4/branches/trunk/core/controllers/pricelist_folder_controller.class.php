@@ -16,15 +16,12 @@ class pricelist_folder_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/pricelist_folder/display.html'
         ),
         'admin_display' => array(
-            'permissions_required' => 'rw',
             'template_path' => '/pricelist_folder/admin_display.html'
         ),
         'set_metadata' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('set_metadata'),
@@ -33,7 +30,6 @@ class pricelist_folder_controller extends site_object_controller
             'img_src' => '/shared/images/configure.gif'
         ),
         'create_pricelist_object' => array(
-            'permissions_required' => 'w',
             'template_path' => '/pricelist_object/create.html',
             'action_path' => '/pricelist_object/create_pricelist_object_action',
             'JIP' => true,
@@ -43,7 +39,6 @@ class pricelist_folder_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'template_path' => '/site_object/edit.html',
             'action_path' => '/site_object/edit_action',
             'popup' => true,
@@ -52,7 +47,6 @@ class pricelist_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit_pricelist_folder', 'pricelist'),
         ),
         'publish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
@@ -61,7 +55,6 @@ class pricelist_folder_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
@@ -70,7 +63,6 @@ class pricelist_folder_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete_pricelist_folder', 'pricelist'),

@@ -17,11 +17,9 @@ class article_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/article/display.html',
         ),
         'set_metadata' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('set_metadata'),
@@ -30,7 +28,6 @@ class article_controller extends site_object_controller
             'img_src' => '/shared/images/configure.gif'
         ),
         'admin_detail' => array(
-            'permissions_required' => 'r',
             'template_path' => '/admin/object_detail_info.html',
             'popup' => true,
             'JIP' => true,
@@ -38,13 +35,11 @@ class article_controller extends site_object_controller
             'action_name' => strings :: get('detail_info'),
         ),
         'print_version' => array(
-            'permissions_required' => 'r',
             'template_path' => '/article/print_version.html',
             'action_name' => strings :: get('print_version_action', 'document'),
             'display_in_breadcrumbs' => false,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit_article', 'article'),
@@ -53,7 +48,6 @@ class article_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'publish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
@@ -62,7 +56,6 @@ class article_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
@@ -71,7 +64,6 @@ class article_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete_article', 'article'),

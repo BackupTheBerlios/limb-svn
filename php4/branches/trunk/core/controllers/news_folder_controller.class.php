@@ -16,15 +16,12 @@ class news_folder_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/news_folder/display.html'
         ),
         'admin_display' => array(
-            'permissions_required' => 'rw',
             'template_path' => '/news_folder/admin_display.html'
         ),
         'create_news' => array(
-            'permissions_required' => 'w',
             'template_path' => '/news_object/create.html',
             'action_path' => '/news/create_news_action',
             'JIP' => true,
@@ -34,7 +31,6 @@ class news_folder_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit_news_folder', 'newsline'),

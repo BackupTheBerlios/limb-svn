@@ -21,11 +21,9 @@ class user_groups_folder_controller extends site_object_controller
   {
     return array(
         'admin_display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/user_groups_folder/admin_display.html'
         ),
         'create_user_group' => array(
-            'permissions_required' => 'w',
             'template_path' => '/user_group/create.html',
             'action_path' => '/user_group/create_user_group_action',
             'JIP' => true,
@@ -34,7 +32,6 @@ class user_groups_folder_controller extends site_object_controller
             'action_name' => strings :: get('create_user_group', 'user_group'),
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),

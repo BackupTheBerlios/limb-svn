@@ -8,9 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
 
-define('CHAT_WARN_INACTIVE_USERS_TIME', 5*60 - 10);
-define('CHAT_DELETE_INACTIVE_USERS_TIME', 15*60 - 10);
-define('CHAT_DELETE_OLD_MESSAGES_TIME', 60*60 - 10);
+class sys_access_template_item_db_table extends db_table
+{
+  function _define_columns()
+  {
+    return array(
+      'id' => array('type' => 'numeric'),
+      'template_id' => array('type' => 'numeric'),
+      'accessor_id' => array('type' => 'numeric'),
+      'access' => array('type' => 'numeric'),
+    );
+  }
+}
 
 ?>

@@ -17,12 +17,10 @@ class paragraph_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/paragraph/display.html',
             'action_path' => '/paragraph/display_paragraph_action',
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit_paragraph', 'paragraph'),
@@ -31,7 +29,6 @@ class paragraph_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'publish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
@@ -40,7 +37,6 @@ class paragraph_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
@@ -49,7 +45,6 @@ class paragraph_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete_paragraph', 'paragraph'),

@@ -16,15 +16,12 @@ class period_news_folder_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'permissions_required' => 'r',
             'template_path' => '/period_news_folder/display.html'
         ),
         'admin_display' => array(
-            'permissions_required' => 'rw',
             'template_path' => '/period_news_folder/admin_display.html'
         ),
         'create_news' => array(
-            'permissions_required' => 'w',
             'template_path' => '/period_news_object/create.html',
             'action_path' => '/period_news/create_period_news_action',
             'JIP' => true,
@@ -34,7 +31,6 @@ class period_news_folder_controller extends site_object_controller
             'can_have_access_template' => true,
         ),
         'edit' => array(
-            'permissions_required' => 'w',
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('edit'),
@@ -43,7 +39,6 @@ class period_news_folder_controller extends site_object_controller
             'img_src' => '/shared/images/edit.gif'
         ),
         'delete' => array(
-            'permissions_required' => 'w',
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('delete'),

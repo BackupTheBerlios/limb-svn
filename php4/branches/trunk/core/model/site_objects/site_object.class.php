@@ -101,7 +101,7 @@ class site_object extends object
   {
     $ids_sql_params = $sql_params;
     $ids_sql_params['tables'][] = ' , sys_object_access as soa';
-    $ids_sql_params['conditions'][] = ' AND sso.id = soa.object_id AND soa.r = 1';
+    $ids_sql_params['conditions'][] = ' AND sso.id = soa.object_id AND soa.access = 1';
 
     $access_policy =& access_policy :: instance();
     $accessor_ids = implode(',', $access_policy->get_accessor_ids());
@@ -327,7 +327,7 @@ class site_object extends object
   function fetch_accessible_count($params=array(), $sql_params=array())
   {
     $sql_params['tables'][] = ' INNER JOIN sys_object_access as soa ON soa.object_id = sso.id';
-    $sql_params['conditions'][] = ' AND sso.id = soa.object_id AND soa.r = 1';
+    $sql_params['conditions'][] = ' AND sso.id = soa.object_id AND soa.access = 1';
 
     $access_policy =& access_policy :: instance();
     $accessor_ids = implode(',', $access_policy->get_accessor_ids());
