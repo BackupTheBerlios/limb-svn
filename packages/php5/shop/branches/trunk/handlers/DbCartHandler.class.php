@@ -21,7 +21,7 @@ class DbCartHandler extends CartHandler
 
     $this->cart_db_table = Limb :: toolkit()->createDBTable('Cart');
 
-    register_shutdown_function(array($this, '_db_cart_handler'));
+    register_shutdown_function(array($this, '_dbCartHandler'));
   }
 
   public function reset()

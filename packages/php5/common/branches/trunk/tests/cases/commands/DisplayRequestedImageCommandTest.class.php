@@ -52,7 +52,7 @@ class DisplayRequestedImageCommandTest extends LimbTestCase
 
     $this->toolkit->setReturnValue('getResponse', $this->response);
     $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
     $this->toolkit->setReturnValue('getINI', $this->ini, array('image_variations.ini'));
 
     $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));

@@ -77,7 +77,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
                                       null,
@@ -96,7 +96,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
                                       array('objectId' => $object_id = 100),
@@ -126,7 +126,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
                                       array('objectId' => $object_id = 100),
@@ -161,7 +161,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
                                       array('objectId' => $object_id = 100),
@@ -202,7 +202,7 @@ class SimplePermissionsAuthenticationFilterTest extends LimbTestCase
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
     $this->datasource->setReturnValue('mapRequestToNode',
                                       array('objectId' => $object_id = 100),
