@@ -41,7 +41,7 @@ class image_cache_filter implements intercepting_filter
     
       $response->write($content);
     }
-    
+
     debug :: add_timing_point('image cache write finished');    
   }
   

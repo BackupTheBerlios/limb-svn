@@ -439,12 +439,12 @@ class debug
   */
 	static public function is_debug_enabled()
 	{
-		return (!defined('ENABLED') || (defined('ENABLED') && constant('ENABLED')));
+		return (!defined('DEBUG_ENABLED') || (defined('DEBUG_ENABLED') && constant('DEBUG_ENABLED')));
 	} 
 	
 	static public function is_console_enabled()
 	{
-		return (defined('CONSOLE_ENABLED') && constant('CONSOLE_ENABLED'));
+		return (defined('DEBUG_CONSOLE_ENABLED') && constant('DEBUG_CONSOLE_ENABLED'));
 	}
 	
 	static public function parse_console()

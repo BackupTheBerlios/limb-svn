@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 class	db_factory
 {
-	function instance($db_type='', $db_params=array(), $force_new_instance=false)
+	static public function instance($db_type='', $db_params=array(), $force_new_instance=false)
 	{
 		if(!$db_type)
 			$db_type = get_ini_option('common.ini', 'type', 'DB');

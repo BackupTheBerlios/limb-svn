@@ -11,18 +11,18 @@
 
 function & instantiate_session_object($class_name, &$arguments = array())
 {
-	if(	!isset($_SESSION['global_'. $class_name]) || 
-			get_class($_SESSION['global_'. $class_name]) != $class_name)
+	if(	!isset($_SESSION['global_session_singleton_'. $class_name]) || 
+			get_class($_SESSION['global_session_singleton_'. $class_name]) != $class_name)
 	{ 
     $handle =& $arguments;
     array_unshift($handle, $class_name);
     
     resolve_handle($handle);
   
-		$_SESSION['global_' . $class_name] =& $handle;
+		$_SESSION['global_session_singleton_' . $class_name] =& $handle;
 	}
 	else
-		$handle =& $_SESSION['global_' . $class_name];
+		$handle =& $_SESSION['global_session_singleton_' . $class_name];
 	
 	return $handle;
 }

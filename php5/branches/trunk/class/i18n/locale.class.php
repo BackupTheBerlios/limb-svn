@@ -730,7 +730,7 @@ class locale
 			return $GLOBALS['global_locale_' . $locale_string];
 		} 
 
-		$obj =& new locale($locale_string);
+		$obj = new locale($locale_string);
 		$GLOBALS['global_locale_' . $locale_string] =& $obj;
 
 		return $obj;

@@ -41,7 +41,7 @@ class content_object_tester extends site_object_tester
 
 		if(isset($props['db_table_name']))
 		{
-			$this->assertTrue(is_a($db_table, $props['db_table_name'].'_db_table'));
+			$this->assertIsA($db_table, $props['db_table_name'].'_db_table');
 		}
 		else
 		{

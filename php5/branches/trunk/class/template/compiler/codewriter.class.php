@@ -23,7 +23,7 @@ class codewriter
 	/**
 	* The current state of the writer.
 	*/
-	protected $mode = self :: CODE_WRITER_MODE_HTML;
+	protected $mode;
 	/**
 	* A prefix to add to the compiled template construct and render functions
 	*/
@@ -39,7 +39,11 @@ class codewriter
 	*/
 	protected $include_list = array();
 	protected $temp_var_name = 1;
-
+	
+	function __construct()
+	{
+	  $this->mode = self :: CODE_WRITER_MODE_HTML;
+	}
 
 	/**
 	* Puts the writer into PHP mode, writing an opening PHP processing

@@ -58,11 +58,6 @@ abstract class tree_db_driver extends tree_driver
 	
 	/**
 	* Changes the payload of a node
-	* 
-	* @param int $id Node ID
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @access public 
-	* @return bool True if the update is successful
 	*/
 	public function update_node($id, $values, $internal = false)
 	{
@@ -83,15 +78,6 @@ abstract class tree_db_driver extends tree_driver
 	
 	/**
 	* Adds a specific type of SQL to a sql_exec string
-	* 
-	* @param array $add_sql The array of SQL strings to add.  Example value:
-	*                $add_sql = array(
-	*                'columns' => 'tb2.col2, tb2.col3',         // Additional tables/columns
-	*                'join' => 'LEFT JOIN tb1 USING(id)', // Join statement
-	*                'append' => 'GROUP by tb1.id');      // Group condition
-	* @param string $type The type of SQL.  Can be 'columns', 'join', or 'append'.
-	* @access private 
-	* @return string The SQL, properly formatted
 	*/
 	protected function _add_sql($add_sql, $type)
 	{
@@ -116,9 +102,6 @@ abstract class tree_db_driver extends tree_driver
 
 	/**
 	* Gets the select fields based on the params
-	* 
-	* @access private 
-	* @return string A string of sql_exec fields to select
 	*/
 	protected function _get_select_fields()
 	{
@@ -133,11 +116,6 @@ abstract class tree_db_driver extends tree_driver
   
 	/**
 	* Clean values from protected or unknown columns
-	* 
-	* @var string $caller The calling method
-	* @var string $values The values array
-	* @access private 
-	* @return void 
 	*/
 	protected function _verify_user_values(&$values)
 	{

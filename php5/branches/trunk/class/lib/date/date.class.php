@@ -17,15 +17,15 @@ define('DATE_SHORT_FORMAT_ISO', "%Y-%m-%d"); //YYYY-MM-DD
 
 class date
 {
-  var $year = 0;
-  var $month = 0;
-  var $day = 0;
-  var $hour = 0;
-  var $minute = 0;
-  var $second = 0;
-  var $tz = 0;
+  protected $year = 0;
+  protected $month = 0;
+  protected $day = 0;
+  protected $hour = 0;
+  protected $minute = 0;
+  protected $second = 0;
+  protected $tz = 0;
 
-  function date($date=null, $format=DATE_SHORT_FORMAT_ISO)
+  function __construct ($date=null, $format=DATE_SHORT_FORMAT_ISO)
   {
     $this->tz = date_time_zone::get_default();
     
@@ -39,22 +39,21 @@ class date
     	$this->set_by_stamp();
   }
   
-  //static
-  function &create($year=0, $month=0, $day=0, $hour=0, $minute=0, $second=0)
+  static public function create($year=0, $month=0, $day=0, $hour=0, $minute=0, $second=0)
   {
-  	$d =& new date();
+  	$d = new date();
   	
-  	$d->year = $year;
-   	$d->month = $month;
-  	$d->day = $day;
-  	$d->hour = $hour;
-  	$d->minute = $minute;
-  	$d->second = $second;
+  	$d->set_year($year);
+   	$d->set_month($month);
+  	$d->set_day($day);
+  	$d->set_hour($hour);
+  	$d->set_minute($minute);
+  	$d->set_second($second);
   
   	return $d;
   }
   
-  function reset()
+  public function reset()
   {
 	  $this->year   = 0;
 	  $this->month  = 0;
@@ -64,7 +63,7 @@ class date
 	  $this->second = 0;
   }
   
-  function is_valid()
+  public function is_valid()
   {
     if ($this->year < 0 || $this->year > 9999)
     	return false;
@@ -72,7 +71,7 @@ class date
     return checkdate($this->month, $this->day, $this->year);
   }
   
-  function set_by_string($string, $format=DATE_SHORT_FORMAT_ISO)
+  public function set_by_string($string, $format=DATE_SHORT_FORMAT_ISO)
   {
     switch ($format) 
     {
@@ -116,7 +115,7 @@ class date
   	Returns an array('hour','minute','second','month','day','year')
   	At this moment only most common tags are supported.
   */
-  function _parse_time_string($time_string, $fmt)
+  protected function _parse_time_string($time_string, $fmt)
   {
   	$hour = 0;
   	$minute = 0; 
@@ -219,7 +218,7 @@ class date
   	return array('hour' => $hour, 'minute' => $minute, 'second' => $second, 'month' => $month, 'day' => $day, 'year' => $year);
   }
  
-  function _explode_time_string_by_format($time_string, $fmt)
+  protected function _explode_time_string_by_format($time_string, $fmt)
   {
   	$fmt_len = strlen($fmt);
   	$time_string_len = strlen($time_string);
@@ -255,7 +254,7 @@ class date
   	return $time_array;
   }
   
-  function set_by_stamp($time=-1)
+  public function set_by_stamp($time=-1)
   {
   	if($time == -1)
   		$time = time();
@@ -270,7 +269,7 @@ class date
     $this->second = $arr['seconds'];
   }
 
-  function set_by_days($days)
+  public function set_by_days($days)
   {
   	$days    -= 1721119;
     $century =  floor(( 4 * $days - 1) / 146097);
@@ -304,20 +303,19 @@ class date
     $this->year = (int)$year;
   }
 
-
   /**
    * Copy values from another date object
    * Makes this date a copy of another date object.
    */
-  function copy($date)
+  public function copy($date)
   {
-    $this->year = $date->year;
-    $this->month = $date->month;
-    $this->day = $date->day;
-    $this->hour = $date->hour;
-    $this->minute = $date->minute;
-    $this->second = $date->second;
-    $this->tz = $date->tz;
+    $this->year = $date->get_year();
+    $this->month = $date->get_month();
+    $this->day = $date->get_day();
+    $this->hour = $date->get_hour();
+    $this->minute = $date->get_minute();
+    $this->second = $date->get_second();
+    $this->tz = $date->get_time_zone();
   }
 
   /**
@@ -355,7 +353,7 @@ class date
    *  %Y    year as decimal including century (range 0000 to 9999) 
    *  %%    literal '%' 
    */
-  function format($format=DATE_SHORT_FORMAT_ISO)
+  public function format($format=DATE_SHORT_FORMAT_ISO)
   {
     $output = '';
 		
@@ -482,17 +480,17 @@ class date
     return $output;
   }
 
-  function get_stamp()
+  public function get_stamp()
   {
   	return mktime($this->hour, $this->minute, $this->second, $this->month, $this->day, $this->year);
   }
 
-  function set_time_zone($tz)
+  public function set_time_zone($tz)
   {
   	$this->tz = $tz;
   }
 
-  function set_time_zone_by_id($id)
+  public function set_time_zone_by_id($id)
   {
     if (date_time_zone::is_valid_id($id))
     	$this->tz = new date_time_zone($id);
@@ -500,12 +498,12 @@ class date
     	$this->tz = date_time_zone::get_default();
   }
 
-  function is_in_daylight_time()
+  public function is_in_daylight_time()
   {
   	return $this->tz->is_in_daylight_time($this);
   }
 
-  function to_UTC()
+  public function to_UTC()
   {
     if ($this->tz->get_offset($this) > 0)
     	$this->sub_seconds(intval($this->tz->get_offset($this) / 1000));
@@ -524,7 +522,7 @@ class date
    * date::time_zone::is_in_daylight_time() for more information.
    *
    */
-  function convert_to_time_zone($tz)
+  public function convert_to_time_zone($tz)
   {
     // convert to UTC
     if ($this->tz->get_offset($this) > 0)
@@ -541,7 +539,7 @@ class date
     $this->tz = $tz;
   }
 
-  function convert_to_time_zone_by_id($id)
+  public function convert_to_time_zone_by_id($id)
   {
    if (date_time_zone::is_valid_id($id))
    	$tz = new date_time_zone($id);
@@ -555,7 +553,7 @@ class date
    * Compares object with $d date object.
    * return int 0 if the dates are equal, -1 if is before, 1 if is after than $d
    */
-  function compare($d, $use_time_zone=false)
+  public function compare($d, $use_time_zone=false)
   {
   	if($use_time_zone)
   	{
@@ -567,16 +565,16 @@ class date
     $days2 = $d->date_to_days();
     if ($days1 < $days2) return -1;
     if ($days1 > $days2) return 1;
-    if ($this->hour < $d->hour) return -1;
-    if ($this->hour > $d->hour) return 1;
-    if ($this->minute < $d->minute) return -1;
-    if ($this->minute > $d->minute) return 1;
-    if ($this->second < $d->second) return -1;
-    if ($this->second > $d->second) return 1;
+    if ($this->hour < $d->get_hour()) return -1;
+    if ($this->hour > $d->get_hour()) return 1;
+    if ($this->minute < $d->get_minute()) return -1;
+    if ($this->minute > $d->get_minute()) return 1;
+    if ($this->second < $d->get_second()) return -1;
+    if ($this->second > $d->get_second()) return 1;
     return 0;
   }
 
-  function is_before($when, $use_time_zone=false)
+  public function is_before($when, $use_time_zone=false)
   {
     if ($this->compare($when, $use_time_zone) == -1)
     	return true;
@@ -584,7 +582,7 @@ class date
     	return false;
   }
 
-  function is_after($when, $use_time_zone=false)
+  public function is_after($when, $use_time_zone=false)
   {
     if ($this->compare($when, $use_time_zone) == 1)
     	return true;
@@ -592,7 +590,7 @@ class date
     	return false;
   }
 
-  function is_equal($when, $use_time_zone=false)
+  public function is_equal($when, $use_time_zone=false)
   {
     if ($this->compare($when, $use_time_zone) == 0)
     	return true;
@@ -600,12 +598,12 @@ class date
     	return false;
   }
 
-  function is_leap_year()
+  public function is_leap_year()
   {
   	return (($this->year % 4 == 0 && $this->year % 100 != 0) || $this->year % 400 == 0);
   }
 
-  function get_day_of_year()
+  public function get_day_of_year()
   {
   	$days = array(0,31,59,90,120,151,181,212,243,273,304,334);
 
@@ -617,7 +615,7 @@ class date
     return $julian;
   }
 
-  function get_day_of_week()
+  public function get_day_of_week()
   {
     $year = $this->year;
     $month = $this->month;
@@ -640,7 +638,7 @@ class date
     return $weekday_number;
   }
 
-  function get_week_of_year() 
+  public function get_week_of_year() 
   {
   	$day = $this->day;
   	$month = $this->month;
@@ -706,12 +704,12 @@ class date
     return $weeknumber;
   }
   
-  function get_quarter_of_year()
+  public function get_quarter_of_year()
   {
   	return (intval(($this->month - 1) / 3 + 1));
   }
   
-  function date_to_days()
+  public function date_to_days()
   {
     $century = (int) substr("{$this->year}", 0, 2);
     $year = (int) substr("{$this->year}", 2, 2);
@@ -738,37 +736,42 @@ class date
         $day + 1721119);
   }
          
-	function get_year()
+	public function get_year()
   {
   	return $this->year;
   }
 
-  function get_month()
+  public function get_month()
   {
   	return $this->month;
   }
 
-  function get_day()
+  public function get_day()
   {
   	return $this->day;
   }
 
-  function get_hour()
+  public function get_hour()
   {
   	return $this->hour;
   }
 
-  function get_minute()
+  public function get_minute()
   {
   	return $this->minute;
   }
 
-  function get_second()
+  public function get_second()
   {
   	return $this->second;
   }
 
-  function set_year($y)
+  public function get_time_zone()
+  {
+  	return $this->tz;
+  }
+
+  public function set_year($y)
   {
     if ($y < 0 || $y > 9999)
     	$this->year = 0;
@@ -776,7 +779,7 @@ class date
     	$this->year = $y;
   }
 
-  function set_month($m)
+  public function set_month($m)
   {
     if ($m < 1 || $m > 12)
     	$this->month = 1;
@@ -784,7 +787,7 @@ class date
     	$this->month = $m;
   }
 
-  function set_day($d)
+  public function set_day($d)
   {
     if ($d > 31 || $d < 1)
     	$this->day = 1;
@@ -792,7 +795,7 @@ class date
     	$this->day = $d;
   }
 
-  function set_hour($h)
+  public function set_hour($h)
   {
     if ($h > 23 || $h < 0)
     	$this->hour = 0;
@@ -800,7 +803,7 @@ class date
     	$this->hour = $h;
   }
 
-  function set_minute($m)
+  public function set_minute($m)
   {
     if ($m > 59 || $m < 0)
     	$this->minute = 0;
@@ -808,7 +811,7 @@ class date
     	$this->minute = $m;
   }
 
-  function set_second($s) 
+  public function set_second($s) 
   {
     if ($s > 59 || $s < 0)
     	$this->second = 0;

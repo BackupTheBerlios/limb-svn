@@ -177,7 +177,7 @@ class source_file_parser
 	private function check_server_id($parent_component, $component)
 	{
 		$tree = $parent_component;
-		if (is_a($component, 'server_tag_component_tag'))
+		if ($component instanceof server_tag_component_tag)
 		{ 
 			// Move up to the root
 			while (!is_null($tree->parent))
@@ -204,7 +204,7 @@ class source_file_parser
 	* invoked by the Compiletemplate function, the first component argument
 	* being a root_compiler_component. Accesses the $tag_dictionary
 	*/
-	protected function parse($parent_component)
+	public function parse($parent_component)
 	{
 		$tag_info = null;
 		$parent_component->contents = '';

@@ -20,8 +20,6 @@ abstract class tree_driver
 	
 	/**
 	* Used for _internal_ tree conversion
-	* 
-	* @var bool Turn off user param verification and id generation
 	*/
 	protected $_dumb_mode = false;
 			

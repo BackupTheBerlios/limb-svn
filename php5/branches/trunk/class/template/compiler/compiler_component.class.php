@@ -19,43 +19,43 @@ abstract class compiler_component
 	/**
 	* XML attributes of the tag
 	*/
-	protected $attributes = array();
+	public $attributes = array();
 	/**
 	* child compile-time components
 	*/
-	protected $children = array();
-	protected $vars = array();
+	public $children = array();
+	public $vars = array();
 	/**
 	* Parent compile-time component
 	*/
-	protected $parent = null;
+	public $parent = null;
 	/**
 	* Stores the identifying component ID
 	*/
-	protected $server_id;
+	public $server_id;
 	/**
 	* Name of the XML tag as it appears in the template. This would include
 	* the namespace prefix, if applicable.
 	*/
-	protected $tag;
+	public $tag;
 	/**
 	* Used to identify the source template file, when generating compile time
 	* error messages.
 	*/
-	protected $source_file;
+	public $source_file;
 	/**
 	* Used to indentify the line number where a compile time error occurred.
 	*/
-	protected $starting_line_no;
+	public $starting_line_no;
 	/**
 	* Instance of a CoreWraptag
 	*/
-	protected $wrapping_component;
+	public $wrapping_component;
 	/**
 	* Defines whether the tag is allowed to have a closing tag
 	*/
-	protected $has_closing_tag;
-
+	public $has_closing_tag;
+	
 	/**
 	* Sets the XML attributes for this component (as extracted from the
 	* template)
@@ -65,6 +65,10 @@ abstract class compiler_component
 		$this->attributes = $attrib;
 	} 
 	
+	public function set_source_file($source_file)
+	{
+	  $this->source_file = $source_file;
+	}
 	/**
 	* Remove an attribute from the list
 	* @param string name of attribute
@@ -166,7 +170,7 @@ abstract class compiler_component
 	{
 		foreach(array_keys($this->children) as $key)
 		{
-			if (is_a($this->children[$key], $class))
+			if ($this->children[$key] instanceof $class)
 			{
 				return $this->children[$key];
 			} 
@@ -189,7 +193,7 @@ abstract class compiler_component
 	{
 		foreach(array_keys($this->children) as $key)
 		{
-			if (is_a($this->children[$key], $class))
+			if ($this->children[$key] instanceof  $class)
 			{
 				return $this->children[$key];
 			} 
@@ -204,7 +208,7 @@ abstract class compiler_component
 	public function find_parent_by_class($class)
 	{
 		$parent = $this->parent;
-		while ($parent && !is_a($parent, $class))
+		while ($parent && !($parent instanceof $class))
 		{
 			$parent = $parent->parent;
 		} 

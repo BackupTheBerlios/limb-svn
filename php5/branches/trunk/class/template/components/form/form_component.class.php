@@ -12,6 +12,7 @@ require_once(LIMB_DIR . 'class/core/array_dataset.class.php');
 require_once(LIMB_DIR . 'class/template/tag_component.class.php');
 require_once(LIMB_DIR . 'class/validators/error_list.class.php');
 require_once(LIMB_DIR . 'class/core/dataspace_registry.class.php');
+require_once(LIMB_DIR . 'class/core/empty_dataset.class.php');
 
 /**
 * The form_component provide a runtime API for control the behavior of a form

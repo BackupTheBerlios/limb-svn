@@ -82,7 +82,6 @@ class form_tag extends server_tag_component_tag
 		
 		$code->write_php($this->get_component_ref_code() . '->preserve_state("submitted", 1);');
 		$code->write_php($this->get_component_ref_code() . '->render_state();');
-		$code->write_php($this->get_dataspace_ref_code() . '->prepare();');
 	} 
 	
 	public function generate_contents($code)

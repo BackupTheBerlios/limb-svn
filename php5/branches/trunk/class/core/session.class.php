@@ -13,7 +13,9 @@ require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 
 class session
 {
-	public function & get($name)
+  private function __construct(){}
+  
+	static public function & get($name)
 	{
 		if(!isset($_SESSION[$name]))
 			$_SESSION[$name] = '';
@@ -21,17 +23,17 @@ class session
 		return $_SESSION[$name];
 	}
 	
-	public function set($name, $value)
+	static public function set($name, $value)
 	{
 		$_SESSION[$name] = $value;
 	}
 	
-	public function session_exists($name)
+	static public function session_exists($name)
 	{
 		return isset($_SESSION[$name]);
 	}
 
-	public function destroy($name)
+	static public function destroy($name)
 	{
 		if(isset($_SESSION[$name]))
 		{
@@ -40,11 +42,9 @@ class session
 		}
 	}
 	
-	public function destroy_user_session($user_id)
+	static public function destroy_user_session($user_id)
 	{
-		$db =& db_factory :: instance();
-		
-		$db->sql_delete('sys_session', "user_id='{$user_id}'");
+		db_factory :: instance()->sql_delete('sys_session', "user_id='{$user_id}'");
 	}
 }
 
@@ -55,8 +55,7 @@ function start_user_session()
 	if (isset($has_started) && $has_started)
 		return false;
 	
-	if(defined('SESSION_USE_DB') && constant('SESSION_USE_DB'))
-		_register_session_db_functions();
+	_register_session_db_handlers();
 	
 	session_start();
 		
@@ -64,7 +63,7 @@ function start_user_session()
 	return true;
 }
 
-function _register_session_db_functions()
+function _register_session_db_handlers()
 {
 	session_module_name('user');
 	session_set_save_handler(
@@ -133,18 +132,14 @@ function _session_db_write($session_id, $value)
 
 function _session_dbunset($session_id)
 {
-	$db =& db_factory :: instance();
-
-	$db->sql_delete('sys_session', "session_id='{$session_id}'");
+	db_factory :: instance()->sql_delete('sys_session', "session_id='{$session_id}'");
 }
 
 function _session_db_garbage_collector($max_life_time)
 {
-	$db =& db_factory :: instance();
-
 	if(defined('SESSION_DB_MAX_LIFE_TIME') && constant('SESSION_DB_MAX_LIFE_TIME'))
 		$max_life_time = constant('SESSION_DB_MAX_LIFE_TIME');
 
-	$db->sql_delete('sys_session', "last_activity_time < ". (time() - $max_life_time));
+	db_factory :: instance()->sql_delete('sys_session', "last_activity_time < ". (time() - $max_life_time));
 }
 ?>

@@ -27,7 +27,7 @@ class grid_default_tag extends silent_compiler_directive_tag
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
-		if (!is_a($this->parent, 'grid_list_tag'))
+		if (!$this->parent instanceof grid_list_tag)
 		{
 			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
 					'enclosing_tag' => 'grid:LIST',

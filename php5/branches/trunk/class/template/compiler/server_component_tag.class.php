@@ -25,7 +25,7 @@ abstract class server_component_tag extends compiler_component
 	/**
 	* Returns a string of PHP code identifying the component in the hierarchy.
 	*/
-	protected function get_component_ref_code()
+	public function get_component_ref_code()
 	{
 		$path = $this->parent->get_component_ref_code();
 		return $path . '->children[\'' . $this->get_server_id() . '\']';
@@ -36,7 +36,7 @@ abstract class server_component_tag extends compiler_component
 	* compiled template, appending an add_child() method used to create
 	* this component at runtime
 	*/
-	public function generate_constructor(&$code)
+	public function generate_constructor($code)
 	{
 		if (file_exists($this->runtime_component_path . '.class.php'))
 			$code->register_include($this->runtime_component_path . '.class.php');

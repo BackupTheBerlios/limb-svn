@@ -18,13 +18,13 @@ class list_component extends component
 	/**
 	* Data set to iterate over when rendering the list
 	*/
-	protected $dataset;
+	public $dataset;
 	/**
 	* Whether to show the list seperator
 	*/
-	protected $show_separator;
+	public $show_separator;
 	
-	protected $offset = 0;
+	public $offset = 0;
 	
 	/**
 	* Registers a dataset with the list component. The dataset must
@@ -78,7 +78,6 @@ class list_component extends component
 		  include_once(LIMB_DIR . 'class/core/empty_dataset.class.php');
 			$this->register_dataset(new empty_dataset());
 		} 
-		$this->dataset->prepare();
 		
 		$this->show_separator = false;		
 	} 

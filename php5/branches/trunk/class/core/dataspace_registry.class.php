@@ -23,7 +23,7 @@ class dataspace_registry
 		
   	if(!$obj || get_class($obj) != 'dataspace')
   	{
-  		$obj =& new dataspace();
+  		$obj = new dataspace();
   		$GLOBALS[$instance_name] =& $obj;
   	}
   	

@@ -24,7 +24,7 @@ abstract class form_edit_site_object_action extends form_site_object_action
   
   protected function _define_increase_version_flag()
   {
-    if (is_a($this->object, 'content_object'))
+    if ($this->object instanceof content_object)
       return true;
     else 
       return false;

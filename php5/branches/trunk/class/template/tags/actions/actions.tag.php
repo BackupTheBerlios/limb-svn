@@ -42,7 +42,7 @@ class actions_tag extends server_component_tag
 
 		$code->write_php($this->get_component_ref_code() . "->set_node_id({$node_id});\n");
 		
-		//$code->write_php($this->get_component_ref_code() . '->prepare();'."\n");
+		$code->write_php($this->get_component_ref_code() . '->prepare();'."\n");
 
 		$code->write_php('if (' . $this->get_component_ref_code() . '->next()) {');
 	} 

@@ -19,7 +19,9 @@ class site_object_controller_filter implements intercepting_filter
   
     $site_object = wrap_with_site_object(fetch_requested_object($request));
      
-    $site_object_controller =& $site_object->get_controller();
+    $site_object_controller = $site_object->get_controller();
+    
+    $site_object_controller->determine_action($request);
             
     $site_object_controller->process($request, $response);
     

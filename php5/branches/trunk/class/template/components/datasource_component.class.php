@@ -22,7 +22,7 @@ class datasource_component extends component
 	{
 		$datasource = $this->_get_datasource();
 		
-		if (!is_a($datasource, 'datasource'))
+		if (!$datasource instanceof datasource)
 		{
 			 debug :: write_error('data source not created',
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 

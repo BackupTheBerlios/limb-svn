@@ -27,7 +27,7 @@ class fetch_one_tag extends server_component_tag
 	public function pre_generate($code)
 	{
 		parent :: pre_generate($code);
-    $code->write_php($this->get_component_ref_code() . '->prepare();');
+    //$code->write_php($this->get_component_ref_code() . '->prepare();');
 	} 
 	
 	public function generate_contents($code)
@@ -35,11 +35,6 @@ class fetch_one_tag extends server_component_tag
 		$code->write_php($this->get_component_ref_code() . '->fetch("' . $this->attributes['path'] . '");');
 		
 		parent :: generate_contents($code);
-	}
-	
-	public function post_generate($code)
-	{
-		parent :: post_generate($code);
 	}
 	
 	public function get_dataspace()

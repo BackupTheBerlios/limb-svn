@@ -2,7 +2,7 @@
 
 class loaded_handle_class 
 {
-  var $test_var = 'default';
+  public $test_var = 'default';
 }
 
 ?>

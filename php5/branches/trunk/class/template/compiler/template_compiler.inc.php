@@ -100,7 +100,7 @@ function compile_template_file($filename, $resolve_path = true)
 	else
 		$sourcefile = $filename;
 		
-	$destfile = resolve_template_compiled_file_name($sourcefile, TMPL_INCLUDE);
+	$destfile = resolve_template_compiled_file_name($sourcefile);
 	
 	if (empty($sourcefile))
 	{
@@ -111,7 +111,7 @@ function compile_template_file($filename, $resolve_path = true)
 	$code->set_function_prefix(md5($destfile));
 
 	$tree = new root_compiler_component();
-	$tree->source_file = $sourcefile;
+	$tree->set_source_file($sourcefile);
 
 	$sfp = new source_file_parser($sourcefile, $tag_dictionary);
 	$sfp->parse($tree);

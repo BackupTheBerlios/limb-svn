@@ -34,7 +34,7 @@ class full_page_cache_filter implements intercepting_filter
       $response->write($contents);
       return;
     }
-    
+
     $filter_chain->next();
     
     $cache->write($content = $response->get_response_string());    

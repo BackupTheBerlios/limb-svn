@@ -13,11 +13,6 @@ require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 
 class materialized_path_driver extends tree_db_driver implements tree_interface
 {	
-	/**
-	* 
-	* @var array The field parameters of the table with the nested set.
-	* @access public 
-	*/
 	protected $_params = array(
 		'id' => 'id',
 		'root_id' => 'root_id',
@@ -31,18 +26,10 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	
 	protected $_expanded_parents = array(); 
 	
-	/**
-	* 
-	* @var array An array of field ids that must exist in the table
-	* @access private 
-	*/
 	protected $_required_params = array('id', 'root_id', 'path', 'level', 'children');
 					    
 	/**
 	* Fetch the whole nested set
-	* 
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @return mixed False on error, or an array of nodes
 	*/
 	public function get_all_nodes($add_sql = array())
 	{
@@ -57,9 +44,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Fetches the first level (the rootnodes)
-	* 
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
 	*/
 	public function get_root_nodes($add_sql = array())
 	{
@@ -81,9 +65,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 
 	/**
 	* Fetch the parents of a node given by id
-	* 
-	* @param int $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
 	*/
 	public function get_parents($id, $add_sql = array())
 	{
@@ -119,12 +100,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Fetch the immediate parent of a node given by id
-	* 
-	* @param int $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or the parent node
 	*/
 	public function get_parent($id, $add_sql = array())
 	{
@@ -147,12 +122,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	* Fetch all siblings of the node given by id
 	* Important: The node given by ID will also be returned
 	* Do aunset($array[$id]) on the result if you don't want that
-	* 
-	* @param int $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or the parent node
 	*/
 	public function get_siblings($id, $add_sql = array())
 	{
@@ -171,7 +140,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Fetch the children _one level_ after of a node given by id
-	* 
 	*/
 	public function get_children($id, $add_sql = array())
 	{		
@@ -222,10 +190,8 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Fetch all the children of a node given by id
-	* 
 	* get_children only queries the immediate children
 	* get_sub_branch returns all nodes below the given node
-	* 
 	*/
 	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
 	{
@@ -388,7 +354,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Fetch the data of a node with the given id
-	* 
 	*/
 	public function get_node($id, $add_sql = array())
 	{	  
@@ -628,7 +593,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 			
 	/**
 	* Deletes a node
-	* 
 	*/
 	public function delete_node($id)
 	{
@@ -656,7 +620,6 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
 		
 	/**
 	* Moves node
-	* 
 	*/
 	public function move_tree($id, $target_id)
 	{

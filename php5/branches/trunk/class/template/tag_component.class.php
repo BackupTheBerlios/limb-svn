@@ -16,7 +16,7 @@ class tag_component extends component
 	/**
 	* Array of XML attributes
 	*/
-	protected $attributes = array();
+	public $attributes = array();
 
 	/**
 	* Returns the value of the ID attribute

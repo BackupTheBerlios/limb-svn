@@ -18,20 +18,20 @@ class component extends dataspace
 	/**
 	* Array of child components
 	*/
-	protected $children = array();
+	public $children = array();
 	/**
 	* parent component - "parent" refers to nesting in template
 	* not to class hierarchy.
 	*/
-	protected $parent;
+	public $parent;
 	/**
 	* root component in template
 	*/
-	protected $root;
+	public $root;
 	/**
 	* ID of component, corresponding to it's ID attribute in the template
 	*/
-	protected $id;
+	public $id;
 
 	/**
 	* Returns the ID of the component, as defined in the template tags
@@ -78,7 +78,7 @@ class component extends dataspace
 	{
 		foreach(array_keys($this->children) as $key)
 		{
-			if (is_a($this->children[$key], $class))
+			if ($this->children[$key] instanceof $class)
 				return $this->children[$key];
 			else
 			{
@@ -98,7 +98,7 @@ class component extends dataspace
 	{
 		$parent = $this->parent;
 		
-		while ($parent && !is_a($parent, $class))
+		while ($parent && !($parent instanceof $class))
 		  $parent = $parent->parent;
 
 		return $parent;

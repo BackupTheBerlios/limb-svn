@@ -18,11 +18,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
   const SORT_LEVEL = 'SLV';
   const SORT_PREORDER = 'SPO';
   
-	/**
-	* 
-	* @var array The field parameters of the table with the nested set.
-	* @access public 
-	*/
 	protected $_params = array(
 		'id' => 'id',
 		'root_id' => 'root_id',
@@ -34,34 +29,14 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 		'parent_id' => 'parent_id',
 	);
 	
-	/**
-	* 
-	* @var string The table with the actual tree data
-	* @access public 
-	*/
 	protected $_node_table = 'sys_site_object_tree';
 
-	/**
-	* 
-	* @var array An array of field ids that must exist in the table
-	* @access private 
-	*/
 	protected $_required_params = array('id', 'root_id', 'l', 'r', 'level');
 
-	/**
-	* 
-	* @var array Used for mapping a cloned tree to the real tree for move_* operations
-	* @access private 
-	*/
 	protected $_relations = array();
-
 			    
 	/**
 	* Fetch the whole nested set
-	* 
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
 	public function get_all_nodes($add_sql = array())
 	{
@@ -75,11 +50,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	} 
 	/**
 	* Fetches the first level (the rootnodes) of the NestedSet
-	* 
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
 	public function get_root_nodes($add_sql = array())
 	{
@@ -96,12 +66,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	} 
 	/**
 	* Fetch the whole branch where a given node id is in
-	* 
-	* @param int $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
 	public function get_branch($id, $add_sql = array())
 	{
@@ -127,9 +91,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	} 
 	/**
 	* Fetch the parents of a node given by id
-	* 
-	* @param int $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
 	*/
 	public function get_parents($id, $add_sql = array())
 	{
@@ -161,12 +122,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Fetch the immediate parent of a node given by id
-	* 
-	* @param int $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or the parent node
 	*/
 	public function get_parent($id, $add_sql = array())
 	{
@@ -205,12 +160,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	* Fetch all siblings of the node given by id
 	* Important: The node given by ID will also be returned
 	* Do aunset($array[$id]) on the result if you don't want that
-	* 
-	* @param int $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error
 	*/
 	public function get_siblings($id, $add_sql = array())
 	{
@@ -229,12 +178,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Fetch the children _one level_ after of a node given by id
-	* 
-	* @param int $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
 	public function get_children($id, $add_sql = array())
 	{		
@@ -297,12 +240,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	* 
 	* get_children only queries the immediate children
 	* get_sub_branch returns all nodes below the given node
-	* 
-	* @param string $id The node ID
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
 	public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
 	{
@@ -436,12 +373,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Fetch the data of a node with the given id
-	* 
-	* @param int $id The node id of the node to fetch
-	* @param array $add_sql (optional) Array of additional params to pass to the sql_exec.
-	* @see _add_sql
-	* @access public 
-	* @return mixed False on error, or an array of nodes
 	*/
 	public function get_node($id, $add_sql = array())
 	{
@@ -644,10 +575,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	* |
 	* +-- root3
 	* </pre>
-	* 
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @access public 
-	* @return mixed The node id or false on error
 	*/
 	public function create_root_node($values)
 	{
@@ -681,11 +608,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	* |
 	* +-- root3
 	* </pre>
-	* 
-	* @param integer $id Parent node ID
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @access public 
-	* @return mixed The node id or false on error
 	*/
 	public function create_sub_node($id, $values)
 	{
@@ -760,15 +682,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	* +-- root3
 	* </pre>
 	* 
-	* @param int $id Target node ID
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @param bool $returnID Tell the method to return a node id instead of an object.
-	*                                 ATTENTION: That the method defaults to return an object instead of the node id
-	*                                 has been overseen and is basically a bug. We have to keep this to maintain BC.
-	*                                 You will have to set $returnID to true to make it behave like the other creation methods.
-	*                                 This flaw will get fixed with the next major version.
-	* @access public 
-	* @return mixed The node id or false on error
 	*/
 	public function create_left_node($id, $values)
 	{
@@ -856,10 +769,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	* +-- root3
 	* </pre>
 	* 
-	* @param int $id Target node ID
-	* @param array $values Hash with param => value pairs of the node (see $this->_params)
-	* @access public 
-	* @return mixed The node id or false on error
 	*/
 	public function create_right_node($id, $values)
 	{
@@ -922,10 +831,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	
 	/**
 	* Deletes a node
-	* 
-	* @param int $id ID of the node to be deleted
-	* @access public 
-	* @return bool True if the delete succeeds
 	*/
 	public function delete_node($id)
 	{
@@ -977,13 +882,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 		
 	/**
 	* Wrapper for node moving and copying
-	* 
-	* @param int $id Source ID
-	* @param int $target Target ID
-	* @param constant $pos Position (use one of the MOVE_* constants)
-	* @param bool $copy Shall we create a copy
-	* @access public 
-	* @return int ID of the moved node or false on error
 	*/
 	public function ns_move_tree($id, $target_id, $pos, $copy = false)
 	{
@@ -1081,12 +979,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	*    |-\ subnode 3.2 [source] >--+------+
 	*      |-- subnode 3.2.1
 	* </pre>
-	* 
-	* @param object $ NodeCT $source   Source node
-	* @param object $ NodeCT $target   Target node
-	* @param string $pos Position [SUBnode/BEfore]
-	* @param bool $copy Shall we create a copy
-	* @access private 
 	*/
 	protected function _move_across($source, $target, $pos, $first = false)
 	{
@@ -1147,10 +1039,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	} 
 	/**
 	* Deletes the old subtree (node) and writes the node id's into the cloned tree
-	* 
-	* @param array $relations Hash in der Form $h[alteid]=neueid
-	* @param array $copy Are we in copy mode?
-	* @access private 
 	*/
 	protected function _move_cleanup($copy = false)
 	{
@@ -1244,12 +1132,6 @@ class nested_sets_driver extends tree_db_driver implements tree_interface
 	*    |-\ subnode 3.2 [source] >--+
 	*      |-- subnode 3.2.1
 	* </pre>
-	* 
-	* @param object $ NodeCT $source    Source
-	* @param object $ NodeCT $target    Target
-	* @param string $pos BEfore | AFter
-	* @access private 
-	* @see moveTree
 	*/
 	protected function _move_root2root($source, $target, $pos)
 	{

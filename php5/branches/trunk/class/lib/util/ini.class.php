@@ -61,7 +61,7 @@ class ini
 		if (isset($GLOBALS[$instance_name]))
 			return $GLOBALS[$instance_name];
 
-		$obj =& new ini($file_path, $use_cache);
+		$obj = new ini($file_path, $use_cache);
 		$GLOBALS[$instance_name] =& $obj;
 
 		return $obj;

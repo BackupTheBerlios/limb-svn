@@ -17,39 +17,29 @@ class variable_reference extends compiler_component
 {
 	/**
 	* Reference of variable
-	* 
-	* @var string 
-	* @access private 
 	*/
-	var $reference;
+	public $reference;
 	/**
 	* Scope of variable
-	* 
-	* @var string 
-	* @access private 
 	*/
-	var $scope;
+	public $scope;
 
 	/**
 	* Generate the code
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
 	*/
-	function generate(&$code)
+	public function generate($code)
 	{ 
 		// This has to find parental namespaces, not parental components
 		switch ($this->scope)
 		{
 			case '#':
-				$context = &$this->get_root_dataspace();
+				$context = $this->get_root_dataspace();
 				break;
 			case '^':
-				$context = &$this->get_parent_dataspace();
+				$context = $this->get_parent_dataspace();
 				break;
 			case '$':
-				$context = &$this->get_dataspace();
+				$context = $this->get_dataspace();
 				break;
 		} 
 		if ($context != null)
