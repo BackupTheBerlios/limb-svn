@@ -424,7 +424,7 @@ class ini_test extends UnitTestCase
       'testing.ini',
       'test = 1'
     );
-    
+
     $ini =& new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...    
     
     // caching happens very quickly we have to tweak the cache file modification time

@@ -151,7 +151,7 @@ function get_http_path(href)
 tmp_window_onload = window.onload
 window.onload = function()
 {
-	show_included()
+//	show_included()
 
 	if(window != top)
 		if(top.onload_iframe)
