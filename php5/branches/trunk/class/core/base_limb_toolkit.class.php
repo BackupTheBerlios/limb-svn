@@ -12,6 +12,7 @@ require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 
 class BaseLimbToolkit implements LimbToolkit
 {
+  protected $dataspace;
   protected $fetcher;
   protected $authorizer;
   protected $authenticator;
@@ -140,12 +141,24 @@ class BaseLimbToolkit implements LimbToolkit
     $this->response = new http_response();
     
     return $this->response;    
-  }
+  }  
   
   public function getLocale($locale_id = '')
   {
     include_once(LIMB_DIR . '/class/i18n/locale.class.php');
     return locale :: instance($locale_id);
+  }
+  
+  public function getDataspace()
+  {
+    if($this->dataspace)
+      return $this->dataspace;
+    
+    include_once(LIMB_DIR . '/class/core/dataspace.class.php');
+    
+    $this->dataspace = new dataspace();
+    
+    return $this->dataspace;
   }
 }
 

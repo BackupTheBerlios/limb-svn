@@ -8,12 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions/state_machine.class.php');
-require_once(LIMB_DIR . 'class/core/actions/command.interface.php');
+require_once(LIMB_DIR . 'class/core/commands/state_machine.class.php');
+require_once(LIMB_DIR . 'class/core/commands/command.interface.php');
 
-Mock::generate(
-  'Command'
-);
+Mock::generate('Command');
 
 class state_machine_test extends LimbTestCase 
 {

@@ -19,20 +19,12 @@ abstract class form_site_object_action extends form_action
 	
 	protected $site_object_class_name = '';
 	
-	protected $datamap = array();
-
-	protected $indexer = null;
-	
 	function __construct()
 	{
 		$this->site_object_class_name = $this->_define_site_object_class_name();
 		
 		$this->object = $this->get_site_object();
 		
-		$this->datamap = $this->_define_datamap();
-
-		$this->indexer = $this->_get_site_object_indexer();
-
 		parent :: __construct();
 	}
 	
@@ -41,25 +33,6 @@ abstract class form_site_object_action extends form_action
 	  return 'site_object';
 	}
 
-	protected function _define_datamap()
-	{
-	  return array(
-			'parent_node_id' => 'parent_node_id',
-			'identifier' => 'identifier',
-			'title' => 'title'
-	  );
-	}
-
-	protected function _get_site_object_indexer()
-	{
-		return new full_text_indexer();
-	}
-	
-	public function get_datamap()
-	{
-		return $this->datamap;
-	}	
-	
 	public function get_site_object()
 	{
 		return Limb :: toolkit()->createSiteObject($this->site_object_class_name);

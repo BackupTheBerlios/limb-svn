@@ -12,19 +12,7 @@ require_once(LIMB_DIR . 'class/core/object.class.php');
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 
 class request extends object
-{
-  const STATUS_DONT_TRACK = 0;
-
-  const STATUS_SUCCESS_MASK = 15;
-  const STATUS_PROBLEM_MASK = 240;
-
-  const STATUS_SUCCESS = 1;
-  const STATUS_FORM_SUBMITTED = 2;
-  const STATUS_FORM_DISPLAYED = 4;
-
-  const STATUS_FORM_NOT_VALID = 16;
-  const STATUS_FAILURE = 32;
-  
+{  
   static protected $instance = null;
   
   protected $status;
@@ -47,8 +35,6 @@ class request extends object
 
     foreach ($request as $k => $v)
       $this->set($k, $v); 
-      
-    $this->status = request :: STATUS_SUCCESS; 
   }
   
   protected function _strip_http_slashes($data, $result=array())
@@ -76,26 +62,6 @@ class request extends object
   {
     $this->uri = new uri($_SERVER['REQUEST_URI']);
   }
-  
-  public function set_status($status)
-  {
-    $this->status = $status;
-  }
-  
-  public function get_status()
-  {
-    return $this->status;
-  }
-  
-	public function is_success()
-	{
-		return ($this->status & request :: STATUS_SUCCESS_MASK);
-	}
-
-	public function is_problem()
-	{
-		return ($this->status & request :: STATUS_PROBLEM_MASK);
-	}  
 }
 
 ?>

@@ -11,16 +11,31 @@
 
 class Limb
 {
-  static protected $toolkit;
+  const STATUS_SUCCESS_MASK = 15;
+  const STATUS_PROBLEM_MASK = 240;
+
+  const STATUS_OK = 1;
+  const STATUS_FORM_SUBMITTED = 2;
+  const STATUS_FORM_DISPLAYED = 4;
+
+  const STATUS_FORM_NOT_VALID = 16;
+  const STATUS_ERROR = 32;
+  
+  static protected $toolkits = array();
   
   static public function registerToolkit($toolkit)
+  {    
+    self :: $toolkits[] = $toolkit;
+  }
+    
+  static public function popToolkit()
   {
-    self :: $toolkit = $toolkit;
+    array_pop(self :: $toolkits);
   }
 
   static public function toolkit()
   {
-    return self :: $toolkit;
+    return end(self :: $toolkits);
   }
 }
 
