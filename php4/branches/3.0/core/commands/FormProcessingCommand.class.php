@@ -32,66 +32,17 @@ class FormProcessingCommand// implements Command
     $request =& $toolkit->getRequest();
 
     $dataspace =& $this->_switchDataSpace();
-    $form_component =& $this->getFormComponent();
+    $form =& $this->getFormComponent();
+    $form->registerDataSource($dataspace);
 
     if($this->_isFirstTime($request))
-    {
-      $result = $this->_initializeDataspace($dataspace);
-      $form_component->registerDataSource($dataspace);
-      return $result;
-    }
+      return LIMB_STATUS_FORM_DISPLAYED;
     else
     {
       $this->_mergeDataspaceWithRequest($dataspace, $request);
-      $form_component->registerDataSource($dataspace);
-      return $this->_validate(&$dataspace);
-    }
-  }
 
-  function _initializeDataspace(&$dataspace)
-  {
-    return LIMB_STATUS_FORM_DISPLAYED;
-  }
-
-  function _validate(&$dataspace)
-  {
-    $validator =& $this->getValidator($dataspace);
-
-    $validator->validate($dataspace);
-
-    if(!$validator->IsValid())
-    {
-      $form_component =& $this->getFormComponent();
-      $form_component->setErrors($validator->getErrorList());
-      return LIMB_STATUS_FORM_NOT_VALID;
-    }
-    else
       return LIMB_STATUS_FORM_SUBMITTED;
-  }
-
-  function & getFormComponent()
-  {
-    $toolkit =& Limb :: toolkit();
-    $view =& $toolkit->getView();
-    return $view->findChild($this->form_id);
-  }
-
-  function & getValidator(&$dataspace)
-  {
-    if(is_object($this->validator))
-      return $this->validator;
-
-    include_once(WACT_ROOT . '/validation/validator.inc.php');
-    $this->validator = new Validator();
-
-    $this->_registerValidationRules($this->validator, $dataspace);
-
-    return $this->validator;
-  }
-
-  function setValidator(&$validator)
-  {
-    $this->validator =& $validator;
+    }
   }
 
   function _isFirstTime(&$request)
@@ -103,18 +54,16 @@ class FormProcessingCommand// implements Command
       return true;
   }
 
-  function _registerValidationRules(&$validator, &$dataspace)
-  {
-  }
-
-  function _defineDatamap()
+  function _defineRequest2DataspaceMap()
   {
     return array();
   }
 
   function _mergeDataspaceWithRequest(&$dataspace, &$request)
   {
-    ComplexArray :: map($this->_defineDatamap(), $this->_getRequestData($request), $data = array());
+    ComplexArray :: map($this->_defineRequest2DataspaceMap(),
+                        $this->_getRequestData($request),
+                        $data = array());
 
     $dataspace->merge($data);
   }
@@ -135,6 +84,13 @@ class FormProcessingCommand// implements Command
       return $toolkit->switchDataspace($this->form_id);
     else
       return $toolkit->getDataspace();
+  }
+
+  function & getFormComponent()
+  {
+    $toolkit =& Limb :: toolkit();
+    $view =& $toolkit->getView();
+    return $view->findChild($this->form_id);
   }
 
   function _htmlspecialcharsDataspaceValue(&$dataspace, $name)

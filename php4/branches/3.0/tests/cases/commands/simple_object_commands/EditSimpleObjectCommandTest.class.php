@@ -28,10 +28,6 @@ class EditSimpleObjectCommandStub extends EditSimpleObjectCommand
   }
 }
 
-Mock :: generatePartial('SimpleObject',
-                 'MockSimpleObject',
-                 array('setTitle', 'setAnnotation'));
-
 class EditSimpleObjectCommandTest extends LimbTestCase
 {
   var $cmd;
@@ -43,7 +39,7 @@ class EditSimpleObjectCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new MockSimpleObject($this);
+    $this->object = new SpecialMockSimpleObject($this);
     $this->object->SimpleObject();//dataspace init
 
     $this->cmd = new EditSimpleObjectCommandStub();

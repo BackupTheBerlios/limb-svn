@@ -28,9 +28,6 @@ class CreateSimpleObjectCommandStub extends CreateSimpleObjectCommand
   }
 }
 
-Mock :: generatePartial('SimpleObject',
-                 'MockSimpleObject',
-                 array('setTitle', 'setAnnotation'));
 
 class CreateSimpleObjectCommandTest extends LimbTestCase
 {
@@ -43,7 +40,7 @@ class CreateSimpleObjectCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new MockSimpleObject($this);
+    $this->object = new SpecialMockSimpleObject($this);
     $this->object->SimpleObject();//dataspace init
 
     $this->cmd = new CreateSimpleObjectCommandStub();

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/FormProcessingEditSimpleObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/InitializeDataspaceFromSimpleObjectCommand.class.php');
 require_once(dirname(__FILE__) . '/simple_object_commands_orm_support.inc.php');
 
-class FormProcessingEditSimpleObjectCommandStub extends FormProcessingEditSimpleObjectCommand
+class InitializeDataspaceFromSimpleObjectCommandStub extends InitializeDataspaceFromSimpleObjectCommand
 {
   var $mock;
 
@@ -28,25 +28,21 @@ class FormProcessingEditSimpleObjectCommandStub extends FormProcessingEditSimple
   }
 }
 
-Mock :: generatePartial('SimpleObject',
-                 'MockSimpleObject',
-                 array('getTitle', 'getAnnotation'));
-
-class FormProcessingEditSimpleObjectCommandTest extends LimbTestCase
+class InitializeDataspaceFromSimpleObjectCommandTest extends LimbTestCase
 {
   var $cmd;
 
-  function FormProcessingEditSimpleObjectCommandTest()
+  function InitializeDataspaceFromSimpleObjectCommandTest()
   {
-    parent :: LimbTestCase('form processing edit simple object command test');
+    parent :: LimbTestCase('initialize dataspace from simple object command test');
   }
 
   function setUp()
   {
-    $this->object = new MockSimpleObject($this);
+    $this->object = new SpecialMockSimpleObject($this);
     $this->object->SimpleObject();//dataspace init
 
-    $this->cmd = new FormProcessingEditSimpleObjectCommandStub();
+    $this->cmd = new InitializeDataspaceFromSimpleObjectCommandStub();
 
     Limb :: saveToolkit();
   }

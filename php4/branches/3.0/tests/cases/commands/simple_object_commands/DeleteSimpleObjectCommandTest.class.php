@@ -21,10 +21,6 @@ class DeleteSimpleObjectCommandStub extends DeleteSimpleObjectCommand
   }
 }
 
-Mock :: generatePartial('SimpleObject',
-                        'MockSimpleObject',
-                        array());
-
 class DeleteSimpleObjectCommandTest extends LimbTestCase
 {
   var $cmd;
@@ -36,7 +32,7 @@ class DeleteSimpleObjectCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new MockSimpleObject($this);
+    $this->object = new SpecialMockSimpleObject($this);
     $this->object->SimpleObject();//dataspace init
 
     $this->cmd = new DeleteSimpleObjectCommandStub();

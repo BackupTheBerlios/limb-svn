@@ -26,4 +26,10 @@ class SimpleObject extends DomainObject
   function getAnnotation(){}
 }
 
+Mock :: generatePartial('SimpleObject', 'SpecialMockSimpleObject',
+                 array('setTitle',
+                       'setAnnotation',
+                       'getTitle',
+                       'getAnnotation'));
+
 ?>

@@ -8,19 +8,20 @@
 * $Id: FormProcessingCommand.class.php 1143 2005-03-05 11:04:06Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/FormProcessingCommand.class.php');
-
-class FormProcessingEditSimpleObjectCommand extends FormProcessingCommand
+class InitializeDataspaceFromSimpleObjectCommand
 {
-  function _initializeDataspace(&$dataspace)
+  function perform()
   {
     if (!$object =& $this->_findObjectInUnitOfWork())
       return LIMB_STATUS_ERROR;
 
+    $toolkit =& Limb :: toolkit();
+    $dataspace =& $toolkit->getDataspace();
+
     foreach($this->_defineObject2DataspaceMap() as $getter => $key)
       $dataspace->set($key, $object->$getter());
 
-    parent :: _initializeDataspace($dataspace);
+    return LIMB_STATUS_OK;
   }
 
   function &_findObjectInUnitOfWork()
