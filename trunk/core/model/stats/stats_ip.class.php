@@ -9,43 +9,43 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
-
-class stats_ip extends stats_supertype
+class stats_ip
 {
+	var $db = null;
+	
 	function stats_ip()
 	{
-		parent :: stats_supertype();
+		$this->db =& db_factory :: instance();
 	}
 
-	function is_new_host()
+	function is_new_host($reg_date)
 	{
 		if(($record = $this->_get_stat_ip_record()) === false)
 		{
-			$this->_insert_stat_ip_record();
+			$this->_insert_stat_ip_record($reg_date->get_stamp());
 			return true;
 		}
 		
 		$ip_date =& new date();
 		$ip_date->set_by_stamp($record['time']);
 		
-		if($ip_date->date_to_days() < $this->reg_date->date_to_days())
+		if($ip_date->date_to_days() < $reg_date->date_to_days())
 		{
-			$this->_update_stat_ip_record();
+			$this->_update_stat_ip_record($reg_date->get_stamp());
 			return true;
 		}
-		elseif($ip_date->date_to_days() > $this->reg_date->date_to_days()) //this shouldn't happen normally...
-			$this->_update_stat_ip_record();
+		elseif($ip_date->date_to_days() > $reg_date->date_to_days()) //this shouldn't happen normally...
+			$this->_update_stat_ip_record($reg_date->get_stamp());
 
 		return false;
 	}
 
-	function _insert_stat_ip_record()
+	function _insert_stat_ip_record($stamp)
 	{
 		$this->db->sql_insert('sys_stat_ip', 
 			array(
 				'id' => $this->get_client_ip(), 
-				'time' => $this->get_register_time_stamp()
+				'time' => $stamp
 			)
 		);
 	}
@@ -61,10 +61,10 @@ class stats_ip extends stats_supertype
 		return $this->db->fetch_row();
 	}
 
-	function _update_stat_ip_record()
+	function _update_stat_ip_record($stamp)
 	{
 		$this->db->sql_update('sys_stat_ip', 
-			array('time' => $this->get_register_time_stamp()),
+			array('time' => $stamp),
 			array('id' => $this->get_client_ip())
 		);
 	}

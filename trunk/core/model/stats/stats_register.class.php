@@ -9,35 +9,35 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_counter.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_ip.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_log.class.php');
 
-class stats_register extends stats_supertype
+class stats_register
 {
 	var $_counter = null;
 	var $_stats_log = null;
 	var $_ip_register = null;
+	var $_reg_date;
 	
 	function stats_register()
 	{
-		parent :: stats_supertype();
+		$this->_reg_date = new date();		
 
 		$this->_counter = new stats_counter();
 	}
 
+	function get_register_time_stamp()
+	{
+		return $this->_reg_date->get_stamp();
+	}
+
 	function set_register_time($stamp = null)
 	{
-		parent :: set_register_time($stamp);
-
-		$this->_counter->set_register_time($this->get_register_time_stamp());
-
-		$ip_register =& $this->_get_ip_register();
-		$ip_register->set_register_time($stamp);
-
-		$log_register =& $this->_get_log_register();
-		$log_register->set_register_time($stamp);
+		if(!$stamp)
+			$stamp = time();
+			
+		$this->_reg_date->set_by_stamp($stamp);
 	}
 
 	function register($node_id, $action)
@@ -51,13 +51,13 @@ class stats_register extends stats_supertype
 	{
 		$ip_register =& $this->_get_ip_register();
 		$log_register =& $this->_get_log_register();
-		$result = $log_register->update($ip_register->get_client_ip(), $node_id, $action);
+		$result = $log_register->update($this->get_register_time_stamp(), $ip_register->get_client_ip(), $node_id, $action);
 	}
 	
 	function _update_counters()
 	{	
 		$ip_register =& $this->_get_ip_register();
-		$this->_counter->update($ip_register->is_new_host());
+		$this->_counter->update($this->_reg_date, $ip_register->is_new_host($this->_reg_date));
 	}
 	
 	function & _get_log_register()

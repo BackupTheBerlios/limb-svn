@@ -9,34 +9,26 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
 
-class stats_log extends stats_supertype
+class stats_log
 {
+	var $db = null;
 	var $_referer_register = null;
 	
 	function stats_log()
 	{
-		parent :: stats_supertype();
-	}
-
-	function set_register_time($stamp = null)
-	{
-		parent :: set_register_time($stamp);
-		
-		$referer_register =& $this->_get_referer_register();
-		$referer_register->set_register_time($stamp);
+		$this->db =& db_factory :: instance();
 	}
 	
-	function update($ip, $node_id, $action)
+	function update($stamp, $ip, $node_id, $action)
 	{
 		$referer_register =& $this->_get_referer_register();
 		
 		$this->db->sql_insert('sys_stat_log', 
 			array(
 				'ip' => $ip, 
-				'time' => $this->get_register_time_stamp(),
+				'time' => $stamp,
 				'node_id' => $node_id,
 				'stat_referer_id' => $referer_register->get_referer_page_id(),
 				'user_id' => user :: get_id(),

@@ -9,28 +9,28 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
-
-class stats_counter extends stats_supertype
+class stats_counter
 {
 	var $_hits_today;
 	var $_hosts_today;
 	var $_hits_all;
 	var $_hosts_all;
 	
+	var $db = null;
+	
 	function stats_counter()
 	{
-		parent :: stats_supertype();
+		$this->db =& db_factory :: instance();
 	}
 	
-	function update($is_new_host)
+	function update($reg_date, $is_new_host)
 	{	
-		$record = $this->_get_counter_record();
+		$record = $this->_get_counter_record($reg_date->get_stamp());
 		
 		$counters_date =& new date();
 		$counters_date->set_by_stamp($record['time']);
 		
-		if($counters_date->date_to_days() < $this->reg_date->date_to_days())
+		if($counters_date->date_to_days() < $reg_date->date_to_days())
 		{
 			$record['hosts_today'] = 0;
 			$record['hits_today'] = 0;
@@ -45,10 +45,15 @@ class stats_counter extends stats_supertype
 		$record['hits_today']++;
 		$record['hits_all']++;
 		
-		$this->_update_today_counters($record['hits_today'], $record['hosts_today'], $record['hits_all'], $record['hosts_all']);	
+		$this->_update_today_counters(
+			$reg_date->get_stamp(), 
+			$record['hits_today'], 
+			$record['hosts_today'], 
+			$record['hits_all'], 
+			$record['hosts_all']);	
 	}
 	
-	function _get_counter_record()
+	function _get_counter_record($stamp)
 	{
 		$this->db->sql_select('sys_stat_counter');
 		
@@ -59,7 +64,7 @@ class stats_counter extends stats_supertype
 				'hits_all' => 0,
 				'hosts_today' => 0,
 				'hits_today' => 0,
-				'time' => $this->get_register_time_stamp()
+				'time' => $stamp
 			);
 			$this->db->sql_insert('sys_stat_counter', $record);
 		}
@@ -67,13 +72,13 @@ class stats_counter extends stats_supertype
 		return $record;
 	}
 
-	function _update_today_counters($hits_today, $hosts_today, $hits_all, $hosts_all)
+	function _update_today_counters($stamp, $hits_today, $hosts_today, $hits_all, $hosts_all)
 	{
 		$update_array['hits_today'] = $hits_today;
 		$update_array['hosts_today'] = $hosts_today;
 		$update_array['hits_all'] = $hits_all;
 		$update_array['hosts_all'] = $hosts_all;
-		$update_array['time'] = $this->get_register_time_stamp();
+		$update_array['time'] = $stamp;
 		
 		$this->db->sql_update('sys_stat_counter', $update_array);
 	}

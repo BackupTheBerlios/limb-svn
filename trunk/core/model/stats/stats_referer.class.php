@@ -9,13 +9,13 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
-
-class stats_referer extends stats_supertype
-{
+class stats_referer
+{	
+	var $db = null;
+	
 	function stats_referer()
 	{
-		parent :: stats_supertype();
+		$this->db =& db_factory :: instance();
 	}
 
 	function get_referer_page_id()
