@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: single_field_rule.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/locale/strings.class.php');
@@ -93,4 +93,5 @@ class single_field_rule extends rule
 		error('ABSTRACTMETHOD', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 			array('method' => __FUNCTION__ . '()', 'class' => __CLASS__));
 	} 
-} 
+}
+?>

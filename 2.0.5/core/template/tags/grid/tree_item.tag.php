@@ -1,4 +1,14 @@
 <?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
+
 
 define('TREE_LINE_IMG', "<table border=0 cellspacing=0 cellpadding=0 height=100% style='display:inline'><tr><td background='/shared/images/t_l.gif' width=20><img src='/shared/images/1x1.gif'></td></tr></table>");
 define('TREE_SPACER_IMG', "<img src='/shared/images/0.gif' width=20>");

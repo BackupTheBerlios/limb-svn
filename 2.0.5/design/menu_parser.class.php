@@ -1,4 +1,14 @@
 <?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
+
 	include_once(LIMB_DIR . 'core/lib/xml/sax_parser.class.php');
 	
 	class menu_parser extends sax_parser

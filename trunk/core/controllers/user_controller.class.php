@@ -1,4 +1,13 @@
 <?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
 
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
@@ -49,7 +58,6 @@ class user_controller extends site_object_controller
 						'img_src' => '/shared/images/rem.gif'
 				),
 		);
- 		
 
 		parent :: site_object_controller();
 	}

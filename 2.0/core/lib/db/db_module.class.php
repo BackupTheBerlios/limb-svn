@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: db_module.class.php 441 2004-02-13 16:07:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -519,3 +519,4 @@ function sql_in($column_name, $values, $type='')
 	
 	return $db->sql_in($column_name, $values, $type);
 }
+?>

@@ -20,6 +20,8 @@ class stats_log
 	function stats_log()
 	{
 		$this->db =& db_factory :: instance();
+		
+		$this->_reset_register_time();
 	}
 	
 	function register($node_id, $action)
@@ -40,6 +42,11 @@ class stats_log
 		$this->reg_date = new date();
 	}
 	
+	function get_register_time_stamp()
+	{
+		return $this->reg_date->get_stamp();
+	}
+	
 	function _is_new_host()
 	{
 		if(($record = $this->_get_stat_ip_record()) === false)
@@ -51,12 +58,12 @@ class stats_log
 		$ip_date =& new date();
 		$ip_date->set_by_stamp($record['time']);
 		
-		if($ip_date->is_before($this->reg_date))
+		if($ip_date->date_to_days() < $this->reg_date->date_to_days())
 		{
 			$this->_update_stat_ip_record();
 			return true;
 		}
-		elseif($ip_date->is_after($this->reg_date)) //this shouldn't happen normally...
+		elseif($ip_date->date_to_days() > $this->reg_date->date_to_days()) //this shouldn't happen normally...
 			$this->_update_stat_ip_record();
 
 		return false;
@@ -70,7 +77,7 @@ class stats_log
 		$counters_date =& new date();
 		$counters_date->set_by_stamp($record['time']);
 		
-		if($counters_date->is_before($this->reg_date))
+		if($counters_date->date_to_days() < $this->reg_date->date_to_days())
 		{
 			$this->_reset_today_counters();
 			return;

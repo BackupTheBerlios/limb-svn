@@ -1,4 +1,14 @@
 <?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
+
   if (!defined('PHP_IMAGE_DIR_C'))
     define('PHP_IMAGE_DIR_C', LIMB_DIR . 'core/lib/image/');
   

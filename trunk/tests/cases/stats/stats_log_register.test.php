@@ -56,72 +56,70 @@ class test_stats_register_log extends UnitTestCase
   	$this->db->sql_delete('sys_stat_counter');
   }
       
-  function test_register_first_page() 
+  function test_register_new_host() 
   {
   	$this->stats_log->register(2, 'display');
 
-		$this->_check_stats_log_record();
-		$this->_check_stats_referer_url_record();
+		$this->_check_stats_log_record(1, 1, 10, 2, 'display', $this->stats_log->get_register_time_stamp());
+		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
 		$this->_check_stats_ip_record();
-		$this->_check_stats_counter_record();
+		$this->_check_stats_counter_record(1, 1, 1, 1, $this->stats_log->get_register_time_stamp());
   }
   
-  function test_register_second_page()
+  function test_register_same_host_and_new_referer()
   {
-  	$this->test_register_first_page();
+  	$this->test_register_new_host();
   	
   	$this->stats_log->setReturnValueAt(2, '_get_clean_referer_page', 'some.other-referer.com');
   	$this->stats_log->setReturnValueAt(3, '_get_clean_referer_page', 'some.other-referer.com');
   	$this->stats_log->register(4, 'edit');
 		
-		$this->_check_second_stats_log_record();
-		$this->_check_second_stats_referer_url_record();
-		$this->_check_second_stats_counter_record();
+		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', $this->stats_log->get_register_time_stamp());
+		$this->_check_stats_referer_url_record(2, 2, 'some.other-referer.com');
+		$this->_check_stats_counter_record(2, 2, 1, 1, $this->stats_log->get_register_time_stamp());
 		$this->_check_stats_ip_record();
   }
   
-	function _check_stats_log_record()
-	{
-  	$this->db->sql_select('sys_stat_log');
-  	$record = $this->db->fetch_row();
-  	
-  	$this->assertEqual($record['user_id'], 10);
-  	$this->assertEqual($record['node_id'], 2);
-  	$this->assertEqual($record['action'], 'display');
-  	$this->assertEqual($record['time'], $this->stats_log->reg_date->get_stamp());
-  	$this->assertEqual($record['session_id'], session_id());
+  function test_register_same_host()
+  {
   }
-
-	function _check_second_stats_log_record()
+  
+	function _check_stats_log_record($total_records, $current_record, $user_id, $node_id, $action, $time)
 	{
   	$this->db->sql_select('sys_stat_log', '*', '', 'id');
   	$arr = $this->db->get_array();
-  	$record = end($arr);
+
+  	$this->assertTrue(sizeof($arr), $total_records);
+  	reset($arr);
   	
-  	$this->assertTrue(sizeof($arr), 2);
-  	$this->assertEqual($record['user_id'], 10);
-  	$this->assertEqual($record['node_id'], 4);
-  	$this->assertEqual($record['action'], 'edit');
-  	$this->assertEqual($record['time'], $this->stats_log->reg_date->get_stamp());
+  	for($i = 1; $i <= $current_record; $i++)
+  	{
+  	 	$record = current($arr);
+  	 	next($arr);
+  	}
+  	
+  	$this->assertEqual($record['user_id'], $user_id);
+  	$this->assertEqual($record['node_id'], $node_id);
+  	$this->assertEqual($record['action'], $action);
+  	$this->assertEqual($record['time'], $time);
   	$this->assertEqual($record['session_id'], session_id());
   }
-  
-  function _check_stats_referer_url_record()
-  {
-  	$this->db->sql_select('sys_stat_referer_url');
-  	$record = $this->db->fetch_row();
-  	
-  	$this->assertEqual($record['referer_url'], 'some.referer.com', 'referer url was parsed or written incorrectly');
-  }
 
-  function _check_second_stats_referer_url_record()
+  function _check_stats_referer_url_record($total_records, $current_record, $referer)
   {
   	$this->db->sql_select('sys_stat_referer_url', '*', '', 'id');
   	$arr = $this->db->get_array('id');
-  	$record = end($arr);
+
+  	$this->assertTrue(sizeof($arr), $total_records);
+  	reset($arr);
   	
-  	$this->assertTrue(sizeof($arr), 2);
-  	$this->assertEqual($record['referer_url'], 'some.other-referer.com', 'referer url was parsed or written incorrectly');
+  	for($i = 1; $i <= $current_record; $i++)
+  	{
+  	 	$record = current($arr);
+  	 	next($arr);
+  	}
+  	
+  	$this->assertEqual($record['referer_url'], $referer, 'referer url was parsed or written incorrectly');
   }
   
   function _check_stats_ip_record()
@@ -135,29 +133,16 @@ class test_stats_register_log extends UnitTestCase
   	$this->assertEqual($record['time'], $this->stats_log->reg_date->get_stamp());
   }
   
-  function _check_stats_counter_record()
+  function _check_stats_counter_record($hits_all, $hits_today, $hosts_all, $hosts_today, $time)
   {
   	$this->db->sql_select('sys_stat_counter');
   	$record = $this->db->fetch_row();
   	
-  	$this->assertEqual($record['hits_all'], 1);
-  	$this->assertEqual($record['hits_today'], 1);
-  	$this->assertEqual($record['hosts_all'], 1);
-  	$this->assertEqual($record['hosts_today'], 1);
-  	$this->assertEqual($record['time'], $this->stats_log->reg_date->get_stamp());
-  }
-
-  function _check_second_stats_counter_record()
-  {
-  	$this->db->sql_select('sys_stat_counter');
-  	$arr = $this->db->get_array();
-  	$record = end($arr);
-  	
-  	$this->assertEqual($record['hits_all'], 2);
-  	$this->assertEqual($record['hits_today'], 2);
-  	$this->assertEqual($record['hosts_all'], 1);
-  	$this->assertEqual($record['hosts_today'], 1);
-  	$this->assertEqual($record['time'], $this->stats_log->reg_date->get_stamp());
+  	$this->assertEqual($record['hits_all'], $hits_all);
+  	$this->assertEqual($record['hits_today'], $hits_today);
+  	$this->assertEqual($record['hosts_all'], $hosts_all);
+  	$this->assertEqual($record['hosts_today'], $hosts_today);
+  	$this->assertEqual($record['time'], $time);
   }
   
   function _login_user($id, $groups)

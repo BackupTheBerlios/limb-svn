@@ -1,4 +1,14 @@
 <?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
+
 require_once(TMPL_FILESCHEME_PATH . 'compiler_support.inc.php');
 // Line breaks in the file must match the line breaks used by the host OS
 // Now that this is done at compile time, many other attributes are available.

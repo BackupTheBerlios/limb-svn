@@ -1,4 +1,14 @@
 <?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
+
 /**
 * Creates a new ID for a server component, if one wasn't found. Called from
 * compiler_component::get_server_id()

@@ -1,4 +1,14 @@
 <?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
+
 define('LIMB_DIR', 'c:/var/dev/limb/2.0/');
 define('PROJECT_DIR', 'c:/var/dev/limb/2.0/tests/');
 
