@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/lib/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/single_field_rule.class.php');
 
 /**
 * For fields have a minimum and maximum length

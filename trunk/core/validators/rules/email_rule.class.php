@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/lib/validators/rules/domain_rule.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/domain_rule.class.php');
 
 class email_rule extends domain_rule
 {

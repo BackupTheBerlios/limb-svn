@@ -34,13 +34,13 @@ class form_create_site_object_action extends form_site_object_action
 			$parent_node_id = $parent_object_data['parent_node_id'];		
 		}	
 		
-		$this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/tree_node_id_rule', 'parent_node_id'));
+		$this->validator->add_rule($v1 = array(LIMB_DIR . 'core/validators/rules/tree_node_id_rule', 'parent_node_id'));
 		
 		if($this->object->is_auto_identifier())
 			return;
 
-		$this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'identifier'));
-		$this->validator->add_rule($v3 = array(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule', 'identifier', $parent_node_id));
+		$this->validator->add_rule($v2 = array(LIMB_DIR . 'core/validators/rules/required_rule', 'identifier'));
+		$this->validator->add_rule($v3 = array(LIMB_DIR . 'core/validators/rules/tree_identifier_rule', 'identifier', $parent_node_id));
 	}
 	
 	function _valid_perform(&$request, &$response)

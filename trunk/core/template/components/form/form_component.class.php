@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
 require_once(LIMB_DIR . 'core/template/tag_component.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/error_list.class.php');
+require_once(LIMB_DIR . 'core/validators/error_list.class.php');
 require_once(LIMB_DIR . 'core/lib/util/dataspace_registry.class.php');
 
 /**

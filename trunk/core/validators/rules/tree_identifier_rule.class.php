@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/tree/tree.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . 'core/validators/rules/single_field_rule.class.php');
 
 define('TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID', -1000);
 

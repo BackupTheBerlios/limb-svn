@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/lib/validators/validator.class.php');
+require_once(LIMB_DIR . 'core/validators/validator.class.php');
 
 class form_action extends action
 {

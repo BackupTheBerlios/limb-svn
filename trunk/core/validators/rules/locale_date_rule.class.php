@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/lib/validators/rules/domain_rule.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/domain_rule.class.php');
 require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
 require_once(LIMB_DIR . '/core/lib/date/date.class.php');
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/lib/validators/rules/email_rule.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/email_rule.class.php');
 
 /**
 * check for a valid email address and verify that a mail server

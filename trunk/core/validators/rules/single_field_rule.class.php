@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/i18n/strings.class.php');
-require_once(LIMB_DIR . '/core/lib/validators/rules/rule.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/rule.class.php');
 
 /**
 * rules responsbile for validating a single field descend from this class.
