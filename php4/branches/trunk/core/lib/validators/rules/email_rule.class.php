@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: email_rule.class.php 512 2004-02-20 14:40:38Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/validators/rules/domain_rule.class.php');
@@ -32,7 +32,7 @@ class email_rule extends domain_rule
 	*/
 	function check_user($value)
 	{
-		if (!preg_match('/^[a-z0-9]+([_.-][a-z0-9]+)*$/', $value))
+		if (!preg_match('/^[a-z0-9]+([_.-][a-z0-9_]+)*$/', $value))
 		{
 			$this->error(strings :: get('invalid_email', 'error'));
 		} 
