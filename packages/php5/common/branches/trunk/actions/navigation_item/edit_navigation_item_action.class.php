@@ -33,6 +33,11 @@ class edit_navigation_item_action extends form_edit_site_object_action
 	  );     
 	}  
 	
+	protected function _define_increase_version_flag()
+	{
+	  return false;
+	}  
+		
 	protected function _init_validator()
 	{
 		parent :: _init_validator();
