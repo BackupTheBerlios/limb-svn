@@ -772,18 +772,15 @@ window.onload = function()
 }
 function apply_behavior()
 {
-	
 	CLASS_MAP = build_class_map(document)
 	var arr = document.getElementsByTagName('*')
 	for(var v in arr)
 	{
-		
-		if(CLASS_MAP[arr[v].className])
+		if(typeof(arr[v]) != 'undefined' && CLASS_MAP[arr[v].className])
 		{
 			try
 			{
 				var clss = window[CLASS_MAP[arr[v].className]].prototype
-				
 			}
 			catch(ex)
 			{
@@ -797,6 +794,7 @@ function apply_behavior()
 		}
 	}
 }
+
 function build_class_map(doc)
 {
 	var arr = []
