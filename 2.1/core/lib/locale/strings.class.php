@@ -21,16 +21,16 @@ class strings
 	{		
 	}
 	
-	function get($key, $filename='common', $language_id=null)
+	function get($key, $filename='common', $locale_id=null)
 	{
 		$strings =& strings :: instance();
 			  
-	  return $strings->_get_recursive($key, $filename, $language_id);
+	  return $strings->_get_recursive($key, $filename, $locale_id);
 	}
 	
-	function _get_recursive($key, $filename, $language_id)
+	function _get_recursive($key, $filename, $locale_id)
 	{
-		$path = $this->_get_path($filename, $language_id);
+		$path = $this->_get_path($filename, $locale_id);
 		
 		if(isset($this->_cache[$path][$key]))
 			return $this->_cache[$path][$key];
@@ -48,7 +48,7 @@ class strings
 		  if($ini->has_variable('extends', 'filename'))
 		  {
 		  	$extend_filename = $ini->variable('extends', 'filename');
-		  	$value = $this->_get_recursive($key, $extend_filename, $language_id);
+		  	$value = $this->_get_recursive($key, $extend_filename, $locale_id);
 		  }
 		}
 		
@@ -58,34 +58,33 @@ class strings
 		return $value;
 	}
 		
-	function _get_path($filename='common', $language_id=null)
+	function _get_path($filename='common', $locale_id=null)
 	{	
-		if(isset($this->_path_cache[$filename][$language_id]))
-			return $this->_path_cache[$filename][$language_id];
+		if(isset($this->_path_cache[$filename][$locale_id]))
+			return $this->_path_cache[$filename][$locale_id];
 			
-  	if(!$language_id)
+  	if(!$locale_id)
   	{
 	  	if(defined('MANAGEMENT_LOCALE_ID'))
-	  		$language_id = MANAGEMENT_LOCALE_ID;
+	  		$locale_id = MANAGEMENT_LOCALE_ID;
 	  	else
-	  		$language_id = DEFAULT_MANAGEMENT_LOCALE_ID;
+	  		$locale_id = DEFAULT_MANAGEMENT_LOCALE_ID;
 	  }
-
 		
-		if(file_exists(PROJECT_DIR . '/core/strings/' . $filename . '_' . $language_id . '.ini'))
+		if(file_exists(PROJECT_DIR . '/core/strings/' . $filename . '_' . $locale_id . '.ini'))
   		$dir = PROJECT_DIR . '/core/strings/';
-  	elseif(file_exists(LIMB_DIR . '/core/strings/' . $filename . '_' . $language_id . '.ini'))
+  	elseif(file_exists(LIMB_DIR . '/core/strings/' . $filename . '_' . $locale_id . '.ini'))
   		$dir = LIMB_DIR . '/core/strings/';
   	else
   		error('strings file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
   			array(
   				'filename' => $filename,
-  				'language_id' => $language_id
+  				'locale_id' => $locale_id
   			));
   		
-	  $path = $dir . $filename . '_' . $language_id . '.ini';
+	  $path = $dir . $filename . '_' . $locale_id . '.ini';
 	  
-	  $this->_path_cache[$filename][$language_id] = $path;
+	  $this->_path_cache[$filename][$locale_id] = $path;
 	  
 	  return $path;
 	}
