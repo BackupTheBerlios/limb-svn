@@ -53,7 +53,6 @@ class stats_routes_report
 			else
 				$this->condition_changed = false;
 		}
-			
 		
 		$prev_start_date = $start_date;
 		$prev_finish_date = $finish_date;
