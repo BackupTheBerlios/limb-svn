@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-
+require_once(LIMB_DIR . '/core/template/component.class.php');
 /**
 * Base class for runtime components that output XML tags
 *

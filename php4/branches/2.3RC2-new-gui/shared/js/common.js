@@ -155,45 +155,20 @@ function toggle_obj_display(obj)
   }
 }
 
-function _optimize_window()
-{
-  var body = document.body;
-
-  if (is_gecko)
-    window.sizeToContent();
-
-  var clientWidth = body.clientWidth;
-  var clientHeight = body.clientHeight;
-  var scrollWidth = body.scrollWidth;
-  var scrollHeight = body.scrollHeight;
-  window.resizeBy(scrollWidth - clientWidth, scrollHeight - clientHeight + 30);
-}
-
 function optimize_window()
 {
-  w = window;
+  var w = window;
+  var top_opener = window;
 
   var x_ratio = 0.85;
-  var y_ratio = 0.90;
+  var y_ratio = 0.85;
+  var screen_x = (is_gecko) ? top_opener.screenX : top_opener.screenLeft;
 
-  top_opener = window;
-
-  do
+  while(typeof(top_opener.top.opener) != 'undefined' && top_opener.top.opener != null && screen_x > 0)
   {
-    iterate = false;
-    if (top_opener.opener)
-    {
-      top_opener = top_opener.opener;
-      iterate = true;
-    }
-    else
-      if (top_opener.top && top_opener != top_opener.top)
-      {
-        top_opener = top_opener.top
-        iterate = true;
-      }
+    screen_x = (is_gecko) ? top_opener.screenX : top_opener.screenLeft;
+    top_opener = top_opener.top.opener;
   }
-  while (iterate)
 
   if (is_ie)
   {

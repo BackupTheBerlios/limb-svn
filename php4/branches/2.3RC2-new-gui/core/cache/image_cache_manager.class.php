@@ -34,8 +34,8 @@ class image_cache_manager
   function _define_replace_regex_array()
   {
     return array(
-        '~(<img[^>]+src=)("|\')?/root\?node_id=(\d+)(&(thumbnail|original|icon))?("|\')?([^<]*>)~',
-        '~(background=)("|\')?/root\?node_id=(\d+)(&(thumbnail|original|icon))?("|\')?()~'
+        '~(<img[^>]+src=)("|\')?/root\?node_id=(\d+)(&(amp;)?(thumbnail|original|icon))?("|\')?([^<]*>)~',
+        '~(background=)("|\')?/root\?node_id=(\d+)(&(amp;)?(thumbnail|original|icon))?("|\')?()~'
       );
   }
 
@@ -215,14 +215,14 @@ class image_cache_manager
 
   function _mark_images_callback($matches)
   {
-    if(!empty($matches[5]))
-      $variation = $matches[5];
+    if(!empty($matches[6]))
+      $variation = $matches[6];
     else
       $variation = 'thumbnail';
 
     $this->found_images[$matches[3]][$variation] = 1;
 
-    return $matches[1] . "'" . $this->_get_wildcard_hash($matches[3], $variation) . "'" . $matches[7];
+    return $matches[1] . "'" . $this->_get_wildcard_hash($matches[3], $variation) . "'" . $matches[8];
   }
 
   function _cache_media_file($media_id, $cache_name)

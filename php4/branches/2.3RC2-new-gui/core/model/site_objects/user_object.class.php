@@ -205,10 +205,13 @@ class user_object extends content_object
     global $_SERVER;
     $http_host = $_SERVER['HTTP_HOST'];
 
-    $filename = LIMB_DIR . '/design/default/templates/user/generated_password_mail.html';
+    $filename = PROJECT_DIR . '/design/main/templates/user/generated_password_mail.html';
 
     if(!file_exists($filename))
-      error('template file for password notification email not found!',
+      $filename = LIMB_DIR . '/design/default/templates/user/generated_password_mail.html';
+
+    if(!file_exists($filename))
+      error('template file for pa ssword notification email not found!',
         __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('file_name' => $filename));
 
     $fd = fopen ($filename, "r");
