@@ -90,6 +90,7 @@ class content_object_fetch_test extends LimbTestCase
   	$this->db->sql_delete('sys_site_object_tree');
   	$this->db->sql_delete('sys_class');
   	$this->db->sql_delete('sys_object_version');
+  	$this->db->sql_delete('sys_behaviour');
   	$this->db->sql_delete('test_content_object');
   }
 
@@ -158,6 +159,7 @@ class content_object_fetch_test extends LimbTestCase
   		$this->assertEqual($result[$key]['annotation'], 'object_' . $key . '_annotation_version_' . $version);
   		$this->assertEqual($result[$key]['content'], 'object_' . $key . '_content_version_' . $version);
   		$this->assertEqual($result[$key]['class_name'], get_class($this->object));
+  		$this->assertEqual($result[$key]['behaviour'], 'site_object_behaviour');
   	}
   }
 

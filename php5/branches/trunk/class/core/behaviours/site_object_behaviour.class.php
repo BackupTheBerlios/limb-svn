@@ -10,39 +10,32 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/i18n/strings.class.php');
 	
-abstract class site_object_behaviour
+class site_object_behaviour
 {
-  protected  $_attributes_definition = array();
-
-  protected  $_behaviour_properties = array();
+  protected  $_properties = array();
 
   protected  $_behaviour_id;
 
   function __construct()
   {
-    $this->_behaviour_properties = $this->_define_behaviour_properties();
-
-    $this->_attributes_definition = $this->_define_attributes_definition();
+    $this->_properties = $this->_define_properties();
   }
 
-	protected function _define_attributes_definition()
-	{
-    return array();
-	}
-
-  protected function _define_behaviour_properties()
+  protected function _define_properties()
   {
     return array(
-      'class_ordr' => 1,
+      'sort_order' => 1,
       'can_be_parent' => 1,
       'icon' => '/shared/images/generic.gif',
     );
   }
   
-  static public function get_id($behaviour_name)
+  public function get_id()
   {
+    $behaviour_name = get_class($this);
+    
     $db_table = Limb :: toolkit()->createDBTable('sys_behaviour');
-    $list = $db_table->get_list('name="'. $behaviour_name. '"');
+    $list = $db_table->get_list('name="'. $behaviour_name . '"');
 
     if (count($list) == 1)
     {
@@ -57,7 +50,10 @@ abstract class site_object_behaviour
 
     $insert_data = array();
     $insert_data['name'] = $behaviour_name;
-    
+    $insert_data['icon'] = $this->get_property('icon', '/shared/images/generic.gif');
+    $insert_data['can_be_parent'] = $this->get_property('can_be_parent', 1);
+    $insert_data['sort_order'] = $this->get_property('sort_order', 1);
+
     $db_table->insert($insert_data);
 
     return $db_table->get_last_insert_id();
@@ -65,29 +61,15 @@ abstract class site_object_behaviour
 
   public function can_be_parent()
   {
-    if (isset($this->_behaviour_properties['can_be_parent']))
-      return $this->_behaviour_properties['can_be_parent'];
-    else
-      return false;
+    return $this->get_property('can_be_parent', false);
   }
   
-  public function get_attributes_definition()
+  public function get_property($attribute_name, $default = null)
   {
-    return $this->_attributes_definition;
-  }
-
-  public function get_definition($attribute_name)
-  {
-    $definition = $this->get_attributes_definition();
-
-    if(isset($definition[$attribute_name]))
-    {
-      if($definition[$attribute_name] == '')
-        return array();
-      else
-        return $definition[$attribute_name];
-    }
-    return false;
+    if(isset($this->_properties[$attribute_name]))
+      return $this->_properties[$attribute_name];
+    else
+      return $default;
   }
 
   public function can_accept_children($node_id)

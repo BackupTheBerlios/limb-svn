@@ -38,10 +38,6 @@ class sys_site_object_db_table extends db_table
 					'field' => 'object_id',
 				),
 	  		array(
-					'table_name' => 'sys_full_text_index',
-					'field' => 'object_id'
-				),
-	  		array(
 					'table_name' => 'sys_node_link',
 					'field' => 'target_node_id'
 				),

@@ -18,16 +18,10 @@ Mock :: generate('site_object_behaviour');
 
 class site_object_behaviour_test_version extends site_object_behaviour
 {	
-	function _define_attributes_definition()
-	{
-		return array('title' => '',
-                 'name' => array('type' => 'numeric'));
-	}
-	
-	function _define_behaviour_properties()
+	function _define_properties()
 	{
 		return array(
-			'ordr' => 1,
+			'sort_order' => 3,
 			'can_be_parent' => 1,
       'icon' => '/shared/images/folder.gif',
 		);
@@ -65,29 +59,30 @@ class site_object_behaviour_test extends LimbTestCase
     $this->db->sql_delete('sys_site_object_tree');
   }
 
-  function test_attributes_definition()
+  function test_get_property()
   {  	
-  	$this->assertIdentical($this->behaviour->get_definition('no_such_attribute'), false);
+  	$this->assertIdentical($this->behaviour->get_property('no_such_property', false), false);
   	
-  	$definition = $this->behaviour->get_definition('name');
-  	
-  	$this->assertEqual($definition['type'], 'numeric');
+  	$this->assertEqual($this->behaviour->get_property('sort_order'), 3);
   }
   
   function test_get_behaviour_id()
   {
     // test auto create new record
-		$id = site_object_behaviour :: get_id('test_behaviour');
-		
-		$this->db->sql_select('sys_behaviour', '*', 'name="test_behaviour"');
+    $id = $this->behaviour->get_id();
+    
+		$this->db->sql_select('sys_behaviour', '*', 'name="site_object_behaviour_test_version"');
 		$arr = $this->db->fetch_row();
 		
 		$this->assertNotNull($id);
 		
 		$this->assertEqual($id, $arr['id']);
+    $this->assertEqual($this->behaviour->get_property('icon'), $arr['icon']);
+    $this->assertEqual($this->behaviour->get_property('can_be_parent'), $arr['can_be_parent']);
+    $this->assertEqual($this->behaviour->get_property('sort_order'), $arr['sort_order']);
     
     // test only one record for one name
-		$id = site_object_behaviour :: get_id('test_behaviour');
+		$id = $this->behaviour->get_id();
 		$this->db->sql_select('sys_behaviour', '*');
 		$arr = $this->db->get_array();
 		

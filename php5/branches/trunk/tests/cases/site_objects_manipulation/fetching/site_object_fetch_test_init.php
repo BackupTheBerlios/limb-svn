@@ -27,7 +27,8 @@ class site_object_fetch_test_init
   {
   	$this->class_id = $object->get_class_id();
 
-    $this->behaviour_id = site_object_behaviour :: get_id(get_class($object) . '_behaviour');
+    $behaviour = new site_object_behaviour();
+    $this->behaviour_id = $behaviour->get_id();
 
   	$this->_insert_sys_site_object_records();
   	$this->_insert_fake_sys_site_object_records();

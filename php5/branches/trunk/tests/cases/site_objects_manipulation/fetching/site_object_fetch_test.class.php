@@ -12,10 +12,6 @@ require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php');
 
-class site_object_fetch_test_version extends site_object
-{
-}
-
 class site_object_fetch_test extends LimbTestCase
 {
 	var $class_id;
@@ -48,8 +44,6 @@ class site_object_fetch_test extends LimbTestCase
       $this->class_id = $this->object->get_class_id();
       $first_time++;
     }
-
-  	debug_mock :: init($this);
   }
 
   function _init_fetch_data($object)
@@ -61,12 +55,11 @@ class site_object_fetch_test extends LimbTestCase
 
   function _init_object()
   {
-  	$this->object = new site_object_fetch_test_version();
+  	$this->object = new site_object();
   }
 
   function tearDown()
   {
-		debug_mock :: tally();
   }
 
   function _clean_up()
@@ -128,7 +121,7 @@ class site_object_fetch_test extends LimbTestCase
   		$this->assertEqual($result[$i]['title'], 'object_' . $i . '_title');
   		$this->assertEqual($result[$i]['class_id'], $this->class_id);
   		$this->assertEqual($result[$i]['class_name'], get_class($this->object));
-  		$this->assertEqual($result[$i]['behaviour'], get_class($this->object) . '_behaviour');
+  		$this->assertEqual($result[$i]['behaviour'], 'site_object_behaviour');
   	}
   }
 
@@ -144,7 +137,7 @@ class site_object_fetch_test extends LimbTestCase
   		$this->assertEqual($result[$i]['title'], 'object_' . $i . '_title');
   		$this->assertEqual($result[$i]['class_id'], $this->class_id);
   		$this->assertEqual($result[$i]['class_name'], get_class($this->object));
-  		$this->assertEqual($result[$i]['behaviour'], get_class($this->object) . '_behaviour');
+  		$this->assertEqual($result[$i]['behaviour'], 'site_object_behaviour');
   	}
   }
 
@@ -161,7 +154,7 @@ class site_object_fetch_test extends LimbTestCase
   		$this->assertEqual($result[$i]['title'], 'object_' . $i . '_title');
   		$this->assertEqual($result[$i]['class_id'], $this->class_id);
   		$this->assertEqual($result[$i]['class_name'], get_class($this->object));
-  		$this->assertEqual($result[$i]['behaviour'], get_class($this->object) . '_behaviour');
+  		$this->assertEqual($result[$i]['behaviour'], 'site_object_behaviour');
   	}
   }
 
@@ -194,7 +187,7 @@ class site_object_fetch_test extends LimbTestCase
   		$this->assertEqual($result[$key]['title'], 'object_' . $key . '_title');
   		$this->assertEqual($result[$key]['class_id'], $this->class_id);
   		$this->assertEqual($result[$key]['class_name'], get_class($this->object));
-  		$this->assertEqual($result[$key]['behaviour'], get_class($this->object) . '_behaviour');
+  		$this->assertEqual($result[$key]['behaviour'], 'site_object_behaviour');
   	}
   }
 

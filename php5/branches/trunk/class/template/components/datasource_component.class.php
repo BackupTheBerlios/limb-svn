@@ -10,8 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
 require_once(LIMB_DIR . '/class/datasources/datasource_factory.class.php');
-//  			throw new WactException('target component not found', 
-//					array('target' => $target));
+
 class datasource_component extends component 
 {
 	protected $parameters = array();

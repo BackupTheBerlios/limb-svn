@@ -132,7 +132,7 @@ class site_object extends object
                 sys_behaviour.id as behaviour_id,
                 sys_behaviour.name as behaviour,
                 sys_behaviour.icon as icon,
-                sys_behaviour.class_ordr as class_ordr,
+                sys_behaviour.sort_order as sort_order,
                 sys_behaviour.can_be_parent as can_be_parent
                 FROM
                 sys_site_object as sso, sys_class, sys_behaviour,

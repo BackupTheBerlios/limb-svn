@@ -18,7 +18,7 @@ class sys_behaviour_db_table extends db_table
       'id' => array('type' => 'numeric'),
       'name' => '',
       'icon' => '',
-      'class_ordr' => array('type' => 'numeric'),
+      'sort_order' => array('type' => 'numeric'),
       'can_be_parent' => array('type' => 'numeric'),
     );
   }
