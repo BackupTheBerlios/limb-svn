@@ -13,9 +13,9 @@ require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class vote_action extends form_action
 {
-	function vote_action($name='vote_action')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'vote_action';
 	}
 	
 	function _valid_perform()

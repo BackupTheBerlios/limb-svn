@@ -4,8 +4,10 @@
 <core:INCLUDE file="jip_actions/extended.html">
 </fetch:MAPPED>
 </span>
+
 <fetch:SUB_BRANCH target='folders' >
 	<core:PARAMETER name='loader_class_name' value='documents_folder' >
+	<core:PARAMETER name='order' value='priority=ASC' >
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='folders'>
@@ -32,6 +34,7 @@
 
 <fetch:SUB_BRANCH target='documents' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='document' >
+	<core:PARAMETER name='order' value='priority=ASC' >
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">

@@ -47,7 +47,8 @@ class node_links_datasource extends datasource
 		if (!is_array($target_node_ids) || !count($target_node_ids))
 		  return new array_dataset($groups);
 		
-		$objects =& fetch_by_node_ids($target_node_ids, 'site_object', $counter, array(
+		$site_object_class_name = isset($params['loader_class_name']) ? $params['loader_class_name'] : 'site_object';
+		$objects =& fetch_by_node_ids($target_node_ids, $site_object_class_name, $counter, array(
 		  'restrict_by_class' => false
 		));
 		
