@@ -289,7 +289,8 @@ class db_module
     		return $value*1;
     	break;
     	case 'float':
-    		return str_replace(',', '.', "'" . floatval($value) . "'"); // FIXX!!
+        $value = str_replace(',', '.', $value);
+    		return str_replace(',', '.', "'" . floatval($value) . "'");
     	break;
 	    case 'string':
 	    	return $this->_process_string_value($value);
