@@ -81,11 +81,11 @@
 			preview_path_obj.nodeValue = node.path;
 			preview_class_name_obj.nodeValue =  node.class_name;
 
-			if(node.node_id)
+			if(node.node_id && node.node_id != 0)
 				start_path ='/root/?node_id=' + node.node_id;				
 			else if(node.start_path)
 				start_path = node.start_path;
-			
+
 			if(node.only_parents == 'false')
 				only_parents = '&only_parents=' + node.only_parents;
 		}

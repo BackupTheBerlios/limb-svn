@@ -64,8 +64,13 @@ class node_select_component extends input_form_element
   	
   	$start_path_condition = "";
   	$only_parents_condition = "";
-  	if($start_path = $this->get_attribute('start_path'))
-  		$start_path_condition = "node_select_{$md5id}.set_start_path('{$start_path}');";
+  	$start_path = $this->get_attribute('start_path');
+  	if(!$start_path)
+  		$start_path = session :: get('limb_node_select_working_path');
+  	if(!$start_path)
+			$start_path = '/root';
+  	
+  	$start_path_condition = "node_select_{$md5id}.set_start_path('{$start_path}');";
 
   	if($only_parents = $this->get_attribute('only_parents'))
   		$only_parents_condition = "node_select_{$md5id}.set_only_parents_restriction('{$only_parents}');";
