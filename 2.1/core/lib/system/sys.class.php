@@ -57,7 +57,7 @@ class sys
       $this->backup_filename = '~';
     }
     
-    $request_uri = sys::server_variable( 'REQUEST_URI' );
+    $request_uri = sys::server_variable('REQUEST_URI');
 
     // Remove url parameters
     if ( ereg( "([^?]+)", $request_uri, $regs ) )

@@ -75,7 +75,7 @@ class send_feedback_action extends form_action
 		}
 		
 		message_box :: write_error(strings :: get('message_was_sent', 'feedback'));
-		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, PHP_SELF);
+		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, $_SERVER['PHP_SELF']);
 	}
 }
 ?>

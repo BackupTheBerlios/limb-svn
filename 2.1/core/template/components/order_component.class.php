@@ -28,7 +28,7 @@ class order_component extends component
 		if (!$this->get('is_first_child'))
 		{
 			$params['direction'] = 'up';
-			$this->set('order_up_href', add_url_query_items(PHP_SELF, $params));
+			$this->set('order_up_href', add_url_query_items($_SERVER['PHP_SELF'], $params));
 		}	
 		else
 			$this->set('order_up_href', '');
@@ -36,7 +36,7 @@ class order_component extends component
 		if (!$this->get('is_last_child'))
 		{
 			$params['direction'] = 'down';
-			$this->set('order_down_href', add_url_query_items(PHP_SELF, $params));
+			$this->set('order_down_href', add_url_query_items($_SERVER['PHP_SELF'], $params));
 		}	
 		else
 			$this->set('order_down_href', '');

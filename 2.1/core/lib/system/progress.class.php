@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: progress.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define( 'PROGRESS_MAX_MESSAGE_LIFETIME', 60*60*24);
@@ -119,7 +119,7 @@ class progress
   }
 }
 
-if(strstr(REQUEST_URI, 'progress=1'))
+if(strstr($_SERVER['REQUEST_URI'], 'progress=1'))
 	progress :: cleanup();
 	
 ?>

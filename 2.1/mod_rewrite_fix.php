@@ -13,6 +13,7 @@ require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 $url = parse_url($_SERVER['REQUEST_URI']);
 
 $_SERVER['QUERY_STRING'] = $url['query'];
+$_SERVER['PHP_SELF'] = $url['path'];
 
 if($url['query'])
 {

@@ -35,8 +35,11 @@ function add_url_query_items($url, $items=array())
 	return $url . $str_params . $fragment;
 }
 
-function reload($url = PHP_SELF)
+function reload($url = '')
 {
+	if(!$url)
+		$url = $_SERVER['PHP_SELF'];
+	
 	ob_end_clean();
 
 	ob_start();
@@ -135,8 +138,11 @@ function _add_js_param_to_url($href, $param, $value)
 	
 }
 
-function reload_popup($url = PHP_SELF)
+function reload_popup($url = '')
 {
+	if(!$url)
+		$url = $_SERVER['PHP_SELF'];
+
 	if(!isset($_REQUEST['popup']) || !$_REQUEST['popup'])
 		return;
 	

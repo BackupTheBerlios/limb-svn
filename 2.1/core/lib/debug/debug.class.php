@@ -378,7 +378,7 @@ class debug
 								. "e-mail:\t\t" . $user->get_email() . "\n";
 
 		$message .= "ip:\t\t" . sys :: client_ip() . "\n"
-							. "request:\t" . REQUEST_URI . "\n"
+							. "request:\t" . $_SERVER['REQUEST_URI'] . "\n"
 							. "description:\n" . $description;
 		
 		if(sys :: exec_mode() == 'cli')
