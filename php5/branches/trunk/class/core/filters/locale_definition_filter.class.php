@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . 'class/core/user.class.php');
 
 class locale_definition_filter implements intercepting_filter 
 { 
