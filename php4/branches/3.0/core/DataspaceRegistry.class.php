@@ -12,22 +12,16 @@ require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 
 class DataspaceRegistry
 {
+  var $dataspaces = array();
+
   function & get($name)
   {
-    $obj = null;
+    if(isset($this->dataspaces[$name]))
+      return $this->dataspaces[$name];
 
-    $instance_name = "global_dataspace_instance_{$name}";
+    $this->dataspaces[$name] = new Dataspace();
 
-    if(isset($GLOBALS[$instance_name]))
-      $obj =& $GLOBALS[$instance_name];
-
-    if(!is_a($obj, 'Dataspace'))
-    {
-      $obj =& new Dataspace();
-      $GLOBALS[$instance_name] =& $obj;
-    }
-
-    return $obj;
+    return $this->dataspaces[$name];
   }
 }
 

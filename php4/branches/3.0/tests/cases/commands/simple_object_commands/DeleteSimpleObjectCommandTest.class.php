@@ -9,15 +9,13 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/DeleteSimpleObjectCommand.class.php');
-require_once(dirname(__FILE__) . '/simple_object_commands_orm_support.inc.php');
+require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
 class DeleteSimpleObjectCommandStub extends DeleteSimpleObjectCommand
 {
-  var $mock;
-
   function &_defineObjectHandle()
   {
-    return $this->mock;
+    return new LimbHandle('SimpleObject');
   }
 }
 
@@ -32,9 +30,6 @@ class DeleteSimpleObjectCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new SpecialMockSimpleObject($this);
-    $this->object->SimpleObject();//dataspace init
-
     $this->cmd = new DeleteSimpleObjectCommandStub();
 
     Limb :: saveToolkit();
@@ -42,43 +37,42 @@ class DeleteSimpleObjectCommandTest extends LimbTestCase
 
   function tearDown()
   {
-    $this->object->tally();
     Limb :: restoreToolkit();
   }
 
   function testPerformOK()
   {
-    $this->object->set('id', $id = 1001);
-    $this->cmd->mock =& $this->object;
+    $object = new SimpleObject();
+    $object->set('id', $id = 1001);
 
     $toolkit =& Limb :: toolkit();
 
     $uow =& $toolkit->getUOW();
-    $uow->register($this->object);
+    $uow->register($object);
 
     $request =& $toolkit->getRequest();
     $request->set('id', $id);
 
     $this->assertEqual($this->cmd->perform(), LIMB_STATUS_OK);
 
-    $this->assertTrue($uow->isDeleted($this->object));
+    $this->assertTrue($uow->isDeleted($object));
   }
 
   function testPerformError()
   {
-    $this->cmd->mock =& $this->object;
+    $object = new SimpleObject();
 
     $toolkit =& Limb :: toolkit();
 
     $uow =& $toolkit->getUOW();
-    $uow->register($this->object);
+    $uow->register($object);
 
     $request =& $toolkit->getRequest();
     $request->set('id', $id = 1000);
 
     $this->assertEqual($this->cmd->perform(), LIMB_STATUS_ERROR);
 
-    $this->assertFalse($uow->isDeleted($this->object));
+    $this->assertFalse($uow->isDeleted($object));
   }
 }
 

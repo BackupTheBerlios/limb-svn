@@ -23,6 +23,7 @@ class LimbBaseToolkit// implements LimbToolkit
   var $cache;
   var $uow;
   var $ini_cache = array();
+  var $dataspace_registry;
 
   function reset()
   {
@@ -149,7 +150,6 @@ class LimbBaseToolkit// implements LimbToolkit
     return $this->uow;
   }
 
-
   function & getRequest()
   {
     if(is_object($this->request))
@@ -203,17 +203,26 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getDataspace()
   {
+    $reg =& $this->_getDataspaceRegistry();
+    return $reg->get($this->current_dataspace_name);
+  }
+
+  function & _getDataspaceRegistry()
+  {
+    if(is_object($this->dataspace_registry))
+      return $this->dataspace_registry;
+
     include_once(LIMB_DIR . '/core/DataspaceRegistry.class.php');
-    return DataspaceRegistry :: get($this->current_dataspace_name);
+    $this->dataspace_registry = new DataspaceRegistry();
+
+    return $this->dataspace_registry;
   }
 
   function & switchDataspace($name)
   {
-    include_once(LIMB_DIR . '/core/DataspaceRegistry.class.php');
-
     $this->current_dataspace_name = $name;
 
-    return DataspaceRegistry :: get($name);
+    return $this->getDataspace();
   }
 
   function setView(&$view)

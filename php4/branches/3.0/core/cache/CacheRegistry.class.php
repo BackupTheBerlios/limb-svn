@@ -32,6 +32,11 @@ class CacheRegistry
       unset($this->cache[$group][$key]);
   }
 
+  function purgeGroup($group = null)
+  {
+    $this->flush($group);
+  }
+
   function flush($group = null)
   {
     if($group !== null)

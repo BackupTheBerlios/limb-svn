@@ -5,16 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: OneTableObjectsCriteriaTest.class.php 1085 2005-02-02 16:04:20Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/dao/criteria/ServicesCriteria.class.php');
 
+Mock :: generatePartial('SQLBasedDAO',
+                        'SQLBasedDAOSCTestVersion',
+                        array('_initSQL'));
+
 class ServicesCriteriaTest extends LimbTestCase
 {
   var $dao;
+  var $sql;
   var $db;
   var $conn;
 
@@ -30,9 +35,12 @@ class ServicesCriteriaTest extends LimbTestCase
 
     $this->_cleanUp();
 
-    $this->dao = new SQLBasedDAO();
-    $sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
-    $this->dao->setSQL($sql);
+    $this->dao= new SQLBasedDAOSCTestVersion($this);
+
+    $this->sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
+    $this->dao->setReturnReference('_initSQL', $this->sql);
+
+    $this->dao->SQLBasedDAO();
 
     $this->dao->addCriteria(new ServicesCriteria());
 
@@ -53,8 +61,7 @@ class ServicesCriteriaTest extends LimbTestCase
 
   function testCorrectLink()
   {
-    $sql =& $this->dao->getSQL();
-    $sql->addCondition('sys_object.oid = 3');
+    $this->sql->addCondition('sys_object.oid = 3');
 
     $rs =& new SimpleDbDataset($this->dao->fetch());
     $record = $rs->getRow();

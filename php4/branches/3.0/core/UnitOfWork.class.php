@@ -5,16 +5,30 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: DomainObject.class.php 1028 2005-01-18 11:06:55Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 @define('UOW_CACHE_GROUP', 'identity_map');
 
 class UnitOfWork
 {
-  var $existing = array();
-  var $new = array();
-  var $deleted = array();
+  var $existing;
+  var $new;
+  var $deleted;
+
+  function UnitOfWork()
+  {
+    $this->reset();
+  }
+
+  function reset()
+  {
+    $this->existing = array();
+    $this->new = array();
+    $this->deleted = array();
+
+    $this->_purgeAllFromCache();
+  }
 
   function & _getDAO($class)
   {
@@ -140,6 +154,12 @@ class UnitOfWork
   {
     $cache =& $this->_getCache();
     $cache->purge($id, UOW_CACHE_GROUP);
+  }
+
+  function _purgeAllFromCache()
+  {
+    $cache =& $this->_getCache();
+    $cache->purgeGroup(UOW_CACHE_GROUP);
   }
 
   function _getId(&$obj)

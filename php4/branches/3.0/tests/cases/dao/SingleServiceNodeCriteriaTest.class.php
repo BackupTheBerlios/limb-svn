@@ -18,6 +18,11 @@ require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 Mock :: generatePartial('LimbBaseToolkit',
                         'SingleServiceNodeCriteriaTestToolkit',
                         array('getTree'));
+
+Mock :: generatePartial('SQLBasedDAO',
+                        'SQLBasedDAOSSNCTestVersion',
+                        array('_initSQL'));
+
 Mock :: generate('Tree');
 Mock :: generate('ComplexSelectSQL');
 
@@ -34,10 +39,13 @@ class SingleServiceNodeCriteriaTest extends LimbTestCase
 
   function setUp()
   {
-    $this->dao = new SQLBasedDAO();
+    $this->dao= new SQLBasedDAOSSNCTestVersion($this);
+
     $this->sql = new MockComplexSelectSQL($this);
     $this->sql->setReturnValue('toString', 'SELECT * from sys_object');
-    $this->dao->setSQL($this->sql);
+
+    $this->dao->setReturnReference('_initSQL', $this->sql);
+    $this->dao->SQLBasedDAO();
   }
 
   function testLimitByObjectId()

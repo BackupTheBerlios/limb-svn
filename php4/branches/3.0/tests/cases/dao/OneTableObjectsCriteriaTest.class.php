@@ -13,9 +13,14 @@ require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(dirname(__FILE__) . '/../orm/data_mappers/OneTableObjectMapperTestDbTable.class.php');
 
+Mock :: generatePartial('SQLBasedDAO',
+                        'SQLBasedDAOOTOCTestVersion',
+                        array('_initSQL'));
+
 class OneTableObjectsCriteriaTest extends LimbTestCase
 {
   var $dao;
+  var $sql;
   var $db;
   var $conn;
 
@@ -31,9 +36,12 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
 
     $this->_cleanUp();
 
-    $this->dao = new SQLBasedDAO();
-    $sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
-    $this->dao->setSQL($sql);
+    $this->dao = new SQLBasedDAOOTOCTestVersion($this);
+
+    $this->sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
+    $this->dao->setReturnReference('_initSQL', $this->sql);
+
+    $this->dao->SQLBasedDAO();
 
     $this->dao->addCriteria(new OneTableObjectsCriteria('OneTableObjectMapperTest'));
 
@@ -54,8 +62,7 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
 
   function testCorrectLink()
   {
-    $sql =& $this->dao->getSQL();
-    $sql->addCondition('sys_object.oid = 1');
+    $this->sql->addCondition('sys_object.oid = 1');
 
     $rs =& new SimpleDbDataset($this->dao->fetch());
     $record = $rs->getRow();

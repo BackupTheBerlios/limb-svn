@@ -9,22 +9,21 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/InitializeDataspaceFromSimpleObjectCommand.class.php');
-require_once(dirname(__FILE__) . '/simple_object_commands_orm_support.inc.php');
+require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
 class InitializeDataspaceFromSimpleObjectCommandStub extends InitializeDataspaceFromSimpleObjectCommand
 {
-  var $mock;
-
   function &_defineObjectHandle()
   {
-    return $this->mock;
+    return new LimbHandle('SimpleObject');
   }
 
   function _defineObject2DataspaceMap()
   {
     //object's getter => dataspace
-    return array('getTitle' => 'title',
-                 'getAnnotation' => 'annotation');
+    return array('title' => 'title',
+                 'annotation' => 'annotation',
+                 'content' => 'content');
   }
 }
 
@@ -39,9 +38,6 @@ class InitializeDataspaceFromSimpleObjectCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new SpecialMockSimpleObject($this);
-    $this->object->SimpleObject();//dataspace init
-
     $this->cmd = new InitializeDataspaceFromSimpleObjectCommandStub();
 
     Limb :: saveToolkit();
@@ -49,24 +45,22 @@ class InitializeDataspaceFromSimpleObjectCommandTest extends LimbTestCase
 
   function tearDown()
   {
-    $this->object->tally();
     Limb :: restoreToolkit();
   }
 
   function testPerformOK()
   {
-    $this->object->set('id', $id = 1001);
-    $this->object->expectOnce('getTitle');
-    $this->object->setReturnValue('getTitle', $title = 'title');
-    $this->object->expectOnce('getAnnotation');
-    $this->object->setReturnValue('getAnnotation', $annotation = 'annotation');
+    $object = new SimpleObject();
 
-    $this->cmd->mock =& $this->object;
+    $object->set('id', $id = 1001);
+    $object->set('title', $title = 'title');
+    $object->set('annotation', $annotation = 'annotation');
+    $object->set('content', $content = '');
 
     $toolkit =& Limb :: toolkit();
 
     $uow =& $toolkit->getUOW();
-    $uow->register($this->object);
+    $uow->register($object);
 
     $request =& $toolkit->getRequest();
     $request->set('id', $id);
@@ -76,25 +70,30 @@ class InitializeDataspaceFromSimpleObjectCommandTest extends LimbTestCase
     $dataspace =& $toolkit->getDataspace();
     $this->assertEqual($dataspace->get('title'), $title);
     $this->assertEqual($dataspace->get('annotation'), $annotation);
+    $this->assertIdentical($dataspace->get('content'), $content);
   }
 
   function testPerformError()
   {
-    $this->object->set('id', $id = 1001);
-    $this->object->expectNever('getTitle');
-    $this->object->expectNever('getAnnotation');
+    $object = new SimpleObject();
 
-    $this->cmd->mock =& $this->object;
+    $object->set('id', $id = 1001);
+    $object->set('title', $title = 'title');
+    $object->set('annotation', $annotation = 'annotation');
 
     $toolkit =& Limb :: toolkit();
 
     $uow =& $toolkit->getUOW();
-    $uow->register($this->object);
+    $uow->register($object);
 
     $request =& $toolkit->getRequest();
     $request->set('id', $id = 'no-such-object');
 
     $this->assertEqual($this->cmd->perform(), LIMB_STATUS_ERROR);
+
+    $dataspace =& $toolkit->getDataspace();
+    $this->assertFalse($dataspace->get('title'));
+    $this->assertFalse($dataspace->get('annotation'));
   }
 
 }

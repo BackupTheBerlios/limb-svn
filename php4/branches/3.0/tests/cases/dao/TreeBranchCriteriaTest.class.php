@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: OneTableObjectsCriteriaTest.class.php 1068 2005-01-28 14:01:40Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
@@ -18,11 +18,17 @@ require_once(LIMB_DIR . '/core/tree/MaterializedPathTree.class.php');
 Mock :: generatePartial('LimbBaseToolkit',
                         'TreeBranchCriteriaTestToolkit',
                         array('getTree'));
+
+Mock :: generatePartial('SQLBasedDAO',
+                        'SQLBasedDAOTBCTestVersion',
+                        array('_initSQL'));
+
 Mock :: generate('Tree');
 
 class TreeBranchCriteriaTest extends LimbTestCase
 {
   var $dao;
+  var $sql;
   var $db;
   var $conn;
   var $root_node_id;
@@ -41,9 +47,10 @@ class TreeBranchCriteriaTest extends LimbTestCase
 
     $this->_cleanUp();
 
-    $this->dao = new SQLBasedDAO();
-    $sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
-    $this->dao->setSQL($sql);
+    $this->dao = new SQLBasedDAOTBCTestVersion($this);
+    $this->sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
+    $this->dao->setReturnReference('_initSQL', $this->sql);
+    $this->dao->SQLBasedDAO();
 
     $this->_insertNodeRecords();
     $this->_insertObjectToNodeRecords();

@@ -19,7 +19,7 @@ class InitializeDataspaceFromSimpleObjectCommand
     $dataspace =& $toolkit->getDataspace();
 
     foreach($this->_defineObject2DataspaceMap() as $getter => $key)
-      $dataspace->set($key, $object->$getter());
+      $dataspace->set($key, $object->get($getter));
 
     return LIMB_STATUS_OK;
   }

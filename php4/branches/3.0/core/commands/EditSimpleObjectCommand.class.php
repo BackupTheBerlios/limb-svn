@@ -38,8 +38,8 @@ class EditSimpleObjectCommand
 
     foreach($this->_defineDataspace2ObjectMap() as $key => $setter)
     {
-      if ($value = $dataspace->get($key))
-        $object->$setter($value);
+      if (($value = $dataspace->get($key)) !== false)
+        $object->set($setter, $value);
     }
   }
 

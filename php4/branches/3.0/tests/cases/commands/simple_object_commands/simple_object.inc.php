@@ -19,17 +19,5 @@ class SimpleObjectDAO extends DAO{}
 class SimpleObject extends DomainObject
 {
   var $__class_name = 'SimpleObject';
-
-  function setTitle($title){}
-  function setAnnotation($annotation){}
-  function getTitle(){}
-  function getAnnotation(){}
 }
-
-Mock :: generatePartial('SimpleObject', 'SpecialMockSimpleObject',
-                 array('setTitle',
-                       'setAnnotation',
-                       'getTitle',
-                       'getAnnotation'));
-
 ?>

@@ -9,22 +9,23 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/CreateSimpleObjectCommand.class.php');
-require_once(dirname(__FILE__) . '/simple_object_commands_orm_support.inc.php');
+require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
 class CreateSimpleObjectCommandStub extends CreateSimpleObjectCommand
 {
-  var $mock;
+  var $object;
 
   function &_defineObjectHandle()
   {
-    return $this->mock;
+    return $this->object;
   }
 
   function _defineDataspace2ObjectMap()
   {
     //dataspace => object's setter
-    return array('title' => 'setTitle',
-                 'annotation' => 'setAnnotation');
+    return array('title' => 'title',
+                 'annotation' => 'annotation',
+                 'content' => 'content');
   }
 }
 
@@ -40,9 +41,6 @@ class CreateSimpleObjectCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new SpecialMockSimpleObject($this);
-    $this->object->SimpleObject();//dataspace init
-
     $this->cmd = new CreateSimpleObjectCommandStub();
 
     Limb :: saveToolkit();
@@ -50,28 +48,31 @@ class CreateSimpleObjectCommandTest extends LimbTestCase
 
   function tearDown()
   {
-    $this->object->tally();
     Limb :: restoreToolkit();
   }
 
   function testPerform()
   {
-    $this->object->expectOnce('setTitle', array($title = 'title'));
-    $this->object->expectOnce('setAnnotation', array($annotation = 'annotation'));
+    $object = new SimpleObject();
 
-    $this->cmd->mock =& $this->object;
+    $this->cmd->object =& $object;
 
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
-    $dataspace->set('title', $title);
-    $dataspace->set('annotation', $annotation);
+    $dataspace->set('title', $title = 'title');
+    $dataspace->set('annotation', $annotation = 'annotation');
+    $dataspace->set('content', $content = '');
 
     $this->assertEqual($this->cmd->perform(), LIMB_STATUS_OK);
 
     $uow =& $toolkit->getUOW();
 
-    $this->assertTrue($uow->isRegistered($this->object));
+    $this->assertTrue($uow->isRegistered($object));
+
+    $this->assertEqual($object->get('title'), $title);
+    $this->assertEqual($object->get('annotation'), $annotation);
+    $this->assertIdentical($object->get('content'), $content);
   }
 
 }
