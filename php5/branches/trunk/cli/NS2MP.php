@@ -26,7 +26,7 @@ else
 require_once($project_dir . '/setup.php'); 
 
 require_once(LIMB_DIR . '/class/core/tree/drivers/nested_sets_tree.class.php');
-require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
 
 $db = db_factory :: instance();
 $db->sql_delete($mp_table);

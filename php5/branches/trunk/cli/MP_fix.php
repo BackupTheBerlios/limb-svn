@@ -14,7 +14,7 @@ else
 	die('project dir required');
 	
 require_once($project_dir . '/setup.php'); 
-require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
 
 $tree = new materialized_path_tree();
 $driver = $tree->get_driver();

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 

@@ -76,7 +76,7 @@ class BaseLimbToolkit implements LimbToolkit
       return $this->tree;
     
     include_once(LIMB_DIR . '/class/core/tree/tree_decorator.class.php');
-		include_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_tree.class.php');
+		include_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
     
     $this->tree = new tree_decorator(new materialized_path_tree());
     
