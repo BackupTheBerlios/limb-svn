@@ -674,39 +674,6 @@ class site_object extends object
     return site_object_controller_factory :: create($this->_class_properties['controller_class_name']);
   }
 
-  public function save_metadata()
-  {
-    if(!$id = $this->get_id())
-      throw new LimbException('object id is not set');
-
-    $sys_metadata_db_table = db_table_factory :: create('sys_metadata');
-
-    $sys_metadata_db_table->delete('object_id=' . $id);
-
-    $metadata = array();
-    $metadata['id'] = null;
-    $metadata['object_id'] = $id;
-    $metadata['keywords'] = $this->get('keywords');
-    $metadata['description'] = $this->get('description');
-
-    $sys_metadata_db_table->insert($metadata);
-    return $sys_metadata_db_table->get_last_insert_id();
-  }
-
-  public function get_metadata()
-  {
-    if(!$id = $this->get_id())
-      return false;
-
-    $sys_metadata_db_table = db_table_factory :: create('sys_metadata');
-    $arr = $sys_metadata_db_table->get_list('object_id=' . $id);
-
-    if (!count($arr))
-      return array();
-
-    return current($arr);
-  }
-
   protected function _get_parent_locale_id()
   {
     if (!$parent_node_id = $this->get_parent_node_id())
