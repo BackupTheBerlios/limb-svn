@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/lib/tree/tree.class.php');
+require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
 require_once(LIMB_DIR . 'class/core/dataspace.class.php');
 require_once(LIMB_DIR . 'class/validators/rules/tree_node_id_rule.class.php');
 

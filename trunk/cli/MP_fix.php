@@ -14,7 +14,7 @@ else
 	die('project dir required');
 	
 require_once($project_dir . '/setup.php'); 
-require_once(LIMB_DIR . '/class/lib/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
 
 $tree =& tree :: instance();
 $driver = $tree->get_driver();

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/tree/drivers/materialized_path_driver.class.php');
+require_once(LIMB_DIR . 'class/core/tree/drivers/materialized_path_driver.class.php');
 
 define('MATERIALIZED_PATH_TEST_TABLE', 'test_materialized_path_tree');
 
