@@ -54,8 +54,6 @@ class PackagesInfo
     {
       $package_data = array();
 
-      $package_path = $this->_parsePath($package_path);
-
       include($package_path . '/setup.php');
 
       $this->_definePackageConstant($PACKAGE_NAME, $package_path);
@@ -71,12 +69,6 @@ class PackagesInfo
   {
     @define($package_name . '_DIR', $path);
   }
-
-  function _parsePath($path)
-  {
-    return preg_replace('~\{([^\}]+)\}~e', "constant('\\1')", $path);
-  }
-
 }
 
 ?>

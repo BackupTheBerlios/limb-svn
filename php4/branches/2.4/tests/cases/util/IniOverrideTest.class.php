@@ -18,6 +18,11 @@ Mock :: generatePartial(
 
 class IniOverrideTest extends LimbTestCase
 {
+  function IniOverrideTest()
+  {
+    parent :: LimbTestCase('ini override test');
+  }
+
   function setUp()
   {
     DebugMock :: init($this);

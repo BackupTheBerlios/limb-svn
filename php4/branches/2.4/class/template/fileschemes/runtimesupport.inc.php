@@ -12,14 +12,16 @@
 /**
 * Determines the full path to a compiled template file.
 */
-function resolveTemplateCompiledFileName($sourcefile)
+function ResolveTemplateCompiledFileName($file, $operation = TMPL_INCLUDE)
 {
   if (defined('CONTENT_LOCALE_ID'))
     $locale = '_' . CONTENT_LOCALE_ID . '/';
-  else
+  elseif(defined('DEFAULT_CONTENT_LOCALE_ID'))
     $locale = '_' . DEFAULT_CONTENT_LOCALE_ID . '/';
+  else
+    $locale = '';
 
-  return VAR_DIR . '/compiled/' . md5($sourcefile . $locale) . '.php';
+  return VAR_DIR . '/compiled/' . md5($file . $locale) . '.php';
 }
 
 /**

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(WACT_ROOT . 'template/template.inc.php');
+require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(LIMB_DIR . '/class/commands/UseViewCommand.class.php');
 require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 

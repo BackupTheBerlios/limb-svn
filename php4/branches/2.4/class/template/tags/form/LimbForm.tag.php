@@ -46,5 +46,12 @@ class LimbFormTag extends FormTag
   {
     return preg_replace('/^([^\[\]]+)(\[.*\])*$/', "[\\1]\\2", $name);
   }
+
+  function preGenerate(&$code)
+  {
+    $this->tag = 'form';
+
+    parent :: preGenerate($code);
+  }
 }
 ?>

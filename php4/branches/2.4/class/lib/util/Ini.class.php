@@ -251,9 +251,11 @@ class Ini
         if (preg_match('/^"(.*)"$/', $var_value, $m))
           $var_value = $m[1];
 
-        if ($value_array[2])
+        $var_value = $this->_parseConstants($var_value);
+
+        if ($value_array[2])//check for array []
         {
-          if ($value_array[3])
+          if ($value_array[3]) //check for hashed array ['test']
           {
             $key_name = $value_array[3];
 
@@ -278,6 +280,11 @@ class Ini
         }
       }
     }
+  }
+
+  function _parseConstants($value)
+  {
+    return preg_replace('~\{([^\}]+)\}~e', "constant('\\1')", $value);
   }
 
   // removes the cache file if it exists.

@@ -16,6 +16,11 @@ class PackagesInfoTest extends LimbTestCase
 {
   var $info;
 
+  function PackagesInfoTest()
+  {
+    parent :: LimbTestCase('packages info test');
+  }
+
   function setUp()
   {
     $this->info = new PackagesInfo();

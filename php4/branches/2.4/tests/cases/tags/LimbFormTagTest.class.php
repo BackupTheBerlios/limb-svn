@@ -8,14 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(WACT_ROOT . 'template/template.inc.php');
-require_once(WACT_ROOT . 'template/components/form/form.inc.php');
+require_once(WACT_ROOT . '/template/template.inc.php');
+require_once(WACT_ROOT . '/template/components/form/form.inc.php');
 
 class LimbFormTagTestCase extends LimbTestCase
 {
   function LimbFormTagTestCase()
   {
     parent :: LimbTestCase('limb form tag case');
+  }
+
+  function tearDown()
+  {
+    ClearTestingTemplates();
   }
 
   function testChildFormElementsNamesWrapping()
@@ -25,9 +30,9 @@ class LimbFormTagTestCase extends LimbTestCase
                     <input id="testInput" name="testInput" type="text">
                 </limb:FORM>';
 
-    RegisterTestingTemplate('/components/form/limbform.html', $template);
+    RegisterTestingTemplate('/limb/form.html', $template);
 
-    $page =& new Template('/components/form/limbform.html');
+    $page =& new Template('/limb/form.html');
 
     $input =& $page->getChild('testInput');
     $label =& $page->getChild('testLabel');
@@ -42,9 +47,9 @@ class LimbFormTagTestCase extends LimbTestCase
                     <input id="testInput" name="{$\'testInput\'|uppercase}" type="text">
                 </limb:FORM>';
 
-    RegisterTestingTemplate('/components/form/limbform2.html', $template);
+    RegisterTestingTemplate('/limb/form2.html', $template);
 
-    $page =& new Template('/components/form/limbform2.html');
+    $page =& new Template('/limb/form2.html');
 
     $input =& $page->getChild('testInput');
 
@@ -58,9 +63,9 @@ class LimbFormTagTestCase extends LimbTestCase
                     <input id="testInput" name="{$^name|uppercase}" type="text">
                 </limb:FORM>';
 
-    RegisterTestingTemplate('/components/form/limbform3.html', $template);
+    RegisterTestingTemplate('/limb/form3.html', $template);
 
-    $page =& new Template('/components/form/limbform3.html');
+    $page =& new Template('/limb/form3.html');
 
     $input =& $page->getChild('testInput');
 
@@ -73,9 +78,9 @@ class LimbFormTagTestCase extends LimbTestCase
                     <input id="testInput" name="wow[wrap][testInput]" type="text">
                 </limb:FORM>';
 
-    RegisterTestingTemplate('/components/form/limbform4.html', $template);
+    RegisterTestingTemplate('/limb/form4.html', $template);
 
-    $page =& new Template('/components/form/limbform4.html');
+    $page =& new Template('/limb/form4.html');
 
     $input =& $page->getChild('testInput');
 
@@ -90,13 +95,25 @@ class LimbFormTagTestCase extends LimbTestCase
                     </div>
                 </limb:FORM>';
 
-    RegisterTestingTemplate('/components/form/limbform5.html', $template);
+    RegisterTestingTemplate('/limb/form5.html', $template);
 
-    $page =& new Template('/components/form/limbform5.html');
+    $page =& new Template('/limb/form5.html');
 
     $input =& $page->getChild('testInput');
 
     $this->assertEqual($input->getAttribute('name'), 'testForm[testInput]');
+  }
+
+  function testRenderAsCommonForm()
+  {
+    $template = '<limb:FORM id="testForm" name="testForm"></limb:FORM>';
+
+    RegisterTestingTemplate('/limb/form6.html', $template);
+
+    $page =& new Template('/limb/form6.html');
+    $result = $page->capture();
+
+    $this->assertEqual($result, '<form id="testForm" name="testForm"></form>');
   }
 }
 ?>

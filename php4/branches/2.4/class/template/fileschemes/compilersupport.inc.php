@@ -10,24 +10,13 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/file_resolvers/file_resolvers_registry.inc.php');
 
-/**
-* Determines the full path to a source template file.
-*/
-function resolveTemplateSourceFileName($file)
+function ResolveTemplateSourceFileName($file, $operation = TMPL_INCLUDE, $context = NULL)
 {
   resolveHandle($resolver =& getFileResolver('template'));
 
   return $resolver->resolve($file);
 }
 
-/**
-* Writes a compiled template file
-*
-* @param string $ filename
-* @param string $ content to write to the file
-* @return void
-* @access protected
-*/
 function writeTemplateFile($file, $data)
 {
   if(!is_dir(dirname($file)))
@@ -35,9 +24,9 @@ function writeTemplateFile($file, $data)
 
   $fp = fopen($file, "wb");
   if (fwrite($fp, $data, strlen($data)))
-  {
     fclose($fp);
-  }
 }
+
+function CompileEntireFileScheme(){}
 
 ?>

@@ -18,6 +18,11 @@ Mock :: generatePartial(
 
 class IniTest extends LimbTestCase
 {
+  function IniTest()
+  {
+    parent :: LimbTestCase('ini test');
+  }
+
   function setUp()
   {
     DebugMock :: init($this);
@@ -350,6 +355,23 @@ class IniTest extends LimbTestCase
 
     $var = $ini->getOption('test', 'test3');
     $this->assertEqual($var, array('wow' => 1, 'hey' => 2));
+  }
+
+  function testReplaceConstants()
+  {
+    define('INI_TEST_UNIQUE_CONSTANT', '*constant*');
+
+    registerTestingIni(
+      'testing.ini',
+      '
+        [test]
+        test = {INI_TEST_UNIQUE_CONSTANT}1
+      '
+    );
+
+    $ini = getIni('testing.ini');
+
+    $this->assertEqual($ini->getOption('test', 'test'), '*constant*1');
   }
 
   function testGetGroup()

@@ -12,9 +12,9 @@ require_once(LIMB_DIR . '/class/lib/util/log.class.php');
 
 class LogTest extends LimbTestCase
 {
-  function logTest()
+  function LogTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('log test');
   }
 
   function testWritingToFile()

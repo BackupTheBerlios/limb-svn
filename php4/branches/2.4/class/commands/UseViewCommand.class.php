@@ -20,7 +20,7 @@ class UseViewCommand //implements Command
 
   function perform()
   {
-    $handle = array(WACT_ROOT . 'template/template.inc.php|Template', $this->template_path);
+    $handle = array(WACT_ROOT . '/template/template.inc.php|Template', $this->template_path);
 
     $toolkit =& Limb :: toolkit();
     $toolkit->setView($handle);
