@@ -60,7 +60,6 @@ class form_edit_site_object_action extends form_site_object_action
 		$object_data =& fetch_mapped_by_url();
 
 		$data = array();
-		
 		complex_array :: map(array_flip($this->definition['datamap']), $object_data, $data);
 		
 		$this->dataspace->import($data);

@@ -694,12 +694,11 @@ class site_object extends object
 		$tree =& tree :: instance();
 		
 		$node = $tree->get_node($data['node_id']);
-		
 		if (isset($data['parent_node_id']) && isset($data['node_id']))
 		{
 			if ($node['parent_id'] != $data['parent_node_id'])
 			{
-				if (!$tree->move_tree($data['node_id'], $data['parent_node_id'], NESE_MOVE_BELOW))
+				if (!$tree->move_tree($data['node_id'], $data['parent_node_id']))
 				{
 				 	error('could not move node',
 	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 

@@ -20,13 +20,7 @@ class node_select_component extends input_form_element
 					
 		echo "<script type='text/javascript' src='/shared/js/node_select.js'></script>";
 		
-		define('NODE_SELECT_LOAD_SCRIPT', 1);
-		
-		if(!$node_id = $this->get_value())
-		{
-			$object_data = fetch_mapped_by_url();
-			$this->set_value($object_data['node_id']);
-		}
+		define('NODE_SELECT_LOAD_SCRIPT', 1);		
 	}
 	
 	function render_node_select()
