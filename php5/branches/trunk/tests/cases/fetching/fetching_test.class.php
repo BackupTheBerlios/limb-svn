@@ -70,7 +70,7 @@ class fetching_test extends db_test
   {
   	parent :: setUp();
   	
-  	$this->fetcher =& new fetcher();
+  	$this->fetcher = new fetcher();
   	
   	$this->fetcher->set_jip_status(true);
   	

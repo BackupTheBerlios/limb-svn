@@ -22,7 +22,7 @@ class TestFinder
 	
 	function &getTestCasesHandlesFromPackages()
 	{	  
-	  $finder =& new TestFinder();
+	  $finder = new TestFinder();
 	  $info =& packages_info :: instance();
 	  
 	  $packages = $info->get_packages();
@@ -41,7 +41,7 @@ class TestFinder
 
 	function &getTestCasesHandlesFromDirectory($directory)
 	{
-	  $finder =& new TestFinder();
+	  $finder = new TestFinder();
 		$files = $finder->_getFileList($directory, array(&$finder, '_isTestCaseFile'));
 		
 		return $finder->_getTestCasesHandlesFromFilesList($files);
@@ -49,7 +49,7 @@ class TestFinder
 
 	function &getTestCasesHandlesFromDirectoryRecursive($directory)
 	{
-	  $finder =& new TestFinder();
+	  $finder = new TestFinder();
 		$files = $finder->_getRecursiveFileList($directory, array(&$finder, '_isTestCaseFile'));
 		
 		return $finder->_getTestCasesHandlesFromFilesList($files);

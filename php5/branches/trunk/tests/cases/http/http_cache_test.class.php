@@ -21,8 +21,8 @@ class http_cache_test extends LimbTestCase
   
   function setUp()
   {
-    $this->response =& new Mockhttp_response($this);
-    $this->cache =& new http_cache();
+    $this->response = new Mockhttp_response($this);
+    $this->cache = new http_cache();
     $this->server_vars = $_SERVER;
   }
   

@@ -19,8 +19,8 @@ $force = false;
 if(isset($argv[2]) && $argv[2] == 'force')
 	$force = true;
 
-$response =& new nonbuffered_response();
-$mgr =& new cron_manager();
+$response = new nonbuffered_response();
+$mgr = new cron_manager();
 
 $mgr->perform($response, $force);
   

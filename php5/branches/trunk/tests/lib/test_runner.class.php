@@ -16,7 +16,7 @@ class TestRunner
   
   function TestRunner()
   {
-    $this->test_manager =& new TestsTreeManager();
+    $this->test_manager = new TestsTreeManager();
   }
   
   function &_getReporter()

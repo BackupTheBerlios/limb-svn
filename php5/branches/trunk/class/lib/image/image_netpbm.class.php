@@ -113,7 +113,7 @@ class image_netpbm extends image_library
 	    $this->create_types[] = 'TIFF';
 	}
 	
-	public function set_input_file($file_name, $type)
+	public function set_input_file($file_name, $type = '')
 	{
 	  parent :: set_input_file($file_name, $type);
     

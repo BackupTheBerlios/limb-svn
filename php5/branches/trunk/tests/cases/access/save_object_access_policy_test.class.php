@@ -31,9 +31,9 @@ class save_object_access_policy_test extends db_test
   	parent :: setUp();
   	
   	$this->ac =& access_policy :: instance();
-		$this->object =& new Mocksite_object($this);
-		$this->parent_object =& new Mocksite_object($this);
-		$this->parent_object_controller =& new Mocksite_object_controller($this);
+		$this->object = new Mocksite_object($this);
+		$this->parent_object = new Mocksite_object($this);
+		$this->parent_object_controller = new Mocksite_object_controller($this);
 		
 		$this->object->expectOnce('get_id');
 		$this->parent_object->expectOnce('get_id');

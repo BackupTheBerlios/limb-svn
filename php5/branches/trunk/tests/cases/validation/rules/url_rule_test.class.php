@@ -18,7 +18,7 @@ class url_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new url_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'https://wow.com.dot:81/this/a/valid/url?hey=wow&test');
 
 		$this->error_list->expectNever('add_error');
@@ -31,7 +31,7 @@ class url_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new url_rule('testfield'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('testfield', '://not/a/valid/url');
 
 		$this->error_list->expectOnce('add_error', array('testfield', 'BAD_URL', array()));

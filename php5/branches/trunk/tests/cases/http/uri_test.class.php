@@ -16,7 +16,7 @@ class uri_test extends LimbTestCase
   
   function setUp()
   {
-    $this->uri =& new uri();
+    $this->uri = new uri();
   }
   
   function tearDown()

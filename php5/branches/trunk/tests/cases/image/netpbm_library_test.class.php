@@ -22,7 +22,7 @@ class netpbm_library_test extends image_library_test
   
   function netpbm_library_test() 
   {
-  	$this->library =& new image_netpbm();
+  	$this->library = new image_netpbm();
 
   	parent :: image_library_test();
   }

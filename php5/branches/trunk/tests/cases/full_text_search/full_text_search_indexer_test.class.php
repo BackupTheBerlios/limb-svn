@@ -26,9 +26,9 @@ class full_text_search_indexer_test extends LimbTestCase
 		
 		$this->_clean_up();
 		
-		$this->indexer =& new full_text_indexer();
+		$this->indexer = new full_text_indexer();
 		
-		$this->site_object =& new Mocksite_object($this);
+		$this->site_object = new Mocksite_object($this);
 		
 		$this->site_object->setReturnValue('get_id', 10);
 		$this->site_object->setReturnValue('export', 

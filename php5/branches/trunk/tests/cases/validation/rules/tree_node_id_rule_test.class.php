@@ -51,7 +51,7 @@ class tree_node_id_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_node_id_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '');
 
 		$this->error_list->expectNever('add_error');
@@ -64,7 +64,7 @@ class tree_node_id_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_node_id_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', false);
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_node_id', 'error'), array()));
@@ -77,7 +77,7 @@ class tree_node_id_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_node_id_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', $this->node_id_document);
 
 		$this->error_list->expectNever('add_error');
@@ -90,7 +90,7 @@ class tree_node_id_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_node_id_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', -10000);
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_node_id', 'error'), array()));

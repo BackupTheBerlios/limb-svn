@@ -37,10 +37,10 @@ class partial_page_cache_manager_test extends LimbTestCase
   
   function setUp()
   {
-    $this->uri =& new Mockuri($this);
-    $this->user =& new Mockuser($this);
+    $this->uri = new Mockuri($this);
+    $this->user = new Mockuser($this);
     
-    $this->cache_manager =& new partial_page_cache_manager_test_version($this);
+    $this->cache_manager = new partial_page_cache_manager_test_version($this);
     $this->cache_manager->set_uri($this->uri);
     
     $this->cache_manager->setReturnReference('_get_user', $this->user);
@@ -399,7 +399,7 @@ class partial_page_cache_manager_test extends LimbTestCase
 
   function test_get()
   {
-    $cache_manager =& new partial_page_cache_manager_test_version2($this);
+    $cache_manager = new partial_page_cache_manager_test_version2($this);
     $cache_manager->set_uri($this->uri);
     
     $this->_write_simple_cache($cache_id = 1, $contents = 'test-test');
@@ -423,7 +423,7 @@ class partial_page_cache_manager_test extends LimbTestCase
 
   function test_write()
   {
-    $cache_manager =& new partial_page_cache_manager_test_version2($this);
+    $cache_manager = new partial_page_cache_manager_test_version2($this);
     $cache_manager->set_uri($this->uri);
     
     $contents = 'test-test';
@@ -442,7 +442,7 @@ class partial_page_cache_manager_test extends LimbTestCase
   {
     $this->_write_simple_cache($cache_id = 1, $contents = 'test-overwrite');
     
-    $cache_manager =& new partial_page_cache_manager_test_version2($this);
+    $cache_manager = new partial_page_cache_manager_test_version2($this);
     $cache_manager->set_uri($this->uri);
     
     $contents = 'test-test';
@@ -463,7 +463,7 @@ class partial_page_cache_manager_test extends LimbTestCase
     $this->_write_simple_cache('p_test2', $content2 ='test-content2');
     $this->_write_simple_cache('not_page_file', $content3 ='test-content3');
     
-    $cache_manager =& new partial_page_cache_manager();
+    $cache_manager = new partial_page_cache_manager();
     $cache_manager->flush();
     
     $files = fs :: find_subitems(PAGE_CACHE_DIR);

@@ -27,8 +27,8 @@ class rule_test extends LimbTestCase
 	
 	function setUp()
 	{
-   $this->error_list =& new Mockerror_list($this);
-   $this->validator =& new validator_test_version($this);
+   $this->error_list = new Mockerror_list($this);
+   $this->validator = new validator_test_version($this);
    $this->validator->setReturnReference('_get_error_list', $this->error_list);
 	} 
 	

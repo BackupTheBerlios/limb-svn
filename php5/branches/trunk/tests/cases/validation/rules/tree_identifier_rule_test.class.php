@@ -66,7 +66,7 @@ class tree_identifier_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru, $this->node_id_document));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '');
 
 		$this->error_list->expectNever('add_error');
@@ -79,7 +79,7 @@ class tree_identifier_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru, $this->node_id_document));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'id_test');
 
 		$this->error_list->expectNever('add_error');
@@ -92,7 +92,7 @@ class tree_identifier_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru, $this->node_id_document));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'doc1');
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_duplicate_tree_identifier', 'error'), array()));
@@ -105,7 +105,7 @@ class tree_identifier_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru, $this->node_id_doc1));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'doc1');
 
 		$this->error_list->expectNever('add_error');
@@ -118,7 +118,7 @@ class tree_identifier_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'doc1');
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_duplicate_tree_identifier', 'error'), array()));

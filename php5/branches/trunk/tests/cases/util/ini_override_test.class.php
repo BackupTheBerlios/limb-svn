@@ -81,14 +81,14 @@ class ini_override_test extends LimbTestCase
       'test = 2'
     );
     
-    $ini =& new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...    
+    $ini = new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...    
     
     // caching happens very quickly we have to tweak the original file modification time
     // in order to test     
     touch($ini->get_original_file(), time()+100);
     touch($ini->get_override_file(), time()-100);
     
-    $ini_mock =& new ini_mock_version_override($this);
+    $ini_mock = new ini_mock_version_override($this);
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_save_cache');
     
@@ -111,12 +111,12 @@ class ini_override_test extends LimbTestCase
       'test = 2'
     );
     
-    $ini =& new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...    
+    $ini = new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...    
     
     touch($ini->get_original_file(), time()-100);
     unlink($ini->get_override_file());
     
-    $ini_mock =& new ini_mock_version_override($this);
+    $ini_mock = new ini_mock_version_override($this);
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_save_cache');
     
@@ -139,14 +139,14 @@ class ini_override_test extends LimbTestCase
       'test = 2'
     );
     
-    $ini =& new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...    
+    $ini = new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...    
     
     // caching happens very quickly we have to tweak the original file modification time
     // in order to test     
     touch($ini->get_original_file(), time()-100);
     touch($ini->get_override_file(), time()+100);
     
-    $ini_mock =& new ini_mock_version_override($this);
+    $ini_mock = new ini_mock_version_override($this);
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_save_cache');
     
@@ -169,9 +169,9 @@ class ini_override_test extends LimbTestCase
       'test = 2'
     );
     
-    $ini =& new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here... 
+    $ini = new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here... 
     
-    $ini_mock =& new ini_mock_version_override($this);
+    $ini_mock = new ini_mock_version_override($this);
     
     touch($ini->get_cache_file(), time()+100);
     

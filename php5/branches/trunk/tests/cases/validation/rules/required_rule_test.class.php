@@ -32,7 +32,7 @@ class required_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new required_rule('testfield'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('testfield', 0);
 
 		$this->error_list->expectNever('add_error');
@@ -45,7 +45,7 @@ class required_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new required_rule('testfield'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('testfield', '0');
 
 		$this->error_list->expectNever('add_error');
@@ -58,7 +58,7 @@ class required_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new required_rule('testfield'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('testfield', false);
 
 		$this->error_list->expectNever('add_error');

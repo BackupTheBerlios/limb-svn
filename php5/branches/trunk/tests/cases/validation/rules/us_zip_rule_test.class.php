@@ -18,7 +18,7 @@ class us_zip_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new us_zip_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '49007');
 
 		$this->error_list->expectNever('add_error');
@@ -31,7 +31,7 @@ class us_zip_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new us_zip_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '49007 1234');
 
 		$this->error_list->expectNever('add_error');
@@ -44,7 +44,7 @@ class us_zip_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new us_zip_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '490078');
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_zip_format', 'error'), array()));
@@ -57,7 +57,7 @@ class us_zip_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new us_zip_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '49007 23234');
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_zip_format', 'error'), array()));
@@ -70,7 +70,7 @@ class us_zip_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new us_zip_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '4t007 12d4');
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_zip_format', 'error'), array()));

@@ -29,8 +29,8 @@ class validator_test extends LimbTestCase
   
 	function setUp()
 	{
-   $this->error_list =& new Mockerror_list($this);
-   $this->validator =& new validator_test_version2($this);
+   $this->error_list = new Mockerror_list($this);
+   $this->validator = new validator_test_version2($this);
    $this->validator->setReturnReference('_get_error_list', $this->error_list);
 	} 
 	  	  
@@ -41,7 +41,7 @@ class validator_test extends LimbTestCase
       
   function test_validate_true()
   {
-  	$r1 =& new Mockrule($this);
+  	$r1 = new Mockrule($this);
   	
   	$r1->expectOnce('validate');
   	$r1->expectOnce('is_valid');
@@ -58,8 +58,8 @@ class validator_test extends LimbTestCase
   
   function test_validate_false()
   {
-  	$r1 =& new Mockrule($this);
-  	$r2 =& new Mockrule($this);
+  	$r1 = new Mockrule($this);
+  	$r2 = new Mockrule($this);
   	
   	$r1->setReturnValue('is_valid', true);
   	$r2->setReturnValue('is_valid', false);

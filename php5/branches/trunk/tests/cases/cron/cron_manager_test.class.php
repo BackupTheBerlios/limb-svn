@@ -35,9 +35,9 @@ class cron_manager_test extends LimbTestCase
   
   function setUp()
   {
-    $this->cron_manager =& new cron_manager_test_version($this);
-    $this->response =& new Mockresponse($this);
-    $this->cron_job =& new Mockcommand($this);
+    $this->cron_manager = new cron_manager_test_version($this);
+    $this->response = new Mockresponse($this);
+    $this->cron_job = new Mockcommand($this);
   }
   
   function tearDown()
@@ -229,7 +229,7 @@ class cron_manager_test extends LimbTestCase
   {
     $job = array('handle' => dirname(__FILE__) . '/testing_cron_job', 'interval' => 1);
     
-    $cron_manager =& new cron_manager_test_version2($this);
+    $cron_manager = new cron_manager_test_version2($this);
     
     $cron_manager->setReturnValue('get_jobs',
       array('cron-job' => $job)    
@@ -253,7 +253,7 @@ class cron_manager_test extends LimbTestCase
       "
     );
     
-    $cron_manager =& new cron_manager();
+    $cron_manager = new cron_manager();
     
     $this->response->expectArgumentsAt(1, 'write', array('I was performed'));
     

@@ -46,15 +46,15 @@ class image_cache_manager_test extends LimbTestCase
   
   function setUp()
   {
-    $this->uri =& new Mockuri($this);
-    $this->user =& new Mockuser($this);
-    $this->fetcher =& new Mockfetcher($this);
+    $this->uri = new Mockuri($this);
+    $this->user = new Mockuser($this);
+    $this->fetcher = new Mockfetcher($this);
     
-    $this->cache_manager =& new image_cache_manager_test_version($this);
+    $this->cache_manager = new image_cache_manager_test_version($this);
     $this->cache_manager->set_uri($this->uri);    
     $this->cache_manager->setReturnReference('_get_user', $this->user);
     
-    $this->cache_manager2 =& new image_cache_manager_test_version2($this);
+    $this->cache_manager2 = new image_cache_manager_test_version2($this);
     $this->cache_manager2->setReturnValue('is_cacheable', true);
     $this->cache_manager2->setReturnReference('_get_fetcher', $this->fetcher);
   }
@@ -458,7 +458,7 @@ class image_cache_manager_test extends LimbTestCase
   {  
     $c = '<p><img alt="test" src="/root?node_id=1&icon" border="0"></p>';
     
-    $cache_manager =& new image_cache_manager_test_version3($this);
+    $cache_manager = new image_cache_manager_test_version3($this);
     $cache_manager->setReturnValue('is_cacheable', true);
     $cache_manager->setReturnReference('_get_fetcher', $this->fetcher);
   
@@ -487,7 +487,7 @@ class image_cache_manager_test extends LimbTestCase
 
   function test_cached_write_file_no_media_file()
   {
-    $cache_manager =& new image_cache_manager_test_version3($this);
+    $cache_manager = new image_cache_manager_test_version3($this);
     $cache_manager->setReturnValue('is_cacheable', true);
     $cache_manager->setReturnReference('_get_fetcher', $this->fetcher);
     

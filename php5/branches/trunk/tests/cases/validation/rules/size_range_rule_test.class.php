@@ -18,7 +18,7 @@ class size_range_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new size_range_rule('testfield', 10));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 
 		$this->error_list->expectNever('add_error');
 
@@ -30,7 +30,7 @@ class size_range_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new size_range_rule('testfield', 5, 10));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('testfield', '');
 
 		$this->error_list->expectNever('add_error');

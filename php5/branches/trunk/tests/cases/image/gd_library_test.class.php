@@ -23,7 +23,7 @@ class gd_library_test extends image_library_test
   
   function gd_library_test() 
   {
-  	$this->library =& new image_gd();
+  	$this->library = new image_gd();
 
   	parent :: image_library_test();
   }

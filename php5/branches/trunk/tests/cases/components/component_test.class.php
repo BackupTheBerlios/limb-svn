@@ -18,7 +18,7 @@ class component_test extends dataspace_test
 {	 
 	function setUp()
 	{
-		$this->dataspace =& new component();
+		$this->dataspace = new component();
 	}
 	 
 	function tearDown()

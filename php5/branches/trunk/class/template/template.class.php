@@ -63,11 +63,18 @@ class template extends component
 			  include_once(LIMB_DIR . 'class/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);
 			}
+
+      $errorlevel = error_reporting();
+      			
+			if(!defined('DONT_LOWER_TEMPLATES_ERROR_REPORTING'))
+			{
+			  error_reporting($errorlevel &~E_WARNING);
+			}
 			
-			$errorlevel = error_reporting();
-			error_reporting($errorlevel &~E_WARNING);
 			$parse_error = include_once($this->codefile);
-			error_reporting($errorlevel);
+			
+			if(!defined('SET_TEMPLATES_ERROR_REPORTING'))			
+			  error_reporting($errorlevel);
 			
 		} 
 		$this->render_function = $GLOBALS['template_render'][$this->codefile];

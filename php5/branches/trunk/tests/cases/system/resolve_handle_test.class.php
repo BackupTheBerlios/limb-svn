@@ -36,7 +36,7 @@ class resolve_handle_test extends LimbTestCase
   
 	function test_object_unaffected() 
 	{
-    $handle =& new unaffected_object();
+    $handle = new unaffected_object();
     $obj =& $handle;
     $obj->test_var = 'changed';
     resolve_handle($handle);

@@ -18,7 +18,7 @@ class packages_info_test extends LimbTestCase
   
   function setUp()
   {
-    $this->info =& new packages_info();
+    $this->info = new packages_info();
   }
   
   function tearDown()

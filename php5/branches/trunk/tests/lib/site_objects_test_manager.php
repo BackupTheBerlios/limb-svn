@@ -12,7 +12,7 @@ class SiteObjectsTestManager
 {
 	function getTestCasesHandlesWithLoader($loader, $tester_postfix='')
 	{
-	  $manager =& new SiteObjectsTestManager();
+	  $manager = new SiteObjectsTestManager();
 	  
 	  $handles = array();
 	  foreach($loader->get_classes_list() as $site_object_class)

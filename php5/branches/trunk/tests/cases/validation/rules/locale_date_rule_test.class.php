@@ -19,7 +19,7 @@ class locale_date_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new locale_date_rule('test', 'en'));
 		
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '02/28/2003');
 
 		$this->error_list->expectNever('add_error');
@@ -32,7 +32,7 @@ class locale_date_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new locale_date_rule('test', 'en'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '02/29/2003');
 
 		$this->error_list->expectOnce('add_error', array('test', 'INVALID_DATE', array()));
@@ -45,7 +45,7 @@ class locale_date_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new locale_date_rule('test', 'en'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '28/12/2003');
 
 		$this->error_list->expectOnce('add_error', array('test', 'INVALID_DATE', array()));
@@ -58,7 +58,7 @@ class locale_date_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new locale_date_rule('test', 'en'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '02-29-2003');
 
 		$this->error_list->expectOnce('add_error', array('test', 'INVALID_DATE', array()));
@@ -71,7 +71,7 @@ class locale_date_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new locale_date_rule('test', 'en'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '02jjklklak/sdsdskj34-sdsdsjkjkj78');
 
 		$this->error_list->expectOnce('add_error', array('test', 'INVALID_DATE', array()));

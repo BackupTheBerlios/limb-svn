@@ -18,7 +18,7 @@ class email_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new email_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'billgates@microsoft.com');
 
 		$this->error_list->expectNever('add_error');
@@ -31,7 +31,7 @@ class email_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new email_rule('testfield'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('testfield', 'billgatesmicrosoft.com');
 
 		$this->error_list->expectOnce('add_error', array('testfield', strings :: get('invalid_email', 'error'), array()));

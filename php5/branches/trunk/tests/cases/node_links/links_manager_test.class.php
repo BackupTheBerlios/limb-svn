@@ -19,7 +19,7 @@ class links_manager_test extends LimbTestCase
   function setUp()
   {
   	$this->db =& db_factory :: instance();
-   	$this->links_manager =& new links_manager();
+   	$this->links_manager = new links_manager();
    	
    	$this->_clean_up();
   }

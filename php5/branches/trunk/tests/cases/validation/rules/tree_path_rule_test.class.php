@@ -51,7 +51,7 @@ class tree_path_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_path_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '');
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_path', 'error'), array()));
@@ -64,7 +64,7 @@ class tree_path_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_path_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '/root/document');
 
 		$this->error_list->expectNever('add_error');
@@ -77,7 +77,7 @@ class tree_path_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new tree_path_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', '/root/document/1');
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_path', 'error'), array()));

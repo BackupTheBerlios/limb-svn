@@ -31,7 +31,7 @@ class image_factory
 		  
 		  include_once($dir . $image_class_name . '.class.php');
 		  
-		  $obj =& new $image_class_name();
+		  $obj = new $image_class_name();
   		$GLOBALS['global_' . $image_class_name] =& $obj;
   	}
   	

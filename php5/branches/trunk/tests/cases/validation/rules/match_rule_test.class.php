@@ -18,7 +18,7 @@ class match_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new match_rule('testfield', 'testmatch'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('testfield', 'peaches');
 		$data->set('testmatch', 'peaches');
 
@@ -70,7 +70,7 @@ class match_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new match_rule('testfield', 'testmatch'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('testfield', 'peaches');
 		$data->set('testmatch', 'cream');
 

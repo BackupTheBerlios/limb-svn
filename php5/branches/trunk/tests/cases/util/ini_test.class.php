@@ -425,13 +425,13 @@ class ini_test extends LimbTestCase
       'test = 1'
     );
     
-    $ini =& new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...    
+    $ini = new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...    
     
     // caching happens very quickly we have to tweak the cache file modification time
     // in order to test cache hit    
     touch($ini->get_cache_file(), time()+100);
     
-    $ini_mock =& new ini_mock_version($this);
+    $ini_mock = new ini_mock_version($this);
     $ini_mock->expectNever('_parse');
     $ini_mock->expectNever('_save_cache');
     
@@ -451,12 +451,12 @@ class ini_test extends LimbTestCase
       'test = 1'
     );
     
-    $ini =& new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...    
+    $ini = new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...    
     
     $this->assertTrue(file_exists($ini->get_cache_file()));   
     unlink($ini->get_cache_file());
     
-    $ini_mock =& new ini_mock_version($this);
+    $ini_mock = new ini_mock_version($this);
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_save_cache');
     
@@ -474,13 +474,13 @@ class ini_test extends LimbTestCase
       'test = 1'
     );
     
-    $ini =& new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...    
+    $ini = new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...    
     
     // caching happens very quickly we have to tweak the original file modification time
     // in order to test     
     touch($ini->get_original_file(), time()+100);
     
-    $ini_mock =& new ini_mock_version($this);
+    $ini_mock = new ini_mock_version($this);
     $ini_mock->expectOnce('_parse');
     $ini_mock->expectOnce('_save_cache');
     
@@ -498,7 +498,7 @@ class ini_test extends LimbTestCase
       'test = 1'
     );
     
-    $ini =& new ini_mock_version($this);
+    $ini = new ini_mock_version($this);
     $ini->expectOnce('_parse');
     $ini->expectOnce('_save_cache');
     
@@ -516,7 +516,7 @@ class ini_test extends LimbTestCase
       'test = 1'
     );
     
-    $ini =& new ini_mock_version($this);
+    $ini = new ini_mock_version($this);
     
     $ini->expectOnce('_parse');
     $ini->expectNever('_save_cache');

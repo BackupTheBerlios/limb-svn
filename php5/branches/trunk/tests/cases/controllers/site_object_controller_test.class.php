@@ -59,7 +59,7 @@ class site_object_controller_test extends LimbTestCase
   	$this->request = new Mockrequest($this);
   	$this->response = new Mockhttp_response($this);
   	
-  	$this->site_object_controller =& new site_object_controller_test_version1($this);
+  	$this->site_object_controller = new site_object_controller_test_version1($this);
   	$this->site_object_controller->setReturnValue('get_actions_definitions', $this->actions_definition_test);
   	$this->site_object_controller->__construct();
   }
@@ -128,9 +128,9 @@ class site_object_controller_test extends LimbTestCase
 
   function test_display_view()
   { 
-  	$template =& new Mocktemplate($this);
+  	$template = new Mocktemplate($this);
   	
-  	$site_object_controller =& new site_object_controller_test_version2($this);
+  	$site_object_controller = new site_object_controller_test_version2($this);
   	$site_object_controller->setReturnValue('get_actions_definitions', $this->actions_definition_test);
   	
   	$this->request->setReturnValue('get', 'action_test', array('action'));
@@ -178,10 +178,10 @@ class site_object_controller_test extends LimbTestCase
     
   function test_process()
   { 
-  	$action =& new Mockaction($this);
-  	$template =& new Mocktemplate($this);
+  	$action = new Mockaction($this);
+  	$template = new Mocktemplate($this);
   	
-  	$site_object_controller =& new site_object_controller_test_version2($this);
+  	$site_object_controller = new site_object_controller_test_version2($this);
    	
   	$site_object_controller->setReturnValue('get_actions_definitions', $this->actions_definition_test);
 

@@ -43,7 +43,7 @@ class unique_user_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new unique_user_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'maso');
 
 		$this->error_list->expectNever('add_error');
@@ -56,7 +56,7 @@ class unique_user_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new unique_user_rule('test'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'vasa');
 
 		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_duplicate_user', 'error'), array()));
@@ -69,7 +69,7 @@ class unique_user_rule_test extends single_field_rule_test
 	{
 		$this->validator->add_rule(new unique_user_rule('test', 'maso'));
 
-		$data =& new dataspace();
+		$data = new dataspace();
 		$data->set('test', 'maso');
 
 		$this->error_list->expectNever('add_error');

@@ -36,7 +36,7 @@ class metadata_component_test extends db_test
   {
   	parent :: setUp();
   	
-  	$this->metadata_component =& new metadata_component_test_version($this);
+  	$this->metadata_component = new metadata_component_test_version($this);
   	$this->metadata_component->__construct();
   	
   	$this->controller = new Mocksite_object_controller($this);

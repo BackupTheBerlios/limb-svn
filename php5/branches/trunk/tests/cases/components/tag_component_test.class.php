@@ -17,7 +17,7 @@ class tag_component_test extends component_test
 {
 	function setUp()
 	{
-		$this->dataspace =& new tag_component();
+		$this->dataspace = new tag_component();
 	} 
 	
 	function test_get_client_id()

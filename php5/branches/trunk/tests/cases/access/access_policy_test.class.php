@@ -120,7 +120,7 @@ class access_policy_test extends db_test
  	{
 		$this->_login_user(200, array(100 => 'admins'));
 		
-		$m =& new Mocksite_object_controller($this);
+		$m = new Mocksite_object_controller($this);
 		$m->setReturnValue('get_actions_definitions', $this->site_object_controller_actions);
 		
 		$this->ac->expectOnce('_get_controller');

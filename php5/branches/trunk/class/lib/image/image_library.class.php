@@ -27,7 +27,7 @@ abstract class image_library
 		return $this->library_installed;
 	}
 
-	public function set_input_file($file_name, $type)
+	public function set_input_file($file_name, $type = '')
 	{
 		if (!$this->library_installed)
 			return false;
