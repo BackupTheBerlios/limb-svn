@@ -1,0 +1,34 @@
+ADDING AN OBJECT AT ANY POINT
+
+To create an absolutely new object we use create_object.php script that
+could be found at your project root directory. You use this script if 
+there is no appropriate action at any object you have with a project.
+So create_object.php permits you to create objects at any node of
+site tree. 
+
+NOTE: create_object.php doesn't require authentication
+so don't leave it at your public site. The problem will be solved 
+to new release. We will put create_object action in one
+of LIMB basic site objects (probably admin_page).
+
+To create a new object input its class name, identifier, title and
+the path to parent object. You can set parent path as '/' to create
+completely new branch in site tree like /root (e.g. /en, /ru). This
+is useful then you try to create multilanguage sites. If object was
+created you will see a message above the form.
+
+NOTE: create_object.php script doesn't check identifier uniqueness
+with in one parent. It's you responsibility for now. We hope to 
+fix it soon.
+
+When a new object is created (and it's the first object of class)
+you will probably want to set actions permissions and actions access
+templates. Also you will probably want to set object's permissions for groups.
+To know more about LIMB access policy visit this page http://limb/documents/AccessPolicy.
+
+After settings permissions you can start working with object. Usually 
+we create a navigation links like /path_to_object?action=admin_display
+for admin pages and /path_to_object for common pages for quick access 
+if object acts as a parent object for some functionality such as news or catalog etc.
+
+

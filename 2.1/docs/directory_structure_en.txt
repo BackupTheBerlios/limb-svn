@@ -1,0 +1,124 @@
+LIMB file structure
+
+LIMB contains the following directories in it's root directory:
+
+LIMB_DIR 
+	|
+	+ - core – here all LIMB php classes are stored (except 
+	tests classes).
+	|
+	+ - design – a directory with images, templates, css-files and so
+	on concerning site appearance
+	|
+	+ - var – all compiled templates, media files, log and cache file
+	are stored here
+	|
+	+ - tests
+
+NOTE: Projects file structure should be equal 
+one in LIMB. This is required by file name resolving
+rules.
+
+Now we can look through directory structure more
+detailed.
+
+LIMB_DIR/core
+	     |
+       + - actions – all classes that implement site
+       functionality are stored here. We haven't come
+       to any conclusion if we need to put business
+       logic into action classes or left it in
+       site_object classes - it a matter of experience. 
+       The action classes for different site_objects 
+       are kept in accordingly names dir. For example
+       create_article_action, edit_article_action and delete_article_action actions are stored in  
+ LIMB/core/actions/article directory. 
+       |
+       + - controllers – Controllers for site_objects are here. Controllers define site_object's functionality.
+       |
+       + - datasource – You can find fetching helper classes for fetch and datasource tags here. Our template are active and it's activity mostly implemented by datasoutces.
+       |
+       + - db_tables – db_tables are classes for working with a single db table. These classes have methods for type-casting, fetching rows from table, creating/edition/deleting rows. They also useful in
+cascade deleting. In future we are planning to use Creole classes instead.
+       |
+       + - lib – this directory could be titled as a LIMB class library (with some restrictions).
+       |
+       + - locale – ini-files for locales configurations could be found here.
+       |
+       + - model – We keep model classes mostly here. But can find audit and statistics related classes, search, actions response classes here, something could be changed eventually. 
+       |
+       + - settings – template mechanism ini-files are kept here (this is a WACT artifact).
+       |
+       + - strings – ini-files with localized strings.
+       |
+       + - template – All view related files, WACT template mechanism.
+       |
+       + - tree – Classes to deal with hierarchic structures.
+       
+
+Let's take a closer look into LIMB_DIR/core/model
+
+LIMB_DIR/core/model	
+		    |
+       	+ - chat – very simple implementation of chat. We just had a simple project with chat so these files are here.
+       	|
+       	+ - response – The objects of these classes are returned from action classes. You could argue about the validity of placing them here.
+		    |
+       	+ - search - indexers and search query classes.
+       	|
+       	+ - shop – A simple implementation of shopping cart.
+		    |
+       	+ - site_objects – site_objects classes.
+       	|
+       	+ - stats – statistics and user audit related classes are kept here. You can also find here stats and audit report makers classes.
+
+Now it's time of LIMB_DIR/core/template directory
+
+LIMB_DIR/core/templates	
+    		|
+       	+ - compiler - compiler classes
+       	|
+       	+ - components – runtime components classes
+		    |
+        + - fileschemes – file name resolving classes
+       	|
+       	+ - tags – tags files 
+      			|
+         		+ - actions – tags to display JIP-actions
+         		|
+         		+ - cart –helper tags for shopping cart
+      			|
+         		+ - chat – chat helper tags 
+         		|
+         		+ - core – some core tags took from WACT. But we also put a lot of new tags here. We believe that some of these tags should be moved to somewhere else. 
+      			|
+         		+ - datasource – template's fetching tag
+         		|
+         		+ - dev –tags to view templates sources.
+        		|
+         		+ - fetch – template's fetching tags. Complement datasource tag
+         		|
+         		+ - form – tags to work with forms. Includes selectors, buttons, inputs and so on.
+    		    |
+         		+ - grid – tags to output table data. You could think of them as WACT list tags
+         		|
+         		+ - hint – tags to output small popup iframes then user move this mouse over some text and image.
+    		    |
+         		+ - locale – data localization tags
+         		|
+         		+ - metadata – you need to pt breadcrumbs, full page title, keywords or charset on your page - look through metadata tags
+    		    |
+         		+ - order – deprecated
+         		|
+         		+ - pager
+      			|
+         		+ - phpbb – some helper tags to use LIMB with phpbb
+         		|
+         		+ - poll – poll logic tags
+      			|
+         		+ - print – outputs link to print version of object if it support print_version action,
+         		|
+         		+ - status – document flow tags should be kept here. 
+    		    |
+         		+ - user – some helper tags to deal with user.
+    

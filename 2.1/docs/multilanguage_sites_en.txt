@@ -1,0 +1,121 @@
+
+We don't have a big experience in creating multilanguage sites. Our experience
+includes several sites with russsian-english content zones and 
+unified admin template for russian-speaking personnel. 
+And a couple of sites with the same difficulty level for english-speaking
+personnel. Unfortunately where there no examples of creating 
+muiltilanguage sites for muiltilanguage speaking personnel but we think
+is not a very strong task with LIMB.
+
+To create multilanguage sites you have to understand the following
+LIMB concepts:
+
+1) access policy
+2) file name resolving 
+3) locale policy
+4) creating objects at any point 
+5) template system
+
+LIMB doesn't use translations of objects as EZ does. We prefer 
+completely different site branches. We think it's less complicated
+and more transparent to users. Of course it does has problems but 
+we didn't face them in our practice yet. So, if you want to have say 
+articles both in English and German you'll probably have at least two
+objects on your site with paths like /root/articles and /de/articles.
+We would be glad to discuss this topic with somebody experienced in
+creating multilanguage sites.
+
+Well, to create a new branch you need to create an object with
+parent path like '/'. Usually you create second main_page object
+if both main pages have the same functionality. Second, you will have
+to set LOCALE_ID for the new object.
+
+—юда нужно добавить описание файла, который будет работать с новой веткой.
+“ипа ru.
+
+Next you have to decide will you create a separate admin template for
+the new branch or just modify the existent one. Separate admin template
+could be very useful if your site will be controlled by several 
+admins each of them using his own language.
+
+Generally speaking you create a new branch using the following 
+algorithm:
+1) In case you need a separate object for some functionality.
+So you create an object, modify or create new templates to show only 
+language (or branch) dependent information.
+2) In case you don't need a separate object you just modify template
+to reflect situation in all branches.
+
+For example, we need new admin page for a new branch. We create new object
+of main_page class with 'admin' as identifier, using '/ru' as parent path.
+Then we copy admin_display_page.html and page.html from 
+path_to_limb_templates/admin to path_to_projects/templates/_ru/admin and
+change say layout, messages, navigation etc.
+
+The next stage is modification of site_structure template to show new 
+branch objects. You just need to copy <fetch:SUB_BRANCH> and 
+<grid:LIST> tags contents like this:
+
+<fetch:SUB_BRANCH target='en_tree'>
+	<core:PARAMETER name='path' value='/root'>
+	// some other parameters here
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='en_tree'>
+<grid:ITERATOR>
+<tr class=row>
+<td height=100%><grid:TREE_ITEM></td>
+<td><small>{$class_name}</small></td>
+<td><core:INCLUDE file="order.html"></td>
+<td><core:INCLUDE file="/jip_actions/simple.html"></td>
+</tr>
+</grid:ITERATOR>
+</grid:LIST>
+
+<fetch:SUB_BRANCH target='ru_tree'>
+	<core:PARAMETER name='path' value='/ru'>
+	// some other parameters here
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='ru_tree'>
+// some othe tags here
+</grid:LIST>
+
+The fact is you can't use '/' as path in fetch tags, the path have to
+point to a real object like '/root'. ThatТs why you need at least
+one fetching operation per branch to show all site objects at one
+page.
+
+Of course you can create a new object of site_structure class and modify 
+new template to show only a new branch objects. Some times we you 
+something like this to prevent template files complication:
+
+<locale:LOCALE name=ТenТ>
+	<fetch:SUB_BRANCH target='tree'>
+		<core:PARAMETER name='datasource_path' value='/fetch_tree_datasource'>
+		<core:PARAMETER name='path' value='/root'>
+		<core:PARAMETER name='depth' value='-1' type='numeric'>
+		<core:PARAMETER name='check_expanded_parents' value='1' type='boolean'>
+		<core:PARAMETER name='include_parent' value='1' type='boolean'>
+		<core:PARAMETER name='restrict_by_class' value='0' type='boolean'>
+	</fetch:SUB_BRANCH>
+	<core:INCLUDE file=Т/site_structure/site_structure_items.htmlТ>
+</locale:LOCALE>
+
+<locale:LOCALE name=ТenТ>
+	<fetch:SUB_BRANCH target='tree'>
+		<core:PARAMETER name='datasource_path' value='/fetch_tree_datasource'>
+		<core:PARAMETER name='path' value='/ru'>
+		<core:PARAMETER name='depth' value='-1' type='numeric'>
+		<core:PARAMETER name='check_expanded_parents' value='1' type='boolean'>
+		<core:PARAMETER name='include_parent' value='1' type='boolean'>
+		<core:PARAMETER name='restrict_by_class' value='0' type='boolean'>
+	</fetch:SUB_BRANCH>
+	
+	<core:INCLUDE file=Т/site_structure/site_structure_items.htmlТ>
+</locale:LOCALE>
+
+NOTE: It is better to make all the template changes in your project 
+directory (except admin templates) and not to modify LIMB 
+default templates. This is very useful then you carry several
+projects using one LIMB version.
