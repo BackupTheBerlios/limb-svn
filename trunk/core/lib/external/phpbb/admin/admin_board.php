@@ -309,6 +309,6 @@ $template->assign_vars(array(
 
 $template->pparse("body");
 
-include('./page_footer_admin.php');
+include($phpbb_root_path . '/admin/page_footer_admin.php');
 
 ?>

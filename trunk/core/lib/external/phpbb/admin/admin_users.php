@@ -870,7 +870,7 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 				for($j = 0; $j < count($avatar_images[$category][$i]); $j++)
 				{
 					$template->assign_block_vars("avatar_row.avatar_column", array(
-						"AVATAR_IMAGE" => PROJECT_DIR . $board_config['avatar_gallery_path'] . "/" . $avatar_images[$category][$i][$j])
+						"AVATAR_IMAGE" => $board_config['avatar_gallery_path'] . "/" . $avatar_images[$category][$i][$j])
 					);
 
 					$template->assign_block_vars("avatar_row.avatar_option_column", array(
@@ -945,13 +945,13 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 			switch( $user_avatar_type )
 			{
 				case USER_AVATAR_UPLOAD:
-					$avatar = '<img src="../' . $board_config['avatar_path'] . '/' . $user_avatar . '" alt="" />';
+					$avatar = '<img src="' . $board_config['avatar_path'] . '/' . $user_avatar . '" alt="" />';
 					break;
 				case USER_AVATAR_REMOTE:
 					$avatar = '<img src="' . $user_avatar . '" alt="" />';
 					break;
 				case USER_AVATAR_GALLERY:
-					$avatar = '<img src="../' . $board_config['avatar_gallery_path'] . '/' . $user_avatar . '" alt="" />';
+					$avatar = '<img src="' . $board_config['avatar_gallery_path'] . '/' . $user_avatar . '" alt="" />';
 					break;
 			}
 		}

@@ -670,7 +670,6 @@ else
 	// of the templates to 'fake' an IF...ELSE...ENDIF solution
 	// it works well :)
 	//
-	trigger_error('Stop', E_USER_WARNING);	
 	if ( $mode != 'register' )
 	{
 		if ( $userdata['user_allowavatar'] && ( $board_config['allow_avatar_upload'] || $board_config['allow_avatar_local'] || $board_config['allow_avatar_remote'] ) )
