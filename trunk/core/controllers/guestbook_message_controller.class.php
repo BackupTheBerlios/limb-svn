@@ -31,6 +31,24 @@ class guestbook_message_controller extends site_object_controller
 						'template_path' => '/guestbook_message/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/publish_action',
+						'img_src' => '/shared/images/publish.gif',
+						'can_have_access_template' => true,
+				),
+				'unpublish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('unpublish'),
+						'action_path' => '/doc_flow_object/unpublish_action',
+						'img_src' => '/shared/images/unpublish.gif',
+						'can_have_access_template' => true,
+				),
 				'delete' => array(
 						'permissions_required' => 'w',
 						'JIP' => true,

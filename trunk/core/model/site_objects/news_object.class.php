@@ -23,7 +23,8 @@ class news_object extends content_object
 				parent :: _define_attributes_definition(),
 				array(
 				'content' => array('search' => true),
-				'annotation' => array('search' => true)
+				'annotation' => array('search' => true),
+				'identifier' => array('search' => false, 'auto_identifier' => true)								
 				));
 	}
 	

@@ -31,6 +31,10 @@ class poll_answer_controller extends site_object_controller
 						'template_path' => '/poll_answer/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
+				'order' => array(
+						'permissions_required' => 'r',
+						'action_path' => 'tree_change_order_action', 
+				),
 				'delete' => array(
 						'permissions_required' => 'w',
 						'JIP' => true,

@@ -36,6 +36,15 @@ class guestbook_controller extends site_object_controller
 						'action_name' => strings :: get('create_message', 'guestbook'),
 						'can_have_access_template' => true,
 				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete'),
+						'action_path' => '/guestbook/delete_guestbook_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				),
 		);
  		
 		parent :: site_object_controller();

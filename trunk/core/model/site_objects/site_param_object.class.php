@@ -5,25 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: site_structure.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
+require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
-class document extends content_object
+class site_param_object extends site_object
 {
-	function document()
+	function site_param_object()
 	{
-		parent :: content_object();
-	}
-	
-	function _define_attributes_definition()
-	{	
-		return complex_array :: array_merge(
-				parent :: _define_attributes_definition(),
-				array(
-				'content' => array('search' => true, 'search_weight' => 1),
-				));
+		parent :: site_object();
 	}
 	
 	function _define_class_properties()
@@ -31,7 +22,7 @@ class document extends content_object
 		return array(
 			'class_ordr' => 1,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'document_controller',
+			'controller_class_name' => 'site_param_object_controller',
 		);
 	}
 }

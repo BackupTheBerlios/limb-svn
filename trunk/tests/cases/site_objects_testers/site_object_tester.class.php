@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
+require_once(LIMB_DIR . 'core/actions/empty_action.class.php');
 
 class mock_root_object extends site_object
 {
@@ -113,6 +114,8 @@ class site_object_tester extends UnitTestCase
 		$definitions = $controller->get_actions_definitions();
 		$controller_class = get_class($controller);
 		
+		$empty_action = new empty_action();
+		
 		foreach($definitions as $action => $data)
 		{
 			$this->assertTrue(isset($data['permissions_required']), 
@@ -132,9 +135,11 @@ class site_object_tester extends UnitTestCase
 			
 			if(isset($data['action_path']))
 			{	
+				debug_mock :: expect_never_write('write_error');
+				
 				$action_obj = action_factory :: create($data['action_path']);
 				
-				$this->assertNotNull($action_obj, 
+				$this->assertNotIdentical($action_obj, $empty_action,
 					'controller: "' . $controller_class . 
 					'" action object for action "' . $action . '"not found');
 					

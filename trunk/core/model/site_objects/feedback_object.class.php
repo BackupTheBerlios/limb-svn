@@ -23,7 +23,7 @@ class feedback_object extends content_object
 				parent :: _define_attributes_definition(),
 				array(
 				'title' => array(),
-				'content' => array(),
+				'content' => array('search' => true, 'search_weight' => 1),
 			));
 	}
 	

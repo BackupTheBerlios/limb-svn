@@ -33,6 +33,33 @@ class faq_folder_container_controller extends site_object_controller
 						'action_name' => strings :: get('create_faq_folder','faq'),
 						'can_have_access_template' => true,
 				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/publish_action',
+						'img_src' => '/shared/images/publish.gif',
+						'can_have_access_template' => true,
+				),
+				'unpublish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('unpublish'),
+						'action_path' => '/doc_flow_object/unpublish_action',
+						'img_src' => '/shared/images/unpublish.gif',
+						'can_have_access_template' => true,
+				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete_faq_folder','faq'),
+						'action_path' => '/faq_folder/delete_faq_folder_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				),
 		);
  		
 		parent :: site_object_controller();

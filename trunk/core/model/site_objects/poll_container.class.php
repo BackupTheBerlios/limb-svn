@@ -165,7 +165,7 @@ class poll_container extends site_object
 		
 		foreach($questions as $key => $data)
 		{
-			if (($data['start_date'] >= $current_date) || ($data['finish_date'] <= $current_date))
+			if (($data['start_date'] > $current_date) || ($data['finish_date'] < $current_date))
 				unset($questions[$key]);
 		}	
 
@@ -181,7 +181,7 @@ class poll_container extends site_object
 	function _process_question(& $poll_data)
 	{
 		$poll_data['answers'] = $this->_load_answers($poll_data['path']);
-		
+
 		$poll_data['total_count'] = 0;
 		foreach($poll_data['answers'] as $answer_id => $answer_data)
 			$poll_data['total_count'] += $answer_data['count'];
