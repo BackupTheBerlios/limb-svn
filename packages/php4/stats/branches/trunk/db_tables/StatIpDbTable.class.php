@@ -8,13 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/setup.php');
-require_once(dirname(__FILE__) . '/StatsRootGroupTest.class.php');
-require_once(LIMB_DIR . '/tests/lib/CliTestRunner.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-$root_group = new StatsRootGroupTest();
-$test_runner = new CLITestRunner();
+class StatIpDbTable extends LimbDbTable
+{
+  function _defineDbTableName()
+  {
+    return 'stat_ip';
+  }
 
-$test_runner->run($root_group);
+  function _defineColumns()
+  {
+    return array(
+      'id' => '',
+      'time' => array('type' => 'numeric')
+    );
+  }
+}
 
 ?>

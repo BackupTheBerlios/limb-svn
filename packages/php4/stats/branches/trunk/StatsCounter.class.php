@@ -8,26 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/date/Date.class.php');
+
 class StatsCounter
 {
   var $_is_new_host = false;
+  var $_is_home_hit = false;
 
   var $_hits_today;
   var $_hosts_today;
   var $_hits_all;
   var $_hosts_all;
 
-  var $db = null;
+  var $counter_db_table = null;
+  var $day_counters_db_table = null;
 
   function StatsCounter()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDbConnection();
+    $this->counter_db_table =& $toolkit->createDBTable('StatCounter');
+    $this->day_counters_db_table =& $toolkit->createDBTable('StatDayCounters');
   }
 
   function setNewHost($status = true)
   {
     $this->_is_new_host = $status;
+  }
+
+  function setHomeHit($status = true)
+  {
+    $this->_is_home_hit = $status;
   }
 
   function update($reg_date)
@@ -74,25 +84,11 @@ class StatsCounter
     return (!isset($_SERVER['HTTP_REFERER']));
   }
 
-  function _isHomeHit()
-  {
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-
-    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
-    $datasource->setRequest($request);
-
-    if(!$object_data = $datasource->fetch())
-      return false;
-
-    return ($object_data['parent_node_id'] == 0);
-  }
-
   function _getCounterRecord($stamp)
   {
-    $this->db->sqlSelect('sys_stat_counter');
+    $record_set =& $this->counter_db_table->select();
 
-    if(($record = $this->db->fetchRow()) === false)
+    if(($record =& $record_set->getRow()) === false)
     {
       $record = array(
         'id' => null,
@@ -102,7 +98,7 @@ class StatsCounter
         'hits_today' => 0,
         'time' => $stamp
       );
-      $this->db->sqlInsert('sys_stat_counter', $record);
+      $this->counter_db_table->insert($record);
 
       $this->_insertNewDayCountersRecord($stamp);
     }
@@ -112,8 +108,8 @@ class StatsCounter
 
   function _getNewDayCountersRecord($stamp)
   {
-    $this->db->sqlSelect('sys_stat_day_counters', '*', array('time' => $this->makeDayStamp($stamp)));
-    return $this->db->fetchRow();
+    $record_set =& $this->day_counters_db_table->select(array('time' => $this->makeDayStamp($stamp)));
+    return $record_set->getRow();
   }
 
   function _insertNewDayCountersRecord($stamp)
@@ -125,7 +121,7 @@ class StatsCounter
       'home_hits' => 0,
       'time' => $this->makeDayStamp($stamp)
     );
-    $this->db->sqlInsert('sys_stat_day_counters', $record);
+    $this->day_counters_db_table->insert($record);
   }
 
   function makeDayStamp($stamp)
@@ -136,18 +132,21 @@ class StatsCounter
 
   function _updateDayCountersRecord($stamp, $hits_today, $hosts_today)
   {
-    $home_hit = ($this->_isHomeHit()) ? 1 : 0;
+    $home_hit = $this->_is_home_hit ? 1 : 0;
     $audience = ($this->_is_new_host &&  $this->_isNewAudience()) ? 1 : 0;
 
-    $sql = "UPDATE sys_stat_day_counters
-            SET hosts={$hosts_today},
-            hits={$hits_today},
-            home_hits=home_hits+{$home_hit},
-            audience=audience+{$audience}
-            WHERE
-            time=" . $this->makeDayStamp($stamp);
+    $sql = new SimpleUpdateSQL($this->day_counters_db_table->getTableName());
+    $sql->addField('hosts = ' . $hosts_today);
+    $sql->addField('hits = ' . $hits_today);
+    $sql->addField('home_hits = home_hits + ' . $home_hit);
+    $sql->addField('audience = audience + ' . $audience);
+    $sql->addCondition('time =' . $this->makeDayStamp($stamp));
 
-    $this->db->sqlExec($sql);
+    $toolkit =& Limb :: toolkit();
+    $conn =& $toolkit->getDBConnection();
+    $stmt =& $conn->newStatement($sql->toString());
+
+    $stmt->execute();
   }
 
   function _updateCountersRecord($stamp, $hits_today, $hosts_today, $hits_all, $hosts_all)
@@ -158,7 +157,7 @@ class StatsCounter
     $update_array['hosts_all'] = $hosts_all;
     $update_array['time'] = $stamp;
 
-    $this->db->sqlUpdate('sys_stat_counter', $update_array);
+    $this->counter_db_table->update($update_array);
   }
 }
 ?>

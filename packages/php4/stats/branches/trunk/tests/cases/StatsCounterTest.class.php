@@ -8,23 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../StatsRegister.class.php');
-require_once(dirname(__FILE__) . '/../../../StatsCounter.class.php');
+require_once(dirname(__FILE__) . '/../../StatsRegister.class.php');
+require_once(dirname(__FILE__) . '/../../StatsCounter.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
-
-Mock :: generatePartial
-(
-  'StatsCounter',
-  'StatsCounterTestVersion',
-  array(
-    '_isHomeHit',
-    '_isNewAudience',
-  )
-);
 
 class StatsCounterTest extends LimbTestCase
 {
   var $db = null;
+  var $conn = null;
 
   var $stats_counter = null;
 
@@ -35,28 +26,23 @@ class StatsCounterTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& LimbDbPool :: getConnection();
+    $this->conn =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb($this->conn);
 
-    $this->stats_counter = new StatsCounterTestVersion($this);
-    $this->stats_counter->StatsCounter();
-
-    $this->stats_counter->setReturnValue('_isHomeHit', false);
-    $this->stats_counter->setReturnValue('_isNewAudience', false);
+    $this->stats_counter = new StatsCounter();
 
     $this->_cleanUp();
   }
 
   function tearDown()
   {
-    $this->stats_counter->tally();
-
     $this->_cleanUp();
   }
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_stat_counter');
-    $this->db->sqlDelete('sys_stat_day_counters');
+    $this->db->delete('stat_counter');
+    $this->db->delete('stat_day_counters');
   }
 
   function testNewHost()
@@ -142,7 +128,9 @@ class StatsCounterTest extends LimbTestCase
     $date = new Date();
     $this->stats_counter->setNewHost();
 
-    $this->stats_counter->setReturnValueAt(0, '_isNewAudience', true);
+    $old_server_value = $_SERVER;
+
+    unset($_SERVER['HTTP_REFERER']);
 
     $this->stats_counter->update($date);
 
@@ -153,13 +141,17 @@ class StatsCounterTest extends LimbTestCase
       $audience_host = 1,
       $date
     );
+
+    $_SERVER = $old_server_value;
   }
 
   function testNewAudienceSameHost()
   {
     $date = new Date();
 
-    $this->stats_counter->setReturnValueAt(0, '_isNewAudience', true);
+    $old_server_value = $_SERVER;
+
+    $_SERVER['HTTP_REFERER'] = 'some referer';
 
     $this->stats_counter->update($date);
 
@@ -170,12 +162,14 @@ class StatsCounterTest extends LimbTestCase
       $audience_host = 0,
       $date
     );
+
+    $old_server_value = $_SERVER;
   }
 
   function testHomeHit()
   {
     $date = new Date();
-    $this->stats_counter->setReturnValueAt(0, '_isHomeHit', true);
+    $this->stats_counter->setHomeHit();
 
     $this->stats_counter->update($date);
 
@@ -190,8 +184,9 @@ class StatsCounterTest extends LimbTestCase
 
   function _checkStatsCounterRecord($hits_all, $hits_today, $hosts_all, $hosts_today, $date)
   {
-    $this->db->sqlSelect('sys_stat_counter');
-    $record = $this->db->fetchRow();
+    $rs =& $this->db->select('stat_counter', '*');
+
+    $record = $rs->getRow();
 
     $this->assertNotIdentical($record, false, 'counter record doesnt exist');
     $this->assertEqual($record['hits_all'], $hits_all, 'all hits incorrect. Got ' . $record['hits_all'] . ', expected '. $hits_all);
@@ -203,9 +198,11 @@ class StatsCounterTest extends LimbTestCase
 
   function _checkStatsDayCountersRecord($hits, $hosts, $home_hits, $audience_hosts, $date)
   {
+    $rs =& $this->db->select('stat_day_counters',
+                      '*',
+                      array('time' => $this->stats_counter->makeDayStamp($date->getStamp())));
 
-    $this->db->sqlSelect('sys_stat_day_counters', '*', array('time' => $this->stats_counter->makeDayStamp($date->getStamp())));
-    $record = $this->db->fetchRow();
+    $record = $rs->getRow();
 
     $this->assertNotIdentical($record, false, 'day counters record doesnt exist');
     $this->assertEqual($record['hits'], $hits, 'day hits incorrect. Got ' . $record['hits'] . ', expected '. $hits);
@@ -218,26 +215,37 @@ class StatsCounterTest extends LimbTestCase
   {
     $time = $date->getStamp();
 
-    $this->db->sqlExec('	SELECT
-                          SUM(ssdc.hits) as hits_all,
-                          SUM(ssdc.hosts) as hosts_all
-                          FROM
-                          sys_stat_day_counters as ssdc');
-    $record1 = $this->db->fetchRow();
+    $sql = 'SELECT SUM(hits) as hits_all, SUM(hosts) as hosts_all FROM stat_day_counters';
 
-    $this->db->sqlSelect('sys_stat_counter');
-    $record2 = $this->db->fetchRow();
+    $stmt =& $this->conn->newStatement($sql);
+    $rs = new SimpleDbDataset($stmt->getRecordSet());
+    $record1 = $rs->getRow();
 
-    $this->assertEqual($record1['hits_all'], $record2['hits_all'], 'Counters all hits number inconsistent. ' . $record1['hits_all'] . ' not equal '. $record2['hits_all']);
-    $this->assertEqual($record1['hosts_all'], $record2['hosts_all'], 'Counters all hosts number inconsistent. ' . $record1['hosts_all'] . ' not equal '. $record2['hosts_all']);
+    $rs =& $this->db->select('stat_counter', '*');
+    $record2 = $rs->getRow();
 
-    $this->db->sqlSelect('sys_stat_day_counters', '*', array('time' => $this->stats_counter->makeDayStamp($time)));
-    $record3 = $this->db->fetchRow();
+    $this->assertEqual($record1['hits_all'],
+                       $record2['hits_all'],
+                       'Counters all hits number inconsistent. ' . $record1['hits_all'] . ' not equal '. $record2['hits_all']);
 
-    $this->assertEqual($record3['hits'], $record2['hits_today'], 'Counters day hits number inconsistent. ' . $record3['hits'] . ' not equal '. $record2['hits_today']);
-    $this->assertEqual($record3['hosts'], $record2['hosts_today'], 'Counters day hosts number inconsistent. ' . $record3['hosts'] . ' not equal '. $record2['hosts_today']);
+    $this->assertEqual($record1['hosts_all'],
+                       $record2['hosts_all'],
+                       'Counters all hosts number inconsistent. ' . $record1['hosts_all'] . ' not equal '. $record2['hosts_all']);
+
+    $rs = $this->db->select('stat_day_counters',
+                         '*',
+                         array('time' => $this->stats_counter->makeDayStamp($time)));
+
+    $record3 = $rs->getRow();
+
+    $this->assertEqual($record3['hits'],
+                       $record2['hits_today'],
+                       'Counters day hits number inconsistent. ' . $record3['hits'] . ' not equal '. $record2['hits_today']);
+
+    $this->assertEqual($record3['hosts'],
+                       $record2['hosts_today'],
+                       'Counters day hosts number inconsistent. ' . $record3['hosts'] . ' not equal '. $record2['hosts_today']);
   }
-
 }
 
 ?>

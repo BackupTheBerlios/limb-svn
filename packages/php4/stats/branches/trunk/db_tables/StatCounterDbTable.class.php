@@ -10,22 +10,22 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class SysStatDayCountersDbTable extends LimbDbTable
+class StatCounterDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'sys_stat_day_counters';
+    return 'stat_counter';
   }
 
   function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
+      'hosts_all' => array('type' => 'numeric'),
+      'hits_all' => array('type' => 'numeric'),
+      'hosts_today' => array('type' => 'numeric'),
+      'hits_today' => array('type' => 'numeric'),
       'time' => array('type' => 'numeric'),
-      'hosts' => array('type' => 'numeric'),
-      'hits' => array('type' => 'numeric'),
-      'home_hits' => array('type' => 'numeric'),
-      'audience' => array('type' => 'numeric'),
     );
   }
 }

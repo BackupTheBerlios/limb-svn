@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../../search_engine_rules/SearchEngineMailruRule.class.php');
+require_once(dirname(__FILE__) . '/../../../search_engine_rules/SearchEngineMailruRule.class.php');
 
 class SearchEngineMailruRuleTest extends LimbTestCase
 {

@@ -8,14 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/date/Date.class.php');
+require_once(LIMB_DIR . '/core/http/Ip.class.php');
+
 class StatsIp
 {
-  var $db = null;
+  var $db_table = null;
 
   function StatsIp()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDbConnection();
+    $this->db_table =& $toolkit->createDBTable('StatIp');
   }
 
   function isNewHost($reg_date)
@@ -42,8 +45,7 @@ class StatsIp
 
   function _insertStatIpRecord($stamp)
   {
-    $this->db->sqlInsert('sys_stat_ip',
-      array(
+    $this->db_table->insert(array(
         'id' => $this->getClientIp(),
         'time' => $stamp
       )
@@ -52,21 +54,19 @@ class StatsIp
 
   function getClientIp()
   {
-    return Ip :: encodeIp(Sys :: clientIp());
+    return Ip :: encode(Sys :: clientIp());
   }
 
   function _getStatIpRecord()
   {
-    $this->db->sqlSelect('sys_stat_ip', '*', array('id' => $this->getClientIp()));
-    return $this->db->fetchRow();
+    $rs =& $this->db_table->select(array('id' => $this->getClientIp()));
+    return $rs->getRow();
   }
 
   function _updateStatIpRecord($stamp)
   {
-    $this->db->sqlUpdate('sys_stat_ip',
-      array('time' => $stamp),
-      array('id' => $this->getClientIp())
-    );
+    $this->db_table->update(array('time' => $stamp),
+                            array('id' => $this->getClientIp()));
   }
 }
 

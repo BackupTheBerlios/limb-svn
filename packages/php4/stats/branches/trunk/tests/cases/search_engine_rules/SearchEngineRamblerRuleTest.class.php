@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../../search_engine_rules/SearchEngineRamblerRule.class.php');
+require_once(dirname(__FILE__) . '/../../../search_engine_rules/SearchEngineRamblerRule.class.php');
 
 class SearchEngineRamblerRuleTest extends LimbTestCase
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../../search_engine_rules/SearchEngineYandexRule.class.php');
+require_once(dirname(__FILE__) . '/../../../search_engine_rules/SearchEngineYandexRule.class.php');
 
 class SearchEngineYandexRuleTest extends LimbTestCase
 {
