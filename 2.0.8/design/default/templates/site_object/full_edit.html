@@ -3,7 +3,11 @@
 <form name="edit_site_object" id="edit_site_object" enctype="multipart/form-data" method="post">
 	<core:INCLUDE file="form_errors.html">
 	<table>
-	
+
+	<tr>
+		<td><span class=req>*</span><locale:STRING name='parent'></td>
+		<td align='left' nowrap><node_select name='parent_node_id' id='parent_node_id'></td>
+	</tr> 
 	<tr>
 		<td><span class=req>*</span><locale:STRING name='identifier'></td>
 		<td align='left' nowrap><input id="identifier" name="identifier" class="input" type="text" value=''/></td>
