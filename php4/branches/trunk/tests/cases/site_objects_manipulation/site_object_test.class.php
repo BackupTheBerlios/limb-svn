@@ -45,7 +45,7 @@ Mock::generatePartial
 
 class controller_test{}
 
-class site_object_test extends UnitTestCase
+class site_object_test extends LimbTestCase
 {
   var $db = null;
   var $object = null;

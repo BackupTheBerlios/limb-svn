@@ -9,13 +9,16 @@
 *
 ***********************************************************************************/
 
-
-class http_group extends GroupTest 
+class http_group extends LimbGroupTest
 {
-	function http_group() 
-	{
-	  $this->GroupTest('http tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/http');
-	}
+  function http_group()
+  {
+    parent :: LimbGroupTest('http tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/http');
+  }
 }
 ?>

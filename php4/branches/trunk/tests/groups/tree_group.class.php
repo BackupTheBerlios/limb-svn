@@ -9,13 +9,16 @@
 *
 ***********************************************************************************/
 
-class tree_group extends GroupTest 
+class tree_group extends LimbGroupTest
 {
-	function tree_group() 
-	{
-	  $this->GroupTest('tree');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/tree/');
-	}
+  function tree_group()
+  {
+    parent :: LimbGroupTest('tree');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/tree');
+  }
 }
 ?>

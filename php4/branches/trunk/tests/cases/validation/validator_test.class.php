@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/util/array_dataset.class.php');
 require_once(LIMB_DIR . '/core/lib/validators/validator.class.php');
 require_once(LIMB_DIR . '/core/lib/validators/rules/size_range_rule.class.php');
@@ -18,60 +18,60 @@ Mock::generate('error_list');
 Mock::generatePartial(
     'validator',
     'validator_test_version2',
-    array('_get_error_list')); 
+    array('_get_error_list'));
 
 Mock :: generate('rule');
 
-class validator_test extends UnitTestCase 
+class validator_test extends LimbTestCase
 {
   var $error_list = null;
   var $validator = null;
-  
-	function setUp()
-	{
+
+  function setUp()
+  {
    $this->error_list =& new Mockerror_list($this);
    $this->validator =& new validator_test_version2($this);
    $this->validator->setReturnReference('_get_error_list', $this->error_list);
-	} 
-	  	  
+  }
+
   function test_validate_no_rules()
   {
-  	$this->assertTrue($this->validator->validate(new array_dataset()));
+    $this->assertTrue($this->validator->validate(new array_dataset()));
   }
-      
+
   function test_validate_true()
   {
-  	$r1 =& new Mockrule($this);
-  	
-  	$r1->expectOnce('validate');
-  	$r1->expectOnce('is_valid');
-  	$r1->setReturnValue('is_valid', true);
+    $r1 =& new Mockrule($this);
 
-  	$this->validator->add_rule(&$r1);
-  	
-  	$this->validator->validate(new array_dataset());
-  	
-  	$this->assertTrue($this->validator->is_valid());
-  	
-  	$r1->tally();
+    $r1->expectOnce('validate');
+    $r1->expectOnce('is_valid');
+    $r1->setReturnValue('is_valid', true);
+
+    $this->validator->add_rule(&$r1);
+
+    $this->validator->validate(new array_dataset());
+
+    $this->assertTrue($this->validator->is_valid());
+
+    $r1->tally();
   }
-  
+
   function test_validate_false()
   {
-  	$r1 =& new Mockrule($this);
-  	$r2 =& new Mockrule($this);
-  	
-  	$r1->setReturnValue('is_valid', true);
-  	$r2->setReturnValue('is_valid', false);
+    $r1 =& new Mockrule($this);
+    $r2 =& new Mockrule($this);
 
-  	$this->validator->add_rule(&$r1);
-  	$this->validator->add_rule(&$r2);
-  	
-  	$this->validator->validate(new array_dataset());
-  	
-  	$this->assertFalse($this->validator->is_valid());
+    $r1->setReturnValue('is_valid', true);
+    $r2->setReturnValue('is_valid', false);
+
+    $this->validator->add_rule(&$r1);
+    $this->validator->add_rule(&$r2);
+
+    $this->validator->validate(new array_dataset());
+
+    $this->assertFalse($this->validator->is_valid());
   }
-  
+
   function test_add_error()
   {
     $this->validator->add_error('test', 'error', array('1' => 'error'));

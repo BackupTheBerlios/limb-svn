@@ -9,13 +9,16 @@
 *
 ***********************************************************************************/
 
-
-class system_group extends GroupTest 
+class system_group extends LimbGroupTest
 {
-	function system_group() 
-	{
-	  $this->GroupTest('system tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/system');
-	}
+  function system_group()
+  {
+    parent :: LimbGroupTest('system tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/system');
+  }
 }
 ?>

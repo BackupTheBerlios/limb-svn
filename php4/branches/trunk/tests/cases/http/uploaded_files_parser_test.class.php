@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/request/uploaded_files_parser.class.php');
 
-class uploaded_files_parser_test extends UnitTestCase
+class uploaded_files_parser_test extends LimbTestCase
 {
   var $parser;
 

@@ -9,12 +9,16 @@
 *
 ***********************************************************************************/
 
-class cron_group extends GroupTest 
+class cron_group extends LimbGroupTest
 {
-	function cron_group() 
-	{
-	  $this->GroupTest('cron tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/cron');
-	}
+  function cron_group()
+  {
+    parent :: LimbGroupTest('cron tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/cron');
+  }
 }
 ?>

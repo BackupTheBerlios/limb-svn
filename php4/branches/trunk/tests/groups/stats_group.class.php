@@ -7,14 +7,18 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-class stats_group extends GroupTest 
+***********************************************************************************/
+
+class stats_group extends LimbGroupTest
 {
-	function stats_group() 
-	{
-	  $this->GroupTest('stats tests');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/stats');
-	}
+  function stats_group()
+  {
+    parent :: LimbGroupTest('stats tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/stats');
+  }
 }
 ?>

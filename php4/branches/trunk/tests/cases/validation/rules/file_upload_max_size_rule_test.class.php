@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/util/dataspace.class.php');
 require_once(LIMB_DIR . '/core/lib/validators/rules/file_upload_max_size_rule.class.php');
+require_once(LIMB_DIR . '/tests/cases/validation/rules/_single_field_rule_test.class.php');
 
 class file_upload_max_size_rule_test extends single_field_rule_test
 {

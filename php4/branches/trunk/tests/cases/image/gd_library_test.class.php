@@ -7,11 +7,11 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/image/image_gd.class.php');
-require_once(LIMB_DIR . 'tests/cases/image/_image_library_test.class.php');
+require_once(LIMB_DIR . 'tests/cases/image/image_library_test.class.php');
 
-class gd_library_test extends image_library_test 
+class gd_library_test extends image_library_test
 {
   var $rotated_size = 4479;
   var $hflipped_size = 4011;
@@ -20,12 +20,12 @@ class gd_library_test extends image_library_test
   var $cutted_size2 = 4722;
   var $cutted_size3 = 1243;
   var $cutted_size4 = 1931;
-  
-  function gd_library_test() 
-  {
-  	$this->library =& new image_gd();
 
-  	parent :: image_library_test();
+  function gd_library_test()
+  {
+    $this->library =& new image_gd();
+
+    parent :: image_library_test();
   }
 }
 ?>

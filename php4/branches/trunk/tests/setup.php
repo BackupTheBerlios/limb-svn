@@ -7,19 +7,23 @@
 *
 * $Id$
 *
-***********************************************************************************/ 	
+***********************************************************************************/
 if(!defined('SIMPLE_TEST'))
-	define('SIMPLE_TEST', LIMB_DIR . '/tests/lib/simpletest1.0beta6/');
+  define('SIMPLE_TEST', dirname(__FILE__) . '/../../../../external/php_simpletest_1.0RC1/');
 
-if ( !file_exists(SIMPLE_TEST . 'unit_tester.php') ) 
-	die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
+if ( !defined('SIMPLE_TEST') || !file_exists(SIMPLE_TEST . 'unit_tester.php') )
+  die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
 
 require_once(SIMPLE_TEST . 'unit_tester.php');
 require_once(SIMPLE_TEST . 'mock_objects.php');
 require_once(SIMPLE_TEST . 'web_tester.php');
 require_once(SIMPLE_TEST . 'reporter.php');
-	
+
+require_once(LIMB_DIR . '/tests/cases/limb_group_test.class.php');
+require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');
+require_once(LIMB_DIR . '/tests/lib/test_finder.class.php');
 require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');
+require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 
 set_time_limit(0);
 error_reporting(E_ALL);

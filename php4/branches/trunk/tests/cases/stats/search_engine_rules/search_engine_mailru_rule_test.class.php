@@ -7,51 +7,51 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/model/stats/search_engine_rules/search_engine_mailru_rule.class.php');
 
-class search_engine_mailru_rule_test extends UnitTestCase 
+class search_engine_mailru_rule_test extends LimbTestCase
 {
   var $rule = null;
-	
-  function search_engine_mailru_rule_test() 
+
+  function search_engine_mailru_rule_test()
   {
-  	parent :: UnitTestCase();
+    parent :: LimbTestCase();
   }
-  
+
   function setUp()
   {
-   	$this->rule = new search_engine_mailru_rule();
+    $this->rule = new search_engine_mailru_rule();
   }
-  
+
   function test_name()
   {
-  	$this->assertEqual('mail.ru', $this->rule->get_engine_name());
+    $this->assertEqual('mail.ru', $this->rule->get_engine_name());
   }
-   
+
   function test_match_ru_true()
   {
-  	$this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/?qs=1&lfilter=yes&words=%EF%F0%E8%E2%E5%F2&change=2')));
-  	$this->assertEqual('привет', $this->rule->get_matching_phrase());
-  } 
+    $this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/?qs=1&lfilter=yes&words=%EF%F0%E8%E2%E5%F2&change=2')));
+    $this->assertEqual('привет', $this->rule->get_matching_phrase());
+  }
 
   function test_second_match_ru_true()
   {
-  	$this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/index.phtml?lfilter=yes&hl=ru&q=%F1%E8%F1%F2%E5%EC%E0+LIMB+CMS&change=2')));
-  	$this->assertEqual('система LIMB CMS', $this->rule->get_matching_phrase());
-  } 
+    $this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/index.phtml?lfilter=yes&hl=ru&q=%F1%E8%F1%F2%E5%EC%E0+LIMB+CMS&change=2')));
+    $this->assertEqual('система LIMB CMS', $this->rule->get_matching_phrase());
+  }
 
   function test_match_eng_true()
   {
-  	$this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/?qs=1&lfilter=yes&words=wow&change=2')));
-  	$this->assertEqual('wow', $this->rule->get_matching_phrase());
-  } 
+    $this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/?qs=1&lfilter=yes&words=wow&change=2')));
+    $this->assertEqual('wow', $this->rule->get_matching_phrase());
+  }
 
   function test_second_match_eng_true()
   {
-  	$this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/index.phtml?lfilter=yes&hl=ru&q=wow&change=2')));
-  	$this->assertEqual('wow', $this->rule->get_matching_phrase());
-  } 
+    $this->assertTrue($this->rule->match(urldecode('http://go.mail.ru/index.phtml?lfilter=yes&hl=ru&q=wow&change=2')));
+    $this->assertEqual('wow', $this->rule->get_matching_phrase());
+  }
 }
 
 ?>

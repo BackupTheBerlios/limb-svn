@@ -7,14 +7,17 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-class search_group extends GroupTest 
+***********************************************************************************/
+class search_group extends LimbGroupTest
 {
-	function search_group() 
-	{
-	  $this->GroupTest('search tests');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/full_text_search');
-	}
+  function search_group()
+  {
+    parent :: LimbGroupTest('search tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/full_text_search');
+  }
 }
 ?>

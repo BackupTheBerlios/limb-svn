@@ -7,16 +7,17 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/tests/cases/validation/rules/__rule_test.class.php');
 
-class single_field_rule_test extends rule_test 
-{  	          
+class single_field_rule_test extends rule_test
+{
   function test_init()
   {
-  	$r = new single_field_rule('test');    	
-  	$this->assertEqual($r->get_field_name(), 'test');
-  }   
+    $r = new single_field_rule('test');
+    $this->assertEqual($r->get_field_name(), 'test');
+  }
 }
 
 ?>

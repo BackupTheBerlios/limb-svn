@@ -9,14 +9,17 @@
 *
 ***********************************************************************************/
 
-
-class validation_group extends GroupTest 
+class validation_group extends LimbGroupTest
 {
-	function validation_group() 
-	{
-	  $this->GroupTest('validation tests');
-	  
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/validation');
-	}
+  function validation_group()
+  {
+    parent :: LimbGroupTest('validation tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/validation');
+  }
+
 }
 ?>

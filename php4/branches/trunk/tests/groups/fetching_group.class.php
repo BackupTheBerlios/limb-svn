@@ -9,13 +9,16 @@
 *
 ***********************************************************************************/
 
-
-class fetching_group extends GroupTest 
+class fetching_group extends LimbGroupTest
 {
-	function fetching_group() 
-	{
-	  $this->GroupTest('fetch operations');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/fetching');
-	}
+  function fetching_group()
+  {
+    parent :: LimbGroupTest('fetch operations');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/fetching');
+  }
 }
 ?>

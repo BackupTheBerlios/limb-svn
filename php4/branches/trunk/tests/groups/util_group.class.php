@@ -9,13 +9,16 @@
 *
 ***********************************************************************************/
 
-
-class util_group extends GroupTest 
+class util_group extends LimbGroupTest
 {
-	function util_group() 
-	{
-	  $this->GroupTest('util tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/util');
-	}
+  function util_group()
+  {
+    parent :: LimbGroupTest('util tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/util');
+  }
 }
 ?>

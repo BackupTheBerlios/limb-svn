@@ -7,14 +7,17 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
-class shop_group extends GroupTest 
+***********************************************************************************/
+class shop_group extends LimbGroupTest
 {
-	function shop_group() 
-	{
-	  $this->GroupTest('shop tests');
-	  
- 		TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/shop');
-	}
+  function shop_group()
+  {
+    parent :: LimbGroupTest('shop tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/shop');
+  }
 }
 ?>

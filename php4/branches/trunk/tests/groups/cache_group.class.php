@@ -9,12 +9,16 @@
 *
 ***********************************************************************************/
 
-class cache_group extends GroupTest 
+class cache_group extends LimbGroupTest
 {
-	function cache_group() 
-	{
-	  $this->GroupTest('cache tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/cache');
-	}
+  function cache_group()
+  {
+    parent :: LimbGroupTest('cache tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/cache');
+  }
 }
 ?>

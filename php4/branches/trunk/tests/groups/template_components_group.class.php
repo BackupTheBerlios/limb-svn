@@ -9,13 +9,16 @@
 *
 ***********************************************************************************/
 
-
-class template_components_group extends GroupTest 
+class template_components_group extends LimbGroupTest
 {
-  function template_components_group() 
+  function template_components_group()
   {
-    $this->GroupTest('template components tests');
-    TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/components');
+    parent :: LimbGroupTest('template components tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/components');
   }
 }
 ?>

@@ -7,37 +7,38 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/util/dataspace.class.php');
 require_once(LIMB_DIR . '/core/lib/validators/rules/url_rule.class.php');
+require_once(LIMB_DIR . '/tests/cases/validation/rules/_single_field_rule_test.class.php');
 
 class url_rule_test extends single_field_rule_test
 {
-	function test_url_rule_valid()
-	{
-		$this->validator->add_rule(new url_rule('test'));
+  function test_url_rule_valid()
+  {
+    $this->validator->add_rule(new url_rule('test'));
 
-		$data =& new dataspace();
-		$data->set('test', 'https://wow.com.dot:81/this/a/valid/url?hey=wow&test');
+    $data =& new dataspace();
+    $data->set('test', 'https://wow.com.dot:81/this/a/valid/url?hey=wow&test');
 
-		$this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('add_error');
 
-		$this->validator->validate($data);
-		$this->assertTrue($this->validator->is_valid());
-	} 
-	
-	function test_url_rule_invalid()
-	{
-		$this->validator->add_rule(new url_rule('testfield'));
+    $this->validator->validate($data);
+    $this->assertTrue($this->validator->is_valid());
+  }
 
-		$data =& new dataspace();
-		$data->set('testfield', '://not/a/valid/url');
+  function test_url_rule_invalid()
+  {
+    $this->validator->add_rule(new url_rule('testfield'));
 
-		$this->error_list->expectOnce('add_error', array('testfield', 'BAD_URL', array()));
+    $data =& new dataspace();
+    $data->set('testfield', '://not/a/valid/url');
 
-		$this->validator->validate($data);
-		$this->assertFalse($this->validator->is_valid());
-	}
-} 
+    $this->error_list->expectOnce('add_error', array('testfield', 'BAD_URL', array()));
+
+    $this->validator->validate($data);
+    $this->assertFalse($this->validator->is_valid());
+  }
+}
 
 ?>

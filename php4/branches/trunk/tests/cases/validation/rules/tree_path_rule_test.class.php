@@ -7,83 +7,84 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/core/tree/tree.class.php');
 require_once(LIMB_DIR . '/core/lib/util/dataspace.class.php');
 require_once(LIMB_DIR . '/core/lib/validators/rules/tree_path_rule.class.php');
+require_once(LIMB_DIR . '/tests/cases/validation/rules/_single_field_rule_test.class.php');
 
 class tree_path_rule_test extends single_field_rule_test
 {
-	var $db = null;
-	var $node_id_root;
-	var $node_id_document;
-		
-	function setUp()
-	{
-		parent :: setUp();
-		
-		$this->db =& db_factory :: instance();
-		
-  	$tree =& tree :: instance();
+  var $db = null;
+  var $node_id_root;
+  var $node_id_document;
 
-		$values['identifier'] = 'root';
-		$this->node_id_root = $tree->create_root_node($values, false, true);
+  function setUp()
+  {
+    parent :: setUp();
 
-		$values['identifier'] = 'document';
-		$values['object_id'] = 10;
-		$this->node_id_document = $tree->create_sub_node($this->node_id_root, $values);
-	}
-	
-  function tearDown()
-  { 
-  	parent :: tearDown();
-  	$this->_clean_up();
+    $this->db =& db_factory :: instance();
+
+    $tree =& tree :: instance();
+
+    $values['identifier'] = 'root';
+    $this->node_id_root = $tree->create_root_node($values, false, true);
+
+    $values['identifier'] = 'document';
+    $values['object_id'] = 10;
+    $this->node_id_document = $tree->create_sub_node($this->node_id_root, $values);
   }
-  
+
+  function tearDown()
+  {
+    parent :: tearDown();
+    $this->_clean_up();
+  }
+
   function _clean_up()
   {
-  	$this->db->sql_delete('sys_site_object_tree');
+    $this->db->sql_delete('sys_site_object_tree');
   }
-	
-	function test_tree_identifier_rule_blank()
-	{
-		$this->validator->add_rule(new tree_path_rule('test'));
 
-		$data =& new dataspace();
-		$data->set('test', '');
+  function test_tree_identifier_rule_blank()
+  {
+    $this->validator->add_rule(new tree_path_rule('test'));
 
-		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_path', 'error'), array()));
+    $data =& new dataspace();
+    $data->set('test', '');
 
-		$this->validator->validate($data);
-		$this->assertFalse($this->validator->is_valid());
-	}
+    $this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_path', 'error'), array()));
 
-	function test_tree_identifier_rule_normal()
-	{
-		$this->validator->add_rule(new tree_path_rule('test'));
+    $this->validator->validate($data);
+    $this->assertFalse($this->validator->is_valid());
+  }
 
-		$data =& new dataspace();
-		$data->set('test', '/root/document');
+  function test_tree_identifier_rule_normal()
+  {
+    $this->validator->add_rule(new tree_path_rule('test'));
 
-		$this->error_list->expectNever('add_error');
+    $data =& new dataspace();
+    $data->set('test', '/root/document');
 
-		$this->validator->validate($data);
-		$this->assertTrue($this->validator->is_valid());
-	}
+    $this->error_list->expectNever('add_error');
 
-	function test_tree_identifier_rule_error()
-	{
-		$this->validator->add_rule(new tree_path_rule('test'));
+    $this->validator->validate($data);
+    $this->assertTrue($this->validator->is_valid());
+  }
 
-		$data =& new dataspace();
-		$data->set('test', '/root/document/1');
+  function test_tree_identifier_rule_error()
+  {
+    $this->validator->add_rule(new tree_path_rule('test'));
 
-		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_path', 'error'), array()));
+    $data =& new dataspace();
+    $data->set('test', '/root/document/1');
 
-		$this->validator->validate($data);
-		$this->assertFalse($this->validator->is_valid());
-	}
-} 
+    $this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_path', 'error'), array()));
+
+    $this->validator->validate($data);
+    $this->assertFalse($this->validator->is_valid());
+  }
+}
 
 ?>

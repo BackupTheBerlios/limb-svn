@@ -9,13 +9,16 @@
 *
 ***********************************************************************************/
 
-
-class metadata_group extends GroupTest 
+class metadata_group extends LimbGroupTest
 {
-    function metadata_group() 
-    {
-        $this->GroupTest('metadata tests');
-        TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/metadata');
-    }
+  function metadata_group()
+  {
+    parent :: LimbGroupTest('metadata tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/metadata');
+  }
 }
 ?>

@@ -7,31 +7,31 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/model/stats/search_engine_rules/search_engine_regex_rule.class.php');
 
-class search_engine_regex_rule_test extends UnitTestCase 
+class search_engine_regex_rule_test extends LimbTestCase
 {
   var $rule = null;
-	
-  function search_engine_regex_rule_test() 
+
+  function search_engine_regex_rule_test()
   {
-  	parent :: UnitTestCase();
+    parent :: LimbTestCase();
   }
-  
+
   function setUp()
   {
-   	$this->rule = new search_engine_regex_rule('google', '/^.*google\..*q=([^&]*).*$/', 1);
+    $this->rule = new search_engine_regex_rule('google', '/^.*google\..*q=([^&]*).*$/', 1);
   }
-   
+
   function test_match_true()
   {
-  	$this->assertTrue($this->rule->match('http://www.google.com.ru/search?q=wow&some_other_parameter'));
-  	
-  	$this->assertEqual('google', $this->rule->get_engine_name());
-  	$this->assertEqual('wow', $this->rule->get_matching_phrase());
-  	
-  }  
+    $this->assertTrue($this->rule->match('http://www.google.com.ru/search?q=wow&some_other_parameter'));
+
+    $this->assertEqual('google', $this->rule->get_engine_name());
+    $this->assertEqual('wow', $this->rule->get_matching_phrase());
+
+  }
 }
 
 ?>

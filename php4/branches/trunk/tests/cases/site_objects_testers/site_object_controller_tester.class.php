@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/model/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . '/core/actions/empty_action.class.php');
 
-class site_object_controller_tester extends UnitTestCase
+class site_object_controller_tester extends LimbTestCase
 {
   var $db = null;
   var $class_name = '';
@@ -25,7 +25,7 @@ class site_object_controller_tester extends UnitTestCase
 
     $this->class_name = $class_name;
 
-    parent :: UnitTestCase();
+    parent :: LimbTestCase();
   }
 
   function &_create_site_object()

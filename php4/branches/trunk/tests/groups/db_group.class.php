@@ -9,12 +9,16 @@
 *
 ***********************************************************************************/
 
-class db_group extends GroupTest 
+class db_group extends LimbGroupTest
 {
-	function db_group() 
-	{
-	  $this->GroupTest('db tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/db');
-	}
+  function db_group()
+  {
+    parent :: LimbGroupTest('db tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/db');
+  }
 }
 ?>

@@ -9,13 +9,17 @@
 *
 ***********************************************************************************/
 
-
-class object_access_group extends GroupTest 
+class object_access_group extends LimbGroupTest
 {
-	function object_access_group() 
-	{
-	  $this->GroupTest('object access tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/access');
-	}
+  function object_access_group()
+  {
+    parent :: LimbGroupTest('object access tests');
+  }
+
+  function & getTestCasesHandles()
+  {
+    return TestFinder :: getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/access');
+  }
+
 }
 ?>

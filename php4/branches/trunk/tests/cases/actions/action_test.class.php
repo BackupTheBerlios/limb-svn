@@ -7,26 +7,26 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/core/actions/action.class.php');
 
-class action_test extends UnitTestCase 
+class action_test extends LimbTestCase
 {
-	var $a = null;
-  	  
+  var $a = null;
+
   function setUp()
-  {    	
-  	$this->a =& new action();
+  {
+    $this->a =& new action();
   }
-  
+
   function tearDown()
   {
   }
-  
+
   function test_init()
   {
-  	$this->assertNotNull($this->a);
-  }    
+    $this->assertNotNull($this->a);
+  }
 }
 
 ?>
