@@ -17,7 +17,7 @@ class FileResolverDecorator// implements FileResolver
   {
     resolveHandle($resolver);
 
-    if(!$resolver instanceof FileResolver &&  !$resolver instanceof SimpleMock)
+    if(!is_a($resolver, 'FileResolver') &&  is_a($resolver, 'SimpleMock'))
       throw new Exception('invalid wrapped resolver');
 
     $this->_resolver = $resolver;

@@ -56,7 +56,7 @@ class EditSiteObjectCommand// implements Command
 
   function _defineIncreaseVersionFlag($object)
   {
-    if (class_exists('ContentObject') &&  ($object instanceof ContentObject))
+    if (is_a($object, 'ContentObject'))
       return true;
     else
       return false;

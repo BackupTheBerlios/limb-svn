@@ -44,7 +44,7 @@ class CoreParameterTag extends CompilerDirectiveTag
 
   function checkNestingLevel()
   {
-    if (!$this->parent instanceof ServerComponentTag)
+    if (!is_a($this->parent, 'ServerComponentTag'))
     {
       throw new WactException('wrong parent tag',
           array('tag' => $this->tag,

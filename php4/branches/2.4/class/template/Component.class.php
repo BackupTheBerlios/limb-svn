@@ -78,7 +78,7 @@ class Component extends Dataspace
   {
     foreach(array_keys($this->children) as $key)
     {
-      if ($this->children[$key] instanceof $class)
+      if (is_a($this->children[$key], $class))
         return $this->children[$key];
       else
       {
@@ -98,7 +98,7 @@ class Component extends Dataspace
   {
     $parent = $this->parent;
 
-    while ($parent &&  !($parent instanceof $class))
+    while ($parent &&  !(is_a($parent, $class)))
       $parent = $parent->parent;
 
     return $parent;

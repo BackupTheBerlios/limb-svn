@@ -28,7 +28,7 @@ class GridDefaultTag extends SilentCompilerDirectiveTag
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
     }
-    if (!$this->parent instanceof GridListTag)
+    if (!is_a($this->parent, 'GridListTag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,

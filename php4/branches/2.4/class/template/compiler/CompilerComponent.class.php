@@ -170,7 +170,7 @@ class CompilerComponent
   {
     foreach(array_keys($this->children) as $key)
     {
-      if ($this->children[$key] instanceof $class)
+      if(is_a($this->children[$key] $class))
       {
         return $this->children[$key];
       }
@@ -193,7 +193,7 @@ class CompilerComponent
   {
     foreach(array_keys($this->children) as $key)
     {
-      if ($this->children[$key] instanceof  $class)
+      if (is_a($this->children[$key], $class))
       {
         return $this->children[$key];
       }
@@ -208,7 +208,7 @@ class CompilerComponent
   function findParentByClass($class)
   {
     $parent = $this->parent;
-    while ($parent &&  !($parent instanceof $class))
+    while ($parent &&  !(is_a($parent, $class)))
     {
       $parent = $parent->parent;
     }

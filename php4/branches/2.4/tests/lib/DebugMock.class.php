@@ -26,7 +26,7 @@ class DebugMock extends Debug
 
   function expectWriteException($e)
   {
-    if($e instanceof LimbException)
+    if(is_a($e, 'LimbException'))
       DebugMock :: _expectWrite(DebugMock :: LEVEL_ERROR, $e->getMessage(), $e->getAdditionalParams());
     else
       DebugMock :: _expectWrite(DebugMock :: LEVEL_ERROR, $e->getMessage());

@@ -268,7 +268,7 @@ class Debug
 
   function writeException($e)
   {
-    if($e instanceof LimbException)
+    if(is_a($e, 'LimbException'))
       Debug :: writeError($e->getMessage(), $e->getFile() . ' : ' . $e->getLine(), $e->getAdditionalParams());
     else
       Debug :: writeError($e->getMessage(), $e->getFile() . ' : ' . $e->getLine());

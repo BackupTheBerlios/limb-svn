@@ -31,7 +31,7 @@ class GridSeparatorTag extends CompilerDirectiveTag
           'line' => $this->starting_line_no));
     }
 
-    if (!$this->parent instanceof GridIteratorTag)
+    if (!is_a($this->parent, 'GridIteratorTag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,

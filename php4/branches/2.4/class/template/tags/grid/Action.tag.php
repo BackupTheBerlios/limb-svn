@@ -21,7 +21,7 @@ class GridActionTag extends CompilerDirectiveTag
 {
   function checkNestingLevel()
   {
-    if (!$this->parent instanceof GridActionsTag)
+    if (!is_a($this->parent, 'GridActionsTag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,

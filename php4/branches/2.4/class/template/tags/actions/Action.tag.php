@@ -24,7 +24,7 @@ class ActionTag extends CompilerDirectiveTag
 {
   function checkNestingLevel()
   {
-    if (!$this->parent instanceof ActionsTag)
+    if (!is_a($this->parent, 'ActionsTag'))
     {
       throw new WactException('wrong parent tag',
           array('tag' => $this->tag,

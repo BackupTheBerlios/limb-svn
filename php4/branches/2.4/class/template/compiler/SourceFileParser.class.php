@@ -177,7 +177,7 @@ class SourceFileParser
   function checkServerId($parent_component, $component)
   {
     $tree = $parent_component;
-    if ($component instanceof ServerTagComponentTag)
+    if (is_a($component, 'ServerTagComponentTag'))
     {
       // Move up to the root
       while (!is_null($tree->parent))

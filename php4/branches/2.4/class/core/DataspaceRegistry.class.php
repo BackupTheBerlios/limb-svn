@@ -21,7 +21,7 @@ class DataspaceRegistry
     if(isset($GLOBALS[$instance_name]))
       $obj = $GLOBALS[$instance_name];
 
-    if(!$obj instanceof Dataspace)
+    if(!is_a($obj, 'Dataspace'))
     {
       $obj = new Dataspace();
       $GLOBALS[$instance_name] = $obj;
