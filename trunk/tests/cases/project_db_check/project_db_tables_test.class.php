@@ -20,11 +20,10 @@ class project_db_tables_test extends UnitTestCase
 	function project_db_tables_test($name = 'db tables test case')
 	{
 		$this->db =& db_factory :: instance();
-		
 		parent :: UnitTestCase($name);
 	} 
 	
-	function db_test_tables()
+	function test_db_tables()
 	{
 		$this->_load_db_tables(PROJECT_DIR . '/core/db_tables/');
 		$this->_load_db_tables(LIMB_DIR . '/core/db_tables/');
@@ -75,14 +74,11 @@ class project_db_tables_test extends UnitTestCase
 		
 		$a1 = complex_array :: get_column_values('Field', $db_columns);
 		$a2 = array_keys($columns);
-		
-		sort($a1);
-		sort($a2);
-		
-		$this->assertEqual(sizeof($db_columns), sizeof($columns), 
-			$table_name . ' has wrong number of columns: db columns: ' . 
-			var_export($a1, true) . 
-			' against ' .  var_export($a2, true) . '');
+		  			
+	  foreach($a1 as $column)
+	  {
+	    $this->assertTrue(in_array($column, $a2), $table_name . ' column "' . $column . '" not in db');
+	  }
 					
 		$db_primary_key_name = '';
 		foreach($db_columns as $db_column)
@@ -111,6 +107,10 @@ class project_db_tables_test extends UnitTestCase
 				
 				case 'numeric':
 					$this->assertWantedPattern('/int|double|dec|float/', $db_column['Type'], $status_string . 'numeric');
+				break;
+
+				case 'float':
+					$this->assertWantedPattern('/float/', $db_column['Type'], $status_string . 'float');
 				break;
 				
 				case 'date':

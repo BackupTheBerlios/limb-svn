@@ -11,12 +11,7 @@
 require_once(LIMB_DIR . 'core/actions/cart/cart_form_action.class.php');
 
 class recount_cart_items_action extends cart_form_action
-{
-	function recount_cart_items_action($name = 'cart_form')
-	{		
-		parent :: cart_form_action($name);
-	}
-	
+{	
 	function _valid_perform(&$request, &$response)
 	{
 		$this->_update_items_amount();
