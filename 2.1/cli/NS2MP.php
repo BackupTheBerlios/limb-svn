@@ -22,9 +22,6 @@ if(isset($argv[3]))
 	$mp_table = $argv[3];
 else
 	$mp_table = 'sys_site_object_tree';
-
-if(file_exists($project_dir . '/setup_custom.php'))
-	require_once($project_dir . '/setup_custom.php'); 	
 	
 require_once($project_dir . '/setup.php'); 
 

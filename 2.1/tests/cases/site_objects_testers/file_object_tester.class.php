@@ -31,14 +31,14 @@ class file_object_tester extends site_object_tester
   
   function _set_file_create_attributes()
   {
-		$this->object->set_attribute('tmp_file_path', LIMB_DIR . '/tests/images/1.jpg');
+		$this->object->set_attribute('tmp_file_path', LIMB_DIR . '/tests/cases/site_objects_testers/images/1.jpg');
 		$this->object->set_attribute('file_name','original_name.jpg');
 		$this->object->set_attribute('mime_type', 'image/jpeg');
   }
 
   function _set_file_update_attributes()
   {
-		$this->object->set_attribute('tmp_file_path', LIMB_DIR . '/tests/images/2.jpg');
+		$this->object->set_attribute('tmp_file_path', LIMB_DIR . '/tests/cases/site_objects_testers/images/2.jpg');
 		$this->object->set_attribute('file_name','original_name.jpg');
 		$this->object->set_attribute('mime_type', 'image/jpeg');
   }

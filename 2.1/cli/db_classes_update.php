@@ -12,9 +12,6 @@ if(isset($argv[1]))
 	$project_dir = $argv[1];
 else
 	die('project dir required');
-
-if(file_exists($project_dir . '/setup_custom.php'))
-	require_once($project_dir . '/setup_custom.php'); 	
 	
 require_once($project_dir . '/setup.php'); 
 require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');

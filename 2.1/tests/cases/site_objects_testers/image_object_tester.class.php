@@ -58,8 +58,8 @@ class image_object_tester extends site_object_tester
   {
   	$files = array(
 			'tmp_name' => array(
-				'original' => LIMB_DIR . '/tests/images/1.jpg',
-				'thumbnail' => LIMB_DIR . '/tests/images/2.jpg',
+				'original' => LIMB_DIR . '/tests/cases/site_objects_testers/images/1.jpg',
+				'thumbnail' => LIMB_DIR . '/tests/cases/site_objects_testers/images/2.jpg',
 				'icon' => '',
 			),
 			'name' => array(
@@ -141,7 +141,7 @@ class image_object_tester extends site_object_tester
   	
 		$files = array(
 			'tmp_name' => array(
-				'original' => LIMB_DIR . '/tests/images/1.jpg',
+				'original' => LIMB_DIR . '/tests/cases/site_objects_testers/images/1.jpg',
 				'thumbnail' => '',
 				'icon' => '',
 			),
@@ -220,7 +220,7 @@ class image_object_tester extends site_object_tester
 	{
 		$files = array(
 			'tmp_name' => array(
-				'original' => LIMB_DIR . '/tests/images/1.bmp',
+				'original' => LIMB_DIR . '/tests/cases/site_objects_testers/images/1.bmp',
 				'thumbnail' => '',
 				'icon' => '',
 			),
@@ -289,7 +289,7 @@ class image_object_tester extends site_object_tester
 		
 		$files = array(
 			'tmp_name' => array(
-				'original' => LIMB_DIR . '/tests/images/1.jpg',
+				'original' => LIMB_DIR . '/tests/cases/site_objects_testers/images/1.jpg',
 				'thumbnail' => '',
 				'icon' => '',
 			),
@@ -358,8 +358,8 @@ class image_object_tester extends site_object_tester
 	{
 		 $files = array(
 			'tmp_name' => array(
-				'original' => LIMB_DIR . '/tests/images/1.jpg',
-				'thumbnail' => LIMB_DIR . '/tests/images/2.jpg',
+				'original' => LIMB_DIR . '/tests/cases/site_objects_testers/images/1.jpg',
+				'thumbnail' => LIMB_DIR . '/tests/cases/site_objects_testers/images/2.jpg',
 				'icon' => '',
 			),
 			'name' => array(

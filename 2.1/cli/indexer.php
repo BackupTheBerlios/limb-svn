@@ -19,9 +19,6 @@ if(isset($argv[2]))
 else
 	$path = '/root';
 
-if(file_exists($project_dir . '/setup_custom.php'))
-	require_once($project_dir . '/setup_custom.php'); 	
-
 require_once($project_dir . '/setup.php'); 
 require_once(LIMB_DIR . '/core/tree/tree.class.php');
 require_once(LIMB_DIR . '/core/model/site_object_factory.class.php');
