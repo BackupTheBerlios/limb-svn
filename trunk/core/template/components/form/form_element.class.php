@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/template/tag_component.class.php');
 require_once(LIMB_DIR . '/core/lib/validators/error_list.class.php');
+require_once(LIMB_DIR . 'core/lib/util/dataspace_registry.class.php');
 
 /**
 * Base class for concrete form elements
@@ -130,8 +131,8 @@ class form_element extends tag_component
 	function get_value()
 	{
 		$form_component =& $this->find_parent_by_class('form_component');
-
-		$dataspace = dataspace :: instance($form_component->attributes['name']);
+    
+    $dataspace =& dataspace_registry :: get($form_component->attributes['name']);
 		
 		if(!isset($this->attributes['name']))
 			debug :: write_warning("form element 'name' attribute not set:" . $this->get_server_id());
@@ -142,8 +143,8 @@ class form_element extends tag_component
 	function set_value($value)
 	{
 		$form_component =& $this->find_parent_by_class('form_component');
-
-		$dataspace =& dataspace :: instance($form_component->attributes['name']);
+    
+    $dataspace =& dataspace_registry :: get($form_component->attributes['name']);
 
 		if(!isset($this->attributes['name']))
 			debug :: write_warning("form element 'name' attribute not set:" . $this->get_server_id());

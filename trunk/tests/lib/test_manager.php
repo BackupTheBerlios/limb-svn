@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/core/lib/system/dir.class.php');
+require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 
 class TestManager
 {
@@ -164,7 +164,7 @@ class TestManager
 			} 
 			if ($file_test_function[0]->$file_test_function[1]($file))
 			{
-				$file_list[] = dir :: clean_path($file_path);
+				$file_list[] = fs :: clean_path($file_path);
 			} 
 		} 
 		closedir($dh);
@@ -242,7 +242,7 @@ class HTMLTestManager extends TestManager
 		if(!file_exists($directory))
 			return '';
 		
-		$directory = dir :: clean_path($directory);
+		$directory = fs :: clean_path($directory);
 		$manager = &new HTMLTestManager();
 		$group_tests = &$manager->_getTestGroupList($directory);
 		
@@ -268,7 +268,7 @@ class HTMLTestManager extends TestManager
 		if(!file_exists($directory))
 			return '';
 
-		$directory = dir :: clean_path($directory);
+		$directory = fs :: clean_path($directory);
 		$manager = &new HTMLTestManager();
 		$testcases = &$manager->_getTestFileList($directory);
 

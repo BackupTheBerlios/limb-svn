@@ -33,7 +33,7 @@ class multi_delete_action extends form_action
 		  $request->set_status(REQUEST_STATUS_FAILURE);
 		  		  
 			if($request->has_attribute('popup'))
-			  $response->write_response_string(close_popup_response($request));
+			  $response->write(close_popup_response($request));
 			  
 			return;
 		}
@@ -54,7 +54,7 @@ class multi_delete_action extends form_action
 	  $request->set_status(REQUEST_STATUS_FAILURE);
 	  		  
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_response($request));
+		  $response->write(close_popup_response($request));
 		
 		if(!isset($data['ids']) || !is_array($data['ids']))
 			return;
@@ -79,7 +79,7 @@ class multi_delete_action extends form_action
 		}	
 	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	
-		$response->write_response_string(close_popup_response($request));
+		$response->write(close_popup_response($request));
 	}
 	
 	function _get_objects_to_delete($node_ids)

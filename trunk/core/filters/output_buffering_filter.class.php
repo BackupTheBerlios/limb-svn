@@ -19,7 +19,7 @@ class output_buffering_filter extends intercepting_filter
     $filter_chain->next();
     
     if($response->is_empty())
-      $response->write_response_string(ob_get_contents());
+      $response->write(ob_get_contents());
       
     ob_end_clean();
   }      

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
+require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/image_object.class.php');
 require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_tester.class.php');
@@ -48,7 +48,7 @@ class image_object_tester extends site_object_tester
   {
   	parent :: _clean_up();
   	
-		dir :: rm(MEDIA_DIR);
+		fs :: rm(MEDIA_DIR);
 		$this->db->sql_delete('image_object');
   	$this->db->sql_delete('image_variation');
   	$this->db->sql_delete('media');

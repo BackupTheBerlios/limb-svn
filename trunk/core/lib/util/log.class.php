@@ -12,7 +12,7 @@
 define( 'MAX_LOGROTATE_FILES', 5 );
 define( 'MAX_LOGFILE_SIZE', 500*1024 );
 
-require_once(LIMB_DIR . '/core/lib/system/dir.class.php');
+require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
@@ -33,7 +33,7 @@ class log
     $file_name = $log_dir . $log_name;
     
     if (!is_dir($log_dir))
-    	dir :: mkdir($log_dir, 0775, true);
+    	fs :: mkdir($log_dir, 0775, true);
     
     $oldumask = @umask( 0 );
     $file_existed = @file_exists( $file_name );

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
+require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_tester.class.php');
@@ -24,7 +24,7 @@ class file_object_tester extends site_object_tester
   {
   	parent :: _clean_up();
   	
-		dir :: rm(MEDIA_DIR);
+		fs :: rm(MEDIA_DIR);
 		$this->db->sql_delete('file_object');
   	$this->db->sql_delete('media');
   }

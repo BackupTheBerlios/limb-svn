@@ -7,22 +7,13 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 
-class response
+class cron_job
 {
-	
-	function is_empty()
-	{
-	  return true;
-	}
-		
-	function write($string)
-	{	  
-	}
-		
-	function commit()
-	{  	
-	}			
-} 
+  function perform(&$response)
+  {
+  }
+}
+
 ?>

@@ -93,7 +93,7 @@ function recursive_compile_all($root, $path)
 function write_template_file($file, $data)
 {
 	if(!is_dir(dirname($file)))
-		dir :: mkdir(dirname($file), 0777, true);
+		fs :: mkdir(dirname($file), 0777, true);
 	
 	$fp = fopen($file, "wb");
 	if (fwrite($fp, $data, strlen($data)))

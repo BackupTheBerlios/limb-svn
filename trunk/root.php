@@ -16,7 +16,7 @@ debug :: add_timing_point('start');
 
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . 'core/request/response.class.php');
+require_once(LIMB_DIR . 'core/request/http_response.class.php');
 require_once(LIMB_DIR . 'core/request/request.class.php');
 require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/message_box.class.php');
@@ -25,7 +25,7 @@ start_user_session();
 
 // filters include
 $request =& request :: instance();
-$response =& response :: instance();
+$response =& new http_response();
 
 $filter_chain =& new filter_chain($request, $response);
 

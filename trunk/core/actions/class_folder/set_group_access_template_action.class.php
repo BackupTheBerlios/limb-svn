@@ -48,7 +48,7 @@ class set_group_access_template_action extends form_action
 		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 
 		if($request->has_attribute('popup'))
-			$response->write_response_string(close_popup_no_parent_reload_response());
+			$response->write(close_popup_no_parent_reload_response());
 	}
 }
 ?>

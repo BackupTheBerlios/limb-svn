@@ -30,7 +30,7 @@ class form_delete_site_object_action extends form_site_object_action
 		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 		
 		if($request->has_attribute('popup'))
-			$response->write_response_string(close_popup_response($request, RELOAD_SELF_URL, true));
+			$response->write(close_popup_response($request, RELOAD_SELF_URL, true));
 	}
 
 }

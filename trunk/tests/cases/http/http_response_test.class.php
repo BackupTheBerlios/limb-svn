@@ -8,38 +8,32 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/request/response.class.php');
+require_once(LIMB_DIR . '/core/request/http_response.class.php');
 
 Mock::generatePartial(
-  'response',
+  'http_response',
   'special_mock_response',
-  array('_pre_commit', '_post_commit', '_write_header', '_write_string')
+  array('_pre_commit', '_post_commit', '_send_header', '_send_string')
 );
 
-class response_test extends UnitTestCase
+class http_response_test extends UnitTestCase
 {
   var $response;
   
   function setUp()
   {
     $this->response =& new special_mock_response($this);
-    $this->response->response();
   }
   
   function tearDown()
   {
     $this->response->tally();
   } 
-  
-  function test_instance()
-  {
-    $this->assertReference(response :: instance(), response :: instance());
-  }
-  
+    
   function test_header()
   {
-    $this->response->expectArgumentsAt(0, '_write_header', array("Location:to-some-place"));
-    $this->response->expectArgumentsAt(1, '_write_header', array("Location:to-some-place2"));
+    $this->response->expectArgumentsAt(0, '_send_header', array("Location:to-some-place"));
+    $this->response->expectArgumentsAt(1, '_send_header', array("Location:to-some-place2"));
     $this->response->expectOnce('_pre_commit');
     $this->response->expectOnce('_post_commit');
     
@@ -61,7 +55,7 @@ class response_test extends UnitTestCase
 
   function test_not_empty_response_string()
   {
-    $this->response->write_response_string("<b>wow</b>");
+    $this->response->write("<b>wow</b>");
     $this->assertFalse($this->response->is_empty());
   }
   
@@ -78,7 +72,7 @@ class response_test extends UnitTestCase
   
   function test_redirect()
   {
-    $this->response->expectOnce('_write_string', array("<html><head><meta http-equiv=refresh content='0;url=/to/some/place?t=1&t=2'></head><body bgcolor=white></body></html>"));
+    $this->response->expectOnce('_send_string', array("<html><head><meta http-equiv=refresh content='0;url=/to/some/place?t=1&t=2'></head><body bgcolor=white></body></html>"));
     $this->response->expectOnce('_pre_commit');
     $this->response->expectOnce('_post_commit');   
     
@@ -86,13 +80,13 @@ class response_test extends UnitTestCase
     $this->response->commit();
   }
     
-  function test_write_response_string()
+  function test_write()
   {
-    $this->response->expectOnce('_write_string', array("<b>wow</b>"));
+    $this->response->expectOnce('_send_string', array("<b>wow</b>"));
     $this->response->expectOnce('_pre_commit');
     $this->response->expectOnce('_post_commit');   
     
-    $this->response->write_response_string("<b>wow</b>");
+    $this->response->write("<b>wow</b>");
     $this->response->commit();
   }
 }

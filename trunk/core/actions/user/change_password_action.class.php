@@ -51,7 +51,7 @@ class change_password_action extends form_edit_site_object_action
 		if (REQUEST_STATUS_SUCCESS == $request->get_status())
 		{			  
   		if($request->has_attribute('popup'))
-  		  $response->write_response_string(close_popup_response($request, '/'));
+  		  $response->write(close_popup_response($request, '/'));
 		}
 	}
 	

@@ -7,22 +7,14 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 
-class response
+class testing_cron_job
 {
-	
-	function is_empty()
-	{
-	  return true;
-	}
-		
-	function write($string)
-	{	  
-	}
-		
-	function commit()
-	{  	
-	}			
-} 
+  function perform(&$response)
+  {
+    $response->write('I was performed');
+  }
+}
+
 ?>

@@ -30,6 +30,11 @@ class edit_file_action extends form_edit_site_object_action
   				'description' => 'description',
 	      )
 	  );     
+	}
+	
+	function _define_increase_version_flag()
+	{
+	  return false;
 	}  
 
 	function _init_validator()

@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/size_range_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
+require_once(LIMB_DIR . 'core/lib/util/dataspace_registry.class.php');
 
 require_once(LIMB_DIR . 'core/request/request.class.php');
 require_once(LIMB_DIR . 'core/request/response.class.php');
@@ -45,16 +46,13 @@ class form_action_test extends UnitTestCase
 	var $form_action = null;
 	var $request = null;
 	var $response = null;
+	var $dataspace = null;
 		  	
   function setUp()
   {
   	debug_mock :: init($this);
   	
-  	$dataspace =& dataspace :: instance();
-  	$dataspace->import(array());
-
-  	$dataspace =& dataspace :: instance('test1');
-  	$dataspace->import(array());
+  	$this->dataspace =& dataspace_registry :: get('test1');
   	  	
   	$this->form_action = new form_action_test_version($this);
 
@@ -66,11 +64,7 @@ class form_action_test extends UnitTestCase
   {
   	debug_mock :: tally();
   	
-  	$dataspace =& dataspace :: instance();
-  	$dataspace->import(array());
-
-  	$dataspace =& dataspace :: instance('test1');
-  	$dataspace->import(array());
+  	$this->dataspace->reset();
   	
   	$this->form_action->tally();
   	$this->request->tally();
@@ -82,28 +76,8 @@ class form_action_test extends UnitTestCase
   {
   	$this->assertFalse($this->form_action->is_valid());
   }
-  
-  function test_is_first_time_no_name()
-  {
-  	$this->form_action->setReturnValue('_define_dataspace_name', '');
-  	$this->form_action->form_action();
-
-  	$this->request->expectOnce('get_attribute');
-  	$this->assertTrue($this->form_action->is_first_time($this->request));
-  }	
-  	
-  function test_is_first_time_false_no_name()
-  {
-  	$this->form_action->setReturnValue('_define_dataspace_name', '');
-  	$this->form_action->form_action();
-
-  	$this->request->expectOnce('get_attribute');
-  	$this->request->setReturnValue('get_attribute', true, array('submitted'));
-
-  	$this->assertFalse($this->form_action->is_first_time($this->request));
-  }
-  
-  function test_is_first_time_with_name()
+    
+  function test_is_first_time()
   {	
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
@@ -114,8 +88,7 @@ class form_action_test extends UnitTestCase
   	$this->assertTrue($this->form_action->is_first_time($this->request), '%s ' . __LINE__);
   }
   
-  
-  function test_is_first_time_false_with_name() 	
+  function test_is_first_time_false() 	
   {
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
@@ -128,12 +101,10 @@ class form_action_test extends UnitTestCase
   
   function test_form_action_validate()
   {
-  	$dataspace =& dataspace :: instance('test1');
-  	
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
   
-  	$dataspace->import(array('username' => 'vasa', 'password' => 'yoyoyo'));
+  	$this->dataspace->import(array('username' => 'vasa', 'password' => 'yoyoyo'));
   	
   	$this->assertTrue($this->form_action->validate());  	
   }
@@ -143,14 +114,12 @@ class form_action_test extends UnitTestCase
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
   
-   	$dataspace =& dataspace :: instance('test1');
-   	
-   	$dataspace->set('username', 'vasa');
-   	$dataspace->set('password', 'yoyoyoyo');
+   	$this->dataspace->set('username', 'vasa');
+   	$this->dataspace->set('password', 'yoyoyoyo');
 
   	$this->assertTrue($this->form_action->validate());  	
 
-   	$dataspace->set('password', 'yo');
+   	$this->dataspace->set('password', 'yo');
 
   	$this->assertTrue($this->form_action->validate(), 'validation occurs only once!');
   }
@@ -201,14 +170,12 @@ class form_action_test extends UnitTestCase
   	$this->request->expectCallCount('get_attribute', 2);
   	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
 
-  	$dataspace =& dataspace :: instance('test1');
-
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
 
   	$this->form_action->perform($this->request, $this->response);
   	
-  	$this->assertEqual($dataspace->export(), $request_data);
+  	$this->assertEqual($this->dataspace->export(), $request_data);
   }
   
  	function test_perform_validation_ok()
@@ -223,7 +190,6 @@ class form_action_test extends UnitTestCase
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
-
   	
   	$this->request->expectOnce('set_status', array(REQUEST_STATUS_FORM_SUBMITTED));
   	$this->form_action->perform($this->request, $this->response);  	

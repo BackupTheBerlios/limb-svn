@@ -20,7 +20,7 @@ class multi_toggle_publish_status_action extends form_action
 	function _valid_perform(&$request, &$response)
 	{
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_response($request));
+		  $response->write(close_popup_response($request));
 	
 		$data = $this->dataspace->export();
 		

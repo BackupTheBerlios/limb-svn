@@ -379,6 +379,12 @@ function & map_request_to_node($request = null, $recursive = false)
 	return $result;
 }
 
+function & flush_cache()
+{
+	$fetcher =& fetcher :: instance();
+	$fetcher->flush_cache();
+}
+
 function & map_url_to_node($url, $recursive = false)
 {
 	$fetcher =& fetcher :: instance();

@@ -466,12 +466,12 @@ class partial_page_cache_manager_test extends UnitTestCase
     $cache_manager =& new partial_page_cache_manager();
     $cache_manager->flush();
     
-    $files = dir :: find_subitems(PAGE_CACHE_DIR);
+    $files = fs :: find_subitems(PAGE_CACHE_DIR);
     
     $this->assertEqual(sizeof($files), 1);
     
     $file = reset($files);
-    $this->assertEqual(dir :: clean_path($file), dir :: clean_path(PAGE_CACHE_DIR . dir :: separator() . 'not_page_file'));
+    $this->assertEqual(fs :: clean_path($file), fs :: clean_path(PAGE_CACHE_DIR . fs :: separator() . 'not_page_file'));
 
     $this->_clean_simple_cache('not_page_file');
   }
@@ -488,7 +488,7 @@ class partial_page_cache_manager_test extends UnitTestCase
   
   function _write_simple_cache($file_id, $contents)
   {
-    dir :: mkdir(PAGE_CACHE_DIR);
+    fs :: mkdir(PAGE_CACHE_DIR);
     $f = fopen(PAGE_CACHE_DIR . $file_id, 'w');
     fwrite($f, $contents);
     fclose($f);

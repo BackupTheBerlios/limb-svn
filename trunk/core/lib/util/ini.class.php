@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
+require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
 
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
@@ -126,7 +126,7 @@ class ini
 
 		if (!is_dir($cache_dir))
 		{
-			if (!dir::mkdir($cache_dir, 0777, true))
+			if (!fs :: mkdir($cache_dir, 0777, true))
 				debug::write_error("Couldn't create cache directory $cache_dir, perhaps wrong permissions", __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
 		} 
 

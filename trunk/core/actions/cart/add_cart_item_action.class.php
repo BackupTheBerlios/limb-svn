@@ -18,7 +18,7 @@ class add_cart_item_action extends action
 		$request->set_status(REQUEST_STATUS_FAILURE);
 
 		if($request->has_attribute('popup'))
-			$response->write_response_string(close_popup_response($request));
+			$response->write(close_popup_response($request));
 			
 		if (!$id = $request->get_attribute('id'))
   		return;			

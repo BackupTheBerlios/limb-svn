@@ -28,7 +28,7 @@ class change_user_locale_action extends form_action
 		$locale_id = $this->dataspace->get('locale_id');
 
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_response($request));
+		  $response->write(close_popup_response($request));
 
 		if (!locale :: is_valid_locale_id($locale_id))
 		{

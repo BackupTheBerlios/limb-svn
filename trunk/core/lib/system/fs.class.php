@@ -15,17 +15,13 @@ define( 'WIN32_NET_PREFIX', '\\\\' );
 
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 
-class dir
-{
-  function dir()
-  {
-  }
-  
+class fs
+{  
   function dirpath($path)
   {
-	  $path = dir :: clean_path($path);
+	  $path = fs :: clean_path($path);
 	  
-  	if (($dir_pos = strrpos($path, dir :: separator())) !== false )
+  	if (($dir_pos = strrpos($path, fs :: separator())) !== false )
       return substr($path, 0, $dir_pos);
       
   	return $path;
@@ -38,14 +34,14 @@ class dir
   */
   function mkdir($dir, $perm=0777, $parents=true)
   {
-    $dir = dir :: clean_path($dir);
+    $dir = fs :: clean_path($dir);
     
     if(!$parents)
-    	return dir :: _do_mkdir($dir, $perm);
+    	return fs :: _do_mkdir($dir, $perm);
     
-    $separator = dir :: separator();
+    $separator = fs :: separator();
     	
-    $dir_elements = dir :: explode_path($dir);
+    $dir_elements = fs :: explode_path($dir);
         
     if (count($dir_elements) == 0)
     	return true;
@@ -59,14 +55,14 @@ class dir
     	$current_dir = array_shift($dir_elements);
 		
     
-    if(!dir :: _do_mkdir($current_dir, $perm))
+    if(!fs :: _do_mkdir($current_dir, $perm))
     	return false;
           	
     for ($i = 0; $i < count( $dir_elements ); $i++ )
     {
       $current_dir .= $separator . $dir_elements[$i];
 			
-      if (!dir :: _do_mkdir($current_dir, $perm))
+      if (!fs :: _do_mkdir($current_dir, $perm))
       	return false;
     }
   	return true;
@@ -80,7 +76,7 @@ class dir
   	if(is_dir($dir))
   		return true;
   	
-  	if(dir :: _has_win32_net_prefix($dir))
+  	if(fs :: _has_win32_net_prefix($dir))
   	{
   		debug :: write_notice('win32 net path - cant check if it exists',
 		 	__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
@@ -106,16 +102,16 @@ class dir
   
   function explode_path($path)
   {
-  	$path = dir :: clean_path($path);
+  	$path = fs :: clean_path($path);
   	
-    $separator = dir :: separator();
+    $separator = fs :: separator();
     	
     $dir_elements = explode($separator, $path);
 		
 		if(sizeof($dir_elements) > 1 && $dir_elements[sizeof($dir_elements)-1] === '')
 			array_pop($dir_elements);
 		
-    if(dir :: _has_win32_net_prefix($path))
+    if(fs :: _has_win32_net_prefix($path))
     {
     	array_shift($dir_elements);
     	array_shift($dir_elements);
@@ -127,8 +123,8 @@ class dir
   
   function chop($path)
   {
-		$path = dir :: clean_path($path);
-		if(substr($path, -1) == dir :: separator())
+		$path = fs :: clean_path($path);
+		if(substr($path, -1) == fs :: separator())
 			$path = substr($path, 0, -1); 
 			
 		return $path;
@@ -136,7 +132,7 @@ class dir
     
 	function rm($dir)
 	{
-		dir :: _do_rm(dir :: chop($dir), dir :: separator());
+		fs :: _do_rm(fs :: chop($dir), fs :: separator());
 		clearstatcache();
 	}
 	
@@ -150,7 +146,7 @@ class dir
           continue;
           
         if(is_dir( $dir . $separator . $file))
-      		dir::_do_rm($dir . $separator . $file, $separator);
+      		fs :: _do_rm($dir . $separator . $file, $separator);
       	else
        		unlink($dir . $separator . $file);
       }
@@ -165,8 +161,8 @@ class dir
   */
   function cp($src, $dest, $as_child = false, $exclude_regex = '', $include_hidden = false)
   {
-  	$src = dir :: clean_path($src);
-  	$dest = dir :: clean_path($dest);
+  	$src = fs :: clean_path($src);
+  	$dest = fs :: clean_path($dest);
   	
     if (!is_dir($src))
     {
@@ -177,23 +173,23 @@ class dir
     	return false;
     }
     
-    if(!dir :: mkdir($dest))
+    if(!fs :: mkdir($dest))
     	return false;
     	
-    $separator = dir :: separator();
+    $separator = fs :: separator();
     
     if ($as_child)
     {
     	$separator_regex = preg_quote($separator);
       if (preg_match( "#^.+{$separator_regex}([^{$separator_regex}]+)$#", $src, $matches))
       {
-        dir :: _do_mkdir($dest . $separator . $matches[1], 0777);
+        fs :: _do_mkdir($dest . $separator . $matches[1], 0777);
         $dest .= $separator . $matches[1];
       }
       else
       	return false;//???
     }
-    $items = dir :: find_subitems($src, 'df', $exclude_regex, false, $include_hidden);
+    $items = fs :: find_subitems($src, 'df', $exclude_regex, false, $include_hidden);
     
     $total_items = $items;
     while (count($items) > 0)
@@ -207,9 +203,9 @@ class dir
         	copy($full_path, $dest . $separator . $item);
         elseif (is_dir( $full_path))
         {
-          dir :: _do_mkdir($dest . $separator . $item, 0777);
+          fs :: _do_mkdir($dest . $separator . $item, 0777);
           
-          $new_items = dir :: find_subitems($full_path, 'df', $exclude_regex, $item, $include_hidden);
+          $new_items = fs :: find_subitems($full_path, 'df', $exclude_regex, $item, $include_hidden);
           
           $items = array_merge($items, $new_items);
           $total_items = array_merge($total_items, $new_items);
@@ -230,7 +226,7 @@ class dir
 		  return array();
 
     $files = array();		
-		$path = dir :: clean_path($path);
+		$path = fs :: clean_path($path);
 		if($handle = opendir($path))
 		{
 			while(($file = readdir($handle)) !== false) 
@@ -273,7 +269,7 @@ class dir
   */
   function convert_separators($path, $to_type = DIR_SEPARATOR_UNIX)
   {
-    $separator = dir :: separator($to_type);
+    $separator = fs :: separator($to_type);
     return preg_replace("#[/\\\\]#", $separator, $path);
   }
 
@@ -285,10 +281,10 @@ class dir
   */
   function clean_path($path, $to_type=DIR_SEPARATOR_LOCAL)
   {
-    $path = dir :: convert_separators($path, $to_type);
-    $separator = dir :: separator($to_type);
+    $path = fs :: convert_separators($path, $to_type);
+    $separator = fs :: separator($to_type);
 		
-		$path = dir :: _normalize_separators($path, $separator);
+		$path = fs :: _normalize_separators($path, $separator);
 		        
     $path_elements= explode($separator, $path);
     $newpath_elements= array();
@@ -314,7 +310,7 @@ class dir
   {
   	$clean_path = preg_replace( "#$separator$separator+#", $separator, $path);
   	  	
-    if(dir :: _has_win32_net_prefix($path))
+    if(fs :: _has_win32_net_prefix($path))
     	$clean_path = '\\' . $clean_path;
     
     return $clean_path;
@@ -333,15 +329,15 @@ class dir
    Creates a path out of all the dir and file items in the array $names
    with correct separators in between them.
    It will also remove unneeded separators.
-   $type is used to determine the separator type, see dir::separator.
+   $type is used to determine the separator type, see fs::separator.
    If $include_end_separator is true then it will make sure that the path ends with a
    separator if false it make sure there are no end separator.
   */
   function path($names, $include_end_separator=false, $type=DIR_SEPARATOR_LOCAL)
   {
-    $separator = dir :: separator($type);
+    $separator = fs :: separator($type);
     $path = implode($separator, $names);
-    $path = dir :: clean_path($path, $type);
+    $path = fs :: clean_path($path, $type);
     
     $has_end_separator = (strlen($path) > 0 && $path[strlen($path) - 1] == $separator);
                      
@@ -355,7 +351,7 @@ class dir
   
   function &recursive_find($path, $regex)
   {
-		$dir =& new dir();
+		$dir =& new fs();
 		
 		return $dir->walk_dir($path, array(&$dir, '_do_recursive_find'), array('regex' => $regex));		
   }
@@ -372,13 +368,13 @@ class dir
 	{
 		$return_params = array();
 		
-		$separator = dir :: separator();
-		$dir = dir :: clean_path($dir);
-		$dir = dir :: chop($dir);
+		$separator = fs :: separator();
+		$dir = fs :: clean_path($dir);
+		$dir = fs :: chop($dir);
 		
 		$params['separator'] = $separator;
 				
-		dir :: _do_walk_dir($dir, $separator, $function_def, &$return_params, $params);
+		fs :: _do_walk_dir($dir, $separator, $function_def, &$return_params, $params);
 		
 		return $return_params;
 	}
@@ -396,7 +392,7 @@ class dir
 					call_user_func_array($function_def, array('dir' => $dir, 'file' => $file, 'params' => $params, 'return_params' => &$return_params));
 					
 					if (is_dir($dir . $separator . $file))
-						dir :: _do_walk_dir($dir . $separator . $file, $separator, $function_def, &$return_params, $params);
+						fs :: _do_walk_dir($dir . $separator . $file, $separator, $function_def, &$return_params, $params);
 				}
 			}
 			closedir($handle); 
@@ -408,12 +404,12 @@ class dir
   */
   function find_subitems($dir, $types = 'dfl', $exclude_regex = '', $add_path = true, $include_hidden = false)
   {
-  	$dir = dir :: clean_path($dir);
-  	$dir = dir :: chop($dir);
+  	$dir = fs :: clean_path($dir);
+  	$dir = fs :: chop($dir);
   	    	
     $items = array();
     
-    $separator = dir :: separator();
+    $separator = fs :: separator();
     
     if ($handle = opendir($dir))
     {
@@ -449,7 +445,7 @@ class dir
   
   function find_subdirs($dir, $full_path = false, $include_hidden = false, $exclude_items = false)
   {
-  	return dir :: find_subitems($dir, 'd', $full_path, $include_hidden, $exclude_items);
+  	return fs :: find_subitems($dir, 'd', $full_path, $include_hidden, $exclude_items);
   }
 }
 ?>

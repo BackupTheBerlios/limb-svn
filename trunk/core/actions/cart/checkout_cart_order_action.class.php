@@ -73,7 +73,7 @@ class checkout_cart_order_action extends form_action
 			$request->set_status(REQUEST_STATUS_FAILURE);
 			
   		if($request->has_attribute('popup'))
-  			$response->write_response_string(close_popup_response($request));
+  			$response->write(close_popup_response($request));
   			
   		return;
 		}
@@ -85,7 +85,7 @@ class checkout_cart_order_action extends form_action
 		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 		
 		if($request->has_attribute('popup'))
-			$response->write_response_string(close_popup_response($request));
+			$response->write(close_popup_response($request));
 	}
 	
 	function _clear_cart()

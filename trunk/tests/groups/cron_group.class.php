@@ -7,22 +7,14 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 
-class response
+class cron_group extends GroupTest 
 {
-	
-	function is_empty()
+	function cron_group() 
 	{
-	  return true;
+	  $this->GroupTest('cron tests');
+	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/cron');
 	}
-		
-	function write($string)
-	{	  
-	}
-		
-	function commit()
-	{  	
-	}			
-} 
+}
 ?>

@@ -476,7 +476,7 @@ class compiler_component
 			define('WS_SCRIPT_WRITTEN', true);
 		}
 		
-		$file_path = addslashes(dir :: clean_path($file_path));
+		$file_path = addslashes(fs :: clean_path($file_path));
 		$code->write_html("<a href='#'><img onclick='run_template_editor(\"{$file_path}\");' src='/shared/images/i.gif' alt='{$file_path}'></a>");
 	}
 

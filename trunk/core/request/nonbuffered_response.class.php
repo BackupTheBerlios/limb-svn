@@ -9,20 +9,20 @@
 *
 ***********************************************************************************/ 
 
-class response
-{
+class nonbuffered_response
+{			
+	function write($string)
+	{
+	  echo $string;
+	}
+	
+	function commit()
+	{
+	}
 	
 	function is_empty()
 	{
 	  return true;
-	}
-		
-	function write($string)
-	{	  
-	}
-		
-	function commit()
-	{  	
 	}			
 } 
 ?>

@@ -13,6 +13,23 @@ require_once(LIMB_DIR . 'core/fetcher.class.php');
 
 class form_edit_site_object_action extends form_site_object_action
 {
+  var $_increase_version;
+  
+  function form_edit_site_object_action()
+  {
+    parent :: form_site_object_action();
+    
+    $this->_increase_version = $this->_define_increase_version_flag();
+  }
+  
+  function _define_increase_version_flag()
+  {
+    if (is_a($this->object, 'content_object'))
+      return true;
+    else 
+      return false;
+  }
+  
 	function _init_validator()
 	{
 		if(!$object_data = fetch_requested_object())
@@ -71,14 +88,18 @@ class form_edit_site_object_action extends form_site_object_action
 		}	
 
 	  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+	  
+	  fetcher :: flush_cache();
 	}
 	
 	function _update_object_operation()
 	{
-		if(!$this->object->update())
-			return false;
+	  if ($this->dataspace->get('minor_changes') || ($this->_increase_version == false))
+		  $result = $this->object->update(false);
 		else
-			return true;
+		  $result = $this->object->update(true);
+		
+		return ($result !== false) ? true : false;
 	}
 	
 	function _handle_changed_identifier($new_identifier)

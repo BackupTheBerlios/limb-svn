@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
-require_once(LIMB_DIR . 'core/request/response.class.php');
 require_once(LIMB_DIR . 'core/request/request.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');

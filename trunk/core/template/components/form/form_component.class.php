@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
 require_once(LIMB_DIR . 'core/template/tag_component.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/error_list.class.php');
+require_once(LIMB_DIR . 'core/lib/util/dataspace_registry.class.php');
 
 /**
 * The form_component provide a runtime API for control the behavior of a form
@@ -99,7 +100,7 @@ class form_component extends tag_component
 	{
 		if(isset($this->attributes['name']))
 		{
-			$dataspace = dataspace :: instance($this->attributes['name']);
+			$dataspace =& dataspace_registry :: get($this->attributes['name']);
 			
 			return $dataspace->get('submitted') ? false : true;
 		}	

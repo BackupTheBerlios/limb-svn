@@ -31,7 +31,7 @@ class full_page_cache_filter extends intercepting_filter
     {
       debug :: add_timing_point('full page cache read finished');
     
-      $response->write_response_string($contents);
+      $response->write($contents);
       return;
     }
     

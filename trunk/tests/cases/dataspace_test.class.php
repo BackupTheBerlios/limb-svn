@@ -35,18 +35,6 @@ class dataspace_test extends UnitTestCase
 	{
 		unset($this->dataspace);
 	}
-	
-	function test_instance()
-	{
-		$d1 =& dataspace :: instance('test');
-				
-		$this->assertNotNull($d1);
-		$this->assertIsA($d1, 'dataspace');
-		
-		$d2 =& dataspace :: instance('test');
-		
-		$this->assertReference(&$d1, &$d2);
-	}
 	 
 	function test_get_unset_variable()
 	{

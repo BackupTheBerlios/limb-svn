@@ -15,7 +15,7 @@ class recover_version_action extends action
 	function perform(&$request, &$response)
 	{
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_no_parent_reload_response());
+		  $response->write(close_popup_no_parent_reload_response());
 	
 	  $request->set_status(REQUEST_STATUS_FAILURE);
 	  
@@ -35,7 +35,7 @@ class recover_version_action extends action
 		  return;
 
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_response($request));
+		  $response->write(close_popup_response($request));
 	
 	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}

@@ -29,7 +29,7 @@ class set_links_priority_action extends form_action
     $request->set_status(REQUEST_STATUS_SUCCESS);
     
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_response($request));
+		  $response->write(close_popup_response($request));
 	}
 }
 

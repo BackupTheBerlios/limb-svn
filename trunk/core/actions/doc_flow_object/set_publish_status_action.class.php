@@ -17,7 +17,7 @@ class set_publish_status_action extends action
 		$request->set_status(REQUEST_STATUS_SUCCESS);
 		
 		if($request->has_attribute('popup'))
-			$response->write_response_string(close_popup_response($request));
+			$response->write(close_popup_response($request));
 	
 		if(!$object = wrap_with_site_object(fetch_requested_object()))
   		return;
@@ -42,6 +42,8 @@ class set_publish_status_action extends action
 		$object->update(false);
 		
 		$this->_apply_access_policy($object, $action);
+
+	  fetcher :: flush_cache();
 	}
 	
 	function get_publish_status($object)

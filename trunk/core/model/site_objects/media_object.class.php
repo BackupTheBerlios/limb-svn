@@ -34,7 +34,7 @@ class media_object extends content_object
 		srand(time());
 		$media_id = md5(uniqid(rand()));
 
-		dir :: mkdir(MEDIA_DIR);
+		fs :: mkdir(MEDIA_DIR);
 	
 		if (!copy($tmp_file_path, MEDIA_DIR . $media_id . '.media'))
 		{
@@ -95,7 +95,7 @@ class media_object extends content_object
 			$etag = md5($contents);
 		}
 		
-		dir :: mkdir(MEDIA_DIR);
+		fs :: mkdir(MEDIA_DIR);
 		
 		if(!copy($tmp_file_path, MEDIA_DIR . $id .'.media'))
 		{

@@ -33,6 +33,11 @@ class edit_user_action extends form_edit_site_object_action
 	      )
 	  );     
 	}  
+
+	function _define_increase_version_flag()
+	{
+	  return false;
+	}  
 	
 	function _init_validator()
 	{
@@ -48,15 +53,6 @@ class edit_user_action extends form_edit_site_object_action
     $this->validator->add_rule($v4 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'email'));
     $this->validator->add_rule($v5 = array(LIMB_DIR . 'core/lib/validators/rules/email_rule', 'email'));
 	}
-	
-	function _update_object_operation()
-	{
-		if(!$this->object->update(false))
-			return false;
-		else
-			return true;
-	}
-	
 }
 
 ?>

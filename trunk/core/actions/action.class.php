@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
+require_once(LIMB_DIR . 'core/lib/util/dataspace_registry.class.php');
 
 class action
 {
@@ -22,7 +22,7 @@ class action
 	{
 		$this->name = $this->_define_dataspace_name();
 		
-		$this->dataspace =& dataspace :: instance($this->name);
+		$this->dataspace =& dataspace_registry :: get($this->name);
 	}
 	
 	function _define_dataspace_name()

@@ -37,24 +37,6 @@ class dataspace
 			$this->import($vars);
 	}
 	
-	function & instance($name='')
-	{
-		$obj = null;
-  	
-  	$instance_name = "global_dataspace_instance_{$name}";
-  	
-  	if(isset($GLOBALS[$instance_name]))
-			$obj =& $GLOBALS[$instance_name];
-		
-  	if(!$obj || get_class($obj) != 'dataspace')
-  	{
-  		$obj =& new dataspace();
-  		$GLOBALS[$instance_name] =& $obj;
-  	}
-  	
-  	return $obj;
-	}
-
 	/**
 	* Gets a copy of a stored variable by name
 	* 

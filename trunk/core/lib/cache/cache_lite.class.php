@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: cache_lite.class.php 441 2004-02-13 16:07:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
 define('CACHE_LITE_ERROR_RETURN', 1);
 define('CACHE_LITE_ERROR_DIE', 8);
 
-require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
+require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
 
 class cache_lite
@@ -180,7 +180,7 @@ class cache_lite
 		$this->import_attributes($attributes);
 
 		if (!is_dir(CACHE_DIR))
-			dir::mkdir(CACHE_DIR, 0777, true);
+			fs :: mkdir(CACHE_DIR, 0777, true);
 	} 
 
 	/**

@@ -9,18 +9,18 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
+require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 
 class flush_template_cache_action extends action
 {
 	function perform(&$request, &$response)
 	{
-	  $files = dir :: find_subitems(VAR_DIR . '/compiled', 'f');
+	  $files = fs :: find_subitems(VAR_DIR . '/compiled', 'f');
 	  foreach($files as $file)
 	    unlink($file);
 	  
 		if($request->has_attribute('popup'))
-		  $response->write_response_string(close_popup_response($request));
+		  $response->write(close_popup_response($request));
 	  
 	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}

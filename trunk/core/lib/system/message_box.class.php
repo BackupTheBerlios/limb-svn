@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: message_box.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define( 'MESSAGE_LEVEL_NOTICE', 1 );
@@ -13,7 +13,7 @@ define( 'MESSAGE_LEVEL_WARNING', 2 );
 define( 'MESSAGE_LEVEL_ERROR', 3 );
 define( 'MESSAGE_LEVEL', 4 );
 
-require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
+require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
 
 class message_box

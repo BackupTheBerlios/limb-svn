@@ -11,7 +11,7 @@
 if(!defined('PAGE_CACHE_DIR'))
   define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
   
-require_once(LIMB_DIR . '/core/lib/system/dir.class.php');
+require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 
 class partial_page_cache_manager
@@ -71,7 +71,7 @@ class partial_page_cache_manager
     if(!$id = $this->get_cache_id())
       return false;      
     
-    dir :: mkdir(PAGE_CACHE_DIR);
+    fs :: mkdir(PAGE_CACHE_DIR);
     
     $tmp = tempnam(PAGE_CACHE_DIR, '_');
     $f = fopen($tmp, 'w');
@@ -178,7 +178,7 @@ class partial_page_cache_manager
   
   function flush()
   {
-    $files = dir :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^p]~');
+    $files = fs :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^p]~');
 
     foreach($files as $file)
     {
@@ -188,7 +188,7 @@ class partial_page_cache_manager
 
   function get_cache_size()
   {
-    $files = dir :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^p]~');
+    $files = fs :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^p]~');
     
     $size = 0;
     
