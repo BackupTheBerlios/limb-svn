@@ -96,4 +96,41 @@ It means that our user is allowed to display all articles (since the user is a m
 of visitors and admin groups), can delete article1 and article3 and not article2
 (he has only r permission for article2 - that's not enough to execute delete action as required by action definition).
 
-ѕлюс нужно иметь описание шаблонов прав доступа.
+
+ACCESS TEMPLATES
+In some cases we need to set a predefined set of object permissions. For example new article, created by the content manager needs to be verified by the editor in chief before it is published for public view. Hence we need the new article to be created with no access permissions for ordinary user and with full access rights to the editorial staff. Meet 'access templates'!
+
+"Access templates" is a matrix of the object permissions applied to the object. This a common instrument for the document flow control. 
+We've faced 2 cases of using access templates so far:
+ - applying acces template from parent to child
+ - applying access template for object itself
+
+access_policy object resolves all questions, connected with getting or saving access policy for the particular object.
+A small example should clarify a bit:
+
+class articles_folder_controller extends site_object_controller
+{
+	function articles_folder_controller()
+	{
+		$this->_actions = array(
+				'create_article' => array(
+						'permissions_required' => 'w',
+						'action_path' => '/article/create_article_action',
+						'action_name' => strings :: get('create_article', 'article'),
+						'can_have_access_template' => true,
+				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'can_have_access_template' => true, //note this attribute!
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/set_publish_status_action',						
+				),
+		);
+		parent :: site_object_controller();
+	}
+}
+'can_have_access_template' attribute defines that object has access template for this action. 
+
+In case of creating a new article (create_article action) appropriate action tries to create an article_object and to apply access permissions as defined in access template. If there is no access template for this action (e.g. it's empty) then access permissions are copied from the parent object.
+
+When publishing an object access permissions are applied to the object itself(access template IS mandatory in this case).
