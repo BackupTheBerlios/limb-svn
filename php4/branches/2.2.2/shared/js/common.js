@@ -170,69 +170,39 @@ function optimize_window()
 	
   if (is_ie)
 	{
-		opener_width = top_opener.document.body.clientWidth;
-		opener_height = top_opener.document.body.clientHeight;
+		openerWidth = top_opener.document.body.clientWidth;
+		openerHeight = top_opener.document.body.clientHeight;
+		openerLeft = top_opener.screenLeft;
+		openerTop = top_opener.screenTop;
 	}
-	else if(is_gecko)
+	else if(is_gecko || is_opera)
 	{
-		opener_width = top_opener.innerWidth;
-		opener_height = top_opener.innerHeight;
+		openerWidth = top_opener.innerWidth;
+		openerHeight = top_opener.innerHeight;
+		openerLeft = top_opener.screenX + top_opener.outerWidth - top_opener.innerWidth;
+		openerTop = top_opener.screenY + top_opener.outerHeight - top_opener.innerHeight;
 	}
 	else
 	{
-		opener_width = top_opener.document.body.clientWidth;
-		opener_height = top_opener.document.body.clientHeight;
+		openerWidth = top_opener.document.body.clientWidth;
+		openerHeight = top_opener.document.body.clientHeight;
+		openerLeft = top_opener.screenLeft;
+		openerTop = top_opener.screenTop;
 	}
 	
 	if(window.WINDOW_WIDTH)
-  {
    	newWidth = window.WINDOW_WIDTH;
-  }
   else
-  {
-  	newWidth = opener_width*x_ratio;
-  	if (w.document.body.scrollWidth > newWidth )
-  	{
-  	  x_ratio = 1;
-  	  newWidth = opener_width;
-  	} 
-  }	
+  	newWidth = openerWidth*x_ratio;
 
 	if(window.WINDOW_HEIGHT)
-  {
    	newHeight = window.WINDOW_HEIGHT;
-  }
   else
-  {
-  	newHeight = opener_height*y_ratio;
+  	newHeight = openerHeight*y_ratio;
 
-  	if (w.document.body.scrollHeight > newHeight )
-  	{
-  	  y_ratio = 1;
-  	  newHeight = opener_height;
-  	} 
-  }	
-  
-	if (is_ie)
-	{
-		openerLeft = w.opener.screenLeft;
-		openerTop = w.opener.screenTop;
-	}
-	else if((is_gecko)	|| (is_opera))
-	{
-		openerLeft = w.opener.screenX;
-		openerTop = w.opener.screenY;
-	}	
-	else
-	{
-		openerLeft = w.opener.screenLeft;
-		openerTop = w.opener.screenTop;
-	}
 
-	newLeft = (w.screen.width - newWidth)/2 - 20;
-	newTop = (w.screen.height - newHeight)/2 - 30;
-	if(is_opera)
-		newTop -= 50;
+	newLeft = openerLeft + (openerWidth - newWidth)/2;
+	newTop = openerTop + (openerHeight - newHeight)/2;
 	
 	w.moveTo(newLeft, newTop);
 	w.resizeTo(newWidth, newHeight);
