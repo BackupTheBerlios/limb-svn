@@ -22,7 +22,7 @@ class ad_block_object extends content_object
 		return complex_array :: array_merge(
 					parent :: _define_attributes_definition(),
 					array(
-					'identifier' => array('search' => true)
+					'identifier' => array('search' => false)
 					)
 				);
 	}
