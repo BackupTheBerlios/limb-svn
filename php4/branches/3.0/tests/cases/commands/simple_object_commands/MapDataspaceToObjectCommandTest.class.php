@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/EditSimpleObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/MapDataspaceToObjectCommand.class.php');
 require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
-class EditSimpleObjectCommandTest extends LimbTestCase
+class MapDataspaceToObjectCommandTest extends LimbTestCase
 {
-  function EditSimpleObjectCommandTest()
+  function MapDataspaceToObjectCommandTest()
   {
-    parent :: LimbTestCase('edit simple cms object command test');
+    parent :: LimbTestCase('map dataspace to object command test');
   }
 
   function setUp()
@@ -35,18 +35,13 @@ class EditSimpleObjectCommandTest extends LimbTestCase
                  'ds_annotation' => 'annotation',
                  'ds_content' => 'content');
 
-    $object = new SimpleObject();
-    $object->set('id', $id = 1001);
-
-    $command = new EditSimpleObjectCommand($map, $object);
-
     $toolkit =& Limb :: toolkit();
 
-    $uow =& $toolkit->getUOW();
-    $uow->register($object);
+    $object = new SimpleObject();
 
-    $request =& $toolkit->getRequest();
-    $request->set('id', $id);
+    $toolkit->setProcessedObject($object);
+
+    $command = new MapDataspaceToObjectCommand($map);
 
     $dataspace =& $toolkit->getDataspace();
     $dataspace->set('ds_title', $title = 'title');
@@ -63,21 +58,14 @@ class EditSimpleObjectCommandTest extends LimbTestCase
   function testPerformError()
   {
     $object = new SimpleObject();
-    $object->set('id', $id = 1001);
 
     $map = array('title' => 'title',
                  'annotation' => 'annotation',
                  'content' => 'content');
 
-    $command = new EditSimpleObjectCommand($map, $object);
+    $command = new MapDataspaceToObjectCommand($map);
 
     $toolkit =& Limb :: toolkit();
-
-    $uow =& $toolkit->getUOW();
-    $uow->register($object);
-
-    $request =& $toolkit->getRequest();
-    $request->set('id', $id = 'no-such-object');
 
     $this->assertEqual($command->perform(), LIMB_STATUS_ERROR);
 

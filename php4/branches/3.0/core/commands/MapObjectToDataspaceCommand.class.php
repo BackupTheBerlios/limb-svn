@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-class InitializeDataspaceFromProcessedObjectCommand
+class MapObjectToDataspaceCommand
 {
   var $map;
   var $object_handle;
 
-  function InitializeDataspaceFromProcessedObjectCommand($map)
+  function MapObjectToDataspaceCommand($map)
   {
     $this->map = $map;
   }

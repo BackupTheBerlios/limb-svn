@@ -5,23 +5,30 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: CreateSimpleObjectCommand.class.php 1165 2005-03-16 14:28:14Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 
-class CommitNewObjectCommand
+class InitializeExistingObjectCommand
 {
-  function CommitNewObjectCommand(){}
+  var $object_handle;
+
+  function InitializeExistingObjectCommand(&$object_handle)
+  {
+    $this->object_handle =& $object_handle;
+  }
 
   function perform()
   {
+    $object =& Handle :: resolve($this->object_handle);
+
     $toolkit =& Limb :: toolkit();
-    if(!$object =& $toolkit->getProcessedObject($toolkit))
+    $request =& $toolkit->getRequest();
+    $uow =& $toolkit->getUOW();
+    if(!$object = $uow->load($object->__class_name, $request->get('id')))
       return LIMB_STATUS_ERROR;
 
-    $uow =& $toolkit->getUOW();
-
-    $uow->register($object);
+    $toolkit->setProcessedObject($object);
 
     return LIMB_STATUS_OK;
   }

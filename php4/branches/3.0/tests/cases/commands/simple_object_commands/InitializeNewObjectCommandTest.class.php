@@ -8,14 +8,14 @@
 * $Id: CreateSimpleObjectCommandTest.class.php 1165 2005-03-16 14:28:14Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/CommitNewObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/InitializeNewObjectCommand.class.php');
 require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
-class CommitNewObjectCommandTest extends LimbTestCase
+class InitializeNewObjectCommandTest extends LimbTestCase
 {
-  function CommitNewObjectCommandTest()
+  function InitializeNewObjectCommandTest()
   {
-    parent :: LimbTestCase('commit new object command test');
+    parent :: LimbTestCase('initialize new object command test');
   }
 
   function setUp()
@@ -30,19 +30,15 @@ class CommitNewObjectCommandTest extends LimbTestCase
 
   function testPerform()
   {
-    $object = new SimpleObject();
-    $object->set('title', $title = 'any title');
-
-    $toolkit =& Limb :: toolkit();
-    $toolkit->setProcessedObject($object);
-
-    $command = new CommitNewObjectCommand();
+    $handle = new Handle('SimpleObject');
+    $command = new InitializeNewObjectCommand($handle);
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
-    $uow =& $toolkit->getUOW();
+    $toolkit =& Limb :: toolkit();
+    $object =& $toolkit->getProcessedObject();
 
-    $this->assertTrue($uow->isRegistered($object));
+    $this->assertIsA($object, 'SimpleObject');
   }
 }
 

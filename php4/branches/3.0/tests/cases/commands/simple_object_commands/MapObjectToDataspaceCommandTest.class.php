@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/InitializeDataspaceFromProcessedObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/MapObjectToDataspaceCommand.class.php');
 require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
-class InitializeDataspaceFromProcessedObjectCommandTest extends LimbTestCase
+class MapObjectToDataspaceCommandTest extends LimbTestCase
 {
   var $cmd;
 
-  function InitializeDataspaceFromProcessedObjectCommandTest()
+  function MapObjectToDataspaceCommandTest()
   {
-    parent :: LimbTestCase('initialize dataspace from processed object command test');
+    parent :: LimbTestCase('map object to dataspace command test');
   }
 
   function setUp()
@@ -48,7 +48,7 @@ class InitializeDataspaceFromProcessedObjectCommandTest extends LimbTestCase
 
     $toolkit->setProcessedObject($object);
 
-    $command = new InitializeDataspaceFromProcessedObjectCommand($map);
+    $command = new MapObjectToDataspaceCommand($map);
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
@@ -64,7 +64,7 @@ class InitializeDataspaceFromProcessedObjectCommandTest extends LimbTestCase
                  'annotation' => 'ds_annotation',
                  'content' => 'ds_content');
 
-    $command = new InitializeDataspaceFromProcessedObjectCommand($map);
+    $command = new MapObjectToDataspaceCommand($map);
 
     $toolkit =& Limb :: toolkit();
 

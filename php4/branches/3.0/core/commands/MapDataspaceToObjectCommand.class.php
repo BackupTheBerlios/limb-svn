@@ -5,43 +5,26 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: EditSimpleObjectCommand.class.php 1186 2005-03-23 09:47:34Z seregalimb $
 *
 ***********************************************************************************/
 
-class EditSimpleObjectCommand
+class MapDataspaceToObjectCommand
 {
   var $map;
-  var $object_handle;
 
-  function EditSimpleObjectCommand($map, &$object_handle)
+  function MapDataspaceToObjectCommand($map)
   {
     $this->map = $map;
-    $this->object_handle =& $object_handle;
   }
 
   function perform()
   {
-    if(!$object =& $this->_findObjectInUnitOfWork())
+    $toolkit =& Limb :: toolkit();
+
+    if(!$object =& $toolkit->getProcessedObject())
       return LIMB_STATUS_ERROR;
 
-    $this->_populateObjectUsingDataspace($object);
-
-    return LIMB_STATUS_OK;
-  }
-
-  function &_findObjectInUnitOfWork()
-  {
-    $object =& Handle :: resolve($this->object_handle);
-
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-    $uow =& $toolkit->getUOW();
-    return $uow->load($object->__class_name, $request->get('id'));
-  }
-
-  function _populateObjectUsingDataspace(&$object)
-  {
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
@@ -50,6 +33,8 @@ class EditSimpleObjectCommand
       if (($value = $dataspace->get($key)) !== false)
         $object->set($setter, $value);
     }
+
+    return LIMB_STATUS_OK;
   }
 }
 

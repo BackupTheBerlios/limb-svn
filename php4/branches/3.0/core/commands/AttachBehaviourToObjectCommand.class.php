@@ -5,40 +5,31 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: EditSimpleObjectCommand.class.php 1186 2005-03-23 09:47:34Z seregalimb $
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
-class DeleteSimpleObjectCommand
+class AttachBehaviourToObjectCommand
 {
-  var $object_handle;
+  var $name;
 
-  function DeleteSimpleObjectCommand(&$handle)
+  function AttachBehaviourToObjectCommand($name)
   {
-    $this->object_handle =& $handle;
+    $this->name = $name;
   }
 
   function perform()
   {
     $toolkit =& Limb :: toolkit();
-    $uow =& $toolkit->getUOW();
+    $object =& $toolkit->getProcessedObject();
 
-    if (!$object =& $this->_findObjectInUnitOfWork())
+    if(!is_a($object, 'Service'))
       return LIMB_STATUS_ERROR;
 
-    $uow->delete($object);
+    $object->attachBehaviour(new Behaviour($this->name));
 
     return LIMB_STATUS_OK;
-  }
-
-  function &_findObjectInUnitOfWork()
-  {
-    $object =& Handle :: resolve($this->object_handle);
-
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-    $uow =& $toolkit->getUOW();
-    return $uow->load($object->__class_name, $request->get('id'));
   }
 }
 
