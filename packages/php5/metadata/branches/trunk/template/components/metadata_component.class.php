@@ -138,7 +138,7 @@ class metadata_component extends component
 			  $request = request :: instance();
 			  $node_path = $request->get($this->request_path);
 
-				if(!$node = fetcher :: instance()->map_url_to_node($node_path))
+				if(!$node = fetcher :: instance()->map_uri_to_node(new uri($node_path)))
 					$node = fetcher :: instance()->map_request_to_node();
 			}
 			else

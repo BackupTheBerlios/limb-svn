@@ -19,7 +19,7 @@ class node_select_action extends action
 	  if(!$path = $request->get('path'))
 	    return;
 
-	 if(!$node = fetcher :: instance()->map_url_to_node($path))
+	 if(!$node = fetcher :: instance()->map_uri_to_node(new uri($path)))
 	    return;
 
 	  if(!$object_data = fetcher :: instance()->fetch_one_by_node_id($node['id']))

@@ -40,7 +40,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 
 		if(strpos($path, '?') !== false)
 		{
-			if(!$node = fetcher :: instance()->map_url_to_node($path))
+			if(!$node = fetcher :: instance()->map_uri_to_node(new uri($path)))
 				return $default_path;
 
 			if(!$path = tree :: instance()->get_path_to_node($node))
