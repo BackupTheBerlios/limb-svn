@@ -35,7 +35,7 @@ class stats_ip_test extends LimbTestCase
   function setUp()
   {
    	$this->stats_ip = new stats_ip_self_test_version($this);
-   	$this->stats_ip->stats_ip();
+   	$this->stats_ip->__construct();
    	
    	$this->_clean_up();
   }

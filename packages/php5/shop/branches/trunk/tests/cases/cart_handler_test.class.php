@@ -112,7 +112,7 @@ class cart_handler_test extends LimbTestCase
     $item->setReturnValue('get_id', 1);
     
     $this->cart_handler->add_item($item);
-    $this->cart_handler->clear();
+    $this->cart_handler->clear_items();
     
     $this->assertFalse($this->cart_handler->get_item(1));
   }

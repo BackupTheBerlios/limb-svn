@@ -31,7 +31,7 @@ class stats_counter_test extends LimbTestCase
   	$this->db = db_factory :: instance();
   	
    	$this->stats_counter = new stats_counter_test_version($this);
-   	$this->stats_counter->stats_counter();
+   	$this->stats_counter->__construct();
 
   	$this->stats_counter->setReturnValue('_is_home_hit', false);
   	$this->stats_counter->setReturnValue('_is_new_audience', false);

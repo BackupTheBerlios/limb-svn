@@ -33,7 +33,7 @@ class stats_uri_test extends LimbTestCase
   	$this->db =& db_factory :: instance();
   	
    	$this->stats_uri = new stats_uri_self_test_version($this);
-   	$this->stats_uri->stats_uri();
+   	$this->stats_uri->__construct();
    	
    	$this->_clean_up();
   }

@@ -69,7 +69,7 @@ class stats_search_phrase_test extends LimbTestCase
   	$this->stats_search_phrase->register_search_engine_rule($rule_no_match);
   	$this->stats_search_phrase->register_search_engine_rule($rule_match);
   	
-  	$match_rule = $this->stats_search_phrase->_get_matching_search_engine_rule();
+  	$match_rule = $this->stats_search_phrase->get_matching_search_engine_rule();
   	$this->assertEqual($match_rule->get_matching_phrase(), 'test');
   	
   	$rule_match->tally();
@@ -86,7 +86,7 @@ class stats_search_phrase_test extends LimbTestCase
   	  	
   	$this->stats_search_phrase->register_search_engine_rule($rule_no_match);
   	
-  	$this->assertNull(null, $this->stats_search_phrase->_get_matching_search_engine_rule());
+  	$this->assertNull(null, $this->stats_search_phrase->get_matching_search_engine_rule());
   	
   	$rule_no_match->tally();
   }

@@ -38,7 +38,7 @@ class cart_test extends LimbTestCase
   
   function test_instance()
   {
-    $this->assertReference(cart :: instance(10), cart :: instance(10));
+    $this->assertTrue(cart :: instance(10) === cart :: instance(10));
   }
   
   function test_get_default_card_id()
@@ -179,7 +179,7 @@ class cart_test extends LimbTestCase
 
   function test_clear()
   {
-    $this->cart_handler->expectOnce('clear');
+    $this->cart_handler->expectOnce('clear_items');
     $this->cart->clear();
   }
   

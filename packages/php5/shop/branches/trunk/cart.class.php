@@ -24,7 +24,7 @@ class cart
 	protected $_cart_id = null;
 	protected $_cart_handler = null;
 
-	protected function __construct($cart_id, $handler)
+	function __construct($cart_id, $handler)
 	{
 	  if($cart_id === null)
 		  $this->_cart_id = CART_DEFAULT_ID;
@@ -151,7 +151,7 @@ class cart
 
 	public function clear()
 	{
-	  $this->_cart_handler->clear();
+	  $this->_cart_handler->clear_items();
 	}
 	
 	public function merge($cart)

@@ -38,7 +38,7 @@ class stats_search_phrase
 	
 	public function register($date)
 	{
-		if(!$rule = $this->_get_matching_search_engine_rule())
+		if(!$rule = $this->get_matching_search_engine_rule())
 			return false;
 		
 		$this->db->sql_insert('sys_stat_search_phrase', 
@@ -52,7 +52,7 @@ class stats_search_phrase
 		return true;
 	}
 	
-	protected function _get_matching_search_engine_rule()
+	public function get_matching_search_engine_rule()
 	{
 		$uri = urldecode($this->_get_http_referer());
 		
