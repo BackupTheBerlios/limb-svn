@@ -300,7 +300,7 @@ class debug
     if(!defined('DEVELOPER_EMAIL'))//???
       return;
 
-    include_once(LIMB_DIR . '/core/lib/mail/send_plain_mail.inc.php');
+    include_once(LIMB_DIR . '/core/lib/mail/mail.inc.php');
 
     $title = '';
     $headers = array();
