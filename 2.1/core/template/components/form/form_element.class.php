@@ -63,17 +63,17 @@ class form_element extends tag_component
 		{
 			return $this->display_name;
 		} 
-		elseif (isset($this->attributes["title"]))
+		elseif (isset($this->attributes['title']))
 		{
-			return $this->attributes["title"];
+			return $this->attributes['title'];
 		} 
-		elseif (isset($this->attributes["alt"]))
+		elseif (isset($this->attributes['alt']))
 		{
-			return $this->attributes["alt"];
+			return $this->attributes['alt'];
 		} 
 		else
 		{
-			return str_replace("_", " ", $this->attributes["name"]);
+			return str_replace('_', ' ', $this->attributes['name']);
 		} 
 	} 
 
@@ -176,14 +176,14 @@ class form_element extends tag_component
 	}
 		
 	function render_attributes()
-	{		
+	{				
 		foreach ($this->attributes as $attrib_name => $value)
-		{
+		{	
 			if($this->attach_form_prefix && $attrib_name == 'name')
 			{						
 				$value = $this->_process_name_attribute($value);
 			}
-			
+		
 			if (!is_null($value))
 			{
 				echo ' ';

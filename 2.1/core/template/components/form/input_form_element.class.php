@@ -29,10 +29,6 @@ class input_form_element extends form_element
 		{
 			$this->attributes['value'] = $value;
 		} 
-		else
-		{
-			$this->attributes['value'] = '';
-		}
 		 
 		parent :: render_attributes();
 	} 

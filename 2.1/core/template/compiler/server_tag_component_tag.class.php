@@ -90,7 +90,6 @@ class server_tag_component_tag extends server_component_tag
 	{
 		parent::generate_constructor($code);
 		$code->write_php($this->get_component_ref_code() . '->attributes = ' . var_export($this->attributes, true) . ';');
-		//$code->write_php($this->get_component_ref_code() . '->attributes = unserialize("' . addslashes(serialize($this->attributes)) . '");');
 	} 
 } 
 
