@@ -54,6 +54,12 @@ class BaseLimbToolkit implements LimbToolkit
     return site_object_factory :: create($site_object_path);    
   }
   
+  public function createDataMapper($mapper_path)
+  {
+    include_once(LIMB_DIR . '/class/core/data_mappers/data_mapper_factory.class.php');
+    return data_mapper_factory :: create($mapper_path);    
+  }  
+  
   public function createBehaviour($behaviour_path)
   {
     include_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour_factory.class.php');

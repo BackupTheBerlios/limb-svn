@@ -45,6 +45,12 @@ class base_limb_toolkit_test extends LimbTestCase
     $this->assertEqual(get_class($this->toolkit->createSiteObject('site_object')), 
                        'site_object');    
   }
+  
+  function test_create_data_mapper()
+  {
+    $this->assertEqual(get_class($this->toolkit->createDataMapper('site_object_mapper')), 
+                       'site_object_mapper');    
+  }  
 
   function test_create_behaviour()
   {

@@ -124,50 +124,7 @@ class site_object_test extends LimbTestCase
     
     $object->tally();
   }
-
-  function test_get_class_id()
-  {
-    // autogenerate class_id
-		$id = $this->object->get_class_id();
-		
-		$this->db->sql_select('sys_class', '*', 'name="' . get_class($this->object) . '"');
-		$arr = $this->db->fetch_row();
-		
-		$this->assertNotNull($id);
-		
-		$this->assertEqual($id, $arr['id']);
-
-    // generate class_id only once
-		$id = $this->object->get_class_id();
-		$this->db->sql_select('sys_class', '*');
-		$arr = $this->db->get_array();
-		
-		$this->assertEqual(sizeof($arr), 1);
-	}
   
-  function test_get_behaviour_name_by_id_ok()
-  {
-    $this->db->sql_insert('sys_behaviour', array('id' => $behaviour_id = 100,
-                                                 'name' => $name = 'test_behaviour'));
-    
-    $this->db->sql_insert('sys_site_object', array('id' => $object_id = 100,
-                                                 'behaviour_id' => $behaviour_id));
-    
-    $this->assertEqual(site_object :: find_behaviour_name_by_id($object_id), $name);
-  }
-
-  function test_get_behaviour_name_by_id_failed()
-  {
-    try
-    {
-      site_object :: find_behaviour_name_by_id(100);
-      $this->assertTrue(false);
-    }
-    catch(LimbException $e)
-    {
-      $this->assertTrue(true);
-    }
-  }
 }
 
 ?>

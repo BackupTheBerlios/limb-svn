@@ -23,6 +23,7 @@ class base_package_file_resolver_test extends LimbTestCase
   
   function setUp()
   {
+    Limb :: toolkit()->flushINICache();
   	packages_info :: instance()->reset();
   	
     debug_mock :: init($this); 

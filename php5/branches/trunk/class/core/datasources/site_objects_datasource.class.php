@@ -114,7 +114,7 @@ class site_objects_datasource implements datasource, countable
   {
     $params = $this->raw_sql_params;
     
-		if ($object_ids = $this->get_accessible_object_ids())
+    if ($object_ids = $this->get_accessible_object_ids())
       $params['conditions'][] = ' AND ' . sql_in('sso.id', $object_ids);
     
     if ($this->restrict_by_class)
@@ -150,7 +150,7 @@ class site_objects_datasource implements datasource, countable
       return $result; 
     
     $authorizer = Limb :: toolkit()->getAuthorizer();
-		$result = $authorizer->get_accessible_object_ids($ids, $action);
+    $result = $authorizer->get_accessible_object_ids($ids, $action);
  
     $cache->put($key, $result, self :: CACHE_GROUP);
     
@@ -159,10 +159,10 @@ class site_objects_datasource implements datasource, countable
 
   protected function _get_site_object()
   {
-		if ($this->site_object)
-		  return $this->site_object;
+    if ($this->site_object)
+      return $this->site_object;
     
-		$this->site_object = Limb :: toolkit()->createSiteObject($this->site_object_class_name);
+    $this->site_object = Limb :: toolkit()->createSiteObject($this->site_object_class_name);
  
     return $this->site_object;
   }
@@ -203,9 +203,9 @@ class site_objects_datasource implements datasource, countable
     if($result !== null)
       return $result; 
 
-		$site_object = $this->_get_site_object();
+    $site_object = $this->_get_site_object();
     
-		$result = $site_object->$fetch_method($params, $sql_params);
+    $result = $site_object->$fetch_method($params, $sql_params);
     
     $cache->put($key, $result, self :: CACHE_GROUP);
     

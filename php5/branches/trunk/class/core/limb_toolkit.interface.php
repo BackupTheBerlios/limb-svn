@@ -16,6 +16,7 @@ interface LimbToolkit
   public function createDBTable($table_name);
   public function getDatasource($datasource_path);
   public function createSiteObject($site_object_path);
+  public function createDataMapper($mapper_path);
   public function createBehaviour($behaviour_path);
   public function getDB();
   public function getTree();
