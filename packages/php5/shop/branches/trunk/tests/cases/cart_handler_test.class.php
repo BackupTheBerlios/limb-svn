@@ -20,7 +20,7 @@ class cart_handler_test extends LimbTestCase
   
   function setUp()
   {
-    $this->cart_handler =& new cart_handler(10);
+    $this->cart_handler = new cart_handler(10);
   }
   
   function tearDown()
@@ -34,8 +34,8 @@ class cart_handler_test extends LimbTestCase
   
   function test_add_item()
   {
-    $item1 =& new Mockcart_item($this);
-    $item2 =& new Mockcart_item($this);
+    $item1 = new Mockcart_item($this);
+    $item2 = new Mockcart_item($this);
     
     $item1->expectOnce('get_id');
     $item1->setReturnValue('get_id', 1);
@@ -57,8 +57,8 @@ class cart_handler_test extends LimbTestCase
 
   function test_add_item_already_added()
   {
-    $item1 =& new Mockcart_item($this);
-    $item2 =& new Mockcart_item($this);
+    $item1 = new Mockcart_item($this);
+    $item2 = new Mockcart_item($this);
     
     $item1->expectOnce('get_id');
     $item1->setReturnValue('get_id', $item_id = 1);
@@ -87,7 +87,7 @@ class cart_handler_test extends LimbTestCase
   
   function test_get_item()
   {
-    $item =& new Mockcart_item($this);
+    $item = new Mockcart_item($this);
     $item->setReturnValue('get_id', 1);
     
     $this->cart_handler->add_item($item);
@@ -97,7 +97,7 @@ class cart_handler_test extends LimbTestCase
   
   function test_remove_item()
   {
-    $item =& new Mockcart_item($this);
+    $item = new Mockcart_item($this);
     $item->setReturnValue('get_id', 1);
     
     $this->cart_handler->add_item($item);
@@ -108,7 +108,7 @@ class cart_handler_test extends LimbTestCase
   
   function test_clear()
   {
-    $item =& new Mockcart_item($this);
+    $item = new Mockcart_item($this);
     $item->setReturnValue('get_id', 1);
     
     $this->cart_handler->add_item($item);

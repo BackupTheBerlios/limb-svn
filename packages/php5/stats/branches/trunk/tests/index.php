@@ -13,8 +13,8 @@ require_once(dirname(__FILE__) . '/setup.php');
 require_once(dirname(__FILE__) . '/stats_root_group_test.class.php');
 require_once(LIMB_DIR . '/tests/lib/html_test_runner.class.php');
 
-$root_group =& new StatsRootGroupTest();
-$test_runner =& new HTMLTestRunner();
+$root_group = new StatsRootGroupTest();
+$test_runner = new HTMLTestRunner();
 
 $test_runner->run($root_group);
   

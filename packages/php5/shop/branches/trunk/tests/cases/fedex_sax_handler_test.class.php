@@ -18,8 +18,8 @@ class fedex_sax_handler_test extends LimbTestCase
   
   function setUp()
   {
-    $this->parser =& new XML_HTMLSax3();
-    $this->handler =& new fedex_sax_handler();
+    $this->parser = new XML_HTMLSax3();
+    $this->handler = new fedex_sax_handler();
     
     $this->parser->set_object($this->handler);
     

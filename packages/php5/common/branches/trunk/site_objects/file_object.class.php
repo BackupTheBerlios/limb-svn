@@ -21,11 +21,11 @@ class file_object extends media_object
 		);
 	}
 	
-	public function create()
+	public function create($is_root = false)
 	{
 		$this->_create_file();
 				
-		return parent :: create();
+		return parent :: create($is_root);
 	}
 	
 	public function update($force_create_new_version = true)

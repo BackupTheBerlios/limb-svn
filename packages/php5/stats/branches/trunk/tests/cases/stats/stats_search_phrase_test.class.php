@@ -57,11 +57,11 @@ class stats_search_phrase_test extends LimbTestCase
   {
   	$this->stats_search_phrase->setReturnValue('_get_http_referer', 'test');
 
-  	$rule_no_match =& new Mocksearch_engine_regex_rule($this);
+  	$rule_no_match = new Mocksearch_engine_regex_rule($this);
   	$rule_no_match->expectOnce('match');
   	$rule_no_match->setReturnValue('match', false);
   	
-  	$rule_match =& new Mocksearch_engine_regex_rule($this);
+  	$rule_match = new Mocksearch_engine_regex_rule($this);
   	$rule_match->expectOnce('match');
   	$rule_match->setReturnValue('match', true);
   	$rule_match->setReturnValue('get_matching_phrase', 'test');
@@ -80,7 +80,7 @@ class stats_search_phrase_test extends LimbTestCase
   {
   	$this->stats_search_phrase->setReturnValue('_get_http_referer', 'test');
 
-  	$rule_no_match =& new Mocksearch_engine_regex_rule($this);
+  	$rule_no_match = new Mocksearch_engine_regex_rule($this);
   	$rule_no_match->expectOnce('match');
   	$rule_no_match->setReturnValue('match', false);
   	  	
@@ -93,7 +93,7 @@ class stats_search_phrase_test extends LimbTestCase
   
   function test_register()
   {
-  	$rule_match =& new Mocksearch_engine_regex_rule($this);
+  	$rule_match = new Mocksearch_engine_regex_rule($this);
   	$rule_match->setReturnValue('match', true);
   	$rule_match->setReturnValue('get_matching_phrase', 'test');
   	$rule_match->setReturnValue('get_engine_name', 'engine_name');

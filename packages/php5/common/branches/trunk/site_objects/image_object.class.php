@@ -53,9 +53,9 @@ class image_object extends media_object
 		);
 	}
 	
-	public function create()
+	public function create($is_root = false)
 	{				
-		$id = parent :: create();
+		$id = parent :: create($is_root);
 		
 		if($this->get('files_data'))
 			$this->_create_variations();

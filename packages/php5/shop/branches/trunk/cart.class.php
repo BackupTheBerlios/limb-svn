@@ -50,12 +50,12 @@ class cart
 	    {
 	      case 'session':
 	        include_once(dirname(__FILE__) . '/handlers/session_cart_handler.class.php');
-	        $this->_cart_handler =& new session_cart_handler($this->_cart_id);
+	        $this->_cart_handler = new session_cart_handler($this->_cart_id);
 	      break;
 	        
 	      case 'db':
 	        include_once(dirname(__FILE__) . '/handlers/db_cart_handler.class.php');
-	        $this->_cart_handler =& new db_cart_handler($this->_cart_id);
+	        $this->_cart_handler = new db_cart_handler($this->_cart_id);
         break;
         
         default:

@@ -23,11 +23,11 @@ class cart_test extends LimbTestCase
   
   function setUp()
   {
-    $this->cart_handler =& new Mockcart_handler($this);
+    $this->cart_handler = new Mockcart_handler($this);
     $this->cart_handler->expectOnce('set_cart_id', array(1));
     $this->cart_handler->expectOnce('reset');
     
-    $this->cart =& new cart(1, $h = null);
+    $this->cart = new cart(1, $h = null);
     $this->cart->set_cart_handler($this->cart_handler);
   }
   
@@ -59,7 +59,7 @@ class cart_test extends LimbTestCase
   
   function test_initialize_cart_handler()
   {
-    $cart_handler =& new Mockcart_handler($this);
+    $cart_handler = new Mockcart_handler($this);
     $cart_handler->expectOnce('set_cart_id', array(1));
     $cart_handler->expectOnce('reset');
     $cart = new cart(1, $cart_handler);
@@ -82,7 +82,7 @@ class cart_test extends LimbTestCase
   
   function test_add_item()
   {
-    $item =& new Mockcart_item($this);
+    $item = new Mockcart_item($this);
     $this->cart_handler->expectOnce('add_item', array(new IsAExpectation('Mockcart_item')));
     $this->cart->add_item($item);
   }
@@ -95,8 +95,8 @@ class cart_test extends LimbTestCase
 
   function test_get_total_summ()
   {
-    $item1 =& new Mockcart_item($this);
-    $item2 =& new Mockcart_item($this);
+    $item1 = new Mockcart_item($this);
+    $item2 = new Mockcart_item($this);
     
     $item1->expectOnce('get_summ');
     $item1->setReturnValue('get_summ', 10);
@@ -141,8 +141,8 @@ class cart_test extends LimbTestCase
 
   function test_get_items_array_dataset()
   {
-    $item1 =& new Mockcart_item($this);
-    $item2 =& new Mockcart_item($this);
+    $item1 = new Mockcart_item($this);
+    $item2 = new Mockcart_item($this);
     
     $item1->expectOnce('get_summ');
     $item1->setReturnValue('get_summ', 10);
@@ -185,10 +185,10 @@ class cart_test extends LimbTestCase
   
   function test_merge()
   {  
-    $item1 =& new Mockcart_item($this);
-    $item2 =& new Mockcart_item($this);
+    $item1 = new Mockcart_item($this);
+    $item2 = new Mockcart_item($this);
   
-    $cart =& new Mockcart($this);
+    $cart = new Mockcart($this);
     
     $cart->expectOnce('get_items');
     $cart->setReturnReference('get_items', $arr = array(&$item1, &$item2));
