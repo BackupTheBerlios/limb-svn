@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: template.class.php 513 2004-02-20 15:10:42Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define('TMPL_IMPORT', 'import');
@@ -55,21 +55,25 @@ class template extends component
 	* @param string $ name of (source) template file (relative or full path)
 	* @access public 
 	*/
-	function template($file)
+	function template($file, $resolve_path = true)
 	{
 		$this->file = $file;
+		
+		if($resolve_path)
+			$srcfile = resolve_template_source_file_name($file, TMPL_INCLUDE);
+		else
+			$srcfile = $file;				
 
-		$srcfile = resolve_template_source_file_name($file, TMPL_INCLUDE);
 		$this->codefile = resolve_template_compiled_file_name($srcfile, TMPL_INCLUDE);
 		
 		if (!isset($GLOBALS['template_render'][$this->codefile]))
 		{
 			if (get_ini_option('config.ini', 'templates', 'force_compile'))
-				compile_template_file($file);
+				compile_template_file($file, $resolve_path);
 			
 			if(!file_exists($this->codefile))
 			{
-				compile_template_file($file);
+				compile_template_file($file, $resolve_path);
 			}
 			
 			$errorlevel = error_reporting();

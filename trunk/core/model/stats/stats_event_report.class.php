@@ -69,7 +69,7 @@ class stats_event_report
 		
 	function _build_filter_condition()
 	{
-		return implode(' ', $this->filter_conditions);
+		return ' WHERE ssu.id = sslog.stat_uri_id ' . implode(' ', $this->filter_conditions);
 	}
 	
 	function fetch($params = array())
@@ -84,9 +84,7 @@ class stats_event_report
 						sys_stat_log as sslog LEFT JOIN user ON user.object_id=sslog.user_id 
 						LEFT JOIN sys_site_object_tree as ssot ON ssot.id=sslog.node_id
 						LEFT JOIN sys_site_object as sso ON ssot.object_id=sso.id,
-						sys_stat_uri as ssu
-						WHERE ssu.id = sslog.stat_uri_id 
-						";
+						sys_stat_uri as ssu";
 						
 		$sql .= $this->_build_filter_condition();
 		
@@ -95,7 +93,7 @@ class stats_event_report
 		
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
-
+		
 		$this->db->sql_exec($sql, $limit, $offset);
 				
 		return $this->db->get_array('id');
@@ -107,7 +105,8 @@ class stats_event_report
 						FROM
 						sys_stat_log as sslog LEFT JOIN user ON user.object_id=sslog.user_id 
 						LEFT JOIN sys_site_object_tree as ssot ON ssot.id=sslog.node_id
-						LEFT JOIN sys_site_object as sso ON ssot.object_id=sso.id";
+						LEFT JOIN sys_site_object as sso ON ssot.object_id=sso.id,
+						sys_stat_uri as ssu";
 		
 		$sql .= $this->_build_filter_condition();
 		

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
-require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/core/template/template.class.php');
 require_once(LIMB_DIR . '/core/actions/action_factory.class.php');
 
 class test_project_controllers extends UnitTestCase
@@ -53,7 +53,10 @@ class test_project_controllers extends UnitTestCase
 				'" permissions_required property for action "' . $action . '"not valid');
 			
 			if (isset($data['template_path']))
-				resolve_template_source_file_name($data['template_path']); //throws error if no such a file
+			{
+				$template = new template($data['template_path']);
+				$this->_check_template($template);
+			}
 			
 			if(isset($data['action_path']))
 			{	
@@ -77,6 +80,10 @@ class test_project_controllers extends UnitTestCase
 		$this->assertTrue(isset($definitions[$action]), 
 			'controller: "' . $controller_class . 
 			'" default action "' . $action . '" doesnt exist');
+	}
+	
+	function _check_template($template)
+	{
 	}
 	
 	function _load_controllers($dir_name)

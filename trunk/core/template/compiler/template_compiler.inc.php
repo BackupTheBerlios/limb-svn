@@ -81,10 +81,15 @@ foreach ($path as $tagpath)
 * @param string $ name of source template
 * @return void 
 */
-function compile_template_file($filename)
+function compile_template_file($filename, $resolve_path = true)
 {
 	global $tag_dictionary;
-	$sourcefile = resolve_template_source_file_name($filename, TMPL_INCLUDE);
+	
+	if($resolve_path)
+		$sourcefile = resolve_template_source_file_name($filename, TMPL_INCLUDE);
+	else
+		$sourcefile = $filename;
+		
 	$destfile = resolve_template_compiled_file_name($sourcefile, TMPL_INCLUDE);
 	
 	if (empty($sourcefile))
