@@ -68,6 +68,10 @@ class add_cart_items_action extends form_action
 		{
 			$object->import_attributes($object_data);
 			$cart_item =& $object->get_cart_item();
+			
+			if(!$objects_amounts[$key])
+				continue;
+				
 			$cart_item->set_amount($objects_amounts[$key]);
 			$cart->add_item($cart_item);
 		}
