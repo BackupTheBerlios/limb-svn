@@ -20,13 +20,23 @@ class dir
   function dir()
   {
   }
+  
+  function dirpath($path)
+  {
+	  $path = dir :: clean_path($path);
+	  
+  	if (($dir_pos = strrpos($path, dir :: separator())) !== false )
+      return substr($path, 0, $dir_pos);
+      
+  	return $path;
+  }
 
   /*
    Creates the directory $dir with permissions $perm.
    If $parents is true it will create any missing parent directories,
    just like 'mkdir -p'.
   */
-  function mkdir($dir, $perm, $parents=true)
+  function mkdir($dir, $perm=0777, $parents=true)
   {
     $dir = dir :: clean_path($dir);
     
@@ -46,9 +56,7 @@ class dir
     	$current_dir .= array_shift($dir_elements);
     }
     else
-    {
     	$current_dir = array_shift($dir_elements);
-    }
     
     if(!dir :: _do_mkdir($current_dir, $perm))
     	return false;
@@ -58,11 +66,8 @@ class dir
       $current_dir .= $separator . $dir_elements[$i];
 			
       if (!dir :: _do_mkdir($current_dir, $perm))
-      {	
       	return false;
-      }
     }
-
   	return true;
   }
   
@@ -78,6 +83,11 @@ class dir
     if(!mkdir($dir, $perm))
     {
       umask($oldumask);
+      
+			debug :: write_error('failed to create directory',
+			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+			array('dir' => $dir));
+      
       return false;
     }
     umask($oldumask);
@@ -86,9 +96,14 @@ class dir
   
   function explode_path($path)
   {
+  	$path = dir :: clean_path($path);
+  	
     $separator = dir :: separator();
     	
     $dir_elements = explode($separator, $path);
+		
+		if(sizeof($dir_elements) > 1 && $dir_elements[sizeof($dir_elements)-1] === '')
+			array_pop($dir_elements);
 		
     if(dir :: _has_win32_net_prefix($path))
     {
@@ -99,70 +114,118 @@ class dir
     	
 		return $dir_elements;
   }
+  
+  function chop($path)
+  {
+		$path = dir :: clean_path($path);
+		if(substr($path, -1) == dir :: separator())
+			$path = substr($path, 0, -1); 
+			
+		return $path;
+  }
     
 	function rm($dir)
 	{
-		$dir = dir :: clean_path($dir);
-		
-		if(!is_dir($dir))
-			return;
-		
-		if($current_dir = @opendir($dir))
-		{
-			$separator = dir :: separator();
-			
-			while($entryname = readdir($current_dir))
-			{
-				if(is_dir("{$dir}{$separator}{$entryname}") && ($entryname != "." && $entryname!=".."))
-					deldir("{$dir}{$separator}{$entryname}");
-				elseif($entryname != "." && $entryname!="..")
-					unlink("{$dir}{$separator}{$entryname}");
-			}
-			closedir($current_dir);
-			rmdir($dir);
-		}
+		dir :: _do_rm(dir :: chop($dir), dir :: separator());
 	}
 	
-	function cp($src, $dest)
-	{ 		
-		dir :: mkdir($dest, 0777);
-		$arr = dir :: ls($src);
-		
-		$separator = dir :: separator();
-		
-		foreach ($arr as $fn)
-		{
-			if($fn)
-			{
-				$fl = "{$src}{$separator}{$fn}";
-				$flto = "{$dest}{$separator}{$fn}";
-				if(is_dir($fl)) 
-					dir :: cp($fl, $flto);
-				else 
-					copy(dir :: clean_path($fl), dir :: clean_path($flto));
-			}
-		}
-	}
-	
-	function ls($wh)
+	function _do_rm($dir, $separator)
 	{
-		$files = '';
-		$wh = dir :: clean_path($wh);
-		if($handle = opendir($wh)) 
+    if (is_dir($dir) && $handle = opendir($dir))
+    {
+      while(($file = readdir($handle)) !== false)
+      {
+	    	if(( $file == '.' ) || ( $file == '..' ))
+          continue;
+          
+        if(is_dir( $dir . $separator . $file))
+      		dir::_do_rm($dir . $separator . $file, $separator);
+      	else
+       		unlink($dir . $separator . $file);
+      }
+      
+      closedir($handle);
+      rmdir($dir);
+    }		
+	}
+		
+  /*
+   Copies a directory (and optionally all it's subitems) to another directory.
+  */
+  function cp($src, $dest, $as_child = false, $exclude_regex = '', $include_hidden = false)
+  {
+  	$src = dir :: clean_path($src);
+  	$dest = dir :: clean_path($dest);
+  	
+    if (!is_dir($src))
+    {
+			debug :: write_error('no such a directory',
+			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+			array('dir' => $src));
+
+    	return false;
+    }
+    
+    if(!dir :: mkdir($dest))
+    	return false;
+    	
+    $separator = dir :: separator();
+    
+    if ($as_child)
+    {
+    	$separator_regex = preg_quote($separator);
+      if (preg_match( "#^.+{$separator_regex}([^{$separator_regex}]+)$#", $src, $matches))
+      {
+        dir :: _do_mkdir($dest . $separator . $matches[1], 0777);
+        $dest .= $separator . $matches[1];
+      }
+      else
+      	return false;//???
+    }
+    $items = dir :: find_subitems($src, 'df', $exclude_regex, false, $include_hidden);
+    
+    $total_items = $items;
+    while (count($items) > 0)
+    {
+      $current_items = $items;
+      $items = array();
+      foreach ($current_items as $item)
+      {
+        $full_path = $src . $separator . $item;
+        if (is_file( $full_path))
+        	copy($full_path, $dest . $separator . $item);
+        elseif (is_dir( $full_path))
+        {
+          dir :: _do_mkdir($dest . $separator . $item, 0777);
+          
+          $new_items = dir :: find_subitems($full_path, 'df', $exclude_regex, $item, $include_hidden);
+          
+          $items = array_merge($items, $new_items);
+          $total_items = array_merge($total_items, $new_items);
+          
+          unset($new_items);
+        }
+      }
+    }
+		return $total_items;
+  }
+	
+	function ls($path)
+	{
+		$files = array();
+		$path = dir :: clean_path($path);
+		if($handle = opendir($path))
 		{
 			while(($file = readdir($handle)) !== false) 
 			{ 
-				if($file != "." && $file != ".." ) 
+				if($file != '.' && $file != '..' ) 
 				{ 
-					if(!$files) 
-						$files = "$file";
-					else 
-						$files = "$file\n$files"; 
+					$files[] = $file;
 				} 
 			}
 			closedir($handle); 
 		}
-		return explode("\n", $files);
+		return $files;
 	}
 
   /*
@@ -257,45 +320,119 @@ class dir
    If $include_end_separator is true then it will make sure that the path ends with a
    separator if false it make sure there are no end separator.
   */
-  function path( $names, $include_end_separator = false, $type = DIR_SEPARATOR_UNIX )
+  function path($names, $include_end_separator=false, $type=DIR_SEPARATOR_LOCAL)
   {
-    $separator = dir :: separator( $type );
-    $path = implode( $separator, $names );
-    $path = dir :: clean_path( $path, $type );
+    $separator = dir :: separator($type);
+    $path = implode($separator, $names);
+    $path = dir :: clean_path($path, $type);
     
-    $has_end_separator = (strlen( $path ) > 0 && $path[strlen( $path ) - 1] == $separator);
+    $has_end_separator = (strlen($path) > 0 && $path[strlen($path) - 1] == $separator);
                      
-    if ( $include_end_separator && !$has_end_separator )
+    if ($include_end_separator && !$has_end_separator)
     	$path .= $separator;
-    elseif ( !$include_end_separator && $has_end_separator )
-    	$path = substr( $path, 0, strlen( $path ) - 1 );
+    elseif (!$include_end_separator && $has_end_separator)
+    	$path = substr($path, 0, strlen($path) - 1);
     	
     return $path;
   }
   
+  function &recursive_find($path, $regex)
+  {
+		$dir =& new dir();
+		
+		return $dir->walk_dir($path, array(&$dir, '_do_recursive_find'), array('regex' => $regex));		
+  }
+  
+  function _do_recursive_find($dir, $file, $params, &$return_params)
+  {
+  	if(preg_match( '/' . $params['regex'] . '$/', $file))
+  	{
+  		$return_params[] = $dir . $params['separator'] . $file;
+  	}
+  }
+  
 	function walk_dir($dir, $function_def, $params=array())
 	{
-		static $separator = '';
+		$return_params = array();
 		
-		if(!$separator)
-			$separator = dir :: separator();
+		$separator = dir :: separator();
+		$dir = dir :: clean_path($dir);
+		$dir = dir :: chop($dir);
 		
+		$params['separator'] = $separator;
+				
+		dir :: _do_walk_dir($dir, $separator, $function_def, &$return_params, $params);
+		
+		return $return_params;
+	}
+	
+	function _do_walk_dir($dir, $separator, $function_def, &$return_params, $params)
+	{
 		if(is_dir($dir))
 		{
 			$handle = opendir($dir);
 			
-			while (($file = readdir($handle))!==false) 
+			while(($file = readdir($handle)) !== false) 
 			{
 				if (($file != '.') && ($file != '..')) 
 				{
+					call_user_func_array($function_def, array('dir' => $dir, 'file' => $file, 'params' => $params, 'return_params' => &$return_params));
+					
 					if (is_dir($dir . $separator . $file))
-						dir :: walk_dir($dir . $separator . $file . $separator, $function_def, $params);
-
-					call_user_func_array($function_def, array('dir' => $dir, 'file' => $file, 'params' => $params));
+						dir :: _do_walk_dir($dir . $separator . $file, $separator, $function_def, &$return_params, $params);
 				}
 			}
 			closedir($handle); 
 		}
 	}
+	
+  /*
+   Returns sub-items in the specific folder
+  */
+  function find_subitems($dir, $types = 'dfl', $exclude_regex = '', $add_path = true, $include_hidden = false)
+  {
+  	$dir = dir :: clean_path($dir);
+  	$dir = dir :: chop($dir);
+  	    	
+    $items = array();
+    
+    $separator = dir :: separator();
+    
+    if ($handle = opendir($dir))
+    {
+      while(($element = readdir($handle)) !== false)
+      {
+        if ($element == '.' || $element == '..')
+        	continue;
+        if (!$include_hidden && $element[0] == '.')
+        	continue;
+        if ($exclude_regex && preg_match($exclude_regex, $element))
+        	continue;
+        if (is_dir($dir . $separator . $element) && strpos($types, 'd') === false)
+        	continue;
+        if (is_link($dir . $separator . $element) && strpos($types, 'l') === false)
+        	continue;
+        if (is_file( $dir . $separator . $element ) && strpos($types, 'f') === false)
+        	continue;
+        	
+        if ($add_path)
+        {
+          if (is_string($add_path))
+          	$items[] = $add_path . $separator . $element;
+          else
+          	$items[] = $dir . $separator . $element;
+        }
+        else
+        	$items[] = $element;
+      }
+      closedir($handle);
+    }
+    return $items;
+  }
+  
+  function find_subdirs($dir, $full_path = false, $include_hidden = false, $exclude_items = false)
+  {
+  	return dir :: find_subitems($dir, 'd', $full_path, $include_hidden, $exclude_items);
+  }
 }
 ?>
