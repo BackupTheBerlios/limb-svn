@@ -20,12 +20,6 @@ class image_select_component extends input_form_element
 			echo "<script type='text/javascript' src='/shared/js/image_select.js'></script>";
 			define('IMAGE_SELECT_LOAD_SCRIPT',1);
 		}	
-		
-		if (!defined('RICHEDIT_POPURL_SCRIPT'))
-		{
-    	echo "<script type='text/javascript' src='/shared/richedit/popupurl.js'></script>";
-    	define('RICHEDIT_POPURL_SCRIPT',1);
-    }	
 	}
 	
 	function render_image_select()
@@ -79,7 +73,7 @@ class image_select_component extends input_form_element
 	      add_event(window, 'load', init_image_select_{$md5id});
 	    </script>";
 	    
-	  echo "<br><br><input class='button' type='button' onclick='PopupURL(null, \"/root/image_select?properties=0\", image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='Select image'>";
+	  echo "<br><br><input class='button' type='button' onclick='popup(\"/root/image_select?properties=0\", null, null, false, image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='Select image'>";
 	  echo '&nbsp;';
 	  echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='Reset'>";
 	}

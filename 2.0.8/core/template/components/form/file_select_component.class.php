@@ -20,12 +20,6 @@ class file_select_component extends input_form_element
 			echo "<script type='text/javascript' src='/shared/js/file_select.js'></script>";
 			define('FILE_SELECT_LOAD_SCRIPT',1);
 		}	
-			
-		if (!defined('RICHEDIT_POPURL_SCRIPT'))
-		{
-    	echo "<script type='text/javascript' src='/shared/richedit/popupurl.js'></script>";
-    	define('RICHEDIT_POPURL_SCRIPT',1);
-    }	
 	}
 	
 	function render_file_select()
@@ -87,7 +81,7 @@ class file_select_component extends input_form_element
 		      add_event(window, 'load', init_file_select_{$md5id});
 		    </script>";
 	    
-	  echo "<input class='button' type='button' onclick='PopupURL(null, \"/root/file_select?\", file_select_{$md5id}_insert_file, file_select_{$md5id}_get_file)' value='Select file'>";
+	  echo "<input class='button' type='button' onclick='popup(\"/root/file_select?\", null, null, false, file_select_{$md5id}_insert_file, file_select_{$md5id}_get_file)' value='Select file'>";
 	  echo '&nbsp;';
 	  echo "<input class='button' type='button' onclick='file_reset_{$md5id}()' value='Reset'>";
 	}

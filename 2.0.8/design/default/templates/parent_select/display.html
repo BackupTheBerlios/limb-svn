@@ -33,14 +33,16 @@
 	
 	function insert_node()
 	{
-		opener.popups[window.name]['process_popup'](node_obj);
+		h = get_close_popup_handler();
+		h(node_obj);
 		window.close();
 	}
 	
 	function get_node()
 	{
-		node = opener.popups[window.name]['init_popup'](window.name);
-		
+		h = get_init_popup_handler();
+		node = h(window.name);
+
 		obj = document.getElementById('_preview_identifier');
 		preview_identifier_obj = obj.firstChild;
 
@@ -60,7 +62,10 @@
 		
 		obj = document.getElementsByName('_insert_button');
 		insert_button_obj = obj[0];
-
+		
+		start_path = '/root';
+		only_parents = '';
+		
 		if (typeof(node) == 'object' && node != null)
 		{
 			preview_identifier_obj.nodeValue = node.identifier;
@@ -69,10 +74,17 @@
 			preview_icon_obj.src = node.icon;
 			preview_path_obj.nodeValue = node.path;
 			preview_class_name_obj.nodeValue =  node.class_name;
-			parent_select_frame.location = '/root/admin/site_structure?action=parent_select&path=/root/?node_id='+ node.parent_node_id;
+
+			if(node.parent_node_id)
+				start_path ='/root/?node_id=' + node.parent_node_id;				
+			else if(node.start_path)
+				start_path = node.start_path;
+			
+			if(node.only_parents == 'false')
+				only_parents = '&only_parents=' + node.only_parents;
 		}
-		else
-			parent_select_frame.location = '/root/admin/site_structure?action=parent_select&path=/root';
+		
+		parent_select_frame.location = '/root/admin/site_structure?action=parent_select&path=' + start_path + only_parents;
 		
 		process_popup();
 	}

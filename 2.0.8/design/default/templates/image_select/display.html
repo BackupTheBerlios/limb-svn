@@ -61,13 +61,17 @@
 	
 	function insert_image()
 	{
-		opener.popups[window.name]['process_popup'](image);
+		h = get_close_popup_handler();
+		h(image);
+//		opener.popups[window.name]['process_popup'](image);
 		window.close();
 	}
 	
 	function get_image()
 	{
-		img = opener.popups[window.name]['init_popup'](window.name);
+		//img = opener.popups[window.name]['init_popup'](window.name);
+		h = get_init_popup_handler();
+		img = h(window.name);
 		
 		preview_obj = document.getElementById('_preview');
 

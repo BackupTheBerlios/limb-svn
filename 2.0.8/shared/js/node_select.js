@@ -1,4 +1,4 @@
-function node_select(id, md5_id)
+function node_select(id, md5_id, start_path)
 {	
 	this.id_container = document.getElementById(id);
 	this.identifier = document.getElementById(md5_id + '_identifier');
@@ -7,13 +7,23 @@ function node_select(id, md5_id)
 	this.class_name = document.getElementById(md5_id + '_class_name');
 	this.path = document.getElementById(md5_id + '_path');
 	this.parent_node_id = document.getElementById(md5_id + '_parent_node_id');
-		
 }
 
 node_select.prototype.generate = function()
 {			
 	optimize_window();
 }
+
+node_select.prototype.set_start_path = function(start_path)
+{
+	this.start_path = start_path;
+}
+
+node_select.prototype.set_only_parents_restriction = function(flag)
+{
+	this.only_parents = flag;
+}
+
 
 node_select.prototype.get_node = function()
 {
@@ -24,7 +34,9 @@ node_select.prototype.get_node = function()
 		title: this.title.innerHTML,
 		icon: this.icon.src,
 		path: this.path.innerHTML,
-		class_name: this.class_name.innerHTML
+		class_name: this.class_name.innerHTML,
+		start_path: this.start_path,
+		only_parents: this.only_parents
 	};
 	
 	return node;
@@ -41,4 +53,15 @@ node_select.prototype.insert_node = function(node)
 	this.class_name.innerHTML = node.class_name;
 	
 	this.generate();
+}
+
+node_select.prototype.reset = function()
+{
+	this.id_container.value = 0;
+	this.identifier.innerHTML = '';
+	this.title.innerHTML = '';
+	this.path.innerHTML = '';
+	this.icon.src = '/shared/images/no.gif';
+	this.parent_node_id.innerHTML = '';
+	this.class_name.innerHTML = '';
 }

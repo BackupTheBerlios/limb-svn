@@ -11,42 +11,44 @@
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
 
-class parents_only_datasource extends fetch_sub_branch_datasource
+class node_select_datasource extends fetch_sub_branch_datasource
 {
-	function parents_only_datasource()
+	function node_select_datasource()
 	{
 		parent :: fetch_sub_branch_datasource();
 	}
 	
-	function & _fetch(&$counter, $params)
+	function & get_dataset(&$counter, $params = array())
 	{
 		$params['depth'] = 1;
-		$params['only_parents'] = true;
-		$params['restrict_by_class'] = false;
 
-		if(isset($_REQUEST['path']))
-		{
-			if(!$path = $this->_process_path($_REQUEST['path']))
-				$path = '/root/';
-				
-			$params['path'] = $path;
-		}
+		if(isset($_REQUEST['only_parents']) && $_REQUEST['only_parents'] == 'false')
+			$params['only_parents'] = false;
 		else
-			$params['path'] = '/root/';
+			$params['only_parents'] = true;
 
-		return parent :: _fetch($counter, $params);
+		$params['restrict_by_class'] = false;
+		$params['path'] = $this->_process_path();
+
+		return parent :: get_dataset($counter, $params);
 	}
 	
-	function _process_path($path)
+	function _process_path()
 	{
+		$default_path = '/root/';
+		if(!isset($_REQUEST['path']))
+			return $default_path;
+		else
+			$path = $_REQUEST['path'];
+
 		if(strpos($path, '?') !== false)
 		{
 			if(!$node = map_url_to_node($path))
-				return false;
+				return $default_path;
 				
 			$tree =& limb_tree :: instance();
 			if(!$path = $tree->get_path_to_node($node))
-				return false;
+				return $default_path;
 		}
 		return $path;
 	}

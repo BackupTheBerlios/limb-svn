@@ -27,28 +27,31 @@
 	</table>
 
 
-<fetch:SUB_BRANCH target="parents" navigator='pager'>
-	<core:PARAMETER name='datasource_path' value='parents_only_datasource'>
+<fetch:SUB_BRANCH target="nodes" navigator='pager'>
+	<core:PARAMETER name='datasource_path' value='node_select_datasource'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">
 
 <table width="100%" border="0" cellspacing="5" cellpadding="5">
 
-<grid:LIST id='parents'>
-<th></th>
-<th><locale:STRING name='title'></th>
-<th><locale:STRING name='class_name'></th>
-<th></th>
+<grid:LIST id='nodes'>
+<tr>
+	<th></th>
+	<th><locale:STRING name='title'></th>
+	<th><locale:STRING name='class_name'></th>
+	<th></th>
+</tr>
 <grid:ITERATOR>
 <tr>
-<td><img src='{$icon}' align='center'></td>
-<td>
-<a href='/root/admin/site_structure?action=parent_select&path={$path}'>{$identifier}   ({$title})</a>
-</td>
-<td>{$class_name}</td>
-<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "{$title}", path: "{$path}",
- icon: "{$icon}", parent_node_id: "{$parent_node_id}"}<core:LITERAL>)'>Select</button></core:LITERAL><core:LITERAL></a></core:LITERAL></td>
+	<td><img src='{$icon}' align='center'></td>
+	<td>
+	<a href='/root/admin/site_structure?action=parent_select&path={$path}'>{$identifier}   ({$title})</a>
+	</td>
+	<td>{$class_name}</td>
+	<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "{$title}", path: "{$path}",
+	 icon: "{$icon}", parent_node_id: "{$parent_node_id}"}<core:LITERAL>)'>Select</button></core:LITERAL>
+	 </td>
 </tr>
 </grid:ITERATOR>
 </grid:LIST>

@@ -255,8 +255,8 @@ function jump_change_get(get, w)
 }
 
 //makes popup window at href address
-function popup(href, window_name, window_params, dont_set_focus)
-{
+function popup(href, window_name, window_params, dont_set_focus, on_close_handler, on_init_handler)
+{	
 	if (typeof(window_name) == 'undefined' || window_name == null) 
 		window_name = '_generate';
 
@@ -271,6 +271,22 @@ function popup(href, window_name, window_params, dont_set_focus)
 	if (window_name.toLowerCase() == '_generate')
 		window_name = 'w' + hex_md5(href) + 's';
 
+	if (typeof(window.popups) != 'array')
+		window.popups = new Array();
+
+	if (typeof(window.popups[window_name]) != 'array')
+		window.popups[window_name] = new Array();
+		
+	if (typeof(on_close_handler) != 'undefined') 
+	{		
+		window.popups[window_name]['close_popup_handler'] = on_close_handler;
+	}
+
+	if (typeof(on_init_handler) != 'undefined') 
+	{
+		window.popups[window_name]['init_popup_handler'] = on_init_handler;
+	}
+
 	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);
 	
 	if (href != LOADING_STATUS_PAGE)
@@ -280,6 +296,16 @@ function popup(href, window_name, window_params, dont_set_focus)
 		w.focus();
 		
 	return w;
+}
+
+function get_close_popup_handler()
+{
+	return opener.popups[window.name]['close_popup_handler'];
+}
+
+function get_init_popup_handler()
+{
+	return opener.popups[window.name]['init_popup_handler'];
 }
 
 function show_progress()

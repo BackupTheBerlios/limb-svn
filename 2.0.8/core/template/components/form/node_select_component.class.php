@@ -20,11 +20,7 @@ class node_select_component extends input_form_element
 					
 		echo "<script type='text/javascript' src='/shared/js/node_select.js'></script>";
 		
-		if (!defined('RICHEDIT_POPURL_SCRIPT'))
-    	echo "<script type='text/javascript' src='/shared/richedit/popupurl.js'></script>";
-			
 		define('NODE_SELECT_LOAD_SCRIPT', 1);
-		define('RICHEDIT_POPURL_SCRIPT', 1);
 		
 		if(!$node_id = $this->get_value())
 		{
@@ -39,15 +35,28 @@ class node_select_component extends input_form_element
   	$md5id = substr(md5($id), 0, 5);
 
   	$node_id = $this->get_value();
-  	$object_data = fetch_one_by_node_id($node_id);
-		
-		$identifier = $object_data['identifier'];
-		$title = $object_data['title'];
-		$path = $object_data['path'];
-		$class_name = $object_data['class_name'];
-		$icon = $object_data['icon'];
-		$parent_node_id = $object_data['parent_node_id'];
+
+  	$object_data = array();
+
+  	if($node_id)
+	  	$object_data = fetch_one_by_node_id($node_id);
   	
+  	if(sizeof($object_data))
+  	{
+			$identifier = $object_data['identifier'];
+			$title = $object_data['title'];
+			$path = $object_data['path'];
+			$class_name = $object_data['class_name'];
+			$icon = $object_data['icon'];
+			$parent_node_id = $object_data['parent_node_id'];
+
+		}
+		else
+		{
+			$identifier = $title = $path = $class_name = $parent_node_id = '';
+			$icon = '/shared/images/no.gif';
+		}
+		
   	echo "	<img id='{$md5id}_icon' align='center' src='{$icon}'/>&nbsp;
 	 					<b><span id='{$md5id}_path'>{$path}</span></b>
   					<span style='display:none;'>
@@ -57,12 +66,22 @@ class node_select_component extends input_form_element
   					<span id='{$md5id}_class_name'>{$class_name}</span>
   					</span>";
   	
+  	$start_path_condition = "";
+  	$only_parents_condition = "";
+  	if($start_path = $this->get_attribute('start_path'))
+  		$start_path_condition = "node_select_{$md5id}.set_start_path('{$start_path}');";
+
+  	if($only_parents = $this->get_attribute('only_parents'))
+  		$only_parents_condition = "node_select_{$md5id}.set_only_parents_restriction('{$only_parents}');";
+
   	echo "<script type='text/javascript'>
 		    	var node_select_{$md5id};
 		    	
 		      function init_node_select_{$md5id}()
 		      {
 		        node_select_{$md5id} = new node_select('{$id}', '{$md5id}');
+		        {$start_path_condition}
+		        {$only_parents_condition}
 		        node_select_{$md5id}.generate();
 		      }
 		      
@@ -76,10 +95,22 @@ class node_select_component extends input_form_element
 		      	return node_select_{$md5id}.get_node();
 		      }
 		      		     
+		      function node_reset_{$md5id}()
+		      {
+		      	node_select_{$md5id}.reset();
+		      }
+
 		      add_event(window, 'load', init_node_select_{$md5id});
 		    </script>";
 	    
-	  echo "<input class='button' type='button' onclick='PopupURL(null, \"/root/parent_select\", node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value=' ... '>";
+	  echo "<input class='button' type='button' onclick='popup(\"/root/parent_select\", null, null, false, node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value=' ... '>";
+
+		if($this->get_attribute('reset_button'))
+		{
+		  echo '&nbsp;';
+		  echo "<input class='button' type='button' onclick='node_reset_{$md5id}()' value='Reset'>";
+		}
+
 	}
 	
 } 

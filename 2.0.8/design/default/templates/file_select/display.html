@@ -41,13 +41,16 @@
 	
 	function insert_file()
 	{
-		opener.popups[window.name]['process_popup'](file_obj);
+		h = get_close_popup_handler();
+		h(file_obj);
+
 		window.close();
 	}
 	
 	function get_file()
 	{
-		file = opener.popups[window.name]['init_popup'](window.name);
+		h = get_init_popup_handler();
+		file = h(window.name);
 		
 		preview_obj = document.getElementById('_preview');
 
