@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_events_list_data_source.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -36,18 +36,11 @@ class stats_pages_list_data_source extends data_source
 
 	function _process_result_array($arr)		
 	{
-		$tree =& limb_tree :: instance();
-		
 		$total = $this->stats_report->fetch_total_hits();
 			
 		$result = array();
 		foreach($arr as $index => $data)
 		{
-			if($node = $tree->get_node($data['node_id']))
-				$data['path'] = $tree->get_path_to_node($node);
-			else
-				$data['page_deleted'] = 1;
-				
 			$data['percentage'] = round($data['hits'] / $total * 100, 2);
 				
 			$result[$index] = $data;

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_report.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
@@ -23,14 +23,16 @@ class stats_pages_report
 	function fetch($params = array())
 	{
 		$sql = 'SELECT
-						node_id, 
-						COUNT(node_id) as hits 
+						stat_uri_id, ssu.uri,
+						COUNT(stat_uri_id) as hits 
 						FROM 
-						sys_stat_log';
+						sys_stat_log as sslog, sys_stat_uri as ssu';
+						
 
 		$sql .= $this->_build_filter_condition();
+		$sql .= ' AND sslog.stat_uri_id = ssu.id ';
 		
-		$sql .= '	GROUP BY node_id
+		$sql .= '	GROUP BY stat_uri_id
 							ORDER BY hits DESC';
 						
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
@@ -44,13 +46,13 @@ class stats_pages_report
 	function fetch_count($params = array())
 	{
 		$sql = 'SELECT
-						node_id
+						stat_uri_id
 						FROM 
 						sys_stat_log';
 
 		$sql .= $this->_build_filter_condition();
 		
-		$sql .= 'GROUP BY node_id';
+		$sql .= 'GROUP BY stat_uri_id';
 		
 		$this->db->sql_exec($sql);
 		return $this->db->count_selected_rows();

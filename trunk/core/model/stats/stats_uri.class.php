@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_referer.class.php 37 2004-03-13 10:36:02Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -58,10 +58,9 @@ class stats_uri
 	{
 		$this->url->parse($raw_url);
 		
-		$this->url->remove_query_item('PHPSESSID');
-					
-		$this->url->anchor = '';
-		
+		$this->url->remove_query_items();
+		$this->url->remove_anchor();
+							
 		if($this->url->is_inner())
 			return $this->url->get_inner_url();
 		else

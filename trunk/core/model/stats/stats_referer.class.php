@@ -71,8 +71,7 @@ class stats_referer
 		$this->url->parse($raw_url);
 		
 		$this->url->remove_query_item('PHPSESSID');
-					
-		$this->url->anchor = '';
+		$this->url->remove_anchor();
 		
 		return $this->url->get_url();
 	}	

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_report.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
@@ -27,6 +27,9 @@ class stats_hits_hosts_by_days_report
 						sys_stat_day_counters as ssdc";
 
 		$sql .= $this->_build_filter_condition();
+		
+		if(isset($params['order']))
+			$sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
 						
 		$limit = isset($params['limit']) ? $params['limit'] : 0;
 		$offset = isset($params['offset']) ? $params['offset'] : 0;
@@ -58,6 +61,16 @@ class stats_hits_hosts_by_days_report
 	function _build_filter_condition()
 	{
 		return ' WHERE 1=1 ' . implode(' ', $this->filter_conditions);
+	}
+	
+	function _build_order_sql($order_array)
+	{
+		$columns = array();
+		
+		foreach($order_array as $column => $sort_type)
+			$columns[] = $column . ' ' . $sort_type;
+			
+		return implode(', ', $columns);
 	}
 }
 

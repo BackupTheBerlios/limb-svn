@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_uri.test.php 37 2004-03-13 10:36:02Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/stats/stats_uri.class.php');
@@ -92,14 +92,14 @@ class test_stats_uri extends UnitTestCase
   function test_clean_outer_uri()
   {
   	$this->assertEqual(
-  		'http://wow.com.bit/some/path?yo=1&haba',
+  		'http://wow.com.bit/some/path',
   		$this->stats_uri->clean_url('http://wow.com.bit/some/path/?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
   
   function test_clean_inner_uri()
   {
   	$this->assertEqual(
-  		'/test?yo=1&haba',
+  		'/test',
   		$this->stats_uri->clean_url('http://' . $_SERVER['HTTP_HOST'] . '/test?PHPSESSID=8988190381803003109&yo=1&haba&haba#not'));
   }
  

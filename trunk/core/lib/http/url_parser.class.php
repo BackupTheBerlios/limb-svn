@@ -215,6 +215,11 @@ class url_parser
   	return $this->_path_elements;
   }
   
+  function remove_anchor()
+  {
+  	$this->anchor = '';
+	}
+  
   /**
   * Adds a query_string item
   *
