@@ -8,31 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/lib/mail/mime_mail.class.php');
 
-function send_html_mail($recipients, $sender, $subject, $html, $text = null, $headers = array())
+function send_html_mail($recipients, $sender, $subject, $html, $text = null)
 {
-  $mail = new mime_mail();
+  include_once(PHPMailer_DIR . '/class.phpmailer.php');
 
-  //$text = convert_html_to_plain_text(preg_replace('(<p>|br>)', "\n", $html));
+  $mail = new PHPMailer();
+  $mail->IsHTML(true);
 
-  $mail->set_html($html, $text);
-  $mail->set_subject($subject);
-  $mail->set_from($sender);
+  $mail->Body    = $html;
 
-  foreach($headers as $key => $value)
-    $mail->set_header($key, $value);
+  if(!is_null($text))
+    $mail->AltBody = $text;
 
-  return $mail->send($recipients);
+  foreach($recipients as $recipient)
+    $mail->AddAddress($recipient);
+
+  $mail->From = $sender;
+  $mail->Subject = $subject;
+  $mail->Body    = $body;
+
+  return $mail->Send();
 }
 
 
-function convert_html_to_plain_text($html)
+function convert_html_mail_to_plain_text($html)
 {
   $search = array ("'<script[^>]*?>.*?</script>'si",  // Strip out javascript
-                 "'<[\/\!]*?[^<>]*?>'si",           // Strip out html tags
-                 "'([\r\n])[\s]+'",                 // Strip out white space
-                 "'&(quot|#34);'i",                 // Replace html entities
+                 "'<[\/\!]*?[^<>]*?>'si",             // Strip out html tags
+                 "'([\r\n])[\s]+'",                   // Strip out white space
+                 "'&(quot|#34);'i",                   // Replace html entities
                  "'&(amp|#38);'i",
                  "'&(lt|#60);'i",
                  "'&(gt|#62);'i",
@@ -43,7 +48,7 @@ function convert_html_to_plain_text($html)
                  "'&(copy|#169);'i",
                  "'&#(\d+);'e");                    // evaluate as php
 
-  $replace = array ("",
+  $replace = array("",
                   "",
                   "\\1",
                   "\"",

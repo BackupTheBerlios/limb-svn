@@ -8,18 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/lib/mail/mime_mail.class.php');
 
-function send_plain_mail($recipients, $sender, $subject, $body, $headers = array())
+function send_plain_mail($recipients, $sender, $subject, $body)
 {
-  $mail = new mime_mail();
-  $mail->set_text($body);
-  $mail->set_subject($subject);
-  $mail->set_from($sender);
+  include_once(PHPMailer_DIR . '/class.phpmailer.php');
 
-  foreach($headers as $key => $value)
-    $mail->set_header($key, $value);
+  $mail = new PHPMailer();
+  $mail->IsHTML(false);
 
-  return $mail->send($recipients);
+  foreach($recipients as $recipient)
+    $mail->AddAddress($recipient);
+
+  $mail->From = $sender;
+  $mail->Subject = $subject;
+  $mail->Body    = $body;
+
+  return $mail->Send();
 }
 ?>
