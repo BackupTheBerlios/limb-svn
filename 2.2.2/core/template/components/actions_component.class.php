@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/template/components/list_component.class.php');
 require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 
