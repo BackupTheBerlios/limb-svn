@@ -29,6 +29,10 @@ class change_user_locale_action extends form_action
 
 		if($request->has_attribute('popup'))
 		  $response->write(close_popup_response($request));
+		elseif(isset($_SERVER['HTTP_REFERER']))
+		  $response->redirect($_SERVER['HTTP_REFERER']);
+		else
+		  $response->redirect('/');
 
 		if (!locale :: is_valid_locale_id($locale_id))
 		{

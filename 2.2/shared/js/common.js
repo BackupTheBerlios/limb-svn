@@ -683,35 +683,38 @@ function binl2b64(binarray)
 
 	function init_tab(name, tabulator_name, style_label, style_tabbox, eval_code)
 	{
-		var obj = document.getElementById(name)
-		var tabulator = document.getElementById(tabulator_name)
-		if(!ISSET(tabulator.tab_active)) tabulator.tab_active = document.getElementById(tabulator.attributes.getNamedItem('active').value)
+		var obj = document.getElementById(name);
+		var tabulator = document.getElementById(tabulator_name);
 		
-		document.getElementById(obj.id+'_content').style.display = 'none'
-		document.getElementById(tabulator.tab_active.id+'_content').style.display = 'block'
+		if(!isset(tabulator.tab_active)) 
+		  tabulator.tab_active = document.getElementById(tabulator.attributes.getNamedItem('active').value);
+		
+		document.getElementById(obj.id + '_content').style.display = 'none';
+		document.getElementById(tabulator.tab_active.id + '_content').style.display = 'block';
 		
 		obj.onmousedown = function()
 		{	
-			tabulator.tab_active.set_normal()
-			this.set_active()
-			tabulator.tab_active = this
+			tabulator.tab_active.set_normal();
+			this.set_active();
+			tabulator.tab_active = this;
 		}
 		obj.set_active = function()
 		{
-			document.getElementById(this.id+'_content').style.display = 'block'
-			this.className = style_label + '-active'
-			document.getElementById(this.id + '_box').className = style_tabbox + '-active'
-			if(ISSET(eval_code))eval(eval_code)
+			document.getElementById(this.id + '_content').style.display = 'block';
+			this.className = style_label + '-active';
+			document.getElementById(this.id + '_box').className = style_tabbox + '-active';
+			if(isset(eval_code))
+			  eval(eval_code);
 		}
 		obj.set_normal = function()
 		{
-			document.getElementById(this.id+'_content').style.display = 'none'
-			this.className = style_label
-			document.getElementById(this.id + '_box').className = style_tabbox
+			document.getElementById(this.id + '_content').style.display = 'none';
+			this.className = style_label;
+			document.getElementById(this.id + '_box').className = style_tabbox;
 		}
 	}
 	
-	function ISSET(obj)
+	function isset(obj)
 	{
 		return typeof(obj) != 'undefined'
 	}

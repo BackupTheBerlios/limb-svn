@@ -601,8 +601,7 @@ HTMLArea.prototype._createStatusBar = function()
 
 // Creates the HTMLArea object and replaces the textarea with it.
 HTMLArea.prototype.generate = function ()
-{
-  
+{ 
 	var editor = this;	// we'll need "this" in some nested functions
 	// get the textarea
 	var textarea = this._textArea;
@@ -680,14 +679,13 @@ HTMLArea.prototype.generate = function ()
 	this._textArea.onshow = function()
 	{
 		this.this_obj.onsize()
-//		alert(123)
 	}
 	// IMPORTANT: we have to allow Mozilla a short time to recognize the
 	// new frame.  Otherwise we get a stupid exception.
 	function initIframe()
 	{
 		var doc = editor._iframe.contentWindow.document;
-
+    
 		if (!doc)
 	 	{
 			// Try again..
@@ -697,15 +695,18 @@ HTMLArea.prototype.generate = function ()
 	 		{
 				setTimeout(initIframe, 10);
 				return false;
-			} else {
+			} 
+			else
 				alert("ERROR: IFRAME can't be initialized.");
-			}
+
 		}
+		
 		if (HTMLArea.is_gecko)
 	 	{
 			// enable editable mode for Mozilla
 			doc.designMode = "on";
 		}
+		
 		editor._doc = doc;
 		doc.open();
 		var html = "<html>\n";
