@@ -14,10 +14,34 @@ class HttpResponse// implements Response
   var $response_string = '';
   var $response_file_path = '';
   var $headers = array();
+  var $is_redirected = false;
+
+  var $redirect_strategy = null;
+
+  function setRedirectStrategy(&$strategy)
+  {
+    $this->redirect_strategy =& $strategy;
+  }
 
   function redirect($path)
   {
-    $this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white></body></html>";
+    if ($this->is_redirected)
+      return;
+
+    if($this->redirect_strategy === null)
+      $strategy =& $this->_getDefaultRedirectStrategy();
+    else
+      $strategy =& $this->redirect_strategy;
+
+    $strategy->redirect($this, $path);
+
+    $this->is_redirected = true;
+  }
+
+  function &_getDefaultRedirectStrategy()
+  {
+    include_once(dirname(__FILE__) . '/HttpRedirectStrategy.class.php');
+    return new HttpRedirectStrategy();
   }
 
   function reset()
@@ -25,6 +49,12 @@ class HttpResponse// implements Response
     $this->response_string = '';
     $this->response_file_path = '';
     $this->headers = array();
+    $this->is_redirected = false;
+  }
+
+  function isRedirected()
+  {
+    return $this->is_redirected;
   }
 
   function getStatus()
@@ -76,6 +106,7 @@ class HttpResponse// implements Response
     $status = $this->getStatus();
 
     return (
+      !$this->is_redirected &&
       empty($this->response_string) &&
       empty($this->response_file_path) &&
       ($status != 304 &&  $status != 412));//???

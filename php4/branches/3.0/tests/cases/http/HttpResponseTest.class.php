@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
 require_once(LIMB_DIR . '/core/i18n/Strings.class.php');
+require_once(LIMB_DIR . '/core/request/HttpRedirectStrategy.class.php');
 
 Mock :: generatePartial(
   'HttpResponse',
@@ -17,9 +18,16 @@ Mock :: generatePartial(
   array('_sendHeader', '_sendString', '_sendFile', '_exit')
 );
 
+Mock::generate('HttpRedirectStrategy');
+
 class HttpResponseTest extends LimbTestCase
 {
   var $response;
+
+  function HttpResponseTest()
+  {
+    parent :: LimbTestCase('http response test');
+  }
 
   function setUp()
   {
@@ -112,13 +120,27 @@ class HttpResponseTest extends LimbTestCase
 
   function testRedirect()
   {
-    $path = '/to/some/place?t=1&t=2';
-    $message = Strings :: get('redirect_message');
-    $message = str_replace('%path%', $path, $message);
+    $this->assertFalse($this->response->isRedirected());
 
-    $this->response->expectOnce('_sendString', array(new WantedPatternExpectation("~^<html><head><meta http-equiv=refresh content='0;url=" . preg_quote($path) . "'~")));
+    $this->response->redirect('some path');
 
-    $this->response->redirect($path);
+    $this->assertTrue($this->response->isRedirected());
+  }
+
+  function testRedirectOnlyOnce()
+  {
+    $strategy =& new MockHttpRedirectStrategy($this);
+
+    $this->response->setRedirectStrategy($strategy);
+
+    $this->assertFalse($this->response->isRedirected());
+
+    $strategy->expectOnce('redirect');
+    $this->response->redirect('some path');
+    $this->response->redirect('some other path');
+
+    $this->assertTrue($this->response->isRedirected());
+
     $this->response->commit();
   }
 

@@ -56,6 +56,7 @@ Limb :: registerToolkit(new LimbBaseToolkit());
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/LimbTestCase.class.php');
+require_once(LIMB_DIR . '/tests/lib/LimbGroupTest.class.php');
 
 set_time_limit(0);
 error_reporting(E_ALL);
