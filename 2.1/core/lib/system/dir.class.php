@@ -53,10 +53,11 @@ class dir
     if(!$dir_elements[0])
     {
     	array_shift($dir_elements);
-    	$current_dir .= array_shift($dir_elements);
+    	$current_dir = $separator . array_shift($dir_elements);
     }
     else
     	$current_dir = array_shift($dir_elements);
+		
     
     if(!dir :: _do_mkdir($current_dir, $perm))
     	return false;

@@ -37,33 +37,33 @@ class dir_test extends UnitTestCase
 {  
   function _create_file_system()
   {
-  	dir :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/');
-  	
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1');
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_2');
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_3');
-
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_1');
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_2');
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_3');
-
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_1');
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_2');
-  	touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_3');
+		dir :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/');
+		
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1');
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_2');
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_3');
+		
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_1');
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_2');
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_3');
+		
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_1');
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_2');
+		touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_3');
   }
   
   function _remove_file_system()
   {
-  	dir :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+		dir :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
   }
   
   function test_remove_recursive()
   {
 		$this->_create_file_system();
-		  	
-  	dir :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
-  	
-  	$this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/'));
+		
+		dir :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+		
+		$this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/'));
   }
   
   function test_clean_path()
@@ -171,7 +171,12 @@ class dir_test extends UnitTestCase
   {
   	$this->_create_file_system();
   	
-  	$this->assertEqual(array('test1_1', 'test1_2', 'test1_3', 'wow'), dir :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/'));
+	$a1 = array('test1_1', 'test1_2', 'test1_3', 'wow');
+	sort($a1);
+	$a2 =  dir :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+	sort($a2);
+	
+  	$this->assertEqual($a1, $a2);
   	$this->assertEqual(array('hey', 'test2_1', 'test2_2', 'test2_3'), dir :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
   	
   	$this->_remove_file_system();
@@ -200,18 +205,36 @@ class dir_test extends UnitTestCase
   	$mock =& new special_dir_walker($this);
   	
   	$mock->expectCallCount('walk', 9+2);
-  	
-  	$mock->expectArgumentsAt(0, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_1', array('test', 'separator' => dir :: separator()), array(0)));
-  	$mock->expectArgumentsAt(1, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_2', array('test', 'separator' => dir :: separator()), array(0, 1)));
-  	$mock->expectArgumentsAt(2, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2)));
-  	$mock->expectArgumentsAt(3, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'wow', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3)));
-  	$mock->expectArgumentsAt(4, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'hey', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4)));
-  	$mock->expectArgumentsAt(5, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_1', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5)));
-  	$mock->expectArgumentsAt(6, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_2', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6)));
-  	$mock->expectArgumentsAt(7, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7)));
-  	$mock->expectArgumentsAt(8, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_1', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8)));
-  	$mock->expectArgumentsAt(9, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_2', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
-  	$mock->expectArgumentsAt(10, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
+	
+	if(sys :: os_type() == 'win32')
+	{  	
+		$mock->expectArgumentsAt(0, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_1', array('test', 'separator' => dir :: separator()), array(0)));
+		$mock->expectArgumentsAt(1, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_2', array('test', 'separator' => dir :: separator()), array(0, 1)));
+		$mock->expectArgumentsAt(2, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2)));
+		$mock->expectArgumentsAt(3, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'wow', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3)));
+		$mock->expectArgumentsAt(4, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'hey', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4)));
+		$mock->expectArgumentsAt(5, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_1', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5)));
+		$mock->expectArgumentsAt(6, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_2', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6)));
+		$mock->expectArgumentsAt(7, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7)));
+		$mock->expectArgumentsAt(8, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_1', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8)));
+		$mock->expectArgumentsAt(9, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_2', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
+		$mock->expectArgumentsAt(10, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
+	}
+	elseif(sys :: os_type() == 'unix')
+	{
+		$mock->expectArgumentsAt(0, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'wow', array('test', 'separator' => dir :: separator()), array(0)));
+		$mock->expectArgumentsAt(1, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'hey', array('test', 'separator' => dir :: separator()), array(0, 1)));
+		$mock->expectArgumentsAt(2, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_1', array('test', 'separator' => dir :: separator()), array(0, 1, 2)));
+		$mock->expectArgumentsAt(3, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_2', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3)));
+		$mock->expectArgumentsAt(4, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'), 'test3_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4)));
+		$mock->expectArgumentsAt(5, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_1', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5)));
+		$mock->expectArgumentsAt(6, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_2', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6)));
+		$mock->expectArgumentsAt(7, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'), 'test2_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7)));
+		$mock->expectArgumentsAt(8, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_1', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8)));
+		$mock->expectArgumentsAt(9, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_2', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
+		$mock->expectArgumentsAt(10, 'walk', array(dir :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp'), 'test1_3', array('test', 'separator' => dir :: separator()), array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
+		
+	}
   	
   	$this->assertEqual(
   		dir :: walk_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/', array(&$mock, 'walk'), array('test')),
@@ -276,7 +299,8 @@ class dir_test extends UnitTestCase
   	$this->_create_file_system();
   	
   	$res = dir :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', false, '/hey/');
-  	
+  	sort($res);
+	
   	$this->assertEqual(
   		$res,
   		array('test2_1', 'test2_2', 'test2_3')
@@ -297,6 +321,7 @@ class dir_test extends UnitTestCase
   	$this->_create_file_system();
   	
   	$res = dir :: find_subitems(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey');
+	sort($res);
   	
   	$this->assertEqual(
   		$res, 
@@ -308,7 +333,8 @@ class dir_test extends UnitTestCase
   	);
 
   	$res = dir :: find_subitems(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/', 'f', '/^test2_1$/');
-  	
+  	sort($res);
+	
   	$this->assertEqual(
   		$res, 
   		array(
@@ -325,6 +351,7 @@ class dir_test extends UnitTestCase
   	$this->_create_file_system();
   	 
   	$res = dir :: recursive_find(TEST_DIR_ABSOLUTE_PATH . '/tmp/', 'test\d_1');
+	sort($res);
 
   	$this->assertEqual(
   		$res, 
@@ -337,7 +364,6 @@ class dir_test extends UnitTestCase
   	
   	$this->_remove_file_system();
   }
-
 }
 
 ?>

@@ -104,9 +104,9 @@ class image_object_tester extends site_object_tester
 		
 		$arr = $this->db->get_array();
 		
-		$this->assertTrue(is_array($arr), __LINE__);
-		$this->assertEqual(sizeof($arr), 3, __LINE__);
-		$this->assertEqual($arr[0]['image_id'], 100, __LINE__);
+		$this->assertTrue(is_array($arr), __LINE__ . ' %s');
+		$this->assertEqual(sizeof($arr), 3, __LINE__ . ' %s');
+		$this->assertEqual($arr[0]['image_id'], 100, __LINE__ . ' %s');
 		
 		$sql = "SELECT m.id as media_id, iv.variation
 						FROM image_variation iv, media m
@@ -374,7 +374,7 @@ class image_object_tester extends site_object_tester
 			),
 		);
   	
-  	$this->object->set_attribute('files_data', $files);
+		$this->object->set_attribute('files_data', $files);
   						
 		$this->object->set_attribute('original_action', 'upload');
 		$this->object->set_attribute('thumbnail_action', 'upload');
