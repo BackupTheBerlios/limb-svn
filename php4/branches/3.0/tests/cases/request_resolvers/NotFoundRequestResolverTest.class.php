@@ -35,7 +35,7 @@ class NotFoundRequestResolverTest extends LimbTestCase
     $service =& $resolver->getRequestedService($request);
     $this->assertEqual($service->getName(), '404');
 
-    $this->assertEqual($resolver->getAction($request), 'display');
+    $this->assertEqual($resolver->getRequestedAction($request), 'display');
 
     $this->assertEqual($resolver->getRequestedEntity($request), new Object());
   }

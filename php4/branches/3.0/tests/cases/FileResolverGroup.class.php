@@ -17,7 +17,7 @@ class FileResolverGroup extends LimbGroupTest
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/file_resolver');
+    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/file_resolvers');
   }
 }
 ?>
