@@ -21,6 +21,11 @@ class fetch_sub_branch_datasource_component extends datasource_component
 			
 		$ds =& parent :: _get_datasource();
 		
+		if(!is_a($ds, 'fetch_sub_branch_datasource'))
+			error('not allowed type of datasource, should be inherited from fetch_sub_branch_datasource class',
+			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+			array('datasource' => get_class($ds)));
+
 		return $ds;
 	}
 						
