@@ -66,7 +66,7 @@ class form_create_site_object_action extends form_site_object_action
 		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 		
 		if($request->has_attribute('popup'))
-			$response->write_response_string(close_popup_response());
+			$response->write_response_string(close_popup_response($request));
 	}
 	
 	function _create_object_operation()

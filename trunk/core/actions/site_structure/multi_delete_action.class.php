@@ -78,6 +78,8 @@ class multi_delete_action extends form_action
 			}
 		}	
 	  $request->set_status(REQUEST_STATUS_SUCCESS);
+	
+		$response->write_response_string(close_popup_response($request));
 	}
 	
 	function _get_objects_to_delete($node_ids)

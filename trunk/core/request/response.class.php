@@ -84,7 +84,8 @@ class response
 		
 	function _pre_commit()
 	{
-  	ob_end_clean();
+		while (ob_get_level())
+			ob_end_clean();
   
   	ob_start();	
 	}
