@@ -229,9 +229,9 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 		{
 			if( $this_userdata['user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "" )
 			{
-				if( @file_exists("./" . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']) )
+				if( @file_exists(PROJECT_DIR . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']) )
 				{
-					@unlink("./" . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']);
+					@unlink(PROJECT_DIR . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']);
 				}
 			}
 			$avatar_sql = ", user_avatar = '', user_avatar_type = " . USER_AVATAR_NONE;
@@ -297,12 +297,12 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 
 								if( $this_userdata['user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "" )
 								{
-									if( @file_exists("./../" . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']) )
+									if( @file_exists(PROJECT_DIR . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']) )
 									{
-										@unlink("./../" . $board_config['avatar_path'] . "/". $this_userdata['user_avatar']);
+										@unlink(PROJECT_DIR . $board_config['avatar_path'] . "/". $this_userdata['user_avatar']);
 									}
 								}
-								@copy($user_avatar_loc, "./../" . $board_config['avatar_path'] . "/$avatar_filename");
+								@copy($user_avatar_loc, PROJECT_DIR . $board_config['avatar_path'] . "/$avatar_filename");
 
 								$avatar_sql = ", user_avatar = '$avatar_filename', user_avatar_type = " . USER_AVATAR_UPLOAD;
 							}
@@ -406,12 +406,12 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 
 										if( $this_userdata['user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "")
 										{
-											if( file_exists("./../" . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']) )
+											if( file_exists(PROJECT_DIR . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']) )
 											{
-												@unlink("./../" . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']);
+												@unlink(PROJECT_DIR . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']);
 											}
 										}
-										@copy($tmp_filename, "./../" . $board_config['avatar_path'] . "/$avatar_filename");
+										@copy($tmp_filename, PROJECT_DIR . $board_config['avatar_path'] . "/$avatar_filename");
 										@unlink($tmp_filename);
 
 										$avatar_sql = ", user_avatar = '$avatar_filename', user_avatar_type = " . USER_AVATAR_UPLOAD;
@@ -809,14 +809,14 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 				"body" => "admin/user_avatar_gallery.tpl")
 			);
 
-			$dir = @opendir("../" . $board_config['avatar_gallery_path']);
+			$dir = @opendir(PROJECT_DIR . $board_config['avatar_gallery_path']);
 
 			$avatar_images = array();
 			while( $file = @readdir($dir) )
 			{
 				if( $file != "." && $file != ".." && !is_file("./../" . $board_config['avatar_gallery_path'] . "/" . $file) && !is_link("./../" . $board_config['avatar_gallery_path'] . "/" . $file) )
 				{
-					$sub_dir = @opendir("../" . $board_config['avatar_gallery_path'] . "/" . $file);
+					$sub_dir = @opendir(PROJECT_DIR. $board_config['avatar_gallery_path'] . "/" . $file);
 
 					$avatar_row_count = 0;
 					$avatar_col_count = 0;
@@ -870,7 +870,7 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 				for($j = 0; $j < count($avatar_images[$category][$i]); $j++)
 				{
 					$template->assign_block_vars("avatar_row.avatar_column", array(
-						"AVATAR_IMAGE" => "../" . $board_config['avatar_gallery_path'] . "/" . $avatar_images[$category][$i][$j])
+						"AVATAR_IMAGE" => PROJECT_DIR . $board_config['avatar_gallery_path'] . "/" . $avatar_images[$category][$i][$j])
 					);
 
 					$template->assign_block_vars("avatar_row.avatar_option_column", array(
@@ -1106,7 +1106,7 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 			'S_PROFILE_ACTION' => append_sid("admin_users.php"))
 		);
 
-		if( file_exists('./../' . $board_config['avatar_path'] ) && ($board_config['allow_avatar_upload'] == TRUE) )
+		if( file_exists(PROJECT_DIR . $board_config['avatar_path'] ) && ($board_config['allow_avatar_upload'] == TRUE) )
 		{
 			if ( $form_enctype != '' )
 			{
@@ -1115,7 +1115,7 @@ if( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) |
 			$template->assign_block_vars('avatar_remote_upload', array() );
 		}
 
-		if( file_exists('./../' . $board_config['avatar_gallery_path'] ) && ($board_config['allow_avatar_local'] == TRUE) )
+		if( file_exists(PROJECT_DIR . $board_config['avatar_gallery_path'] ) && ($board_config['allow_avatar_local'] == TRUE) )
 		{
 			$template->assign_block_vars('avatar_local_gallery', array() );
 		}

@@ -53,9 +53,9 @@ function user_avatar_delete($avatar_type, $avatar_file)
 
 	if ( $avatar_type == USER_AVATAR_UPLOAD && $avatar_file != '' )
 	{
-		if ( @file_exists('./' . $board_config['avatar_path'] . '/' . $avatar_file) )
+		if ( @file_exists(PROJECT_DIR .$board_config['avatar_path'] . '/' . $avatar_file) )
 		{
-			@unlink('./' . $board_config['avatar_path'] . '/' . $avatar_file);
+			@unlink(PROJECT_DIR . $board_config['avatar_path'] . '/' . $avatar_file);
 		}
 	}
 
@@ -65,7 +65,7 @@ function user_avatar_delete($avatar_type, $avatar_file)
 function user_avatar_gallery($mode, &$error, &$error_msg, $avatar_filename)
 {
 	global $board_config;
-	if ( file_exists($board_config['avatar_gallery_path'] . '/' . $avatar_filename) && ($mode == 'editprofile') )
+	if ( file_exists(PROJECT_DIR . $board_config['avatar_gallery_path'] . '/' . $avatar_filename) && ($mode == 'editprofile') )
 	{
 		$return = ", user_avatar = '" . str_replace("\'", "''", $avatar_filename) . "', user_avatar_type = " . USER_AVATAR_GALLERY;
 	}
@@ -144,7 +144,7 @@ function user_avatar_upload($mode, $avatar_mode, &$current_avatar, &$current_typ
 		{
 			$avatar_data = substr($avatar_data, strlen($avatar_data) - $avatar_filesize, $avatar_filesize);
 
-			$tmp_path = ( !@$ini_val('safe_mode') ) ? '/tmp' : './' . $board_config['avatar_path'] . '/tmp';
+			$tmp_path = ( !@$ini_val('safe_mode') ) ? '/tmp' : PROJECT_DIR . $board_config['avatar_path'] . '/tmp';
 			$tmp_filename = tempnam($tmp_path, uniqid($user_ip) . '-');
 
 			$fptr = @fopen($tmp_filename, 'wb');
@@ -197,15 +197,15 @@ function user_avatar_upload($mode, $avatar_mode, &$current_avatar, &$current_typ
 
 		if ( $mode == 'editprofile' && $current_type == USER_AVATAR_UPLOAD && $current_avatar != '' )
 		{
-			if ( file_exists('./' . $board_config['avatar_path'] . '/' . $current_avatar) )
+			if ( file_exists(PROJECT_DIR . $board_config['avatar_path'] . '/' . $current_avatar) )
 			{
-				@unlink('./' . $board_config['avatar_path'] . '/' . $current_avatar);
+				@unlink(PROJECT_DIR . $board_config['avatar_path'] . '/' . $current_avatar);
 			}
 		}
 
 		if( $avatar_mode == 'remote' )
 		{
-			@copy($tmp_filename, './' . $board_config['avatar_path'] . "/$new_filename");
+			@copy($tmp_filename, PROJECT_DIR . $board_config['avatar_path'] . "/$new_filename");
 			@unlink($tmp_filename);
 		}
 		else
@@ -224,10 +224,10 @@ function user_avatar_upload($mode, $avatar_mode, &$current_avatar, &$current_typ
 				$move_file = 'copy';
 			}
 
-			$move_file($avatar_filename, './' . $board_config['avatar_path'] . "/$new_filename");
+			$move_file($avatar_filename, PROJECT_DIR . $board_config['avatar_path'] . "/$new_filename");
 		}
 
-		@chmod('./' . $board_config['avatar_path'] . "/$new_filename", 0777);
+		@chmod(PROJECT_DIR . $board_config['avatar_path'] . "/$new_filename", 0777);
 
 		$avatar_sql = ( $mode == 'editprofile' ) ? ", user_avatar = '$new_filename', user_avatar_type = " . USER_AVATAR_UPLOAD : "'$new_filename', " . USER_AVATAR_UPLOAD;
 	}
@@ -247,14 +247,14 @@ function display_avatar_gallery($mode, &$category, &$user_id, &$email, &$current
 	global $board_config, $db, $template, $lang, $images, $theme;
 	global $phpbb_root_path;
 
-	$dir = @opendir($board_config['avatar_gallery_path']);
-
+	$dir = @opendir(PROJECT_DIR . $board_config['avatar_gallery_path']);
+	
 	$avatar_images = array();
 	while( $file = @readdir($dir) )
 	{
-		if( $file != '.' && $file != '..' && !is_file($board_config['avatar_gallery_path'] . '/' . $file) && !is_link($board_config['avatar_gallery_path'] . '/' . $file) )
+		if( $file != '.' && $file != '..' && !is_file(PROJECT_DIR . $board_config['avatar_gallery_path'] . '/' . $file) && !is_link($board_config['avatar_gallery_path'] . '/' . $file) )
 		{
-			$sub_dir = @opendir($board_config['avatar_gallery_path'] . '/' . $file);
+			$sub_dir = @opendir(PROJECT_DIR . $board_config['avatar_gallery_path'] . '/' . $file);
 
 			$avatar_row_count = 0;
 			$avatar_col_count = 0;
@@ -308,7 +308,7 @@ function display_avatar_gallery($mode, &$category, &$user_id, &$email, &$current
 		for($j = 0; $j < count($avatar_images[$category][$i]); $j++)
 		{
 			$template->assign_block_vars('avatar_row.avatar_column', array(
-				"AVATAR_IMAGE" => $board_config['avatar_gallery_path'] . '/' . $avatar_images[$category][$i][$j], 
+				"AVATAR_IMAGE" => PROJECT_DIR . $board_config['avatar_gallery_path'] . '/' . $avatar_images[$category][$i][$j], 
 				"AVATAR_NAME" => $avatar_name[$category][$i][$j])
 			);
 

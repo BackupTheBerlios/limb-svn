@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: fetcher.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -140,7 +140,7 @@ class fetcher
 		
 		return $result;
 	}
-				
+	
 	function & fetch_one_by_node_id($node_id)
 	{
 		$tree =& limb_tree :: instance();

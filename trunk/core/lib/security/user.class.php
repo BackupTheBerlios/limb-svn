@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: user.class.php 470 2004-02-18 13:04:56Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -231,19 +231,22 @@ class user
 	
 	function is_in_groups($groups_to_check)
 	{
-		$groups = user :: get_groups();
-		
-		$found = false;
-		foreach	($groups as $name)
+		if (!is_array($groups_to_check))
 		{
-			if (in_array($name, $groups_to_check))
-			{
-				$found = true;
-				break;
-			}	
-		}
+			$groups_to_check = explode(',', $groups_to_check);
+			if(!is_array($groups_to_check))
+				return false;
+		}	
+			
+		foreach	(user :: get_groups() as $group_name)
+			if (in_array($group_name, $groups_to_check))
+				return true; 
 		
-		return $found; 
+		return false;		
+	}
+	
+	function _get_groups_to_check_from_string($groups)
+	{
 	}
 }
 ?>

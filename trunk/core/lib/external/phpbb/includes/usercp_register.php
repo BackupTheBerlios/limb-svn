@@ -150,9 +150,10 @@ if (
 			$user_avatar = $user_avatar_local;
 			$user_avatar_type = USER_AVATAR_GALLERY;
 
-			if ( $userdata['user_avatar_type'] == USER_AVATAR_UPLOAD && @file_exists('./' . $board_config['avatar_path'] . '/' . $userdata['user_avatar']) )
+			if ( $userdata['user_avatar_type'] == USER_AVATAR_UPLOAD 
+				&& @file_exists(PROJECT_DIR . $board_config['avatar_path'] . '/' . $userdata['user_avatar']) )
 			{
-				@unlink('./' . $board_config['avatar_path'] . '/' . $userdata['user_avatar']);
+				@unlink(PROJECT_DIR . $board_config['avatar_path'] . '/' . $userdata['user_avatar']);
 			}
 
 		}
@@ -442,7 +443,6 @@ else if ( $mode == 'editprofile' && !isset($HTTP_POST_VARS['avatargallery']) && 
 
 	$user_avatar = ( $userdata['user_allowavatar'] ) ? $userdata['user_avatar'] : '';
 	$user_avatar_type = ( $userdata['user_allowavatar'] ) ? $userdata['user_avatar_type'] : USER_AVATAR_NONE;
-
 	$user_style = $userdata['user_style'];
 	$user_lang = $userdata['user_lang'];
 	$user_timezone = $userdata['user_timezone'];
@@ -670,13 +670,14 @@ else
 	// of the templates to 'fake' an IF...ELSE...ENDIF solution
 	// it works well :)
 	//
+	trigger_error('Stop', E_USER_WARNING);	
 	if ( $mode != 'register' )
 	{
 		if ( $userdata['user_allowavatar'] && ( $board_config['allow_avatar_upload'] || $board_config['allow_avatar_local'] || $board_config['allow_avatar_remote'] ) )
 		{
 			$template->assign_block_vars('switch_avatar_block', array() );
 
-			if ( $board_config['allow_avatar_upload'] && file_exists('./' . $board_config['avatar_path']) )
+			if ( $board_config['allow_avatar_upload'] && file_exists(PROJECT_DIR . $board_config['avatar_path']) )
 			{
 				if ( $form_enctype != '' )
 				{
@@ -690,7 +691,7 @@ else
 				$template->assign_block_vars('switch_avatar_block.switch_avatar_remote_link', array() );
 			}
 
-			if ( $board_config['allow_avatar_local'] && file_exists('./' . $board_config['avatar_gallery_path']) )
+			if ( $board_config['allow_avatar_local'] && file_exists(PROJECT_DIR . $board_config['avatar_gallery_path']) )
 			{
 				$template->assign_block_vars('switch_avatar_block.switch_avatar_local_gallery', array() );
 			}

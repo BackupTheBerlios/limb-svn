@@ -25,7 +25,7 @@ class set_publish_status_action extends action
 		
 		if(!$access_policy->save_object_access_for_action($object, $action))
 		{
-			error('acccess template for action not defined',
+			error('access template for action not defined',
 				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 				array('action' => $action));
 		}	

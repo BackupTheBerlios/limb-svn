@@ -28,7 +28,7 @@ class phpbb_user extends object
   	$phpbb_user_data['user_active'] = 1;
   	$phpbb_user_data['username'] = $data['identifier'];
   	$phpbb_user_data['user_password'] = user :: get_crypted_password($data['identifier'], $data['password']);
-  	$phpbb_user_data['user_regdate'] = '';
+  	$phpbb_user_data['user_regdate'] = time();
   	$phpbb_user_data['user_style'] = 1;
   	$phpbb_user_data['user_lang'] = 'english';
   	$phpbb_user_data['user_popup_pm'] = 1;

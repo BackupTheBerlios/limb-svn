@@ -9,7 +9,6 @@ class user_attribute_tag_info
 
 register_tag(new user_attribute_tag_info());
 
-
 class user_attribute_tag extends compiler_directive_tag
 {
 	var $name;
@@ -30,16 +29,13 @@ class user_attribute_tag extends compiler_directive_tag
 
 	function generate_contents(&$code)
 	{
-
 		$user_methods = get_class_methods('user');
 
 		if(in_array('get_'. $this->attributes['name'], $user_methods))
 			$code->write_php("echo user :: get_{$this->attributes['name']}();");
-		
 				
 		parent :: generate_contents($code);
 	}
-
 } 
 
 ?>
