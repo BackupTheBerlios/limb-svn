@@ -52,6 +52,14 @@ class fs_test extends LimbTestCase
     fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
   }
 
+  function test_is_absolute_true()
+  {
+    $this->assertTrue(fs :: is_absolute('/test'));
+
+    if(sys :: os_type() == 'win32')
+      $this->assertTrue(fs :: is_absolute('c:/test'));
+  }
+
   function test_remove_recursive()
   {
     $this->_create_file_system();

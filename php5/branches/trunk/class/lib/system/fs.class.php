@@ -30,6 +30,19 @@ class fs
     return $path;
   }
 
+  function is_absolute($path)
+  {
+    $path = fs :: clean_path($path);
+    $separator = fs :: separator();
+
+    if($path{0} == $separator)
+      return true;
+    elseif(sys :: os_type() == 'win32' && preg_match('~^[a-zA-Z]+:~', $path))
+      return true;
+    else
+      return false;
+  }
+
   /*
    Creates the directory $dir with permissions $perm.
    If $parents is true it will create any missing parent directories,
@@ -52,7 +65,7 @@ class fs
 
     $path_elements = self :: explode_path($dir);
 
-    if (count($path_elements) == 0)
+    if(count($path_elements) == 0)
       return;
 
     $index = self :: _get_first_existent_path_index($path_elements, $separator);
@@ -63,12 +76,12 @@ class fs
     }
 
     $offset_path = '';
-    for ($i=0; $i < $index; $i++)
+    for($i=0; $i < $index; $i++)
     {
       $offset_path .= $path_elements[$i] . $separator;
     }
 
-    for ($i=$index; $i < count($path_elements); $i++)
+    for($i=$index; $i < count($path_elements); $i++)
     {
       $offset_path .= $path_elements[$i] . $separator;
       self :: _do_mkdir($offset_path, $perm);
@@ -77,7 +90,7 @@ class fs
 
   static protected function _get_first_existent_path_index($path_elements, $separator)
   {
-    for ($i=count($path_elements); $i > 0; $i--)
+    for($i=count($path_elements); $i > 0; $i--)
     {
       $path = implode($separator, $path_elements);
 
@@ -86,7 +99,11 @@ class fs
 
       array_pop($path_elements);
     }
-    return false;
+
+    if(self :: is_absolute($path))
+      return false;
+    else
+      return 0;
   }
 
   /*
