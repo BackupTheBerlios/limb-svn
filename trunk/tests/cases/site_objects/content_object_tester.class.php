@@ -44,12 +44,68 @@ class content_object_tester extends site_object_tester
  		$this->_check_content_object_record();
   }
   
+  function _generate_string()
+  {
+		$alphabet = array(
+				array('b','c','d','f','g','h','g','k','l','m','n','p','q','r','s','t','v','w','x','z',
+							'B','C','D','F','G','H','G','K','L','M','N','P','Q','R','S','T','V','W','X','Z'),
+				array('a','e','i','o','u','y','A','E','I','O','U','Y'),
+		);
+		
+		$string = '';
+		for($i = 0; $i < 9 ;$i++)
+		{
+			$j = $i%2;
+			$min_value = 0;
+			$max_value = count($alphabet[$j]) - 1;
+			$key = rand($min_value, $max_value);
+			$string .= $alphabet[$j][$key];
+		}
+		
+		return $string;
+  }
+  
+  function _generate_number()
+  {
+  	return mt_rand(1, 1000);
+  }
+  
+  function _generate_test_attributes()
+  {
+  	$definition = $this->object->get_attributes_definition();
+  	
+  	foreach($this->object->get_attributes_definition() as $attribute => $data)
+  	{
+  		if(in_array($attribute, array('id', 'version', 'object_id')))
+  			continue;
+  		
+  		if($data === '' || (is_array($data) && !isset($data['type'])))
+  			$type = 'string';
+  		else
+  			$type = $data['type'];
+  		
+			switch ($type)
+			{
+				case 'numeric':
+					$this->object->set_attribute($attribute, $this->_generate_number());
+				break;
+				
+				case 'string':
+					$this->object->set_attribute($attribute, $this->_generate_number());
+				break;
+			}
+			
+  	}
+  }
+  
   function _set_object_initial_attributes()
   {
+  	$this->_generate_test_attributes();
   }
 
 	function _set_object_secondary_update_attributes()
 	{
+		$this->_generate_test_attributes();
 	}
 	
 	function test_versioned_update()
@@ -67,13 +123,9 @@ class content_object_tester extends site_object_tester
   	$this->_set_object_initial_attributes();
   	
   	$this->object->set_parent_node_id($this->parent_node_id);
-  	$this->object->set_identifier('test_node');
 
   	$id = $this->object->create();
   	$node_id = $this->object->get_node_id();
-
-  	$this->object->set_identifier('new_article_test');
-  	$this->object->set_title('New article test2');
 
   	$this->_set_object_secondary_update_attributes();
   	
@@ -83,9 +135,9 @@ class content_object_tester extends site_object_tester
   	$this->assertTrue($result, 'update operation failed');
 
   	if ($versioned)
-  		$this->assertEqual($version + 1, $this->object->get_version(), 'version index is the same as before versioned update');
+  		$this->assertEqual($version + 1, $this->object->get_version(), get_class($this->object) . ': version index is the same as before versioned update');
   	else	
-  		$this->assertEqual($version, $this->object->get_version(), 'version index schould be the same as before unversioned update');
+  		$this->assertEqual($version, $this->object->get_version(), get_class($this->object) . ': version index schould be the same as before unversioned update');
   	
   	$this->_check_sys_site_object_tree_record();
   	
@@ -140,7 +192,7 @@ class content_object_tester extends site_object_tester
 		
 		foreach($attribs as $name => $value)
 			if (isset($record[$name]) && !in_array($name, array('id', 'object_id')))
-				$this->assertEqual($record[$name], $value);
+				$this->assertEqual($record[$name], $value, get_class($this->object) . ': db content is not valid at attribute "' . $name . '"');
 	}		
 }
 

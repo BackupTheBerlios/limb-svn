@@ -25,6 +25,8 @@ class site_object extends object
 	
 	function site_object()
 	{
+    $this->_class_properties = $this->_define_class_properties();
+    
 		$new_attributes_definition = $this->_define_attributes_definition();
 		
     $this->_attributes_definition['id'] = array('type' => 'numeric');
@@ -34,8 +36,6 @@ class site_object extends object
     $this->_attributes_definition['identifier'] = array('search' => true, 'search_weight' => 50);
     
     $this->_attributes_definition = complex_array :: array_merge($this->_attributes_definition, $new_attributes_definition);
-    
-    $this->_class_properties = $this->_define_class_properties();
     
     parent :: object();
 	}

@@ -20,11 +20,13 @@ class site_object_fetch_test_version extends site_object
 		
 	function _define_attributes_definition()
 	{
-		return array(
-			'title' => '',
-			'name' => array('type' => 'numeric'),
-			'search' => array('search' => true),
-		);		
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+				'title' => '',
+				'name' => array('type' => 'numeric'),
+				'search' => array('search' => true),
+				));		
 	}
 	
 	function _define_class_properties()

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: news_object.class.php 422 2004-02-10 09:50:25Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
@@ -19,10 +19,12 @@ class news_object extends content_object
 	
 	function _define_attributes_definition()
 	{
-		return array(
-			'content' => array('search' => true),
-			'annotation' => array('search' => true)
-		);
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+				'content' => array('search' => true),
+				'annotation' => array('search' => true)
+				));
 	}
 	
 	function _define_class_properties()

@@ -30,6 +30,18 @@ class content_object extends site_object
 			'icon' => '/shared/images/generic.gif'
 		);
 	}
+	
+	function _define_attributes_definition()
+	{
+		$table =& $this->_get_db_table();
+		
+		$columns = $table->get_columns();
+		
+		if($key = $table->get_primary_key_name())
+			unset($columns[$key]);
+			
+		return $columns;
+	}
 		
 	function & _get_db_table()
 	{

@@ -19,10 +19,12 @@ class feedback_object extends content_object
 	
 	function _define_attributes_definition()
 	{
-		return array(
-			'title' => array(),
-			'content' => array(),
-		);
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+				'title' => array(),
+				'content' => array(),
+			));
 	}
 	
 	function _define_class_properties()

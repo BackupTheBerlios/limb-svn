@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: document.class.php 36 2004-02-29 18:57:15Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
@@ -19,9 +19,11 @@ class document extends content_object
 	
 	function _define_attributes_definition()
 	{
-		return array(
-			'content' => array('search' => true, 'search_weight' => 1),
-		);
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+				'content' => array('search' => true, 'search_weight' => 1),
+				));
 	}
 	
 	function _define_class_properties()

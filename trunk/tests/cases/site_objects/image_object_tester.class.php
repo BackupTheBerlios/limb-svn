@@ -30,9 +30,9 @@ class image_object_tester extends site_object_tester
   function & _create_site_object()
   {
   	$obj =& new image_object_test_version($this);
-  	$obj->image_object();
-  	
   	$obj->setReturnValue('_get_db_table_name', 'image_object');
+  	
+  	$obj->image_object();
   	
   	return $obj;
   }

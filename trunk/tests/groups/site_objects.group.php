@@ -42,12 +42,10 @@ class tests_site_objects extends GroupTest
 		{	
 			$site_object = site_object_factory :: create($class_name);
 					
-	  	$test_case =& new site_object_tester($class_name);
-	  	
-	  	//if (is_subclass_of($site_object, 'site_object'))
-	  		//$tester =& new site_object_tester($row['class_name']);
-	  	//else
-	  	//	$tester =& new content_object_tester($site_object);
+	  	if (is_subclass_of($site_object, 'content_object'))
+	  		$test_case =& new content_object_tester($class_name);
+	  	else
+	  		$test_case =& new site_object_tester($class_name);
 		}
 		
 		return $test_case;

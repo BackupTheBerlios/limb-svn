@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: school_news_object.class.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/period_object.class.php');
@@ -19,10 +19,12 @@ class period_news_object extends period_object
 	
 	function _define_attributes_definition()
 	{
-		return array(
-			'content' => array('search' => true, 'search_weight' => 1),
-			'annotation' => array('search' => true, 'search_weight' => 5)
-		);
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+				'content' => array('search' => true, 'search_weight' => 1),
+				'annotation' => array('search' => true, 'search_weight' => 5)
+				));
 	}
 	
 	function _define_class_properties()

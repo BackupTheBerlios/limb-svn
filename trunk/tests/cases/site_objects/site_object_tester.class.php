@@ -52,9 +52,9 @@ class site_object_tester extends UnitTestCase
     
   function setUp()
   {
-  	$this->_clean_up();
-  	
   	$this->object = $this->_create_site_object();
+  	
+  	$this->_clean_up();
   	
   	debug_mock :: init($this);
   	
@@ -152,8 +152,8 @@ class site_object_tester extends UnitTestCase
   	$id = $this->object->create();
   	$node_id = $this->object->get_node_id();
 
-  	$this->object->set_identifier('new_article_test');
-  	$this->object->set_title('New article test');
+  	$this->object->set_identifier('new_test_identifier');
+  	$this->object->set_title('New test title');
   	
   	$version = $this->object->get_version();
   	$result = $this->object->update($versioned);

@@ -19,12 +19,14 @@ class article extends content_object
 
 	function _define_attributes_definition()
 	{
-		return array(
-			'content' => array('search' => true, 'search_weight' => 1),
-			'annotation' => array('search' => true, 'search_weight' => 5),
-			'author' => array('search' => true, 'search_weight' => 10),
-			'source' => array('search' => true, 'search_weight' => 10),
-		);
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+					'content' => array('search' => true, 'search_weight' => 1),
+					'annotation' => array('search' => true, 'search_weight' => 5),
+					'author' => array('search' => true, 'search_weight' => 10),
+					'source' => array('search' => true, 'search_weight' => 10),
+				));
 	}
 	
 	function _define_class_properties()

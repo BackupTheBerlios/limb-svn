@@ -19,9 +19,11 @@ class poll extends content_object
 	
 	function _define_attributes_definition()
 	{
-		return array(
-			'identifier' => array('search' => true, 'auto_identifier' => true)
-		);
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+				'identifier' => array('search' => true, 'auto_identifier' => true)
+				));
 	}
 	
 	function _define_class_properties()
