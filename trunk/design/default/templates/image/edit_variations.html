@@ -14,10 +14,14 @@
 	<td>
 		<table>
 		<tr>
-			<td>
-			</td>
+			<td></td>
 			<td class='text'>
 			GIF,JPEG,PNG
+			<hint>
+	      <hint:CONTENT>
+	      	<locale:STRING name='image_format_description' file='image'>
+	      </hint:CONTENT>
+	    </hint>
 			</td>
 		</tr>
 		<tr>
@@ -38,7 +42,7 @@
 						<td class='text'>
 						
 						<fetch:MAPPED>
-						<a href="{$path}?original" target="_blank">Click here to view original</a><br>
+						<a href="{$path}?original" target="_blank"><locale:STRING name='click_original' file='image'></a><br>
 					  Height:{$variations['original']['height']} Width:{$variations['original']['width']} Size:{$variations['original']['size']}
 					  </fetch:MAPPED>
 					  
@@ -82,7 +86,7 @@
 						<td class='text'>
 						
 						<fetch:MAPPED>
-						<a href="{$path}?thumbnail" target="_blank">Click here to view thumbnail</a><br>
+						<a href="{$path}?thumbnail" target="_blank"><locale:STRING name='click_thumbnail' file='image'></a><br>
 					  Height:{$variations['thumbnail']['height']} Width:{$variations['thumbnail']['width']} Size:{$variations['thumbnail']['size']}
 					  </fetch:MAPPED>
 	
@@ -126,7 +130,7 @@
 						<td class='text'>
 	
 							<fetch:MAPPED>
-							<a href="{$path}?icon" target="_blank">Click here to view icon</a><br>
+							<a href="{$path}?icon" target="_blank"><locale:STRING name='click_icon' file='image'></a><br>
 						  Height:{$variations['icon']['height']} Width:{$variations['icon']['width']} Size:{$variations['icon']['size']}
 						  </fetch:MAPPED>
 	

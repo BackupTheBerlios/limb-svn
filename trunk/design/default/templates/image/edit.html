@@ -1,5 +1,23 @@
 <core:WRAP file="popup.html" placeholder="content">
 
+<h2><locale:STRING name='image_edition' file='image'></h2>
+<fetch:MAPPED>
+<table>
+	<tr>
+		<td style='padding: 5px' align='center'>
+		<img src="{$path}?icon">
+		</td>
+		<td>
+		<a href="{$path}?original" target="_blank"><locale:STRING name='click_original' file='image'></a><br>
+	  Height:{$variations['original']['height']} Width:{$variations['original']['width']} Size:{$variations['original']['size']}
+		<br>
+		<a href="{$path}?thumbnail" target="_blank"><locale:STRING name='click_thumbnail' file='image'></a><br>
+	  Height:{$variations['thumbnail']['height']} Width:{$variations['thumbnail']['width']} Size:{$variations['thumbnail']['size']}
+		</td>
+
+	</tr>
+</table>
+</fetch:MAPPED>
 <form name="edit_image" id="edit_image" method="post">
 	<table>
 		<col span=100 valign=bottom class=form>
