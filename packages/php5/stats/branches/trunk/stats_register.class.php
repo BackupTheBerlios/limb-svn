@@ -19,13 +19,13 @@ include(dirname(__FILE__) . '/search_engines.setup.php');
 
 class stats_register
 {
-	private $_counter_register = null;
-	private $_ip_register = null;
-	private $_uri_register = null;
-	private $_referer_register = null;
-	private $_search_phrase_register = null;
-	private $_reg_date;
-	private $db = null;
+	protected $_counter_register = null;
+	protected $_ip_register = null;
+	protected $_uri_register = null;
+	protected $_referer_register = null;
+	protected $_search_phrase_register = null;
+	protected $_reg_date;
+	protected $db = null;
 	
 	public function __construct()
 	{
@@ -58,14 +58,12 @@ class stats_register
 		$this->_update_search_referers();
 	}
 	
-	public function _update_log($node_id, $action, $status_code)
+	protected function _update_log($node_id, $action, $status_code)
 	{
 		$ip_register = $this->_get_ip_register();
 
 		$referer_register = $this->_get_referer_register();
 		$uri_register = $this->_get_uri_register();
-		
-		$user = user :: instance();
 		
 		$this->db->sql_insert('sys_stat_log', 
 			array(
@@ -74,7 +72,7 @@ class stats_register
 				'node_id' => $node_id,
 				'stat_referer_id' => $referer_register->get_referer_page_id(),
 				'stat_uri_id' => $uri_register->get_uri_id(),
-				'user_id' => $user->get_id(),
+				'user_id' => user :: instance()->get_id(),
 				'session_id' => session_id(),
 				'action' => $action,
 				'status' => $status_code,
@@ -94,7 +92,7 @@ class stats_register
 		return $row['counter'];
 	}
 	
-	private function _update_counters()
+	protected function _update_counters()
 	{	
 		$ip_register = $this->_get_ip_register();
 		$counter_register = $this->_get_counter_register();
@@ -103,7 +101,7 @@ class stats_register
 		$counter_register->update($this->_reg_date);
 	}
 	
-	private function _update_search_referers()
+	protected function _update_search_referers()
 	{	
 		$phrase_register = $this->_get_search_phrase_register();
 		$phrase_register->register($this->_reg_date);

@@ -37,7 +37,7 @@ class stats_keywords_list_datasource extends stats_report_datasource
 		return $result;
 	}		
 		
-	private function _set_period_filter($request)
+	protected function _set_period_filter($request)
 	{
 		$locale = locale :: instance();
 		$start_date = new date();

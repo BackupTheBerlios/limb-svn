@@ -18,15 +18,11 @@ class cart_item extends object
 		
 		$this->_set_id($id);
 		
-		$this->_define_class_path();
+		//important!!!
+		$this->__session_class_path = addslashes(__FILE__);
 	}
-	
-	private function _define_class_path()
-	{
-	  $this->__session_class_path = __FILE__;
-	}
-	
-	private function _set_id($id)
+		
+	protected function _set_id($id)
 	{
 		$this->set('id', $id);
 	}

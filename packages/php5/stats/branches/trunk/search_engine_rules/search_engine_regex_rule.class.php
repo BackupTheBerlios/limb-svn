@@ -12,12 +12,12 @@ require_once(dirname(__FILE__) . '/search_engine_rule.interface.php');
 
 class search_engine_regex_rule implements search_engine_rule
 {	
-	private $engine_name = '';
-	private $regex = '';
-	private $matches = array();
-	private $uri = '';
+	protected $engine_name = '';
+	protected $regex = '';
+	protected $matches = array();
+	protected $uri = '';
 	
-	private $match_phrase_index;
+	protected $match_phrase_index;
 	
 	function __construct($engine_name, $regex, $match_phrase_index)
 	{

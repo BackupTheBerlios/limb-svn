@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/../reports/stats_event_report.class.php');
 
 class stats_events_list_datasource extends stats_report_datasource
 {
-	private $response_map = array(
+	protected $response_map = array(
 				request :: STATUS_SUCCESS => 'STATUS_SUCCESS', 
 				request :: STATUS_FORM_DISPLAYED => 'STATUS_FORM_DISPLAYED',
 				request :: STATUS_FORM_SUBMITTED => 'STATUS_FORM_SUBMITTED',
@@ -55,25 +55,25 @@ class stats_events_list_datasource extends stats_report_datasource
 		$this->_set_status_filter($request);
 	}
 	
-	private function _set_login_filter($request)
+	protected function _set_login_filter($request)
 	{
 	  if ($stats_user_login = $request->get('stats_user_login'))
 			$this->_stats_report->set_login_filter($stats_user_login);
 	}
 
-	private function _set_action_filter($request)
+	protected function _set_action_filter($request)
 	{
 	  if ($stats_action_name = $request->get('stats_action_name'))
 			$this->_stats_report->set_action_filter($stats_action_name);
 	}
 	
-	private function _set_ip_filter($request)
+	protected function _set_ip_filter($request)
 	{
 	  if ($stats_ip = $request->get('stats_ip'))
 			$this->_stats_report->set_ip_filter($stats_ip);
 	}
 	
-	private function _set_status_filter($request)
+	protected function _set_status_filter($request)
 	{
 	  if (($stats_status = $request->get('stats_status')) || (!is_array($stats_status)))
 			return ;
@@ -88,13 +88,13 @@ class stats_events_list_datasource extends stats_report_datasource
 			$this->_stats_report->set_status_filter($status_mask);
 	}
 	
-	private function _set_uri_filter($request)
+	protected function _set_uri_filter($request)
 	{		
 	  if ($stats_uri = $request->get('stats_uri'))
 			$this->_stats_report->set_uri_filter($stats_uri);
 	}
 	
-	private function _set_period_filter($request)
+	protected function _set_period_filter($request)
 	{
 		$locale = locale :: instance();
 		$start_date = new date();

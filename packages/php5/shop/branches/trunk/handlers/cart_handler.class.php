@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . '/cart_handler_interface.interface.php';
 
 abstract class cart_handler implements cart_handler_interface
 {		
-	private $_cart_id = null;
+	protected $_cart_id = null;
 	protected $_items = array();
 		
 	function __construct($cart_id)

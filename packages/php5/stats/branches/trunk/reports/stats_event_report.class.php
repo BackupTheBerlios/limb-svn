@@ -14,8 +14,8 @@ require_once(dirname(__FILE__) . '/stats_report.interface.php');
 
 class stats_event_report implements stats_report
 {
-	private $db;
-	private $filter_conditions = array();
+	protected $db;
+	protected $filter_conditions = array();
 	
 	public function __construct()
 	{
@@ -127,7 +127,7 @@ class stats_event_report implements stats_report
 			$this->filter_conditions[] = ' AND ( ' . $condition . ' ) ';
 	}
 		
-	private function _build_filter_condition()
+	protected function _build_filter_condition()
 	{
 		return ' WHERE ssu.id = sslog.stat_uri_id ' . implode(' ', $this->filter_conditions);
 	}
@@ -175,7 +175,7 @@ class stats_event_report implements stats_report
 		return (int)$arr['count'];
 	}
 
-	private function _build_order_sql($order_array)
+	protected function _build_order_sql($order_array)
 	{
 		$columns = array();
 		
@@ -185,7 +185,7 @@ class stats_event_report implements stats_report
 		return implode(', ', $columns);
 	}	
 	
-	private function _parse_input_string($input_string)
+	protected function _parse_input_string($input_string)
 	{
 		if(!$input_string = trim(str_replace('*', '%', $input_string)))
 			return false;
@@ -197,7 +197,7 @@ class stats_event_report implements stats_report
 		return $items;
 	}
 		
-	private function _build_negative_conditions($field_name, $condition_string)
+	protected function _build_negative_conditions($field_name, $condition_string)
 	{		
 		if(($conditions = $this->_parse_input_string($condition_string)) === false)
 			return '';
@@ -215,7 +215,7 @@ class stats_event_report implements stats_report
 		return $negative_conditions;
 	}
 	
-	private function _build_positive_conditions($field_name, $condition_string)
+	protected function _build_positive_conditions($field_name, $condition_string)
 	{
 		if(($conditions = $this->_parse_input_string($condition_string)) === false)
 			return '';
@@ -231,7 +231,7 @@ class stats_event_report implements stats_report
 		return $positive_conditions;
 	}	
 	
-	private function _build_negative_condition($field_name, $value)
+	protected function _build_negative_condition($field_name, $value)
 	{
 		if(strpos($value, '%') !== false)
 			$negative_condition = "{$field_name} NOT LIKE '{$value}'";	
@@ -241,7 +241,7 @@ class stats_event_report implements stats_report
 		return $negative_condition;
 	}
 
-	private function _build_positive_condition($field_name, $value)
+	protected function _build_positive_condition($field_name, $value)
 	{
 		if(strpos($value, '%') !== false)
 			$negative_condition = "{$field_name} LIKE '{$value}'";	
@@ -251,7 +251,7 @@ class stats_event_report implements stats_report
 		return $negative_condition;
 	}
 	
-	private function _combine_positive_negative_conditions($positive_conditions, $negative_conditions)
+	protected function _combine_positive_negative_conditions($positive_conditions, $negative_conditions)
 	{
 		$sql_condition = '';
 		

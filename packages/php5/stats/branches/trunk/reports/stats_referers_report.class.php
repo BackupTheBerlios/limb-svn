@@ -13,8 +13,8 @@ require_once(dirname(__FILE__) . '/stats_report.interface.php');
 
 class stats_referers_report implements stats_report
 {
-	private $db;
-	private $filter_conditions = array();
+	protected $db;
+	protected $filter_conditions = array();
 	
 	public function __construct()
 	{
@@ -82,7 +82,7 @@ class stats_referers_report implements stats_report
 		$this->filter_conditions[] = " AND time BETWEEN {$start_stamp} AND {$finish_stamp} ";
 	}
 
-	private function _build_filter_condition()
+	protected function _build_filter_condition()
 	{
 		return ' WHERE stat_referer_id <> -1 ' . implode(' ', $this->filter_conditions);
 	}

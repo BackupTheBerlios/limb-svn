@@ -40,7 +40,7 @@ class file_object extends media_object
 		return parent :: update($force_create_new_version);
 	}
 	
-	private function _create_file()
+	protected function _create_file()
 	{
 		$tmp_file_path = $this->get('tmp_file_path');
 		$file_name = $this->get('file_name');
@@ -54,7 +54,7 @@ class file_object extends media_object
 		return true;
 	}
 	
-	private function _update_file()
+	protected function _update_file()
 	{
 		$tmp_file_path = $this->get('tmp_file_path');
 		$file_name = $this->get('file_name');

@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 
 class stats_uri
 {	
-	private $db = null;
-	private $url = null;
+	protected $db = null;
+	protected $url = null;
 	
 	public function __construct()
 	{
@@ -36,7 +36,7 @@ class stats_uri
 		return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 	}
 	
-	private function _get_existing_uri_record_id($uri)
+	protected function _get_existing_uri_record_id($uri)
 	{
 		$this->db->sql_select('sys_stat_uri', '*', 
 			"uri='" . $uri . "'");
@@ -46,7 +46,7 @@ class stats_uri
 			return false;	
 	}
 	
-	private function _insert_uri_record($uri)
+	protected function _insert_uri_record($uri)
 	{
 		$this->db->sql_insert('sys_stat_uri', 
 			array('uri' => $uri));
@@ -65,7 +65,7 @@ class stats_uri
 			return $this->url->to_string(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
 	}	
 
-	private function _is_inner_url()
+	protected function _is_inner_url()
 	{
     return ($this->url->get_host() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
 	}

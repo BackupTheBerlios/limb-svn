@@ -39,7 +39,7 @@ class db_cart_handler extends cart_handler
 	  }
 	}
 	
-	private function _load_items_for_user()
+	protected function _load_items_for_user()
 	{
 	  $user = $this->_get_user();
 
@@ -51,7 +51,7 @@ class db_cart_handler extends cart_handler
     $this->cart_db_table->delete($conditions); 
 	}
 	
-	private function _load_items_for_visitor()
+	protected function _load_items_for_visitor()
 	{
     $conditions = array(
       'cart_id' => $this->_cart_id
@@ -60,7 +60,7 @@ class db_cart_handler extends cart_handler
     return $this->_load_items_by_conditions($conditions);
 	}
 	
-	private function _load_items_by_conditions($conditions)
+	protected function _load_items_by_conditions($conditions)
 	{
     if($arr = $this->cart_db_table->get_list($conditions))
     {
@@ -76,7 +76,7 @@ class db_cart_handler extends cart_handler
     return false;
 	}
 	
-	private function _get_user()
+	protected function _get_user()
 	{
 	  return user :: instance();
 	}

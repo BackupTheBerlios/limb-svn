@@ -29,7 +29,7 @@ class send_feedback_action extends form_action
     $this->validator->add_rule(array(LIMB_DIR . 'class/validators/rules/required_rule', 'body'));
 	}
 
-	private function _get_email()
+	protected function _get_email()
 	{
 		if(!$email = sys_param :: instance()->get_param('contact_email', 'char'))
 			$email = constant('ADMINISTRATOR_EMAIL');		
@@ -37,7 +37,7 @@ class send_feedback_action extends form_action
 		return $email;
 	}
 
-	private function _get_mail_subject()
+	protected function _get_mail_subject()
 	{
 		return sprintf(strings :: get('message_subject', 'feedback'), 
 												$this->dataspace->get('subject'),

@@ -19,12 +19,12 @@ if(!defined('CART_DEFAULT_HANDLER_TYPE'))
 
 class cart
 {	
-	private static $_instance = null;
+	protected static $_instance = null;
 	
-	private $_cart_id = null;
-	private $_cart_handler = null;
+	protected $_cart_id = null;
+	protected $_cart_handler = null;
 
-	private function __construct($cart_id, $handler)
+	protected function __construct($cart_id, $handler)
 	{
 	  if($cart_id === null)
 		  $this->_cart_id = CART_DEFAULT_ID;
@@ -42,7 +42,7 @@ class cart
     return self :: $_instance;
 	}
 		
-	private function _initialize_cart_handler($handler)
+	protected function _initialize_cart_handler($handler)
 	{
 	  if($handler === null)
 	  {

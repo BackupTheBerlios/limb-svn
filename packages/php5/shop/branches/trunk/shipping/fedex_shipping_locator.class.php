@@ -52,7 +52,7 @@ class fedex_shipping_locator extends shipping_locator
     return $options;
   }
   
-  private function _parse_html_options($html)
+  protected function _parse_html_options($html)
   {
     include_once(LIMB_COMMON_DIR . '/setup_HTMLSax.inc.php');
     include_once(dirname(__FILE__) . '/fedex_sax_handler.class.php');
@@ -73,7 +73,7 @@ class fedex_shipping_locator extends shipping_locator
 		return $this->_process_raw_options($handler->get_options());
   }
   
-  private function _process_raw_options($raw_options)
+  protected function _process_raw_options($raw_options)
   {
 		$processed_options = array();
 		foreach($raw_options as $data)
@@ -91,7 +91,7 @@ class fedex_shipping_locator extends shipping_locator
 		return $processed_options;
   }    
       
-  private function _clean_cookie()
+  protected function _clean_cookie()
   {
     if(is_file(SHIPPING_FEDEX_SERVER_COOKIE_FILE))
       unlink(SHIPPING_FEDEX_SERVER_COOKIE_FILE);    

@@ -67,7 +67,7 @@ class image_object extends media_object
 		return $id;
 	}
 	
-	private function _create_variations()
+	protected function _create_variations()
 	{
 		$image_variations = $this->_get_variations_ini_list();
 		$result = array();
@@ -92,7 +92,7 @@ class image_object extends media_object
 		return true;//???
 	}
 	
-	private function _create_generate_operation($variation, &$result)
+	protected function _create_generate_operation($variation, &$result)
 	{
 		$files_data = $this->get('files_data', array());
 		$output_file = tempnam(VAR_DIR, 'p');
@@ -139,7 +139,7 @@ class image_object extends media_object
 	  return true;
 	}
 	
-	private function _create_upload_operation($variation, &$result)
+	protected function _create_upload_operation($variation, &$result)
 	{
 		$files_data = $this->get('files_data', array());
 
@@ -219,7 +219,7 @@ class image_object extends media_object
 		$this->_check_result($result);
 	}
 
-	private function _update_generate_operation($variation, &$result)
+	protected function _update_generate_operation($variation, &$result)
 	{
 		$output_file = tempnam(VAR_DIR, 'p');
 		
@@ -260,7 +260,7 @@ class image_object extends media_object
 	  return;
 	}
 	
-	private function _update_upload_operation($variation, &$result)
+	protected function _update_upload_operation($variation, &$result)
 	{
 		$files_data = $this->get('files_data');
 		
@@ -328,14 +328,14 @@ class image_object extends media_object
 	  return;
 	}
 	
-	private function _get_variations_ini_list()
+	protected function _get_variations_ini_list()
 	{
 		$ini = get_ini('image_variations.ini');
 		
 		return $ini->get_all();
 	}
 	
-	private function _insert_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
+	protected function _insert_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
 	{
 		$image_id = $this->get_id();
 		
@@ -356,7 +356,7 @@ class image_object extends media_object
 		return true;
 	}
 	
-	private function _resize_operation($base_variation, $max_size=0, $output_file, &$output_file_type)
+	protected function _resize_operation($base_variation, $max_size=0, $output_file, &$output_file_type)
 	{
 		if(!$base_media_data = $this->_get_variation_media_data($base_variation))
 			return false;
@@ -369,7 +369,7 @@ class image_object extends media_object
 					$output_file_type);
 	}
 		
-	private function _get_variation_media_data($variation)
+	protected function _get_variation_media_data($variation)
 	{
 		$image_id = $this->get_id();
 		
@@ -395,7 +395,7 @@ class image_object extends media_object
 		return $db->fetch_row();
 	}
 	
-	private function _resize_file_variation($base_media_id, $mime_type, $max_size, $output_file, &$output_file_type)
+	protected function _resize_file_variation($base_media_id, $mime_type, $max_size, $output_file, &$output_file_type)
 	{
 		$input_file = MEDIA_DIR . $base_media_id . '.media';
 		$input_file_type = $this->_image_library->get_image_type($mime_type);
@@ -414,7 +414,7 @@ class image_object extends media_object
 		return $this->_image_library->commit();
 	}
 	
-	private function _update_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
+	protected function _update_variation($variation_name, $tmp_file_path, $file_name, $mime_type)
 	{
   	$media_data = $this->_get_variation_media_data($variation_name);
   	
@@ -488,7 +488,7 @@ class image_object extends media_object
 		return $records;
 	}
 	
-	private function _check_result($result)//it's not really the place for it...
+	protected function _check_result($result)//it's not really the place for it...
 	{
 		$image_variations = $this->_get_variations_ini_list();
 		

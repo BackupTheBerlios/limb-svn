@@ -116,7 +116,7 @@ class poll_container extends site_object
 		return true;
 	}
 	
-	private function _add_vote_to_answer($record_id)
+	protected function _add_vote_to_answer($record_id)
 	{
 		$poll_answer_db_table = db_table_factory :: instance('poll_answer');
 		
@@ -131,7 +131,7 @@ class poll_container extends site_object
 	}
 
 	
-	private function _register_new_ip($poll_id, $ip)
+	protected function _register_new_ip($poll_id, $ip)
 	{
 		$poll_ip_db_table = db_table_factory :: instance('poll_ip');
 		$data['ip'] = $ip;
@@ -139,7 +139,7 @@ class poll_container extends site_object
 		$poll_ip_db_table->insert($data);
 	}
 	
-	private function _poll_ip_exists($poll_id, $ip)
+	protected function _poll_ip_exists($poll_id, $ip)
 	{
 		$poll_ip_db_table = db_table_factory :: instance('poll_ip');
 		$where['poll_id'] = $poll_id;
@@ -173,7 +173,7 @@ class poll_container extends site_object
 		return $record;
 	}
 
-	private function _process_question(& $poll_data)
+	protected function _process_question(& $poll_data)
 	{
 		$poll_data['answers'] = $this->_load_answers($poll_data['path']);
 
@@ -194,7 +194,7 @@ class poll_container extends site_object
 			}	
 	}
 
-	private function _load_all_questions($new_params = array())
+	protected function _load_all_questions($new_params = array())
 	{
 		$params = array(
 			'depth' => -1,
@@ -208,7 +208,7 @@ class poll_container extends site_object
 		return fetch_sub_branch('/root/polls', 'poll', $counter, $params);
 	}
 	
-	private function _load_answers($question_path)
+	protected function _load_answers($question_path)
 	{
 		return fetch_sub_branch($question_path, 'poll_answer', $counter);
 	}

@@ -16,10 +16,10 @@ if (!defined('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME'))
 
 class shipping_locator
 {
-  private $cache_result = true;
-  private $cache_life_time;
+  protected $cache_result = true;
+  protected $cache_life_time;
  
-  private $cache; 
+  protected $cache; 
   
   function __construct()
   {

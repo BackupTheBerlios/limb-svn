@@ -10,7 +10,7 @@
 ***********************************************************************************/
 class stats_search_phrase
 {	
-  static private $instance = null;
+  static protected $instance = null;
   
 	protected $db = null;
 	protected $url = null;
@@ -52,7 +52,7 @@ class stats_search_phrase
 		return true;
 	}
 	
-	private function _get_matching_search_engine_rule()
+	protected function _get_matching_search_engine_rule()
 	{
 		$uri = urldecode($this->_get_http_referer());
 		

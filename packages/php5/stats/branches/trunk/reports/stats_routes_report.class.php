@@ -13,12 +13,12 @@ require_once(dirname(__FILE__) . '/stats_report.interface.php');
 
 class stats_routes_report implements stats_report
 {
-	private $db;
-	private $start_date = null;
-	private $finish_date = null;
+	protected $db;
+	protected $start_date = null;
+	protected $finish_date = null;
 	
-	private $routes_array = array();
-	private $condition_changed = true;
+	protected $routes_array = array();
+	protected $condition_changed = true;
 	
 	public function __construct()
 	{
@@ -62,7 +62,7 @@ class stats_routes_report implements stats_report
 		$this->finish_date = $finish_date;
 	}
 	
-	private function _retrieve_routes()
+	protected function _retrieve_routes()
 	{
 		if(!$this->condition_changed)
 			return $this->routes_array;

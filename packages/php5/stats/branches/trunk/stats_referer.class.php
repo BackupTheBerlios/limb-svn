@@ -13,8 +13,8 @@ require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
 
 class stats_referer
 {	
-	private $db = null;
-	private $url = null;
+	protected $db = null;
+	protected $url = null;
 	
 	public function __construct()
 	{
@@ -36,12 +36,12 @@ class stats_referer
 		return $this->_insert_referer_record($clean_uri);
 	}
 	
-	private function _is_inner_url()
+	protected function _is_inner_url()
 	{
     return ($this->url->get_host() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
 	}
 	
-	private function _get_clean_referer_page()
+	protected function _get_clean_referer_page()
 	{
 		if ($referer = $this->_get_http_referer())
 			return $this->clean_url($referer);
@@ -49,12 +49,12 @@ class stats_referer
 		return false;
 	}
 	
-	private function _get_http_referer()
+	protected function _get_http_referer()
 	{
 		return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 	}
 	
-	private function _get_existing_referer_record_id($uri)
+	protected function _get_existing_referer_record_id($uri)
 	{
 		$this->db->sql_select('sys_stat_referer_url', '*', 
 			"referer_url='" . $uri . "'");
@@ -64,7 +64,7 @@ class stats_referer
 			return false;	
 	}
 	
-	private function _insert_referer_record($uri)
+	protected function _insert_referer_record($uri)
 	{
 		$this->db->sql_insert('sys_stat_referer_url', 
 			array('referer_url' => $uri));

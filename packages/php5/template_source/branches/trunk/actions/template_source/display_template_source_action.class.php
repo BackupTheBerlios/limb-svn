@@ -16,7 +16,7 @@ if (!defined('TEMPLATE_FOR_HACKERS'))
 
 class display_template_source_action extends action
 {
-	private $history = array();
+	protected $history = array();
 	
 	public function perform($request, $response)
 	{
@@ -62,7 +62,7 @@ class display_template_source_action extends action
 		$this->view->set('template_content', $this->_process_template_content($template_contents));
 	}
 	
-	private function _get_template_path_from_node($node_id)
+	protected function _get_template_path_from_node($node_id)
 	{
 		if(!$site_object = wrap_with_site_object(fetch_one_by_node_id($node_id)))
 			return null;
@@ -72,7 +72,7 @@ class display_template_source_action extends action
 		return $controller->get_action_property($controller->get_default_action(), 'template_path');
 	}
 	
-	private function _process_template_content($template_contents)
+	protected function _process_template_content($template_contents)
 	{
 	  include_once(LIMB_DIR . 'class/template/compiler/template_compiler.inc.php');
     include_once(dirname(__FILE__) . '/../../template_highlight_handler.class.php');

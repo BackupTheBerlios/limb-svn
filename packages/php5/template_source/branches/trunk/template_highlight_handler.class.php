@@ -10,10 +10,10 @@
 ***********************************************************************************/
 class template_highlight_handler 
 {
-  private $html = '';
-  private $current_tag = '';
-  private $template_path_history = array();
-  private $tag_dictionary = null;
+  protected $html = '';
+  protected $current_tag = '';
+  protected $template_path_history = array();
+  protected $tag_dictionary = null;
 
   public function __construct($tag_dictionary)
   {

@@ -12,14 +12,14 @@ require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 
 class stats_counter
 {
-	private $_is_new_host = false;
+	protected $_is_new_host = false;
 	
-	private $_hits_today;
-	private $_hosts_today;
-	private $_hits_all;
-	private $_hosts_all;
+	protected $_hits_today;
+	protected $_hosts_today;
+	protected $_hits_all;
+	protected $_hosts_all;
 	
-	private $db = null;
+	protected $db = null;
 	
 	public function __construct()
 	{
@@ -83,7 +83,7 @@ class stats_counter
 		return ($object_data['parent_node_id'] == 0);
 	}
 	
-	private function _get_counter_record($stamp)
+	protected function _get_counter_record($stamp)
 	{
 		$this->db->sql_select('sys_stat_counter');
 		
@@ -104,13 +104,13 @@ class stats_counter
 		return $record;
 	}
 	
-	private function _get_new_day_counters_record($stamp)
+	protected function _get_new_day_counters_record($stamp)
 	{
 		$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->make_day_stamp($stamp)));
 		return $this->db->fetch_row();
 	}
 	
-	private function _insert_new_day_counters_record($stamp)
+	protected function _insert_new_day_counters_record($stamp)
 	{
 		$record = array(
 			'hosts' => 0,
@@ -127,7 +127,7 @@ class stats_counter
 		return mktime(0, 0, 0, $arr['mon'], $arr['mday'], $arr['year']);
 	}
 	
-	private function _update_day_counters_record($stamp, $hits_today, $hosts_today)
+	protected function _update_day_counters_record($stamp, $hits_today, $hosts_today)
 	{
 		$home_hit = ($this->_is_home_hit()) ? 1 : 0;
 		$audience = ($this->_is_new_host && $this->_is_new_audience()) ? 1 : 0;
@@ -143,7 +143,7 @@ class stats_counter
 		$this->db->sql_exec($sql);
 	}
 
-	private function _update_counters_record($stamp, $hits_today, $hosts_today, $hits_all, $hosts_all)
+	protected function _update_counters_record($stamp, $hits_today, $hosts_today, $hits_all, $hosts_all)
 	{
 		$update_array['hits_today'] = $hits_today;
 		$update_array['hosts_today'] = $hosts_today;

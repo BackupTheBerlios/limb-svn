@@ -10,7 +10,7 @@
 ***********************************************************************************/
 class stats_ip
 {
-	private $db = null;
+	protected $db = null;
 	
 	function __construct()
 	{
@@ -39,7 +39,7 @@ class stats_ip
 		return false;
 	}
 
-	private function _insert_stat_ip_record($stamp)
+	protected function _insert_stat_ip_record($stamp)
 	{
 		$this->db->sql_insert('sys_stat_ip', 
 			array(
@@ -54,13 +54,13 @@ class stats_ip
 		return ip :: encode_ip(sys :: client_ip());
 	}
 	
-	private function _get_stat_ip_record()
+	protected function _get_stat_ip_record()
 	{
 		$this->db->sql_select('sys_stat_ip', '*', array('id' => $this->get_client_ip()));
 		return $this->db->fetch_row();
 	}
 
-	private function _update_stat_ip_record($stamp)
+	protected function _update_stat_ip_record($stamp)
 	{
 		$this->db->sql_update('sys_stat_ip', 
 			array('time' => $stamp),

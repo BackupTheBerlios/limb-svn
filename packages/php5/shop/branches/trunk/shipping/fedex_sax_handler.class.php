@@ -11,18 +11,18 @@
 
 class fedex_sax_handler 
 {
-  private $tags_list = array();
-  private $options = array();
-  private $total_options = 0;
-  private $services_began = false;
+  protected $tags_list = array();
+  protected $options = array();
+  protected $total_options = 0;
+  protected $services_began = false;
   
-  private $service_name_began = false;
-  private $service_description_began = false;
-  private $service_price_began = false;
+  protected $service_name_began = false;
+  protected $service_description_began = false;
+  protected $service_price_began = false;
   
-  private $service_name_expected = false;
-  private $service_description_expected = false;
-  private $service_price_expected = false;
+  protected $service_name_expected = false;
+  protected $service_description_expected = false;
+  protected $service_price_expected = false;
 	 	  
   public function open_handler($parser, $name, $attrs) 
   {	

@@ -49,14 +49,14 @@ class set_publish_status_action extends action
 	public function get_publish_status($object)
 	{
 		$current_status = $object->get('status');
-		$current_status |= SITE_OBJECT_PUBLISHED_STATUS;
+		$current_status |= site_object :: STATUS_PUBLISHED;
 		return $current_status;
 	}
 	
 	public function get_unpublish_status($object)
 	{
 		$current_status = $object->get('status');
-		$current_status = $current_status & (~SITE_OBJECT_PUBLISHED_STATUS);
+		$current_status = $current_status & (~site_object :: STATUS_PUBLISHED);
 		return $current_status;
 	}
 		

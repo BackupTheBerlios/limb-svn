@@ -53,7 +53,7 @@ class poll_all_results_datasource implements datasource
 		return new array_dataset($questions);
 	}
 	
-	private function _load_all_questions($new_params = array())
+	protected function _load_all_questions($new_params = array())
 	{
 		$params = array(
 			'depth' => -1
@@ -64,7 +64,7 @@ class poll_all_results_datasource implements datasource
 		return fetch_sub_branch('/root/polls', 'poll', $params);
 	}
 	
-	private function _load_answers($question_path)
+	protected function _load_answers($question_path)
 	{
 		$params = array(
 			'depth' => 1

@@ -13,8 +13,8 @@ require_once(dirname(__FILE__) . '/stats_report.interface.php');
 
 class stats_hits_hosts_by_days_report implements stats_report
 {
-	private $db;
-	private $filter_conditions = array();
+	protected $db;
+	protected $filter_conditions = array();
 	
 	public function __construct()
 	{
@@ -59,12 +59,12 @@ class stats_hits_hosts_by_days_report implements stats_report
 		$this->filter_conditions[] = " AND ssdc.time BETWEEN {$start_stamp} AND {$finish_stamp} ";
 	}
 
-	private function _build_filter_condition()
+	protected function _build_filter_condition()
 	{
 		return ' WHERE 1=1 ' . implode(' ', $this->filter_conditions);
 	}
 	
-	private function _build_order_sql($order_array)
+	protected function _build_order_sql($order_array)
 	{
 		$columns = array();
 		
