@@ -36,6 +36,14 @@ class limb_tree extends nested_db_tree
   	
   	$this->check_expanded_parents();
 	}
+	
+	function create_sub_node($id, $values)
+	{
+		if($node_id = parent :: create_sub_node($id, $values))
+			$this->expand_node($id);
+			
+		return $node_id;
+	}
 		
 	function &instance()
 	{

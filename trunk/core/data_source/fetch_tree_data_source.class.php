@@ -63,7 +63,9 @@ class fetch_tree_data_source extends fetch_sub_branch_data_source
 				$is_last_child = false;
 					
 			$tree_array[$id]['level'] = $tree_array[$id]['level'] - $path_node_level;
-			$levels_status_array[$tree_item['level'] - $path_node_level] = $is_last_child;			
+			$levels_status_array[$tree_item['level'] - $path_node_level] = $is_last_child;		
+			
+			$tree_array[$id]['level_' . $tree_array[$id]['level']] = 1;
 			
 			$tree_array[$id]['is_expanded'] = $tree->is_node_expanded($tree_item['node_id']);
 			$tree_array[$id]['is_last_child'] = $is_last_child;

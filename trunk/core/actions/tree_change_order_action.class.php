@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
+require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class tree_change_order_action extends action
 {

@@ -25,8 +25,6 @@ class fetch_mapped_tag extends fetch_one_tag
 {	
 	function generate_contents(&$code)
 	{
-		$code->write_html('<!--content_object_begin-->');
-		
 		$list_child =& $this->find_immediate_child_by_class('fetch_list_tag');
 		if ($list_child)
 		{
@@ -36,8 +34,6 @@ class fetch_mapped_tag extends fetch_one_tag
 		$code->write_php($this->get_component_ref_code() . '->fetch_mapped_by_url();');
 		
 		server_component_tag :: generate_contents($code);
-		
-		$code->write_html('<!--content_object_end-->');
 	}	
 } 
 

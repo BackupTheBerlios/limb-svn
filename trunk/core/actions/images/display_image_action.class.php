@@ -38,25 +38,19 @@ class display_image_action extends action
 		
 		$image = $object_data['variations'][$variation];
 		
-		if (!$image)
+		if(!$image)
 		{
-			header("HTTP/1.1 404 Not found");
+			header("Content-type: image/gif");
+			readfile(SHARED_DIR . 'images/1x1.gif');
 			return new exit_response(RESPONSE_STATUS_FAILURE);
-		}
+		}		
 				
 		if(!file_exists(MEDIA_DIR. $image['media_id'] . '.media'))
 		{
 			header("HTTP/1.1 404 Not found");
 			return new exit_response(RESPONSE_STATUS_FAILURE);
 		}		
-		
-		if(empty($image))
-		{
-			header("Content-type: image/gif");
-			readfile(SHARED_DIR . 'images/1x1.gif');
-			return new exit_response(RESPONSE_STATUS_FAILURE);
-		}		
-		
+				
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $image['etag'])
 		{
 			header("HTTP/1.1 304 Not modified");
