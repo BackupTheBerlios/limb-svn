@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 
-class url_parser
+class uri
 {
   var $url = '';
   
@@ -33,7 +33,7 @@ class url_parser
 	
   var $_path_elements = array();
 
-  function url_parser($url='', $use_brackets=true)
+  function uri($url='', $use_brackets=true)
   {
     if ($url)
       $this->parse($url, $use_brackets);
@@ -135,28 +135,28 @@ class url_parser
   { 
   	$rest = null;
   		
-  	$url_parser = new url_parser($url);
+  	$uri = new uri($url);
   	
   	$count1 = $this->count_path();
-  	$count2 = $url_parser->count_path();
+  	$count2 = $uri->count_path();
   	
     if (  !$count1 ||
     			!$count2 ||
-    			$this->protocol !== $url_parser->protocol ||
-    			$this->host !== $url_parser->host
+    			$this->protocol !== $uri->protocol ||
+    			$this->host !== $uri->host
     		)
     return false;
         
     $query_match = false;
     
-    if(sizeof($this->_query_items) == sizeof($url_parser->_query_items))
+    if(sizeof($this->_query_items) == sizeof($uri->_query_items))
     {
     	$query_match = true;
     	
 	    foreach($this->_query_items as $name => $value)
 	    {
-	    	if(	!isset($url_parser->query_items[$name]) ||
-	    			$url_parser->query_items[$name] != $this->_query_items[$name])
+	    	if(	!isset($uri->query_items[$name]) ||
+	    			$uri->query_items[$name] != $this->_query_items[$name])
 	    	{
 	    		$query_match = false;
 	    		break;
@@ -166,7 +166,7 @@ class url_parser
     
     for($i=0; $i < $count1 && $i < $count2; $i++)
     {
-      if( $this->_path_elements[$i] != $url_parser->_path_elements[$i] )
+      if( $this->_path_elements[$i] != $uri->_path_elements[$i] )
       	return false;
     }
     $rest = ($count1 - $count2);
@@ -202,7 +202,7 @@ class url_parser
   
   function is_inner()
   {
-  	return ($this->host == $_SERVER['HTTP_HOST']);
+  	return ($this->host == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
   }
   
   function get_path_element($level)
@@ -374,5 +374,6 @@ class url_parser
 
     return implode('/', $path);
   }
+  
 }
 ?>

@@ -20,10 +20,10 @@ class simple_navigation_data_source extends fetch_sub_branch_data_source
 	function & _fetch(&$counter, $params)
 	{
 		$result =& parent :: _fetch($counter, $params);
-		$url_parser = new url_parser(PHP_SELF);		
+		$uri = new uri(PHP_SELF);		
 
 		foreach($result as $key => $data)
-			if($url_parser->compare($data['url'], $url_rest, $query_match))
+			if($uri->compare($data['url'], $url_rest, $query_match))
 				if($url_rest >= 0)
 					$result[$key]['in_path'] = true;
 			

@@ -19,6 +19,7 @@ Mock::generatePartial
   	'_get_ip_register',
   	'_get_counter_register',
   	'_get_referer_register',
+  	'_get_search_phrase_register',
   )
 );
 
@@ -48,6 +49,15 @@ Mock::generatePartial
   'stats_referer_test_version',
   array(
   	'get_referer_page_id'
+  )
+); 
+
+Mock::generatePartial
+(
+  'stats_search_phrase',
+  'stats_search_phrase_test_version',
+  array(
+  	'register'
   )
 ); 
 
@@ -83,11 +93,16 @@ class test_stats_register extends UnitTestCase
    	$this->stats_referer->stats_referer();
   	$this->stats_referer->setReturnValue('get_referer_page_id', 10);
 
+   	$this->stats_search_phrase = new stats_search_phrase_test_version($this);
+   	$this->stats_search_phrase->stats_search_phrase();
+  	$this->stats_search_phrase->setReturnValue('register', true);
+
    	$this->stats_register = new stats_register_test_version($this);
    	$this->stats_register->stats_register();
   	$this->stats_register->setReturnReference('_get_ip_register', $this->stats_ip);
   	$this->stats_register->setReturnReference('_get_counter_register', $this->stats_counter);
   	$this->stats_register->setReturnReference('_get_referer_register', $this->stats_referer);
+  	$this->stats_register->setReturnReference('_get_search_phrase_register', $this->stats_search_phrase);
 
 		$this->_login_user(10, array());
   	
@@ -99,6 +114,8 @@ class test_stats_register extends UnitTestCase
   	$this->stats_ip->tally();
 
   	$this->stats_referer->tally();
+
+		$this->stats_search_phrase->tally();
 
 		$this->stats_register->tally();
 		
@@ -125,6 +142,8 @@ class test_stats_register extends UnitTestCase
   	$this->stats_counter->expectOnce('update', array($date));
 
   	$this->stats_referer->expectOnce('get_referer_page_id');
+
+  	$this->stats_search_phrase->expectOnce('register', array($date));
 
    	$this->stats_register->set_register_time($date->get_stamp());
   

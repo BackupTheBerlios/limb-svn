@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: stats_event_controller.class.php 37 2004-03-13 10:36:02Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -24,6 +24,13 @@ class stats_report_controller extends site_object_controller
 						'template_path' => '/stats_report/pages_list.html',
 						'action_name' => strings :: get('show_pages_report', 'stats'),
 						'action_path' => '/stats_report/stats_pages_report_action',
+						'display_in_breadcrumbs' => true
+				),
+				'referers_report' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/stats_report/referers_list.html',
+						'action_name' => strings :: get('show_referers_report', 'stats'),
+						'action_path' => '/stats_report/stats_referers_report_action',
 						'display_in_breadcrumbs' => true
 				),
 				'hits_hosts_report' => array(

@@ -13,6 +13,12 @@ require_once(LIMB_DIR . '/core/model/stats/stats_counter.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_ip.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_uri.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_search_phrase.class.php');
+
+if(file_exists(PROJECT_DIR . '/core/model/stats/search_engines.setup.php'))
+	include(PROJECT_DIR . '/core/model/stats/search_engines.setup.php');
+elseif(file_exists(LIMB_DIR . '/core/model/stats/search_engines.setup.php'))
+	include(LIMB_DIR . '/core/model/stats/search_engines.setup.php');
 
 class stats_register
 {
@@ -47,6 +53,8 @@ class stats_register
 		$this->_update_log($node_id, $action, $status_code);
 		
 		$this->_update_counters();
+		
+		$this->_update_search_referers();
 	}
 	
 	function _update_log($node_id, $action, $status_code)
@@ -92,6 +100,12 @@ class stats_register
 		$counter_register->update($this->_reg_date);
 	}
 	
+	function _update_search_referers()
+	{	
+		$phrase_register =& $this->_get_search_phrase_register();
+		$phrase_register->register($this->_reg_date);
+	}
+	
 	function & _get_ip_register()
 	{
 		if (!$this->_ip_register)
@@ -122,6 +136,14 @@ class stats_register
 			$this->_uri_register = new stats_uri();
 		
 		return $this->_uri_register;
+	}
+	
+	function & _get_search_phrase_register()
+	{
+		if (!$this->_search_phrase_register)
+			$this->_search_phrase_register =& stats_search_phrase :: instance();
+		
+		return $this->_search_phrase_register;
 	}
 }
 

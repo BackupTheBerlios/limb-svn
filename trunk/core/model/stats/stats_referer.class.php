@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/lib/http/url_parser.class.php');
+require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
 
 class stats_referer
 {	
@@ -19,7 +19,7 @@ class stats_referer
 	function stats_referer()
 	{
 		$this->db =& db_factory :: instance();
-		$this->url = new url_parser();
+		$this->url = new uri();
 	}
 
 	function get_referer_page_id()

@@ -11,7 +11,7 @@
 
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
-require_once(LIMB_DIR . 'core/lib/http/url_parser.class.php');
+require_once(LIMB_DIR . 'core/lib/http/uri.class.php');
 require_once(LIMB_DIR . 'core/model/access_policy.class.php');
 
 class fetcher
@@ -242,10 +242,10 @@ class fetcher
 				$url = $_SERVER['PHP_SELF'];
 		}
 		
-		$url_parser = new url_parser();
-		$url_parser->parse($url);
+		$uri = new uri();
+		$uri->parse($url);
 		
-		$node =& $tree->get_node_by_path($url_parser->path, '/', $recursive);
+		$node =& $tree->get_node_by_path($uri->path, '/', $recursive);
 		
 		$this->_node_mapped_by_url =& $node;
 		

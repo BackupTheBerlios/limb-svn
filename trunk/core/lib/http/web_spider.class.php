@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: web_spider.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -13,7 +13,7 @@ define('WEB_SPIDER_ITERATION_LIMIT', 100000);
 //define('WEB_SPIDER_ITERATION_LIMIT', 10);//for test purposes
 define('WEB_SPIDER_TIME_LIMIT', 30000);
 
-require_once(LIMB_DIR . 'core/lib/http/url_parser.class.php');
+require_once(LIMB_DIR . 'core/lib/http/uri.class.php');
 
 class web_spider
 {
@@ -22,18 +22,18 @@ class web_spider
 	var $_uri_contents = array();
 	var $_iteration_counter = 0;
 	
-	var $_url_parser = null;
+	var $_uri = null;
 	
 	function web_spider()
 	{			
-		$this->_url_parser = new url_parser();
+		$this->_uri = new uri();
 	}
 	
 	function bind_to_host($host)
 	{
-		$this->_url_parser->parse($host);
+		$this->_uri->parse($host);
 		
-		$this->_host_bind = $this->_url_parser->host;
+		$this->_host_bind = $this->_uri->host;
 	}
 	
 	function & crawl($init_uri)
@@ -94,18 +94,18 @@ class web_spider
 	
 	function _normalize_uri($uri)
 	{
-		$this->_url_parser->parse($uri);
+		$this->_uri->parse($uri);
 		
-		$host = $this->_url_parser->host;
+		$host = $this->_uri->host;
 		
 		if(	$this->_host_bind && 
 				$host != $this->_host_bind)
 			return;
 
-		$this->_url_parser->remove_query_item('PHPSESSID');
-		$this->_url_parser->anchor = '';
+		$this->_uri->remove_query_item('PHPSESSID');
+		$this->_uri->anchor = '';
 						
-		return $this->_url_parser->get_url();
+		return $this->_uri->get_url();
 	}
 			
 	function _get_content_hrefs(& $content)
