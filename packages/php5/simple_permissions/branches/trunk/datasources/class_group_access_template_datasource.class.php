@@ -46,8 +46,7 @@ class class_group_access_template_datasource implements datasource
 					$result[$group_id]['actions'][$action]['action_name'] = str_replace('_', ' ', strtoupper($action{0}) . substr($action, 1));
 
 				$result[$group_id]['group_name'] = $group_data['identifier'];
-				$result[$group_id]['actions'][$action]['read_selector_name'] = 'template[' . $action . '][' . $group_id . '][r]';
-				$result[$group_id]['actions'][$action]['write_selector_name'] = 'template[' . $action . '][' . $group_id . '][w]';
+				$result[$group_id]['actions'][$action]['access_selector_name'] = 'template[' . $action . '][' . $group_id . ']';
 			}
 		}
 

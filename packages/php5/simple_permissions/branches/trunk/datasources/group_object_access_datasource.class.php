@@ -35,10 +35,7 @@ class group_object_access_datasource extends fetch_tree_datasource
 		{
 			$object_id = $node['id'];
 			foreach($user_groups as $group_id => $group_data)
-			{
-				$tree_array[$id]['groups'][$group_id]['read_selector_name'] = 'policy[' . $object_id . '][' .  $group_id . '][r]';
-				$tree_array[$id]['groups'][$group_id]['write_selector_name'] = 'policy[' . $object_id . '][' . $group_id . '][w]';
-			}
+				$tree_array[$id]['groups'][$group_id]['access_selector_name'] = 'policy[' . $object_id . '][' .  $group_id . ']';
 		}
 
 		return $tree_array;

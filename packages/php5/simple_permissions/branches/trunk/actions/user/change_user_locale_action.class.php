@@ -40,7 +40,7 @@ class change_user_locale_action extends form_action
 		  $request->set_status(request :: STATUS_FAILURE);
 		}
 		
-		user :: instance()->set_locale_id($locale_id);
+		user :: instance()->set('locale_id', $locale_id);
 		
 		$request->set_status(request :: STATUS_SUCCESS);
 	}

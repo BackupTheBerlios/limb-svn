@@ -43,8 +43,8 @@ class user_db_table extends content_object_db_table
 					'field' => 'accessor_id',
 				),
 	  		3 => array(
-					'table_name' => 'sys_user_object_access_template_item',
-					'field' => 'user_id',
+					'table_name' => 'sys_action_access_template_item',
+					'field' => 'accessor_id',
 				),
 			),
 		);
