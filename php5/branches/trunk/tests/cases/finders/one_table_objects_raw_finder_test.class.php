@@ -25,7 +25,7 @@ class test_one_table_objects_raw_finder extends one_table_objects_raw_finder
 Mock :: generatePartial('test_one_table_objects_raw_finder',
                         'one_table_objects_raw_finder_test_version',
                         array('_do_parent_find',
-                              '_do_parent_count'));
+                              '_do_parent_find_count'));
 
 class one_table_objects_raw_finder_test extends LimbTestCase
 {
@@ -95,7 +95,7 @@ class one_table_objects_raw_finder_test extends LimbTestCase
     $this->assertEqual($this->finder->find_by_id($id), $result);
   }
 
-  function test_count()
+  function test_find_count()
   {
     $sql_params['conditions'][] = 'some condition';
     
@@ -106,12 +106,12 @@ class one_table_objects_raw_finder_test extends LimbTestCase
     $expected_sql_params['tables'][] = ',table1 as tn';
     $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id';
     
-    $this->finder->expectOnce('_do_parent_count', 
+    $this->finder->expectOnce('_do_parent_find_count', 
                               array(new EqualExpectation($expected_sql_params)));
     
-    $this->finder->setReturnValue('_do_parent_count', $result = 'some result');
+    $this->finder->setReturnValue('_do_parent_find_count', $result = 'some result');
      
-    $this->assertEqual($this->finder->count($sql_params), $result);
+    $this->assertEqual($this->finder->find_count($sql_params), $result);
   }
 }
 

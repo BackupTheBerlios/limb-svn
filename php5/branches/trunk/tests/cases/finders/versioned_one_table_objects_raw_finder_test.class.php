@@ -25,7 +25,7 @@ class test_versioned_one_table_objects_raw_finder extends versioned_one_table_ob
 Mock :: generatePartial('test_versioned_one_table_objects_raw_finder',
                         'versioned_one_table_objects_raw_finder_test_version',
                         array('_do_parent_find',
-                              '_do_parent_count'));
+                              '_do_parent_find_count'));
 
 class versioned_one_table_objects_raw_finder_test extends LimbTestCase
 {
@@ -81,19 +81,19 @@ class versioned_one_table_objects_raw_finder_test extends LimbTestCase
     $this->assertEqual($this->finder->find_by_version($object_id, $version), $result);
   }
   
-  function test_count()
+  function test_find_count()
   {
     $sql_params['conditions'][] = 'some condition';
     $expected_sql_params = $sql_params;
     
     $expected_sql_params['conditions'][] = ' AND sso.current_version=tn.version';
     
-    $this->finder->expectOnce('_do_parent_count', 
+    $this->finder->expectOnce('_do_parent_find_count', 
                               array(new EqualExpectation($expected_sql_params)));
     
-    $this->finder->setReturnValue('_do_parent_count', $result = 'some result');
+    $this->finder->setReturnValue('_do_parent_find_count', $result = 'some result');
      
-    $this->assertEqual($this->finder->count($sql_params), $result);
+    $this->assertEqual($this->finder->find_count($sql_params), $result);
   }
   
 }

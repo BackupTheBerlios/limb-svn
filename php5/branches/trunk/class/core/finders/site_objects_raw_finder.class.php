@@ -95,7 +95,7 @@ class site_objects_raw_finder implements data_finder
     return implode(', ', $columns);
   }
 
-  public function count($sql_params=array())//refactor!!!
+  public function find_count($sql_params=array())//refactor!!!
   {
     $sql = sprintf(self :: RAW_COUNT_STMT,
                   $this->_add_sql($sql_params, 'tables'),

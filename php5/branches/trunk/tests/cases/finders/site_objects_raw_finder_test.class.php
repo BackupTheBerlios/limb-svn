@@ -138,7 +138,7 @@ class site_objects_raw_finder_test extends LimbTestCase
     $db_mock->tally();
   }
   
-	function test_count_sql_with_group()
+	function test_find_count_sql_with_group()
   {
     $db_mock = new Mockdb_module($this);
     $toolkit = new MockLimbToolkit($this);
@@ -162,14 +162,14 @@ class site_objects_raw_finder_test extends LimbTestCase
     $db_mock->expectOnce('count_selected_rows');
     $db_mock->setReturnValue('count_selected_rows', $result = 10);
     
-    $this->assertEqual($result, $this->finder->count($sql_params));
+    $this->assertEqual($result, $this->finder->find_count($sql_params));
     
     Limb :: popToolkit();
     
     $db_mock->tally();    
   }  
 
-  function test_count_sql_no_group()
+  function test_find_count_sql_no_group()
   {
     $db_mock = new Mockdb_module($this);
     $toolkit = new MockLimbToolkit($this);
@@ -192,7 +192,7 @@ class site_objects_raw_finder_test extends LimbTestCase
     $db_mock->expectOnce('fetch_row');
     $db_mock->setReturnValue('fetch_row', array('count' => 10));
 
-    $this->assertEqual(10, $this->finder->count($sql_params));
+    $this->assertEqual(10, $this->finder->find_count($sql_params));
     
     Limb :: popToolkit();
     
@@ -251,7 +251,7 @@ class site_objects_raw_finder_test extends LimbTestCase
   
 	function test_count()
 	{
-  	$result = $this->finder->count();
+  	$result = $this->finder->find_count();
   	$this->assertEqual($result, 10);
 	}
   

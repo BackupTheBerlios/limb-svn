@@ -19,15 +19,15 @@ class site_objects_datasource implements datasource, countable
   protected $object_ids;
   protected $behaviours;
   protected $accessible_object_ids;
-  protected $site_object_class_name;
+  protected $finder_name;
   protected $fetch_method;
   protected $limit;
   protected $offset;
   protected $order;
   protected $permissions_action;
-  protected $restrict_by_class;
+  protected $restriction_class_name;
   protected $raw_sql_params;
-  protected $site_object;
+  protected $finder;
   
   function __construct()
   {
@@ -44,12 +44,12 @@ class site_objects_datasource implements datasource, countable
     $this->behaviours = $behaviours;
   }
 
-  function set_site_object_class_name($name)
+  function set_finder_name($name)
   {
-    $this->site_object_class_name = $name;
+    $this->finder_name = $name;
   }
 
-  function set_fetch_method($fetch_method)
+  function set_find_method($fetch_method)
   {
     $this->fetch_method = $fetch_method;
   }
@@ -69,9 +69,9 @@ class site_objects_datasource implements datasource, countable
     $this->order = $order;
   }
 
-  function set_restrict_by_class($status = true)
+  function set_restriction_class_name($class_name)
   {
-    $this->restrict_by_class = $status;
+    $this->restriction_class_name = $class_name;
   }
 
   function set_raw_sql_params($params)
@@ -89,8 +89,8 @@ class site_objects_datasource implements datasource, countable
     $this->object_ids = array();
     $this->behaviours = array();
     $this->accessible_object_ids = array();
-    $this->site_object_class_name = 'site_object';
-    $this->fetch_method = 'fetch_by_ids';
+    $this->finder_name = 'site_objects_raw_finder';
+    $this->fetch_method = 'find';
     $this->limit = null;
     $this->offset = null;
     $this->order = null;
@@ -117,9 +117,9 @@ class site_objects_datasource implements datasource, countable
     if ($object_ids = $this->get_accessible_object_ids())
       $params['conditions'][] = ' AND ' . sql_in('sso.id', $object_ids);
     
-    if ($this->restrict_by_class)
+    if ($this->restriction_class_name)
     {
-      $params['conditions'][] = ' AND sso.class_id = ' . $this->_get_site_object()->get_class_id();
+      $params['conditions'][] = ' AND sys_class.name = ' . $this->restriction_class_name;
     }
     
     if ($this->behaviours)
@@ -157,14 +157,16 @@ class site_objects_datasource implements datasource, countable
     return $result;
   }
 
-  protected function _get_site_object()
+  protected function _get_finder()
   {
-    if ($this->site_object)
-      return $this->site_object;
+    if ($this->finder)
+      return $this->finder;
     
-    $this->site_object = Limb :: toolkit()->createSiteObject($this->site_object_class_name);
+    include_once(LIMB_DIR . '/class/core/finders/finder_factory.class.php');
+
+    $this->finder = finder_factory :: create($this->finder_name);
  
-    return $this->site_object;
+    return $this->finder;
   }
   
   public function count_total()
@@ -180,9 +182,9 @@ class site_objects_datasource implements datasource, countable
     if($result !== null)
       return $result; 
         
-    $site_object = $this->_get_site_object();
+    $finder = $this->_get_finder();
     
-    $result = $site_object->$count_method($sql_params);
+    $result = $finder->$count_method($sql_params);
     
     $cache->put($key, $result, self :: CACHE_GROUP);
     
@@ -203,9 +205,12 @@ class site_objects_datasource implements datasource, countable
     if($result !== null)
       return $result; 
 
-    $site_object = $this->_get_site_object();
+    $finder = $this->_get_finder();
     
-    $result = $site_object->$fetch_method($params, $sql_params);
+    if (!method_exists($finder, $fetch_method))
+      throw new LimbException($fetch_method .' is not supported by finder');
+    
+    $result = $finder->$fetch_method($params, $sql_params);
     
     $cache->put($key, $result, self :: CACHE_GROUP);
     

@@ -20,7 +20,7 @@ class db_table_file_resolver_test extends base_package_file_resolver_test
 
   function test_resolve_db_table_file_from_limb()
   {    
-    $this->assertEqual($this->resolver->resolve('content_object'), LIMB_DIR . '/class/db_tables/content_object_db_table.class.php');
+    $this->assertEqual($this->resolver->resolve('one_table_object'), LIMB_DIR . '/class/db_tables/one_table_object_db_table.class.php');
   }  
     
   function test_resolve_db_table_file_ok()

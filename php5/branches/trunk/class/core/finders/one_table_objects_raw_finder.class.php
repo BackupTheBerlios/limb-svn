@@ -53,12 +53,12 @@ abstract class one_table_objects_raw_finder extends site_objects_raw_finder
     return parent :: find($params, $sql_params);
   }
   
-  protected function _do_parent_count($sql_params)
+  protected function _do_parent_find_count($sql_params)
   {
-    return parent :: count($sql_params);
+    return parent :: find_count($sql_params);
   }
   
-  public function count($sql_params=array())
+  public function find_count($sql_params=array())
   {
     $db_table = $this->get_db_table();
     $table_name = $db_table->get_table_name();
@@ -66,7 +66,7 @@ abstract class one_table_objects_raw_finder extends site_objects_raw_finder
     
     $sql_params['conditions'][] = 'AND sso.id=tn.object_id';
     
-    return $this->_do_parent_count($sql_params);
+    return $this->_do_parent_find_count($sql_params);
   }
 }
 

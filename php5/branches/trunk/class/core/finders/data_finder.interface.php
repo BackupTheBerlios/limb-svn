@@ -12,7 +12,7 @@ interface data_finder
 {
   public function find($params = array(), $sql_params = array());//refactor!!!
   
-  public function count($sql_params=array());//refactor!!!
+  public function find_count($sql_params=array());//refactor!!!
   
   public function find_by_id($id);
 }

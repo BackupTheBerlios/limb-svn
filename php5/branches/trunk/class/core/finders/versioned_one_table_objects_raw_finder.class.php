@@ -34,16 +34,16 @@ abstract class versioned_one_table_objects_raw_finder extends one_table_objects_
     return parent :: find($params, $sql_params);
   }
   
-  protected function _do_parent_count($sql_params)
+  protected function _do_parent_find_count($sql_params)
   {
-    return parent :: count($sql_params);
+    return parent :: find_count($sql_params);
   }
   
-  public function count($sql_params=array())
+  public function find_count($sql_params=array())
   {
     $sql_params['conditions'][] = ' AND sso.current_version=tn.version';
     
-    return $this->_do_parent_count($sql_params);
+    return $this->_do_parent_find_count($sql_params);
   }
 }
 
