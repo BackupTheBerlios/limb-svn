@@ -1,102 +1,93 @@
 LOCALE CLASSES
 
-To deal with different locales and strings LIMB use the following
-classes locale and strings with could be found at LIMB_DIR/core/lib/locale/ 
-directory.
-* locale class used for date, currency and numeric data formatting.
+To deal with different locales and strings LIMB uses locale and strings classes(LIMB_DIR/core/lib/locale/ directory).
+* locale class is used for date, currency and numeric data formatting.
 ini-files for different locale settings are stored in 
 LIMB_DIR/core/locale directory.
-* strings class used for localized strings resolving. ini-files with
+* strings class is used for localized strings resolving. ini-files with
 localized strings could be found at:
 	1) PROJECT_DIR/core/strings
 	2) LIMB_DIR/core/strings
-We have translated strings on English (as far as possible) 
-and Russian only. The common usage of strings class is:
-	echo strings :: get($string_name, $file_name, $language_id);
+For now we have localized strings for English and Russian languages. 
+The common usage of the strings class is:
 
-Real file name equals to $file_name + '_' + language_id.
-strings first looks for necessary file in the project strings directory 
-and if file is not found - in the limb strings directory. If no file
-found an error rised. In case only string not found - only warning raised.
-strings ini-files could be inherit from other file using something like
-that in it:
+	echo strings :: get($string_name, [$file_name='common'], [$language_id=null]);
+
+$file_name is mapped to physical file by schema(order is preserved): 
+	1) 'PROJECT_DIR/core/strings' . $file_name . '_' . language_id . '.ini'
+	2) 'LIMB_DIR/core/strings' . $file_name . '_' . language_id . '.ini'
+
+If no file found the critical error is risen.
+
+The common format of the localized ini file as follows:
+
+[[extends]
+filename = some_inherited_file]
+
+[constants]
+attribute1 = ...
+attribute2 = ...
+...
+
+Localized ini files support simple inheritance with [extends] section: you have to supply 'filename' property in it to let strings class handle inheritance issues. Simple example, contents of ad_en.ini file:
 
 [extends]
+filename = common
 
-filename = some_other_file
+[constants]
+create_ad_block = Create ad block
+ad_block_creation  = Ad block creation
+ad_block_edition  = Ad block edition
+edit_ad_block = Edit ad block
+
 
 LOCALE CONSTANTS
 
-LIMB uses 2 constants to deal with localization:
-1) CONTENT_LOCALE_ID - current object's locale.
-2) MANAGEMENT_LOCALE_ID - current user's locale. It is used for 
-localise mamagement messages, validation errors, action names etc.
+LIMB uses two constants to deal with localization:
+1) CONTENT_LOCALE_ID - current site object's locale.
+2) MANAGEMENT_LOCALE_ID - current user's preferred locale. It is used for 
+localized mamagement messages, validation errors, action names etc.
 
-Each LIMB site object has it's LOCALE_ID (e.g 'en' or 'ru'). It stored 
-in sys_site_object table (see URL db_organization_chart). 
-Every new object inherits parent's LOCALE_ID by default.
-Unfortunately we don't have user interface for setting object's LOCALE_ID
-for the moment. Any way it possible to create multilanguage site with
-LIMB easy.
+Each LIMB site object has its locale id (e.g 'en' or 'ru'). It is stored 
+in the sys_site_object table (see URL db_organization_chart). 
+Every new object inherits from its parent locale id by default.
+At the moment we don't have a nice GUI for setting site object's locale id(this is planned).
 
-CONTENT_LOCALE_ID is defined with object's LOCALE_ID then object is fetched in root.
+CONTENT_LOCALE_ID is defined with mapped to request object's locale id when object is fetched in the root.
 
-MANAGEMENT_LOCALE_ID constant is stored in user session data. If 
+There's a trick about defining MANAGEMENT_LOCALE_ID:
+
+MANAGEMENT_LOCALE_ID constant is stored in the user session. If 
 MANAGEMENT_LOCALE_ID is not defined (in case it's a new visitor or 
-user just executed logout action), then MANAGEMENT_LOCALE_ID defined
-as CONTENT_LOCALE_ID. Thus general uses see messages in the same 
-language as object 
-User can change his MANAGEMENT_LOCALE_ID during logging into a site.
-It is also possible to change MANAGEMENT_LOCALE_ID using a form
-like right-upper corner form on http:://limbdemo.0x00.ru demo site. To 
-change his MANAGEMENT_LOCALE_ID user must have access to 
-change_user_locale action in login object.
+user executed logout action), then MANAGEMENT_LOCALE_ID is defined
+as CONTENT_LOCALE_ID.
+
+User can set preferred MANAGEMENT_LOCALE_ID during logging into a site.
+
+It is also possible to switch MANAGEMENT_LOCALE_ID using the upper-right form in the administrative part of the site.
 
 The list of available locales is defined by global variable in setup.php
-in project root directory. It looks something like that:
+in the PROJECT_DIR. The valid example is:
 
-$AVAILABLE_LOCALES = array('ru', ‘en’); 
-
+$AVAILABLE_LOCALES = array('ru', 'en'); 
 
 Let's see how and where these locale constants are used.
 
-* MANAGEMENT_LOCALE_ID - default value for language_id in 
-	get methid of strings class.
+* MANAGEMENT_LOCALE_ID - default value used in strings :: get(...)
 
-* CONTENT_LOCALE_ID - default value for locale :: instance();
+* CONTENT_LOCALE_ID - default value in locale :: instance();
 
-* Tag <locale:STRING name=’string_name’ file=’strings_file_name’ locale_type=’{management|content}’> 
-MANAGEMENT_LOCALE_ID is used by default
+* Tag <locale:STRING name='string_name' file='strings_file_name' locale_type='{management|content}'> by default MANAGEMENT_LOCALE_ID
 
-* Tag <locale:DATE_FORMAT hash_id=’var_name’ format=’format_type’ type=’{stamp|string}’ locale_type=’{management|content}’>
-  CONTENT_LOCALE_ID is used by default
+* Tag <locale:DATE_FORMAT hash_id='var_name' format='format_type' type='{stamp|string}' locale_type='{management|content}'> by default CONTENT_LOCALE_ID
  
-* Tag < locale:LOCALE name=’locale_name’ locale_type=’{management|content}’>
-CONTENT_LOCALE_ID - default value
+* Tag <locale:LOCALE name='locale_name' locale_type='{management|content}'> by default CONTENT_LOCALE_ID
 
-* Any control tag (e.g. INPUT, BUTTON etc.) can use locale_type, 
-	locale_value, locale_file to set control value. Default locale_type
-	is management.
+* Any form input tag (e.g. INPUT, BUTTON etc.) has locale_type, 
+	locale_value, locale_file attributes to set localized values, by default MANAGEMENT_LOCALE_ID
 
-* Every page charset is defined by MANAGEMENT_LOCALE_ID. 
-	See metadata:CHARSET tag.
+* <metadata:CHARSET> renders page charset, uses MANAGEMENT_LOCALE_ID only
 
-* All form validation errors renders using MANAGEMENT_LOCALE_ID.
+* All form validation errors are rendered with MANAGEMENT_LOCALE_ID
 
-Default values have chosen based on usage frequency. We didn't have
-any special plan or feature request for localizing. So you see
-the result of slow evolution. We would be only glad if you have 
-any ideas or requests in this field.
-
-We have a couple of experiences of creating muiltilanguage sites using
-LIMB. You read the details here.
-
-
-
-
-
-
-
-
-
-
+This all proved to be useful for creating muiltilanguage sites with LIMB.

@@ -1,14 +1,12 @@
 
-HOW TO HAVE CREATE SEVERAL PROJECTS USING LIMB
+HOW TO MANTAIN SEVERAL PROJECTS USING SAME LIMB INSTANCE
 
 From the very beginning LIMB has been developed to manage several projects
-using one copy of it. We prefer to separate LIMB directory from 
-the projects and setup them to use that detached LIMB_DIR. Our 
-common projects directory structure look like this:
+being a shared instance. We store it separately from 
+the projects. It becomes possible with having LIMB_DIR constant pointing at the LIMB directory. 
+Our common projects directory structure has the following scheme:
 
-some_path
-|
-+ - projects
++ - /var/dev/
 		|
 		+ - LIMB_DIR
 		|
@@ -18,9 +16,9 @@ some_path
 		|
 		+ - PROJECT_3_DIR
 
-Every projects requires the following files at it's root directory
+Every project requires the following files at its root directory
 
-YOUR_PROJECT_DIRECTORY
++-PROJECT_DIR
 	|
 	+ - setup.php (setup_custom.php is optional)
 	|
@@ -30,8 +28,7 @@ YOUR_PROJECT_DIRECTORY
 	|
 	+ - .htaccess (optional)
 
-Yoy also need to create 'var' directory in your project directory
-with several subdirectories like this:
+You also need to create 'var' PHP accessible directory in your project directory:
 
 YOUR_PROJECT_DIRECTORY
 |

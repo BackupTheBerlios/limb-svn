@@ -1,0 +1,44 @@
+FILE PATH RESOLVING
+
+From the very beginning LIMB has been developed to manage several projects
+being a shared instance. Sometimes projects require a bit
+different behavior then default one. That’s why LIMB uses special file path resolving technique: 
+first file is searched in the project file structure then in the LIMB file structure. 
+
+This tecnique makes use of the two constants you defined in the setup.php(or setup_custom.php) 
+PROJECT_DIR and LIMB_DIR.
+
+That's why the file structures of the LIMB based project and LIMB are similar. 
+You can read more about file structure at SOME_LINK.
+
+This PROJECT_DIR -> LIMB_DIR resolving technique is applied almost to everything:
+
+1) all object factories like db_table_factory, action_factory, site_object_factory, etc.
+2) *.ini files - localized strings, configuration files etc. 
+3) WACT templates, so it's easy to override default LIMB template in the project
+
+In fact, if you need some different functionality in the specific project you can copy the LIMB file 
+to your project and modify it. It's a convenient way to extend and override default functionality. 
+
+NOTE: From the pure OOP point of view it's quite a dirty hack - we admit that, that's why we are working on the packages technique, so this feature will be available for WACT templates only.
+ 
+Template file path resolving works a little different. It tries to take 
+into account localization during template compilation. 
+It searches in the following directories(order is important, the first match is returned):
+
+1) PROJECT_DIR . '/design/main/templates/_' . CONTENT_LOCALE_ID . '/' . $file_path
+2) PROJECT_DIR . '/design/main/templates/' . $file_path
+3) LIMB_DIR . '/design/main/templates/_' . CONTENT_LOCALE_ID . '/' . $file_path
+4) LIMB_DIR . '/design/main/templates/' . $file_path
+
+That’s why if you want to customize template according to 
+current locale in the runtime you should use something like this:
+
+<locale:LOCALE name='en'>
+	<core:INCLUDE file='_en/type_tables.html'>
+</locale:LOCALE>
+<locale:LOCALE name='ru'>
+	<core:INCLUDE file=/_ru/type_tables.html'>
+</locale:LOCALE>
+
+It's a good practice to use <locale:STRING> tag to output localized strings in templates.
