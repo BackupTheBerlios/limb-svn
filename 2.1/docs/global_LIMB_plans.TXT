@@ -1,0 +1,91 @@
+ Here goes the short global TODO list:
+ 
+ 1)studlyCaps and more commmon coding style(four spaces instead of tab,
+ etc)
+ 
+ 2)As LIMB is following packages direction, we need to totally refactor
+ existing site_objects, controllers and actions. The main idea behind
+ all this is the ability to install some package and inherit new package
+ from it.
+ 
+ So it would be possible to use base packages and quickly
+ create new ones. This would make the LIMB a way more RAD tool.
+ 
+ What we actually need to refactor is atributes definition.
+ For instance, here"s what we now in some arbitrary controller:
+ 
+ function article_controller()
+ {
+   $this->_actions = array(
+     "display" => array(
+                     "permissions_required" => "r",
+                     "template_path" => "/article/display.html",
+     ),
+     "set_metadata" => array(
+                     "permissions_required" => "w",
+                     "popup" => true,
+                     "JIP" => true,
+                     "action_name" => strings :: get("set_metadata"),
+                     "action_path" => "/site_object/set_metadata_action",
+                     "template_path" => "/site_object/set_metadata.html",
+                     "img_src" => "/shared/images/configure.gif"
+     ),
+         [...]
+ 
+ This is completely unacceptable in the new packaging model, this
+ should rather look like this:
+ 
+ class article_controller
+ {
+   function _define_actions()
+   {
+     return array(
+       "display" => array(
+                       "permissions_required" => "r",
+                       "template_path" => "/article/display.html",
+       ),
+       "set_metadata" => array(
+                       "permissions_required" => "w",
+                       "popup" => true,
+                       "JIP" => true,
+                       "action_name" => strings :: get("set_metadata"),
+                       "action_path" => "/site_object/set_metadata_action",
+                       "template_path" => "/site_object/set_metadata.html",
+                       "img_src" => "/shared/images/configure.gif"
+       ),
+         [...]
+ 
+ Inheritance is much simpler in this case:
+ 
+ class project_article_controller
+ {
+   function _define_actions()
+   {
+     return complex_array :: merge(
+        parent :: _define_actions(),
+        array(
+              "set_picture" => array(....)
+        )
+     )
+ 
+ 3)Switching to the Creole db abstraction layer. It"s not yet clear
+ whether we"ll incorporate in or use an external product... Anyway the
+ second one id more preferable. This task also includes db auto
+ generation.
+ 
+ 4)Using WACT separately - this will require some negotiation with WACT
+ original developers
+ 
+ 5)Packages: separating the LIMB kernel and making pluggable
+ modules(packages).
+ 
+ Somewhere between the above global tasks are:
+ 1) Major browsers support
+ 2) Ability to place LIMB not in the server root, like
+ /my/cms/limb/root/
+ 3) Removal of the annoying /root/* prefix
+ 4) Giving prefixes to all db tables, constants etc(like limb_, LIMB_) to make LIMB more
+ usable with other products
+ 
+ The changes will be done in the trunk branch of the LIMB - 2.1 branch
+ is considered to be quite stable.
