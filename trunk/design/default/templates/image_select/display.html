@@ -1,149 +1,6 @@
 <core:WRAP file="popup.html" placeholder="content">
 
 <script src='/shared/js/image_properties.js'></script>
-<script>
-
-	var image_properties_objects = new Array();
-	var image_id_obj;
-	var preview_obj;
-	var preview_caption_obj;
-	var preview_description_obj;
-	var insert_button_obj;
-	var image = new Object();
-	
-	var img_1x1 = new Image();
-	img_1x1.src = '/shared/images/1x1.gif';
-	
-	function change_img_prop(obj)
-	{
-		image[obj.name] = (obj.value == null ? '' : obj.value);
-	}
-	
-	function set_img_prop(prop_name, value)
-	{
-		if (value == null) value = '';
-		if (prop_name == 'type' && value == '') value = 'thumbnail';
-		if (prop_name == 'link_to' && value == '') value = 'original';
-		image[prop_name] = value;
-		obj = document.getElementsByName(prop_name);
-		if (obj.length && obj.length > 0)
-		{
-			if (typeof(obj[0]) == 'object')
-				obj[0].value = value;
-		}
-	}
-
-	function update_image_data(img)
-	{
-		preview_obj.src = img_1x1.src;
-		preview_obj.width = 1;
-		preview_obj.height = 1;
-		
-		if (img.variations.thumbnail)
-		{
-			preview_obj.src = '/root?node_id=' + img.node_id;
-			preview_obj.width = img.variations.thumbnail.width;
-			preview_obj.height = img.variations.thumbnail.height;
-		}
-
-		preview_caption_obj.nodeValue = img.name;
-		preview_description_obj.nodeValue = img.description;
-
-		insert_button_obj.disabled = false;
-		img.alt = img.description;
-		
-		for(id in img_props)
-			set_img_prop(img_props[id], img[img_props[id]]);
-		
-		for(id in static_img_props)
-			set_img_prop(static_img_props[id], img[static_img_props[id]]);
-	}
-	
-	function insert_image()
-	{
-		h = get_close_popup_handler();		
-		h(image);
-		//opener.popups[window.name]['process_popup'](image);
-		window.close();
-	}
-	
-	function get_image()
-	{
-		//img = opener.popups[window.name]['init_popup'](window.name);
-		h = get_init_popup_handler();
-		img = h(window.name);
-		
-		preview_obj = document.getElementById('_preview');
-    
-		obj = document.getElementById('_preview_caption');
-		preview_caption_obj = obj.firstChild;
-
-		obj = document.getElementById('_preview_description');
-		preview_description_obj = obj.firstChild;
-		
-		obj = document.getElementsByName('_insert_button');
-		insert_button_obj = obj[0];
-
-		if (typeof(img) == 'object' && img != null)
-		{
-			if (img.node_id)
-			{
-				if(img.node_id == 0)
-					preview_obj.src = '/shared/images/no_img.gif';
-				else
-					preview_obj.src = '/root?node_id=' + img.node_id;
-					
-				insert_button_obj.disabled = false;
-			}
-			
-			for(id in img)
-				set_img_prop(id, img[id])
-
-			preview_description_obj.nodeValue = img.alt;
-			preview_caption_obj.nodeValue = img.name;
-		}
-		
-		start_path = img.start_path;
-		if(!start_path)
-			start_path = '/root/images_folder?action=image_select';
-
-		image_select_frame.location = start_path;
-//		hide_loading_div();
-		render_properties();
-		process_popup();
-	}
-	
-	function render_properties()
-	{
-		props = get_query_item(location.href, 'properties');
-		
-		if (props == 0)
-			return;
-		
-		elem = document.getElementById('properties');
-		elem.style.display = 'block';
-		
-		if (props == null)
-			props = 65535;
-		
-		for(i=0; i<img_props.length; i++)
-			if ((Math.pow(2, i) & props) == 0)
-			{
-				elem = document.getElementById('_' + img_props[i]);
-				elem.disabled = true;
-				elem.className = 'disabled_input';
-			}
-	}
-	
-	function type_changed()
-	{
-		set_img_prop('width', '');
-		set_img_prop('height', '');
-	}
-	
-	add_event(window, 'load', get_image);
-	
-</script>
 <core:LITERAL>
 <table cellspacing=0 cellpadding=1 border=0>
 <form>
@@ -294,3 +151,141 @@
 </form>
 </table>
 </core:LITERAL>
+<script>
+
+	var image_properties_objects = new Array();
+	var image_id_obj;
+	var image = new Object();
+	
+	var preview_obj = document.getElementById('_preview');
+    
+	obj = document.getElementById('_preview_caption');
+	var preview_caption_obj = obj.firstChild;
+
+	obj = document.getElementById('_preview_description');
+	var preview_description_obj = obj.firstChild;
+		
+	obj = document.getElementsByName('_insert_button');
+	var insert_button_obj = obj[0];
+	
+	var img_1x1 = new Image();
+	img_1x1.src = '/shared/images/1x1.gif';
+	
+	function change_img_prop(obj)
+	{
+		image[obj.name] = (obj.value == null ? '' : obj.value);
+	}
+	
+	function set_img_prop(prop_name, value)
+	{
+		if (value == null) value = '';
+		if (prop_name == 'type' && value == '') value = 'thumbnail';
+		if (prop_name == 'link_to' && value == '') value = 'original';
+		image[prop_name] = value;
+		obj = document.getElementsByName(prop_name);
+		if (obj.length && obj.length > 0)
+		{
+			if (typeof(obj[0]) == 'object')
+				obj[0].value = value;
+		}
+	}
+
+	function update_image_data(img)
+	{
+		preview_obj.src = img_1x1.src;
+		preview_obj.width = 1;
+		preview_obj.height = 1;
+		
+		if (img.variations.thumbnail)
+		{
+			preview_obj.src = '/root?node_id=' + img.node_id;
+			preview_obj.width = img.variations.thumbnail.width;
+			preview_obj.height = img.variations.thumbnail.height;
+		}
+
+		preview_caption_obj.nodeValue = img.name;
+		preview_description_obj.nodeValue = img.description;
+
+		insert_button_obj.disabled = false;
+		img.alt = img.description;
+		
+		for(id in img_props)
+			set_img_prop(img_props[id], img[img_props[id]]);
+		
+		for(id in static_img_props)
+			set_img_prop(static_img_props[id], img[static_img_props[id]]);
+	}
+	
+	function insert_image()
+	{
+		h = get_close_popup_handler();		
+		h(image);
+		window.close();
+	}
+	
+	function get_image()
+	{
+		h = get_init_popup_handler();
+		img = h(window.name);
+		
+		if (img && typeof(img) == 'object')
+		{
+			if (img.node_id)
+			{
+				if(img.node_id == 0)
+					preview_obj.src = '/shared/images/no_img.gif';
+				else
+					preview_obj.src = '/root?node_id=' + img.node_id;
+					
+				insert_button_obj.disabled = false;
+			}
+			
+			for(id in img)
+				set_img_prop(id, img[id])
+
+			preview_description_obj.nodeValue = img.alt;
+			
+			if(img.name) //the case when we don't have image identifier in richedit
+			  preview_caption_obj.nodeValue = img.name;
+			  
+  		start_path = img.start_path;
+  		if(!start_path)
+  			start_path = '/root/images_folder?action=image_select';
+  
+  		image_select_frame.location = start_path;			  
+		}
+		
+		render_properties();
+		process_popup();
+	}
+	
+	function render_properties()
+	{
+		props = get_query_item(location.href, 'properties');
+		
+		if (props == 0)
+			return;
+		else if(props == null)
+		  props = 65535;
+		
+		elem = document.getElementById('properties');
+		elem.style.display = 'block';
+				
+		for(i=0; i<img_props.length; i++)
+			if ((Math.pow(2, i) & props) == 0)
+			{
+				elem = document.getElementById('_' + img_props[i]);
+				elem.disabled = true;
+				elem.className = 'disabled_input';
+			}
+	}
+	
+	function type_changed()
+	{
+		set_img_prop('width', '');
+		set_img_prop('height', '');
+	}
+	
+	add_event(window, 'load', get_image);
+	
+</script>

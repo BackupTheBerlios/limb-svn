@@ -304,19 +304,16 @@ function popup(href, window_name, window_params, dont_set_focus, on_close_handle
 		window.popups[window_name] = new Array();
 		
 	if (typeof(on_close_handler) != 'undefined') 
-	{		
 		window.popups[window_name]['close_popup_handler'] = on_close_handler;
-	}
 
 	if (typeof(on_init_handler) != 'undefined') 
-	{
 		window.popups[window_name]['init_popup_handler'] = on_init_handler;
-	}
 
-	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);
-	
+	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);	
 	if (href != LOADING_STATUS_PAGE)
-		w.location.href = href;
+	 w.location.href = href;
+	
+	//w = window.open(href, window_name, window_params);	
 	
 	if(!dont_set_focus)
 		w.focus();
@@ -366,7 +363,7 @@ function add_form_action_parameter(form, parameter, val)
 	if(!form)
 	  return;
 
-  form.action = set_http_get_parameter(form.action, parameter, val);
+  form.action = set_http_get_parameter(form.action + '', parameter, val);
 }
 
 function add_form_hidden_parameter(form, parameter, val)

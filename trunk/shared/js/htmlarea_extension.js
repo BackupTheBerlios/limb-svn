@@ -1,3 +1,17 @@
+HTMLArea.isBlockElement = function(el) 
+{
+  if(!el.tagName)//quick and dirty hack
+  {
+    return false;
+  }
+    
+	var blockTags = " body form textarea fieldset ul ol dl li div " +
+		"p h1 h2 h3 h4 h5 h6 quote pre table thead " +
+		"tbody tfoot tr td iframe address ";
+		
+	return (blockTags.indexOf(" " + el.tagName.toLowerCase() + " ") != -1);
+};
+
 function install_limb_full_extension(config)
 {
   config.toolbar = 
@@ -53,89 +67,123 @@ function insert_limb_repository_image(e, id)
     function(image) 
     {
     	if (!image)
-    		return false;
-    		
-			var sel = editor._getSelection();
-			var range = editor._createRange(sel);    		
-    	      
-      // delete selected content and replace with image
-      if (sel.type == "Control")
+    		return;
+            
+      if(HTMLArea.is_gecko)
       {
-        range.execCommand('Delete');
-        range = editor._createRange(sel);
-      }
-      
-      link_to = image['link_to'];
-      if (link_to.length > 1)
-      {
-      	idstr = "556e697175657e537472696e67";
-    	  range.execCommand("CreateLink", null, idstr);
-    	  coll = editor._doc.getElementsByTagName("A");
-    	  for(i=0; i<coll.length; i++)
-    	  {
-    	  	if (coll[i].href == idstr)
-    	  	{
-    			  link_element = coll[i];
-    			  link_element.href = '/root?node_id=' + image['node_id'] + '&' + link_to;
-    			  link_element.target = '_blank';
-    			  img_element = editor._doc.createElement("IMG");
-    			  img_element.src = '/root?node_id=' + image['node_id'] + '&' + image['type'];
-    			  link_element.appendChild(img_element);
-    			}
-    		}
-    	}
-      else
-    	{
-    		idstr = "\" id=\"556e697175657e537472696e67";
-    	  range.execCommand("InsertImage", null, idstr);
-    	  img_element = editor._doc.all['556e697175657e537472696e67'];
-    	  img_element.removeAttribute("id");
-    	  img_element.src = '/root?node_id=' + image['node_id'] + '&' + image['type'];
-    	}
-    	
-      img_element.id = image['node_id'] + ':' + image['type'] + ':' + image['link_to'];
-      img_element.border = image['border'];
-      img_element.alt = image['alt'];
-      img_element.align = image['align'];
-      img_element.hspace = image['hspace'];
-      img_element.vspace = image['vspace'];
-      new_width = parseInt(image['width']);
-      new_height = parseInt(image['height']);
-      if (new_width != 0 && !isNaN(new_width))
-      	img_element.width = image['width'];
-      if (new_height != 0 && !isNaN(new_height))
-      	img_element.height = image['height'];
-      
-      range.collapse(false);
-      range.select();
+  			parent = editor.getParentElement();		
+      	      
+        // delete selected content and replace with image
+        if (parent.tagName == 'IMG')
+          editor.execCommand('Delete');
+        
+        selection = editor._getSelection();
+        range = editor._createRange(selection); 
+
+  			var img_element = editor._doc.createElement("IMG");
+        
+        img_element.src = '/root?node_id=' + image['node_id'] + '&' + image['type'];
+        img_element.setAttribute('limb_attributes', image['node_id'] + ':' + image['type'] + ':' + image['link_to']);
+        img_element.border = image['border'];
+        img_element.alt = image['alt'];
+        img_element.align = image['align'];
+        img_element.hspace = image['hspace'];
+        img_element.vspace = image['vspace'];
+        new_width = parseInt(image['width']);
+        new_height = parseInt(image['height']);
+        if (new_width != 0 && !isNaN(new_width))
+        	img_element.width = image['width'];
+        if (new_height != 0 && !isNaN(new_height))
+        	img_element.height = image['height'];
+  			
+        if (image['link_to'])
+        {
+          var a = editor._doc.createElement("A");
+          
+  			  a.href = '/root?node_id=' + image['node_id'] + '&' + image['link_to'];
+  			  a.target = '_blank';
+  			  a.appendChild(img_element);
+  			  node = a;        
+  			}
+  		  else
+  		    node = img_element;
+  			
+  			editor.insertNodeAtSelection(node);
+  		}
+  	  else//IE dirty hack!
+  	  {
+        var range = editor._doc.selection.createRange();
+        
+        // delete selected content and replace with image
+        if (editor._doc.selection.type == "Control")
+        {
+          range.execCommand('Delete');
+          range = editor._doc.selection.createRange();
+        }
+        if (image['link_to'])
+        {
+        	idstr = "556e697175657e537472696e67";
+      	  range.execCommand("CreateLink", null, idstr);
+      	  coll = editor._doc.getElementsByTagName("A");
+      	  for(i=0; i<coll.length; i++)
+      	  {
+      	  	if (coll[i].href == idstr)
+      	  	{
+      			  link_element = coll[i];
+      			  link_element.href = '/root?node_id=' + image['node_id'] + '&' + image['link_to'];
+      			  link_element.target = '_blank';
+      			  img_element = editor._doc.createElement("IMG");
+      			  img_element.src = '/root?node_id=' + image['node_id'] + '&' + image['type'];
+      			  link_element.appendChild(img_element);
+      			}      			
+      		}
+      	}
+        else
+      	{
+      		idstr = "\" id=\"556e697175657e537472696e67";
+      	  range.execCommand("InsertImage", null, idstr);
+      	  img_element = editor._doc.all['556e697175657e537472696e67'];
+      	  img_element.removeAttribute("id");
+      	  img_element.src = '/root?node_id=' + image['node_id'] + '&' + image['type'];
+      	}
+      	
+        img_element.setAttribute('limb_attributes', image['node_id'] + ':' + image['type'] + ':' + image['link_to']);
+        img_element.border = image['border'];
+        img_element.alt = image['alt'];
+        img_element.align = image['align'];
+        img_element.hspace = image['hspace'];
+        img_element.vspace = image['vspace'];
+        new_width = parseInt(image['width']);
+        new_height = parseInt(image['height']);
+        if (new_width != 0 && !isNaN(new_width))
+        	img_element.width = image['width'];
+        if (new_height != 0 && !isNaN(new_height))
+        	img_element.height = image['height'];
+        
+        range.collapse(false);
+  	  }
     }	  
 	  ,
     function()
     {      
-			var sel = editor._getSelection();
-			var range = editor._createRange(sel);    		
-    
-      // delete selected content and replace with image
-      if (sel.type == "Control")
-      {
-      	if (range.item(0).tagName == 'IMG')
-      	{
-      		params = range.item(0).id;
-      		params = params.split(':');
-    			img = {node_id:  params[0],
-    						 width:   range.item(0).width,
-    						 height:   range.item(0).height,
-    						 border:  range.item(0).border,
-    						 hspace:  range.item(0).hspace,
-    						 vspace:  range.item(0).vspace,
-    						 align:  range.item(0).align,
-    						 alt:  range.item(0).alt,
-    						 type:  params[1],
-    						 link_to: params[2]};
-    			return img;
-      	}
-      }
-      return false
+      sel = editor.getParentElement();
+    	if (sel.tagName == 'IMG' && sel.hasAttribute('limb_attributes'))
+    	{
+    		params = sel.getAttribute('limb_attributes');
+    		params = params.split(':');
+  			img = {node_id: params[0],
+  						 width:   sel.width,
+  						 height:  sel.height,
+  						 border:  sel.border,
+  						 hspace:  sel.hspace,
+  						 vspace:  sel.vspace,
+  						 align:   sel.align,
+  						 alt:     sel.alt,
+  						 type:    params[1],
+  						 link_to: params[2]};
+  			return img;
+    	}
+      return null;
     }
 	);
 }

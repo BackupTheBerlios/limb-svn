@@ -37,8 +37,8 @@ class richedit_component extends text_area_component
       var _editor_url = '/shared/HTMLArea-3.0-rc1/';    
     </script>
   	
-  	<script type='text/javascript' src='/shared/js/htmlarea_extension.js'></script>		
-    <script type='text/javascript' src='/shared/HTMLArea-3.0-rc1/htmlarea.js'></script>";	
+    <script type='text/javascript' src='/shared/HTMLArea-3.0-rc1/htmlarea.js'></script>
+    <script type='text/javascript' src='/shared/js/htmlarea_extension.js'></script>";	
 	}
 
 	function load_richedit()
