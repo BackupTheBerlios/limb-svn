@@ -18,9 +18,9 @@ define('DEBUG_HANDLE_NATIVE', 0);
 define('DEBUG_HANDLE_CUSTOM', 1);
 define('DEBUG_HANDLE_TRIGGER_ERROR', 2);
 
-define('DEBUG_OUTPUT_MESSAGE_SCREEN', 1);
-define('DEBUG_OUTPUT_MESSAGE_STORE', 2);
-define('DEBUG_OUTPUT_MESSAGE_SEND', 4);
+define('DEBUG_OUTPUT_MESSAGE_NULL', 0);
+define('DEBUG_OUTPUT_MESSAGE_STORE', 1);
+define('DEBUG_OUTPUT_MESSAGE_SEND', 2);
 
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
@@ -435,16 +435,11 @@ class debug
   		'code_line' => $code_line,
   		'params' => $params
 		);
-				
-		if ($this->message_output & DEBUG_OUTPUT_MESSAGE_SCREEN)
-		{
-			print("$verbosity_level:\n " . debug :: _parse_text_debug_info($debug_info) . "\n\n");
-		} 
 		
+		$this->debug_strings[] = $debug_info;
+						
 		if ($this->message_output & DEBUG_OUTPUT_MESSAGE_STORE)
 		{
-			$this->debug_strings[] = $debug_info;
-
 			$files =& $this->log_files;
 			$file_name = false;
 	

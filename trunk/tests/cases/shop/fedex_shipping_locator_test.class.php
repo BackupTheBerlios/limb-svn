@@ -72,28 +72,28 @@ class fedex_shipping_locator_test extends UnitTestCase
     $this->assertEqual($options, 
       array(
         $id1 => array(
-          'id' => $id1,
           'name' => '<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>',
           'description' => "Delivery in&nbsp;\n5&nbsp;business days",
-          'price' => 16.02,          
+          'price' => 16.02,
+          'id' => $id1,
         ),
         $id2 => array(
-          'id' => $id2,
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>',
           'description' => 'Time definite delivery in 2 business days',
           'price' => 72.62,          
+          'id' => $id2,
         ),
         $id3 => array(
-          'id' => $id3,
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/priority.html?link=4">FedEx International Priority<SUP>&reg;</SUP></a>',
           'description' => 'Reach major business centers in 24 to 48 hours',
           'price' => 113.68,  
+          'id' => $id3,
         ),        
         $id4 => array(
-          'id' => $id4,
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/first.html?link=4">FedEx International First<SUP>&reg;</SUP></a>',
           'description' => 'Overseas delivery by 8 a.m. to major cities',
           'price' => 169.31,
+          'id' => $id4,
         ),
       )
     );    
@@ -149,8 +149,8 @@ class fedex_shipping_locator_test extends UnitTestCase
   
   function test_get_shipping_options()//integration test ???
   { 
-    return;
-       
+    return;      
+    
     $options = $this->locator->get_shipping_options($this->shipping_configuration);
 
     $id1 = md5('<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>');
@@ -161,28 +161,28 @@ class fedex_shipping_locator_test extends UnitTestCase
     $this->assertEqual($options, 
       array(
         $id1 => array(
-          'id' => $id1,
           'name' => '<a href="http://www.fedex.com/us/services/ground/intl/?link=4?">FedEx International Ground<SUP>&reg;</SUP></a>',
-          'description' => "Delivery in&nbsp;\n5&nbsp;business days",
-          'price' => 16.02,          
+          'description' => "Delivery in&nbsp;\n4&nbsp;business days",
+          'price' => 16.02,
+          'id' => $id1,
         ),
         $id2 => array(
-          'id' => $id2,
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>',
           'description' => 'Time definite delivery in 2 business days',
-          'price' => 72.62,          
+          'price' => 72.62,
+          'id' => $id2,
         ),
         $id3 => array(
-          'id' => $id3,
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/priority.html?link=4">FedEx International Priority<SUP>&reg;</SUP></a>',
           'description' => 'Reach major business centers in 24 to 48 hours',
           'price' => 113.68,  
+          'id' => $id3,
         ),        
         $id4 => array(
-          'id' => $id4,
           'name' => '<a href="http://www.fedex.com/us/services/waystoship/intlexpress/first.html?link=4">FedEx International First<SUP>&reg;</SUP></a>',
           'description' => 'Overseas delivery by 8 a.m. to major cities',
           'price' => 169.31,
+          'id' => $id4,
         ),
       )
     );    

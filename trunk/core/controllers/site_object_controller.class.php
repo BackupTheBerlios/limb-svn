@@ -140,7 +140,9 @@ class site_object_controller
 		debug :: add_timing_point('action performed');
 		
 		if($request->is_problem())
+		{
 			debug :: write_error('action failed', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+		}
 	}
 	
 	function display_view()
