@@ -66,7 +66,7 @@ class LimbDAOTagTestCase extends LimbTestCase
     $this->ds->expectOnce('fetch');
     $this->ds->setReturnReference('fetch', $dataset);
 
-    $template = '<limb:DATASOURCE target="testTarget" class="TestDAO"></limb:DATASOURCE>' .
+    $template = '<limb:DAO target="testTarget" class="TestDAO"></limb:DAO>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$username}</list:ITEM></list:LIST>';
 
     RegisterTestingTemplate('/limb/dao.html', $template);
@@ -90,7 +90,7 @@ class LimbDAOTagTestCase extends LimbTestCase
     $this->ds->expectOnce('fetch');
     $this->ds->setReturnReference('fetch', $dataset);
 
-    $template = '<limb:DATASOURCE target="testTarget1,testTarget2" class="TestDAO"></limb:DATASOURCE>' .
+    $template = '<limb:DAO target="testTarget1,testTarget2" class="TestDAO"></limb:DAO>' .
                 '<list:LIST id="testTarget1"><list:ITEM>{$username}</list:ITEM></list:LIST>' .
                 '<list:LIST id="testTarget2"><list:ITEM>{$secondname}</list:ITEM></list:LIST>';
 
@@ -120,7 +120,7 @@ class LimbDAOTagTestCase extends LimbTestCase
 
     $request->setReturnValue('getUri', new Uri('test.com'));
 
-    $template = '<limb:DATASOURCE target="testTarget" class="TestDAO" navigator="pagenav"></limb:DATASOURCE>' .
+    $template = '<limb:DAO target="testTarget" class="TestDAO" navigator="pagenav"></limb:DAO>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$username}</list:ITEM></list:LIST>'.
                 '<limb:pager:NAVIGATOR id="pagenav" items="10"></limb:pager:NAVIGATOR>';
 
