@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/core/actions/guestbook_message/create_guestbook_message_action.class.php');
+require_once(dirname(__FILE__) . '/create_guestbook_message_action.class.php');
 
 class front_create_guestbook_message_action extends create_guestbook_message_action
 {
