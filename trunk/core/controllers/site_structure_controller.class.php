@@ -22,6 +22,7 @@ class site_structure_controller extends site_object_controller
 						'permissions_required' => 'r',
 						'action_path' => 'tree_change_order_action', 
 						'display_in_breadcrumbs' => false,
+						'popup' => true,
 				),
 				'edit' => array(
 						'permissions_required' => 'w',

@@ -42,6 +42,7 @@ class navigation_item_controller extends site_object_controller
 				'order' => array(
 						'permissions_required' => 'r',
 						'action_path' => 'tree_change_order_action', 
+						'popup' => true,
 				),
 		);
  		

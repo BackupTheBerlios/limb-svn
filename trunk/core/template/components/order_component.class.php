@@ -10,6 +10,7 @@ class order_component extends component
 		$params['id'] = $this->get('node_id');
 		$params['action'] = 'order';
 		$params['rn'] = time();
+		$params['popup'] = 1;
 		
 		$this->set('order_up_alt', strings :: get('order_up'));
 		$this->set('order_down_alt', strings :: get('order_down'));

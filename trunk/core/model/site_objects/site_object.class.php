@@ -141,10 +141,9 @@ class site_object extends object
 
 		$result = array();
 		
-		if(!count($sort_ids))
+		if(isset($params['order']))
 		{
-			if(isset($params['order']))
-				$sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
+			$sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
 				
 			$db->sql_exec($sql, $limit, $offset);
 
@@ -153,7 +152,7 @@ class site_object extends object
 	
 			return $result;
 		}
-		else
+		elseif(count($sort_ids))
 		{
 			$db->sql_exec($sql);
 			
@@ -167,6 +166,15 @@ class site_object extends object
 			if($limit)
 				$result = array_splice($result, $offset, $limit);
 			
+			return $result;
+		}
+		else
+		{
+			$db->sql_exec($sql, $limit, $offset);
+
+			while($row = $db->fetch_row())
+				$result[] = $row['id'];
+	
 			return $result;
 		}
 	}

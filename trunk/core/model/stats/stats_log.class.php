@@ -125,10 +125,10 @@ class stats_log
 	{
 		$this->db->sql_insert('sys_stat_counter', 
 			array(
-				'hosts_all' => 0,
-				'hits_all' => 0,
-				'hosts_today' => 0,
-				'hits_today' => 0,
+				'hosts_all' => 1,
+				'hits_all' => 1,
+				'hosts_today' => 1,
+				'hits_today' => 1,
 				'time' => $this->reg_date->get_stamp()
 			)
 		);	
