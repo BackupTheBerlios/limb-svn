@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: cron.php 474 2004-02-18 14:50:38Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -18,7 +18,7 @@ if (file_exists($site_path . '/setup_custom.php'))
 
 require_once($site_path . '/setup.php');
 require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
-require_once(LIMB_DIR . 'core/lib/debug.class.php');
+require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
 
 $cron_scripts_dir = $site_path . '/cron/';
 $ini =& ini::instance('cron.ini', $cron_scripts_dir, false);
@@ -87,7 +87,7 @@ foreach($scripts_last_run as $time)
 	
 fclose($fp);
 	
-echo debug::parse_report(false, false);
+echo debug::parse_cli_console();
 
 ob_end_flush();
 ?>

@@ -29,7 +29,7 @@ class dir
   function mkdir($dir, $perm, $parents=true)
   {
     $dir = dir :: clean_path($dir);
-
+    
     if(!$parents)
     	return dir :: _do_mkdir($dir, $perm);
     
@@ -39,19 +39,18 @@ class dir
         
     if (count($dir_elements) == 0)
     	return true;
-    	
-    $current_dir = $dir_elements[0];
     
-    if (!dir :: _do_mkdir($current_dir, $perm))
-    	return false;
-  	
+    $current_dir = '';
+      	
     for ($i=1; $i < count( $dir_elements ); ++$i )
     {
       $dir_element = $dir_elements[$i];
       $current_dir .= $separator . $dir_element;
-
-      if (!dir :: _do_mkdir( $current_dir, $perm ))
+			
+      if (!dir :: _do_mkdir($current_dir, $perm))
+      {	
       	return false;
+      }
     }
 
   	return true;
@@ -62,18 +61,21 @@ class dir
     $separator = dir :: separator();
     	
     $dir_elements = explode($separator, $path);
-
+		
     if(dir :: _has_win32_net_prefix($path))
     {
     	array_shift($dir_elements);
     	array_shift($dir_elements);
     	$dir_elements[0] = WIN32_NET_PREFIX . $dir_elements[0];
     }
+    	
 		return $dir_elements;
   }
     
 	function rm($dir)
 	{
+		$dir = dir :: clean_path($dir);
+		
 		if(!is_dir($dir))
 			return;
 		
@@ -94,7 +96,7 @@ class dir
 	}
 	
 	function cp($src, $dest)
-	{ 
+	{ 		
 		dir :: mkdir($dest, 0777);
 		$arr = dir :: ls($src);
 		
@@ -109,16 +111,18 @@ class dir
 				if(is_dir($fl)) 
 					dir :: cp($fl, $flto);
 				else 
-					copy($fl, $flto);
+					copy(dir :: clean_path($fl), dir :: clean_path($flto));
 			}
 		}
 	}
 	
 	function ls($wh)
 	{
+		$files = '';
+		$wh = dir :: clean_path($wh);
 		if($handle = opendir($wh)) 
 		{
-			while(false !== ($file = readdir($handle))) 
+			while(($file = readdir($handle)) !== false) 
 			{ 
 				if($file != "." && $file != ".." ) 
 				{ 
@@ -140,7 +144,7 @@ class dir
   {
   	if(is_dir($dir))
   		return true;
-  	
+  	  	  	
     $oldumask = umask(0);
     if(!mkdir($dir, $perm))
     {
