@@ -234,7 +234,7 @@ function insert_limb_repository_file(e, id)
 			}
 			
 			if(a)  		  
-        a.title = file['name'] + ' : ' + file['size'];
+        a.title = file['title'] + ' : ' + file['size'] + ' bytes';
       
     }, 
 	  function (obj){});
