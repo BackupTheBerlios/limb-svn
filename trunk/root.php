@@ -57,14 +57,16 @@ if(isset($node['only_parent_found']) && $node['only_parent_found'])
 	
 	$tree = limb_tree :: instance();
 	reload($tree->get_path_to_node($node). $params);
+	exit;
 }
 
-if(!$object_data =& fetch_one_by_node_id($node['id']))
+if(($object_data =& fetch_one_by_node_id($node['id'])) === false)
 {
 	if (!user :: is_logged_in())
 	{
 		$tree = limb_tree :: instance();
 		reload('/root/login?redirect='. $tree->get_path_to_node($node));
+		exit;
 	}	
 	else
 	{

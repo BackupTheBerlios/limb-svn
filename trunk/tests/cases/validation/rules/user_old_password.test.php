@@ -55,7 +55,7 @@ class test_user_old_password_rule extends test_single_field_rule
 		$data =& new dataspace();
 		$data->set('old_password', 'wrong_pass');
 
-		$this->error_list->expectOnce('add_error', array('old_password', 'WRONG_OLD_PASSWORD_USER', array()));
+		$this->error_list->expectOnce('add_error', array('old_password', 'WRONG_OLD_PASSWORD', array()));
 
 		$this->validator->validate($data);
 		$this->assertFalse($this->validator->is_valid());

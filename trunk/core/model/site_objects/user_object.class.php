@@ -27,6 +27,13 @@ class user_object extends content_object
 		);
 	}
 	
+	function create($is_root = false)
+	{
+		$crypted_password = user :: get_crypted_password($this->get_identifier(), $this->get_attribute('password'));
+		$this->set_attribute('password', $crypted_password);
+		return parent :: create($is_root);
+	}
+	
 	function get_membership($user_id)
 	{
 		$db_table	=& db_table_factory :: instance('user_in_group');
@@ -55,9 +62,16 @@ class user_object extends content_object
 	
 	function change_password()
 	{
-		if(!$object_id = $this->get_attribute('id'))
+		if(!$user_id = $this->get_id())
 		{
-		  debug :: write_error('object id not set', 
+		  debug :: write_error('user id not set', 
+			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
+		  return false;
+		}
+
+		if(!$identifier = $this->get_identifier())
+		{
+		  debug :: write_error('user identifier not set', 
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
 		  return false;
 		}
@@ -65,10 +79,18 @@ class user_object extends content_object
 		$this->set_attribute(
 			'password', 
 			user :: get_crypted_password(
-				$this->get_attribute('identifier'), 
+				$identifier, 
 				$this->get_attribute('password')
 			)
 		);
+		
+		if($user_id == user :: get_id())
+		{
+			user :: logout();
+			message_box :: write_warning(strings :: get('need_relogin', 'user'));
+		}
+		else
+			session :: destroy_user_session($user_id);
 		
 		return $this->update(false);
 	}
@@ -106,39 +128,36 @@ class user_object extends content_object
 		$this->set_attribute('password', $data['password']);
 		
 		if ($user_db_table->update($data, 'identifier="'. user :: get_login() . '"'))
-			return user :: login(user :: get_login(), $password);
+			return $this->login(user :: get_login(), $password);
 		else
 			return false;
 	}
 
-	function generate_password($email)
+	function generate_password($email, &$new_non_crypted_password)
 	{
-		$user_data = $this->get_user_by_email($email);
+		if(!$user_data = $this->get_user_by_email($email))
+			return false;
 		
 		$this->import_attributes($user_data);
 
-		$new_password = user :: generate_password();
-		$this->set_attribute(
-			'generated_password', 
-			user :: get_crypted_password($email,$new_password)
-		);
+		$new_non_crypted_password = user :: generate_password();
+		$crypted_password = user :: get_crypted_password($user_data['identifier'], $new_non_crypted_password);
+		$this->set_attribute('generated_password', $crypted_password);
 		
-		$result = $this->update(false);
-		if($result)
-		{
-			$this->send_activate_password_email($user_data, $new_password);
-		}
+		if($result = $this->update(false))
+			$this->send_activate_password_email($user_data, $new_non_crypted_password);
+			
 		return $result;
 	}
 
-
 	function activate_password()
 	{
-		$email = $_REQUEST['user'];
-		$password = $_REQUEST['id'];
-		if(empty($email) || empty($password))
+		if(!isset($_REQUEST['user']) || !isset($_REQUEST['id']))
 			return false;
 
+		$email = $_REQUEST['user'];
+		$password = $_REQUEST['id'];
+		
 		$user_data = $this->get_user_by_email($email);
 		if(($password != $user_data['password']) || empty($user_data['generated_password']))
 			return false;
@@ -150,7 +169,6 @@ class user_object extends content_object
 		return $this->update(false);
 	}
 
-
 	function get_user_by_email($email)
 	{
 		$db =& db_factory :: instance();
@@ -161,7 +179,7 @@ class user_object extends content_object
 			sys_site_object as sco, 
 			user as tn
 			WHERE tn.email="' . $db->escape($email) . '"
-			AND scot.id=tn.object_id
+			AND scot.object_id=tn.object_id
 			AND sco.id=tn.object_id 
 			AND sco.current_version=tn.version';
 					

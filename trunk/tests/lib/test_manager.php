@@ -89,6 +89,11 @@ class TestManager
 		sort($test_cases);
 		foreach ($test_cases as $test_case)
 		{
+			/*$existing_classes = get_declared_classes();
+			include_once($test_case);
+			trigger_error('Stop', E_USER_WARNING);
+			$new_classes = array_diff(get_declared_classes(), $existing_classes);*/
+			
 			$group_test->addTestFile($test_case);
 		} 
 	} 

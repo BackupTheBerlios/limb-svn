@@ -11,33 +11,6 @@
 require_once(LIMB_DIR . '/tests/cases/site_objects/__site_object_template.test.php');
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
-class content_object_template_test_adapter extends content_object
-{
-	var $content_object = null;
-	
-	function content_object_template_test_adapter($content_object)
-	{
-		$this->content_object = $content_object;
-		
-		parent :: content_object();
-	}
-	
-	function _define_class_properties()
-	{
-		$props = $this->content_object->get_class_properties();
-		
-		if(!isset($props['db_table_name']))
-			$props['db_table_name'] = get_class($this->content_object);
-		
-		return $props;
-	}
-	
-	function get_db_table()
-	{
-		return $this->_get_db_table();
-	}
-}
-
 SimpleTestOptions::ignore('test_content_object_template'); 
 
 class test_content_object_template extends test_site_object_template 
@@ -58,8 +31,7 @@ class test_content_object_template extends test_site_object_template
   
   function _clean_content_db_table_records()
   {
-		$content_object_adapter = new content_object_template_test_adapter($this->object);
-		$db_table = $content_object_adapter->get_db_table();
+		$db_table = $this->object->_get_db_table();
   	$this->db->sql_delete($db_table->get_table_name());
   }
   
@@ -158,8 +130,7 @@ class test_content_object_template extends test_site_object_template
 		$conditions['object_id'] = $this->object->get_id();
 		$conditions['version'] = $this->object->get_version();
 
-		$content_object_adapter = new content_object_template_test_adapter($this->object);
-		$db_table = $content_object_adapter->get_db_table();
+		$db_table = $this->object->_get_db_table();
 		$arr = $db_table->get_list($conditions, 'id');
 
   	$this->assertEqual(sizeof($arr), 1);

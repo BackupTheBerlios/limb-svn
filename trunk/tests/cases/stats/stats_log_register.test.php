@@ -191,9 +191,9 @@ class test_stats_log extends UnitTestCase
   	$this->stats_ip2->setReturnValue('get_client_ip', $ip);
   	
 		$this->stats_register2->set_register_time(time()+ 60*60*24 + 1);
-  	$this->stats_register2->register(4, 'edit', RESPONSE_STATUS_NOT_VALID);
+  	$this->stats_register2->register(4, 'edit', RESPONSE_STATUS_FORM_NOT_VALID);
 		
-		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', RESPONSE_STATUS_NOT_VALID, $this->stats_register2->get_register_time_stamp());
+		$this->_check_stats_log_record(2, 2, 10, 4, 'edit', RESPONSE_STATUS_FORM_NOT_VALID, $this->stats_register2->get_register_time_stamp());
 		$this->_check_stats_referer_url_record(1, 1, 'some.referer.com');
 		$this->_check_stats_counter_record(2, 1, 2, 1, $this->stats_register2->get_register_time_stamp());
 		$this->_check_stats_ip_record(1, $ip, $this->stats_register2->get_register_time_stamp());

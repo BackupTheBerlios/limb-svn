@@ -15,7 +15,7 @@ class not_valid_response extends response
 {
 	function not_valid_response()
 	{
-		parent :: response(RESPONSE_STATUS_NOT_VALID);
+		parent :: response(RESPONSE_STATUS_FORM_NOT_VALID);
 	}
 } 
 ?>

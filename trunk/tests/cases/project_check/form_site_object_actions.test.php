@@ -31,34 +31,32 @@ class test_form_site_object_actions extends UnitTestCase
 	function _check_all_actions()
 	{
 		foreach($this->actions as $action)
-		{
 			$this->_check_action($action);
-		}
 	}
 		
 	function _check_action($action)
 	{
-		if(	is_subclass_of($action, 'form_create_site_object_action') ||
-				is_subclass_of($action, 'form_edit_site_object_action'))
-		{
-			$definition = $action->get_definition();
-			$site_object = $action->get_site_object();
+		if(!is_subclass_of($action, 'form_create_site_object_action') &&
+				!is_subclass_of($action, 'form_edit_site_object_action'))
+		return;		
 
-			$action->_init_validator(); //this is not a very good idea...
-			$validator = $action->get_validator();
-			
-			$rules = $validator->get_rules();
-			
-			foreach($rules as $rule)
-			{
-				if(!is_subclass_of($rule, 'single_field_rule'))
-					continue;
-					
-				$field_name = $rule->get_field_name();
+		$definition = $action->get_definition();
+		$site_object = $action->get_site_object();
+
+		$action->_init_validator(); //this is not a very good idea...
+		$validator = $action->get_validator();
+		
+		$rules = $validator->get_rules();
+		
+		foreach($rules as $rule)
+		{
+			if(!is_subclass_of($rule, 'single_field_rule'))
+				continue;
 				
-				$this->assertTrue(isset($definition['datamap'][$field_name]),
-					'no such field in datamap(validator rule) "' . $field_name. '" in "' . get_class($action) . '"' );
-			}
+			$field_name = $rule->get_field_name();
+			
+			$this->assertTrue(isset($definition['datamap'][$field_name]),
+				'no such field in datamap(validator rule) "' . $field_name. '" in "' . get_class($action) . '"' );
 		}
 	}
 	

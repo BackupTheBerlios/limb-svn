@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/ 
 define('RESPONSE_STATUS_SUCCESS', 15);
-define('RESPONSE_STATUS_FIRST_TIME', 2);
+define('RESPONSE_STATUS_FORM_NOT_SUBMITTED', 2);
 
 define('RESPONSE_STATUS_FAILURE', 240);
-define('RESPONSE_STATUS_NOT_VALID', 16);
+define('RESPONSE_STATUS_FORM_NOT_VALID', 16);
 
 class response
 {

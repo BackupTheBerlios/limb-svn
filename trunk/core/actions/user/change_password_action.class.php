@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/match_rule.class.php');
+require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class change_password_action extends form_edit_site_object_action
 {
@@ -34,12 +35,30 @@ class change_password_action extends form_edit_site_object_action
 		$this->validator->add_rule(new match_rule('second_password', 'password', 'PASSWORD'));
 	}
 	
+	function perform()
+	{
+		if ($this->_changing_own_password())
+		{
+			$response = parent :: perform();
+		
+			if (RESPONSE_STATUS_SUCCESS == $response->get_status())
+				return new close_popup_response(RESPONSE_STATUS_SUCCESS, '/');
+			else
+				return $response;	
+		}		
+		else
+			return parent :: perform();
+	}
+	
+	function _changing_own_password()
+	{
+		$object_data = $this->_load_object_data();
+		return ($object_data['id'] == user :: get_id()) ? true : false;
+	}
+	
 	function _update_object_operation()
 	{
-		if(!$this->object->change_password())
-			return false;
-		else
-			return true;
+		return $this->object->change_password();
 	}
 }
 

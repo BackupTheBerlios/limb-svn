@@ -34,7 +34,6 @@ class composite_user_object extends user_object
 	function _synchronize_attributes()
 	{
 		$data =& $this->export_attributes();
-		
 		$this->_walk_node_objects('import_attributes', array('data' => $data));	
 	}
 	
@@ -97,12 +96,13 @@ class composite_user_object extends user_object
 		return true;
 	}
 
-	function generate_password($email)
+	function generate_password($email, &$new_non_crypted_password)
 	{
-		if(($result = parent :: generate_password($email)) === false)
+		if(($result = parent :: generate_password($email, $new_non_crypted_password)) === false)
 			return false;
 
-		if($this->_walk_node_objects('generate_password', array('email' => $email)) === false)
+		if($this->_walk_node_objects('generate_password', 
+				array('email' => $email, 'new_password' => $new_non_crypted_password)) === false)
 			return false;
 				
 		return $result;		
@@ -144,12 +144,11 @@ class composite_user_object extends user_object
 	function _walk_node_objects($function, $params = array())
 	{
 		foreach(array_keys($this->_node_objects) as $id)
-			if(call_user_func_array(array($this->_node_objects[$id], $function), $params)  === false)
+			if(call_user_func_array(array(&$this->_node_objects[$id], $function), $params)  === false)
 				return false;
 				
 		return true;
 	}
-
 }
 
 ?>

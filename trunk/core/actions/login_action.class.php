@@ -14,6 +14,8 @@ require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class login_action extends form_action
 {
+	var $user_object_class_name = 'user_object';
+
 	function login_action($name='login_form')
 	{
 		parent :: form_action($name);
@@ -58,8 +60,8 @@ class login_action extends form_action
 		$login = $this->_get('login');
 		$password = $this->_get('password');
 		
-		$user_object =& site_object_factory :: create('user_object');
-		
+		$user_object =& site_object_factory :: create($this->user_object_class_name);
+
 		if($user_object->login($login, $password))
 		{
 			if($redirect = $this->_get('redirect'))

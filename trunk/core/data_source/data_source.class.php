@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: data_source.class.php 435 2004-02-11 16:22:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 class data_source
@@ -19,7 +19,6 @@ class data_source
 		$counter = 0;
 		return new array_dataset(array());
 	}
-	
 }
 
 

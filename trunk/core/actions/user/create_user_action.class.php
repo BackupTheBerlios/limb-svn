@@ -45,13 +45,6 @@ class create_user_action extends form_create_site_object_action
 		$this->validator->add_rule(new match_rule('second_password', 'password', 'PASSWORD'));
 		$this->validator->add_rule(new required_rule('email'));
 	}
-	
-	function _valid_perform_prepare_data(&$data)
-	{
-		parent :: _valid_perform_prepare_data(&$data);
-		
-		$data['password'] = user :: get_crypted_password($data['identifier'], $data['password']);
-	}
 }
 
 ?>

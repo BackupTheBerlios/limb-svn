@@ -1,0 +1,42 @@
+<core:WRAP file="admin/page.html" placeholder="content">
+<br>
+
+<DATA_SOURCE target='events' navigator='pager'>
+	<core:PARAMETER name='data_source_path' value='stats_events_list_data_source'>
+	<core:PARAMETER name='order' value='time=DESC'>
+</DATA_SOURCE>
+
+<pager:navigator id="pager" items="60">
+<core:INCLUDE file="pager_contents.html">
+</pager:navigator>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<th><locale:STRING name='event_code' file='stats'></th>
+<th><locale:STRING name='date'></th>
+<th>ip</th>
+<th><locale:STRING name='action'></th>
+<th><locale:STRING name='object'></th>
+<th><locale:STRING name='user' file='user'></th>
+</tr>
+
+<list:LIST id='events'>
+<list:ITEM>
+<list:STRIPE odd>
+<tr bgcolor='#f0f0f0'>
+</list:STRIPE>
+
+<list:STRIPE even>
+<tr>
+</list:STRIPE>
+
+<td align='center'>{$id}</td>
+<td><locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'></td>
+<td>{$ip}</td>
+<td>{$action}</td>
+<td><a href='/root?node_id={$node_id}' target='_blank'>{$identifier} : {$title}</a></td>
+<td><a href='/root/users/{$user_login}' target='_blank'>{$user_login}</a></td>
+</tr>
+</list:ITEM>
+</list:LIST>
+</table>

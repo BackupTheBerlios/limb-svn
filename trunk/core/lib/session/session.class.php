@@ -44,6 +44,13 @@ class session
 			unset($_SESSION[$name]);
 		}
 	}
+	
+	function destroy_user_session($user_id)
+	{
+		$db =& db_factory :: instance();
+		
+		$db->sql_delete('sys_session', "user_id='{$user_id}'");
+	}
 }
 
 function start_user_session()
@@ -64,7 +71,7 @@ function start_user_session()
 
 function _register_session_db_functions()
 {
-	session_module_name( 'user' );
+	session_module_name('user');
 	session_set_save_handler(
 	    '_session_db_open',
 	    '_session_db_close',

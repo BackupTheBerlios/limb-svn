@@ -5,16 +5,25 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: files_folder.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/form_delete_site_object_action.class.php');
+require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
-class delete_faq_folder_action extends form_delete_site_object_action
+class stats_event extends site_object
 {
-	function delete_faq_folder_action($name = 'delete_form')
-	{		
-		parent :: form_delete_site_object_action($name, array('site_object' => 'faq_folder'));
+	function stats_event()
+	{
+		parent :: site_object();
+	}
+	
+	function _define_class_properties()
+	{
+		return array(
+			'class_ordr' => 0,
+			'can_be_parent' => 0,
+			'controller_class_name' => 'stats_event_controller',
+		);
 	}
 }
 

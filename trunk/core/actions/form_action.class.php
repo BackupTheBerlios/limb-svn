@@ -116,7 +116,7 @@ class form_action extends action
 
 	function _first_time_perform()
 	{
-		return new response(RESPONSE_STATUS_FIRST_TIME);
+		return new response(RESPONSE_STATUS_FORM_NOT_SUBMITTED);
 	}
 		
 	function _valid_perform()

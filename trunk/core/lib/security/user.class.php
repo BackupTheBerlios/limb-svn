@@ -210,7 +210,7 @@ class user
 		{
 			$j = $i%2;
 			$min_value = 0;
-			$max_value = count($alphabet[$j]);
+			$max_value = count($alphabet[$j]) - 1;
 			$key = rand($min_value, $max_value);
 			$new_password .= $alphabet[$j][$key];
 		}
