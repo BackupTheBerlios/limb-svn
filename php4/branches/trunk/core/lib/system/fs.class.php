@@ -79,7 +79,7 @@ class fs
     for ($i=$index; $i < count($path_elements); $i++)
     {
       $offset_path .= $path_elements[$i] . $separator;
-
+    
       if (!fs :: _do_mkdir($offset_path, $perm))
         return false;
     }
