@@ -16,14 +16,14 @@ require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
 
-Mock::generate('LimbToolkit');
-Mock::generate('request');
-Mock::generate('fetcher');
-Mock::generate('site_object');
-Mock::generate('site_object_controller');
-Mock::generate('access_policy');
+Mock :: generate('LimbToolkit');
+Mock :: generate('request');
+Mock :: generate('fetcher');
+Mock :: generate('site_object');
+Mock :: generate('site_object_controller');
+Mock :: generate('access_policy');
 
-Mock::generatePartial(
+Mock :: generatePartial(
                       'apply_action_access_template_command',
                       'apply_action_access_template_command_test_version',
                       array('_get_access_policy'));

@@ -11,14 +11,14 @@
 require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
 require_once(dirname(__FILE__) . '/../../../simple_authorizer.class.php');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'simple_authorizer',
   'simple_authorizer_test_version',
   array('_get_controller')
 ); 
 
-Mock::generate('site_object_controller');
+Mock :: generate('site_object_controller');
   
 class simple_authorizer_test extends LimbTestCase 
 {  	

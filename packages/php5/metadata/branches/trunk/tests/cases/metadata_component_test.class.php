@@ -18,7 +18,7 @@ Mock :: generatePartial(
   array('_get_mapped_controller')
 );
 
-Mock::generate('site_object_controller');
+Mock :: generate('site_object_controller');
 
 class metadata_component_test extends LimbTestCase
 {

@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/../../../stats_uri.class.php');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_uri',
   'stats_uri_self_test_version',

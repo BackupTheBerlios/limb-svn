@@ -17,15 +17,15 @@ require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . '/class/core/dataspace.class.php');
 
-Mock::generate('LimbToolkit');
-Mock::generate('request');
-Mock::generate('fetcher');
-Mock::generate('site_object');
-Mock::generate('site_object_controller');
-Mock::generate('access_policy');
-Mock::generate('dataspace');
+Mock :: generate('LimbToolkit');
+Mock :: generate('request');
+Mock :: generate('fetcher');
+Mock :: generate('site_object');
+Mock :: generate('site_object_controller');
+Mock :: generate('access_policy');
+Mock :: generate('dataspace');
 
-Mock::generatePartial(
+Mock :: generatePartial(
                       'save_new_object_access_command',
                       'save_new_object_access_command_test_version',
                       array('_get_access_policy'));

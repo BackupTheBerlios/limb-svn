@@ -11,7 +11,7 @@
 require_once(dirname(__FILE__) . '/../../../stats_register.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_register',
   'stats_register_test_version',
@@ -23,7 +23,7 @@ Mock::generatePartial
   )
 );
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_counter',
   'stats_counter_test_version2',
@@ -33,7 +33,7 @@ Mock::generatePartial
   )
 );
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_ip',
   'stats_ip_test_version',
@@ -43,7 +43,7 @@ Mock::generatePartial
   )
 ); 
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_referer',
   'stats_referer_test_version',
@@ -52,7 +52,7 @@ Mock::generatePartial
   )
 ); 
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_search_phrase',
   'stats_search_phrase_test_version',

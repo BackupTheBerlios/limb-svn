@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/../../../stats_referer.class.php');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_referer',
   'stats_referer_self_test_version',

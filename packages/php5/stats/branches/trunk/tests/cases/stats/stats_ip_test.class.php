@@ -11,7 +11,7 @@
 require_once(dirname(__FILE__) . '/../../../stats_ip.class.php');
 require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_ip',
   'stats_ip_self_test_version',

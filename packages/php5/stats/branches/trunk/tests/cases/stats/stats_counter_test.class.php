@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/../../../stats_register.class.php');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_counter',
   'stats_counter_test_version',

@@ -10,9 +10,9 @@
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/../../../stats_search_phrase.class.php');
 
-Mock::generate('search_engine_regex_rule');
+Mock :: generate('search_engine_regex_rule');
 
-Mock::generatePartial
+Mock :: generatePartial
 (
   'stats_search_phrase',
   'stats_search_phrase_self_test_version',
