@@ -225,12 +225,6 @@ class fs_test extends LimbTestCase
   	
   	$mock = new special_dir_walker();
   	
-/*  	
-  	$this->assertEqual(
-  		fs :: walk_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/', array(&$mock, 'walk'), array('test')),
-  		array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-  	);*/
-
   	$this->assertEqual(
   		fs :: walk_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/', array(&$mock, 'walk'), array('test')),
   		array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)

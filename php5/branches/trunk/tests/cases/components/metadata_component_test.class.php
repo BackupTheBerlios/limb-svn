@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 require_once(LIMB_DIR . 'class/core/user.class.php');
 require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'class/template/components/metadata_component.class.php');
@@ -21,10 +20,8 @@ Mock :: generatePartial(
 
 Mock::generate('site_object_controller');
 
-class metadata_component_test extends db_test 
+class metadata_component_test extends LimbTestCase 
 {
-	var $dump_file = 'metadata.sql';
-	
 	var $metadata_component = null;
 	var $controller = null;
 
@@ -34,7 +31,7 @@ class metadata_component_test extends db_test
 	
   function setUp()
   {
-  	parent :: setUp();
+  	load_testing_db_dump(dirname(__FILE__) . '/../../sql/metadata.sql');
   	
   	$this->metadata_component = new metadata_component_test_version($this);
   	$this->metadata_component->__construct();
@@ -64,7 +61,7 @@ class metadata_component_test extends db_test
   
   function tearDown()
   {
-  	parent :: tearDown();
+  	clear_testing_db_tables();
   	
   	$user =& user :: instance();
   	$user->logout();

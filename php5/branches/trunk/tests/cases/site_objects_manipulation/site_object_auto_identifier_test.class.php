@@ -80,8 +80,6 @@ class site_object_auto_identifier_test extends LimbTestCase
   	
   function test_create_first()
   {
-  	debug_mock :: expect_never_write();
-
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
 		
@@ -92,9 +90,7 @@ class site_object_auto_identifier_test extends LimbTestCase
 
   function test_create_text_only()
   {
-  	debug_mock :: expect_never_write();
-
-		$this->_create_node('ru');
+	  $this->_create_node('ru');
 		
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
@@ -106,12 +102,10 @@ class site_object_auto_identifier_test extends LimbTestCase
 
   function test_create_complex()
   {
-  	debug_mock :: expect_never_write();
-
-		$this->_create_node('10ru1');
-		$this->_create_node('10ru2');
-		$this->_create_node('10a1');
-		$this->_create_node(1000);
+	  $this->_create_node('10ru1');
+	  $this->_create_node('10ru2');
+	  $this->_create_node('10a1');
+	  $this->_create_node(1000);
 
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
@@ -123,12 +117,10 @@ class site_object_auto_identifier_test extends LimbTestCase
 
   function test_create_complex2()
   {
-  	debug_mock :: expect_never_write();
-
-		$this->_create_node('test');
-		$this->_create_node('test8');
-		$this->_create_node('test9');
-		$this->_create_node('test10');
+	  $this->_create_node('test');
+	  $this->_create_node('test8');
+	  $this->_create_node('test9');
+	  $this->_create_node('test10');
 
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('node_test');
@@ -136,6 +128,32 @@ class site_object_auto_identifier_test extends LimbTestCase
   	$id = $this->object->create();
   	
   	$this->assertEqual($this->object->get_identifier(), 'test11');
+  }
+
+  function test_create_complex3()
+  {
+	  $this->_create_node('1test15');
+	  $this->_create_node('2test17');
+	  $this->_create_node('3test18');
+	  $this->_create_node('4test19');
+
+  	$this->object->set_parent_node_id($this->parent_node_id);
+		
+  	$id = $this->object->create();
+  	
+  	$this->assertEqual($this->object->get_identifier(), '4test20');
+  }
+
+  function test_create_simple()
+  {
+	  $this->_create_node('118');
+	  $this->_create_node('119');
+
+  	$this->object->set_parent_node_id($this->parent_node_id);
+		
+  	$id = $this->object->create();
+  	
+  	$this->assertEqual($this->object->get_identifier(), '120');
   }
   
   function _create_node($identifier)

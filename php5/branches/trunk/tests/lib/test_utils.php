@@ -51,4 +51,47 @@ function clear_testing_ini()
 	 unset($GLOBALS[$instance_name]);
 }
 
+function load_testing_db_dump($dump_path)
+{
+	if(!file_exists($dump_path))
+		die('"' . $dump_path . '" sql dump file not found!');
+		
+  $tables = array();
+  $sql_array = file($dump_path);
+  
+  $db = db_factory::instance();
+  	
+	foreach($sql_array as $sql)
+	{
+		if(!preg_match("|insert\s+?into\s+?([^\s]+)|i", $sql, $matches))
+		  continue;
+
+		if(isset($tables[$matches[1]]))
+		  continue;
+
+		$tables[$matches[1]] = $matches[1];	
+		$db->sql_delete($matches[1]);
+	}
+	
+	$GLOBALS['testing_db_tables'] = $tables;
+	
+	foreach($sql_array as $sql)
+	{    		
+		$db->sql_exec($sql);
+	}
+}
+
+function clear_testing_db_tables()
+{
+  if(!isset($GLOBALS['testing_db_tables']))
+    return;
+  
+  $db = db_factory::instance();
+  
+	foreach($GLOBALS['testing_db_tables'] as $table)
+		$db->sql_delete($table);
+		
+	$GLOBALS['testing_db_tables'] = array();
+}
+
 ?>

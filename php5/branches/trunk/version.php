@@ -31,22 +31,22 @@ define('LIMB_VERSION_MAJOR', '2');
 /**
  * Minor software version
  */
-define('LIMB_VERSION_MINOR', '2');
+define('LIMB_VERSION_MINOR', '9');
 
 /**
  * Micro software version
  */
-define('LIMB_VERSION_MICRO', '2');
+define('LIMB_VERSION_MICRO', '');
 
 /**
  * Software version patch
  */
-define('LIMB_VERSION_PATCH', '');
+define('LIMB_VERSION_PATCH', '-alpha');
 
 /**
  * Software release version
  */
-define('LIMB_RELEASE_NAME', 'Vacation Edition');
+define('LIMB_RELEASE_NAME', '');
 
 /**
  * Software build (full) date

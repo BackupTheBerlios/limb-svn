@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
-require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
@@ -17,10 +15,8 @@ require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php
 Mock :: generate('site_object');
 Mock :: generate('site_object_controller');
 
-class save_object_access_policy_test extends db_test 
+class save_object_access_policy_test extends LimbTestCase 
 {  	
-	var $dump_file = 'access_policy_load.sql';
-
 	var $ac = null;
 	var $object = null;
 	var $parent_object = null;
@@ -28,7 +24,7 @@ class save_object_access_policy_test extends db_test
   
   function setUp()
   {
-  	parent :: setUp();
+  	load_testing_db_dump(dirname(__FILE__) . '/../../sql/access_policy_load.sql');
   	
   	$this->ac =& access_policy :: instance();
 		$this->object = new Mocksite_object($this);
@@ -44,7 +40,7 @@ class save_object_access_policy_test extends db_test
 
   function tearDown()
   {
-  	parent :: tearDown();
+  	clear_testing_db_tables();
   	
   	$this->object->tally();
   	$this->parent_object->tally();

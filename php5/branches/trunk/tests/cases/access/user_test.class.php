@@ -8,17 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 require_once(LIMB_DIR . 'class/core/user.class.php');	
 
-class user_test extends db_test 
+class user_test extends LimbTestCase 
 {  	
-	var $dump_file = 'user_login.sql';
+	function setUp()
+	{
+	  load_testing_db_dump(dirname(__FILE__) . '/../../sql/user_login.sql');
+	}
 	
 	function tearDown()
 	{
   	$user =& user :: instance();
-  	$user->logout();	
+  	$user->logout();
+  	
+  	clear_testing_db_tables();
 	}
 	
   function _login_user($id, $groups)

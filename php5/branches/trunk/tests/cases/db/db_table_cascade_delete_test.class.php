@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
-
 require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 
@@ -78,7 +76,7 @@ class test_media_db_table extends db_table
     );
   }  
 }
-class db_table_cascade_delete_test extends db_test
+class db_table_cascade_delete_test extends LimbTestCase
 {
 	var $image = null;
 	var $image_variation = null;
@@ -92,7 +90,12 @@ class db_table_cascade_delete_test extends db_test
 		$this->image_variation =& db_table_factory :: create('test_image_variation');
 		$this->media =& db_table_factory :: create('test_media');
 		
-		parent :: setUp();
+		load_testing_db_dump(dirname(__FILE__) . '/../../sql/cascade_delete.sql');
+	}
+	
+	function tearDown()
+	{
+	  clear_testing_db_tables();
 	}
 
 	function test_cascade_delete()

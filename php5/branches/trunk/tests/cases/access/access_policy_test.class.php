@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
-
 require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 
@@ -22,10 +20,8 @@ Mock::generatePartial
 
 Mock::generate('site_object_controller');
   
-class access_policy_test extends db_test 
+class access_policy_test extends LimbTestCase 
 {  	
-	var $dump_file = 'access_policy_load.sql';
-
 	var $ac = null;
 
 	var $objects_to_filter = array();
@@ -36,8 +32,8 @@ class access_policy_test extends db_test
 	  
   function setUp()
   {
-  	parent :: setUp();
-		
+  	load_testing_db_dump(dirname(__FILE__) . '/../../sql/access_policy_load.sql');
+  	
   	$this->ac = new access_policy_test_version($this);
 
   	$this->objects_to_assign_actions = array(
@@ -81,12 +77,12 @@ class access_policy_test extends db_test
   
   function tearDown()
   {
-  	parent :: tearDown();
-  	
   	$user =& user :: instance();
   	$user->logout();
   	
   	$this->ac->tally();
+  	
+  	clear_testing_db_tables();
   }
   
   function _login_user($id, $groups)

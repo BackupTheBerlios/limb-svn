@@ -8,24 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 require_once(LIMB_DIR . 'class/core/access_policy.class.php');
 
-class load_access_policy_test extends db_test 
+class load_access_policy_test extends LimbTestCase 
 {  	
-	var $dump_file = 'access_policy_load.sql';
-
 	var $ac = null;
 	  
   function setUp()
   {
-  	parent :: setUp();
+  	load_testing_db_dump(dirname(__FILE__) . '/../../sql/access_policy_load.sql');
   	
   	$this->ac =& access_policy :: instance();
   }
   
   function tearDown()
   {
+    clear_testing_db_tables();
   }
 
 	function test_get_user_object_access_by_ids()

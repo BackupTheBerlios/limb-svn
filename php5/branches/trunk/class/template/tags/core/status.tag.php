@@ -43,8 +43,6 @@ class core_status_tag extends compiler_directive_tag
 
 	public function pre_generate($code)
 	{
-		parent::pre_generate($code);
-		
 		$value = 'true';
 		if (isset($this->attributes['value']) && !(boolean)$this->attributes['value'])
 			$value = 'false';
@@ -52,12 +50,15 @@ class core_status_tag extends compiler_directive_tag
 		$tempvar = $code->get_temp_variable();
 		$code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
 		$code->write_php('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
+		
+		parent::pre_generate($code);
 	} 
 
 	public function post_generate($code)
 	{
+	  parent::post_generate($code);
+	  
 		$code->write_php('}');
-		parent::post_generate($code);
 	} 
 } 
 

@@ -8,28 +8,31 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 require_once(LIMB_DIR . '/class/search/full_text_search.class.php');
 require_once(LIMB_DIR . '/class/search/search_query.class.php');
 
-class search_full_text_find_test extends db_test
+class search_full_text_find_test extends LimbTestCase
 {
 	var $search = null;
 	var $search_query = null;
-	var $dump_file = 'full_text_search.sql'; 
 
 	function search_full_text_find_test($name = 'full text search find test case')
 	{
-		parent :: db_test($name);
+		parent :: LimbTestCase($name);
 	}
 	
 	function setUp()
 	{
-		parent :: setUp();
+		load_testing_db_dump(dirname(__FILE__) . '/../../sql/full_text_search.sql');
 		
 		$this->search_query = new search_query();
 		$this->search = new full_text_search();
 	} 
+	
+	function tearDown()
+	{
+	  clear_testing_db_tables();
+	}	
 		
 	function test_simple_find()
 	{	

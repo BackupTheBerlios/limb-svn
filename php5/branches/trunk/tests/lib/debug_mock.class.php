@@ -24,11 +24,6 @@ class debug_mock extends debug
 		$debug->mock = new SimpleMock($test, $wildcard, false);
 	} 
 	
-  static public function expect_never_write() 
-  {
-  	self :: instance()->mock->expectNever('write');
-  }
-
 	static public function expect_write_exception($e)
 	{
 	  if($e instanceof LimbException)

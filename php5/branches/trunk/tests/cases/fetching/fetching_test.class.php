@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/core/user.class.php');
-require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 require_once(LIMB_DIR . 'class/core/request/request.class.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object_factory.class.php');
@@ -55,8 +54,9 @@ class fetching_object2_test_version extends site_object
 	}
 }
 
-class fetching_test extends db_test 
+class fetching_test extends LimbTestCase 
 { 
+  var $db = null;
 	var $fetcher = null;
 	var $access_policy = null;
 	var $articles_object = null;
@@ -68,8 +68,8 @@ class fetching_test extends db_test
 	  
   function setUp()
   {
-  	parent :: setUp();
-  	
+    $this->db = db_factory :: instance();
+    
   	$this->fetcher = new fetcher();
   	
   	$this->fetcher->set_jip_status(true);
@@ -139,8 +139,6 @@ class fetching_test extends db_test
   
   function tearDown()
   {
-  	parent :: tearDown();
-  	
   	$user =& user :: instance();
   	$user->logout();  	
   	

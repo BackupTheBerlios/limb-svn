@@ -130,8 +130,6 @@ class site_object_tester extends LimbTestCase
 			
 			if(isset($data['action_path']))
 			{	
-				debug_mock :: expect_never_write('write_error');
-				
 				$action_obj = action_factory :: create($data['action_path']);
 				
 				$this->assertNotIdentical($action_obj, $empty_action,
@@ -224,8 +222,6 @@ class site_object_tester extends LimbTestCase
 	
   function test_create()
   {
-  	debug_mock :: expect_never_write();
-  	
   	$this->object->set_parent_node_id($this->parent_node_id);
   	$this->object->set_identifier('test_site_object');
 		
