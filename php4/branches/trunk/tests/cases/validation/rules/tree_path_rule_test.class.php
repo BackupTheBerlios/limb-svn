@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/core/tree/tree.class.php');
 require_once(LIMB_DIR . '/core/lib/util/dataspace.class.php');
 require_once(LIMB_DIR . '/core/lib/validators/rules/tree_path_rule.class.php');
-require_once(LIMB_DIR . '/tests/cases/validation/rules/_single_field_rule_test.class.php');
+require_once(LIMB_DIR . '/tests/cases/validation/rules/single_field_rule_test.class.php');
 
 class tree_path_rule_test extends single_field_rule_test
 {

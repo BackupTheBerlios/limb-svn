@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/validators/rules/single_field_rule.class.php');
-require_once(LIMB_DIR . '/tests/cases/validation/rules/__rule_test.class.php');
+require_once(LIMB_DIR . '/tests/cases/validation/rules/rule_test.class.php');
 
 class single_field_rule_test extends rule_test
 {
