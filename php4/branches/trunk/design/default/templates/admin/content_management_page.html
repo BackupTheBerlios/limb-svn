@@ -6,19 +6,21 @@
 <script language="javascript" src="/shared/js/common.js"></script>
 <script language="javascript" src="/shared/js/form_errors.js"></script>
 <script language="javascript" src="/shared/js/store_tab_url.js"></script>
+<script language="javascript" src="/shared/js/admin_menu_toggler.js"></script>
 <script language="javascript" src="/shared/js/hint.js"></script>
 <metadata:METADATA>
 	<meta name="description" content="{$description}">
 	<meta name="keywords" content="{$keywords}">
 </metadata:METADATA>
 </head>
-<body bgcolor="#FFFFFF">
+<body bgcolor="#FFFFFF" onload='init_menu()'>
 <!--BEGIN: layout-->
 
 <!--BEGIN: body-->
 <table width=100% border=0 cellspacing=0 cellpadding=0>
 <tr>
 	<td valign='top' style='padding:10px'>
+		<img src='/shared/images/1x1.gif' width='160px' height='1px'>
 		<core:INCLUDE file="/navigation/content_management_admin.html">
     <core:INCLUDE file="/admin/session_history.html"> 
 	</td>

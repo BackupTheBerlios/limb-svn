@@ -48,7 +48,7 @@ a:hover{text-decoration:underline}
 
 /*design*/
 .cp-header{border-bottom:0;border-top:dashed 3px #d0d0d0;}
-.btitle1{font: bold; padding:2px 10px 2px 10px; background-color:#F3F3F3;text-align:center;border:solid 1px #E4E4E4;}
+.btitle1{font: bold; padding:2px 1px 2px 1px; background-color:#F3F3F3;text-align:center;border:solid 1px #E4E4E4;}
 .btitle1 a{color:#ffffff;text-transform:uppercase}
 .btitle2{padding:7px 10px 6px 30px;}
 .border1{border:solid 1px #E4E4E4; background-color:#FBFBFB;}
