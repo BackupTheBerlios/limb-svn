@@ -1,0 +1,94 @@
+<core:WRAP file="admin/page.html" placeholder="content">
+
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='images_folder'  navigator="pager">
+	<core:PARAMETER name='loader_class_name' value='images_folder'>
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<fetch:SUB_BRANCH target='images' navigator="pager" >
+	<core:PARAMETER name='loader_class_name' value='image_object' >
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+
+<grid:LIST id='images_folder'>
+<table border=0 cellspacing=2 cellpadding=0>
+<tr>
+	<td colspan=5 class=btitle1>Site management's table header: common grid items</td>
+</tr>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='articles_folder' file='article'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="row">
+	<td><core:INCLUDE file="/admin/selector.html"></td>
+	<td jip='object' class=jip-object valign='bottom'>
+		<core:OPTIONAL for='title'>
+		<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$title}({$children})</a>
+		</core:OPTIONAL>
+		<core:DEFAULT for='title'>
+		<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$identifier}</a>
+		</core:DEFAULT>		
+	</td>
+	<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+	<td><core:INCLUDE file='/admin/priority_input.html'></td>
+	<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr><td colspan=5 class=btitle1 height=3></td></tr>
+<tr>
+	<td colspan='3' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td></td>
+</tr>
+</table>
+</grid:LIST>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='images'>
+<table border=0 cellspacing=2 cellpadding=0>
+<tr>
+	<td colspan=5 class=btitle1>Site management's table header: common grid items</td>
+</tr>
+	<tr>
+		<th><grid:SELECTORS_TOGGLER></th>
+		<th><locale:STRING name='image' file='image'></th>
+		<th><locale:STRING name='modified_date'></th>
+		<th><locale:STRING name='items_order'></th>
+		<th><locale:STRING name='actions'></th>
+	</tr>
+<grid:ITERATOR>
+<tr class="row">
+	<td><core:INCLUDE file="/admin/selector.html"></td>
+	<td jip='object' class=jip-object>
+		<core:OPTIONAL for='title'>
+		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
+		</core:OPTIONAL>
+		<core:DEFAULT for='title'>
+		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
+		</core:DEFAULT>		
+	</td>
+	<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+	<td><core:INCLUDE file='/admin/priority_input.html'></td>
+	<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr><td colspan=5 class=btitle1 height=3></td></tr>
+<tr>
+	<td colspan='3' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td></td>
+</tr>
+</table>
+</grid:LIST>

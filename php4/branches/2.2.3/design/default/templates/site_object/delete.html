@@ -1,0 +1,17 @@
+<core:WRAP file="popup.html" placeholder="content">
+
+<form method="post" name="delete_form" id="delete_form">
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+  <col span=2 align=center>
+	<tr>
+		<td colspan=2><h1><locale:STRING name='want_to_delete'></h1></td>
+	</tr>
+	<tr>
+		<td colspan=2 height=20></td>
+	</tr>
+	<tr>
+	  <td><action_button action="delete" name="delete" id="delete" locale_value="delete" class="button"></td>
+	  <td><input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button"></td>
+	</tr>
+  </table>
+</form>
