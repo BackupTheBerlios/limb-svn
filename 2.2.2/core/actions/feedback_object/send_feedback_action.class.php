@@ -40,7 +40,14 @@ class send_feedback_action extends form_action
 
 		return $email;
 	}
-	
+
+	function _get_mail_subject()
+	{
+		return sprintf(strings :: get('message_subject', 'feedback'), 
+												$this->dataspace->get('subject'),
+												$_SERVER['HTTP_HOST']);	
+	}	
+
 	function _valid_perform(&$request, &$response)
 	{
 		$mail_data = $this->dataspace->export();
@@ -57,9 +64,7 @@ class send_feedback_action extends form_action
 										
 		$body = str_replace('<br>', "\n", $body);
 
-		$subject = sprintf(strings :: get('message_subject', 'feedback'), 
-												$mail_data['subject'],
-												$_SERVER['HTTP_HOST']);
+		$subject = $this->_get_mail_subject();
 		
 		$recipient_email = $this->_get_email();
 		

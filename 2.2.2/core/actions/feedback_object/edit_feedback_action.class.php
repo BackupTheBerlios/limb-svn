@@ -19,7 +19,7 @@ class edit_feedback_action extends form_edit_site_object_action
 	  
 	function _define_dataspace_name()
 	{
-	  return 'edit_feedback_content';
+	  return 'feedback_form';
 	}
   
   function _define_datamap()
