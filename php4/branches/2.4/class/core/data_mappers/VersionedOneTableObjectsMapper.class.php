@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/data_mappers/OneTableObjectsMapper.class.php');
 
-abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
+class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
 {
   function findByVersion($id, $version)
   {

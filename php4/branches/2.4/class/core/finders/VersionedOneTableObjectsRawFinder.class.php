@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/finders/OneTableObjectsRawFinder.class.php');
 
-abstract class VersionedOneTableObjectsRawFinder extends OneTableObjectsRawFinder
+class VersionedOneTableObjectsRawFinder extends OneTableObjectsRawFinder
 {
   function find($params=array(), $sql_params=array())
   {

@@ -11,7 +11,7 @@
 /**
 * Ancester tag class for input controls
 */
-abstract class ControlTag extends ServerTagComponentTag
+class ControlTag extends ServerTagComponentTag
 {
   function getServerId()
   {

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-abstract class AbstractDataMapper
+class AbstractDataMapper
 {
   //current SimpleTest has limited support for php5 features,
   //error pops up when abstract ones are partially mocked :(

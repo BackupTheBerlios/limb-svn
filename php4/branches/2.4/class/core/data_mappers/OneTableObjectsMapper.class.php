@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectMapper.class.php');
 
-abstract class OneTableObjectsMapper extends SiteObjectMapper
+class OneTableObjectsMapper extends SiteObjectMapper
 {
   protected  $_db_table = null;
 
@@ -33,7 +33,7 @@ abstract class OneTableObjectsMapper extends SiteObjectMapper
     return $this->_db_table;
   }
 
-  abstract function _defineDbTableName();
+  function _defineDbTableName(){die('abstract function!')}
 
   //for mocking
   function _doParentInsert($site_object)

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-abstract class ImageLibrary
+class ImageLibrary
 {
   const FLIP_HORIZONTAL = 1;
   const FLIP_VERTICAL = 2;
@@ -183,15 +183,15 @@ abstract class ImageLibrary
     return array($dst_width, $dst_height);
   }
 
-  abstract function flip($params);
+  function flip($params){die('abstract function!')}
 
-  abstract function cut($x, $y, $w, $h, $bg_color);
+  function cut($x, $y, $w, $h, $bg_color){die('abstract function!')}
 
-  abstract function resize($params);
+  function resize($params){die('abstract function!')}
 
-  abstract function rotate($angle, $bg_color);
+  function rotate($angle, $bg_color){die('abstract function!')}
 
-  abstract function commit();
+  function commit(){die('abstract function!')}
 
   function _hexColorToX11($color)
   {

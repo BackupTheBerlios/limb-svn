@@ -70,11 +70,11 @@ class DbModule
                 );
   }
 
-  abstract function _connectDbOperation($db_params);
+  function _connectDbOperation($db_params){die('abstract function!')}
 
-  abstract function _disconnectDbOperation($db_params);
+  function _disconnectDbOperation($db_params){die('abstract function!')}
 
-  abstract function _selectDbOperation($db_name);
+  function _selectDbOperation($db_name){die('abstract function!')}
 
   function disconnectDb()
   {
@@ -88,7 +88,7 @@ class DbModule
     $this->_sql_result = null;
   }
 
-  abstract function getAffectedRows();
+  function getAffectedRows(){die('abstract function!')}
 
   function sqlExec($sql, $limit=0, $offset=0)
   {
@@ -132,7 +132,7 @@ class DbModule
     return $this->_sql_result;
   }
 
-  abstract function _sqlExecOperation($sql);
+  function _sqlExecOperation($sql){die('abstract function!')}
 
   function sqlExecBatch($sql='')
   {
@@ -192,9 +192,9 @@ class DbModule
     return $sql;
   }
 
-  abstract function concat($values);
+  function concat($values){die('abstract function!')}
 
-  abstract function substr($string, $offset, $limit=null);
+  function substr($string, $offset, $limit=null){die('abstract function!')}
 
   function null()
   {
@@ -222,11 +222,11 @@ class DbModule
     return $this->sqlExec($this->makeDeleteString($table, $where));
   }
 
-  abstract function parseBatchSql(&$ret, $sql, $release);
+  function parseBatchSql(&$ret, $sql, $release){die('abstract function!')}
 
-  abstract function _resultNumFields();
+  function _resultNumFields(){die('abstract function!')}
 
-  abstract function _fetchAssocResultRow($col_num = '');
+  function _fetchAssocResultRow($col_num = ''){die('abstract function!')}
 
   function processValues($names_values, $column_types=array())
   {
@@ -324,9 +324,9 @@ class DbModule
     return strval($value);
   }
 
-  abstract function getLastError();
+  function getLastError(){die('abstract function!')}
 
-  abstract function getSqlInsertId();
+  function getSqlInsertId(){die('abstract function!')}
 
   function getMaxColumnValue($table_name, $column_name)
   {
@@ -343,7 +343,7 @@ class DbModule
     return $this->_fetchAssocResultRow();
   }
 
-  abstract function countSelectedRows();
+  function countSelectedRows(){die('abstract function!')}
 
   function makeInsertString($table, $names_values, $column_types=array())
   {
@@ -447,7 +447,7 @@ class DbModule
     }
   }
 
-  abstract function _beginOperation();
+  function _beginOperation(){die('abstract function!')}
 
   function commit()
   {
@@ -458,7 +458,7 @@ class DbModule
     }
   }
 
-  abstract function _commitOperation();
+  function _commitOperation(){die('abstract function!')}
 
   function rollback()
   {
@@ -469,7 +469,7 @@ class DbModule
     }
   }
 
-  abstract function _rollbackOperation();
+  function _rollbackOperation(){die('abstract function!')}
 }
 
 function sqlAnd($conditions, $column_types=array())

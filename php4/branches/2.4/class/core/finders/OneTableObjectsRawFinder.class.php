@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/finders/SiteObjectsRawFinder.class.php');
 
-abstract class OneTableObjectsRawFinder extends SiteObjectsRawFinder
+class OneTableObjectsRawFinder extends SiteObjectsRawFinder
 {
   protected  $_db_table = null;
 
@@ -27,7 +27,7 @@ abstract class OneTableObjectsRawFinder extends SiteObjectsRawFinder
     return $this->_db_table;
   }
 
-  abstract function _defineDbTableName();
+  function _defineDbTableName(){die('abstract function!')}
 
   function find($params=array(), $sql_params=array())
   {

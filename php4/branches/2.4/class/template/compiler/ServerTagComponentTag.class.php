@@ -14,7 +14,7 @@
 * an HTML tag. Makes it easier to implement instead of extending from the
 * server_component_tag class
 */
-abstract class ServerTagComponentTag extends ServerComponentTag
+class ServerTagComponentTag extends ServerComponentTag
 {
   /**
   * Returns the XML tag name

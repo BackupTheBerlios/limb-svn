@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-abstract class SiteObjectBehaviourFactory
+class SiteObjectBehaviourFactory
 {
   var $_behaviours = array();
 

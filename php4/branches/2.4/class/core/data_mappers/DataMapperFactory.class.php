@@ -17,7 +17,7 @@ if(!isRegisteredResolver('mapper'))
   registerFileResolver('mapper', new DataMapperFileResolver(new PackageFileResolver()));
 }
 
-abstract class DataMapperFactory
+class DataMapperFactory
 {
   function create($class_name)
   {

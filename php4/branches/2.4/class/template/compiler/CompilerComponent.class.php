@@ -14,7 +14,7 @@
 * Note this in the comments for this class, parent and child refer to the XML
 * heirarchy in the template, as opposed to the PHP class tree.
 */
-abstract class CompilerComponent
+class CompilerComponent
 {
   /**
   * XML attributes of the tag

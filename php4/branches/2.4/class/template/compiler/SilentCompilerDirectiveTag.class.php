@@ -14,7 +14,7 @@
 * not have a corresponding runtime component, nor do they normally generate
 * output into the compiled template.
 */
-abstract class SilentCompilerDirectiveTag extends CompilerComponent
+class SilentCompilerDirectiveTag extends CompilerComponent
 {
   /**
   * Does nothing -  silent_compiler_directive_tags do not generate

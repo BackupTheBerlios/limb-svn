@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php');
 
-abstract class InputFormElement extends FormElement
+class InputFormElement extends FormElement
 {
   /**
   * Overrides then calls with the parent render_attributes() method. Makes

@@ -13,5 +13,5 @@
 * Compiler directive tags do not have a corresponding runtime server component,
 * but they do render their contents into the compiled template.
 */
-abstract class CompilerDirectiveTag extends CompilerComponent {}
+class CompilerDirectiveTag extends CompilerComponent {}
 ?>

@@ -15,7 +15,7 @@ require_once(LIMB_DIR . '/class/core/DataspaceRegistry.class.php');
 /**
 * Base class for concrete form elements
 */
-abstract class FormElement extends TagComponent
+class FormElement extends TagComponent
 {
   /**
   * Whether the form element has validated successfully (default TRUE)

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-abstract class Rule
+class Rule
 {
   var $error_list = null;
 
@@ -24,9 +24,9 @@ abstract class Rule
     $this->error_list = $error_list;
   }
 
-  abstract function error($error, $params=array());
+  function error($error, $params=array()){die('abstract function!')}
 
-  abstract function validate($dataspace);
+  function validate($dataspace){die('abstract function!')}
 }
 
 ?>

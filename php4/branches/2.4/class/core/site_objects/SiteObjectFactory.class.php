@@ -17,7 +17,7 @@ if(!isRegisteredResolver('site_object'))
   registerFileResolver('site_object', new SiteObjectFileResolver(new PackageFileResolver()));
 }
 
-abstract class SiteObjectFactory
+class SiteObjectFactory
 {
   function create($class_name)
   {

@@ -17,7 +17,7 @@ if(!isRegisteredResolver('finder'))
   registerFileResolver('finder', new FinderFileResolver(new PackageFileResolver()));
 }
 
-abstract class FinderFactory
+class FinderFactory
 {
   function create($class_name)
   {

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
 
-abstract class FormEditSiteObjectCommand extends FormCommand
+class FormEditSiteObjectCommand extends FormCommand
 {
   function _registerValidationRules($validator, $dataspace)
   {
