@@ -23,7 +23,7 @@ class canada_zip_rule extends single_field_rule
 	{
 	  $value = "$value";
 	  
-    if(!preg_match("~^[a-zA-Z]\d[a-zA-Z]\s?\d[a-zA-Z]\d$~", $value))
+    if(!preg_match("~^[a-zA-Z]\d[a-zA-Z]\s\d[a-zA-Z]\d$~", $value))
       $this->error(strings :: get('error_invalid_zip_format', 'error'));
 	} 
 } 
