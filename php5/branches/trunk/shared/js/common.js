@@ -261,7 +261,7 @@ function process_popup()
 	
 	if(opener && (get_query_item(href, 'reload_parent')))
 		opener.location.reload();
-	
+	else
 	if (typeof(window.opener.popups) != 'undefined')
 		window.opener.popups[window.name]['status'] = 'processed';
 }
