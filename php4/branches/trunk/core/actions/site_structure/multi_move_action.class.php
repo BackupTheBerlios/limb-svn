@@ -92,6 +92,17 @@ class multi_move_action extends form_action
     return true;
   }
 
+  function _first_time_perform(&$request, &$response)
+  {
+    if(!$ids = $this->dataspace->get('ids'))
+    {
+      $response->write(close_popup_response($request));
+      return;
+    }
+
+    parent :: _first_time_perform($request, $response);
+  }
+
   function _valid_perform(&$request, &$response)
   {
     $ids = $this->dataspace->get('ids');
