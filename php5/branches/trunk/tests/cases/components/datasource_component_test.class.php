@@ -68,6 +68,7 @@ class datasource_component_test extends LimbTestCase
     $this->parent->tally();
     $this->request->tally();
     $this->datasource->tally();
+    $this->toolkit->tally();
     
     Limb :: popToolkit();
   }

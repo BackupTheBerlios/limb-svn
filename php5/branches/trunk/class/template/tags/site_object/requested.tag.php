@@ -8,29 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/
-class fetch_one_tag_info
+class site_object_requested_tag_info
 {
-	public $tag = 'fetch:ONE';
+	public $tag = 'site_object:REQUESTED';
 	public $end_tag = ENDTAG_REQUIRED;
-	public $tag_class = 'fetch_one_tag';
+	public $tag_class = 'site_object_requested_tag';
 } 
 
-register_tag(new fetch_one_tag_info());
+register_tag(new site_object_requested_tag_info());
 
-class fetch_one_tag extends server_component_tag
-{
+class site_object_requested_tag extends server_component_tag
+{	
   public function __construct()
   {
-	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/fetch_component';
+	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/site_object_component';
 	}
-		
+  
 	public function generate_contents($code)
-	{		
-		$code->write_php($this->get_component_ref_code() . '->fetch("' . $this->attributes['path'] . '");');
+	{
+		$code->write_php($this->get_component_ref_code() . '->fetch_requested();');
 		
 		parent :: generate_contents($code);
-	}
-	
+	}	
+
 	public function get_dataspace()
 	{
 		return $this;

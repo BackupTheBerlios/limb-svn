@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/core/tree/tree_sorter.class.php');
 
 class fetch_tree_datasource extends fetch_sub_branch_datasource
 {
-	protected function _fetch(&$counter, $params)
+	protected function fetch()
 	{
 		$tree = Limb :: toolkit()->getTree();
 
@@ -25,7 +25,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 		else
 			$order = array('priority' => 'ASC');
 		
-		$tree_array = parent :: _fetch($counter, $params);
+		$tree_array = parent :: fetch();
 		$tree_array = tree_sorter :: sort($tree_array, $order, 'node_id', 'parent_node_id');
 		
 		$path_node = $tree->get_node_by_path($params['path']);

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
+require_once(LIMB_DIR . '/class/template/component.class.php');
 
 class datasource_component extends component 
 {
