@@ -5,12 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: image_object.test.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/image_object.class.php');
+require_once(LIMB_DIR . '/tests/cases/site_objects/site_object_tester.class.php');
 
 Mock::generatePartial
 (
@@ -19,11 +20,11 @@ Mock::generatePartial
   array('_check_result', '_get_db_table_name')
 ); 
   
-class test_image_object extends test_site_object_template 
+class image_object_tester extends site_object_tester 
 {
-  function test_image_object() 
+  function image_object_tester() 
   {
-  	parent :: test_site_object_template();
+  	parent :: site_object_tester('image_object');
   }
 
   function & _create_site_object()

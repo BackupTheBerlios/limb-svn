@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: site_object_auto_identifier.test.php 16 2004-03-04 10:25:23Z server $
 *
 ***********************************************************************************/ 
 

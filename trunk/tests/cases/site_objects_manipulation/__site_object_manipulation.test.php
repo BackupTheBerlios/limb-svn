@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: __site_object_manipulation.test.php 81 2004-03-26 13:51:05Z server $
 *
 ***********************************************************************************/ 
 
@@ -13,62 +13,77 @@ require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 
-class mock_root_object extends site_object
+class site_object_manipulation_test extends site_object
 {
-	function mock_root_object()
+	function site_object_manipulation_test()
 	{
 		parent :: site_object();
+	}
+		
+	function _define_attributes_definition()
+	{
+		return array(
+			'title' => '',
+			'name' => array('type' => 'numeric'),
+			'search' => array('search' => true),
+		);		
 	}
 	
 	function _define_class_properties()
 	{
 		return array(
+			'ordr' => 1,
 			'can_be_parent' => 1,
+			'db_table_name' => 'site_object',
+			'controller_class_name' => 'test_controller'
 		);
 	}
 }
 
-SimpleTestOptions::ignore('test_site_object_template'); 
-
-class test_site_object_template extends UnitTestCase 
+class test_site_object_manipulation extends UnitTestCase 
 { 
 	var $db = null;
 	var $object = null;
 	
 	var $parent_node_id = '';
 	var $sub_node_id = '';
-	
-  function test_site_object_template() 
+		 	
+  function test_site_object_manipulation() 
   {
   	$this->db =& db_factory :: instance();
 
   	parent :: UnitTestCase();
   }
-  
-  function & _create_site_object()
-  {
-  	return null;
-  }
 
   function setUp()
   {
-  	$this->object =& $this->_create_site_object();
-
   	$this->_clean_up();
+  	
+  	$this->object = new site_object_manipulation_test();
   	
   	debug_mock :: init($this);
   	
   	$user =& user :: instance();
   	$user->_set_id(10);
-		
+  	
   	$tree =& limb_tree :: instance();
 
 		$values['identifier'] = 'root';
+		$root_node_id = $tree->create_root_node($values, false, true);
+
+		$values['identifier'] = 'ru';
 		$values['object_id'] = 1;
-		$this->parent_node_id = $tree->create_root_node($values, false, true);
-		
-		$this->db->sql_insert('sys_class', array('id' => 1, 'class_name' => 'mock_root_object'));
-		$this->db->sql_insert('sys_site_object', array('id' => 1, 'class_id' => 1, 'current_version' => 1, 'identifier' => 'root'));
+		$this->parent_node_id = $tree->create_sub_node($root_node_id, $values);
+
+		$class_id = $this->object->get_class_id();
+		$this->db->sql_insert('sys_site_object', array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
+
+		$values['identifier'] = 'document';
+		$values['object_id'] = 10;
+		$this->sub_node_id = $tree->create_sub_node($this->parent_node_id, $values);
+
+		$class_id = $this->object->get_class_id();
+		$this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => $class_id, 'current_version' => 1));
   }
   
   function tearDown()
@@ -76,8 +91,8 @@ class test_site_object_template extends UnitTestCase
   	$this->_clean_up();
   	
   	debug_mock :: tally();
- 
-   	$user =& user :: instance();
+  	
+  	$user =& user :: instance();
   	$user->logout();
   }
   
@@ -90,28 +105,19 @@ class test_site_object_template extends UnitTestCase
   
   function test_failed_create()
   {
-  	if(!$this->object->is_auto_identifier())
-  	{
-  		debug_mock :: expect_write_error('identifier is empty');
+  	debug_mock :: expect_write_error('identifier is empty');
   	
-  		$this->assertIdentical($this->object->create(), false);
-  	}
+  	$this->assertIdentical($this->object->create(), false);
   	
-		$this->object->set_parent_node_id(1000000);
-
-  	if(!$this->object->is_auto_identifier())
-  	{
-			debug_mock :: expect_write_error('identifier is empty');
+		$this->object->set_parent_node_id(10);
 		
-  		$this->assertIdentical($this->object->create(), false);
-  	}
+		debug_mock :: expect_write_error('identifier is empty');
+		
+  	$this->assertIdentical($this->object->create(), false);
   	
 		$this->object->set_identifier('test');
-
-  	if($this->object->is_auto_identifier())
-			debug_mock :: expect_write_error(NESE_ERROR_NOT_FOUND, array('id' => 1000000));
-		else
-			debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 1000000));
+		
+		debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 10));
 		
   	$this->assertIdentical($this->object->create(), false);
   }
@@ -121,7 +127,7 @@ class test_site_object_template extends UnitTestCase
   	debug_mock :: expect_never_write();
   	
   	$this->object->set_parent_node_id($this->parent_node_id);
-  	$this->object->set_identifier('test_site_object');
+  	$this->object->set_identifier('test_node');
 		
   	$id = $this->object->create();
   	
@@ -135,49 +141,72 @@ class test_site_object_template extends UnitTestCase
 		
   	$this->_check_sys_class_record();
   }
-
-	function test_versioned_update()
-	{
-		$this->_test_update(true);
-	}
-
-	function test_unversioned_update()
-	{
-		$this->_test_update(false);
-	}
-	
-  function _test_update($versioned = false)
+  
+  function test_versioned_update()
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
-  	$this->object->set_identifier('test_site_object');
+  	$this->object->set_identifier('test_node');
 
   	$id = $this->object->create();
-  	$node_id = $this->object->get_node_id();
+  	$node_id = $this->object->get_attribute('node_id');
 
   	$this->object->set_identifier('new_article_test');
   	$this->object->set_title('New article test');
   	
-  	$version = $this->object->get_version();
-  	$result = $this->object->update($versioned);
+  	$result = $this->object->update();
   	$this->assertTrue($result, 'update operation failed');
-
-  	if ($versioned)
-  		$this->assertEqual($version + 1, $this->object->get_version(), 'version index is the same as before versioned update');
-  	else	
-  		$this->assertEqual($version, $this->object->get_version(), 'version index schould be the same as before unversioned update');
 
   	$this->_check_sys_site_object_tree_record();
   	
 	 	$this->_check_sys_site_object_record();
   }
 
-  function test_delete()
+  function test_unversioned_update()
   {
   	$this->object->set_parent_node_id($this->parent_node_id);
-  	$this->object->set_identifier('test_site_object');
-		
+  	$this->object->set_identifier('test_node');
+  	
   	$id = $this->object->create();
+  	$node_id = $this->object->get_node_id();
+		
+  	$this->object->set_identifier('new_article_test');
+  	$this->object->set_title('New article test');
+  	
+  	$result = $this->object->update(false);
+  	
+  	$this->assertTrue($result, 'update operation failed');
 
+  	$this->_check_sys_site_object_tree_record();
+  	
+	 	$this->_check_sys_site_object_record();
+  }
+
+  function test_can_not_delete()
+  {
+  	$data['id'] = 1;
+  	$data['node_id'] = $this->parent_node_id;
+  	$this->object->import_attributes($data);
+  	
+  	$result = $this->object->can_delete();
+  	
+  	$this->assertFalse($result);
+  }
+  
+  function test_can_delete()
+  {
+  	$data['id'] = 10;
+  	$data['node_id'] = $this->sub_node_id;
+  	$this->object->import_attributes($data);
+  	$result = $this->object->can_delete();
+  	
+  	$this->assertTrue($result);
+  }
+	      
+  function test_delete()
+  {
+  	$data['id'] = 10;
+  	$data['node_id'] = $this->sub_node_id;
+  	$this->object->import_attributes($data);
   	$result = $this->object->delete();
   	
   	$this->assertTrue($result);
@@ -210,7 +239,7 @@ class test_site_object_template extends UnitTestCase
   function _check_sys_site_object_record()
 	{
 		$user =& user :: instance();
-		   	
+		
   	$this->db->sql_select('sys_site_object', '*', 'id=' . $this->object->get_id());
   	$record = $this->db->fetch_row();
 		$this->assertEqual($record['identifier'], $this->object->get_identifier());
@@ -227,45 +256,6 @@ class test_site_object_template extends UnitTestCase
   	$this->db->sql_select('sys_class', '*', 'class_name="' . get_class($this->object) . '"');
   	$record = $this->db->fetch_row();
   	$this->assertTrue(is_array($record));
-	}
-	
-	function test_fetch()
-	{
-  	$this->object->set_parent_node_id($this->parent_node_id);
-  	$this->object->set_identifier('test_site_object');
-		
-  	$id = $this->object->create();
-
-		$arr = $this->object->fetch();
-		
-		reset($arr);
-		$this->assertNotEqual(sizeof($arr), 0);
-		$this->assertEqual(key($arr), $id, __FILE__ . ' : ' . __LINE__ . ': id doesnt match');
-		
-		$record = current($arr);
-		
-		$this->_compare_fetch_data($record);
-	}
-	
-	function _compare_fetch_data($record)
-	{
-		$id = $this->object->get_id();
-		
-		$this->assertEqual($record['id'], $id, 'site object id doesnt match');
-		$this->assertEqual($record['node_id'], $this->object->get_node_id(), __FILE__ . ' : ' . __LINE__ . ': node id doesnt match');
-		$this->assertEqual($record['class_id'], $this->object->get_class_id(), __FILE__ . ' : ' . __LINE__ . ': class_id doesnt match');
-		$this->assertEqual($record['class_name'], get_class($this->object), __FILE__ . ' : ' . __LINE__ . ': class name doesnt match');
-		$this->assertEqual($record['identifier'], $this->object->get_identifier(), __FILE__ . ' : ' . __LINE__ . ': identifier doesnt match');
-		$this->assertEqual($record['title'], $this->object->get_title(), __FILE__ . ' : ' . __LINE__ . ': title doesnt match');
-		$this->assertEqual($record['parent_node_id'], $this->object->get_parent_node_id(), __FILE__ . ' : ' . __LINE__ . ': parent_node_id doesnt match');
-		$this->assertEqual($record['version'], $this->object->get_version(), __FILE__ . ' : ' . __LINE__ . ': version doesnt match');
-		
-		$tree =& limb_tree :: instance();
-		
-		$node = $tree->get_node($this->object->get_node_id());
-		$this->assertEqual($record['l'], $node['l'], __FILE__ . ' : ' . __LINE__ . ': l doesnt match');
-		$this->assertEqual($record['r'], $node['r'], __FILE__ . ' : ' . __LINE__ . ': r doesnt match');
-		$this->assertEqual($record['level'], $node['level'], __FILE__ . ' : ' . __LINE__ . ': level doesnt match');
 	}
 }
 

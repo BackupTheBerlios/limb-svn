@@ -12,33 +12,6 @@ require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
 require_once(LIMB_DIR . '/core/model/site_objects/content_object.class.php');
 
-class content_object_test_adapter extends content_object
-{
-	var $content_object = null;
-	
-	function content_object_test_adapter($content_object)
-	{
-		$this->content_object = $content_object;
-		
-		parent :: content_object();
-	}
-	
-	function _define_class_properties()
-	{
-		$props = $this->content_object->get_class_properties();
-		
-		if(!isset($props['db_table_name']))
-			$props['db_table_name'] = get_class($this->content_object);
-		
-		return $props;
-	}
-	
-	function get_db_table()
-	{
-		return $this->_get_db_table();
-	}
-}
-
 class test_project_site_objects extends UnitTestCase
 {
 	var $site_objects = array();
@@ -78,8 +51,7 @@ class test_project_site_objects extends UnitTestCase
 		
 		if (is_subclass_of($site_object, 'content_object'))
 		{
-			$content_object_adapter = new content_object_test_adapter($site_object);
-			$db_table = $content_object_adapter->get_db_table();
+			$db_table = $site_object->_get_db_table();
 
 			if(isset($props['db_table_name']))
 			{

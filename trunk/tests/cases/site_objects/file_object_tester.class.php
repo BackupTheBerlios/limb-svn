@@ -5,26 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: file_object.test.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
+require_once(LIMB_DIR . '/tests/cases/site_objects/site_object_tester.class.php');
 
-class test_file_object extends test_site_object_template 
+class file_object_tester extends site_object_tester
 {  	
-  function test_file_object() 
+  function file_object_tester() 
   {
-  	parent :: test_site_object_template();
+  	parent :: site_object_tester('file_object');
   }
-  
-  function & _create_site_object()
-  {
-  	$object =& site_object_factory :: create('file_object');  	
-  	return $object;
-  }
-  
+    
   function _clean_up()
   {
   	parent :: _clean_up();

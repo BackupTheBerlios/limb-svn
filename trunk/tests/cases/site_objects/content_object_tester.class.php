@@ -5,19 +5,17 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: _content_object_template.test.php 81 2004-03-26 13:51:05Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/site_objects/__site_object_template.test.php');
+require_once(LIMB_DIR . '/tests/cases/site_objects/site_object_tester.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
-SimpleTestOptions::ignore('test_content_object_template'); 
-
-class test_content_object_template extends test_site_object_template 
+class content_object_tester extends site_object_tester 
 { 
-  function test_content_object_template() 
+  function content_object_tester($class_name) 
   {
-  	parent :: test_site_object_template();
+  	parent :: site_object_tester($class_name);
   }
   
   function _clean_up()

@@ -8,12 +8,66 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/tests/cases/site_objects/site_object_tester.class.php');
+require_once(LIMB_DIR . '/tests/cases/site_objects/content_object_tester.class.php');
+
 class tests_site_objects extends GroupTest 
 {
 	function tests_site_objects() 
 	{
 	  $this->GroupTest('site objects tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/site_objects');
+	  
+	  foreach($this->_get_classes_list() as $row)
+	  {
+	  	$this->addTestCase($this->_get_site_object_test_case($row['class_name']));
+	  }
+	}
+	
+	function &_get_site_object_test_case($class_name)
+	{
+		if(file_exists(PROJECT_DIR . '/tests/cases/site_objects/' . $class_name . '_tester.class.php'))
+		{
+			include_once(PROJECT_DIR . '/tests/cases/site_objects/' . $class_name . '_tester.class.php');
+			$test_case_name = $class_name . '_tester';
+			$test_case =& new $test_case_name();
+		}
+		elseif(file_exists(LIMB_DIR . '/tests/cases/site_objects/' . $class_name . '_tester.class.php'))
+		{
+			include_once(LIMB_DIR . '/tests/cases/site_objects/' . $class_name . '_tester.class.php');
+			$test_case_name = $class_name . '_tester';
+			$test_case =& new $test_case_name();
+		}
+		else
+		{	
+			$site_object = site_object_factory :: create($class_name);
+					
+	  	$test_case =& new site_object_tester($class_name);
+	  	
+	  	//if (is_subclass_of($site_object, 'site_object'))
+	  		//$tester =& new site_object_tester($row['class_name']);
+	  	//else
+	  	//	$tester =& new content_object_tester($site_object);
+		}
+		
+		return $test_case;
+	}
+	
+	function _get_classes_list()
+	{
+		$project_db = str_replace('_tests', '', DB_NAME);
+		
+		$db =& db_factory :: instance();
+		
+		$db->select_db($project_db);
+		
+		$db->sql_select('sys_class');
+		
+		$list = $db->get_array();
+		
+		$db->select_db(DB_NAME);
+		
+		return $list;
 	}
 }
 ?>
