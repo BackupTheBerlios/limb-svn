@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: _content_object_template.test.php 81 2004-03-26 13:51:05Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_tester.class.php');
