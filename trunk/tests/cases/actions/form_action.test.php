@@ -30,12 +30,12 @@ class form_action1 extends form_action
 	
 	function _valid_perform()
 	{
-		return true;
+		return new response();
 	}
 	
 	function _first_time_perform()
 	{
-		return false;
+		return new failed_response();
 	}
 }
 
@@ -164,26 +164,25 @@ class test_form_action extends UnitTestCase
 
   	$a1 =& new form_action1();
   	
-  	debug_mock :: expect_write_error('validation failed');
-  	
-  	$this->assertFalse($a1->perform());
+  	$this->assertIsA($a1->perform(), 'failed_response');
   	
   	$_REQUEST['submitted'] = true;
   	
   	debug_mock :: expect_write_error('validation failed');
   	
-  	$this->assertFalse($a1->perform());
+  	$this->assertIsA($a1->perform(), 'not_valid_response');
   	
   	$_REQUEST['password'] = 'yoyoyoyo';
   	$_REQUEST['password_confirm'] = 'yoyoyoyo';
+
+  	debug_mock :: expect_write_error('validation failed');
   	
-  	$this->assertFalse($a1->perform(), 'validation occurs only once');
+  	$this->assertIsA($a1->perform(), 'not_valid_response', 'validation occurs only once');
   	
   	$a2 =& new form_action1();
   	
-  	$this->assertTrue($a2->perform());
+  	$this->assertIsA($a2->perform(), 'response');
   }
-  
   
   function test_perform_with_name()
   {
@@ -193,24 +192,24 @@ class test_form_action extends UnitTestCase
 
   	$a1 =& new form_action1('test1');
   	
-  	debug_mock :: expect_write_error('validation failed');
-  	
-  	$this->assertFalse($a1->perform());
+  	$this->assertIsA($a1->perform(), 'failed_response');
   	
   	$_REQUEST['test1']['submitted'] = true;
   	
   	debug_mock :: expect_write_error('validation failed');
   	
-  	$this->assertFalse($a1->perform());
+  	$this->assertIsA($a1->perform(), 'not_valid_response');
   	
   	$_REQUEST['test1']['password'] = 'yoyoyoyo';
   	$_REQUEST['test1']['password_confirm'] = 'yoyoyoyo';
-  	
-  	$this->assertFalse($a1->perform(), 'validation occurs only once');
+
+		debug_mock :: expect_write_error('validation failed');
+		
+  	$this->assertIsA($a1->perform(), 'not_valid_response', 'validation occurs only once');
   	
   	$a2 =& new form_action1('test1');
   	
-  	$this->assertTrue($a2->perform());
+  	$this->assertIsA($a2->perform(), 'response');
   }
 }
 

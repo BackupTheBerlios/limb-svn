@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
+require_once(LIMB_DIR . 'core/model/response/exit_response.class.php');
 
 class display_image_action extends action
 {
@@ -19,7 +20,6 @@ class display_image_action extends action
 	function perform()
 	{
 		$object_data =& fetch_mapped_by_url();
-		
 		ob_end_clean();
 		
 		$ini =& get_ini('image_variations.ini');
@@ -41,20 +41,20 @@ class display_image_action extends action
 		if (!$image)
 		{
 			header("HTTP/1.1 404 Not found");
-			exit;
+			return new exit_response(RESPONSE_STATUS_FAILURE);
 		}
 				
 		if(!file_exists(MEDIA_DIR. $image['media_id'] . '.media'))
 		{
 			header("HTTP/1.1 404 Not found");
-			exit;
+			return new exit_response(RESPONSE_STATUS_FAILURE);
 		}		
 		
 		if(empty($image))
 		{
 			header("Content-type: image/gif");
 			readfile(SHARED_DIR . 'images/1x1.gif');
-			exit;
+			return new exit_response(RESPONSE_STATUS_FAILURE);
 		}		
 		
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $image['etag'])
@@ -75,7 +75,7 @@ class display_image_action extends action
 			header("Content-Disposition: filename={$image['file_name']}"); 
 			readfile(MEDIA_DIR. $image['media_id'] .'.media');
 		}
-		exit;
+		return new exit_response();
 	}
 }
 

@@ -9,6 +9,8 @@
 *
 ***********************************************************************************/
 
+require_once(LIMB_DIR . '/core/lib/http/url_parser.class.php');
+
 class stats_referer
 {	
 	var $db = null;
@@ -29,7 +31,9 @@ class stats_referer
 	function _get_clean_referer_page()
 	{
 		if (isset($_SERVER['HTTP_REFERER']))
-			return $this->_clean_url($_SERVER['HTTP_REFERER']);
+		{
+			return $this->clean_url($_SERVER['HTTP_REFERER']);
+		}
 	}
 
 	function _get_existing_referer_record_id()
@@ -49,26 +53,16 @@ class stats_referer
 		return $this->db->get_sql_insert_id('sys_stat_referer_url');		
 	}
 
-	function _clean_url($raw_url)
+	function clean_url($raw_url)
 	{
-		$url = trim($raw_url);
-		$url = preg_replace('/(^' . preg_quote('http://' . $_SERVER['HTTP_HOST'], '/') . ')(.*)/', '\\2', $url);
-		$url = preg_replace('/#[^\?]*/', '', $url);
-		$url = $this->_trim_url_params($url);
-		return $url;
-	}
-	
-	function _trim_url_params($url)
-	{
-		if(strpos($url, '?') !== false)
-		{
-			$url = preg_replace('/PHPSESSID=[^&]*/', '', $url);
-						
-			if($pos == (strlen($url)-1))
-				$url = rtrim($url, '?');
-		}
-		$url = rtrim($url, '/');
-	}
+		$url = new url_parser($raw_url);
+		
+		$url->remove_query_item('PHPSESSID');
+					
+		$url->anchor = '';
+		
+		return $url->get_url();
+	}	
 }
 
 ?>

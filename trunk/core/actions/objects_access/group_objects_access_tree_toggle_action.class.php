@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: group_objects_access_tree_toggle_action.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/tree_toggle_action.class.php');
@@ -18,17 +18,14 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 	}
 	
 	function perform()
-	{
-		if(!parent :: perform())
-			return false;
-				
+	{				
 		$access_policy =& access_policy :: instance();
 	
 		$data['policy'] = $access_policy->get_group_object_access();
 
 		$this->_import($data);
 		
-		return true;
+		return parent :: perform();
 	}
 }
 

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: url_parser.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -41,9 +41,6 @@ class url_parser
   
   function parse($url, $use_brackets=true)
   {
-  	global $HTTP_SERVER_VARS;
-		global $PHP_SELF;
-		
 		$this->_use_brackets = $use_brackets;
 		$this->url         = $url;
 		$this->user        = '';
@@ -57,7 +54,7 @@ class url_parser
 		// Only use defaults if not an absolute URL given
 		if (!preg_match('/^[a-z0-9]+:\/\//i', $url)) 
 		{
-      if (!empty($HTTP_SERVER_VARS['HTTP_HOST']) && preg_match('/^(.*)(:([0-9]+))?$/U', $HTTP_SERVER_VARS['HTTP_HOST'], $matches))
+      if (!empty($_SERVER['HTTP_HOST']) && preg_match('/^(.*)(:([0-9]+))?$/U', $_SERVER['HTTP_HOST'], $matches))
       {
       	$host = $matches[1];
         if (!empty($matches[3]))
@@ -66,13 +63,13 @@ class url_parser
          	$port = '80';			          
       }
 
-      $this->protocol    = 'http' . ((isset($HTTP_SERVER_VARS['HTTPS']) && $HTTP_SERVER_VARS['HTTPS'] == 'on') ? 's' : '');
+      $this->protocol    = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
       $this->user        = '';
       $this->pass        = '';
-      $this->host        = !empty($host) ? $host : (isset($HTTP_SERVER_VARS['SERVER_NAME']) ? $HTTP_SERVER_VARS['SERVER_NAME'] : 'localhost');
-      $this->port        = !empty($port) ? $port : (isset($HTTP_SERVER_VARS['SERVER_PORT']) ? $HTTP_SERVER_VARS['SERVER_PORT'] : 80);
-      $this->path        = !empty($HTTP_SERVER_VARS['PHP_SELF']) ? $HTTP_SERVER_VARS['PHP_SELF'] : '/';
-      $this->_query_items = isset($HTTP_SERVER_VARS['QUERY_STRING']) ? $this->_parse_query_string($HTTP_SERVER_VARS['QUERY_STRING']) : null;
+      $this->host        = !empty($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost');
+      $this->port        = !empty($port) ? $port : (isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80);
+      $this->path        = !empty($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '/';
+      $this->_query_items = isset($_SERVER['QUERY_STRING']) ? $this->_parse_query_string($_SERVER['QUERY_STRING']) : null;
       $this->anchor      = '';
 		}
 

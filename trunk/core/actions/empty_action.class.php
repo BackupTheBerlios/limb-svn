@@ -5,22 +5,26 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: action.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/login_action.class.php');
+require_once(LIMB_DIR . 'core/model/response/response.class.php');
 
-class phpbb_login_action extends login_action
+class empty_action
 {
-	function phpbb_login_action($name = 'login_form')
+	function empty_action($name = '')
 	{
-		parent :: login_action($name);
+	}
+	
+	function set_view(&$view)
+	{
 	}
 		
-	function _login_redirect($redirect)
+	function perform()
 	{
-		$redirect = add_url_query_items($redirect, array('sid' => session :: get('phpbb_sid')));
-		return new redirect_response(RESPONSE_STATUS_SUCCESS, $redirect);
+		return new response();
 	}
-}
+} 
+
+
 ?>

@@ -9,17 +9,14 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
-require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
+require_once(LIMB_DIR . 'core/actions/form_action.class.php');
+require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
-class login_action extends form_site_object_action
+class login_action extends form_action
 {
-	var $definition = array(
-		'site_object' => 'user_object',
-	);
-
 	function login_action($name='login_form')
 	{
-		parent :: form_site_object_action($name);
+		parent :: form_action($name);
 	}
 
 	function _init_validator()
@@ -61,23 +58,22 @@ class login_action extends form_site_object_action
 		$login = $this->_get('login');
 		$password = $this->_get('password');
 		
-		$user_object =& $this->get_site_object();
-		$is_logged = $user_object->login($login, $password);
+		$user_object =& site_object_factory :: create('user_object');
 		
-		if($is_logged)
+		if($user_object->login($login, $password))
 		{
 			if($redirect = $this->_get('redirect'))
-				$this->_login_redirect($redirect);
+				return $this->_login_redirect($redirect);
 			else
-				reload('/');
-		}	
-			
-		return $is_logged;
+				return new redirect_response(RESPONSE_STATUS_SUCCESS, '/');
+		}
+		else	
+			return new failed_response();
 	}
 	
 	function _login_redirect($redirect)
 	{
-		reload($redirect);
+		return new redirect_response(RESPONSE_STATUS_SUCCESS, $redirect);
 	}
 }
 

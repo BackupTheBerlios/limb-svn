@@ -5,15 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: back.php 401 2004-02-04 15:40:14Z server $
+* $Id: action.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
-ob_start();	
+require_once(LIMB_DIR . 'core/model/response/response.class.php');
 
-include_once('setup.php');	
-require_once(LIMB_DIR . 'core/lib/http/control_flow.php');
-
-return_back();
-
-ob_end_flush();
+class failed_response extends response
+{
+	function failed_response()
+	{
+		parent :: response(RESPONSE_STATUS_FAILURE);
+	}				
+} 
 ?>

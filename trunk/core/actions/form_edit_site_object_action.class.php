@@ -79,7 +79,7 @@ class form_edit_site_object_action extends form_site_object_action
 		$this->object->import_attributes($data);
 		
 		if(!$this->_update_object_operation())
-			return false;
+			return new failed_response();
 
 		$this->indexer->add($this->object);
 		
@@ -88,7 +88,7 @@ class form_edit_site_object_action extends form_site_object_action
 			$this->_handle_changed_identifier($data['identifier']);
 		}	
 			
-		return true;
+		return new response();
 	}
 	
 	function _update_object_operation()

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: access_policy.class.php 455 2004-02-16 18:43:12Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -281,7 +281,7 @@ class access_policy
 	{
 		$accessor_ids = array();
 		
-		if ($user_id = user :: get_id())
+		if(($user_id = user :: get_id()) != VISITOR_USER_ID)
 			$accessor_ids[] = $user_id;
 			
 		foreach(array_keys(user :: get_groups()) as $group_id)	

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: edit_poll_action.class.php 467 2004-02-18 10:16:31Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -25,8 +25,6 @@ class edit_poll_action extends form_edit_site_object_action
 
 		parent :: form_edit_site_object_action('edit_poll', $definition);
 	}
-
-
 	
 	function _init_validator()
 	{

@@ -9,12 +9,13 @@
 *
 ***********************************************************************************/
 
-
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 require_once(LIMB_DIR . 'core/template/template.class.php');
+require_once(LIMB_DIR . 'core/template/empty_template.class.php');
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . 'core/model/response/response.class.php');
 	
 class site_object_controller
 {
@@ -25,6 +26,8 @@ class site_object_controller
 	var $_default_action = 'display';
 	
 	var $_view = null;
+	
+	var $_response = null;
 
 	function site_object_controller()
 	{
@@ -45,7 +48,7 @@ class site_object_controller
 		if (!$this->action_exists($action))
 		{
 			debug :: write_warning(
-				"action not found", 
+				'action not found', 
 				__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 				array(
 					'class' => get_class($this),
@@ -102,35 +105,62 @@ class site_object_controller
 	function process()
 	{
 		if(!$this->_current_action)
-			return false;
-		
-		if($is_transacton = $this->_is_transaction_required())	
-			start_user_transaction();
+		{
+			debug :: write_error('current action not defined', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+			return new response();
+		}
 			
+		$this->_start_transaction();
+		
+		$this->_perform_action();
+				
+		$this->_end_transaction();
+		
+		return $this->_response;
+	}
+	
+	function _perform_action()
+	{
 		$action =& $this->get_action_object();
 		
-		$perform_result = true;	
-		
-		if (is_object($action))
-		{
-			if($view =& $this->get_view())
-				$action->set_view($view);
+		if($view =& $this->get_view())
+			$action->set_view($view);
 
-			$perform_result = $action->perform();
-		}
+		$this->_response = $action->perform();
 		
-		if($is_transacton)
-		{
-			if($perform_result)
-				commit_user_transaction();
-			else
-				rollback_user_transaction();
-		}
-					
-		return $perform_result;
+		debug :: add_timing_point('action performed');
+		
+		if($this->_response->get_status() == RESPONSE_STATUS_FAILURE)
+			debug :: write_error('action failed', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	}
-			
-	function _is_transaction_required()
+	
+	function display_view()
+	{
+		$view =& $this->get_view();
+		
+		$view->display();
+		
+		debug :: add_timing_point('template executed');
+	}
+	
+	function _start_transaction()
+	{
+		if($this->is_transaction_required())	
+			start_user_transaction();
+	}
+	
+	function _end_transaction()
+	{
+		if(!$this->is_transaction_required())
+			return;
+
+		if($this->_response->get_status() == RESPONSE_STATUS_SUCCESS)
+			commit_user_transaction();
+		else
+			rollback_user_transaction();
+	}
+				
+	function is_transaction_required()
 	{
 		$requires_transaction = $this->get_current_action_property('transaction');
 		
@@ -143,7 +173,7 @@ class site_object_controller
 	function & get_action_object()
 	{
 		if (!$action_path = $this->get_current_action_property('action_path'))
-			return null;
+			$action_path = 'empty_action';
 		
 		return $this->_create_action($action_path);
 	}
@@ -158,21 +188,20 @@ class site_object_controller
 	{
 		if($this->_view)
 			return $this->_view;
-		
-		if (!$template_path = $this->get_current_action_property('template_path'))
-			return null;
 				
-		$this->_view =& $this->_create_template($template_path);
+		$this->_view =& $this->_create_template();
 
 	  debug :: add_timing_point('template created');
 		
 		return $this->_view;
 	}
 	
-	function &_create_template($template_path)
+	function &_create_template()
 	{
-		$template =& new template($template_path);
-		return $template;
+		if($template_path = $this->get_current_action_property('template_path'))
+			return new template($template_path);
+		else
+			return new empty_template();			
 	}
 	
 	function get_current_action_property($property_name)

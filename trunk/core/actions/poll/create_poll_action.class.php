@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_poll_action.class.php 467 2004-02-18 10:16:31Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
@@ -25,7 +25,6 @@ class create_poll_action extends form_create_site_object_action
 		
 		parent :: form_create_site_object_action('create_poll', $definition);
 	}
-	
 	
 	function _init_validator()
 	{

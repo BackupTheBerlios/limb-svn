@@ -5,10 +5,11 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_group_access_template_action.class.php 512 2004-02-20 14:40:38Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
+require_once(LIMB_DIR . 'core/model/response/close_popup_no_reload_response.class.php');
 
 class set_group_access_template_action extends form_action
 {
@@ -19,11 +20,10 @@ class set_group_access_template_action extends form_action
 	
 	function _init_dataspace()
 	{
-		$object_data =& fetch_mapped_by_url();
-
 		if (!isset($_REQUEST['class_id']))
 		{
-			close_popup($object_data['path']);
+			error('class_id not defined',
+			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 		}
 
 		$access_policy =& access_policy :: instance();
@@ -36,14 +36,17 @@ class set_group_access_template_action extends form_action
 	function _valid_perform()
 	{
 		if (!isset($_REQUEST['class_id']))
-			return false;
+		{
+			error('class_id not defined',
+			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+		}
 
 		$data = $this->_export();
 		$access_policy =& access_policy :: instance();
 
 		$access_policy->save_group_action_access_template($_REQUEST['class_id'], $data['template']);
 		
-		close_popup_no_parent_reload();
+		return new close_popup_no_reload_response();
 	}
 }
 ?>

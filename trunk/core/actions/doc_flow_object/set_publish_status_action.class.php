@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 
 class set_publish_status_action extends action

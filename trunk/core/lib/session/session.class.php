@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: session.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
@@ -109,8 +109,7 @@ function _session_db_write( $session_id, $value )
 	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
   $session_res = $db->get_array();	
 
-  if(!$user_id = user :: get_id())
-  	$user_id = 0;
+  $user_id = user :: get_id();
 
   if(count($session_res) == 1)
 		$res = $db->sql_update('sys_session', "last_activity_time=". time().", session_data='{$value}', user_id = {$user_id}" , "session_id='{$session_id}'");
@@ -122,7 +121,7 @@ function _session_db_write( $session_id, $value )
   			 											'user_id' => "{$user_id}", 
   			 											'session_id' => "{$session_id}"
   			 										)
-  			 										);
+  			 									);
 }
 
 function _session_db_destroy($session_id)

@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
@@ -58,10 +56,10 @@ class send_feedback_action extends form_action
 										$subject))
 		{
 			message_box :: write_error(strings :: get('mail_not_sent', 'feedback'));
-			return false;
+			return new failed_response();
 		}
 
-		return true;
+		return new response();
 	}
 }
 ?>

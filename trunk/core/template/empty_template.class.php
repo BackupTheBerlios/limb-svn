@@ -5,22 +5,24 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: template.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/actions/login_action.class.php');
-
-class phpbb_login_action extends login_action
+class empty_template
 {
-	function phpbb_login_action($name = 'login_form')
+	function empty_template()
 	{
-		parent :: login_action($name);
-	}
-		
-	function _login_redirect($redirect)
+	} 
+
+	function &get_child($server_id)
 	{
-		$redirect = add_url_query_items($redirect, array('sid' => session :: get('phpbb_sid')));
-		return new redirect_response(RESPONSE_STATUS_SUCCESS, $redirect);
-	}
-}
+		return null;
+	} 
+
+	function display()
+	{
+		debug :: write_error('template is null', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+	} 
+} 
+
 ?>

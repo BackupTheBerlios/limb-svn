@@ -16,7 +16,7 @@ require_once(LIMB_DIR . '/core/model/stats/stats_log.class.php');
 class stats_register
 {
 	var $_counter = null;
-	var $_stats_log = null;
+	var $_log_register = null;
 	var $_ip_register = null;
 	var $_reg_date;
 	
@@ -40,18 +40,24 @@ class stats_register
 		$this->_reg_date->set_by_stamp($stamp);
 	}
 
-	function register($node_id, $action)
+	function register($node_id, $action, $status_code)
 	{
-		$this->_update_log($node_id, $action);
+		$this->_update_log($node_id, $action, $status_code);
 		
 		$this->_update_counters();
 	}
 	
-	function _update_log($node_id, $action)
+	function _update_log($node_id, $action, $status_code)
 	{
 		$ip_register =& $this->_get_ip_register();
 		$log_register =& $this->_get_log_register();
-		$result = $log_register->update($this->get_register_time_stamp(), $ip_register->get_client_ip(), $node_id, $action);
+		
+		$log_register->update(
+			$this->get_register_time_stamp(), 
+			$ip_register->get_client_ip(), 
+			$node_id, 
+			$action, 
+			$status_code);
 	}
 	
 	function _update_counters()

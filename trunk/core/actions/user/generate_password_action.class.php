@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: generate_password_action.class.php 401 2004-02-04 15:40:14Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
@@ -14,12 +14,10 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 
 class generate_password_action extends form_action
 {
-
 	function generate_password_action($name = 'generate_password')
 	{
 		parent :: form_action($name);
 	}
-
 	
 	function _init_validator()
 	{
@@ -27,12 +25,15 @@ class generate_password_action extends form_action
 		$this->validator->add_rule(new email_rule('email'));		
 	}
 	
-	
 	function _valid_perform()
 	{
 		$data = $this->_export();
 		$object =& site_object_factory :: create('user_object');
-		return $object->generate_password($data['email']);
+		
+		if($object->generate_password($data['email']))
+			return new response();
+		else
+			return new failed_response();
 	}
 }
 

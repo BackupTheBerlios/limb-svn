@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_metadata_action.class.php 420 2004-02-09 16:40:33Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
@@ -41,9 +41,9 @@ class set_metadata_action extends form_action
 		$object->import_attributes($data);
 		
 		if(!$object->save_metadata())
-			return false;
+			return new failed_response();
 		
-		return true;
+		return new response();
 	}
 }
 ?>

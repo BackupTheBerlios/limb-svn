@@ -5,11 +5,12 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: activate_password_action.class.php 401 2004-02-04 15:40:14Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
+require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class activate_password_action extends action
 {
@@ -24,10 +25,10 @@ class activate_password_action extends action
 		if(!$object->activate_password())
 		{
 			message_box :: write_notice('Password activation failed!');
-			reload('/');
+			return new redirect_response(RESPONSE_STATUS_FAILED, '/');
 		}
 		
-		return true;
+		return new response();
 	}
 }
 

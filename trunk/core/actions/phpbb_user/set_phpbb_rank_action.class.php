@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_membership.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
@@ -46,7 +46,11 @@ class set_phpbb_rank_action extends form_action
   	$phpbb_user_data['user_rank'] = $data['rank'];
 
 		$db =& db_factory :: instance();
-		return $db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $object_data['id']));
+		
+		if($db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $object_data['id'])))
+			return new response();
+		else
+			return new failed_response();
 	}
 
 }

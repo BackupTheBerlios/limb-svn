@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: error.inc.php 468 2004-02-18 12:03:43Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -40,7 +40,7 @@ function error($description, $error_place='', $params=array())
 	{	
 		$message = '';
 		
-		if($user_id = user :: get_id())
+		if(($user_id = user :: get_id()) != VISITOR_USER_ID)
 			$message .= "user id:\t$user_id\nlogin:\t\t"  . user :: get_login() . "\ne-mail:\t\t" . user :: get_email() . "\n";
 
 		$message .= "ip:\t\t" . sys::client_ip() . "\nrequest:\t" . REQUEST_URI . "\nerror:\t\t$title\ndescription:\t$msg";

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: vote_action.class.php 401 2004-02-04 15:40:14Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
@@ -26,10 +26,13 @@ class vote_action extends form_action
 		if (!isset($data['answer']))
 		{
 			message_box :: write_notice(strings :: get('no_answer', 'poll'));
-			return false;
+			return new failed_response();
 		}
 		
-		return $object->register_answer($data['answer']);
+		if($object->register_answer($data['answer']))
+			return new response();
+		else
+			return new failed_response();
 	}
 
 }

@@ -9,6 +9,8 @@
 *
 ***********************************************************************************/ 
 
+define('RELOAD_SELF_URL', '');
+
 function add_url_query_items($url, $items=array())
 {
 	$str_params = '';
@@ -43,11 +45,7 @@ function reload($url = PHP_SELF)
 	
 	echo "<html><head><meta http-equiv=refresh content='0;url=$url'></head><body bgcolor=white></body></html>";
 	
-	ob_end_flush();
-	
-	commit_user_transaction();
-	
-	exit();
+	ob_end_flush();	
 }
 
 function remember_url_history()
@@ -85,14 +83,10 @@ function close_popup_no_parent_reload()
 				 	};
 				</script></body></html>"; 
 	
-	ob_end_flush();
-	
-	commit_user_transaction();
-	
-	exit();
+	ob_end_flush();	
 }
 
-function close_popup($parent_reload_url='', $search_for_node = false)
+function close_popup($parent_reload_url = RELOAD_SELF_URL, $search_for_node = false)
 {
 	if(!isset($_REQUEST['popup']) || !$_REQUEST['popup'])
 		return;
@@ -104,9 +98,8 @@ function close_popup($parent_reload_url='', $search_for_node = false)
 	echo "<html><body><script>
 							if(window.opener)
 							{";
-							
-							
-	if($parent_reload_url)
+														
+	if($parent_reload_url != RELOAD_SELF_URL)
 		echo 			"	href = '{$parent_reload_url}';";
 	else	
 		echo 			"	href = window.opener.location.href;"; 
@@ -123,11 +116,7 @@ function close_popup($parent_reload_url='', $search_for_node = false)
 								window.close();
 							</script></body></html>"; 
 	
-	ob_end_flush();
-	
-	commit_user_transaction();
-	
-	exit();
+	ob_end_flush();	
 }
 
 function _add_js_random_to_url($href)
@@ -152,7 +141,7 @@ function _add_js_param_to_url($href, $param, $value)
 	
 }
 
-function reload_popup($url=PHP_SELF)
+function reload_popup($url = PHP_SELF)
 {
 	if(!isset($_REQUEST['popup']) || !$_REQUEST['popup'])
 		return;
@@ -184,11 +173,7 @@ function reload_popup($url=PHP_SELF)
 					</body>
 				</html>';
 						
-	ob_end_flush();
-	
-	commit_user_transaction();
-	
-	exit();
+	ob_end_flush();	
 }
 
 ?>

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_message_action.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
@@ -24,7 +24,6 @@ class create_message_action extends form_create_site_object_action
 		
 		parent :: form_create_site_object_action('create_message', $definition);
 	}
-	
 	
 	function _init_validator()
 	{

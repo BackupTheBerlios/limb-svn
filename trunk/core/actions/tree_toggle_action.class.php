@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: tree_toggle_action.class.php 418 2004-02-08 11:31:53Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
@@ -28,11 +28,16 @@ class tree_toggle_action extends action
 			$id = get_mapped_id();
 			
 		if(isset($_REQUEST['expand']))
-			return $tree->expand_node($id);
+			$result = $tree->expand_node($id);
 		elseif(isset($_REQUEST['collapse']))
-			return $tree->collapse_node($id);
+			$result = $tree->collapse_node($id);
 		else
-			return $tree->toggle_node($id);
+			$result = $tree->toggle_node($id);
+			
+		if($result)
+			return new response();
+		else
+			return new failed_response();
 	}
 }
 

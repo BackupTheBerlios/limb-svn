@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: change_own_password_action.class.php 470 2004-02-18 13:04:56Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
@@ -19,14 +19,12 @@ class change_own_password_action extends form_action
 		parent :: form_action($name);
 	}
 
-	
 	function _init_validator()
 	{
 		$this->validator->add_rule(new required_rule('password'));
 		$this->validator->add_rule(new required_rule('second_password'));
 		$this->validator->add_rule(new match_rule('second_password', 'password', 'PASSWORD'));
 	}
-	
 
 	function _valid_perform()
 	{
@@ -39,10 +37,13 @@ class change_own_password_action extends form_action
 			$error_list = & error_list :: instance();
 			$error_list->add_error('old_password', 'WRONG_PASSWORD');
 			$this->valid = false;
-			return $this->valid;
+			return new not_valid_response();
 		}
 
-		return $user_object->change_own_password($data['password']);
+		if($user_object->change_own_password($data['password']))
+			return new response();
+		else
+			return new failed_response();
 	}
 
 }

@@ -13,6 +13,7 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
 require_once(LIMB_DIR . 'core/model/search/full_text_indexer.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
+require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class form_create_site_object_action extends form_site_object_action
 {
@@ -61,17 +62,17 @@ class form_create_site_object_action extends form_site_object_action
 		
 		$this->object->import_attributes($data);
 
-		if(($object_id = $this->_create_object_operation()) === false)
-			return false;
+		if($this->_create_object_operation() === false)
+			return new failed_response();
 			
 		$this->indexer->add($this->object);
 		
 		$this->_write_create_access_policy();
 		
 		if(!isset($_REQUEST['popup']) || !$_REQUEST['popup'])
-			return $object_id;
-			
-		close_popup();
+			return new response();
+		else
+			return new close_popup_response();
 	}
 	
 	function _create_object_operation()

@@ -9,6 +9,8 @@
 *
 ***********************************************************************************/ 
 
+define('VISITOR_USER_ID', -1);
+
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 
 class user
@@ -149,7 +151,7 @@ class user
 	
 	function get_id()
 	{
-		return user :: _get_session_attribute('id');
+		return user :: _get_session_attribute('id', VISITOR_USER_ID);
 	}
 	
 	function get_node_id()

@@ -5,12 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: form_action.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/validator.class.php');
+require_once(LIMB_DIR . 'core/model/response/not_valid_response.class.php');
 
 class form_action extends action
 {
@@ -73,7 +74,7 @@ class form_action extends action
 			
 			if(!$this->validate())
 			{
-				$result = false;
+				$result =& new not_valid_response();
 
 			  debug :: write_error('validation failed', 
 				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
@@ -82,7 +83,7 @@ class form_action extends action
 				$result = $this->_valid_perform();
 				
 			if($this->view && $form =& $this->view->find_child($this->name))
-				$form->set_valid_status($result);
+				$form->set_valid_status($result->get_status() == RESPONSE_STATUS_SUCCESS);
 			
 			return $result;
 		} 
@@ -115,12 +116,12 @@ class form_action extends action
 
 	function _first_time_perform()
 	{
-		return true;
+		return new response();
 	}
 		
 	function _valid_perform()
 	{
-		return true;
+		return new response();
 	}
 	
 	function get_validator()

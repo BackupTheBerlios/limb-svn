@@ -29,6 +29,7 @@ require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
+require_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
 
 start_user_session();
 debug :: add_timing_point('require_done');
@@ -77,7 +78,6 @@ if(!$object_data =& fetch_one_by_node_id($node['id']))
 	}	
 }
 
-
 if(isset($object_data['locale_id']) && $object_data['locale_id'])
 	define('CONTENT_LOCALE_ID', $object_data['locale_id']);
 else
@@ -115,17 +115,15 @@ if(!isset($actions[$action]))
 	exit;
 }
 
-if(!$site_object_controller->process())
-	debug :: write_error('action failed', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+$response = $site_object_controller->process();
 
-debug :: add_timing_point('action processed');
-	
-if(!$view =& $site_object_controller->get_view())
-	error('template is null', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+$stats_register = new stats_register();
 
-$view->display();
+$stats_register->register($node['id'], $action, $response->get_status());
 
-debug :: add_timing_point('template executed');
+$response->perform();
+
+$site_object_controller->display_view();
 
 echo message_box :: parse();
 

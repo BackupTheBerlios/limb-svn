@@ -14,10 +14,12 @@ require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class login_object_controller extends site_object_controller
 {
+	var $_default_action = 'login';
+	
 	function login_object_controller()
 	{
 		$this->_actions = array(
-				'display' => array(
+				'login' => array(
 						'permissions_required' => 'r',
 						'action_path' => 'login_action',
 						'template_path' => 'login.html'

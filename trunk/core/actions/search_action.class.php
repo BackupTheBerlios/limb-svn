@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: search_action.class.php 458 2004-02-17 15:32:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
@@ -44,7 +44,7 @@ class search_action extends form_action
 			
 		$this->_set_pager_items_per_page($items_per_page);
 												
-		return true;
+		return new response();
 	}
 		
 	function _get_query()

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
+require_once(LIMB_DIR . 'core/model/response/exit_response.class.php');
 
 class display_file_action extends action
 {
@@ -24,7 +25,7 @@ class display_file_action extends action
 		if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
 		{
 			header("HTTP/1.1 404 Not found");
-			exit;
+			return new exit_response(RESPONSE_STATUS_FAILURE);
 		}
 		
 		if (isset($_GET['icon']))
@@ -41,7 +42,8 @@ class display_file_action extends action
 				readfile($file_name);
 			else
 				readfile(SHARED_DIR . "images/mime_icons/file.{$size}.gif");
-			exit;
+				
+			return new exit_response();
 		}
 		
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $object_data['etag'])
@@ -63,7 +65,7 @@ class display_file_action extends action
 			readfile(MEDIA_DIR . $object_data['media_id'] . '.media');
 		}
 		
-		exit;
+		return new exit_response();
 	}
 }
 

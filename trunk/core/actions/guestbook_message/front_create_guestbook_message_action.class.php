@@ -5,10 +5,11 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: front_create_guestbook_message_action.class.php 564 2004-02-25 16:49:41Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/guestbook_message/create_guestbook_message_action.class.php');
+require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class front_create_guestbook_message_action extends create_guestbook_message_action
 {
@@ -19,8 +20,12 @@ class front_create_guestbook_message_action extends create_guestbook_message_act
 
 	function _valid_perform()
 	{
-		if (parent :: _valid_perform())
-			reload();
+		$response = parent :: _valid_perform();
+		
+		if ($response->get_status() == RESPONSE_STATUS_SUCCESS)
+			return new redirect_response();
+		
+		return $response;
 	}		
 }
 

@@ -5,10 +5,11 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: action.class.php 401 2004-02-04 15:40:14Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
+require_once(LIMB_DIR . 'core/model/response/failed_response.class.php');
 
 class action
 {
@@ -32,7 +33,7 @@ class action
 		
 	function perform()
 	{
-		return true;
+		return new response();
 	}
 	
 	function _set($name, $value)
@@ -53,9 +54,6 @@ class action
 	function _export()
 	{
 		return $this->dataspace->export();
-	}
-
+	}	
 } 
-
-
 ?>

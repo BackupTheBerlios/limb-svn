@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/doc_flow_object/set_publish_status_action.class.php');
+require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class unpublish_action extends set_publish_status_action
 {
@@ -20,7 +21,8 @@ class unpublish_action extends set_publish_status_action
 	function perform()
 	{
 		$this->set_publish_status(get_ini_option('doc_flow.ini', 'default', 'unpublished'));
-		close_popup();
+		
+		return new close_popup_response();
 	}
 	
 }

@@ -21,7 +21,7 @@ class stats_log
 		$this->db =& db_factory :: instance();
 	}
 	
-	function update($stamp, $ip, $node_id, $action)
+	function update($stamp, $ip, $node_id, $action, $status_code)
 	{
 		$referer_register =& $this->_get_referer_register();
 		
@@ -34,6 +34,7 @@ class stats_log
 				'user_id' => user :: get_id(),
 				'session_id' => session_id(),
 				'action' => $action,
+				'status' => $status_code,
 			)
 		);	
 	}

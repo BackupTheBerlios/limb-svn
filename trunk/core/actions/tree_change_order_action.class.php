@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: tree_change_order_action.class.php 570 2004-02-26 12:37:31Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
@@ -28,7 +28,7 @@ class tree_change_order_action extends action
 			$node_id = get_mapped_id();
 
 		if (!isset($_REQUEST['direction']))
-			return false;
+			return new failed_response();
 		
 		if (!$object_data = fetch_one_by_node_id($node_id))
 		{
@@ -38,7 +38,7 @@ class tree_change_order_action extends action
     			'node_id' => $node_id
     		)
     	);
-			close_popup();
+			return new close_popup_response(RESPONSE_STATUS_FAILURE);
 		}	
 		
 		$direction = $_REQUEST['direction'];
@@ -50,11 +50,13 @@ class tree_change_order_action extends action
     			'direction' => $direction
     		)
     	);
-			close_popup();
+			return new close_popup_response(RESPONSE_STATUS_FAILURE);
 		}	
 				
-		$tree->change_node_order($node_id, $direction);
-		close_popup();
+		if($tree->change_node_order($node_id, $direction))
+			return new close_popup_response();
+		else
+			return new close_popup_response(RESPONSE_STATUS_FAILURE);
 	}
 }
 
