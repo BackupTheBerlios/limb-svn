@@ -237,6 +237,22 @@ class db_table
 	{
 		return (defined('DB_AUTO_CONSTRAINTS') && DB_AUTO_CONSTRAINTS == true);
 	}
+	
+	public function get_columns_for_select($table_name = '', $exclude_columns = array())
+	{
+	  if(!$table_name)
+	    $table_name = $this->get_table_name();
+	    
+	  $columns = $this->get_columns();
+	  $implode_arr = array();
+	  foreach($columns as $key => $descr)
+	  {
+	    if(!in_array($key, $exclude_columns))
+	      $implode_arr[] = $table_name . '.' . $key . ' as ' . $key;
+	  }
+	  
+	  return implode(', ', $implode_arr);
+	}
 }
 
 ?>

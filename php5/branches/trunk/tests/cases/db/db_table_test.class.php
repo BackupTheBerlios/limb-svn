@@ -258,5 +258,27 @@ class db_table_test extends LimbTestCase
 		$this->assertEqual($arr['title'], 'wow!');
 		$this->assertEqual($arr['description'], 'description2');
 	}
+	
+	function test_get_columns_for_select_default_name()
+	{	  
+	  $select_string = 'test1.id as id, test1.description as description, test1.title as title, test1.date_field as date_field, test1.int_field as int_field, test1.int as int';
+	  
+	  $this->assertEqual($this->db_table_test->get_columns_for_select(), $select_string);
+	}
+	
+	function test_get_columns_for_select_specific_name()
+	{	  
+	  $select_string = 'tn.id as id, tn.description as description, tn.title as title, tn.date_field as date_field, tn.int_field as int_field, tn.int as int';
+	  
+	  $this->assertEqual($this->db_table_test->get_columns_for_select('tn'), $select_string);
+	}
+
+	function test_get_columns_for_select_specific_name_with_excludes()
+	{	  
+	  $select_string = 'tn.title as title, tn.date_field as date_field, tn.int_field as int_field, tn.int as int';
+	  
+	  $this->assertEqual($this->db_table_test->get_columns_for_select('tn', array('id', 'description')), $select_string);
+	}
+	
 } 
 ?>

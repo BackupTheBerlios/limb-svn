@@ -199,8 +199,13 @@ class site_object extends object
 
 		$sql = 
 			sprintf( "SELECT 
-								sso.* 
-								%s,
+                sso.current_version as current_version,
+                sso.modified_date as modified_date,
+                sso.status as status,
+                sso.created_date as created_date,
+                sso.creator_id as creator_id,
+                sso.locale_id as locale_id,
+								%s
 								sso.title as title, 
 								sso.identifier as identifier,
 								sso.id as id, 

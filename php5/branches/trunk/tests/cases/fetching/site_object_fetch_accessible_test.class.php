@@ -106,7 +106,9 @@ class site_object_fetch_accessible_test extends LimbTestCase
   	$result = $this->object->fetch_accessible_by_ids($ids_array);
   	
   	$ids = array(1, 2, 3, 4, 5, 8, 9, 10);
-  	$this->assertEqual(array_keys($result) , $ids);
+  	$keys = array_keys($result);
+  	sort($keys);
+  	$this->assertEqual($keys , $ids);
   }
 
   function test_accesssible_by_ids_count_no_params()

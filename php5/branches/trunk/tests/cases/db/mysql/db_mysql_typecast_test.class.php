@@ -32,7 +32,7 @@ class db_mysql_typecast_test extends LimbTestCase
 			array(
 				'id' => "'1'",
 				'title' => "' \\\"\\\" title\''",
-				'null' => "''",
+				'null' => 'NULL',
 				'bool_true' => 1,
 				'bool_false' => 0
 			),
@@ -87,7 +87,7 @@ class db_mysql_typecast_test extends LimbTestCase
 	{
 		$this->assertEqual(
 			array(
-				'null' => "''",
+				'null' => 'NULL',
 				'bool_true' => 1,
 				'bool_false' => 0,
 				'id' => "'abc zxc'",

@@ -80,13 +80,24 @@ class user extends object
 	{
 		$db = db_factory :: instance();
 		
-		$sql = 
-			'SELECT sso.*, tn.*
-			FROM sys_site_object as sso, user_group as tn, user_in_group as u_i_g
-			WHERE sso.id=tn.object_id 
-			AND sso.current_version=tn.version
-			AND u_i_g.user_id='. $this->get_id() . '
-			AND u_i_g.group_id=sso.id';
+		$sql = "SELECT 
+            sso.id as id,
+            sso.class_id as class_id,
+            sso.current_version as current_version,
+            sso.modified_date as modified_date,
+            sso.status as status,
+            sso.created_date as created_date,
+            sso.creator_id as creator_id,
+            sso.locale_id as locale_id,
+            tn.title as title,
+            tn.identifier as identifier,
+            tn.version as version,
+            tn.object_id as object_id
+      			FROM sys_site_object as sso, user_group as tn, user_in_group as u_i_g
+      			WHERE sso.id=tn.object_id 
+      			AND sso.current_version=tn.version
+      			AND u_i_g.user_id=". $this->get_id() . "
+      			AND u_i_g.group_id=sso.id";
 					
 		$db->sql_exec($sql);	
 		
@@ -97,12 +108,23 @@ class user extends object
 	{
 		$db = db_factory :: instance();
 	
-		$sql = 
-			'SELECT sso.*, tn.*
-			FROM sys_site_object as sso, user_group as tn
-			WHERE sso.identifier="' . self :: DEFAULT_USER_GROUP . '"
-			AND sso.id=tn.object_id 
-			AND sso.current_version=tn.version';
+		$sql = "SELECT 
+            sso.id as id,
+            sso.class_id as class_id,
+            sso.current_version as current_version,
+            sso.modified_date as modified_date,
+            sso.status as status,
+            sso.created_date as created_date,
+            sso.creator_id as creator_id,
+            sso.locale_id as locale_id,
+            tn.title as title,
+            tn.identifier as identifier,
+            tn.version as version,
+            tn.object_id as object_id
+      			FROM sys_site_object as sso, user_group as tn
+      			WHERE sso.identifier='" . self :: DEFAULT_USER_GROUP . "'
+      			AND sso.id=tn.object_id 
+      			AND sso.current_version=tn.version";
 					
 		$db->sql_exec($sql);	
 		
@@ -141,16 +163,32 @@ class user extends object
 
 		$db = db_factory :: instance();
 		
-		$sql = 
-			'SELECT *, ssot.id as node_id, sso.id as id FROM 
-			sys_site_object_tree as ssot, 
-			sys_site_object as sso, 
-			user as tn
-			WHERE sso.identifier="' . $db->escape($login) . '"
-			AND tn.password="' . $db->escape($crypted_password) . '"
-			AND ssot.object_id=tn.object_id
-			AND sso.id=tn.object_id 
-			AND sso.current_version=tn.version';
+		$sql = "SELECT 
+            sso.id as id,
+            sso.class_id as class_id,
+            sso.current_version as current_version,
+            sso.modified_date as modified_date,
+            sso.status as status,
+            sso.created_date as created_date,
+            sso.creator_id as creator_id,
+            sso.locale_id as locale_id,
+		        ssot.id as node_id, 
+            tn.version as version,
+            tn.object_id as object_id,
+            tn.name as name,
+            tn.lastname as lastname,
+            tn.password as password,
+            tn.email as email,
+            tn.generated_password as generated_password
+		        FROM 
+      			sys_site_object_tree as ssot, 
+      			sys_site_object as sso, 
+      			user as tn
+      			WHERE sso.identifier='" . $db->escape($login) . "'
+      			AND tn.password='" . $db->escape($crypted_password) . "'
+      			AND ssot.object_id=tn.object_id
+      			AND sso.id=tn.object_id 
+      			AND sso.current_version=tn.version";
 					
 		$db->sql_exec($sql);
 		

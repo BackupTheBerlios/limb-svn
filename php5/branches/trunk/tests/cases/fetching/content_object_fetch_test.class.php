@@ -72,9 +72,11 @@ class content_object_fetch_test extends site_object_fetch_test
   function test_fetch_by_ids_no_params()
   {
   	$ids_array = array(1, 2, 4, 6, 9);
-  	$result = $this->object->fetch_by_ids($ids_array);
   	
-  	$this->assertEqual(array_keys($result), $ids_array);
+  	$result = $this->object->fetch_by_ids($ids_array);
+  	$keys = array_keys($result);
+  	sort($keys);
+  	$this->assertEqual($keys, $ids_array);
   	
   	foreach($ids_array as $key)
   	{
@@ -95,7 +97,9 @@ class content_object_fetch_test extends site_object_fetch_test
   	$result = $this->object->fetch_by_ids($ids_array);
   	
   	$ids_array = array(1, 2, 4, 6, 9);
-  	$this->assertEqual(array_keys($result), $ids_array);
+  	$keys = array_keys($result);
+  	sort($keys);  	
+  	$this->assertEqual($keys, $ids_array);
   }
 
   function test_fetch_by_ids_no_class_restriction()
@@ -105,7 +109,9 @@ class content_object_fetch_test extends site_object_fetch_test
   	$result = $this->object->fetch_by_ids($ids_array, $params);
   	
   	$ids_array = array(1, 2, 4, 6, 9);
-  	$this->assertEqual(array_keys($result), $ids_array);
+  	$keys = array_keys($result);
+  	sort($keys);  	  	
+  	$this->assertEqual($keys, $ids_array);
   }
   
   function test_fetch_by_ids_limit()
@@ -123,10 +129,12 @@ class content_object_fetch_test extends site_object_fetch_test
   	$ids_array = array(1, 2, 3, 4, 6, 8, 9);
   	$params['limit'] = $limit = 3;
   	$params['offset'] = $offset = 2;
+  	$params['order'] = array('annotation' =>  'ASC');
   	
   	$result = $this->object->fetch_by_ids($ids_array, $params);
-  	
-  	$this->assertEqual(array_keys($result), array(3, 4, 6));
+  	$keys = array_keys($result);
+  	sort($keys);  	  	
+  	$this->assertEqual($keys, array(3, 4, 6));
   }
   
   function test_fetch_by_ids_order()

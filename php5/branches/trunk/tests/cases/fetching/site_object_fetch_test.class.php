@@ -153,8 +153,11 @@ class site_object_fetch_test extends LimbTestCase
   {
   	$ids_array = array(1, 2, 4, 6, 9);
   	$result = $this->object->fetch_by_ids($ids_array);
+
+  	$keys = array_keys($result);
+  	sort($keys);
   	
-  	$this->assertEqual(array_keys($result), $ids_array);
+  	$this->assertEqual($keys, $ids_array);
   	
   	foreach($ids_array as $key)
   	{
@@ -172,7 +175,10 @@ class site_object_fetch_test extends LimbTestCase
 
   	$result = $this->object->fetch_by_ids($ids_array, $params);
   	
-  	$this->assertEqual(array_keys($result), $ids_array);
+  	$keys = array_keys($result);
+  	sort($keys);
+  	
+  	$this->assertEqual($keys, $ids_array);
   }
 
   function test_fetch_by_ids_no_params_wrong_ids()
@@ -181,7 +187,11 @@ class site_object_fetch_test extends LimbTestCase
   	$result = $this->object->fetch_by_ids($ids_array);
   	
   	$ids_array = array(1, 2, 4, 6, 9);
-  	$this->assertEqual(array_keys($result), $ids_array);
+
+  	$keys = array_keys($result);
+  	sort($keys);
+  	
+  	$this->assertEqual($keys, $ids_array);
   }
   
   function test_fetch_by_ids_limit()
@@ -199,10 +209,14 @@ class site_object_fetch_test extends LimbTestCase
   	$ids_array = array(1, 2, 3, 4, 6, 8, 9);
   	$params['limit'] = $limit = 3;
   	$params['offset'] = $offset = 2;
+  	$params['order'] = array('sso.title' =>  'ASC');
   	
   	$result = $this->object->fetch_by_ids($ids_array, $params);
   	
-  	$this->assertEqual(array_keys($result), array(3, 4, 6));
+  	$keys = array_keys($result);
+  	sort($keys);
+  	
+  	$this->assertEqual($keys, array(3, 4, 6));
   }
   
   function test_fetch_by_ids_order()

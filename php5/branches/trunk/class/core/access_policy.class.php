@@ -561,10 +561,17 @@ class access_policy
 	{
 		$db = db_factory :: instance();
 		
-		$sql = "SELECT * FROM sys_user_object_access_template as stoat, 
-			sys_user_object_access_template_item as stoati
-			WHERE stoat.class_id = {$class_id} AND
-			stoati.template_id = stoat.id";
+		$sql = "SELECT 
+		        stoat.action_name as action_name, 
+		        stoat.class_id as class_id, 
+		        stoati.template_id as template_id, 
+		        stoati.user_id as user_id, 
+		        stoati.w as w, 
+		        stoati.r as r 
+		        FROM sys_user_object_access_template as stoat, 
+			      sys_user_object_access_template_item as stoati
+			      WHERE stoat.class_id = {$class_id} AND
+			      stoati.template_id = stoat.id";
 		
     $db->sql_exec($sql);
     $all_template_records = $db->get_array();
@@ -586,10 +593,17 @@ class access_policy
 	{
 		$db = db_factory :: instance();
 		
-		$sql = "SELECT * FROM sys_group_object_access_template as stoat, 
-			sys_group_object_access_template_item as stoati
-			WHERE stoat.class_id = {$class_id} AND
-			stoati.template_id = stoat.id";
+		$sql = "SELECT 
+		        stoat.action_name as action_name, 
+		        stoat.class_id as class_id, 
+		        stoati.template_id as template_id, 
+		        stoati.group_id as group_id, 
+		        stoati.w as w, 
+		        stoati.r as r
+		        FROM sys_group_object_access_template as stoat, 
+			      sys_group_object_access_template_item as stoati
+			      WHERE stoat.class_id = {$class_id} AND
+			      stoati.template_id = stoat.id";
 		
     $db->sql_exec($sql);
     $all_template_records = $db->get_array();

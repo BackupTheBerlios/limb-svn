@@ -61,9 +61,10 @@ class content_object extends site_object
 	
 	public function fetch($params=array(), $sql_params=array())
 	{
-		$sql_params['columns'][] = ', tn.*, tn.id as record_id';
+	  $db_table = $this->get_db_table();
+	  
+	  $sql_params['columns'][] = ' ' . $db_table->get_columns_for_select('tn', array('id')) . ', tn.id as record_id, ';
 		
-		$db_table = $this->get_db_table();
 		$table_name = $db_table->get_table_name();
 		$sql_params['tables'][] = ",{$table_name} as tn";
 		
@@ -100,8 +101,8 @@ class content_object extends site_object
 								%s
 								ssot.id as node_id, 
 								ssot.parent_id as parent_node_id, 
-								ssot.level as level,
-								tn.*,
+								ssot.level as level," . 
+								$db_table->get_columns_for_select('tn', array('id', 'object_id')). ",
 								tn.id as record_id,
 								tn.object_id as id
 								FROM 
