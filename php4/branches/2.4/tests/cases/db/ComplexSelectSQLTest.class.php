@@ -31,7 +31,24 @@ class ComplexSelectSQLTest extends LimbTestCase
     $this->assertEqual($sql->toString(), 'SELECT * FROM test');
   }
 
-  function testAddField()
+  function testAddFieldWithFields()
+  {
+    $sql = new ComplexSelectSQL('SELECT t3 %fields%,t4 FROM test');
+
+    $sql->addField('t1');
+    $sql->addField('t2');
+
+    $this->assertEqual($sql->toString(), 'SELECT t3 ,t1,t2,t4 FROM test');
+  }
+
+  function testNoFieldsAdded()
+  {
+    $sql = new ComplexSelectSQL('SELECT t3 %fields%,t4 FROM test');
+
+    $this->assertEqual($sql->toString(), 'SELECT t3 ,t4 FROM test');
+  }
+
+  function testAddFieldNoFields()
   {
     $sql = new ComplexSelectSQL('SELECT %fields% FROM test');
 
@@ -149,12 +166,20 @@ class ComplexSelectSQLTest extends LimbTestCase
                        'SELECT * FROM test ORDER BY t0 DESC');
   }
 
-  function testEmptyGroupBy()
+  function testNoGroupsAdded()
   {
     $sql = new ComplexSelectSQL('SELECT * FROM test');
 
     $this->assertEqual($sql->toString(),
                        'SELECT * FROM test');
+  }
+
+  function testNoGroupsAdded2()
+  {
+    $sql = new ComplexSelectSQL('SELECT * FROM test GROUP BY t0 %group_by%');
+
+    $this->assertEqual($sql->toString(),
+                       'SELECT * FROM test GROUP BY t0');
   }
 
   function testAddGroupBy()
@@ -188,14 +213,6 @@ class ComplexSelectSQLTest extends LimbTestCase
 
     $this->assertEqual($sql->toString(),
                        'SELECT * FROM test GROUP BY t0 ,t1,t2');
-  }
-
-  function testAddGroupByWithGroupByClause3()
-  {
-    $sql = new ComplexSelectSQL('SELECT * FROM test GROUP BY t0 %group_by%');
-
-    $this->assertEqual($sql->toString(),
-                       'SELECT * FROM test GROUP BY t0');
   }
 
 }

@@ -84,10 +84,22 @@ class ComplexSelectSQL
 
   function _createFieldsClause()
   {
-    if (count($this->_fields) == 0)
-      return '*';
+    $sql = $this->_getCleanSQL();
+    $fields = implode(',', $this->_fields);
 
-    return implode(',', $this->_fields);
+    //primitive check if select fields were already in sql
+    //!!!make it better later
+    if(preg_match('~^select\s+[a-zA-Z].*?from~i', $sql))
+    {
+      if(count($this->_fields))
+        return ',' . $fields;
+      else
+        return '';
+    }
+    elseif(count($this->_fields) == 0)
+      return '*';
+    else
+      return $fields;
   }
 
   function _createJoinClause()
