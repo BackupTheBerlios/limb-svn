@@ -8,6 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
+
 class stats_search_phrase
 {	
   static protected $instance = null;

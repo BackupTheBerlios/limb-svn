@@ -22,7 +22,7 @@ class apply_action_access_template_command implements Command
     
     $object = wrap_with_site_object($datasource->fetch());
     
-    $action = $object->get_controller()->get_action($request);
+    $action = $object->get_controller()->get_requested_action($request);
      
 	  try
 	  {

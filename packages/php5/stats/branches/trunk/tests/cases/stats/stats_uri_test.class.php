@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/../../../stats_uri.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 Mock :: generatePartial
 (

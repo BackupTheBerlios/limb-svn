@@ -26,7 +26,7 @@ class save_new_object_access_command implements Command
     $datasource->set_node_id($parent_id);
     $parent_object = wrap_with_site_object($datasource->fetch());
 
-    $action = $parent_object->get_controller()->get_action($toolkit->getRequest());
+    $action = $parent_object->get_controller()->get_requested_action($toolkit->getRequest());
 
     try
     {

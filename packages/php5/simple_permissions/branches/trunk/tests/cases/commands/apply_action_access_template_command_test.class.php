@@ -14,7 +14,7 @@ require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('request');
@@ -83,11 +83,11 @@ class apply_action_access_template_command_test extends LimbTestCase
   {	
     $object_data = array('class_name' => 'site_object');
     
-    $this->controller->expectOnce('get_action', array(new IsAExpectation('Mockrequest')));
-    $this->controller->setReturnValue('get_action', $action = 'some_action');
+    $this->controller->expectOnce('get_requested_action', array(new IsAExpectation('Mockrequest')));
+    $this->controller->setReturnValue('get_requested_action', $action = 'some_action');
     
   	$this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
-  	$this->datasource->expectOnce('fetch', array(new IsAExpectation('Mockrequest')));
+  	$this->datasource->expectOnce('fetch');
   	$this->datasource->setReturnValue('fetch', $object_data);
     
     $this->access_policy->expectOnce('apply_access_templates', 
@@ -102,7 +102,7 @@ class apply_action_access_template_command_test extends LimbTestCase
   {	
     $object_data = array('class_name' => 'site_object');
     
-  	$this->fetcher->setReturnValue('fetch_requested_object', $object_data);
+  	$this->datasource->setReturnValue('fetch', $object_data);
     
     $this->command->setReturnValue('_get_access_policy', 
                                    new access_policy_for_apply_action_access_template_command());

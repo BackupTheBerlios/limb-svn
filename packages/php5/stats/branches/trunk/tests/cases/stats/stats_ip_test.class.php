@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/../../../stats_ip.class.php');
 require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 Mock :: generatePartial
 (

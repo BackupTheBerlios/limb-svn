@@ -9,7 +9,9 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/../../../stats_register.class.php');
+require_once(dirname(__FILE__) . '/../../../stats_counter.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 Mock :: generatePartial
 (
@@ -109,7 +111,7 @@ class stats_register_test extends LimbTestCase
   	$this->stats_register->setReturnReference('_get_referer_register', $this->stats_referer);
   	$this->stats_register->setReturnReference('_get_search_phrase_register', $this->stats_search_phrase);
     
-    user :: instance()->set('id', 10);
+    Limb :: toolkit()->getUser()->set('id', 10);
   	
   	$this->_clean_up();
   }

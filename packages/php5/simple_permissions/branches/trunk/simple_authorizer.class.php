@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/permissions/authorizer.interface.php');
 
 class simple_authorizer implements authorizer
 {
-  protected $_cached_class_accessible_actions = array();
+  protected $_cached_behaviour_accessible_actions = array();
 
   public function get_accessible_object_ids($object_ids, $action = 'display')
   {
@@ -65,40 +65,43 @@ class simple_authorizer implements authorizer
 			$arr =& $objects_data;
   
 		$controllers = array();
-		$class_actions = array();
+		$behaviour_actions = array();
 				
 		foreach($arr as $key => $data)
 		{
-			$class_id = $data['class_id'];
+			$behaviour_name = $data['behaviour'];
 			
 			$arr[$key]['actions'] = array();
 						
-			if (!isset($class_actions[$class_id]))
+			if (!isset($behaviour_actions[$behaviour_name]))
 			{
-				$site_object_controller = $this->_get_controller($data['class_name']);
-				$class_actions[$class_id] = $site_object_controller->get_actions_definitions();
+				$behaviour = $this->_get_behaviour($behaviour_name);
+				$behaviour_actions[$behaviour_name] = $site_object_controller->get_actions_list();
 			}	
 
-			$accessible_actions = $this->_get_class_accessible_actions($class_id);
+			$accessible_actions = $this->_get_behaviour_accessible_actions($behaviour_name);
 
-			foreach($class_actions[$class_id] as $action_name => $action_params)
+			foreach($accessible_actions[$behaviour_name] as $action_name)
 			{
-			  if (isset($accessible_actions[$action_name]))
-					$arr[$key]['actions'][$action_name] = $action_params;
+			  if (isset($behaviour_actions[$behaviour_name][$action_name]))
+        {
+          $method = 'get_' . $action_name . '_action_properties'; 
+					$arr[$key]['actions'][$action_name] = $behaviour->$method();
+        }  
 			}			
 		}
   }
 
 	//for mocking
-	protected function _get_controller($class_name)
+	protected function _get_behaviour($behaviour)
 	{
-		return Limb :: toolkit()->createSiteObject($class_name)->get_controller();
+		return Limb :: toolkit()->getBehaviour($behaviour);
 	}
 
-	protected function _get_class_accessible_actions($class_id)
+	protected function _get_behaviour_accessible_actions($behaviour_id)
 	{
-	  if(isset($this->_cached_class_accessible_actions[$class_id]))
-	    return $this->_cached_class_accessible_actions[$class_id];
+	  if(isset($this->_cached_behaviour_accessible_actions[$behaviour_id]))
+	    return $this->_cached_behaviour_accessible_actions[$behaviour_id];
 	    
 		$accessor_ids = $this->_get_accessor_ids();
 		
@@ -107,14 +110,14 @@ class simple_authorizer implements authorizer
 		$db = Limb :: toolkit()->getDB();
 
 		$sql = "SELECT saa.action_name as action_name FROM sys_action_access as saa
-			WHERE saa.class_id = {$class_id} AND
+			WHERE saa.behaviour_id = {$behaviour_id} AND
 			saa.accessor_id IN ({$in_ids})
 			GROUP BY saa.action_name";
 		
     $db->sql_exec($sql);
     $result = $db->get_array('action_name');
 		
-		$this->_cached_class_accessible_actions[$class_id] = $result;
+		$this->_cached_behaviour_accessible_actions[$behaviour_id] = $result;
 		return $result;	
 	}
 }

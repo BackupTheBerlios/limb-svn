@@ -13,12 +13,13 @@ require_once(dirname(__FILE__) . '/../../../access_policy.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
 require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/single_object_datasource.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('request');
-Mock :: generate('fetcher');
+Mock :: generate('single_object_datasource');
 Mock :: generate('site_object');
 Mock :: generate('site_object_controller');
 Mock :: generate('access_policy');
@@ -43,7 +44,7 @@ class save_new_object_access_command_test extends LimbTestCase
   var $request;
 	var $dataspace;
   var $toolkit;
-  var $fetcher;
+  var $datasource;
   var $site_object;
   var $parent_site_object;
   var $controller;
@@ -53,14 +54,14 @@ class save_new_object_access_command_test extends LimbTestCase
   {
     $this->request = new Mockrequest($this);
     $this->dataspace = new Mockdataspace($this);
-    $this->fetcher = new Mockfetcher($this);
+    $this->datasource = new Mocksingle_object_datasource($this);
     $this->site_object = new Mocksite_object($this);
     $this->parent_site_object = new Mocksite_object($this);
     $this->controller = new Mocksite_object_controller($this); 
     $this->access_policy = new Mockaccess_policy($this);
     
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getFetcher', $this->fetcher);
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('single_object_datasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('createSiteObject', $this->parent_site_object, array('site_object'));
     $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
@@ -76,7 +77,7 @@ class save_new_object_access_command_test extends LimbTestCase
     
     $this->request->tally();
     $this->dataspace->tally();
-    $this->fetcher->tally();
+    $this->datasource->tally();
   	$this->toolkit->tally();
     $this->site_object->tally();
     $this->parent_site_object->tally();
@@ -95,14 +96,18 @@ class save_new_object_access_command_test extends LimbTestCase
     $this->dataspace->setReturnValue('get', $this->site_object, array('created_site_object'));
 
     $parent_object_data = array('class_name' => 'site_object');
-  	$this->fetcher->expectOnce('fetch_one_by_node_id', array($parent_node_id = 100));
-  	$this->fetcher->setReturnValue('fetch_one_by_node_id', $parent_object_data);
+  	$this->datasource->expectOnce('set_node_id', array($parent_node_id = 100));
+  	$this->datasource->setReturnValue('fetch', $parent_object_data);
     
     $this->site_object->setReturnValue('get_parent_node_id', $parent_node_id);
 
-    $this->controller->setReturnValue('get_action', 'some_action', array(new IsAExpectation('Mockrequest')));
-    $this->controller->expectOnce('get_action', array(new IsAExpectation('Mockrequest')));
     $this->parent_site_object->setReturnValue('get_controller', $this->controller);
+
+    $this->controller->setReturnValue('get_requested_action', 
+                                      'some_action', 
+                                      array(new IsAExpectation('Mockrequest')));
+    
+    $this->controller->expectOnce('get_requested_action', array(new IsAExpectation('Mockrequest')));
     
     $this->command->setReturnValue('_get_access_policy', $this->access_policy);
 
@@ -117,12 +122,17 @@ class save_new_object_access_command_test extends LimbTestCase
                                    new access_policy_for_save_new_object_access_command());
 
     $parent_object_data = array('class_name' => 'site_object');
-  	$this->fetcher->expectOnce('fetch_one_by_node_id', array($parent_node_id = 100));
-  	$this->fetcher->setReturnValue('fetch_one_by_node_id', $parent_object_data);
 
-    $this->controller->setReturnValue('get_action', 'some_action', array(new IsAExpectation('Mockrequest')));
-    $this->controller->expectOnce('get_action', array(new IsAExpectation('Mockrequest')));
+  	$this->datasource->expectOnce('set_node_id', array($parent_node_id = 100));
+  	$this->datasource->setReturnValue('fetch', $parent_object_data);
+
     $this->parent_site_object->setReturnValue('get_controller', $this->controller);
+    
+    $this->controller->setReturnValue('get_requested_action', 
+                                      'some_action', 
+                                      array(new IsAExpectation('Mockrequest')));
+    
+    $this->controller->expectOnce('get_requested_action', array(new IsAExpectation('Mockrequest')));
     
     $this->site_object->setReturnValue('get_parent_node_id', $parent_node_id);
     
@@ -143,6 +153,7 @@ class save_new_object_access_command_test extends LimbTestCase
     }
     catch(LimbException $e)
     {
+      $this->assertTrue(true);
     }
   }
 }

@@ -9,8 +9,10 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../access_policy.class.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
 
-class access_templates_test extends LimbTestCase
+class access_policy_test extends LimbTestCase
 {
   var $ac = null;
 

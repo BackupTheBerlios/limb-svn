@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
 require_once(dirname(__FILE__) . '/../../../simple_authorizer.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 Mock :: generatePartial
 (
