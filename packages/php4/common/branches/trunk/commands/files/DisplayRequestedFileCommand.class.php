@@ -17,22 +17,22 @@ class DisplayRequestedFileCommand// implements Command
 {
   function perform()
   {
-    $t =& Limb :: toolkit();
-    $request =& $t->getRequest();
-    $response =& $t->getResponse();
-    $datasource =& $t->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $response =& $toolkit->getResponse();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
 
     $datasource->setRequest($request);
 
     if(!$object_data = $datasource->fetch())
-      return Limb :: getSTATUS_ERROR();
+      return LIMB_STATUS_ERROR;
 
     if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
     {
       $response->header("HTTP/1.1 404 Not found");
 
       if(!$request->hasAttribute('icon'))
-        return Limb :: getSTATUS_ERROR();
+        return LIMB_STATUS_ERROR;
 
       $response->commit(); //for speed
       return;//for tests, fix!!!
@@ -49,7 +49,7 @@ class DisplayRequestedFileCommand// implements Command
     $response->header('Content-Disposition: attachment; filename="' . $object_data['file_name'] . '"');
     $response->readfile(MEDIA_DIR . $object_data['media_id'] . '.media');
 
-    return Limb :: getSTATUS_OK();
+    return LIMB_STATUS_OK;
   }
 
   function _fillIconResponse($response, $request, $object_data)

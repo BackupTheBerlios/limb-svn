@@ -21,7 +21,7 @@ class SaveNewObjectAccessCommand// implements Command
 
     $parent_id = $object->getParentNodeId();
 
-    $datasource = $toolkit->getDatasource('SingleObjectDatasource');
+    $datasource =& $toolkit->getDatasource('SingleObjectDatasource');
     $datasource->setNodeId($parent_id);
     $parent_object = wrapWithSiteObject($datasource->fetch());
 
@@ -30,7 +30,7 @@ class SaveNewObjectAccessCommand// implements Command
 
     try
     {
-      $access_policy = $this->_getAccessPolicy();
+      $access_policy =& $this->_getAccessPolicy();
       $access_policy->saveNewObjectAccess($object, $parent_object, $action);
     }
     catch(LimbException $e)
@@ -38,7 +38,7 @@ class SaveNewObjectAccessCommand// implements Command
       return LIMB_STATUS_ERROR;
     }
 
-    return Limb :: getSTATUS_OK();
+    return LIMB_STATUS_OK;
   }
 
   // for mocking

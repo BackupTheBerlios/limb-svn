@@ -72,8 +72,8 @@ class ImageVariation extends DomainObject
 
   function resize($max_size)
   {
-    $image_library = $this->_getImageLibrary();
-    $media_manager = $this->_getMediaManager();
+    $image_library =& $this->_getImageLibrary();
+    $media_manager =& $this->_getMediaManager();
 
     $media_file_id = $this->getMediaFileId();
 

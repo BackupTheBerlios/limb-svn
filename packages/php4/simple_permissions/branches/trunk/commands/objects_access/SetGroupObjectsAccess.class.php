@@ -20,7 +20,7 @@ class SetGroupObjectsAccess extends FormAction
     return 'set_group_access';
   }
 
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
     $session =& $toolkit->getSession();
@@ -32,7 +32,7 @@ class SetGroupObjectsAccess extends FormAction
     if ($filter_groups = $session->get('filter_groups'))
       $this->dataspace->set('filter_groups', $filter_groups);
 
-    parent :: perform($request, $response);
+    parent :: perform(&$request, &$response);
 
     $this->_fillPolicy();
   }
@@ -54,7 +54,7 @@ class SetGroupObjectsAccess extends FormAction
     $this->_fillPolicy();
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $data = $this->dataspace->export();
 

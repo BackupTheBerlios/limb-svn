@@ -11,7 +11,7 @@
 
 class LoggingFilter// implements InterceptingFilter
 {
-  function run($filter_chain, $request, $response)
+  function run(&$filter_chain, &$request, &$response)
   {
     $filter_chain->next();
 
@@ -23,7 +23,7 @@ class LoggingFilter// implements InterceptingFilter
 
     $object = wrapWithSiteObject($datasource->fetch());
 
-    $controller = $object->getController();
+    $controller =& $object->getController();
 
     include_once(dirname(__FIlE__) . '/../StatsRegister.class.php');
 

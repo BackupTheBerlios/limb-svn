@@ -65,7 +65,7 @@ class SimpleAuthenticatorTest extends LimbTestCase
 
   function testLogout()
   {
-    $user = User :: instance();
+    $user =& User :: instance();
     $user->set('login', 'some_user');
 
     $user->logout();

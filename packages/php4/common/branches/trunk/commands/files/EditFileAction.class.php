@@ -53,9 +53,9 @@ class EditFileAction extends FormEditSiteObjectAction
         throw new LimbException('uploaded file size exceeds limit');
       }
 
-      $t =& Limb :: toolkit();
-      $request =& $t->getRequest();
-      $datasource =& $t->getDatasource('RequestedObjectDatasource');
+      $toolkit =& Limb :: toolkit();
+      $request =& $toolkit->getRequest();
+      $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
       $datasource->setRequest($request);
 
       $object_data = $datasource->fetch();

@@ -28,8 +28,8 @@ class EditVariationsAction extends FormEditSiteObjectAction
       '_FILES_' => 'files_data'
     );
 
-    $t =& Limb :: toolkit();
-    $ini =& $t->getINI('image_variations.ini');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('image_variations.ini');
 
     $image_variations = $ini->getAll();
 
@@ -56,8 +56,8 @@ class EditVariationsAction extends FormEditSiteObjectAction
   {
     parent :: _initDataspace($request);
 
-    $t =& Limb :: toolkit();
-    $ini =& $t->getINI('image_variations.ini');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('image_variations.ini');
 
     $image_variations = $ini->getAll();
 

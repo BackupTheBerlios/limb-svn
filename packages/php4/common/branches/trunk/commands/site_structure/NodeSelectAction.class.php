@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class NodeSelectAction extends Action
 {
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
     $request->setStatus(Request :: STATUS_DONT_TRACK);
 

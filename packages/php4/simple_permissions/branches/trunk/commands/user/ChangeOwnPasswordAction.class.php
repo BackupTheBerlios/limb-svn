@@ -25,7 +25,7 @@ class ChangeOwnPasswordAction extends FormAction
     $this->validator->addRule( array(LIMB_DIR . '/class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
     $user_object =& $toolkit->createSiteObject('UserObject');

@@ -12,15 +12,15 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class ImageSelectAction extends Action
 {
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
-    $t =& Limb :: toolkit();
-    $datasource =& $t->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
 
     $object = $datasource->fetch();
 
-    $t->getSession()->set('limb_image_select_working_path', $object['path']);
+    $toolkit->getSession()->set('limb_image_select_working_path', $object['path']);
   }
 }
 ?>

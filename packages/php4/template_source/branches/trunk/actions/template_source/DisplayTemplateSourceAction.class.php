@@ -11,14 +11,13 @@
 require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 require_once(LIMB_DIR . '/class/template/fileschemes/compiler_support.inc.php');
 
-if (!defined('TEMPLATE_FOR_HACKERS'))
-  define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');
+@define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');
 
 class DisplayTemplateSourceAction extends Action
 {
   var $history = array();
 
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
     if(($t = $request->get('t')) &&  is_array($t) &&  sizeof($t) > 0)
     {
@@ -79,7 +78,7 @@ class DisplayTemplateSourceAction extends Action
     if(!$site_object = wrapWithSiteObject($datasource->fetch()))
       return null;
 
-    $controller = $site_object->getController();
+    $controller =& $site_object->getController();
 
     return $controller->getActionProperty($controller->getDefaultAction(), 'template_path');
   }

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class ActivatePasswordAction extends Action
 {
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
     $object =& $toolkit->createSiteObject('UserObject');

@@ -13,8 +13,8 @@ class ApplyActionAccessTemplateCommand// implements Command
 {
   function perform()
   {
-    $toolkit = Limb :: toolkit();
-    $request = $toolkit->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
     $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
@@ -26,7 +26,7 @@ class ApplyActionAccessTemplateCommand// implements Command
 
     try
     {
-      $access_policy = $this->_getAccessPolicy();
+      $access_policy =& $this->_getAccessPolicy();
       $access_policy->applyAccessTemplates($object, $action);
     }
     catch(LimbException $e)
@@ -34,7 +34,7 @@ class ApplyActionAccessTemplateCommand// implements Command
       return LIMB_STATUS_ERROR;
     }
 
-    return Limb :: getSTATUS_OK();
+    return LIMB_STATUS_OK;
   }
 
   // for mocking

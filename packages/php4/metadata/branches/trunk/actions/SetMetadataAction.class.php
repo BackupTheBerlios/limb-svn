@@ -31,7 +31,7 @@ class SetMetadataAction extends FormAction
     $this->dataspace->import($data);
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
 

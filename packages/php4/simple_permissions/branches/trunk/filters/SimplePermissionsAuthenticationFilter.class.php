@@ -12,14 +12,14 @@ require_once(LIMB_DIR . '/class/core/filters/AuthenticationFilter.class.php');
 
 class SimplePermissionsAuthenticationFilter extends AuthenticationFilter
 {
-  function run($filter_chain, $request, $response)
+  function run(&$filter_chain, &$request, &$response)
   {
     Debug :: addTimingPoint('authentication filter started');
 
     $this->initializeUser();
 
-    $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
 
     if(!$node = $datasource->mapRequestToNode($request))
     {
@@ -28,9 +28,9 @@ class SimplePermissionsAuthenticationFilter extends AuthenticationFilter
       return;
     }
 
-    $behaviour = $this->getBehaviourByObjectId($node['object_id']);
+    $behaviour =& $this->getBehaviourByObjectId($node['object_id']);
 
-    $controller = $this->_getController($behaviour);
+    $controller =& $this->_getController($behaviour);
     if(!$action = $controller->getRequestedAction())
     {
       $this->process404Error($request, $response);

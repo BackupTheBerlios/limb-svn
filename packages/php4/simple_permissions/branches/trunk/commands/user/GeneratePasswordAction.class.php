@@ -23,7 +23,7 @@ class GeneratePasswordAction extends FormAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'email'));
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $data = $this->dataspace->export();
     $toolkit =& Limb :: toolkit();

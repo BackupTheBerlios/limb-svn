@@ -37,6 +37,7 @@ class ObjectVersionsDatasource// implements Datasource
       $user = '';
 
       if (count($users))
+      {
         foreach($users as $user_data)
         {
           if ($user_data['id'] == $data['creator_id'])
@@ -45,6 +46,7 @@ class ObjectVersionsDatasource// implements Datasource
             break;
           }
         }
+      }
 
       if ($user)
       {

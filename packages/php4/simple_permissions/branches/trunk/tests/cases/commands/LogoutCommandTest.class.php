@@ -52,7 +52,7 @@ class LogoutCommandTest extends LimbTestCase
     $this->user->expectOnce('logout');
     $this->response->expectOnce('redirect', array('/'));
 
-    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_OK, $this->command->perform());
   }
 }
 

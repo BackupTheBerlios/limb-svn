@@ -11,8 +11,7 @@
 require_once(dirname(__FILE__) . '/ShippingConfiguration.class.php');
 require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 
-if (!defined('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME'))
-  define('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME', 60*60*24*7);
+@define('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME', 60*60*24*7);
 
 class ShippingLocator
 {
@@ -88,14 +87,14 @@ class ShippingLocator
 
   function _saveCachedOptions($shipping_configuration, $options)
   {
-    $cache = $this->getCache();
+    $cache =& $this->getCache();
 
     $cache->save(serialize($options), $shipping_configuration->getHash());
   }
 
   function _getCachedOptions($shipping_configuration)
   {
-    $cache = $this->getCache();
+    $cache =& $this->getCache();
 
     if($result = $cache->get($shipping_configuration->getHash()))
       return unserialize($result);

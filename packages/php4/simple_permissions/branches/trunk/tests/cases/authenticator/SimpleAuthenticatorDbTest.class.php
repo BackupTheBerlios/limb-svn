@@ -33,7 +33,7 @@ class SimpleAuthenticatorDbTest extends LimbTestCase
   {
     $this->auth->login(array('login' => 'vasa', 'password' => '1', 'locale_id' => 'en'));
 
-    $user = User :: instance();
+    $user =& User :: instance();
 
     $this->assertTrue($user->isLoggedIn());
     $this->assertEqual($user->getId(), 1);
@@ -47,7 +47,7 @@ class SimpleAuthenticatorDbTest extends LimbTestCase
   {
     $this->auth->logout();
 
-    $user = User :: instance();
+    $user =& User :: instance();
 
     $this->assertEqual($user->get('groups'), array(3 => 'visitors'));
   }

@@ -17,11 +17,11 @@ class StatsSearchEnginesReportAction extends FormAction
     return 'search_engines_form';
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $request->import($this->dataspace->export());
 
-    parent :: _validPerform($request, $response);
+    parent :: _validPerform(&$request, &$response);
   }
 
 }

@@ -29,7 +29,7 @@ class SetGroupAccessTemplateAction extends FormAction
     $this->dataspace->merge($data);
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     if (!$class_id = $request->get('class_id'))
       throw new LimbException('class_id not defined');

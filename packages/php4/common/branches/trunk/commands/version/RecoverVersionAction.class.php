@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class RecoverVersionAction extends Action
 {
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
     if($request->hasAttribute('popup'))
       $response->write(closePopupNoParentReloadResponse());

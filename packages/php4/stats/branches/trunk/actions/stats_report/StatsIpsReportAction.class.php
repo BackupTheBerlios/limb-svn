@@ -17,11 +17,11 @@ class StatsIpsReportAction extends FormAction
     return 'ips_form';
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $request->import($this->dataspace->export());
 
-    parent :: _validPerform($request, $response);
+    parent :: _validPerform(&$request, &$response);
   }
 
 }

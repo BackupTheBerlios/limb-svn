@@ -52,10 +52,10 @@ class StatsRegister
 
   function _updateLog($node_id, $action, $status_code)
   {
-    $ip_register = $this->_getIpRegister();
+    $ip_register =& $this->_getIpRegister();
 
-    $referer_register = $this->_getRefererRegister();
-    $uri_register = $this->_getUriRegister();
+    $referer_register =& $this->_getRefererRegister();
+    $uri_register =& $this->_getUriRegister();
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
@@ -89,8 +89,8 @@ class StatsRegister
 
   function _updateCounters()
   {
-    $ip_register = $this->_getIpRegister();
-    $counter_register = $this->_getCounterRegister();
+    $ip_register =& $this->_getIpRegister();
+    $counter_register =& $this->_getCounterRegister();
 
     $counter_register->setNewHost($ip_register->isNewHost($this->_reg_date));
     $counter_register->update($this->_reg_date);

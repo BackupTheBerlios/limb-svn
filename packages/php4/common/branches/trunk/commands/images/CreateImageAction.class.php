@@ -28,8 +28,8 @@ class CreateImageAction extends FormCreateSiteObjectAction
       'description' => 'description',
     );
 
-    $t =& Limb :: toolkit();
-    $ini = $t->getINI('image_variations.ini');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('image_variations.ini');
 
     $image_variations = $ini->getAll();
 
@@ -58,8 +58,8 @@ class CreateImageAction extends FormCreateSiteObjectAction
   {
     parent :: _initDataspace($request);
 
-    $t =& Limb :: toolkit();
-    $ini = $t->getINI('image_variations.ini');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('image_variations.ini');
 
     $image_variations = $ini->getAll();
 

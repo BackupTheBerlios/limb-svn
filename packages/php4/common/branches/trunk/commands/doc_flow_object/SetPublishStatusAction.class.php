@@ -12,20 +12,20 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class SetPublishStatusAction extends Action
 {
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
     $request->setStatus(Request :: STATUS_SUCCESS);
 
     if($request->hasAttribute('popup'))
       $response->write(closePopupResponse($request));
 
-    $t =& Limb :: toolkit();
-    $datasource =& $t->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
     if(!$object = wrapWithSiteObject($datasource->fetch()))
       return;
 
-    $site_object_controller = $object->getController();
+    $site_object_controller =& $object->getController();
     $action = $site_object_controller->getAction($request);
 
     switch ($action)

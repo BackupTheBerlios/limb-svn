@@ -17,11 +17,11 @@ class StatsEventFilterAction extends FormAction
     return 'events_filter_form';
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $request->merge($this->dataspace->export());
 
-    parent :: _validPerform($request, $response);
+    parent :: _validPerform(&$request, &$response);
   }
 }
 

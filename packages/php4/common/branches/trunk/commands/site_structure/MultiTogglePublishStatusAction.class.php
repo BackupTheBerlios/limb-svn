@@ -17,7 +17,7 @@ class MultiTogglePublishStatusAction extends FormAction
     return 'grid_form';
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     if($request->hasAttribute('popup'))
       $response->write(closePopupResponse($request));
@@ -64,7 +64,7 @@ class MultiTogglePublishStatusAction extends FormAction
   function _getObjects($node_ids)
   {
     $toolkit =& Limb :: toolkit();
-    $datasource =& $toolkit)->getDatasource('SiteObjectsByNodeIdsDatasource');
+    $datasource =& $toolkit->getDatasource('SiteObjectsByNodeIdsDatasource');
     $datasource->setNodeIds($node_ids);
 
     return $datasource->fetch();

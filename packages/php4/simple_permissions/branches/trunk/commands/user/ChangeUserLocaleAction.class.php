@@ -23,7 +23,7 @@ class ChangeUserLocaleAction extends FormAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'locale_id'));
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $locale_id = $this->dataspace->get('locale_id');
 

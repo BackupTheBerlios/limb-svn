@@ -27,7 +27,7 @@ class ClassTemplateActionsListDatasource// implements Datasource
 
     $site_object =& $toolkit->createSiteObject($class_data['ClassName']);
 
-    $site_object_controller = $site_object->getController();
+    $site_object_controller =& $site_object->getController();
 
     $actions = $site_object_controller->getActionsDefinitions();
 

@@ -17,7 +17,7 @@ class VoteAction extends FormAction
     return 'vote_action';
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
     $object =& $toolkit->createSiteObject('PollContainer');

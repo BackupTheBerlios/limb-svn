@@ -16,10 +16,10 @@ class DisplayRequestedImageCommand// implements Command
 {
   function perform()
   {
-    $t =& Limb :: toolkit();
-    $request =& $t->getRequest();
-    $response =& $t->getResponse();
-    $datasource =& $t->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $response =& $toolkit->getResponse();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
 
     $datasource->setRequest($request);
 
@@ -68,7 +68,7 @@ class DisplayRequestedImageCommand// implements Command
     $response->header("Content-type: {$image['mime_type']}");
 
     if($variation == 'original')
-      return Limb :: getSTATUS_OK();
+      return LIMB_STATUS_OK;
     else
       $response->commit();//for speed
     return;//for tests, fix!!!
@@ -82,8 +82,8 @@ class DisplayRequestedImageCommand// implements Command
 
   function _getRequestedVariation($request)
   {
-    $t =& Limb :: toolkit();
-    $ini =& $t->getINI('image_variations.ini');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('image_variations.ini');
 
     $variation = 'thumbnail';
     $image_variations = $ini->getAll();

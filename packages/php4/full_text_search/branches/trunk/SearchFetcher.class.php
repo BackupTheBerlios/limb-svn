@@ -94,7 +94,7 @@ class SearchFetcher
     }
 
     $toolkit =& Limb :: toolkit();
-    $authr =& $toolkit->getAuthorizer()();
+    $authr =& $toolkit->getAuthorizer();
     $authr->assignActionsToObjects($result);
 
     $this->_assignPaths($result);

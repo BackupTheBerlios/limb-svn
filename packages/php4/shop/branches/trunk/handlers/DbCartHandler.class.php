@@ -31,7 +31,7 @@ class DbCartHandler extends CartHandler
 
     $this->_loadItemsForVisitor();
 
-    $user = $this->_getUser();
+    $user =& $this->_getUser();
     if($user->isLoggedIn())
     {
       $this->_loadItemsForUser();
@@ -40,7 +40,7 @@ class DbCartHandler extends CartHandler
 
   function _loadItemsForUser()
   {
-    $user = $this->_getUser();
+    $user =& $this->_getUser();
 
     $conditions = 'user_id = ' . $user->getId() . ' AND cart_id <> "'. $this->_cart_id . '"';
 
@@ -83,7 +83,7 @@ class DbCartHandler extends CartHandler
 
   function _dbCartHandler()
   {
-    $user = $this->_getUser();
+    $user =& $this->_getUser();
 
     $cart_data = array(
       'user_id' => $user->getId(),

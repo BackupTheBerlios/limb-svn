@@ -20,7 +20,7 @@ class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
     return 'set_group_access';
   }
 
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
     $session =& $toolkit->getSession();
@@ -28,7 +28,7 @@ class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
     if ($filter_groups = $session->get('filter_groups'))
       $this->dataspace->set('filter_groups', $filter_groups);
 
-    parent :: perform($request, $response);
+    parent :: perform(&$request, &$response);
 
     $this->_setTemplateTree();
     $this->_initDataspace($request);
@@ -59,7 +59,7 @@ class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
 
     );
     $count = null;
-    $dataset = $datasource->getDataset($count, $params);
+    $dataset =& $datasource->getDataset($count, $params);
 
     $this->object_ids = array();
     $dataset->reset();

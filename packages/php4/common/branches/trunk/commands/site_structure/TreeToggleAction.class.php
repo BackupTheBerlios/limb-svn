@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class TreeToggleAction extends Action
 {
-  function perform($request, $response)
+  function perform(&$request, &$response)
   {
     if($request->hasAttribute('recursive_search_for_node'))
       return;

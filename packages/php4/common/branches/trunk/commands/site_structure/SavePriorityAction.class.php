@@ -17,7 +17,7 @@ class SavePriorityAction extends FormAction
     return 'grid_form';
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $data = $this->dataspace->export();
     $toolkit =& Limb :: toolkit();

@@ -41,7 +41,7 @@ class LoginCommand// implements Command
       return LIMB :: STATUS_OK;
     }
 
-    $referer = $this->_getHttpReferer();
+    $referer =& $this->_getHttpReferer();
     if($referer &&  (strpos(strtolower($referer), '/root/login') === false))
     {
       $response->redirect($referer);

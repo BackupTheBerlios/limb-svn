@@ -24,7 +24,7 @@ class MultiDeleteAction extends FormAction
     $this->_transferDataspace($request);
   }
 
-  function _firstTimePerform($request, $response)
+  function _firstTimePerform(&$request, &$response)
   {
     $data = $this->dataspace->export();
 
@@ -44,10 +44,10 @@ class MultiDeleteAction extends FormAction
 
     $grid->registerDataset(new ArrayDataset($objects));
 
-    parent :: _firstTimePerform($request, $response);
+    parent :: _firstTimePerform(&$request, &$response);
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $data = $this->dataspace->export();
 
@@ -88,7 +88,7 @@ class MultiDeleteAction extends FormAction
   function _getObjectsToDelete($node_ids)
   {
     $toolkit =& Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('SiteObjectsByNodeIdsDatasource');
+    $datasource =& $toolkit->getDatasource('SiteObjectsByNodeIdsDatasource');
     $datasource->setNodeIds($node_ids);
 
     $objects = $datasource->fetch();

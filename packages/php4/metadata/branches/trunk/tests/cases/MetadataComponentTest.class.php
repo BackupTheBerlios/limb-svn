@@ -64,7 +64,7 @@ class MetadataComponentTest extends LimbTestCase
   {
     clearTestingDbTables();
 
-    $user = User :: instance();
+    $user =& User :: instance();
     $user->logout();
 
     $this->metadata_component->tally();

@@ -13,9 +13,9 @@ require_once(LIMB_SHOP_DIR . 'CartItem.class.php');
 
 class CatalogObject extends ContentObject
 {
-  function getCartItem()
+  function &getCartItem()
   {
-    $cart_item = new CartItem($this->getNodeId());
+    $cart_item =& new CartItem($this->getNodeId());
 
     $cart_item->setDescription($this->getTitle());
     $cart_item->setAttribute('image_id', $this->getAttribute('image_id'));

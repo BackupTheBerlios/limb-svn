@@ -13,9 +13,7 @@ require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
 define('CART_DEFAULT_ID', session_id());
-
-if(!defined('CART_DEFAULT_HANDLER_TYPE'))
-  define('CART_DEFAULT_HANDLER_TYPE', 'session');
+@define('CART_DEFAULT_HANDLER_TYPE', 'session');
 
 class Cart
 {
@@ -40,7 +38,7 @@ class Cart
     return $GLOBALS['CartGlobalInstance'];
   }
 
-  function _initializeCartHandler($handler)
+  function _initializeCartHandler(&$handler)
   {
     if($handler === null)
     {
@@ -64,7 +62,7 @@ class Cart
     }
     else
     {
-      $this->_cart_handler = $handler;
+      $this->_cart_handler =& $handler;
       $this->_cart_handler->setCartId($this->_cart_id);
       $this->_cart_handler->reset();
     }

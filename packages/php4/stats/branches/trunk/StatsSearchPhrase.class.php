@@ -40,7 +40,7 @@ class StatsSearchPhrase
 
   function register($date)
   {
-    if(!$rule = $this->getMatchingSearchEngineRule())
+    if(!$rule =& $this->getMatchingSearchEngineRule())
       return false;
 
     $this->db->sqlInsert('sys_stat_search_phrase',

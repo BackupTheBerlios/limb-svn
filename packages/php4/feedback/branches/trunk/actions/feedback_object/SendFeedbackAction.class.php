@@ -44,7 +44,7 @@ class SendFeedbackAction extends FormAction
                         $_SERVER['HTTP_HOST']);
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $mail_data = $this->dataspace->export();
 

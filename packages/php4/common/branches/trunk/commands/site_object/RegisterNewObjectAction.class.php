@@ -26,8 +26,8 @@ class RegisterNewObjectAction extends FormAction
 
     if($path = $this->dataspace->get('parent_path'))
     {
-      $t =& Limb :: toolkit();
-      $tree =& $t->getTree();
+      $toolkit =& Limb :: toolkit();
+      $tree =& $toolkit->getTree();
       if($node = $tree->getNodeByPath($path))
         $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $node['id']));
     }
@@ -35,7 +35,7 @@ class RegisterNewObjectAction extends FormAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
     $params = array();
 

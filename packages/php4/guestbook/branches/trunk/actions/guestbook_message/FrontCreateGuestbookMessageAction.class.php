@@ -17,9 +17,9 @@ class FrontCreateGuestbookMessageAction extends CreateGuestbookMessageAction
     return 'display';
   }
 
-  function _validPerform($request, $response)
+  function _validPerform(&$request, &$response)
   {
-    parent :: _validPerform($request, $response);
+    parent :: _validPerform(&$request, &$response);
 
     if ($request->isSuccess())
       $response->reload();

@@ -92,7 +92,7 @@ class ImageObjectDataMapperTest extends LimbTestCase
     $this->finder->expectOnce('findById', array($id));
     $this->finder->setReturnValue('findById', $result, array($id));
 
-    $image = $this->mapper->findById($id);
+    $image =& $this->mapper->findById($id);
 
     $this->assertEqual($image->getId(), $id);
     $this->assertEqual($image->getDescription(), $description);
