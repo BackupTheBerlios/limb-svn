@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/tree/drivers/materialized_path_driver.class.php');
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
 
 class tree
@@ -32,9 +31,12 @@ class tree
 	}
 
 	function initialize_tree_driver($driver = null)
-	{
+	{	
 		if($driver === null)
+		{
+		  include_once(LIMB_DIR . 'core/tree/drivers/materialized_path_driver.class.php');
 			$this->_tree_driver =& new materialized_path_driver();
+		}
 			
 		$parents =& session :: get('tree_expanded_parents');
 		$this->_tree_driver->set_expanded_parents($parents);

@@ -50,6 +50,8 @@ class authentication_filter extends intercepting_filter
     }
     
     $object =& wrap_with_site_object($object_data); 
+
+    debug :: add_timing_point('object fetched');
     
     $site_object_controller =& $object->get_controller();
     

@@ -25,7 +25,7 @@ class db_module
   var $_sql_result;
   
   var $_locale_id = '';
-
+  
   function db_module($db_params)
   {
 		$this->_transaction_status = DB_TRANSACTION_STATUS_OUT;

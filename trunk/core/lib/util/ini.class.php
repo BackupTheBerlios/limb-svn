@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: ini.class.php 418 2004-02-08 11:31:53Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -94,13 +94,10 @@ class ini
   	$instance_name = "global_ini_instance_{$root_dir}_{$file_name}";
   	
   	if(isset($GLOBALS[$instance_name]))
-			$obj =& $GLOBALS[$instance_name];
+			return $GLOBALS[$instance_name];
 		
-  	if(!$obj || get_class($obj) != 'ini')
-  	{
-  		$obj =& new ini($file_name, $root_dir, $use_cache);
-  		$GLOBALS[$instance_name] =& $obj;
-  	}
+		$obj =& new ini($file_name, $root_dir, $use_cache);
+		$GLOBALS[$instance_name] =& $obj;
   	
   	return $obj;
   }
@@ -290,17 +287,17 @@ class ini
     Parses either the override ini file or the standard file and then the append
     override file if it exists.
    */
-  function _parse( $input_files = false, $ini_file = false, $reset = true )
+  function _parse($input_files = false, $ini_file = false, $reset = true)
   {
-    if ( $reset )
+    if ($reset)
     	$this->reset();
-    if ( $input_files === false || $ini_file === false )
-    	$this->find_input_files( $input_files, $ini_file );
+    if ($input_files === false || $ini_file === false)
+    	$this->find_input_files($input_files, $ini_file);
 
-    foreach ( $input_files as $input_file )
+    foreach ($input_files as $input_file)
     {
-	    if ( file_exists( $input_file ) )
-	    	$this->_parse_file( $input_file );
+	    if (file_exists($input_file))
+	    	$this->_parse_file($input_file);
     }
   }
 

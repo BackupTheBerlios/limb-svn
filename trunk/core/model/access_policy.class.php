@@ -20,6 +20,8 @@ class access_policy
 {
 	var $_action_access = array();
 
+  var $_cached_type_accessible_actions = array();
+  
 	function access_policy()
 	{
 	}
@@ -270,6 +272,9 @@ class access_policy
 	
 	function _get_type_accessible_actions($class_id)
 	{
+	  if(isset($this->_cached_type_accessible_actions[$class_id]))
+	    return $this->_cached_type_accessible_actions[$class_id];
+	    
 		$accessor_ids = $this->get_accessor_ids();
 		
 		$in_ids = implode(',', $accessor_ids);
@@ -284,6 +289,7 @@ class access_policy
     $db->sql_exec($sql);
     $result = $db->get_array('action_name');
 		
+		$this->_cached_type_accessible_actions[$class_id] = $result;
 		return $result;	
 	}
 	

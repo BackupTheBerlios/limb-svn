@@ -14,7 +14,6 @@ define('TMPL_INCLUDE', 'include');
 require_once(LIMB_DIR . 'core/lib/util/ini.class.php');
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/template/component.class.php');
-require_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
 require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
 require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/runtime_support.inc.php');
 
@@ -74,10 +73,14 @@ class template extends component
 		if (!isset($GLOBALS['template_render'][$this->codefile]))
 		{
 			if (get_ini_option('config.ini', 'templates', 'force_compile'))
+			{
+			  include_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);
+			}
 			
 			if(!file_exists($this->codefile))
 			{
+			  include_once(LIMB_DIR . 'core/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);
 			}
 			

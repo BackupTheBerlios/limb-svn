@@ -11,7 +11,6 @@
 require_once(LIMB_DIR . 'core/tree/tree.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/http/uri.class.php');
-require_once(LIMB_DIR . 'core/model/access_policy.class.php');
 require_once(LIMB_DIR . 'core/request/request.class.php');
 
 class fetcher
@@ -21,6 +20,8 @@ class fetcher
 	var $_node_mapped_by_request = null;
 	
 	var $_cached_objects = array('path' => array(), 'node_id' => array(), 'id' => array());
+	
+	var $_is_jip_enabled = false;
 
 	function fetcher()
 	{
@@ -30,6 +31,25 @@ class fetcher
 	{
 		$obj =&	instantiate_object('fetcher');
 		return $obj;
+	}
+	
+	function & _get_access_policy()
+	{
+	  include_once(LIMB_DIR . 'core/model/access_policy.class.php');
+	  $access_policy =& access_policy :: instance();
+	  return $access_policy;
+	}
+	
+	function is_jip_enabled()
+	{
+	  return $this->_is_jip_enabled;
+	}
+	
+	function set_jip_status($status=true)
+	{
+	  $prev = $this->_is_jip_enabled;
+	  $this->_is_jip_enabled = $status;
+	  return $prev;
 	}
 	
 	function flush_cache()
@@ -56,6 +76,15 @@ class fetcher
 	    return $this->_cached_objects[$cache_type][$cache_id];
 	}
 	
+	function _assign_actions(&$objects_data)
+	{
+    if ($this->is_jip_enabled())
+    {
+		  $access_policy =& $this->_get_access_policy();
+		  $access_policy->assign_actions_to_objects($objects_data);
+		}
+	}
+	
 	function & fetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
 	{
 		$counter = 0;
@@ -68,9 +97,8 @@ class fetcher
 		
 		if(!count($result))
 			return array();
-		
-		$access_policy = access_policy :: instance();
-		$access_policy->assign_actions_to_objects($result);
+
+    $this->_assign_actions($result);
 
 		$this->_assign_paths($result);
 		return $result;
@@ -129,9 +157,8 @@ class fetcher
 		
 		if(!is_array($result) || !count($result))
 			return array();
-		
-		$access_policy = access_policy :: instance();
-		$access_policy->assign_actions_to_objects($result);
+
+    $this->_assign_actions($result);
 
 		$this->_assign_paths($result);
 		
@@ -158,15 +185,18 @@ class fetcher
       return array();
     
 		foreach($nodes as $node)
-			$object_ids[] = $node['object_id'];
+			$object_ids[$node['id']] = $node['object_id'];
 		
 		$objects_data =& $this->fetch_by_ids($object_ids, $loader_class_name, $counter, $params, $fetch_method);
 		$sorted_objects_data = array();
 		
-		foreach($object_ids as $node_id => $object_id)
+		foreach($node_ids as $node_id)
 		{
-			if (isset($objects_data[$object_id]))
-				$sorted_objects_data[$node_id] =& $objects_data[$object_id];
+		  if (!isset($object_ids[$node_id]))
+		    continue;
+		    
+			if (isset($objects_data[$object_ids[$node_id]]))
+				$sorted_objects_data[$node_id] =& $objects_data[$object_ids[$node_id]];
 		}
 		
 		return $sorted_objects_data;
@@ -177,7 +207,7 @@ class fetcher
 	  if($object_data =& $this->_get_object_from_cache('id', $object_id))
 	    return $object_data;
 	  
-		$access_policy = access_policy :: instance();
+	  $access_policy =& $this->_get_access_policy();
 		$object_ids = $access_policy->get_accessible_objects(array($object_id));
 		
 		if (!is_array($object_ids) || !count($object_ids))
@@ -193,8 +223,8 @@ class fetcher
 					
 		if (!is_array($result) || !count($result))
 			return false;
-					
-		$access_policy->assign_actions_to_objects($result);
+
+    $this->_assign_actions($result);
 
 		$this->_assign_paths($result);
 		
@@ -266,8 +296,12 @@ class fetcher
 	  
 		if(!$node =& $this->map_request_to_node())
 			return array();
-			
+		
+		$prev_jip_status	= $this->set_jip_status(true);
+		
 		$object_data =& $this->fetch_one_by_node_id($node['id']);
+		
+		$this->set_jip_status($prev_jip_status);
 		
 		return $object_data;
 	}
@@ -286,7 +320,7 @@ class fetcher
 		return $node;
 	}
 	
-	function & map_request_to_node($request = null, $recursive = false)
+	function & map_request_to_node($request = null)
 	{
 		if($this->_node_mapped_by_request)
 			return $this->_node_mapped_by_request;

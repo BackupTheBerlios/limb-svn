@@ -46,7 +46,7 @@ class node_links_datasource extends datasource
 				
 		if (!is_array($target_node_ids) || !count($target_node_ids))
 		  return new array_dataset($groups);
-		
+
 		$site_object_class_name = isset($params['loader_class_name']) ? $params['loader_class_name'] : 'site_object';
 		$objects =& fetch_by_node_ids($target_node_ids, $site_object_class_name, $counter, array(
 		  'restrict_by_class' => false
@@ -62,6 +62,9 @@ class node_links_datasource extends datasource
 		  {
 		    if ($link['group_id']!= $group_id)
 		      continue;
+		    
+		    //if (!isset($objects[$link['target_node_id']]))
+		    //  continue;
         
         $link_data = array_merge($objects[$link['target_node_id']], $link);
         $groups[$group_id]['links'][$link_id] = $link_data;

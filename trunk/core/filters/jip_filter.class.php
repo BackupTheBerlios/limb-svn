@@ -9,21 +9,27 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/filters/intercepting_filter.class.php');
+require_once(LIMB_DIR . 'core/fetcher.class.php');
+require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 
-class site_object_controller_filter extends intercepting_filter 
+class jip_filter extends intercepting_filter 
 { 
   function run(&$filter_chain, &$request, &$response) 
-  {  
-    $site_object =& wrap_with_site_object(fetch_requested_object($request));
-        
-    $site_object_controller =& $site_object->get_controller();
-            
-    $site_object_controller->process($request, $response);
+  {
+    $fetcher =& fetcher :: instance();
+    $fetcher->set_jip_status(false);
     
-    if($response->is_empty())
-      $site_object_controller->display_view();
+    $user =& user :: instance();
+    
+    if ($user->is_logged_in())
+    {
+      $ini =& get_ini('jip_groups.ini');
+      
+      if($user->is_in_groups(array_keys($ini->group('groups'))))
+        $fetcher->set_jip_status(true);
+    }
 
-    $filter_chain->next(); 
-  } 
+    $filter_chain->next();
+  }   
 } 
 ?>

@@ -23,6 +23,7 @@ require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 require_once(LIMB_DIR . 'core/filters/logging_filter.class.php');
 require_once(LIMB_DIR . 'core/filters/locale_definition_filter.class.php');
 require_once(LIMB_DIR . 'core/filters/authentication_filter.class.php');
+require_once(LIMB_DIR . 'core/filters/jip_filter.class.php');
 require_once(LIMB_DIR . 'core/filters/output_buffering_filter.class.php');
 require_once(LIMB_DIR . 'core/filters/site_object_controller_filter.class.php');
 
@@ -33,6 +34,7 @@ $filter_chain =& new filter_chain($request, $response);
 
 $filter_chain->register_filter(new locale_definition_filter());
 $filter_chain->register_filter(new authentication_filter());
+$filter_chain->register_filter(new jip_filter());
 $filter_chain->register_filter(new logging_filter());
 $filter_chain->register_filter(new output_buffering_filter());
 $filter_chain->register_filter(new site_object_controller_filter());

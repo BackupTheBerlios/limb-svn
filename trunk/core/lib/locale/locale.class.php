@@ -747,11 +747,14 @@ class locale
   		$locale_string = CONTENT_LOCALE_ID;
   	elseif(!$locale_string && !defined('CONTENT_LOCALE_ID'))
 			$locale_string = DEFAULT_CONTENT_LOCALE_ID;
-			
-		$obj =& $GLOBALS['global_locale_' . $locale_string];
 		
-    if ( get_class( $obj ) != 'locale' )
-    	$obj =& new locale( $locale_string );
+		if(isset($GLOBALS['global_locale_' . $locale_string]))
+		{
+		  return $GLOBALS['global_locale_' . $locale_string];
+		}
+    
+    $obj =& new locale($locale_string);
+    $GLOBALS['global_locale_' . $locale_string] =& $obj;
     	
     return $obj;
   }

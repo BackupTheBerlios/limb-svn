@@ -73,6 +73,8 @@ class fetching_test extends db_test
   	
   	$this->fetcher =& new fetcher();
   	
+  	$this->fetcher->set_jip_status(true);
+  	
   	$user_id = 10;
   	
   	$this->_login_user($user_id, array(103 => 'visitors', 104 => 'admin'));

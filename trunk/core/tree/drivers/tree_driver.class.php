@@ -24,11 +24,11 @@ class tree_driver
 	* @access private 
 	*/
 	var $_dumb_mode = false;
-
+	
 	function tree_driver()
 	{
 	}
-	
+		
   function set_dumb_mode($status=true)
   {
   	$prev_mode = $this->_dumb_mode;

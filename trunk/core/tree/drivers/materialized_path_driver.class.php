@@ -36,7 +36,7 @@ class materialized_path_driver extends tree_db_driver
 	* @access private 
 	*/
 	var $_required_params = array('id', 'root_id', 'path', 'level', 'children');
-
+	
 	/**
 	* Constructor
 	* 
@@ -427,7 +427,7 @@ class materialized_path_driver extends tree_db_driver
 	* @return mixed False on error, or an array of nodes
 	*/
 	function & get_node($id, $add_sql = array())
-	{
+	{	  
 		$sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.id=%s %s',
 										$this->_get_select_fields(), 
 										$this->_add_sql($add_sql, 'columns'),
@@ -438,7 +438,7 @@ class materialized_path_driver extends tree_db_driver
 									);
 
 		$node_set =& $this->_get_result_set($sql);
-
+    
 		return current($node_set);
 	}
 	
