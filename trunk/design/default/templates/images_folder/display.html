@@ -66,10 +66,10 @@
 	<td><core:INCLUDE file="/admin/selector.html"></td>
 	<td jip='object' class=jip-object>
 		<core:OPTIONAL for='title'>
-		<img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
+		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
 		</core:OPTIONAL>
 		<core:DEFAULT for='title'>
-		<img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
+		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
 		</core:DEFAULT>		
 	</td>
 	<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>

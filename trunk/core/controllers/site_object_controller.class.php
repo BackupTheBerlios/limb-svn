@@ -118,7 +118,7 @@ class site_object_controller
 		if(!$this->_current_action)
 		{
 			debug :: write_error('current action not defined', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-			return new response();
+			return;
 		}
 			
 		$this->_start_transaction();

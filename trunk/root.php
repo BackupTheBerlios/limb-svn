@@ -40,10 +40,13 @@ $filter_chain->register_filter($f8 = LIMB_DIR . 'core/filters/site_object_contro
 
 $filter_chain->process();
 
-if (debug :: is_console_enabled())
-	echo debug :: parse_html_console();//FIXXX
-	
-echo message_box :: parse();//FIXXX
+if(!$response->file_sent())//FIXXX???
+{
+  if (debug :: is_console_enabled())
+  	echo debug :: parse_html_console();
+  	
+  echo message_box :: parse();//It definetly should be somewhere else!
+}
 
 $response->commit();
 

@@ -12,7 +12,9 @@
 class http_response
 {
 	var $response_string = '';
+	var $response_file_path = '';
 	var $headers = array();
+	var $use_client_cache = false;
 		
 	function redirect($path)
 	{  		  	
@@ -26,12 +28,20 @@ class http_response
 	
 	function is_empty()
 	{
-	  return $this->response_string == '';
+	  return (
+	    empty($this->response_string) && 
+	    empty($this->response_file_path) && 
+	    !$this->use_client_cache);
 	}
 	
 	function headers_sent()
 	{
 	  return sizeof($this->headers) > 0;
+	}
+	
+	function file_sent()
+	{
+	  return !empty($this->response_file_path);
 	}
 	
 	function reload()
@@ -44,6 +54,17 @@ class http_response
 	  $this->headers[] = $header;	  
 	}
 	
+	function readfile($file_path)
+	{
+	  $this->response_file_path = $file_path;
+	}
+	
+	function use_client_cache($status = true)
+	{
+	  $this->use_client_cache = $status;
+	  $this->header('HTTP/1.1 304 Not modified');
+	}
+	
 	function write($string)
 	{
 	  $this->response_string = $string;	  
@@ -51,15 +72,16 @@ class http_response
 		
 	function commit()
 	{  	
-	  $this->_pre_commit();
-  	
   	foreach($this->headers as $header)
   	  $this->_send_header($header);
   	
   	if(!empty($this->response_string))
   	  $this->_send_string($this->response_string);
-	  
-	  $this->_post_commit();
+
+  	if(!empty($this->response_file_path))
+  	  $this->_send_file($this->response_file_path);
+  	  
+  	$this->_exit();
 	}
 	
 	function _send_header($header)
@@ -71,20 +93,15 @@ class http_response
 	{
 	  echo $string;
 	}
-		
-	function _pre_commit()
+	
+	function _send_file($file_path)
 	{
-		while (ob_get_level())
-			ob_end_clean();
-  
-  	ob_start();	
+	  readfile($file_path);
 	}
 	
-	function _post_commit()
+	function _exit()
 	{
-    ob_end_flush();
-    exit();
-	}		
-			
+	  exit();
+	}			
 } 
 ?>

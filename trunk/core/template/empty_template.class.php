@@ -20,7 +20,7 @@ class empty_template
 	} 
 
 	function display()
-	{
+	{trigger_error('Stop', E_USER_WARNING);
 		debug :: write_error('template is null', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	} 
 } 

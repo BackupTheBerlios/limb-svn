@@ -18,10 +18,11 @@ class output_buffering_filter extends intercepting_filter
     
     $filter_chain->next();
     
-    if($response->is_empty())
-      $response->write(ob_get_contents());
-      
-    ob_end_clean();
+    if($response->is_empty() && ($content = ob_get_contents()))
+      $response->write($content);
+  
+    if(ob_get_level())
+      ob_end_clean();
   }      
 }
 ?>

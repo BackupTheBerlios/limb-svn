@@ -31,7 +31,7 @@ define('LIMB_VERSION_MAJOR', '2');
 /**
  * Minor software version
  */
-define('LIMB_VERSION_MINOR', '1');
+define('LIMB_VERSION_MINOR', '2');
 
 /**
  * Micro software version
@@ -41,7 +41,7 @@ define('LIMB_VERSION_MICRO', '0');
 /**
  * Software version patch
  */
-define('LIMB_VERSION_PATCH', '-dev');
+define('LIMB_VERSION_PATCH', '-rc1');
 
 /**
  * Software release version
@@ -51,7 +51,7 @@ define('LIMB_RELEASE_NAME', '');
 /**
  * Software build (full) date
  */
-define('LIMB_VERSION_DATE', 'May 11, 2004');
+define('LIMB_VERSION_DATE', 'June 29, 2004');
 
 
 // --- Do not change from here ----------------------------------------
@@ -77,6 +77,6 @@ define('LIMB_FULL_NAME', LIMB_NAME . ' ' . LIMB_VERSION);
 /**
  * The URL of the home of this software
  */
-define('LIMB_HOME', 'http://0x00.ru');
+define('LIMB_HOME', 'http://limb-project.com');
 
 ?>

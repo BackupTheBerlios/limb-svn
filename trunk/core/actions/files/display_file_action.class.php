@@ -16,13 +16,12 @@ class display_file_action extends action
 	{
 		$object_data =& fetch_requested_object($request);
 		
-		ob_end_clean();
 		if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
 		{
-			header("HTTP/1.1 404 Not found");
+			$response->header("HTTP/1.1 404 Not found");
 			
 			if(isset($_GET['icon']))
-				exit(); //for speed
+				$response->commit(); //for speed
 			else
 			{
 			  $request->set_status(REQUEST_STATUS_FAILURE);
@@ -36,8 +35,6 @@ class display_file_action extends action
 			if (!empty($_GET['icon']))
 				$size = $_GET['icon'];
 			
-			header("Content-type: image/gif");
-			
 			$mime_type = $object_data['mime_type'];
 			
 			if($mime_type == 'application/x-zip-compressed')
@@ -47,31 +44,49 @@ class display_file_action extends action
 			
 			$file_name = SHARED_DIR . 'images/mime_icons/' . str_replace('/', '_' , $mime_type) . '.' . $size . '.gif';
 
-			if (file_exists($file_name))
-				readfile($file_name);
+			if (!file_exists($file_name))
+				$file_name = SHARED_DIR . "images/mime_icons/file.{$size}.gif";
+			
+			$etag = md5($file_name);
+			
+			if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $etag)
+			{
+			  $response->use_client_cache();
+  			$response->header("Pragma: public");
+  			$response->header("Cache-Control: private");
+  			$response->header("Date: " . date("D, d M Y H:i:s") . " GMT");
+  			$response->header("Etag: {$etag}");			  
+			}
 			else
-				readfile(SHARED_DIR . "images/mime_icons/file.{$size}.gif");
-				
-			exit();//for speed
+			{
+  			$response->header("Pragma: public");
+  			$response->header("Cache-Control: private");
+  			$response->header("Date: " . date("D, d M Y H:i:s") . " GMT");
+  			$response->header("Etag: {$etag}");			
+  			$response->header("Content-type: image/gif");
+  			$response->readfile($file_name);			
+			}			
+			
+			$response->commit();//for speed	
 		}
 		
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $object_data['etag'])
 		{
-			header("HTTP/1.1 304 Not modified");
-			header("Pragma: public");
-			header("Cache-Control: private");
-			header("Date: " . date("D, d M Y H:i:s") . " GMT");
-			header("Etag: {$object_data['etag']}");
+			$response->use_client_cache();
+			$response->header("Pragma: public");
+			$response->header("Cache-Control: private");
+			$response->header("Date: " . date("D, d M Y H:i:s") . " GMT");
+			$response->header("Etag: {$object_data['etag']}");
 		}
 		else
 		{
-			header("Pragma: public");
-			header("Cache-Control: private");
-			header("Date: " . date("D, d M Y H:i:s") . " GMT");
-			header("Etag: {$object_data['etag']}");
-			header("Content-type: {$object_data['mime_type']}");
-			header("Content-Disposition: attachment; filename=\"{$object_data["file_name"]}\"");
-			readfile(MEDIA_DIR . $object_data['media_id'] . '.media');
+			$response->header("Pragma: public");
+			$response->header("Cache-Control: private");
+			$response->header("Date: " . date("D, d M Y H:i:s") . " GMT");
+			$response->header("Etag: {$object_data['etag']}");
+			$response->header("Content-type: {$object_data['mime_type']}");
+			$response->header("Content-Disposition: attachment; filename=\"{$object_data["file_name"]}\"");
+			$response->readfile(MEDIA_DIR . $object_data['media_id'] . '.media');
 		}
 	}
 }

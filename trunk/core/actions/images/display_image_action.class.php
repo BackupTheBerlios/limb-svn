@@ -15,7 +15,6 @@ class display_image_action extends action
 	function perform(&$request, &$response)
 	{
 		$object_data =& fetch_requested_object($request);
-		ob_end_clean();
 		
 		$ini =& get_ini('image_variations.ini');
 		
@@ -37,8 +36,8 @@ class display_image_action extends action
 		
 		if(!$image)
 		{
-			header("Content-type: image/gif");
-			readfile(SHARED_DIR . 'images/1x1.gif');
+			$response->header("Content-type: image/gif");
+			$response->readfile(SHARED_DIR . 'images/1x1.gif');
 			
 			if($variation == 'original')
 			{
@@ -46,13 +45,14 @@ class display_image_action extends action
 				return;
 			}
 			else
-				exit();//for speed
-
+			{
+				$response->commit();//for speed
+			}
 		}		
 				
 		if(!file_exists(MEDIA_DIR. $image['media_id'] . '.media'))
 		{
-			header("HTTP/1.1 404 Not found");
+			$response->header("HTTP/1.1 404 Not found");
 			
 			if($variation == 'original')
 			{
@@ -60,32 +60,36 @@ class display_image_action extends action
 				return;
 			}
 			else
-				exit();//for speed
+			{
+				$response->commit();//for speed
+			}
 		}		
 				
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $image['etag'])
 		{
-			header("HTTP/1.1 304 Not modified");
-			header("Pragma: public");
-			header("Cache-Control: private");
-			header("Date: " . date("D, d M Y H:i:s") . " GMT");
-			header("Etag: {$image['etag']}");
+			$response->use_client_cache();
+			$response->header("Pragma: public");
+			$response->header("Cache-Control: private");
+			$response->header("Date: " . date("D, d M Y H:i:s") . " GMT");
+			$response->header("Etag: {$image['etag']}");
 		}
 		else
 		{
-			header("Pragma: public");
-			header("Cache-Control: private");
-			header("Date: " . date("D, d M Y H:i:s") . " GMT");
-			header("Etag: {$image['etag']}");
-			header("Content-type: {$image['mime_type']}");
-			header("Content-Disposition: filename={$image['file_name']}"); 
-			readfile(MEDIA_DIR. $image['media_id'] .'.media');
+			$response->header("Pragma: public");
+			$response->header("Cache-Control: private");
+			$response->header("Date: " . date("D, d M Y H:i:s") . " GMT");
+			$response->header("Etag: {$image['etag']}");
+			$response->header("Content-type: {$image['mime_type']}");
+			$response->header("Content-Disposition: filename={$image['file_name']}"); 
+			$response->readfile(MEDIA_DIR. $image['media_id'] .'.media');
 		}
 		
 		if($variation == 'original')
 			return;
 		else
-			exit();//for speed
+		{
+			$response->commit();//for speed
+		}
 	}
 }
 
