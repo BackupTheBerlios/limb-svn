@@ -29,8 +29,8 @@
 <td><core:INCLUDE file="published_status.html"></td>
 <td jip='object'><a href="{$path}" target="_blank">{$title}</a></td>
 <td>{$identifier}</td>
-<td><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date'></td>
-<td><locale:DATE_FORMAT hash_id='modified_date' locale_format='short_date'></td>
+<td><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date' locale_type='management'></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' locale_format='short_date' type='stamp' locale_type='management'></td>
 <td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
 </grid:ITERATOR>

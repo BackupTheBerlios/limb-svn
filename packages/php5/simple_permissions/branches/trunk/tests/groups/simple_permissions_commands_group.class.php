@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/ 
-class simple_permissions_group extends LimbGroupTest 
+class simple_permissions_commands_group extends LimbGroupTest 
 {
-	function simple_permissions_group() 
+	function simple_permissions_commands_group() 
 	{
-	  $this->LimbGroupTest('simple permissions tests');
+	  $this->LimbGroupTest('simple permissions commands tests');
 	}
 	
 	function getTestCasesHandles()
 	{
-	  return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/../cases');
+	  return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/../cases/commands');
 	}	
 }
 ?>

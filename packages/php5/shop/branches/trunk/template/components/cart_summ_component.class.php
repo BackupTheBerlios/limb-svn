@@ -14,7 +14,7 @@ class cart_summ_component extends component
 {
 	public function get_cart_summ()
 	{
-		$locale = locale :: instance();
+		$locale = Limb :: toolkit()->getLocale();
 		
 		return number_format(cart :: instance()->get_total_summ(), 
 												 $locale->fract_digits,

@@ -39,19 +39,19 @@ class stats_ips_list_datasource extends stats_report_datasource
 
 	protected function _set_period_filter($request)
 	{
-		$locale = locale :: instance();
+		$locale = Limb :: toolkit()->getLocale();
 		$start_date = new date();
 		$start_date->set_hour(0);
 		$start_date->set_minute(0);
 		$start_date->set_second(0);
 
 	  if ($stats_start_date = $request->get('stats_start_date'))
-			$start_date->set_by_string($stats_start_date, $locale->get_short_date_time_format());
+			$start_date->set_by_locale_string($locale, $stats_start_date, $locale->get_short_date_time_format());
 		
 		$finish_date = new date();
 
 	  if ($stats_finish_date = $request->get('stats_finish_date'))
-			$finish_date->set_by_string($stats_finish_date, $locale->get_short_date_time_format());
+			$finish_date->set_by_locale_string($locale, $stats_finish_date, $locale->get_short_date_time_format());
 
 		$finish_date->set_hour(23);
 		$finish_date->set_minute(59);
