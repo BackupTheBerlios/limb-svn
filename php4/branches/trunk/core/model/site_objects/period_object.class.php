@@ -144,6 +144,36 @@ class period_object extends content_object
 
     return parent :: fetch_accessible_count($params, $sql_params);
   }
+
+  function & fetch_publish_period_by_ids($ids_array, $params=array(), $sql_params=array())
+  {
+    $start_date = $params['start_date'];
+    $finish_date = $params['finish_date'];
+
+    $sql_params['conditions'][] = ' AND sso.locale_id = "'. CONTENT_LOCALE_ID . '"';
+    $sql_params['conditions'][] = " AND sso.id=tn.object_id AND sso.current_version=tn.version";
+
+    $sql_params['conditions'][] =
+      " AND ((tn.start_date >= '{$start_date}' AND tn.start_date <= '{$finish_date}')
+          OR (tn.finish_date >= '{$start_date}' AND tn.finish_date <= '{$finish_date}')) ";
+
+    return parent :: fetch_accessible_by_ids($ids_array, $params, $sql_params);
+  }
+
+  function fetch_publish_period_by_ids_count($ids_array, $params=array(), $sql_params=array())
+  {
+    $start_date = $params['start_date'];
+    $finish_date = $params['finish_date'];
+
+    $sql_params['conditions'][] = ' AND sso.locale_id = "'. CONTENT_LOCALE_ID . '"';
+    $sql_params['conditions'][] = " AND sso.id=tn.object_id AND sso.current_version=tn.version";
+
+    $sql_params['conditions'][] =
+      " AND ((tn.start_date >= '{$start_date}' AND tn.start_date <= '{$finish_date}')
+          OR (tn.finish_date >= '{$start_date}' AND tn.finish_date <= '{$finish_date}')) ";
+
+    return parent :: fetch_accessible_by_ids_count($ids_array, $params, $sql_params);
+  }
 }
 
 ?>
