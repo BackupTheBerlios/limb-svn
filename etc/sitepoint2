@@ -1,0 +1,197 @@
+I guess it's the very right time to get into some internal details of LIMB.
+Some links may need authorization - enter login [B]admin[/B], password [B]test[/B] if required.
+
+The central architectural unit of LIMB is a "site object". 
+Every single piece of LIMB CMS data is a site object, be it a workflow document or just a guest book reply.
+All site objects are hierarchicaly organized in the <a href="http://limbdemo.0x00.ru/root/admin/site_structure">site tree</a>.
+
+The site object is defined with set of different attributes. One of the most important is identifier - with identifier you can reach(fetch in LIMB terms) any site object in the site tree. Actually there're 2 ways of fetching the specific site object: 
+
+1 - by the full tree path which comprises site objects identifiers delimetered with /, e.g. <a href="http://limbdemo.0x00.ru/root/catalog/TDD/refactoring">/root/catalog/TDD/refactoring</a>
+2 - by the node id, e.g. < a href="http://limbdemo.0x00.ru/root?node_id=92">/root?node_id=92</a>
+
+Both point to the same site object.
+
+There're two types of site objects: simply site object and a content object. The main difference of the latter  is its being under very simple LIMB version control, every modification results in a new version. This way we resolve concurrent editing. The basic implementation of the content object ties it with a database record.
+Most of the content objects never require any complex O-R mapping and if any the developer is required to resolve mapping manually(next major LIMB release has plans for adopting Propel for this purpose).
+
+Here goes the example of the article content object:
+[PHP]
+<?php
+require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
+
+class article extends content_object
+{
+	function _define_attributes_definition()
+	{
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+					'content' => array('search' => true, 'search_weight' => 1),
+					'annotation' => array('search' => true, 'search_weight' => 5),
+					'author' => array('search' => true, 'search_weight' => 10),
+					'source' => array('search' => true, 'search_weight' => 10),
+				));
+	}
+	
+	function _define_class_properties()
+	{
+		return array(
+			'class_ordr' => 1,
+			'can_be_parent' => 0,
+			'controller_class_name' => 'article_controller',
+		);
+	}
+}
+
+?>
+[/PHP]
+
+Every site object has a controller, it defines what kind of actions the site object has.
+In the example above the article has the controller too 'controller_class_name' => 'article_controller', let's take a closer look.
+
+[PHP]
+<?php
+require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
+	
+class article_controller extends site_object_controller
+{
+	function article_controller()
+	{
+		$this->_actions = array(
+				'display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/article/display.html',
+				),
+				'set_metadata' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('set_metadata'),
+						'action_path' => '/site_object/set_metadata_action',
+						'template_path' => '/site_object/set_metadata.html',
+						'img_src' => '/shared/images/configure.gif'
+				),
+				'admin_detail' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/admin/object_detail_info.html',
+						'popup' => true,
+						'JIP' => true,
+						'img_src' => '/shared/images/admin_detail.gif',
+						'action_name' => strings :: get('detail_info'),
+				),
+				'print_version' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/article/print_version.html',
+						'action_name' => strings :: get('print_version_action', 'document'),
+						'display_in_breadcrumbs' => false,
+				),
+				'edit' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('edit_article', 'article'),
+						'action_path' => '/article/edit_article_action',
+						'template_path' => '/article/edit.html',
+						'img_src' => '/shared/images/edit.gif'
+				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/set_publish_status_action',
+						'img_src' => '/shared/images/publish.gif',
+						'can_have_access_template' => true,
+				),
+				'unpublish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('unpublish'),
+						'action_path' => '/doc_flow_object/set_publish_status_action',
+						'img_src' => '/shared/images/unpublish.gif',
+						'can_have_access_template' => true,
+				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete_article', 'article'),
+						'action_path' => '/article/delete_article_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				),
+		);
+ 		
+		parent :: site_object_controller();
+	}
+}
+?>
+[/PHP]
+
+Please note 'permissions_required' part of the code above. It defines what type of the permission the user should have to the site object to perform this action('r' read or 'w' write).
+You can see how site objects access can be manipulated at <a href="http://limbdemo.0x00.ru/root/admin/objects_access">Objects access page</a>.
+
+You can also define how site object actions accessed by groups. It's done in the popup window, so i can't give you the direct link, ok, proceed to the <a href="http://limbdemo.0x00.ru/root/admin/classes">Object types page</a> and click "Display groups permissions to actions" at the right of article. You should see a nice popup with the good bunch of checkboxes.
+
+Given this we're ready for explanation of how access system actually works:
+
+1 - access system determines what type of access the user has for the object: read or write
+2 - access system determines what action user wants to perform
+3 - if this action is allowed to the user's group AND if the user has the appropriate access type for the object determined at 1 then the action is allowed
+
+Currently access control is group based and maybe sounds a bit complicated, yet we have not faced the case where this access system proved inefficient(however we do admit its clumsiness and have plans to make it more flexible and clear).
+
+Action is....action can be whatever you want! There're a few base actions that ease the developers life though.
+
+Action is transferred via 'action' attribute of the $_REQUEST, so http://limbdemo.0x00.ru/root?&action=edit&node_id=83 will require the article site object to perform 'edit' action(please note we fetch site object by bode id). 
+In the 'edit' section of the article controller we have 'action_path' set to '/article/edit_article_action', the controller is going to fire 'edit_article_action':
+
+[PHP]
+<?php
+require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
+
+class edit_article_action extends form_edit_site_object_action
+{
+	function edit_article_action()
+	{
+		$definition = array(
+			'site_object' => 'article',
+			'datamap' => array(
+				'article_content' => 'content',
+				'annotation' => 'annotation',
+				'author' => 'author',
+				'source' => 'source',
+				'uri' => 'uri',
+			)
+		);
+
+		parent :: form_edit_site_object_action('article_form', $definition);
+	}
+	
+	function _init_validator()
+	{
+		parent :: _init_validator();
+		
+		$this->validator->add_rule(new required_rule('title'));
+		$this->validator->add_rule(new required_rule('author'));
+		$this->validator->add_rule(new required_rule('article_content'));
+	}
+}
+?>
+[/PHP]
+
+Simply, isn't it? :)
+
+Also in the 'edit' section of the article controller we have optional attribute 'template_path' set to '/article/edit.html', the controller is going to initialize WACT template and pass it to action. This template can be found <a href="http://limbdemo.0x00.ru/root/template_source?t[]=/article/edit.html">here</a>.
+
+Every action has its View in the $_view attribute(rarely used though, our templates have active behaviour).
+
+Site objects passed around as arrays in the LIMB, turning into objects only when it's needed. This allows to decrease unnecessary overhead greatly. Furthermore they're transfered to WACT templates as array datasets it allows us to use all the nice features of WACT.
+
+There's no code generation for site objects yet and this colud be a very nice feature!
+
+...still reading? :) Gosh...i think that's enough.
+We hope to put this and other info on the LIMB support site quite soon(a week or two).
