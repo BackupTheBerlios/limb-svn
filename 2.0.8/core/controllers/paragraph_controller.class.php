@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: photogallery_object_controller.class.php 33 2004-03-10 16:05:12Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -19,6 +19,7 @@ class paragraph_controller extends site_object_controller
 				'display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/paragraph/display.html',
+						'action_path' => '/paragraph/display_paragraph_action',
 				),
 				'edit' => array(
 						'permissions_required' => 'w',
