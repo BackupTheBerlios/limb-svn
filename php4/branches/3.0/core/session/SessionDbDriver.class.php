@@ -13,13 +13,11 @@ require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
 class SessionDbDriver// implements SessionDriver
 {
   var $db;
-  var $user;
 
   function SessionDbDriver()
   {
     $toolkit =& Limb :: toolkit();
     $this->db =& new SimpleDb($toolkit->getDbConnection());
-    $this->user =& $toolkit->getUser();
   }
 
   function storageOpen()
@@ -53,8 +51,10 @@ class SessionDbDriver// implements SessionDriver
       $this->db->update('sys_session', $session_data, array('session_id' => "{$session_id}"));
     else
     {
+      $toolkit =& Limb :: toolkit();
+      $user =& $toolkit->getUser();
       $session_data['session_id'] = "{$session_id}";
-      $session_data['user_id'] = $this->user->getId();
+      $session_data['user_id'] = $user->getId();
 
       $this->db->insert('sys_session', $session_data);
     }
