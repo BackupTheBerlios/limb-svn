@@ -257,7 +257,7 @@ function process_popup()
 
 	if (typeof(window.opener.popups) != 'undefined')
 		if (window.opener.popups[window.name]['status'] == 'popped_up')
-	optimize_window();
+	    optimize_window();
 	
 	if(opener && (get_query_item(href, 'reload_parent')))
 		opener.location.reload();

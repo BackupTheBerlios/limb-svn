@@ -371,7 +371,7 @@ abstract class compiler_component
 			define('WS_SCRIPT_WRITTEN', true);
 		}
 		
-		if(substr($file_path, 1, 2) != fs :: separator())
+		if(fs :: is_path_relative($file_path))
 		{
 		  $items = fs :: explode_path($_SERVER['PATH_TRANSLATED']);
 		  array_pop($items);
