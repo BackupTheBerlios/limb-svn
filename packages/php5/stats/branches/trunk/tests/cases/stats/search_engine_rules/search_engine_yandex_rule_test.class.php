@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -37,7 +37,7 @@ class search_engine_yandex_rule_test extends LimbTestCase
 
   function test_match_highlite_ru_true()
   {
-  	$this->assertTrue($this->rule->match(urldecode('http://hghltd.yandex.ru/yandbtm?url=http://www.0x00.ru/root/ru/portfolio/gallery/565%3FPHPSESSID%3Df13597251e617971f3710bbca63a96bf&text=%E1%FE%F0%EE+%E8%ED%F4%EE%F0%EC%E0%F6%E8%EE%ED%ED%FB%F5+%F2%E5%F5%ED%EE%EB%EE%E3%E8%E9&dsn=39&d=128984')));
+  	$this->assertTrue($this->rule->match(urldecode('http://hghltd.yandex.ru/yandbtm?url=http://limb-project.com/root/ru/portfolio/gallery/565%3FPHPSESSID%3Df13597251e617971f3710bbca63a96bf&text=%E1%FE%F0%EE+%E8%ED%F4%EE%F0%EC%E0%F6%E8%EE%ED%ED%FB%F5+%F2%E5%F5%ED%EE%EB%EE%E3%E8%E9&dsn=39&d=128984')));
   	$this->assertEqual('бюро информационных технологий', $this->rule->get_matching_phrase());
   } 
 

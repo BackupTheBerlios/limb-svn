@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -74,7 +74,7 @@ class multi_toggle_publish_status_action extends form_action
 	{		
 	  try
 	  {
-	    access_policy :: instance()->save_object_access_for_action($object, $action)
+	    access_policy :: instance()->save_object_access_for_action($object, $action);
 	  }
 	  catch(LimbException $e)
 	  {
