@@ -8,8 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
+
+if(!is_registered_resolver('ini'))
+  register_file_resolver('db_table', $r = LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
 
 class db_table_factory
 {		

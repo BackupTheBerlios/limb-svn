@@ -6,7 +6,7 @@ class LimbCLIReporter extends TextReporter
   {
     parent :: paintCaseEnd($test_name);
     
-    print $this->getTestCaseProgress() . " of " . $this->getTestCaseCount() . " test cases done...\n";
+    print $this->getTestCaseProgress() . "/" . $this->getTestCaseCount() . " done({$test_name})\n";
   }
 }
 ?>

@@ -20,18 +20,12 @@ else
 function error($description, $error_place='', $params=array()) 
 {
 	if(isset($GLOBALS['error_recursion']) && $GLOBALS['error_recursion'])
-		die();
+		die('error recursion');
+
+	if($_SERVER['SERVER_PORT'] == 81)
+		trigger_error('error', E_USER_WARNING);		
 		
 	$GLOBALS['error_recursion'] = true;
-	
-	if(defined('DEVELOPER_ENVIROMENT'))
-	{
-		trigger_error('error', E_USER_WARNING);
-		
-		echo(  $description . '<br>' . $error_place . '<br><pre>');
-		print_r($params);
-		echo('</pre>');
-	}
 	
 	$description = $description . "\n\nback trace:\n" . get_trace_back();
 		
@@ -40,11 +34,10 @@ function error($description, $error_place='', $params=array())
 	debug :: set_message_output(DEBUG_OUTPUT_MESSAGE_STORE | DEBUG_OUTPUT_MESSAGE_SEND);
 	debug :: write_error($description, $error_place, $params);
 	
-	if (debug :: is_console_enabled())
-	{
-		debug :: write_error($description, $error_place, $params);
-		echo debug :: parse_console();
-	}
+	if(sys :: exec_mode() == 'cli')
+	  echo debug :: parse_cli_console();
+	elseif (debug :: is_console_enabled())
+		echo debug :: parse_html_console();
 		
 	ob_end_flush();
 			

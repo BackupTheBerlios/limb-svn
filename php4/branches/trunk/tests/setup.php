@@ -31,9 +31,9 @@ require_once(LIMB_DIR . '/setup.php');
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_repository.php');
 
 $r = array();
-register_file_resolver('ini',    $r[] = LIMB_DIR . '/class/core/file_resolvers/tests_ini_file_resolver');
-register_file_resolver('action', $r[] = LIMB_DIR . '/class/core/file_resolvers/tests_action_file_resolver');
-register_file_resolver('strings', $r[] = LIMB_DIR . '/class/core/file_resolvers/tests_strings_file_resolver');
+register_file_resolver('ini',    $r[] = LIMB_DIR . '/tests/lib/tests_ini_file_resolver');
+register_file_resolver('action', $r[] = LIMB_DIR . '/tests/lib/tests_action_file_resolver');
+register_file_resolver('strings', $r[] = LIMB_DIR . '/tests/lib/tests_strings_file_resolver');
 register_file_resolver('db_table', $r[] = LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
