@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'class/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . 'class/lib/util/complex_array.class.php');
 
 define('ACCESSOR_TYPE_GROUP', 0);

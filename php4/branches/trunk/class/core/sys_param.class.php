@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . 'class/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
 
 class sys_param
 {

@@ -10,13 +10,13 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
 
-class action_file_resolver extends package_file_resolver
+class controller_file_resolver extends package_file_resolver
 {
   function resolve($class_path)
   {
-    if(!$resolved_path = parent :: resolve('actions/' . $class_path . '.class.php'))    
+    if(!$resolved_path = parent :: resolve('controllers/' . $class_path . '.class.php'))    
   	{
-  	  debug :: write_error('action not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+  	  debug :: write_error('controller not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
   	    array('class_path' => $class_path));
   	    
   	  return false;

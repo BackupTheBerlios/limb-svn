@@ -40,7 +40,7 @@ class domain_rule extends single_field_rule
 		// We can't be too restrictive by default.
 		if (!preg_match("/^[a-zA-Z0-9.-]+$/i", $value))
 		{
-			$this->error(strings :: get('BAD_DOMAIN_CHARACTERS', 'error'));
+			$this->error(strings :: get('bad_domain_characters', 'error'));
 		} 
 
 		if (is_integer(strpos($value, '--', $value)))

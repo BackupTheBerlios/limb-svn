@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
 require_once(LIMB_DIR . 'class/template/component.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_table.class.php');
-require_once(LIMB_DIR . 'class/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');
 require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
 

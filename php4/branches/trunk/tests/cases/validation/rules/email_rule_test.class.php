@@ -59,7 +59,7 @@ class email_rule_test extends single_field_rule_test
 		$Data = &new dataspace();
 		$Data->set('testfield', 'billgates@micro$oft.com');
 
-		$this->error_list->expectOnce('add_error', array('testfield', strings :: get('BAD_DOMAIN_CHARACTERS', 'error'), array()));
+		$this->error_list->expectOnce('add_error', array('testfield', strings :: get('bad_domain_characters', 'error'), array()));
 
 		$this->validator->validate($Data);
 		$this->assertFalse($this->validator->is_valid());

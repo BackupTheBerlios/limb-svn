@@ -10,13 +10,13 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
 
-class action_file_resolver extends package_file_resolver
+class db_table_file_resolver extends package_file_resolver
 {
   function resolve($class_path)
   {
-    if(!$resolved_path = parent :: resolve('actions/' . $class_path . '.class.php'))    
+    if(!$resolved_path = parent :: resolve('db_tables/' . $class_path . '_db_table.class.php'))    
   	{
-  	  debug :: write_error('action not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+  	  debug :: write_error('db_table not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
   	    array('class_path' => $class_path));
   	    
   	  return false;

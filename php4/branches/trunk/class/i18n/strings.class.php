@@ -29,35 +29,26 @@ class strings
 	  		$locale_id = DEFAULT_MANAGEMENT_LOCALE_ID;
 	  }		
 			  
-	  return $strings->_get_recursive($key, $filename, $locale_id);
+	  return $strings->_do_get($key, $filename, $locale_id);
 	}
 	
-	function _get_recursive($key, $filename, $locale_id)
+	function _do_get($key, $filename, $locale_id)
 	{
 		$path = $this->_get_path($filename, $locale_id);
-		$md5_path = md5($path);		
-		if(isset($this->_cache[$md5_path][$key]))
-			return $this->_cache[$md5_path][$key];
 		
-		if(isset($this->_ini_objects[$md5_path]))
-			$ini =& $this->_ini_objects[$md5_path];
+		if(isset($this->_cache[$path][$key]))
+			return $this->_cache[$path][$key];
+		
+		if(isset($this->_ini_objects[$path]))
+			$ini =& $this->_ini_objects[$path];
 		else
 		{	  	
 			$ini =& ini :: instance($path);			
-			$this->_ini_objects[$md5_path] =& $ini;					
+			$this->_ini_objects[$path] =& $ini;
 		}
 		
-		if(!($value = $ini->get_option($key, 'constants')))
-	  {
-		  if($ini->has_option('filename', 'extends'))
-		  {
-		  	$extend_filename = $ini->get_option('filename', 'extends');
-		  	$value = $this->_get_recursive($key, $extend_filename, $locale_id);
-		  }
-		}
-		
-		if($value)
-			$this->_cache[$md5_path][$key] = $value;
+		if($value = $ini->get_option($key, 'constants'))
+			$this->_cache[$path][$key] = $value;
 
 		return $value;
 	}

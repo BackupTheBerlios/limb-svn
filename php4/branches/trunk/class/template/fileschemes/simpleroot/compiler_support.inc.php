@@ -36,12 +36,6 @@ function resolve_template_source_file_name($file)
 	if(file_exists(LIMB_DIR . '/design/default/templates/' . $file))
 		return LIMB_DIR . '/design/default/templates/' . $file;
 	
-	if (file_exists(dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . $locale. $file))
-		return dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . $locale. $file;
-
-	if (file_exists(dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . $file))
-		return dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . $file;
-	
 	return null;	
 } 
 

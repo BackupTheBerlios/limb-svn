@@ -8,24 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
 
-class strings_file_resolver
+class strings_file_resolver extends package_file_resolver
 {
-  function resolve($file_name, $locale_id)
+  function resolve($file_name, $locale_id)  
   {  
-		if(file_exists(LIMB_APP_DIR . '/class/i18n/strings/' . $file_name . '_' . $locale_id . '.ini'))
-  		$dir = LIMB_APP_DIR . '/class/i18n/strings/';
-  	elseif(file_exists(LIMB_DIR . '/class/i18n/strings/' . $file_name . '_' . $locale_id . '.ini'))
-  		$dir = LIMB_DIR . '/class/i18n/strings/';
-  	else
-  		error('strings file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+    if(!$resolved_path = parent :: resolve('i18n/' . $file_name . '_' . $locale_id . '.ini'))    
+  	{
+  		debug :: write_error('strings file not found', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
   			array(
   				'file_name' => $file_name,
   				'locale_id' => $locale_id
   			)
-  	);
-  	
-  	return $dir . $file_name . '_' . $locale_id . '.ini';
+  	  );
+  	    
+  	  return false;
+  	}
+  		  
+		return $resolved_path;  
   }  
 }
 
