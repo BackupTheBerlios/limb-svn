@@ -49,8 +49,16 @@ class checkout_cart_order_action extends form_action
 			return new close_popup_response(RESPONSE_STATUS_FAILURE);
 		}
 		
+		$this->_clear_cart();
+		
 		message_box :: write_error(strings :: get('message_was_sent', 'cart'));
 		return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED);
+	}
+	
+	function _clear_cart()
+	{
+		$cart =& cart :: instance();
+		$cart->clear();
 	}
 	
 	function _get_mail_body()
