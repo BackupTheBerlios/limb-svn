@@ -14,8 +14,6 @@ require_once(LIMB_DIR . '/core/model/stats/stats_referer.class.php');
 
 class stats_log extends stats_supertype
 {
-	var $db = null;
-	var $reg_date = null;
 	var $_referer_register = null;
 	
 	function stats_log()

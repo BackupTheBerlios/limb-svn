@@ -9,17 +9,13 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/core/lib/date/date.class.php');
+require_once(LIMB_DIR . '/core/model/stats/stats_supertype.class.php');
 
-class stats_ip
+class stats_ip extends stats_supertype
 {
-	var $db = null;
-	var $reg_date;
-	
 	function stats_ip()
 	{
-		$this->db =& db_factory :: instance();
-		$this->reg_date = new date();		
+		parent :: stats_supertype();
 	}
 
 	function is_new_host()
@@ -52,16 +48,6 @@ class stats_ip
 				'time' => $this->get_register_time_stamp()
 			)
 		);
-	}
-
-	function set_register_time($stamp)
-	{
-		$this->reg_date->set_by_stamp($stamp);
-	}
-
-	function get_register_time_stamp()
-	{
-		return $this->reg_date->get_stamp();
 	}
 
 	function get_client_ip()
