@@ -60,6 +60,12 @@ class site_structure_controller extends site_object_controller
 						'action_path' => '/site_structure/save_priority_action', 
 						'popup' => true,
 				),
+				'multi_delete' => array(
+						'permissions_required' => 'w',
+						'action_path' => '/site_structure/multi_delete_action', 
+						'template_path' => '/site_structure/multi_delete.html',
+						'popup' => true,
+				),
 		);
  		
 

@@ -67,10 +67,7 @@ function pop_url_history()
 }
 
 function close_popup_no_parent_reload()
-{
-	if(!isset($_REQUEST['popup']) || !$_REQUEST['popup'])
-		return;
-	
+{	
 	ob_end_clean();
 
 	ob_start();
@@ -87,10 +84,7 @@ function close_popup_no_parent_reload()
 }
 
 function close_popup($parent_reload_url = RELOAD_SELF_URL, $search_for_node = false)
-{
-	if(!isset($_REQUEST['popup']) || !$_REQUEST['popup'])
-		return;
-	
+{	
 	ob_end_clean();
 
 	ob_start();

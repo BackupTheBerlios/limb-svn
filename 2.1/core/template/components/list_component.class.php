@@ -67,6 +67,11 @@ class list_component extends component
 	{
 		$this->dataset->register_filter($filter);
 	} 
+	
+	function get_by_index_string($raw_index)
+	{
+		return $this->dataset->get_by_index_string($raw_index);
+	}
 
 	/**
 	* Prepares the list for iteration, creating an empty_dataset if no

@@ -32,26 +32,42 @@ class grid_button_tag extends button_tag
 					'enclosing_tag' => 'grid:LIST',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
-		} 	}
+		}
+		
+		if (!isset($this->attributes['path']))
+		{
+			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+					'attribute' => 'path',
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
+		} 
+	}
 
 	function prepare()
 	{
 		$grid_tag =& $this->find_parent_by_class('grid_list_tag');
 		$grid_tag->set_form_required();
+		
+		if(isset($this->attributes['form_submitted']))
+		{
+			$grid_tag->set_form_submitted((boolean)$this->attributes['form_submitted']);
+			unset($this->attributes['form_submitted']);
+		}
 
 		$this->attributes['type'] = 'button';
 		
-		$action_path = '';
+		$action_path = $this->attributes['path'] . '?';
 		
-		if (isset($this->attributes['path']))
-			$action_path .= $this->attributes['path'];
-
-		$action_path .= '?';
-
-		if (isset($this->attributes['action']))
+		if(isset($this->attributes['action']))
 			$action_path .= 'action=' . $this->attributes['action'];
+			
+		if (isset($this->attributes['reload_parent']) && $this->attributes['reload_parent'])
+		{
+			$action_path .= '&reload_parent=1';
+			unset($this->attributes['reload_parent']);
+		}
 		
-		$this->attributes['onclick'] = "submit_form('grid_form_{$grid_tag->attributes['id']}', '{$action_path}&reload_parent=1')";
+		$this->attributes['onclick'] = "submit_form('grid_form_{$grid_tag->attributes['id']}', '{$action_path}')";
 		
 		parent :: prepare();
 		

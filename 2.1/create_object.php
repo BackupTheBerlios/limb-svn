@@ -92,7 +92,6 @@ if($_REQUEST['action'] == 'create_object' && $params_set)
 		$access_policy->save_object_access($object, $parent_object);
 	}	
 
-
   $db->commit();
   debug :: add_timing_point('finish');
 	if (debug :: is_console_enabled())

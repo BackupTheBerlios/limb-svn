@@ -38,7 +38,7 @@ foreach($site_objects as $object)
 	
 	echo "updating " . get_class($object)  . "...\n";
 	
-	if(!isset($class_properties['icon']))
+	if(!isset($class_properties['icon']) || !$class_properties['icon'])
 		$class_properties['icon'] = '/shared/images/generic.gif';
 		
 	$class_db_table->update_by_id($class_id, $class_properties);

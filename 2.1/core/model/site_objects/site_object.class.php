@@ -579,6 +579,9 @@ class site_object extends object
 		$insert_data = $this->get_class_properties();
 		$insert_data['class_name'] = $class_name;
 		
+		if(!isset($insert_data['icon']) || !$insert_data['icon'])
+			$insert_data['icon'] = '/shared/images/generic.gif';
+		
 		$type_db_table->insert($insert_data);
 		
 		$this->_class_id = (int)$type_db_table->get_last_insert_id();

@@ -131,6 +131,8 @@ class array_dataset
 		if (isset($this->record[$name]))
 			return $this->record[$name];
 	} 
+
+	
 	/**
 	* Places an element in the current record of the array_dataset
 	* 

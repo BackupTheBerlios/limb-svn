@@ -15,6 +15,7 @@
 <grid:LIST id='items'>
 <table width="100%" border="0" cellspacing="0" cellpadding="8">
 <tr>
+<th><locale:STRING name='selected_column'></th>
 <th><locale:STRING name='title'></th>
 <th>URL</th>
 <th><locale:STRING name='items_order'></th>
@@ -22,12 +23,13 @@
 </tr>
 <grid:ITERATOR>
 <tr class='jip'>
+<td><core:INCLUDE file="/admin/selector.html"></td>
 <td jip='object' class='jip_object'><a href="{$path}">{$title}</a></td>
 <td>{$url}</td>
 <td><core:INCLUDE file='/admin/priority_input.html'></td>
 <td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr><td colspan='3' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
+<tr><td colspan='2' align='left'><core:INCLUDE file='/admin/delete_button.html'></td><td colspan='2' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
 </table>
 </grid:LIST>
