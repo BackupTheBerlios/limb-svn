@@ -1,5 +1,5 @@
 <?php
-    // $Id: shell_test.php,v 1.4 2004/01/05 20:22:10 lastcraft Exp $
+    // $Id$
     
     class TestOfShell extends UnitTestCase {
         function TestOfShell() {

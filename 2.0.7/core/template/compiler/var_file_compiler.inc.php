@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: var_file_compiler.inc.php 513 2004-02-20 15:10:42Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');

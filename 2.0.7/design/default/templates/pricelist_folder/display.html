@@ -7,6 +7,7 @@
 </span><br>
 
 <fetch:SUB_BRANCH target='direct_objects'>
+	<core:PARAMETER name='data_source_path' value='pricelist_data_source' >
 	<core:PARAMETER name='loader_class_name' value='pricelist_object' >
 	<core:PARAMETER name='depth' value='1' >
 </fetch:SUB_BRANCH>
@@ -22,7 +23,8 @@
 	</td>
 	<td>
 		<core:OPTIONAL for='file_id'>
-					<a href='/root?node_id={$file_id}'>Скачать</a></td>
+			<a href='/root?node_id={$file_id}'><locale:STRING name='download' file='pricelist'  locale_type='content'></a>
+			( <img src='{$file_icon}'> {$file_size} bytes)</td>
 		</core:OPTIONAL>
 	</td>
 	<td  jip='object' class=jip bgcolor="white" valign=top>

@@ -25,6 +25,9 @@ class mime_type
 				'application/vnd.ms-powerpoint' => array(
 						'icon' => 'application_ppt',
 				),
+				'application/octet-stream' => array(
+						'icon' => 'file',
+				),
 				'application/pdf' => array(
 						'icon' => 'application_pdf',
 				),
@@ -35,6 +38,9 @@ class mime_type
 						'icon' => 'application_swf',
 				),
 				'application/x-zip-compressed' => array(
+						'icon' => 'application_zip',
+				),
+				'application/x-gzip-compressed' => array(
 						'icon' => 'application_zip',
 				),
 				'audio/x-wav' => array(

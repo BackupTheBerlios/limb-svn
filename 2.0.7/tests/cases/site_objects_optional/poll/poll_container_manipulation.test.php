@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: school_news_folder_manipulation.test.php 21 2004-02-29 18:59:25Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: session_id.tag.php 14 2004-03-03 17:37:32Z server $
+* $Id$
 *
 ***********************************************************************************/
 class ip_tag_info

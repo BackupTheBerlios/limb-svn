@@ -1,5 +1,5 @@
 <?php
-    // $Id: xml_test.php,v 1.9 2004/01/05 20:22:10 lastcraft Exp $
+    // $Id$
     
     if (!defined("SIMPLE_TEST")) {
         define("SIMPLE_TEST", "../");

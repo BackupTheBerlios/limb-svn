@@ -3,7 +3,7 @@
      *	base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	MockObjects
-     *	@version	$Id: query_string.php,v 1.5 2004/02/08 08:38:19 jsweat Exp $
+     *	@version	$Id$
      */
     
     /**

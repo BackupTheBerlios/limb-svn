@@ -3,7 +3,7 @@
      *	Base include file for SimpleTest.
      *	@package	SimpleTest
      *	@subpackage	WebTester
-     *	@version	$Id: tag.php,v 1.42 2004/02/10 17:07:50 lastcraft Exp $
+     *	@version	$Id$
      */
     
     /**

@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: profile.php,v 1.2 2003/07/05 12:24:28 pacha Exp $
+ *   $Id$
  *
  *
  ***************************************************************************/

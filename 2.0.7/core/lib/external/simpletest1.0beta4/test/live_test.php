@@ -1,5 +1,5 @@
 <?php
-    // $Id: live_test.php,v 1.54 2004/02/19 01:18:56 lastcraft Exp $
+    // $Id$
     
     if (!defined("SIMPLE_TEST")) {
         define("SIMPLE_TEST", "../");

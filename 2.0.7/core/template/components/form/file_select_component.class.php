@@ -52,7 +52,10 @@ class file_select_component extends input_form_element
   	  	
   	echo "<span id='{$md5id}_span_empty'><img src='/shared/images/no_img.gif'></span>
   				<span id='{$md5id}_span_content'>
-  					<a id='{$md5id}_href' href='#'><img id='{$md5id}_img' align='center' src='/shared/images/1x1.gif'/>&nbsp;<span id='{$md5id}_name'>{$span_name}</span><span id='{$md5id}_description'>{$span_description}</span>&nbsp;size:&nbsp;<span id='{$md5id}_size'>{$span_size}</span>&nbsp;bytes&nbsp;mime-type:<span id='{$md5id}_mime'>{$span_mime}</span></a>
+  					<a id='{$md5id}_href' href='#'><img id='{$md5id}_img' align='center' src='/shared/images/1x1.gif'/>&nbsp;<span id='{$md5id}_name'>{$span_name}</span></a><br>
+  					<span id='{$md5id}_description'>{$span_description}</span><br>
+  					size:&nbsp;<span id='{$md5id}_size'>{$span_size}</span>&nbsp;bytes&nbsp;<br>
+  					mime-type:<span id='{$md5id}_mime'>{$span_mime}</span>
   				</span><br><br>";
   	
   	echo "<script type='text/javascript'>

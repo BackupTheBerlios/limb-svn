@@ -23,10 +23,16 @@ class simple_navigation_data_source extends fetch_sub_branch_data_source
 		$uri = new uri(PHP_SELF);		
 
 		foreach($result as $key => $data)
+		{
 			if($uri->compare($data['url'], $url_rest, $query_match))
+			{
 				if($url_rest >= 0)
 					$result[$key]['in_path'] = true;
-			
+				if($url_rest == 0)
+					$result[$key]['selected'] = true;
+			}
+		}
+
 		return $result;
 	}
 
