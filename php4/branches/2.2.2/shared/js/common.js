@@ -157,16 +157,17 @@ function toggle_obj_display(obj)
 
 function optimize_window()
 {
-  w = window;
+  var w = window;
 
   var x_ratio = 0.85;
   var y_ratio = 0.85;
 
   var top_opener = window;
-  screen_x = (is_gecko) ? top_opener.screenX : top_opener.screenLeft;
+  var screen_x = (is_gecko) ? top_opener.screenX : top_opener.screenLeft;
 
   while(typeof(top_opener.top.opener) != 'undefined' && top_opener.top.opener != null && screen_x>0)
   {
+    screen_x = (is_gecko) ? top_opener.screenX : top_opener.screenLeft;
     top_opener = top_opener.top.opener;
   }
 

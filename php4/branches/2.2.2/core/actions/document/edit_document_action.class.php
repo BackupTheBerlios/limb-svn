@@ -12,34 +12,34 @@ require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
 class edit_document_action extends form_edit_site_object_action
 {
-	function _define_site_object_class_name()
-	{
-	  return 'document';
-	}  
-	  
-	function _define_dataspace_name()
-	{
-	  return 'documents_form';
-	}
-  
+  function _define_site_object_class_name()
+  {
+    return 'document';
+  }
+
+  function _define_dataspace_name()
+  {
+    return 'documents_form';
+  }
+
   function _define_datamap()
-	{
-	  return complex_array :: array_merge(
-	      parent :: _define_datamap(),
-	      array(
-  				'document_content' => 'content',
-  				'annotation' => 'annotation',
-	      )
-	  );     
-	}  
-	
-	function _init_validator()
-	{
-		parent :: _init_validator();
-		
+  {
+    return complex_array :: array_merge(
+        parent :: _define_datamap(),
+        array(
+          'document_content' => 'content',
+          'annotation' => 'annotation',
+        )
+    );
+  }
+
+  function _init_validator()
+  {
+    parent :: _init_validator();
+
     $this->validator->add_rule($v1 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
     $this->validator->add_rule($v2 = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'document_content'));
-	}
+  }
 }
 
 ?>
