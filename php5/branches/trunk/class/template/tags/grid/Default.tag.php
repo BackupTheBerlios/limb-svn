@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_default_tag_info
+class GridDefaultTagInfo
 {
   public $tag = 'grid:DEFAULT';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'grid_default_tag';
 }
 
-register_tag(new grid_default_tag_info());
+registerTag(new GridDefaultTagInfo());
 
-class grid_default_tag extends silent_compiler_directive_tag
+class GridDefaultTag extends SilentCompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('grid_default_tag'))
+    if ($this->findParentByClass('grid_default_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
     }
-    if (!$this->parent instanceof grid_list_tag)
+    if (!$this->parent instanceof GridListTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,

@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/button.tag.php');
+require_once(LIMB_DIR . '/class/template/tags/form/Button.tag.php');
 
-class action_button_tag_info
+class ActionButtonTagInfo
 {
   public $tag = 'action_button';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'action_button_tag';
 }
 
-register_tag(new action_button_tag_info());
+registerTag(new ActionButtonTagInfo());
 
-class action_button_tag extends button_tag
+class ActionButtonTag extends ButtonTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['action']))
     {
@@ -47,7 +47,7 @@ class action_button_tag extends button_tag
     if(!isset($this->attributes['type']))
       $this->attributes['type'] = 'submit';
 
-    $this->attributes['onclick'] = "add_form_hidden_parameter(this.form, 'action', '{$this->attributes['action']}');";
+    $this->attributes['onclick'] = "addFormHiddenParameter(this.form, 'action', '{$this->attributes['action']}');";
 
     if(isset($this->attributes['reload_parent']))
     {
@@ -58,7 +58,7 @@ class action_button_tag extends button_tag
     unset($this->attributes['action']);
   }
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'input';
   }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class unique_user_rule extends single_field_rule
+class UniqueUserRule extends SingleFieldRule
 {
   protected $current_identifier = '';
 
@@ -26,7 +26,7 @@ class unique_user_rule extends single_field_rule
     if(!$value = $dataspace->get($this->field_name))
       return;
 
-    if(	$this->current_identifier &&
+    if(	$this->current_identifier && 
         $this->current_identifier == $value)
       return;
 
@@ -38,12 +38,12 @@ class unique_user_rule extends single_field_rule
             AND sco.id=tn.object_id
             AND sco.current_version=tn.version';
 
-    $db->sql_exec($sql);
+    $db->sqlExec($sql);
 
-    $arr = $db->get_array();
+    $arr = $db->getArray();
 
-    if(is_array($arr) && count($arr))
-      $this->error(strings :: get('error_duplicate_user', 'error'));
+    if(is_array($arr) &&  count($arr))
+      $this->error(Strings :: get('error_duplicate_user', 'error'));
   }
 }
 

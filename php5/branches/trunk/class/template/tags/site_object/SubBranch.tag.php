@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/template/tags/datasource/datasource.tag.php');
+require_once(LIMB_DIR . '/class/template/tags/datasource/Datasource.tag.php');
 
-class fetch_sub_branch_tag_info
+class FetchSubBranchTagInfo
 {
 	public $tag = 'fetch:SUB_BRANCH';
 	public $end_tag = ENDTAG_REQUIRED;
 	public $tag_class = 'fetch_sub_branch_tag';
 } 
 
-register_tag(new fetch_sub_branch_tag_info());
+registerTag(new FetchSubBranchTagInfo());
 
-class fetch_sub_branch_tag extends datasource_tag
+class FetchSubBranchTag extends DatasourceTag
 {	
   function __construct()
   {

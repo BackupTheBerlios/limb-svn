@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_data_transfer_tag_info
+class CoreDataTransferTagInfo
 {
   public $tag = 'core:DATA_TRANSFER';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'core_data_transfer_tag';
 }
 
-register_tag(new core_data_transfer_tag_info());
+registerTag(new CoreDataTransferTagInfo());
 
-class core_data_transfer_tag extends compiler_directive_tag
+class CoreDataTransferTag extends CompilerDirectiveTag
 {
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['target']))
     {
@@ -33,19 +33,19 @@ class core_data_transfer_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $dataspace = $this->get_dataspace_ref_code();
+    $dataspace = $this->getDataspaceRefCode();
 
-    if (isset($this->attributes['hash_id']) && isset($this->attributes['target']))
+    if (isset($this->attributes['hash_id']) &&  isset($this->attributes['target']))
     {
-      if($target = $this->parent->find_child($this->attributes['target']))
+      if($target = $this->parent->findChild($this->attributes['target']))
       {
-        $code->write_php($target->get_component_ref_code() . '->register_dataset(new array_dataset(' . $dataspace . '->get("' . $this->attributes['hash_id'] . '")))');
+        $code->writePhp($target->getComponentRefCode() . '->register_dataset(new array_dataset(' . $dataspace . '->get("' . $this->attributes['hash_id'] . '")))');
       }
     }
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 }
 

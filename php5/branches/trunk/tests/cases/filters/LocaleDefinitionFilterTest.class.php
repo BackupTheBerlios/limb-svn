@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/locale_definition_filter.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/request/response.interface.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/i18n/locale.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/core/filters/LocaleDefinitionFilter.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('filter_chain');
-Mock :: generate('request');
-Mock :: generate('locale');
-Mock :: generate('response');
-Mock :: generate('requested_object_datasource');
-Mock :: generate('user');
+Mock :: generate('FilterChain');
+Mock :: generate('Request');
+Mock :: generate('Locale');
+Mock :: generate('Response');
+Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('User');
 
-Mock :: generatePartial('locale_definition_filter',
-                        'locale_definition_filter_test_version',
-                        array('_find_site_object_locale_id'));
+Mock :: generatePartial('LocaleDefinitionFilter',
+                        'LocaleDefinitionFilterTestVersion',
+                        array('_findSiteObjectLocaleId'));
 
-class locale_definition_filter_test extends LimbTestCase
+class LocaleDefinitionFilterTest extends LimbTestCase
 {
   var $filter_chain;
   var $filter;
@@ -42,19 +42,19 @@ class locale_definition_filter_test extends LimbTestCase
 
   function setUp()
   {
-    $this->filter = new locale_definition_filter_test_version($this);
+    $this->filter = new LocaleDefinitionFilterTestVersion($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->request = new Mockrequest($this);
-    $this->response = new Mockresponse($this);
-    $this->locale = new Mocklocale($this);
-    $this->filter_chain = new Mockfilter_chain($this);
-    $this->datasource = new Mockrequested_object_datasource($this);
-    $this->user = new Mockuser($this);
+    $this->request = new MockRequest($this);
+    $this->response = new MockResponse($this);
+    $this->locale = new MockLocale($this);
+    $this->filter_chain = new MockFilterChain($this);
+    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->user = new MockUser($this);
 
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
     $this->toolkit->setReturnValue('getUser', $this->user);
     $this->toolkit->setReturnValue('getLocale', $this->locale);
@@ -77,10 +77,10 @@ class locale_definition_filter_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_run_node_not_found()
+  function testRunNodeNotFound()
   {
-    $this->datasource->expectOnce('map_request_to_node', array(new IsAExpectation('Mockrequest')));
-    $this->datasource->setReturnValue('map_request_to_node', false);
+    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->datasource->setReturnValue('mapRequestToNode', false);
 
     $this->toolkit->expectArgumentsAt(0, 'define', array('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID));
     $this->toolkit->expectArgumentsAt(1, 'define', array('MANAGEMENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID));
@@ -88,13 +88,13 @@ class locale_definition_filter_test extends LimbTestCase
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 
-  function test_run_node_found_1()
+  function testRunNodeFound1()
   {
-    $this->datasource->expectOnce('map_request_to_node', array(new IsAExpectation('Mockrequest')));
-    $this->datasource->setReturnValue('map_request_to_node', $node = array('object_id' => $object_id = 100));
+    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->datasource->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
 
-    $this->filter->expectOnce('_find_site_object_locale_id', array($object_id));
-    $this->filter->setReturnValue('_find_site_object_locale_id', $locale_id = 'fr');
+    $this->filter->expectOnce('_findSiteObjectLocaleId', array($object_id));
+    $this->filter->setReturnValue('_findSiteObjectLocaleId', $locale_id = 'fr');
 
     $this->toolkit->expectOnce('getUser');
 
@@ -109,13 +109,13 @@ class locale_definition_filter_test extends LimbTestCase
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 
-  function test_run_node_found_2()
+  function testRunNodeFound2()
   {
-    $this->datasource->expectOnce('map_request_to_node', array(new IsAExpectation('Mockrequest')));
-    $this->datasource->setReturnValue('map_request_to_node', $node = array('object_id' => $object_id = 100));
+    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->datasource->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
 
-    $this->filter->expectOnce('_find_site_object_locale_id', array($object_id));
-    $this->filter->setReturnValue('_find_site_object_locale_id', $locale_id = 'fr');
+    $this->filter->expectOnce('_findSiteObjectLocaleId', array($object_id));
+    $this->filter->setReturnValue('_findSiteObjectLocaleId', $locale_id = 'fr');
 
     $this->toolkit->expectOnce('getUser');
 
@@ -127,13 +127,13 @@ class locale_definition_filter_test extends LimbTestCase
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 
-  function test_run_node_found_3()
+  function testRunNodeFound3()
   {
-    $this->datasource->expectOnce('map_request_to_node', array(new IsAExpectation('Mockrequest')));
-    $this->datasource->setReturnValue('map_request_to_node', $node = array('object_id' => $object_id = 100));
+    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->datasource->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
 
-    $this->filter->expectOnce('_find_site_object_locale_id', array($object_id));
-    $this->filter->setReturnValue('_find_site_object_locale_id', null);
+    $this->filter->expectOnce('_findSiteObjectLocaleId', array($object_id));
+    $this->filter->setReturnValue('_findSiteObjectLocaleId', null);
 
     $this->toolkit->expectOnce('getUser');
 
@@ -146,13 +146,13 @@ class locale_definition_filter_test extends LimbTestCase
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 
-  function test_run_node_found_4()
+  function testRunNodeFound4()
   {
-    $this->datasource->expectOnce('map_request_to_node', array(new IsAExpectation('Mockrequest')));
-    $this->datasource->setReturnValue('map_request_to_node', $node = array('object_id' => $object_id = 100));
+    $this->datasource->expectOnce('mapRequestToNode', array(new IsAExpectation('MockRequest')));
+    $this->datasource->setReturnValue('mapRequestToNode', $node = array('object_id' => $object_id = 100));
 
-    $this->filter->expectOnce('_find_site_object_locale_id', array($object_id));
-    $this->filter->setReturnValue('_find_site_object_locale_id', null);
+    $this->filter->expectOnce('_findSiteObjectLocaleId', array($object_id));
+    $this->filter->setReturnValue('_findSiteObjectLocaleId', null);
 
     $this->toolkit->expectOnce('getUser');
 

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class us_zip_rule extends single_field_rule
+class UsZipRule extends SingleFieldRule
 {
   protected function check($value)
   {
@@ -19,19 +19,19 @@ class us_zip_rule extends single_field_rule
     if(strlen($value) == 5)
     {
       if(!preg_match("~^\d{5}$~", $value))
-        $this->error(strings :: get('error_invalid_zip_format', 'error'));
+        $this->error(Strings :: get('error_invalid_zip_format', 'error'));
       else
         return;
     }
     elseif(strlen($value) == 10)
     {
       if(!preg_match("~^\d{5}\s\d{4}$~", $value))
-        $this->error(strings :: get('error_invalid_zip_format', 'error'));
+        $this->error(Strings :: get('error_invalid_zip_format', 'error'));
       else
         return;
     }
     else
-      $this->error(strings :: get('error_invalid_zip_format', 'error'));
+      $this->error(Strings :: get('error_invalid_zip_format', 'error'));
   }
 }
 ?>

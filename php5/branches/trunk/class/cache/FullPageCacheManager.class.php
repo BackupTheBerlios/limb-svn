@@ -11,26 +11,26 @@
 if(!defined('PAGE_CACHE_DIR'))
   define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
 
-require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 
-class full_page_cache_manager
+class FullPageCacheManager
 {
   protected $id;
   protected $request;
   protected $rules = array();
   protected $matched_rule;
 
-  protected function _set_matched_rule($rule)
+  protected function _setMatchedRule($rule)
   {
     $this->matched_rule = $rule;
   }
 
-  protected function _get_matched_rule()
+  protected function _getMatchedRule()
   {
     return $this->matched_rule;
   }
 
-  public function set_request($request)
+  public function setRequest($request)
   {
     $this->id = null;
     $this->request = $request;
@@ -41,10 +41,10 @@ class full_page_cache_manager
     if(!$this->request)
       return false;
 
-    if($this->is_cacheable())
+    if($this->isCacheable())
     {
-      if($this->cache_exists())
-        return $this->read_cache();
+      if($this->cacheExists())
+        return $this->readCache();
     }
 
     return false;
@@ -52,10 +52,10 @@ class full_page_cache_manager
 
   public function write($content)
   {
-    if(!$id = $this->get_cache_id())
+    if(!$id = $this->getCacheId())
       return false;
 
-    fs :: mkdir(PAGE_CACHE_DIR);
+    Fs :: mkdir(PAGE_CACHE_DIR);
 
     $tmp = tempnam(PAGE_CACHE_DIR, '_');
     $f = fopen($tmp, 'w');
@@ -68,12 +68,12 @@ class full_page_cache_manager
     return rename($tmp,  PAGE_CACHE_DIR . $id);
   }
 
-  public function get_cache_id()
+  public function getCacheId()
   {
     if(!$this->request)
       return null;
 
-    if(is_null($matched_rule = $this->_get_matched_rule()))
+    if(is_null($matched_rule = $this->_getMatchedRule()))
       return null;
 
     if($this->id)
@@ -83,10 +83,10 @@ class full_page_cache_manager
     $cache_query_items = array();
     $attributes = array();
 
-    if(isset($matched_rule['optional']) && is_array($matched_rule['optional']))
+    if(isset($matched_rule['optional']) &&  is_array($matched_rule['optional']))
       $attributes = $matched_rule['optional'];
 
-    if(isset($matched_rule['required']) && is_array($matched_rule['required']))
+    if(isset($matched_rule['required']) &&  is_array($matched_rule['required']))
       $attributes = array_merge($matched_rule['required'], $attributes);
 
     foreach($query_items as $key => $value)
@@ -97,12 +97,12 @@ class full_page_cache_manager
 
     ksort($cache_query_items);
 
-    $this->id = 'f_' . md5($this->request->get_uri()->get_path() . serialize($cache_query_items));
+    $this->id = 'f_' . md5($this->request->getUri()->getPath() . serialize($cache_query_items));
 
     return $this->id;
   }
 
-  public function is_cacheable()
+  public function isCacheable()
   {
     if(!$this->request)
       return false;
@@ -110,9 +110,9 @@ class full_page_cache_manager
     $query_items = $this->request->export();
     $query_keys = array_keys($query_items);
 
-    $uri_path = $this->request->get_uri()->get_path();
+    $uri_path = $this->request->getUri()->getPath();
 
-    $rules = $this->get_rules();
+    $rules = $this->getRules();
 
     foreach($rules as $rule)
     {
@@ -121,7 +121,7 @@ class full_page_cache_manager
 
       if(isset($rule['groups']))
       {
-        if(!$this->_is_user_in_groups($rule['groups']))
+        if(!$this->_isUserInGroups($rule['groups']))
           continue;
       }
 
@@ -137,9 +137,9 @@ class full_page_cache_manager
         }
       }
 
-      if(!isset($rule['type']) || $rule['type'] === 'allow')
+      if(!isset($rule['type']) ||  $rule['type'] === 'allow')
       {
-        $this->_set_matched_rule($rule);
+        $this->_setMatchedRule($rule);
         return true;
       }
       else
@@ -149,7 +149,7 @@ class full_page_cache_manager
     return false;
   }
 
-  protected function _is_user_in_groups($groups)
+  protected function _isUserInGroups($groups)
   {
     $user = Limb :: toolkit()->getUser();
 
@@ -160,9 +160,9 @@ class full_page_cache_manager
     return false;
   }
 
-  public function cache_exists()
+  public function cacheExists()
   {
-    if(!$id = $this->get_cache_id())
+    if(!$id = $this->getCacheId())
       return false;
 
     return file_exists(PAGE_CACHE_DIR . $id);
@@ -170,9 +170,9 @@ class full_page_cache_manager
 
   public function flush()
   {
-    fs :: mkdir(PAGE_CACHE_DIR);
+    Fs :: mkdir(PAGE_CACHE_DIR);
 
-    $files = fs :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^f]~');
+    $files = Fs :: findSubitems(PAGE_CACHE_DIR, 'f', '~^[^f]~');
 
     foreach($files as $file)
     {
@@ -180,11 +180,11 @@ class full_page_cache_manager
     }
   }
 
-  public function get_cache_size()
+  public function getCacheSize()
   {
-    fs :: mkdir(PAGE_CACHE_DIR);
+    Fs :: mkdir(PAGE_CACHE_DIR);
 
-    $files = fs :: find_subitems(PAGE_CACHE_DIR, 'f', '~^[^f]~');
+    $files = Fs :: findSubitems(PAGE_CACHE_DIR, 'f', '~^[^f]~');
 
     $size = 0;
 
@@ -196,27 +196,27 @@ class full_page_cache_manager
     return $size;
   }
 
-  public function read_cache()
+  public function readCache()
   {
-    if(!$id = $this->get_cache_id())
+    if(!$id = $this->getCacheId())
       return false;
 
     return file_get_contents(PAGE_CACHE_DIR . $id);
   }
 
-  public function get_rules()
+  public function getRules()
   {
     if(!$this->rules)
-      $this->_load_rules();
+      $this->_loadRules();
 
     return $this->rules;
   }
 
-  protected function _load_rules()
+  protected function _loadRules()
   {
     $this->rules = array();
 
-    $groups = Limb :: toolkit()->getINI('full_page_cache.ini')->get_all();
+    $groups = Limb :: toolkit()->getINI('full_page_cache.ini')->getAll();
 
     foreach($groups as $group => $data)
     {

@@ -9,25 +9,25 @@
 *
 ***********************************************************************************/
 
-function process_output(& $output)
+function processOutput(& $output)
 {
-  _highlight_output($output);
-  _gzip_output($output);
+  _highlightOutput($output);
+  _gzipOutput($output);
 
   return $output;
 }
 
-function _gzip_output(& $output)
+function _gzipOutput(& $output)
 {
   global $HTTP_SERVER_VARS;
 
-  if(defined('OUTPUT_GZIP_ENABLED') && constant('OUTPUT_GZIP_ENABLED') == false)
+  if(defined('OUTPUT_GZIP_ENABLED') &&  constant('OUTPUT_GZIP_ENABLED') == false)
     return;
 
-  if(isset($HTTP_SERVER_VARS['HTTP_ACCEPT_ENCODING']) && strstr($HTTP_SERVER_VARS['HTTP_ACCEPT_ENCODING'], 'gzip'))
+  if(isset($HTTP_SERVER_VARS['HTTP_ACCEPT_ENCODING']) &&  strstr($HTTP_SERVER_VARS['HTTP_ACCEPT_ENCODING'], 'gzip'))
   {
     $size = strlen($output);
-    if(extension_loaded('zlib') &&  $size >= 20000)
+    if(extension_loaded('zlib') &&   $size >= 20000)
     {
       $crc = crc32($output);
 
@@ -36,8 +36,8 @@ function _gzip_output(& $output)
       // We can't just output it here, since the CRC is messed up. Strip off the old CRC
       $output = substr($output, 0, strlen($output) - 4);
 
-      _gzip_append_4_chars($output, $crc);
-      _gzip_append_4_chars($output, $size);
+      _gzipAppend4_chars($output, $crc);
+      _gzipAppend4_chars($output, $size);
 
       $output = "\x1f\x8b\x08\x00\x00\x00\x00\x00" . $output;
 
@@ -46,7 +46,7 @@ function _gzip_output(& $output)
   }
 }
 
-function _gzip_append_4_chars(& $content, $value)
+function _gzipAppend4_chars(& $content, $value)
 {
   for ($i = 0; $i < 4; $i ++)
   {
@@ -55,9 +55,9 @@ function _gzip_append_4_chars(& $content, $value)
   }
 }
 
-function _highlight_output(& $output)
+function _highlightOutput(& $output)
 {
-  if(isset($_GET['h']) && strlen(trim($_GET['h'])) > 1)
+  if(isset($_GET['h']) &&  strlen(trim($_GET['h'])) > 1)
   {
     $pieces1 = explode('<!--content_object_begin-->', $output);
 
@@ -75,7 +75,7 @@ function _highlight_output(& $output)
   }
 }
 
-function _highlite_callback($matches)
+function _highliteCallback($matches)
 {
   static $tag_context = array();
   static $words_regxp = '';
@@ -96,10 +96,10 @@ function _highlite_callback($matches)
     elseif(isset($tag_context[$tag]))
     unset($tag_context[$tag]);
 
-    if(	isset($tag_context['head']) ||
-        isset($tag_context['textarea']) ||
-        isset($tag_context['button']) ||
-        isset($tag_context['script']) ||
+    if(	isset($tag_context['head']) || 
+        isset($tag_context['textarea']) || 
+        isset($tag_context['button']) || 
+        isset($tag_context['script']) || 
         isset($tag_context['pre'])
       )
     return $matches[0];

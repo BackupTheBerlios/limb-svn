@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-abstract class rule
+abstract class Rule
 {
   protected $error_list = null;
 
   protected $is_valid = true;
 
-  public function is_valid()
+  public function isValid()
   {
     return $this->is_valid;
   }
 
-  public function set_error_list($error_list)
+  public function setErrorList($error_list)
   {
     $this->error_list = $error_list;
   }

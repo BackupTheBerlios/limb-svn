@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class template_components_group extends LimbGroupTest
+class TemplateComponentsGroup extends LimbGroupTest
 {
-  function template_components_group()
+  function templateComponentsGroup()
   {
-    $this->LimbGroupTest('template components tests');
+    $this->limbGroupTest('template components tests');
   }
 
   function getTestCasesHandles()

@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/data_mappers/site_object_mapper.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectMapper.class.php');
 
-abstract class one_table_objects_mapper extends site_object_mapper
+abstract class OneTableObjectsMapper extends SiteObjectMapper
 {
   protected  $_db_table = null;
 
-  protected function _get_finder()
+  protected function _getFinder()
   {
-    include_once(LIMB_DIR . '/class/core/finders/finder_factory.class.php');
-    return finder_factory :: create('one_table_objects_raw_finder');
+    include_once(LIMB_DIR . '/class/core/finders/FinderFactory.class.php');
+    return FinderFactory :: create('one_table_objects_raw_finder');
   }
 
-  public function get_db_table()
+  public function getDbTable()
   {
     if(!$this->_db_table)
     {
-      $db_table_name = $this->_define_db_table_name();
+      $db_table_name = $this->_defineDbTableName();
 
       $this->_db_table = Limb :: toolkit()->createDBTable($db_table_name);
     }
@@ -32,70 +32,70 @@ abstract class one_table_objects_mapper extends site_object_mapper
     return $this->_db_table;
   }
 
-  abstract protected function _define_db_table_name();
+  abstract protected function _defineDbTableName();
 
   //for mocking
-  protected function _do_parent_insert($site_object)
+  protected function _doParentInsert($site_object)
   {
     return parent :: insert($site_object);
   }
 
   //for mocking
-  protected function _do_parent_update($site_object)
+  protected function _doParentUpdate($site_object)
   {
     parent :: update($site_object);
   }
 
   //for mocking
-  protected function _do_parent_delete($site_object)
+  protected function _doParentDelete($site_object)
   {
     parent :: delete($site_object);
   }
 
   public function update($site_object)
   {
-    $this->_do_parent_update($site_object);
+    $this->_doParentUpdate($site_object);
 
-    $this->_update_linked_table_record($site_object);
+    $this->_updateLinkedTableRecord($site_object);
   }
 
   public function insert($site_object)
   {
-    $id = $this->_do_parent_insert($site_object);
+    $id = $this->_doParentInsert($site_object);
 
-    $this->_insert_linked_table_record($site_object);
+    $this->_insertLinkedTableRecord($site_object);
 
     return $id;
   }
 
   public function delete($site_object)
   {
-    $this->_do_parent_delete($site_object);
+    $this->_doParentDelete($site_object);
 
-    $this->_delete_linked_table_record($site_object);
+    $this->_deleteLinkedTableRecord($site_object);
   }
 
-  protected function _insert_linked_table_record($site_object)
+  protected function _insertLinkedTableRecord($site_object)
   {
     $data = $site_object->export();
-    $data['object_id'] = $site_object->get_id();
+    $data['object_id'] = $site_object->getId();
     unset($data['id']);
 
-    $this->get_db_table()->insert($data);
+    $this->getDbTable()->insert($data);
   }
 
-  protected function _update_linked_table_record($site_object)
+  protected function _updateLinkedTableRecord($site_object)
   {
     $data = $site_object->export();
     unset($data['id']);
 
-    $this->get_db_table()->update($data, array('object_id' => $site_object->get_id()));
+    $this->getDbTable()->update($data, array('object_id' => $site_object->getId()));
   }
 
-  protected function _delete_linked_table_record($site_object)
+  protected function _deleteLinkedTableRecord($site_object)
   {
-    $db_table = $this->get_db_table();
-    $db_table->delete(array('object_id' => $site_object->get_id()));
+    $db_table = $this->getDbTable();
+    $db_table->delete(array('object_id' => $site_object->getId()));
   }
 }
 

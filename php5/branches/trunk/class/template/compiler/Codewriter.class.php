@@ -11,7 +11,7 @@
 /**
 * Provides an API for generating the compiled template.
 */
-class codewriter
+class Codewriter
 {
   const CODE_WRITER_MODE_PHP = 1;
   const CODE_WRITER_MODE_HTML = 2;
@@ -50,7 +50,7 @@ class codewriter
   * instruction to the template. Does nothing if writer is already
   * in PHP mode
   */
-  protected function switch_to_php()
+  protected function switchToPhp()
   {
     if ($this->mode == self :: CODE_WRITER_MODE_HTML)
     {
@@ -64,7 +64,7 @@ class codewriter
   * instruction to the template. Does nothing if writer is already in
   * HTML mode
   */
-  protected function switch_to_html()
+  protected function switchToHtml()
   {
     if ($this->mode == self :: CODE_WRITER_MODE_PHP)
     {
@@ -76,18 +76,18 @@ class codewriter
   /**
   * Writes some PHP to the compiled template
   */
-  public function write_php($text)
+  public function writePhp($text)
   {
-    $this->switch_to_php();
+    $this->switchToPhp();
     $this->code .= $text;
   }
 
   /**
   * Writes some HTML to the compiled template
   */
-  public function write_html($text)
+  public function writeHtml($text)
   {
-    $this->switch_to_html();
+    $this->switchToHtml();
     $this->code .= $text;
   }
 
@@ -95,9 +95,9 @@ class codewriter
   * Returns the finished compiled template, adding the include directives
   * at the start of the template
   */
-  public function get_code()
+  public function getCode()
   {
-    $this->switch_to_html();
+    $this->switchToHtml();
     $includecode = '';
     foreach($this->include_list as $includefile)
     {
@@ -128,7 +128,7 @@ class codewriter
   * <br />Note that the path to the file to be included will need to
   * be in PHP's runtime include path.
   */
-  public function register_include($includefile)
+  public function registerInclude($includefile)
   {
     if (!in_array($includefile, $this->include_list))
     {
@@ -141,30 +141,30 @@ class codewriter
   * function_prefix and the function_suffix, the latter being post incremented
   * by one.
   */
-  public function begin_function($ParamList)
+  public function beginFunction($ParamList)
   {
     $funcname = 'tpl' . $this->function_prefix . $this->function_suffix++;
-    $this->write_php('function ' . $funcname . $ParamList . "\n{\n");
+    $this->writePhp('function ' . $funcname . $ParamList . "\n{\n");
     return $funcname;
   }
 
   /**
   * Finish writing a PHP function to the compiled template
   */
-  public function end_function()
+  public function endFunction()
   {
-    $this->write_php("\n}\n");
+    $this->writePhp("\n}\n");
   }
 
   /**
   * Sets the function prefix
   */
-  public function set_function_prefix($prefix)
+  public function setFunctionPrefix($prefix)
   {
     $this->function_prefix = $prefix;
   }
 
-  public function get_temp_variable()
+  public function getTempVariable()
   {
     $var = $this->temp_var_name++;
     if ($var > 675)

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_action_tag_info
+class GridActionTagInfo
 {
 	public $tag = 'grid:action';
 	public $end_tag = ENDTAG_FORBIDDEN;
 	public $tag_class = 'grid_action_tag';
 } 
 
-register_tag(new grid_action_tag_info());
+registerTag(new GridActionTagInfo());
 
-class grid_action_tag extends compiler_directive_tag
+class GridActionTag extends CompilerDirectiveTag
 {  
-	public function check_nesting_level()
+	public function checkNestingLevel()
 	{
-		if (!$this->parent instanceof grid_actions_tag)
+		if (!$this->parent instanceof GridActionsTag)
 		{
 			throw new WactException('missing enclosure', 
 					array('tag' => $this->tag,
@@ -31,11 +31,11 @@ class grid_action_tag extends compiler_directive_tag
 		} 
 	} 
  
-	function pre_parse()
+	function preParse()
 	{
 		$action = array();
 
-		if(!isset($this->attributes['action']) && !isset($this->attributes['shortcut']))
+		if(!isset($this->attributes['action']) &&  !isset($this->attributes['shortcut']))
 		{
 			throw new WactException('missing required attribute', 
 					array('tag' => $this->tag,
@@ -47,8 +47,8 @@ class grid_action_tag extends compiler_directive_tag
 		if(isset($this->attributes['shortcut']))
 		{
       $conf = Limb :: toolkit()->getINI('grid_actions.ini');
-			$action['action'] = $conf->get_option($this->attributes['shortcut'], 'action');
-			$action['path'] = $conf->get_option($this->attributes['shortcut'],  'path');
+			$action['action'] = $conf->getOption($this->attributes['shortcut'], 'action');
+			$action['path'] = $conf->getOption($this->attributes['shortcut'],  'path');
 		}
 		else
 		{
@@ -67,7 +67,7 @@ class grid_action_tag extends compiler_directive_tag
 		if(isset($this->attributes['name']))
 			$action['name'] = $this->attributes['name'];
 
-		$this->parent->register_action($action);
+		$this->parent->registerAction($action);
 		
 		return PARSER_REQUIRE_PARSING;
 	}

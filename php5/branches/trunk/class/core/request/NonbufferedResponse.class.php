@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/request/response.interface.php');
+require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
 
-class nonbuffered_response implements response
+class NonbufferedResponse implements Response
 {
   public function write($string)
   {
@@ -21,7 +21,7 @@ class nonbuffered_response implements response
   {
   }
 
-  public function is_empty()
+  public function isEmpty()
   {
     return true;
   }

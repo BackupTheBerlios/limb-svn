@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class cache_group extends LimbGroupTest
+class CacheGroup extends LimbGroupTest
 {
-  function cache_group()
+  function cacheGroup()
   {
-    $this->LimbGroupTest('cache tests');
+    $this->limbGroupTest('cache tests');
   }
 
   function getTestCasesHandles()

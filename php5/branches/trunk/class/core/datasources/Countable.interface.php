@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-interface countable
+interface Countable
 {
-  public function count_total();
+  public function countTotal();
 }
 
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-function utf8_to_win1251($string)
+function utf8ToWin1251($string)
 {
   static $transition_table;
 

@@ -8,76 +8,76 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/match_rule.class.php');
+require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/MatchRule.class.php');
 
-class match_rule_test extends single_field_rule_test
+class MatchRuleTest extends SingleFieldRuleTest
 {
-  function test_match_rule_true()
+  function testMatchRuleTrue()
   {
-    $this->validator->add_rule(new match_rule('testfield', 'testmatch'));
+    $this->validator->addRule(new MatchRule('testfield', 'testmatch'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', 'peaches');
     $data->set('testmatch', 'peaches');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_match_rule_empty()
+  function testMatchRuleEmpty()
   {
-    $this->validator->add_rule(new match_rule('testfield', 'testmatch'));
+    $this->validator->addRule(new MatchRule('testfield', 'testmatch'));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_match_rule_empty2()
+  function testMatchRuleEmpty2()
   {
-    $this->validator->add_rule(new match_rule('testfield', 'testmatch'));
+    $this->validator->addRule(new MatchRule('testfield', 'testmatch'));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', 'peaches');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_match_rule_empty3()
+  function testMatchRuleEmpty3()
   {
-    $this->validator->add_rule(new match_rule('testfield', 'testmatch'));
+    $this->validator->addRule(new MatchRule('testfield', 'testmatch'));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testmatch', 'peaches');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_match_rule_failure()
+  function testMatchRuleFailure()
   {
-    $this->validator->add_rule(new match_rule('testfield', 'testmatch'));
+    $this->validator->addRule(new MatchRule('testfield', 'testmatch'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', 'peaches');
     $data->set('testmatch', 'cream');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('error_no_match', 'error'), array('match_field' => 'testmatch')));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('error_no_match', 'error'), array('match_field' => 'testmatch')));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 }
 

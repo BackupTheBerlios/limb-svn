@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class node_links_group extends LimbGroupTest
+class NodeLinksGroup extends LimbGroupTest
 {
-  function node_links_group()
+  function nodeLinksGroup()
   {
-    $this->LimbGroupTest('nodes links tests');
+    $this->limbGroupTest('nodes links tests');
   }
 
   function getTestCasesHandles()

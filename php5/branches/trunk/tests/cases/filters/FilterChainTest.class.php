@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
+require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
 
-Mock :: generate('intercepting_filter');
-Mock :: generate('request');
-Mock :: generate('http_response');
+Mock :: generate('InterceptingFilter');
+Mock :: generate('Request');
+Mock :: generate('HttpResponse');
 
-class special_intercepting_filter extends Mockintercepting_filter
+class SpecialInterceptingFilter extends MockInterceptingFilter
 {
   var $captured = array();
 
-  function special_intercepting_filter($test)
+  function specialInterceptingFilter($test)
   {
-    parent :: Mockintercepting_filter($test);
+    parent :: mockinterceptingFilter($test);
   }
 
   function run($fc, $request, $response)
@@ -38,11 +38,11 @@ class special_intercepting_filter extends Mockintercepting_filter
   }
 }
 
-class output_filter1 extends Mockintercepting_filter
+class OutputFilter1 extends MockInterceptingFilter
 {
-  function output_filter1($test)
+  function outputFilter1($test)
   {
-    parent :: Mockintercepting_filter($test);
+    parent :: mockinterceptingFilter($test);
   }
 
   function run($fc, $request, $response)
@@ -57,11 +57,11 @@ class output_filter1 extends Mockintercepting_filter
   }
 }
 
-class output_filter2 extends Mockintercepting_filter
+class OutputFilter2 extends MockInterceptingFilter
 {
-  function output_filter2($test)
+  function outputFilter2($test)
   {
-    parent :: Mockintercepting_filter($test);
+    parent :: mockinterceptingFilter($test);
   }
 
   function run($fc, $request, $response)
@@ -76,11 +76,11 @@ class output_filter2 extends Mockintercepting_filter
   }
 }
 
-class output_filter3 extends Mockintercepting_filter
+class OutputFilter3 extends MockInterceptingFilter
 {
-  function output_filter3($test)
+  function outputFilter3($test)
   {
-    parent :: Mockintercepting_filter($test);
+    parent :: mockinterceptingFilter($test);
   }
 
   function run($fc, $request, $response)
@@ -95,7 +95,7 @@ class output_filter3 extends Mockintercepting_filter
   }
 }
 
-class filter_chain_test extends LimbTestCase
+class FilterChainTest extends LimbTestCase
 {
   var $fc;
   var $request;
@@ -103,29 +103,29 @@ class filter_chain_test extends LimbTestCase
 
   function setUp()
   {
-    $this->request = new Mockrequest($this);
-    $this->response = new Mockhttp_response($this);
-    $this->fc = new filter_chain($this->request, $this->response);
+    $this->request = new MockRequest($this);
+    $this->response = new MockHttpResponse($this);
+    $this->fc = new FilterChain($this->request, $this->response);
   }
 
   function tearDown()
   {
   }
 
-  function test_register_filter()
+  function testRegisterFilter()
   {
-    $ref = array('Mockintercepting_filter', $this);
-    $this->fc->register_filter($ref);
+    $ref = array('MockInterceptingFilter', $this);
+    $this->fc->registerFilter($ref);
 
-    $this->assertTrue($this->fc->has_filter('Mockintercepting_filter'));
-    $this->assertFalse($this->fc->has_filter('no_such_filter'));
+    $this->assertTrue($this->fc->hasFilter('MockInterceptingFilter'));
+    $this->assertFalse($this->fc->hasFilter('no_such_filter'));
   }
 
-  function test_process()
+  function testProcess()
   {
-    $mock_filter = new special_intercepting_filter($this);
+    $mock_filter = new SpecialInterceptingFilter($this);
 
-    $this->fc->register_filter($mock_filter);
+    $this->fc->registerFilter($mock_filter);
 
     $mock_filter->expectOnce('run');
 
@@ -138,13 +138,13 @@ class filter_chain_test extends LimbTestCase
     $mock_filter->tally();
   }
 
-  function test_process_proper_nesting()
+  function testProcessProperNesting()
   {
-    $f1 = new output_filter1($this);
-    $f2 = new output_filter2($this);
+    $f1 = new OutputFilter1($this);
+    $f2 = new OutputFilter2($this);
 
-    $this->fc->register_filter($f1);
-    $this->fc->register_filter($f2);
+    $this->fc->registerFilter($f1);
+    $this->fc->registerFilter($f2);
 
     $f1->expectOnce('run');
     $f2->expectOnce('run');

@@ -8,15 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tag_component.class.php');
+require_once(LIMB_DIR . '/class/template/TagComponent.class.php');
 
-class request_transfer_component extends tag_component
+class RequestTransferComponent extends TagComponent
 {
   protected $attributes_string = '';
 
-  public function append_request_attributes(&$content)
+  public function appendRequestAttributes(&$content)
   {
-    $transfer_attributes = explode(',', $this->get_attribute('attributes'));
+    $transfer_attributes = explode(',', $this->getAttribute('attributes'));
 
     $attributes_to_append = array();
 
@@ -34,7 +34,7 @@ class request_transfer_component extends tag_component
     }
   }
 
-  protected function _replace_callback($matches)
+  protected function _replaceCallback($matches)
   {
     if(strpos($matches[3], '?') === false)
       $matches[3] .= '?';

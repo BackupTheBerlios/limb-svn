@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-interface intercepting_filter
+interface InterceptingFilter
 {
   function run($filter_chain, $request, $response);
 }

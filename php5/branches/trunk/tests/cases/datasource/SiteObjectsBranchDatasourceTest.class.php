@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/datasources/site_objects_branch_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/datasources/SiteObjectsBranchDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
-Mock :: generate('tree');
+Mock :: generate('Tree');
 Mock :: generate('LimbToolkit');
 
-class site_objects_brach_datasource_test extends LimbTestCase
+class SiteObjectsBrachDatasourceTest extends LimbTestCase
 {
   var $datasource;
   var $tree;
@@ -23,9 +23,9 @@ class site_objects_brach_datasource_test extends LimbTestCase
 
   function setUp()
   {
-    $this->datasource = new site_objects_branch_datasource();
+    $this->datasource = new SiteObjectsBranchDatasource();
 
-    $this->tree = new Mocktree($this);
+    $this->tree = new MockTree($this);
 
     $this->toolkit = new MockLimbToolkit($this);
 
@@ -43,32 +43,32 @@ class site_objects_brach_datasource_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_get_object_ids_no_nodes_found()
+  function testGetObjectIdsNoNodesFound()
   {
-    $this->datasource->set_path($path = '/root/news');
-    $this->datasource->set_check_expanded_parents(true);
-    $this->datasource->set_include_parent(false);
-    $this->datasource->set_depth($depth = 3);
+    $this->datasource->setPath($path = '/root/news');
+    $this->datasource->setCheckExpandedParents(true);
+    $this->datasource->setIncludeParent(false);
+    $this->datasource->setDepth($depth = 3);
 
-    $this->tree->expectOnce('get_sub_branch_by_path', array($path, $depth, false, true));
-    $this->tree->setReturnValue('get_sub_branch_by_path', array(), array($path, $depth, false, true));
-    $this->assertEqual($this->datasource->get_object_ids(), array());
+    $this->tree->expectOnce('getSubBranchByPath', array($path, $depth, false, true));
+    $this->tree->setReturnValue('getSubBranchByPath', array(), array($path, $depth, false, true));
+    $this->assertEqual($this->datasource->getObjectIds(), array());
   }
 
-  function test_get_object_ids()
+  function testGetObjectIds()
   {
-    $this->datasource->set_path($path = '/root/news');
-    $this->datasource->set_check_expanded_parents(true);
-    $this->datasource->set_include_parent(false);
-    $this->datasource->set_depth($depth = 3);
+    $this->datasource->setPath($path = '/root/news');
+    $this->datasource->setCheckExpandedParents(true);
+    $this->datasource->setIncludeParent(false);
+    $this->datasource->setDepth($depth = 3);
 
-    $this->tree->expectOnce('get_sub_branch_by_path', array($path, $depth, false, true));
+    $this->tree->expectOnce('getSubBranchByPath', array($path, $depth, false, true));
 
     $nodes = array(100 => array('object_id' => 20),
                    101 => array('object_id' => 21));
 
-    $this->tree->setReturnValue('get_sub_branch_by_path', $nodes, array($path, $depth, false, true));
-    $this->assertEqual($this->datasource->get_object_ids(), array(20, 21));
+    $this->tree->setReturnValue('getSubBranchByPath', $nodes, array($path, $depth, false, true));
+    $this->assertEqual($this->datasource->getObjectIds(), array(20, 21));
   }
 }
 

@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/image_cache_filter.class.php');
-require_once(LIMB_DIR . '/class/cache/image_cache_manager.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
+require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/core/filters/ImageCacheFilter.class.php');
+require_once(LIMB_DIR . '/class/cache/ImageCacheManager.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('filter_chain');
-Mock :: generate('http_response');
-Mock :: generate('request');
-Mock :: generate('response');
-Mock :: generate('image_cache_manager');
+Mock :: generate('FilterChain');
+Mock :: generate('HttpResponse');
+Mock :: generate('Request');
+Mock :: generate('Response');
+Mock :: generate('ImageCacheManager');
 
-Mock :: generatePartial('image_cache_filter',
-                        'image_cache_filter_test_version',
-                        array('_is_caching_enabled',
-                              '_get_image_cache_manager'));
+Mock :: generatePartial('ImageCacheFilter',
+                        'ImageCacheFilterTestVersion',
+                        array('_isCachingEnabled',
+                              '_getImageCacheManager'));
 
-class image_cache_filter_test extends LimbTestCase
+class ImageCacheFilterTest extends LimbTestCase
 {
   var $filter_chain;
   var $filter;
@@ -37,12 +37,12 @@ class image_cache_filter_test extends LimbTestCase
 
   function setUp()
   {
-    $this->filter = new image_cache_filter_test_version($this);
+    $this->filter = new ImageCacheFilterTestVersion($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->request = new Mockrequest($this);
-    $this->filter_chain = new Mockfilter_chain($this);
-    $this->response = new Mockhttp_response($this);
+    $this->request = new MockRequest($this);
+    $this->filter_chain = new MockFilterChain($this);
+    $this->response = new MockHttpResponse($this);
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -57,12 +57,12 @@ class image_cache_filter_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_caching_disabled()
+  function testCachingDisabled()
   {
-    $this->filter->setReturnValue('_is_caching_enabled', false);
+    $this->filter->setReturnValue('_isCachingEnabled', false);
 
     $this->filter_chain->expectOnce('next');
-    $this->filter->expectNever('_get_image_cache_manager');
+    $this->filter->expectNever('_getImageCacheManager');
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);
 
@@ -70,22 +70,22 @@ class image_cache_filter_test extends LimbTestCase
     $this->filter_chain->tally();
   }
 
-  function test_no_content()
+  function testNoContent()
   {
-    $this->filter->setReturnValue('_is_caching_enabled', true);
+    $this->filter->setReturnValue('_isCachingEnabled', true);
 
-    $cache_manager = new Mockimage_cache_manager($this);
+    $cache_manager = new MockImageCacheManager($this);
     $this->filter_chain->expectOnce('next');
-    $this->filter->setReturnValue('_get_image_cache_manager', $cache_manager);
+    $this->filter->setReturnValue('_getImageCacheManager', $cache_manager);
 
     $this->filter_chain->expectOnce('next');
 
-    $cache_manager->expectOnce('set_uri');
+    $cache_manager->expectOnce('setUri');
 
-    $this->response->expectOnce('file_sent');
-    $this->response->setReturnValue('file_sent', true);
+    $this->response->expectOnce('fileSent');
+    $this->response->setReturnValue('fileSent', true);
 
-    $cache_manager->expectNever('process_content');
+    $cache_manager->expectNever('processContent');
     $this->response->expectNever('write');
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);
@@ -93,25 +93,25 @@ class image_cache_filter_test extends LimbTestCase
     $cache_manager->tally();
   }
 
-  function test_process_content()
+  function testProcessContent()
   {
-    $this->filter->setReturnValue('_is_caching_enabled', true);
+    $this->filter->setReturnValue('_isCachingEnabled', true);
 
-    $cache_manager = new Mockimage_cache_manager($this);
+    $cache_manager = new MockImageCacheManager($this);
     $this->filter_chain->expectOnce('next');
-    $this->filter->setReturnValue('_get_image_cache_manager', $cache_manager);
+    $this->filter->setReturnValue('_getImageCacheManager', $cache_manager);
 
     $this->filter_chain->expectOnce('next');
 
-    $cache_manager->expectOnce('set_uri');
+    $cache_manager->expectOnce('setUri');
 
-    $this->response->expectOnce('file_sent');
-    $this->response->setReturnValue('file_sent', false);
+    $this->response->expectOnce('fileSent');
+    $this->response->setReturnValue('fileSent', false);
 
-    $this->response->setReturnValue('get_response_string', $result = 'some_response');
+    $this->response->setReturnValue('getResponseString', $result = 'someResponse');
 
-    $cache_manager->expectOnce('process_content', array($result));
-    $cache_manager->setReturnValue('process_content', $result);
+    $cache_manager->expectOnce('processContent', array($result));
+    $cache_manager->setReturnValue('processContent', $result);
     $this->response->expectOnce('write', array($result));
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);

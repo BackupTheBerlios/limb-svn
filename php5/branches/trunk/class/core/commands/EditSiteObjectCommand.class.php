@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class edit_site_object_command implements Command
+class EditSiteObjectCommand implements Command
 {
   public function perform()
   {
-    $object = Limb :: toolkit()->createSiteObject($this->_define_site_object_class_name());
+    $object = Limb :: toolkit()->createSiteObject($this->_defineSiteObjectClassName());
 
-    $this->_fill_object($object);
+    $this->_fillObject($object);
 
     try
     {
-      $this->_update_object_operation($object);
+      $this->_updateObjectOperation($object);
     }
     catch(LimbException $e)
     {
@@ -30,38 +30,38 @@ class edit_site_object_command implements Command
     return Limb :: STATUS_OK;
   }
 
-  protected function _update_object_operation($object)
+  protected function _updateObjectOperation($object)
   {
-    $object->update($this->_define_increase_version_flag($object));
+    $object->update($this->_defineIncreaseVersionFlag($object));
   }
 
-  protected function _fill_object($object)
+  protected function _fillObject($object)
   {
     $dataspace = Limb :: toolkit()->getDataspace();
 
-    $object->import($this->_load_object_data());
+    $object->import($this->_loadObjectData());
 
     $object->merge($dataspace->export());
   }
 
-  protected function _load_object_data()
+  protected function _loadObjectData()
   {
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('requested_object_datasource');
-    $datasource->set_request($toolkit->getRequest());
+    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($toolkit->getRequest());
 
     return $datasource->fetch();
   }
 
-  protected function _define_increase_version_flag($object)
+  protected function _defineIncreaseVersionFlag($object)
   {
-    if (class_exists('content_object') && ($object instanceof content_object))
+    if (class_exists('ContentObject') &&  ($object instanceof ContentObject))
       return true;
     else
       return false;
   }
 
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'site_object';
   }

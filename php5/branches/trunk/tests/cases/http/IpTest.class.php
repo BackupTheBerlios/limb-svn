@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
+require_once(LIMB_DIR . '/class/lib/http/Ip.class.php');
 
-class ip_test extends LimbTestCase
+class IpTest extends LimbTestCase
 {
   var $ip = null;
 
-  function ip_test()
+  function ipTest()
   {
-    parent :: LimbTestCase();
+    parent :: limbTestCase();
   }
 
   function setUp()
   {
-    $this->ip = new ip();
+    $this->ip = new Ip();
   }
 
-  function test_encode_ip_range()
+  function testEncodeIpRange()
   {
-    $ip_list = $this->ip->encode_ip_range('192.168.0.1', '192.168.10.10');
+    $ip_list = $this->ip->encodeIpRange('192.168.0.1', '192.168.10.10');
 
-    $this->assertNotIdentical(false, array_search($this->ip->encode_ip('192.168.0.1'), $ip_list));
-    $this->assertNotIdentical(false, array_search($this->ip->encode_ip('192.168.10.10'), $ip_list));
+    $this->assertNotIdentical(false, array_search($this->ip->encodeIp('192.168.0.1'), $ip_list));
+    $this->assertNotIdentical(false, array_search($this->ip->encodeIp('192.168.10.10'), $ip_list));
   }
 }
 

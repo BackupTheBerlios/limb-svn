@@ -9,22 +9,22 @@
 *
 ***********************************************************************************/
 
-class grid_actions_tag_info
+class GridActionsTagInfo
 {
 	public $tag = 'grid:actions';
 	public $end_tag = ENDTAG_REQUIRED;
 	public $tag_class = 'grid_actions_tag';
 } 
 
-register_tag(new grid_actions_tag_info());
+registerTag(new GridActionsTagInfo());
 
-class grid_actions_tag extends compiler_directive_tag
+class GridActionsTag extends CompilerDirectiveTag
 {
   protected $_actions = array();
 
-	public function check_nesting_level()
+	public function checkNestingLevel()
 	{
-		if (!$this->find_parent_by_class('grid_list_tag'))
+		if (!$this->findParentByClass('grid_list_tag'))
 		{
 			throw new WactException('missing enclosure', 
 					array('tag' => $this->tag,
@@ -34,58 +34,58 @@ class grid_actions_tag extends compiler_directive_tag
 		} 
 	} 
 	
-	public function pre_generate($code)
+	public function preGenerate($code)
 	{	  	  
-		$grid_tag = $this->find_parent_by_class('grid_list_tag');
-		$grid_tag->set_form_required();
+		$grid_tag = $this->findParentByClass('grid_list_tag');
+		$grid_tag->setFormRequired();
 
-	  parent :: pre_generate($code);
+	  parent :: preGenerate($code);
 	}
 	
-	public function register_action($action)
+	public function registerAction($action)
 	{
 		$this->_actions[] = $action;
 	}
 
-	public function post_generate($code)
+	public function postGenerate($code)
 	{
 		if(!count($this->_actions))
-			parent :: post_generate($code);
+			parent :: postGenerate($code);
 		$selector_id = uniqid(''); 
 		
-		$code->write_html("
+		$code->writeHtml("
 		<select id='{$selector_id}'>
         <option value=''>");
-		$code->write_php("echo strings :: get('choose_action_for_selected_rows')");        
-    $code->write_html("</option>");
+		$code->writePhp("echo strings :: get('choose_action_for_selected_rows')");        
+    $code->writeHtml("</option>");
 
 		foreach($this->_actions as $option)
 		{
-			$action_path = $this->_get_action_path($option);
-			$code->write_html("<option value='{$action_path}'>");
+			$action_path = $this->_getActionPath($option);
+			$code->writeHtml("<option value='{$action_path}'>");
 			if(isset($option['locale_value']))
 			{
 				$locale_file = '';
 				if(isset($option['locale_file']))
 					$locale_file = "','{$option['locale_file']}";
-				$code->write_php("echo strings :: get('" . $option['locale_value'] . $locale_file ."')");
+				$code->writePhp("echo strings :: get('" . $option['locale_value'] . $locale_file ."')");
 			}
 			else
-				$code->write_html($option['name']);
-			$code->write_html("</option>");
+				$code->writeHtml($option['name']);
+			$code->writeHtml("</option>");
 		}
-		$code->write_html("</select>");
-		$this->_render_button($code, $selector_id);
-    parent :: post_generate($code);
+		$code->writeHtml("</select>");
+		$this->_renderButton($code, $selector_id);
+    parent :: postGenerate($code);
 	}
 
-	protected function _render_button($code, $selector_id)
+	protected function _renderButton($code, $selector_id)
 	{
 		if (!defined('SUBMIT_GRID_FORM_SCRIPT_LOADED'))
 		{
 			define('SUBMIT_GRID_FORM_SCRIPT_LOADED', 1);
 
-	    $code->write_html("
+	    $code->writeHtml("
 	    	<script>
 	    		function submit_grid_form(button, selector_id)
 	    		{
@@ -97,30 +97,30 @@ class grid_actions_tag extends compiler_directive_tag
 	    	</script>
 	    ");
 	  }
-    $code->write_html("&nbsp;<input type='button' value=");
+    $code->writeHtml("&nbsp;<input type='button' value=");
 
 		if(isset($this->attributes['locale_value']))
 		{
 			$locale_file = '';
 			if(isset($this->attributes['locale_file']))
 				$locale_file = "','{$option['locale_file']}";
-			$code->write_php("echo '\'' . strings :: get('" . $this->attributes['locale_value'] . $locale_file ."') . '\''");
+			$code->writePhp("echo '\'' . strings :: get('" . $this->attributes['locale_value'] . $locale_file ."') . '\''");
 		}
 		else
-			$code->write_html("'" . $option['name'] . "'");
+			$code->writeHtml("'" . $option['name'] . "'");
     if(isset($this->attributes['button_class']))
-    	$code->write_html(" class='{$this->attributes['button_class']}'");
+    	$code->writeHtml(" class='{$this->attributes['button_class']}'");
     	
-    $code->write_html(" onclick='submit_grid_form(this, \"{$selector_id}\")'>");
+    $code->writeHtml(" onclick='submitGridForm(this, \"{$selector_id}\")'>");
 	}
 
-	protected function _get_action_path($option)
+	protected function _getActionPath($option)
 	{
 		if (!isset($option['path']))
 		{
 			$action_path = $_SERVER['PHP_SELF'];
 			
-			if($node_id = Limb :: toolkit()->getRequest()->get_attribute('node_id'))
+			if($node_id = Limb :: toolkit()->getRequest()->getAttribute('node_id'))
 				$action_path .= '?node_id=' . $node_id;
 		}
 		else
@@ -134,10 +134,10 @@ class grid_actions_tag extends compiler_directive_tag
 		if($option['action'])
 			$action_path .= 'action=' . $option['action'];
 			
-		if (isset($option['reload_parent']) && $option['reload_parent'])
+		if (isset($option['reload_parent']) &&  $option['reload_parent'])
 			$action_path .= '&reload_parent=1';
 
-		if (isset($option['form_submitted']) && $option['form_submitted'])
+		if (isset($option['form_submitted']) &&  $option['form_submitted'])
 			$action_path .= '&grid_form[submitted]=1';
 
 		return $action_path;

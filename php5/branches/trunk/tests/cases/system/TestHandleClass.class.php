@@ -1,6 +1,6 @@
 <?php
 
-class test_handle_class 
+class TestHandleClass 
 {
   var $test_var = 'default';
 }

@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_mysql.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbMysql.class.php');
 
-class db_mysql_typecast_test extends LimbTestCase
+class DbMysqlTypecastTest extends LimbTestCase
 {
   var $db = null;
 
-  function db_mysql_typecast_test($name = 'mysql typecast db test case')
+  function dbMysqlTypecastTest($name = 'mysql typecast db test case')
   {
-    parent :: LimbTestCase($name);
+    parent :: limbTestCase($name);
   }
 
   function setUp()
   {
-    $this->db =& db_factory :: instance();
-    $this->db->set_locale_id('en');
+    $this->db =& DbFactory :: instance();
+    $this->db->setLocaleId('en');
   }
 
-  function test_default_types()
+  function testDefaultTypes()
   {
     $this->assertEqual(
       array(
@@ -36,7 +36,7 @@ class db_mysql_typecast_test extends LimbTestCase
         'bool_true' => 1,
         'bool_false' => 0
       ),
-      $this->db->process_values(
+      $this->db->processValues(
         array(
           'id' => 1,
           'title' => " \"\" title'",
@@ -48,7 +48,7 @@ class db_mysql_typecast_test extends LimbTestCase
     );
   }
 
-  function test_defined_types()
+  function testDefinedTypes()
   {
     $this->assertEqual(
       array(
@@ -60,7 +60,7 @@ class db_mysql_typecast_test extends LimbTestCase
         'datetime_iso' => '\'1982-12-01 12:01:59\'',
         'title' => "' \\\"\\\" title\''",
       ),
-      $this->db->process_values(
+      $this->db->processValues(
         array(
           'id' => 'abc zxc',
           'id1' => '1000',
@@ -83,7 +83,7 @@ class db_mysql_typecast_test extends LimbTestCase
     );
   }
 
-  function test_insert_defined_with_not_defined_types()
+  function testInsertDefinedWithNotDefinedTypes()
   {
     $this->assertEqual(
       array(
@@ -98,7 +98,7 @@ class db_mysql_typecast_test extends LimbTestCase
         'datetime_iso' => '\'1982-12-01 12:01:59\'',
         'title' => "' \\\"\\\" title\''",
       ),
-      $this->db->process_values(
+      $this->db->processValues(
         array(
           'null' => null,
           'bool_true' => true,

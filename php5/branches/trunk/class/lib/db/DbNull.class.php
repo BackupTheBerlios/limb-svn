@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_module.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
 
-class db_null extends db_module
+class DbNull extends DbModule
 {
   function __construct()
   {
@@ -18,58 +18,58 @@ class db_null extends db_module
     $this->_sql_result = null;
   }
 
-  public function connect_db($db_params)
+  public function connectDb($db_params)
   {
   }
 
-  public function select_db($db_name)
+  public function selectDb($db_name)
   {
   }
 
-  public function disconnect_db($db_params)
+  public function disconnectDb($db_params)
   {
   }
 
-  public function free_result()
+  public function freeResult()
   {
   }
 
-  protected function _sql_exec_operation($sql, $count=0, $start=0)
+  protected function _sqlExecOperation($sql, $count=0, $start=0)
   {
     return false;
   }
 
-  public function get_affected_rows()
+  public function getAffectedRows()
   {
     return 0;
   }
 
-  public function get_sql_insert_id()
+  public function getSqlInsertId()
   {
     return false;
   }
 
-  public function get_last_error()
+  public function getLastError()
   {
     return '';
   }
 
-  public function parse_batch_sql(&$ret, $sql, $release)
+  public function parseBatchSql(&$ret, $sql, $release)
   {
     return false;
   }
 
-  protected function _fetch_assoc_result_row()
+  protected function _fetchAssocResultRow()
   {
     return false;
   }
 
-  protected function _result_num_fields()
+  protected function _resultNumFields()
   {
     return false;
   }
 
-  protected function _process_default_value($value)
+  protected function _processDefaultValue($value)
   {
     return false;
   }
@@ -89,21 +89,21 @@ class db_null extends db_module
     return false;
   }
 
-  public function count_selected_rows()
+  public function countSelectedRows()
   {
     return false;
   }
 
-  protected function _begin_operation()
+  protected function _beginOperation()
   {
     return false;
   }
 
-  protected function _commit_operation()
+  protected function _commitOperation()
   {
   }
 
-  protected function _rollback_operation()
+  protected function _rollbackOperation()
   {
   }
 }

@@ -14,34 +14,34 @@ else
   die('project dir required');
 
 require_once($project_dir . '/setup.php');
-require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
-require_once(LIMB_DIR . '/tests/lib/project_site_objects_loader.class.php');
+require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+require_once(LIMB_DIR . '/tests/lib/ProjectSiteObjectsLoader.class.php');
 
 $site_objects = array();
 
 echo "loading site objects...\n";
 
-$loader = new project_site_objects_loader();
+$loader = new ProjectSiteObjectsLoader();
 
-if(!$site_objects = $loader->get_site_objects())
+if(!$site_objects = $loader->getSiteObjects())
 {
   die("no site objects loaded");
 }
 
-$class_db_table = db_table_factory :: create('sys_class');
+$class_db_table = DbTableFactory :: create('SysClass');
 
 foreach($site_objects as $object)
 {
-  $class_id = $object->get_class_id();
+  $class_id = $object->getClassId();
 
-  $class_properties = $object->get_class_properties();
+  $class_properties = $object->getClassProperties();
 
   echo "updating " . get_class($object)  . "...\n";
 
-  if(!isset($class_properties['icon']) || !$class_properties['icon'])
+  if(!isset($class_properties['icon']) ||  !$class_properties['icon'])
     $class_properties['icon'] = '/shared/images/generic.gif';
 
-  $class_db_table->update_by_id($class_id, $class_properties);
+  $class_db_table->updateById($class_id, $class_properties);
 }
 
 echo 'done';

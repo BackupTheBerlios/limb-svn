@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php');
 
-class grid_button_component extends form_element
+class GridButtonComponent extends FormElement
 {
   protected $path = '';
   protected $action = '';
   protected $reload_parent = 0;
   protected $onclick = '';
 
-  protected function _process_attributes()
+  protected function _processAttributes()
   {
     if (isset($this->attributes['path']))
       $this->path = $this->attributes['path'];
@@ -37,9 +37,9 @@ class grid_button_component extends form_element
     unset($this->attributes['onclick']);
   }
 
-  public function render_attributes()
+  public function renderAttributes()
   {
-    $this->_process_attributes();
+    $this->_processAttributes();
 
     if (!$this->path)
     {
@@ -65,9 +65,9 @@ class grid_button_component extends form_element
     }
 
     $this->attributes['onclick'] = $this->onclick;
-    $this->attributes['onclick'] .= "submit_form(this.form, '{$action_path}')";
+    $this->attributes['onclick'] .= "submitForm(this.form, '{$action_path}')";
 
-    parent :: render_attributes();
+    parent :: renderAttributes();
 
     unset($this->attributes['onclick']);
   }

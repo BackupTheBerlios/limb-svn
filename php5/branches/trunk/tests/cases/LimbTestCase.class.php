@@ -11,9 +11,9 @@
 
 class LimbTestCase extends UnitTestCase
 {
-  function LimbTestCase($label = false)
+  function limbTestCase($label = false)
   {
-    parent :: UnitTestCase($label);
+    parent :: unitTestCase($label);
   }
 
   function &_createRunner(&$reporter)
@@ -26,7 +26,7 @@ class LimbTestCase extends UnitTestCase
 
   function _isDebugging()
   {
-    return (isset($_SERVER['SERVER_PORT']) && ($_SERVER['SERVER_PORT'] == 81));
+    return (isset($_SERVER['SERVER_PORT']) &&  ($_SERVER['SERVER_PORT'] == 81));
   }
 }
 

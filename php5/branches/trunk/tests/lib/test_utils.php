@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-function register_testing_ini($ini_file, $content)
+function registerTestingIni($ini_file, $content)
 {
   if (isset($GLOBALS['testing_ini'][$ini_file]))
     die("Duplicate ini registration not allowed.");
@@ -22,9 +22,9 @@ function register_testing_ini($ini_file, $content)
   fclose($f);
 }
 
-function clear_testing_ini()
+function clearTestingIni()
 {
-  if(!isset($GLOBALS['testing_ini']) || !count($GLOBALS['testing_ini']))
+  if(!isset($GLOBALS['testing_ini']) ||  !count($GLOBALS['testing_ini']))
     return;
 
   foreach(array_keys($GLOBALS['testing_ini']) as $ini_file)
@@ -42,7 +42,7 @@ function clear_testing_ini()
   Limb :: toolkit()->flushINIcache();
 }
 
-function load_testing_db_dump($dump_path)
+function loadTestingDbDump($dump_path)
 {
   if(!file_exists($dump_path))
     die('"' . $dump_path . '" sql dump file not found!');
@@ -50,7 +50,7 @@ function load_testing_db_dump($dump_path)
   $tables = array();
   $sql_array = file($dump_path);
 
-  $db = db_factory::instance();
+  $db = DbFactory::instance();
 
   foreach($sql_array as $sql)
   {
@@ -61,7 +61,7 @@ function load_testing_db_dump($dump_path)
       continue;
 
     $tables[$matches[1]] = $matches[1];
-    $db->sql_delete($matches[1]);
+    $db->sqlDelete($matches[1]);
   }
 
   $GLOBALS['testing_db_tables'] = $tables;
@@ -69,19 +69,19 @@ function load_testing_db_dump($dump_path)
   foreach($sql_array as $sql)
   {
     if(trim($sql))
-      $db->sql_exec($sql);
+      $db->sqlExec($sql);
   }
 }
 
-function clear_testing_db_tables()
+function clearTestingDbTables()
 {
   if(!isset($GLOBALS['testing_db_tables']))
     return;
 
-  $db = db_factory::instance();
+  $db = DbFactory::instance();
 
   foreach($GLOBALS['testing_db_tables'] as $table)
-    $db->sql_delete($table);
+    $db->sqlDelete($table);
 
   $GLOBALS['testing_db_tables'] = array();
 }

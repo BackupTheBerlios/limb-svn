@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class tree_path_rule extends single_field_rule
+class TreePathRule extends SingleFieldRule
 {
   public function validate($dataspace)
   {
     $value = $dataspace->get($this->field_name);
 
-    if(!Limb :: toolkit()->getTree()->get_node_by_path($value))
-      $this->error(strings :: get('error_invalid_tree_path', 'error'));
+    if(!Limb :: toolkit()->getTree()->getNodeByPath($value))
+      $this->error(Strings :: get('error_invalid_tree_path', 'error'));
   }
 }
 

@@ -8,173 +8,173 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/data_mappers/abstract_data_mapper.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/AbstractDataMapper.class.php');
 
-class site_object_mapper extends abstract_data_mapper
+class SiteObjectMapper extends AbstractDataMapper
 {
-  protected function _create_domain_object()
+  protected function _createDomainObject()
   {
-    include_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-    return new site_object();
+    include_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+    return new SiteObject();
   }
 
-  protected function _get_finder()
+  protected function _getFinder()
   {
-    include_once(LIMB_DIR . '/class/core/finders/finder_factory.class.php');
-    return finder_factory :: create('site_objects_raw_finder');
+    include_once(LIMB_DIR . '/class/core/finders/FinderFactory.class.php');
+    return FinderFactory :: create('site_objects_raw_finder');
   }
 
-  protected function _do_load($raw_data, $site_object)
+  protected function _doLoad($raw_data, $site_object)
   {
     $site_object->import($raw_data);
 
-    $this->_do_load_behaviour($raw_data, $site_object);
+    $this->_doLoadBehaviour($raw_data, $site_object);
   }
 
-  protected function _do_load_behaviour($raw_data, $site_object)
+  protected function _doLoadBehaviour($raw_data, $site_object)
   {
-    $behaviour = $this->_get_behaviour_mapper()->find_by_id($raw_data['behaviour_id']);
+    $behaviour = $this->_getBehaviourMapper()->findById($raw_data['behaviour_id']);
 
-    $site_object->attach_behaviour($behaviour);
+    $site_object->attachBehaviour($behaviour);
   }
 
-  protected function _get_behaviour_mapper()
+  protected function _getBehaviourMapper()
   {
-    return Limb :: toolkit()->createDataMapper('site_object_behaviour_mapper');
+    return Limb :: toolkit()->createDataMapper('SiteObjectBehaviourMapper');
   }
 
   public function insert($site_object)
   {
-    $id = $this->_insert_site_object_record($site_object);
+    $id = $this->_insertSiteObjectRecord($site_object);
 
-    $node_id = $this->_insert_tree_node($site_object);
+    $node_id = $this->_insertTreeNode($site_object);
 
-    $site_object->set_id($id);
-    $site_object->set_node_id($node_id);
+    $site_object->setId($id);
+    $site_object->setNodeId($node_id);
 
     return $id;
   }
 
-  protected function _insert_tree_node($site_object)
+  protected function _insertTreeNode($site_object)
   {
-    if(!($parent_node_id = $site_object->get_parent_node_id()))
+    if(!($parent_node_id = $site_object->getParentNodeId()))
       throw new LimbException('tree parent node is empty');
 
-    if(!$this->_can_add_node_to_parent($parent_node_id))
+    if(!$this->_canAddNodeToParent($parent_node_id))
       throw new LimbException('tree registering failed', array('parent_node_id' => $parent_node_id));
 
     $tree = Limb :: toolkit()->getTree();
 
-    $values['identifier'] = $site_object->get_identifier();
-    $values['object_id'] = $site_object->get_id();
+    $values['identifier'] = $site_object->getIdentifier();
+    $values['object_id'] = $site_object->getId();
 
-    if (!$node_id = $tree->create_sub_node($parent_node_id, $values))
+    if (!$node_id = $tree->createSubNode($parent_node_id, $values))
       throw new LimbException('could not create tree node');
 
     return $node_id;
   }
 
-  protected function _insert_site_object_record($site_object)
+  protected function _insertSiteObjectRecord($site_object)
   {
-    if(!$identifier = $this->_get_identifier_generator()->generate($site_object))
+    if(!$identifier = $this->_getIdentifierGenerator()->generate($site_object))
       throw new LimbException('identifier is empty');
 
-    if (!$behaviour = $site_object->get_behaviour())
+    if (!$behaviour = $site_object->getBehaviour())
       throw new LimbException('behaviour is not attached');
 
-    if (!$class_id = $this->get_class_id($site_object))
+    if (!$class_id = $this->getClassId($site_object))
       throw new LimbException('class id is empty');
 
-    if(!$created_date = $site_object->get_created_date())
-      $site_object->set_created_date(time());
+    if(!$created_date = $site_object->getCreatedDate())
+      $site_object->setCreatedDate(time());
 
-    if(!$modified_date = $site_object->get_modified_date())
-      $site_object->set_modified_date(time());
+    if(!$modified_date = $site_object->getModifiedDate())
+      $site_object->setModifiedDate(time());
 
-    if (!$site_object->get_locale_id())
-      $site_object->set_locale_id($this->get_parent_locale_id($site_object->get_parent_node_id()));
+    if (!$site_object->getLocaleId())
+      $site_object->setLocaleId($this->getParentLocaleId($site_object->getParentNodeId()));
 
-    $site_object->set_version(1);
+    $site_object->setVersion(1);
 
     $user = Limb :: toolkit()->getUser();
 
-    $this->_get_behaviour_mapper()->save($site_object->get_behaviour());
+    $this->_getBehaviourMapper()->save($site_object->getBehaviour());
 
-    $site_object->set_creator_id($user->get_id());
+    $site_object->setCreatorId($user->getId());
 
     $data['id'] = null;
-    $data['identifier'] = $site_object->get_identifier();
-    $data['title'] = $site_object->get_title();
-    $data['class_id'] = $this->get_class_id($site_object);
-    $data['behaviour_id'] = $site_object->get_behaviour()->get_id();
-    $data['current_version'] = $site_object->get_version();
-    $data['creator_id'] = $site_object->get_creator_id();
-    $data['status'] = $site_object->get_status();
-    $data['created_date'] = $site_object->get_created_date();
-    $data['modified_date'] = $site_object->get_modified_date();
-    $data['locale_id'] = $site_object->get_locale_id();
+    $data['identifier'] = $site_object->getIdentifier();
+    $data['title'] = $site_object->getTitle();
+    $data['class_id'] = $this->getClassId($site_object);
+    $data['behaviour_id'] = $site_object->getBehaviour()->getId();
+    $data['current_version'] = $site_object->getVersion();
+    $data['creator_id'] = $site_object->getCreatorId();
+    $data['status'] = $site_object->getStatus();
+    $data['created_date'] = $site_object->getCreatedDate();
+    $data['modified_date'] = $site_object->getModifiedDate();
+    $data['locale_id'] = $site_object->getLocaleId();
 
-    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('sys_site_object');
+    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('SysSiteObject');
 
     $sys_site_object_db_table->insert($data);
 
-    return $sys_site_object_db_table->get_last_insert_id();
+    return $sys_site_object_db_table->getLastInsertId();
   }
 
   public function update($site_object)
   {
-    $this->_update_tree_node($site_object);
+    $this->_updateTreeNode($site_object);
 
-    $this->_update_site_object_record($site_object);
+    $this->_updateSiteObjectRecord($site_object);
   }
 
-  protected function _update_site_object_record($site_object)
+  protected function _updateSiteObjectRecord($site_object)
   {
-    if(!$site_object->get_id())
+    if(!$site_object->getId())
       throw new LimbException('object id not set');
 
-    if(!$site_object->get_identifier())
+    if(!$site_object->getIdentifier())
       throw new LimbException('identifier is empty');
 
-    if (!$site_object->get_behaviour())
+    if (!$site_object->getBehaviour())
       throw new LimbException('behaviour id not attached');
 
-    $this->_get_behaviour_mapper()->save($site_object->get_behaviour());
+    $this->_getBehaviourMapper()->save($site_object->getBehaviour());
 
-    $data['current_version'] = $site_object->get_version();
-    $data['behaviour_id'] = $site_object->get_behaviour()->get_id();
-    $data['locale_id'] = $site_object->get_locale_id();
-    $data['modified_date'] = $site_object->get_modified_date();
-    $data['identifier'] = $site_object->get_identifier();
-    $data['title'] = $site_object->get_title();
-    $data['status'] = $site_object->get_status();
+    $data['current_version'] = $site_object->getVersion();
+    $data['behaviour_id'] = $site_object->getBehaviour()->getId();
+    $data['locale_id'] = $site_object->getLocaleId();
+    $data['modified_date'] = $site_object->getModifiedDate();
+    $data['identifier'] = $site_object->getIdentifier();
+    $data['title'] = $site_object->getTitle();
+    $data['status'] = $site_object->getStatus();
 
-    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('sys_site_object');
-    $sys_site_object_db_table->update_by_id($site_object->get_id(), $data);
+    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('SysSiteObject');
+    $sys_site_object_db_table->updateById($site_object->getId(), $data);
   }
 
-  protected function _update_tree_node($site_object)
+  protected function _updateTreeNode($site_object)
   {
-    if(!$site_object->get_node_id())
+    if(!$site_object->getNodeId())
       throw new LimbException('node id not set');
 
-    if(!$site_object->get_parent_node_id())
+    if(!$site_object->getParentNodeId())
       throw new LimbException('parent node id not set');
 
-    $node_id = $site_object->get_node_id();
-    $parent_node_id = $site_object->get_parent_node_id();
-    $identifier = $site_object->get_identifier();
+    $node_id = $site_object->getNodeId();
+    $parent_node_id = $site_object->getParentNodeId();
+    $identifier = $site_object->getIdentifier();
 
     $tree = Limb :: toolkit()->getTree();
-    $node = $tree->get_node($node_id);
+    $node = $tree->getNode($node_id);
 
-    if ($this->_is_object_moved_from_node($parent_node_id, $node))
+    if ($this->_isObjectMovedFromNode($parent_node_id, $node))
     {
-      if(!$this->_can_add_node_to_parent($parent_node_id))
+      if(!$this->_canAddNodeToParent($parent_node_id))
         throw new LimbException('new parent cant accept children',
                                 array('parent_node_id' => $parent_node_id));
 
-      if (!$tree->move_tree($node_id, $parent_node_id))
+      if (!$tree->moveTree($node_id, $parent_node_id))
       {
         throw new LimbException('could not move node',
           array(
@@ -186,29 +186,29 @@ class site_object_mapper extends abstract_data_mapper
     }
 
     if ($identifier != $node['identifier'])
-      $tree->update_node($node_id, array('identifier' => $identifier), true);
+      $tree->updateNode($node_id, array('identifier' => $identifier), true);
   }
 
-  protected function _get_identifier_generator()
+  protected function _getIdentifierGenerator()
   {
-    include_once(LIMB_DIR . '/class/core/data_mappers/default_site_object_identifier_generator.class.php');
+    include_once(LIMB_DIR . '/class/core/data_mappers/DefaultSiteObjectIdentifierGenerator.class.php');
     return new DefaultSiteObjectIdentifierGenerator();
   }
 
-  protected function _can_add_node_to_parent($parent_node_id)
+  protected function _canAddNodeToParent($parent_node_id)
   {
     $tree = Limb :: toolkit()->getTree();
 
-    return $tree->can_add_node($node_id);
+    return $tree->canAddNode($node_id);
   }
 
-  public function get_class_id($site_object)
+  public function getClassId($site_object)
   {
-    $db_table = Limb :: toolkit()->createDBTable('sys_class');
+    $db_table = Limb :: toolkit()->createDBTable('SysClass');
 
     $class_name = get_class($site_object);
 
-    $list = $db_table->get_list('name="'. $class_name. '"');
+    $list = $db_table->getList('name="'. $class_name. '"');
 
     if (count($list) == 1)
     {
@@ -225,60 +225,60 @@ class site_object_mapper extends abstract_data_mapper
 
     $db_table->insert($insert_data);
 
-    return $db_table->get_last_insert_id();
+    return $db_table->getLastInsertId();
   }
 
-  protected function _is_object_moved_from_node($parent_node_id, $node)
+  protected function _isObjectMovedFromNode($parent_node_id, $node)
   {
     return ($node['parent_id'] != $parent_node_id);
   }
 
   public function delete($site_object)
   {
-    if (!$this->can_delete($site_object))
+    if (!$this->canDelete($site_object))
       return;
 
-    $this->_delete_tree_node($site_object);
+    $this->_deleteTreeNode($site_object);
 
-    $this->_delete_site_object_record($site_object);
+    $this->_deleteSiteObjectRecord($site_object);
   }
 
-  protected function _delete_tree_node($site_object)
+  protected function _deleteTreeNode($site_object)
   {
-    Limb :: toolkit()->getTree()->delete_node($site_object->get_node_id());
+    Limb :: toolkit()->getTree()->deleteNode($site_object->getNodeId());
   }
 
-  protected function _delete_site_object_record($site_object)
+  protected function _deleteSiteObjectRecord($site_object)
   {
-    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('sys_site_object');
-    $sys_site_object_db_table->delete_by_id($site_object->get_id());
+    $sys_site_object_db_table = Limb :: toolkit()->createDBTable('SysSiteObject');
+    $sys_site_object_db_table->deleteById($site_object->getId());
   }
 
-  public function can_delete($site_object)
+  public function canDelete($site_object)
   {
-    if(!$this->_can_delete_site_object_record($site_object))
+    if(!$this->_canDeleteSiteObjectRecord($site_object))
       return false;
 
-    return $this->_can_delete_tree_node($site_object);
+    return $this->_canDeleteTreeNode($site_object);
   }
 
-  protected function _can_delete_tree_node($site_object)
+  protected function _canDeleteTreeNode($site_object)
   {
-    if(!$site_object->get_node_id())
+    if(!$site_object->getNodeId())
       throw new LimbException('node id not set');
 
-    return Limb :: toolkit()->getTree()->can_delete_node($site_object->get_node_id());
+    return Limb :: toolkit()->getTree()->canDeleteNode($site_object->getNodeId());
   }
 
-  protected function _can_delete_site_object_record($site_object)
+  protected function _canDeleteSiteObjectRecord($site_object)
   {
-    if(!$site_object->get_id())
+    if(!$site_object->getId())
       throw new LimbException('object id not set');
 
     return true;
   }
 
-  public function get_parent_locale_id($parent_node_id)
+  public function getParentLocaleId($parent_node_id)
   {
     $sql = "SELECT sso.locale_id as locale_id
             FROM sys_site_object as sso, sys_site_object_tree as ssot
@@ -287,11 +287,11 @@ class site_object_mapper extends abstract_data_mapper
 
     $db = Limb :: toolkit()->getDB();
 
-    $db->sql_exec($sql);
+    $db->sqlExec($sql);
 
-    $parent_data = $db->fetch_row();
+    $parent_data = $db->fetchRow();
 
-    if (isset($parent_data['locale_id']) && $parent_data['locale_id'])
+    if (isset($parent_data['locale_id']) &&  $parent_data['locale_id'])
       return $parent_data['locale_id'];
     else
       return Limb :: toolkit()->constant('DEFAULT_CONTENT_LOCALE_ID');

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/text_area_component.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/TextAreaComponent.class.php');
 
 if(!defined('RICHEDIT_DEFAULT_WIDTH'))
   define('RICHEDIT_DEFAULT_WIDTH', '600px');
@@ -19,14 +19,14 @@ if(!defined('RICHEDIT_DEFAULT_ROWS'))
 if(!defined('RICHEDIT_DEFAULT_COLS'))
   define('RICHEDIT_DEFAULT_COLS', '60');
 
-class richedit_component extends text_area_component
+class RicheditComponent extends TextAreaComponent
 {
-  public function render_contents()
+  public function renderContents()
   {
-    echo htmlspecialchars($this->get_value(), ENT_QUOTES);
+    echo htmlspecialchars($this->getValue(), ENT_QUOTES);
   }
 
-  protected function _load_js_script()
+  protected function _loadJsScript()
   {
     if (defined('HTMLAREA_SCRIPT_LOADED'))
       return;
@@ -58,39 +58,39 @@ class richedit_component extends text_area_component
     </script>";
   }
 
-  public function init_richedit()
+  public function initRichedit()
   {
-    $this->_load_js_script();
+    $this->_loadJsScript();
 
-    $id = $this->get_attribute('id');
+    $id = $this->getAttribute('id');
 
-    if (isset($_COOKIE['use_textarea_instead_of_richedit']) && $_COOKIE['use_textarea_instead_of_richedit'])
-      $caption = strings :: get('use_richedit_instead_of_textarea', 'common');
+    if (isset($_COOKIE['use_textarea_instead_of_richedit']) &&  $_COOKIE['use_textarea_instead_of_richedit'])
+      $caption = Strings :: get('use_richedit_instead_of_textarea', 'common');
     else
-      $caption = strings :: get('use_textarea_instead_of_richedit', 'common');
+      $caption = Strings :: get('use_textarea_instead_of_richedit', 'common');
 
     echo "<table cellpadding=0 cellspacing=0>
           <tr>
             <td><button id='{$id}_button' class='button' onclick='toggle_richedit_textarea();window.location.reload();return false;' style='display:none'>{$caption}</button></td>
-            <td nowrap> " . strings :: get('richedit_textarea_warning', 'common') . "</td>
+            <td nowrap> " . Strings :: get('richedit_textarea_warning', 'common') . "</td>
           </tr>
           </table>";
 
-    if ($this->get_attribute('mode') == 'light')
+    if ($this->getAttribute('mode') == 'light')
       $init_function = 'install_limb_lite_extension(editor.config);';
     else
       $init_function = 'install_limb_full_extension(editor.config);editor.registerPlugin(TableOperations);';
 
-    if(!$this->get_attribute('rows'))
-      $this->set_attribute('rows', RICHEDIT_DEFAULT_ROWS);
+    if(!$this->getAttribute('rows'))
+      $this->setAttribute('rows', RICHEDIT_DEFAULT_ROWS);
 
-    if(!$this->get_attribute('cols'))
-      $this->set_attribute('cols', RICHEDIT_DEFAULT_COLS);
+    if(!$this->getAttribute('cols'))
+      $this->setAttribute('cols', RICHEDIT_DEFAULT_COLS);
 
-    if(!$width = $this->get_attribute('width'))
+    if(!$width = $this->getAttribute('width'))
       $width = RICHEDIT_DEFAULT_WIDTH;
 
-    if(!$height = $this->get_attribute('height'))
+    if(!$height = $this->getAttribute('height'))
       $height = RICHEDIT_DEFAULT_HEIGHT;
 
     echo "
@@ -116,7 +116,7 @@ class richedit_component extends text_area_component
         document.getElementById('{$id}_button').style.display = 'block';
       }
 
-      add_event(window, 'load', init_richedit_{$id});
+      addEvent(window, 'load', init_richedit_{$id});
 
     </script>";
   }

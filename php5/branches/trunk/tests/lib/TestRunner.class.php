@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/tests/lib/tests_tree_manager.class.php');
+require_once(LIMB_DIR . '/tests/lib/TestsTreeManager.class.php');
 
 class TestRunner
 {
   var $test_manager;
 
-  function TestRunner()
+  function testRunner()
   {
     $this->test_manager = new TestsTreeManager();
   }

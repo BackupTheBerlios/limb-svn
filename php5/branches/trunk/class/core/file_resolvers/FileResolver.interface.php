@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-interface file_resolver
+interface FileResolver
 {
   public function resolve($file_path, $params = array());
 }

@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php');
 
-abstract class input_form_element extends form_element
+abstract class InputFormElement extends FormElement
 {
   /**
   * Overrides then calls with the parent render_attributes() method. Makes
   * sure there is always a value attribute, even if it's empty.
   * Called from within a compiled template render function.
   */
-  public function render_attributes()
+  public function renderAttributes()
   {
-    $value = $this->get_value();
+    $value = $this->getValue();
 
     if (!is_null($value))
     {
       $this->attributes['value'] = $value;
     }
 
-    parent :: render_attributes();
+    parent :: renderAttributes();
   }
 }
 ?>

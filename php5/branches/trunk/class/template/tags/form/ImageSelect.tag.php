@@ -8,43 +8,43 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class image_select_tag_info
+class ImageSelectTagInfo
 {
   public $tag = 'image_select';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'image_select_tag';
 }
 
-register_tag(new image_select_tag_info());
+registerTag(new ImageSelectTagInfo());
 
-class image_select_tag extends control_tag
+class ImageSelectTag extends ControlTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/image_select_component';
   }
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'input';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     $this->attributes['type'] = 'hidden';
 
-    $code->write_php($this->get_component_ref_code() . '->init_image_select();');
+    $code->writePhp($this->getComponentRefCode() . '->init_image_select();');
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php($this->get_component_ref_code() . '->render_image_select();');
+    $code->writePhp($this->getComponentRefCode() . '->render_image_select();');
   }
 }
 

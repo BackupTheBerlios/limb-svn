@@ -8,34 +8,34 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/form_command.class.php');
+require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
 
-class form_create_site_object_command extends form_command
+class FormCreateSiteObjectCommand extends FormCommand
 {
-  protected function _register_validation_rules($validator, $dataspace)
+  protected function _registerValidationRules($validator, $dataspace)
   {
     if (($parent_node_id = $dataspace->get('parent_node_id')) === null)
     {
-      if(!$parent_object_data = $this->_load_parent_object_data())
+      if(!$parent_object_data = $this->_loadParentObjectData())
         return;
 
       $parent_node_id = $parent_object_data['parent_node_id'];
     }
 
-    $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id'));
-    $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $parent_node_id));
+    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id'));
+    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $parent_node_id));
   }
 
-  protected function _load_parent_object_data()
+  protected function _loadParentObjectData()
   {
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('requested_object_datasource');
-    $datasource->set_request($toolkit->getRequest());
+    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($toolkit->getRequest());
 
     return $datasource->fetch();
   }
 
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
     return array(
       'parent_node_id' => 'parent_node_id',

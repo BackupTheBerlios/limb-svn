@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class match_rule extends single_field_rule
+class MatchRule extends SingleFieldRule
 {
   protected $match_field;
 
@@ -32,11 +32,11 @@ class match_rule extends single_field_rule
     $value1 = $dataspace->get($this->field_name);
     $value2 = $dataspace->get($this->match_field);
 
-    if (isset($value1) && isset($value2))
+    if (isset($value1) &&  isset($value2))
     {
       if (strcmp($value1, $value2))
       {
-        $this->error(strings :: get('error_no_match', 'error'), array('match_field' => $this->match_field_name));
+        $this->error(Strings :: get('error_no_match', 'error'), array('match_field' => $this->match_field_name));
       }
     }
   }

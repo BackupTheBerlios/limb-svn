@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-function assign_paths_to_site_objects(&$objects_array, $append = '')
+function assignPathsToSiteObjects(&$objects_array, $append = '')
 {
   $tree = Limb :: toolkit()->getTree();
   $parent_paths = array();
@@ -19,7 +19,7 @@ function assign_paths_to_site_objects(&$objects_array, $append = '')
     $parent_node_id = $data['parent_node_id'];
     if (!isset($parent_paths[$parent_node_id]))
     {
-      $parents = $tree->get_parents($data['node_id']);
+      $parents = $tree->getParents($data['node_id']);
       $path = '';
       foreach($parents as $parent_data)
         $path .= '/' . $parent_data['identifier'];
@@ -31,7 +31,7 @@ function assign_paths_to_site_objects(&$objects_array, $append = '')
   }
 }
 
-function wrap_with_site_object($fetched_data)
+function wrapWithSiteObject($fetched_data)
 {
   if(!$fetched_data)
     return false;

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
+require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
 
-if(!is_registered_resolver('datasource'))
+if(!isRegisteredResolver('datasource'))
 {
-  include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
-  include_once(LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver.class.php');
-  register_file_resolver('datasource', new datasource_file_resolver(new package_file_resolver()));
+  include_once(LIMB_DIR . '/class/core/file_resolvers/PackageFileResolver.class.php');
+  include_once(LIMB_DIR . '/class/core/file_resolvers/DatasourceFileResolver.class.php');
+  registerFileResolver('datasource', new DatasourceFileResolver(new PackageFileResolver()));
 }
 
-class datasource_factory
+class DatasourceFactory
 {
   static protected $datasources = array();
 
@@ -30,7 +30,7 @@ class datasource_factory
 
     if(!class_exists($class_name))
     {
-      resolve_handle($resolver =& get_file_resolver('datasource'));
+      resolveHandle($resolver =& getFileResolver('datasource'));
 
       if(!$full_path = $resolver->resolve($class_path))
         return null;

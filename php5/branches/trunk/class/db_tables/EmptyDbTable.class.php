@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class empty_db_table extends db_table
+class EmptyDbTable extends DbTable
 {
-  protected function _define_columns()
+  protected function _defineColumns()
   {
     return array();
   }

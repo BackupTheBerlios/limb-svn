@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/button.tag.php');
+require_once(LIMB_DIR . '/class/template/tags/form/Button.tag.php');
 
-class grid_button_tag_info
+class GridButtonTagInfo
 {
   public $tag = 'grid:BUTTON';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'grid_button_tag';
 }
 
-register_tag(new grid_button_tag_info());
+registerTag(new GridButtonTagInfo());
 
-class grid_button_tag extends button_tag
+class GridButtonTag extends ButtonTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_button_component';
   }
 
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->find_parent_by_class('grid_list_tag'))
+    if (!$this->findParentByClass('grid_list_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -40,14 +40,14 @@ class grid_button_tag extends button_tag
 
   public function prepare()
   {
-    $grid_tag = $this->find_parent_by_class('grid_list_tag');
-    $grid_tag->set_form_required();
+    $grid_tag = $this->findParentByClass('grid_list_tag');
+    $grid_tag->setFormRequired();
 
     $this->attributes['type'] = 'button';
 
     $this->attributes['onclick'] = '';
 
-    if(isset($this->attributes['form_submitted']) && (boolean)$this->attributes['form_submitted'])
+    if(isset($this->attributes['form_submitted']) &&  (boolean)$this->attributes['form_submitted'])
     {
       $this->attributes['onclick'] .= "add_form_hidden_parameter(this.form, 'grid_form[submitted]', 1);";
     unset($this->attributes['form_submitted']);
@@ -56,7 +56,7 @@ class grid_button_tag extends button_tag
     parent :: prepare();
   }
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'input';
   }

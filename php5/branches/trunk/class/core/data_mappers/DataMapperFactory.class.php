@@ -10,28 +10,28 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
-if(!is_registered_resolver('mapper'))
+if(!isRegisteredResolver('mapper'))
 {
-  include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
-  include_once(LIMB_DIR . '/class/core/file_resolvers/data_mapper_file_resolver.class.php');
-  register_file_resolver('mapper', new data_mapper_file_resolver(new package_file_resolver()));
+  include_once(LIMB_DIR . '/class/core/file_resolvers/PackageFileResolver.class.php');
+  include_once(LIMB_DIR . '/class/core/file_resolvers/DataMapperFileResolver.class.php');
+  registerFileResolver('mapper', new DataMapperFileResolver(new PackageFileResolver()));
 }
 
-abstract class data_mapper_factory
+abstract class DataMapperFactory
 {
   static function create($class_name)
   {
-    self :: _include_class_file($class_name);
+    self :: _includeClassFile($class_name);
 
     return new $class_name();
   }
 
-  static protected function _include_class_file($class_name)
+  static protected function _includeClassFile($class_name)
   {
     if(class_exists($class_name))
       return;
 
-    resolve_handle($resolver =& get_file_resolver('mapper'));
+    resolveHandle($resolver =& getFileResolver('mapper'));
 
     $full_path = $resolver->resolve($class_name);
 

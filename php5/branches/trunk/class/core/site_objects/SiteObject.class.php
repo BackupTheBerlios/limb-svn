@@ -8,126 +8,126 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/domain_object.class.php');
+require_once(LIMB_DIR . '/class/core/DomainObject.class.php');
 
-class site_object extends domain_object
+class SiteObject extends DomainObject
 {
   protected $behaviour;
 
-  public function get_behaviour()
+  public function getBehaviour()
   {
     return $this->behaviour;
   }
 
-  public function attach_behaviour($behaviour)
+  public function attachBehaviour($behaviour)
   {
     return $this->behaviour = $behaviour;
   }
 
-  public function get_parent_node_id()
+  public function getParentNodeId()
   {
     return (int)$this->get('parent_node_id');
   }
 
-  public function set_parent_node_id($parent_node_id)
+  public function setParentNodeId($parent_node_id)
   {
     $this->set('parent_node_id', (int)$parent_node_id);
   }
 
-  public function get_node_id()
+  public function getNodeId()
   {
     return (int)$this->get('node_id');
   }
 
-  public function set_node_id($node_id)
+  public function setNodeId($node_id)
   {
     $this->set('node_id', (int)$node_id);
   }
 
-  public function get_identifier()
+  public function getIdentifier()
   {
     return $this->get('identifier');
   }
 
-  public function set_identifier($identifier)
+  public function setIdentifier($identifier)
   {
     $this->set('identifier', $identifier);
   }
 
-  public function get_title()
+  public function getTitle()
   {
     return $this->get('title', '');
   }
 
-  public function set_title($title)
+  public function setTitle($title)
   {
     $this->set('title', $title);
   }
 
-  public function set_version($version)
+  public function setVersion($version)
   {
     $this->set('version', $version);
   }
 
-  public function get_version()
+  public function getVersion()
   {
     return (int)$this->get('version');
   }
 
-  public function get_locale_id()
+  public function getLocaleId()
   {
     return $this->get('locale_id');
   }
 
-  public function set_locale_id($locale_id)
+  public function setLocaleId($locale_id)
   {
     $this->set('locale_id', $locale_id);
   }
 
-  public function get_creator_id()
+  public function getCreatorId()
   {
     return (int)$this->get('creator_id');
   }
 
-  public function set_creator_id($creator_id)
+  public function setCreatorId($creator_id)
   {
     $this->set('creator_id', (int)$creator_id);
   }
 
-  public function get_modified_date()
+  public function getModifiedDate()
   {
     return (int)$this->get('modified_date');
   }
 
-  public function set_modified_date($modified_date)
+  public function setModifiedDate($modified_date)
   {
     $this->set('modified_date', (int)$modified_date);
   }
 
-  public function get_created_date()
+  public function getCreatedDate()
   {
     return (int)$this->get('created_date');
   }
 
-  public function set_created_date($created_date)
+  public function setCreatedDate($created_date)
   {
     $this->set('created_date', (int)$created_date);
   }
 
-  public function get_status()//???
+  public function getStatus()//???
   {
     return (int)$this->get('status', 0);
   }
 
-  public function set_status($status)
+  public function setStatus($status)
   {
     $this->set('status', (int)$status);
   }
 
-  public function get_controller()
+  public function getController()
   {
-    include_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
-    return new site_object_controller($this->get_behaviour());
+    include_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
+    return new SiteObjectController($this->getBehaviour());
   }
 
 }

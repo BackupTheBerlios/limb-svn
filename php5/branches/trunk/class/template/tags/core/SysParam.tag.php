@@ -8,33 +8,33 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/compiler/server_component_tag.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/ServerComponentTag.class.php');
 
-class sys_param_tag_info
+class SysParamTagInfo
 {
   public $tag = 'core:SYS_PARAM';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'sys_param_tag';
 }
 
-register_tag(new sys_param_tag_info());
+registerTag(new SysParamTagInfo());
 
-class sys_param_tag extends server_component_tag
+class SysParamTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/sys_param_component';
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    if(isset($this->attributes['name']) && isset($this->attributes['type']))
+    if(isset($this->attributes['name']) &&  isset($this->attributes['type']))
     {
-      $code->write_php(
-        $this->get_component_ref_code() . '->get_param("' . $this->attributes['name'] . '","' . $this->attributes['type'] . '");');
+      $code->writePhp(
+        $this->getComponentRefCode() . '->get_param("' . $this->attributes['name'] . '","' . $this->attributes['type'] . '");');
     }
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 }
 

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-abstract class image_library
+abstract class ImageLibrary
 {
   const FLIP_HORIZONTAL = 1;
   const FLIP_VERTICAL = 2;
@@ -22,52 +22,56 @@ abstract class image_library
   protected $create_types = array();
   protected $library_installed = false;
 
-  function is_library_installed()
+  function isLibraryInstalled()
   {
     return $this->library_installed;
   }
 
-  public function set_input_file($file_path)
+  public function setInputFile($file_path, $file_type=null)
   {
     $this->input_file = $file_path;
+    if(!is_null($file_type))
+      $this->setInputType($file_type);
   }
 
-  public function set_input_type($type)
+  public function setInputType($type)
   {
-    if (!$this->is_type_read_supported($type))
+    if (!$this->isTypeReadSupported($type))
       throw new Exception('type not supported');
 
     $this->input_file_type = $type;
   }
 
-  public function set_output_file($file_path)
+  public function setOutputFile($file_path, $file_type=null)
   {
     $this->output_file = $file_path;
+    if(!is_null($file_type))
+      $this->setOutputType($file_type);
   }
 
-  public function set_output_type($type)
+  public function setOutputType($type)
   {
-    if (!$this->is_type_create_supported($type))
+    if (!$this->isTypeCreateSupported($type))
       throw new Exception('type not supported');
 
     $this->output_file_type = $type;
   }
 
-  public function fall_back_to_any_supported_type($type)
+  public function fallBackToAnySupportedType($type)
   {
-    if ($this->is_type_create_supported($type))
+    if ($this->isTypeCreateSupported($type))
       return $type;
 
-    if ($this->is_type_create_supported('PNG'))
+    if ($this->isTypeCreateSupported('PNG'))
       return 'PNG';
 
-    if ($this->is_type_create_supported('JPEG'))
+    if ($this->isTypeCreateSupported('JPEG'))
       return 'JPEG';
 
     throw new Exception('no file type supported');
   }
 
-  public function get_image_type($str)
+  public function getImageType($str)
   {
     if (preg_match("/bmp/i", $str))
       return 'BMP';
@@ -82,7 +86,7 @@ abstract class image_library
       return 'JPEG';
   }
 
-  public function get_mime_type($str)
+  public function getMimeType($str)
   {
     if (preg_match("/bmp/i", $str))
       return 'image/bmp';
@@ -97,27 +101,27 @@ abstract class image_library
       return 'image/jpeg';
   }
 
-  public function is_type_read_supported($type)
+  public function isTypeReadSupported($type)
   {
     return in_array(strtoupper($type), $this->read_types);
   }
 
-  public function is_type_create_supported($type)
+  public function isTypeCreateSupported($type)
   {
     return in_array(strtoupper($type), $this->create_types);
   }
 
-  public function get_read_supported_types()
+  public function getReadSupportedTypes()
   {
     return $this->read_types;
   }
 
-  public function get_create_supported_types()
+  public function getCreateSupportedTypes()
   {
     return $this->create_types;
   }
 
-  public function get_dst_dimensions($src_width, $src_height, $params)
+  public function getDstDimensions($src_width, $src_height, $params)
   {
     if (isset($params['max_dimension']))
     {
@@ -133,7 +137,7 @@ abstract class image_library
       $dst_width = floor($src_width * $params['scale_factor']);
       $dst_height = floor($src_height * $params['scale_factor']);
     }
-    elseif(isset($params['xscale']) || isset($params['yscale']))
+    elseif(isset($params['xscale']) ||  isset($params['yscale']))
     {
       if (isset($params['xscale']))
         $dst_width = floor($src_width * $params['xscale']);
@@ -151,7 +155,7 @@ abstract class image_library
         else
           $dst_height = $src_height;
     }
-    elseif(isset($params['width']) || isset($params['height']))
+    elseif(isset($params['width']) ||  isset($params['height']))
     {
       if (isset($params['width']))
         $dst_width = $params['width'];
@@ -189,7 +193,7 @@ abstract class image_library
 
   abstract public function commit();
 
-  protected function _hex_color_to_X11($color)
+  protected function _hexColorToX11($color)
   {
     return preg_replace('/(\d{2})(\d{2})(\d{2})/', 'rgb:$1/$2/$3', $color);
   }

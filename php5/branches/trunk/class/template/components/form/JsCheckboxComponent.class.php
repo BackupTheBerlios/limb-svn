@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.php');
 
-class js_checkbox_component extends input_form_element
+class JsCheckboxComponent extends InputFormElement
 {
-  public function render_attributes()
+  public function renderAttributes()
   {
     unset($this->attributes['value']);
-    parent :: render_attributes();
+    parent :: renderAttributes();
   }
 
-  public function render_js_checkbox()
+  public function renderJsCheckbox()
   {
-    $id = $this->get_attribute('id');
-    $name = $this->get_attribute('name');
+    $id = $this->getAttribute('id');
+    $name = $this->getAttribute('name');
 
-    if ($this->get_attribute('value'))
+    if ($this->getAttribute('value'))
       $checked = 'checked=\'on\'';
     else
       $checked = '';
 
-    $name = $this->_process_name_attribute($name);
+    $name = $this->_processNameAttribute($name);
     $js = "onclick=\"this.form.elements['{$name}'].value = 1*this.checked\"";
 
     echo "<input type='checkbox' id='{$id}_checkbox' {$checked} {$js}>";

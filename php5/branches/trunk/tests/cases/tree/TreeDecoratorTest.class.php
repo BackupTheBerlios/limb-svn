@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/tree_decorator.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/tree/TreeDecorator.class.php');
+require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('tree');
+Mock :: generate('Tree');
 
-class tree_decorator_test extends LimbTestCase
+class TreeDecoratorTest extends LimbTestCase
 {
   var $tree;
   var $driver;
@@ -25,8 +25,8 @@ class tree_decorator_test extends LimbTestCase
   {
     $this->toolkit = new MockLimbToolkit($this);
 
-    $this->tree = new Mocktree($this);
-    $this->decorator = new tree_decorator($this->tree);
+    $this->tree = new MockTree($this);
+    $this->decorator = new TreeDecorator($this->tree);
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -39,264 +39,264 @@ class tree_decorator_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_is_node()
+  function testIsNode()
   {
     $id = 100;
-    $this->tree->expectOnce('is_node', array($id));
-    $this->tree->setReturnValue('is_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->is_node($id));
+    $this->tree->expectOnce('isNode', array($id));
+    $this->tree->setReturnValue('isNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->isNode($id));
   }
 
-  function test_get_node()
+  function testGetNode()
   {
     $id = 100;
-    $this->tree->expectOnce('get_node', array($id));
-    $this->tree->setReturnValue('get_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_node($id));
+    $this->tree->expectOnce('getNode', array($id));
+    $this->tree->setReturnValue('getNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getNode($id));
   }
 
-  function test_get_parent()
+  function testGetParent()
   {
     $id = 100;
-    $this->tree->expectOnce('get_parent', array($id));
-    $this->tree->setReturnValue('get_parent', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_parent($id));
+    $this->tree->expectOnce('getParent', array($id));
+    $this->tree->setReturnValue('getParent', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getParent($id));
   }
 
-  function test_get_parents()
+  function testGetParents()
   {
     $id = 100;
-    $this->tree->expectOnce('get_parents', array($id));
-    $this->tree->setReturnValue('get_parents', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_parents($id));
+    $this->tree->expectOnce('getParents', array($id));
+    $this->tree->setReturnValue('getParents', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getParents($id));
   }
 
-  function test_get_siblings()
+  function testGetSiblings()
   {
     $id = 100;
-    $this->tree->expectOnce('get_siblings', array($id));
-    $this->tree->setReturnValue('get_siblings', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_siblings($id));
+    $this->tree->expectOnce('getSiblings', array($id));
+    $this->tree->setReturnValue('getSiblings', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getSiblings($id));
   }
 
-  function test_get_children()
+  function testGetChildren()
   {
     $id = 100;
-    $this->tree->expectOnce('get_children', array($id));
-    $this->tree->setReturnValue('get_children', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_children($id));
+    $this->tree->expectOnce('getChildren', array($id));
+    $this->tree->setReturnValue('getChildren', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getChildren($id));
   }
 
-  function test_count_children()
+  function testCountChildren()
   {
     $id = 100;
-    $this->tree->expectOnce('count_children', array($id));
-    $this->tree->setReturnValue('count_children', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->count_children($id));
+    $this->tree->expectOnce('countChildren', array($id));
+    $this->tree->setReturnValue('countChildren', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->countChildren($id));
   }
 
-  function test_create_root_node()
+  function testCreateRootNode()
   {
     $values = array('identifier' => 'test');
-    $this->tree->expectOnce('create_root_node', array($values));
-    $this->tree->setReturnValue('create_root_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->create_root_node($values));
+    $this->tree->expectOnce('createRootNode', array($values));
+    $this->tree->setReturnValue('createRootNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->createRootNode($values));
   }
 
-  function test_create_sub_node()
+  function testCreateSubNode()
   {
     $values = array('identifier' => 'test');
     $id = 100;
-    $this->tree->expectOnce('create_sub_node', array($id, $values));
-    $this->tree->setReturnValue('create_sub_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->create_sub_node($id, $values));
+    $this->tree->expectOnce('createSubNode', array($id, $values));
+    $this->tree->setReturnValue('createSubNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->createSubNode($id, $values));
   }
 
-  function test_delete_node()
+  function testDeleteNode()
   {
     $id = 100;
-    $this->tree->expectOnce('delete_node', array($id));
-    $this->tree->setReturnValue('delete_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->delete_node($id));
+    $this->tree->expectOnce('deleteNode', array($id));
+    $this->tree->setReturnValue('deleteNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->deleteNode($id));
   }
 
-  function test_update_node()
+  function testUpdateNode()
   {
     $id = 100;
     $values = array('identifier' => 'test');
     $internal = true;
 
-    $this->tree->expectOnce('update_node', array($id, $values, $internal));
-    $this->tree->setReturnValue('update_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->update_node($id, $values, $internal));
+    $this->tree->expectOnce('updateNode', array($id, $values, $internal));
+    $this->tree->setReturnValue('updateNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->updateNode($id, $values, $internal));
   }
 
-  function test_move_tree()
+  function testMoveTree()
   {
     $id = 100;
     $target_id = 101;
 
-    $this->tree->expectOnce('move_tree', array($id, $target_id));
-    $this->tree->setReturnValue('move_tree', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->move_tree($id, $target_id));
+    $this->tree->expectOnce('moveTree', array($id, $target_id));
+    $this->tree->setReturnValue('moveTree', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->moveTree($id, $target_id));
   }
 
-  function test_set_dumb_mode()
+  function testSetDumbMode()
   {
     $status = true;
-    $this->tree->expectOnce('set_dumb_mode', array($status));
-    $this->decorator->set_dumb_mode($status);
+    $this->tree->expectOnce('setDumbMode', array($status));
+    $this->decorator->setDumbMode($status);
   }
 
-  function test_get_all_nodes()
+  function testGetAllNodes()
   {
-    $this->tree->expectOnce('get_all_nodes');
-    $this->tree->setReturnValue('get_all_nodes', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_all_nodes());
+    $this->tree->expectOnce('getAllNodes');
+    $this->tree->setReturnValue('getAllNodes', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getAllNodes());
   }
 
-  function test_get_nodes_by_ids()
+  function testGetNodesByIds()
   {
     $ids_arr = array(100);
-    $this->tree->expectOnce('get_nodes_by_ids', array($ids_arr));
-    $this->tree->setReturnValue('get_nodes_by_ids', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_nodes_by_ids($ids_arr));
+    $this->tree->expectOnce('getNodesByIds', array($ids_arr));
+    $this->tree->setReturnValue('getNodesByIds', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getNodesByIds($ids_arr));
   }
 
-  function test_get_max_child_identifier()
+  function testGetMaxChildIdentifier()
   {
     $id = 100;
-    $this->tree->expectOnce('get_max_child_identifier', array($id));
-    $this->tree->setReturnValue('get_max_child_identifier', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_max_child_identifier($id));
+    $this->tree->expectOnce('getMaxChildIdentifier', array($id));
+    $this->tree->setReturnValue('getMaxChildIdentifier', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getMaxChildIdentifier($id));
   }
 
-  function test_get_node_by_path()
+  function testGetNodeByPath()
   {
     $path = 'test/path';
-    $this->tree->expectOnce('get_node_by_path', array($path, '/'));
-    $this->tree->setReturnValue('get_node_by_path', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_node_by_path($path));
+    $this->tree->expectOnce('getNodeByPath', array($path, '/'));
+    $this->tree->setReturnValue('getNodeByPath', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getNodeByPath($path));
   }
 
-  function test_get_sub_branch()
+  function testGetSubBranch()
   {
     $id = 100;
-    $this->tree->expectOnce('get_sub_branch', array($id, -1, false, false));
-    $this->tree->setReturnValue('get_sub_branch', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_sub_branch($id));
+    $this->tree->expectOnce('getSubBranch', array($id, -1, false, false));
+    $this->tree->setReturnValue('getSubBranch', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getSubBranch($id));
   }
 
-  function test_get_sub_branch_by_path()
+  function testGetSubBranchByPath()
   {
     $path = '/test/path';
-    $this->tree->expectOnce('get_sub_branch_by_path', array($path, -1, false, false));
-    $this->tree->setReturnValue('get_sub_branch_by_path', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_sub_branch_by_path($path));
+    $this->tree->expectOnce('getSubBranchByPath', array($path, -1, false, false));
+    $this->tree->setReturnValue('getSubBranchByPath', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getSubBranchByPath($path));
   }
 
-  function test_get_root_nodes()
+  function testGetRootNodes()
   {
-    $this->tree->expectOnce('get_root_nodes');
-    $this->tree->setReturnValue('get_root_nodes', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->get_root_nodes());
+    $this->tree->expectOnce('getRootNodes');
+    $this->tree->setReturnValue('getRootNodes', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->getRootNodes());
   }
 
-  function test_is_node_expanded()
-  {
-    $id = 100;
-    $this->tree->expectOnce('is_node_expanded', array($id));
-    $this->tree->setReturnValue('is_node_expanded', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->is_node_expanded($id));
-  }
-
-  function test_toggle_node()
+  function testIsNodeExpanded()
   {
     $id = 100;
-    $this->tree->expectOnce('toggle_node', array($id));
-    $this->tree->setReturnValue('toggle_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->toggle_node($id));
+    $this->tree->expectOnce('isNodeExpanded', array($id));
+    $this->tree->setReturnValue('isNodeExpanded', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->isNodeExpanded($id));
   }
 
-  function test_expand_node()
+  function testToggleNode()
   {
     $id = 100;
-    $this->tree->expectOnce('expand_node', array($id));
-    $this->tree->setReturnValue('expand_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->expand_node($id));
+    $this->tree->expectOnce('toggleNode', array($id));
+    $this->tree->setReturnValue('toggleNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->toggleNode($id));
   }
 
-  function test_collapse_node()
+  function testExpandNode()
   {
     $id = 100;
-    $this->tree->expectOnce('collapse_node', array($id));
-    $this->tree->setReturnValue('collapse_node', $res = 'whatever');
-    $this->assertEqual($res, $this->decorator->collapse_node($id));
+    $this->tree->expectOnce('expandNode', array($id));
+    $this->tree->setReturnValue('expandNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->expandNode($id));
   }
 
-  function test_can_add_node_true()
+  function testCollapseNode()
   {
     $id = 100;
-    $this->tree->expectOnce('is_node', array($id));
-    $this->tree->setReturnValue('is_node', true);
-
-    $this->assertTrue($this->decorator->can_add_node($id));
+    $this->tree->expectOnce('collapseNode', array($id));
+    $this->tree->setReturnValue('collapseNode', $res = 'whatever');
+    $this->assertEqual($res, $this->decorator->collapseNode($id));
   }
 
-  function test_can_add_node_false()
+  function testCanAddNodeTrue()
   {
     $id = 100;
-    $this->tree->expectOnce('is_node', array($id));
-    $this->tree->setReturnValue('is_node', false);
+    $this->tree->expectOnce('isNode', array($id));
+    $this->tree->setReturnValue('isNode', true);
 
-    $this->assertFalse($this->decorator->can_add_node($id));
+    $this->assertTrue($this->decorator->canAddNode($id));
   }
 
-  function test_can_delete_node_true()
+  function testCanAddNodeFalse()
   {
     $id = 100;
-    $this->tree->expectOnce('count_children', array($id));
-    $this->tree->setReturnValue('count_children', 0);
+    $this->tree->expectOnce('isNode', array($id));
+    $this->tree->setReturnValue('isNode', false);
 
-    $this->assertTrue($this->decorator->can_delete_node($id));
+    $this->assertFalse($this->decorator->canAddNode($id));
   }
 
-  function test_can_delete_node_true2()
+  function testCanDeleteNodeTrue()
   {
     $id = 100;
-    $this->tree->expectOnce('count_children', array($id));
-    $this->tree->setReturnValue('count_children', false);
+    $this->tree->expectOnce('countChildren', array($id));
+    $this->tree->setReturnValue('countChildren', 0);
 
-    $this->assertTrue($this->decorator->can_delete_node($id));
+    $this->assertTrue($this->decorator->canDeleteNode($id));
   }
 
-  function test_get_path_to_node_false()
+  function testCanDeleteNodeTrue2()
+  {
+    $id = 100;
+    $this->tree->expectOnce('countChildren', array($id));
+    $this->tree->setReturnValue('countChildren', false);
+
+    $this->assertTrue($this->decorator->canDeleteNode($id));
+  }
+
+  function testGetPathToNodeFalse()
   {
     $node = array('id' => 100);
 
-    $this->tree->expectOnce('get_parents', array(100));
-    $this->tree->setReturnValue('get_parents', false);
+    $this->tree->expectOnce('getParents', array(100));
+    $this->tree->setReturnValue('getParents', false);
 
-    $this->assertIdentical(false, $this->decorator->get_path_to_node($node));
+    $this->assertIdentical(false, $this->decorator->getPathToNode($node));
   }
 
-  function test_get_path_to_node()
+  function testGetPathToNode()
   {
     $node = array('id' => 100, 'identifier' => '3');
 
-    $this->tree->expectOnce('get_parents', array(100));
-    $this->tree->setReturnValue('get_parents', array(array('identifier' => '1'),
+    $this->tree->expectOnce('getParents', array(100));
+    $this->tree->setReturnValue('getParents', array(array('identifier' => '1'),
                                                        array('identifier' => '2')));
-    $this->assertEqual('/1/2/3', $this->decorator->get_path_to_node($node));
+    $this->assertEqual('/1/2/3', $this->decorator->getPathToNode($node));
   }
 
-  function test_get_path_to_node2()
+  function testGetPathToNode2()
   {
     $node = array('id' => 100, 'identifier' => '3');
 
-    $this->tree->expectOnce('get_parents', array(100));
-    $this->tree->setReturnValue('get_parents', array());
-    $this->assertEqual('/3', $this->decorator->get_path_to_node($node));
+    $this->tree->expectOnce('getParents', array(100));
+    $this->tree->setReturnValue('getParents', array());
+    $this->assertEqual('/3', $this->decorator->getPathToNode($node));
   }
 }
 

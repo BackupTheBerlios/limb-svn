@@ -8,29 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
+require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 
-class site_object_controller_filter implements intercepting_filter
+class SiteObjectControllerFilter implements InterceptingFilter
 {
   public function run($filter_chain, $request, $response)
   {
-    debug :: add_timing_point('site object controller filter started');
+    Debug :: addTimingPoint('site object controller filter started');
 
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
-    $datasource->set_request($request);
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
 
-    $site_object = wrap_with_site_object($datasource->fetch());
+    $site_object = wrapWithSiteObject($datasource->fetch());
 
-    $site_object->get_controller()->process($request);
+    $site_object->getController()->process($request);
 
-    debug :: add_timing_point('site object controller filter finished');
+    Debug :: addTimingPoint('site object controller filter finished');
 
     $filter_chain->next();
   }
 
-  protected function _get_controller($behaviour)
+  protected function _getController($behaviour)
   {
-    return new site_object_controller($behaviour);
+    return new SiteObjectController($behaviour);
   }
 }
 ?>

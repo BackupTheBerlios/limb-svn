@@ -8,44 +8,44 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/compiler/compiler_directive_tag.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/CompilerDirectiveTag.class.php');
 
 /**
 * The root compile time component in the template hierarchy. Used to generate
 * the correct reference PHP code like $dataspace->...
 */
-class root_compiler_component extends compiler_directive_tag
+class RootCompilerComponent extends CompilerDirectiveTag
 {
   /**
   * Calls the parent pre_generate() method then writes
   * "$dataspace->prepare();" to the compiled template.
   */
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
-    if($this->is_debug_enabled())
+    if($this->isDebugEnabled())
     {
-      $code->write_html("<div class='debug-tmpl-main'>");
+      $code->writeHtml("<div class='debug-tmpl-main'>");
 
-      $this->_generate_debug_editor_link_html($code, $this->source_file);
+      $this->_generateDebugEditorLinkHtml($code, $this->source_file);
     }
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    if($this->is_debug_enabled())
+    if($this->isDebugEnabled())
     {
-      $code->write_html('</div>');
+      $code->writeHtml('</div>');
     }
 
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
   }
 
   /**
   * Returns the base for building the PHP runtime component reference string
   */
-  public function get_component_ref_code()
+  public function getComponentRefCode()
   {
     return '$dataspace';
   }
@@ -53,7 +53,7 @@ class root_compiler_component extends compiler_directive_tag
   /**
   * Returns $dataspace
   */
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
     return '$dataspace';
   }
@@ -61,7 +61,7 @@ class root_compiler_component extends compiler_directive_tag
   /**
   * Returns this instance of root_compiler_component
   */
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }

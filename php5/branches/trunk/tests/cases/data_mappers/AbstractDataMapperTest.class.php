@@ -8,32 +8,32 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/data_mappers/abstract_data_mapper.class.php');
-require_once(LIMB_DIR . '/class/core/domain_object.class.php');
-require_once(LIMB_DIR . '/class/core/finders/data_finder.interface.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/AbstractDataMapper.class.php');
+require_once(LIMB_DIR . '/class/core/DomainObject.class.php');
+require_once(LIMB_DIR . '/class/core/finders/DataFinder.interface.php');
 
-Mock :: generate('domain_object');
-Mock :: generate('data_finder');
+Mock :: generate('DomainObject');
+Mock :: generate('DataFinder');
 
-class abstract_data_mapper_test_version extends abstract_data_mapper{}
+class AbstractDataMapperTestVersion extends AbstractDataMapper{}
 
-Mock :: generatePartial('abstract_data_mapper_test_version',
-                        'abstract_data_mapper_mock',
+Mock :: generatePartial('AbstractDataMapperTestVersion',
+                        'AbstractDataMapperMock',
                         array('insert',
                               'update',
-                              '_create_domain_object',
-                              '_do_load',
-                              '_get_finder'));
+                              '_createDomainObject',
+                              '_doLoad',
+                              '_getFinder'));
 
-class abstract_data_mapper_test extends LimbTestCase
+class AbstractDataMapperTest extends LimbTestCase
 {
   var $object;
   var $finder;
 
   function setUp()
   {
-    $this->object = new Mockdomain_object($this);
-    $this->finder = new Mockdata_finder($this);
+    $this->object = new MockDomainObject($this);
+    $this->finder = new MockDataFinder($this);
   }
 
   function tearDown()
@@ -42,61 +42,61 @@ class abstract_data_mapper_test extends LimbTestCase
     $this->finder->tally();
   }
 
-  function test_find_by_id_null()
+  function testFindByIdNull()
   {
-    $mapper = new abstract_data_mapper_mock($this);
-    $mapper->setReturnValue('_get_finder', $this->finder);
+    $mapper = new AbstractDataMapperMock($this);
+    $mapper->setReturnValue('_getFinder', $this->finder);
 
-    $this->finder->expectOnce('find_by_id', array($id = 100));
-    $this->finder->setReturnValue('find_by_id', array(), array($id = 100));
+    $this->finder->expectOnce('findById', array($id = 100));
+    $this->finder->setReturnValue('findById', array(), array($id = 100));
 
-    $mapper->expectNever('_create_domain_object');
-    $mapper->expectNever('_do_load');
+    $mapper->expectNever('_createDomainObject');
+    $mapper->expectNever('_doLoad');
 
-    $this->assertNull($mapper->find_by_id($id));
+    $this->assertNull($mapper->findById($id));
 
     $mapper->tally();
   }
 
-  function test_find_by_id()
+  function testFindById()
   {
-    $mapper = new abstract_data_mapper_mock($this);
-    $mapper->setReturnValue('_get_finder', $this->finder);
+    $mapper = new AbstractDataMapperMock($this);
+    $mapper->setReturnValue('_getFinder', $this->finder);
 
-    $this->finder->expectOnce('find_by_id', array($id = 100));
-    $this->finder->setReturnValue('find_by_id', $result_set = array('whatever'), array($id = 100));
+    $this->finder->expectOnce('findById', array($id = 100));
+    $this->finder->setReturnValue('findById', $result_set = array('whatever'), array($id = 100));
 
-    $mapper->expectOnce('_create_domain_object');
-    $mapper->setReturnValue('_create_domain_object', $object = new domain_object());
+    $mapper->expectOnce('_createDomainObject');
+    $mapper->setReturnValue('_createDomainObject', $object = new DomainObject());
 
-    $mapper->expectOnce('_do_load', array($result_set, $object));
+    $mapper->expectOnce('_doLoad', array($result_set, $object));
 
-    $this->assertTrue($mapper->find_by_id($id) === $object);
+    $this->assertTrue($mapper->findById($id) === $object);
 
     $mapper->tally();
   }
 
-  function test_save_insert()
+  function testSaveInsert()
   {
-    $mapper = new abstract_data_mapper_mock($this);
+    $mapper = new AbstractDataMapperMock($this);
 
-    $mapper->expectOnce('insert', array(new IsAExpectation('Mockdomain_object')));
+    $mapper->expectOnce('insert', array(new IsAExpectation('MockDomainObject')));
 
-    $this->object->expectOnce('get_id');
+    $this->object->expectOnce('getId');
 
     $mapper->save($this->object);
 
     $mapper->tally();
   }
 
-  function test_save_update()
+  function testSaveUpdate()
   {
-    $mapper = new abstract_data_mapper_mock($this);
+    $mapper = new AbstractDataMapperMock($this);
 
-    $mapper->expectOnce('update', array(new IsAExpectation('Mockdomain_object')));
+    $mapper->expectOnce('update', array(new IsAExpectation('MockDomainObject')));
 
-    $this->object->expectOnce('get_id');
-    $this->object->setReturnValue('get_id', 10);
+    $this->object->expectOnce('getId');
+    $this->object->setReturnValue('getId', 10);
 
     $mapper->save($this->object);
 

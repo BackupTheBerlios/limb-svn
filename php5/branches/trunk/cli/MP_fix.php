@@ -14,21 +14,21 @@ else
   die('project dir required');
 
 require_once($project_dir . '/setup.php');
-require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/MaterializedPathTree.class.php');
 
-$tree = new materialized_path_tree();
-$driver = $tree->get_driver();
-$tree_table = $driver->get_node_table();
+$tree = new MaterializedPathTree();
+$driver = $tree->getDriver();
+$tree_table = $driver->getNodeTable();
 
-$root_nodes = $tree->get_root_nodes();
+$root_nodes = $tree->getRootNodes();
 
-$db = db_factory :: instance();
+$db = DbFactory :: instance();
 
 echo 'total roots: ' . sizeof($root_ns_nodes) . "\n";
 
 foreach($root_nodes as $root_node)
 {
-  $sub_branch = $tree->get_sub_branch($root_node['id'], -1);
+  $sub_branch = $tree->getSubBranch($root_node['id'], -1);
 
   $branch_size = sizeof($sub_branch);
   echo 'total nodes in current root: ' . $branch_size . "\n";
@@ -38,15 +38,15 @@ foreach($root_nodes as $root_node)
   {
     echo ++$c . ' branch of ' . $branch_size . ': ';
 
-    $children = $tree->count_children($node['id']);
+    $children = $tree->countChildren($node['id']);
 
-    $db->sql_select($tree_table, 'children', array('id' => $node['id']));
-    $row = $db->fetch_row();
+    $db->sqlSelect($tree_table, 'children', array('id' => $node['id']));
+    $row = $db->fetchRow();
 
     if($row['children'] != $children)
     {
       echo "expected {$children} found {$row['children']}...fixing...";
-      $db->sql_update($tree_table, array('children' => $children), array('id' => $node['id']));
+      $db->sqlUpdate($tree_table, array('children' => $children), array('id' => $node['id']));
       echo 'ok';
     }
     else

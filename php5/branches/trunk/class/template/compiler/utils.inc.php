@@ -13,7 +13,7 @@
 * Creates a new ID for a server component, if one wasn't found. Called from
 * compiler_component::get_server_id()
 */
-function get_new_server_id()
+function getNewServerId()
 {
   static $server_id_counter = 1;
   return 'id00' . $server_id_counter++;
@@ -22,7 +22,7 @@ function get_new_server_id()
 /**
 * Adds further quotes to a regex pattern
 */
-function preg_replacement_quote($replacement)
+function pregReplacementQuote($replacement)
 {
   $replacement = str_replace("\\", "\\\\", $replacement);
   $replacement = str_replace("$", "\\$", $replacement);

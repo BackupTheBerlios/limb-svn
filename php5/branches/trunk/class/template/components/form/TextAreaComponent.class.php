@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/container_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/ContainerFormElement.class.php');
 
-class text_area_component extends container_form_element
+class TextAreaComponent extends ContainerFormElement
 {
   /**
   * Output the contents of the textarea, passing through htmlspecialchars().
   * Called from within a compiled template's render function
   */
-  public function render_contents()
+  public function renderContents()
   {
-    echo htmlspecialchars($this->get_value(), ENT_QUOTES);
+    echo htmlspecialchars($this->getValue(), ENT_QUOTES);
   }
 }
 

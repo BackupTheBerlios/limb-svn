@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-class action_tag_info
+class ActionTagInfo
 {
   public $tag = 'actions:ITEM';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'action_tag';
 }
 
-register_tag(new action_tag_info());
+registerTag(new ActionTagInfo());
 
 /**
 * Compile time component for items (rows) in the list
 */
-class action_tag extends compiler_directive_tag
+class ActionTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof actions_tag)
+    if (!$this->parent instanceof ActionsTag)
     {
       throw new WactException('wrong parent tag',
           array('tag' => $this->tag,
@@ -34,13 +34,13 @@ class action_tag extends compiler_directive_tag
     }
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php('do { ');
+    $code->writePhp('do { ');
 
-    parent::generate_contents($code);
+    parent::generateContents($code);
 
-    $code->write_php('} while (' . $this->get_dataspace_ref_code() . '->next());');
+    $code->writePhp('} while (' . $this->getDataspaceRefCode() . '->next());');
   }
 }
 

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/state_machine.class.php');
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/StateMachine.class.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 Mock :: generate('Command');
 
-class state_machine_test extends LimbTestCase
+class StateMachineTest extends LimbTestCase
 {
   protected $state_machine;
 
@@ -27,19 +27,19 @@ class state_machine_test extends LimbTestCase
     $this->state_machine->reset();
   }
 
-  function test_run_no_states_ok()
+  function testRunNoStatesOk()
   {
     $this->state_machine->run();
   }
 
-  function test_simple_flow()
+  function testSimpleFlow()
   {
     $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', 'some_status');
+    $command1->setReturnValue('perform', 'someStatus');
     $this->state_machine->registerState('initial', $command1, array('some_status' => 'next_state'));
 
     $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', 'some_other_status');
+    $command2->setReturnValue('perform', 'someOtherStatus');
     $this->state_machine->registerState('next_state', $command2);
 
     $command3 = new MockCommand($this);
@@ -56,13 +56,13 @@ class state_machine_test extends LimbTestCase
     $command3->tally();
   }
 
-  function test_run_from_initial_state()
+  function testRunFromInitialState()
   {
     $command1 = new MockCommand($this);
     $this->state_machine->registerState('initial', $command1, array('some_status' => 'next_state'));
 
     $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', 'some_other_status');
+    $command2->setReturnValue('perform', 'someOtherStatus');
     $this->state_machine->registerState('next_state', $command2, array('some_other_status' => 'extra_state'));
 
     $command3 = new MockCommand($this);
@@ -80,7 +80,7 @@ class state_machine_test extends LimbTestCase
     $command3->tally();
   }
 
-  function test_register_state_twice()
+  function testRegisterStateTwice()
   {
     $command = new MockCommand($this);
 
@@ -97,11 +97,11 @@ class state_machine_test extends LimbTestCase
     }
   }
 
-  function test_several_statuses_flow()
+  function testSeveralStatusesFlow()
   {
     $command1 = new MockCommand($this);
-    $command1->setReturnValueAt(0, 'perform', 'some_status');
-    $command1->setReturnValueAt(1, 'perform', 'some_other_status');
+    $command1->setReturnValueAt(0, 'perform', 'someStatus');
+    $command1->setReturnValueAt(1, 'perform', 'someOtherStatus');
     $this->state_machine->registerState('initial', $command1,
                                         array('some_status' => 'variant1_state',
                                               'some_other_status' => 'variant2_state'));
@@ -124,18 +124,18 @@ class state_machine_test extends LimbTestCase
     $command3->tally();
   }
 
-  function test_state_by_default()
+  function testStateByDefault()
   {
     $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', 'some_status');
+    $command1->setReturnValue('perform', 'someStatus');
     $this->state_machine->registerState('initial', $command1, array(StateMachine :: BY_DEFAULT => 'next_state1'));
 
     $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', 'some_other_status');
+    $command2->setReturnValue('perform', 'someOtherStatus');
     $this->state_machine->registerState('next_state1', $command2, array(StateMachine :: BY_DEFAULT => 'next_state2'));
 
     $command3 = new MockCommand($this);
-    $command3->setReturnValue('perform', 'some_other_status_also');
+    $command3->setReturnValue('perform', 'someOtherStatusAlso');
     $this->state_machine->registerState('next_state2', $command3);
 
     $command1->expectOnce('perform');
@@ -149,10 +149,10 @@ class state_machine_test extends LimbTestCase
     $command3->tally();
   }
 
-  function test_state_with_broken_transitions()
+  function testStateWithBrokenTransitions()
   {
     $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', 'some_status');
+    $command1->setReturnValue('perform', 'someStatus');
     $this->state_machine->registerState('initial', $command1, array('some_status' => 'no_such_state'));
 
     $command2 = new MockCommand($this);
@@ -171,7 +171,7 @@ class state_machine_test extends LimbTestCase
     }
   }
 
-  function test_catch_circular_flow()
+  function testCatchCircularFlow()
   {
   }
 

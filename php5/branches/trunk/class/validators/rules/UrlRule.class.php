@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class url_rule extends single_field_rule
+class UrlRule extends SingleFieldRule
 {
   protected function check($value)
   {

@@ -11,9 +11,9 @@
 /**
 * Ancester tag class for input controls
 */
-abstract class control_tag extends server_tag_component_tag
+abstract class ControlTag extends ServerTagComponentTag
 {
-  public function get_server_id()
+  public function getServerId()
   {
     if (!empty($this->attributes['id']))
     {
@@ -25,21 +25,21 @@ abstract class control_tag extends server_tag_component_tag
     }
     else
     {
-      $this->server_id = get_new_server_id();
+      $this->server_id = getNewServerId();
       return $this->server_id;
     }
   }
 
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class(get_class($this)))
+    if ($this->findParentByClass(get_class($this)))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
     }
-    if (!$this->find_parent_by_class('form_tag'))
+    if (!$this->findParentByClass('form_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -49,23 +49,23 @@ abstract class control_tag extends server_tag_component_tag
     }
   }
 
-  public function generate_constructor($code)
+  public function generateConstructor($code)
   {
-    parent :: generate_constructor($code);
+    parent :: generateConstructor($code);
 
     if (array_key_exists('display_name', $this->attributes))
     {
-      $code->write_php($this->get_component_ref_code() . '->display_name = \'' . $this->attributes['display_name'] . '\';');
+      $code->writePhp($this->getComponentRefCode() . '->display_name = \'' . $this->attributes['display_name'] . '\';');
     unset($this->attributes['display_name']);
     }
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
 
-    $code->write_php($this->get_component_ref_code() . '->render_js_validation();');
-    $code->write_php($this->get_component_ref_code() . '->render_errors();');
+    $code->writePhp($this->getComponentRefCode() . '->render_js_validation();');
+    $code->writePhp($this->getComponentRefCode() . '->render_errors();');
   }
 }
 

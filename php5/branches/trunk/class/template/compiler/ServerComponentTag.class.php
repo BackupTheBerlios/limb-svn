@@ -13,7 +13,7 @@
 * Server component tags have a corresponding server component which represents
 * an API which can be used to manipulate the marked up portion of the template.
 */
-abstract class server_component_tag extends compiler_component
+abstract class ServerComponentTag extends CompilerComponent
 {
   protected $runtime_component_path = '';
 
@@ -25,10 +25,10 @@ abstract class server_component_tag extends compiler_component
   /**
   * Returns a string of PHP code identifying the component in the hierarchy.
   */
-  public function get_component_ref_code()
+  public function getComponentRefCode()
   {
-    $path = $this->parent->get_component_ref_code();
-    return $path . '->children[\'' . $this->get_server_id() . '\']';
+    $path = $this->parent->getComponentRefCode();
+    return $path . '->children[\'' . $this->getServerId() . '\']';
   }
 
   /**
@@ -36,10 +36,10 @@ abstract class server_component_tag extends compiler_component
   * compiled template, appending an add_child() method used to create
   * this component at runtime
   */
-  public function generate_constructor($code)
+  public function generateConstructor($code)
   {
     if (file_exists($this->runtime_component_path . '.class.php'))
-      $code->register_include($this->runtime_component_path . '.class.php');
+      $code->registerInclude($this->runtime_component_path . '.class.php');
     else
       throw new FileNotFoundException('run time component file not found', $this->runtime_component_path);
 
@@ -49,9 +49,9 @@ abstract class server_component_tag extends compiler_component
       throw new WactException('run time component file doesn\'t contains component class name',
                                 array('file_path' => $this->runtime_component_path));
 
-    $code->write_php($this->parent->get_component_ref_code() . '->add_child(new ' . $component_class_name . '(), \'' . $this->get_server_id() . '\');' . "\n");
+    $code->writePhp($this->parent->getComponentRefCode() . '->add_child(new ' . $component_class_name . '(), \'' . $this->getServerId() . '\');' . "\n");
 
-    parent::generate_constructor($code);
+    parent::generateConstructor($code);
   }
 }
 

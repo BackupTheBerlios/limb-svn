@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/component.class.php');
+require_once(LIMB_DIR . '/class/template/Component.class.php');
 
 /**
 * Represents list tags at runtime, providing an API for preparing the data set
 */
-class list_component extends component
+class ListComponent extends Component
 {
   /**
   * Data set to iterate over when rendering the list
@@ -30,7 +30,7 @@ class list_component extends component
   * Registers a dataset with the list component. The dataset must
   * implement the iterator methods defined in dataspace
   */
-  public function register_dataset($dataset)
+  public function registerDataset($dataset)
   {
     $this->dataset = $dataset;
   }
@@ -51,19 +51,19 @@ class list_component extends component
     return $this->dataset->next();
   }
 
-  public function get_by_index_string($raw_index)
+  public function getByIndexString($raw_index)
   {
-    return $this->dataset->get_by_index_string($raw_index);
+    return $this->dataset->getByIndexString($raw_index);
   }
 
-  public function set_offset($offset)
+  public function setOffset($offset)
   {
     $this->offset = $offset;
   }
 
-  public function get_counter()
+  public function getCounter()
   {
-    return $this->dataset->get_counter() + $this->offset + 1;
+    return $this->dataset->getCounter() + $this->offset + 1;
   }
 
   /**
@@ -75,8 +75,8 @@ class list_component extends component
   {
     if (empty($this->dataset))
     {
-      include_once(LIMB_DIR . '/class/core/empty_dataset.class.php');
-      $this->register_dataset(new empty_dataset());
+      include_once(LIMB_DIR . '/class/core/EmptyDataset.class.php');
+      $this->registerDataset(new EmptyDataset());
     }
 
     $this->show_separator = false;

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
+require_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
 
-class view_test_version{}
+class ViewTestVersion{}
 
-class base_limb_toolkit_test extends LimbTestCase
+class BaseLimbToolkitTest extends LimbTestCase
 {
   var $toolkit;
 
@@ -21,116 +21,116 @@ class base_limb_toolkit_test extends LimbTestCase
     $this->toolkit = new BaseLimbToolkit();
   }
 
-  function test_define_constant()
+  function testDefineConstant()
   {
     $const = md5(mt_rand());
     $this->toolkit->define($const, 'test-value');
     $this->assertEqual($this->toolkit->constant($const), 'test-value');
   }
 
-  function test_create_db_table()
+  function testCreateDbTable()
   {
-    $this->assertEqual(get_class($this->toolkit->createDBTable('sys_site_object')),
+    $this->assertEqual(get_class($this->toolkit->createDBTable('SysSiteObject')),
                        'sys_site_object_db_table');
   }
 
-  function test_get_datasource()
+  function testGetDatasource()
   {
-    $this->assertEqual(get_class($this->toolkit->getDatasource('site_objects_datasource')),
+    $this->assertEqual(get_class($this->toolkit->getDatasource('SiteObjectsDatasource')),
                        'site_objects_datasource');
   }
 
-  function test_create_site_object()
+  function testCreateSiteObject()
   {
-    $this->assertEqual(get_class($this->toolkit->createSiteObject('site_object')),
+    $this->assertEqual(get_class($this->toolkit->createSiteObject('SiteObject')),
                        'site_object');
   }
 
-  function test_create_data_mapper()
+  function testCreateDataMapper()
   {
-    $this->assertEqual(get_class($this->toolkit->createDataMapper('site_object_mapper')),
+    $this->assertEqual(get_class($this->toolkit->createDataMapper('SiteObjectMapper')),
                        'site_object_mapper');
   }
 
-  function test_create_behaviour()
+  function testCreateBehaviour()
   {
-    $this->assertEqual(get_class($this->toolkit->createBehaviour('site_object_behaviour')),
+    $this->assertEqual(get_class($this->toolkit->createBehaviour('SiteObjectBehaviour')),
                        'site_object_behaviour');
   }
 
-  function test_get_db()
+  function testGetDb()
   {
-    $this->assertTrue(is_a($this->toolkit->getDB(), 'db_module'));
+    $this->assertTrue(is_a($this->toolkit->getDB(), 'DbModule'));
   }
 
-  function test_get_tree()
+  function testGetTree()
   {
     $this->assertEqual(get_class($this->toolkit->getTree()),
                        'tree_decorator');
   }
 
-  function test_get_user()
+  function testGetUser()
   {
     $this->assertEqual(get_class($this->toolkit->getUser()), 'user');
   }
 
-  function test_get_config()
+  function testGetConfig()
   {
-    register_testing_ini('test-config.ini', 'test = 1');
+    registerTestingIni('test-config.ini', 'test = 1');
 
     $conf = $this->toolkit->getINI('test-config.ini');
-    $this->assertEqual($conf->get_option('test'), 1);
+    $this->assertEqual($conf->getOption('test'), 1);
   }
 
-  function test_get_authenticator()
+  function testGetAuthenticator()
   {
     $this->assertEqual(get_class($this->toolkit->getAuthenticator()),
                        'simple_authenticator');
   }
 
-  function test_get_authorizer()
+  function testGetAuthorizer()
   {
     $this->assertEqual(get_class($this->toolkit->getAuthorizer()),
                        'simple_authorizer');
   }
 
-  function test_get_request()
+  function testGetRequest()
   {
     $this->assertEqual(get_class($this->toolkit->getRequest()),
                        'request');
   }
 
-  function test_get_response()
+  function testGetResponse()
   {
     $this->assertEqual(get_class($this->toolkit->getResponse()),
                        'http_response');
   }
 
-  function test_get_cache()
+  function testGetCache()
   {
     $this->assertEqual(get_class($this->toolkit->getCache()),
                        'CacheRegistry');
   }
 
-  function test_get_locale()
+  function testGetLocale()
   {
     $this->assertEqual(get_class($this->toolkit->getLocale()),
                        'locale');
   }
 
-  function test_get_session()
+  function testGetSession()
   {
     $this->assertEqual(get_class($this->toolkit->getSession()),
                        'session');
   }
 
-  function test_get_dataspace()
+  function testGetDataspace()
   {
     $this->assertEqual(get_class($this->toolkit->getDataspace()),
                        'dataspace');
   }
 
-  function test_switch_dataspace()
+  function testSwitchDataspace()
   {
     $d1 = $this->toolkit->getDataspace();
     $d2 = $this->toolkit->switchDataspace('test-dataspace');
@@ -142,9 +142,9 @@ class base_limb_toolkit_test extends LimbTestCase
     $this->assertTrue($d1 === $d3);
   }
 
-  function test_set_get_view()
+  function testSetGetView()
   {
-    $view = new view_test_version();
+    $view = new ViewTestVersion();
     $this->toolkit->setView($view);
 
     $this->assertEqual(get_class($this->toolkit->getView()),

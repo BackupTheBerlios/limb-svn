@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class filters_group extends LimbGroupTest
+class FiltersGroup extends LimbGroupTest
 {
-  function filters_group()
+  function filtersGroup()
   {
-    $this->LimbGroupTest('filters tests');
+    $this->limbGroupTest('filters tests');
   }
 
   function getTestCasesHandles()

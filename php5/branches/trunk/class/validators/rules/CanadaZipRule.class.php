@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class canada_zip_rule extends single_field_rule
+class CanadaZipRule extends SingleFieldRule
 {
   //The Canadian postal code is LNL NLN
   //where N=number and L=letter
@@ -19,7 +19,7 @@ class canada_zip_rule extends single_field_rule
     $value = "$value";
 
     if(!preg_match("~^[a-zA-Z]\d[a-zA-Z]\s\d[a-zA-Z]\d$~", $value))
-      $this->error(strings :: get('error_invalid_zip_format', 'error'));
+      $this->error(Strings :: get('error_invalid_zip_format', 'error'));
   }
 }
 ?>

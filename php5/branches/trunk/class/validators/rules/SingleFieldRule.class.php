@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/i18n/strings.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/rule.class.php');
+require_once(LIMB_DIR . '/class/i18n/Strings.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/Rule.class.php');
 
-class single_field_rule extends rule
+class SingleFieldRule extends Rule
 {
   protected $field_name;
 
@@ -20,7 +20,7 @@ class single_field_rule extends rule
     $this->field_name = $field_name;
   }
 
-  public function get_field_name()
+  public function getFieldName()
   {
     return $this->field_name;
   }
@@ -30,14 +30,14 @@ class single_field_rule extends rule
     $this->is_valid = false;
 
     if($this->error_list)
-      $this->error_list->add_error($this->field_name, $error, $params);
+      $this->error_list->addError($this->field_name, $error, $params);
   }
 
   public function validate($dataspace)
   {
     $this->is_valid = true;
     $value = $dataspace->get($this->field_name);
-    if (isset($value) && $value !== '')
+    if (isset($value) &&  $value !== '')
     {
       $this->check($value);
     }

@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cache/partial_page_cache_manager.class.php');
+require_once(LIMB_DIR . '/class/cache/PartialPageCacheManager.class.php');
 
-class outputcache_component extends component
+class OutputcacheComponent extends Component
 {
   protected $cache_manager = null;
 
   function __construct()
   {
-    $this->cache_manager = new partial_page_cache_manager();
+    $this->cache_manager = new PartialPageCacheManager();
   }
 
   public function prepare()
   {
     $request = Limb :: toolkit()->getRequest();
-    $this->cache_manager->set_uri($request->get_uri());
-    $this->cache_manager->set_server_id($this->get_server_id());
+    $this->cache_manager->setUri($request->getUri());
+    $this->cache_manager->setServerId($this->getServerId());
   }
 
-  public function set_server_id($server_id)
+  public function setServerId($server_id)
   {
-    $this->cache_manager->set_server_id($this->server_id);
+    $this->cache_manager->setServerId($this->server_id);
   }
 
   public function get()

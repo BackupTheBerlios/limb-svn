@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.php');
 
-class node_select_component extends input_form_element
+class NodeSelectComponent extends InputFormElement
 {
-  public function init_node_select()
+  public function initNodeSelect()
   {
     if (defined('NODE_SELECT_LOAD_SCRIPT'))
       return;
@@ -22,13 +22,13 @@ class node_select_component extends input_form_element
     define('NODE_SELECT_LOAD_SCRIPT', 1);
   }
 
-  public function render_node_select()
+  public function renderNodeSelect()
   {
-    $id = $this->get_attribute('id');
+    $id = $this->getAttribute('id');
     $md5id = substr(md5($id), 0, 5);
 
-    if($node_id = $this->get_value())
-      $object_data = Limb :: toolkit()->getFetcher()->fetch_one_by_node_id($node_id);
+    if($node_id = $this->getValue())
+      $object_data = Limb :: toolkit()->getFetcher()->fetchOneByNodeId($node_id);
     else
       $object_data = false;
 
@@ -64,7 +64,7 @@ class node_select_component extends input_form_element
 
     $start_path_condition = "";
     $only_parents_condition = "";
-    $start_path = $this->get_attribute('start_path');
+    $start_path = $this->getAttribute('start_path');
     if(!$start_path)
       $start_path = Limb :: toolkit()->getSession()->get('limb_node_select_working_path');
     if(!$start_path)
@@ -72,7 +72,7 @@ class node_select_component extends input_form_element
 
     $start_path_condition = "node_select_{$md5id}.set_start_path('{$start_path}');";
 
-    if($only_parents = $this->get_attribute('only_parents'))
+    if($only_parents = $this->getAttribute('only_parents'))
       $only_parents_condition = "node_select_{$md5id}.set_only_parents_restriction('{$only_parents}');";
 
     echo "<script type='text/javascript'>
@@ -86,9 +86,9 @@ class node_select_component extends input_form_element
             node_select_{$md5id}.generate();
           }
 
-          function node_select_{$md5id}_insert_node(node)
+          function node_select_{$md5id}_insertNode(node)
           {
-            node_select_{$md5id}.insert_node(node);
+            node_select_{$md5id}.insertNode(node);
           }
 
           function node_select_{$md5id}_get_node()
@@ -101,15 +101,15 @@ class node_select_component extends input_form_element
             node_select_{$md5id}.reset();
           }
 
-          add_event(window, 'load', init_node_select_{$md5id});
+          addEvent(window, 'load', init_node_select_{$md5id});
         </script>";
 
     echo "<input class='button' type='button' onclick='popup(\"/root/node_select\", null, null, false, node_select_{$md5id}_insert_node, node_select_{$md5id}_get_node)' value=' ... '>";
 
-    if($this->get_attribute('reset_button'))
+    if($this->getAttribute('reset_button'))
     {
       echo '&nbsp;';
-      echo "<input class='button' type='button' onclick='node_reset_{$md5id}()' value='" . strings :: get('reset'). "'>";
+      echo "<input class='button' type='button' onclick='node_reset_{$md5id}()' value='" . Strings :: get('reset'). "'>";
     }
   }
 }

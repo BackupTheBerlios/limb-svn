@@ -14,7 +14,7 @@
 * not have a corresponding runtime component, nor do they normally generate
 * output into the compiled template.
 */
-abstract class silent_compiler_directive_tag extends compiler_component
+abstract class SilentCompilerDirectiveTag extends CompilerComponent
 {
   /**
   * Does nothing -  silent_compiler_directive_tags do not generate
@@ -30,7 +30,7 @@ abstract class silent_compiler_directive_tag extends compiler_component
   * Results in all components registered as children of the instance of this
   * component having their generate() methods called
   */
-  public function generate_now($code)
+  public function generateNow($code)
   {
     return parent :: generate($code);
   }

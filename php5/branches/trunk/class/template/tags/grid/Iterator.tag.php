@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_iterator_tag_info
+class GridIteratorTagInfo
 {
   public $tag = 'grid:ITERATOR';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'grid_iterator_tag';
 }
 
-register_tag(new grid_iterator_tag_info());
+registerTag(new GridIteratorTagInfo());
 
-class grid_iterator_tag extends compiler_directive_tag
+class GridIteratorTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof grid_list_tag)
+    if (!$this->parent instanceof GridListTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -31,27 +31,27 @@ class grid_iterator_tag extends compiler_directive_tag
     }
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
-    $code->write_php('if (' . $this->get_component_ref_code() . '->next()) {');
+    $code->writePhp('if (' . $this->getComponentRefCode() . '->next()) {');
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php('do { ');
+    $code->writePhp('do { ');
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php('} while (' . $this->get_dataspace_ref_code() . '->next());');
+    $code->writePhp('} while (' . $this->getDataspaceRefCode() . '->next());');
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_php('}');
+    $code->writePhp('}');
 
-    parent::post_generate($code);
+    parent::postGenerate($code);
   }
 }
 

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.php');
 
-class file_select_component extends input_form_element
+class FileSelectComponent extends InputFormElement
 {
-  public function init_file_select()
+  public function initFileSelect()
   {
     if (!defined('FILE_SELECT_LOAD_SCRIPT'))
     {
@@ -21,14 +21,14 @@ class file_select_component extends input_form_element
     }
   }
 
-  public function render_file_select()
+  public function renderFileSelect()
   {
-    $id = $this->get_attribute('id');
+    $id = $this->getAttribute('id');
     $md5id = substr(md5($id), 0, 5);
 
-    $file_node_id = $this->get_value();
+    $file_node_id = $this->getValue();
 
-    if($file_node_id && $file_data = Limb :: toolkit()->getFetcher()->fetch_one_by_node_id($file_node_id))
+    if($file_node_id &&  $file_data = Limb :: toolkit()->getFetcher()->fetchOneByNodeId($file_node_id))
     {
       $span_name = $file_data['identifier'];
       $span_description = $file_data['description'];
@@ -60,9 +60,9 @@ class file_select_component extends input_form_element
             file_select_{$md5id}.generate();
           }
 
-          function file_select_{$md5id}_insert_file(file)
+          function file_select_{$md5id}_insertFile(file)
           {
-            file_select_{$md5id}.insert_file(file);
+            file_select_{$md5id}.insertFile(file);
           }
 
           function file_select_{$md5id}_get_file()
@@ -76,12 +76,12 @@ class file_select_component extends input_form_element
             init_file_select_{$md5id}();
           }
 
-          add_event(window, 'load', init_file_select_{$md5id});
+          addEvent(window, 'load', init_file_select_{$md5id});
         </script>";
 
-    echo "<input class='button' type='button' onclick='popup(\"/root/file_select\", null, null, false, file_select_{$md5id}_insert_file, file_select_{$md5id}_get_file)' value='" . strings :: get('select_file', 'file') . "'>";
+    echo "<input class='button' type='button' onclick='popup(\"/root/file_select\", null, null, false, file_select_{$md5id}_insert_file, file_select_{$md5id}_get_file)' value='" . Strings :: get('select_file', 'file') . "'>";
     echo '&nbsp;';
-    echo "<input class='button' type='button' onclick='file_reset_{$md5id}()' value='" . strings :: get('reset') . "'>";
+    echo "<input class='button' type='button' onclick='file_reset_{$md5id}()' value='" . Strings :: get('reset') . "'>";
   }
 }
 ?>

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/core/packages_info.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
 
 class TestFinder
 {
@@ -19,9 +19,9 @@ class TestFinder
   function &getTestCasesHandlesFromPackages()
   {
     $finder = new TestFinder();
-    $info =& packages_info :: instance();
+    $info =& PackagesInfo :: instance();
 
-    $packages = $info->get_packages();
+    $packages = $info->getPackages();
 
     $handles = array();
 
@@ -92,7 +92,7 @@ class TestFinder
 
       if ($file_test_function[0]->$file_test_function[1]($file))
       {
-        $file_list[] = fs :: clean_path($file_path);
+        $file_list[] = Fs :: cleanPath($file_path);
       }
     }
     closedir($dh);
@@ -124,7 +124,7 @@ class TestFinder
       }
       if ($file_test_function[0]->$file_test_function[1]($file))
       {
-        $file_list[] = fs :: clean_path($file_path);
+        $file_list[] = Fs :: cleanPath($file_path);
       }
     }
     closedir($dh);

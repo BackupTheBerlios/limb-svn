@@ -30,37 +30,37 @@ if(!defined('DEFAULT_CONTENT_LOCALE_ID'))
   define('DEFAULT_CONTENT_LOCALE_ID','en');
 
 require_once(LIMB_DIR . '/setup.php');
-require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');//don't move this line!!!
+require_once(LIMB_DIR . '/tests/lib/DebugMock.class.php');//don't move this line!!!
 
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
-include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
-include_once(LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver.class.php');
-include_once(LIMB_DIR . '/class/core/file_resolvers/behaviour_file_resolver.class.php');
-include_once(LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver.class.php');
-include_once(LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver.class.php');
-include_once(LIMB_DIR . '/class/core/file_resolvers/template_file_resolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/PackageFileResolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/DbTableFileResolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/BehaviourFileResolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/DatasourceFileResolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/SiteObjectFileResolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/TemplateFileResolver.class.php');
 
-register_file_resolver('ini',         LIMB_DIR . '/tests/lib/tests_ini_file_resolver');
-register_file_resolver('action',      LIMB_DIR . '/tests/lib/tests_action_file_resolver');
-register_file_resolver('strings',     LIMB_DIR . '/tests/lib/tests_strings_file_resolver');
-register_file_resolver('db_table',    new db_table_file_resolver(new package_file_resolver()));
-register_file_resolver('template',    new template_file_resolver(new package_file_resolver()));
-register_file_resolver('behaviour',   new behaviour_file_resolver(new package_file_resolver()));
-register_file_resolver('datasource',  new datasource_file_resolver(new package_file_resolver()));
-register_file_resolver('site_object', new site_object_file_resolver(new package_file_resolver()));
+registerFileResolver('ini',         LIMB_DIR . '/tests/lib/testsIniFileResolver');
+registerFileResolver('action',      LIMB_DIR . '/tests/lib/testsActionFileResolver');
+registerFileResolver('strings',     LIMB_DIR . '/tests/lib/testsStringsFileResolver');
+registerFileResolver('db_table',    new DbTableFileResolver(new PackageFileResolver()));
+registerFileResolver('template',    new TemplateFileResolver(new PackageFileResolver()));
+registerFileResolver('behaviour',   new BehaviourFileResolver(new PackageFileResolver()));
+registerFileResolver('datasource',  new DatasourceFileResolver(new PackageFileResolver()));
+registerFileResolver('site_object', new SiteObjectFileResolver(new PackageFileResolver()));
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
-require_once(LIMB_DIR . '/tests/cases/limb_test_case.class.php');
-require_once(LIMB_DIR . '/tests/lib/test_finder.class.php');
+require_once(LIMB_DIR . '/tests/cases/LimbTestCase.class.php');
+require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
 require_once(LIMB_DIR . '/class/lib/error/error.inc.php');
-require_once(LIMB_DIR . '/class/core/packages_info.class.php');
-require_once(LIMB_DIR . '/class/core/limb.class.php');
-require_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
+require_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
+require_once(LIMB_DIR . '/class/core/Limb.class.php');
+require_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
 
 Limb :: registerToolkit(new BaseLimbToolkit());
 
-packages_info :: instance()->load_packages();//???
+PackagesInfo :: instance()->loadPackages();//???
 
 set_time_limit(0);
 error_reporting(E_ALL);

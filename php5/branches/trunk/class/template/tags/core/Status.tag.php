@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_status_tag_info
+class CoreStatusTagInfo
 {
   public $tag = 'core:STATUS';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'core_status_tag';
 }
 
-register_tag(new core_status_tag_info());
+registerTag(new CoreStatusTagInfo());
 
 /**
 * Defines an action take, should a dataspace variable have been set at runtime.
 * The opposite of the core_default_tag
 */
-class core_status_tag extends compiler_directive_tag
+class CoreStatusTag extends CompilerDirectiveTag
 {
   protected $const;
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -41,24 +41,24 @@ class core_status_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     $value = 'true';
-    if (isset($this->attributes['value']) && !(boolean)$this->attributes['value'])
+    if (isset($this->attributes['value']) &&  !(boolean)$this->attributes['value'])
       $value = 'false';
 
-    $tempvar = $code->get_temp_variable();
-    $code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
-    $code->write_php('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
+    $tempvar = $code->getTempVariable();
+    $code->writePhp('$' . $tempvar . ' = trim(' . $this->getDataspaceRefCode() . '->get("status"));');
+    $code->writePhp('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
 
-    parent::pre_generate($code);
+    parent::preGenerate($code);
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    parent::post_generate($code);
+    parent::postGenerate($code);
 
-    $code->write_php('}');
+    $code->writePhp('}');
   }
 }
 

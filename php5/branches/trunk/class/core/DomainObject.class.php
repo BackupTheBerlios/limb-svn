@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/core/Object.class.php');
 
-class domain_object extends object
+class DomainObject extends Object
 {
   protected $clean_hash;
 
@@ -18,34 +18,34 @@ class domain_object extends object
   {
     parent :: __construct();
 
-    $this->mark_clean();
+    $this->markClean();
   }
 
-  public function get_id()
+  public function getId()
   {
     return (int)$this->get('id');
   }
 
-  public function set_id($id)
+  public function setId($id)
   {
     $this->set('id', (int)$id);
   }
 
-  public function is_dirty()
+  public function isDirty()
   {
-    return ($this->clean_hash != $this->dataspace->get_hash());
+    return ($this->clean_hash != $this->dataspace->getHash());
   }
 
-  public function mark_clean()
+  public function markClean()
   {
-    $this->clean_hash = $this->dataspace->get_hash();
+    $this->clean_hash = $this->dataspace->getHash();
   }
 
   public function import($values)
   {
     parent :: import($values);
 
-    $this->mark_clean();
+    $this->markClean();
   }
 }
 

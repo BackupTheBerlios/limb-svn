@@ -8,69 +8,69 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 
 Mock :: generatePartial(
-  'ini',
-  'ini_mock_version',
-  array('_parse', '_save_cache')
+  'Ini',
+  'IniMockVersion',
+  array('_parse', '_saveCache')
 );
 
-class ini_test extends LimbTestCase
+class IniTest extends LimbTestCase
 {
   function setUp()
   {
-    debug_mock :: init($this);
+    DebugMock :: init($this);
   }
 
   function tearDown()
   {
-    debug_mock :: tally();
-    clear_testing_ini();
+    DebugMock :: tally();
+    clearTestingIni();
   }
 
-  function test_file_path()
+  function testFilePath()
   {
-    $ini = new ini(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
-    $this->assertEqual($ini->get_original_file(), LIMB_DIR . '/tests/cases/util/ini_test.ini');
+    $ini = new Ini(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
+    $this->assertEqual($ini->getOriginalFile(), LIMB_DIR . '/tests/cases/util/ini_test.ini');
   }
 
-  function test_default_charset()
+  function testDefaultCharset()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       ''
     );
 
-    $ini = get_ini('testing.ini');
-    $this->assertEqual($ini->get_charset(), 'utf8');
+    $ini = getIni('testing.ini');
+    $this->assertEqual($ini->getCharset(), 'utf8');
   }
 
-  function test_charset()
+  function testCharset()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '#charset = iso-8859-1'
     );
 
-    $ini = get_ini('testing.ini');
-    $this->assertEqual($ini->get_charset(), 'iso-8859-1');
+    $ini = getIni('testing.ini');
+    $this->assertEqual($ini->getCharset(), 'iso-8859-1');
   }
 
-  function test_charset2()
+  function testCharset2()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '#charset=iso-8859-1 '
     );
 
-    $ini = get_ini('testing.ini');
-    $this->assertEqual($ini->get_charset(), 'iso-8859-1');
+    $ini = getIni('testing.ini');
+    $this->assertEqual($ini->getCharset(), 'iso-8859-1');
   }
 
-  function test_trimming_file_contents()
+  function testTrimmingFileContents()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
         [group1]
@@ -80,9 +80,9 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_all(),
+    $this->assertEqual($ini->getAll(),
       array(
         'group1' => array('value' => 'test1'),
         'group2' => array('value' => 'test2'),
@@ -90,9 +90,9 @@ class ini_test extends LimbTestCase
     );
   }
 
-  function test_proper_comments()
+  function testProperComments()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
       #[group_is_commented]
@@ -104,9 +104,9 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_all(),
+    $this->assertEqual($ini->getAll(),
       array(
         'group1' => array(
           'value1' => 'test1',
@@ -116,9 +116,9 @@ class ini_test extends LimbTestCase
     );
   }
 
-  function test_strings_with_spaces()
+  function testStringsWithSpaces()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
       [group1]
@@ -127,9 +127,9 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_all(),
+    $this->assertEqual($ini->getAll(),
       array(
         'group1' => array(
           'value1' => 'this is a string with spaces            indeed',
@@ -139,9 +139,9 @@ class ini_test extends LimbTestCase
     );
   }
 
-  function test_proper_quotes()
+  function testProperQuotes()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
       [group1]
@@ -151,9 +151,9 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_all(),
+    $this->assertEqual($ini->getAll(),
       array(
         'group1' => array(
           'value1' => '  this is a quoted string  ',
@@ -164,9 +164,9 @@ class ini_test extends LimbTestCase
     );
   }
 
-  function test_default_group_exists_only_if_global_values()
+  function testDefaultGroupExistsOnlyIfGlobalValues()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
       [group1]
@@ -174,14 +174,14 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertFalse($ini->has_group('default'));
+    $this->assertFalse($ini->hasGroup('default'));
   }
 
-  function test_global_values_in_default_group()
+  function testGlobalValuesInDefaultGroup()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
       value = global_test
@@ -190,21 +190,21 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_all(),
+    $this->assertEqual($ini->getAll(),
       array(
         'default' => array('value' => 'global_test'),
         'group1' => array('value' => 'test'),
       )
     );
 
-    $this->assertTrue($ini->has_group('default'));
+    $this->assertTrue($ini->hasGroup('default'));
   }
 
-  function test_null_elements()
+  function testNullElements()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
       [group1]
@@ -212,18 +212,18 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_all(),
+    $this->assertEqual($ini->getAll(),
       array('group1' => array('value' => null))
     );
 
-    $this->assertFalse($ini->has_option('group1', 'value'));
+    $this->assertFalse($ini->hasOption('group1', 'value'));
   }
 
-  function test_array_elements()
+  function testArrayElements()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
       [group1]
@@ -234,16 +234,16 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_all(),
+    $this->assertEqual($ini->getAll(),
       array('group1' => array('value' => array(null, 1, null, 2)))
     );
   }
 
-  function test_hashed_array_elements()
+  function testHashedArrayElements()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
       [group1]
@@ -255,17 +255,17 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_all(),
+    $this->assertEqual($ini->getAll(),
       array('group1' => array('value' =>
         array('apple' => null, 'banana' => 1, 'fruit' => null)))
     );
   }
 
-  function test_checkers()
+  function testCheckers()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
         unassigned =
@@ -281,26 +281,26 @@ class ini_test extends LimbTestCase
         test = '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertFalse($ini->has_group(''));
-    $this->assertTrue($ini->has_group('default'));
-    $this->assertTrue($ini->has_group('test'));
-    $this->assertTrue($ini->has_group('test2'));
-    $this->assertTrue($ini->has_group('empty_group'));
+    $this->assertFalse($ini->hasGroup(''));
+    $this->assertTrue($ini->hasGroup('default'));
+    $this->assertTrue($ini->hasGroup('test'));
+    $this->assertTrue($ini->hasGroup('test2'));
+    $this->assertTrue($ini->hasGroup('empty_group'));
 
-    $this->assertFalse($ini->has_option(null, null));
-    $this->assertFalse($ini->has_option('', ''));
-    $this->assertFalse($ini->has_option('', 'no_such_block'));
-    $this->assertTrue($ini->has_option('test', 'test'));
-    $this->assertFalse($ini->has_option('no_such_variable', 'test3'));
-    $this->assertTrue($ini->has_option('unassigned', 'default'));
-    $this->assertTrue($ini->has_option('test', 'default'));
+    $this->assertFalse($ini->hasOption(null, null));
+    $this->assertFalse($ini->hasOption('', ''));
+    $this->assertFalse($ini->hasOption('', 'no_such_block'));
+    $this->assertTrue($ini->hasOption('test', 'test'));
+    $this->assertFalse($ini->hasOption('no_such_variable', 'test3'));
+    $this->assertTrue($ini->hasOption('unassigned', 'default'));
+    $this->assertTrue($ini->hasOption('test', 'default'));
   }
 
-  function test_get_option()
+  function testGetOption()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
         unassigned =
@@ -318,43 +318,43 @@ class ini_test extends LimbTestCase
         test[hey] = 2'
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_option('unassigned'), '');
-    $this->assertEqual($ini->get_option('test'), 1);
+    $this->assertEqual($ini->getOption('unassigned'), '');
+    $this->assertEqual($ini->getOption('test'), 1);
 
-    debug_mock :: expect_write_notice('undefined option',
+    DebugMock :: expectWriteNotice('undefined option',
       array(
-        'ini' => $ini->get_original_file(),
+        'ini' => $ini->getOriginalFile(),
         'group' => 'default',
         'option' => 'no_such_option'
       )
     );
 
-    $this->assertEqual($ini->get_option('no_such_option'), '');
+    $this->assertEqual($ini->getOption('no_such_option'), '');
 
-    debug_mock :: expect_write_notice('undefined group',
+    DebugMock :: expectWriteNotice('undefined group',
       array(
-        'ini' => $ini->get_original_file(),
+        'ini' => $ini->getOriginalFile(),
         'group' => 'no_such_group',
         'option' => 'test'
       )
     );
 
-    $this->assertEqual($ini->get_option('test', 'no_such_group'), '');
+    $this->assertEqual($ini->getOption('test', 'no_such_group'), '');
 
-    $this->assertEqual($ini->get_option('test', 'test'), 1);
+    $this->assertEqual($ini->getOption('test', 'test'), 1);
 
-    $var = $ini->get_option('test', 'test2');
+    $var = $ini->getOption('test', 'test2');
     $this->assertEqual($var, array(1, 2));
 
-    $var = $ini->get_option('test', 'test3');
+    $var = $ini->getOption('test', 'test3');
     $this->assertEqual($var, array('wow' => 1, 'hey' => 2));
   }
 
-  function test_get_group()
+  function testGetGroup()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
         unassigned =
@@ -365,24 +365,24 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->get_group('default'), array('unassigned' => '', 'test' => 1));
-    $this->assertEqual($ini->get_group('test'), array('test' => 1));
+    $this->assertEqual($ini->getGroup('default'), array('unassigned' => '', 'test' => 1));
+    $this->assertEqual($ini->getGroup('test'), array('test' => 1));
 
-    debug_mock :: expect_write_notice('undefined group',
+    DebugMock :: expectWriteNotice('undefined group',
       array(
-        'ini' => $ini->get_original_file(),
+        'ini' => $ini->getOriginalFile(),
         'group' => 'no_such_group'
       )
     );
 
-    $this->assertNull($ini->get_group('no_such_group'));
+    $this->assertNull($ini->getGroup('no_such_group'));
   }
 
-  function test_assign_option()
+  function testAssignOption()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       '
         unassigned =
@@ -393,132 +393,132 @@ class ini_test extends LimbTestCase
       '
     );
 
-    $ini = get_ini('testing.ini');
+    $ini = getIni('testing.ini');
 
-    $this->assertTrue($ini->assign_option($test, 'unassigned'));
+    $this->assertTrue($ini->assignOption($test, 'unassigned'));
     $this->assertEqual($test, '');
 
-    $this->assertTrue($ini->assign_option($test, 'test'));
+    $this->assertTrue($ini->assignOption($test, 'test'));
     $this->assertEqual($test, 1);
 
-    $this->assertTrue($ini->assign_option($test, 'test', 'test'));
+    $this->assertTrue($ini->assignOption($test, 'test', 'test'));
     $this->assertEqual($test, 2);
-    $this->assertFalse($ini->assign_option($test, 'no_such_option', 'test'));
+    $this->assertFalse($ini->assignOption($test, 'no_such_option', 'test'));
     $this->assertEqual($test, 2);
   }
 
-  function test_cache_hit()
+  function testCacheHit()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       'test = 1'
     );
 
-    $ini = new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...
+    $ini = new Ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...
 
     // caching happens very quickly we have to tweak the cache file modification time
     // in order to test cache hit
-    touch($ini->get_cache_file(), time()+100);
+    touch($ini->getCacheFile(), time()+100);
 
-    $ini_mock = new ini_mock_version($this);
+    $ini_mock = new IniMockVersion($this);
     $ini_mock->expectNever('_parse');
-    $ini_mock->expectNever('_save_cache');
+    $ini_mock->expectNever('_saveCache');
 
     $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
 
     $ini_mock->tally();
 
-    $this->assertEqual($ini->get_all(), $ini_mock->get_all());
+    $this->assertEqual($ini->getAll(), $ini_mock->getAll());
 
-    $ini->reset_cache();
+    $ini->resetCache();
   }
 
-  function test_no_cache()
+  function testNoCache()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       'test = 1'
     );
 
-    $ini = new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...
+    $ini = new Ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...
 
-    $this->assertTrue(file_exists($ini->get_cache_file()));
-    unlink($ini->get_cache_file());
+    $this->assertTrue(file_exists($ini->getCacheFile()));
+    unlink($ini->getCacheFile());
 
-    $ini_mock = new ini_mock_version($this);
+    $ini_mock = new IniMockVersion($this);
     $ini_mock->expectOnce('_parse');
-    $ini_mock->expectOnce('_save_cache');
+    $ini_mock->expectOnce('_saveCache');
 
     $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
 
     $ini_mock->tally();
 
-    $ini->reset_cache();
+    $ini->resetCache();
   }
 
-  function test_cache_hit_file_was_modified()
+  function testCacheHitFileWasModified()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       'test = 1'
     );
 
-    $ini = new ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...
+    $ini = new Ini(VAR_DIR . 'testing.ini', true); //ini should be cached here...
 
     // caching happens very quickly we have to tweak the original file modification time
     // in order to test
-    touch($ini->get_original_file(), time()+100);
+    touch($ini->getOriginalFile(), time()+100);
 
-    $ini_mock = new ini_mock_version($this);
+    $ini_mock = new IniMockVersion($this);
     $ini_mock->expectOnce('_parse');
-    $ini_mock->expectOnce('_save_cache');
+    $ini_mock->expectOnce('_saveCache');
 
     $ini_mock->__construct(VAR_DIR . 'testing.ini', true);
 
     $ini_mock->tally();
 
-    $ini->reset_cache();
+    $ini->resetCache();
   }
 
-  function test_cache_save()
+  function testCacheSave()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       'test = 1'
     );
 
-    $ini = new ini_mock_version($this);
+    $ini = new IniMockVersion($this);
     $ini->expectOnce('_parse');
-    $ini->expectOnce('_save_cache');
+    $ini->expectOnce('_saveCache');
 
     $ini->__construct(VAR_DIR . 'testing.ini', true);
 
     $ini->tally();
 
-    $ini->reset_cache();
+    $ini->resetCache();
   }
 
-  function test_dont_cache()
+  function testDontCache()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing.ini',
       'test = 1'
     );
 
-    $ini = new ini_mock_version($this);
+    $ini = new IniMockVersion($this);
 
     $ini->expectOnce('_parse');
-    $ini->expectNever('_save_cache');
+    $ini->expectNever('_saveCache');
 
     $ini->__construct(VAR_DIR . 'testing.ini', false);
 
     $ini->tally();
   }
 
-  function test_parse_real_file()
+  function testParseRealFile()
   {
-    $ini = new ini(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
-    $this->assertEqual($ini->get_all(), array('test' => array('test' => 1)));
+    $ini = new Ini(LIMB_DIR . '/tests/cases/util/ini_test.ini', false);
+    $this->assertEqual($ini->getAll(), array('test' => array('test' => 1)));
   }
 }
 

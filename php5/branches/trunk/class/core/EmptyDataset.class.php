@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class empty_dataset
+class EmptyDataset
 {
   public function reset(){}
 
@@ -31,14 +31,14 @@ class empty_dataset
 
   public function import($valuelist){}
 
-  public function import_append($valuelist){}
+  public function importAppend($valuelist){}
 
   public function export()
   {
     return array();
   }
 
-  public function get_total_row_count()
+  public function getTotalRowCount()
   {
     return 0;
   }

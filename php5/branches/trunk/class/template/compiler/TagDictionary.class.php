@@ -18,16 +18,16 @@ define('ENDTAG_FORBIDDEN', 3);
 * This function is called from the respective compile time component class
 * file.
 */
-function register_tag($taginfo)
+function registerTag($taginfo)
 {
-  $GLOBALS['tag_dictionary']->register_tag($taginfo);
+  $GLOBALS['tag_dictionary']->registerTag($taginfo);
 }
 
 /**
 * The tag_dictionary, which exists as a global variable, acting as a registry
 * of compile time components.
 */
-class tag_dictionary
+class TagDictionary
 {
   /**
   * Associative array of tag_info objects
@@ -42,7 +42,7 @@ class tag_dictionary
   * Registers a tag in the dictionary, called from the global register_tag()
   * function.
   */
-  public function register_tag($taginfo)
+  public function registerTag($taginfo)
   {
     $tag = strtolower($taginfo->tag);
     $this->tag_list[] = $tag;
@@ -53,7 +53,7 @@ class tag_dictionary
   * Gets the tag information about a given tag.
   * Called from the source_file_parser
   */
-  public function get_tag_info($tag)
+  public function getTagInfo($tag)
   {
     if(isset($this->tag_information[strtolower($tag)]))
       return $this->tag_information[strtolower($tag)];
@@ -63,7 +63,7 @@ class tag_dictionary
   * Gets the list of a registered tags.
   * Called from the source_file_parser
   */
-  public function get_tag_list()
+  public function getTagList()
   {
     return $this->tag_list;
   }

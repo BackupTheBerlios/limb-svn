@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class db_group extends LimbGroupTest
+class DbGroup extends LimbGroupTest
 {
-  function db_group()
+  function dbGroup()
   {
-    $this->LimbGroupTest('db tests');
+    $this->limbGroupTest('db tests');
   }
 
   function getTestCasesHandles()
@@ -20,7 +20,7 @@ class db_group extends LimbGroupTest
     $handles = array();
     $handles = TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/db');
 
-    $db_type = get_ini_option('common.ini', 'type', 'DB');
+    $db_type = getIniOption('common.ini', 'type', 'DB');
 
     $handles = array_merge(
       $handles,

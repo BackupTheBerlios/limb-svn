@@ -10,13 +10,13 @@
 ***********************************************************************************/
 define('TEST_PACKAGES_RESOLVER_DIR', dirname(__FILE__) . '/packages/');
 
-SimpleTestOptions::ignore('base_package_file_resolver_test');
+SimpleTestOptions :: ignore('BasePackageFileResolverTest');
 
-class base_package_file_resolver_test extends LimbTestCase
+class BasePackageFileResolverTest extends LimbTestCase
 {
   var $resolver;
 
-  function & _define_resolver()
+  function & _defineResolver()
   {
     die('abstract method: define file resolver!');
   }
@@ -24,13 +24,13 @@ class base_package_file_resolver_test extends LimbTestCase
   function setUp()
   {
     Limb :: toolkit()->flushINICache();
-    packages_info :: instance()->reset();
+    PackagesInfo :: instance()->reset();
 
-    debug_mock :: init($this);
+    DebugMock :: init($this);
 
-    $this->resolver =& $this->_define_resolver();
+    $this->resolver =& $this->_defineResolver();
 
-    register_testing_ini(
+    registerTestingIni(
       'packages.ini',
       '
        packages[] = {TEST_PACKAGES_RESOLVER_DIR}package2/1.0/
@@ -41,13 +41,13 @@ class base_package_file_resolver_test extends LimbTestCase
 
   function tearDown()
   {
-    debug_mock :: tally();
+    DebugMock :: tally();
 
     unset($this->resolver);
 
-    clear_testing_ini();
+    clearTestingIni();
 
-    packages_info :: instance()->reset();
+    PackagesInfo :: instance()->reset();
   }
 
 }

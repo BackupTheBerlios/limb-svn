@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/datasources/single_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/datasources/SingleObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('tree');
+Mock :: generate('Tree');
 
-class single_object_datasource_test extends LimbTestCase
+class SingleObjectDatasourceTest extends LimbTestCase
 {
   var $toolkit;
   var $tree;
@@ -23,8 +23,8 @@ class single_object_datasource_test extends LimbTestCase
 
   function setUp()
   {
-    $this->tree = new Mocktree($this);
-    $this->datasource = new single_object_datasource();
+    $this->tree = new MockTree($this);
+    $this->datasource = new SingleObjectDatasource();
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getTree', $this->tree);
@@ -42,41 +42,41 @@ class single_object_datasource_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_get_object_ids_empty()
+  function testGetObjectIdsEmpty()
   {
-    $this->assertEqual($this->datasource->get_object_ids(), array());
+    $this->assertEqual($this->datasource->getObjectIds(), array());
   }
 
-  function test_get_object_ids_by_object_id()
+  function testGetObjectIdsByObjectId()
   {
-    $this->datasource->set_object_id($id = 200);
+    $this->datasource->setObjectId($id = 200);
 
-    $this->tree->expectNever('get_node_by_path');
-    $this->tree->expectNever('get_node');
+    $this->tree->expectNever('getNodeByPath');
+    $this->tree->expectNever('getNode');
 
-    $this->assertEqual($this->datasource->get_object_ids(), array($id));
+    $this->assertEqual($this->datasource->getObjectIds(), array($id));
   }
 
-  function test_get_object_ids_by_node_id()
+  function testGetObjectIdsByNodeId()
   {
-    $this->datasource->set_node_id($node_id = 200);
+    $this->datasource->setNodeId($node_id = 200);
 
-    $this->tree->expectNever('get_node_by_path');
-    $this->tree->expectOnce('get_node');
-    $this->tree->setReturnValue('get_node', array('object_id' => 10), array($node_id));
+    $this->tree->expectNever('getNodeByPath');
+    $this->tree->expectOnce('getNode');
+    $this->tree->setReturnValue('getNode', array('objectId' => 10), array($node_id));
 
-    $this->assertEqual($this->datasource->get_object_ids(), array(10));
+    $this->assertEqual($this->datasource->getObjectIds(), array(10));
   }
 
-  function test_get_object_ids_by_path()
+  function testGetObjectIdsByPath()
   {
-    $this->datasource->set_path($path = '/test/path');
+    $this->datasource->setPath($path = '/test/path');
 
-    $this->tree->expectNever('get_node');
-    $this->tree->expectOnce('get_node_by_path');
-    $this->tree->setReturnValue('get_node_by_path', array('object_id' => 10), array($path));
+    $this->tree->expectNever('getNode');
+    $this->tree->expectOnce('getNodeByPath');
+    $this->tree->setReturnValue('getNodeByPath', array('objectId' => 10), array($path));
 
-    $this->assertEqual($this->datasource->get_object_ids(), array(10));
+    $this->assertEqual($this->datasource->getObjectIds(), array(10));
   }
 
 }

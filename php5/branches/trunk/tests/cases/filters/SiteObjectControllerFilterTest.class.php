@@ -8,30 +8,30 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/site_object_controller_filter.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
-require_once(LIMB_DIR . '/class/core/request/response.interface.php');
+require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/core/filters/SiteObjectControllerFilter.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('filter_chain');
-Mock :: generate('request');
-Mock :: generate('requested_object_datasource');
-Mock :: generate('site_object');
-Mock :: generate('site_object_controller');
-Mock :: generate('site_object_behaviour');
-Mock :: generate('response');
+Mock :: generate('FilterChain');
+Mock :: generate('Request');
+Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('SiteObject');
+Mock :: generate('SiteObjectController');
+Mock :: generate('SiteObjectBehaviour');
+Mock :: generate('Response');
 
-Mock :: generatePartial('site_object_controller_filter',
-                        'site_object_controller_filter_test_version',
-                        array('_get_controller'));
+Mock :: generatePartial('SiteObjectControllerFilter',
+                        'SiteObjectControllerFilterTestVersion',
+                        array('_getController'));
 
-class site_object_controller_filter_test extends LimbTestCase
+class SiteObjectControllerFilterTest extends LimbTestCase
 {
   var $filter_chain;
   var $filter;
@@ -45,31 +45,31 @@ class site_object_controller_filter_test extends LimbTestCase
 
   function setUp()
   {
-    $this->filter = new site_object_controller_filter_test_version($this);
+    $this->filter = new SiteObjectControllerFilterTestVersion($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->site_object = new Mocksite_object($this);
-    $this->request = new Mockrequest($this);
-    $this->filter_chain = new Mockfilter_chain($this);
-    $this->datasource = new Mockrequested_object_datasource($this);
-    $this->controller = new Mocksite_object_controller($this);
-    $this->behaviour = new Mocksite_object_behaviour($this);
-    $this->response = new Mockresponse($this);
+    $this->site_object = new MockSiteObject($this);
+    $this->request = new MockRequest($this);
+    $this->filter_chain = new MockFilterChain($this);
+    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->controller = new MockSiteObjectController($this);
+    $this->behaviour = new MockSiteObjectBehaviour($this);
+    $this->response = new MockResponse($this);
 
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
 
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
+    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('SiteObject'));
 
     $this->filter_chain->expectOnce('next');
 
-    $this->site_object->setReturnValue('get_controller', $this->controller);
+    $this->site_object->setReturnValue('getController', $this->controller);
 
-    $this->controller->expectOnce('process', array(new IsAExpectation('Mockrequest')));
+    $this->controller->expectOnce('process', array(new IsAExpectation('MockRequest')));
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -87,9 +87,9 @@ class site_object_controller_filter_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_run()
+  function testRun()
   {
-    $this->datasource->setReturnValue('fetch', array('class_name' => 'site_object'));
+    $this->datasource->setReturnValue('fetch', array('class_name' => 'SiteObject'));
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
-require_once(LIMB_DIR . '/class/core/request/http_cache.class.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/class/core/request/HttpCache.class.php');
 
-Mock :: generate('http_response');
+Mock :: generate('HttpResponse');
 
-class http_cache_test extends LimbTestCase
+class HttpCacheTest extends LimbTestCase
 {
   var $response;
   var $cache;
@@ -21,8 +21,8 @@ class http_cache_test extends LimbTestCase
 
   function setUp()
   {
-    $this->response = new Mockhttp_response($this);
-    $this->cache = new http_cache();
+    $this->response = new MockHttpResponse($this);
+    $this->cache = new HttpCache();
     $this->server_vars = $_SERVER;
   }
 
@@ -32,23 +32,23 @@ class http_cache_test extends LimbTestCase
     $_SERVER = $this->server_vars;
   }
 
-  function test_set_cache_settings()
+  function testSetCacheSettings()
   {
-    $this->cache->set_last_modified_time($time = time());
-    $this->assertEqual($this->cache->get_last_modified_time(), $time);
-    $this->assertEqual($this->cache->format_last_modified_time(), gmdate('D, d M Y H:i:s \G\M\T', $time));
+    $this->cache->setLastModifiedTime($time = time());
+    $this->assertEqual($this->cache->getLastModifiedTime(), $time);
+    $this->assertEqual($this->cache->formatLastModifiedTime(), gmdate('D, d M Y H:i:s \G\M\T', $time));
 
-    $this->cache->set_etag($etag = md5(time()));
-    $this->assertEqual($this->cache->get_etag(), $etag);
+    $this->cache->setEtag($etag = md5(time()));
+    $this->assertEqual($this->cache->getEtag(), $etag);
 
-    $this->cache->set_cache_time(10);
-    $this->assertEqual($this->cache->get_cache_time(), 10);
+    $this->cache->setCacheTime(10);
+    $this->assertEqual($this->cache->getCacheTime(), 10);
 
-    $this->cache->set_cache_type('public');
-    $this->assertEqual($this->cache->get_cache_type(), 'public');
+    $this->cache->setCacheType('public');
+    $this->assertEqual($this->cache->getCacheType(), 'public');
   }
 
-  function test_get_default_etag1()
+  function testGetDefaultEtag1()
   {
     $script = 'test';
     $query = 'query';
@@ -56,13 +56,13 @@ class http_cache_test extends LimbTestCase
     $_SERVER['QUERY_STRING'] = $query;
     $_SERVER['SCRIPT_FILENAME'] = $script;
 
-    $this->cache->set_last_modified_time($time = time());
-    $etag = $this->cache->get_etag();
+    $this->cache->setLastModifiedTime($time = time());
+    $etag = $this->cache->getEtag();
 
     $this->assertEqual($etag, '"' . md5($script . '?' . $query . '#' . $time ) . '"');
   }
 
-  function test_get_default_etag2()
+  function testGetDefaultEtag2()
   {
     $script = 'test';
     $query = 'query';
@@ -71,111 +71,111 @@ class http_cache_test extends LimbTestCase
    unset($_SERVER['SCRIPT_FILENAME']);
     $_SERVER['PATH_TRANSLATED'] = $script;
 
-    $this->cache->set_last_modified_time($time = time());
-    $etag = $this->cache->get_etag();
+    $this->cache->setLastModifiedTime($time = time());
+    $etag = $this->cache->getEtag();
 
     $this->assertEqual($etag, '"' . md5($script . '?' . $query . '#' . $time ) . '"');
   }
 
-  function test_get_default_etag3()
+  function testGetDefaultEtag3()
   {
     $script = 'test';
 
    unset($_SERVER['QUERY_STRING']);
     $_SERVER['SCRIPT_FILENAME'] = $script;
 
-    $this->cache->set_last_modified_time($time = time());
-    $etag = $this->cache->get_etag();
+    $this->cache->setLastModifiedTime($time = time());
+    $etag = $this->cache->getEtag();
 
     $this->assertEqual($etag, '"' . md5($script . '#' . $time ) . '"');
   }
 
-  function test_is412_false()
+  function testIs412False()
   {
     $this->assertFalse($this->cache->is412());
   }
 
-  function test_is412_false_part_of_etag()
+  function testIs412FalsePartOfEtag()
   {
     $_SERVER['HTTP_IF_MATCH'] = 'big_etag';
 
-    $this->cache->set_etag('etag');
+    $this->cache->setEtag('etag');
 
     $this->assertFalse($this->cache->is412());
   }
 
-  function test_is412_false_asteric()
+  function testIs412FalseAsteric()
   {
     $_SERVER['HTTP_IF_MATCH'] = '*';
 
-    $this->cache->set_etag('etag');
+    $this->cache->setEtag('etag');
 
     $this->assertFalse($this->cache->is412());
   }
 
-  function test_is412_etag()
+  function testIs412Etag()
   {
     $_SERVER['HTTP_IF_MATCH'] = 'wrong';
 
-    $this->cache->set_etag('etag');
+    $this->cache->setEtag('etag');
 
     $this->assertTrue($this->cache->is412());
   }
 
-  function test_is412_unmodified_since()
+  function testIs412UnmodifiedSince()
   {
-    $this->cache->set_last_modified_time($time = time());
+    $this->cache->setLastModifiedTime($time = time());
 
     $_SERVER['HTTP_IF_UNMODIFIED_SINCE'] = gmdate('D, d M Y H:i:s \G\M\T', $time - 100);
 
     $this->assertTrue($this->cache->is412());
   }
 
-  function test_is304_false()
+  function testIs304False()
   {
     $this->assertFalse($this->cache->is304());
   }
 
-  function test_is304_last_modified_time()
+  function testIs304LastModifiedTime()
   {
-    $this->cache->set_last_modified_time($time = time());
+    $this->cache->setLastModifiedTime($time = time());
 
-    $_SERVER['HTTP_IF_MODIFIED_SINCE'] = $this->cache->format_last_modified_time();
+    $_SERVER['HTTP_IF_MODIFIED_SINCE'] = $this->cache->formatLastModifiedTime();
 
     $this->assertTrue($this->cache->is304());
   }
 
-  function test_is304_etag()
+  function testIs304Etag()
   {
     $etag = 'etag';
 
    unset($_SERVER['HTTP_IF_MODIFIED_SINCE']);
     $_SERVER['HTTP_IF_NONE_MATCH'] = $etag;
 
-    $this->cache->set_last_modified_time($time = time());
-    $this->cache->set_etag($etag);
+    $this->cache->setLastModifiedTime($time = time());
+    $this->cache->setEtag($etag);
 
     $this->assertTrue($this->cache->is304());
   }
 
-  function test_is304_etag_asteric()
+  function testIs304EtagAsteric()
   {
     $etag = 'etag';
 
    unset($_SERVER['HTTP_IF_MODIFIED_SINCE']);
     $_SERVER['HTTP_IF_NONE_MATCH'] = '*';
 
-    $this->cache->set_last_modified_time($time = time());
-    $this->cache->set_etag($etag);
+    $this->cache->setLastModifiedTime($time = time());
+    $this->cache->setEtag($etag);
 
     $this->assertTrue($this->cache->is304());
   }
 
-  function test_check_and_write_412()
+  function testCheckAndWrite412()
   {
     $_SERVER['HTTP_IF_MATCH'] = 'wrong';
 
-    $this->cache->set_etag('etag');
+    $this->cache->setEtag('etag');
 
     $this->response->expectCallCount('header', 3);
     $this->response->expectArgumentsAt(0, 'header', array('HTTP/1.1 412 Precondition Failed'));
@@ -184,14 +184,14 @@ class http_cache_test extends LimbTestCase
 
     $this->response->expectOnce('write', array(new WantedPatternExpectation("~^HTTP/1.1 Error 412~")));
 
-    $this->assertTrue($this->cache->check_and_write($this->response));
+    $this->assertTrue($this->cache->checkAndWrite($this->response));
   }
 
-  function test_check_and_write_304()
+  function testCheckAndWrite304()
   {
     $_SERVER['HTTP_IF_NONE_MATCH'] = 'etag';
 
-    $this->cache->set_etag('etag');
+    $this->cache->setEtag('etag');
 
     $this->response->expectCallCount('header', 6);
     $this->response->expectArgumentsAt(0, 'header', array('HTTP/1.0 304 Not Modified'));
@@ -201,64 +201,64 @@ class http_cache_test extends LimbTestCase
     $this->response->expectArgumentsAt(4, 'header', array('Last-Modified: '));
     $this->response->expectArgumentsAt(5, 'header', array('Expires: '));
 
-    $this->assertTrue($this->cache->check_and_write($this->response));
+    $this->assertTrue($this->cache->checkAndWrite($this->response));
   }
 
-  function test_check_and_write_false_not_head()
+  function testCheckAndWriteFalseNotHead()
   {
     $_SERVER['REQUEST_METHOD'] = 'GET';
-    $this->assertFalse($this->cache->check_and_write($this->response));
+    $this->assertFalse($this->cache->checkAndWrite($this->response));
   }
 
-  function test_check_and_write_no_cache_time()
+  function testCheckAndWriteNoCacheTime()
   {
     $_SERVER['REQUEST_METHOD'] = 'HEAD';
 
-    $this->cache->set_last_modified_time($time = time());
+    $this->cache->setLastModifiedTime($time = time());
 
     $this->response->expectCallCount('header', 5);
     $this->response->expectArgumentsAt(0, 'header', array('Cache-Control: protected, must-revalidate, max-age=0'));
-    $this->response->expectArgumentsAt(1, 'header', array('Last-Modified: ' . $this->cache->format_last_modified_time()));
-    $this->response->expectArgumentsAt(2, 'header', array('Etag: ' . $this->cache->get_etag()));
+    $this->response->expectArgumentsAt(1, 'header', array('Last-Modified: ' . $this->cache->formatLastModifiedTime()));
+    $this->response->expectArgumentsAt(2, 'header', array('Etag: ' . $this->cache->getEtag()));
     $this->response->expectArgumentsAt(3, 'header', array('Pragma: '));
     $this->response->expectArgumentsAt(4, 'header', array('Expires: '));
 
-    $this->assertTrue($this->cache->check_and_write($this->response));
+    $this->assertTrue($this->cache->checkAndWrite($this->response));
   }
 
-  function test_check_and_write_with_cache_time()
+  function testCheckAndWriteWithCacheTime()
   {
     $_SERVER['REQUEST_METHOD'] = 'HEAD';
 
-    $this->cache->set_last_modified_time($time = time());
-    $this->cache->set_cache_time(100);
+    $this->cache->setLastModifiedTime($time = time());
+    $this->cache->setCacheTime(100);
 
     $this->response->expectCallCount('header', 5);
     $this->response->expectArgumentsAt(0, 'header', array('Cache-Control: protected, max-age=100'));
-    $this->response->expectArgumentsAt(1, 'header', array('Last-Modified: ' . $this->cache->format_last_modified_time()));
-    $this->response->expectArgumentsAt(2, 'header', array('Etag: ' . $this->cache->get_etag()));
+    $this->response->expectArgumentsAt(1, 'header', array('Last-Modified: ' . $this->cache->formatLastModifiedTime()));
+    $this->response->expectArgumentsAt(2, 'header', array('Etag: ' . $this->cache->getEtag()));
     $this->response->expectArgumentsAt(3, 'header', array('Pragma: '));
     $this->response->expectArgumentsAt(4, 'header', array('Expires: '));
 
-    $this->assertTrue($this->cache->check_and_write($this->response));
+    $this->assertTrue($this->cache->checkAndWrite($this->response));
   }
 
-  function test_check_and_write_with_privacy()
+  function testCheckAndWriteWithPrivacy()
   {
     $_SERVER['REQUEST_METHOD'] = 'HEAD';
 
-    $this->cache->set_last_modified_time($time = time());
-    $this->cache->set_cache_time(100);
-    $this->cache->set_cache_type(http_cache :: TYPE_PUBLIC);
+    $this->cache->setLastModifiedTime($time = time());
+    $this->cache->setCacheTime(100);
+    $this->cache->setCacheType(HttpCache :: TYPE_PUBLIC);
 
     $this->response->expectCallCount('header', 5);
     $this->response->expectArgumentsAt(0, 'header', array('Cache-Control: public, max-age=100'));
-    $this->response->expectArgumentsAt(1, 'header', array('Last-Modified: ' . $this->cache->format_last_modified_time()));
-    $this->response->expectArgumentsAt(2, 'header', array('Etag: ' . $this->cache->get_etag()));
+    $this->response->expectArgumentsAt(1, 'header', array('Last-Modified: ' . $this->cache->formatLastModifiedTime()));
+    $this->response->expectArgumentsAt(2, 'header', array('Etag: ' . $this->cache->getEtag()));
     $this->response->expectArgumentsAt(3, 'header', array('Pragma: '));
     $this->response->expectArgumentsAt(4, 'header', array('Expires: '));
 
-    $this->assertTrue($this->cache->check_and_write($this->response));
+    $this->assertTrue($this->cache->checkAndWrite($this->response));
   }
 
 }

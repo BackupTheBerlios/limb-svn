@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class tree_identifier_rule extends single_field_rule
+class TreeIdentifierRule extends SingleFieldRule
 {
   const UNKNOWN_NODE_ID = -1000;
 
@@ -32,10 +32,10 @@ class tree_identifier_rule extends single_field_rule
 
     $tree = Limb :: toolkit()->getTree();
 
-    if(!$tree->is_node($this->parent_node_id))
+    if(!$tree->isNode($this->parent_node_id))
       return;
 
-    if(!$nodes = $tree->get_children($this->parent_node_id))
+    if(!$nodes = $tree->getChildren($this->parent_node_id))
       return;
 
     foreach($nodes as $id => $node)
@@ -45,12 +45,12 @@ class tree_identifier_rule extends single_field_rule
 
       if($this->node_id == self :: UNKNOWN_NODE_ID)
       {
-        $this->error(strings :: get('error_duplicate_tree_identifier', 'error'));
+        $this->error(Strings :: get('error_duplicate_tree_identifier', 'error'));
         break;
       }
       elseif($id != $this->node_id)
       {
-        $this->error(strings :: get('error_duplicate_tree_identifier', 'error'));
+        $this->error(Strings :: get('error_duplicate_tree_identifier', 'error'));
         break;
       }
     }

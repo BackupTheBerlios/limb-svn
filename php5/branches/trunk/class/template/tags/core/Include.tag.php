@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_include_tag_info
+class CoreIncludeTagInfo
 {
   public $tag = 'core:INCLUDE';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'core_include_tag';
 }
 
-register_tag(new core_include_tag_info());
+registerTag(new CoreIncludeTagInfo());
 
 /**
 * Include another template into the current template
 */
-class core_include_tag extends compiler_directive_tag
+class CoreIncludeTag extends CompilerDirectiveTag
 {
   protected $resolved_source_file;
 
-  public function pre_parse()
+  public function preParse()
   {
     global $tag_dictionary;
-    if (! array_key_exists('file', $this->attributes) ||
+    if (! array_key_exists('file', $this->attributes) || 
         empty($this->attributes['file']))
     {
       throw new WactException('missing required attribute',
@@ -38,7 +38,7 @@ class core_include_tag extends compiler_directive_tag
     }
     $file = $this->attributes['file'];
 
-    if (!$this->resolved_source_file = resolve_template_source_file_name($file))
+    if (!$this->resolved_source_file = resolveTemplateSourceFileName($file))
     {
       throw new WactException('missing file',
           array('tag' => $this->tag,
@@ -49,30 +49,30 @@ class core_include_tag extends compiler_directive_tag
 
     if (array_key_exists('literal', $this->attributes))
     {
-      $literal_component = new text_node(read_template_file($this->resolved_source_file));
-      $this->add_child($literal_component);
+      $literal_component = new TextNode(readTemplateFile($this->resolved_source_file));
+      $this->addChild($literal_component);
     }
     else
     {
-      $sfp = new source_file_parser($this->resolved_source_file, $tag_dictionary);
+      $sfp = new SourceFileParser($this->resolved_source_file, $tag_dictionary);
       $sfp->parse($this);
     }
     return PARSER_FORBID_PARSING;
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    if($this->is_debug_enabled())
+    if($this->isDebugEnabled())
     {
-      $code->write_html("<div class='debug-tmpl-include'>");
+      $code->writeHtml("<div class='debug-tmpl-include'>");
 
-      $this->_generate_debug_editor_link_html($code, $this->resolved_source_file);
+      $this->_generateDebugEditorLinkHtml($code, $this->resolved_source_file);
     }
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    if($this->is_debug_enabled())
-      $code->write_html('</div>');
+    if($this->isDebugEnabled())
+      $code->writeHtml('</div>');
   }
 }
 

@@ -8,50 +8,50 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/state_machine.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
-require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
+require_once(LIMB_DIR . '/class/core/commands/StateMachine.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
 
 Mock :: generate('StateMachine');
-Mock :: generate('request');
-Mock :: generate('site_object_behaviour');
+Mock :: generate('Request');
+Mock :: generate('SiteObjectBehaviour');
 
-class site_object_behaviour_controller_test_version extends site_object_behaviour
+class SiteObjectBehaviourControllerTestVersion extends SiteObjectBehaviour
 {
-  public function define_test_action($state_machine){}
+  public function defineTestAction($state_machine){}
 }
 
 Mock :: generatePartial
 (
-  'site_object_behaviour_controller_test_version',
-  'site_object_behaviour_mock',
-  array('define_test_action')
+  'SiteObjectBehaviourControllerTestVersion',
+  'SiteObjectBehaviourMock',
+  array('defineTestAction')
 );
 
 Mock :: generatePartial
 (
-  'site_object_controller',
-  'site_object_controller_mock',
-  array('_get_state_machine',
-        '_start_transaction',
-        '_commit_transaction',
-        '_rollback_transaction')
+  'SiteObjectController',
+  'SiteObjectControllerMock',
+  array('_getStateMachine',
+        '_startTransaction',
+        '_commitTransaction',
+        '_rollbackTransaction')
 );
 
 Mock :: generatePartial
 (
-  'site_object_controller',
-  'site_object_controller_mock2',
-  array('_perform_action',
-        '_start_transaction',
-        '_commit_transaction',
-        '_rollback_transaction')
+  'SiteObjectController',
+  'SiteObjectControllerMock2',
+  array('_performAction',
+        '_startTransaction',
+        '_commitTransaction',
+        '_rollbackTransaction')
 );
 
-class site_object_controller_perform_test_version extends site_object_controller
+class SiteObjectControllerPerformTestVersion extends SiteObjectController
 {
-  protected function _perform_action($request)
+  protected function _performAction($request)
   {
     throw new LimbException('catch me!');
   }
@@ -59,15 +59,15 @@ class site_object_controller_perform_test_version extends site_object_controller
 
 Mock :: generatePartial
 (
-  'site_object_controller_perform_test_version',
-  'site_object_controller_mock3',
-  array('_start_transaction',
-        '_commit_transaction',
-        '_rollback_transaction')
+  'SiteObjectControllerPerformTestVersion',
+  'SiteObjectControllerMock3',
+  array('_startTransaction',
+        '_commitTransaction',
+        '_rollbackTransaction')
 );
 
 
-class site_object_controller_test extends LimbTestCase
+class SiteObjectControllerTest extends LimbTestCase
 {
   var $site_object_controller;
   var $state_machine;
@@ -76,11 +76,11 @@ class site_object_controller_test extends LimbTestCase
 
   function setUp()
   {
-    $this->request = new Mockrequest($this);
+    $this->request = new MockRequest($this);
     $this->state_machine = new MockStateMachine($this);
-    $this->behaviour = new Mocksite_object_behaviour($this);
+    $this->behaviour = new MockSiteObjectBehaviour($this);
 
-    $this->controller = new site_object_controller_mock($this);
+    $this->controller = new SiteObjectControllerMock($this);
     $this->controller->__construct($this->behaviour);
   }
 
@@ -92,50 +92,50 @@ class site_object_controller_test extends LimbTestCase
     $this->behaviour->tally();
   }
 
-  function test_get_requested_action_ok()
+  function testGetRequestedActionOk()
   {
-    $this->request->setReturnValue('get', $action = 'test_action', array('action'));
+    $this->request->setReturnValue('get', $action = 'testAction', array('action'));
 
-    $this->behaviour->expectOnce('action_exists', array($action));
-    $this->behaviour->setReturnValue('action_exists', true, array($action));
+    $this->behaviour->expectOnce('actionExists', array($action));
+    $this->behaviour->setReturnValue('actionExists', true, array($action));
 
-    $this->assertEqual($this->controller->get_requested_action($this->request), 'test_action');
+    $this->assertEqual($this->controller->getRequestedAction($this->request), 'test_action');
   }
 
-  function test_default_get_action()
+  function testDefaultGetAction()
   {
     $this->request->setReturnValue('get', null, array('action'));
 
-    $this->behaviour->expectOnce('get_default_action');
-    $this->behaviour->setReturnValue('get_default_action', $action = 'display');
+    $this->behaviour->expectOnce('getDefaultAction');
+    $this->behaviour->setReturnValue('getDefaultAction', $action = 'display');
 
-    $this->behaviour->expectOnce('action_exists', array($action));
-    $this->behaviour->setReturnValue('action_exists', true, array($action));
+    $this->behaviour->expectOnce('actionExists', array($action));
+    $this->behaviour->setReturnValue('actionExists', true, array($action));
 
-    $this->assertEqual($this->controller->get_requested_action($this->request), $action);
+    $this->assertEqual($this->controller->getRequestedAction($this->request), $action);
   }
 
-  function test_get_no_such_action()
+  function testGetNoSuchAction()
   {
-    $this->request->setReturnValue('get', 'no_such_action', array('action'));
-    $this->behaviour->setReturnValue('action_exists', false, array('no_such_action'));
+    $this->request->setReturnValue('get', 'noSuchAction', array('action'));
+    $this->behaviour->setReturnValue('actionExists', false, array('no_such_action'));
 
-    $this->assertNull($this->controller->get_requested_action($this->request));
+    $this->assertNull($this->controller->getRequestedAction($this->request));
   }
 
-  function test_process()
+  function testProcess()
   {
-    $behaviour = new site_object_behaviour_mock($this);
+    $behaviour = new SiteObjectBehaviourMock($this);
 
-    $controller = new site_object_controller_mock($this);
+    $controller = new SiteObjectControllerMock($this);
     $controller->__construct($behaviour);
 
-    $this->request->setReturnValue('get', 'test_action', array('action'));
+    $this->request->setReturnValue('get', 'testAction', array('action'));
 
-    $controller->expectOnce('_get_state_machine');
-    $controller->setReturnValue('_get_state_machine', $this->state_machine);
+    $controller->expectOnce('_getStateMachine');
+    $controller->setReturnValue('_getStateMachine', $this->state_machine);
 
-    $behaviour->expectOnce('define_test_action',
+    $behaviour->expectOnce('defineTestAction',
                                  array(new IsAExpectation('MockStateMachine')));
 
     $this->state_machine->expectOnce('run');
@@ -145,16 +145,16 @@ class site_object_controller_test extends LimbTestCase
     $behaviour->tally();
   }
 
-  function test_process_no_action_find()
+  function testProcessNoActionFind()
   {
-    $behaviour = new site_object_behaviour_mock($this);
+    $behaviour = new SiteObjectBehaviourMock($this);
 
-    $controller = new site_object_controller_mock($this);
+    $controller = new SiteObjectControllerMock($this);
     $controller->__construct($behaviour);
 
-    $this->request->setReturnValue('get', 'no_such_action', array('action'));
+    $this->request->setReturnValue('get', 'noSuchAction', array('action'));
 
-    $controller->expectNever('_get_state_machine');
+    $controller->expectNever('_getStateMachine');
 
     try
     {
@@ -169,23 +169,23 @@ class site_object_controller_test extends LimbTestCase
     $behaviour->tally();
   }
 
-  function test_transaction_calls()
+  function testTransactionCalls()
   {
-    $controller = new site_object_controller_mock2($this);
+    $controller = new SiteObjectControllerMock2($this);
 
-    $controller->expectOnce('_start_transaction');
-    $controller->expectOnce('_commit_transaction');
+    $controller->expectOnce('_startTransaction');
+    $controller->expectOnce('_commitTransaction');
     $controller->process($this->request);
 
     $controller->tally();
   }
 
-  function test_transaction_rollback()
+  function testTransactionRollback()
   {
-    $controller = new site_object_controller_mock3($this);
+    $controller = new SiteObjectControllerMock3($this);
 
-    $controller->expectOnce('_start_transaction');
-    $controller->expectOnce('_rollback_transaction');
+    $controller->expectOnce('_startTransaction');
+    $controller->expectOnce('_rollbackTransaction');
 
     try
     {

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class tree_group extends LimbGroupTest
+class TreeGroup extends LimbGroupTest
 {
-  function tree_group()
+  function treeGroup()
   {
-    $this->LimbGroupTest('tree');
+    $this->limbGroupTest('tree');
   }
 
   function getTestCasesHandles()

@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_optional_tag_info
+class CoreOptionalTagInfo
 {
   public $tag = 'core:OPTIONAL';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'core_optional_tag';
 }
 
-register_tag(new core_optional_tag_info());
+registerTag(new CoreOptionalTagInfo());
 
 /**
 * Defines an action take, should a dataspace variable have been set at runtime.
 * The opposite of the core_default_tag
 */
-class core_optional_tag extends compiler_directive_tag
+class CoreOptionalTag extends CompilerDirectiveTag
 {
-  public function pre_parse()
+  public function preParse()
   {
-    if (!isset($this->attributes['for']) || !$this->attributes['for'])
+    if (!isset($this->attributes['for']) ||  !$this->attributes['for'])
     {
       throw new WactException('missing required attribute',
           array('tag' => $this->tag,
@@ -37,19 +37,19 @@ class core_optional_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
-    $tempvar = $code->get_temp_variable();
-    $code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get(\'' . $this->attributes['for'] . '\'));');
-    $code->write_php('if (!empty($' . $tempvar . ')) {');
+    $tempvar = $code->getTempVariable();
+    $code->writePhp('$' . $tempvar . ' = trim(' . $this->getDataspaceRefCode() . '->get(\'' . $this->attributes['for'] . '\'));');
+    $code->writePhp('if (!empty($' . $tempvar . ')) {');
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_php('}');
-    parent::post_generate($code);
+    $code->writePhp('}');
+    parent::postGenerate($code);
   }
 }
 

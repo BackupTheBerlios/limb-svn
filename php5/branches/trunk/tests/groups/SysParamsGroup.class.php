@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class sys_params_group extends LimbGroupTest
+class SysParamsGroup extends LimbGroupTest
 {
-  function sys_params_group()
+  function sysParamsGroup()
   {
-    $this->LimbGroupTest('sys params tests');
+    $this->limbGroupTest('sys params tests');
   }
 
   function getTestCasesHandles()

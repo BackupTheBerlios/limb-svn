@@ -10,15 +10,15 @@
 ***********************************************************************************/
 define('PACKAGES_DIR_FOR_PACKAGES_INFO_TEST', dirname(__FILE__) . '/packages/');
 
-require_once(LIMB_DIR . '/class/core/packages_info.class.php');
+require_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
 
-class packages_info_test extends LimbTestCase
+class PackagesInfoTest extends LimbTestCase
 {
   var $info;
 
   function setUp()
   {
-    $this->info = new packages_info();
+    $this->info = new PackagesInfo();
   }
 
   function tearDown()
@@ -27,14 +27,14 @@ class packages_info_test extends LimbTestCase
     unset($this->info);
   }
 
-  function test_instance()
+  function testInstance()
   {
-    $this->assertTrue(packages_info :: instance() === packages_info :: instance());
+    $this->assertTrue(PackagesInfo :: instance() === PackagesInfo :: instance());
   }
 
-  function test_get_packages_from_ini()
+  function testGetPackagesFromIni()
   {
-    register_testing_ini(
+    registerTestingIni(
       'packages.ini',
       '
        packages[] = {PACKAGES_DIR_FOR_PACKAGES_INFO_TEST}test1
@@ -42,7 +42,7 @@ class packages_info_test extends LimbTestCase
       '
     );
 
-    $this->assertEqual($this->info->get_packages(),
+    $this->assertEqual($this->info->getPackages(),
       array(
         array('path' => PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test1', 'name' => 'PACKAGE1_FOR_PACKAGES_INFO_TEST'),
         array('path' => PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test2', 'name' => 'PACKAGE2_FOR_PACKAGES_INFO_TEST')
@@ -54,7 +54,7 @@ class packages_info_test extends LimbTestCase
     $this->assertEqual(constant('PACKAGE1_FOR_PACKAGES_INFO_TEST_DIR'), PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test1');
     $this->assertEqual(constant('PACKAGE2_FOR_PACKAGES_INFO_TEST_DIR'), PACKAGES_DIR_FOR_PACKAGES_INFO_TEST . 'test2');
 
-    clear_testing_ini();
+    clearTestingIni();
   }
 }
 

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/edit_site_object_command.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
+require_once(LIMB_DIR . '/class/core/commands/EditSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('request');
-Mock :: generate('requested_object_datasource');
-Mock :: generate('dataspace');
-Mock :: generate('site_object');
+Mock :: generate('Request');
+Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('Dataspace');
+Mock :: generate('SiteObject');
 
 //do you miss namespaces? yeah, we too :)
-class site_object_for_edit_site_object_command extends site_object
+class SiteObjectForEditSiteObjectCommand extends SiteObject
 {
   public function update($force_create_new_version = true)
   {
@@ -29,7 +29,7 @@ class site_object_for_edit_site_object_command extends site_object
   }
 }
 
-class edit_site_object_command_test extends LimbTestCase
+class EditSiteObjectCommandTest extends LimbTestCase
 {
   var $command;
   var $request;
@@ -40,21 +40,21 @@ class edit_site_object_command_test extends LimbTestCase
 
   function setUp()
   {
-    $this->request = new Mockrequest($this);
-    $this->datasource = new Mockrequested_object_datasource($this);
-    $this->dataspace = new Mockdataspace($this);
-    $this->site_object = new Mocksite_object($this);
+    $this->request = new MockRequest($this);
+    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->dataspace = new MockDataspace($this);
+    $this->site_object = new MockSiteObject($this);
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
 
-    $this->toolkit->expectOnce('createSiteObject', array('site_object'));
+    $this->toolkit->expectOnce('createSiteObject', array('siteObject'));
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->command = new edit_site_object_command();
+    $this->command = new EditSiteObjectCommand();
   }
 
   function tearDown()
@@ -68,27 +68,27 @@ class edit_site_object_command_test extends LimbTestCase
     $this->site_object->tally();
   }
 
-  function test_perform_failure()
+  function testPerformFailure()
   {
     $this->toolkit->setReturnValue('createSiteObject',
-                                   new site_object_for_edit_site_object_command(),
+                                   new SiteObjectForEditSiteObjectCommand(),
                                    array('site_object'));
 
     $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
   }
 
-  function test_perform_ok_no_version_increase()
+  function testPerformOkNoVersionIncrease()
   {
     $this->dataspace->expectOnce('export');
     $this->dataspace->setReturnValue('export', $data = array('identifier' => 'test',
-                                                     'title' => 'Test',
+                                                     'title' => 'test',
                                                      ));
 
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch',
-                                   array('node_id' => 100,
-                                         'some_other_attrib' => 'some_value'));
+                                   array('nodeId' => 100,
+                                         'someOtherAttrib' => 'someValue'));
 
     $this->site_object->expectOnce('merge', array($data));
 

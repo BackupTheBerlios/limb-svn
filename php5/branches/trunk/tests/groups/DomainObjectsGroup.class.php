@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class site_objects_group extends LimbGroupTest
+class SiteObjectsGroup extends LimbGroupTest
 {
-  function site_objects_group()
+  function siteObjectsGroup()
   {
-    $this->LimbGroupTest('domain objects tests');
+    $this->limbGroupTest('domain objects tests');
   }
 
   function getTestCasesHandles()

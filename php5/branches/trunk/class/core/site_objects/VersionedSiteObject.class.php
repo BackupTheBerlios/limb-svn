@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
 
-class versioned_site_object extends site_object
+class VersionedSiteObject extends SiteObject
 {
   protected $new_version = false;
 
-  public function increase_version()
+  public function increaseVersion()
   {
     $this->new_version = true;
   }
 
-  public function is_new_version()
+  public function isNewVersion()
   {
     return $this->new_version;
   }

@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_request_transfer_tag_info
+class CoreRequestTransferTagInfo
 {
   public $tag = 'core:REQUEST_TRANSFER';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'core_request_transfer_tag';
 }
 
-register_tag(new core_request_transfer_tag_info());
+registerTag(new CoreRequestTransferTagInfo());
 
-class core_request_transfer_tag extends server_tag_component_tag
+class CoreRequestTransferTag extends ServerTagComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/request_transfer_component';
   }
 
-  public function pre_parse()
+  public function preParse()
   {
-    if (! array_key_exists('attributes', $this->attributes) || empty($this->attributes['attributes']))
+    if (! array_key_exists('attributes', $this->attributes) ||  empty($this->attributes['attributes']))
       throw new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'attributes',
@@ -36,29 +36,29 @@ class core_request_transfer_tag extends server_tag_component_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     //we override parent behavior
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
     //we override parent behavior
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $content = '$' . $code->get_temp_variable();
+    $content = '$' . $code->getTempVariable();
 
-    $code->write_php('ob_start();');
+    $code->writePhp('ob_start();');
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php("{$content} = ob_get_contents();ob_end_clean();");
+    $code->writePhp("{$content} = ob_get_contents();ob_end_clean();");
 
-    $code->write_php($this->get_component_ref_code() . "->append_request_attributes({$content});");
+    $code->writePhp($this->getComponentRefCode() . "->appendRequestAttributes({$content});");
 
-    $code->write_php("echo {$content};");
+    $code->writePhp("echo {$content};");
   }
 }
 

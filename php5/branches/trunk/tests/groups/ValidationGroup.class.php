@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class validation_group extends LimbGroupTest
+class ValidationGroup extends LimbGroupTest
 {
-  function validation_group()
+  function validationGroup()
   {
-    $this->LimbGroupTest('validation tests');
+    $this->limbGroupTest('validation tests');
   }
 
   function getTestCasesHandles()

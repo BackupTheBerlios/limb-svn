@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 
-require_once(dirname(__FILE__) . '/limb_exception.class.php');
-require_once(dirname(__FILE__) . '/sql_exception.class.php');
-require_once(dirname(__FILE__) . '/file_not_found_exception.class.php');
-require_once(dirname(__FILE__) . '/io_exception.class.php');
-require_once(dirname(__FILE__) . '/wact_exception.class.php');
+require_once(dirname(__FILE__) . '/LimbException.class.php');
+require_once(dirname(__FILE__) . '/SqlException.class.php');
+require_once(dirname(__FILE__) . '/FileNotFoundException.class.php');
+require_once(dirname(__FILE__) . '/IoException.class.php');
+require_once(dirname(__FILE__) . '/WactException.class.php');
 
 ?>

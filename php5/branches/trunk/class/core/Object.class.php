@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-class object
+class Object
 {
   protected $dataspace;
 
   function __construct()
   {
-    $this->dataspace = $this->_create_dataspace();
+    $this->dataspace = $this->_createDataspace();
   }
 
-  protected function _create_dataspace()
+  protected function _createDataspace()
   {
-    include_once(LIMB_DIR . '/class/core/dataspace.class.php');
-    return new dataspace();
+    include_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+    return new Dataspace();
   }
 
   public function merge($values)
@@ -38,7 +38,7 @@ class object
     return $this->dataspace->export();
   }
 
-  public function has_attribute($name)//rename later
+  public function hasAttribute($name)//rename later
   {
     return $this->dataspace->get($name) !== null;
   }
@@ -48,14 +48,14 @@ class object
     return $this->dataspace->get($name, $default_value);
   }
 
-  public function & get_reference($name)
+  public function & getReference($name)
   {
-    return $this->dataspace->get_reference($name);
+    return $this->dataspace->getReference($name);
   }
 
-  public function get_by_index_string($raw_index, $default_value = null)
+  public function getByIndexString($raw_index, $default_value = null)
   {
-    return $this->dataspace->get_by_index_string($raw_index, $default_value);
+    return $this->dataspace->getByIndexString($raw_index, $default_value);
   }
 
   public function set($name, $value)
@@ -63,9 +63,9 @@ class object
     $this->dataspace->set($name, $value);
   }
 
-  public function set_by_index_string($raw_index, $value)
+  public function setByIndexString($raw_index, $value)
   {
-    $this->dataspace->set_by_index_string($raw_index, $value);
+    $this->dataspace->setByIndexString($raw_index, $value);
   }
 
   public function destroy($name)

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_item_tag_info
+class GridItemTagInfo
 {
   public $tag = 'grid:ITEM';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'grid_item_tag';
 }
 
-register_tag(new grid_item_tag_info());
+registerTag(new GridItemTagInfo());
 
-class grid_item_tag extends compiler_directive_tag
+class GridItemTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof grid_list_tag)
+    if (!$this->parent instanceof GridListTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/test_runner.class.php');
+require_once(dirname(__FILE__) . '/TestRunner.class.php');
 
 class HTMLTestRunner extends TestRunner
 {
@@ -53,7 +53,7 @@ class HTMLTestRunner extends TestRunner
 
     echo '<p><a href="' . $this->getBaseURL() . '?browse=' . $path . $postfix . '">Back</a></p>';
 
-    echo debug :: parse_html_console();
+    echo Debug :: parseHtmlConsole();
   }
 
   function _displayBrowse($path, &$root_group, &$current_group)
@@ -75,7 +75,7 @@ class HTMLTestRunner extends TestRunner
       $buffer .= "<ul>";
       foreach ($group_tests as $index => $group_test)
       {
-        resolve_handle($group_test);
+        resolveHandle($group_test);
 
         if(!is_a($group_test, 'LimbGroupTest'))
         {
@@ -93,7 +93,7 @@ class HTMLTestRunner extends TestRunner
 
     echo $buffer;
 
-    echo debug :: parse_html_console();
+    echo Debug :: parseHtmlConsole();
   }
 }
 

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . '/class/i18n/strings.class.php');
+require_once(LIMB_DIR . '/class/i18n/Strings.class.php');
 
-class site_object_controller
+class SiteObjectController
 {
   protected $behaviour;
 
@@ -21,17 +21,17 @@ class site_object_controller
     $this->behaviour = $behaviour;
   }
 
-  public function get_behaviour()
+  public function getBehaviour()
   {
     return $this->behaviour;
   }
 
-  public function get_requested_action($request)
+  public function getRequestedAction($request)
   {
     if (!$action = $request->get('action'))
-      $action = $this->behaviour->get_default_action();
+      $action = $this->behaviour->getDefaultAction();
 
-    if (!$this->behaviour->action_exists($action))
+    if (!$this->behaviour->actionExists($action))
       return null;
 
     return $action;
@@ -39,55 +39,55 @@ class site_object_controller
 
   public function process($request)
   {
-    $this->_start_transaction();
+    $this->_startTransaction();
 
     try
     {
-      $this->_perform_action($request);
-      $this->_commit_transaction();
+      $this->_performAction($request);
+      $this->_commitTransaction();
     }
     catch(LimbException $e)
     {
-      $this->_rollback_transaction();
+      $this->_rollbackTransaction();
       throw $e;
     }
   }
 
-  protected function _get_state_machine()
+  protected function _getStateMachine()
   {
-    include_once(LIMB_DIR . '/class/commands/state_machine.class.php');
-    return new state_machine();
+    include_once(LIMB_DIR . '/class/commands/StateMachine.class.php');
+    return new StateMachine();
   }
 
-  protected function _perform_action($request)
+  protected function _performAction($request)
   {
-    if(!$action = $this->get_requested_action($request))
+    if(!$action = $this->getRequestedAction($request))
       throw new LimbException('action not defined in state machine',
                               array('action' => $action,
                                     'class' => get_class($this->behaviour)));
 
-    $state_machine = $this->_get_state_machine();
+    $state_machine = $this->_getStateMachine();
 
     call_user_func(array($this->behaviour, 'define_' . $action), $state_machine);
 
     $state_machine->run();
 
-    debug :: add_timing_point('action performed');
+    Debug :: addTimingPoint('action performed');
   }
 
-  protected function _start_transaction()
+  protected function _startTransaction()
   {
-    start_user_transaction();
+    startUserTransaction();
   }
 
-  protected function _commit_transaction()
+  protected function _commitTransaction()
   {
-    commit_user_transaction();
+    commitUserTransaction();
   }
 
-  protected function _rollback_transaction()
+  protected function _rollbackTransaction()
   {
-    rollback_user_transaction();
+    rollbackUserTransaction();
   }
 }
 

@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class selector_tag_info
+class SelectorTagInfo
 {
   public $tag = 'selector';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'selector_tag';
 }
 
-register_tag(new selector_tag_info());
+registerTag(new SelectorTagInfo());
 
-class selector_tag extends control_tag
+class SelectorTag extends ControlTag
 {
   public function __construct()
   {
@@ -38,23 +38,23 @@ class selector_tag extends control_tag
   unset($this->attributes['selector_name']);
   }
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'input';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    $name = '$' . $code->get_temp_variable();
-    $parent = $this->get_dataspace_ref_code();
-    $ref = $this->get_component_ref_code();
+    $name = '$' . $code->getTempVariable();
+    $parent = $this->getDataspaceRefCode();
+    $ref = $this->getComponentRefCode();
 
-    $code->write_php("
+    $code->writePhp("
     if ({$name} = {$parent}->get('" . $this->attributes['name']. "'))
       {$ref}->set_attribute('name', {$name});
     ");
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 }
 

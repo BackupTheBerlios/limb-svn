@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-interface response
+interface Response
 {
-  public function is_empty();
+  public function isEmpty();
 
   public function write($string);
 

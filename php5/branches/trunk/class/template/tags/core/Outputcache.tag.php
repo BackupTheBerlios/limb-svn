@@ -8,35 +8,35 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_outputcache_tag_info
+class CoreOutputcacheTagInfo
 {
   public $tag = 'core:OUTPUTCACHE';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'core_outputcache_tag';
 }
 
-register_tag(new core_outputcache_tag_info());
+registerTag(new CoreOutputcacheTagInfo());
 
-class core_outputcache_tag extends server_component_tag
+class CoreOutputcacheTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/outputcache_component';
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $v = '$' . $code->get_temp_variable();
+    $v = '$' . $code->getTempVariable();
 
-    $code->write_php($this->get_component_ref_code() . '->prepare();');
-    $code->write_php('if (!(' . $v . ' = ' . $this->get_component_ref_code() . '->get())) {');
-    $code->write_php('ob_start();');
+    $code->writePhp($this->getComponentRefCode() . '->prepare();');
+    $code->writePhp('if (!(' . $v . ' = ' . $this->getComponentRefCode() . '->get())) {');
+    $code->writePhp('ob_start();');
 
-    parent::generate_contents($code);
+    parent::generateContents($code);
 
-    $code->write_php($this->get_component_ref_code() . '->write(ob_get_contents());ob_end_flush();');
-    $code->write_php('}');
-    $code->write_php('else echo ' . $v . ';');
+    $code->writePhp($this->getComponentRefCode() . '->write(ob_get_contents());ob_end_flush();');
+    $code->writePhp('}');
+    $code->writePhp('else echo ' . $v . ';');
   }
 }
 

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class test_image_db_table extends db_table
+class TestImageDbTable extends DbTable
 {
-  function _define_columns()
+  function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
@@ -22,7 +22,7 @@ class test_image_db_table extends db_table
     );
   }
 
-  function _define_constraints()
+  function _defineConstraints()
   {
     return array(
       'id' =>	array(
@@ -36,9 +36,9 @@ class test_image_db_table extends db_table
 }
 
 
-class test_image_variation_db_table extends db_table
+class TestImageVariationDbTable extends DbTable
 {
-  function _define_columns()
+  function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
@@ -50,7 +50,7 @@ class test_image_variation_db_table extends db_table
     );
   }
 
-  function _define_constraints()
+  function _defineConstraints()
   {
     return array(
       'media_id' =>	array(
@@ -63,9 +63,9 @@ class test_image_variation_db_table extends db_table
   }
 }
 
-class test_media_db_table extends db_table
+class TestMediaDbTable extends DbTable
 {
-  function _define_columns()
+  function _defineColumns()
   {
     return array(
       'id' => '',
@@ -76,7 +76,7 @@ class test_media_db_table extends db_table
     );
   }
 }
-class db_table_cascade_delete_test extends LimbTestCase
+class DbTableCascadeDeleteTest extends LimbTestCase
 {
   var $image = null;
   var $image_variation = null;
@@ -86,33 +86,33 @@ class db_table_cascade_delete_test extends LimbTestCase
 
   function setUp()
   {
-    $this->image = db_table_factory :: create('test_image');
-    $this->image_variation = db_table_factory :: create('test_image_variation');
-    $this->media = db_table_factory :: create('test_media');
+    $this->image = DbTableFactory :: create('TestImage');
+    $this->image_variation = DbTableFactory :: create('TestImageVariation');
+    $this->media = DbTableFactory :: create('TestMedia');
 
-    load_testing_db_dump(dirname(__FILE__) . '/../../sql/cascade_delete.sql');
+    loadTestingDbDump(dirname(__FILE__) . '/../../sql/cascade_delete.sql');
   }
 
   function tearDown()
   {
-    clear_testing_db_tables();
+    clearTestingDbTables();
   }
 
-  function test_cascade_delete()
+  function testCascadeDelete()
   {
     $this->image_variation->delete(array('id' => 16));
 
-    $this->assertEqual(sizeof($this->image_variation->get_list()), 11);
-    $this->assertEqual(sizeof($this->media->get_list()), 11);
+    $this->assertEqual(sizeof($this->image_variation->getList()), 11);
+    $this->assertEqual(sizeof($this->media->getList()), 11);
   }
 
-  function test_nested_cascade_delete()
+  function testNestedCascadeDelete()
   {
     $this->image->delete(array('id' => 12));
 
-    $this->assertEqual(sizeof($this->image->get_list()), 4);
-    $this->assertEqual(sizeof($this->image_variation->get_list()), 9);
-    $this->assertEqual(sizeof($this->media->get_list()), 9);
+    $this->assertEqual(sizeof($this->image->getList()), 4);
+    $this->assertEqual(sizeof($this->image_variation->getList()), 9);
+    $this->assertEqual(sizeof($this->media->getList()), 9);
   }
 
 }

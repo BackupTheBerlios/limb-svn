@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/core/Object.class.php');
 
-class user extends object
+class User extends Object
 {
   const DEFAULT_USER_ID = -1;
   protected static $_instance = null;
@@ -31,7 +31,7 @@ class user extends object
   static public function instance()
   {
     if (!self :: $_instance)
-      self :: $_instance = instantiate_session_object('user');
+      self :: $_instance = instantiateSessionObject('user');
 
     return self :: $_instance;
   }
@@ -48,17 +48,17 @@ class user extends object
     $this->_is_logged_in = false;
   }
 
-  public function is_logged_in()
+  public function isLoggedIn()
   {
     return $this->_is_logged_in;
   }
 
-  public function get_login()
+  public function getLogin()
   {
     return $this->get('login');
   }
 
-  public function get_id()
+  public function getId()
   {
     return $this->get('id', self :: DEFAULT_USER_ID);
   }

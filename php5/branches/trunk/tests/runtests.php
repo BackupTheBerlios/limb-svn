@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/setup.php');
-require_once(dirname(__FILE__) . '/limb_root_group_test.class.php');
-require_once(dirname(__FILE__) . '/lib/cli_test_runner.class.php');
+require_once(dirname(__FILE__) . '/LimbRootGroupTest.class.php');
+require_once(dirname(__FILE__) . '/lib/CliTestRunner.class.php');
 
 $root_group = new LimbRootGroupTest();
 $test_runner = new CLITestRunner();

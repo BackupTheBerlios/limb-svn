@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class locale_locale_tag_info
+class LocaleLocaleTagInfo
 {
   public $tag = 'locale:LOCALE';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'locale_locale_tag';
 }
 
-register_tag(new locale_locale_tag_info());
+registerTag(new LocaleLocaleTagInfo());
 
-class locale_locale_tag extends compiler_directive_tag
+class LocaleLocaleTag extends CompilerDirectiveTag
 {
-  function pre_parse()
+  function preParse()
   {
-    if (!isset($this->attributes['name']) || !$this->attributes['name'])
+    if (!isset($this->attributes['name']) ||  !$this->attributes['name'])
     {
       throw new WactException('missing required attribute',
           array('tag' => $this->tag,
@@ -33,9 +33,9 @@ class locale_locale_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
     if(isset($this->attributes['locale_type']))
     {
@@ -47,13 +47,13 @@ class locale_locale_tag extends compiler_directive_tag
     else
         $locale_constant = 'CONTENT_LOCALE_ID';
 
-    $code->write_php('if ("' . $this->attributes['name']. '" == constant("'. $locale_constant .'")) {');
+    $code->writePhp('if ("' . $this->attributes['name']. '" == constant("'. $locale_constant .'")) {');
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_php('}');
-    parent::post_generate($code);
+    $code->writePhp('}');
+    parent::postGenerate($code);
   }
 }
 

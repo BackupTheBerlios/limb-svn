@@ -8,122 +8,122 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/data_mappers/one_table_objects_mapper.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/OneTableObjectsMapper.class.php');
 
-abstract class versioned_one_table_objects_mapper extends one_table_objects_mapper
+abstract class VersionedOneTableObjectsMapper extends OneTableObjectsMapper
 {
-  public function find_by_version($id, $version)
+  public function findByVersion($id, $version)
   {
-    $raw_data = $this->_get_finder()->find_by_version($id, $version);
+    $raw_data = $this->_getFinder()->findByVersion($id, $version);
 
     if(!$raw_data)
       return null;
 
-    $domain_object = $this->_create_domain_object();
+    $domain_object = $this->_createDomainObject();
 
-    $this->_do_load($raw_data, $domain_object);
+    $this->_doLoad($raw_data, $domain_object);
 
     return $domain_object;
   }
 
-  function trim_versions($object_id, $version)
+  function trimVersions($object_id, $version)
   {
-    $this->get_db_table()->delete('object_id = ' . $object_id .
+    $this->getDbTable()->delete('object_id = ' . $object_id .
                                   ' AND version <> ' . $version);
 
-    $version_db_table = Limb :: toolkit()->createDBTable('sys_object_version');
+    $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
     $version_db_table->delete('object_id = ' . $object_id .
                               ' AND version <> ' . $version);
   }
 
   public function insert($site_object)
   {
-    $id = $this->_do_parent_insert($site_object);
+    $id = $this->_doParentInsert($site_object);
 
-    $this->_insert_version_record($site_object);
+    $this->_insertVersionRecord($site_object);
 
     return $id;
   }
 
   //for mocking
-  protected function _do_parent_insert($site_object)
+  protected function _doParentInsert($site_object)
   {
     return parent :: insert($site_object);
   }
 
-  protected function _insert_version_record($site_object)
+  protected function _insertVersionRecord($site_object)
   {
-    $version_db_table = Limb :: toolkit()->createDBTable('sys_object_version');
+    $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
 
-    $site_object->set_created_date(time());
-    $site_object->set_modified_date(time());
+    $site_object->setCreatedDate(time());
+    $site_object->setModifiedDate(time());
 
     $user = Limb :: toolkit()->getUser();
-    $site_object->set_creator_id($user->get_id());
+    $site_object->setCreatorId($user->getId());
 
-    $data['object_id'] = $site_object->get_id();
-    $data['version'] = $site_object->get_version();
-    $data['created_date'] = $site_object->get_created_date();
-    $data['modified_date'] = $site_object->get_modified_date();
+    $data['object_id'] = $site_object->getId();
+    $data['version'] = $site_object->getVersion();
+    $data['created_date'] = $site_object->getCreatedDate();
+    $data['modified_date'] = $site_object->getModifiedDate();
 
-    $data['creator_id'] = $site_object->get_creator_id();
+    $data['creator_id'] = $site_object->getCreatorId();
 
     $version_db_table->insert($data);
   }
 
-  protected function _update_version_record($site_object)
+  protected function _updateVersionRecord($site_object)
   {
-    $version_db_table = Limb :: toolkit()->createDBTable('sys_object_version');
+    $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
 
-    $site_object->set_modified_date(time());
+    $site_object->setModifiedDate(time());
 
-    $data['modified_date'] = $site_object->get_modified_date();
+    $data['modified_date'] = $site_object->getModifiedDate();
 
-    $version_db_table->update($data, array('object_id' => $site_object->get_id(),
-                                           'version' => $site_object->get_version()));
+    $version_db_table->update($data, array('object_id' => $site_object->getId(),
+                                           'version' => $site_object->getVersion()));
   }
 
   public function update($site_object)
   {
-    if ($site_object->is_new_version())
+    if ($site_object->isNewVersion())
     {
-      $site_object->set_version($site_object->get_version() + 1);
+      $site_object->setVersion($site_object->getVersion() + 1);
 
-      $this->_insert_version_record($site_object);
+      $this->_insertVersionRecord($site_object);
 
-      $this->_insert_linked_table_record($site_object);
+      $this->_insertLinkedTableRecord($site_object);
     }
     else
     {
-      $this->_update_version_record($site_object);
+      $this->_updateVersionRecord($site_object);
     }
 
-    $this->_do_parent_update($site_object);
+    $this->_doParentUpdate($site_object);
   }
 
   //for mocking
-  protected function _do_parent_update($site_object)
+  protected function _doParentUpdate($site_object)
   {
     parent :: update($site_object);
   }
 
   public function delete($site_object)
   {
-    $this->_do_parent_delete($site_object);
+    $this->_doParentDelete($site_object);
 
-    $this->_delete_version_records($site_object);
+    $this->_deleteVersionRecords($site_object);
   }
 
   //for mocking
-  protected function _do_parent_delete($site_object)
+  protected function _doParentDelete($site_object)
   {
     parent :: delete($site_object);
   }
 
-  protected function _delete_version_records($site_object)
+  protected function _deleteVersionRecords($site_object)
   {
-    $version_db_table = Limb :: toolkit()->createDBTable('sys_object_version');
-    $version_db_table->delete(array('object_id' => $site_object->get_id()));
+    $version_db_table = Limb :: toolkit()->createDBTable('SysObjectVersion');
+    $version_db_table->delete(array('object_id' => $site_object->getId()));
   }
 }
 

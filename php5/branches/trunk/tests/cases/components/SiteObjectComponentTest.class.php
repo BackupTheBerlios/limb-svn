@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/datasource/site_object_component.class.php');
-require_once(LIMB_DIR . '/class/template/component.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/single_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/template/components/datasource/SiteObjectComponent.class.php');
+require_once(LIMB_DIR . '/class/template/Component.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/SingleObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generatePartial('site_object_component',
-                        'site_object_component_test_version',
+Mock :: generatePartial('SiteObjectComponent',
+                        'SiteObjectComponentTestVersion',
                         array('import'));
-Mock :: generate('request');
-Mock :: generate('single_object_datasource');
-Mock :: generate('requested_object_datasource');
+Mock :: generate('Request');
+Mock :: generate('SingleObjectDatasource');
+Mock :: generate('RequestedObjectDatasource');
 
-class site_object_component_test extends LimbTestCase
+class SiteObjectComponentTest extends LimbTestCase
 {
   var $component;
   var $datasource;
@@ -34,9 +34,9 @@ class site_object_component_test extends LimbTestCase
   {
     $this->toolkit = new MockLimbToolkit($this);
 
-    $this->component = new site_object_component_test_version($this);
+    $this->component = new SiteObjectComponentTestVersion($this);
 
-    $this->request = new Mockrequest($this);
+    $this->request = new MockRequest($this);
 
     $this->toolkit->setReturnValue('getRequest', $this->request);
 
@@ -52,36 +52,36 @@ class site_object_component_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_fetch_by_path()
+  function testFetchByPath()
   {
-    $datasource = new Mocksingle_object_datasource($this);
-    $this->toolkit->setReturnValue('getDatasource', $datasource, array('single_object_datasource'));
+    $datasource = new MockSingleObjectDatasource($this);
+    $this->toolkit->setReturnValue('getDatasource', $datasource, array('singleObjectDatasource'));
 
-    $datasource->expectOnce('set_path', array($path = '/root/test'));
+    $datasource->expectOnce('setPath', array($path = '/root/test'));
     $datasource->expectOnce('fetch');
 
     $result = array('some_result');
     $datasource->setReturnValue('fetch', $result);
 
     $this->component->expectOnce('import', array($result));
-    $this->component->fetch_by_path($path);
+    $this->component->fetchByPath($path);
 
     $datasource->tally();
   }
 
-  function test_fetch_requested()
+  function testFetchRequested()
   {
-    $datasource = new Mockrequested_object_datasource($this);
-    $this->toolkit->setReturnValue('getDatasource', $datasource, array('requested_object_datasource'));
+    $datasource = new MockRequestedObjectDatasource($this);
+    $this->toolkit->setReturnValue('getDatasource', $datasource, array('requestedObjectDatasource'));
 
-    $datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $datasource->expectOnce('fetch');
 
     $result = array('some_result');
     $datasource->setReturnValue('fetch', $result);
 
     $this->component->expectOnce('import', array($result));
-    $this->component->fetch_requested();
+    $this->component->fetchRequested();
 
     $datasource->tally();
   }

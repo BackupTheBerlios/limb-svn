@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/full_page_cache_filter.class.php');
-require_once(LIMB_DIR . '/class/cache/full_page_cache_manager.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
+require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/core/filters/FullPageCacheFilter.class.php');
+require_once(LIMB_DIR . '/class/cache/FullPageCacheManager.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('filter_chain');
-Mock :: generate('http_response');
-Mock :: generate('request');
-Mock :: generate('response');
-Mock :: generate('full_page_cache_manager');
+Mock :: generate('FilterChain');
+Mock :: generate('HttpResponse');
+Mock :: generate('Request');
+Mock :: generate('Response');
+Mock :: generate('FullPageCacheManager');
 
-Mock :: generatePartial('full_page_cache_filter',
-                        'full_page_cache_filter_test_version',
-                        array('_is_caching_enabled',
-                              '_get_full_pache_cache_manager'));
+Mock :: generatePartial('FullPageCacheFilter',
+                        'FullPageCacheFilterTestVersion',
+                        array('_isCachingEnabled',
+                              '_getFullPacheCacheManager'));
 
-class full_page_cache_filter_test extends LimbTestCase
+class FullPageCacheFilterTest extends LimbTestCase
 {
   var $filter_chain;
   var $filter;
@@ -37,12 +37,12 @@ class full_page_cache_filter_test extends LimbTestCase
 
   function setUp()
   {
-    $this->filter = new full_page_cache_filter_test_version($this);
+    $this->filter = new FullPageCacheFilterTestVersion($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->request = new Mockrequest($this);
-    $this->filter_chain = new Mockfilter_chain($this);
-    $this->response = new Mockhttp_response($this);
+    $this->request = new MockRequest($this);
+    $this->filter_chain = new MockFilterChain($this);
+    $this->response = new MockHttpResponse($this);
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -57,12 +57,12 @@ class full_page_cache_filter_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_caching_disabled()
+  function testCachingDisabled()
   {
-    $this->filter->setReturnValue('_is_caching_enabled', false);
+    $this->filter->setReturnValue('_isCachingEnabled', false);
 
     $this->filter_chain->expectOnce('next');
-    $this->filter->expectNever('_get_full_pache_cache_manager');
+    $this->filter->expectNever('_getFullPacheCacheManager');
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);
 
@@ -70,17 +70,17 @@ class full_page_cache_filter_test extends LimbTestCase
     $this->filter_chain->tally();
   }
 
-  function test_cache_hit()
+  function testCacheHit()
   {
-    $this->filter->setReturnValue('_is_caching_enabled', true);
+    $this->filter->setReturnValue('_isCachingEnabled', true);
 
-    $cache_manager = new Mockfull_page_cache_manager($this);
+    $cache_manager = new MockFullPageCacheManager($this);
     $this->filter_chain->expectOnce('next');
-    $this->filter->setReturnValue('_get_full_pache_cache_manager', $cache_manager);
+    $this->filter->setReturnValue('_getFullPacheCacheManager', $cache_manager);
 
-    $cache_manager->expectOnce('set_request');
+    $cache_manager->expectOnce('setRequest');
     $cache_manager->expectOnce('get');
-    $cache_manager->setReturnValue('get', $result = 'some_cached_result');
+    $cache_manager->setReturnValue('get', $result = 'someCachedResult');
 
     $this->response->expectOnce('write', array($result));
     $this->filter_chain->expectNever('next');
@@ -90,21 +90,21 @@ class full_page_cache_filter_test extends LimbTestCase
     $cache_manager->tally();
   }
 
-  function test_cache_miss()
+  function testCacheMiss()
   {
-    $this->filter->setReturnValue('_is_caching_enabled', true);
+    $this->filter->setReturnValue('_isCachingEnabled', true);
 
-    $cache_manager = new Mockfull_page_cache_manager($this);
+    $cache_manager = new MockFullPageCacheManager($this);
     $this->filter_chain->expectOnce('next');
-    $this->filter->setReturnValue('_get_full_pache_cache_manager', $cache_manager);
+    $this->filter->setReturnValue('_getFullPacheCacheManager', $cache_manager);
 
-    $cache_manager->expectOnce('set_request');
+    $cache_manager->expectOnce('setRequest');
     $cache_manager->expectOnce('get');
     $cache_manager->setReturnValue('get', null);
 
     $this->filter_chain->expectOnce('next');
 
-    $this->response->setReturnValue('get_response_string', $result = 'some_rendered_result');
+    $this->response->setReturnValue('getResponseString', $result = 'someRenderedResult');
     $cache_manager->expectOnce('write', array($result));
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);

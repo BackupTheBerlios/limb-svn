@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
-require_once(LIMB_DIR . '/class/lib/date/date.class.php');
-require_once(LIMB_DIR . '/class/i18n/locale.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.php');
+require_once(LIMB_DIR . '/class/lib/date/Date.class.php');
+require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
-class date_component extends input_form_element
+class DateComponent extends InputFormElement
 {
-  public function init_date()
+  public function initDate()
   {
     if (defined('DATEBOX_LOAD_SCRIPT'))
       return;
 
-    $date_iframe_id = $this->_get_frame_id();
+    $date_iframe_id = $this->_getFrameId();
 
     echo '<iframe width=168 height=190 name="' . $date_iframe_id . '" id="' . $date_iframe_id . '"
           src="/shared/calendar/ipopeng.htm" scrolling="no"
@@ -28,7 +28,7 @@ class date_component extends input_form_element
     define('DATEBOX_LOAD_SCRIPT',1);
   }
 
-  protected function _get_frame_id()
+  protected function _getFrameId()
   {
     //default-month:theme-name[:agenda-file[:context-name[:plugin-file]]]
 
@@ -39,80 +39,80 @@ class date_component extends input_form_element
 
     $params = array();
 
-    if($default_month = $this->get_attribute('default_month'))
+    if($default_month = $this->getAttribute('default_month'))
     {
       $params[0] = $default_month;
-      $this->unset_attribute('default_month');
+      $this->unsetAttribute('default_month');
     }
     else
       $params[0] = 'gToday';
 
-    if($this->get_attribute('theme'))
+    if($this->getAttribute('theme'))
     {
-      $params[1] = $this->get_attribute('theme').'_'. $locale_id;
-      $this->unset_attribute('theme');
+      $params[1] = $this->getAttribute('theme').'_'. $locale_id;
+      $this->unsetAttribute('theme');
     }
     else
       $params[1] = $locale_id;
 
-    if($this->get_attribute('agenda'))
+    if($this->getAttribute('agenda'))
     {
-      $params[2] = $this->get_attribute('agenda');
-      $this->unset_attribute('agenda');
+      $params[2] = $this->getAttribute('agenda');
+      $this->unsetAttribute('agenda');
     }
     else
       $params[2] = '';
 
-    if($this->get_attribute('context_name'))
+    if($this->getAttribute('context_name'))
     {
-      $params[3] = $this->get_attribute('context_name');
-      $this->unset_attribute('context_name');
+      $params[3] = $this->getAttribute('context_name');
+      $this->unsetAttribute('context_name');
     }
     else
       $params[3] = '';
 
-    if($this->get_attribute('plugin'))
+    if($this->getAttribute('plugin'))
     {
-      $params[4] = $this->get_attribute('plugin');
-      $this->unset_attribute('plugin');
+      $params[4] = $this->getAttribute('plugin');
+      $this->unsetAttribute('plugin');
     }
 
     return implode(':', $params);
   }
 
-  public function render_date()
+  public function renderDate()
   {
-    $form_id = $this->parent->get_attribute('id');
-    $id = $this->get_attribute('id');
+    $form_id = $this->parent->getAttribute('id');
+    $id = $this->getAttribute('id');
 
-    if(!$function = $this->get_attribute('function'))
+    if(!$function = $this->getAttribute('function'))
       $function = "fPopCalendar(document[\"$form_id\"][\"{$id}\"])";
     else
-      $this->unset_attribute('function');
+      $this->unsetAttribute('function');
 
-    if(!$button = $this->get_attribute('button'))
+    if(!$button = $this->getAttribute('button'))
       $button = "/shared/calendar/calbtn.gif";
     else
-      $this->unset_attribute('button');
+      $this->unsetAttribute('button');
 
     echo "<a href='javascript:void(0)' onclick='gfPop.". $function .";return false;' HIDEFOCUS><img name='popcal' align='absbottom' src='". $button ."' width='34' height='22' border='0' alt=''></a>";
   }
 
-  public function get_value()
+  public function getValue()
   {
-    $form = $this->find_parent_by_class('form_component');
+    $form = $this->findParentByClass('form_component');
 
-    $value = parent :: get_value();
+    $value = parent :: getValue();
 
     if(empty($value))
-      $value = $this->get_attribute('default_value');
+      $value = $this->getAttribute('default_value');
 
-    if($form->is_first_time())
+    if($form->isFirstTime())
     {
-      $date = new date($value);
+      $date = new Date($value);
       $locale = Limb :: toolkit()->getLocale();
 
-      $value = $date->format($locale, $locale->get_short_date_format());
+      $value = $date->format($locale, $locale->getShortDateFormat());
     }
 
     return $value;

@@ -12,7 +12,7 @@
 /**
 * Determines the full path to a compiled template file.
 */
-function resolve_template_compiled_file_name($sourcefile)
+function resolveTemplateCompiledFileName($sourcefile)
 {
   if (defined('CONTENT_LOCALE_ID'))
     $locale = '_' . CONTENT_LOCALE_ID . '/';
@@ -25,7 +25,7 @@ function resolve_template_compiled_file_name($sourcefile)
 /**
 * Returns the contents of a compiled template file
 */
-function read_template_file($file)
+function readTemplateFile($file)
 {
   return file_get_contents($file);
 }

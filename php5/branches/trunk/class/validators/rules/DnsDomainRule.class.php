@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/domain_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/DomainRule.class.php');
 
 /**
 * check for a valid domain name with a valid DNS Record.
 * If DNS is down, data will not be considered invalid,
 * possibly preventing data entry when connectivity is bad.
 */
-class dns_domain_rule extends domain_rule
+class DnsDomainRule extends DomainRule
 {
   protected function check($value)
   {
     parent::check($value);
 
-    if ($this->is_valid())
+    if ($this->isValid())
     {
       if (!checkdnsrr($value, 'A'))
       {

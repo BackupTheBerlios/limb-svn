@@ -8,76 +8,76 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/locale_date_rule.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/LocaleDateRule.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class locale_date_rule_test extends single_field_rule_test
+class LocaleDateRuleTest extends SingleFieldRuleTest
 {
-  function test_locale_date_rule_correct()
+  function testLocaleDateRuleCorrect()
   {
-    $this->validator->add_rule(new locale_date_rule('test', 'en'));
+    $this->validator->addRule(new LocaleDateRule('test', 'en'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', '02/28/2003');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_locale_date_rule_error_leap_year()
+  function testLocaleDateRuleErrorLeapYear()
   {
-    $this->validator->add_rule(new locale_date_rule('test', 'en'));
+    $this->validator->addRule(new LocaleDateRule('test', 'en'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', '02/29/2003');
 
-    $this->error_list->expectOnce('add_error', array('test', 'INVALID_DATE', array()));
+    $this->error_list->expectOnce('addError', array('test', 'INVALID_DATE', array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function test_error_locale_month_position()
+  function testErrorLocaleMonthPosition()
   {
-    $this->validator->add_rule(new locale_date_rule('test', 'en'));
+    $this->validator->addRule(new LocaleDateRule('test', 'en'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', '28/12/2003');
 
-    $this->error_list->expectOnce('add_error', array('test', 'INVALID_DATE', array()));
+    $this->error_list->expectOnce('addError', array('test', 'INVALID_DATE', array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function test_locale_date_rule_error_format()
+  function testLocaleDateRuleErrorFormat()
   {
-    $this->validator->add_rule(new locale_date_rule('test', 'en'));
+    $this->validator->addRule(new LocaleDateRule('test', 'en'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', '02-29-2003');
 
-    $this->error_list->expectOnce('add_error', array('test', 'INVALID_DATE', array()));
+    $this->error_list->expectOnce('addError', array('test', 'INVALID_DATE', array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function test_locale_date_rule_error()
+  function testLocaleDateRuleError()
   {
-    $this->validator->add_rule(new locale_date_rule('test', 'en'));
+    $this->validator->addRule(new LocaleDateRule('test', 'en'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', '02jjklklak/sdsdskj34-sdsdsjkjkj78');
 
-    $this->error_list->expectOnce('add_error', array('test', 'INVALID_DATE', array()));
+    $this->error_list->expectOnce('addError', array('test', 'INVALID_DATE', array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 }
 

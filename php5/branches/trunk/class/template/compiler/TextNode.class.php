@@ -12,7 +12,7 @@
 * Used to write literal text from the source template to the compiled
 * template
 */
-class text_node extends compiler_directive_tag
+class TextNode extends CompilerDirectiveTag
 {
   /**
   * A text string to write
@@ -22,7 +22,7 @@ class text_node extends compiler_directive_tag
   /**
   * Constructs text_node
   */
-  public function text_node($text)
+  public function textNode($text)
   {
     $this->contents = $text;
   }
@@ -33,7 +33,7 @@ class text_node extends compiler_directive_tag
   */
   public function generate($code)
   {
-    $code->write_html($this->contents);
+    $code->writeHtml($this->contents);
   }
 }
 

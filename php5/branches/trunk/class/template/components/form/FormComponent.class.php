@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
-require_once(LIMB_DIR . '/class/template/tag_component.class.php');
-require_once(LIMB_DIR . '/class/validators/error_list.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace_registry.class.php');
-require_once(LIMB_DIR . '/class/core/empty_dataset.class.php');
+require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
+require_once(LIMB_DIR . '/class/template/TagComponent.class.php');
+require_once(LIMB_DIR . '/class/validators/ErrorList.class.php');
+require_once(LIMB_DIR . '/class/core/DataspaceRegistry.class.php');
+require_once(LIMB_DIR . '/class/core/EmptyDataset.class.php');
 
 /**
 * The form_component provide a runtime API for control the behavior of a form
 */
-class form_component extends tag_component
+class FormComponent extends TagComponent
 {
   /**
   * Switch to identify whether the form has errors or not
@@ -31,12 +31,12 @@ class form_component extends tag_component
   /**
   * Determined whether the form has errors.
   */
-  public function is_valid()
+  public function isValid()
   {
     return $this->is_valid;
   }
 
-  public function set_valid_status($status)
+  public function setValidStatus($status)
   {
     $this->is_valid = $status;
   }
@@ -44,58 +44,58 @@ class form_component extends tag_component
   /**
   * Returns the error_list if it exists or an empty_error_list if not
   */
-  public function get_error_dataset()
+  public function getErrorDataset()
   {
-    $errors = error_list :: instance()->export();
+    $errors = ErrorList :: instance()->export();
 
     if (!sizeof($errors))
-      return new empty_dataset();
+      return new EmptyDataset();
 
     $array = array();
     foreach($errors as $field_name => $errors_array)
     {
       foreach($errors_array as $error)
       {
-        if($child = $this->find_child($field_name))
+        if($child = $this->findChild($field_name))
         {
-          if(!$label = $child->get_attribute('label'))
-            $label = $child->get_server_id();
+          if(!$label = $child->getAttribute('label'))
+            $label = $child->getServerId();
 
           $array[] = array('label' => $label, 'error_message' => $error['error']);
         }
       }
     }
 
-    return new array_dataset($array);
+    return new ArrayDataset($array);
   }
 
   /**
   * Identify a variable stored in the dataspace of the component, which
   * should be passed as a hidden form field in the form post.
   */
-  public function preserve_state($variable, $value=null)
+  public function preserveState($variable, $value=null)
   {
     $this->state_vars[$variable] = $value;
   }
 
-  public function is_first_time()
+  public function isFirstTime()
   {
     if(isset($this->attributes['name']))
     {
-      $dataspace = dataspace_registry :: get($this->attributes['name']);
+      $dataspace = DataspaceRegistry :: get($this->attributes['name']);
 
       return $dataspace->get('submitted') ? false : true;
     }
     else
     {
-      return Limb :: toolkit()->getRequest()->has_attribute('submitted');
+      return Limb :: toolkit()->getRequest()->hasAttribute('submitted');
     }
   }
 
   /**
   * Renders the hidden fields for variables which should be preserved
   */
-  public function render_state()
+  public function renderState()
   {
     foreach ($this->state_vars as $var => $value)
     {
@@ -104,7 +104,7 @@ class form_component extends tag_component
       echo '" value="';
 
       if(!$value)
-        echo htmlspecialchars($this->get_attribute($var), ENT_QUOTES);
+        echo htmlspecialchars($this->getAttribute($var), ENT_QUOTES);
       else
         echo htmlspecialchars($value, ENT_QUOTES);
 
@@ -112,18 +112,18 @@ class form_component extends tag_component
     }
   }
 
-  public function render_attributes()
+  public function renderAttributes()
   {
     if(!isset($this->attributes['action']))
     {
       $this->attributes['action'] = $_SERVER['PHP_SELF'];
 
       $request = Limb :: toolkit()->getRequest();
-      if($request->has_attribute('popup'))
+      if($request->hasAttribute('popup'))
         $this->attributes['action'] .= '?popup=1';
     }
 
-    parent :: render_attributes();
+    parent :: renderAttributes();
   }
 
 }

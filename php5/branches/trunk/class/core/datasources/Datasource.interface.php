@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-interface datasource
+interface Datasource
 {
   public function fetch();
 }

@@ -8,87 +8,87 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/size_range_rule.class.php');
+require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SizeRangeRule.class.php');
 
-class size_range_rule_test extends single_field_rule_test
+class SizeRangeRuleTest extends SingleFieldRuleTest
 {
-  function test_size_range_rule_empty()
+  function testSizeRangeRuleEmpty()
   {
-    $this->validator->add_rule(new size_range_rule('testfield', 10));
+    $this->validator->addRule(new SizeRangeRule('testfield', 10));
 
-    $data = new dataspace();
+    $data = new Dataspace();
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_size_range_rule_blank()
+  function testSizeRangeRuleBlank()
   {
-    $this->validator->add_rule(new size_range_rule('testfield', 5, 10));
+    $this->validator->addRule(new SizeRangeRule('testfield', 5, 10));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', '');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function testsize_range_rule_zero()
+  function testsizeRangeRuleZero()
   {
-    $this->validator->add_rule(new size_range_rule('testfield', 5, 10));
+    $this->validator->addRule(new SizeRangeRule('testfield', 5, 10));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', '0');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('size_too_small', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('size_too_small', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function testsize_range_ruleTooBig()
+  function testsizeRangeRuleTooBig()
   {
-    $this->validator->add_rule(new size_range_rule('testfield', 10));
+    $this->validator->addRule(new SizeRangeRule('testfield', 10));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', '12345678901234567890');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('size_too_big', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('size_too_big', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function testsize_range_ruleTooBig2()
+  function testsizeRangeRuleTooBig2()
   {
-    $this->validator->add_rule(new size_range_rule('testfield', 5, 10));
+    $this->validator->addRule(new SizeRangeRule('testfield', 5, 10));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', '12345678901234567890');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('size_too_big', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('size_too_big', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function testsize_range_ruleTooSmall()
+  function testsizeRangeRuleTooSmall()
   {
-    $this->validator->add_rule(new size_range_rule('testfield', 30, 100));
+    $this->validator->addRule(new SizeRangeRule('testfield', 30, 100));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', '12345678901234567890');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('size_too_small', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('size_too_small', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 }
 

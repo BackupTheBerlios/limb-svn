@@ -10,73 +10,73 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
-class unaffected_object
+class UnaffectedObject
 {
   var $test_var = 'default';
 }
 
-class declared_in_same_file
+class DeclaredInSameFile
 {
     var $test_var = 'default';
 
-    function declared_in_same_file($var = 'construction_default')
+    function declaredInSameFile($var = 'construction_default')
     {
         $this->test_var = $var;
     }
 }
 
-class resolve_handle_test extends LimbTestCase
+class ResolveHandleTest extends LimbTestCase
 {
-  function test_null_handle()
+  function testNullHandle()
   {
     $handle = null;
-    resolve_handle($handle);
+    resolveHandle($handle);
     $this->assertNull($handle);
   }
 
-  function test_object_unaffected()
+  function testObjectUnaffected()
   {
-    $handle = new unaffected_object();
+    $handle = new UnaffectedObject();
     $obj =& $handle;
     $obj->test_var = 'changed';
-    resolve_handle($handle);
-    $this->assertIsA($handle, 'unaffected_object');
+    resolveHandle($handle);
+    $this->assertIsA($handle, 'UnaffectedObject');
     $this->assertIdentical($handle, $obj);
     $this->assertEqual($handle->test_var, 'changed');
   }
 
-  function test_class_declared_in_same_file()
+  function testClassDeclaredInSameFile()
   {
     $handle = 'declared_in_same_file';
-    resolve_handle($handle);
-    $this->assertIsA($handle, 'declared_in_same_file');
+    resolveHandle($handle);
+    $this->assertIsA($handle, 'DeclaredInSameFile');
   }
 
-  function test_load_class_file1()
+  function testLoadClassFile1()
   {
-    $this->assertFalse(class_exists('loaded_handle_class'));
+    $this->assertFalse(class_exists('LoadedHandleClass'));
     $handle = dirname(__FILE__) . '/handle.inc.php|loaded_handle_class';
-    resolve_handle($handle);
-    $this->assertIsA($handle, 'loaded_handle_class');
-    $this->assertTrue(class_exists('loaded_handle_class'));
+    resolveHandle($handle);
+    $this->assertIsA($handle, 'LoadedHandleClass');
+    $this->assertTrue(class_exists('LoadedHandleClass'));
   }
 
-  function test_load_class_file2()
+  function testLoadClassFile2()
   {
-    $this->assertFalse(class_exists('test_handle_class'));
+    $this->assertFalse(class_exists('TestHandleClass'));
     $handle = dirname(__FILE__) . '/test_handle_class';
-    resolve_handle($handle);
-    $this->assertIsA($handle, 'test_handle_class');
-    $this->assertTrue(class_exists('test_handle_class'));
+    resolveHandle($handle);
+    $this->assertIsA($handle, 'TestHandleClass');
+    $this->assertTrue(class_exists('TestHandleClass'));
   }
 
-  function test_load_class_file_exception()
+  function testLoadClassFileException()
   {
     $handle = array(dirname(__FILE__) . '/test_handle_class', 1, 2, 3, 4, 5);
 
     try
     {
-      resolve_handle($handle);
+      resolveHandle($handle);
       $this->assertTrue(false);
     }
     catch(Exception $e)
@@ -85,11 +85,11 @@ class resolve_handle_test extends LimbTestCase
     }
   }
 
-  function test_constructor()
+  function testConstructor()
   {
     $handle = array('declared_in_same_file', 'construction_parameter');
-    resolve_handle($handle);
-    $this->assertIsA($handle, 'declared_in_same_file');
+    resolveHandle($handle);
+    $this->assertIsA($handle, 'DeclaredInSameFile');
     $this->assertEqual($handle->test_var, 'construction_parameter');
   }
 

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
-require_once(LIMB_DIR . '/class/template/component.class.php');
+require_once(LIMB_DIR . '/class/template/Component.class.php');
 require_once(LIMB_DIR . '/class/template/fileschemes/compiler_support.inc.php');
 require_once(LIMB_DIR . '/class/template/fileschemes/runtime_support.inc.php');
 
@@ -23,7 +23,7 @@ $template_construct = array();
 * Public facade for handling templates, dealing with loading, compiling and
 * displaying
 */
-class template extends component
+class Template extends Component
 {
   /**
   * Stored the name of the compiled template file
@@ -42,26 +42,26 @@ class template extends component
 
     if($resolve_path)
     {
-      if(!$srcfile = resolve_template_source_file_name($file))
+      if(!$srcfile = resolveTemplateSourceFileName($file))
         throw new FileNotFoundException('template file not found', $file);
     }
     else
       $srcfile = $file;
 
-    $this->codefile = resolve_template_compiled_file_name($srcfile);
+    $this->codefile = resolveTemplateCompiledFileName($srcfile);
 
     if (!isset($GLOBALS['template_render'][$this->codefile]))
     {
-      if (Limb :: toolkit()->getINI('common.ini')->get_option('force_compile', 'Templates'))
+      if (Limb :: toolkit()->getINI('common.ini')->getOption('force_compile', 'Templates'))
       {
         include_once(LIMB_DIR . '/class/template/compiler/template_compiler.inc.php');
-        compile_template_file($file, $resolve_path);
+        compileTemplateFile($file, $resolve_path);
       }
 
       if(!file_exists($this->codefile))
       {
         include_once(LIMB_DIR . '/class/template/compiler/template_compiler.inc.php');
-        compile_template_file($file, $resolve_path);
+        compileTemplateFile($file, $resolve_path);
       }
 
       $errorlevel = error_reporting();
@@ -82,9 +82,9 @@ class template extends component
     $func($this);
   }
 
-  public function get_child($server_id)
+  public function getChild($server_id)
   {
-    $result = $this->find_child($server_id);
+    $result = $this->findChild($server_id);
     if (!is_object($result))
     {
       throw new WactException('component not found',

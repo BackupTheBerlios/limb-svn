@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cron/cron_manager.class.php');
-require_once(LIMB_DIR . '/class/cron/cronjobs/cronjob_command.class.php');
-require_once(LIMB_DIR . '/class/core/request/response.interface.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/cron/CronManager.class.php');
+require_once(LIMB_DIR . '/class/cron/cronjobs/CronjobCommand.class.php');
+require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
-Mock :: generate('cronjob_command');
-Mock :: generate('response');
+Mock :: generate('CronjobCommand');
+Mock :: generate('Response');
 Mock :: generate('LimbToolkit');
 
 Mock :: generatePartial(
-  'cron_manager',
-  'cron_manager_test_version',
-  array('get_jobs', '_get_time', '_create_job_object')
+  'CronManager',
+  'CronManagerTestVersion',
+  array('getJobs', '_getTime', '_createJobObject')
 );
 
 Mock :: generatePartial(
-  'cron_manager',
-  'cron_manager_test_version2',
-  array('get_jobs', '_get_time')
+  'CronManager',
+  'CronManagerTestVersion2',
+  array('getJobs', '_getTime')
 );
 
-class cron_manager_test extends LimbTestCase
+class CronManagerTest extends LimbTestCase
 {
   var $cron_manager;
   var $response;
@@ -37,9 +37,9 @@ class cron_manager_test extends LimbTestCase
 
   function setUp()
   {
-    $this->cron_manager = new cron_manager_test_version($this);
-    $this->response = new Mockresponse($this);
-    $this->cron_job = new Mockcronjob_command($this);
+    $this->cron_manager = new CronManagerTestVersion($this);
+    $this->response = new MockResponse($this);
+    $this->cron_job = new MockCronjobCommand($this);
   }
 
   function tearDown()
@@ -47,12 +47,12 @@ class cron_manager_test extends LimbTestCase
     $this->cron_manager->tally();
     $this->response->tally();
     $this->cron_job->tally();
-    $this->_remove_jobs_last_time();
+    $this->_removeJobsLastTime();
   }
 
-  function test_get_jobs_last_time()
+  function testGetJobsLastTime()
   {
-    $this->_write_jobs_last_time(
+    $this->_writeJobsLastTime(
     'handle1 = 10
      handle3=
      handle
@@ -61,19 +61,19 @@ class cron_manager_test extends LimbTestCase
     '
     );
 
-    $cron_manager = new cron_manager();
+    $cron_manager = new CronManager();
 
     $this->assertEqual(
       array('handle1' => 10, 'handle2' => 20),
-      $cron_manager->get_jobs_last_time()
+      $cron_manager->getJobsLastTime()
     );
   }
 
-  function test_get_jobs_from_ini()
+  function testGetJobsFromIni()
   {
-    $cron_manager = new cron_manager();
+    $cron_manager = new CronManager();
 
-    register_testing_ini(
+    registerTestingIni(
       'cron.ini',
       '
       [cron-job1]
@@ -87,171 +87,171 @@ class cron_manager_test extends LimbTestCase
       '
     );
 
-    $this->assertEqual($cron_manager->get_jobs(),
+    $this->assertEqual($cron_manager->getJobs(),
       array(
         'cron-job1' => array('handle' => 'test1.php', 'interval' => 10),
         'cron-job2' => array('handle' => 'test2.php', 'interval' => 20)
       )
     );
 
-    clear_testing_ini();
+    clearTestingIni();
   }
 
-  function test_perform_there_is_no_jobs_last_time_file()
+  function testPerformThereIsNoJobsLastTimeFile()
   {
     $job1 = array('handle' => 'test1.php', 'interval' => 10);
     $job2 = array('handle' => 'test2.php', 'interval' => 10);
 
-    $this->cron_manager->setReturnValue('get_jobs',
+    $this->cron_manager->setReturnValue('getJobs',
       array(
         'cron-job1' => $job1,
         'cron-job2' => $job2
       )
     );
 
-    $this->cron_job->expectAtLeastOnce('set_response', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('setResponse', array(new IsAExpectation('MockResponse')));
     $this->cron_job->expectAtLeastOnce('perform');
-    $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
+    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
 
-    $this->cron_manager->setReturnValue('_get_time', 1);
+    $this->cron_manager->setReturnValue('_getTime', 1);
 
-    $this->cron_manager->expectArgumentsAt(0, '_create_job_object', array('test1.php'));
-    $this->cron_manager->expectArgumentsAt(1, '_create_job_object', array('test2.php'));
+    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
+    $this->cron_manager->expectArgumentsAt(1, '_createJobObject', array('test2.php'));
 
     $this->cron_manager->perform($this->response);
 
-    $contents = $this->_read_jobs_last_time();
+    $contents = $this->_readJobsLastTime();
 
     $this->assertEqual("cron-job1 = 1\ncron-job2 = 1", $contents);
   }
 
-  function test_perform_with_jobs_last_time_file_all_entries()
+  function testPerformWithJobsLastTimeFileAllEntries()
   {
-    $this->_write_jobs_last_time("cron-job1 = 1 \n cron-job2 = 11");
+    $this->_writeJobsLastTime("cron-job1 = 1 \n cron-job2 = 11");
 
     $job1 = array('handle' => 'test1.php', 'interval' => 10);
     $job2 = array('handle' => 'test2.php', 'interval' => 10);
 
-    $this->cron_manager->setReturnValue('get_jobs',
+    $this->cron_manager->setReturnValue('getJobs',
       array(
         'cron-job1' => $job1,
         'cron-job2' => $job2
       )
     );
 
-    $this->cron_job->expectOnce('set_response', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectOnce('setResponse', array(new IsAExpectation('MockResponse')));
     $this->cron_job->expectOnce('perform');
-    $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
+    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
 
-    $this->cron_manager->setReturnValue('_get_time', 12);
+    $this->cron_manager->setReturnValue('_getTime', 12);
 
-    $this->cron_manager->expectCallCount('_create_job_object', 1);
-    $this->cron_manager->expectArgumentsAt(0, '_create_job_object', array('test1.php'));
+    $this->cron_manager->expectCallCount('_createJobObject', 1);
+    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
 
     $this->cron_manager->perform($this->response);
 
-    $contents = $this->_read_jobs_last_time();
+    $contents = $this->_readJobsLastTime();
 
     $this->assertEqual("cron-job1 = 12\ncron-job2 = 11", $contents);
   }
 
-  function test_perform_with_jobs_last_time_file_missing_entry()
+  function testPerformWithJobsLastTimeFileMissingEntry()
   {
-    $this->_write_jobs_last_time("cron-job1 = 1");
+    $this->_writeJobsLastTime("cron-job1 = 1");
 
     $job1 = array('handle' => 'test1.php', 'interval' => 10);
     $job2 = array('handle' => 'test2.php', 'interval' => 10);
 
-    $this->cron_manager->setReturnValue('get_jobs',
+    $this->cron_manager->setReturnValue('getJobs',
       array(
         'cron-job1' => $job1,
         'cron-job2' => $job2
       )
     );
 
-    $this->cron_job->expectAtLeastOnce('set_response', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('setResponse', array(new IsAExpectation('MockResponse')));
     $this->cron_job->expectAtLeastOnce('perform');
-    $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
+    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
 
-    $this->cron_manager->setReturnValue('_get_time', 12);
-    $this->cron_manager->expectArgumentsAt(0, '_create_job_object', array('test1.php'));
-    $this->cron_manager->expectArgumentsAt(1, '_create_job_object', array('test2.php'));
+    $this->cron_manager->setReturnValue('_getTime', 12);
+    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
+    $this->cron_manager->expectArgumentsAt(1, '_createJobObject', array('test2.php'));
 
     $this->cron_manager->perform($this->response);
 
-    $contents = $this->_read_jobs_last_time();
+    $contents = $this->_readJobsLastTime();
 
     $this->assertEqual("cron-job1 = 12\ncron-job2 = 12", $contents);
   }
 
-  function test_perform_with_interval_missing_entry()
+  function testPerformWithIntervalMissingEntry()
   {
-    $this->_write_jobs_last_time("cron-job1 = 1");
+    $this->_writeJobsLastTime("cron-job1 = 1");
 
     $job1 = array('handle' => 'test1.php');
 
-    $this->cron_manager->setReturnValue('get_jobs',
+    $this->cron_manager->setReturnValue('getJobs',
       array(
         'cron-job1' => $job1,
       )
     );
 
-    $this->cron_job->expectAtLeastOnce('set_response', array(new IsAExpectation('Mockresponse')));
+    $this->cron_job->expectAtLeastOnce('setResponse', array(new IsAExpectation('MockResponse')));
     $this->cron_job->expectAtLeastOnce('perform');
-    $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
+    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
 
-    $this->cron_manager->setReturnValue('_get_time', 12);
-    $this->cron_manager->expectArgumentsAt(0, '_create_job_object', array('test1.php'));
+    $this->cron_manager->setReturnValue('_getTime', 12);
+    $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
 
     $this->cron_manager->perform($this->response);
 
-    $contents = $this->_read_jobs_last_time();
+    $contents = $this->_readJobsLastTime();
 
     $this->assertEqual("cron-job1 = 12", $contents);
   }
 
-  function test_forced_perform()
+  function testForcedPerform()
   {
-    $this->_write_jobs_last_time("cron-job1 = 10000");
+    $this->_writeJobsLastTime("cron-job1 = 10000");
 
     $job = array('handle' => 'test1.php', 'interval' => 10000);
 
-    $this->cron_manager->setReturnValue('get_jobs',
+    $this->cron_manager->setReturnValue('getJobs',
       array(
         'cron-job1' => $job,
       )
     );
 
-    $this->cron_manager->setReturnValue('_get_time', 10001);
-    $this->cron_manager->setReturnReference('_create_job_object', $this->cron_job);
+    $this->cron_manager->setReturnValue('_getTime', 10001);
+    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
     $this->cron_manager->perform($this->response, true);
 
-    $contents = $this->_read_jobs_last_time();
+    $contents = $this->_readJobsLastTime();
 
     $this->assertEqual("cron-job1 = 10001", $contents);
   }
 
-  function test_preform_testing_cron_job()
+  function testPreformTestingCronJob()
   {
-    $job = array('handle' => dirname(__FILE__) . '/testing_cron_job', 'interval' => 1);
+    $job = array('handle' => dirname(__FILE__) . '/testingCronJob', 'interval' => 1);
 
-    $cron_manager = new cron_manager_test_version2($this);
+    $cron_manager = new CronManagerTestVersion2($this);
 
-    $cron_manager->setReturnValue('get_jobs',
+    $cron_manager->setReturnValue('getJobs',
       array('cron-job' => $job)
     );
 
-    $cron_manager->setReturnValue('_get_time', 1);
+    $cron_manager->setReturnValue('_getTime', 1);
 
     $this->response->expectArgumentsAt(1, 'write', array('I was performed'));
 
     $cron_manager->perform($this->response);
   }
 
-  function test_real_perform()
+  function testRealPerform()
   {
-    $handle = dirname(__FILE__) . '/testing_cron_job';
-    register_testing_ini(
+    $handle = dirname(__FILE__) . '/testingCronJob';
+    registerTestingIni(
       'cron.ini',
       "
       [cron-job1]
@@ -259,25 +259,25 @@ class cron_manager_test extends LimbTestCase
       "
     );
 
-    $cron_manager = new cron_manager();
+    $cron_manager = new CronManager();
 
     $this->response->expectArgumentsAt(1, 'write', array('I was performed'));
 
     $cron_manager->perform($this->response);
 
-    $contents = $this->_read_jobs_last_time();
+    $contents = $this->_readJobsLastTime();
 
     $this->assertWantedPattern("/^cron-job1 = \d+$/", $contents);
   }
 
-  function _write_jobs_last_time($content)
+  function _writeJobsLastTime($content)
   {
     $f = fopen(VAR_DIR . '.cronjobs', 'w');
     fwrite($f, $content);
     fclose($f);
   }
 
-  function _read_jobs_last_time()
+  function _readJobsLastTime()
   {
     if(!file_exists(VAR_DIR . '.cronjobs'))
       return '';
@@ -285,7 +285,7 @@ class cron_manager_test extends LimbTestCase
     return trim(file_get_contents(VAR_DIR . '.cronjobs'));
   }
 
-  function _remove_jobs_last_time()
+  function _removeJobsLastTime()
   {
     if(file_exists(VAR_DIR . '.cronjobs'))
       unlink(VAR_DIR . '.cronjobs');

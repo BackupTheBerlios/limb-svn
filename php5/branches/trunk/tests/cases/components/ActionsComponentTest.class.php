@@ -8,33 +8,33 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/actions_component.class.php');
-require_once(LIMB_DIR . '/class/i18n/strings.class.php');
+require_once(LIMB_DIR . '/class/template/components/ActionsComponent.class.php');
+require_once(LIMB_DIR . '/class/i18n/Strings.class.php');
 
-class actions_component_test extends LimbTestCase
+class ActionsComponentTest extends LimbTestCase
 {
-  function test_get_actions()
+  function testGetActions()
   {
-    $j = new actions_component();
+    $j = new ActionsComponent();
 
     $actions = array(
       'display' => array(),
       'edit' => array(
           'JIP' => false,
-          'action_name' => strings :: get('edit'),
+          'action_name' => Strings :: get('edit'),
           'img_src' => '/shared/images/edit.gif',
       ),
       'delete' => array(
           'JIP' => true,
-          'action_name' => strings :: get('delete'),
+          'action_name' => Strings :: get('delete'),
           'img_src' => '/shared/images/rem.gif',
       ),
     );
 
-    $j->set_actions($actions);
-    $j->set_node_id(100);
+    $j->setActions($actions);
+    $j->setNodeId(100);
 
-    $actions = $j->get_actions();
+    $actions = $j->getActions();
 
     $this->assertTrue(is_array($actions));
     $this->assertEqual(count($actions), 1);

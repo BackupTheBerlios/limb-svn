@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolverDecorator.class.php');
 
-class caching_file_resolver extends file_resolver_decorator
+class CachingFileResolver extends FileResolverDecorator
 {
   protected $_resolved_paths = array();
 
@@ -19,32 +19,32 @@ class caching_file_resolver extends file_resolver_decorator
   {
     parent :: __construct($resolver);
 
-    $this->_load_cache();
+    $this->_loadCache();
 
     //destructors are buggy!!!
     register_shutdown_function(array($this, 'save_cache'));
   }
 
-  public function get_cache_file()
+  public function getCacheFile()
   {
     $cache_file = VAR_DIR . '/resolvers/' . get_class($this->_resolver) . '.php';
-    fs :: mkdir(VAR_DIR . '/resolvers/');
+    Fs :: mkdir(VAR_DIR . '/resolvers/');
 
     return $cache_file;
   }
 
-  public function flush_cache()
+  public function flushCache()
   {
     $this->_resolved_paths = array();
-    $cache_file = $this->get_cache_file();
+    $cache_file = $this->getCacheFile();
 
     if(file_exists($cache_file))
       unlink($cache_file);
   }
 
-  protected function _load_cache()
+  protected function _loadCache()
   {
-    $cache_file = $this->get_cache_file();
+    $cache_file = $this->getCacheFile();
     if(!file_exists($cache_file))
       return;
 
@@ -56,14 +56,14 @@ class caching_file_resolver extends file_resolver_decorator
       $this->_resolved_paths = array();
   }
 
-  public function save_cache()
+  public function saveCache()
   {
-    $cache_file = $this->get_cache_file();
+    $cache_file = $this->getCacheFile();
 
     $fp = fopen($cache_file, 'w+');
     if ($fp === false)
     {
-      debug::write_error("Couldn't create cache file '{$cache_file}', perhaps wrong permissions",
+      Debug::writeError("Couldn't create cache file '{$cache_file}', perhaps wrong permissions",
       __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
       return;
     }

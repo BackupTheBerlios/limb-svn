@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/search/full_text_indexer.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/search/FullTextIndexer.class.php');
 
-Mock :: generate('site_object');
+Mock :: generate('SiteObject');
 
-class full_text_search_indexer_test extends LimbTestCase
+class FullTextSearchIndexerTest extends LimbTestCase
 {
   var $db = null;
   var $site_object = null;
@@ -22,24 +22,22 @@ class full_text_search_indexer_test extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& db_factory :: instance();
+    $this->db =& DbFactory :: instance();
 
-    $this->_clean_up();
+    $this->_cleanUp();
 
-    $this->indexer = new full_text_indexer();
+    $this->indexer = new FullTextIndexer();
 
-    $this->site_object = new Mocksite_object($this);
+    $this->site_object = new MockSiteObject($this);
 
-    $this->site_object->setReturnValue('get_id', 10);
+    $this->site_object->setReturnValue('getId', 10);
     $this->site_object->setReturnValue('export',
       array(
         'id' => 10,
-        'title' => "     <b>this</b><p><br>is
-          a      \"TEST\" title    ",
-        'content' => " [this;;]
-              is a content 'test'",
-        'no_search' => 'wow',
-        'default_weight_field' => 'this is a field'
+        'title' => ,
+        'content' => ,
+        'noSearch' => 'wow',
+        'defaultWeightField' => 'this is a field'
       )
     );
 
@@ -52,64 +50,64 @@ class full_text_search_indexer_test extends LimbTestCase
     );
 
     foreach($attributes_definition as $id => $definition)
-      $this->site_object->setReturnValue('get_definition', $definition, array($id));
+      $this->site_object->setReturnValue('getDefinition', $definition, array($id));
 
-    $this->site_object->setReturnValue('get_class_id', 5);
+    $this->site_object->setReturnValue('getClassId', 5);
   }
 
   function tearDown()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
     $this->site_object->tally();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('sys_full_text_index');
+    $this->db->sqlDelete('sys_full_text_index');
   }
 
-  function test_index_object_no_words_in_db()
+  function testIndexObjectNoWordsInDb()
   {
-    $this->site_object->expectAtLeastOnce('get_id');
-    $this->site_object->expectAtLeastOnce('get_class_id');
+    $this->site_object->expectAtLeastOnce('getId');
+    $this->site_object->expectAtLeastOnce('getClassId');
     $this->site_object->expectAtLeastOnce('export');
 
     $this->indexer->add($this->site_object);
 
-    $this->db->sql_select('sys_full_text_index', '*', '', 'id');
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect('sys_full_text_index', '*', '', 'id');
+    $arr = $this->db->getArray();
 
     $this->assertNotEqual($arr, array());
     $this->assertEqual(sizeof($arr), 3);
 
     $record = reset($arr);
     $this->assertEqual($record['attribute'], 'title');
-    $this->assertEqual((int)$record['object_id'], $this->site_object->get_id());
-    $this->assertEqual((int)$record['class_id'], $this->site_object->get_class_id());
+    $this->assertEqual((int)$record['object_id'], $this->site_object->getId());
+    $this->assertEqual((int)$record['class_id'], $this->site_object->getClassId());
     $this->assertEqual($record['body'], 'this is a test title');
     $this->assertEqual($record['weight'], 10);
 
     $record = next($arr);
     $this->assertEqual($record['attribute'], 'content');
-    $this->assertEqual((int)$record['object_id'], $this->site_object->get_id());
-    $this->assertEqual((int)$record['class_id'], $this->site_object->get_class_id());
+    $this->assertEqual((int)$record['object_id'], $this->site_object->getId());
+    $this->assertEqual((int)$record['class_id'], $this->site_object->getClassId());
     $this->assertEqual($record['body'], 'this is a content test');
     $this->assertEqual($record['weight'], 5);
 
     $record = next($arr);
     $this->assertEqual($record['attribute'], 'default_weight_field');
-    $this->assertEqual((int)$record['object_id'], $this->site_object->get_id());
-    $this->assertEqual((int)$record['class_id'], $this->site_object->get_class_id());
+    $this->assertEqual((int)$record['object_id'], $this->site_object->getId());
+    $this->assertEqual((int)$record['class_id'], $this->site_object->getClassId());
     $this->assertEqual($record['body'], 'this is a field');
     $this->assertEqual($record['weight'], 1);
   }
 
-  function test_index_2_equal_objects()
+  function testIndex2_equalObjects()
   {
     $this->indexer->add($this->site_object);
     $this->indexer->add($this->site_object);
 
-    $this->test_index_object_no_words_in_db();
+    $this->testIndexObjectNoWordsInDb();
   }
 
 }

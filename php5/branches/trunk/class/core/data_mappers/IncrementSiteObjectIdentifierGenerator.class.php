@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/site_object_identifier_generator.interface.php');
+require_once(dirname(__FILE__) . '/SiteObjectIdentifierGenerator.interface.php');
 
 class IncrementSiteObjectIdentifierGenerator implements SiteObjectIdentifierGenerator
 {
   public function generate($site_object)
   {
     $tree = Limb :: toolkit()->getTree();
-    $identifier = $tree->get_max_child_identifier($site_object->get_parent_node_id());
+    $identifier = $tree->getMaxChildIdentifier($site_object->getParentNodeId());
 
     if($identifier === false)
       return false;

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_stripe_tag_info
+class GridStripeTagInfo
 {
   public $tag = 'grid:STRIPE';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'grid_stripe_tag';
 }
 
-register_tag(new grid_stripe_tag_info());
+registerTag(new GridStripeTagInfo());
 
-class grid_stripe_tag extends compiler_directive_tag
+class GridStripeTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('grid_stripe_tag'))
+    if ($this->findParentByClass('grid_stripe_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
@@ -29,7 +29,7 @@ class grid_stripe_tag extends compiler_directive_tag
           'line' => $this->starting_line_no));
     }
 
-    if (!$this->parent instanceof grid_iterator_tag)
+    if (!$this->parent instanceof GridIteratorTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -39,19 +39,19 @@ class grid_stripe_tag extends compiler_directive_tag
     }
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
     if (array_key_exists('even', $this->attributes))
     {
-      $code->write_php('if (!(' . $this->get_dataspace_ref_code() . '->get_counter()%2)) {');
-      parent :: generate_contents($code);
-      $code->write_php('}');
+      $code->writePhp('if (!(' . $this->getDataspaceRefCode() . '->get_counter()%2)) {');
+      parent :: generateContents($code);
+      $code->writePhp('}');
     }
     elseif (array_key_exists('odd', $this->attributes))
     {
-      $code->write_php('if ((' . $this->get_dataspace_ref_code() . '->get_counter()%2)) {');
-      parent :: generate_contents($code);
-      $code->write_php('}');
+      $code->writePhp('if ((' . $this->getDataspaceRefCode() . '->get_counter()%2)) {');
+      parent :: generateContents($code);
+      $code->writePhp('}');
     }
   }
 }

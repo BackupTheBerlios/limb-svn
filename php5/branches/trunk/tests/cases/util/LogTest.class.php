@@ -10,14 +10,14 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/util/log.class.php');
 
-class log_test extends LimbTestCase
+class LogTest extends LimbTestCase
 {
-  function log_test()
+  function logTest()
   {
-    parent :: LimbTestCase();
+    parent :: limbTestCase();
   }
 
-  function test_writing_to_file()
+  function testWritingToFile()
   {
     log :: write(array(VAR_DIR . '/tmp/', 'test.log'), 'wow');
 

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-interface options_datasource
+interface OptionsDatasource
 {
-  public function get_options_array();
+  public function getOptionsArray();
 
-  public function get_default_option();
+  public function getDefaultOption();
 }
 
 

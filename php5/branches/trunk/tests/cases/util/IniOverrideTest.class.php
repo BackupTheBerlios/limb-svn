@@ -8,30 +8,30 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 
 Mock :: generatePartial(
-  'ini',
-  'ini_mock_version_override',
-  array('_parse', '_save_cache')
+  'Ini',
+  'IniMockVersionOverride',
+  array('_parse', '_saveCache')
 );
 
-class ini_override_test extends LimbTestCase
+class IniOverrideTest extends LimbTestCase
 {
   function setUp()
   {
-    debug_mock :: init($this);
+    DebugMock :: init($this);
   }
 
   function tearDown()
   {
-    debug_mock :: tally();
-    clear_testing_ini();
+    DebugMock :: tally();
+    clearTestingIni();
   }
 
-  function test_override_group_values_properly()
+  function testOverrideGroupValuesProperly()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini',
       '
         [Templates]
@@ -40,7 +40,7 @@ class ini_override_test extends LimbTestCase
         path = design/templates/      '
     );
 
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini.override',
       '
         [Templates]
@@ -49,140 +49,140 @@ class ini_override_test extends LimbTestCase
       '
     );
 
-    $ini = new ini (VAR_DIR . 'testing2.ini', false);
+    $ini = new Ini (VAR_DIR . 'testing2.ini', false);
 
-    $this->assertEqual($ini->get_option('conf', 'Templates'), null);
-    $this->assertEqual($ini->get_option('path', 'Templates'), 'design/templates/');
-    $this->assertEqual($ini->get_option('force_compile', 'Templates'), 1);
+    $this->assertEqual($ini->getOption('conf', 'Templates'), null);
+    $this->assertEqual($ini->getOption('path', 'Templates'), 'design/templates/');
+    $this->assertEqual($ini->getOption('force_compile', 'Templates'), 1);
   }
 
-  function test_override_use_real_file()
+  function testOverrideUseRealFile()
   {
-    $ini = new ini(LIMB_DIR . '/tests/cases/util/ini_test2.ini', false);
+    $ini = new Ini(LIMB_DIR . '/tests/cases/util/ini_test2.ini', false);
 
-    $this->assertTrue($ini->has_group('test1'));
-    $this->assertTrue($ini->has_group('test2'));
+    $this->assertTrue($ini->hasGroup('test1'));
+    $this->assertTrue($ini->hasGroup('test2'));
 
-    $this->assertEqual($ini->get_option('v1', 'test1'), 1);
-    $this->assertEqual($ini->get_option('v2', 'test1'), 2);
-    $this->assertEqual($ini->get_option('v3', 'test1'), 3);
-    $this->assertEqual($ini->get_option('v1', 'test2'), 1);
+    $this->assertEqual($ini->getOption('v1', 'test1'), 1);
+    $this->assertEqual($ini->getOption('v2', 'test1'), 2);
+    $this->assertEqual($ini->getOption('v3', 'test1'), 3);
+    $this->assertEqual($ini->getOption('v1', 'test2'), 1);
   }
 
-  function test_cache_original_file_was_modified()
+  function testCacheOriginalFileWasModified()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini',
       'test = 1'
     );
 
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini.override',
       'test = 2'
     );
 
-    $ini = new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...
+    $ini = new Ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...
 
     // caching happens very quickly we have to tweak the original file modification time
     // in order to test
-    touch($ini->get_original_file(), time()+100);
-    touch($ini->get_override_file(), time()-100);
+    touch($ini->getOriginalFile(), time()+100);
+    touch($ini->getOverrideFile(), time()-100);
 
-    $ini_mock = new ini_mock_version_override($this);
+    $ini_mock = new IniMockVersionOverride($this);
     $ini_mock->expectOnce('_parse');
-    $ini_mock->expectOnce('_save_cache');
+    $ini_mock->expectOnce('_saveCache');
 
     $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
 
     $ini_mock->tally();
 
-    $ini->reset_cache();
+    $ini->resetCache();
   }
 
-  function test_cache_override_file_was_removed()
+  function testCacheOverrideFileWasRemoved()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini',
       'test = 1'
     );
 
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini.override',
       'test = 2'
     );
 
-    $ini = new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...
+    $ini = new Ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...
 
-    touch($ini->get_original_file(), time()-100);
-    unlink($ini->get_override_file());
+    touch($ini->getOriginalFile(), time()-100);
+    unlink($ini->getOverrideFile());
 
-    $ini_mock = new ini_mock_version_override($this);
+    $ini_mock = new IniMockVersionOverride($this);
     $ini_mock->expectOnce('_parse');
-    $ini_mock->expectOnce('_save_cache');
+    $ini_mock->expectOnce('_saveCache');
 
     $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
 
     $ini_mock->tally();
 
-    $ini->reset_cache();
+    $ini->resetCache();
   }
 
-  function test_cache_override_file_was_modified()
+  function testCacheOverrideFileWasModified()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini',
       'test = 1'
     );
 
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini.override',
       'test = 2'
     );
 
-    $ini = new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...
+    $ini = new Ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...
 
     // caching happens very quickly we have to tweak the original file modification time
     // in order to test
-    touch($ini->get_original_file(), time()-100);
-    touch($ini->get_override_file(), time()+100);
+    touch($ini->getOriginalFile(), time()-100);
+    touch($ini->getOverrideFile(), time()+100);
 
-    $ini_mock = new ini_mock_version_override($this);
+    $ini_mock = new IniMockVersionOverride($this);
     $ini_mock->expectOnce('_parse');
-    $ini_mock->expectOnce('_save_cache');
+    $ini_mock->expectOnce('_saveCache');
 
     $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
 
     $ini_mock->tally();
 
-    $ini->reset_cache();
+    $ini->resetCache();
   }
 
-  function test_cache_hit()
+  function testCacheHit()
   {
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini',
       'test = 1'
     );
 
-    register_testing_ini(
+    registerTestingIni(
       'testing2.ini.override',
       'test = 2'
     );
 
-    $ini = new ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...
+    $ini = new Ini(VAR_DIR . 'testing2.ini', true); //ini should be cached here...
 
-    $ini_mock = new ini_mock_version_override($this);
+    $ini_mock = new IniMockVersionOverride($this);
 
-    touch($ini->get_cache_file(), time()+100);
+    touch($ini->getCacheFile(), time()+100);
 
     $ini_mock->expectNever('_parse');
-    $ini_mock->expectNever('_save_cache');
+    $ini_mock->expectNever('_saveCache');
 
     $ini_mock->__construct(VAR_DIR . 'testing2.ini', true);
 
     $ini_mock->tally();
 
-    $ini->reset_cache();
+    $ini->resetCache();
   }
 }
 

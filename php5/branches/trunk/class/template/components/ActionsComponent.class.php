@@ -8,36 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/list_component.class.php');
+require_once(LIMB_DIR . '/class/template/components/ListComponent.class.php');
 require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
 
-class actions_component extends list_component
+class ActionsComponent extends ListComponent
 {
   protected $all_actions = array();
 
   protected $node_id;
 
-  public function set_actions($all_actions)
+  public function setActions($all_actions)
   {
     $this->all_actions = $all_actions;
   }
 
-  public function set_node_id($node_id)
+  public function setNodeId($node_id)
   {
     $this->node_id = $node_id;
   }
 
   public function prepare()
   {
-    $actions = $this->get_actions();
+    $actions = $this->getActions();
 
     if (count($actions))
-      $this->register_dataset(new array_dataset($actions));
+      $this->registerDataset(new ArrayDataset($actions));
 
     return parent :: prepare();
   }
 
-  public function get_actions()
+  public function getActions()
   {
     if (!count($this->all_actions))
       return array();
@@ -51,17 +51,17 @@ class actions_component extends list_component
       else
         $action_params = array();
 
-      if(isset($params['popup']) && $params['popup'] === true)
+      if(isset($params['popup']) &&  $params['popup'] === true)
           $action_params['popup'] = 1;
 
-      if (isset($params['JIP']) && $params['JIP'] === true)
+      if (isset($params['JIP']) &&  $params['JIP'] === true)
       {
         $actions[$action] = $params;
         $actions[$action]['action'] = $action;
         $action_params['action'] = $action;
         $action_params['node_id'] = $this->node_id;
 
-        $actions[$action]['action_href'] = add_url_query_items('/root', $action_params);
+        $actions[$action]['action_href'] = addUrlQueryItems('/root', $action_params);
       }
     }
 

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/lib/system/sys.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
 
 if(!defined('MAX_LOGROTATE_FILES'))
   define('MAX_LOGROTATE_FILES', 5);
@@ -29,7 +29,7 @@ class log
     $file_name = $log_dir . $log_name;
 
     if (!is_dir($log_dir))
-      fs :: mkdir($log_dir, 0775, true);
+      Fs :: mkdir($log_dir, 0775, true);
 
     $oldumask = umask(0);
     $file_existed = file_exists($file_name);
@@ -43,10 +43,10 @@ class log
 
       $user = Limb :: toolkit()->getUser();
 
-      if(($user_id = $user->get_id()) != user :: DEFAULT_USER_ID)
-        $notice .= '[ ' . $user_id . ' ] [ '  . $user->get_login() . ' ] [ ' . $user->get('email', '') . ' ] ';
+      if(($user_id = $user->getId()) != User :: DEFAULT_USER_ID)
+        $notice .= '[ ' . $user_id . ' ] [ '  . $user->getLogin() . ' ] [ ' . $user->get('email', '') . ' ] ';
 
-      $notice .= '[' . sys::client_ip() . '] [' . (isset($_SERVER['REQUEST_URI']) ?  $_SERVER['REQUEST_URI'] : '') . "]\n" . $string . "\n\n";
+      $notice .= '[' . Sys::clientIp() . '] [' . (isset($_SERVER['REQUEST_URI']) ?  $_SERVER['REQUEST_URI'] : '') . "]\n" . $string . "\n\n";
 
       fwrite($log_file, $notice);
       fclose($log_file );
@@ -73,7 +73,7 @@ class log
    exceed max_logrotate_files() will be removed.
    Rotated files will get the extension .1, .2 etc.
   */
-  static public function rotate_log($file_name)
+  static public function rotateLog($file_name)
   {
     $max_logrotate_files = MAX_LOGROTATE_FILES;
     for ($i = $max_logrotate_files; $i > 0; --$i)

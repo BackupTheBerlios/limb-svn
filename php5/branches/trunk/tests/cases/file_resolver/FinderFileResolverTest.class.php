@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/base_package_file_resolver_test.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/finder_file_resolver.class.php');
+require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/FinderFileResolver.class.php');
 
-class finder_file_resolver_test extends base_package_file_resolver_test
+class FinderFileResolverTest extends BasePackageFileResolverTest
 {
-  function & _define_resolver()
+  function & _defineResolver()
   {
-    return new finder_file_resolver(new package_file_resolver());
+    return new FinderFileResolver(new PackageFileResolver());
   }
 
-  function test_resolve_finder_file_ok()
+  function testResolveFinderFileOk()
   {
     $this->assertEqual($this->resolver->resolve('test_finder'),
                        TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/finders/test_finder.class.php');
   }
 
-  function test_resolve_finder_file_failed()
+  function testResolveFinderFileFailed()
   {
     try
     {

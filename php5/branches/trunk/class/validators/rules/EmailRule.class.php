@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/domain_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/DomainRule.class.php');
 
-class email_rule extends domain_rule
+class EmailRule extends DomainRule
 {
-  protected function check_user($value)
+  protected function checkUser($value)
   {
     if (!preg_match('/^[a-z0-9]{1}([-a-z0-9_.]+)*$/', $value))
-      $this->error(strings :: get('invalid_email', 'error'));
+      $this->error(Strings :: get('invalid_email', 'error'));
   }
 
-  protected function check_domain($value)
+  protected function checkDomain($value)
   {
     parent :: check($value);
   }
@@ -28,12 +28,12 @@ class email_rule extends domain_rule
     if (is_integer(strpos($value, '@')))
     {
       list($user, $domain) = split('@', $value, 2);
-      $this->check_user($user);
-      $this->check_domain($domain);
+      $this->checkUser($user);
+      $this->checkDomain($domain);
     }
     else
     {
-      $this->error(strings :: get('invalid_email', 'error'));
+      $this->error(Strings :: get('invalid_email', 'error'));
     }
   }
 }

@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/delete_site_object_command.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/commands/DeleteSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('request');
-Mock :: generate('requested_object_datasource');
-Mock :: generate('site_object');
+Mock :: generate('Request');
+Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('SiteObject');
 
-class site_object_delete_command_test_version1 extends site_object
+class SiteObjectDeleteCommandTestVersion1 extends SiteObject
 {
   public function delete()
   {
@@ -27,7 +27,7 @@ class site_object_delete_command_test_version1 extends site_object
   }
 }
 
-class site_object_delete_command_test_version2 extends site_object
+class SiteObjectDeleteCommandTestVersion2 extends SiteObject
 {
   public function delete()
   {
@@ -36,7 +36,7 @@ class site_object_delete_command_test_version2 extends site_object
 }
 
 
-class delete_site_object_command_test extends LimbTestCase
+class DeleteSiteObjectCommandTest extends LimbTestCase
 {
   var $delete_command;
   var $site_object;
@@ -46,9 +46,9 @@ class delete_site_object_command_test extends LimbTestCase
 
   function setUp()
   {
-    $this->request = new Mockrequest($this);
-    $this->datasource = new Mockrequested_object_datasource($this);
-    $this->site_object = new Mocksite_object($this);
+    $this->request = new MockRequest($this);
+    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->site_object = new MockSiteObject($this);
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
@@ -56,7 +56,7 @@ class delete_site_object_command_test extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->delete_command = new delete_site_object_command();
+    $this->delete_command = new DeleteSiteObjectCommand();
   }
 
   function tearDown()
@@ -69,11 +69,11 @@ class delete_site_object_command_test extends LimbTestCase
     $this->site_object->tally();
   }
 
-  function test_delete_ok()
+  function testDeleteOk()
   {
     $object_data = array('class_name' => 'some_class');
 
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $object_data);
 
@@ -83,26 +83,26 @@ class delete_site_object_command_test extends LimbTestCase
     $this->assertEqual($this->delete_command->perform(), Limb :: STATUS_OK);
   }
 
-  function test_delete_failed()
+  function testDeleteFailed()
   {
-    $this->toolkit->setReturnValue('createSiteObject', new site_object_delete_command_test_version1());
+    $this->toolkit->setReturnValue('createSiteObject', new SiteObjectDeleteCommandTestVersion1());
 
     $object_data = array('class_name' => 'some_class');
 
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $object_data);
 
     $this->assertEqual($this->delete_command->perform(), Limb :: STATUS_ERROR);
   }
 
-  function test_delete_failed_sql_exception()
+  function testDeleteFailedSqlException()
   {
-    $this->toolkit->setReturnValue('createSiteObject', new site_object_delete_command_test_version2());
+    $this->toolkit->setReturnValue('createSiteObject', new SiteObjectDeleteCommandTestVersion2());
 
     $object_data = array('class_name' => 'some_class');
 
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $object_data);
 

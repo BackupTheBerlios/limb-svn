@@ -8,58 +8,58 @@
 * $Id$
 *
 ***********************************************************************************/
-class actions_tag_info
+class ActionsTagInfo
 {
   public $tag = 'actions';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'actions_tag';
 }
 
-register_tag(new actions_tag_info());
+registerTag(new ActionsTagInfo());
 
-class actions_tag extends server_component_tag
+class ActionsTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/actions_component';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
 
-    $actions_array = '$' . $code->get_temp_variable();
-    $node_id = '$' . $code->get_temp_variable();
-    $node = '$' . $code->get_temp_variable();
-    $code->write_php("{$actions_array} = ".  $this->parent->get_dataspace_ref_code() . '->get("actions");'."\n");
+    $actions_array = '$' . $code->getTempVariable();
+    $node_id = '$' . $code->getTempVariable();
+    $node = '$' . $code->getTempVariable();
+    $code->writePhp("{$actions_array} = ".  $this->parent->getDataspaceRefCode() . '->get("actions");'."\n");
 
-    $code->write_php("{$node_id} = " . $this->parent->get_dataspace_ref_code() . '->get("node_id");'. "\n");
+    $code->writePhp("{$node_id} = " . $this->parent->getDataspaceRefCode() . '->get("node_id");'. "\n");
 
-    $code->write_php("if(!{$node_id}){
-      {$node} = Limb :: toolkit()->getFetcher()->map_request_to_node(Limb :: toolkit()->getRequest()); {$node_id} = {$node}['id'];}\n");
+    $code->writePhp("if(!{$node_id}){
+      {$node} = Limb :: toolkit()->getFetcher()->mapRequestToNode(Limb :: toolkit()->getRequest()); {$node_id} = {$node}['id'];}\n");
 
-    $code->write_php($this->get_component_ref_code() . "->set_actions({$actions_array});\n");
+    $code->writePhp($this->getComponentRefCode() . "->setActions({$actions_array});\n");
 
-    $code->write_php($this->get_component_ref_code() . "->set_node_id({$node_id});\n");
+    $code->writePhp($this->getComponentRefCode() . "->setNodeId({$node_id});\n");
 
-    $code->write_php($this->get_component_ref_code() . '->prepare();'."\n");
+    $code->writePhp($this->getComponentRefCode() . '->prepare();'."\n");
 
-    $code->write_php('if (' . $this->get_component_ref_code() . '->next()) {');
+    $code->writePhp('if (' . $this->getComponentRefCode() . '->next()) {');
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_php('}');
+    $code->writePhp('}');
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code() . '->dataset';
+    return $this->getComponentRefCode() . '->dataset';
   }
 }
 

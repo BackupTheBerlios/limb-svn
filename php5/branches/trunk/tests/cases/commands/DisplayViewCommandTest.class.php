@@ -8,15 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/display_view_command.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/request/response.interface.php');
-require_once(LIMB_DIR . '/class/template/template.class.php');
+require_once(LIMB_DIR . '/class/core/commands/DisplayViewCommand.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
+require_once(LIMB_DIR . '/class/template/Template.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('response');
+Mock :: generate('Response');
 
-class template_stub extends template
+class TemplateStub extends Template
 {
   function __construct()
   {
@@ -28,7 +28,7 @@ class template_stub extends template
   }
 }
 
-class display_view_command_test extends LimbTestCase
+class DisplayViewCommandTest extends LimbTestCase
 {
   var $toolkit;
   var $response;
@@ -37,8 +37,8 @@ class display_view_command_test extends LimbTestCase
   function setUp()
   {
     $this->toolkit = new MockLimbToolkit($this);
-    $this->response = new Mockresponse($this);
-    $this->template = new template_stub();
+    $this->response = new MockResponse($this);
+    $this->template = new TemplateStub();
 
     $this->toolkit->setReturnValue('getResponse', $this->response);
 
@@ -53,9 +53,9 @@ class display_view_command_test extends LimbTestCase
     $this->response->tally();
   }
 
-  function test_perform_ok()
+  function testPerformOk()
   {
-    $command = new display_view_command();
+    $command = new DisplayViewCommand();
 
     $this->toolkit->expectOnce('getView');
     $this->toolkit->setReturnValue('getView', $this->template);
@@ -65,9 +65,9 @@ class display_view_command_test extends LimbTestCase
     $this->assertEqual($command->perform(), Limb :: STATUS_OK);
   }
 
-  function test_perform_failed_no_view()
+  function testPerformFailedNoView()
   {
-    $command = new display_view_command();
+    $command = new DisplayViewCommand();
 
     $this->toolkit->expectOnce('getView');
     $this->toolkit->setReturnValue('getView', null);

@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-class site_object_tag_info
+class SiteObjectTagInfo
 {
   public $tag = 'site_object';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'site_object';
 }
 
-register_tag(new site_object_tag_info());
+registerTag(new SiteObjectTagInfo());
 
-class site_object_tag extends server_component_tag
+class SiteObjectTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/site_object_component';
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['path']))
     {
@@ -38,21 +38,21 @@ class site_object_tag extends server_component_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php($this->get_component_ref_code() . '->fetch_by_path("' . $this->attributes['path'] . '");');
+    $code->writePhp($this->getComponentRefCode() . '->fetch_by_path("' . $this->attributes['path'] . '");');
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code();
+    return $this->getComponentRefCode();
   }
 }
 

@@ -9,23 +9,23 @@
 *
 ***********************************************************************************/
 define('OVERRIDE_TEMPLATE_DIR_FOR_TEST', dirname(__FILE__) . '/design/');
-require_once(dirname(__FILE__) . '/base_package_file_resolver_test.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/template_file_resolver.class.php');
+require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/TemplateFileResolver.class.php');
 
 Mock :: generatePartial(
-  'template_file_resolver',
-  'template_file_resolver_test_version',
-  array('_get_locale_prefix')
+  'TemplateFileResolver',
+  'TemplateFileResolverTestVersion',
+  array('_getLocalePrefix')
 );
 
-class template_file_resolver_test extends base_package_file_resolver_test
+class TemplateFileResolverTest extends BasePackageFileResolverTest
 {
-  function & _define_resolver()
+  function & _defineResolver()
   {
-    $resolver = new template_file_resolver_test_version($this);
-    $resolver->__construct(new package_file_resolver());
+    $resolver = new TemplateFileResolverTestVersion($this);
+    $resolver->__construct(new PackageFileResolver());
 
-    $resolver->setReturnValue('_get_locale_prefix', '');
+    $resolver->setReturnValue('_getLocalePrefix', '');
 
     return $resolver;
   }
@@ -34,7 +34,7 @@ class template_file_resolver_test extends base_package_file_resolver_test
   {
     parent :: setUp();
 
-    register_testing_ini(
+    registerTestingIni(
       'common.ini',
       '
       [Templates]
@@ -49,29 +49,29 @@ class template_file_resolver_test extends base_package_file_resolver_test
     parent :: tearDown();
   }
 
-  function test_resolve_template_file_found_in_templates_dir_using_locale()
+  function testResolveTemplateFileFoundInTemplatesDirUsingLocale()
   {
-    $this->resolver->setReturnValueAt(0, '_get_locale_prefix', '_en/');
+    $this->resolver->setReturnValueAt(0, '_getLocalePrefix', '_en/');
     $this->assertEqual($this->resolver->resolve('test1.html'), OVERRIDE_TEMPLATE_DIR_FOR_TEST . '_en/test1.html');
   }
 
-  function test_resolve_template_file_found_in_templates_dir()
+  function testResolveTemplateFileFoundInTemplatesDir()
   {
     $this->assertEqual($this->resolver->resolve('test1.html'), OVERRIDE_TEMPLATE_DIR_FOR_TEST . 'test1.html');
   }
 
-  function test_resolve_template_file_found_in_package_using_locale()
+  function testResolveTemplateFileFoundInPackageUsingLocale()
   {
-    $this->resolver->setReturnValueAt(0, '_get_locale_prefix', '_en/');
+    $this->resolver->setReturnValueAt(0, '_getLocalePrefix', '_en/');
     $this->assertEqual($this->resolver->resolve('test2.html'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/design/_en/test2.html');
   }
 
-  function test_resolve_template_file_found_in_package()
+  function testResolveTemplateFileFoundInPackage()
   {
     $this->assertEqual($this->resolver->resolve('test2.html'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/design/test2.html');
   }
 
-  function test_resolve_template_file_failed()
+  function testResolveTemplateFileFailed()
   {
     try
     {

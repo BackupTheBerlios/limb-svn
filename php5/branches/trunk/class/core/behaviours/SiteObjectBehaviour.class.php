@@ -8,29 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/i18n/strings.class.php');
-require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/i18n/Strings.class.php');
+require_once(LIMB_DIR . '/class/core/Object.class.php');
 
-class site_object_behaviour extends object
+class SiteObjectBehaviour extends Object
 {
   protected $_actions_list = array();
 
-  public function get_id()
+  public function getId()
   {
     return (int)$this->get('id');
   }
 
-  public function set_id($id)
+  public function setId($id)
   {
     $this->set('id', (int)$id);
   }
 
-  public function get_default_action()
+  public function getDefaultAction()
   {
     return 'display';
   }
 
-  public function get_actions_list()
+  public function getActionsList()
   {
     if($this->_actions_list)
       return $this->_actions_list;
@@ -44,9 +44,9 @@ class site_object_behaviour extends object
     return $this->_actions_list;
   }
 
-  public function action_exists($action)
+  public function actionExists($action)
   {
-    return in_array($action, $this->get_actions_list());
+    return in_array($action, $this->getActionsList());
   }
 }
 

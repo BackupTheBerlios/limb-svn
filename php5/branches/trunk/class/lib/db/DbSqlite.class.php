@@ -8,11 +8,11 @@
 * $Id: db_sqlite.class.php 658 2004-09-15 14:21:14Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_module.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
 
-class db_sqlite extends db_module
+class DbSqlite extends DbModule
 {
-  protected function _connect_db_operation($db_params)
+  protected function _connectDbOperation($db_params)
   {
     if (file_exists($db_params['name']))
       return sqlite_open($db_params['name']);
@@ -20,22 +20,22 @@ class db_sqlite extends db_module
       return false;
   }
 
-  protected function _select_db_operation($db_name)
+  protected function _selectDbOperation($db_name)
   {
     return true;
   }
 
-  protected function _disconnect_db_operation($db_params)
+  protected function _disconnectDbOperation($db_params)
   {
     sqlite_close($this->_db_connection);
   }
 
-  public function free_result()
+  public function freeResult()
   {
     $this->_sql_result = null;
   }
 
-  protected function _sql_exec_operation($sql, $count=0, $start=0)
+  protected function _sqlExecOperation($sql, $count=0, $start=0)
   {
     if ($count)
     {
@@ -48,9 +48,9 @@ class db_sqlite extends db_module
     return sqlite_query($this->_db_connection, $sql);
   }
 
-  public function make_select_string($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  public function makeSelectString($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
-    $sql = parent :: make_select_string($table, $fields, $where, $order, $count, $start);
+    $sql = parent :: makeSelectString($table, $fields, $where, $order, $count, $start);
 
     if ($count)
     {
@@ -63,38 +63,38 @@ class db_sqlite extends db_module
     return $sql;
   }
 
-  public function get_affected_rows()
+  public function getAffectedRows()
   {
     return sqlite_changes($this->_db_connection);
   }
 
-  public function get_sql_insert_id()
+  public function getSqlInsertId()
   {
     return sqlite_last_insert_rowid($this->_db_connection);
   }
 
-  public function get_last_error()
+  public function getLastError()
   {
     return sqlite_last_error($this->_db_connection);
   }
 
-  public function parse_batch_sql(&$ret, $sql, $release)
+  public function parseBatchSql(&$ret, $sql, $release)
   {
     $ret[] = $sql;
     return $ret;
   }
 
-  protected function _fetch_assoc_result_row($col_num = '')
+  protected function _fetchAssocResultRow($col_num = '')
   {
     return sqlite_fetch_array($this->_sql_result, SQLITE_ASSOC);
   }
 
-  protected function _result_num_fields()
+  protected function _resultNumFields()
   {
     return sqlite_num_fields($this->_sql_result);
   }
 
-  protected function _process_default_value($value)
+  protected function _processDefaultValue($value)
   {
     return "'{$value}'";
   }
@@ -117,22 +117,22 @@ class db_sqlite extends db_module
     return " substr({$string}, {$offset}, {$limit}) ";
   }
 
-  public function count_selected_rows()
+  public function countSelectedRows()
   {
     return sqlite_num_rows($this->_sql_result);
   }
 
-  protected function _begin_operation()
+  protected function _beginOperation()
   {
     sqlite_query('BEGIN TRANSACTION', $this->_db_connection);
   }
 
-  protected function _commit_operation()
+  protected function _commitOperation()
   {
     sqlite_query('COMMIT', $this->_db_connection);
   }
 
-  protected function _rollback_operation()
+  protected function _rollbackOperation()
   {
     sqlite_query('ROLLBACK', $this->_db_connection);
   }

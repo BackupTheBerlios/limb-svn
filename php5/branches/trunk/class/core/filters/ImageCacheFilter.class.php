@@ -8,47 +8,47 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
-require_once(LIMB_DIR . '/class/cache/image_cache_manager.class.php');
+require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
+require_once(LIMB_DIR . '/class/cache/ImageCacheManager.class.php');
 
-class image_cache_filter implements intercepting_filter
+class ImageCacheFilter implements InterceptingFilter
 {
   public function run($filter_chain, $request, $response)
   {
-    if(!$this->_is_caching_enabled())
+    if(!$this->_isCachingEnabled())
     {
       $filter_chain->next();
       return;
     }
 
-    $cache = $this->_get_image_cache_manager();
-    $cache->set_uri($request->get_uri());
+    $cache = $this->_getImageCacheManager();
+    $cache->setUri($request->getUri());
 
     ob_start();
 
     $filter_chain->next();
 
-    if($response->file_sent())
+    if($response->fileSent())
       return;
 
-    debug :: add_timing_point('image cache started');
+    Debug :: addTimingPoint('image cache started');
 
-    if($content = $response->get_response_string())
+    if($content = $response->getResponseString())
     {
       //by reference
-      $cache->process_content($content);
+      $cache->processContent($content);
       $response->write($content);
     }
 
-    debug :: add_timing_point('image cache write finished');
+    Debug :: addTimingPoint('image cache write finished');
   }
 
-  protected function _get_image_cache_manager()
+  protected function _getImageCacheManager()
   {
-    return new image_cache_manager();
+    return new ImageCacheManager();
   }
 
-  protected function _is_caching_enabled()
+  protected function _isCachingEnabled()
   {
     if(!defined('IMAGE_CACHE_ENABLED'))
       return true;

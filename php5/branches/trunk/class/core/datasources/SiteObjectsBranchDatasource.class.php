@@ -8,31 +8,31 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/site_objects_datasource.class.php');
+require_once(dirname(__FILE__) . '/SiteObjectsDatasource.class.php');
 
-class site_objects_branch_datasource extends site_objects_datasource
+class SiteObjectsBranchDatasource extends SiteObjectsDatasource
 {
   protected $path;
   protected $check_expanded_parents;
   protected $include_parent;
   protected $depth;
 
-  function set_path($path)
+  function setPath($path)
   {
     $this->path = $path;
   }
 
-  function set_check_expanded_parents($status = true)
+  function setCheckExpandedParents($status = true)
   {
     $this->check_expanded_parents = $status;
   }
 
-  function set_include_parent($status = true)
+  function setIncludeParent($status = true)
   {
     $this->include_parent = $status;
   }
 
-  function set_depth($depth)
+  function setDepth($depth)
   {
     $this->depth = $depth;
   }
@@ -47,13 +47,13 @@ class site_objects_branch_datasource extends site_objects_datasource
     $this->depth = 1;
   }
 
-  public function get_object_ids()
+  public function getObjectIds()
   {
     if ($this->object_ids)
       return $this->object_ids;
 
     $tree = Limb :: toolkit()->getTree();
-    if(!$nodes = $tree->get_sub_branch_by_path($this->path,
+    if(!$nodes = $tree->getSubBranchByPath($this->path,
                                                $this->depth,
                                                $this->include_parent,
                                                $this->check_expanded_parents))
@@ -61,7 +61,7 @@ class site_objects_branch_datasource extends site_objects_datasource
       return array();
     }
 
-    $this->object_ids = complex_array :: get_column_values('object_id', $nodes);
+    $this->object_ids = ComplexArray :: getColumnValues('object_id', $nodes);
 
     return $this->object_ids;
   }

@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/domain_rule.class.php');
-require_once(LIMB_DIR . '/class/i18n/locale.class.php');
-require_once(LIMB_DIR . '/class/lib/date/date.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/DomainRule.class.php');
+require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
+require_once(LIMB_DIR . '/class/lib/date/Date.class.php');
 
-class locale_date_rule extends single_field_rule
+class LocaleDateRule extends SingleFieldRule
 {
   protected $locale_id = '';
 
   function __construct($fieldname, $locale_id = '')
   {
-    if (!$locale_id && !defined('CONTENT_LOCALE_ID'))
+    if (!$locale_id &&  !defined('CONTENT_LOCALE_ID'))
       $this->locale_id = DEFAULT_CONTENT_LOCALE_ID;
     elseif(!$locale_id)
       $this->locale_id = CONTENT_LOCALE_ID;
@@ -30,12 +30,12 @@ class locale_date_rule extends single_field_rule
 
   protected function check($value)
   {
-    $date = new date();
+    $date = new Date();
     $locale = Limb :: toolkit()->getLocale($this->locale_id);
 
-    $date->set_by_locale_string($locale, $value, $locale->get_short_date_format());
+    $date->setByLocaleString($locale, $value, $locale->getShortDateFormat());
 
-    if(!$date->is_valid())
+    if(!$date->isValid())
       $this->error('INVALID_DATE');
   }
 }

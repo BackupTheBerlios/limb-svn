@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class tree_node_id_rule extends single_field_rule
+class TreeNodeIdRule extends SingleFieldRule
 {
   protected function check($value)
   {
     if(empty($value))
-      $this->error(strings :: get('error_invalid_tree_node_id', 'error'));
-    elseif(!Limb :: toolkit()->getTree()->get_node((int)$value))
-      $this->error(strings :: get('error_invalid_tree_node_id', 'error'));
+      $this->error(Strings :: get('error_invalid_tree_node_id', 'error'));
+    elseif(!Limb :: toolkit()->getTree()->getNode((int)$value))
+      $this->error(Strings :: get('error_invalid_tree_node_id', 'error'));
   }
 }
 ?>

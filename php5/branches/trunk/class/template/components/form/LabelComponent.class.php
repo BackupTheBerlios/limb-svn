@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tag_component.class.php');
+require_once(LIMB_DIR . '/class/template/TagComponent.class.php');
 
-class label_component extends tag_component
+class LabelComponent extends TagComponent
 {
   /**
   * CSS class attribute to display on error
@@ -24,7 +24,7 @@ class label_component extends tag_component
   /**
   * If either are set, assigns the attributes for error class or style
   */
-  public function set_error()
+  public function setError()
   {
     if (isset($this->error_class))
     {

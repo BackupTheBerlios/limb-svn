@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 
-final class strings
+final class Strings
 {
   static protected $_instance = null;
 
@@ -21,7 +21,7 @@ final class strings
   static function instance()
   {
     if (!self :: $_instance)
-      self :: $_instance = new strings();
+      self :: $_instance = new Strings();
 
     return self :: $_instance;
   }
@@ -36,12 +36,12 @@ final class strings
         $locale_id = DEFAULT_MANAGEMENT_LOCALE_ID;
     }
 
-    return self :: instance()->_do_get($key, $filename, $locale_id);
+    return self :: instance()->_doGet($key, $filename, $locale_id);
   }
 
-  protected function _do_get($key, $filename, $locale_id)
+  protected function _doGet($key, $filename, $locale_id)
   {
-    $path = $this->_get_path($filename, $locale_id);
+    $path = $this->_getPath($filename, $locale_id);
 
     if(isset($this->_cache[$path][$key]))
       return $this->_cache[$path][$key];
@@ -50,22 +50,22 @@ final class strings
       $ini = $this->_ini_objects[$path];
     else
     {
-      $ini = new ini($path);
+      $ini = new Ini($path);
       $this->_ini_objects[$path] = $ini;
     }
 
-    if($value = $ini->get_option($key, 'constants'))
+    if($value = $ini->getOption($key, 'constants'))
       $this->_cache[$path][$key] = $value;
 
     return $value;
   }
 
-  protected function _get_path($file_name, $locale_id)
+  protected function _getPath($file_name, $locale_id)
   {
     if(isset($this->_path_cache[$file_name][$locale_id]))
       return $this->_path_cache[$file_name][$locale_id];
 
-    resolve_handle($resolver =& get_file_resolver('strings'));
+    resolveHandle($resolver =& getFileResolver('strings'));
     $path = $resolver->resolve($file_name, array($locale_id));
 
     $this->_path_cache[$file_name][$locale_id] = $path;

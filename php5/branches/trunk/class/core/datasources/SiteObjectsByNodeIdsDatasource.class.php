@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/site_objects_datasource.class.php');
+require_once(dirname(__FILE__) . '/SiteObjectsDatasource.class.php');
 
-class site_objects_by_node_ids_datasource extends site_objects_datasource
+class SiteObjectsByNodeIdsDatasource extends SiteObjectsDatasource
 {
   protected $node_ids;
   protected $use_node_ids_as_keys;
 
-  function set_node_ids($node_ids)
+  function setNodeIds($node_ids)
   {
     $this->node_ids = $node_ids;
   }
 
-  function set_use_node_ids_as_keys($status = true)
+  function setUseNodeIdsAsKeys($status = true)
   {
     $this->use_node_ids_as_keys = $status;
   }
@@ -33,7 +33,7 @@ class site_objects_by_node_ids_datasource extends site_objects_datasource
     $this->use_node_ids_as_keys = false;
   }
 
-  public function get_object_ids()
+  public function getObjectIds()
   {
     if ($this->object_ids)
       return $this->object_ids;
@@ -42,22 +42,22 @@ class site_objects_by_node_ids_datasource extends site_objects_datasource
       return array();
 
     $tree = Limb :: toolkit()->getTree();
-    if (!$nodes = Limb :: toolkit()->getTree()->get_nodes_by_ids($this->node_ids))
+    if (!$nodes = Limb :: toolkit()->getTree()->getNodesByIds($this->node_ids))
       return array();
 
-    $this->object_ids = complex_array :: get_column_values('object_id', $nodes);
+    $this->object_ids = ComplexArray :: getColumnValues('object_id', $nodes);
 
     return $this->object_ids;
   }
 
-  protected function _do_parent_fetch()
+  protected function _doParentFetch()
   {
     return parent :: fetch();
   }
 
   public function fetch()
   {
-    $objects_data = $this->_do_parent_fetch();
+    $objects_data = $this->_doParentFetch();
 
     if (!$this->use_node_ids_as_keys)
       return $objects_data;

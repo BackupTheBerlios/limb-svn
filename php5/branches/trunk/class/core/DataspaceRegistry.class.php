@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
-class dataspace_registry
+class DataspaceRegistry
 {
 	static public function get($name)
 	{
@@ -21,9 +21,9 @@ class dataspace_registry
   	if(isset($GLOBALS[$instance_name]))
 			$obj = $GLOBALS[$instance_name];
 		
-  	if(!$obj || get_class($obj) != 'dataspace')
+  	if(!$obj ||  get_class($obj) != 'dataspace')
   	{
-  		$obj = new dataspace();
+  		$obj = new Dataspace();
   		$GLOBALS[$instance_name] = $obj;
   	}
   	

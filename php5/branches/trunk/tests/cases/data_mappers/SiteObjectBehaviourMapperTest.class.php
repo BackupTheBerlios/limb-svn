@@ -8,57 +8,57 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/site_object_behaviour_mapper.class.php');
-require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectBehaviourMapper.class.php');
+require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
 
-Mock :: generatePartial('site_object_behaviour_mapper',
-                        'site_object_behaviour_mapper_test_version',
+Mock :: generatePartial('SiteObjectBehaviourMapper',
+                        'SiteObjectBehaviourMapperTestVersion',
                         array('insert', 'update'));
 
-class site_object_behaviour_mapper_test extends LimbTestCase
+class SiteObjectBehaviourMapperTest extends LimbTestCase
 {
   var $db;
   var $mapper;
 
   function setUp()
   {
-    $this->mapper = new site_object_behaviour_mapper();
-    $this->db = db_factory :: instance();
+    $this->mapper = new SiteObjectBehaviourMapper();
+    $this->db = DbFactory :: instance();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('sys_behaviour');
+    $this->db->sqlDelete('sys_behaviour');
   }
 
-  function test_find_by_id_null()
+  function testFindByIdNull()
   {
-    $this->assertNull($this->mapper->find_by_id(1000));
+    $this->assertNull($this->mapper->findById(1000));
   }
 
-  function test_find_by_id()
+  function testFindById()
   {
-    $this->db->sql_insert('sys_behaviour', array('id' => $id = 100, 'name' => 'site_object_behaviour'));
+    $this->db->sqlInsert('sys_behaviour', array('id' => $id = 100, 'name' => 'site_object_behaviour'));
 
-    $behaviour = $this->mapper->find_by_id($id);
+    $behaviour = $this->mapper->findById($id);
 
-    $this->assertIsA($behaviour, 'site_object_behaviour');
-    $this->assertEqual($id, $behaviour->get_id());
+    $this->assertIsA($behaviour, 'SiteObjectBehaviour');
+    $this->assertEqual($id, $behaviour->getId());
   }
 
-  function test_save_insert()
+  function testSaveInsert()
   {
-    $mapper = new site_object_behaviour_mapper_test_version($this);
+    $mapper = new SiteObjectBehaviourMapperTestVersion($this);
 
-    $behaviour = new site_object_behaviour();
+    $behaviour = new SiteObjectBehaviour();
 
     $mapper->expectOnce('insert', array($behaviour));
 
@@ -67,12 +67,12 @@ class site_object_behaviour_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function test_save_update()
+  function testSaveUpdate()
   {
-    $mapper = new site_object_behaviour_mapper_test_version($this);
+    $mapper = new SiteObjectBehaviourMapperTestVersion($this);
 
-    $behaviour = new site_object_behaviour();
-    $behaviour->set_id(100);
+    $behaviour = new SiteObjectBehaviour();
+    $behaviour->setId(100);
 
     $mapper->expectOnce('update', array($behaviour));
 
@@ -81,22 +81,22 @@ class site_object_behaviour_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function test_insert()
+  function testInsert()
   {
-    $behaviour = new site_object_behaviour();
+    $behaviour = new SiteObjectBehaviour();
 
     $this->mapper->insert($behaviour);
 
-    $this->db->sql_select('sys_behaviour', '*', 'id=' . $behaviour->get_id());
+    $this->db->sqlSelect('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
-    $record = $this->db->fetch_row();
+    $record = $this->db->fetchRow();
 
     $this->assertEqual($record['name'], get_class($behaviour));
   }
 
-  function test_update_failed_no_id()
+  function testUpdateFailedNoId()
   {
-    $behaviour = new site_object_behaviour();
+    $behaviour = new SiteObjectBehaviour();
 
     try
     {
@@ -106,25 +106,25 @@ class site_object_behaviour_mapper_test extends LimbTestCase
     catch(LimbException $e){}
   }
 
-  function test_update()
+  function testUpdate()
   {
-    $this->db->sql_insert('sys_behaviour', array('id' => $id = 100));
+    $this->db->sqlInsert('sys_behaviour', array('id' => $id = 100));
 
-    $behaviour = new site_object_behaviour();
-    $behaviour->set_id($id);
+    $behaviour = new SiteObjectBehaviour();
+    $behaviour->setId($id);
 
     $this->mapper->update($behaviour);
 
-    $this->db->sql_select('sys_behaviour', '*', 'id=' . $behaviour->get_id());
+    $this->db->sqlSelect('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
-    $record = $this->db->fetch_row();
+    $record = $this->db->fetchRow();
 
     $this->assertEqual($record['name'], get_class($behaviour));
   }
 
-  function test_delete_failed_no_id()
+  function testDeleteFailedNoId()
   {
-    $behaviour = new site_object_behaviour();
+    $behaviour = new SiteObjectBehaviour();
 
     try
     {
@@ -134,18 +134,18 @@ class site_object_behaviour_mapper_test extends LimbTestCase
     catch(LimbException $e){}
   }
 
-  function test_delete()
+  function testDelete()
   {
-    $this->db->sql_insert('sys_behaviour', array('id' => $id = 100));
+    $this->db->sqlInsert('sys_behaviour', array('id' => $id = 100));
 
-    $behaviour = new site_object_behaviour();
-    $behaviour->set_id($id);
+    $behaviour = new SiteObjectBehaviour();
+    $behaviour->setId($id);
 
     $this->mapper->delete($behaviour);
 
-    $this->db->sql_select('sys_behaviour', '*', 'id=' . $behaviour->get_id());
+    $this->db->sqlSelect('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
-    $this->assertTrue(!$this->db->fetch_row());
+    $this->assertTrue(!$this->db->fetchRow());
   }
 }
 

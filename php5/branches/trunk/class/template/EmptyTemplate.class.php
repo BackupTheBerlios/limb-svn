@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-class empty_template
+class EmptyTemplate
 {
-  public function find_parent_by_class($class)
+  public function findParentByClass($class)
   {
     return null;
   }
 
-  public function find_child_by_class($class)
+  public function findChildByClass($class)
   {
     return null;
   }
 
-  public function find_child($server_id)
+  public function findChild($server_id)
   {
     return null;
   }
 
-  public function get_child($server_id)
+  public function getChild($server_id)
   {
     return null;
   }

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php');
 
-class package_tests_ini_file_resolver implements file_resolver
+class PackageTestsIniFileResolver implements FileResolver
 {
   var $package_directory;
 
-  function package_tests_ini_file_resolver($package_directory)
+  function packageTestsIniFileResolver($package_directory)
   {
     $this->package_directory = $package_directory;
   }

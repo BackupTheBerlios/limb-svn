@@ -8,74 +8,74 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
-require_once(LIMB_DIR . '/class/validators/validator.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/size_range_rule.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/required_rule.class.php');
+require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
+require_once(LIMB_DIR . '/class/validators/Validator.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SizeRangeRule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/RequiredRule.class.php');
 
-Mock :: generate('error_list');
+Mock :: generate('ErrorList');
 
 Mock :: generatePartial(
-    'validator',
-    'validator_test_version2',
-    array('_get_error_list'));
+    'Validator',
+    'ValidatorTestVersion2',
+    array('_getErrorList'));
 
-Mock :: generate('rule');
+Mock :: generate('Rule');
 
-class validator_test extends LimbTestCase
+class ValidatorTest extends LimbTestCase
 {
   var $error_list = null;
   var $validator = null;
 
   function setUp()
   {
-   $this->error_list = new Mockerror_list($this);
-   $this->validator = new validator_test_version2($this);
-   $this->validator->setReturnReference('_get_error_list', $this->error_list);
+   $this->error_list = new MockErrorList($this);
+   $this->validator = new ValidatorTestVersion2($this);
+   $this->validator->setReturnValue('_getErrorList', $this->error_list);
   }
 
-  function test_validate_no_rules()
+  function testValidateNoRules()
   {
-    $this->assertTrue($this->validator->validate(new array_dataset()));
+    $this->assertTrue($this->validator->validate(new ArrayDataset()));
   }
 
-  function test_validate_true()
+  function testValidateTrue()
   {
-    $r1 = new Mockrule($this);
+    $r1 = new MockRule($this);
 
     $r1->expectOnce('validate');
-    $r1->expectOnce('is_valid');
-    $r1->setReturnValue('is_valid', true);
+    $r1->expectOnce('isValid');
+    $r1->setReturnValue('isValid', true);
 
-    $this->validator->add_rule($r1);
+    $this->validator->addRule($r1);
 
-    $this->validator->validate(new array_dataset());
+    $this->validator->validate(new ArrayDataset());
 
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
 
     $r1->tally();
   }
 
-  function test_validate_false()
+  function testValidateFalse()
   {
-    $r1 = new Mockrule($this);
-    $r2 = new Mockrule($this);
+    $r1 = new MockRule($this);
+    $r2 = new MockRule($this);
 
-    $r1->setReturnValue('is_valid', true);
-    $r2->setReturnValue('is_valid', false);
+    $r1->setReturnValue('isValid', true);
+    $r2->setReturnValue('isValid', false);
 
-    $this->validator->add_rule($r1);
-    $this->validator->add_rule($r2);
+    $this->validator->addRule($r1);
+    $this->validator->addRule($r2);
 
-    $this->validator->validate(new array_dataset());
+    $this->validator->validate(new ArrayDataset());
 
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function test_add_error()
+  function testAddError()
   {
-    $this->validator->add_error('test', 'error', array('1' => 'error'));
-    $this->error_list->expectOnce('add_error', array('test', 'error', array('1' => 'error')));
+    $this->validator->addError('test', 'error', array('1' => 'error'));
+    $this->error_list->expectOnce('addError', array('test', 'error', array('1' => 'error')));
   }
 }
 

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class sys_site_object_db_table extends db_table
+class SysSiteObjectDbTable extends DbTable
 {
-  protected function _define_columns()
+  protected function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
@@ -29,7 +29,7 @@ class sys_site_object_db_table extends db_table
     );
   }
 
-  protected function _define_constraints()
+  protected function _defineConstraints()
   {
     return array(
       'id' =>	array(

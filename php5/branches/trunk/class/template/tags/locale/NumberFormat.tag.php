@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class locale_number_format_tag_info
+class LocaleNumberFormatTagInfo
 {
   public $tag = 'locale:NUMBER_FORMAT';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'locale_number_format_tag';
 }
 
-register_tag(new locale_number_format_tag_info());
+registerTag(new LocaleNumberFormatTagInfo());
 
-class locale_number_format_tag extends server_component_tag
+class LocaleNumberFormatTag extends ServerComponentTag
 {
   protected $field;
 
@@ -26,9 +26,9 @@ class locale_number_format_tag extends server_component_tag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/locale_number_format_component';
   }
 
-  public function pre_parse()
+  public function preParse()
   {
-    if (!isset($this->attributes['hash_id']) || !$this->attributes['hash_id'])
+    if (!isset($this->attributes['hash_id']) ||  !$this->attributes['hash_id'])
     {
       throw new WactException('missing required attribute',
           array('tag' => $this->tag,
@@ -40,10 +40,10 @@ class locale_number_format_tag extends server_component_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php(
-      'echo ' . $this->get_component_ref_code() . '->format(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['field'] . '"));');
+    $code->writePhp(
+      'echo ' . $this->getComponentRefCode() . '->format(' . $this->getDataspaceRefCode() . '->get("' . $this->attributes['field'] . '"));');
   }
 }
 

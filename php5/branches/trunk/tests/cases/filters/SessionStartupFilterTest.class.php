@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/session_startup_filter.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/session/session.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
+require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/core/filters/SessionStartupFilter.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/session/Session.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('filter_chain');
-Mock :: generate('http_response');
-Mock :: generate('session');
-Mock :: generate('request');
-Mock :: generate('authenticator');
+Mock :: generate('FilterChain');
+Mock :: generate('HttpResponse');
+Mock :: generate('Session');
+Mock :: generate('Request');
+Mock :: generate('Authenticator');
 
-class session_startup_filter_test extends LimbTestCase
+class SessionStartupFilterTest extends LimbTestCase
 {
   var $filter_chain;
   var $filter;
@@ -34,13 +34,13 @@ class session_startup_filter_test extends LimbTestCase
 
   function setUp()
   {
-    $this->filter = new session_startup_filter($this);
+    $this->filter = new SessionStartupFilter($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->request = new Mockrequest($this);
-    $this->filter_chain = new Mockfilter_chain($this);
-    $this->response = new Mockhttp_response($this);
-    $this->session = new Mocksession($this);
+    $this->request = new MockRequest($this);
+    $this->filter_chain = new MockFilterChain($this);
+    $this->response = new MockHttpResponse($this);
+    $this->session = new MockSession($this);
 
     $this->toolkit->setReturnValue('getSession', $this->session);
 
@@ -58,7 +58,7 @@ class session_startup_filter_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_run()
+  function testRun()
   {
     $this->session->expectOnce('start');
     $this->filter_chain->expectOnce('next');

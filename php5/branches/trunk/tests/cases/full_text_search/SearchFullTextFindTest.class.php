@@ -8,33 +8,33 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/search/full_text_search.class.php');
-require_once(LIMB_DIR . '/class/search/search_query.class.php');
+require_once(LIMB_DIR . '/class/search/FullTextSearch.class.php');
+require_once(LIMB_DIR . '/class/search/SearchQuery.class.php');
 
-class search_full_text_find_test extends LimbTestCase
+class SearchFullTextFindTest extends LimbTestCase
 {
   var $search = null;
   var $search_query = null;
 
-  function search_full_text_find_test($name = 'full text search find test case')
+  function searchFullTextFindTest($name = 'full text search find test case')
   {
-    parent :: LimbTestCase($name);
+    parent :: limbTestCase($name);
   }
 
   function setUp()
   {
-    load_testing_db_dump(dirname(__FILE__) . '/../../sql/full_text_search.sql');
+    loadTestingDbDump(dirname(__FILE__) . '/../../sql/full_text_search.sql');
 
-    $this->search_query = new search_query();
-    $this->search = new full_text_search();
+    $this->search_query = new SearchQuery();
+    $this->search = new FullTextSearch();
   }
 
   function tearDown()
   {
-    clear_testing_db_tables();
+    clearTestingDbTables();
   }
 
-  function test_simple_find()
+  function testSimpleFind()
   {
     $this->search_query->add('mysql');
     $this->search_query->add('root');
@@ -46,7 +46,7 @@ class search_full_text_find_test extends LimbTestCase
     );
   }
 
-  function test_simple_find_only_class()
+  function testSimpleFindOnlyClass()
   {
     $this->search_query->add('данных');
 
@@ -56,7 +56,7 @@ class search_full_text_find_test extends LimbTestCase
     );
   }
 
-  function test_simple_find_whith_restricted_classes()
+  function testSimpleFindWhithRestrictedClasses()
   {
     $this->search_query->add('restrict');
 
@@ -65,7 +65,7 @@ class search_full_text_find_test extends LimbTestCase
     $this->assertEqual(array_keys($result), array( 27, 26));
   }
 
-  function test_simple_find_whith_allowed_classes()
+  function testSimpleFindWhithAllowedClasses()
   {
     $this->search_query->add('restrict');
 
@@ -74,12 +74,12 @@ class search_full_text_find_test extends LimbTestCase
     $this->assertEqual(array_keys($result), array(27, 25, 24));
   }
 
-  function test_simple_find_by_ids()
+  function testSimpleFindByIds()
   {
     $this->search_query->add('mysql');
     $this->search_query->add('root');
 
-    $result = $this->search->find_by_ids(array(24), $this->search_query);
+    $result = $this->search->findByIds(array(24), $this->search_query);
     $this->assertEqual(array_keys($result),
       array(24)
     );

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class form_command implements Command
+class FormCommand implements Command
 {
   protected $form_name;
 
@@ -20,35 +20,35 @@ class form_command implements Command
   }
 
   //for mocking
-  protected function _get_validator()
+  protected function _getValidator()
   {
-    include_once(LIMB_DIR . '/class/validators/validator.class.php');
-    return new validator();
+    include_once(LIMB_DIR . '/class/validators/Validator.class.php');
+    return new Validator();
   }
 
-  protected function _is_first_time($request)
+  protected function _isFirstTime($request)
   {
     $arr = $request->get($this->form_name);
-    if(isset($arr['submitted']) && $arr['submitted'])
+    if(isset($arr['submitted']) &&  $arr['submitted'])
       return false;
     else
       return true;
   }
 
-  protected function _register_validation_rules($validator, $dataspace)
+  protected function _registerValidationRules($validator, $dataspace)
   {
   }
 
-  protected function _define_datamap()
+  protected function _defineDatamap()
   {
     return array();
   }
 
   public function validate($dataspace)
   {
-    $validator = $this->_get_validator();
+    $validator = $this->_getValidator();
 
-    $this->_register_validation_rules($validator, $dataspace);
+    $this->_registerValidationRules($validator, $dataspace);
 
     return $validator->validate($dataspace);
   }
@@ -59,15 +59,15 @@ class form_command implements Command
 
     $dataspace = Limb :: toolkit()->switchDataspace($this->form_name);
 
-    if ($this->_is_first_time($request))
+    if ($this->_isFirstTime($request))
     {
-      $this->_init_first_time_dataspace($dataspace, $request);
+      $this->_initFirstTimeDataspace($dataspace, $request);
 
       return Limb :: STATUS_FORM_DISPLAYED;
     }
     else
     {
-      $this->_merge_dataspace_with_request($dataspace, $request);
+      $this->_mergeDataspaceWithRequest($dataspace, $request);
 
       if(!$this->validate($dataspace))
         return Limb :: STATUS_FORM_NOT_VALID;
@@ -76,13 +76,13 @@ class form_command implements Command
     }
   }
 
-  protected function _init_first_time_dataspace($dataspace, $request)
+  protected function _initFirstTimeDataspace($dataspace, $request)
   {
   }
 
-  protected function _merge_dataspace_with_request($dataspace, $request)
+  protected function _mergeDataspaceWithRequest($dataspace, $request)
   {
-    complex_array :: map($this->_define_datamap(), $request->get($this->form_name), $data = array());
+    ComplexArray :: map($this->_defineDatamap(), $request->get($this->form_name), $data = array());
 
     $dataspace->merge($data);
   }

@@ -8,15 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/site_object_mapper.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/site_object_behaviour_mapper.class.php');
-require_once(LIMB_DIR . '/class/core/finders/site_objects_raw_finder.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
-require_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree_decorator.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectMapper.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectBehaviourMapper.class.php');
+require_once(LIMB_DIR . '/class/core/finders/SiteObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
+require_once(LIMB_DIR . '/class/core/tree/TreeDecorator.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
 
 Mock :: generatePartial('BaseLimbToolkit',
                       'SiteObjectToolkitMock', array());
@@ -50,35 +50,35 @@ class SiteObjectManipulationTestToolkit extends SiteObjectToolkitMock
   }
 }
 
-Mock :: generate('tree_decorator');
-Mock :: generate('user');
-Mock :: generate('site_object');
-Mock :: generate('site_objects_raw_finder');
-Mock :: generate('site_object_behaviour');
-Mock :: generate('site_object_behaviour_mapper');
+Mock :: generate('TreeDecorator');
+Mock :: generate('User');
+Mock :: generate('SiteObject');
+Mock :: generate('SiteObjectsRawFinder');
+Mock :: generate('SiteObjectBehaviour');
+Mock :: generate('SiteObjectBehaviourMapper');
 
-Mock :: generatePartial('site_object_mapper',
-                      'site_object_mapper_test_version0',
+Mock :: generatePartial('SiteObjectMapper',
+                      'SiteObjectMapperTestVersion0',
                       array('insert',
                             'update',
-                            '_get_finder',
-                            '_get_behaviour_mapper'));
+                            '_getFinder',
+                            '_getBehaviourMapper'));
 
-Mock :: generatePartial('site_object_mapper',
-                      'site_object_mapper_test_version1',
-                      array('_insert_tree_node',
-                            '_update_tree_node',
-                            '_can_delete_site_object_record',
-                            'get_class_id'));
+Mock :: generatePartial('SiteObjectMapper',
+                      'SiteObjectMapperTestVersion1',
+                      array('_insertTreeNode',
+                            '_updateTreeNode',
+                            '_canDeleteSiteObjectRecord',
+                            'getClassId'));
 
-Mock :: generatePartial('site_object_mapper',
-                      'site_object_mapper_test_version2',
-                      array('_can_add_node_to_parent',
-                            '_insert_site_object_record',
-                            '_update_site_object_record'));
+Mock :: generatePartial('SiteObjectMapper',
+                      'SiteObjectMapperTestVersion2',
+                      array('_canAddNodeToParent',
+                            '_insertSiteObjectRecord',
+                            '_updateSiteObjectRecord'));
 
 
-class site_object_mapper_test extends LimbTestCase
+class SiteObjectMapperTest extends LimbTestCase
 {
   var $db;
   var $behaviour;
@@ -91,11 +91,11 @@ class site_object_mapper_test extends LimbTestCase
   function setUp()
   {
     $this->toolkit = new SiteObjectManipulationTestToolkit($this);
-    $this->tree = new Mocktree_decorator($this);
-    $this->user = new Mockuser($this);
-    $this->behaviour_mapper = new Mocksite_object_behaviour_mapper($this);
-    $this->site_object = new Mocksite_object($this);
-    $this->user->setReturnValue('get_id', 125);
+    $this->tree = new MockTreeDecorator($this);
+    $this->user = new MockUser($this);
+    $this->behaviour_mapper = new MockSiteObjectBehaviourMapper($this);
+    $this->site_object = new MockSiteObject($this);
+    $this->user->setReturnValue('getId', 125);
 
     $this->toolkit->setReturnValue('getTree', $this->tree);
     $this->toolkit->setReturnValue('getUser', $this->user);
@@ -103,18 +103,18 @@ class site_object_mapper_test extends LimbTestCase
                                    $this->behaviour_mapper,
                                    array('site_object_behaviour_mapper'));
 
-    $this->behaviour = new Mocksite_object_behaviour($this);
+    $this->behaviour = new MockSiteObjectBehaviour($this);
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->db = db_factory :: instance();
+    $this->db = DbFactory :: instance();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
 
     $this->toolkit->tally();
     $this->tree->tally();
@@ -125,95 +125,95 @@ class site_object_mapper_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('sys_site_object');
-    $this->db->sql_delete('sys_site_object_tree');
-    $this->db->sql_delete('sys_class');
+    $this->db->sqlDelete('sys_site_object');
+    $this->db->sqlDelete('sys_site_object_tree');
+    $this->db->sqlDelete('sys_class');
   }
 
-  function test_get_class_id()
+  function testGetClassId()
   {
-    $mapper = new site_object_mapper();
-    $object = new site_object();
+    $mapper = new SiteObjectMapper();
+    $object = new SiteObject();
 
     // autogenerate class_id
-    $id = $mapper->get_class_id($object);
+    $id = $mapper->getClassId($object);
 
-    $this->db->sql_select('sys_class', '*', 'name="' . get_class($object) . '"');
-    $arr = $this->db->fetch_row();
+    $this->db->sqlSelect('sys_class', '*', 'name="' . get_class($object) . '"');
+    $arr = $this->db->fetchRow();
 
     $this->assertNotNull($id);
 
     $this->assertEqual($id, $arr['id']);
 
     // generate class_id only once
-    $id = $mapper->get_class_id($object);
-    $this->db->sql_select('sys_class', '*');
-    $arr = $this->db->get_array();
+    $id = $mapper->getClassId($object);
+    $this->db->sqlSelect('sys_class', '*');
+    $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
   }
 
-  function test_get_parent_locale_id_default()
+  function testGetParentLocaleIdDefault()
   {
-    $mapper = new site_object_mapper();
+    $mapper = new SiteObjectMapper();
 
     $this->toolkit->setReturnValue('constant',
                                    $locale_id  = 'ge',
-                                   array('DEFAULT_CONTENT_LOCALE_ID'));
+                                   array('dEFAULTCONTENTLOCALEID'));
 
-    $this->assertEqual($mapper->get_parent_locale_id(10000), $locale_id);
+    $this->assertEqual($mapper->getParentLocaleId(10000), $locale_id);
   }
 
-  function test_get_parent_locale_id()
+  function testGetParentLocaleId()
   {
-    $this->db->sql_insert('sys_site_object', array('locale_id' => $locale_id = 'ru',
+    $this->db->sqlInsert('sys_site_object', array('locale_id' => $locale_id = 'ru',
                                                    'id' => 200));
 
-    $this->db->sql_insert('sys_site_object_tree', array('object_id' => 200,
+    $this->db->sqlInsert('sys_site_object_tree', array('object_id' => 200,
                                                         'id' => $parent_node_id = 300));
 
-    $mapper = new site_object_mapper();
+    $mapper = new SiteObjectMapper();
 
-    $this->assertEqual($mapper->get_parent_locale_id($parent_node_id), $locale_id);
+    $this->assertEqual($mapper->getParentLocaleId($parent_node_id), $locale_id);
   }
 
-  function test_find_by_id()
+  function testFindById()
   {
-    $finder = new Mocksite_objects_raw_finder($this);
+    $finder = new MockSiteObjectsRawFinder($this);
     $result = array('id' => $id = 10,
                     'identifier' => $identifier = 'test',
                     'behaviour_id' => $behaviour_id = 100);
 
-    $finder->expectOnce('find_by_id', array($id));
-    $finder->setReturnValue('find_by_id', $result, array($id));
+    $finder->expectOnce('findById', array($id));
+    $finder->setReturnValue('findById', $result, array($id));
 
-    $mapper = new site_object_mapper_test_version0($this);
+    $mapper = new SiteObjectMapperTestVersion0($this);
 
-    $mapper->setReturnValue('_get_finder', $finder);
-    $mapper->setReturnValue('_get_behaviour_mapper', $this->behaviour_mapper);
+    $mapper->setReturnValue('_getFinder', $finder);
+    $mapper->setReturnValue('_getBehaviourMapper', $this->behaviour_mapper);
 
-    $this->behaviour_mapper->expectOnce('find_by_id', array($behaviour_id));
-    $this->behaviour_mapper->setReturnValue('find_by_id', $this->behaviour, array($behaviour_id));
+    $this->behaviour_mapper->expectOnce('findById', array($behaviour_id));
+    $this->behaviour_mapper->setReturnValue('findById', $this->behaviour, array($behaviour_id));
 
-    $site_object = $mapper->find_by_id($id);
+    $site_object = $mapper->findById($id);
 
-    $this->assertEqual($site_object->get_id(), $id);
-    $this->assertEqual($site_object->get_identifier(), $identifier);
-    $this->assertTrue($site_object->get_behaviour() === $this->behaviour);
+    $this->assertEqual($site_object->getId(), $id);
+    $this->assertEqual($site_object->getIdentifier(), $identifier);
+    $this->assertTrue($site_object->getBehaviour() === $this->behaviour);
 
     $finder->tally();
     $mapper->tally();
   }
 
-  function test_failed_insert_site_object_record_no_identifier()
+  function testFailedInsertSiteObjectRecordNoIdentifier()
   {
-    $mapper = new site_object_mapper_test_version1($this);
-    $mapper->setReturnValue('get_class_id', 1000);
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $mapper->setReturnValue('getClassId', 1000);
 
-    $this->site_object->expectOnce('get_identifier');
-    $this->site_object->setReturnValue('get_identifier', null);
+    $this->site_object->expectOnce('getIdentifier');
+    $this->site_object->setReturnValue('getIdentifier', null);
 
     try
     {
@@ -225,14 +225,14 @@ class site_object_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function test_failed_insert_site_object_record_no_behaviour_attached()
+  function testFailedInsertSiteObjectRecordNoBehaviourAttached()
   {
-    $mapper = new site_object_mapper_test_version1($this);
-    $mapper->setReturnValue('get_class_id', 1000);
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $mapper->setReturnValue('getClassId', 1000);
 
-    $this->site_object->setReturnValue('get_identifier', 'test');
-    $this->site_object->expectOnce('get_behaviour');
-    $this->site_object->setReturnValue('get_behaviour', null);
+    $this->site_object->setReturnValue('getIdentifier', 'test');
+    $this->site_object->expectOnce('getBehaviour');
+    $this->site_object->setReturnValue('getBehaviour', null);
 
     try
     {
@@ -247,40 +247,40 @@ class site_object_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function test_insert_site_object_record_ok()
+  function testInsertSiteObjectRecordOk()
   {
-    $mapper = new site_object_mapper_test_version1($this);
-    $mapper->setReturnValue('get_class_id', 1000);
-    $mapper->expectOnce('_insert_tree_node');
-    $mapper->setReturnValue('_insert_tree_node', $node_id = 120);
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $mapper->setReturnValue('getClassId', 1000);
+    $mapper->expectOnce('_insertTreeNode');
+    $mapper->setReturnValue('_insertTreeNode', $node_id = 120);
 
-    $site_object = new site_object();
-    $site_object->set_identifier('test');
-    $site_object->set_title('test');
-    $site_object->set_locale_id('fr');
-    $site_object->attach_behaviour($this->behaviour);
-    $this->behaviour->setReturnValue('get_id', 25);
+    $site_object = new SiteObject();
+    $site_object->setIdentifier('test');
+    $site_object->setTitle('test');
+    $site_object->setLocaleId('fr');
+    $site_object->attachBehaviour($this->behaviour);
+    $this->behaviour->setReturnValue('getId', 25);
 
-    $this->behaviour_mapper->expectOnce('save', array(new IsAExpectation('Mocksite_object_behaviour')));
+    $this->behaviour_mapper->expectOnce('save', array(new IsAExpectation('MockSiteObjectBehaviour')));
 
     $id = $mapper->insert($site_object);
 
-    $this->assertEqual($site_object->get_id(), $id);
-    $this->assertEqual($site_object->get_node_id(), $node_id);
+    $this->assertEqual($site_object->getId(), $id);
+    $this->assertEqual($site_object->getNodeId(), $node_id);
 
-    $this->_check_sys_site_object_record($site_object);
+    $this->_checkSysSiteObjectRecord($site_object);
 
     $mapper->tally();
   }
 
-  function test_failed_insert_tree_node_parent_id_not_set()
+  function testFailedInsertTreeNodeParentIdNotSet()
   {
-    $mapper = new site_object_mapper_test_version2($this);
+    $mapper = new SiteObjectMapperTestVersion2($this);
 
-    $mapper->expectOnce('_insert_site_object_record');
-    $mapper->setReturnValue('_insert_site_object_record', $object_id = 120);
+    $mapper->expectOnce('_insertSiteObjectRecord');
+    $mapper->setReturnValue('_insertSiteObjectRecord', $object_id = 120);
 
-    $this->site_object->setReturnValue('get_id', $object_id);
+    $this->site_object->setReturnValue('getId', $object_id);
 
     try
     {
@@ -295,18 +295,18 @@ class site_object_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function test_failed_insert_tree_node_cant_register_node()
+  function testFailedInsertTreeNodeCantRegisterNode()
   {
-    $mapper = new site_object_mapper_test_version2($this);
+    $mapper = new SiteObjectMapperTestVersion2($this);
 
-    $mapper->expectOnce('_insert_site_object_record');
-    $mapper->setReturnValue('_insert_site_object_record', $object_id = 120);
+    $mapper->expectOnce('_insertSiteObjectRecord');
+    $mapper->setReturnValue('_insertSiteObjectRecord', $object_id = 120);
 
-    $this->site_object->setReturnValue('get_id', $object_id);
-    $this->site_object->setReturnValue('get_parent_node_id', $parent_node_id = 10);
+    $this->site_object->setReturnValue('getId', $object_id);
+    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
 
-    $mapper->expectOnce('_can_add_node_to_parent', array($parent_node_id));
-    $mapper->setReturnValue('_can_add_node_to_parent', false);
+    $mapper->expectOnce('_canAddNodeToParent', array($parent_node_id));
+    $mapper->setReturnValue('_canAddNodeToParent', false);
 
     try
     {
@@ -320,32 +320,32 @@ class site_object_mapper_test extends LimbTestCase
     }
   }
 
-  function test_insert_tree_node_ok()
+  function testInsertTreeNodeOk()
   {
-    $mapper = new site_object_mapper_test_version2($this);
+    $mapper = new SiteObjectMapperTestVersion2($this);
 
-    $mapper->expectOnce('_insert_site_object_record');
-    $mapper->setReturnValue('_insert_site_object_record', $object_id = 120);
+    $mapper->expectOnce('_insertSiteObjectRecord');
+    $mapper->setReturnValue('_insertSiteObjectRecord', $object_id = 120);
 
-    $this->site_object->setReturnValue('get_id', $object_id);
-    $this->site_object->setReturnValue('get_parent_node_id', $parent_node_id = 10);
+    $this->site_object->setReturnValue('getId', $object_id);
+    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
 
-    $mapper->setReturnValue('_can_add_node_to_parent', true);
-    $this->tree->expectOnce('create_sub_node');
-    $this->tree->setReturnValue('create_sub_node', $node_id = 200);
+    $mapper->setReturnValue('_canAddNodeToParent', true);
+    $this->tree->expectOnce('createSubNode');
+    $this->tree->setReturnValue('createSubNode', $node_id = 200);
 
-    $this->site_object->expectOnce('set_id', array($object_id));
-    $this->site_object->expectOnce('set_node_id', array($node_id));
+    $this->site_object->expectOnce('setId', array($object_id));
+    $this->site_object->expectOnce('setNodeId', array($node_id));
 
     $id = $mapper->insert($this->site_object);
 
     $mapper->tally();
   }
 
-  function  test_update_site_object_record_failed_no_id()
+  function  testUpdateSiteObjectRecordFailedNoId()
   {
-    $mapper = new site_object_mapper_test_version1($this);
-    $this->site_object->expectOnce('get_id');
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $this->site_object->expectOnce('getId');
 
     try
     {
@@ -360,13 +360,13 @@ class site_object_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function  test_update_site_object_record_failed_no_behaviour_id()
+  function  testUpdateSiteObjectRecordFailedNoBehaviourId()
   {
-    $mapper = new site_object_mapper_test_version1($this);
-    $this->site_object->setReturnValue('get_id', 125);
-    $this->site_object->setReturnValue('get_identifier', 'test');
-    $this->site_object->expectOnce('get_behaviour');
-    $this->site_object->setReturnValue('get_behaviour', null);
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $this->site_object->setReturnValue('getId', 125);
+    $this->site_object->setReturnValue('getIdentifier', 'test');
+    $this->site_object->expectOnce('getBehaviour');
+    $this->site_object->setReturnValue('getBehaviour', null);
 
     try
     {
@@ -381,11 +381,11 @@ class site_object_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function  test_update_site_object_record_failed_no_identifier()
+  function  testUpdateSiteObjectRecordFailedNoIdentifier()
   {
-    $mapper = new site_object_mapper_test_version1($this);
-    $this->site_object->setReturnValue('get_id', 125);
-    $this->site_object->setReturnValue('get_identifier', null);
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $this->site_object->setReturnValue('getId', 125);
+    $this->site_object->setReturnValue('getIdentifier', null);
 
     try
     {
@@ -400,36 +400,36 @@ class site_object_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function test_update_site_object_record_ok()
+  function testUpdateSiteObjectRecordOk()
   {
-    $this->db->sql_insert('sys_site_object',
+    $this->db->sqlInsert('sys_site_object',
                           array('id' => $object_id = 100,
                                 'title' => 'old title',
                                 'identifier' => 'old identifier',
                                 'class_id' => 234));
 
-    $mapper = new site_object_mapper_test_version1($this);
+    $mapper = new SiteObjectMapperTestVersion1($this);
 
-    $site_object = new site_object();
-    $site_object->set_id($object_id);
-    $site_object->set_identifier('test');
-    $site_object->set_title('test');
-    $site_object->set_locale_id('fr');
-    $site_object->attach_behaviour($this->behaviour);
-    $this->behaviour->setReturnValue('get_id', 25);
+    $site_object = new SiteObject();
+    $site_object->setId($object_id);
+    $site_object->setIdentifier('test');
+    $site_object->setTitle('test');
+    $site_object->setLocaleId('fr');
+    $site_object->attachBehaviour($this->behaviour);
+    $this->behaviour->setReturnValue('getId', 25);
 
-    $this->behaviour_mapper->expectOnce('save', array(new IsAExpectation('Mocksite_object_behaviour')));
+    $this->behaviour_mapper->expectOnce('save', array(new IsAExpectation('MockSiteObjectBehaviour')));
 
     $mapper->update($site_object);
 
-    $this->_check_sys_site_object_record($site_object);
+    $this->_checkSysSiteObjectRecord($site_object);
 
     $mapper->tally();
   }
 
-  function  test_update_tree_node_failed_no_node_id()
+  function  testUpdateTreeNodeFailedNoNodeId()
   {
-    $mapper = new site_object_mapper_test_version2($this);
+    $mapper = new SiteObjectMapperTestVersion2($this);
 
     try
     {
@@ -442,11 +442,11 @@ class site_object_mapper_test extends LimbTestCase
     }
   }
 
-  function  test_update_tree_node_failed_no_parent_node_id()
+  function  testUpdateTreeNodeFailedNoParentNodeId()
   {
-    $mapper = new site_object_mapper_test_version2($this);
+    $mapper = new SiteObjectMapperTestVersion2($this);
 
-    $this->site_object->setReturnValue('get_node_id', 10);
+    $this->site_object->setReturnValue('getNodeId', 10);
 
     try
     {
@@ -459,19 +459,19 @@ class site_object_mapper_test extends LimbTestCase
     }
   }
 
-  function  test_update_tree_node_failed_to_move()
+  function  testUpdateTreeNodeFailedToMove()
   {
-    $this->site_object->setReturnValue('get_node_id', $node_id = 100);
-    $this->site_object->setReturnValue('get_parent_node_id', $parent_node_id = 10);
+    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
+    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
 
-    $mapper = new site_object_mapper_test_version2($this);
-    $mapper->setReturnValue('_can_add_node_to_parent', true, array($parent_node_id));
+    $mapper = new SiteObjectMapperTestVersion2($this);
+    $mapper->setReturnValue('_canAddNodeToParent', true, array($parent_node_id));
 
-    $this->tree->expectOnce('get_node');
-    $this->tree->setReturnValue('get_node', array('parent_id' => 110), array($node_id));
+    $this->tree->expectOnce('getNode');
+    $this->tree->setReturnValue('getNode', array('parentId' => 110), array($node_id));
 
-    $this->tree->expectOnce('move_tree');
-    $this->tree->setReturnValue('move_tree', false, array($node_id, $parent_node_id));
+    $this->tree->expectOnce('moveTree');
+    $this->tree->setReturnValue('moveTree', false, array($node_id, $parent_node_id));
 
     try
     {
@@ -486,18 +486,18 @@ class site_object_mapper_test extends LimbTestCase
     $mapper->tally();
   }
 
-  function  test_update_tree_node_failed_new_parent_cant_accept_children()
+  function  testUpdateTreeNodeFailedNewParentCantAcceptChildren()
   {
-    $this->site_object->setReturnValue('get_node_id', $node_id = 100);
-    $this->site_object->setReturnValue('get_parent_node_id', $parent_node_id = 10);
+    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
+    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
 
-    $mapper = new site_object_mapper_test_version2($this);
-    $mapper->setReturnValue('_can_add_node_to_parent', false, array($parent_node_id));
+    $mapper = new SiteObjectMapperTestVersion2($this);
+    $mapper->setReturnValue('_canAddNodeToParent', false, array($parent_node_id));
 
-    $this->tree->expectOnce('get_node');
-    $this->tree->setReturnValue('get_node', array('parent_id' => 110), array($node_id));
+    $this->tree->expectOnce('getNode');
+    $this->tree->setReturnValue('getNode', array('parentId' => 110), array($node_id));
 
-    $this->tree->expectNever('move_tree');
+    $this->tree->expectNever('moveTree');
 
     try
     {
@@ -510,56 +510,56 @@ class site_object_mapper_test extends LimbTestCase
     }
   }
 
-  function  test_update_ok_object_not_moved_identifier_changed_in_tree()
+  function  testUpdateOkObjectNotMovedIdentifierChangedInTree()
   {
-    $this->site_object->setReturnValue('get_node_id', $node_id = 100);
-    $this->site_object->setReturnValue('get_parent_node_id', $parent_node_id = 10);
-    $this->site_object->setReturnValue('get_identifier', $identifier = 'test');
+    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
+    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
+    $this->site_object->setReturnValue('getIdentifier', $identifier = 'test');
 
-    $mapper = new site_object_mapper_test_version2($this);
-    $mapper->setReturnValue('_can_add_node_to_parent', true, array($parent_node_id));
+    $mapper = new SiteObjectMapperTestVersion2($this);
+    $mapper->setReturnValue('_canAddNodeToParent', true, array($parent_node_id));
 
-    $this->tree->expectOnce('get_node');
-    $this->tree->setReturnValue('get_node',
-                                array('identifier' => 'test2', 'parent_id' => $parent_node_id),
+    $this->tree->expectOnce('getNode');
+    $this->tree->setReturnValue('getNode',
+                                array('identifier' => 'test2', 'parentId' => $parent_node_id),
                                 array($node_id));
 
-    $this->tree->expectNever('move_tree');
+    $this->tree->expectNever('moveTree');
 
-    $this->tree->expectOnce('update_node', array($node_id,
+    $this->tree->expectOnce('updateNode', array($node_id,
                                                  array('identifier' => $identifier),
                                                  true));
 
     $mapper->update($this->site_object);
   }
 
-  function  test_update_ok_object_not_moved_identifier_not_changed_in_tree()
+  function  testUpdateOkObjectNotMovedIdentifierNotChangedInTree()
   {
-    $this->site_object->setReturnValue('get_node_id', $node_id = 100);
-    $this->site_object->setReturnValue('get_parent_node_id', $parent_node_id = 10);
-    $this->site_object->setReturnValue('get_identifier', $identifier = 'test');
+    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
+    $this->site_object->setReturnValue('getParentNodeId', $parent_node_id = 10);
+    $this->site_object->setReturnValue('getIdentifier', $identifier = 'test');
 
-    $mapper = new site_object_mapper_test_version2($this);
-    $mapper->setReturnValue('_can_add_node_to_parent', true, array($parent_node_id));
+    $mapper = new SiteObjectMapperTestVersion2($this);
+    $mapper->setReturnValue('_canAddNodeToParent', true, array($parent_node_id));
 
-    $this->tree->expectOnce('get_node');
-    $this->tree->setReturnValue('get_node',
-                                array('identifier' => $identifier, 'parent_id' => $parent_node_id),
+    $this->tree->expectOnce('getNode');
+    $this->tree->setReturnValue('getNode',
+                                array('identifier' => $identifier, 'parentId' => $parent_node_id),
                                 array($node_id));
 
-    $this->tree->expectNever('move_tree');
-    $this->tree->expectNever('update_node');
+    $this->tree->expectNever('moveTree');
+    $this->tree->expectNever('updateNode');
 
     $mapper->update($this->site_object);
   }
 
-  function test_cant_delete_no_id()
+  function testCantDeleteNoId()
   {
-    $mapper = new site_object_mapper();
+    $mapper = new SiteObjectMapper();
 
     try
     {
-      $mapper->can_delete($this->site_object);
+      $mapper->canDelete($this->site_object);
       $this->assertTrue(false);
     }
     catch(LimbException $e)
@@ -568,14 +568,14 @@ class site_object_mapper_test extends LimbTestCase
     }
   }
 
-  function test_cant_delete_no_node_id()
+  function testCantDeleteNoNodeId()
   {
-    $mapper = new site_object_mapper();
-    $this->site_object->setReturnValue('get_id', 10);
+    $mapper = new SiteObjectMapper();
+    $this->site_object->setReturnValue('getId', 10);
 
     try
     {
-      $mapper->can_delete($this->site_object);
+      $mapper->canDelete($this->site_object);
       $this->assertTrue(false);
     }
     catch(LimbException $e)
@@ -584,92 +584,92 @@ class site_object_mapper_test extends LimbTestCase
     }
   }
 
-  function test_cant_delete()
+  function testCantDelete()
   {
-    $this->site_object->setReturnValue('get_id', 10);
-    $this->site_object->setReturnValue('get_node_id', 100);
+    $this->site_object->setReturnValue('getId', 10);
+    $this->site_object->setReturnValue('getNodeId', 100);
 
-    $mapper = new site_object_mapper_test_version1($this);
-    $mapper->setReturnValue('_can_delete_site_object_record', false);
-    $this->assertFalse($mapper->can_delete($this->site_object));
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $mapper->setReturnValue('_canDeleteSiteObjectRecord', false);
+    $this->assertFalse($mapper->canDelete($this->site_object));
   }
 
-  function test_cant_delete_not_terminal_node()
+  function testCantDeleteNotTerminalNode()
   {
-    $this->site_object->setReturnValue('get_id', 10);
-    $this->site_object->setReturnValue('get_node_id', $node_id = 100);
+    $this->site_object->setReturnValue('getId', 10);
+    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
 
-    $mapper = new site_object_mapper_test_version1($this);
-    $mapper->setReturnValue('_can_delete_site_object_record', true);
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $mapper->setReturnValue('_canDeleteSiteObjectRecord', true);
 
-    $this->tree->expectOnce('can_delete_node', array($node_id));
-    $this->tree->setReturnValue('can_delete_node', false, array($node_id));
+    $this->tree->expectOnce('canDeleteNode', array($node_id));
+    $this->tree->setReturnValue('canDeleteNode', false, array($node_id));
 
-    $this->assertFalse($mapper->can_delete($this->site_object));
+    $this->assertFalse($mapper->canDelete($this->site_object));
   }
 
-  function test_can_delete()
+  function testCanDelete()
   {
-    $this->site_object->setReturnValue('get_id', 10);
-    $this->site_object->setReturnValue('get_node_id', $node_id = 100);
+    $this->site_object->setReturnValue('getId', 10);
+    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
 
-    $mapper = new site_object_mapper_test_version1($this);
-    $mapper->setReturnValue('_can_delete_site_object_record', true);
-    $this->tree->setReturnValue('can_delete_node', true, array($node_id));
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $mapper->setReturnValue('_canDeleteSiteObjectRecord', true);
+    $this->tree->setReturnValue('canDeleteNode', true, array($node_id));
 
-    $this->assertTrue($mapper->can_delete($this->site_object));
+    $this->assertTrue($mapper->canDelete($this->site_object));
   }
 
-  function test_delete()
+  function testDelete()
   {
-    $this->db->sql_insert('sys_site_object', array('id' => $object_id = 1));
+    $this->db->sqlInsert('sys_site_object', array('id' => $object_id = 1));
 
-    $this->site_object->setReturnValue('get_id', $object_id);
-    $this->site_object->setReturnValue('get_node_id', $node_id = 100);
+    $this->site_object->setReturnValue('getId', $object_id);
+    $this->site_object->setReturnValue('getNodeId', $node_id = 100);
 
-    $mapper = new site_object_mapper_test_version1($this);
-    $mapper->setReturnValue('_can_delete_site_object_record', true);
-    $this->tree->setReturnValue('can_delete_node', true, array($node_id));
+    $mapper = new SiteObjectMapperTestVersion1($this);
+    $mapper->setReturnValue('_canDeleteSiteObjectRecord', true);
+    $this->tree->setReturnValue('canDeleteNode', true, array($node_id));
 
-    $this->tree->expectOnce('delete_node', array($node_id));
+    $this->tree->expectOnce('deleteNode', array($node_id));
 
     $mapper->delete($this->site_object);
 
-    $this->db->sql_select('sys_site_object', '*', 'id=' . $object_id);
-    $this->assertTrue(!$record = $this->db->fetch_row());
+    $this->db->sqlSelect('sys_site_object', '*', 'id=' . $object_id);
+    $this->assertTrue(!$record = $this->db->fetchRow());
   }
 
-  function _check_sys_site_object_record($site_object)
+  function _checkSysSiteObjectRecord($site_object)
   {
-    $this->db->sql_select('sys_site_object', '*', 'id=' . $site_object->get_id());
+    $this->db->sqlSelect('sys_site_object', '*', 'id=' . $site_object->getId());
 
-    $record = $this->db->fetch_row();
+    $record = $this->db->fetchRow();
 
-    $this->assertNotNull($site_object->get_identifier());
-    $this->assertEqual($record['identifier'], $site_object->get_identifier());
+    $this->assertNotNull($site_object->getIdentifier());
+    $this->assertEqual($record['identifier'], $site_object->getIdentifier());
 
-    $this->assertNotNull($site_object->get_title());
-    $this->assertEqual($record['title'], $site_object->get_title());
+    $this->assertNotNull($site_object->getTitle());
+    $this->assertEqual($record['title'], $site_object->getTitle());
 
-    $this->assertNotNull($site_object->get_version());
-    $this->assertEqual($record['current_version'], $site_object->get_version());
+    $this->assertNotNull($site_object->getVersion());
+    $this->assertEqual($record['current_version'], $site_object->getVersion());
 
-    $this->assertNotNull($site_object->get_locale_id());
-    $this->assertEqual($record['locale_id'], $site_object->get_locale_id());
+    $this->assertNotNull($site_object->getLocaleId());
+    $this->assertEqual($record['locale_id'], $site_object->getLocaleId());
 
     $this->assertFalse(!$record['class_id']);//???
 
-    $this->assertNotNull($site_object->get_creator_id());
-    $this->assertEqual($record['creator_id'], $site_object->get_creator_id());
+    $this->assertNotNull($site_object->getCreatorId());
+    $this->assertEqual($record['creator_id'], $site_object->getCreatorId());
 
-    $this->assertNotNull($site_object->get_behaviour()->get_id());
-    $this->assertEqual($record['behaviour_id'], $site_object->get_behaviour()->get_id());
+    $this->assertNotNull($site_object->getBehaviour()->getId());
+    $this->assertEqual($record['behaviour_id'], $site_object->getBehaviour()->getId());
 
-    $this->assertNotNull($site_object->get_created_date());
-    $this->assertEqual($record['created_date'], $site_object->get_created_date());
+    $this->assertNotNull($site_object->getCreatedDate());
+    $this->assertEqual($record['created_date'], $site_object->getCreatedDate());
 
-    $this->assertNotNull($site_object->get_modified_date());
-    $this->assertEqual($record['modified_date'], $site_object->get_modified_date());
+    $this->assertNotNull($site_object->getModifiedDate());
+    $this->assertEqual($record['modified_date'], $site_object->getModifiedDate());
   }
 }
 

@@ -8,96 +8,96 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/domain_object.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/core/DomainObject.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
-class domain_object_test extends LimbTestCase
+class DomainObjectTest extends LimbTestCase
 {
   var $object;
 
   function setUp()
   {
-    $this->object = new domain_object();
+    $this->object = new DomainObject();
   }
 
   function tearDown()
   {
   }
 
-  function test_get_id()
+  function testGetId()
   {
-    $this->object->set_id(10);
-    $this->assertEqual($this->object->get_id(), 10);
+    $this->object->setId(10);
+    $this->assertEqual($this->object->getId(), 10);
   }
 
-  function test_is_dirty_false()
+  function testIsDirtyFalse()
   {
-    $this->assertFalse($this->object->is_dirty());
+    $this->assertFalse($this->object->isDirty());
   }
 
-  function test_object_becomes_clean_after_import()
+  function testObjectBecomesCleanAfterImport()
   {
-    $this->assertFalse($this->object->is_dirty());
+    $this->assertFalse($this->object->isDirty());
 
     $this->object->set('test', 'value');
 
-    $this->assertTrue($this->object->is_dirty());
+    $this->assertTrue($this->object->isDirty());
 
     $values = array('test');
 
     $this->object->import($values);
 
-    $this->assertFalse($this->object->is_dirty());
+    $this->assertFalse($this->object->isDirty());
   }
 
-  function test_object_becomes_dirty_after_set()
+  function testObjectBecomesDirtyAfterSet()
   {
-    $this->assertFalse($this->object->is_dirty());
+    $this->assertFalse($this->object->isDirty());
 
     $this->object->set('test', 'value');
 
-    $this->assertTrue($this->object->is_dirty());
+    $this->assertTrue($this->object->isDirty());
   }
 
-  function test_mark_clean()
+  function testMarkClean()
   {
     $this->object->set('test', 'value');
-    $this->object->mark_clean();
+    $this->object->markClean();
 
-    $this->assertFalse($this->object->is_dirty());
+    $this->assertFalse($this->object->isDirty());
   }
 
-  function test_object_becomes_dirty_after_get_nonexisting_reference()
+  function testObjectBecomesDirtyAfterGetNonexistingReference()
   {
-    $property =& $this->object->get_reference('test');
+    $property =& $this->object->getReference('test');
 
-    $this->assertTrue($this->object->is_dirty());
+    $this->assertTrue($this->object->isDirty());
   }
 
-  function test_object_becomes_dirty_after_reference_got_changed1()
+  function testObjectBecomesDirtyAfterReferenceGotChanged1()
   {
-    $this->object->import(array('test' => new object()));
+    $this->object->import(array('test' => new Object()));
 
     $obj = $this->object->get('test');
 
-    $this->assertFalse($this->object->is_dirty());
+    $this->assertFalse($this->object->isDirty());
 
     $obj->set('whatever', 1);
 
-    $this->assertTrue($this->object->is_dirty());
+    $this->assertTrue($this->object->isDirty());
   }
 
-  function test_object_becomes_dirty_after_reference_got_changed2()
+  function testObjectBecomesDirtyAfterReferenceGotChanged2()
   {
     $this->object->import(array('test' => 2));
 
-    $ref =& $this->object->get_reference('test');
+    $ref =& $this->object->getReference('test');
 
-    $this->assertFalse($this->object->is_dirty());
+    $this->assertFalse($this->object->isDirty());
 
     $ref = 1;
 
-    $this->assertTrue($this->object->is_dirty());
+    $this->assertTrue($this->object->isDirty());
   }
 
 }

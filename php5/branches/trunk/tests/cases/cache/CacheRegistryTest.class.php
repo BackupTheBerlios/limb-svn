@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cache/cache_registry.class.php');
+require_once(LIMB_DIR . '/class/cache/CacheRegistry.class.php');
 
-class cache_registry_test extends LimbTestCase
+class CacheRegistryTest extends LimbTestCase
 {
   var $cache;
 
@@ -19,14 +19,14 @@ class cache_registry_test extends LimbTestCase
     $this->cache = new CacheRegistry();
   }
 
-  function test_get_null()
+  function testGetNull()
   {
     $key = 'empty';
 
     $this->assertNull($this->cache->get($key));
   }
 
-  function test_get_null2()
+  function testGetNull2()
   {
     $key = 'empty';
     $this->cache->put($key, 'value', 'some-group');
@@ -34,7 +34,7 @@ class cache_registry_test extends LimbTestCase
     $this->assertNull($this->cache->get($key));
   }
 
-  function test_put_to_cache_no_group()
+  function testPutToCacheNoGroup()
   {
     $key = array('c1' => 'c', 'c2' => 'c');
     $this->cache->put($key, 'value');
@@ -42,7 +42,7 @@ class cache_registry_test extends LimbTestCase
     $this->assertEqual($this->cache->get($key), 'value');
   }
 
-  function test_put_to_cache_with_group()
+  function testPutToCacheWithGroup()
   {
     $key = array('c1' => 'c', 'c2' => 'c');
     $this->cache->put($key, 'value', 'test-group');
@@ -50,7 +50,7 @@ class cache_registry_test extends LimbTestCase
     $this->assertEqual($this->cache->get($key, 'test-group'), 'value');
   }
 
-  function test_flush_all()
+  function testFlushAll()
   {
     $key = array('c1' => 'c', 'c2' => 'c');
     $this->cache->put($key, 'value');
@@ -60,7 +60,7 @@ class cache_registry_test extends LimbTestCase
     $this->assertNull($this->cache->get($key));
   }
 
-  function test_flush_group()
+  function testFlushGroup()
   {
     $key = array('c1' => 'c', 'c2' => 'c');
     $this->cache->put($key, 'value1');

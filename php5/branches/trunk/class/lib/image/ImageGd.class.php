@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/image/image_library.class.php');
+require_once(dirname(__FILE__) . '/ImageLibrary.class.php');
 
-class image_gd extends image_library
+class ImageGd extends ImageLibrary
 {
   protected $image;
   protected $gd_version;
@@ -29,7 +29,7 @@ class image_gd extends image_library
 
     $this->library_installed = true;
 
-    $this->_determine_gd_options();
+    $this->_determineGdOptions();
 
     if ($this->gd_version >= 2)
     {
@@ -43,18 +43,18 @@ class image_gd extends image_library
     }
   }
 
-  protected function _determine_gd_options()
+  protected function _determineGdOptions()
   {
     if (function_exists('gd_info'))
-      $this->_determine_gd_options_through_gd_info();
+      $this->_determineGdOptionsThroughGdInfo();
     else
-      $this->_determine_gd_options_through_php_info();
+      $this->_determineGdOptionsThroughPhpInfo();
   }
 
-  protected function _determine_gd_options_through_gd_info()
+  protected function _determineGdOptionsThroughGdInfo()
   {
     $info = gd_info();
-    $this->gd_version = $this->_get_numeric_gd_version($info['GD Version']);
+    $this->gd_version = $this->_getNumericGdVersion($info['GD Version']);
 
     if ($info['GIF Read Support'])
       $this->read_types[] = 'GIF';
@@ -69,42 +69,42 @@ class image_gd extends image_library
       $this->read_types[] = $this->create_types[] = 'PNG';
   }
 
-  protected function _determine_gd_options_through_php_info()
+  protected function _determineGdOptionsThroughPhpInfo()
   {
     ob_start();
     phpinfo();
     $phpinfo = ob_get_contents();
     ob_end_clean();
-    $this->gd_version = $this->_get_numeric_gd_version($this->_get_gd_option($phpinfo, 'GD Version'));
+    $this->gd_version = $this->_getNumericGdVersion($this->_getGdOption($phpinfo, 'GD Version'));
 
-    if (strpos($this->_get_gd_option($phpinfo, 'GIF Read Support'), 'enabled') !== false)
+    if (strpos($this->_getGdOption($phpinfo, 'GIF Read Support'), 'enabled') !== false)
       $this->read_types[] = 'GIF';
 
-    if (strpos($this->_get_gd_option($phpinfo, 'GIF Create Support'), 'enabled') !== false)
+    if (strpos($this->_getGdOption($phpinfo, 'GIF Create Support'), 'enabled') !== false)
       $this->cerate_types[] = 'GIF';
 
-    if (strpos($this->_get_gd_option($phpinfo, 'JPG Support'), 'enabled') !== false)
+    if (strpos($this->_getGdOption($phpinfo, 'JPG Support'), 'enabled') !== false)
       $this->read_types[] = $this->create_types[] = 'JPEG';
 
-    if (strpos($this->_get_gd_option($phpinfo, 'PNG Support'), 'enabled') !== false)
+    if (strpos($this->_getGdOption($phpinfo, 'PNG Support'), 'enabled') !== false)
       $this->read_types[] = $this->create_types[] = 'PNG';
   }
 
-  protected function _get_gd_option($phpinfo, $option)
+  protected function _getGdOption($phpinfo, $option)
   {
     $re = sprintf($this->option_re, $option);
     preg_match($re, $phpinfo, $matches);
     return $matches[1];
   }
 
-  protected function _get_numeric_gd_version($str)
+  protected function _getNumericGdVersion($str)
   {
     $re = "/[^\.\d]*([\.\d]+)[^\.\d]*/";
     preg_match($re, $str, $matches);
     return (float)$matches[1];
   }
 
-  protected function _get_image()
+  protected function _getImage()
   {
     if($this->image)
       return $this->image;
@@ -121,12 +121,12 @@ class image_gd extends image_library
     return $this->image;
   }
 
-  protected function _set_image($image)
+  protected function _setImage($image)
   {
     $this->image = $image;
   }
 
-  public function parse_hex_color($hex)
+  public function parseHexColor($hex)
   {
     $length = strlen($hex);
     $color['red'] = hexdec(substr($hex, $length - 6, 2));
@@ -142,7 +142,7 @@ class image_gd extends image_library
 
   public function commit()
   {
-    $image = $this->_get_image();
+    $image = $this->_getImage();
 
     $create_func = "Image{$this->output_file_type}";
     $create_func($image, $this->output_file);
@@ -152,12 +152,12 @@ class image_gd extends image_library
 
   public function resize($params)
   {
-    $image = $this->_get_image();
+    $image = $this->_getImage();
 
-    $src_width = ImageSX($image);
-    $src_height = ImageSY($image);
+    $src_width = imagesx($image);
+    $src_height = imagesy($image);
 
-    list($dst_width, $dst_height) = $this->get_dst_dimensions($src_width, $src_height, $params);
+    list($dst_width, $dst_height) = $this->getDstDimensions($src_width, $src_height, $params);
 
     $create_func = $this->create_func;
     $resize_func = $this->resize_func;
@@ -165,23 +165,23 @@ class image_gd extends image_library
     $dest_image = $create_func($dst_width, $dst_height);
     $resize_func($dest_image, $image, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
 
-    ImageDestroy($image);
+    imagedestroy($image);
 
-    $this->_set_image($dest_image);
+    $this->_setImage($dest_image);
   }
 
   public function rotate($angle, $bg_color)
   {
-    $image = $this->_get_image();
+    $image = $this->_getImage();
 
-    $color = $this->parse_hex_color($bg_color);
+    $color = $this->parseHexColor($bg_color);
     $background_color = imagecolorallocate($image, $color['red'], $color['green'], $color['blue']);
-    $this->_set_image(imagerotate($image, $angle, $background_color));
+    $this->_setImage(imagerotate($image, $angle, $background_color));
   }
 
   public function flip($params)
   {
-    $image = $this->_get_image();
+    $image = $this->_getImage();
 
     $x = imagesx($image);
     $y = imagesy($image);
@@ -197,15 +197,15 @@ class image_gd extends image_library
     if ($params == self :: FLIP_VERTICAL)
       $resize_func($dest_image, $image, 0, 0, 0, $y, $x, $y, $x, -$y);
 
-    ImageDestroy($image);
-    $this->_set_image($dest_image);
+    imagedestroy($image);
+    $this->_setImage($dest_image);
   }
 
   public function cut($x, $y, $w, $h, $bg_color)
   {
-    $image = $this->_get_image();
+    $image = $this->_getImage();
 
-    $color = $this->parse_hex_color($bg_color);
+    $color = $this->parseHexColor($bg_color);
     $background_color = imagecolorallocate($image, $color['red'], $color['green'], $color['blue']);
     imagefill($image, 0, 0, $background_color);
 
@@ -215,8 +215,8 @@ class image_gd extends image_library
     $dest_image = $create_func($w, $h);
     $resize_func($dest_image, $image, 0, 0, $x, $y, $w, $h, $w, $h);
 
-    ImageDestroy($image);
-    $this->_set_image($dest_image);
+    imagedestroy($image);
+    $this->_setImage($dest_image);
   }
 }
 ?>

@@ -9,44 +9,44 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
-require_once(LIMB_DIR . '/class/core/sys_param.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+require_once(LIMB_DIR . '/class/core/SysParam.class.php');
 
-class sys_params_test extends LimbTestCase
+class SysParamsTest extends LimbTestCase
 {
   var $db = null;
 
-  function sys_params_test()
+  function sysParamsTest()
   {
-    $this->db =& db_factory :: instance();
-    parent :: LimbTestCase();
+    $this->db =& DbFactory :: instance();
+    parent :: limbTestCase();
   }
 
   function setUp()
   {
-    debug_mock :: init($this);
+    DebugMock :: init($this);
 
-    $this->db->sql_delete('sys_param');
+    $this->db->sqlDelete('sys_param');
   }
 
   function tearDown()
   {
-    debug_mock :: tally();
+    DebugMock :: tally();
 
-    $this->db->sql_delete('sys_param');
+    $this->db->sqlDelete('sys_param');
   }
 
-  function test_save_char_value()
+  function testSaveCharValue()
   {
-    $sp =& sys_param :: instance();
+    $sp =& SysParam :: instance();
 
-    $result = $sp->save_param('param_1', 'char', 123);
+    $result = $sp->saveParam('param_1', 'char', 123);
 
     $this->assertNotNull($result);
 
-    $db_table =& db_table_factory :: create('sys_param');
-    $list = $db_table->get_list();
+    $db_table =& DbTableFactory :: create('SysParam');
+    $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
 
     $record = current($list);
@@ -58,16 +58,16 @@ class sys_params_test extends LimbTestCase
     $this->assertNull($record['blob_value']);
   }
 
-  function test_save_int_value()
+  function testSaveIntValue()
   {
-    $sp =& sys_param :: instance();
+    $sp =& SysParam :: instance();
 
-    $result = $sp->save_param('param_1', 'int', 123);
+    $result = $sp->saveParam('param_1', 'int', 123);
 
     $this->assertNotNull($result);
 
-    $db_table =& db_table_factory :: create('sys_param');
-    $list = $db_table->get_list();
+    $db_table =& DbTableFactory :: create('SysParam');
+    $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -78,16 +78,16 @@ class sys_params_test extends LimbTestCase
     $this->assertNull($record['blob_value']);
   }
 
-  function test_save_float_value()
+  function testSaveFloatValue()
   {
-    $sp =& sys_param :: instance();
+    $sp =& SysParam :: instance();
 
-    $result = $sp->save_param('param_1', 'float', 123.053);
+    $result = $sp->saveParam('param_1', 'float', 123.053);
 
     $this->assertNotNull($result);
 
-    $db_table =& db_table_factory :: create('sys_param');
-    $list = $db_table->get_list();
+    $db_table =& DbTableFactory :: create('SysParam');
+    $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -98,16 +98,16 @@ class sys_params_test extends LimbTestCase
     $this->assertNull($record['blob_value']);
   }
 
-  function test_save_blob()
+  function testSaveBlob()
   {
-    $sp =& sys_param :: instance();
+    $sp =& SysParam :: instance();
 
-    $result = $sp->save_param('param_1', 'blob', 123.053);
+    $result = $sp->saveParam('param_1', 'blob', 123.053);
 
     $this->assertNotNull($result);
 
-    $db_table =& db_table_factory :: create('sys_param');
-    $list = $db_table->get_list();
+    $db_table =& DbTableFactory :: create('SysParam');
+    $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -118,18 +118,18 @@ class sys_params_test extends LimbTestCase
     $this->assertNull($record['float_value']);
   }
 
-  function test_save_multitype_value()
+  function testSaveMultitypeValue()
   {
-    $sp =& sys_param :: instance();
+    $sp =& SysParam :: instance();
 
-    $result = $sp->save_param('param_1', 'float', 123.053);
+    $result = $sp->saveParam('param_1', 'float', 123.053);
     $this->assertNotNull($result);
-    $result = $sp->save_param('param_1', 'int', 123.053);
+    $result = $sp->saveParam('param_1', 'int', 123.053);
 
     $this->assertNotNull($result);
 
-    $db_table =& db_table_factory :: create('sys_param');
-    $list = $db_table->get_list();
+    $db_table =& DbTableFactory :: create('SysParam');
+    $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -139,11 +139,11 @@ class sys_params_test extends LimbTestCase
     $this->assertEqual($record['char_value'],'');
     $this->assertEqual($record['blob_value'],'');
 
-    $result = $sp->save_param('param_1', 'char', 123.053, false);
+    $result = $sp->saveParam('param_1', 'char', 123.053, false);
 
     $this->assertNotNull($result);
 
-    $list = $db_table->get_list();
+    $list = $db_table->getList();
     $this->assertEqual(count($list) , 1);
     $record = current($list);
 
@@ -154,13 +154,13 @@ class sys_params_test extends LimbTestCase
     $this->assertEqual($record['blob_value'],'');
   }
 
-  function test_save_wrong_type_value()
+  function testSaveWrongTypeValue()
   {
-    $sp =& sys_param :: instance();
+    $sp =& SysParam :: instance();
 
     try
     {
-      $result = $sp->save_param('param_1', 'sadnkfjhskjfd', 123.053);
+      $result = $sp->saveParam('param_1', 'sadnkfjhskjfd', 123.053);
       $this->assertTrue(false);
     }
     catch(LimbException $e)
@@ -175,27 +175,27 @@ class sys_params_test extends LimbTestCase
     }
   }
 
-  function test_get_value()
+  function testGetValue()
   {
-    $sp =& sys_param :: instance();
+    $sp =& SysParam :: instance();
 
     $number = 123.053;
-    $sp->save_param('param_1', 'float', $number);
+    $sp->saveParam('param_1', 'float', $number);
 
-    $this->assertEqual($sp->get_param('param_1'), $number);
-    $this->assertNull($sp->get_param('param_1', 'char'));
+    $this->assertEqual($sp->getParam('param_1'), $number);
+    $this->assertNull($sp->getParam('param_1', 'char'));
   }
 
-  function test_get_wrong_type_value()
+  function testGetWrongTypeValue()
   {
-    $sp =& sys_param :: instance();
+    $sp =& SysParam :: instance();
 
     $number = 123.053;
-    $sp->save_param('param_1', 'float', $number);
+    $sp->saveParam('param_1', 'float', $number);
 
     try
     {
-      $this->assertNull($sp->get_param('param_1', 'blabla'));
+      $this->assertNull($sp->getParam('param_1', 'blabla'));
     }
     catch(LimbException $e)
     {

@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/one_table_object_db_table.class.php');
+require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
 
-class one_table_objects_mapper_test_version_db_table extends one_table_object_db_table
+class OneTableObjectsMapperTestVersionDbTable extends OneTableObjectDbTable
 {
-  function _define_db_table_name()
+  function _defineDbTableName()
   {
     return 'test_one_table_object';
   }
 
-  function _define_columns()
+  function _defineColumns()
   {
-    return complex_array :: array_merge(
-      parent :: _define_columns(),
+    return ComplexArray :: array_merge(
+      parent :: _defineColumns(),
       array(
         'annotation' => '',
         'content' => '',

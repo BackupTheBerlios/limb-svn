@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
 
-if(!is_registered_resolver('ini'))
+if(!isRegisteredResolver('ini'))
 {
-  include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
-  include_once(LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver.class.php');
-  register_file_resolver('ini', new ini_file_resolver(new package_file_resolver()));
+  include_once(LIMB_DIR . '/class/core/file_resolvers/PackageFileResolver.class.php');
+  include_once(LIMB_DIR . '/class/core/file_resolvers/IniFileResolver.class.php');
+  registerFileResolver('ini', new IniFileResolver(new PackageFileResolver()));
 }
 
-function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
+function getIniOption($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
-  return get_ini($file_path, $use_cache)->get_option($var_name, $group_name);
+  return getIni($file_path, $use_cache)->getOption($var_name, $group_name);
 }
 
-function get_ini($file_name, $use_cache = null)
+function getIni($file_name, $use_cache = null)
 {
   if (isset($GLOBALS['testing_ini'][$file_name]))
   {
@@ -32,11 +32,11 @@ function get_ini($file_name, $use_cache = null)
   }
   else
   {
-    resolve_handle($resolver =& get_file_resolver('ini'));
+    resolveHandle($resolver =& getFileResolver('ini'));
     $resolved_file = $resolver->resolve($file_name);
   }
 
-  return new ini($resolved_file, $use_cache);
+  return new Ini($resolved_file, $use_cache);
 }
 
 ?>

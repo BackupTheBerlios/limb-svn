@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/cache/full_page_cache_manager.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/cache/FullPageCacheManager.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
-Mock :: generate('request');
-Mock :: generate('uri');
+Mock :: generate('Request');
+Mock :: generate('Uri');
 
 Mock :: generatePartial(
-  'full_page_cache_manager',
-  'full_page_cache_manager_test_version',
-  array('get_rules', '_set_matched_rule', '_get_matched_rule', '_is_user_in_groups')
+  'FullPageCacheManager',
+  'FullPageCacheManagerTestVersion',
+  array('getRules', '_setMatchedRule', '_getMatchedRule', '_isUserInGroups')
 );
 
 Mock :: generatePartial(
-  'full_page_cache_manager',
-  'full_page_cache_manager_test_version2',
-  array('is_cacheable', 'cache_exists', 'get_cache_id')
+  'FullPageCacheManager',
+  'FullPageCacheManagerTestVersion2',
+  array('isCacheable', 'cacheExists', 'getCacheId')
 );
 
-class full_page_cache_manager_test extends LimbTestCase
+class FullPageCacheManagerTest extends LimbTestCase
 {
   var $cache_manager;
   var $request;
@@ -35,13 +35,13 @@ class full_page_cache_manager_test extends LimbTestCase
 
   function setUp()
   {
-    $this->request = new Mockrequest($this);
-    $this->uri = new Mockuri($this);
+    $this->request = new MockRequest($this);
+    $this->uri = new MockUri($this);
 
-    $this->request->setReturnValue('get_uri', $this->uri);
+    $this->request->setReturnValue('getUri', $this->uri);
 
-    $this->cache_manager = new full_page_cache_manager_test_version($this);
-    $this->cache_manager->set_request($this->request);
+    $this->cache_manager = new FullPageCacheManagerTestVersion($this);
+    $this->cache_manager->setRequest($this->request);
   }
 
   function tearDown()
@@ -51,11 +51,11 @@ class full_page_cache_manager_test extends LimbTestCase
     $this->uri->tally();
   }
 
-  function test_get_rules_from_ini()
+  function testGetRulesFromIni()
   {
-    $cache_manager = new full_page_cache_manager();
+    $cache_manager = new FullPageCacheManager();
 
-    register_testing_ini(
+    registerTestingIni(
       'full_page_cache.ini',
       '
       [rule1]
@@ -71,27 +71,27 @@ class full_page_cache_manager_test extends LimbTestCase
       '
     );
 
-    $this->assertEqual($cache_manager->get_rules(),
+    $this->assertEqual($cache_manager->getRules(),
       array(
         array('path_regex' => '/root/test1', 'optional' => array('test1', 'test2')),
         array('path_regex' => '/root/test2', 'groups' => array('members', 'visitors'))
       )
     );
 
-    clear_testing_ini();
+    clearTestingIni();
   }
 
-  function test_is_not_cacheable_no_uri()
+  function testIsNotCacheableNoUri()
   {
-    $cache_manager = new full_page_cache_manager();
+    $cache_manager = new FullPageCacheManager();
 
-    $this->assertFalse($cache_manager->is_cacheable());
+    $this->assertFalse($cache_manager->isCacheable());
   }
 
-  function test_is_cacheable_required_attributes()
+  function testIsCacheableRequiredAttributes()
   {
     $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -99,18 +99,18 @@ class full_page_cache_manager_test extends LimbTestCase
                'type' => 'allow'
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
-    $this->assertTrue($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
+    $this->assertTrue($this->cache_manager->isCacheable());
+    $this->cache_manager->expectOnce('_setMatchedRule', array($rule));
   }
 
-  function test_is_cacheable_optional_attributes()
+  function testIsCacheableOptionalAttributes()
   {
     $this->request->setReturnValue('export', array('action' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -118,20 +118,20 @@ class full_page_cache_manager_test extends LimbTestCase
                'type' => 'allow'
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
-    $this->assertTrue($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
+    $this->assertTrue($this->cache_manager->isCacheable());
+    $this->cache_manager->expectOnce('_setMatchedRule', array($rule));
   }
 
-  function test_is_cacheable_groups_match()
+  function testIsCacheableGroupsMatch()
   {
     $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->cache_manager->setReturnValueAt(0, '_is_user_in_groups', true, array(array('members', 'visitors')));
+    $this->cache_manager->setReturnValueAt(0, '_isUserInGroups', true, array(array('members', 'visitors')));
 
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -140,20 +140,20 @@ class full_page_cache_manager_test extends LimbTestCase
                'groups' => array('members', 'visitors')
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
-    $this->assertTrue($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
+    $this->assertTrue($this->cache_manager->isCacheable());
+    $this->cache_manager->expectOnce('_setMatchedRule', array($rule));
   }
 
-  function test_is_not_cacheable_groups_dont_match()
+  function testIsNotCacheableGroupsDontMatch()
   {
     $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->cache_manager->setReturnValueAt(0, '_is_user_in_groups', false, array(array('members')));
+    $this->cache_manager->setReturnValueAt(0, '_isUserInGroups', false, array(array('members')));
 
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -162,33 +162,33 @@ class full_page_cache_manager_test extends LimbTestCase
                'groups' => array('members')
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
-    $this->assertFalse($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectNever('_set_matched_rule');
+    $this->assertFalse($this->cache_manager->isCacheable());
+    $this->cache_manager->expectNever('_setMatchedRule');
   }
 
-  function test_is_cacheable_allow_by_default()
+  function testIsCacheableAllowByDefault()
   {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
                'optional' => array('action', 'pager'),
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
     $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->assertTrue($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
+    $this->assertTrue($this->cache_manager->isCacheable());
+    $this->cache_manager->expectOnce('_setMatchedRule', array($rule));
   }
 
-  function test_is_not_cacheable_deny()
+  function testIsNotCacheableDeny()
   {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -196,18 +196,18 @@ class full_page_cache_manager_test extends LimbTestCase
                'type' => 'deny'
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
     $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->assertFalse($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectNever('_set_matched_rule');
+    $this->assertFalse($this->cache_manager->isCacheable());
+    $this->cache_manager->expectNever('_setMatchedRule');
   }
 
-  function test_is_cacheable_extra_query_items()
+  function testIsCacheableExtraQueryItems()
   {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -215,18 +215,18 @@ class full_page_cache_manager_test extends LimbTestCase
                'type' => 'allow'
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
     $this->request->setReturnValue('export', array('action' => 1, 'pager' => 1, 'extra' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->assertTrue($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
+    $this->assertTrue($this->cache_manager->isCacheable());
+    $this->cache_manager->expectOnce('_setMatchedRule', array($rule));
   }
 
-  function test_is_not_cacheable_not_enough_attributes()
+  function testIsNotCacheableNotEnoughAttributes()
   {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -234,18 +234,18 @@ class full_page_cache_manager_test extends LimbTestCase
                'type' => 'allow'
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
     $this->request->setReturnValue('export', array('action' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->assertFalse($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectNever('_set_matched_rule');
+    $this->assertFalse($this->cache_manager->isCacheable());
+    $this->cache_manager->expectNever('_setMatchedRule');
   }
 
-  function test_is_not_cacheable_attributes_dont_match()
+  function testIsNotCacheableAttributesDontMatch()
   {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -253,18 +253,18 @@ class full_page_cache_manager_test extends LimbTestCase
                'type' => 'allow'
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
     $this->request->setReturnValue('export', array('action' => 1, 'pager1' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->assertFalse($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectNever('_set_matched_rule');
+    $this->assertFalse($this->cache_manager->isCacheable());
+    $this->cache_manager->expectNever('_setMatchedRule');
   }
 
-  function test_is_not_cacheable_path_doesnt_match()
+  function testIsNotCacheablePathDoesntMatch()
   {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
@@ -272,18 +272,18 @@ class full_page_cache_manager_test extends LimbTestCase
                'type' => 'allow'
               );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
     $this->request->setReturnValue('export', array('action' => 1));
-    $this->uri->setReturnValue('get_path', '/root/tesx');
+    $this->uri->setReturnValue('getPath', '/root/tesx');
 
-    $this->assertFalse($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectNever('_set_matched_rule');
+    $this->assertFalse($this->cache_manager->isCacheable());
+    $this->cache_manager->expectNever('_setMatchedRule');
   }
 
-  function test_is_cacheable_second_rule_match()
+  function testIsCacheableSecondRuleMatch()
   {
     $rule1 = array(
            'path_regex' => '/^\/root\/test.*$/',
@@ -302,18 +302,18 @@ class full_page_cache_manager_test extends LimbTestCase
            'type' => 'allow'
     );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule1, $rule2, $rule3)
     );
 
     $this->request->setReturnValue('export', array('action' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->assertTrue($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectOnce('_set_matched_rule', array($rule2));
+    $this->assertTrue($this->cache_manager->isCacheable());
+    $this->cache_manager->expectOnce('_setMatchedRule', array($rule2));
   }
 
-  function test_is_not_cacheable_second_rule_deny()
+  function testIsNotCacheableSecondRuleDeny()
   {
     $rule1 = array(
            'path_regex' => '/^\/root\/test.*$/',
@@ -327,270 +327,270 @@ class full_page_cache_manager_test extends LimbTestCase
            'type' => 'deny'
     );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule1, $rule2)
     );
 
     $this->request->setReturnValue('export', array('action' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->assertFalse($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectNever('_set_matched_rule');
+    $this->assertFalse($this->cache_manager->isCacheable());
+    $this->cache_manager->expectNever('_setMatchedRule');
   }
 
-  function test_is_cacheable_no_attributes()
+  function testIsCacheableNoAttributes()
   {
     $rule = array(
            'path_regex' => '/^\/root\/test.*$/',
            'type' => 'allow'
     );
 
-    $this->cache_manager->setReturnValue('get_rules',
+    $this->cache_manager->setReturnValue('getRules',
       array($rule)
     );
 
     $this->request->setReturnValue('export', array('action' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->assertTrue($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
+    $this->assertTrue($this->cache_manager->isCacheable());
+    $this->cache_manager->expectOnce('_setMatchedRule', array($rule));
   }
 
-  function test_get_cache_id_no_matched_rule()
+  function testGetCacheIdNoMatchedRule()
   {
-    $this->cache_manager->setReturnValue('_get_matched_rule', null);
-    $this->assertNull($this->cache_manager->get_cache_id());
+    $this->cache_manager->setReturnValue('_getMatchedRule', null);
+    $this->assertNull($this->cache_manager->getCacheId());
   }
 
-  function test_get_cache_id_optional_merged_with_required()
+  function testGetCacheIdOptionalMergedWithRequired()
   {
     $rule = array('optional' => array('pager', 'prop'), 'required' => array('action'));
 
     $this->request->setReturnValue('export', $query_items = array('action' => 1, 'pager' => 2));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->cache_manager->setReturnValue('_get_matched_rule', $rule);
+    $this->cache_manager->setReturnValue('_getMatchedRule', $rule);
 
     $this->assertEqual(
-      $this->cache_manager->get_cache_id(),
+      $this->cache_manager->getCacheId(),
       'f_' . md5('/root/test' . serialize($query_items))
     );
   }
 
-  function test_get_cache_id_query_items_sorted()
+  function testGetCacheIdQueryItemsSorted()
   {
     $rule = array('optional' => array('pager', 'prop'), 'required' => array('action'));
 
     $this->request->setReturnValue('export', $query_items = array('action' => 1, 'pager' => 2));
 
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->cache_manager->setReturnValue('_get_matched_rule', $rule);
+    $this->cache_manager->setReturnValue('_getMatchedRule', $rule);
 
-    $cache_id = $this->cache_manager->get_cache_id();
+    $cache_id = $this->cache_manager->getCacheId();
 
     $this->request->setReturnValue('export', $query_items = array('junky' => 1, 'pager' => 2, 'action' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->cache_manager->setReturnValue('_get_matched_rule', $rule);
+    $this->cache_manager->setReturnValue('_getMatchedRule', $rule);
 
     $this->assertEqual(
-      $this->cache_manager->get_cache_id(),
+      $this->cache_manager->getCacheId(),
       $cache_id
     );
   }
 
-  function test_get_cache_id_no_attributes()
+  function testGetCacheIdNoAttributes()
   {
     $rule = array();
 
     $this->request->setReturnValue('export', $query_items = array('action' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->cache_manager->setReturnValue('_get_matched_rule', $rule);
+    $this->cache_manager->setReturnValue('_getMatchedRule', $rule);
 
     $this->assertEqual(
-      $this->cache_manager->get_cache_id(),
+      $this->cache_manager->getCacheId(),
       'f_' . md5('/root/test' . serialize(array()))
     );
   }
 
-  function test_get_cache_id_junky_attributes()
+  function testGetCacheIdJunkyAttributes()
   {
     $rule = array('optional' => array('pager'), 'required' => array('action'));
 
     $this->request->setReturnValue('export', $query_items = array('action' => 1, 'pager' => 1, 'extra' => 1));
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
 
-    $this->cache_manager->setReturnValue('_get_matched_rule', $rule);
+    $this->cache_manager->setReturnValue('_getMatchedRule', $rule);
 
     $this->assertEqual(
-      $this->cache_manager->get_cache_id(),
+      $this->cache_manager->getCacheId(),
       'f_' . md5('/root/test' . serialize(array('action' => 1, 'pager' => 1)))
     );
   }
 
-  function test_cache_doesnt_exist_no_uri()
+  function testCacheDoesntExistNoUri()
   {
-    $cache_manager = new full_page_cache_manager();
-    $this->assertFalse($cache_manager->cache_exists());
+    $cache_manager = new FullPageCacheManager();
+    $this->assertFalse($cache_manager->cacheExists());
   }
 
-  function test_cache_exists()
+  function testCacheExists()
   {
-    $this->_write_cache($path = '/root/test', $attributes = array('action' => 1));
+    $this->_writeCache($path = '/root/test', $attributes = array('action' => 1));
 
-    $this->uri->setReturnValue('get_path', $path);
+    $this->uri->setReturnValue('getPath', $path);
     $this->request->setReturnValue('export', $attributes);
-    $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
+    $this->cache_manager->setReturnValue('_getMatchedRule', array('optional' => array('action')));
 
-    $this->assertTrue($this->cache_manager->cache_exists());
+    $this->assertTrue($this->cache_manager->cacheExists());
 
-    $this->_clean_cache($path, $attributes);
+    $this->_cleanCache($path, $attributes);
   }
 
-  function test_cache_doesnt_exist_params_dont_match()
+  function testCacheDoesntExistParamsDontMatch()
   {
-    $this->_write_cache($path = '/root/test', $attributes = array('action' => 2));
+    $this->_writeCache($path = '/root/test', $attributes = array('action' => 2));
 
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
     $this->request->setReturnValue('export', array('action' => 1));
 
-    $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
+    $this->cache_manager->setReturnValue('_getMatchedRule', array('optional' => array('action')));
 
-    $this->assertFalse($this->cache_manager->cache_exists());
+    $this->assertFalse($this->cache_manager->cacheExists());
 
-    $this->_clean_cache($path, $attributes);
+    $this->_cleanCache($path, $attributes);
   }
 
-  function test_cache_doesnt_exist_params_dont_match2()
+  function testCacheDoesntExistParamsDontMatch2()
   {
-    $this->_write_cache($path = '/root/test', $attributes = array('action' => 1, 'page' => 1));
+    $this->_writeCache($path = '/root/test', $attributes = array('action' => 1, 'page' => 1));
 
-    $this->uri->setReturnValue('get_path', '/root/test');
+    $this->uri->setReturnValue('getPath', '/root/test');
     $this->request->setReturnValue('export', array('action' => 1));
 
-    $this->cache_manager->setReturnValue('_get_matched_rule', array('optional' => array('action')));
+    $this->cache_manager->setReturnValue('_getMatchedRule', array('optional' => array('action')));
 
-    $this->assertFalse($this->cache_manager->cache_exists());
+    $this->assertFalse($this->cache_manager->cacheExists());
 
-    $this->_clean_cache($path, $attributes);
+    $this->_cleanCache($path, $attributes);
   }
 
-  function test_get_false_no_uri()
+  function testGetFalseNoUri()
   {
-    $cache_manager = new full_page_cache_manager();
+    $cache_manager = new FullPageCacheManager();
     $this->assertFalse($cache_manager->get());
   }
 
-  function test_get()
+  function testGet()
   {
-    $cache_manager = new full_page_cache_manager_test_version2($this);
-    $cache_manager->set_request($this->request);
+    $cache_manager = new FullPageCacheManagerTestVersion2($this);
+    $cache_manager->setRequest($this->request);
 
-    $this->_write_simple_cache($cache_id = 1, $contents = 'test-test');
+    $this->_writeSimpleCache($cache_id = 1, $contents = 'test-test');
 
-    $cache_manager->setReturnValue('is_cacheable', true);
-    $cache_manager->setReturnValue('cache_exists', true);
-    $cache_manager->setReturnValue('get_cache_id', $cache_id);
+    $cache_manager->setReturnValue('isCacheable', true);
+    $cache_manager->setReturnValue('cacheExists', true);
+    $cache_manager->setReturnValue('getCacheId', $cache_id);
 
     $this->assertEqual($cache_manager->get(), $contents);
 
     $cache_manager->tally();
 
-    $this->_clean_simple_cache($cache_id);
+    $this->_cleanSimpleCache($cache_id);
   }
 
-  function test_write_false_no_uri()
+  function testWriteFalseNoUri()
   {
-    $cache_manager = new full_page_cache_manager();
+    $cache_manager = new FullPageCacheManager();
     $this->assertFalse($cache_manager->write($content = 'test'));
   }
 
-  function test_write()
+  function testWrite()
   {
-    $cache_manager = new full_page_cache_manager_test_version2($this);
-    $cache_manager->set_request($this->request);
+    $cache_manager = new FullPageCacheManagerTestVersion2($this);
+    $cache_manager->setRequest($this->request);
 
     $contents = 'test-test';
 
-    $cache_manager->setReturnValue('get_cache_id', $cache_id = 1);
+    $cache_manager->setReturnValue('getCacheId', $cache_id = 1);
 
     $this->assertTrue($cache_manager->write($contents));
-    $this->assertEqual($this->_read_simple_cache($cache_id), $contents);
+    $this->assertEqual($this->_readSimpleCache($cache_id), $contents);
 
     $cache_manager->tally();
 
-    $this->_clean_simple_cache($cache_id);
+    $this->_cleanSimpleCache($cache_id);
   }
 
-  function test_overwrite()
+  function testOverwrite()
   {
-    $this->_write_simple_cache($cache_id = 1, $contents = 'test-overwrite');
+    $this->_writeSimpleCache($cache_id = 1, $contents = 'test-overwrite');
 
-    $cache_manager = new full_page_cache_manager_test_version2($this);
-    $cache_manager->set_request($this->request);
+    $cache_manager = new FullPageCacheManagerTestVersion2($this);
+    $cache_manager->setRequest($this->request);
 
     $contents = 'test-test';
 
-    $cache_manager->setReturnValue('get_cache_id', $cache_id);
+    $cache_manager->setReturnValue('getCacheId', $cache_id);
 
     $this->assertTrue($cache_manager->write($contents));
-    $this->assertEqual($this->_read_simple_cache($cache_id), $contents);
+    $this->assertEqual($this->_readSimpleCache($cache_id), $contents);
 
-    $this->_clean_simple_cache($cache_id);
+    $this->_cleanSimpleCache($cache_id);
 
     $cache_manager->tally();
   }
 
-  function test_flush()
+  function testFlush()
   {
-    $this->_write_simple_cache('f_test1', $content1 = 'test-content1');
-    $this->_write_simple_cache('f_test2', $content2 ='test-content2');
-    $this->_write_simple_cache('not_page_file', $content3 ='test-content3');
+    $this->_writeSimpleCache('f_test1', $content1 = 'test-content1');
+    $this->_writeSimpleCache('f_test2', $content2 ='test-content2');
+    $this->_writeSimpleCache('not_page_file', $content3 ='test-content3');
 
-    $cache_manager = new full_page_cache_manager();
+    $cache_manager = new FullPageCacheManager();
     $cache_manager->flush();
 
-    $files = fs :: find_subitems(PAGE_CACHE_DIR);
+    $files = Fs :: findSubitems(PAGE_CACHE_DIR);
 
     $this->assertEqual(sizeof($files), 1);
 
     $file = reset($files);
-    $this->assertEqual(fs :: clean_path($file), fs :: clean_path(PAGE_CACHE_DIR . fs :: separator() . 'not_page_file'));
+    $this->assertEqual(Fs :: cleanPath($file), Fs :: cleanPath(PAGE_CACHE_DIR . Fs :: separator() . 'not_page_file'));
 
-    $this->_clean_simple_cache('not_page_file');
+    $this->_cleanSimpleCache('not_page_file');
   }
 
-  function _write_cache($path, $attributes, $contents='test')
+  function _writeCache($path, $attributes, $contents='test')
   {
     $file_id = 'f_' . md5($path . serialize($attributes));
-    $this->_write_simple_cache($file_id, $contents);
+    $this->_writeSimpleCache($file_id, $contents);
   }
 
-  function _write_simple_cache($file_id, $contents)
+  function _writeSimpleCache($file_id, $contents)
   {
-    fs :: mkdir(PAGE_CACHE_DIR);
+    Fs :: mkdir(PAGE_CACHE_DIR);
     $f = fopen(PAGE_CACHE_DIR . $file_id, 'w');
     fwrite($f, $contents);
     fclose($f);
   }
 
-  function _read_simple_cache($file_id)
+  function _readSimpleCache($file_id)
   {
     return file_get_contents(PAGE_CACHE_DIR . $file_id);
   }
 
-  function _clean_simple_cache($file_id)
+  function _cleanSimpleCache($file_id)
   {
     if(file_exists(PAGE_CACHE_DIR . $file_id))
       unlink(PAGE_CACHE_DIR . $file_id);
   }
 
-  function _clean_cache($path, $attributes)
+  function _cleanCache($path, $attributes)
   {
     $file_id = 'f_' . md5($path . serialize($attributes));
-    $this->_clean_simple_cache($file_id);
+    $this->_cleanSimpleCache($file_id);
   }
 }
 

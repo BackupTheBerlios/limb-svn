@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php');
 
-class control_button_component extends form_element
+class ControlButtonComponent extends FormElement
 {
-  public function render_attributes()
+  public function renderAttributes()
   {
-    if (!isset($this->attributes['path']) || !$this->attributes['path'])
+    if (!isset($this->attributes['path']) ||  !$this->attributes['path'])
     {
       $action_path = $_SERVER['PHP_SELF'];
 
@@ -34,7 +34,7 @@ class control_button_component extends form_element
     if(isset($this->attributes['action']))
       $action_path .= 'action=' . $this->attributes['action'];
 
-    if (isset($this->attributes['reload_parent']) && $this->attributes['reload_parent'])
+    if (isset($this->attributes['reload_parent']) &&  $this->attributes['reload_parent'])
     {
       $action_path .= '&reload_parent=1';
       unset($this->attributes['reload_parent']);
@@ -43,12 +43,12 @@ class control_button_component extends form_element
     if(!isset($this->attributes['onclick']))
       $this->attributes['onclick'] = '';
 
-    $this->attributes['onclick'] .= "submit_form(this.form, '{$action_path}')";
+    $this->attributes['onclick'] .= "submitForm(this.form, '{$action_path}')";
 
     unset($this->attributes['path']);
     unset($this->attributes['action']);
 
-    parent :: render_attributes();
+    parent :: renderAttributes();
   }
 }
 

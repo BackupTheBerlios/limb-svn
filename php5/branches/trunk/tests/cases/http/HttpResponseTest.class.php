@@ -8,21 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
 
 Mock :: generatePartial(
-  'http_response',
-  'special_mock_response',
-  array('_send_header', '_send_string', '_send_file', '_exit')
+  'HttpResponse',
+  'SpecialMockResponse',
+  array('_sendHeader', '_sendString', '_sendFile', '_exit')
 );
 
-class http_response_test extends LimbTestCase
+class HttpResponseTest extends LimbTestCase
 {
   var $response;
 
   function setUp()
   {
-    $this->response = new special_mock_response($this);
+    $this->response = new SpecialMockResponse($this);
   }
 
   function tearDown()
@@ -30,153 +30,153 @@ class http_response_test extends LimbTestCase
     $this->response->tally();
   }
 
-  function test_header()
+  function testHeader()
   {
-    $this->response->expectArgumentsAt(0, '_send_header', array("Location:to-some-place"));
-    $this->response->expectArgumentsAt(1, '_send_header', array("Location:to-some-place2"));
+    $this->response->expectArgumentsAt(0, '_sendHeader', array("Location:to-some-place"));
+    $this->response->expectArgumentsAt(1, '_sendHeader', array("Location:to-some-place2"));
 
     $this->response->header("Location:to-some-place");
     $this->response->header("Location:to-some-place2");
     $this->response->commit();
   }
 
-  function test_is_empty()
+  function testIsEmpty()
   {
-    $this->assertTrue($this->response->is_empty());
+    $this->assertTrue($this->response->isEmpty());
   }
 
-  function test_is_empty_headers_sent()
+  function testIsEmptyHeadersSent()
   {
     $this->response->header('test');
-    $this->assertTrue($this->response->is_empty());
+    $this->assertTrue($this->response->isEmpty());
   }
 
-  function test_not_empty_redirect()
+  function testNotEmptyRedirect()
   {
     $this->response->redirect("/to/some/place?t=1&amp;t=2");
-    $this->assertFalse($this->response->is_empty());
+    $this->assertFalse($this->response->isEmpty());
   }
 
-  function test_not_empty_response_string()
+  function testNotEmptyResponseString()
   {
     $this->response->write("<b>wow</b>");
-    $this->assertFalse($this->response->is_empty());
+    $this->assertFalse($this->response->isEmpty());
   }
 
-  function test_not_empty_readfile()
+  function testNotEmptyReadfile()
   {
     $this->response->readfile("/path/to/file");
-    $this->assertFalse($this->response->is_empty());
+    $this->assertFalse($this->response->isEmpty());
   }
 
-  function test_not_empty_304_status()
+  function testNotEmpty304Status()
   {
     $this->response->header('HTTP/1.0 304 Not Modified');
-    $this->assertFalse($this->response->is_empty());
+    $this->assertFalse($this->response->isEmpty());
   }
 
-  function test_not_empty_412_status()
+  function testNotEmpty412Status()
   {
     $this->response->header('HTTP/1.1 412 Precondition Failed');
-    $this->assertFalse($this->response->is_empty());
+    $this->assertFalse($this->response->isEmpty());
   }
 
-  function test_headers_not_sent()
+  function testHeadersNotSent()
   {
     $this->assertFalse($this->response->headers_sent());
   }
 
-  function test_file_not_sent()
+  function testFileNotSent()
   {
-    $this->assertFalse($this->response->file_sent());
+    $this->assertFalse($this->response->fileSent());
   }
 
-  function test_file_sent()
+  function testFileSent()
   {
     $this->response->readfile('somefile');
-    $this->assertTrue($this->response->file_sent());
+    $this->assertTrue($this->response->fileSent());
   }
 
-  function test_headers_sent()
+  function testHeadersSent()
   {
     $this->response->header("Location:to-some-place");
     $this->assertTrue($this->response->headers_sent());
   }
 
-  function test_exit_after_commit()
+  function testExitAfterCommit()
   {
     $this->response->expectOnce('_exit');
     $this->response->commit();
   }
 
-  function test_redirect()
+  function testRedirect()
   {
     $path = '/to/some/place?t=1&t=2';
-    $message = strings :: get('redirect_message');
+    $message = Strings :: get('redirect_message');
     $message = str_replace('%path%', $path, $message);
 
-    $this->response->expectOnce('_send_string', array(new WantedPatternExpectation("~^<html><head><meta http-equiv=refresh content='0;url=" . preg_quote($path) . "'~")));
+    $this->response->expectOnce('_sendString', array(new WantedPatternExpectation("~^<html><head><meta http-equiv=refresh content='0;url=" . preg_quote($path) . "'~")));
 
     $this->response->redirect($path);
     $this->response->commit();
   }
 
-  function test_write()
+  function testWrite()
   {
-    $this->response->expectOnce('_send_string', array("<b>wow</b>"));
+    $this->response->expectOnce('_sendString', array("<b>wow</b>"));
 
     $this->response->write("<b>wow</b>");
     $this->response->commit();
   }
 
-  function test_readfile()
+  function testReadfile()
   {
-    $this->response->expectOnce('_send_file', array("/path/to/file"));
+    $this->response->expectOnce('_sendFile', array("/path/to/file"));
 
     $this->response->readfile("/path/to/file");
     $this->response->commit();
   }
 
-  function test_get_response_default_status()
+  function testGetResponseDefaultStatus()
   {
-    $this->assertEqual($this->response->get_status(), 200);
+    $this->assertEqual($this->response->getStatus(), 200);
   }
 
-  function test_get_response_status_http()
+  function testGetResponseStatusHttp()
   {
     $this->response->header('HTTP/1.0  304 ');
-    $this->assertEqual($this->response->get_status(), 304);
+    $this->assertEqual($this->response->getStatus(), 304);
 
     $this->response->header('HTTP/1.1  412');
-    $this->assertEqual($this->response->get_status(), 412);
+    $this->assertEqual($this->response->getStatus(), 412);
   }
 
-  function test_get_unknown_directive()
+  function testGetUnknownDirective()
   {
-    $this->assertFalse($this->response->get_directive('cache-control'));
+    $this->assertFalse($this->response->getDirective('cache-control'));
   }
 
-  function test_get_directive()
+  function testGetDirective()
   {
     $this->response->header('Cache-Control: protected, max-age=0, must-revalidate');
-    $this->assertEqual($this->response->get_directive('cache-control'), 'protected, max-age=0, must-revalidate');
+    $this->assertEqual($this->response->getDirective('cache-control'), 'protected, max-age=0, must-revalidate');
 
     $this->response->header('Cache-Control :    protected, max-age=10  ');
-    $this->assertEqual($this->response->get_directive('cache-control'), 'protected, max-age=10');
+    $this->assertEqual($this->response->getDirective('cache-control'), 'protected, max-age=10');
   }
 
-  function test_get_content_default_type()
+  function testGetContentDefaultType()
   {
-    $this->assertEqual($this->response->get_content_type(), 'text/html');
+    $this->assertEqual($this->response->getContentType(), 'text/html');
   }
 
-  function test_get_content_type()
+  function testGetContentType()
   {
     $this->response->header('Content-Type: image/png');
-    $this->assertEqual($this->response->get_content_type(), 'image/png');
+    $this->assertEqual($this->response->getContentType(), 'image/png');
 
     $this->response->header('Content-Type: application/rss+xml');
-    $this->assertEqual($this->response->get_content_type(), 'application/rss+xml');
+    $this->assertEqual($this->response->getContentType(), 'application/rss+xml');
   }
 
 }

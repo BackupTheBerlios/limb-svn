@@ -13,7 +13,7 @@
 * Used to allow PHP variable references to be copied from straight from the source
 * to the compiled template file.
 */
-class variable_reference extends compiler_component
+class VariableReference extends CompilerComponent
 {
   /**
   * Reference of variable
@@ -33,29 +33,29 @@ class variable_reference extends compiler_component
     switch ($this->scope)
     {
       case '#':
-        $context = $this->get_root_dataspace();
+        $context = $this->getRootDataspace();
         break;
       case '^':
-        $context = $this->get_parent_dataspace();
+        $context = $this->getParentDataspace();
         break;
       case '$':
-        $context = $this->get_dataspace();
+        $context = $this->getDataspace();
         break;
     }
     if ($context != null)
     {
       if (array_key_exists($this->reference, $context->vars))
       {
-        $code->write_html($context->vars[$this->reference]);
+        $code->writeHtml($context->vars[$this->reference]);
       }
       elseif(strpos($this->reference, '[') !== false)
       {
         $index = addslashes(preg_replace('/^([^\[\]]+)(\[.*\])+$/', "['\\1']\\2", $this->reference));
-        $code->write_php('echo ' . $context->get_dataspace_ref_code() . '->get_by_index_string(\'' . $index . '\');');
+        $code->writePhp('echo ' . $context->getDataspaceRefCode() . '->get_by_index_string(\'' . $index . '\');');
       }
       else
       {
-        $code->write_php('echo ' . $context->get_dataspace_ref_code() . '->get(\'' . $this->reference . '\');');
+        $code->writePhp('echo ' . $context->getDataspaceRefCode() . '->get(\'' . $this->reference . '\');');
       }
     }
   }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/session/session_driver.interface.php');
+require_once(LIMB_DIR . '/class/core/session/SessionDriver.interface.php');
 
-class session_db_driver implements session_driver
+class SessionDbDriver implements SessionDriver
 {
   protected $db;
   protected $user;
@@ -21,21 +21,21 @@ class session_db_driver implements session_driver
     $this->user = Limb :: toolkit()->getUser();
   }
 
-  public function storage_open()
+  public function storageOpen()
   {
     return true;
   }
 
-  public function storage_close()
+  public function storageClose()
   {
     return true;
   }
 
-  public function storage_read($session_id)
+  public function storageRead($session_id)
   {
-    $this->db->sql_select('sys_session', 'session_data', array('session_id' => $session_id));
+    $this->db->sqlSelect('sys_session', 'session_data', array('session_id' => $session_id));
 
-    if($data = $this->db->fetch_row())
+    if($data = $this->db->fetchRow())
     {
       return $data['session_data'];
     }
@@ -43,37 +43,37 @@ class session_db_driver implements session_driver
       return false;
   }
 
-  public function storage_write($session_id, $value)
+  public function storageWrite($session_id, $value)
   {
-    $this->db->sql_select('sys_session', 'session_id', array('session_id' => $session_id));
+    $this->db->sqlSelect('sys_session', 'session_id', array('session_id' => $session_id));
 
     $session_data = array('last_activity_time' => time(),
                           'session_data' => "{$value}");
 
-    if($this->db->fetch_row())
-      $this->db->sql_update('sys_session', $session_data, array('session_id' => $session_id));
+    if($this->db->fetchRow())
+      $this->db->sqlUpdate('sys_session', $session_data, array('session_id' => $session_id));
     else
     {
       $session_data['session_id'] = "{$session_id}";  //type juggling to string
-      $session_data['user_id'] = $this->user->get_id();
+      $session_data['user_id'] = $this->user->getId();
 
-      $this->db->sql_insert('sys_session', $session_data);
+      $this->db->sqlInsert('sys_session', $session_data);
     }
   }
 
-  public function storage_destroy($session_id)
+  public function storageDestroy($session_id)
   {
-    $this->db->sql_delete('sys_session', array('session_id' => $session_id));
+    $this->db->sqlDelete('sys_session', array('session_id' => $session_id));
   }
 
-  public function storage_gc($max_life_time)
+  public function storageGc($max_life_time)
   {
-    $this->db->sql_delete('sys_session', "last_activity_time < ". (time() - $max_life_time));
+    $this->db->sqlDelete('sys_session', "last_activity_time < ". (time() - $max_life_time));
   }
 
-  public function storage_destroy_user($user_id)
+  public function storageDestroyUser($user_id)
   {
-    $this->db->sql_delete('sys_session', array('user_id' => $user_id));
+    $this->db->sqlDelete('sys_session', array('user_id' => $user_id));
   }
 
 }

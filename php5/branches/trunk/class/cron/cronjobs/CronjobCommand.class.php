@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
-require_once(LIMB_DIR . '/class/core/request/nonbuffered_response.class.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
+require_once(LIMB_DIR . '/class/core/request/NonbufferedResponse.class.php');
 
-class cronjob_command implements Command
+class CronjobCommand implements Command
 {
   protected $response;
 
   function __construct()
   {
-    $this->response = new nonbuffered_response();
+    $this->response = new NonbufferedResponse();
   }
 
-  public function set_response($response)
+  public function setResponse($response)
   {
     $this->response = $response;
   }
 
-  public function get_response()
+  public function getResponse()
   {
     return $this->response;
   }

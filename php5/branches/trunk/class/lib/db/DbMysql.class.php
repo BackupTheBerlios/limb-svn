@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_module.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
 
-class db_mysql extends db_module
+class DbMysql extends DbModule
 {
-  protected function _connect_db_operation($db_params)
+  protected function _connectDbOperation($db_params)
   {
     return mysql_connect($db_params['host'], $db_params['login'], $db_params['password']);
   }
 
-  protected function _select_db_operation($db_name)
+  protected function _selectDbOperation($db_name)
   {
     return mysql_select_db($db_name, $this->_db_connection);
   }
 
-  protected function _disconnect_db_operation($db_params)
+  protected function _disconnectDbOperation($db_params)
   {
     mysql_close($this->_db_connection);
   }
 
-  public function free_result()
+  public function freeResult()
   {
     if($this->_sql_result)
     {
@@ -36,7 +36,7 @@ class db_mysql extends db_module
     }
   }
 
-  protected function _sql_exec_operation($sql, $count=0, $start=0)
+  protected function _sqlExecOperation($sql, $count=0, $start=0)
   {
     if ($count)
       $sql .= "\nLIMIT $start, $count";
@@ -44,9 +44,9 @@ class db_mysql extends db_module
     return mysql_query($sql, $this->_db_connection);
   }
 
-  public function make_select_string($table, $fields='*', $where='', $order='', $count=0, $start=0)
+  public function makeSelectString($table, $fields='*', $where='', $order='', $count=0, $start=0)
   {
-    $sql = parent :: make_select_string($table, $fields, $where, $order, $count, $start);
+    $sql = parent :: makeSelectString($table, $fields, $where, $order, $count, $start);
 
     if ($count)
       $sql .= "\nLIMIT $start, $count";
@@ -54,22 +54,22 @@ class db_mysql extends db_module
     return $sql;
   }
 
-  public function get_affected_rows()
+  public function getAffectedRows()
   {
     return mysql_affected_rows($this->_db_connection);
   }
 
-  public function get_sql_insert_id()
+  public function getSqlInsertId()
   {
     return mysql_insert_id($this->_db_connection);
   }
 
-  public function get_last_error()
+  public function getLastError()
   {
     return mysql_error();
   }
 
-  public function parse_batch_sql(&$ret, $sql, $release)
+  public function parseBatchSql(&$ret, $sql, $release)
   {
     $sql          = trim($sql);
     $sql_len      = strlen($sql);
@@ -98,7 +98,7 @@ class db_mysql extends db_module
           }
           // Backquotes or no backslashes before quotes: it's indeed the
           // end of the string->exit the loop
-          elseif ($string_start == '`' || $sql[$i-1] != '\\')
+          elseif ($string_start == '`' ||  $sql[$i-1] != '\\')
           {
             $string_start      = '';
             $in_string         = false;
@@ -110,7 +110,7 @@ class db_mysql extends db_module
             // ... first checks for escaped backslashes
             $j                     = 2;
             $escaped_backslash     = false;
-            while ($i-$j > 0 && $sql[$i-$j] == '\\')
+            while ($i-$j > 0 &&  $sql[$i-$j] == '\\')
             {
               $escaped_backslash = !$escaped_backslash;
               $j++;
@@ -141,14 +141,13 @@ class db_mysql extends db_module
           return true;
       }
       // ... then check for start of a string,...
-      elseif (($char == '"') || ($char == '\'') || ($char == '`'))
+      elseif (($char == '"') ||  ($char == '\'') ||  ($char == '`'))
       {
         $in_string    = true;
         $string_start = $char;
       }
       // ... for start of a comment (and remove this comment if found)...
-      elseif ($char == '#'
-               || ($char == ' ' && $i > 1 && $sql[$i-2] . $sql[$i-1] == '--'))
+      elseif ($char == '#' ||  ($char == ' ' &&  $i > 1 &&  $sql[$i-2] . $sql[$i-1] == '--'))
       {
         // starting position of the comment depends on the comment type
         $start_of_comment = (($sql[$i] == '#') ? $i : $i-2);
@@ -174,8 +173,7 @@ class db_mysql extends db_module
         }
       }
       // ... and finally disactivate the "/*!...*/" syntax if MySQL < 3.22.07
-      elseif ($release < 32270
-               && ($char == '!' && $i > 1  && $sql[$i-2] . $sql[$i-1] == '/*'))
+      elseif ($release < 32270 &&  ($char == '!' &&  $i > 1 &&  $sql[$i-2] . $sql[$i-1] == '/*'))
         $sql[$i] = ' ';
 
       //send a fake header each 30 sec. to bypass browser timeout
@@ -188,23 +186,23 @@ class db_mysql extends db_module
     }
 
     // add any rest to the returned array
-    if (!empty($sql) && ereg('[^[:space:]]+', $sql))
+    if (!empty($sql) &&  ereg('[^[:space:]]+', $sql))
       $ret[] = $sql;
 
     return true;
   }
 
-  protected function _fetch_assoc_result_row($col_num = '')
+  protected function _fetchAssocResultRow($col_num = '')
   {
     return mysql_fetch_assoc($this->_sql_result);
   }
 
-  protected function _result_num_fields()
+  protected function _resultNumFields()
   {
     return mysql_num_fields($this->_sql_result);
   }
 
-  protected function _process_default_value($value)
+  protected function _processDefaultValue($value)
   {
     return "'{$value}'";
   }
@@ -228,22 +226,22 @@ class db_mysql extends db_module
       return " SUBSTRING({$string} FROM {$offset} FOR {$limit}) ";
   }
 
-  public function count_selected_rows()
+  public function countSelectedRows()
   {
     return mysql_num_rows($this->_sql_result);
   }
 
-  protected function _begin_operation()
+  protected function _beginOperation()
   {
     mysql_query('START TRANSACTION', $this->_db_connection);
   }
 
-  protected function _commit_operation()
+  protected function _commitOperation()
   {
     mysql_query('COMMIT', $this->_db_connection);
   }
 
-  protected function _rollback_operation()
+  protected function _rollbackOperation()
   {
     mysql_query('ROLLBACK', $this->_db_connection);
   }

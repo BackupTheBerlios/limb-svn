@@ -8,30 +8,30 @@
 * $Id$
 *
 ***********************************************************************************/
-class radio_selector_tag_info
+class RadioSelectorTagInfo
 {
   public $tag = 'radio_selector';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'radio_selector_tag';
 }
 
-register_tag(new radio_selector_tag_info());
+registerTag(new RadioSelectorTagInfo());
 
-class radio_selector_tag extends compiler_directive_tag
+class RadioSelectorTag extends CompilerDirectiveTag
 {
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    $value = '$' . $code->get_temp_variable();
-    $parent = $this->get_dataspace_ref_code();
+    $value = '$' . $code->getTempVariable();
+    $parent = $this->getDataspaceRefCode();
 
-    $radio_child = $this->find_child_by_class('input_tag');
-    $label_child = $this->find_child_by_class('label_tag');
+    $radio_child = $this->findChildByClass('input_tag');
+    $label_child = $this->findChildByClass('label_tag');
 
-    $radio = $radio_child->get_component_ref_code();
-    $label = $label_child->get_component_ref_code();
+    $radio = $radio_child->getComponentRefCode();
+    $label = $label_child->getComponentRefCode();
 
 
-    $code->write_php("
+    $code->writePhp("
     if ({$value} = {$parent}->get('id'))
     {
       {$radio}->set_attribute('value', {$value});
@@ -40,7 +40,7 @@ class radio_selector_tag extends compiler_directive_tag
     }
     ");
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 }
 

@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_site_map_tree_item_tag_info
+class GridSiteMapTreeItemTagInfo
 {
   public $tag = 'grid:SITE_MAP_TREE_ITEM';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'grid_site_map_tree_item_tag';
 }
 
-register_tag(new grid_site_map_tree_item_tag_info());
+registerTag(new GridSiteMapTreeItemTagInfo());
 
-class grid_site_map_tree_item_tag extends compiler_directive_tag
+class GridSiteMapTreeItemTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof grid_iterator_tag)
+    if (!$this->parent instanceof GridIteratorTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -31,25 +31,25 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
     }
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $ref = $this->get_component_ref_code();
+    $ref = $this->getComponentRefCode();
 
-    $code->write_html("<table border='0' cellpadding='0' cellspacing='0' height='100%'><tr><td>");
+    $code->writeHtml("<table border='0' cellpadding='0' cellspacing='0' height='100%'><tr><td>");
 
-    $i = '$' . $code->get_temp_variable();
-    $node_htm = '$' . $code->get_temp_variable();
-    $level = '$' . $code->get_temp_variable();
-    $levels_status = '$' . $code->get_temp_variable();
+    $i = '$' . $code->getTempVariable();
+    $node_htm = '$' . $code->getTempVariable();
+    $level = '$' . $code->getTempVariable();
+    $levels_status = '$' . $code->getTempVariable();
 
-    $code->write_php(
+    $code->writePhp(
       "{$node_htm} = '';
       {$level} = {$ref}->get('level');
       {$levels_status} = {$ref}->get('levels_status');
       "
     );
 
-    $code->write_php("
+    $code->writePhp("
       for({$i}=1; {$i} < {$level}; {$i}++)
       {
         if(isset({$levels_status}[{$i}]) && {$levels_status}[{$i}])
@@ -59,15 +59,15 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
       }
     ");
 
-    $open_params = '$' . $code->get_temp_variable();
-    $close_params = '$' . $code->get_temp_variable();
-    $open_link = '$' . $code->get_temp_variable();
-    $close_link = '$' . $code->get_temp_variable();
-    $anchor = '$' . $code->get_temp_variable();
-    $next_img = '$' . $code->get_temp_variable();
-    $tmp = '$' . $code->get_temp_variable();
+    $open_params = '$' . $code->getTempVariable();
+    $close_params = '$' . $code->getTempVariable();
+    $open_link = '$' . $code->getTempVariable();
+    $close_link = '$' . $code->getTempVariable();
+    $anchor = '$' . $code->getTempVariable();
+    $next_img = '$' . $code->getTempVariable();
+    $tmp = '$' . $code->getTempVariable();
 
-    $code->write_php("
+    $code->writePhp("
       {$open_params}['id'] = {$ref}->get('node_id');
       {$open_params}['action'] = 'toggle';{$open_params}['expand'] = 1;
       {$close_params}['id'] = {$ref}->get('node_id');
@@ -76,22 +76,22 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
       "
     );
 
-    $code->write_php("
+    $code->writePhp("
       if({$ref}->get('is_last_child'))
       {
-        {$open_link} = sprintf(\"" . TREE_END_P_IMG . "\", add_url_query_items(\$_SERVER['PHP_SELF'], {$open_params}) . {$anchor});
-        {$close_link} = sprintf(\"" . TREE_END_M_IMG . "\", add_url_query_items(\$_SERVER['PHP_SELF'], {$close_params}) . {$anchor});
+        {$open_link} = sprintf(\"" . TREE_END_P_IMG . "\", addUrlQueryItems(\$_SERVER['PHP_SELF'], {$open_params}) . {$anchor});
+        {$close_link} = sprintf(\"" . TREE_END_M_IMG . "\", addUrlQueryItems(\$_SERVER['PHP_SELF'], {$close_params}) . {$anchor});
         {$next_img} = \"" . TREE_END_IMG . "\";
       }
       else
       {
-        {$open_link} = sprintf(\"" . TREE_CROSS_P_IMG . "\", add_url_query_items(\$_SERVER['PHP_SELF'], {$open_params}) . {$anchor});
-        {$close_link} = sprintf(\"" . TREE_CROSS_M_IMG . "\", add_url_query_items(\$_SERVER['PHP_SELF'], {$close_params}) . {$anchor});
+        {$open_link} = sprintf(\"" . TREE_CROSS_P_IMG . "\", addUrlQueryItems(\$_SERVER['PHP_SELF'], {$open_params}) . {$anchor});
+        {$close_link} = sprintf(\"" . TREE_CROSS_M_IMG . "\", addUrlQueryItems(\$_SERVER['PHP_SELF'], {$close_params}) . {$anchor});
         {$next_img} = \"" . TREE_CROSS_IMG . "\";
       }
     ");
 
-    $code->write_php("
+    $code->writePhp("
       if(({$ref}->get('r')-{$ref}->get('l')) > 1)
       {
         if({$ref}->get('is_expanded'))
@@ -103,21 +103,21 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
           {$node_htm} .= {$next_img};
     ");
 
-    $code->write_php("echo '<a name=' . {$ref}->get('node_id') . '>';");
+    $code->writePhp("echo '<a name=' . {$ref}->get('node_id') . '>';");
 
-    $code->write_php("echo {$node_htm};");
+    $code->writePhp("echo {$node_htm};");
 
-    $code->write_html("</td><td nowrap class='text'>");
+    $code->writeHtml("</td><td nowrap class='text'>");
 
-    $img_alt = '$' . $code->get_temp_variable();
-    $img_htm = '$' . $code->get_temp_variable();
+    $img_alt = '$' . $code->getTempVariable();
+    $img_htm = '$' . $code->getTempVariable();
 
-    $code->write_php("
+    $code->writePhp("
       if(!{$ref}->get('img_alt'))
         {$img_alt} = {$ref}->get('identifier');
     ");
 
-    $code->write_php("echo
+    $code->writePhp("echo
       \"<table border=0 cellspacing=0 cellpadding=0 height=100% style='display:inline'>
         <tr>
           <td><img src='/shared/images/1x1.gif' height=3 width=1></td>
@@ -126,10 +126,10 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
         <td>\";
     ");
 
-    $code->write_php("echo
+    $code->writePhp("echo
       \"</td></tr>\";
     ");
-    $code->write_php("
+    $code->writePhp("
       echo \"<tr><td height=100% \";
 
       if(({$ref}->get('r')-{$ref}->get('l')) > 1)
@@ -143,21 +143,21 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
       echo \"></td></tr>\";
     ");
 
-    $code->write_php("echo \"</table>\";");
+    $code->writePhp("echo \"</table>\";");
 
-    $code->write_html("</td><td valign=top style='padding:6px 3px 3px 2px'>");
-
-    if(!array_key_exists('nolink', $this->attributes))
-      $code->write_php("echo '<a href=' . {$ref}->get('url') . '>';");
-
-    $code->write_php("echo {$ref}->get('title');");
+    $code->writeHtml("</td><td valign=top style='padding:6px 3px 3px 2px'>");
 
     if(!array_key_exists('nolink', $this->attributes))
-      $code->write_php("echo '</a>';");
+      $code->writePhp("echo '<a href=' . {$ref}->get('url') . '>';");
 
-    $code->write_html("</td></tr></table>");
+    $code->writePhp("echo {$ref}->get('title');");
 
-    parent::generate_contents($code);
+    if(!array_key_exists('nolink', $this->attributes))
+      $code->writePhp("echo '</a>';");
+
+    $code->writeHtml("</td></tr></table>");
+
+    parent::generateContents($code);
   }
 }
 

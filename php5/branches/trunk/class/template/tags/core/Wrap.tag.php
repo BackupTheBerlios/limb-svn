@@ -8,29 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_wrap_tag_info
+class CoreWrapTagInfo
 {
   public $tag = 'core:WRAP';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'core_wrap_tag';
 }
 
-register_tag(new core_wrap_tag_info());
+registerTag(new CoreWrapTagInfo());
 
 /**
 * Merges the current template with a wrapper template, the current
 * template being inserted into the wrapper at the point where the
 * wrap tag exists.
 */
-class core_wrap_tag extends compiler_directive_tag
+class CoreWrapTag extends CompilerDirectiveTag
 {
   protected $resolved_source_file;
 
   protected $keylist;
 
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('core_wrap_tag'))
+    if ($this->findParentByClass('core_wrap_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
@@ -39,11 +39,11 @@ class core_wrap_tag extends compiler_directive_tag
     }
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     global $tag_dictionary;
     $file = $this->attributes['file'];
-    if (!isset($this->attributes['file']) || !$this->attributes['file'])
+    if (!isset($this->attributes['file']) ||  !$this->attributes['file'])
     {
       throw new WactException('missing required attribute',
           array('tag' => $this->tag,
@@ -52,7 +52,7 @@ class core_wrap_tag extends compiler_directive_tag
           'line' => $this->starting_line_no));
     }
 
-    if (!$this->resolved_source_file = resolve_template_source_file_name($file))
+    if (!$this->resolved_source_file = resolveTemplateSourceFileName($file))
     {
       throw new WactException('missing file',
           array('tag' => $this->tag,
@@ -61,7 +61,7 @@ class core_wrap_tag extends compiler_directive_tag
           'line' => $this->starting_line_no));
     }
 
-    $sfp = new source_file_parser($this->resolved_source_file, $tag_dictionary);
+    $sfp = new SourceFileParser($this->resolved_source_file, $tag_dictionary);
     $sfp->parse($this);
     return PARSER_FORBID_PARSING;
   }
@@ -73,7 +73,7 @@ class core_wrap_tag extends compiler_directive_tag
     parent :: prepare();
   }
 
-  public function generate_wrapper_prefix($code)
+  public function generateWrapperPrefix($code)
   {
     $this->keylist = array_keys($this->children);
     $name = $this->attributes['placeholder'];
@@ -81,7 +81,7 @@ class core_wrap_tag extends compiler_directive_tag
     while (list(, $key) = each($this->keylist))
     {
       $child = $this->children[$key];
-      if ($child->get_server_id() == $name)
+      if ($child->getServerId() == $name)
       {
         break;
       }
@@ -89,7 +89,7 @@ class core_wrap_tag extends compiler_directive_tag
     }
   }
 
-  public function generate_wrapper_postfix($code)
+  public function generateWrapperPostfix($code)
   {
     while (list(, $key) = each($this->keylist))
     {

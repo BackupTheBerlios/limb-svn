@@ -26,7 +26,7 @@
 *
 * This class includes time zone data (from zoneinfo) in the form of a global array, $_DATE_TIMEZONE_DATA.
 */
-class date_time_zone
+class DateTimeZone
 {
   protected $id;
   protected $longname; //Long Name of this time zone (ie Central Standard Time)
@@ -42,7 +42,7 @@ class date_time_zone
   {
     global $_DATE_TIMEZONE_DATA;
 
-    if (date_time_zone::is_valid_id($id))
+    if (DateTimeZone::isValidId($id))
     {
       $this->id = $id;
       $this->longname = $_DATE_TIMEZONE_DATA[$id]['longname'];
@@ -72,20 +72,20 @@ class date_time_zone
     }
   }
 
-  static public function get_default()
+  static public function getDefault()
   {
     global $_DATE_TIMEZONE_DEFAULT;
-    return new date_time_zone($_DATE_TIMEZONE_DEFAULT);
+    return new DateTimeZone($_DATE_TIMEZONE_DEFAULT);
   }
 
-  static public function set_default($id)
+  static public function setDefault($id)
   {
     global $_DATE_TIMEZONE_DEFAULT;
-    if (date_time_zone::is_valid_id($id))
+    if (DateTimeZone::isValidId($id))
       $_DATE_TIMEZONE_DEFAULT = $id;
   }
 
-  static public function is_valid_id($id)
+  static public function isValidId($id)
   {
     global $_DATE_TIMEZONE_DATA;
     if (isset($_DATE_TIMEZONE_DATA[$id]))
@@ -97,9 +97,9 @@ class date_time_zone
   /**
   * Is this time zone equal to another
   */
-  public function is_equal($tz)
+  public function isEqual($tz)
   {
-    if (strcasecmp($this->id, $tz->get_id()) == 0)
+    if (strcasecmp($this->id, $tz->getId()) == 0)
       return true;
     else
       return false;
@@ -116,9 +116,9 @@ class date_time_zone
   * for the observance of DST, but this implementation does not
   * know DST rules.
   */
-  public function is_equivalent($tz)
+  public function isEquivalent($tz)
   {
-    if ($this->offset == $tz->get_raw_offset() && $this->hasdst == $tz->has_daylight_time())
+    if ($this->offset == $tz->getRawOffset() &&  $this->hasdst == $tz->hasDaylightTime())
       return true;
     else
       return false;
@@ -127,7 +127,7 @@ class date_time_zone
   /**
   * Returns true if this zone observes daylight savings time
   */
-  public function has_daylight_time()
+  public function hasDaylightTime()
   {
     return $this->hasdst;
   }
@@ -143,14 +143,14 @@ class date_time_zone
   * underlying OS calls, so it may not work on Windows or on a system where
   * zoneinfo is not installed or configured properly.
   */
-  static public function in_daylight_time($date)
+  static public function inDaylightTime($date)
   {
     $env_tz = '';
     if (getenv('TZ'))
       $env_tz = getenv('TZ');
 
     putenv('TZ=' . $this->id);
-    $ltime = localtime($date->get_stamp(), true);
+    $ltime = localtime($date->getStamp(), true);
     putenv('TZ=' . $env_tz);
     return $ltime['tm_isdst'];
   }
@@ -162,7 +162,7 @@ class date_time_zone
   * if the zone observes DST, zero otherwise.  Currently the
   * DST offset is hard-coded to one hour.
   */
-  public function get_DST_savings()
+  public function getDSTSavings()
   {
     if ($this->hasdst)
       return 3600000;
@@ -177,10 +177,10 @@ class date_time_zone
   * account daylight savings time, if the time zone observes it and if
   * it is in effect.  Please see the WARNINGS on date_time_zone::in_daylight_time().
   */
-  public function get_offset($date)
+  public function getOffset($date)
   {
-    if ($this->in_daylight_time($date))
-      return $this->offset + $this->get_DST_savings();
+    if ($this->inDaylightTime($date))
+      return $this->offset + $this->getDSTSavings();
     else
       return $this->offset;
   }
@@ -188,7 +188,7 @@ class date_time_zone
   /**
   * Returns the list of valid time zone id strings
   */
-  static public function get_available_ids()
+  static public function getAvailableIds()
   {
     global $_DATE_TIMEZONE_DATA;
     return array_keys($_DATE_TIMEZONE_DATA);
@@ -197,7 +197,7 @@ class date_time_zone
   /**
   * Returns the time zone id  for this time zone, i.e. "America/Chicago"
   */
-  public function get_id()
+  public function getId()
   {
     return $this->id;
   }
@@ -206,7 +206,7 @@ class date_time_zone
   * Returns the long name for this time zone,
   * i.e. "Central Standard Time"
   */
-  public function get_long_name()
+  public function getLongName()
   {
     return $this->longname;
   }
@@ -214,7 +214,7 @@ class date_time_zone
   /**
   * Returns the short name for this time zone, i.e. "CST"
   */
-  public function get_short_name()
+  public function getShortName()
   {
     return $this->shortname;
   }
@@ -222,7 +222,7 @@ class date_time_zone
   /**
   * Returns the DST long name for this time zone, i.e. "Central Daylight Time"
   */
-  public function get_DST_long_name()
+  public function getDSTLongName()
   {
     return $this->dstlongname;
   }
@@ -230,7 +230,7 @@ class date_time_zone
   /**
   * Returns the DST short name for this time zone, i.e. "CDT"
   */
-  public function get_DST_short_name()
+  public function getDSTShortName()
   {
     return $this->dstshortname;
   }
@@ -238,7 +238,7 @@ class date_time_zone
   /**
   * Returns the raw (non-DST-corrected) offset from UTC/GMT for this time zone
   */
-  public function get_raw_offset()
+  public function getRawOffset()
   {
     return $this->offset;
   }
@@ -250,9 +250,9 @@ $GLOBALS['_DATE_TIMEZONE_DATA'] = array('UTC' => array('offset' => 0,
     'hasdst' => false),
   );
 
-if (isset($_DATE_TIMEZONE_DEFAULT) && date_time_zone::is_valid_id($_DATE_TIMEZONE_DEFAULT))
-  date_time_zone::set_default($_DATE_TIMEZONE_DEFAULT);
+if (isset($_DATE_TIMEZONE_DEFAULT) &&  DateTimeZone::isValidId($_DATE_TIMEZONE_DEFAULT))
+  DateTimeZone::setDefault($_DATE_TIMEZONE_DEFAULT);
 else
-  date_time_zone::set_default('UTC');
+  DateTimeZone::setDefault('UTC');
 
 ?>

@@ -9,15 +9,15 @@
 *
 ***********************************************************************************/
 
-function instantiate_session_object($class_name, &$arguments = array())
+function instantiateSessionObject($class_name, &$arguments = array())
 {
-  if(	!isset($_SESSION['global_session_singleton_'. $class_name]) ||
+  if(	!isset($_SESSION['global_session_singleton_'. $class_name]) || 
       get_class($_SESSION['global_session_singleton_'. $class_name]) != $class_name)
   {
     $handle =& $arguments;
     array_unshift($handle, $class_name);
 
-    resolve_handle($handle);
+    resolveHandle($handle);
 
     $_SESSION['global_session_singleton_' . $class_name] = $handle;
   }
@@ -28,9 +28,9 @@ function instantiate_session_object($class_name, &$arguments = array())
 }
 
 //Original idea by Jeff Moore, http://wact.sourceforge.net/index.php/ResolveHandle
-function resolve_handle(&$handle)
+function resolveHandle(&$handle)
 {
-  if (is_object($handle) || is_null($handle))
+  if (is_object($handle) ||  is_null($handle))
     return;
 
   if (is_array($handle))

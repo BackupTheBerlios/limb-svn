@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/base_package_file_resolver_test.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/behaviour_file_resolver.class.php');
+require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/BehaviourFileResolver.class.php');
 
-class behaviour_file_resolver_test extends base_package_file_resolver_test
+class BehaviourFileResolverTest extends BasePackageFileResolverTest
 {
-  function & _define_resolver()
+  function & _defineResolver()
   {
-    return new behaviour_file_resolver(new package_file_resolver());
+    return new BehaviourFileResolver(new PackageFileResolver());
   }
 
-  function test_resolve_behaviour_file_in_packages_ok()
+  function testResolveBehaviourFileInPackagesOk()
   {
     $this->assertEqual($this->resolver->resolve('test_behaviour'),
                        TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/behaviours/test_behaviour.class.php');
   }
 
-  function test_resolve_behaviour_file_failed()
+  function testResolveBehaviourFileFailed()
   {
     try
     {

@@ -13,7 +13,7 @@
 * Represents a page navigator at runtime.  The total number of items in the
 * list to be paged must be known before the navigator can be displayed.
 */
-class pager_component extends component
+class PagerComponent extends Component
 {
   /**
   * Used while displaying a page number list to determine when a separator
@@ -73,22 +73,22 @@ class pager_component extends component
     }
   }
 
-  public function set_total_items($items)
+  public function setTotalItems($items)
   {
     $this->total_items = $items;
   }
 
-  public function get_total_items()
+  public function getTotalItems()
   {
     return $this->total_items;
   }
 
-  public function has_more_than_one_page()
+  public function hasMoreThanOnePage()
   {
     return $this->total_items > $this->items;
   }
 
-  public function set_items_per_page($items)
+  public function setItemsPerPage($items)
   {
     $this->items = $items;
   }
@@ -96,7 +96,7 @@ class pager_component extends component
   /**
   * Set the database which this pager controls.
   */
-  public function register_dataset($dataset)
+  public function registerDataset($dataset)
   {
     $this->paged_dataset = $dataset;
   }
@@ -106,7 +106,7 @@ class pager_component extends component
   * Usually called by the paged_dataset to determine where to
   * begin query.
   */
-  public function get_starting_item()
+  public function getStartingItem()
   {
     return $this->items * ($this->current_page - 1);
   }
@@ -116,12 +116,12 @@ class pager_component extends component
   * Usually called by the paged_dataset to determine how many
   * items are on a page.
   */
-  public function get_items_per_page()
+  public function getItemsPerPage()
   {
     return $this->items;
   }
 
-  public function get_pages_count()
+  public function getPagesCount()
   {
     return $this->last_page;
   }
@@ -129,7 +129,7 @@ class pager_component extends component
   /**
   * Is the current page being displayed the first page in the page list?
   */
-  public function is_first()
+  public function isFirst()
   {
     return ($this->current_page == 1);
   }
@@ -137,7 +137,7 @@ class pager_component extends component
   /**
   * Is there a page available to display before the current page being displayed?
   */
-  public function has_prev()
+  public function hasPrev()
   {
     return ($this->current_page > 1);
   }
@@ -145,7 +145,7 @@ class pager_component extends component
   /**
   * Is there a page available to display after the current page being displayed?
   */
-  public function has_next()
+  public function hasNext()
   {
     return ($this->current_page < $this->last_page);
   }
@@ -153,7 +153,7 @@ class pager_component extends component
   /**
   * Is the current page being displayed the last page in the page list?
   */
-  public function is_last()
+  public function isLast()
   {
     return ($this->current_page == $this->last_page);
   }
@@ -166,7 +166,7 @@ class pager_component extends component
   {
     $request = Limb :: toolkit()->getRequest();
 
-    $this->current_page = $request->get($this->pager_variable .'_'. $this->get_server_id());
+    $this->current_page = $request->get($this->pager_variable .'_'. $this->getServerId());
 
     if (empty($this->current_page))
     {
@@ -175,7 +175,7 @@ class pager_component extends component
 
     if (isset($this->paged_dataset))
     {
-      $this->set_total_items($this->paged_dataset->get_total_row_count());
+      $this->setTotalItems($this->paged_dataset->getTotalRowCount());
     }
 
     $this->last_page = ceil($this->total_items / $this->items);
@@ -217,7 +217,7 @@ class pager_component extends component
   * This is called automatically from the compiled template and should
   * not be called directly.
   */
-  public function get_page_number()
+  public function getPageNumber()
   {
     return $this->page;
   }
@@ -228,12 +228,12 @@ class pager_component extends component
   * This is called automatically from the compiled template and should
   * not be called directly.
   */
-  public function is_current_page()
+  public function isCurrentPage()
   {
     return $this->page == $this->current_page;
   }
 
-  public function is_display_page()
+  public function isDisplayPage()
   {
     if ($this->section != $this->current_section)
       return false;
@@ -241,7 +241,7 @@ class pager_component extends component
       return true;
   }
 
-  public function has_section_changed()
+  public function hasSectionChanged()
   {
     if($this->section_has_changed)
       $this->page += $this->pages_per_section - 1;
@@ -249,20 +249,20 @@ class pager_component extends component
     return $this->section_has_changed;
   }
 
-  public function get_current_section_begin_number()
+  public function getCurrentSectionBeginNumber()
   {
     return ($this->section - 1) * $this->pages_per_section + 1;
   }
 
-  public function get_current_section_uri()
+  public function getCurrentSectionUri()
   {
     if ($this->section > $this->current_section)
-      return $this->get_page_uri(($this->section - 1) * $this->pages_per_section + 1);
+      return $this->getPageUri(($this->section - 1) * $this->pages_per_section + 1);
     else
-      return $this->get_page_uri($this->section * $this->pages_per_section);
+      return $this->getPageUri($this->section * $this->pages_per_section);
   }
 
-  public function get_current_section_end_number()
+  public function getCurrentSectionEndNumber()
   {
     $result = $this->section * $this->pages_per_section;
     if ($result >= $this->last_page)
@@ -276,31 +276,31 @@ class pager_component extends component
   * This is called automatically from the compiled template and should
   * not be called directly.
   */
-  public function get_current_page_uri()
+  public function getCurrentPageUri()
   {
-    return $this->get_page_uri($this->page);
+    return $this->getPageUri($this->page);
   }
 
   /**
   * Return the URI to a specific page in the list.
   */
-  public function get_page_uri($page)
+  public function getPageUri($page)
   {
-    $params = complex_array :: array_merge($_GET, $_POST);
+    $params = ComplexArray :: array_merge($_GET, $_POST);
     if ($page <= 1)
     {
-    unset($params[$this->pager_variable.'_'. $this->get_server_id()]);
+    unset($params[$this->pager_variable.'_'. $this->getServerId()]);
     }
     else
     {
-      $params[$this->pager_variable .'_'. $this->get_server_id()] = $page;
+      $params[$this->pager_variable .'_'. $this->getServerId()] = $page;
     }
 
     $sep = '';
     $query = '';
 
     $flat_params = array();
-    complex_array :: to_flat_array($params, $flat_params);
+    ComplexArray :: toFlatArray($params, $flat_params);
 
     foreach ($flat_params as $key => $value)
     {
@@ -320,33 +320,33 @@ class pager_component extends component
   /**
   * Return the URI to the first page in the list.
   */
-  public function get_first_page_uri()
+  public function getFirstPageUri()
   {
-    return $this->get_page_uri(1);
+    return $this->getPageUri(1);
   }
 
   /**
   * Return the URI to the previous page in the list.
   */
-  public function get_prev_page_uri()
+  public function getPrevPageUri()
   {
-    return $this->get_page_uri($this->current_page - 1);
+    return $this->getPageUri($this->current_page - 1);
   }
 
   /**
   * Return the URI to the last page in the list.
   */
-  public function get_last_page_uri()
+  public function getLastPageUri()
   {
-    return $this->get_page_uri($this->last_page);
+    return $this->getPageUri($this->last_page);
   }
 
   /**
   * Return the URI to the next page in the list.
   */
-  public function get_next_page_uri()
+  public function getNextPageUri()
   {
-    return $this->get_page_uri($this->current_page + 1);
+    return $this->getPageUri($this->current_page + 1);
   }
 }
 

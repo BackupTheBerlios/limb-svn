@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-class datasource_tag_info
+class DatasourceTagInfo
 {
   public $tag = 'datasource';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'datasource_tag';
 }
 
-register_tag(new datasource_tag_info());
+registerTag(new DatasourceTagInfo());
 
-class datasource_tag extends server_component_tag
+class DatasourceTag extends ServerComponentTag
 {
   function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/datasource_component';
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['target']))
     {
@@ -44,12 +44,12 @@ class datasource_tag extends server_component_tag
           'line' => $this->starting_line_no));
     }
 
-    $this->_check_order_parameter();
+    $this->_checkOrderParameter();
 
     return PARSER_REQUIRE_PARSING;
   }
 
-  protected function _check_order_parameter()
+  protected function _checkOrderParameter()
   {
     if (!isset($this->attributes['order']))
       return;
@@ -63,8 +63,7 @@ class datasource_tag extends server_component_tag
       if(!isset($arr[1]))
         continue;
 
-      if(strtolower($arr[1]) != 'asc' && strtolower($arr[1]) != 'desc'
-         && !strtolower($arr[1]) == 'rand()')
+      if(strtolower($arr[1]) != 'asc' &&  strtolower($arr[1]) != 'desc' &&  !strtolower($arr[1]) == 'rand()')
         throw new WactException('wrong order type',
           array('tag' => $this->tag,
           'order_value' => $arr[1],
@@ -72,18 +71,18 @@ class datasource_tag extends server_component_tag
           'line' => $this->starting_line_no));
     }
   }
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php($this->get_component_ref_code() . '->set_datasource_path("' . $this->attributes['datasource_path'] .'");');
+    $code->writePhp($this->getComponentRefCode() . '->set_datasource_path("' . $this->attributes['datasource_path'] .'");');
 
     if(isset($this->attributes['navigator']))
     {
-      $code->write_php($this->get_component_ref_code() . '->setup_navigator("' . $this->attributes['navigator'] .'");');
+      $code->writePhp($this->getComponentRefCode() . '->setup_navigator("' . $this->attributes['navigator'] .'");');
     }
 
-    $code->write_php($this->get_component_ref_code() . '->setup_targets("' . $this->attributes['target'] .'");');
+    $code->writePhp($this->getComponentRefCode() . '->setup_targets("' . $this->attributes['target'] .'");');
   }
 
 }

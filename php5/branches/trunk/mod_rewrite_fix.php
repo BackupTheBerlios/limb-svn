@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
 $url = parse_url($_SERVER['REQUEST_URI']);
 
@@ -19,7 +19,7 @@ if($url['query'])
 {
   parse_str($url['query'], $output);
 
-  $_GET = complex_array :: array_merge($_GET, $output);
+  $_GET = ComplexArray :: array_merge($_GET, $output);
 }
 
 ?>

@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/component.class.php');
+require_once(LIMB_DIR . '/class/template/Component.class.php');
 
-class site_object_component extends component
+class SiteObjectComponent extends Component
 {
-  public function fetch_by_path($path)
+  public function fetchByPath($path)
   {
-    $datasource = Limb :: toolkit()->getDatasource('single_object_datasource');
-    $datasource->set_path($path);
+    $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
+    $datasource->setPath($path);
     $this->import($datasource->fetch());
   }
 
-  public function fetch_requested()
+  public function fetchRequested()
   {
-    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
     $request = Limb :: toolkit()->getRequest();
-    $datasource->set_request($request);
+    $datasource->setRequest($request);
     $this->import($datasource->fetch());
   }
 }

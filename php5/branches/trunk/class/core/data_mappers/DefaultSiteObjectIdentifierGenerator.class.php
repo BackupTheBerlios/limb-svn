@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/site_object_identifier_generator.interface.php');
+require_once(dirname(__FILE__) . '/SiteObjectIdentifierGenerator.interface.php');
 
 class DefaultSiteObjectIdentifierGenerator implements SiteObjectIdentifierGenerator
 {
   function generate($site_object)
   {
-    return $site_object->get_identifier();
+    return $site_object->getIdentifier();
   }
 }
 

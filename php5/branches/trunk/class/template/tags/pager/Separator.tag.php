@@ -8,30 +8,30 @@
 * $Id$
 *
 ***********************************************************************************/
-class pager_separator_tag_info
+class PagerSeparatorTagInfo
 {
   public $tag = 'pager:SEPARATOR';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'pager_separator_tag';
 }
 
-register_tag(new pager_separator_tag_info());
+registerTag(new PagerSeparatorTagInfo());
 
 /**
 * Compile time component for seperators in a Pager
 */
-class pager_separator_tag extends silent_compiler_directive_tag
+class PagerSeparatorTag extends SilentCompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('pager_separator_tag'))
+    if ($this->findParentByClass('pager_separator_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
     }
-    if (!$this->find_parent_by_class('pager_navigator_tag'))
+    if (!$this->findParentByClass('pager_navigator_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,

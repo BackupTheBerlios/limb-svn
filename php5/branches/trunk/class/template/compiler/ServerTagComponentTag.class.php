@@ -14,12 +14,12 @@
 * an HTML tag. Makes it easier to implement instead of extending from the
 * server_component_tag class
 */
-abstract class server_tag_component_tag extends server_component_tag
+abstract class ServerTagComponentTag extends ServerComponentTag
 {
   /**
   * Returns the XML tag name
   */
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return $this->tag;
   }
@@ -27,7 +27,7 @@ abstract class server_tag_component_tag extends server_component_tag
   /**
   * Adds any additional XML attributes
   */
-  public function generate_extra_attributes($code)
+  public function generateExtraAttributes($code)
   {
   }
 
@@ -36,25 +36,25 @@ abstract class server_tag_component_tag extends server_component_tag
   * plus a PHP string which renders the attributes from the runtime
   * component.
   */
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
-    $code->write_html('<' . $this->get_rendered_tag());
-    $code->write_php($this->get_component_ref_code() . '->render_attributes();');
-    $this->generate_extra_attributes($code);
-    $code->write_html('>');
+    parent::preGenerate($code);
+    $code->writeHtml('<' . $this->getRenderedTag());
+    $code->writePhp($this->getComponentRefCode() . '->render_attributes();');
+    $this->generateExtraAttributes($code);
+    $code->writeHtml('>');
   }
 
   /**
   * Writes the closing tag string to the compiled template
   */
-  public function post_generate($code)
+  public function postGenerate($code)
   {
     if ($this->has_closing_tag)
     {
-      $code->write_html('</' . $this->get_rendered_tag() . '>');
+      $code->writeHtml('</' . $this->getRenderedTag() . '>');
     }
-    parent::post_generate($code);
+    parent::postGenerate($code);
   }
 
   /**
@@ -62,10 +62,10 @@ abstract class server_tag_component_tag extends server_component_tag
   * assigning the attributes found at compile time to the runtime component
   * via a serialized string
   */
-  public function generate_constructor($code)
+  public function generateConstructor($code)
   {
-    parent::generate_constructor($code);
-    $code->write_php($this->get_component_ref_code() . '->attributes = ' . var_export($this->attributes, true) . ';');
+    parent::generateConstructor($code);
+    $code->writePhp($this->getComponentRefCode() . '->attributes = ' . var_export($this->attributes, true) . ';');
   }
 }
 

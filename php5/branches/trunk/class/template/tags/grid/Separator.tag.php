@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_separator_tag_info
+class GridSeparatorTagInfo
 {
   public $tag = 'grid:SEPARATOR';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'grid_separator_tag';
 }
 
-register_tag(new grid_separator_tag_info());
+registerTag(new GridSeparatorTagInfo());
 
-class grid_separator_tag extends compiler_directive_tag
+class GridSeparatorTag extends CompilerDirectiveTag
 {
   protected $count;
 
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('grid_separator_tag'))
+    if ($this->findParentByClass('grid_separator_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
@@ -31,7 +31,7 @@ class grid_separator_tag extends compiler_directive_tag
           'line' => $this->starting_line_no));
     }
 
-    if (!$this->parent instanceof grid_iterator_tag)
+    if (!$this->parent instanceof GridIteratorTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -41,7 +41,7 @@ class grid_separator_tag extends compiler_directive_tag
     }
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['count']))
       $this->count = 1;
@@ -51,24 +51,24 @@ class grid_separator_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
-    $counter = '$' . $code->get_temp_variable();
+    $counter = '$' . $code->getTempVariable();
 
-    $code->write_php($counter . ' = trim(' . $this->get_dataspace_ref_code() . '->get_counter());');
+    $code->writePhp($counter . ' = trim(' . $this->getDataspaceRefCode() . '->get_counter());');
 
-    $code->write_php(
+    $code->writePhp(
         "if (	($counter > 0) &&
-              ($counter < " . $this->get_dataspace_ref_code() . "->get_total_row_count()) &&
+              ($counter < " . $this->getDataspaceRefCode() . "->get_total_row_count()) &&
               ($counter % " . $this->count . " == 0)) {");
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_php('}');
-    parent::post_generate($code);
+    $code->writePhp('}');
+    parent::postGenerate($code);
   }
 }
 

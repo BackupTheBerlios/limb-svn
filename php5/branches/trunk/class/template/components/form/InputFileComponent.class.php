@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.php');
 
-class input_file_component extends input_form_element
+class InputFileComponent extends InputFormElement
 {
   /**
   * We can't get a meaningful 'value' attribute for file upload controls
@@ -20,7 +20,7 @@ class input_file_component extends input_form_element
   * portion of the $_FILES array, allowing initial validation of uploaded
   * files.
   */
-  public function get_value()
+  public function getValue()
   {
     return;
   }

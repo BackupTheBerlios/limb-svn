@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
-class links_manager
+class LinksManager
 {
-  public function create_links_group($identifier, $title)
+  public function createLinksGroup($identifier, $title)
   {
-    $group_db_table = Limb :: toolkit()->createDBTable('sys_node_link_group');
+    $group_db_table = Limb :: toolkit()->createDBTable('SysNodeLinkGroup');
 
     $conditions = array(
       'identifier' => $identifier
     );
 
-    if($arr = $group_db_table->get_list($conditions))
+    if($arr = $group_db_table->getList($conditions))
       return false;
 
     $data = array(
@@ -31,62 +31,62 @@ class links_manager
     );
 
     if($group_db_table->insert($data))
-      return $group_db_table->get_last_insert_id();
+      return $group_db_table->getLastInsertId();
     else
       return false;
   }
 
-  public function update_links_group($group_id, $identifier, $title)
+  public function updateLinksGroup($group_id, $identifier, $title)
   {
-    $group_db_table = Limb :: toolkit()->createDBTable('sys_node_link_group');
+    $group_db_table = Limb :: toolkit()->createDBTable('SysNodeLinkGroup');
 
-    $group_db_table->update_by_id($group_id,
+    $group_db_table->updateById($group_id,
       array('identifier' => $identifier,
             'title' => $title)
     );
   }
 
-  public function delete_links_group($group_id)
+  public function deleteLinksGroup($group_id)
   {
-    Limb :: toolkit()->createDBTable('sys_node_link_group')->delete_by_id($group_id);
+    Limb :: toolkit()->createDBTable('SysNodeLinkGroup')->deleteById($group_id);
   }
 
-  public function set_groups_priority($priority_info)
+  public function setGroupsPriority($priority_info)
   {
-    $group_db_table = Limb :: toolkit()->createDBTable('sys_node_link_group');
+    $group_db_table = Limb :: toolkit()->createDBTable('SysNodeLinkGroup');
 
     foreach($priority_info as $group_id => $priority_value)
     {
-      $group_db_table->update_by_id($group_id, array('priority' => (int)$priority_value));
+      $group_db_table->updateById($group_id, array('priority' => (int)$priority_value));
     }
   }
 
-  public function fetch_groups()
+  public function fetchGroups()
   {
-    return Limb :: toolkit()->createDBTable('sys_node_link_group')->get_list('', 'priority ASC');
+    return Limb :: toolkit()->createDBTable('SysNodeLinkGroup')->getList('', 'priority ASC');
   }
 
-  public function fetch_group_by_identifier($identifier)
+  public function fetchGroupByIdentifier($identifier)
   {
-    $group_db_table = Limb :: toolkit()->createDBTable('sys_node_link_group');
+    $group_db_table = Limb :: toolkit()->createDBTable('SysNodeLinkGroup');
 
-    if($arr = $group_db_table->get_list(array('identifier' => $identifier)))
+    if($arr = $group_db_table->getList(array('identifier' => $identifier)))
       return current($arr);
     else
       return false;
   }
 
-  public function fetch_group($group_id)
+  public function fetchGroup($group_id)
   {
-    return Limb :: toolkit()->createDBTable('sys_node_link_group')->get_row_by_id($group_id);
+    return Limb :: toolkit()->createDBTable('SysNodeLinkGroup')->getRowById($group_id);
   }
 
-  public function create_link($group_id, $linker_object_id, $target_object_id)
+  public function createLink($group_id, $linker_object_id, $target_object_id)
   {
-    if ($this->fetch_group($group_id) === false)
+    if ($this->fetchGroup($group_id) === false)
       return false;
 
-    $link_db_table = Limb :: toolkit()->createDBTable('sys_node_link');
+    $link_db_table = Limb :: toolkit()->createDBTable('SysNodeLink');
 
     $data = array(
       'linker_node_id' => $linker_object_id,
@@ -94,67 +94,67 @@ class links_manager
       'group_id' => $group_id,
     );
 
-    if($arr = $link_db_table->get_list($data))
+    if($arr = $link_db_table->getList($data))
       return false;
 
     $data['priority'] = 0;
 
     if($link_db_table->insert($data))
-      return $link_db_table->get_last_insert_id();
+      return $link_db_table->getLastInsertId();
     else
       return false;
   }
 
-  public function delete_link($link_id)
+  public function deleteLink($link_id)
   {
-    Limb :: toolkit()->createDBTable('sys_node_link')->delete_by_id($link_id);
+    Limb :: toolkit()->createDBTable('SysNodeLink')->deleteById($link_id);
   }
 
-  public function fetch_target_links_node_ids($linker_node_id, $groups_ids = array())
+  public function fetchTargetLinksNodeIds($linker_node_id, $groups_ids = array())
   {
-    $links = $this->fetch_target_links($linker_node_id, $groups_ids);
+    $links = $this->fetchTargetLinks($linker_node_id, $groups_ids);
 
-    return complex_array :: get_column_values('target_node_id', $links);
+    return ComplexArray :: getColumnValues('target_node_id', $links);
   }
 
-  public function fetch_target_links($linker_node_id, $groups_ids = array())
+  public function fetchTargetLinks($linker_node_id, $groups_ids = array())
   {
-    $link_db_table = Limb :: toolkit()->createDBTable('sys_node_link');
+    $link_db_table = Limb :: toolkit()->createDBTable('SysNodeLink');
 
     $conditions = "linker_node_id = {$linker_node_id}";
 
-    if (is_array($groups_ids) && count($groups_ids))
-      $conditions .= ' AND ' . sql_in('group_id', $groups_ids);
+    if (is_array($groups_ids) &&  count($groups_ids))
+      $conditions .= ' AND ' . sqlIn('group_id', $groups_ids);
 
-    return $link_db_table->get_list($conditions, 'priority ASC');
+    return $link_db_table->getList($conditions, 'priority ASC');
   }
 
-  public function fetch_back_links_node_ids($target_node_id, $groups_ids = array())
+  public function fetchBackLinksNodeIds($target_node_id, $groups_ids = array())
   {
-    $links = $this->fetch_back_links($target_node_id, $groups_ids);
+    $links = $this->fetchBackLinks($target_node_id, $groups_ids);
 
-    return complex_array :: get_column_values('linker_node_id', $links);
+    return ComplexArray :: getColumnValues('linker_node_id', $links);
   }
 
-  public function fetch_back_links($target_node_id, $groups_ids = array())
+  public function fetchBackLinks($target_node_id, $groups_ids = array())
   {
-    $link_db_table = Limb :: toolkit()->createDBTable('sys_node_link');
+    $link_db_table = Limb :: toolkit()->createDBTable('SysNodeLink');
 
     $conditions = "target_node_id = {$target_node_id}";
 
-    if (is_array($groups_ids) && count($groups_ids))
-      $conditions .= ' AND ' . sql_in('group_id', $groups_ids);
+    if (is_array($groups_ids) &&  count($groups_ids))
+      $conditions .= ' AND ' . sqlIn('group_id', $groups_ids);
 
-    return $link_db_table->get_list($conditions, 'priority ASC');
+    return $link_db_table->getList($conditions, 'priority ASC');
   }
 
-  public function set_links_priority($priority_info)
+  public function setLinksPriority($priority_info)
   {
-    $link_db_table = Limb :: toolkit()->createDBTable('sys_node_link');
+    $link_db_table = Limb :: toolkit()->createDBTable('SysNodeLink');
 
     foreach($priority_info as $link_id => $priority_value)
     {
-      $link_db_table->update_by_id($link_id, array('priority' => (int)$priority_value));
+      $link_db_table->updateById($link_id, array('priority' => (int)$priority_value));
     }
   }
 

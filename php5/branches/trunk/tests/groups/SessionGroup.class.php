@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class session_group extends LimbGroupTest
+class SessionGroup extends LimbGroupTest
 {
-  function session_group()
+  function sessionGroup()
   {
-    $this->LimbGroupTest('session tests');
+    $this->limbGroupTest('session tests');
   }
 
   function getTestCasesHandles()

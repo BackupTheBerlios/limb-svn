@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
-class uri
+class Uri
 {
   protected $_protocol = '';
 
@@ -36,37 +36,37 @@ class uri
       $this->parse($str);
   }
 
-  public function get_protocol()
+  public function getProtocol()
   {
     return $this->_protocol;
   }
 
-  public function get_user()
+  public function getUser()
   {
     return $this->_user;
   }
 
-  public function get_password()
+  public function getPassword()
   {
     return $this->_password;
   }
 
-  public function get_host()
+  public function getHost()
   {
     return $this->_host;
   }
 
-  public function get_port()
+  public function getPort()
   {
     return $this->_port;
   }
 
-  public function get_path()
+  public function getPath()
   {
     return $this->_path;
   }
 
-  public function get_anchor()
+  public function getAnchor()
   {
     return $this->_anchor;
   }
@@ -84,7 +84,7 @@ class uri
     // Only use defaults if not an absolute URL given
     if (!preg_match('/^[a-z0-9]+:\/\//i', $str))
     {
-      if (!empty($_SERVER['HTTP_HOST']) && preg_match('/^(.*)(:([0-9]+))?$/U', $_SERVER['HTTP_HOST'], $matches))
+      if (!empty($_SERVER['HTTP_HOST']) &&  preg_match('/^(.*)(:([0-9]+))?$/U', $_SERVER['HTTP_HOST'], $matches))
       {
         $host = $matches[1];
         if (!empty($matches[3]))
@@ -93,13 +93,13 @@ class uri
           $port = '80';
       }
 
-      $this->_protocol    = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
+      $this->_protocol    = 'http' . ((isset($_SERVER['HTTPS']) &&  $_SERVER['HTTPS'] == 'on') ? 's' : '');
       $this->_user        = '';
       $this->_password        = '';
       $this->_host        = !empty($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost');
       $this->_port        = !empty($port) ? $port : (isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80);
       $this->_path        = !empty($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '/';
-      $this->_query_items = isset($_SERVER['QUERY_STRING']) ? $this->_parse_query_string($_SERVER['QUERY_STRING']) : null;
+      $this->_query_items = isset($_SERVER['QUERY_STRING']) ? $this->_parseQueryString($_SERVER['QUERY_STRING']) : null;
       $this->_anchor      = '';
     }
 
@@ -149,12 +149,12 @@ class uri
             if($this->_path{$last_pos} == '/')
               $this->_path = substr($this->_path, 0, $last_pos);								//probably is subject to change
 
-            $this->_path = $this->resolve_path($this->_path);
+            $this->_path = $this->resolvePath($this->_path);
 
           break;
 
           case 'query':
-            $this->_query_items = $this->_parse_query_string($value);
+            $this->_query_items = $this->_parseQueryString($value);
           break;
 
           case 'fragment':
@@ -167,12 +167,12 @@ class uri
     $this->_path_elements = explode('/',$this->_path);
   }
 
-  public function count_path()
+  public function countPath()
   {
     return sizeof($this->_path_elements);
   }
 
-  public function count_query_items()
+  public function countQueryItems()
   {
     return sizeof($this->_query_items);
   }
@@ -180,52 +180,52 @@ class uri
   public function compare($uri)
   {
     if (
-          $this->_protocol !== $uri->get_protocol() ||
-          $this->_host !== $uri->get_host() ||
-          $this->_port !== $uri->get_port() ||
-          $this->_user !== $uri->get_user() ||
-          $this->_password !== $uri->get_password()
+          $this->_protocol !== $uri->getProtocol() || 
+          $this->_host !== $uri->getHost() || 
+          $this->_port !== $uri->getPort() || 
+          $this->_user !== $uri->getUser() || 
+          $this->_password !== $uri->getPassword()
         )
     return false;
 
-    if(!$this->compare_query($uri))
+    if(!$this->compareQuery($uri))
       return false;
 
-    if($this->compare_path($uri) !== 0)
+    if($this->comparePath($uri) !== 0)
       return false;
 
     return true;
   }
 
-  public function compare_query($uri)
+  public function compareQuery($uri)
   {
-    if ($this->count_query_items() != $uri->count_query_items())
+    if ($this->countQueryItems() != $uri->countQueryItems())
       return false;
 
     foreach($this->_query_items as $name => $value)
     {
-      if(	(($item = $uri->get_query_item($name)) === false) ||
+      if(	(($item = $uri->getQueryItem($name)) === false) || 
           $item != $value)
         return false;
     }
     return true;
   }
 
-  public function compare_path($uri)
+  public function comparePath($uri)
   {
-    $count1 = $this->count_path();
-    $count2 = $uri->count_path();
+    $count1 = $this->countPath();
+    $count2 = $uri->countPath();
 
-    for($i=0; $i < $count1 && $i < $count2; $i++)
+    for($i=0; $i < $count1 &&  $i < $count2; $i++)
     {
-      if( $this->get_path_element($i) != $uri->get_path_element($i) )
+      if( $this->getPathElement($i) != $uri->getPathElement($i) )
         return false;
     }
 
     return ($count1 - $count2);
   }
 
-  public function to_string($parts = array('protocol', 'user', 'password', 'host', 'port', 'path', 'query', 'anchor'))
+  public function toString($parts = array('protocol', 'user', 'password', 'host', 'port', 'path', 'query', 'anchor'))
   {
     $string = '';
 
@@ -247,7 +247,7 @@ class uri
       $string .= $this->_host;
 
       if(in_array('port', $parts))
-        $string .= (empty($this->_port) || ($this->_port == '80') ? '' : ':' . $this->_port);
+        $string .= (empty($this->_port) ||  ($this->_port == '80') ? '' : ':' . $this->_port);
     }
     else
       $string = '';
@@ -257,7 +257,7 @@ class uri
 
     if(in_array('query', $parts))
     {
-      $query_string = $this->get_query_string();
+      $query_string = $this->getQueryString();
       $string .= !empty($query_string) ? '?' . $query_string : '';
     }
 
@@ -267,12 +267,12 @@ class uri
      return $string;
   }
 
-  public function get_path_element($level)
+  public function getPathElement($level)
   {
     return isset($this->_path_elements[$level]) ? $this->_path_elements[$level] : '';
   }
 
-  public function get_path_elements()
+  public function getPathElements()
   {
     return $this->_path_elements;
   }
@@ -281,19 +281,19 @@ class uri
   * Adds a query_string item
   *
   */
-  public function add_encoded_query_item($name, $value)
+  public function addEncodedQueryItem($name, $value)
   {
     $this->_query_items[$name] = $value;
   }
 
-  public function add_query_item($name, $value)
+  public function addQueryItem($name, $value)
   {
     $this->_query_items[$name] = is_array($value)?
-      complex_array :: array_map_recursive('urlencode', $value) :
+      ComplexArray :: arrayMapRecursive('urlencode', $value) :
       urlencode($value);
   }
 
-  public function get_query_item($name)
+  public function getQueryItem($name)
   {
     if (isset($this->_query_items[$name]))
       return $this->_query_items[$name];
@@ -301,7 +301,7 @@ class uri
     return false;
   }
 
-  public function get_query_items()
+  public function getQueryItems()
   {
     return $this->_query_items;
   }
@@ -310,7 +310,7 @@ class uri
   * Removes a query_string item
   *
   */
-  public function remove_query_item($name)
+  public function removeQueryItem($name)
   {
     if (isset($this->_query_items[$name]))
     unset($this->_query_items[$name]);
@@ -319,15 +319,15 @@ class uri
   /**
   * Sets the query_string to literally what you supply
   */
-  public function set_query_string($query_string)
+  public function setQueryString($query_string)
   {
-    $this->_query_items = $this->_parse_query_string($query_string);
+    $this->_query_items = $this->_parseQueryString($query_string);
   }
 
   /**
   * Removes query items
   */
-  public function remove_query_items()
+  public function removeQueryItems()
   {
     $this->_query_items = array();
   }
@@ -336,17 +336,17 @@ class uri
   * Returns flat query_string
   *
   */
-  public function get_query_string()
+  public function getQueryString()
   {
     $query_string = '';
     $query_items = array();
     $flat_array = array();
 
-    complex_array :: to_flat_array($this->_query_items, $flat_array);
+    ComplexArray :: toFlatArray($this->_query_items, $flat_array);
 
     foreach($flat_array as $key => $value)
     {
-      if ($value != '' || is_null($value))
+      if ($value != '' ||  is_null($value))
         $query_items[] = $key . '=' . $value;
       else
         $query_items[] = $key;
@@ -361,7 +361,7 @@ class uri
   /**
   * Parses raw query_string and returns an array of it
   */
-  protected function _parse_query_string($query_string)
+  protected function _parseQueryString($query_string)
   {
     $query_string = rawurldecode($query_string);
 
@@ -385,7 +385,7 @@ class uri
   * /foo/bar/.././/boo.php => /foo/boo.php
   *
   */
-  public function resolve_path($path)
+  public function resolvePath($path)
   {
     $path = explode('/', str_replace('//', '/', $path));
 
@@ -397,14 +397,14 @@ class uri
         $path = array_values($path);
         $i--;
       }
-      elseif ($path[$i] == '..' && ($i > 1 || ($i == 1 && $path[0] != '') ) )
+      elseif ($path[$i] == '..' &&  ($i > 1 ||  ($i == 1 &&  $path[0] != '') ) )
       {
        unset($path[$i]);
        unset($path[$i-1]);
         $path = array_values($path);
         $i -= 2;
       }
-      elseif ($path[$i] == '..' && $i == 1 && $path[0] == '')
+      elseif ($path[$i] == '..' &&  $i == 1 &&  $path[0] == '')
       {
        unset($path[$i]);
         $path = array_values($path);

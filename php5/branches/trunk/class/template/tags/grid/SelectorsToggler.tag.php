@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_selectors_toggler_tag_info
+class GridSelectorsTogglerTagInfo
 {
   public $tag = 'grid:SELECTORS_TOGGLER';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'grid_selectors_toggler_tag';
 }
 
-register_tag(new grid_selectors_toggler_tag_info());
+registerTag(new GridSelectorsTogglerTagInfo());
 
-class grid_selectors_toggler_tag extends compiler_directive_tag
+class GridSelectorsTogglerTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->find_parent_by_class('grid_list_tag'))
+    if (!$this->findParentByClass('grid_list_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -31,16 +31,16 @@ class grid_selectors_toggler_tag extends compiler_directive_tag
     }
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $md5id = substr(md5($this->get_server_id()), 0, 5);
+    $md5id = substr(md5($this->getServerId()), 0, 5);
 
     if(isset($this->attributes['form_id']))
       $form_id = $this->attributes['form_id'];
     else
     {
-      $grid = $this->find_parent_by_class('grid_list_tag');
-      $form_id = 'grid_form_' . $grid->get_server_id();
+      $grid = $this->findParentByClass('grid_list_tag');
+      $form_id = 'grid_form_' . $grid->getServerId();
     }
 
     if(isset($this->attributes['selector_name']))
@@ -78,9 +78,9 @@ class grid_selectors_toggler_tag extends compiler_directive_tag
     }
     </script>";
 
-    $code->write_html($js);
+    $code->writeHtml($js);
 
-    $code->write_html("<img src='{$img_src}' onclick='selectors_toggle_{$md5id}()'>");
+    $code->writeHtml("<img src='{$img_src}' onclick='selectors_toggle_{$md5id}()'>");
 
   }
 }

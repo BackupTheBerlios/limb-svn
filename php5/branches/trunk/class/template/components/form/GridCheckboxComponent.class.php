@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_checkbox_component.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputCheckboxComponent.class.php');
 
-class grid_checkbox_component extends input_checkbox_component
+class GridCheckboxComponent extends InputCheckboxComponent
 {
-  public function get_value()
+  public function getValue()
   {
-    return $this->find_parent_by_class('list_component')->get_by_index_string($this->_make_index_name($this->attributes['name']));
+    return $this->findParentByClass('list_component')->getByIndexString($this->_makeIndexName($this->attributes['name']));
   }
 
-  public function set_value($value)
+  public function setValue($value)
   {
   }
 
-  protected function _process_name_attribute($value)
+  protected function _processNameAttribute($value)
   {
-    $list = $this->find_parent_by_class('list_component');
+    $list = $this->findParentByClass('list_component');
 
-    return 'grid_form' . $this->_make_index_name($value) . '[' . $list->get('node_id') . ']';
+    return 'grid_form' . $this->_makeIndexName($value) . '[' . $list->get('node_id') . ']';
   }
 
 }

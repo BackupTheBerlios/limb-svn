@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
-function get_counter_record()
+function getCounterRecord()
 {
-  $db = db_factory :: instance();
-  $db->sql_select('sys_stat_counter', '*');
-  return $db->fetch_row();
+  $db = DbFactory :: instance();
+  $db->sqlSelect('sys_stat_counter', '*');
+  return $db->fetchRow();
 }
 
 ?>

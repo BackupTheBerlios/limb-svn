@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_parameter_tag_info
+class CoreParameterTagInfo
 {
   public $tag = 'core:PARAMETER';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'core_parameter_tag';
 }
 
-register_tag(new core_parameter_tag_info());
+registerTag(new CoreParameterTagInfo());
 
-class core_parameter_tag extends compiler_directive_tag
+class CoreParameterTag extends CompilerDirectiveTag
 {
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -42,9 +42,9 @@ class core_parameter_tag extends compiler_directive_tag
     return PARSER_FORBID_PARSING;
   }
 
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof server_component_tag)
+    if (!$this->parent instanceof ServerComponentTag)
     {
       throw new WactException('wrong parent tag',
           array('tag' => $this->tag,
@@ -54,26 +54,26 @@ class core_parameter_tag extends compiler_directive_tag
     }
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     if(!isset($this->attributes['type']))
       $this->attributes['type'] = 'string';
 
-    parent::pre_generate($code);
+    parent::preGenerate($code);
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $value = $this->_typecast_value();
+    $value = $this->_typecastValue();
 
-    $code->write_php($this->parent->get_component_ref_code()
+    $code->writePhp($this->parent->getComponentRefCode()
       . '->set_parameter("' . $this->attributes['name'] . '", '
       . var_export($value, true) . ')');
 
-    parent::generate_contents($code);
+    parent::generateContents($code);
   }
 
-  protected function _typecast_value()
+  protected function _typecastValue()
   {
     $value = $this->attributes['value'];
     switch(strtolower($this->attributes['type']))

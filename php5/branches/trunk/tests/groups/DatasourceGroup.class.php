@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class datasource_group extends LimbGroupTest
+class DatasourceGroup extends LimbGroupTest
 {
-  function datasource_group()
+  function datasourceGroup()
   {
-    $this->LimbGroupTest('datasource tests');
+    $this->limbGroupTest('datasource tests');
   }
 
   function getTestCasesHandles()

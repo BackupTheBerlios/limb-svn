@@ -8,43 +8,43 @@
 * $Id$
 *
 ***********************************************************************************/
-class status_published_tag_info
+class StatusPublishedTagInfo
 {
   public $tag = 'status:PUBLISHED';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'status_published_tag';
 }
 
-register_tag(new status_published_tag_info());
+registerTag(new StatusPublishedTagInfo());
 
 /**
 * Defines an action take, should a dataspace variable have been set at runtime.
 * The opposite of the core_default_tag
 */
-class status_published_tag extends compiler_directive_tag
+class StatusPublishedTag extends CompilerDirectiveTag
 {
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
     $value = 'true';
-    if (isset($this->attributes['value']) && !(boolean)$this->attributes['value'])
+    if (isset($this->attributes['value']) &&  !(boolean)$this->attributes['value'])
       $value = 'false';
 
-    $tempvar = $code->get_temp_variable();
-    $actions_tempvar = $code->get_temp_variable();
-    $code->write_php('$' . $actions_tempvar . ' = ' . $this->get_dataspace_ref_code() . '->get("actions");');
+    $tempvar = $code->getTempVariable();
+    $actions_tempvar = $code->getTempVariable();
+    $code->writePhp('$' . $actions_tempvar . ' = ' . $this->getDataspaceRefCode() . '->get("actions");');
 
-    $code->write_php('if (isset($' . $actions_tempvar . '["publish"]) && isset($' . $actions_tempvar . '["unpublish"])) {');
-    $code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
-    $code->write_php('if ((boolean)(site_object :: STATUS_PUBLISHED & $' . $tempvar . ') === ' . $value . ') {');
+    $code->writePhp('if (isset($' . $actions_tempvar . '["publish"]) && isset($' . $actions_tempvar . '["unpublish"])) {');
+    $code->writePhp('$' . $tempvar . ' = trim(' . $this->getDataspaceRefCode() . '->get("status"));');
+    $code->writePhp('if ((boolean)(site_object :: STATUS_PUBLISHED & $' . $tempvar . ') === ' . $value . ') {');
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_php('}');
-    $code->write_php('}');
-    parent::post_generate($code);
+    $code->writePhp('}');
+    $code->writePhp('}');
+    parent::postGenerate($code);
   }
 }
 

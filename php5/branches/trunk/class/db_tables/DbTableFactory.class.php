@@ -10,14 +10,14 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
-if(!is_registered_resolver('db_table'))
+if(!isRegisteredResolver('db_table'))
 {
-  include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
-  include_once(LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver.class.php');
-  register_file_resolver('db_table', new db_table_file_resolver(new package_file_resolver()));
+  include_once(LIMB_DIR . '/class/core/file_resolvers/PackageFileResolver.class.php');
+  include_once(LIMB_DIR . '/class/core/file_resolvers/DbTableFileResolver.class.php');
+  registerFileResolver('db_table', new DbTableFileResolver(new PackageFileResolver()));
 }
 
-class db_table_factory
+class DbTableFactory
 {
   static protected $_tables;
 
@@ -28,9 +28,9 @@ class db_table_factory
     if(isset(self :: $_tables[$db_table_name]))
       return self :: $_tables[$db_table_name];
 
-    self :: _include_class_file($db_table_name);
+    self :: _includeClassFile($db_table_name);
 
-    $class_name = $db_table_name . '_db_table';
+    $class_name = $db_table_name . 'DbTable';
 
     $object = new $class_name();
 
@@ -39,12 +39,12 @@ class db_table_factory
     return $object;
   }
 
-  static protected function _include_class_file($db_table_name)
+  static protected function _includeClassFile($db_table_name)
   {
-    if(class_exists($db_table_name . '_db_table'))
+    if(class_exists($db_table_name . 'DbTable'))
       return;
 
-    resolve_handle($resolver =& get_file_resolver('db_table'));
+    resolveHandle($resolver =& getFileResolver('db_table'));
 
     $full_path = $resolver->resolve($db_table_name);
 

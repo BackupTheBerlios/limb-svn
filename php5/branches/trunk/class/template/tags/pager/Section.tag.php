@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-class pager_section_tag_info
+class PagerSectionTagInfo
 {
   public $tag = 'pager:section';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'pager_section_tag';
 }
 
-register_tag(new pager_section_tag_info());
+registerTag(new PagerSectionTagInfo());
 
-class pager_section_tag extends server_component_tag
+class PagerSectionTag extends ServerComponentTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('pager_section_tag'))
+    if ($this->findParentByClass('pager_section_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
     }
-    if (!$this->find_parent_by_class('pager_navigator_tag'))
+    if (!$this->findParentByClass('pager_navigator_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -38,28 +38,28 @@ class pager_section_tag extends server_component_tag
     }
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $parent = $this->find_parent_by_class('pager_navigator_tag');
-    $code->write_php('if (!' . $parent->get_component_ref_code() . '->is_display_page()) {');
+    $parent = $this->findParentByClass('pager_navigator_tag');
+    $code->writePhp('if (!' . $parent->getComponentRefCode() . '->is_display_page()) {');
 
-    $code->write_php($this->get_component_ref_code() . '->set("href", ' . $parent->get_component_ref_code() . '->get_current_section_uri());');
-    $code->write_php($this->get_component_ref_code() . '->set("number_begin", ' . $parent->get_component_ref_code() . '->get_current_section_begin_number());');
-    $code->write_php($this->get_component_ref_code() . '->set("number_end", ' . $parent->get_component_ref_code() . '->get_current_section_end_number());');
+    $code->writePhp($this->getComponentRefCode() . '->set("href", ' . $parent->getComponentRefCode() . '->get_current_section_uri());');
+    $code->writePhp($this->getComponentRefCode() . '->set("number_begin", ' . $parent->getComponentRefCode() . '->get_current_section_begin_number());');
+    $code->writePhp($this->getComponentRefCode() . '->set("number_end", ' . $parent->getComponentRefCode() . '->get_current_section_end_number());');
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php('}');
+    $code->writePhp('}');
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code();
+    return $this->getComponentRefCode();
   }
 }
 

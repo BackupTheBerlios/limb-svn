@@ -8,49 +8,49 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/core/tree/MaterializedPathTree.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
 define('MATERIALIZED_PATH_TEST_TABLE', 'test_materialized_path_tree');
 
-class materialized_path_tree_test_version extends materialized_path_tree
+class MaterializedPathTreeTestVersion extends MaterializedPathTree
 {
   var $_node_table = MATERIALIZED_PATH_TEST_TABLE;
 }
 
-class materialized_path_tree_test extends LimbTestCase
+class MaterializedPathTreeTest extends LimbTestCase
 {
   var $db = null;
   var $driver = null;
 
   function setUp()
   {
-    $this->db = db_factory :: instance();
+    $this->db = DbFactory :: instance();
 
-    $this->driver = new materialized_path_tree_test_version();
+    $this->driver = new MaterializedPathTreeTestVersion();
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete(MATERIALIZED_PATH_TEST_TABLE);
-    $this->db->sql_delete('sys_site_object');
-    $this->db->sql_delete('sys_class');
+    $this->db->sqlDelete(MATERIALIZED_PATH_TEST_TABLE);
+    $this->db->sqlDelete('sys_site_object');
+    $this->db->sqlDelete('sys_class');
   }
 
-  function test_get_node_failed()
+  function testGetNodeFailed()
   {
-    $this->assertIdentical(false, $this->driver->get_node(10000));
+    $this->assertIdentical(false, $this->driver->getNode(10000));
   }
 
-  function test_get_node()
+  function testGetNode()
   {
     $node = array(
       'identifier' => 'test',
@@ -63,17 +63,17 @@ class materialized_path_tree_test extends LimbTestCase
       'children' => 0
     );
 
-    $this->db->sql_insert(MATERIALIZED_PATH_TEST_TABLE, $node);
+    $this->db->sqlInsert(MATERIALIZED_PATH_TEST_TABLE, $node);
 
-    $this->assertEqual($node, $this->driver->get_node(10));
+    $this->assertEqual($node, $this->driver->getNode(10));
   }
 
-  function test_get_parent_failed()
+  function testGetParentFailed()
   {
-    $this->assertIdentical(false, $this->driver->get_parent(1000));
+    $this->assertIdentical(false, $this->driver->getParent(1000));
   }
 
-  function test_get_parent()
+  function testGetParent()
   {
     $root_node = array(
       'identifier' => 'root',
@@ -86,7 +86,7 @@ class materialized_path_tree_test extends LimbTestCase
       'children' => 1
     );
 
-    $this->db->sql_insert(MATERIALIZED_PATH_TEST_TABLE, $root_node);
+    $this->db->sqlInsert(MATERIALIZED_PATH_TEST_TABLE, $root_node);
 
     $node = array(
       'identifier' => 'test',
@@ -99,13 +99,13 @@ class materialized_path_tree_test extends LimbTestCase
       'children' => 0
     );
 
-    $this->db->sql_insert(MATERIALIZED_PATH_TEST_TABLE, $node);
+    $this->db->sqlInsert(MATERIALIZED_PATH_TEST_TABLE, $node);
 
-    $this->assertEqual($root_node, $this->driver->get_parent(10));
-    $this->assertIdentical(false, $this->driver->get_parent(1));
+    $this->assertEqual($root_node, $this->driver->getParent(10));
+    $this->assertIdentical(false, $this->driver->getParent(1));
   }
 
-  function test_create_root_node()
+  function testCreateRootNode()
   {
     $node = array(
       'identifier' => 'test',
@@ -118,12 +118,12 @@ class materialized_path_tree_test extends LimbTestCase
       'children' => 1000
     );
 
-    $node_id = $this->driver->create_root_node($node);
+    $node_id = $this->driver->createRootNode($node);
 
     $this->assertNotIdentical($node_id, false);
 
-    $this->db->sql_select(MATERIALIZED_PATH_TEST_TABLE);
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect(MATERIALIZED_PATH_TEST_TABLE);
+    $arr = $this->db->getArray();
     $this->assertEqual(sizeof($arr), 1);
 
     $row = current($arr);
@@ -138,7 +138,7 @@ class materialized_path_tree_test extends LimbTestCase
     $this->assertEqual($row['children'], 0, 'invalid parameter: children');
   }
 
-  function test_create_root_node_dumb()
+  function testCreateRootNodeDumb()
   {
     $node = array(
       'identifier' => 'test',
@@ -151,29 +151,29 @@ class materialized_path_tree_test extends LimbTestCase
       'children' => 10000
     );
 
-    $this->driver->set_dumb_mode();
+    $this->driver->setDumbMode();
 
-    $node_id = $this->driver->create_root_node($node);
+    $node_id = $this->driver->createRootNode($node);
 
     $this->assertEqual($node_id, 1000000000);
 
-    $this->db->sql_select(MATERIALIZED_PATH_TEST_TABLE);
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect(MATERIALIZED_PATH_TEST_TABLE);
+    $arr = $this->db->getArray();
     $row = current($arr);
 
     $this->assertEqual($row['id'], 1000000000, 'invalid parameter: id');
   }
 
-  function test_create_sub_node_failed()
+  function testCreateSubNodeFailed()
   {
-    $this->driver->create_sub_node(100000, array());
+    $this->driver->createSubNode(100000, array());
   }
 
-  function test_create_sub_node()
+  function testCreateSubNode()
   {
-    $parent_node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+    $parent_node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
 
-    $parent_node = $this->driver->get_node($parent_node_id);
+    $parent_node = $this->driver->getNode($parent_node_id);
 
     $sub_node = array(
       'identifier' => 'test',
@@ -186,12 +186,12 @@ class materialized_path_tree_test extends LimbTestCase
       'children' => 1000
     );
 
-    $sub_node_id = $this->driver->create_sub_node($parent_node_id, $sub_node);
+    $sub_node_id = $this->driver->createSubNode($parent_node_id, $sub_node);
 
     $this->assertNotIdentical($sub_node_id, false);
 
-    $this->db->sql_select(MATERIALIZED_PATH_TEST_TABLE);
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect(MATERIALIZED_PATH_TEST_TABLE);
+    $arr = $this->db->getArray();
     $this->assertEqual(sizeof($arr), 2);
 
     $row = reset($arr);
@@ -210,12 +210,12 @@ class materialized_path_tree_test extends LimbTestCase
     $this->assertEqual($row['children'], 0, 'invalid parameter: children');
   }
 
-  function test_create_sub_node_dumb()
+  function testCreateSubNodeDumb()
   {
-    $parent_node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+    $parent_node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
 
-    $parent_node = $this->driver->get_node($parent_node_id);
-    $this->driver->set_dumb_mode();
+    $parent_node = $this->driver->getNode($parent_node_id);
+    $this->driver->setDumbMode();
 
     $sub_node = array(
       'identifier' => 'test',
@@ -228,65 +228,65 @@ class materialized_path_tree_test extends LimbTestCase
       'children' => 1000
     );
 
-    $sub_node_id = $this->driver->create_sub_node($parent_node_id, $sub_node);
+    $sub_node_id = $this->driver->createSubNode($parent_node_id, $sub_node);
 
     $this->assertNotIdentical($sub_node_id, false);
     $this->assertEqual($sub_node_id, 12);
 
-    $this->db->sql_select(MATERIALIZED_PATH_TEST_TABLE);
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect(MATERIALIZED_PATH_TEST_TABLE);
+    $arr = $this->db->getArray();
     $row = end($arr);
 
     $this->assertEqual($row['id'], $sub_node_id, 'invalid parameter: id');
   }
 
-  function test_get_max_identifier_failed()
+  function testGetMaxIdentifierFailed()
   {
-    $this->assertIdentical(false, $this->driver->get_max_child_identifier(1000));
+    $this->assertIdentical(false, $this->driver->getMaxChildIdentifier(1000));
   }
 
-  function test_get_max_identifier()
+  function testGetMaxIdentifier()
   {
-    $root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
 
-    $this->assertEqual(0, $this->driver->get_max_child_identifier($root_id));
+    $this->assertEqual(0, $this->driver->getMaxChildIdentifier($root_id));
 
-    $sub_node_id_1_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test1', 'object_id' => 20));
-    $sub_node_id_1_2 = $this->driver->create_sub_node($root_id, array('identifier' => 'test3', 'object_id' => 10));
-    $sub_node_id_1_3 = $this->driver->create_sub_node($root_id, array('identifier' => 'test2', 'object_id' => 10));
+    $sub_node_id_1_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test1', 'object_id' => 20));
+    $sub_node_id_1_2 = $this->driver->createSubNode($root_id, array('identifier' => 'test3', 'object_id' => 10));
+    $sub_node_id_1_3 = $this->driver->createSubNode($root_id, array('identifier' => 'test2', 'object_id' => 10));
 
-    $this->assertEqual('test3', $this->driver->get_max_child_identifier($root_id));
+    $this->assertEqual('test3', $this->driver->getMaxChildIdentifier($root_id));
   }
 
-  function test_get_max_identifier_natural_sort()
+  function testGetMaxIdentifierNaturalSort()
   {
-    $root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
 
-    $this->assertEqual(0, $this->driver->get_max_child_identifier($root_id));
+    $this->assertEqual(0, $this->driver->getMaxChildIdentifier($root_id));
 
-    $sub_node_id_1_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test8', 'object_id' => 20));
-    $sub_node_id_1_2 = $this->driver->create_sub_node($root_id, array('identifier' => 'test9', 'object_id' => 10));
-    $sub_node_id_1_3 = $this->driver->create_sub_node($root_id, array('identifier' => 'test10', 'object_id' => 10));
+    $sub_node_id_1_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test8', 'object_id' => 20));
+    $sub_node_id_1_2 = $this->driver->createSubNode($root_id, array('identifier' => 'test9', 'object_id' => 10));
+    $sub_node_id_1_3 = $this->driver->createSubNode($root_id, array('identifier' => 'test10', 'object_id' => 10));
 
-    $this->assertEqual('test10', $this->driver->get_max_child_identifier($root_id));
+    $this->assertEqual('test10', $this->driver->getMaxChildIdentifier($root_id));
   }
 
-  function test_delete_node_failed()
+  function testDeleteNodeFailed()
   {
-    $this->driver->delete_node(100000);
+    $this->driver->deleteNode(100000);
   }
 
-  function test_delete_node()
+  function testDeleteNode()
   {
-    $parent_node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id1 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
-    $sub_node_id2 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test2', 'object_id' => 20));
-    $this->driver->create_sub_node($sub_node_id1, array('identifier' => 'test0', 'object_id' => 20));
+    $parent_node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id1 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
+    $sub_node_id2 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test2', 'object_id' => 20));
+    $this->driver->createSubNode($sub_node_id1, array('identifier' => 'test0', 'object_id' => 20));
 
-    $this->driver->delete_node($sub_node_id1);
+    $this->driver->deleteNode($sub_node_id1);
 
-    $this->db->sql_select(MATERIALIZED_PATH_TEST_TABLE);
-    $arr = $this->db->get_array();
+    $this->db->sqlSelect(MATERIALIZED_PATH_TEST_TABLE);
+    $arr = $this->db->getArray();
     $this->assertEqual(sizeof($arr), 2);
 
     $row = reset($arr);
@@ -303,34 +303,34 @@ class materialized_path_tree_test extends LimbTestCase
     $this->assertEqual($row['children'], 0, 'invalid parameter: children');
   }
 
-  function test_is_node()
+  function testIsNode()
   {
-    $parent_node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
+    $parent_node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
 
-    $this->assertTrue($this->driver->is_node($sub_node_id));
-    $this->assertTrue($this->driver->is_node($parent_node_id));
-    $this->assertFalse($this->driver->is_node(1000));
+    $this->assertTrue($this->driver->isNode($sub_node_id));
+    $this->assertTrue($this->driver->isNode($parent_node_id));
+    $this->assertFalse($this->driver->isNode(1000));
   }
 
-  function test_get_parents_failed()
+  function testGetParentsFailed()
   {
-    $this->assertFalse($this->driver->get_parents(10000));
+    $this->assertFalse($this->driver->getParents(10000));
   }
 
-  function test_get_parents()
+  function testGetParents()
   {
-    $parent_node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test0', 'object_id' => 20));
+    $parent_node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $this->driver->createSubNode($parent_node_id, array('identifier' => 'test0', 'object_id' => 20));
 
-    $sub_node_id1 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
-    $sub_node_id2 = $this->driver->create_sub_node($sub_node_id1, array('identifier' => 'test2', 'object_id' => 20));
+    $sub_node_id1 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
+    $sub_node_id2 = $this->driver->createSubNode($sub_node_id1, array('identifier' => 'test2', 'object_id' => 20));
 
-    $nodes = $this->driver->get_parents($sub_node_id2);
+    $nodes = $this->driver->getParents($sub_node_id2);
 
     $this->assertEqual(sizeof($nodes), 2);
-    $this->_check_proper_nesting($nodes, __LINE__);
-    $this->_check_result_nodes_array($nodes, __LINE__);
+    $this->_checkProperNesting($nodes, __LINE__);
+    $this->_checkResultNodesArray($nodes, __LINE__);
 
     $row = reset($nodes);
 
@@ -344,29 +344,29 @@ class materialized_path_tree_test extends LimbTestCase
     $this->assertEqual($row['identifier'], 'test1', 'invalid parameter: identifier');
     $this->assertEqual($row['object_id'], 20, 'invalid parameter: object_id');
 
-    $nodes = $this->driver->get_parents($sub_node_id1);
+    $nodes = $this->driver->getParents($sub_node_id1);
 
     $this->assertEqual(sizeof($nodes), 1);
-    $this->_check_proper_nesting($nodes, __LINE__);
-    $this->_check_result_nodes_array($nodes, __LINE__);
+    $this->_checkProperNesting($nodes, __LINE__);
+    $this->_checkResultNodesArray($nodes, __LINE__);
   }
 
-  function test_get_children_failed()
+  function testGetChildrenFailed()
   {
-    $this->assertFalse($this->driver->get_children(10000));
+    $this->assertFalse($this->driver->getChildren(10000));
   }
 
-  function test_get_children()
+  function testGetChildren()
   {
-    $parent_node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id1 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
-    $sub_node_id2 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test2', 'object_id' => 20));
-    $this->driver->create_sub_node($sub_node_id1, array('identifier' => 'test0', 'object_id' => 20));
+    $parent_node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id1 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
+    $sub_node_id2 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test2', 'object_id' => 20));
+    $this->driver->createSubNode($sub_node_id1, array('identifier' => 'test0', 'object_id' => 20));
 
-    $nodes = $this->driver->get_children($parent_node_id);
+    $nodes = $this->driver->getChildren($parent_node_id);
 
     $this->assertEqual(sizeof($nodes), 2);
-    $this->_check_result_nodes_array($nodes, __LINE__);
+    $this->_checkResultNodesArray($nodes, __LINE__);
 
     $row = reset($nodes);
 
@@ -381,34 +381,34 @@ class materialized_path_tree_test extends LimbTestCase
     $this->assertEqual($row['object_id'], 20, 'invalid parameter: object_id');
   }
 
-  function test_count_children_failed()
+  function testCountChildrenFailed()
   {
-    $this->assertFalse($this->driver->count_children(10000));
+    $this->assertFalse($this->driver->countChildren(10000));
   }
 
-  function test_count_children()
+  function testCountChildren()
   {
-    $parent_node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id1 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
-    $sub_node_id2 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test2', 'object_id' => 20));
-    $this->driver->create_sub_node($sub_node_id1, array('identifier' => 'test0', 'object_id' => 20));
+    $parent_node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id1 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
+    $sub_node_id2 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test2', 'object_id' => 20));
+    $this->driver->createSubNode($sub_node_id1, array('identifier' => 'test0', 'object_id' => 20));
 
-    $this->assertEqual(2, $this->driver->count_children($parent_node_id));
+    $this->assertEqual(2, $this->driver->countChildren($parent_node_id));
   }
 
-  function test_get_siblings_failed()
+  function testGetSiblingsFailed()
   {
-    $this->assertFalse($this->driver->get_siblings(10000));
+    $this->assertFalse($this->driver->getSiblings(10000));
   }
 
-  function test_get_siblings()
+  function testGetSiblings()
   {
-    $parent_node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id1 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
-    $sub_node_id2 = $this->driver->create_sub_node($parent_node_id, array('identifier' => 'test2', 'object_id' => 20));
-    $this->driver->create_sub_node($sub_node_id1, array('identifier' => 'test0', 'object_id' => 20));
+    $parent_node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id1 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test1', 'object_id' => 20));
+    $sub_node_id2 = $this->driver->createSubNode($parent_node_id, array('identifier' => 'test2', 'object_id' => 20));
+    $this->driver->createSubNode($sub_node_id1, array('identifier' => 'test0', 'object_id' => 20));
 
-    $nodes = $this->driver->get_siblings($sub_node_id2);
+    $nodes = $this->driver->getSiblings($sub_node_id2);
 
     $this->assertEqual(sizeof($nodes), 2);
 
@@ -425,14 +425,14 @@ class materialized_path_tree_test extends LimbTestCase
     $this->assertEqual($row['object_id'], 20, 'invalid parameter: object_id');
   }
 
-  function test_update_node_failed()
+  function testUpdateNodeFailed()
   {
-    $this->assertFalse($this->driver->update_node(10000, array()));
+    $this->assertFalse($this->driver->updateNode(10000, array()));
   }
 
-  function test_update_node()
+  function testUpdateNode()
   {
-    $node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
+    $node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
 
     $node = array(
       'identifier' => 'test',
@@ -445,54 +445,54 @@ class materialized_path_tree_test extends LimbTestCase
       'children' => 1000
     );
 
-    $this->assertTrue($this->driver->update_node($node_id, $node));
+    $this->assertTrue($this->driver->updateNode($node_id, $node));
 
-    $updated_node = $this->driver->get_node($node_id);
+    $updated_node = $this->driver->getNode($node_id);
 
     $this->assertEqual($updated_node['object_id'], 100, 'invalid parameter: object_id');
     $this->assertEqual($updated_node['identifier'], 'test', 'invalid parameter: identifier');
     $this->assertNotEqual($updated_node, $node, 'invalid update');
   }
 
-  function test_move_tree_failed()
+  function testMoveTreeFailed()
   {
-    $this->assertFalse($this->driver->move_tree(1, 1));
+    $this->assertFalse($this->driver->moveTree(1, 1));
 
-    $this->assertFalse($this->driver->move_tree(1, 2));
+    $this->assertFalse($this->driver->moveTree(1, 2));
 
-    $node_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id = $this->driver->create_sub_node($node_id, array('identifier' => 'test', 'object_id' => 10));
+    $node_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id = $this->driver->createSubNode($node_id, array('identifier' => 'test', 'object_id' => 10));
 
-    $this->assertFalse($this->driver->move_tree($node_id, $node_id-1));
+    $this->assertFalse($this->driver->moveTree($node_id, $node_id-1));
 
-    $this->assertFalse($this->driver->move_tree($node_id, $sub_node_id));
+    $this->assertFalse($this->driver->moveTree($node_id, $sub_node_id));
   }
 
-  function test_move_tree()
+  function testMoveTree()
   {
-    $root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_1_1 = $this->driver->createSubNode($sub_node_id_1, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_1_1_1 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_1_1_2 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
 
-    $root_id_2 = $this->driver->create_root_node( array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_2 = $this->driver->create_sub_node($root_id_2, array('identifier' => 'test', 'object_id' => 10));
+    $root_id_2 = $this->driver->createRootNode( array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_2 = $this->driver->createSubNode($root_id_2, array('identifier' => 'test', 'object_id' => 10));
 
-    $root_node = $this->driver->get_node($root_id);
+    $root_node = $this->driver->getNode($root_id);
     $this->assertEqual($root_node['children'], 1, 'invalid parent parameter: children');
 
-    $this->assertTrue($this->driver->move_tree($sub_node_id_1, $sub_node_id_2));
+    $this->assertTrue($this->driver->moveTree($sub_node_id_1, $sub_node_id_2));
 
-    $root_node = $this->driver->get_node($root_id);
+    $root_node = $this->driver->getNode($root_id);
     $this->assertEqual($root_node['children'], 0, 'invalid parent parameter: children');
 
-    $sub_node_2 = $this->driver->get_node($sub_node_id_2);
+    $sub_node_2 = $this->driver->getNode($sub_node_id_2);
     $this->assertEqual($sub_node_2['children'], 1, 'invalid parent parameter: children');
 
     $current_path = '/' . $root_id_2 . '/' . $sub_node_id_2 . '/';
 
-    $sub_node_1 = $this->driver->get_node($sub_node_id_1);
+    $sub_node_1 = $this->driver->getNode($sub_node_id_1);
 
     $current_path .= $sub_node_id_1 . '/';
     $this->assertEqual($sub_node_1['level'], 3, 'invalid parameter: level');
@@ -501,21 +501,21 @@ class materialized_path_tree_test extends LimbTestCase
     $this->assertEqual($sub_node_1['root_id'], $root_id_2, 'invalid parameter: root_id');
 
     $current_path .= $sub_node_id_1_1 . '/';
-    $sub_node_1_1 = $this->driver->get_node($sub_node_id_1_1);
+    $sub_node_1_1 = $this->driver->getNode($sub_node_id_1_1);
 
     $this->assertEqual($sub_node_1_1['level'], 4, 'invalid parameter: level');
     $this->assertEqual($sub_node_1_1['parent_id'], $sub_node_id_1, 'invalid parameter: parent_id');
     $this->assertEqual($sub_node_1_1['path'], $current_path , 'invalid parameter: path');
     $this->assertEqual($sub_node_1_1['root_id'], $root_id_2, 'invalid parameter: root_id');
 
-    $sub_node_1_1_1 = $this->driver->get_node($sub_node_id_1_1_1);
+    $sub_node_1_1_1 = $this->driver->getNode($sub_node_id_1_1_1);
 
     $this->assertEqual($sub_node_1_1_1['level'], 5, 'invalid parameter: level');
     $this->assertEqual($sub_node_1_1_1['parent_id'], $sub_node_id_1_1, 'invalid parameter: parent_id');
     $this->assertEqual($sub_node_1_1_1['path'], $current_path . $sub_node_id_1_1_1 . '/', 'invalid parameter: path');
     $this->assertEqual($sub_node_1_1_1['root_id'], $root_id_2, 'invalid parameter: root_id');
 
-    $sub_node_1_1_2 = $this->driver->get_node($sub_node_id_1_1_2);
+    $sub_node_1_1_2 = $this->driver->getNode($sub_node_id_1_1_2);
 
     $this->assertEqual($sub_node_1_1_2['level'], 5, 'invalid parameter: level');
     $this->assertEqual($sub_node_1_1_2['parent_id'], $sub_node_id_1_1, 'invalid parameter: parent_id');
@@ -523,145 +523,145 @@ class materialized_path_tree_test extends LimbTestCase
     $this->assertEqual($sub_node_1_1_2['root_id'], $root_id_2, 'invalid parameter: root_id');
   }
 
-  function test_get_sub_branch_failed()
+  function testGetSubBranchFailed()
   {
-    $this->assertFalse($this->driver->get_sub_branch(1));
+    $this->assertFalse($this->driver->getSubBranch(1));
   }
 
-  function test_get_sub_branch()
+  function testGetSubBranch()
   {
-    $root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 20));
-    $sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_1_1 = $this->driver->createSubNode($sub_node_id_1, array('identifier' => 'test', 'object_id' => 20));
+    $sub_node_id_1_1_1 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_1_1_2 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 10));
 
     //getting all
-    $branch = $this->driver->get_sub_branch($sub_node_id_1);
+    $branch = $this->driver->getSubBranch($sub_node_id_1);
     $this->assertEqual(3, sizeof($branch));
-    $this->_check_result_nodes_array($branch, __LINE__);
-    $this->_check_proper_nesting($branch, __LINE__);
+    $this->_checkResultNodesArray($branch, __LINE__);
+    $this->_checkProperNesting($branch, __LINE__);
 
     $node = current($branch);
     $this->assertEqual($node['id'], $sub_node_id_1_1, 'invalid parameter: id');
 
     //getting at unlimited depth, including node
-    $branch = $this->driver->get_sub_branch($sub_node_id_1, -1, true);
+    $branch = $this->driver->getSubBranch($sub_node_id_1, -1, true);
     $this->assertEqual(4, sizeof($branch));
-    $this->_check_result_nodes_array($branch, __LINE__);
-    $this->_check_proper_nesting($branch, __LINE__);
+    $this->_checkResultNodesArray($branch, __LINE__);
+    $this->_checkProperNesting($branch, __LINE__);
 
     //getting at depth = 1
-    $branch = $this->driver->get_sub_branch($sub_node_id_1, 1);
+    $branch = $this->driver->getSubBranch($sub_node_id_1, 1);
     $this->assertEqual(1, sizeof($branch));
-    $this->_check_result_nodes_array($branch,  __LINE__);
-    $this->_check_proper_nesting($branch, __LINE__);
+    $this->_checkResultNodesArray($branch,  __LINE__);
+    $this->_checkProperNesting($branch, __LINE__);
 
     //getting at depth = 1, including node
-    $branch = $this->driver->get_sub_branch($sub_node_id_1, 1, true);
+    $branch = $this->driver->getSubBranch($sub_node_id_1, 1, true);
     $this->assertEqual(2, sizeof($branch));
-    $this->_check_result_nodes_array($branch,  __LINE__);
-    $this->_check_proper_nesting($branch, __LINE__);
+    $this->_checkResultNodesArray($branch,  __LINE__);
+    $this->_checkProperNesting($branch, __LINE__);
   }
 
-  function test_get_sub_branch_check_expanded_parents()
+  function testGetSubBranchCheckExpandedParents()
   {
-    $this->db->sql_insert('sys_site_object', array('id' => 10));
-    $this->db->sql_insert('sys_site_object', array('id' => 20));
+    $this->db->sqlInsert('sys_site_object', array('id' => 10));
+    $this->db->sqlInsert('sys_site_object', array('id' => 20));
 
     //creating subtree
-    $root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
-    $sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_1_1 = $this->driver->createSubNode($sub_node_id_1, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_1_1_1 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
+    $sub_node_id_1_1_2 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test', 'object_id' => 20));
 
     //creating second subtree to check that only one subtree uses during fetch subbranch
-    $root_id_2 = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id_2 = $this->driver->create_sub_node($root_id_2, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_2_1 = $this->driver->create_sub_node($sub_node_id_2, array('identifier' => 'test', 'object_id' => 10));
-    $sub_node_id_2_1_1 = $this->driver->create_sub_node($sub_node_id_2_1, array('identifier' => 'test', 'object_id' => 20));
-    $sub_node_id_2_1_2 = $this->driver->create_sub_node($sub_node_id_2_1, array('identifier' => 'test', 'object_id' => 20));
+    $root_id_2 = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id_2 = $this->driver->createSubNode($root_id_2, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_2_1 = $this->driver->createSubNode($sub_node_id_2, array('identifier' => 'test', 'object_id' => 10));
+    $sub_node_id_2_1_1 = $this->driver->createSubNode($sub_node_id_2_1, array('identifier' => 'test', 'object_id' => 20));
+    $sub_node_id_2_1_2 = $this->driver->createSubNode($sub_node_id_2_1, array('identifier' => 'test', 'object_id' => 20));
 
-    $this->driver->check_expanded_parents();
+    $this->driver->checkExpandedParents();
 
-    $this->driver->expand_node($sub_node_id_1);
+    $this->driver->expandNode($sub_node_id_1);
 
-    $this->driver->expand_node($sub_node_id_2);
-    $this->driver->expand_node($sub_node_id_2_1);
+    $this->driver->expandNode($sub_node_id_2);
+    $this->driver->expandNode($sub_node_id_2_1);
 
     //getting at unlimited depth, including node, checking expanded parents
-    $branch = $this->driver->get_sub_branch($root_id, -1, true, true);
+    $branch = $this->driver->getSubBranch($root_id, -1, true, true);
     $this->assertEqual(3, sizeof($branch));
-    $this->_check_result_nodes_array($branch, __LINE__);
-    $this->_check_proper_nesting($branch, __LINE__);
+    $this->_checkResultNodesArray($branch, __LINE__);
+    $this->_checkProperNesting($branch, __LINE__);
 
-    $this->driver->collapse_node($root_id);
-    $this->driver->expand_node($sub_node_id_1_1);
+    $this->driver->collapseNode($root_id);
+    $this->driver->expandNode($sub_node_id_1_1);
 
     //getting at unlimited depth, including node, checking expanded parents
-    $branch = $this->driver->get_sub_branch($root_id, -1, true, true);
+    $branch = $this->driver->getSubBranch($root_id, -1, true, true);
     $this->assertEqual(1, sizeof($branch));
-    $this->_check_result_nodes_array($branch, __LINE__);
-    $this->_check_proper_nesting($branch, __LINE__);
+    $this->_checkResultNodesArray($branch, __LINE__);
+    $this->_checkProperNesting($branch, __LINE__);
   }
 
-  function test_get_node_by_path_failed()
+  function testGetNodeByPathFailed()
   {
-    $root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => '1_test', 'object_id' => 10));
-    $sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => '1_1_test', 'object_id' => 20));
-    $sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => '1_1_1_test', 'object_id' => 10));
-    $sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => '1_1_2_test', 'object_id' => 10));
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id_1 = $this->driver->createSubNode($root_id, array('identifier' => '1_test', 'object_id' => 10));
+    $sub_node_id_1_1 = $this->driver->createSubNode($sub_node_id_1, array('identifier' => '1_1_test', 'object_id' => 20));
+    $sub_node_id_1_1_1 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => '1_1_1_test', 'object_id' => 10));
+    $sub_node_id_1_1_2 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => '1_1_2_test', 'object_id' => 10));
 
-    $root_id2 = $this->driver->create_root_node(array('identifier' => 'root2', 'object_id' => 10));
-    $sub_node_id_2 = $this->driver->create_sub_node($root_id2, array('identifier' => '2_test', 'object_id' => 10));
+    $root_id2 = $this->driver->createRootNode(array('identifier' => 'root2', 'object_id' => 10));
+    $sub_node_id_2 = $this->driver->createSubNode($root_id2, array('identifier' => '2_test', 'object_id' => 10));
 
-    $this->assertFalse($this->driver->get_node_by_path(''));
-    $this->assertFalse($this->driver->get_node_by_path('/root///'));
-    $this->assertFalse($this->driver->get_node_by_path('/root/wow/yo'));
-    $this->assertFalse($this->driver->get_node_by_path('/root/2_test'));
+    $this->assertFalse($this->driver->getNodeByPath(''));
+    $this->assertFalse($this->driver->getNodeByPath('/root///'));
+    $this->assertFalse($this->driver->getNodeByPath('/root/wow/yo'));
+    $this->assertFalse($this->driver->getNodeByPath('/root/2_test'));
   }
 
-  function test_get_node_by_path()
+  function testGetNodeByPath()
   {
-    $root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test1', 'object_id' => 10));
-    $sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test1', 'object_id' => 20));
-    $sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test1', 'object_id' => 10));
-    $sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test2', 'object_id' => 10));
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test1', 'object_id' => 10));
+    $sub_node_id_1_1 = $this->driver->createSubNode($sub_node_id_1, array('identifier' => 'test1', 'object_id' => 20));
+    $sub_node_id_1_1_1 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test1', 'object_id' => 10));
+    $sub_node_id_1_1_2 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test2', 'object_id' => 10));
 
-    $node = $this->driver->get_node_by_path('/root/');
+    $node = $this->driver->getNodeByPath('/root/');
     $this->assertEqual($node['id'], $root_id);
-    $this->_check_result_nodes_array($node, __LINE__);
+    $this->_checkResultNodesArray($node, __LINE__);
 
-    $node = $this->driver->get_node_by_path('/root/test1/test1/');
+    $node = $this->driver->getNodeByPath('/root/test1/test1/');
     $this->assertEqual($node['id'], $sub_node_id_1_1);
-    $this->_check_result_nodes_array($node,  __LINE__);
+    $this->_checkResultNodesArray($node,  __LINE__);
 
-    $node = $this->driver->get_node_by_path('/root/test1/test1/test2');
+    $node = $this->driver->getNodeByPath('/root/test1/test1/test2');
     $this->assertEqual($node['id'], $sub_node_id_1_1_2);
-    $this->_check_result_nodes_array($node,  __LINE__);
+    $this->_checkResultNodesArray($node,  __LINE__);
 
-    $node = $this->driver->get_node_by_path('/root/test1/test1/test1/');
+    $node = $this->driver->getNodeByPath('/root/test1/test1/test1/');
     $this->assertEqual($node['id'], $sub_node_id_1_1_1);
-    $this->_check_result_nodes_array($node,  __LINE__);
+    $this->_checkResultNodesArray($node,  __LINE__);
   }
 
-  function test_get_sub_branch_by_path_failed()
+  function testGetSubBranchByPathFailed()
   {
-    $this->assertFalse($this->driver->get_sub_branch(1));
+    $this->assertFalse($this->driver->getSubBranch(1));
   }
 
-  function test_get_nodes_by_ids()
+  function testGetNodesByIds()
   {
-    $root_id = $this->driver->create_root_node(array('identifier' => 'root', 'object_id' => 10));
-    $sub_node_id_1 = $this->driver->create_sub_node($root_id, array('identifier' => 'test1', 'object_id' => 10));
-    $sub_node_id_1_1 = $this->driver->create_sub_node($sub_node_id_1, array('identifier' => 'test1', 'object_id' => 20));
-    $sub_node_id_1_1_1 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test1', 'object_id' => 10));
-    $sub_node_id_1_1_2 = $this->driver->create_sub_node($sub_node_id_1_1, array('identifier' => 'test2', 'object_id' => 10));
+    $root_id = $this->driver->createRootNode(array('identifier' => 'root', 'object_id' => 10));
+    $sub_node_id_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test1', 'object_id' => 10));
+    $sub_node_id_1_1 = $this->driver->createSubNode($sub_node_id_1, array('identifier' => 'test1', 'object_id' => 20));
+    $sub_node_id_1_1_1 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test1', 'object_id' => 10));
+    $sub_node_id_1_1_2 = $this->driver->createSubNode($sub_node_id_1_1, array('identifier' => 'test2', 'object_id' => 10));
 
-    $nodes = $this->driver->get_nodes_by_ids(
+    $nodes = $this->driver->getNodesByIds(
       array(
         $root_id,
         $sub_node_id_1,
@@ -673,9 +673,9 @@ class materialized_path_tree_test extends LimbTestCase
     );
 
     $this->assertEqual(sizeof($nodes), 5);
-    $this->_check_result_nodes_array($nodes,  __LINE__);
+    $this->_checkResultNodesArray($nodes,  __LINE__);
 
-    $nodes = $this->driver->get_nodes_by_ids(
+    $nodes = $this->driver->getNodesByIds(
       array(
         $sub_node_id_1,
         $sub_node_id_1_1,
@@ -685,27 +685,27 @@ class materialized_path_tree_test extends LimbTestCase
     );
 
     $this->assertEqual(sizeof($nodes), 3);
-    $this->_check_result_nodes_array($nodes,  __LINE__);
+    $this->_checkResultNodesArray($nodes,  __LINE__);
 
-    $nodes = $this->driver->get_nodes_by_ids(
+    $nodes = $this->driver->getNodesByIds(
       array()
     );
 
     $this->assertEqual(sizeof($nodes), 0);
   }
 
-  function _check_result_nodes_array($nodes, $line='')
+  function _checkResultNodesArray($nodes, $line='')
   {
     if(isset($nodes['object_id']))
-      $this->assertEqual($this->driver->get_node($nodes['id']), $nodes, 'at line: ' . $line);
+      $this->assertEqual($this->driver->getNode($nodes['id']), $nodes, 'at line: ' . $line);
     else
       foreach($nodes as $id => $node)
-        $this->assertEqual($this->driver->get_node($id), $node, 'at line: ' . $line);
+        $this->assertEqual($this->driver->getNode($id), $node, 'at line: ' . $line);
   }
 
-  function _check_proper_nesting($nodes, $line='')
+  function _checkProperNesting($nodes, $line='')
   {
-    $paths[] = complex_array :: get_min_column_value('path', $nodes, $index);
+    $paths[] = ComplexArray :: getMinColumnValue('path', $nodes, $index);
 
     $counter = 0;
     foreach($nodes as $id => $node)

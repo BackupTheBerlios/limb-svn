@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/form_create_site_object_command.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/validators/validator.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
+require_once(LIMB_DIR . '/class/core/commands/FormCreateSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/validators/Validator.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('request');
-Mock :: generate('requested_object_datasource');
-Mock :: generate('validator');
-Mock :: generate('dataspace');
+Mock :: generate('Request');
+Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('Validator');
+Mock :: generate('Dataspace');
 
 Mock :: generatePartial(
-                      'form_create_site_object_command',
-                      'form_create_site_object_command_test_version',
-                      array('_is_first_time', '_get_validator')
+                      'FormCreateSiteObjectCommand',
+                      'FormCreateSiteObjectCommandTestVersion',
+                      array('_isFirstTime', '_getValidator')
                       );
 
-class form_create_site_object_command_test extends LimbTestCase
+class FormCreateSiteObjectCommandTest extends LimbTestCase
 {
   var $command;
   var $request;
@@ -37,10 +37,10 @@ class form_create_site_object_command_test extends LimbTestCase
 
   function setUp()
   {
-    $this->request = new Mockrequest($this);
-    $this->datasource = new Mockrequested_object_datasource($this);
-    $this->validator = new Mockvalidator($this);
-    $this->dataspace = new Mockdataspace($this);
+    $this->request = new MockRequest($this);
+    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->validator = new MockValidator($this);
+    $this->dataspace = new MockDataspace($this);
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
@@ -49,11 +49,11 @@ class form_create_site_object_command_test extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->command = new form_create_site_object_command_test_version($this);
+    $this->command = new FormCreateSiteObjectCommandTestVersion($this);
     $this->command->__construct('test_form');
 
-    $this->command->setReturnValue('_is_first_time', false);
-    $this->command->setReturnValue('_get_validator', $this->validator);
+    $this->command->setReturnValue('_isFirstTime', false);
+    $this->command->setReturnValue('_getValidator', $this->validator);
     $this->validator->setReturnValue('validate', true);
   }
 
@@ -68,34 +68,34 @@ class form_create_site_object_command_test extends LimbTestCase
     $this->dataspace->tally();
   }
 
-  function test_register_validation_rules_no_parent_node_id()
+  function testRegisterValidationRulesNoParentNodeId()
   {
     $object_data = array('parent_node_id' => 100);
 
-    $this->dataspace->expectOnce('get', array('parent_node_id'));
+    $this->dataspace->expectOnce('get', array('parentNodeId'));
     $this->dataspace->setReturnValue('get', null);
 
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->validator->expectCallCount('add_rule', 2);
-    $this->validator->expectArgumentsAt(0, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id')));
-    $this->validator->expectArgumentsAt(1, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', 100)));
+    $this->validator->expectCallCount('addRule', 2);
+    $this->validator->expectArgumentsAt(0, 'addRule', array(array(LIMB_DIR . '/class/validators/rules/treeNodeIdRule', 'parentNodeId')));
+    $this->validator->expectArgumentsAt(1, 'addRule', array(array(LIMB_DIR . '/class/validators/rules/treeIdentifierRule', 'identifier', 100)));
 
     $this->command->perform();
   }
 
-  function test_register_validation_rules()
+  function testRegisterValidationRules()
   {
-    $this->dataspace->expectOnce('get', array('parent_node_id'));
+    $this->dataspace->expectOnce('get', array('parentNodeId'));
     $this->dataspace->setReturnValue('get', 100);
 
     $this->datasource->expectNever('fetch');
 
-    $this->validator->expectCallCount('add_rule', 2);
-    $this->validator->expectArgumentsAt(0, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id')));
-    $this->validator->expectArgumentsAt(1, 'add_rule', array(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', 100)));
+    $this->validator->expectCallCount('addRule', 2);
+    $this->validator->expectArgumentsAt(0, 'addRule', array(array(LIMB_DIR . '/class/validators/rules/treeNodeIdRule', 'parentNodeId')));
+    $this->validator->expectArgumentsAt(1, 'addRule', array(array(LIMB_DIR . '/class/validators/rules/treeIdentifierRule', 'identifier', 100)));
 
     $this->command->perform();
   }

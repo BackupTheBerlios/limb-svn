@@ -13,7 +13,7 @@
 *
 * @todo documention - check that err object is validation_error
 */
-class error_list
+class ErrorList
 {
   static protected $instance = null;
 
@@ -22,17 +22,17 @@ class error_list
   static public function instance()
   {
     if (!self :: $instance)
-      self :: $instance = new error_list();
+      self :: $instance = new ErrorList();
 
     return self :: $instance;
   }
 
-  public function add_error($field_name, $error_msg, $params=array())
+  public function addError($field_name, $error_msg, $params=array())
   {
     $this->errors[$field_name][] = array('error' => $error_msg, 'params' => $params);
   }
 
-  public function get_errors($field_name)
+  public function getErrors($field_name)
   {
     if(isset($this->errors[$field_name]))
       return $this->errors[$field_name];

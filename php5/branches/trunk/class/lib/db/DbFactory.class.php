@@ -10,30 +10,30 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
-class	db_factory
+class	DbFactory
 {
   static public function instance($db_type='', $db_params=array(), $force_new_instance=false)
   {
     if(!$db_type)
-      $db_type = get_ini_option('common.ini', 'type', 'DB');
+      $db_type = getIniOption('common.ini', 'type', 'DB');
     elseif(!$db_type)
       $db_type = 'null';
 
-    $db_class_name = 'db_' . $db_type;
+    $db_class_name = self :: _mapTypeToClass($db_type);
 
     $obj = null;
     if (isset($GLOBALS['global_db_handler']))
       $obj =& $GLOBALS['global_db_handler'];
 
-    if (get_class($obj) != $db_class_name || $force_new_instance)
+    if (get_class($obj) != $db_class_name ||  $force_new_instance)
     {
-      if(!$db_params && $db_type !== 'null')
+      if(!$db_params &&  $db_type !== 'null')
       {
-        $conf = get_ini('common.ini');
-        $db_params['host'] = $conf->get_option('host', 'DB');
-        $db_params['login'] = $conf->get_option('login', 'DB');
-        $db_params['password'] = $conf->get_option('password', 'DB');
-        $db_params['name'] = $conf->get_option('name', 'DB');
+        $conf = getIni('common.ini');
+        $db_params['host'] = $conf->getOption('host', 'DB');
+        $db_params['login'] = $conf->getOption('login', 'DB');
+        $db_params['password'] = $conf->getOption('password', 'DB');
+        $db_params['name'] = $conf->getOption('name', 'DB');
       }
 
       include_once(LIMB_DIR . '/class/lib/db/' . $db_class_name . '.class.php');
@@ -45,33 +45,38 @@ class	db_factory
     return $obj;
   }
 
-  public function select_db($db_name)
+  public function selectDb($db_name)
   {
-    db_factory :: instance()->select_db($db_name);
+    DbFactory :: instance()->selectDb($db_name);
   }
 
   public function create($db_type, $db_params)
   {
-    $db_class_name = 'db_' . $db_type;
+    $db_class_name = self :: _mapTypeToClass($db_type);
 
     include_once(LIMB_DIR . '/class/lib/db/' . $db_class_name . '.class.php');
 
     return new $db_class_name($db_params);
   }
+
+  static protected function _mapTypeToClass($type)
+  {
+    return 'Db' . ucfirst($type);
+  }
 }
 
-function start_user_transaction()
+function startUserTransaction()
 {
-  db_factory :: instance()->begin();
+  DbFactory :: instance()->begin();
 }
 
-function commit_user_transaction()
+function commitUserTransaction()
 {
-  db_factory :: instance()->commit();
+  DbFactory :: instance()->commit();
 }
 
-function rollback_user_transaction()
+function rollbackUserTransaction()
 {
-  db_factory :: instance()->rollback();
+  DbFactory :: instance()->rollback();
 }
 ?>

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/sys.class.php');
-require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 
 define('TEST_DIR_ABSOLUTE_PATH', LIMB_DIR . '/var/');
 define('TEST_DIR_RELATIVE_PATH', 'var');
 
-class special_dir_walker
+class SpecialDirWalker
 {
   var $walked = array();
 
@@ -22,17 +22,17 @@ class special_dir_walker
   {
     static $counter = 0;
 
-    $this->walked[] = fs :: clean_path($dir . $params['separator'] .  $file);
+    $this->walked[] = Fs :: cleanPath($dir . $params['separator'] .  $file);
 
     $return_params[] = $counter++;
   }
 }
 
-class fs_test extends LimbTestCase
+class FsTest extends LimbTestCase
 {
-  function _create_file_system()
+  function _createFileSystem()
   {
-    fs :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/');
+    Fs :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/');
 
     touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1');
     touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_2');
@@ -47,66 +47,66 @@ class fs_test extends LimbTestCase
     touch(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_3');
   }
 
-  function _remove_file_system()
+  function _removeFileSystem()
   {
-    fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+    Fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
   }
 
-  function test_is_absolute_true()
+  function testIsAbsoluteTrue()
   {
-    $this->assertTrue(fs :: is_absolute('/test'));
+    $this->assertTrue(Fs :: isAbsolute('/test'));
 
-    if(sys :: os_type() == 'win32')
-      $this->assertTrue(fs :: is_absolute('c:/test'));
+    if(Sys :: osType() == 'win32')
+      $this->assertTrue(Fs :: isAbsolute('c:/test'));
   }
 
-  function test_remove_recursive()
+  function testRemoveRecursive()
   {
-    $this->_create_file_system();
+    $this->_createFileSystem();
 
-    fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+    Fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
 
     $this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/'));
   }
 
-  function test_is_path_absolute()
+  function testIsPathAbsolute()
   {
-    $this->assertTrue(fs :: is_path_absolute('c:/var/wow', 'win32'));
-    $this->assertTrue(fs :: is_path_absolute('/var/wow', 'unix'));
+    $this->assertTrue(Fs :: isPathAbsolute('c:/var/wow', 'win32'));
+    $this->assertTrue(Fs :: isPathAbsolute('/var/wow', 'unix'));
 
-    $this->assertFalse(fs :: is_path_absolute(':/var/wow', 'win32'));
-    $this->assertFalse(fs :: is_path_absolute('/var/wow', 'win32'));
-    $this->assertFalse(fs :: is_path_absolute('c:/var/wow', 'unix'));
+    $this->assertFalse(Fs :: isPathAbsolute(':/var/wow', 'win32'));
+    $this->assertFalse(Fs :: isPathAbsolute('/var/wow', 'win32'));
+    $this->assertFalse(Fs :: isPathAbsolute('c:/var/wow', 'unix'));
 
-    $this->assertFalse(fs :: is_path_absolute('var/wow'));
+    $this->assertFalse(Fs :: isPathAbsolute('var/wow'));
   }
 
-  function test_clean_path1()
+  function testCleanPath1()
   {
-    $path = fs :: clean_path('/tmp\../tmp/wow////hey/');
-    $this->assertEqual($path, fs :: separator() . 'tmp' . fs :: separator() . 'wow' . fs :: separator() . 'hey' . fs :: separator());
+    $path = Fs :: cleanPath('/tmp\../tmp/wow////hey/');
+    $this->assertEqual($path, Fs :: separator() . 'tmp' . Fs :: separator() . 'wow' . Fs :: separator() . 'hey' . Fs :: separator());
 
-    $path = fs :: clean_path('tmp\../tmp/wow////hey/');
-    $this->assertEqual($path, 'tmp' . fs :: separator() . 'wow' . fs :: separator() . 'hey' . fs :: separator());
+    $path = Fs :: cleanPath('tmp\../tmp/wow////hey/');
+    $this->assertEqual($path, 'tmp' . Fs :: separator() . 'wow' . Fs :: separator() . 'hey' . Fs :: separator());
   }
 
-  function test_clean_path2()
+  function testCleanPath2()
   {
-    $path = fs :: clean_path('c:\\var\\dev\\demo\\design\\templates\\test.html');
+    $path = Fs :: cleanPath('c:\\var\\dev\\demo\\design\\templates\\test.html');
 
     $this->assertEqual($path,
-      'c:' . fs :: separator() .
-      'var' . fs :: separator() .
-      'dev' . fs :: separator() .
-      'demo' . fs :: separator() .
-      'design' . fs :: separator() .
-      'templates' . fs :: separator() .
+      'c:' . Fs :: separator() .
+      'var' . Fs :: separator() .
+      'dev' . Fs :: separator() .
+      'demo' . Fs :: separator() .
+      'design' . Fs :: separator() .
+      'templates' . Fs :: separator() .
       'test.html');
   }
 
-  function test_explode_absolute_path()
+  function testExplodeAbsolutePath()
   {
-    $path = fs :: explode_path('/tmp\../tmp/wow////hey/');
+    $path = Fs :: explodePath('/tmp\../tmp/wow////hey/');
 
     $this->assertEqual(sizeof($path), 4);
 
@@ -115,7 +115,7 @@ class fs_test extends LimbTestCase
     $this->assertEqual($path[2], 'wow');
     $this->assertEqual($path[3], 'hey');
 
-    $path = fs :: explode_path('/tmp\../tmp/wow////hey'); // no trailing slash
+    $path = Fs :: explodePath('/tmp\../tmp/wow////hey'); // no trailing slash
 
     $this->assertEqual(sizeof($path), 4);
 
@@ -125,9 +125,9 @@ class fs_test extends LimbTestCase
     $this->assertEqual($path[3], 'hey');
   }
 
-  function test_explode_relative_path()
+  function testExplodeRelativePath()
   {
-    $path = fs :: explode_path('tmp\../tmp/wow////hey/');
+    $path = Fs :: explodePath('tmp\../tmp/wow////hey/');
 
     $this->assertEqual(sizeof($path), 3);
 
@@ -135,7 +135,7 @@ class fs_test extends LimbTestCase
     $this->assertEqual($path[1], 'wow');
     $this->assertEqual($path[2], 'hey');
 
-    $path = fs :: explode_path('tmp\../tmp/wow////hey'); // no trailing slash
+    $path = Fs :: explodePath('tmp\../tmp/wow////hey'); // no trailing slash
 
     $this->assertEqual(sizeof($path), 3);
 
@@ -144,97 +144,97 @@ class fs_test extends LimbTestCase
     $this->assertEqual($path[2], 'hey');
   }
 
-  function test_mkdir_absolute_path()
+  function testMkdirAbsolutePath()
   {
-    fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+    Fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
 
     $this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/'));
 
-    fs :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/./tmp\../tmp/wow////hey/');
+    Fs :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/./tmp\../tmp/wow////hey/');
 
     $this->assertTrue(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/'));
   }
 
-  function test_mkdir_absolute_path_no_trailing_slash()
+  function testMkdirAbsolutePathNoTrailingSlash()
   {
-    fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+    Fs :: rm(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
 
     $this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/'));
 
-    fs :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/./tmp\../tmp/wow////hey');
+    Fs :: mkdir(TEST_DIR_ABSOLUTE_PATH . '/./tmp\../tmp/wow////hey');
 
     $this->assertTrue(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/'));
   }
 
-  function test_mkdir_relative_path()
+  function testMkdirRelativePath()
   {
-    fs :: rm(TEST_DIR_RELATIVE_PATH . '/tmp/');
+    Fs :: rm(TEST_DIR_RELATIVE_PATH . '/tmp/');
 
     $this->assertFalse(is_dir(TEST_DIR_RELATIVE_PATH . '/tmp/wow/hey/'));
 
-    fs :: mkdir(TEST_DIR_RELATIVE_PATH . '/./tmp\../tmp/wow////hey/');
+    Fs :: mkdir(TEST_DIR_RELATIVE_PATH . '/./tmp\../tmp/wow////hey/');
 
     $this->assertTrue(is_dir(TEST_DIR_RELATIVE_PATH . '/tmp/wow/hey/'));
   }
 
-  function test_mkdir_relative_path_no_trailing_slash()
+  function testMkdirRelativePathNoTrailingSlash()
   {
-    fs :: rm(TEST_DIR_RELATIVE_PATH . '/tmp/');
+    Fs :: rm(TEST_DIR_RELATIVE_PATH . '/tmp/');
 
     $this->assertFalse(is_dir(TEST_DIR_RELATIVE_PATH . '/tmp/wow/hey/'));
 
-    fs :: mkdir(TEST_DIR_RELATIVE_PATH . '/./tmp\../tmp/wow////hey');
+    Fs :: mkdir(TEST_DIR_RELATIVE_PATH . '/./tmp\../tmp/wow////hey');
 
     $this->assertTrue(is_dir(TEST_DIR_RELATIVE_PATH . '/tmp/wow/hey/'));
   }
 
-  function test_dirpath()
+  function testDirpath()
   {
-    $this->assertEqual(fs :: dirpath('/wow/test.txt'), fs :: clean_path('/wow'));
-    $this->assertEqual(fs :: dirpath('wow/hey/test.txt'), fs :: clean_path('wow/hey'));
-    $this->assertEqual(fs :: dirpath('test.txt'), 'test.txt');
-    $this->assertEqual(fs :: dirpath('/'), '');
+    $this->assertEqual(Fs :: dirpath('/wow/test.txt'), Fs :: cleanPath('/wow'));
+    $this->assertEqual(Fs :: dirpath('wow/hey/test.txt'), Fs :: cleanPath('wow/hey'));
+    $this->assertEqual(Fs :: dirpath('test.txt'), 'test.txt');
+    $this->assertEqual(Fs :: dirpath('/'), '');
   }
 
-  function test_ls()
+  function testLs()
   {
-    $this->_create_file_system();
+    $this->_createFileSystem();
 
     $a1 = array('test1_1', 'test1_2', 'test1_3', 'wow');
     sort($a1);
-    $a2 =  fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
+    $a2 =  Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
     sort($a2);
 
     $this->assertEqual($a1, $a2);
-    $this->assertEqual(array('hey', 'test2_1', 'test2_2', 'test2_3'), fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
+    $this->assertEqual(array('hey', 'test2_1', 'test2_2', 'test2_3'), Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
 
-    $this->_remove_file_system();
+    $this->_removeFileSystem();
   }
 
-  function test_path()
+  function testPath()
   {
-    $this->assertEqual(fs :: path(array('test')), 'test');
-    $this->assertEqual(fs :: path(array('test', 'wow')), 'test' . fs :: separator() . 'wow');
-    $this->assertEqual(fs :: path(array('test', 'wow/')), 'test' . fs :: separator() . 'wow');
+    $this->assertEqual(Fs :: path(array('test')), 'test');
+    $this->assertEqual(Fs :: path(array('test', 'wow')), 'test' . Fs :: separator() . 'wow');
+    $this->assertEqual(Fs :: path(array('test', 'wow/')), 'test' . Fs :: separator() . 'wow');
 
-    $this->assertEqual(fs :: path(array('test'), true), 'test' . fs :: separator());
-    $this->assertEqual(fs :: path(array('test', 'wow'), true), 'test' . fs :: separator() . 'wow' . fs :: separator());
+    $this->assertEqual(Fs :: path(array('test'), true), 'test' . Fs :: separator());
+    $this->assertEqual(Fs :: path(array('test', 'wow'), true), 'test' . Fs :: separator() . 'wow' . Fs :: separator());
   }
 
-  function test_chop()
+  function testChop()
   {
-    $this->assertEqual(fs :: chop('test'), 'test');
-    $this->assertEqual(fs :: chop('test/'), 'test');
+    $this->assertEqual(Fs :: chop('test'), 'test');
+    $this->assertEqual(Fs :: chop('test/'), 'test');
   }
 
-  function test_walk_dir()
+  function testWalkDir()
   {
-    $this->_create_file_system();
+    $this->_createFileSystem();
 
-    $mock = new special_dir_walker();
+    $mock = new SpecialDirWalker();
 
     $this->assertEqual(
-      fs :: walk_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/', array(&$mock, 'walk'), array('test')),
+      Fs :: walkDir(TEST_DIR_ABSOLUTE_PATH . '/tmp/', array(&$mock, 'walk'), array('test')),
       array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
     );
 
@@ -242,35 +242,35 @@ class fs_test extends LimbTestCase
 
     $this->assertEqual(sizeof($mock->walked), 11);
 
-    $this->assertEqual($mock->walked[0], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1'));
-    $this->assertEqual($mock->walked[1], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_2'));
-    $this->assertEqual($mock->walked[2], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_3'));
-    $this->assertEqual($mock->walked[3], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
-    $this->assertEqual($mock->walked[4], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'));
-    $this->assertEqual($mock->walked[5], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_1'));
-    $this->assertEqual($mock->walked[6], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_2'));
-    $this->assertEqual($mock->walked[7], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_3'));
-    $this->assertEqual($mock->walked[8], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_1'));
-    $this->assertEqual($mock->walked[9], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_2'));
-    $this->assertEqual($mock->walked[10], fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_3'));
+    $this->assertEqual($mock->walked[0], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1'));
+    $this->assertEqual($mock->walked[1], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_2'));
+    $this->assertEqual($mock->walked[2], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_3'));
+    $this->assertEqual($mock->walked[3], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
+    $this->assertEqual($mock->walked[4], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'));
+    $this->assertEqual($mock->walked[5], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_1'));
+    $this->assertEqual($mock->walked[6], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_2'));
+    $this->assertEqual($mock->walked[7], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_3'));
+    $this->assertEqual($mock->walked[8], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_1'));
+    $this->assertEqual($mock->walked[9], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_2'));
+    $this->assertEqual($mock->walked[10], Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_3'));
 
-    $this->_remove_file_system();
+    $this->_removeFileSystem();
   }
 
-  function test_cp()
+  function testCp()
   {
-    $this->_create_file_system();
+    $this->_createFileSystem();
 
-    $res = fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp');
+    $res = Fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp');
     sort($res);
 
     $this->assertEqual(
       $res,
       array(
       'hey',
-      fs :: clean_path('hey/test3_1'),
-      fs :: clean_path('hey/test3_2'),
-      fs :: clean_path('hey/test3_3'),
+      Fs :: cleanPath('hey/test3_1'),
+      Fs :: cleanPath('hey/test3_2'),
+      Fs :: cleanPath('hey/test3_3'),
       'test2_1',
       'test2_2',
       'test2_3',
@@ -278,38 +278,38 @@ class fs_test extends LimbTestCase
     );
 
     $this->assertEqual(
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp'),
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp'),
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
 
     $this->assertEqual(
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/hey'),
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'));
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/hey'),
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'));
 
-    $this->_remove_file_system();
+    $this->_removeFileSystem();
   }
 
-  function test_cp_as_shild()
+  function testCpAsShild()
   {
-    $this->_create_file_system();
+    $this->_createFileSystem();
 
-    fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', true);
-
-    $this->assertEqual(
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/wow/'),
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
+    Fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', true);
 
     $this->assertEqual(
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/wow/hey'),
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'));
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/wow/'),
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
 
-    $this->_remove_file_system();
+    $this->assertEqual(
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/wow/hey'),
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey'));
+
+    $this->_removeFileSystem();
   }
 
-  function test_cp_with_exclude()
+  function testCpWithExclude()
   {
-    $this->_create_file_system();
+    $this->_createFileSystem();
 
-    $res = fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', false, '/hey/');
+    $res = Fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', false, '/hey/');
     sort($res);
 
     $this->assertEqual(
@@ -319,61 +319,61 @@ class fs_test extends LimbTestCase
 
     $this->assertEqual(
       $res,
-      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/')
+      Fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/')
     );
 
     $this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/hey'));
 
-    $this->_remove_file_system();
+    $this->_removeFileSystem();
   }
 
-  function test_find_subitems()
+  function testFindSubitems()
   {
-    $this->_create_file_system();
+    $this->_createFileSystem();
 
-    $res = fs :: find_subitems(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey');
+    $res = Fs :: findSubitems(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey');
   sort($res);
 
     $this->assertEqual(
       $res,
       array(
-        fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_1'),
-        fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_2'),
-        fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_3')
+        Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_1'),
+        Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_2'),
+        Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_3')
       )
     );
 
-    $res = fs :: find_subitems(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/', 'f', '/^test2_1$/');
+    $res = Fs :: findSubitems(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/', 'f', '/^test2_1$/');
     sort($res);
 
     $this->assertEqual(
       $res,
       array(
-        fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_2'),
-        fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_3'),
+        Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_2'),
+        Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_3'),
       )
     );
 
-    $this->_remove_file_system();
+    $this->_removeFileSystem();
   }
 
-  function test_recursive_find()
+  function testRecursiveFind()
   {
-    $this->_create_file_system();
+    $this->_createFileSystem();
 
-    $res = fs :: recursive_find(TEST_DIR_ABSOLUTE_PATH . '/tmp/', 'test\d_1');
+    $res = Fs :: recursiveFind(TEST_DIR_ABSOLUTE_PATH . '/tmp/', 'test\d_1');
   sort($res);
 
     $this->assertEqual(
       $res,
       array(
-        fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1'),
-        fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_1'),
-        fs :: clean_path(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_1'),
+        Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1'),
+        Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey/test3_1'),
+        Fs :: cleanPath(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test2_1'),
       )
     );
 
-    $this->_remove_file_system();
+    $this->_removeFileSystem();
   }
 }
 

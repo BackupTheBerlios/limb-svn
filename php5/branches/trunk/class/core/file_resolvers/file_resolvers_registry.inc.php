@@ -11,13 +11,13 @@
 
 $LIMB_FILE_RESOLVERS = array();
 
-function & get_file_resolvers_list()
+function & getFileResolversList()
 {
   global $LIMB_FILE_RESOLVERS;
   return $LIMB_FILE_RESOLVERS;
 }
 
-function & get_file_resolver($resolver_name)
+function & getFileResolver($resolver_name)
 {
   global $LIMB_FILE_RESOLVERS;
   if(isset($LIMB_FILE_RESOLVERS[$resolver_name]))
@@ -27,14 +27,14 @@ function & get_file_resolver($resolver_name)
       array('resolver' => $resolver_name));
 }
 
-function register_file_resolver($resolver_name, $resolver)
+function registerFileResolver($resolver_name, $resolver)
 {
   global $LIMB_FILE_RESOLVERS;
 
   $LIMB_FILE_RESOLVERS[$resolver_name] = $resolver;
 }
 
-function is_registered_resolver($resolver_name)
+function isRegisteredResolver($resolver_name)
 {
   global $LIMB_FILE_RESOLVERS;
 

@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/datasources/site_objects_by_node_ids_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/datasources/SiteObjectsByNodeIdsDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
-Mock :: generatePartial('site_objects_by_node_ids_datasource',
-                        'site_objects_by_node_ids_test_version_datasource',
-                        array('_do_parent_fetch'));
+Mock :: generatePartial('SiteObjectsByNodeIdsDatasource',
+                        'SiteObjectsByNodeIdsTestVersionDatasource',
+                        array('_doParentFetch'));
 
-Mock :: generate('tree');
+Mock :: generate('Tree');
 Mock :: generate('LimbToolkit');
 
-class site_objects_by_node_ids_datasource_test extends LimbTestCase
+class SiteObjectsByNodeIdsDatasourceTest extends LimbTestCase
 {
   var $datasource;
   var $tree;
@@ -27,9 +27,9 @@ class site_objects_by_node_ids_datasource_test extends LimbTestCase
 
   function setUp()
   {
-    $this->datasource = new site_objects_by_node_ids_test_version_datasource($this);
+    $this->datasource = new SiteObjectsByNodeIdsTestVersionDatasource($this);
 
-    $this->tree = new Mocktree($this);
+    $this->tree = new MockTree($this);
 
     $this->toolkit = new MockLimbToolkit($this);
 
@@ -47,38 +47,38 @@ class site_objects_by_node_ids_datasource_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_get_object_ids_no_nodes_found()
+  function testGetObjectIdsNoNodesFound()
   {
     $node_ids = array(10, 11);
-    $this->datasource->set_node_ids($node_ids);
+    $this->datasource->setNodeIds($node_ids);
 
-    $this->tree->expectOnce('get_nodes_by_ids', array($node_ids));
-    $this->tree->setReturnValue('get_nodes_by_ids', array(), array($node_ids));
-    $this->assertEqual($this->datasource->get_object_ids(), array());
+    $this->tree->expectOnce('getNodesByIds', array($node_ids));
+    $this->tree->setReturnValue('getNodesByIds', array(), array($node_ids));
+    $this->assertEqual($this->datasource->getObjectIds(), array());
   }
 
-  function test_get_object_ids()
+  function testGetObjectIds()
   {
     $node_ids = array(100, 101);
-    $this->datasource->set_node_ids($node_ids);
+    $this->datasource->setNodeIds($node_ids);
 
-    $this->tree->expectOnce('get_nodes_by_ids', array($node_ids));
+    $this->tree->expectOnce('getNodesByIds', array($node_ids));
 
     $nodes = array(100 => array('object_id' => 20),
                    101 => array('object_id' => 21));
 
-    $this->tree->setReturnValue('get_nodes_by_ids', $nodes, array($node_ids));
-    $this->assertEqual($this->datasource->get_object_ids(), array(20, 21));
+    $this->tree->setReturnValue('getNodesByIds', $nodes, array($node_ids));
+    $this->assertEqual($this->datasource->getObjectIds(), array(20, 21));
   }
 
-  function test_fetch_use_node_ids_as_keys()
+  function testFetchUseNodeIdsAsKeys()
   {
     $objects = array(20 => array('node_id' => 100),
                      21 => array('node_id' => 101));
 
-    $this->datasource->setReturnValue('_do_parent_fetch', $objects);
+    $this->datasource->setReturnValue('_doParentFetch', $objects);
 
-    $this->datasource->set_use_node_ids_as_keys();
+    $this->datasource->setUseNodeIdsAsKeys();
 
     $result_objects = array(100 => array('node_id' => 100),
                             101 => array('node_id' => 101));
@@ -86,12 +86,12 @@ class site_objects_by_node_ids_datasource_test extends LimbTestCase
     $this->assertEqual($this->datasource->fetch(), $result_objects);
   }
 
-  function test_fetch_normal()
+  function testFetchNormal()
   {
     $objects = array(20 => array('node_id' => 100),
                      21 => array('node_id' => 101));
 
-    $this->datasource->setReturnValue('_do_parent_fetch', $objects);
+    $this->datasource->setReturnValue('_doParentFetch', $objects);
 
     $this->assertEqual($this->datasource->fetch(), $objects);
   }

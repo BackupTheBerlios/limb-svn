@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/fetch_sub_branch_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree_sorter.class.php');
+require_once(LIMB_DIR . '/class/datasources/FetchSubBranchDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/tree/TreeSorter.class.php');
 
-class fetch_tree_datasource extends fetch_sub_branch_datasource
+class FetchTreeDatasource extends FetchSubBranchDatasource
 {
   protected function fetch()
   {
@@ -26,10 +26,10 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
       $order = array('priority' => 'ASC');
 
     $tree_array = parent :: fetch();
-    $tree_array = tree_sorter :: sort($tree_array, $order, 'node_id', 'parent_node_id');
+    $tree_array = TreeSorter :: sort($tree_array, $order, 'node_id', 'parent_node_id');
 
-    $path_node = $tree->get_node_by_path($params['path']);
-    if (isset($params['include_parent']) && (bool)$params['include_parent'])
+    $path_node = $tree->getNodeByPath($params['path']);
+    if (isset($params['include_parent']) &&  (bool)$params['include_parent'])
       $path_node_level = $path_node['level'] - 1;
     else
       $path_node_level = $path_node['level'];
@@ -48,7 +48,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
         if($parent_node_id == 0)
           $parent_data[$parent_node_id]['children_amount'] = 1;
         else
-          $parent_data[$parent_node_id]['children_amount'] = $tree->count_children($parent_node_id);
+          $parent_data[$parent_node_id]['children_amount'] = $tree->countChildren($parent_node_id);
 
         $parent_data[$parent_node_id]['counter'] = 0;
       }
@@ -70,15 +70,15 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 
       $tree_array[$id]['level_' . $tree_array[$id]['level']] = 1;
 
-      $tree_array[$id]['is_expanded'] = $tree->is_node_expanded($tree_item['node_id']);
+      $tree_array[$id]['is_expanded'] = $tree->isNodeExpanded($tree_item['node_id']);
       $tree_array[$id]['is_last_child'] = $is_last_child;
       $tree_array[$id]['is_first_child'] = $is_first_child;
       $tree_array[$id]['levels_status'] = $levels_status_array;
 
-      if(	$tree_array[$id]['class_name'] == 'image_object' ||
+      if(	$tree_array[$id]['class_name'] == 'image_object' || 
           $tree_array[$id]['class_name'] == 'file_object')
         $tree_array[$id]['icon'] = '/root?node_id=' . $tree_item['node_id'] . '&icon';
-      elseif(isset($tree_item['icon']) && $tree_item['icon'])
+      elseif(isset($tree_item['icon']) &&  $tree_item['icon'])
         $tree_array[$id]['icon'] = $tree_item['icon'];
       else
         $tree_array[$id]['icon'] = '/shared/images/generic.gif';

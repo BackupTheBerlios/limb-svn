@@ -20,20 +20,20 @@ else
   $path = '/root';
 
 require_once($project_dir . '/setup.php');
-require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php');
-require_once(LIMB_DIR . '/class/search/full_text_indexer.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/core/tree/MaterializedPathTree.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectFactory.class.php');
+require_once(LIMB_DIR . '/class/search/FullTextIndexer.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
 set_time_limit(3000);
 
-$tree = materialized_path_tree();
-$indexer = new full_text_indexer();
-$db = db_factory::instance();
+$tree = materializedPathTree();
+$indexer = new FullTextIndexer();
+$db = DbFactory::instance();
 
 echo "getting nodes from {$path}...\n";
 
-$nodes =& $tree->get_sub_branch_by_path($path);
+$nodes =& $tree->getSubBranchByPath($path);
 
 echo "nodes retrieved...\n";
 
@@ -47,19 +47,19 @@ $missed_objects = array();
 
 foreach($nodes as $node)
 {
-  $db->sql_exec(
+  $db->sqlExec(
     'SELECT sc.class_name FROM sys_site_object sso, sys_class sc
     WHERE sso.class_id=sc.id AND sso.id=' . $node['object_id']);
 
-  if(!$row = $db->fetch_row())//???
+  if(!$row = $db->fetchRow())//???
   {
     $missed_objects[] = $node['object_id'];
     continue;
   }
 
-  $site_object = Limb :: toolkit()->createSiteObject($row['class_name']);
+  $site_object = Limb :: toolkit()->createSiteObject($row['ClassName']);
 
-  $object_data = current($site_object->fetch_by_ids(array($node['object_id'])));
+  $object_data = current($site_object->fetchByIds(array($node['object_id'])));
 
   $site_object->merge($object_data);
 

@@ -13,19 +13,19 @@ class CacheRegistry
 {
   protected $cache = array();
 
-  protected function _encode_key($key)
+  protected function _encodeKey($key)
   {
     return md5(serialize($key));
   }
 
   public function put($key, $value, $group = 'default')
   {
-    $this->cache[$group][$this->_encode_key($key)] = $value;
+    $this->cache[$group][$this->_encodeKey($key)] = $value;
   }
 
   public function get($key, $group = 'default')
   {
-    $raw_key = $this->_encode_key($key);
+    $raw_key = $this->_encodeKey($key);
 
     if(isset($this->cache[$group][$raw_key]))
       return $this->cache[$group][$raw_key];

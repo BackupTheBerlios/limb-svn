@@ -14,13 +14,13 @@
 * Deals with rendering option elements for HTML select tags
 *
 */
-class option_renderer
+class OptionRenderer
 {
   /**
   * Renders an option, sending directly to display. Called from a compiled
   * template render function.
   */
-  public function render_attribute($key, $contents, $selected)
+  public function renderAttribute($key, $contents, $selected)
   {
     echo '<option value="';
     echo htmlspecialchars($key, ENT_QUOTES);

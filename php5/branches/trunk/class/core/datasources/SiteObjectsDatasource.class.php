@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/datasource.interface.php');
-require_once(dirname(__FILE__) . '/countable.interface.php');
+require_once(dirname(__FILE__) . '/Datasource.interface.php');
+require_once(dirname(__FILE__) . '/Countable.interface.php');
 require_once(dirname(__FILE__) . '/site_objects_datasource_support.inc.php');
 
-class site_objects_datasource implements datasource, countable
+class SiteObjectsDatasource implements Datasource, countable
 {
   const CACHE_GROUP = 'site_objects';
 
@@ -34,52 +34,52 @@ class site_objects_datasource implements datasource, countable
     $this->reset();
   }
 
-  function set_object_ids($object_ids)
+  function setObjectIds($object_ids)
   {
     $this->object_ids = $object_ids;
   }
 
-  function set_behaviours($behaviours)
+  function setBehaviours($behaviours)
   {
     $this->behaviours = $behaviours;
   }
 
-  function set_finder_name($name)
+  function setFinderName($name)
   {
     $this->finder_name = $name;
   }
 
-  function set_find_method($fetch_method)
+  function setFindMethod($fetch_method)
   {
     $this->fetch_method = $fetch_method;
   }
 
-  function set_limit($limit)
+  function setLimit($limit)
   {
     $this->limit = $limit;
   }
 
-  function set_offset($offset)
+  function setOffset($offset)
   {
     $this->offset = $offset;
   }
 
-  function set_order($order)
+  function setOrder($order)
   {
     $this->order = $order;
   }
 
-  function set_restriction_class_name($class_name)
+  function setRestrictionClassName($class_name)
   {
     $this->restriction_class_name = $class_name;
   }
 
-  function set_raw_sql_params($params)
+  function setRawSqlParams($params)
   {
     $this->raw_sql_params = $params;
   }
 
-  function set_permissions_action($permissions_action)
+  function setPermissionsAction($permissions_action)
   {
     $this->permissions_action = $permissions_action;
   }
@@ -100,7 +100,7 @@ class site_objects_datasource implements datasource, countable
     $this->site_object = null;
   }
 
-  protected function _collect_params()
+  protected function _collectParams()
   {
     $params = array();
     $params['limit'] = $this->limit;
@@ -110,12 +110,12 @@ class site_objects_datasource implements datasource, countable
     return $params;
   }
 
-  protected function _collect_raw_sql_params()
+  protected function _collectRawSqlParams()
   {
     $params = $this->raw_sql_params;
 
-    if ($object_ids = $this->get_accessible_object_ids())
-      $params['conditions'][] = ' AND ' . sql_in('sso.id', $object_ids);
+    if ($object_ids = $this->getAccessibleObjectIds())
+      $params['conditions'][] = ' AND ' . sqlIn('sso.id', $object_ids);
 
     if ($this->restriction_class_name)
     {
@@ -124,23 +124,23 @@ class site_objects_datasource implements datasource, countable
 
     if ($this->behaviours)
     {
-      $params['conditions'][] = ' AND ' . sql_in('sso.behaviour_id', $this->_get_behaviours_ids());
+      $params['conditions'][] = ' AND ' . sqlIn('sso.behaviour_id', $this->_getBehavioursIds());
     }
 
     return $params;
   }
 
 
-  public function get_object_ids()
+  public function getObjectIds()
   {
     return $this->object_ids;
   }
 
-  public function get_accessible_object_ids()
+  public function getAccessibleObjectIds()
   {
     $cache = Limb :: toolkit()->getCache();
 
-    $ids = $this->get_object_ids();
+    $ids = $this->getObjectIds();
     $action = $this->permissions_action;
     $key = array($ids, $action);
 
@@ -150,28 +150,28 @@ class site_objects_datasource implements datasource, countable
       return $result;
 
     $authorizer = Limb :: toolkit()->getAuthorizer();
-    $result = $authorizer->get_accessible_object_ids($ids, $action);
+    $result = $authorizer->getAccessibleObjectIds($ids, $action);
 
     $cache->put($key, $result, self :: CACHE_GROUP);
 
     return $result;
   }
 
-  protected function _get_finder()
+  protected function _getFinder()
   {
     if ($this->finder)
       return $this->finder;
 
-    include_once(LIMB_DIR . '/class/core/finders/finder_factory.class.php');
+    include_once(LIMB_DIR . '/class/core/finders/FinderFactory.class.php');
 
-    $this->finder = finder_factory :: create($this->finder_name);
+    $this->finder = FinderFactory :: create($this->finder_name);
 
     return $this->finder;
   }
 
-  public function count_total()
+  public function countTotal()
   {
-    $sql_params = $this->_collect_raw_sql_params();
+    $sql_params = $this->_collectRawSqlParams();
     $count_method = $this->fetch_method . '_count';
 
     $key = array($sql_params, $count_method);
@@ -182,7 +182,7 @@ class site_objects_datasource implements datasource, countable
     if($result !== null)
       return $result;
 
-    $finder = $this->_get_finder();
+    $finder = $this->_getFinder();
 
     $result = $finder->$count_method($sql_params);
 
@@ -193,8 +193,8 @@ class site_objects_datasource implements datasource, countable
 
   public function fetch()
   {
-    $params = $this->_collect_params();
-    $sql_params = $this->_collect_raw_sql_params();
+    $params = $this->_collectParams();
+    $sql_params = $this->_collectRawSqlParams();
     $fetch_method = $this->fetch_method;
 
     $key = array($params, $sql_params, $fetch_method);
@@ -205,7 +205,7 @@ class site_objects_datasource implements datasource, countable
     if($result !== null)
       return $result;
 
-    $finder = $this->_get_finder();
+    $finder = $this->_getFinder();
 
     if (!method_exists($finder, $fetch_method))
       throw new LimbException($fetch_method .' is not supported by finder');
@@ -217,15 +217,15 @@ class site_objects_datasource implements datasource, countable
     return $result;
   }
 
-  public function flush_cache()
+  public function flushCache()
   {
     Limb :: toolkit()->getCache()->flush(self :: CACHE_GROUP);
   }
 
-  protected function _get_behaviours_ids()
+  protected function _getBehavioursIds()
   {
-    require_once(LIMB_DIR . '/class/core/data_mappers/site_object_behaviour_mapper.class.php');
-    return site_object_behaviour_mapper :: get_ids_by_names($this->behaviours);
+    require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectBehaviourMapper.class.php');
+    return SiteObjectBehaviourMapper :: getIdsByNames($this->behaviours);
   }
 }
 

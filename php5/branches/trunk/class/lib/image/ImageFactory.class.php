@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-class image_factory
+class ImageFactory
 {
   static public function create($library = 'gd', $dir = '')
   {

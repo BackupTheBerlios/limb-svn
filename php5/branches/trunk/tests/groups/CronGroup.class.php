@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class cron_group extends LimbGroupTest
+class CronGroup extends LimbGroupTest
 {
-  function cron_group()
+  function cronGroup()
   {
-    $this->LimbGroupTest('cron tests');
+    $this->limbGroupTest('cron tests');
   }
 
   function getTestCasesHandles()

@@ -8,39 +8,39 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/authentication_filter.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object_controller.class.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
-require_once(LIMB_DIR . '/class/core/request/http_response.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/authenticator.interface.php');
-require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/core/filters/AuthenticationFilter.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/core/permissions/Authenticator.interface.php');
+require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('filter_chain');
-Mock :: generate('http_response');
-Mock :: generate('requested_object_datasource');
-Mock :: generate('request');
-Mock :: generate('site_object_controller');
-Mock :: generate('site_object_behaviour');
-Mock :: generate('response');
-Mock :: generate('user');
-Mock :: generate('authenticator');
-Mock :: generate('ini');
+Mock :: generate('FilterChain');
+Mock :: generate('HttpResponse');
+Mock :: generate('RequestedObjectDatasource');
+Mock :: generate('Request');
+Mock :: generate('SiteObjectController');
+Mock :: generate('SiteObjectBehaviour');
+Mock :: generate('Response');
+Mock :: generate('User');
+Mock :: generate('Authenticator');
+Mock :: generate('Ini');
 
-Mock :: generatePartial('authentication_filter',
-                        'authentication_filter_test_version',
-                        array('_get_controller',
-                              'get_behaviour_by_object_id',
-                              'initialize_user',
-                              'process_404_error'));
+Mock :: generatePartial('AuthenticationFilter',
+                        'AuthenticationFilterTestVersion',
+                        array('_getController',
+                              'getBehaviourByObjectId',
+                              'initializeUser',
+                              'process404Error'));
 
-class authentication_filter_test extends LimbTestCase
+class AuthenticationFilterTest extends LimbTestCase
 {
   var $filter_chain;
   var $filter;
@@ -52,17 +52,17 @@ class authentication_filter_test extends LimbTestCase
 
   function setUp()
   {
-    $this->filter = new authentication_filter_test_version($this);
+    $this->filter = new AuthenticationFilterTestVersion($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->ini = new Mockini($this);
+    $this->ini = new MockIni($this);
 
     $this->toolkit->setReturnValue('getINI', $this->ini);
 
-    $this->datasource = new Mockrequested_object_datasource($this);
-    $this->request = new Mockrequest($this);
-    $this->filter_chain = new Mockfilter_chain($this);
-    $this->response = new Mockhttp_response($this);
+    $this->datasource = new MockRequestedObjectDatasource($this);
+    $this->request = new MockRequest($this);
+    $this->filter_chain = new MockFilterChain($this);
+    $this->response = new MockHttpResponse($this);
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -79,139 +79,139 @@ class authentication_filter_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_initialize_user_is_logged_in()
+  function testInitializeUserIsLoggedIn()
   {
-    $user = new Mockuser($this);
-    $authenticator = new Mockauthenticator($this);
+    $user = new MockUser($this);
+    $authenticator = new MockAuthenticator($this);
 
     $this->toolkit->expectOnce('getUser');
     $this->toolkit->setReturnValue('getUser', $user);
 
-    $user->expectOnce('is_logged_in');
-    $user->setReturnValue('is_logged_in', true);
+    $user->expectOnce('isLoggedIn');
+    $user->setReturnValue('isLoggedIn', true);
     $authenticator->expectNever('login', array(array('login' => '', 'password' => '')));
 
-    $filter = new authentication_filter();
+    $filter = new AuthenticationFilter();
 
-    $filter->initialize_user();
+    $filter->initializeUser();
 
     $user->tally();
     $authenticator->tally();
   }
 
-  function test_initialize_user_not_logged_in()
+  function testInitializeUserNotLoggedIn()
   {
-    $user = new Mockuser($this);
-    $authenticator = new Mockauthenticator($this);
+    $user = new MockUser($this);
+    $authenticator = new MockAuthenticator($this);
 
     $this->toolkit->expectOnce('getUser');
     $this->toolkit->setReturnValue('getUser', $user);
 
-    $user->expectOnce('is_logged_in');
-    $user->setReturnValue('is_logged_in', false);
+    $user->expectOnce('isLoggedIn');
+    $user->setReturnValue('isLoggedIn', false);
 
     $this->toolkit->expectOnce('getAuthenticator');
     $this->toolkit->setReturnValue('getAuthenticator', $authenticator);
 
     $authenticator->expectOnce('login', array(array('login' => '', 'password' => '')));
 
-    $filter = new authentication_filter();
+    $filter = new AuthenticationFilter();
 
-    $filter->initialize_user();
+    $filter->initializeUser();
 
     $user->tally();
     $authenticator->tally();
   }
 
-  function test_process_404_error_from_ini()
+  function testProcess404ErrorFromIni()
   {
-    $this->ini->expectOnce('get_option', array('404', 'ERROR_DOCUMENTS'));
-    $this->ini->setReturnValue('get_option', $error_path = '/root/404');
+    $this->ini->expectOnce('getOption', array('404', 'ERROR_DOCUMENTS'));
+    $this->ini->setReturnValue('getOption', $error_path = '/root/404');
 
-    $filter = new authentication_filter();
+    $filter = new AuthenticationFilter();
 
     $this->response->expectOnce('redirect', array($error_path));
     $this->response->expectNever('header');
 
-    $filter->process_404_error($this->request, $this->response);
+    $filter->process404Error($this->request, $this->response);
   }
 
-  function test_process_404_error_not_found()
+  function testProcess404ErrorNotFound()
   {
-    $filter = new authentication_filter();
+    $filter = new AuthenticationFilter();
 
     $this->response->expectNever('redirect');
     $this->response->expectOnce('header', array("HTTP/1.1 404 Not found"));
 
-    $filter->process_404_error($this->request, $this->response);
+    $filter->process404Error($this->request, $this->response);
   }
 
-  function test_run_node_not_found()
+  function testRunNodeNotFound()
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
-    $this->datasource->setReturnValue('map_request_to_node',
+    $this->datasource->setReturnValue('mapRequestToNode',
                                       null,
-                                      array(new IsAExpectation('Mockrequest')));
+                                      array(new IsAExpectation('MockRequest')));
 
-    $this->filter->expectOnce('process_404_error');
+    $this->filter->expectOnce('process404Error');
     $this->filter_chain->expectOnce('next');
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 
-  function test_run_no_such_action()
+  function testRunNoSuchAction()
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
-    $this->datasource->setReturnValue('map_request_to_node',
+    $this->datasource->setReturnValue('mapRequestToNode',
                                       array('object_id' => $object_id = 100),
-                                      array(new IsAExpectation('Mockrequest')));
+                                      array(new IsAExpectation('MockRequest')));
 
-    $controller = new Mocksite_object_controller($this);
-    $behaviour = new Mocksite_object_behaviour($this);
+    $controller = new MockSiteObjectController($this);
+    $behaviour = new MockSiteObjectBehaviour($this);
 
-    $this->filter->setReturnValue('get_behaviour_by_object_id', $behaviour, array($object_id));
+    $this->filter->setReturnValue('getBehaviourByObjectId', $behaviour, array($object_id));
 
-    $this->filter->setReturnValue('_get_controller',
+    $this->filter->setReturnValue('_getController',
                                   $controller,
-                                  array(new IsAExpectation('Mocksite_object_behaviour')));
+                                  array(new IsAExpectation('MockSiteObjectBehaviour')));
 
-    $controller->setReturnValue('get_requested_action', null);
+    $controller->setReturnValue('getRequestedAction', null);
 
-    $this->filter->expectOnce('process_404_error');
+    $this->filter->expectOnce('process404Error');
     $this->filter_chain->expectOnce('next');
 
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 
-  function test_run_object_is_not_accessible()
+  function testRunObjectIsNotAccessible()
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
-    $this->datasource->setReturnValue('map_request_to_node',
+    $this->datasource->setReturnValue('mapRequestToNode',
                                       array('object_id' => $object_id = 100),
-                                      array(new IsAExpectation('Mockrequest')));
+                                      array(new IsAExpectation('MockRequest')));
 
-    $controller = new Mocksite_object_controller($this);
-    $behaviour = new Mocksite_object_behaviour($this);
+    $controller = new MockSiteObjectController($this);
+    $behaviour = new MockSiteObjectBehaviour($this);
 
-    $this->filter->setReturnValue('get_behaviour_by_object_id', $behaviour, array($object_id));
+    $this->filter->setReturnValue('getBehaviourByObjectId', $behaviour, array($object_id));
 
-    $this->filter->setReturnValue('_get_controller',
+    $this->filter->setReturnValue('_getController',
                                   $controller,
-                                  array(new IsAExpectation('Mocksite_object_behaviour')));
+                                  array(new IsAExpectation('MockSiteObjectBehaviour')));
 
-    $controller->setReturnValue('get_requested_action', $action = 'some_actin');
+    $controller->setReturnValue('getRequestedAction', $action = 'someAction');
 
-    $this->datasource->expectOnce('set_permissions_action', array($action));
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setPermissionsAction', array($action));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
 
     $this->datasource->setReturnValue('fetch', null);
 
@@ -222,31 +222,31 @@ class authentication_filter_test extends LimbTestCase
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 
-  function test_run_ok()
+  function testRunOk()
   {
     $this->toolkit->setReturnValue('getDatasource',
                                    $this->datasource,
-                                   array('requested_object_datasource'));
+                                   array('RequestedObjectDatasource'));
 
-    $this->datasource->setReturnValue('map_request_to_node',
+    $this->datasource->setReturnValue('mapRequestToNode',
                                       array('object_id' => $object_id = 100),
-                                      array(new IsAExpectation('Mockrequest')));
+                                      array(new IsAExpectation('MockRequest')));
 
-    $controller = new Mocksite_object_controller($this);
-    $behaviour = new Mocksite_object_behaviour($this);
+    $controller = new MockSiteObjectController($this);
+    $behaviour = new MockSiteObjectBehaviour($this);
 
-    $this->filter->setReturnValue('get_behaviour_by_object_id', $behaviour, array($object_id));
+    $this->filter->setReturnValue('getBehaviourByObjectId', $behaviour, array($object_id));
 
-    $this->filter->setReturnValue('_get_controller',
+    $this->filter->setReturnValue('_getController',
                                   $controller,
-                                  array(new IsAExpectation('Mocksite_object_behaviour')));
+                                  array(new IsAExpectation('MockSiteObjectBehaviour')));
 
-    $controller->setReturnValue('get_requested_action', $action = 'some_actin');
+    $controller->setReturnValue('getRequestedAction', $action = 'someAction');
 
-    $this->datasource->expectOnce('set_permissions_action', array($action));
-    $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+    $this->datasource->expectOnce('setPermissionsAction', array($action));
+    $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
 
-    $this->datasource->setReturnValue('fetch', $result = 'some_fetch_result');
+    $this->datasource->setReturnValue('fetch', $result = 'someFetchResult');
 
     $this->response->expectNever('redirect');
 

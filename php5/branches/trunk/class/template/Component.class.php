@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
 // This is a bit problematic, since not every component is a dataspace.
 // every template is a dataspace, however.
 // Bit of a refused bequest here.
-class component extends dataspace
+class Component extends Dataspace
 {
   /**
   * Array of child components
@@ -37,12 +37,12 @@ class component extends dataspace
   * Returns the ID of the component, as defined in the template tags
   * ID attribute
   */
-  public function get_server_id()
+  public function getServerId()
   {
     return $this->id;
   }
 
-  public function set_server_id($id)
+  public function setServerId($id)
   {
     $this->id = $id;
   }
@@ -54,13 +54,13 @@ class component extends dataspace
   * based on alphanumeric order: strcasecmp(). Attempt to call it via
   * the nearest known component to the required child.
   */
-  public function find_child($server_id)
+  public function findChild($server_id)
   {
     foreach(array_keys($this->children) as $key)
     {
       if (strcasecmp($key, $server_id))
       {
-        $result = $this->children[$key]->find_child($server_id);
+        $result = $this->children[$key]->findChild($server_id);
         if ($result)
           return $result;
       }
@@ -74,7 +74,7 @@ class component extends dataspace
   * Returns the first child component matching the supplied WACT_TEMPLATE
   * component PHP class name
   */
-  public function find_child_by_class($class)
+  public function findChildByClass($class)
   {
     foreach(array_keys($this->children) as $key)
     {
@@ -82,7 +82,7 @@ class component extends dataspace
         return $this->children[$key];
       else
       {
-        $result = &$this->children[$key]->find_child_by_class($class);
+        $result = &$this->children[$key]->findChildByClass($class);
         if ($result)
           return $result;
       }
@@ -94,11 +94,11 @@ class component extends dataspace
   * Recursively searches through parents of this component searching
   * for a given WACT_TEMPLATE component PHP class name
   */
-  public function find_parent_by_class($class)
+  public function findParentByClass($class)
   {
     $parent = $this->parent;
 
-    while ($parent && !($parent instanceof $class))
+    while ($parent &&  !($parent instanceof $class))
       $parent = $parent->parent;
 
     return $parent;
@@ -108,7 +108,7 @@ class component extends dataspace
   * Adds a reference to a child component to this component, using it's
   * ID attribute as the child array key
   */
-  public function add_child($child, $server_id = null)
+  public function addChild($child, $server_id = null)
   {
     if (is_null($server_id))
     {

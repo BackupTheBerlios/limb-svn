@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-abstract class site_object_behaviour_factory
+abstract class SiteObjectBehaviourFactory
 {
   static protected $_behaviours = array();
 
@@ -18,18 +18,18 @@ abstract class site_object_behaviour_factory
     if(isset(self :: $_behaviours[$class_name]))
       return self :: $_behaviours[$class_name];
 
-    self :: _include_class_file($class_name);
+    self :: _includeClassFile($class_name);
 
     self :: $_behaviours[$class_name] = new $class_name();
     return self :: $_behaviours[$class_name];
   }
 
-  static protected function _include_class_file($class_name)
+  static protected function _includeClassFile($class_name)
   {
     if(class_exists($class_name))
       return;
 
-    resolve_handle($resolver =& get_file_resolver('behaviour'));
+    resolveHandle($resolver =& getFileResolver('behaviour'));
 
     $full_path = $resolver->resolve($class_name);
 

@@ -8,30 +8,30 @@
 * $Id$
 *
 ***********************************************************************************/
-class print_link_tag_info
+class PrintLinkTagInfo
 {
   public $tag = 'print:LINK';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'print_link_tag';
 }
 
-register_tag(new print_link_tag_info());
+registerTag(new PrintLinkTagInfo());
 
-class print_link_tag extends compiler_directive_tag
+class PrintLinkTag extends CompilerDirectiveTag
 {
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $mapped = '$' . $code->get_temp_variable();
+    $mapped = '$' . $code->getTempVariable();
 
-    $code->write_php("{$mapped} = Limb :: toolkit()->getFetcher()->fetch_requested_object(Limb :: toolkit()->getRequest());");
+    $code->writePhp("{$mapped} = Limb :: toolkit()->getFetcher()->fetchRequestedObject(Limb :: toolkit()->getRequest());");
 
-    $code->write_php("if(isset({$mapped}['actions']) && array_key_exists('print_version', {$mapped}['actions'])){");
+    $code->writePhp("if(isset({$mapped}['actions']) && array_key_exists('print_version', {$mapped}['actions'])){");
 
-    $code->write_php($this->get_dataspace_ref_code() . "->set('link', {$mapped}['path'] . '?action=print_version');");
+    $code->writePhp($this->getDataspaceRefCode() . "->set('link', {$mapped}['path'] . '?action=print_version');");
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php('}');
+    $code->writePhp('}');
   }
 }
 

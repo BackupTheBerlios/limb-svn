@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class use_view_command implements Command
+class UseViewCommand implements Command
 {
   protected $template_path;
 

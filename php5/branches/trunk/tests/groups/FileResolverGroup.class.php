@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class file_resolver_group extends LimbGroupTest
+class FileResolverGroup extends LimbGroupTest
 {
-  function file_resolver_group()
+  function fileResolverGroup()
   {
-    $this->LimbGroupTest('file resolvers tests');
+    $this->limbGroupTest('file resolvers tests');
   }
 
   function getTestCasesHandles()

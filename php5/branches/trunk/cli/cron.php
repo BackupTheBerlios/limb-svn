@@ -11,20 +11,20 @@
 $site_path = $argv[1];
 require_once($site_path . '/setup.php');
 
-require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
-require_once(LIMB_DIR . '/class/core/request/nonbuffered_response.class.php');
-require_once(LIMB_DIR . '/class/lib/cron/cron_manager.class.php');
+require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
+require_once(LIMB_DIR . '/class/core/request/NonbufferedResponse.class.php');
+require_once(LIMB_DIR . '/class/lib/cron/CronManager.class.php');
 
 $force = false;
-if(isset($argv[2]) && $argv[2] == 'force')
+if(isset($argv[2]) &&  $argv[2] == 'force')
   $force = true;
 
-$response = new nonbuffered_response();
-$mgr = new cron_manager();
+$response = new NonbufferedResponse();
+$mgr = new CronManager();
 
 $mgr->perform($response, $force);
 
-$response->write(debug::parse_cli_console());
+$response->write(Debug::parseCliConsole());
 
 $response->commit();
 

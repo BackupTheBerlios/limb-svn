@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_literal_tag_info
+class CoreLiteralTagInfo
 {
   public $tag = 'core:LITERAL';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'core_literal_tag';
 }
 
-register_tag(new core_literal_tag_info());
+registerTag(new CoreLiteralTagInfo());
 
 /**
 * Prevents a section of the template from being parsed, placing the contents
 * directly into the compiled template
 */
-class core_literal_tag extends compiler_directive_tag
+class CoreLiteralTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('core_literal_tag'))
+    if ($this->findParentByClass('core_literal_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
@@ -34,7 +34,7 @@ class core_literal_tag extends compiler_directive_tag
     }
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     return PARSER_FORBID_PARSING;
   }

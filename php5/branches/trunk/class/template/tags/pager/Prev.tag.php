@@ -8,29 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/
-class pager_prev_tag_info
+class PagerPrevTagInfo
 {
   public $tag = 'pager:PREV';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'pager_prev_tag';
 }
 
-register_tag(new pager_prev_tag_info());
+registerTag(new PagerPrevTagInfo());
 
-class pager_prev_tag extends server_component_tag
+class PagerPrevTag extends ServerComponentTag
 {
   protected $hide_for_current_page;
 
-  function check_nesting_level()
+  function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('pager_prev_tag'))
+    if ($this->findParentByClass('pager_prev_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
     }
-    if (!$this->find_parent_by_class('pager_navigator_tag'))
+    if (!$this->findParentByClass('pager_navigator_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -40,53 +40,53 @@ class pager_prev_tag extends server_component_tag
     }
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     $this->hide_for_current_page = array_key_exists('hide_for_current_page', $this->attributes);
 
-    $parent = $this->find_parent_by_class('pager_navigator_tag');
-    $code->write_php('if (' . $parent->get_component_ref_code() . '->has_prev()) {');
+    $parent = $this->findParentByClass('pager_navigator_tag');
+    $code->writePhp('if (' . $parent->getComponentRefCode() . '->has_prev()) {');
 
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
-    $code->write_php($this->get_component_ref_code() . '->set("href", ' . $parent->get_component_ref_code() . '->get_prev_page_uri());');
+    $code->writePhp($this->getComponentRefCode() . '->set("href", ' . $parent->getComponentRefCode() . '->get_prev_page_uri());');
     if (!$this->hide_for_current_page)
     {
-      $code->write_php('}');
+      $code->writePhp('}');
     }
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
     if (!$this->hide_for_current_page)
     {
-      $parent = $this->find_parent_by_class('pager_navigator_tag');
-      $code->write_php('if (' . $parent->get_component_ref_code() . '->has_prev()) {');
+      $parent = $this->findParentByClass('pager_navigator_tag');
+      $code->writePhp('if (' . $parent->getComponentRefCode() . '->has_prev()) {');
     }
-    parent::post_generate($code);
+    parent::postGenerate($code);
 
-    $code->write_php('}');
+    $code->writePhp('}');
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $parent = $this->find_parent_by_class('pager_navigator_tag');
+    $parent = $this->findParentByClass('pager_navigator_tag');
 
-    $code->write_php('if (' . $parent->get_component_ref_code() . '->has_prev()) {');
+    $code->writePhp('if (' . $parent->getComponentRefCode() . '->has_prev()) {');
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php('}');
+    $code->writePhp('}');
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code();
+    return $this->getComponentRefCode();
   }
 }
 

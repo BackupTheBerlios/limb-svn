@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class http_group extends LimbGroupTest
+class HttpGroup extends LimbGroupTest
 {
-  function http_group()
+  function httpGroup()
   {
-    $this->LimbGroupTest('http tests');
+    $this->limbGroupTest('http tests');
   }
 
   function getTestCasesHandles()

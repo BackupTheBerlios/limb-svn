@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class create_site_object_command implements Command
+class CreateSiteObjectCommand implements Command
 {
   protected $behaviour_name;
 
@@ -21,13 +21,13 @@ class create_site_object_command implements Command
 
   public function perform()
   {
-    $object = Limb :: toolkit()->createSiteObject($this->_define_site_object_class_name());
+    $object = Limb :: toolkit()->createSiteObject($this->_defineSiteObjectClassName());
 
-    $this->_fill_object($object);
+    $this->_fillObject($object);
 
     try
     {
-      $this->_create_object_operation($object);
+      $this->_createObjectOperation($object);
     }
     catch(LimbException $e)
     {
@@ -37,43 +37,43 @@ class create_site_object_command implements Command
     return Limb :: STATUS_OK;
   }
 
-  protected function _create_object_operation($object)
+  protected function _createObjectOperation($object)
   {
     $object->create();
 
     Limb :: toolkit()->getDataspace()->set('created_site_object', $object);
   }
 
-  protected function _fill_object($object)
+  protected function _fillObject($object)
   {
     $dataspace = Limb :: toolkit()->getDataspace();
 
     $object->merge($dataspace->export());
 
-    $object->set_behaviour_id($this->_get_behaviour_id());
+    $object->setBehaviourId($this->_getBehaviourId());
 
     if (!$dataspace->get('parent_node_id'))
     {
-      $parent_object_data = $this->_load_parent_object_data();
+      $parent_object_data = $this->_loadParentObjectData();
       $object->set('parent_node_id', $parent_object_data['node_id']);
     }
   }
 
-  protected function _get_behaviour_id()
+  protected function _getBehaviourId()
   {
     $behaviour = Limb :: toolkit()->createBehaviour($this->behaviour_name);
-    return $behaviour->get_id();
+    return $behaviour->getId();
   }
 
-  protected function _load_parent_object_data()
+  protected function _loadParentObjectData()
   {
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('requested_object_datasource');
-    $datasource->set_request($toolkit->getRequest());
+    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($toolkit->getRequest());
     return $datasource->fetch();
   }
 
-  protected function _define_site_object_class_name()
+  protected function _defineSiteObjectClassName()
   {
     return 'site_object';
   }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class size_range_rule extends single_field_rule
+class SizeRangeRule extends SingleFieldRule
 {
   protected $min_len;
   protected $max_len;
@@ -33,13 +33,13 @@ class size_range_rule extends single_field_rule
 
   protected function check($value)
   {
-    if (!is_null($this->min_len) && (strlen($value) < $this->min_len))
+    if (!is_null($this->min_len) &&  (strlen($value) < $this->min_len))
     {
-      $this->error(strings :: get('size_too_small', 'error'));
+      $this->error(Strings :: get('size_too_small', 'error'));
     }
     elseif (strlen($value) > $this->max_len)
     {
-      $this->error(strings :: get('size_too_big', 'error'));
+      $this->error(Strings :: get('size_too_big', 'error'));
     }
   }
 }

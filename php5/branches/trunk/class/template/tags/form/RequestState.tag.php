@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class request_state_tag_info
+class RequestStateTagInfo
 {
   public $tag = 'request_state';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'request_state_tag';
 }
 
-register_tag(new request_state_tag_info());
+registerTag(new RequestStateTagInfo());
 
-class request_state_tag extends control_tag
+class RequestStateTag extends ControlTag
 {
   function __construct()
   {
@@ -29,19 +29,19 @@ class request_state_tag extends control_tag
     $this->attributes['type'] = 'hidden';
   }
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'input';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     if(isset($this->attributes['attach_form_prefix']))
-      $code->write_php($this->get_component_ref_code() . '->attach_form_prefix(true);');
+      $code->writePhp($this->getComponentRefCode() . '->attach_form_prefix(true);');
     else
-      $code->write_php($this->get_component_ref_code() . '->attach_form_prefix(false);');
+      $code->writePhp($this->getComponentRefCode() . '->attach_form_prefix(false);');
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 }
 

@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/validator.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/Validator.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
-Mock :: generate('error_list');
+Mock :: generate('ErrorList');
 
 Mock :: generatePartial(
-    'validator',
-    'validator_test_version',
-    array('_get_error_list'));
+    'Validator',
+    'ValidatorTestVersion',
+    array('_getErrorList'));
 
-SimpleTestOptions::ignore('rule_test');
+SimpleTestOptions :: ignore('RuleTest');
 
-class rule_test extends LimbTestCase
+class RuleTest extends LimbTestCase
 {
   var $validator = null;
   var $error_list = null;
 
   function setUp()
   {
-   $this->error_list = new Mockerror_list($this);
-   $this->validator = new validator_test_version($this);
-   $this->validator->setReturnReference('_get_error_list', $this->error_list);
+   $this->error_list = new MockErrorList($this);
+   $this->validator = new ValidatorTestVersion($this);
+   $this->validator->setReturnValue('_getErrorList', $this->error_list);
   }
 
   function tearDown()

@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class delete_site_object_command implements Command
+class DeleteSiteObjectCommand implements Command
 {
-  protected function _get_object_to_delete()
+  protected function _getObjectToDelete()
   {
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->getDatasource('requested_object_datasource');
-    $datasource->set_request($toolkit->getRequest());
+    $datasource = $toolkit->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($toolkit->getRequest());
 
-    return wrap_with_site_object($datasource->fetch());
+    return wrapWithSiteObject($datasource->fetch());
   }
 
   public function perform()
   {
-    $object = $this->_get_object_to_delete();
+    $object = $this->_getObjectToDelete();
 
     try
     {

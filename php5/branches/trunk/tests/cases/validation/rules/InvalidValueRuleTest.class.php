@@ -8,89 +8,89 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/invalid_value_rule.class.php');
+require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/InvalidValueRule.class.php');
 
-class invalid_value_rule_test extends single_field_rule_test
+class InvalidValueRuleTest extends SingleFieldRuleTest
 {
-  function test_invalid_value_rule_ok_int()
+  function testInvalidValueRuleOkInt()
   {
-    $this->validator->add_rule(new invalid_value_rule('testfield', 0));
+    $this->validator->addRule(new InvalidValueRule('testfield', 0));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', 1);
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_invalid_value_rule_ok_int2()
+  function testInvalidValueRuleOkInt2()
   {
-    $this->validator->add_rule(new invalid_value_rule('testfield', 0));
+    $this->validator->addRule(new InvalidValueRule('testfield', 0));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', 'whatever');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
 
-  function test_invalid_value_rule_ok_null()
+  function testInvalidValueRuleOkNull()
   {
-    $this->validator->add_rule(new invalid_value_rule('testfield', null));
+    $this->validator->addRule(new InvalidValueRule('testfield', null));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', 'null');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_invalid_value_rule_ok_bool()
+  function testInvalidValueRuleOkBool()
   {
-    $this->validator->add_rule(new invalid_value_rule('testfield', false));
+    $this->validator->addRule(new InvalidValueRule('testfield', false));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', 'false');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_inavlid_value_rule_error()
+  function testInavlidValueRuleError()
   {
-    $this->validator->add_rule(new invalid_value_rule('testfield', 1));
+    $this->validator->addRule(new InvalidValueRule('testfield', 1));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', 1);
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('error_invalid_value', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('error_invalid_value', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function test_inavlid_value_rule_error2()
+  function testInavlidValueRuleError2()
   {
-    $this->validator->add_rule(new invalid_value_rule('testfield', 1));
+    $this->validator->addRule(new InvalidValueRule('testfield', 1));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', '1');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('error_invalid_value', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('error_invalid_value', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
 }

@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-class form_errors_tag_info
+class FormErrorsTagInfo
 {
   public $tag = 'form:ERRORS';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'form_errors_tag';
 }
 
-register_tag(new form_errors_tag_info());
+registerTag(new FormErrorsTagInfo());
 
-class form_errors_tag extends server_component_tag
+class FormErrorsTag extends ServerComponentTag
 {
   function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
   }
 
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->find_parent_by_class('form_tag'))
+    if (!$this->findParentByClass('form_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -36,7 +36,7 @@ class form_errors_tag extends server_component_tag
     }
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['target']))
     {
@@ -51,16 +51,16 @@ class form_errors_tag extends server_component_tag
   }
 
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $parent_form = $this->find_parent_by_class('form_tag');
+    $parent_form = $this->findParentByClass('form_tag');
 
-    $target = $this->parent->find_child($this->attributes['target']);
+    $target = $this->parent->findChild($this->attributes['target']);
 
-    $code->write_php($target->get_component_ref_code() . '->register_dataset(' .
-      $parent_form->get_component_ref_code() . '->get_error_dataset());');
+    $code->writePhp($target->getComponentRefCode() . '->register_dataset(' .
+      $parent_form->getComponentRefCode() . '->get_error_dataset());');
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 }
 

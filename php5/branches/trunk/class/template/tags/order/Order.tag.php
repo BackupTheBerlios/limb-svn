@@ -8,39 +8,39 @@
 * $Id$
 *
 ***********************************************************************************/
-class order_tag_info
+class OrderTagInfo
 {
   public $tag = 'order';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'order_tag';
 }
 
-register_tag(new order_tag_info());
+registerTag(new OrderTagInfo());
 
-class order_tag extends server_component_tag
+class OrderTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/order_component';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent::pre_generate($code);
+    parent::preGenerate($code);
 
-    $code->write_php($this->get_component_ref_code() . "->import(" . $this->parent->get_dataspace_ref_code() . "->export());\n");
+    $code->writePhp($this->getComponentRefCode() . "->import(" . $this->parent->getDataspaceRefCode() . "->export());\n");
 
-    $code->write_php($this->get_component_ref_code() . '->prepare();'."\n");
+    $code->writePhp($this->getComponentRefCode() . '->prepare();'."\n");
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code();
+    return $this->getComponentRefCode();
   }
 }
 

@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/caching_file_resolver.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/CachingFileResolver.class.php');
 
-Mock :: generate('file_resolver');
+Mock :: generate('FileResolver');
 
-class caching_file_resolver_test extends LimbTestCase
+class CachingFileResolverTest extends LimbTestCase
 {
   var $resolver;
   var $wrapped_resolver;
 
   function setUp()
   {
-    $this->wrapped_resolver = new Mockfile_resolver($this);
+    $this->wrapped_resolver = new MockFileResolver($this);
 
-    $this->resolver = new caching_file_resolver($this->wrapped_resolver);
-    $this->resolver->flush_cache();
+    $this->resolver = new CachingFileResolver($this->wrapped_resolver);
+    $this->resolver->flushCache();
 
-    $this->cache_file = $this->resolver->get_cache_file();
+    $this->cache_file = $this->resolver->getCacheFile();
   }
 
   function tearDown()
@@ -33,7 +33,7 @@ class caching_file_resolver_test extends LimbTestCase
     $this->wrapped_resolver->tally();
   }
 
-  function test_resolve_caching_from_wrapped_resolver()
+  function testResolveCachingFromWrappedResolver()
   {
     $this->wrapped_resolver->expectOnce('resolve');
     $this->wrapped_resolver->setReturnValue('resolve', 'resolved-path-to-file', array('path-to-file', array()));
@@ -41,7 +41,7 @@ class caching_file_resolver_test extends LimbTestCase
     $this->assertEqual($this->resolver->resolve('path-to-file'), 'resolved-path-to-file');
   }
 
-  function test_resolve_caching_from_internal_cache()
+  function testResolveCachingFromInternalCache()
   {
     $this->wrapped_resolver->expectOnce('resolve');
     $this->wrapped_resolver->setReturnValue('resolve', 'resolved-path-to-file', array('path-to-file', array()));
@@ -51,12 +51,12 @@ class caching_file_resolver_test extends LimbTestCase
     $this->assertEqual($this->resolver->resolve('path-to-file'), 'resolved-path-to-file');
   }
 
-  function test_write_to_cache_on_destroy()
+  function testWriteToCacheOnDestroy()
   {
     $this->wrapped_resolver->setReturnValue('resolve', 'resolved-path-to-file', array('path-to-file', array()));
     $this->resolver->resolve('path-to-file');
 
-    $this->resolver->save_cache();
+    $this->resolver->saveCache();
 
     $this->assertTrue(file_exists($this->cache_file));
 
@@ -67,7 +67,7 @@ class caching_file_resolver_test extends LimbTestCase
     unlink($this->cache_file);
   }
 
-  function test_load_from_cache()
+  function testLoadFromCache()
   {
     $php = '
     <?php
@@ -78,7 +78,7 @@ class caching_file_resolver_test extends LimbTestCase
 
     file_put_contents($this->cache_file, $php);
 
-    $local_resolver = new caching_file_resolver($this->wrapped_resolver);
+    $local_resolver = new CachingFileResolver($this->wrapped_resolver);
 
     $this->wrapped_resolver->expectNever('resolve');
 

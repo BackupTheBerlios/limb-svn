@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class array_dataset
+class ArrayDataset
 {
   protected $data = array();
 
@@ -23,17 +23,17 @@ class array_dataset
   {
     if (is_array($array))
     {
-      $this->add_array($array);
+      $this->addArray($array);
     }
   }
 
-  protected function _set_current_record()
+  protected function _setCurrentRecord()
   {
     if ($this->first)
       $this->next();
   }
 
-  protected function _save_current_record($record)
+  protected function _saveCurrentRecord($record)
   {
     $this->data[key($this->data)] = $record;
   }
@@ -71,7 +71,7 @@ class array_dataset
 
   public function get($name)
   {
-    $this->_set_current_record();
+    $this->_setCurrentRecord();
 
     if (isset($this->record[$name]))
       return $this->record[$name];
@@ -79,49 +79,49 @@ class array_dataset
 
   public function set($name, $value)
   {
-    $this->_set_current_record();
+    $this->_setCurrentRecord();
     $this->record[$name] = $value;
-    $this->_save_current_record($this->record);
+    $this->_saveCurrentRecord($this->record);
   }
 
   public function append($name, $value)
   {
-    $this->_set_current_record();
+    $this->_setCurrentRecord();
     $this->record[$name] .= $value;
-    $this->_save_current_record($this->record);
+    $this->_saveCurrentRecord($this->record);
   }
 
   public function import($valuelist)
   {
-    $this->_set_current_record();
+    $this->_setCurrentRecord();
     if (is_array($valuelist))
     {
       $this->record = null;
       $this->record = $valuelist;
     }
-    $this->_save_current_record($this->record);
+    $this->_saveCurrentRecord($this->record);
   }
 
-  public function import_append($valuelist)
+  public function importAppend($valuelist)
   {
     if (is_array($valuelist))
     {
-      $this->_set_current_record();
+      $this->_setCurrentRecord();
       foreach ($valuelist as $name => $value)
       {
         $this->set($name, $value);
       }
-      $this->_save_current_record($this->record);
+      $this->_saveCurrentRecord($this->record);
     }
   }
 
   public function export()
   {
-    $this->_set_current_record();
+    $this->_setCurrentRecord();
     return $this->record;
   }
 
-  public function add_array($array)
+  public function addArray($array)
   {
     foreach ($array as $value)
     {
@@ -132,19 +132,19 @@ class array_dataset
     }
   }
 
-  public function get_counter()
+  public function getCounter()
   {
     return $this->counter;
   }
 
-  public function get_total_row_count()
+  public function getTotalRowCount()
   {
     return sizeof($this->data);
   }
 
-  public function get_by_index_string($index)
+  public function getByIndexString($index)
   {
-    $this->_set_current_record();
+    $this->_setCurrentRecord();
 
     if(!preg_match('/^(\[\w+\]|\[\'\w+\'\]|\[\"\w+\"\])+$/', $index))
       return '';

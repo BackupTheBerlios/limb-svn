@@ -13,9 +13,9 @@ require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.
 /**
 * Determines the full path to a source template file.
 */
-function resolve_template_source_file_name($file)
+function resolveTemplateSourceFileName($file)
 {
-  resolve_handle($resolver =& get_file_resolver('template'));
+  resolveHandle($resolver =& getFileResolver('template'));
 
   return $resolver->resolve($file);
 }
@@ -28,10 +28,10 @@ function resolve_template_source_file_name($file)
 * @return void
 * @access protected
 */
-function write_template_file($file, $data)
+function writeTemplateFile($file, $data)
 {
   if(!is_dir(dirname($file)))
-    fs :: mkdir(dirname($file), 0777, true);
+    Fs :: mkdir(dirname($file), 0777, true);
 
   $fp = fopen($file, "wb");
   if (fwrite($fp, $data, strlen($data)))

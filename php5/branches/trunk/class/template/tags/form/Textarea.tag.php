@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class text_area_tag_info
+class TextAreaTagInfo
 {
   public $tag = 'textarea';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'text_area_tag';
 }
 
-register_tag(new text_area_tag_info());
+registerTag(new TextAreaTagInfo());
 
-class text_area_tag extends control_tag
+class TextAreaTag extends ControlTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/text_area_component';
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php($this->get_component_ref_code() . '->render_contents();');
+    $code->writePhp($this->getComponentRefCode() . '->render_contents();');
   }
 }
 

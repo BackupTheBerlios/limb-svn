@@ -8,15 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_hidden_component.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputHiddenComponent.class.php');
 
-class request_state_component extends input_hidden_component
+class RequestStateComponent extends InputHiddenComponent
 {
-  public function get_value()
+  public function getValue()
   {
-    $form = $this->find_parent_by_class('form_component');
+    $form = $this->findParentByClass('form_component');
 
-    if($form->is_first_time())
+    if($form->isFirstTime())
     {
       if($value = Limb :: toolkit()->getRequest()->get($this->attributes['name']))
         return $value;
@@ -24,7 +24,7 @@ class request_state_component extends input_hidden_component
         return '';
     }
     else
-      return parent :: get_value();
+      return parent :: getValue();
   }
 }
 ?>

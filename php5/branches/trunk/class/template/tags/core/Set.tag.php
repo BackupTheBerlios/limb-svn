@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_set_tag_info
+class CoreSetTagInfo
 {
   public $tag = 'core:SET';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'core_set_tag';
 }
 
-register_tag(new core_set_tag_info());
+registerTag(new CoreSetTagInfo());
 
 /**
 * Sets a variable in the runtime dataspace, according the attributes of this
 * tag at compile time.
 */
-class core_set_tag extends silent_compiler_directive_tag
+class CoreSetTag extends SilentCompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('core_set_tag'))
+    if ($this->findParentByClass('core_set_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,
@@ -34,9 +34,9 @@ class core_set_tag extends silent_compiler_directive_tag
     }
   }
 
-  public function pre_parse()
+  public function preParse()
   {
-    $dataspace = $this->get_dataspace();
+    $dataspace = $this->getDataspace();
     $dataspace->vars += $this->attributes;
     return PARSER_FORBID_PARSING;
   }

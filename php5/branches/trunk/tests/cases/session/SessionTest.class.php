@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/session/session.class.php');
-require_once(LIMB_DIR . '/class/core/session/session_driver.interface.php');
+require_once(LIMB_DIR . '/class/core/session/Session.class.php');
+require_once(LIMB_DIR . '/class/core/session/SessionDriver.interface.php');
 
-Mock :: generate('session_driver');
+Mock :: generate('SessionDriver');
 
-class session_test extends LimbTestCase
+class SessionTest extends LimbTestCase
 {
   var $session;
   var $session_driver;
 
   function setUp()
   {
-    $this->session_driver = new Mocksession_driver($this);
-    $this->session = new session($this->session_driver);
+    $this->session_driver = new MockSessionDriver($this);
+    $this->session = new Session($this->session_driver);
   }
 
   function tearDown()
@@ -29,19 +29,19 @@ class session_test extends LimbTestCase
     $this->session_driver->tally();
   }
 
-  function test_storage_open()
+  function testStorageOpen()
   {
-    $this->session_driver->expectOnce('storage_open');
-    $this->session->storage_open();
+    $this->session_driver->expectOnce('storageOpen');
+    $this->session->storageOpen();
   }
 
-  function test_close_session()
+  function testCloseSession()
   {
-    $this->session_driver->expectOnce('storage_close');
-    $this->session->storage_close();
+    $this->session_driver->expectOnce('storageClose');
+    $this->session->storageClose();
   }
 
-  function test_read_session()
+  function testReadSession()
   {
     $session_include_path1 = dirname(__FILE__) . '/session_test_include_file1.php';
     $session_include_path2 = dirname(__FILE__) . '/session_test_include_file2.php';
@@ -51,39 +51,39 @@ class session_test extends LimbTestCase
                         'session_history|a:1:{s:3:"tab";a:3:{i:0;a:2:{s:5:"title";s:7:"Yo-yo";s:4:"href";' .
                         's:20:"__session_class_path";s:56:"' . $session_include_path2 .'";}s:38:"http://dbrain.bit-creative.bit/root/ru";}i:1;a:2:{s:5:"title";s:5:"?????";s:4:"href";s:57:"http://dbrain.bit-creative.bit/root/ru/portfolio/websites";}i:2;a:2:{s:5:"title";s:5:"Bla-bla";s:4:"href";s:84:"http://dbrain.bit-creative.bit/root/ru/portfolio/websites?id=273&action=presentation";}}}strings|s:0:"";';
 
-    $this->session_driver->expectOnce('storage_read', array($id = 100));
-    $this->session_driver->setReturnValue('storage_read', $raw_session_data);
-    $this->session->storage_read($id);
+    $this->session_driver->expectOnce('storageRead', array($id = 100));
+    $this->session_driver->setReturnValue('storageRead', $raw_session_data);
+    $this->session->storageRead($id);
 
     $this->assertEqual($GLOBALS['session_read_include_file_test_value1'], 'whatever');
     $this->assertEqual($GLOBALS['session_read_include_file_test_value2'], 'nevermind');
   }
 
-  function test_storage_write()
+  function testStorageWrite()
   {
-    $this->session_driver->expectOnce('storage_write', array($id = 20, $value = 'something' ));
-    $this->session->storage_write($id, $value);
+    $this->session_driver->expectOnce('storageWrite', array($id = 20, $value = 'something' ));
+    $this->session->storageWrite($id, $value);
   }
 
-  function test_storage_destroy()
+  function testStorageDestroy()
   {
-    $this->session_driver->expectOnce('storage_destroy', array($id = 20));
-    $this->session->storage_destroy($id);
+    $this->session_driver->expectOnce('storageDestroy', array($id = 20));
+    $this->session->storageDestroy($id);
   }
 
-  function test_storage_destroy_user()
+  function testStorageDestroyUser()
   {
-    $this->session_driver->expectOnce('storage_destroy_user', array($user_id = 20));
-    $this->session->storage_destroy_user($user_id);
+    $this->session_driver->expectOnce('storageDestroyUser', array($user_id = 20));
+    $this->session->storageDestroyUser($user_id);
   }
 
-  function test_storage_gc()
+  function testStorageGc()
   {
-    $this->session_driver->expectOnce('storage_gc', array($time = 200));
-    $this->session->storage_gc($time);
+    $this->session_driver->expectOnce('storageGc', array($time = 200));
+    $this->session->storageGc($time);
   }
 
-  function test_get()
+  function testGet()
   {
     $key = md5(mt_rand());
 
@@ -96,11 +96,11 @@ class session_test extends LimbTestCase
     unset($_SESSION[$key]);
   }
 
-  function test_get_reference()
+  function testGetReference()
   {
     $key = md5(mt_rand());
 
-    $ref =& $this->session->get_reference($key);
+    $ref =& $this->session->getReference($key);
 
     $ref = 'ref test';
 
@@ -109,7 +109,7 @@ class session_test extends LimbTestCase
     unset($_SESSION[$key]);
   }
 
-  function test_exists()
+  function testExists()
   {
     $key = md5(mt_rand());
 
@@ -122,7 +122,7 @@ class session_test extends LimbTestCase
     unset($_SESSION[$key]);
   }
 
-  function test_destroy()
+  function testDestroy()
   {
     $key = md5(mt_rand());
 

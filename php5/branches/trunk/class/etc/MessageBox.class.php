@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/core/session/session.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/core/session/Session.class.php');
 
-class message_box
+class MessageBox
 {
   const NOTICE  = 1;
   const WARNING = 2;
@@ -21,7 +21,7 @@ class message_box
 
   protected $strings = array();
 
-  function message_box()
+  function messageBox()
   {
     $this->strings = Limb :: toolkit()->getSession()->get('strings');
   }
@@ -34,22 +34,22 @@ class message_box
   static function instance()
   {
     if (!self :: $instance)
-      self :: $instance = new message_box();
+      self :: $instance = new MessageBox();
 
     return self :: $instance;
   }
 
-  static function write_notice($string, $label='')
+  static function writeNotice($string, $label='')
   {
     self :: instance()->write($string, self :: NOTICE, $label);
   }
 
-  static function write_warning($string, $label='')
+  static function writeWarning($string, $label='')
   {
     self :: instance()->write($string, self :: WARNING, $label);
   }
 
-  static function write_error($string, $label='')
+  static function writeError($string, $label='')
   {
     self :: instance()->write($string, self :: ERROR, $label);
   }
@@ -63,7 +63,7 @@ class message_box
     );
   }
 
-  protected function _get_message_strings()
+  protected function _getMessageStrings()
   {
     return $this->strings;
   }
@@ -73,7 +73,7 @@ class message_box
   */
   static function parse()
   {
-    if(!($strings = self :: instance()->_get_message_strings()))
+    if(!($strings = self :: instance()->_getMessageStrings()))
       return '';
 
     $js_function = "
@@ -106,11 +106,11 @@ class message_box
 
             var message_strings = new Array();
             $js
-            show_message_boxes(message_strings);
+            showMessageBoxes(message_strings);
             //-->
             </script>";
 
-    message_box :: reset();
+    MessageBox :: reset();
 
     return $js;
   }

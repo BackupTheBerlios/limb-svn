@@ -8,33 +8,33 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/search/search_query.class.php');
+require_once(LIMB_DIR . '/class/search/SearchQuery.class.php');
 
-class search_query_test extends LimbTestCase
+class SearchQueryTest extends LimbTestCase
 {
   var $query_object = null;
 
-  function search_query_test($name = 'search query test case')
+  function searchQueryTest($name = 'search query test case')
   {
-    parent :: LimbTestCase($name);
+    parent :: limbTestCase($name);
   }
 
   function setUp()
   {
-    $this->query_object = new search_query();
+    $this->query_object = new SearchQuery();
   }
 
-  function test_is_empty()
+  function testIsEmpty()
   {
-    $this->assertTrue($this->query_object->is_empty());
+    $this->assertTrue($this->query_object->isEmpty());
   }
 
-  function test_add()
+  function testAdd()
   {
     $this->query_object->add('wow');
     $this->query_object->add('yo');
 
-    $this->assertEqual($this->query_object->to_string(), 'wow yo');
+    $this->assertEqual($this->query_object->toString(), 'wow yo');
   }
 }
 ?>

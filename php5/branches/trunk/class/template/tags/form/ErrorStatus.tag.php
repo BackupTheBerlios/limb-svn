@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class form_error_status_tag_info
+class FormErrorStatusTagInfo
 {
   public $tag = 'form:ERROR_STATUS';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'error_status_tag';
 }
 
-register_tag(new form_error_status_tag_info());
+registerTag(new FormErrorStatusTagInfo());
 
-class error_status_tag extends compiler_directive_tag
+class ErrorStatusTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->find_parent_by_class('form_status_tag'))
+    if (!$this->findParentByClass('form_status_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,

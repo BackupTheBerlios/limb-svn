@@ -1,6 +1,6 @@
 <?php
 
-class loaded_handle_class 
+class LoadedHandleClass 
 {
   public $test_var = 'default';
 }

@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/default_site_object_identifier_generator.class.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/DefaultSiteObjectIdentifierGenerator.class.php');
 
-Mock :: generate('site_object');
+Mock :: generate('SiteObject');
 
-class default_site_object_identifier_generator_test extends LimbTestCase
+class DefaultSiteObjectIdentifierGeneratorTest extends LimbTestCase
 {
   var $object;
   var $generator;
 
   function setUp()
   {
-    $this->object = new Mocksite_object($this);
+    $this->object = new MockSiteObject($this);
     $this->generator = new DefaultSiteObjectIdentifierGenerator();
   }
 
@@ -29,10 +29,10 @@ class default_site_object_identifier_generator_test extends LimbTestCase
     $this->object->tally();
   }
 
-  function test_generate()
+  function testGenerate()
   {
-    $this->object->expectOnce('get_identifier');
-    $this->object->setReturnValue('get_identifier', 'test');
+    $this->object->expectOnce('getIdentifier');
+    $this->object->setReturnValue('getIdentifier', 'test');
     $this->assertEqual('test', $this->generator->generate($this->object));
   }
 }

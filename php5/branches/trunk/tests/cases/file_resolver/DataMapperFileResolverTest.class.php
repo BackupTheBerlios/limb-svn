@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/base_package_file_resolver_test.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/data_mapper_file_resolver.class.php');
+require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/DataMapperFileResolver.class.php');
 
-class data_mapper_file_resolver_test extends base_package_file_resolver_test
+class DataMapperFileResolverTest extends BasePackageFileResolverTest
 {
-  function & _define_resolver()
+  function & _defineResolver()
   {
-    return new data_mapper_file_resolver(new package_file_resolver());
+    return new DataMapperFileResolver(new PackageFileResolver());
   }
 
-  function test_resolve_data_mapper_file_ok()
+  function testResolveDataMapperFileOk()
   {
     $this->assertEqual($this->resolver->resolve('test_mapper'),
                        TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/data_mappers/test_mapper.class.php');
   }
 
-  function test_resolve_data_mapper_file_failed()
+  function testResolveDataMapperFileFailed()
   {
     try
     {

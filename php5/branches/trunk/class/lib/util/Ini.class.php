@@ -10,10 +10,10 @@
 ***********************************************************************************/
 //inspired by EZpublish(http://ez.no) ini class
 
-require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
-require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
 
-class ini
+class Ini
 {
   // Variable to store the ini file values.
   protected $group_values;
@@ -29,7 +29,7 @@ class ini
   function __construct($file_path, $use_cache = null)
   {
     if ($use_cache === null)
-      $use_cache = $this->is_cache_enabled();
+      $use_cache = $this->isCacheEnabled();
 
     $this->file_path = $file_path;
     $this->use_cache = $use_cache;
@@ -38,7 +38,7 @@ class ini
     $this->load();
   }
 
-  public function get_override_file()
+  public function getOverrideFile()
   {
     if(file_exists($this->file_path . '.override'))
       return $this->file_path . '.override';
@@ -46,26 +46,26 @@ class ini
       return false;
   }
 
-  public function get_cache_file()
+  public function getCacheFile()
   {
     return $this->cache_file;
   }
 
-  public function get_charset()
+  public function getCharset()
   {
     return $this->charset;
   }
 
   // returns the file_path
-  public function get_original_file()
+  public function getOriginalFile()
   {
     return $this->file_path;
   }
 
   // returns true if INI cache is enabled globally, the default value is true.
-  public function is_cache_enabled()
+  public function isCacheEnabled()
   {
-    return (!defined('INI_CACHING_ENABLED') || (defined('INI_CACHING_ENABLED') && constant('INI_CACHING_ENABLED')));
+    return (!defined('INI_CACHING_ENABLED') ||  (defined('INI_CACHING_ENABLED') &&  constant('INI_CACHING_ENABLED')));
   }
 
   /*
@@ -79,7 +79,7 @@ class ini
 
 
     if ($this->use_cache)
-      $this->_load_cache();
+      $this->_loadCache();
     else
       $this->_parse($this->file_path);
   }
@@ -88,7 +88,7 @@ class ini
     Will load a cached version of the ini file if it exists,
     if not it will _parse the original file and create the cache file.
   */
-  protected function _load_cache()
+  protected function _loadCache()
   {
     $this->reset();
 
@@ -96,11 +96,11 @@ class ini
 
     try
     {
-      fs :: mkdir($cache_dir);
+      Fs :: mkdir($cache_dir);
     }
     catch(IOException $e)
     {
-      debug :: write_warning('could not create cache directory for ini',
+      Debug :: writeWarning('could not create cache directory for ini',
       __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
       array('cache_dir' => $cache_dir));
 
@@ -108,12 +108,12 @@ class ini
       return;
     }
 
-    if($override_file = $this->get_override_file())
+    if($override_file = $this->getOverrideFile())
       $this->cache_file = $this->cache_dir . md5($override_file) . '.php';
     else
       $this->cache_file = $this->cache_dir . md5($this->file_path) . '.php';
 
-    if ($this->_is_cache_valid())
+    if ($this->_isCacheValid())
     {
       $charset = null;
       $group_values = array();
@@ -127,20 +127,20 @@ class ini
     else
     {
       $this->_parse();
-      $this->_save_cache();
+      $this->_saveCache();
     }
   }
 
-  protected function _is_cache_valid()
+  protected function _isCacheValid()
   {
     if(!file_exists($this->cache_file))
       return false;
 
-    $override_file = $this->get_override_file();
+    $override_file = $this->getOverrideFile();
 
     if (filemtime($this->cache_file) > filemtime($this->file_path))
     {
-      if($override_file && filemtime($this->cache_file) < filemtime($override_file))
+      if($override_file &&  filemtime($this->cache_file) < filemtime($override_file))
         return false;
       else
         return true;
@@ -152,14 +152,14 @@ class ini
   /*
    Stores the content of the INI object to the cache file
   */
-  protected function _save_cache()
+  protected function _saveCache()
   {
     if (is_array($this->group_values))
     {
       $fp = @fopen($this->cache_file, 'w+');
       if ($fp === false)
       {
-        debug::write_error("Couldn't create cache file '{$this->cache_file}', perhaps wrong permissions",
+        Debug::writeError("Couldn't create cache file '{$this->cache_file}', perhaps wrong permissions",
         __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
         return;
       }
@@ -182,13 +182,13 @@ class ini
   {
     $this->reset();
 
-    $this->_parse_file_contents($this->file_path);
+    $this->_parseFileContents($this->file_path);
 
-    if($override_file = $this->get_override_file())
-      $this->_parse_file_contents($override_file);
+    if($override_file = $this->getOverrideFile())
+      $this->_parseFileContents($override_file);
   }
 
-  protected function _parse_file_contents($file_path)
+  protected function _parseFileContents($file_path)
   {
     $fp = @fopen($file_path, 'r');
     if (!$fp)
@@ -202,17 +202,17 @@ class ini
     $contents = fread($fp, $size);
     fclose($fp);
 
-    $this->_parse_string($contents);
+    $this->_parseString($contents);
   }
 
-  protected function _parse_string(&$contents)
+  protected function _parseString(&$contents)
   {
     $lines =& preg_split("#\r\n|\r|\n#", $contents);
     unset($contents);
 
     if ($lines === false)
     {
-      debug::write_error("'{$this->file_path}' is empty", __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
+      Debug::writeError("'{$this->file_path}' is empty", __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
       return false;
     }
 
@@ -260,7 +260,7 @@ class ini
           {
             $key_name = $value_array[3];
 
-            if (isset($this->group_values[$current_group][$var_name]) &&
+            if (isset($this->group_values[$current_group][$var_name]) && 
                 is_array($this->group_values[$current_group][$var_name]))
               $this->group_values[$current_group][$var_name][$key_name] = $var_value;
             else
@@ -268,7 +268,7 @@ class ini
           }
           else
           {
-            if (isset($this->group_values[$current_group][$var_name]) &&
+            if (isset($this->group_values[$current_group][$var_name]) && 
                 is_array($this->group_values[$current_group][$var_name]))
               $this->group_values[$current_group][$var_name][] = $var_value;
             else
@@ -284,7 +284,7 @@ class ini
   }
 
   // removes the cache file if it exists.
-  public function reset_cache()
+  public function resetCache()
   {
     if (file_exists($this->cache_file))
       unlink($this->cache_file);
@@ -302,11 +302,11 @@ class ini
     Reads a variable from the ini file.
     false is returned if the variable was not found.
   */
-  public function get_option($var_name, $group_name = 'default')
+  public function getOption($var_name, $group_name = 'default')
   {
     if (!isset($this->group_values[$group_name]))
     {
-      debug::write_notice('undefined group',
+      Debug::writeNotice('undefined group',
         __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__,
         array('ini' => $this->file_path,
           'group' => $group_name,
@@ -319,7 +319,7 @@ class ini
     }
     else
     {
-      debug::write_notice('undefined option',
+      Debug::writeNotice('undefined option',
         __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__,
         array('ini' => $this->file_path,
           'group' => $group_name,
@@ -334,34 +334,34 @@ class ini
     Reads a variable from the ini file and puts it in the parameter $variable.
     $variable is not modified if the variable does not exist
   */
-  public function assign_option(&$variable, $var_name, $group_name = 'default')
+  public function assignOption(&$variable, $var_name, $group_name = 'default')
   {
-    if (!$this->has_option($var_name, $group_name))
+    if (!$this->hasOption($var_name, $group_name))
       return false;
 
-    $variable = $this->get_option($var_name, $group_name);
+    $variable = $this->getOption($var_name, $group_name);
     return true;
   }
 
   /*
     Checks if a variable is set. Returns true if the variable exists, false if not.
   */
-  public function has_option($var_name, $group_name = 'default')
+  public function hasOption($var_name, $group_name = 'default')
   {
     return isset($this->group_values[$group_name][$var_name]);
   }
   // Checks if group $group_name is set. Returns true if the group exists, false if not.
-  public function has_group($group_name)
+  public function hasGroup($group_name)
   {
     return isset($this->group_values[$group_name]);
   }
   // Fetches a variable group and returns it as an associative array.
-  public function get_group($group_name)
+  public function getGroup($group_name)
   {
     if (isset($this->group_values[$group_name]))
       return $this->group_values[$group_name];
 
-    debug::write_notice('undefined group',
+    Debug::writeNotice('undefined group',
       __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__,
       array('ini' => $this->file_path,
         'group' => $group_name
@@ -371,7 +371,7 @@ class ini
   }
 
   // Returns group_values, which is a nicely named Array
-  public function get_all()
+  public function getAll()
   {
     return $this->group_values;
   }

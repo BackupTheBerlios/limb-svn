@@ -8,21 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/packages_info.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php');
+require_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php');
 
-class package_file_resolver implements file_resolver
+class PackageFileResolver implements FileResolver
 {
   protected $_packages_info = null;
 
   function __construct()
   {
-    $this->_packages_info = packages_info :: instance();
+    $this->_packages_info = PackagesInfo :: instance();
   }
 
   public function resolve($file_path, $params = array())
   {
-    $packages = $this->_get_packages();
+    $packages = $this->_getPackages();
 
     foreach($packages as $package)
     {
@@ -37,9 +37,9 @@ class package_file_resolver implements file_resolver
     throw new FileNotFoundException('file not found in packages', $file_path);
   }
 
-  protected function _get_packages()
+  protected function _getPackages()
   {
-    return $this->_packages_info->get_packages();
+    return $this->_packages_info->getPackages();
   }
 
 }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php');
 
-class input_submit_component extends form_element
+class InputSubmitComponent extends FormElement
 {
 }
 

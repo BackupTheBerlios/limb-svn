@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class image_library_group extends LimbGroupTest
+class ImageLibraryGroup extends LimbGroupTest
 {
-  function image_library_group()
+  function imageLibraryGroup()
   {
-    $this->LimbGroupTest('image library tests');
+    $this->limbGroupTest('image library tests');
   }
 
   function getTestCasesHandles()
   {
-    return array(LIMB_DIR . '/tests/cases/image/gd_library_test');
+    return array(LIMB_DIR . '/tests/cases/image/GdLibraryTest');
   }
 }
 ?>

@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/caching_tree.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/cache/cache_registry.class.php');
+require_once(LIMB_DIR . '/class/core/tree/CachingTree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/cache/CacheRegistry.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('tree');
+Mock :: generate('Tree');
 Mock :: generate('CacheRegistry');
 
-class caching_tree_test extends LimbTestCase
+class CachingTreeTest extends LimbTestCase
 {
   var $tree;
   var $driver;
@@ -27,14 +27,14 @@ class caching_tree_test extends LimbTestCase
   function setUp()
   {
     $this->toolkit = new MockLimbToolkit($this);
-    $this->tree = new Mocktree($this);
+    $this->tree = new MockTree($this);
     $this->cache = new MockCacheRegistry($this);
 
     $this->toolkit->setReturnValue('getCache', $this->cache);
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->decorator = new caching_tree($this->tree);
+    $this->decorator = new CachingTree($this->tree);
   }
 
   function tearDown()
@@ -46,198 +46,198 @@ class caching_tree_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_get_node_cache_hit()
+  function testGetNodeCacheHit()
   {
     $node_id = 100;
-    $this->cache->expectOnce('get', array(array('node' => $node_id), caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('get', array(array('node' => $node_id), CachingTree :: CACHE_GROUP));
     $this->cache->setReturnValue('get', $result = 'some result');
 
-    $this->tree->expectNever('get_node');
-    $this->assertEqual($this->decorator->get_node($node_id), $result);
+    $this->tree->expectNever('getNode');
+    $this->assertEqual($this->decorator->getNode($node_id), $result);
   }
 
-  function test_get_node_cache_miss()
+  function testGetNodeCacheMiss()
   {
     $node_id = 100;
-    $this->cache->expectOnce('get', array(array('node' => $node_id), caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('get', array(array('node' => $node_id), CachingTree :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
-    $this->tree->expectOnce('get_node', array($node_id));
-    $this->tree->setReturnValue('get_node', $result = 'some result');
+    $this->tree->expectOnce('getNode', array($node_id));
+    $this->tree->setReturnValue('getNode', $result = 'some result');
 
-    $this->cache->expectOnce('put', array(array('node' => $node_id), $result, caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('put', array(array('node' => $node_id), $result, CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->get_node($node_id), $result);
+    $this->assertEqual($this->decorator->getNode($node_id), $result);
   }
 
-  function test_get_parents_cache_hit()
+  function testGetParentsCacheHit()
   {
     $node_id = 100;
     $this->cache->expectOnce('get', array(array('parents' => $node_id),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
     $this->cache->setReturnValue('get', $result = 'some result');
 
-    $this->tree->expectNever('get_parents');
-    $this->assertEqual($this->decorator->get_parents($node_id), $result);
+    $this->tree->expectNever('getParents');
+    $this->assertEqual($this->decorator->getParents($node_id), $result);
   }
 
-  function test_get_parents_cache_miss()
+  function testGetParentsCacheMiss()
   {
     $node_id = 100;
-    $this->cache->expectOnce('get', array(array('parents' => $node_id), caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('get', array(array('parents' => $node_id), CachingTree :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
-    $this->tree->expectOnce('get_parents', array($node_id));
-    $this->tree->setReturnValue('get_parents', $result = 'some result');
+    $this->tree->expectOnce('getParents', array($node_id));
+    $this->tree->setReturnValue('getParents', $result = 'some result');
 
-    $this->cache->expectOnce('put', array(array('parents' => $node_id), $result, caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('put', array(array('parents' => $node_id), $result, CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->get_parents($node_id), $result);
+    $this->assertEqual($this->decorator->getParents($node_id), $result);
   }
 
-  function test_get_children_cache_hit()
+  function testGetChildrenCacheHit()
   {
     $node_id = 100;
     $this->cache->expectOnce('get', array(array('children' => $node_id),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
     $this->cache->setReturnValue('get', $result = 'some result');
 
-    $this->tree->expectNever('get_children');
-    $this->assertEqual($this->decorator->get_children($node_id), $result);
+    $this->tree->expectNever('getChildren');
+    $this->assertEqual($this->decorator->getChildren($node_id), $result);
   }
 
-  function test_get_children_cache_miss()
+  function testGetChildrenCacheMiss()
   {
     $node_id = 100;
     $this->cache->expectOnce('get', array(array('children' => $node_id),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
-    $this->tree->expectOnce('get_children', array($node_id));
-    $this->tree->setReturnValue('get_children', $result = 'some result');
+    $this->tree->expectOnce('getChildren', array($node_id));
+    $this->tree->setReturnValue('getChildren', $result = 'some result');
 
     $this->cache->expectOnce('put', array(array('children' => $node_id),
                                           $result,
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->get_children($node_id), $result);
+    $this->assertEqual($this->decorator->getChildren($node_id), $result);
   }
 
-  function test_count_children_cache_hit()
+  function testCountChildrenCacheHit()
   {
     $node_id = 100;
     $this->cache->expectOnce('get', array(array('count_children' => $node_id),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
     $this->cache->setReturnValue('get', $result = 'some result');
 
-    $this->tree->expectNever('count_children');
-    $this->assertEqual($this->decorator->count_children($node_id), $result);
+    $this->tree->expectNever('countChildren');
+    $this->assertEqual($this->decorator->countChildren($node_id), $result);
   }
 
-  function test_count_children_cache_miss()
+  function testCountChildrenCacheMiss()
   {
     $node_id = 100;
     $this->cache->expectOnce('get', array(array('count_children' => $node_id),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
     $this->cache->setReturnValue('get', null);
 
-    $this->tree->expectOnce('count_children', array($node_id));
-    $this->tree->setReturnValue('count_children', $result = 'some result');
+    $this->tree->expectOnce('countChildren', array($node_id));
+    $this->tree->setReturnValue('countChildren', $result = 'some result');
 
     $this->cache->expectOnce('put', array(array('count_children' => $node_id),
                                           $result,
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->count_children($node_id), $result);
+    $this->assertEqual($this->decorator->countChildren($node_id), $result);
   }
 
-  function test_create_root_node()
+  function testCreateRootNode()
   {
-    $this->tree->setReturnValue('create_root_node', $result = 'some_result', array($values = 'whatever'));
+    $this->tree->setReturnValue('createRootNode', $result = 'someResult', array($values = 'whatever'));
 
-    $this->cache->expectOnce('flush', array(caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('flush', array(CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->create_root_node($values), $result);
+    $this->assertEqual($this->decorator->createRootNode($values), $result);
   }
 
-  function test_create_sub_node()
+  function testCreateSubNode()
   {
-    $this->tree->setReturnValue('create_sub_node',
-                                $result = 'some_result',
+    $this->tree->setReturnValue('createSubNode',
+                                $result = 'someResult',
                                 array($id = 'id',$values = 'whatever'));
 
-    $this->cache->expectOnce('flush', array(caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('flush', array(CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->create_sub_node($id, $values), $result);
+    $this->assertEqual($this->decorator->createSubNode($id, $values), $result);
   }
 
-  function test_delete_node()
+  function testDeleteNode()
   {
-    $this->tree->setReturnValue('delete_node', $result = 'some_result', array($id = 'id'));
+    $this->tree->setReturnValue('deleteNode', $result = 'someResult', array($id = 'id'));
 
-    $this->cache->expectOnce('flush', array(caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('flush', array(CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->delete_node($id), $result);
+    $this->assertEqual($this->decorator->deleteNode($id), $result);
   }
 
-  function test_update_node()
+  function testUpdateNode()
   {
-    $this->tree->setReturnValue('update_node',
-                                $result = 'some_result',
+    $this->tree->setReturnValue('updateNode',
+                                $result = 'someResult',
                                 array($id = 'id', $values = 'whatever', false));
 
-    $this->cache->expectOnce('flush', array(caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('flush', array(CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->update_node($id, $values), $result);
+    $this->assertEqual($this->decorator->updateNode($id, $values), $result);
   }
 
-  function test_move_tree()
+  function testMoveTree()
   {
-    $this->tree->setReturnValue('move_tree',
-                                $result = 'some_result',
+    $this->tree->setReturnValue('moveTree',
+                                $result = 'some result',
                                 array($id = 'id', $target_id = 'target'));
 
-    $this->cache->expectOnce('flush', array(caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('flush', array(CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->move_tree($id, $target_id), $result);
+    $this->assertEqual($this->decorator->moveTree($id, $target_id), $result);
   }
 
-  function test_get_node_by_path_cache_hit()
+  function testGetNodeByPathCacheHit()
   {
     $path = 'some_path';
 
     $this->cache->expectOnce('get', array(array('path' => $path),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
     $this->cache->setReturnValue('get', $result = 'some result');
 
-    $this->tree->expectNever('get_node_by_path');
-    $this->assertEqual($this->decorator->get_node_by_path($path), $result);
+    $this->tree->expectNever('getNodeByPath');
+    $this->assertEqual($this->decorator->getNodeByPath($path), $result);
   }
 
-  function test_get_node_by_path_cache_miss()
+  function testGetNodeByPathCacheMiss()
   {
     $path = 'some_path';
     $delimeter = '/';
     $this->cache->expectOnce('get', array(array('path' => $path),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
-    $this->tree->expectOnce('get_node_by_path', array($path, $delimeter));
-    $this->tree->setReturnValue('get_node_by_path', $result = 'some result');
+    $this->tree->expectOnce('getNodeByPath', array($path, $delimeter));
+    $this->tree->setReturnValue('getNodeByPath', $result = 'some result');
 
     $this->cache->expectOnce('put', array(array('path' => $path),
                                           $result,
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->get_node_by_path($path,$delimeter), $result);
+    $this->assertEqual($this->decorator->getNodeByPath($path,$delimeter), $result);
   }
 
-  function test_get_sub_branch_cache_hit()
+  function testGetSubBranchCacheHit()
   {
     $key = array('sub_branch',
                  'node_id' => $node_id = 100,
@@ -245,15 +245,15 @@ class caching_tree_test extends LimbTestCase
                  'include_parent' => false,
                  'check_expanded_parents' => false );
 
-    $this->cache->expectOnce('get', array($key, caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('get', array($key, CachingTree :: CACHE_GROUP));
 
     $this->cache->setReturnValue('get', $result = 'some result');
 
-    $this->tree->expectNever('get_sub_branch');
-    $this->assertEqual($this->decorator->get_sub_branch($node_id, $depth, false, false), $result);
+    $this->tree->expectNever('getSubBranch');
+    $this->assertEqual($this->decorator->getSubBranch($node_id, $depth, false, false), $result);
   }
 
-  function test_get_sub_branch_cache_miss()
+  function testGetSubBranchCacheMiss()
   {
     $key = array('sub_branch',
                  'node_id' => $node_id = 100,
@@ -261,42 +261,42 @@ class caching_tree_test extends LimbTestCase
                  'include_parent' => false,
                  'check_expanded_parents' => false );
 
-    $this->cache->expectOnce('get', array($key, caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('get', array($key, CachingTree :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
-    $this->tree->expectOnce('get_sub_branch', array($node_id, $depth, false, false));
-    $this->tree->setReturnValue('get_sub_branch', $result = 'some result');
+    $this->tree->expectOnce('getSubBranch', array($node_id, $depth, false, false));
+    $this->tree->setReturnValue('getSubBranch', $result = 'some result');
 
-    $this->cache->expectOnce('put', array($key, $result, caching_tree :: CACHE_GROUP));
+    $this->cache->expectOnce('put', array($key, $result, CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->get_sub_branch($node_id, $depth, false, false), $result);
+    $this->assertEqual($this->decorator->getSubBranch($node_id, $depth, false, false), $result);
   }
 
-  function test_get_root_nodes_cache_hit()
+  function testGetRootNodesCacheHit()
   {
     $this->cache->expectOnce('get', array(array('root_nodes'),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
     $this->cache->setReturnValue('get', $result = 'some result');
 
-    $this->tree->expectNever('get_root_nodes');
-    $this->assertEqual($this->decorator->get_root_nodes(), $result);
+    $this->tree->expectNever('getRootNodes');
+    $this->assertEqual($this->decorator->getRootNodes(), $result);
   }
 
-  function test_get_root_nodes_cache_miss()
+  function testGetRootNodesCacheMiss()
   {
     $this->cache->expectOnce('get', array(array('root_nodes'),
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
-    $this->tree->expectOnce('get_root_nodes');
-    $this->tree->setReturnValue('get_root_nodes', $result = 'some result');
+    $this->tree->expectOnce('getRootNodes');
+    $this->tree->setReturnValue('getRootNodes', $result = 'some result');
 
     $this->cache->expectOnce('put', array(array('root_nodes'),
                                           $result,
-                                          caching_tree :: CACHE_GROUP));
+                                          CachingTree :: CACHE_GROUP));
 
-    $this->assertEqual($this->decorator->get_root_nodes(), $result);
+    $this->assertEqual($this->decorator->getRootNodes(), $result);
   }
 
 }

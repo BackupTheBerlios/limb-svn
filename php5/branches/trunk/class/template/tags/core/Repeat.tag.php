@@ -8,41 +8,41 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_data_repeat_tag_info
+class CoreDataRepeatTagInfo
 {
   public $tag = 'core:REPEAT';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'core_data_repeat_tag';
 }
 
-register_tag(new core_data_repeat_tag_info());
+registerTag(new CoreDataRepeatTagInfo());
 
-class core_data_repeat_tag extends compiler_directive_tag
+class CoreDataRepeatTag extends CompilerDirectiveTag
 {
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $dataspace = $this->get_dataspace_ref_code();
+    $dataspace = $this->getDataspaceRefCode();
 
-    $counter = '$' . $code->get_temp_variable();
-    $value = '$' . $code->get_temp_variable();
+    $counter = '$' . $code->getTempVariable();
+    $value = '$' . $code->getTempVariable();
 
     if (isset($this->attributes['hash_id']))
     {
-      $code->write_php($value . ' = trim(' . $this->get_dataspace_ref_code() . '->get(\'' . $this->attributes['hash_id'] . '\'));');
+      $code->writePhp($value . ' = trim(' . $this->getDataspaceRefCode() . '->get(\'' . $this->attributes['hash_id'] . '\'));');
     }
     else
     {
       if(!isset($this->attributes['value']))
         $this->attributes['value'] = 1;
 
-      $code->write_php($value . ' = ' . $this->attributes['value'] . ';');
+      $code->writePhp($value . ' = ' . $this->attributes['value'] . ';');
     }
 
-    $code->write_php('for(' . $counter . '=0;' . $counter . ' < ' . $value . '; ' . $counter . '++){');
+    $code->writePhp('for(' . $counter . '=0;' . $counter . ' < ' . $value . '; ' . $counter . '++){');
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php('}');
+    $code->writePhp('}');
   }
 }
 

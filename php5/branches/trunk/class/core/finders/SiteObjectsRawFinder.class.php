@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/finders/data_finder.interface.php');
+require_once(LIMB_DIR . '/class/core/finders/DataFinder.interface.php');
 
-class site_objects_raw_finder implements data_finder
+class SiteObjectsRawFinder implements DataFinder
 {
   const RAW_SELECT_STMT =
     "SELECT
@@ -54,30 +54,30 @@ class site_objects_raw_finder implements data_finder
   public function find($params = array(), $sql_params=array())//refactor!!!
   {
     $sql = sprintf(self :: RAW_SELECT_STMT,
-                  $this->_add_sql($sql_params, 'columns'),
-                  $this->_add_sql($sql_params, 'tables'),
-                  $this->_add_sql($sql_params, 'conditions'),
-                  $this->_add_sql($sql_params, 'group'));
+                  $this->_addSql($sql_params, 'columns'),
+                  $this->_addSql($sql_params, 'tables'),
+                  $this->_addSql($sql_params, 'conditions'),
+                  $this->_addSql($sql_params, 'group'));
 
     if(isset($params['order']))
-      $sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
+      $sql .= ' ORDER BY ' . $this->_buildOrderSql($params['order']);
 
     $db = Limb :: toolkit()->getDB();
 
     $limit = isset($params['limit']) ? $params['limit'] : 0;
     $offset = isset($params['offset']) ? $params['offset'] : 0;
 
-    $db->sql_exec($sql, $limit, $offset);
+    $db->sqlExec($sql, $limit, $offset);
 
-    return $db->get_array('id');
+    return $db->getArray('id');
   }
 
-  public function find_by_id($id)
+  public function findById($id)
   {
     return $this->find(array(), array('conditions' => array(' AND sso.id=' . $id)));
   }
 
-  protected function _add_sql($add_sql, $type)//refactor!!!
+  protected function _addSql($add_sql, $type)//refactor!!!
   {
     if (isset($add_sql[$type]))
       return implode(' ', $add_sql[$type]);
@@ -85,7 +85,7 @@ class site_objects_raw_finder implements data_finder
       return '';
   }
 
-  protected function _build_order_sql($order_array)
+  protected function _buildOrderSql($order_array)
   {
     $columns = array();
 
@@ -95,25 +95,25 @@ class site_objects_raw_finder implements data_finder
     return implode(', ', $columns);
   }
 
-  public function find_count($sql_params=array())//refactor!!!
+  public function findCount($sql_params=array())//refactor!!!
   {
     $sql = sprintf(self :: RAW_COUNT_STMT,
-                  $this->_add_sql($sql_params, 'tables'),
-                  $this->_add_sql($sql_params, 'conditions'),
-                  $this->_add_sql($sql_params, 'group')
+                  $this->_addSql($sql_params, 'tables'),
+                  $this->_addSql($sql_params, 'conditions'),
+                  $this->_addSql($sql_params, 'group')
                 );
 
     $db = Limb :: toolkit()->getDB();
 
-    $db->sql_exec($sql);
+    $db->sqlExec($sql);
 
     if (!isset($sql_params['group']))
     {
-      $arr = $db->fetch_row();
+      $arr = $db->fetchRow();
       return (int)$arr['count'];
     }
     else
-      return $db->count_selected_rows();
+      return $db->countSelectedRows();
   }
 }
 

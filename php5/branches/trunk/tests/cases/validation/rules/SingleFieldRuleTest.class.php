@@ -8,15 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/rule_test.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(dirname(__FILE__) . '/RuleTest.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class single_field_rule_test extends rule_test
+class SingleFieldRuleTest extends RuleTest
 {
-  function test_init()
+  function testInit()
   {
-    $r = new single_field_rule('test');
-    $this->assertEqual($r->get_field_name(), 'test');
+    $r = new SingleFieldRule('test');
+    $this->assertEqual($r->getFieldName(), 'test');
   }
 }
 

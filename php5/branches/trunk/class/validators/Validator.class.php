@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/error_list.class.php');
+require_once(LIMB_DIR . '/class/validators/ErrorList.class.php');
 
-class validator
+class Validator
 {
   protected $rules = array();
 
   protected $is_valid = true;
 
-  public function add_rule($rule)
+  public function addRule($rule)
   {
     $this->rules[] = $rule;
   }
 
-  protected function _get_error_list()
+  protected function _getErrorList()
   {
-    return error_list :: instance();
+    return ErrorList :: instance();
   }
 
-  public function is_valid()
+  public function isValid()
   {
     return $this->is_valid;
   }
@@ -35,24 +35,24 @@ class validator
   {
     foreach($this->rules as $key => $rule)
     {
-      resolve_handle($this->rules[$key]);
+      resolveHandle($this->rules[$key]);
 
-      $this->rules[$key]->set_error_list($this->_get_error_list());
+      $this->rules[$key]->setErrorList($this->_getErrorList());
       $this->rules[$key]->validate($dataspace);
-      $this->is_valid = (bool)($this->is_valid & $this->rules[$key]->is_valid());
+      $this->is_valid = (bool)($this->is_valid & $this->rules[$key]->isValid());
     }
     return $this->is_valid;
   }
 
-  public function get_rules()
+  public function getRules()
   {
     return $this->rules;
   }
 
-  public function add_error($field_name, $error, $params=array())
+  public function addError($field_name, $error, $params=array())
   {
-    $error_list = $this->_get_error_list();
-    $error_list->add_error($field_name, $error, $params);
+    $error_list = $this->_getErrorList();
+    $error_list->addError($field_name, $error, $params);
   }
 }
 

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
-class one_table_object_db_table extends db_table
+class OneTableObjectDbTable extends DbTable
 {
-  protected function _define_columns()
+  protected function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),

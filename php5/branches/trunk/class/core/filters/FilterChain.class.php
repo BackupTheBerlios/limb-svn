@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class filter_chain
+class FilterChain
 {
   protected $filters = array();
   protected $counter = 0;
@@ -23,16 +23,16 @@ class filter_chain
     $this->response = $response;
   }
 
-  public function register_filter($filter)
+  public function registerFilter($filter)
   {
     $this->filters[] = $filter;
   }
 
-  public function has_filter($filter_class)
+  public function hasFilter($filter_class)
   {
     foreach(array_keys($this->filters) as $key)
     {
-      resolve_handle($this->filters[$key]);
+      resolveHandle($this->filters[$key]);
       if(get_class($this->filters[$key]) == $filter_class)
         return true;
     }
@@ -46,7 +46,7 @@ class filter_chain
 
     if(isset($this->filters[$this->counter]))
     {
-      resolve_handle($this->filters[$this->counter]);
+      resolveHandle($this->filters[$this->counter]);
       $this->filters[$this->counter]->run($this, $this->request, $this->response);
     }
   }
@@ -57,7 +57,7 @@ class filter_chain
 
     if(sizeof($this->filters) > 0)
     {
-      resolve_handle($this->filters[0]);
+      resolveHandle($this->filters[0]);
       $this->filters[0]->run($this, $this->request, $this->response);
     }
   }

@@ -11,7 +11,7 @@
 /**
 * Base class for runtime components that output XML tags
 */
-class tag_component extends component
+class TagComponent extends Component
 {
   /**
   * Array of XML attributes
@@ -21,7 +21,7 @@ class tag_component extends component
   /**
   * Returns the value of the ID attribute
   */
-  public function get_client_id()
+  public function getClientId()
   {
     if (isset($this->attributes['id']))
       return $this->attributes['id'];
@@ -30,7 +30,7 @@ class tag_component extends component
   /**
   * Sets an attribute
   */
-  public function set_attribute($attrib, $value)
+  public function setAttribute($attrib, $value)
   {
     $this->attributes[$attrib] = $value;
   }
@@ -38,13 +38,13 @@ class tag_component extends component
   /**
   * Returns the value of an attribute, given it's name
   */
-  public function get_attribute($attrib)
+  public function getAttribute($attrib)
   {
     if (isset($this->attributes[$attrib]))
       return $this->attributes[$attrib];
   }
 
-  public function unset_attribute($attrib)
+  public function unsetAttribute($attrib)
   {
     if (isset($this->attributes[$attrib]))
       unset($this->attributes[$attrib]);
@@ -53,7 +53,7 @@ class tag_component extends component
   /**
   * Check to see whether a named attribute exists
   */
-  public function has_attribute($attrib)
+  public function hasAttribute($attrib)
   {
     return array_key_exists($attrib, $this->attributes);
   }
@@ -63,7 +63,7 @@ class tag_component extends component
   * htmlspecialchars to convert entities in values. Called by
   * a compiled template
   */
-  public function render_attributes()
+  public function renderAttributes()
   {
     foreach ($this->attributes as $name => $value)
     {

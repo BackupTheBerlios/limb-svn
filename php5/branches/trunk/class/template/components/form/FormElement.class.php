@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tag_component.class.php');
-require_once(LIMB_DIR . '/class/validators/error_list.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace_registry.class.php');
+require_once(LIMB_DIR . '/class/template/TagComponent.class.php');
+require_once(LIMB_DIR . '/class/validators/ErrorList.class.php');
+require_once(LIMB_DIR . '/class/core/DataspaceRegistry.class.php');
 
 /**
 * Base class for concrete form elements
 */
-abstract class form_element extends tag_component
+abstract class FormElement extends TagComponent
 {
   /**
   * Whether the form element has validated successfully (default TRUE)
@@ -43,7 +43,7 @@ abstract class form_element extends tag_component
   * set, returns either the title, alt or name attribute (in that order
   * of preference, defined for the tag
   */
-  public function get_field_name()
+  public function getFieldName()
   {
     if (isset($this->display_name))
     {
@@ -63,7 +63,7 @@ abstract class form_element extends tag_component
     }
   }
 
-  public function attach_form_prefix($state = true)
+  public function attachFormPrefix($state = true)
   {
     $prev = $this->attach_form_prefix;
     $this->attach_form_prefix = $state;
@@ -73,7 +73,7 @@ abstract class form_element extends tag_component
   /**
   * Returns true if the form element is in an error state
   */
-  public function is_valid()
+  public function isValid()
   {
     return !$this->is_valid;
   }
@@ -82,7 +82,7 @@ abstract class form_element extends tag_component
   * Puts the element into the error state and assigns the error class or
   * style attributes, if the corresponding member vars have a value
   */
-  public function set_error()
+  public function setError()
   {
     $this->is_valid = false;
     if (isset($this->error_class))
@@ -99,35 +99,35 @@ abstract class form_element extends tag_component
   * Returns the value of the form element
   * (the contents of the value attribute)
   */
-  public function get_value()
+  public function getValue()
   {
-    $form_component = $this->find_parent_by_class('form_component');
+    $form_component = $this->findParentByClass('form_component');
 
-    $dataspace = dataspace_registry :: get($form_component->attributes['name']);
+    $dataspace = DataspaceRegistry :: get($form_component->attributes['name']);
 
     if(!isset($this->attributes['name']))
-      debug :: write_warning("form element 'name' attribute not set:" . $this->get_server_id());
+      Debug :: writeWarning("form element 'name' attribute not set:" . $this->getServerId());
 
-    return $dataspace->get_by_index_string($this->_make_index_name($this->attributes['name']));
+    return $dataspace->getByIndexString($this->_makeIndexName($this->attributes['name']));
   }
 
-  public function set_value($value)
+  public function setValue($value)
   {
-    $form_component = $this->find_parent_by_class('form_component');
+    $form_component = $this->findParentByClass('form_component');
 
-    $dataspace = dataspace_registry :: get($form_component->attributes['name']);
+    $dataspace = DataspaceRegistry :: get($form_component->attributes['name']);
 
     if(!isset($this->attributes['name']))
-      debug :: write_warning("form element 'name' attribute not set:" . $this->get_server_id());
+      Debug :: writeWarning("form element 'name' attribute not set:" . $this->getServerId());
 
-    $dataspace->set_by_index_string($this->_make_index_name($this->attributes['name']), $value);
+    $dataspace->setByIndexString($this->_makeIndexName($this->attributes['name']), $value);
   }
 
-  public function render_errors()
+  public function renderErrors()
   {
-    $error_list = error_list :: instance();
+    $error_list = ErrorList :: instance();
 
-    if($errors = $error_list->get_errors($this->id))
+    if($errors = $error_list->getErrors($this->id))
     {
       echo '<script language="javascript">';
 
@@ -140,34 +140,34 @@ abstract class form_element extends tag_component
     }
   }
 
-  public function render_js_validation()
+  public function renderJsValidation()
   {
     echo '';
   }
 
-  protected function _make_index_name($name)
+  protected function _makeIndexName($name)
   {
     return preg_replace('/^([^\[\]]+)(\[.*\])*$/', "[\\1]\\2", $name);
   }
 
-  protected function _process_name_attribute($value)
+  protected function _processNameAttribute($value)
   {
-    $form_component = $this->find_parent_by_class('form_component');
+    $form_component = $this->findParentByClass('form_component');
 
     $form_name = $form_component->attributes['name'];
 
-    return $form_name . $this->_make_index_name($value);
+    return $form_name . $this->_makeIndexName($value);
   }
 
-  public function render_attributes()
+  public function renderAttributes()
   {
-    $this->_process_localized_value();
+    $this->_processLocalizedValue();
 
     foreach ($this->attributes as $attrib_name => $value)
     {
-      if($this->attach_form_prefix && $attrib_name == 'name')
+      if($this->attach_form_prefix &&  $attrib_name == 'name')
       {
-        $value = $this->_process_name_attribute($value);
+        $value = $this->_processNameAttribute($value);
       }
 
       if (!is_null($value))
@@ -182,7 +182,7 @@ abstract class form_element extends tag_component
     }
   }
 
-  protected function _process_localized_value()
+  protected function _processLocalizedValue()
   {
     if (!isset($this->attributes['locale_value']))
       return;
@@ -201,11 +201,11 @@ abstract class form_element extends tag_component
 
     if(isset($this->attributes['locale_file']))
     {
-      $this->attributes['value'] = strings :: get($this->attributes['locale_value'], $this->attributes['locale_file'], $locale_constant);
+      $this->attributes['value'] = Strings :: get($this->attributes['locale_value'], $this->attributes['locale_file'], $locale_constant);
       unset($this->attributes['locale_file']);
     }
     else
-      $this->attributes['value'] = strings :: get($this->attributes['locale_value'], 'common', $locale_constant);
+      $this->attributes['value'] = Strings :: get($this->attributes['locale_value'], 'common', $locale_constant);
 
     unset($this->attributes['locale_value']);
   }

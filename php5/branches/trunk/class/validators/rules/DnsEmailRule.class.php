@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/email_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/EmailRule.class.php');
 
 /**
 * check for a valid email address and verify that a mail server
 * DNS record exists for this address.
 *
 */
-class dns_email_rule extends email_rule
+class DnsEmailRule extends EmailRule
 {
-  protected function check_domain($value)
+  protected function checkDomain($value)
   {
-    parent::check_domain($value);
+    parent::checkDomain($value);
 
-    if ($this->is_valid())
+    if ($this->isValid())
     {
       if (!checkdnsrr($value, "MX"))
       {

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class invalid_value_rule extends single_field_rule
+class InvalidValueRule extends SingleFieldRule
 {
   protected $invalid_value;
 
@@ -31,7 +31,7 @@ class invalid_value_rule extends single_field_rule
 
     if ($value == $invalid_value)
     {
-      $this->error(strings :: get('error_invalid_value', 'error'));
+      $this->error(Strings :: get('error_invalid_value', 'error'));
     }
   }
 }

@@ -8,39 +8,39 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class richedit_tag_info
+class RicheditTagInfo
 {
   public $tag = 'richedit';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'richedit_tag';
 }
 
-register_tag(new richedit_tag_info());
+registerTag(new RicheditTagInfo());
 
-class richedit_tag extends control_tag
+class RicheditTag extends ControlTag
 {
   function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/richedit_component';
   }
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'textarea';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    $code->write_php($this->get_component_ref_code() . '->init_richedit();');
+    $code->writePhp($this->getComponentRefCode() . '->init_richedit();');
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php($this->get_component_ref_code() . '->render_contents();');
+    $code->writePhp($this->getComponentRefCode() . '->render_contents();');
   }
 }
 

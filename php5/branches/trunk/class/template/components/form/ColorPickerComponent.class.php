@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.php');
 
-class color_picker_component extends input_form_element
+class ColorPickerComponent extends InputFormElement
 {
-  public function init_color_picker()
+  public function initColorPicker()
   {
     if (defined('COLOR_PICKER_LOAD_SCRIPT'))
       return;
 
     echo "<script type='text/javascript' src='/shared/js/color_picker.js'></script>";
 
-    $this->set_attribute('onChange', "relateColor(this.id, this.value)");
-    if(!$this->get_attribute('size'))
-      $this->set_attribute('size', "10");
+    $this->setAttribute('onChange', "relateColor(this.id, this.value)");
+    if(!$this->getAttribute('size'))
+      $this->setAttribute('size', "10");
 
     define('COLOR_PICKER_LOAD_SCRIPT',1);
   }
 
-  public function render_color_picker()
+  public function renderColorPicker()
   {
-    $id = $this->get_attribute('id');
+    $id = $this->getAttribute('id');
 
     echo "&nbsp;<a href=\"javascript:pickColor('{$id}');\" id=\"{$id}_picker\"
           style=\"border: 1px solid #000000; font-family:Verdana; font-size:10px;

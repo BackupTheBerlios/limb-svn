@@ -8,71 +8,71 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/error/debug.class.php');
+require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
 
-debug :: add_timing_point('start');
+Debug :: addTimingPoint('start');
 
-require_once(LIMB_DIR . '/class/core/limb.class.php');
+require_once(LIMB_DIR . '/class/core/Limb.class.php');
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
-require_once(LIMB_DIR . '/class/core/filters/filter_chain.class.php');
+require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
 require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
-require_once(LIMB_DIR . '/class/etc/message_box.class.php');
+require_once(LIMB_DIR . '/class/etc/MessageBox.class.php');
 
-class limb_application
+class LimbApplication
 {
-  protected function _load_packages()
+  protected function _loadPackages()
   {
-    include_once(LIMB_DIR . '/class/core/packages_info.class.php');
-    packages_info :: instance()->load_packages();
+    include_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
+    PackagesInfo :: instance()->loadPackages();
   }
 
-  protected function _create_toolkit()
+  protected function _createToolkit()
   {
-    include_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
+    include_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
     return new BaseLimbToolkit();
   }
 
-  protected function _register_toolkit()
+  protected function _registerToolkit()
   {
-    Limb :: registerToolkit($this->_create_toolkit());
+    Limb :: registerToolkit($this->_createToolkit());
   }
 
-  protected function _register_filters($filter_chain)
+  protected function _registerFilters($filter_chain)
   {
     $filters_dir = LIMB_DIR . '/class/core/filters/';
 
-    $filter_chain->register_filter($filters_dir . 'session_startup_filter');
-    $filter_chain->register_filter($filters_dir . 'locale_definition_filter');
-    $filter_chain->register_filter($filters_dir . 'authentication_filter');
-    $filter_chain->register_filter($filters_dir . 'full_page_cache_filter');
-    $filter_chain->register_filter($filters_dir . 'image_cache_filter');
-    $filter_chain->register_filter($filters_dir . 'site_object_controller_filter');
+    $filter_chain->registerFilter($filters_dir . 'session_startup_filter');
+    $filter_chain->registerFilter($filters_dir . 'locale_definition_filter');
+    $filter_chain->registerFilter($filters_dir . 'authentication_filter');
+    $filter_chain->registerFilter($filters_dir . 'full_page_cache_filter');
+    $filter_chain->registerFilter($filters_dir . 'image_cache_filter');
+    $filter_chain->registerFilter($filters_dir . 'site_object_controller_filter');
   }
 
-  protected function _register_file_resolvers()
+  protected function _registerFileResolvers()
   {
     $resolvers_dir = LIMB_DIR . '/class/core/file_resolvers/';
 
-    include_once($resolvers_dir . 'package_file_resolver.class.php');
-    include_once($resolvers_dir . 'caching_file_resolver.class.php');
-    include_once($resolvers_dir . 'ini_file_resolver.class.php');
-    include_once($resolvers_dir . 'action_file_resolver.class.php');
-    include_once($resolvers_dir . 'strings_file_resolver.class.php');
-    include_once($resolvers_dir . 'template_file_resolver.class.php');
-    include_once($resolvers_dir . 'controller_file_resolver.class.php');
-    include_once($resolvers_dir . 'db_table_file_resolver.class.php');
-    include_once($resolvers_dir . 'datasource_file_resolver.class.php');
-    include_once($resolvers_dir . 'site_object_file_resolver.class.php');
+    include_once($resolvers_dir . 'PackageFileResolver.class.php');
+    include_once($resolvers_dir . 'CachingFileResolver.class.php');
+    include_once($resolvers_dir . 'IniFileResolver.class.php');
+    include_once($resolvers_dir . 'ActionFileResolver.class.php');
+    include_once($resolvers_dir . 'StringsFileResolver.class.php');
+    include_once($resolvers_dir . 'TemplateFileResolver.class.php');
+    include_once($resolvers_dir . 'ControllerFileResolver.class.php');
+    include_once($resolvers_dir . 'DbTableFileResolver.class.php');
+    include_once($resolvers_dir . 'DatasourceFileResolver.class.php');
+    include_once($resolvers_dir . 'SiteObjectFileResolver.class.php');
 
-    register_file_resolver('ini',                 new caching_file_resolver(new ini_file_resolver(new package_file_resolver())));
-    register_file_resolver('action',              new caching_file_resolver(new action_file_resolver(new package_file_resolver())));
-    register_file_resolver('strings',             new caching_file_resolver(new strings_file_resolver(new package_file_resolver())));
-    register_file_resolver('template',            new caching_file_resolver(new template_file_resolver(new package_file_resolver())));
-    register_file_resolver('controller',          new caching_file_resolver(new controller_file_resolver(new package_file_resolver())));
-    register_file_resolver('db_table',            new caching_file_resolver(new db_table_file_resolver(new package_file_resolver())));
-    register_file_resolver('datasource',          new caching_file_resolver(new datasource_file_resolver(new package_file_resolver())));
-    register_file_resolver('site_object',         new caching_file_resolver(new site_object_file_resolver(new package_file_resolver())));
+    registerFileResolver('ini',                 new CachingFileResolver(new IniFileResolver(new PackageFileResolver())));
+    registerFileResolver('action',              new CachingFileResolver(new ActionFileResolver(new PackageFileResolver())));
+    registerFileResolver('strings',             new CachingFileResolver(new StringsFileResolver(new PackageFileResolver())));
+    registerFileResolver('template',            new CachingFileResolver(new TemplateFileResolver(new PackageFileResolver())));
+    registerFileResolver('controller',          new CachingFileResolver(new ControllerFileResolver(new PackageFileResolver())));
+    registerFileResolver('db_table',            new CachingFileResolver(new DbTableFileResolver(new PackageFileResolver())));
+    registerFileResolver('datasource',          new CachingFileResolver(new DatasourceFileResolver(new PackageFileResolver())));
+    registerFileResolver('site_object',         new CachingFileResolver(new SiteObjectFileResolver(new PackageFileResolver())));
   }
 
   public function run()
@@ -83,7 +83,7 @@ class limb_application
     }
     catch(LimbException $e)
     {
-      debug :: write_exception($e);
+      Debug :: writeException($e);
     }
     catch(Exception $e)
     {
@@ -99,28 +99,28 @@ class limb_application
 
   protected function _doRun()
   {
-    $this->_register_file_resolvers();
+    $this->_registerFileResolvers();
 
-    $this->_register_toolkit();
+    $this->_registerToolkit();
 
-    $this->_load_packages();
+    $this->_loadPackages();
 
     $request = Limb :: toolkit()->getRequest();
     $response = Limb :: toolkit()->getResponse();
 
-    $filter_chain = new filter_chain($request, $response);
+    $filter_chain = new FilterChain($request, $response);
 
-    $this->_register_filters($filter_chain);
+    $this->_registerFilters($filter_chain);
 
     $filter_chain->process();
 
-    if( $response->get_content_type() == 'text/html' &&
-        $response->get_status() == 200)//only 200?
+    if( $response->getContentType() == 'text/html' && 
+        $response->getStatus() == 200)//only 200?
     {
-      if (debug :: is_console_enabled())
-        $response->write(debug :: parse_html_console());
+      if (Debug :: isConsoleEnabled())
+        $response->write(Debug :: parseHtmlConsole());
 
-      $response->write(message_box :: parse());//It definitely should be somewhere else!
+      $response->write(MessageBox :: parse());//It definitely should be somewhere else!
     }
 
     $response->commit();

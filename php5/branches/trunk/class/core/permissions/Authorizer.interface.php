@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 
-interface authorizer
+interface Authorizer
 {
-  public function get_accessible_object_ids($ids, $action = 'display');
+  public function getAccessibleObjectIds($ids, $action = 'display');
 
-  public function assign_actions_to_objects(&$objects_data);
+  public function assignActionsToObjects(&$objects_data);
 }
 ?>

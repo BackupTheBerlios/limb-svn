@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolverDecorator.class.php');
 
-class data_mapper_file_resolver extends file_resolver_decorator
+class DataMapperFileResolver extends FileResolverDecorator
 {
   public function resolve($class_path, $params = array())
   {

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/site_objects_datasource.class.php');
+require_once(dirname(__FILE__) . '/SiteObjectsDatasource.class.php');
 
-class single_object_datasource extends site_objects_datasource
+class SingleObjectDatasource extends SiteObjectsDatasource
 {
   protected $path;
   protected $node_id;
@@ -21,17 +21,17 @@ class single_object_datasource extends site_objects_datasource
     $this->reset();
   }
 
-  public function set_path($path)
+  public function setPath($path)
   {
     $this->path = $path;
   }
 
-  public function set_node_id($node_id)
+  public function setNodeId($node_id)
   {
     $this->node_id = $node_id;
   }
 
-  public function set_object_id($object_id)
+  public function setObjectId($object_id)
   {
     $this->object_id = $object_id;
   }
@@ -45,34 +45,34 @@ class single_object_datasource extends site_objects_datasource
     $this->object_id = null;
   }
 
-  public function get_object_ids()
+  public function getObjectIds()
   {
     if ($this->object_id)
       return array($this->object_id);
 
-    if ($this->node_id && $object_id = $this->_get_object_id_by_node_id())
+    if ($this->node_id &&  $object_id = $this->_getObjectIdByNodeId())
       return array($object_id);
 
-    if ($this->path && $object_id = $this->_get_object_id_by_path())
+    if ($this->path &&  $object_id = $this->_getObjectIdByPath())
       return array($object_id);
 
     return array();
   }
 
-  protected function _get_object_id_by_node_id()
+  protected function _getObjectIdByNodeId()
   {
     $tree = Limb :: toolkit()->getTree();
-    $node = $tree->get_node($this->node_id);
+    $node = $tree->getNode($this->node_id);
     if (!$node)
       return null;
     else
       return $node['object_id'];
   }
 
-  protected function _get_object_id_by_path()
+  protected function _getObjectIdByPath()
   {
     $tree = Limb :: toolkit()->getTree();
-    $node = $tree->get_node_by_path($this->path);
+    $node = $tree->getNodeByPath($this->path);
     if (!$node)
       return null;
     else

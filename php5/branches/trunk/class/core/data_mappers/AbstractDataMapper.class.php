@@ -9,34 +9,34 @@
 *
 ***********************************************************************************/
 
-abstract class abstract_data_mapper
+abstract class AbstractDataMapper
 {
   //current SimpleTest has limited support for php5 features,
   //error pops up when abstract ones are partially mocked :(
 
-  /*abstract*/ protected function _create_domain_object(){}
+  /*abstract*/ protected function _createDomainObject(){}
 
-  /*abstract*/ protected function _get_finder(){}
+  /*abstract*/ protected function _getFinder(){}
 
-  /*abstract*/ protected function _do_load($result_set, $domain_object){}
+  /*abstract*/ protected function _doLoad($result_set, $domain_object){}
 
-  public function find_by_id($id)
+  public function findById($id)
   {
-    $result_set = $this->_get_finder()->find_by_id($id);
+    $result_set = $this->_getFinder()->findById($id);
 
     if (!$result_set)
       return null;
 
-    $domain_object = $this->_create_domain_object();
+    $domain_object = $this->_createDomainObject();
 
-    $this->_do_load($result_set, $domain_object);
+    $this->_doLoad($result_set, $domain_object);
 
     return $domain_object;
   }
 
   public function save($domain_object)
   {
-    if($domain_object->get_id())
+    if($domain_object->getId())
       $this->update($domain_object);
     else
       $this->insert($domain_object);

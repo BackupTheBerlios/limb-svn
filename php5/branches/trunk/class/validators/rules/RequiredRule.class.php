@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class required_rule extends single_field_rule
+class RequiredRule extends SingleFieldRule
 {
   public function validate($dataspace)
   {
     $value = $dataspace->get($this->field_name);
 
-    if (!isset($value) || $value === '')
+    if (!isset($value) ||  $value === '')
     {
-      $this->error(strings :: get('error_required', 'error'));
+      $this->error(Strings :: get('error_required', 'error'));
     }
   }
 }

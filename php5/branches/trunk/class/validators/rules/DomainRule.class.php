@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/SingleFieldRule.class.php');
 
-class domain_rule extends single_field_rule
+class DomainRule extends SingleFieldRule
 {
   protected function check($value)
   {
@@ -19,7 +19,7 @@ class domain_rule extends single_field_rule
     // We can't be too restrictive by default.
     if (!preg_match("/^[a-zA-Z0-9.-]+$/i", $value))
     {
-      $this->error(strings :: get('bad_domain_characters', 'error'));
+      $this->error(Strings :: get('bad_domain_characters', 'error'));
     }
 
     if (is_integer(strpos($value, '--', $value)))
@@ -56,7 +56,7 @@ class domain_rule extends single_field_rule
         $this->error('BAD_DOMAIN_SEGMENT_TOO_LARGE',
           array('segment' => $dseg));
       }
-      if ($dseg{$len-1} == '-' || $dseg{0} == '-')
+      if ($dseg{$len-1} == '-' ||  $dseg{0} == '-')
       {
         $this->error('BAD_DOMAIN_HYPHENS', array('segment' => $dseg));
       }

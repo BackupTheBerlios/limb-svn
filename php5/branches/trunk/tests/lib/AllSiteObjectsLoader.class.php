@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/tests/lib/site_objects_loader.class.php');
-require_once(LIMB_DIR . '/class/lib/system/fs.class.php');
+require_once(LIMB_DIR . '/tests/lib/SiteObjectsLoader.class.php');
+require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 
-class all_site_objects_loader extends site_objects_loader
+class AllSiteObjectsLoader extends SiteObjectsLoader
 {
-  function get_classes_list()
+  function getClassesList()
   {
     $contents = array_merge(
-      fs :: ls(LIMB_DIR . '/class/core/site_objects/'),
-      fs :: ls(LIMB_APP_DIR . '/class/core/site_objects/')
+      Fs :: ls(LIMB_DIR . '/class/core/site_objects/'),
+      Fs :: ls(LIMB_APP_DIR . '/class/core/site_objects/')
     );
 
     $classes_list = array();

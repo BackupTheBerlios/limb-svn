@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php');
 
-class input_radio_component extends form_element
+class InputRadioComponent extends FormElement
 {
   /**
   * Overrides then calls with the parent render_attributes() method dealing
   * with the special case of the checked attribute
   */
-  public function render_attributes()
+  public function renderAttributes()
   {
-    $value = $this->get_value();
+    $value = $this->getValue();
 
-    if (isset($this->attributes['value']) && $value == $this->attributes['value'])
+    if (isset($this->attributes['value']) &&  $value == $this->attributes['value'])
     {
       $this->attributes['checked'] = 1;
     }
@@ -28,7 +28,7 @@ class input_radio_component extends form_element
     {
       unset($this->attributes['checked']);
     }
-    parent::render_attributes();
+    parent::renderAttributes();
   }
 }
 ?>

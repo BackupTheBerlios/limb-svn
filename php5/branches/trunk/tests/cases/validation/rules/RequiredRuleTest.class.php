@@ -8,88 +8,88 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/rule.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/required_rule.class.php');
+require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/Rule.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/RequiredRule.class.php');
 
-class required_rule_test extends single_field_rule_test
+class RequiredRuleTest extends SingleFieldRuleTest
 {
-  function test_required_rule_true()
+  function testRequiredRuleTrue()
   {
-    $this->validator->add_rule(new required_rule('testfield'));
+    $this->validator->addRule(new RequiredRule('testfield'));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', true);
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_required_rule_zero()
+  function testRequiredRuleZero()
   {
-    $this->validator->add_rule(new required_rule('testfield'));
+    $this->validator->addRule(new RequiredRule('testfield'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', 0);
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_required_rule_zero2()
+  function testRequiredRuleZero2()
   {
-    $this->validator->add_rule(new required_rule('testfield'));
+    $this->validator->addRule(new RequiredRule('testfield'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', '0');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_required_rule_false()
+  function testRequiredRuleFalse()
   {
-    $this->validator->add_rule(new required_rule('testfield'));
+    $this->validator->addRule(new RequiredRule('testfield'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', false);
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_required_rule_zero_length_string()
+  function testRequiredRuleZeroLengthString()
   {
-    $this->validator->add_rule(new required_rule('testfield'));
+    $this->validator->addRule(new RequiredRule('testfield'));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
     $data->set('testfield', '');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('error_required', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('error_required', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function test_required_rule_failure()
+  function testRequiredRuleFailure()
   {
-    $this->validator->add_rule(new required_rule('testfield'));
+    $this->validator->addRule(new RequiredRule('testfield'));
 
-    $data = &new dataspace();
+    $data = &new Dataspace();
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('error_required', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('error_required', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 }
 

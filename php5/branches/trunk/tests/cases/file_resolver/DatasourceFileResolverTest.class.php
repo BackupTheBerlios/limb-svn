@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/base_package_file_resolver_test.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver.class.php');
+require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/DatasourceFileResolver.class.php');
 
-class datasource_file_resolver_test extends base_package_file_resolver_test
+class DatasourceFileResolverTest extends BasePackageFileResolverTest
 {
-  function & _define_resolver()
+  function & _defineResolver()
   {
-    return new datasource_file_resolver(new package_file_resolver());
+    return new DatasourceFileResolver(new PackageFileResolver());
   }
 
-  function test_resolve_datasource_file_from_limb()
+  function testResolveDatasourceFileFromLimb()
   {
     $this->assertEqual($this->resolver->resolve('site_objects_datasource'), LIMB_DIR . '/class/core/datasources/site_objects_datasource.class.php');
   }
 
-  function test_resolve_datasource_file_ok()
+  function testResolveDatasourceFileOk()
   {
     $this->assertEqual($this->resolver->resolve('test_datasource'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/datasources/test_datasource.class.php');
   }
 
-  function test_resolve_datasource_file_failed()
+  function testResolveDatasourceFileFailed()
   {
     try
     {

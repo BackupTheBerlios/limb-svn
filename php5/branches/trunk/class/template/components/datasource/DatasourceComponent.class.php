@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/array_dataset.class.php');
-require_once(LIMB_DIR . '/class/template/component.class.php');
+require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
+require_once(LIMB_DIR . '/class/template/Component.class.php');
 
-class datasource_component extends component
+class DatasourceComponent extends Component
 {
   protected $datasource_path;
   protected $datasource;
@@ -19,12 +19,12 @@ class datasource_component extends component
   protected $navigator_id;
   protected $parameters = array();
 
-  public function set_datasource_path($datasource_path)
+  public function setDatasourcePath($datasource_path)
   {
     $this->datasource_path = $datasource_path;
   }
 
-  protected function _get_datasource()
+  protected function _getDatasource()
   {
     if ($this->datasource)
       return $this->datasource;
@@ -41,7 +41,7 @@ class datasource_component extends component
     return $this->datasource;
   }
 
-  protected function _set_targets($targets)
+  protected function _setTargets($targets)
   {
     if(is_array($targets))
       $this->targets = $targets;
@@ -56,31 +56,31 @@ class datasource_component extends component
     }
   }
 
-  public function get_dataset()
+  public function getDataset()
   {
-    if ($result = $this->_get_datasource()->fetch())
-      return new array_dataset($result);
+    if ($result = $this->_getDatasource()->fetch())
+      return new ArrayDataset($result);
     else
-      return new empty_dataset();
+      return new EmptyDataset();
   }
 
-  public function set_parameter($name, $value)
+  public function setParameter($name, $value)
   {
     if($name == 'order')
-      $this->_set_order_parameters($value);
+      $this->_setOrderParameters($value);
     elseif($name == 'limit')
-      $this->_set_limit_parameters($value);
+      $this->_setLimitParameters($value);
     else
       $this->parameters[$name] = $value;
   }
 
-  public function get_parameter($name)
+  public function getParameter($name)
   {
     if(isset($this->parameters[$name]))
       return $this->parameters[$name];
   }
 
-  protected function _set_limit_parameters($limit_string)
+  protected function _setLimitParameters($limit_string)
   {
     $arr = explode(',', $limit_string);
 
@@ -93,7 +93,7 @@ class datasource_component extends component
       $this->parameters['offset'] = (int)$arr[1];
   }
 
-  protected function _set_order_parameters($order_string)
+  protected function _setOrderParameters($order_string)
   {
     $order_items = explode(',', $order_string);
     $order_pairs = array();
@@ -111,8 +111,8 @@ class datasource_component extends component
       else
         $sort = trim($arr[1]);
 
-      if(strtolower($sort) == 'asc' ||
-         strtolower($sort) == 'desc'||
+      if(strtolower($sort) == 'asc' || 
+         strtolower($sort) == 'desc' || 
          strtolower($sort) == 'rand()')
         $order_pairs[$field] = strtoupper($sort);
       else
@@ -123,39 +123,39 @@ class datasource_component extends component
       $this->parameters['order'] = $order_pairs;
   }
 
-  public function setup_navigator($navigator_id)
+  public function setupNavigator($navigator_id)
   {
     $this->navigator_id = $navigator_id;
 
-    if(!$navigator = $this->_get_navigator_component())
+    if(!$navigator = $this->_getNavigatorComponent())
       return null;
 
-    $limit = $navigator->get_items_per_page();
-    $this->set_parameter('limit', $limit);
+    $limit = $navigator->getItemsPerPage();
+    $this->setParameter('limit', $limit);
 
-    $navigator_id = 'page_' . $navigator->get_server_id();
+    $navigator_id = 'page_' . $navigator->getServerId();
 
     $request = Limb :: toolkit()->getRequest();
 
-    if ($request->has_attribute($navigator_id))
+    if ($request->hasAttribute($navigator_id))
     {
       $offset = ((int)$request->get($navigator_id)-1)*$limit;
-      $this->set_parameter('offset', $offset);
+      $this->setParameter('offset', $offset);
     }
 
-    $navigator->set_total_items($this->_get_datasource()->count_total());
+    $navigator->setTotalItems($this->_getDatasource()->countTotal());
   }
 
-  public function setup_targets($targets)
+  public function setupTargets($targets)
   {
-    $this->_set_targets($targets);
+    $this->_setTargets($targets);
 
-    $dataset = $this->get_dataset();
+    $dataset = $this->getDataset();
     foreach($this->targets as $target)
     {
-      if($target_component = $this->parent->find_child($target))
+      if($target_component = $this->parent->findChild($target))
       {
-        $target_component->register_dataset($dataset);
+        $target_component->registerDataset($dataset);
       }
       else
       {
@@ -165,12 +165,12 @@ class datasource_component extends component
     }
   }
 
-  protected function _get_navigator_component()
+  protected function _getNavigatorComponent()
   {
     if (!$this->navigator_id)
       return null;
 
-    if(!$navigator = $this->parent->find_child($this->navigator_id))
+    if(!$navigator = $this->parent->findChild($this->navigator_id))
       return null;
 
     return $navigator;

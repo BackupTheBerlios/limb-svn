@@ -8,21 +8,21 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class button_tag_info
+class ButtonTagInfo
 {
   public $tag = 'button';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'button_tag';
 }
 
-register_tag(new button_tag_info());
+registerTag(new ButtonTagInfo());
 
 /**
 * Compile time component for button tags
 */
-class button_tag extends control_tag
+class ButtonTag extends ControlTag
 {
   public function __construct()
   {

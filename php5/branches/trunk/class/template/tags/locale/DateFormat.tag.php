@@ -8,69 +8,69 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/compiler/server_component_tag.class.php');
+require_once(LIMB_DIR . '/class/template/compiler/ServerComponentTag.class.php');
 
-class locale_date_format_tag_info
+class LocaleDateFormatTagInfo
 {
   public $tag = 'locale:DATE_FORMAT';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'locale_date_format_tag';
 }
 
-register_tag(new locale_date_format_tag_info());
+registerTag(new LocaleDateFormatTagInfo());
 
-class locale_date_format_tag extends server_component_tag
+class LocaleDateFormatTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/locale_date_format_component';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    $code->write_php($this->get_component_ref_code() . '->prepare();');
+    $code->writePhp($this->getComponentRefCode() . '->prepare();');
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
     if(isset($this->attributes['hash_id']))
     {
 
       if(isset($this->attributes['locale_type']))
       {
-        $code->write_php(
-          $this->get_component_ref_code() . '->set_locale_type("' . $this->attributes['locale_type'] . '");');
+        $code->writePhp(
+          $this->getComponentRefCode() . '->set_locale_type("' . $this->attributes['locale_type'] . '");');
       }
 
       if(isset($this->attributes['type']))
       {
-        $code->write_php(
-          $this->get_component_ref_code() . '->set_date_type("' . $this->attributes['type'] . '");');
+        $code->writePhp(
+          $this->getComponentRefCode() . '->set_date_type("' . $this->attributes['type'] . '");');
       }
 
       if(!isset($this->attributes['date_format']))
-        $code->write_php(
-          $this->get_component_ref_code() . '->set_date(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"), DATE_SHORT_FORMAT_ISO);');
+        $code->writePhp(
+          $this->getComponentRefCode() . '->set_date(' . $this->getDataspaceRefCode() . '->get("' . $this->attributes['hash_id'] . '"), DATE_SHORT_FORMAT_ISO);');
       else
-        $code->write_php(
-          $this->get_component_ref_code() . '->set_date(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"), "' . $this->attributes['date_format'] . '");');
+        $code->writePhp(
+          $this->getComponentRefCode() . '->set_date(' . $this->getDataspaceRefCode() . '->get("' . $this->attributes['hash_id'] . '"), "' . $this->attributes['date_format'] . '");');
 
       if(isset($this->attributes['locale_format']))
       {
-        $code->write_php(
-          $this->get_component_ref_code() . '->set_locale_format_type("' . $this->attributes['locale_format'] . '");');
+        $code->writePhp(
+          $this->getComponentRefCode() . '->set_locale_format_type("' . $this->attributes['locale_format'] . '");');
       }
       elseif(isset($this->attributes['format']))
       {
-        $code->write_php(
-          $this->get_component_ref_code() . '->set_format_string("' . $this->attributes['format'] . '");');
+        $code->writePhp(
+          $this->getComponentRefCode() . '->set_format_string("' . $this->attributes['format'] . '");');
       }
 
-      $code->write_php(
-        $this->get_component_ref_code() . '->format();');
+      $code->writePhp(
+        $this->getComponentRefCode() . '->format();');
     }
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 }
 

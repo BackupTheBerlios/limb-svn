@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/use_view_command.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/UseViewCommand.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
 
-class use_view_command_test extends LimbTestCase
+class UseViewCommandTest extends LimbTestCase
 {
   var $toolkit;
 
@@ -31,9 +31,9 @@ class use_view_command_test extends LimbTestCase
     $this->toolkit->tally();
   }
 
-  function test_perform_ok()
+  function testPerformOk()
   {
-    $command = new use_view_command('/test.html');
+    $command = new UseViewCommand('/test.html');
 
     $handle = array(LIMB_DIR . '/class/template/template', '/test.html');
 

@@ -8,36 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/datasource/datasource_component.class.php');
-require_once(LIMB_DIR . '/class/template/components/list_component.class.php');
-require_once(LIMB_DIR . '/class/template/component.class.php');
-require_once(LIMB_DIR . '/class/template/components/pager_component.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/datasource.interface.php');
-require_once(LIMB_DIR . '/class/core/datasources/countable.interface.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/template/components/datasource/DatasourceComponent.class.php');
+require_once(LIMB_DIR . '/class/template/components/ListComponent.class.php');
+require_once(LIMB_DIR . '/class/template/Component.class.php');
+require_once(LIMB_DIR . '/class/template/components/PagerComponent.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/Datasource.interface.php');
+require_once(LIMB_DIR . '/class/core/datasources/Countable.interface.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
-class datasource_component_test_version implements datasource, countable
+class DatasourceComponentTestVersion implements Datasource, countable
 {
   public function fetch(){}
-  public function count_total(){}
-  public function set_limit($limit){}
-  public function set_offset($offset){}
-  public function set_order($order){}
+  public function countTotal(){}
+  public function setLimit($limit){}
+  public function setOffset($offset){}
+  public function setOrder($order){}
 }
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('component');
-Mock :: generate('list_component');
-Mock :: generate('datasource_component_test_version');
-Mock :: generate('pager_component');
-Mock :: generate('request');
+Mock :: generate('Component');
+Mock :: generate('ListComponent');
+Mock :: generate('DatasourceComponentTestVersion');
+Mock :: generate('PagerComponent');
+Mock :: generate('Request');
 
-Mock :: generatePartial('datasource_component',
-                        'datasource_component_setup_targets_test_version',
-                        array('get_dataset'));
+Mock :: generatePartial('DatasourceComponent',
+                        'DatasourceComponentSetupTargetsTestVersion',
+                        array('getDataset'));
 
-class datasource_component_test extends LimbTestCase
+class DatasourceComponentTest extends LimbTestCase
 {
   var $component;
   var $datasource;
@@ -49,14 +49,14 @@ class datasource_component_test extends LimbTestCase
   {
     $this->toolkit = new MockLimbToolkit($this);
 
-    $this->parent = new Mockcomponent($this);
+    $this->parent = new MockComponent($this);
 
-    $this->component = new datasource_component();
+    $this->component = new DatasourceComponent();
     $this->component->parent = $this->parent;
 
-    $this->request = new Mockrequest($this);
+    $this->request = new MockRequest($this);
 
-    $this->datasource = new Mockdatasource_component_test_version($this);
+    $this->datasource = new MockDatasourceComponentTestVersion($this);
 
     $this->toolkit->setReturnValue('getRequest', $this->request);
 
@@ -73,199 +73,199 @@ class datasource_component_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_set_get_parameter()
+  function testSetGetParameter()
   {
-    $this->component->set_parameter('test', 'test parameter');
-    $this->assertEqual($this->component->get_parameter('test'), 'test parameter');
+    $this->component->setParameter('test', 'test parameter');
+    $this->assertEqual($this->component->getParameter('test'), 'test parameter');
   }
 
-  function test_get_nonexistent_parameter()
+  function testGetNonexistentParameter()
   {
-    $this->assertNull($this->component->get_parameter('test'));
+    $this->assertNull($this->component->getParameter('test'));
   }
 
-  function test_set_order_parameter1()
+  function testSetOrderParameter1()
   {
-    $this->component->set_parameter('order', '');
-    $this->assertNull($this->component->get_parameter('order'));
+    $this->component->setParameter('order', '');
+    $this->assertNull($this->component->getParameter('order'));
   }
 
-  function test_set_order_parameter2()
+  function testSetOrderParameter2()
   {
-    $this->component->set_parameter('order', 'c1 =AsC, c2 = DeSC , c3=Junky');
-    $this->assertEqual($this->component->get_parameter('order'),
+    $this->component->setParameter('order', 'c1 =AsC, c2 = DeSC , c3=Junky');
+    $this->assertEqual($this->component->getParameter('order'),
                        array('c1' => 'ASC', 'c2' => 'DESC', 'c3' => 'ASC'));
   }
 
-  function test_set_order_parameter3()
+  function testSetOrderParameter3()
   {
-    $this->component->set_parameter('order', 'c1, c2 = Rand() ');//!!!mysql only
-    $this->assertEqual($this->component->get_parameter('order'),
+    $this->component->setParameter('order', 'c1, c2 = Rand() ');//!!!mysql only
+    $this->assertEqual($this->component->getParameter('order'),
                        array('c1' => 'ASC', 'c2' => 'RAND()'));
   }
 
-  function test_limit_parameter1()
+  function testLimitParameter1()
   {
-    $this->component->set_parameter('limit', '10');
-    $this->assertEqual($this->component->get_parameter('limit'), 10);
-    $this->assertNull($this->component->get_parameter('offset'));
+    $this->component->setParameter('limit', '10');
+    $this->assertEqual($this->component->getParameter('limit'), 10);
+    $this->assertNull($this->component->getParameter('offset'));
   }
 
-  function test_limit_parameter2()
+  function testLimitParameter2()
   {
-    $this->component->set_parameter('limit', '10, 20');
-    $this->assertEqual($this->component->get_parameter('limit'), 10);
-    $this->assertEqual($this->component->get_parameter('offset'), 20);
+    $this->component->setParameter('limit', '10, 20');
+    $this->assertEqual($this->component->getParameter('limit'), 10);
+    $this->assertEqual($this->component->getParameter('offset'), 20);
   }
 
-  function test_limit_parameter3()
+  function testLimitParameter3()
   {
-    $this->component->set_parameter('limit', ',20');
-    $this->assertNull($this->component->get_parameter('limit'));
-    $this->assertNull($this->component->get_parameter('offset'));
+    $this->component->setParameter('limit', ',20');
+    $this->assertNull($this->component->getParameter('limit'));
+    $this->assertNull($this->component->getParameter('offset'));
   }
 
-  function test_setup_navigator_no_navigator()
+  function testSetupNavigatorNoNavigator()
   {
-    $pager = new Mockpager_component($this);
+    $pager = new MockPagerComponent($this);
 
-    $this->parent->expectOnce('find_child', array($pager_id = 'test-nav'));
-    $this->parent->setReturnValue('find_child', null, array($pager_id));
+    $this->parent->expectOnce('findChild', array($pager_id = 'test-nav'));
+    $this->parent->setReturnValue('findChild', null, array($pager_id));
 
-    $this->request->expectNever('has_attribute');
+    $this->request->expectNever('hasAttribute');
 
-    $this->component->setup_navigator($pager_id);
+    $this->component->setupNavigator($pager_id);
 
-    $this->assertNull($this->component->get_parameter('limit'));
-    $this->assertNull($this->component->get_parameter('offset'));
+    $this->assertNull($this->component->getParameter('limit'));
+    $this->assertNull($this->component->getParameter('offset'));
 
     $pager->tally();
   }
 
-  function test_setup_navigator_with_params_in_request()
+  function testSetupNavigatorWithParamsInRequest()
   {
-    $pager = new Mockpager_component($this);
+    $pager = new MockPagerComponent($this);
 
-    $this->parent->expectOnce('find_child', array($pager_id = 'test-nav'));
-    $this->parent->setReturnValue('find_child', $pager, array($pager_id));
+    $this->parent->expectOnce('findChild', array($pager_id = 'test-nav'));
+    $this->parent->setReturnValue('findChild', $pager, array($pager_id));
 
-    $pager->expectOnce('get_items_per_page');
-    $pager->setReturnValue('get_items_per_page', 100);
+    $pager->expectOnce('getItemsPerPage');
+    $pager->setReturnValue('getItemsPerPage', 100);
 
-    $pager->expectOnce('get_server_id');
-    $pager->setReturnValue('get_server_id', $pager_id);
+    $pager->expectOnce('getServerId');
+    $pager->setReturnValue('getServerId', $pager_id);
 
-    $this->request->expectOnce('has_attribute', array('page_' . $pager_id));
-    $this->request->setReturnValue('has_attribute', true, array('page_' . $pager_id));
+    $this->request->expectOnce('hasAttribute', array('page_' . $pager_id));
+    $this->request->setReturnValue('hasAttribute', true, array('page_' . $pager_id));
 
     $this->request->expectOnce('get', array('page_' . $pager_id));
     $this->request->setReturnValue('get', 10, array('page_' . $pager_id));
 
-    $this->component->set_datasource_path('test-datasource');
+    $this->component->setDatasourcePath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
 
-    $this->datasource->expectOnce('count_total');
-    $this->datasource->setReturnValue('count_total', $count = 13);
-    $pager->expectOnce('set_total_items', array($count));
+    $this->datasource->expectOnce('countTotal');
+    $this->datasource->setReturnValue('countTotal', $count = 13);
+    $pager->expectOnce('setTotalItems', array($count));
 
-    $this->component->setup_navigator($pager_id);
+    $this->component->setupNavigator($pager_id);
 
-    $this->assertEqual($this->component->get_parameter('limit'), 100);
-    $this->assertEqual($this->component->get_parameter('offset'), (10-1)*100);
+    $this->assertEqual($this->component->getParameter('limit'), 100);
+    $this->assertEqual($this->component->getParameter('offset'), (10-1)*100);
 
     $pager->tally();
   }
 
-  function test_setup_navigator_no_params_in_request()
+  function testSetupNavigatorNoParamsInRequest()
   {
-    $pager = new Mockpager_component($this);
+    $pager = new MockPagerComponent($this);
 
-    $this->parent->expectOnce('find_child', array($pager_id = 'test-nav'));
-    $this->parent->setReturnValue('find_child', $pager, array($pager_id));
+    $this->parent->expectOnce('findChild', array($pager_id = 'test-nav'));
+    $this->parent->setReturnValue('findChild', $pager, array($pager_id));
 
-    $pager->expectOnce('get_items_per_page');
-    $pager->expectOnce('get_server_id');
-    $pager->setReturnValue('get_items_per_page', 100);
-    $pager->setReturnValue('get_server_id', $pager_id);
+    $pager->expectOnce('getItemsPerPage');
+    $pager->expectOnce('getServerId');
+    $pager->setReturnValue('getItemsPerPage', 100);
+    $pager->setReturnValue('getServerId', $pager_id);
 
-    $this->request->expectOnce('has_attribute', array('page_' . $pager_id));
-    $this->request->setReturnValue('has_attribute', false, array('page_' . $pager_id));
+    $this->request->expectOnce('hasAttribute', array('page_' . $pager_id));
+    $this->request->setReturnValue('hasAttribute', false, array('page_' . $pager_id));
     $this->request->expectNever('get');
 
-    $this->component->set_datasource_path('test-datasource');
+    $this->component->setDatasourcePath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
 
-    $this->datasource->expectOnce('count_total');
-    $this->datasource->setReturnValue('count_total', $count = 13);
-    $pager->expectOnce('set_total_items', array($count));
+    $this->datasource->expectOnce('countTotal');
+    $this->datasource->setReturnValue('countTotal', $count = 13);
+    $pager->expectOnce('setTotalItems', array($count));
 
-    $this->component->setup_navigator($pager_id);
+    $this->component->setupNavigator($pager_id);
 
-    $this->assertEqual($this->component->get_parameter('limit'), 100);
-    $this->assertNull($this->component->get_parameter('offset'));
+    $this->assertEqual($this->component->getParameter('limit'), 100);
+    $this->assertNull($this->component->getParameter('offset'));
 
     $pager->tally();
   }
 
-  function test_get_dataset()
+  function testGetDataset()
   {
-    $this->component->set_parameter('limit', '10, 2');
-    $this->component->set_parameter('order', 'col1=ASC');
-    $this->component->set_parameter('junky', 'trash');
+    $this->component->setParameter('limit', '10, 2');
+    $this->component->setParameter('order', 'col1=ASC');
+    $this->component->setParameter('junky', 'trash');
 
-    $this->component->set_datasource_path('test-datasource');
+    $this->component->setDatasourcePath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
     $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
 
-    $this->datasource->expectOnce('set_limit', array(10));
-    $this->datasource->expectOnce('set_offset', array(2));
-    $this->datasource->expectOnce('set_order', array(array('col1' => 'ASC')));
+    $this->datasource->expectOnce('setLimit', array(10));
+    $this->datasource->expectOnce('setOffset', array(2));
+    $this->datasource->expectOnce('setOrder', array(array('col1' => 'aSC')));
 
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $result = array('whatever'));
-    $this->assertEqual(new array_dataset($result), $this->component->get_dataset());
+    $this->assertEqual(new ArrayDataset($result), $this->component->getDataset());
   }
 
-  function test_setup_targets()
+  function testSetupTargets()
   {
-    $component = new datasource_component_setup_targets_test_version($this);
+    $component = new DatasourceComponentSetupTargetsTestVersion($this);
 
     $component->parent = $this->parent;
-    $this->parent->expectArgumentsAt(0, 'find_child', array('target1'));
-    $this->parent->expectArgumentsAt(1, 'find_child', array('target2'));
-    $this->parent->setReturnValueAt(0, 'find_child', $target1 = new Mocklist_component($this));
-    $this->parent->setReturnValueAt(1, 'find_child', $target2 = new Mocklist_component($this));
+    $this->parent->expectArgumentsAt(0, 'findChild', array('target1'));
+    $this->parent->expectArgumentsAt(1, 'findChild', array('target2'));
+    $this->parent->setReturnValueAt(0, 'findChild', $target1 = new MockListComponent($this));
+    $this->parent->setReturnValueAt(1, 'findChild', $target2 = new MockListComponent($this));
 
-    $component->expectOnce('get_dataset');
-    $dataset = new array_dataset(array('some_data'));
-    $component->setReturnValue('get_dataset', $dataset);
+    $component->expectOnce('getDataset');
+    $dataset = new ArrayDataset(array('some_data'));
+    $component->setReturnValue('getDataset', $dataset);
 
-    $target1->expectOnce('register_dataset', array($dataset));
-    $target2->expectOnce('register_dataset', array($dataset));
-    $component->setup_targets('target1, target2');
+    $target1->expectOnce('registerDataset', array($dataset));
+    $target2->expectOnce('registerDataset', array($dataset));
+    $component->setupTargets('target1, target2');
 
     $component->tally();
     $target1->tally();
     $target2->tally();
   }
 
-  function test_setup_targets_failed_no_such_runtime_target()
+  function testSetupTargetsFailedNoSuchRuntimeTarget()
   {
-    $component = new datasource_component_setup_targets_test_version($this);
+    $component = new DatasourceComponentSetupTargetsTestVersion($this);
 
     $component->parent = $this->parent;
-    $this->parent->expectArgumentsAt(0, 'find_child', array('target1'));
-    $this->parent->setReturnValueAt(0, 'find_child', null);
+    $this->parent->expectArgumentsAt(0, 'findChild', array('target1'));
+    $this->parent->setReturnValueAt(0, 'findChild', null);
 
-    $component->expectOnce('get_dataset');
-    $dataset = new array_dataset(array('some_data'));
-    $component->setReturnValue('get_dataset', $dataset);
+    $component->expectOnce('getDataset');
+    $dataset = new ArrayDataset(array('some_data'));
+    $component->setReturnValue('getDataset', $dataset);
 
     try
     {
-      $component->setup_targets('target1, target2');
+      $component->setupTargets('target1, target2');
       $this->assertTrue(false);
     }
     catch(WactException $e)

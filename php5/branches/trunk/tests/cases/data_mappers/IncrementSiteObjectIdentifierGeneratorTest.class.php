@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/increment_site_object_identifier_generator.class.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/IncrementSiteObjectIdentifierGenerator.class.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('site_object');
-Mock :: generate('tree');
+Mock :: generate('SiteObject');
+Mock :: generate('Tree');
 
-class increment_site_object_identifier_generator_test extends LimbTestCase
+class IncrementSiteObjectIdentifierGeneratorTest extends LimbTestCase
 {
   var $object;
   var $generator;
@@ -26,17 +26,17 @@ class increment_site_object_identifier_generator_test extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new Mocksite_object($this);
+    $this->object = new MockSiteObject($this);
     $this->generator = new IncrementSiteObjectIdentifierGenerator();
-    $this->tree = new Mocktree($this);
+    $this->tree = new MockTree($this);
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getTree', $this->tree);
 
-    $this->object->expectOnce('get_parent_node_id');
-    $this->object->setReturnValue('get_parent_node_id', 100);
+    $this->object->expectOnce('getParentNodeId');
+    $this->object->setReturnValue('getParentNodeId', 100);
 
-    $this->tree->expectOnce('get_max_child_identifier', array(100));
+    $this->tree->expectOnce('getMaxChildIdentifier', array(100));
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -50,51 +50,51 @@ class increment_site_object_identifier_generator_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_generate_false()
+  function testGenerateFalse()
   {
-    $this->tree->setReturnValue('get_max_child_identifier', false);
+    $this->tree->setReturnValue('getMaxChildIdentifier', false);
     $this->assertIdentical($this->generator->generate($this->object), false);
   }
 
-  function test_generate_for_number()
+  function testGenerateForNumber()
   {
-    $this->tree->setReturnValue('get_max_child_identifier', 0);
+    $this->tree->setReturnValue('getMaxChildIdentifier', 0);
     $this->assertEqual($this->generator->generate($this->object), 1);
   }
 
-  function test_generate_for_number2()
+  function testGenerateForNumber2()
   {
-    $this->tree->setReturnValue('get_max_child_identifier', 1000);
+    $this->tree->setReturnValue('getMaxChildIdentifier', 1000);
     $this->assertEqual($this->generator->generate($this->object), 1001);
   }
 
-  function test_generate_for_text()
+  function testGenerateForText()
   {
-    $this->tree->setReturnValue('get_max_child_identifier', 'ru');
+    $this->tree->setReturnValue('getMaxChildIdentifier', 'ru');
     $this->assertEqual($this->generator->generate($this->object), 'ru1');
   }
 
-  function test_generate_for_text2()
+  function testGenerateForText2()
   {
-    $this->tree->setReturnValue('get_max_child_identifier', '119');
+    $this->tree->setReturnValue('getMaxChildIdentifier', '119');
     $this->assertEqual($this->generator->generate($this->object), '120');
   }
 
-  function test_generate_for_text_ending_with_number()
+  function testGenerateForTextEndingWithNumber()
   {
-    $this->tree->setReturnValue('get_max_child_identifier', 'test10');
+    $this->tree->setReturnValue('getMaxChildIdentifier', 'test10');
     $this->assertEqual($this->generator->generate($this->object), 'test11');
   }
 
-  function test_generate_for_text_ending_with_number2()
+  function testGenerateForTextEndingWithNumber2()
   {
-    $this->tree->setReturnValue('get_max_child_identifier', '4test19');
+    $this->tree->setReturnValue('getMaxChildIdentifier', '4test19');
     $this->assertEqual($this->generator->generate($this->object), '4test20');
   }
 
-  function test_generate_for_text_ending_with_number3()
+  function testGenerateForTextEndingWithNumber3()
   {
-    $this->tree->setReturnValue('get_max_child_identifier', '4te10st19');
+    $this->tree->setReturnValue('getMaxChildIdentifier', '4te10st19');
     $this->assertEqual($this->generator->generate($this->object), '4te10st20');
   }
 }

@@ -14,7 +14,7 @@
 * The block_component provides an API which allows the block to be shown
 * or hidden at runtime.
 */
-class block_component extends component
+class BlockComponent extends Component
 {
   /**
   * Whether the block is visible or not
@@ -24,7 +24,7 @@ class block_component extends component
   * Called within the compiled template render function to determine
   * whether block should be displayed.
   */
-  public function is_visible()
+  public function isVisible()
   {
     return $this->visible;
   }

@@ -8,15 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
 
-function add_url_query_items($url, $items=array())
+function addUrlQueryItems($url, $items=array())
 {
   $str_params = '';
 
   $request = Limb :: toolkit()->getRequest();
 
-  if (($node_id = $request->get('node_id')) && !isset($items['node_id']))
+  if (($node_id = $request->get('node_id')) &&  !isset($items['node_id']))
     $items['node_id'] = $node_id;
 
   if(strpos($url, '?') === false)

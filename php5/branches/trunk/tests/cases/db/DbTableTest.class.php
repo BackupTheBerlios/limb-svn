@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class test1_db_table extends db_table
+class Test1DbTable extends DbTable
 {
-  function _define_columns()
+  function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
@@ -25,7 +25,7 @@ class test1_db_table extends db_table
     );
   }
 
-  function _define_constraints()
+  function _defineConstraints()
   {
     return array(
       'object_id' =>	array(
@@ -39,73 +39,73 @@ class test1_db_table extends db_table
 }
 
 
-class db_table_test extends LimbTestCase
+class DbTableTest extends LimbTestCase
 {
   var $db = null;
   var $db_table_test = null;
 
   function setUp()
   {
-    $this->db =& db_factory :: instance();
-    $this->db_table_test = db_table_factory :: create('test1');
+    $this->db =& DbFactory :: instance();
+    $this->db_table_test = DbTableFactory :: create('Test1');
 
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
   function tearDown()
   {
-    $this->_clean_up();
+    $this->_cleanUp();
   }
 
-  function _clean_up()
+  function _cleanUp()
   {
-    $this->db->sql_delete('test1');
+    $this->db->sqlDelete('test1');
   }
 
-  function test_correct_table_properties()
+  function testCorrectTableProperties()
   {
-    $this->assertEqual($this->db_table_test->get_table_name(), 'test1');
-    $this->assertEqual($this->db_table_test->get_primary_key_name(), 'id');
-    $this->assertEqual($this->db_table_test->get_column_type('id'), 'numeric');
-    $this->assertIdentical($this->db_table_test->get_column_type('no_column'), false);
-    $this->assertTrue($this->db_table_test->has_column('id'));
-    $this->assertTrue($this->db_table_test->has_column('description'));
-    $this->assertTrue($this->db_table_test->has_column('title'));
-    $this->assertFalse($this->db_table_test->has_column('no_such_a_field'));
+    $this->assertEqual($this->db_table_test->getTableName(), 'test1');
+    $this->assertEqual($this->db_table_test->getPrimaryKeyName(), 'id');
+    $this->assertEqual($this->db_table_test->getColumnType('id'), 'numeric');
+    $this->assertIdentical($this->db_table_test->getColumnType('no_column'), false);
+    $this->assertTrue($this->db_table_test->hasColumn('id'));
+    $this->assertTrue($this->db_table_test->hasColumn('description'));
+    $this->assertTrue($this->db_table_test->hasColumn('title'));
+    $this->assertFalse($this->db_table_test->hasColumn('no_such_a_field'));
   }
 
-  function test_insert()
+  function testInsert()
   {
     $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'wow!'));
 
-    $this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
+    $this->assertNotEqual($this->db->sqlExec("SELECT * FROM test1"), array());
 
-    $result = $this->db->fetch_row();
+    $result = $this->db->fetchRow();
     $this->assertTrue(is_array($result));
-    $id = $this->db_table_test->get_last_insert_id();
+    $id = $this->db_table_test->getLastInsertId();
 
     $this->assertEqual($result['title'], 'wow');
     $this->assertEqual($result['description'], 'wow!');
     $this->assertEqual($result['id'], $id);
   }
 
-  function test_update()
+  function testUpdate()
   {
     $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
     $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
 
     $this->db_table_test->update(array('description' =>  'new_description'), array('title' =>  'wow'));
 
-    $this->assertEqual($this->db->get_affected_rows(), 2);
+    $this->assertEqual($this->db->getAffectedRows(), 2);
 
-    $this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
+    $this->assertNotEqual($this->db->sqlExec("SELECT * FROM test1"), array());
 
-    $result = $this->db->get_array();
+    $result = $this->db->getArray();
     $this->assertEqual($result[0]['description'], 'new_description');
     $this->assertEqual($result[1]['description'], 'new_description');
   }
 
-  function test_update_by_in_condition()
+  function testUpdateByInCondition()
   {
     $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
     $this->db_table_test->insert(array('id' => null, 'title' =>  'wow1', 'description' => 'description2'));
@@ -113,37 +113,37 @@ class db_table_test extends LimbTestCase
 
     $this->db_table_test->update(
       array('description' =>  'new_description'),
-      sql_in('title', array('wow', 'wow1'))
+      sqlIn('title', array('wow', 'wow1'))
     );
 
-    $this->assertEqual($this->db->get_affected_rows(), 2);
+    $this->assertEqual($this->db->getAffectedRows(), 2);
 
-    $this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
+    $this->assertNotEqual($this->db->sqlExec("SELECT * FROM test1"), array());
 
-    $result = $this->db->get_array();
+    $result = $this->db->getArray();
     $this->assertEqual($result[0]['description'], 'new_description');
     $this->assertEqual($result[1]['description'], 'new_description');
   }
 
-  function test_update_by_id()
+  function testUpdateById()
   {
     $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
     $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
 
-    $this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
+    $this->assertNotEqual($this->db->sqlExec("SELECT * FROM test1"), array());
 
-    $result = $this->db->get_array();
+    $result = $this->db->getArray();
 
-    $this->db_table_test->update_by_id($result[0]['id'], array('description' =>  'new_description'));
+    $this->db_table_test->updateById($result[0]['id'], array('description' =>  'new_description'));
 
-    $this->assertEqual($this->db->get_affected_rows(), 1);
+    $this->assertEqual($this->db->getAffectedRows(), 1);
 
-    $this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
-    $result = $this->db->get_array();
+    $this->assertNotEqual($this->db->sqlExec("SELECT * FROM test1"), array());
+    $result = $this->db->getArray();
     $this->assertEqual($result[0]['description'], 'new_description');
   }
 
-  function test_get_list_all()
+  function testGetListAll()
   {
     $data = array(
       0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
@@ -153,7 +153,7 @@ class db_table_test extends LimbTestCase
     $this->db_table_test->insert($data[0]);
     $this->db_table_test->insert($data[1]);
 
-    $result = $this->db_table_test->get_list();
+    $result = $this->db_table_test->getList();
 
     $this->assertNotEqual($result, array());
 
@@ -166,9 +166,9 @@ class db_table_test extends LimbTestCase
     $this->assertEqual($arr['description'], 'description2');
   }
 
-  function test_get_list_by_string_condition()
+  function testGetListByStringCondition()
   {
-    $this->assertEqual($this->db_table_test->get_list('title="wow"'), array());
+    $this->assertEqual($this->db_table_test->getList('title="wow"'), array());
 
     $data = array(
       0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
@@ -178,7 +178,7 @@ class db_table_test extends LimbTestCase
     $this->db_table_test->insert($data[0]);
     $this->db_table_test->insert($data[1]);
 
-    $result = $this->db_table_test->get_list(
+    $result = $this->db_table_test->getList(
       "title='wow!' AND description='description2'");
 
     $this->assertNotEqual($result, array());
@@ -189,9 +189,9 @@ class db_table_test extends LimbTestCase
     $this->assertEqual($arr['description'], 'description2');
   }
 
-  function test_get_list_by_array_condition()
+  function testGetListByArrayCondition()
   {
-    $this->assertEqual($this->db_table_test->get_list(array('title' => 'wow!')), array());
+    $this->assertEqual($this->db_table_test->getList(array('title' => 'wow!')), array());
 
     $data = array(
       0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
@@ -201,7 +201,7 @@ class db_table_test extends LimbTestCase
     $this->db_table_test->insert($data[0]);
     $this->db_table_test->insert($data[1]);
 
-    $result = $this->db_table_test->get_list(
+    $result = $this->db_table_test->getList(
       array('title' => 'wow!', 'description' => 'description2'));
 
     $this->assertNotEqual($result, array());
@@ -212,7 +212,7 @@ class db_table_test extends LimbTestCase
     $this->assertEqual($arr['description'], 'description2');
   }
 
-  function test_get_list_by_in_condition()
+  function testGetListByInCondition()
   {
     $data = array(
       0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
@@ -222,8 +222,8 @@ class db_table_test extends LimbTestCase
     $this->db_table_test->insert($data[0]);
     $this->db_table_test->insert($data[1]);
 
-    $result = $this->db_table_test->get_list(
-      sql_in('title', array('wow!', 'wow')));
+    $result = $this->db_table_test->getList(
+      sqlIn('title', array('wow!', 'wow')));
 
     $this->assertNotEqual($result, array());
 
@@ -236,7 +236,7 @@ class db_table_test extends LimbTestCase
     $this->assertEqual($arr['description'], 'description2');
   }
 
-  function test_get_list_with_limit()
+  function testGetListWithLimit()
   {
     $data = array(
       0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
@@ -248,7 +248,7 @@ class db_table_test extends LimbTestCase
     $this->db_table_test->insert($data[1]);
     $this->db_table_test->insert($data[2]);
 
-    $result = $this->db_table_test->get_list('', 'id', '', 1, 1);
+    $result = $this->db_table_test->getList('', 'id', '', 1, 1);
 
     $this->assertNotEqual($result, array());
 
@@ -259,25 +259,25 @@ class db_table_test extends LimbTestCase
     $this->assertEqual($arr['description'], 'description2');
   }
 
-  function test_get_columns_for_select_default_name()
+  function testGetColumnsForSelectDefaultName()
   {
     $select_string = 'test1.id as id, test1.description as description, test1.title as title, test1.date_field as date_field, test1.int_field as int_field, test1.int as int';
 
-    $this->assertEqual($this->db_table_test->get_columns_for_select(), $select_string);
+    $this->assertEqual($this->db_table_test->getColumnsForSelect(), $select_string);
   }
 
-  function test_get_columns_for_select_specific_name()
+  function testGetColumnsForSelectSpecificName()
   {
     $select_string = 'tn.id as id, tn.description as description, tn.title as title, tn.date_field as date_field, tn.int_field as int_field, tn.int as int';
 
-    $this->assertEqual($this->db_table_test->get_columns_for_select('tn'), $select_string);
+    $this->assertEqual($this->db_table_test->getColumnsForSelect('tn'), $select_string);
   }
 
-  function test_get_columns_for_select_specific_name_with_excludes()
+  function testGetColumnsForSelectSpecificNameWithExcludes()
   {
     $select_string = 'tn.title as title, tn.date_field as date_field, tn.int_field as int_field, tn.int as int';
 
-    $this->assertEqual($this->db_table_test->get_columns_for_select('tn', array('id', 'description')), $select_string);
+    $this->assertEqual($this->db_table_test->getColumnsForSelect('tn', array('id', 'description')), $select_string);
   }
 
 }

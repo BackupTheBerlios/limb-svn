@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/image/image_netpbm.class.php');
+require_once(LIMB_DIR . '/class/lib/image/ImageNetpbm.class.php');
 
-class netpbm_library_test extends image_library_test
+class NetpbmLibraryTest extends ImageLibraryTest
 {
   var $rotated_size = 5576;
   var $hflipped_size = 3861;
@@ -20,11 +20,11 @@ class netpbm_library_test extends image_library_test
   var $cutted_size3 = 1177;
   var $cutted_size4 = 1867;
 
-  function netpbm_library_test()
+  function netpbmLibraryTest()
   {
-    $this->library = new image_netpbm();
+    $this->library = new ImageNetpbm();
 
-    parent :: image_library_test();
+    parent :: imageLibraryTest();
   }
 }
 ?>

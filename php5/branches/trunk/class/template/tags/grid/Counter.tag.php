@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_counter_tag_info
+class GridCounterTagInfo
 {
   public $tag = 'grid:COUNTER';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'grid_counter_tag';
 }
 
-register_tag(new grid_counter_tag_info());
+registerTag(new GridCounterTagInfo());
 
-class grid_counter_tag extends compiler_directive_tag
+class GridCounterTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->parent instanceof grid_iterator_tag)
+    if (!$this->parent instanceof GridIteratorTag)
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -31,11 +31,11 @@ class grid_counter_tag extends compiler_directive_tag
     }
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $grid = $this->find_parent_by_class('grid_list_tag');
+    $grid = $this->findParentByClass('grid_list_tag');
 
-    $code->write_php('echo ' . $grid->get_component_ref_code() . '->get_counter();');
+    $code->writePhp('echo ' . $grid->getComponentRefCode() . '->get_counter();');
   }
 }
 

@@ -9,14 +9,14 @@
 *
 ***********************************************************************************/
 
-interface session_driver
+interface SessionDriver
 {
-  public function storage_open();
-  public function storage_close();
-  public function storage_read($session_id);
-  public function storage_write($session_id, $value);
-  public function storage_destroy($session_id);
-  public function storage_destroy_user($user_id);
-  public function storage_gc($max_life_time);
+  public function storageOpen();
+  public function storageClose();
+  public function storageRead($session_id);
+  public function storageWrite($session_id, $value);
+  public function storageDestroy($session_id);
+  public function storageDestroyUser($user_id);
+  public function storageGc($max_life_time);
 }
 ?>

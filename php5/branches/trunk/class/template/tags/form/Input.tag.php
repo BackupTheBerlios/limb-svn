@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class input_tag_info
+class InputTagInfo
 {
   public $tag = 'input';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'input_tag';
 }
 
-register_tag(new input_tag_info());
+registerTag(new InputTagInfo());
 
 /**
 * Compile time component for building runtime Inputcomponents
 * Creates all the components beginning with the name Input
 */
-class input_tag extends control_tag
+class InputTag extends ControlTag
 {
   /**
   * Sets the runtime_component_path property, depending on the type of

@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php');
 
-class file_resolver_decorator implements file_resolver
+class FileResolverDecorator implements FileResolver
 {
   protected $_resolver = null;
 
   function __construct($resolver)
   {
-    resolve_handle($resolver);
+    resolveHandle($resolver);
 
-    if(!$resolver instanceof file_resolver && !$resolver instanceof SimpleMock)
+    if(!$resolver instanceof FileResolver &&  !$resolver instanceof SimpleMock)
       throw new Exception('invalid wrapped resolver');
 
     $this->_resolver = $resolver;

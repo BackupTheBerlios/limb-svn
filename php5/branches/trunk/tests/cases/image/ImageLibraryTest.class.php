@@ -11,9 +11,9 @@
 if (!defined('PHP_IMAGE_DIR_C'))
   define('PHP_IMAGE_DIR_C', LIMB_DIR . '/class/lib/image/');
 
-SimpleTestOptions::ignore('image_library_test');
+SimpleTestOptions :: ignore('ImageLibraryTest');
 
-class image_library_test extends LimbTestCase
+class ImageLibraryTest extends LimbTestCase
 {
   var $library = null;
   var $input_file = '';
@@ -29,8 +29,8 @@ class image_library_test extends LimbTestCase
 
     $input_type = 'jpeg';
     $output_type = 'jpeg';
-    $this->library->set_input_file($this->input_file, $input_type);
-    $this->library->set_output_file($this->output_file, $output_type);
+    $this->library->setInputFile($this->input_file, $input_type);
+    $this->library->setOutputFile($this->output_file, $output_type);
   }
 
   function tearDown()
@@ -39,12 +39,12 @@ class image_library_test extends LimbTestCase
       unlink($this->output_file);
   }
 
-  function test_installed()
+  function testInstalled()
   {
-    $this->assertTrue($this->library->is_library_installed());
+    $this->assertTrue($this->library->isLibraryInstalled());
   }
 
-  function test_resize_by_max_dimension()
+  function testResizeByMaxDimension()
   {
     $max_dimension = 200;
     $params = array('max_dimension' => $max_dimension);
@@ -59,7 +59,7 @@ class image_library_test extends LimbTestCase
       $this->assertEqual($info2[1], $max_dimension);
   }
 
-  function test_resize_by_scale_factor()
+  function testResizeByScaleFactor()
   {
     $scale_factor = 2;
     $params = array('scale_factor' => $scale_factor);
@@ -72,7 +72,7 @@ class image_library_test extends LimbTestCase
     $this->assertEqual(floor($info1[1] * $scale_factor), $info2[1]);
   }
 
-  function test_resize_by_xy_scale()
+  function testResizeByXyScale()
   {
     $info1 = getimagesize($this->input_file);
     $xscale = 2;
@@ -103,7 +103,7 @@ class image_library_test extends LimbTestCase
     $this->assertEqual(floor($info1[1] * $yscale), $info2[1]);
   }
 
-  function test_resize_by_width_height()
+  function testResizeByWidthHeight()
   {
     $info1 = getimagesize($this->input_file);
     $width = 200;
@@ -147,11 +147,11 @@ class image_library_test extends LimbTestCase
   }
 */
 
-  function test_flip()
+  function testFlip()
   {
     $info1 = getimagesize($this->input_file);
 
-    $this->library->flip(image_library :: FLIP_HORIZONTAL);
+    $this->library->flip(ImageLibrary :: FLIP_HORIZONTAL);
     $this->library->commit();
 
     $info2 = getimagesize($this->output_file);
@@ -160,7 +160,7 @@ class image_library_test extends LimbTestCase
 //      $this->assertEqual(filesize($this->output_file), $this->hflipped_size);
     clearstatcache();
 
-    $this->library->flip(image_library :: FLIP_VERTICAL);
+    $this->library->flip(ImageLibrary :: FLIP_VERTICAL);
     $this->library->commit();
 
     $info2 = getimagesize($this->output_file);
@@ -170,7 +170,7 @@ class image_library_test extends LimbTestCase
     clearstatcache();
   }
 
-  function test_cut_inside()
+  function testCutInside()
   {
     $info1 = getimagesize($this->input_file);
     $bgcolor = '000000';
@@ -195,7 +195,7 @@ class image_library_test extends LimbTestCase
     clearstatcache();
   }
 
-  function test_cut_outside()
+  function testCutOutside()
   {
     $info1 = getimagesize($this->input_file);
     $bgcolor = '000000';
@@ -216,7 +216,7 @@ class image_library_test extends LimbTestCase
     clearstatcache();
   }
 
-  function test_cut_left_up()
+  function testCutLeftUp()
   {
     $info1 = getimagesize($this->input_file);
     $bgcolor = '000000';
@@ -236,7 +236,7 @@ class image_library_test extends LimbTestCase
     clearstatcache();
   }
 
-  function test_cut_right_down()
+  function testCutRightDown()
   {
     $info1 = getimagesize($this->input_file);
     $bgcolor = '000000';

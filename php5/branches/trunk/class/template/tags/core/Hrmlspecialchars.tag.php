@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class htmlspecialchars_tag_info
+class HtmlspecialcharsTagInfo
 {
   public $tag = 'core:HTMLSPECIALCHARS';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'htmlspecialchars_tag';
 }
 
-register_tag(new htmlspecialchars_tag_info());
+registerTag(new HtmlspecialcharsTagInfo());
 
-class htmlspecialchars_tag extends compiler_directive_tag
+class HtmlspecialcharsTag extends CompilerDirectiveTag
 {
-  public function pre_parse()
+  public function preParse()
   {
-    if (! array_key_exists('hash_id', $this->attributes) ||
+    if (! array_key_exists('hash_id', $this->attributes) || 
         empty($this->attributes['hash_id']))
     {
       throw new WactException('missing required attribute',
@@ -33,12 +33,12 @@ class htmlspecialchars_tag extends compiler_directive_tag
     return PARSER_FORBID_PARSING;
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
     if(isset($this->attributes['hash_id']))
     {
-      $code->write_php(
-        'echo htmlspecialchars(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"), ENT_QUOTES);');
+      $code->writePhp(
+        'echo htmlspecialchars(' . $this->getDataspaceRefCode() . '->get("' . $this->attributes['hash_id'] . '"), ENT_QUOTES);');
     }
   }
 }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/command.interface.php');
+require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class close_popup_command implements Command
+class ClosePopupCommand implements Command
 {
   public function perform()
   {
@@ -18,8 +18,8 @@ class close_popup_command implements Command
     $request = $toolkit->getRequest();
 
     // maybe we should use some kind of template here instead of close_popup_response($request)
-    if($request->has_attribute('popup'))
-      $toolkit->getResponse()->write(close_popup_response($request));
+    if($request->hasAttribute('popup'))
+      $toolkit->getResponse()->write(closePopupResponse($request));
 
     return Limb :: STATUS_OK;
   }

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 //Inspired by EZpublish(http//ez.no), system class
 
-require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
+require_once(LIMB_DIR . '/class/lib/http/Ip.class.php');
 
-class sys
+class Sys
 {
   protected static $instance = null;
 
@@ -30,18 +30,18 @@ class sys
   */
   function __construct()
   {
-    $this->_collect_system_params();
+    $this->_collectSystemParams();
   }
 
   static public function instance()
   {
     if (!self :: $instance)
-      self :: $instance = new sys();
+      self :: $instance = new Sys();
 
     return self :: $instance;
   }
 
-  protected function _collect_system_params()
+  protected function _collectSystemParams()
   {
     // Determine OS specific settings
     if ( substr( php_uname(), 0, 7 ) == 'Windows' )
@@ -72,7 +72,7 @@ class sys
       $this->backup_filename = '~';
     }
 
-    $request_uri = self :: server_variable('REQUEST_URI');
+    $request_uri = self :: serverVariable('REQUEST_URI');
 
     // Remove url parameters
     if ( ereg( "([^?]+)", $request_uri, $regs ) )
@@ -108,61 +108,61 @@ class sys
       $this->exec_mode = 'module';
   }
 
-  static public function os_type()
+  static public function osType()
   {
-    return sys::instance()->os_type;
+    return Sys::instance()->os_type;
   }
 
-  static public function client_ip()
+  static public function clientIp()
   {
-    return sys::instance()->client_ip;
+    return Sys::instance()->client_ip;
   }
 
   /*
    return the file_system type, either "win32" or "unix"
   */
-  static public function file_system_type()
+  static public function fileSystemType()
   {
-    return sys::instance()->file_system_type;
+    return Sys::instance()->file_system_type;
   }
 
   /*
    Returns the string which is used for file separators on the current OS (server).
   */
-  static public function file_separator()
+  static public function fileSeparator()
   {
-    return sys::instance()->file_separator;
+    return Sys::instance()->file_separator;
   }
 
   /*
    return the backup filename for this platform, returns .bak for win32 and ~ for unix and mac.
   */
-  static public function backup_filename()
+  static public function backupFilename()
   {
-    return sys::instance()->backup_filename;
+    return Sys::instance()->backup_filename;
   }
 
   /*
    Returns the string which is used for line separators on the current OS (server).
   */
-  static public function line_separator()
+  static public function lineSeparator()
   {
-    return sys::instance()->line_separator;
+    return Sys::instance()->line_separator;
   }
 
   /*
    Returns the string which is used for enviroment separators on the current OS (server).
   */
-  static public function env_separator()
+  static public function envSeparator()
   {
-    return sys::instance()->env_separator;
+    return Sys::instance()->env_separator;
   }
 
   /*
    return the variable named $name in the global $_SERVER variable.
    If the variable is not present an error is shown and null is returned.
   */
-  static public function server_variable($name)
+  static public function serverVariable($name)
   {
     if (isset($_SERVER[$name]))
       return $_SERVER[$name];
@@ -172,7 +172,7 @@ class sys
    Sets the server variable named $name to $value.
    note Variables are only set for the current page view.
   */
-  static public function set_server_variable($name, $value)
+  static public function setServerVariable($name, $value)
   {
     $_SERVER[$name] = $value;
   }
@@ -180,7 +180,7 @@ class sys
   /*
    return the variable named $name in the global $_ENV variable.
   */
-  static public function environment_variable($name)
+  static public function environmentVariable($name)
   {
     if (isset($_ENV[$name]))
       return $_ENV[$name];
@@ -190,19 +190,19 @@ class sys
    Sets the environment variable named $name to $value.
    Variables are only set for the current page view.
   */
-  static public function set_environment_variable($name, $value)
+  static public function setEnvironmentVariable($name, $value)
   {
     $_ENV[$name] = $value;
   }
 
-  static public function exec_mode()
+  static public function execMode()
   {
-    return sys::instance()->exec_mode;
+    return Sys::instance()->exec_mode;
   }
 
-  static public function request_uri()
+  static public function requestUri()
   {
-    return sys::instance()->request_uri;
+    return Sys::instance()->request_uri;
   }
 }
 

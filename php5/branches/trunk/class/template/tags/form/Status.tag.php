@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-class form_status_tag_info
+class FormStatusTagInfo
 {
   public $tag = 'form:STATUS';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'form_status_tag';
 }
 
-register_tag(new form_status_tag_info());
+registerTag(new FormStatusTagInfo());
 
 /**
 * The parent compile time component for lists
 */
-class form_status_tag extends compiler_directive_tag
+class FormStatusTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->find_parent_by_class('form_tag'))
+    if (!$this->findParentByClass('form_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -34,22 +34,22 @@ class form_status_tag extends compiler_directive_tag
     }
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $error_child = $this->find_child_by_class('error_status_tag');
-    $success_child = $this->find_child_by_class('success_status_tag');
+    $error_child = $this->findChildByClass('error_status_tag');
+    $success_child = $this->findChildByClass('success_status_tag');
 
-    $code->write_php('if (!' . $this->get_component_ref_code() . '->is_first_time()) {');
+    $code->writePhp('if (!' . $this->getComponentRefCode() . '->is_first_time()) {');
 
-    $code->write_php('if (' . $this->get_component_ref_code() . '->is_valid()) {');
+    $code->writePhp('if (' . $this->getComponentRefCode() . '->is_valid()) {');
       if ($success_child)
         $success_child->generate($code);
-    $code->write_php('}else{');
+    $code->writePhp('}else{');
       if ($error_child)
         $error_child->generate($code);
-    $code->write_php('}');
+    $code->writePhp('}');
 
-    $code->write_php('}');
+    $code->writePhp('}');
   }
 }
 

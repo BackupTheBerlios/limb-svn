@@ -8,37 +8,37 @@
 * $Id$
 *
 ***********************************************************************************/
-class site_object_requested_tag_info
+class SiteObjectRequestedTagInfo
 {
   public $tag = 'site_object:REQUESTED';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'site_object_requested_tag';
 }
 
-register_tag(new site_object_requested_tag_info());
+registerTag(new SiteObjectRequestedTagInfo());
 
-class site_object_requested_tag extends server_component_tag
+class SiteObjectRequestedTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/site_object_component';
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    $code->write_php($this->get_component_ref_code() . '->fetch_requested();');
+    $code->writePhp($this->getComponentRefCode() . '->fetch_requested();');
 
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code();
+    return $this->getComponentRefCode();
   }
 }
 

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-class finders_group extends LimbGroupTest
+class FindersGroup extends LimbGroupTest
 {
-  function finders_group()
+  function findersGroup()
   {
-    $this->LimbGroupTest('finders tests');
+    $this->limbGroupTest('finders tests');
   }
 
   function getTestCasesHandles()

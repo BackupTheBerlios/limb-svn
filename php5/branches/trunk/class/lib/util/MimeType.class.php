@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-class mime_type
+class MimeType
 {
   protected $mime_types = array();
 
@@ -106,7 +106,7 @@ class mime_type
     );
   }
 
-  public function get_type_icon($mime_type, $image_size = 16)
+  public function getTypeIcon($mime_type, $image_size = 16)
   {
     if(!array_key_exists($mime_type, $this->mime_types))
       $mime_type = 'default' ;
@@ -114,7 +114,7 @@ class mime_type
     return '/shared/images/mime_icons/'. $this->mime_types[$mime_type]['icon'].'.'.$image_size.'.gif';
   }
 
-  public function get_type_extension($mime_type)
+  public function getTypeExtension($mime_type)
   {
 
     if(!array_key_exists($mime_type, $this->mime_types))

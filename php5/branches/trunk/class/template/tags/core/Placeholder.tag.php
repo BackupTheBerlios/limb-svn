@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_place_holder_tag_info
+class CorePlaceHolderTagInfo
 {
   public $tag = 'core:PLACEHOLDER';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'core_place_holder_tag';
 }
 
-register_tag(new core_place_holder_tag_info());
+registerTag(new CorePlaceHolderTagInfo());
 
 /**
 * Present a named location where content can be inserted at runtime
 */
-class core_place_holder_tag extends server_component_tag
+class CorePlaceHolderTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/placeholder_component';
   }
 
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if ($this->find_parent_by_class('core_place_holder_tag'))
+    if ($this->findParentByClass('core_place_holder_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,

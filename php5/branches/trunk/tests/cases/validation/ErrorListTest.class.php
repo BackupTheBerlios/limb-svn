@@ -8,59 +8,59 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/validators/error_list.class.php');
+require_once(LIMB_DIR . '/class/validators/ErrorList.class.php');
 
-class error_list_test extends LimbTestCase
+class ErrorListTest extends LimbTestCase
 {
-  function error_list_test()
+  function errorListTest()
   {
-    parent :: LimbTestCase();
+    parent :: limbTestCase();
   }
 
   function setUp()
   {
-    $e =& error_list :: instance();
+    $e =& ErrorList :: instance();
     $e->reset();
   }
 
   function tearDown()
   {
-    $e =& error_list :: instance();
+    $e =& ErrorList :: instance();
     $e->reset();
   }
 
-  function test_instance()
+  function testInstance()
   {
-    $e =& error_list :: instance();
+    $e =& ErrorList :: instance();
 
     $this->assertNotNull($e);
-    $this->assertIsA($e, 'error_list');
+    $this->assertIsA($e, 'ErrorList');
 
-    $e2 =& error_list :: instance();
+    $e2 =& ErrorList :: instance();
 
     $this->assertTrue($e === $e2);
   }
 
-  function test_add_error()
+  function testAddError()
   {
-    $e =& error_list :: instance();
+    $e =& ErrorList :: instance();
 
-    $e->add_error('test', 'error');
+    $e->addError('test', 'error');
 
-    $errors = $e->get_errors('test');
+    $errors = $e->getErrors('test');
 
     $this->assertEqual(sizeof($errors), 1);
     $this->assertEqual($errors[0]['error'], 'error');
 
-    $e->add_error('test', 'error2', array('param' => 1));
+    $e->addError('test', 'error2', array('param' => 1));
 
-    $errors = $e->get_errors('test');
+    $errors = $e->getErrors('test');
 
     $this->assertEqual(sizeof($errors), 2);
     $this->assertEqual($errors[1]['error'], 'error2');
     $this->assertEqual($errors[1]['params']['param'], 1);
 
-    $errors = $e->get_errors('no_errors');
+    $errors = $e->getErrors('no_errors');
     $this->assertNull($errors);
   }
 }

@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
-SimpleTestOptions::ignore('dataspace_test');
+SimpleTestOptions :: ignore('DataspaceTest');
 
-class dataspace_test extends LimbTestCase
+class DataspaceTest extends LimbTestCase
 {
   var $dataspace;
   var $filter;
 
   function setUp()
   {
-    $this->dataspace = new dataspace();
+    $this->dataspace = new Dataspace();
   }
 
   function tearDown()
@@ -27,32 +27,32 @@ class dataspace_test extends LimbTestCase
     unset($this->dataspace);
   }
 
-  function test_get_unset_variable()
+  function testGetUnsetVariable()
   {
     $this->assertNull($this->dataspace->get('foo'));
   }
 
-  function test_get_set_variable()
+  function testGetSetVariable()
   {
     $this->dataspace->set('foo', 'bar');
     $this->assertIdentical($this->dataspace->get('foo'), 'bar');
   }
 
-  function test_get_set_array()
+  function testGetSetArray()
   {
     $array = array('red', 'blue', 'green');
     $this->dataspace->set('foo', $array);
     $this->assertIdentical($this->dataspace->get('foo'), $array);
   }
 
-  function test_get_set_object()
+  function testGetSetObject()
   {
     $foo = array('red', 'blue', 'green');
     $this->dataspace->set('foo', $foo);
     $this->assertIdentical($this->dataspace->get('foo'), $foo);
   }
 
-  function test_get_set_append()
+  function testGetSetAppend()
   {
     $first = 'Hello';
     $second = 'World!';
@@ -61,22 +61,22 @@ class dataspace_test extends LimbTestCase
     $this->assertIdentical($this->dataspace->get('foo'), $first . $second);
   }
 
-  function test_get_reference()
+  function testGetReference()
   {
-    $foo =& $this->dataspace->get_reference('foo');
+    $foo =& $this->dataspace->getReference('foo');
     $foo = 'whatever';
     $this->assertEqual($this->dataspace->get('foo'), $foo);
   }
 
-  function test_get_reference_default_value()
+  function testGetReferenceDefaultValue()
   {
-    $foo =& $this->dataspace->get_reference('foo', array());
+    $foo =& $this->dataspace->getReference('foo', array());
     $this->assertIdentical($foo, array());
     $foo['test1'] = 'whatever';
     $this->assertEqual($this->dataspace->get('foo'), $foo);
   }
 
-  function test_get_set_append_mixed_type()
+  function testGetSetAppendMixedType()
   {
     $first = 'Hello';
     $second = 2;
@@ -85,20 +85,20 @@ class dataspace_test extends LimbTestCase
     $this->assertIdentical($this->dataspace->get('foo'), $first . $second);
   }
 
-  function test_export_empty()
+  function testExportEmpty()
   {
     $foo = array();
     $this->assertIdentical($this->dataspace->export(), $foo);
   }
 
-  function test_export()
+  function testExport()
   {
     $this->dataspace->set('foo', 'bar');
     $expected = array('foo' => 'bar');
     $this->assertIdentical($this->dataspace->export(), $expected);
   }
 
-  function test_export_import()
+  function testExportImport()
   {
     $numbers = array(1, 2, 3);
     $foo = array('size' => 'big', 'color' => 'red', 'numbers' => $numbers);
@@ -109,19 +109,19 @@ class dataspace_test extends LimbTestCase
     $this->assertIdentical($exported['numbers'], $numbers);
   }
 
-  function test_export_import_append()
+  function testExportImportAppend()
   {
     $numbers = array(1, 2, 3);
     $foo = array('numbers' => $numbers);
     $bar = array('size' => 'big', 'color' => 'red');
     $this->dataspace->import($foo);
-    $this->dataspace->import_append($bar);
+    $this->dataspace->importAppend($bar);
     $exported = $this->dataspace->export();
     $this->assertIdentical($exported['size'], 'big');
     $this->assertIdentical($exported['color'], 'red');
     $this->assertIdentical($exported['numbers'], $numbers);
   }
-  function test_duplicate_import_append()
+  function testDuplicateImportAppend()
   {
     // experimental test case.  Should this be the proper behavior of importAppend
     // instead of what it does now?
@@ -129,12 +129,12 @@ class dataspace_test extends LimbTestCase
     // using the new one? (Jon)
     $foo = array('foo' => 'kung');
     $this->dataspace->set('foo', 'bar');
-    $this->dataspace->import_append($foo);
+    $this->dataspace->importAppend($foo);
     $expected = $this->dataspace->export();
     $this->assertIdentical($expected['foo'], 'kung');
   }
 
-  function test_unset()
+  function testUnset()
   {
     $array = array('rainbow' => array('color' => 'red'));
     $this->dataspace->import($array);
@@ -144,7 +144,7 @@ class dataspace_test extends LimbTestCase
     $this->assertNull($this->dataspace->get('rainbow'));
   }
 
-  function test_merge()
+  function testMerge()
   {
     $this->dataspace->import('');
 
@@ -160,62 +160,62 @@ class dataspace_test extends LimbTestCase
 
     $this->assertEqual(count($all['people']), 2);
 
-    $this->assertTrue((in_array('Bob', $all['people']) && in_array('Vasa', $all['people'])));
+    $this->assertTrue((in_array('Bob', $all['people']) &&  in_array('Vasa', $all['people'])));
   }
 
-  function test_get_by_index_string()
+  function testGetByIndexString()
   {
     $array = array('rainbow' => array('color' => 'red'));
     $this->dataspace->import($array);
 
     try
     {
-      $this->dataspace->get_by_index_string('""hkljkscc');
+      $this->dataspace->getByIndexString('""hkljkscc');
       $this->assertTrue(false);
     }
     catch(Exception $e){}
 
     try
     {
-      $this->dataspace->get_by_index_string('["rainbow][color]');
+      $this->dataspace->getByIndexString('["rainbow][color]');
       $this->assertTrue(false);
     }
     catch(Exception $e){}
 
     try
     {
-      $this->dataspace->get_by_index_string('[rainbow["color"]]');
+      $this->dataspace->getByIndexString('[rainbow["color"]]');
       $this->assertTrue(false);
     }
     catch(Exception $e){}
 
-    $this->assertNull($this->dataspace->get_by_index_string('[rainbow][sound]'), 'undefined index');
+    $this->assertNull($this->dataspace->getByIndexString('[rainbow][sound]'), 'undefined index');
 
-    $this->assertEqual($this->dataspace->get_by_index_string('[rainbow][color]'), 'red');
-    $this->assertEqual($this->dataspace->get_by_index_string('[rainbow]["color"]'), 'red');
-    $this->assertEqual($this->dataspace->get_by_index_string('["rainbow"][\'color\']'), 'red');
+    $this->assertEqual($this->dataspace->getByIndexString('[rainbow][color]'), 'red');
+    $this->assertEqual($this->dataspace->getByIndexString('[rainbow]["color"]'), 'red');
+    $this->assertEqual($this->dataspace->getByIndexString('["rainbow"][\'color\']'), 'red');
   }
 
-  function test_set_by_index_string()
+  function testSetByIndexString()
   {
-    $size_before = $this->dataspace->get_size();
+    $size_before = $this->dataspace->getSize();
 
-    $this->dataspace->set_by_index_string('""hkljkscc', 'test');
-    $this->assertEqual($this->dataspace->get_size(), $size_before, 'invalid index string, nothing should be written');
+    $this->dataspace->setByIndexString('""hkljkscc', 'test');
+    $this->assertEqual($this->dataspace->getSize(), $size_before, 'invalid index string, nothing should be written');
 
-    $this->dataspace->set_by_index_string('["rainbow][color]', 'test');
-    $this->assertEqual($this->dataspace->get_size(), $size_before, 'wrong quotation nesting, nothing should be written');
+    $this->dataspace->setByIndexString('["rainbow][color]', 'test');
+    $this->assertEqual($this->dataspace->getSize(), $size_before, 'wrong quotation nesting, nothing should be written');
 
-    $this->dataspace->set_by_index_string('[rainbow["color"]]', 'test');
-    $this->assertEqual($this->dataspace->get_size(), $size_before, 'wrong brackets nesting, nothing should be written');
+    $this->dataspace->setByIndexString('[rainbow["color"]]', 'test');
+    $this->assertEqual($this->dataspace->getSize(), $size_before, 'wrong brackets nesting, nothing should be written');
 
-    $this->dataspace->set_by_index_string('[rainbow][color]', array(1 => 'red'));
+    $this->dataspace->setByIndexString('[rainbow][color]', array(1 => 'red'));
     $this->assertEqual($this->dataspace->vars['rainbow']['color'], array(1 => 'red'));
 
-    $this->dataspace->set_by_index_string('[rainbow]["color"]', '"red"');
+    $this->dataspace->setByIndexString('[rainbow]["color"]', '"red"');
     $this->assertEqual($this->dataspace->vars['rainbow']['color'], '"red"');
 
-    $this->dataspace->set_by_index_string('["rainbow"][\'color\']', 10);
+    $this->dataspace->setByIndexString('["rainbow"][\'color\']', 10);
     $this->assertEqual($this->dataspace->vars['rainbow']['color'], 10);
   }
 }

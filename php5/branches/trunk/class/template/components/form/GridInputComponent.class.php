@@ -8,36 +8,36 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.php');
 
-class grid_input_component extends input_form_element
+class GridInputComponent extends InputFormElement
 {
   protected $hash_id = 'node_id';
 
-  public function get_value()
+  public function getValue()
   {
-    return $this->find_parent_by_class('list_component')->get($this->attributes['name']);
+    return $this->findParentByClass('list_component')->get($this->attributes['name']);
   }
 
-  public function set_value($value)
+  public function setValue($value)
   {
   }
 
-  public function render_attributes()
+  public function renderAttributes()
   {
     if (isset($this->attributes['hash_id']))
       $this->hash_id = $this->attributes['hash_id'];
 
     unset($this->attributes['hash_id']);
 
-    parent :: render_attributes();
+    parent :: renderAttributes();
   }
 
-  protected function _process_name_attribute($value)
+  protected function _processNameAttribute($value)
   {
-    $list = $this->find_parent_by_class('list_component');
+    $list = $this->findParentByClass('list_component');
 
-    return 'grid_form' . $this->_make_index_name($value) . '[' . $list->get($this->hash_id) . ']';
+    return 'grid_form' . $this->_makeIndexName($value) . '[' . $list->get($this->hash_id) . ']';
   }
 
 }

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/unique_user_email_rule.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/UniqueUserEmailRule.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class unique_email_user_rule_test extends single_field_rule_test
+class UniqueEmailUserRuleTest extends SingleFieldRuleTest
 {
   var $db = null;
 
@@ -21,64 +21,64 @@ class unique_email_user_rule_test extends single_field_rule_test
   {
     parent :: setUp();
 
-    $this->db = db_factory :: instance();
+    $this->db = DbFactory :: instance();
 
-    $this->db->sql_delete('user');
-    $this->db->sql_delete('sys_site_object');
+    $this->db->sqlDelete('user');
+    $this->db->sqlDelete('sys_site_object');
 
-    $this->db->sql_insert('sys_site_object', array('id' => 1, 'identifier' => 'vasa', 'class_id' => '1', 'current_version' => '1'));
-    $this->db->sql_insert('sys_site_object', array('id' => 2, 'identifier' => 'sasa', 'class_id' => '1', 'current_version' => '1'));
-    $this->db->sql_insert('user', array('id' => 1, 'name' => 'Vasa',' email' => '1@1.1', 'password' => '1', 'version' => '1', 'object_id' => '1'));
-    $this->db->sql_insert('user', array('id' => 2, 'name' => 'Sasa', 'email' => '2@2.2', 'password' => '1', 'version' => '1', 'object_id' => '2'));
-    $this->db->sql_insert('user', array('id' => 3, 'name' => 'Sasa', 'email' => '3@3.3', 'password' => '1', 'version' => '2', 'object_id' => '2'));
+    $this->db->sqlInsert('sys_site_object', array('id' => 1, 'identifier' => 'vasa', 'class_id' => '1', 'current_version' => '1'));
+    $this->db->sqlInsert('sys_site_object', array('id' => 2, 'identifier' => 'sasa', 'class_id' => '1', 'current_version' => '1'));
+    $this->db->sqlInsert('user', array('id' => 1, 'name' => 'Vasa',' email' => '1@1.1', 'password' => '1', 'version' => '1', 'object_id' => '1'));
+    $this->db->sqlInsert('user', array('id' => 2, 'name' => 'Sasa', 'email' => '2@2.2', 'password' => '1', 'version' => '1', 'object_id' => '2'));
+    $this->db->sqlInsert('user', array('id' => 3, 'name' => 'Sasa', 'email' => '3@3.3', 'password' => '1', 'version' => '2', 'object_id' => '2'));
   }
 
   function tearDown()
   {
     parent :: tearDown();
 
-    $this->db->sql_delete('user');
-    $this->db->sql_delete('sys_site_object');
+    $this->db->sqlDelete('user');
+    $this->db->sqlDelete('sys_site_object');
   }
 
-  function test_unique_user_email_rule_correct()
+  function testUniqueUserEmailRuleCorrect()
   {
-    $this->validator->add_rule(new unique_user_email_rule('test'));
+    $this->validator->addRule(new UniqueUserEmailRule('test'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', '3@3.3');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_unique_user_email_rule_error()
+  function testUniqueUserEmailRuleError()
   {
-    $this->validator->add_rule(new unique_user_email_rule('test'));
+    $this->validator->addRule(new UniqueUserEmailRule('test'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', '2@2.2');
 
-    $this->error_list->expectOnce('add_error', array('test', strings :: get('error_duplicate_user', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('test', Strings :: get('error_duplicate_user', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
 
-  function test_unique_user_email_rule_correct_edit()
+  function testUniqueUserEmailRuleCorrectEdit()
   {
-    $this->validator->add_rule(new unique_user_email_rule('test', '2@2.2'));
+    $this->validator->addRule(new UniqueUserEmailRule('test', '2@2.2'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', '2@2.2');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 }
 

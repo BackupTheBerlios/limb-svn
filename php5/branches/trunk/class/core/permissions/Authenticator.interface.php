@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-interface authenticator
+interface Authenticator
 {
   public function login($params = array());
 

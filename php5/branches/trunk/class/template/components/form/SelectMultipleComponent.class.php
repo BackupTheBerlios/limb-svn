@@ -8,31 +8,31 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/options_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/OptionsFormElement.class.php');
 
-class select_multiple_component extends options_form_element
+class SelectMultipleComponent extends OptionsFormElement
 {
-  protected function _process_name_attribute($value)
+  protected function _processNameAttribute($value)
   {
-    return parent :: _process_name_attribute($value) . '[]';
+    return parent :: _processNameAttribute($value) . '[]';
   }
 
-  protected function _render_options()
+  protected function _renderOptions()
   {
-    $values = $this->get_value();
+    $values = $this->getValue();
 
     if(!is_array($values))
       $values = array();
 
     foreach($this->choice_list as $key => $contents)
     {
-      $this->option_renderer->render_attribute($key, $contents, in_array($key, $values));
+      $this->option_renderer->renderAttribute($key, $contents, in_array($key, $values));
     }
   }
 
-  public function get_value()
+  public function getValue()
   {
-    return container_form_element :: get_value();
+    return ContainerFormElement :: getValue();
   }
 }
 ?>

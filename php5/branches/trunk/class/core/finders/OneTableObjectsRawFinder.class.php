@@ -8,17 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/finders/site_objects_raw_finder.class.php');
+require_once(LIMB_DIR . '/class/core/finders/SiteObjectsRawFinder.class.php');
 
-abstract class one_table_objects_raw_finder extends site_objects_raw_finder
+abstract class OneTableObjectsRawFinder extends SiteObjectsRawFinder
 {
   protected  $_db_table = null;
 
-  public function get_db_table()
+  public function getDbTable()
   {
     if(!$this->_db_table)
     {
-      $db_table_name = $this->_define_db_table_name();
+      $db_table_name = $this->_defineDbTableName();
 
       $this->_db_table = Limb :: toolkit()->createDBTable($db_table_name);
     }
@@ -26,47 +26,47 @@ abstract class one_table_objects_raw_finder extends site_objects_raw_finder
     return $this->_db_table;
   }
 
-  abstract protected function _define_db_table_name();
+  abstract protected function _defineDbTableName();
 
   public function find($params=array(), $sql_params=array())
   {
-    $db_table = $this->get_db_table();
+    $db_table = $this->getDbTable();
 
-    $sql_params['columns'][] = ' ' . $db_table->get_columns_for_select('tn', array('id')) . ',';
+    $sql_params['columns'][] = ' ' . $db_table->getColumnsForSelect('tn', array('id')) . ',';
 
-    $table_name = $db_table->get_table_name();
+    $table_name = $db_table->getTableName();
     $sql_params['tables'][] = ",{$table_name} as tn";
 
     $sql_params['conditions'][] = 'AND sso.id=tn.object_id';
 
-    return $this->_do_parent_find($params, $sql_params);
+    return $this->_doParentFind($params, $sql_params);
   }
 
-  public function find_by_id($id)
+  public function findById($id)
   {
     return $this->find(array(), array('conditions' => array(' AND sso.id='. $id)));
   }
 
   //for mocking
-  protected function _do_parent_find($params, $sql_params)
+  protected function _doParentFind($params, $sql_params)
   {
     return parent :: find($params, $sql_params);
   }
 
-  protected function _do_parent_find_count($sql_params)
+  protected function _doParentFindCount($sql_params)
   {
-    return parent :: find_count($sql_params);
+    return parent :: findCount($sql_params);
   }
 
-  public function find_count($sql_params=array())
+  public function findCount($sql_params=array())
   {
-    $db_table = $this->get_db_table();
-    $table_name = $db_table->get_table_name();
+    $db_table = $this->getDbTable();
+    $table_name = $db_table->getTableName();
     $sql_params['tables'][] = ",{$table_name} as tn";
 
     $sql_params['conditions'][] = 'AND sso.id=tn.object_id';
 
-    return $this->_do_parent_find_count($sql_params);
+    return $this->_doParentFindCount($sql_params);
   }
 }
 

@@ -8,101 +8,101 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/single_field_rule_test.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/email_rule.class.php');
+require_once(dirname(__FILE__) . '/SingleFieldRuleTest.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
+require_once(LIMB_DIR . '/class/validators/rules/EmailRule.class.php');
 
-class email_rule_test extends single_field_rule_test
+class EmailRuleTest extends SingleFieldRuleTest
 {
-  function test_email_rule_valid()
+  function testEmailRuleValid()
   {
-    $this->validator->add_rule(new email_rule('test'));
+    $this->validator->addRule(new EmailRule('test'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', 'billgates@microsoft.com');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_email_rule_valid2()
+  function testEmailRuleValid2()
   {
-    $this->validator->add_rule(new email_rule('test'));
+    $this->validator->addRule(new EmailRule('test'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', 'billgates_@microsoft.com');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_email_rule_valid3()
+  function testEmailRuleValid3()
   {
-    $this->validator->add_rule(new email_rule('test'));
+    $this->validator->addRule(new EmailRule('test'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', 'bill_gates_@microsoft.com');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_email_rule_valid4()
+  function testEmailRuleValid4()
   {
-    $this->validator->add_rule(new email_rule('test'));
+    $this->validator->addRule(new EmailRule('test'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('test', 'bill-gates@microsoft.com');
 
-    $this->error_list->expectNever('add_error');
+    $this->error_list->expectNever('addError');
 
     $this->validator->validate($data);
-    $this->assertTrue($this->validator->is_valid());
+    $this->assertTrue($this->validator->isValid());
   }
 
-  function test_email_rule_invalid_user()
+  function testEmailRuleInvalidUser()
   {
-    $this->validator->add_rule(new email_rule('testfield'));
+    $this->validator->addRule(new EmailRule('testfield'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', 'bill(y!)gates@microsoft.com');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('invalid_email', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('invalid_email', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function test_email_rule_invalid_user2()
+  function testEmailRuleInvalidUser2()
   {
-    $this->validator->add_rule(new email_rule('testfield'));
+    $this->validator->addRule(new EmailRule('testfield'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', '_bill.gates@microsoft.com');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('invalid_email', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('invalid_email', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 
-  function test_email_user_invalid_domain()
+  function testEmailUserInvalidDomain()
   {
-    $this->validator->add_rule(new email_rule('testfield'));
+    $this->validator->addRule(new EmailRule('testfield'));
 
-    $data = new dataspace();
+    $data = new Dataspace();
     $data->set('testfield', 'billgates@micro$oft.com');
 
-    $this->error_list->expectOnce('add_error', array('testfield', strings :: get('bad_domain_characters', 'error'), array()));
+    $this->error_list->expectOnce('addError', array('testfield', Strings :: get('bad_domain_characters', 'error'), array()));
 
     $this->validator->validate($data);
-    $this->assertFalse($this->validator->is_valid());
+    $this->assertFalse($this->validator->isValid());
   }
 }
 

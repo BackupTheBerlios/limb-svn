@@ -8,47 +8,47 @@
 * $Id$
 *
 ***********************************************************************************/
-class core_dataspace_tag_info
+class CoreDataspaceTagInfo
 {
   public $tag = 'core:DATASPACE';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'core_dataspace_tag';
 }
 
-register_tag(new core_dataspace_tag_info());
+registerTag(new CoreDataspaceTagInfo());
 
 /**
 * Dataspaces act is "namespaces" for a template.
 */
-class core_dataspace_tag extends server_component_tag
+class CoreDataspaceTag extends ServerComponentTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/dataspace_component';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
 
-    $code->write_php('if (!' . $this->get_dataspace_ref_code() . '->is_empty()){');
+    $code->writePhp('if (!' . $this->getDataspaceRefCode() . '->is_empty()){');
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_php('}');
+    $code->writePhp('}');
 
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code();
+    return $this->getComponentRefCode();
   }
 }
 

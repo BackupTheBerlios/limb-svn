@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/object.class.php');
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
+require_once(LIMB_DIR . '/class/core/Object.class.php');
+require_once(LIMB_DIR . '/class/core/Dataspace.class.php');
 
-Mock :: generate('dataspace');
-Mock :: generatePartial('object',
-                        'object_test_version',
-                        array('_create_dataspace'));
+Mock :: generate('Dataspace');
+Mock :: generatePartial('Object',
+                        'ObjectTestVersion',
+                        array('_createDataspace'));
 
-class object_test extends LimbTestCase
+class ObjectTest extends LimbTestCase
 {
   var $object;
   var $dataspace;
 
   function setUp()
   {
-    $this->dataspace = new Mockdataspace($this);
+    $this->dataspace = new MockDataspace($this);
 
-    $this->object = new object_test_version($this);
-    $this->object->setReturnValue('_create_dataspace', $this->dataspace);
+    $this->object = new ObjectTestVersion($this);
+    $this->object->setReturnValue('_createDataspace', $this->dataspace);
     $this->object->__construct();
   }
 
@@ -35,7 +35,7 @@ class object_test extends LimbTestCase
     $this->dataspace->tally();
   }
 
-  function test_import()
+  function testImport()
   {
     $values = array('test');
 
@@ -44,7 +44,7 @@ class object_test extends LimbTestCase
     $this->object->import($values);
   }
 
-  function test_merge()
+  function testMerge()
   {
     $values = array('test');
 
@@ -53,7 +53,7 @@ class object_test extends LimbTestCase
     $this->object->merge($values);
   }
 
-  function test_export()
+  function testExport()
   {
     $values = array('test');
 
@@ -62,43 +62,43 @@ class object_test extends LimbTestCase
     $this->assertEqual($this->object->export(), $values);
   }
 
-  function test_has_attribute_true1()
+  function testHasAttributeTrue1()
   {
     $values = array('test');
 
     $this->dataspace->setReturnValue('get', 1, array($property = 'test'));
 
-    $this->assertTrue($this->object->has_attribute($property));
+    $this->assertTrue($this->object->hasAttribute($property));
   }
 
-  function test_has_attribute_true2()
+  function testHasAttributeTrue2()
   {
     $values = array('test');
 
     $this->dataspace->setReturnValue('get', 0, array($property = 'test'));
 
-    $this->assertTrue($this->object->has_attribute($property));
+    $this->assertTrue($this->object->hasAttribute($property));
   }
 
-  function test_has_attribute_true3()
+  function testHasAttributeTrue3()
   {
     $values = array('test');
 
     $this->dataspace->setReturnValue('get', '', array($property = 'test'));
 
-    $this->assertTrue($this->object->has_attribute($property));
+    $this->assertTrue($this->object->hasAttribute($property));
   }
 
-  function test_has_attribute_false()
+  function testHasAttributeFalse()
   {
     $values = array('test');
 
     $this->dataspace->setReturnValue('get', null, array($property = 'test'));
 
-    $this->assertFalse($this->object->has_attribute($property));
+    $this->assertFalse($this->object->hasAttribute($property));
   }
 
-  function test_get()
+  function testGet()
   {
     $value = 'test';
 
@@ -107,7 +107,7 @@ class object_test extends LimbTestCase
     $this->assertEqual($this->object->get($property), $value);
   }
 
-  function test_set()
+  function testSet()
   {
     $property = 'property';
     $value = 'test';
@@ -117,33 +117,33 @@ class object_test extends LimbTestCase
     $this->object->set($property, $value);
   }
 
-  function test_get_by_index_string()
+  function testGetByIndexString()
   {
     $value = 'test';
 
-    $this->dataspace->setReturnValue('get_by_index_string', $value, array($index = '[test]', null));
+    $this->dataspace->setReturnValue('getByIndexString', $value, array($index = '[test]', null));
 
-    $this->assertEqual($this->object->get_by_index_string($index), $value);
+    $this->assertEqual($this->object->getByIndexString($index), $value);
   }
 
-  function test_set_by_index_string()
+  function testSetByIndexString()
   {
     $path = '[path]';
     $value = 'test';
 
-    $this->dataspace->expectOnce('set_by_index_string', array($path, $value));
+    $this->dataspace->expectOnce('setByIndexString', array($path, $value));
 
-    $this->object->set_by_index_string($path, $value);
+    $this->object->setByIndexString($path, $value);
   }
 
-  function test_destroy()
+  function testDestroy()
   {
     $this->dataspace->expectOnce('destroy', array($property = 'test'));
 
     $this->object->destroy($property);
   }
 
-  function test_reset()
+  function testReset()
   {
     $this->dataspace->expectOnce('reset');
 

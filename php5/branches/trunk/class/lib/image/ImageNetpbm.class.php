@@ -34,15 +34,15 @@ define('PNMCOMP', 'pnmpaste');
 
 if(!defined('NETPBM_LIB_DIR'))
 {
-  if(sys :: os_type() == 'win32')
+  if(Sys :: osType() == 'win32')
     define('NETPBM_LIB_DIR', 'c:/netpbm/');
   else
     define('NETPBM_LIB_DIR', '/usr/local/netpbm/bin/');
  }
 
-require_once(LIMB_DIR . '/class/lib/image/image_library.class.php');
+require_once(LIMB_DIR . '/class/lib/image/ImageLibrary.class.php');
 
-class image_netpbm extends image_library
+class ImageNetpbm extends ImageLibrary
 {
   protected $lib_dir = '';
   protected $os = '';
@@ -60,16 +60,16 @@ class image_netpbm extends image_library
   {
     $this->lib_dir = $lib_dir;
 
-    $this->_determine_options();
+    $this->_determineOptions();
   }
 
-  protected function _determine_options()
+  protected function _determineOptions()
   {
-    if (sys :: os_type() == "win32")
+    if (Sys :: osType() == "win32")
       $this->ext = '.exe';
 
-    $this->_determine_read_types();
-    $this->_determine_write_types();
+    $this->_determineReadTypes();
+    $this->_determineWriteTypes();
 
     if (sizeof($this->read_types) == 0)
       $this->library_installed = false;
@@ -77,7 +77,7 @@ class image_netpbm extends image_library
       $this->library_installed = true;
   }
 
-  protected function _determine_read_types()
+  protected function _determineReadTypes()
   {
     if (file_exists($this->lib_dir . JPEGTOPNM . $this->ext))
       $this->read_types[] = 'JPEG';
@@ -95,7 +95,7 @@ class image_netpbm extends image_library
       $this->read_types[] = 'TIFF';
   }
 
-  protected function _determine_write_types()
+  protected function _determineWriteTypes()
   {
     if (file_exists($this->lib_dir . PNMTOJPEG . $this->ext))
       $this->create_types[] = 'JPEG';
@@ -113,16 +113,16 @@ class image_netpbm extends image_library
       $this->create_types[] = 'TIFF';
   }
 
-  public function set_input_file($file_name, $type = '')
+  public function setInputFile($file_name, $type = '')
   {
-    parent :: set_input_file($file_name, $type);
+    parent :: setInputFile($file_name, $type);
 
     $this->to_pnm = constant(strtoupper($type . 'TOPNM')) . " $file_name";
   }
 
-  public function set_output_file($file_name, &$type)
+  public function setOutputFile($file_name, &$type)
   {
-    parent :: set_output_file($file_name, $type);
+    parent :: setOutputFile($file_name, $type);
 
     $this->from_pnm = '';
 
@@ -142,11 +142,11 @@ class image_netpbm extends image_library
     if (!$this->library_installed)
       return false;
 
-    array_unshift($this->cmd_array, $this->_to_pnm());
+    array_unshift($this->cmd_array, $this->_toPnm());
     array_push($this->cmd_array, $this->from_pnm);
 
     echo $cmd = implode(' | ', $this->cmd_array);
-    $this->_run_cmd($cmd);
+    $this->_runCmd($cmd);
 
     $this->reset();
 
@@ -170,7 +170,7 @@ class image_netpbm extends image_library
     $src_width = $info[0];
     $src_height = $info[1];
 
-    list($dst_width, $dst_height) = $this->get_dst_dimensions($src_width, $src_height, $params);
+    list($dst_width, $dst_height) = $this->getDstDimensions($src_width, $src_height, $params);
 
     $this->cmd_array[] = PNMSCALE . " -width={$dst_width} -height={$dst_height}";
   }
@@ -197,7 +197,7 @@ class image_netpbm extends image_library
     $this->cmd_array[] = PNMFLIP . " {$args}";
   }
 
-  protected function _to_pnm()
+  protected function _toPnm()
   {
     if (!empty($this->current_input_file))
     {
@@ -213,7 +213,7 @@ class image_netpbm extends image_library
     return constant(strtoupper($type . 'TOPNM')) . " $file_name";
   }
 
-  protected function _from_pnm()
+  protected function _fromPnm()
   {
     if (!empty($this->current_output_file))
     {
@@ -229,7 +229,7 @@ class image_netpbm extends image_library
     return constant(strtoupper('PNMTO' . $type)) . " > $file_name";
   }
 
-  protected function _run_cmd($cmd)
+  protected function _runCmd($cmd)
   {
     $cwd = getcwd();
     chdir($this->lib_dir);
@@ -248,12 +248,12 @@ class image_netpbm extends image_library
 
     if (sizeof($this->cmd_array) > 0)
     {
-      array_unshift($this->cmd_array, $this->_to_pnm());
-      array_push($this->cmd_array, $this->_from_pnm());
+      array_unshift($this->cmd_array, $this->_toPnm());
+      array_push($this->cmd_array, $this->_fromPnm());
 
       $cmd = implode(' | ', $this->cmd_array);
 
-      $this->_run_cmd($cmd);
+      $this->_runCmd($cmd);
 
       $file_name = $this->current_input_file = $tmp_file;
       $type = $this->current_input_file_type = $this->current_output_file_type;
@@ -298,15 +298,15 @@ class image_netpbm extends image_library
 
     $tmp_file = tempnam(VAR_DIR, 'netpbm');
 
-    $cmd = $this->_to_pnm() . ' | ' . PNMCUT . " $cx $cy $cw $ch > {$tmp_file}";
+    $cmd = $this->_toPnm() . ' | ' . PNMCUT . " $cx $cy $cw $ch > {$tmp_file}";
 
-    $this->_run_cmd($cmd);
+    $this->_runCmd($cmd);
 
     $cx = ($x < 0) ? -$x : 0;
     $cy = ($y < 0) ? -$y : 0;
-    $cmd = PNMMAKE . " " . $this->_hex_color_to_X11($bg_color) . " {$w} {$h} | " . PNMCOMP . " {$tmp_file} {$cx} {$cy}" . ' | ' . $this->_from_pnm();
+    $cmd = PNMMAKE . " " . $this->_hexColorToX11($bg_color) . " {$w} {$h} | " . PNMCOMP . " {$tmp_file} {$cx} {$cy}" . ' | ' . $this->_fromPnm();
 
-    $this->_run_cmd($cmd);
+    $this->_runCmd($cmd);
 
     unlink($tmp_file);
 

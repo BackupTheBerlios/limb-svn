@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/input_form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/InputFormElement.class.php');
 
-class image_select_component extends input_form_element
+class ImageSelectComponent extends InputFormElement
 {
-  public function init_image_select()
+  public function initImageSelect()
   {
     if (!defined('IMAGE_SELECT_LOAD_SCRIPT'))
     {
@@ -21,16 +21,16 @@ class image_select_component extends input_form_element
     }
   }
 
-  public function render_image_select()
+  public function renderImageSelect()
   {
-    $id = $this->get_attribute('id');
+    $id = $this->getAttribute('id');
     $md5id = substr(md5($id), 0, 5);
 
-    $image_node_id = $this->get_value();
+    $image_node_id = $this->getValue();
 
     $start_path = '';
 
-    if($image_node_id && $image_data = Limb :: toolkit()->getFetcher()->fetch_one_by_node_id($image_node_id))
+    if($image_node_id &&  $image_data = Limb :: toolkit()->getFetcher()->fetchOneByNodeId($image_node_id))
     {
       $span_name = $image_data['identifier'];
       $start_path = '/root?action=image_select&node_id=' . $image_data['parent_node_id'];
@@ -40,7 +40,7 @@ class image_select_component extends input_form_element
 
     if(!$start_path)
     {
-      $start_path = $this->get_attribute('start_path');
+      $start_path = $this->getAttribute('start_path');
       if(!$start_path)
         $start_path = Limb :: toolkit()->getSession()->get('limb_image_select_working_path');
       if(!$start_path)
@@ -60,9 +60,9 @@ class image_select_component extends input_form_element
           image_select_{$md5id}.generate();
         }
 
-        function image_select_{$md5id}_insert_image(image)
+        function image_select_{$md5id}_insertImage(image)
         {
-          image_select_{$md5id}.insert_image(image);
+          image_select_{$md5id}.insertImage(image);
         }
 
         function image_select_{$md5id}_get_image()
@@ -76,12 +76,12 @@ class image_select_component extends input_form_element
           init_image_select_{$md5id}();
         }
 
-        add_event(window, 'load', init_image_select_{$md5id});
+        addEvent(window, 'load', init_image_select_{$md5id});
       </script>";
 
-    echo "<br><br><input class='button' type='button' onclick='popup(\"/root/image_select?properties=0\", null, null, false, image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='" . strings :: get('select_image', 'image') . "'>";
+    echo "<br><br><input class='button' type='button' onclick='popup(\"/root/image_select?properties=0\", null, null, false, image_select_{$md5id}_insert_image, image_select_{$md5id}_get_image)' value='" . Strings :: get('select_image', 'image') . "'>";
     echo '&nbsp;';
-    echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='" . strings :: get('reset') . "'>";
+    echo "<input class='button' type='button' onclick='image_reset_{$md5id}()' value='" . Strings :: get('reset') . "'>";
   }
 }
 ?>

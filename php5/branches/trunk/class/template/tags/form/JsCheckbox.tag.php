@@ -8,41 +8,41 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class js_checkbox_tag_info
+class JsCheckboxTagInfo
 {
   public $tag = 'js_checkbox';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'js_checkbox_tag';
 }
 
-register_tag(new js_checkbox_tag_info());
+registerTag(new JsCheckboxTagInfo());
 
-class js_checkbox_tag extends control_tag
+class JsCheckboxTag extends ControlTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/js_checkbox_component';
   }
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'input';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
     $this->attributes['type'] = 'hidden';
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
   }
 
-  public function generate_contents($code)
+  public function generateContents($code)
   {
-    parent :: generate_contents($code);
+    parent :: generateContents($code);
 
-    $code->write_php($this->get_component_ref_code() . '->render_js_checkbox();');
+    $code->writePhp($this->getComponentRefCode() . '->render_js_checkbox();');
   }
 }
 

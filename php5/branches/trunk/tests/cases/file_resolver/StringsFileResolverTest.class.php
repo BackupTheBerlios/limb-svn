@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/base_package_file_resolver_test.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/strings_file_resolver.class.php');
+require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/StringsFileResolver.class.php');
 
-class strings_file_resolver_test extends base_package_file_resolver_test
+class StringsFileResolverTest extends BasePackageFileResolverTest
 {
-  function & _define_resolver()
+  function & _defineResolver()
   {
-    return new strings_file_resolver(new package_file_resolver());
+    return new StringsFileResolver(new PackageFileResolver());
   }
 
-  function test_resolve_strings_file_ok()
+  function testResolveStringsFileOk()
   {
     $this->assertEqual($this->resolver->resolve('test', array('en')), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/i18n/test_en.ini');
   }
 
-  function test_resolve_strings_file_failed()
+  function testResolveStringsFileFailed()
   {
     try
     {

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
 /**
 * The dataspace is a container for a set of named data values (variables).
 */
-class dataspace
+class Dataspace
 {
   public $vars = array();//public is done for speed in compiled template
 
@@ -23,7 +23,7 @@ class dataspace
       $this->import($vars);
   }
 
-  public function get_hash()
+  public function getHash()
   {
     return md5(serialize($this->vars));
   }
@@ -36,7 +36,7 @@ class dataspace
       return $default_value;
   }
 
-  public function & get_reference($name, $default_value = '')
+  public function & getReference($name, $default_value = '')
   {
     if (!isset($this->vars[$name]))
       $this->vars[$name] = $default_value;
@@ -44,7 +44,7 @@ class dataspace
     return $this->vars[$name];
   }
 
-  protected function _process_index_string($index)
+  protected function _processIndexString($index)
   {
     if(!preg_match('/^(\[\w+\]|\[\'\w+\'\]|\[\"\w+\"\])+$/', $index))
       return null;
@@ -54,9 +54,9 @@ class dataspace
     return $index;
   }
 
-  public function get_by_index_string($raw_index, $default_value = null)
+  public function getByIndexString($raw_index, $default_value = null)
   {
-    if(!$index = $this->_process_index_string($raw_index))
+    if(!$index = $this->_processIndexString($raw_index))
       throw new Exception('invalid string index');
 
     eval('$res = isset($this->vars' . $index . ') ? $this->vars' . $index . ' : null;');
@@ -67,16 +67,16 @@ class dataspace
     return $res;
   }
 
-  public function set_by_index_string($raw_index, $value)
+  public function setByIndexString($raw_index, $value)
   {
-    if(!$index = $this->_process_index_string($raw_index))
+    if(!$index = $this->_processIndexString($raw_index))
       return null;
 
     eval('$this->vars' . $index . ' = "";$res =& $this->vars' . $index . ';');
     $res = $value;
   }
 
-  public function get_size()
+  public function getSize()
   {
     return count($this->vars);
   }
@@ -96,7 +96,7 @@ class dataspace
     $this->vars = $valuelist;
   }
 
-  public function import_append($valuelist)
+  public function importAppend($valuelist)
   {
     foreach ($valuelist as $key => $value)
     {
@@ -106,8 +106,8 @@ class dataspace
 
   public function merge($valuelist)
   {
-    if(is_array($valuelist) && sizeof($valuelist))
-      $this->vars = complex_array :: array_merge($this->vars, $valuelist);
+    if(is_array($valuelist) &&  sizeof($valuelist))
+      $this->vars = ComplexArray :: array_merge($this->vars, $valuelist);
 
     if(!is_array($this->vars))
       $this->vars = array();
@@ -129,7 +129,7 @@ class dataspace
     $this->vars = array();
   }
 
-  public function is_empty()
+  public function isEmpty()
   {
     return count($this->vars) ? false : true;
   }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/session/session_driver.interface.php');
+require_once(LIMB_DIR . '/class/core/session/SessionDriver.interface.php');
 
-class session implements session_driver
+class Session implements SessionDriver
 {
   protected $driver;
 
@@ -34,28 +34,28 @@ class session implements session_driver
     session_start();
   }
 
-  public function storage_open()
+  public function storageOpen()
   {
-    $this->driver->storage_open();
+    $this->driver->storageOpen();
   }
 
-  public function storage_close()
+  public function storageClose()
   {
-    $this->driver->storage_close();
+    $this->driver->storageClose();
   }
 
-  public function storage_read($session_id)
+  public function storageRead($session_id)
   {
-    if($data = $this->driver->storage_read($session_id))
+    if($data = $this->driver->storageRead($session_id))
     {
-      $this->_include_session_objects_classes($data);
+      $this->_includeSessionObjectsClasses($data);
       return $data;
     }
     else
       return false;
   }
 
-  protected function _include_session_objects_classes($session_data)
+  protected function _includeSessionObjectsClasses($session_data)
   {
     if(preg_match_all('/"*__session_class_path";s:\d+:"([^"]+)"/',
                       $session_data,
@@ -68,31 +68,31 @@ class session implements session_driver
     }
   }
 
-  public function storage_write($session_id, $value)
+  public function storageWrite($session_id, $value)
   {
-    $this->driver->storage_write($session_id, $value);
+    $this->driver->storageWrite($session_id, $value);
   }
 
-  public function storage_destroy($session_id)
+  public function storageDestroy($session_id)
   {
-    $this->driver->storage_destroy($session_id);
+    $this->driver->storageDestroy($session_id);
   }
 
-  public function storage_destroy_user($user_id)
+  public function storageDestroyUser($user_id)
   {
-    $this->driver->storage_destroy_user($user_id);
+    $this->driver->storageDestroyUser($user_id);
   }
 
-  public function storage_gc($max_life_time)
+  public function storageGc($max_life_time)
   {
     //???
-    if(defined('SESSION_DB_MAX_LIFE_TIME') && constant('SESSION_DB_MAX_LIFE_TIME'))
+    if(defined('SESSION_DB_MAX_LIFE_TIME') &&  constant('SESSION_DB_MAX_LIFE_TIME'))
       $max_life_time = constant('SESSION_DB_MAX_LIFE_TIME');
 
-    $this->driver->storage_gc($max_life_time);
+    $this->driver->storageGc($max_life_time);
   }
 
-  public function & get_reference($name)
+  public function & getReference($name)
   {
     if(!isset($_SESSION[$name]))
       $_SESSION[$name] = '';

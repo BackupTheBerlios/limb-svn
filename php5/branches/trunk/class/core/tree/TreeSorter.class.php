@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
-class tree_sorter
+class TreeSorter
 {
   static function sort($tree_array, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
   {
@@ -19,12 +19,12 @@ class tree_sorter
 
     $sorted_tree_array = array();
 
-    tree_sorter :: _do_sort($tree_array, $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash);
+    TreeSorter :: _doSort($tree_array, $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash);
 
     return $sorted_tree_array;
   }
 
-  static function _do_sort($tree_array, & $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
+  static function _doSort($tree_array, & $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
   {
     $children = array();
 
@@ -40,7 +40,7 @@ class tree_sorter
     if(!($count = sizeof($children)))
       return;
 
-    $children = complex_array :: sort_array($children, $sort_params);
+    $children = ComplexArray :: sortArray($children, $sort_params);
 
     if(!$sorted_tree_array)
     {
@@ -48,7 +48,7 @@ class tree_sorter
     }
     else
     {
-      $ids = complex_array :: get_column_values($id_hash, $sorted_tree_array);
+      $ids = ComplexArray :: getColumnValues($id_hash, $sorted_tree_array);
 
       $offset = array_search($parent_id, $ids) + 1;
 
@@ -57,7 +57,7 @@ class tree_sorter
 
     for($i=0; $i < $count; $i++)
     {
-      tree_sorter :: _do_sort($tree_array, $sorted_tree_array, $sort_params, $children[$i][$id_hash], $id_hash, $parent_hash);
+      TreeSorter :: _doSort($tree_array, $sorted_tree_array, $sort_params, $children[$i][$id_hash], $id_hash, $parent_hash);
     }
   }
 }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
+require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
 
-class tree_decorator implements tree
+class TreeDecorator implements Tree
 {
   protected $_tree = null;
 
@@ -19,84 +19,84 @@ class tree_decorator implements tree
     $this->_tree = $tree;
   }
 
-  public function is_node($id)
+  public function isNode($id)
   {
-    return $this->_tree->is_node($id);
+    return $this->_tree->isNode($id);
   }
 
-  public function get_node($id)
+  public function getNode($id)
   {
-    return $this->_tree->get_node($id);
+    return $this->_tree->getNode($id);
   }
 
-  public function get_parent($id)
+  public function getParent($id)
   {
-    return $this->_tree->get_parent($id);
+    return $this->_tree->getParent($id);
   }
 
-  public function get_parents($id)
+  public function getParents($id)
   {
-    return $this->_tree->get_parents($id);
+    return $this->_tree->getParents($id);
   }
 
-  public function get_siblings($id)
+  public function getSiblings($id)
   {
-    return $this->_tree->get_siblings($id);
+    return $this->_tree->getSiblings($id);
   }
 
-  public function get_children($id)
+  public function getChildren($id)
   {
-    return $this->_tree->get_children($id);
+    return $this->_tree->getChildren($id);
   }
 
-  public function count_children($id)
+  public function countChildren($id)
   {
-    return $this->_tree->count_children($id);
+    return $this->_tree->countChildren($id);
   }
 
-  public function create_root_node($values)
+  public function createRootNode($values)
   {
-    return $this->_tree->create_root_node($values);
+    return $this->_tree->createRootNode($values);
   }
 
-  public function create_sub_node($id, $values)
+  public function createSubNode($id, $values)
   {
-    return $this->_tree->create_sub_node($id, $values);
+    return $this->_tree->createSubNode($id, $values);
   }
 
-  public function delete_node($id)
+  public function deleteNode($id)
   {
-    return $this->_tree->delete_node($id);
+    return $this->_tree->deleteNode($id);
   }
 
-  public function update_node($id, $values, $internal = false)
+  public function updateNode($id, $values, $internal = false)
   {
-    return $this->_tree->update_node($id, $values, $internal);
+    return $this->_tree->updateNode($id, $values, $internal);
   }
 
-  public function move_tree($id, $target_id)
+  public function moveTree($id, $target_id)
   {
-    return $this->_tree->move_tree($id, $target_id);
+    return $this->_tree->moveTree($id, $target_id);
   }
 
-  public function set_dumb_mode($status=true)
+  public function setDumbMode($status=true)
   {
-    $this->_tree->set_dumb_mode($status);
+    $this->_tree->setDumbMode($status);
   }
 
-  public function get_all_nodes()
+  public function getAllNodes()
   {
-    return $this->_tree->get_all_nodes();
+    return $this->_tree->getAllNodes();
   }
 
-  public function get_nodes_by_ids($ids_array)
+  public function getNodesByIds($ids_array)
   {
-    return $this->_tree->get_nodes_by_ids($ids_array);
+    return $this->_tree->getNodesByIds($ids_array);
   }
 
-  public function get_path_to_node($node, $delimeter = '/')
+  public function getPathToNode($node, $delimeter = '/')
   {
-    if(($parents = $this->_tree->get_parents($node['id'])) === false)
+    if(($parents = $this->_tree->getParents($node['id'])) === false)
       return false;
 
     $path = '';
@@ -106,64 +106,64 @@ class tree_decorator implements tree
     return $path .= $delimeter . $node['identifier'];
   }
 
-  public function get_max_child_identifier($id)
+  public function getMaxChildIdentifier($id)
   {
-    return $this->_tree->get_max_child_identifier($id);
+    return $this->_tree->getMaxChildIdentifier($id);
   }
 
-  public function get_node_by_path($path, $delimiter='/')
+  public function getNodeByPath($path, $delimiter='/')
   {
-    return $this->_tree->get_node_by_path($path, $delimiter);
+    return $this->_tree->getNodeByPath($path, $delimiter);
   }
 
-  public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  public function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
-    return $this->_tree->get_sub_branch($id, $depth, $include_parent, $check_expanded_parents);
+    return $this->_tree->getSubBranch($id, $depth, $include_parent, $check_expanded_parents);
   }
 
-  public function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  public function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
-    return $this->_tree->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents);
+    return $this->_tree->getSubBranchByPath($path, $depth, $include_parent, $check_expanded_parents);
   }
 
-  public function get_root_nodes()
+  public function getRootNodes()
   {
-    return $this->_tree->get_root_nodes();
+    return $this->_tree->getRootNodes();
   }
 
-  public function is_node_expanded($id)
+  public function isNodeExpanded($id)
   {
-    return $this->_tree->is_node_expanded($id);
+    return $this->_tree->isNodeExpanded($id);
   }
 
-  public function toggle_node($id)
+  public function toggleNode($id)
   {
-    return $this->_tree->toggle_node($id);
+    return $this->_tree->toggleNode($id);
   }
 
-  public function expand_node($id)
+  public function expandNode($id)
   {
-    return $this->_tree->expand_node($id);
+    return $this->_tree->expandNode($id);
   }
 
-  public function collapse_node($id)
+  public function collapseNode($id)
   {
-    return $this->_tree->collapse_node($id);
+    return $this->_tree->collapseNode($id);
   }
 
-  public function can_add_node($id)
+  public function canAddNode($id)
   {
-    if (!$this->is_node($id))
+    if (!$this->isNode($id))
       return false;
     else
       return true;
   }
 
-  public function can_delete_node($id)
+  public function canDeleteNode($id)
   {
-    $amount = $this->count_children($id);
+    $amount = $this->countChildren($id);
 
-    if ($amount === false || $amount == 0)
+    if ($amount === false ||  $amount == 0)
       return true;
     else
       return false;

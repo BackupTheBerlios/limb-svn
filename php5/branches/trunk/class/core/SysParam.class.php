@@ -9,27 +9,27 @@
 *
 ***********************************************************************************/
 
-class sys_param
+class SysParam
 {
   static protected $_instance = null;
 
   protected $_db_table = null;
   protected $_types = array("char", "int", "blob", "float");
 
-  function sys_param()
+  function sysParam()
   {
-    $this->_db_table = Limb :: toolkit()->createDBTable('sys_param');
+    $this->_db_table = Limb :: toolkit()->createDBTable('SysParam');
   }
 
   static public function instance()
   {
     if (!self :: $_instance)
-      self :: $_instance = new sys_param();
+      self :: $_instance = new SysParam();
 
     return self :: $_instance;
   }
 
-  public function save_param($identifier, $type, $value, $force_new = true)
+  public function saveParam($identifier, $type, $value, $force_new = true)
   {
     if(!in_array($type, $this->_types))
     {
@@ -37,17 +37,17 @@ class sys_param
         array('type' => $type, 'param' => $identifier));
     }
 
-    $params = $this->_db_table->get_list("identifier='{$identifier}'", '', '', 0, 1);
+    $params = $this->_db_table->getList("identifier='{$identifier}'", '', '', 0, 1);
 
     if(empty($value))//?
     {
-      if ($type == 'int' || $type == 'float')
+      if ($type == 'int' ||  $type == 'float')
         $value = (int) $value;
       else
         $value = (string) $value;
     }
 
-    if(is_array($params) && count($params))
+    if(is_array($params) &&  count($params))
     {
       $param = current($params);
 
@@ -63,7 +63,7 @@ class sys_param
               $data["{$type_name}_value"] =  NULL;
 
       }
-      return $this->_db_table->update_by_id($param['id'], $data);
+      return $this->_db_table->updateById($param['id'], $data);
 
     }
     else
@@ -77,21 +77,21 @@ class sys_param
 
       $this->_db_table->insert($data);
 
-      return $this->_db_table->get_last_insert_id();
+      return $this->_db_table->getLastInsertId();
     }
   }
 
-  public function get_param($identifier, $type='')
+  public function getParam($identifier, $type='')
   {
-    if(!empty($type) && !in_array($type, $this->_types))
+    if(!empty($type) &&  !in_array($type, $this->_types))
     {
       throw new LimbException('trying to get undefined type in sys_param',
         array('type' => $type, 'param' => $identifier));
     }
 
-    $params = $this->_db_table->get_list("identifier='{$identifier}'", '', '', 0, 1);
+    $params = $this->_db_table->getList("identifier='{$identifier}'", '', '', 0, 1);
 
-    if(!is_array($params) || !count($params))
+    if(!is_array($params) ||  !count($params))
       return null;
 
     $param = current($params);

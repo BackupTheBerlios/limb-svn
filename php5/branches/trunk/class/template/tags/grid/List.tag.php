@@ -8,19 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-class grid_list_tag_info
+class GridListTagInfo
 {
   public $tag = 'grid:LIST';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'grid_list_tag';
 }
 
-register_tag(new grid_list_tag_info());
+registerTag(new GridListTagInfo());
 
 /**
 * The parent compile time component for lists
 */
-class grid_list_tag extends server_component_tag
+class GridListTag extends ServerComponentTag
 {
   protected $has_form = false;
 
@@ -29,48 +29,48 @@ class grid_list_tag extends server_component_tag
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/list_component';
   }
 
-  public function pre_generate($code)
+  public function preGenerate($code)
   {
-    $code->write_php($this->get_component_ref_code() . '->prepare();');
+    $code->writePhp($this->getComponentRefCode() . '->prepare();');
 
-    parent :: pre_generate($code);
+    parent :: preGenerate($code);
 
     if ($this->has_form)
     {
-      $code->write_html('<form name="grid_form" id="grid_form_'. $this->get_server_id() .'" method="post">');
+      $code->writeHtml('<form name="grid_form" id="grid_form_'. $this->getServerId() .'" method="post">');
     }
 
-    $code->write_php('if (' . $this->get_dataspace_ref_code() . '->get_total_row_count()){');
+    $code->writePhp('if (' . $this->getDataspaceRefCode() . '->get_total_row_count()){');
   }
 
-  public function post_generate($code)
+  public function postGenerate($code)
   {
-    $code->write_php('} else {');
+    $code->writePhp('} else {');
 
-    if ($default = $this->find_immediate_child_by_class('grid_default_tag'))
-      $default->generate_now($code);
+    if ($default = $this->findImmediateChildByClass('grid_default_tag'))
+      $default->generateNow($code);
 
-    $code->write_php('}');
+    $code->writePhp('}');
 
     if ($this->has_form)
     {
-      $code->write_html('</form>');
+      $code->writeHtml('</form>');
     }
 
-    parent :: post_generate($code);
+    parent :: postGenerate($code);
   }
 
-  public function get_dataspace()
+  public function getDataspace()
   {
     return $this;
   }
 
-  public function get_dataspace_ref_code()
+  public function getDataspaceRefCode()
   {
-    return $this->get_component_ref_code() . '->dataset';
+    return $this->getComponentRefCode() . '->dataset';
   }
 
-  public function set_form_required($status=true)
+  public function setFormRequired($status=true)
   {
     $this->has_form = $status;
   }

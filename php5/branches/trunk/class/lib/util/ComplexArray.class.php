@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class complex_array
+class ComplexArray
 {
   protected function __construct(){}
 
@@ -25,22 +25,22 @@ class complex_array
   {
     $n = $a1;
     foreach($a2 as $k => $v)
-      if(is_array($v) && isset($n[$k]) && is_array($n[$k]))
-        $n[$k] = complex_array :: array_merge($n[$k], $v);
+      if(is_array($v) &&  isset($n[$k]) &&  is_array($n[$k]))
+        $n[$k] = ComplexArray :: array_merge($n[$k], $v);
       else
         $n[$k] = $v;
     return $n;
   }
 
-  static public function & array_get($arr_def, &$res_array, $default_value='')
+  static public function & arrayGet($arr_def, &$res_array, $default_value='')
   {
     if($size = sizeof($arr_def))
     {
       $key = array_shift($arr_def);
 
-      if(is_array($res_array) && isset($res_array[$key]))
+      if(is_array($res_array) &&  isset($res_array[$key]))
         if($size > 1)
-          return self :: array_get($arr_def, $res_array[$key]);
+          return self :: arrayGet($arr_def, $res_array[$key]);
         elseif($size == 1)
           return $res_array[$key];
     }
@@ -48,7 +48,7 @@ class complex_array
     return $default_value;
   }
 
-  static public function array_set($arr_def, &$res_array, $value)
+  static public function arraySet($arr_def, &$res_array, $value)
   {
     if($size = sizeof($arr_def))
     {
@@ -59,14 +59,14 @@ class complex_array
         if (!isset($res_array[$key]))
           $res_array[$key] = array();
 
-        self :: array_set($arr_def, $res_array[$key], $value);
+        self :: arraySet($arr_def, $res_array[$key], $value);
       }
       elseif($size == 1)
         $res_array[$key] = $value;
     }
   }
 
-  static public function get_column_values($column_name, $array)
+  static public function getColumnValues($column_name, $array)
   {
     $result = array();
     foreach($array as $item)
@@ -75,11 +75,11 @@ class complex_array
     return $result;
   }
 
-  static public function get_max_column_value($column_name, $array, &$index)
+  static public function getMaxColumnValue($column_name, $array, &$index)
   {
     $index = 0;
 
-    if(!$values = self :: get_column_values($column_name, $array))
+    if(!$values = self :: getColumnValues($column_name, $array))
       return false;
 
     $max = max($values);
@@ -89,11 +89,11 @@ class complex_array
     return $max;
   }
 
-  static public function get_min_column_value($column_name, $array, &$index)
+  static public function getMinColumnValue($column_name, $array, &$index)
   {
     $index = 0;
 
-    if(!$values = self :: get_column_values($column_name, $array))
+    if(!$values = self :: getColumnValues($column_name, $array))
       return false;
 
     $min = min($values);
@@ -103,27 +103,27 @@ class complex_array
     return $min;
   }
 
-  static public function to_flat_array($array, &$result, $prefix='')
+  static public function toFlatArray($array, &$result, $prefix='')
   {
     foreach($array as $key => $value)
     {
       $string_key = ($prefix) ? '[' . $key . ']' : $key;
 
       if(is_array($value))
-        self :: to_flat_array($value, $result, $prefix . $string_key);
+        self :: toFlatArray($value, $result, $prefix . $string_key);
       else
         $result[$prefix . $string_key] = $value;
     }
   }
 
-  static public function array_map_recursive($in_func, &$in_array)
+  static public function arrayMapRecursive($in_func, &$in_array)
   {
     foreach (array_keys($in_array) as $key)
     {
       $value =& $in_array[$key];
 
       if (is_array($value))
-        self :: array_map_recursive($in_func, $value);
+        self :: arrayMapRecursive($in_func, $value);
       else
         $value = call_user_func_array($in_func, array($value));
     }
@@ -131,7 +131,7 @@ class complex_array
   }
 
   //e.g, $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')
-  static public function & sort_array($array, $sort_params, $preserve_keys = true)
+  static public function & sortArray($array, $sort_params, $preserve_keys = true)
   {
    $array_mod = array();
    foreach ($array as $key => $value)

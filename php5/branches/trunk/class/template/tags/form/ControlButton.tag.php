@@ -8,28 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class control_button_tag_info
+class ControlButtonTagInfo
 {
   public $tag = 'control_button';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'control_button_tag';
 }
 
-register_tag(new control_button_tag_info());
+registerTag(new ControlButtonTagInfo());
 
 /**
 * Compile time component for button tags
 */
-class control_button_tag extends control_tag
+class ControlButtonTag extends ControlTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/control_button_component';
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['action']))
     {
@@ -44,7 +44,7 @@ class control_button_tag extends control_tag
   }
 
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'button';
   }

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/component.class.php');
+require_once(LIMB_DIR . '/class/template/Component.class.php');
 
-class order_component extends component
+class OrderComponent extends Component
 {
   public function prepare()
   {
@@ -20,13 +20,13 @@ class order_component extends component
     $params['rn'] = time();
     $params['popup'] = 1;
 
-    $this->set('order_up_alt', strings :: get('order_up'));
-    $this->set('order_down_alt', strings :: get('order_down'));
+    $this->set('order_up_alt', Strings :: get('order_up'));
+    $this->set('order_down_alt', Strings :: get('order_down'));
 
     if (!$this->get('is_first_child'))
     {
       $params['direction'] = 'up';
-      $this->set('order_up_href', add_url_query_items($_SERVER['PHP_SELF'], $params));
+      $this->set('order_up_href', addUrlQueryItems($_SERVER['PHP_SELF'], $params));
     }
     else
       $this->set('order_up_href', '');
@@ -34,7 +34,7 @@ class order_component extends component
     if (!$this->get('is_last_child'))
     {
       $params['direction'] = 'down';
-      $this->set('order_down_href', add_url_query_items($_SERVER['PHP_SELF'], $params));
+      $this->set('order_down_href', addUrlQueryItems($_SERVER['PHP_SELF'], $params));
     }
     else
       $this->set('order_down_href', '');

@@ -8,24 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/components/form/form_element.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/FormElement.class.php');
 
-class input_checkbox_component extends form_element
+class InputCheckboxComponent extends FormElement
 {
   /**
   * Overrides then calls with the parent render_attributes() method dealing
   * with the special case of the checked attribute
   */
-  public function render_attributes()
+  public function renderAttributes()
   {
-    $value = $this->get_value();
+    $value = $this->getValue();
 
     if ($value)
       $this->attributes['checked'] = 1;
     else
     unset($this->attributes['checked']);
 
-    parent :: render_attributes();
+    parent :: renderAttributes();
   }
 }
 ?>

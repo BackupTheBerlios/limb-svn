@@ -8,20 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-class form_success_status_tag_info
+class FormSuccessStatusTagInfo
 {
   public $tag = 'form:SUCCESS_STATUS';
   public $end_tag = ENDTAG_REQUIRED;
   public $tag_class = 'success_status_tag';
 }
 
-register_tag(new form_success_status_tag_info());
+registerTag(new FormSuccessStatusTagInfo());
 
-class success_status_tag extends compiler_directive_tag
+class SuccessStatusTag extends CompilerDirectiveTag
 {
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->find_parent_by_class('form_status_tag'))
+    if (!$this->findParentByClass('form_status_tag'))
     {
       throw new WactException('bad self nesting',
           array('tag' => $this->tag,

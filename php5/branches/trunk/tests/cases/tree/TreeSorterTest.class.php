@@ -9,16 +9,16 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/class/core/tree/tree_sorter.class.php');
+require_once(LIMB_DIR . '/class/core/tree/TreeSorter.class.php');
 
-class tree_sorter_test extends LimbTestCase
+class TreeSorterTest extends LimbTestCase
 {
-  function tree_sorter_test()
+  function treeSorterTest()
   {
-    parent :: LimbTestCase();
+    parent :: limbTestCase();
   }
 
-  function test_sort()
+  function testSort()
   {
     $raw_tree_array = array(
       array('id' => 1, 'parent_id' => 0, 'sort1' => 'bill', 'sort2' => 0),
@@ -42,7 +42,7 @@ class tree_sorter_test extends LimbTestCase
         array('id' => 7, 'parent_id' => 6, 'sort1' => 'tom', 'sort2' => 0),
     );
 
-    $sorted = tree_sorter :: sort($raw_tree_array, array('sort1' => 'DESC', 'sort2' => 'ASC'));
+    $sorted = TreeSorter :: sort($raw_tree_array, array('sort1' => 'DESC', 'sort2' => 'ASC'));
 
     $this->assertEqual(
       $sorted,

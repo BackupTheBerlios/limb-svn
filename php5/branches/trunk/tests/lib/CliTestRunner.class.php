@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/test_runner.class.php');
-require_once(dirname(__FILE__) . '/limb_cli_reporter.class.php');
+require_once(dirname(__FILE__) . '/TestRunner.class.php');
+require_once(dirname(__FILE__) . '/LimbCliReporter.class.php');
 require_once ('Console/Getopt.php');
 
 class CLITestRunner extends TestRunner
@@ -21,8 +21,7 @@ Usage: ./runtests.php [OPTION]...
   -b, --browse=PATH       list available tests cases at specified node
   -t, --test=PATH         test specified test cases node
   -h, --help              display this help and exit
-EOD;
-    echo $usage;
+EOD;    echo $usage;
     exit(0);
   }
 
@@ -31,7 +30,7 @@ EOD;
     $opt_browse_path = false;
     $opt_test_path = false;
 
-    $argv = Console_Getopt::readPHPArgv();
+    $argv = ConsoleGetopt::readPHPArgv();
     if (PEAR::isError($argv))
     {
       die('Fatal Error: ' . $argv->getMessage()) . "\n";
@@ -39,7 +38,7 @@ EOD;
 
     $short_opts = 'ht:b:';
     $long_opts = array('help', 'test=', 'browse=');
-    $options = Console_Getopt::getopt($argv, $short_opts, $long_opts);
+    $options = ConsoleGetopt::getopt($argv, $short_opts, $long_opts);
     if (PEAR::isError($options))
     {
       $this->usage();
@@ -70,7 +69,7 @@ EOD;
     if ($opt_test_path)
       $this->perform($opt_test_path, $root_group);
 
-    if(!$opt_browse_path && !$opt_test_path)
+    if(!$opt_browse_path &&  !$opt_test_path)
       $this->browse('', $root_group);
 
     exit(0);
@@ -104,7 +103,7 @@ EOD;
     {
       foreach ($group_tests as $index => $group_test)
       {
-        resolve_handle($group_test);
+        resolveHandle($group_test);
 
         $buffer .= $path . '/' . $index . ' ' . $group_test->getLabel() . "\n";
       }
@@ -115,7 +114,7 @@ EOD;
 
     echo $buffer;
 
-    echo debug :: parse_cli_console();
+    echo Debug :: parseCliConsole();
   }
 }
 

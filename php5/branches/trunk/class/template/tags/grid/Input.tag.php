@@ -8,27 +8,27 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
+require_once(LIMB_DIR . '/class/template/tags/form/ControlTag.class.php');
 
-class grid_input_tag_info
+class GridInputTagInfo
 {
   public $tag = 'grid:INPUT';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'grid_input_tag';
 }
 
-register_tag(new grid_input_tag_info());
+registerTag(new GridInputTagInfo());
 
-class grid_input_tag extends control_tag
+class GridInputTag extends ControlTag
 {
   public function __construct()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/grid_input_component';
   }
 
-  public function check_nesting_level()
+  public function checkNestingLevel()
   {
-    if (!$this->find_parent_by_class('grid_iterator_tag'))
+    if (!$this->findParentByClass('grid_iterator_tag'))
     {
       throw new WactException('missing enclosure',
           array('tag' => $this->tag,
@@ -38,7 +38,7 @@ class grid_input_tag extends control_tag
     }
   }
 
-  public function pre_parse()
+  public function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -56,13 +56,13 @@ class grid_input_tag extends control_tag
   {
     $this->attributes['type'] = 'text';
 
-    $grid_tag = $this->find_parent_by_class('grid_list_tag');
-    $grid_tag->set_form_required();
+    $grid_tag = $this->findParentByClass('grid_list_tag');
+    $grid_tag->setFormRequired();
 
     parent :: prepare();
   }
 
-  public function get_rendered_tag()
+  public function getRenderedTag()
   {
     return 'input';
   }

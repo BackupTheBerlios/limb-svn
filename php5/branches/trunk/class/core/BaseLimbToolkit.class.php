@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
 class BaseLimbToolkit implements LimbToolkit
 {
@@ -38,32 +38,32 @@ class BaseLimbToolkit implements LimbToolkit
 
   public function createDBTable($table_name)
   {
-    include_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
-    return db_table_factory :: create($table_name);
+    include_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+    return DbTableFactory :: create($table_name);
   }
 
   public function getDatasource($datasource_path)
   {
-    include_once(LIMB_DIR . '/class/core/datasources/datasource_factory.class.php');
-    return datasource_factory :: create($datasource_path);
+    include_once(LIMB_DIR . '/class/core/datasources/DatasourceFactory.class.php');
+    return DatasourceFactory :: create($datasource_path);
   }
 
   public function createSiteObject($site_object_path)
   {
-    include_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php');
-    return site_object_factory :: create($site_object_path);
+    include_once(LIMB_DIR . '/class/core/site_objects/SiteObjectFactory.class.php');
+    return SiteObjectFactory :: create($site_object_path);
   }
 
   public function createDataMapper($mapper_path)
   {
-    include_once(LIMB_DIR . '/class/core/data_mappers/data_mapper_factory.class.php');
-    return data_mapper_factory :: create($mapper_path);
+    include_once(LIMB_DIR . '/class/core/data_mappers/DataMapperFactory.class.php');
+    return DataMapperFactory :: create($mapper_path);
   }
 
   public function createBehaviour($behaviour_path)
   {
-    include_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour_factory.class.php');
-    return site_object_behaviour_factory :: create($behaviour_path);
+    include_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviourFactory.class.php');
+    return SiteObjectBehaviourFactory :: create($behaviour_path);
   }
 
   public function getDB()
@@ -71,8 +71,8 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->db)
       return $this->db;
 
-    include_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
-    $this->db = db_factory :: instance();
+    include_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+    $this->db = DbFactory :: instance();
 
     return $this->db;
   }
@@ -82,10 +82,10 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->tree)
       return $this->tree;
 
-    include_once(LIMB_DIR . '/class/core/tree/tree_decorator.class.php');
-    include_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
+    include_once(LIMB_DIR . '/class/core/tree/TreeDecorator.class.php');
+    include_once(LIMB_DIR . '/class/core/tree/MaterializedPathTree.class.php');
 
-    $this->tree = new tree_decorator(new materialized_path_tree());
+    $this->tree = new TreeDecorator(new MaterializedPathTree());
 
     return $this->tree;
   }
@@ -95,8 +95,8 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->user)
       return $this->user;
 
-    include_once(LIMB_DIR . '/class/core/permissions/user.class.php');
-    $this->user = user :: instance();
+    include_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+    $this->user = User :: instance();
 
     return $this->user;
   }
@@ -108,7 +108,7 @@ class BaseLimbToolkit implements LimbToolkit
 
     include_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
-    $ini = get_ini($ini_path);
+    $ini = getIni($ini_path);
 
     $this->ini_cache[$ini_path] = $ini;
 
@@ -125,9 +125,9 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->authenticator)
       return $this->authenticator;
 
-    include_once(LIMB_SIMPLE_PERMISSIONS_DIR . '/simple_authenticator.class.php');
+    include_once(LIMB_SIMPLE_PERMISSIONS_DIR . '/SimpleAuthenticator.class.php');
 
-    $this->authenticator = new simple_authenticator();
+    $this->authenticator = new SimpleAuthenticator();
 
     return $this->authenticator;
   }
@@ -137,9 +137,9 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->authorizer)
       return $this->authorizer;
 
-    include_once(LIMB_SIMPLE_PERMISSIONS_DIR . '/simple_authorizer.class.php');
+    include_once(LIMB_SIMPLE_PERMISSIONS_DIR . '/SimpleAuthorizer.class.php');
 
-    $this->authorizer = new simple_authorizer();
+    $this->authorizer = new SimpleAuthorizer();
 
     return $this->authorizer;
   }
@@ -149,8 +149,8 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->request)
       return $this->request;
 
-    include_once(LIMB_DIR . '/class/core/request/request.class.php');
-    $this->request = new request();
+    include_once(LIMB_DIR . '/class/core/request/Request.class.php');
+    $this->request = new Request();
 
     return $this->request;
   }
@@ -160,8 +160,8 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->response)
       return $this->response;
 
-    include_once(LIMB_DIR . '/class/core/request/http_response.class.php');
-    $this->response = new http_response();
+    include_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
+    $this->response = new HttpResponse();
 
     return $this->response;
   }
@@ -171,7 +171,7 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->cache)
       return $this->cache;
 
-    include_once(LIMB_DIR . '/class/cache/cache_registry.class.php');
+    include_once(LIMB_DIR . '/class/cache/CacheRegistry.class.php');
     $this->cache = new CacheRegistry();
 
     return $this->cache;
@@ -179,8 +179,8 @@ class BaseLimbToolkit implements LimbToolkit
 
   public function getLocale($locale_id = '')
   {
-    include_once(LIMB_DIR . '/class/i18n/locale.class.php');
-    return locale :: instance($locale_id);
+    include_once(LIMB_DIR . '/class/i18n/Locale.class.php');
+    return Locale :: instance($locale_id);
   }
 
   public function getSession()
@@ -188,26 +188,26 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->session)
       return $this->session;
 
-    include_once(LIMB_DIR . '/class/core/session/session.class.php');
-    include_once(LIMB_DIR . '/class/core/session/session_db_driver.class.php');
-    $this->session = new session(new session_db_driver());
+    include_once(LIMB_DIR . '/class/core/session/Session.class.php');
+    include_once(LIMB_DIR . '/class/core/session/SessionDbDriver.class.php');
+    $this->session = new Session(new SessionDbDriver());
 
     return $this->session;
   }
 
   public function getDataspace()
   {
-    include_once(LIMB_DIR . '/class/core/dataspace_registry.class.php');
-    return dataspace_registry :: get($this->current_dataspace_name);
+    include_once(LIMB_DIR . '/class/core/DataspaceRegistry.class.php');
+    return DataspaceRegistry :: get($this->current_dataspace_name);
   }
 
   public function switchDataspace($name)
   {
-    include_once(LIMB_DIR . '/class/core/dataspace_registry.class.php');
+    include_once(LIMB_DIR . '/class/core/DataspaceRegistry.class.php');
 
     $this->current_dataspace_name = $name;
 
-    return dataspace_registry :: get($name);
+    return DataspaceRegistry :: get($name);
   }
 
   public function setView($view)
@@ -217,7 +217,7 @@ class BaseLimbToolkit implements LimbToolkit
 
   public function getView()
   {
-    resolve_handle($this->view);
+    resolveHandle($this->view);
     return $this->view;
   }
 

@@ -8,18 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
-require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('tree');
-Mock :: generate('uri');
-Mock :: generate('request');
+Mock :: generate('Tree');
+Mock :: generate('Uri');
+Mock :: generate('Request');
 
-class requested_object_datasource_test extends LimbTestCase
+class RequestedObjectDatasourceTest extends LimbTestCase
 {
   var $toolkit;
   var $request;
@@ -29,12 +29,12 @@ class requested_object_datasource_test extends LimbTestCase
 
   function setUp()
   {
-    $this->tree = new Mocktree($this);
-    $this->request = new Mockrequest($this);
-    $this->uri = new Mockuri($this);
-    $this->datasource = new requested_object_datasource();
+    $this->tree = new MockTree($this);
+    $this->request = new MockRequest($this);
+    $this->uri = new MockUri($this);
+    $this->datasource = new RequestedObjectDatasource();
 
-    $this->request->setReturnValue('get_uri', $this->uri);
+    $this->request->setReturnValue('getUri', $this->uri);
 
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getTree', $this->tree);
@@ -55,62 +55,62 @@ class requested_object_datasource_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_map_uri_to_node_by_node_id()
+  function testMapUriToNodeByNodeId()
   {
-    $this->uri->setReturnValue('get_query_item', $node_id = 10, array('node_id'));
+    $this->uri->setReturnValue('getQueryItem', $node_id = 10, array('nodeId'));
 
-    $this->tree->expectOnce('get_node');
-    $this->tree->setReturnValue('get_node', $node = array('node_id' => $node_id), array($node_id));
-    $this->assertEqual($node, $this->datasource->map_uri_to_node($this->uri));
+    $this->tree->expectOnce('getNode');
+    $this->tree->setReturnValue('getNode', $node = array('nodeId' => $node_id), array($node_id));
+    $this->assertEqual($node, $this->datasource->mapUriToNode($this->uri));
   }
 
-  function test_map_uri_to_node_by_path()
+  function testMapUriToNodeByPath()
   {
-    $this->uri->setReturnValue('get_query_item', false, array('node_id'));
-    $this->uri->setReturnValue('get_path', $path = '/path');
+    $this->uri->setReturnValue('getQueryItem', false, array('node_id'));
+    $this->uri->setReturnValue('getPath', $path = '/path');
 
-    $this->tree->expectOnce('get_node_by_path');
-    $this->tree->setReturnValue('get_node_by_path', $node = array('node_id' => 10), array($path, '/', false));
+    $this->tree->expectOnce('getNodeByPath');
+    $this->tree->setReturnValue('getNodeByPath', $node = array('nodeId' => 10), array($path, '/', false));
 
-    $this->assertEqual($node, $this->datasource->map_uri_to_node($this->uri));
+    $this->assertEqual($node, $this->datasource->mapUriToNode($this->uri));
   }
 
-  function test_map_request_to_node_by_node_id()
+  function testMapRequestToNodeByNodeId()
   {
-    $this->request->setReturnValue('get', $node_id = 10, array('node_id'));
-    $this->tree->setReturnValue('get_node', $node = array('node_id' => $node_id), array($node_id));
+    $this->request->setReturnValue('get', $node_id = 10, array('nodeId'));
+    $this->tree->setReturnValue('getNode', $node = array('nodeId' => $node_id), array($node_id));
 
-    $this->assertEqual($node, $this->datasource->map_request_to_node($this->request));
+    $this->assertEqual($node, $this->datasource->mapRequestToNode($this->request));
   }
 
-  function test_map_request_to_node_by_path()
+  function testMapRequestToNodeByPath()
   {
-    $this->uri->setReturnValue('get_query_item', false, array('node_id'));
-    $this->uri->setReturnValue('get_path', $path = '/path');
+    $this->uri->setReturnValue('getQueryItem', false, array('node_id'));
+    $this->uri->setReturnValue('getPath', $path = '/path');
 
     $this->request->setReturnValue('get', false, array('node_id'));
 
-    $this->tree->expectOnce('get_node_by_path');
-    $this->tree->setReturnValue('get_node_by_path', $node = array('node_id' => 10), array($path, '/', false));
-    $this->assertEqual($node, $this->datasource->map_request_to_node($this->request));
+    $this->tree->expectOnce('getNodeByPath');
+    $this->tree->setReturnValue('getNodeByPath', $node = array('nodeId' => 10), array($path, '/', false));
+    $this->assertEqual($node, $this->datasource->mapRequestToNode($this->request));
   }
 
-  function test_map_request_to_node_cache()
+  function testMapRequestToNodeCache()
   {
     $this->request->expectOnce('get');
 
-    $this->request->setReturnValue('get', $node_id = 10, array('node_id'));
-    $this->tree->setReturnValue('get_node', $node = array('node_id' => $node_id), array($node_id));
+    $this->request->setReturnValue('get', $node_id = 10, array('nodeId'));
+    $this->tree->setReturnValue('getNode', $node = array('nodeId' => $node_id), array($node_id));
 
-    $this->datasource->map_request_to_node($this->request);
-    $this->assertEqual($node, $this->datasource->map_request_to_node($this->request));
+    $this->datasource->mapRequestToNode($this->request);
+    $this->assertEqual($node, $this->datasource->mapRequestToNode($this->request));
   }
 
-  function test_get_object_ids_no_request()
+  function testGetObjectIdsNoRequest()
   {
     try
     {
-      $this->datasource->get_object_ids();
+      $this->datasource->getObjectIds();
       $this->assertTrue(false);
     }
     catch(LimbException $e)
@@ -119,20 +119,20 @@ class requested_object_datasource_test extends LimbTestCase
 
   }
 
-  function test_get_object_ids()
+  function testGetObjectIds()
   {
-    Mock :: generatePartial('requested_object_datasource',
-                            'requested_object_get_ids_test_version_datasource',
-                            array('map_request_to_node'));
+    Mock :: generatePartial('RequestedObjectDatasource',
+                            'RequestedObjectGetIdsTestVersionDatasource',
+                            array('mapRequestToNode'));
 
-    $datasource = new requested_object_get_ids_test_version_datasource($this);
+    $datasource = new RequestedObjectGetIdsTestVersionDatasource($this);
     $node = array('id' => 10, 'object_id' => $object_id = 20);
 
-    $datasource->setReturnValue('map_request_to_node', $node, array(new IsAExpectation('Mockrequest')));
-    $datasource->expectOnce('map_request_to_node');
+    $datasource->setReturnValue('mapRequestToNode', $node, array(new IsAExpectation('MockRequest')));
+    $datasource->expectOnce('mapRequestToNode');
 
-    $datasource->set_request($this->request);
-    $this->assertEqual(array($object_id), $datasource->get_object_ids());
+    $datasource->setRequest($this->request);
+    $this->assertEqual(array($object_id), $datasource->getObjectIds());
 
     $datasource->tally();
   }

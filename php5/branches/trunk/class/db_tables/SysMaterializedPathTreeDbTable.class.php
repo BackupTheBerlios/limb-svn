@@ -8,11 +8,11 @@
 * $Id: sys_site_object_tree_db_table.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
-class sys_materialized_path_tree_db_table extends db_table
+class SysMaterializedPathTreeDbTable extends DbTable
 {
-  protected function _define_columns()
+  protected function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
@@ -25,7 +25,7 @@ class sys_materialized_path_tree_db_table extends db_table
     );
   }
 
-  protected function _define_constraints()
+  protected function _defineConstraints()
   {
     return array(
       'object_id' =>	array(

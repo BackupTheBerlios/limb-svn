@@ -25,19 +25,19 @@ else
 
 require_once($project_dir . '/setup.php');
 
-require_once(LIMB_DIR . '/class/core/tree/drivers/nested_sets_tree.class.php');
-require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/drivers/NestedSetsTree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/MaterializedPathTree.class.php');
 
-$db = db_factory :: instance();
-$db->sql_delete($mp_table);
+$db = DbFactory :: instance();
+$db->sqlDelete($mp_table);
 
-$ns = new nested_sets_tree();
-$ns->set_node_table($ns_table);
-$mp = new materialized_path_tree();
-$mp->set_node_table($mp_table);
+$ns = new NestedSetsTree();
+$ns->setNodeTable($ns_table);
+$mp = new MaterializedPathTree();
+$mp->setNodeTable($mp_table);
 
-$root_ns_nodes = $ns->get_root_nodes();
-$mp->set_dumb_mode();
+$root_ns_nodes = $ns->getRootNodes();
+$mp->setDumbMode();
 
 echo 'total roots: ' . sizeof($root_ns_nodes) . "\n";
 
@@ -46,9 +46,9 @@ foreach($root_ns_nodes as $root_node)
   unset($root_node['l']);
   unset($root_node['r']);
   unset($root_node['ordr']);
-  $mp->create_root_node($root_node);
+  $mp->createRootNode($root_node);
 
-  $sub_branch = $ns->get_sub_branch($root_node['id'], -1);
+  $sub_branch = $ns->getSubBranch($root_node['id'], -1);
 
   $branch_size = sizeof($sub_branch);
   echo 'total branches in current root: ' . $branch_size . "\n";
@@ -61,7 +61,7 @@ foreach($root_ns_nodes as $root_node)
     unset($node['l']);
     unset($node['r']);
     unset($node['ordr']);
-    $mp->create_sub_node($node['parent_id'], $node);
+    $mp->createSubNode($node['parent_id'], $node);
   }
 }
 

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/tree_decorator.class.php');
+require_once(LIMB_DIR . '/class/core/tree/TreeDecorator.class.php');
 
-class caching_tree extends tree_decorator
+class CachingTree extends TreeDecorator
 {
   const CACHE_GROUP = 'tree';
 
@@ -23,112 +23,112 @@ class caching_tree extends tree_decorator
     $this->cache = Limb :: toolkit()->getCache();
   }
 
-  public function get_node($id)
+  public function getNode($id)
   {
     if($node = $this->cache->get(array('node' => $id), self :: CACHE_GROUP))
       return $node;
 
-    $node = $this->_tree->get_node($id);
+    $node = $this->_tree->getNode($id);
 
     $this->cache->put(array('node' => $id), $node, self :: CACHE_GROUP);
 
     return $node;
   }
 
-  public function get_parents($id)
+  public function getParents($id)
   {
     if($node = $this->cache->get(array('parents' => $id), self :: CACHE_GROUP))
       return $node;
 
-    $parents = $this->_tree->get_parents($id);
+    $parents = $this->_tree->getParents($id);
 
     $this->cache->put(array('parents' => $id), $parents, self :: CACHE_GROUP);
 
     return $parents;
   }
 
-  public function get_children($id)
+  public function getChildren($id)
   {
     if($node = $this->cache->get(array('children' => $id), self :: CACHE_GROUP))
       return $node;
 
-    $children = $this->_tree->get_children($id);
+    $children = $this->_tree->getChildren($id);
 
     $this->cache->put(array('children' => $id), $children, self :: CACHE_GROUP);
 
     return $children;
   }
 
-  public function count_children($id)
+  public function countChildren($id)
   {
     if($node = $this->cache->get(array('count_children' => $id), self :: CACHE_GROUP))
       return $node;
 
-    $count = $this->_tree->count_children($id);
+    $count = $this->_tree->countChildren($id);
 
     $this->cache->put(array('count_children' => $id), $count, self :: CACHE_GROUP);
 
     return $count;
   }
 
-  public function create_root_node($values)
+  public function createRootNode($values)
   {
-    $result = parent :: create_root_node($values);
+    $result = parent :: createRootNode($values);
 
     $this->cache->flush(self :: CACHE_GROUP);
 
     return $result;
   }
 
-  public function create_sub_node($id, $values)
+  public function createSubNode($id, $values)
   {
-    $result = parent :: create_sub_node($id, $values);
+    $result = parent :: createSubNode($id, $values);
 
     $this->cache->flush(self :: CACHE_GROUP);
 
     return $result;
   }
 
-  public function delete_node($id)
+  public function deleteNode($id)
   {
-    $result = parent :: delete_node($id);
+    $result = parent :: deleteNode($id);
 
     $this->cache->flush(self :: CACHE_GROUP);
 
     return $result;
   }
 
-  public function update_node($id, $values, $internal = false)
+  public function updateNode($id, $values, $internal = false)
   {
-    $result = parent :: update_node($id, $values, $internal);
+    $result = parent :: updateNode($id, $values, $internal);
 
     $this->cache->flush(self :: CACHE_GROUP);
 
     return $result;
   }
 
-  public function move_tree($id, $target_id)
+  public function moveTree($id, $target_id)
   {
-    $result = parent :: move_tree($id, $target_id);
+    $result = parent :: moveTree($id, $target_id);
 
     $this->cache->flush(self :: CACHE_GROUP);
 
     return $result;
   }
 
-  public function get_node_by_path($path, $delimiter='/')
+  public function getNodeByPath($path, $delimiter='/')
   {
     if($node = $this->cache->get(array('path' => $path), self :: CACHE_GROUP))
       return $node;
 
-    $node = $this->_tree->get_node_by_path($path, $delimiter);
+    $node = $this->_tree->getNodeByPath($path, $delimiter);
 
     $this->cache->put(array('path' => $path), $node, self :: CACHE_GROUP);
 
     return $node;
   }
 
-  public function get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  public function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
     $key = array('sub_branch',
                  'node_id' => $id,
@@ -139,19 +139,19 @@ class caching_tree extends tree_decorator
     if($node = $this->cache->get($key, self :: CACHE_GROUP))
       return $node;
 
-    $nodes = $this->_tree->get_sub_branch($id, $depth, $include_parent, $check_expanded_parents);
+    $nodes = $this->_tree->getSubBranch($id, $depth, $include_parent, $check_expanded_parents);
 
     $this->cache->put($key, $nodes, self :: CACHE_GROUP);
 
     return $nodes;
   }
 
-  public function get_root_nodes()
+  public function getRootNodes()
   {
     if($nodes = $this->cache->get(array('root_nodes'), self :: CACHE_GROUP))
       return $nodes;
 
-    $nodes = $this->_tree->get_root_nodes();
+    $nodes = $this->_tree->getRootNodes();
 
     $this->cache->put(array('root_nodes'), $nodes, self :: CACHE_GROUP);
 

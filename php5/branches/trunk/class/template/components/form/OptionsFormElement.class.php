@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
-require_once(LIMB_DIR . '/class/template/components/form/container_form_element.class.php');
-require_once(LIMB_DIR . '/class/template/components/form/option_renderer.class.php');
-require_once(LIMB_DIR . '/class/datasources/datasource_factory.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/ContainerFormElement.class.php');
+require_once(LIMB_DIR . '/class/template/components/form/OptionRenderer.class.php');
+require_once(LIMB_DIR . '/class/datasources/DatasourceFactory.class.php');
 
-class options_form_element extends container_form_element
+class OptionsFormElement extends ContainerFormElement
 {
   protected $default_value;
 
@@ -31,7 +31,7 @@ class options_form_element extends container_form_element
   * contents of the option value attributes and the values in the array
   * become the text contents of the option tag
   */
-  public function set_choices($choice_list)
+  public function setChoices($choice_list)
   {
     $this->choice_list = $choice_list;
   }
@@ -39,16 +39,16 @@ class options_form_element extends container_form_element
   /**
   * Sets a single option to be displayed as selected
   */
-  public function set_selection($selection)
+  public function setSelection($selection)
   {
-    $form_component = $this->find_parent_by_class('form_component');
+    $form_component = $this->findParentByClass('form_component');
     $form_component->set($this->attributes['name'], $selection);
   }
 
   /**
   * Sets object responsible for rendering the attributes
   */
-  protected function set_renderer($option_renderer)
+  protected function setRenderer($option_renderer)
   {
     $this->option_renderer = $option_renderer;
   }
@@ -57,33 +57,33 @@ class options_form_element extends container_form_element
   * Renders the contents of the the select tag, option tags being built by
   * the option handler. Called from with a compiled template render function.
   */
-  public function render_contents()
+  public function renderContents()
   {
-    $this->_set_options();
+    $this->_setOptions();
 
     if (empty($this->option_renderer))
     {
-      $this->option_renderer = new option_renderer();
+      $this->option_renderer = new OptionRenderer();
     }
 
-    $this->_render_options();
+    $this->_renderOptions();
   }
 
-  public function set_default_value($value)
+  public function setDefaultValue($value)
   {
     $this->default_value = $value;
   }
 
-  public function get_default_value()
+  public function getDefaultValue()
   {
     return $this->default_value;
   }
 
-  public function get_value()
+  public function getValue()
   {
-    $value = parent :: get_value();
+    $value = parent :: getValue();
 
-    if(!$default_value = $this->get_default_value())
+    if(!$default_value = $this->getDefaultValue())
       $default_value = reset($this->choice_list);
 
     if (!array_key_exists($value, $this->choice_list))
@@ -92,60 +92,60 @@ class options_form_element extends container_form_element
       return $value;
   }
 
-  protected function _set_options()
+  protected function _setOptions()
   {
-    if($this->_use_ini_options())
+    if($this->_useIniOptions())
     {
-      $this->_set_options_from_ini_file();
+      $this->_setOptionsFromIniFile();
     }
-    elseif($this->_use_strings_options())
+    elseif($this->_useStringsOptions())
     {
-      $this->_set_options_from_strings_file();
+      $this->_setOptionsFromStringsFile();
     }
-    elseif ($this->_use_datasource_options())
+    elseif ($this->_useDatasourceOptions())
     {
-      $this->_set_options_from_datasource();
+      $this->_setOptionsFromDatasource();
     }
   }
 
-  protected function _use_ini_options()
+  protected function _useIniOptions()
   {
-    return $this->get_attribute('options_ini_file') && $this->get_attribute('use_ini');
+    return $this->getAttribute('options_ini_file') &&  $this->getAttribute('use_ini');
   }
 
-  protected function _use_strings_options()
+  protected function _useStringsOptions()
   {
-    return $this->get_attribute('options_ini_file') && !$this->get_attribute('use_ini');
+    return $this->getAttribute('options_ini_file') &&  !$this->getAttribute('use_ini');
   }
 
-  protected function _use_datasource_options()
+  protected function _useDatasourceOptions()
   {
-    return $this->get_attribute('options_datasource');
+    return $this->getAttribute('options_datasource');
   }
 
-  protected function _render_options()
+  protected function _renderOptions()
   {
-    $value = $this->get_value();
+    $value = $this->getValue();
 
     foreach($this->choice_list as $key => $contents)
     {
-      $this->option_renderer->render_attribute($key, $contents, $key == $value);
+      $this->option_renderer->renderAttribute($key, $contents, $key == $value);
     }
   }
 
-  protected function _set_options_from_ini_file()
+  protected function _setOptionsFromIniFile()
   {
-    $ini_file = $this->get_attribute('options_ini_file');
+    $ini_file = $this->getAttribute('options_ini_file');
     $conf = Limb :: toolkit()->getINI($ini_file . '.ini');
-    $this->set_choices($conf->get_option('options', 'constants'));
+    $this->setChoices($conf->getOption('options', 'constants'));
 
-    if (!$this->get_default_value())
-      $this->set_default_value($conf->get_option('default_option', 'constants'));
+    if (!$this->getDefaultValue())
+      $this->setDefaultValue($conf->getOption('default_option', 'constants'));
   }
 
-  protected function _set_options_from_strings_file()
+  protected function _setOptionsFromStringsFile()
   {
-    if($locale_type = $this->get_attribute('locale_type'))
+    if($locale_type = $this->getAttribute('locale_type'))
     {
       if(strtolower($locale_type) == 'content')
         $locale_constant = 'CONTENT_LOCALE_ID';
@@ -155,25 +155,25 @@ class options_form_element extends container_form_element
     else
       $locale_constant = 'MANAGEMENT_LOCALE_ID';
 
-    $ini_file = $this->get_attribute('options_ini_file');
+    $ini_file = $this->getAttribute('options_ini_file');
 
-    $this->set_choices(strings :: get('options', $ini_file, constant($locale_constant)));
+    $this->setChoices(Strings :: get('options', $ini_file, constant($locale_constant)));
 
-    $this->set_default_value(strings :: get('default_option', $ini_file, constant($locale_constant)));
+    $this->setDefaultValue(Strings :: get('default_option', $ini_file, constant($locale_constant)));
   }
 
-  protected function _set_options_from_datasource()
+  protected function _setOptionsFromDatasource()
   {
-    $datasource = $this->_get_datasource();
+    $datasource = $this->_getDatasource();
 
-    $this->set_choices($datasource->get_options_array());
+    $this->setChoices($datasource->getOptionsArray());
 
-    $this->set_default_value($datasource->get_default_option());
+    $this->setDefaultValue($datasource->getDefaultOption());
   }
 
-  protected function _get_datasource()
+  protected function _getDatasource()
   {
-    return Limb :: toolkit()->getDatasource($this->get_attribute('options_datasource'));
+    return Limb :: toolkit()->getDatasource($this->getAttribute('options_datasource'));
   }
 }
 

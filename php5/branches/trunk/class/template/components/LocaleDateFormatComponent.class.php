@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/date/date.class.php');
-require_once(LIMB_DIR . '/class/i18n/locale.class.php');
+require_once(LIMB_DIR . '/class/lib/date/Date.class.php');
+require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
-class locale_date_format_component extends component
+class LocaleDateFormatComponent extends Component
 {
   protected $date = null;
 
@@ -23,20 +23,20 @@ class locale_date_format_component extends component
 
   public function prepare()
   {
-    $this->date = new date();
+    $this->date = new Date();
   }
 
-  public function set_format_string($string)
+  public function setFormatString($string)
   {
     $this->format_string = $string;
   }
 
-  public function set_date_type($type)
+  public function setDateType($type)
   {
     $this->date_type = $type;
   }
 
-  public function set_locale_type($locale_type)
+  public function setLocaleType($locale_type)
   {
     if ($locale_type == 'management')
       $this->locale_type = MANAGEMENT_LOCALE_ID;
@@ -44,52 +44,52 @@ class locale_date_format_component extends component
       $this->locale_type = CONTENT_LOCALE_ID;
   }
 
-  public function set_locale_format_type($type)
+  public function setLocaleFormatType($type)
   {
     $locale = Limb :: toolkit()->getLocale($this->locale_type);
 
     switch($type)
     {
       case 'time':
-        $this->format_string = $locale->get_time_format();
+        $this->format_string = $locale->getTimeFormat();
       break;
 
       case 'short_time':
-        $this->format_string = $locale->get_short_time_format();
+        $this->format_string = $locale->getShortTimeFormat();
       break;
 
       case 'date':
-        $this->format_string = $locale->get_date_format();
+        $this->format_string = $locale->getDateFormat();
       break;
 
       case 'short_date':
-        $this->format_string = $locale->get_short_date_format();
+        $this->format_string = $locale->getShortDateFormat();
       break;
 
       case 'date_time':
-        $this->format_string = $locale->get_date_time_format();
+        $this->format_string = $locale->getDateTimeFormat();
       break;
 
       case 'short_date_time':
-        $this->format_string = $locale->get_short_date_time_format();
+        $this->format_string = $locale->getShortDateTimeFormat();
       break;
 
       default:
-        $this->format_string = $locale->get_short_date_format();
+        $this->format_string = $locale->getShortDateFormat();
     }
   }
 
-  public function set_date($date_string, $format=DATE_SHORT_FORMAT_ISO)
+  public function setDate($date_string, $format=DATE_SHORT_FORMAT_ISO)
   {
     switch($this->date_type)
     {
       case 'string':
         $locale = Limb :: toolkit()->getLocale($this->locale_type);
-        $this->date->set_by_locale_string($locale, $date_string, $format);
+        $this->date->setByLocaleString($locale, $date_string, $format);
       break;
 
       case 'stamp':
-        $this->date->set_by_stamp((int)$date_string);
+        $this->date->setByStamp((int)$date_string);
       break;
     }
   }
@@ -101,7 +101,7 @@ class locale_date_format_component extends component
     if($this->format_string)
       $format_string = $this->format_string;
     else
-      $format_string = $locale->get_short_date_format();
+      $format_string = $locale->getShortDateFormat();
 
     echo $this->date->format($locale, $format_string);
   }

@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/finders/one_table_objects_raw_finder.class.php');
-require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
+require_once(LIMB_DIR . '/class/core/finders/OneTableObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('db_table');
+Mock :: generate('DbTable');
 
-class test_one_table_objects_raw_finder extends one_table_objects_raw_finder
+class TestOneTableObjectsRawFinder extends OneTableObjectsRawFinder
 {
-  protected function _define_db_table_name()
+  protected function _defineDbTableName()
   {
     return 'table1';
   }
 }
 
-Mock :: generatePartial('test_one_table_objects_raw_finder',
-                        'one_table_objects_raw_finder_test_version',
-                        array('_do_parent_find',
-                              '_do_parent_find_count'));
+Mock :: generatePartial('TestOneTableObjectsRawFinder',
+                        'OneTableObjectsRawFinderTestVersion',
+                        array('_doParentFind',
+                              '_doParentFindCount'));
 
-class one_table_objects_raw_finder_test extends LimbTestCase
+class OneTableObjectsRawFinderTest extends LimbTestCase
 {
   var $finder;
   var $toolkit;
@@ -35,8 +35,8 @@ class one_table_objects_raw_finder_test extends LimbTestCase
 
   function setUp()
   {
-    $this->finder = new one_table_objects_raw_finder_test_version($this);
-    $this->db_table = new Mockdb_table($this);
+    $this->finder = new OneTableObjectsRawFinderTestVersion($this);
+    $this->db_table = new MockDbTable($this);
     $this->toolkit = new MockLimbToolkit($this);
 
     $this->toolkit->setReturnValue('createDBTable', $this->db_table);
@@ -53,34 +53,34 @@ class one_table_objects_raw_finder_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_find()
+  function testFind()
   {
     $params['limit'] = 5;
     $sql_params['conditions'][] = 'some condition';
 
-    $this->db_table->expectOnce('get_columns_for_select', array('tn', array('id')));
-    $this->db_table->setReturnValue('get_columns_for_select', 'tn.field1, tn.field2');
-    $this->db_table->expectOnce('get_table_name');
-    $this->db_table->setReturnValue('get_table_name', 'table1');
+    $this->db_table->expectOnce('getColumnsForSelect', array('tn', array('id')));
+    $this->db_table->setReturnValue('getColumnsForSelect', 'tn.field1, tn.field2');
+    $this->db_table->expectOnce('getTableName');
+    $this->db_table->setReturnValue('getTableName', 'table1');
 
     $expected_sql_params = $sql_params;
     $expected_sql_params['columns'][] = ' tn.field1, tn.field2,';
     $expected_sql_params['tables'][] = ',table1 as tn';
     $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id';
 
-    $this->finder->expectOnce('_do_parent_find', array(new EqualExpectation($params),
+    $this->finder->expectOnce('_doParentFind', array(new EqualExpectation($params),
                                                         new EqualExpectation($expected_sql_params)));
-    $this->finder->setReturnValue('_do_parent_find', $result = 'some result');
+    $this->finder->setReturnValue('_doParentFind', $result = 'some result');
 
     $this->assertEqual($this->finder->find($params, $sql_params), $result);
   }
 
-  function test_find_by_id()
+  function testFindById()
   {
-    $this->db_table->expectOnce('get_columns_for_select', array('tn', array('id')));
-    $this->db_table->setReturnValue('get_columns_for_select', 'tn.field1, tn.field2');
-    $this->db_table->expectOnce('get_table_name');
-    $this->db_table->setReturnValue('get_table_name', 'table1');
+    $this->db_table->expectOnce('getColumnsForSelect', array('tn', array('id')));
+    $this->db_table->setReturnValue('getColumnsForSelect', 'tn.field1, tn.field2');
+    $this->db_table->expectOnce('getTableName');
+    $this->db_table->setReturnValue('getTableName', 'table1');
 
     $expected_sql_params = array();
     $expected_sql_params['conditions'][] = ' AND sso.id='. $id = 100;
@@ -88,30 +88,30 @@ class one_table_objects_raw_finder_test extends LimbTestCase
     $expected_sql_params['columns'][] = ' tn.field1, tn.field2,';
     $expected_sql_params['tables'][] = ',table1 as tn';
 
-    $this->finder->expectOnce('_do_parent_find', array(array(),
+    $this->finder->expectOnce('_doParentFind', array(array(),
                                                         new EqualExpectation($expected_sql_params)));
-    $this->finder->setReturnValue('_do_parent_find', $result = 'some result');
+    $this->finder->setReturnValue('_doParentFind', $result = 'some result');
 
-    $this->assertEqual($this->finder->find_by_id($id), $result);
+    $this->assertEqual($this->finder->findById($id), $result);
   }
 
-  function test_find_count()
+  function testFindCount()
   {
     $sql_params['conditions'][] = 'some condition';
 
-    $this->db_table->expectOnce('get_table_name');
-    $this->db_table->setReturnValue('get_table_name', 'table1');
+    $this->db_table->expectOnce('getTableName');
+    $this->db_table->setReturnValue('getTableName', 'table1');
 
     $expected_sql_params = $sql_params;
     $expected_sql_params['tables'][] = ',table1 as tn';
     $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id';
 
-    $this->finder->expectOnce('_do_parent_find_count',
+    $this->finder->expectOnce('_doParentFindCount',
                               array(new EqualExpectation($expected_sql_params)));
 
-    $this->finder->setReturnValue('_do_parent_find_count', $result = 'some result');
+    $this->finder->setReturnValue('_doParentFindCount', $result = 'some result');
 
-    $this->assertEqual($this->finder->find_count($sql_params), $result);
+    $this->assertEqual($this->finder->findCount($sql_params), $result);
   }
 }
 

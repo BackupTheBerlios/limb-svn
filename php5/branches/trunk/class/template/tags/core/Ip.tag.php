@@ -8,26 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/
-class ip_tag_info
+class IpTagInfo
 {
   public $tag = 'core:IP';
   public $end_tag = ENDTAG_FORBIDDEN;
   public $tag_class = 'ip_tag';
 }
 
-register_tag(new ip_tag_info());
+registerTag(new IpTagInfo());
 
-class ip_tag extends compiler_directive_tag
+class IpTag extends CompilerDirectiveTag
 {
-  public function generate_contents($code)
+  public function generateContents($code)
   {
     if(isset($this->attributes['hash_id']))
     {
-      $code->write_php(
-        'echo ip :: decode_ip(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"));');
+      $code->writePhp(
+        'echo ip :: decode_ip(' . $this->getDataspaceRefCode() . '->get("' . $this->attributes['hash_id'] . '"));');
     }
     else
-      $code->write_php('echo sys :: client_ip();');
+      $code->writePhp('echo sys :: client_ip();');
   }
 }
 

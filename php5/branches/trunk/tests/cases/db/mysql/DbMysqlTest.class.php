@@ -8,25 +8,25 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
-class db_mysql_test extends LimbTestCase
+class DbMysqlTest extends LimbTestCase
 {
-  function db_mysql_test($name = 'mysql db test case')
+  function dbMysqlTest($name = 'mysql db test case')
   {
-    parent :: LimbTestCase($name);
+    parent :: limbTestCase($name);
   }
 
   function setUp()
   {
-    if (!mysql_connect(get_ini_option('common.ini', 'host', 'DB'), get_ini_option('common.ini', 'login', 'DB'), get_ini_option('common.ini', 'password', 'DB')))
-      die ('Could not connect: ' . mysql_errno() . ' - ' . mysql_error());
-    if (!mysql_select_db(get_ini_option('common.ini', 'name', 'DB')))
-      die ('Could not connect: ' . mysql_errno() . ' - ' . mysql_error());
+    if (!mysql_connect(getIniOption('common.ini', 'host', 'DB'), getIniOption('common.ini', 'login', 'DB'), getIniOption('common.ini', 'password', 'DB')))
+      die ('Could not connect: ' . mysql_errno() . ' - ' . mysql_errno());
+    if (!mysql_select_db(getIniOption('common.ini', 'name', 'DB')))
+      die ('Could not connect: ' . mysql_errno() . ' - ' . mysql_errno());
 
     if (!mysql_query("DROP TABLE IF EXISTS founding_fathers;"))
-      die ('Error dropping table: ' . mysql_errno() . ' - ' . mysql_error());
+      die ('Error dropping table: ' . mysql_errno() . ' - ' . mysql_errno());
 
     $sql = "CREATE TABLE founding_fathers (
       id int(11) NOT NULL auto_increment,
@@ -38,7 +38,7 @@ class db_mysql_test extends LimbTestCase
     ) type=InnoDB;";
 
     if (!mysql_query($sql))
-      die ('Error creating table: ' . mysql_errno() . ' - ' . mysql_error());
+      die ('Error creating table: ' . mysql_errno() . ' - ' . mysql_errno());
 
     $inserts = array(
       "INSERT INTO founding_fathers VALUES (1, 'George', 'Washington', '', 0);",
@@ -50,7 +50,7 @@ class db_mysql_test extends LimbTestCase
     foreach ($inserts as $insert)
     {
       if (!mysql_query($insert))
-        die ('Error inserting ' . mysql_errno() . ' - ' . mysql_error());
+        die ('Error inserting ' . mysql_errno() . ' - ' . mysql_errno());
     }
   }
 
@@ -58,64 +58,64 @@ class db_mysql_test extends LimbTestCase
   {
   }
 
-  function test_instance()
+  function testInstance()
   {
-    $this->assertTrue(db_factory :: instance() === db_factory :: instance());
+    $this->assertTrue(DbFactory :: instance() === DbFactory :: instance());
   }
 
-  function test_execute()
+  function testExecute()
   {
-    $db = db_factory :: instance();
-    $this->assertNotNull($db->sql_exec("SELECT * FROM founding_fathers"));
+    $db = DbFactory :: instance();
+    $this->assertNotNull($db->sqlExec("SELECT * FROM founding_fathers"));
   }
 
-  function test_fetch_row()
+  function testFetchRow()
   {
-    $db = db_factory :: instance();
-    $this->assertNotEqual($db->sql_exec("SELECT * FROM founding_fathers"), array());
+    $db = DbFactory :: instance();
+    $this->assertNotEqual($db->sqlExec("SELECT * FROM founding_fathers"), array());
 
-    $result = $db->fetch_row();
+    $result = $db->fetchRow();
     $this->assertTrue(is_array($result));
 
     $this->assertEqual($result['id'], 1);
     $this->assertEqual($result['first'], 'George');
 
-    $db->fetch_row();
-    $db->fetch_row();
-    $result = $db->fetch_row();
+    $db->fetchRow();
+    $db->fetchRow();
+    $result = $db->fetchRow();
     $this->assertTrue(is_array($result));
 
     $this->assertEqual($result['id'], 10);
     $this->assertEqual($result['last'], 'Zade');
 
-    $db->sql_exec("SELECT * FROM founding_fathers WHERE last='maugli'");
-    $this->assertFalse($db->fetch_row());
+    $db->sqlExec("SELECT * FROM founding_fathers WHERE last='maugli'");
+    $this->assertFalse($db->fetchRow());
   }
 
-  function test_get_array()
+  function testGetArray()
   {
-    $db = db_factory :: instance();
-    $db->sql_exec("SELECT * FROM founding_fathers");
+    $db = DbFactory :: instance();
+    $db->sqlExec("SELECT * FROM founding_fathers");
 
-    $result = $db->get_array();
+    $result = $db->getArray();
 
     $this->assertTrue(is_array($result));
     $this->assertEqual(sizeof($result), 4);
 
-    $db->sql_exec("SELECT * FROM founding_fathers WHERE id=-1");
+    $db->sqlExec("SELECT * FROM founding_fathers WHERE id=-1");
 
-    $result = $db->get_array();
+    $result = $db->getArray();
 
     $this->assertTrue(is_array($result));
     $this->assertEqual(sizeof($result), 0);
   }
 
-  function test_get_array_fancy_indexed()
+  function testGetArrayFancyIndexed()
   {
-    $db = db_factory :: instance();
-    $db->sql_exec("SELECT * FROM founding_fathers");
+    $db = DbFactory :: instance();
+    $db->sqlExec("SELECT * FROM founding_fathers");
 
-    $result = $db->get_array('id');
+    $result = $db->getArray('id');
 
     $this->assertTrue(is_array($result));
     $this->assertEqual(sizeof($result), 4);
@@ -124,12 +124,12 @@ class db_mysql_test extends LimbTestCase
     $this->assertTrue(array_key_exists(3, $result));
     $this->assertTrue(array_key_exists(10, $result));
 
-    $result = $db->get_array('id');
+    $result = $db->getArray('id');
     $this->assertTrue(is_array($result), 'Result should be cleaned');
     $this->assertEqual(sizeof($result), 0);
 
-    $db->sql_exec("SELECT * FROM founding_fathers");
-    $result = $db->get_array('first');
+    $db->sqlExec("SELECT * FROM founding_fathers");
+    $result = $db->getArray('first');
 
     $this->assertTrue(is_array($result));
     $this->assertEqual(sizeof($result), 3);
@@ -138,150 +138,150 @@ class db_mysql_test extends LimbTestCase
     $this->assertTrue(array_key_exists('Alexander', $result));
   }
 
-  function test_select()
+  function testSelect()
   {
-    $db = db_factory :: instance();
-    $db->sql_select("founding_fathers");
+    $db = DbFactory :: instance();
+    $db->sqlSelect("founding_fathers");
 
-    $result = $db->get_array();
+    $result = $db->getArray();
 
     $this->assertEqual(sizeof($result), 4);
 
-    $db->sql_select("founding_fathers", '*', '', '', 2, 2);
+    $db->sqlSelect("founding_fathers", '*', '', '', 2, 2);
 
-    $result = $db->get_array('id');
+    $result = $db->getArray('id');
 
     $this->assertEqual(sizeof($result), 2);
     $this->assertTrue(array_key_exists(3, $result));
     $this->assertTrue(array_key_exists(10, $result));
   }
 
-  function test_select_fancy_conditions()
+  function testSelectFancyConditions()
   {
-    $db = db_factory :: instance();
+    $db = DbFactory :: instance();
 
-    $db->sql_select("founding_fathers", '*', 'first="Benjamin" AND last="Franklin" AND dog_name=NULL');
+    $db->sqlSelect("founding_fathers", '*', 'first="Benjamin" AND last="Franklin" AND dog_name=NULL');
 
-    $arr1 = $db->get_array();
+    $arr1 = $db->getArray();
 
-    $db->sql_select("founding_fathers", '*', array('first' => 'Benjamin', 'last' => 'Franklin', 'dog_name' => null));
+    $db->sqlSelect("founding_fathers", '*', array('first' => 'Benjamin', 'last' => 'Franklin', 'dog_name' => null));
 
-    $arr2 = $db->get_array();
+    $arr2 = $db->getArray();
 
-    $db->sql_select("founding_fathers", '*', array('first' => 'Benjamin', 'last' => 'Franklin', 'dog_name' => 'NULL'));
+    $db->sqlSelect("founding_fathers", '*', array('first' => 'Benjamin', 'last' => 'Franklin', 'dog_name' => 'NULL'));
 
-    $arr3 = $db->get_array();
+    $arr3 = $db->getArray();
 
     $this->assertEqual(sizeof(array_diff($arr1, $arr2)), 0);
     $this->assertEqual(sizeof(array_diff($arr1, $arr3)), 0);
   }
 
-  function test_count_selected_rows()
+  function testCountSelectedRows()
   {
-    $db = db_factory :: instance();
-    $this->assertNotEqual($db->sql_exec("SELECT * FROM founding_fathers"), array());
+    $db = DbFactory :: instance();
+    $this->assertNotEqual($db->sqlExec("SELECT * FROM founding_fathers"), array());
 
-    $this->assertEqual($db->count_selected_rows(), 4);
+    $this->assertEqual($db->countSelectedRows(), 4);
 
-    $db->sql_select("founding_fathers", '*', '', '', 2, 2);
-    $this->assertEqual($db->count_selected_rows(), 2);
+    $db->sqlSelect("founding_fathers", '*', '', '', 2, 2);
+    $this->assertEqual($db->countSelectedRows(), 2);
 
-    $db->sql_exec("SELECT * FROM founding_fathers WHERE last='maugli'");
-    $this->assertEqual($db->count_selected_rows(), 0);
+    $db->sqlExec("SELECT * FROM founding_fathers WHERE last='maugli'");
+    $this->assertEqual($db->countSelectedRows(), 0);
   }
 
-  function test_insert()
+  function testInsert()
   {
     if (!mysql_query('TRUNCATE founding_fathers'))
-      die ('Error creating table: ' . mysql_errno() . ' - ' . mysql_error());
+      die ('Error creating table: ' . mysql_errno() . ' - ' . mysql_errno());
 
-    $db = db_factory :: instance();
+    $db = DbFactory :: instance();
 
-    $db->sql_insert("founding_fathers", array('id' => 2, 'first' => 'Wow', 'last' => 'Hey'));
-    $db->sql_insert("founding_fathers", array('id' => 3, 'first' => 'Richard', 'last' => 'Nixon', 'dog_name' => null));
+    $db->sqlInsert("founding_fathers", array('id' => 2, 'first' => 'Wow', 'last' => 'Hey'));
+    $db->sqlInsert("founding_fathers", array('id' => 3, 'first' => 'Richard', 'last' => 'Nixon', 'dog_name' => null));
 
-    $this->assertEqual($db->get_sql_insert_id('founding_fathers'), 3);
+    $this->assertEqual($db->getSqlInsertId('founding_fathers'), 3);
 
-    $db->sql_select("founding_fathers", '*', 'last="Nixon"');
+    $db->sqlSelect("founding_fathers", '*', 'last="Nixon"');
 
-    $this->assertEqual(sizeof($arr = $db->get_array()), 1);
+    $this->assertEqual(sizeof($arr = $db->getArray()), 1);
     $this->assertEqual($arr[0]['last'], 'Nixon');
   }
 
-  function test_update()
+  function testUpdate()
   {
-    $db = db_factory :: instance();
+    $db = DbFactory :: instance();
 
-    $db->sql_update("founding_fathers", array('first' => 'Wow', 'last' => 'Hey'), array('id' => 10));
+    $db->sqlUpdate("founding_fathers", array('first' => 'Wow', 'last' => 'Hey'), array('id' => 10));
 
-    $db->sql_select("founding_fathers", '*', 'last="Hey" AND first="Wow"');
+    $db->sqlSelect("founding_fathers", '*', 'last="Hey" AND first="Wow"');
 
-    $this->assertEqual(sizeof($arr = $db->get_array()), 1);
+    $this->assertEqual(sizeof($arr = $db->getArray()), 1);
     $this->assertEqual($arr[0]['id'], 10);
 
-    $db->sql_update("founding_fathers", "int_test=int_test+10", array('id' => 10));
+    $db->sqlUpdate("founding_fathers", "int_test=int_test+10", array('id' => 10));
 
-    $db->sql_select("founding_fathers", '*', array('int_test' => 10));
-    $this->assertEqual(sizeof($arr = $db->get_array()), 1);
+    $db->sqlSelect("founding_fathers", '*', array('int_test' => 10));
+    $this->assertEqual(sizeof($arr = $db->getArray()), 1);
     $this->assertEqual($arr[0]['id'], 10);
   }
 
-  function test_delete()
+  function testDelete()
   {
-    $db = db_factory :: instance();
+    $db = DbFactory :: instance();
 
-    $db->sql_insert("founding_fathers", array('first' => 'Wow', 'last' => 'Hey'));
-    $db->sql_delete("founding_fathers", array('last' => 'Hey', 'first' => 'Wow'));
+    $db->sqlInsert("founding_fathers", array('first' => 'Wow', 'last' => 'Hey'));
+    $db->sqlDelete("founding_fathers", array('last' => 'Hey', 'first' => 'Wow'));
 
-    $db->sql_select("founding_fathers", '*', 'last="Hey" AND first="Wow"');
-    $this->assertEqual(sizeof($arr = $db->get_array()), 0);
+    $db->sqlSelect("founding_fathers", '*', 'last="Hey" AND first="Wow"');
+    $this->assertEqual(sizeof($arr = $db->getArray()), 0);
 
-    $db->sql_insert("founding_fathers", array('last' => 'Hey', 'first' => 'Wow'));
-    $db->sql_delete("founding_fathers", 'first="Wow" AND last="Hey"');
+    $db->sqlInsert("founding_fathers", array('last' => 'Hey', 'first' => 'Wow'));
+    $db->sqlDelete("founding_fathers", 'first="Wow" AND last="Hey"');
 
-    $db->sql_select("founding_fathers", '*', 'last="Hey" AND first="Wow"');
-    $this->assertEqual(sizeof($arr = $db->get_array()), 0);
+    $db->sqlSelect("founding_fathers", '*', 'last="Hey" AND first="Wow"');
+    $this->assertEqual(sizeof($arr = $db->getArray()), 0);
   }
 
-  function test_transactions()
+  function testTransactions()
   {
-    $db =& db_factory :: instance();
+    $db =& DbFactory :: instance();
 
-    start_user_transaction();
+    startUserTransaction();
 
-    $db->sql_insert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon', 'dog_name' => null));
-    $db->sql_insert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon2', 'dog_name' => null));
-    $db->sql_insert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon3', 'dog_name' => null));
+    $db->sqlInsert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon', 'dog_name' => null));
+    $db->sqlInsert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon2', 'dog_name' => null));
+    $db->sqlInsert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon3', 'dog_name' => null));
 
-    rollback_user_transaction();
+    rollbackUserTransaction();
 
-    $db->sql_select("founding_fathers", '*', 'last="Nixon"');
-    $this->assertEqual(sizeof($db->get_array()), 0);
+    $db->sqlSelect("founding_fathers", '*', 'last="Nixon"');
+    $this->assertEqual(sizeof($db->getArray()), 0);
 
-    start_user_transaction();
+    startUserTransaction();
 
-    $db->sql_insert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon', 'dog_name' => null));
-    $db->sql_insert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon2', 'dog_name' => null));
-    $db->sql_insert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon3', 'dog_name' => null));
+    $db->sqlInsert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon', 'dog_name' => null));
+    $db->sqlInsert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon2', 'dog_name' => null));
+    $db->sqlInsert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixon3', 'dog_name' => null));
 
-    commit_user_transaction();
+    commitUserTransaction();
 
-    $db->sql_select("founding_fathers", '*', 'last="Nixon" OR last="Nixon2" OR last="Nixon3"');
-    $this->assertEqual(sizeof($db->get_array()), 3);
+    $db->sqlSelect("founding_fathers", '*', 'last="Nixon" OR last="Nixon2" OR last="Nixon3"');
+    $this->assertEqual(sizeof($db->getArray()), 3);
 
-    start_user_transaction();
+    startUserTransaction();
 
-    $db->sql_insert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixxxxx', 'dog_name' => null));
+    $db->sqlInsert("founding_fathers", array('first' => 'Richard', 'last' => 'Nixxxxx', 'dog_name' => null));
 
-    $db->sql_select("founding_fathers", '*', 'last="Nixxxxx"');
-    $arr = $db->get_array();
+    $db->sqlSelect("founding_fathers", '*', 'last="Nixxxxx"');
+    $arr = $db->getArray();
     $this->assertEqual(sizeof($arr), 1);
     $this->assertEqual($arr[0]['last'], 'Nixxxxx');
 
-    rollback_user_transaction();
+    rollbackUserTransaction();
 
-    $db->sql_select("founding_fathers", '*', 'last="Nixxxxx"');
-    $arr = $db->get_array();
+    $db->sqlSelect("founding_fathers", '*', 'last="Nixxxxx"');
+    $arr = $db->getArray();
     $this->assertEqual(sizeof($arr), 0);
   }
 }
