@@ -466,20 +466,18 @@ class compiler_component
 		{
 
 			$code->write_html('	<SCRIPT LANGUAGE="JScript">
-													function run_shell(path)
+													function run_template_editor(path)
 													{
-														full_path = "uedit32.exe " + path;
-														
 														WS = new ActiveXObject("WScript.shell");
-														WS.exec(full_path);
+														WS.exec("uedit32.exe " + path);
 													}
 													</SCRIPT>');
 		
 			define('WS_SCRIPT_WRITTEN', true);
 		}
 		
-		$file_path = dir :: clean_path($file_path, DIR_SEPARATOR_UNIX);
-		$code->write_html("<a href='#'><img onclick='run_shell(\"{$file_path}\");' src='/shared/images/i.gif' alt='{$file_path}'></a>");
+		$file_path = addslashes(dir :: clean_path($file_path));
+		$code->write_html("<a href='#'><img onclick='run_template_editor(\"{$file_path}\");' src='/shared/images/i.gif' alt='{$file_path}'></a>");
 	}
 
 	/**
