@@ -1,0 +1,24 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+{$content}
+<core:OPTIONAL for="content">
+<br>
+</core:OPTIONAL>
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='messages' pager='pager'>
+  <core:PARAMETER name='loader_class_name' value='message' >
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="/admin/pager.html">
+
+<grid:LIST id='messages'>
+<table>
+<tr><td colspan='4' class='btitle1' height='3'><locale:STRING name='messages_list' file='message'></td></tr>
+<core:INCLUDE file='/admin/grid_items/no_publish_folder_grid_body.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
+</table>
+</grid:LIST>

@@ -1,0 +1,47 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+<h2><locale:STRING name='setting_metadata'><h2>
+<form method="post" name="set_metadata" id="set_metadata">
+  <core:INCLUDE file="form_errors.html">
+  <metadata:METADATA>
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+    <tr>
+      <td width='10%'>Title</td>
+      <td>{$title}</td>
+    </tr>
+    <tr>
+      <td width='10%'>Keywords</td>
+      <td>{$keywords}</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>{$description}</td>
+    </tr>
+  </table>
+  </metadata:METADATA>
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+    <tr>
+      <td><label for="title">Title</label></td>
+      <td><input type='text' name="title" id="title" label="title" class='input' size='60'>
+      </td>
+    </tr>
+    <tr>
+      <td><label for="keywords">Keywords</label></td>
+      <td><textarea name="keywords" id="keywords" label="keywords" rows="10" cols="60" class='textarea'></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td><label for="description">Description</label></td>
+      <td><textarea name="description" id="description" label="description" rows="10" cols="60" class='textarea'></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+      <action_button action="set_metadata" name="save" type="submit" id="save" locale_value="save" class='button'>
+      &nbsp;
+      <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+
+      </td>
+    </tr>
+  </table>
+</form>

@@ -1,0 +1,29 @@
+<core:WRAP file="admin/site_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+<br>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+  <th><locale:STRING name='controller_class_name'></th>
+  <th colspan='2'><locale:STRING name='actions'></th>
+</tr>
+<DATASOURCE target='controllers'>
+  <core:PARAMETER name='datasource_path' value='controller_list_datasource'>
+</DATASOURCE>
+
+<grid:LIST id='controllers'>
+<grid:ITERATOR>
+<tr class=jip>
+  <td><small>{$name}</small></td>
+  <td>
+    <a href='{^path}?popup=1&action=set_group_access&controller_id={$id}' onclick="return click_href(this.href);"><img alt="" src="/shared/images/access_manage.gif">Set group access</a>
+  </td>
+  <td>
+    <a href='{^path}?popup=1&action=set_group_access_template&controller_id={$id}' onclick="return click_href(this.href);"><img alt="" src="/shared/images/access_template_manage.gif">Set group access template</a>
+  </td>
+</tr>
+</grid:ITERATOR>
+</grid:LIST>
+</table>
+</fetch:MAPPED>

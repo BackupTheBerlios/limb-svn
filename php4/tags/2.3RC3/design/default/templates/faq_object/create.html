@@ -1,0 +1,22 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+
+<form method="post" name="create_faq_object" id="create_faq_object">
+  <table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
+  <tr>
+    <td colspan=2 class=table-title><locale:STRING name='faq_question_creation' file='faq'> <h1>"<fetch:MAPPED>{$title}</fetch:MAPPED>"</h1></td>
+  </tr>
+  <tr>
+    <td colspan=2 height=100% valign=top class=com4>
+        <core:INCLUDE file="/faq_object/form_fields.html">
+    </td>
+  </tr>
+  <core:INCLUDE file='/admin/admin_form_items/req_info.html'>
+  <tr>
+    <td colspan=2 align=center height=30>
+    <action_button action="create_faq_object" name="create" type="submit" id="create" locale_value="create" class="button">
+    &nbsp;
+    <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+    </td>
+  </tr>
+  </table>
+</form>

@@ -1,0 +1,164 @@
+<html>
+<head>
+  <title><metadata:TITLE separator=' :: ' offset_path='/root'/> :: <core:SYS_PARAM name='site_title' type='char'></title>
+  <meta http-equiv='Content-Type' content='text/html; charset=windows-1251'>
+  <link rel='stylesheet' type="text/css" href="/shared/styles/admin.css">
+  <script language="javascript" src="/shared/js/common.js"></script>
+  <script language="javascript" src="/shared/js/tabs.js"></script>
+  <script language="javascript" src="/shared/js/hint.js"></script>
+</head>
+<script>
+  var tabs = new tabs_container();
+
+  function get_frame(tab_id)
+  {
+    var iframe_name = tabs.tab_items[tab_id].data.iframe_name;
+    for(i=0; i<window.frames.length; i++)
+      if (window.frames[i].name == iframe_name)
+        return window.frames[i]
+  }
+
+  function activate_tab(tab)
+  {
+    var frm = get_frame(tab.id)
+    if (frm.location.href == 'about:blank' || frm.location.href == '')
+      if (last_tab_url = get_cookie(tab.id + '_last_url'))
+        frm.location.href = last_tab_url;
+      else
+        frm.location.href = tab.data.src;
+    refresh_url();
+  }
+
+  function go_home(tab_id)
+  {
+    var home_src = tabs.tab_items[tab_id].data.src;
+    var frm = get_frame(tab_id)
+    if (frm.location.href != home_src)
+      frm.location.href = home_src;
+  }
+
+  function reload(tab_id)
+  {
+    get_frame(tab_id).location.reload();
+  }
+
+  function refresh_url()
+  {
+    var frm = get_frame(tabs.active_tab.id)
+    if(location_bar = document.getElementById('active_iframe_url'))
+     location_bar.value = frm.location;
+  }
+
+  function goto_address()
+  {
+    href = '';
+    if(location_bar = document.getElementById('active_iframe_url'))
+     href = location_bar.value;
+
+    var frm = get_frame(tabs.active_tab.id)
+    frm.location.href = href;
+  }
+</script>
+<body>
+<table width=100% border=0 cellspacing=0 cellpadding=0 class=cp-header>
+<tr>
+  <td class=com1>
+ <table width=100% border=0 cellspacing=0 cellpadding=0>
+    <tr>
+      <td align=left style='padding:4px 10px 0 12px'><img src='/shared/images/logo.limb.gif'>
+      <br><img src='/shared/images/1x1.gif' width=168 height=1></td>
+      <td width=100% ><core:INCLUDE file="admin/include/user_services.html"></td>
+      <td valign=middle width='1%' nowrap></td>
+    </tr>
+  </table>
+  <fetch:SUB_BRANCH target="tabs_header, tabs_body" >
+    <core:PARAMETER name='loader_class_name' value='navigation_item' >
+    <core:PARAMETER name='path' value='/root/admin/navigation' >
+    <core:PARAMETER name='order' value='priority=ASC'>
+    <core:PARAMETER name='depth' value='1'>
+  </fetch:SUB_BRANCH>
+
+
+  <grid:LIST id='tabs_header'>
+  <table width='100%' border='0' cellspacing='0' cellpadding='0' class="tabulator">
+  <tr>
+    <td class="tab" style='padding:0 0 0 10px' nowrap align=left>
+    <b><locale:STRING name='limb_cp'></b>
+    <br><img src='/shared/images/1x1.gif' width=168 height=1>
+    </td>
+    <grid:ITERATOR>
+      <td id='tab_{$identifier}'>
+        <table border='0' cellspacing='0' cellpadding='0' style='height:100%'>
+        <tr>
+          <td nowrap class="tab">
+          <a href='JavaScript:void(0);'>{$title}</a>
+          <a href="JavaScript:go_home('tab_{$identifier}')"><img src='/shared/images/icons/home.gif' alt='Home page of this tab' title='Home page of this tab'></a>
+          <a href="JavaScript:reload('tab_{$identifier}');"><img src='/shared/images/icons/reload.gif' alt='Reload this tab' title='Reload this tab'></a>
+          </td>
+        </tr>
+        </table>
+      </td>
+    </grid:ITERATOR>
+    <td class=tab width=100%>&nbsp;</td>
+  </tr>
+  </table>
+  </grid:LIST>
+  </td>
+</tr>
+</table>
+
+
+
+<grid:LIST id='tabs_body'>
+  <grid:ITERATOR>
+
+    <div id='tab_{$identifier}_content'>
+      <iframe src='about:blank' id='iframe_{$identifier}' name='iframe_{$identifier}' width='100%' height='83%' frameborder=0></iframe>
+    </div>
+    <script type='text/javascript'>
+      tab_data = {'id': 'tab_{$identifier}', 'activate_handler': activate_tab, 'src': '{$url}', 'iframe_name': 'iframe_{$identifier}'}
+      tabs.register_tab_item(tab_data);
+    </script>
+
+  </grid:ITERATOR>
+
+<script type='text/javascript'>
+  if (active_tab = get_cookie('active_tab'))
+    tabs.activate(active_tab);
+  else
+    tabs.activate('');
+
+//  var debug_body_onkeypress = document.body.onkeydown
+//  document.body.onkeydown = function()
+//  {
+//    if(window.event.shiftKey)
+//    if(window.event.keyCode == 192)
+//    {
+//      if(typeof(is_debug_info_enabled)=='undefined') is_debug_info_enabled = 1
+//      show_hide_debug_info_all_frames(is_debug_info_enabled)
+//      is_debug_info_enabled = !is_debug_info_enabled
+//    }
+//
+//    debug_body_onkeypress()
+//  }
+
+</script>
+</grid:LIST>
+<table border='0' cellspacing='4' cellpadding='0' align=center width=100%>
+  <tr><td bgcolor='#6484D3' height='3' colspan='2'></td></tr>
+  <tr'>
+    <td width='100%' valign='middle'>
+      <core:LITERAL>
+        <div id='location_bar'>
+        <form onsubmit='goto_address();return false;'>
+        <input type='text' id='active_iframe_url' name='active_iframe_url' class='input' size='60'>
+        <input type='submit' class='button' value='GO!'>
+        </form>
+        </div>
+      </core:LITERAL>
+    </td>
+    <td align="center"><nobr>Copyright &copy; 2004 <a href='http://bit-creative.com'>BIT</a></nobr></td>
+  </tr>
+</table>
+</body>
+</html>
