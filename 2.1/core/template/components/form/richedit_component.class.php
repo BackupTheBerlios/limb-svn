@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 require_once(LIMB_DIR . 'core/template/components/form/text_area_component.class.php');
 
 class richedit_component extends text_area_component

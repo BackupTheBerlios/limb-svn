@@ -60,7 +60,7 @@
 	</core:DEFAULT>
 	</td>
 	<td>
-		<a href='/root/admin/site_structure?action=node_select&path={$path}'>{$identifier}   ({$title})</a>
+		<a href='/root/admin/site_structure?action=node_select&path={$path}'>{$identifier}   ({$title})({$children})</a>
 	</td>
 	<td>{$class_name}</td>
 	<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "{$title}", path: "{$path}",
