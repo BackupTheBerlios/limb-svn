@@ -18,7 +18,7 @@ class cart_db_table extends db_table
       'id' => array('type' => 'numeric'),
       'user_id' => array('type' => 'numeric'),
       'cart_id' => '',
-      'cart_items' => '',
+      'cart_items' => array('type' => 'blob'),
       'last_activity_time' => array('type' => 'numeric')
     );
   }
