@@ -43,7 +43,7 @@ class form_create_site_object_command_test extends LimbTestCase
     $this->dataspace = new Mockdataspace($this); 
     
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('createDatasource', $this->datasource, array('requested_object_datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('switchDataspace', $this->dataspace, array('test_form'));
      

@@ -57,7 +57,7 @@ class image_cache_manager_test extends LimbTestCase
     $this->cache_manager2->setReturnValue('is_cacheable', true);
     
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('createDatasource', 
+    $this->toolkit->setReturnValue('getDatasource', 
                                    $this->datasource, 
                                    array('site_objects_by_node_ids_datasource'));
     
@@ -271,7 +271,7 @@ class image_cache_manager_test extends LimbTestCase
   {        
     $this->cache_manager2->process_content($c = '');
     $this->assertIdentical($c, '');
-    $this->toolkit->expectNever('createDatasource');
+    $this->toolkit->expectNever('getDatasource');
   }
 
   function test_process_img_tag()

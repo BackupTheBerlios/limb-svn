@@ -55,7 +55,7 @@ class site_object_component_test extends LimbTestCase
   function test_fetch_by_path()
   {
     $datasource = new Mocksingle_object_datasource($this);
-    $this->toolkit->setReturnValue('createDatasource', $datasource, array('single_object_datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $datasource, array('single_object_datasource'));
     
     $datasource->expectOnce('set_path', array($path = '/root/test'));
     $datasource->expectOnce('fetch');
@@ -72,7 +72,7 @@ class site_object_component_test extends LimbTestCase
   function test_fetch_requested()
   {
     $datasource = new Mockrequested_object_datasource($this);
-    $this->toolkit->setReturnValue('createDatasource', $datasource, array('requested_object_datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $datasource, array('requested_object_datasource'));
 
     $datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
     $datasource->expectOnce('fetch');

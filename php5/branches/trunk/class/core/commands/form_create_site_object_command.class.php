@@ -29,7 +29,7 @@ class form_create_site_object_command extends form_command
 	protected function _load_parent_object_data()
 	{
     $toolkit = Limb :: toolkit();
-    $datasource = $toolkit->createDatasource('requested_object_datasource');
+    $datasource = $toolkit->getDatasource('requested_object_datasource');
     $datasource->set_request($toolkit->getRequest());
     
 		return $datasource->fetch();

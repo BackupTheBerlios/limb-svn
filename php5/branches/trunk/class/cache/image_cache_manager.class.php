@@ -124,7 +124,7 @@ class image_cache_manager
       }
     }
     
-    $datasource = Limb :: toolkit()->createDatasource('site_objects_by_node_ids_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('site_objects_by_node_ids_datasource');
     $datasource->set_node_ids(array_keys($node_ids));
     $datasource->set_site_object_class_name('image_object');
 

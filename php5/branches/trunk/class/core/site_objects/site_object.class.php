@@ -20,7 +20,7 @@ class site_object extends object
 
   protected  $_class_id = null;
 
-  public function get_locale_by_id($id)
+  static public function find_object_locale_id($id)
   {
     $table = Limb :: toolkit()->createDBTable('sys_site_object');
 

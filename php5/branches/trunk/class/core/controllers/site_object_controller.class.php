@@ -13,82 +13,25 @@ require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/class/i18n/strings.class.php');
 	
 abstract class site_object_controller
-{
-	protected $_actions = array();
-	
-	protected $_current_action = '';
-
-	protected $_default_action = '';
-	
-	protected $_request = null;
-	
-	function __construct()
+{	
+  var $behaviour;
+  
+	function __construct($behaviour)
 	{
-	  $this->_actions = $this->_define_actions();
-	  
-	  $this->_default_action = $this->_define_default_action();
+	  $this->behaviour = $behaviour;
 	}
-	
-	protected function _define_actions()
-	{
-	  return array();
-	}
-	
-	protected function _define_default_action()
-	{
-	  return 'display';
-	}
-	
-	public function get_action($request)
-	{		    
-	  if($this->_request === $request && $this->_current_action)
-	    return $this->_current_action;
-	    
-	  $this->_request = $request;
-	  
+		
+	public function get_requested_action($request)
+	{		    	  
 		if (!$action = $request->get('action'))
-			$action = $this->_default_action;
+			$action = $this->behaviour->get_default_action();
 		
-		if (!$this->action_exists($action))
-		{
-		  throw new LimbException('action not found', 
-          				array(
-          					'class' => get_class($this),
-          					'action' => $action,
-          					'default_action' => $this->_default_action
-          				)
-          			);
-		}
+		if (!$this->behaviour->action_exists($action))
+      return null;
 		
-		$this->_current_action = $action;
+		return $action;
+	}
 		
-		return $this->_current_action;
-	}
-	
-	public function get_default_action()
-	{
-		return $this->_default_action;
-	}
-	
-	public function get_actions_definitions()
-	{
-		return $this->_actions;
-	}
-	
-	public function action_exists($action)
-	{
-		$actions = $this->get_actions_definitions();
-		return isset($actions[$action]);
-	}
-	
-	public function get_action_name($action)
-	{
-		if(!$name = $this->get_action_property($action, 'action_name'))
-			$name = $action;
-		
-		return $name;
-	}
-	
 	public function process($request)
 	{			
 		$this->_start_transaction();
@@ -113,16 +56,14 @@ abstract class site_object_controller
 	
 	protected function _perform_action($request)
 	{
-    $action = $this->get_action($request);
-    
-    if(!method_exists($this, '_define_' . $action))
+    if(!$action = $this->get_requested_action($request))
       throw new LimbException('action not defined in state machine', 
                               array('action' => $action, 
-                                    'class' => get_class($this)));
+                                    'class' => get_class($this->behaviour)));
       
     $state_machine = $this->_get_state_machine();
     
-    call_user_func(array($this, '_define_' . $action), $state_machine);
+    call_user_func(array($this->behaviour, 'define_' . $action), $state_machine);
     
     $state_machine->run();
     
@@ -142,21 +83,7 @@ abstract class site_object_controller
   protected function _rollback_transaction()
   {			
     rollback_user_transaction();
-  }
-		
-	public function get_action_property($action, $property_name)
-	{
-		$actions = $this->get_actions_definitions();
-			
-		if (!isset($actions[$action]))
-			return null;
-			
-		$action_definition = $actions[$action];
-		if (!isset($action_definition[$property_name]))	
-			return null;
-		else
-			return $action_definition[$property_name];
-	}
+  }		
 }
 
 ?>

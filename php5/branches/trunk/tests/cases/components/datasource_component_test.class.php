@@ -162,8 +162,8 @@ class datasource_component_test extends LimbTestCase
     $this->request->setReturnValue('get', 10, array('page_' . $pager_id));
 
     $this->component->set_datasource_path('test-datasource');
-    $this->toolkit->expectOnce('createDatasource', array('test-datasource'));
-    $this->toolkit->setReturnValue('createDatasource', $this->datasource, array('test-datasource'));
+    $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
     
     $this->datasource->expectOnce('count_total');
     $this->datasource->setReturnValue('count_total', $count = 13);
@@ -194,8 +194,8 @@ class datasource_component_test extends LimbTestCase
     $this->request->expectNever('get');    
 
     $this->component->set_datasource_path('test-datasource');
-    $this->toolkit->expectOnce('createDatasource', array('test-datasource'));
-    $this->toolkit->setReturnValue('createDatasource', $this->datasource, array('test-datasource'));
+    $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
     
     $this->datasource->expectOnce('count_total');
     $this->datasource->setReturnValue('count_total', $count = 13);
@@ -216,8 +216,8 @@ class datasource_component_test extends LimbTestCase
     $this->component->set_parameter('junky', 'trash');
     
     $this->component->set_datasource_path('test-datasource');
-    $this->toolkit->expectOnce('createDatasource', array('test-datasource'));
-    $this->toolkit->setReturnValue('createDatasource', $this->datasource, array('test-datasource'));
+    $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
     
     $this->datasource->expectOnce('set_limit', array(10));
     $this->datasource->expectOnce('set_offset', array(2));

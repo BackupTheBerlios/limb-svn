@@ -12,13 +12,39 @@ require_once(LIMB_DIR . '/class/i18n/strings.class.php');
 	
 class site_object_behaviour
 {
-  protected  $_properties = array();
+  protected $_properties = array();
 
-  protected  $_behaviour_id;
+  protected $_behaviour_id;
+  
+  protected $_actions_list = array();
 
   function __construct()
   {
     $this->_properties = $this->_define_properties();
+  }
+  
+  function get_default_action()
+  {
+    return 'display';
+  }
+  
+  function get_actions_list()
+  {
+    if($this->_actions_list)
+      return $this->_actions_list;
+    
+    $methods = get_class_methods($this);
+    foreach($methods as $method)
+    {
+      if(preg_match('~^define_(.*)$~', $method, $matches))
+        $this->_actions_list[] = $matches[1];
+    }
+    return $this->_actions_list;
+  }
+  
+  function action_exists($action)
+  {
+    return in_array($action, $this->get_actions_list());
   }
 
   protected function _define_properties()
@@ -43,7 +69,7 @@ class site_object_behaviour
     }
     elseif(count($list) > 1)
     {
-      throw new LimbException('there are more than 1 behaviuor found',
+      throw new LimbException('there are more than 1 behaviour found',
         __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
         array('behaviour_name' => $behaviour_name));
     }

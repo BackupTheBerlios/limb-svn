@@ -25,13 +25,23 @@ class BaseLimbToolkit implements LimbToolkit
   protected $view;
   protected $cache;
   
+  public function define($key, $value)
+  {
+    define($key, $value);
+  }
+  
+  public function constant($key)
+  {
+    return constant($key);
+  }
+  
   public function createDBTable($table_name)
   {
     include_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
     return db_table_factory :: create($table_name);
   }
   
-  public function createDatasource($datasource_path)
+  public function getDatasource($datasource_path)
   {
     include_once(LIMB_DIR . '/class/datasources/datasource_factory.class.php');
     return datasource_factory :: create($datasource_path);    
@@ -78,19 +88,7 @@ class BaseLimbToolkit implements LimbToolkit
     
     return $this->tree;
   }
-  
-  public function getFetcher()
-  {
-    if($this->fetcher)
-      return $this->fetcher;
     
-    include_once(LIMB_DIR . '/class/core/fetcher.class.php');
-    
-    $this->fetcher = new fetcher();
-    
-    return $this->fetcher; 
-  }
-  
   public function getUser()
   {
     if($this->user)

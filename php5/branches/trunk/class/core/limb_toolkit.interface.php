@@ -11,14 +11,15 @@
 
 interface LimbToolkit
 {
+  public function define($key, $value);
+  public function constant($key);
   public function createDBTable($table_name);
-  public function createDatasource($datasource_path);
+  public function getDatasource($datasource_path);
   public function createSiteObject($site_object_path);
   public function createBehaviour($behaviour_path);
   public function createAction($action_path);
   public function getDB();
   public function getTree();
-  public function getFetcher();
   public function getUser();
   public function getAuthorizer();
   public function getAuthenticator();

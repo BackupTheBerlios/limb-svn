@@ -14,14 +14,14 @@ class site_object_component extends component
 {
 	public function fetch_by_path($path)
 	{
-    $datasource = Limb :: toolkit()->createDatasource('single_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('single_object_datasource');
     $datasource->set_path($path);
 		$this->import($datasource->fetch());
 	}
 		
 	public function fetch_requested()
 	{
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $request = Limb :: toolkit()->getRequest();
     $datasource->set_request($request);
 		$this->import($datasource->fetch());

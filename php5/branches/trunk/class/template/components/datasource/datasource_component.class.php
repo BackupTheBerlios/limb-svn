@@ -29,7 +29,7 @@ class datasource_component extends component
 		if ($this->datasource)
 			return $this->datasource;
 
-    $this->datasource = Limb :: toolkit()->createDatasource($this->datasource_path);
+    $this->datasource = Limb :: toolkit()->getDatasource($this->datasource_path);
 		
     foreach($this->parameters as $key => $value)
     {

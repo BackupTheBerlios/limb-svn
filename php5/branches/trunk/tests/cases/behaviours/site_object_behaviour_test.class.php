@@ -26,6 +26,9 @@ class site_object_behaviour_test_version extends site_object_behaviour
       'icon' => '/shared/images/folder.gif',
 		);
 	}
+  
+  public function define_action1($state_machine){}
+  public function define_action2($state_machine){}
 }
 
 class site_object_behaviour_test extends LimbTestCase 
@@ -58,6 +61,19 @@ class site_object_behaviour_test extends LimbTestCase
   	$this->db->sql_delete('sys_behaviour');
     $this->db->sql_delete('sys_site_object');
     $this->db->sql_delete('sys_site_object_tree');
+  }
+  
+  function test_get_actions_list()
+  {
+    $this->assertEqual(
+                       array('action1', 'action2'),                       
+                       $this->behaviour->get_actions_list());
+  }
+
+  function test_action_exists()
+  {
+    $this->assertTrue($this->behaviour->action_exists('action1'));
+    $this->assertFalse($this->behaviour->action_exists('no_such_action'));
   }
 
   function test_get_property()
