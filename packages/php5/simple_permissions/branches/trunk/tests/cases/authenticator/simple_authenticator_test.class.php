@@ -28,6 +28,7 @@ class simple_authenticator_test extends LimbTestCase
     	
 	function setUp()
 	{
+  	user :: instance()->logout();
 	  $this->auth = new special_simple_authenticator($this);
 	}
 	

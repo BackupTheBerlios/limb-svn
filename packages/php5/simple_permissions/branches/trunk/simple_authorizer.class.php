@@ -12,7 +12,8 @@ require_once(LIMB_DIR . '/class/core/permissions/authorizer.interface.php');
 
 class simple_authorizer implements authorizer
 {
-  protected $_cached_behaviour_accessible_actions = array();
+  protected $_cached_accessible_actions_properties = array();
+  protected $_cached_behaviour_actions = array();
 
   public function get_accessible_object_ids($object_ids, $action = 'display')
   {
@@ -21,11 +22,11 @@ class simple_authorizer implements authorizer
 			
 		$in_ids = implode(',', $object_ids);
 
-    $accessor_ids = implode(',', $this->_get_accessor_ids());
-    
-    if (!$accessor_ids)
+ 		if(!$accessor_ids = $this->get_user_accessor_ids())
       return array();
-			
+
+    $accessor_ids = implode(',', $accessor_ids);
+    
 		$db = Limb :: toolkit()->getDB();
 		
     $sql = "SELECT soa.object_id as id
@@ -41,7 +42,7 @@ class simple_authorizer implements authorizer
   	return array_keys($db->get_array('id'));
   }
 
-	protected function _get_accessor_ids()
+	public function get_user_accessor_ids()
 	{
 		$accessor_ids = array();
 		
@@ -65,45 +66,64 @@ class simple_authorizer implements authorizer
 			$arr =& $objects_data;
   
 		$controllers = array();
-		$behaviour_actions = array();
+		$actions = array();
+		$accessible_actions = array();
 				
 		foreach($arr as $key => $data)
 		{
 			$behaviour_name = $data['behaviour'];
+			$behaviour_id = $data['behaviour_id'];
 			
-			$arr[$key]['actions'] = array();
-						
-			if (!isset($behaviour_actions[$behaviour_name]))
-			{
-				$behaviour = $this->_get_behaviour($behaviour_name);
-				$behaviour_actions[$behaviour_name] = $behaviour->get_actions_list();
-			}	
-
-			$accessible_actions = $this->_get_behaviour_accessible_actions($behaviour_name);
-
-			foreach($accessible_actions[$behaviour_name] as $action_name)
-			{
-			  if (isset($behaviour_actions[$behaviour_name][$action_name]))
-        {
-          $method = 'get_' . $action_name . '_action_properties'; 
-					$arr[$key]['actions'][$action_name] = $behaviour->$method();
-        }  
-			}			
+      $arr[$key]['actions'] = $this->_get_accessible_actions_properties($behaviour_id, $behaviour_name);		
 		}
+  }
+  
+  protected function _get_accessible_actions_properties($behaviour_id, $behaviour_name)
+  {
+	  if(isset($this->_cached_accessible_actions_properties[$behaviour_id]))
+	    return $this->_cached_accessible_actions_properties[$behaviour_id];
+
+    $actions = $this->_get_behaviour_actions($behaviour_id, $behaviour_name);			
+      
+    $behaviour_accessible_actions = $this->get_behaviour_accessible_actions($behaviour_id);
+    $behaviour = $this->_get_behaviour($behaviour_name);
+    
+    $result = array();
+    foreach($behaviour_accessible_actions as $action)
+    {
+      if (in_array($action, $actions))
+      {
+        $method = 'get_' . $action . '_action_properties'; 
+        $result[$action] = $behaviour->$method();
+      }  
+    }
+    
+		$this->_cached_accessible_actions_properties[$behaviour_id] = $result;
+    
+    return $result;
+  }
+  
+  protected function _get_behaviour_actions($behaviour_id, $behaviour_name)
+  {
+	  if(isset($this->_cached_behaviour_actions[$behaviour_id]))
+	    return $this->_cached_behaviour_actions[$behaviour_id];
+    
+    $behaviour = $this->_get_behaviour($behaviour_name);
+    $this->_cached_behaviour_actions[$behaviour_id] = $behaviour->get_actions_list();
+    
+    return $this->_cached_behaviour_actions[$behaviour_id];
   }
 
 	//for mocking
-	protected function _get_behaviour($behaviour)
+	protected function _get_behaviour($behaviour_name)
 	{
-		return Limb :: toolkit()->getBehaviour($behaviour);
+		return Limb :: toolkit()->getBehaviour($behaviour_name);
 	}
 
-	protected function _get_behaviour_accessible_actions($behaviour_id)
+	public function get_behaviour_accessible_actions($behaviour_id)
 	{
-	  if(isset($this->_cached_behaviour_accessible_actions[$behaviour_id]))
-	    return $this->_cached_behaviour_accessible_actions[$behaviour_id];
-	    
-		$accessor_ids = $this->_get_accessor_ids();
+		if(!$accessor_ids = $this->get_user_accessor_ids())
+      return array();
 		
 		$in_ids = implode(',', $accessor_ids);
 
@@ -115,10 +135,7 @@ class simple_authorizer implements authorizer
 			GROUP BY saa.action_name";
 		
     $db->sql_exec($sql);
-    $result = $db->get_array('action_name');
-		
-		$this->_cached_behaviour_accessible_actions[$behaviour_id] = $result;
-		return $result;	
+    return array_keys($db->get_array('action_name'));
 	}
 }
 ?>

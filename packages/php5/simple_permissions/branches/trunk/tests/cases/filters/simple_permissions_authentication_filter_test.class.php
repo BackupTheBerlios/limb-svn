@@ -41,7 +41,7 @@ Mock :: generatePartial('simple_permissions_authentication_filter',
                               'initialize_user',
                               'process_404_error')); 
 
-class authentication_filter_test extends LimbTestCase
+class simple_permissions_authentication_filter_test extends LimbTestCase
 {
   var $filter_chain;
   var $filter;
