@@ -19,7 +19,7 @@ class class_template_actions_list_datasource implements datasource
 		if(!$class_id = $request->get('class_id'))
 			return new array_dataset();
 			
-		$db_table = db_table_factory :: instance('sys_class');
+		$db_table = db_table_factory :: create('sys_class');
 		$class_data = $db_table->get_row_by_id($class_id);
 		
 		if (!$class_data)

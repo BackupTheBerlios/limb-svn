@@ -349,7 +349,7 @@ class image_object extends media_object
 		$image_variation_data['height'] = $size[1];
 		$image_variation_data['variation'] = $variation_name;
 		
-		$image_variation_db_table = db_table_factory :: instance('image_variation');
+		$image_variation_db_table = db_table_factory :: create('image_variation');
 		
 		$image_variation_db_table->insert($image_variation_data);
 		
@@ -426,7 +426,7 @@ class image_object extends media_object
 		
 		$size = getimagesize($tmp_file_path);
 		
-		$image_variation_db_table = db_table_factory :: instance('image_variation');
+		$image_variation_db_table = db_table_factory :: create('image_variation');
 		
 		$image_id = $this->get_id();
 		

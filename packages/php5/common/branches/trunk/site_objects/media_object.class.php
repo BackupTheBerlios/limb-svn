@@ -57,7 +57,7 @@ abstract class media_object extends content_object
 			$etag = md5($contents);
 		}
 				
-		$media_db_table = db_table_factory :: instance('media');
+		$media_db_table = db_table_factory :: create('media');
 		
   	$media_db_table->insert(
   		array(
@@ -108,7 +108,7 @@ abstract class media_object extends content_object
 			return false;
 		}
 
-		$media_db_table = db_table_factory :: instance('media');
+		$media_db_table = db_table_factory :: create('media');
 		
   	$media_db_table->update_by_id(
   		$id,

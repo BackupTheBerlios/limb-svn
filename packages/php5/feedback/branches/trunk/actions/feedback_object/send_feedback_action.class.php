@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'class/lib/mail/send_plain_mail.inc.php');
 require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'class/core/sys_param.class.php');
 
@@ -32,7 +31,7 @@ class send_feedback_action extends form_action
 	protected function _get_email()
 	{
 		if(!$email = sys_param :: instance()->get_param('contact_email', 'char'))
-			$email = constant('ADMINISTRATOR_EMAIL');		
+			$email = constant('ADMINISTRATOR_EMAIL');
 
 		return $email;
 	}
@@ -64,10 +63,15 @@ class send_feedback_action extends form_action
 		
 		$recipient_email = $this->_get_email();
 		
+		$mailer = $this->_get_mailer();
+		
+    $headers['From']    = $mail_data['sender_email'];
+    $headers['To']      = $recipient_email;
+    $headers['Subject'] = $subject;
+    
 		if(!$recipient_email ||
-			 !send_plain_mail(array($recipient_email), 
-										$mail_data['sender_email'], 
-										$subject,
+			 !$mailer->send($recipient_email, 
+										$headers, 
 										$body
 										)
 				)
@@ -82,6 +86,13 @@ class send_feedback_action extends form_action
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 		$response->redirect($_SERVER['PHP_SELF']);
+	}
+	
+	protected function _get_mailer()
+	{
+	  include_once('Mail.php');
+	  
+	  return Mail :: factory('mail');
 	}
 }
 ?>

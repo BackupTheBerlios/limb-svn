@@ -40,14 +40,14 @@ class user_object extends content_object
 	
 	public function get_membership($user_id)
 	{
-		$db_table	= db_table_factory :: instance('user_in_group');
+		$db_table	= db_table_factory :: create('user_in_group');
 		$groups = $db_table->get_list('user_id='. $user_id, '', 'group_id');		
 		return $groups;
 	}
 	
 	public function save_membership($user_id, $membership)
 	{
-		$db_table	= db_table_factory :: instance('user_in_group');
+		$db_table	= db_table_factory :: create('user_in_group');
 		$db_table->delete('user_id='. $user_id);		
 
 		foreach($membership as $group_id => $is_set)

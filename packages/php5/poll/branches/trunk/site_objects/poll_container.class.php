@@ -118,7 +118,7 @@ class poll_container extends site_object
 	
 	protected function _add_vote_to_answer($record_id)
 	{
-		$poll_answer_db_table = db_table_factory :: instance('poll_answer');
+		$poll_answer_db_table = db_table_factory :: create('poll_answer');
 		
 		$data = $poll_answer_db_table->get_row_by_id($record_id);
 		if (!$data)
@@ -133,7 +133,7 @@ class poll_container extends site_object
 	
 	protected function _register_new_ip($poll_id, $ip)
 	{
-		$poll_ip_db_table = db_table_factory :: instance('poll_ip');
+		$poll_ip_db_table = db_table_factory :: create('poll_ip');
 		$data['ip'] = $ip;
 		$data['poll_id'] = $poll_id;
 		$poll_ip_db_table->insert($data);
@@ -141,7 +141,7 @@ class poll_container extends site_object
 	
 	protected function _poll_ip_exists($poll_id, $ip)
 	{
-		$poll_ip_db_table = db_table_factory :: instance('poll_ip');
+		$poll_ip_db_table = db_table_factory :: create('poll_ip');
 		$where['poll_id'] = $poll_id;
 		$where['ip'] = $ip;
 		

@@ -21,7 +21,7 @@ class db_cart_handler extends cart_handler
 	{
 	  parent :: __construct($cart_id);
 	  
-	  $this->cart_db_table = db_table_factory :: instance('cart');
+	  $this->cart_db_table = db_table_factory :: create('cart');
 	  
 	  register_shutdown_function(array($this, '_db_cart_handler'));
 	}

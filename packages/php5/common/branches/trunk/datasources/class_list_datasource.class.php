@@ -17,7 +17,7 @@ class class_list_datasource implements datasource
 		if(!$arr = fetch_requested_object())
 			return new array_dataset();
 		
-		$db_table = db_table_factory :: instance('sys_class');
+		$db_table = db_table_factory :: create('sys_class');
 		$classes = $db_table->get_list('', 'class_name');
 		
 		$result = array();

@@ -19,7 +19,7 @@ class object_versions_datasource implements datasource
 		if (!count($object_data))
 			return new array_dataset(array());
 			
-		$db_table	= db_table_factory :: instance('sys_object_version');
+		$db_table	= db_table_factory :: create('sys_object_version');
 		
 		$arr = $db_table->get_list('object_id='. $object_data['id'], 'version DESC');
 		
