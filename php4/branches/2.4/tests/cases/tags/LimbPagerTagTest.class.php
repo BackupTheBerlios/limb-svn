@@ -11,7 +11,7 @@
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/lib/http/uri.class.php');
+require_once(LIMB_DIR . '/class/http/uri.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Request');

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
+require_once(LIMB_DIR . '/class/db/DbModule.class.php');
 require_once(LIMB_DIR . '/class/finders/SiteObjectsRawFinder.class.php');
 require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
 require_once(LIMB_DIR . '/class/tree/MaterializedPathTree.class.php');

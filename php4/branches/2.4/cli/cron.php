@@ -11,9 +11,9 @@
 $site_path = $argv[1];
 require_once($site_path . '/setup.php');
 
-require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
+require_once(LIMB_DIR . '/class/error/Debug.class.php');
 require_once(LIMB_DIR . '/class/request/NonbufferedResponse.class.php');
-require_once(LIMB_DIR . '/class/lib/cron/CronManager.class.php');
+require_once(LIMB_DIR . '/class/cron/CronManager.class.php');
 
 $force = false;
 if(isset($argv[2]) &&  $argv[2] == 'force')

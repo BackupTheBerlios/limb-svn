@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/class/system/objects_support.inc.php');
 
 class PackagesInfo
 {
@@ -37,7 +37,7 @@ class PackagesInfo
 
   function loadPackages()
   {
-    include_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
+    include_once(LIMB_DIR . '/class/util/ini_support.inc.php');
 
     $toolkit =& Limb :: toolkit();
     $ini =& $toolkit->getINI('packages.ini');

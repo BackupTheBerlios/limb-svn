@@ -24,7 +24,7 @@ class ImageFactory
 
     if(get_class($obj) != $image_class_name)
     {
-      $dir = ($dir == '') ? LIMB_DIR . '/class/lib/image/' : $dir;
+      $dir = ($dir == '') ? LIMB_DIR . '/class/image/' : $dir;
 
       if(!file_exists($dir . $image_class_name . '.class.php'))
           return throw(new FileNotFoundException('image library not found', $dir . $image_class_name . '.class.php'));

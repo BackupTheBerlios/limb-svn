@@ -11,7 +11,7 @@
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/class/validators/rules/UniqueUserRule.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/class/db/LimbDbTable.class.php');
 
 class UniqueUserRuleTest extends SingleFieldRuleTestCase
 {

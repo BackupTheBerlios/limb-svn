@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 //inspired by EZpublish(http://ez.no), dir class
-require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
+require_once(LIMB_DIR . '/class/system/Sys.class.php');
 
 define('FS_SEPARATOR_LOCAL', 1);
 define('FS_SEPARATOR_UNIX', 2);

@@ -49,7 +49,7 @@ require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/cases/LimbTestCase.class.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
-require_once(LIMB_DIR . '/class/lib/error/error.inc.php');
+require_once(LIMB_DIR . '/class/error/error.inc.php');
 require_once(LIMB_DIR . '/class/PackagesInfo.class.php');
 require_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
 

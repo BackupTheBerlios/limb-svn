@@ -7,7 +7,7 @@ function writeUnhandledExceptions()
   if(!isset($GLOBALS['global_exception']))
     return;
 
-  include_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
+  include_once(LIMB_DIR . '/class/error/Debug.class.php');
 
   Debug :: writeException($GLOBALS['global_exception']);
 }

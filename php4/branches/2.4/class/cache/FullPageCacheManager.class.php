@@ -10,7 +10,7 @@
 ***********************************************************************************/
 @define('PAGE_CACHE_DIR', VAR_DIR . '/pages/');
 
-require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/system/Fs.class.php');
 
 class FullPageCacheManager
 {

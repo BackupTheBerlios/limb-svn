@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/system/Fs.class.php');
 require_once(LIMB_DIR . '/class/file_resolvers/FileResolverDecorator.class.php');
 
 class CachingFileResolver extends FileResolverDecorator

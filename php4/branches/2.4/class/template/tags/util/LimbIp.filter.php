@@ -14,7 +14,7 @@ class LimbIpFilter extends CompilerFilter
 {
   function getValue()
   {
-    include_once(LIMB_DIR . '/class/lib/http/Ip.class.php');
+    include_once(LIMB_DIR . '/class/http/Ip.class.php');
 
     if ($this->isConstant())
       return Ip :: decode($this->base->getValue());
@@ -24,7 +24,7 @@ class LimbIpFilter extends CompilerFilter
 
   function generateExpression(&$code)
   {
-    $code->registerInclude(LIMB_DIR . '/class/lib/http/Ip.class.php');
+    $code->registerInclude(LIMB_DIR . '/class/http/Ip.class.php');
 
     $code->writePHP('Ip :: decode(');
     $this->base->generateExpression($code);

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/cache/ImageCacheManager.class.php');
 require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
+require_once(LIMB_DIR . '/class/http/Uri.class.php');
 require_once(LIMB_DIR . '/class/permissions/User.class.php');
 require_once(LIMB_DIR . '/class/datasources/SiteObjectsByNodeIdsDatasource.class.php');
 require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');

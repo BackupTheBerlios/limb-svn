@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
-require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
+require_once(LIMB_DIR . '/class/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/system/Sys.class.php');
 
 @define('MAX_LOGROTATE_FILES', 5);
 @define('MAX_LOGFILE_SIZE', 500*1024);

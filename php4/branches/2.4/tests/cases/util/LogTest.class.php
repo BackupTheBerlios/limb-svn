@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/log.class.php');
+require_once(LIMB_DIR . '/class/util/log.class.php');
 
 class LogTest extends LimbTestCase
 {

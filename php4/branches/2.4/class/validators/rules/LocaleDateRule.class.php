@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/validation/rule.inc.php');
 require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
-require_once(LIMB_DIR . '/class/lib/date/Date.class.php');
+require_once(LIMB_DIR . '/class/date/Date.class.php');
 
 class LocaleDateRule extends SingleFieldRule
 {

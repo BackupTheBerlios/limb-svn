@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
+require_once(LIMB_DIR . '/class/error/Debug.class.php');
 
 if(!defined('ERROR_HANDLER_TYPE'))
   Debug :: setHandleType('custom');

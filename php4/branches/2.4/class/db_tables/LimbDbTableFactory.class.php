@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/class/system/objects_support.inc.php');
 
 if(!isRegisteredResolver('db_table'))
 {

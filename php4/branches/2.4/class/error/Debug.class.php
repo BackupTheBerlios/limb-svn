@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 //Inspired by EZpublish(http//ez.no), debug class
-require_once(LIMB_DIR . '/class/lib/system/Sys.class.php');
+require_once(LIMB_DIR . '/class/system/Sys.class.php');
 
 @define('DEBUG_HTTP_CONSOLE_DIR', '/var/');
 
@@ -276,7 +276,7 @@ class Debug
 
   function _sendMail($debug_info)
   {
-    include_once(LIMB_DIR . '/class/lib/mail/send_plain_mail.inc.php');
+    include_once(LIMB_DIR . '/class/mail/send_plain_mail.inc.php');
 
     $title = '';
     $headers = array();
@@ -409,7 +409,7 @@ class Debug
   */
   function _writeFile($file_name, $debug_info)
   {
-    include_once(LIMB_DIR . '/class/lib/util/log.class.php');
+    include_once(LIMB_DIR . '/class/util/log.class.php');
 
     if (!log :: write($file_name, Debug :: _parseTextDebugInfo($debug_info)))
       $this->setLogFileEnabled(false, $debug_info['level']);

@@ -8,7 +8,7 @@
 * $Id: sys_site_object_tree_db_table.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/class/db/LimbDbTable.class.php');
 
 class SysMaterializedPathTreeDbTable extends LimbDbTable
 {

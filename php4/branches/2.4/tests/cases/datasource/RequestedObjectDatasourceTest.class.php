@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php'
 require_once(LIMB_DIR . '/class/tree/Tree.interface.php');
 require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
+require_once(LIMB_DIR . '/class/http/Uri.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('Tree');

@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/tree/MaterializedPathTree.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
+require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/class/util/ComplexArray.class.php');
 
 define('MATERIALIZED_PATH_TEST_TABLE', 'test_materialized_path_tree');
 

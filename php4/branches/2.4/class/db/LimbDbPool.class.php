@@ -12,7 +12,7 @@ class LimbDbConnectionConfiguration
 {
   function get($name)
   {
-    include_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
+    include_once(LIMB_DIR . '/class/util/ini_support.inc.php');
     return getIniOption('common.ini', $name, 'DB');
   }
 }

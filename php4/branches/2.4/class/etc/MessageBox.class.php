@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/system/Fs.class.php');
 require_once(LIMB_DIR . '/class/session/Session.class.php');
 
 define('MESSAGE_BOX_NOTICE', 1);

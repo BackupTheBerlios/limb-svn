@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/tests/lib/SiteObjectsLoader.class.php');
-require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/system/Fs.class.php');
 
 class AllSiteObjectsLoader extends SiteObjectsLoader
 {

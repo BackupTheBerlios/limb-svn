@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/file_resolvers/FileResolverDecorator.class.php');
-require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
+require_once(LIMB_DIR . '/class/util/ini_support.inc.php');
 
 class TemplateFileResolver extends FileResolverDecorator
 {

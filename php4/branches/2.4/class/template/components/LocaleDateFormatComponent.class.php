@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/date/Date.class.php');
+require_once(LIMB_DIR . '/class/date/Date.class.php');
 require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
 class LocaleDateFormatComponent extends Component

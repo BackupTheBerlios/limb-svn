@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
-require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/class/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/class/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/class/i18n/Strings.class.php');
 
 class SiteObjectController

@@ -70,7 +70,7 @@ class LimbBaseToolkit// implements LimbToolkit
     if($this->db)
       return $this->db;
 
-    include_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+    include_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
     $this->db =& LimbDbPool :: getConnection();
 
     return $this->db;
@@ -105,7 +105,7 @@ class LimbBaseToolkit// implements LimbToolkit
     if(isset($this->ini_cache[$ini_path]))
       return $this->ini_cache[$ini_path];
 
-    include_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
+    include_once(LIMB_DIR . '/class/util/ini_support.inc.php');
 
     $ini = getIni($ini_path);
 

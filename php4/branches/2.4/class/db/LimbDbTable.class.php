@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/lib/db/SimpleQueryBuilder.class.php');
+require_once(LIMB_DIR . '/class/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/class/db/SimpleQueryBuilder.class.php');
 require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
 
 class LimbDbTable

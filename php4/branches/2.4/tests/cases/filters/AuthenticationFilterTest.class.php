@@ -19,7 +19,7 @@ require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
 require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
 require_once(LIMB_DIR . '/class/permissions/User.class.php');
 require_once(LIMB_DIR . '/class/permissions/Authenticator.interface.php');
-require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
+require_once(LIMB_DIR . '/class/util/Ini.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('FilterChain');

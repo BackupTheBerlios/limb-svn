@@ -10,8 +10,8 @@
 ***********************************************************************************/
 //inspired by EZpublish(http://ez.no) ini class
 
-require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
-require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
+require_once(LIMB_DIR . '/class/system/Fs.class.php');
+require_once(LIMB_DIR . '/class/error/Debug.class.php');
 
 class Ini
 {

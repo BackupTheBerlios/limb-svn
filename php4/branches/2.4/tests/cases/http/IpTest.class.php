@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/http/Ip.class.php');
+require_once(LIMB_DIR . '/class/http/Ip.class.php');
 
 class IpTest extends LimbTestCase
 {

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/class/db/LimbDbTable.class.php');
 
 class TestImageDbTable extends LimbDbTable
 {

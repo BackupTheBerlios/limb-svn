@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/finders/OneTableObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/class/db/LimbDbTable.class.php');
 require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');

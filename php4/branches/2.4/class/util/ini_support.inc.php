@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
+require_once(LIMB_DIR . '/class/util/Ini.class.php');
 require_once(LIMB_DIR . '/class/file_resolvers/file_resolvers_registry.inc.php');
 
 if(!isRegisteredResolver('ini'))

@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
+require_once(LIMB_DIR . '/class/error/Debug.class.php');
 
 Debug :: addTimingPoint('start');
 
 require_once(LIMB_DIR . '/class/Limb.class.php');
-require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/class/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/class/file_resolvers/file_resolvers_registry.inc.php');
 require_once(LIMB_DIR . '/class/filters/FilterChain.class.php');
 require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
