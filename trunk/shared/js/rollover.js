@@ -54,7 +54,7 @@ function rollover_swap()
   document.rollover_sr=new Array; 
   
   for(i=0;i<(a.length-2);i+=3)
-   if ((x=rollover_findObj(a[i]))!=null)
+   if ((x=rollover_find_obj(a[i]))!=null)
    {
    	document.rollover_sr[j++] = x; 
    	if(!x.oSrc) 
