@@ -17,6 +17,15 @@ class user_object extends content_object
 		parent :: content_object();
 	}
 	
+	function _define_attributes_definition()
+	{
+		return complex_array :: array_merge(
+				parent :: _define_attributes_definition(),
+				array(
+				'second_password' => '',
+				));
+	}
+		
 	function _define_class_properties()
 	{
 		return array(

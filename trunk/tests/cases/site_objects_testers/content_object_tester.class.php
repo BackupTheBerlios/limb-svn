@@ -8,7 +8,7 @@
 * $Id: _content_object_template.test.php 81 2004-03-26 13:51:05Z server $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/site_objects/site_object_tester.class.php');
+require_once(LIMB_DIR . '/tests/cases/site_objects_testers/site_object_tester.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
 class content_object_tester extends site_object_tester 
@@ -31,6 +31,22 @@ class content_object_tester extends site_object_tester
   {
 		$db_table = $this->object->_get_db_table();
   	$this->db->sql_delete($db_table->get_table_name());
+  }
+  
+  function _do_test_class_properties($props)
+  {
+  	parent :: _do_test_class_properties($props);
+  	
+		$db_table = $this->object->_get_db_table();
+
+		if(isset($props['db_table_name']))
+		{
+			$this->assertTrue(is_a($db_table, $props['db_table_name'].'_db_table'));
+		}
+		else
+		{
+			$this->assertTrue(is_a($db_table, get_class($this->object).'_db_table'));
+		}
   }
   
   function test_create()

@@ -5,15 +5,17 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: delete_photogallery_folder_action.class.php 21 2004-02-29 18:59:25Z server $
 *
 ***********************************************************************************/
-class tests_project_check extends GroupTest 
+require_once(LIMB_DIR . 'core/actions/form_delete_site_object_action.class.php');
+
+class delete_photogallery_folder_action extends form_delete_site_object_action
 {
-	function tests_project_check() 
-	{
-	  $this->GroupTest('project tests');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/project_check');
+	function delete_photogallery_folder_action($name='delete_form')
+	{		
+		parent :: form_delete_site_object_action($name, array('site_object' => 'photogallery_folder'));
 	}
 }
+
 ?>

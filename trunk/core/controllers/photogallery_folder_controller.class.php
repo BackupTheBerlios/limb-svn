@@ -5,25 +5,23 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: photogallery_folder_controller.class.php 33 2004-03-10 16:05:12Z server $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
-require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
-class document_controller extends site_object_controller
+class photogallery_folder_controller extends site_object_controller
 {
-	function document_controller()
+	function photogallery_folder_controller()
 	{
 		$this->_actions = array(
 				'display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/document/display.html',
+						'template_path' => '/photogallery_folder/display.html'
 				),
 				'admin_display' => array(
-						'permissions_required' => 'r',
-						'template_path' => '/document/admin_display.html',
-						'action_name' => strings :: get('admin_display'),
+						'permissions_required' => 'rw',
+						'template_path' => '/photogallery_folder/admin_display.html'
 				),
 				'set_metadata' => array(
 						'permissions_required' => 'w',
@@ -34,38 +32,34 @@ class document_controller extends site_object_controller
 						'template_path' => '/site_object/set_metadata.html',
 						'img_src' => '/shared/images/configure.gif'
 				),
-				'admin_detail' => array(
-						'permissions_required' => 'r',
-						'template_path' => '/admin/object_detail_info.html',
-						'popup' => true,
-						'JIP' => true,
-						'img_src' => '/shared/images/admin_detail.gif',
-						'action_name' => strings :: get('detail_info'),
-				),
-				'create_document' => array(
+				'create_photo' => array(
 						'permissions_required' => 'w',
-						'template_path' => '/document/create.html',
-						'action_path' => '/document/create_document_action',
+						'template_path' => '/photogallery_object/create.html',
+						'action_path' => '/photogallery_object/create_photo_action',
 						'JIP' => true,
 						'popup' => true,
-						'action_name' => strings :: get('create_document', 'document'),
 						'img_src' => '/shared/images/new.generic.gif',
+						'action_name' => strings :: get('create_photo', 'photogallery'),
 						'can_have_access_template' => true,
 				),
-				'print_version' => array(
-						'permissions_required' => 'r',
-						'template_path' => '/document/print_version.html',
-						'action_name' => strings :: get('print_version_action', 'document'),
-						'display_in_breadcrumbs' => false,
+				'create_photogallery_folder' => array(
+						'permissions_required' => 'w',
+						'template_path' => '/photogallery_folder/create.html',
+						'action_path' => '/photogallery_folder/create_photogallery_folder_action',
+						'JIP' => true,
+						'popup' => true,
+						'img_src' => '/shared/images/new.folder.gif',
+						'action_name' => strings :: get('create_photogallery_folder', 'photogallery'),
+						'can_have_access_template' => true,
 				),
 				'edit' => array(
 						'permissions_required' => 'w',
-						'popup' => true,
+						'template_path' => '/photogallery_folder/edit.html',
+						'action_path' => '/photogallery_folder/edit_photogallery_folder_action',
 						'JIP' => true,
-						'action_name' => strings :: get('edit_document', 'document'),
-						'action_path' => '/document/edit_document_action',
-						'template_path' => '/document/edit.html',
-						'img_src' => '/shared/images/edit.gif'
+						'popup' => true,
+						'img_src' => '/shared/images/edit.gif',
+						'action_name' => strings :: get('edit_photogallery_folder', 'photogallery'),
 				),
 				'publish' => array(
 						'permissions_required' => 'w',
@@ -89,14 +83,14 @@ class document_controller extends site_object_controller
 						'permissions_required' => 'w',
 						'JIP' => true,
 						'popup' => true,
-						'action_name' => strings :: get('delete_document', 'document'),
-						'action_path' => '/document/delete_document_action',
+						'action_name' => strings :: get('delete_photogallery_folder', 'photogallery'),
+						'action_path' => '/photogallery_folder/delete_photogallery_folder_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),
+
 		);
  		
-
 		parent :: site_object_controller();
 	}
 }

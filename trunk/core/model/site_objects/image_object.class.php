@@ -23,6 +23,27 @@ class image_object extends media_object
 		$this->_image_library = image_factory :: create();
 	}
 	
+	function _define_attributes_definition()
+	{
+		$ini =& get_ini('image_variations.ini');
+		
+		$image_variations = $ini->get_named_array();
+		
+		$definition = array();
+		
+		foreach(array_keys($image_variations) as $variation)
+		{
+			$definition['upload_' . $variation . '_max_size'] = 'upload_' . $variation . '_max_size';
+			$definition['generate_' . $variation . '_max_size'] = 'generate_' . $variation . '_max_size';
+			$definition[$variation . '_action'] = $variation . '_action';
+			$definition[$variation . '_base_variation'] = $variation . '_base_variation';
+		}
+		
+		$definition['files_data'] = array();
+		
+		return complex_array :: array_merge(parent :: _define_attributes_definition(), $definition);
+	}
+	
 	function _define_class_properties()
 	{
 		return array(

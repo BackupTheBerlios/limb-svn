@@ -5,29 +5,26 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: edit_photogallery_folder_action.class.php 21 2004-02-29 18:59:25Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 
-class create_ad_block_object_action extends form_create_site_object_action
+class edit_photogallery_folder_action extends form_edit_site_object_action
 {
-	function create_ad_block_object_action()
+	function edit_photogallery_folder_action()
 	{
 		$definition = array(
-			'site_object' => 'ad_block_object',
-			'datamap' => array(
-				'image_id' => 'image_id1',
-			)
+			'site_object' => 'photogallery_folder',
 		);
-		
-		parent :: form_create_site_object_action('ad_block_form', $definition);
+
+		parent :: form_edit_site_object_action('edit_photogallery_folder', $definition);
 	}
 	
 	function _init_validator()
 	{
 		parent :: _init_validator();
-
+		
 		$this->validator->add_rule(new required_rule('title'));
 	}
 }
