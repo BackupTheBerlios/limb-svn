@@ -1,7 +1,7 @@
 <fieldset>
   <legend style='color:#000000'><limb:locale:STRING file="stats">report_filter</limb:locale:STRING></legend>
   <table>
-  <form id='hits_hosts_form' name='hits_hosts_form' method='post'>
+  <form id='report_form' name='report_form' method='post'>
     <core:INCLUDE file='/stats/period_filter_fields.html'>
     <tr>
       <td>
@@ -9,7 +9,7 @@
       <td>
         <input type="submit" name="update" value="{update|LimbI18NString}" class="button">
         <input class='button' type='reset' value='Reset'>
-        <input class='hidden' name='action' type='reset' value='countersReport'>
+        <input class='hidden' name='action' type='reset' value='keywordsReport'>
       </td>
     </tr>
   </form>

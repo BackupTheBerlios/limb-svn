@@ -1,0 +1,32 @@
+<core:WRAP file="/admin/site_management_page.html" placeholder="content">
+
+<core:INCLUDE file="/stats/referers_report_form.html"><br>
+<br>
+
+<limb:DAO class="/StatsReferersReportDAO" target="table" navigator="pager"/>
+
+<limb:pager:NAVIGATOR id="pager" items="30">
+  <core:INCLUDE file="/admin/pager_contents.html">
+</limb:pager:NAVIGATOR>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<th>URL</th>
+<th>hits</th>
+<th>%</th>
+</tr>
+
+<list:LIST id='table'>
+<list:ITEM>
+<core:optional for="ListRowOdd"><tr bgcolor='#f0f0f0'></core:optional>
+<core:optional for="ListRowEven"><tr></core:optional>
+
+<td>
+  <a href='{$referer_url}'>{$referer_url}</a>
+</td>
+<td>{$hits}</td>
+<td>{$percentage}</td>
+</tr>
+</list:ITEM>
+</list:LIST>
+</table>
