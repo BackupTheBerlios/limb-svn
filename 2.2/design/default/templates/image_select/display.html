@@ -15,9 +15,8 @@
 	
 	function change_img_prop(obj)
 	{
-		image[obj.name] = obj.value == null ? '' : obj.value;
+		image[obj.name] = (obj.value == null ? '' : obj.value);
 	}
-	
 	
 	function set_img_prop(prop_name, value)
 	{
@@ -61,9 +60,9 @@
 	
 	function insert_image()
 	{
-		h = get_close_popup_handler();
+		h = get_close_popup_handler();		
 		h(image);
-//		opener.popups[window.name]['process_popup'](image);
+		//opener.popups[window.name]['process_popup'](image);
 		window.close();
 	}
 	
@@ -74,7 +73,7 @@
 		img = h(window.name);
 		
 		preview_obj = document.getElementById('_preview');
-
+    
 		obj = document.getElementById('_preview_caption');
 		preview_caption_obj = obj.firstChild;
 

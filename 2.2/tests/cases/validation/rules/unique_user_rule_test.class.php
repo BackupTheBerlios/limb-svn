@@ -58,7 +58,7 @@ class unique_user_rule_test extends single_field_rule_test
 		$data =& new dataspace();
 		$data->set('test', 'vasa');
 
-		$this->error_list->expectOnce('add_error', array('test', 'DUPLICATE_USER', array()));
+		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_duplicate_user', 'error'), array()));
 
 		$this->validator->validate($data);
 		$this->assertFalse($this->validator->is_valid());

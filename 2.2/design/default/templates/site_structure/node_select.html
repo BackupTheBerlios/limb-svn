@@ -59,7 +59,7 @@
 		{$identifier}   ({$title})
 	</td>
 	<td>{$class_name}</td>
-	<td align='right'><core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "{$title}", path: "{$path}",
+	<td align='right'><core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "<core:HTMLSPECIALCHARS hash_id='title'>", path: "{$path}",
 	 icon: "{$icon}", parent_node_id: "{$parent_node_id}"}<core:LITERAL>)'></core:LITERAL><locale:STRING name='select'><core:LITERAL></button></core:LITERAL>
 	 </td>
 </tr>
@@ -91,7 +91,7 @@
 		<a href='/root/admin/site_structure?action=node_select&path={$path}'>{$identifier}   ({$title})({$children})</a>
 	</td>
 	<td>{$class_name}</td>
-	<td align='right'><core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "{$title}", path: "{$path}",
+	<td align='right'><core:LITERAL><button class='button' onclick='parent.update_node_data(</core:LITERAL>{node_id: "{$node_id}", identifier: "{$identifier}", class_name: "{$class_name}", title: "<core:HTMLSPECIALCHARS hash_id='title'>", path: "{$path}",
 	 icon: "{$icon}", parent_node_id: "{$parent_node_id}"}<core:LITERAL>)'></core:LITERAL><locale:STRING name='select'><core:LITERAL></button></core:LITERAL>
 	 </td>
 </tr>

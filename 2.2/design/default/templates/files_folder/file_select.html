@@ -58,7 +58,7 @@
 <tr>
 <td><img src='/root?node_id={$node_id}&icon' align='center'>{$identifier}&nbsp;{$description}</td>
 <td width='1'><core:INCLUDE file="/jip_actions/simple.html"></td>
-<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_file_data(</core:LITERAL>{node_id: "{$node_id}", name: "{$identifier}", description: "{$description}", mime_type: "{$mime_type}", size: "{$size}"}<core:LITERAL>)'></core:LITERAL><locale:STRING name='select'><core:LITERAL></button></a></core:LITERAL></td>
+<td>&nbsp;<core:LITERAL><button class='button' onclick='parent.update_file_data(</core:LITERAL>{node_id: "{$node_id}", name: "{$identifier}", description: "<core:HTMLSPECIALCHARS hash_id='description'>", mime_type: "{$mime_type}", size: "{$size}"}<core:LITERAL>)'></core:LITERAL><locale:STRING name='select'><core:LITERAL></button></a></core:LITERAL></td>
 </tr>
 </grid:ITERATOR>
 </grid:LIST>

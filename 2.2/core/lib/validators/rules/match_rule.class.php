@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: match_rule.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
@@ -36,7 +36,7 @@ class match_rule extends single_field_rule
 		{
 			if (strcmp($value1, $value2))
 			{
-				$this->error('NO_MATCH', array('match_field' => $this->match_field_name));
+				$this->error(strings :: get('error_no_match', 'error'), array('match_field' => $this->match_field_name));
 			}
 		}
 	}

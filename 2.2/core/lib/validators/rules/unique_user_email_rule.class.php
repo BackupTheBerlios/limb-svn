@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: unique_user_email_rule.class.php 411 2004-02-06 15:33:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
@@ -43,7 +43,7 @@ class unique_user_email_rule extends single_field_rule
 		$arr = $db->get_array();
 
 		if(is_array($arr) && count($arr))
-			$this->error('DUPLICATE_USER');
+			$this->error(strings :: get('error_duplicate_user', 'error'));
 	} 
 } 
 
