@@ -33,7 +33,11 @@ class invalid_value_rule extends single_field_rule
 	{
 		$value = $dataspace->get($this->field_name);
 		
-		if ($value == $this->invalid_value)
+		$invalid_value = $this->invalid_value;
+		
+		settype($invalid_value, 'string');//???
+		
+		if ($value == $invalid_value)
 		{
 			$this->error(strings :: get('error_invalid_value', 'error'));
 		} 
