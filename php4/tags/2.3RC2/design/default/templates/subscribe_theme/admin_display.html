@@ -1,0 +1,50 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='items' navigator="pager" >
+  <core:PARAMETER name='loader_class_name' value='subscribe_mail'>
+  <core:PARAMETER name='order' value='created_date=DESC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="/admin/pager.html">
+
+<grid:LIST id='items'>
+<table border=0 cellspacing=2 cellpadding=2>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='subscribe_mails' file='subscribe'></td></tr>
+<tr>
+  <th><grid:SELECTORS_TOGGLER></th>
+  <th><locale:STRING name='title'></th>
+  <th><locale:STRING name='created_date'></th>
+  <th><locale:STRING name='actions'></th>
+</tr>
+<tr><td colspan=10 height=2 class=com1></td></tr>
+<grid:ITERATOR>
+  <tr>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td>
+  <table width=100% border=0 cellspacing=0 cellpadding=2>
+  <tr>
+    <td width=1><a href="{$path}"><img src='/shared/images/s.gif'></a></td>
+    <td><a href="{$path}" target='_blank'>{$title}</a></td>
+  </tr>
+  </table>
+  </td>
+  <td>
+  <locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'>
+  </td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+  </tr>
+</grid:ITERATOR>
+<tr><td colspan='100' class='btitle1' height='3'></td></tr>
+<tr>
+  <td colspan='100'>
+  <grid:actions select_class='select' button_class='button' locale_value='do'>
+    <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+  </grid:actions>
+  </td>
+</tr>
+ </table>
+</grid:LIST>

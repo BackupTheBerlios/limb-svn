@@ -1,0 +1,22 @@
+	<core:DATA_TRANSFER hash_id='answers' target='answers'>
+	
+<table border=0 cellspacing=0 cellpadding=0>
+<tr>
+	<td colspan=3>{$title}</td>
+</tr>
+<tr>
+	<td colspan=3 align=right><locale:STRING name='votes_count' file='poll' locale_type='content'>:{$total_count}</td>
+</tr>
+<grid:LIST id='answers'>
+<grid:ITERATOR>
+<tr>
+	<td>{$title}</td>
+	<td width=100><img src='/shared/images/1x1.gif' width='{$percentage}%' height=4 style='background-color:#e60000'></td>
+	<td width=1><nobr>{$count} ({$rounded_percentage}%)</nobr></td>
+</tr>
+</grid:ITERATOR>
+</grid:LIST>
+<tr>
+	<td colspan=3 align=right height=30 valign=bottom><a href='/root/polls/'>Все опросы...</a></td>
+</tr>
+</table>

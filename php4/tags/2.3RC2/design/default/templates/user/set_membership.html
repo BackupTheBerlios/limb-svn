@@ -1,0 +1,38 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+<h2><locale:STRING name='work_with_user_membership' file='user'></h2>
+<br>
+<fetch:MAPPED>
+  <locale:STRING name='login' file='user'>: {$identifier}
+</fetch:MAPPED>
+<form method="post" name="set_membership" id="set_membership">
+<table width="100%" border="0" cellspacing="3" cellpadding="0">
+  <tr class=com4>
+    <td colspan=2 class=pad4><core:INCLUDE file="form_errors.html"></td>
+  </tr>
+<tr>
+  <th><locale:STRING name='group_name' file='user'></th>
+  <th></th>
+</tr>
+<DATASOURCE target='groups'>
+  <core:PARAMETER name='datasource_path' value='user_membership_datasource'>
+</DATASOURCE>
+<grid:LIST id='groups'>
+<grid:ITERATOR>
+<tr>
+  <td><small>{$identifier}</small></td>
+  <td><selector class="checkbox"></td>
+</tr>
+</grid:ITERATOR>
+</grid:LIST>
+<tr>
+<td colspan=2 align=center>
+<action_button action="set_membership" name="update" id="update" locale_value="update" class="button">
+ &nbsp;
+<input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+
+</td>
+</tr>
+</table>
+
+
+</form>

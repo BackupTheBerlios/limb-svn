@@ -1,0 +1,28 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+</fetch:MAPPED>
+<br/>
+
+<fetch:SUB_BRANCH target='faq_folder'>
+	<core:PARAMETER name='loader_class_name' value='site_object' >
+	<core:PARAMETER name='order' value='priority=ASC' >
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='faq_folder'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+  <grid:ITERATOR>
+		<tr>
+			<td width='100%'>
+				<a href='{$path}'>{$title}</a>
+			</td>
+			<td nowrap>
+			<core:INCLUDE file="published_status.html">
+      <core:INCLUDE file="jip_actions/dropdown.html">
+			</td>
+
+    </tr>
+  </grid:ITERATOR>
+</table>
+</grid:LIST>

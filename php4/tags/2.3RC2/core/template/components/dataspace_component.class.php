@@ -1,0 +1,23 @@
+<?php
+/**********************************************************************************
+* Copyright 2004 BIT, Ltd. http://www.limb-project.com, mailto: support@limb-project.com
+*
+* Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
+***********************************************************************************
+*
+* $Id$
+*
+***********************************************************************************/
+
+/**
+* The dataspace_component does nothing other than extend component but is
+* required to build the runtime component heirarchy, being the root component
+*/
+class dataspace_component extends component
+{
+  function register_dataset(&$dataset)
+  {
+    $this->import($dataset->export());
+  }
+}
+?>
