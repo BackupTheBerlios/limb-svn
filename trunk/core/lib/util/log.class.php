@@ -15,7 +15,7 @@ define( 'MAX_LOGFILE_SIZE', 500*1024 );
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
-require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . '/core/lib/error/debug.class.php');
 
 class log
 {

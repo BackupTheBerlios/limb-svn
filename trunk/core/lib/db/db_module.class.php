@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
-require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . 'core/lib/error/debug.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
 require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
 

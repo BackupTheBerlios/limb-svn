@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . 'core/lib/error/debug.class.php');
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 
 class site_object_controller_factory

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/lib/system/fs.class.php');
-require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . 'core/lib/error/debug.class.php');
 require_once(LIMB_DIR . '/core/file_resolvers/file_resolvers_repository.php');
 
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
@@ -60,7 +60,7 @@ class ini
 
 		$this->file_path = $file_path;
 		$this->use_cache = $use_cache;
-		$this->cache_dir = VAR_DIR . '/cache/';
+		$this->cache_dir = VAR_DIR . '/ini/';
 
 		$this->load();
 	} 
