@@ -484,6 +484,11 @@ class compiler_component
 		$this->generate_contents($code);
 		$this->post_generate($code);
 	} 
+	
+	function is_debug_enabled()
+	{
+		return (defined('DEBUG_TEMPLATE_ENABLED') && constant('DEBUG_TEMPLATE_ENABLED'));
+	}
 } 
 
 ?>

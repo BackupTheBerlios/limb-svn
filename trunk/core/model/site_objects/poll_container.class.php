@@ -35,7 +35,7 @@ class poll_container extends site_object
 			
 		$poll_id = $poll_data['id'];
 
-		if(defined('POLL_DEBUG_ENABLED'))
+		if(defined('DEBUG_POLL_ENABLED') && constant('DEBUG_POLL_ENABLED'))
 			return true;
 
 		$poll_session =& session :: get('poll_session');

@@ -24,6 +24,9 @@ register_tag(new core_include_tag_info());
 */
 class core_include_tag extends compiler_directive_tag
 {
+	
+	var $resolved_source_file;
+	
 	/**
 	* 
 	* @return int PARSER_FORBID_PARSING
@@ -35,34 +38,47 @@ class core_include_tag extends compiler_directive_tag
 		if (! array_key_exists('file', $this->attributes) ||
 				empty($this->attributes['file']))
 		{
-			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'attribute' => 'file',
-					'file' => $this->source_file,
-					'line' => $this->starting_line_no));
+			error('MISSINGREQUIREATTRIBUTE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+				array('tag' => $this->tag,
+							'attribute' => 'file',
+							'file' => $this->source_file,
+							'line' => $this->starting_line_no));
 		} 
 		$file = $this->attributes['file'];
 
-		$sourcefile = resolve_template_source_file_name($file, TMPL_INCLUDE, $this->source_file);
-		if (empty($sourcefile))
+		$this->resolved_source_file = resolve_template_source_file_name($file, TMPL_INCLUDE, $this->source_file);
+		if (empty($this->resolved_source_file))
 		{
-			error('MISSINGFILE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'srcfile' => $file,
-					'file' => $this->source_file,
-					'line' => $this->starting_line_no));
+			error('MISSINGFILE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+				array('tag' => $this->tag,
+							'srcfile' => $file,
+							'file' => $this->source_file,
+							'line' => $this->starting_line_no));
 		} 
 
 		if (array_key_exists('literal', $this->attributes))
 		{
-			$literal_component =& new text_node(read_template_file($sourcefile));
+			$literal_component =& new text_node(read_template_file($this->resolved_source_file));
 			$this->add_child($literal_component);
 		} 
 		else
 		{
-			$sfp =& new source_file_parser($sourcefile, $tag_dictionary);
+			$sfp =& new source_file_parser($this->resolved_source_file, $tag_dictionary);
 			$sfp->parse($this);
 		} 
 		return PARSER_FORBID_PARSING;
 	} 
+	
+	function generate_contents(&$code)
+	{
+		if($this->is_debug_enabled())
+			$code->write_html("<div style='border:dashed 1px red;'><img src='/shared/images/i.gif' alt='{$this->resolved_source_file}'><br>");
+		
+		parent :: generate_contents($code);
+		
+		if($this->is_debug_enabled())
+			$code->write_html('</div>');
+	}
 } 
 
 ?>
