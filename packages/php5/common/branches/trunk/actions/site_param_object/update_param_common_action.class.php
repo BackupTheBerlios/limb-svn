@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . 'class/lib/util/complex_array.class.php');
 require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/sys_param.class.php');
+require_once(LIMB_DIR . 'class/core/sys_param.class.php');
 
 class update_param_common_action extends form_action
 {

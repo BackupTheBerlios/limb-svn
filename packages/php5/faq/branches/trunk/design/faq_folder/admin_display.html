@@ -1,4 +1,4 @@
-<core:WRAP file="admin/admin_display_page.html" placeholder="content">
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
 <span class=jip>
 <fetch:MAPPED>
 <core:INCLUDE file="jip_actions/extended.html">
@@ -27,7 +27,7 @@
 <tr class=jip>
 <td><core:INCLUDE file="/admin/selector.html"></td>
 <td><core:INCLUDE file="published_status.html"></td>
-<td jip=object class=jip-object><a href="{$path}">{$question}</a></td>
+<td jip=object class=jip-object><a href="{$path}" target='_blank'>{$question}</a></td>
 <td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
 <td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 <td><core:INCLUDE file='/admin/priority_input.html'></td>

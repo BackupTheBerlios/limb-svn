@@ -1,4 +1,4 @@
-<core:WRAP file="admin/admin_display_page.html" placeholder="content">
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
 <span class=jip>
 <fetch:MAPPED>
 <core:INCLUDE file="jip_actions/extended.html">
@@ -28,7 +28,7 @@
 	<tr class="jip">
 		<td><core:INCLUDE file="/admin/selector.html"></td>
 		<td><core:INCLUDE file="published_status.html"></td>
-		<td jip='object'><a href="{$path}">{$title}</a></td>
+		<td jip='object'><a href="{$path}" target='_blank'>{$title}</a></td>
 		<td>
 			<core:DEFAULT for='sender_email'>
 				{$sender}
