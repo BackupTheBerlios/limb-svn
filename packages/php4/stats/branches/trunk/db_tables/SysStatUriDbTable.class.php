@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysStatUriDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_stat_uri';
+  }
+
   function _defineColumns()
   {
     return array(

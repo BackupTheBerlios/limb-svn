@@ -29,7 +29,7 @@ class AccessPolicyTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
     $db->sqlDelete('sys_action_access_template');
     $db->sqlDelete('sys_action_access_template_item');
 

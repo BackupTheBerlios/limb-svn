@@ -30,7 +30,7 @@ class StatsCounterTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     $this->stats_counter = new StatsCounterTestVersion($this);
     $this->stats_counter->StatsCounter();

@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysActionAccessTemplateDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_action_access_template';
+  }
+
   function _defineColumns()
   {
     return array(

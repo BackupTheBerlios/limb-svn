@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysFullTextIndexDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_full_text_index';
+  }
+
   function _defineColumns()
   {
     return array(

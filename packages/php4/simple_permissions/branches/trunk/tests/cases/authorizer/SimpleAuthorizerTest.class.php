@@ -58,7 +58,7 @@ class SimpleAuthorizerTest extends LimbTestCase
 
   function cleanUp()
   {
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
 
     $db->sqlDelete('sys_object_access');
     $db->sqlDelete('sys_action_access');

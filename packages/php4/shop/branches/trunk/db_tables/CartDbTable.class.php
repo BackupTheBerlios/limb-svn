@@ -12,6 +12,11 @@ require_once(LIMB_DIR  . '/class/lib/db/DbTable.class.php');
 
 class CartDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'cart';
+  }
+
   function _defineColumns()
   {
     return array(

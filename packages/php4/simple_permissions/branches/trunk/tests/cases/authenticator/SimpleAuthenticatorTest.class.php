@@ -69,7 +69,7 @@ class SimpleAuthenticatorTest extends LimbTestCase
 
     $this->auth->login(array('login' => 'some_user', 'password' => 'test', 'locale_id' => 'en'));
 
-    $user = User :: instance();
+    $user =& User :: instance();
     $groups = $user->get('groups');
     $this->assertEqual(sizeof($groups), 1);
     $this->assertTrue(in_array('visitors', $groups));
@@ -113,7 +113,7 @@ class SimpleAuthenticatorTest extends LimbTestCase
 
   function testUserInGroupsMethod()
   {
-    $user = User :: instance();
+    $user =& User :: instance();
 
     $groups = array(
       0 => 'visitors',

@@ -31,7 +31,7 @@ class StatsUriTest extends LimbTestCase
     $this->server = $_SERVER;
     $_SERVER['HTTP_HOST'] = 'test';
 
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     $this->stats_uri = new StatsUriSelfTestVersion($this);
     $this->stats_uri->StatsUri();

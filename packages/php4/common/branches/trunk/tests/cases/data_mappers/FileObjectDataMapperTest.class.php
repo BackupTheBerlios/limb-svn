@@ -36,7 +36,7 @@ class FileObjectDataMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
 
     $this->finder = new MockFileObjectsRawFinder($this);
     $this->media_manager = new MockMediaManager($this);

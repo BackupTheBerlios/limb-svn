@@ -31,7 +31,7 @@ class StatsRefererTest extends LimbTestCase
     $this->server = $_SERVER;
     $_SERVER['HTTP_HOST'] = 'test';
 
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
     $this->stats_referer = new StatsRefererSelfTestVersion($this);
     $this->stats_referer->StatsReferer();
 

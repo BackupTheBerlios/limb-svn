@@ -77,7 +77,7 @@ class UpdateParamCommonAction extends FormAction
   function _validPerform(&$request, &$response)
   {
     $data = $this->dataspace->export();
-    $sys_param = SysParam :: instance();
+    $sys_param =& SysParam :: instance();
 
     foreach($this->params_type as $param_name => $param_type)
     {

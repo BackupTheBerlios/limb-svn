@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class PollIpDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'poll_ip';
+  }
+
   function _defineColumns()
   {
     return array(

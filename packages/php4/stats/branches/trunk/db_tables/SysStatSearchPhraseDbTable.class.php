@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysStatSearchPhraseDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_stat_search_phrase';
+  }
+
   function _defineColumns()
   {
     return array(

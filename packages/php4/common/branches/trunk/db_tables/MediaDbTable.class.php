@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class MediaDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'media';
+  }
+
   function _defineColumns()
   {
     return array(

@@ -146,13 +146,13 @@ class StatsRegister
     return $this->_uri_register;
   }
 
-  function _getSearchPhraseRegister()
+  function & _getSearchPhraseRegister()
   {
     if ($this->_search_phrase_register)
       return $this->_search_phrase_register;
 
     include_once(dirname(__FILE__) . '/StatsSearchPhrase.class.php');
-    $this->_search_phrase_register = StatsSearchPhrase :: instance();
+    $this->_search_phrase_register =& StatsSearchPhrase :: instance();
 
     return $this->_search_phrase_register;
   }

@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysStatLogDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_stat_log';
+  }
+
   function _defineColumns()
   {
     return array(

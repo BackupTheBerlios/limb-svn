@@ -16,7 +16,7 @@ require_once(dirname(__FILE__) . '/search_engine_rules/SearchEngineAportRule.cla
 
 require_once(dirname(__FILE__) . '/StatsSearchPhrase.class.php');
 
-$instance = StatsSearchPhrase :: instance();
+$instance =& StatsSearchPhrase :: instance();
 
 $instance->registerSearchEngineRule( new SearchEngineGoogleRule());
 $instance->registerSearchEngineRule( new SearchEngineYandexRule());

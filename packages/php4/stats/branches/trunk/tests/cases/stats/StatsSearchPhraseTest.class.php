@@ -104,7 +104,7 @@ class StatsSearchPhraseTest extends LimbTestCase
     $date = new Date();
     $this->assertTrue($this->stats_search_phrase->register($date));
 
-    $db = DbFactory :: instance();
+    $db =& DbFactory :: instance();
     $db->sqlSelect('sys_stat_search_phrase');
 
     $arr = $db->getArray();

@@ -30,7 +30,7 @@ class StatsIpTest extends LimbTestCase
   {
     parent :: LimbTestCase();
 
-    $this->db = DbFactory :: instance();
+    $this->db =& DbFactory :: instance();
   }
 
   function setUp()

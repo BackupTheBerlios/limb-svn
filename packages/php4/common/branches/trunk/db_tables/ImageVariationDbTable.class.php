@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class ImageVariationDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'image_variation';
+  }
+
   function _defineColumns()
   {
     return array(

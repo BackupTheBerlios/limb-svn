@@ -12,6 +12,11 @@ require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
 
 class SysMetadataDbTable extends DbTable
 {
+  function _defineDbTableName()
+  {
+    return 'sys_metadata';
+  }
+
   function _defineColumns()
   {
     return array(
