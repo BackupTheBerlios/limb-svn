@@ -23,10 +23,10 @@ class grid_site_map_tree_item_tag extends compiler_directive_tag
 {
 	function check_nesting_level()
 	{
-		if (!is_a($this->parent, 'grid_list_tag'))
+		if (!is_a($this->parent, 'grid_iterator_tag'))
 		{
 			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
-					'enclosing_tag' => 'grid:TREE_ITEM',
+					'enclosing_tag' => 'grid:SITE_MAP_TREE_ITEM',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 

@@ -1,0 +1,26 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<core:INCLUDE file="page_data.html">
+
+<table border=0 cellspacing=0 cellpadding=0>
+<tr><td height=1 colspan=100 bgcolor=#c0c0c0></td></tr>
+<col valign=top style='padding:0 0px 0 0px'>
+<tr><td height=1 colspan=100 bgcolor=#c0c0c0></td></tr>
+<tr>
+	<td height=10 background='/shared/images/t_l.gif' class=bgr_no_rep></td>
+</tr>
+<fetch:SUB_BRANCH target='site_map'>
+	<core:PARAMETER name='loader_class_name' value='navigation_item'>
+	<core:PARAMETER name='datasource_path' value='/site_map_datasource'>
+	<core:PARAMETER name='path' value='/root/navigation/main'>
+	<core:PARAMETER name='depth' value='-1' type='numeric'>
+	<core:PARAMETER name='check_expanded_parents' value='0' type='boolean'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='site_map'>
+<grid:ITERATOR>
+<tr><td height=100%><grid:SITE_MAP_TREE_ITEM></grid:SITE_MAP_TREE_ITEM></td></tr>
+</grid:ITERATOR>
+</grid:LIST>
+
+</table>
