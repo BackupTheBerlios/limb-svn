@@ -51,7 +51,7 @@ class main_page_controller extends site_object_controller
 						'JIP' => true,
 						'action_name' => strings :: get('edit'),
 						'action_path' => '/main_page/edit_main_page_action',
-						'template_path' => '/document/edit.html',
+						'template_path' => '/main_page/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
 		);

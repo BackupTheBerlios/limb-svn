@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: pagestart.php,v 1.1 2003/07/04 18:37:44 pacha Exp $
+ *   $Id$
  *
  *
  ***************************************************************************/
@@ -35,7 +35,6 @@ include($phpbb_root_path . 'common.php');
 $userdata = session_pagestart($user_ip, PAGE_INDEX);
 
 init_userprefs($userdata);
-
 //
 // End session management
 //
