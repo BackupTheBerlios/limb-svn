@@ -23,6 +23,8 @@ class base_package_file_resolver_test extends LimbTestCase
   
   function setUp()
   {
+  	packages_info :: instance()->reset();
+  	
     debug_mock :: init($this); 
     
     $this->resolver =& $this->_define_resolver();
@@ -44,8 +46,7 @@ class base_package_file_resolver_test extends LimbTestCase
     
     clear_testing_ini(); 
     
-    $info =& packages_info :: instance();
-    $info->reset();             
+    packages_info :: instance()->reset();
   }  
 
 }

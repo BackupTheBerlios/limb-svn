@@ -253,7 +253,7 @@ class fetcher
 	{
 		$db = db_factory :: instance();
 		
-		$sql = "SELECT sc.class_name 
+		$sql = "SELECT sc.class_name as class_name
 			FROM sys_site_object as sso, sys_class as sc
 			WHERE sso.class_id = sc.id
 			AND sso.id={$object_id}";

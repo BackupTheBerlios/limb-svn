@@ -607,8 +607,8 @@ class materialized_path_driver extends tree_db_driver implements tree_interface
     $this->_db->sql_update($this->_node_table, $move_values, array('id' => $id));
     
     $src_path_len = strlen($source_node['path']);
-    $sub_string = $this->_db->substr( 'path', 1, $src_path_len );
-    $sub_string2 = $this->_db->substr( 'path', $src_path_len);
+    $sub_string = $this->_db->substr('path', 1, $src_path_len);
+    $sub_string2 = $this->_db->substr('path', $src_path_len);
 
     $path_set = 
 	    $this->_db->concat( array( 

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
-require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 
 class db_table
 {
@@ -111,7 +110,7 @@ class db_table
       
   	$filtered = array();
   	foreach($row as $key => $value)
-  	{
+  	{  	    	  
   		if($this->has_column($key))
   			$filtered[$key] = $value;		
   	}

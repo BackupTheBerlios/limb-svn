@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
+require_once(LIMB_DIR . 'class/core/user.class.php');
 require_once(LIMB_DIR . 'class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 

@@ -79,6 +79,7 @@ class content_object_fetch_test_init extends site_object_fetch_test_init
   		
   		for($k = $record['current_version']; $k <= $record['current_version']; $k++)
   		{
+	  		$data['id'] = null; 
 	  		$data['version'] = $k;
 	  		$data['object_id'] = $i;
 	  		$data['annotation'] = 'object_' . $i . '_annotation_version_' . $k;
@@ -99,6 +100,7 @@ class content_object_fetch_test_init extends site_object_fetch_test_init
   	for($i = 1; $i <= $version_max; $i++)
   	{
   		$data = array();
+  		$data['id'] = null;
   		$data['version'] = $i;
   		$data['object_id'] = $object_id;
   		

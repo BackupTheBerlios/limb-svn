@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/core/object.class.php');
-require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/db_tables/db_table_factory.class.php');
 require_once(LIMB_DIR . 'class/core/controllers/site_object_controller_factory.class.php');
 require_once(LIMB_DIR . 'class/core/tree/tree.class.php');
@@ -133,7 +132,7 @@ class site_object extends object
 		}	
 
 		$sql = 
-			sprintf( "SELECT sso.id 
+			sprintf( "SELECT sso.id as id
 								FROM 
 								sys_site_object as sso, sys_site_object_tree as ssot
 								%s
@@ -438,7 +437,7 @@ class site_object extends object
 		if (!$tree->can_add_node($parent_node_id))
 			return false;
 			
-		$sql = "SELECT sys_class.class_name
+		$sql = "SELECT sys_class.class_name as class_name
 		FROM sys_site_object as sso, sys_class, sys_site_object_tree as ssot
 		WHERE ssot.id={$parent_node_id} 
 		AND sso.class_id=sys_class.id
@@ -449,7 +448,7 @@ class site_object extends object
 		$db->sql_exec($sql);
 		
 		$row = $db->fetch_row();
-		
+
 		if (!is_array($row) || !count($row))
 			return false;
 		
@@ -485,7 +484,7 @@ class site_object extends object
 
 	public function get_title()
 	{
-		return $this->get('title');
+		return $this->get('title', '');
 	}
 
 	public function set_title($title)
@@ -526,6 +525,7 @@ class site_object extends object
 		}			
 		
 		$insert_data = $this->get_class_properties();
+    $insert_data['id'] = null;
 		$insert_data['class_name'] = $class_name;
 		
 		if(!isset($insert_data['icon']) || !$insert_data['icon'])
@@ -557,6 +557,7 @@ class site_object extends object
 		
 		$user = user :: instance();
 
+    $data['id'] = null;
 		$data['identifier'] = $this->get_identifier();
 		$data['title'] = $this->get_title();
 		$data['class_id'] = $this->get_class_id();
@@ -721,6 +722,7 @@ class site_object extends object
   	$sys_metadata_db_table->delete('object_id=' . $id);
   	
   	$metadata = array();
+    $metadata['id'] = null;
   	$metadata['object_id'] = $id;
   	$metadata['keywords'] = $this->get('keywords');
   	$metadata['description'] = $this->get('description');
@@ -748,10 +750,10 @@ class site_object extends object
 		if (!$parent_node_id = $this->get_parent_node_id())
 			return DEFAULT_CONTENT_LOCALE_ID;
 		
-		$sql = "SELECT sso.locale_id	
-		FROM sys_site_object as sso, sys_site_object_tree as ssot
-		WHERE ssot.id = {$parent_node_id} 
-		AND sso.id = ssot.object_id";
+		$sql = "SELECT sso.locale_id as locale_id
+						FROM sys_site_object as sso, sys_site_object_tree as ssot
+						WHERE ssot.id = {$parent_node_id} 
+						AND sso.id = ssot.object_id";
 		
 		$db = db_factory :: instance();
 		

@@ -33,10 +33,10 @@ class unique_user_rule extends single_field_rule
 		$db = db_factory :: instance();
 		
 		$sql = 'SELECT *
-		FROM sys_site_object as sco, user as tn
-		WHERE sco.identifier="' . $db->escape($value) . '"
-		AND sco.id=tn.object_id 
-		AND sco.current_version=tn.version';
+						FROM sys_site_object as sco, user as tn
+						WHERE sco.identifier="' . $db->escape($value) . '"
+						AND sco.id=tn.object_id 
+						AND sco.current_version=tn.version';
 					
 		$db->sql_exec($sql);
 

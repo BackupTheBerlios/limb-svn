@@ -43,6 +43,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   	{
   		$this->db->sql_insert('sys_object_access', 
   			array(
+  				'id' => null,
   				'object_id' => $i,
   				'accessor_id' => 100,
   				'r' => 1,
@@ -53,6 +54,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
 
   		$this->db->sql_insert('sys_object_access', 
   			array(
+  				'id' => null,
   				'object_id' => $i,
   				'accessor_id' => 110,
   				'r' => 1,
@@ -72,6 +74,7 @@ class site_object_fetch_accessible_test_init extends site_object_fetch_test_init
   	{
   		$this->db->sql_insert('sys_object_access', 
   			array(
+  				'id' => null,  			
   				'object_id' => $i,
   				'accessor_id' => 200,
   				'r' => 1,

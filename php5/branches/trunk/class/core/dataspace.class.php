@@ -23,10 +23,12 @@ class dataspace
 			$this->import($vars);
 	}
 	
-	public function get($name)
+	public function get($name, $default_value = null)
 	{ 
 		if (isset($this->vars[$name]))
 			return $this->vars[$name];
+		else
+		  return $default_value;
 	} 
 	
 	protected function _process_index_string($index)

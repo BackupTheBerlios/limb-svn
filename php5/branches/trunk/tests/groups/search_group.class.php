@@ -17,7 +17,10 @@ class search_group extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
- 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/full_text_search');
+	  if(get_ini_option('common.ini', 'type', 'DB') == 'mysql')
+ 		  return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/full_text_search');
+ 		else
+ 		  return array();
 	}		
 }
 ?>

@@ -76,13 +76,12 @@ class db_table_test extends LimbTestCase
 	
 	function test_insert()
 	{
-		$this->db_table_test->insert(array('title' =>  'wow', 'description' => 'wow!'));
+		$this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'wow!'));
 		
 		$this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
 		
 		$result = $this->db->fetch_row();
 		$this->assertTrue(is_array($result));
-		
 		$id = $this->db_table_test->get_last_insert_id();
 		
 		$this->assertEqual($result['title'], 'wow');
@@ -92,8 +91,8 @@ class db_table_test extends LimbTestCase
 	
 	function test_update()
 	{
-		$this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description'));
-		$this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description2'));
+		$this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
+		$this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
 		
 		$this->db_table_test->update(array('description' =>  'new_description'), array('title' =>  'wow'));
 		
@@ -108,9 +107,9 @@ class db_table_test extends LimbTestCase
 
 	function test_update_by_in_condition()
 	{
-		$this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description'));
-		$this->db_table_test->insert(array('title' =>  'wow1', 'description' => 'description2'));
-		$this->db_table_test->insert(array('title' =>  'yo', 'description' => 'description3'));
+		$this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
+		$this->db_table_test->insert(array('id' => null, 'title' =>  'wow1', 'description' => 'description2'));
+		$this->db_table_test->insert(array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
 		
 		$this->db_table_test->update(
 			array('description' =>  'new_description'), 
@@ -128,8 +127,8 @@ class db_table_test extends LimbTestCase
 	
 	function test_update_by_id()
 	{
-		$this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description'));
-		$this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description2'));
+		$this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
+		$this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
 		
 		$this->assertNotEqual($this->db->sql_exec("SELECT * FROM test1"), array());
 		
@@ -147,8 +146,8 @@ class db_table_test extends LimbTestCase
 	function test_get_list_all()
 	{
 		$data = array(
-			0 => array('title' =>  'wow', 'description' => 'description'),
-			1 => array('title' =>  'wow', 'description' => 'description2')
+			0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
+			1 => array('id' => null, 'title' =>  'wow', 'description' => 'description2')
 		);
 		
 		$this->db_table_test->insert($data[0]);
@@ -172,8 +171,8 @@ class db_table_test extends LimbTestCase
 		$this->assertEqual($this->db_table_test->get_list('title="wow"'), array());
 		
 		$data = array(
-			0 => array('title' =>  'wow', 'description' => 'description'),
-			1 => array('title' =>  'wow!', 'description' => 'description2')
+			0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
+			1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
 		);
 		
 		$this->db_table_test->insert($data[0]);
@@ -195,8 +194,8 @@ class db_table_test extends LimbTestCase
 		$this->assertEqual($this->db_table_test->get_list(array('title' => 'wow!')), array());
 		
 		$data = array(
-			0 => array('title' =>  'wow', 'description' => 'description'),
-			1 => array('title' =>  'wow!', 'description' => 'description2')
+			0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
+			1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
 		);
 		
 		$this->db_table_test->insert($data[0]);
@@ -216,8 +215,8 @@ class db_table_test extends LimbTestCase
 	function test_get_list_by_in_condition()
 	{
 		$data = array(
-			0 => array('title' =>  'wow', 'description' => 'description'),
-			1 => array('title' =>  'wow!', 'description' => 'description2')
+			0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
+			1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
 		);
 		
 		$this->db_table_test->insert($data[0]);
@@ -240,9 +239,9 @@ class db_table_test extends LimbTestCase
 	function test_get_list_with_limit()
 	{
 		$data = array(
-			0 => array('title' =>  'wow', 'description' => 'description'),
-			1 => array('title' =>  'wow!', 'description' => 'description2'),
-			2 => array('title' =>  'wow2', 'description' => 'description3'),
+			0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
+			1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2'),
+			2 => array('id' => null, 'title' =>  'wow2', 'description' => 'description3'),
 		);
 		
 		$this->db_table_test->insert($data[0]);

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/db_tables/db_table_factory.class.php');
+require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 
 class links_manager
 {  
@@ -24,6 +25,7 @@ class links_manager
       return false;
     
     $data = array(
+      'id' => null,
       'identifier' => $identifier,
       'title' => $title,
       'priority' => 0,

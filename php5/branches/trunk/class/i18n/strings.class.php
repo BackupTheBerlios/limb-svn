@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/lib/util/ini.class.php');
 
 final class strings

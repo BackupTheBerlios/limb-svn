@@ -260,7 +260,7 @@ class access_policy
 
 		$db = db_factory :: instance();
 
-		$sql = "SELECT saa.action_name FROM sys_action_access as saa
+		$sql = "SELECT saa.action_name as action_name FROM sys_action_access as saa
 			WHERE saa.class_id = {$class_id} AND
 			saa.accessor_id IN ({$in_ids})
 			GROUP BY saa.action_name";
@@ -313,6 +313,7 @@ class access_policy
 					continue;
 
 				$data = array();
+      	$data['id'] = null;
 				$data['accessor_id'] = $accessor_id;
 				$data['class_id'] = $class_id;
 				$data['action_name'] = $action_name;
@@ -426,6 +427,7 @@ class access_policy
 				if (!$data['r'] && !$data['w'])
 					continue;
 
+      	$data['id'] = null;
 				$data['accessor_id'] = $accessor_id;
 				$data['object_id'] = $object_id;
 				$data['accessor_type'] = $accessor_type;
@@ -464,7 +466,7 @@ class access_policy
 
 		foreach($rows as $id => $data)
 		{
-		unset($data['id']);
+    	$data['id'] = null;
 			$data['object_id'] = $object_id;
 			$db_table->insert($data);
 		}
@@ -481,6 +483,7 @@ class access_policy
 		foreach($template_array as $action_name => $access_data)
 		{
 			$data = array();
+    	$data['id'] = null;
 			$data['class_id'] = $class_id;
 			$data['action_name'] = $action_name;
 			$db_table->insert($data);
@@ -489,6 +492,7 @@ class access_policy
 			foreach($access_data as $user_id => $rights)
 			{
 				$data = array();
+      	$data['id'] = null;
 				$data['user_id'] = $user_id;
 				$data['template_id'] = $template_id;
 
@@ -520,6 +524,7 @@ class access_policy
 		foreach($template_array as $action_name => $access_data)
 		{
 			$data = array();
+    	$data['id'] = null;
 			$data['class_id'] = $class_id;
 			$data['action_name'] = $action_name;
 			$db_table->insert($data);
@@ -528,6 +533,7 @@ class access_policy
 			foreach($access_data as $group_id => $rights)
 			{
 				$data = array();
+      	$data['id'] = null;
 				$data['group_id'] = $group_id;
 				$data['template_id'] = $template_id;
 

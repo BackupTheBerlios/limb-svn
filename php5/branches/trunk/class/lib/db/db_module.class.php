@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'class/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 require_once(LIMB_DIR . 'class/lib/date/date.class.php');
 require_once(LIMB_DIR . 'class/i18n/locale.class.php');
@@ -199,7 +198,7 @@ abstract class db_module
   
   public function null()
   {
-  	return "''";
+  	return 'NULL';
   }
   
 	//$count $start not supported by default!
@@ -241,13 +240,19 @@ abstract class db_module
 	}
 	
 	protected function _process_value($value, $type='')
-  { 
+  {   	
+	  //quick'n'dirty fix for autoincrements
+  	if(is_null($value))
+  		return $this->null();
+  
   	$type = ($type) ? $type : gettype($value);
   	
     switch(strtolower($type)) 
     {
     	case 'numeric':
     		return $value*1;
+    	case 'int':
+    		return intval($value);
     	break;
     	case 'float':
     		return str_replace(',', '.', "'" . floatval($value) . "'"); // FIXX!!

@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(dirname(__FILE__) . '/base_package_file_resolver_test.class.php');
 require_once(LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver.class.php');
 
 class db_table_file_resolver_test extends base_package_file_resolver_test

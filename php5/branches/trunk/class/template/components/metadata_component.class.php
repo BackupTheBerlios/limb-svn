@@ -60,7 +60,17 @@ class metadata_component extends component
 		$ids_array = $this->_get_path_objects_ids_array();
 				
 		$sql = 
-		'SELECT sso.* 
+		'SELECT 
+		sso.id as id,
+		sso.class_id as class_id,
+		sso.current_version as current_version,
+		sso.modified_date as modified_date,
+		sso.identifier as identifier,
+		sso.status as status,
+		sso.created_date as created_date,
+		sso.creator_id as creator_id,
+		sso.locale_id as locale_id,
+		sso.title as title
 		FROM sys_site_object as sso, sys_site_object_tree as ssot
 		WHERE ssot.object_id=sso.id 
 		AND	' . sql_in('sso.id', $ids_array) . '

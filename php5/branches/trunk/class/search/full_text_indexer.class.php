@@ -62,6 +62,7 @@ class full_text_indexer
 			{
 				$this->db->sql_insert('sys_full_text_index', 
 					array(
+	  				'id' => null,  			
 						'body' => $text,
 						'attribute' => $attribute_name,
 						'weight' => $weight,

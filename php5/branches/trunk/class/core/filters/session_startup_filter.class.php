@@ -23,7 +23,7 @@ class session_startup_filter extends intercepting_filter
     
     require_once(LIMB_DIR . 'class/core/session.class.php');    
     start_user_session();
-                  
+
     debug :: add_timing_point('session startup filter finished');
     
     $filter_chain->next();

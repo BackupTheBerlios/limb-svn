@@ -151,6 +151,7 @@ class content_object extends site_object
 		
 		$time = time();
 		
+    $data['id'] = null;
 		$data['object_id'] = $this->get_id();
 		$data['version'] = $this->get_version();
 		$data['created_date'] = $time;
@@ -164,8 +165,8 @@ class content_object extends site_object
 	{
 		$data = $this->_attributes->export();
 		
+    $data['id'] = null;
 		$data['object_id'] = $this->get_id();
-	  unset($data['id']);
 				
 		$db_table = $this->get_db_table();
 		$db_table->insert($data);

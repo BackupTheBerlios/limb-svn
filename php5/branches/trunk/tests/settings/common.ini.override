@@ -1,0 +1,7 @@
+
+[DB]
+type = sqlite
+host = 
+login = 
+password = 
+name = c:/sqlite/test.db

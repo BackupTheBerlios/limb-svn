@@ -53,7 +53,7 @@ class sys_param
 			$param = current($params);
 			
 			$data = array(
-					"type" => $type,
+					'type' => $type,
 					"{$type}_value" => $value,
 			);
 
@@ -70,6 +70,7 @@ class sys_param
 		else
 		{
 			$data = array(
+					"id" => null,
 					'identifier' => $identifier,
 					'type' => $type,
 					"{$type}_value" => $value,

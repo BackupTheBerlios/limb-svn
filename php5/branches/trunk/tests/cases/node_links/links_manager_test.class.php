@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/core/links_manager.class.php');
 
 class links_manager_test extends LimbTestCase 
@@ -102,9 +103,8 @@ class links_manager_test extends LimbTestCase
 
     $this->links_manager->set_groups_priority($priority_info);
 
-    $this->db->sql_select('sys_node_link_group', '*', '', 'priority DESC');
+    $this->db->sql_select('sys_node_link_group', 'sys_node_link_group.id as id', '', 'priority DESC');
     $arr = $this->db->get_array();
-    
     $this->assertEqual(sizeof($arr), 3);
 
     $record = reset($arr);
@@ -273,10 +273,12 @@ class links_manager_test extends LimbTestCase
   	$this->links_manager->create_link($group_id1, $linker_node_id, 101);
 
   	$node_ids = $this->links_manager->fetch_target_links_node_ids($linker_node_id, array($group_id1));
+  	sort($node_ids);
   	$this->assertEqual($node_ids, array(100, 101));
 
   	$node_ids = $this->links_manager->fetch_target_links_node_ids($linker_node_id, array($group_id1, $group_id2));
-  	$this->assertEqual($node_ids, array(100, 200, 101));
+  	sort($node_ids);
+  	$this->assertEqual($node_ids, array(100, 101, 200));
 
   	$node_ids = $this->links_manager->fetch_target_links_node_ids($no_such_linker_node_id = 10, array($group_id1));
 
@@ -293,8 +295,8 @@ class links_manager_test extends LimbTestCase
   	$this->links_manager->create_link($group_id1, $linker_node_id, 101);
   	
   	$node_ids = $this->links_manager->fetch_target_links_node_ids($linker_node_id);
-  	
-  	$this->assertEqual($node_ids, array(100, 200, 101));
+  	sort($node_ids);
+  	$this->assertEqual($node_ids, array(100, 101, 200));
 
   	$node_ids = $this->links_manager->fetch_target_links_node_ids($no_such_linker_node_id = 10);
 
@@ -311,12 +313,12 @@ class links_manager_test extends LimbTestCase
   	$this->links_manager->create_link($group_id1, 2, $target_node_id1);
 
   	$node_ids = $this->links_manager->fetch_back_links_node_ids($target_node_id1, array($group_id1));
-  	
+  	sort($node_ids);
   	$this->assertEqual($node_ids, array(1, 2));
 
   	$node_ids = $this->links_manager->fetch_back_links_node_ids($target_node_id1, array($group_id1, $group_id2));
-  	
-  	$this->assertEqual($node_ids, array(1, 3, 2));
+  	sort($node_ids);
+  	$this->assertEqual($node_ids, array(1, 2, 3));
 
   	$node_ids = $this->links_manager->fetch_back_links_node_ids($no_such_target_node_id = 300, array($group_id1));
 
@@ -333,8 +335,8 @@ class links_manager_test extends LimbTestCase
   	$this->links_manager->create_link($group_id1, 2, $target_node_id1);
     
   	$node_ids = $this->links_manager->fetch_back_links_node_ids($target_node_id1);
-  	
-  	$this->assertEqual($node_ids, array(1, 3, 2));
+  	sort($node_ids);
+  	$this->assertEqual($node_ids, array(1, 2, 3));
 
   	$node_ids = $this->links_manager->fetch_back_links_node_ids($no_such_target_node_id = 300);
 

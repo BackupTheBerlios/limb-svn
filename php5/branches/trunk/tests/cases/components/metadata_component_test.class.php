@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
+require_once(LIMB_DIR . 'class/core/user.class.php');
 require_once(LIMB_DIR . 'class/core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'class/template/components/metadata_component.class.php');
 

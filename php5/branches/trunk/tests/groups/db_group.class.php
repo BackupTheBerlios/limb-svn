@@ -17,7 +17,17 @@ class db_group extends LimbGroupTest
 	
 	function getTestCasesHandles()
 	{
- 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/db');
+		$handles = array();
+ 		$handles = TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/db');
+ 		
+ 		$db_type = get_ini_option('common.ini', 'type', 'DB');
+ 		
+ 		$handles = array_merge(
+ 			$handles,
+ 			TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/db/' . $db_type)
+ 		);
+ 		
+ 		return $handles;
 	}
 	
 }

@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
+require_once(LIMB_DIR . 'class/core/user.class.php');
 require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 require_once(LIMB_DIR . 'class/core/request/request.class.php');
 require_once(LIMB_DIR . 'class/core/fetcher.class.php');

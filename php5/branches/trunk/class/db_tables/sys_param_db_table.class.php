@@ -18,8 +18,8 @@ class sys_param_db_table extends db_table
       'id' => array('type' => 'numeric'),
       'identifier' => '',
       'type' => '',
-      'int_value' => array('type' => 'numeric'),
-      'float_value' => array('type' => 'numeric'),
+      'int_value' => array('type' => 'int'),
+      'float_value' => array('type' => 'float'),
       'char_value' => '',
       'blob_value' => array('type' => 'blob'),
     );

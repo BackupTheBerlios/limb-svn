@@ -39,7 +39,7 @@ class packages_info
   
   public function load_packages()
   {
-    include_once(LIMB_DIR . '/class/lib/util/ini.class.php');
+    include_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
     
     $ini = get_ini('packages.ini');
     $this->_packages = array();
