@@ -26,7 +26,6 @@ class site_object_auto_identifier_test_version extends site_object
 				parent :: _define_attributes_definition(),
 				array(
 				'title' => '',
-				'identifier' => array('auto_identifier' => true),
 				'name' => array('type' => 'numeric'),
 				'search' => array('search' => true),
 				));		
@@ -38,6 +37,7 @@ class site_object_auto_identifier_test_version extends site_object
 			'ordr' => 1,
 			'can_be_parent' => 1,
 			'db_table_name' => 'site_object',
+			'auto_identifier' => true
 		);
 	}
 }

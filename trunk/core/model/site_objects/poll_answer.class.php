@@ -22,7 +22,7 @@ class poll_answer extends content_object
 		return complex_array :: array_merge(
 				parent :: _define_attributes_definition(),
 				array(
-				'identifier' => array('search' => true, 'auto_identifier' => true)
+				'identifier' => array('search' => true)
 				));
 	}
 	
@@ -32,7 +32,8 @@ class poll_answer extends content_object
 			'class_ordr' => 2,
 			'can_be_parent' => 0,
 			'controller_class_name' => 'poll_answer_controller',
-			'icon' => '/shared/images/folder.gif'
+			'icon' => '/shared/images/folder.gif',
+			'auto_identifier' => true
 		);
 	}
 }

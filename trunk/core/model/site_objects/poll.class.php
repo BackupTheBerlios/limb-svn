@@ -22,7 +22,7 @@ class poll extends content_object
 		return complex_array :: array_merge(
 				parent :: _define_attributes_definition(),
 				array(
-				'identifier' => array('search' => true, 'auto_identifier' => true)
+				'identifier' => array('search' => true)
 				));
 	}
 	
@@ -32,6 +32,7 @@ class poll extends content_object
 			'class_ordr' => 1,
 			'can_be_parent' => 1,
 			'controller_class_name' => 'poll_controller',
+			'auto_identifier' => true
 		);
 	}
 }

@@ -22,7 +22,7 @@ class photogallery_object extends content_object
 		return complex_array :: array_merge(
 					parent :: _define_attributes_definition(),
 					array(
-						'identifier' => array('search' => false, 'auto_identifier' => true),
+						'identifier' => array('search' => false),
 						'annotation' => array('search' => true, 'search_weight' => 5),
 					)
 				);
@@ -34,6 +34,7 @@ class photogallery_object extends content_object
 			'class_ordr' => 1,
 			'can_be_parent' => 0,
 			'controller_class_name' => 'photogallery_object_controller',
+			'auto_identifier' => true
 		);
 	}
 }

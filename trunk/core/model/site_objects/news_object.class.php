@@ -24,7 +24,7 @@ class news_object extends content_object
 				array(
 				'content' => array('search' => true),
 				'annotation' => array('search' => true),
-				'identifier' => array('search' => false, 'auto_identifier' => true)								
+				'identifier' => array('search' => false)								
 				));
 	}
 	
@@ -34,6 +34,7 @@ class news_object extends content_object
 			'ordr' => 1,
 			'can_be_parent' => 0,
 			'controller_class_name' => 'news_object_controller',
+			'auto_identifier' => true
 		);
 	}
 }

@@ -43,11 +43,10 @@ class site_object extends object
 		
 	function is_auto_identifier()
 	{
-		if($definition = $this->get_attribute_definition('identifier'))
-		{
-			return (isset($definition['auto_identifier']) && $definition['auto_identifier']);
-		}
-		return false;
+		if(isset($this->_class_properties['auto_identifier']))
+			return $this->_class_properties['auto_identifier'];
+		else
+			return false;		
 	}
 		
 	function _define_class_properties()
