@@ -63,14 +63,14 @@ class pager_navigator_tag extends server_component_tag
 	
 	function get_component_ref_code()
 	{
-		if (isset($this->attributes['mirrow_of']))
+		if (isset($this->attributes['mirror_of']))
 		{
-			if($mirrowed_pager =& $this->parent->find_child($this->attributes['mirrow_of']))
+			if($mirrowed_pager =& $this->parent->find_child($this->attributes['mirror_of']))
 				return $mirrowed_pager->get_component_ref_code();
 			else
-				debug :: write_error('mirrow_of pager component not found',
+				debug :: write_error('mirror_of pager component not found',
 				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array('mirrow_of' => $this->attributes['mirrow_of']));
+				array('mirror_of' => $this->attributes['mirror_of']));
 		}	
 		else
 			return parent :: get_component_ref_code();

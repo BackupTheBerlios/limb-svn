@@ -95,10 +95,10 @@ class site_object extends object
 		$ids_sql_params['conditions'][] = " AND soa.accessor_id IN ({$accessor_ids})";
 
 		$ids_sql_params['group'][] = ' GROUP BY sso.id';
-
+		
 		$ids =& $this->fetch_ids($params, $ids_sql_params, $sort_ids);
 
-		$ids_sql_params['conditions'] = array();
+		$sql_params['conditions'] = array();
 		
 		$arr = array();
 		if (!$ids)
@@ -242,10 +242,10 @@ class site_object extends object
 			return array();
 		}	
 	
-		$ids = '('. implode(',', $ids_array) . ')';
-		
 		if(isset($params['limit']))
 		{
+			$ids = '('. implode(',', $ids_array) . ')';
+		
 			$ids_sql_params = $sql_params;
 			$ids_sql_params['conditions'][] =  " AND sso.id IN {$ids}";
 			
