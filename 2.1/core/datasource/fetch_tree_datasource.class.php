@@ -11,6 +11,7 @@
 
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/datasource/fetch_sub_branch_datasource.class.php');
+require_once(LIMB_DIR . 'core/tree/tree_sorter.class.php');
 
 class fetch_tree_datasource extends fetch_sub_branch_datasource
 {
@@ -24,6 +25,9 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 		$tree =& tree :: instance();
 		
 		$tree_array =& parent :: _fetch($counter, $params);	
+		
+		$tree_array =& tree_sorter :: sort($tree_array, array('priority' => 'ASC'), 'node_id', 'parent_node_id');
+		
 		
 		$path_node = $tree->get_node_by_path($params['path']);
 		if (isset($params['include_parent']) && (bool)$params['include_parent'])

@@ -13,25 +13,25 @@ require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
 
 class tree_sorter
 {  
-  function sort($tree_array, $sort_params)
+  function sort($tree_array, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
   {
 		$item = reset($tree_array);
-		$parent_id = $item['parent_id'];
+		$parent_id = $item[$parent_hash];
 		
 		$sorted_tree_array = array();
  		
-		tree_sorter :: _do_sort($tree_array, $sorted_tree_array, $sort_params, $parent_id);
+		tree_sorter :: _do_sort($tree_array, $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash);
 		
 		return $sorted_tree_array;
   }
   
-  function _do_sort(& $tree_array, & $sorted_tree_array, $sort_params, $parent_id)
+  function _do_sort(& $tree_array, & $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
   {
  		$children = array();
  		
   	foreach($tree_array as $index => $item)
   	{
-  		if($item['parent_id'] == $parent_id)
+  		if($item[$parent_hash] == $parent_id)
   		{
   			$children[] = $item;
   			unset($tree_array[$index]);
@@ -49,7 +49,7 @@ class tree_sorter
 		}
 		else
 		{
-			$ids = complex_array :: get_column_values('id', $sorted_tree_array);
+			$ids = complex_array :: get_column_values($id_hash, $sorted_tree_array);
 			
 			$offset = array_search($parent_id, $ids) + 1;
 			
@@ -58,7 +58,7 @@ class tree_sorter
 		
     for($i=0; $i < $count; $i++)
     {
-	   	tree_sorter :: _do_sort($tree_array, $sorted_tree_array, $sort_params, $children[$i]['id']);
+	   	tree_sorter :: _do_sort($tree_array, $sorted_tree_array, $sort_params, $children[$i][$id_hash], $id_hash, $parent_hash);
     }
   }  
 }
