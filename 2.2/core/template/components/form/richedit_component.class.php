@@ -75,7 +75,7 @@ class richedit_component extends text_area_component
         editor.config.editorURL = '/shared/richedit/';
         editor.generate();
       }
-      //add_event(window, 'load', init_richedit);
+      add_event(window, 'load', init_richedit);
     </script>";
 	}
 
