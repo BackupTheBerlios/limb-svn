@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
 require_once(LIMB_DIR . 'core/template/template_highlight_handler.class.php');
-require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
+require_once(XML_HTMLSAX3 . '/HTMLSax3.php');
 
 define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');
 
@@ -79,7 +79,7 @@ class display_template_source_action extends action
 	  		
 		global $tag_dictionary; //fixx
 		
-  	$parser =& new XML_HTMLSax();
+  	$parser =& new XML_HTMLSax3();
   	
   	$handler =& new template_highlight_handler($tag_dictionary);
   	

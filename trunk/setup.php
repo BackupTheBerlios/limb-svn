@@ -41,4 +41,6 @@ if (version_compare(phpversion(), '4.2', '<'))
 if (version_compare(phpversion(), '4.3', '<')) 
 	include_once(LIMB_DIR . '/core/lib/util/php43.php');
 
+if(!defined('XML_HTMLSAX3'))
+  define('XML_HTMLSAX3', 'c:/var/external/XML_HTMLSax3-3.0.0RC1/');
 ?>

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
+require_once(XML_HTMLSAX3 . '/HTMLSax3.php');
 
 class template_highlight_handler 
 {
