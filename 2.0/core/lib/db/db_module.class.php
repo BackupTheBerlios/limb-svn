@@ -183,7 +183,7 @@ class db_module
   	if(is_array($row))
   		$row = $this->_process_values($row, $column_types);
   	
-    return $this->sql_exec($this->_sql_string_insert($table, $row));
+    return $this->sql_exec($this->_make_insert_string($table, $row));
   }
   
   function escape($sql)
@@ -354,7 +354,7 @@ class db_module
   	);  
 	}
 	
-  function _sql_string_insert($table, $names_values)
+  function _make_insert_string($table, $names_values)
   {
     if(!$table)
     	debug ::write_error('empty $table', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);

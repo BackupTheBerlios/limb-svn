@@ -16,7 +16,7 @@ Mock::generatePartial
   'db_mysql',
   'test_db_mysql_version',
   array(
-  	'_sql_string_insert',
+  	'_make_insert_string',
   	'sql_exec'
   )
 ); 
@@ -44,7 +44,7 @@ class test_db_mysql_typecast extends UnitTestCase
 	
 	function test_insert_default_types()
 	{
-		$this->mock_db_module->expectOnce('_sql_string_insert', 
+		$this->mock_db_module->expectOnce('_make_insert_string', 
 			array(
 				'test', 
 				array(
@@ -71,7 +71,7 @@ class test_db_mysql_typecast extends UnitTestCase
 	
 	function test_insert_defined_types()
 	{
-		$this->mock_db_module->expectOnce('_sql_string_insert', 
+		$this->mock_db_module->expectOnce('_make_insert_string', 
 			array(
 				'test', 
 				array(
@@ -111,7 +111,7 @@ class test_db_mysql_typecast extends UnitTestCase
 
 	function test_insert_defined_with_not_defined_types()
 	{
-		$this->mock_db_module->expectOnce('_sql_string_insert', 
+		$this->mock_db_module->expectOnce('_make_insert_string', 
 			array(
 				'test', 
 				array(

@@ -11,7 +11,8 @@
 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_types.class.php');
-require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
+require_once(LIMB_DIR . 'core/lib/db/builder/sql_builder.class.php');
+require_once(LIMB_DIR . 'core/lib/db/builder/criteria.class.php');
 
 class db_table
 {

@@ -17,12 +17,12 @@ class tests_db extends GroupTest
 	{
 	  $this->GroupTest('db tests');
 	  
-	  driver_test_manager :: restore();
+	  //driver_test_manager :: restore();
 	  
 	  //driver_test_manager :: add_driver_suite_cases($this);
 	  
 	  //$this->addTestFile(LIMB_DIR . '/tests/cases/db/criteria.test.php');
-	  $this->addTestFile(LIMB_DIR . '/tests/cases/db/sql_builder.test.php');
+	  //$this->addTestFile(LIMB_DIR . '/tests/cases/db/sql_builder.test.php');
 	  $this->addTestFile(LIMB_DIR . '/tests/cases/db/db_table.test.php');
 	}
 }

@@ -138,7 +138,7 @@ class connection_common extends connection
 	* @param string $sql 
 	* @return callable_statement 
 	*/
-	function prepare_call(&$sql)
+	function prepare_call($sql)
 	{
 		return new sql_exception(DB_ERROR_UNSUPPORTED, "Current driver does not support stored procedures using callable_statement.");
 	} 

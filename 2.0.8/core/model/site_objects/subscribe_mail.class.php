@@ -24,7 +24,8 @@ class subscribe_mail extends content_object
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
 			'controller_class_name' => 'subscribe_mail_controller',
-			'auto_identifier' => true
+			'auto_identifier' => true,
+			'db_table_name' => 'subscribe_mail',
 		);
 	}
 
@@ -49,7 +50,7 @@ class subscribe_mail extends content_object
 		$subscribe_email = ADMINISTRATOR_EMAIL; //fix
 		
 		$parent_object_data =& fetch_mapped_by_url();
-
+		
 		$recipients = $this->_get_theme_subscribers($parent_object_data['id']);
 		
 		if(!count($recipients))

@@ -48,9 +48,13 @@ class test_materialized_path_driver extends UnitTestCase
 	
 	function _clean_up()
 	{
-		$this->connection->sql_delete(MATERIALIZED_PATH_TEST_TABLE);
-		$this->connection->sql_delete('sys_site_object');
-		$this->connection->sql_delete('sys_class');
+		$t1 =& db_table_factory :: instance(MATERIALIZED_PATH_TEST_TABLE);
+		$t2 =& db_table_factory :: instance('sys_site_object');
+		$t3 =& db_table_factory :: instance('sys_class');
+		
+		$t1->delete();
+		$t2->delete();
+		$t3->delete();
 	}
 	
 	function test_get_node_failed()

@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 
@@ -76,14 +77,17 @@ class test_site_object_manipulation extends UnitTestCase
 		$this->parent_node_id = $tree->create_sub_node($root_node_id, $values);
 
 		$class_id = $this->object->get_class_id();
-		$this->connection->sql_insert('sys_site_object', array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
+		
+		$table = db_table_factory :: instance('sys_site_object');
+		
+		$table->insert(array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
 
 		$values['identifier'] = 'document';
 		$values['object_id'] = 10;
 		$this->sub_node_id = $tree->create_sub_node($this->parent_node_id, $values);
 
 		$class_id = $this->object->get_class_id();
-		$this->connection->sql_insert('sys_site_object', array('id' => 10, 'class_id' => $class_id, 'current_version' => 1));
+		$table->insert(array('id' => 10, 'class_id' => $class_id, 'current_version' => 1));
   }
   
   function tearDown()
@@ -96,9 +100,13 @@ class test_site_object_manipulation extends UnitTestCase
   
   function _clean_up()
   {
-  	$this->connection->sql_delete('sys_site_object');
-  	$this->connection->sql_delete('sys_site_object_tree');
-  	$this->connection->sql_delete('sys_class');
+  	$table1 = db_table_factory :: instance('sys_site_object');
+  	$table2 = db_table_factory :: instance('sys_site_object_tree');
+  	$table3 = db_table_factory :: instance('sys_class');
+  	
+  	$table1->delete();
+  	$table2->delete();
+  	$table3->delete();
   }
   
   function test_failed_create()

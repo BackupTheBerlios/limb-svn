@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: sys_site_object_db_table.class.php 456 2004-02-16 18:52:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/db/db_table.class.php');
@@ -20,16 +20,16 @@ class sys_site_object_db_table extends db_table
   function _define_columns()
   {
   	return array(
-      'id' => array('type' => 'numeric'),
-      'class_id' => array('type' => 'numeric'),
-      'status' => array('type' => 'numeric'),
-      'title' => '',
-      'identifier' => '',
-      'current_version' => array('type' => 'numeric'),
-      'creator_id' => array('type' => 'numeric'),
-      'created_date' => array('type' => 'numeric'),
-      'modified_date' => array('type' => 'numeric'),
-      'locale_id' => '',
+      'id' => array('type' => db_types::NUMERIC()),
+      'class_id' => array('type' => db_types::NUMERIC()),
+      'status' => array('type' => db_types::NUMERIC()),
+      'title' => array('type' => db_types::VARCHAR()),
+      'identifier' => array('type' => db_types::VARCHAR()),
+      'current_version' => array('type' => db_types::VARCHAR()),
+      'creator_id' => array('type' => db_types::VARCHAR()),
+      'created_date' => array('type' => db_types::VARCHAR()),
+      'modified_date' => array('type' => db_types::VARCHAR()),
+      'locale_id' => array('type' => db_types::VARCHAR()),
     );
   }
   

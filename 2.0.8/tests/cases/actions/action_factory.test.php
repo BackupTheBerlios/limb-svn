@@ -12,10 +12,10 @@ require_once(LIMB_DIR . 'core/actions/action_factory.class.php');
 
 class test_action_factory extends UnitTestCase 
 {  	
-  function test_action_factory() 
-  {
-  	parent :: UnitTestCase();
-  }
+//  function test_action_factory() 
+//  {
+//  	parent :: UnitTestCase();
+//  }
   
   function setUp()
   {

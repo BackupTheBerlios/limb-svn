@@ -598,7 +598,7 @@ class prepared_statement_common extends prepared_statement
 		else
 		{
 			$this->bound_in_vars[$param_index] = "'" . $this->escape((string) $value) . "'";
-		} 
+		}
 	} 
 
 	/**

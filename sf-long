@@ -1,0 +1,7 @@
+The main aim of LIMB is to build scalable, extensible and easy-to-update websites. LIMB uses the following simple metaphor: "Every piece of information is an object". Every object has set of actions that user can perform, like display, edit, delete etc. LIMB uses internal access system to determine if the user is allowed to perform action or not. This access system is suitable for creating flexible access rules and maintaining documents flow. 
+
+LIMB is build with scalability in mind. This means that it is suitable for any kind of project from simple websites to corporate portals. Development of LIMB was conducted with modern principles of programming, like object oriented programming, design patterns, test-driven development. 
+
+Using site objects concept allows to develop/reuse/maintain different modules, such as articles, news, press releases, products catalogs and many others. LIMB offers user friendly interface to add/update information on the website. Administrator can use either back office to add/edit/delete information or manage information from front side using JIP (just in place) managing feature. JIP edition allows dramatically decrease time of learning the CMS and decrease administration time.
+
+LIMB is WACT based which implies very powerfull and extendable templating system.
