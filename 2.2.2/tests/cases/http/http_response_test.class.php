@@ -39,14 +39,7 @@ class http_response_test extends UnitTestCase
     $this->response->header("Location:to-some-place2");
     $this->response->commit();
   }
-  
-  function test_use_client_cache()
-  {
-    $this->response->use_client_cache();
-    $this->response->expectOnce('_send_header', array('HTTP/1.1 304 Not modified'));
-    $this->response->commit();
-  }
-  
+    
   function test_is_empty()
   {
     $this->assertTrue($this->response->is_empty());
@@ -76,9 +69,15 @@ class http_response_test extends UnitTestCase
     $this->assertFalse($this->response->is_empty());
   }
   
-  function test_not_empty_use_client_cache()
+  function test_not_empty_304_status()
   {
-    $this->response->use_client_cache();
+    $this->response->header('HTTP/1.0 304 Not Modified');
+    $this->assertFalse($this->response->is_empty());  
+  }
+
+  function test_not_empty_412_status()
+  {
+    $this->response->header('HTTP/1.1 412 Precondition Failed');
     $this->assertFalse($this->response->is_empty());  
   }
   
@@ -116,7 +115,7 @@ class http_response_test extends UnitTestCase
   	$message = strings :: get('redirect_message');
   	$message = str_replace('%path%', $path, $message);
     
-    $this->response->expectOnce('_send_string', array(new WantedPatternExpectation("~<html><head><meta http-equiv=refresh content='0;url=" . preg_quote($path) . "'~")));
+    $this->response->expectOnce('_send_string', array(new WantedPatternExpectation("~^<html><head><meta http-equiv=refresh content='0;url=" . preg_quote($path) . "'~")));
     
     $this->response->redirect($path);
     $this->response->commit();
@@ -137,6 +136,49 @@ class http_response_test extends UnitTestCase
     $this->response->readfile("/path/to/file");
     $this->response->commit();
   }
+  
+  function test_get_response_default_status()
+  {
+    $this->assertEqual($this->response->get_status(), 200);
+  }
+  
+  function test_get_response_status_http()
+  {
+    $this->response->header('HTTP/1.0  304 ');
+    $this->assertEqual($this->response->get_status(), 304);
+    
+    $this->response->header('HTTP/1.1  412');
+    $this->assertEqual($this->response->get_status(), 412);
+  }
+  
+  function test_get_unknown_directive()
+  {
+    $this->assertFalse($this->response->get_directive('cache-control'));
+  }
+  
+  function test_get_directive()
+  {
+    $this->response->header('Cache-Control: private, max-age=0, must-revalidate');
+    $this->assertEqual($this->response->get_directive('cache-control'), 'private, max-age=0, must-revalidate');
+    
+    $this->response->header('Cache-Control :    private, max-age=10  ');
+    $this->assertEqual($this->response->get_directive('cache-control'), 'private, max-age=10');
+  } 
+  
+  function test_get_content_default_type()
+  {
+    $this->assertEqual($this->response->get_content_type(), 'text/html');
+  }
+  
+  function test_get_content_type()
+  {
+    $this->response->header('Content-Type: image/png');
+    $this->assertEqual($this->response->get_content_type(), 'image/png');
+    
+    $this->response->header('Content-Type: application/rss+xml');
+    $this->assertEqual($this->response->get_content_type(), 'application/rss+xml');    
+  }
+  
 }
 
 ?>

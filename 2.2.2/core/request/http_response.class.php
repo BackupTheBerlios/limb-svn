@@ -15,19 +15,58 @@ class http_response
 	var $response_string = '';
 	var $response_file_path = '';
 	var $headers = array();
-	var $use_client_cache = false;
 		
 	function redirect($path)
 	{  		  	
-  	$message = strings :: get('redirect_message');
+  	$message = strings :: get('redirect_message');//???
   	$message = str_replace('%path%', $path, $message);
-  	$this->response_string = "
-  	<html>
-  	<head><meta http-equiv=refresh content='0;url={$path}'></head>
-  	<body bgcolor=white>
-  	<font color=707070><small>{$message}</small></font>
-  	</body>
-  	</html>";
+  	$this->response_string = "<html><head><meta http-equiv=refresh content='0;url={$path}'></head><body bgcolor=white><font color=707070><small>{$message}</small></font></body></html>";
+	}
+	
+	function reset()
+	{
+	  $this->response_string = '';
+	  $this->response_file_path = '';
+	  $this->headers = array();	
+	}
+	
+	function get_status()
+	{
+	  $status = null;
+	  foreach($this->headers as $header)
+	  {
+	    if(preg_match('~^HTTP/1.\d[^\d]+(\d+)[^\d]*~i', $header, $matches))
+	      $status = (int)$matches[1];
+	  }
+	  
+	  if($status)
+	    return $status;
+	  else
+	    return 200;
+	}
+	
+	function get_directive($directive_name)
+	{
+	  $directive = null;
+	  $regex = '~^' . preg_quote($directive_name). "\s*:(.*)$~i";
+	  foreach($this->headers as $header)
+	  {
+	    if(preg_match($regex, $header, $matches))
+	      $directive = trim($matches[1]);
+	  }	
+	  
+	  if($directive)
+	    return $directive;
+	  else
+	    return false;
+	}
+	
+	function get_content_type()
+	{
+	  if($directive = $this->get_directive('content-type'))
+	    return $directive;
+	  else
+	    return 'text/html';
 	}
 	
 	function & get_response_string()
@@ -37,10 +76,12 @@ class http_response
 	
 	function is_empty()
 	{
+	  $status = $this->get_status();
+	  
 	  return (
 	    empty($this->response_string) && 
 	    empty($this->response_file_path) && 
-	    !$this->use_client_cache);
+	    ($status != 304 && $status != 412));//???
 	}
 	
 	function headers_sent()
@@ -67,23 +108,17 @@ class http_response
 	{
 	  $this->response_file_path = $file_path;
 	}
-	
-	function use_client_cache($status = true)
-	{
-	  $this->use_client_cache = $status;
-	  $this->header('HTTP/1.1 304 Not modified');
-	}
-	
+		
 	function write($string)
 	{
-	  $this->response_string = $string;	  
+	  $this->response_string .= $string;	  
 	}
 		
 	function commit()
 	{  	
   	foreach($this->headers as $header)
   	  $this->_send_header($header);
-  	
+  	  
   	if(!empty($this->response_string))
   	  $this->_send_string($this->response_string);
 

@@ -83,7 +83,7 @@ hr{height:1; color:#D7D7D7}
 
 /*form*/
 input, textArea{color:#0447CA}
-.button{font:bold 8pt Tahoma, sans; color:#ffffff; border:ridge 1px; background-color:#E96060}
+.button{font:bold 8pt Tahoma, sans; color:#ffffff; border-top: 1px solid #cecece; border-bottom: 2px solid #4a4a4a; border-left: 1px solid #cecece; border-right: 2px solid #727272; background-color:#E96060}
 .input{font:8pt Verdana, sans; border:solid 1px #3278ED; height:18px}
 .input-changed{font:8pt Verdana, sans; border:dotted 1px #3278ED; height:18px}
 .textArea-changed{font:8pt Verdana, sans; border:dotted 1px #3278ED;}
