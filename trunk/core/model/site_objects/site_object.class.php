@@ -15,7 +15,7 @@ define('SITE_OBJECT_RESTRICTED_STATUS', 2);
 require_once(LIMB_DIR . 'core/model/object.class.php');
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
-require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
+require_once(LIMB_DIR . 'core/controllers/site_object_controller_factory.class.php');
 require_once(LIMB_DIR . 'core/tree/tree.class.php');
 
 class site_object extends object
@@ -812,7 +812,7 @@ class site_object extends object
 	  if ($this->_controller)
 	    return $this->_controller;
 	   
-		$this->_controller =& site_object_controller :: create($this->_class_properties['controller_class_name']);
+		$this->_controller =& site_object_controller_factory :: create($this->_class_properties['controller_class_name']);
 		return $this->_controller;
 	}
 	
