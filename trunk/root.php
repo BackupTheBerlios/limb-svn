@@ -33,6 +33,7 @@ require_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
 require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 
 start_user_session();
+
 debug :: add_timing_point('require_done');
 
 $recursive = false;

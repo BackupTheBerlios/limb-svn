@@ -9,12 +9,12 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/model/object.class.php');
 require_once(LIMB_DIR . 'core/model/chat/chat_system.class.php');
 
 class chat_user extends object
 {
-
 	function chat_user()
 	{
 		parent :: object();
@@ -50,19 +50,16 @@ class chat_user extends object
 		return true;
 	}
 	
-
 	function activate_password()
 	{
 		return true;
 	}
 	
-	function login($data)
+	function login($login, $password = null)
 	{
-		if(empty($data['nickname']))
-			return false;
-			
 		if(user :: is_logged_in())
 			return chat_user :: _login_to_chat(user :: get_login());
+			
 		$db =& db_factory :: instance();		
 		$sql = "SELECT u.identifier 
 						FROM user u, sys_site_object sso
@@ -71,11 +68,10 @@ class chat_user extends object
 		$db->sql_exec($sql);
 		$users = $db->get_array();
 		
-		if(in_array($data['nickname'], $users))
+		if(in_array($login, $users))
 			return false;
 		
-		return chat_user :: _login_to_chat($data['nickname']);
-				
+		return chat_user :: _login_to_chat($login);
 	}
 	
 	function _login_to_chat($nickname)
@@ -113,7 +109,7 @@ class chat_user extends object
 		
 		$id = $db->get_sql_insert_id();
 		
-		session :: set('chat_user_id', $id);
+		chat_user :: _set_session_chat_user_id($id);
 
 		return true;
 	}
@@ -122,7 +118,6 @@ class chat_user extends object
 	{
 		if (!$chat_user_data = chat_user :: get_chat_user_data())
 			return true;
-
 		
 		chat_system :: leave_chat_room(
 				$chat_user_data['id'],
@@ -130,41 +125,77 @@ class chat_user extends object
 				$chat_user_data['chat_room_id']
 		);
 		
-		session :: destroy('chat_user_id');
+		chat_user :: _session_destroy();
+		
 		return true;
 	}
 	
 	function is_logged_in()
 	{
-		return (session :: get('chat_user_id')) ? true : false;
+		return (chat_user :: _get_session_chat_user_id()) ? true : false;
+	}
+	
+	function _session_destroy()
+	{
+		session :: destroy('chat_user_id');
+		session :: destroy('chat_user_data');
+	}
+	
+	function _get_session_chat_user_id()
+	{
+		return session :: get('chat_user_id');
+	}
+	
+	function _set_session_chat_user_id($id)
+	{
+		session :: set('chat_user_id', $id);
+	}
+	
+	function _get_session_chat_user_data()
+	{
+		return session :: get('chat_user_data');
+	}
+	
+	function _set_session_chat_user_data($data)
+	{
+		session :: set('chat_user_data', $data);
 	}
 	
 	function get_chat_user_data()
 	{
-		if(!$id = session :: get('chat_user_id'))
+		if(!$id = chat_user :: _get_session_chat_user_id())
 			return false;
-
+			
+		if($data = chat_user :: _get_session_chat_user_data())
+			return $data;
+			
 		$db =& db_factory :: instance();
-
 		$sql = "SELECT * FROM chat_user WHERE id='{$id}'";
 
 		$db->sql_exec($sql);
-		return $db->fetch_row();
+		$row = $db->fetch_row();
+		
+		chat_user :: _set_session_chat_user_data($row);
+		
+		return $row;
 	}
 	
-//	function get_messages($last_message_id = 0)
-//	{
-//		if (!$chat_user_data = chat_user :: get_chat_user_data())
-//			return false;
-//		
-//		return chat_system :: get_messages_for_user(
-//						$chat_user_data['id'],
-//						$chat_user_data['chat_room_id'],
-//						$last_message_id
-//					);
-//	}
+	function update_chat_user($data)
+	{
+		$nickname = $data['nickname'];
+		$status = $$data['status'];
+		$color = $data['color'];
+		$time = time();
+		
+		$db =& db_factory :: instance();		
+		$sql = "UPDATE chat_user 
+						SET time={$time}, status = {$status},
+							color = {$color}, nickname = {$nickname},
+						WHERE id='{$chat_user_id}'";
 
+		$db->sql_exec($sql);
+
+		chat_user :: _set_session_chat_user_data($row);
+	}
 }
-
-
 ?>

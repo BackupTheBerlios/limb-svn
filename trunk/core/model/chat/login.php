@@ -16,7 +16,7 @@ require_once(LIMB_DIR . 'core/lib/system/message_box.class.php');
 
 start_user_session();
 
-if($_POST['nickname'] && !chat_user :: login(array('nickname' => $_POST['nickname'])))
+if($_POST['nickname'] && !chat_user :: login($_POST['nickname']))
 	message_box :: write_notice('such name already exists');
 
 reload($_SERVER['HTTP_REFERER']);
