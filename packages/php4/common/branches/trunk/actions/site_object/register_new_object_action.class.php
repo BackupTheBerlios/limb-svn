@@ -62,7 +62,7 @@ class register_new_object_action extends form_action
 		else	
 			$params['parent_node_id'] = 0;		
 			
-		$object->import_attributes($params);
+		$object->merge($params);
 	
 		if(!$object->create($is_root))
 		{
@@ -73,7 +73,7 @@ class register_new_object_action extends form_action
 		if (!$is_root)
 		{
 			$parent_object =& site_object_factory :: instance($parent_data['class_name']);
-			$parent_object->import_attributes($parent_data);
+			$parent_object->merge($parent_data);
 		
 			$access_policy =& access_policy :: instance();
 			$access_policy->save_object_access($object, $parent_object);

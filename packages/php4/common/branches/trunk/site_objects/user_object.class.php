@@ -148,7 +148,7 @@ class user_object extends content_object
 		if(!$user_data = $this->get_user_by_email($email))
 			return false;
 		
-		$this->import_attributes($user_data);
+		$this->merge($user_data);
 
 		$new_non_crypted_password = user :: generate_password();
 		$crypted_password = user :: get_crypted_password($user_data['identifier'], $new_non_crypted_password);
@@ -174,7 +174,7 @@ class user_object extends content_object
 		if(($password != $user_data['password']) || empty($user_data['generated_password']))
 			return false;
 		
-		$this->import_attributes($user_data);
+		$this->merge($user_data);
 		$this->set('password', $user_data['generated_password']);
 		$this->set('generated_password', '');
 

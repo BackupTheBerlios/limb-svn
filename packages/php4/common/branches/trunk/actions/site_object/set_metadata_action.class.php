@@ -38,7 +38,7 @@ class set_metadata_action extends form_action
 		$data['id'] = $object_data['id'];
 		
 		$object =& site_object_factory :: create('site_object');
-		$object->import_attributes($data);
+		$object->merge($data);
 		
 		if(!$object->save_metadata())
 			$request->set_status(REQUEST_STATUS_FAILURE);
