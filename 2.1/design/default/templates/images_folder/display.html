@@ -17,21 +17,28 @@
 
 <grid:LIST id='images_folder'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
-  <grid:ITERATOR>
-	<tr>
-		<td jip='object' class=jip-object valign='bottom'>
-			<core:OPTIONAL for='title'>
-			<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$title}</a>
-			</core:OPTIONAL>
-			<core:DEFAULT for='title'>
-			<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$identifier}</a>
-			</core:DEFAULT>		
-		</td>
-		<td>
-		<core:INCLUDE file="jip_actions/normal.html">
-		</td>
-	</tr>
-  </grid:ITERATOR>
+<tr>
+	<th><locale:STRING name='articles_folder' file='article'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+	<td jip='object' class=jip-object valign='bottom'>
+		<core:OPTIONAL for='title'>
+		<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$title}</a>
+		</core:OPTIONAL>
+		<core:DEFAULT for='title'>
+		<img src='{$icon}' align='center'>&nbsp;<a href='{$path}'>{$identifier}</a>
+		</core:DEFAULT>		
+	</td>
+	<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+	<td><core:INCLUDE file='/admin/priority_input.html'></td>
+	<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr><td colspan='3' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
 </table>
 </grid:LIST>
 
@@ -39,21 +46,27 @@
 
 <grid:LIST id='images'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
-  <grid:ITERATOR>
-		<tr>
-			<td jip='object' class=jip-object>
-			<core:OPTIONAL for='title'>
-			<img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
-			</core:OPTIONAL>
-			<core:DEFAULT for='title'>
-			<img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
-			</core:DEFAULT>		
-			
-			</td>
-			<td>
-			<core:INCLUDE file="jip_actions/normal.html">
-			</td>
-		</tr>
-  </grid:ITERATOR>
+	<tr>
+		<th><locale:STRING name='image' file='image'></th>
+		<th><locale:STRING name='modified_date'></th>
+		<th><locale:STRING name='items_order'></th>
+		<th><locale:STRING name='actions'></th>
+	</tr>
+<grid:ITERATOR>
+<tr class="jip">
+	<td jip='object' class=jip-object>
+		<core:OPTIONAL for='title'>
+		<img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
+		</core:OPTIONAL>
+		<core:DEFAULT for='title'>
+		<img src='{$path}?icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
+		</core:DEFAULT>		
+	</td>
+	<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+	<td><core:INCLUDE file='/admin/priority_input.html'></td>
+	<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr><td colspan='3' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
 </table>
 </grid:LIST>

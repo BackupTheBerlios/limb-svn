@@ -1,4 +1,5 @@
 <core:WRAP file="admin/admin_display_page.html" placeholder="content">
+
 <span class=jip>
 <fetch:MAPPED>
 <core:INCLUDE file="jip_actions/extended.html">
@@ -7,57 +8,60 @@
 
 <fetch:SUB_BRANCH target='folders' >
 	<core:PARAMETER name='loader_class_name' value='articles_folder' >
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
-
-<table width=100%>
-<tr>
-	<th><locale:STRING name='articles_folder' file='article'></th>
-	<th><locale:STRING name='published_status' ></th>
-	<th><locale:STRING name='created_date'></th>
-	<th><locale:STRING name='modified_date'></th>
-	<th><locale:STRING name='actions'></th>
-</tr>
-<grid:LIST id='folders'>
-<grid:ITERATOR>
-<tr class="jip">
-<td jip='object'><a href="{$path}?action=admin_display">{$title}</a></td>
-<td align="center">
-					<core:INCLUDE file="published_status.html">
-</td>
-<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
-<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
-<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
-</tr>
-</grid:ITERATOR>
-</grid:LIST>
-</table>
 
 <fetch:SUB_BRANCH target='articles' navigator="pager" >
 	<core:PARAMETER name='loader_class_name' value='article' >
+	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
+<grid:LIST id='folders'>
+<table width=100%>
+<tr>
+	<th><locale:STRING name='published_status' ></th>
+	<th><locale:STRING name='articles_folder' file='article'></th>
+	<th><locale:STRING name='created_date'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+<td align="center"><core:INCLUDE file="published_status.html"></td>
+<td jip='object'><a href="{$path}?action=admin_display">{$title}</a></td>
+<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr><td colspan='5' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
+</table>
+</grid:LIST>
 
 <core:INCLUDE file="pager.html">
 
+<grid:LIST id='articles'>
 <table width=100%>
 <tr>
+	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='article' file='article'></th>
 	<th><locale:STRING name='author' file='article'></th>
-	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
-<grid:LIST id='articles'>
 <grid:ITERATOR>
 <tr class="jip">
+<td><core:INCLUDE file="published_status.html"></td>
 <td jip='object'><a href="{$path}" target="_blank">{$title}</a></td>
 <td>{$author}</td>
-<td align="center">
-					<core:INCLUDE file="published_status.html">
-</td>
-<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
-<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
 </grid:ITERATOR>
-</grid:LIST>
+<tr><td colspan='5' align='right'><core:INCLUDE file='/admin/priority_button.html'></td><td>&nbsp;</td></tr>
 </table>
+</grid:LIST>
