@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/permissions/User.class.php');
+require_once(LIMB_DIR . '/core/permissions/User.class.php');
 require_once(dirname(__FILE__) . '/../../../SimpleAuthenticator.class.php');
 
 Mock :: generatePartial(

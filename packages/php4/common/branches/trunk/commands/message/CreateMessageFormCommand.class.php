@@ -8,7 +8,7 @@
 * $Id: edit_message_action.class.php 707 2004-09-18 14:43:42Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/FormCreateSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/FormCreateSiteObjectCommand.class.php');
 
 class CreateMessageFormCommand extends FormCreateSiteObjectCommand
 {
@@ -26,8 +26,8 @@ class CreateMessageFormCommand extends FormCreateSiteObjectCommand
   {
     parent :: _registerValidationRules($validator, $dataspace);
 
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'content'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'title'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'content'));
   }
 }
 

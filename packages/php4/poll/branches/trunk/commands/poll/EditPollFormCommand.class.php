@@ -8,7 +8,7 @@
 * $Id: edit_poll_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/FormEditSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/FormEditSiteObjectCommand.class.php');
 
 class EditPollFormCommand extends FormEditSiteObjectCommand
 {
@@ -28,9 +28,9 @@ class EditPollFormCommand extends FormEditSiteObjectCommand
   {
     parent :: _registerValidationRules($validator, $dataspace);
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'start_date'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'finish_date'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'restriction'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'start_date'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'finish_date'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'restriction'));
   }
 }
 

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../StatsReferer.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generatePartial
 (

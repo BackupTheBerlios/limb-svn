@@ -71,7 +71,7 @@ class DisplayRequestedFileCommand// implements Command
 
   function &_getMimeType()
   {
-    include_once(LIMB_DIR . '/class/lib/util/MimeType.class.php');
+    include_once(LIMB_DIR . '/core/util/MimeType.class.php');
     return new MimeType();
   }
 }

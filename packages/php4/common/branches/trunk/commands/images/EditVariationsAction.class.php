@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormEditSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormEditSiteObjectAction.class.php');
 
 class EditVariationsAction extends FormEditSiteObjectAction
 {

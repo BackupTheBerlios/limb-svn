@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commans/FormCommand.class.php');
+require_once(LIMB_DIR . '/core/commans/FormCommand.class.php');
 require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
 class SetGroupAccessCommand extends FormCommand

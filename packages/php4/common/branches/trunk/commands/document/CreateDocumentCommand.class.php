@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/CreateSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/CreateSiteObjectCommand.class.php');
 
 class CreateDocumentCommand extends CreateSiteObjectCommand
 {

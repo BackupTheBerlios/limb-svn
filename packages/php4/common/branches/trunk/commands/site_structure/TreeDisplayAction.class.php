@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/Action.class.php');
+require_once(LIMB_DIR . '/core/actions/Action.class.php');
 
 class TreeDisplayAction extends Action
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/DomainObject.class.php');
+require_once(LIMB_DIR . '/core/DomainObject.class.php');
 
 class ImageVariation extends DomainObject
 {
@@ -31,7 +31,7 @@ class ImageVariation extends DomainObject
     if($this->_image_library)
       return $this->_image_library;
 
-    include_once(LIMB_DIR . '/class/lib/image/ImageFactory.class.php');
+    include_once(LIMB_DIR . '/core/image/ImageFactory.class.php');
     $this->_image_library = ImageFactory :: create();
 
     return $this->_image_library;

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/data_mappers/OneTableObjectsMapper.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/OneTableObjectsMapper.class.php');
 
 class ImageObjectMapper extends OneTableObjectsMapper
 {

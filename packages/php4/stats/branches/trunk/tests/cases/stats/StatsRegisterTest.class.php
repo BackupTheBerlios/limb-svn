@@ -12,8 +12,8 @@ require_once(dirname(__FILE__) . '/../../../StatsRegister.class.php');
 require_once(dirname(__FILE__) . '/../../../StatsCounter.class.php');
 require_once(dirname(__FILE__) . '/../../../StatsIp.class.php');
 require_once(dirname(__FILE__) . '/../../../StatsReferer.class.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generatePartial
 (

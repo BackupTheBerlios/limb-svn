@@ -8,7 +8,7 @@
 * $Id: create_navigation_item_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/FormCreateSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/FormCreateSiteObjectCommand.class.php');
 
 class CreateNavigationItemFormCommand extends FormCreateSiteObjectCommand
 {
@@ -27,8 +27,8 @@ class CreateNavigationItemFormCommand extends FormCreateSiteObjectCommand
   {
     parent :: _registerValidationRules($validator, $dataspace);
 
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'url'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'title'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'url'));
   }
 }
 

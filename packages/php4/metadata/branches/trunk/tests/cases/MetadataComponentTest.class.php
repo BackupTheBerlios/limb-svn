@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/controllers/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/core/controllers/SiteObjectController.class.php');
 require_once(dirname(__FILE__) . '/../../template/components/MetadataComponent.class.php');
 
 Mock :: generatePartial(

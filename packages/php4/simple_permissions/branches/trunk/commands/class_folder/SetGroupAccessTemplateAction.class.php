@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormAction.class.php');
 require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
 class SetGroupAccessTemplateAction extends FormAction

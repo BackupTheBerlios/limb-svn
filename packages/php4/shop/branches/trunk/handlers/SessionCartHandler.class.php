@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/CartHandler.class.php');
-require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/system/objects_support.inc.php');
 
 class SessionCartHandler extends CartHandler
 {

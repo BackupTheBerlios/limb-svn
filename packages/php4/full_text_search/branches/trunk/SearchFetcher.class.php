@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/search/FullTextSearch.class.php');
+require_once(LIMB_DIR . '/core/search/FullTextSearch.class.php');
 
 class SearchFetcher
 {

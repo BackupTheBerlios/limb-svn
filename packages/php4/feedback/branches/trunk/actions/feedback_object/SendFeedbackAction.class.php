@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormAction.class.php');
-require_once(LIMB_DIR . '/class/SysParam.class.php');
+require_once(LIMB_DIR . '/core/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/core/SysParam.class.php');
 
 class SendFeedbackAction extends FormAction
 {
@@ -22,10 +22,10 @@ class SendFeedbackAction extends FormAction
   {
     parent :: _initValidator();
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'subject'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'sender_email'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'sender_email'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'body'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'subject'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'sender_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/email_rule', 'sender_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'body'));
   }
 
   function _getEmail()

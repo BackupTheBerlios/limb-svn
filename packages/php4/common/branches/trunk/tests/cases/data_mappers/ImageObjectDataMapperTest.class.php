@@ -13,8 +13,8 @@ require_once(dirname(__FILE__) . '/../../../finders/ImageObjectsRawFinder.class.
 require_once(dirname(__FILE__) . '/../../../data_mappers/ImageObjectMapper.class.php');
 require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
 
 Mock :: generatePartial('ImageObjectMapper',
                         'ImageObjectMapperTestVersion',

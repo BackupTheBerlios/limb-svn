@@ -8,7 +8,7 @@
 * $Id: edit_navigation_item_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/FormEditSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/FormEditSiteObjectCommand.class.php');
 
 class EditNavigationItemFormCommand extends FormEditSiteObjectCommand
 {
@@ -27,8 +27,8 @@ class EditNavigationItemFormCommand extends FormEditSiteObjectCommand
   {
     parent :: _registerValidationRules($validator, $dataspace);
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'url'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'url'));
   }
 }
 

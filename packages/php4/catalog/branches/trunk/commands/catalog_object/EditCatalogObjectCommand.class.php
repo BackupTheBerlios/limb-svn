@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/EditSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/EditSiteObjectCommand.class.php');
 
 class EditCatalogObjectCommand extends EditSiteObjectCommand
 {

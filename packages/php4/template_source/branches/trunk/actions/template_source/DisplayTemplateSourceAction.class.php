@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/Action.class.php');
-require_once(LIMB_DIR . '/class/template/fileschemes/compiler_support.inc.php');
+require_once(LIMB_DIR . '/core/actions/Action.class.php');
+require_once(LIMB_DIR . '/core/template/fileschemes/compiler_support.inc.php');
 
 @define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');
 
@@ -83,7 +83,7 @@ class DisplayTemplateSourceAction extends Action
 
   function _processTemplateContent($template_contents)
   {
-    include_once(LIMB_DIR . '/class/template/compiler/template_compiler.inc.php');
+    include_once(LIMB_DIR . '/core/template/compiler/template_compiler.inc.php');
     include_once(dirname(__FILE__) . '/../../TemplateHighlightHandler.class.php');
     include_once(LIMB_COMMON_DIR . '/setup_HTMLSax.inc.php');
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormAction.class.php');
 
 class GeneratePasswordAction extends FormAction
 {
@@ -19,8 +19,8 @@ class GeneratePasswordAction extends FormAction
 
   function _initValidator()
   {
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'email'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/email_rule', 'email'));
   }
 
   function _validPerform(&$request, &$response)

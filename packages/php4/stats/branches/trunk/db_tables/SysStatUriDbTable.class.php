@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
 class SysStatUriDbTable extends LimbDbTable
 {

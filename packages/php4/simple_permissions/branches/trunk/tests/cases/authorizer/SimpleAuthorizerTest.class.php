@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
 require_once(dirname(__FILE__) . '/../../../SimpleAuthorizer.class.php');
-require_once(LIMB_DIR . '/class/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
+require_once(LIMB_DIR . '/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/db_tables/LimbDbTableFactory.class.php');
 require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
 
 class SimpleAuthorizerTestBehaviourTestVersion extends SiteObjectBehaviour

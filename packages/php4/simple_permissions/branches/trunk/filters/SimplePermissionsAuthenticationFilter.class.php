@@ -8,7 +8,7 @@
 * $Id: authentication_filter.class.php 814 2004-10-21 12:46:23Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/filters/AuthenticationFilter.class.php');
+require_once(LIMB_DIR . '/core/filters/AuthenticationFilter.class.php');
 
 class SimplePermissionsAuthenticationFilter extends AuthenticationFilter
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormEditSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormEditSiteObjectAction.class.php');
 
 class EditFileAction extends FormEditSiteObjectAction
 {
@@ -41,7 +41,7 @@ class EditFileAction extends FormEditSiteObjectAction
   {
     parent :: _initValidator();
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'title'));
   }
 
   function _updateObjectOperation()

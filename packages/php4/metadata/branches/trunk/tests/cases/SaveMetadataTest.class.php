@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/site_objects/SiteObjectFactory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/site_objects/SiteObjectFactory.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(dirname(__FILE__) . '/../../MetadataManager.class.php');
 
 class SaveMetadataTest extends LimbTestCase

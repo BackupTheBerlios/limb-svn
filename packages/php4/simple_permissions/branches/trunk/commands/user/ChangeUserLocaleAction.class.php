@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormEditSiteObjectAction.class.php');
-require_once(LIMB_DIR . '/class/validators/rules/RequiredRule.class.php');
+require_once(LIMB_DIR . '/core/actions/FormEditSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/core/validators/rules/RequiredRule.class.php');
 
 class ChangeUserLocaleAction extends FormAction
 {
@@ -20,7 +20,7 @@ class ChangeUserLocaleAction extends FormAction
 
   function _initValidator()
   {
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'locale_id'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'locale_id'));
   }
 
   function _validPerform(&$request, &$response)

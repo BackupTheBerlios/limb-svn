@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/controllers/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/core/controllers/SiteObjectController.class.php');
 
 class ArticlesFolderController extends SiteObjectController
 {
@@ -20,12 +20,12 @@ class ArticlesFolderController extends SiteObjectController
   function defineDisplay(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/commands/use_view_command',
+                                  array(LIMB_DIR . '/core/commands/use_view_command',
                                         '/articles_folder/display.html')
                                   array(LIMB_STATUS_OK => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/commands/display_view_command');
+                                  LIMB_DIR . '/core/commands/display_view_command');
   }
 
   function getAdminDisplayActionProperties()
@@ -36,12 +36,12 @@ class ArticlesFolderController extends SiteObjectController
   function defineAdminDisplay(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/commands/use_view_command',
+                                  array(LIMB_DIR . '/core/commands/use_view_command',
                                         '/articles_folder/admin_display.html')
                                   array(LIMB_STATUS_OK => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/commands/display_view_command');
+                                  LIMB_DIR . '/core/commands/display_view_command');
   }
 
   function getCreateArticleActionProperties()
@@ -55,7 +55,7 @@ class ArticlesFolderController extends SiteObjectController
   function defineCreateArticle(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/commands/use_view_command',
+                                  array(LIMB_DIR . '/core/commands/use_view_command',
                                         '/article/create.html')
                                   array(LIMB_STATUS_OK => 'form'));
 
@@ -70,7 +70,7 @@ class ArticlesFolderController extends SiteObjectController
                                   array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/commands/display_view_command');
+                                  LIMB_DIR . '/core/commands/display_view_command');
   }
 
   function getCreateArticlesFolderActionProperties()
@@ -84,22 +84,22 @@ class ArticlesFolderController extends SiteObjectController
   function defineCreateArticlesFolder(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/commands/use_view_command',
+                                  array(LIMB_DIR . '/core/commands/use_view_command',
                                         '/articles_folder/create.html')
                                   array(LIMB_STATUS_OK => 'form'));
 
     $state_machine->registerState('form',
-                                  array(LIMB_DIR . '/class/commands/create_simple_folder_form_command',
+                                  array(LIMB_DIR . '/core/commands/create_simple_folder_form_command',
                                         'articles_folder_form'),
                                   array(LIMB_STATUS_FORM_SUBMITTED => 'process',
                                         LIMB_STATUS_FORM_DISPLAYED => 'render'));
 
     $state_machine->registerState('process',
-                                  LIMB_DIR . '/class/commands/create_site_object_command',
+                                  LIMB_DIR . '/core/commands/create_site_object_command',
                                   array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/commands/display_view_command');
+                                  LIMB_DIR . '/core/commands/display_view_command');
   }
 
   function getEditActionProperties()
@@ -113,22 +113,22 @@ class ArticlesFolderController extends SiteObjectController
   function defineEdit(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/commands/use_view_command',
+                                  array(LIMB_DIR . '/core/commands/use_view_command',
                                         '/articles_folder/edit.html')
                                   array(LIMB_STATUS_OK => 'form'));
 
     $state_machine->registerState('form',
-                                  array(LIMB_DIR . '/class/commands/edit_simple_folder_form_command',
+                                  array(LIMB_DIR . '/core/commands/edit_simple_folder_form_command',
                                         'articles_folder_form'),
                                   array(LIMB_STATUS_FORM_SUBMITTED => 'process',
                                         LIMB_STATUS_FORM_DISPLAYED => 'render'));
 
     $state_machine->registerState('process',
-                                  LIMB_DIR . '/class/commands/edit_site_object_command',
+                                  LIMB_DIR . '/core/commands/edit_site_object_command',
                                   array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/commands/display_view_command');
+                                  LIMB_DIR . '/core/commands/display_view_command');
   }
 }
 

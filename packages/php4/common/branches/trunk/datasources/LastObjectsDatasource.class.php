@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/FetchDatasource.class.php');
+require_once(LIMB_DIR . '/core/datasources/FetchDatasource.class.php');
 
 class LastObjectsDatasource extends FetchDatasource
 {

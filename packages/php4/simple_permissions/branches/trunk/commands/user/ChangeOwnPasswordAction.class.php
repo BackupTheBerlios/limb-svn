@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormAction.class.php');
 
 class ChangeOwnPasswordAction extends FormAction
 {
@@ -19,10 +19,10 @@ class ChangeOwnPasswordAction extends FormAction
 
   function _initValidator()
   {
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/user_old_password_rule', 'old_password'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'second_password'));
-    $this->validator->addRule( array(LIMB_DIR . '/class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/user_old_password_rule', 'old_password'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'password'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'second_password'));
+    $this->validator->addRule( array(LIMB_DIR . '/core/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
   }
 
   function _validPerform(&$request, &$response)

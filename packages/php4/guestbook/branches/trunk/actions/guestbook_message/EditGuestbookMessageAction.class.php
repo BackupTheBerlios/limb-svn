@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormEditSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormEditSiteObjectAction.class.php');
 
 class EditGuestbookMessageAction extends FormEditSiteObjectAction
 {
@@ -41,10 +41,10 @@ class EditGuestbookMessageAction extends FormEditSiteObjectAction
   {
     parent :: _initValidator();
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'message'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'sender'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'sender_email'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'comment_author_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'message'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'sender'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/email_rule', 'sender_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/email_rule', 'comment_author_email'));
   }
 
   function _initDataspace(&$request)

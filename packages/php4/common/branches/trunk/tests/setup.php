@@ -12,7 +12,7 @@ if (file_exists(dirname(__FILE__) . '/setup.override.php'))
   include_once(dirname(__FILE__) . '/setup.override.php');
 
 require_once(LIMB_DIR . '/tests/setup.php');
-require_once(LIMB_DIR . '/class/PackagesInfo.class.php');
+require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
 
 registerFileResolver('ini',    $r = array(LIMB_DIR . '/tests/lib/PackageTestsIniFileResolver',
                                           dirname(__FILE__) . '/../'));

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/controllers/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/core/controllers/SiteObjectController.class.php');
 
 class LoginBehaviour extends SiteObjectController
 {
@@ -25,7 +25,7 @@ class LoginBehaviour extends SiteObjectController
   function defineLogin(&$state_machine)
   {
     $state_machine->registerState('init',
-                                  array(LIMB_DIR . '/class/commands/use_view_command',
+                                  array(LIMB_DIR . '/core/commands/use_view_command',
                                         'login.html')
                                   array(LIMB_STATUS_OK => 'form'));
 
@@ -40,7 +40,7 @@ class LoginBehaviour extends SiteObjectController
                                   array(LIMB_STATUS_ERROR => 'render'));
 
     $state_machine->registerState('render',
-                                  LIMB_DIR . '/class/commands/display_view_command');
+                                  LIMB_DIR . '/core/commands/display_view_command');
   }
 
   function getLogoutActionProperties()

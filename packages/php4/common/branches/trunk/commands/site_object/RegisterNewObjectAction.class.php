@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormAction.class.php');
 
 class RegisterNewObjectAction extends FormAction
 {
@@ -19,20 +19,20 @@ class RegisterNewObjectAction extends FormAction
 
   function _initValidator()
   {
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'class_name'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'identifier'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'parent_path'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_path_rule', 'parent_path'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'class_name'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'identifier'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'parent_path'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/tree_path_rule', 'parent_path'));
 
     if($path = $this->dataspace->get('parent_path'))
     {
       $toolkit =& Limb :: toolkit();
       $tree =& $toolkit->getTree();
       if($node = $tree->getNodeByPath($path))
-        $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $node['id']));
+        $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/tree_identifier_rule', 'identifier', $node['id']));
     }
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'title'));
   }
 
   function _validPerform(&$request, &$response)

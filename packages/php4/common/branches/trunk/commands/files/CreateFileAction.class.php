@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormCreateSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormCreateSiteObjectAction.class.php');
 
 class CreateFileAction extends FormCreateSiteObjectAction
 {
@@ -36,7 +36,7 @@ class CreateFileAction extends FormCreateSiteObjectAction
   {
     parent :: _initValidator();
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'title'));
   }
 
   function _createObjectOperation()

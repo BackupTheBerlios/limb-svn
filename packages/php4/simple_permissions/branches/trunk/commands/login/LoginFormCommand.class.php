@@ -8,14 +8,14 @@
 * $Id: login_command.class.php 827 2004-10-23 15:00:44Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/FormCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/FormCommand.class.php');
 
 class LoginFormCommand extends FormCommand
 {
   function _registerValidationRules(&$validator, &$dataspace)
   {
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'login'));
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'login'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'password'));
   }
 
   function _mergeDataspaceWithRequest(&$dataspace, &$request)

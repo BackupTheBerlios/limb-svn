@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/db_tables/LimbDbTableFactory.class.php');
 
 class AccessPolicyTest extends LimbTestCase
 {

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/ShippingConfiguration.class.php');
-require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+require_once(LIMB_DIR . '/core/system/Fs.class.php');
 
 @define('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME', 60*60*24*7);
 
@@ -31,7 +31,7 @@ class ShippingLocator
       return $this->cache;
 
     include_once('Cache/Lite.php');
-    include_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
+    include_once(LIMB_DIR . '/core/system/Fs.class.php');
 
     Fs :: mkdir(VAR_DIR . '/shipping_options');
 

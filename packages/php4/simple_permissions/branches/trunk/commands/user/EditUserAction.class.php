@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormEditSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormEditSiteObjectAction.class.php');
 
 class EditUserAction extends FormEditSiteObjectAction
 {
@@ -51,13 +51,13 @@ class EditUserAction extends FormEditSiteObjectAction
 
     if ($object_data = $datasource->fetch())
     {
-      $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/unique_user_rule', 'identifier', $object_data['identifier']));
-      $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/unique_user_email_rule', 'email', $object_data['email']));
+      $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/unique_user_rule', 'identifier', $object_data['identifier']));
+      $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/unique_user_email_rule', 'email', $object_data['email']));
     }
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'name'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'email'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'name'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/email_rule', 'email'));
   }
 }
 

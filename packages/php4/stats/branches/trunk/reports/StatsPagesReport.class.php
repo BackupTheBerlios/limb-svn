@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class StatsPagesReport //implements StatsReportInterface
 {

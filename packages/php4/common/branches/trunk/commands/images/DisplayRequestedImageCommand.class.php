@@ -76,7 +76,7 @@ class DisplayRequestedImageCommand// implements Command
 
   function _getHttpCache()
   {
-    include_once(LIMB_DIR . '/class/request/HttpCache.class.php');
+    include_once(LIMB_DIR . '/core/request/HttpCache.class.php');
     return new HttpCache();
   }
 

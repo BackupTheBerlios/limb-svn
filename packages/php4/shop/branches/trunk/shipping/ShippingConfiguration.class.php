@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/Object.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
 
 class ShippingConfiguration extends Object
 {

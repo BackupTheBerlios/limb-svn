@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/image/ImageLibrary.class.php');
+require_once(LIMB_DIR . '/core/image/ImageLibrary.class.php');
 require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
 

@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
+require_once(LIMB_DIR . '/core/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
 
 define('ACCESS_POLICY_ACCESSOR_TYPE_GROUP', 0);
 define('ACCESS_POLICY_ACCESSOR_TYPE_USER', 1);

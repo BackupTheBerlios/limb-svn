@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormAction.class.php');
 require_once(dirname(__FILE__) . '/../MetadataManager.class.php');
 
 class SetMetadataAction extends FormAction

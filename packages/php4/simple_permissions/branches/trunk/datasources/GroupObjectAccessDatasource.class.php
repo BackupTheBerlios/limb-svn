@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/FetchTreeDatasource.class.php');
+require_once(LIMB_DIR . '/core/datasources/FetchTreeDatasource.class.php');
 
 class GroupObjectAccessDatasource extends FetchTreeDatasource
 {

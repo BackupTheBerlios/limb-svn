@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
+require_once(LIMB_DIR . '/core/i18n/Locale.class.php');
 
 class AvailableLocalesDatasource// implements OptionsDatasource
 {

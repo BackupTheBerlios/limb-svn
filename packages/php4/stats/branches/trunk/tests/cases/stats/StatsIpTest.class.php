@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../StatsIp.class.php');
-require_once(LIMB_DIR . '/class/lib/http/Ip.class.php');
-require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/http/Ip.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generatePartial
 (

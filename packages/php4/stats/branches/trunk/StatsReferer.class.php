@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
+require_once(LIMB_DIR . '/core/http/Uri.class.php');
 
 class StatsReferer
 {

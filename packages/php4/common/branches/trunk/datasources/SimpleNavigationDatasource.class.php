@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/datasources/FetchSubBranchDatasource.class.php');
+require_once(LIMB_DIR . '/core/datasources/FetchSubBranchDatasource.class.php');
 
 class SimpleNavigationDatasource extends FetchSubBranchDatasource
 {

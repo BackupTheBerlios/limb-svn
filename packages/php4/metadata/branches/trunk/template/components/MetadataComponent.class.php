@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/template/Component.class.php');
-require_once(LIMB_DIR . '/class/ArrayDataset.class.php');
+require_once(LIMB_DIR . '/core/template/Component.class.php');
+require_once(LIMB_DIR . '/core/ArrayDataset.class.php');
 
 class MetadataComponent extends Component
 {

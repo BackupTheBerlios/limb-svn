@@ -8,7 +8,7 @@
 * $Id: create_document_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/FormEditSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/FormEditSiteObjectCommand.class.php');
 
 class EditDocumentFormCommand extends FormEditSiteObjectCommand
 {
@@ -27,8 +27,8 @@ class EditDocumentFormCommand extends FormEditSiteObjectCommand
   {
     parent :: _registerValidationRules($validator, $dataspace);
 
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'document_content'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'title'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'document_content'));
   }
 }
 

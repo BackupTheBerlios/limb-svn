@@ -8,7 +8,7 @@
 * $Id: create_catalog_object_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/commands/FormCreateSiteObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/FormCreateSiteObjectCommand.class.php');
 
 class CreateCatalogObjectFormCommand extends FormCreateSiteObjectCommand
 {
@@ -28,8 +28,8 @@ class CreateCatalogObjectFormCommand extends FormCreateSiteObjectCommand
   {
     parent :: _registerValidationRules($validator, $dataspace);
 
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'annotation'));
-    $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'object_content'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'annotation'));
+    $validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'object_content'));
   }
 }
 

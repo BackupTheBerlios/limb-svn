@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/DomainObject.class.php');
+require_once(LIMB_DIR . '/core/DomainObject.class.php');
 
 class FileObject extends DomainObject
 {

@@ -19,7 +19,7 @@ class SearchEngineYahooRule extends SearchEngineRegexRule
 
   function getMatchingPhrase()
   {
-    include_once(LIMB_DIR . '/class/lib/http/utf8_to_win1251.inc.php');
+    include_once(LIMB_DIR . '/core/http/utf8_to_win1251.inc.php');
     return utf8ToWin1251(parent :: getMatchingPhrase());
   }
 }

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
+require_once(LIMB_DIR . '/core/db_tables/OneTableObjectDbTable.class.php');
 
 class FileObjectDbTable extends OneTableObjectDbTable
 {

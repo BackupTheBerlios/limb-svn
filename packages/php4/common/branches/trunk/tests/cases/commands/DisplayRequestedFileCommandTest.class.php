@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../commands/files/DisplayRequestedFileCommand.class.php');
-require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
-require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
-include_once(LIMB_DIR . '/class/lib/util/MimeType.class.php');
+require_once(LIMB_DIR . '/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/core/request/Request.class.php');
+require_once(LIMB_DIR . '/core/datasources/RequestedObjectDatasource.class.php');
+include_once(LIMB_DIR . '/core/util/MimeType.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('HttpResponse');

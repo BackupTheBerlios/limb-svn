@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/actions/FormCreateSiteObjectAction.class.php');
+require_once(LIMB_DIR . '/core/actions/FormCreateSiteObjectAction.class.php');
 
 class CreateFaqObjectAction extends FormCreateSiteObjectAction
 {
@@ -41,10 +41,10 @@ class CreateFaqObjectAction extends FormCreateSiteObjectAction
   {
     parent :: _initValidator();
 
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'question'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'answer'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'question_author_email'));
-    $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'answer_author_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'question'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/required_rule', 'answer'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/email_rule', 'question_author_email'));
+    $this->validator->addRule(array(LIMB_DIR . '/core/validators/rules/email_rule', 'answer_author_email'));
   }
 }
 
