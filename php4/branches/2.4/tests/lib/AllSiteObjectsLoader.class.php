@@ -16,8 +16,8 @@ class AllSiteObjectsLoader extends SiteObjectsLoader
   function getClassesList()
   {
     $contents = array_merge(
-      Fs :: ls(LIMB_DIR . '/class/core/site_objects/'),
-      Fs :: ls(LIMB_APP_DIR . '/class/core/site_objects/')
+      Fs :: ls(LIMB_DIR . '/class/site_objects/'),
+      Fs :: ls(LIMB_APP_DIR . '/class/site_objects/')
     );
 
     $classes_list = array();

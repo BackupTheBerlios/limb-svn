@@ -13,8 +13,8 @@ class TestsActionFileResolver// implements FileResolver
 {
   function resolve($class_path, $params = array())
   {
-    if(file_exists(LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php'))
-      $full_path = LIMB_DIR . '/class/core/actions/' . $class_path . '.class.php';
+    if(file_exists(LIMB_DIR . '/class/actions/' . $class_path . '.class.php'))
+      $full_path = LIMB_DIR . '/class/actions/' . $class_path . '.class.php';
     else
       return throw(new FileNotFoundException('action not found', $class_path));
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
 
 Mock :: generate('SiteObjectBehaviour');
 

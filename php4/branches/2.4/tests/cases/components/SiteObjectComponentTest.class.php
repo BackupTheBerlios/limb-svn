@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/template/components/datasource/SiteObjectComponent.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/SingleObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/request/Request.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/datasources/SingleObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/request/Request.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generatePartial('SiteObjectComponent',

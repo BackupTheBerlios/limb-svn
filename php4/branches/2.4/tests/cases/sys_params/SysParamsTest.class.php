@@ -11,7 +11,7 @@
 
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
-require_once(LIMB_DIR . '/class/core/SysParam.class.php');
+require_once(LIMB_DIR . '/class/SysParam.class.php');
 
 class SysParamsTest extends LimbTestCase
 {

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/core/LinksManager.class.php');
+require_once(LIMB_DIR . '/class/LinksManager.class.php');
 
 class LinksManagerTest extends LimbTestCase
 {

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/LimbApplication.class.php');
+require_once(LIMB_DIR . '/class/LimbApplication.class.php');
 
 $app = new LimbApplication();
 $app->run();

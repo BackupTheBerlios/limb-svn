@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/data_mappers/AbstractDataMapper.class.php');
-require_once(LIMB_DIR . '/class/core/DomainObject.class.php');
-require_once(LIMB_DIR . '/class/core/finders/DataFinder.interface.php');
+require_once(LIMB_DIR . '/class/data_mappers/AbstractDataMapper.class.php');
+require_once(LIMB_DIR . '/class/DomainObject.class.php');
+require_once(LIMB_DIR . '/class/finders/DataFinder.interface.php');
 
 Mock :: generate('DomainObject');
 Mock :: generate('DataFinder');

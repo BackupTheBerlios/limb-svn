@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/CachingTree.class.php');
-require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/tree/CachingTree.class.php');
+require_once(LIMB_DIR . '/class/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/class/cache/CacheRegistry.class.php');
 
 Mock :: generate('LimbToolkit');

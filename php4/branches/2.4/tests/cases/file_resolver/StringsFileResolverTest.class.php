@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/StringsFileResolver.class.php');
+require_once(LIMB_DIR . '/class/file_resolvers/StringsFileResolver.class.php');
 
 class StringsFileResolverTest extends BasePackageFileResolverTest
 {

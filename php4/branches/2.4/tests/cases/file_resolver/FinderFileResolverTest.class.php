@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/FinderFileResolver.class.php');
+require_once(LIMB_DIR . '/class/file_resolvers/FinderFileResolver.class.php');
 
 class FinderFileResolverTest extends BasePackageFileResolverTest
 {

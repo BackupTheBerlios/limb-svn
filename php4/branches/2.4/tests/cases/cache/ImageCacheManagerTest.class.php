@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/cache/ImageCacheManager.class.php');
-require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/request/Request.class.php');
 require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/SiteObjectsByNodeIdsDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/datasources/SiteObjectsByNodeIdsDatasource.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 
 Mock :: generate('Uri');
 Mock :: generate('SiteObjectsByNodeIdsDatasource');

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/session/SessionDbDriver.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/session/SessionDbDriver.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/permissions/User.class.php');
 
 Mock :: generate('User');
 Mock :: generate('LimbToolkit');

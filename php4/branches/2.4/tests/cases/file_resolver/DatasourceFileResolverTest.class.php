@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/BasePackageFileResolverTest.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/DatasourceFileResolver.class.php');
+require_once(LIMB_DIR . '/class/file_resolvers/DatasourceFileResolver.class.php');
 
 class DatasourceFileResolverTest extends BasePackageFileResolverTest
 {
@@ -21,7 +21,7 @@ class DatasourceFileResolverTest extends BasePackageFileResolverTest
   function testResolveDatasourceFileFromLimb()
   {
     $this->assertEqual($this->resolver->resolve('SiteObjectsDatasource'),
-                       LIMB_DIR . '/class/core/datasources/SiteObjectsDatasource.class.php');
+                       LIMB_DIR . '/class/datasources/SiteObjectsDatasource.class.php');
   }
 
   function testResolveDatasourceFileOk()

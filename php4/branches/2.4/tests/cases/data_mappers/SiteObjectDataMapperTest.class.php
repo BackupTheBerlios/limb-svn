@@ -9,14 +9,14 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectMapper.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/SiteObjectBehaviourMapper.class.php');
-require_once(LIMB_DIR . '/class/core/finders/SiteObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
-require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
-require_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
-require_once(LIMB_DIR . '/class/core/tree/TreeDecorator.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/data_mappers/SiteObjectMapper.class.php');
+require_once(LIMB_DIR . '/class/data_mappers/SiteObjectBehaviourMapper.class.php');
+require_once(LIMB_DIR . '/class/finders/SiteObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/BaseLimbToolkit.class.php');
+require_once(LIMB_DIR . '/class/tree/TreeDecorator.class.php');
+require_once(LIMB_DIR . '/class/permissions/User.class.php');
 
 Mock :: generatePartial('BaseLimbToolkit',
                       'SiteObjectManipulationTestToolkit',

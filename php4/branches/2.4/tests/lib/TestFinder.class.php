@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
-require_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
+require_once(LIMB_DIR . '/class/PackagesInfo.class.php');
 
 class TestFinder
 {

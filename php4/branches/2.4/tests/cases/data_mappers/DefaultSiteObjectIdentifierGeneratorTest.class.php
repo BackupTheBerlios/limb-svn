@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/DefaultSiteObjectIdentifierGenerator.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/class/data_mappers/DefaultSiteObjectIdentifierGenerator.class.php');
 
 Mock :: generate('SiteObject');
 

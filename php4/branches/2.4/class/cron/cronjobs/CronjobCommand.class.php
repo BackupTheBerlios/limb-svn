@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/request/NonbufferedResponse.class.php');
+require_once(LIMB_DIR . '/class/request/NonbufferedResponse.class.php');
 
 class CronjobCommand //implements Command
 {

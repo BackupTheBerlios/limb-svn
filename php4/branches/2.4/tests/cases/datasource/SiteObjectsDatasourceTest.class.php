@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/datasources/SiteObjectsDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/Authorizer.interface.php');
-require_once(LIMB_DIR . '/class/core/finders/DataFinder.interface.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/datasources/SiteObjectsDatasource.class.php');
+require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
+require_once(LIMB_DIR . '/class/permissions/Authorizer.interface.php');
+require_once(LIMB_DIR . '/class/finders/DataFinder.interface.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/class/cache/CacheRegistry.class.php');
 
 Mock :: generatePartial('SiteObjectsDatasource', 'SpecialSiteObjectsDatasource',

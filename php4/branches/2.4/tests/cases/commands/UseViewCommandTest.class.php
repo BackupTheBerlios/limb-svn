@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/UseViewCommand.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/commands/UseViewCommand.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 
 Mock :: generate('LimbToolkit');
 

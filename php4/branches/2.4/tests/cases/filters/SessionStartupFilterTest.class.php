@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/SessionStartupFilter.class.php');
-require_once(LIMB_DIR . '/class/core/request/Request.class.php');
-require_once(LIMB_DIR . '/class/core/session/Session.class.php');
-require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/request/HttpResponse.class.php');
+require_once(LIMB_DIR . '/class/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/filters/SessionStartupFilter.class.php');
+require_once(LIMB_DIR . '/class/request/Request.class.php');
+require_once(LIMB_DIR . '/class/session/Session.class.php');
+require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/request/HttpResponse.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('FilterChain');

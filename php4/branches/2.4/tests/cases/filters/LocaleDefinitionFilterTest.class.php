@@ -8,14 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/FilterChain.class.php');
-require_once(LIMB_DIR . '/class/core/filters/LocaleDefinitionFilter.class.php');
-require_once(LIMB_DIR . '/class/core/request/Request.class.php');
-require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
-require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/filters/FilterChain.class.php');
+require_once(LIMB_DIR . '/class/filters/LocaleDefinitionFilter.class.php');
+require_once(LIMB_DIR . '/class/request/Request.class.php');
+require_once(LIMB_DIR . '/class/request/Response.interface.php');
+require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/permissions/User.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('FilterChain');

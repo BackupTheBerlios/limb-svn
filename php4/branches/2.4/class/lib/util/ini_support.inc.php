@@ -9,12 +9,12 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
+require_once(LIMB_DIR . '/class/file_resolvers/file_resolvers_registry.inc.php');
 
 if(!isRegisteredResolver('ini'))
 {
-  include_once(LIMB_DIR . '/class/core/file_resolvers/PackageFileResolver.class.php');
-  include_once(LIMB_DIR . '/class/core/file_resolvers/IniFileResolver.class.php');
+  include_once(LIMB_DIR . '/class/file_resolvers/PackageFileResolver.class.php');
+  include_once(LIMB_DIR . '/class/file_resolvers/IniFileResolver.class.php');
   registerFileResolver('ini', new IniFileResolver(new PackageFileResolver()));
 }
 

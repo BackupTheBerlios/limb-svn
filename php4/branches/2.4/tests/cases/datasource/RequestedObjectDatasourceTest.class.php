@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/datasources/RequestedObjectDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
-require_once(LIMB_DIR . '/class/core/request/Request.class.php');
+require_once(LIMB_DIR . '/class/datasources/RequestedObjectDatasource.class.php');
+require_once(LIMB_DIR . '/class/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/request/Request.class.php');
 require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
 Mock :: generate('LimbToolkit');

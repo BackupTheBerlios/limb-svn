@@ -12,7 +12,7 @@ $site_path = $argv[1];
 require_once($site_path . '/setup.php');
 
 require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
-require_once(LIMB_DIR . '/class/core/request/NonbufferedResponse.class.php');
+require_once(LIMB_DIR . '/class/request/NonbufferedResponse.class.php');
 require_once(LIMB_DIR . '/class/lib/cron/CronManager.class.php');
 
 $force = false;

@@ -9,12 +9,12 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/core/data_mappers/VersionedOneTableObjectsMapper.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/VersionedSiteObject.class.php');
+require_once(LIMB_DIR . '/class/data_mappers/VersionedOneTableObjectsMapper.class.php');
+require_once(LIMB_DIR . '/class/site_objects/VersionedSiteObject.class.php');
 require_once(dirname(__FILE__) . '/OneTableObjectsMapperTestVersionDbTable.class.php');
-require_once(LIMB_DIR . '/class/core/finders/VersionedOneTableObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/core/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/core/BaseLimbToolkit.class.php');
+require_once(LIMB_DIR . '/class/finders/VersionedOneTableObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/class/permissions/User.class.php');
+require_once(LIMB_DIR . '/class/BaseLimbToolkit.class.php');
 
 Mock :: generatePartial('BaseLimbToolkit',
                       'VersionedOneTableObjectsToolkitMock', array());

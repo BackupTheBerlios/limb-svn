@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/datasources/SiteObjectsByNodeIdsDatasource.class.php');
-require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/datasources/SiteObjectsByNodeIdsDatasource.class.php');
+require_once(LIMB_DIR . '/class/tree/Tree.interface.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 
 Mock :: generatePartial('SiteObjectsByNodeIdsDatasource',
                         'SiteObjectsByNodeIdsTestVersionDatasource',

@@ -11,9 +11,9 @@
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
 require_once(LIMB_DIR . '/class/lib/db/DbModule.class.php');
-require_once(LIMB_DIR . '/class/core/finders/SiteObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/core/behaviours/SiteObjectBehaviour.class.php');
-require_once(LIMB_DIR . '/class/core/tree/MaterializedPathTree.class.php');
+require_once(LIMB_DIR . '/class/finders/SiteObjectsRawFinder.class.php');
+require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/class/tree/MaterializedPathTree.class.php');
 
 Mock :: generate('DbModule');
 Mock :: generate('LimbToolkit');

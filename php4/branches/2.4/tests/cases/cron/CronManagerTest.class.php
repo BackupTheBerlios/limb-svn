@@ -10,8 +10,8 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/cron/CronManager.class.php');
 require_once(LIMB_DIR . '/class/cron/cronjobs/CronjobCommand.class.php');
-require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
+require_once(LIMB_DIR . '/class/request/Response.interface.php');
+require_once(LIMB_DIR . '/class/LimbToolkit.interface.php');
 
 Mock :: generate('CronjobCommand');
 Mock :: generate('Response');

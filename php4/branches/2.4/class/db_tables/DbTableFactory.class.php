@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
 if(!isRegisteredResolver('db_table'))
 {
-  include_once(LIMB_DIR . '/class/core/file_resolvers/PackageFileResolver.class.php');
-  include_once(LIMB_DIR . '/class/core/file_resolvers/DbTableFileResolver.class.php');
+  include_once(LIMB_DIR . '/class/file_resolvers/PackageFileResolver.class.php');
+  include_once(LIMB_DIR . '/class/file_resolvers/DbTableFileResolver.class.php');
   registerFileResolver('db_table', new DbTableFileResolver(new PackageFileResolver()));
 }
 

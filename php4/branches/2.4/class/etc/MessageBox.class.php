@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
-require_once(LIMB_DIR . '/class/core/session/Session.class.php');
+require_once(LIMB_DIR . '/class/session/Session.class.php');
 
 define('MESSAGE_BOX_NOTICE', 1);
 define('MESSAGE_BOX_WARNING', 2);

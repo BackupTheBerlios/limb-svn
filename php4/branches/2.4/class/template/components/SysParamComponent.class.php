@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/SysParam.class.php');
+require_once(LIMB_DIR . '/class/SysParam.class.php');
 
 class SysParamComponent extends Component
 {
