@@ -16,7 +16,16 @@ class detail_info_controller extends site_object_controller
   {
     return array(
         'display' => array(
-            'template_path' => '/detail_info/display.html'
+            'template_path' => '/detail_info/display.html',
+            'action_path' => '/detail_info/display_detail_info_action',
+        ),
+        'change_locale' => array(
+            'template_path' => '/detail_info/display.html',
+            'action_path' => '/detail_info/change_locale_action',
+        ),
+        'change_access' => array(
+            'template_path' => '/detail_info/display.html',
+            'action_path' => '/detail_info/change_access_action',
         ),
         'edit' => array(
             'popup' => true,

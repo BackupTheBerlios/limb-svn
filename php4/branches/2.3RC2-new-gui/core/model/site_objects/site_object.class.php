@@ -209,6 +209,7 @@ class site_object extends object
                 sso.title as title,
                 sso.identifier as identifier,
                 sso.id as id,
+                sso.locale_id as locale_id,
                 ssot.id as node_id,
                 ssot.parent_id as parent_node_id,
                 ssot.level as level,
@@ -573,6 +574,11 @@ class site_object extends object
     return (int)$this->get_attribute('id');
   }
 
+  function set_locale_id($id)
+  {
+    return $this->set_attribute('locale_id', $id);
+  }
+  
   function get_version()
   {
     return (int)$this->get_attribute('version');
@@ -655,10 +661,13 @@ class site_object extends object
     else
       $data['modified_date'] = $modified_date;
 
-    if ($this->get_attribute('locale_id'))
-      $data['locale_id'] = $this->get_attribute('locale_id');
-    else
-      $data['locale_id'] = $this->_get_parent_locale_id();
+    if (!$locale_id = $this->get_locale_id())
+    {
+      $locale_id = $this->_get_parent_locale_id();
+      $this->set_locale_id($locale_id);
+    }
+        
+    $data['locale_id'] = $locale_id;
 
     $sys_site_object_db_table =& db_table_factory :: instance('sys_site_object');
 
@@ -706,6 +715,7 @@ class site_object extends object
     $data['title'] = $this->get_title();
     $data['status'] = $this->get_attribute('status', 0);
     $data['controller_id'] = $this->get_attribute('controller_id');
+    $data['locale_id'] = $this->get_locale_id();
 
     return $sys_site_object_db_table->update_by_id($this->get_id(), $data);
   }
@@ -839,6 +849,11 @@ class site_object extends object
       return site_object_controller :: get_id($controller_name);
     else
       return null;
+  }
+  
+  function get_locale_id()
+  {
+    return $this->get_attribute('locale_id');
   }
 
   function save_metadata()

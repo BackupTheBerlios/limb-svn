@@ -42,6 +42,7 @@ class site_object_manipulation_test extends LimbTestCase
 
   var $root_node_id = '';
   var $parent_node_id = '';
+  var $parent_locale_id = '';
   var $sub_node_id = '';
 
   function setUp()
@@ -72,12 +73,14 @@ class site_object_manipulation_test extends LimbTestCase
 
     $values['identifier'] = 'ru';
     $values['object_id'] = 1;
+    $this->parent_locale_id = 'fr';
     $this->parent_node_id = $tree->create_sub_node($this->root_node_id, $values);
 
-    $this->db->sql_insert('sys_site_object', array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
+    $this->db->sql_insert('sys_site_object', array('id' => 1, 'class_id' => $class_id, 'current_version' => 1, 'locale_id' => $this->parent_locale_id));
 
     $values['identifier'] = 'document';
     $values['object_id'] = 10;
+    
     $this->sub_node_id = $tree->create_sub_node($this->parent_node_id, $values);
 
     $this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => $class_id, 'current_version' => 1));
@@ -109,20 +112,20 @@ class site_object_manipulation_test extends LimbTestCase
   function test_failed_create()
   {
     debug_mock :: expect_write_error('identifier is empty');
-
-    $this->assertIdentical($this->object->create(), false, 'create should fail here');
+    
+    $this->assertIdentical($this->object->create(), false);
 
     $this->object->set_parent_node_id(10);
 
     debug_mock :: expect_write_error('identifier is empty');
 
-    $this->assertIdentical($this->object->create(), false, 'create should fail here');
+    $this->assertIdentical($this->object->create(), false);
 
     $this->object->set_identifier('test');
 
     debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 10));
 
-    $this->assertIdentical($this->object->create(), false, 'create should fail here');
+    $this->assertIdentical($this->object->create(), false);
   }
 
   function test_create()
@@ -131,7 +134,8 @@ class site_object_manipulation_test extends LimbTestCase
 
     $this->object->set_parent_node_id($this->parent_node_id);
     $this->object->set_identifier('node_test');
-
+    $this->object->set_locale_id('en');
+    
     $id = $this->object->create();
 
     $this->assertNotIdentical($id, false, 'create operation failed');
@@ -144,17 +148,39 @@ class site_object_manipulation_test extends LimbTestCase
 
     $this->_check_sys_class_record();
   }
+  
+  function test_create_take_locale_from_parent()
+  {
+    debug_mock :: expect_never_write();
+
+    $this->object->set_parent_node_id($this->parent_node_id);
+    $this->object->set_identifier('node_test');    
+
+    $id = $this->object->create();
+
+    $this->assertNotIdentical($id, false, 'create operation failed');
+
+    $this->assertEqual($id, $this->object->get_id());
+    $this->assertEqual($this->parent_locale_id, $this->object->get_locale_id());
+
+    $this->_check_sys_site_object_tree_record();
+
+    $this->_check_sys_site_object_record();
+
+    $this->_check_sys_class_record();
+  }  
 
   function test_versioned_update()
   {
     $this->object->set_parent_node_id($this->parent_node_id);
-    $this->object->set_identifier('node_test');
-
+    $this->object->set_identifier('node_test');    
+    
     $id = $this->object->create();
     $node_id = $this->object->get_attribute('node_id');
 
     $this->object->set_identifier('new_article_test');
     $this->object->set_title('New article test');
+    $this->object->set_locale_id('ru');
 
     $result = $this->object->update();
     $this->assertTrue($result, 'update operation failed');
@@ -167,14 +193,14 @@ class site_object_manipulation_test extends LimbTestCase
   function test_unversioned_update()
   {
     $this->object->set_parent_node_id($this->parent_node_id);
-    $this->object->set_identifier('node_test');
-
+    $this->object->set_identifier('node_test');    
+    
     $this->object->create();
     $this->object->get_node_id();
 
     $this->object->set_identifier('new_article_test');
     $this->object->set_title('New article test');
-
+    $this->object->set_locale_id('ru');
     $this->assertTrue($this->object->update(false), 'update operation failed');
 
     $this->_check_sys_site_object_tree_record();
@@ -241,9 +267,11 @@ class site_object_manipulation_test extends LimbTestCase
 
     $this->db->sql_select('sys_site_object', '*', 'id=' . $this->object->get_id());
     $record = $this->db->fetch_row();
+    
     $this->assertEqual($record['identifier'], $this->object->get_identifier());
     $this->assertEqual($record['title'], $this->object->get_title());
-    $this->assertEqual($record['current_version'], $this->object->get_version());
+    $this->assertEqual($record['current_version'], $this->object->get_version());    
+    $this->assertEqual($record['locale_id'], $this->object->get_locale_id());
     $this->assertFalse(!$record['class_id']);
     $this->assertEqual($record['creator_id'], $user->get_id());
     $this->assertTrue((time() - $record['created_date']) <= 60);
