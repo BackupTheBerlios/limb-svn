@@ -16,7 +16,7 @@
 /**
  * Naming, version & release date
  */
-define('LIMB_NAME', 'L.I.M.B');
+define('LIMB_NAME', 'LIMB');
 
 /**
  * Additional software subname string
@@ -51,7 +51,7 @@ define('LIMB_RELEASE_NAME', 'Vacation Edition');
 /**
  * Software build (full) date
  */
-define('LIMB_VERSION_DATE', 'August 8, 2004');
+define('LIMB_VERSION_DATE', 'August 10, 2004');
 
 
 // --- Do not change from here ----------------------------------------
