@@ -13,11 +13,6 @@ require_once(dirname(__FILE__) . '/../simple_authenticator.class.php');
 
 class login_command extends form_command
 {
-	protected function _define_dataspace_name()
-	{
-	  return 'login_form';
-	}
-
 	protected function _init_validator()
 	{
 		$this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'login'));
