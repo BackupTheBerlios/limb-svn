@@ -30,7 +30,7 @@ class user_controller extends site_object_controller
             'action_name' => strings :: get('edit_user', 'user'),
             'action_path' => '/user/edit_user_action',
             'template_path' => '/user/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'set_membership' => array(
             'JIP' => true,
@@ -38,7 +38,7 @@ class user_controller extends site_object_controller
             'action_name' => strings :: get('membership', 'user'),
             'action_path' => '/user/set_membership',
             'template_path' => '/user/set_membership.html',
-            'img_src' => '/shared/images/actions/membership.gif'
+            'icon' => 'membership'
         ),
         'change_password' => array(
             'action_path' => '/user/change_password_action',
@@ -46,7 +46,7 @@ class user_controller extends site_object_controller
             'action_name' => strings :: get('change_password', 'user'),
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/actions/password_manage.gif'
+            'icon' => 'password_manage'
         ),
         'delete' => array(
             'JIP' => true,
@@ -54,7 +54,7 @@ class user_controller extends site_object_controller
             'action_name' => strings :: get('delete_user','user'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

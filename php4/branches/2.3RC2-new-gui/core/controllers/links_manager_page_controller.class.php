@@ -29,7 +29,7 @@ class links_manager_page_controller extends site_object_controller
             'action_path' => '/links_manager/create_links_group_action',
             'popup' => true,
             'JIP' => true,
-            'img_src' => '/shared/images/actions/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_group', 'links'),
         ),
         'delete_group' => array(

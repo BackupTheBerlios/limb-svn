@@ -25,7 +25,7 @@ class image_object_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/images/edit_image_action',
             'template_path' => '/image/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'edit_variations' => array(
             'popup' => true,
@@ -33,12 +33,12 @@ class image_object_controller extends site_object_controller
             'action_name' => strings :: get('edit_variations', 'image'),
             'action_path' => '/images/edit_variations_action',
             'template_path' => '/image/edit_variations.html',
-            'img_src' => '/shared/images/actions/look_group.gif'
+            'icon' => 'look_group'
         ),
         'delete' => array(
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/actions/delete.gif',
+            'icon' => 'delete',
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',

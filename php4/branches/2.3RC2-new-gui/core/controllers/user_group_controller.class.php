@@ -30,7 +30,7 @@ class user_group_controller extends site_object_controller
             'action_name' => strings :: get('edit_user_group', 'user_group'),
             'action_path' => '/user_group/edit_user_group_action',
             'template_path' => '/user_group/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -38,7 +38,7 @@ class user_group_controller extends site_object_controller
             'action_name' => strings :: get('delete_user_group', 'user_group'),
             'action_path' => '/form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

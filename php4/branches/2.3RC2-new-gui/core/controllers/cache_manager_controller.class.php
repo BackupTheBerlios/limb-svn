@@ -31,7 +31,7 @@ class cache_manager_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'flush_full_page_cache' => array(
             'action_name' => strings :: get('flush_full_page_cache', 'cache_manager'),
@@ -64,7 +64,7 @@ class cache_manager_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

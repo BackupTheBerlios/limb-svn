@@ -28,7 +28,7 @@ class guestbook_controller extends site_object_controller
             'action_path' => '/guestbook_message/create_guestbook_message_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/actions/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_message', 'guestbook'),
             'can_have_access_template' => true,
         ),
@@ -38,7 +38,7 @@ class guestbook_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -46,7 +46,7 @@ class guestbook_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

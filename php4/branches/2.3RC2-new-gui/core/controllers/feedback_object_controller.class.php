@@ -29,7 +29,7 @@ class feedback_object_controller extends site_object_controller
             'action_name' => strings :: get('edit_feedback_content', 'feedback'),
             'action_path' => '/feedback_object/edit_feedback_action',
             'template_path' => '/feedback_object/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -37,7 +37,7 @@ class feedback_object_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

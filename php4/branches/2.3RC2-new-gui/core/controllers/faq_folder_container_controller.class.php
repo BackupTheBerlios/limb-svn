@@ -26,7 +26,7 @@ class faq_folder_container_controller extends site_object_controller
             'action_path' => '/faq_folder/create_faq_folder_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/actions/new.folder.gif',
+            'icon' => 'new.folder',
             'action_name' => strings :: get('create_faq_folder','faq'),
             'can_have_access_template' => true,
         ),
@@ -36,7 +36,7 @@ class faq_folder_container_controller extends site_object_controller
             'action_name' => strings :: get('delete_faq_folder','faq'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

@@ -31,7 +31,7 @@ class admin_page_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'register_new_object' => array(
             'popup' => true,
@@ -39,7 +39,7 @@ class admin_page_controller extends site_object_controller
             'action_name' => strings :: get('register_new_object'),
             'action_path' => '/site_object/register_new_object_action',
             'template_path' => '/site_object/register_new_object.html',
-            'img_src' => '/shared/images/actions/activate.gif'
+            'icon' => 'activate'
         )
     );
   }

@@ -27,14 +27,14 @@ class paragraphs_list_page_controller extends site_object_controller
             'action_name' => strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
-            'img_src' => '/shared/images/actions/configure.gif'
+            'icon' => 'configure'
         ),
         'create_paragraph' => array(
             'template_path' => '/paragraph/create.html',
             'action_path' => '/paragraph/create_paragraph_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/actions/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_paragraph', 'paragraph'),
             'can_have_access_template' => true,
         ),
@@ -43,7 +43,7 @@ class paragraphs_list_page_controller extends site_object_controller
             'action_path' => '/paragraphs_list_page/create_paragraphs_list_page_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/actions/new.folder.gif',
+            'icon' => 'new.folder',
             'action_name' => strings :: get('create_paragraphs_list_page', 'paragraph'),
             'can_have_access_template' => true,
         ),
@@ -53,14 +53,14 @@ class paragraphs_list_page_controller extends site_object_controller
             'action_name' => strings :: get('edit_paragraphs_list_page', 'paragraph'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/full_edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/actions/publish.gif',
+            'icon' => 'publish',
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
@@ -68,7 +68,7 @@ class paragraphs_list_page_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/actions/unpublish.gif',
+            'icon' => 'unpublish',
             'can_have_access_template' => true,
         ),
         'delete' => array(
@@ -77,7 +77,7 @@ class paragraphs_list_page_controller extends site_object_controller
             'action_name' => strings :: get('delete_paragraphs_list_page', 'paragraph'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

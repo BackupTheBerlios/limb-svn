@@ -30,14 +30,14 @@ class poll_answer_controller extends site_object_controller
             'action_name' => strings :: get('edit_poll_answer','poll'),
             'action_path' => '/poll_answer/edit_poll_answer_action',
             'template_path' => '/poll_answer/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/actions/publish.gif',
+            'icon' => 'publish',
             'template_path' => '/news_object/display.html',
             'can_have_access_template' => true,
         ),
@@ -46,7 +46,7 @@ class poll_answer_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/actions/unpublish.gif',
+            'icon' => 'unpublish',
             'template_path' => '/news_object/display.html',
             'can_have_access_template' => true,
         ),
@@ -56,7 +56,7 @@ class poll_answer_controller extends site_object_controller
             'action_name' => strings :: get('delete_poll_answer','poll'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

@@ -29,7 +29,7 @@ class admin_navigation_item_controller extends site_object_controller
             'action_path' => '/navigation_item/create_admin_navigation_item_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/actions/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_menu_item','navigation'),
             'can_have_access_template' => true,
         ),
@@ -39,7 +39,7 @@ class admin_navigation_item_controller extends site_object_controller
             'action_name' => strings :: get('edit_menu_item', 'navigation'),
             'action_path' => '/navigation_item/edit_navigation_item_action',
             'template_path' => '/navigation_item/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -47,7 +47,7 @@ class admin_navigation_item_controller extends site_object_controller
             'action_name' => strings :: get('delete_menu_item', 'navigation'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

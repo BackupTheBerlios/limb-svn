@@ -28,7 +28,7 @@ class objects_access_controller extends site_object_controller
             'template_path' => '/objects_access/set_group_access.html',
             'action_path' => '/objects_access/set_group_objects_access',
             'JIP' => true,
-            'img_src' => '/shared/images/actions/access_manage.gif',
+            'icon' => 'access_manage',
             'action_name' => strings :: get('set_group_access'),
         ),
         'toggle' => array(
@@ -41,7 +41,7 @@ class objects_access_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
 
     );

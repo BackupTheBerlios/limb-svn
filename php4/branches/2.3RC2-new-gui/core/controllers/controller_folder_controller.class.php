@@ -30,14 +30,14 @@ class controller_folder_controller extends site_object_controller
             'template_path' => '/controller_folder/set_group_access.html',
             'action_path' => '/controller_folder/set_group_access',
             'popup' => true,
-            'img_src' => '/shared/images/actions/access_manage.gif',
+            'icon' => 'access_manage',
             'action_name' => strings :: get('set_group_access'),
         ),
         'set_group_access_template' => array(
             'template_path' => '/controller_folder/set_group_access_template.html',
             'action_path' => '/controller_folder/set_group_access_template_action',
             'popup' => true,
-            'img_src' => '/shared/images/actions/access_template_manage.gif',
+            'icon' => 'access_template_manage',
             'action_name' => strings :: get('set_group_access_template'),
         ),
         'edit' => array(
@@ -46,7 +46,7 @@ class controller_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
     );
   }

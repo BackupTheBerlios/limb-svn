@@ -28,14 +28,14 @@ class catalog_object_controller extends site_object_controller
             'action_name' => strings :: get('edit_catalog_object', 'catalog'),
             'action_path' => '/catalog_object/edit_catalog_object_action',
             'template_path' => '/catalog_object/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/actions/publish.gif',
+            'icon' => 'publish',
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
@@ -43,7 +43,7 @@ class catalog_object_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/actions/unpublish.gif',
+            'icon' => 'unpublish',
             'can_have_access_template' => true,
         ),
         'delete' => array(
@@ -52,7 +52,7 @@ class catalog_object_controller extends site_object_controller
             'action_name' => strings :: get('delete_catalog_object', 'catalog'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }

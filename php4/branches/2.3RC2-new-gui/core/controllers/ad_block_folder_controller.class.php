@@ -30,7 +30,7 @@ class ad_block_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('create_ad_block', 'ad'),
-            'img_src' => '/shared/images/actions/new.generic.gif',
+            'icon' => 'new.generic',
             'can_have_access_template' => true,
         ),
         'edit' => array(
@@ -39,7 +39,7 @@ class ad_block_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/actions/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -47,7 +47,7 @@ class ad_block_folder_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/actions/delete.gif'
+            'icon' => 'delete'
         ),
     );
   }
