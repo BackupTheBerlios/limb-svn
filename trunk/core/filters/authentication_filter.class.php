@@ -16,9 +16,7 @@ class authentication_filter extends intercepting_filter
   function run(&$filter_chain, &$request, &$response)
   { 
     debug :: add_timing_point('authentication filter started');
-  
-    start_user_session();
-    
+  	
     if(!$object_data = fetch_requested_object($request))
     {
       if(!$node = map_request_to_node($request))

@@ -393,6 +393,13 @@ function & fetch_requested_object()
 	return $result;
 }
 
+function & fetch_one_by_id($object_id)
+{
+	$fetcher =& fetcher :: instance();
+	$result =& $fetcher->fetch_one_by_id($object_id);
+	return $result;
+}
+
 function & fetch_one_by_node_id($node_id)
 {
 	$fetcher =& fetcher :: instance();
