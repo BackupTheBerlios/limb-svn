@@ -24,15 +24,8 @@ function error($description, $error_place='', $params=array())
 		
 	$GLOBALS['error_recursion'] = true;
 	
-	if(defined('DEVELOPER_ENVIROMENT'))
-	{
-		trigger_error('error', E_USER_WARNING);
+	trigger_error('error', E_USER_WARNING);
 		
-		echo(  $description . '<br>' . $error_place . '<br><pre>');
-		print_r($params);
-		echo('</pre>');
-	}
-	
 	$description = $description . "\n\nback trace:\n" . get_trace_back();
 		
 	rollback_user_transaction();
