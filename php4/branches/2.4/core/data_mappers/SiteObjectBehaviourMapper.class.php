@@ -69,7 +69,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
     $toolkit =& Limb :: toolkit();
     $db =& new SimpleDb($toolkit->getDbConnection());
 
-    $rs =& $db->select('sys_behaviour', 'id', sqlIn('name', $names));
+    $rs =& $db->select('sys_behaviour', array('id'), sqlIn('name', $names));
 
     $result = array();
     for($rs->rewind();$rs->valid();$rs->next())

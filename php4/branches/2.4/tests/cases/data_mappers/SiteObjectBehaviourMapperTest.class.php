@@ -92,7 +92,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
     $this->mapper->insert($behaviour);
 
-    $rs =& $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $rs =& $this->db->select('sys_behaviour', '*', array('id' => $behaviour->getId()));
 
     $record = $rs->getRow();
 
@@ -116,7 +116,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
     $this->mapper->update($behaviour);
 
-    $rs =& $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $rs =& $this->db->select('sys_behaviour', '*',  array('id' => $behaviour->getId()));
 
     $record = $rs->getRow();
 
@@ -140,7 +140,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
     $this->mapper->delete($behaviour);
 
-    $rs =& $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $rs =& $this->db->select('sys_behaviour', '*',  array('id' => $behaviour->getId()));
 
     $this->assertTrue(!$rs->getRow());
   }

@@ -117,6 +117,12 @@ class SimpleDb
 
   function _addConditions(&$sql, $conditions)
   {
+    if(!is_array($conditions))
+    {
+      $sql->addCondition($conditions);
+      return;
+    }
+
     foreach($conditions as $key => $value)
     {
       if(is_integer($key))
