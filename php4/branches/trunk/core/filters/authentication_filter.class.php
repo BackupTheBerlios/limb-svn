@@ -54,7 +54,12 @@ class authentication_filter extends intercepting_filter
 
     if(!isset($actions[$action]))
     {
-      $response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
+      $redirect = $site_object_controller->get_action_property($action, 'inaccessible_redirect');
+      
+      if(!$redirect)
+        $redirect = '/root/login';
+      
+      $response->redirect($redirect . '?redirect='. urlencode($_SERVER['REQUEST_URI']));
     }
 
     debug :: add_timing_point('authentication filter finished');
