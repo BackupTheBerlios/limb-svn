@@ -44,6 +44,14 @@ class packages_info
     
     $packages = $ini->get_option('packages');
     
+    if (!count($packages))
+    {
+   		debug :: write_error('no packages in package.ini!',
+  		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+
+      return false;
+    }
+    
     foreach($packages as $package_path)
     {
       $package_data = array();
