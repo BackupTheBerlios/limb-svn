@@ -75,19 +75,19 @@ class SimpleSelectSQLTest extends LimbTestCase
 
   function testAddCondition()
   {
-    $this->sql->addCondition('c1=:c1');
+    $this->sql->addCondition('c1=:c1:');
 
     $this->assertEqual($this->sql->toString(),
-                       'SELECT test.* FROM test WHERE (c1=:c1)');
+                       'SELECT test.* FROM test WHERE (c1=:c1:)');
   }
 
   function testAddSeveralConditions()
   {
-    $this->sql->addCondition('c1=:c1');
-    $this->sql->addCondition('c2=:c2');
+    $this->sql->addCondition('c1=:c1:');
+    $this->sql->addCondition('c2=:c2:');
 
     $this->assertEqual($this->sql->toString(),
-                       'SELECT test.* FROM test WHERE (c1=:c1) AND (c2=:c2)');
+                       'SELECT test.* FROM test WHERE (c1=:c1:) AND (c2=:c2:)');
   }
 
   function testAddOrder()

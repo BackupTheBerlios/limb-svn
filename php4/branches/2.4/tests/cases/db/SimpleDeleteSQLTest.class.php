@@ -31,11 +31,11 @@ class SimpleDeleteSQLTest extends LimbTestCase
 
   function testDeleteFiltered()
   {
-    $this->sql->addCondition('c1=:c1');
-    $this->sql->addCondition('c2=:c2');
+    $this->sql->addCondition('c1=:c1:');
+    $this->sql->addCondition('c2=:c2:');
 
     $this->assertEqual($this->sql->toString(),
-                       'DELETE FROM test WHERE (c1=:c1) AND (c2=:c2)');
+                       'DELETE FROM test WHERE (c1=:c1:) AND (c2=:c2:)');
   }
 }
 ?>

@@ -32,7 +32,7 @@ class UniqueUserEmailRule extends SingleFieldRule
 
     $sql = 'SELECT *
             FROM sys_site_object as sco, user as tn
-            WHERE tn.email=:email
+            WHERE tn.email=:email:
             AND sco.id=tn.object_id
             AND sco.current_version=tn.version';
 

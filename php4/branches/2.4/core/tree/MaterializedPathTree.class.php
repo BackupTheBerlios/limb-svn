@@ -121,9 +121,9 @@ class MaterializedPathTree// implements Tree
             FROM {$this->_node_table}, {$this->_node_table} AS  {$join_table}
             WHERE
             {$join_table}.path LIKE {$concat} AND
-            {$this->_node_table}.root_id = :root_id AND
-            {$this->_node_table}.level < :level AND
-            {$join_table}.id = :id
+            {$this->_node_table}.root_id = :root_id: AND
+            {$this->_node_table}.level < :level: AND
+            {$join_table}.id = :id:
             ORDER BY {$this->_node_table}.level ASC";
 
     $stmt =& $this->_conn->newStatement($sql);
@@ -170,7 +170,7 @@ class MaterializedPathTree// implements Tree
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
-            WHERE parent_id = :parent_id";
+            WHERE parent_id = :parent_id:";
 
     $stmt =& $this->_conn->newStatement($sql);
     $stmt->set('parent_id', $parent['id']);
@@ -184,7 +184,7 @@ class MaterializedPathTree// implements Tree
       return null;
 
     $sql = "SELECT count(id) as counter FROM {$this->_node_table}
-            WHERE parent_id = :parent_id";
+            WHERE parent_id = :parent_id:";
 
     $stmt =& $this->_conn->newStatement($sql);
     $stmt->set('parent_id', $id);
@@ -275,7 +275,7 @@ class MaterializedPathTree// implements Tree
   function getNode($id)
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE id=:id";
+            FROM {$this->_node_table} WHERE id=:id:";
 
     $stmt =& $this->_conn->newStatement($sql);
     $stmt->setInteger('id', $id);
@@ -358,8 +358,8 @@ class MaterializedPathTree// implements Tree
 
     $sql = "SELECT identifier FROM {$this->_node_table}
             WHERE
-            root_id=:root_id AND
-            parent_id=:parent_id";
+            root_id=:root_id: AND
+            parent_id=:parent_id:";
 
     $stmt =& $this->_conn->newStatement($sql);
     $stmt->setInteger('root_id', $parent['root_id']);
@@ -601,8 +601,8 @@ class MaterializedPathTree// implements Tree
 
     $stmt =& $this->_conn->newStatement("DELETE FROM {$this->_node_table}
                                         WHERE
-                                        path LIKE :path AND
-                                        root_id = :root_id");
+                                        path LIKE :path: AND
+                                        root_id = :root_id:");
 
     $stmt->setVarChar('path', $node['path'] . '%');
     $stmt->setInteger('root_id', $node['root_id']);
@@ -612,7 +612,7 @@ class MaterializedPathTree// implements Tree
     $stmt =& $this->_conn->newStatement("UPDATE {$this->_node_table}
                                         SET children = children - 1
                                         WHERE
-                                        id = :id");
+                                        id = :id:");
 
     $stmt->setInteger('id', $node['parent_id']);
 

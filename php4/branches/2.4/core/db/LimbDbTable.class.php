@@ -115,7 +115,7 @@ class LimbDbTable
 
     $sql = new SimpleInsertSQL($this->_db_table_name);
     foreach($filtered_row as $key => $value)
-      $sql->addField($key , ':'. $key);
+      $sql->addField($key , ':' . $key . ':');
 
     $this->_stmt =& $this->_conn->newStatement($sql->toString());
 
@@ -136,7 +136,7 @@ class LimbDbTable
     $prefixed_row = array();
     foreach($row as $key => $value)
     {
-      $sql->addField($key . '=:_'. $key);
+      $sql->addField($key . '=:_' . $key . ':');
       $prefixed_row['_' . $key] = $value;
     }
 
@@ -376,7 +376,7 @@ class LimbDbTable
       if(is_integer($key))
         $sql->addCondition($value);
       else
-        $sql->addCondition($key . '=:' . $key);
+        $sql->addCondition($key . '=:' . $key . ':');
     }
   }
 

@@ -313,7 +313,7 @@ class SiteObjectMapper extends AbstractDataMapper
   {
     $sql = "SELECT sso.locale_id as locale_id
             FROM sys_site_object as sso, sys_site_object_tree as ssot
-            WHERE ssot.id = :parent_node_id
+            WHERE ssot.id = :parent_node_id:
             AND sso.id = ssot.object_id";
 
     $toolkit =& Limb :: toolkit();

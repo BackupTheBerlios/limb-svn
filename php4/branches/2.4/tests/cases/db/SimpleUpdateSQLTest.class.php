@@ -26,23 +26,23 @@ class SimpleUpdateSQLTest extends LimbTestCase
 
   function testUpdate()
   {
-    $this->sql->addField('id=:id');
-    $this->sql->addField('title=:title');
+    $this->sql->addField('id=:id:');
+    $this->sql->addField('title=:title:');
 
     $this->assertEqual($this->sql->toString(),
-                       "UPDATE test SET id=:id,title=:title");
+                       "UPDATE test SET id=:id:,title=:title:");
   }
 
   function testUpdateFiltered()
   {
-    $this->sql->addField('id=:id');
-    $this->sql->addField('title=:title');
+    $this->sql->addField('id=:id:');
+    $this->sql->addField('title=:title:');
 
-    $this->sql->addCondition('c1=:c1');
-    $this->sql->addCondition('c2=:c2');
+    $this->sql->addCondition('c1=:c1:');
+    $this->sql->addCondition('c2=:c2:');
 
     $this->assertEqual($this->sql->toString(),
-                       "UPDATE test SET id=:id,title=:title WHERE (c1=:c1) AND (c2=:c2)");
+                       "UPDATE test SET id=:id:,title=:title: WHERE (c1=:c1:) AND (c2=:c2:)");
   }
 }
 ?>

@@ -97,64 +97,64 @@ class ComplexSelectSQLTest extends LimbTestCase
   {
     $sql = new ComplexSelectSQL("SELECT * FROM test WHERE \n%where%");
 
-    $sql->addCondition('c1=:c1 OR c2=:c2');
+    $sql->addCondition('c1=:c1: OR c2=:c2:');
 
     $this->assertEqual($sql->toString(),
-                       "SELECT * FROM test WHERE \n(c1=:c1 OR c2=:c2)");
+                       "SELECT * FROM test WHERE \n(c1=:c1: OR c2=:c2:)");
   }
 
   function testAddConditionNoWhereClause()
   {
     $sql = new ComplexSelectSQL("SELECT * FROM test \n%where%");
 
-    $sql->addCondition('c1=:c1 OR c2=:c2');
+    $sql->addCondition('c1=:c1: OR c2=:c2:');
 
     $this->assertEqual($sql->toString(),
-                       "SELECT * FROM test \nWHERE (c1=:c1 OR c2=:c2)");
+                       "SELECT * FROM test \nWHERE (c1=:c1: OR c2=:c2:)");
   }
 
   function testAddSeveralConditions()
   {
     $sql = new ComplexSelectSQL('SELECT * FROM test %where%');
 
-    $sql->addCondition('c1=:c1');
-    $sql->addCondition('c2=:c2');
+    $sql->addCondition('c1=:c1:');
+    $sql->addCondition('c2=:c2:');
 
     $this->assertEqual($sql->toString(),
-                       'SELECT * FROM test WHERE (c1=:c1) AND (c2=:c2)');
+                       'SELECT * FROM test WHERE (c1=:c1:) AND (c2=:c2:)');
   }
 
   function testAddConditionToExistingConditions()
   {
     $sql = new ComplexSelectSQL("SELECT * FROM test WHERE t1=t1\n %where%");
 
-    $sql->addCondition('c1=:c1');
-    $sql->addCondition('c2=:c2');
+    $sql->addCondition('c1=:c1:');
+    $sql->addCondition('c2=:c2:');
 
     $this->assertEqual($sql->toString(),
-                       "SELECT * FROM test WHERE t1=t1\n AND (c1=:c1) AND (c2=:c2)");
+                       "SELECT * FROM test WHERE t1=t1\n AND (c1=:c1:) AND (c2=:c2:)");
   }
 
   function testAddConditionToExistingConditionsWithOrder()
   {
     $sql = new ComplexSelectSQL("SELECT * FROM test WHERE t1=t1\n\n %where% \n\tORDER BY t1");
 
-    $sql->addCondition('c1=:c1');
-    $sql->addCondition('c2=:c2');
+    $sql->addCondition('c1=:c1:');
+    $sql->addCondition('c2=:c2:');
 
     $this->assertEqual($sql->toString(),
-                       "SELECT * FROM test WHERE t1=t1\n\n AND (c1=:c1) AND (c2=:c2) \n\tORDER BY t1");
+                       "SELECT * FROM test WHERE t1=t1\n\n AND (c1=:c1:) AND (c2=:c2:) \n\tORDER BY t1");
   }
 
   function testAddConditionToExistingConditionsWithGroup()
   {
     $sql = new ComplexSelectSQL("SELECT * FROM test WHERE t1=t1\n\n %where% \n\tGROUP BY t1");
 
-    $sql->addCondition('c1=:c1');
-    $sql->addCondition('c2=:c2');
+    $sql->addCondition('c1=:c1:');
+    $sql->addCondition('c2=:c2:');
 
     $this->assertEqual($sql->toString(),
-                       "SELECT * FROM test WHERE t1=t1\n\n AND (c1=:c1) AND (c2=:c2) \n\tGROUP BY t1");
+                       "SELECT * FROM test WHERE t1=t1\n\n AND (c1=:c1:) AND (c2=:c2:) \n\tGROUP BY t1");
   }
 
   function testEmptyOrder()

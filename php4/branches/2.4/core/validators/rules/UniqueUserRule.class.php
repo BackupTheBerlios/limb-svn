@@ -32,7 +32,7 @@ class UniqueUserRule extends SingleFieldRule
 
     $sql = 'SELECT *
             FROM sys_site_object as sco, user as tn
-            WHERE sco.identifier=:identifier
+            WHERE sco.identifier=:identifier:
             AND sco.id=tn.object_id
             AND sco.current_version=tn.version';
 

@@ -67,7 +67,7 @@ class SimpleDb
     $prefixed_values = array();
     foreach($values as $key => $value)
     {
-      $sql->addField($key . '=:_'. $key);
+      $sql->addField($key . '=:_' . $key . ':');
       $prefixed_values['_' . $key] = $value;
     }
 
@@ -105,7 +105,7 @@ class SimpleDb
       if(is_integer($key))
         $sql->addField($value);
       else
-        $sql->addField($key , ':'. $key);
+        $sql->addField($key , ':' . $key . ':');
     }
   }
 
@@ -116,7 +116,7 @@ class SimpleDb
       if(is_integer($key))
         $sql->addCondition($value);
       else
-        $sql->addCondition($key . '=:' . $key);
+        $sql->addCondition($key . '=:' . $key . ':');
     }
   }
 
