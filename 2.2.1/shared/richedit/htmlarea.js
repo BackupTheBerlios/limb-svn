@@ -1237,15 +1237,142 @@ HTMLArea.prototype.getSelectedHTML = function()
 // Called when the user clicks on "InsertImage" button
 HTMLArea.prototype._insertImage = function()
 {
-	var editor = this;	// for nested functions
-	popup("/root/image_select", null, null, false,  richedit_insert_image, richedit_get_image);
+  editor = this;
+  
+	popup("/root/image_select", null, null, false,  
+	
+    function(image) 
+    {
+    	if (!image)
+    		return false;
+    	
+      var htmlSelectionControl = "Control";
+      var grngMaster = editor._doc.selection.createRange();
+      
+      // delete selected content and replace with image
+      if (editor._doc.selection.type == htmlSelectionControl)
+      {
+        grngMaster.execCommand('Delete');
+        grngMaster = editor._doc.selection.createRange();
+      }
+      
+      link_to = image['link_to'];
+      if (link_to.length > 1)
+      {
+      	idstr = "556e697175657e537472696e67";
+    	  grngMaster.execCommand("CreateLink", null, idstr);
+    	  coll = editor._doc.getElementsByTagName("A");
+    	  for(i=0; i<coll.length; i++)
+    	  {
+    	  	if (coll[i].href == idstr)
+    	  	{
+    			  link_element = coll[i];
+    			  link_element.href = '/root?node_id=' + image['node_id'] + '&' + link_to;
+    			  link_element.target = '_blank';
+    			  img_element = editor._doc.createElement("IMG");
+    			  img_element.src = '/root?node_id=' + image['node_id'] + '&' + image['type'];
+    			  link_element.appendChild(img_element);
+    			}
+    		}
+    	}
+      else
+    	{
+    		idstr = "\" id=\"556e697175657e537472696e67";
+    	  grngMaster.execCommand("InsertImage", null, idstr);
+    	  img_element = editor._doc.all['556e697175657e537472696e67'];
+    	  img_element.removeAttribute("id");
+    	  img_element.src = '/root?node_id=' + image['node_id'] + '&' + image['type'];
+    	}
+    	
+      img_element.id = image['node_id'] + ':' + image['type'] + ':' + image['link_to'];
+      img_element.border = image['border'];
+      img_element.alt = image['alt'];
+      img_element.align = image['align'];
+      img_element.hspace = image['hspace'];
+      img_element.vspace = image['vspace'];
+      new_width = parseInt(image['width']);
+      new_height = parseInt(image['height']);
+      if (new_width != 0 && !isNaN(new_width))
+      	img_element.width = image['width'];
+      if (new_height != 0 && !isNaN(new_height))
+      	img_element.height = image['height'];
+      
+      grngMaster.collapse(false);
+      grngMaster.select();
+    }	  
+	  ,
+    function()
+    {      
+      var grngMaster = editor._doc.selection.createRange();
+    
+      // delete selected content and replace with image
+      if (editor._doc.selection.type == "Control")
+      {
+      	if (grngMaster.item(0).tagName == 'IMG')
+      	{
+      		params = grngMaster.item(0).id;
+      		params = params.split(':');
+    			img = {node_id:  params[0],
+    						 width:   grngMaster.item(0).width,
+    						 height:   grngMaster.item(0).height,
+    						 border:  grngMaster.item(0).border,
+    						 hspace:  grngMaster.item(0).hspace,
+    						 vspace:  grngMaster.item(0).vspace,
+    						 align:  grngMaster.item(0).align,
+    						 alt:  grngMaster.item(0).alt,
+    						 type:  params[1],
+    						 link_to: params[2]};
+    			return img;
+      	}
+      }
+      return false
+    }
+    
+	);
+	
 };
 
 // Called when the user clicks on "InsertImage" button
 HTMLArea.prototype._insertLinkFile = function()
 {
-	var editor = this;	// for nested functions
-	popup("/root/file_select", null, null, false, richedit_insert_filelink, richedit_get_filelink);
+  var editor = this;
+  
+	popup("/root/file_select", null, null, false, 
+	
+  	function (file)
+    {
+      var htmlSelectionControl = "Control";
+      var grngMaster = editor._doc.selection.createRange();
+      
+      // delete selected content and replace with image
+      if (editor._doc.selection.type == htmlSelectionControl)
+      {
+        grngMaster.execCommand('Delete');
+        grngMaster = editor._doc.selection.createRange();
+      }
+        
+    	idstr = "556e697175657e537472696e67";
+      grngMaster.execCommand("CreateLink", null, idstr);
+      coll = editor._doc.getElementsByTagName("A");
+      for(i=0; i<coll.length; i++)
+      {
+      	if (coll[i].href == idstr)
+      	{
+    		  link_element = coll[i];
+      		if (link_element.firstChild == null)
+      		{
+      			txt = editor._doc.createTextNode(file.name);
+      			link_element.appendChild(txt);
+      		}
+    		  link_element.href = '/root?node_id=' + file.node_id;
+    		  link_element.title = file.name;
+    		}
+    	}
+    
+      grngMaster.collapse(false);
+      grngMaster.select();
+    }, 
+	  function (obj){});
 };
 
 // Called when the user clicks the Insert Table button
@@ -1344,45 +1471,50 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param)
 	switch (cmdID.toLowerCase())
 	{
 	    case "htmlmode" : this.setMode(); break;
+	    
 	    case "hilitecolor":
-		(HTMLArea.is_ie) && (cmdID = "backcolor");
+		  (HTMLArea.is_ie) && (cmdID = "backcolor");
+		  
 	    case "forecolor":
-		this._popupDialog("/shared/richedit/popups/select_color.html", function(color)
-	 	{
-			if (color)
-	 		{ // selection not canceled
-				editor._doc.execCommand(cmdID, false, "#" + color);
-			}
-		}, HTMLArea._colorToRgb(this._doc.queryCommandValue(cmdID)));
-		break;
+  		this._popupDialog("/shared/richedit/popups/select_color.html", 
+  		  function(color)
+    	 	{
+    			if (color)
+    	 		{ // selection not canceled
+    				editor._doc.execCommand(cmdID, false, "#" + color);
+    			}
+    		}, 
+  		  HTMLArea._colorToRgb(this._doc.queryCommandValue(cmdID)));
+		  break;
+		  
 	    case "createlink":
-		if (HTMLArea.is_ie || !UI)
-	 	{
-			this._doc.execCommand(cmdID, UI, param);
-		} else {
-			// browser is Mozilla & wants UI
-			var param;
-			if ((param = prompt("Enter URL")))
-	 		{
-				this._doc.execCommand(cmdID, false, param);
-			}
-		}
-		break;
+  		if (HTMLArea.is_ie || !UI)
+  	 	{
+  			this._doc.execCommand(cmdID, UI, param);
+  		} else {
+  			// browser is Mozilla & wants UI
+  			var param;
+  			if ((param = prompt("Enter URL")))
+  	 		{
+  				this._doc.execCommand(cmdID, false, param);
+  			}
+  		}
+		  break;
 	    case "popupeditor":
-		if (HTMLArea.is_ie)
-	 	{
-			window.open(this.popupURL("/shared/richedit/popups/fullscreen.html"), "ha_fullscreen",
-//							"");
-				    "toolbar=no,location=no,directories=no,status=no,menubar=no," +
-				    "scrollbars=no,resizable=yes,width=640,height=480");
-		} else {
-			window.open(this.popupURL("/shared/richedit/popups/fullscreen.html"), "ha_fullscreen",
-				    "toolbar=no,menubar=no,personalbar=no,width=640,height=480," +
-				    "scrollbars=no,resizable=yes");
-		}
-		// pass this object to the newly opened window
-		HTMLArea._object = this;
-		break;
+  		if (HTMLArea.is_ie)
+  	 	{
+  			window.open(this.popupURL("/shared/richedit/popups/fullscreen.html"), "ha_fullscreen",
+  				    "toolbar=no,location=no,directories=no,status=no,menubar=no," +
+  				    "scrollbars=no,resizable=yes,width=640,height=480");
+  		} else {
+  			window.open(this.popupURL("/shared/richedit/popups/fullscreen.html"), "ha_fullscreen",
+  				    "toolbar=no,menubar=no,personalbar=no,width=640,height=480," +
+  				    "scrollbars=no,resizable=yes");
+  		}
+  		// pass this object to the newly opened window
+  		HTMLArea._object = this;
+  		break;
+  		
 	    case "inserttable": this._insertTable(); break;
 	    case "insertimage": this._insertImage(); break;
 	    case "insertlinkfile": this._insertLinkFile(); break;
@@ -1870,143 +2002,8 @@ HTMLArea.prototype.imgURL = function(file, plugin)
 
 HTMLArea.prototype.popupURL = function(file)
 {
-//	return this.config.editorURL + this.config.popupURL + file;
 	return file;
 };
-
-// EOF
-// Local variables: //
-// c-basic-offset:8 //
-// indent-tabs-mode:t //
-// End: //
-
-function richedit_insert_image(param) 
-{
-	if (!param)
-		return false;
-	
-  var htmlSelectionControl = "Control";
-  var grngMaster = editor._doc.selection.createRange();
-  
-  // delete selected content and replace with image
-  if (editor._doc.selection.type == htmlSelectionControl)
-  {
-    grngMaster.execCommand('Delete');
-    grngMaster = editor._doc.selection.createRange();
-  }
-  
-  link_to = param['link_to'];
-  if (link_to.length > 1)
-  {
-  	idstr = "556e697175657e537472696e67";
-	  grngMaster.execCommand("CreateLink", null, idstr);
-	  coll = editor._doc.getElementsByTagName("A");
-	  for(i=0; i<coll.length; i++)
-	  {
-	  	if (coll[i].href == idstr)
-	  	{
-			  link_element = coll[i];
-			  link_element.href = '/root?node_id=' + param['node_id'] + '&' + link_to;
-			  link_element.target = '_blank';
-			  img_element = editor._doc.createElement("IMG");
-			  img_element.src = '/root?node_id=' + param['node_id'] + '&' + param['type'];
-			  link_element.appendChild(img_element);
-			}
-		}
-	}
-else
-	{
-		idstr = "\" id=\"556e697175657e537472696e67";
-	  grngMaster.execCommand("InsertImage", null, idstr);
-	  img_element = editor._doc.all['556e697175657e537472696e67'];
-	  img_element.removeAttribute("id");
-	  img_element.src = '/root?node_id=' + param['node_id'] + '&' + param['type'];
-	}
-	
-  img_element.id = param['node_id'] + ':' + param['type'] + ':' + param['link_to'];
-  img_element.border = param['border'];
-  img_element.alt = param['alt'];
-  img_element.align = param['align'];
-  img_element.hspace = param['hspace'];
-  img_element.vspace = param['vspace'];
-  new_width = parseInt(param['width']);
-  new_height = parseInt(param['height']);
-  if (new_width != 0 && !isNaN(new_width))
-  	img_element.width = param['width'];
-  if (new_height != 0 && !isNaN(new_height))
-  	img_element.height = param['height'];
-  
-  grngMaster.collapse(false);
-  grngMaster.select();
-}
-
-function richedit_get_image(window_name)
-{
-  var htmlSelectionControl = "Control";
-  var grngMaster = editor._doc.selection.createRange();
-
-  // delete selected content and replace with image
-  if (editor._doc.selection.type == htmlSelectionControl)
-  {
-  	if (grngMaster.item(0).tagName == 'IMG')
-  	{
-  		params = grngMaster.item(0).id;
-  		params = params.split(':');
-			img = {node_id:  params[0],
-						 width:   grngMaster.item(0).width,
-						 height:   grngMaster.item(0).height,
-						 border:  grngMaster.item(0).border,
-						 hspace:  grngMaster.item(0).hspace,
-						 vspace:  grngMaster.item(0).vspace,
-						 align:  grngMaster.item(0).align,
-						 alt:  grngMaster.item(0).alt,
-						 type:  params[1],
-						 link_to: params[2]};
-			return img;
-  	}
-  }
-  return false
-}
-
-function richedit_insert_filelink(file)
-{
-  var htmlSelectionControl = "Control";
-  var grngMaster = editor._doc.selection.createRange();
-  
-  // delete selected content and replace with image
-  if (editor._doc.selection.type == htmlSelectionControl)
-  {
-    grngMaster.execCommand('Delete');
-    grngMaster = editor._doc.selection.createRange();
-  }
-    
-	idstr = "556e697175657e537472696e67";
-  grngMaster.execCommand("CreateLink", null, idstr);
-  coll = editor._doc.getElementsByTagName("A");
-  for(i=0; i<coll.length; i++)
-  {
-  	if (coll[i].href == idstr)
-  	{
-		  link_element = coll[i];
-  		if (link_element.firstChild == null)
-  		{
-  			txt = editor._doc.createTextNode(file.name);
-  			link_element.appendChild(txt);
-  		}
-		  link_element.href = '/root?node_id=' + file.node_id;
-		  link_element.title = file.name;
-		}
-	}
-
-  grngMaster.collapse(false);
-  grngMaster.select();
-}
-
-function richedit_get_filelink(objname)
-{
-}
-
-
 
 //
 // [anton's]
@@ -2055,19 +2052,7 @@ HTMLArea.prototype.clearEmptyTags = function()
 				s++
 			}
 			}catch(ex){}
-//////			try{
-//////			if(obj.nodeType == 1)
-//////			if(obj.children.length==1)
-//////			if(obj.children[0].hasChildNodes() && obj.children[0].firstChild.nodeType == 1)
-//////			{
-//////				var h = obj.children[0].firstChild.innerHTML
-////////				if(typeof(h)!=undefined) 
-//////				obj.innerHTML = h
-//////				s++
-//////			}
-//////			}catch(ex){}
 		}
-//	alert(s)
 	return s
 }
 HTMLArea.prototype.isNonPairTag = function(name)

@@ -40,6 +40,7 @@ file_select.prototype.get_file = function()
 					description: this.description.innerHTML,
 					size: this.size.innerHTML,
 					mime_type: this.mime.innerHTML
+		      start_path: this.start_path
 				};
 	
 	return file;
@@ -54,4 +55,9 @@ file_select.prototype.insert_file = function(file)
 	this.mime.innerHTML = file.mime_type;
 	
 	this.generate();
+}
+
+file_select.prototype.set_start_path = function(start_path)
+{
+	this.start_path = start_path;
 }

@@ -86,8 +86,16 @@
 			preview_description_obj.nodeValue = file.description;
 			preview_size_obj.nodeValue = 'Size:' + file.size + ' bytes';
 			preview_mime_obj.nodeValue = 'Mime-type:' + file.mime_type;
+			
+  		if(!file.start_path)
+  			start_path = '/root/files_folder?action=file_select';
+  	  else
+  	    start_path = file.start_path;
+  	    
+      if((file_select_frame.location.pathname + file_select_frame.location.search) != start_path)
+  		  file_select_frame.location = start_path;					
 		}
-		
+
 		process_popup();
 	}
 	
@@ -115,7 +123,7 @@
 							</tr>
 							<tr>
 								<td align=center>
-									<iframe src='/root/files_folder/?action=file_select' width=450 height=400></iframe>
+									<iframe name='file_select_frame' src='/root/files_folder/?action=file_select' width=450 height=400></iframe>
 									</td>
 							</tr>
 							</table>	

@@ -66,16 +66,16 @@ class richedit_component extends text_area_component
 		
     echo "
     <script type='text/javascript'>
-      var editor = null;
+      var editor_{$id} = null;
     
-      function init_richedit()
+      function init_richedit_{$id}()
       {
-	    	editor = new HTMLArea('{$id}');
-			  editor.registerPlugin('TableOperations');
-        editor.config.editorURL = '/shared/richedit/';
-        editor.generate();
+	    	editor_{$id} = new HTMLArea('{$id}');
+			  editor_{$id}.registerPlugin('TableOperations');
+        editor_{$id}.config.editorURL = '/shared/richedit/';
+        editor_{$id}.generate();
       }
-      add_event(window, 'load', init_richedit);
+      add_event(window, 'load', init_richedit_{$id});
     </script>";
 	}
 

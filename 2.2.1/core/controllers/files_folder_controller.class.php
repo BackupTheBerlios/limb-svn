@@ -60,6 +60,7 @@ class files_folder_controller extends site_object_controller
 				'file_select' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/files_folder/file_select.html',
+						'action_path' => '/files_folder/file_select_action',
 						'trasaction' => false,
 				),
 		);

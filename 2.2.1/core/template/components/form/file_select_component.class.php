@@ -35,6 +35,7 @@ class file_select_component extends input_form_element
 			$span_description = $file_data['description'];
 			$span_size = $file_data['size'];
 			$span_mime = $file_data['mime_type'];
+			$start_path = '/root?action=file_select&node_id=' . $file_data['parent_node_id'];
 		}
 		else
 		{
@@ -44,7 +45,19 @@ class file_select_component extends input_form_element
 			$span_mime = '';
 		}
 
-  	  	
+  	$start_path_condition = "";
+  	if(!$start_path)
+  	{
+	 		$start_path = $this->get_attribute('start_path');
+	  	if(!$start_path)
+	  		$start_path = session :: get('limb_file_select_working_path');
+	  	if(!$start_path)
+				$start_path = '/root/images_folder';
+
+			$start_path .= '?action=file_select';
+		}
+  	$start_path_condition = "file_select_{$md5id}.set_start_path('{$start_path}');";
+
   	echo "<span id='{$md5id}_span_empty'><img src='/shared/images/no_img.gif'></span>
   				<span id='{$md5id}_span_content'>
   					<a id='{$md5id}_href' href='#'><img id='{$md5id}_img' align='center' src='/shared/images/1x1.gif'/>&nbsp;<span id='{$md5id}_name'>{$span_name}</span></a><br>
@@ -59,6 +72,7 @@ class file_select_component extends input_form_element
 		      function init_file_select_{$md5id}()
 		      {
 		        file_select_{$md5id} = new file_select('{$id}', '{$md5id}');
+		        {$start_path_condition}
 		        file_select_{$md5id}.generate();
 		      }
 		      

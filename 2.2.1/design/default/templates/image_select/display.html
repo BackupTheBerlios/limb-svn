@@ -61,9 +61,8 @@
 	
 	function insert_image()
 	{
-		h = get_close_popup_handler();		
+		h = get_close_popup_handler();	
 		h(image);
-		//opener.popups[window.name]['process_popup'](image);
 		window.close();
 	}
 	
@@ -101,14 +100,16 @@
 
 			preview_description_obj.nodeValue = img.alt;
 			preview_caption_obj.nodeValue = img.name;
+			
+  		if(!img.start_path)
+  			start_path = '/root/images_folder?action=image_select';
+  	  else
+  	    start_path = img.start_path;
+  	    
+      if((image_select_frame.location.pathname + image_select_frame.location.search) != start_path)
+  		  image_select_frame.location = start_path;			
 		}
 		
-		start_path = img.start_path;
-		if(!start_path)
-			start_path = '/root/images_folder?action=image_select';
-
-		image_select_frame.location = start_path;
-//		hide_loading_div();
 		render_properties();
 		process_popup();
 	}
