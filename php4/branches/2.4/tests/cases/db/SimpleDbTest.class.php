@@ -36,17 +36,17 @@ class SimpleDbTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $stmt = $this->conn->newStatement('DELETE FROM test1');
+    $stmt = $this->conn->newStatement('DELETE FROM test_db_table');
     $stmt->execute();
   }
 
   function testInsert()
   {
-    $id = $this->db->insert('test1', array('id' => null,
+    $id = $this->db->insert('test_db_table', array('id' => null,
                                            'title' =>  'wow',
                                            'description' => 'wow!'));
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $record = $stmt->getOneRecord();
 
     $this->assertEqual($record->get('title'), 'wow');
@@ -56,12 +56,12 @@ class SimpleDbTest extends LimbTestCase
 
   function testUpdateAll()
   {
-    $this->db->insert('test1', array('id' => null, 'title' =>  'wow', 'description' => 'description' ));
-    $this->db->insert('test1', array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'wow', 'description' => 'description' ));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
 
-    $this->assertEqual($this->db->update('test1', array('description' =>  'new_description')), 2);
+    $this->assertEqual($this->db->update('test_db_table', array('description' =>  'new_description')), 2);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -75,17 +75,17 @@ class SimpleDbTest extends LimbTestCase
 
   function testUpdateByCondition()
   {
-    $this->db->insert('test1', array('id' => null, 'title' =>  'wow', 'description' => 'description'));
-    $this->db->insert('test1', array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
-    $this->db->insert('test1', array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'wow', 'description' => 'description'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
 
-    $res = $this->db->update('test1',
+    $res = $this->db->update('test_db_table',
                               array('description' =>  'new_description', 'title' => 'wow2'),
                               array('title' => 'wow'));
 
     $this->assertEqual($res, 2);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -101,17 +101,17 @@ class SimpleDbTest extends LimbTestCase
 
   function testUpdateByMixedCondition()
   {
-    $this->db->insert('test1', array('id' => null, 'title' =>  'wow', 'description' => 'description'));
-    $this->db->insert('test1', array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
-    $this->db->insert('test1', array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'wow', 'description' => 'description'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
 
-    $res = $this->db->update('test1',
+    $res = $this->db->update('test_db_table',
                               array('description' =>  'new_description', 'title' => 'wow2'),
                               array('title' => 'wow', "description='description2'"));
 
     $this->assertEqual($res, 1);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -132,17 +132,17 @@ class SimpleDbTest extends LimbTestCase
 
   function testUpdateByStringCondition()
   {
-    $this->db->insert('test1', array('id' => null, 'title' =>  'wow', 'description' => 'description'));
-    $this->db->insert('test1', array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
-    $this->db->insert('test1', array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'wow', 'description' => 'description'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
+    $this->db->insert('test_db_table', array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
 
-    $res = $this->db->update('test1',
+    $res = $this->db->update('test_db_table',
                               array('description' =>  'new_description', 'title' => 'wow2'),
                               "title = 'wow'");
 
     $this->assertEqual($res, 2);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -163,10 +163,10 @@ class SimpleDbTest extends LimbTestCase
       1 => array('id' => null, 'title' =>  'wow', 'description' => 'description2')
     );
 
-    $this->db->insert('test1', $data[0]);
-    $this->db->insert('test1', $data[1]);
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
 
-    $result = $this->db->select('test1');
+    $result = $this->db->select('test_db_table');
 
     $this->assertEqual($result->getTotalRowCount(), 2);
 
@@ -186,10 +186,10 @@ class SimpleDbTest extends LimbTestCase
       1 => array('id' => null, 'title' =>  'wow', 'description' => 'description2')
     );
 
-    $this->db->insert('test1', $data[0]);
-    $this->db->insert('test1', $data[1]);
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
 
-    $result = $this->db->select('test1', '*');
+    $result = $this->db->select('test_db_table', '*');
 
     $this->assertEqual($result->getTotalRowCount(), 2);
 
@@ -209,10 +209,10 @@ class SimpleDbTest extends LimbTestCase
       1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
     );
 
-    $this->db->insert('test1', $data[0]);
-    $this->db->insert('test1', $data[1]);
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
 
-    $result = $this->db->select('test1',
+    $result = $this->db->select('test_db_table',
                                 array('*'),
                                 array('title' => 'wow!',
                                       'description' => 'description2'));
@@ -231,10 +231,10 @@ class SimpleDbTest extends LimbTestCase
       1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2'),
     );
 
-    $this->db->insert('test1', $data[0]);
-    $this->db->insert('test1', $data[1]);
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
 
-    $result = $this->db->select('test1',
+    $result = $this->db->select('test_db_table',
                                 array('*'),
                                 array("title = 'wow!'",
                                       'description' => 'description2'));
@@ -253,10 +253,10 @@ class SimpleDbTest extends LimbTestCase
       1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2'),
     );
 
-    $this->db->insert('test1', $data[0]);
-    $this->db->insert('test1', $data[1]);
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
 
-    $result = $this->db->select('test1',
+    $result = $this->db->select('test_db_table',
                                 array('*'),
                                 "title = 'wow!' AND description = 'description2'");
 
@@ -274,12 +274,12 @@ class SimpleDbTest extends LimbTestCase
       1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
     );
 
-    $this->db->insert('test1', $data[0]);
-    $this->db->insert('test1', $data[1]);
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
 
-    $this->assertEqual($this->db->delete('test1'), 2);
+    $this->assertEqual($this->db->delete('test_db_table'), 2);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $this->assertEqual($records->getTotalRowCount(), 0);
@@ -292,14 +292,14 @@ class SimpleDbTest extends LimbTestCase
       1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
     );
 
-    $this->db->insert('test1', $data[0]);
-    $this->db->insert('test1', $data[1]);
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
 
-    $this->assertEqual($this->db->delete('test1',
+    $this->assertEqual($this->db->delete('test_db_table',
                                          array('description' => 'description',
                                                "description='no-such-descr'")), 0);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $this->assertEqual($records->getTotalRowCount(), 2);
@@ -312,14 +312,14 @@ class SimpleDbTest extends LimbTestCase
       1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
     );
 
-    $this->db->insert('test1', $data[0]);
-    $this->db->insert('test1', $data[1]);
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
 
-    $this->assertEqual($this->db->delete('test1',
+    $this->assertEqual($this->db->delete('test_db_table',
                                          "description = 'description' AND
                                           description='no-such-descr'"), 0);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $this->assertEqual($records->getTotalRowCount(), 2);

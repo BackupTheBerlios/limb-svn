@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/dao/criteria/OneTableObjectsCriteria.class.php');
-require_once(dirname(__FILE__) . '/DocumentTestDBTable.class.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(dirname(__FILE__) . '/../orm/data_mappers/OneTableObjectMapperTestDbTable.class.php');
 
 class OneTableObjectsCriteriaTest extends LimbTestCase
 {
@@ -35,7 +35,7 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
     $sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
     $this->dao->setSQL($sql);
 
-    $this->dao->addCriteria(new OneTableObjectsCriteria('DocumentTest'));
+    $this->dao->addCriteria(new OneTableObjectsCriteria('OneTableObjectMapperTest'));
 
     $this->_insertObjectRecords();
     $this->_insertLinkedTableRecords();
@@ -48,7 +48,7 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('test_document');
+    $this->db->delete('test_one_table_object');
     $this->db->delete('sys_object');
   }
 
@@ -83,7 +83,7 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
     $data = array();
     for($i = 1; $i <= 5; $i++)
     {
-      $this->db->insert('test_document',
+      $this->db->insert('test_one_table_object',
         array(
           'id' => $i+100,
           'oid' => $i,

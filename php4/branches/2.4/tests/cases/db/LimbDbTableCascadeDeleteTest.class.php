@@ -11,11 +11,11 @@
 require_once(LIMB_DIR . '/core/db_tables/LimbDbTableFactory.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class TestImageDbTable extends LimbDbTable
+class TestCascadeMasterDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'test_image';
+    return 'test_cascade_master';
   }
 
   function _defineColumns()
@@ -32,7 +32,7 @@ class TestImageDbTable extends LimbDbTable
     return array(
       'id' =>	array(
           0 => array(
-            'table_name' => 'test_image_variation',
+            'table_name' => 'test_cascade_slave',
             'field' => 'image_id',
           ),
       ),
@@ -41,11 +41,11 @@ class TestImageDbTable extends LimbDbTable
 }
 
 
-class TestImageVariationDbTable extends LimbDbTable
+class TestCascadeSlaveDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'test_image_variation';
+    return 'test_cascade_slave';
   }
 
   function _defineColumns()
@@ -65,7 +65,7 @@ class TestImageVariationDbTable extends LimbDbTable
     return array(
       'media_id' =>	array(
           0 => array(
-            'table_name' => 'test_media',
+            'table_name' => 'test_cascade_other',
             'field' => 'id',
           ),
       ),
@@ -73,11 +73,11 @@ class TestImageVariationDbTable extends LimbDbTable
   }
 }
 
-class TestMediaDbTable extends LimbDbTable
+class TestCascadeOtherDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'test_media';
+    return 'test_cascade_other';
   }
 
   function _defineColumns()
@@ -97,8 +97,6 @@ class LimbDbTableCascadeDeleteTest extends LimbTestCase
   var $image_variation = null;
   var $media = null;
 
-  var $dump_file = 'cascade_delete.sql';
-
   function LimbDbTableCascadeDeleteTest()
   {
     parent :: LimbTestCase('cascade delete db table tests');
@@ -106,9 +104,9 @@ class LimbDbTableCascadeDeleteTest extends LimbTestCase
 
   function setUp()
   {
-    $this->image = LimbDbTableFactory :: create('TestImage');
-    $this->image_variation = LimbDbTableFactory :: create('TestImageVariation');
-    $this->media = LimbDbTableFactory :: create('TestMedia');
+    $this->master = LimbDbTableFactory :: create('TestCascadeMaster');
+    $this->slave = LimbDbTableFactory :: create('TestCascadeSlave');
+    $this->other = LimbDbTableFactory :: create('TestCascadeOther');
 
     loadTestingDbDump(dirname(__FILE__) . '/../../sql/cascade_delete.sql');
   }
@@ -120,45 +118,45 @@ class LimbDbTableCascadeDeleteTest extends LimbTestCase
 
   function testCascadeDelete()
   {
-    $this->image_variation->delete(array('id' => 16));
+    $this->slave->delete(array('id' => 16));
 
-    $medias =& $this->media->select();
+    $medias =& $this->other->select();
     $this->assertEqual($medias->getTotalRowCount(), 11);
 
-    $variations =& $this->image_variation->select();
+    $variations =& $this->slave->select();
     $this->assertEqual($variations->getTotalRowCount(), 11);
   }
 
   function testNestedCascadeDelete()
   {
-    $this->image->delete(array('id' => 12));
+    $this->master->delete(array('id' => 12));
 
-    $images =& $this->image->select();
+    $images =& $this->master->select();
     $this->assertEqual($images->getTotalRowCount(), 4);
 
-    $variations =& $this->image_variation->select();
+    $variations =& $this->slave->select();
     $this->assertEqual($variations->getTotalRowCount(), 9);
 
-    $medias =& $this->media->select();
+    $medias =& $this->other->select();
     $this->assertEqual($medias->getTotalRowCount(), 9);
   }
 
   /*
   function testCascadeDelete()
   {
-    $this->image_variation->delete(array('id' => 16));
+    $this->slave->delete(array('id' => 16));
 
-    $this->assertEqual(sizeof($this->image_variation->getList()), 11);
-    $this->assertEqual(sizeof($this->media->getList()), 11);
+    $this->assertEqual(sizeof($this->slave->getList()), 11);
+    $this->assertEqual(sizeof($this->other->getList()), 11);
   }
 
   function testNestedCascadeDelete()
   {
-    $this->image->delete(array('id' => 12));
+    $this->master->delete(array('id' => 12));
 
-    $this->assertEqual(sizeof($this->image->getList()), 4);
-    $this->assertEqual(sizeof($this->image_variation->getList()), 9);
-    $this->assertEqual(sizeof($this->media->getList()), 9);
+    $this->assertEqual(sizeof($this->master->getList()), 4);
+    $this->assertEqual(sizeof($this->slave->getList()), 9);
+    $this->assertEqual(sizeof($this->other->getList()), 9);
   }
   */
 

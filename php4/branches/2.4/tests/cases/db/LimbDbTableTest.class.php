@@ -15,7 +15,7 @@ class Test1DbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'test1';
+    return 'test_db_table';
   }
 
   function _defineColumns()
@@ -54,13 +54,13 @@ class LimbDbTableTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $stmt = $this->conn->newStatement('DELETE FROM test1');
+    $stmt = $this->conn->newStatement('DELETE FROM test_db_table');
     $stmt->execute();
   }
 
   function testCorrectTableProperties()
   {
-    $this->assertEqual($this->db_table_test->getTableName(), 'test1');
+    $this->assertEqual($this->db_table_test->getTableName(), 'test_db_table');
     $this->assertEqual($this->db_table_test->getPrimaryKeyName(), 'id');
     $this->assertEqual($this->db_table_test->getColumnType('id'), 'numeric');
     $this->assertIdentical($this->db_table_test->getColumnType('no_column'), false);
@@ -76,7 +76,7 @@ class LimbDbTableTest extends LimbTestCase
                                              'description' => 'wow!',
                                              'junk!!!' => 'junk!!!'));
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $record = $stmt->getOneRecord();
 
     $this->assertEqual($record->get('title'), 'wow');
@@ -94,7 +94,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -122,7 +122,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -147,7 +147,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($res, 1);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -175,7 +175,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 1);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
     $records->rewind();
     $record = $records->current();
@@ -280,7 +280,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $this->assertEqual($records->getTotalRowCount(), 0);
@@ -301,7 +301,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 0);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $this->assertEqual($records->getTotalRowCount(), 2);
@@ -319,7 +319,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->db_table_test->deleteById($id);
 
-    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
 
     $this->assertEqual($records->getTotalRowCount(), 1);
@@ -332,7 +332,7 @@ class LimbDbTableTest extends LimbTestCase
 
   function testGetColumnsForSelectDefaultName()
   {
-    $select_string = 'test1.id as id, test1.description as description, test1.title as title';
+    $select_string = 'test_db_table.id as id, test_db_table.description as description, test_db_table.title as title';
 
     $this->assertEqual($this->db_table_test->getColumnsForSelectAsString(), $select_string);
   }
