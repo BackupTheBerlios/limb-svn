@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-interface OptionsDatasource
+class OptionsDatasource
 {
-  function getOptionsArray();
+  function getOptionsArray(){}
 
-  function getDefaultOption();
+  function getDefaultOption(){}
 }
 
 

@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php');
 
-class PackageTestsIniFileResolver implements FileResolver
+class PackageTestsIniFileResolver// implements FileResolver
 {
   var $package_directory;
 

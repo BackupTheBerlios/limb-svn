@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/site_objects_datasource_support.inc.php');
 
 @define(SITE_OBJECTS_CACHE_GROUP, 'site_objects');
 
-class SiteObjectsDatasource /*implements Datasource, Countable*/
+class SiteObjectsDatasource //implements Datasource, Countable
 {
   var $object_ids;
   var $behaviours;

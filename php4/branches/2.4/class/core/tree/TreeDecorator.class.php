@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
 
-class TreeDecorator implements Tree
+class TreeDecorator// implements Tree
 {
   var $_tree = null;
 

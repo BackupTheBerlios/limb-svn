@@ -8,10 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 require_once(LIMB_DIR . '/class/cache/ImageCacheManager.class.php');
 
-class ImageCacheFilter implements InterceptingFilter
+class ImageCacheFilter// implements InterceptingFilter
 {
   function run($filter_chain, $request, $response)
   {

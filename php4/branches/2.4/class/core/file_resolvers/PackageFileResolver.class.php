@@ -9,9 +9,8 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/PackagesInfo.class.php');
-require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php');
 
-class PackageFileResolver implements FileResolver
+class PackageFileResolver// implements FileResolver
 {
   var $_packages_info = null;
 

@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/session/SessionDriver.interface.php');
 
-class SessionDbDriver implements SessionDriver
+class SessionDbDriver// implements SessionDriver
 {
   var $db;
   var $user;

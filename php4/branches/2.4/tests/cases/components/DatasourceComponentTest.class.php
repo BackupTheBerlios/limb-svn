@@ -17,7 +17,7 @@ require_once(LIMB_DIR . '/class/core/datasources/Countable.interface.php');
 require_once(LIMB_DIR . '/class/core/request/Request.class.php');
 require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
-class DatasourceComponentTestVersion implements Datasource, Countable
+class DatasourceComponentTestVersion //implements Datasource, Countable
 {
   function fetch(){}
   function countTotal(){}

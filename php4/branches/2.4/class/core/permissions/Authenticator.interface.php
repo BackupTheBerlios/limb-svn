@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 
-interface Authenticator
+class Authenticator
 {
-  function login($params = array());
+  function login($params = array()){}
 
-  function logout($params = array());
+  function logout($params = array()){}
 }
 ?>

@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-interface SiteObjectIdentifierGenerator
+class SiteObjectIdentifierGenerator
 {
-  function generate($site_object);
+  function generate($site_object){}
 }
 
 ?>

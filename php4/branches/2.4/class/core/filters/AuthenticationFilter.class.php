@@ -8,10 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 require_once(LIMB_DIR . '/class/core/session/Session.class.php');
 
-class AuthenticationFilter implements InterceptingFilter
+class AuthenticationFilter// implements InterceptingFilter
 {
   function run($filter_chain, $request, $response)
   {

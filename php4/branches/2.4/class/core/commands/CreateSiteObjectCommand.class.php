@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
+//require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class CreateSiteObjectCommand implements Command
+class CreateSiteObjectCommand// implements Command
 {
   var $behaviour_name;
 

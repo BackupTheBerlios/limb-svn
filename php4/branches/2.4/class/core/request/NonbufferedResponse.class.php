@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
 
-class NonbufferedResponse implements Response
+class NonbufferedResponse// implements Response
 {
   function write($string)
   {

@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-interface Countable
+class Countable
 {
-  function countTotal();
+  function countTotal(){}
 }
 
 

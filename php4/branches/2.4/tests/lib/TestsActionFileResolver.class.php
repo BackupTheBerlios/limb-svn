@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/FileResolver.interface.php');
 
-class TestsActionFileResolver implements FileResolver
+class TestsActionFileResolver// implements FileResolver
 {
   function resolve($class_path, $params = array())
   {

@@ -9,12 +9,12 @@
 *
 ***********************************************************************************/
 
-interface Response
+class Response
 {
-  function isEmpty();
+  function isEmpty(){}
 
-  function write($string);
+  function write($string){}
 
-  function commit();
+  function commit(){}
 }
 ?>

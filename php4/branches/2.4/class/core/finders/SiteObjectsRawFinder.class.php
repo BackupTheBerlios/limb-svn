@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/finders/DataFinder.interface.php');
 
-class SiteObjectsRawFinder implements DataFinder
+class SiteObjectsRawFinder// implements DataFinder
 {
   function _defineRawCountSTMT()
   {

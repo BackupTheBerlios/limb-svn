@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/LimbToolkit.interface.php');
 
-class BaseLimbToolkit implements LimbToolkit
+class BaseLimbToolkit// implements LimbToolkit
 {
   var $current_dataspace_name = 'default';
   var $fetcher;

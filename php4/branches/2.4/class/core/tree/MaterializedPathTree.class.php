@@ -8,9 +8,8 @@
 * $Id: nested_sets_tree.class.php 131 2004-04-09 14:11:45Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/Tree.interface.php');
 
-class MaterializedPathTree implements Tree
+class MaterializedPathTree// implements Tree
 {
   var $_db = null;
 

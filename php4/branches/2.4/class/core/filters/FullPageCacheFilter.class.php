@@ -8,10 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 require_once(LIMB_DIR . '/class/cache/FullPageCacheManager.class.php');
 
-class FullPageCacheFilter implements InterceptingFilter
+class FullPageCacheFilter// implements InterceptingFilter
 {
   function run($filter_chain, $request, $response)
   {

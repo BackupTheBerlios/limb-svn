@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/request/Response.interface.php');
 
-class HttpResponse implements Response
+class HttpResponse// implements Response
 {
   var $response_string = '';
   var $response_file_path = '';

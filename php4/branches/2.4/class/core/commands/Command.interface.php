@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-interface Command
+class Command
 {
-  function perform();
+  function perform(){}
 }
 
 ?>

@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 
-class SiteObjectControllerFilter implements InterceptingFilter
+class SiteObjectControllerFilter// implements InterceptingFilter
 {
   function run($filter_chain, $request, $response)
   {

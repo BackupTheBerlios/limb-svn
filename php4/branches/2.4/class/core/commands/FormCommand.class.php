@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class FormCommand implements Command
+class FormCommand// implements Command
 {
   var $form_name;
 

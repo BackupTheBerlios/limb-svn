@@ -9,9 +9,9 @@
 *
 ***********************************************************************************/
 
-interface FileResolver
+class FileResolver
 {
-  function resolve($file_path, $params = array());
+  function resolve($file_path, $params = array()){}
 }
 
 ?>

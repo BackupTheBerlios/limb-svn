@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-interface Datasource
+class Datasource
 {
-  function fetch();
+  function fetch(){}
 }
 
 

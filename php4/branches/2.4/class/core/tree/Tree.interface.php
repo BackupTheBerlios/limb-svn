@@ -9,55 +9,55 @@
 *
 ***********************************************************************************/
 
-interface Tree
+class Tree
 {
-  function isNode($id);
+  function isNode($id){}
 
-  function getNode($id);
+  function getNode($id){}
 
-  function getParent($id);
+  function getParent($id){}
 
-  function getParents($id);
+  function getParents($id){}
 
-  function getSiblings($id);
+  function getSiblings($id){}
 
-  function getChildren($id);
+  function getChildren($id){}
 
-  function countChildren($id);
+  function countChildren($id){}
 
-  function createRootNode($values);
+  function createRootNode($values){}
 
-  function createSubNode($id, $values);
+  function createSubNode($id, $values){}
 
-  function deleteNode($id);
+  function deleteNode($id){}
 
-  function updateNode($id, $values, $internal = false);
+  function updateNode($id, $values, $internal = false){}
 
-  function moveTree($id, $target_id);
+  function moveTree($id, $target_id){}
 
-  function setDumbMode($status=true);
+  function setDumbMode($status=true){}
 
-  function getAllNodes();
+  function getAllNodes(){}
 
-  function getNodesByIds($ids_array);
+  function getNodesByIds($ids_array){}
 
-  function getMaxChildIdentifier($id);
+  function getMaxChildIdentifier($id){}
 
-  function getNodeByPath($path, $delimiter='/');
+  function getNodeByPath($path, $delimiter='/'){}
 
-  function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false);
+  function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false){}
 
-  function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false);
+  function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false){}
 
-  function getRootNodes();
+  function getRootNodes(){}
 
-  function isNodeExpanded($id);
+  function isNodeExpanded($id){}
 
-  function toggleNode($id);
+  function toggleNode($id){}
 
-  function expandNode($id);
+  function expandNode($id){}
 
-  function collapseNode($id);
+  function collapseNode($id){}
 }
 
 ?>

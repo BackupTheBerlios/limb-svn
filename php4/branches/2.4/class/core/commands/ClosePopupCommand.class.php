@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-class ClosePopupCommand implements Command
+class ClosePopupCommand// implements Command
 {
   function perform()
   {
