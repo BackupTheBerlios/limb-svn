@@ -24,6 +24,32 @@ CDDAction.prototype.get_content = function()
 }
 
 //===========================
+// [ Class :: drop down :: CDDGridAction]
+//===========================
+CDDGridAction = function(parent)
+{
+  this._super(parent)
+}
+CDDGridAction._extends(CDropDown)
+CDDGridAction.prototype.get_content = function()
+{
+  var arr = arr_actions[this.init_obj.id]
+  var grid_form = "document.getElementById('grid_form_items')";
+  var str = '<table border="0" cellspacing="0" cellpadding="0" class="dd-action-container">'
+  for(var v in arr)
+  {
+    if(v == '_' || v == '_extends' )continue;
+    str += '<tr>'
+    str += '<td><nobr><a href="' + arr[v]['href'] + '" onclick="submit_form(' + grid_form + ', this.href); return false;">' + arr[v]['name'] + '</a></nobr></td>'
+    str += '</tr>'
+  }
+  str += '</table>'
+  return str
+
+  return str;
+}
+
+//===========================
 // [ Class :: drop down :: info]
 //===========================
 CDropDown_info = function(parent)

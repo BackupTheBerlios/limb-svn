@@ -18,7 +18,7 @@ class grid_actions_tag_info
 
 register_tag(new grid_actions_tag_info());
 
-class grid_actions_tag extends compiler_directive_tag
+class grid_actions_tag extends compiler_directive_tag 
 {
   var $actions = array();
 
@@ -53,6 +53,40 @@ class grid_actions_tag extends compiler_directive_tag
   }
 
   function post_generate(&$code)
+  {
+    if(!count($this->actions))
+      parent :: post_generate($code);
+    $span_id = uniqid('');
+
+
+    $code->write_html("<script>arr_actions['{$span_id}'] = {");
+
+    foreach($this->actions as $action_name => $action)
+    {
+      $action_path = $this->get_action_path($action);
+      $code->write_html("'{$action_name}':{'href':'{$action_path}', 'name': '");
+
+      if(isset($action['locale_value']))
+      {
+        $locale_file = '';
+        if(isset($action['locale_file']))
+          $locale_file = "','{$action['locale_file']}";
+        $code->write_php("echo strings :: get('" . $action['locale_value'] . $locale_file ."')");
+      }
+      else
+        $code->write_html($action['name']);
+
+      $code->write_html("'},");
+    }
+    $code->write_html("'_' : {}}</script>");
+
+    $code->write_html("<span id='{$span_id}' behavior='CDDGridAction' ddalign='vbr'><img alt='' src='/shared/images/marker/1.gif'>");
+    $code->write_php("echo strings :: get('actions_for_selected');");
+    $code->write_html("</span>");
+    parent :: post_generate($code);
+  }
+
+  function post_generate__(&$code)
   {
     if(!count($this->actions))
       parent :: post_generate($code);
