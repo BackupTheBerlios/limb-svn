@@ -14,7 +14,7 @@ if(!defined('PAGE_CACHE_DIR'))
 require_once(LIMB_DIR . '/core/lib/system/dir.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 
-class local_cache_manager
+class template_cache_manager
 {
   var $id;
   var $server_id;
@@ -22,7 +22,7 @@ class local_cache_manager
   var $rules = array();
   var $matched_rule;
   
-  function local_cache_manager()
+  function template_cache_manager()
   {
   }
   
@@ -111,7 +111,10 @@ class local_cache_manager
       $cache_query_items = array();
     }
     
-    $this->id = md5($this->uri->get_path() . serialize($cache_query_items));
+    if (isset($matched_rule['use_path']))
+      $this->id = md5($matched_rule['server_id'] . $this->uri->get_path() . serialize($cache_query_items));
+    else
+      $this->id = md5($matched_rule['server_id'] . serialize($cache_query_items));
     
     return $this->id;
   }
@@ -191,7 +194,7 @@ class local_cache_manager
   {
     include_once(LIMB_DIR . '/core/lib/util/ini.class.php');
     
-    $ini =& get_ini('local_page_cache.ini');
+    $ini =& get_ini('template_cache.ini');
     $this->rules = array();
     
     $groups = $ini->get_named_array();

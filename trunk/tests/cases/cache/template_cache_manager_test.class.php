@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/cache/local_cache_manager.class.php');
+require_once(LIMB_DIR . '/core/cache/template_cache_manager.class.php');
 require_once(LIMB_DIR . '/core/request/request.class.php');
 require_once(LIMB_DIR . '/core/lib/http/uri.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
@@ -17,12 +17,19 @@ Mock::generate('uri');
 Mock::generate('user');
 
 Mock::generatePartial(
-  'local_cache_manager', 
-  'local_cache_manager_test_version', 
+  'template_cache_manager', 
+  'template_cache_manager_test_version', 
   array('get_rules', '_set_matched_rule', '_get_matched_rule', '_get_user') 
 );
 
-class local_cache_manager_test extends UnitTestCase
+Mock::generatePartial(
+  'template_cache_manager', 
+  'template_cache_manager_test_version2', 
+  array('is_cacheable', 'cache_exists', 'get_cache_id')
+);
+
+
+class template_cache_manager_test extends UnitTestCase
 {
   var $cache_manager;
   var $uri;
@@ -33,7 +40,7 @@ class local_cache_manager_test extends UnitTestCase
     $this->uri =& new Mockuri($this);
     $this->user =& new Mockuser($this);
     
-    $this->cache_manager =& new local_cache_manager_test_version($this);
+    $this->cache_manager =& new template_cache_manager_test_version($this);
     $this->cache_manager->set_uri($this->uri);
     
     $this->cache_manager->setReturnReference('_get_user', $this->user);
@@ -48,10 +55,10 @@ class local_cache_manager_test extends UnitTestCase
   
   function test_get_rules_from_ini()
   {
-    $cache_manager = new local_cache_manager();
+    $cache_manager = new template_cache_manager();
     
     register_testing_ini(
-      'local_page_cache.ini',
+      'template_cache.ini',
       ' 
       [rule1]
        server_id = test1
@@ -78,7 +85,7 @@ class local_cache_manager_test extends UnitTestCase
   
   function test_is_not_cacheable_no_uri()
   {
-    $cache_manager = new local_cache_manager();
+    $cache_manager = new template_cache_manager();
     
     $this->assertFalse($cache_manager->is_cacheable());
   }
@@ -261,6 +268,189 @@ class local_cache_manager_test extends UnitTestCase
     $this->cache_manager->expectNever('_set_matched_rule');
   }
 
+  function test_get_cache_id()
+  {
+    $rule = array('attributes' => array('action'), 'server_id' => 'last_news');
+    
+    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1));
+
+    $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
+
+    $this->assertEqual(
+      $this->cache_manager->get_cache_id(), 
+      md5( 'last_news' . serialize($query_items))
+    ); 
+  }
+
+  function test_get_cache_id_use_path()
+  {
+    $rule = array('attributes' => array('action'), 'server_id' => 'last_news', 'use_path' => true);
+    
+    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1));
+    $this->uri->setReturnValue('get_path', '/root/test');
+
+    $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
+
+    $this->assertEqual(
+      $this->cache_manager->get_cache_id(), 
+      md5('last_news' . '/root/test' . serialize($query_items))
+    ); 
+  }
+
+  function test_get_cache_id_extra_attributes()
+  {
+    $rule = array('attributes' => array('action'), 'server_id' => 'last_news');
+    
+    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1, 'extra' => 1));
+
+    $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
+
+    $this->assertEqual(
+      $this->cache_manager->get_cache_id(), 
+      md5( 'last_news' . serialize(array('action' => 1)))
+    ); 
+  }
+
+  function test_get_cache_id_no_attributes()
+  {
+    $rule = array('server_id' => 'last_news');
+    
+    $this->uri->setReturnValue('get_query_items', $query_items = array('action' => 1));
+
+    $this->cache_manager->setReturnValue('_get_matched_rule', $rule); 
+
+    $this->assertEqual(
+      $this->cache_manager->get_cache_id(), 
+      md5('last_news' . serialize(array()))
+    ); 
+  }
+
+  function test_cache_doesnt_exist_no_uri()
+  {
+    $cache_manager = new template_cache_manager();
+    $this->assertFalse($cache_manager->cache_exists());
+  }
+
+  function test_cache_exists()
+  {    
+    $this->_write_cache($server_id = 'last_news', $attributes = array('action' => 1));
+    
+    $this->uri->setReturnValue('get_query_items', $attributes);
+    $this->cache_manager->setReturnValue('_get_matched_rule', array('server_id' => $server_id, 'attributes' => array('action')));
+    
+    $this->assertTrue($this->cache_manager->cache_exists());
+    
+    $this->_clean_cache($server_id, $attributes);
+  }
+
+  function test_cache_exists_use_path()
+  {    
+    $this->_write_cache($server_id = 'last_news', $attributes = array('action' => 1), $path = '/root/test');
+    
+    $this->uri->setReturnValue('get_query_items', $attributes);
+    $this->cache_manager->setReturnValue('_get_matched_rule', array('server_id' => $server_id, 'use_path' => true, 'attributes' => array('action')));
+    
+    $this->assertTrue($this->cache_manager->cache_exists());
+    
+    $this->_clean_cache($server_id, $attributes, $path);
+  }
+
+  function test_get()
+  {
+    $cache_manager =& new template_cache_manager_test_version2($this);
+    $cache_manager->set_uri($this->uri);
+    
+    $this->_write_simple_cache($cache_id = 1, $contents = 'test-test');
+    
+    $cache_manager->setReturnValue('is_cacheable', true);
+    $cache_manager->setReturnValue('cache_exists', true);
+    $cache_manager->setReturnValue('get_cache_id', $cache_id);
+    
+    $this->assertEqual($cache_manager->get(), $contents);
+    
+    $cache_manager->tally();
+    
+    $this->_clean_simple_cache($cache_id);
+  }
+
+  function test_write_false_no_uri()
+  {
+    $cache_manager = new template_cache_manager();
+    $this->assertFalse($cache_manager->write($content = 'test'));      
+  }
+
+  function test_write()
+  {
+    $cache_manager =& new template_cache_manager_test_version2($this);
+    $cache_manager->set_uri($this->uri);
+    
+    $contents = 'test-test';
+    
+    $cache_manager->setReturnValue('get_cache_id', $cache_id = 1);
+    
+    $this->assertTrue($cache_manager->write($contents));
+    $this->assertEqual($this->_read_simple_cache($cache_id), $contents);
+    
+    $cache_manager->tally();
+    
+    $this->_clean_simple_cache($cache_id);
+  }
+
+  function test_overwrite()
+  {
+    $this->_write_simple_cache($cache_id = 1, $contents = 'test-overwrite');
+    
+    $cache_manager =& new template_cache_manager_test_version2($this);
+    $cache_manager->set_uri($this->uri);
+    
+    $contents = 'test-test';
+    
+    $cache_manager->setReturnValue('get_cache_id', $cache_id);
+    
+    $this->assertTrue($cache_manager->write($contents));
+    $this->assertEqual($this->_read_simple_cache($cache_id), $contents);
+    
+    $cache_manager->tally();
+  }  
+
+  function _write_cache($server_id, $attributes, $contents='test', $path = '')
+  {
+    if ($path)
+      $file_id = md5($server_id . $path . serialize($attributes));
+    else
+      $file_id = md5($server_id . serialize($attributes));
+      
+    $this->_write_simple_cache($file_id, $contents);
+  }
+  
+  function _write_simple_cache($file_id, $contents)
+  {
+    dir :: mkdir(PAGE_CACHE_DIR);
+    $f = fopen(PAGE_CACHE_DIR . $file_id, 'w');
+    fwrite($f, $contents);
+    fclose($f);
+  }
+  
+  function _read_simple_cache($file_id)
+  {
+    return file_get_contents(PAGE_CACHE_DIR . $file_id);
+  }
+  
+  function _clean_simple_cache($file_id)
+  {
+    if(file_exists(PAGE_CACHE_DIR . $file_id))
+      unlink(PAGE_CACHE_DIR . $file_id);
+  }  
+  
+  function _clean_cache($server_id, $attributes, $path = '')
+  {
+    if ($path)
+      $file_id = md5($server_id . $path . serialize($attributes));
+    else  
+      $file_id = md5($server_id . serialize($attributes));
+    
+    $this->_clean_simple_cache($file_id);
+  }
 }
 
 ?>
