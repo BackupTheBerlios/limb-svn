@@ -15,15 +15,14 @@ require_once(LIMB_DIR . 'core/model/chat/chat_user.class.php');
 
 start_user_session();
 
-$chat_system =& new chat_system();
-$chat_user =& new chat_user();
+$chat_user_data = chat_user :: get_chat_user_data();
 
-if ($_REQUEST['ignorant_id'])
-	$chat_user->toggle_ignore_user($_REQUEST['ignorant_id']);
+if ($_REQUEST['ignorant_id'] && $chat_user_data)
+	chat_system :: toggle_ignore_user($chat_user_data['id'], $_REQUEST['ignorant_id']);
 
-$chat_user_data = $chat_user->get_chat_user_data();
 
-$chat_users = $chat_system->get_users_for_room($_COOKIE['chat_room_id'], $chat_user_data['id']);
+
+$chat_users = chat_system :: get_users_for_room($_COOKIE['chat_room_id'], $chat_user_data['id']);
 
 
 if (sizeof($chat_users))

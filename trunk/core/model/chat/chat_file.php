@@ -17,8 +17,7 @@ start_user_session();
 if(!$_REQUEST['id'])
 	exit();
 
-$chat_system =& new chat_system();
-$file = $chat_system->get_chat_file($_REQUEST['id']);
+$file = chat_system :: get_chat_file($_REQUEST['id']);
 
 if (!$file)
 {

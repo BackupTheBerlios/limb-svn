@@ -17,6 +17,8 @@ class composite_user_object extends user_object
 	function composite_user_object()
 	{
 		parent :: user_object();
+		
+		$this->_initialize_node_objects();
 	}
 	
 	function import_attributes($attributes, $merge=true)
@@ -148,6 +150,10 @@ class composite_user_object extends user_object
 				return false;
 				
 		return true;
+	}
+	
+	function & _initialize_node_objects()
+	{
 	}
 }
 

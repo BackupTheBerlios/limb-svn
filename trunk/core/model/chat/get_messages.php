@@ -21,20 +21,17 @@ require_once(LIMB_DIR . 'core/model/chat/smiles.class.php');
 
 start_user_session();
 
-$chat_user =& new chat_user();
-$chat_system =& new chat_system();
-
 $smiles =& new smiles();
 
-$chat_user_data = $chat_user->get_chat_user_data();
-$chat_system->update_user_time($chat_user_data['id']);
+$chat_user_data = chat_user :: get_chat_user_data();
+chat_system  :: update_user_time($chat_user_data['id']);
 
 $last_message_ids = session :: get("last_message_ids");
 
 if(!$last_message_id = $last_message_ids[$chat_user_data['chat_room_id']])
 	$last_message_id = 0;
 
-$messages = $chat_user->get_messages($last_message_id);
+$messages = chat_user :: get_messages($last_message_id);
 
 $date =& new date();
 $locale =& locale :: instance($this->locale_type);

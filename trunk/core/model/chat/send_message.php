@@ -18,15 +18,12 @@ start_user_session();
 if(!isset($_POST['recipient_id']) || !isset($_POST['message']))
 	exit;
 
-$chat_user =& new chat_user();
-$chat_system =& new chat_system();
-
-if(!$chat_user_data = $chat_user->get_chat_user_data())
+if(!$chat_user_data = chat_user :: get_chat_user_data())
 	exit();
 
 $file = ($_FILES['file']) ? ($_FILES['file']) : null;
 
-$chat_system->send_message($_POST['message'], 
+chat_system :: send_message($_POST['message'], 
 														$chat_user_data['chat_room_id'],
 														$chat_user_data['id'],
 														$_POST['recipient_id'], 

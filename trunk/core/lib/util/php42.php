@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: php42.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -13,6 +13,38 @@ function is_a($object, $classname)
 {
 	return ((strtolower($classname) == get_class($object))
 		or (is_subclass_of($object, $classname)));
+}
+
+function var_export($a)
+{
+	$result = "";
+  switch (gettype($a))
+  {
+    case "array":
+			reset($a);
+			$result = "array(";
+			while (list($k, $v) = each($a))
+			{
+				if (is_numeric($k))
+					$key = $k;
+				else
+					$key = "'" . addslashes($k) . "'";
+				
+				$result .= "{$key} => " . var_export($v) . ", ";
+			}
+			$result .= ")";
+			break;
+		case "string":
+			$result = "'" . addslashes($a) . "'";
+			break;
+		case "boolean":
+			$result = ($a) ? "true" : "false";
+			break;
+		default:
+			$result = $a;
+			break;
+	}
+	return $result;
 }
 
 ?>

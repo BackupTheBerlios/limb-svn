@@ -29,7 +29,7 @@ class codewriter
 	* @var string 
 	* @access private 
 	*/
-	var $code;
+	var $code = '';
 	/**
 	* The current state of the writer.
 	* 

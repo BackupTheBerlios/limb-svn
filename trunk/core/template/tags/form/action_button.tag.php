@@ -42,11 +42,11 @@ class action_button_tag extends control_tag
 		if(!isset($this->attributes['type']))
 			$this->attributes['type'] = 'submit';	
 
-		$this->attributes['onclick'] = "add_form_hidden_parameter(\"{$form_tag->attributes['id']}\", \"action\", \"{$this->attributes['action']}\");";
+		$this->attributes['onclick'] = "add_form_hidden_parameter('{$form_tag->attributes['id']}', 'action', '{$this->attributes['action']}');";
 		
 		if(isset($this->attributes['reload_parent']))
 		{
-			$this->attributes['onclick'] .= "add_form_action_parameter(\"{$form_tag->attributes['id']}\", \"reload_parent\", \"1\")";
+			$this->attributes['onclick'] .= "add_form_action_parameter('{$form_tag->attributes['id']}', 'reload_parent', '1')";
 			unset($this->attributes['reload_parent']);
 		}
 		
