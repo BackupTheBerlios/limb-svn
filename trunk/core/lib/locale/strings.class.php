@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: strings.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
@@ -71,6 +71,7 @@ class strings
 	  		$language_id = DEFAULT_MANAGEMENT_LOCALE_ID;
 	  }
 
+		
 		if(file_exists(PROJECT_DIR . '/core/strings/' . $filename . '_' . $language_id . '.ini'))
   		$dir = PROJECT_DIR . '/core/strings/';
   	elseif(file_exists(LIMB_DIR . '/core/strings/' . $filename . '_' . $language_id . '.ini'))

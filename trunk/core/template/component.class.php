@@ -148,8 +148,15 @@ class component extends dataspace
 	* @return void 
 	* @access public 
 	*/
-	function add_child(&$child, $server_id)
+	function add_child(&$child, $server_id = null)
 	{
+    if (is_null($server_id)) 
+    {
+  		static $genid = 1;
+			$server_id = 'widxxx_' . $genid;
+			$genid++;
+    }
+
 		$child->parent = &$this;
 		$child->id = $server_id;
 		$this->children[$server_id] = &$child;

@@ -25,7 +25,7 @@ var guOutOfRange=null;	// the background image url for the out-range dates.
 
 var gbEuroCal=true;	// true: ISO-8601 calendar layout - Monday is the 1st day of week; false: US layout - Sunday is the 1st day of week.
 
-var gcCalBG="#4983B9";	// the background color of the outer calendar panel.
+var gcCalBG="#FFFFFF";	// the background color of the outer calendar panel.
 var guCalBG=null;	//  the background image url for the inner table.
 var gcCalFrame="white";	// the background color of the inner table, showing as a frame.
 var gsInnerTable="border=0 cellpadding=2 cellspacing=1";	// properties of the inner <table> tag, which holds all the calendar cells.
@@ -36,8 +36,8 @@ var giDCStyle=0;	// the style of month-controls in top section.	0: 3D; 1: flat; 
 var gsCalTitle="gMonths[gCurMonth[1]-1]+' '+gCurMonth[0]";	// dynamic statement to be eval-ed as the title when giDCStyle>0.
 var gbDCSeq=true;	// (effective only when giDCStyle is 0) true: show month box before year box; false: vice-versa;
 var gsYearInBox="i";	// dynamic statement to be eval-ed as the text shown in the year box. e.g. "'A.D.'+i" will show "A.D.2001"
-var gsNavPrev="<INPUT type='button' value='&lt;' class='MonthNav' onclick='fPrevMonth();this.blur();'>";	// the content of the left month navigator
-var gsNavNext="<INPUT type='button' value='&gt;' class='MonthNav' onclick='fNextMonth();this.blur();'>";	// the content of the right month navigator
+var gsNavPrev="<img src='/shared/images/arr_prev.gif' border=0 width=11 height=11 onclick='fPrevMonth();this.blur();'>";	// the content of the left month navigator
+var gsNavNext="<img src='/shared/images/arr_next.gif' border=0 width=11 height=11 onclick='fNextMonth();this.blur();'>";	// the content of the right month navigator
 
 var gbHideBottom=false;	// true: hide the bottom section; false: show it with gsBottom.
 var gsBottom="<A href='javascript:void(0)' class='Today' onclick='if(!NN4)this.blur();if(!fSetDate(gToday[0],gToday[1],gToday[2]))alert(\"You may not pick this day!\");return false;' onmouseover='return true;' title='Today'>Today : "+gToday[2]+" "+gMonths[gToday[1]-1]+" "+gToday[0]+"</A>";	// the content of the bottom section.
@@ -49,7 +49,7 @@ var giWeekWidth=22;	// calendar week-number-column width;
 var giHeadTop=1;	// calendar head row top offset;
 var giWeekTop=0;	// calendar week-number-column top offset;
 
-var gcCellBG="#e5e5e5";	// default background color of the cells. Use "" for transparent!!!
+var gcCellBG="#DEDEDE";	// default background color of the cells. Use "" for transparent!!!
 var gsCellHTML="";	// default HTML contents for days without any agenda, usually an image tag.
 var guCellBGImg="";	// url of default background image for each calendar cell.
 var gsAction=" ";	// default action to be eval-ed on everyday except the days with agendas, which have their own actions defined in agendas.
@@ -61,11 +61,12 @@ var gsWeeks="weekNo";	// the dynamic statement to be eval-ed into the week-numbe
 
 var gcWorkday="black";	// Workday font color
 var gcSat="black";	// Saturday font color
-var gcSatBG="#99ccff";	// Saturday background color
+var gcSatBG="#B3CBF6";	// Saturday background color
 var gcSun="black";	// Sunday font color
-var gcSunBG="#99ccff";	// Sunday background color
+var gcSunBG="#B3CBF6";	// Sunday background color
 
 var gcOtherDay="silver";	// the font color of days in other months; when hiding, it's also the background color.
+var gcOtherDayBG=gcCellBG;	// the background color of days in other months. when giShowOther set to hiding, it'll substitute the gcOtherDay.
 var giShowOther=2;	// control the look of days in OTHER months. 1: show date & agendas effects; 2: show selected & today effects; 4: hide days in previous month; 8: hide days in next month. NOTE: values can be added up to create mix effects.
 
 var gbFocus=true;	// whether to enable the gcToggle highlight whenever mouse pointer focuses over a calendar cell.
@@ -87,3 +88,8 @@ var gbShrink2fit=true;	// whether to hide the week line if none of its day belon
 var gdSelect=gToday;	// default selected date in format of [year, month, day]; [0,0,0] means no default date selected.
 var giFreeDiv=0;	// The number of absolutely positioned layers you want to customize, they will be named as "freeDiv0", "freeDiv1"...
 var gAgendaMask=[-1,-1,-1,null,null,-1,null];	// Set the relevant bit to -1 to keep the original agenda info of that bit unchanged, otherwise the new value will substitute the one defined in agenda.js.
+
+var giResizeDelay=KO3?150:50;	// delay in milliseconds before resizing the calendar panel. Calendar may have incorrect initial size if this value is too small.
+var gbFlatBorder=false;	// flat the .CalCell css border of any agenda date by setting it to solid style. NOTE: it should always be set to false if .CalCell has no explicit border size.
+var gbInvertBorder=false;	// true: invert the effect caused by gbFlatBorder; false: no change.
+var gbShareAgenda=false;	// if set to true, a global agenda store will be created and used to share across calendars. Check tutorials for details.

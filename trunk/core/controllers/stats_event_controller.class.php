@@ -23,6 +23,7 @@ class stats_event_controller extends site_object_controller
 						'permissions_required' => 'r',
 						'template_path' => '/stats_event/events_list.html',
 						'action_name' => strings :: get('show_events_list', 'stats'),
+						'action_path' => '/stats_event/stats_event_filter_action',
 				),
 		);
  		

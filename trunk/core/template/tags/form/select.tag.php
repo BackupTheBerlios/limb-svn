@@ -58,7 +58,10 @@ class select_tag extends control_tag
 	*/
 	// Ignore the compiler time contents and generate the contents at run time.
 	function generate_contents(&$code)
-	{		
+	{	
+		if(isset($this->attributes['default_value']))
+			$code->write_php($this->get_component_ref_code() . '->set_default_value("' . $this->attributes['default_value'] . '");');
+			
 		$code->write_php($this->get_component_ref_code() . '->render_contents();');
 		
 		parent :: generate_contents($code);

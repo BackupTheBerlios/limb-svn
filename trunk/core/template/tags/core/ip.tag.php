@@ -24,7 +24,7 @@ class ip_tag extends compiler_directive_tag
 		if(isset($this->attributes['hash_id']))
 		{
 			$code->write_php(
-				'echo sys :: decode_ip(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"));');
+				'echo ip :: decode_ip(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"));');
 		}
 		else
 			$code->write_php('echo sys :: client_ip();');

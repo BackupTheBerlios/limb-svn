@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . 'core/model/object.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/session/session.class.php');
+require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
 
 class phpbb_user extends object
 {
@@ -97,7 +98,7 @@ class phpbb_user extends object
 	{	
 		$this->_delete_cookie();
 
-		$user_ip = sys :: encode_ip();
+		$user_ip = ip :: encode_ip(sys :: client_ip());
 		$sid = md5(uniqid($user_ip));
 		
 		session :: set('phpbb_sid', $sid);

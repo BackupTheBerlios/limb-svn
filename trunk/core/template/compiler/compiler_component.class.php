@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: compiler_component.class.php 412 2004-02-06 17:05:40Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 /**
@@ -102,7 +102,23 @@ class compiler_component
 	{
 		$this->attributes = $attrib;
 	} 
-
+	
+	/**
+	* Remove an attribute from the list
+	* @param string name of attribute
+	* @return void
+	* @access public
+	*/
+	function remove_attribute($attrib) 
+	{
+  	unset($this->attributes[strtolower($attrib)]);
+	}
+	
+	function has_attribute($attrib) 
+	{
+		return isset($this->attributes[strtolower($attrib)]);
+	}
+	
 	/**
 	* Get the value of the XML id attribute
 	* 

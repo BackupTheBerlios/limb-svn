@@ -162,9 +162,9 @@ class form_element extends tag_component
 		
 		$form_name = $form_component->attributes['name'];
 		
-		foreach ($this->attributes as $name => $value)
+		foreach ($this->attributes as $attrib_name => $value)
 		{
-			if($this->attach_form_prefix && $name == 'name')
+			if($this->attach_form_prefix && $attrib_name == 'name')
 			{						
 				$value = $form_name . $this->_make_index_name($value);
 			}
@@ -172,7 +172,7 @@ class form_element extends tag_component
 			if (!is_null($value))
 			{
 				echo ' ';
-				echo $name;
+				echo $attrib_name;
 
 				echo '="';
 				echo htmlspecialchars($value, ENT_QUOTES);

@@ -8,17 +8,59 @@
 * $Id: site_object.class.php 20 2004-03-05 09:59:38Z server $
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
+require_once(LIMB_DIR . 'core/lib/http/ip.class.php');
 
 class stats_report
 {
 	var $db = null;
+	var $filter_conditions = array();
 	
 	function stats_report()
 	{
 		$this->db =& db_factory :: instance();
+	}
+	
+	function set_login_filter($login)
+	{
+		if($login)
+			$this->filter_conditions[] = "AND user.identifier = '{$login}'";
+	}
+
+	function set_action_filter($action)
+	{
+		if($action)
+			$this->filter_conditions[] = "AND sslog.action = '{$action}'";
+	}
+	
+	function set_period_filter($start_date, $finish_date)
+	{
+		$start_stamp = $start_date->get_stamp();
+		$finish_stamp = $finish_date->get_stamp();
+		
+		$this->filter_conditions[] = " AND sslog.time BETWEEN {$start_stamp} AND {$finish_stamp} ";
+	}
+	
+	function set_ip_filter($ip_range)
+	{		
+		$ip_list = ip :: process_ip_range($ip_range);
+		$filter_ip_arr = array();
+		
+		foreach($ip_list as $ip)
+		{
+			if ( preg_match('/(ff\.)|(\.ff)/is', chunk_split($ip, 2, '.')) )
+				$filter_ip_arr[] = "ip LIKE '" . str_replace('.', '', preg_replace('/(ff\.)|(\.ff)/is', '%', chunk_split($ip, 2, "."))) . "'";
+			else
+				$filter_ip_arr[] = "ip = '" . $ip . "'";
+		}
+		if($filter_ip_arr)
+			$this->filter_conditions[] = 'AND (' . implode(' OR ', $filter_ip_arr) . ')';
+	}
+		
+	function _build_filter_condition()
+	{
+		return ' WHERE 1=1 ' . implode(' ', $this->filter_conditions);
 	}
 	
 	function fetch($params = array())
@@ -33,7 +75,9 @@ class stats_report
 						sys_stat_log as sslog LEFT JOIN user ON user.object_id=sslog.user_id 
 						LEFT JOIN sys_site_object_tree as ssot ON ssot.id=sslog.node_id
 						LEFT JOIN sys_site_object as sso ON ssot.object_id=sso.id";
-
+						
+		$sql .= $this->_build_filter_condition();
+		
 		if(isset($params['order']))
 			$sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
 		
@@ -47,7 +91,13 @@ class stats_report
 	
 	function fetch_count($params = array())
 	{
-		$sql = "SELECT COUNT(id) as count FROM sys_stat_log";
+		$sql = "SELECT COUNT(sslog.id) as count 
+						FROM
+						sys_stat_log as sslog LEFT JOIN user ON user.object_id=sslog.user_id 
+						LEFT JOIN sys_site_object_tree as ssot ON ssot.id=sslog.node_id
+						LEFT JOIN sys_site_object as sso ON ssot.object_id=sso.id";
+		
+		$sql .= $this->_build_filter_condition();
 		
 		$this->db->sql_exec($sql);
 		$arr =& $this->db->fetch_row();

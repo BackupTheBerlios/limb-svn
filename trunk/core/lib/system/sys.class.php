@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');  
 require_once(LIMB_DIR . 'core/lib/util/log.class.php');
+require_once(LIMB_DIR . 'core/lib/http/ip.class.php');
 
 class sys
 {
@@ -116,38 +117,16 @@ class sys
   /*
   	return the client ip
   */  
-  function client_ip($hex_mode=false)
+  function client_ip()
   {
   	if ( !isset( $this ) || get_class( $this ) != 'sys' )
     	$obj =& sys::instance();
     else
     	$obj =& $this;
     
-    if($hex_mode)	
-    {
-			$ip_sep = explode('.', $obj->client_ip);
-			return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
-    }
-    else
-    	return $obj->client_ip;
+    return $obj->client_ip;
 	}
-	
-	function encode_ip($ip=null)
-	{
-		if(!$ip)
-			$ip = sys :: client_ip();
-		
-		$ip_sep = explode('.', $ip);
 			
-		return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
-	}
-	
-	function decode_ip($hex_ip)
-	{
-		$hexipbang = explode('.', chunk_split($hex_ip, 2, '.'));
-		return hexdec($hexipbang[0]). '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
-	}
-	
   /*
    return the file_system type, either "win32" or "unix"
   */

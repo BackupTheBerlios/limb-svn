@@ -174,7 +174,7 @@ class test_phpbb_user_test extends UnitTestCase
 		$conditions['session_user_id'] = 5;
 		$rows = $db_table->get_list($conditions, '', null);
 		$record = current($rows);
-		$this->assertEqual($record['session_ip'], sys :: encode_ip());
+		$this->assertEqual($record['session_ip'], ip :: encode_ip(sys :: client_ip()));
 		$this->assertEqual($record['session_logged_in'], 1);
   }
 
