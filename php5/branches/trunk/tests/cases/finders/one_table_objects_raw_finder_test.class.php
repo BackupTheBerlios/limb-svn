@@ -53,7 +53,7 @@ class content_object_fetch_test extends LimbTestCase
     Limb :: popToolkit();
   }
 
-  function test_fetch()
+  function test_find()
   {
     $params['limit'] = 5;
     $sql_params['conditions'][] = 'some condition';

@@ -8,50 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/dataspace.class.php');
-require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
+require_once(LIMB_DIR . '/class/core/data_mappers/site_object_mapper.class.php');
 
-class content_object extends site_object
+class one_table_objects_mapper extends site_object_mapper
 {
-  protected  $_db_table = null;
-    
-  public function get_db_table()
-  {
-    if(!$this->_db_table)
-    {
-      $db_table_name = $this->_define_db_table_name();
-        
-      $this->_db_table = Limb :: toolkit()->createDBTable($db_table_name);
-    } 
-      
-    return $this->_db_table;
-  }
-  
-  protected function _define_db_table_name()
-  {
-    return get_class($this);
-  }
-  
-  public function fetch($params=array(), $sql_params=array())
-  {
-    $db_table = $this->get_db_table();
-    
-    $sql_params['columns'][] = ' ' . $db_table->get_columns_for_select('tn', array('id')) . ',';
-    
-    $table_name = $db_table->get_table_name();
-    $sql_params['tables'][] = ",{$table_name} as tn";
-    
-    $sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
-    
-    return $this->_do_parent_fetch($params, $sql_params);
-  }
-  
-  //for mocking
-  protected function _do_parent_fetch($params, $sql_params)
-  {
-    return parent :: fetch($params, $sql_params);
-  }
-  
   public function recover_version($version)
   {
     if(!$version_data = $this->fetch_version($version))
@@ -90,43 +50,27 @@ class content_object extends site_object
                                   ' AND version <> ' . $this->get_version());
   }
   
-  protected function _do_parent_fetch_count($sql_params)
-  {
-    return parent :: fetch_count($sql_params);
-  }
-  
-  public function fetch_count($sql_params=array())
-  {
-    $db_table = $this->get_db_table();
-    $table_name = $db_table->get_table_name();
-    $sql_params['tables'][] = ",{$table_name} as tn";
-    
-    $sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
-    
-    return $this->_do_parent_fetch_count($sql_params);
-  }
-    
-  protected function _create_version_record()
+  protected function _create_version_record($site_object)
   {
     $version_db_table = Limb :: toolkit()->createDBTable('sys_object_version');
     
     $time = time();
     
     $data['id'] = null;
-    $data['object_id'] = $this->get_id();
-    $data['version'] = $this->get_version();
+    $data['object_id'] = $site_object->get_id();
+    $data['version'] = $site_object->get_version();
     $data['created_date'] = $time;
     $data['modified_date'] = $time;
-    $data['creator_id'] = Limb :: toolkit()->getUser()->get_id();
+    $data['creator_id'] = $site->get_creator_id();
     
     $version_db_table->insert($data);
   }
       
-  protected function _create_versioned_content_record()
+  protected function _create_versioned_content_record($site_object)
   {
-    $data = $this->_attributes->export();
+    $data = $site_object->export();
     
-    $data['object_id'] = $this->get_id();
+    $data['object_id'] = $site_object->get_id();
         
     $this->get_db_table()->insert($data);
   }
@@ -156,59 +100,61 @@ class content_object extends site_object
   }
 
   //for mocking
-  protected function _do_parent_create($is_root)
+  protected function _do_parent_create($site_object)
   {
-    return parent :: create($is_root);
+    return parent :: create($site_object);
   }
   
   //for mocking
-  protected function _do_parent_update($force_create_new_version)
+  protected function _do_parent_update($site_object)
   {
-    parent :: update($force_create_new_version);
+    parent :: update($site_object);
   }
 
   //for mocking
-  protected function _do_parent_delete()
+  protected function _do_parent_delete($site_object)
   {
-    parent :: delete();
+    parent :: delete($site_object);
   }
   
-  public function update($force_create_new_version = true)
+  public function update($site_object)
   {
-    $this->_do_parent_update($force_create_new_version);
+    // Need to check if we need to create new version record
+    
+    $this->_do_parent_update($site_object);
     
     if ($force_create_new_version)
     {
-      $this->_create_version_record();
+      $this->_create_version_record($site_object);
     
-      $this->_create_versioned_content_record();
+      $this->_create_versioned_content_record($site_object);
     }
     else
-      $this->_update_versioned_content_record();
+      $this->_update_versioned_content_record($site_object);
   }
   
-  public function create($is_root = false)
+  public function insert($site_object)
   {
-    $id = $this->_do_parent_create($is_root);
+    $id = $this->_do_parent_create($site_object);
       
-    $this->_create_version_record();
+    $this->_create_version_record($site_object);
      
-    $this->_create_versioned_content_record();
+    $this->_create_versioned_content_record($site_object);
     
     return $id;
   }
         
-  public function delete()
+  public function delete($site_object)
   {
-    $this->_do_parent_delete();
+    $this->_do_parent_delete($site_object);
 
-    $this->_delete_versioned_content_records();
+    $this->_delete_versioned_content_records($site_object);
   }
 
-  protected function _delete_versioned_content_records()
+  protected function _delete_versioned_content_records($site_object)
   {
     $db_table = $this->get_db_table();  
-    $db_table->delete(array('object_id' => $this->get_id()));
+    $db_table->delete(array('object_id' => $site_object->get_id()));
   } 
 }
 
