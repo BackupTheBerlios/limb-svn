@@ -42,6 +42,15 @@ class useful_links_folder_controller extends site_object_controller
 						'action_name' => strings :: get('create_link', 'useful_link'),
 						'can_have_access_template' => true,
 				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'template_path' => '/site_object/delete.html',
+						'action_path' => '/site_object/delete_action',
+						'JIP' => true,
+						'popup' => true,
+						'img_src' => '/shared/images/rem.gif',
+						'action_name' => strings :: get('delete'),
+				),
 		);
  		
 		parent :: site_object_controller();
