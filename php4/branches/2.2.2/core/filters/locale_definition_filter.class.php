@@ -20,8 +20,10 @@ class locale_definition_filter extends intercepting_filter
     
     if(!$node = map_request_to_node($request))
     {
-    	define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
-    	define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
+    	if(!defined('CONTENT_LOCALE_ID'))
+    	  define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
+    	if(!defined('MANAGEMENT_LOCALE_ID'))
+    	  define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
     	
     	$locale =& locale :: instance();    	
     	$locale->setlocale();
@@ -30,16 +32,22 @@ class locale_definition_filter extends intercepting_filter
       return;
     }
           
-    if($object_locale_id = site_object :: get_locale_by_id($node['object_id']))
-    	define('CONTENT_LOCALE_ID', $object_locale_id);
-    else
-      define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
+    if(!defined('CONTENT_LOCALE_ID'))
+    {
+      if($object_locale_id = site_object :: get_locale_by_id($node['object_id']))
+      	define('CONTENT_LOCALE_ID', $object_locale_id);
+      else
+        define('CONTENT_LOCALE_ID', DEFAULT_CONTENT_LOCALE_ID);
+    }
     
-    $user = user :: instance();
-    if($user_locale_id = $user->get_locale_id())
-    	define('MANAGEMENT_LOCALE_ID', $user_locale_id);
-    else
-      define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
+    if(!defined('MANAGEMENT_LOCALE_ID'))
+    {
+      $user = user :: instance();
+      if($user_locale_id = $user->get_locale_id())
+      	define('MANAGEMENT_LOCALE_ID', $user_locale_id);
+      else
+        define('MANAGEMENT_LOCALE_ID', CONTENT_LOCALE_ID);
+    }
               
     debug :: add_timing_point('locale filter finished');
 
