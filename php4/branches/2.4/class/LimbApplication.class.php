@@ -30,8 +30,8 @@ class LimbApplication
 
   function _createToolkit()
   {
-    include_once(LIMB_DIR . '/class/BaseLimbToolkit.class.php');
-    return new BaseLimbToolkit();
+    include_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
+    return new LimbBaseToolkit();
   }
 
   function _registerToolkit()

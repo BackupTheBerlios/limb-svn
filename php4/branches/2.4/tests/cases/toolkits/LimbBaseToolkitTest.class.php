@@ -8,17 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/BaseLimbToolkit.class.php');
+require_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
 
 class ViewTestVersion{}
 
-class BaseLimbToolkitTest extends LimbTestCase
+class LimbBaseToolkitTest extends LimbTestCase
 {
   var $toolkit;
 
+  function LimbBaseToolkitTest()
+  {
+    parent :: LimbTestCase('limb base toolkit tests');
+  }
+
   function setUp()
   {
-    $this->toolkit = new BaseLimbToolkit();
+    $this->toolkit = new LimbBaseToolkit();
   }
 
   function testDefineConstant()
@@ -61,7 +66,7 @@ class BaseLimbToolkitTest extends LimbTestCase
   function testGetDb()
   {
     $this->assertIsA($this->toolkit->getDB(),
-                     'DbModule');
+                     'MysqlConnection');//???
   }
 
   function testGetTree()

@@ -14,11 +14,11 @@ require_once(LIMB_DIR . '/class/data_mappers/SiteObjectBehaviourMapper.class.php
 require_once(LIMB_DIR . '/class/finders/SiteObjectsRawFinder.class.php');
 require_once(LIMB_DIR . '/class/site_objects/SiteObject.class.php');
 require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
-require_once(LIMB_DIR . '/class/BaseLimbToolkit.class.php');
+require_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/class/tree/TreeDecorator.class.php');
 require_once(LIMB_DIR . '/class/permissions/User.class.php');
 
-Mock :: generatePartial('BaseLimbToolkit',
+Mock :: generatePartial('LimbBaseToolkit',
                       'SiteObjectManipulationTestToolkit',
                       array('getTree', 'getUser', 'constant', 'createDataMapper'));
 

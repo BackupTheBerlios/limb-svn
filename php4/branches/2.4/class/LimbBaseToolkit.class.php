@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class BaseLimbToolkit// implements LimbToolkit
+class LimbBaseToolkit// implements LimbToolkit
 {
   var $current_dataspace_name = 'default';
   var $fetcher;

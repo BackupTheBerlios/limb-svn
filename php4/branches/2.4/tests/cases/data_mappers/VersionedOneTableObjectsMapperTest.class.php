@@ -14,9 +14,9 @@ require_once(LIMB_DIR . '/class/site_objects/VersionedSiteObject.class.php');
 require_once(dirname(__FILE__) . '/OneTableObjectsMapperTestVersionDbTable.class.php');
 require_once(LIMB_DIR . '/class/finders/VersionedOneTableObjectsRawFinder.class.php');
 require_once(LIMB_DIR . '/class/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/BaseLimbToolkit.class.php');
+require_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
 
-Mock :: generatePartial('BaseLimbToolkit',
+Mock :: generatePartial('LimbBaseToolkit',
                       'VersionedOneTableObjectsToolkitMock', array());
 
 class VersionedOneTableObjectsTestToolkitMock extends VersionedOneTableObjectsToolkitMock

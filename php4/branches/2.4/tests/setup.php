@@ -51,9 +51,9 @@ require_once(LIMB_DIR . '/tests/cases/LimbTestCase.class.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
 require_once(LIMB_DIR . '/class/lib/error/error.inc.php');
 require_once(LIMB_DIR . '/class/PackagesInfo.class.php');
-require_once(LIMB_DIR . '/class/BaseLimbToolkit.class.php');
+require_once(LIMB_DIR . '/class/LimbBaseToolkit.class.php');
 
-Limb :: registerToolkit(new BaseLimbToolkit());
+Limb :: registerToolkit(new LimbBaseToolkit());
 
 $inst =& PackagesInfo :: instance();
 $inst->loadPackages();//???
