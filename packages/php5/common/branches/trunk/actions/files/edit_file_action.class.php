@@ -50,8 +50,7 @@ class edit_file_action extends form_edit_site_object_action
 		{	
 			if(($_FILES[$this->name]['size']['file']) > ini_get('upload_max_filesize')*1024*1024)
 			{
-				message_box :: write_warning('uploaded file size exceeds limit');
-				return false;
+			  throw new LimbException('uploaded file size exceeds limit');
 			}
 			
 			$object_data = fetch_requested_object();
@@ -62,7 +61,7 @@ class edit_file_action extends form_edit_site_object_action
 			$this->object->set('mime_type', $_FILES[$this->name]['type']['file']);
 		}
 
-		return parent :: _update_object_operation();
+		parent :: _update_object_operation();
 	}
 }
 

@@ -76,13 +76,13 @@ class send_feedback_action extends form_action
 										)
 				)
 		{
-			message_box :: write_error(strings :: get('mail_not_sent', 'feedback'));
+			message_box :: write_notice(strings :: get('mail_not_sent', 'feedback'));
 			
 			$request->set_status(request :: STATUS_FAILUER);
 			return;
 		}
 		
-		message_box :: write_error(strings :: get('message_was_sent', 'feedback'));
+		message_box :: write_notice(strings :: get('message_was_sent', 'feedback'));
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 		$response->redirect($_SERVER['PHP_SELF']);

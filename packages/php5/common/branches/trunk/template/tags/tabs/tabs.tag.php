@@ -72,11 +72,10 @@ class tabs_tag extends compiler_directive_tag
 	
 	  if(!$this->tabs || !$active_tab || !in_array($active_tab, $this->tabs))
 	  {
-			error('INVALID_TABS_DECLARATION', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
-					'description' => 'check your tabs settings',
+			throw new WactException('invalid tabs declaration. Check your tabs settings', 
+					array('tag' => $this->tag,
 					'file' => $this->source_file,
-					'line' => $this->starting_line_no));	  
+					'line' => $this->starting_line_no));
 	  }
 	  
 	  foreach($this->tabs as $id)

@@ -23,24 +23,29 @@ class tab_item_label_tag extends compiler_directive_tag
 	{
 		if (!$this->parent instanceof tabs_labels_tag)
 		{
-			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
 					'enclosing_tag' => 'tabs:labels',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
-		
-		if (!isset($this->attributes['tab_id']))
+	}
+
+	public function pre_parse()
+	{
+		if (!isset($this->attributes['tab_id']) || !$this->attributes['tab_id'])
 		{
-			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'tab_id',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		}
 		
 		$this->parent->parent->tabs[] = $this->attributes['tab_id'];
-	} 
+
+    return PARSER_REQUIRE_PARSING;
+	}
 	
 	public function pre_generate($code)
 	{

@@ -59,11 +59,8 @@ class cart
         break;
         
         default:
-          error('unknown default cart handler type',
-    		  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-    		  array('type' => CART_DEFAULT_HANDLER_TYPE));
+          throw new LimbException('unknown default cart handler type', array('type' => CART_DEFAULT_HANDLER_TYPE));
 	    }
-	    
 	    
 	    $this->_cart_handler->reset();
 	  }

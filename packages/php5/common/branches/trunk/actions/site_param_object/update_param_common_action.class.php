@@ -46,8 +46,27 @@ class update_param_common_action extends form_action
 		$sys_param = sys_param :: instance();
 
 		$data = array();
-		foreach($this->params_type as $param_name => $param_type)
-			$data[$param_name] = $sys_param->get_param($param_name, $param_type);
+		
+	  foreach($this->params_type as $param_name => $param_type)
+	  {
+      try
+	    {		    
+		    $data[$param_name] = $sys_param->get_param($param_name, $param_type);
+		  }
+  		catch(LimbException $e)
+  		{
+  		  $data[$param_name] = '';
+  		  
+    		debug :: write_warning('couldnt get sys parameter',
+    		   __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+    		  array(
+    		    'param_name' => $param_name,
+    		    'param_type' => $param_type,
+    		  )
+    		);
+        
+  		}			  
+		}
 		
 		$this->dataspace->import($data);		
 	}
@@ -58,7 +77,27 @@ class update_param_common_action extends form_action
 		$sys_param = sys_param :: instance();
 
 		foreach($this->params_type as $param_name => $param_type)
-			$sys_param->save_param($param_name, $param_type, $data[$param_name]);
+		{
+		  try
+		  {
+			  $sys_param->save_param($param_name, $param_type, $data[$param_name]);
+			}
+			catch(SQLException $e)
+			{
+			  throw $e;
+			}
+			catch(LimbException $e)
+			{
+    		debug :: write_warning('couldnt save sys parameter',
+    		   __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
+    		  array(
+    		    'param_name' => $param_name,
+    		    'param_type' => $param_type,
+    		  )
+    		);
+			}
+			
+		}
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 	}

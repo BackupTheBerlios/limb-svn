@@ -21,33 +21,37 @@ class tab_item_content_tag extends compiler_directive_tag
 {  
 	public function check_nesting_level()
 	{
-		if (!$this->parent  instanceof tabs_contents_tag)
+		if (!$this->parent instanceof tabs_contents_tag)
 		{
-			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
 					'enclosing_tag' => 'tabs:contents',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
-		
+	}
+
+	public function pre_parse()
+	{
 		if (!isset($this->attributes['tab_id']))
 		{
-			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('missing required attribute', 
+					array('tag' => $this->tag,
 					'attribute' => 'id',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 	
 		if(!in_array($this->attributes['tab_id'], $this->parent->parent->tabs))
 		{
-			error('ATRRIBUTE_INVALID', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('invalid attribute value', 
+					array('tag' => $this->tag,
 					'attribute' => 'tab_id',
 					'description' => 'tab_id not declared in <tab_item:label> tag',
 					'file' => $this->source_file,
-					'line' => $this->starting_line_no));		
+					'line' => $this->starting_line_no));
 		}
-		
+
+    return PARSER_REQUIRE_PARSING;
 	}
 	
 	public function pre_generate($code)

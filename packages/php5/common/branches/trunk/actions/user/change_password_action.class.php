@@ -69,7 +69,7 @@ class change_password_action extends form_edit_site_object_action
 	
 	protected function _update_object_operation()
 	{
-		return $this->object->change_password();
+		$this->object->change_password();
 	}
 }
 

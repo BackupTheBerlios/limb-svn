@@ -33,14 +33,22 @@ class display_template_source_action extends action
 		
 		if(substr($template_path, -5,  5) != '.html')
 		  $request->set_status(request :: STATUS_FAILURE);
-				
-		if(!$source_file_path = resolve_template_source_file_name($template_path))
+		
+		try 
+		{		
+		  $source_file_path = resolve_template_source_file_name($template_path);
+		}
+		catch(LimbException $e)
 		{
-			debug :: write_error('template not found',
-	 			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
-				array('template_path' => $this->template_path));
-			
-			$source_file_path = resolve_template_source_file_name(TEMPLATE_FOR_HACKERS);
+		  try
+		  {
+			  $source_file_path = resolve_template_source_file_name(TEMPLATE_FOR_HACKERS);
+			}
+			catch(LimbException $final_e)
+			{
+			  $request->set_status(request :: STATUS_FAILURE);
+			  return;
+			}  
 		}
 		
 		$template_contents = file_get_contents($source_file_path);

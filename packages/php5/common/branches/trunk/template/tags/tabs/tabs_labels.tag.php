@@ -21,16 +21,16 @@ class tabs_labels_tag extends compiler_directive_tag
 {  
 	public function check_nesting_level()
 	{
-		if (!$this->parent  instanceof  tabs_tag)
+		if (!$this->parent instanceof tabs_tag)
 		{
-			error('MISSINGENCLOSURE', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-			array('tag' => $this->tag,
+			throw new WactException('missing enclosure', 
+					array('tag' => $this->tag,
 					'enclosing_tag' => 'tabs',
 					'file' => $this->source_file,
 					'line' => $this->starting_line_no));
 		} 
 	} 
-	
+
 	public function pre_generate($code)
 	{
 	  $tabulator_class = $this->parent->tabulator_class;
