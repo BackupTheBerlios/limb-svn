@@ -101,7 +101,7 @@ class cart
 		
 	public function get_total_summ()
 	{
-	  $items =& $this->_cart_handler->get_items();
+	  $items = $this->_cart_handler->get_items();
 		$summ = 0;
 			
 		foreach(array_keys($items) as $key)
@@ -132,7 +132,7 @@ class cart
 	
 	public function get_items_array_dataset()
 	{
-	  $items =& $this->_cart_handler->get_items();
+	  $items = $this->_cart_handler->get_items();
 	
 		$result_array = array();
 		foreach(array_keys($items) as $key)
