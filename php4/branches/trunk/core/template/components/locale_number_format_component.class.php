@@ -33,7 +33,6 @@ class locale_number_format_component extends component
 
     return number_format($value, $fract_digits, $decimal_symbol, $thousand_separator);
   }
-
 }
 
 ?>

@@ -509,6 +509,41 @@ class locale
   {
     return $this->currency_short_name;
   }
+  
+  function get_currency_decimal_symbol()
+  {
+    return $this->currency_decimal_symbol;
+  }
+
+  function get_currency_thousand_separator()
+  {
+    return $this->currency_thousand_separator;
+  }
+
+  function get_currency_fract_digits()
+  {
+    return $this->currency_fract_digits;
+  }
+
+  function get_currency_negative_symbol()
+  {
+    return $this->currency_negative_symbol;
+  }
+
+  function get_currency_positive_symbol()
+  {
+    return $this->currency_positive_symbol;
+  }
+
+  function get_currency_positive_format()
+  {
+    return $this->currency_positive_format;
+  }
+
+  function get_currency_negative_format()
+  {
+    return $this->currency_negative_format;
+  }
 
   function get_time_format()
   {
