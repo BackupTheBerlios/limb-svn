@@ -31,6 +31,9 @@ class display_template_source_action extends action
 			return new failed_response();
 		
 		$template_path = end($this->history);
+		
+		if(substr($template_path, -5,  5) != '.html')
+			return new failed_response();
 				
 		if(!$source_file_path = resolve_template_source_file_name($template_path))
 		{
