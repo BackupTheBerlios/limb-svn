@@ -202,7 +202,7 @@ class site_object_controller
 		if($template_path = $this->get_current_action_property('template_path'))
 			return new template($template_path);
 		else
-			return new empty_template();			
+			return new empty_template();
 	}
 	
 	function get_current_action_property($property_name)

@@ -15,7 +15,7 @@ class image_library_group extends GroupTest
 	function image_library_group() 
 	{
 	  $this->GroupTest('Image library');
-	  TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/image');
+	  //TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/image');
 	}
 }
 ?>

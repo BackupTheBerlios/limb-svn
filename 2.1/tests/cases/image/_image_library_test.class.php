@@ -179,8 +179,12 @@ class image_library_test extends UnitTestCase
     $this->library->commit();
 
     $info2 = getimagesize($this->output_file);
-  	$this->assertEqual($info2[0], $w);
-  	$this->assertEqual($info2[1], $h);
+	
+	if(!file_exists($this->output_file))
+		echo $this->output_file . '<br>';
+	
+  	$this->assertEqual($info2[0], $w, __LINE__ . ' %s');
+  	$this->assertEqual($info2[1], $h, __LINE__ . ' %s');
 //      $this->assertEqual(filesize($this->output_file), $this->cutted_size1);
     clearstatcache();
   }

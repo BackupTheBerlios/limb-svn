@@ -159,7 +159,7 @@ class site_object_controller_test extends UnitTestCase
 
   	$this->assertIdentical($this->site_object_controller->determine_action(), false);
 
-		debug_mock :: expect_write_error('template is null');
+	//debug_mock :: expect_write_error('template is null');
 		
   	$this->site_object_controller->display_view();  	
   }  

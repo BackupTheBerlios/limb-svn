@@ -32,6 +32,12 @@ define('PNMQUANT', 'ppmquant');
 define('PNMMAKE', 'ppmmake');
 define('PNMCOMP', 'pnmpaste');
 
+//default settings - should  be overriden in steup.php or setup_custom.php
+if(sys :: os_type() == 'win32')
+	define('NETPBM_LIB_DIR', 'c:/netpbm/');
+else
+	define('NETPBM_LIB_DIR', '/usr/local/netpbm/bin/');
+
 require_once(LIMB_DIR . 'core/lib/image/image_library.class.php');
 
 class image_netpbm extends image_library
@@ -48,7 +54,7 @@ class image_netpbm extends image_library
 	var $current_output_file = '';
 	var $current_output_file_type = '';
 
-	function image_netpbm($lib_dir = '')
+	function image_netpbm($lib_dir = NETPBM_LIB_DIR)
 	{
 	  $this->lib_dir = $lib_dir;
 
@@ -57,13 +63,8 @@ class image_netpbm extends image_library
 	
 	function _determine_options()
 	{
-    if (substr(php_uname(), 0, 7) == "Windows")
-    {
-      $this->os = 'windows';
+    if (sys :: os_type() == "win32")
       $this->ext = '.exe';
-    }
-    else
-      $this->os = 'unix';
     
     $this->_determine_read_types();
     $this->_determine_write_types();
