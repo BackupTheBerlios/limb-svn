@@ -144,6 +144,30 @@ class site_object_test extends LimbTestCase
 		
 		$this->assertEqual(sizeof($arr), 1);
 	}
+  
+  function test_get_behaviour_name_by_id_ok()
+  {
+    $this->db->sql_insert('sys_behaviour', array('id' => $behaviour_id = 100,
+                                                 'name' => $name = 'test_behaviour'));
+    
+    $this->db->sql_insert('sys_site_object', array('id' => $object_id = 100,
+                                                 'behaviour_id' => $behaviour_id));
+    
+    $this->assertEqual(site_object :: find_behaviour_name_by_id($object_id), $name);
+  }
+
+  function test_get_behaviour_name_by_id_failed()
+  {
+    try
+    {
+      site_object :: find_behaviour_name_by_id(100);
+      $this->assertTrue(false);
+    }
+    catch(LimbException $e)
+    {
+      $this->assertTrue(true);
+    }
+  }
 }
 
 ?>

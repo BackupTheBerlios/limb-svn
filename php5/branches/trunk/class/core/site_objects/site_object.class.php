@@ -248,27 +248,27 @@ class site_object extends object
     return (int)$this->get('version');
   }
 
-	static public function get_object_class_name_by_id($object_id)
+	static public function find_behaviour_name_by_id($object_id)
 	{
 		$db = Limb :: toolkit()->getDB();
 
-		$sql = "SELECT sc.class_name as class_name
-			FROM sys_site_object as sso, sys_class as sc
-			WHERE sso.class_id = sc.id
-			AND sso.id={$object_id}";
+		$sql = "SELECT sys_behaviour.name
+			FROM sys_site_object, sys_behaviour
+			WHERE sys_site_object.behaviour_id = sys_behaviour.id
+			AND sys_site_object.id={$object_id}";
 
 		$db->sql_exec($sql);
 		$row = $db->fetch_row();
-		if (!isset($row['class_name']))
+		if (!isset($row['name']))
 		{
-			throw new LimbException('object class name not found',
+			throw new LimbException('behaviour name not found',
     		array(
     			'object_id' => $object_id
     		)
     	);
 		}
 		else
-			return $row['class_name'];
+			return $row['name'];
 	}
 
   public function get_class_id()

@@ -19,51 +19,35 @@ class authentication_filter implements intercepting_filter
     
     $this->_initialize_user();
     
-    if(!$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request))
+    $toolkit = Limb :: toolkit();
+    $datasource = $toolkit->createDatasource('single_object_datasource');
+    $datasource->set_request($request);
+    
+    if(!$node = $datasource->map_request_to_node($request))
     {
-      if(!$node = Limb :: toolkit()->getFetcher()->map_request_to_node($request))
-      {
-      	if(defined('ERROR_DOCUMENT_404'))
-      		$response->redirect(ERROR_DOCUMENT_404);
-      	else
-      		$response->header("HTTP/1.1 404 Not found");
-      	return;
-      }
+      $this->_process_404_object($request, $response);
+      $filter_chain->next();
+      return;
+    }
+    
+    $behaviour = $this->_get_behavoiur($node['object_id']);
+    
+    $controller = new site_object_controller($behaviour);
+    if(!$action = $controller->get_requested_action())
+    {
+      $this->_process_404_object($request, $response);
+      $filter_chain->next();
+      return;
+    }
+    
+    $datasource->set_id($node['object_id']);
+    $datasource->set_permission_action($action);
+    
+    if(!$object_data = $datasource->fetch())
+    {
   		$response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
   		return;
     }
-
-    $object = wrap_with_site_object($object_data);
-
-    $site_object_controller = $object->get_controller();
-
-    try
-    {
-      $action = $site_object_controller->get_action($request);
-    }
-    catch(LimbException $e)
-    {
-    	debug :: write_exception($e);
-
-    	if(defined('ERROR_DOCUMENT_404'))
-    		$response->redirect(ERROR_DOCUMENT_404);
-    	else
-    		$response->header("HTTP/1.1 404 Not found");
-
-      debug :: add_timing_point('authentication filter finished');
-
-    	$filter_chain->next();
-    	return;
-    }
-
-    $actions = $object->get('actions');
-
-    if(!isset($actions[$action]))
-    {
-      $response->redirect('/root/login?redirect='. urlencode($_SERVER['REQUEST_URI']));
-    }
-
-    debug :: add_timing_point('authentication filter finished');
 
     $filter_chain->next();
   }
@@ -77,5 +61,19 @@ class authentication_filter implements intercepting_filter
     $authenticator = Limb :: toolkit()->getAuthenticator();
     $authenticator->login(array('login' => '', 'password' => ''));
   }
+  
+  protected function _get_behavoiur($object_id)
+  {
+    $behaviour_name = site_object :: find_behaviour_name_by_id($object_id);
+    return Limb :: toolkit()->createBehaviour($behaviour_name); 
+  }
+
+  protected function _process_404_object($request, $response)
+  {  
+    if(defined('ERROR_DOCUMENT_404'))
+      $response->redirect(ERROR_DOCUMENT_404);
+    else
+      $response->header("HTTP/1.1 404 Not found");
+  }    
 }
 ?>

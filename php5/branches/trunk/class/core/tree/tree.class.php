@@ -12,8 +12,6 @@ require_once(LIMB_DIR . '/class/core/tree/tree_interface.interface.php');
 
 class tree implements tree_interface
 {
-  static protected $_instance = null;
-
 	protected $_tree_driver = null;
 
 	function __construct($driver)
