@@ -17,6 +17,8 @@ class grid_button_component extends form_element
   var $action = '';
   var $reload_parent = 0;
   var $onclick = '';
+  var $onbeforeclick = '';
+  var $onafterclick = '';
   var $target = '';
 
   function _process_attributes()
@@ -33,6 +35,12 @@ class grid_button_component extends form_element
     if (isset($this->attributes['onclick']))
       $this->onclick = $this->attributes['onclick'];
 
+    if (isset($this->attributes['onbeforeclick']))
+      $this->onbeforeclick = $this->attributes['onbeforeclick'];
+
+    if (isset($this->attributes['onafterclick']))
+      $this->onafterclick = $this->attributes['onafterclick'];
+
     if (isset($this->attributes['target']))
       $this->target = $this->attributes['target'];
 
@@ -40,6 +48,8 @@ class grid_button_component extends form_element
     unset($this->attributes['action']);
     unset($this->attributes['reload_parent']);
     unset($this->attributes['onclick']);
+    unset($this->attributes['onbeforeclick']);
+    unset($this->attributes['onafterclick']);
   }
 
   function render_attributes()
@@ -75,8 +85,10 @@ class grid_button_component extends form_element
     if($this->target)
       $window_name = ", '{$this->target}'";
 
-    $this->attributes['onclick'] = $this->onclick;
-    $this->attributes['onclick'] .= "submit_form(this.form, '{$action_path}'{$window_name})";
+    $this->attributes['onclick'] = $this->onbeforeclick;
+    $this->attributes['onclick'] .= $this->onclick;
+    $this->attributes['onclick'] .= "submit_form(this.form, '{$action_path}'{$window_name});";
+    $this->attributes['onclick'] .= $this->onafterclick;
 
     parent :: render_attributes();
 
