@@ -1,7 +1,5 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
-
 <span class=jip>
 <fetch:MAPPED><core:INCLUDE file="jip_actions/normal.html"></fetch:MAPPED>
 </span><br>
@@ -11,10 +9,10 @@
 </fetch:SUB_BRANCH>
 
 	<grid:LIST id='folders'>
-		<table width=100% border=0 cellspacing=0 cellpadding=0 bgcolor="DFE4F7">
+		<table width=100% border=0 cellspacing=0 cellpadding=0>
 	    <grid:ITERATOR>
 			<tr>
-		    <td colspan=100 bgcolor="DFE4F7" style="padding: 2px, 0, 3px, 10px">
+		    <td colspan=100 style="padding: 2px, 0, 3px, 10px">
 		    	<h3><a href='{$path}'>{$title}</a></h3>
 		    </td>
 			</tr>
@@ -27,17 +25,16 @@
 	<core:PARAMETER name='loader_class_name' value='catalog_object' >
 </fetch:SUB_BRANCH>
 
-<table width=100% border=0 cellspacing=1 cellpadding=0 >
-	<tr>
-
 <grid:LIST id='direct_objects'>	
-<grid:ITERATOR>
+<table width=100% border=0 cellspacing=10 cellpadding=0 >
+	<tr>
+		<grid:ITERATOR>
 
 		<grid:SEPARATOR count='2'>
 		</tr><tr>
 		</grid:SEPARATOR>
 		
-			<td  jip='object' class=jip bgcolor="white" valign=top>
+			<td jip='object' class=jip bgcolor="white" valign=top>
 				<core:INCLUDE file="published_status.html">
 				<span jip='action'><core:INCLUDE file="jip_actions/normal.html"></span><br>
 				<core:OPTIONAL for='image_id'>
@@ -50,12 +47,8 @@
 				</core:OPTIONAL>
 				<a href='{$path}'>{$title}</a><br>
 				{$annotation}<br>
-      	</table>
-			
 			</td>
-		
-</grid:ITERATOR>
-</grid:LIST>
+		</grid:ITERATOR>
 		</tr>
 </table>
-<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->
+</grid:LIST>
