@@ -120,7 +120,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
     $db_pool =& $this->_getDbPool();
 
-    return $db_pool->createConnection($conf);
+    return $db_pool->newConnection($conf);
   }
 
   function & _getDbPool()
