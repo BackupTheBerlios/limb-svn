@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 class core_include_tag_info
 {
 	var $tag = 'core:INCLUDE';
@@ -72,7 +71,7 @@ class core_include_tag extends compiler_directive_tag
 	function generate_contents(&$code)
 	{
 		if($this->is_debug_enabled())
-			$code->write_html("<div style='border:dashed 1px red;'><img src='/shared/images/i.gif' alt='{$this->resolved_source_file}'><br>");
+			$code->write_html("<div style='border:dashed 1px red;padding:10px 10px 10px 10px;'><img src='/shared/images/i.gif' alt='{$this->resolved_source_file}'>");
 		
 		parent :: generate_contents($code);
 		

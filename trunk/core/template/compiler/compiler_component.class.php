@@ -450,7 +450,10 @@ class compiler_component
 		if (isset($this->wrapping_component))
 		{
 			if($this->is_debug_enabled())
-				$code->write_html("<div style='border:dashed 1px red;'><img src='/shared/images/i.gif' alt='{$this->wrapping_component->resolved_source_file}'><br>");
+			{
+				$code->write_html("<div style='border:dashed 1px blue;padding: 10px 10px 10px 10px;'><img src='/shared/images/i.gif' alt='{$this->wrapping_component->resolved_source_file}'>");
+				$code->write_html("<div style='border:dashed 1px green;padding: 10px 10px 10px 10px;'><img src='/shared/images/i.gif' alt='{$this->wrapping_component->source_file}'>");
+			}
 
 			$this->wrapping_component->generate_wrapper_prefix($code);
 		} 
@@ -472,7 +475,7 @@ class compiler_component
 			$this->wrapping_component->generate_wrapper_postfix($code);
 			
 			if($this->is_debug_enabled())
-				$code->write_html('</div>');
+				$code->write_html('</div></div>');
 		} 
 	} 
 
