@@ -68,7 +68,7 @@ class wysiwygpro_component extends richedit_component
     }
 
     $editor->set_stylesheet('/design/main/styles/main.css');
-
+    $editor->usep(true);
     $editor->print_editor($width, $height);
   }
 }
