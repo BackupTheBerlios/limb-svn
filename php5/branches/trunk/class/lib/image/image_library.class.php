@@ -186,6 +186,8 @@ abstract class image_library
 	abstract public function resize($params);
 
 	abstract public function rotate($angle, $bg_color);
+  
+  abstract public function commit();
 
 	protected function _hex_color_to_X11($color)
 	{
