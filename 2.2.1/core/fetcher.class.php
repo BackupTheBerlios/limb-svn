@@ -380,7 +380,7 @@ function & map_request_to_node($request = null)
 	return $result;
 }
 
-function & flush_cache()
+function & flush_fetcher_cache()
 {
 	$fetcher =& fetcher :: instance();
 	$fetcher->flush_cache();

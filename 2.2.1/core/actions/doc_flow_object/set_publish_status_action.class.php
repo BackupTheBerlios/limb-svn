@@ -43,7 +43,7 @@ class set_publish_status_action extends action
 		
 		$this->_apply_access_policy($object, $action);
 
-	  fetcher :: flush_cache();
+	  flush_fetcher_cache();
 	}
 	
 	function get_publish_status($object)
