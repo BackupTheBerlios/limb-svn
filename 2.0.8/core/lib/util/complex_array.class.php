@@ -94,7 +94,7 @@ class complex_array
 	{
 		$index = 0;
 		
-		if(!$values = get_column_values($column_name, $array))
+		if(!$values = complex_array :: get_column_values($column_name, $array))
 			return false;
 			
 		$min = min($values);

@@ -9,13 +9,6 @@
 *
 ***********************************************************************************/ 
 
-require_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
-require_once(LIMB_DIR . 'core/model/response/response.class.php');
-
-$stats_register = new stats_register();
-$response = new response();
-$stats_register->register(-1, '', $response->get_status());
-
 header("Location: /root");
 exit;
 ?> 

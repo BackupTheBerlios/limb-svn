@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 setlocale(LC_ALL, 'ru');//temporary
 
 require_once(LIMB_DIR . 'core/process_output.php');
