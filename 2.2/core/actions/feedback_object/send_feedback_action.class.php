@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/model/sys_param.class.php');
+require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
 
 class send_feedback_action extends form_action
 {

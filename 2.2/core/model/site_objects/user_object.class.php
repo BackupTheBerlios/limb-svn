@@ -224,6 +224,8 @@ class user_object extends content_object
 		$activate_href = 'http://'. $http_host. '/root/activate_password?user='. $user_data['email'] .'&id='. $user_data['password']; 
 		$contents = str_replace('%activate_href%', $activate_href, $contents);
 		
+		include_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');		
+		
 		if(!send_plain_mail(
 									array($user_data['email']),
 									ADMINISTRATOR_EMAIL, 

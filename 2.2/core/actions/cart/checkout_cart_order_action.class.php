@@ -12,7 +12,7 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 require_once(LIMB_DIR . 'core/lib/i18n/locale.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
-require_once(LIMB_DIR . 'core/lib/mail/send_html_mail.inc.php');
+require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
 require_once(LIMB_DIR . 'core/template/template.class.php');
 
 class checkout_cart_order_action extends form_action
