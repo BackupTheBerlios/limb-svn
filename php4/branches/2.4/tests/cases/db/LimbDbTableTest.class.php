@@ -31,7 +31,7 @@ class Test1DbTable extends LimbDbTable
 
 class LimbDbTableTest extends LimbTestCase
 {
-  var $db = null;
+  var $conn = null;
   var $db_table_test = null;
 
   function LimbDbTableTest()
@@ -41,7 +41,7 @@ class LimbDbTableTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& LimbDbPool :: getConnection();
+    $this->conn =& LimbDbPool :: getConnection();
     $this->db_table_test = LimbDbTableFactory :: create('Test1');
 
     $this->_cleanUp();
@@ -54,7 +54,7 @@ class LimbDbTableTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $stmt = $this->db->newStatement('DELETE FROM test1');
+    $stmt = $this->conn->newStatement('DELETE FROM test1');
     $stmt->execute();
   }
 
@@ -77,7 +77,7 @@ class LimbDbTableTest extends LimbTestCase
                                              'description' => 'wow!',
                                              'junk!!!' => 'junk!!!'));
 
-    $stmt = $this->db->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test1");
     $record = $stmt->getOneRecord();
 
     $this->assertEqual($record->get('title'), 'wow');
@@ -95,7 +95,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
 
-    $stmt = $this->db->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test1");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -123,7 +123,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
 
-    $stmt = $this->db->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test1");
     $records = $stmt->getRecordSet();
 
     $records->rewind();
@@ -137,6 +137,36 @@ class LimbDbTableTest extends LimbTestCase
     $this->assertEqual($record->get('title'), 'wow2');
   }
 
+  function testUpdateByMixedCondition()
+  {
+    $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
+    $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
+    $this->db_table_test->insert(array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
+
+    $res = $this->db_table_test->update(array('description' =>  'new_description', 'title' => 'wow2'),
+                                        array('title' => 'wow', "description='description2'"));
+
+    $this->assertEqual($res, 1);
+
+    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $records = $stmt->getRecordSet();
+
+    $records->rewind();
+    $record = $records->current();
+    $this->assertEqual($record->get('description'), 'description');
+    $this->assertEqual($record->get('title'), 'wow');
+
+    $records->next();
+    $record = $records->current();
+    $this->assertEqual($record->get('description'), 'new_description');
+    $this->assertEqual($record->get('title'), 'wow2');
+
+    $records->next();
+    $record = $records->current();
+    $this->assertEqual($record->get('description'), 'description3');
+    $this->assertEqual($record->get('title'), 'yo');
+  }
+
   function testUpdateById()
   {
     $id = $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
@@ -146,7 +176,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 1);
 
-    $stmt = $this->db->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test1");
     $records = $stmt->getRecordSet();
     $records->rewind();
     $record = $records->current();
@@ -198,6 +228,26 @@ class LimbDbTableTest extends LimbTestCase
     $this->assertEqual($record->get('description'), 'description2');
   }
 
+  function testSelectByMixedCondition()
+  {
+    $data = array(
+      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
+      1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2'),
+    );
+
+    $this->db_table_test->insert($data[0]);
+    $this->db_table_test->insert($data[1]);
+
+    $result = $this->db_table_test->select(array("title = 'wow!'",
+                                                 'description' => 'description2'));
+
+    $this->assertEqual($result->getTotalRowCount(), 1);
+
+    $result->rewind();
+    $record = $result->current();
+    $this->assertEqual($record->get('description'), 'description2');
+  }
+
   function testSelectRecordById()
   {
     $data = array(
@@ -229,10 +279,33 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->db_table_test->delete();
 
-    $stmt = $this->db->newStatement("SELECT * FROM test1");
+    $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
+
+    $stmt = $this->conn->newStatement("SELECT * FROM test1");
     $records = $stmt->getRecordSet();
 
     $this->assertEqual($records->getTotalRowCount(), 0);
+  }
+
+  function testDeleteByMixedCondition()
+  {
+    $data = array(
+      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
+      1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
+    );
+
+    $this->db_table_test->insert($data[0]);
+    $this->db_table_test->insert($data[1]);
+
+    $this->db_table_test->delete(array('description' => 'description',
+                                       "description='no-such-descr'"));
+
+    $this->assertEqual($this->db_table_test->getAffectedRowCount(), 0);
+
+    $stmt = $this->conn->newStatement("SELECT * FROM test1");
+    $records = $stmt->getRecordSet();
+
+    $this->assertEqual($records->getTotalRowCount(), 2);
   }
 
   function testDeleteById()
@@ -247,7 +320,7 @@ class LimbDbTableTest extends LimbTestCase
 
     $this->db_table_test->deleteById($id);
 
-    $stmt = $this->db->newStatement("SELECT * FROM test1");
+    $stmt = $this->conn->newStatement("SELECT * FROM test1");
     $records = $stmt->getRecordSet();
 
     $this->assertEqual($records->getTotalRowCount(), 1);

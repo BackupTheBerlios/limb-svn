@@ -32,7 +32,7 @@ class LimbDbTable
     $this->_primary_key_name = $this->_definePrimaryKeyName();
 
     $toolkit =& Limb :: toolkit();
-    $this->_db =& $toolkit->getDbConnection();
+    $this->_conn =& $toolkit->getDbConnection();
   }
 
   function _defineDbTableName()
@@ -117,7 +117,7 @@ class LimbDbTable
     foreach($filtered_row as $key => $value)
       $sql->addField($key , ':'. $key);
 
-    $this->_stmt =& $this->_db->newStatement($sql->toString());
+    $this->_stmt =& $this->_conn->newStatement($sql->toString());
 
     $this->_fillStatementVariables($filtered_row);
 
@@ -140,10 +140,9 @@ class LimbDbTable
       $prefixed_row['_' . $key] = $value;
     }
 
-    foreach($conditions as $key => $value)
-      $sql->addCondition($key . '=:' . $key);
+    $this->_addConditions($sql, $conditions);
 
-    $this->_stmt =& $this->_db->newStatement($sql->toString());
+    $this->_stmt =& $this->_conn->newStatement($sql->toString());
 
     $this->_fillStatementVariables($prefixed_row);
     $this->_fillStatementVariables($conditions);
@@ -178,13 +177,12 @@ class LimbDbTable
     foreach($this->getColumns() as $field => $desc)
       $sql->addField($field);
 
-    foreach($conditions as $key => $value)
-      $sql->addCondition($key . '=:' . $key);
+    $this->_addConditions($sql, $conditions);
 
     if($order)
       $sql->addOrder($order);
 
-    $this->_stmt =& $this->_db->newStatement($sql->toString());
+    $this->_stmt =& $this->_conn->newStatement($sql->toString());
 
     $this->_fillStatementVariables($conditions);
 
@@ -207,10 +205,10 @@ class LimbDbTable
     include_once(LIMB_DIR . '/core/db/SimpleDeleteSQL.class.php');
 
     $sql = new SimpleDeleteSQL($this->_db_table_name);
-    foreach($conditions as $key => $value)
-      $sql->addCondition($key . '=:' . $key);
 
-    $this->_stmt =& $this->_db->newStatement($sql->toString());
+    $this->_addConditions($sql, $conditions);
+
+    $this->_stmt =& $this->_conn->newStatement($sql->toString());
     $this->_fillStatementVariables($conditions);
 
     $this->_stmt->execute();
@@ -371,6 +369,17 @@ class LimbDbTable
     }
   }
 
+  function _addConditions(&$sql, $conditions)
+  {
+    foreach($conditions as $key => $value)
+    {
+      if(is_integer($key))
+        $sql->addCondition($value);
+      else
+        $sql->addCondition($key . '=:' . $key);
+    }
+  }
+
   function _filterRow($row)
   {
     if (!is_array($row))
@@ -379,7 +388,9 @@ class LimbDbTable
     $filtered = array();
     foreach($row as $key => $value)
     {
-      if($this->hasColumn($key))
+      if(is_integer($key))
+        $filtered[$key] = $value;
+      elseif($this->hasColumn($key))
         $filtered[$key] = $value;
     }
     return $filtered;

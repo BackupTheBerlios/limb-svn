@@ -70,7 +70,7 @@ class SimpleSelectSQL
 
     foreach($fields as $key => $value)
     {
-      if(is_numeric($key))
+      if(is_integer($key))
         $this->_fields[$alias][] = $value;
       else
         $this->_fields[$alias][] = array($key => $value);
