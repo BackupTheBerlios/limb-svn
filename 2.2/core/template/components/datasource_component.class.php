@@ -73,7 +73,8 @@ class datasource_component extends component
 			
 			if(isset($arr[1]))
 			{
-			  if(strtolower($arr[1]) == 'asc' || strtolower($arr[1]) == 'desc')			  
+			  if(strtolower($arr[1]) == 'asc' || strtolower($arr[1]) == 'desc'
+			  	 || strtolower($arr[1]) == 'rand()')			  
 			    $order_pairs[$arr[0]] = strtoupper($arr[1]);
 			  else
 			    debug :: write_error('wrong order type',
@@ -85,7 +86,8 @@ class datasource_component extends component
 			  $order_pairs[$arr[0]] = 'ASC';
 		}	
 		
-		$this->parameters['order'] = $order_pairs;
+		if(sizeof($order_pairs))
+			$this->parameters['order'] = $order_pairs;
 	}
 	
 	function & _get_datasource()
