@@ -8,19 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/db_tables/one_table_object_db_table.class.php');
-
-class poll_answer_db_table extends one_table_object_db_table
+class common_data_mappers_group extends LimbGroupTest 
 {
-  protected function _define_columns()
-  {
-  	return complex_array :: array_merge(
-		  parent :: _define_columns(),
-  		array(
-	      'count' => array('type' => 'numeric')
-	    )  
-    );
-  }
+	function common_data_mappers_group() 
+	{
+	  $this->LimbGroupTest('common data mappers tests');
+	}
+	
+	function getTestCasesHandles()
+	{
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/../cases/data_mappers');
+	}
 }
 
 ?>

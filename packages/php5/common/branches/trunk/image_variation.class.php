@@ -8,25 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/core/domain_object.class.php');
 
-class image_variation extends object
+class image_variation extends domain_object
 {
   protected $_media_manager;
   protected $_image_library;
-  
-  public function attach_to_image_object($object)
-  {
-    $this->set_image_id($object->get_id());
-  }
-  
+    
   protected function _get_media_manager()
   {
     if($this->_media_manager)
       return $this->_media_manager;
     
     include_once(dirname(__FILE__) . '/media_manager.class.php');
-    $this->_media_manager = new MediaManager();
+    $this->_media_manager = new media_manager();
 
     return $this->_media_manager;    
   }
@@ -42,24 +37,45 @@ class image_variation extends object
     return $this->_image_library;
   }  
   
-  public function get_current_file()
+  public function get_media_file()
   {
-    return $this->_get_media_manager()->getMediaIdFilePath($this->get_media_id());
+    return $this->_get_media_manager()->get_media_id_file_path($this->get_media_id());
   }
 
-  public function get_file_type()
+  public function get_media_file_type()
   {
     return $this->_get_image_library()->get_image_type($this->get_mime_type());
   }
   
+  public function load_from_file($file)
+  {
+    $media_id = $this->_get_media_manager()->store($file);
+    $this->set_media_id($media_id);
+    
+    $this->_update_dimensions_using_file($file);
+  }  
+  
+  //for mocking, refactor and use fs?
+  protected function _generate_temp_file()
+  {    
+    return tempnam(VAR_DIR, 'p');    
+  }
+  
+  //for mocking, refactor and use fs?
+  protected function _unlink_temp_file($temp_file)
+  {    
+    unlink($temp_file);
+  }
+  
   public function resize($max_size)
   {
-    if(!$input_file = $this->get_input_file())
-      $input_file = $this->get_current_file();
-    
-    $output_file = tempnam(VAR_DIR, 'p');
-    
     $image_library = $this->_get_image_library();
+    $media_manager = $this->_get_media_manager();
+    
+    $media_id = $this->get_media_id();
+    
+    $input_file = $media_manager->get_media_id_file_path($media_id);    
+    $output_file = $this->_generate_temp_file();
     
     $input_file_type = $image_library->get_image_type($this->get_mime_type());  
     $output_file_type = $image_library->fall_back_to_any_supported_type($input_file_type);
@@ -74,93 +90,28 @@ class image_variation extends object
       $image_library->resize(array('max_dimension' => $max_size));//ugly!!! 
       $image_library->commit();
       
-      $this->set_input_file($output_file);
-
-      $this->store();      
+      $this->_update_dimensions_using_file($output_file);
+      $media_id = $media_manager->store($output_file);
+      
+      $this->set_media_id($media_id);
     }
     catch(Exception $e)
     {
       if(file_exists($output_file))
-        unlink($output_file);
+        $this->_unlink_temp_file($output_file);
       throw $e;
     }
 
-    unlink($output_file);    
+    $this->_unlink_temp_file($output_file);
   }
-  
-  public function store()
-  {
-    $variation_table = Limb :: toolkit()->createDBTable('image_variation');
-        
-    if(!$id = $this->get_id())
-    {      
-      if($this->get_input_file())
-      {        
-        $this->_create_media_record();
-        $this->_update_dimensions_with_input_file();
-        $this->reset_input_file();
-      }
-      else
-        throw new LimbException('input file not found');
-        
-      complex_array :: map($this->_get_variation_db_map(), $this->export(), $variation_data);    
-      
-      $variation_table->insert($variation_data);
-    }
-    else
-    {
-      if($this->get_input_file())
-      {        
-        $this->_update_media_record();
-        $this->_update_dimensions_with_input_file();
-        $this->reset_input_file();        
-      }
-      
-      complex_array :: map($this->_get_variation_db_map(), $this->export(), $variation_data);
-       
-      $variation_table->update($variation_data, array('id' => $id));
-    }
-  }
-  
-  protected function _create_media_record()
-  {
-    $media_record = $this->_get_media_manager()->createMediaRecord($this->get_input_file(), 
-                                                                   $this->get_file_name(), 
-                                                                   $this->get_mime_type());
     
-    $this->set_media_id($media_record['id']);
-    $this->set_etag($media_record['etag']);
-    $this->set_size($media_record['size']);
-  }
-
-  protected function _update_media_record()
+  protected function _update_dimensions_using_file($file)
   {
-    $media_record = $this->_get_media_manager()->updateMediaRecord($this->get_media_id(),
-                                                                   $this->get_input_file(), 
-                                                                   $this->get_file_name(), 
-                                                                   $this->get_mime_type());
-    
-    $this->set_etag($media_record['etag']);
-    $this->set_size($media_record['size']);
-  }
-  
-  protected function _update_dimensions_with_input_file()
-  {
-    $size = getimagesize($this->get_input_file());
+    $size = getimagesize($file);
     $this->set_width($size[0]);
     $this->set_height($size[1]);        
   }
-  
-  public function get_id()
-  {
-    return (int)$this->get('id');
-  }   
-  
-  public function set_id($id)
-  {
-    $this->set('id', (int)$id);
-  }  
-    
+      
   public function get_etag()
   {
     return $this->get('etag');
@@ -250,33 +201,6 @@ class image_variation extends object
   {
     $this->set('size', (int)$size);
   }
-
-  public function reset_input_file()
-  {
-    $this->destroy('input_file');
-  }
-
-  public function set_input_file($file)
-  {
-    $this->set('input_file', $file);
-  }
-
-  public function get_input_file()
-  {
-    return $this->get('input_file');
-  }
-  
-	protected function _get_variation_db_map()
-	{
-	  return array(
-	    'id' => 'id',
-	    'name' => 'variation',
-      'media_id' => 'media_id', 
-      'image_id' => 'image_id',  
-      'width' => 'width',
-      'height' => 'height'
-	  );
-	}  
 }
 
 ?> 

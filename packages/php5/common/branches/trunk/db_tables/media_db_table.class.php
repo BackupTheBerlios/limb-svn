@@ -22,19 +22,6 @@ class media_db_table extends db_table
       'etag' => '',
     );
   }  
-  
-  protected function _delete_media_files($ids)
-  {
-		foreach($ids as $id)
-			unlink(MEDIA_DIR . $id . '.media');
-  }
-  	
-	protected function _delete_operation($conditions, $affected_rows)
-	{
-		parent :: _delete_operation($conditions, $affected_rows);
-		
-		$this->_delete_media_files(complex_array :: get_column_values('id', $affected_rows));
-	}	
 }
 
 ?>

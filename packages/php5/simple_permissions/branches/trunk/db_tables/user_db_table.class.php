@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/db_tables/content_object_db_table.class.php');
+require_once(LIMB_DIR . '/class/db_tables/one_table_object_db_table.class.php');
 
-class user_db_table extends content_object_db_table
+class user_db_table extends one_table_object_db_table
 {  
   protected function _define_columns()
   {
