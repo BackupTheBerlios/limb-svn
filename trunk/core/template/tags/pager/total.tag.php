@@ -46,6 +46,7 @@ class pager_total_count_tag extends server_component_tag
 		parent::pre_generate($code);
 
 		$code->write_php($this->get_component_ref_code() . '->set("number", ' . $parent->get_component_ref_code() . '->get_total_items());');
+		$code->write_php($this->get_component_ref_code() . '->set("pages_count", ' . $parent->get_component_ref_code() . '->get_pages_count());');
 		$code->write_php($this->get_component_ref_code() . '->set("more_than_one_page", ' . $parent->get_component_ref_code() . '->has_more_than_one_page());');
 	} 
 

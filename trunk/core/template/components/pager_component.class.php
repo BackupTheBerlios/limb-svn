@@ -172,6 +172,11 @@ class pager_component extends component
 	{
 		return $this->items;
 	} 
+	
+	function get_pages_count()
+	{
+	  return $this->last_page;
+	}
 
 	/**
 	* Is the current page being displayed the first page in the page list?

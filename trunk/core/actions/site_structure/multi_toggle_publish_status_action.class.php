@@ -42,7 +42,8 @@ class multi_toggle_publish_status_action extends form_action
 			
 			if ($status & SITE_OBJECT_PUBLISHED_STATUS)
 			{
-				$status &= !(SITE_OBJECT_PUBLISHED_STATUS);
+			
+				$status &= ~SITE_OBJECT_PUBLISHED_STATUS;
 				$action = 'unpublish';
 			}	
 			else

@@ -403,6 +403,12 @@ class access_policy
 			return false;
 		}
 
+		$db_table	=& db_table_factory :: instance('sys_object_access');
+
+		$conditions['object_id'] = $object_id;
+
+		$db_table->delete($conditions);
+
 		$this->save_group_object_access(array($object_id => $group_template));
 		$this->save_user_object_access(array($object_id => $user_template));
 		

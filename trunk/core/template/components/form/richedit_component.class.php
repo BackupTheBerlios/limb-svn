@@ -83,7 +83,7 @@ class richedit_component extends text_area_component
 		  $height = RICHEDIT_DEFAULT_HEIGHT;
 		
     echo "
-    <script type='text/javascript'>
+    <script type='text/javascript' defer='defer'>
     
       function init_richedit_{$id}()
       {

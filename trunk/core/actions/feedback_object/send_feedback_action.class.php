@@ -9,8 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.inc.php');
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/model/sys_param.class.php');
+
 
 class send_feedback_action extends form_action
 {
@@ -38,7 +40,14 @@ class send_feedback_action extends form_action
 
 		return $email;
 	}
-	
+
+	function _get_mail_subject()
+	{
+		return sprintf(strings :: get('message_subject', 'feedback'), 
+												$this->dataspace->get('subject'),
+												$_SERVER['HTTP_HOST']);	
+	}	
+
 	function _valid_perform(&$request, &$response)
 	{
 		$mail_data = $this->dataspace->export();
@@ -55,9 +64,7 @@ class send_feedback_action extends form_action
 										
 		$body = str_replace('<br>', "\n", $body);
 
-		$subject = sprintf(strings :: get('message_subject', 'feedback'), 
-												$mail_data['subject'],
-												$_SERVER['HTTP_HOST']);
+		$subject = $this->_get_mail_subject();
 		
 		$recipient_email = $this->_get_email();
 		

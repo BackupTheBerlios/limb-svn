@@ -14,6 +14,7 @@ class set_publish_status_action extends action
 {
 	function perform(&$request, &$response)
 	{
+		trigger_error('Stop', E_USER_WARNING);
 		$request->set_status(REQUEST_STATUS_SUCCESS);
 		
 		if($request->has_attribute('popup'))
@@ -37,7 +38,7 @@ class set_publish_status_action extends action
 				return ;
 			break;
 		}
-
+		
 		$object->set_attribute('status', $status);
 		$object->update(false);
 		
@@ -56,7 +57,7 @@ class set_publish_status_action extends action
 	function get_unpublish_status($object)
 	{
 		$current_status = $object->get_attribute('status');
-		$current_status &= !(SITE_OBJECT_PUBLISHED_STATUS);
+		$current_status = $current_status & (~SITE_OBJECT_PUBLISHED_STATUS);
 		return $current_status;
 	}
 		

@@ -52,8 +52,6 @@ if (isset($_GET['case']))
 } 
 
 echo "<h1>Unit Test Suite</h1>\n";
-echo "<p><a href='" . $_SERVER['PHP_SELF'] . "'>Test groups</a>";
-echo " || <a href='" . $_SERVER['PHP_SELF'] . "?show=cases'>Test cases</a></p>";
 
 if (isset($_GET['show']) && $_GET['show'] == 'cases')
 {

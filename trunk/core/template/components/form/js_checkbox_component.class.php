@@ -28,7 +28,8 @@ class js_checkbox_component extends input_form_element
 			$checked = 'checked=\'on\'';
 		else	
 			$checked = '';		
-		
+
+		$name = $this->_process_name_attribute($name);
 		$js = "onclick=\"this.form.elements['{$name}'].value = 1*this.checked\"";
 		
 		echo "<input type='checkbox' id='{$id}_checkbox' {$checked} {$js}>";

@@ -1,3 +1,51 @@
+Version 2.2.2 Vacation Edition
+(10 August 2004, from /2.2.2)
+svn://svn.berlios.de/limb/tags/2.2.2
+
+  --  only group tests are available at the moment, confusing test cases link is removed for now
+  --  compiler group removed, since it's empty and we're going to use new version of WACT
+  --  project tests temporarily removed from the suite for now, they'll be somewhere else
+  --  phpBB stuff removed, it'll be as an external package too
+  --  chat stuff removed for now
+  --  fixed: more strict canada zip rule
+  --  strings.tag improved, i18n code helper will be executed only when force_compile=1
+  --  "edtition" changed to "editing" in *.ini, *.php, *.html files, excuse our bad english :)
+  --  improved pager tag with new {$pages_count} variable
+  --  new DEBUG_TEMPLATE_I18N_ENABLED mode which renders i18n values with information on from what file this value is taken
+  --  fixed a bug in access_policy class: access template don't delete all the previous access records. 
+  --  fixed a bug in bitwise operation (get unpublished status value) that makes it impossible to work more than with 1 status value.
+  --  fixed: 304 cached images were displayed invalid
+  --  initial revision of http_cache class
+  --  improved & refactored http_response class, additional methods: get_content_type(),get_status() and get_directive()
+  --  new session_startup_filter where session ibitialization takes place, moved from limb_application
+  --  js richedit insert limb repositiry file improvement: the link has title with file title and size
+  --  minor changes in cart_summ_component: now it outputs formated cart sum.
+  --  now it is possible to have several grid:LIST tags with the same ID and grid:BUTTON tag in every grid:LIST and submit every grid separately.
+  --  string class md5 hashing added for path storage
+  --  new number_format tag(argch, i'm dreaming of new WACT output filters :) ), common usage is <locale:NUMBER_FORMAT hash_id='price'>, the component pulls the required locale info via locale class.
+  --  new us_zip_rule and canada_zip_rule
+  --  added localized message to http_request :: redirect();
+  --  fixed cart: now items with 0 amount are not added to cart;
+  --  lots fixes of small but annoying js bugs
+  --  trim function added to common.js
+  --  fixed mime_type, added method get_type_extension();
+  --  some common templates changed for browsers compatibility
+  --  new toggle richedit/textarea functionality which sets cookie in order to remember user preferences
+  --  js optimize window can accept global WINDOW_WIDTH, WINDOW_HEIGHT to adjust popup window size when auto resizing shouldn't be applied
+  --  fixed: redirect with node_id attribute would invoke infinite loop
+  --  fixed: better popup window autoresizing
+  --  richedit sets default cols, rows and iframe width, height if not specified
+  --  fixed: HTMLArea would improperly strip base urls, this is fixed in extensions rather than in HTMLArea itself
+  --  fixed: files can be selected from repository in Mozilla too
+  --  fixed: images from media repositiry are selected in Mozilla too
+  --  groups object access page now has groups filter. User now can set groups which permissions he wants to modify
+  --  all depricated html tabs replaced with <tabs> rag
+  --  RFE: initial revision of tabs tag(issue #986604)
+  --  fixed: htmlTextarea glitch in Mozilla(issue #986571)
+  --  richedit is replaced with original HTMLArea-3.0-rc1 and will be stored INTACT, hope to use it completely separated in future
+  --  phpBB stuff temporarily deleted from /shared
+  --  debug supports 3 masks of message outputting: DEBUG_OUTPUT_MESSAGE_SEND, DEBUG_OUTPUT_MESSAGE_STORE and DEBUG_OUTPUT_MESSAGE_NULL
+
 Version 2.2.1
 (27 July 2004, from /trunk)
 svn://svn.berlios.de/limb/tags/2.2.1
