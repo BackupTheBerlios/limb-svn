@@ -36,7 +36,12 @@ class display_file_action extends action
 			
 			header("Content-type: image/gif");
 			
-			$file_name = SHARED_DIR . 'images/mime_icons/' . str_replace('/', '_' ,$object_data['mime_type']) . '.' . $size . '.gif';
+			$mime_type = $object_data['mime_type'];
+			
+			if($mime_type == 'application/x-zip-compressed')
+				$mime_type = 'application/zip';
+			
+			$file_name = SHARED_DIR . 'images/mime_icons/' . str_replace('/', '_' ,$mime_type) . '.' . $size . '.gif';
 
 			if (file_exists($file_name))
 				readfile($file_name);
