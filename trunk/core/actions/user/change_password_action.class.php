@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: change_password_action.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
@@ -13,18 +13,18 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/match_rule.class.php');
 
 class change_password_action extends form_edit_site_object_action
 {
-	var $definition = array(
+	function change_password_action($name = 'change_password', $merge_definition=array())
+	{
+		$definition = array(
 			'site_object' => 'user_object',
 			'datamap' => array(
 				'identifier' => 'identifier',
 				'password' => 'password',
 				'second_password' => 'second_password',
 			)
-	);
+		);
 
-	function change_password_action($name = 'change_password')
-	{
-		parent :: form_edit_site_object_action($name);
+		parent :: form_edit_site_object_action($name, complex_array :: array_merge($definition, $merge_definition));
 	}
 	
 	function _init_validator()

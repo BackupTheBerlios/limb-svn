@@ -5,11 +5,12 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: user_object.class.php 470 2004-02-18 13:04:56Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/object.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
+require_once(LIMB_DIR . 'core/lib/session/session.class.php');
 
 class phpbb_user extends object
 {
@@ -23,7 +24,7 @@ class phpbb_user extends object
 		$data = $this->export_attributes();
 		
 		$phpbb_user_data = array();
-		$phpbb_user_data['user_id'] = $data['object_id'];
+		$phpbb_user_data['user_id'] = $data['id'];
   	$phpbb_user_data['user_active'] = 1;
   	$phpbb_user_data['username'] = $data['identifier'];
   	$phpbb_user_data['user_password'] = user :: get_crypted_password($data['identifier'], $data['password']);
@@ -44,29 +45,77 @@ class phpbb_user extends object
 	
 	function update($force_create_new_version = true)		
 	{
-		return true;		
+		$data = $this->export_attributes();
+
+		$phpbb_user_data = array();
+		$phpbb_user_data['user_email'] = $data['email'];
+  	$phpbb_user_data['username'] = $data['identifier'];
+
+		$db =& db_factory :: instance();
+		return $db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
 	}
 
 	function change_password()
 	{
-		return true;
+		$data = $this->export_attributes();
+
+		$phpbb_user_data = array();
+		$phpbb_user_data['user_password'] = $data['password'];
+
+		$db =& db_factory :: instance();
+		return $db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
 	}
 
 	function change_own_password($password)
 	{
-		return true;
+		return $this->change_password();
 	}
 
 	function generate_password($email)
 	{
-		return true;
+		$data = $this->export_attributes();
+
+		$phpbb_user_data = array();
+		$phpbb_user_data['user_newpasswd'] = $data['generated_password'];
+
+		$db =& db_factory :: instance();
+		return $db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $data['id']));
 	}
 
-	function activate_password()
+	function login($login, $password)
+	{
+		$user_ip = sys :: client_ip(true);
+		$sid = md5(uniqid($user_ip));
+		
+		session :: set('phpbb_sid', $sid);
+
+		$phpbb_user_data = array();
+		$phpbb_user_data['session_user_id'] = user :: get_id();
+		$phpbb_user_data['session_id'] = $sid;
+		$phpbb_user_data['session_ip'] = $user_ip;
+		$phpbb_user_data['session_logged_in'] = 1;
+		$phpbb_user_data['session_start'] = time();
+		$phpbb_user_data['session_time'] = time();
+		
+  	$db_table =& db_table_factory :: create('phpbb_sessions');
+  	return $db_table->insert($phpbb_user_data);
+	}
+	
+	function logout()
 	{
 		return true;
 	}
 	
+	function activate_password()
+	{
+		$data = $this->export_attributes();
+
+		$sql = "UPDATE phpbb_users
+						SET `user_password` = `user_newpasswd`
+						WHERE user_id = " . $data['id'];
+		$db =& db_factory :: instance();
+		return $db->sql_exec($sql);
+	}
 }
 
 ?>

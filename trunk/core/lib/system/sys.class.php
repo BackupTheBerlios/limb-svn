@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: sys.class.php 513 2004-02-20 15:10:42Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');  
@@ -116,16 +116,22 @@ class sys
   /*
   	return the client ip
   */  
-  function client_ip()
+  function client_ip($hex_mode=false)
   {
   	if ( !isset( $this ) || get_class( $this ) != 'sys' )
     	$obj =& sys::instance();
     else
     	$obj =& $this;
-    	
-    return $obj->client_ip;
+    
+    if($hex_mode)	
+    {
+			$ip_sep = explode('.', $obj->client_ip);
+			return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
+    }
+    else
+    	return $obj->client_ip;
 	}
-
+	
   /*
    return the file_system type, either "win32" or "unix"
   */

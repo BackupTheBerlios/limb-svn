@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: user_db_table.class.php 468 2004-02-18 12:03:43Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/db_tables/content_object_db_table.class.php');
@@ -31,7 +31,7 @@ class user_db_table extends content_object_db_table
   function _define_constraints()
   {
   	return array(
-    	'id' =>	array(
+    	'object_id' =>	array(
     		0 => array(
 					'table_name' => 'user_in_group',
 					'field' => 'user_id',

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: user_object.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
@@ -73,7 +73,6 @@ class user_object extends content_object
 		return $this->update(false);
 	}
 
-
 	function validate_password($password)
 	{
 		if(!user :: is_logged_in() || !$node_id = user :: get_node_id())
@@ -103,6 +102,8 @@ class user_object extends content_object
 		$data['password'] = user :: get_crypted_password(user :: get_login(),	$password);
 		
 		$user_db_table =& db_table_factory :: create('user');
+
+		$this->set_attribute('password', $data['password']);
 		
 		if ($user_db_table->update($data, 'identifier="'. user :: get_login() . '"'))
 			return user :: login(user :: get_login(), $password);
@@ -167,9 +168,7 @@ class user_object extends content_object
 		$db->sql_exec($sql);
 		
 		return current($db->get_array());
-	
 	}
-
 
 	function send_activate_password_email(&$user_data, $password)
 	{
@@ -211,6 +210,15 @@ class user_object extends content_object
 			return true;	
 	}
 
+	function login($login, $password)
+	{
+		return user :: login($login, $password);
+	}
+	
+	function logout()
+	{
+		return user :: logout();
+	}
 }
 
 ?>

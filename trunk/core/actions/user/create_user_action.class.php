@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: create_user_action.class.php 427 2004-02-11 09:03:24Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
@@ -52,8 +52,6 @@ class create_user_action extends form_create_site_object_action
 		
 		$data['password'] = user :: get_crypted_password($data['identifier'], $data['password']);
 	}
-	
-	
 }
 
 ?>

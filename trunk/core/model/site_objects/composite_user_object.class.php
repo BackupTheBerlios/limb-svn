@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: user_object.class.php 470 2004-02-18 13:04:56Z mike $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/user_object.class.php');
@@ -17,30 +17,20 @@ class composite_user_object extends user_object
 	function composite_user_object()
 	{
 		parent :: user_object();
-		
-		$this->_create_node_objects();
 	}
 	
 	function import_attributes($attributes, $merge=true)
 	{
 		parent :: import_attributes($attributes, $merge);
 		
-		$this->_walk_node_objects('import_attributes', array('data' => $data, 'merge' => $merge));		
+		$this->_walk_node_objects('import_attributes', array('attributes' => $attributes, 'merge' => $merge));		
 	}
 	
-	function _create_node_objects()
+	function _register_node_object(&$object)
 	{
-		$definitions = $this->_define_node_objects();
-				
-		foreach($definitions as $class_name)
-			$this->_node_objects[$class_name] =& instantiate_object($class_name, '/core/model/');
+		$this->_node_objects[] =& $object;
 	}
-	
-	function _define_node_objects()
-	{
-		return array();
-	}
-	
+		
 	function _synchronize_attributes()
 	{
 		$data =& $this->export_attributes();
@@ -87,27 +77,30 @@ class composite_user_object extends user_object
 	
 	function change_password()
 	{
-		$result = parent :: change_password();
+		if(($result = parent :: change_password()) === false)
+			return false;
 		
 		if($this->_walk_node_objects('change_password') === false)
 			return false;
 		
-		return $result;		
+		return true;		
 	}
 
 	function change_own_password($password)
 	{
-		$result = parent :: change_own_password($password);
+		if(($result = parent :: change_own_password($password)) === false)
+			return false;
 
 		if($this->_walk_node_objects('change_own_password', array('password' => $password)) === false)
 			return false;
 				
-		return $result;		
+		return true;
 	}
 
 	function generate_password($email)
 	{
-		$result = parent :: generate_password($email);
+		if(($result = parent :: generate_password($email)) === false)
+			return false;
 
 		if($this->_walk_node_objects('generate_password', array('email' => $email)) === false)
 			return false;
@@ -117,12 +110,35 @@ class composite_user_object extends user_object
 
 	function activate_password()
 	{
-		$result = parent :: activate_password();
+		if(($result = parent :: activate_password()) === false)
+			return false;
 		
 		if($this->_walk_node_objects('activate_password') === false)
 			return false;
 				
 		return $result;		
+	}
+	
+	function login($login, $password)
+	{
+		if(($result = parent :: login($login, $password)) === false)
+			return false;
+			
+		if($this->_walk_node_objects('login', array('login' => $login, 'password' => $password)) === false)
+			return false;			
+			
+		return true;
+	}
+
+	function logout()
+	{
+		if(($result = parent :: logout()) === false)
+			return false;
+			
+		if($this->_walk_node_objects('logout') === false)
+			return false;
+			
+		return true;
 	}
 	
 	function _walk_node_objects($function, $params = array())

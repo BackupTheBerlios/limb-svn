@@ -35,6 +35,20 @@ class test_phpbb_user_test extends UnitTestCase
   	$this->object =& new phpbb_user();
   }
   
+  function _create_user()
+  {
+  	$user_data = array(
+  		'id' => $user_id = 5,
+  		'identifier' => 'test_login',
+  		'password' => 'test',
+  		'email' => 'test@here.com',
+  	);
+  	
+  	$this->object->import_attributes($user_data);
+  	
+		$this->object->create();
+  }
+  
   function tearDown()
   { 
   	$this->_clean_up();
@@ -45,13 +59,14 @@ class test_phpbb_user_test extends UnitTestCase
   function _clean_up()
   {
 		$this->db->sql_delete('phpbb_users');
+		$this->db->sql_delete('phpbb_sessions');
   }
   
   
   function test_create()
   {
   	$user_data = array(
-  		'object_id' => $user_id = 5,
+  		'id' => $user_id = 5,
   		'identifier' => 'test_login',
   		'password' => 'test',
   		'email' => 'test@here.com',
@@ -70,7 +85,7 @@ class test_phpbb_user_test extends UnitTestCase
 		$this->assertEqual(count($rows), 1);
 		
 		$record = current($rows);
-		$this->assertEqual($record['user_id'], $user_data['object_id']);
+		$this->assertEqual($record['user_id'], $user_data['id']);
 		$this->assertEqual($record['username'], $user_data['identifier']);
 		$this->assertEqual($record['user_password'], user :: get_crypted_password($user_data['identifier'], $user_data['password']));
 		$this->assertEqual($record['user_email'], $user_data['email']);
@@ -78,9 +93,96 @@ class test_phpbb_user_test extends UnitTestCase
 
   function test_update()
   {
+  	$this->_create_user();
+  	
+  	$user_data = array(
+  		'id' => $user_id = 5,
+  		'identifier' => 'test_login',
+  		'email' => 'test@here.com',
+  	);
+  	
+  	$this->object->import_attributes($user_data);
+  	
 		$this->assertTrue($this->object->update());
+		
+		$db_table	=& db_table_factory :: instance('phpbb_users');
+
+		$conditions['user_id'] = $user_id;
+		$rows = $db_table->get_list($conditions, '', null);
+		
+		$this->assertEqual(count($rows), 1);
+		
+		$record = current($rows);
+		$this->assertEqual($record['user_id'], $user_data['id']);
+		$this->assertEqual($record['username'], $user_data['identifier']);
+		$this->assertEqual($record['user_email'], $user_data['email']);
   }
   
+  function test_change_password()
+  {
+  	$this->_create_user();
+
+  	$user_data = array(
+  		'id' => $user_id = 5,
+  		'password' => 'crypted_test_password',
+  	);
+  	
+  	$this->object->import_attributes($user_data);
+  	
+		$this->assertTrue($this->object->change_password());
+  
+		$db_table	=& db_table_factory :: instance('phpbb_users');
+
+		$conditions['user_id'] = $user_id;
+		$rows = $db_table->get_list($conditions, '', null);
+		$record = current($rows);
+		$this->assertEqual($record['user_password'], $user_data['password']);
+
+		return true;
+  }
+  
+  function test_generate_password()
+  {
+  	$this->_create_user();
+
+  	$user_data = array(
+  		'id' => $user_id = 5,
+  		'generated_password' => 'crypted_test_password',
+  	);
+  	
+  	$this->object->import_attributes($user_data);
+  	
+		$this->assertTrue($this->object->generate_password('test@here.com'));
+  
+		$db_table	=& db_table_factory :: instance('phpbb_users');
+
+		$conditions['user_id'] = $user_id;
+		$rows = $db_table->get_list($conditions, '', null);
+		$record = current($rows);
+		$this->assertEqual($record['user_newpasswd'], $user_data['generated_password']);
+
+		return true;
+  }
+  
+  function test_login()
+  {
+  	$this->_login_user(5, array());
+		$this->assertTrue($this->object->login('', ''));
+		
+		$db_table	=& db_table_factory :: instance('phpbb_sessions');
+		
+		$conditions['session_user_id'] = 5;
+		$rows = $db_table->get_list($conditions, '', null);
+		$record = current($rows);
+		$this->assertEqual($record['session_ip'], sys :: client_ip(true));
+		$this->assertEqual($record['session_logged_in'], 1);
+  }
+
+  function _login_user($id, $groups)
+  {
+		$_SESSION[user :: get_session_identifier()]['id'] = $id;
+		$_SESSION[user :: get_session_identifier()]['groups'] = $groups;
+  }
 }
 
 ?>

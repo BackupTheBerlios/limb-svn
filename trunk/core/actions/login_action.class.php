@@ -5,17 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: login_action.class.php 401 2004-02-04 15:40:14Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
-require_once(LIMB_DIR . 'core/actions/form_action.class.php');
+require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
 
-class login_action extends form_action
+class login_action extends form_site_object_action
 {
+	var $definition = array(
+		'site_object' => 'user_object',
+	);
+
 	function login_action($name='login_form')
 	{
-		parent :: form_action($name);
+		parent :: form_site_object_action($name);
 	}
 
 	function _init_validator()
@@ -29,7 +33,8 @@ class login_action extends form_action
 		$login = $this->_get('login');
 		$password = $this->_get('password');
 		
-		$is_logged = user :: login($login, $password);
+		$user_object =& $this->get_site_object();
+		$is_logged = $user_object->login($login, $password);
 		
 		if($is_logged)
 			reload('/');

@@ -125,7 +125,21 @@ class test_content_object_template extends test_site_object_template
 
  		$this->_check_content_object_record();
   }
-	      
+
+  function test_delete()
+  {
+  	$this->_set_object_initial_attributes();
+  	
+  	parent :: test_delete();
+  }
+
+	function test_fetch()
+	{
+  	$this->_set_object_initial_attributes();
+  	
+  	parent :: test_fetch();
+	}
+		      
   function _check_sys_object_version_record()
 	{
 		$conditions['object_id'] = $this->object->get_id();
