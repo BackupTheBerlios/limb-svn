@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . 'class/datasources/datasource.class.php');
-require_once(LIMB_DIR . 'class/stats/stats_pages_report.class.php');
+require_once(dirname(__FILE__) . '/../reports/stats_pages_report.class.php');
 
 class stats_pages_list_datasource extends datasource
 {		
