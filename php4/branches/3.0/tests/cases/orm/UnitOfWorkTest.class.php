@@ -220,11 +220,12 @@ class UnitOfWorkTest extends LimbTestCase
   function testEvictNewObject()
   {
     $obj = new UOWTestObject();
+
     $this->uow->register($obj);
 
     $this->uow->evict($obj);
 
-    $this->mapper->expectNever('save', array($obj));
+    $this->mapper->expectNever('save', array(new IdenticalExpectation($obj)));
 
     $this->uow->commit();
   }
@@ -256,6 +257,17 @@ class UnitOfWorkTest extends LimbTestCase
     $this->mapper->expectNever('delete', array($obj));
 
     $this->uow->commit();
+  }
+
+  function testIsRegisteredForNewObject()
+  {
+    $obj1 = new UOWTestObject();
+    $obj2 = new UOWTestObject();
+
+    $this->uow->register($obj1);
+
+    $this->assertTrue($this->uow->isRegistered($obj1));
+    $this->assertFalse($this->uow->isRegistered($obj2));
   }
 }
 

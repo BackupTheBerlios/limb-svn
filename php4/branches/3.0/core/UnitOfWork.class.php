@@ -12,7 +12,7 @@
 
 class UnitOfWork
 {
-  var $registered = array();
+  var $existing = array();
   var $new = array();
   var $deleted = array();
 
@@ -45,12 +45,43 @@ class UnitOfWork
     if($id = $this->_getId($obj))
     {
       $this->_putToCache($id, $obj);
-      $this->registered[$id] = $this->_getHash($obj);
+      $this->existing[$id] = $this->_getHash($obj);
     }
     else
     {
       $this->new[] =& $obj;
     }
+  }
+
+  //stolen from SimpleTest
+  function _isReference(&$first, &$second)
+  {
+    if (version_compare(phpversion(), '5', '>=') && is_object($first))
+      return ($first === $second);
+
+    $temp = $first;
+    $first = uniqid('test');
+    $is_ref = ($first === $second);
+    $first = $temp;
+    return $is_ref;
+  }
+
+  function isRegistered(&$obj)
+  {
+    if($id = $this->_getId($obj))
+    {
+      return isset($this->existing[$id]);
+    }
+    else
+    {
+      foreach(array_keys($this->new) as $key)
+      {
+        if($this->_isReference($this->new[$key], $obj))
+          return true;
+      }
+    }
+
+    return false;
   }
 
   function evict(&$obj)
@@ -59,22 +90,22 @@ class UnitOfWork
     {
       $this->_purgeFromCache($id);
 
-      if(isset($this->registered[$id]))
-        unset($this->registered[$id]);
+      if(isset($this->existing[$id]))
+        unset($this->existing[$id]);
 
       //???
-      foreach($this->deleted as $key => $deleted)
+      foreach(array_keys($this->deleted) as $key)
       {
-        if($deleted == $obj)
+        if($this->_isReference($this->deleted[$key], $obj))
           unset($this->deleted[$key]);
       }
     }
     else
     {
       //???
-      foreach($this->new as $key => $new)
+      foreach(array_keys($this->new) as $key)
       {
-        if($new == $obj)
+        if($this->_isReference($this->new[$key], $obj))
           unset($this->new[$key]);
       }
     }
@@ -136,7 +167,7 @@ class UnitOfWork
 
   function start()
   {
-    $this->registered = array();
+    $this->existing = array();
     $this->new = array();
     $this->deleted = array();
 
@@ -146,14 +177,14 @@ class UnitOfWork
 
   function commit()
   {
-    $this->_commitRegistered();
+    $this->_commitExisting();
     $this->_commitNew();
     $this->_commitDeleted();
   }
 
-  function _commitRegistered()
+  function _commitExisting()
   {
-    foreach(array_keys($this->registered) as $id)
+    foreach(array_keys($this->existing) as $id)
     {
       $obj =& $this->_getFromCache($id);
       if($this->_isDirty($id, $obj))
@@ -195,7 +226,7 @@ class UnitOfWork
 
   function _isDirty($id, $obj)
   {
-    return $this->_getHash($obj) != $this->registered[$id];
+    return $this->_getHash($obj) != $this->existing[$id];
   }
 
   function _getHash($obj)
