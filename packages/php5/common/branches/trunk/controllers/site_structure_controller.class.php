@@ -27,7 +27,7 @@ class site_structure_controller extends site_object_controller
 				),
 				'toggle' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/site_structure/display.html',						
+						'template_path' => '/site_structure/admin_display.html',						
 						'action_path' => '/site_structure/tree_toggle_action', 
 				),
 				'edit' => array(
