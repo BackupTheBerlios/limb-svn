@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/site_objects_datasource_support.inc.php');
 
 @define(SITE_OBJECTS_CACHE_GROUP, 'site_objects');
 
-class SiteObjectsDatasource //implements Datasource, Countable
+class SiteObjectsDatasource //implements Datasource
 {
   var $object_ids;
   var $behaviours;
@@ -163,29 +163,6 @@ class SiteObjectsDatasource //implements Datasource, Countable
     $this->finder =& FinderFactory :: create($this->finder_name);
 
     return $this->finder;
-  }
-
-  function countTotal()
-  {
-    $sql_params = $this->_collectRawSqlParams();
-    $count_method = $this->fetch_method . 'Count';
-
-    $key = array($sql_params, $count_method);
-    $toolkit =& Limb :: toolkit();
-    $cache =& $toolkit->getCache();
-
-    $result = $cache->get($key, SITE_OBJECTS_CACHE_GROUP);
-
-    if($result !== null)
-      return $result;
-
-    $finder =& $this->_getFinder();
-
-    $result = $finder->$count_method($sql_params);
-
-    $cache->put($key, $result, SITE_OBJECTS_CACHE_GROUP);
-
-    return $result;
   }
 
   function fetch()
