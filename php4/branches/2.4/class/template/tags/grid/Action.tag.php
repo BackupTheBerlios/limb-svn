@@ -23,7 +23,7 @@ class GridActionTag extends CompilerDirectiveTag
   {
     if (!is_a($this->parent, 'GridActionsTag'))
     {
-      throw new WactException('missing enclosure',
+      return new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'gird:actions',
           'file' => $this->source_file,
@@ -37,7 +37,7 @@ class GridActionTag extends CompilerDirectiveTag
 
     if(!isset($this->attributes['action']) &&  !isset($this->attributes['shortcut']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'action or shortcut',
           'file' => $this->source_file,

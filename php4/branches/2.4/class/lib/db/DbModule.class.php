@@ -51,7 +51,7 @@ class DbModule
   function connectDb($db_params)
   {
     if(!$this->_db_connection = $this->_connectDbOperation($db_params))
-      throw new SQLException('couldnt connect to database at host, check db params',
+      return new SQLException('couldnt connect to database at host, check db params',
                   $this->getLastError(),
                   array(
                     'host' => $db_params['host'],
@@ -59,15 +59,18 @@ class DbModule
                     'login' => $db_params['login']
                   )
                 );
+
+    return true;
   }
 
   function selectDb($db_name)
   {
     if(!$this->_selectDbOperation($db_name))
-      throw new SQLException('couldnt select database, check db params',
+      return new SQLException('couldnt select database, check db params',
                   $this->getLastError(),
                   array('database' => $db_name)
                 );
+    return true;
   }
 
   function _connectDbOperation($db_params){die('abstract function!')}
@@ -123,7 +126,7 @@ class DbModule
 
     if (!$this->_sql_result)
     {
-      throw new SQLException('query error',
+      return new SQLException('query error',
                   $this->getLastError(),
                   array('sql' => $sql)
                 );

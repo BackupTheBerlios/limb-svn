@@ -74,15 +74,7 @@ class ResolveHandleTest extends LimbTestCase
   {
     $handle = array(dirname(__FILE__) . '/TestHandleClass', 1, 2, 3, 4, 5);
 
-    try
-    {
-      resolveHandle($handle);
-      $this->assertTrue(false);
-    }
-    catch(Exception $e)
-    {
-      $this->assertEqual($e->getMessage(), 'too many arguments for resolve handle');
-    }
+    $this->assertTrue(Limb :: isError(resolveHandle($handle)));
   }
 
   function testConstructor()

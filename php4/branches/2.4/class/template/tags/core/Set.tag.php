@@ -27,7 +27,7 @@ class CoreSetTag extends SilentCompilerDirectiveTag
   {
     if ($this->findParentByClass('core_set_tag'))
     {
-      throw new WactException('bad self nesting',
+      return new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no));

@@ -263,14 +263,8 @@ class DatasourceComponentTest extends LimbTestCase
     $dataset = new ArrayDataset(array('some_data'));
     $component->setReturnValue('getDataset', $dataset);
 
-    try
-    {
-      $component->setupTargets('target1, target2');
-      $this->assertTrue(false);
-    }
-    catch(WactException $e)
-    {
-    }
+    $this->assertTrue(Limb :: isError($component->setupTargets('target1, target2')));
+    $this->assertTrue(false);
 
     $component->tally();
   }

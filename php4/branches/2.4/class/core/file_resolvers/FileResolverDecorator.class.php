@@ -18,7 +18,7 @@ class FileResolverDecorator// implements FileResolver
     resolveHandle($resolver);
 
     if(!is_a($resolver, 'FileResolver') &&  is_a($resolver, 'SimpleMock'))
-      throw new Exception('invalid wrapped resolver');
+      die('invalid wrapped resolver! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 
     $this->_resolver = $resolver;
   }

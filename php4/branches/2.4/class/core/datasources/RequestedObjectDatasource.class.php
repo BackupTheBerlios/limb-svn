@@ -41,7 +41,7 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
       return array($this->object_id);
     }
     else
-      throw new LimbException('request is null');
+      return new LimbException('request is null');
   }
 
   function mapUriToNode($uri, $recursive = false)

@@ -23,7 +23,7 @@ class CoreParameterTag extends CompilerDirectiveTag
   {
     if (!isset($this->attributes['name']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'name',
           'file' => $this->source_file,
@@ -32,7 +32,7 @@ class CoreParameterTag extends CompilerDirectiveTag
 
     if (!isset($this->attributes['value']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'value',
           'file' => $this->source_file,
@@ -46,7 +46,7 @@ class CoreParameterTag extends CompilerDirectiveTag
   {
     if (!is_a($this->parent, 'ServerComponentTag'))
     {
-      throw new WactException('wrong parent tag',
+      return new WactException('wrong parent tag',
           array('tag' => $this->tag,
           'parent_class' => get_class($this->parent),
           'file' => $this->source_file,

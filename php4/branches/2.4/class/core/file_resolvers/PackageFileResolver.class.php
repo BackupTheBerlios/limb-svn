@@ -33,7 +33,7 @@ class PackageFileResolver// implements FileResolver
         return $resolved_file_path;
     }
 
-    throw new FileNotFoundException('file not found in packages', $file_path);
+    return new FileNotFoundException('file not found in packages', $file_path);
   }
 
   function _getPackages()

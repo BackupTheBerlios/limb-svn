@@ -28,7 +28,7 @@ class SiteObjectTag extends ServerComponentTag
   {
     if (!isset($this->attributes['path']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'path',
           'file' => $this->source_file,

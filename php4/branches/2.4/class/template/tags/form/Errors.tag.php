@@ -28,7 +28,7 @@ class FormErrorsTag extends ServerComponentTag
   {
     if (!$this->findParentByClass('form_tag'))
     {
-      throw new WactException('missing enclosure',
+      return new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'form',
           'file' => $this->source_file,
@@ -40,7 +40,7 @@ class FormErrorsTag extends ServerComponentTag
   {
     if (!isset($this->attributes['target']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'target',
           'file' => $this->source_file,

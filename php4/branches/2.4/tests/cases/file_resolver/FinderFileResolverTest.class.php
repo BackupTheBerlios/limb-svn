@@ -26,12 +26,7 @@ class FinderFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveFinderFileFailed()
   {
-    try
-    {
-      $this->resolver->resolve('no_such_finder');
-      $this->assertTrue(false);
-    }
-    catch(FileNotFoundException $e){}
+    $this->assertTrue(Limb :: isError($this->resolver->resolve('no_such_finder')));
   }
 
 }

@@ -41,12 +41,12 @@ class ServerComponentTag extends CompilerComponent
     if (file_exists($this->runtime_component_path . '.class.php'))
       $code->registerInclude($this->runtime_component_path . '.class.php');
     else
-      throw new FileNotFoundException('run time component file not found', $this->runtime_component_path);
+      return new FileNotFoundException('run time component file not found', $this->runtime_component_path);
 
     $component_class_name = end(explode('/', $this->runtime_component_path));
 
     if(!$component_class_name)
-      throw new WactException('run time component file doesn\'t contains component class name',
+      return new WactException('run time component file doesn\'t contains component class name',
                                 array('file_path' => $this->runtime_component_path));
 
     $code->writePhp($this->parent->getComponentRefCode() . '->add_child(new ' . $component_class_name . '(), \'' . $this->getServerId() . '\');' . "\n");

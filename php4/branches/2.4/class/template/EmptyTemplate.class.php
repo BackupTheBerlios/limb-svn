@@ -32,7 +32,7 @@ class EmptyTemplate
 
   function display()
   {
-    throw new LimbException('template is empty');
+    return new LimbException('template is empty');
   }
 }
 

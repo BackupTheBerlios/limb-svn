@@ -26,19 +26,13 @@ class StringsFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveStringsFileFailed()
   {
-    try
-    {
-      $this->resolver->resolve('no_such_strings_file', array('fr'));
-      $this->assertTrue(false);
-    }
-    catch(FileNotFoundException $e)
-    {
-      $this->assertEqual($e->getAdditionalParams(),
-        array(
-          'file_path' => 'i18n/no_such_strings_file_fr.ini',
-        )
-      );
-    }
+    $this->assertTrue(Limb :: isError($e = $this->resolver->resolve('no_such_strings_file', array('fr'))));
+
+    $this->assertEqual($e->getAdditionalParams(),
+      array(
+        'file_path' => 'i18n/no_such_strings_file_fr.ini',
+      ));
+
   }
 
 }

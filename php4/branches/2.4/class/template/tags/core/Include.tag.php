@@ -30,7 +30,7 @@ class CoreIncludeTag extends CompilerDirectiveTag
     if (! array_key_exists('file', $this->attributes) ||
         empty($this->attributes['file']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'file',
           'file' => $this->source_file,
@@ -40,7 +40,7 @@ class CoreIncludeTag extends CompilerDirectiveTag
 
     if (!$this->resolved_source_file = resolveTemplateSourceFileName($file))
     {
-      throw new WactException('missing file',
+      return new WactException('missing file',
           array('tag' => $this->tag,
           'srcfile' => $file,
           'file' => $this->source_file,

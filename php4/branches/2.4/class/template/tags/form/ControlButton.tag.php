@@ -33,7 +33,7 @@ class ControlButtonTag extends ControlTag
   {
     if (!isset($this->attributes['action']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'action',
           'file' => $this->source_file,

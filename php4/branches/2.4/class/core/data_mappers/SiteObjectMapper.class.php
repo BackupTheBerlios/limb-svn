@@ -60,10 +60,10 @@ class SiteObjectMapper extends AbstractDataMapper
   function _insertTreeNode($site_object)
   {
     if(!($parent_node_id = $site_object->getParentNodeId()))
-      throw new LimbException('tree parent node is empty');
+      return new LimbException('tree parent node is empty');
 
     if(!$this->_canAddNodeToParent($parent_node_id))
-      throw new LimbException('tree registering failed', array('parent_node_id' => $parent_node_id));
+      return new LimbException('tree registering failed', array('parent_node_id' => $parent_node_id));
 
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();
@@ -72,7 +72,7 @@ class SiteObjectMapper extends AbstractDataMapper
     $values['object_id'] = $site_object->getId();
 
     if (!$node_id = $tree->createSubNode($parent_node_id, $values))
-      throw new LimbException('could not create tree node');
+      return new LimbException('could not create tree node');
 
     return $node_id;
   }
@@ -82,13 +82,13 @@ class SiteObjectMapper extends AbstractDataMapper
     $gntr =& $this->_getIdentifierGenerator();
 
     if(!$identifier = $gntr->generate($site_object))
-      throw new LimbException('identifier is empty');
+      return new LimbException('identifier is empty');
 
     if (!$behaviour = $site_object->getBehaviour())
-      throw new LimbException('behaviour is not attached');
+      return new LimbException('behaviour is not attached');
 
     if (!$class_id = $this->getClassId($site_object))
-      throw new LimbException('class id is empty');
+      return new LimbException('class id is empty');
 
     if(!$created_date = $site_object->getCreatedDate())
       $site_object->setCreatedDate(time());
@@ -126,7 +126,8 @@ class SiteObjectMapper extends AbstractDataMapper
 
     $sys_site_object_db_table = $toolkit->createDBTable('SysSiteObject');
 
-    $sys_site_object_db_table->insert($data);
+    if(Limb :: isError($res = $sys_site_object_db_table->insert($data)))
+      return $res;
 
     return $sys_site_object_db_table->getLastInsertId();
   }
@@ -141,13 +142,13 @@ class SiteObjectMapper extends AbstractDataMapper
   function _updateSiteObjectRecord($site_object)
   {
     if(!$site_object->getId())
-      throw new LimbException('object id not set');
+      return new LimbException('object id not set');
 
     if(!$site_object->getIdentifier())
-      throw new LimbException('identifier is empty');
+      return new LimbException('identifier is empty');
 
     if (!$site_object->getBehaviour())
-      throw new LimbException('behaviour id not attached');
+      return new LimbException('behaviour id not attached');
 
     $mapper =& $this->_getBehaviourMapper();
     $mapper->save($site_object->getBehaviour());
@@ -165,16 +166,16 @@ class SiteObjectMapper extends AbstractDataMapper
 
     $toolkit =& Limb :: toolkit();
     $sys_site_object_db_table =& $toolkit->createDBTable('SysSiteObject');
-    $sys_site_object_db_table->updateById($site_object->getId(), $data);
+    return $sys_site_object_db_table->updateById($site_object->getId(), $data);
   }
 
   function _updateTreeNode($site_object)
   {
     if(!$site_object->getNodeId())
-      throw new LimbException('node id not set');
+      return new LimbException('node id not set');
 
     if(!$site_object->getParentNodeId())
-      throw new LimbException('parent node id not set');
+      return new LimbException('parent node id not set');
 
     $node_id = $site_object->getNodeId();
     $parent_node_id = $site_object->getParentNodeId();
@@ -187,12 +188,12 @@ class SiteObjectMapper extends AbstractDataMapper
     if ($this->_isObjectMovedFromNode($parent_node_id, $node))
     {
       if(!$this->_canAddNodeToParent($parent_node_id))
-        throw new LimbException('new parent cant accept children',
+        return new LimbException('new parent cant accept children',
                                 array('parent_node_id' => $parent_node_id));
 
       if (!$tree->moveTree($node_id, $parent_node_id))
       {
-        throw new LimbException('could not move node',
+        return new LimbException('could not move node',
           array(
             'node_id' => $node_id,
             'target_id' => $parent_node_id,
@@ -202,7 +203,9 @@ class SiteObjectMapper extends AbstractDataMapper
     }
 
     if ($identifier != $node['identifier'])
-      $tree->updateNode($node_id, array('identifier' => $identifier), true);
+      return $tree->updateNode($node_id, array('identifier' => $identifier), true);
+
+    return true;
   }
 
   function _getIdentifierGenerator()
@@ -234,7 +237,7 @@ class SiteObjectMapper extends AbstractDataMapper
     }
     elseif(count($list) > 1)
     {
-      throw new LimbException('there are more than 1 type found',
+      return new LimbException('there are more than 1 type found',
         array('name' => $class_name));
     }
 
@@ -286,7 +289,7 @@ class SiteObjectMapper extends AbstractDataMapper
   function _canDeleteTreeNode($site_object)
   {
     if(!$site_object->getNodeId())
-      throw new LimbException('node id not set');
+      return new LimbException('node id not set');
 
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();
@@ -297,7 +300,7 @@ class SiteObjectMapper extends AbstractDataMapper
   function _canDeleteSiteObjectRecord($site_object)
   {
     if(!$site_object->getId())
-      throw new LimbException('object id not set');
+      return new LimbException('object id not set');
 
     return true;
   }

@@ -211,7 +211,7 @@ class DbTable
 
         if(!$db_table->hasColumn($column_name))
         {
-          throw new SQLException('column not found while cascade deleting',
+          return new SQLException('column not found while cascade deleting',
             null,
             array(
               'table' => $table_name,

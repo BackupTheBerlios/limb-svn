@@ -158,21 +158,15 @@ class SysParamsTest extends LimbTestCase
   {
     $sp =& SysParam :: instance();
 
-    try
-    {
-      $result = $sp->saveParam('param_1', 'sadnkfjhskjfd', 123.053);
-      $this->assertTrue(false);
-    }
-    catch(LimbException $e)
-    {
-      $this->assertEqual($e->getMessage(), 'trying to save undefined type in sys_param');
-      $this->assertEqual($e->getAdditionalParams(),
-        array (
-          'type' => 'sadnkfjhskjfd',
-          'param' => 'param_1',
-        )
-      );
-    }
+    $this->assertTrue(Limb :: isError($e = $result = $sp->saveParam('param_1', 'sadnkfjhskjfd', 123.053)));
+
+    $this->assertEqual($e->getMessage(), 'trying to save undefined type in sys_param');
+    $this->assertEqual($e->getAdditionalParams(),
+      array (
+        'type' => 'sadnkfjhskjfd',
+        'param' => 'param_1',
+      )
+    );
   }
 
   function testGetValue()
@@ -193,20 +187,15 @@ class SysParamsTest extends LimbTestCase
     $number = 123.053;
     $sp->saveParam('param_1', 'float', $number);
 
-    try
-    {
-      $this->assertNull($sp->getParam('param_1', 'blabla'));
-    }
-    catch(LimbException $e)
-    {
-      $this->assertEqual($e->getMessage(), 'trying to get undefined type in sys_param');
-      $this->assertEqual($e->getAdditionalParams(),
-        array (
-          'type' => 'blabla',
-          'param' => 'param_1',
-        )
-      );
-    }
+    $this->assertTrue(Limb :: isError($e = $sp->getParam('param_1', 'blabla')));
+
+    $this->assertEqual($e->getMessage(), 'trying to get undefined type in sys_param');
+    $this->assertEqual($e->getAdditionalParams(),
+      array (
+        'type' => 'blabla',
+        'param' => 'param_1',
+      )
+    );
   }
 }
 ?>

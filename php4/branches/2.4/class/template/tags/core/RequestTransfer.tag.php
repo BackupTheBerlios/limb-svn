@@ -27,7 +27,7 @@ class CoreRequestTransferTag extends ServerTagComponentTag
   function preParse()
   {
     if (! array_key_exists('attributes', $this->attributes) ||  empty($this->attributes['attributes']))
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'attributes',
           'file' => $this->source_file,

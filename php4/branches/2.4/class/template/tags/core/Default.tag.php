@@ -27,7 +27,7 @@ class CoreDefaultTag extends CompilerDirectiveTag
   {
     if (!isset($this->attributes['for']) ||  !$this->attributes['for'])
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'for',
           'file' => $this->source_file,

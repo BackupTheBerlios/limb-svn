@@ -25,14 +25,14 @@ class PagerPrevTag extends ServerComponentTag
   {
     if ($this->findParentByClass('pager_prev_tag'))
     {
-      throw new WactException('bad self nesting',
+      return new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
     }
     if (!$this->findParentByClass('pager_navigator_tag'))
     {
-      throw new WactException('missing enclosure',
+      return new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'pager:navigator',
           'file' => $this->source_file,

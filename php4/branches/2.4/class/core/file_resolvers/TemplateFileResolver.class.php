@@ -27,16 +27,10 @@ class TemplateFileResolver extends FileResolverDecorator
     if(file_exists($tmpl_path . $file_path))
       return $tmpl_path . $file_path;
 
-    try
-    {
-      $resolved_path = $this->_resolver->resolve('design/' . $locale . $file_path, $params);
-    }
-    catch(FileNotFoundException $e)
-    {
-      $resolved_path = $this->_resolver->resolve('design/'  . $file_path, $params);
-    }
+    if(Limb :: isError($res = $this->_resolver->resolve('design/' . $locale . $file_path, $params)))
+      $res = $this->_resolver->resolve('design/'  . $file_path, $params);
 
-    return $resolved_path;
+    return $res;
   }
 
   function _getLocalePrefix()

@@ -26,7 +26,7 @@ class ActionTag extends CompilerDirectiveTag
   {
     if (!is_a($this->parent, 'ActionsTag'))
     {
-      throw new WactException('wrong parent tag',
+      return new WactException('wrong parent tag',
           array('tag' => $this->tag,
           'parent_class' => get_class($this->parent),
           'file' => $this->source_file,

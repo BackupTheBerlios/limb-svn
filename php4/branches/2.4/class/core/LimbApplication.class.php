@@ -78,23 +78,22 @@ class LimbApplication
 
   function run()
   {
-    try
+    if(Limb :: isError($res = $this->_doRun()))
     {
-      $this->_doRun();
-    }
-    catch(LimbException $e)
-    {
-      Debug :: writeException($e);
-    }
-    catch(Exception $e)
-    {
-      echo  'Unexpected PHP exception in ' . $e->getFile() . ' in line ' . $e->getLine();
-      echo  '<br>';
-      echo  '<pre>';
-      echo    $e->getTraceAsString();
-      echo  '</pre>';
-      echo  'Report this error to the LIMB developers, please.';
-      exit;
+      if(is_a($res, 'LimbException'))
+      {
+        Debug :: writeException($res);
+      }
+      else
+      {
+        echo  'Unexpected PHP exception in ' . $e->getFile() . ' in line ' . $e->getLine();
+        echo  '<br>';
+        echo  '<pre>';
+        echo    $e->getTraceAsString();
+        echo  '</pre>';
+        echo  'Report this error to the LIMB developers, please.';
+        exit;
+      }
     }
   }
 

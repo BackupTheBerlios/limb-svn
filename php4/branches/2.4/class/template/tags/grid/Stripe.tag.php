@@ -23,7 +23,7 @@ class GridStripeTag extends CompilerDirectiveTag
   {
     if ($this->findParentByClass('grid_stripe_tag'))
     {
-      throw new WactException('bad self nesting',
+      return new WactException('bad self nesting',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no));
@@ -31,7 +31,7 @@ class GridStripeTag extends CompilerDirectiveTag
 
     if (!is_a($this->parent, 'GridIteratorTag'))
     {
-      throw new WactException('missing enclosure',
+      return new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'grid:ITERATOR',
           'file' => $this->source_file,

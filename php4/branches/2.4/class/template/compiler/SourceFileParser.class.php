@@ -192,7 +192,7 @@ class SourceFileParser
 
     if ($tree->findChild($server_id))
     {
-      throw new WactException('dublicated component found',
+      return new WactException('dublicated component found',
           array(
             'server_id' => $server_id,
             'tag' => $component->tag,
@@ -222,7 +222,7 @@ class SourceFileParser
         {
           if ($tag != $parent_component->tag)
           {
-            throw new WactException('unexpected close',
+            return new WactException('unexpected close',
                 array(
                   'tag' => $tag,
                   'expect_tag' => $parent_component->tag,
@@ -237,7 +237,7 @@ class SourceFileParser
         }
         else
         {
-          throw new WactException('unexpected close',
+          return new WactException('unexpected close',
               array(
                 'tag' => $tag,
                 'file' => $this->source_file,
@@ -261,7 +261,7 @@ class SourceFileParser
 
           if (!$this->matchText('/^\/?>/', $start_maches))
           {
-            throw new WactException('expecting >',
+            return new WactException('expecting >',
                 array(
                   'tag' => $component->tag,
                   'file' => $this->source_file,
@@ -286,7 +286,7 @@ class SourceFileParser
             }
             else
             {
-              throw new WactException('missing close tag',
+              return new WactException('missing close tag',
                   array(
                     'tag' => $component->tag,
                     'file' => $this->source_file,
@@ -316,7 +316,7 @@ class SourceFileParser
       }
       else
       {
-        throw new WactException('missing close tag',
+        return new WactException('missing close tag',
             array(
               'tag' => $parent_component->tag,
               'file' => $this->source_file,

@@ -32,14 +32,7 @@ class DatasourceFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveDatasourceFileFailed()
   {
-    try
-    {
-      $this->resolver->resolve('no_such_datasource');
-      $this->assertTrue(false);
-    }
-    catch(FileNotFoundException $e)
-    {
-    }
+    $this->assertTrue(Limb :: isError($this->resolver->resolve('no_such_datasource')));
   }
 }
 

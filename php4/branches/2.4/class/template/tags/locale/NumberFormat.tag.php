@@ -30,7 +30,7 @@ class LocaleNumberFormatTag extends ServerComponentTag
   {
     if (!isset($this->attributes['hash_id']) ||  !$this->attributes['hash_id'])
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'hash_id',
           'file' => $this->source_file,

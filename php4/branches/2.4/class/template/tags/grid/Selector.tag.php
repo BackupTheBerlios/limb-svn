@@ -30,7 +30,7 @@ class GridSelectorTag extends ControlTag
   {
     if (!$this->findParentByClass('grid_iterator_tag'))
     {
-      throw new WactException('missing enclosure',
+      return new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'grid:ITERATOR',
           'file' => $this->source_file,
@@ -42,7 +42,7 @@ class GridSelectorTag extends ControlTag
   {
     if (!isset($this->attributes['name']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'name',
           'file' => $this->source_file,

@@ -23,19 +23,35 @@ class Limb
 {
   var $toolkits = array();
 
-  function registerToolkit($toolkit)
+  function & instance()
   {
-    Limb :: $toolkits[] = $toolkit;
+    if (!isset($GLOBALS['LimbGlobalInstance']) || !is_a($GLOBALS['LimbGlobalInstance'], 'Limb'))
+      $GLOBALS['LimbGlobalInstance'] =& new Limb();
+
+    return $GLOBALS['LimbGlobalInstance'];
   }
 
-  function popToolkit()
+  function isError($obj)
   {
-    array_pop(Limb :: $toolkits);
+    return is_a($obj, 'Exception');
   }
 
-  function toolkit()
+  function registerToolkit(&$toolkit)
   {
-    return end(Limb :: $toolkits);
+    $limb =& Limb :: instance();
+    $limb->toolkits[] =& $toolkit;
+  }
+
+  function & popToolkit()
+  {
+    $limb =& Limb :: instance();
+    array_pop($limb->toolkits);
+  }
+
+  function & toolkit()
+  {
+    $limb =& Limb :: instance();
+    return end($limb->toolkits);
   }
 }
 

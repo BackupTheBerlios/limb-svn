@@ -22,7 +22,7 @@ class AppTestsIniFileResolver// implements FileResolver
     elseif (file_exists(LIMB_DIR . '/settings/' . $file_name))
       $dir = LIMB_DIR . '/settings/';
     else
-      throw new FileNotFoundException('ini file not found', $file_name);
+      return new FileNotFoundException('ini file not found', $file_name);
 
     return $dir . $file_name;
   }

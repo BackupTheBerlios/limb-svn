@@ -11,7 +11,7 @@
 
 function instantiateSessionObject($class_name, &$arguments = array())
 {
-  if(	!isset($_SESSION['global_session_singleton_'. $class_name]) || 
+  if(	!isset($_SESSION['global_session_singleton_'. $class_name]) ||
       get_class($_SESSION['global_session_singleton_'. $class_name]) != $class_name)
   {
     $handle =& $arguments;
@@ -78,7 +78,7 @@ function resolveHandle(&$handle)
       break;
     default:
       // Too many arguments for this cobbled together implemenentation.  :(
-      throw new Exception('too many arguments for resolve handle');
+      return new Exception('too many arguments for resolve handle');
   }
 }
 

@@ -66,7 +66,7 @@ class InputTag extends ControlTag
         $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_button_component';
         break;
       default:
-        throw new WactException('unknown input type',
+        return new WactException('unknown input type',
           array('tag' => $this->tag,
           'type' => $type,
           'file' => $this->source_file,

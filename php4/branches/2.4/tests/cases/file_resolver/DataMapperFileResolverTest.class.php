@@ -26,12 +26,7 @@ class DataMapperFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveDataMapperFileFailed()
   {
-    try
-    {
-      $this->resolver->resolve('no_such_mapper');
-      $this->assertTrue(false);
-    }
-    catch(FileNotFoundException $e){}
+    $this->assertTrue(Limb :: isError($this->resolver->resolve('no_such_mapper')));
   }
 
 }

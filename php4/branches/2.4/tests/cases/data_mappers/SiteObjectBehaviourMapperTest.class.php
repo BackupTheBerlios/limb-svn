@@ -98,12 +98,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
   {
     $behaviour = new SiteObjectBehaviour();
 
-    try
-    {
-      $this->mapper->update($behaviour);
-      $this->assertTrue(false);
-    }
-    catch(LimbException $e){}
+    $this->assertTrue(Limb :: isError($this->mapper->update($behaviour)));
   }
 
   function testUpdate()
@@ -126,12 +121,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
   {
     $behaviour = new SiteObjectBehaviour();
 
-    try
-    {
-      $this->mapper->delete($behaviour);
-      $this->assertTrue(false);
-    }
-    catch(LimbException $e){}
+    $this->assertTrue(Limb :: isError($this->mapper->delete($behaviour)))
   }
 
   function testDelete()

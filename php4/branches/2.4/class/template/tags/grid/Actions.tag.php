@@ -26,7 +26,7 @@ class GridActionsTag extends CompilerDirectiveTag
   {
     if (!$this->findParentByClass('grid_list_tag'))
     {
-      throw new WactException('missing enclosure',
+      return new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'grid:LIST',
           'file' => $this->source_file,

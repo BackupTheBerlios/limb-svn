@@ -28,7 +28,7 @@ class DatasourceTag extends ServerComponentTag
   {
     if (!isset($this->attributes['target']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'target',
           'file' => $this->source_file,
@@ -37,7 +37,7 @@ class DatasourceTag extends ServerComponentTag
 
     if (!isset($this->attributes['datasource_path']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'datasource_path',
           'file' => $this->source_file,
@@ -64,7 +64,7 @@ class DatasourceTag extends ServerComponentTag
         continue;
 
       if(strtolower($arr[1]) != 'asc' &&  strtolower($arr[1]) != 'desc' &&  !strtolower($arr[1]) == 'rand()')
-        throw new WactException('wrong order type',
+        return new WactException('wrong order type',
           array('tag' => $this->tag,
           'order_value' => $arr[1],
           'file' => $this->source_file,

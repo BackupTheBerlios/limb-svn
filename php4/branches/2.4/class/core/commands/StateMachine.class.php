@@ -19,11 +19,13 @@ class StateMachine
   function registerState($state_name, $command, $transitions_matrix = array())
   {
     if (isset($this->states[$state_name]))
-      throw new LimbException('state already been registered',
+      return new LimbException('state already been registered',
                               array('state_name' => $state_name));
 
     $this->states[$state_name]['command'] = $command;
     $this->states[$state_name]['transitions'] = $transitions_matrix;
+
+    return true;
   }
 
   function setInitialState($state)
@@ -55,7 +57,7 @@ class StateMachine
   {
     if (!isset($this->states[$state_name]))
     {
-      throw new LimbException('illegal state',
+      return new LimbException('illegal state',
                             array('state_name' => $state_name));
     }
 

@@ -23,7 +23,7 @@ function & getFileResolver($resolver_name)
   if(isset($LIMB_FILE_RESOLVERS[$resolver_name]))
     return $LIMB_FILE_RESOLVERS[$resolver_name];
   else
-    throw new LimbException('unknown file resolver',
+    return new LimbException('unknown file resolver',
       array('resolver' => $resolver_name));
 }
 

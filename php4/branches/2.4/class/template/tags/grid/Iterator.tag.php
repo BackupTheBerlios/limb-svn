@@ -23,7 +23,7 @@ class GridIteratorTag extends CompilerDirectiveTag
   {
     if (!is_a($this->parent, 'GridListTag'))
     {
-      throw new WactException('missing enclosure',
+      return new WactException('missing enclosure',
           array('tag' => $this->tag,
           'enclosing_tag' => 'grid:LIST',
           'file' => $this->source_file,

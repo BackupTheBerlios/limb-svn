@@ -21,7 +21,7 @@ class TestsStringsFileResolver// implements FileResolver
     if(file_exists(LIMB_DIR . '/tests/i18n/' . $file_name . '_' . $locale_id . '.ini'))
       $dir = LIMB_DIR . '/tests/i18n/';
     else
-      throw new FileNotFoundException('strings file not found', $file_name, array('locale_id' => $locale_id));
+      return new FileNotFoundException('strings file not found', $file_name, array('locale_id' => $locale_id));
 
     return $dir . $file_name . '_' . $locale_id . '.ini';
   }

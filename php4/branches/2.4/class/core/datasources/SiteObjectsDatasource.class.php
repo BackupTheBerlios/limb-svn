@@ -210,7 +210,7 @@ class SiteObjectsDatasource //implements Datasource, Countable
     $finder = $this->_getFinder();
 
     if (!method_exists($finder, $fetch_method))
-      throw new LimbException($fetch_method .' is not supported by finder');
+      return new LimbException($fetch_method .' is not supported by finder');
 
     $result = $finder->$fetch_method($params, $sql_params);
 

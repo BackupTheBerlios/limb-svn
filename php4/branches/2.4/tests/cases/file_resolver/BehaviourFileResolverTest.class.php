@@ -26,14 +26,7 @@ class BehaviourFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveBehaviourFileFailed()
   {
-    try
-    {
-      $this->resolver->resolve('no_such_behaviour');
-      $this->assertTrue(false);
-    }
-    catch(FileNotFoundException $e)
-    {
-    }
+    $this->assertTrue(Limb :: isError($this->resolver->resolve('no_such_behaviour')));
   }
 
 }

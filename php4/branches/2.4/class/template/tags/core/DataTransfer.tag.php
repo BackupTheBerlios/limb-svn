@@ -23,7 +23,7 @@ class CoreDataTransferTag extends CompilerDirectiveTag
   {
     if (!isset($this->attributes['target']))
     {
-      throw new WactException('missing required attribute',
+      return new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'target',
           'file' => $this->source_file,
