@@ -60,7 +60,7 @@ class file_object extends media_object
 	
 	public function fetch($params=array(), $sql_params=array())
 	{
-		$sql_params['columns'][] = ', m.file_name, m.mime_type, m.etag, m.size ';
+		$sql_params['columns'][] = ' m.file_name as file_name, m.mime_type as mime_type, m.etag as etag, m.size as size, ';
 		$sql_params['tables'][] = ', media as m ';
 		$sql_params['conditions'][] = ' AND tn.media_id=m.id ';
 		

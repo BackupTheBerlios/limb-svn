@@ -48,7 +48,6 @@ class display_file_action extends action
 				$file_name = HTTP_SHARED_DIR . "images/mime_icons/file.{$size}.gif";
 			
 			$response->header("Date: " . gmdate("D, d M Y H:i:s") . " GMT");
-			$response->header("Etag: {$etag}");			
 			$response->header("Content-type: image/gif");
 			$response->readfile($file_name);			
 			
