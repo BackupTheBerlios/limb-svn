@@ -27,7 +27,7 @@ class generate_password_action extends form_action
 	
 	function _valid_perform()
 	{
-		$data = $this->_export();
+		$data = $this->dataspace->export();
 		$object =& site_object_factory :: create('user_object');
 		
 		$new_non_crypted_password = '';

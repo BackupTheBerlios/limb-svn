@@ -41,21 +41,18 @@ class form_edit_site_object_action extends form_site_object_action
 	
 	function _init_validator()
 	{
-		if(!$this->object->is_auto_identifier())
-		{
-			$this->validator->add_rule(new required_rule('identifier'));
+		if($this->object->is_auto_identifier())
+			return;
 			
-			$object_data = fetch_mapped_by_url();
-			
-			if(($parent_node_id = $this->dataspace->get('parent_node_id')) && $object_data)
-			{
-				$this->validator->add_rule(new tree_identifier_rule('identifier', (int)$parent_node_id, $object_data['identifier']));
-			}
-			elseif($object_data)
-			{
-				$this->validator->add_rule(new tree_identifier_rule('identifier', (int)$object_data['parent_node_id'], $object_data['identifier']));
-			}
-		}
+		$this->validator->add_rule(new required_rule('identifier'));
+		
+		if(!$object_data = fetch_mapped_by_url())
+			return;
+
+		if(($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
+			$parent_node_id = $object_data['parent_node_id'];
+		
+		$this->validator->add_rule(new tree_identifier_rule('identifier', (int)$parent_node_id, (int)$object_data['node_id']));
 	}
 
 	function _init_dataspace()
@@ -66,33 +63,34 @@ class form_edit_site_object_action extends form_site_object_action
 		
 		complex_array :: map(array_flip($this->definition['datamap']), $object_data, $data);
 		
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 
 	function _valid_perform()
 	{
 		$object_data =& $this->_load_object_data();
 
-		$data['id'] = $object_data['id'];
-		$data['node_id'] = $object_data['node_id'];
-		$data['identifier'] = $object_data['identifier'];
-		$data['title'] = $object_data['title'];
+		$data_to_import['id'] = $object_data['id'];
+		$data_to_import['node_id'] = $object_data['node_id'];
+		$data_to_import['parent_node_id'] = $object_data['parent_node_id'];
+		$data_to_import['identifier'] = $object_data['identifier'];
+		$data_to_import['title'] = $object_data['title'];
 		
-		complex_array :: map($this->definition['datamap'], $this->dataspace->export(), $data);
+		complex_array :: map($this->definition['datamap'], $this->dataspace->export(), $data_to_import);
 		
-		if (!isset($data['status']))
-			$data['status'] = $object_data['status'];
+		if (!isset($data_to_import['status']))
+			$data_to_import['status'] = $object_data['status'];
 			
-		$this->object->import_attributes($data);
+		$this->object->import_attributes($data_to_import);
 		
 		if(!$this->_update_object_operation())
 			return new failed_response();
 
 		$this->indexer->add($this->object);
 		
-		if(isset($data['identifier']) && $object_data['identifier'] != $data['identifier'])
+		if(isset($data_to_import['identifier']) && $object_data['identifier'] != $data_to_import['identifier'])
 		{
-			$this->_handle_changed_identifier($data['identifier']);
+			$this->_handle_changed_identifier($data_to_import['identifier']);
 		}	
 			
 		return new response(RESPONSE_STATUS_FORM_SUBMITTED);

@@ -57,14 +57,14 @@ class login_action extends form_action
 	
 	function _valid_perform()
 	{
-		$login = $this->_get('login');
-		$password = $this->_get('password');
+		$login = $this->dataspace->get('login');
+		$password = $this->dataspace->get('password');
 		
 		$user_object =& site_object_factory :: create($this->user_object_class_name);
 
 		if($user_object->login($login, $password))
 		{
-			if($redirect = $this->_get('redirect'))
+			if($redirect = $this->dataspace->get('redirect'))
 				return $this->_login_redirect($redirect);
 			else
 				return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, '/');

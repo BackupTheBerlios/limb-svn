@@ -49,7 +49,7 @@ class search_action extends form_action
 		
 	function _get_query()
 	{		
-		return $this->_get('search_query');
+		return $this->dataspace->get('search_query');
 	}	
 			
 	function _set_pager_items_per_page($items_per_page)

@@ -26,7 +26,7 @@ class set_metadata_action extends form_action
 		$object->set_attribute('id', $object_data['id']);
 		
 		$data = $object->get_metadata();
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 
 	function _valid_perform()

@@ -45,7 +45,7 @@ class create_guestbook_message_action extends form_create_site_object_action
 		$data['sender'] = $user->get_login();
 		$data['sender_email'] = $user->get_email();
 		
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 	
 	function _process_transfered_dataspace()

@@ -42,15 +42,13 @@ class form_create_site_object_action extends form_site_object_action
 	
 	function _init_validator()
 	{
-		$parent_object_data =& $this->_load_parent_object_data();
+		if($this->object->is_auto_identifier())
+			return;
 		
-		if(!$this->object->is_auto_identifier())
-		{
-			$this->validator->add_rule(new required_rule('identifier'));
-			
-			if($parent_object_data)
-				$this->validator->add_rule(new tree_identifier_rule('identifier', $parent_object_data['node_id']));
-		}
+		$this->validator->add_rule(new required_rule('identifier'));
+		
+		if($parent_object_data =& $this->_load_parent_object_data())
+			$this->validator->add_rule(new tree_identifier_rule('identifier', $parent_object_data['node_id']));
 	}
 	
 	function _valid_perform()

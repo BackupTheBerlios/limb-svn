@@ -11,15 +11,17 @@
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
 
+define('TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID', -1000);
+
 class tree_identifier_rule extends single_field_rule
 {
-	var $parent_node_id = -1;
-	var $current_identifier = '';
+	var $parent_node_id;
+	var $node_id;
 	
-	function tree_identifier_rule($field_name, $parent_node_id, $current_identifier='')
+	function tree_identifier_rule($field_name, $parent_node_id, $node_id = TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID)
 	{
+		$this->node_id = $node_id;
 		$this->parent_node_id = $parent_node_id;
-		$this->current_identifier = $current_identifier;
 		
 		parent :: single_field_rule($field_name);
 	} 
@@ -30,17 +32,25 @@ class tree_identifier_rule extends single_field_rule
 			return;
 		
 		$tree = limb_tree :: instance();
-		
+				
 		if(!$nodes = $tree->get_children($this->parent_node_id))
 			return;
 			
-		foreach($nodes as $node)
-		{			
-			if($node['identifier'] == $value)
+		foreach($nodes as $id => $node)
+		{
+			if($node['identifier'] != $value)
+				continue;
+						
+			if($this->node_id == TREE_IDENTIFIER_RULE_UNKNOWN_NODE_ID)
+			{				
+				$this->error('DUPLICATE_TREE_IDENTIFIER');
+				break;
+			}
+			elseif($id != $this->node_id)
 			{
 				$this->error('DUPLICATE_TREE_IDENTIFIER');
 				break;
-			}			
+			}
 		}
 	} 
 } 

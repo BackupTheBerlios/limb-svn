@@ -47,7 +47,7 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 	{
 		parent :: _init_dataspace();
 		
-		$data = $this->_export();
+		$data = $this->dataspace->export();
 	
 		$user =& user :: instance();
 		
@@ -57,7 +57,7 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 		if (empty($data['comment_author_email']))
 			$data['comment_author_email'] = $user->get_email();
 		
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 	
 	function _process_transfered_dataspace()

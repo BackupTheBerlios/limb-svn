@@ -23,7 +23,7 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 	
 		$data['policy'] = $access_policy->get_group_object_access();
 
-		$this->_import($data);
+		$this->dataspace->import($data);
 		
 		return parent :: perform();
 	}

@@ -22,12 +22,12 @@ class set_group_objects_access extends form_action
 		$access_policy =& access_policy :: instance();
 		$data['policy'] = $access_policy->get_group_object_access();
 
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 	
 	function _valid_perform()
 	{
-		$data = $this->_export();
+		$data = $this->dataspace->export();
 		
 		$access_policy =& access_policy :: instance();
 

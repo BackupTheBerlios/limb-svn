@@ -42,7 +42,7 @@ class update_action extends form_action
 		foreach($this->definition['params_type'] as $param_name => $param_type)
 			$data[$param_name] = $sys_param->get_param($param_name, $param_type);
 		
-		$this->_import($data);		
+		$this->dataspace->import($data);		
 	}
 
 	function _valid_perform()

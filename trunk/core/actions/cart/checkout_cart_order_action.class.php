@@ -46,7 +46,7 @@ class checkout_cart_order_action extends form_action
 				'name' => $user->get_name() . ' ' . $user->get_lastname(),
 				'email' => $user->get_email(),
 		);
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 	
 	function _get_email()

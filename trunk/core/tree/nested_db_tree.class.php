@@ -412,7 +412,7 @@ class nested_db_tree
 	* @return mixed False on error, or an array of nodes
 	*/
 	function & get_children($id, $add_sql = array())
-	{
+	{		
 		if (!($parent = $this->get_node($id)))
 		{
     	debug :: write_error(NESE_ERROR_NOT_FOUND,

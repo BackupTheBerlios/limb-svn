@@ -34,14 +34,14 @@ class set_phpbb_rank_action extends form_action
 		$phpbb_user_data = current($list);
 		$data['rank'] = $phpbb_user_data['user_rank'];
 
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 		
 	function _valid_perform()
 	{
 		$object_data =& fetch_mapped_by_url();
 
-		$data = $this->_export();
+		$data = $this->dataspace->export();
 
   	$phpbb_user_data['user_rank'] = $data['rank'];
 

@@ -25,14 +25,14 @@ class set_membership extends form_action
 		
 		$data['membership'] = $object->get_membership($object_data['id']);
 
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 	
 	function _valid_perform()
 	{
 		$object_data =& fetch_mapped_by_url();
 
-		$data = $this->_export();
+		$data = $this->dataspace->export();
 		$object =& site_object_factory :: create('user_object');
 		
 		$object->save_membership($object_data['id'], $data['membership']);

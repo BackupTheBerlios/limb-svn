@@ -30,7 +30,7 @@ class set_group_access_template_action extends form_action
 
 		$data['template'] = $access_policy->get_group_action_access_templates($_REQUEST['class_id']);
 
-		$this->_import($data);
+		$this->dataspace->import($data);
 	}
 	
 	function _valid_perform()
@@ -41,7 +41,7 @@ class set_group_access_template_action extends form_action
 			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 		}
 
-		$data = $this->_export();
+		$data = $this->dataspace->export();
 		$access_policy =& access_policy :: instance();
 
 		$access_policy->save_group_action_access_template($_REQUEST['class_id'], $data['template']);

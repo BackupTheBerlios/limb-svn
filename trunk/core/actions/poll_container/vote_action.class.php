@@ -21,7 +21,7 @@ class vote_action extends form_action
 	function _valid_perform()
 	{
 		$object =& site_object_factory :: create('poll_container');
-		$data = $this->_export();
+		$data = $this->dataspace->export();
 		
 		if (!isset($data['answer']))
 		{

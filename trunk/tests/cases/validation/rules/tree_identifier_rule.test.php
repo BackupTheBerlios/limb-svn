@@ -16,8 +16,11 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.ph
 class test_tree_identifier_rule extends test_single_field_rule
 {
 	var $db = null;
-	var $root_node_id;
-	var $sub_node_id;
+	var $node_id_root;
+	var $node_id_ru;
+	var $node_id_document;
+	var $node_id_doc1;
+	var $node_id_doc2;
 	
 	function test_tree_identifier_rule()
 	{
@@ -33,23 +36,23 @@ class test_tree_identifier_rule extends test_single_field_rule
   	$tree =& limb_tree :: instance();
 
 		$values['identifier'] = 'root';
-		$this->root_node_id = $tree->create_root_node($values, false, true);
+		$this->node_id_root = $tree->create_root_node($values, false, true);
 
 		$values['identifier'] = 'ru';
 		$values['object_id'] = 1;
-		$this->sub_node_id= $tree->create_sub_node($this->root_node_id, $values);
+		$this->node_id_ru = $tree->create_sub_node($this->node_id_root, $values);
 
 		$values['identifier'] = 'document';
 		$values['object_id'] = 10;
-		$tree->create_sub_node($this->sub_node_id, $values);
+		$this->node_id_document = $tree->create_sub_node($this->node_id_ru, $values);
 
 		$values['identifier'] = 'doc1';
 		$values['object_id'] = 20;
-		$tree->create_sub_node($this->sub_node_id, $values);
+		$this->node_id_doc1 = $tree->create_sub_node($this->node_id_ru, $values);
 
 		$values['identifier'] = 'doc2';
 		$values['object_id'] = 30;
-		$tree->create_sub_node($this->sub_node_id, $values);		
+		$this->node_id_doc2 = $tree->create_sub_node($this->node_id_ru, $values);		
 	}
 	
   function tearDown()
@@ -62,23 +65,10 @@ class test_tree_identifier_rule extends test_single_field_rule
   {
   	$this->db->sql_delete('sys_site_object_tree');
   }
-
-	function test_tree_identifier_rule_empty()
-	{
-		$this->validator->add_rule(new tree_identifier_rule('test', $this->sub_node_id));
-
-		$data =& new dataspace();
-		$data->set('test', 'test_id');
-
-		$this->error_list->expectNever('add_error');
-
-		$this->validator->validate($data);
-		$this->assertTrue($this->validator->is_valid());
-	}
 	
 	function test_tree_identifier_rule_blank()
 	{
-		$this->validator->add_rule(new tree_identifier_rule('test', $this->sub_node_id));
+		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru, $this->node_id_document));
 
 		$data =& new dataspace();
 		$data->set('test', '');
@@ -91,7 +81,7 @@ class test_tree_identifier_rule extends test_single_field_rule
 
 	function test_tree_identifier_rule_normal()
 	{
-		$this->validator->add_rule(new tree_identifier_rule('test', $this->sub_node_id));
+		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru, $this->node_id_document));
 
 		$data =& new dataspace();
 		$data->set('test', 'test_id');
@@ -104,7 +94,7 @@ class test_tree_identifier_rule extends test_single_field_rule
 
 	function test_tree_identifier_rule_error()
 	{
-		$this->validator->add_rule(new tree_identifier_rule('test', $this->sub_node_id));
+		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru, $this->node_id_document));
 
 		$data =& new dataspace();
 		$data->set('test', 'doc1');
@@ -115,19 +105,31 @@ class test_tree_identifier_rule extends test_single_field_rule
 		$this->assertFalse($this->validator->is_valid());
 	}
 	
-	function test_tree_identifier_rule_normal_edit()
+	function test_tree_identifier_same_node_changed_identifier()
 	{
-		$this->validator->add_rule(new tree_identifier_rule('test', $this->sub_node_id, 'document'));
+		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru, $this->node_id_doc1));
 
 		$data =& new dataspace();
-		$data->set('test', 'document');
+		$data->set('test', 'doc1');
 
 		$this->error_list->expectNever('add_error');
 
 		$this->validator->validate($data);
 		$this->assertTrue($this->validator->is_valid());
 	}
+	
+	function test_tree_identifier_node_id_not_set_error()
+	{
+		$this->validator->add_rule(new tree_identifier_rule('test', $this->node_id_ru));
 
+		$data =& new dataspace();
+		$data->set('test', 'doc1');
+
+		$this->error_list->expectOnce('add_error', array('test', 'DUPLICATE_TREE_IDENTIFIER', array()));
+
+		$this->validator->validate($data);
+		$this->assertFalse($this->validator->is_valid());
+	}
 } 
 
 ?>

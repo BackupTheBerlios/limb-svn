@@ -34,26 +34,6 @@ class action
 	function perform()
 	{
 		return new response();
-	}
-	
-	function _set($name, $value)
-	{
-		$this->dataspace->set($name, $value);
-	}
-
-	function _get($name)
-	{
-		return $this->dataspace->get($name);
-	}
-	
-	function _import($arr)
-	{
-		$this->dataspace->import($arr);
-	}
-	
-	function _export()
-	{
-		return $this->dataspace->export();
 	}	
 } 
 ?>
