@@ -38,21 +38,18 @@ class poll_tag extends server_component_tag
 		$results_child =& $this->find_child_by_class('poll_result_tag');
 		
 		$code->write_php('if (' . $this->get_component_ref_code() . '->poll_exists()) {');
-			
+					
+		$code->write_php('if (' . $this->get_component_ref_code() . '->can_vote()) {');
+
 		if($form_child)
-		{
-		
-			$code->write_php('if (' . $this->get_component_ref_code() . '->can_vote()) {');
-			
 			$form_child->generate($code);
 										
-			$code->write_php('}');
-		}
+			$code->write_php('}else{');
 		
 		if ($results_child)
 			$results_child->generate($code);
-
-		$code->write_php('}');
+				
+		$code->write_php('}}');
 	} 
 
  
