@@ -25,7 +25,6 @@ class LimbPagerComponent extends Component
 
   var $pager_prefix = 'page';
   var $base_url;
-  var $request;
 
   function setPagerPrefix($prefix)
   {
@@ -35,6 +34,29 @@ class LimbPagerComponent extends Component
   function setTotalItems($items)
   {
     $this->total_items = $items;
+  }
+
+  function reset()
+  {
+    $this->_initBaseUrl();
+
+    $this->total_page_count = ceil($this->total_items / $this->items_per_page);
+
+    if ($this->total_page_count < 1)
+      $this->total_page_count = 1;
+
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+
+    $this->displayed_page = $request->get($this->getPagerId());
+
+    if (empty($this->displayed_page))
+      $this->displayed_page = 1;
+
+    if($this->displayed_page > $this->total_page_count)
+      $this->displayed_page = $this->total_page_count;
+
+    $this->page_counter = 1;
   }
 
   function setPagesPerSection($pages)
@@ -110,34 +132,11 @@ class LimbPagerComponent extends Component
     return ($this->displayed_page == $this->total_page_count);
   }
 
-  function prepare()
-  {
-    $this->_initBaseUrl();
-
-    $this->total_page_count = ceil($this->total_items / $this->items_per_page);
-
-    if ($this->total_page_count < 1)
-      $this->total_page_count = 1;
-
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-
-    $this->displayed_page = $request->get($this->getPagerId());
-
-    if (empty($this->displayed_page))
-      $this->displayed_page = 1;
-
-    if($this->displayed_page > $this->total_page_count)
-      $this->displayed_page = $this->total_page_count;
-
-    $this->page_counter = 1;
-  }
-
   function _initBaseUrl()
   {
     $toolkit =& Limb :: toolkit();
-    $this->request =& $toolkit->getRequest();
-    $uri =& $this->request->getUri();
+    $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
 
     $uri->removeQueryItems();
     $this->base_url = $uri->toString();
@@ -240,7 +239,10 @@ class LimbPagerComponent extends Component
     if ($page == null)
       $page = $this->page_counter;
 
-    $params = $this->request->export();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+
+    $params = $request->export();
 
     if ($page <= 1)
       unset($params[$this->getPagerId()]);

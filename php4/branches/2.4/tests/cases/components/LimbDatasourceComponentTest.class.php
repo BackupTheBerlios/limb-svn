@@ -23,6 +23,7 @@ class LimbDatasourceComponentTestVersion //implements Datasource, Countable
   function setLimit($limit){}
   function setOffset($offset){}
   function setOrder($order){}
+  function setBar($bar){}
 }
 
 Mock :: generate('LimbToolkit');
@@ -51,18 +52,21 @@ class LimbDatasourceComponentTest extends LimbTestCase
 
   function setUp()
   {
-    $this->toolkit = new MockLimbToolkit($this);
-
     $this->parent = new MockComponent($this);
 
     $this->component = new LimbDatasourceComponent();
     $this->component->parent =& $this->parent;
+    $this->component->setClassPath('test-datasource');
 
     $this->request = new MockRequest($this);
 
     $this->datasource = new MockLimbDatasourceComponentTestVersion($this);
 
+    $this->toolkit = new MockLimbToolkit($this);
+
     $this->toolkit->setReturnReference('getRequest', $this->request);
+
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -79,54 +83,53 @@ class LimbDatasourceComponentTest extends LimbTestCase
 
   function testSetGetParameter()
   {
-    $this->component->setParameter('test', 'test parameter');
-    $this->assertEqual($this->component->getParameter('test'), 'test parameter');
-  }
+    $this->component->setParameter('bar', 'test parameter');
+    $this->datasource->expectOnce('setBar', array('test parameter'));
 
-  function testGetNonexistentParameter()
-  {
-    $this->assertNull($this->component->getParameter('test'));
+    //we can't check it...
+    //$this->component->setParameter('foo', 'test parameter');
+    //$this->datasource->expectNever('setFoo');
   }
 
   function testSetOrderParameter1()
   {
     $this->component->setParameter('order', '');
-    $this->assertNull($this->component->getParameter('order'));
+    $this->datasource->expectNever('setOrder');
   }
 
   function testSetOrderParameter2()
   {
     $this->component->setParameter('order', 'c1 =AsC, c2 = DeSC , c3=Junky');
-    $this->assertEqual($this->component->getParameter('order'),
-                       array('c1' => 'ASC', 'c2' => 'DESC', 'c3' => 'ASC'));
+    $this->datasource->expectOnce('setOrder',
+                                  array(array('c1' => 'ASC', 'c2' => 'DESC', 'c3' => 'ASC')));
   }
 
   function testSetOrderParameter3()
   {
     $this->component->setParameter('order', 'c1, c2 = Rand() ');//!!!mysql only
-    $this->assertEqual($this->component->getParameter('order'),
-                       array('c1' => 'ASC', 'c2' => 'RAND()'));
+    $this->datasource->expectOnce('setOrder',
+                                  array(array('c1' => 'ASC', 'c2' => 'RAND()')));
   }
 
   function testLimitParameter1()
   {
     $this->component->setParameter('limit', '10');
-    $this->assertEqual($this->component->getParameter('limit'), 10);
-    $this->assertNull($this->component->getParameter('offset'));
+    $this->datasource->expectOnce('setLimit', array(10));
+    $this->datasource->expectNever('setOffset');
   }
 
   function testLimitParameter2()
   {
     $this->component->setParameter('limit', '10, 20');
-    $this->assertEqual($this->component->getParameter('limit'), 10);
-    $this->assertEqual($this->component->getParameter('offset'), 20);
+    $this->datasource->expectOnce('setLimit', array(10));
+    $this->datasource->expectOnce('setOffset', array(20));
   }
 
-  function testLimitParameter3()
+  function testLimitParameterError()
   {
     $this->component->setParameter('limit', ',20');
-    $this->assertNull($this->component->getParameter('limit'));
-    $this->assertNull($this->component->getParameter('offset'));
+    $this->datasource->expectNever('setLimit');
+    $this->datasource->expectNever('setOffset');
   }
 
   function testSetupNavigatorNoNavigator()
@@ -136,8 +139,8 @@ class LimbDatasourceComponentTest extends LimbTestCase
 
     $this->component->setupNavigator($pager_id);
 
-    $this->assertNull($this->component->getParameter('limit'));
-    $this->assertNull($this->component->getParameter('offset'));
+    $this->datasource->expectNever('setLimit');
+    $this->datasource->expectNever('setOffset');
   }
 
   function testSetupNavigatorWithParamsInRequest()
@@ -159,32 +162,14 @@ class LimbDatasourceComponentTest extends LimbTestCase
     $this->datasource->expectOnce('countTotal');
     $this->datasource->setReturnValue('countTotal', $count = 13);
     $pager->expectOnce('setTotalItems', array($count));
+    $pager->expectOnce('reset');
 
     $this->component->setupNavigator($pager_id);
 
-    $this->assertEqual($this->component->getParameter('limit'), $limit);
-    $this->assertEqual($this->component->getParameter('offset'), $offset);
+    $this->datasource->expectOnce('setLimit', array($limit));
+    $this->datasource->expectOnce('setOffset', array($offset));
 
     $pager->tally();
-  }
-
-  function testGetDataset()
-  {
-    $this->component->setParameter('limit', '10, 2');
-    $this->component->setParameter('order', 'col1=ASC');
-    $this->component->setParameter('junky', 'trash');
-
-    $this->component->setClassPath('test-datasource');
-    $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
-    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
-
-    $this->datasource->expectOnce('setLimit', array(10));
-    $this->datasource->expectOnce('setOffset', array(2));
-    $this->datasource->expectOnce('setOrder', array(array('col1' => 'ASC')));
-
-    $this->datasource->expectOnce('fetch');
-    $this->datasource->setReturnValue('fetch', $result = 'whatever');
-    $this->assertEqual($result, $this->component->getDataset());
   }
 
   function testSetupTargets()

@@ -17,7 +17,6 @@ class LimbDatasourceComponent extends Component
   var $datasource;
   var $targets;
   var $navigator_id;
-  var $parameters = array();
 
   function setClassPath($class_path)
   {
@@ -32,13 +31,6 @@ class LimbDatasourceComponent extends Component
     $toolkit =& Limb :: toolkit();
     $this->datasource =& $toolkit->getDatasource($this->class_path);
 
-    foreach($this->parameters as $key => $value)
-    {
-      $method = 'set' . ucfirst($key);
-
-      if(method_exists($this->datasource, $method))
-        $this->datasource->$method($value);
-    }
     return $this->datasource;
   }
 
@@ -53,7 +45,6 @@ class LimbDatasourceComponent extends Component
       $pieces = explode(',', $targets);
       foreach($pieces as $piece)
         $this->targets[] = trim($piece);
-
     }
   }
 
@@ -70,13 +61,7 @@ class LimbDatasourceComponent extends Component
     elseif($name == 'limit')
       $this->_setLimitParameters($value);
     else
-      $this->parameters[$name] = $value;
-  }
-
-  function getParameter($name)
-  {
-    if(isset($this->parameters[$name]))
-      return $this->parameters[$name];
+      $this->_setDatasourceParameter($name, $value);
   }
 
   function _setLimitParameters($limit_string)
@@ -86,10 +71,10 @@ class LimbDatasourceComponent extends Component
     if(empty($arr[0]))
       return;
 
-    $this->parameters['limit'] = (int)$arr[0];
+    $this->_setDatasourceParameter('limit', (int)$arr[0]);
 
     if(!empty($arr[1]))
-      $this->parameters['offset'] = (int)$arr[1];
+      $this->_setDatasourceParameter('offset', (int)$arr[1]);
   }
 
   function _setOrderParameters($order_string)
@@ -119,7 +104,7 @@ class LimbDatasourceComponent extends Component
     }
 
     if($order_pairs)
-      $this->parameters['order'] = $order_pairs;
+      $this->_setDatasourceParameter('order', $order_pairs);
   }
 
   function setupNavigator($navigator_id)
@@ -129,11 +114,22 @@ class LimbDatasourceComponent extends Component
     if(!$navigator =& $this->_getNavigatorComponent())
       return null;
 
-    $this->setParameter('limit', $navigator->getItemsPerPage());
-    $this->setParameter('offset', $navigator->getDisplayedPageBeginItem());
-
     $ds =& $this->_getDatasource();
     $navigator->setTotalItems($ds->countTotal());
+    $navigator->reset();//???
+
+    $this->_setDatasourceParameter('limit', $navigator->getItemsPerPage());
+    $this->_setDatasourceParameter('offset', $navigator->getDisplayedPageBeginItem());
+  }
+
+  function _setDatasourceParameter($parameter, $value)
+  {
+    $ds =& $this->_getDatasource();
+
+    $method = 'set' . ucfirst($parameter);
+
+    if(method_exists($ds, $method))
+      $ds->$method($value);
   }
 
   function setupTargets($targets)

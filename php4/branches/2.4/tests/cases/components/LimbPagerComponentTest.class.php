@@ -37,17 +37,17 @@ class LimbPagerComponentTest extends LimbTestCase
   {
   }
 
-  function testPrepare()
+  function testReset()
   {
     $this->component->id = $id = 'navigator';
 
     $this->request->set($this->component->getPagerId(), 2);
 
-    $this->component->setTotalItems(100);
     $this->component->setItemsPerPage(10);
     $this->component->setPagesPerSection(5);
+    $this->component->setTotalItems(100);
 
-    $this->component->prepare();
+    $this->component->reset();
 
     $this->assertEqual($this->component->getDisplayedPage(), 2);
     $this->assertFalse($this->component->isDisplayedPage());
@@ -63,17 +63,17 @@ class LimbPagerComponentTest extends LimbTestCase
     $this->assertEqual($this->component->getDisplayedPageEndItem(), 20);
   }
 
-  function testPrepareNoItemsSet()
+  function testResetTotalItemsZero()
   {
     $this->component->id = $id = 'navigator';
 
     $this->request->set($this->component->getPagerId(), 2);
 
-    $this->component->setTotalItems(0);
     $this->component->setItemsPerPage(10);
     $this->component->setPagesPerSection(5);
+    $this->component->setTotalItems(0);
 
-    $this->component->prepare();
+    $this->component->reset();
 
     $this->assertEqual($this->component->getDisplayedPage(), 1);
     $this->assertEqual($this->component->getPage(), 1);
@@ -98,7 +98,7 @@ class LimbPagerComponentTest extends LimbTestCase
     $this->component->setItemsPerPage(10);
     $this->component->setPagesPerSection(5);
 
-    $this->component->prepare();
+    $this->component->reset();
 
     $this->assertEqual($this->component->getPage(), 1);
 
@@ -117,7 +117,7 @@ class LimbPagerComponentTest extends LimbTestCase
     $this->component->setTotalItems(40);
     $this->component->setItemsPerPage(10);
 
-    $this->component->prepare();
+    $this->component->reset();
 
     $this->assertTrue($this->component->nextPage());
     $this->assertTrue($this->component->isValid());
@@ -142,7 +142,7 @@ class LimbPagerComponentTest extends LimbTestCase
     $this->component->setItemsPerPage(3);
     $this->component->setPagesPerSection(10);
 
-    $this->component->prepare();
+    $this->component->reset();
 
     $this->component->nextPage();
 
@@ -161,7 +161,7 @@ class LimbPagerComponentTest extends LimbTestCase
     $this->component->setItemsPerPage(10);// 4 pages total
     $this->component->setPagesPerSection(10);
 
-    $this->component->prepare();
+    $this->component->reset();
 
     $this->component->nextPage();
 
@@ -180,7 +180,7 @@ class LimbPagerComponentTest extends LimbTestCase
     $this->component->setItemsPerPage(5);
     $this->component->setPagesPerSection(2);
 
-    $this->component->prepare();
+    $this->component->reset();
 
     $this->assertTrue($this->component->nextSection());
     $this->assertTrue($this->component->nextSection());
@@ -203,7 +203,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->component->setPagerPrefix('p');
     $this->component->id = 'navi';
-    $this->component->prepare();
+    $this->component->reset();
 
     $uri = $this->component->getPageUri(1);
 
@@ -227,7 +227,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->component->setPagerPrefix('p');
     $this->component->id = 'navi';
-    $this->component->prepare();
+    $this->component->reset();
 
     $uri = $this->component->getPageUri(1);
 
@@ -251,7 +251,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->component->setPagerPrefix('p');
     $this->component->id = 'navi';
-    $this->component->prepare();
+    $this->component->reset();
 
     $uri = $this->component->getPageUri(2);
 
@@ -280,7 +280,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $request->setReturnValue('export', array('p_nav' => 3));
 
-    $this->component->prepare();
+    $this->component->reset();
 
     $this->component->nextPage();
 
@@ -313,7 +313,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $request->setReturnValue('export', array('p_nav' => 3));
 
-    $this->component->prepare();
+    $this->component->reset();
 
     for($i = 0; $i < 5; $i++)
       $this->component->nextPage();

@@ -19,13 +19,6 @@ class LimbPagerNavigatorTag extends ServerComponentTag
 
   var $mirror;
 
-  function preGenerate(&$code)
-  {
-    parent::preGenerate($code);
-
-    $code->writePhp($this->getComponentRefCode() . '->prepare();');
-  }
-
   function generateConstructor(&$code)
   {
     parent :: generateConstructor($code);
