@@ -40,7 +40,7 @@ class grid_button_tag extends button_tag
 
 	public function prepare()
 	{
-		$grid_tag =& $this->find_parent_by_class('grid_list_tag');
+		$grid_tag = $this->find_parent_by_class('grid_list_tag');
 		$grid_tag->set_form_required();
 		
 		$this->attributes['type'] = 'button';

@@ -45,9 +45,7 @@ class grid_button_component extends form_element
 		{
 			$action_path = $_SERVER['PHP_SELF'];
 			
-			$request = request :: instance();
-			
-			if($node_id = $request->get('node_id'))
+			if($node_id = request :: instance()->get('node_id'))
 				$action_path .= '?node_id=' . $node_id;
 		}
 		else

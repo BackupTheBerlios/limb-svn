@@ -113,7 +113,7 @@ abstract class site_object_controller
 		}
 		catch(LimbException $e)
 		{
-		  $this->_roll_back_transaction($request);
+		  $this->_rollback_transaction($request);
 		  throw $e;
 		}
 	}
