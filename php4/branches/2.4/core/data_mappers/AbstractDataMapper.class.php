@@ -23,14 +23,14 @@ class AbstractDataMapper
   function & findById($id)
   {
     $finder =& $this->_getFinder();
-    $result_set = $finder->findById($id);
+    $rs = $finder->findById($id);
 
-    if (!$result_set)
+    if (!$rs)
       return null;
 
     $domain_object =& $this->_createDomainObject();
 
-    $this->_doLoad($result_set, $domain_object);
+    $this->_doLoad($rs, $domain_object);
 
     return $domain_object;
   }

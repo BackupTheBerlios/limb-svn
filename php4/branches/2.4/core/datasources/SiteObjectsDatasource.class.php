@@ -116,14 +116,10 @@ class SiteObjectsDatasource //implements Datasource, Countable
       $params['conditions'][] = ' AND ' . sqlIn('sso.id', $object_ids);
 
     if ($this->restriction_class_name)
-    {
       $params['conditions'][] = ' AND sys_class.name = ' . $this->restriction_class_name;
-    }
 
     if ($this->behaviours)
-    {
       $params['conditions'][] = ' AND ' . sqlIn('sso.behaviour_id', $this->_getBehavioursIds());
-    }
 
     return $params;
   }

@@ -57,11 +57,6 @@ class ComplexSelectSQL
     $this->_group_by[] = $group;
   }
 
-  function addJoin($table, $connect_by)
-  {
-    $this->_join_constraints[$table] = $connect_by;
-  }
-
   function addLeftJoin($table, $connect_by)
   {
     $this->_left_join_constraints[$table] = $connect_by;
@@ -79,7 +74,7 @@ class ComplexSelectSQL
                      '%left_join%' => $this->_createLeftJoinClause(),
                      '%where%' => $this->_createWhereClause(),
                      '%order%' => $this->_createOrderClause(),
-                     '%group_by%' => $this->_createGroupClause());
+                     '%group%' => $this->_createGroupClause());
 
     return trim(strtr($this->_processed_sql, $replace));
   }
@@ -91,7 +86,7 @@ class ComplexSelectSQL
                      '%left_join%' => '',
                      '%where%' => '',
                      '%order%' => '',
-                     '%group_by%' => '');
+                     '%group%' => '');
 
     return strtr($this->_template_sql, $replace);
   }
@@ -141,8 +136,13 @@ class ComplexSelectSQL
 
     $where = '(' . implode(') AND (', $this->_constraints) . ')';
 
-    if($this->_whereClauseExists())
-      return $where;
+    if($this->_whereClauseExists($where_args))
+    {
+      if($where_args)
+        return 'AND ' . $where;
+      else
+        return $where;
+    }
     else
       return 'WHERE ' . $where;
   }
@@ -188,7 +188,7 @@ class ComplexSelectSQL
   function _orderByClauseExists(&$args)
   {
     //!!!make it better later
-    if(preg_match('~(?<=from).+order\s+by\s(.*)$~i', $this->_getNoTagsSQL(), $matches))
+    if(preg_match('~(?<=from).+order\s+by\s(.*)$~si', $this->_getNoTagsSQL(), $matches))
     {
       $args = trim($matches[1]);
       return true;
@@ -200,7 +200,7 @@ class ComplexSelectSQL
   function _groupByClauseExists(&$args)
   {
     //!!!make it better later
-    if(preg_match('~(?<=from).+group\s+by\s(.*)$~i', $this->_getNoTagsSQL(), $matches))
+    if(preg_match('~(?<=from).+group\s+by\s(.*)$~si', $this->_getNoTagsSQL(), $matches))
     {
       $args = trim($matches[1]);
       return true;
@@ -212,14 +212,23 @@ class ComplexSelectSQL
   function _selectFieldsExist()
   {
     //!!!make it better later
-    return preg_match('~^select\s+[a-zA-Z].*?from~i', $this->_getNoTagsSQL());
+    return preg_match('~^select\s+[a-zA-Z].*?from~si', $this->_getNoTagsSQL());
   }
 
-  function _whereClauseExists()
+  function _whereClauseExists(&$args)
   {
     //primitive check if WHERE was already in sql
     //!!!make it better later
-    return preg_match('~(?<=from).+where\s~i', $this->_getNoTagsSQL());
+    if(preg_match('~(?<=from).+where\s+(.*)~si', $this->_getNoTagsSQL(), $matches))
+    {
+      if(preg_match('~([a-zA-Z].*)(group|order)?$~si', $matches[1], $args_matches))
+        $args = $args_matches[1];
+      else
+        $args = '';
+
+      return true;
+    }
+    return false;
   }
 }
 ?>
