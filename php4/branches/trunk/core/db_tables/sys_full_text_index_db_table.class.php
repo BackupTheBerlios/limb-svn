@@ -18,7 +18,7 @@ class sys_full_text_index_db_table extends db_table
   		'id' => array('type' => 'numeric'),
       'attribute' => '',
       'body' => '',
-      'class_id' => array('type' => 'numeric'),
+      'controller_id' => array('type' => 'numeric'),
       'weight' => array('type' => 'numeric'),
       'object_id' => array('type' => 'numeric')
     );

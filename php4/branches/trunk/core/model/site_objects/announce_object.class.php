@@ -17,7 +17,6 @@ class announce_object extends period_object
 		return array(
 			'class_ordr' => 1,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'announce_object_controller',
 			'auto_identifier' => true
 		);
 	}

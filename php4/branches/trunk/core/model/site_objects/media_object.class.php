@@ -17,7 +17,6 @@ class media_object extends content_object
 		return array(
 		  'abstract_class' => true,
 		  'db_table_name' => 'empty',
-      'controller_class_name' => 'empty_controller' 		  
 		);
 	}
 		

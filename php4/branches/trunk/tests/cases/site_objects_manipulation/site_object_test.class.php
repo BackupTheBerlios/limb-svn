@@ -31,7 +31,6 @@ class site_object_test_version extends site_object
 			'ordr' => 1,
 			'can_be_parent' => 1,
 			'db_table_name' => 'site_object',
-			'controller_class_name' => 'controller_test'
 		);
 	}
 }
@@ -58,7 +57,7 @@ class site_object_test extends UnitTestCase
   	$this->_clean_up();
   	
   	$this->object = new mocked_site_object_test_version($this);
-  	
+ 	
   	$this->object->site_object();
   	
   	$user =& user :: instance();
@@ -81,6 +80,7 @@ class site_object_test extends UnitTestCase
   	$this->db->sql_delete('sys_site_object_tree');
   	$this->db->sql_delete('sys_object_version');
   	$this->db->sql_delete('sys_class');
+  	$this->db->sql_delete('sys_controller');
   }
 
   function test_attributes()
@@ -114,6 +114,7 @@ class site_object_test extends UnitTestCase
   
   function test_get_controller()
   {
+  	$this->object->set_attribute('controller_name', 'controller_test');
   	$ctrl =& $this->object->get_controller();
   	
   	$this->assertNotNull($ctrl);

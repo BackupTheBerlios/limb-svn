@@ -26,7 +26,6 @@ class poll_answer extends content_object
 		return array(
 			'class_ordr' => 2,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'poll_answer_controller',
 			'icon' => '/shared/images/folder.gif',
 			'auto_identifier' => true
 		);

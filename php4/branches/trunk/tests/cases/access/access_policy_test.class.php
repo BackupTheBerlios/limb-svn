@@ -43,18 +43,18 @@ class access_policy_test extends db_test
   	$this->objects_to_assign_actions = array(
   		1 => array(
   			'id' => 300,
-  			'class_id' => 10,
-  			'class_name' => 'site_object_access_test',
+  			'controller_id' => 10,
+  			'controller_name' => 'site_object_access_test',
   		),
   		2 => array(
   			'id' => 302,
-  			'class_id' => 10,
-  			'class_name' => 'site_object_access_test',
+  			'controller_id' => 10,
+  			'controller_name' => 'site_object_access_test',
   		),
   		3 => array(
   			'id' => 303,
-  			'class_id' => 10,
-  			'class_name' => 'site_object_access_test',
+  			'controller_id' => 10,
+  			'controller_name' => 'site_object_access_test',
   		)
   	);
 

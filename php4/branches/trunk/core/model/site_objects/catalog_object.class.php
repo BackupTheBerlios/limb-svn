@@ -18,7 +18,6 @@ class catalog_object extends content_object
 		return array(
 			'ordr' => 1,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'catalog_object_controller',
 		);
 	}
 

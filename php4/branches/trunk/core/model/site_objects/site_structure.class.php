@@ -17,7 +17,6 @@ class site_structure extends site_object
 		return array(
 			'class_ordr' => 1,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'site_structure_controller',
 		);
 	}
 	

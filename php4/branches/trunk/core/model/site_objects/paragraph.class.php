@@ -28,7 +28,6 @@ class paragraph extends content_object
 		return array(
 			'class_ordr' => 1,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'paragraph_controller',
 			'auto_identifier' => true
 		);
 	}

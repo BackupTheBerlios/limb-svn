@@ -2,12 +2,11 @@
 
 <h2><locale:STRING name='set_group_access_template'> </h2>
 
-<DATASOURCE target='class'>
-		<core:PARAMETER name='datasource_path' value='class_datasource' >
+<DATASOURCE target='controller'>
+		<core:PARAMETER name='datasource_path' value='controller_datasource' >
 </DATASOURCE>
 
-
-<grid:LIST id='class'>
+<grid:LIST id='controller'>
 <grid:ITERATOR>
 <h2>{$class_name}</h2>
 </grid:ITERATOR>
@@ -15,11 +14,11 @@
 <br>
 
 <form method="post" name="set_group_access_template" id="set_group_access_template">
-<request_state name="class_id" id="class_id">
+<request_state name="controller_id" id="controller_id">
 
 
 <DATASOURCE target='actions'>
-		<core:PARAMETER name='datasource_path' value='class_template_actions_list_datasource' >
+		<core:PARAMETER name='datasource_path' value='controller_template_actions_list_datasource' >
 </DATASOURCE>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="5">
@@ -32,11 +31,11 @@
 </grid:LIST>
 </tr>
 
-<DATASOURCE target='classes'>
-		<core:PARAMETER name='datasource_path' value='class_group_access_template_datasource' >
+<DATASOURCE target='controllers'>
+		<core:PARAMETER name='datasource_path' value='controller_group_access_template_datasource' >
 </DATASOURCE>
 
-<grid:LIST id='classes'>
+<grid:LIST id='controllers'>
 <grid:ITERATOR>
 <tr>
 <td>{$group_name}</td>

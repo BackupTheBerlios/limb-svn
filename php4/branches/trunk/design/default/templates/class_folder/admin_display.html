@@ -3,7 +3,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <th>
-<locale:STRING name='class_name'>
+<locale:STRING name='controller_name'>
 </th>
 <th>
 <locale:STRING name='actions'>
@@ -11,14 +11,14 @@
 </tr>
 
 
-<DATASOURCE target='classes'>
-	<core:PARAMETER name='datasource_path' value='class_list_datasource'>
+<DATASOURCE target='controllers'>
+	<core:PARAMETER name='datasource_path' value='controller_list_datasource'>
 </DATASOURCE>
 
-<grid:LIST id='classes'>
+<grid:LIST id='controllers'>
 <grid:ITERATOR>
 <tr class=jip>
-<td jip='object' class=jip-object><small>{$class_name}</small></td>
+<td jip='object' class=jip-object><small>{$name}</small></td>
 <td><core:INCLUDE file="/jip_actions/extended.html"></td>
 </tr>
 </grid:ITERATOR>

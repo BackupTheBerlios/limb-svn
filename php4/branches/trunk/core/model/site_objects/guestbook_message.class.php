@@ -17,7 +17,6 @@ class guestbook_message extends content_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'guestbook_message_controller',
 		);
 	}
 }

@@ -17,7 +17,6 @@ class main_page extends content_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'main_page_controller',
 			'icon' => '/shared/images/folder.gif',
 			'db_table_name' => 'document'
 		);

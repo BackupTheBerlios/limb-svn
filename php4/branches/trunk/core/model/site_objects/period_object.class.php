@@ -19,7 +19,6 @@ class period_object extends content_object
 					array(
 					  'abstract_class' => true, 
 					  'db_table_name' => 'empty',
-					  'controller_class_name' => 'empty_controller' 
 					)
 		);
 	}

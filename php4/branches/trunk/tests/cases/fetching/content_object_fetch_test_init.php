@@ -40,7 +40,6 @@ class news_object_fetch_test extends content_object
 			'ordr' => 1,
 			'can_be_parent' => 1,
 			'db_table_name' => 'news_object_fetch_test',
-			'controller_class_name' => 'controller_test'
 		);
 	}
 }

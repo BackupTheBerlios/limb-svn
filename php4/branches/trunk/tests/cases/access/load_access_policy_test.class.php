@@ -80,7 +80,7 @@ class load_access_policy_test extends db_test
 
 	function test_load_user_action_access()
 	{
-		$user_actions_access = $this->ac->get_user_action_access_by_class(10);
+		$user_actions_access = $this->ac->get_user_action_access_by_controller(10);
 		
 		$this->assertEqual($user_actions_access, 
 			array(
@@ -88,7 +88,7 @@ class load_access_policy_test extends db_test
 			)	
 		);
 
-		$user_actions_access = $this->ac->get_user_action_access_by_class(12);
+		$user_actions_access = $this->ac->get_user_action_access_by_controller(12);
 
 		$this->assertEqual($user_actions_access, 
 			array(
@@ -99,7 +99,7 @@ class load_access_policy_test extends db_test
 
 	function test_load_group_action_access()
 	{
-		$group_actions_access = $this->ac->get_group_action_access_by_class(10);
+		$group_actions_access = $this->ac->get_group_action_access_by_controller(10);
 		
 		$this->assertEqual($group_actions_access, 
 			array(
@@ -108,7 +108,7 @@ class load_access_policy_test extends db_test
 			)
 		);
 
-		$group_actions_access = $this->ac->get_group_action_access_by_class(12);
+		$group_actions_access = $this->ac->get_group_action_access_by_controller(12);
 
 		$this->assertEqual($group_actions_access, 
 			array(

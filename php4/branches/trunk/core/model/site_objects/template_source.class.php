@@ -17,7 +17,6 @@ class template_source extends site_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'template_source_controller',
 		);
 	}
 }

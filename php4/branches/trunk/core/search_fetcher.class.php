@@ -35,7 +35,7 @@ class search_fetcher extends fetcher
 		{
 			if(trim($class_name))
 			{
-				$site_object =& site_object_factory :: instance(trim($class_name));
+				$site_object =& site_object_factory :: create(trim($class_name));
 				$classes_ids[] = $site_object->get_class_id();
 			}
 		}
@@ -54,7 +54,7 @@ class search_fetcher extends fetcher
     	return array();
     }	
 
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$site_object =& site_object_factory :: create($loader_class_name);
 
 		$restricted_classes = array();
 		$allowed_classes = array();
@@ -109,7 +109,7 @@ class search_fetcher extends fetcher
 	function & search_fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
 	{
 		$tree =& tree :: instance();
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$site_object =& site_object_factory :: create($loader_class_name);
 
 		if (!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
@@ -162,7 +162,7 @@ class search_fetcher extends fetcher
 		$counter = 0;
 		$count_method = $fetch_method . '_count';
 		
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$site_object =& site_object_factory :: create($loader_class_name);
 		$counter = $site_object->$count_method(array_keys($search_result), $params);
 		$fetched_objects =& $site_object->$fetch_method(array_keys($search_result),$params);
 

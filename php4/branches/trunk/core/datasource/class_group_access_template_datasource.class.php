@@ -16,18 +16,16 @@ class class_group_access_template_datasource extends datasource
 	{
 	  $request = request :: instance();
 	  
-		if(!$class_id = $request->get_attribute('class_id'))
+		if(!$controller_id = $request->get_attribute('controller_id'))
 			return new array_dataset();
 		
-		$db_table =& db_table_factory :: instance('sys_class');
-		$class_data = $db_table->get_row_by_id($class_id);
+		$db_table =& db_table_factory :: instance('sys_controller');
+		$controller_data = $db_table->get_row_by_id($controller_id);
 		
-		if (!$class_data)
+		if (!$controller_data)
 			return new array_dataset();
 
-		$c =& site_object_factory :: instance($class_data['class_name']);	
-		
-		$site_object_controller =& $c->get_controller();			
+		$site_object_controller =& site_object_controller :: create($controller_data['name']);			
 		
 		$actions = $site_object_controller->get_actions_definitions();
 		

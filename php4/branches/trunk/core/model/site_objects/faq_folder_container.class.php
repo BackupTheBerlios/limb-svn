@@ -17,7 +17,6 @@ class faq_folder_container extends site_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'faq_folder_container_controller',
 			'icon' => '/shared/images/folder.gif'
 		);
 	}

@@ -27,7 +27,6 @@ class ad_block_object extends content_object
 		return  array(
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'ad_block_object_controller',
 			'auto_identifier' => true
 		);
 	}

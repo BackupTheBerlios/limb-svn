@@ -26,7 +26,7 @@ class access_templates_test extends db_test
 	
 	function test_load_user_access_templates()
 	{
-		$template = $this->ac->get_user_action_access_templates($class_id = 11);
+		$template = $this->ac->get_user_action_access_templates($controller_id = 11);
 		
 		$this->assertEqual(sizeof($template), 2);
 		
@@ -46,7 +46,7 @@ class access_templates_test extends db_test
 
 	function test_load_group_access_templates()
 	{
-		$template = $this->ac->get_group_action_access_templates($class_id = 10);
+		$template = $this->ac->get_group_action_access_templates($controller_id = 10);
 		
 		$this->assertEqual(sizeof($template), 1);
 		
@@ -59,7 +59,7 @@ class access_templates_test extends db_test
 			)	
 		);
 
-		$template = $this->ac->get_group_action_access_templates($class_id = 11);
+		$template = $this->ac->get_group_action_access_templates($controller_id = 11);
 		
 		$this->assertEqual(sizeof($template), 1);
 		
@@ -98,7 +98,7 @@ class access_templates_test extends db_test
 		    )
    	);
 	
-		$this->ac->save_user_action_access_template($class_id = 11, $template);
+		$this->ac->save_user_action_access_template($controller_id = 11, $template);
 		
 		$db_table	=& db_table_factory :: instance('sys_user_object_access_template');
 		$templates_rows = $db_table->get_list('', 'id', null);
@@ -114,9 +114,9 @@ class access_templates_test extends db_test
 	
 		$this->assertEqual($templates_rows, 
 			array(
-				array('id' => $templates_rows[0]['id'], 'class_id' => 12, 'action_name' => 'create'),
-				array('id' => $templates_rows[1]['id'], 'class_id' => 11, 'action_name' => 'create'),
-				array('id' => $templates_rows[2]['id'], 'class_id' => 11, 'action_name' => 'publish'),
+				array('id' => $templates_rows[0]['id'], 'controller_id' => 12, 'action_name' => 'create'),
+				array('id' => $templates_rows[1]['id'], 'controller_id' => 11, 'action_name' => 'create'),
+				array('id' => $templates_rows[2]['id'], 'controller_id' => 11, 'action_name' => 'publish'),
 			)
 		);
 		

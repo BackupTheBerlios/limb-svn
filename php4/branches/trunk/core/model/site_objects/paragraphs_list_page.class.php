@@ -17,7 +17,6 @@ class paragraphs_list_page extends site_object
 		return  array(
 			'class_ordr' => 0,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'paragraphs_list_page_controller',
 			'icon' => '/shared/images/folder.gif'
 		);
 	}

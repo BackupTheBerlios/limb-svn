@@ -28,7 +28,6 @@ class period_news_object extends period_object
 		return array(
 			'class_ordr' => 2,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'period_news_object_controller',
 			'auto_identifier' => true			
 		);
 	}

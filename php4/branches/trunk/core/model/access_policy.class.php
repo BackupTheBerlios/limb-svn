@@ -20,7 +20,7 @@ class access_policy
 {
 	var $_action_access = array();
 
-  var $_cached_type_accessible_actions = array();
+  var $_cached_controller_accessible_actions = array();
   
 	function access_policy()
 	{
@@ -32,7 +32,7 @@ class access_policy
 		return $obj;
 	}
 	
-	function get_accessible_objects($object_ids, $permissions = 'r', $class_id = null)
+	function get_accessible_objects($object_ids, $permissions = 'r')
 	{
 		if (!count($object_ids))
 			return array();
@@ -51,9 +51,6 @@ class access_policy
 			WHERE soa.object_id IN ({$in_ids})
 			AND sso.id = soa.object_id ";
 			
-		if ($class_id)
-			$sql .=" AND sso.class_id = {$class_id}";
-
 		$sql	.= " AND soa.accessor_id IN ({$accessor_ids})";
 		
 		if ($permissions == 'r')
@@ -148,11 +145,11 @@ class access_policy
 	}
 	
 
-	function & _get_action_access_by_class($class_id, $accessor_type)
+	function & _get_action_access_by_controller($controller_id, $accessor_type)
 	{
 		$db_table =& db_table_factory :: instance('sys_action_access');
 		
-		$condition = 'class_id ='. $class_id . ' AND accessor_type=' . $accessor_type;
+		$condition = 'controller_id ='. $controller_id . ' AND accessor_type=' . $accessor_type;
 		
 		$arr =& $db_table->get_list($condition);
 	
@@ -161,15 +158,15 @@ class access_policy
 		return $result;
 	}
 
-	function & get_user_action_access_by_class($class_id)
+	function & get_user_action_access_by_controller($controller_id)
 	{
-		$result =& $this->_get_action_access_by_class($class_id, ACCESSOR_TYPE_USER);
+		$result =& $this->_get_action_access_by_controller($controller_id, ACCESSOR_TYPE_USER);
 		return $result;
 	}
 	
-	function & get_group_action_access_by_class($class_id)
+	function & get_group_action_access_by_controller($controller_id)
 	{
-		$result =& $this->_get_action_access_by_class($class_id, ACCESSOR_TYPE_GROUP);
+		$result =& $this->_get_action_access_by_controller($controller_id, ACCESSOR_TYPE_GROUP);
 		return $result;
 	}
 
@@ -200,21 +197,21 @@ class access_policy
 		
 		foreach($arr as $key => $data)
 		{
-			$class_id = $data['class_id'];
+			$controller_id = $data['controller_id'];
 			
 			$arr[$key]['actions'] = array();
 						
-			if (!isset($actions_definitions[$class_id]))
+			if (!isset($actions_definitions[$controller_id]))
 			{
-				$site_object_controller =& $this->_get_controller($data['class_name']);
-				$actions_definitions[$class_id] = $site_object_controller->get_actions_definitions();
+				$site_object_controller =& $this->_get_controller($data['controller_name']);
+				$actions_definitions[$controller_id] = $site_object_controller->get_actions_definitions();
 			}	
 
-			if (!isset($permitted_type_actions[$class_id]))
-				$permitted_actions[$class_id] = $this->_get_type_accessible_actions($class_id);
+			if (!isset($permitted_type_actions[$controller_id]))
+				$permitted_actions[$controller_id] = $this->_get_controller_accessible_actions($controller_id);
 			
-			$permitted_type_actions =& $permitted_actions[$class_id];			
-			$all_actions =  $actions_definitions[$class_id];
+			$permitted_type_actions =& $permitted_actions[$controller_id];			
+			$all_actions =  $actions_definitions[$controller_id];
 
 			if (!isset($available_permissions[$data['id']]))
 				continue;
@@ -228,7 +225,7 @@ class access_policy
 			   	error('action permissions not set',
 		    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
 		    		array(
-		    			'site_object_controller' => $controller_class_name,
+		    			'site_object_controller' => $controller_controller_name,
 		    			'action' => $action_name,
 	    			)
 		    	);
@@ -246,11 +243,10 @@ class access_policy
 	}
 		
 	//for mocking
-	function &_get_controller($class_name)
+	function &_get_controller($controller_name)
 	{
-		$site_object =& site_object_factory :: instance($class_name);
-		$site_object_controller =& $site_object->get_controller();
-		return $site_object_controller;
+	  $controller =& site_object_controller :: create($controller_name);
+		return $controller;
 	}
 	
 	function & _load_objects_available_permissions($objects_ids)
@@ -273,10 +269,10 @@ class access_policy
   	return $result;
 	}
 	
-	function _get_type_accessible_actions($class_id)
+	function _get_controller_accessible_actions($controller_id)
 	{
-	  if(isset($this->_cached_type_accessible_actions[$class_id]))
-	    return $this->_cached_type_accessible_actions[$class_id];
+	  if(isset($this->_cached_controller_accessible_actions[$controller_id]))
+	    return $this->_cached_controller_accessible_actions[$controller_id];
 	    
 		$accessor_ids = $this->get_accessor_ids();
 		
@@ -285,14 +281,14 @@ class access_policy
 		$db =& db_factory :: instance();
 
 		$sql = "SELECT saa.action_name FROM sys_action_access as saa
-			WHERE saa.class_id = {$class_id} AND
+			WHERE saa.controller_id = {$controller_id} AND
 			saa.accessor_id IN ({$in_ids})
 			GROUP BY saa.action_name";
 		
     $db->sql_exec($sql);
     $result = $db->get_array('action_name');
 		
-		$this->_cached_type_accessible_actions[$class_id] = $result;
+		$this->_cached_controller_accessible_actions[$controller_id] = $result;
 		return $result;	
 	}
 	
@@ -311,20 +307,20 @@ class access_policy
 		return $accessor_ids;	
 	}
 	
-	function save_user_action_access($class_id, $policy_array)
+	function save_user_action_access($controller_id, $policy_array)
 	{
-		return $this->_save_action_access($class_id, $policy_array, ACCESSOR_TYPE_USER);
+		return $this->_save_action_access($controller_id, $policy_array, ACCESSOR_TYPE_USER);
 	}
 
-	function save_group_action_access($class_id, $policy_array)
+	function save_group_action_access($controller_id, $policy_array)
 	{
-		return $this->_save_action_access($class_id, $policy_array, ACCESSOR_TYPE_GROUP);
+		return $this->_save_action_access($controller_id, $policy_array, ACCESSOR_TYPE_GROUP);
 	}
 	
-	function _save_action_access($class_id, $policy_array, $accessor_type)
+	function _save_action_access($controller_id, $policy_array, $accessor_type)
 	{
 		$db_table	=& db_table_factory :: instance('sys_action_access');
-		$conditions['class_id'] = $class_id;
+		$conditions['controller_id'] = $controller_id;
 		$conditions['accessor_type'] = $accessor_type;
 
 		$db_table->delete($conditions);
@@ -338,7 +334,7 @@ class access_policy
 
 				$data = array();
 				$data['accessor_id'] = $accessor_id;
-				$data['class_id'] = $class_id;
+				$data['controller_id'] = $controller_id;
 				$data['action_name'] = $action_name;
 				$data['accessor_type'] = $accessor_type;
 
@@ -357,12 +353,12 @@ class access_policy
 			$action = $parent_controller->determine_action();
 		}
 
-		$class_id = $parent_object->get_class_id();
+		$controller_id = $parent_object->get_controller_id();
 		$object_id = $object->get_id();
 		$parent_object_id = $parent_object->get_id();
 
-		$group_template = $this->get_group_action_access_template($class_id, $action);
-		$user_template = $this->get_user_action_access_template($class_id, $action);
+		$group_template = $this->get_group_action_access_template($controller_id, $action);
+		$user_template = $this->get_user_action_access_template($controller_id, $action);
 		
 		if (!count($group_template))
 			$group_result = $this->copy_group_object_access($object_id, $parent_object_id);
@@ -388,17 +384,17 @@ class access_policy
 	
 	function save_object_access_for_action(&$object, $action)
 	{
-		$class_id = $object->get_class_id();
+		$controller_id = $object->get_controller_id();
 		$object_id = $object->get_id();
 		
-		$user_template = $this->get_user_action_access_template($class_id, $action);
-		$group_template = $this->get_group_action_access_template($class_id, $action);
+		$user_template = $this->get_user_action_access_template($controller_id, $action);
+		$group_template = $this->get_group_action_access_template($controller_id, $action);
 
 		if(!$user_template && !$group_template)
 		{
 			 debug ::	write_error('Access template is not set',
     		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
-    		array('action' => $action, 'class_name' => get_class($object))
+    		array('action' => $action, 'controller_name' => get_class($object))
     	);
 			return false;
 		}
@@ -500,16 +496,16 @@ class access_policy
 		return true;
 	}
 
-	function save_user_action_access_template($class_id, $template_array)
+	function save_user_action_access_template($controller_id, $template_array)
 	{
 		$db_table	=& db_table_factory :: instance('sys_user_object_access_template');
 		$item_db_table	=& db_table_factory :: instance('sys_user_object_access_template_item');
-		$db_table->delete('class_id='. $class_id);		
+		$db_table->delete('controller_id='. $controller_id);		
 
 		foreach($template_array as $action_name => $access_data)
 		{
 			$data = array();
-			$data['class_id'] = $class_id;
+			$data['controller_id'] = $controller_id;
 			$data['action_name'] = $action_name;
 			$db_table->insert($data);
 			$template_id = $db_table->get_last_insert_id();
@@ -540,16 +536,16 @@ class access_policy
 	}
 
 
-	function save_group_action_access_template($class_id, $template_array)
+	function save_group_action_access_template($controller_id, $template_array)
 	{
 		$db_table	=& db_table_factory :: instance('sys_group_object_access_template');
 		$item_db_table	=& db_table_factory :: instance('sys_group_object_access_template_item');
-		$db_table->delete('class_id='. $class_id);		
+		$db_table->delete('controller_id='. $controller_id);		
 
 		foreach($template_array as $action_name => $access_data)
 		{
 			$data = array();
-			$data['class_id'] = $class_id;
+			$data['controller_id'] = $controller_id;
 			$data['action_name'] = $action_name;
 			$db_table->insert($data);
 			$template_id = $db_table->get_last_insert_id();
@@ -579,13 +575,13 @@ class access_policy
 		return true;
 	}
 	
-	function get_user_action_access_templates($class_id)
+	function get_user_action_access_templates($controller_id)
 	{
 		$db =& db_factory :: instance();
 		
 		$sql = "SELECT * FROM sys_user_object_access_template as stoat, 
 			sys_user_object_access_template_item as stoati
-			WHERE stoat.class_id = {$class_id} AND
+			WHERE stoat.controller_id = {$controller_id} AND
 			stoati.template_id = stoat.id";
 		
     $db->sql_exec($sql);
@@ -604,13 +600,13 @@ class access_policy
 		return $result;
 	}
 
-	function get_group_action_access_templates($class_id)
+	function get_group_action_access_templates($controller_id)
 	{
 		$db =& db_factory :: instance();
 		
 		$sql = "SELECT * FROM sys_group_object_access_template as stoat, 
 			sys_group_object_access_template_item as stoati
-			WHERE stoat.class_id = {$class_id} AND
+			WHERE stoat.controller_id = {$controller_id} AND
 			stoati.template_id = stoat.id";
 		
     $db->sql_exec($sql);
@@ -629,9 +625,9 @@ class access_policy
 		return $result;
 	}
 
-	function get_user_action_access_template($class_id, $action_name)
+	function get_user_action_access_template($controller_id, $action_name)
 	{
-		$template = $this->get_user_action_access_templates($class_id);
+		$template = $this->get_user_action_access_templates($controller_id);
 		
 		if (isset($template[$action_name]))
 			return $template[$action_name];
@@ -639,9 +635,9 @@ class access_policy
 			return array();	
 	}
 
-	function get_group_action_access_template($class_id, $action_name)
+	function get_group_action_access_template($controller_id, $action_name)
 	{
-		$template = $this->get_group_action_access_templates($class_id);
+		$template = $this->get_group_action_access_templates($controller_id);
 		
 		if (isset($template[$action_name]))
 			return $template[$action_name];

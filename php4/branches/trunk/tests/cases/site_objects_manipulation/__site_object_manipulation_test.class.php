@@ -32,7 +32,6 @@ class site_object_manipulation_test_version extends site_object
 			'ordr' => 1,
 			'can_be_parent' => 1,
 			'db_table_name' => 'site_object',
-			'controller_class_name' => 'controller_test'
 		);
 	}
 }
@@ -52,7 +51,11 @@ class site_object_manipulation_test extends UnitTestCase
   	
   	$this->_clean_up();
   	
-  	$this->object = new site_object_manipulation_test_version();
+  	$this->_init_site_object();
+  	
+  	$this->object->set_attribute('controller_name', 'site_object_controller');
+  	$controller_id = site_object_controller :: get_id('site_object_controller');
+  	$this->object->set_attribute('controller_id', $controller_id);
   	
   	debug_mock :: init($this);
   	
@@ -81,6 +84,11 @@ class site_object_manipulation_test extends UnitTestCase
 		$this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => $class_id, 'current_version' => 1));
   }
   
+  function _init_site_object()
+  {
+    $this->object = new site_object_manipulation_test_version();
+  }
+  
   function tearDown()
   { 
   	$this->_clean_up();
@@ -96,6 +104,7 @@ class site_object_manipulation_test extends UnitTestCase
   	$this->db->sql_delete('sys_site_object');
   	$this->db->sql_delete('sys_site_object_tree');
   	$this->db->sql_delete('sys_class');
+  	$this->db->sql_delete('sys_controller');
   }
   
   function test_failed_create()

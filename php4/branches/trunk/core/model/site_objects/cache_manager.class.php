@@ -17,7 +17,6 @@ class cache_manager extends site_object
 		return array(
 			'class_ordr' => 1,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'cache_manager_controller',
 		);
 	}
 }

@@ -27,7 +27,6 @@ class user_object extends content_object
 			'class_ordr' => 1,
 			'db_table_name' => 'user',
 			'can_be_parent' => 0,
-			'controller_class_name' => 'user_controller',
 		);
 	}
 	

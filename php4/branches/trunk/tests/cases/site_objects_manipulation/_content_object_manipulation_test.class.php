@@ -21,7 +21,6 @@ class news_object_manipulation_test extends content_object
 			'ordr' => 1,
 			'can_be_parent' => 1,
 			'db_table_name' => 'test_news_object',
-			'controller_class_name' => 'controller_test'
 		);
 	}
 }
@@ -40,10 +39,8 @@ class test_news_object_db_table extends content_object_db_table
 
 class content_object_manipulation_test extends site_object_manipulation_test 
 { 		 	
-  function setUp()
+  function _init_site_object()
   {
-  	parent :: setUp();
-  	
   	$this->object = new news_object_manipulation_test();  	
   }
     

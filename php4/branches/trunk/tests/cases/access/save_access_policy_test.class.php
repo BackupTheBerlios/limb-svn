@@ -42,11 +42,11 @@ class save_access_policy_test extends db_test
   		),
    	);
 
-		$this->ac->save_user_action_access($class_id = 10, $policy);
+		$this->ac->save_user_action_access($controller_id = 10, $policy);
 		
 		$db_table	=  & db_table_factory :: instance('sys_action_access');
 
-		$conditions['class_id'] = $class_id;
+		$conditions['controller_id'] = $controller_id;
 		$conditions['accessor_type'] = ACCESSOR_TYPE_USER;
 
 		$rows = $db_table->get_list($conditions, 'id', null);
@@ -55,11 +55,11 @@ class save_access_policy_test extends db_test
 		
 		$this->assertEqual($rows, 
 			array(
-				array('id' => $rows[0]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'display', 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[1]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'create', 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[2]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'edit', 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[3]['id'], 'class_id' => 10, 'accessor_id' => 200, 'action_name' => 'delete', 'accessor_type' => ACCESSOR_TYPE_USER),
-				array('id' => $rows[4]['id'], 'class_id' => 10, 'accessor_id' => 210, 'action_name' => 'display', 'accessor_type' => ACCESSOR_TYPE_USER),
+				array('id' => $rows[0]['id'], 'controller_id' => 10, 'accessor_id' => 200, 'action_name' => 'display', 'accessor_type' => ACCESSOR_TYPE_USER),
+				array('id' => $rows[1]['id'], 'controller_id' => 10, 'accessor_id' => 200, 'action_name' => 'create', 'accessor_type' => ACCESSOR_TYPE_USER),
+				array('id' => $rows[2]['id'], 'controller_id' => 10, 'accessor_id' => 200, 'action_name' => 'edit', 'accessor_type' => ACCESSOR_TYPE_USER),
+				array('id' => $rows[3]['id'], 'controller_id' => 10, 'accessor_id' => 200, 'action_name' => 'delete', 'accessor_type' => ACCESSOR_TYPE_USER),
+				array('id' => $rows[4]['id'], 'controller_id' => 10, 'accessor_id' => 210, 'action_name' => 'display', 'accessor_type' => ACCESSOR_TYPE_USER),
 			)
 		);
   }    
@@ -81,11 +81,11 @@ class save_access_policy_test extends db_test
   		),
    	);
 
-		$this->ac->save_group_action_access($class_id = 10, $policy);
+		$this->ac->save_group_action_access($controller_id = 10, $policy);
 		
 		$db_table	=  & db_table_factory :: instance('sys_action_access');
 
-		$conditions['class_id'] = $class_id;
+		$conditions['controller_id'] = $controller_id;
 		$conditions['accessor_type'] = ACCESSOR_TYPE_GROUP;
 
 		$rows = $db_table->get_list($conditions, 'id', null);
@@ -94,12 +94,12 @@ class save_access_policy_test extends db_test
 		
 		$this->assertEqual($rows, 
 			array(
-				array('id' => $rows[0]['id'], 'class_id' => 10, 'action_name' => 'display', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[1]['id'], 'class_id' => 10, 'action_name' => 'create', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[2]['id'], 'class_id' => 10, 'action_name' => 'edit', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[3]['id'], 'class_id' => 10, 'action_name' => 'delete', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[4]['id'], 'class_id' => 10, 'action_name' => 'display', 'accessor_id' => 110, 'accessor_type' => ACCESSOR_TYPE_GROUP),
-				array('id' => $rows[5]['id'], 'class_id' => 10, 'action_name' => 'delete', 'accessor_id' => 110, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[0]['id'], 'controller_id' => 10, 'action_name' => 'display', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[1]['id'], 'controller_id' => 10, 'action_name' => 'create', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[2]['id'], 'controller_id' => 10, 'action_name' => 'edit', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[3]['id'], 'controller_id' => 10, 'action_name' => 'delete', 'accessor_id' => 100, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[4]['id'], 'controller_id' => 10, 'action_name' => 'display', 'accessor_id' => 110, 'accessor_type' => ACCESSOR_TYPE_GROUP),
+				array('id' => $rows[5]['id'], 'controller_id' => 10, 'action_name' => 'delete', 'accessor_id' => 110, 'accessor_type' => ACCESSOR_TYPE_GROUP),
 			)
 		);
   }    

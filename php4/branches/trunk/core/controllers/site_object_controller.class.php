@@ -73,6 +73,28 @@ class site_object_controller
 		
 		return $this->_current_action;
 	}
+
+  function get_id($controller_name)
+  {			
+		$db_table =& db_table_factory :: instance('sys_controller');	
+
+		$list = $db_table->get_list('name="'. $controller_name. '"');
+		
+		if (count($list) == 1)
+		{
+			return key($list);
+		}
+		elseif(count($list) > 1)
+		{
+		  error('there are more than 1 controller found', 
+			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 
+			  array('controller_name' => $controller_name));
+		}			
+		
+		$db_table->insert(array('name' => $controller_name));
+		
+		return $db_table->get_last_insert_id();
+  }
 	
 	function get_default_action()
 	{

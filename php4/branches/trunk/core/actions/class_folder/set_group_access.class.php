@@ -19,31 +19,31 @@ class set_group_access extends form_action
    
 	function _init_dataspace(&$request)
 	{
-		if (!$class_id = $request->get_attribute('class_id'))
+		if (!$controller_id = $request->get_attribute('controller_id'))
 		{
-			error('class_id not defined',
+			error('controller_id not defined',
 			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 		}
 
 		$access_policy =& access_policy :: instance();
 
-		$data['policy'] = $access_policy->get_group_action_access_by_class($class_id);
+		$data['policy'] = $access_policy->get_group_action_access_by_controller($controller_id);
 
 		$this->dataspace->import($data);
 	}
 	
 	function _valid_perform(&$request, &$response)
 	{
-		if (!$class_id = $request->get_attribute('class_id'))
+		if (!$controller_id = $request->get_attribute('controller_id'))
 		{
-			error('class_id not defined',
+			error('controller_id not defined',
 			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 		}
 		
 		$data = $this->dataspace->export();
 		$access_policy =& access_policy :: instance();
 
-		$access_policy->save_group_action_access($class_id, $data['policy']);
+		$access_policy->save_group_action_access($controller_id, $data['policy']);
 
 		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 

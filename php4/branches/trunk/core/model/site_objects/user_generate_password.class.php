@@ -17,7 +17,6 @@ class user_generate_password extends site_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'user_generate_password_controller',
 		);
 	}
 }

@@ -16,7 +16,7 @@ class sys_user_object_access_template_db_table extends db_table
   {
   	return array(
       'id' => array('type' => 'numeric'),
-      'class_id' => array('type' => 'numeric'),
+      'controller_id' => array('type' => 'numeric'),
       'action_name' => '',
     );
   }

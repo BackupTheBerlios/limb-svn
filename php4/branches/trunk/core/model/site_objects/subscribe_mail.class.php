@@ -18,7 +18,6 @@ class subscribe_mail extends content_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'subscribe_mail_controller',
 			'auto_identifier' => true,
 			'db_table_name' => 'subscribe_mail',
 		);

@@ -27,7 +27,6 @@ class feedback_object extends content_object
 		return array(
 			'ordr' => 1,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'feedback_object_controller',
 			'db_table_name' => 'message',
 		);
 	}

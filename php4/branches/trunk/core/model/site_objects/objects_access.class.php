@@ -17,7 +17,6 @@ class objects_access extends site_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'objects_access_controller',
 		);
 	}
 }

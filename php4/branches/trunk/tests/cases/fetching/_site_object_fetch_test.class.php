@@ -65,7 +65,7 @@ class site_object_fetch_test extends UnitTestCase
   {
   	for($i = 1; $i <= 20; $i++)
   		$ids_array[] = $i;
-  		
+  	
   	$params = array('restrict_by_class' => false);	
   	$result_ids = $this->object->fetch_ids($params);
   	

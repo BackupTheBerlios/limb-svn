@@ -33,7 +33,6 @@ class pictured_news_object extends content_object
 		return array(
 			'ordr' => 1,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'pictured_news_object_controller',
 			'auto_identifier' => true
 		);
 	}

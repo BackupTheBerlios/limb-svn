@@ -17,7 +17,6 @@ class links_manager_page extends site_object
 		return array(
 			'class_ordr' => 10,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'links_manager_page_controller',
 		);
 	}
 }

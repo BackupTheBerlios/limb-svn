@@ -17,7 +17,6 @@ class useful_links_folder extends site_object
 		return  array(
 			'class_ordr' => 0,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'useful_links_folder_controller',
 			'icon' => '/shared/images/folder.gif'
 		);
 	}

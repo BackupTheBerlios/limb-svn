@@ -31,6 +31,9 @@ class fetch_object_controller_test extends site_object_controller
 	}
 }
 
+class fetching_test_controller_test_version extends site_object_controller
+{
+}
 
 class fetching_object1_test_version extends site_object
 {		
@@ -39,7 +42,6 @@ class fetching_object1_test_version extends site_object
 		return array(
 			'db_table_name' => 'site_object',
 			'can_be_parent' => true,
-			'controller_class_name' => 'fetch_object_controller_test'
 		);
 	}
 }
@@ -78,11 +80,15 @@ class fetching_test extends db_test
   	
   	$this->_login_user($user_id, array(103 => 'visitors', 104 => 'admin'));
   	
+  	$controller_id = site_object_controller :: get_id('fetching_test_controller_test_version');
+  	
   	$obj1 = site_object_factory :: create('fetching_object1_test_version');
   	$obj2 = site_object_factory :: create('fetching_object2_test_version');
 
   	$obj1->set_identifier('root');
   	$obj1->set_title('Root');
+  	$obj1->set_attribute('controller_id', $controller_id);
+  	$obj2->set_attribute('controller_name', 'fetching_test_controller_test_version');
   	$obj1->create(true);
   	$access[$obj1->get_id()] = array($user_id => array('r' => 1, 'w' => 1));
   	$this->root_node_id = $obj1->get_node_id();
@@ -91,6 +97,8 @@ class fetching_test extends db_test
   	$obj1->set_parent_node_id($this->root_node_id);
   	$obj1->set_identifier('articles');
   	$obj1->set_title('Articles');  	
+  	$obj2->set_attribute('controller_name', 'fetching_test_controller_test_version');
+  	$obj1->set_attribute('controller_id', $controller_id);
   	$obj1->create();
   	$access[$obj1->get_id()] = array($user_id => array('r' => 1, 'w' => 1));
   	$this->_add_object($obj1);
@@ -100,6 +108,8 @@ class fetching_test extends db_test
   	$obj2->set_parent_node_id($obj1->get_node_id());
   	$obj2->set_identifier('article1');
   	$obj2->set_title('Article1');
+  	$obj2->set_attribute('controller_name', 'fetching_test_controller_test_version');
+  	$obj2->set_attribute('controller_id', $controller_id);
   	$obj2->create();
   	$access[$obj2->get_id()] = array($user_id => array('r' => 1, 'w' => 1));
   	$this->child_node_ids[] = $obj2->get_node_id();
@@ -110,6 +120,8 @@ class fetching_test extends db_test
   	$obj2->set_parent_node_id($obj1->get_node_id());
   	$obj2->set_identifier('article2');
   	$obj2->set_title('Article2');
+  	$obj2->set_attribute('controller_id', $controller_id);
+  	$obj2->set_attribute('controller_name', 'fetching_test_controller_test_version');
   	$obj2->create();
   	$access[$obj2->get_id()] = array($user_id => array('r' => 1, 'w' => 1));
   	$this->child_node_ids[] = $obj2->get_node_id();
@@ -118,6 +130,8 @@ class fetching_test extends db_test
   	$obj2->set_parent_node_id($obj1->get_node_id());
   	$obj2->set_identifier('article3');
   	$obj2->set_title('Article3');
+  	$obj2->set_attribute('controller_id', $controller_id);
+  	$obj2->set_attribute('controller_name', 'fetching_test_controller_test_version');
   	$obj2->create();
   	$access[$obj2->get_id()] = array($user_id => array('r' => 0, 'w' => 0));
   	$this->child_node_ids[] = $obj2->get_node_id();
@@ -151,6 +165,8 @@ class fetching_test extends db_test
  		$this->db->sql_delete('sys_site_object');
  		$this->db->sql_delete('sys_object_access');
  		$this->db->sql_delete('sys_action_access');
+ 		$this->db->sql_delete('sys_class');
+ 		$this->db->sql_delete('sys_controller');
  		
  		$this->fetcher->flush_cache();
   }

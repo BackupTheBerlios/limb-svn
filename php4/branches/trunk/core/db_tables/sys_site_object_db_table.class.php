@@ -17,6 +17,7 @@ class sys_site_object_db_table extends db_table
   	return array(
       'id' => array('type' => 'numeric'),
       'class_id' => array('type' => 'numeric'),
+      'controller_id' => array('type' => 'numeric'),
       'status' => array('type' => 'numeric'),
       'title' => '',
       'identifier' => '',

@@ -91,7 +91,7 @@ class fetcher
 		$counter = 0;
 		$count_method = $fetch_method . '_count';
 		
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$site_object =& site_object_factory :: create($loader_class_name);
 		$counter = $site_object->$count_method($params);
 		
 		$result =& $site_object->$fetch_method($params);
@@ -108,7 +108,7 @@ class fetcher
 	function & fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
 	{		
 		$tree =& tree :: instance();
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$site_object =& site_object_factory :: create($loader_class_name);
 		
 		if ($loader_class_name != 'site_object' &&
 				!isset($params['restrict_by_class']) ||
@@ -150,7 +150,7 @@ class fetcher
 		$counter = 0;
 		$count_method = $fetch_method . '_count';
 		
-		$site_object =& site_object_factory :: instance($loader_class_name);
+		$site_object =& site_object_factory :: create($loader_class_name);
 		
 		$counter = $site_object->$count_method($object_ids, $params);
 		
@@ -218,7 +218,7 @@ class fetcher
 		if (!$class_name = $this->_get_object_class_name_by_id($object_id))
 		  return false;
 
-		$site_object =& site_object_factory :: instance($class_name);
+		$site_object =& site_object_factory :: create($class_name);
 		
 		$result =& $site_object->fetch_by_ids(array($object_id));
 					
@@ -459,7 +459,7 @@ function & wrap_with_site_object($fetched_data)
 		
 	if(isset($fetched_data['class_name']))
 	{
-		$site_object =& site_object_factory :: instance($fetched_data['class_name']);
+		$site_object =& site_object_factory :: create($fetched_data['class_name']);
 		$site_object->import_attributes($fetched_data);
 		return $site_object;
 	}
@@ -467,7 +467,7 @@ function & wrap_with_site_object($fetched_data)
 	$site_objects = array();
 	foreach($fetched_data as $id => $data)
 	{
-		$site_object =& site_object_factory :: instance($data['class_name']);
+		$site_object =& site_object_factory :: create($data['class_name']);
 		$site_object->import_attributes($data);
 		$site_objects[$id] =& $site_object;
 	}

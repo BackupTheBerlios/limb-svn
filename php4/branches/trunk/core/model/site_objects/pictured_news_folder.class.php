@@ -22,7 +22,6 @@ class pictured_news_folder extends site_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'pictured_news_folder_controller',
 			'icon' => '/shared/images/folder.gif'
 		);
 	}

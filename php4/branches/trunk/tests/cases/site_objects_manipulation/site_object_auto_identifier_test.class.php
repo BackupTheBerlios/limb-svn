@@ -58,8 +58,11 @@ class site_object_auto_identifier_test extends UnitTestCase
 		$this->parent_node_id = $tree->create_root_node($values, false, true);
 		
 		$class_id = $this->object->get_class_id();
+		$controller_id = site_object_controller :: get_id('site_object_controller');
+		$this->object->set_attribute('controller_id', $controller_id);
+		
 		$this->db->sql_insert('sys_site_object', 
-			array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
+			array('id' => 1, 'class_id' => $class_id, 'current_version' => 1, 'controller_id' => $controller_id));
 
   	debug_mock :: init($this);
   }
@@ -76,6 +79,7 @@ class site_object_auto_identifier_test extends UnitTestCase
   	$this->db->sql_delete('sys_site_object');
   	$this->db->sql_delete('sys_site_object_tree');
   	$this->db->sql_delete('sys_class');
+  	$this->db->sql_delete('sys_controller');
   }
   	
   function test_create_first()
@@ -138,6 +142,32 @@ class site_object_auto_identifier_test extends UnitTestCase
   	$this->assertEqual($this->object->get_identifier(), 'test11');
   }
   
+  function test_create_complex3()
+  {
+	  $this->_create_node('1test15');
+	  $this->_create_node('2test17');
+	  $this->_create_node('3test18');
+	  $this->_create_node('4test19');
+
+  	$this->object->set_parent_node_id($this->parent_node_id);
+		
+  	$id = $this->object->create();
+  	
+  	$this->assertEqual($this->object->get_identifier(), '4test20');
+  }
+
+  function test_create_simple()
+  {
+	  $this->_create_node('118');
+	  $this->_create_node('119');
+
+  	$this->object->set_parent_node_id($this->parent_node_id);
+		
+  	$id = $this->object->create();
+  	
+  	$this->assertEqual($this->object->get_identifier(), '120');
+  }  
+  
   function _create_node($identifier)
   {
   	static $object_id = 1;
@@ -148,9 +178,12 @@ class site_object_auto_identifier_test extends UnitTestCase
 		$values['object_id'] = ++$object_id;
 		$tree->create_sub_node($this->parent_node_id, $values);
 
+		$controller_id = site_object_controller :: get_id('site_object_controller');
+		$this->object->set_attribute('controller_id', $controller_id);
+		
 		$class_id = $this->object->get_class_id();
 		$this->db->sql_insert('sys_site_object', 
-			array('id' => $object_id, 'class_id' => $class_id, 'current_version' => 1));
+			array('id' => $object_id, 'class_id' => $class_id, 'current_version' => 1, 'controller_id' => $controller_id));
   }
   	      	
 }

@@ -17,7 +17,6 @@ class control_panel extends site_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'control_panel_controller',
 		);
 	}
 }

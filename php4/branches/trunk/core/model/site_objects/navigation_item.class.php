@@ -27,7 +27,6 @@ class navigation_item extends content_object
 		return array(
 			'class_ordr' => 1,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'navigation_item_controller',
 		);
 	}
 }

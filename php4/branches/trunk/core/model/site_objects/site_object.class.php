@@ -70,7 +70,6 @@ class site_object extends object
 			'class_ordr' => 1,
 			'can_be_parent' => 1,
 			'icon' => '/shared/images/generic.gif',
-			'controller_class_name' => 'empty_controller'
 		);
 	}
 	
@@ -220,12 +219,14 @@ class site_object extends object
 								sys_class.class_name as class_name,
 								sys_class.icon as icon,
 								sys_class.class_ordr as class_ordr,
-								sys_class.can_be_parent as can_be_parent
+								sys_class.can_be_parent as can_be_parent,
+								sys_controller.name as controller_name
 								FROM
-								sys_site_object as sso, sys_class, 
+								sys_site_object as sso, sys_class, sys_controller,
 								sys_site_object_tree as ssot
 								%s
 								WHERE sys_class.id = sso.class_id
+								AND sys_controller.id = sso.controller_id
 								AND ssot.object_id = sso.id
 								%s %s",
 								$this->_add_sql($sql_params, 'columns'),
@@ -410,6 +411,13 @@ class site_object extends object
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 		  return false;
 		}
+
+		if (!$controller_id = $this->get_attribute('controller_id'))
+		{
+		  debug :: write_error('controller id is empty', 
+			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+		  return false;
+		}
 		
 		if(!$this->is_auto_identifier())
 		{
@@ -487,7 +495,7 @@ class site_object extends object
 		if($identifier === false)
 			return false;
 			
-		if(preg_match('/^(.*)(\d+)$/', $identifier, $matches))
+		if(preg_match('/(.*?)(\d+)$/', $identifier, $matches))
 			$new_identifier = $matches[1] . ($matches[2] + 1);
 		else
 			$new_identifier = $identifier . '1';
@@ -519,7 +527,7 @@ class site_object extends object
 		if (!is_array($row) || !count($row))
 			return false;
 		
-		$parent_object = site_object_factory :: instance($row['class_name']);
+		$parent_object = site_object_factory :: create($row['class_name']);
 		
 		return $parent_object->can_be_parent();
 	}
@@ -604,7 +612,7 @@ class site_object extends object
 		
 		return $this->_class_id;
 	}
-			
+	
 	function get_class_properties()
 	{
 		return $this->_class_properties;
@@ -630,6 +638,7 @@ class site_object extends object
 		$data['current_version'] = $this->get_version();
 		$data['creator_id'] = $user->get_id();
 		$data['status'] = $this->get_attribute('status', 0);
+		$data['controller_id'] = $this->get_attribute('controller_id');
 
 		$created_date = $this->get_attribute('created_date', 0);
 		$modified_date = $this->get_attribute('modified_date', 0);
@@ -806,14 +815,28 @@ class site_object extends object
 	{
 		return true;
 	}
+	
+	function get_controller_name()
+	{
+	  return $this->get_attribute('controller_name');
+	}
 		
 	function & get_controller()
 	{
 	  if ($this->_controller)
 	    return $this->_controller;
-	   
-		$this->_controller =& site_object_controller :: create($this->_class_properties['controller_class_name']);
+	 
+	  $controller_name = $this->get_controller_name();
+		$this->_controller =& site_object_controller :: create($controller_name);
 		return $this->_controller;
+	}
+	
+	function get_controller_id()
+	{
+	  if($controller_name = $this->get_controller_name())
+	    return site_object_controller :: get_id($controller_name);
+	  else
+	    return null;  
 	}
 	
 	function save_metadata()

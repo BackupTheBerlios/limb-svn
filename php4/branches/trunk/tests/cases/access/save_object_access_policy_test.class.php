@@ -37,7 +37,7 @@ class save_object_access_policy_test extends db_test
 		
 		$this->object->expectOnce('get_id');
 		$this->parent_object->expectOnce('get_id');
-		$this->parent_object->expectOnce('get_class_id');
+		$this->parent_object->expectOnce('get_controller_id');
 		$this->parent_object->expectOnce('get_controller');
 		$this->parent_object->setReturnReference('get_controller', $this->parent_object_controller);
   }
@@ -55,7 +55,7 @@ class save_object_access_policy_test extends db_test
   {
   	$this->object->setReturnValue('get_id', -1);
   	$this->parent_object->setReturnValue('get_id', -2);
-  	$this->parent_object->setReturnValue('get_class_id', -2);
+  	$this->parent_object->setReturnValue('get_controller_id', -2);
   	$this->parent_object_controller->setReturnValue('determine_action', 'display');
   	
   	debug_mock :: expect_write_error('parent object has no acccess records at all', 
@@ -71,7 +71,7 @@ class save_object_access_policy_test extends db_test
   {
   	$this->object->setReturnValue('get_id', -1);
   	$this->parent_object->setReturnValue('get_id', -2);
-  	$this->parent_object->setReturnValue('get_class_id', 10);
+  	$this->parent_object->setReturnValue('get_controller_id', 10);
   	$this->parent_object_controller->setReturnValue('determine_action', 'display');
   	
   	debug_mock :: expect_write_error('parent object has no acccess records at all', 
@@ -87,7 +87,7 @@ class save_object_access_policy_test extends db_test
   {
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', -2);
-  	$this->parent_object->setReturnValue('get_class_id', 10);
+  	$this->parent_object->setReturnValue('get_controller_id', 10);
   	$this->parent_object_controller->setReturnValue('determine_action', 'create');
   	
   	$this->assertTrue($this->ac->save_object_access($this->object, $this->parent_object));
@@ -109,7 +109,7 @@ class save_object_access_policy_test extends db_test
   {
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', -2);
-  	$this->parent_object->setReturnValue('get_class_id', 11);
+  	$this->parent_object->setReturnValue('get_controller_id', 11);
   	$this->parent_object_controller->setReturnValue('determine_action', 'publish');
   	$this->assertTrue($this->ac->save_object_access($this->object, $this->parent_object));
 
@@ -130,7 +130,7 @@ class save_object_access_policy_test extends db_test
   {
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', -2);
-  	$this->parent_object->setReturnValue('get_class_id', 11);
+  	$this->parent_object->setReturnValue('get_controller_id', 11);
   	$this->parent_object_controller->setReturnValue('determine_action', 'create');
   	
   	$this->assertTrue($this->ac->save_object_access($this->object, $this->parent_object));
@@ -158,7 +158,7 @@ class save_object_access_policy_test extends db_test
   {
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', -2);
-  	$this->parent_object->setReturnValue('get_class_id', 11);
+  	$this->parent_object->setReturnValue('get_controller_id', 11);
   	
 		$this->parent_object->expectCallCount('get_controller', 0);
   	
@@ -187,7 +187,7 @@ class save_object_access_policy_test extends db_test
   {
   	$this->object->setReturnValue('get_id', 305);
   	$this->parent_object->setReturnValue('get_id', 300);
-  	$this->parent_object->setReturnValue('get_class_id', -1);
+  	$this->parent_object->setReturnValue('get_controller_id', -1);
   	$this->parent_object_controller->setReturnValue('determine_action', 'no_such_action');
   	
   	$this->assertTrue($this->ac->save_object_access($this->object, $this->parent_object));
@@ -214,10 +214,10 @@ class save_object_access_policy_test extends db_test
   function test_save_object_access_for_action()
   {
   	$this->object->setReturnValue('get_id', 305);
-  	$this->object->setReturnValue('get_class_id', 11);
+  	$this->object->setReturnValue('get_controller_id', 11);
 
 		$this->parent_object->expectCallCount('get_id', 0);
-		$this->parent_object->expectCallCount('get_class_id', 0);
+		$this->parent_object->expectCallCount('get_controller_id', 0);
 		$this->parent_object->expectCallCount('get_controller', 0);
 		
   	$this->assertTrue($this->ac->save_object_access_for_action($this->object, 'create'));

@@ -17,7 +17,6 @@ class subscribe_theme extends content_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'subscribe_theme_controller',
 		);
 	}
 }

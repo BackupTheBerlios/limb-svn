@@ -17,7 +17,6 @@ class message extends content_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'message_controller',
 		);
 	}
 }

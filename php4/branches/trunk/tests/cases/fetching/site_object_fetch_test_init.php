@@ -30,7 +30,6 @@ class site_object_fetch_test_version extends site_object
 			'ordr' => 1,
 			'can_be_parent' => 1,
 			'db_table_name' => 'site_object',
-			'controller_class_name' => 'controller_test'
 		);
 	}
 }
@@ -40,6 +39,7 @@ class site_object_fetch_test_init
 	var $db = null;
 	var $class_id = '';
 	var $root_node_id = '';
+	var $controller_id = '';
 	
   function site_object_fetch_test_init() 
   {
@@ -51,6 +51,8 @@ class site_object_fetch_test_init
   function init(& $object)
   {
   	$this->class_id = $object->get_class_id();
+
+  	$this->controller_id = site_object_controller :: get_id(get_class($object) . '_controller');
   	
   	$this->_insert_sys_site_object_records();
   	$this->_insert_fake_sys_site_object_records();
@@ -74,6 +76,7 @@ class site_object_fetch_test_init
   			array(
   				'id' => $i,
   				'class_id' => $this->class_id,
+  				'controller_id' => $this->controller_id,
   				'current_version' => $version,
   				'identifier' => 'object_' . $i,
   				'title' => 'object_' . $i . '_title',
@@ -108,6 +111,7 @@ class site_object_fetch_test_init
   			array(
   				'id' => $i,
   				'class_id' => 1001,
+  				'controller_id' => $this->controller_id,
   				'identifier' => 'object_' . $i,
   				'title' => 'object_' . $i . '_title',
   				'status' => 0,
@@ -126,6 +130,7 @@ class site_object_fetch_test_init
   	$this->db->sql_delete('sys_site_object');
   	$this->db->sql_delete('sys_site_object_tree');
   	$this->db->sql_delete('sys_class');
+  	$this->db->sql_delete('sys_controller');
   }
 }
 

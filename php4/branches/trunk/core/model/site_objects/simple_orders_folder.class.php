@@ -17,7 +17,6 @@ class simple_orders_folder extends site_object
 		return array(
 			'class_ordr' => 0,
 			'can_be_parent' => 1,
-			'controller_class_name' => 'simple_orders_folder_controller',
 			'icon' => '/shared/images/folder.gif'
 		);
 	}

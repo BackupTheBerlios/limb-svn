@@ -13,6 +13,18 @@ require_once(LIMB_DIR . 'core/fetcher.class.php');
 
 class form_create_site_object_action extends form_site_object_action
 {
+  function _define_controller_name()
+  {
+    return get_class($this->object) . '_controller';
+  }
+  
+  function _get_controller_id()
+  {			
+		$controller_name = $this->_define_controller_name();
+		
+    return site_object_controller :: get_id($controller_name);
+  }
+  
   function _init_dataspace(&$request)
   {
     parent :: _init_dataspace($request);
@@ -48,6 +60,7 @@ class form_create_site_object_action extends form_site_object_action
 		$parent_object_data =& $this->_load_parent_object_data();
 		
 		$data['parent_node_id'] = $parent_object_data['node_id'];
+		$data['controller_id'] = $this->_get_controller_id();
 		
 		$this->_valid_perform_prepare_data($data);
 		
@@ -81,7 +94,7 @@ class form_create_site_object_action extends form_site_object_action
 	{
 		$parent_data =& $this->_load_parent_object_data();
 
-		$parent_object =& site_object_factory :: instance($parent_data['class_name']);
+		$parent_object =& site_object_factory :: create($parent_data['class_name']);
 		
 		$parent_object->import_attributes($parent_data);
 

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: unique_user_email_rule.class.php 2 2004-02-29 19:06:22Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
@@ -22,7 +22,7 @@ class user_old_password_rule extends single_field_rule
 	{
 		$old_password = $dataspace->get($this->field_name);
 		
-		$user_site_object =& site_object_factory :: instance('user_object');
+		$user_site_object =& site_object_factory :: create('user_object');
 		
 		if($user_site_object->validate_password($old_password))
 			return;

@@ -17,7 +17,6 @@ class pricelist_object extends content_object
 		return array(
 			'ordr' => 1,
 			'can_be_parent' => 0,
-			'controller_class_name' => 'pricelist_object_controller',
 		);
 	}
 }

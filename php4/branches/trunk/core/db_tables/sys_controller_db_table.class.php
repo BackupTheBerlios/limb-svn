@@ -8,19 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
+require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 
-class articles_folder extends site_object
+class sys_controller_db_table extends db_table
 {
-	function _define_class_properties()
-	{
-		return  array(
-			'class_ordr' => 0,
-			'can_be_parent' => 1,
-			'icon' => '/shared/images/folder.gif'
-		);
-	}
-
+  function _define_columns()
+  {
+  	return array(
+      'id' => array('type' => 'numeric'),
+      'name' => '',
+    );
+  }
 }
 
 ?>

@@ -98,7 +98,9 @@ class list_component extends component
 		if (empty($this->dataset))
 		{
 			$this->register_dataset(new empty_dataset());
-		} 
+		}
+		 
+		$this->dataset->reset(); 
 		$this->dataset->prepare();
 		
 		$this->show_separator = false;		
