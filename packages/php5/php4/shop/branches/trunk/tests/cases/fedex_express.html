@@ -1,0 +1,1177 @@
+<!--  resultsSummary.jsp -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html lang="en" xml:lang="en">
+<HEAD>
+<TITLE>FedEx | Rate Finder</TITLE>
+<META NAME ="keywords" CONTENT=" ">
+<META NAME ="description" CONTENT=" ">
+
+
+<LINK REL="stylesheet" HREF="/css/fedexmain.css" TYPE="text/css">
+<LINK REL="stylesheet" HREF="/css/fedexascend.css" TYPE="text/css">
+
+<STYLE type=text/css>
+.rfresultstableheader {
+    color:FFFFFF;
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+    font-size:11px;
+   font-weight:bold;
+}
+
+.rfresultstableheader A:link {
+   color:FFFFFF;}
+
+.rfresultstableheader A:visited {
+   color:FFFFFF;}
+
+.subheaderwhite1 A:link {
+    font-weight: 600; font-size: 12px; color: #ffffff
+}
+
+.subheaderwhite1 A:visited {
+    font-weight: 600; font-size: 12px; color: #ffffff
+}
+
+.small A:link {
+   font-size: 11px;
+}
+
+.small A:visited {
+   font-size: 11px;
+}
+</STYLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+var supported = navigator.userAgent.indexOf("Mozilla")==0 && navigator.userAgent.substring(8,9) >= 3;
+
+function openWin(howto)
+{
+    if(supported)
+    {
+        howto = window.open(howto,"howto","resizable=yes,scrollbars=yes,status=no,height=500,width=500");
+        return; // false;
+    }
+    else
+    {
+        return; // true;
+    }
+}
+</SCRIPT>
+
+<!--  resultsJSLogic.jsp -->
+
+
+
+<script language="javascript">
+//-------------------------------------------------------------------
+// Function to submit form when link is clicked on
+// 
+//
+// submitVal, value to set the submit parameter for use in the Action
+//            
+//-------------------------------------------------------------------
+function submitFromLink(submitVal)
+{
+	document.shipInfoForm.submitAction.value = submitVal;
+	document.shipInfoForm.submit();
+}
+</script>
+
+
+</HEAD>
+
+<BODY vLink=#660099 aLink=#ff9933 link=#cc3300 bgColor=#ffffff leftMargin=0 topMargin=0 marginwidth="0" marginheight="0">
+
+
+
+<!-- TABLE:  Begin Header. -->
+
+    
+        <!-- Begin /templates/components/headers/us/rates_mainheader.html -->
+<!--WEBSIDESTORY CODE HBX1.0 (Universal)-->
+<!--COPYRIGHT 1997-2004 WEBSIDESTORY,INC. ALL RIGHTS RESERVED. U.S.PATENT No. 6,393,479B1. MORE INFO:http://websidestory.com/privacy-->
+<script language="javascript">
+var _hbEC=0,_hbE=new Array;function _hbEvent(a,b){b=_hbE[_hbEC++]=new Object();b._N=a;b._C=0;return b;}
+var hbx=_hbEvent("pv");hbx.vpc="HBX0100u";hbx.gn="ehg.fedex.com";
+var wsscbid = getCookie("fdx_cbid");
+var wsslogin = getCookie("fdx_login");
+if (wsscbid == undefined){	wsscbid="";}
+if (wsslogin == undefined){ wsslogin="";}
+var wssloc = new String(window.location);
+var wsshost = wssloc.replace(/http.*:\/\/(.*\.fedex\.com).*/, "$1");
+if ((wsshost == 'fedex.com') || (wsshost == 'www.fedex.com')){hbx.acct="DM53091636DS;DM540225I9WM;DM54022555FM";}
+else {hbx.acct="DM530909CMEW;DM54022548EE;DM540225K3DN";}
+hbx.pn="PUT+PAGE+NAME+HERE";
+hbx.mlc="CONTENT+CATEGORY";
+hbx.pndef="title";
+hbx.ctdef="full";
+hbx.fv="";
+hbx.lt="auto";
+hbx.dlf="n";
+hbx.dft="n";
+hbx.elf="n";
+hbx.seg="";
+hbx.fnl="";
+hbx.cmp="";
+hbx.cmpn="";
+hbx.dcmp="";
+hbx.dcmpn="";
+hbx.dcmpe="";
+hbx.dcmpre="";
+hbx.hra="";
+hbx.hqsr="";
+hbx.hqsp="";
+hbx.hlt="";
+hbx.hla="";
+hbx.gp="";
+hbx.gpn="";
+hbx.hcn="";
+hbx.hcv="";
+hbx.cp="null";
+hbx.cpd="";
+hbx.ci=wsscbid+"-"+wsslogin;
+hbx.hc1="";
+hbx.hc2="";
+hbx.hc3="";
+hbx.hc4="";
+hbx.hrf="";
+hbx.pec="";
+function getCookie(Name) {
+var search = Name + "="
+if (document.cookie.length > 0){offset = document.cookie.indexOf(search)
+if (offset != -1) {offset += search.length
+end = document.cookie.indexOf(";", offset)
+if (end == -1)end = document.cookie.length
+return unescape(document.cookie.substring(offset, end))}}}
+</script>
+<!--END WEBSIDESTORY CODE-->
+<!-- Start Measurements Area 1 -->
+<table name="header" width="780" border="0" cellpadding="0" cellspacing="0">
+	<tr name="topheadergutter" height="10">
+		<td colspan="13"><img src="/images/ascend/shared/spacer.gif" width="1" height="10" border="0" alt=""></td>
+	</tr>
+	<tr valign="top" align="left">
+		<td width="15" rowspan="3"></td>
+		<td width="5" rowspan="3"></td>
+		<td width="170" rowspan="3"><a href="/us/?link=1" name="&lid=Corp+Logo"><img src="/images/ascend/shared/corp_logo.gif" align="left" alt="" border="0" hspace="0" vspace="0"></a></td>
+		<td width="15" rowspan="3"></td>
+		<td width="170" colspan="2"><a href="/us/?link=1" class="autilitynav">United States Home</a></td>
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="20" border="0" alt=""></td>
+		<td width="5"><img src="/images/ascend/shared/spacer.gif" width="5" height="1" border="0" alt=""></td>
+		<td colspan="4" class="ascend" align="right"><a href="/us/infocenter/?link=1" class="autilitynav">Information Center</a> &nbsp; | &nbsp; <a href="/us/customersupport/?link=1" class="autilitynav">Customer Support</a> &nbsp; | &nbsp; <a href="/us/search/?link=1" class="autilitynav">Site Map</a><img src="/images/ascend/shared/spacer.gif" height="1" width="10" border="0" alt="international shipping, freight, cargo, logistics, critical shipments"></td>
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="20" border="0" alt=""></td>
+	</tr>
+	<tr style="vertical-align: top; text-align: left;">
+		<form name="searchform" action="http://www.fedex.com/cgi-bin/search_redirect" method="post">
+		<td colspan="5"><img src="/images/ascend/shared/spacer.gif" width="5" height="10" border="0" alt=""></td>
+		<td style="vertical-align: middle; text-align: right" colspan="3">
+			<div align="right">
+			<table border="0" cellpadding="0" cellspacing="0" summary="table for formatting purposes only">
+				<tr>
+					<td style="width: 120px; vertical-align: middle; text-align: right"><input type="hidden" id="Collection" name="Collection" value="us"><input type="hidden" id="ResultTemplate" name="ResultTemplate" value="us.hts"><input type="hidden" id="filter" name="filter" value="metatagfilter.hts"><input type="hidden" id="Action" name="Action" value="FilterSearch"><input type="text" class="nnform" id="QueryText" name="QueryText" style="width: 120px; font-size: 11px;" size="13" value="Search" onfocus="if (this.value=='Search') this.value='';" alt="Enter Search Text"></td>
+					<td style="width: 5px;"><img src="/images/ascend/shared/spacer.gif" width="5" height="1" border="0" alt=""></td>
+					<td class="ascend" style="width: 40px; vertical-align: middle;"><input type="image" id="Search" name="Search fedex.com" src="/images/ascend/shared/button-search.gif" border="0" alt="Search fedex.com"></td>
+				</tr>
+			</table>
+			</div>
+		</td>
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="1" border="0" alt=""></td>
+		</form>
+	</tr>
+	<tr>
+		<td align="left" valign="bottom" colspan="9"></td>
+	</tr>
+	<tr>
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="20" border="0" alt=""></td>
+		<td align="left" valign="top" colspan="12">
+			<map name="navmap">
+<area shape="rect" coords="190,0,347,23" href="/us/?link=1&lid=Package+Envelope+Services" alt="Package / Envelope Services (shipments under 150 lbs.)"> <area shape="rect" coords="348,0,472,23" href="/us/officeprint/main/?link=1&lid=Office+Print+Services" alt="FedEx Kinko's">
+<area shape="rect" coords="473,0,569,23" href="/us/freightportal/?link=1&lid=Freight+Services" alt="Freight Services (shipments over 150 lbs.)"> <area shape="rect" coords="570,0,683,23" href="/us/sameday/?link=1&lid=Expedited+Services" alt="Expedited Services"> <area shape="rect" coords="190,24,243,45" href="https://www.fedex.com/cgi-bin/ship_it/interNetShip?link=1&origincountry=us&locallang=us&urlparams=us&lid=Ship" alt="Ship">
+<area shape="rect" coords="244,24,301,45" href="/us/tracking/?link=1&ascend_header=1&lid=Track" alt="Track Shipments">
+<area shape="rect" coords="302,24,360,45" href="/us/rates/?link=1&lid=Rates" alt="Get Rates">
+<area shape="rect" coords="361,24,425,45" href="https://www.fedex.com/us/pickup/?link=1&lid=Pickup" alt="Schedule a Pickup">
+<area shape="rect" coords="426,24,504,45" href="/us/dropoff/?link=1&lid=Locations" alt="Find Locations">
+<area shape="rect" coords="505,24,595,45" href="/us/transittime/?link=1&lid=Transit+Time" alt="Get Transit Time">
+<area shape="rect" coords="596,24,718,45" href="/us/international/?link=1&lid=International+Tools" alt="International Shipping Tools and Information">
+</map>
+<img src="/images/ascend/navs/package_rates.gif" usemap="#navmap" border="0" alt=""></td>
+	</tr>
+	<tr name="headergutter" height="9">
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="9" border="0" alt=""></td>
+		<td width="5"><img src="/images/ascend/shared/spacer.gif" width="5" height="1" border="0" alt=""></td>
+		<td width="170"><img src="/images/ascend/shared/spacer.gif" width="170" height="1" border="0" alt=""></td>
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="1" border="0" alt=""></td>
+		<td width="5"><img src="/images/ascend/shared/spacer.gif" width="5" height="1" border="0" alt=""></td>
+		<td width="170"><img src="/images/ascend/shared/spacer.gif" width="170" height="1" border="0" alt=""></td>
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="1" border="0" alt=""></td>
+		<td width="5"><img src="/images/ascend/shared/spacer.gif" width="5" height="1" border="0" alt=""></td>
+		<td width="170"><img src="/images/ascend/shared/spacer.gif" width="170" height="1" border="0" alt=""></td>
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="1" border="0" alt=""></td>
+		<td width="5"><img src="/images/ascend/shared/spacer.gif" width="5" height="1" border="0" alt=""></td>
+		<td width="170"><img src="/images/ascend/shared/spacer.gif" width="170" height="1" border="0" alt=""></td>
+		<td width="15"><img src="/images/ascend/shared/spacer.gif" width="15" height="1" border="0" alt=""></td>
+	</tr>
+</table>
+<!-- End Measurements Area 1 -->
+<!-- End /templates/components/headers/us/rates_mainheader.html -->
+
+
+    
+
+<!-- TABLE:  End Header. -->
+
+
+
+
+
+<!-- TABLE:  Begin Top. -->
+<TABLE cellSpacing=0 cellPadding=0 width=760 border=0>
+
+
+<TR>
+<TD WIDTH="15">&nbsp;</TD>
+<TD>
+<TABLE cellSpacing=0 cellPadding=0 width=745 border=0>
+<TR>
+<TD COLSPAN="3"><IMG height=20 src="/images/ascend/shared/spacer.gif" width=1></TD>
+</TR>
+
+<TR>
+<TD colSpan=2> 
+<SPAN class=mainheader2>
+
+    FedEx List Rates
+
+</SPAN>
+</TD>
+
+<TD vAlign="bottom" align="right" class="small">
+
+</TD> 
+</TR>
+
+
+<TR>
+<TD colSpan=2> <!-- FedEx Express -->
+<SPAN class=mainheader1>
+
+    FedEx Express
+
+</SPAN>
+</TD>
+
+
+<TD vAlign=bottom align=right>
+<TABLE cellSpacing=0 cellPadding=3 border=0>
+<TR>
+<TD vAlign="center"><!-- A HREF="javascript:window.open('<.bean:message key="url.quickhelp"/>','quickhelp','resizable=no,scrollbars=yes,status=no,height=500,width=500')" -->
+<A HREF="javascript:openWin('http://www.fedex.com/us/rates/quickhelp.html?link=6')">
+<IMG src="/images/ascend/shared/icon_quickhelp.gif" name="quickhelp" border="0" ALT="Quick Help"></A></TD>
+<TD vAlign="center"><A HREF="javascript:openWin('http://www.fedex.com/us/rates/quickhelp.html?link=6')">
+<SPAN class="small">
+Quick Help
+</SPAN></A>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+
+<TR>
+<TD colSpan=3><IMG height=15 src="/images/ascend/shared/spacer.gif" width=1></TD>
+</TR>
+
+
+
+
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<!-- TABLE:  Begin Top. -->
+
+
+
+<TABLE cellSpacing=0 cellPadding=0 width=760 border=0 SUMMARY="MAIN CONTENT">
+<TR>
+<TD WIDTH="15">&nbsp;</TD>
+<TD WIDTH="745">
+
+<form name="shipInfoForm" method="POST" action="/ratefinder/shipInfo">
+<input type="hidden" name="cc" value="US">
+<input type="hidden" name="language" value="en">
+<input type="hidden" name="locId" value="">
+<input type="hidden" name="submitAction" value="">
+
+
+
+
+<!-- TABLE:  Begin Steps Header. -->
+<TABLE cellSpacing=0 cellPadding=0 width=745 bgColor=#E6E6E6 border=0>
+
+
+<TR>
+<TD bgColor=#660099>
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD>
+<TABLE cellSpacing=0 cellPadding=2 border=0>
+<TR>
+
+<TD vAlign=center><IMG src="/images/ascend/shared/steps_1_purple.gif" ALT="Enter shipping information"></TD>
+
+<TD class=stepsoff vAlign=center>
+<!-- Enter shipping information -->
+<B>Enter shipping information</B>
+</TD>
+
+<TD><IMG height=1 src="/images/ascend/shared/spacer.gif" width=3></TD>
+
+
+<TD vAlign=center><IMG src="/images/ascend/shared/steps_2_purple.gif" ALT="Enter package information"></TD>
+
+
+<!-- Enter package information -->
+
+<TD class=stepsoff vAlign=center><B>Enter package information</B></TD>
+
+
+<TD><IMG height=1 src="/images/ascend/shared/spacer.gif" width=3></TD>
+
+<TD vAlign=center><IMG src="/images/ascend/shared/steps_3_white.gif" ALT="Get rate quote"></TD>
+
+<TD class=stepson vAlign=center BGCOLOR="#660099">
+<!-- Get rate quote -->
+<B>Get rate quote</B>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+
+<TR>
+<TD bgColor="#FF6600"> <!-- CompanyColorStrip -->
+<IMG height=3 src="/images/ascend/shared/spacer.gif" width=1></TD>
+</TR>
+
+
+<TR>
+<TD>
+<TABLE cellSpacing=0 cellPadding=5 width=745 border=0>
+
+
+
+<TR>
+<TD class=small> <!-- All packages are being shipped from  -->
+<!-- If this is freight, changed the word packages to skids -->
+
+    All <A HREF="#packageinfo">packages</A> are being shipped
+
+    from
+<B>
+
+    L5V 1A7,
+
+    Canada
+</B>
+to
+<B>
+
+    02478,
+
+U.S.A.
+</B>
+
+		(Zone N/A)
+
+on <B>July 17, 2004.</B>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<!-- TABLE:  End Steps Header. -->
+
+
+
+
+
+<!-- <input type="hidden" name="submitAction"> -->
+
+
+
+
+<!-- TABLE:  Begin Rates Summary Heading. -->
+<TABLE cellSpacing=0 cellPadding=0 width=745 bgColor=#E6E6E6 border=0>
+<TR>
+<TD vAlign=top bgColor=#ffffff>
+
+
+<TABLE cellSpacing=0 cellPadding=0 width=745 border=0>
+<TR>
+
+
+<!-- column:  Service -->
+<TD vAlign=bottom bgColor=#999999 WIDTH="180">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=subheaderwhite1>
+
+Service
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+<!-- column:  Delivery Time -->
+<TD vAlign=bottom bgColor=#999999 WIDTH="456">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR> 
+<TD class=subheaderwhite1>
+<B>
+
+    
+        Estimated delivery
+    
+
+</B>
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+
+<!-- column:  Rate (US$) -->
+<TD vAlign=bottom bgColor=#999999 WIDTH="107">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=subheaderwhite1>
+Rate&nbsp;(CA$)
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+
+</TR>
+</TABLE>
+
+
+</TD>
+</TR>
+</TABLE>
+<!-- TABLE:  End Rates Summary Heading. -->
+
+
+
+
+
+
+<!-- TABLE:  Begin Services. -->
+<TABLE cellSpacing=0 cellPadding=0 width=745 border=0>
+
+
+
+
+
+
+
+<TR>
+
+
+<!-- column:  Service -->
+<TD vAlign=bottom bgColor="#E6E6E6" WIDTH="180">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class="small"> <!-- FedEx First Overnight -->
+<a href="http://www.fedex.com/us/services/waystoship/intlexpress/first.html?link=4">FedEx International First<SUP>&reg;</SUP></a>
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+<!-- column:  Delivery Time -->
+<TD vAlign=bottom bgColor="#E6E6E6" WIDTH="456">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD>
+<!-- 8:00 am or 8:30 the next business day to major -->
+<!-- If company Express - show delivery time from   -->
+<!-- resource bundle based on service type          -->
+
+Overseas delivery by 8 a.m. to major cities
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+<!-- column:  Rate (US$) -->
+<TD vAlign=bottom align=right bgColor="#E6E6E6" WIDTH="107">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+
+
+<TD ALIGN="RIGHT">
+169.31&nbsp;
+</TD>
+
+ 
+</TR>
+</TABLE>
+</TD>
+
+
+
+</TR>
+
+
+
+<TR>
+
+
+<!-- column:  Service -->
+<TD vAlign=bottom bgColor="#FFFFFF" WIDTH="180">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class="small"> <!-- FedEx First Overnight -->
+<a href="http://www.fedex.com/us/services/waystoship/intlexpress/priority.html?link=4">FedEx International Priority<SUP>&reg;</SUP></a>
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+<!-- column:  Delivery Time -->
+<TD vAlign=bottom bgColor="#FFFFFF" WIDTH="456">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD>
+<!-- 8:00 am or 8:30 the next business day to major -->
+<!-- If company Express - show delivery time from   -->
+<!-- resource bundle based on service type          -->
+
+Reach major business centers in 24 to 48 hours
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+<!-- column:  Rate (US$) -->
+<TD vAlign=bottom align=right bgColor="#FFFFFF" WIDTH="107">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+
+
+<TD ALIGN="RIGHT">
+113.68&nbsp;
+</TD>
+
+ 
+</TR>
+</TABLE>
+</TD>
+
+
+
+</TR>
+
+
+
+<TR>
+
+
+<!-- column:  Service -->
+<TD vAlign=bottom bgColor="#E6E6E6" WIDTH="180">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class="small"> <!-- FedEx First Overnight -->
+<a href="http://www.fedex.com/us/services/waystoship/intlexpress/economy.html?link=4">FedEx International Economy<SUP>&reg;</SUP></a>
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+<!-- column:  Delivery Time -->
+<TD vAlign=bottom bgColor="#E6E6E6" WIDTH="456">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD>
+<!-- 8:00 am or 8:30 the next business day to major -->
+<!-- If company Express - show delivery time from   -->
+<!-- resource bundle based on service type          -->
+
+Time definite delivery in 2 business days
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+<!-- column:  Rate (US$) -->
+<TD vAlign=bottom align=right bgColor="#E6E6E6" WIDTH="107">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+
+
+<TD ALIGN="RIGHT">
+72.62&nbsp;
+</TD>
+
+ 
+</TR>
+</TABLE>
+</TD>
+
+
+
+</TR>
+ 
+
+
+
+
+
+
+
+<TR>
+
+
+<!-- column:  Service -->
+<TD vAlign=bottom bgColor="#FFFFFF" WIDTH="180">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class="small"> <!-- FedEx Same Day Delivery -->
+
+<a href="http://www.fedex.com/us/services/express/intl/nextflight.html?link=4">FedEx International Next Flight<SUP>&reg;</SUP></a>
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+<!-- column:  separator -->
+<TD BGCOLOR="#FFFFFF" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+
+<!-- column:  Delivery Time -->
+
+<TD vAlign=bottom bgColor="#FFFFFF" colspan="3" WIDTH="215">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD nowrap>
+
+In the shortest time possible. Call 1&middot;800&middot;Go&middot;FedEx for availability and rate.
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+
+</TR>
+
+
+
+
+
+</TABLE>
+<!-- TABLE:  End Services. -->
+
+
+
+
+
+
+<!-- TABLE:  Begin Currency Converter. -->
+
+
+<TABLE cellSpacing=0 cellPadding=0 width=745 border=0>
+
+
+
+<TR bgColor="#E6E6E6">
+<TD align=right>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+<TR>
+<TD colSpan=3><IMG height=5 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+<TR>
+<TD vAlign=center align=right>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+<TR>
+<TD vAlign=center><IMG src="/images/shared/rates/currency_converter_gray.gif"></TD>
+<TD><IMG height=0 src="/images/ascend/shared/spacer.gif" width=3 border=0></TD>
+<TD vAlign=center class="small"><A HREF="javascript:openWin('http://www.fedex.com/cgi-bin/crg_currency_converter.cgi?link=4')">Currency Converter</A></TD>
+<TD><IMG height=0 src="/images/ascend/shared/spacer.gif" width=5 border=0></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD colSpan=3><IMG height=5 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+
+
+
+
+
+<TR bgColor=#CCCCCC>
+<TD><IMG height=3 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+
+
+<TR bgColor=#CCCCCC>
+<TD vAlign=bottom align=right>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+<TR>
+<TD colSpan=2><IMG height=10 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+
+
+<TR>
+<TD> <!-- "Get details" -->
+<INPUT class=buttongray NAME="submitGetDetails" type="SUBMIT" value='Get details'></TD>
+<TD><IMG height=1 src="/images/ascend/shared/spacer.gif" width=5 border=0></TD>
+</TR>
+
+
+<TR>
+<TD colSpan=2><IMG height=10 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+
+<!-- row:  spacer -->
+<TR bgColor=#CCCCCC>
+<TD><IMG height=3 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+
+
+</TABLE>
+<!-- TABLE:  End Currency Converter. -->
+
+
+ 
+
+
+
+<!-- TABLE:  Begin Home Delivery. -->
+
+<!-- TABLE:  End Home Delivery. -->
+
+
+
+<A NAME="packageinfo"></A>
+
+
+
+<!-- TABLE:  Begin Package and Dim. -->
+<TABLE cellSpacing=0 cellPadding=0 width=745 bgColor=#E6E6E6 border=0>
+
+
+<TR>
+<TD vAlign=top bgColor=#ffffff colSpan=3>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+<TR>
+<TD align=bottom bgColor=#999999 WIDTH="26">&nbsp;</TD>
+<TD WIDTH="1" BGCOLOR="#CCCCCC"></TD>
+<TD vAlign=bottom bgColor=#999999 WIDTH="140">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=subheaderwhite1>
+<!-- For Weight we must first see if it is FedEx Express Freight -->
+<!-- Package weight -->
+
+    
+        <A HREF="#" onClick="return(openWin('http://www.fedex.com/cgi-bin/crg_dim_weight.cgi?country_code=us&language=english&link=4'))" CLASS="acolorwhite">
+        Package weight</A>
+    
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+<TD WIDTH="1" BGCOLOR="#CCCCCC"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+<!-- If FedEx Express Freight, do not show Package Type information  -->
+
+<TD vAlign=bottom bgColor=#999999 WIDTH="140">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=subheaderwhite1>
+<!-- Package type -->
+
+<A HREF="#" onClick="return(openWin('http://www.fedex.com/cgi-bin/crg_quick_package_dims.cgi?country_code=us&language=english&link=4'))" CLASS="acolorwhite">Package type</A>
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+<TD WIDTH="1" BGCOLOR="#CCCCCC"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+
+<TD vAlign=bottom bgColor=#999999 WIDTH="235">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=subheaderwhite1>
+<!-- Package measurements -->
+
+    
+        <A HREF="#" onClick="return(openWin('http://www.fedex.com/cgi-bin/crg_dim_weight.cgi?country_code=us&language=english&link=4'))" CLASS="acolorwhite">
+        Package measurements</A>
+    
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+<TD WIDTH="1" BGCOLOR="#CCCCCC"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+<TD vAlign=bottom bgColor=#999999 WIDTH="200">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=subheaderwhite1>
+<!-- Declared value (USD) US$ -->
+
+    <A HREF="http://www.fedex.com/us/services/termsandconditions/liabilitylimits.html?link=4" CLASS="subheaderwhite1">Declared value</A>
+
+<!-- Added by DFJ 7/30/2003 - will need to change in Jan '04 code to pull using URL country -->
+<!-- changed for Jan 2004 - 10/23/2003 -->
+
+(US$)
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+<!-- ITERATIVE LOOP FOR PACKAGE MEASUREMENTS -->
+
+
+
+
+
+
+<TR BGCOLOR="#E6E6E6">
+<TD vAlign=bottom>
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=small>1.</TD>
+</TR>
+</TABLE>
+</TD>
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+<TD vAlign=bottom>
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=small> <!-- 10.0 lb -->
+10.0
+
+&nbsp;lbs
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+<TD vAlign=bottom>
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=small><!-- Your Packaging -->
+Your Packaging
+</TD>
+</TR>
+</TABLE>
+</TD>
+
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+<TD vAlign=bottom bgColor="#E6E6E6">
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD NOWRAP class=small><!-- 10.0 x 10.0 x 10.0 cm -->
+
+
+</TD>
+
+<TD NOWRAP class="small">
+
+
+</TD>
+<TD NOWRAP class="small">
+
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+<TD BGCOLOR="#CCCCCC" WIDTH="1"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0" WIDTH="1"></TD>
+<TD vAlign=bottom>
+<TABLE cellSpacing=0 cellPadding=5 border=0>
+<TR>
+<TD class=small><!-- example value 100.00 -->
+<!-- bean:write name="shipInfoForm" property="currencyCode" />&nbsp; -->
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<!--
+<TR>
+<TD bgColor=#ffffff><IMG height=1
+src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+-->
+
+
+
+</TABLE>
+</TD>
+</TR>
+
+
+<!-- .booleanValue() == true  -->
+
+
+
+
+<TR bgColor="#FFFFFF">
+<TD colSpan=3><IMG height=20 src="/images/ascend/shared/spacer.gif" width=1></TD>
+</TR>
+
+
+
+<!-- END OF ITERATION of PACKAGE MEASUREMENTS     -->
+<!-- Multiple Packaging Information SUBMIT EDIT   -->
+
+<TR bgColor=#CCCCCC>
+<TD colSpan=3><IMG height=5 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+
+
+<TR bgColor="#CCCCCC">
+<TD COLSPAN=3>
+<TABLE cellSpacing=2 cellPadding=5 width="100%" border=0>
+<TR>
+<TD vAlign=center align=right colSpan=5>
+<!-- Edit package information -->
+
+<INPUT class=buttongray TYPE="SUBMIT" NAME="submitEditPackageInformation" VALUE='Edit package information'>
+
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+
+<TR bgColor="#CCCCCC">
+<TD colSpan=3><IMG height=5 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+
+
+</TABLE>
+<!-- Multiple Packaging Information end         -->
+<!-- TABLE:  End Package and Dim. -->
+
+
+ 
+
+
+
+<!-- TABLE:  Begin Action Button. -->
+<TABLE cellSpacing=0 cellPadding=0 width=745 bgColor=#E6E6E6 border=0>
+
+<!-- row:  spacer -->
+<TR>
+<TD colSpan=3><IMG height=5 src="/images/ascend/shared/spacer.gif" width=1></TD>
+</TR>
+
+<!-- row:  button "Get Another Rate" -->
+<TR>
+<TD COLSPAN=3>
+<TABLE cellSpacing=2 cellPadding=5 width="100%" border=0>
+<TR>
+<TD vAlign=bottom align=right>
+<INPUT class=buttonpurple TYPE="SUBMIT" NAME="submitGetAnotherRate" VALUE='Get another rate'>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+<!-- row:  spacer -->
+<TR>
+<TD colSpan=3><IMG height=5 src="/images/ascend/shared/spacer.gif" width=1></TD>
+</TR>
+
+</TABLE>
+<!-- TABLE:  End Action Button. -->
+
+
+
+ 
+</form>
+
+</TD>
+</TR>
+</TABLE>
+
+
+
+<!-- TABLE:  Begin Please Note. -->
+<TABLE cellSpacing=0 cellPadding=0 width=760 border=0 SUMMARY="FOOTER CONTENT">
+
+<!-- row:  spacer -->
+<TR>
+<TD WIDTH="15">&nbsp;</TD>
+<TD><IMG height=20 src="/images/ascend/shared/spacer.gif" width=1></TD>
+</TR>
+
+<!-- row:  x -->
+<TR>
+<TD WIDTH="15">&nbsp;</TD>
+<TD WIDTH="745"> <!-- Please note -->
+<B class=subheaderblack1>Please note</B>
+<TABLE cellSpacing=0 cellPadding=2 border=0>
+<TR>
+<TD class=small>
+<UL>
+<!-- The rate quote shown may be different than the actual -->
+<LI>The rate quote shown may be different than the actual charges for your shipment. Differences may occur based on actual weight, dimensions, and/or <A HREF="http://www.fedex.com/us/services/express/addservopt/addresscorrection.html?link=4">address correction</A>. Consult the most recent <A HREF="http://www.fedex.com/us/services?link=4">FedEx Service Guide</A> or your FedEx pricing agreement for details on how shipping charges are calculated.</LI>
+<!-- The displayed rates apply to dropoff shipments at any -->
+<LI>The displayed rates apply to dropoff shipments at any of the <A HREF="http://www.fedex.com/us/dropoff/shipsiteus.html?link=4">FedEx drop boxes or staffed FedEx World Service Centers</A>.</LI>
+<!-- Express Hundredweight pricing is available            -->
+<LI>FedEx <A HREF="http://www.fedex.com/us/services/express/other/hundredweight.html">Express Hundredweight</A> pricing is available for multiple piece shipments traveling on a single FedEx Airbill to one destination, on the same day, and totaling 100 lbs. or more.</LI>
+
+</UL>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+<!-- row:  x -->
+<TR>
+<TD WIDTH="15">&nbsp;</TD>
+<TD WIDTH="745">
+<IMG height=20 src="/images/ascend/shared/spacer.gif" width=1 border=0></TD>
+</TR>
+
+</TABLE>
+<!-- TABLE:  End Please Note. -->
+
+
+
+
+
+<!-- TABLE:  Begin Footer. -->
+<TABLE WIDTH="760" CELLSPACING="0" CELLPADDING="0" BORDER="0">
+
+<!-- row:  x -->
+<TR>
+<TD WIDTH="15">&nbsp;</TD>
+<TD WIDTH="745" CLASS="disclaimer">
+
+    <!-- Begin /templates/components/footers/us/mainfooter.html -->
+<script language="javascript1.1">if ((self.hbx)||(self._cp )){ftcd = "<script language=\"javascript1.1\" defer src=\"\/css\/hbx.js\"><\/script>";document.write(ftcd);}</script>
+<!-- Start Measurements Area 5 -->
+<br><a href="/?location=home&link=5" class="afooternav">Global Home</a>  |  <a href="/us/services/?link=5" class="afooternav">Service Info</a>  |  <a href="/us/about/?link=5" class="afooternav">About FedEx</a>  |  <a href="/us/investorrelations/?link=5" class="afooternav">Investor Relations</a>  |  <a href="/us/careers/?link=5" class="afooternav">Careers</a> | <a href="/legal/?link=5" class="afooternav">fedex.com Terms of Use</a>  |  <a href="/us/privacypolicy.html?link=5" class="afooternav">Privacy Policy</a><br><nobr><span class="footertext">This site is protected by copyright and trademark laws under US and International law. All rights reserved. &copy; 1995-2004 FedEx</span></nobr>
+<!-- End Measurements Area 5 -->
+<!-- End /templates/components/footers/us/mainfooter.html -->
+
+
+
+
+</TD>
+</TR>
+
+<!-- row:  spacer -->
+<TR>
+<TD COLSPAN=2 HEIGHT="10"><IMG SRC="/images/ascend/shared/spacer.gif" BORDER="0"></TD>
+</TR>
+
+</TABLE>
+<!-- TABLE:  End Footer. -->
+
+
+
+</BODY>
+</html>
