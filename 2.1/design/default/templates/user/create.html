@@ -1,0 +1,46 @@
+<core:WRAP file="popup.html" placeholder="content">
+<h2><locale:STRING name='user_edition' file='user'></h2>
+<form method="post" name="create_user" id="create_user">
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+	<tr class=com4>
+		<td colspan=2 class=pad4><core:INCLUDE file="form_errors.html"></td>
+	</tr>
+    <tr>
+      <td><label for="identifier"><span class=req>*</span><locale:STRING name='login' file='user'></label></td>
+      <td><input type="text" name="identifier" id="identifier" label="Login" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="name"><span class=req>*</span><locale:STRING name='firstname' file='user'></label></td>
+      <td><input name="name" type="text" id="name" label="Name" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="lastname"><locale:STRING name='lastname' file='user'></label></td>
+      <td><input name="lastname" type="text" id="lastname" label="Last name" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="email"><span class=req>*</span><locale:STRING name='email'></label></td>
+      <td><input name="email" type="text" id="email" label="Email" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="password"><span class=req>*</span><locale:STRING name='password' file='user'></label></td>
+      <td><input name="password" type="password" id="password" label="Password" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="second_password"><span class=req>*</span><locale:STRING name='second_password' file='user'></label></td>
+      <td><input name="second_password" type="password" id="second_password" label="Password verify" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2 align=center>
+      <action_button action="create_user" name="create" type="submit" id="create" locale_value="create" class="button">
+	     &nbsp;
+      <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+      </td>
+    </tr>
+  </table>
+</form>

@@ -1,0 +1,37 @@
+<core:WRAP file="admin/page.html" placeholder="content">
+
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<br>
+<fetch:MAPPED>
+{$content}
+</fetch:MAPPED>
+
+<br>
+<fetch:SUB_BRANCH target='messages' >
+	<core:PARAMETER name='loader_class_name' value='message' >
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='messages'>
+<table width=100%>
+<tr>
+	<th><locale:STRING name='messages_list' file='message'></th>
+	<th><locale:STRING name='created_date'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+
+<grid:ITERATOR>
+	<tr class="jip">
+		<td jip='object'><a href="{$path}">{$title} ({$identifier})</a></td>
+		<td align="center"><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+		<td align="center"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+		<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+	</tr>
+</grid:ITERATOR>
+</table>
+</grid:LIST>

@@ -1,0 +1,28 @@
+	<core:DATA_TRANSFER hash_id='answers' target='answers'>
+	
+	<table border=0 cellspacing=0 cellpadding=0>
+	<tr>
+		<td><img class=icon src='/design/main/images/icons/v.gif'></td>
+		<td class=named>{$title}</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td align=right>Всего ответов:</td>
+		<td><b>{$total_count}</b></td>
+	</tr>
+	<grid:LIST id='answers'>
+	<grid:ITERATOR>
+	<tr>
+		<td></td>
+		<td>{$title}</td>
+		<td width=100><img src='/shared/images/1x1.gif' width='{$percentage}%' height=4 style='background-color:#e60000'></td>
+		<td width=1><nobr>{$count} ({$rounded_percentage}%)</nobr></td>
+	</tr>
+	</grid:ITERATOR>
+	</grid:LIST>
+	<tr>
+		<td></td>
+		<td colspan=10 align=right height=30 valign=bottom><a href='/root/polls/'>Все опросы...</a></td>
+	</tr>
+	</table>
