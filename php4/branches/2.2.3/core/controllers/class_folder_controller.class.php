@@ -12,12 +12,21 @@ require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class class_folder_controller extends site_object_controller
 {
+  function _define_default_action()
+  {
+    return 'admin_display';
+  } 
+
 	function _define_actions()
 	{
 		return array(
 				'display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/class_folder/display.html',
+						'template_path' => '/class_folder/admin_display.html',
+				),
+				'admin_display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/class_folder/admin_display.html',
 				),
 				'set_group_access' => array(
 						'permissions_required' => 'w',

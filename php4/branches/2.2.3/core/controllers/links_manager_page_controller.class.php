@@ -13,12 +13,17 @@ require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
 	
 class links_manager_page_controller extends site_object_controller
 {
+  function _define_default_action()
+  {
+    return 'admin_display';
+  }
+  
 	function _define_actions()
 	{
 		return array(
-				'display' => array(
+				'admin_display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/links_manager/display.html',
+						'template_path' => '/links_manager/admin_display.html',
 				),
 				'create_group' => array(
 						'permissions_required' => 'w',

@@ -12,10 +12,15 @@ require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class stats_report_controller extends site_object_controller
 {
+  function _define_default_action()
+  {
+    return 'admin_display';
+  }
+  
 	function _define_actions()
 	{
 		return array(
-				'display' => array(
+				'admin_display' => array(
 						'permissions_required' => 'r',
 						'template_path' => '/stats_report/reports_list.html',
 				),

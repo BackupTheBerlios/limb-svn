@@ -13,13 +13,27 @@ require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
 	
 class cache_manager_controller extends site_object_controller
 {
+  function _define_default_action()
+  {
+    return 'admin_display';
+  } 
+
 	function _define_actions()
 	{
 		return array(
-				'display' => array(
+				'admin_display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/cache_manager/display.html',
+						'template_path' => '/cache_manager/admin_display.html',
 						'action_path' => '/cache_manager/display_cache_manager_action', 
+				),
+				'edit' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('edit'),
+						'action_path' => '/site_object/edit_action',
+						'template_path' => '/site_object/edit.html',
+						'img_src' => '/shared/images/edit.gif'
 				),
 				'flush_full_page_cache' => array(
 						'permissions_required' => 'r',

@@ -13,12 +13,17 @@ require_once(LIMB_DIR . 'core/lib/i18n/strings.class.php');
 	
 class site_structure_controller extends site_object_controller
 {
+  function _define_default_action()
+  {
+    return 'admin_display';
+  }
+  
 	function _define_actions()
 	{
 		return array(
-				'display' => array(
+				'admin_display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/site_structure/display.html',
+						'template_path' => '/site_structure/admin_display.html',
 						'action_path' => '/site_structure/tree_display_action',
 				),
 				'toggle' => array(

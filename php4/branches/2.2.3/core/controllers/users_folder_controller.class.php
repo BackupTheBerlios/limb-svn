@@ -12,12 +12,17 @@ require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class users_folder_controller extends site_object_controller
 {
+  function _define_default_action()
+  {
+    return 'admin_display';
+  }
+  
 	function _define_actions()
 	{
 		return array(
-				'display' => array(
+				'admin_display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/users_folder/display.html'
+						'template_path' => '/users_folder/admin_display.html'
 				),
 				'create_user' => array(
 						'permissions_required' => 'w',
