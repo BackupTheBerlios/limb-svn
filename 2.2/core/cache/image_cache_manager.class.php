@@ -56,7 +56,7 @@ class image_cache_manager
   }
   
   function process_content(&$content)
-  {    
+  { 
     if(!$this->is_cacheable())
       return false;
     

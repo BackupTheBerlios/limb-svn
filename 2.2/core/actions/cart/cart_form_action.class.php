@@ -26,10 +26,14 @@ class cart_form_action extends form_action
 		{
 			foreach($item_ids as $item_id => $amount)
 			{
+			  $amount = (int)$amount;
 				if(!$item =& $cart->get_item($item_id))
 					continue;
 				
-				$item->set_amount((int)$amount);
+				if($amount <= 0)
+		      $cart->remove_item($item_id);		  
+				else
+				  $item->set_amount($amount);
 			}
 		}	
 	}

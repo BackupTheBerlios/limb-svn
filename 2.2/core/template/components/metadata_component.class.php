@@ -201,7 +201,7 @@ class metadata_component extends component
 		array_pop($results);
 		
 		$record['is_last'] = true;
-		$results[] = $record;
+		$results[-1] = $record;//???
 		
 		return new array_dataset($results);
 	}
@@ -222,6 +222,7 @@ class metadata_component extends component
 		{			
 			$path .= $data['identifier'] . '/';
 			$results[$data['id']] = array(
+			  'id' => $data['id'], 
 				'path' => $path,
 				'title' => $data['title'] ? $data['title'] : $data['identifier']
 			);

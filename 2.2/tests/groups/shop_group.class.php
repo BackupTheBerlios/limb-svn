@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/ 
-class filters_group extends GroupTest 
+class shop_group extends GroupTest 
 {
-	function filters_group() 
+	function shop_group() 
 	{
 	  $this->GroupTest('shop tests');
 	  
