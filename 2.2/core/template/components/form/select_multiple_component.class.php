@@ -21,6 +21,9 @@ class select_multiple_component extends options_form_element
 	function _render_options()
 	{
 		$values = $this->get_value();
+		
+		if(!is_array($values))
+		  $values = array();
 				
 		foreach($this->choice_list as $key => $contents)
 		{
