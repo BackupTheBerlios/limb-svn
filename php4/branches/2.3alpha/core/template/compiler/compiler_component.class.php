@@ -462,22 +462,25 @@ class compiler_component
 	
 	function _generate_debug_editor_link_html(& $code, $file_path)
 	{
-//		if(!defined('WS_SCRIPT_WRITTEN'))
-//		{
-//
-//			$code->write_html('	<SCRIPT LANGUAGE="JScript">
-//													function run_template_editor(path)
-//													{
-//														WS = new ActiveXObject("WScript.shell");
-//														WS.exec("uedit32.exe " + path);
-//													}
-//													</SCRIPT>');
-//		
-//			define('WS_SCRIPT_WRITTEN', true);
-//		}
+ 		if(!defined('WS_SCRIPT_WRITTEN'))
+		{
+
+/* 			$code->write_html('	<SCRIPT LANGUAGE="JScript">
+													function run_template_editor(path)
+													{
+														if(!WS = new ActiveXObject("WScript.shell"))
+                              return;
+                            
+														WS.exec("uedit32.exe " + path);
+													}
+													</SCRIPT>');
+		
+			define('WS_SCRIPT_WRITTEN', true);
+ */
+		}
 		
 		$file_path = addslashes(fs :: clean_path($file_path));
-		$code->write_html("<a href='#'><img class='debug-info-img' src='/shared/images/i.gif' alt='{$file_path}' title='{$file_path}' border='0'></a>");
+		$code->write_html("<a href='{$file_path}'><img class='debug-info-img' src='/shared/images/i.gif' title='{$file_path}' border='0'></a>");
 	}
 
 	/**

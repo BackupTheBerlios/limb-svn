@@ -157,16 +157,16 @@ function toggle_obj_display(obj)
 
 function _optimize_window()
 {
-	var body = document.body;
+  var body = document.body;
 
-	if (is_gecko)
+  if (is_gecko)
     window.sizeToContent();
 
   var clientWidth = body.clientWidth;
   var clientHeight = body.clientHeight;
   var scrollWidth = body.scrollWidth;
   var scrollHeight = body.scrollHeight;
-	window.resizeBy(scrollWidth - clientWidth, scrollHeight - clientHeight + 30);
+  window.resizeBy(scrollWidth - clientWidth, scrollHeight - clientHeight + 30);
 }
 
 function optimize_window()
@@ -468,7 +468,7 @@ function add_form_hidden_parameter(form, parameter, val)
   }
 }
 
-function submit_form(form, form_action)
+function submit_form(form, form_action, window_name)
 {
   has_progress = form_action.indexOf('progress=1');
   if(has_progress > -1)
@@ -477,7 +477,8 @@ function submit_form(form, form_action)
   is_popup = form_action.indexOf('popup=1');
   if(is_popup > -1)
   {
-    window_name = 'w' + hex_md5(form_action) + 's';
+    if(!window_name)
+      window_name = 'w' + hex_md5(form_action) + 's';
     w = popup(LOADING_STATUS_PAGE, window_name);
     form.target = w.name;
   }
