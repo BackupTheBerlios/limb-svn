@@ -5,10 +5,9 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: Object2NodeMapperTest.class.php 1085 2005-02-02 16:04:20Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/ObjectMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 
@@ -23,7 +22,8 @@ class ObjectMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $toolkit =& Limb :: toolkit();
+    $this->db =& new SimpleDb($toolkit->getDbConnection());
 
     $this->_cleanUp();
   }

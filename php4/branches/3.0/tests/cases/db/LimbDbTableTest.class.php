@@ -41,7 +41,8 @@ class LimbDbTableTest extends LimbTestCase
 
   function setUp()
   {
-    $this->conn =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $this->conn =& $toolkit->getDbConnection();
     $this->db_table_test = LimbDbTableFactory :: create('Test1');
 
     $this->_cleanUp();

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/../tests/cases/validation/rules/singlefield.inc.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/core/validators/rules/TreePathRule.class.php');
 
@@ -28,9 +27,9 @@ class TreePathRuleTest extends SingleFieldRuleTestCase
   {
     parent :: setUp();
 
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
-
     $toolkit =& Limb :: toolkit();
+
+    $this->db =& new SimpleDb($toolkit->getDbConnection());
     $tree =& $toolkit->getTree();
 
     $values['identifier'] = 'root';

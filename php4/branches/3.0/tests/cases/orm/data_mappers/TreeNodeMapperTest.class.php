@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/TreeNodeDataMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
@@ -45,7 +44,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $this->db =& new SimpleDb($this->toolkit->getDbConnection());
 
     $this->_cleanUp();
   }

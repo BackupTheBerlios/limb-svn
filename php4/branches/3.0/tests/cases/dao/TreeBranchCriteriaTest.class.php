@@ -12,7 +12,6 @@ require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
 require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/DAO/criteria/TreeBranchCriteria.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/tree/MaterializedPathTree.class.php');
 
 Mock :: generatePartial('LimbBaseToolkit',
@@ -41,8 +40,8 @@ class TreeBranchCriteriaTest extends LimbTestCase
 
   function setUp()
   {
-
-    $this->conn =& LimbDbPool :: getConnection();
+    $toolkit =& Limb :: toolkit();
+    $this->conn =& $toolkit->getDbConnection();
     $this->db =& new SimpleDb($this->conn);
 
     $this->_cleanUp();

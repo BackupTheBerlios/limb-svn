@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/ServiceMapper.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/BehaviourMapper.class.php');
 require_once(LIMB_DIR . '/core/Service.class.php');
@@ -50,7 +49,7 @@ class ServiceMapperTest extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $this->db =& new SimpleDb($this->toolkit->getDbConnection());
 
     $this->_cleanUp();
   }

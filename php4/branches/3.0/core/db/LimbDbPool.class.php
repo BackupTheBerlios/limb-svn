@@ -10,44 +10,30 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');//for conevenience
 
-class LimbDbConnectionConfiguration
-{
-  function get($name)
-  {
-    include_once(LIMB_DIR . '/core/util/ini_support.inc.php');
-    return getIniOption('common.ini', $name, 'DB');
-  }
-}
-
 class LimbDbPool
 {
-  function & newConnection($name, $conf = null)
-  {
-    if($conf === null)
-      $conf =& LimbDbPool :: getDefaultConfiguration();
+  var $conns = array();
 
+  function & newConnection(&$conf)
+  {
     $driver = $conf->get('driver');
     $class = ucfirst($driver) . 'Connection';
 
-    include_once(WACT_ROOT . 'db/drivers/' . $driver . '/driver.inc.php');
+    include_once(WACT_ROOT . '/db/drivers/' . $driver . '/driver.inc.php');
     $connection = new $class($conf);
     $connection->connect();
 
     return $connection;
   }
 
-  function & getDefaultConfiguration()
+  function & getConnection(&$conf)
   {
-    return new LimbDbConnectionConfiguration();
-  }
+    $name = $conf->get('name');
 
-  function & getConnection($name = 'default', $conf = null)
-  {
-    if (!isset($GLOBALS['DatabaseConnectionObjList'][$name]))
-    {
-      $GLOBALS['DatabaseConnectionObjList'][$name] =& LimbDbPool :: newConnection($name, $conf);
-    }
-    return $GLOBALS['DatabaseConnectionObjList'][$name];
+    if(!isset($this->conns[$name]))
+      $this->conns[$name] =& $this->newConnection($conf);
+
+    return $this->conns[$name];
   }
 }
 

@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/permissions/User.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
@@ -62,7 +61,7 @@ class VersionedObjectMapperTest extends LimbTestCase
     $this->toolkit->setReturnReference('getUser', $this->user);
 
     $this->delegated_mapper = new VersionedDataMapperStub($this);
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $this->db =& new SimpleDb($this->toolkit->getDbConnection());
 
     $this->_cleanUp();
 

@@ -53,7 +53,8 @@ function loadTestingDbDump($dump_path)
   $tables = array();
   $sql_array = file($dump_path);
 
-  $db = LimbDbPool :: getConnection();
+  $toolkit = Limb :: toolkit();
+  $conn = $toolkit->getDbConnection();
 
   foreach($sql_array as $sql)
   {
@@ -65,7 +66,7 @@ function loadTestingDbDump($dump_path)
 
     $tables[$matches[1]] = $matches[1];
 
-    $stmt =& $db->newStatement('DELETE FROM '. $matches[1]);
+    $stmt =& $conn->newStatement('DELETE FROM '. $matches[1]);
     $stmt->execute();
   }
 
@@ -75,7 +76,7 @@ function loadTestingDbDump($dump_path)
   {
     if(trim($sql))
     {
-      $stmt =& $db->newStatement($sql);
+      $stmt =& $conn->newStatement($sql);
       $stmt->execute();
     }
   }
@@ -86,11 +87,12 @@ function clearTestingDbTables()
   if(!isset($GLOBALS['testing_db_tables']))
     return;
 
-  $db = LimbDbPool :: getConnection();
+  $toolkit = Limb :: toolkit();
+  $conn = $toolkit->getDbConnection();
 
   foreach($GLOBALS['testing_db_tables'] as $table)
   {
-    $stmt =& $db->newStatement('DELETE FROM '. $table);
+    $stmt =& $conn->newStatement('DELETE FROM '. $table);
     $stmt->execute();
   }
 

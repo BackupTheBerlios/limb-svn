@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/Object2NodeMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 
@@ -23,7 +22,8 @@ class Object2NodeMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $toolkit =& Limb :: toolkit();
+    $this->db =& new SimpleDb($toolkit->getDbConnection());
 
     $this->_cleanUp();
   }

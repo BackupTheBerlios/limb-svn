@@ -13,7 +13,9 @@ require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/permissions/User.class.php');
 
 Mock :: generate('User');
-Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
+Mock :: generatePartial('LimbBaseToolkit',
+                        'LimbToolkitSessionDbDriverVersion',
+                        array('getUser'));
 
 class SessionDbDriverTest extends LimbTestCase
 {
@@ -29,13 +31,11 @@ class SessionDbDriverTest extends LimbTestCase
   function setUp()
   {
     $this->user = new MockUser($this);
-    $this->toolkit = new MockLimbToolkit($this);
+    $this->toolkit = new LimbToolkitSessionDbDriverVersion($this);
 
     $this->toolkit->setReturnReference('getUser', $this->user);
 
-    $conn =& LimbDbPool :: getConnection();
-    $this->db =& new SimpleDb($conn);
-    $this->toolkit->setReturnReference('getDbConnection', $conn);
+    $this->db =& new SimpleDb($this->toolkit->getDbConnection());
 
     Limb :: registerToolkit($this->toolkit);
 

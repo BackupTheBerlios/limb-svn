@@ -26,7 +26,8 @@ class UniqueEmailUserRuleTest extends SingleFieldRuleTestCase
   {
     parent :: setUp();
 
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $toolkit = Limb :: toolkit();
+    $this->db =& new SimpleDb($toolkit->getDbConnection());
 
     $this->_cleanUp();
 

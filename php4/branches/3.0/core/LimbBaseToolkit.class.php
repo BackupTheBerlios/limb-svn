@@ -12,12 +12,12 @@
 class LimbBaseToolkit// implements LimbToolkit
 {
   var $current_dataspace_name = 'default';
-  var $fetcher;
   var $response;
   var $request;
   var $session;
   var $user;
-  var $db;
+  var $db_pool;
+  var $default_db_config;
   var $tree;
   var $view;
   var $cache;
@@ -28,12 +28,12 @@ class LimbBaseToolkit// implements LimbToolkit
   function reset()
   {
     $this->current_dataspace_name = 'default';
-    $this->fetcher = null;
     $this->response = null;
     $this->request = null;
     $this->session = null;
     $this->user = null;
-    $this->db = null;
+    $this->db_pool = null;
+    $this->default_db_config = null;
     $this->tree = null;
     $this->view = null;
     $this->cache = null;
@@ -81,15 +81,34 @@ class LimbBaseToolkit// implements LimbToolkit
     return DataMapperFactory :: create($mapper_path);
   }
 
-  function & getDbConnection()
+  function setDefaultDbConnectionConfig(&$conf)
   {
-    if(is_object($this->db))
-      return $this->db;
+    $this->default_db_config =& $conf;
+  }
 
-    include_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
-    $this->db =& LimbDbPool :: getConnection();
+  function & getDefaultDbConnectionConfig()
+  {
+    if(is_object($this->default_db_config))
+      return $this->default_db_config;
 
-    return $this->db;
+    include_once(LIMB_DIR . '/core/db/IniBasedDbConnectionConfig.class.php');
+    $this->default_db_config = new IniBasedDbConnectionConfig('default');
+
+    return $this->default_db_config;
+  }
+
+  function & getDbConnection($conf = null)
+  {
+    if(!is_object($conf))
+      $conf = $this->getDefaultDbConnectionConfig();
+
+    if(!is_object($this->db_pool))
+    {
+      include_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+      $this->db_pool = new LimbDbPool();
+    }
+
+    return $this->db_pool->getConnection($conf);
   }
 
   function & getTree()
@@ -235,7 +254,6 @@ class LimbBaseToolkit// implements LimbToolkit
     $this->view =& Handle :: resolve($this->view);
     return $this->view;
   }
-
 
 }
 

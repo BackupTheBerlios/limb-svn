@@ -10,7 +10,6 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/tree/Path2BehaviourTranslator.class.php');
 require_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 Mock :: generatePartial('Path2BehaviourTranslator',
                         'Path2BehaviourTranslatorSpecialVersion',
@@ -37,10 +36,10 @@ class Path2BehaviourTranslatorTest extends LimbTestCase
     $this->translator = new Path2BehaviourTranslatorSpecialVersion($this);
     $this->translator->setReturnReference('_getPath2IdTranslator', $this->id_translator);
 
-    $this->db = new SimpleDb(LimbDbPool :: getConnection());
-
     $toolkit = Limb :: toolkit();
     $this->tree = $toolkit->getTree();
+
+    $this->db = new SimpleDb($toolkit->getDbConnection());
 
     $this->_cleanUp();
   }

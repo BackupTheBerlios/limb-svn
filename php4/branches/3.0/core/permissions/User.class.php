@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 

@@ -11,7 +11,6 @@
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
 require_once(LIMB_DIR . '/core/DAO/criteria/SingleServiceNodeCriteria.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
 require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
 

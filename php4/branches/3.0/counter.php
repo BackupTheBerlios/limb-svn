@@ -8,13 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/Limb.class.php');
 
 function getCounterRecord()
 {
-  $db =& LimbDbPool :: getConnection();
-  $db->sqlSelect('sys_stat_counter', '*');
-  return $db->fetchRow();
+  $toolkit =& Limb :: toolkit();
+  $db =& new SimpleDb($toolkit->getDbConnection());
+  $db->select('sys_stat_counter', '*');
+  return $db->getRow();
 }
 
 ?>

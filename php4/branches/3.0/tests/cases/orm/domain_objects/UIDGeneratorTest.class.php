@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/UIDGenerator.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class UIDGeneratorTest extends LimbTestCase
 {
@@ -23,7 +22,8 @@ class UIDGeneratorTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $toolkit =& Limb :: toolkit();
+    $this->db =& new SimpleDb($toolkit->getDbConnection());
 
     $this->_cleanUp();
   }

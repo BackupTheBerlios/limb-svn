@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/BehaviourMapper.class.php');
 require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
@@ -29,7 +28,8 @@ class BehaviourMapperTest extends LimbTestCase
   function setUp()
   {
     $this->mapper = new BehaviourMapper();
-    $this->db =& new SimpleDb(LimbDbPool :: getConnection());
+    $toolkit =& Limb :: toolkit();
+    $this->db =& new SimpleDb($toolkit->getDbConnection());
 
     $this->_cleanUp();
   }

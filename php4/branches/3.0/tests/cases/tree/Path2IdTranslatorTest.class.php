@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
-require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 
 class Path2IdTranslatorTest extends LimbTestCase
 {
@@ -24,10 +23,10 @@ class Path2IdTranslatorTest extends LimbTestCase
 
   function setUp()
   {
-    $this->translator = new Path2IdTranslator();
-    $this->db = new SimpleDb(LimbDbPool :: getConnection());
-
     $toolkit = Limb :: toolkit();
+
+    $this->translator = new Path2IdTranslator();
+    $this->db = new SimpleDb($toolkit->getDbConnection());
     $this->tree = $toolkit->getTree();
 
     $this->_cleanUp();
