@@ -224,8 +224,8 @@ class site_objects_datasource implements datasource, countable
   
   protected function _get_behaviours_ids()
   {
-    require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
-    return site_object_behaviour :: get_ids_by_names($this->behaviours);
+    require_once(LIMB_DIR . '/class/core/data_mappers/site_object_behaviour_mapper.class.php');
+    return site_object_behaviour_mapper :: get_ids_by_names($this->behaviours);
   }  
 }
 
