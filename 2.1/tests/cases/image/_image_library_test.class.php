@@ -18,22 +18,26 @@ class image_library_test extends UnitTestCase
   var $library = null;
   var $input_file = '';
   var $output_file = '';
-  
-  function image_library_test()
-  {
-  	parent :: UnitTestCase();  	
-  }
-  
+    
   function setUp()
   {
-  	$this->input_file = LIMB_DIR . '/tests/cases/image/images/1.jpg';
-  	$this->output_file = LIMB_DIR . '/tests/cases/image/images/2.jpg';
+  	$this->input_file = LIMB_DIR . '/tests/cases/image/images/input.jpg';
+  	$this->output_file = VAR_DIR . '/output.jpg';
+	
+	if(!file_exists($this->output_file))
+		touch($this->output_file);
 
     $input_type = 'jpeg';
     $output_type = 'jpeg';
     $this->library->set_input_file($this->input_file, $input_type);
     $this->library->set_output_file($this->output_file, $output_type); 
   }
+
+	function tearDown()
+	{
+		if(file_exists($this->output_file))
+			unlink($this->output_file);
+	}
   
   function test_installed()
   {
@@ -220,7 +224,6 @@ class image_library_test extends UnitTestCase
     $w = 50;
     $h = 50;
     
-    //trigger_error('Stop', E_USER_WARNING);
     $this->library->cut($x, $y, $w, $h, $bgcolor);
     $this->library->commit();
     

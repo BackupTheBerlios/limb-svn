@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: image_library.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define('FLIP_HORIZONTAL', 1);
@@ -194,6 +194,11 @@ class image_library
 	function rotate()
 	{
   }
+
+	function _hex_color_to_X11($color)
+	{
+		return preg_replace('/(\d{2})(\d{2})(\d{2})/', 'rgb:$1/$2/$3', $color);
+	}
 }
 
 ?>

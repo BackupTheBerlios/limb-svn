@@ -122,10 +122,12 @@ class image_netpbm extends image_library
 	{
 	  parent :: set_output_file($file_name, $type);
     
-    if (strtoupper($type) == 'GIF')
+    $this->from_pnm = '';
+
+	if (strtoupper($type) == 'GIF')
       $this->from_pnm = PNMQUANT . ' 256 | ';
     
-    $this->from_pnm .= constant(strtoupper('PNMTO' . $type)) . " > $file_name";
+	$this->from_pnm .= constant(strtoupper('PNMTO' . $type)) . " > $file_name";
 	}
 	
 	function reset()
@@ -141,8 +143,7 @@ class image_netpbm extends image_library
 	  array_unshift($this->cmd_array, $this->_to_pnm());
 	  array_push($this->cmd_array, $this->from_pnm);
 
-	  $cmd = implode(' | ', $this->cmd_array);
-	  
+	  echo $cmd = implode(' | ', $this->cmd_array);
     $this->_run_cmd($cmd);
 	  
 	  $this->reset();
@@ -301,7 +302,7 @@ class image_netpbm extends image_library
 
 		$cx = ($x < 0) ? -$x : 0;
 		$cy = ($y < 0) ? -$y : 0;
-		$cmd = PNMMAKE . " #{$bg_color} {$w} {$h} | " . PNMCOMP . " {$tmp_file} {$cx} {$cy}" . ' | ' . $this->_from_pnm();
+		$cmd = PNMMAKE . " " . $this->_hex_color_to_X11($bg_color) . " {$w} {$h} | " . PNMCOMP . " {$tmp_file} {$cx} {$cy}" . ' | ' . $this->_from_pnm();
 		
     $this->_run_cmd($cmd);
 
