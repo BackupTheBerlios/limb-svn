@@ -8,20 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
+require_once(LIMB_DIR . 'core/actions/navigation_item/create_navigation_item_action.class.php');
 
-class sys_action_access_db_table extends db_table
+class create_admin_navigation_item_action extends create_navigation_item_action
 {
-  function _define_columns()
+  function _define_controller_name()
   {
-    return array(
-      'id' => array('type' => 'numeric'),
-      'controller_id' => array('type' => 'numeric'),
-      'accessor_id' => array('type' => 'numeric'),
-      'action_name' => '',
-      'accessor_type' => array('type' => 'numeric'),
-    );
+    return 'admin_navigation_item_controller';
   }
 }
-
 ?>
