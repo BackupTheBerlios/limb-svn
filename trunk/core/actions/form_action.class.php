@@ -27,7 +27,7 @@ class form_action extends action
 				
 		parent :: action($name);
 	}
-			
+				
 	function is_first_time()
 	{
 		if($this->name)

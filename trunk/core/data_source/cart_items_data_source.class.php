@@ -5,36 +5,28 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: class_data_source.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/data_source/data_source.class.php');
+require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 
-class class_data_source extends data_source
+class cart_items_data_source extends data_source
 {
-	function class_data_source()
+	function cart_items_data_source()
 	{
 		parent :: data_source();
 	}
 
 	function & get_data_set(&$counter, $params=array())
 	{
-		$counter = 0;
+		$cart =& cart :: instance();
 		
-		if(!isset($_REQUEST['class_id']))
-			return new array_dataset();
+		$dataset =& $cart->get_items_array_dataset();
 		
-		$class_id = $_REQUEST['class_id'];
-		$db_table =& db_table_factory :: instance('sys_class');
-		$class_data = $db_table->get_row_by_id($class_id);
+		$counter = $dataset->get_total_row_count();
 		
-		if ($class_data)
-		{
-			$counter = 1;
-			return new array_dataset(array(0 => $class_data));
-		}
-		else
-			return new array_dataset(array());
+		return $dataset;
 	}		
 }
 

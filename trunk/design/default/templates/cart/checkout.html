@@ -1,0 +1,17 @@
+<core:WRAP file="simple_popup.html" placeholder="content">
+
+<form method="post" name="checkout_form" id="checkout_form">
+	<table width=100% border=0 cellspacing=0 cellpadding=0 height=100%>
+	<tr>
+		<td colspan=2 height=100% valign=top class=com4>
+				<core:INCLUDE file="/cart/checkout_fields.html">
+		</td>
+	</tr>
+  <tr>
+    <td colspan=2 align=center height=30><action_button action="checkout" name="checkout" type="submit" id="checkout" value="Checkout" class="button">
+    &nbsp;
+    <input name="cancel" type="button" id="cancel" value="Cancel" onclick='window.close();' class="button">
+    </td>
+  </tr>
+	</table>	
+</form>

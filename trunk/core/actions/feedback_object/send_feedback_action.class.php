@@ -13,7 +13,6 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
-
 require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class send_feedback_action extends form_action

@@ -30,6 +30,7 @@ require_once(LIMB_DIR . 'core/lib/http/control_flow.inc.php');
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/model/stats/stats_register.class.php');
+require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 
 start_user_session();
 debug :: add_timing_point('require_done');

@@ -1,0 +1,24 @@
+Заказ с сайта!
+
+Имя заказчика: {$name}
+
+Мыло: {$email}
+
+Адрес: {$address}
+
+Телефон: {$phone}
+
+Заметки: {$notes}
+
+
+Содержимое заказа:
+
+Наименование       Цена      Кол-во     Сумма       Примечание
+
+<list:LIST id='cart_items'>
+<list:ITEM>
+
+{$description}       {$price}      {$amount}     {$summ}       {$note}
+
+</list:ITEM>
+</list:LIST>

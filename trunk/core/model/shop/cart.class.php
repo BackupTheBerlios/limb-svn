@@ -8,195 +8,116 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . 'core/model/shop/cart_item.class.php');
+require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
+
+define('CART_DEFAULT_ID', 1);
 
 class cart
 {		
-	var $_catalog_id = array();
+	var $_cart_id = CART_DEFAULT_ID;
 	var $_items = array();
-	var $_status = '';
-	var $_allow_zero_item_amount = false;
 	
-	function cart($catalog_id)
+	function cart($cart_id = CART_DEFAULT_ID)
 	{
-		$this->_catalog_id = $catalog_id;
-		
-		$this->_items =& session :: get('cart_'. $catalog_id .'_items');
-		$this->_status =& session :: get('cart_'. $catalog_id .'_status');
-	}
-
-	function get_catalog_id()	
-	{
-		return $this->_catalog_id;
+		$this->_cart_id = $cart_id;
+		$this->_items = array();
 	}
 	
- 	function & instance($catalog_id = '')
-  {
-  	$class_name = 'session_cart';
-  	$class_index = (!$catalog_id ? 'SESSION_CART' : 'SESSION_CART_'. $catalog_id);
-  	$class_index = 'global_'. $class_index;
+	function get_cart_id()	
+	{
+		return $this->_cart_id;
+	}
+	
+ 	function & instance($cart_id = CART_DEFAULT_ID)
+  {  	
+  	$obj = null;
   	
-  	$obj =& $GLOBALS[$class_index];
-
-  	if(get_class($obj) != $class_name)
+  	$instance_name = "global_cart_instance_{$cart_id}";
+  	
+  	if(isset($_SESSION[$instance_name]))
+			$obj =& $_SESSION[$instance_name];
+		
+  	if(!$obj || get_class($obj) != 'cart')
   	{
-  		$obj = & new $class_name($catalog_id);
-  		$GLOBALS[$class_index] =& $obj;
+  		$obj =& new cart($cart_id);
+  		$_SESSION[$instance_name] =& $obj;
   	}
   	
   	return $obj;
   }
 
-	function add_items($items = array())
+	function add_item(&$new_item)
 	{
-		if (!count($items))
-			return;
-		
-		foreach($items as $item_id => $data)
-		{
-			$this->add_item($item_id, $data['amount'], $data['price'], $data['description'] , $data['notes']);
-		}	
-	}
+		$id = $new_item->get_id();
 
-	function add_item($item_id, $amount = 0, $price = '', $description = array(), $notes = '')
-	{
-		if ((!is_numeric($amount)) || ((integer)$amount < 0))
-			$amount = 0;
+		if ($new_item->get_amount() <= 0)
+			$new_item->set_amount(1);
 		
-		if ((!$amount) && (!$this->_allow_zero_item_amount))
-			return;
-		
-		if(!isset($this->_items[$item_id]))
-			$this->_items[$item_id]['amount'] = $amount;
-		else	
-			$this->_items[$item_id]['amount'] = $this->_items[$item_id]['amount'] + $amount;
+		if(($item =& $this->get_item($id)) !== false)
+			$new_item->summ_amount($item);
 
-		$this->_items[$item_id]['price'] = $price;
-		$this->_items[$item_id]['description'] = $description;
-		$this->_items[$item_id]['notes'] = $notes;
+		$this->_items[$new_item->get_id()] = &$new_item;
 	}
 	
-	function set_items_amounts($items = array())
+	function & get_item($id)
 	{
-		if (!count($items))
-			return;
+		if(isset($this->_items[$id]))
+			return $this->_items[$id];
+		else
+			return false;
+	}
 		
-		foreach($items as $item_id => $new_amount)
-			$this->set_item_amount($item_id, $new_amount);
-	}
-
-	function set_item_amount($item_id, $new_amount = 0)
-	{
-		if ((!is_numeric($new_amount)) || ((integer)$new_amount < 0))
-			$new_amount = 0;
-		
-		if ((!$new_amount) && (!$this->_allow_zero_item_amount))
-		{
-			if (isset($this->_items[$item_id]))
-				unset($this->_items[$item_id]);
-			return;
-		}
-
-		$this->_items[$item_id]['amount'] = $new_amount;
-	}
-
-	function set_items_notes($items = array())
-	{
-		if (!count($items))
-			return;
-		
-		foreach($items as $item_id => $new_note)
-			$this->set_item_amount($item_id, $new_note);
-	}
-
-	function set_item_note($item_id, $new_note = '')
-	{
-		if (isset($this->_items[$item_id]))
-			$this->_items[$item_id]['note'] = $new_note;
-	}
-
-	function update_cart_items_property($propety_name, $items = array())
-	{
-		if (!count($items) || !$propety_name)
-			return;
-		foreach($items as $item_id => $new_value)
-			$this->update_cart_item_property($propety_name, $item_id, $new_value);
-	}
-
-	function update_cart_item_property($propety_name, $item_id, $new_value = '')
-	{
-		if (!$propety_name)
-			return;
-		
-		if (isset($this->_items[$item_id]))
-			$this->_items[$item_id][$propety_name] = $new_value;
-	}
-	
 	function get_total_summ()
 	{
 		$summ = 0;
-		if ((!count($this->_items)) || (!is_array($this->_items)))
-			return $summ;
 			
-		foreach($this->_items as $item_id => $item_data)
-			$summ = $item_data['price'] * $item_data['amount'] + $summ;
+		foreach($this->_items as $item)
+			$summ += $item->get_summ();
 		
 		return $summ;
 	}
 
-	function delete_item($item_id)
+	function remove_item($item_id)
 	{
 		if (isset($this->_items[$item_id]))
 			unset($this->_items[$item_id]);
 	}
-
-	function delete_items($items = array())
+	
+	function remove_items($item_ids)
 	{
-		if (!count($items))
-			return;
-		
-		foreach($items as $item_id => $item_data)
-			$this->delete_item($item_id);
+		foreach($item_ids as $id)
+			$this->remove_item($id);
 	}
 	
 	function get_items()
 	{
 		return $this->_items;		
 	}
-
-	function get_status()
+	
+	function get_items_array_dataset()
 	{
-		return $this->_status;		
+		$result_array = array();
+		foreach($this->_items as $id => $item)
+		{
+			$result_array[$id] = $item->export_attributes();
+			$result_array[$id]['summ'] = $item->get_summ();
+		}
+		
+		return new array_dataset($result_array);
 	}
 
-	function set_status($new_status = '')
-	{
-		$this->_status = $new_status;
-	}
-
-	function get_items_count()
+	function count_items()
 	{
 		if (is_array($this->_items))
-			return count($this->_items);		
+			return count($this->_items);	
 		else
 			return 0;	
 	}
 
-	function get_pieces_count()
-	{
-		$result = 0;
-
-		if (!is_array($this->_items))
-			return $result;		
-		
-		foreach($this->_items as $id => $data)
-			$result += $data['amount'];
-		
-		return $result;
-	}
-
 	function clear()
 	{
-		$this->_items =  array();		
+		$this->_items = array();		
 	}
 }
 ?>

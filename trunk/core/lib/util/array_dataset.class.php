@@ -5,13 +5,10 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: array_dataset.class.php 456 2004-02-16 18:52:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-/**
-* Provides DataSpace combatible Iterator an array of associative arrays
-* - a record set
-*/
+
 class array_dataset
 {
 	/**
