@@ -30,7 +30,7 @@ class unique_user_rule extends single_field_rule
 				$this->current_identifier == $value)
 			return;
 
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 		
 		$sql = 'SELECT *
 						FROM sys_site_object as sco, user as tn

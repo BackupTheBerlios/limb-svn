@@ -36,71 +36,6 @@ class site_object extends object
     return new DefaultSiteObjectIdentifierGenerator();
   }
 
-  public function fetch_ids($params=array(), $sql_params=array(), $sort_ids=array())
-  {
-    if (!isset($params['restrict_by_class']) ||
-        (isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
-    {
-      $sql_params['conditions'][] = (' AND sso.class_id = ' . $this->get_class_id());
-    }
-
-    $sql =
-      sprintf( "SELECT sso.id as id
-                FROM
-                sys_site_object as sso, sys_site_object_tree as ssot
-                %s
-                WHERE sso.id=ssot.object_id
-                %s %s",
-                $this->_add_sql($sql_params, 'tables'),
-                $this->_add_sql($sql_params, 'conditions'),
-                $this->_add_sql($sql_params, 'group')
-              );
-
-    $db = db_factory :: instance();
-
-    $limit = isset($params['limit']) ? $params['limit'] : 0;
-    $offset = isset($params['offset']) ? $params['offset'] : 0;
-
-    $result = array();
-
-    if(isset($params['order']))
-    {
-      $sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
-
-      $db->sql_exec($sql, $limit, $offset);
-
-      while($row = $db->fetch_row())
-        $result[] = $row['id'];
-
-      return $result;
-    }
-    elseif(count($sort_ids))
-    {
-      $db->sql_exec($sql);
-
-      if(!$arr = $db->get_array('id'))
-        return $result;
-
-      foreach($sort_ids as $key)
-        if (isset($arr[$key]))
-          $result[] = $key;
-
-      if($limit)
-        $result = array_splice($result, $offset, $limit);
-
-      return $result;
-    }
-    else
-    {
-      $db->sql_exec($sql, $limit, $offset);
-
-      while($row = $db->fetch_row())
-        $result[] = $row['id'];
-
-      return $result;
-    }
-  }
-
   public function fetch($params=array(), $sql_params=array())
   {
     $sql =
@@ -145,7 +80,7 @@ class site_object extends object
     if(isset($params['order']))
       $sql .= ' ORDER BY ' . $this->_build_order_sql($params['order']);
 
-    $db = db_factory :: instance();
+    $db = Limb :: toolkit()->getDB();
 
     $limit = isset($params['limit']) ? $params['limit'] : 0;
     $offset = isset($params['offset']) ? $params['offset'] : 0;
@@ -153,37 +88,6 @@ class site_object extends object
     $db->sql_exec($sql, $limit, $offset);
 
     return $db->get_array('id');
-  }
-
-  public function fetch_by_ids($ids_array, $params=array(), $sql_params=array())
-  {
-    if (!count($ids_array))
-      return array();
-
-    $ids = '('. implode(' , ', $ids_array) . ')';
-
-    if(isset($params['limit']))
-    {
-      $ids_sql_params = $sql_params;
-      $ids_sql_params['conditions'][] =  " AND sso.id IN {$ids}";
-
-      $ids_array = $this->fetch_ids($params, $ids_sql_params, $ids_array);
-
-      if (!count($ids_array))
-        return array();
-
-    unset($params['limit']);
-
-      if(isset($params['offset']))
-      unset($params['offset']);
-
-      $sql_params['conditions'] = array();
-    }
-
-    $ids = '('. implode(' , ', $ids_array) . ')';
-    $sql_params['conditions'][] =  " AND sso.id IN {$ids}";
-
-    return $this->fetch($params, $sql_params);
   }
 
   protected function _add_sql($add_sql, $type)
@@ -204,14 +108,8 @@ class site_object extends object
     return implode(', ', $columns);
   }
 
-  public function fetch_count($params=array(), $sql_params=array())
+  public function fetch_count($sql_params=array())
   {
-    if (!isset($params['restrict_by_class']) ||
-        (isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
-    {
-      $sql_params['conditions'][] = (' AND sso.class_id = ' . $this->get_class_id());
-    }
-
     $sql = sprintf("SELECT COUNT(sso.id) as count
                     FROM sys_site_object as sso %s
                     WHERE sso.id %s %s",
@@ -220,7 +118,7 @@ class site_object extends object
                   $this->_add_sql($sql_params, 'group')
                 );
 
-    $db = db_factory :: instance();
+    $db = Limb :: toolkit()->getDB();
 
     $db->sql_exec($sql);
 
@@ -231,18 +129,6 @@ class site_object extends object
     }
     else
       return $db->count_selected_rows();
-  }
-
-  public function fetch_by_ids_count($ids_array, $params=array(), $sql_params=array())
-  {
-    if (!count($ids_array))
-      return array();
-
-    $ids = '('. implode(' , ', $ids_array) . ')';
-
-    $sql_params['conditions'][] =  " AND sso.id IN {$ids}";
-
-    return $this->fetch_count($params, $sql_params);
   }
 
   public function create($is_root = false)
@@ -364,7 +250,7 @@ class site_object extends object
 
 	static public function get_object_class_name_by_id($object_id)
 	{
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 
 		$sql = "SELECT sc.class_name as class_name
 			FROM sys_site_object as sso, sys_class as sc
@@ -599,7 +485,7 @@ class site_object extends object
             FROM sys_behaviour
             WHERE id={$id}";
 
-    $db = db_factory :: instance();
+    $db = Limb :: toolkit()->getDB();
 
     $db->sql_exec($sql);
 
@@ -619,7 +505,7 @@ class site_object extends object
             WHERE ssot.id = {$parent_node_id}
             AND sso.id = ssot.object_id";
 
-    $db = db_factory :: instance();
+    $db = Limb :: toolkit()->getDB();
 
     $db->sql_exec($sql);
 

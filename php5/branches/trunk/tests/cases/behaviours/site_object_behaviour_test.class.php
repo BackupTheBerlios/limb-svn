@@ -39,6 +39,7 @@ class site_object_behaviour_test extends LimbTestCase
   { 
   	$this->db = db_factory :: instance();
     $this->toolkit = new MockLimbToolkit($this);
+    $this->toolkit->setReturnValue('getDB', $this->db);
     
   	$this->_clean_up();
   	

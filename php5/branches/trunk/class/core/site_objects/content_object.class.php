@@ -38,13 +38,19 @@ class content_object extends site_object
   {
     $db_table = $this->get_db_table();
     
-    $sql_params['columns'][] = ' ' . $db_table->get_columns_for_select('tn', array('id')) . ', tn.id as record_id, ';
+    $sql_params['columns'][] = ' ' . $db_table->get_columns_for_select('tn', array('id')) . ',';
     
     $table_name = $db_table->get_table_name();
     $sql_params['tables'][] = ",{$table_name} as tn";
     
     $sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
     
+    return $this->_do_parent_fetch($params, $sql_params);
+  }
+  
+  //for mocking
+  protected function _do_parent_fetch($params, $sql_params)
+  {
     return parent :: fetch($params, $sql_params);
   }
   
@@ -86,18 +92,12 @@ class content_object extends site_object
                                   ' AND version <> ' . $this->get_version());
   }
   
-  public function fetch_ids($params=array(), $sql_params=array(), $sort_ids = array())
+  protected function _do_parent_fetch_count($sql_params)
   {
-    $db_table = $this->get_db_table();
-    $table_name = $db_table->get_table_name();
-    $sql_params['tables'][] = ",{$table_name} as tn";
-    
-    $sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
-    
-    return parent :: fetch_ids($params, $sql_params, $sort_ids);
+    return parent :: fetch_count($sql_params);
   }
-
-  public function fetch_count($params=array(), $sql_params=array())
+  
+  public function fetch_count($sql_params=array())
   {
     $db_table = $this->get_db_table();
     $table_name = $db_table->get_table_name();
@@ -105,7 +105,7 @@ class content_object extends site_object
     
     $sql_params['conditions'][] = 'AND sso.id=tn.object_id AND sso.current_version=tn.version';
     
-    return parent :: fetch_count($params, $sql_params);
+    return $this->_do_parent_fetch_count($sql_params);
   }
     
   protected function _create_version_record()

@@ -82,14 +82,15 @@ class site_objects_datasource_test extends LimbTestCase
                                       array($object_ids, $action = 'test_action'));
 
     $params = array('limit' => 10, 'offset' => 5, 'order' => null);
-    $sql_params = array('conditions' => array('sso.class_id = 1', 
+    $sql_params = array('conditions' => array('sso.class_id = 1',  
+                                              " AND sso.id IN ('1' , '2')", 
                                               ' AND sso.class_id = 10',
                                               " AND sso.behaviour_id IN ('100' , '101')"));
 
     $this->site_object->expectOnce('get_class_id');
     $this->site_object->setReturnValue('get_class_id', 10);
-    $this->site_object->expectOnce('fetch_by_ids', array($object_ids, $params, $sql_params));
-    $this->site_object->setReturnValue('fetch_by_ids', $objects, array($object_ids, $params, $sql_params));
+    $this->site_object->expectOnce('fetch', array($params, $sql_params));
+    $this->site_object->setReturnValue('fetch', $objects, array($params, $sql_params));
     
     $this->datasource->expectOnce('_get_behaviours_ids');
     $this->datasource->setReturnValue('_get_behaviours_ids', array(100, 101));
@@ -101,7 +102,7 @@ class site_objects_datasource_test extends LimbTestCase
     $this->datasource->set_limit(10);
     $this->datasource->set_offset(5);
     $this->datasource->set_restrict_by_class(true);
-    $this->datasource->set_fetch_method('fetch_by_ids');
+    $this->datasource->set_fetch_method('fetch');
     $this->datasource->set_site_object_class_name('some_class');
     $this->datasource->set_permissions_action($action);
     $this->datasource->set_raw_sql_params(array('conditions' => array('sso.class_id = 1')));
@@ -114,15 +115,14 @@ class site_objects_datasource_test extends LimbTestCase
   function test_fetch_cache_hit()
   {
     $datasource = new special_datasource_for_cache_hit($this);
-    $datasource->setReturnValue('get_accessible_object_ids', $ids = array(1, 2));
     $datasource->setReturnValue('_collect_params', $params = array('p1' => '1'));
     $datasource->setReturnValue('_collect_raw_sql_params', $sql_params = array('p2' => '2'));
     
-    $datasource->set_fetch_method($method = 'fetch_by_ids');
+    $datasource->set_fetch_method($method = 'fetch');
 
     $this->site_object->expectNever($method);
     
-    $this->cache->expectOnce('get', array(array($ids, $params, $sql_params, $method), 
+    $this->cache->expectOnce('get', array(array($params, $sql_params, $method), 
                                           site_objects_datasource :: CACHE_GROUP));
     $this->cache->setReturnValue('get', $objects = 'some_data');
     
@@ -137,40 +137,23 @@ class site_objects_datasource_test extends LimbTestCase
     );
     
     $datasource = new special_datasource_for_cache_hit($this);
-    $datasource->setReturnValue('get_accessible_object_ids', $ids = array(1, 2));
     $datasource->setReturnValue('_collect_params', $params = array('p1' => '1'));
     $datasource->setReturnValue('_collect_raw_sql_params', $sql_params = array('p2' => '2'));
     
-    $datasource->set_fetch_method($method = 'fetch_by_ids');
+    $datasource->set_fetch_method($method = 'fetch');
 
-    $key = array($ids, $params, $sql_params, $method);
+    $key = array($params, $sql_params, $method);
     $this->cache->expectOnce('get', array($key, site_objects_datasource :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
-    $this->site_object->expectOnce('fetch_by_ids', array($ids, $params, $sql_params));
-    $this->site_object->setReturnValue('fetch_by_ids', $objects, array($ids, $params, $sql_params));
+    $this->site_object->expectOnce('fetch', array($params, $sql_params));
+    $this->site_object->setReturnValue('fetch', $objects, array($params, $sql_params));
 
     $this->cache->expectOnce('put', array($key,$objects, site_objects_datasource :: CACHE_GROUP));
     
     $this->assertEqual($datasource->fetch(), $objects);
   }
     
-  function test_count_total_zero_no_accessible_object_ids()
-  {
-    Mock :: generatePartial('site_objects_datasource', 
-                            'special_datasource_for_count_total_zero',
-                            array('get_accessible_object_ids'));
-    
-    
-    $this->site_object->expectNever('fetch_by_ids_count');
-    
-    $datasource = new special_datasource_for_count_total_zero($this);
-    $datasource->__construct();
-    $datasource->set_fetch_method('fetch_by_ids');
-    
-    $this->assertEqual($datasource->count_total(), 0);
-  }
-  
   function test_count_total_ok()
   {
     Mock :: generatePartial('site_objects_datasource', 
@@ -183,16 +166,18 @@ class site_objects_datasource_test extends LimbTestCase
 
     $datasource->setReturnValue('get_accessible_object_ids', $object_ids);
     
-    $sql_params = array('conditions' => array('sso.class_id = 1', ' AND sso.class_id = 10'));
+    $sql_params = array('conditions' => array('sso.class_id = 1',
+                                              " AND sso.id IN ('1' , '2')",
+                                              ' AND sso.class_id = 10'));
     
     $this->site_object->expectOnce('get_class_id');
     $this->site_object->setReturnValue('get_class_id', 10);
-    $this->site_object->expectOnce('fetch_by_ids_count', array($object_ids, $sql_params));
-    $this->site_object->setReturnValue('fetch_by_ids_count', 2, array($object_ids, $sql_params));
+    $this->site_object->expectOnce('fetch_count', array($sql_params));
+    $this->site_object->setReturnValue('fetch_count', 2, array($sql_params));
 
     $datasource->set_object_ids($object_ids);
     $datasource->set_restrict_by_class(true);
-    $datasource->set_fetch_method('fetch_by_ids');
+    $datasource->set_fetch_method('fetch');
     $datasource->set_site_object_class_name('some_class');
     $datasource->set_raw_sql_params(array('conditions' => array('sso.class_id = 1')));
 
@@ -202,14 +187,13 @@ class site_objects_datasource_test extends LimbTestCase
   function test_count_total_cache_hit()
   {
     $datasource = new special_datasource_for_cache_hit($this);
-    $datasource->setReturnValue('get_accessible_object_ids', $ids = array(1, 2));
     $datasource->setReturnValue('_collect_raw_sql_params', $sql_params = array('p2' => '2'));
     
-    $datasource->set_fetch_method('fetch_by_ids');
+    $datasource->set_fetch_method('fetch');
 
-    $this->site_object->expectNever($method = 'fetch_by_ids_count');
+    $this->site_object->expectNever($method = 'fetch_count');
     
-    $this->cache->expectOnce('get', array(array($ids, $sql_params, $method), 
+    $this->cache->expectOnce('get', array(array($sql_params, $method), 
                                           site_objects_datasource :: CACHE_GROUP));
     $this->cache->setReturnValue('get', $result = 101);
     
@@ -221,17 +205,16 @@ class site_objects_datasource_test extends LimbTestCase
     $result = 101;
     
     $datasource = new special_datasource_for_cache_hit($this);
-    $datasource->setReturnValue('get_accessible_object_ids', $ids = array(1, 2));
     $datasource->setReturnValue('_collect_raw_sql_params', $sql_params = array('p2' => '2'));
     
-    $datasource->set_fetch_method('fetch_by_ids');
+    $datasource->set_fetch_method('fetch');
 
-    $key = array($ids, $sql_params, $method = 'fetch_by_ids_count');
+    $key = array($sql_params, $method = 'fetch_count');
     $this->cache->expectOnce('get', array($key, site_objects_datasource :: CACHE_GROUP));
     $this->cache->setReturnValue('get', null);
 
-    $this->site_object->expectOnce($method, array($ids, $sql_params));
-    $this->site_object->setReturnValue($method, $result, array($ids, $sql_params));
+    $this->site_object->expectOnce($method, array($sql_params));
+    $this->site_object->setReturnValue($method, $result, array($sql_params));
 
     $this->cache->expectOnce('put', array($key, $result, site_objects_datasource :: CACHE_GROUP));
     

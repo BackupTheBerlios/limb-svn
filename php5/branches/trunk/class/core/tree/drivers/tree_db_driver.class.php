@@ -30,7 +30,7 @@ abstract class tree_db_driver extends tree_driver
 
 	function __construct()
 	{
-		$this->_db = db_factory :: instance();
+		$this->_db = Limb :: toolkit()->getDB();
 	}
 	
 	public function set_node_table($table_name)

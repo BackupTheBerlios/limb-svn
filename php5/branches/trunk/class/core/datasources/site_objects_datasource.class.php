@@ -114,6 +114,9 @@ class site_objects_datasource implements datasource, countable
   {
     $params = $this->raw_sql_params;
     
+		if ($object_ids = $this->get_accessible_object_ids())
+      $params['conditions'][] = ' AND ' . sql_in('sso.id', $object_ids);
+    
     if ($this->restrict_by_class)
     {
       $params['conditions'][] = ' AND sso.class_id = ' . $this->_get_site_object()->get_class_id();
@@ -166,13 +169,10 @@ class site_objects_datasource implements datasource, countable
   
   public function count_total()
   {
-		if (!$object_ids = $this->get_accessible_object_ids())
-		  return 0;
-    
     $sql_params = $this->_collect_raw_sql_params();
     $count_method = $this->fetch_method . '_count';
     
-    $key = array($object_ids, $sql_params, $count_method);
+    $key = array($sql_params, $count_method);
     $cache = Limb :: toolkit()->getCache();
     
     $result = $cache->get($key, self :: CACHE_GROUP);
@@ -182,7 +182,7 @@ class site_objects_datasource implements datasource, countable
         
     $site_object = $this->_get_site_object();
     
-    $result = $site_object->$count_method($object_ids, $sql_params);
+    $result = $site_object->$count_method($sql_params);
     
     $cache->put($key, $result, self :: CACHE_GROUP);
     
@@ -191,14 +191,11 @@ class site_objects_datasource implements datasource, countable
     
   public function fetch()
   {
-		if (!$object_ids = $this->get_accessible_object_ids())
-		  return array();
-    
     $params = $this->_collect_params();
     $sql_params = $this->_collect_raw_sql_params();
     $fetch_method = $this->fetch_method;
     
-    $key = array($object_ids, $params, $sql_params, $fetch_method);
+    $key = array($params, $sql_params, $fetch_method);
     $cache = Limb :: toolkit()->getCache();
     
     $result = $cache->get($key, self :: CACHE_GROUP);
@@ -208,9 +205,7 @@ class site_objects_datasource implements datasource, countable
 
 		$site_object = $this->_get_site_object();
     
-		$result = $site_object->$fetch_method($object_ids, 
-                                          $params, 
-                                          $sql_params);
+		$result = $site_object->$fetch_method($params, $sql_params);
     
     $cache->put($key, $result, self :: CACHE_GROUP);
     

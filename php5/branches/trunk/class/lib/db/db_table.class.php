@@ -29,7 +29,7 @@ class db_table
     $this->_constraints = $this->_define_constraints();
     $this->_primary_key_name = $this->_define_primary_key_name();
    
-    $this->_db = db_factory :: instance();
+    $this->_db = Limb :: toolkit()->getDB();
   }
       
   protected function _define_db_table_name()

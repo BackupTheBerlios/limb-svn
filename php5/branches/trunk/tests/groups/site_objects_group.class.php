@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class site_objects_manipulation_group extends LimbGroupTest 
+class site_objects_group extends LimbGroupTest 
 {
-	function site_objects_manipulation_group() 
+	function site_objects_group() 
 	{
-	  $this->LimbGroupTest('site objects manipulation tests');
+	  $this->LimbGroupTest('site objects tests');
 	}
 	
 	function getTestCasesHandles()
 	{
- 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/site_objects_manipulation');
+ 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/site_objects');
 	}		
 }
 ?>

@@ -56,7 +56,7 @@ function _session_db_close()
 
 function _session_db_read($session_id)
 {
-  $db = db_factory :: instance();
+  $db = Limb :: toolkit()->getDB();
   
 	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
 	
@@ -79,7 +79,7 @@ function _session_db_read($session_id)
 
 function _session_db_write($session_id, $value)
 {
-	$db = db_factory :: instance();	
+	$db = Limb :: toolkit()->getDB();	
 	
 	$db->sql_select('sys_session', 'session_id', "session_id='{$session_id}'");
 	

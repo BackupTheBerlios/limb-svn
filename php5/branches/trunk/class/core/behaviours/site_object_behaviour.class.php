@@ -85,7 +85,7 @@ class site_object_behaviour
             AND sso.behaviour_id=sys_behaviour.id
             AND sso.id=ssot.object_id";
 
-    $db = db_factory :: instance();
+    $db = Limb :: toolkit()->getDB();
 
     $db->sql_exec($sql);
 
@@ -101,7 +101,7 @@ class site_object_behaviour
   
   static public function get_ids_by_names($names)
   {
-    $db = db_factory :: instance();
+    $db = Limb :: toolkit()->getDB();
 
     $db->sql_select('sys_behaviour', 'id', sql_in('name', $names));
     

@@ -378,7 +378,6 @@ class content_object_manipulation_test extends LimbTestCase
     $this->assertEqual($record['annotation'], $this->object->get('annotation'));
     $this->assertEqual($record['content'], $this->object->get('content'));
     $this->assertEqual($record['news_date'], $this->object->get('news_date'));
-    
   }   
 }
 

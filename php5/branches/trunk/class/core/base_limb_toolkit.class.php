@@ -60,7 +60,7 @@ class BaseLimbToolkit implements LimbToolkit
     if($this->db)
       return $this->db;
     
-    include_once(LIMB_DIR . '/class/core/lib/db/db_factory.class.php');
+    include_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
     $this->db = db_factory :: instance();
     
     return $this->db;
