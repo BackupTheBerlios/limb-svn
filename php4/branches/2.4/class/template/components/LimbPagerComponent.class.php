@@ -17,12 +17,8 @@ class LimbPagerComponent extends Component
   var $total_page_count;
 
   var $page_counter;
-  var $section_counter;
 
-  var $current_page;
-  var $current_section;
-
-  var $section_has_changed = false;
+  var $displayed_page;
 
   var $pages_per_section = 10;
   var $items_per_page = 20;
@@ -46,6 +42,11 @@ class LimbPagerComponent extends Component
     $this->pages_per_section = $pages;
   }
 
+  function getPagesPerSection()
+  {
+    return $this->pages_per_section;
+  }
+
   function getTotalItems()
   {
     return $this->total_items;
@@ -61,17 +62,17 @@ class LimbPagerComponent extends Component
     $this->items_per_page = $items;
   }
 
-  function getCurrentPageBeginItemNumber()
+  function getDisplayedPageBeginItem()
   {
     if($this->total_items < 1)
       return 0;
 
-    return $this->items_per_page * ($this->current_page - 1) + 1;
+    return $this->items_per_page * ($this->displayed_page - 1) + 1;
   }
 
-  function getCurrentPageEndItemNumber()
+  function getDisplayedPageEndItem()
   {
-    $res = $this->items_per_page * $this->current_page;
+    $res = $this->items_per_page * $this->displayed_page;
 
     if($res > $this->total_items)
       return $this->total_items;
@@ -84,29 +85,29 @@ class LimbPagerComponent extends Component
     return $this->items_per_page;
   }
 
-  function getPagesCount()
+  function getTotalPages()
   {
     return $this->total_page_count;
   }
 
   function isFirst()
   {
-    return ($this->current_page == 1);
+    return ($this->displayed_page == 1);
   }
 
   function hasPrev()
   {
-    return ($this->current_page > 1);
+    return ($this->displayed_page > 1);
   }
 
   function hasNext()
   {
-    return ($this->current_page < $this->total_page_count);
+    return ($this->displayed_page < $this->total_page_count);
   }
 
   function isLast()
   {
-    return ($this->current_page == $this->total_page_count);
+    return ($this->displayed_page == $this->total_page_count);
   }
 
   function prepare()
@@ -114,28 +115,22 @@ class LimbPagerComponent extends Component
     $this->_initBaseUrl();
 
     $this->total_page_count = ceil($this->total_items / $this->items_per_page);
+
     if ($this->total_page_count < 1)
-    {
       $this->total_page_count = 1;
-    }
 
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
 
-    $this->current_page = $request->get($this->getPagerId());
+    $this->displayed_page = $request->get($this->getPagerId());
 
-    if (empty($this->current_page))
-    {
-      $this->current_page = 1;
-    }
+    if (empty($this->displayed_page))
+      $this->displayed_page = 1;
 
-    if($this->current_page > $this->total_page_count)
-      $this->current_page = $this->total_page_count;
+    if($this->displayed_page > $this->total_page_count)
+      $this->displayed_page = $this->total_page_count;
 
-    $this->page_counter = 0;
-    $this->section_counter = 1;
-
-    $this->current_section = ceil($this->current_page / $this->pages_per_section);
+    $this->page_counter = 1;
   }
 
   function _initBaseUrl()
@@ -148,84 +143,91 @@ class LimbPagerComponent extends Component
     $this->base_url = $uri->toString();
   }
 
-  function next()
+  function nextPage()
   {
     $this->page_counter++;
 
-    if(ceil($this->page_counter / $this->pages_per_section) != $this->section_counter)
-    {
-      $this->section_counter = ceil($this->page_counter/$this->pages_per_section);
-      $this->section_has_changed = true;
-    }
-    else
-    {
-      $this->section_has_changed = false;
-    }
+    return $this->isValid();
+  }
 
+  function isValid()
+  {
     return ($this->page_counter <= $this->total_page_count);
   }
 
-  function getPageCounter()
+  function nextSection()
+  {
+    $this->page_counter += $this->pages_per_section;
+
+    return $this->isValid();
+  }
+
+  function getPage()
   {
     return $this->page_counter;
   }
 
-  function getSectionCounter()
+  function isDisplayedPage()
   {
-    return $this->section_counter;
+    return $this->page_counter == $this->displayed_page;
   }
 
-  function isCurrentPage()
+  function isDisplayedSection()
   {
-    return $this->page_counter == $this->current_page;
-  }
-
-  function isDisplayPage()
-  {
-    if ($this->section_counter != $this->current_section)
-      return false;
-    else
+    if($this->getSection() == $this->getDisplayedSection())
       return true;
+    else
+      return false;
   }
 
-  function hasSectionChanged()
+  function getSection()
   {
-    if($this->section_has_changed)
-      $this->page_counter += $this->pages_per_section - 1;
+    return ceil($this->page_counter / $this->pages_per_section);
+  }
 
-    return $this->section_has_changed;
+  function getDisplayedSection()
+  {
+    return ceil($this->displayed_page / $this->pages_per_section);
   }
 
   function getSectionUri()
   {
-    if ($this->section_counter > $this->current_section)
-      return $this->getPageUri(($this->section_counter - 1) * $this->pages_per_section + 1);
+    $section = $this->getSection();
+
+    if ($section > $this->getDisplayedSection())
+      return $this->getPageUri(($section - 1) * $this->pages_per_section + 1);
     else
-      return $this->getPageUri($this->section_counter * $this->pages_per_section);
+      return $this->getPageUri($section  * $this->pages_per_section);
   }
 
-  function getSectionBeginPageNumber()
+  function getSectionBeginPage()
   {
-    return ($this->section_counter - 1) * $this->pages_per_section + 1;
+    $result = ($this->getSection() - 1) * $this->pages_per_section + 1;
+
+    if($result < 0)
+      return 0;
+    else
+      return $result;
   }
 
-  function getSectionEndPageNumber()
+  function getSectionEndPage()
   {
-    $result = $this->section_counter * $this->pages_per_section;
+    $result = $this->getSection() * $this->pages_per_section;
+
     if ($result >= $this->total_page_count)
       $result = $this->total_page_count;
 
     return $result;
   }
 
-  function getCurrentPageUri()
+  function getDisplayedPageUri()
   {
-    return $this->getPageUri($this->page_counter);
+    return $this->getPageUri($this->displayed_page);
   }
 
-  function getCurrentPage()
+  function getDisplayedPage()
   {
-    return $this->current_page;
+    return $this->displayed_page;
   }
 
   function getPagerId()
@@ -233,8 +235,11 @@ class LimbPagerComponent extends Component
     return $this->pager_prefix . '_' . $this->getServerId();
   }
 
-  function getPageUri($page)
+  function getPageUri($page = null)
   {
+    if ($page == null)
+      $page = $this->page_counter;
+
     $params = $this->request->export();
 
     if ($page <= 1)
@@ -261,19 +266,9 @@ class LimbPagerComponent extends Component
     return $this->getPageUri(1);
   }
 
-  function getPrevPageUri()
-  {
-    return $this->getPageUri($this->current_page - 1);
-  }
-
   function getLastPageUri()
   {
     return $this->getPageUri($this->total_page_count);
-  }
-
-  function getNextPageUri()
-  {
-    return $this->getPageUri($this->current_page + 1);
   }
 }
 

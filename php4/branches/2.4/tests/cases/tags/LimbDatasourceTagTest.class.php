@@ -117,12 +117,14 @@ class LimbDatasourceTagTestCase extends LimbTestCase
     $request =& new MockRequest($this);
     $this->toolkit->setReturnReference('getRequest', $request);
 
+    $request->setReturnValue('getUri', new Uri('test.com'));
+
     $this->ds->expectOnce('countTotal');
     $this->ds->setReturnValue('countTotal', $total = 40);
 
     $template = '<limb:DATASOURCE target="testTarget" class="TestDatasource" navigator="pagenav"></limb:DATASOURCE>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$username}</list:ITEM></list:LIST>'.
-                '<page:navigator id="pagenav" items="10"></page:navigator>';
+                '<limb:pager:NAVIGATOR id="pagenav" items="10"></limb:pager:NAVIGATOR>';
 
     RegisterTestingTemplate('/limb/datasource3.html', $template);
 
@@ -131,7 +133,7 @@ class LimbDatasourceTagTestCase extends LimbTestCase
     $this->assertEqual($page->capture(), 'joeivan');
 
     $pager =& $page->findChild('pagenav');
-    $this->assertEqual($pager->TotalItems, $total);
+    $this->assertEqual($pager->getTotalItems(), $total);
   }
 }
 ?>

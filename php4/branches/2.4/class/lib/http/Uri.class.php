@@ -30,10 +30,22 @@ class Uri
 
   var $_path_elements = array();
 
-  function Uri($str='')
+  function uri($str='')
   {
     if ($str)
       $this->parse($str);
+  }
+
+  function reset()
+  {
+    $this->_user        = '';
+    $this->_password    = '';
+    $this->_host        = '';
+    $this->_port        = '';
+    $this->_path        = '';
+    $this->_query_items = array();
+    $this->_anchor      = '';
+    $this->_path_elements = array();
   }
 
   function getProtocol()
@@ -71,100 +83,100 @@ class Uri
     return $this->_anchor;
   }
 
+  function setProtocol($protocol)
+  {
+    $this->_protocol = $protocol;
+  }
+
+  function setUser($user)
+  {
+    $this->_user = $user;
+  }
+
+  function setPassword($password)
+  {
+    $this->_password = $password;
+  }
+
+  function setHost($host)
+  {
+    $this->_host = $host;
+  }
+
+  function setPort($port)
+  {
+    $this->_port = $port;
+  }
+
+  function setPath($path)
+  {
+    $this->_path = $path;
+    $this->_path_elements = explode('/',$this->_path);
+  }
+
+  function setAnchor($anchor)
+  {
+    $this->_anchor = $anchor;
+  }
+
+  function isAbsolute()
+  {
+    return ('/' == substr($this->_path, 0, 1));
+  }
+
+  function isRelative()
+  {
+    return !$this->isAbsolute();
+  }
+
   function parse($str)
   {
-    $this->_user        = '';
-    $this->_password    = '';
-    $this->_host        = '';
-    $this->_port        = 80;
-    $this->_path        = '';
-    $this->_query_items = array();
-    $this->_anchor      = '';
-
-    // Only use defaults if not an absolute URL given
-    if (!preg_match('/^[a-z0-9]+:\/\//i', $str))
-    {
-      if (!empty($_SERVER['HTTP_HOST']) &&  preg_match('/^(.*)(:([0-9]+))?$/U', $_SERVER['HTTP_HOST'], $matches))
-      {
-        $host = $matches[1];
-        if (!empty($matches[3]))
-          $port = $matches[3];
-        else
-          $port = '80';
-      }
-
-      $this->_protocol    = 'http' . ((isset($_SERVER['HTTPS']) &&  $_SERVER['HTTPS'] == 'on') ? 's' : '');
-      $this->_user        = '';
-      $this->_password        = '';
-      $this->_host        = !empty($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost');
-      $this->_port        = !empty($port) ? $port : (isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80);
-      $this->_path        = !empty($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '/';
-      $this->_query_items = isset($_SERVER['QUERY_STRING']) ? $this->_parseQueryString($_SERVER['QUERY_STRING']) : null;
-      $this->_anchor      = '';
-    }
+    $this->reset();
 
     // Parse the url and store the various parts
-    if (!empty($str))
+    if (empty($str))
+      return;
+
+    if(!($urlinfo = @parse_url($str)))
+      return;
+
+    foreach ($urlinfo as $key => $value)
     {
-      if(!($urlinfo = @parse_url($str)))
-        return;
-
-      // Default query_string
-      $this->_query_items = array();
-
-      foreach ($urlinfo as $key => $value)
+      switch ($key)
       {
-        switch ($key)
-        {
-          case 'scheme':
-            $this->_protocol = $value;
-          break;
+        case 'scheme':
+          $this->setProtocol($value);
+        break;
 
-          case 'user':
-            $this->_user = $value;
-          break;
+        case 'user':
+          $this->setUser($value);
+        break;
 
-          case 'host':
-            $this->_host = $value;
-          break;
+        case 'host':
+          $this->setHost($value);
+        break;
 
-          case 'port':
-            $this->_port = $value;
-          break;
+        case 'port':
+          $this->setPort($value);
+        break;
 
-          case 'pass':
-            $this->_password = $value;
-          break;
+        case 'pass':
+          $this->setPassword($value);
+        break;
 
-          case 'path':
-            if ($value{0} == '/')
-              $this->_path = $value;
-            else
-            {
-              $path = dirname($this->_path) == '/' ? '' : dirname($this->_path);//FIXX, not crossplatform?
-              $this->_path = sprintf('%s/%s', $path, $value);
-            }
+        case 'path':
+          $this->setPath($value);
+        break;
 
-            $last_pos = strlen($this->_path)-1;
-            if($this->_path{$last_pos} == '/')
-              $this->_path = substr($this->_path, 0, $last_pos);								//probably is subject to change
+        case 'query':
+          $this->setQueryString($value);
+        break;
 
-            $this->_path = $this->resolvePath($this->_path);
-
-          break;
-
-          case 'query':
-            $this->_query_items = $this->_parseQueryString($value);
-          break;
-
-          case 'fragment':
-            $this->_anchor = $value;
-          break;
-        }
+        case 'fragment':
+          $this->setAnchor($value);
+        break;
       }
     }
-
-    $this->_path_elements = explode('/',$this->_path);
   }
 
   function countPath()
@@ -180,9 +192,9 @@ class Uri
   function compare($uri)
   {
     if (
-          $this->_protocol !== $uri->getProtocol() ||
-          $this->_host !== $uri->getHost() ||
-          $this->_port !== $uri->getPort() ||
+          $this->_protocol != $uri->getProtocol() ||
+          $this->_host != $uri->getHost() ||
+          $this->_port != $uri->getPort() ||
           $this->_user !== $uri->getUser() ||
           $this->_password !== $uri->getPassword()
         )
@@ -277,10 +289,6 @@ class Uri
     return $this->_path_elements;
   }
 
-  /**
-  * Adds a query_string item
-  *
-  */
   function addEncodedQueryItem($name, $value)
   {
     $this->_query_items[$name] = $value;
@@ -313,7 +321,7 @@ class Uri
   function removeQueryItem($name)
   {
     if (isset($this->_query_items[$name]))
-    unset($this->_query_items[$name]);
+      unset($this->_query_items[$name]);
   }
 
   /**
@@ -343,7 +351,7 @@ class Uri
     $flat_array = array();
 
     ComplexArray :: toFlatArray($this->_query_items, $flat_array);
-
+    ksort($flat_array);
     foreach($flat_array as $key => $value)
     {
       if ($value != '' ||  is_null($value))
@@ -385,28 +393,29 @@ class Uri
   * /foo/bar/.././/boo.php => /foo/boo.php
   *
   */
-  function resolvePath($path)
+  function normalizePath()
   {
+    $path = $this->_path;
     $path = explode('/', str_replace('//', '/', $path));
 
     for ($i=0; $i < sizeof($path); $i++)
     {
       if ($path[$i] == '.')
       {
-       unset($path[$i]);
+        unset($path[$i]);
         $path = array_values($path);
         $i--;
       }
       elseif ($path[$i] == '..' &&  ($i > 1 ||  ($i == 1 &&  $path[0] != '') ) )
       {
-       unset($path[$i]);
-       unset($path[$i-1]);
+        unset($path[$i]);
+        unset($path[$i-1]);
         $path = array_values($path);
         $i -= 2;
       }
       elseif ($path[$i] == '..' &&  $i == 1 &&  $path[0] == '')
       {
-       unset($path[$i]);
+        unset($path[$i]);
         $path = array_values($path);
         $i--;
       }
@@ -414,7 +423,8 @@ class Uri
         continue;
     }
 
-    return implode('/', $path);
+    $this->_path = implode('/', $path);
+    $this->_path_elements = explode('/',$this->_path);
   }
 }
 ?>

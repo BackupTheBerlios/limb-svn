@@ -49,18 +49,18 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->component->prepare();
 
-    $this->assertEqual($this->component->getCurrentPage(), 2);
-    $this->assertFalse($this->component->isCurrentPage());
-    $this->assertEqual($this->component->getPageCounter(), 0);
-    $this->assertEqual($this->component->getPagesCount(), 10);
+    $this->assertEqual($this->component->getDisplayedPage(), 2);
+    $this->assertFalse($this->component->isDisplayedPage());
+    $this->assertEqual($this->component->getPage(), 1);
+    $this->assertEqual($this->component->getTotalPages(), 10);
+    $this->assertEqual($this->component->getPagesPerSection(), 5);
     $this->assertTrue($this->component->hasMoreThanOnePage());
-    $this->assertEqual($this->component->getSectionBeginPageNumber(), 1);
-    $this->assertEqual($this->component->getSectionEndPageNumber(), 5);
+    $this->assertEqual($this->component->getSectionBeginPage(), 1);
+    $this->assertEqual($this->component->getSectionEndPage(), 5);
     $this->assertTrue($this->component->hasNext());
     $this->assertTrue($this->component->hasPrev());
-    $this->assertFalse($this->component->hasSectionChanged());
-    $this->assertEqual($this->component->getCurrentPageBeginItemNumber(), 11);
-    $this->assertEqual($this->component->getCurrentPageEndItemNumber(), 20);
+    $this->assertEqual($this->component->getDisplayedPageBeginItem(), 11);
+    $this->assertEqual($this->component->getDisplayedPageEndItem(), 20);
   }
 
   function testPrepareNoItemsSet()
@@ -75,21 +75,20 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->component->prepare();
 
-    $this->assertEqual($this->component->getCurrentPage(), 1);
-    $this->assertEqual($this->component->getPageCounter(), 0);
-    $this->assertFalse($this->component->isCurrentPage());
-    $this->assertEqual($this->component->getPagesCount(), 1);
+    $this->assertEqual($this->component->getDisplayedPage(), 1);
+    $this->assertEqual($this->component->getPage(), 1);
+    $this->assertTrue($this->component->isDisplayedPage());
+    $this->assertEqual($this->component->getTotalPages(), 1);
     $this->assertFalse($this->component->hasMoreThanOnePage());
-    $this->assertEqual($this->component->getSectionBeginPageNumber(), 1);
-    $this->assertEqual($this->component->getSectionEndPageNumber(), 1);
+    $this->assertEqual($this->component->getSectionBeginPage(), 1);
+    $this->assertEqual($this->component->getSectionEndPage(), 1);
     $this->assertFalse($this->component->hasNext());
     $this->assertFalse($this->component->hasPrev());
-    $this->assertFalse($this->component->hasSectionChanged());
-    $this->assertEqual($this->component->getCurrentPageBeginItemNumber(), 0);
-    $this->assertEqual($this->component->getCurrentPageEndItemNumber(), 0);
+    $this->assertEqual($this->component->getDisplayedPageBeginItem(), 0);
+    $this->assertEqual($this->component->getDisplayedPageEndItem(), 0);
   }
 
-  function testNext()
+  function testNextPage()
   {
     $this->component->id = $id = 'navigator';
 
@@ -101,17 +100,15 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->component->prepare();
 
-    $this->assertEqual($this->component->getPageCounter(), 0);//???
+    $this->assertEqual($this->component->getPage(), 1);
 
-    $this->assertTrue($this->component->next());
+    $this->assertTrue($this->component->nextPage());
+    $this->assertTrue($this->component->isValid());
 
-    $this->assertEqual($this->component->getPageCounter(), 1);
-
-    $this->assertFalse($this->component->hasSectionChanged());
-    $this->assertEqual($this->component->getSectionCounter(), 1);
+    $this->assertEqual($this->component->getPage(), 2);
   }
 
-  function testNextSectionhasChanged()
+  function testNextPageOutOfBounds()
   {
     $this->component->id = $id = 'navigator';
 
@@ -119,23 +116,76 @@ class LimbPagerComponentTest extends LimbTestCase
 
     $this->component->setTotalItems(40);
     $this->component->setItemsPerPage(10);
-    $this->component->setPagesPerSection(3);
 
     $this->component->prepare();
 
-    $this->assertEqual($this->component->getPageCounter(), 0);
-    $this->component->next();
-    $this->component->next();
+    $this->assertTrue($this->component->nextPage());
+    $this->assertTrue($this->component->isValid());
 
-    $this->assertTrue($this->component->isCurrentPage());
+    $this->assertTrue($this->component->nextPage());
+    $this->assertTrue($this->component->isValid());
 
-    $this->component->next();
-    $this->assertFalse($this->component->hasSectionChanged());
+    $this->assertTrue($this->component->nextPage());
+    $this->assertTrue($this->component->isValid());
 
-    $this->assertTrue($this->component->next());
-    $this->assertTrue($this->component->hasSectionChanged());
+    $this->assertFalse($this->component->nextPage());
+    $this->assertFalse($this->component->isValid());
+  }
 
-    $this->assertFalse($this->component->next());
+  function testSectionNumbers()
+  {
+    $this->component->id = $id = 'navigator';
+
+    $this->request->set($this->component->getPagerId(), 2);
+
+    $this->component->setTotalItems(40);
+    $this->component->setItemsPerPage(3);
+    $this->component->setPagesPerSection(10);
+
+    $this->component->prepare();
+
+    $this->component->nextPage();
+
+    $this->assertEqual($this->component->getSection(), 1);
+    $this->assertEqual($this->component->getSectionBeginPage(), 1);
+    $this->assertEqual($this->component->getSectionEndPage(), 10);
+  }
+
+  function testSectionNumbersRightBound()
+  {
+    $this->component->id = $id = 'navigator';
+
+    $this->request->set($this->component->getPagerId(), 2);
+
+    $this->component->setTotalItems(40);
+    $this->component->setItemsPerPage(10);// 4 pages total
+    $this->component->setPagesPerSection(10);
+
+    $this->component->prepare();
+
+    $this->component->nextPage();
+
+    $this->assertEqual($this->component->getSection(), 1);
+    $this->assertEqual($this->component->getSectionBeginPage(), 1);
+    $this->assertEqual($this->component->getSectionEndPage(), 4);
+  }
+
+  function testNextSection()
+  {
+    $this->component->id = $id = 'navigator';
+
+    $this->request->set($this->component->getPagerId(), 2);
+
+    $this->component->setTotalItems(40);
+    $this->component->setItemsPerPage(5);
+    $this->component->setPagesPerSection(2);
+
+    $this->component->prepare();
+
+    $this->assertTrue($this->component->nextSection());
+    $this->assertTrue($this->component->nextSection());
+    $this->assertTrue($this->component->nextSection());
+    $this->assertFalse($this->component->nextSection());
   }
 
   function testGetFirstPageUri()
@@ -206,6 +256,73 @@ class LimbPagerComponentTest extends LimbTestCase
     $uri = $this->component->getPageUri(2);
 
     $this->assertEqual($uri, 'http://test.com?p1=wow&p2[3]=+yo+&p_navi=2');
+
+    Limb :: popToolkit();
+  }
+
+  function testGetPrevSectionUri()
+  {
+    $uri = new Uri('http://test.com');
+
+    $toolkit =& new MockLimbToolkit($this);
+    $request =& new MockRequest($this);
+
+    $request->setReturnValue('getUri', $uri);
+
+    $toolkit->setReturnReference('getRequest', $request);
+    Limb :: registerToolkit($toolkit);
+
+    $this->component->setPagerPrefix('p');
+    $this->component->id = 'nav';
+    $this->component->setTotalItems(60);
+    $this->component->setItemsPerPage(10);
+    $this->component->setPagesPerSection(2);
+
+    $request->setReturnValue('export', array('p_nav' => 3));
+
+    $this->component->prepare();
+
+    $this->component->nextPage();
+
+    $uri = $this->component->getSectionUri();
+
+    $this->assertEqual($uri, 'http://test.com?p_nav=2');
+    $this->assertEqual($this->component->getSectionBeginPage(), 1);
+    $this->assertEqual($this->component->getSectionEndPage(), 2);
+
+    Limb :: popToolkit();
+  }
+
+  function testGetNextSectionUri()
+  {
+    $uri = new Uri('http://test.com');
+
+    $toolkit =& new MockLimbToolkit($this);
+    $request =& new MockRequest($this);
+
+    $request->setReturnValue('getUri', $uri);
+
+    $toolkit->setReturnReference('getRequest', $request);
+    Limb :: registerToolkit($toolkit);
+
+    $this->component->setPagerPrefix('p');
+    $this->component->id = 'nav';
+    $this->component->setTotalItems(60);
+    $this->component->setItemsPerPage(10);
+    $this->component->setPagesPerSection(2);
+
+    $request->setReturnValue('export', array('p_nav' => 3));
+
+    $this->component->prepare();
+
+    for($i = 0; $i < 5; $i++)
+      $this->component->nextPage();
+
+    $uri = $this->component->getSectionUri(2);
+
+    $this->assertEqual($uri, 'http://test.com?p_nav=5');
+    $this->assertEqual($this->component->getSectionBeginPage(), 5);
+    $this->assertEqual($this->component->getSectionEndPage(), 6);
 
     Limb :: popToolkit();
   }

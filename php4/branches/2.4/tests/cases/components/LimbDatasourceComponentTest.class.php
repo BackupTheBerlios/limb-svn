@@ -150,7 +150,7 @@ class LimbDatasourceComponentTest extends LimbTestCase
     $pager->expectOnce('getItemsPerPage');
     $pager->setReturnValue('getItemsPerPage', $limit = 100);
 
-    $pager->setReturnValue('getCurrentPageBeginItemNumber', $offset = 200);
+    $pager->setReturnValue('getDisplayedPageBeginItem', $offset = 200);
 
     $this->component->setClassPath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));

@@ -130,7 +130,7 @@ class LimbDatasourceComponent extends Component
       return null;
 
     $this->setParameter('limit', $navigator->getItemsPerPage());
-    $this->setParameter('offset', $navigator->getCurrentPageBeginItemNumber());
+    $this->setParameter('offset', $navigator->getDisplayedPageBeginItem());
 
     $ds =& $this->_getDatasource();
     $navigator->setTotalItems($ds->countTotal());

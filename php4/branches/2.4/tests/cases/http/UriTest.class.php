@@ -14,13 +14,14 @@ class UriTest extends LimbTestCase
 {
   var $uri;
 
+  function UriTest()
+  {
+    parent :: LimbTestCase('uri test');
+  }
+
   function setUp()
   {
     $this->uri = new Uri();
-  }
-
-  function tearDown()
-  {
   }
 
   function testParse()
@@ -54,6 +55,16 @@ class UriTest extends LimbTestCase
     $this->uri->parse($url);
 
     $this->assertEqual($this->uri->toString(), $url);
+  }
+
+  function testToStringQueryItemsSort()
+  {
+    $url = 'http://localhost/test.php?b=1&a=2&c[1]=456';
+    $expected_url = 'http://localhost/test.php?a=2&b=1&c[1]=456';
+
+    $this->uri->parse($url);
+
+    $this->assertEqual($this->uri->toString(), $expected_url);
   }
 
   function testToStringNoProtocol()
@@ -164,11 +175,19 @@ class UriTest extends LimbTestCase
     $this->assertEqual($this->uri->getQueryItem('foo'), array('i1' => '1', 'i2' => '2'));
   }
 
-  function testResolvePath()
+  function testNormalizePath()
   {
-    $this->assertEqual($this->uri->resolvePath('/foo/bar/../boo.php'), '/foo/boo.php');
-    $this->assertEqual($this->uri->resolvePath('/foo/bar/../../boo.php'), '/boo.php');
-    $this->assertEqual($this->uri->resolvePath('/foo/bar/../boo.php'), '/foo/boo.php');
+    $this->uri->parse('/foo/bar/../boo.php');
+    $this->uri->normalizePath();
+    $this->assertEqual($this->uri, new Uri('/foo/boo.php'));
+
+    $this->uri->parse('/foo/bar/../../boo.php');
+    $this->uri->normalizePath();
+    $this->assertEqual($this->uri, new Uri('/boo.php'));
+
+    $this->uri->parse('/foo/bar/../boo.php');
+    $this->uri->normalizePath();
+    $this->assertEqual($this->uri, new Uri('/foo/boo.php'));
   }
 
   function testAddQueryItem()
@@ -178,7 +197,7 @@ class UriTest extends LimbTestCase
     $this->uri->parse($url);
 
     $this->uri->addQueryItem('bar', 'foo');
-    $this->assertEqual($this->uri->getQueryString(), 'foo=bar&bar=foo');
+    $this->assertEqual($this->uri->getQueryString(), 'bar=foo&foo=bar');
   }
 
   function testAddQueryItem2()
@@ -199,7 +218,7 @@ class UriTest extends LimbTestCase
 
     $this->uri->addQueryItem('foo', array('i1' => 'bar'));
     $this->uri->addQueryItem('bar', 1);
-    $this->assertEqual($this->uri->getQueryString(), 'foo[i1]=bar&bar=1');
+    $this->assertEqual($this->uri->getQueryString(), 'bar=1&foo[i1]=bar');
   }
 
   function testAddQueryItem4()
@@ -210,7 +229,7 @@ class UriTest extends LimbTestCase
 
     $this->uri->addQueryItem('foo', array('i1' => array('i2' => 'bar')));
     $this->uri->addQueryItem('bar', 1);
-    $this->assertEqual($this->uri->getQueryString(), 'foo[i1][i2]=bar&bar=1');
+    $this->assertEqual($this->uri->getQueryString(), 'bar=1&foo[i1][i2]=bar');
   }
 
   function testAddQueryItemUrlencode()
@@ -231,15 +250,6 @@ class UriTest extends LimbTestCase
 
     $this->uri->addQueryItem('foo', array('i1' => ' bar '));
     $this->assertEqual($this->uri->getQueryString(), 'foo[i1]=+bar+');
-  }
-
-  function testParseDefault80Port()
-  {
-    $url = 'http://admin:test@localhost/test.php?foo=bar#23';
-
-    $this->uri->parse($url);
-
-    $this->assertEqual($this->uri->getPort(), '80');
   }
 
   function testCompareQueryEqual()
@@ -303,28 +313,6 @@ class UriTest extends LimbTestCase
 
     $this->assertTrue($this->uri->compare(
       new Uri('http://admin:test@localhost:81')
-     ));
-  }
-
-  function testCompareEqual3()
-  {
-    $url = 'http://admin:test@localhost:81?';
-
-    $this->uri->parse($url);
-
-    $this->assertTrue($this->uri->compare(
-      new Uri('http://admin:test@localhost:81/')
-     ));
-  }
-
-  function testCompareEqual4()
-  {
-    $url = 'http://admin:test@localhost:81?bar=foo';
-
-    $this->uri->parse($url);
-
-    $this->assertTrue($this->uri->compare(
-      new Uri('http://admin:test@localhost:81/?bar=foo')
      ));
   }
 
@@ -492,6 +480,32 @@ class UriTest extends LimbTestCase
     $this->assertEqual('http://localhost/test.php', $this->uri->toString());
   }
 
+  function testIsAbsolute()
+  {
+    $url = '/test.php';
+
+    $this->uri->parse($url);
+
+    $this->assertTrue($this->uri->isAbsolute());
+  }
+
+  function testIsRelative()
+  {
+    $url = '../../test.php';
+
+    $this->uri->parse($url);
+
+    $this->assertTrue($this->uri->isRelative());
+  }
+
+  function testSetPath()
+  {
+    $this->uri->setPath('/index.html');
+
+    $uri = new Uri('http://dot.com/index.html');
+
+    $this->assertEqual($uri->getPathElements(), $this->uri->getPathElements());
+  }
 }
 
 ?>
