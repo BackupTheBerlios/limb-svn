@@ -1,0 +1,19 @@
+<core:WRAP file="page.html" placeholder="content">
+<table width=100% border=0 cellspacing=0 cellpadding=0  height=100% >
+<tr>
+	<td width=100% valign=top style='padding:10px 20px 30px 20px'>
+		<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
+		<core:INCLUDE file="page_data.html">
+
+		<poll>
+			<core:BLOCK id='poll_results'>
+				<core:INCLUDE file="poll_container/poll_results.html">
+			</core:BLOCK>
+			<core:BLOCK id='poll_form'>
+				<core:INCLUDE file="poll_container/poll_results.html">
+			</core:BLOCK>
+		</poll>
+		<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->
+	</td>
+</tr>
+</table>

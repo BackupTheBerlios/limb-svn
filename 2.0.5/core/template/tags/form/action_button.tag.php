@@ -1,0 +1,52 @@
+<?php
+require_once(LIMB_DIR . '/core/template/tags/form/control_tag.class.php');
+
+class action_button_tag_info
+{
+	var $tag = 'action_button';
+	var $end_tag = ENDTAG_FORBIDDEN;
+	var $tag_class = 'action_button_tag';
+} 
+
+register_tag(new action_button_tag_info());
+
+class action_button_tag extends control_tag
+{
+	var $runtime_component_path = '/core/template/components/form/input_submit_component';
+	
+	function check_nesting_level()
+	{
+		if (!isset($this->attributes['action']))
+		{
+			error('ATTRIBUTE_REQUIRED', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('tag' => $this->tag,
+					'attribute' => 'action',
+					'file' => $this->source_file,
+					'line' => $this->starting_line_no));
+		} 
+	}
+	
+	function prepare()
+	{
+		$form_tag =& $this->find_parent_by_class('form_tag');
+		
+		if(!isset($this->attributes['type']))
+			$this->attributes['type'] = 'submit';	
+
+		$this->attributes['onclick'] = "add_form_hidden_parameter(\"{$form_tag->attributes['id']}\", \"action\", \"{$this->attributes['action']}\");";
+		
+		if(isset($this->attributes['reload_parent']))
+		{
+			$this->attributes['onclick'] .= "add_form_action_parameter(\"{$form_tag->attributes['id']}\", \"reload_parent\", \"1\")";
+			unset($this->attributes['reload_parent']);
+		}
+		
+		unset($this->attributes['action']);
+	}
+	
+	function get_rendered_tag()
+	{
+		return 'input';
+	}	
+} 
+
+?>

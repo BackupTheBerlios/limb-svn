@@ -1,0 +1,127 @@
+<core:WRAP file="popup.html" placeholder="content">
+
+<script language="javascript" src="/shared/js/image_actions.js"></script>
+
+<form name="create_image" id="create_image" enctype="multipart/form-data" method="post">
+	<core:INCLUDE file="form_errors.html">
+	<table>
+	<tr>
+		<td></td>
+		<td class='text'>
+		GIF,JPEG,PNG
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<fieldset>
+				<legend style='color:#000000'>
+	  				<select name='original_action' class='input' onchange="change_action(this, 'original')">
+	  					<option value='upload' selected='1'><locale:STRING name='upload' file='image'></option>
+	  				</select>
+				  <locale:STRING name='original' file='image'>
+				 </legend>
+				<table>
+				<tr>
+					<td class='text'>
+					  <div id='original_upload_div' class='text' >
+						  <input type="file" name='original' class="input" size="25" ><br>
+	    				<nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type="text" name="upload_original_max_size" class="input" size="3"/> <locale:STRING name='pixels' file='image'></nobr>
+						</div>
+					</td>
+				</tr>
+				</table>
+			</fieldset>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<fieldset>
+				<legend style='color:#000000'>
+	  				<select name='thumbnail_action' onchange="change_action(this, 'thumbnail')" class='input'>
+	  					<option value='upload' ><locale:STRING name='upload' file='image'></option>
+	  					<option value='generate' selected='1'><locale:STRING name='generate' file='image'></option>
+	  				</select>
+				  <locale:STRING name='thumbnail' file='image'>
+				 </legend>
+				<table>
+				<tr>
+					<td class='text'>
+					  <div id='thumbnail_upload_div' class='text' style='display:none'>
+						  <input type=file name='thumbnail' class=input size=25 ><br>
+	  				  <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='upload_thumbnail_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+						</div>
+					  
+						<div id='thumbnail_generate_div' class='text' >
+						  <locale:STRING name='generate_from' file='image'> <select name='thumbnail_base_variation' class='input'>
+						  		<option value='original' selected='1'><locale:STRING name='original' file='image'></option>
+						  		<option value='icon' ><locale:STRING name='icon' file='image'></option>
+						  	 </select>
+						  <br>
+    				  <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='generate_thumbnail_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+						</div>
+					</td>
+				</tr>
+				</table>
+			</fieldset>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<fieldset>
+				<legend style='color:#000000'>
+	  				<select name='icon_action' onchange="change_action(this, 'icon')" class='input'>
+	  					<option value='upload' ><locale:STRING name='upload' file='image'></option>
+	  					<option value='generate' selected='1'><locale:STRING name='generate' file='image'></option>
+	  				</select>
+				  <locale:STRING name='icon' file='image'>
+				 </legend>
+				<table>
+				<tr>
+					<td class='text'>
+					  <div id='icon_upload_div' class='text' style='display:none'>
+						  <input type=file name='icon' class=input size=25 /><br>
+	  				  <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='upload_icon_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+						</div>
+					  
+						<div id='icon_generate_div' class='text' >
+						  <locale:STRING name='generate_from' file='image'> <select name='icon_base_variation' class='input'>
+						  		<option value='original' selected='1'><locale:STRING name='original' file='image'></option>
+						  		<option value='thumbnail' ><locale:STRING name='thumbnail' file='image'></option>
+						  	 </select>
+						  <br>
+    				  <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='generate_icon_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+						</div>
+					</td>
+				</tr>
+				</table>
+			</fieldset>
+	</td>
+	</tr>
+	
+	<tr>
+		<td><locale:STRING name='identifier'></td>
+		<td align='left' nowrap><input id="identifier" name="identifier" class="input" type="text" size="60"  value=''/></td>
+	</tr>
+	
+	<tr>
+		<td><locale:STRING name='title' ></td>
+		<td align='left' nowrap><input id="title" name="title" class="input" type="text" size="60"  value=''/></td>
+	</tr>
+	
+	<tr>
+		<td><locale:STRING name='description' file='image'></td>
+		<td align='left' nowrap><textarea name="description" class="textarea" cols='60' rows='5'></textarea></td>
+	</tr>
+	
+	<tr>
+	<td colspan='2'>
+	<action_button name="create_button" class="button"  action="create_image" value="Create"/>
+	</td>
+	</tr>
+
+</table>
+
+</form>

@@ -1,0 +1,33 @@
+<core:WRAP file="admin/admin_display_page.html" placeholder="content">
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='folders' >
+	<core:PARAMETER name='loader_class_name' value='faq_folder' >
+</fetch:SUB_BRANCH>
+
+<table width=100% border=0 cellspacing=3 cellpadding=0>
+<tr>
+	<th></th>
+	<th><locale:STRING name='faq_folder' file='faq'></th>
+	<th><locale:STRING name='published_status' ></th>
+	<th><locale:STRING name='created_date'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:LIST id='folders'>
+<tr class=jip>
+<td><img class=icon src='/design/main/images/icons/f.gif'></td>
+<td jip=object class=jip-object><grid:ITEM><a href="{$path}?action=admin_display">{$title}</a></grid:ITEM></td>
+<td align="center"><grid:ITEM>
+					<core:INCLUDE file="published_status.html">
+</grid:ITEM></td>
+<td align="center"><grid:ITEM><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></grid:ITEM></td>
+<td align="center"><grid:ITEM><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></grid:ITEM></td>
+<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:LIST>
+</table>

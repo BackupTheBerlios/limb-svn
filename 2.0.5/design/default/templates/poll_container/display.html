@@ -1,0 +1,68 @@
+<core:WRAP file="page.html" placeholder="content">
+<table width=100% border=0 cellspacing=0 cellpadding=0  height=100% >
+<tr>
+	<td width=100% valign=top style='padding:10px 20px 30px 20px'>
+				<!--Õ¿◊¿ÀŒ:  ŒÕ“≈Õ“-->
+
+					<core:INCLUDE file="page_data.html">
+					<table width=100% border=0 cellspacing=0 cellpadding=0>
+					<tr class="jip">
+						<td style='padding:0 10px 0 40px'>
+							<fetch:MAPPED>
+							<core:INCLUDE file="jip_actions/extended.html">
+							</fetch:MAPPED>
+						</td>
+					</tr>
+					<tr>
+						<td style='padding:0 10px 0 40px'>
+							<DATA_SOURCE target='questions'>
+								<core:PARAMETER name='data_source_path' value='poll_all_results_data_source'>
+								<core:PARAMETER name='loader_class_name' value='poll'>
+								<core:PARAMETER name='order' value='created_date=DESC'>
+							</DATA_SOURCE>
+							
+								<list:LIST id='questions'>
+							    	<table border=0 cellspacing=0 cellpadding=1> 
+								    <list:ITEM>
+												<tr class="jip">
+													<td><core:INCLUDE file="published_status.html"></td>
+													<td><img class=icon src='/design/main/images/icons/v.gif'></td>
+													<td class=named jip=object class=jip-object>{$title}</td>
+													<td></td>
+													<td></td>
+													<td><core:INCLUDE file="jip_actions/normal.html"></td>
+												</tr>
+												<tr>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td align=right>¬ÒÂ„Ó ÓÚ‚ÂÚÓ‚:</td>
+													<td><b>{$total_count}</b></td>
+												</tr>
+											<core:DATASET hash_id='answers' child_id='answers'>
+											<list:LIST id='answers'>
+												<list:ITEM>
+												<tr class=jip>
+													<td></td>
+													<td></td>
+													<td jip=object class=jip-object>{$title}</td>
+													<td width=100><img src='/shared/images/1x1.gif' width='{$percentage}%' height=4 style='background-color:#e60000'></td>
+													<td width=1><nobr>{$count} ({$rounded_percentage}%)</nobr></td>
+													<td><core:INCLUDE file="jip_actions/normal.html"></td>
+												</tr>
+												</list:ITEM>
+										</list:LIST>
+										</core:DATASET>
+										<tr>
+											<td height=10></td>
+										</tr>
+							    </list:ITEM>
+										</table>
+							</list:LIST>
+						</td>
+					</tr>
+					</table>
+			<!-- ŒÕ≈÷:  ŒÕ“≈Õ“-->
+	</td>
+</tr>
+</table>

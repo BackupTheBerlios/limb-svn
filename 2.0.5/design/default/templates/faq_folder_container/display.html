@@ -1,0 +1,45 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<table width=100% border=0 cellspacing=0 cellpadding=0  height=100% >
+<tr>
+	<td width=100% valign=top style='padding:10px 20px 30px 20px'>
+				<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
+
+<core:INCLUDE file="page_data.html">
+
+<fetch:MAPPED>
+<span class="jip">
+	<core:INCLUDE file="jip_actions/extended.html">
+</span>
+</fetch:MAPPED>
+<br/>
+
+<fetch:SUB_BRANCH target='faq_folder'>
+	<core:PARAMETER name='loader_class_name' value='faq_folder' >
+</fetch:SUB_BRANCH>
+
+<list:LIST id='faq_folder'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+  <list:ITEM>
+		<tr class='jip'>
+			<td width='1'><core:INCLUDE file="published_status.html"></td>
+			<td width='1'><a href='{$path}'><img class=icon src='/design/main/images/icons/f.gif'></a></td>
+			<td jip='object' class='jip_object' >
+				<a href='{$path}'>{$title}</a>
+			</td>
+			<td jip='action'>
+				<core:INCLUDE file="jip_actions/normal.html">
+			</td>
+		</tr>
+  </list:ITEM>
+</table>
+</list:LIST>
+
+
+
+			<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->
+	</td>
+</tr>
+</table>
+
+
