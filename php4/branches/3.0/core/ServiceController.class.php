@@ -26,8 +26,11 @@ class ServiceController
     return $this->behaviour;
   }
 
-  function getRequestedAction(&$request)
+  function getRequestedAction()
   {
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+
     if (!$action = $request->get('action'))
       $action = $this->behaviour->getDefaultAction();
 
@@ -37,26 +40,17 @@ class ServiceController
     return $action;
   }
 
-  function process(&$request)
+  function process()
   {
-    if(!$action = $this->getRequestedAction($request))
+    if(!$action = $this->getRequestedAction())
       return throw(new LimbException('action not defined in state machine',
                               array('action' => $action,
                                     'class' => get_class($this->behaviour))));
 
-    $state_machine =& $this->_getStateMachine();
-
-    call_user_func(array($this->behaviour, 'define' . $action), &$state_machine);
-
-    $state_machine->run();
+    $command =& $this->behaviour->getActionCommand($action);
+    $command->perform();
 
     Debug :: addTimingPoint('action performed');
-  }
-
-  function &_getStateMachine()
-  {
-    include_once(LIMB_DIR . '/core/commands/StateMachine.class.php');
-    return new StateMachine();
   }
 }
 

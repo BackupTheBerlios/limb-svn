@@ -121,14 +121,14 @@ class LimbBaseToolkit// implements LimbToolkit
     return $this->user;
   }
 
-  function & getINI($ini_path)
+  function & getINI($ini_path, $resolver_name = 'ini')
   {
     if(isset($this->ini_cache[$ini_path]))
       return $this->ini_cache[$ini_path];
 
     include_once(LIMB_DIR . '/core/util/ini_support.inc.php');
 
-    $ini = getIni($ini_path);
+    $ini = getIni($ini_path, null, $resolver_name);
 
     $this->ini_cache[$ini_path] = $ini;
 

@@ -13,19 +13,84 @@ require_once(LIMB_DIR . '/core/Object.class.php');
 
 class Behaviour extends Object
 {
-  var $_actions_list = array();
+  var $ini;
 
-  function Behaviour()
+  function & getActionCommand($action)
   {
-    parent :: Object();
+    $ini =& $this->_getIni();
 
-    $this->merge($this->_defineProperties());
+    if(!$ini->hasGroup($action))
+      return new NullCommand();
+
+    if(!$ini->hasOption('command', $action))
+      return new NullCommand();
+
+    $command_handle = new LimbHandle($ini->getOption('command', $action));
+
+    $command =& Handle :: resolve($command_handle);
+
+    return $command;
   }
 
-  function _defineProperties()
+  function & _getIni()
   {
-    return array();
+    if(is_object($this->ini))
+      return $this->ini;
+
+    if (!$name = $this->getName())
+      $name = 'default';
+
+    $toolkit =& Limb :: toolkit();
+    $this->ini =& $toolkit->getIni($name . '.behaviour.ini', 'behaviour');
+    return $this->ini;
   }
+
+  function getActionProperties($action)
+  {
+    $ini =& $this->_getIni();
+
+    if($ini->hasGroup($action))
+      return $ini->gasGroup($action);
+    else
+      return array();
+  }
+
+  function getActionsList()
+  {
+    $ini =& $this->_getIni();
+
+    $groups = $ini->getAll();
+    if(isset($groups['default']))
+      unset($groups['default']);
+
+    return array_keys($groups);
+  }
+
+  function actionExists($action)
+  {
+    $ini =& $this->_getIni();
+
+    return $ini->hasGroup($action);
+  }
+
+  function canBeParent()
+  {
+    $ini =& $this->_getIni();
+    if(!$ini->hasOption('can_be_parent'))
+      return false;
+
+    return (bool)$ini->getOption('can_be_parent');
+  }
+
+  function getDefaultAction()
+  {
+    $ini =& $this->_getIni();
+    if(!$ini->hasOption('default_action'))
+      return 'display';
+
+    return $ini->getOption('default_action');
+  }
+
 
   function getId()
   {
@@ -37,36 +102,14 @@ class Behaviour extends Object
     $this->set('id', (int)$id);
   }
 
-  function getDefaultAction()
+  function setName($name)
   {
-    return 'display';
+    $this->set('name', $name);
   }
 
-  function getActionsList()
+  function getName()
   {
-    if($this->_actions_list)
-      return $this->_actions_list;
-
-    $methods = get_class_methods($this);
-    foreach($methods as $method)
-    {
-      if(preg_match('~^define(.*)$~', $method, $matches))
-        $this->_actions_list[] = $matches[1];
-    }
-    return $this->_actions_list;
-  }
-
-  function actionExists($action)
-  {
-    return in_array(strtolower($action), $this->getActionsList());
-  }
-
-  function canBeParent()
-  {
-    if ($can_be_parent = $this->get('can_be_parent'))
-      return $can_be_parent;
-    else
-      return false;
+    return $this->get('name');
   }
 }
 

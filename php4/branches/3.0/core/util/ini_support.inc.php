@@ -24,7 +24,7 @@ function getIniOption($file_path, $var_name, $group_name = 'default', $use_cache
   return $ini->getOption($var_name, $group_name);
 }
 
-function getIni($file_name, $use_cache = null)
+function getIni($file_name, $use_cache = null, $resolver_name = 'ini')
 {
   if (isset($GLOBALS['testing_ini'][$file_name]))
   {
@@ -33,7 +33,7 @@ function getIni($file_name, $use_cache = null)
   }
   else
   {
-    $resolver =& Handle :: resolve(getFileResolver('ini'));
+    $resolver =& Handle :: resolve(getFileResolver($resolver_name));
     $resolved_file = $resolver->resolve($file_name);
 
     if (catch('LimbException', $e))

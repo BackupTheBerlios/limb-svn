@@ -8,33 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/StateMachine.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/ServiceController.class.php');
 require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
+require_once(LIMB_DIR . '/core/commands/Command.interface.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
-Mock :: generate('StateMachine');
 Mock :: generate('Request');
 Mock :: generate('Behaviour');
-
-class BehaviourControllerTestVersion extends Behaviour
-{
-  function defineTestAction(&$state_machine){}
-}
-
-Mock :: generatePartial
-(
-  'BehaviourControllerTestVersion',
-  'BehaviourMock',
-  array('defineTestAction')
-);
-
-Mock :: generatePartial
-(
-  'ServiceController',
-  'ServiceControllerMock',
-  array('_getStateMachine')
-);
+Mock :: generate('Command');
+Mock :: generate('LimbBaseToolkit');
 
 class ServiceControllerPerformTestVersion extends ServiceController
 {
@@ -57,9 +40,9 @@ Mock :: generatePartial
 class ServiceControllerTest extends LimbTestCase
 {
   var $object_controller;
-  var $state_machine;
   var $behaviour;
   var $request;
+  var $toolkit;
 
   function ServiceControllerTest()
   {
@@ -69,33 +52,38 @@ class ServiceControllerTest extends LimbTestCase
   function setUp()
   {
     $this->request = new MockRequest($this);
-    $this->state_machine = new MockStateMachine($this);
     $this->behaviour = new MockBehaviour($this);
 
-    $this->controller = new ServiceControllerMock($this);
-    $this->controller->ServiceController($this->behaviour);
+    $this->toolkit = new MockLimbBaseToolkit($this);
+    $this->toolkit->setReturnReference('getRequest', $this->request);
+
+    Limb :: registerToolkit($this->toolkit);
   }
 
   function tearDown()
   {
-    $this->controller->tally();
     $this->request->tally();
-    $this->state_machine->tally();
     $this->behaviour->tally();
+
+    Limb :: restoreToolkit();
   }
 
   function testGetRequestedActionOk()
   {
+    $controller = new ServiceController($this->behaviour);
+
     $this->request->setReturnValue('get', $action = 'test_action', array('action'));
 
     $this->behaviour->expectOnce('actionExists', array($action));
     $this->behaviour->setReturnValue('actionExists', true, array($action));
 
-    $this->assertEqual($this->controller->getRequestedAction($this->request), 'test_action');
+    $this->assertEqual($controller->getRequestedAction(), 'test_action');
   }
 
   function testDefaultGetAction()
   {
+    $controller = new ServiceController($this->behaviour);
+
     $this->request->setReturnValue('get', null, array('action'));
 
     $this->behaviour->expectOnce('getDefaultAction');
@@ -104,55 +92,49 @@ class ServiceControllerTest extends LimbTestCase
     $this->behaviour->expectOnce('actionExists', array($action));
     $this->behaviour->setReturnValue('actionExists', true, array($action));
 
-    $this->assertEqual($this->controller->getRequestedAction($this->request), $action);
+    $this->assertEqual($controller->getRequestedAction(), $action);
   }
 
   function testGetNoSuchAction()
   {
+    $controller = new ServiceController($this->behaviour);
+
     $this->request->setReturnValue('get', 'noSuchAction', array('action'));
     $this->behaviour->setReturnValue('actionExists', false, array('no_such_action'));
 
-    $this->assertNull($this->controller->getRequestedAction($this->request));
+    $this->assertNull($controller->getRequestedAction());
   }
 
   function testProcess()
   {
-    $behaviour = new BehaviourMock($this);
+    $controller = new ServiceController($this->behaviour);
 
-    $controller = new ServiceControllerMock($this);
-    $controller->ServiceController($behaviour);
+    $this->request->setReturnValue('get', $action = 'test_action', array('action'));
 
-    $this->request->setReturnValue('get', 'TestAction', array('action'));
+    $this->behaviour->setReturnValue('actionExists', true, array($action));
+    $this->behaviour->expectOnce('getActionCommand', array($action));
 
-    $controller->expectOnce('_getStateMachine');
-    $controller->setReturnReference('_getStateMachine', $this->state_machine);
+    $command = new MockCommand($this);
+    $this->behaviour->setReturnReference('getActionCommand', $command);
 
-    $behaviour->expectOnce('defineTestAction',
-                                 array(new IsAExpectation('MockStateMachine')));
+    $command->expectOnce('perform');
 
-    $this->state_machine->expectOnce('run');
-    $controller->process($this->request);
+    $controller->process();
 
-    $controller->tally();
-    $behaviour->tally();
+    $command->tally();
   }
 
   function testProcessNoActionFind()
   {
-    $behaviour = new BehaviourMock($this);
+    $controller = new ServiceController($this->behaviour);
 
-    $controller = new ServiceControllerMock($this);
-    $controller->ServiceController($behaviour);
+    $this->request->setReturnValue('get', $action = 'noSuchAction', array('action'));
 
-    $this->request->setReturnValue('get', 'noSuchAction', array('action'));
-
-    $controller->expectNever('_getStateMachine');
+    $this->behaviour->setReturnValue('actionExists', false, array($action));
+    $this->behaviour->expectNever('getActionCommand');
 
     $controller->process($this->request);
     $this->assertTrue(catch('Exception', $e));
-
-    $controller->tally();
-    $behaviour->tally();
   }
 }
 ?>

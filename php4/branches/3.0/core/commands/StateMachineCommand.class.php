@@ -11,10 +11,14 @@
 
 define('STATE_MACHINE_BY_DEFAULT', 255);
 
-class StateMachine
+class StateMachineCommand
 {
   var $states = array();
   var $initial_state = null;
+
+  function StateMachineCommand()
+  {
+  }
 
   function registerState($state_name, &$command, $transitions_matrix = array())
   {
@@ -33,7 +37,7 @@ class StateMachine
     $this->initial_state = $state;
   }
 
-  function run()
+  function perform()
   {
     if (!count($this->states))
       return;
@@ -49,31 +53,34 @@ class StateMachine
     while($next_state != false)
     {
       $state = $next_state;
-      $next_state = $this->_processState($state);
+      $result = $this->_performStateCommand($state);
+
+      if (isset($this->states[$state]['transitions'][$result]))
+        $next_state = $this->states[$state]['transitions'][$result];
+      elseif(isset($this->states[$state]['transitions'][STATE_MACHINE_BY_DEFAULT]))
+        $next_state = $this->states[$state]['transitions'][STATE_MACHINE_BY_DEFAULT];
+      else
+        return $result;
 
       if(catch('Exception', $e))
          return throw($e);
     }
   }
 
-  function _processState($state_name)
+  function _performStateCommand($state)
   {
-    if (!isset($this->states[$state_name]))
+    if (!isset($this->states[$state]))
     {
       return throw(new LimbException('illegal state',
-                            array('state_name' => $state_name)));
+                            array('state_name' => $state)));
     }
 
-    $state_data =& $this->states[$state_name];
-    $command =& Handle :: resolve($state_data['command']);
-    $result = $command->perform();
+    $command =& Handle :: resolve($this->states[$state]['command']);
+    return $command->perform();
+  }
 
-    if (isset($state_data['transitions'][$result]))
-      return $state_data['transitions'][$result];
-    elseif(isset($state_data['transitions'][STATE_MACHINE_BY_DEFAULT]))
-      return $state_data['transitions'][STATE_MACHINE_BY_DEFAULT];
-    else
-      return false;
+  function _getNextState($state, $result)
+  {
   }
 
   function reset()

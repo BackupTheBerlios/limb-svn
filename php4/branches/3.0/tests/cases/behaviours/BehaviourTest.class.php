@@ -10,56 +10,87 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
-Mock :: generate('Behaviour');
-
-class BehaviourTestVersion extends Behaviour
-{
-  function _defineProperties()
-  {
-    return array(
-      'sort_order' => 3,
-      'can_be_parent' => 1,
-      'icon' => '/shared/images/folder.gif',
-    );
-  }
-
-  function defineAction1(&$state_machine){}
-  function defineAction2(&$state_machine){}
-}
-
 class BehaviourTest extends LimbTestCase
 {
-  var $behaviour;
-
   function BehaviourTest()
   {
     parent :: LimbTestCase('site object behaviour tests');
   }
 
-  function setUp()
-  {
-    $this->behaviour = new BehaviourTestVersion();
-  }
-
   function tearDown()
   {
+    clearTestingIni();
   }
 
   function testGetActionsList()
   {
+    registerTestingIni(
+      'test.behaviour.ini',
+      '
+      [action1]
+      some_properties
+      [action2]
+      some_properties
+      '
+    );
+
+    $behaviour = new Behaviour();
+    $behaviour->setName('test');
     $this->assertEqual(array('action1', 'action2'),
-                       $this->behaviour->getActionsList());
+                       $behaviour->getActionsList());
   }
 
   function testActionExists()
   {
-    $this->assertTrue($this->behaviour->actionExists('action1'));
-    $this->assertFalse($this->behaviour->actionExists('no_such_action'));
+    registerTestingIni(
+      'test.behaviour.ini',
+      '
+      [action1]
+      some_properties
+      [action2]
+      some_properties
+      '
+    );
+
+    $behaviour = new Behaviour();
+    $behaviour->setName('test');
+    $this->assertTrue($behaviour->actionExists('action1'));
+    $this->assertFalse($behaviour->actionExists('no_such_action'));
   }
 
   function testCanBeParent()
   {
-    $this->assertTrue($this->behaviour->canBeParent());
+    registerTestingIni(
+      'test.behaviour.ini',
+      '
+      can_be_parent = 1
+
+      [action1]
+      some_properties
+      '
+    );
+
+    $behaviour = new Behaviour();
+    $behaviour->setName('test');
+    $this->assertTrue($behaviour->canBeParent());
+  }
+
+  function testGetDefaultAction()
+  {
+    registerTestingIni(
+      'test.behaviour.ini',
+      '
+      can_be_parent = 1
+      default_action = admin_display
+
+      [admin_display]
+      some_properties
+      '
+    );
+
+    $behaviour = new Behaviour();
+    $behaviour->setName('test');
+    $this->assertTrue($behaviour->getDefaultAction(), 'admin_display');
   }
 }
 

@@ -8,23 +8,23 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/StateMachine.class.php');
+require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
 require_once(LIMB_DIR . '/core/commands/Command.interface.php');
 
 Mock :: generate('Command');
 
-class StateMachineTest extends LimbTestCase
+class StateMachineCommandTest extends LimbTestCase
 {
   var $state_machine;
 
-  function StateMachineTest()
+  function StateMachineCommandTest()
   {
-    parent :: LimbTestCase('state machine test');
+    parent :: LimbTestCase('state machine command test');
   }
 
   function setUp()
   {
-    $this->state_machine = new StateMachine();
+    $this->state_machine = new StateMachineCommand();
   }
 
   function tearDown()
@@ -34,17 +34,17 @@ class StateMachineTest extends LimbTestCase
 
   function testRunNoStatesOk()
   {
-    $this->state_machine->run();
+    $this->state_machine->perform();
   }
 
   function testSimpleFlow()
   {
     $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', 'some_status');
-    $this->state_machine->registerState('initial', $command1, array('some_status' => 'next_state'));
+    $command1->setReturnValue('perform', $result1 = 'some_status');
+    $this->state_machine->registerState('initial', $command1, array($result1 => 'next_state'));
 
     $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', 'some_nonexistent_status');
+    $command2->setReturnValue('perform', $result2 = 'final_status');
     $this->state_machine->registerState('next_state', $command2);
 
     $command3 = new MockCommand($this);
@@ -54,7 +54,7 @@ class StateMachineTest extends LimbTestCase
     $command2->expectOnce('perform');
     $command3->expectNever('perform');
 
-    $this->state_machine->run();
+    $this->assertEqual($this->state_machine->perform(), $result2);
 
     $command1->tally();
     $command2->tally();
@@ -67,10 +67,11 @@ class StateMachineTest extends LimbTestCase
     $this->state_machine->registerState('initial', $command1, array('some_status' => 'next_state'));
 
     $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', 'some_other_status');
+    $command2->setReturnValue('perform', $result1 = 'some_other_status');
     $this->state_machine->registerState('next_state', $command2, array('some_other_status' => 'extra_state'));
 
     $command3 = new MockCommand($this);
+    $command3->setReturnValue('perform', $result2 = 'final_status');
     $this->state_machine->registerState('extra_state', $command3);
 
     $command1->expectNever('perform');
@@ -78,7 +79,7 @@ class StateMachineTest extends LimbTestCase
     $command3->expectOnce('perform');
 
     $this->state_machine->setInitialState('next_state');
-    $this->state_machine->run();
+    $this->assertEqual($this->state_machine->perform(), $result2);
 
     $command1->tally();
     $command2->tally();
@@ -114,8 +115,8 @@ class StateMachineTest extends LimbTestCase
     $command2->expectOnce('perform');
     $command3->expectOnce('perform');
 
-    $this->state_machine->run();
-    $this->state_machine->run();
+    $this->state_machine->perform();
+    $this->state_machine->perform();
 
     $command1->tally();
     $command2->tally();
@@ -140,7 +141,7 @@ class StateMachineTest extends LimbTestCase
     $command2->expectOnce('perform');
     $command3->expectOnce('perform');
 
-    $this->state_machine->run();
+    $this->state_machine->perform();
 
     $command1->tally();
     $command2->tally();
@@ -156,7 +157,7 @@ class StateMachineTest extends LimbTestCase
     $command2 = new MockCommand($this);
     $this->state_machine->registerState('next_state', $command2);
 
-    $this->state_machine->run();
+    $this->state_machine->perform();
     $this->assertTrue(catch('Exception', $e));
   }
 

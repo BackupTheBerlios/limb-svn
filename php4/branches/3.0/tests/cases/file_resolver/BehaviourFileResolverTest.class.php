@@ -20,8 +20,8 @@ class BehaviourFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveBehaviourFileInPackagesOk()
   {
-    $this->assertEqual($this->resolver->resolve('TestBehaviour'),
-                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/behaviours/TestBehaviour.class.php');
+    $this->assertEqual($this->resolver->resolve('test.behaviour.ini'),
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/behaviours/test.behaviour.ini');
   }
 
   function testResolveBehaviourFileFailed()

@@ -5,19 +5,15 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: StateMachine.class.php 1098 2005-02-10 12:06:14Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/file_resolvers/FileResolverDecorator.class.php');
 
-class BehaviourFileResolver extends FileResolverDecorator
+class NullCommand // implements Command
 {
-  function resolve($path, $params = array())
+  function perform()
   {
-    if(file_exists(LIMB_DIR . '/core/behaviours/' . $path))
-      return LIMB_DIR . '/core/behaviours/' . $path;
-
-    return $this->_resolver->resolve('behaviours/' . $path, $params);
+    return LIMB_STATUS_OK;
   }
 }
 
