@@ -45,6 +45,8 @@ class Tree
 
   function getNodeByPath($path, $delimiter='/'){}
 
+  function getPathToNode($node, $delimeter = '/'){}
+
   function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false){}
 
   function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false){}
@@ -58,6 +60,10 @@ class Tree
   function expandNode($id){}
 
   function collapseNode($id){}
+
+  function canAddNode($id){}
+
+  function canDeleteNode($id){}
 }
 
 ?>
