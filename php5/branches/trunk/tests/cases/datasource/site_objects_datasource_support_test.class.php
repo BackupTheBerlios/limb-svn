@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/datasources/site_objects_datasource_support.inc.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
                       
 Mock :: generate('site_object');

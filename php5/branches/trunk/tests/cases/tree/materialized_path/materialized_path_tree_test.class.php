@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_driver.class.php');
+require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_tree.class.php');
 
 define('MATERIALIZED_PATH_TEST_TABLE', 'test_materialized_path_tree');
 
-class materialized_path_driver_test_version extends materialized_path_driver
+class materialized_path_tree_test_version extends materialized_path_tree
 {	
 	var $_node_table = MATERIALIZED_PATH_TEST_TABLE;	
 }
 
-class materialized_path_driver_test extends LimbTestCase
+class materialized_path_tree_test extends LimbTestCase
 {
 	var $db = null;
 	var $driver = null;
@@ -26,7 +26,7 @@ class materialized_path_driver_test extends LimbTestCase
 	{
 		$this->db = db_factory :: instance();
 		
-		$this->driver = new materialized_path_driver_test_version();
+		$this->driver = new materialized_path_tree_test_version();
 		
 		$this->_clean_up();
 	} 

@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-interface tree_interface
+interface tree
 {
 	public function is_node($id);
 

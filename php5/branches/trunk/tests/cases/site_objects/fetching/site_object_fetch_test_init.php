@@ -10,8 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
-require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_driver.class.php');
+require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_tree.class.php');
 
 class site_object_fetch_test_init
 {
@@ -24,7 +23,7 @@ class site_object_fetch_test_init
   function site_object_fetch_test_init()
   {
 		$this->db = db_factory :: instance();
-    $this->tree = new tree(new materialized_path_driver());
+    $this->tree = new materialized_path_tree();
   }
 
   function init(& $object)

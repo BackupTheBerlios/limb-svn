@@ -5,12 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: nested_sets_driver.class.php 131 2004-04-09 14:11:45Z server $
+* $Id: nested_sets_tree.class.php 131 2004-04-09 14:11:45Z server $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/tree/drivers/tree_db_driver.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
 
-class materialized_path_driver extends tree_db_driver
+class materialized_path_tree extends tree_db_driver implements tree
 {	
 	protected $_params = array(
 		'id' => 'id',

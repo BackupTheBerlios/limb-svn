@@ -9,11 +9,12 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree_decorator.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
+require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 Mock :: generate('LimbToolkit');
-Mock :: generate('tree');
+Mock :: generate('tree_decorator');
 Mock :: generate('site_object_behaviour');
 
 class site_object_behaviour_test_version extends site_object_behaviour
@@ -113,7 +114,7 @@ class site_object_behaviour_test extends LimbTestCase
   
   function test_can_accept_children_false()
   {
-    $tree = new Mocktree($this);
+    $tree = new Mocktree_decorator($this);
     $tree->expectOnce('can_add_node', array(10));
     $tree->setReturnValue('can_add_node', false);
     
@@ -151,7 +152,7 @@ class site_object_behaviour_test extends LimbTestCase
                                                    'behaviour_id' => $behaviour_id,
                                                    'identifier' => 'test_object'));
 
-    $tree = new Mocktree($this);
+    $tree = new Mocktree_decorator($this);
     $tree->expectOnce('can_add_node', array($node_id));
     $tree->setReturnValue('can_add_node', true);
     

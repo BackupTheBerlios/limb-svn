@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/datasources/site_objects_branch_datasource.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
                       
 Mock :: generate('tree');

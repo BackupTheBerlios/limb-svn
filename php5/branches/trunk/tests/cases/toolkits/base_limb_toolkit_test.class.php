@@ -60,7 +60,7 @@ class base_limb_toolkit_test extends LimbTestCase
   function test_get_tree()
   {
     $this->assertEqual(get_class($this->toolkit->getTree()), 
-                       'tree');    
+                       'tree_decorator');    
   }
   
   function test_get_user()

@@ -20,15 +20,14 @@ else
 	$path = '/root';
 
 require_once($project_dir . '/setup.php'); 
-require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
-require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_driver.class.php'); 
+require_once(LIMB_DIR . '/class/core/tree/drivers/materialized_path_tree.class.php'); 
 require_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . '/class/search/full_text_indexer.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 set_time_limit(3000);
 
-$tree = new tree(new materialized_path_driver());
+$tree = materialized_path_tree();
 $indexer = new full_text_indexer();
 $db = db_factory::instance();
 

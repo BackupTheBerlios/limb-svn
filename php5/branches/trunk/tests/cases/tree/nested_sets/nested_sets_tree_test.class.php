@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/tree/drivers/nested_sets_driver.class.php');
+require_once(LIMB_DIR . '/class/core/tree/drivers/nested_sets_tree.class.php');
 
 define('NESTED_SETS_TEST_TABLE', 'test_nested_sets_tree');
 
-class nested_sets_driver_test_version extends nested_sets_driver
+class nested_sets_tree_test_version extends nested_sets_tree
 {	
 	var $_node_table = NESTED_SETS_TEST_TABLE;	
 }
 
-class nested_sets_driver_test extends LimbTestCase
+class nested_sets_tree_test extends LimbTestCase
 {
 	var $db = null;
 	var $driver = null;
@@ -28,7 +28,7 @@ class nested_sets_driver_test extends LimbTestCase
 		
 		debug_mock :: init($this);
 		
-		$this->driver = new nested_sets_driver_test_version();
+		$this->driver = new nested_sets_tree_test_version();
 		
 		$this->_clean_up();
 	} 

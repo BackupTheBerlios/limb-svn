@@ -9,8 +9,9 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/tree/drivers/tree_db_driver.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree.interface.php');
 
-class nested_sets_driver extends tree_db_driver
+class nested_sets_tree extends tree_db_driver implements tree
 {
   const MOVE_BEFORE = 'BE';
   const MOVE_AFTER = 'AF';

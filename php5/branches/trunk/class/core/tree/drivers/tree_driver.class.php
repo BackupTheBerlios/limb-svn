@@ -8,9 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/tree/tree_interface.interface.php');
 
-abstract class tree_driver implements tree_interface
+abstract class tree_driver
 {  
 	protected $_expanded_parents = array();
 	

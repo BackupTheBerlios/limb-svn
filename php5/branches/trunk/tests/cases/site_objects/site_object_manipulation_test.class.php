@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . '/class/core/behaviours/site_object_behaviour.class.php');
 require_once(LIMB_DIR . '/class/core/base_limb_toolkit.class.php');
-require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
+require_once(LIMB_DIR . '/class/core/tree/tree_decorator.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 Mock :: generatePartial('BaseLimbToolkit',
@@ -36,7 +36,7 @@ class SiteObjectManipulationTestToolkit extends SiteObjectToolkitMock
   }
 }
 
-Mock :: generate('tree');
+Mock :: generate('tree_decorator');
 Mock :: generate('user');
 
 Mock :: generatePartial('site_object',
@@ -57,7 +57,7 @@ class site_object_manipulation_test extends LimbTestCase
   function setUp()
   {
     $this->toolkit = new SiteObjectManipulationTestToolkit($this);
-    $this->tree = new Mocktree($this);
+    $this->tree = new Mocktree_decorator($this);
     $this->user = new Mockuser($this);
     $this->user->setReturnValue('get_id', 125);
     
