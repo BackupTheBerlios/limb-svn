@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/actions/site_object/create_action.class.php');
 
 class create_documents_folder_action extends create_action
 {
-  function _define_dataspace_name()
+  function _define_controller_name()
   {
     return 'documents_folder_controller';
   }
