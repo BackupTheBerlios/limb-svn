@@ -25,8 +25,8 @@ class datasource_factory
 		else
 			$class_name = $class_path;
 		
-		if (file_exists(PROJECT_DIR . '/core/datasource/' . $class_path . '.class.php')) 
-			$full_path = PROJECT_DIR . '/core/datasource/' . $class_path . '.class.php';
+		if (file_exists(LIMB_APP_DIR . '/core/datasource/' . $class_path . '.class.php')) 
+			$full_path = LIMB_APP_DIR . '/core/datasource/' . $class_path . '.class.php';
 		elseif(file_exists(LIMB_DIR . '/core/datasource/' . $class_path . '.class.php'))
 			$full_path = LIMB_DIR . '/core/datasource/' . $class_path . '.class.php';
 		else
