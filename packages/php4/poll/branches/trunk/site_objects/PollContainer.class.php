@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
 
 class PollContainer extends SiteObject
 {
-  public function canVote()
+  function canVote()
   {
     if(!$poll_data = $this->getActivePoll())
       return false;
@@ -22,7 +22,10 @@ class PollContainer extends SiteObject
     if(defined('DEBUG_POLL_ENABLED') &&  constant('DEBUG_POLL_ENABLED'))
       return true;
 
-    $poll_session = Limb :: toolkit()->getSession()->get('poll_session');
+    $toolkit =& Limb :: toolkit();
+    $session =& $toolkit->getSession();
+
+    $poll_session = $session->get('poll_session');
     if (is_array($poll_session) &&  isset($poll_session[$poll_id]))
       return false;
 
@@ -55,7 +58,7 @@ class PollContainer extends SiteObject
     return true;
   }
 
-  public function registerAnswer($answer_id)
+  function registerAnswer($answer_id)
   {
     if (!$answer_id)
       return false;
@@ -73,7 +76,10 @@ class PollContainer extends SiteObject
     if(!$this->_addVoteToAnswer($poll_data['answers'][$answer_id]['record_id']))
       return false;
 
-    $poll_session =& Limb :: toolkit()->getSession()->getReference('poll_session');
+    $toolkit =& Limb :: toolkit();
+    $session =& $toolkit->getSession();
+
+    $poll_session =& $session->getReference('poll_session');
     $poll_session[$poll_id] = $poll_id;
 
     switch($poll_data['restriction'])
@@ -106,9 +112,10 @@ class PollContainer extends SiteObject
     return true;
   }
 
-  protected function _addVoteToAnswer($record_id)
+  function _addVoteToAnswer($record_id)
   {
-    $poll_answer_db_table = Limb :: toolkit()->createDBTable('PollAnswer');
+    $toolkit =& Limb :: toolkit();
+    $poll_answer_db_table =& $toolkit->createDBTable('PollAnswer');
 
     $data = $poll_answer_db_table->getRowById($record_id);
     if (!$data)
@@ -121,18 +128,20 @@ class PollContainer extends SiteObject
   }
 
 
-  protected function _registerNewIp($poll_id, $ip)
+  function _registerNewIp($poll_id, $ip)
   {
-    $poll_ip_db_table = Limb :: toolkit()->createDBTable('PollIp');
+    $toolkit =& Limb :: toolkit();
+    $poll_ip_db_table =& $toolkit->createDBTable('PollIp');
     $data['id'] = null;
     $data['ip'] = $ip;
     $data['poll_id'] = $poll_id;
     $poll_ip_db_table->insert($data);
   }
 
-  protected function _pollIpExists($poll_id, $ip)
+  function _pollIpExists($poll_id, $ip)
   {
-    $poll_ip_db_table = Limb :: toolkit()->createDBTable('PollIp');
+    $toolkit =& Limb :: toolkit();
+    $poll_ip_db_table =& $toolkit->createDBTable('PollIp');
     $where['poll_id'] = $poll_id;
     $where['ip'] = $ip;
 
@@ -142,7 +151,7 @@ class PollContainer extends SiteObject
       return false;
   }
 
-  public function getActivePoll()
+  function getActivePoll()
   {
     if(!$questions = $this->_loadAllQuestions())
       return array();
@@ -164,7 +173,7 @@ class PollContainer extends SiteObject
     return $record;
   }
 
-  protected function _processQuestion(& $poll_data)
+  function _processQuestion(& $poll_data)
   {
     $poll_data['answers'] = $this->_loadAnswers($poll_data['path']);
 
@@ -185,10 +194,12 @@ class PollContainer extends SiteObject
       }
   }
 
-  protected function _loadAllQuestions()
+  function _loadAllQuestions()
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
-    $datasource->setPath('root/polls');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
+
+    $datasource->setPath('/root/polls');
     $datasource->setOrder(array('start_date' => 'DESC'));
     $datasource->setSiteObjectClassName('poll');
     $datasource->setRestrictByClass();
@@ -196,9 +207,11 @@ class PollContainer extends SiteObject
     return $datasource->fetch();
   }
 
-  protected function _loadAnswers($question_path)
+  function _loadAnswers($question_path)
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
+
     $datasource->setPath($question_path);
     $datasource->setSiteObjectClassName('poll_answer');
     $datasource->setRestrictByClass();

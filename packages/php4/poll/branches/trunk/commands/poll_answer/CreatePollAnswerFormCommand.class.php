@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/FormCreateSiteObjectCommand.class.
 
 class CreatePollAnswerFormCommand extends FormCreateSiteObjectCommand
 {
-  protected function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules($validator, $dataspace)
   {
     parent :: _registerValidationRules($validator, $dataspace);
 

@@ -10,14 +10,15 @@
 ***********************************************************************************/
 class StatsIp
 {
-  protected $db = null;
+  var $db = null;
 
-  function __construct()
+  function StatsIp()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
   }
 
-  public function isNewHost($reg_date)
+  function isNewHost($reg_date)
   {
     if(($record = $this->_getStatIpRecord()) === false)
     {
@@ -39,7 +40,7 @@ class StatsIp
     return false;
   }
 
-  protected function _insertStatIpRecord($stamp)
+  function _insertStatIpRecord($stamp)
   {
     $this->db->sqlInsert('sys_stat_ip',
       array(
@@ -49,18 +50,18 @@ class StatsIp
     );
   }
 
-  public function getClientIp()
+  function getClientIp()
   {
     return Ip :: encodeIp(Sys :: clientIp());
   }
 
-  protected function _getStatIpRecord()
+  function _getStatIpRecord()
   {
     $this->db->sqlSelect('sys_stat_ip', '*', array('id' => $this->getClientIp()));
     return $this->db->fetchRow();
   }
 
-  protected function _updateStatIpRecord($stamp)
+  function _updateStatIpRecord($stamp)
   {
     $this->db->sqlUpdate('sys_stat_ip',
       array('time' => $stamp),

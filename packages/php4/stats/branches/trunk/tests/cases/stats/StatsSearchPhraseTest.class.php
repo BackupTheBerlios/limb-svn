@@ -27,9 +27,9 @@ class StatsSearchPhraseTest extends LimbTestCase
   var $stats_referer = null;
   var $db = null;
 
-  function __construct()
+  function StatsSearchPhraseTest()
   {
-    parent :: __construct();
+    parent :: LimbTestCase();
 
     $this->db = DbFactory :: instance();
   }
@@ -37,7 +37,7 @@ class StatsSearchPhraseTest extends LimbTestCase
   function setUp()
   {
     $this->stats_search_phrase = new StatsSearchPhraseSelfTestVersion($this);
-    $this->stats_search_phrase->__construct();
+    $this->stats_search_phrase->StatsSearchPhrase();
 
     $this->_cleanUp();
   }

@@ -12,7 +12,7 @@ require_once(dirname(__FILE__). '\updateParamCommonAction.class.php');
 
 class UpdateParamAction extends UpdateParamCommonAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'site_param_form';
   }

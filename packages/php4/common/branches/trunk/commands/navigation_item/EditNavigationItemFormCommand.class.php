@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/FormEditSiteObjectCommand.class.ph
 
 class EditNavigationItemFormCommand extends FormEditSiteObjectCommand
 {
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -23,7 +23,7 @@ class EditNavigationItemFormCommand extends FormEditSiteObjectCommand
     );
   }
 
-  protected function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules($validator, $dataspace)
   {
     parent :: _registerValidationRules($validator, $dataspace);
 

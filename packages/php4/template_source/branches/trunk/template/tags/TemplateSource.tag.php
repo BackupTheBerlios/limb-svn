@@ -19,12 +19,12 @@ registerTag(new TemplateSourceTagInfo());
 
 class TemplateSourceTag extends ServerComponentTag
 {
-  public function __construct()
+  function TemplateSourceTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/template_source_component';
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     if(isset($this->attributes['target']))
       $target = 'target=' . $this->attributes['target'];

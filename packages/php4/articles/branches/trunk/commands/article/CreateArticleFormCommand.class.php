@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/FormCreateSiteObjectCommand.class.
 
 class CreateArticleFormCommand extends FormCreateSiteObjectCommand
 {
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -26,7 +26,7 @@ class CreateArticleFormCommand extends FormCreateSiteObjectCommand
     );
   }
 
-  protected function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules($validator, $dataspace)
   {
     parent :: _registerValidationRules($validator, $dataspace);
 

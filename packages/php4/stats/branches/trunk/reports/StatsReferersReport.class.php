@@ -9,19 +9,19 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(dirname(__FILE__) . '/StatsReportInterface.interface.php');
 
-class StatsReferersReport implements StatsReportInterface
+class StatsReferersReport //implements StatsReportInterface
 {
-  protected $db;
-  protected $filter_conditions = array();
+  var $db;
+  var $filter_conditions = array();
 
-  public function __construct()
+  function StatsReferersReport()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
   }
 
-  public function fetch($params = array())
+  function fetch($params = array())
   {
     $sql = 'SELECT
             stat_referer_id, ssru.referer_url as referer_url,
@@ -44,7 +44,7 @@ class StatsReferersReport implements StatsReportInterface
     return $this->db->getArray();
   }
 
-  public function fetchCount($params = array())
+  function fetchCount($params = array())
   {
     $sql = 'SELECT
             stat_referer_id
@@ -59,7 +59,7 @@ class StatsReferersReport implements StatsReportInterface
     return $this->db->countSelectedRows();
   }
 
-  public function fetchTotalHits()
+  function fetchTotalHits()
   {
     $sql = 'SELECT
             COUNT(id) as total
@@ -74,7 +74,7 @@ class StatsReferersReport implements StatsReportInterface
     return $record['total'];
   }
 
-  public function setPeriodFilter($start_date, $finish_date)
+  function setPeriodFilter($start_date, $finish_date)
   {
     $start_stamp = $start_date->getStamp();
     $finish_stamp = $finish_date->getStamp();
@@ -82,7 +82,7 @@ class StatsReferersReport implements StatsReportInterface
     $this->filter_conditions[] = " AND time BETWEEN {$start_stamp} AND {$finish_stamp} ";
   }
 
-  protected function _buildFilterCondition()
+  function _buildFilterCondition()
   {
     return ' WHERE stat_referer_id <> -1 ' . implode(' ', $this->filter_conditions);
   }

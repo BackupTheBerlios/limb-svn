@@ -7,28 +7,28 @@
 *
 * $Id: edit_message_action.class.php 707 2004-09-18 14:43:42Z pachanga $
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/commands/FormEditSiteObjectCommand.class.php');
 
 class EditMessageFormCommand extends FormEditSiteObjectCommand
 {
-  protected function _defineDatamap()
-	{
-	  return ComplexArray :: array_merge(
-	      parent :: _defineDatamap(),
-	      array(
-  				'content' => 'content',
-	      )
-	  );     
-	}  
-	
-	protected function _registerValidationRules($validator, $dataspace)
-	{
+  function _defineDatamap()
+  {
+    return ComplexArray :: array_merge(
+        parent :: _defineDatamap(),
+        array(
+          'content' => 'content',
+        )
+    );
+  }
+
+  function _registerValidationRules($validator, $dataspace)
+  {
     parent :: _registerValidationRules($validator, $dataspace);
 
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'content'));
-	}
+  }
 }
 
 ?>

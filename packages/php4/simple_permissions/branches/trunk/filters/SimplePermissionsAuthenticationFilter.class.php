@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/filters/AuthenticationFilter.class.php');
 
 class SimplePermissionsAuthenticationFilter extends AuthenticationFilter
 {
-  public function run($filter_chain, $request, $response)
+  function run($filter_chain, $request, $response)
   {
     Debug :: addTimingPoint('authentication filter started');
 
@@ -46,7 +46,8 @@ class SimplePermissionsAuthenticationFilter extends AuthenticationFilter
       return;
     }
 
-    $authoriser = Limb :: toolkit()->getAuthorizer();
+    $toolkit =& Limb :: toolkit();
+    $authoriser =& $toolkit->getAuthorizer();
     $authoriser->assignActionsToObjects($object_data);
 
     if (!isset($object_data['actions']) ||  !isset($object_data['actions'][$action]))

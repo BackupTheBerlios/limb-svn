@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class StatsSearchEnginesReportAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'search_engines_form';
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $request->import($this->dataspace->export());
 

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
 
 class UserGroupDbTable extends OneTableObjectDbTable
 {
-  protected function _defineConstraints()
+  function _defineConstraints()
   {
     return array(
       'object_id' =>	array(

@@ -10,9 +10,9 @@
 ***********************************************************************************/
 interface StatsReportInterface
 {
-  public function fetch($params = array());
+  function fetch($params = array());
 
-  public function fetchCount($params = array());
+  function fetchCount($params = array());
 }
 
 ?>

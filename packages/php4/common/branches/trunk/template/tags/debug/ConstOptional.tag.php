@@ -20,9 +20,9 @@ registerTag(new ConstOptionalTagInfo());
 
 class ConstOptionalTag extends CompilerDirectiveTag
 {
-  protected $const;
+  var $const;
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['name']))
     {
@@ -38,7 +38,7 @@ class ConstOptionalTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $value = 'true';
     if (isset($this->attributes['value']) &&  !(boolean)$this->attributes['value'])
@@ -49,7 +49,7 @@ class ConstOptionalTag extends CompilerDirectiveTag
     parent::preGenerate($code);
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     parent::postGenerate($code);
     $code->writePhp('}');

@@ -34,13 +34,14 @@ class MetadataComponentTest extends LimbTestCase
     loadTestingDbDump(dirname(__FILE__) . '/../sql/metadata.sql');
 
     $this->metadata_component = new MetadataComponentTestVersion($this);
-    $this->metadata_component->__construct();
+    $this->metadata_component->MetadataComponent();
 
     $this->controller = new MockSiteObjectController($this);
 
     $this->metadata_component->setReturnValue('_getMappedController', $this->controller);
 
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
 
     $values['identifier'] = 'object_300';
     $values['object_id'] = 300;

@@ -25,7 +25,8 @@ class SimpleAuthenticatorDbTest extends LimbTestCase
   function tearDown()
   {
     clearTestingDbTables();
-    User :: instance()->logout();
+    $inst =& User :: instance();
+    $inst->logout();
   }
 
   function testLoginOk()

@@ -10,17 +10,17 @@
 ***********************************************************************************/
 class MediaManager
 {
-  public function getMediaFilePath($media_id)
+  function getMediaFilePath($media_id)
   {
     return MEDIA_DIR . $media_id . '.media';
   }
 
-  public function unlinkMedia($media_id)
+  function unlinkMedia($media_id)
   {
     unlink($this->getMediaFilePath($media_id));
   }
 
-  public function store($disk_file_path)
+  function store($disk_file_path)
   {
     if(!file_exists($disk_file_path))
       throw new FileNotFoundException('file not found', $disk_file_path);

@@ -13,12 +13,12 @@ require_once(dirname(__FILE__) . '/../reports/StatsPagesReport.class.php');
 
 class StatsPagesListDatasource extends StatsReportDatasource
 {
-  protected function _initStatsReport()
+  function _initStatsReport()
   {
     $this->_stats_report = new StatsPagesReport();
   }
 
-  protected function _processResultArray($arr)
+  function _processResultArray($arr)
   {
     $total = $this->_stats_report->fetchTotalHits();
 
@@ -33,14 +33,15 @@ class StatsPagesListDatasource extends StatsReportDatasource
     return $result;
   }
 
-  protected function _configureFilters()
+  function _configureFilters()
   {
-    $this->_setPeriodFilter(Limb :: toolkit()->getRequest());
+    $toolkit =& Limb :: toolkit();
+
+    $this->_setPeriodFilter($toolkit->getRequest(), $toolkit->getLocale());
   }
 
-  protected function _setPeriodFilter($request)
+  function _setPeriodFilter(&$request, &$locale)
   {
-    $locale = Limb :: toolkit()->getLocale();
     $start_date = new Date();
     $start_date->setHour(0);
     $start_date->setMinute(0);

@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php'
 
 class EditUserGroupAction extends FormEditSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'user_group';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'edit_user_group';
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 

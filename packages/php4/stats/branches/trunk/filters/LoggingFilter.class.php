@@ -12,13 +12,14 @@ require_once(LIMB_DIR . '/class/core/filters/InterceptingFilter.interface.php');
 
 class LoggingFilter implements InterceptingFilter
 {
-  public function run($filter_chain, $request, $response)
+  function run($filter_chain, $request, $response)
   {
     $filter_chain->next();
 
     Debug :: addTimingPoint('logging filter started');
 
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
 
     $object = wrapWithSiteObject($datasource->fetch());

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
 class UserMembershipDatasource implements Datasource
 {
-  public function getDataset(&$counter, $params = array())
+  function getDataset(&$counter, $params = array())
   {
     $user_groups = $this->_getUserGroups();
 
@@ -27,9 +27,10 @@ class UserMembershipDatasource implements Datasource
     return new ArrayDataset($result);
   }
 
-  protected function _getUserGroups()
+  function _getUserGroups()
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
     $datasource->setPath('/root/user_groups');
     $datasource->setSiteObjectClassName('user_group');
     $datasource->setRestrictByClass();

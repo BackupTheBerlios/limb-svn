@@ -12,18 +12,20 @@ include(dirname(__FILE__) . '/search_engines.setup.php');//ugly ???
 
 class StatsRegister
 {
-  protected $_counter_register = null;
-  protected $_ip_register = null;
-  protected $_uri_register = null;
-  protected $_referer_register = null;
-  protected $_search_phrase_register = null;
-  protected $_reg_date;
-  protected $db = null;
+  var $_counter_register = null;
+  var $_ip_register = null;
+  var $_uri_register = null;
+  var $_referer_register = null;
+  var $_search_phrase_register = null;
+  var $_reg_date;
+  var $db = null;
 
-  public function __construct()
+  function StatsRegister()
   {
     $this->_reg_date = new Date();
-    $this->db = Limb :: toolkit()->getDB();
+
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
   }
 
   function getRegisterTimeStamp()
@@ -31,7 +33,7 @@ class StatsRegister
     return $this->_reg_date->getStamp();
   }
 
-  public function setRegisterTime($stamp = null)
+  function setRegisterTime($stamp = null)
   {
     if(!$stamp)
       $stamp = time();
@@ -39,7 +41,7 @@ class StatsRegister
     $this->_reg_date->setByStamp($stamp);
   }
 
-  public function register($node_id, $action, $status_code)
+  function register($node_id, $action, $status_code)
   {
     $this->_updateLog($node_id, $action, $status_code);
 
@@ -48,12 +50,15 @@ class StatsRegister
     $this->_updateSearchReferers();
   }
 
-  protected function _updateLog($node_id, $action, $status_code)
+  function _updateLog($node_id, $action, $status_code)
   {
     $ip_register = $this->_getIpRegister();
 
     $referer_register = $this->_getRefererRegister();
     $uri_register = $this->_getUriRegister();
+
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     $this->db->sqlInsert('sys_stat_log',
       array(
@@ -62,7 +67,7 @@ class StatsRegister
         'node_id' => $node_id,
         'stat_referer_id' => $referer_register->getRefererPageId(),
         'stat_uri_id' => $uri_register->getUriId(),
-        'user_id' => Limb :: toolkit()->getUser()->getId(),
+        'user_id' => $user->getId(),
         'session_id' => session_id(),
         'action' => $action,
         'status' => $status_code,
@@ -70,19 +75,19 @@ class StatsRegister
     );
   }
 
-  public function cleanUntil($date)
+  function cleanUntil($date)
   {
     $this->db->sqlDelete('sys_stat_log', 'time < ' . $date->getStamp());
   }
 
-  public function countLogRecords()
+  function countLogRecords()
   {
     $this->db->sqlExec('SELECT COUNT(id) as counter FROM sys_stat_log');
     $row = $this->db->fetchRow();
     return $row['counter'];
   }
 
-  protected function _updateCounters()
+  function _updateCounters()
   {
     $ip_register = $this->_getIpRegister();
     $counter_register = $this->_getCounterRegister();
@@ -91,13 +96,13 @@ class StatsRegister
     $counter_register->update($this->_reg_date);
   }
 
-  protected function _updateSearchReferers()
+  function _updateSearchReferers()
   {
     $phrase_register = $this->_getSearchPhraseRegister();
     $phrase_register->register($this->_reg_date);
   }
 
-  protected function _getIpRegister()
+  function _getIpRegister()
   {
     if ($this->_ip_register)
       return $this->_ip_register;
@@ -108,7 +113,7 @@ class StatsRegister
     return $this->_ip_register;
   }
 
-  protected function _getCounterRegister()
+  function _getCounterRegister()
   {
     if ($this->_counter_register)
       return $this->_counter_register;
@@ -119,7 +124,7 @@ class StatsRegister
     return $this->_counter_register;
   }
 
-  protected function _getRefererRegister()
+  function _getRefererRegister()
   {
     if ($this->_referer_register)
       return $this->_referer_register;
@@ -130,7 +135,7 @@ class StatsRegister
     return $this->_referer_register;
   }
 
-  protected function _getUriRegister()
+  function _getUriRegister()
   {
     if ($this->_uri_register)
       return $this->_uri_register;
@@ -141,7 +146,7 @@ class StatsRegister
     return $this->_uri_register;
   }
 
-  protected function _getSearchPhraseRegister()
+  function _getSearchPhraseRegister()
   {
     if ($this->_search_phrase_register)
       return $this->_search_phrase_register;

@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php'
 
 class UserActivatePasswordController extends SiteObjectController
 {
-  protected function _defineDefaultAction()
+  function _defineDefaultAction()
   {
     return 'activate_password';
   }
 
-  protected function _defineActions()
+  function _defineActions()
   {
     return array(
         'activate_password' => array(

@@ -12,15 +12,16 @@ require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
 
 class StatsSearchEnginesReport
 {
-  protected $db = null;
-  protected $filter_conditions = array();
+  var $db = null;
+  var $filter_conditions = array();
 
-  function __construct()
+  function StatsSearchEnginesReport()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
   }
 
-  public function fetch($params = array())
+  function fetch($params = array())
   {
     $sql = 'SELECT
             *,
@@ -41,7 +42,7 @@ class StatsSearchEnginesReport
     return $this->db->getArray();
   }
 
-  public function fetchCount($params = array())
+  function fetchCount($params = array())
   {
     $sql = 'SELECT
             engine
@@ -56,7 +57,7 @@ class StatsSearchEnginesReport
     return $this->db->countSelectedRows();
   }
 
-  public function fetchTotalHits()
+  function fetchTotalHits()
   {
     $sql = 'SELECT
             COUNT(id) as total
@@ -71,7 +72,7 @@ class StatsSearchEnginesReport
     return $record['total'];
   }
 
-  public function setPeriodFilter($start_date, $finish_date)
+  function setPeriodFilter($start_date, $finish_date)
   {
     $start_stamp = $start_date->getStamp();
     $finish_stamp = $finish_date->getStamp();
@@ -79,7 +80,7 @@ class StatsSearchEnginesReport
     $this->filter_conditions[] = " AND time BETWEEN {$start_stamp} AND {$finish_stamp} ";
   }
 
-  protected function _buildFilterCondition()
+  function _buildFilterCondition()
   {
     return ' WHERE 1=1 ' . implode(' ', $this->filter_conditions);
   }

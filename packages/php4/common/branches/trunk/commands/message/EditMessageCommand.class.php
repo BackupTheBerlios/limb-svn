@@ -7,15 +7,15 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/commands/EditSiteObjectCommand.class.php');
 
 class EditMessageCommand extends EditSiteObjectCommand
 {
-	protected function _defineSiteObjectClassName()
-	{
-	  return 'message';
-	}  
+  function _defineSiteObjectClassName()
+  {
+    return 'message';
+  }
 }
 
 ?>

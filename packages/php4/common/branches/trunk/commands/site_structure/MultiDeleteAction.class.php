@@ -12,19 +12,19 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class MultiDeleteAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'grid_form';
   }
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
     parent :: _initDataspace($request);
 
     $this->_transferDataspace($request);
   }
 
-  protected function _firstTimePerform($request, $response)
+  function _firstTimePerform($request, $response)
   {
     $data = $this->dataspace->export();
 
@@ -47,7 +47,7 @@ class MultiDeleteAction extends FormAction
     parent :: _firstTimePerform($request, $response);
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
 
@@ -85,14 +85,15 @@ class MultiDeleteAction extends FormAction
     $response->write(closePopupResponse($request));
   }
 
-  protected function _getObjectsToDelete($node_ids)
+  function _getObjectsToDelete($node_ids)
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsByNodeIdsDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource = $toolkit->getDatasource('SiteObjectsByNodeIdsDatasource');
     $datasource->setNodeIds($node_ids);
 
     $objects = $datasource->fetch();
 
-    $tree = Limb :: toolkit()->getTree();
+    $tree =& $toolkit->getTree();
 
     foreach($objects as $id => $item)
     {

@@ -13,16 +13,17 @@ require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
 class StatsReferer
 {
-  protected $db = null;
-  protected $url = null;
+  var $db = null;
+  var $url = null;
 
-  public function __construct()
+  function StatsReferer()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
     $this->url = new Uri();
   }
 
-  public function getRefererPageId()
+  function getRefererPageId()
   {
     if(!$clean_uri = $this->_getCleanRefererPage())
       return -1;
@@ -36,12 +37,12 @@ class StatsReferer
     return $this->_insertRefererRecord($clean_uri);
   }
 
-  protected function _isInnerUrl()
+  function _isInnerUrl()
   {
     return ($this->url->getHost() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
   }
 
-  protected function _getCleanRefererPage()
+  function _getCleanRefererPage()
   {
     if ($referer = $this->_getHttpReferer())
       return $this->cleanUrl($referer);
@@ -49,12 +50,12 @@ class StatsReferer
     return false;
   }
 
-  protected function _getHttpReferer()
+  function _getHttpReferer()
   {
     return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
   }
 
-  protected function _getExistingRefererRecordId($uri)
+  function _getExistingRefererRecordId($uri)
   {
     $this->db->sqlSelect('sys_stat_referer_url', '*',
       "referer_url='" . $uri . "'");
@@ -64,14 +65,14 @@ class StatsReferer
       return false;
   }
 
-  protected function _insertRefererRecord($uri)
+  function _insertRefererRecord($uri)
   {
     $this->db->sqlInsert('sys_stat_referer_url',
       array('id' => null, 'referer_url' => $uri));
     return $this->db->getSqlInsertId('sys_stat_referer_url');
   }
 
-  public function cleanUrl($raw_url)
+  function cleanUrl($raw_url)
   {
     $this->url->parse($raw_url);
 

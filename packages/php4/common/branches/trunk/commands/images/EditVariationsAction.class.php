@@ -12,23 +12,24 @@ require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php'
 
 class EditVariationsAction extends FormEditSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'image_object';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'edit_variations';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     $datamap = array(
       '_FILES_' => 'files_data'
     );
 
-    $ini = Limb :: toolkit()->getINI('image_variations.ini');
+    $t =& Limb :: toolkit();
+    $ini =& $t->getINI('image_variations.ini');
 
     $image_variations = $ini->getAll();
 
@@ -46,16 +47,17 @@ class EditVariationsAction extends FormEditSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     //??
   }
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
     parent :: _initDataspace($request);
 
-    $ini = Limb :: toolkit()->getINI('image_variations.ini');
+    $t =& Limb :: toolkit();
+    $ini =& $t->getINI('image_variations.ini');
 
     $image_variations = $ini->getAll();
 
@@ -69,7 +71,7 @@ class EditVariationsAction extends FormEditSiteObjectAction
     }
   }
 
-  protected function _updateObjectOperation()
+  function _updateObjectOperation()
   {
     $this->object->set('files_data', $_FILES[$this->name]);
 

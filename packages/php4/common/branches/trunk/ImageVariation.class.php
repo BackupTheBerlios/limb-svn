@@ -12,10 +12,10 @@ require_once(LIMB_DIR . '/class/core/DomainObject.class.php');
 
 class ImageVariation extends DomainObject
 {
-  protected $_media_manager;
-  protected $_image_library;
+  var $_media_manager;
+  var $_image_library;
 
-  protected function _getMediaManager()
+  function _getMediaManager()
   {
     if($this->_media_manager)
       return $this->_media_manager;
@@ -26,7 +26,7 @@ class ImageVariation extends DomainObject
     return $this->_media_manager;
   }
 
-  protected function _getImageLibrary()
+  function _getImageLibrary()
   {
     if($this->_image_library)
       return $this->_image_library;
@@ -37,37 +37,40 @@ class ImageVariation extends DomainObject
     return $this->_image_library;
   }
 
-  public function getMediaFile()
+  function getMediaFile()
   {
-    return $this->_getMediaManager()->getMediaFilePath($this->getMediaFileId());
+    $mgr =& $this->_getMediaManager();
+    return $mgr->getMediaFilePath($this->getMediaFileId());
   }
 
-  public function getMediaFileType()
+  function getMediaFileType()
   {
-    return $this->_getImageLibrary()->getImageType($this->getMimeType());
+    $lib =& $this->_getImageLibrary();
+    return $lib->getImageType($this->getMimeType());
   }
 
-  public function loadFromFile($file)
+  function loadFromFile($file)
   {
-    $media_file_id = $this->_getMediaManager()->store($file);
+    $mgr =& $this->_getMediaManager();
+    $media_file_id = $mgr->store($file);
     $this->setMediaFileId($media_file_id);
 
     $this->_updateDimensionsUsingFile($file);
   }
 
   //for mocking, refactor and use fs?
-  protected function _generateTempFile()
+  function _generateTempFile()
   {
     return tempnam(VAR_DIR, 'p');
   }
 
   //for mocking, refactor and use fs?
-  protected function _unlinkTempFile($temp_file)
+  function _unlinkTempFile($temp_file)
   {
     unlink($temp_file);
   }
 
-  public function resize($max_size)
+  function resize($max_size)
   {
     $image_library = $this->_getImageLibrary();
     $media_manager = $this->_getMediaManager();
@@ -105,109 +108,109 @@ class ImageVariation extends DomainObject
     $this->_unlinkTempFile($output_file);
   }
 
-  protected function _updateDimensionsUsingFile($file)
+  function _updateDimensionsUsingFile($file)
   {
     $size = getimagesize($file);
     $this->setWidth($size[0]);
     $this->setHeight($size[1]);
   }
 
-  public function getEtag()
+  function getEtag()
   {
     return $this->get('etag');
   }
 
-  public function setEtag($etag)
+  function setEtag($etag)
   {
     $this->set('etag', $etag);
   }
 
-  public function getName()
+  function getName()
   {
     return $this->get('name');
   }
 
-  public function setName($name)
+  function setName($name)
   {
     $this->set('name', $name);
   }
 
-  public function getWidth()
+  function getWidth()
   {
     return (int)$this->get('width');
   }
 
-  public function setWidth($width)
+  function setWidth($width)
   {
     $this->set('width', (int)$width);
   }
 
-  public function getHeight()
+  function getHeight()
   {
     return (int)$this->get('height');
   }
 
-  public function setHeight($height)
+  function setHeight($height)
   {
     $this->set('height', (int)$height);
   }
 
-  public function getMimeType()
+  function getMimeType()
   {
     return $this->get('mime_type');
   }
 
-  public function setMimeType($mime_type)
+  function setMimeType($mime_type)
   {
     $this->set('mime_type', $mime_type);
   }
 
-  public function getFileName()
+  function getFileName()
   {
     return $this->get('file_name');
   }
 
-  public function setFileName($file_name)
+  function setFileName($file_name)
   {
     $this->set('file_name', $file_name);
   }
 
-  public function getImageId()
+  function getImageId()
   {
     return (int)$this->get('image_id');
   }
 
-  public function setImageId($image_id)
+  function setImageId($image_id)
   {
     $this->set('image_id', (int)$image_id);
   }
 
-  public function getMediaFileId()
+  function getMediaFileId()
   {
     return $this->get('media_file_id');
   }
 
-  public function setMediaFileId($media_file_id)
+  function setMediaFileId($media_file_id)
   {
     $this->set('media_file_id', $media_file_id);
   }
 
-  public function getMediaId()
+  function getMediaId()
   {
     return (int)$this->get('media_id');
   }
 
-  public function setMediaId($media_id)
+  function setMediaId($media_id)
   {
     $this->set('media_id', (int)$media_id);
   }
 
-  public function getSize()
+  function getSize()
   {
     return (int)$this->get('size');
   }
 
-  public function setSize($size)
+  function setSize($size)
   {
     $this->set('size', (int)$size);
   }

@@ -19,12 +19,12 @@ registerTag(new UserInGroupsTagInfo());
 
 class UserInGroupsTag extends ServerComponentTag
 {
-  public function __construct()
+  function UserInGroupsTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../../components/simple_authenticator_component';
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['groups']) ||  !$this->attributes['groups'])
     {
@@ -38,7 +38,7 @@ class UserInGroupsTag extends ServerComponentTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp('if ' .
       $this->getComponentRefCode() . '->is_user_in_groups(' . $this->attributes['groups'] .'){');

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/CreateSiteObjectCommand.class.php'
 
 class CreatePollCommand extends CreateSiteObjectCommand
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'poll';
   }

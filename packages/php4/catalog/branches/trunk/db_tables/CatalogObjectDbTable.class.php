@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
 
 class CatalogObjectDbTable extends OneTableObjectDbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return array(
       'image_id' => array('type' => 'numeric'),

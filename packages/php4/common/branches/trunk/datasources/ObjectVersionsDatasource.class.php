@@ -12,11 +12,11 @@ require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
 class ObjectVersionsDatasource implements Datasource
 {
-  public function getDataset(&$counter, $params=array())
+  function getDataset(&$counter, $params=array())
   {
-    $request = Limb :: toolkit()->getRequest();
-
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
 
     $object_data = $datasource->fetch();
@@ -24,7 +24,7 @@ class ObjectVersionsDatasource implements Datasource
     if (!count($object_data))
       return new ArrayDataset(array());
 
-    $db_table	= Limb :: toolkit()->createDBTable('SysObjectVersion');
+    $db_table	=& $toolkit->createDBTable('SysObjectVersion');
 
     $arr = $db_table->getList('object_id='. $object_data['id'], 'version DESC');
 
@@ -60,9 +60,10 @@ class ObjectVersionsDatasource implements Datasource
     return new ArrayDataset($result);
   }
 
-  protected function _getUsers()
+  function _getUsers()
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
     $datasource->setPath('/root/users');
     $datasource->setSiteObjectClassName('user_object');
     $datasource->setRestrictByClass();

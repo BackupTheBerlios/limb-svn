@@ -10,21 +10,18 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
-if(!defined('HTTP_SHARED_DIR'))
-  define('HTTP_SHARED_DIR', LIMB_DIR . '/shared/');
-
-if(!defined('MEDIA_DIR'))
-  define('MEDIA_DIR', VAR_DIR . '/media/');
+@define('HTTP_SHARED_DIR', LIMB_DIR . '/shared/');
+@define('MEDIA_DIR', VAR_DIR . '/media/');
+@define('DAY_CACHE', 24*60*60);
 
 class DisplayRequestedImageCommand implements Command
 {
-  const DAY_CACHE = 86400;
-
-  public function perform()
+  function perform()
   {
-    $request = Limb :: toolkit()->getRequest();
-    $response = Limb :: toolkit()->getResponse();
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $t =& Limb :: toolkit();
+    $request =& $t->getRequest();
+    $response =& $t->getResponse();
+    $datasource =& $t->getDatasource('RequestedObjectDatasource');
 
     $datasource->setRequest($request);
 
@@ -62,7 +59,7 @@ class DisplayRequestedImageCommand implements Command
 
     $http_cache = $this->_getHttpCache();
     $http_cache->setLastModifiedTime($object_data['modified_date']);
-    $http_cache->setCacheTime(self :: DAY_CACHE);
+    $http_cache->setCacheTime(DAY_CACHE);
 
     if(!$http_cache->checkAndWrite($response))
     {
@@ -73,21 +70,22 @@ class DisplayRequestedImageCommand implements Command
     $response->header("Content-type: {$image['mime_type']}");
 
     if($variation == 'original')
-      return Limb :: STATUS_OK;
+      return Limb :: getSTATUS_OK();
     else
       $response->commit();//for speed
     return;//for tests, fix!!!
   }
 
-  protected function _getHttpCache()
+  function _getHttpCache()
   {
     include_once(LIMB_DIR . '/class/core/request/HttpCache.class.php');
     return new HttpCache();
   }
 
-  protected function _getRequestedVariation($request)
+  function _getRequestedVariation($request)
   {
-    $ini = Limb :: toolkit()->getINI('image_variations.ini');
+    $t =& Limb :: toolkit();
+    $ini =& $t->getINI('image_variations.ini');
 
     $variation = 'thumbnail';
     $image_variations = $ini->getAll();

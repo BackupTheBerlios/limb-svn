@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/CreateSiteObjectCommand.class.php'
 
 class CreateArticleCommand extends CreateSiteObjectCommand
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'article';
   }

@@ -12,30 +12,30 @@ require_once(dirname(__FILE__) . '/CartHandlerInterface.interface.php');
 
 class CartHandler implements CartHandlerInterface
 {
-  protected $_cart_id = null;
-  protected $_items = array();
+  var $_cart_id = null;
+  var $_items = array();
 
-  function __construct($cart_id)
+  function CartHandler($cart_id)
   {
     $this->_cart_id = $cart_id;
   }
 
-  public function reset()
+  function reset()
   {
     $this->clearItems();
   }
 
-  public function getCartId()
+  function getCartId()
   {
     return $this->_cart_id;
   }
 
-  public function setCartId($cart_id)
+  function setCartId($cart_id)
   {
     $this->_cart_id = $cart_id;
   }
 
-  public function addItem($new_item)
+  function addItem($new_item)
   {
     $id = $new_item->getId();
 
@@ -48,7 +48,7 @@ class CartHandler implements CartHandlerInterface
     $this->_items[$id] = $new_item;
   }
 
-  public function getItem($id)
+  function getItem($id)
   {
     if(isset($this->_items[$id]))
       return $this->_items[$id];
@@ -56,29 +56,29 @@ class CartHandler implements CartHandlerInterface
       return false;
   }
 
-  public function removeItem($item_id)
+  function removeItem($item_id)
   {
     if (isset($this->_items[$item_id]))
       unset($this->_items[$item_id]);
   }
 
-  public function removeItems($item_ids)
+  function removeItems($item_ids)
   {
     foreach($item_ids as $id)
       $this->removeItem($id);
   }
 
-  public function getItems()
+  function getItems()
   {
     return $this->_items;
   }
 
-  public function setItems($items)
+  function setItems($items)
   {
     $this->_items = $items;
   }
 
-  public function countItems()
+  function countItems()
   {
     if (is_array($this->_items))
       return count($this->_items);
@@ -86,7 +86,7 @@ class CartHandler implements CartHandlerInterface
       return 0;
   }
 
-  public function clearItems()
+  function clearItems()
   {
     $this->_items = array();
   }

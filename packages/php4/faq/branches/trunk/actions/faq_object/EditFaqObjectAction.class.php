@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php'
 
 class EditFaqObjectAction extends FormEditSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'faq_object';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'edit_faq_object';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -37,7 +37,7 @@ class EditFaqObjectAction extends FormEditSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 

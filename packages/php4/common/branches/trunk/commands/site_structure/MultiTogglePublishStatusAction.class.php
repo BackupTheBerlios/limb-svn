@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class MultiTogglePublishStatusAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'grid_form';
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     if($request->hasAttribute('popup'))
       $response->write(closePopupResponse($request));
@@ -61,15 +61,16 @@ class MultiTogglePublishStatusAction extends FormAction
     $request->setStatus(Request :: STATUS_SUCCESS);
   }
 
-  protected function _getObjects($node_ids)
+  function _getObjects($node_ids)
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsByNodeIdsDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit)->getDatasource('SiteObjectsByNodeIdsDatasource');
     $datasource->setNodeIds($node_ids);
 
     return $datasource->fetch();
   }
 
-  protected function _applyAccessPolicy($object, $action)
+  function _applyAccessPolicy($object, $action)
   {
     try
     {

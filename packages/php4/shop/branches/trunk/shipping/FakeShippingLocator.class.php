@@ -10,7 +10,7 @@
 ***********************************************************************************/
 class FakeShippingLocator
 {
-  public function getShippingOptions($config)
+  function getShippingOptions($config)
   {
     $options = array(
         array(

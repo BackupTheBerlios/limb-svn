@@ -33,7 +33,7 @@ class StatsCounterTest extends LimbTestCase
     $this->db = DbFactory :: instance();
 
     $this->stats_counter = new StatsCounterTestVersion($this);
-    $this->stats_counter->__construct();
+    $this->stats_counter->StatsCounter();
 
     $this->stats_counter->setReturnValue('_isHomeHit', false);
     $this->stats_counter->setReturnValue('_isNewAudience', false);

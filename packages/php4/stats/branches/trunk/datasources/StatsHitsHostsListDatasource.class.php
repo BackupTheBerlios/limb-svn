@@ -13,12 +13,12 @@ require_once(dirname(__FILE__) . '/../reports/StatsHitsHostsByDaysReport.class.p
 
 class StatsHitsHostsListDatasource extends StatsReportDatasource
 {
-  protected function _initStatsReport()
+  function _initStatsReport()
   {
     $this->_stats_report = new StatsHitsHostsByDaysReport();
   }
 
-  protected function _processResultArray($arr)
+  function _processResultArray($arr)
   {
     if(ComplexArray :: getMaxColumnValue('hosts', $arr, $index) !== false)
       $arr[$index]['max_hosts'] = 1;
@@ -44,14 +44,15 @@ class StatsHitsHostsListDatasource extends StatsReportDatasource
     return $result;
   }
 
-  protected function _configureFilters()
+  function _configureFilters()
   {
-    $this->_setPeriodFilter(Limb :: toolkit()->getRequest());
+    $toolkit =& Limb :: toolkit();
+
+    $this->_setPeriodFilter($toolkit->getRequest(), $toolkit->getLocale());
   }
 
-  protected function _setPeriodFilter($request)
+  function _setPeriodFilter(&$request, &$locale)
   {
-    $locale = Limb :: toolkit()->getLocale();
     $start_date = new Date();
     $start_date->setHour(0);
     $start_date->setMinute(0);

@@ -24,7 +24,7 @@ require_once(dirname(__FILE__) . '/ShippingLocator.class.php');
 
 class FedexShippingLocator extends ShippingLocator
 {
-  protected function _doGetShippingOptions($shipping_configuration)
+  function _doGetShippingOptions($shipping_configuration)
   {
     $this->_cleanCookie();
 
@@ -52,7 +52,7 @@ class FedexShippingLocator extends ShippingLocator
     return $options;
   }
 
-  protected function _parseHtmlOptions($html)
+  function _parseHtmlOptions($html)
   {
     include_once(LIMB_COMMON_DIR . '/setup_HTMLSax.inc.php');
     include_once(dirname(__FILE__) . '/FedexSaxHandler.class.php');
@@ -73,7 +73,7 @@ class FedexShippingLocator extends ShippingLocator
     return $this->_processRawOptions($handler->getOptions());
   }
 
-  protected function _processRawOptions($raw_options)
+  function _processRawOptions($raw_options)
   {
     $processed_options = array();
     foreach($raw_options as $data)
@@ -91,13 +91,13 @@ class FedexShippingLocator extends ShippingLocator
     return $processed_options;
   }
 
-  protected function _cleanCookie()
+  function _cleanCookie()
   {
     if(is_file(SHIPPING_FEDEX_SERVER_COOKIE_FILE))
       unlink(SHIPPING_FEDEX_SERVER_COOKIE_FILE);
   }
 
-  protected function _getExpressShippingOptionsHtml($shipping_configuration)
+  function _getExpressShippingOptionsHtml($shipping_configuration)
   {
     $data = array();
     $data['shipDate'] = strftime("%m%d%Y");
@@ -200,7 +200,7 @@ class FedexShippingLocator extends ShippingLocator
     return $html;
   }
 
-  protected function _getGroundShippingOptionsHtml($shipping_configuration)
+  function _getGroundShippingOptionsHtml($shipping_configuration)
   {
     $data = array();
     $data['shipDate'] = strftime("%m%d%Y");
@@ -304,7 +304,7 @@ class FedexShippingLocator extends ShippingLocator
     return $html;
   }
 
-  protected function _browseToHomePage()
+  function _browseToHomePage()
   {
     $ch = curlInit();
 

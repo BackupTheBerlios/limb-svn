@@ -19,12 +19,12 @@ registerTag(new MetadataTitleTagInfo());
 
 class MetadataTitleTag extends ServerComponentTag
 {
-  public function __construct()
+  function MetadataTitleTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/metadata_component';
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $ref = $this->getComponentRefCode();
 

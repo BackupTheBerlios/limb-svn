@@ -12,23 +12,22 @@ require_once(LIMB_DIR . '/class/search/FullTextSearch.class.php');
 
 class SearchFetcher
 {
-  protected static $_instance;
-  protected $_query_object;
+  var $_query_object;
 
-  static public function instance()
+  function & instance()
   {
-    if (!self :: $_instance)
-      self :: $_instance = new SearchFetcher();
+    if (!isset($GLOBALS['SearchFetcherGlobalInstance']) || !is_a($GLOBALS['SearchFetcherGlobalInstance'], 'SearchFetcher'))
+      $GLOBALS['SearchFetcherGlobalInstance'] =& new SearchFetcher();
 
-    return self :: $_instance;
+    return $GLOBALS['SearchFetcherGlobalInstance'];
   }
 
-  public function setSearchQueryObject($query_object)
+  function setSearchQueryObject($query_object)
   {
     $this->_query_object = $query_object;
   }
 
-  protected function _getClassesIdsFromString($classes_string)
+  function _getClassesIdsFromString($classes_string)
   {
     $classes_ids = array();
     $classes_names = explode(',', $classes_string);
@@ -36,7 +35,8 @@ class SearchFetcher
     {
       if(trim($class_name))
       {
-        $site_object = Limb :: toolkit()->createSiteObject(trim($class_name));
+        $toolkit =& Limb :: toolkit();
+        $site_object =& $toolkit->createSiteObject(trim($class_name));
         $classes_ids[] = $site_object->getClassId();
       }
     }
@@ -44,17 +44,18 @@ class SearchFetcher
     return $classes_ids;
   }
 
-  public function searchFetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
+  function searchFetch($loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_accessible_by_ids')
   {
     if (!$this->_query_object)
       return array();
 
-    $site_object = Limb :: toolkit()->createSiteObject($loader_class_name);
+    $toolkit =& Limb :: toolkit();
+    $site_object =& $toolkit->createSiteObject($loader_class_name);
 
     $restricted_classes = array();
     $allowed_classes = array();
 
-    if (!isset($params['restrict_by_class']) || 
+    if (!isset($params['restrict_by_class']) ||
         (isset($params['restrict_by_class']) &&  (bool)$params['restrict_by_class']))
       $class_id = $site_object->getClassId();
     else
@@ -92,7 +93,9 @@ class SearchFetcher
       }
     }
 
-    Limb :: toolkit()->getAuthorizer()->assignActionsToObjects($result);
+    $toolkit =& Limb :: toolkit();
+    $authr =& $toolkit->getAuthorizer()();
+    $authr->assignActionsToObjects($result);
 
     $this->_assignPaths($result);
     $this->_assignSearchPaths($result, isset($params['offset']) ? $params['offset'] : 0);
@@ -100,12 +103,13 @@ class SearchFetcher
     return $result;
   }
 
-  public function searchFetchSubBranch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
+  function searchFetchSubBranch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch')
   {
-    $tree = Limb :: toolkit()->getTree();
-    $site_object = Limb :: toolkit()->createSiteObject($loader_class_name);
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
+    $site_object =& $toolkit()->createSiteObject($loader_class_name);
 
-    if (!isset($params['restrict_by_class']) || 
+    if (!isset($params['restrict_by_class']) ||
         (isset($params['restrict_by_class']) &&  (bool)$params['restrict_by_class']))
       $class_id = $site_object->getClassId();
     else
@@ -134,7 +138,7 @@ class SearchFetcher
     return $this->searchFetchByIds($object_ids, $loader_class_name, $counter, $params, $fetch_method);
   }
 
-  public function searchFetchByIds($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
+  function searchFetchByIds($object_ids, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
   {
     if (!$this->_query_object)
       return array();
@@ -148,7 +152,9 @@ class SearchFetcher
     $counter = 0;
     $count_method = $fetch_method . '_count';
 
-    $site_object = Limb :: toolkit()->createSiteObject($loader_class_name);
+    $toolkit =& Limb :: toolkit();
+
+    $site_object = $toolkit->createSiteObject($loader_class_name);
     $counter = $site_object->$count_method(array_keys($search_result), $params);
     $fetched_objects = $site_object->$fetch_method(array_keys($search_result),$params);
 
@@ -156,13 +162,16 @@ class SearchFetcher
       return array();
 
     foreach($search_result as $key => $score)
+    {
       if (isset($fetched_objects[$key]))
       {
         $result[$key] = $fetched_objects[$key];
         $result[$key]['score'] = $score;
       }
+    }
 
-    Limb :: toolkit()->getAuthorizer()->assignActionsToObjects($result);
+    $authr =& $toolkit->getAuthorizer();
+    $authr->assignActionsToObjects($result);
 
     $this->_assignPaths($result);
     $this->_assignSearchPaths($result, isset($params['offset']) ? $params['offset'] : 0);
@@ -170,7 +179,7 @@ class SearchFetcher
     return $result;
   }
 
-  protected function _assignSearchPaths(& $objects_array, $offset = 0)
+  function _assignSearchPaths(& $objects_array, $offset = 0)
   {
     $query = $this->_query_object->toString();
 

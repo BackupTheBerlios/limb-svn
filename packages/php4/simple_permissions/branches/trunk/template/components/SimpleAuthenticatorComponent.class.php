@@ -12,9 +12,12 @@ require_once(dirname(__FILE__) . '/../../SimpleAuthenticator.class.php');
 
 class SimpleAuthenticatorComponent extends Component
 {
-  public function isUserInGroups($groups)
+  function isUserInGroups($groups)
   {
-    if ((Limb :: toolkit()->getUser()->isLoggedIn()) &&  SimpleAuthenticator :: isUserInGroups($groups))
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+
+    if (($user->isLoggedIn()) &&  SimpleAuthenticator :: isUserInGroups($groups))
       return true;
   }
 

@@ -12,9 +12,10 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class ActivatePasswordAction extends Action
 {
-  public function perform($request, $response)
+  function perform($request, $response)
   {
-    $object = Limb :: toolkit()->createSiteObject('UserObject');
+    $toolkit =& Limb :: toolkit();
+    $object =& $toolkit->createSiteObject('UserObject');
     if(!$object->activatePassword())
     {
       MessageBox :: writeNotice('Password activation failed!');

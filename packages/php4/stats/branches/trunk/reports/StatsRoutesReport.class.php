@@ -9,23 +9,23 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(dirname(__FILE__) . '/StatsReportInterface.interface.php');
 
-class StatsRoutesReport implements StatsReportInterface
+class StatsRoutesReport //implements StatsReportInterface
 {
-  protected $db;
-  protected $start_date = null;
-  protected $finish_date = null;
+  var $db;
+  var $start_date = null;
+  var $finish_date = null;
 
-  protected $routes_array = array();
-  protected $condition_changed = true;
+  var $routes_array = array();
+  var $condition_changed = true;
 
-  public function __construct()
+  function StatsRoutesReport()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
   }
 
-  public function fetch($params = array())
+  function fetch($params = array())
   {
     $records = $this->_retrieveRoutes();
 
@@ -37,12 +37,12 @@ class StatsRoutesReport implements StatsReportInterface
     return $records;
   }
 
-  public function fetchCount($params = array())
+  function fetchCount($params = array())
   {
     return sizeof($this->_retrieveRoutes());
   }
 
-  public function setPeriodFilter($start_date, $finish_date)
+  function setPeriodFilter($start_date, $finish_date)
   {
     static $prev_start_date = null;
     static $prev_finish_date = null;
@@ -62,7 +62,7 @@ class StatsRoutesReport implements StatsReportInterface
     $this->finish_date = $finish_date;
   }
 
-  protected function _retrieveRoutes()
+  function _retrieveRoutes()
   {
     if(!$this->condition_changed)
       return $this->routes_array;
@@ -70,7 +70,9 @@ class StatsRoutesReport implements StatsReportInterface
     $start_stamp = $this->start_date->getStamp();
     $finish_stamp = $this->finish_date->getStamp();
 
-    $root = Limb :: toolkit()->getTree()->getNodeByPath('/root');
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
+    $root = $tree->getNodeByPath('/root');
     $root_id = $root['id'];
 
     $sql = "SELECT sslog.time as time, sslog.action as action, sslog.session_id as session_id, ssu.uri as uri

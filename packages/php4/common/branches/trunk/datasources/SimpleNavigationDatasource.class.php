@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/datasources/FetchSubBranchDatasource.class.php')
 
 class SimpleNavigationDatasource extends FetchSubBranchDatasource
 {
-  protected function _fetch(&$counter, $params)
+  function _fetch(&$counter, $params)
   {
     $result = parent :: _fetch($counter, $params);
     $uri = new Uri($_SERVER['PHP_SELF']);

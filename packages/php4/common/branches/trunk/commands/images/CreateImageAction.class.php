@@ -12,23 +12,24 @@ require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.ph
 
 class CreateImageAction extends FormCreateSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'image_object';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'create_image';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     $datamap = array(
       'description' => 'description',
     );
 
-    $ini = Limb :: toolkit()->getINI('image_variations.ini');
+    $t =& Limb :: toolkit();
+    $ini = $t->getINI('image_variations.ini');
 
     $image_variations = $ini->getAll();
 
@@ -46,18 +47,19 @@ class CreateImageAction extends FormCreateSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
     parent :: _initDataspace($request);
 
-    $ini = Limb :: toolkit()->getINI('image_variations.ini');
+    $t =& Limb :: toolkit();
+    $ini = $t->getINI('image_variations.ini');
 
     $image_variations = $ini->getAll();
 
@@ -68,7 +70,7 @@ class CreateImageAction extends FormCreateSiteObjectAction
     }
   }
 
-  protected function _createObjectOperation()
+  function _createObjectOperation()
   {
     $this->object->set('files_data', $_FILES[$this->name]);
 

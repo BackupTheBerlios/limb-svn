@@ -9,17 +9,17 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/SearchEngineRegexRule.class.php');
-require_once(LIMB_DIR . '/class/lib/http/utf8_to_win1251.inc.php');
 
 class SearchEngineGoogleRule extends SearchEngineRegexRule
 {
-  public function __construct()
+  function SearchEngineGoogleRule()
   {
-    parent :: __construct('google', '/^.*google\..*?q=(cache:[^\s]*\s)?([^&]*).*$/', 2);
+    parent :: SearchEngineRegexRule('google', '/^.*google\..*?q=(cache:[^\s]*\s)?([^&]*).*$/', 2);
   }
 
-  public function getMatchingPhrase()
+  function getMatchingPhrase()
   {
+    include_once(LIMB_DIR . '/class/lib/http/utf8_to_win1251.inc.php');
     return utf8ToWin1251(parent :: getMatchingPhrase());
   }
 }

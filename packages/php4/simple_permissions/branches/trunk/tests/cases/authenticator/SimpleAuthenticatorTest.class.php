@@ -27,13 +27,15 @@ class SimpleAuthenticatorTest extends LimbTestCase
 
   function setUp()
   {
-    User :: instance()->logout();
+    $inst =& User :: instance();
+    $inst->logout();
     $this->auth = new SpecialSimpleAuthenticator($this);
   }
 
   function tearDown()
   {
-    User :: instance()->logout();
+    $inst =& User :: instance();
+    $inst->logout();
     $this->auth->tally();
   }
 
@@ -100,7 +102,8 @@ class SimpleAuthenticatorTest extends LimbTestCase
 
     $this->auth->login(array('login' => 'some_user', 'password' => 'test', 'locale_id' => 'en'));
 
-    $groups = User :: instance()->get('groups');
+    $inst =& User :: instance();
+    $groups = $inst->get('groups');
     $this->assertEqual(sizeof($groups), 1);
     $this->assertTrue(in_array('visitors', $groups));
   }
@@ -115,7 +118,8 @@ class SimpleAuthenticatorTest extends LimbTestCase
 
     $this->auth->login(array('login' => 'some_user', 'password' => 'test', 'locale_id' => 'en'));
 
-    $groups = User :: instance()->get('groups');
+    $inst =& User :: instance();
+    $groups = $inst->get('groups');
     $this->assertEqual(sizeof($groups), 1);
     $this->assertTrue(in_array('admins', $groups));
   }

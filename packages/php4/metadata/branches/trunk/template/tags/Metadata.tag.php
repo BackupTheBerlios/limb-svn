@@ -19,12 +19,12 @@ registerTag(new MetadataMetadataTagInfo());
 
 class MetadataMetadataTag extends ServerComponentTag
 {
-  public function __construct()
+  function MetadataMetadataTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/metadata_component';
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $ref = $this->getComponentRefCode();
     $code->writePhp("{$ref}->load_metadata();\n");
@@ -32,12 +32,12 @@ class MetadataMetadataTag extends ServerComponentTag
     parent :: generateContents($code);
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

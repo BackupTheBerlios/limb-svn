@@ -8,36 +8,35 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/SearchEngineRule.interface.php');
 
-class SearchEngineRegexRule implements SearchEngineRule
+class SearchEngineRegexRule //implements SearchEngineRule
 {
-  protected $engine_name = '';
-  protected $regex = '';
-  protected $matches = array();
-  protected $uri = '';
+  var $engine_name = '';
+  var $regex = '';
+  var $matches = array();
+  var $uri = '';
 
-  protected $match_phrase_index;
+  var $match_phrase_index;
 
-  function __construct($engine_name, $regex, $match_phrase_index)
+  function SearchEngineRegexRule($engine_name, $regex, $match_phrase_index)
   {
     $this->engine_name = $engine_name;
     $this->regex = $regex;
     $this->match_phrase_index = $match_phrase_index;
   }
 
-  public function match($uri)
+  function match($uri)
   {
     $this->uri = $uri;
     return preg_match($this->regex, $this->uri, $this->matches);
   }
 
-  public function getMatchingPhrase()
+  function getMatchingPhrase()
   {
     return $this->matches[$this->match_phrase_index];
   }
 
-  public function getEngineName()
+  function getEngineName()
   {
     return $this->engine_name;
   }

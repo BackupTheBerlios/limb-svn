@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php'
 
 class UserChangeOwnPasswordController extends SiteObjectController
 {
-  protected function _defineDefaultAction()
+  function _defineDefaultAction()
   {
     return 'change_own_password';
   }
 
-  protected function _defineActions()
+  function _defineActions()
   {
     return array(
       'change_own_password' => array(

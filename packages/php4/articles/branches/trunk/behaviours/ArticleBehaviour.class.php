@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php'
 
 class ArticleController extends SiteObjectController
 {
-  public function getDisplayActionProperties()
+  function getDisplayActionProperties()
   {
     return array();
   }
 
-  public function defineDisplay($state_machine)
+  function defineDisplay($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -28,12 +28,12 @@ class ArticleController extends SiteObjectController
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function getPrintVersionActionProperties()
+  function getPrintVersionActionProperties()
   {
     return array('action_name' => Strings :: get('print_version_action', 'document'));
   }
 
-  public function definePrintVersion($state_machine)
+  function definePrintVersion($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -44,7 +44,7 @@ class ArticleController extends SiteObjectController
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function getEditActionProperties()
+  function getEditActionProperties()
   {
     return array('popup' => true,
                  'JIP' => true,
@@ -52,7 +52,7 @@ class ArticleController extends SiteObjectController
                  'img_src' => '/shared/images/edit.gif');
   }
 
-  public function defineEdit($state_machine)
+  function defineEdit($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',

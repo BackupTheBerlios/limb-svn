@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/EditSiteObjectCommand.class.php');
 
 class EditArticleCommand extends EditSiteObjectCommand
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'article';
   }

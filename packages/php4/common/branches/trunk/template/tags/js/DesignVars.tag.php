@@ -20,7 +20,7 @@ registerTag(new JsDesignVarsTagInfo());
 
 class JsDesignVarsTag extends CompilerDirectiveTag
 {
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writeHtml("<script language='javascript'>\n");
     $code->writePhp('echo "var HTTP_SHARED_DIR = \'" . addslashes(fs :: clean_path(constant("HTTP_SHARED_DIR"))) . "\';";');

@@ -12,12 +12,12 @@ require_once(dirname(__FILE__) . '/SearchEngineRegexRule.class.php');
 
 class SearchEngineYandexRule extends SearchEngineRegexRule
 {
-  public function __construct()
+  function SearchEngineYandexRule()
   {
-    parent :: __construct('yandex', '/^.*yand.*text=([^&]*).*$/', 1);
+    parent :: SearchEngineRegexRule('yandex', '/^.*yand.*text=([^&]*).*$/', 1);
   }
 
-  public function getMatchingPhrase()
+  function getMatchingPhrase()
   {
     $phrase = parent :: getMatchingPhrase();
 

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
 
 class FaqObjectDbTable extends OneTableObjectDbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return ComplexArray :: array_merge(
       parent :: _defineColumns(),

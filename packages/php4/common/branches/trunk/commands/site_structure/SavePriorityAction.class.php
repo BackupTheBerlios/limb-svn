@@ -12,15 +12,16 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class SavePriorityAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'grid_form';
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
-    $object = Limb :: toolkit()->createSiteObject('SiteStructure');
+    $toolkit =& Limb :: toolkit();
+    $object =& $toolkit->createSiteObject('SiteStructure');
 
     if(isset($data['priority']))
       $object->savePriority($data['priority']);

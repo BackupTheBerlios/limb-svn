@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php'
 
 class EditFeedbackAction extends FormEditSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'feedback_object';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'feedback_form';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -32,7 +32,7 @@ class EditFeedbackAction extends FormEditSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 

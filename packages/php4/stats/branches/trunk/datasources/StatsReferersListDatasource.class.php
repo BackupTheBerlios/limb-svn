@@ -13,12 +13,12 @@ require_once(dirname(__FILE__) . '/../reports/StatsReferersReport.class.php');
 
 class StatsReferersListDatasource extends StatsReportDatasource
 {
-  protected function _initStatsReport()
+  function _initStatsReport()
   {
     $this->_stats_report = new StatsReferersReport();
   }
 
-  protected function _processResultArray($arr)
+  function _processResultArray($arr)
   {
     $total = $this->_stats_report->fetchTotalHits();
 
@@ -32,14 +32,15 @@ class StatsReferersListDatasource extends StatsReportDatasource
     return $result;
   }
 
-  protected function _configureFilters()
+  function _configureFilters()
   {
-    $this->_setPeriodFilter(Limb :: toolkit()->getRequest());
+    $toolkit =& Limb :: toolkit();
+
+    $this->_setPeriodFilter($toolkit->getRequest(), $toolkit->getLocale());
   }
 
-  protected function _setPeriodFilter($request)
+  function _setPeriodFilter(&$request, &$locale)
   {
-    $locale = Limb :: toolkit()->getLocale();
     $start_date = new Date();
     $start_date->setHour(0);
     $start_date->setMinute(0);

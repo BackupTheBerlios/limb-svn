@@ -91,7 +91,7 @@ class LoginCommandTest extends LimbTestCase
     $this->response->expectOnce('redirect', array('/'));
     $this->command->setReturnValue('_getHttpReferer', '');
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 
   function testPerformOkRedirectToRootButLogin()
@@ -109,7 +109,7 @@ class LoginCommandTest extends LimbTestCase
     $this->response->expectOnce('redirect', array('/'));
     $this->command->setReturnValue('_getHttpReferer', '/root/login');
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 
 
@@ -129,7 +129,7 @@ class LoginCommandTest extends LimbTestCase
 
     $this->response->expectOnce('redirect', array($refer));
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 
   function testPerformOkRedirectToRedirectParam()
@@ -150,7 +150,7 @@ class LoginCommandTest extends LimbTestCase
 
     $this->response->expectOnce('redirect', array($some_redirect));
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 }
 

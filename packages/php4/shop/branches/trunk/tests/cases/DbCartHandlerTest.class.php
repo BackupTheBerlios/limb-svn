@@ -30,7 +30,7 @@ class DbCartHandlerTest extends LimbTestCase
   {
     $this->db =& DbFactory :: instance();
     $this->cart_handler = new SpecialDbCartHandler($this);
-    $this->cart_handler->__construct(10);
+    $this->cart_handler->DbCartHandler(10);
 
     $this->user = new MockUser($this);
 

@@ -13,16 +13,19 @@ require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
 class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
 {
-  protected $objects_ids = array();
+  var $objects_ids = array();
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'set_group_access';
   }
 
-  public function perform($request, $response)
+  function perform($request, $response)
   {
-    if ($filter_groups = Limb :: toolkit()->getSession()->get('filter_groups'))
+    $toolkit =& Limb :: toolkit();
+    $session =& $toolkit->getSession();
+
+    if ($filter_groups = $session->get('filter_groups'))
       $this->dataspace->set('filter_groups', $filter_groups);
 
     parent :: perform($request, $response);
@@ -31,7 +34,7 @@ class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
     $this->_initDataspace($request);
   }
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
     $access_policy = new AccessPolicy();
 
@@ -40,9 +43,10 @@ class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
     $this->dataspace->set('policy', $policy);
   }
 
-  protected function _setTemplateTree()
+  function _setTemplateTree()
   {
-    $datasource = Limb :: toolkit()->getDatasource('GroupObjectAccessDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('GroupObjectAccessDatasource');
     $params = array(
       'path' => '/root',
       'depth' => -1,

@@ -12,10 +12,10 @@ require_once(LIMB_DIR . '/class/core/permissions/Authorizer.interface.php');
 
 class SimpleAuthorizer implements Authorizer
 {
-  protected $_cached_accessible_actions_properties = array();
-  protected $_cached_behaviour_actions = array();
+  var $_cached_accessible_actions_properties = array();
+  var $_cached_behaviour_actions = array();
 
-  public function getAccessibleObjectIds($object_ids, $action = 'display')
+  function getAccessibleObjectIds($object_ids, $action = 'display')
   {
     if (!count($object_ids))
       return array();
@@ -27,7 +27,8 @@ class SimpleAuthorizer implements Authorizer
 
     $accessor_ids = implode(',', $accessor_ids);
 
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $sql = "SELECT soa.object_id as id
       FROM sys_object_access as soa
@@ -42,11 +43,12 @@ class SimpleAuthorizer implements Authorizer
     return array_keys($db->getArray('id'));
   }
 
-  public function getUserAccessorIds()
+  function getUserAccessorIds()
   {
     $accessor_ids = array();
 
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     if(($user_id = $user->getId()) != User :: DEFAULT_USER_ID)
       $accessor_ids[] = $user_id;
@@ -58,7 +60,7 @@ class SimpleAuthorizer implements Authorizer
     return $accessor_ids;
   }
 
-  public function assignActionsToObjects(&$objects_data)
+  function assignActionsToObjects(&$objects_data)
   {
     if(isset($objects_data['id']))//hack which allows to accept objects arrays and single objects
       $arr[] =& $objects_data;
@@ -78,7 +80,7 @@ class SimpleAuthorizer implements Authorizer
     }
   }
 
-  protected function _getAccessibleActionsProperties($behaviour_id, $behaviour_name)
+  function _getAccessibleActionsProperties($behaviour_id, $behaviour_name)
   {
     if(isset($this->_cached_accessible_actions_properties[$behaviour_id]))
       return $this->_cached_accessible_actions_properties[$behaviour_id];
@@ -103,7 +105,7 @@ class SimpleAuthorizer implements Authorizer
     return $result;
   }
 
-  protected function _getBehaviourActions($behaviour_id, $behaviour_name)
+  function _getBehaviourActions($behaviour_id, $behaviour_name)
   {
     if(isset($this->_cached_behaviour_actions[$behaviour_id]))
       return $this->_cached_behaviour_actions[$behaviour_id];
@@ -115,19 +117,21 @@ class SimpleAuthorizer implements Authorizer
   }
 
   //for mocking
-  protected function _getBehaviour($behaviour_name)
+  function &_getBehaviour($behaviour_name)
   {
-    return Limb :: toolkit()->getBehaviour($behaviour_name);
+    $toolkit =& Limb :: toolkit();
+    return $toolkit->getBehaviour($behaviour_name);
   }
 
-  public function getBehaviourAccessibleActions($behaviour_id)
+  function getBehaviourAccessibleActions($behaviour_id)
   {
     if(!$accessor_ids = $this->getUserAccessorIds())
       return array();
 
     $in_ids = implode(',', $accessor_ids);
 
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $sql = "SELECT saa.action_name as action_name FROM sys_action_access as saa
       WHERE saa.behaviour_id = {$behaviour_id} AND

@@ -11,24 +11,24 @@
 
 class SearchQuery
 {
-  protected $items = array();
+  var $items = array();
 
-  public function add($item)
+  function add($item)
   {
     $this->items[] = $item;
   }
 
-  public function toString()
+  function toString()
   {
     return implode(' ', $this->items);
   }
 
-  public function getQueryItems()
+  function getQueryItems()
   {
     return $this->items;
   }
 
-  public function isEmpty()
+  function isEmpty()
   {
     return (sizeof($this->items) == 0);
   }

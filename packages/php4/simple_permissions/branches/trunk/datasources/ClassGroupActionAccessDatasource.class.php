@@ -12,20 +12,21 @@ require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
 class ClassGroupActionAccessDatasource implements Datasource
 {
-  public function getDataset(&$counter, $params = array())
+  function getDataset(&$counter, $params = array())
   {
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
     if(!$class_id = $request->get('class_id'))
       return new ArrayDataset();
 
-    $db_table = Limb :: toolkit()->createDBTable('SysClass');
+    $db_table =& $toolkit->createDBTable('SysClass');
     $class_data = $db_table->getRowById($class_id);
 
     if (!$class_data)
       return new ArrayDataset();
 
-    $site_object = Limb :: toolkit()->createSiteObject($class_data['ClassName']);
+    $site_object =& $toolkit->createSiteObject($class_data['ClassName']);
 
     $site_object_controller = $site_object->getController();
 
@@ -51,9 +52,10 @@ class ClassGroupActionAccessDatasource implements Datasource
     return new ArrayDataset($result);
   }
 
-  protected function _getUserGroups()
+  function _getUserGroups()
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
     $datasource->setPath('/root/user_groups');
     $datasource->setSiteObjectClassName('user_group');
     $datasource->setRestrictByClass();

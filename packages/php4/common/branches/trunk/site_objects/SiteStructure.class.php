@@ -12,12 +12,13 @@ require_once(LIMB_DIR . '/class/core/site_objects/SiteObject.class.php');
 
 class SiteStructure extends SiteObject
 {
-  public function savePriority($params)
+  function savePriority($params)
   {
     if(!count($params))
       return true;
 
-    $db_table = Limb :: toolkit()->createDBTable('SysSiteObjectTree');
+    $toolkit =& Limb :: toolkit();
+    $db_table = $toolkit->createDBTable('SysSiteObjectTree');
 
     foreach($params as $node_id => $value)
     {

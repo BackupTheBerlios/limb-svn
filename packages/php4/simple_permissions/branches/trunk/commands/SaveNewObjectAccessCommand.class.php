@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class SaveNewObjectAccessCommand implements Command
 {
-  public function perform()
+  function perform()
   {
     $toolkit = Limb :: toolkit();
 
@@ -26,7 +26,8 @@ class SaveNewObjectAccessCommand implements Command
     $datasource->setNodeId($parent_id);
     $parent_object = wrapWithSiteObject($datasource->fetch());
 
-    $action = $parent_object->getController()->getRequestedAction($toolkit->getRequest());
+    $ctrl =& $parent_object->getController();
+    $action = $ctrl->getRequestedAction($toolkit->getRequest());
 
     try
     {
@@ -38,11 +39,11 @@ class SaveNewObjectAccessCommand implements Command
       return Limb :: STATUS_ERROR;
     }
 
-    return Limb :: STATUS_OK;
+    return Limb :: getSTATUS_OK();
   }
 
   // for mocking
-  protected function _getAccessPolicy()
+  function _getAccessPolicy()
   {
     return new $access_policy;
   }

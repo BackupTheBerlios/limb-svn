@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php'
 
 class ArticlesFolderController extends SiteObjectController
 {
-  public function getDisplayActionProperties()
+  function getDisplayActionProperties()
   {
     return array();
   }
 
-  public function defineDisplay($state_machine)
+  function defineDisplay($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -28,12 +28,12 @@ class ArticlesFolderController extends SiteObjectController
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function getAdminDisplayActionProperties()
+  function getAdminDisplayActionProperties()
   {
     return array();
   }
 
-  public function defineAdminDisplay($state_machine)
+  function defineAdminDisplay($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -44,7 +44,7 @@ class ArticlesFolderController extends SiteObjectController
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function getCreateArticleActionProperties()
+  function getCreateArticleActionProperties()
   {
     return array('popup' => true,
                  'JIP' => true,
@@ -52,7 +52,7 @@ class ArticlesFolderController extends SiteObjectController
                  'img_src' => '/shared/images/new.generic.gif');
   }
 
-  public function defineCreateArticle($state_machine)
+  function defineCreateArticle($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -73,7 +73,7 @@ class ArticlesFolderController extends SiteObjectController
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function getCreateArticlesFolderActionProperties()
+  function getCreateArticlesFolderActionProperties()
   {
     return array('popup' => true,
                  'JIP' => true,
@@ -81,7 +81,7 @@ class ArticlesFolderController extends SiteObjectController
                  'img_src' => '/shared/images/new.folder.gif');
   }
 
-  public function defineCreateArticlesFolder($state_machine)
+  function defineCreateArticlesFolder($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -102,7 +102,7 @@ class ArticlesFolderController extends SiteObjectController
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function getEditActionProperties()
+  function getEditActionProperties()
   {
     return array('popup' => true,
                  'JIP' => true,
@@ -110,7 +110,7 @@ class ArticlesFolderController extends SiteObjectController
                  'img_src' => '/shared/images/edit.gif');
   }
 
-  public function defineEdit($state_machine)
+  function defineEdit($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',

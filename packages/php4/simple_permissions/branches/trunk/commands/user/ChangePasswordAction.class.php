@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php'
 
 class ChangePasswordAction extends FormEditSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'user_object';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'change_password';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -34,26 +34,30 @@ class ChangePasswordAction extends FormEditSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'second_password'));
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
   }
 
-  public function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     parent :: _validPerform($request, $response);
 
+    $toolkit =& Limb :: toolkit();
+
     if ($this->_changingOwnPassword())
     {
-      Limb :: toolkit()->getUser()->logout();
+      $user =& $toolkit->getUser();
+      $user->logout();
       MessageBox :: writeWarning(Strings :: get('need_relogin', 'user'));
     }
     else
     {
       $object_data = $this->_loadObjectData();
-      Limb :: toolkit()->getSession()->storageDestroyUser($object_data['id']);
+      $session =& $toolkit->getSession();
+      $session->storageDestroyUser($object_data['id']);
     }
 
     if ($request->getStatus() == Request :: STATUS_SUCCESS)
@@ -63,14 +67,17 @@ class ChangePasswordAction extends FormEditSiteObjectAction
     }
   }
 
-  protected function _changingOwnPassword()
+  function _changingOwnPassword()
   {
     $object_data = $this->_loadObjectData();
 
-    return ($object_data['id'] == Limb :: toolkit()->getUser()->getId()) ? true : false;
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+
+    return ($object_data['id'] == $user->getId()) ? true : false;
   }
 
-  protected function _updateObjectOperation()
+  function _updateObjectOperation()
   {
     $this->object->changePassword();
   }

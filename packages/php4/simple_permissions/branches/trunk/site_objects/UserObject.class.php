@@ -13,23 +13,25 @@ require_once(dirname(__FILE__) . '/../SimpleAuthenticator.class.php');
 
 class UserObject extends ContentObject
 {
-  public function create($is_root = false)
+  function create($is_root = false)
   {
     $crypted_password = SimpleAuthenticator :: getCryptedPassword($this->getIdentifier(), $this->get('password'));
     $this->set('password', $crypted_password);
     return parent :: create($is_root);
   }
 
-  public function getMembership($user_id)
+  function getMembership($user_id)
   {
-    $db_table	= Limb :: toolkit()->createDBTable('UserInGroup');
+    $toolkit =& Limb :: toolkit();
+    $db_table	=& $toolkit->createDBTable('UserInGroup');
     $groups = $db_table->getList('user_id='. $user_id, '', 'group_id');
     return $groups;
   }
 
-  public function saveMembership($user_id, $membership)
+  function saveMembership($user_id, $membership)
   {
-    $db_table	= Limb :: toolkit()->createDBTable('UserInGroup');
+    $toolkit =& Limb :: toolkit();
+    $db_table	=& $toolkit->createDBTable('UserInGroup');
     $db_table->delete('user_id='. $user_id);
 
     foreach($membership as $group_id => $is_set)
@@ -45,7 +47,7 @@ class UserObject extends ContentObject
     }
   }
 
-  public function changePassword()
+  function changePassword()
   {
     if(!$user_id = $this->getId())
       throw new LimbException('user id not set');
@@ -64,9 +66,10 @@ class UserObject extends ContentObject
     $this->update(false);
   }
 
-  public function validatePassword($password)
+  function validatePassword($password)
   {
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     if(!$user->isLoggedIn() ||  !$node_id = $user->get('node_id'))
       return false;
@@ -79,15 +82,16 @@ class UserObject extends ContentObject
       return true;
   }
 
-  public function changeOwnPassword($password)
+  function changeOwnPassword($password)
   {
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     $node_id = $user->get('node_id');
 
     $data['password'] = SimpleAuthenticator :: getCryptedPassword($user->getLogin(),	$password);
 
-    $user_db_table = Limb :: toolkit()->createDBTable('User');
+    $user_db_table =& $toolkit->createDBTable('User');
 
     $this->set('password', $data['password']);
 
@@ -95,7 +99,7 @@ class UserObject extends ContentObject
     return $this->login($user->getLogin(), $password);
   }
 
-  public function generatePassword($email, &$new_non_crypted_password)
+  function generatePassword($email, &$new_non_crypted_password)
   {
     if(!$user_data = $this->getUserByEmail($email))
       return false;
@@ -110,9 +114,10 @@ class UserObject extends ContentObject
     return true;
   }
 
-  public function activatePassword()
+  function activatePassword()
   {
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
     if(!$email = $request->get('user'))
       return false;
@@ -133,9 +138,10 @@ class UserObject extends ContentObject
     return true;
   }
 
-  public function getUserByEmail($email)
+  function getUserByEmail($email)
   {
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $sql =
       'SELECT *, scot.id as node_id, sco.id as id FROM

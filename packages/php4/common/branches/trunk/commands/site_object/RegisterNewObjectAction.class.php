@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class RegisterNewObjectAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'register_new_object';
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'class_name'));
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'identifier'));
@@ -26,14 +26,16 @@ class RegisterNewObjectAction extends FormAction
 
     if($path = $this->dataspace->get('parent_path'))
     {
-      if($node = Limb :: toolkit()->getTree()->getNodeByPath($path))
+      $t =& Limb :: toolkit();
+      $tree =& $t->getTree();
+      if($node = $tree->getNodeByPath($path))
         $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_identifier_rule', 'identifier', $node['id']));
     }
 
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $params = array();
 
@@ -42,9 +44,10 @@ class RegisterNewObjectAction extends FormAction
     $params['class'] = $this->dataspace->get('class_name');
     $params['title'] = $this->dataspace->get('title');
 
-    $object = Limb :: toolkit()->createSiteObject($params['Class']);
+    $toolkit =& Limb :: toolkit();
+    $object =& $toolkit->createSiteObject($params['Class']);
 
-    $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
+    $datasource =& $toolkit->getDatasource('SingleObjectDatasource');
     $datasource->setPath($params['parent_path']);
 
     $is_root = false;
@@ -80,10 +83,11 @@ class RegisterNewObjectAction extends FormAction
 
     if (!$is_root)
     {
-      $parent_object = Limb :: toolkit()->createSiteObject($parent_data['ClassName']);
+      $parent_object =& $toolkit->createSiteObject($parent_data['ClassName']);
       $parent_object->merge($parent_data);
 
-      $action = $parent_object->getController()->determineAction();
+      $controller =& $parent_object->getController();
+      $action = $controller->determineAction();
 
       $access_policy = new AccessPolicy();
       $access_policy->saveNewObjectAccess($object, $parent_object, $action);

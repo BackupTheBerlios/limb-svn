@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/../reports/StatsEventReport.class.php');
 
 class StatsEventsListDatasource extends StatsReportDatasource
 {
-  protected $response_map = array(
+  var $response_map = array(
         Request :: STATUS_SUCCESS => 'STATUS_SUCCESS',
         Request :: STATUS_FORM_DISPLAYED => 'STATUS_FORM_DISPLAYED',
         Request :: STATUS_FORM_SUBMITTED => 'STATUS_FORM_SUBMITTED',
@@ -21,12 +21,12 @@ class StatsEventsListDatasource extends StatsReportDatasource
         Request :: STATUS_FORM_NOT_VALID => 'STATUS_FORM_NOT_VALID'
       );
 
-  protected function _initStatsReport()
+  function _initStatsReport()
   {
     $this->_stats_report = new StatsEventReport();
   }
 
-  protected function _processResultArray($arr)
+  function _processResultArray($arr)
   {
     $result = array();
     foreach($arr as $index => $data)
@@ -38,9 +38,10 @@ class StatsEventsListDatasource extends StatsReportDatasource
     return $result;
   }
 
-  protected function _configureFilters()
+  function _configureFilters()
   {
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
     $this->_setIpFilter($request);
 
@@ -55,25 +56,25 @@ class StatsEventsListDatasource extends StatsReportDatasource
     $this->_setStatusFilter($request);
   }
 
-  protected function _setLoginFilter($request)
+  function _setLoginFilter($request)
   {
     if ($stats_user_login = $request->get('stats_user_login'))
       $this->_stats_report->setLoginFilter($stats_user_login);
   }
 
-  protected function _setActionFilter($request)
+  function _setActionFilter($request)
   {
     if ($stats_action_name = $request->get('stats_action_name'))
       $this->_stats_report->setActionFilter($stats_action_name);
   }
 
-  protected function _setIpFilter($request)
+  function _setIpFilter($request)
   {
     if ($stats_ip = $request->get('stats_ip'))
       $this->_stats_report->setIpFilter($stats_ip);
   }
 
-  protected function _setStatusFilter($request)
+  function _setStatusFilter($request)
   {
     if (($stats_status = $request->get('stats_status')) ||  (!is_array($stats_status)))
       return ;
@@ -88,15 +89,16 @@ class StatsEventsListDatasource extends StatsReportDatasource
       $this->_stats_report->setStatusFilter($status_mask);
   }
 
-  protected function _setUriFilter($request)
+  function _setUriFilter($request)
   {
     if ($stats_uri = $request->get('stats_uri'))
       $this->_stats_report->setUriFilter($stats_uri);
   }
 
-  protected function _setPeriodFilter($request)
+  function _setPeriodFilter($request)
   {
-    $locale = Limb :: toolkit()->getLocale();
+    $toolkit =& Limb :: toolkit();
+    $locale =& $toolkit->getLocale();
     $start_date = new Date();
     $start_date->setHour(0);
     $start_date->setMinute(0);

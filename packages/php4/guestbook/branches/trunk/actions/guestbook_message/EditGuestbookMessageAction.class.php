@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php'
 
 class EditGuestbookMessageAction extends FormEditSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'guestbook_message';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'edit_guestbook_message';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -37,7 +37,7 @@ class EditGuestbookMessageAction extends FormEditSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 
@@ -48,13 +48,14 @@ class EditGuestbookMessageAction extends FormEditSiteObjectAction
   }
 
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
     parent :: _initDataspace($request);
 
     $data = $this->dataspace->export();
 
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     if (empty($data['comment_author']))
       $data['comment_author'] = $user->getLogin();
@@ -65,7 +66,7 @@ class EditGuestbookMessageAction extends FormEditSiteObjectAction
     $this->dataspace->import($data);
   }
 
-  protected function _processTransferedDataspace()
+  function _processTransferedDataspace()
   {
     $this->_htmlspecialcharsDataspaceValue('message');
     $this->_htmlspecialcharsDataspaceValue('sender_email');

@@ -13,12 +13,12 @@ require_once(LIMB_DIR . '/class/core/SysParam.class.php');
 
 class SendFeedbackAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'feedback_form';
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 
@@ -28,22 +28,23 @@ class SendFeedbackAction extends FormAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'body'));
   }
 
-  protected function _getEmail()
+  function _getEmail()
   {
-    if(!$email = SysParam :: instance()->getParam('contact_email', 'char'))
+    $inst =& SysParam :: instance();
+    if(!$email = $inst->getParam('contact_email', 'char'))
       $email = constant('ADMINISTRATOR_EMAIL');
 
     return $email;
   }
 
-  protected function _getMailSubject()
+  function _getMailSubject()
   {
     return sprintf(Strings :: get('message_subject', 'feedback'),
                         $this->dataspace->get('subject'),
                         $_SERVER['HTTP_HOST']);
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $mail_data = $this->dataspace->export();
 
@@ -69,7 +70,7 @@ class SendFeedbackAction extends FormAction
     $headers['To']      = $recipient_email;
     $headers['Subject'] = $subject;
 
-    if(!$recipient_email || 
+    if(!$recipient_email ||
        !$mailer->send($recipient_email,
                     $headers,
                     $body
@@ -88,7 +89,7 @@ class SendFeedbackAction extends FormAction
     $response->redirect($_SERVER['PHP_SELF']);
   }
 
-  protected function _getMailer()
+  function _getMailer()
   {
     include_once('Mail.php');
 

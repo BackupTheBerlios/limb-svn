@@ -11,7 +11,7 @@
 
 interface SearchNormalizer
 {
-  public function process($content);
+  function process($content);
 }
 
 

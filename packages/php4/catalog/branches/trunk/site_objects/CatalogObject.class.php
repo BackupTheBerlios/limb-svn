@@ -13,7 +13,7 @@ require_once(LIMB_SHOP_DIR . 'CartItem.class.php');
 
 class CatalogObject extends ContentObject
 {
-  public function getCartItem()
+  function getCartItem()
   {
     $cart_item = new CartItem($this->getNodeId());
 

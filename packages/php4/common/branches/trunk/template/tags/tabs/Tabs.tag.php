@@ -26,7 +26,7 @@ class TabsTag extends CompilerDirectiveTag
     $active_tab_class = 'class="active-tab"',
     $use_cookie = false;
 
-  public function prepare()
+  function prepare()
   {
     if(isset($this->attributes['active_tab']))
       $this->active_tab = $this->attributes['active_tab'];
@@ -48,7 +48,7 @@ class TabsTag extends CompilerDirectiveTag
     parent :: prepare();
   }
 
-  public function _loadTabsJsScript($code)
+  function _loadTabsJsScript($code)
   {
     if (defined('TABS_SCRIPT_LOADED'))
       return;
@@ -58,14 +58,14 @@ class TabsTag extends CompilerDirectiveTag
     $code->writeHtml("<script type='text/javascript' src='/shared/js/tabs.js'></script>");
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $this->_loadTabsJsScript($code);
 
     parent :: preGenerate($code);
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $js = '';
 

@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/SearchNormalizer.interface.php');
 
 class SearchTextNormalizer implements SearchNormalizer
 {
-  public function process($content)
+  function process($content)
   {
     $content = strtolower($content);
     $content = str_replace("\n", ' ', $content );

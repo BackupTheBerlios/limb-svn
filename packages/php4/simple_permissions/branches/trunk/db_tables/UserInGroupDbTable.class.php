@@ -12,12 +12,12 @@ require_once(LIMB_DIR  . '/class/lib/db/DbTable.class.php');
 
 class UserInGroupDbTable extends DbTable
 {
-  protected function _defineDbTableName()
+  function _defineDbTableName()
   {
     return 'user_in_group';
   }
 
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),

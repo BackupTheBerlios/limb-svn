@@ -9,19 +9,19 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(dirname(__FILE__) . '/StatsReportInterface.interface.php');
 
-class StatsHitsHostsByDaysReport implements StatsReportInterface
+class StatsHitsHostsByDaysReport //implements StatsReportInterface
 {
-  protected $db;
-  protected $filter_conditions = array();
+  var $db;
+  var $filter_conditions = array();
 
-  public function __construct()
+  function StatsHitsHostsByDaysReport()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
   }
 
-  public function fetch($params = array())
+  function fetch($params = array())
   {
     $sql = "SELECT *
             FROM
@@ -40,7 +40,7 @@ class StatsHitsHostsByDaysReport implements StatsReportInterface
     return $this->db->getArray();
   }
 
-  public function fetchCount($params = array())
+  function fetchCount($params = array())
   {
     $sql = "SELECT COUNT(id) as count FROM sys_stat_day_counters as ssdc";
 
@@ -51,7 +51,7 @@ class StatsHitsHostsByDaysReport implements StatsReportInterface
     return (int)$arr['count'];
   }
 
-  public function setPeriodFilter($start_date, $finish_date)
+  function setPeriodFilter($start_date, $finish_date)
   {
     $start_stamp = $start_date->getStamp();
     $finish_stamp = $finish_date->getStamp();
@@ -59,12 +59,12 @@ class StatsHitsHostsByDaysReport implements StatsReportInterface
     $this->filter_conditions[] = " AND ssdc.time BETWEEN {$start_stamp} AND {$finish_stamp} ";
   }
 
-  protected function _buildFilterCondition()
+  function _buildFilterCondition()
   {
     return ' WHERE 1=1 ' . implode(' ', $this->filter_conditions);
   }
 
-  protected function _buildOrderSql($order_array)
+  function _buildOrderSql($order_array)
   {
     $columns = array();
 

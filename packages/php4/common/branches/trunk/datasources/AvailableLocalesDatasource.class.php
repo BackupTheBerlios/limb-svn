@@ -13,12 +13,12 @@ require_once(LIMB_DIR . '/class/i18n/Locale.class.php');
 
 class AvailableLocalesDatasource implements OptionsDatasource
 {
-  public function getOptionsArray()
+  function getOptionsArray()
   {
     return Locale :: getAvailableLocalesData();
   }
 
-  public function getDefaultOption()
+  function getDefaultOption()
   {
     return MANAGEMENT_LOCALE_ID;
   }

@@ -10,11 +10,11 @@
 ***********************************************************************************/
 interface SearchEngineRule
 {
-  public function match($uri);
+  function match($uri);
 
-  public function getMatchingPhrase();
+  function getMatchingPhrase();
 
-  public function getEngineName();
+  function getEngineName();
 }
 
 ?>

@@ -12,13 +12,14 @@ require_once(dirname(__FILE__) . '/SearchEngineRegexRule.class.php');
 
 class SearchEngineYahooRule extends SearchEngineRegexRule
 {
-  public function __construct()
+  function SearchEngineYahooRule()
   {
-    parent :: __construct('yahoo', '/^.*search\.yahoo.*\?p=([^&]*).*$/', 1);
+    parent :: SearchEngineRegexRule('yahoo', '/^.*search\.yahoo.*\?p=([^&]*).*$/', 1);
   }
 
-  public function getMatchingPhrase()
+  function getMatchingPhrase()
   {
+    include_once(LIMB_DIR . '/class/lib/http/utf8_to_win1251.inc.php');
     return utf8ToWin1251(parent :: getMatchingPhrase());
   }
 }

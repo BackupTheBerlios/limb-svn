@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.ph
 
 class CreateFaqObjectAction extends FormCreateSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'faq_object';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'create_faq_object';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -37,7 +37,7 @@ class CreateFaqObjectAction extends FormCreateSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 

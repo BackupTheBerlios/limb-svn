@@ -34,7 +34,7 @@ class StatsUriTest extends LimbTestCase
     $this->db = DbFactory :: instance();
 
     $this->stats_uri = new StatsUriSelfTestVersion($this);
-    $this->stats_uri->__construct();
+    $this->stats_uri->StatsUri();
 
     $this->_cleanUp();
   }

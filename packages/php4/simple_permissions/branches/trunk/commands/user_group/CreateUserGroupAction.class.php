@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.ph
 
 class CreateUserGroupAction extends FormCreateSiteObjectAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'create_user_group';
   }
 
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'user_group';
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 

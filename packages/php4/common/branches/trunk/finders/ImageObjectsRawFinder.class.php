@@ -13,17 +13,17 @@ require_once(LIMB_DIR . '/class/core/finders/OneTableObjectsRawFinder.class.php'
 
 class ImageObjectsRawFinder extends OneTableObjectsRawFinder
 {
-  protected function _defineDbTableName()
+  function _defineDbTableName()
   {
     return 'image_object';
   }
 
-  protected function _doParentFind($params, $sql_params)
+  function _doParentFind($params, $sql_params)
   {
     return parent :: find($params, $sql_params);
   }
 
-  public function find($params=array(), $sql_params=array())
+  function find($params=array(), $sql_params=array())
   {
     if(!$records = $this->_doParentFind($params, $sql_params))
       return array();
@@ -51,7 +51,8 @@ class ImageObjectsRawFinder extends OneTableObjectsRawFinder
             WHERE iv.media_id = m.id AND
             iv.image_id IN {$ids}";
 
-    $db = Limb :: toolkit()->getDB();
+    $t =& Limb :: toolkit();
+    $db =& $t->getDB();
 
     $db->sqlExec($sql);
 

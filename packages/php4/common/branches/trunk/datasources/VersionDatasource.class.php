@@ -12,11 +12,12 @@ require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
 class VersionDatasource implements Datasource
 {
-  public function getDataset(&$counter, $params=array())
+  function getDataset(&$counter, $params=array())
   {
     $counter = 0;
 
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
     if (!$version = $request->get('version'))
       return new EmptyDataset();
@@ -27,7 +28,7 @@ class VersionDatasource implements Datasource
     $version = (int)$version;
     $node_id = (int)$node_id;
 
-    $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
+    $datasource =& $toolkit->getDatasource('SingleObjectDatasource');
     $datasource->setNodeId($node_id);
 
     if(!$site_object = wrapWithSiteObject($datasource->fetch()))

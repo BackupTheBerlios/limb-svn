@@ -12,9 +12,9 @@ require_once(dirname(__FILE__) . '/SearchEngineRegexRule.class.php');
 
 class SearchEngineAportRule extends SearchEngineRegexRule
 {
-  public function __construct()
+  function SearchEngineAportRule()
   {
-    parent :: __construct('aport', '/^.*sm\.aport.*r=([^&]*).*$/', 1);
+    parent :: SearchEngineRegexRule('aport', '/^.*sm\.aport.*r=([^&]*).*$/', 1);
   }
 }
 

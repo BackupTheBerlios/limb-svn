@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class ChangeOwnPasswordAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'change_own_password';
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/user_old_password_rule', 'old_password'));
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'password'));
@@ -25,9 +25,10 @@ class ChangeOwnPasswordAction extends FormAction
     $this->validator->addRule( array(LIMB_DIR . '/class/validators/rules/match_rule', 'second_password', 'password', 'PASSWORD'));
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
-    $user_object = Limb :: toolkit()->createSiteObject('UserObject');
+    $toolkit =& Limb :: toolkit();
+    $user_object =& $toolkit->createSiteObject('UserObject');
 
     $data = $this->dataspace->export();
 
@@ -46,7 +47,8 @@ class ChangeOwnPasswordAction extends FormAction
 
     $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
 
-    Limb :: toolkit()->getUser()->logout();
+    $user =& toolkit()->getUser();
+    $user->logout();
     MessageBox :: writeWarning(Strings :: get('need_relogin', 'user'));
   }
 }

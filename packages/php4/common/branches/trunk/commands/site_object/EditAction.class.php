@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php'
 
 class EditAction extends FormEditSiteObjectAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'edit_site_object';
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 

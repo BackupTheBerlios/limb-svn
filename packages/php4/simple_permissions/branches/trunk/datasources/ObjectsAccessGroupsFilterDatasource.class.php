@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/datasources/OptionsDatasource.interface.php');
 
 class ObjectsAccessGroupsFilterDatasource implements OptionsDatasource
 {
-  public function getOptionsArray()
+  function getOptionsArray()
   {
     $params['order'] = array('priority' => 'ASC');
     $user_groups = $this->_getUserGroups();
@@ -25,9 +25,10 @@ class ObjectsAccessGroupsFilterDatasource implements OptionsDatasource
     return $options_array;
   }
 
-  protected function _getUserGroups()
+  function _getUserGroups()
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
     $datasource->setPath('/root/user_groups');
     $datasource->setSiteObjectClassName('user_group');
     $datasource->setRestrictByClass();
@@ -35,7 +36,7 @@ class ObjectsAccessGroupsFilterDatasource implements OptionsDatasource
     return $datasource->fetch();
   }
 
-  public function getDefaultOption()
+  function getDefaultOption()
   {
     return null;
   }

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/db_tables/OneTableObjectDbTable.class.php');
 
 class ImageObjectDbTable extends OneTableObjectDbTable
 {
-  protected function _defineColumns()
+  function _defineColumns()
   {
     return ComplexArray :: array_merge(
       parent :: _defineColumns(),
@@ -22,7 +22,7 @@ class ImageObjectDbTable extends OneTableObjectDbTable
     );
   }
 
-  protected function _defineConstraints()
+  function _defineConstraints()
   {
     return array(
       'object_id' =>	array(

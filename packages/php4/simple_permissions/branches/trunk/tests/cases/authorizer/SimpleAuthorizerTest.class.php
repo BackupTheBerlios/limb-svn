@@ -18,11 +18,11 @@ require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
 
 class SimpleAuthorizerTestBehaviourTestVersion extends SiteObjectBehaviour
 {
-  public function getDisplayActionProperties(){}
-  public function getCreateActionProperties(){}
-  public function getEditActionProperties(){}
-  public function getPublishActionProperties(){}
-  public function getDeleteActionProperties(){}
+  function getDisplayActionProperties(){}
+  function getCreateActionProperties(){}
+  function getEditActionProperties(){}
+  function getPublishActionProperties(){}
+  function getDeleteActionProperties(){}
 }
 
 Mock :: generate('SimpleAuthorizerTestBehaviourTestVersion');
@@ -50,7 +50,8 @@ class SimpleAuthorizerTest extends LimbTestCase
 
   function tearDown()
   {
-    User :: instance()->logout();
+    $inst =& User :: instance();
+    $inst->logout();
 
     $this->cleanUp();
   }

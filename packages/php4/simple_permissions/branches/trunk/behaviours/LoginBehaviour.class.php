@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php'
 
 class LoginBehaviour extends SiteObjectController
 {
-  public function getDefaultAction()
+  function getDefaultAction()
   {
     return 'login';
   }
 
-  public function getLoginActionProperties()
+  function getLoginActionProperties()
   {
     return array();
   }
 
-  public function defineLogin($state_machine)
+  function defineLogin($state_machine)
   {
     $state_machine->registerState('init',
                                   array(LIMB_DIR . '/class/core/commands/use_view_command',
@@ -43,12 +43,12 @@ class LoginBehaviour extends SiteObjectController
                                   LIMB_DIR . '/class/core/commands/display_view_command');
   }
 
-  public function getLogoutActionProperties()
+  function getLogoutActionProperties()
   {
     return array();
   }
 
-  public function defineLogout($state_machine)
+  function defineLogout($state_machine)
   {
     $state_machine->registerState('process', LIMB_SIMPLE_PERMISSIONS_DIR . '/commands/logout_command');
   }

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class ApplyActionAccessTemplateCommand implements Command
 {
-  public function perform()
+  function perform()
   {
     $toolkit = Limb :: toolkit();
     $request = $toolkit->getRequest();
@@ -22,7 +22,8 @@ class ApplyActionAccessTemplateCommand implements Command
 
     $object = wrapWithSiteObject($datasource->fetch());
 
-    $action = $object->getController()->getRequestedAction($request);
+    $ctrl =& $object->getController();
+    $action = $ctrl->getRequestedAction($request);
 
     try
     {
@@ -34,11 +35,11 @@ class ApplyActionAccessTemplateCommand implements Command
       return Limb :: STATUS_ERROR;
     }
 
-    return Limb :: STATUS_OK;
+    return Limb :: getSTATUS_OK();
   }
 
   // for mocking
-  protected function _getAccessPolicy()
+  function _getAccessPolicy()
   {
     return new $access_policy;
   }

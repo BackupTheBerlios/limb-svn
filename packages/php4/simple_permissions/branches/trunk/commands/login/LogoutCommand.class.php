@@ -12,13 +12,15 @@ require_once(LIMB_DIR . '/class/core/commands/Command.interface.php');
 
 class LogoutCommand implements Command
 {
-  public function perform()
+  function perform()
   {
-    $toolkit = Limb :: toolkit();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+    $response =& $toolkit->getResponse();
 
-    $toolkit->getUser()->logout();
+    $user->logout();
 
-    $toolkit->getResponse()->redirect('/');
+    $response->redirect('/');
 
     return LIMB :: STATUS_OK;
   }

@@ -16,27 +16,31 @@ class NodeSelectDatasource extends FetchSubBranchDatasource
   {
     $params['depth'] = 1;
 
-    if(Limb :: toolkit()->getRequest()->get('only_parents') == 'false')
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $tree =& $toolkit->getTree();
+
+    if($request->get('only_parents') == 'false')
       $params['only_parents'] = false;
     else
       $params['only_parents'] = true;
 
     $params['restrict_by_class'] = false;
-    $params['path'] = $this->_processPath();
+    $params['path'] = $this->_processPath($request, $tree);
 
     return parent :: getDataset($counter, $params);
   }
 
-  function _processPath()
+  function _processPath(&$request, &$tree)
   {
     $default_path = '/root/';
 
-    if(!$path = Limb :: toolkit()->getRequest()->get('path'))
+    if(!$path = $request->get('path'))
       return $default_path;
 
     if(strpos($path, '?') !== false)
     {
-      if(!$path = Limb :: toolkit()->getTree()->getNodeByPath($path))
+      if(!$path = $tree->getNodeByPath($path))
         return $default_path;
     }
     return $path;

@@ -90,28 +90,31 @@ class StatsRegisterTest extends LimbTestCase
     $this->stats_counter = new StatsCounter();
 
     $this->stats_ip = new StatsIpTestVersion($this);
-    $this->stats_ip->__construct();
+    $this->stats_ip->StatsIp();
     $this->stats_ip->setReturnValue('getClientIp', Ip :: encodeIp('127.0.0.1'));
 
     $this->stats_counter = new StatsCounterTestVersion2($this);
-    $this->stats_counter->__construct();
+    $this->stats_counter->StatsCounter();
 
     $this->stats_referer = new StatsRefererTestVersion($this);
-    $this->stats_referer->__construct();
+    $this->stats_referer->StatsReferer();
     $this->stats_referer->setReturnValue('getRefererPageId', 10);
 
     $this->stats_search_phrase = new StatsSearchPhraseTestVersion($this);
-    $this->stats_search_phrase->__construct();
+    $this->stats_search_phrase->StatsSearchPhrase();
     $this->stats_search_phrase->setReturnValue('register', true);
 
     $this->stats_register = new StatsRegisterTestVersion($this);
-    $this->stats_register->__construct();
+    $this->stats_register->StatsRegister();
     $this->stats_register->setReturnValue('_getIpRegister', $this->stats_ip);
     $this->stats_register->setReturnValue('_getCounterRegister', $this->stats_counter);
     $this->stats_register->setReturnValue('_getRefererRegister', $this->stats_referer);
     $this->stats_register->setReturnValue('_getSearchPhraseRegister', $this->stats_search_phrase);
 
-    Limb :: toolkit()->getUser()->set('id', 10);
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+
+    $user->set('id', 10);
 
     $this->_cleanUp();
   }
@@ -128,7 +131,8 @@ class StatsRegisterTest extends LimbTestCase
 
     $this->stats_register->tally();
 
-    User :: instance()->logout();
+    $inst =& User :: instance();
+    $inst->logout();
 
     $this->_cleanUp();
   }

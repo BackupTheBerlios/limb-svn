@@ -13,27 +13,28 @@ require_once(LIMB_DIR . '/class/core/ArrayDataset.class.php');
 
 class MetadataComponent extends Component
 {
-  protected $node_id = '';
+  var $node_id = '';
 
-  protected $request_path = '';
+  var $request_path = '';
 
-  protected $object_ids_array = array();
+  var $object_ids_array = array();
 
-  protected $object_metadata = array();
+  var $object_metadata = array();
 
-  protected $separator = ' - ';
+  var $separator = ' - ';
 
-  protected $offset_path = '';
+  var $offset_path = '';
 
-  protected $metadata_db_table_name = 'sys_metadata';
-  protected $needed_metadata = array('keywords', 'description');
+  var $metadata_db_table_name = 'sys_metadata';
+  var $needed_metadata = array('keywords', 'description');
 
-  protected function _getPathObjectsIdsArray()
+  function _getPathObjectsIdsArray()
   {
     if (count($this->object_ids_array))
       return $this->object_ids_array;
 
-    $tree = Limb :: toolkit()->getTree();
+    $toolkit =& Limb :: toolkit();
+    $tree =& $toolkit->getTree();
 
     $node = $tree->getNode($this->getNodeId());
     $parents = $tree->getParents($this->getNodeId());
@@ -52,7 +53,7 @@ class MetadataComponent extends Component
     return $this->object_ids_array = $result;
   }
 
-  protected function  _getPathObjectsArray()
+  function  _getPathObjectsArray()
   {
     $ids_array = $this->_getPathObjectsIdsArray();
 
@@ -73,13 +74,14 @@ class MetadataComponent extends Component
     AND	' . sqlIn('sso.id', $ids_array) . '
     ORDER BY ssot.level';
 
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
     $db->sqlExec($sql);
 
     return $db->getArray('id');
   }
 
-  public function loadMetadata()
+  function loadMetadata()
   {
     $ids_array = $this->_getPathObjectsIdsArray();
 
@@ -87,7 +89,8 @@ class MetadataComponent extends Component
       return false;
     $ids_array = array_reverse($ids_array);
 
-    $metadata_db_table	= Limb :: toolkit()->createDBTable($this->metadata_db_table_name);
+    $toolkit =& Limb :: toolkit();
+    $metadata_db_table =& $toolkit->createDBTable($this->metadata_db_table_name);
     $objects_metadata = $metadata_db_table->getList(sqlIn('object_id', $ids_array), '', 'object_id');
 
     if (!count($objects_metadata))
@@ -98,7 +101,7 @@ class MetadataComponent extends Component
     return true;
   }
 
-  protected function _processLoadedMetadata($ids_array, $objects_metadata)
+  function _processLoadedMetadata($ids_array, $objects_metadata)
   {
     foreach($this->needed_metadata as $metadata_name)
       $metadata_loaded[$metadata_name] = false;
@@ -121,27 +124,28 @@ class MetadataComponent extends Component
     }
   }
 
-  public function setNodeId($node_id)
+  function setNodeId($node_id)
   {
     $this->node_id = $node_id;
   }
 
-  public function getNodeId()
+  function getNodeId()
   {
     if ($this->node_id)
       return $this->node_id;
 
-    $toolkit = Limb :: toolkit();
-    $request = $toolkit->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
     if($this->request_path)
     {
       $node_path = $request->get($this->request_path);
-      $node = $toolkit->getTree()->getNodeByPath($node_path);
+      $tree =& $toolkit->getTree();
+      $node = $tree->getNodeByPath($node_path);
     }
     else
     {
-      $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+      $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
       $datasource->setRequest($request);
       $node = $datasource->mapRequestToNode($request);
     }
@@ -151,17 +155,17 @@ class MetadataComponent extends Component
     return $this->node_id;
   }
 
-  public function getKeywords()
+  function getKeywords()
   {
     return $this->get('keywords');
   }
 
-  public function getDescription()
+  function getDescription()
   {
     return $this->get('description');
   }
 
-  public function get($name, $default_value = null)
+  function get($name, $default_value = null)
   {
     if(isset($this->object_metadata[$name]))
       return $this->object_metadata[$name];
@@ -169,12 +173,12 @@ class MetadataComponent extends Component
       return $default_value;
   }
 
-  public function setTitleSeparator($separator = ' ')
+  function setTitleSeparator($separator = ' ')
   {
     $this->separator = $separator;
   }
 
-  public function getTitle()
+  function getTitle()
   {
     $result = $this->_applyOffsetPath($this->_getPathObjectsArray());
 
@@ -194,7 +198,7 @@ class MetadataComponent extends Component
     return implode($this->separator, $titles);
   }
 
-  public function getBreadcrumbsDataset()
+  function getBreadcrumbsDataset()
   {
     $objects_data = $this->_getPathObjectsArray();
 
@@ -214,7 +218,7 @@ class MetadataComponent extends Component
     return new ArrayDataset($results);
   }
 
-  protected function _applyOffsetPath($objects_data)
+  function _applyOffsetPath($objects_data)
   {
     $path = '/';
 
@@ -250,16 +254,19 @@ class MetadataComponent extends Component
     return $results;
   }
 
-  protected function _addObjectActionPath(&$results)
+  function _addObjectActionPath(&$results)
   {
+    $toolkit =& Limb :: toolkit();
+
     $data = end($results);
     $path = $data['path'];
 
+    $request =& $toolkit->getRequest();
     $controller = $this->_getMappedController();
-    $request = Limb :: toolkit()->getRequest();
+
     $action = $controller->getAction($request);
 
-    if ($action !== false && 
+    if ($action !== false &&
         $controller->getActionProperty($action, 'display_in_breadcrumbs') === true)
     {
       if($controller->getDefaultAction() != $action)
@@ -272,18 +279,23 @@ class MetadataComponent extends Component
     }
   }
 
-  protected function _getMappedController()
+  function _getMappedController(&$request)
   {
-    $request = Limb :: toolkit()->getRequest();
-    return wrapWithSiteObject(Limb :: toolkit()->getFetcher()->fetchRequestedObject($request))->getController();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
+    $datasource->setRequest($request);
+    $obj =& wrapWithSiteObject($datasource->fetch());
+
+    return $obj->getController();
   }
 
-  public function setOffsetPath($path)
+  function setOffsetPath($path)
   {
     $this->offset_path = $path;
   }
 
-  public function setRequestPath($path)
+  function setRequestPath($path)
   {
     $this->request_path = $path;
   }

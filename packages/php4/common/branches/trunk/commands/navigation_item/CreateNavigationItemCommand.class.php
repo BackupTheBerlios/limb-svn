@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/CreateSiteObjectCommand.class.php'
 
 class CreateNavigationItemCommand extends CreateSiteObjectCommand
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'navigation_item';
   }

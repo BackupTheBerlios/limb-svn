@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/datasources/FetchTreeDatasource.class.php');
 
 class GroupObjectAccessDatasource extends FetchTreeDatasource
 {
-  protected function _fetch(&$counter, $params)
+  function _fetch(&$counter, $params)
   {
     $tree_array = parent :: _fetch($counter, $params);
 
@@ -41,9 +41,10 @@ class GroupObjectAccessDatasource extends FetchTreeDatasource
     return $tree_array;
   }
 
-  protected function _getUserGroups()
+  function _getUserGroups()
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
     $datasource->setPath('/root/user_groups');
     $datasource->setSiteObjectClassName('user_group');
     $datasource->setRestrictByClass();

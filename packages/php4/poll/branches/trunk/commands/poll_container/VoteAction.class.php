@@ -12,14 +12,15 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class VoteAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'vote_action';
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
-    $object = Limb :: toolkit()->createSiteObject('PollContainer');
+    $toolkit =& Limb :: toolkit();
+    $object =& $toolkit->createSiteObject('PollContainer');
     $data = $this->dataspace->export();
 
     $request->setStatus(Request :: STATUS_FAILURE);

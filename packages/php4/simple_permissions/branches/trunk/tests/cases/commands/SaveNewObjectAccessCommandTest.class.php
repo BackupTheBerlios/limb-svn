@@ -31,7 +31,7 @@ Mock :: generatePartial('SaveNewObjectAccessCommand',
 
 class AccessPolicyForSaveNewObjectAccessCommand extends AccessPolicy
 {
-  public function saveNewObjectAccess($object, $parent_object, $action)
+  function saveNewObjectAccess($object, $parent_object, $action)
   {
     throw new LimbException('catch me!');
   }
@@ -110,7 +110,7 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
 
     $this->command->setReturnValue('_getAccessPolicy', $this->access_policy);
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 
   function testPerformFailureAccessPolicyFailed()

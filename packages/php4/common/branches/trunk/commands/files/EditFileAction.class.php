@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormEditSiteObjectAction.class.php'
 
 class EditFileAction extends FormEditSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'file_object';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'edit_file';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -32,19 +32,19 @@ class EditFileAction extends FormEditSiteObjectAction
     );
   }
 
-  protected function _defineIncreaseVersionFlag()
+  function _defineIncreaseVersionFlag()
   {
     return false;
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  protected function _updateObjectOperation()
+  function _updateObjectOperation()
   {
     if(isset($_FILES[$this->name]['tmp_name']['file']))
     {
@@ -53,8 +53,9 @@ class EditFileAction extends FormEditSiteObjectAction
         throw new LimbException('uploaded file size exceeds limit');
       }
 
-      $request = Limb :: toolkit()->getRequest();
-      $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+      $t =& Limb :: toolkit();
+      $request =& $t->getRequest();
+      $datasource =& $t->getDatasource('RequestedObjectDatasource');
       $datasource->setRequest($request);
 
       $object_data = $datasource->fetch();

@@ -20,7 +20,7 @@ registerTag(new HintHintTagInfo());
 
 class HintHintTag extends CompilerDirectiveTag
 {
-  public function preGenerate($code)
+  function preGenerate($code)
   {
 
 $js = <<<JS
@@ -136,7 +136,7 @@ JS;
     }
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $link = $this->findChildByClass('hint_link_tag');
     $title = $this->findChildByClass('hint_title_tag');
@@ -205,7 +205,7 @@ JS;
       $content->generate($code);
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writeHtml('
       </td></tr>

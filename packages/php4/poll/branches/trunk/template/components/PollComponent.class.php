@@ -12,21 +12,22 @@ class PollComponent extends Component
 {
   public $path = '';
 
-  protected $_poll_container = null;
+  var $_poll_container = null;
 
-  public function canVote()
+  function canVote()
   {
     return $this->_poll_container->canVote();
   }
 
-  public function prepare()
+  function prepare()
   {
-    $this->_poll_container = Limb :: toolkit()->createSiteObject('PollContainer');
+    $toolkit =& Limb :: toolkit();
+    $this->_poll_container =& $toolkit->createSiteObject('PollContainer');
 
     $this->import($this->_poll_container->getActivePoll());
   }
 
-  public function pollExists()
+  function pollExists()
   {
     return sizeof($this->_poll_container->getActivePoll());
   }

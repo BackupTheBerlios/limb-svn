@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
 class PollAllResultsDatasource implements Datasource
 {
-  public function getDataset(&$counter, $params = array())
+  function getDataset(&$counter, $params = array())
   {
     $questions = $this->_loadAllQuestions();
 
@@ -53,9 +53,10 @@ class PollAllResultsDatasource implements Datasource
     return new ArrayDataset($questions);
   }
 
-  protected function _loadAllQuestions()
+  function _loadAllQuestions()
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
     $datasource->setPath('root/polls');
     $datasource->setSiteObjectClassName('poll');
     $datasource->setRestrictByClass();
@@ -63,9 +64,10 @@ class PollAllResultsDatasource implements Datasource
     return $datasource->fetch();
   }
 
-  protected function _loadAnswers($question_path)
+  function _loadAnswers($question_path)
   {
-    $datasource = Limb :: toolkit()->getDatasource('SiteObjectsBranchDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SiteObjectsBranchDatasource');
     $datasource->setPath($question_path);
     $datasource->setSiteObjectClassName('poll_answer');
     $datasource->setRestrictByClass();

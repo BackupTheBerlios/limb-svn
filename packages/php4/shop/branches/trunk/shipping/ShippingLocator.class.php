@@ -16,17 +16,17 @@ if (!defined('SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME'))
 
 class ShippingLocator
 {
-  protected $cache_result = true;
-  protected $cache_life_time;
+  var $cache_result = true;
+  var $cache_life_time;
 
-  protected $cache;
+  var $cache;
 
-  function __construct()
+  function ShippingLocator()
   {
     $this->cache_life_time = SHIPPING_LOCATOR_DEFAULT_CACHE_LIFE_TIME;
   }
 
-  public function getCache()
+  function getCache()
   {
     if($this->cache)
       return $this->cache;
@@ -46,27 +46,28 @@ class ShippingLocator
     return $this->cache;
   }
 
-  public function useCache($status = true)
+  function useCache($status = true)
   {
     $this->cache_result = $status;
   }
 
-  public function flushCache()
+  function flushCache()
   {
-    $this->getCache()->clean();
+    $cache =& $this->getCache();
+    $cache->clean();
   }
 
-  public function setCacheLifeTime($time)
+  function setCacheLifeTime($time)
   {
     $this->cache_life_time = $time;
   }
 
-  public function getCacheLifeTime()
+  function getCacheLifeTime()
   {
     return $this->cache_life_time;
   }
 
-  public function getShippingOptions($shipping_configuration)
+  function getShippingOptions($shipping_configuration)
   {
     if($this->cache_result)
     {
@@ -85,14 +86,14 @@ class ShippingLocator
     return $options;
   }
 
-  protected function _saveCachedOptions($shipping_configuration, $options)
+  function _saveCachedOptions($shipping_configuration, $options)
   {
     $cache = $this->getCache();
 
     $cache->save(serialize($options), $shipping_configuration->getHash());
   }
 
-  protected function _getCachedOptions($shipping_configuration)
+  function _getCachedOptions($shipping_configuration)
   {
     $cache = $this->getCache();
 
@@ -102,7 +103,7 @@ class ShippingLocator
       return false;
   }
 
-  protected function _doGetShippingOptions($shipping_configuration)
+  function _doGetShippingOptions($shipping_configuration)
   {
     return array();
   }

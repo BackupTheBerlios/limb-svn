@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.ph
 
 class CreateFileAction extends FormCreateSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'file_object';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'create_file';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -32,14 +32,14 @@ class CreateFileAction extends FormCreateSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'title'));
   }
 
-  protected function _createObjectOperation()
+  function _createObjectOperation()
   {
     if(isset($_FILES[$this->name]['tmp_name']['file']))
     {

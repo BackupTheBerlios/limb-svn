@@ -13,17 +13,17 @@ require_once(LIMB_DIR . '/class/validators/rules/RequiredRule.class.php');
 
 class ChangeUserLocaleAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'change_locale_form';
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'locale_id'));
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $locale_id = $this->dataspace->get('locale_id');
 
@@ -39,7 +39,9 @@ class ChangeUserLocaleAction extends FormAction
       $request->setStatus(Request :: STATUS_FAILURE);
     }
 
-    Limb :: toolkit()->getUser()->set('locale_id', $locale_id);
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+    $user->set('locale_id', $locale_id);
 
     $request->setStatus(Request :: STATUS_SUCCESS);
   }

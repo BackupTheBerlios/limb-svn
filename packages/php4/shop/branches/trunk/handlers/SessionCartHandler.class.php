@@ -13,9 +13,10 @@ require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
 class SessionCartHandler extends CartHandler
 {
-  public function reset()
+  function reset()
   {
-    $session = LIMB :: toolkit()->getSession();
+    $toolkit =& Limb :: toolkit();
+    $session =& $toolkit->getSession();
 
     $this->_items =& $session->getReference('session_cart_' . $this->_cart_id . '_items');
 

@@ -13,18 +13,18 @@ require_once(LIMB_DIR . '/class/core/finders/OneTableObjectsRawFinder.class.php'
 
 class FileObjectsRawFinder extends OneTableObjectsRawFinder
 {
-  protected function _defineDbTableName()
+  function _defineDbTableName()
   {
     return 'file_object';
   }
 
   //for mocking
-  protected function _doParentFind($params, $sql_params)
+  function _doParentFind($params, $sql_params)
   {
     return parent :: find($params, $sql_params);
   }
 
-  public function find($params=array(), $sql_params=array())
+  function find($params=array(), $sql_params=array())
   {
     $sql_params['columns'][] = ' m.file_name as file_name, m.mime_type as mime_type, m.etag as etag, m.size as size, ';
     $sql_params['tables'][] = ', media as m ';

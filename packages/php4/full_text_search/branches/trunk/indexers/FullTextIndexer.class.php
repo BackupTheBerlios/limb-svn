@@ -13,30 +13,30 @@ require_once(dirname(__FILE__) . '/../normalizers/SearchTextNormalizerFactory.cl
 
 class FullTextIndexer
 {
-  static protected $instance;
+  var $db = null;
+  var $string_normalizer;
 
-  protected $db = null;
-  protected $string_normalizer;
-
-  function __construct()
+  function FullTextIndexer()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
   }
 
-  static public function instance()
+  function & instance()
   {
-    if (!self :: $instance)
-      self :: $instance = new FullTextIndexer();
+    if (!isset($GLOBALS['FullTextIndexerGlobalInstance']) || !is_a($GLOBALS['FullTextIndexerGlobalInstance'], 'FullTextIndexer'))
+      $GLOBALS['FullTextIndexerGlobalInstance'] =& new FullTextIndexer();
 
-    return self :: $instance;
+    return $GLOBALS['FullTextIndexerGlobalInstance'];
   }
 
-  static public function add($site_object)
+  function add($site_object)
   {
-    FullTextIndexer :: instance()->_doAdd($site_object);
+    $inst =& FullTextIndexer :: instance();
+    $inst->_doAdd($site_object);
   }
 
-  protected function _doAdd($site_object)
+  function _doAdd($site_object)
   {
     $this->remove($site_object);
 
@@ -47,7 +47,8 @@ class FullTextIndexer
 
     foreach($keys as $attribute_name)
     {
-      $definition = $site_object->getBehaviour()->getDefinition($attribute_name);
+      $bhvr =& $site_object->getBehaviour();
+      $definition = $bhvr->getDefinition($attribute_name);
 
       if (!isset($definition['search']) ||  !$definition['search'])
         continue;
@@ -74,17 +75,18 @@ class FullTextIndexer
     }
   }
 
-  static public function remove($site_object)
+  function remove($site_object)
   {
-    FullTextIndexer :: instance()->_doRemove($site_object);
+    $inst =& FullTextIndexer :: instance();
+    $inst->_doRemove($site_object);
   }
 
-  protected function _doRemove($site_object)
+  function _doRemove($site_object)
   {
     $this->db->sqlDelete('sys_full_text_index', array('object_id' => $site_object->getId()));
   }
 
-  protected function _normalizeString($content, $normalizer_name)
+  function _normalizeString($content, $normalizer_name)
   {
     $text_normalizer = SearchTextNormalizerFactory :: create($normalizer_name);
 

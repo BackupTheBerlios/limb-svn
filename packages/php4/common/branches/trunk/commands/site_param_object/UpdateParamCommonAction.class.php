@@ -14,21 +14,21 @@ require_once(LIMB_DIR . '/class/core/SysParam.class.php');
 
 class UpdateParamCommonAction extends FormAction
 {
-  protected $params_type = array();
+  var $params_type = array();
 
-  function __construct()
+  function UpdateParamCommonAction()
   {
-    parent :: __construct();
+    parent :: FormAction();
 
     $this->params_type = $this->_defineParamsType();
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'site_param_form';
   }
 
-  protected function _defineParamsType()
+  function _defineParamsType()
   {
     return array(
       'site_title' => 'char',
@@ -36,12 +36,12 @@ class UpdateParamCommonAction extends FormAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'contact_email'));
   }
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
     $sys_param = SysParam :: instance();
 
@@ -71,7 +71,7 @@ class UpdateParamCommonAction extends FormAction
     $this->dataspace->import($data);
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
     $sys_param = SysParam :: instance();

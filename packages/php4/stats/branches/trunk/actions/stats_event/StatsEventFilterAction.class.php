@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class StatsEventFilterAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'events_filter_form';
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $request->merge($this->dataspace->export());
 

@@ -19,7 +19,7 @@ registerTag(new TabsLabelsTagInfo());
 
 class TabsLabelsTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof TabsTag)
     {
@@ -31,7 +31,7 @@ class TabsLabelsTag extends CompilerDirectiveTag
     }
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $tabulator_class = $this->parent->tabulator_class;
     $tab_class = $this->parent->tab_class;
@@ -43,7 +43,7 @@ class TabsLabelsTag extends CompilerDirectiveTag
       <td {$tab_class}>&nbsp;</td>");
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $tab_class = $this->parent->tab_class;
 

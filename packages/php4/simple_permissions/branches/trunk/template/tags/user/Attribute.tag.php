@@ -19,7 +19,7 @@ registerTag(new UserAttributeTagInfo());
 
 class UserAttributeTag extends CompilerDirectiveTag
 {
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['name']) ||  !$this->attributes['name'])
     {
@@ -33,9 +33,9 @@ class UserAttributeTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
-    $code->writePhp("echo Limb :: toolkit()->getUser()->get('{$this->attributes['name']}');");
+    $code->writePhp("\$toolkit =& Limb :: toolkit();\$user =& \$toolkit->getUser(); echo \$user->get('{$this->attributes['name']}');");
 
     parent :: generateContents($code);
   }

@@ -16,9 +16,9 @@ if (!defined('TEMPLATE_FOR_HACKERS'))
 
 class DisplayTemplateSourceAction extends Action
 {
-  protected $history = array();
+  var $history = array();
 
-  public function perform($request, $response)
+  function perform($request, $response)
   {
     if(($t = $request->get('t')) &&  is_array($t) &&  sizeof($t) > 0)
     {
@@ -70,9 +70,10 @@ class DisplayTemplateSourceAction extends Action
     $this->view->set('template_content', $this->_processTemplateContent($template_contents));
   }
 
-  protected function _getTemplatePathFromNode($node_id)
+  function _getTemplatePathFromNode($node_id)
   {
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setNodeId($node_id);
 
     if(!$site_object = wrapWithSiteObject($datasource->fetch()))
@@ -83,7 +84,7 @@ class DisplayTemplateSourceAction extends Action
     return $controller->getActionProperty($controller->getDefaultAction(), 'template_path');
   }
 
-  protected function _processTemplateContent($template_contents)
+  function _processTemplateContent($template_contents)
   {
     include_once(LIMB_DIR . '/class/template/compiler/template_compiler.inc.php');
     include_once(dirname(__FILE__) . '/../../TemplateHighlightHandler.class.php');

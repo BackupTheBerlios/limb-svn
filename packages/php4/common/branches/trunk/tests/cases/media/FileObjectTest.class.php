@@ -27,7 +27,7 @@ class FileObjectTest extends LimbTestCase
     $this->media_manager = new MockMediaManager($this);
 
     $this->file = new FileObjectTestVersion($this);
-    $this->file->__construct();
+    $this->file->FileObject();
     $this->file->setReturnValue('_getMediaManager', $this->media_manager);
   }
 

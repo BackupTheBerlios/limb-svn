@@ -12,14 +12,15 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class SetPublishStatusAction extends Action
 {
-  public function perform($request, $response)
+  function perform($request, $response)
   {
     $request->setStatus(Request :: STATUS_SUCCESS);
 
     if($request->hasAttribute('popup'))
       $response->write(closePopupResponse($request));
 
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $t =& Limb :: toolkit();
+    $datasource =& $t->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
     if(!$object = wrapWithSiteObject($datasource->fetch()))
       return;
@@ -48,21 +49,21 @@ class SetPublishStatusAction extends Action
     $datasource->flushCache();
   }
 
-  public function getPublishStatus($object)
+  function getPublishStatus($object)
   {
     $current_status = $object->get('status');
     $current_status |= SiteObject :: STATUS_PUBLISHED;
     return $current_status;
   }
 
-  public function getUnpublishStatus($object)
+  function getUnpublishStatus($object)
   {
     $current_status = $object->get('status');
     $current_status = $current_status & (~SiteObject :: STATUS_PUBLISHED);
     return $current_status;
   }
 
-  protected function _applyAccessPolicy($object, $action)
+  function _applyAccessPolicy($object, $action)
   {
     try
     {

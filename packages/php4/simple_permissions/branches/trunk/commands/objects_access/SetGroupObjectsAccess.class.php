@@ -15,17 +15,21 @@ class SetGroupObjectsAccess extends FormAction
 {
   protected  $objects_ids = array();
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'set_group_access';
   }
 
-  public function perform($request, $response)
+  function perform($request, $response)
   {
-    $parents =& Limb :: toolkit()->getSession()->getReference('tree_expanded_parents');
-    Limb :: toolkit()->getTree()->setExpandedParents($parents);
+    $toolkit =& Limb :: toolkit();
+    $session =& $toolkit->getSession();
+    $tree =& $toolkit->getTree();
 
-    if ($filter_groups = Limb :: toolkit()->getSession()->get('filter_groups'))
+    $parents =& $session->getReference('tree_expanded_parents');
+    $tree->setExpandedParents($parents);
+
+    if ($filter_groups = $session->get('filter_groups'))
       $this->dataspace->set('filter_groups', $filter_groups);
 
     parent :: perform($request, $response);
@@ -33,7 +37,7 @@ class SetGroupObjectsAccess extends FormAction
     $this->_fillPolicy();
   }
 
-  protected function _fillPolicy()
+  function _fillPolicy()
   {
     $access_policy = new AccessPolicy();
     $policy = $access_policy->getObjectsAccessByIds($this->object_ids, AccessPolicy :: ACCESSOR_TYPE_GROUP);
@@ -41,7 +45,7 @@ class SetGroupObjectsAccess extends FormAction
     $this->dataspace->set('policy', $policy);
   }
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
     parent :: _initDataspace($request);
 
@@ -50,12 +54,15 @@ class SetGroupObjectsAccess extends FormAction
     $this->_fillPolicy();
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
 
+    $toolkit =& Limb :: toolkit();
+    $session =& $toolkit->getSession();
+
     if($groups = $this->dataspace->get('filter_groups'))
-      Limb :: toolkit()->getSession()->set('filter_groups', $groups);
+      $session->set('filter_groups', $groups);
 
     if(isset($data['update']) &&  isset($data['policy']))
     {
@@ -68,9 +75,11 @@ class SetGroupObjectsAccess extends FormAction
     $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
   }
 
-  protected function _setTemplateTree()
+  function _setTemplateTree()
   {
-    $datasource = Limb :: toolkit()->getDatasource('GroupObjectAccessDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('GroupObjectAccessDatasource');
+
     $params = array(
       'path' => '/root',
       'depth' => -1,
@@ -83,7 +92,7 @@ class SetGroupObjectsAccess extends FormAction
 
     );
     $count = null;
-    $dataset = $datasource->getDataset($count, $params);
+    $dataset =& $datasource->getDataset($count, $params);
 
     $this->object_ids = array();
     $dataset->reset();

@@ -33,7 +33,7 @@ class StatsRefererTest extends LimbTestCase
 
     $this->db = DbFactory :: instance();
     $this->stats_referer = new StatsRefererSelfTestVersion($this);
-    $this->stats_referer->__construct();
+    $this->stats_referer->StatsReferer();
 
     $this->_cleanUp();
   }

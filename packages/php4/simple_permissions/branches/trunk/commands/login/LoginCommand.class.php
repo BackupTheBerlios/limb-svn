@@ -13,11 +13,12 @@ require_once(dirname(__FILE__) . '/../../SimpleAuthenticator.class.php');
 
 class LoginCommand implements Command
 {
-  public function perform()
+  function perform()
   {
-    $toolkit = Limb :: toolkit();
+    $toolkit =& Limb :: toolkit();
 
-    $dataspace = $toolkit->getDataspace();
+    $dataspace =& $toolkit->getDataspace();
+    $auth =& $toolkit->getAuthenticator();
 
     $login_params = array(
       'login' => $dataspace->get('login'),
@@ -25,14 +26,15 @@ class LoginCommand implements Command
       'locale_id' => $dataspace->get('locale_id')
     );
 
-    $toolkit->getAuthenticator()->login($login_params);
+    $auth->login($login_params);
+    $user =& $toolkit->getUser();
 
-    if (!$toolkit->getUser()->isLoggedIn())
+    if (!$user->isLoggedIn())
     {
       return LIMB :: STATUS_ERROR;
     }
 
-    $response = $toolkit->getResponse();
+    $response =& $toolkit->getResponse();
 
     if($redirect = $dataspace->get('redirect'))
     {
@@ -52,7 +54,7 @@ class LoginCommand implements Command
   }
 
   // for mocking
-  protected function _getHttpReferer()
+  function _getHttpReferer()
   {
     return $_SERVER['HTTP_REFERER'];
   }

@@ -12,17 +12,17 @@ require_once(LIMB_DIR . '/class/core/actions/FormCreateSiteObjectAction.class.ph
 
 class CreateGuestbookMessageAction extends FormCreateSiteObjectAction
 {
-  protected function _defineSiteObjectClassName()
+  function _defineSiteObjectClassName()
   {
     return 'guestbook_message';
   }
 
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'create_guestbook_message';
   }
 
-  protected function _defineDatamap()
+  function _defineDatamap()
   {
     return ComplexArray :: array_merge(
         parent :: _defineDatamap(),
@@ -34,7 +34,7 @@ class CreateGuestbookMessageAction extends FormCreateSiteObjectAction
     );
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     parent :: _initValidator();
 
@@ -43,11 +43,12 @@ class CreateGuestbookMessageAction extends FormCreateSiteObjectAction
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'sender_email'));
   }
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
     $data['identifier'] = md5(rand());
 
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     $data['sender'] = $user->getLogin();
     $data['sender_email'] = $user->get('email', '');
@@ -55,7 +56,7 @@ class CreateGuestbookMessageAction extends FormCreateSiteObjectAction
     $this->dataspace->import($data);
   }
 
-  protected function _processTransferedDataspace()
+  function _processTransferedDataspace()
   {
     $this->_htmlspecialcharsDataspaceValue('message');
     $this->_htmlspecialcharsDataspaceValue('sender_email');

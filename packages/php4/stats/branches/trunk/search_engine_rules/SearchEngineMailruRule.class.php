@@ -12,9 +12,9 @@ require_once(dirname(__FILE__) . '/SearchEngineRegexRule.class.php');
 
 class SearchEngineMailruRule extends SearchEngineRegexRule
 {
-  public function __construct()
+  function SearchEngineMailruRule()
   {
-    parent :: __construct('mail.ru', '/^.*go\.mail\.ru.*(words|q)=([^&]*).*$/', 2);
+    parent :: SearchEngineRegexRule('mail.ru', '/^.*go\.mail\.ru.*(words|q)=([^&]*).*$/', 2);
   }
 }
 

@@ -23,31 +23,31 @@ registerTag(new PollActiveTagInfo());
 */
 class PollActiveTag extends ServerComponentTag
 {
-  public function __construct()
+  function PollActiveTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/poll_component';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
     $code->writePhp($this->getComponentRefCode() . '->prepare();');
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp('if (' . $this->getComponentRefCode() . '->poll_exists()) {');
     parent :: generateContents($code);
     $code->writePhp('}');
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

@@ -13,18 +13,19 @@ require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 
 class DbCartHandler extends CartHandler
 {
-  protected $cart_db_table = null;
+  var $cart_db_table = null;
 
-  function __construct($cart_id)
+  function DbCartHandler($cart_id)
   {
-    parent :: __construct($cart_id);
+    parent :: CartHandler($cart_id);
 
-    $this->cart_db_table = Limb :: toolkit()->createDBTable('Cart');
+    $toolkit =& Limb :: toolkit();
+    $this->cart_db_table =& $toolkit->createDBTable('Cart');
 
     register_shutdown_function(array($this, '_dbCartHandler'));
   }
 
-  public function reset()
+  function reset()
   {
     $this->clearItems();
 
@@ -37,7 +38,7 @@ class DbCartHandler extends CartHandler
     }
   }
 
-  protected function _loadItemsForUser()
+  function _loadItemsForUser()
   {
     $user = $this->_getUser();
 
@@ -49,7 +50,7 @@ class DbCartHandler extends CartHandler
     $this->cart_db_table->delete($conditions);
   }
 
-  protected function _loadItemsForVisitor()
+  function _loadItemsForVisitor()
   {
     $conditions = array(
       'cart_id' => $this->_cart_id
@@ -58,7 +59,7 @@ class DbCartHandler extends CartHandler
     return $this->_loadItemsByConditions($conditions);
   }
 
-  protected function _loadItemsByConditions($conditions)
+  function _loadItemsByConditions($conditions)
   {
     if($arr = $this->cart_db_table->getList($conditions))
     {
@@ -74,12 +75,13 @@ class DbCartHandler extends CartHandler
     return false;
   }
 
-  protected function _getUser()
+  function &_getUser()
   {
-    return Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    return $toolkit->getUser();
   }
 
-  public function _dbCartHandler()
+  function _dbCartHandler()
   {
     $user = $this->_getUser();
 

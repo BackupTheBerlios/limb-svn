@@ -14,7 +14,7 @@ class SimpleAuthenticator implements Authenticator
 {
   const DEFAULT_USER_GROUP = 'visitors';
 
-  public function login($params = array())
+  function login($params = array())
   {
     if(!isset($params['login']))
       throw new LimbException('login attribute required!');
@@ -22,7 +22,8 @@ class SimpleAuthenticator implements Authenticator
     if(!isset($params['password']))
       throw new LimbException('password attribute required!');
 
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
     $user->logout();
 
     if($record = $this->_getIdentityRecord($params['login'], $params['password']))
@@ -35,13 +36,14 @@ class SimpleAuthenticator implements Authenticator
 
     $this->_determineGroups();
 
-    if (isset($params['locale_id']) &&  Limb :: toolkit()->getLocale()->isValidLocaleId($params['locale_id']))
+    if (isset($params['locale_id']) &&  $toolkit->isValidLocaleId($params['locale_id']))
       $user->set('locale_id', $params['locale_id']);
   }
 
-  protected function _determineGroups()
+  function _determineGroups()
   {
-    $user = Limb :: toolkit()->getUser();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
 
     if ($user->isLoggedIn())
       $groups_arr = $this->_getDbGroups();
@@ -58,9 +60,10 @@ class SimpleAuthenticator implements Authenticator
     $user->set('groups', $result);
   }
 
-  protected function _getDefaultDbGroups()
+  function _getDefaultDbGroups()
   {
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $sql = "SELECT
             sso.id as id,
@@ -76,7 +79,7 @@ class SimpleAuthenticator implements Authenticator
             tn.version as version,
             tn.object_id as object_id
             FROM sys_site_object as sso, user_group as tn
-            WHERE sso.identifier='" . self :: DEFAULT_USER_GROUP . "'
+            WHERE sso.identifier='" . SimpleAuthenticator :: DEFAULT_USER_GROUP . "'
             AND sso.id=tn.object_id
             AND sso.current_version=tn.version";
 
@@ -85,11 +88,11 @@ class SimpleAuthenticator implements Authenticator
     return $db->getArray();
   }
 
-  protected function _getDbGroups()
+  function _getDbGroups()
   {
-    $user = Limb :: toolkit()->getUser();
-
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+    $db =& $toolkit->getDB();
 
     $sql = "SELECT
             sso.id as id,
@@ -115,11 +118,12 @@ class SimpleAuthenticator implements Authenticator
     return $db->getArray();
   }
 
-  protected function _getIdentityRecord($login, $password)
+  function _getIdentityRecord($login, $password)
   {
-    $crypted_password = self :: getCryptedPassword($login, $password);
+    $crypted_password = SimpleAuthenticator :: getCryptedPassword($login, $password);
 
-    $db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $db =& $toolkit->getDB();
 
     $sql = "SELECT
             sso.id as id,
@@ -153,19 +157,21 @@ class SimpleAuthenticator implements Authenticator
     return $db->fetchRow();
   }
 
-  static public function getCryptedPassword($login, $none_crypt_password)
+  function getCryptedPassword($login, $none_crypt_password)
   {
     return md5($login.$none_crypt_password);
   }
 
-  public function logout($params = array())
+  function logout($params = array())
   {
-    Limb :: toolkit()->getUser()->logout();
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+    $user->logout();
 
     $this->_determineGroups();
   }
 
-  static public function isUserInGroups($groups_to_check)
+  function isUserInGroups($groups_to_check)
   {
     if (!is_array($groups_to_check))
     {
@@ -174,14 +180,19 @@ class SimpleAuthenticator implements Authenticator
         return false;
     }
 
-    foreach	(Limb :: toolkit()->getUser()->get('groups', array()) as $group_name)
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+
+    foreach	($user ->get('groups', array()) as $group_name)
+    {
       if (in_array($group_name, $groups_to_check))
         return true;
+    }
 
     return false;
   }
 
-  static public function generatePassword()
+  function generatePassword()
   {
     $alphabet = array(
         array('b','c','d','f','g','h','g','k','l','m','n','p','q','r','s','t','v','w','x','z',

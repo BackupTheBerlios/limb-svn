@@ -12,14 +12,17 @@ require_once(LIMB_DIR . '/class/datasources/Datasource.interface.php');
 
 class ClassDatasource implements Datasource
 {
-  public function getDataset(&$counter, $params=array())
+  function getDataset(&$counter, $params=array())
   {
     $counter = 0;
 
-    if(!$class_id = Limb :: toolkit()->getRequest()->get('class_id'))
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+
+    if(!$class_id = $request->get('class_id'))
       return new ArrayDataset();
 
-    $db_table = Limb :: toolkit()->createDBTable('SysClass');
+    $db_table =& $toolkit->createDBTable('SysClass');
     $class_data = $db_table->getRowById($class_id);
 
     if ($class_data)

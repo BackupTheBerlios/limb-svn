@@ -19,11 +19,11 @@ registerTag(new MetadataCharsetTagInfo());
 
 class MetadataCharsetTag extends CompilerDirectiveTag
 {
-  public function generateContents($code)
+  function generateContents($code)
   {
     $locale = '$' . $code->getTempVariable();
 
-    $code->writePhp($locale . ' = Limb :: toolkit()->getLocale(CONTENT_LOCALE_ID);');
+    $code->writePhp('$toolkit =& Limb :: toolkit();' . $locale . ' =& $toolkit->getLocale(CONTENT_LOCALE_ID);');
     $code->writePhp("echo '<meta http-equiv=\"Content-Type\" content=\"text/html; charset=' . {$locale}->get_charset() . '\">';");
   }
 }

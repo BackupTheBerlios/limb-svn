@@ -10,9 +10,10 @@
 ***********************************************************************************/
 class MetadataManager
 {
-  static public function saveMetadata($object_id, $keywords, $description)
+  function saveMetadata($object_id, $keywords, $description)
   {
-    $sys_metadata_db_table = Limb :: toolkit()->createDBTable('SysMetadata');
+    $toolkit =& Limb :: toolkit();
+    $sys_metadata_db_table =& $toolkit->createDBTable('SysMetadata');
 
     $sys_metadata_db_table->delete('object_id=' . $object_id);
 
@@ -25,9 +26,11 @@ class MetadataManager
     return $sys_metadata_db_table->getLastInsertId();
   }
 
-  static public function getMetadata($object_id)
+  function getMetadata($object_id)
   {
-    $sys_metadata_db_table = Limb :: toolkit()->createDBTable('SysMetadata');
+    $toolkit =& Limb :: toolkit();
+    $sys_metadata_db_table =& $toolkit->createDBTable('SysMetadata');
+
     $arr = $sys_metadata_db_table->getList('object_id=' . $object_id);
 
     if (!count($arr))

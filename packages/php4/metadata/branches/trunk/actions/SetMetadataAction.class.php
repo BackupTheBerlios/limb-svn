@@ -13,14 +13,16 @@ require_once(dirname(__FILE__) . '/../MetadataManager.class.php');
 
 class SetMetadataAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'set_metadata';
   }
 
-  protected function _initDataspace($request)
+  function _initDataspace($request)
   {
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
 
     $object_data = $datasource->fetch();
@@ -29,9 +31,11 @@ class SetMetadataAction extends FormAction
     $this->dataspace->import($data);
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
 
     $object_data = $datasource->fetch();

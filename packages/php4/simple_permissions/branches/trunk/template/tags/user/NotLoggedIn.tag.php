@@ -19,9 +19,10 @@ registerTag(new UserNotLoggedInTagInfo());
 
 class UserNotLoggedInTag extends CompilerDirectiveTag
 {
-  public function generateContents($code)
+  function generateContents($code)
   {
-    $code->writePhp("if (!Limb :: toolkit()->getUser()->is_logged_in()) {");
+    $code->writePhp("\$toolkit =& Limb :: toolkit();\$user =& \$toolkit->getUser();");
+    $code->writePhp("if (!\$user->is_logged_in()) {");
       parent :: generateContents($code);
     $code->writePhp("}");
   }

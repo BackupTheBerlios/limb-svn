@@ -12,16 +12,18 @@ require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
 class StatsUri
 {
-  protected $db = null;
-  protected $url = null;
+  var $db = null;
+  var $url = null;
 
-  public function __construct()
+  function StatsUri()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
+
     $this->url = new Uri();
   }
 
-  public function getUriId()
+  function getUriId()
   {
     $uri = $this->cleanUrl($this->_getHttpUri());
 
@@ -31,12 +33,12 @@ class StatsUri
     return $this->_insertUriRecord($uri);
   }
 
-  protected function _getHttpUri()
+  function _getHttpUri()
   {
     return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
   }
 
-  protected function _getExistingUriRecordId($uri)
+  function _getExistingUriRecordId($uri)
   {
     $this->db->sqlSelect('sys_stat_uri', '*',
       "uri='" . $uri . "'");
@@ -46,14 +48,14 @@ class StatsUri
       return false;
   }
 
-  protected function _insertUriRecord($uri)
+  function _insertUriRecord($uri)
   {
     $this->db->sqlInsert('sys_stat_uri',
       array('id' => null, 'uri' => $uri));
     return $this->db->getSqlInsertId('sys_stat_uri');
   }
 
-  public function cleanUrl($raw_url)
+  function cleanUrl($raw_url)
   {
     $this->url->parse($raw_url);
 
@@ -65,7 +67,7 @@ class StatsUri
       return $this->url->toString(array('protocol', 'user', 'password', 'host', 'port', 'path', 'query'));
   }
 
-  protected function _isInnerUrl()
+  function _isInnerUrl()
   {
     return ($this->url->getHost() == preg_replace('/^([^:]+):?.*$/', '\\1', $_SERVER['HTTP_HOST']));
   }

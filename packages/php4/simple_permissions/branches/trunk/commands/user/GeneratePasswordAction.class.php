@@ -12,21 +12,22 @@ require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 
 class GeneratePasswordAction extends FormAction
 {
-  protected function _defineDataspaceName()
+  function _defineDataspaceName()
   {
     return 'generate_password';
   }
 
-  protected function _initValidator()
+  function _initValidator()
   {
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'email'));
     $this->validator->addRule(array(LIMB_DIR . '/class/validators/rules/email_rule', 'email'));
   }
 
-  protected function _validPerform($request, $response)
+  function _validPerform($request, $response)
   {
     $data = $this->dataspace->export();
-    $object = Limb :: toolkit()->createSiteObject('UserObject');
+    $toolkit =& Limb :: toolkit();
+    $object =& $toolkit->createSiteObject('UserObject');
 
     $new_non_crypted_password = '';
     if($object->generatePassword($data['email'], $new_non_crypted_password))

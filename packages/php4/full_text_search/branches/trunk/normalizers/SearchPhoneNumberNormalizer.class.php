@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/SearchNormalizer.interface.php');
 
 class SearchPhoneNumberNormalizer implements SearchNormalizer
 {
-  public function process($content)
+  function process($content)
   {
     $content = preg_replace("#[^\d\(\)\+]+#", '', $content);
     $content = preg_replace("#[\(\)\+]+#", ' ', $content);

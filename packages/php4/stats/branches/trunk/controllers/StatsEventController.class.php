@@ -12,12 +12,12 @@ require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php'
 
 class StatsEventController extends SiteObjectController
 {
-  protected function _defineDefaultAction()
+  function _defineDefaultAction()
   {
     return 'events_list';
   }
 
-  protected function _defineActions()
+  function _defineActions()
   {
     return array(
         'events_list' => array(

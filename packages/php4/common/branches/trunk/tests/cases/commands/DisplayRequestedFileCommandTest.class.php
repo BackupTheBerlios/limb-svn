@@ -204,7 +204,7 @@ class DisplayRequestedFileCommandTest extends LimbTestCase
 
     $this->_createTmpMedia($media_id);
 
-    $this->assertEqual($this->command->perform(), Limb :: STATUS_OK);
+    $this->assertEqual($this->command->perform(), Limb :: getSTATUS_OK());
 
     $this->_removeTmpMedia($media_id);
   }

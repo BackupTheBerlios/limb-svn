@@ -19,7 +19,7 @@ registerTag(new TabItemLabelTagInfo());
 
 class TabItemLabelTag extends CompilerDirectiveTag
 {
-  public function checkNestingLevel()
+  function checkNestingLevel()
   {
     if (!$this->parent instanceof TabsLabelsTag)
     {
@@ -31,7 +31,7 @@ class TabItemLabelTag extends CompilerDirectiveTag
     }
   }
 
-  public function preParse()
+  function preParse()
   {
     if (!isset($this->attributes['tab_id']) ||  !$this->attributes['tab_id'])
     {
@@ -47,7 +47,7 @@ class TabItemLabelTag extends CompilerDirectiveTag
     return PARSER_REQUIRE_PARSING;
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     $id = $this->attributes['tab_id'];
 
@@ -59,7 +59,7 @@ class TabItemLabelTag extends CompilerDirectiveTag
     parent :: preGenerate($code);
   }
 
-  public function postGenerate($code)
+  function postGenerate($code)
   {
     $code->writeHtml("</a></td>
           </tr>

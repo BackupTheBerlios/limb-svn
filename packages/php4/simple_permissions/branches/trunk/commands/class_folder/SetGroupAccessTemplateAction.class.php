@@ -7,42 +7,42 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/actions/FormAction.class.php');
 require_once(dirname(__FILE__) . '/../../AccessPolicy.class.php');
 
 class SetGroupAccessTemplateAction extends FormAction
 {
-	protected function _defineDataspaceName()
-	{
-	  return 'set_group_access_template';
-	}
-	
-	protected function _initDataspace($request)
-	{
-		if (!$class_id = $request->get('class_id'))
-		  throw new LimbException('class_id not defined');
-    
-    $access_policy = new AccessPolicy();
-		$data['template'] = $access_policy->getAccessTemplates($class_id, AccessPolicy :: ACCESSOR_TYPE_GROUP);
+  function _defineDataspaceName()
+  {
+    return 'set_group_access_template';
+  }
 
-		$this->dataspace->merge($data);
-	}
-	
-	protected function _validPerform($request, $response)
-	{
-		if (!$class_id = $request->get('class_id'))
-		  throw new LimbException('class_id not defined');
-
-		$data = $this->dataspace->export();
+  function _initDataspace($request)
+  {
+    if (!$class_id = $request->get('class_id'))
+      throw new LimbException('class_id not defined');
 
     $access_policy = new AccessPolicy();
-		$access_policy->saveAccessTemplates($class_id, $data['template'], AccessPolicy :: ACCESSOR_TYPE_GROUP);
+    $data['template'] = $access_policy->getAccessTemplates($class_id, AccessPolicy :: ACCESSOR_TYPE_GROUP);
 
-		$request->setStatus(Request :: STATUS_FORM_SUBMITTED);
+    $this->dataspace->merge($data);
+  }
 
-		if($request->hasAttribute('popup'))
-			$response->write(closePopupNoParentReloadResponse());
-	}
+  function _validPerform($request, $response)
+  {
+    if (!$class_id = $request->get('class_id'))
+      throw new LimbException('class_id not defined');
+
+    $data = $this->dataspace->export();
+
+    $access_policy = new AccessPolicy();
+    $access_policy->saveAccessTemplates($class_id, $data['template'], AccessPolicy :: ACCESSOR_TYPE_GROUP);
+
+    $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
+
+    if($request->hasAttribute('popup'))
+      $response->write(closePopupNoParentReloadResponse());
+  }
 }
 ?>

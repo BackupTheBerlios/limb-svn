@@ -19,12 +19,12 @@ registerTag(new CartSummTagInfo());
 
 class CartSummTag extends ServerComponentTag
 {
-  public function __construct()
+  function CartSummTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/cart_summ_component';
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $code->writePhp('echo '. $this->getComponentRefCode() . '->get_cart_summ();');
   }

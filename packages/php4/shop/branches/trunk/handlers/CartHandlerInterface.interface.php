@@ -11,26 +11,26 @@
 
 interface CartHandlerInterface
 {
-  public function reset();
+  function reset();
 
-  public function getCartId();
+  function getCartId();
 
-  public function setCartId($cart_id);
+  function setCartId($cart_id);
 
-  public function addItem($new_item);
+  function addItem($new_item);
 
-  public function getItem($id);
+  function getItem($id);
 
-  public function removeItem($item_id);
+  function removeItem($item_id);
 
-  public function removeItems($item_ids);
+  function removeItems($item_ids);
 
-  public function getItems();
+  function getItems();
 
-  public function setItems($items);
+  function setItems($items);
 
-  public function countItems();
+  function countItems();
 
-  public function clearItems();
+  function clearItems();
 }
 ?>

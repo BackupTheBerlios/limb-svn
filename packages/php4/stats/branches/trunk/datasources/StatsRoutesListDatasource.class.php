@@ -13,24 +13,25 @@ require_once(dirname(__FILE__) . '/../reports/StatsRoutesReport.class.php');
 
 class StatsRoutesListDatasource extends StatsReportDatasource
 {
-  protected function _initStatsReport()
+  function _initStatsReport()
   {
     $this->_stats_report = new StatsRoutesReport();
   }
 
-  protected function _processResultArray($arr)
+  function _processResultArray($arr)
   {
     return $arr;
   }
 
-  protected function _configureFilters()
+  function _configureFilters()
   {
-    $this->_setPeriodFilter(Limb :: toolkit()->getRequest());
+    $toolkit =& Limb :: toolkit();
+
+    $this->_setPeriodFilter($toolkit->getRequest(), $toolkit->getLocale());
   }
 
-  protected function _setPeriodFilter($request)
+  function _setPeriodFilter(&$request, &$locale)
   {
-    $locale = Limb :: toolkit()->getLocale();
     $start_date = new Date();
     $start_date->setHour(0);
     $start_date->setMinute(0);

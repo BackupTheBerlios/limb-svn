@@ -41,7 +41,7 @@ class ImageVariationTest extends LimbTestCase
     $this->media_manager = new MockMediaManager($this);
 
     $this->variation = new ImageVariationTestVersion1($this);
-    $this->variation->__construct();
+    $this->variation->ImageVariation();
     $this->variation->setReturnValue('_getImageLibrary', $this->image_library);
     $this->variation->setReturnValue('_getMediaManager', $this->media_manager);
   }
@@ -68,7 +68,7 @@ class ImageVariationTest extends LimbTestCase
   function testResize()
   {
     $this->variation = new ImageVariationTestVersion2($this);
-    $this->variation->__construct();
+    $this->variation->ImageVariation();
     $this->variation->setReturnValue('_getImageLibrary', $this->image_library);
     $this->variation->setReturnValue('_getMediaManager', $this->media_manager);
 

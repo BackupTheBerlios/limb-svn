@@ -22,19 +22,19 @@ registerTag(new PollTagInfo());
 */
 class PollTag extends ServerComponentTag
 {
-  function __construct()
+  function PollTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/poll_component';
   }
 
-  public function preGenerate($code)
+  function preGenerate($code)
   {
     parent::preGenerate($code);
 
     $code->writePhp($this->getComponentRefCode() . '->prepare();');
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $form_child = $this->findChildByClass('poll_form_tag');
     $results_child = $this->findChildByClass('poll_result_tag');
@@ -54,12 +54,12 @@ class PollTag extends ServerComponentTag
     $code->writePhp('}}');
   }
 
-  public function getDataspace()
+  function getDataspace()
   {
     return $this;
   }
 
-  public function getDataspaceRefCode()
+  function getDataspaceRefCode()
   {
     return $this->getComponentRefCode();
   }

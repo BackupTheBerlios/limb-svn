@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/actions/Action.class.php');
 
 class RecoverVersionAction extends Action
 {
-  public function perform($request, $response)
+  function perform($request, $response)
   {
     if($request->hasAttribute('popup'))
       $response->write(closePopupNoParentReloadResponse());
@@ -25,7 +25,8 @@ class RecoverVersionAction extends Action
     if(!$node_id = $request->get('version_node_id'))
       return;
 
-    $datasource = Limb :: toolkit()->getDatasource('SingleObjectDatasource');
+    $toolkit =& Limb :: toolkit();
+    $datasource =& $toolkit->getDatasource('SingleObjectDatasource');
     $datasource->setNodeId($node_id);
 
     if(!$site_object = wrapWithSiteObject($datasource->fetch()))

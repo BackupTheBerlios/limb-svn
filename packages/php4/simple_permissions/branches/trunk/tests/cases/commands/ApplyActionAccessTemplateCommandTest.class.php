@@ -30,7 +30,7 @@ Mock :: generatePartial(
 
 class AccessPolicyForApplyActionAccessTemplateCommand extends AccessPolicy
 {
-  public function applyAccessTemplates($object, $action)
+  function applyAccessTemplates($object, $action)
   {
     throw new LimbException('catch me!');
   }
@@ -95,7 +95,7 @@ class ApplyActionAccessTemplateCommandTest extends LimbTestCase
 
     $this->command->setReturnValue('_getAccessPolicy', $this->access_policy);
 
-    $this->assertEqual(Limb :: STATUS_OK, $this->command->perform());
+    $this->assertEqual(Limb :: getSTATUS_OK(), $this->command->perform());
   }
 
   function testPerformFailure()

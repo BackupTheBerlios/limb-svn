@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/controllers/SiteObjectController.class.php'
 
 class FaqObjectController extends SiteObjectController
 {
-  protected function _defineActions()
+  function _defineActions()
   {
     return array(
         'display' => array(

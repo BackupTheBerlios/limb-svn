@@ -10,11 +10,12 @@
 ***********************************************************************************/
 class TemplateSourceComponent extends Component
 {
-  public function getCurrentTemplateSourceLink()
+  function getCurrentTemplateSourceLink()
   {
-    $request = Limb :: toolkit()->getRequest();
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
 
-    $datasource = Limb :: toolkit()->getDatasource('RequestedObjectDatasource');
+    $datasource =& $toolkit->getDatasource('RequestedObjectDatasource');
     $datasource->setRequest($request);
 
     if(!$site_object = wrapWithSiteObject($datasource->fetch()))

@@ -19,12 +19,12 @@ registerTag(new MetadataBreadcrumbsTagInfo());
 
 class MetadataBreadcrumbsTag extends ServerComponentTag
 {
-  public function __construct()
+  function MetadataBreadcrumbsTag()
   {
     $this->runtime_component_path = dirname(__FILE__) . '/../components/metadata_component';
   }
 
-  public function generateContents($code)
+  function generateContents($code)
   {
     $child_list = $this->findImmediateChildByClass('grid_list_tag');
 

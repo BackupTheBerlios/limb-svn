@@ -13,19 +13,22 @@ require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
 class FullTextSearch
 {
-  protected $db;
-  protected $use_boolean_mode = false;
+  var $db;
+  var $use_boolean_mode = false;
 
-  function __construct()
+  function FullTextSearch()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
 
     $this->use_boolean_mode = $this->_checkBooleanMode();
   }
 
-  protected function _canPerformFulltextSearch()
+  function _canPerformFulltextSearch()
   {
-    $db_type = Limb :: toolkit()->getINI('common.ini')->getOption('type', 'DB');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('common.ini');
+    $db_type = $ini->getOption('type', 'DB');
 
     if($db_type == 'mysql')
     {
@@ -40,7 +43,7 @@ class FullTextSearch
     return false;
   }
 
-  public function find($query, $class_id=null, $restricted_classes_ids = array(), $allowed_classes_ids = array())
+  function find($query, $class_id=null, $restricted_classes_ids = array(), $allowed_classes_ids = array())
   {
     if(!$this->_canPerformFulltextSearch())
       $result = array();
@@ -65,7 +68,7 @@ class FullTextSearch
     return $this->_getDbResult($sql);
   }
 
-  public function findByIds($ids, $query)
+  function findByIds($ids, $query)
   {
     $result = array();
 
@@ -79,9 +82,11 @@ class FullTextSearch
     return $this->_getDbResult($sql);
   }
 
-  protected function _checkBooleanMode()
+  function _checkBooleanMode()
   {
-    $db_type = Limb :: toolkit()->getINI('common.ini')->getOption('type', 'DB');
+    $toolkit =& Limb :: toolkit();
+    $ini =& $toolkit->getINI('common.ini');
+    $db_type = $ini->getOption('type', 'DB');
 
     if($db_type == 'mysql')
     {
@@ -99,7 +104,7 @@ class FullTextSearch
     return false;
   }
 
-  protected function _processQuery($query_object)
+  function _processQuery($query_object)
   {
     $query = '';
 
@@ -120,7 +125,7 @@ class FullTextSearch
     return $query;
   }
 
-  protected function _getSearchSql($query_object)
+  function _getSearchSql($query_object)
   {
     $query = $this->_processQuery($query_object);
 
@@ -145,7 +150,7 @@ class FullTextSearch
     return $sql;
   }
 
-  protected function _getDbResult($sql)
+  function _getDbResult($sql)
   {
     $this->db->sqlExec($sql);
 

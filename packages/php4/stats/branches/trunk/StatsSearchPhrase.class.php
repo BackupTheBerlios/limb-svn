@@ -12,33 +12,33 @@ require_once(LIMB_DIR . '/class/lib/http/Uri.class.php');
 
 class StatsSearchPhrase
 {
-  static protected $instance = null;
+  var $db = null;
+  var $url = null;
 
-  protected $db = null;
-  protected $url = null;
+  var $engine_rules = array();
 
-  protected $engine_rules = array();
-
-  public function __construct()
+  function StatsSearchPhrase()
   {
-    $this->db = Limb :: toolkit()->getDB();
+    $toolkit =& Limb :: toolkit();
+    $this->db =& $toolkit->getDB();
+
     $this->url = new Uri();
   }
 
-  static public function instance()
+  function & instance()
   {
-    if (!self :: $instance)
-      self :: $instance = new StatsSearchPhrase();
+    if (!isset($GLOBALS['StatsSearchPhraseGlobalInstance']) || !is_a($GLOBALS['StatsSearchPhraseGlobalInstance'], 'StatsSearchPhrase'))
+      $GLOBALS['StatsSearchPhraseGlobalInstance'] =& new StatsSearchPhrase();
 
-    return self :: $instance;
+    return $GLOBALS['StatsSearchPhraseGlobalInstance'];
   }
 
-  public function registerSearchEngineRule($engine_rule)
+  function registerSearchEngineRule($engine_rule)
   {
     $this->engine_rules[] = $engine_rule;
   }
 
-  public function register($date)
+  function register($date)
   {
     if(!$rule = $this->getMatchingSearchEngineRule())
       return false;
@@ -55,7 +55,7 @@ class StatsSearchPhrase
     return true;
   }
 
-  public function getMatchingSearchEngineRule()
+  function getMatchingSearchEngineRule()
   {
     $uri = urldecode($this->_getHttpReferer());
 
@@ -67,7 +67,7 @@ class StatsSearchPhrase
     return null;
   }
 
-  protected function _getHttpReferer()
+  function _getHttpReferer()
   {
     return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
   }
