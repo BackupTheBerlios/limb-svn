@@ -12,7 +12,6 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
-require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
 require_once(LIMB_DIR . 'core/template/template.class.php');
@@ -37,20 +36,14 @@ class checkout_cart_order_action extends form_action
 	
 	function _valid_perform()
 	{
-		$mail = new mime_mail();
-		
 		$body = $this->_get_mail_body();
 
 		$subject = sprintf(strings :: get('message_subject', 'cart'), $_SERVER['HTTP_HOST']);
 		
-		$mail->set_body($body);
-		$mail->build_message();
-		
-		if(!$mail->send('administrator', 
-										ADMINISTRATOR_EMAIL, 
-										$_SERVER['SERVER_ADMIN'], 
-										'<' . $_SERVER['HTTP_HOST'] . '> ' . $_SERVER['SERVER_ADMIN'], 
-										$subject))
+		if(!send_plain_mail(array(ADMINISTRATOR_EMAIL), 
+												$_SERVER['SERVER_ADMIN']. '<' . $_SERVER['HTTP_HOST'] . '> ', 
+												$subject, 
+												$body)
 		{
 			message_box :: write_error(strings :: get('mail_not_sent', 'cart'));
 			return new close_popup_response(RESPONSE_STATUS_FAILURE);

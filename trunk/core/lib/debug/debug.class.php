@@ -33,7 +33,7 @@ require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
 require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
 require_once(LIMB_DIR . 'core/lib/util/log.class.php');
-require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
+require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.php');
 
 class debug
 { 
@@ -342,15 +342,15 @@ class debug
 	
 	function _send_mail($description, $verbosity_level)
 	{
-		$mail = new mime_mail();
 		
 		$title = '';
+		$headers = array();
 		
 		switch ($verbosity_level)
 		{
 			case DEBUG_LEVEL_NOTICE:
 				$title .= ' debug notice';
-				$mail->add_header("X-Priority: 0 (Low)");
+				$headers['X-Priority'] = '0 (Low)';
 			break;
 			
 			case DEBUG_LEVEL_WARNING:
@@ -359,7 +359,7 @@ class debug
 			
 			case DEBUG_LEVEL_ERROR:
 				$title .= ' debug error';
-				$mail->add_header("X-Priority: 1 (High)");
+				$headers['X-Priority'] = '1 (High)';
 			break;
 			
 			case DEBUG_TIMING_POINT:
@@ -379,10 +379,8 @@ class debug
 							. "request:\t" . REQUEST_URI . "\n"
 							. "description:\n" . $description;
 				
-		$mail->set_body($message);
-		$mail->build_message();
-		
-		$mail->send('developer', DEVELOPER_EMAIL, $_SERVER['SERVER_ADMIN'], '<' . $_SERVER['HTTP_HOST'] . '> ' . $_SERVER['SERVER_ADMIN'], $title);
+		send_plain_mail(array(DEVELOPER_EMAIL), $_SERVER['SERVER_ADMIN'] . '<' . $_SERVER['HTTP_HOST'] . '> ' , $title, $message, $headers);
+
 	}
 
 	/*

@@ -212,13 +212,13 @@ class user_object extends content_object
 		$activate_href = 'http://'. $http_host. '/root/activate_password?user='. $user_data['email'] .'&id='. $user_data['password']; 
 		$contents = str_replace('%activate_href%', $activate_href, $contents);
 		
-		include_once(LIMB_DIR. '/core/lib/mail/mime_mail.class.php');
-
-		$mail = new mime_mail();
-		$mail->set_body($contents);
-		$mail->build_message();
-		
-		if(!$mail->send($user_data['name'] . ' ' . $user_data['lastname'], $user_data['email'], $http_host, ADMINISTRATOR_EMAIL, strings :: get('generate_password_theme', 'user')))
+		if(!send_plain_mail(
+									array($user_data['email']),
+									ADMINISTRATOR_EMAIL, 
+									strings :: get('generate_password_theme', 'user'),
+									$contents
+									)
+			)
 		{
 		  debug :: write_error('error while sending password notification email', 
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 

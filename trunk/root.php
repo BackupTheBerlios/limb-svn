@@ -12,6 +12,7 @@
 setlocale(LC_ALL, 'ru');//temporary
 
 require_once(LIMB_DIR . 'core/process_output.php');
+require_once(LIMB_DIR . 'core/lib/mail/send_plain_mail.php');
 require_once(LIMB_DIR . 'core/lib/debug/debug.class.php');
 
 ob_start('process_output');
