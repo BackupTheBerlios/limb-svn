@@ -30,22 +30,6 @@ class faq_folder_container_controller extends site_object_controller
             'action_name' => strings :: get('create_faq_folder','faq'),
             'can_have_access_template' => true,
         ),
-        'publish' => array(
-            'popup' => true,
-            'JIP' => true,
-            'action_name' => strings :: get('publish'),
-            'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/publish.gif',
-            'can_have_access_template' => true,
-        ),
-        'unpublish' => array(
-            'popup' => true,
-            'JIP' => true,
-            'action_name' => strings :: get('unpublish'),
-            'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/unpublish.gif',
-            'can_have_access_template' => true,
-        ),
         'delete' => array(
             'JIP' => true,
             'popup' => true,
