@@ -1,0 +1,53 @@
+<poll>
+
+<poll:FORM>
+  <table  width="139" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+			<td  class="title">Опрос</td>
+		</tr>
+		<tr height="2" class="com1"> 
+			<td></td>
+		</tr>
+		<tr height="1" class="com2"> 
+			<td></td>
+		</tr>
+		<tr>
+			<td class="text" style="padding:8px, 0, 0, 0">
+				
+				<span class="title-block"><h3>{$title}</h3></span>
+				<core:DATASET hash_id='answers' child_id='variants' >
+				<form method="post" name="vote_action" action="/root/polls/" id="vote_action">
+				<table>
+						<col valign=top>
+							<list:LIST id='variants'>
+							<list:ITEM>
+				      <radio_selector>
+							<tr>
+								<td class="text">
+									<input type="radio" name="answer"></td>
+								<td><label>{$title}</label></td>
+							</tr>
+							</radio_selector>
+							</list:ITEM>
+							</list:LIST>
+						<tr>
+							<td></td>
+							<td style='padding:10px 0 4px 0'><action_button action="vote" name="vote" type="submit" id="vote" value="Голосовать" class="button"></td>
+						</tr>
+					</td>
+				</tr>
+				</table>
+				<a href='/root/polls/'>&gt;&gt;&gt;&gt;</a>
+				</form>
+				</core:DATASET>
+				
+      </td>
+		</tr>
+	</table>
+</poll:FORM>
+
+<poll:RESULT>
+<core:INCLUDE file="poll_container/poll_results.html">
+</poll:RESULT>
+
+</poll>

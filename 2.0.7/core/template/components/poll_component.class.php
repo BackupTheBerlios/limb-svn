@@ -24,13 +24,12 @@ class poll_component extends component
 	function prepare()
 	{	
 		$this->_poll_container =& site_object_factory :: create('poll_container');
-		
 		$this->import($this->_poll_container->get_active_poll());
 	}
 
 	function poll_exists()
 	{
-		return sizeof($this->_poll_container->get_active_poll());
+		return ($this->_poll_container->get_active_poll() != array());
 	}
 
 
