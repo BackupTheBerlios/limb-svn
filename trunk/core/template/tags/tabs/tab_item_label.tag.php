@@ -53,10 +53,9 @@ class tab_item_label_tag extends compiler_directive_tag
 	  $id = $this->attributes['tab_id'];
 	  
 		$code->write_html("<td id={$id}>
-					<table border=0 cellspacing=0 cellpadding=0 height=100%>
+					<table border='0' cellspacing='0' cellpadding='0' style='height:100%'>
 					<tr>
-						<td nowrap>						
-						  <a href='JavaScript:void(0);'>");
+						<td nowrap><a href='JavaScript:void(0);'>");
 		
 		parent :: pre_generate($code);
 	}
