@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/db/DbConnectionConfig.class.php');
 
 class ConstantBasedDbConnectionConfig extends DbConnectionConfig
 {
