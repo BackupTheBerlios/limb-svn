@@ -20,6 +20,12 @@ class node_select_component extends input_form_element
 					
 		echo "<script type='text/javascript' src='/shared/js/node_select.js'></script>";
 		
+		if($this->get_value() === null)
+		{
+			$object_data = fetch_mapped_by_url();
+			$this->set_value($object_data['node_id']);
+		}		
+		
 		define('NODE_SELECT_LOAD_SCRIPT', 1);		
 	}
 	
