@@ -24,7 +24,6 @@ class StatsCountersReportDAOTest extends LimbTestCase
   {
     $toolkit =& Limb :: toolkit();
     $this->conn =& $toolkit->getDbConnection();
-
     $this->db =& new SimpleDb($this->conn);
 
     $this->_cleanUp();
