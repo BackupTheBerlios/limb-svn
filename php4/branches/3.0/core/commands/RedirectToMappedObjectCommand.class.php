@@ -15,7 +15,7 @@ class RedirectToMappedObjectCommand
   function perform()
   {
     $toolkit =& Limb :: toolkit();
-    if(!$mapped_object =& $toolkit->getMappedObject())
+    if(!$mapped_object =& $toolkit->getCurrentEntity())
       return LIMB_STATUS_ERROR;
 
     $path2id_translator =& $toolkit->getPath2IdTranslator();

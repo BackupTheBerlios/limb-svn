@@ -5,23 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: FormProcessingCommand.class.php 1143 2005-03-05 11:04:06Z pachanga $
+* $Id: Service.class.php 1191 2005-03-25 14:04:13Z seregalimb $
 *
 ***********************************************************************************/
-class InitParentNodeIdCommand
+class RequestResolver
 {
-  function perform()
-  {
-    $toolkit =& Limb :: toolkit();
-    if(!$mapped_object =& $toolkit->getCurrentEntity())
-      return LIMB_STATUS_OK;
-
-    $dataspace =& $toolkit->getDataspace();
-    $dataspace->set('parent_node_id', $mapped_object->get('node_id'));
-
-    return LIMB_STATUS_OK;
-  }
+  function & getRequestedService(&$request){}
+  function & getRequestedAction(&$request){}
+  function & getRequestedEntity(&$request){}
 }
-
 
 ?>

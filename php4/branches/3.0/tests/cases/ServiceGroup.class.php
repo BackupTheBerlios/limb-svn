@@ -5,23 +5,20 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: FormProcessingCommand.class.php 1143 2005-03-05 11:04:06Z pachanga $
+* $Id: RequestResolverGroup.class.php 1200 2005-04-04 09:13:42Z pachanga $
 *
 ***********************************************************************************/
-class InitParentNodeIdCommand
+class ServiceGroup extends LimbGroupTest
 {
-  function perform()
+  function ServiceGroup()
   {
-    $toolkit =& Limb :: toolkit();
-    if(!$mapped_object =& $toolkit->getCurrentEntity())
-      return LIMB_STATUS_OK;
-
-    $dataspace =& $toolkit->getDataspace();
-    $dataspace->set('parent_node_id', $mapped_object->get('node_id'));
-
-    return LIMB_STATUS_OK;
+    parent :: LimbGroupTest('service tests');
   }
+
+  function getTestCasesHandles()
+  {
+    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/services');
+  }
+
 }
-
-
 ?>

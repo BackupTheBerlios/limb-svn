@@ -16,7 +16,7 @@ class MappedObjectDAO
   function & fetch()
   {
     $toolkit =& Limb :: toolkit();
-    return $toolkit->getMappedObject();
+    return $toolkit->getCurrentEntity();
   }
 }
 

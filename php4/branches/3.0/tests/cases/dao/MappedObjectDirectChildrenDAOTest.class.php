@@ -62,7 +62,7 @@ class MappedObjectDirectChildrenDAOTest extends LimbTestCase
   {
     $object = new Object();
     $object->set('node_id', $id = 10);
-    $this->toolkit->setMappedObject($object);
+    $this->toolkit->setCurrentEntity($object);
 
     $this->tree->expectOnce('getPathToNode', array($id));
     $this->tree->setReturnValue('getPathToNode', $path = 'whatever');

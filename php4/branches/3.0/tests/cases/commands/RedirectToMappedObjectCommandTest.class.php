@@ -53,7 +53,7 @@ class RedirectToMappedObjectCommandTest extends LimbTestCase
   {
     $object = new Object();
     $object->set('oid', $id = 10);
-    $this->toolkit->setReturnReference('getMappedObject', $object);
+    $this->toolkit->setReturnReference('getCurrentEntity', $object);
 
     $this->path2id_translator->expectOnce('toPath', array($id));
     $this->path2id_translator->setReturnValue('toPath', $path = 'any path');

@@ -160,14 +160,14 @@ class LimbBaseToolkitTest extends LimbTestCase
     $this->assertEqual($this->toolkit->getProcessedObject(), $object);
   }
 
-  function testSetGetMappedObject()
+  function testSetGetCurrentEntity()
   {
     $object = new Object();
-    $this->toolkit->setMappedObject($object);
+    $this->toolkit->setCurrentEntity($object);
 
     $object->set('id', 'whatever');
 
-    $this->assertEqual($this->toolkit->getMappedObject(), $object);
+    $this->assertEqual($this->toolkit->getCurrentEntity(), $object);
   }
 
   function testGetPath2IdTranslator()

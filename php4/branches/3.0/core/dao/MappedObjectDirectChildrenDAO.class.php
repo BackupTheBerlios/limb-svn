@@ -20,7 +20,7 @@ class MappedObjectDirectChildrenDAO extends SQLBasedDAODecorator
   function fetch()
   {
     $toolkit =& Limb :: toolkit();
-    if(!$mapped_object =& $toolkit->getMappedObject())
+    if(!$mapped_object =& $toolkit->getCurrentEntity())
     {
       include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
       return new PagedArrayDataset(array());

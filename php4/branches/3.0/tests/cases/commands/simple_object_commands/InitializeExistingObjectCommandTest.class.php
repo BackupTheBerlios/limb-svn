@@ -25,7 +25,7 @@ class InitializeExistingObjectCommandTest extends LimbTestCase
     $object = new SimpleObject();
     $object->set('id', $id = 10);
 
-    $toolkit->setMappedObject($object);
+    $toolkit->setCurrentEntity($object);
 
     $command = new InitializeExistingObjectCommand();
 

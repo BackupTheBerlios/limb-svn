@@ -14,7 +14,7 @@ class CommandProcessingFilter//implements InterceptingFilter
   function run(&$filter_chain, &$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
-    $service =& $toolkit->getRequestResolver();
+    $service =& $toolkit->getCurrentService();
 
     $uow =& $toolkit->getUOW();
 

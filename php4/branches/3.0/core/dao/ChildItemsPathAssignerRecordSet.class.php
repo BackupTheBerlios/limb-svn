@@ -26,7 +26,7 @@ class ChildItemsPathAssignerRecordSet extends IteratorDbDecorator
   function rewind()
   {
     $toolkit =& Limb :: toolkit();
-    $mapped_object =& $toolkit->getMappedObject();
+    $mapped_object =& $toolkit->getCurrentEntity();
 
     $id_translator =& $toolkit->getPath2IdTranslator();
     if($path = $id_translator->toPath($mapped_object->get('oid')))

@@ -51,7 +51,7 @@ class ChildItemsPathAssignerRecordSetTest extends LimbTestCase
   {
     $object = new Object();
     $object->set('oid', $id = 5);
-    $this->toolkit->setMappedObject($object);
+    $this->toolkit->setCurrentEntity($object);
 
     $this->path2id_translator->expectOnce('toPath', array($id));
     $this->path2id_translator->setReturnValue('toPath', $path = 'whatever');

@@ -16,7 +16,7 @@ class InitializeExistingObjectCommand
   function perform()
   {
     $toolkit =& Limb :: toolkit();
-    $mapped_object =& $toolkit->getMappedObject();
+    $mapped_object =& $toolkit->getCurrentEntity();
     $toolkit->setProcessedObject($mapped_object);
 
     return LIMB_STATUS_OK;

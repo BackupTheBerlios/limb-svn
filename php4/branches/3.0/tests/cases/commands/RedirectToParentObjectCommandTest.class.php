@@ -69,7 +69,7 @@ class RedirectToParentObjectCommandTest extends LimbTestCase
     $object->set('oid', $id = 10);
     $object->set('parent_node_id', $parent_node_id = 100);
 
-    $this->toolkit->setMappedObject($object);
+    $this->toolkit->setCurrentEntity($object);
 
     $this->db->insert('sys_object_to_node', array('oid' => $parent_oid = 5,
                                                   'node_id' => $parent_node_id));
@@ -95,7 +95,7 @@ class RedirectToParentObjectCommandTest extends LimbTestCase
     $object = new Object();
     $object->set('oid', $id = 10);
     $object->set('parent_node_id', $id = 100);
-    $this->toolkit->setMappedObject($object);
+    $this->toolkit->setCurrentEntity($object);
 
     $this->db->delete('sys_object_to_node');
 

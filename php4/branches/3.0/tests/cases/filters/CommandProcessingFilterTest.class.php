@@ -63,7 +63,7 @@ class CommandProcessingFilterTest extends LimbTestCase
     $service->expectOnce('getActionCommand', array($action));
     $service->setReturnReference('getActionCommand', $command);
 
-    $this->toolkit->setRequestResolver($service);
+    $this->toolkit->setCurrentService($service);
 
     $filter = new CommandProcessingFilter();
 

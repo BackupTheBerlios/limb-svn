@@ -23,7 +23,8 @@ class LimbBaseToolkit// implements LimbToolkit
   var $cache;
   var $uow;
   var $processed_object;
-  var $mapped_object;
+  var $current_entity;
+  var $current_service;
   var $request_resolver;
   var $path2id_translator;
   var $ini_cache = array();
@@ -43,7 +44,8 @@ class LimbBaseToolkit// implements LimbToolkit
     $this->cache = null;
     $this->uow = null;
     $this->processed_object = null;
-    $this->mapped_object = null;
+    $this->current_entity = null;
+    $this->current_service = null;
     $this->request_resolver = null;
     $this->path2id_translator = null;
     $this->ini_cache = array();
@@ -293,14 +295,24 @@ class LimbBaseToolkit// implements LimbToolkit
     return $this->processed_object;
   }
 
-  function setMappedObject(&$object)
+  function setCurrentEntity(&$object)
   {
-    $this->mapped_object =& $object;
+    $this->current_entity =& $object;
   }
 
-  function & getMappedObject()
+  function & getCurrentEntity()
   {
-    return $this->mapped_object;
+    return $this->current_entity;
+  }
+
+  function setCurrentService(&$service)
+  {
+    $this->current_service =& $service;
+  }
+
+  function & getCurrentService()
+  {
+    return $this->current_service;
   }
 
   function setRequestResolver(&$service)

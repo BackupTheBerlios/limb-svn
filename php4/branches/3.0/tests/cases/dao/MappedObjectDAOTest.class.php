@@ -34,7 +34,7 @@ class MappedObjectDAOTest extends LimbTestCase
     $object = new Object();
     $object->set('class_name', $class_name = 'TestArticle');
 
-    $toolkit->setMappedObject($object);
+    $toolkit->setCurrentEntity($object);
 
     $dao = new MappedObjectDAO();
     $this->assertEqual($dao->fetch(), $object);
