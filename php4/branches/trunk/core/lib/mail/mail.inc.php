@@ -15,12 +15,11 @@
 @define('SMTP_USER', '');
 @define('SMTP_PASSWORD', '');
 
-
-function get_mailer()
+function & create_mailer()
 {
   include_once(PHPMailer_DIR . '/class.phpmailer.php');
   $mail = new PHPMailer();
-  $mail->LE = "\r\n";//we're using php mail function!!!
+  $mail->LE = "\r\n";
   if(USE_PHPMAIL)
     return $mail;
 
@@ -39,7 +38,7 @@ function get_mailer()
 
 function send_plain_mail($recipients, $sender, $subject, $body, $charset = 'windows-1251')
 {
-  $mail =& get_mailer();
+  $mail =& create_mailer();
   $mail->IsHTML(false);
   $mail->CharSet = $charset;
 
@@ -61,7 +60,7 @@ function send_plain_mail($recipients, $sender, $subject, $body, $charset = 'wind
 
 function send_html_mail($recipients, $sender, $subject, $html, $text = null, $charset = 'windows-1251')
 {
-  $mail =& get_mailer();
+  $mail =& create_mailer();
   $mail->IsHTML(true);
   $mail->CharSet = $charset;
 
