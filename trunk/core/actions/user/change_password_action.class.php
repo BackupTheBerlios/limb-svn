@@ -10,7 +10,6 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/match_rule.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class change_password_action extends form_edit_site_object_action
 {
@@ -43,19 +42,18 @@ class change_password_action extends form_edit_site_object_action
 		$this->validator->add_rule(new match_rule('second_password', 'password', 'PASSWORD'));
 	}
 	
-	function perform()
+	function perform(&$request, &$response)
 	{
-		if ($this->_changing_own_password())
-		{
-			$response = parent :: perform();
-		
-			if (RESPONSE_STATUS_SUCCESS == $response->get_status())
-				return new close_popup_response(RESPONSE_STATUS_SUCCESS, '/');
-			else
-				return $response;	
-		}		
-		else
-			return parent :: perform();
+	  parent :: perform($request, $response);
+	  
+		if (!$this->_changing_own_password())
+		  return;
+
+		if (REQUEST_STATUS_SUCCESS == $request->get_status())
+		{			  
+  		if($request->has_attribute('popup'))
+  		  $response->write_response_string(close_popup_response($request, '/'));
+		}
 	}
 	
 	function _changing_own_password()

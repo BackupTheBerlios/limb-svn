@@ -42,7 +42,7 @@ class update_param_common_action extends form_action
 		$this->validator->add_rule(new email_rule('contact_email'));
 	}
 
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
 		$sys_param =& sys_param :: instance();
 
@@ -53,7 +53,7 @@ class update_param_common_action extends form_action
 		$this->dataspace->import($data);		
 	}
 
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$data = $this->dataspace->export();
 		$sys_param =& sys_param :: instance();
@@ -61,7 +61,7 @@ class update_param_common_action extends form_action
 		foreach($this->params_type as $param_name => $param_type)
 			$sys_param->save_param($param_name, $param_type, $data[$param_name]);
 
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	}
 }
 ?>

@@ -18,13 +18,16 @@ class request_state_component extends input_hidden_component
 		$form =& $this->find_parent_by_class('form_component');
 				
 		if($form->is_first_time())
-		{				
-		  return isset($_REQUEST[$this->attributes['name']]) ? $_REQUEST[$this->attributes['name']] : '';
+		{
+		  $request = request :: instance();
+		  
+		  if($value = $request->get_attribute($this->attributes['name']))
+		    return $value;
+		  else
+		    return '';
 		}
 		else
-		{
 		  return parent :: get_value();
-		}
 	}	
 } 
 ?>

@@ -17,11 +17,11 @@ class phpbb_login_action extends login_action
 	  return 'login_form';
 	}
 		
-	function _login_redirect($redirect)
+	function _login_redirect($redirect, &$response)
 	{
 		$redirect = add_url_query_items($redirect, array('sid' => session :: get('phpbb_sid')));
 		
-		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, $redirect);
+		$response->redirect($redirect);
 	}
 }
 ?>

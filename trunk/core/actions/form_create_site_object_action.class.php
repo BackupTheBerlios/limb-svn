@@ -13,13 +13,12 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_node_id_rule.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class form_create_site_object_action extends form_site_object_action
 {
-  function _init_dataspace()
+  function _init_dataspace(&$request)
   {
-    parent :: _init_dataspace();
+    parent :: _init_dataspace($request);
     
     if (($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
     {
@@ -47,7 +46,7 @@ class form_create_site_object_action extends form_site_object_action
 		$this->validator->add_rule(new tree_identifier_rule('identifier', $parent_node_id));
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$parent_object_data =& $this->_load_parent_object_data();
 		
@@ -58,16 +57,19 @@ class form_create_site_object_action extends form_site_object_action
 		$this->object->import_attributes($data);
 
 		if($this->_create_object_operation() === false)
-			return new failed_response();
+		{
+		  $request->set_status(REQUEST_STATUS_FAILURE);
+			return;
+		}
 			
 		$this->indexer->add($this->object);
 		
 		$this->_write_create_access_policy();
 		
-		if(!isset($_REQUEST['popup']) || !$_REQUEST['popup'])
-			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
-		else
-			return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED);
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		
+		if($request->has_attribute('popup'))
+			$response->write_response_string(close_popup_response());
 	}
 	
 	function _create_object_operation()
@@ -98,7 +100,7 @@ class form_create_site_object_action extends form_site_object_action
 
 	function & _load_parent_object_data()
 	{
-		$result =& fetch_mapped_by_url();
+		$result =& fetch_requested_object();
 		return $result;
 	}
 }

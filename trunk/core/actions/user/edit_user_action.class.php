@@ -41,7 +41,7 @@ class edit_user_action extends form_edit_site_object_action
 	{
 		parent :: _init_validator();
 		
-		if ($object_data =& fetch_mapped_by_url())
+		if ($object_data =& fetch_requested_object())
 		{
 			$this->validator->add_rule(new unique_user_rule('identifier', $object_data['identifier']));
 			$this->validator->add_rule(new unique_user_email_rule('email', $object_data['email']));		

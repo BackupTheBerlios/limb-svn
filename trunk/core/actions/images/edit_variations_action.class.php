@@ -51,9 +51,9 @@ class edit_variations_action extends form_edit_site_object_action
 	  //??
 	}
 	
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		parent :: _init_dataspace();
+		parent :: _init_dataspace($request);
 		
 		$ini =& get_ini('image_variations.ini');
 		

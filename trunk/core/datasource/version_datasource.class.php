@@ -16,14 +16,16 @@ class version_datasource extends datasource
 	{
 		$counter = 0;
 		
-		if(!isset($_REQUEST['version']))
-			return new empty_dataset();
+	  $request = request :: instance();
+    
+    if (!$version = $request->get_attribute('version'))
+      return new empty_dataset();
 
-		if(!isset($_REQUEST['version_node_id']))
-			return new empty_dataset();
+    if (!$node_id = $request->get_attribute('version_node_id'))
+      return new empty_dataset();
 			
-		$version = (int)$_REQUEST['version'];
-		$node_id = (int)$_REQUEST['version_node_id'];
+		$version = (int)$version;
+		$node_id = (int)$node_id;
 
 		if(!$site_object = wrap_with_site_object(fetch_one_by_node_id($node_id)))
 			return new empty_dataset();

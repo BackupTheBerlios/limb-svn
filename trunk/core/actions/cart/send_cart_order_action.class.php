@@ -5,19 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_group_objects_access.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/cart/cart_form_action.class.php');
 
 class send_cart_order_action extends cart_form_action
 {
-	function send_cart_order_action($name = 'cart_form')
-	{		
-		parent :: cart_form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'cart_form';
 	}
-	
-	function _valid_perform()
+
+	function _valid_perform(&$request, &$response)
 	{
 		$this->_update_items_amount();
 		
@@ -28,10 +28,17 @@ class send_cart_order_action extends cart_form_action
 		if($cart->count_items() == 0)
 		{
 			message_box :: write_error(strings :: get('no_items_in_cart', 'cart'));
-			return new close_popup_response(RESPONSE_STATUS_FAILURE);
+
+			$request->set_status(REQUEST_STATUS_FAILURE);
+			
+  		if($request->has_attribute('popup'))
+  			$response->write_response_string(close_popup_response($request));
+  			
+  		return;			
 		}
-		
-		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, '/root/cart?action=checkout&popup=1');
+
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		$response->redirect('/root/cart?action=checkout&popup=1');
 	}
 }
 

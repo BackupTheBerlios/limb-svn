@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class vote_action extends form_action
 {
@@ -18,21 +17,24 @@ class vote_action extends form_action
 	  return 'vote_action';
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$object =& site_object_factory :: create('poll_container');
 		$data = $this->dataspace->export();
 		
+		$request->set_status(REQUEST_STATUS_FAILURE);
+		
 		if (!isset($data['answer']))
 		{
 			message_box :: write_notice(strings :: get('no_answer', 'poll'));
-			return new failed_response();
+			return;
 		}
 		
 		if($object->register_answer($data['answer']))
-			return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, '/root/polls');
-		else
-			return new failed_response();
+		{
+		  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+			$response->redirect('/root/polls');
+		}
 	}
 
 }

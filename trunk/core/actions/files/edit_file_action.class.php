@@ -49,7 +49,7 @@ class edit_file_action extends form_edit_site_object_action
 				return false;
 			}
 			
-			$object_data =& fetch_mapped_by_url();
+			$object_data =& fetch_requested_object();
 			
 			$this->object->set_attribute('media_id', $object_data['media_id']);
 			$this->object->set_attribute('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);

@@ -8,22 +8,20 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class activate_password_action extends action
 {
-	function perform()
+	function perform(&$request, &$response)
 	{
 		$object =& site_object_factory :: create('user_object');
 		if(!$object->activate_password())
 		{
 			message_box :: write_notice('Password activation failed!');
-			return new redirect_response(RESPONSE_STATUS_FAILED, '/');
+			
+			$request->set_status(REQUEST_STATUS_FAILED);
+			$response->redirect('/');
 		}
-		
-		return new response();
 	}
 }
 

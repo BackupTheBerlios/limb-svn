@@ -17,12 +17,11 @@ class stats_referers_report_action extends form_action
 	  return 'referers_form';
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		$_REQUEST['stats_start_date'] = $this->dataspace->get('stats_start_date');
-		$_REQUEST['stats_finish_date'] = $this->dataspace->get('stats_finish_date');
-	
-		return parent :: _valid_perform();
+	  $request->import_attributes($this->dataspace->export());
+	  
+		parent :: _valid_perform($request, $response);
 	}
 	
 }

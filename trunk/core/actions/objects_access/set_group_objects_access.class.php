@@ -17,7 +17,7 @@ class set_group_objects_access extends form_action
 	  return 'set_group_access';
 	}
 	
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
 		$access_policy =& access_policy :: instance();
 		$data['policy'] = $access_policy->get_group_object_access();
@@ -25,7 +25,7 @@ class set_group_objects_access extends form_action
 		$this->dataspace->import($data);
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$data = $this->dataspace->export();
 		
@@ -33,7 +33,7 @@ class set_group_objects_access extends form_action
 
 		$access_policy->save_group_object_access($data['policy']);
 		
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	}
 
 }

@@ -8,10 +8,10 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . 'core/actions/form_edit_site_object_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/url_rule.class.php');
 
-class create_link_action extends form_create_site_object_action
+class edit_useful_link_action extends form_edit_site_object_action
 {
 	function _define_site_object_class_name()
 	{
@@ -38,7 +38,7 @@ class create_link_action extends form_create_site_object_action
 	function _init_validator()
 	{
 		parent :: _init_validator();
-
+		
 		$this->validator->add_rule(new required_rule('annotation'));
 		$this->validator->add_rule(new required_rule('uri'));
 		$this->validator->add_rule(new required_rule('title'));

@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.inc.php');
 require_once(LIMB_DIR . 'core/template/template_highlight_handler.class.php');
@@ -20,11 +19,11 @@ class display_template_source_action extends action
 {
 	var $history = array();
 	
-	function perform()
+	function perform(&$request, &$response)
 	{
-		if(isset($_REQUEST['t']) && is_array($_REQUEST['t']) && sizeof($_REQUEST['t']) > 0)
+		if(($t = $request->get_attribute('t')) && is_array($t) && sizeof($t) > 0)
 		{
-			$this->history = $_REQUEST['t'];
+			$this->history = $t;
 			$template_path = end($this->history);
 		}
 		else
@@ -34,7 +33,7 @@ class display_template_source_action extends action
 			$template_path = TEMPLATE_FOR_HACKERS;
 		
 		if(substr($template_path, -5,  5) != '.html')
-			return new failed_response();
+		  $request->set_status(REQUEST_STATUS_FAILURE);
 				
 		if(!$source_file_path = resolve_template_source_file_name($template_path))
 		{
@@ -62,8 +61,6 @@ class display_template_source_action extends action
 		
 		$this->view->set('template_path', $template_path);
 		$this->view->set('template_content', $this->_process_template_content($template_contents));
-				
-		return new response();
 	}
 	
 	function _get_template_path_from_node($node_id)

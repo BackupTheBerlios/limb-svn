@@ -12,7 +12,6 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_path_rule.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class register_new_object_action extends form_action
 {
@@ -38,7 +37,7 @@ class register_new_object_action extends form_action
 		$this->validator->add_rule(new required_rule('title'));
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 	  $tree =& tree :: instance();
 		
@@ -82,8 +81,11 @@ class register_new_object_action extends form_action
 			$access_policy =& access_policy :: instance();
 			$access_policy->save_object_access($object, $parent_object);
 		}	
-	
-		return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED);
+
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+
+		if($request->has_attribute('popup'))
+			$response->write_response_string(close_popup_response($request));
 	}
 }
 

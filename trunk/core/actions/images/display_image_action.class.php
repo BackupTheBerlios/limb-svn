@@ -9,14 +9,12 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/response/exit_response.class.php');
-require_once(LIMB_DIR . 'core/model/response/dont_track_response.class.php');
 
 class display_image_action extends action
 {	
-	function perform()
+	function perform(&$request, &$response)
 	{
-		$object_data =& fetch_mapped_by_url();
+		$object_data =& fetch_requested_object($request);
 		ob_end_clean();
 		
 		$ini =& get_ini('image_variations.ini');
@@ -43,7 +41,10 @@ class display_image_action extends action
 			readfile(SHARED_DIR . 'images/1x1.gif');
 			
 			if($variation == 'original')
-				return new exit_response(RESPONSE_STATUS_FAILURE);
+			{
+			  $request->set_status(REQUEST_STATUS_FAILURE);
+				return;
+			}
 			else
 				exit();//for speed
 
@@ -54,7 +55,10 @@ class display_image_action extends action
 			header("HTTP/1.1 404 Not found");
 			
 			if($variation == 'original')
-				return new exit_response(RESPONSE_STATUS_FAILURE);
+			{
+			  $request->set_status(REQUEST_STATUS_FAILURE);
+				return;
+			}
 			else
 				exit();//for speed
 		}		
@@ -79,7 +83,7 @@ class display_image_action extends action
 		}
 		
 		if($variation == 'original')
-			return new exit_response();
+			return;
 		else
 			exit();//for speed
 	}

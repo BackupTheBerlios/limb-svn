@@ -17,7 +17,7 @@ class node_links_datasource extends datasource
 	{
 		$counter = 0;
 		
-		$mapped_node = map_current_request_to_node();
+		$mapped_node = map_request_to_node();
 		
 		$links_manager = new links_manager();
 		

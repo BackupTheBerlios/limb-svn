@@ -35,7 +35,7 @@ class useful_links_folder_controller extends site_object_controller
 				'create_link' => array(
 						'permissions_required' => 'w',
 						'template_path' => '/useful_link/create.html',
-						'action_path' => '/useful_link/create_link_action',
+						'action_path' => '/useful_link/create_useful_link_action',
 						'JIP' => true,
 						'popup' => true,
 						'img_src' => '/shared/images/new.generic.gif',

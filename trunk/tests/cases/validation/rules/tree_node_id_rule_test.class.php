@@ -46,20 +46,20 @@ class tree_node_id_rule_test extends single_field_rule_test
   	$this->db->sql_delete('sys_site_object_tree');
   }
 	
-	function test_tree_identifier_rule_blank()
+	function test_tree_node_id_rule_blank()
 	{
 		$this->validator->add_rule(new tree_node_id_rule('test'));
 
 		$data =& new dataspace();
 		$data->set('test', '');
 
-		$this->error_list->expectOnce('add_error', array('test', strings :: get('error_invalid_tree_node_id', 'error'), array()));
+		$this->error_list->expectNever('add_error');
 
 		$this->validator->validate($data);
-		$this->assertFalse($this->validator->is_valid());
+		$this->assertTrue($this->validator->is_valid());
 	}
 
-	function test_tree_identifier_rule_false()
+	function test_tree_node_id_rule_false()
 	{
 		$this->validator->add_rule(new tree_node_id_rule('test'));
 
@@ -72,7 +72,7 @@ class tree_node_id_rule_test extends single_field_rule_test
 		$this->assertFalse($this->validator->is_valid());
 	}
 		
-	function test_tree_identifier_rule_normal()
+	function test_tree_node_id_rule_normal()
 	{
 		$this->validator->add_rule(new tree_node_id_rule('test'));
 
@@ -85,7 +85,7 @@ class tree_node_id_rule_test extends single_field_rule_test
 		$this->assertTrue($this->validator->is_valid());
 	}
 
-	function test_tree_identifier_rule_error()
+	function test_tree_node_id_rule_error()
 	{
 		$this->validator->add_rule(new tree_node_id_rule('test'));
 

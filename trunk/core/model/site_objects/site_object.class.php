@@ -25,6 +25,8 @@ class site_object extends object
 	var $_class_properties = array();
 	
 	var $_class_id = null;
+
+	var $_controller = null;
 	
 	function site_object()
 	{
@@ -42,6 +44,16 @@ class site_object extends object
     $this->_attributes_definition = complex_array :: array_merge($this->_attributes_definition, $new_attributes_definition);
     
     parent :: object();
+	}
+	
+	function get_locale_by_id($id)
+	{
+	  $table =& db_table_factory :: instance('sys_site_object');
+	  
+	  if($row = $table->get_row_by_id($id))
+	    return $row['locale_id'];
+	  else
+	    return false;
 	}
 		
 	function is_auto_identifier()
@@ -786,8 +798,11 @@ class site_object extends object
 		
 	function & get_controller()
 	{
-		$c =& site_object_controller :: create($this->_class_properties['controller_class_name']);
-		return $c;
+	  if ($this->_controller)
+	    return $this->_controller;
+	   
+		$this->_controller =& site_object_controller :: create($this->_class_properties['controller_class_name']);
+		return $this->_controller;
 	}
 	
 	function save_metadata()

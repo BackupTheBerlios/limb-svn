@@ -31,7 +31,7 @@ class fetch_mapped_tag extends fetch_one_tag
 			$code->write_php($list_child->get_component_ref_code() . '->set_path($_SERVER["PHP_SELF"]);');
 		}
 					
-		$code->write_php($this->get_component_ref_code() . '->fetch_mapped_by_url();');
+		$code->write_php($this->get_component_ref_code() . '->fetch_requested_object();');
 		
 		server_component_tag :: generate_contents($code);
 	}	

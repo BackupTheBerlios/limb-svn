@@ -33,7 +33,7 @@ class useful_link_controller extends site_object_controller
 						'popup' => true,
 						'JIP' => true,
 						'action_name' => strings :: get('edit_link', 'useful_link'),
-						'action_path' => '/useful_link/edit_link_action',
+						'action_path' => '/useful_link/edit_useful_link_action',
 						'template_path' => '/useful_link/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),

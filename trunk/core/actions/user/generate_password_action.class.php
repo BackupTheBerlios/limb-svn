@@ -25,16 +25,17 @@ class generate_password_action extends form_action
 		$this->validator->add_rule(new email_rule('email'));		
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$data = $this->dataspace->export();
 		$object =& site_object_factory :: create('user_object');
 		
 		$new_non_crypted_password = '';
 		if($object->generate_password($data['email'], $new_non_crypted_password))
-			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+		  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 		else
-			return new failed_response();
+		  $request->set_status(REQUEST_STATUS_FAILED);
+			
 	}
 }
 

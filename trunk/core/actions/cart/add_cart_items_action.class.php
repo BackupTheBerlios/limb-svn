@@ -5,27 +5,32 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_group_objects_access.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class add_cart_items_action extends form_action
 {
 	var $_catalog_object_class_name = 'catalog_object';
 	
-	function add_cart_items_action($name = 'order_form')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'order_form';
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		if(!$objects_amounts = $this->dataspace->get('amount'))
-			return new close_popup_response(RESPONSE_STATUS_FAILURE);
+		{
+			$request->set_status(REQUEST_STATUS_FAILURE);
+			
+  		if($request->has_attribute('popup'))
+  			$response->write_response_string(close_popup_response($request));
+  			
+  		return;			
+		}
 			
 		$objects_data =& fetch_by_node_ids(
 													array_keys($objects_amounts), 
@@ -33,12 +38,26 @@ class add_cart_items_action extends form_action
 													$counter);
 	
 		if(!$objects_data)
-			return new close_popup_response(RESPONSE_STATUS_FAILURE);
+		{
+			$request->set_status(REQUEST_STATUS_FAILURE);
+			
+  		if($request->has_attribute('popup'))
+  			$response->write_response_string(close_popup_response($request));
+  			
+  		return;
+		}
 			
 		$object =& site_object_factory :: create($this->_catalog_object_class_name);
 
 		if(!method_exists($object, 'get_cart_item'))
-			return new close_popup_response(RESPONSE_STATUS_FAILURE);
+		{
+			$request->set_status(REQUEST_STATUS_FAILURE);
+			
+  		if($request->has_attribute('popup'))
+  			$response->write_response_string(close_popup_response($request));
+  			
+  		return;
+		}
 
 		$cart =& cart :: instance();
 		
@@ -50,7 +69,7 @@ class add_cart_items_action extends form_action
 			$cart->add_item($cart_item);
 		}
 		
-		return new redirect_response(RESPONSE_STATUS_SUCCESS, '/root/cart?popup=1');
+		$response->redirect('/root/cart?popup=1');
 	}
 	
 }

@@ -14,10 +14,11 @@ class class_group_action_access_datasource extends datasource
 {
 	function & get_dataset($params = array())
 	{
-		if(!isset($_REQUEST['class_id']))
+	  $request = request :: instance();
+	  
+		if(!$class_id = $request->get_attribute('class_id'))
 			return new array_dataset();
 		
-		$class_id = $_REQUEST['class_id'];
 		$db_table =& db_table_factory :: instance('sys_class');
 		$class_data = $db_table->get_row_by_id($class_id);
 		

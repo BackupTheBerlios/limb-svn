@@ -12,43 +12,39 @@ require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/size_range_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 
+require_once(LIMB_DIR . 'core/request/request.class.php');
+require_once(LIMB_DIR . 'core/request/response.class.php');
+
 class form_action_stub extends form_action
 {
 	function _init_validator()
 	{
 		$this->validator->add_rule(new required_rule('username'));
 		$this->validator->add_rule(new required_rule('password'));
-		$this->validator->add_rule(new required_rule('password_confirm'));
 		$this->validator->add_rule(new size_range_rule('password', 6, 15));
-		$this->validator->add_rule(new size_range_rule('password_confirm', 6, 15));
-	}
-	
-	function _define_dataspace_name()
-	{
-	  return 'test1';
-	}
-	
-	function _valid_perform()
-	{
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
-	}
-	
-	function _first_time_perform()
-	{
-		return new failed_response();
-	}
+	}	
 }
 
 Mock::generatePartial(
   'form_action_stub', 
   'form_action_test_version', 
-  array('_define_dataspace_name')
+  array('_define_dataspace_name', '_init_dataspace')
+);
+
+Mock::generate(
+  'request'
+);
+
+Mock::generate(
+  'response'
 );
 
 class form_action_test extends UnitTestCase 
 {
 	var $debug = null;
 	var $form_action = null;
+	var $request = null;
+	var $response = null;
 		  	
   function setUp()
   {
@@ -59,14 +55,11 @@ class form_action_test extends UnitTestCase
 
   	$dataspace =& dataspace :: instance('test1');
   	$dataspace->import(array());
-  	
-  	unset($_REQUEST['test1']);
-  	unset($_REQUEST['submitted']);
-  	unset($_REQUEST['username']);
-  	unset($_REQUEST['password']);
-  	unset($_REQUEST['password_confirm']);
-  	
+  	  	
   	$this->form_action = new form_action_test_version($this);
+
+  	$this->request = new Mockrequest($this);
+  	$this->response = new Mockresponse($this);
   }
   
   function tearDown()
@@ -78,14 +71,11 @@ class form_action_test extends UnitTestCase
 
   	$dataspace =& dataspace :: instance('test1');
   	$dataspace->import(array());
-
-  	unset($_REQUEST['test1']);
-  	unset($_REQUEST['submitted']);
-  	unset($_REQUEST['username']);
-  	unset($_REQUEST['password']);
-  	unset($_REQUEST['password_confirm']);
   	
   	$this->form_action->tally();
+  	$this->request->tally();
+  	$this->response->tally();
+  	
   }
       
   function test_is_valid()
@@ -97,153 +87,147 @@ class form_action_test extends UnitTestCase
   {
   	$this->form_action->setReturnValue('_define_dataspace_name', '');
   	$this->form_action->form_action();
+
+  	$this->request->expectOnce('get_attribute');
+  	$this->assertTrue($this->form_action->is_first_time($this->request));
+  }	
   	
-  	$this->assertTrue($this->form_action->is_first_time());
-  	
-  	$_REQUEST['submitted'] = true;
-  	
-  	$this->assertFalse($this->form_action->is_first_time());
-  	
-  	unset($_REQUEST['submitted']);
-  	
-  	$this->assertTrue($this->form_action->is_first_time());
+  function test_is_first_time_false_no_name()
+  {
+  	$this->form_action->setReturnValue('_define_dataspace_name', '');
+  	$this->form_action->form_action();
+
+  	$this->request->expectOnce('get_attribute');
+  	$this->request->setReturnValue('get_attribute', true, array('submitted'));
+
+  	$this->assertFalse($this->form_action->is_first_time($this->request));
   }
   
   function test_is_first_time_with_name()
   {	
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
-  	
-  	$this->assertTrue($this->form_action->is_first_time(), '%s ' . __LINE__);
-  	
-  	$_REQUEST['test1']['submitted'] = true;
-  	$this->assertFalse($this->form_action->is_first_time(), '%s ' . __LINE__);
-  	
-  	unset($_REQUEST['test1']['submitted']);
-  	
-  	$this->assertTrue($this->form_action->is_first_time(), '%s ' . __LINE__);
+
+  	$this->request->expectOnce('get_attribute');
+  	$this->request->setReturnValue('get_attribute', array(), array('test1'));
+
+  	$this->assertTrue($this->form_action->is_first_time($this->request), '%s ' . __LINE__);
   }
   
-  function test_form_action_validate_no_name()
+  
+  function test_is_first_time_false_with_name() 	
   {
-  	$this->form_action->setReturnValue('_define_dataspace_name', '');
+  	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
-  
-  	$dataspace =& dataspace :: instance();
-  	
-  	$dataspace->import(array('username' => 'vasa', 'password' => 'yoyoyo', 'password_confirm' => 'yoyoyo'));
-  	
-  	$this->assertTrue($this->form_action->validate());  	
+
+  	$this->request->expectOnce('get_attribute');
+  	$this->request->setReturnValue('get_attribute', array('submitted' => true), array('test1'));
+
+  	$this->assertFalse($this->form_action->is_first_time($this->request), '%s ' . __LINE__);
   }
   
-  function test_form_action_validate_with_name()
+  function test_form_action_validate()
   {
   	$dataspace =& dataspace :: instance('test1');
   	
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
   
-  	$dataspace->import(array('username' => 'vasa', 'password' => 'yoyoyo', 'password_confirm' => 'yoyoyo'));
+  	$dataspace->import(array('username' => 'vasa', 'password' => 'yoyoyo'));
   	
   	$this->assertTrue($this->form_action->validate());  	
   }
   
-  function test_double_validation_no_name()
-  {
-  	$this->form_action->setReturnValue('_define_dataspace_name', '');
-  	$this->form_action->form_action();
-  
-  	$_REQUEST['username'] = 'vasa';
-  	$_REQUEST['password'] = 'yo';
-  	$_REQUEST['password_confirm'] = 'yo';
-  	
-  	$this->assertFalse($this->form_action->validate());  	
-
-  	$_REQUEST['password'] = 'yoyoyoyo';
-  	$_REQUEST['password_confirm'] = 'yoyoyoyo';
-
-  	$this->assertFalse($this->form_action->validate(), 'validation occurs only once!');
-  }
-  
- 	function test_perform_no_name_validation_fails()
-  {
-  	$_REQUEST['username'] = 'vasa';
-  	$_REQUEST['password'] = 'yo';
-  	$_REQUEST['password_confirm'] = 'yo';
-
-  	$this->form_action->setReturnValue('_define_dataspace_name', '');
-  	$this->form_action->form_action();
-  	
-  	$this->assertIsA($this->form_action->perform(), 'failed_response');
-  	
-  	$_REQUEST['submitted'] = true;
-  	
-  	debug_mock :: expect_write_error('validation failed');
-  	
-  	$this->assertIsA($this->form_action->perform(), 'not_valid_response');
-  }
-  
-  function test_perform_no_name()
-  {
-  	$_REQUEST['username'] = 'vasa';
-  	$_REQUEST['password'] = 'yoyoyo';
-  	$_REQUEST['password_confirm'] = 'yoyoyo';
-  	$_REQUEST['submitted'] = true;
-
-  	$this->form_action->setReturnValue('_define_dataspace_name', '');
-  	$this->form_action->form_action();
-  	
-  	$this->assertIsA($this->form_action->perform(), 'response');
-  }
-
-  function test_double_validation_with_name()
+  function test_double_validation()
   {
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
   
-  	$_REQUEST['test1']['username'] = 'vasa';
-  	$_REQUEST['test1']['password'] = 'yo';
-  	$_REQUEST['test1']['password_confirm'] = 'yo';
-  	
-  	$this->assertFalse($this->form_action->validate());  	
+   	$dataspace =& dataspace :: instance('test1');
+   	
+   	$dataspace->set('username', 'vasa');
+   	$dataspace->set('password', 'yoyoyoyo');
 
-  	$_REQUEST['test1']['password'] = 'yoyoyoyo';
-  	$_REQUEST['test1']['password_confirm'] = 'yoyoyoyo';
+  	$this->assertTrue($this->form_action->validate());  	
 
-  	$this->assertFalse($this->form_action->validate(), 'validation occurs only once!');
+   	$dataspace->set('password', 'yo');
+
+  	$this->assertTrue($this->form_action->validate(), 'validation occurs only once!');
   }
-  
- 	function test_perform_with_name_validation_fails()
+
+ 	function test_perform_first_time()
   {
-  	$_REQUEST['test1']['username'] = 'vasa';
-  	$_REQUEST['test1']['password'] = 'yo';
-  	$_REQUEST['test1']['password_confirm'] = 'yo';
+    $request_data = array(
+      'username' => 'vasa',
+      'password' => 'yoyoyo',
+    );
+    
+  	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
   	
-  	$this->assertIsA($this->form_action->perform(), 'failed_response');
+  	$this->form_action->expectOnce('_init_dataspace', array(new IsAexpectation('Mockrequest'))); 	
+  	$this->request->expectOnce('set_status', array(REQUEST_STATUS_FORM_DISPLAYED));
   	
-  	$_REQUEST['test1']['submitted'] = true;
-  	
-  	debug_mock :: expect_write_error('validation failed');
-  	
-  	$this->assertIsA($this->form_action->perform(), 'not_valid_response');
+  	$this->form_action->perform($this->request, $this->response);  	
   }
-  
-  function test_perform_with_name()
+    
+ 	function test_perform_validation_failed()
   {
-  	$_REQUEST['test1']['username'] = 'vasa';
-  	$_REQUEST['test1']['password'] = 'yoyoyo';
-  	$_REQUEST['test1']['password_confirm'] = 'yoyoyo';
-  	$_REQUEST['test1']['submitted'] = true;
+    $request_data = array(
+      'username' => 'vasa',
+      'password' => 'yo',
+      'submitted' => 1
+    );
+    
+  	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
 
   	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
   	$this->form_action->form_action();
   	
-  	$this->assertIsA($this->form_action->perform(), 'response');
+  	$this->request->expectOnce('set_status', array(REQUEST_STATUS_FORM_NOT_VALID));
+  	$this->form_action->perform($this->request, $this->response);  	
+  }
+
+  function test_perform_transfer_dataspace()
+  {
+    $request_data = array(
+      'username' => 'vasa',
+      'password' => 'yoyoyo',
+      'submitted' => 1
+    );
+
+  	$this->request->expectCallCount('get_attribute', 2);
+  	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
+
+  	$dataspace =& dataspace :: instance('test1');
+
+  	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
+  	$this->form_action->form_action();
+
+  	$this->form_action->perform($this->request, $this->response);
+  	
+  	$this->assertEqual($dataspace->export(), $request_data);
   }
   
+ 	function test_perform_validation_ok()
+  {
+    $request_data = array(
+      'username' => 'vasa',
+      'password' => 'yoyoyo',
+      'submitted' => 1
+    );
+    
+  	$this->request->setReturnValue('get_attribute', $request_data, array('test1'));
+
+  	$this->form_action->setReturnValue('_define_dataspace_name', 'test1');
+  	$this->form_action->form_action();
+
+  	
+  	$this->request->expectOnce('set_status', array(REQUEST_STATUS_FORM_SUBMITTED));
+  	$this->form_action->perform($this->request, $this->response);  	
+  }
 }
 
 ?>

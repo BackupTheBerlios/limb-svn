@@ -17,24 +17,11 @@ class stats_event_filter_action extends form_action
 	  return 'events_filter_form';
 	}
  
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		$_REQUEST['stats_ip'] = $this->dataspace->get('stats_ip');
-		$_REQUEST['stats_user_login'] = $this->dataspace->get('stats_user_login');
-		$_REQUEST['stats_action_name'] = $this->dataspace->get('stats_action_name');
-		$_REQUEST['stats_start_date'] = $this->dataspace->get('stats_start_date');
-		$_REQUEST['stats_finish_date'] = $this->dataspace->get('stats_finish_date');
-
-		$_REQUEST['stats_start_hour'] = $this->dataspace->get('stats_start_hour');
-		$_REQUEST['stats_start_minute'] = $this->dataspace->get('stats_start_minute');
-
-		$_REQUEST['stats_finish_hour'] = $this->dataspace->get('stats_finish_hour');
-		$_REQUEST['stats_finish_minute'] = $this->dataspace->get('stats_finish_minute');
-
-		$_REQUEST['stats_uri'] = $this->dataspace->get('stats_uri');
-		$_REQUEST['stats_status'] = $this->dataspace->get('stats_status');
+	  $request->merge($this->dataspace->export());
 	
-		return parent :: _valid_perform();
+		parent :: _valid_perform($request, $response);
 	}
 }
 

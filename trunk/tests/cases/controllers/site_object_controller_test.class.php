@@ -9,12 +9,14 @@
 *
 ***********************************************************************************/   
 require_once(LIMB_DIR . 'core/actions/action.class.php');  
-require_once(LIMB_DIR . 'core/model/response/response.class.php');  
+require_once(LIMB_DIR . 'core/request/response.class.php');  
+require_once(LIMB_DIR . 'core/request/request.class.php');  
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 
 Mock::generate('template');
 Mock::generate('action');
 Mock::generate('response');
+Mock::generate('request');
 
 Mock::generatePartial
 (
@@ -36,6 +38,8 @@ Mock::generatePartial
 class site_object_controller_test extends UnitTestCase 
 { 
 	var $site_object_controller = null;
+	var $request = null;
+	var $response = null;
 	
 	var $actions_definition_test = array(
   		'display' => array(
@@ -49,20 +53,14 @@ class site_object_controller_test extends UnitTestCase
 				'transaction' => false
 			)
 		); 
-	 	
-  function site_object_controller_test() 
-  {
-  	parent :: UnitTestCase();
-  }
-  
+	 	  
   function setUp()
   {
-  	$_REQUEST['action'] = 'action_test';
+  	$this->request = new Mockrequest($this);
+  	$this->response = new Mockresponse($this);
   	
   	$this->site_object_controller =& new site_object_controller_test_version1($this);
-   	
   	$this->site_object_controller->setReturnValue('get_actions_definitions', $this->actions_definition_test);
-  	
   	$this->site_object_controller->site_object_controller();
   	
   	debug_mock :: init($this);
@@ -72,9 +70,11 @@ class site_object_controller_test extends UnitTestCase
   {
 		$this->site_object_controller->tally();
 		unset($this->site_object_controller);
-		unset($_REQUEST['action']);
 		
 		debug_mock :: tally();
+		
+		$this->request->tally();
+		$this->response->tally();
   }
       
   function test_action_exists()
@@ -83,35 +83,36 @@ class site_object_controller_test extends UnitTestCase
   	$this->assertFalse($this->site_object_controller->action_exists('no_such_action_test'));
   }
   
+  
   function test_determine_action()
   { 
-  	$this->assertNotIdentical($this->site_object_controller->determine_action(), false);
+  	$this->request->setReturnValue('get_attribute', 'action_test', array('action'));
+  
+  	$this->assertNotIdentical($this->site_object_controller->determine_action($this->request), false);
   	$this->assertEqual($this->site_object_controller->get_action(), 'action_test');
   }
   
   function test_default_determine_action()
   {
-  	unset($_REQUEST['action']);
-  	
-  	$this->site_object_controller->site_object_controller();
-  	
-		$this->assertNotIdentical($this->site_object_controller->determine_action(), false);
+  	$this->assertNotIdentical($this->site_object_controller->determine_action($this->request), false);
   	$this->assertEqual($this->site_object_controller->get_action(), 'display');
   }
-     
+  
   function test_get_action_object()
   {
-  	$this->assertNotIdentical($this->site_object_controller->determine_action(), false);
+  	$this->request->setReturnValue('get_attribute', 'action_test', array('action'));
+
+  	$this->assertNotIdentical($this->site_object_controller->determine_action($this->request), false);
   	$action =& $this->site_object_controller->get_action_object();
   	
   	$this->assertNotNull($action);
   	$this->assertIsA($action, 'action');
   }
-
+  
   function test_get_empty_action_object()
   {
-  	$_REQUEST['action'] = 'no_such_action';
-  	
+  	$this->request->setReturnValue('get_attribute', 'no_such_action', array('action'));
+
   	debug_mock :: expect_write_warning('action not found', 
   		array (
 					  'class' => 'site_object_controller_test_version1',
@@ -120,20 +121,23 @@ class site_object_controller_test extends UnitTestCase
 					)
 		);
   	
-  	$this->assertIdentical($this->site_object_controller->determine_action(), false);
+  	$this->assertIdentical($this->site_object_controller->determine_action($this->request), false);
   	$action =& $this->site_object_controller->get_action_object();
   	
   	$this->assertNotNull($action);
   	$this->assertIsA($action, 'empty_action');
   }
-  
+
   function test_display_view()
   { 
   	$template =& new Mocktemplate($this);
   	
   	$site_object_controller =& new site_object_controller_test_version2($this);
   	$site_object_controller->setReturnValue('get_actions_definitions', $this->actions_definition_test);
-  	$this->assertEqual($site_object_controller->determine_action(), 'action_test');
+  	
+  	$this->request->setReturnValue('get_attribute', 'action_test', array('action'));
+  	
+  	$this->assertEqual($site_object_controller->determine_action($this->request), 'action_test');
 
   	$site_object_controller->expectOnce('_create_template');
   	$site_object_controller->setReturnReference('_create_template', $template);
@@ -147,7 +151,7 @@ class site_object_controller_test extends UnitTestCase
 
   function test_display_empty_view()
   { 
-  	$_REQUEST['action'] = 'no_such_action';
+  	$this->request->setReturnValue('get_attribute', 'no_such_action', array('action'));
   	
   	debug_mock :: expect_write_warning('action not found', 
   		array (
@@ -157,7 +161,7 @@ class site_object_controller_test extends UnitTestCase
 					)
 		);
 
-  	$this->assertIdentical($this->site_object_controller->determine_action(), false);
+  	$this->assertIdentical($this->site_object_controller->determine_action($this->request), false);
 
 		debug_mock :: expect_write_error('template is null');
 		
@@ -166,30 +170,33 @@ class site_object_controller_test extends UnitTestCase
   
   function test_transaction_required()
   {
-  	$this->site_object_controller->determine_action();
+  	$this->request->setReturnValue('get_attribute', 'action_test', array('action'));
+  
+  	$this->site_object_controller->determine_action($this->request);
   	$this->assertTrue($this->site_object_controller->is_transaction_required());
   }
-
+  
   function test_transaction_not_required()
   {
-  	$_REQUEST['action'] = 'publish';
+  	$this->request->setReturnValue('get_attribute', 'publish', array('action'));
   	
-  	$this->site_object_controller->determine_action();
+  	$this->site_object_controller->determine_action($this->request);
   	$this->assertFalse($this->site_object_controller->is_transaction_required());
   }
     
   function test_process()
   { 
   	$action =& new Mockaction($this);
-  	$response =& new Mockresponse($this);
   	$template =& new Mocktemplate($this);
   	
   	$site_object_controller =& new site_object_controller_test_version2($this);
    	
   	$site_object_controller->setReturnValue('get_actions_definitions', $this->actions_definition_test);
+
+  	$this->request->setReturnValue('get_attribute', 'action_test', array('action'));
  	
-  	$this->assertNotIdentical($site_object_controller->determine_action(), false);
-  	$this->assertEqual($site_object_controller->determine_action(), 'action_test');
+  	$this->assertNotIdentical($site_object_controller->determine_action($this->request), false);
+  	$this->assertEqual($site_object_controller->determine_action($this->request), 'action_test');
  
   	$site_object_controller->expectOnce('_create_action', array('action'));
   	$site_object_controller->setReturnReference('_create_action', $action);
@@ -197,19 +204,15 @@ class site_object_controller_test extends UnitTestCase
   	$site_object_controller->expectOnce('_create_template');
   	$site_object_controller->setReturnReference('_create_template', $template);
   	
-  	$response->setReturnValue('get_status', RESPONSE_STATUS_SUCCESS);
-  	 
-   	$action->expectOnce('perform');
-  	$action->setReturnReference('perform', $response);
+   	$action->expectOnce('perform', array(new IsAExpectation('Mockrequest'), new IsAExpectation('Mockresponse')));
   	$action->expectOnce('set_view');
  	  	
   	$site_object_controller->site_object_controller();
 
-  	$this->assertIsA($site_object_controller->process(), 'mockresponse');
+  	$site_object_controller->process($this->request, $this->response);
   	
   	$site_object_controller->tally();
   	$action->tally();
   } 
-
 }
 ?>

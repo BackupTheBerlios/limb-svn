@@ -17,12 +17,11 @@ class stats_keywords_report_action extends form_action
 	  return 'keywords_form';
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		$_REQUEST['stats_start_date'] = $this->dataspace->get('stats_start_date');
-		$_REQUEST['stats_finish_date'] = $this->dataspace->get('stats_finish_date');
+	  $request->import_attributes($this->dataspace->export());
 	
-		return parent :: _valid_perform();
+		parent :: _valid_perform($request, $response);
 	}
 	
 }

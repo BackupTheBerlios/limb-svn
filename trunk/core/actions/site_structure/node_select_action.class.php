@@ -8,28 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class node_select_action extends action
 {
-	function perform()
+	function perform(&$request, &$response)
 	{
-	  if(!isset($_REQUEST['path']))
-	    return new response(RESPONSE_STATUS_DONT_TRACK);
+	  $request->set_status(REQUEST_STATUS_DONT_TRACK);
+	  
+	  if(!$path = $request->get_attribute('path'))
+	    return;
 	 
-	 if(!$node = map_url_to_node($_REQUEST['path']))
-	    return new response(RESPONSE_STATUS_DONT_TRACK);
+	 if(!$node = map_url_to_node($path))
+	    return;
 	 
 	  if(!$object = fetch_one_by_node_id($node['id']))
-	    return new response(RESPONSE_STATUS_DONT_TRACK);
+	    return;
 	    
 	  $dataspace =& $this->view->find_child('parent_node_data');
 	  
 	  $dataspace->import($object);
-	  							
-		return new response(RESPONSE_STATUS_DONT_TRACK);
 	}
 }
 

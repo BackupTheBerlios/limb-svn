@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: poll_component.class.php 45 2004-03-18 16:26:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -13,7 +13,7 @@ class template_source_component extends component
 {
 	function get_current_template_source_link()
 	{
-		if(!$site_object = wrap_with_site_object(fetch_mapped_by_url()))
+		if(!$site_object = wrap_with_site_object(fetch_requested_object()))
 			return '';
 		
 		$site_object_controller = $site_object->get_controller();

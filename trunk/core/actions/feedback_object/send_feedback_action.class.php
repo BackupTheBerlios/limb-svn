@@ -12,7 +12,6 @@ require_once(LIMB_DIR . 'core/lib/util/complex_array.class.php');
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 require_once(LIMB_DIR . 'core/model/sys_param.class.php');
 
 class send_feedback_action extends form_action
@@ -40,7 +39,7 @@ class send_feedback_action extends form_action
 		return $email;
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$mail_data = $this->dataspace->export();
 
@@ -71,11 +70,15 @@ class send_feedback_action extends form_action
 				)
 		{
 			message_box :: write_error(strings :: get('mail_not_sent', 'feedback'));
-			return new failed_response();
+			
+			$request->set_status(REQUEST_STATUS_FAILUER);
+			return;
 		}
 		
 		message_box :: write_error(strings :: get('message_was_sent', 'feedback'));
-		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, $_SERVER['PHP_SELF']);
+
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		$response->redirect($_SERVER['PHP_SELF']);
 	}
 }
 ?>

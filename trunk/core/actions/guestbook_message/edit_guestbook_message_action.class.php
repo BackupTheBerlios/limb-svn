@@ -49,9 +49,9 @@ class edit_guestbook_message_action extends form_edit_site_object_action
 	}
 
 
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		parent :: _init_dataspace();
+		parent :: _init_dataspace($request);
 		
 		$data = $this->dataspace->export();
 	

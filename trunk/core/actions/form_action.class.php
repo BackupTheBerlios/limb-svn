@@ -8,10 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/validator.class.php');
-require_once(LIMB_DIR . 'core/model/response/not_valid_response.class.php');
 
 class form_action extends action
 {
@@ -28,12 +26,21 @@ class form_action extends action
 		parent :: action();
 	}
 				
-	function is_first_time()
+	function is_first_time(&$request)
 	{
 		if($this->name)
-			return isset($_REQUEST[$this->name]['submitted']) ? false : true;
+		{
+		  if($arr = $request->get_attribute($this->name))
+		  {		  
+			  return (isset($arr['submitted']) ? false : true);
+			}
+			return true;
+		}
 		else
-			return isset($_REQUEST['submitted']) ? false : true;
+		{
+		  $res = $request->get_attribute('submitted');
+			return empty($res);
+		}
 	} 
 
 	function _init_validator()
@@ -58,34 +65,27 @@ class form_action extends action
 		return $this->valid;
 	} 
 
-	function perform()
+	function perform(&$request, &$response)
 	{
-		if ($this->is_first_time())
+		if ($this->is_first_time($request))
 		{
-			$this->_init_dataspace();
+			$this->_init_dataspace($request);
 			
-			return $this->_first_time_perform();
+			$this->_first_time_perform($request, $response);
 		} 
 		else
 		{
-			$this->_transfer_dataspace();
+			$this->_transfer_dataspace($request);
 
 			$this->_process_transfered_dataspace();
 			
 			if(!$this->validate())
-			{
-				$result =& new not_valid_response();
-
-			  debug :: write_error('validation failed', 
-				  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
-			}
+			  $request->set_status(REQUEST_STATUS_FORM_NOT_VALID);
 			else	
-				$result = $this->_valid_perform();
+				$this->_valid_perform($request, $response);
 				
 			if($this->view && $form =& $this->view->find_child($this->name))
-				$form->set_valid_status($result->is_success());
-			
-			return $result;
+				$form->set_valid_status($request->is_success());
 		} 
 	}
 	
@@ -98,30 +98,30 @@ class form_action extends action
 		}
 	}
 	
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
 	}
 	
-	function _transfer_dataspace()
+	function _transfer_dataspace(&$request)
 	{	
-		if (isset($_REQUEST[$this->name]))
-			$this->dataspace->import($_REQUEST[$this->name]);
+		if ($arr = $request->get_attribute($this->name))
+			$this->dataspace->import($arr);
 		else
-			$this->dataspace->import($_REQUEST);		
+			$this->dataspace->import($request->export());
 	}
 
 	function _process_transfered_dataspace()
 	{	
 	}
 
-	function _first_time_perform()
+	function _first_time_perform(&$request, &$response)
 	{
-		return new response(RESPONSE_STATUS_FORM_DISPLAYED);
+		$request->set_status(REQUEST_STATUS_FORM_DISPLAYED);
 	}
 		
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	}
 	
 	function get_validator()

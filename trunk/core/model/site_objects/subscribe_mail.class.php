@@ -44,7 +44,7 @@ class subscribe_mail extends content_object
 		
 		$subscribe_email = ADMINISTRATOR_EMAIL; //fix
 		
-		$parent_object_data =& fetch_mapped_by_url();
+		$parent_object_data =& fetch_requested_object();
 
 		$recipients = $this->_get_theme_subscribers($parent_object_data['id']);
 		

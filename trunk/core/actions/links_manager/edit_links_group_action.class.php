@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/model/links_manager.class.php');
 
@@ -29,21 +28,24 @@ class edit_links_group_action extends form_action
 		$this->validator->add_rule(new required_rule('group_id'));
 	}
 
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		if (!isset($_REQUEST['group_id']))
+		if (!$group_id = $request->get_attribute('group_id'))
 			return false;
 	  
 	  $links_manager = new links_manager();
 	  
-	  if($group_data = $links_manager->fetch_group($_REQUEST['group_id']))
+	  if($group_data = $links_manager->fetch_group($group_id))
 		  $this->dataspace->import($group_data);
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		if (!$this->dataspace->get('group_id'))
-			return new failed_response();
+		{
+  		$request->set_status(REQUEST_STATUS_FAILURE);
+			return;
+		}	
 
 	  $links_manager = new links_manager();
 		
@@ -52,11 +54,16 @@ class edit_links_group_action extends form_action
 		    $this->dataspace->get('identifier'),
 		    $this->dataspace->get('title')
     );
-    
+
     if ($result !== false)
-		  return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED);
-		 else 
-		  return new failed_response();
+    {
+  		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+  
+  		if($request->has_attribute('popup'))
+  			$response->write_response_string(close_popup_response($request));
+		}  
+    else
+  		$request->set_status(REQUEST_STATUS_FAILURE);
 	}
 }
 

@@ -11,7 +11,6 @@
 require_once(LIMB_DIR . 'core/actions/form_site_object_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/tree_identifier_rule.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class form_delete_site_object_action extends form_site_object_action
 {
@@ -20,17 +19,20 @@ class form_delete_site_object_action extends form_site_object_action
 	  return 'delete_form';
 	}
 
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		$object =& wrap_with_site_object(fetch_mapped_by_url());
+		$object =& wrap_with_site_object(fetch_requested_object());
 		
 		if(!$object->delete())
 		{
-			message_box :: write_notice('Can not be deleted!');
-			return new failed_response();
+			message_box :: write_notice(strings :: get('cant_be_deleted', 'error'));
+			$request->set_status(REQUEST_STATUS_FAILURE);
+			return;
 		}
-
-		return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED, RELOAD_SELF_URL, true);
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		
+		if($request->has_attribute('popup'))
+			$response->write_response_string(close_popup_response($request, RELOAD_SELF_URL, true));
 	}
 
 }

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class save_priority_action extends form_action
 {
@@ -18,15 +17,18 @@ class save_priority_action extends form_action
 	  return 'grid_form';
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$data = $this->dataspace->export();
 		$object =& site_object_factory :: create('site_structure');
 		
 		if(isset($data['priority']))
 			$object->save_priority($data['priority']);
-				
-		return new close_popup_response();
+    
+    $request->set_status(REQUEST_STATUS_SUCCESS);
+    
+		if($request->has_attribute('popup'))
+		  $response->write_response_string(close_popup_response($request));
 	}
 }
 

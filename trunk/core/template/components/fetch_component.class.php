@@ -25,15 +25,17 @@ class fetch_component extends component
 		$this->import($arr);
 	}
 		
-	function fetch_mapped_by_url()
+	function fetch_requested_object()
 	{
-		$object_arr = fetch_mapped_by_url();
+		$object_arr = fetch_requested_object();
 		
-		if (isset($_REQUEST['version']))
+		$request = request :: instance();
+		
+		if ($version = $request->get_attribute('version'))
 		{
 			$site_object = site_object_factory :: create($object_arr['class_name']);
 			$site_object->import_attributes($object_arr);
-			$object_arr = $site_object->fetch_version($_REQUEST['version']);
+			$object_arr = $site_object->fetch_version((int)$version);
 		}
 		
 		$this->import($object_arr);
@@ -48,7 +50,7 @@ class fetch_component extends component
 	{
 		if(!$this->path)
 		{
-			$object_arr =& fetch_mapped_by_url();
+			$object_arr =& fetch_requested_object();
 			$this->path = $object_arr['path'];
 		}	
 

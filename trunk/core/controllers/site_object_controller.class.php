@@ -8,14 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-
-require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
 require_once(LIMB_DIR . 'core/template/template.class.php');
 require_once(LIMB_DIR . 'core/template/empty_template.class.php');
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
-require_once(LIMB_DIR . 'core/model/response/response.class.php');
+require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
 	
 class site_object_controller
 {
@@ -27,8 +25,6 @@ class site_object_controller
 	
 	var $_view = null;
 	
-	var $_response = null;
-
 	function site_object_controller()
 	{
 	  $this->_actions = $this->_define_actions();
@@ -52,11 +48,12 @@ class site_object_controller
   	return create_object($class_name);
 	}
 		
-	function determine_action()
+	function determine_action($request = null)
 	{	
-		if (isset($_REQUEST['action']))
-			$action = $_REQUEST['action'];
-		else
+	  if($request === null)
+	    $request =& request :: instance();
+	  
+		if (!$action = $request->get_attribute('action'))
 			$action = $this->_default_action;
 		
 		if (!$this->action_exists($action))
@@ -116,7 +113,7 @@ class site_object_controller
 		return $name;
 	}
 	
-	function process()
+	function process(&$request, &$response)
 	{
 		if(!$this->_current_action)
 		{
@@ -126,25 +123,23 @@ class site_object_controller
 			
 		$this->_start_transaction();
 		
-		$this->_perform_action();
+		$this->_perform_action($request, $response);
 				
-		$this->_end_transaction();
-		
-		return $this->_response;
+		$this->_end_transaction($request);
 	}
 	
-	function _perform_action()
+	function _perform_action(&$request, &$response)
 	{
 		$action =& $this->get_action_object();
 		
 		if($view =& $this->get_view())
 			$action->set_view($view);
 
-		$this->_response = $action->perform();
+		$action->perform($request, $response);
 		
 		debug :: add_timing_point('action performed');
 		
-		if($this->_response->is_problem())
+		if($request->is_problem())
 			debug :: write_error('action failed', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	}
 	
@@ -163,12 +158,12 @@ class site_object_controller
 			start_user_transaction();
 	}
 	
-	function _end_transaction()
+	function _end_transaction(&$request)
 	{
 		if(!$this->is_transaction_required())
 			return;
 
-		if($this->_response->is_success())
+		if($request->is_success())
 			commit_user_transaction();
 		else
 			rollback_user_transaction();

@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
 
@@ -23,18 +22,18 @@ class search_action extends form_action
 	  return 'search_form';
 	}
 	
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		if (isset($_REQUEST['search_query']))
-			$this->dataspace->set('search_query', $_REQUEST['search_query']);
+		if ($search_query = $request->get_attribute('search_query'))
+			$this->dataspace->set('search_query', $search_query);
 
-		if (isset($_REQUEST['limit']))
-			$this->dataspace->set('limit', $_REQUEST['limit']);
+		if ($limit = $request->get_attribute('limit'))
+			$this->dataspace->set('limit', $limit);
 	}
 			
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		$_REQUEST['search_query'] = $this->dataspace->get('search_query');
+	  $request->set_attribute('search_query', $this->dataspace->get('search_query'));
 	
 		$this->_set_template_search_query();
 		
@@ -43,8 +42,8 @@ class search_action extends form_action
 			$items_per_page = DEFAULT_SEARCH_ITEMS_PER_PAGE;
 			
 		$this->_set_pager_items_per_page($items_per_page);
-												
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+
+ 		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	}
 		
 	function _get_query()

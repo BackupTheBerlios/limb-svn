@@ -17,7 +17,7 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 	  return 'set_group_access';
 	}
 	
-	function perform()
+	function perform(&$request, &$response)
 	{				
 		$access_policy =& access_policy :: instance();
 	
@@ -25,7 +25,7 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 
 		$this->dataspace->import($data);
 		
-		return parent :: perform();
+		parent :: perform($request, $response);
 	}
 }
 

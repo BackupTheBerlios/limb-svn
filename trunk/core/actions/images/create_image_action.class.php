@@ -53,9 +53,9 @@ class create_image_action extends form_create_site_object_action
 		$this->validator->add_rule(new required_rule('title'));
 	}
 	
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		parent :: _init_dataspace();
+		parent :: _init_dataspace($request);
 		
 		$ini =& get_ini('image_variations.ini');
 		

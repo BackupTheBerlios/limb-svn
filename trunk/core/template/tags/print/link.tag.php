@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: locale.tag.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -24,7 +24,7 @@ class print_link_tag extends compiler_directive_tag
 	{
 		$mapped = '$' . $code->get_temp_variable();
 		
-		$code->write_php("{$mapped} = fetch_mapped_by_url();");
+		$code->write_php("{$mapped} = fetch_requested_object();");
 
 		$code->write_php("if(isset({$mapped}['actions']) && array_key_exists('print_version', {$mapped}['actions'])){");
 		

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/util/dataspace.class.php');
-require_once(LIMB_DIR . 'core/model/response/failed_response.class.php');
 
 class action
 {
@@ -36,9 +35,9 @@ class action
 		$this->view =& $view;
 	}
 		
-	function perform()
+	function perform(&$request, &$response)
 	{
-		return new response();
+	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}	
 } 
 ?>

@@ -18,8 +18,11 @@ class grid_button_component extends form_element
 		if (!isset($this->attributes['path']) || !$this->attributes['path'])
 		{
 			$action_path = $_SERVER['PHP_SELF'];
-			if(isset($_REQUEST['node_id']))
-				$action_path .= '?node_id=' . $_REQUEST['node_id'];
+			
+			$request = request :: instance();
+			
+			if($node_id = $request->get_attribute('node_id'))
+				$action_path .= '?node_id=' . $node_id;
 		}
 		else
 			$action_path = $this->attributes['path'];

@@ -8,19 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class logout_action extends action
 {
 	var $_site_object_name = 'user_object';
 	
-	function perform()
+	function perform(&$request, &$response)
 	{
 		$user_object =& site_object_factory :: create($this->_site_object_name);
 		$user_object->logout();
-		return new redirect_response(RESPONSE_STATUS_SUCCESS, '/');
+		
+		$response->redirect('/');
 	}
 }
 

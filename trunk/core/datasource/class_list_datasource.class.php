@@ -14,7 +14,7 @@ class class_list_datasource extends datasource
 {
 	function & get_dataset($params = array())
 	{
-		if(!$arr = fetch_mapped_by_url())
+		if(!$arr = fetch_requested_object())
 			return new array_dataset();
 		
 		$db_table =& db_table_factory :: instance('sys_class');

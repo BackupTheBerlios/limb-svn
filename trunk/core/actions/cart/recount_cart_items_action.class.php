@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: set_group_objects_access.class.php 38 2004-03-13 14:25:46Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/cart/cart_form_action.class.php');
@@ -17,13 +17,14 @@ class recount_cart_items_action extends cart_form_action
 		parent :: cart_form_action($name);
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$this->_update_items_amount();
 		
 		$this->_update_items_notes();
 		
-		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, '/root/cart');
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		$response->redirect('/root/cart');
 	}
 }
 

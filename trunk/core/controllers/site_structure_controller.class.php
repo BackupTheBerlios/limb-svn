@@ -25,12 +25,6 @@ class site_structure_controller extends site_object_controller
 						'template_path' => '/site_structure/display.html',						
 						'action_path' => '/site_structure/tree_toggle_action', 
 				),
-				'move' => array(
-						'permissions_required' => 'w',
-						'template_path' => '/site_structure/display.html',						
-						'action_path' => '/site_structure/tree_move_item_action', 
-						'popup' => true,
-				),
 				'edit' => array(
 						'permissions_required' => 'w',
 						'popup' => true,

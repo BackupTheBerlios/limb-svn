@@ -44,7 +44,7 @@ class create_guestbook_message_action extends form_create_site_object_action
 		$this->validator->add_rule(new email_rule('sender_email'));
 	}
 
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
 		$data['identifier'] = md5(rand());
 		

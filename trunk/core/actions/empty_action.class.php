@@ -8,17 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/response/response.class.php');
-
 class empty_action
 {
 	function set_view(&$view)
 	{
 	}
 		
-	function perform()
+	function perform(&$request, &$response)
 	{
-		return new response();
+	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}
 } 
 

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class multi_toggle_publish_status_action extends form_action
 {
@@ -18,12 +17,18 @@ class multi_toggle_publish_status_action extends form_action
 	  return 'grid_form';
 	}
 
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
+		if($request->has_attribute('popup'))
+		  $response->write_response_string(close_popup_response($request));
+	
 		$data = $this->dataspace->export();
 		
 		if(!isset($data['ids']) || !is_array($data['ids']))
-			return new close_popup_response(RESPONSE_STATUS_FAILURE);
+		{
+  	  $request->set_status(REQUEST_STATUS_FAILURE);
+  		return;			
+		}
 			
 		$objects = $this->_get_objects(array_keys($data['ids']));
 
@@ -52,7 +57,7 @@ class multi_toggle_publish_status_action extends form_action
 			$this->_apply_access_policy($object, $action);
 		}	
 
-		return new close_popup_response();
+	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}
 	
 	function _get_objects($node_ids)

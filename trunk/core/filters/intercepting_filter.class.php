@@ -7,15 +7,13 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 
-require_once(LIMB_DIR . 'core/model/response/response.class.php');
-
-class dont_track_response extends response
+class intercepting_filter 
 {
-	function dont_track_response()
-	{
-		parent :: response(RESPONSE_STATUS_DONT_TRACK);
-	}
-} 
+  function run(&$filter_chain, &$request, &$response)
+  {
+  }
+}
+
 ?>

@@ -36,7 +36,7 @@ class actions_tag extends server_component_tag
 		$code->write_php("{$node_id} = " . $this->parent->get_dataspace_ref_code() . '->get("node_id");'. "\n");
 
 		$code->write_php("if(!{$node_id}){ 
-			{$node} =& map_current_request_to_node(); {$node_id} = {$node}['id'];}\n");
+			{$node} =& map_request_to_node(); {$node_id} = {$node}['id'];}\n");
 				
 		$code->write_php($this->get_component_ref_code() . "->set_actions({$actions_array});\n");
 

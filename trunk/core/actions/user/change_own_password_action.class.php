@@ -28,16 +28,16 @@ class change_own_password_action extends form_action
 		$this->validator->add_rule(new match_rule('second_password', 'password', 'PASSWORD'));
 	}
 
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$user_object =& site_object_factory :: instance('user_object');
 		
 		$data = $this->dataspace->export();
 
 		if($user_object->change_own_password($data['password']))
-			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+		  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 		else
-			return new failed_response();
+		  $request->set_status(REQUEST_STATUS_FAILED);
 	}
 
 }

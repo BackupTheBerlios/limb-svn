@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/model/links_manager.class.php');
 
@@ -29,7 +28,7 @@ class create_link_action extends form_action
 		$this->validator->add_rule(new required_rule('linker_node_id'));
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 	  $links_manager = new links_manager();
 	  
@@ -40,9 +39,14 @@ class create_link_action extends form_action
     );
 
     if ($result !== false)
-		  return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED);
+    {
+  		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+  
+  		if($request->has_attribute('popup'))
+  			$response->write_response_string(close_popup_response($request));
+		}  
     else
-		  return new failed_response();
+  		$request->set_status(REQUEST_STATUS_FAILURE);
 	}
 }
 

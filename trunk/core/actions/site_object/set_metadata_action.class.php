@@ -18,9 +18,9 @@ class set_metadata_action extends form_action
 	  return 'set_metadata';
 	}
 	
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		$object_data =& fetch_mapped_by_url();
+		$object_data =& fetch_requested_object($request);
 
 		$object =& site_object_factory :: create('site_object');
 		$object->set_attribute('id', $object_data['id']);
@@ -29,9 +29,9 @@ class set_metadata_action extends form_action
 		$this->dataspace->import($data);
 	}
 
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		$object_data =& fetch_mapped_by_url();
+		$object_data =& fetch_requested_object($request);
 
 		$data = $this->dataspace->export();
 
@@ -41,9 +41,9 @@ class set_metadata_action extends form_action
 		$object->import_attributes($data);
 		
 		if(!$object->save_metadata())
-			return new failed_response();
-		
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+			$request->set_status(REQUEST_STATUS_FAILURE);
+		else
+		  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	}
 }
 ?>

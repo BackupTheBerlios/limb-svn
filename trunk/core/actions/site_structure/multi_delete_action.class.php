@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class multi_delete_action extends form_action
 {
@@ -18,19 +17,26 @@ class multi_delete_action extends form_action
 	  return 'grid_form';
 	}
 
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		parent :: _init_dataspace();
+		parent :: _init_dataspace($request);
 		
-		$this->_transfer_dataspace();
+		$this->_transfer_dataspace($request);
 	}
 	
-	function _first_time_perform()
+	function _first_time_perform(&$request, &$response)
 	{
 		$data = $this->dataspace->export();
 		
 		if(!isset($data['ids']) || !is_array($data['ids']))
-			return new close_popup_response(RESPONSE_STATUS_FAILURE);
+		{
+		  $request->set_status(REQUEST_STATUS_FAILURE);
+		  		  
+			if($request->has_attribute('popup'))
+			  $response->write_response_string(close_popup_response($request));
+			  
+			return;
+		}
 			
 		$objects = $this->_get_objects_to_delete(array_keys($data['ids']));
 
@@ -38,15 +44,20 @@ class multi_delete_action extends form_action
 		
 		$grid->register_dataset(new array_dataset($objects));
 	
-		return parent :: _first_time_perform();
+		parent :: _first_time_perform(&$request, &$response);
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$data = $this->dataspace->export();
+
+	  $request->set_status(REQUEST_STATUS_FAILURE);
+	  		  
+		if($request->has_attribute('popup'))
+		  $response->write_response_string(close_popup_response($request));
 		
 		if(!isset($data['ids']) || !is_array($data['ids']))
-			return new close_popup_response(RESPONSE_STATUS_FAILURE);
+			return;
 		
 		$objects = $this->_get_objects_to_delete(array_keys($data['ids']));
 		
@@ -63,10 +74,10 @@ class multi_delete_action extends form_action
 				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 				array('node_id' => $id));
 
-				return new close_popup_response(RESPONSE_STATUS_FAILURE);
+  			return;
 			}
 		}	
-		return new close_popup_response();
+	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}
 	
 	function _get_objects_to_delete($node_ids)

@@ -9,14 +9,12 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/response/exit_response.class.php');
-require_once(LIMB_DIR . 'core/model/response/dont_track_response.class.php');
 
 class display_file_action extends action
 {	
-	function perform()
+	function perform(&$request, &$response)
 	{
-		$object_data =& fetch_mapped_by_url();
+		$object_data =& fetch_requested_object($request);
 		
 		ob_end_clean();
 		if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
@@ -26,7 +24,10 @@ class display_file_action extends action
 			if(isset($_GET['icon']))
 				exit(); //for speed
 			else
-				return new exit_response(RESPONSE_STATUS_FAILURE);
+			{
+			  $request->set_status(REQUEST_STATUS_FAILURE);
+				return;
+			}
 		}
 		
 		if (isset($_GET['icon']))
@@ -72,8 +73,6 @@ class display_file_action extends action
 			header("Content-Disposition: attachment; filename=\"{$object_data["file_name"]}\"");
 			readfile(MEDIA_DIR . $object_data['media_id'] . '.media');
 		}
-		
-		return new exit_response();
 	}
 }
 

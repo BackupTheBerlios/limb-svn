@@ -22,9 +22,9 @@ class set_phpbb_rank_action extends form_action
 	  return 'set_phpbb_rank';
 	}
   
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		$object_data =& fetch_mapped_by_url();
+		$object_data =& fetch_requested_object($request);
 		
 		$phpbb_users_db_table =& db_table_factory :: create('phpbb_users');
 		$conditions['user_id'] = $object_data['id'];
@@ -38,9 +38,9 @@ class set_phpbb_rank_action extends form_action
 		$this->dataspace->import($data);
 	}
 		
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		$object_data =& fetch_mapped_by_url();
+		$object_data =& fetch_requested_object();
 
 		$data = $this->dataspace->export();
 
@@ -49,9 +49,9 @@ class set_phpbb_rank_action extends form_action
 		$db =& db_factory :: instance();
 		
 		if($db->sql_update('phpbb_users', $phpbb_user_data, array('user_id' => $object_data['id'])))
-			return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+			$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 		else
-			return new failed_response();
+			$request->set_status(REQUEST_STATUS_FAILURE);
 	}
 
 }

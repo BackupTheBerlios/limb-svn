@@ -14,7 +14,7 @@ class object_versions_datasource extends datasource
 {
 	function & get_dataset(&$counter, $params=array())
 	{
-		$object_data = fetch_mapped_by_url();
+		$object_data = fetch_requested_object();
 		
 		if (!count($object_data))
 			return new array_dataset(array());

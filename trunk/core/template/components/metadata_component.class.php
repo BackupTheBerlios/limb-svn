@@ -19,7 +19,7 @@ class metadata_component extends component
 {
 	var $node_id = '';
 	
-	var $node_path = '';
+	var $request_path = '';
 	
 	var $object_ids_array = array();
 
@@ -125,13 +125,16 @@ class metadata_component extends component
 	{
 		if (!$this->node_id)
 		{
-			if($this->node_path)
+			if($this->request_path)
 			{
-				if(!$node = map_url_to_node($this->node_path))
-					$node = map_current_request_to_node();
+			  $request = request :: instance();
+			  $node_path = $request->get_attribute($this->request_path);
+			  
+				if(!$node = map_url_to_node($node_path))
+					$node = map_request_to_node();
 			}
 			else
-				$node = map_current_request_to_node();
+				$node = map_request_to_node();
 
 			$this->node_id = $node['id'];
 		}
@@ -248,7 +251,8 @@ class metadata_component extends component
 	
 	function &_get_mapped_controller()
 	{
-		$controller =& get_mapped_controller();
+	  $object =& wrap_with_site_object(fetch_requested_object());
+		$controller =& $object->get_controller();
 		return $controller;
 	}
 			
@@ -257,9 +261,9 @@ class metadata_component extends component
 		$this->offset_path = $path;
 	}
 	
-	function set_node_path($path)
+	function set_request_path($path)
 	{
-		$this->node_path = $path;
+		$this->request_path = $path;
 	}
 	
 } 

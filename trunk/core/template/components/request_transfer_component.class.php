@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: dataspace_component.class.php 47 2004-03-19 15:59:48Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -21,10 +21,12 @@ class request_transfer_component extends tag_component
 		
 		$attributes_to_append = array();
 		
+		$request = request :: instance();
+		
 		foreach($transfer_attributes as $attribute)
 		{
-			if(isset($_REQUEST[$attribute]))
-				$attributes_to_append[] = $attribute . '=' . addslashes($_REQUEST[$attribute]);
+			if($value = $request->get_attribute($attribute))
+				$attributes_to_append[] = $attribute . '=' . addslashes($value);
 		}
 		if($this->attributes_string = implode('&', $attributes_to_append))
 		{

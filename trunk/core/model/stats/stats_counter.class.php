@@ -78,7 +78,7 @@ class stats_counter
 	
 	function _is_home_hit()
 	{
-		if(!$object_data = fetch_mapped_by_url())
+		if(!$object_data = fetch_requested_object())
 			return false;
 			
 		return ($object_data['parent_node_id'] == 0);

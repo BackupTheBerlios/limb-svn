@@ -41,11 +41,11 @@ class create_subscribe_mail_action extends form_create_site_object_action
 		$this->validator->add_rule(new required_rule('subscribe_mail_content'));
 	}
 
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		parent :: _init_dataspace();
+		parent :: _init_dataspace($request);
 		
-		$parent_object_data =& fetch_mapped_by_url();
+		$parent_object_data =& fetch_requested_object($request);
 		
 		$data['subscribe_mail_content'] = $parent_object_data['mail_template'];
 		

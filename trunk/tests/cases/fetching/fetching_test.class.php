@@ -8,11 +8,15 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/limb_test.class.php');
+require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
+require_once(LIMB_DIR . 'core/request/response.class.php');
+require_once(LIMB_DIR . 'core/request/request.class.php');
 require_once(LIMB_DIR . 'core/fetcher.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . 'core/model/site_objects/site_object.class.php');
 require_once(LIMB_DIR . 'core/model/access_policy.class.php');
+
+Mock::generate('request');
 
 class fetch_object_controller_test extends site_object_controller
 {
@@ -29,7 +33,7 @@ class fetch_object_controller_test extends site_object_controller
 }
 
 
-class fetching_object1_test extends site_object
+class fetching_object1_test_version extends site_object
 {		
 	function _define_class_properties()
 	{
@@ -41,7 +45,7 @@ class fetching_object1_test extends site_object
 	}
 }
 
-class fetching_object2_test extends site_object
+class fetching_object2_test_version extends site_object
 {		
 	function _define_class_properties()
 	{
@@ -52,7 +56,7 @@ class fetching_object2_test extends site_object
 	}
 }
 
-class fetching_test extends limb_test 
+class fetching_test extends db_test 
 { 
 	var $fetcher = null;
 	var $access_policy = null;
@@ -73,8 +77,8 @@ class fetching_test extends limb_test
   	
   	$this->_login_user($user_id, array(103 => 'visitors', 104 => 'admin'));
   	
-  	$obj1 = site_object_factory :: create('fetching_object1_test');
-  	$obj2 = site_object_factory :: create('fetching_object2_test');
+  	$obj1 = site_object_factory :: create('fetching_object1_test_version');
+  	$obj2 = site_object_factory :: create('fetching_object2_test_version');
 
   	$obj1->set_identifier('root');
   	$obj1->set_title('Root');
@@ -136,6 +140,9 @@ class fetching_test extends limb_test
   {
   	parent :: tearDown();
   	
+  	$user =& user :: instance();
+  	$user->logout();  	
+  	
  		$this->objects = array();
  		$this->child_node_ids = array();
  		
@@ -143,7 +150,17 @@ class fetching_test extends limb_test
  		$this->db->sql_delete('sys_site_object');
  		$this->db->sql_delete('sys_object_access');
  		$this->db->sql_delete('sys_action_access');
+ 		
+ 		$this->fetcher->flush_cache();
   }
+  
+  function _login_user($id, $groups)
+  {
+  	$user =& user :: instance();
+  	
+  	$user->_set_id($id);
+  	$user->_set_groups($groups);  	
+  }   
   
   function _add_object($object)
   {
@@ -166,7 +183,7 @@ class fetching_test extends limb_test
   	$php_self = $_SERVER['PHP_SELF'];
   	$_SERVER['PHP_SELF'] = '/root/articles';
   	
-  	$node =& $this->fetcher->map_current_request_to_node();
+  	$node =& $this->fetcher->map_request_to_node();
   	
 		$this->assertNotIdentical($node, false);
   	$this->assertEqual($node['identifier'], 'articles');  	
@@ -179,15 +196,17 @@ class fetching_test extends limb_test
   	$php_self = $_SERVER['PHP_SELF'];
   	$_SERVER['PHP_SELF'] = '/root/articles/no/such/article';
   	
-  	$_REQUEST['node_id'] = $this->articles_object->get_node_id();
+  	$request = new Mockrequest($this);
+  	$request->setReturnValue('get_attribute', $this->articles_object->get_node_id(), array('node_id'));
   	
-  	$node =& $this->fetcher->map_current_request_to_node();
+  	$node =& $this->fetcher->map_request_to_node($request);
 
-		unset($_REQUEST['node_id']);
 		$_SERVER['PHP_SELF'] = $php_self;
 		
 		$this->assertNotIdentical($node, false);
   	$this->assertEqual($node['identifier'], 'articles');  	
+  	
+  	$request->tally();
   }
   
   function test_fetch_one_by_node_id()
@@ -221,7 +240,7 @@ class fetching_test extends limb_test
 
   function test_fetch_no_such_path()
   {
-  	$object_data = $this->fetcher->fetch_sub_branch('/no/such/path', 'fetching_object2_test', $counter);
+  	$object_data = $this->fetcher->fetch_sub_branch('/no/such/path', 'fetching_object2_test_version', $counter);
   	$this->assertIdentical($object_data, array());
   }
   
@@ -231,7 +250,7 @@ class fetching_test extends limb_test
   		'depth' => -1,
   	);	
   	
-  	$arr = $this->fetcher->fetch_sub_branch('/root', 'fetching_object2_test', $counter, $params);
+  	$arr = $this->fetcher->fetch_sub_branch('/root', 'fetching_object2_test_version', $counter, $params);
   	
   	$this->assertEqual($counter, 2);
   	$this->assertEqual(sizeof($arr), $counter);
@@ -249,7 +268,7 @@ class fetching_test extends limb_test
   		'depth' => -1,
   		'limit' => 1,
   	);	
-  	$arr = $this->fetcher->fetch_sub_branch('/root', 'fetching_object2_test', $counter, $params);
+  	$arr = $this->fetcher->fetch_sub_branch('/root', 'fetching_object2_test_version', $counter, $params);
   	
   	$this->assertEqual($counter, 2);
   	$this->assertEqual(sizeof($arr), $params['limit']);
@@ -263,7 +282,7 @@ class fetching_test extends limb_test
   	$params = array(
   		'depth' => 1,
   	);	
-  	$arr = $this->fetcher->fetch_sub_branch('/root', 'fetching_object2_test', $counter, $params);
+  	$arr = $this->fetcher->fetch_sub_branch('/root', 'fetching_object2_test_version', $counter, $params);
   	
   	$this->assertEqual($counter, 0);
   	$this->assertEqual(sizeof($arr), 0);
@@ -282,10 +301,9 @@ class fetching_test extends limb_test
   	$this->assertEqual(sizeof($arr), 3);
   }
   
-  
   function test_fetch_by_node_ids()
   {
-  	$arr = $this->fetcher->fetch_by_node_ids($this->child_node_ids, 'fetching_object2_test', $counter);
+  	$arr = $this->fetcher->fetch_by_node_ids($this->child_node_ids, 'fetching_object2_test_version', $counter);
 
   	$this->assertEqual($counter, 3);
   	$this->assertEqual(sizeof($arr), $counter);

@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/guestbook_message/create_guestbook_message_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class front_create_guestbook_message_action extends create_guestbook_message_action
 {
@@ -18,14 +17,12 @@ class front_create_guestbook_message_action extends create_guestbook_message_act
 	  return 'display';
 	}
 
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
-		$response = parent :: _valid_perform();
+		parent :: _valid_perform($request, $response);
 		
-		if ($response->is_success())
-			return new redirect_response($response->get_status());
-		
-		return $response;
+		if ($request->is_success())
+			$response->reload();
 	}		
 }
 

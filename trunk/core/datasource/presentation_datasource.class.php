@@ -20,13 +20,14 @@ class presentation_datasource extends fetch_sub_branch_datasource
 			return array();
 
 		reset($items);
-
-		if (isset($_REQUEST['id']) && $_REQUEST['id'])
-			$current_id = $_REQUEST['id'];
-		else
+    
+    $request = request :: instance();
+    
+		if (!$current_id = $request->get_attribute('id'))
 			$current_id = $items[key($items)]['id'];
 
 		foreach($items as $id => $item)
+		{
 			if ($current_id == $item['id'])
 			{
 				$current_item = $item;
@@ -34,6 +35,7 @@ class presentation_datasource extends fetch_sub_branch_datasource
 			}	
 			else
 				next($items);
+		}
 
 		$result = array();
 		$result['prev'] = array($this->_get_prev_item($items, $current_id));

@@ -14,9 +14,9 @@ require_once(LIMB_DIR . 'core/model/chat/chat_system.class.php');
 
 class display_chat_room_action extends action
 {
-	function perform()
+	function perform(&$request, &$response)
 	{
-		$chat_room_data =& fetch_mapped_by_url();
+		$chat_room_data =& fetch_requested_object();
 		
 		session :: destroy('last_message_ids');
 		
@@ -39,10 +39,9 @@ class display_chat_room_action extends action
 			}
 		
 			$this->view->set('nickname', $chat_user_data['nickname']);
-		
 		}
 
-		return parent :: perform();
+		parent :: perform(&$request, &$response);
 	}
 }
 

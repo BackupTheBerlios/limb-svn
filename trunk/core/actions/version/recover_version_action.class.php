@@ -9,32 +9,35 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_no_reload_response.class.php');
 
 class recover_version_action extends action
 {
-	function perform()
+	function perform(&$request, &$response)
 	{
-		if(!isset($_REQUEST['version']))
-			return new close_popup_no_reload_response(RESPONSE_STATUS_FAILURE);
+		if($request->has_attribute('popup'))
+		  $response->write_response_string(close_popup_no_reload_response());
+	
+	  $request->set_status(REQUEST_STATUS_FAILURE);
+	  
+		if(!$version = $request->get_attribute('version'))
+			return;
 
-		if(!isset($_REQUEST['version_node_id']))
-			return new close_popup_no_reload_response(RESPONSE_STATUS_FAILURE);
+		if(!$node_id = $request->get_attribute('version_node_id'))
+	    return;
 			
-		$version = (int)$_REQUEST['version'];
-		$node_id = (int)$_REQUEST['version_node_id'];
-		
-		if(!$site_object = wrap_with_site_object(fetch_one_by_node_id($node_id)))
-			return new close_popup_no_reload_response(RESPONSE_STATUS_FAILURE);
+		if(!$site_object = wrap_with_site_object(fetch_one_by_node_id((int)$node_id)))
+			return;
 		
 		if(!is_subclass_of($site_object, 'content_object'))
-			return new close_popup_no_reload_response(RESPONSE_STATUS_FAILURE);
+			return;
 
-		if($site_object->recover_version($version))
-			return new close_popup_response(RESPONSE_STATUS_SUCCESS);
-		else
-			return new close_popup_no_reload_response(RESPONSE_STATUS_FAILURE);
+		if(!$site_object->recover_version((int)$version))
+		  return;
+
+		if($request->has_attribute('popup'))
+		  $response->write_response_string(close_popup_response($request));
+	
+	  $request->set_status(REQUEST_STATUS_SUCCESS);
 	}
 }
 

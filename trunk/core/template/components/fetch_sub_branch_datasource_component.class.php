@@ -35,7 +35,7 @@ class fetch_sub_branch_datasource_component extends datasource_component
 		
 		if(!isset($params['path']) || !$params['path'])
 		{
-			$object_arr =& fetch_mapped_by_url();
+			$object_arr =& fetch_requested_object();
 			$params['path'] = $object_arr['path'];
 		}				
 		

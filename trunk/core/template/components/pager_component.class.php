@@ -226,7 +226,9 @@ class pager_component extends component
 	*/
 	function prepare()
 	{
-		$this->current_page = @$_REQUEST[$this->pager_variable .'_'. $this->get_server_id()];
+	  $request = request :: instance();
+	  
+		$this->current_page = $request->get_attribute($this->pager_variable .'_'. $this->get_server_id());
 			
 		if (empty($this->current_page))
 		{

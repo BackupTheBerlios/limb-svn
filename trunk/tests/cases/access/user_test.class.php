@@ -8,12 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/limb_test.class.php');
+require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 require_once(LIMB_DIR . 'core/lib/security/user.class.php');	
 
-class user_test extends limb_test 
+class user_test extends db_test 
 {  	
 	var $dump_file = 'user_login.sql';
+	
+	function tearDown()
+	{
+  	$user =& user :: instance();
+  	$user->logout();	
+	}
+	
+  function _login_user($id, $groups)
+  {
+  	$user =& user :: instance();
+  	
+  	$user->_set_id($id);
+  	$user->_set_groups($groups);  	
+  }	
   
   function test_login_true()
   {

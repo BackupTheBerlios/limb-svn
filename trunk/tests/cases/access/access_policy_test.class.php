@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/tests/cases/limb_test.class.php');
+require_once(LIMB_DIR . '/tests/cases/db_test.class.php');
 
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 require_once(LIMB_DIR . 'core/model/access_policy.class.php');
@@ -22,7 +22,7 @@ Mock::generatePartial
 
 Mock::generate('site_object_controller');
   
-class access_policy_test extends limb_test 
+class access_policy_test extends db_test 
 {  	
 	var $dump_file = 'access_policy_load.sql';
 
@@ -82,8 +82,20 @@ class access_policy_test extends limb_test
   function tearDown()
   {
   	parent :: tearDown();
+  	
+  	$user =& user :: instance();
+  	$user->logout();
+  	
   	$this->ac->tally();
   }
+  
+  function _login_user($id, $groups)
+  {
+  	$user =& user :: instance();
+  	
+  	$user->_set_id($id);
+  	$user->_set_groups($groups);  	
+  }  
 	
  	function test_get_accessible_objects()
  	{

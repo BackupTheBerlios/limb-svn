@@ -9,13 +9,12 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class display_paragraph_action extends action
 {
-	function perform()
+	function perform(&$request, &$response)
 	{
-		$object_data = fetch_mapped_by_url();
+		$object_data = fetch_requested_object();
 		
 		$parent_data = fetch_one_by_node_id($object_data['parent_node_id']);
 		$path = $parent_data['path'];
@@ -36,7 +35,7 @@ class display_paragraph_action extends action
 		if (!empty($query))
 			$path .= '?' . $query;
 		
-		return new redirect_response(RESPONSE_STATUS_SUCCESS, $path);
+		$response->redirect($path);
 	}
 }
 

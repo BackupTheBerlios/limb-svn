@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/stats/stats_register.class.php');
-require_once(LIMB_DIR . '/core/model/response/response.class.php');
+require_once(LIMB_DIR . '/core/request/request.class.php');
 
 Mock::generatePartial
 (
@@ -143,7 +143,7 @@ class stats_register_test extends UnitTestCase
 
   	$this->stats_search_phrase->expectNever('register');
 
-  	$this->stats_register->register(0, '', RESPONSE_STATUS_DONT_TRACK);
+  	$this->stats_register->register(0, '', REQUEST_STATUS_DONT_TRACK);
   }
       
   function test_register() 
@@ -162,7 +162,7 @@ class stats_register_test extends UnitTestCase
 
    	$this->stats_register->set_register_time($date->get_stamp());
   
-  	$this->stats_register->register($node_id = 1, 'test', RESPONSE_STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', REQUEST_STATUS_SUCCESS);
 
 		$this->_check_stats_register_record(
 			$total_records = 1, 
@@ -170,29 +170,29 @@ class stats_register_test extends UnitTestCase
 			$user_id = 10, 
 			$node_id, 
 			'test', 
-			RESPONSE_STATUS_SUCCESS, 
+			REQUEST_STATUS_SUCCESS, 
 			$this->stats_register->get_register_time_stamp());
   }
 
   function test_clean_log()
   {
   	$this->stats_register->set_register_time(time());
-  	$this->stats_register->register($node_id = 1, 'test', RESPONSE_STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', REQUEST_STATUS_SUCCESS);
   	
   	$this->stats_register->set_register_time(time() + 2*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', RESPONSE_STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', REQUEST_STATUS_SUCCESS);
   	
   	$this->stats_register->set_register_time(time() + 3*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', RESPONSE_STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', REQUEST_STATUS_SUCCESS);
   	
   	$this->stats_register->set_register_time(time() + 4*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', RESPONSE_STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', REQUEST_STATUS_SUCCESS);
   	
   	$this->stats_register->set_register_time(time() + 5*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', RESPONSE_STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', REQUEST_STATUS_SUCCESS);
   	
   	$this->stats_register->set_register_time(time() + 6*60*60*24);
-  	$this->stats_register->register($node_id = 1, 'test', RESPONSE_STATUS_SUCCESS);
+  	$this->stats_register->register($node_id = 1, 'test', REQUEST_STATUS_SUCCESS);
   	  	
   	$date = new date();
   	$date->set_by_stamp(time() + 4*60*60*24 - 10);

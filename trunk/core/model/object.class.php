@@ -31,6 +31,11 @@ class object
 	{
 		return $this->_attributes->export();
 	}
+	
+	function has_attribute($name)
+	{
+	  return $this->_attributes->get($name) !== null;
+	}
 		
 	function get_attribute($name, $default_value=null)
 	{

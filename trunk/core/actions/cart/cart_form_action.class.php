@@ -10,16 +10,14 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/model/shop/cart.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class cart_form_action extends form_action
 {
-	function cart_form_action($name = 'cart_form')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'cart_form';
 	}
-	
+  
 	function _update_items_amount()
 	{
 		$cart =& cart :: instance();

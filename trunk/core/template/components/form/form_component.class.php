@@ -104,7 +104,10 @@ class form_component extends tag_component
 			return $dataspace->get('submitted') ? false : true;
 		}	
 		else
-			return isset($_REQUEST['submitted']) ? false : true;
+		{
+		  $request = request :: instance();
+		  return $request->has_attribute('submitted');
+		}
 	} 
 
 	/**
@@ -136,7 +139,8 @@ class form_component extends tag_component
 		{
 			$this->attributes['action'] = $_SERVER['PHP_SELF'];
 			
-			if(isset($_REQUEST['popup']))
+			$request = request :: instance();
+			if($request->has_attribute('popup'))
 				$this->attributes['action'] .= '?popup=1';
 		}
 			

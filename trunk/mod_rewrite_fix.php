@@ -20,7 +20,6 @@ if($url['query'])
 	parse_str($url['query'], $output);
 	
 	$_GET = complex_array :: array_merge($_GET, $output);
-	$_REQUEST = complex_array :: array_merge($_REQUEST, $output);
 }
 
 ?>

@@ -8,13 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/model/response/response.class.php');
-
-class failed_response extends response
+class filters_group extends GroupTest 
 {
-	function failed_response()
+	function filters_group() 
 	{
-		parent :: response(RESPONSE_STATUS_FAILURE);
-	}				
-} 
+	  $this->GroupTest('filters tests');
+	  
+ 		TestManager::addTestCasesFromDirectory($this, LIMB_DIR . '/tests/cases/filters');
+	}
+}
 ?>

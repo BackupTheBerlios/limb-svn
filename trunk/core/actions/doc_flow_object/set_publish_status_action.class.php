@@ -9,22 +9,21 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/action.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class set_publish_status_action extends action
 {
-	function set_publish_status_action($name='')
+	function perform(&$request, &$response)
 	{
-		parent :: action($name);
-	}
+		$request->set_status(REQUEST_STATUS_SUCCESS);
+		
+		if($request->has_attribute('popup'))
+			$response->write_response_string(close_popup_response($request));
 	
-	function perform()
-	{
-		if(!$object = wrap_with_site_object(fetch_mapped_by_url()))
-			return new close_popup_response();
+		if(!$object = wrap_with_site_object(fetch_requested_object()))
+  		return;
 		
 		$site_object_controller =& $object->get_controller();
-		$action = $site_object_controller->determine_action();
+		$action = $site_object_controller->determine_action($request);
 
 		switch ($action)
 		{
@@ -35,7 +34,7 @@ class set_publish_status_action extends action
 				$status = $this->get_unpublish_status($object);
 			break;
 			default:
-				return new close_popup_response();
+				return ;
 			break;
 		}
 
@@ -43,8 +42,6 @@ class set_publish_status_action extends action
 		$object->update(false);
 		
 		$this->_apply_access_policy($object, $action);
-			
-		return new close_popup_response();
 	}
 	
 	function get_publish_status($object)

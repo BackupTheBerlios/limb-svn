@@ -44,9 +44,10 @@ class search_datasource extends fetch_datasource
 	
 	function _init_search_query_object()
 	{
-		if (isset($_REQUEST['search_query']) && trim($_REQUEST['search_query']))
+	  $request = request :: instance();
+		if ($search_query = trim($request->get_attribute('search_query')))
 		{
-			$this->query_object->add(search_text_normalizer :: process($_REQUEST['search_query']));
+			$this->query_object->add(search_text_normalizer :: process($search_query));
 		}
 	}
 }

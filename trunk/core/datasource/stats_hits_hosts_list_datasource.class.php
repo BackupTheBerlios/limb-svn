@@ -63,10 +63,12 @@ class stats_hits_hosts_list_datasource extends datasource
 	
 	function _configure_filters()
 	{
-		$this->_set_period_filter();
+	  $request = request :: instance();
+	
+		$this->_set_period_filter($request);
 	}
 		
-	function _set_period_filter()
+	function _set_period_filter(&$request)
 	{
 		$locale =& locale :: instance();
 		$start_date = new date();
@@ -74,17 +76,16 @@ class stats_hits_hosts_list_datasource extends datasource
 		$start_date->set_minute(0);
 		$start_date->set_second(0);
 
-		if (isset($_REQUEST['stats_start_date']))
-		{
-			$start_date->set_by_string($_REQUEST['stats_start_date'], $locale->get_short_date_time_format());
-		}
+	  if ($stats_start_date = $request->get_attribute('stats_start_date'))
+			$start_date->set_by_string($stats_start_date, $locale->get_short_date_time_format());
 		
 		$finish_date = new date();
+	  if ($stats_finish_date = $request->get_attribute('stats_finish_date'))
+			$finish_date->set_by_string($stats_finish_date, $locale->get_short_date_time_format());
 
-		if (isset($_REQUEST['stats_finish_date']))
-		{
-			$finish_date->set_by_string($_REQUEST['stats_finish_date'], $locale->get_short_date_time_format());
-		}
+		$finish_date->set_hour(23);
+		$finish_date->set_minute(59);
+		$finish_date->set_second(59);
 		
 		$this->stats_report->set_period_filter($start_date, $finish_date);
 	}

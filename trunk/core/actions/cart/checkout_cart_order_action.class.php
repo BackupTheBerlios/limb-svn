@@ -16,14 +16,12 @@ require_once(LIMB_DIR . 'core/lib/locale/locale.class.php');
 require_once(LIMB_DIR . 'core/lib/date/date.class.php');
 require_once(LIMB_DIR . 'core/lib/mail/send_html_mail.inc.php');
 require_once(LIMB_DIR . 'core/template/template.class.php');
-require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class checkout_cart_order_action extends form_action
 {
-	function checkout_cart_order_action($name = 'checkout_form')
-	{		
-		parent :: form_action($name);
+	function _define_dataspace_name()
+	{
+	  return 'checkout_form';
 	}
 
 	function _init_validator()
@@ -35,7 +33,7 @@ class checkout_cart_order_action extends form_action
 		$this->validator->add_rule(new email_rule('email'));
 	}
 
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
 		$user =& user :: instance();
 		
@@ -59,7 +57,7 @@ class checkout_cart_order_action extends form_action
 		return $email;
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		//$html_body = $this->_get_mail_body('/cart/mail_template.html');
 		$text_body = $this->_get_mail_body('/cart/mail_template.txt');
@@ -73,13 +71,23 @@ class checkout_cart_order_action extends form_action
 												$text_body))
 		{
 			message_box :: write_error(strings :: get('mail_not_sent', 'cart'));
-			return new close_popup_response(RESPONSE_STATUS_FAILURE);
+
+			$request->set_status(REQUEST_STATUS_FAILURE);
+			
+  		if($request->has_attribute('popup'))
+  			$response->write_response_string(close_popup_response($request));
+  			
+  		return;
 		}
 		
 		$this->_clear_cart();
 		
 		message_box :: write_error(strings :: get('message_was_sent', 'cart'));
-		return new close_popup_response(RESPONSE_STATUS_FORM_SUBMITTED);
+
+		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		
+		if($request->has_attribute('popup'))
+			$response->write_response_string(close_popup_response($request));
 	}
 	
 	function _clear_cart()

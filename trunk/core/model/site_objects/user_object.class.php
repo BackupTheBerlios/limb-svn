@@ -162,11 +162,13 @@ class user_object extends content_object
 
 	function activate_password()
 	{
-		if(!isset($_REQUEST['user']) || !isset($_REQUEST['id']))
+	  $request = request :: instance();
+	  
+	  if(!$email = $request->get_attribute('user'))
 			return false;
 
-		$email = $_REQUEST['user'];
-		$password = $_REQUEST['id'];
+	  if(!$password = $request->get_attribute('id'))
+			return false;
 		
 		$user_data = $this->get_user_by_email($email);
 		if(($password != $user_data['password']) || empty($user_data['generated_password']))

@@ -10,7 +10,6 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
-require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
 
 class login_action extends form_action
 {
@@ -27,35 +26,33 @@ class login_action extends form_action
 		$this->validator->add_rule(new required_rule('password'));
 	}
 	
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		parent :: _init_dataspace();
+		parent :: _init_dataspace($request);
 		
-		$this->_transfer_redirect_param();
+		$this->_transfer_redirect_param($request);
 	}	
 	
-	function _transfer_redirect_param()
+	function _transfer_redirect_param(&$request)
 	{
-		if (!isset($_REQUEST['redirect']) || !$_REQUEST['redirect'])
-			return ;
+		if(!$redirect = $request->get_attribute('redirect'))
+			return;
 
-		$this->dataspace->set('redirect', urldecode($this->_get_redirect_string()));
+		$this->dataspace->set('redirect', urldecode($this->_get_redirect_string($request)));
 	}
 	
-	function _get_redirect_string()
+	function _get_redirect_string(&$request)
 	{
-		if(!isset($_REQUEST['redirect']))
+		if(!$redirect = $request->get_attribute('redirect'))
 			return '';
 			
-		$redirect = $_REQUEST['redirect'];
-		
 		if(!preg_match("/^([a-z0-9\.#\/\?&=\+\-_]+)/si", $redirect))
 			return '';
 				
 		return $redirect;
 	}
 	
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$login = $this->dataspace->get('login');
 		$password = $this->dataspace->get('password');
@@ -65,20 +62,31 @@ class login_action extends form_action
 
 		if($user_object->login($login, $password, $locale_id))
 		{
+  		$request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
+		  
 			if($redirect = $this->dataspace->get('redirect'))
-				return $this->_login_redirect($redirect);
+			{
+			  $this->_login_redirect($redirect, $response);
+				return;
+			}
 			elseif(isset($_SERVER['HTTP_REFERER']) && strpos(strtolower($_SERVER['HTTP_REFERER']), '/root/login') === false)
-				return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, $_SERVER['HTTP_REFERER']);
+			{
+    		$response->redirect($_SERVER['HTTP_REFERER']);
+    		return;
+			}	
 			else
-				return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, '/');
+			{
+    		$response->redirect('/');
+    		return;
+			}	
 		}
-		else	
-			return new failed_response();
+		
+		$request->set_status(REQUEST_STATUS_FAILURE);
 	}
 	
-	function _login_redirect($redirect)
+	function _login_redirect($redirect, &$response)
 	{
-		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, $redirect);
+		$response->redirect($redirect);
 	}
 }
 

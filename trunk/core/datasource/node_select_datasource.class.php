@@ -17,7 +17,9 @@ class node_select_datasource extends fetch_sub_branch_datasource
 	{
 		$params['depth'] = 1;
 
-		if(isset($_REQUEST['only_parents']) && $_REQUEST['only_parents'] == 'false')
+	  $request = request :: instance();		
+
+		if($request->get_attribute('only_parents') == 'false')
 			$params['only_parents'] = false;
 		else
 			$params['only_parents'] = true;
@@ -31,10 +33,11 @@ class node_select_datasource extends fetch_sub_branch_datasource
 	function _process_path()
 	{
 		$default_path = '/root/';
-		if(!isset($_REQUEST['path']))
+
+	  $request = request :: instance();		
+		
+		if(!$path = $request->get_attribute('path'))
 			return $default_path;
-		else
-			$path = $_REQUEST['path'];
 
 		if(strpos($path, '?') !== false)
 		{

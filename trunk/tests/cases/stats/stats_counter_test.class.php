@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/model/stats/stats_register.class.php');
-require_once(LIMB_DIR . '/core/model/response/response.class.php');
 
 Mock::generatePartial
 (

@@ -18,7 +18,7 @@ class form_edit_site_object_action extends form_site_object_action
 {
 	function _init_validator()
 	{
-		if(!$object_data = fetch_mapped_by_url())
+		if(!$object_data = fetch_requested_object())
 			return;
 	
 		if($this->object->is_auto_identifier())
@@ -33,9 +33,9 @@ class form_edit_site_object_action extends form_site_object_action
 		$this->validator->add_rule(new tree_identifier_rule('identifier', (int)$parent_node_id, (int)$object_data['node_id']));
 	}
 
-	function _init_dataspace()
+	function _init_dataspace(&$request)
 	{
-		$object_data =& fetch_mapped_by_url();
+		$object_data =& fetch_requested_object();
 
 		$data = array();
 		complex_array :: map(array_flip($this->datamap), $object_data, $data);
@@ -43,7 +43,7 @@ class form_edit_site_object_action extends form_site_object_action
 		$this->dataspace->import($data);
 	}
 
-	function _valid_perform()
+	function _valid_perform(&$request, &$response)
 	{
 		$object_data =& $this->_load_object_data();
 
@@ -61,7 +61,10 @@ class form_edit_site_object_action extends form_site_object_action
 		$this->object->import_attributes($data_to_import);
 		
 		if(!$this->_update_object_operation())
-			return new failed_response();
+		{
+		  $request->set_status(REQUEST_STATUS_FAILURE);
+			return;
+		}	
 
 		$this->indexer->add($this->object);
 		
@@ -69,8 +72,8 @@ class form_edit_site_object_action extends form_site_object_action
 		{
 			$this->_handle_changed_identifier($data_to_import['identifier']);
 		}	
-			
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+
+	  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	}
 	
 	function _update_object_operation()
@@ -87,7 +90,7 @@ class form_edit_site_object_action extends form_site_object_action
 	
 	function & _load_object_data()
 	{
-		$result =& fetch_mapped_by_url();
+		$result =& fetch_requested_object();
 		return $result;
 	}
 }

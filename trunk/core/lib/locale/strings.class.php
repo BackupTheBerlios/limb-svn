@@ -16,10 +16,6 @@ class strings
 	var $_ini_objects = array();
 	var $_path_cache = array();
 	var $_cache = array();
-
-	function strings()
-	{		
-	}
 	
 	function get($key, $filename='common', $locale_id=null)
 	{

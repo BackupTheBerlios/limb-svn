@@ -8,34 +8,29 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . 'core/lib/http/http_request.inc.php');
 require_once(LIMB_DIR . 'core/actions/action.class.php');
 
 class tree_toggle_action extends action
 {
-	function perform()
+	function perform(&$request, &$response)
 	{
-		if(isset($_REQUEST['recursive_search_for_node']))
-			return new response();
+		if($request->has_attribute('recursive_search_for_node'))
+			return;
 		
 		$tree =& tree :: instance();
 				
-		if(isset($_REQUEST['id']))
-			$id = (int)$_REQUEST['id'];
-		else
+		if(!$id = $request->get_attribute('id'))
 			$id = get_mapped_id();
 			
-		if(isset($_REQUEST['expand']))
+		if($request->has_attribute('expand'))
 			$result = $tree->expand_node($id);
-		elseif(isset($_REQUEST['collapse']))
+		elseif($request->has_attribute('collapse'))
 			$result = $tree->collapse_node($id);
 		else
 			$result = $tree->toggle_node($id);
 			
-		if($result)
-			return new response();
-		else
-			return new failed_response();
+		if(!$result)
+		  $request->set_status(REQUEST_STATUS_FAILURE);
 	}
 }
 
