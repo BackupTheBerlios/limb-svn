@@ -15,7 +15,7 @@ class objects_access_groups_filter_datasource implements options_datasource
 	public function get_options_array()
 	{
 		$params['order'] = array('priority' => 'ASC');
-		$user_groups = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$user_groups = $this->_get_user_groups();
 
 		$options_array = array();
 
@@ -25,6 +25,16 @@ class objects_access_groups_filter_datasource implements options_datasource
 		return $options_array;
 	}
 
+  protected function _get_user_groups()
+  {
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path('/root/user_groups');
+    $datasource->set_site_object_class_name('user_group');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
+  }
+  
 	public function get_default_option()
 	{
 		return null;

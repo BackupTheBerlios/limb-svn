@@ -21,7 +21,11 @@ class save_new_object_access_command implements Command
       throw new LimbException('can\'t find created site object in dataspace');
 
     $parent_id = $object->get_parent_node_id();
-    $parent_object = wrap_with_site_object($toolkit->getFetcher()->fetch_one_by_node_id($parent_id));
+
+    $datasource = $toolkit->createDatasource('single_object_datasource');
+    $datasource->set_node_id($parent_id);
+    $parent_object = wrap_with_site_object($datasource->fetch());
+
     $action = $parent_object->get_controller()->get_action($toolkit->getRequest());
 
 	  try

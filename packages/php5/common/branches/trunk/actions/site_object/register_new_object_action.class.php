@@ -43,9 +43,12 @@ class register_new_object_action extends form_action
 		$params['title'] = $this->dataspace->get('title');
 		
 		$object = Limb :: toolkit()->createSiteObject($params['class']);
+    
+    $datasource = Limb :: toolkit()->createDatasource('single_object_datasource');
+    $datasource->set_path($params['parent_path']);
 		
 		$is_root = false;
-		if(!$parent_data = Limb :: toolkit()->getFetcher()->fetch_one_by_path($params['parent_path']))
+		if(!$parent_data = $datasource->fetch())
 		{
 			if ($params['parent_path'] == '/')
 				$is_root = true;

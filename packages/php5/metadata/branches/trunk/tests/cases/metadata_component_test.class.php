@@ -40,7 +40,7 @@ class metadata_component_test extends LimbTestCase
 
   	$this->metadata_component->setReturnReference('_get_mapped_controller', $this->controller);
 
-  	$tree = new tree();
+  	$tree = Limb :: toolkit()->getTree();
 
 		$values['identifier'] = 'object_300';
 		$values['object_id'] = 300;

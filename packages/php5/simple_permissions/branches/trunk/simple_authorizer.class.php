@@ -14,7 +14,7 @@ class simple_authorizer implements authorizer
 {
   protected $_cached_class_accessible_actions = array();
 
-  public function get_accessible_object_ids($object_ids, $action = 'display', $class_id = null)
+  public function get_accessible_object_ids($object_ids, $action = 'display')
   {
 		if (!count($object_ids))
 			return array();
@@ -28,17 +28,9 @@ class simple_authorizer implements authorizer
 			
 		$db = db_factory :: instance();
 		
-		if ($class_id)	
-		{
-  		$sql = "SELECT soa.object_id as id
-  			FROM sys_site_object as sso, sys_object_access as soa
-  			WHERE soa.object_id IN ({$in_ids})
-  			AND sso.id = soa.object_id AND sso.class_id = {$class_id}";
-  	}
-		else
-  		$sql = "SELECT soa.object_id as id
-  			FROM sys_object_access as soa
-  			WHERE soa.object_id IN ({$in_ids})";
+    $sql = "SELECT soa.object_id as id
+      FROM sys_object_access as soa
+      WHERE soa.object_id IN ({$in_ids})";
 
 		$sql	.= " AND soa.accessor_id IN ({$accessor_ids})";
 		

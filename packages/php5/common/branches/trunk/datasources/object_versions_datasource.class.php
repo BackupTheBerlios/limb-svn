@@ -15,8 +15,12 @@ class object_versions_datasource implements datasource
 	public function get_dataset(&$counter, $params=array())
 	{
     $request = Limb :: toolkit()->getRequest();
-		$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
 
+    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource->set_request($request);
+
+		$object_data = $datasource->fetch();
+    
 		if (!count($object_data))
 			return new array_dataset(array());
 
@@ -26,7 +30,7 @@ class object_versions_datasource implements datasource
 
 		$result = array();
 
-		$users = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/users', 'user_object', $counter);
+		$users = $this->_get_users();
 
 		foreach($arr as $data)
 		{
@@ -55,6 +59,16 @@ class object_versions_datasource implements datasource
 
 		return new array_dataset($result);
 	}
+  
+  protected function _get_users()
+  {
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path('/root/users');
+    $datasource->set_site_object_class_name('user_object');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
+  }
 }
 
 

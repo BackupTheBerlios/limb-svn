@@ -14,7 +14,7 @@ class poll_all_results_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params = array())
 	{
-		$questions = $this->_load_all_questions($params);
+		$questions = $this->_load_all_questions();
 
 		if(!count($questions))
 			return new array_dataset(array());
@@ -53,24 +53,24 @@ class poll_all_results_datasource implements datasource
 		return new array_dataset($questions);
 	}
 
-	protected function _load_all_questions($new_params = array())
+	protected function _load_all_questions()
 	{
-		$params = array(
-			'depth' => -1
-		);
-
-		$params = complex_array :: array_merge($params, $new_params);
-
-		return Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/polls', 'poll', $params);
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path('root/polls');
+    $datasource->set_site_object_class_name('poll');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
 	}
 
 	protected function _load_answers($question_path)
 	{
-		$params = array(
-			'depth' => 1
-		);
-
-		return Limb :: toolkit()->getFetcher()->fetch_sub_branch($question_path, 'poll_answer', $params);
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path($question_path);
+    $datasource->set_site_object_class_name('poll_answer');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
 	}
 }
 

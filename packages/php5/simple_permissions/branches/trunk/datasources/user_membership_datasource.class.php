@@ -14,7 +14,7 @@ class user_membership_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params = array())
 	{
-		$user_groups = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$user_groups = $this->_get_user_groups();
 
 		$result = array();
 		foreach($user_groups as $id => $group_data)
@@ -26,5 +26,15 @@ class user_membership_datasource implements datasource
 		$counter = sizeof($result);
 		return new array_dataset($result);
 	}
+
+  protected function _get_user_groups()
+  {
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path('/root/user_groups');
+    $datasource->set_site_object_class_name('user_group');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
+  }  
 }
 ?>

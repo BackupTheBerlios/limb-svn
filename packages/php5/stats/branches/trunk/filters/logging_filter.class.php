@@ -18,7 +18,10 @@ class logging_filter implements intercepting_filter
 
     debug :: add_timing_point('logging filter started');
 
-    $object = wrap_with_site_object(Limb :: toolkit()->getFetcher()->fetch_requested_object($request));
+    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource->set_request($request);
+    
+    $object = wrap_with_site_object($datasource->fetch());
 
     $controller = $object->get_controller();
 

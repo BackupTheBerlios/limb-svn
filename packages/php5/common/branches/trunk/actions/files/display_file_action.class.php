@@ -14,7 +14,10 @@ class display_file_action extends action
 {
 	public function perform($request, $response)
 	{
-		$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
+    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource->set_request($request);
+    
+		$object_data = $datasource->fetch();
 
 		if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
 		{

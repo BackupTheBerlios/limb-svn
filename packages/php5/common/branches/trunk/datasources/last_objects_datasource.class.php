@@ -37,12 +37,11 @@ class last_objects_datasource extends fetch_datasource
 				$parent_node_ids[$data['parent_node_id']] = $data['parent_node_id'];
 			}
 
-		$params = array(
-			'restrict_by_class' => false,
-			'use_node_ids_as_keys' => true,
-		);
+    $datasource = Limb :: toolkit()->createDatasource('single_objects_by_node_ids_datasource');
+    $datasource->set_use_node_ids_as_keys();
+    $datasource->set_node_ids($parent_node_ids);
 
-		$parents = Limb :: toolkit()->getFetcher()->fetch_by_node_ids($parent_node_ids, 'site_object', $parents_counter, $params, 'fetch_by_ids');
+		$parents = $datasource->fetch();
 
 		foreach($items as $key => $data)
 		{

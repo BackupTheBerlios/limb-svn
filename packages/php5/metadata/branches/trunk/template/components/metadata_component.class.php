@@ -131,26 +131,27 @@ class metadata_component extends component
 
 	public function get_node_id()
 	{
-    $toolkit = Limb :: toolkit();
+		if ($this->node_id)
+      return $this->node_id;
     
-		if (!$this->node_id)
-		{
-      $request = $toolkit->getRequest();
-      
-			if($this->request_path)
-			{
-			  $node_path = $request->get($this->request_path);
+    $toolkit = Limb :: toolkit();
+    $request = $toolkit->getRequest();
+    
+    if($this->request_path)
+    {
+      $node_path = $request->get($this->request_path);
+      $node = $toolkit->getTree()->get_node_by_path($node_path);
+    }
+    else
+    {
+      $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+      $datasource->set_request($request);
+      $node = $datasource->map_request_to_node($request);
+    }  
 
-				if(!$node = $toolkit->getFetcher()->map_uri_to_node(new uri($node_path)))
-					$node = $toolkit->getFetcher()->map_request_to_node($request);
-			}
-			else
-				$node = $toolkit->getFetcher()->map_request_to_node($request);
-
-			$this->node_id = $node['id'];
-		}
-
-		return $this->node_id;
+    $this->node_id = $node['id'];
+    
+    return $this->node_id;
 	}
 
 	public function get_keywords()

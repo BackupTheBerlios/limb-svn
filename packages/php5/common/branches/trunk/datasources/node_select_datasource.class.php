@@ -36,10 +36,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 
 		if(strpos($path, '?') !== false)
 		{
-			if(!$node = Limb :: toolkit()->getFetcher()->map_uri_to_node(new uri($path)))
-				return $default_path;
-
-			if(!$path = Limb :: toolkit()->getTree()->get_path_to_node($node))
+			if(!$path = Limb :: toolkit()->getTree()->get_node_by_path($path))
 				return $default_path;
 		}
 		return $path;

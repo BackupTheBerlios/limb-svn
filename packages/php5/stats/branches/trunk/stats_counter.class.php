@@ -79,7 +79,10 @@ class stats_counter
 	{
     $request = Limb :: toolkit()->getRequest();
     
-		if(!$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request))
+    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource->set_request($request);
+    
+		if(!$object_data = $datasource->fetch())
 			return false;
 
 		return ($object_data['parent_node_id'] == 0);

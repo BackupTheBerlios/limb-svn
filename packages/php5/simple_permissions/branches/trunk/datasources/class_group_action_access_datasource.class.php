@@ -31,7 +31,7 @@ class class_group_action_access_datasource implements datasource
 
 		$actions = $site_object_controller->get_actions_definitions();
 
-		$user_groups = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter);
+    $user_groups = $this->_get_user_groups();
 
 		$result = array();
 		foreach($actions as $action => $action_params)
@@ -50,6 +50,16 @@ class class_group_action_access_datasource implements datasource
 		$counter = sizeof($result);
 		return new array_dataset($result);
 	}
+
+  protected function _get_user_groups()
+  {
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path('/root/user_groups');
+    $datasource->set_site_object_class_name('user_group');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
+  }
 }
 
 

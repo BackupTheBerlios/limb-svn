@@ -15,7 +15,7 @@ class objects_access_groups_list_datasource implements datasource
 	public function get_dataset(&$counter, $params = array())
 	{
 		$params['order'] = array('priority' => 'ASC');
-		$groups = Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $params);
+		$groups = $this->_get_user_groups();
 
 		$dataspace = dataspace_registry :: get('set_group_access');
 		$filter_groups = $dataspace->get('filter_groups');
@@ -31,6 +31,16 @@ class objects_access_groups_list_datasource implements datasource
 
 		return new array_dataset($groups);
 	}
+
+  protected function _get_user_groups()
+  {
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path('/root/user_groups');
+    $datasource->set_site_object_class_name('user_group');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
+  }
 }
 
 

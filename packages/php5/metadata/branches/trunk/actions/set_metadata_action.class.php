@@ -20,7 +20,10 @@ class set_metadata_action extends form_action
 
 	protected function _init_dataspace($request)
 	{
-		$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
+    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource->set_request($request);
+    
+		$object_data = $datasource->fetch();
 
 		$data = metadata_manager :: get_metadata($object_data['id']);
 		$this->dataspace->import($data);
@@ -28,7 +31,10 @@ class set_metadata_action extends form_action
 
 	protected function _valid_perform($request, $response)
 	{
-		$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
+    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource->set_request($request);
+    
+		$object_data = $datasource->fetch();
 
 		metadata_manager :: save_metadata($object_data['id'], 
 		                                  $this->dataspace->get('keywords'), 

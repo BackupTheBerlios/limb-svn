@@ -16,7 +16,10 @@ class class_list_datasource implements datasource
 	{
     $request = Limb :: toolkit()->getRequest();
     
-		if(!$arr = Limb :: toolkit()->getFetcher()->fetch_requested_object($request))
+    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource->set_request($request);
+    
+		if(!$arr = $datasource->fetch())
 			return new array_dataset();
 
 		$db_table = Limb :: toolkit()->createDBTable('sys_class');

@@ -87,13 +87,11 @@ class multi_delete_action extends form_action
 
 	protected function _get_objects_to_delete($node_ids)
 	{
-		$params = array(
-			'restrict_by_class' => false
-		);
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_by_node_ids_datasource');
+    $datasource->set_node_ids($node_ids);
+        
+		$objects = $datasource->fetch(); 
 
-		$objects = Limb :: toolkit()->getFetcher()->fetch_by_node_ids($node_ids, 'site_object', $counter, $params);
-
-		$result = array();
 		$tree = Limb :: toolkit()->getTree();
 
 		foreach($objects as $id => $item)

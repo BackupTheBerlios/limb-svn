@@ -185,23 +185,25 @@ class poll_container extends site_object
 			}
 	}
 
-	protected function _load_all_questions($new_params = array())
+	protected function _load_all_questions()
 	{
-		$params = array(
-			'depth' => -1,
-			'order' => array(
-				'start_date' => 'DESC'
-			)
-		);
-
-		$params = complex_array :: array_merge($params, $new_params);
-
-		return Limb :: toolkit()->getFetcher()->fetch_sub_branch('/root/polls', 'poll', $counter, $params);
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path('root/polls');
+    $datasource->set_order(array('start_date' => 'DESC'));
+    $datasource->set_site_object_class_name('poll');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
 	}
 
 	protected function _load_answers($question_path)
 	{
-		return Limb :: toolkit()->getFetcher()->fetch_sub_branch($question_path, 'poll_answer', $counter);
+    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource->set_path($question_path);
+    $datasource->set_site_object_class_name('poll_answer');
+    $datasource->set_restrict_by_class();
+    
+		return $datasource->fetch();
 	}
 
 }

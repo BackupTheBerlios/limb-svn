@@ -27,7 +27,10 @@ class version_datasource implements datasource
 		$version = (int)$version;
 		$node_id = (int)$node_id;
 
-		if(!$site_object = wrap_with_site_object(Limb :: toolkit()->getFetcher()->fetch_one_by_node_id($node_id)))
+    $datasource = Limb :: toolkit()->createDatasource('single_object_datasource');
+    $datasource->set_node_id($node_id);
+
+		if(!$site_object = wrap_with_site_object($datasource->fetch()))
 			return new empty_dataset();
 
 		if(!is_subclass_of($site_object, 'content_object'))

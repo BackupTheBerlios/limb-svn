@@ -54,8 +54,11 @@ class edit_file_action extends form_edit_site_object_action
 			}
       
       $request = Limb :: toolkit()->getRequest();
-			$object_data = Limb :: toolkit()->getFetcher()->fetch_requested_object($request);
-
+      $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+      $datasource->set_request($request);
+      
+      $object_data = $datasource->fetch();
+      
 			$this->object->set('media_id', $object_data['media_id']);
 			$this->object->set('tmp_file_path', $_FILES[$this->name]['tmp_name']['file']);
 			$this->object->set('file_name', $_FILES[$this->name]['name']['file']);
