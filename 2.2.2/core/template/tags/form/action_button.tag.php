@@ -41,7 +41,10 @@ class action_button_tag extends button_tag
 		
 		if(!isset($this->attributes['type']))
 			$this->attributes['type'] = 'submit';	
-
+    
+    if (!isset($this->attributes['onclick']) || !$this->attributes['onclick'])
+      $this->attributes['onclick'] = '';
+      
 		if(isset($this->attributes['reload_parent']))
 		{
 			$this->attributes['onclick'] .= "add_form_action_parameter(this.form, 'reload_parent', '1');";
