@@ -74,6 +74,26 @@ class one_table_objects_raw_finder_test extends LimbTestCase
      
     $this->assertEqual($this->finder->find($params, $sql_params), $result);
   }
+  
+  function test_find_by_id()
+  {
+    $this->db_table->expectOnce('get_columns_for_select', array('tn', array('id')));
+    $this->db_table->setReturnValue('get_columns_for_select', 'tn.field1, tn.field2');
+    $this->db_table->expectOnce('get_table_name');
+    $this->db_table->setReturnValue('get_table_name', 'table1');
+    
+    $expected_sql_params = array();
+    $expected_sql_params['conditions'][] = ' AND sso.id='. $id = 100;
+    $expected_sql_params['conditions'][] = 'AND sso.id=tn.object_id';
+    $expected_sql_params['columns'][] = ' tn.field1, tn.field2,';
+    $expected_sql_params['tables'][] = ',table1 as tn';
+    
+    $this->finder->expectOnce('_do_parent_find', array(array(), 
+                                                        new EqualExpectation($expected_sql_params)));
+    $this->finder->setReturnValue('_do_parent_find', $result = 'some result');
+
+    $this->assertEqual($this->finder->find_by_id($id), $result);
+  }
 
   function test_count()
   {

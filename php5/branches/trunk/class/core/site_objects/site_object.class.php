@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/object.class.php');
+require_once(LIMB_DIR . '/class/core/domain_object.class.php');
 
-class site_object extends object
+class site_object extends domain_object
 {
   protected $behaviour;
   
@@ -62,16 +62,6 @@ class site_object extends object
   public function set_title($title)
   {
     $this->set('title', $title);
-  }
-
-  public function get_id()
-  {
-    return (int)$this->get('id');
-  }
-
-  public function set_id($id)
-  {
-    $this->set('id', (int)$id);
   }
   
   public function set_version($version)

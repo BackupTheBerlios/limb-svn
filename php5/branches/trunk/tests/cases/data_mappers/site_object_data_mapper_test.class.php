@@ -179,27 +179,15 @@ class site_object_mapper_test extends LimbTestCase
     $this->assertEqual($mapper->get_parent_locale_id($parent_node_id), $locale_id);
   }
   
-  function test_find_by_id_failed()
-  {
-    $finder = new Mocksite_objects_raw_finder($this);
-    $parameters = array(array(), array('conditions' => array('sso.id=' . $id = 10)));
-    $finder->setReturnValue('find', array(), $parameters);
-
-    $mapper = new site_object_mapper_test_version0($this);
-    $mapper->setReturnValue('_get_finder', $finder);    
-    $this->assertNull($mapper->find_by_id($id));
-  }
-  
   function test_find_by_id()
   {
     $finder = new Mocksite_objects_raw_finder($this);
-    $parameters = array(array(), array('conditions' => array('sso.id=' . $id = 10)));
-    $result = array('id' => $id,
+    $result = array('id' => $id = 10,
                     'identifier' => $identifier = 'test',
                     'behaviour_id' => $behaviour_id = 100);
     
-    $finder->expectOnce('find', $parameters);
-    $finder->setReturnValue('find', $result, $parameters);
+    $finder->expectOnce('find_by_id', array($id));
+    $finder->setReturnValue('find_by_id', $result, array($id));
     
     $mapper = new site_object_mapper_test_version0($this);
     
@@ -218,33 +206,6 @@ class site_object_mapper_test extends LimbTestCase
     $finder->tally();
     $mapper->tally();
   }
-  
-  function test_save_insert()
-  {
-    $mapper = new site_object_mapper_test_version0($this);
-    
-    $site_object = new site_object();    
-    
-    $mapper->expectOnce('insert', array($site_object));
-    
-    $mapper->save($site_object);
-    
-    $mapper->tally();
-  }
-
-  function test_save_update()
-  {
-    $mapper = new site_object_mapper_test_version0($this);
-    
-    $site_object = new site_object(); 
-    $site_object->set_id(100);
-    
-    $mapper->expectOnce('update', array($site_object));
-    
-    $mapper->save($site_object);
-    
-    $mapper->tally();
-  }   
   
   function test_failed_insert_site_object_record_no_identifier()
   {
@@ -380,7 +341,6 @@ class site_object_mapper_test extends LimbTestCase
   
     $mapper->tally();  	
   }
-  
 
   function  test_update_site_object_record_failed_no_id()
   {
@@ -399,7 +359,6 @@ class site_object_mapper_test extends LimbTestCase
     
     $mapper->tally();
   }
-  
   
   function  test_update_site_object_record_failed_no_behaviour_id()
   {
@@ -467,7 +426,6 @@ class site_object_mapper_test extends LimbTestCase
     
     $mapper->tally();
   }
-
   
   function  test_update_tree_node_failed_no_node_id()
   {
@@ -527,7 +485,6 @@ class site_object_mapper_test extends LimbTestCase
     
     $mapper->tally();
   }
-
   
   function  test_update_tree_node_failed_new_parent_cant_accept_children()
   {

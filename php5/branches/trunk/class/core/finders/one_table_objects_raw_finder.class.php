@@ -42,6 +42,11 @@ abstract class one_table_objects_raw_finder extends site_objects_raw_finder
     return $this->_do_parent_find($params, $sql_params);
   }
   
+  public function find_by_id($id)
+  {
+    return $this->find(array(), array('conditions' => array(' AND sso.id='. $id)));
+  }
+  
   //for mocking
   protected function _do_parent_find($params, $sql_params)
   {

@@ -18,6 +18,21 @@ require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
 Mock :: generate('db_module');
 Mock :: generate('LimbToolkit');
 
+Mock :: generatePartial('site_objects_raw_finder',
+                        'site_objects_raw_finder_find_version_mock',
+                        array());
+
+class site_objects_raw_finder_find_test_version extends site_objects_raw_finder_find_version_mock
+{
+  var $_mocked_methods = array('find');
+
+  public function find($params = array(), $sql_params = array()) 
+  { 
+    $args = func_get_args();
+    return $this->_mock->_invoke('find', $args); 
+  }
+}
+
 class site_objects_raw_finder_test extends LimbTestCase
 {
 	var $class_id;
@@ -182,7 +197,19 @@ class site_objects_raw_finder_test extends LimbTestCase
     Limb :: popToolkit();
     
     $db_mock->tally();    
-  }  
+  }
+
+  function test_find_by_id()
+  {
+    $finder = new site_objects_raw_finder_find_test_version($this);
+    $finder->expectOnce('find', array(array(), 
+                                      array('conditions' => array(' AND sso.id='. $id = 100))));
+    
+    $finder->expectOnce('find');
+    $finder->find_by_id($id);
+    
+    $finder->tally();
+  }
 
   function test_find_no_params()
   {

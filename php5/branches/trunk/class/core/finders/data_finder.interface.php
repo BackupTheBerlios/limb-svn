@@ -8,16 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-class site_objects_group extends LimbGroupTest 
+interface data_finder
 {
-	function site_objects_group() 
-	{
-	  $this->LimbGroupTest('site objects tests');
-	}
-	
-	function getTestCasesHandles()
-	{
- 		return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/site_objects');
-	}		
+  public function find($params = array(), $sql_params = array());//refactor!!!
+  
+  public function count($sql_params=array());//refactor!!!
+  
+  public function find_by_id($id);
 }
+
 ?>

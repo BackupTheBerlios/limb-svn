@@ -11,12 +11,10 @@
 class object
 {
 	protected $dataspace;
-  protected $clean_hash;
 	
 	function __construct()
 	{
     $this->dataspace = $this->_create_dataspace();
-    $this->undirty();
 	}
   
   protected function _create_dataspace()
@@ -25,16 +23,6 @@ class object
     return new dataspace();
   }
   
-  public function is_dirty()
-  {
-    return ($this->clean_hash != $this->dataspace->get_hash());
-  }
-  
-  public function undirty()
-  {
-    $this->clean_hash = $this->dataspace->get_hash();
-  }
-
 	public function merge($values)
 	{		
 	  $this->dataspace->merge($values);
@@ -43,8 +31,6 @@ class object
 	public function import($values)
 	{
 	  $this->dataspace->import($values);
-    
-    $this->undirty();
 	}
 		
 	public function export()

@@ -8,8 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/core/data_mappers/abstract_data_mapper.class.php');
 
-class site_object_behaviour_mapper
+class site_object_behaviour_mapper extends abstract_data_mapper
 {
   public function find_by_id($id)
   {
@@ -22,14 +23,6 @@ class site_object_behaviour_mapper
     $behaviour->set_id($id);
     
     return $behaviour; 
-  }
-  
-  public function save($behaviour)
-  {
-    if($behaviour->get_id())
-      $this->update($behaviour);
-    else
-      $this->insert($behaviour);
   }
   
   public function insert($behaviour)

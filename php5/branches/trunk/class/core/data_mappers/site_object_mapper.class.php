@@ -8,27 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/core/data_mappers/abstract_data_mapper.class.php');
 
-class site_object_mapper
+class site_object_mapper extends abstract_data_mapper 
 {
   protected function _create_domain_object()
   {
     include_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
     return new site_object();
-  }
-  
-  public function find_by_id($id)
-  {
-    $raw_data = $this->_get_finder()->find(array(), array('conditions' => array('sso.id=' . $id)));
-    
-    if (!$raw_data)
-      return null;
-    
-    $domain_object = $this->_create_domain_object();
-    
-    $this->_do_load($raw_data, $domain_object);
-    
-    return $domain_object;
   }
   
   protected function _get_finder()
@@ -54,14 +41,6 @@ class site_object_mapper
   protected function _get_behaviour_mapper()
   {
     return Limb :: toolkit()->createDataMapper('site_object_behaviour_mapper');        
-  }
-  
-  public function save($site_object)
-  {
-    if($site_object->get_id())
-      $this->update($site_object);
-    else
-      $this->insert($site_object);
   }
   
   public function insert($site_object)

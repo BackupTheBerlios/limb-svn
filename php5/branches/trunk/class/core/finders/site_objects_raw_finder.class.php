@@ -8,8 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/core/finders/data_finder.interface.php');
 
-class site_objects_raw_finder
+class site_objects_raw_finder implements data_finder
 {
   const RAW_SELECT_STMT = 
     "SELECT
@@ -69,6 +70,11 @@ class site_objects_raw_finder
     $db->sql_exec($sql, $limit, $offset);
 
     return $db->get_array('id');
+  }
+  
+  public function find_by_id($id)
+  {
+    return $this->find(array(), array('conditions' => array(' AND sso.id=' . $id)));
   }
   
   protected function _add_sql($add_sql, $type)//refactor!!!
