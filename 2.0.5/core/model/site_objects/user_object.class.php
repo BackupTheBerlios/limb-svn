@@ -161,7 +161,7 @@ class user_object extends content_object
 			sys_site_object as sco, 
 			user as tn
 			WHERE tn.email="' . $db->escape($email) . '"
-			AND scot.id=tn.object_id
+			AND scot.object_id=tn.object_id
 			AND sco.id=tn.object_id 
 			AND sco.current_version=tn.version';
 					
