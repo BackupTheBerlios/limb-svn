@@ -97,7 +97,7 @@ class cron_manager
       {
         $handle = $job['handle'];
         
-        $response->write("hadle {$handle} starting\n");
+        $response->write("handle {$handle} starting\n");
         
         $object =& $this->_create_job_object($handle);
         

@@ -35,7 +35,7 @@ class fs
   function mkdir($dir, $perm=0777, $parents=true)
   {      
     $dir = fs :: clean_path($dir);
-    
+     
     if(is_dir($dir))
       return true;
     
@@ -44,30 +44,49 @@ class fs
     
     $separator = fs :: separator();
     	
-    $dir_elements = fs :: explode_path($dir);
+    $path_elements = fs :: explode_path($dir);
         
-    if (count($dir_elements) == 0)
+    if (count($path_elements) == 0)
     	return true;
     
-    if(!$dir_elements[0])
+    $index = fs :: _get_first_existent_path_index($path_elements, $separator);
+
+    if($index === false)
     {
-    	array_shift($dir_elements);
-    	$current_dir = $separator . array_shift($dir_elements);
+      debug :: write_error('failed to find first existent path',
+                          __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+      return false;
     }
-    else
-    	$current_dir = array_shift($dir_elements);
-		    
-    if(!fs :: _do_mkdir($current_dir, $perm))
-    	return false;
-          	
-    for ($i=0; $i < count($dir_elements); $i++ )
+
+    $offset_path = '';    
+    for ($i=0; $i < $index; $i++)
     {
-      $current_dir .= $separator . $dir_elements[$i];
+      $offset_path .= $path_elements[$i] . $separator;
+    }
+        
+    for ($i=$index; $i < count($path_elements); $i++)
+    {
+      $offset_path .= $path_elements[$i] . $separator;
 			
-      if (!fs :: _do_mkdir($current_dir, $perm))
+      if (!fs :: _do_mkdir($offset_path, $perm))
       	return false;
-    }
+    }    
+            
   	return true;
+  }
+  
+  function _get_first_existent_path_index($path_elements, $separator)
+  {  
+    for ($i=count($path_elements); $i > 0; $i--)
+    {
+      $path = implode($separator, $path_elements);
+      
+      if(is_dir($path))
+        return $i; 
+      
+      array_pop($path_elements); 
+    }
+    return false;
   }
   
   /*
