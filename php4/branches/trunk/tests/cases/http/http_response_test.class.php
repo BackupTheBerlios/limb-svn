@@ -78,6 +78,12 @@ class http_response_test extends LimbTestCase
     $this->assertFalse($this->response->is_empty());
   }
 
+  function test_not_empty_redirected()
+  {
+    $this->response->redirect('/');
+    $this->assertFalse($this->response->is_empty());
+  }
+
   function test_headers_not_sent()
   {
     $this->assertFalse($this->response->headers_sent());
@@ -128,10 +134,10 @@ class http_response_test extends LimbTestCase
     $this->response->redirect('some other path');
 
     $this->assertTrue($this->response->is_redirected());
-    
+
     $this->response->commit();
   }
-  
+
   function test_write()
   {
     $this->response->expectOnce('_send_string', array("<b>wow</b>"));

@@ -28,7 +28,7 @@ class http_response
   {
     if ($this->is_redirected)
       return;
-    
+
     if($this->redirect_strategy === null)
       $strategy =& $this->_get_default_redirect_strategy();
     else
@@ -106,7 +106,8 @@ class http_response
   {
     $status = $this->get_status();
 
-    return (empty($this->response_string) &&
+    return (!$this->is_redirected &&
+            empty($this->response_string) &&
             empty($this->response_file_path) &&
             ($status != 304 && $status != 412));//???
   }

@@ -38,6 +38,7 @@ class search_action extends form_action
     $this->_set_template_search_query();
 
     $items_per_page = $this->dataspace->get('limit');
+
     if (!$items_per_page)
       $items_per_page = DEFAULT_SEARCH_ITEMS_PER_PAGE;
 

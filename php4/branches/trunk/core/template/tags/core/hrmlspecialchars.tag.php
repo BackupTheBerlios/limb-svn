@@ -19,7 +19,6 @@ register_tag(new htmlspecialchars_tag_info());
 
 class htmlspecialchars_tag extends compiler_directive_tag
 {
-
   function pre_parse()
   {
     if (! array_key_exists('hash_id', $this->attributes) ||
@@ -38,8 +37,14 @@ class htmlspecialchars_tag extends compiler_directive_tag
   {
     if(isset($this->attributes['hash_id']))
     {
-      $code->write_php(
-        'echo htmlspecialchars(' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '"), ENT_QUOTES);');
+      $tmp = '$' . $code->get_temp_variable();
+
+      $code->write_php($tmp . ' = ' . $this->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '");');
+
+      if(isset($this->attributes['addslashes']))
+        $code->write_php("{$tmp} = addslashes({$tmp});");
+
+      $code->write_php("echo htmlspecialchars({$tmp}, ENT_QUOTES);");
     }
   }
 }
