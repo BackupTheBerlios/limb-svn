@@ -36,16 +36,21 @@ class datasource_tag extends server_component_tag
 	{
 		parent :: generate_contents($code);
 		
+		$navigator = null;
+		
 		if(isset($this->attributes['navigator']))
 		{
 			if($navigator =& $this->parent->find_child($this->attributes['navigator']))
 			{
 				$limit = $code->get_temp_variable();
+				$offset = $code->get_temp_variable();
+				
 				$code->write_php('$' . $limit . '= ' . $navigator->get_component_ref_code() . '->get_items_per_page();');
 				$code->write_php($this->get_component_ref_code() . '->set_parameter("limit", $' . $limit . ');');
 
 				$code->write_php('if(isset($_GET["page_' . $navigator->get_server_id() . '"])){');
-				$code->write_php($this->get_component_ref_code() . '->set_parameter("offset", ($_GET["page_' . $navigator->get_server_id() . '"]-1)*$' . $limit . ');');
+        $code->write_php('$' . $offset . '= ($_GET["page_' . $navigator->get_server_id() . '"]-1)*$' . $limit . ';');
+        $code->write_php($this->get_component_ref_code() . '->set_parameter("offset", $' . $offset . ');');
 				$code->write_php('}');
 			}			
 		}
@@ -54,7 +59,16 @@ class datasource_tag extends server_component_tag
 		foreach($targets as $target)
 		{
 			if($target_component =& $this->parent->find_child(trim($target)))
+			{
 				$code->write_php($target_component->get_component_ref_code() . '->register_dataset(' . $this->get_component_ref_code() . '->get_dataset());');
+				
+				if($navigator)
+				{
+				  $code->write_php('if(isset($' . $offset. ')){');
+				  $code->write_php($target_component->get_component_ref_code() . '->set_offset($' . $offset . ');');
+				  $code->write_php('}');
+				}
+			}
 			else
 				debug :: write_error('component target not found',
 				 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
