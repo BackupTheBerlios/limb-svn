@@ -110,7 +110,7 @@ class image_cache_manager
   {
     fs :: mkdir(IMAGE_CACHE_DIR);
     
-    if(file_exists(MEDIA_DIR . $media_id . '.media'))
+    if(file_exists(MEDIA_DIR . $media_id . '.media') && !file_exists(IMAGE_CACHE_DIR . $media_id . $extension))
       copy(MEDIA_DIR . $media_id . '.media', IMAGE_CACHE_DIR . $media_id . $extension);
   }
   
