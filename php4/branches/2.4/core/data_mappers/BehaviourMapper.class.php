@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
-class SiteObjectBehaviourMapper extends AbstractDataMapper
+class BehaviourMapper extends AbstractDataMapper
 {
   function & findById($id)
   {

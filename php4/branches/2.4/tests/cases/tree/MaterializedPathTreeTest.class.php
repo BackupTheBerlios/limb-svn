@@ -25,6 +25,11 @@ class MaterializedPathTreeTest extends LimbTestCase
   var $db = null;
   var $driver = null;
 
+  function MaterializedPathTreeTest()
+  {
+    parent :: LimbTestCase('materialized path tree tests');
+  }
+
   function setUp()
   {
     $this->db = new SimpleDb(LimbDbPool :: getConnection());
@@ -42,7 +47,6 @@ class MaterializedPathTreeTest extends LimbTestCase
   function _cleanUp()
   {
     $this->db->delete(MATERIALIZED_PATH_TEST_TABLE);
-    $this->db->delete('sys_site_object');
     $this->db->delete('sys_class');
   }
 
@@ -560,9 +564,6 @@ class MaterializedPathTreeTest extends LimbTestCase
 
   function testGetSubBranchCheckExpandedParents()
   {
-    $this->db->insert('sys_site_object', array('id' => 10));
-    $this->db->insert('sys_site_object', array('id' => 20));
-
     //creating subtree
     $root_id = $this->driver->createRootNode(array('identifier' => 'root'));
     $sub_node_id_1 = $this->driver->createSubNode($root_id, array('identifier' => 'test'));

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/Object2NodeMapper.class.php');
-require_once(LIMB_DIR . '/core/site_objects/SiteObject.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
 
 class Object2NodeMapperTest extends LimbTestCase
 {
@@ -35,95 +35,96 @@ class Object2NodeMapperTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('sys_domain_object_to_node');
+    $this->db->delete('sys_object_to_node');
   }
 
-  function testFailedInsertNoId()
+  function testFailedInsertNoOId()
   {
-    $site_object = new SiteObject();
+    $object = new Object();
 
     $mapper = new Object2NodeMapper();
 
-    $mapper->insert($site_object);
+    $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'uid is not set');
+    $this->assertEqual($e->getMessage(), 'oid is not set');
   }
 
-  function testFailedInsertNoSiteObjectId()
+  function testFailedInsertNoObjectId()
   {
-    $site_object = new SiteObject();
-    $site_object->setId(10);
+    $object = new Object();
+    $object->set('oid', 10);
 
     $mapper = new Object2NodeMapper();
 
-    $mapper->insert($site_object);
+    $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
-    $this->assertEqual($e->getMessage(), 'site object id is not set');
+    $this->assertEqual($e->getMessage(), 'node id is not set');
   }
 
   function testInsertOk()
   {
     $mapper = new Object2NodeMapper();
-    $site_object = new SiteObject();
+    $object = new Object();
 
-    $site_object->setId($uid = 100);
-    $site_object->setSiteObjectId($site_object_id = 500);
+    $object->set('oid', $oid = 100);
+    $object->set('node_id', $node_id = 500);
 
-    $mapper->insert($site_object);
+    $mapper->insert($object);
 
-    $rs =& $this->db->select('sys_domain_object_to_node');
+    $rs =& $this->db->select('sys_object_to_node');
     $arr = $rs->getArray();
     $this->assertEqual(sizeof($arr), 1);
 
-    $this->assertEqual($arr[0]['uid'], $uid);
-    $this->assertEqual($arr[0]['site_object_id'], $site_object_id);
+    $this->assertEqual($arr[0]['oid'], $oid);
+    $this->assertEqual($arr[0]['node_id'], $node_id);
   }
 
   function testUpdate()
   {
     $mapper = new Object2NodeMapper();
-    $site_object = new SiteObject();
+    $object = new Object();
 
-    $site_object->setId($uid = 100);
-    $site_object->setSiteObjectId($site_object_id = 500);
+    $object->set('oid', $oid = 100);
+    $object->set('node_id', $node_id = 500);
 
-    $this->db->insert('sys_domain_object_to_node',
-                      array('uid' => 99,
-                            'site_object_id' => $site_object_id));
+    $this->db->insert('sys_object_to_node',
+                      array('oid' => $oid,
+                            'node_id' => $old_node_id = 499));
 
-    $mapper->update($site_object);
+    $mapper->update($object);
 
-    $rs =& $this->db->select('sys_domain_object_to_node');
+    $rs =& $this->db->select('sys_object_to_node');
     $arr = $rs->getArray();
     $this->assertEqual(sizeof($arr), 1);
 
-    $this->assertEqual($arr[0]['uid'], $uid);
-    $this->assertEqual($arr[0]['site_object_id'], $site_object_id);
+    $this->assertEqual($arr[0]['oid'], $oid);
+    $this->assertEqual($arr[0]['node_id'], $node_id);
   }
 
   function testDelete()
   {
     $mapper = new Object2NodeMapper();
-    $site_object = new SiteObject();
+    $object = new Object();
 
-    $site_object->setId($uid = 100);
+    $object->set('oid', $oid = 100);
 
-    $this->db->insert('sys_domain_object_to_node',
-                      array('uid' => $uid,
-                            'site_object_id' => $site_object_id = 500));
+    $this->db->insert('sys_object_to_node',
+                      array('oid' => $oid,
+                            'node_id' => $node_id = 500));
 
-    $this->db->insert('sys_domain_object_to_node',
-                      array('uid' => 102,
-                            'site_object_id' => 502));
+    // This record will stay
+    $this->db->insert('sys_object_to_node',
+                      array('oid' => $oid_to_stay = 102,
+                            'node_id' => $node_id_to_stay = 502));
 
-    $mapper->delete($site_object);
+    $mapper->delete($object);
 
-    $rs =& $this->db->select('sys_domain_object_to_node');
+    $rs =& $this->db->select('sys_object_to_node');
     $arr = $rs->getArray();
     $this->assertEqual(sizeof($arr), 1);
 
-    $this->assertEqual($arr[0]['uid'], 102);
-    $this->assertEqual($arr[0]['site_object_id'], 502);
+    $this->assertEqual($arr[0]['oid'], $oid_to_stay);
+    $this->assertEqual($arr[0]['node_id'], $node_id_to_stay);
   }
 }
 

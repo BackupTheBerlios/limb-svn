@@ -24,6 +24,11 @@ class CachingTreeTest extends LimbTestCase
   var $toolkit;
   var $cache;
 
+  function CachingTreeTest()
+  {
+    parent :: LimbTestCase('caching tree tests');
+  }
+
   function setUp()
   {
     $this->toolkit = new MockLimbToolkit($this);

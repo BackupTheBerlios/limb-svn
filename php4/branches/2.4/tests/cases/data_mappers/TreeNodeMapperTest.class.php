@@ -60,7 +60,26 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('sys_site_object_tree');
+    $this->db->delete('sys_tree');
+    $this->db->delete('sys_uid');
+  }
+
+  function testLoad()
+  {
+    $mapper = new TreeNodeDataMapper();
+    $site_object = new SiteObject();
+
+    $record = new Dataspace();
+    $record->import(array('node_id' => $node_id = 10,
+                          'parent_node_id' => $parent_node_id = 100,
+                          'identifier' => $identifier = 'test',
+                          ));
+
+    $mapper->load($record, $site_object);
+
+    $this->assertEqual($site_object->getNodeId(), $node_id);
+    $this->assertEqual($site_object->getParentNodeId(), $parent_node_id);
+    $this->assertEqual($site_object->getIdentifier(), $identifier);
   }
 
   function testFailedInsertTreeNodeParentIdNotSet()
@@ -328,25 +347,6 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->tree->expectOnce('deleteNode', array($node_id));
 
     $mapper->delete($site_object);
-  }
-
-  function testLoad()
-  {
-    $mapper = new TreeNodeDataMapper();
-    $site_object = new SiteObject();
-
-    $record = new Dataspace();
-    $record->import(array('node_id' => $node_id = 10,
-                          'parent_node_id' => $parent_node_id = 100,
-                          'identifier' => $identifier = 'test',
-                          ));
-
-    $mapper->load($record, $site_object);
-
-    $this->assertEqual($site_object->getNodeId(), $node_id);
-    $this->assertEqual($site_object->getParentNodeId(), $parent_node_id);
-    $this->assertEqual($site_object->getIdentifier(), $identifier);
-
   }
 }
 

@@ -21,6 +21,11 @@ class TreeDecoratorTest extends LimbTestCase
   var $driver;
   var $toolkit;
 
+  function TreeDecoratorTest()
+  {
+    parent :: LimbTestCase('tree decorator tests');
+  }
+
   function setUp()
   {
     $this->toolkit = new MockLimbToolkit($this);

@@ -67,8 +67,8 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & createBehaviour($behaviour_path)
   {
-    include_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviourFactory.class.php');
-    return SiteObjectBehaviourFactory :: create($behaviour_path);
+    include_once(LIMB_DIR . '/core/behaviours/BehaviourFactory.class.php');
+    return BehaviourFactory :: create($behaviour_path);
   }
 
   function & getDbConnection()

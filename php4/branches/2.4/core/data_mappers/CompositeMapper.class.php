@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 
-class CompositeDataMapper
+class CompositeMapper
 {
   var $mappers;
 

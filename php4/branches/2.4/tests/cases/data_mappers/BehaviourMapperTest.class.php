@@ -9,26 +9,26 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
-require_once(LIMB_DIR . '/core/data_mappers/SiteObjectBehaviourMapper.class.php');
-require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/BehaviourMapper.class.php');
+require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
-Mock :: generatePartial('SiteObjectBehaviourMapper',
-                        'SiteObjectBehaviourMapperTestVersion',
+Mock :: generatePartial('BehaviourMapper',
+                        'BehaviourMapperTestVersion',
                         array('insert', 'update'));
 
-class SiteObjectBehaviourMapperTest extends LimbTestCase
+class BehaviourMapperTest extends LimbTestCase
 {
   var $db;
   var $mapper;
 
-  function SiteObjectBehaviourMapperTest()
+  function BehaviourMapperTest()
   {
-    parent :: LimbTestCase('site object behaviour mapper test');
+    parent :: LimbTestCase('behaviour mapper test');
   }
 
   function setUp()
   {
-    $this->mapper = new SiteObjectBehaviourMapper();
+    $this->mapper = new BehaviourMapper();
     $this->db =& new SimpleDb(LimbDbPool :: getConnection());
 
     $this->_cleanUp();
@@ -51,19 +51,19 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testFindById()
   {
-    $this->db->insert('sys_behaviour', array('id' => $id = 100, 'name' => 'SiteObjectBehaviour'));
+    $this->db->insert('sys_behaviour', array('id' => $id = 100, 'name' => 'Behaviour'));
 
     $behaviour = $this->mapper->findById($id);
 
-    $this->assertIsA($behaviour, 'SiteObjectBehaviour');
+    $this->assertIsA($behaviour, 'Behaviour');
     $this->assertEqual($id, $behaviour->getId());
   }
 
   function testSaveInsert()
   {
-    $mapper = new SiteObjectBehaviourMapperTestVersion($this);
+    $mapper = new BehaviourMapperTestVersion($this);
 
-    $behaviour = new SiteObjectBehaviour();
+    $behaviour = new Behaviour();
 
     $mapper->expectOnce('insert', array($behaviour));
 
@@ -74,9 +74,9 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testSaveUpdate()
   {
-    $mapper = new SiteObjectBehaviourMapperTestVersion($this);
+    $mapper = new BehaviourMapperTestVersion($this);
 
-    $behaviour = new SiteObjectBehaviour();
+    $behaviour = new Behaviour();
     $behaviour->setId(100);
 
     $mapper->expectOnce('update', array($behaviour));
@@ -88,7 +88,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testInsert()
   {
-    $behaviour = new SiteObjectBehaviour();
+    $behaviour = new Behaviour();
 
     $this->mapper->insert($behaviour);
 
@@ -101,7 +101,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testUpdateFailedNoId()
   {
-    $behaviour = new SiteObjectBehaviour();
+    $behaviour = new Behaviour();
 
     $this->mapper->update($behaviour);
     $this->assertTrue(catch('Exception', $e));
@@ -111,7 +111,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
   {
     $this->db->insert('sys_behaviour', array('id' => $id = 100));
 
-    $behaviour = new SiteObjectBehaviour();
+    $behaviour = new Behaviour();
     $behaviour->setId($id);
 
     $this->mapper->update($behaviour);
@@ -125,7 +125,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testDeleteFailedNoId()
   {
-    $behaviour = new SiteObjectBehaviour();
+    $behaviour = new Behaviour();
 
     $this->mapper->delete($behaviour);
     $this->assertTrue(catch('Exception', $e));
@@ -135,7 +135,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
   {
     $this->db->insert('sys_behaviour', array('id' => $id = 100));
 
-    $behaviour = new SiteObjectBehaviour();
+    $behaviour = new Behaviour();
     $behaviour->setId($id);
 
     $this->mapper->delete($behaviour);
@@ -151,7 +151,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
     $this->db->insert('sys_behaviour', array('id' => 11, 'name' => 'test2'));
     $this->db->insert('sys_behaviour', array('id' => 12, 'name' => 'test3'));
 
-    $ids = SiteObjectBehaviourMapper :: getIdsByNames(array('test1', 'test2'));
+    $ids = BehaviourMapper :: getIdsByNames(array('test1', 'test2'));
 
     sort($ids);
     $this->assertEqual(sizeof($ids), 2);

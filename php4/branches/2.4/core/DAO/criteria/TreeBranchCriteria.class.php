@@ -52,8 +52,14 @@ class TreeBranchCriteria
   {
     $node_ids = $this->_getNodeIds();
 
+    $sql->addField('tree.*');
+    $sql->addTable('sys_object_to_node');
+    $sql->addTable('sys_tree as tree');
+    $sql->addCondition('sys_object_to_node.oid = sys_object.oid');
+    $sql->addCondition('sys_object_to_node.node_id = tree.id');
+
     if(count($node_ids))
-      $sql->addCondition('ssot.id IN (' . implode(',', $node_ids). ')');
+      $sql->addCondition('tree.id IN (' . implode(',', $node_ids). ')');
     else
       $sql->addCondition('0 = 1');
   }

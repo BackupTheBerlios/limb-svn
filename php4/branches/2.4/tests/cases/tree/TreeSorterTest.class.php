@@ -13,9 +13,9 @@ require_once(LIMB_DIR . '/core/tree/TreeSorter.class.php');
 
 class TreeSorterTest extends LimbTestCase
 {
-  function treeSorterTest()
+  function TreeSorterTest()
   {
-    parent :: LimbTestCase();
+    parent :: LimbTestCase('tree sorter tests');
   }
 
   function testSort()

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: sys_site_object_tree_db_table.class.php 2 2004-02-29 19:06:22Z server $
+* $Id: sys_tree_db_table.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
@@ -14,7 +14,7 @@ class SysMaterializedPathTreeDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'sys_site_object_tree';
+    return 'sys_tree';
   }
 
   function _defineColumns()

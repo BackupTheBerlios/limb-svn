@@ -9,26 +9,26 @@
 *
 ***********************************************************************************/
 
-class SiteObjectBehaviourFactory
+class BehaviourFactory
 {
   var $_behaviours = array();
 
   function & instance()
   {
-    if (!isset($GLOBALS['SiteObjectBehaviourFactoryGlobalInstance']) || !is_a($GLOBALS['SiteObjectBehaviourFactoryGlobalInstance'], 'SiteObjectBehaviourFactory'))
-      $GLOBALS['SiteObjectBehaviourFactoryGlobalInstance'] =& new SiteObjectBehaviourFactory();
+    if (!isset($GLOBALS['BehaviourFactoryGlobalInstance']) || !is_a($GLOBALS['BehaviourFactoryGlobalInstance'], 'BehaviourFactory'))
+      $GLOBALS['BehaviourFactoryGlobalInstance'] =& new BehaviourFactory();
 
-    return $GLOBALS['SiteObjectBehaviourFactoryGlobalInstance'];
+    return $GLOBALS['BehaviourFactoryGlobalInstance'];
   }
 
   function & create($class_name)
   {
-    $factory =& SiteObjectBehaviourFactory :: instance();
+    $factory =& BehaviourFactory :: instance();
 
     if(isset($factory->_behaviours[$class_name]))
       return $factory->_behaviours[$class_name];
 
-    SiteObjectBehaviourFactory :: _includeClassFile($class_name);
+    BehaviourFactory :: _includeClassFile($class_name);
 
     if(catch('FileNotFoundException', $e))//???
       return null;

@@ -10,10 +10,10 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/OneTableObjectMapper.class.php');
-require_once(LIMB_DIR . '/core/DomainObject.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(dirname(__FILE__) . '/OneTableObjectMapperTestDbTable.class.php');
 
-class OneTableObjectMapperTestNewsObject extends DomainObject
+class OneTableObjectMapperTestNewsObject extends Object
 {
   function getAnnotation()
   {
@@ -82,7 +82,7 @@ class OneTableObjectMapperTest extends LimbTestCase
   function testLoad()
   {
     $mapper = new OneTableObjectMapper('OneTableObjectMapperTest');
-    $domain_object = new OneTableObjectMapperTestNewsObject();
+    $object = new OneTableObjectMapperTestNewsObject();
 
     $result = array('id' => $id = 10,
                     'content' => $content = 'some content',
@@ -93,67 +93,67 @@ class OneTableObjectMapperTest extends LimbTestCase
     $record = new Dataspace();
     $record->import($result);
 
-    $mapper->load($record, $domain_object);
+    $mapper->load($record, $object);
 
-    $this->assertEqual($domain_object->getId(), $id);
-    $this->assertEqual($domain_object->getContent(), $content);
-    $this->assertEqual($domain_object->getAnnotation(), $annotation);
-    $this->assertEqual($domain_object->getNewsDate(), $news_date);
+    $this->assertEqual($object->get('id'), $id);
+    $this->assertEqual($object->getContent(), $content);
+    $this->assertEqual($object->getAnnotation(), $annotation);
+    $this->assertEqual($object->getNewsDate(), $news_date);
 
-    $this->assertNull($domain_object->get('junk'));
+    $this->assertNull($object->get('junk'));
   }
 
   function testInsertExtraTableRecordOk()
   {
     $mapper = new OneTableObjectMapper('OneTableObjectMapperTest');
-    $domain_object = new OneTableObjectMapperTestNewsObject();
+    $object = new OneTableObjectMapperTestNewsObject();
 
-    $domain_object->setAnnotation('news annotation');
-    $domain_object->setContent('news content');
-    $domain_object->setNewsDate('2004-01-02 00:00:00');
+    $object->setAnnotation('news annotation');
+    $object->setContent('news content');
+    $object->setNewsDate('2004-01-02 00:00:00');
 
-    $mapper->insert($domain_object);
+    $mapper->insert($object);
 
-    $this->assertEqual($domain_object->getId(), 1);
+    $this->assertEqual($object->get('id'), 1);
 
-    $this->_checkLinkedTableRecord($domain_object, $mapper->getDbTable());
+    $this->_checkLinkedTableRecord($object, $mapper->getDbTable());
   }
 
   function testUpdate()
   {
     $mapper = new OneTableObjectMapper('OneTableObjectMapperTest');
-    $domain_object = new OneTableObjectMapperTestNewsObject();
+    $object = new OneTableObjectMapperTestNewsObject();
 
-    $domain_object->setId($object_id = 100);
+    $object->set('id', $id = 100);
 
     $this->db->insert('test_one_table_object',
-                         array('id' => $object_id,
+                         array('id' => $id,
                                'annotation' => 'news annotation',
                                'content' => 'news content',
                                'news_date' => '2000-01-02 00:00:00'));
 
 
-    $domain_object->setAnnotation('news annotation2');
-    $domain_object->setContent('news content2');
-    $domain_object->setNewsDate('2004-01-02 00:00:00');
+    $object->setAnnotation('news annotation2');
+    $object->setContent('news content2');
+    $object->setNewsDate('2004-01-02 00:00:00');
 
-    $mapper->update($domain_object);
+    $mapper->update($object);
 
     $rs =& $this->db->select('test_one_table_object');
     $this->assertEqual(sizeof($rs->getTotalRowCount()), 1);
 
-    $this->_checkLinkedTableRecord($domain_object, $mapper->getDbTable());
+    $this->_checkLinkedTableRecord($object, $mapper->getDbTable());
   }
 
   function testDelete()
   {
     $mapper = new OneTableObjectMapper('OneTableObjectMapperTest');
-    $domain_object = new OneTableObjectMapperTestNewsObject();
+    $object = new OneTableObjectMapperTestNewsObject();
 
-    $domain_object->setId($object_id = 100);
+    $object->set('id', $id = 100);
 
     $this->db->insert('test_one_table_object',
-                      array('id' => $object_id,
+                      array('id' => $id,
                            'annotation' => 'news annotation',
                            'content' => 'news content',
                            'news_date' => '2000-01-02 00:00:00'));
@@ -165,15 +165,15 @@ class OneTableObjectMapperTest extends LimbTestCase
                            'content' => 'news content2',
                            'news_date' => '2000-01-03 00:00:00'));
 
-    $mapper->delete($domain_object);
+    $mapper->delete($object);
 
     $rs =& $this->db->select('test_one_table_object');
     $this->assertEqual(sizeof($rs->getArray()), 1);
   }
 
-  function _checkLinkedTableRecord($domain_object, $db_table)
+  function _checkLinkedTableRecord($object, $db_table)
   {
-    $conditions['id'] = $domain_object->getId();
+    $conditions['id'] = $object->get('id');
 
     $rs =& $db_table->select($conditions, 'id');
     $arr = $rs->getArray();
@@ -181,9 +181,9 @@ class OneTableObjectMapperTest extends LimbTestCase
     $this->assertEqual(sizeof($arr), 1);
     $record = current($arr);
 
-    $this->assertEqual($record['annotation'], $domain_object->getAnnotation());
-    $this->assertEqual($record['content'], $domain_object->getContent());
-    $this->assertEqual($record['news_date'], $domain_object->getNewsDate());
+    $this->assertEqual($record['annotation'], $object->getAnnotation());
+    $this->assertEqual($record['content'], $object->getContent());
+    $this->assertEqual($record['news_date'], $object->getNewsDate());
   }
 }
 

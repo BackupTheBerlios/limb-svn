@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
-require_once(LIMB_DIR . '/core/data_mappers/CompositeDataMapper.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/CompositeMapper.class.php');
 require_once(LIMB_DIR . '/core/DomainObject.class.php');
 
 Mock :: generate('AbstractDataMapper');
@@ -48,11 +48,11 @@ class AbstractDataMapperForCompositeTestVersion extends MockAbstractDataMapper
 
 }
 
-class CompositeDataMapperTest extends LimbTestCase
+class CompositeMapperTest extends LimbTestCase
 {
   var $object;
 
-  function CompositeDataMapperTest()
+  function CompositeMapperTest()
   {
     parent :: LimbTestCase('composite mapper test');
   }
@@ -78,7 +78,7 @@ class CompositeDataMapperTest extends LimbTestCase
 
     $record = array('record emulation');
 
-    $mapper = new CompositeDataMapper();
+    $mapper = new CompositeMapper();
     $mapper->registerMapper($m1);
     $mapper->registerMapper($m2);
 
@@ -104,7 +104,7 @@ class CompositeDataMapperTest extends LimbTestCase
     $m1->setCounter($counter);
     $m2->setCounter($counter);
 
-    $mapper = new CompositeDataMapper();
+    $mapper = new CompositeMapper();
     $mapper->registerMapper($m1);
     $mapper->registerMapper($m2);
 
@@ -129,7 +129,7 @@ class CompositeDataMapperTest extends LimbTestCase
     $m1->setCounter($counter);
     $m2->setCounter($counter);
 
-    $mapper = new CompositeDataMapper();
+    $mapper = new CompositeMapper();
     $mapper->registerMapper($m1);
     $mapper->registerMapper($m2);
 
@@ -154,7 +154,7 @@ class CompositeDataMapperTest extends LimbTestCase
     $m1->setCounter($counter);
     $m2->setCounter($counter);
 
-    $mapper = new CompositeDataMapper();
+    $mapper = new CompositeMapper();
     $mapper->registerMapper($m1);
     $mapper->registerMapper($m2);
 

@@ -10,29 +10,56 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/dao/SiteObjectsDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/dao/criteria/TreeBranchCriteria.class.php');
-require_once(dirname(__FILE__) . '/SiteObjectsSQLBaseTest.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/tree/MaterializedPathTree.class.php');
 
 Mock :: generatePartial('LimbBaseToolkit',
                         'TreeBranchCriteriaTestToolkit',
                         array('getTree'));
 Mock :: generate('Tree');
 
-class TreeBranchCriteriaTest extends SiteObjectsSQLBaseTest
+class TreeBranchCriteriaTest extends LimbTestCase
 {
   var $dao;
+  var $db;
+  var $conn;
+  var $root_node_id;
+  var $object2node = array();
 
   function TreeBranchCriteriaTest()
   {
-    parent :: SiteObjectsSQLBaseTest('tree branch criteria tests');
+    parent :: LimbTestCase('tree branch criteria tests');
   }
 
   function setUp()
   {
-    parent :: setUp();
 
-    $this->dao = new SiteObjectsDAO();
+    $this->conn =& LimbDbPool :: getConnection();
+    $this->db =& new SimpleDb($this->conn);
+
+    $this->_cleanUp();
+
+    $this->dao = new SQLBasedDAO();
+    $sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
+    $this->dao->setSQL($sql);
+
+    $this->_insertNodeRecords();
+    $this->_insertObjectToNodeRecords();
+    $this->_insertObjectRecords();
+  }
+
+  function tearDown()
+  {
+    $this->_cleanUp();
+  }
+
+  function _cleanUp()
+  {
+    $this->db->delete('sys_tree');
+    $this->db->delete('sys_object_to_node');
+    $this->db->delete('sys_object');
   }
 
   // Default settings means: depth = 1, include_parent = false,
@@ -43,14 +70,14 @@ class TreeBranchCriteriaTest extends SiteObjectsSQLBaseTest
     $criteria->setPath('/root');
 
     $this->dao->addCriteria($criteria);
+
     $rs =& new SimpleDbDataset($this->dao->fetch());
 
-    $this->assertEqual($rs->getTotalRowCount(), 10);
+    $this->assertEqual($rs->getTotalRowCount(), 5);
 
     $record = $rs->getRow();
 
     $this->assertEqual($record['identifier'], 'object_1');
-    $this->assertEqual($record['title'], 'object_1_title');
   }
 
   function testNoObjectsIfNoNodesAreFound()
@@ -89,6 +116,57 @@ class TreeBranchCriteriaTest extends SiteObjectsSQLBaseTest
     $toolkit->tally();
 
     Limb :: popToolkit();
+  }
+
+  function _insertNodeRecords()
+  {
+    $tree = new MaterializedPathTree();
+
+    $values['identifier'] = 'root';
+    $this->root_node_id = $tree->createRootNode($values, false, true);
+
+    $data = array();
+    for($i = 1; $i <= 5; $i++)
+    {
+      $values['identifier'] = 'object_' . $i;
+      $this->object2node[$i] = $tree->createSubNode($this->root_node_id, $values);
+    }
+  }
+
+  function _insertObjectRecords()
+  {
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysObject');
+
+    // Insert real records
+    for($i = 1; $i <= 5; $i++)
+    {
+      $values['oid'] = $i;
+      $values['class_id'] = 150;
+      $table->insert($values);
+    }
+  }
+
+  function _insertObjectToNodeRecords()
+  {
+    $toolkit =& Limb :: toolkit();
+    $table =& $toolkit->createDBTable('SysObject2Node');
+
+    // Insert real records
+    for($i = 1; $i <= 5; $i++)
+    {
+      $values['node_id'] = $this->object2node[$i];
+      $values['oid'] = $i;
+      $table->insert($values);
+    }
+
+    // Insert fake records
+    for($i = 1; $i <= 5; $i++)
+    {
+      $values['node_id'] = $this->object2node[$i] + 10;
+      $values['oid'] = $i;
+      $table->insert($values);
+    }
   }
 }
 ?>

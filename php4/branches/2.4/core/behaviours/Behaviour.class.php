@@ -11,11 +11,11 @@
 require_once(LIMB_DIR . '/core/i18n/Strings.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 
-class SiteObjectBehaviour extends Object
+class Behaviour extends Object
 {
   var $_actions_list = array();
 
-  function SiteObjectBehaviour()
+  function Behaviour()
   {
     parent :: Object();
 

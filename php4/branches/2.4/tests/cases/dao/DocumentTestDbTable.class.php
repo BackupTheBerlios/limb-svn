@@ -14,14 +14,16 @@ class DocumentTestDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'document';
+    return 'test_document';
   }
 
   function _defineColumns()
   {
     return array(
-        'content' => '',
-        'annotation' => ''
+      'id' => array('type' => 'numeric'),
+      'oid' => array('type' => 'numeric'),
+      'content' => '',
+      'annotation' => ''
     );
   }
 }

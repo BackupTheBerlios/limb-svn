@@ -12,23 +12,28 @@ require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
 
 class AbstractDataMapper
 {
-  function defineDataMap(){}
-
-  function load(&$record, &$domain_object){}
-
-  function save(&$domain_object)
+  function getIdentityKeyName()
   {
-    if($domain_object->getId())
-      $this->update($domain_object);
-    else
-      $this->insert($domain_object);
+    return 'id';
   }
 
-  function insert(&$domain_object){}
+  function defineDataMap(){}
 
-  function update(&$domain_object){}
+  function load(&$record, &$object){}
 
-  function delete(&$domain_object){}
+  function save(&$object)
+  {
+    if($object->get($this->getIdentityKeyName()))
+      $this->update($object);
+    else
+      $this->insert($object);
+  }
+
+  function insert(&$object){}
+
+  function update(&$object){}
+
+  function delete(&$object){}
 }
 
 ?>

@@ -10,24 +10,18 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class SysSiteObjectDbTable extends LimbDbTable
+class SysObject2NodeDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {
-    return 'sys_site_object';
+    return 'sys_object_to_node';
   }
 
   function _defineColumns()
   {
     return array(
       'id' => array('type' => 'numeric'),
-      'class_id' => array('type' => 'numeric'),
-      'behaviour_id' => array('type' => 'numeric'),
-      'title' => '',
-      'creator_id' => array('type' => 'numeric'),
-      'created_date' => array('type' => 'numeric'),
-      'modified_date' => array('type' => 'numeric'),
-      'locale_id' => '',
+      'oid' => array('type' => 'numeric'),
       'node_id' => array('type' => 'numeric'),
     );
   }

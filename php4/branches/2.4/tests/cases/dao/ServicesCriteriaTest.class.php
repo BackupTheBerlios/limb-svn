@@ -5,23 +5,22 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: OneTableObjectsCriteriaTest.class.php 1085 2005-02-02 16:04:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/dao/criteria/OneTableObjectsCriteria.class.php');
-require_once(dirname(__FILE__) . '/DocumentTestDBTable.class.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/ServicesCriteria.class.php');
 
-class OneTableObjectsCriteriaTest extends LimbTestCase
+class ServicesCriteriaTest extends LimbTestCase
 {
   var $dao;
   var $db;
   var $conn;
 
-  function OneTableObjectsCriteriaTest()
+  function ServicesCriteriaTest()
   {
-    parent :: LimbTestCase('one table objects criteria tests');
+    parent :: LimbTestCase('services criteria tests');
   }
 
   function setUp()
@@ -35,10 +34,10 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
     $sql = new ComplexSelectSQL('SELECT sys_object.oid as oid %fields% FROM sys_object %tables% %where%');
     $this->dao->setSQL($sql);
 
-    $this->dao->addCriteria(new OneTableObjectsCriteria('DocumentTest'));
+    $this->dao->addCriteria(new ServicesCriteria());
 
     $this->_insertObjectRecords();
-    $this->_insertLinkedTableRecords();
+    $this->_insertServicesRecords();
   }
 
   function tearDown()
@@ -48,20 +47,23 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('test_document');
+    $this->db->delete('sys_service');
     $this->db->delete('sys_object');
   }
 
   function testCorrectLink()
   {
     $sql =& $this->dao->getSQL();
-    $sql->addCondition('sys_object.oid = 1');
+    $sql->addCondition('sys_object.oid = 3');
 
     $rs =& new SimpleDbDataset($this->dao->fetch());
     $record = $rs->getRow();
 
-    $this->assertEqual($record['content'], 'object_1_content');
-    $this->assertEqual($record['annotation'], 'object_1_annotation');
+    // see _insertServicesRecords for details
+    $this->assertEqual($record['service_id'], 103);
+    $this->assertEqual($record['oid'], 3);
+    $this->assertEqual($record['title'], 'service_3_title');
+    $this->assertEqual($record['behaviour_id'], 503);
   }
 
   function _insertObjectRecords()
@@ -69,7 +71,6 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
     $toolkit =& Limb :: toolkit();
     $table =& $toolkit->createDBTable('SysObject');
 
-    // Insert real records
     for($i = 1; $i <= 5; $i++)
     {
       $values['oid'] = $i;
@@ -78,17 +79,17 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
     }
   }
 
-  function _insertLinkedTableRecords()
+  function _insertServicesRecords()
   {
     $data = array();
     for($i = 1; $i <= 5; $i++)
     {
-      $this->db->insert('test_document',
+      $this->db->insert('sys_service',
         array(
-          'id' => $i+100,
+          'service_id' => $i+100,
           'oid' => $i,
-          'content' => 'object_' . $i . '_content',
-          'annotation' => 'object_' . $i . '_annotation',
+          'title' => 'service_' . $i . '_title',
+          'behaviour_id' => $i+500,
         )
       );
     }

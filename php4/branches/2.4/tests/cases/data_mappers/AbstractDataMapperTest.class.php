@@ -46,7 +46,7 @@ class AbstractDataMapperTest extends LimbTestCase
 
     $mapper->expectOnce('insert', array(new IsAExpectation('MockDomainObject')));
 
-    $this->object->expectOnce('getId');
+    $this->object->expectOnce('get', array('id'));
 
     $mapper->save($this->object);
 
@@ -59,8 +59,8 @@ class AbstractDataMapperTest extends LimbTestCase
 
     $mapper->expectOnce('update', array(new IsAExpectation('MockDomainObject')));
 
-    $this->object->expectOnce('getId');
-    $this->object->setReturnValue('getId', 10);
+    $this->object->expectOnce('get', array('id'));
+    $this->object->setReturnValue('get', 10, array('id'));
 
     $mapper->save($this->object);
 

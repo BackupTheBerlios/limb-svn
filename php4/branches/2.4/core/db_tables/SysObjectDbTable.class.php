@@ -5,29 +5,28 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: SysClassDbTable.class.php 1028 2005-01-18 11:06:55Z pachanga $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class SysSiteObjectTreeDbTable extends LimbDbTable
+class SysObjectDbTable extends LimbDbTable
 {
+  function _definePrimaryKeyName()
+  {
+    return 'oid';
+  }
+
   function _defineDbTableName()
   {
-    return 'sys_site_object_tree';
+    return 'sys_object';
   }
 
   function _defineColumns()
   {
     return array(
-      'id' => array('type' => 'numeric'),
-      'parent_id' => array('type' => 'numeric'),
-      'root_id' => array('type' => 'numeric'),
-      'path' => '',
-      'level' => array('type' => 'numeric'),
-      'identifier' => '',
-      'priority' => array('type' => 'numeric'),
-      'children' => array('type' => 'numeric'),
+      'oid' => array('type' => 'numeric'),
+      'class_id' => array('type' => 'numeric'),
     );
   }
 }

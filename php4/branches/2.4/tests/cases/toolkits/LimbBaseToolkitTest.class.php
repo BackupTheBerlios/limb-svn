@@ -35,8 +35,8 @@ class LimbBaseToolkitTest extends LimbTestCase
 
   function testCreateDbTable()
   {
-    $this->assertIsA($this->toolkit->createDBTable('SysSiteObject'),
-                     'SysSiteObjectDbTable');
+    $this->assertIsA($this->toolkit->createDBTable('SysObject'),
+                     'SysObjectDbTable');
   }
 
   function testCreateDAO()
@@ -53,14 +53,14 @@ class LimbBaseToolkitTest extends LimbTestCase
 
   function testCreateDataMapper()
   {
-    $this->assertIsA($this->toolkit->createDataMapper('SiteObjectMapper'),
-                     'SiteObjectMapper');
+    $this->assertIsA($this->toolkit->createDataMapper('ServiceMapper'),
+                     'ServiceMapper');
   }
 
   function testCreateBehaviour()
   {
-    $this->assertIsA($this->toolkit->createBehaviour('SiteObjectBehaviour'),
-                     'SiteObjectBehaviour');
+    $this->assertIsA($this->toolkit->createBehaviour('Behaviour'),
+                     'Behaviour');
   }
 
   function testGetDb()

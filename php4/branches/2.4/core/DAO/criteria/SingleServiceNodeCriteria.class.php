@@ -9,13 +9,13 @@
 *
 ***********************************************************************************/
 
-class SingleSiteObjectCriteria
+class SingleServiceNodeCriteria
 {
   var $path;
   var $node_id;
   var $object_id;
 
-  function SingleSiteObjectCriteria()
+  function SingleServiceNodeCriteria()
   {
     $this->reset();
   }
@@ -58,19 +58,19 @@ class SingleSiteObjectCriteria
   {
     if ($this->object_id)
     {
-      $sql->addCondition('sso.id = ' . $this->object_id);
+      $sql->addCondition('sys_object.oid = ' . $this->object_id);
       return;
     }
 
     if ($this->node_id)
     {
-      $sql->addCondition('ssot.id = ' . $this->node_id);
+      $sql->addCondition('sys_tree.id = ' . $this->node_id);
       return;
     }
 
     if ($this->path && $node_id = $this->_getNodeIdByPath())
     {
-      $sql->addCondition('ssot.id = ' . $node_id);
+      $sql->addCondition('sys_tree.id = ' . $node_id);
       return;
     }
 

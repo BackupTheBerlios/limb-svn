@@ -28,32 +28,32 @@ class VersionedObjectMapper extends AbstractDataMapper
   {
     $this->delegated_mapper->insert($object);
 
-    $version_uid = $this->_getVersionUID($object);
+    $version_session_id = $this->_getVersionSessionId($object);
 
-    $this->_insertCurrentVersionRecord($object, $version_uid);
+    $this->_insertCurrentVersionRecord($object, $version_session_id);
 
-    $this->_insertVersionRecord($object, $version_uid);
+    $this->_insertVersionRecord($object, $version_session_id);
   }
 
-  function _getVersionUID(&$object)
+  function _getVersionSessionId(&$object)
   {
     $toolkit =& Limb :: toolkit();
     $db_table =& $toolkit->createDBTable('SysCurrentVersion');
 
-    $condition['uid'] = $object->getId();
+    $condition['revision_object_id'] = $object->get($this->delegated_mapper->getIdentityKeyName());
     $rs =& $db_table->select($condition);
 
     $rs->rewind();
     if($rs->valid())
     {
       $current =& $rs->current();
-      return $current->get('version_uid');
+      return $current->get('version_session_id');
     }
     else
       return $toolkit->nextUID();
   }
 
-  function _getLastVersion($version_uid)
+  function _getLastVersion($version_session_id)
   {
     $toolkit =& Limb :: toolkit();
     $version_db_table =& $toolkit->createDBTable('SysVersionHistory');
@@ -62,24 +62,24 @@ class VersionedObjectMapper extends AbstractDataMapper
 
     //refactor LimbDBTable?
     $conn =& $toolkit->getDbConnection();
-    $stmt = $conn->newStatement("SELECT MAX(version) as version FROM $db_table_name WHERE version_uid=:id:");
+    $stmt = $conn->newStatement("SELECT MAX(version) as version FROM $db_table_name WHERE version_session_id=:id:");
 
-    $stmt->setInteger('id', $version_uid);
+    $stmt->setInteger('id', $version_session_id);
     if(!$value = $stmt->getOneValue())
       return 0;
     else
       return $value;
   }
 
-  function _insertVersionRecord(&$object, $version_uid, $version = 1)
+  function _insertVersionRecord(&$object, $version_session_id, $version = 1)
   {
     $toolkit =& Limb :: toolkit();
     $version_db_table =& $toolkit->createDBTable('SysVersionHistory');
 
     $user =& $toolkit->getUser();
 
-    $data['uid'] = $object->getId();
-    $data['version_uid'] = $version_uid;
+    $data['revision_object_id'] = $object->get($this->delegated_mapper->getIdentityKeyName());
+    $data['version_session_id'] = $version_session_id;
     $data['version'] = $version;
     $data['created_date'] = time();
     $data['creator_id'] = $user->getId();
@@ -87,60 +87,61 @@ class VersionedObjectMapper extends AbstractDataMapper
     $version_db_table->insert($data);
   }
 
-  function _insertCurrentVersionRecord(&$object, $version_uid)
+  function _insertCurrentVersionRecord(&$object, $version_session_id)
   {
     $toolkit =& Limb :: toolkit();
     $db_table =& $toolkit->createDBTable('SysCurrentVersion');
 
-    $row['uid'] = $object->getId();
-    $row['version_uid'] = $version_uid;
+    $row['revision_object_id'] = $object->get($this->delegated_mapper->getIdentityKeyName());
+    $row['version_session_id'] = $version_session_id;
     $db_table->insert($row);
   }
 
-  function _updateCurrentVersionRecord(&$object, $version_uid)
+  function _updateCurrentVersionRecord(&$object, $version_session_id)
   {
     $toolkit =& Limb :: toolkit();
     $db_table =& $toolkit->createDBTable('SysCurrentVersion');
 
-    $db_table->update(array('uid' => $object->getId()), array('version_uid' => $version_uid));
+    $db_table->update(array('revision_object_id' => $object->get($this->delegated_mapper->getIdentityKeyName())),
+                      array('version_session_id' => $version_session_id));
   }
 
   function update(&$object)
   {
-    $version_uid = $this->_getVersionUID($object);
+    $version_session_id = $this->_getVersionSessionId($object);
 
     $this->delegated_mapper->insert($object);
 
-    $version = $this->_getLastVersion($version_uid) + 1;
+    $version = $this->_getLastVersion($version_session_id) + 1;
 
-    $this->_insertVersionRecord($object, $version_uid, $version);
+    $this->_insertVersionRecord($object, $version_session_id, $version);
 
-    $this->_updateCurrentVersionRecord(&$object, $version_uid);
+    $this->_updateCurrentVersionRecord(&$object, $version_session_id);
   }
 
   function delete(&$object)
   {
-    $version_uid = $this->_getVersionUID($object);
+    $version_session_id = $this->_getVersionSessionId($object);
 
     $this->delegated_mapper->delete($object);
 
-    $this->_deleteVersionRecords($object, $version_uid);
+    $this->_deleteVersionRecords($object, $version_session_id);
 
-    $this->_deleteCurrentVersionRecord($object, $version_uid);
+    $this->_deleteCurrentVersionRecord($object, $version_session_id);
   }
 
-  function _deleteVersionRecords(&$object, $version_uid)
+  function _deleteVersionRecords(&$object, $version_session_id)
   {
     $toolkit =& Limb :: toolkit();
     $version_db_table =& $toolkit->createDBTable('SysVersionHistory');
-    $version_db_table->delete(array('version_uid' => $version_uid));
+    $version_db_table->delete(array('version_session_id' => $version_session_id));
   }
 
-  function _deleteCurrentVersionRecord(&$object, $version_uid)
+  function _deleteCurrentVersionRecord(&$object, $version_session_id)
   {
     $toolkit =& Limb :: toolkit();
     $db_table =& $toolkit->createDBTable('SysCurrentVersion');
-    $db_table->delete(array('version_uid' => $version_uid));
+    $db_table->delete(array('version_session_id' => $version_session_id));
   }
 }
 

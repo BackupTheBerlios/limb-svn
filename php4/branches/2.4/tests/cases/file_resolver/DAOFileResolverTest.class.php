@@ -20,8 +20,8 @@ class DAOFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveDAOFileFromLimb()
   {
-    $this->assertEqual($this->resolver->resolve('SiteObjectsDAO'),
-                       LIMB_DIR . '/core/dao/SiteObjectsDAO.class.php');
+    $this->assertEqual($this->resolver->resolve('DAO'),
+                       LIMB_DIR . '/core/dao/DAO.class.php');
   }
 
   function testResolveDAOFileOk()

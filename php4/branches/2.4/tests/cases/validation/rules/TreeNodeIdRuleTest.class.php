@@ -49,7 +49,7 @@ class TreeNodeIdRuleTest extends SingleFieldRuleTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('sys_site_object_tree');
+    $this->db->delete('sys_tree');
   }
 
   function testTreeNodeIdRuleBlank()

@@ -30,13 +30,13 @@ class OneTableObjectMapper extends AbstractDataMapper
     return $this->_db_table;
   }
 
-  function load(&$record, &$domain_object)
+  function load(&$record, &$object)
   {
     $raw_data = $record->export();
 
     $raw_data = $this->_filterInputData($raw_data);
 
-    $domain_object->merge($raw_data);
+    $object->merge($raw_data);
   }
 
   function _filterInputData($row)
@@ -52,32 +52,32 @@ class OneTableObjectMapper extends AbstractDataMapper
     return $filtered;
   }
 
-  function update(&$domain_object)
+  function update(&$object)
   {
-    $data = $domain_object->export();
+    $data = $object->export();
 
     $table =& $this->getDbTable();
-    $table->update($data, array('id' => $domain_object->getId()));
+    $table->update($data, array($table->getPrimaryKeyName() => $object->get($table->getPrimaryKeyName())));
   }
 
-  function insert(&$domain_object)
+  function insert(&$object)
   {
-    $raw_data = $this->_filterInputData($domain_object->export());
+    $raw_data = $this->_filterInputData($object->export());
     $toolkit =& Limb :: toolkit();
+    $table =& $this->getDbTable();
 
     $id = $toolkit->nextUID();
-    $raw_data['id'] = $id;
+    $raw_data[$table->getPrimaryKeyName()] = $id;
 
-    $domain_object->setId($id);
+    $object->set($table->getPrimaryKeyName(), $id);
 
-    $table =& $this->getDbTable();
     return $table->insert($raw_data);
   }
 
-  function delete(&$domain_object)
+  function delete(&$object)
   {
-    $db_table =& $this->getDbTable();
-    $db_table->delete(array('id' => $domain_object->getId()));
+    $table =& $this->getDbTable();
+    $table->delete(array($table->getPrimaryKeyName() => $object->get($table->getPrimaryKeyName())));
   }
 }
 

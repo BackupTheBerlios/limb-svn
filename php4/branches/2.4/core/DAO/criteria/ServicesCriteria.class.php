@@ -5,17 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: SiteObjectsRawSQL.class.php 1085 2005-02-02 16:04:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
-
-class SiteObjectsDAO extends SQLBasedDAO
+class ServicesCriteria
 {
-  function & _initSQL()
+  function process(&$sql)
   {
-    include_once(LIMB_DIR . '/core/dao/SiteObjectsRawSQL.class.php');
-    return new SiteObjectsRawSQL();
+    $sql->addField('sys_service.*');
+    $sql->addTable('sys_service');
+    $sql->addCondition('sys_object.oid=sys_service.oid');
   }
 }
 

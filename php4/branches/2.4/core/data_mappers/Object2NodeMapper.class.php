@@ -12,19 +12,19 @@ require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
 class Object2NodeMapper extends AbstractDataMapper
 {
-  function insert(&$site_object)
+  function insert(&$object)
   {
-    if (!$site_object->getId())
-      return throw(new LimbException('uid is not set'));
+    if (!$object->get('oid'))
+      return throw(new LimbException('oid is not set'));
 
-    if (!$site_object->getSiteObjectId())
-      return throw(new LimbException('site object id is not set'));
+    if (!$object->get('node_id'))
+      return throw(new LimbException('node id is not set'));
 
     $toolkit =& Limb :: toolkit();
-    $db_table =& $toolkit->createDBTable('SysDomainObject2Node');
+    $db_table =& $toolkit->createDBTable('SysObject2Node');
 
-    $row = array('uid' => $site_object->getId(),
-                 'site_object_id' => $site_object->getSiteObjectId());
+    $row = array('oid' => $object->get('oid'),
+                 'node_id' => $object->get('node_id'));
 
     $db_table->insert($row);
   }
@@ -32,29 +32,29 @@ class Object2NodeMapper extends AbstractDataMapper
   function update(&$object)
   {
     $toolkit =& Limb :: toolkit();
-    $db_table =& $toolkit->createDBTable('SysDomainObject2Node');
+    $db_table =& $toolkit->createDBTable('SysObject2Node');
 
-    $condition['site_object_id'] = $object->getSiteObjectId();
+    $condition['oid'] = $object->get('oid');
     $rs = $db_table->select($condition);
     $rs->rewind();
     if($rs->valid())
     {
-      $row['uid'] = $object->getId();
+      $row['node_id'] = $object->get('node_id');
       $db_table->update($row, $condition);
     }
     else
     {
-      $row['uid'] = $object->getId();
-      $row['site_object_id'] = $object->getSiteObjectId();
+      $row['oid'] = $object->get('oid');
+      $row['node_id'] = $object->get('node_id');
       $db_table->insert($row);
     }
   }
 
-  function delete(&$site_object)
+  function delete(&$object)
   {
     $toolkit =& Limb :: toolkit();
-    $db_table =& $toolkit->createDBTable('SysDomainObject2Node');
-    $db_table->delete(array('uid' => $site_object->getId()));
+    $db_table =& $toolkit->createDBTable('SysObject2Node');
+    $db_table->delete(array('oid' => $object->get('oid')));
   }
 }
 

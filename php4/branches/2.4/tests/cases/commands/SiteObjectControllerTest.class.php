@@ -11,21 +11,21 @@
 require_once(LIMB_DIR . '/core/commands/StateMachine.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/site_objects/SiteObjectController.class.php');
-require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
 Mock :: generate('StateMachine');
 Mock :: generate('Request');
-Mock :: generate('SiteObjectBehaviour');
+Mock :: generate('Behaviour');
 
-class SiteObjectBehaviourControllerTestVersion extends SiteObjectBehaviour
+class BehaviourControllerTestVersion extends Behaviour
 {
   function defineTestAction(&$state_machine){}
 }
 
 Mock :: generatePartial
 (
-  'SiteObjectBehaviourControllerTestVersion',
-  'SiteObjectBehaviourMock',
+  'BehaviourControllerTestVersion',
+  'BehaviourMock',
   array('defineTestAction')
 );
 
@@ -70,7 +70,7 @@ class SiteObjectControllerTest extends LimbTestCase
   {
     $this->request = new MockRequest($this);
     $this->state_machine = new MockStateMachine($this);
-    $this->behaviour = new MockSiteObjectBehaviour($this);
+    $this->behaviour = new MockBehaviour($this);
 
     $this->controller = new SiteObjectControllerMock($this);
     $this->controller->SiteObjectController($this->behaviour);
@@ -117,7 +117,7 @@ class SiteObjectControllerTest extends LimbTestCase
 
   function testProcess()
   {
-    $behaviour = new SiteObjectBehaviourMock($this);
+    $behaviour = new BehaviourMock($this);
 
     $controller = new SiteObjectControllerMock($this);
     $controller->SiteObjectController($behaviour);
@@ -139,7 +139,7 @@ class SiteObjectControllerTest extends LimbTestCase
 
   function testProcessNoActionFind()
   {
-    $behaviour = new SiteObjectBehaviourMock($this);
+    $behaviour = new BehaviourMock($this);
 
     $controller = new SiteObjectControllerMock($this);
     $controller->SiteObjectController($behaviour);

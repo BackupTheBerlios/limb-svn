@@ -21,8 +21,8 @@ class SysCurrentVersionDbTable extends LimbDbTable
   {
     return array(
       'id' => array('type' => 'numeric'),
-      'uid' => array('type' => 'numeric'),
-      'version_uid' => array('type' => 'numeric'),
+      'revision_object_id' => array('type' => 'numeric'),
+      'version_session_id' => array('type' => 'numeric'),
     );
   }
 }

@@ -14,7 +14,7 @@ class MaterializedPathTree// implements Tree
   var $_conn = null;
   var $_db = null;
 
-  var $_node_table = 'sys_site_object_tree';
+  var $_node_table = 'sys_tree';
 
   var $_params = array(
     'id' => 'id',

@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/behaviours/SiteObjectBehaviour.class.php');
+require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
 
-Mock :: generate('SiteObjectBehaviour');
+Mock :: generate('Behaviour');
 
-class SiteObjectBehaviourTestVersion extends SiteObjectBehaviour
+class BehaviourTestVersion extends Behaviour
 {
   function _defineProperties()
   {
@@ -27,18 +27,18 @@ class SiteObjectBehaviourTestVersion extends SiteObjectBehaviour
   function defineAction2(&$state_machine){}
 }
 
-class SiteObjectBehaviourTest extends LimbTestCase
+class BehaviourTest extends LimbTestCase
 {
   var $behaviour;
 
-  function SiteObjectBehaviourTest()
+  function BehaviourTest()
   {
     parent :: LimbTestCase('site object behaviour tests');
   }
 
   function setUp()
   {
-    $this->behaviour = new SiteObjectBehaviourTestVersion();
+    $this->behaviour = new BehaviourTestVersion();
   }
 
   function tearDown()
