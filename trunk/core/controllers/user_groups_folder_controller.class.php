@@ -24,7 +24,7 @@ class user_groups_folder_controller extends site_object_controller
 				'create_user_group' => array(
 						'permissions_required' => 'w',
 						'template_path' => '/user_group/create.html',
-						'action_path' => '/user/create_user_group_action',
+						'action_path' => '/user_group/create_user_group_action',
 						'JIP' => true,
 						'popup' => true,
 						'img_src' => '/shared/images/new.folder.gif',

@@ -8,9 +8,11 @@
 * $Id: action.class.php 2 2004-02-29 19:06:22Z server $
 *
 ***********************************************************************************/ 
-define('RESPONSE_STATUS_FAILURE', 0);
-define('RESPONSE_STATUS_SUCCESS', 1);
-define('RESPONSE_STATUS_NOT_VALID', 2);
+define('RESPONSE_STATUS_SUCCESS', 15);
+define('RESPONSE_STATUS_FIRST_TIME', 2);
+
+define('RESPONSE_STATUS_FAILURE', 240);
+define('RESPONSE_STATUS_NOT_VALID', 16);
 
 class response
 {
@@ -28,6 +30,16 @@ class response
 			
 	function perform()
 	{
+	}
+	
+	function is_success()
+	{
+		return ($this->status & RESPONSE_STATUS_SUCCESS);
+	}
+
+	function is_failure()
+	{
+		return ($this->status & RESPONSE_STATUS_FAILURE);
 	}
 	
 } 

@@ -77,7 +77,7 @@ class user_object extends content_object
 	{
 		if(!user :: is_logged_in() || !$node_id = user :: get_node_id())
 		{
-		  debug :: write_error('user not logged in - node id is not set', 
+		  debug :: write_error('user not logged in or node id is not set', 
 			  __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__); 
 		  return false;
 		}

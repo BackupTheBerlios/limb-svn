@@ -27,7 +27,7 @@ class user_group_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('edit_user_group', 'user_group'),
-						'action_path' => '/user/edit_user_group_action',
+						'action_path' => '/user_group/edit_user_group_action',
 						'template_path' => '/user_group/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
@@ -36,7 +36,7 @@ class user_group_controller extends site_object_controller
 						'JIP' => true,
 						'popup' => true,
 						'action_name' => strings :: get('delete_user_group', 'user_group'),
-						'action_path' => '/user/delete_user_group_action',
+						'action_path' => '/user_group/delete_user_group_action',
 						'template_path' => '/site_object/delete.html',
 						'img_src' => '/shared/images/rem.gif'
 				),

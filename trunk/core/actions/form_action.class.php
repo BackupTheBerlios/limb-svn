@@ -83,7 +83,7 @@ class form_action extends action
 				$result = $this->_valid_perform();
 				
 			if($this->view && $form =& $this->view->find_child($this->name))
-				$form->set_valid_status($result->get_status() == RESPONSE_STATUS_SUCCESS);
+				$form->set_valid_status($result->is_success());
 			
 			return $result;
 		} 
@@ -116,7 +116,7 @@ class form_action extends action
 
 	function _first_time_perform()
 	{
-		return new response();
+		return new response(RESPONSE_STATUS_FIRST_TIME);
 	}
 		
 	function _valid_perform()

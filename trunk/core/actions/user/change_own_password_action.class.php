@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . 'core/actions/form_action.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/match_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php'); 
+require_once(LIMB_DIR . 'core/lib/validators/rules/user_old_password_rule.class.php'); 
 
 class change_own_password_action extends form_action
 {
@@ -21,6 +22,7 @@ class change_own_password_action extends form_action
 
 	function _init_validator()
 	{
+		$this->validator->add_rule(new user_old_password_rule('old_password'));
 		$this->validator->add_rule(new required_rule('password'));
 		$this->validator->add_rule(new required_rule('second_password'));
 		$this->validator->add_rule(new match_rule('second_password', 'password', 'PASSWORD'));
@@ -31,14 +33,6 @@ class change_own_password_action extends form_action
 		$user_object =& site_object_factory :: instance('user_object');
 		
 		$data = $this->dataspace->export();
-
-		if (!$user_object->validate_password($data['old_password']))
-		{
-			$error_list = & error_list :: instance();
-			$error_list->add_error('old_password', 'WRONG_PASSWORD');
-			$this->valid = false;
-			return new not_valid_response();
-		}
 
 		if($user_object->change_own_password($data['password']))
 			return new response();

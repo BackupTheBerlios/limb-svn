@@ -130,7 +130,7 @@ class site_object_controller
 		
 		debug :: add_timing_point('action performed');
 		
-		if($this->_response->get_status() == RESPONSE_STATUS_FAILURE)
+		if($this->_response->is_failure())
 			debug :: write_error('action failed', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	}
 	
@@ -154,7 +154,7 @@ class site_object_controller
 		if(!$this->is_transaction_required())
 			return;
 
-		if($this->_response->get_status() == RESPONSE_STATUS_SUCCESS)
+		if($this->_response->is_success())
 			commit_user_transaction();
 		else
 			rollback_user_transaction();
