@@ -7,19 +7,24 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
 
 class create_images_folder_action extends form_create_site_object_action
 {
 	function _define_site_object_class_name()
 	{
-	  return 'images_folder';
-	}  
-	  
+	  return 'site_object';
+	}
+
+	function _define_controller_name()
+	{
+	  return 'images_folder_controller';
+	}
+
 	function _define_dataspace_name()
 	{
-	  return 'create_images_folder';
+	  return 'images_folder_form';
 	}
 
 	function _init_validator()

@@ -13,33 +13,41 @@
 <core:INCLUDE file="pager.html">
 
 <grid:LIST id='list'>
-<table width=100%>
+<table>
+<tr><td colspan='6' class='btitle1' height='3'></td></tr>
 <tr>
 	<th><grid:SELECTORS_TOGGLER></th>
 	<th><locale:STRING name='published_status'></th>
 	<th><locale:STRING name='image' file='image'></th>
 	<th><locale:STRING name='newsline' file='newsline'></th>
-	<th><locale:STRING name='identifier'></th>
 	<th><locale:STRING name='date'></th>
-	<th><locale:STRING name='modified_date'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
 <tr class="jip">
-<td><core:INCLUDE file="/admin/selector.html"></td>
-<td><core:INCLUDE file="published_status.html"></td>
-<td>
-	<core:OPTIONAL for='image_id'>
-	<img src='/root?node_id={$image_id}&icon'>
-	</core:OPTIONAL>
-</td>
-<td jip='object'><a href="{$path}" target="_blank">{$title}</a></td>
-<td>{$identifier}</td>
-<td><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date'></td>
-<td><locale:DATE_FORMAT hash_id='modified_date' locale_format='short_date'></td>
-<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+  <td><core:INCLUDE file="/admin/selector.html"></td>
+  <td><core:INCLUDE file="published_status.html"></td>
+  <td>
+  	<core:OPTIONAL for='image_id'>
+  	<img src='/root?node_id={$image_id}&icon'>
+  	</core:OPTIONAL>
+  </td>
+  <td jip='object'>
+    <core:INCLUDE file="/admin/list_item_hint.html">
+    <a href="{$path}" target="_blank">{$title}</a>
+  </td>
+  <td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<tr><td colspan='6' align='left'><core:INCLUDE file='/admin/delete_button.html'></td><td align='left'><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td></tr>
+<tr><td colspan='6' class='btitle1' height='3'></td></tr>
+<tr>
+	<td colspan='6'>
+	<grid:actions select_class='select' button_class='button' locale_value='do'>
+		<grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+		<grid:action shortcut='save_priority'  locale_value='change_order' form_submitted='1'>
+		<grid:action shortcut='toggle_published_status'   locale_value='toggle_published_status' form_submitted='1'>
+	</grid:actions>
+	</td>
+</tr>
 </table>
 </grid:LIST>

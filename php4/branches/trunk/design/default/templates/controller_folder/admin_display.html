@@ -1,16 +1,10 @@
 <core:WRAP file="admin/site_management_page.html" placeholder="content">
 <br>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<th>
-<locale:STRING name='controller_name'>
-</th>
-<th>
-<locale:STRING name='actions'>
-</th>
+  <th><locale:STRING name='controller_class_name'></th>
+  <th><locale:STRING name='actions'></th>
 </tr>
-
-
 <DATASOURCE target='controllers'>
 	<core:PARAMETER name='datasource_path' value='controller_list_datasource'>
 </DATASOURCE>
@@ -18,8 +12,8 @@
 <grid:LIST id='controllers'>
 <grid:ITERATOR>
 <tr class=jip>
-<td jip='object' class=jip-object><small>{$name}</small></td>
-<td><core:INCLUDE file="/jip_actions/extended.html"></td>
+  <td jip='object' class=jip-object><small>{$name}</small></td>
+  <td><core:INCLUDE file="/jip_actions/extended.html"></td>
 </tr>
 </grid:ITERATOR>
 </grid:LIST>

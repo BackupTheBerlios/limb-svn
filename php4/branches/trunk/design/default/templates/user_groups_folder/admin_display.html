@@ -12,29 +12,33 @@
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='user_groups'>
-<table width=100%>
+<table>
+<tr><td colspan='4' class='btitle1' height='3'></td></tr>
 <tr>
 	<th><grid:SELECTORS_TOGGLER></th>
-	<th><locale:STRING name='user_groups_list' file='user_group'></th>
-	<th><locale:STRING name='created_date'></th>
-	<th><locale:STRING name='modified_date'></th>
 	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='user_groups_list' file='user_group'></th>
 	<th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
 <tr class="jip">
-<td><core:INCLUDE file="/admin/selector.html"></td>
-<td jip='object'>{$title} ({$identifier})</td>
-<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
-<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
-<td><core:INCLUDE file='/admin/priority_input.html'></td>
-<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+  <td><core:INCLUDE file="/admin/selector.html"></td>
+  <td><core:INCLUDE file='/admin/priority_input.html'></td>
+  <td jip='object'>
+    <core:INCLUDE file="/admin/list_item_hint.html">
+    {$title} ({$identifier})
+  </td>
+  <td jip='action'><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
+<tr><td colspan='4' class='btitle1' height='3'></td></tr>
 <tr>
-	<td colspan='4' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
-	<td align='right'><core:INCLUDE file='/admin/priority_button.html'></td>
-	<td></td>
+	<td colspan='4'>
+	<grid:actions select_class='select' button_class='button' locale_value='do'>
+		<grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+		<grid:action shortcut='save_priority'  locale_value='change_order' form_submitted='1'>
+	</grid:actions>
+	</td>
 </tr>
-</table>
+
 </grid:LIST>

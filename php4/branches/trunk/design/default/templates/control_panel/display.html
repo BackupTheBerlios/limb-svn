@@ -5,6 +5,7 @@
   <link rel='stylesheet' type="text/css" href="/shared/styles/admin.css">
   <script language="javascript" src="/shared/js/common.js"></script>
   <script language="javascript" src="/shared/js/tabs.js"></script>
+  <script language="javascript" src="/shared/js/hint.js"></script>
 </head>
 <script>
   var tabs = new tabs_container();
@@ -62,13 +63,12 @@
 <table width=100% border=0 cellspacing=0 cellpadding=0 class=cp-header>
 <tr>
   <td class=com1>
-    <table width=100% border=0 cellspacing=0 cellpadding=0>
+ <table width=100% border=0 cellspacing=0 cellpadding=0>
     <tr>
       <td align=left style='padding:4px 10px 0 12px'><img src='/shared/images/logo.limb.gif'>
       <br><img src='/shared/images/1x1.gif' width=168 height=1></td>
-      <td width=100% >&nbsp;</td>
-      <td valign=middle width='1%' nowrap><core:INCLUDE file="admin/select_user_locale_form.html"></td>
-      <td valign=middle width='1%' nowrap><core:INCLUDE file="admin/current_user_info.html"></td>
+      <td width=100% ><core:INCLUDE file="admin/user_services.html"></td>
+      <td valign=middle width='1%' nowrap></td>
     </tr>
   </table>
   <fetch:SUB_BRANCH target="tabs_header, tabs_body" >
@@ -82,7 +82,8 @@
   <grid:LIST id='tabs_header'>
   <table width='100%' border='0' cellspacing='0' cellpadding='0' class="tabulator">
   <tr>
-    <td class="tab" style='padding:0 0 0 10px' nowrap align=left><b><locale:STRING name='limb_cp'></b>
+    <td class="tab" style='padding:0 0 0 10px' nowrap align=left>
+    <b><locale:STRING name='limb_cp'></b>
     <br><img src='/shared/images/1x1.gif' width=168 height=1>
     </td>
     <grid:ITERATOR>
@@ -101,12 +102,12 @@
     <td class=tab width=100%>&nbsp;</td>
   </tr>
   </table>
-
+  </grid:LIST>
   </td>
 </tr>
 </table>
 
-</grid:LIST>
+
 
 <grid:LIST id='tabs_body'>
   <grid:ITERATOR>

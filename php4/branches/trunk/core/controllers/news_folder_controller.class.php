@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
-	
+
 class news_folder_controller extends site_object_controller
 {
 	function _define_actions()
@@ -33,15 +33,15 @@ class news_folder_controller extends site_object_controller
 						'action_name' => strings :: get('create_newsline', 'newsline'),
 						'can_have_access_template' => true,
 				),
-				'edit' => array(
-						'permissions_required' => 'w',
-						'template_path' => '/news_folder/edit.html',
-						'action_path' => '/news_folder/edit_news_folder_action',
-						'popup' => true,
-						'JIP' => true,
-						'img_src' => '/shared/images/edit.gif',
-						'action_name' => strings :: get('edit_news_folder', 'newsline'),
-				),
+        'edit' => array(
+            'permissions_required' => 'w',
+            'popup' => true,
+            'JIP' => true,
+            'action_name' => strings :: get('edit_news_folder', 'newsline'),
+            'action_path' => '/site_object/edit_action',
+            'template_path' => '/site_object/full_edit.html',
+            'img_src' => '/shared/images/edit.gif'
+        ),
 		);
 	}
 }

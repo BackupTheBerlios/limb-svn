@@ -7,21 +7,26 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
 
 class create_news_folder_action extends form_create_site_object_action
 {
 	function _define_site_object_class_name()
 	{
-	  return 'news_folder';
-	}  
-	  
+	  return 'site_object';
+	}
+
+	function _define_controller_name()
+	{
+	  return 'news_folder_controller';
+	}
+
 	function _define_dataspace_name()
 	{
-	  return 'create_news_folder';
+	  return 'news_folder_form';
 	}
-	
+
 	function _init_validator()
 	{
 		parent :: _init_validator();
