@@ -26,11 +26,11 @@ class SpecialInterceptingFilter extends MockInterceptingFilter
     parent :: mockinterceptingFilter($test);
   }
 
-  function run($fc, $request, $response)
+  function run(&$fc, &$request, &$response)
   {
-    $this->captured['filter_chain'] = $fc;
-    $this->captured['request'] = $request;
-    $this->captured['response'] = $response;
+    $this->captured['filter_chain'] =& $fc;
+    $this->captured['request'] =& $request;
+    $this->captured['response'] =& $response;
 
     $fc->next();
 
@@ -45,7 +45,7 @@ class OutputFilter1 extends MockInterceptingFilter
     parent :: mockinterceptingFilter($test);
   }
 
-  function run($fc, $request, $response)
+  function run(&$fc, &$request, &$response)
   {
     echo '<filter1>';
 
@@ -64,7 +64,7 @@ class OutputFilter2 extends MockInterceptingFilter
     parent :: mockinterceptingFilter($test);
   }
 
-  function run($fc, $request, $response)
+  function run(&$fc, &$request, &$response)
   {
     echo '<filter2>';
 
@@ -83,7 +83,7 @@ class OutputFilter3 extends MockInterceptingFilter
     parent :: mockinterceptingFilter($test);
   }
 
-  function run($fc, $request, $response)
+  function run(&$fc, &$request, &$response)
   {
     echo '<filter3>';
 

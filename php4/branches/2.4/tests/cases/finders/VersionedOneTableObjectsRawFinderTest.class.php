@@ -39,7 +39,7 @@ class VersionedOneTableObjectsRawFinderTest extends LimbTestCase
     $this->db_table = new MockDbTable($this);
     $this->toolkit = new MockLimbToolkit($this);
 
-    $this->toolkit->setReturnValue('createDBTable', $this->db_table);
+    $this->toolkit->setReturnReference('createDBTable', $this->db_table);
 
     Limb :: registerToolkit($this->toolkit);
   }

@@ -191,10 +191,10 @@ class ImageGd extends ImageLibrary
 
     $dest_image = $create_func($x, $y);
 
-    if ($params == ImageGd :: FLIP_HORIZONTAL)
+    if ($params == IMAGE_LIBRARY_FLIP_HORIZONTAL)
       $resize_func($dest_image, $image, 0, 0, $x, 0, $x, $y, -$x, $y);
 
-    if ($params == ImageGd :: FLIP_VERTICAL)
+    if ($params == IMAGE_LIBRARY_FLIP_VERTICAL)
       $resize_func($dest_image, $image, 0, 0, 0, $y, $x, $y, $x, -$y);
 
     imagedestroy($image);

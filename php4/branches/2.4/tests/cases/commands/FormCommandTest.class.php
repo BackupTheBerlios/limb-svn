@@ -43,13 +43,13 @@ class FormCommandTest extends LimbTestCase
     $this->validator = new MockValidator($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('switchDataspace', $this->dataspace, array('test_form'));
-    $this->toolkit->setReturnValue('getRequest', $this->request);
+    $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array('test_form'));
+    $this->toolkit->setReturnReference('getRequest', $this->request);
 
     Limb :: registerToolkit($this->toolkit);
 
     $this->form_command = new FormCommandTestVersion($this);
-    $this->form_command->setReturnValue('_getValidator', $this->validator);
+    $this->form_command->setReturnReference('_getValidator', $this->validator);
   }
 
   function tearDown()

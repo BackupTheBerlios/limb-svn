@@ -51,8 +51,8 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
     $this->site_object = new MockSiteObject($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
-    $this->toolkit->setReturnValue('getRequest', $this->request);
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('getRequest', $this->request);
 
     Limb :: registerToolkit($this->toolkit);
 
@@ -77,7 +77,7 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
     $this->datasource->expectOnce('fetch');
     $this->datasource->setReturnValue('fetch', $object_data);
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object);
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object);
 
     $this->site_object->expectOnce('delete');
     $this->assertEqual($this->delete_command->perform(), LIMB_STATUS_OK);
@@ -85,7 +85,7 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
 
   function testDeleteFailed()
   {
-    $this->toolkit->setReturnValue('createSiteObject', new SiteObjectDeleteCommandTestVersion1());
+    $this->toolkit->setReturnReference('createSiteObject', new SiteObjectDeleteCommandTestVersion1());
 
     $object_data = array('class_name' => 'some_class');
 
@@ -98,7 +98,7 @@ class DeleteSiteObjectCommandTest extends LimbTestCase
 
   function testDeleteFailedSqlException()
   {
-    $this->toolkit->setReturnValue('createSiteObject', new SiteObjectDeleteCommandTestVersion2());
+    $this->toolkit->setReturnReference('createSiteObject', new SiteObjectDeleteCommandTestVersion2());
 
     $object_data = array('class_name' => 'some_class');
 

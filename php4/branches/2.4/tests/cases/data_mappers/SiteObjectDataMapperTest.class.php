@@ -97,9 +97,9 @@ class SiteObjectMapperTest extends LimbTestCase
     $this->site_object = new MockSiteObject($this);
     $this->user->setReturnValue('getId', 125);
 
-    $this->toolkit->setReturnValue('getTree', $this->tree);
-    $this->toolkit->setReturnValue('getUser', $this->user);
-    $this->toolkit->setReturnValue('createDataMapper',
+    $this->toolkit->setReturnReference('getTree', $this->tree);
+    $this->toolkit->setReturnReference('getUser', $this->user);
+    $this->toolkit->setReturnReference('createDataMapper',
                                    $this->behaviour_mapper,
                                    array('SiteObjectBehaviourMapper'));
 
@@ -191,11 +191,11 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $mapper = new SiteObjectMapperTestVersion0($this);
 
-    $mapper->setReturnValue('_getFinder', $finder);
-    $mapper->setReturnValue('_getBehaviourMapper', $this->behaviour_mapper);
+    $mapper->setReturnReference('_getFinder', $finder);
+    $mapper->setReturnReference('_getBehaviourMapper', $this->behaviour_mapper);
 
     $this->behaviour_mapper->expectOnce('findById', array($behaviour_id));
-    $this->behaviour_mapper->setReturnValue('findById', $this->behaviour, array($behaviour_id));
+    $this->behaviour_mapper->setReturnReference('findById', $this->behaviour, array($behaviour_id));
 
     $site_object = $mapper->findById($id);
 

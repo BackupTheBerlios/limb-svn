@@ -34,11 +34,11 @@ class RequestedObjectDatasourceTest extends LimbTestCase
     $this->uri = new MockUri($this);
     $this->datasource = new RequestedObjectDatasource();
 
-    $this->request->setReturnValue('getUri', $this->uri);
+    $this->request->setReturnReference('getUri', $this->uri);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getTree', $this->tree);
-    $this->toolkit->setReturnValue('getRequest', $this->request);
+    $this->toolkit->setReturnReference('getTree', $this->tree);
+    $this->toolkit->setReturnReference('getRequest', $this->request);
 
     Limb :: registerToolkit($this->toolkit);
   }

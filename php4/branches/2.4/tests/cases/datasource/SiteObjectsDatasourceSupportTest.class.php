@@ -44,7 +44,7 @@ class SiteObjectsDatasourceSupportTest extends LimbTestCase
   function testAssignPathsToSiteObjectsWorstCase()
   {
     $this->toolkit->expectOnce('getTree');
-    $this->toolkit->setReturnValue('getTree', $this->tree);
+    $this->toolkit->setReturnReference('getTree', $this->tree);
 
     $objects_array = array(array('parent_node_id' => 10, 'node_id' => 100, 'identifier' => '1'),
                            array('parent_node_id' => 20, 'node_id' => 200, 'identifier' => '2'),
@@ -65,7 +65,7 @@ class SiteObjectsDatasourceSupportTest extends LimbTestCase
   function testAssignPathsToSiteObjectsParentsCache()
   {
     $this->toolkit->expectOnce('getTree');
-    $this->toolkit->setReturnValue('getTree', $this->tree);
+    $this->toolkit->setReturnReference('getTree', $this->tree);
 
     $objects_array = array(array('parent_node_id' => 10, 'node_id' => 100, 'identifier' => '1'),
                            array('parent_node_id' => 10, 'node_id' => 200, 'identifier' => '2'),
@@ -85,7 +85,7 @@ class SiteObjectsDatasourceSupportTest extends LimbTestCase
   function testAssignPathsToSiteObjectsAppend()
   {
     $this->toolkit->expectOnce('getTree');
-    $this->toolkit->setReturnValue('getTree', $this->tree);
+    $this->toolkit->setReturnReference('getTree', $this->tree);
 
     $objects_array = array(array('parent_node_id' => 10, 'node_id' => 100, 'identifier' => '1'),
                            array('parent_node_id' => 10, 'node_id' => 300, 'identifier' => '3'));
@@ -111,7 +111,7 @@ class SiteObjectsDatasourceSupportTest extends LimbTestCase
   {
     $fetched_data = array('class_name' => $class_name = 'test_site_object');
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array($class_name));
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object, array($class_name));
     $this->toolkit->expectOnce('createSiteObject', array($class_name));
 
     $this->site_object->expectOnce('merge', array($fetched_data));
@@ -124,8 +124,8 @@ class SiteObjectsDatasourceSupportTest extends LimbTestCase
     $fetched_data = array($data1 = array('class_name' => $class_name1 = 'test_site_object1'),
                           $data2 = array('class_name' => $class_name2 = 'test_site_object2'));
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array($class_name1));
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array($class_name2));
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object, array($class_name1));
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object, array($class_name2));
     $this->toolkit->expectCallCount('createSiteObject', 2);
 
     $this->site_object->expectArgumentsAt(0, 'merge', array($data1));

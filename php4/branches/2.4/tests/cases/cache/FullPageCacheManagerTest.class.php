@@ -38,7 +38,7 @@ class FullPageCacheManagerTest extends LimbTestCase
     $this->request = new MockRequest($this);
     $this->uri = new MockUri($this);
 
-    $this->request->setReturnValue('getUri', $this->uri);
+    $this->request->setReturnReference('getUri', $this->uri);
 
     $this->cache_manager = new FullPageCacheManagerTestVersion($this);
     $this->cache_manager->setRequest($this->request);

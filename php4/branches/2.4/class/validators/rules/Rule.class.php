@@ -24,9 +24,9 @@ class Rule
     $this->error_list = $error_list;
   }
 
-  function error($error, $params=array()){die('abstract function!')}
+  function error($error, $params=array()){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function validate($dataspace){die('abstract function!')}
+  function validate($dataspace){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 }
 
 ?>

@@ -76,7 +76,7 @@ class ImageCacheFilterTest extends LimbTestCase
 
     $cache_manager = new MockImageCacheManager($this);
     $this->filter_chain->expectOnce('next');
-    $this->filter->setReturnValue('_getImageCacheManager', $cache_manager);
+    $this->filter->setReturnReference('_getImageCacheManager', $cache_manager);
 
     $this->filter_chain->expectOnce('next');
 
@@ -99,7 +99,7 @@ class ImageCacheFilterTest extends LimbTestCase
 
     $cache_manager = new MockImageCacheManager($this);
     $this->filter_chain->expectOnce('next');
-    $this->filter->setReturnValue('_getImageCacheManager', $cache_manager);
+    $this->filter->setReturnReference('_getImageCacheManager', $cache_manager);
 
     $this->filter_chain->expectOnce('next');
 

@@ -19,9 +19,9 @@ class CronjobCommand //implements Command
     $this->response =& new NonbufferedResponse();
   }
 
-  function setResponse($response)
+  function setResponse(&$response)
   {
-    $this->response = $response;
+    $this->response =& $response;
   }
 
   function getResponse()

@@ -25,9 +25,9 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
     $this->request = null;
   }
 
-  function setRequest($request)
+  function setRequest(&$request)
   {
-    $this->request = $request;
+    $this->request =& $request;
   }
 
   function getObjectIds()
@@ -57,7 +57,7 @@ class RequestedObjectDatasource extends SiteObjectsDatasource
     return $node;
   }
 
-  function mapRequestToNode($request)
+  function mapRequestToNode(&$request)
   {
     if($this->node_mapped_by_request)
       return $this->node_mapped_by_request;

@@ -45,7 +45,7 @@ class AbstractDataMapperTest extends LimbTestCase
   function testFindByIdNull()
   {
     $mapper = new AbstractDataMapperMock($this);
-    $mapper->setReturnValue('_getFinder', $this->finder);
+    $mapper->setReturnReference('_getFinder', $this->finder);
 
     $this->finder->expectOnce('findById', array($id = 100));
     $this->finder->setReturnValue('findById', array(), array($id = 100));
@@ -61,13 +61,13 @@ class AbstractDataMapperTest extends LimbTestCase
   function testFindById()
   {
     $mapper = new AbstractDataMapperMock($this);
-    $mapper->setReturnValue('_getFinder', $this->finder);
+    $mapper->setReturnReference('_getFinder', $this->finder);
 
     $this->finder->expectOnce('findById', array($id = 100));
     $this->finder->setReturnValue('findById', $result_set = array('whatever'), array($id = 100));
 
     $mapper->expectOnce('_createDomainObject');
-    $mapper->setReturnValue('_createDomainObject', $object = new DomainObject());
+    $mapper->setReturnReference('_createDomainObject', $object = new DomainObject());
 
     $mapper->expectOnce('_doLoad', array($result_set, $object));
 

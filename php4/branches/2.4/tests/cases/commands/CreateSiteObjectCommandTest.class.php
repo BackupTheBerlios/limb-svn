@@ -50,10 +50,10 @@ class CreateSiteObjectCommandTest extends LimbTestCase
     $this->behaviour = new MockSiteObjectBehaviour($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
-    $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
-    $this->toolkit->setReturnValue('createBehaviour',
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('getRequest', $this->request);
+    $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
+    $this->toolkit->setReturnReference('createBehaviour',
                                    $this->behaviour,
                                    array($behaviour_name = 'some_behaviour'));
 
@@ -98,7 +98,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
 
     $this->site_object->expectOnce('create');
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('SiteObject'));
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object, array('SiteObject'));
 
     $this->dataspace->expectOnce('set', array('createdSiteObject', new IsAExpectation('MockSiteObject')));
 
@@ -127,7 +127,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
 
     $this->site_object->expectOnce('create');
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('SiteObject'));
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object, array('SiteObject'));
 
     $this->dataspace->expectOnce('set', array('createdSiteObject', new IsAExpectation('MockSiteObject')));
 
@@ -147,7 +147,7 @@ class CreateSiteObjectCommandTest extends LimbTestCase
 
     $this->datasource->expectNever('fetch');
 
-    $this->toolkit->setReturnValue('createSiteObject',
+    $this->toolkit->setReturnReference('createSiteObject',
                                    new SiteObjectForCreateSiteObjectCommand(),
                                    array('SiteObject'));
 

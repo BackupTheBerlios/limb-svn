@@ -25,7 +25,7 @@ class FormCommand// implements Command
     return new Validator();
   }
 
-  function _isFirstTime($request)
+  function _isFirstTime(&$request)
   {
     $arr = $request->get($this->form_name);
     if(isset($arr['submitted']) &&  $arr['submitted'])
@@ -34,7 +34,7 @@ class FormCommand// implements Command
       return true;
   }
 
-  function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules(&$validator, &$dataspace)
   {
   }
 
@@ -76,11 +76,11 @@ class FormCommand// implements Command
     }
   }
 
-  function _initFirstTimeDataspace($dataspace, $request)
+  function _initFirstTimeDataspace(&$dataspace, &$request)
   {
   }
 
-  function _mergeDataspaceWithRequest($dataspace, $request)
+  function _mergeDataspaceWithRequest(&$dataspace, &$request)
   {
     ComplexArray :: map($this->_defineDatamap(), $request->get($this->form_name), $data = array());
 

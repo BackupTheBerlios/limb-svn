@@ -57,7 +57,7 @@ class AuthenticationFilterTest extends LimbTestCase
     $this->toolkit = new MockLimbToolkit($this);
     $this->ini = new MockIni($this);
 
-    $this->toolkit->setReturnValue('getINI', $this->ini);
+    $this->toolkit->setReturnReference('getINI', $this->ini);
 
     $this->datasource = new MockRequestedObjectDatasource($this);
     $this->request = new MockRequest($this);
@@ -85,7 +85,7 @@ class AuthenticationFilterTest extends LimbTestCase
     $authenticator = new MockAuthenticator($this);
 
     $this->toolkit->expectOnce('getUser');
-    $this->toolkit->setReturnValue('getUser', $user);
+    $this->toolkit->setReturnReference('getUser', $user);
 
     $user->expectOnce('isLoggedIn');
     $user->setReturnValue('isLoggedIn', true);
@@ -105,13 +105,13 @@ class AuthenticationFilterTest extends LimbTestCase
     $authenticator = new MockAuthenticator($this);
 
     $this->toolkit->expectOnce('getUser');
-    $this->toolkit->setReturnValue('getUser', $user);
+    $this->toolkit->setReturnReference('getUser', $user);
 
     $user->expectOnce('isLoggedIn');
     $user->setReturnValue('isLoggedIn', false);
 
     $this->toolkit->expectOnce('getAuthenticator');
-    $this->toolkit->setReturnValue('getAuthenticator', $authenticator);
+    $this->toolkit->setReturnReference('getAuthenticator', $authenticator);
 
     $authenticator->expectOnce('login', array(array('login' => '', 'password' => '')));
 
@@ -148,7 +148,7 @@ class AuthenticationFilterTest extends LimbTestCase
 
   function testRunNodeNotFound()
   {
-    $this->toolkit->setReturnValue('getDatasource',
+    $this->toolkit->setReturnReference('getDatasource',
                                    $this->datasource,
                                    array('RequestedObjectDatasource'));
 
@@ -164,7 +164,7 @@ class AuthenticationFilterTest extends LimbTestCase
 
   function testRunNoSuchAction()
   {
-    $this->toolkit->setReturnValue('getDatasource',
+    $this->toolkit->setReturnReference('getDatasource',
                                    $this->datasource,
                                    array('RequestedObjectDatasource'));
 
@@ -175,9 +175,9 @@ class AuthenticationFilterTest extends LimbTestCase
     $controller = new MockSiteObjectController($this);
     $behaviour = new MockSiteObjectBehaviour($this);
 
-    $this->filter->setReturnValue('getBehaviourByObjectId', $behaviour, array($object_id));
+    $this->filter->setReturnReference('getBehaviourByObjectId', $behaviour, array($object_id));
 
-    $this->filter->setReturnValue('_getController',
+    $this->filter->setReturnReference('_getController',
                                   $controller,
                                   array(new IsAExpectation('MockSiteObjectBehaviour')));
 
@@ -191,7 +191,7 @@ class AuthenticationFilterTest extends LimbTestCase
 
   function testRunObjectIsNotAccessible()
   {
-    $this->toolkit->setReturnValue('getDatasource',
+    $this->toolkit->setReturnReference('getDatasource',
                                    $this->datasource,
                                    array('RequestedObjectDatasource'));
 
@@ -202,9 +202,9 @@ class AuthenticationFilterTest extends LimbTestCase
     $controller = new MockSiteObjectController($this);
     $behaviour = new MockSiteObjectBehaviour($this);
 
-    $this->filter->setReturnValue('getBehaviourByObjectId', $behaviour, array($object_id));
+    $this->filter->setReturnReference('getBehaviourByObjectId', $behaviour, array($object_id));
 
-    $this->filter->setReturnValue('_getController',
+    $this->filter->setReturnReference('_getController',
                                   $controller,
                                   array(new IsAExpectation('MockSiteObjectBehaviour')));
 
@@ -224,7 +224,7 @@ class AuthenticationFilterTest extends LimbTestCase
 
   function testRunOk()
   {
-    $this->toolkit->setReturnValue('getDatasource',
+    $this->toolkit->setReturnReference('getDatasource',
                                    $this->datasource,
                                    array('RequestedObjectDatasource'));
 
@@ -235,9 +235,9 @@ class AuthenticationFilterTest extends LimbTestCase
     $controller = new MockSiteObjectController($this);
     $behaviour = new MockSiteObjectBehaviour($this);
 
-    $this->filter->setReturnValue('getBehaviourByObjectId', $behaviour, array($object_id));
+    $this->filter->setReturnReference('getBehaviourByObjectId', $behaviour, array($object_id));
 
-    $this->filter->setReturnValue('_getController',
+    $this->filter->setReturnReference('_getController',
                                   $controller,
                                   array(new IsAExpectation('MockSiteObjectBehaviour')));
 

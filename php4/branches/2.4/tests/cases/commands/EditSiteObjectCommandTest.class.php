@@ -46,9 +46,9 @@ class EditSiteObjectCommandTest extends LimbTestCase
     $this->site_object = new MockSiteObject($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
-    $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('getDataspace', $this->dataspace);
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('getRequest', $this->request);
+    $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
 
     $this->toolkit->expectOnce('createSiteObject', array('siteObject'));
 
@@ -70,7 +70,7 @@ class EditSiteObjectCommandTest extends LimbTestCase
 
   function testPerformFailure()
   {
-    $this->toolkit->setReturnValue('createSiteObject',
+    $this->toolkit->setReturnReference('createSiteObject',
                                    new SiteObjectForEditSiteObjectCommand(),
                                    array('site_object'));
 
@@ -94,7 +94,7 @@ class EditSiteObjectCommandTest extends LimbTestCase
 
     $this->site_object->expectOnce('update', array(false));
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object, array('site_object'));
 
     $this->assertEqual(LIMB_STATUS_OK, $this->command->perform());
   }

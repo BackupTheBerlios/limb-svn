@@ -115,7 +115,7 @@ class OneTableObjectsMapperTest extends LimbTestCase
     $finder->expectOnce('findById', array($id));
     $finder->setReturnValue('findById', $result, array($id));
 
-    $this->mapper->setReturnValue('_getFinder', $finder);
+    $this->mapper->setReturnReference('_getFinder', $finder);
     $this->mapper->expectOnce('_doLoadBehaviour',
                               array($result,
                                     new IsAExpectation('OneTableObjectsMapperTestNewsObject')));

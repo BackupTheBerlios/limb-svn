@@ -33,7 +33,7 @@ class OneTableObjectsMapper extends SiteObjectMapper
     return $this->_db_table;
   }
 
-  function _defineDbTableName(){die('abstract function!')}
+  function _defineDbTableName(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   //for mocking
   function _doParentInsert($site_object)

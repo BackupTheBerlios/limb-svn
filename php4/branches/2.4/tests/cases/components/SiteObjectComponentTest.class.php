@@ -38,7 +38,7 @@ class SiteObjectComponentTest extends LimbTestCase
 
     $this->request = new MockRequest($this);
 
-    $this->toolkit->setReturnValue('getRequest', $this->request);
+    $this->toolkit->setReturnReference('getRequest', $this->request);
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -55,7 +55,7 @@ class SiteObjectComponentTest extends LimbTestCase
   function testFetchByPath()
   {
     $datasource = new MockSingleObjectDatasource($this);
-    $this->toolkit->setReturnValue('getDatasource', $datasource, array('SingleObjectDatasource'));
+    $this->toolkit->setReturnReference('getDatasource', $datasource, array('SingleObjectDatasource'));
 
     $datasource->expectOnce('setPath', array($path = '/root/test'));
     $datasource->expectOnce('fetch');
@@ -72,13 +72,13 @@ class SiteObjectComponentTest extends LimbTestCase
   function testFetchRequested()
   {
     $datasource = new MockRequestedObjectDatasource($this);
-    $this->toolkit->setReturnValue('getDatasource', $datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('getDatasource', $datasource, array('RequestedObjectDatasource'));
 
     $datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $datasource->expectOnce('fetch');
 
     $result = array('some_result');
-    $datasource->setReturnValue('fetch', $result);
+    $datasource->setReturnReference('fetch', $result);
 
     $this->component->expectOnce('import', array($result));
     $this->component->fetchRequested();

@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
 define('IMAGE_LIBRARY_FLIP_HORIZONTAL', 1);
 define('IMAGE_LIBRARY_FLIP_VERTICAL', 2);
 
@@ -183,15 +182,15 @@ class ImageLibrary
     return array($dst_width, $dst_height);
   }
 
-  function flip($params){die('abstract function!')}
+  function flip($params){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function cut($x, $y, $w, $h, $bg_color){die('abstract function!')}
+  function cut($x, $y, $w, $h, $bg_color){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function resize($params){die('abstract function!')}
+  function resize($params){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function rotate($angle, $bg_color){die('abstract function!')}
+  function rotate($angle, $bg_color){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function commit(){die('abstract function!')}
+  function commit(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function _hexColorToX11($color)
   {

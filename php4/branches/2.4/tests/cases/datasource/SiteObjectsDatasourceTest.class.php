@@ -46,14 +46,14 @@ class SiteObjectsDatasourceTest extends LimbTestCase
 
     $this->authorizer = new MockAuthorizer($this);
     $this->finder = new MockDataFinder($this);
-    $this->datasource->setReturnValue('_getFinder', $this->finder);
+    $this->datasource->setReturnReference('_getFinder', $this->finder);
 
     $this->cache = new MockCacheRegistry($this);
 
     $this->toolkit = new MockLimbToolkit($this);
 
-    $this->toolkit->setReturnValue('getAuthorizer', $this->authorizer);
-    $this->toolkit->setReturnValue('getCache', $this->cache);
+    $this->toolkit->setReturnReference('getAuthorizer', $this->authorizer);
+    $this->toolkit->setReturnReference('getCache', $this->cache);
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -114,7 +114,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
   function testFetchCacheHit()
   {
     $datasource = new SpecialDatasourceForCacheHit($this);
-    $datasource->setReturnValue('_getFinder', $this->finder);
+    $datasource->setReturnReference('_getFinder', $this->finder);
     $datasource->setReturnValue('_collectParams', $params = array('p1' => '1'));
     $datasource->setReturnValue('_collectRawSqlParams', $sql_params = array('p2' => '2'));
 
@@ -137,7 +137,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
     );
 
     $datasource = new SpecialDatasourceForCacheHit($this);
-    $datasource->setReturnValue('_getFinder', $this->finder);
+    $datasource->setReturnReference('_getFinder', $this->finder);
     $datasource->setReturnValue('_collectParams', $params = array('p1' => '1'));
     $datasource->setReturnValue('_collectRawSqlParams', $sql_params = array('p2' => '2'));
 
@@ -163,7 +163,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
 
     $datasource = new SpecialDatasourceForCountTotalOk($this);
     $datasource->SiteObjectsDatasource();
-    $datasource->setReturnValue('_getFinder', $this->finder);
+    $datasource->setReturnReference('_getFinder', $this->finder);
     $object_ids = array(1, 2);
 
     $datasource->setReturnValue('getAccessibleObjectIds', $object_ids);
@@ -186,7 +186,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
   function testCountTotalCacheHit()
   {
     $datasource = new SpecialDatasourceForCacheHit($this);
-    $datasource->setReturnValue('_getFinder', $this->finder);
+    $datasource->setReturnReference('_getFinder', $this->finder);
     $datasource->setReturnValue('_collectRawSqlParams', $sql_params = array('p2' => '2'));
 
     $datasource->setFindMethod('find');
@@ -205,7 +205,7 @@ class SiteObjectsDatasourceTest extends LimbTestCase
     $result = 101;
 
     $datasource = new SpecialDatasourceForCacheHit($this);
-    $datasource->setReturnValue('_getFinder', $this->finder);
+    $datasource->setReturnReference('_getFinder', $this->finder);
     $datasource->setReturnValue('_collectRawSqlParams', $sql_params = array('p2' => '2'));
 
     $datasource->setFindMethod('find');

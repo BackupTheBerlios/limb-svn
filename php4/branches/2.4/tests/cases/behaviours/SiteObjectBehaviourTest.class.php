@@ -43,7 +43,7 @@ class SiteObjectBehaviourTest extends LimbTestCase
   {
     $this->db = DbFactory :: instance();
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDB', $this->db);
+    $this->toolkit->setReturnReference('getDB', $this->db);
 
     $this->_cleanUp();
 
@@ -117,7 +117,7 @@ class SiteObjectBehaviourTest extends LimbTestCase
     $tree->expectOnce('canAddNode', array(10));
     $tree->setReturnValue('canAddNode', false);
 
-    $this->toolkit->setReturnValue('getTree', $tree);
+    $this->toolkit->setReturnReference('getTree', $tree);
 
     Limb :: registerToolkit($this->toolkit);
 
@@ -159,9 +159,9 @@ class SiteObjectBehaviourTest extends LimbTestCase
     $mock_behaviour->expectOnce('canBeParent');
     $mock_behaviour->setReturnValue('canBeParent', true);
 
-    $this->toolkit->setReturnValue('getTree', $tree);
+    $this->toolkit->setReturnReference('getTree', $tree);
     $this->toolkit->expectOnce('createBehaviour', array('testBehaviour'));
-    $this->toolkit->setReturnValue('createBehaviour', $mock_behaviour);
+    $this->toolkit->setReturnReference('createBehaviour', $mock_behaviour);
 
     Limb :: registerToolkit($this->toolkit);
 

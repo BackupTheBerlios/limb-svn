@@ -51,7 +51,7 @@ Mock :: generatePartial
 
 class SiteObjectControllerPerformTestVersion extends SiteObjectController
 {
-  function _performAction($request)
+  function _performAction(&$request)
   {
     return new LimbException('catch me!');
   }
@@ -133,7 +133,7 @@ class SiteObjectControllerTest extends LimbTestCase
     $this->request->setReturnValue('get', 'testAction', array('action'));
 
     $controller->expectOnce('_getStateMachine');
-    $controller->setReturnValue('_getStateMachine', $this->state_machine);
+    $controller->setReturnReference('_getStateMachine', $this->state_machine);
 
     $behaviour->expectOnce('defineTestAction',
                                  array(new IsAExpectation('MockStateMachine')));

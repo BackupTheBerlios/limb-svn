@@ -59,15 +59,15 @@ class SiteObjectControllerFilterTest extends LimbTestCase
     $this->datasource->expectOnce('setRequest', array(new IsAExpectation('MockRequest')));
     $this->datasource->expectOnce('fetch');
 
-    $this->toolkit->setReturnValue('getDatasource',
+    $this->toolkit->setReturnReference('getDatasource',
                                    $this->datasource,
                                    array('RequestedObjectDatasource'));
 
-    $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('SiteObject'));
+    $this->toolkit->setReturnReference('createSiteObject', $this->site_object, array('SiteObject'));
 
     $this->filter_chain->expectOnce('next');
 
-    $this->site_object->setReturnValue('getController', $this->controller);
+    $this->site_object->setReturnReference('getController', $this->controller);
 
     $this->controller->expectOnce('process', array(new IsAExpectation('MockRequest')));
 

@@ -163,7 +163,7 @@ function closePopupNoParentReloadResponse()
         </script></body></html>";
 }
 
-function closePopupResponse($request, $parent_reload_url = RELOAD_SELF_URL, $search_for_node = false)
+function closePopupResponse(&$request, $parent_reload_url = RELOAD_SELF_URL, $search_for_node = false)
 {
   $str = "<html><body><script>
               if(window.opener)

@@ -36,7 +36,7 @@ class DisplayViewCommandTest extends LimbTestCase
     $this->response = new MockResponse($this);
     $this->template = new TemplateStub();
 
-    $this->toolkit->setReturnValue('getResponse', $this->response);
+    $this->toolkit->setReturnReference('getResponse', $this->response);
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -54,7 +54,7 @@ class DisplayViewCommandTest extends LimbTestCase
     $command = new DisplayViewCommand();
 
     $this->toolkit->expectOnce('getView');
-    $this->toolkit->setReturnValue('getView', $this->template);
+    $this->toolkit->setReturnReference('getView', $this->template);
 
     $this->response->expectOnce('write', array('test template'));
 

@@ -33,7 +33,7 @@ class HttpCache
     $this->cache_type = HTTP_CACHE_TYPE_PRIVATE;
   }
 
-  function checkAndWrite($response)
+  function checkAndWrite(&$response)
   {
     if($this->is412())
     {
@@ -84,7 +84,7 @@ class HttpCache
     return false;
   }
 
-  function _write412Response($response)
+  function _write412Response(&$response)
   {
     $response->header('HTTP/1.1 412 Precondition Failed');
     $response->header('Cache-Control: protected, max-age=0, must-revalidate');
@@ -93,7 +93,7 @@ class HttpCache
     $response->write("HTTP/1.1 Error 412 Precondition Failed: Precondition request failed positive evaluation\n");
   }
 
-  function _write304Response($response)
+  function _write304Response(&$response)
   {
     $response->header('HTTP/1.0 304 Not Modified');
     $response->header('Etag: ' . $this->getEtag());
@@ -103,7 +103,7 @@ class HttpCache
     $response->header('Expires: ');
   }
 
-  function _writeCachingResponse($response)
+  function _writeCachingResponse(&$response)
   {
     $response->header('Cache-Control: ' . $this->_getCacheControl()); //rfc2616-sec14.html#sec14.9
     $response->header('Last-Modified: ' . $this->formatLastModifiedTime());

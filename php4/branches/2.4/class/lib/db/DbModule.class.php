@@ -73,11 +73,11 @@ class DbModule
     return true;
   }
 
-  function _connectDbOperation($db_params){die('abstract function!')}
+  function _connectDbOperation($db_params){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function _disconnectDbOperation($db_params){die('abstract function!')}
+  function _disconnectDbOperation($db_params){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function _selectDbOperation($db_name){die('abstract function!')}
+  function _selectDbOperation($db_name){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function disconnectDb()
   {
@@ -91,7 +91,7 @@ class DbModule
     $this->_sql_result = null;
   }
 
-  function getAffectedRows(){die('abstract function!')}
+  function getAffectedRows(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function sqlExec($sql, $limit=0, $offset=0)
   {
@@ -135,7 +135,7 @@ class DbModule
     return $this->_sql_result;
   }
 
-  function _sqlExecOperation($sql){die('abstract function!')}
+  function _sqlExecOperation($sql){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function sqlExecBatch($sql='')
   {
@@ -195,9 +195,9 @@ class DbModule
     return $sql;
   }
 
-  function concat($values){die('abstract function!')}
+  function concat($values){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function substr($string, $offset, $limit=null){die('abstract function!')}
+  function substr($string, $offset, $limit=null){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function null()
   {
@@ -225,11 +225,11 @@ class DbModule
     return $this->sqlExec($this->makeDeleteString($table, $where));
   }
 
-  function parseBatchSql(&$ret, $sql, $release){die('abstract function!')}
+  function parseBatchSql(&$ret, $sql, $release){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function _resultNumFields(){die('abstract function!')}
+  function _resultNumFields(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function _fetchAssocResultRow($col_num = ''){die('abstract function!')}
+  function _fetchAssocResultRow($col_num = ''){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function processValues($names_values, $column_types=array())
   {
@@ -327,9 +327,9 @@ class DbModule
     return strval($value);
   }
 
-  function getLastError(){die('abstract function!')}
+  function getLastError(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
-  function getSqlInsertId(){die('abstract function!')}
+  function getSqlInsertId(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function getMaxColumnValue($table_name, $column_name)
   {
@@ -346,7 +346,7 @@ class DbModule
     return $this->_fetchAssocResultRow();
   }
 
-  function countSelectedRows(){die('abstract function!')}
+  function countSelectedRows(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function makeInsertString($table, $names_values, $column_types=array())
   {
@@ -450,7 +450,7 @@ class DbModule
     }
   }
 
-  function _beginOperation(){die('abstract function!')}
+  function _beginOperation(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function commit()
   {
@@ -461,7 +461,7 @@ class DbModule
     }
   }
 
-  function _commitOperation(){die('abstract function!')}
+  function _commitOperation(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function rollback()
   {
@@ -472,7 +472,7 @@ class DbModule
     }
   }
 
-  function _rollbackOperation(){die('abstract function!')}
+  function _rollbackOperation(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 }
 
 function sqlAnd($conditions, $column_types=array())

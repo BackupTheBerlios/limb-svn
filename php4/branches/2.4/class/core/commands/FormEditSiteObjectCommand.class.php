@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
 
 class FormEditSiteObjectCommand extends FormCommand
 {
-  function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules(&$validator, &$dataspace)
   {
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/tree_node_id_rule', 'parent_node_id'));
     $validator->addRule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'identifier'));
@@ -28,7 +28,7 @@ class FormEditSiteObjectCommand extends FormCommand
                                      (int)$object_data['node_id']));
   }
 
-  function _initFirstTimeDataspace($dataspace, $request)
+  function _initFirstTimeDataspace(&$dataspace, &$request)
   {
     $object_data = $this->_loadObjectData();
     ComplexArray :: map($this->_defineDatamap(), $object_data, $data = array());

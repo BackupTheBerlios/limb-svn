@@ -26,10 +26,10 @@ class SessionDbDriverTest extends LimbTestCase
     $this->user = new MockUser($this);
     $this->toolkit = new MockLimbToolkit($this);
 
-    $this->toolkit->setReturnValue('getUser', $this->user);
+    $this->toolkit->setReturnReference('getUser', $this->user);
 
     $this->db = DbFactory :: instance();
-    $this->toolkit->setReturnValue('getDB', $this->db);
+    $this->toolkit->setReturnReference('getDB', $this->db);
 
     Limb :: registerToolkit($this->toolkit);
 

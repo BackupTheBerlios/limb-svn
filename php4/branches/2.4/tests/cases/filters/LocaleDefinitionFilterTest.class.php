@@ -52,12 +52,12 @@ class LocaleDefinitionFilterTest extends LimbTestCase
     $this->datasource = new MockRequestedObjectDatasource($this);
     $this->user = new MockUser($this);
 
-    $this->toolkit->setReturnValue('getDatasource',
+    $this->toolkit->setReturnReference('getDatasource',
                                    $this->datasource,
                                    array('RequestedObjectDatasource'));
 
-    $this->toolkit->setReturnValue('getUser', $this->user);
-    $this->toolkit->setReturnValue('getLocale', $this->locale);
+    $this->toolkit->setReturnReference('getUser', $this->user);
+    $this->toolkit->setReturnReference('getLocale', $this->locale);
     $this->locale->expectOnce('setlocale');
 
     $this->filter_chain->expectOnce('next');

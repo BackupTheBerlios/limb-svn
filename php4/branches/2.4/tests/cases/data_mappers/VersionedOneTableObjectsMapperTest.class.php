@@ -102,7 +102,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $this->user->setReturnValue('getId', 125);
 
     $this->toolkit = new VersionedOneTableObjectsTestToolkitMock($this);
-    $this->toolkit->setReturnValue('getUser', $this->user);
+    $this->toolkit->setReturnReference('getUser', $this->user);
     Limb :: registerToolkit($this->toolkit);
 
     $this->mapper = new VersionedOneTableObjectsMapperTestVersionMock($this);
@@ -218,7 +218,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $finder = new MockVersionedOneTableObjectsRawFinder($this);
     $finder->setReturnValue('findByVersion', array(), array($object_id  = 10, $version = 10000));
 
-    $this->mapper->setReturnValue('_getFinder', $finder);
+    $this->mapper->setReturnReference('_getFinder', $finder);
 
     $this->assertNull($this->mapper->findByVersion($object_id, $version));
   }
@@ -235,7 +235,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
     $finder->setReturnValue('findByVersion', $result, array($id, $version));
 
-    $this->mapper->setReturnValue('_getFinder', $finder);
+    $this->mapper->setReturnReference('_getFinder', $finder);
     $this->mapper->expectOnce('_doLoad', array($result, new IsAExpectation('VersionedOneTableObjectsMapperTestNewsObject')));
     $this->mapper->findByVersion($id, $version);
   }

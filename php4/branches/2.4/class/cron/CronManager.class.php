@@ -72,10 +72,10 @@ class CronManager
     return time();
   }
 
-  function perform($response, $force=false)
+  function perform(&$response, $force=false)
   {
     $now = $this->_getTime();
-    $jobs = $this->getJobs();
+    $jobs =& $this->getJobs();
 
     if($force)
       $last_time = array();
@@ -95,7 +95,7 @@ class CronManager
 
         $response->write("handle {$handle} starting\n");
 
-        $object = $this->_createJobObject($handle);
+        $object =& $this->_createJobObject($handle);
 
         $object->setResponse($response);
         $object->perform();
@@ -109,7 +109,7 @@ class CronManager
     $this->_writeJobsLastTime();
   }
 
-  function _createJobObject($handle)
+  function &_createJobObject(&$handle)
   {
     resolveHandle($handle);
     return $handle;

@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/commands/FormCommand.class.php');
 
 class FormCreateSiteObjectCommand extends FormCommand
 {
-  function _registerValidationRules($validator, $dataspace)
+  function _registerValidationRules(&$validator, &$dataspace)
   {
     if (($parent_node_id = $dataspace->get('parent_node_id')) === null)
     {

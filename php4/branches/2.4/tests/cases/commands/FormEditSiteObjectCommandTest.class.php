@@ -43,16 +43,16 @@ class FormEditSiteObjectCommandTest extends LimbTestCase
     $this->dataspace = new MockDataspace($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
-    $this->toolkit->setReturnValue('getRequest', $this->request);
-    $this->toolkit->setReturnValue('switchDataspace', $this->dataspace, array('test_form'));
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('RequestedObjectDatasource'));
+    $this->toolkit->setReturnReference('getRequest', $this->request);
+    $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array('test_form'));
 
     Limb :: registerToolkit($this->toolkit);
 
     $this->command = new FormEditSiteObjectCommandTestVersion($this);
     $this->command->FormEditSiteObjectCommand('test_form');
 
-    $this->command->setReturnValue('_getValidator', $this->validator);
+    $this->command->setReturnReference('_getValidator', $this->validator);
     $this->validator->setReturnValue('validate', true);
   }
 

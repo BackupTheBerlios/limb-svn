@@ -57,7 +57,7 @@ class ImageCacheManagerTest extends LimbTestCase
     $this->cache_manager2->setReturnValue('isCacheable', true);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource',
+    $this->toolkit->setReturnReference('getDatasource',
                                    $this->datasource,
                                    array('SiteObjectsByNodeIdsDatasource'));
 
@@ -92,7 +92,7 @@ class ImageCacheManagerTest extends LimbTestCase
       '
     );
 
-    $this->toolkit->setReturnValue('getINI',
+    $this->toolkit->setReturnReference('getINI',
                                    getIni('image_cache.ini'),
                                    array('image_cache.ini'));
 

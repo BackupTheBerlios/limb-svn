@@ -111,7 +111,7 @@ class CronManagerTest extends LimbTestCase
 
     $this->cron_job->expectAtLeastOnce('setResponse', array(new IsAExpectation('MockResponse')));
     $this->cron_job->expectAtLeastOnce('perform');
-    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
+    $this->cron_manager->setReturnReference('_createJobObject', $this->cron_job);
 
     $this->cron_manager->setReturnValue('_getTime', 1);
 
@@ -141,7 +141,7 @@ class CronManagerTest extends LimbTestCase
 
     $this->cron_job->expectOnce('setResponse', array(new IsAExpectation('MockResponse')));
     $this->cron_job->expectOnce('perform');
-    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
+    $this->cron_manager->setReturnReference('_createJobObject', $this->cron_job);
 
     $this->cron_manager->setReturnValue('_getTime', 12);
 
@@ -171,7 +171,7 @@ class CronManagerTest extends LimbTestCase
 
     $this->cron_job->expectAtLeastOnce('setResponse', array(new IsAExpectation('MockResponse')));
     $this->cron_job->expectAtLeastOnce('perform');
-    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
+    $this->cron_manager->setReturnReference('_createJobObject', $this->cron_job);
 
     $this->cron_manager->setReturnValue('_getTime', 12);
     $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
@@ -198,7 +198,7 @@ class CronManagerTest extends LimbTestCase
 
     $this->cron_job->expectAtLeastOnce('setResponse', array(new IsAExpectation('MockResponse')));
     $this->cron_job->expectAtLeastOnce('perform');
-    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
+    $this->cron_manager->setReturnReference('_createJobObject', $this->cron_job);
 
     $this->cron_manager->setReturnValue('_getTime', 12);
     $this->cron_manager->expectArgumentsAt(0, '_createJobObject', array('test1.php'));
@@ -223,7 +223,7 @@ class CronManagerTest extends LimbTestCase
     );
 
     $this->cron_manager->setReturnValue('_getTime', 10001);
-    $this->cron_manager->setReturnValue('_createJobObject', $this->cron_job);
+    $this->cron_manager->setReturnReference('_createJobObject', $this->cron_job);
     $this->cron_manager->perform($this->response, true);
 
     $contents = $this->_readJobsLastTime();

@@ -27,7 +27,7 @@ class OneTableObjectsRawFinder extends SiteObjectsRawFinder
     return $this->_db_table;
   }
 
-  function _defineDbTableName(){die('abstract function!')}
+  function _defineDbTableName(){die('abstract function! ' . __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);}
 
   function find($params=array(), $sql_params=array())
   {

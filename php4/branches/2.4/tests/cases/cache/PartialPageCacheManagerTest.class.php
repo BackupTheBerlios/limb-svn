@@ -39,7 +39,7 @@ class PartialPageCacheManagerTest extends LimbTestCase
     $this->uri = new MockUri($this);
     $this->request = new MockRequest($this);
 
-    $this->request->setReturnValue('getUri', $this->uri);
+    $this->request->setReturnReference('getUri', $this->uri);
 
     $this->cache_manager = new PartialPageCacheManagerTestVersion($this);
     $this->cache_manager->setRequest($this->request);
@@ -376,6 +376,7 @@ class PartialPageCacheManagerTest extends LimbTestCase
     $this->_writeCache($server_id = 'last_news', $attributes = array('action' => 1));
 
     $this->request->setReturnValue('export', $attributes);
+
     $this->cache_manager->setReturnValue('_getMatchedRule', array('serverId' => $server_id, 'optional' => array('action')));
 
     $this->assertTrue($this->cache_manager->cacheExists());

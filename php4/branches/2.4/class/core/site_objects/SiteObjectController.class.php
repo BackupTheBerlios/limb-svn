@@ -26,7 +26,7 @@ class SiteObjectController
     return $this->behaviour;
   }
 
-  function getRequestedAction($request)
+  function getRequestedAction(&$request)
   {
     if (!$action = $request->get('action'))
       $action = $this->behaviour->getDefaultAction();
@@ -37,7 +37,7 @@ class SiteObjectController
     return $action;
   }
 
-  function process($request)
+  function process(&$request)
   {
     $this->_startTransaction();
 
@@ -53,13 +53,13 @@ class SiteObjectController
       $this->_commitTransaction();
   }
 
-  function _getStateMachine()
+  function &_getStateMachine()
   {
     include_once(LIMB_DIR . '/class/commands/StateMachine.class.php');
     return new StateMachine();
   }
 
-  function _performAction($request)
+  function _performAction(&$request)
   {
     if(!$action = $this->getRequestedAction($request))
       return new LimbException('action not defined in state machine',

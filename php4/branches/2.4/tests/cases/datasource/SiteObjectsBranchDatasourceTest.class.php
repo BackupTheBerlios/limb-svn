@@ -29,7 +29,7 @@ class SiteObjectsBrachDatasourceTest extends LimbTestCase
 
     $this->toolkit = new MockLimbToolkit($this);
 
-    $this->toolkit->setReturnValue('getTree', $this->tree);
+    $this->toolkit->setReturnReference('getTree', $this->tree);
 
     Limb :: registerToolkit($this->toolkit);
   }

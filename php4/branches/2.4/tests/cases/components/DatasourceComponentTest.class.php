@@ -58,7 +58,7 @@ class DatasourceComponentTest extends LimbTestCase
 
     $this->datasource = new MockDatasourceComponentTestVersion($this);
 
-    $this->toolkit->setReturnValue('getRequest', $this->request);
+    $this->toolkit->setReturnReference('getRequest', $this->request);
 
     Limb :: registerToolkit($this->toolkit);
   }
@@ -163,7 +163,7 @@ class DatasourceComponentTest extends LimbTestCase
 
     $this->component->setDatasourcePath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
 
     $this->datasource->expectOnce('countTotal');
     $this->datasource->setReturnValue('countTotal', $count = 13);
@@ -195,7 +195,7 @@ class DatasourceComponentTest extends LimbTestCase
 
     $this->component->setDatasourcePath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
 
     $this->datasource->expectOnce('countTotal');
     $this->datasource->setReturnValue('countTotal', $count = 13);
@@ -217,7 +217,7 @@ class DatasourceComponentTest extends LimbTestCase
 
     $this->component->setDatasourcePath('test-datasource');
     $this->toolkit->expectOnce('getDatasource', array('test-datasource'));
-    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('test-datasource'));
+    $this->toolkit->setReturnReference('getDatasource', $this->datasource, array('test-datasource'));
 
     $this->datasource->expectOnce('setLimit', array(10));
     $this->datasource->expectOnce('setOffset', array(2));

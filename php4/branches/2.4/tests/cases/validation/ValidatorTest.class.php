@@ -31,7 +31,7 @@ class ValidatorTest extends LimbTestCase
   {
    $this->error_list = new MockErrorList($this);
    $this->validator = new ValidatorTestVersion2($this);
-   $this->validator->setReturnValue('_getErrorList', $this->error_list);
+   $this->validator->setReturnReference('_getErrorList', $this->error_list);
   }
 
   function testValidateNoRules()

@@ -42,7 +42,7 @@ class SessionStartupFilterTest extends LimbTestCase
     $this->response = new MockHttpResponse($this);
     $this->session = new MockSession($this);
 
-    $this->toolkit->setReturnValue('getSession', $this->session);
+    $this->toolkit->setReturnReference('getSession', $this->session);
 
     Limb :: registerToolkit($this->toolkit);
   }

@@ -31,7 +31,7 @@ class IncrementSiteObjectIdentifierGeneratorTest extends LimbTestCase
     $this->tree = new MockTree($this);
 
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getTree', $this->tree);
+    $this->toolkit->setReturnReference('getTree', $this->tree);
 
     $this->object->expectOnce('getParentNodeId');
     $this->object->setReturnValue('getParentNodeId', 100);

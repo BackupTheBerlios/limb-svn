@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/util/Ini.class.php');
 
-final class Strings
+class Strings
 {
   var $_ini_objects = array();
   var $_path_cache = array();

@@ -103,7 +103,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $db_mock = new MockDbModule($this);
     $toolkit = new MockLimbToolkit($this);
 
-    $toolkit->setReturnValue('getDB', $db_mock);
+    $toolkit->setReturnReference('getDB', $db_mock);
 
     Limb :: registerToolkit($toolkit);
 
@@ -143,7 +143,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $db_mock = new MockDbModule($this);
     $toolkit = new MockLimbToolkit($this);
 
-    $toolkit->setReturnValue('getDB', $db_mock);
+    $toolkit->setReturnReference('getDB', $db_mock);
 
     Limb :: registerToolkit($toolkit);
 
@@ -174,7 +174,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $db_mock = new MockDbModule($this);
     $toolkit = new MockLimbToolkit($this);
 
-    $toolkit->setReturnValue('getDB', $db_mock);
+    $toolkit->setReturnReference('getDB', $db_mock);
 
     Limb :: registerToolkit($toolkit);
 

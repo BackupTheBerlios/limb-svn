@@ -30,7 +30,7 @@ class CachingTreeTest extends LimbTestCase
     $this->tree = new MockTree($this);
     $this->cache = new MockCacheRegistry($this);
 
-    $this->toolkit->setReturnValue('getCache', $this->cache);
+    $this->toolkit->setReturnReference('getCache', $this->cache);
 
     Limb :: registerToolkit($this->toolkit);
 

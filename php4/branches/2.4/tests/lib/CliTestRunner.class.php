@@ -31,7 +31,7 @@ EOD;
     $opt_browse_path = false;
     $opt_test_path = false;
 
-    $argv = ConsoleGetopt::readPHPArgv();
+    $argv = Console_Getopt::readPHPArgv();
     if (PEAR::isError($argv))
     {
       die('Fatal Error: ' . $argv->getMessage()) . "\n";
@@ -39,7 +39,7 @@ EOD;
 
     $short_opts = 'ht:b:';
     $long_opts = array('help', 'test=', 'browse=');
-    $options = ConsoleGetopt::getopt($argv, $short_opts, $long_opts);
+    $options = Console_Getopt::getopt($argv, $short_opts, $long_opts);
     if (PEAR::isError($options))
     {
       $this->usage();

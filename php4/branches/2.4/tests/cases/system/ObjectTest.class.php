@@ -26,7 +26,7 @@ class ObjectTest extends LimbTestCase
     $this->dataspace = new MockDataspace($this);
 
     $this->object = new ObjectTestVersion($this);
-    $this->object->setReturnValue('_createDataspace', $this->dataspace);
+    $this->object->setReturnReference('_createDataspace', $this->dataspace);
     $this->object->Object();
   }
 

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-@define('PAGE_CACHE_DIR', VAR_DIR . 'pages/');
+@define('PAGE_CACHE_DIR', VAR_DIR . '/pages/');
 
 require_once(LIMB_DIR . '/class/lib/system/Fs.class.php');
 
@@ -29,10 +29,10 @@ class FullPageCacheManager
     return $this->matched_rule;
   }
 
-  function setRequest($request)
+  function setRequest(&$request)
   {
     $this->id = null;
-    $this->request = $request;
+    $this->request =& $request;
   }
 
   function get()
