@@ -11,7 +11,7 @@
 require_once(dirname(__FILE__) . '/../../../site_objects/ImageObject.class.php');
 require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 Mock :: generate('ImageVariation');
 

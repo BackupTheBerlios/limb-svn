@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
 
 class AccessPolicyTest extends LimbTestCase
 {
@@ -34,7 +34,7 @@ class AccessPolicyTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $db =& DbFactory :: instance();
+    $db =& LimbDbPool :: getConnection();
     $db->sqlDelete('sys_action_access_template');
     $db->sqlDelete('sys_action_access_template_item');
 
@@ -44,8 +44,8 @@ class AccessPolicyTest extends LimbTestCase
 
   function testGetAccessTemplates()
   {
-    $db_table = DbTableFactory :: create('SysActionAccessTemplate');
-    $item_db_table = DbTableFactory :: create('SysActionAccessTemplateItem');
+    $db_table = LimbDbTableFactory :: create('SysActionAccessTemplate');
+    $item_db_table = LimbDbTableFactory :: create('SysActionAccessTemplateItem');
 
     $db_table->insert(array('id'=> 1, 'action_name' => 'create', 'behaviour_id' => 11, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
     $db_table->insert(array('id'=> 2, 'action_name' => 'publish', 'behaviour_id' => 11, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
@@ -77,7 +77,7 @@ class AccessPolicyTest extends LimbTestCase
 
   function testGetActionsAccess()
   {
-    $db_table = DbTableFactory :: create('SysActionAccess');
+    $db_table = LimbDbTableFactory :: create('SysActionAccess');
     $db_table->insert(array('id'=> 1, 'behaviour_id' => 11, 'action_name' => 'create', 'accessor_id' => 10, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
     $db_table->insert(array('id'=> 2, 'behaviour_id' => 11, 'action_name' => 'edit', 'accessor_id' => 10, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
     $db_table->insert(array('id'=> 3, 'behaviour_id' => 11, 'action_name' => 'publish', 'accessor_id' => 20, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
@@ -91,7 +91,7 @@ trigger_error('Stop', E_USER_WARNING);
 
   function testGetObjectsAccessByIds()
   {
-    $db_table = DbTableFactory :: create('SysObjectAccess');
+    $db_table = LimbDbTableFactory :: create('SysObjectAccess');
 
     $db_table->insert(array('id'=> 1, 'object_id' => 11, 'access' => 1, 'accessor_id' => 10, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
     $db_table->insert(array('id'=> 2, 'object_id' => 11, 'access' => 1, 'accessor_id' => 11, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
@@ -129,8 +129,8 @@ trigger_error('Stop', E_USER_WARNING);
 
   function testSaveAccessTemplates()
   {
-    $db_table = DbTableFactory :: create('SysActionAccessTemplate');
-    $items_db_table = DbTableFactory :: create('SysActionAccessTemplateItem');
+    $db_table = LimbDbTableFactory :: create('SysActionAccessTemplate');
+    $items_db_table = LimbDbTableFactory :: create('SysActionAccessTemplateItem');
 
     //garbage
     $db_table->insert(array('id'=> 1, 'action_name' => 'edit', 'behaviour_id' => 11, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
@@ -177,7 +177,7 @@ trigger_error('Stop', E_USER_WARNING);
 
   function testSaveActionsAccess()
   {
-    $db_table = DbTableFactory :: create('SysActionAccess');
+    $db_table = LimbDbTableFactory :: create('SysActionAccess');
 
     //garbage
     $db_table->insert(array('id'=> 1, 'behaviour_id' => 11, 'action_name' => 'create', 'accessor_id' => 10, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
@@ -209,7 +209,7 @@ trigger_error('Stop', E_USER_WARNING);
 
   function testSaveObjectsAccess()
   {
-    $db_table = DbTableFactory :: create('SysActionAccess');
+    $db_table = LimbDbTableFactory :: create('SysActionAccess');
 
     //garbage
     $db_table->insert(array('id'=> 1, 'object_id' => 10, 'access' => 1, 'accessor_id' => 100, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));
@@ -242,7 +242,7 @@ trigger_error('Stop', E_USER_WARNING);
 
   function testSaveObjectAccessNoAccessorIdsLimit()
   {
-    $db_table = DbTableFactory :: create('SysActionAccess');
+    $db_table = LimbDbTableFactory :: create('SysActionAccess');
 
     //garbage
     $db_table->insert(array('id'=> 1, 'object_id' => 10, 'access' => 1, 'accessor_id' => 100, 'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_USER));

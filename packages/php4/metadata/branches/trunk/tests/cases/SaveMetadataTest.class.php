@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/site_objects/SiteObjectFactory.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 require_once(dirname(__FILE__) . '/../../MetadataManager.class.php');
 
 class SaveMetadataTest extends LimbTestCase
@@ -18,7 +18,7 @@ class SaveMetadataTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
     $this->db->sqlDelete('sys_metadata');
   }
 
@@ -33,7 +33,7 @@ class SaveMetadataTest extends LimbTestCase
 
     $this->assertNotNull($result_id);
 
-    $sys_metadata_db_table = DbTableFactory :: create('SysMetadata');
+    $sys_metadata_db_table = LimbDbTableFactory :: create('SysMetadata');
     $metadata_row = $sys_metadata_db_table->getRowById($result_id);
 
     $this->assertTrue(is_array($metadata_row));

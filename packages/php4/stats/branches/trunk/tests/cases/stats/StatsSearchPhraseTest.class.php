@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../StatsSearchPhrase.class.php');
 require_once(dirname(__FILE__) . '/../../../search_engine_rules/SearchEngineRegexRule.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 Mock :: generate('SearchEngineRegexRule');
 
@@ -32,7 +32,7 @@ class StatsSearchPhraseTest extends LimbTestCase
   {
     parent :: LimbTestCase('stats search prase test');
 
-    $this->db = DbFactory :: instance();
+    $this->db = LimbDbPool :: getConnection();
   }
 
   function setUp()
@@ -105,7 +105,7 @@ class StatsSearchPhraseTest extends LimbTestCase
     $date = new Date();
     $this->assertTrue($this->stats_search_phrase->register($date));
 
-    $db =& DbFactory :: instance();
+    $db =& LimbDbPool :: getConnection();
     $db->sqlSelect('sys_stat_search_phrase');
 
     $arr = $db->getArray();

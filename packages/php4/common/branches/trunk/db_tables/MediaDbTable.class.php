@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/db/DbTable.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbTable.class.php');
 
-class MediaDbTable extends DbTable
+class MediaDbTable extends LimbDbTable
 {
   function _defineDbTableName()
   {

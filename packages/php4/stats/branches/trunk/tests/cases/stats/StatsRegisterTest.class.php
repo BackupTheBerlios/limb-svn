@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/../../../StatsCounter.class.php');
 require_once(dirname(__FILE__) . '/../../../StatsIp.class.php');
 require_once(dirname(__FILE__) . '/../../../StatsReferer.class.php');
 require_once(LIMB_DIR . '/class/request/Request.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 Mock :: generatePartial
 (
@@ -81,7 +81,7 @@ class StatsRegisterTest extends LimbTestCase
   {
     parent :: LimbTestCase('stats register test');
 
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
   }
 
   function setUp()

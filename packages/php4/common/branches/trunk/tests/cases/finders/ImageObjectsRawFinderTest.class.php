@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../finders/ImageObjectsRawFinder.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 Mock :: generatePartial('ImageObjectsRawFinder',
                         'ImageObjectsRawFinderTestVersion',
@@ -22,7 +22,7 @@ class ImageObjectsRawFinderTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->_cleanUp();
 

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../StatsRegister.class.php');
 require_once(dirname(__FILE__) . '/../../../StatsCounter.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 Mock :: generatePartial
 (
@@ -35,7 +35,7 @@ class StatsCounterTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->stats_counter = new StatsCounterTestVersion($this);
     $this->stats_counter->StatsCounter();

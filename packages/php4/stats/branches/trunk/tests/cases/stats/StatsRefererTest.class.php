@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../StatsReferer.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 Mock :: generatePartial
 (
@@ -36,7 +36,7 @@ class StatsRefererTest extends LimbTestCase
     $this->server = $_SERVER;
     $_SERVER['HTTP_HOST'] = 'test';
 
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
     $this->stats_referer = new StatsRefererSelfTestVersion($this);
     $this->stats_referer->StatsReferer();
 

@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/../../../finders/ImageObjectsRawFinder.class.
 require_once(dirname(__FILE__) . '/../../../data_mappers/ImageObjectMapper.class.php');
 require_once(dirname(__FILE__) . '/../../../ImageVariation.class.php');
 require_once(dirname(__FILE__) . '/../../../MediaManager.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 require_once(LIMB_DIR . '/class/etc/limb_util.inc.php');
 
 Mock :: generatePartial('ImageObjectMapper',
@@ -36,7 +36,7 @@ class ImageObjectDataMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
 
     $this->finder = new MockImageObjectsRawFinder($this);
     $this->media_manager = new MockMediaManager($this);

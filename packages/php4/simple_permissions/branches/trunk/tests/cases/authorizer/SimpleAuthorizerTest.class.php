@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/class/site_objects/SiteObjectController.class.php');
 require_once(LIMB_DIR . '/class/behaviours/SiteObjectBehaviour.class.php');
 require_once(dirname(__FILE__) . '/../../../SimpleAuthorizer.class.php');
 require_once(LIMB_DIR . '/class/permissions/User.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
-require_once(LIMB_DIR . '/class/db_tables/DbTableFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
+require_once(LIMB_DIR . '/class/db_tables/LimbDbTableFactory.class.php');
 require_once(dirname(__FILE__) . '/../../../AccessPolicy.class.php');
 
 class SimpleAuthorizerTestBehaviourTestVersion extends SiteObjectBehaviour
@@ -58,7 +58,7 @@ class SimpleAuthorizerTest extends LimbTestCase
 
   function cleanUp()
   {
-    $db =& DbFactory :: instance();
+    $db =& LimbDbPool :: getConnection();
 
     $db->sqlDelete('sys_object_access');
     $db->sqlDelete('sys_action_access');
@@ -84,7 +84,7 @@ class SimpleAuthorizerTest extends LimbTestCase
     $authorizer->expectOnce('getUserAccessorIds');
     $authorizer->setReturnValue('getUserAccessorIds', array(100, 200));
 
-    $db_table = DbTableFactory :: create('SysObjectAccess');
+    $db_table = LimbDbTableFactory :: create('SysObjectAccess');
 
     $db_table->insert(array('id' => 1,
                            'object_id' => 300,
@@ -142,7 +142,7 @@ class SimpleAuthorizerTest extends LimbTestCase
 
     $behaviour_id = 10;
 
-    $db_table = DbTableFactory :: create('SysActionAccess');
+    $db_table = LimbDbTableFactory :: create('SysActionAccess');
 
     $db_table->insert(array('id' => 1,
                            'behaviour_id' => $behaviour_id,

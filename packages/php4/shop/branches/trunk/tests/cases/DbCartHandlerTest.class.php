@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/class/permissions/User.class.php');
 require_once(dirname(__FILE__) . '/../../handlers/DbCartHandler.class.php');
 require_once(dirname(__FILE__) . '/../../CartItem.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 Mock :: generate('User');
 Mock :: generatePartial(
@@ -28,7 +28,7 @@ class DbCartHandlerTest extends LimbTestCase
 
   function setUp()
   {
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
     $this->cart_handler = new SpecialDbCartHandler($this);
     $this->cart_handler->DbCartHandler(10);
 

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../../StatsIp.class.php');
 require_once(LIMB_DIR . '/class/lib/http/Ip.class.php');
-require_once(LIMB_DIR . '/class/lib/db/DbFactory.class.php');
+require_once(LIMB_DIR . '/class/lib/db/LimbDbPool.class.php');
 
 Mock :: generatePartial
 (
@@ -30,7 +30,7 @@ class StatsIpTest extends LimbTestCase
   {
     parent :: LimbTestCase('stats ip test');
 
-    $this->db =& DbFactory :: instance();
+    $this->db =& LimbDbPool :: getConnection();
   }
 
   function setUp()
