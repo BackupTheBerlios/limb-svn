@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: locale.tag.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -31,16 +31,29 @@ ie = (document.all) ? true : false;
 ie4 = ie && !dom;
 
 var current_hint_x = -1, current_hint_y = -1;
-var mouse_moved = 0;
-var current_hint_id = "";
+var current_hint_id = null;
 
-document.onmousemove = hint_mouse_move_handler; 
+//document.onmousemove = hint_mouse_move_handler; 
+add_event(document, 'mousemove', hint_mouse_move_handler);
 
 function hint_mouse_move_handler(e)
 {
-  current_hint_x = (nn4) ? (e.pageX):(event.x + document.body.scrollLeft);
-  current_hint_y = (nn4) ? (e.pageY):(event.y + document.body.scrollTop);
-  mouse_moved++;
+  if (dom)
+  {
+    current_hint_x = e.clientX;   
+    current_hint_y = e.clientY;
+  }
+  else if(ie4)
+  {
+    current_hint_x = e.x + document.body.scrollLeft;
+    current_hint_y = e.y + document.body.scrollTop;  
+  }
+  else if(nn4)
+  {
+    current_hint_x = e.pageX;
+    current_hint_y = e.pageY;
+  }
+  
   on_hint_mouse_move();
 }
 
@@ -76,20 +89,23 @@ function hide_hint(id)
   else if (nn4) document.hints[id].visibility = "hide";
 }
 
-function move_hint(idname,x,y)
+function move_hint(id,x,y)
 {
   if (dom)
   {
-    with(eval(idname))
-    {
-      style.left = x;
-      style.top = y;
-    }
+    h = document.getElementById(id);
+    h.style.left = x;
+    h.style.top = y;
+  }
+  else if(ie4)
+  {
+    document.all[id].left = x;
+    document.all[id].top = y;    
   }
   else if(nn4)
   {
-    document.hints[idname].left = x;
-    document.hints[idname].top = y;
+    document.hints[id].left = x;
+    document.hints[id].top = y;
   }
 }
 
@@ -97,7 +113,7 @@ function start_hint(id)
 {
   if(current_hint_id)
   	hide_hint(current_hint_id);
-  	
+  
   current_hint_id = id;
   
   move_hint(current_hint_id, current_hint_x+10, current_hint_y+10);
@@ -107,7 +123,7 @@ function start_hint(id)
 function stop_hint()
 {
   hide_hint(current_hint_id);
-  current_hint_id = "";
+  current_hint_id = null;
 }
 </script>
 JS;

@@ -6,16 +6,16 @@ ini-files for different locale settings are stored in
 LIMB_DIR/core/locale directory.
 * strings class is used for localized strings resolving. ini-files with
 localized strings could be found at:
-	1) PROJECT_DIR/core/strings
-	2) LIMB_DIR/core/strings
+    1) PROJECT_DIR/core/strings
+    2) LIMB_DIR/core/strings
 For now we have localized strings for English and Russian languages. 
 The common usage of the strings class is:
 
-	echo strings :: get($string_name, [$file_name='common'], [$language_id=null]);
+    echo strings :: get($string_name, [$file_name='common'], [$language_id=null]);
 
 $file_name is mapped to physical file by schema(order is preserved): 
-	1) 'PROJECT_DIR/core/strings' . $file_name . '_' . language_id . '.ini'
-	2) 'LIMB_DIR/core/strings' . $file_name . '_' . language_id . '.ini'
+    1) 'PROJECT_DIR/core/strings' . $file_name . '_' . language_id . '.ini'
+    2) 'LIMB_DIR/core/strings' . $file_name . '_' . language_id . '.ini'
 
 If no file found the critical error is risen.
 
@@ -84,7 +84,7 @@ Let's see how and where these locale constants are used.
 * Tag <locale:LOCALE name='locale_name' locale_type='{management|content}'> by default CONTENT_LOCALE_ID
 
 * Any form input tag (e.g. INPUT, BUTTON etc.) has locale_type, 
-	locale_value, locale_file attributes to set localized values, by default MANAGEMENT_LOCALE_ID
+    locale_value, locale_file attributes to set localized values, by default MANAGEMENT_LOCALE_ID
 
 * <metadata:CHARSET> renders page charset, uses MANAGEMENT_LOCALE_ID only
 

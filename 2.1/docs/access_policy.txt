@@ -40,34 +40,34 @@ Lets look into one small example to make everything clear:
 Suppose we have some object class, say article. 
 
 class article extends content_object
-{	
-	function _define_class_properties()
-	{
-		return array(
-			'class_ordr' => 1,
-			'can_be_parent' => 0,
-			'controller_class_name' => 'article_controller',
-		);
-	}
+{    
+    function _define_class_properties()
+    {
+        return array(
+            'class_ordr' => 1,
+            'can_be_parent' => 0,
+            'controller_class_name' => 'article_controller',
+        );
+    }
 }
 
 It supports only 2 actions: display and delete.
 
 class article_controller extends site_object_controller
 {
-	function article_controller()
-	{
-		$this->_actions = array(
-	    'display' => array(
-	     'permissions_required' => 'r',
-	    ),
-	   'delete' => array(
-	     'permissions_required' => 'w',
-	    ),
-		);
-		
-		parent :: site_object_controller();
-	}
+    function article_controller()
+    {
+        $this->_actions = array(
+        'display' => array(
+         'permissions_required' => 'r',
+        ),
+       'delete' => array(
+         'permissions_required' => 'w',
+        ),
+        );
+        
+        parent :: site_object_controller();
+    }
 }
 
 Note 'permissions_required' attribute, it defines what type of the permission the user 
@@ -82,15 +82,15 @@ Our user is a member of 2 groups: visitors and admins.
 
 Objects permissions that user groups have for objects are:
 
-					article1		article2	article3
-visitors                 r        r
-admins      rw           r        w
+            article1     article2     article3
+visitors                 r            r
+admins      rw           r            w
 
 And user groups actions access as follows:
 
-				display		delete
-visitor   1 				0
-admins		1					1
+          display        delete
+visitor   1              0
+admins    1              1
 
 It means that our user is allowed to display all articles (since the user is a member
 of visitors and admin groups), can delete article1 and article3 and not article2
@@ -110,24 +110,24 @@ A small example should clarify a bit:
 
 class articles_folder_controller extends site_object_controller
 {
-	function articles_folder_controller()
-	{
-		$this->_actions = array(
-				'create_article' => array(
-						'permissions_required' => 'w',
-						'action_path' => '/article/create_article_action',
-						'action_name' => strings :: get('create_article', 'article'),
-						'can_have_access_template' => true,
-				),
-				'publish' => array(
-						'permissions_required' => 'w',
-						'can_have_access_template' => true, //note this attribute!
-						'action_name' => strings :: get('publish'),
-						'action_path' => '/doc_flow_object/set_publish_status_action',						
-				),
-		);
-		parent :: site_object_controller();
-	}
+    function articles_folder_controller()
+    {
+        $this->_actions = array(
+                'create_article' => array(
+                        'permissions_required' => 'w',
+                        'action_path' => '/article/create_article_action',
+                        'action_name' => strings :: get('create_article', 'article'),
+                        'can_have_access_template' => true,
+                ),
+                'publish' => array(
+                        'permissions_required' => 'w',
+                        'can_have_access_template' => true, //note this attribute!
+                        'action_name' => strings :: get('publish'),
+                        'action_path' => '/doc_flow_object/set_publish_status_action',                        
+                ),
+        );
+        parent :: site_object_controller();
+    }
 }
 'can_have_access_template' attribute defines that object has access template for this action. 
 

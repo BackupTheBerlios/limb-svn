@@ -12,14 +12,14 @@ de's descendant and replacing its _update_object_operation() method:
 
 class your_action extends form_edit_site_object_action
 {
-	[...]
-	function _update_object_operation()
-	{
-		if(!$this->object->update(false))
-			return false;
-		else
-			return true;
-	}
+    [...]
+    function _update_object_operation()
+    {
+        if(!$this->object->update(false))
+            return false;
+        else
+            return true;
+    }
 }
 
 To browse the list of versions of an object and to be able to examine
@@ -28,22 +28,22 @@ to content object controller:
 
 class document_controller extends site_object_controller
 {
-	function document_controller()
-	{
-		$this->_actions = array(
-				[...]
-				'admin_detail' => array(
-						'permissions_required' => 'r',
-						'template_path' => '/admin/object_detail_info.html',
-						'popup' => true,
-						'JIP' => true,
-						'img_src' => '/shared/images/admin_detail.gif',
-						'action_name' => strings :: get('detail_info'),
-				),
-		);
+    function document_controller()
+    {
+        $this->_actions = array(
+                [...]
+                'admin_detail' => array(
+                        'permissions_required' => 'r',
+                        'template_path' => '/admin/object_detail_info.html',
+                        'popup' => true,
+                        'JIP' => true,
+                        'img_src' => '/shared/images/admin_detail.gif',
+                        'action_name' => strings :: get('detail_info'),
+                ),
+        );
 
-		parent :: site_object_controller();
-	}
+        parent :: site_object_controller();
+    }
 }
 
 NOTE: object_detail_info.html template renders content object system 

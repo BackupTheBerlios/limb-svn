@@ -35,10 +35,10 @@ That’s why if you want to customize template according to
 current locale in the runtime you should use something like this:
 
 <locale:LOCALE name='en'>
-	<core:INCLUDE file='_en/type_tables.html'>
+    <core:INCLUDE file='_en/type_tables.html'>
 </locale:LOCALE>
 <locale:LOCALE name='ru'>
-	<core:INCLUDE file=/_ru/type_tables.html'>
+    <core:INCLUDE file=/_ru/type_tables.html'>
 </locale:LOCALE>
 
 It's a good practice to use <locale:STRING> tag to output localized strings in templates.

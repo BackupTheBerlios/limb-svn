@@ -14,16 +14,16 @@ function add_page_to_favourities()
 	window.external.addFavorite(window.location, window.document.title);
 }
 
-function add_event(elm, evType, fn, useCapture) 
+function add_event(control, type, fn, use_capture) 
 { 
- if (elm.addEventListener)
+ if (control.addEventListener)
  { 
-   elm.addEventListener(evType, fn, useCapture); 
+   control.addEventListener(type, fn, use_capture); 
    return true; 
  } 
- else if (elm.attachEvent)
+ else if (control.attachEvent)
  { 
-   var r = elm.attachEvent("on" + evType, fn); 
+   var r = control.attachEvent("on" + type, fn); 
    return r; 
  } 
 }  

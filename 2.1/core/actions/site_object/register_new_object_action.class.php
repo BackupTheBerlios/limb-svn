@@ -56,7 +56,10 @@ class register_new_object_action extends form_action
 		{
 			if ($params['parent_path'] == '/')
 				$is_root = true;
-		}	
+			else
+			 error("parent wasn't retrieved",
+		    __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+		}
 		
 		if (!$is_root)
 			$params['parent_node_id'] = $parent_data['node_id'];
@@ -67,7 +70,7 @@ class register_new_object_action extends form_action
 	
 		if(!$object->create($is_root))
 		{
-			debug :: write_error('object wasnt registered',
+			error("object wasn't registered",
 			 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 		}	
 		

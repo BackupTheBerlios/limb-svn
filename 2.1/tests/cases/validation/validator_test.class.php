@@ -13,31 +13,45 @@ require_once(LIMB_DIR . 'core/lib/validators/validator.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/size_range_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 
+Mock::generate('error_list');
+
+Mock::generatePartial(
+    'validator',
+    'validator_test_version',
+    array('_get_error_list')); 
+
 Mock :: generate('rule');
 
 class validator_test extends UnitTestCase 
-{  	  
+{
+  var $error_list = null;
+  var $validator = null;
+  
+	function setUp()
+	{
+   $this->error_list =& new Mockerror_list($this);
+   $this->validator =& new validator_test_version($this);
+   $this->validator->setReturnReference('_get_error_list', $this->error_list);
+	} 
+	  	  
   function test_validate_no_rules()
   {
-  	$v =& new validator();
-  	$this->assertTrue($v->validate(new array_dataset()));
+  	$this->assertTrue($this->validator->validate(new array_dataset()));
   }
       
   function test_validate_true()
   {
   	$r1 =& new Mockrule($this);
   	
-  	$v =& new validator();
-
   	$r1->expectOnce('validate');
   	$r1->expectOnce('is_valid');
   	$r1->setReturnValue('is_valid', true);
 
-  	$v->add_rule(&$r1);
+  	$this->validator->add_rule(&$r1);
   	
-  	$v->validate(new array_dataset());
+  	$this->validator->validate(new array_dataset());
   	
-  	$this->assertTrue($v->is_valid());
+  	$this->assertTrue($this->validator->is_valid());
   	
   	$r1->tally();
   }
@@ -47,17 +61,21 @@ class validator_test extends UnitTestCase
   	$r1 =& new Mockrule($this);
   	$r2 =& new Mockrule($this);
   	
-  	$v =& new validator();
-
   	$r1->setReturnValue('is_valid', true);
   	$r2->setReturnValue('is_valid', false);
 
-  	$v->add_rule(&$r1);
-  	$v->add_rule(&$r2);
+  	$this->validator->add_rule(&$r1);
+  	$this->validator->add_rule(&$r2);
   	
-  	$v->validate(new array_dataset());
+  	$this->validator->validate(new array_dataset());
   	
-  	$this->assertFalse($v->is_valid());
+  	$this->assertFalse($this->validator->is_valid());
+  }
+  
+  function test_add_error()
+  {
+    $this->validator->add_error('test', 'error', array('1' => 'error'));
+    $this->error_list->expectOnce('add_error', array('test', 'error', array('1' => 'error')));
   }
 }
 

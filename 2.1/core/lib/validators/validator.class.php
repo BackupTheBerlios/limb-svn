@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: validator.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/core/lib/validators/error_list.class.php');
@@ -81,6 +81,12 @@ class validator
 	function get_rules()
 	{
 		return $this->rules;
+	}
+	
+	function add_error($field_name, $error, $params=array())
+	{
+	  $error_list =& $this->_get_error_list();
+	  $error_list->add_error($field_name, $error, $params);
 	}
 } 
 
