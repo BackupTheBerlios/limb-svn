@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class node_select_action extends action
@@ -15,19 +15,19 @@ class node_select_action extends action
 	public function perform($request, $response)
 	{
 	  $request->set_status(request :: STATUS_DONT_TRACK);
-	  
+
 	  if(!$path = $request->get('path'))
 	    return;
-	 
-	 if(!$node = map_url_to_node($path))
+
+	 if(!$node = fetcher :: instance()->map_url_to_node($path))
 	    return;
-	 
-	  if(!$object_data = fetch_one_by_node_id($node['id']))
+
+	  if(!$object_data = fetcher :: instance()->fetch_one_by_node_id($node['id']))
 	    return;
-	    
+
 	  session :: set('limb_node_select_working_path', $path);
 	  $dataspace = $this->view->find_child('parent_node_data');
-	  
+
 	  $dataspace->import($object_data);
 	}
 }

@@ -45,7 +45,7 @@ class register_new_object_action extends form_action
 		$object = site_object_factory :: create($params['class']);
 		
 		$is_root = false;
-		if(!$parent_data = fetch_one_by_path($params['parent_path']))
+		if(!$parent_data = fetcher :: instance()->fetch_one_by_path($params['parent_path']))
 		{
 			if ($params['parent_path'] == '/')
 				$is_root = true;
@@ -54,7 +54,7 @@ class register_new_object_action extends form_action
   	    message_box :: write_notice('parent wasn\'t retrieved by path ' . $params['parent_path']);
   	    $request->set_status(request :: STATUS_FAILURE);
   	    return;
-  	  }  
+  	  }
 		}
 		
 		if (!$is_root)

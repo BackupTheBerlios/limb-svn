@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class set_metadata_action extends form_action
@@ -16,29 +16,29 @@ class set_metadata_action extends form_action
 	{
 	  return 'set_metadata';
 	}
-	
+
 	protected function _init_dataspace($request)
 	{
-		$object_data = fetch_requested_object($request);
+		$object_data = fetcher :: instance()->fetch_requested_object($request);
 
 		$object = site_object_factory :: create('site_object');
 		$object->set('id', $object_data['id']);
-		
+
 		$data = $object->get_metadata();
 		$this->dataspace->import($data);
 	}
 
 	protected function _valid_perform($request, $response)
 	{
-		$object_data = fetch_requested_object($request);
+		$object_data = fetcher :: instance()->fetch_requested_object($request);
 
 		$data = $this->dataspace->export();
 
 		$data['id'] = $object_data['id'];
-		
+
 		$object = site_object_factory :: create('site_object');
 		$object->merge($data);
-		
+
 		if(!$object->save_metadata())
 			$request->set_status(request :: STATUS_FAILURE);
 		else

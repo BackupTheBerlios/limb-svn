@@ -25,7 +25,7 @@ class recover_version_action extends action
 		if(!$node_id = $request->get('version_node_id'))
 	    return;
 			
-		if(!$site_object = wrap_with_site_object(fetch_one_by_node_id((int)$node_id)))
+		if(!$site_object = wrap_with_site_object(fetcher :: instance()->fetch_one_by_node_id((int)$node_id)))
 			return;
 		
 		if(!is_subclass_of($site_object, 'content_object'))

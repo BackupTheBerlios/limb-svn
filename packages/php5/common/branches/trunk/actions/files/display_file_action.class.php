@@ -7,19 +7,19 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 
 class display_file_action extends action
-{	
+{
 	public function perform($request, $response)
 	{
-		$object_data = fetch_requested_object($request);
-		
+		$object_data = fetcher :: instance()->fetch_requested_object($request);
+
 		if(!file_exists(MEDIA_DIR . $object_data['media_id'] . '.media'))
 		{
 			$response->header("HTTP/1.1 404 Not found");
-			
+
 			if(isset($_GET['icon']))
 				$response->commit(); //for speed
 			else
@@ -28,30 +28,30 @@ class display_file_action extends action
 				return;
 			}
 		}
-		
+
 		if (isset($_GET['icon']))
 		{
 			$size = 16;
 			if (!empty($_GET['icon']))
 				$size = $_GET['icon'];
-			
+
 			$mime_type = $object_data['mime_type'];
-			
+
 			if($mime_type == 'application/x-zip-compressed')
 				$mime_type = 'application/zip';
 			elseif($mime_type == 'application/x-shockwave-flash')
 				$mime_type = 'application/swf';
-			
+
 			$file_name = HTTP_SHARED_DIR . 'images/mime_icons/' . str_replace('/', '_' , $mime_type) . '.' . $size . '.gif';
 
 			if (!file_exists($file_name))
 				$file_name = HTTP_SHARED_DIR . "images/mime_icons/file.{$size}.gif";
-			
+
 			$response->header("Date: " . gmdate("D, d M Y H:i:s") . " GMT");
 			$response->header("Content-type: image/gif");
-			$response->readfile($file_name);			
-			
-			$response->commit();//for speed	
+			$response->readfile($file_name);
+
+			$response->commit();//for speed
 		}
 
 		$response->header("Date: " . gmdate("D, d M Y H:i:s") . " GMT");

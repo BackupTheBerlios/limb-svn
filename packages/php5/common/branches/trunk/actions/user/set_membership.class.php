@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
 
 class set_membership extends form_action
@@ -16,25 +16,25 @@ class set_membership extends form_action
 	{
 	  return 'set_membership';
 	}
-	
+
 	protected function _init_dataspace($request)
 	{
-		$object_data = fetch_requested_object($request);
-	
+		$object_data = fetcher :: instance()->fetch_requested_object($request);
+
 		$object = site_object_factory :: create('user_object');
-		
+
 		$data['membership'] = $object->get_membership($object_data['id']);
 
 		$this->dataspace->import($data);
 	}
-	
+
 	protected function _valid_perform($request, $response)
 	{
-		$object_data = fetch_requested_object($request);
+		$object_data = fetcher :: instance()->fetch_requested_object($request);
 
 		$data = $this->dataspace->export();
 		$object = site_object_factory :: create('user_object');
-		
+
 		$object->save_membership($object_data['id'], $data['membership']);
 
 	  $request->set_status(request :: STATUS_FORM_SUBMITTED);

@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
 class poll_all_results_datasource implements datasource
@@ -15,25 +15,25 @@ class poll_all_results_datasource implements datasource
 	public function get_dataset(&$counter, $params = array())
 	{
 		$questions = $this->_load_all_questions($params);
-		
+
 		if(!count($questions))
 			return new array_dataset(array());
-			
+
 		foreach($questions as $key => $data)
 		{
 			$questions[$key]['answers'] = $this->_load_answers($data['path']);
-			
+
 			$questions[$key]['total_count'] = 0;
 
 			if(!count($questions[$key]['answers']))
 			{
 				$questions[$key]['total_count'] = 0;
 				continue;
-			}	
+			}
 
 			foreach($questions[$key]['answers'] as $answer_id => $answer_data)
 				$questions[$key]['total_count'] += $answer_data['count'];
-			
+
 			foreach($questions[$key]['answers'] as $answer_id => $answer_data)
 			{
 				if ($questions[$key]['total_count'] == 0)
@@ -46,31 +46,31 @@ class poll_all_results_datasource implements datasource
 					$questions[$key]['answers'][$answer_id]['percentage'] = round($answer_data['count'] / $questions[$key]['total_count']*100, 2);
 					$questions[$key]['answers'][$answer_id]['rounded_percentage'] = round($answer_data['count'] / $questions[$key]['total_count']*100);
 				}
-			}	
-		}	
-    
+			}
+		}
+
     $counter = sizeof($questions);
 		return new array_dataset($questions);
 	}
-	
+
 	protected function _load_all_questions($new_params = array())
 	{
 		$params = array(
 			'depth' => -1
 		);
-		
+
 		$params = complex_array :: array_merge($params, $new_params);
-		
-		return fetch_sub_branch('/root/polls', 'poll', $params);
+
+		return fetcher :: instance()->fetch_sub_branch('/root/polls', 'poll', $params);
 	}
-	
+
 	protected function _load_answers($question_path)
 	{
 		$params = array(
 			'depth' => 1
 		);
-		
-		return fetch_sub_branch($question_path, 'poll_answer', $params);
+
+		return fetcher :: instance()->fetch_sub_branch($question_path, 'poll_answer', $params);
 	}
 }
 

@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/datasources/fetch_tree_datasource.class.php');
 
 class group_object_access_datasource extends fetch_tree_datasource
@@ -15,22 +15,22 @@ class group_object_access_datasource extends fetch_tree_datasource
 	protected function _fetch(&$counter, $params)
 	{
 		$tree_array = parent :: _fetch($counter, $params);
-		
+
 		$group_params['order'] = array('priority' => 'ASC');
-		$user_groups = fetch_sub_branch('/root/user_groups', 'user_group', $counter, $group_params);
-		
+		$user_groups = fetcher :: instance()->fetch_sub_branch('/root/user_groups', 'user_group', $counter, $group_params);
+
 		$dataspace = dataspace_registry :: get('set_group_access');
 		$groups = $dataspace->get('filter_groups');
 
 		if (!is_array($groups) || !count($groups))
 			return $tree_array;
-		
+
 		foreach(array_keys($user_groups) as $key)
 		{
 			if (!in_array($key, $groups))
 				unset($user_groups[$key]);
 		}
-		
+
 		foreach($tree_array as $id => $node)
 		{
 			$object_id = $node['id'];
@@ -40,7 +40,7 @@ class group_object_access_datasource extends fetch_tree_datasource
 				$tree_array[$id]['groups'][$group_id]['write_selector_name'] = 'policy[' . $object_id . '][' . $group_id . '][w]';
 			}
 		}
-		
+
 		return $tree_array;
 	}
 }

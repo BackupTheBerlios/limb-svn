@@ -10,29 +10,29 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/filters/intercepting_filter.interface.php');
 
-class logging_filter implements intercepting_filter 
+class logging_filter implements intercepting_filter
 {
   public function run($filter_chain, $request, $response)
-  { 
+  {
     $filter_chain->next();
-    
+
     debug :: add_timing_point('logging filter started');
-    
-    $object = wrap_with_site_object(fetch_requested_object($request));
-    
+
+    $object = wrap_with_site_object(fetcher :: instance()->fetch_requested_object($request));
+
     $controller = $object->get_controller();
-    
+
     include_once(dirname(__FIlE__) . '/../stats_register.class.php');
-    
-    $stats_register = new stats_register(); 
-    
+
+    $stats_register = new stats_register();
+
     $stats_register->register(
-      $object->get_node_id(), 
-      $controller->get_action(), 
+      $object->get_node_id(),
+      $controller->get_action(),
       $request->get_status()
     );
-      
-    debug :: add_timing_point('logging filter finished');        
+
+    debug :: add_timing_point('logging filter finished');
   }
 }
 ?>

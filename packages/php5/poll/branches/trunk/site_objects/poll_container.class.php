@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/core/site_objects/site_object.class.php');
 
 class poll_container extends site_object
@@ -21,12 +21,12 @@ class poll_container extends site_object
 			'icon' => '/shared/images/folder.gif'
 		);
 	}
-	
+
 	public function can_vote()
 	{
 		if(!$poll_data = $this->get_active_poll())
 			return false;
-			
+
 		$poll_id = $poll_data['id'];
 
 		if(defined('DEBUG_POLL_ENABLED') && constant('DEBUG_POLL_ENABLED'))
@@ -35,7 +35,7 @@ class poll_container extends site_object
 		$poll_session =& session :: get('poll_session');
 		if (is_array($poll_session) && isset($poll_session[$poll_id]))
 			return false;
-		
+
 		switch($poll_data['restriction'])
 		{
 			case 1:
@@ -46,7 +46,7 @@ class poll_container extends site_object
 				$cookie = $_COOKIE;
 				if (!isset($cookie['poll_ids']))
 					return true;
-					
+
 				$poll_ids = $cookie['poll_ids'];
 				$ips = explode(',', $poll_ids);
 				foreach($ips as $id => $data)
@@ -55,11 +55,11 @@ class poll_container extends site_object
 						return false;
 				}
 			break;
-			
-			case 3:				
+
+			case 3:
 				if ($this->_poll_ip_exists($poll_id, sys :: client_ip()))
 					return false;
-			break;			
+			break;
 		}
 
 		return true;
@@ -72,20 +72,20 @@ class poll_container extends site_object
 
 		if(!$poll_data = $this->get_active_poll())
 			return false;
-	
+
 		$poll_id = $poll_data['id'];
 		if (!$poll_id)
 			return false;
 
 		if (!$this->can_vote())
 			return false;
-			
+
 		if(!$this->_add_vote_to_answer($poll_data['answers'][$answer_id]['record_id']))
 			return false;
-		
+
 		$poll_session =& session :: get('poll_session');
 		$poll_session[$poll_id] = $poll_id;
-		
+
 		switch($poll_data['restriction'])
 		{
 			case 1:
@@ -103,34 +103,34 @@ class poll_container extends site_object
 				{
 					$poll_ids = $poll_id;
 				}
-				
+
 				$one_week = 7 * 24 * 60 * 60;
 				setcookie('poll_ids', $poll_ids, time() + $one_week, '/');
 			break;
-			
-			case 3:				
+
+			case 3:
 				$this->_register_new_ip($poll_id, sys :: client_ip());
-			break;			
+			break;
 		}
-		
-		return true;
-	}
-	
-	protected function _add_vote_to_answer($record_id)
-	{
-		$poll_answer_db_table = db_table_factory :: create('poll_answer');
-		
-		$data = $poll_answer_db_table->get_row_by_id($record_id);
-		if (!$data)
-			return false;
-		
-		$data['count'] = $data['count'] + 1;
-		$poll_answer_db_table->update($data, 'id=' . $record_id);
-		
+
 		return true;
 	}
 
-	
+	protected function _add_vote_to_answer($record_id)
+	{
+		$poll_answer_db_table = db_table_factory :: create('poll_answer');
+
+		$data = $poll_answer_db_table->get_row_by_id($record_id);
+		if (!$data)
+			return false;
+
+		$data['count'] = $data['count'] + 1;
+		$poll_answer_db_table->update($data, 'id=' . $record_id);
+
+		return true;
+	}
+
+
 	protected function _register_new_ip($poll_id, $ip)
 	{
 		$poll_ip_db_table = db_table_factory :: create('poll_ip');
@@ -139,13 +139,13 @@ class poll_container extends site_object
 		$data['poll_id'] = $poll_id;
 		$poll_ip_db_table->insert($data);
 	}
-	
+
 	protected function _poll_ip_exists($poll_id, $ip)
 	{
 		$poll_ip_db_table = db_table_factory :: create('poll_ip');
 		$where['poll_id'] = $poll_id;
 		$where['ip'] = $ip;
-		
+
 		if ($poll_ip_db_table->get_list($where))
 			return true;
 		else
@@ -158,16 +158,16 @@ class poll_container extends site_object
 			return array();
 
 		$current_date = date('Y-m-d', time());
-		
+
 		foreach($questions as $key => $data)
 		{
 			if (($data['start_date'] > $current_date) || ($data['finish_date'] < $current_date))
 				unset($questions[$key]);
-		}	
+		}
 
 		if (!count($questions))
 			return array();
-		
+
 		$record = reset($questions);
 		$this->_process_question($record);
 
@@ -181,18 +181,18 @@ class poll_container extends site_object
 		$poll_data['total_count'] = 0;
 		foreach($poll_data['answers'] as $answer_id => $answer_data)
 			$poll_data['total_count'] += $answer_data['count'];
-		
+
 		foreach($poll_data['answers'] as $answer_id => $answer_data)
 			if($poll_data['total_count'] > 0 )
 			{
 				$poll_data['answers'][$answer_id]['percentage'] = round($answer_data['count'] / $poll_data['total_count']*100, 2);
 				$poll_data['answers'][$answer_id]['rounded_percentage'] = round($answer_data['count'] / $poll_data['total_count']*100);
-			}	
+			}
 			else
 			{
 				$poll_data['answers'][$answer_id]['percentage'] = 0;
 				$poll_data['answers'][$answer_id]['rounded_percentage'] = 0;
-			}	
+			}
 	}
 
 	protected function _load_all_questions($new_params = array())
@@ -203,17 +203,17 @@ class poll_container extends site_object
 				'start_date' => 'DESC'
 			)
 		);
-		
+
 		$params = complex_array :: array_merge($params, $new_params);
-		
-		return fetch_sub_branch('/root/polls', 'poll', $counter, $params);
+
+		return fetcher :: instance()->fetch_sub_branch('/root/polls', 'poll', $counter, $params);
 	}
-	
+
 	protected function _load_answers($question_path)
 	{
-		return fetch_sub_branch($question_path, 'poll_answer', $counter);
+		return fetcher :: instance()->fetch_sub_branch($question_path, 'poll_answer', $counter);
 	}
-		
+
 }
 
 ?>

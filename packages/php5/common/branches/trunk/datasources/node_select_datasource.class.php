@@ -7,7 +7,7 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/datasources/fetch_sub_branch_datasource.class.php');
 
 class node_select_datasource extends fetch_sub_branch_datasource
@@ -16,7 +16,7 @@ class node_select_datasource extends fetch_sub_branch_datasource
 	{
 		$params['depth'] = 1;
 
-	  $request = request :: instance();		
+	  $request = request :: instance();
 
 		if($request->get('only_parents') == 'false')
 			$params['only_parents'] = false;
@@ -28,21 +28,21 @@ class node_select_datasource extends fetch_sub_branch_datasource
 
 		return parent :: get_dataset($counter, $params);
 	}
-	
+
 	function _process_path()
 	{
 		$default_path = '/root/';
 
-	  $request = request :: instance();		
-		
+	  $request = request :: instance();
+
 		if(!$path = $request->get('path'))
 			return $default_path;
 
 		if(strpos($path, '?') !== false)
 		{
-			if(!$node = map_url_to_node($path))
+			if(!$node = fetcher :: instance()->map_url_to_node($path))
 				return $default_path;
-				
+
 			if(!$path = tree :: instance()->get_path_to_node($node))
 				return $default_path;
 		}

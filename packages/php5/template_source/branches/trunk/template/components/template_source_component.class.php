@@ -12,14 +12,14 @@ class template_source_component extends component
 {
 	public function get_current_template_source_link()
 	{
-		if(!$site_object = wrap_with_site_object(fetch_requested_object()))
+		if(!$site_object = wrap_with_site_object(fetcher :: instance()->fetch_requested_object()))
 			return '';
-		
+
 		$site_object_controller = $site_object->get_controller();
-		
+
 		if(($action = $site_object_controller->get_action()) === false)
 			return '';
-			
+
 		if(!$template_path = $site_object_controller->get_action_property($action, 'template_path'))
 			return '';
 		

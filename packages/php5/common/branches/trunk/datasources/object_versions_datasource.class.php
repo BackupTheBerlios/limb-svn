@@ -7,26 +7,26 @@
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . 'class/datasources/datasource.interface.php');
 
 class object_versions_datasource implements datasource
 {
 	public function get_dataset(&$counter, $params=array())
 	{
-		$object_data = fetch_requested_object();
-		
+		$object_data = fetcher :: instance()->fetch_requested_object();
+
 		if (!count($object_data))
 			return new array_dataset(array());
-			
+
 		$db_table	= db_table_factory :: create('sys_object_version');
-		
+
 		$arr = $db_table->get_list('object_id='. $object_data['id'], 'version DESC');
-		
+
 		$result = array();
-		
-		$users = fetch_sub_branch('/root/users', 'user_object', $counter);
-		
+
+		$users = fetcher :: instance()->fetch_sub_branch('/root/users', 'user_object', $counter);
+
 		foreach($arr as $data)
 		{
 			$record = $data;
@@ -38,20 +38,20 @@ class object_versions_datasource implements datasource
 					if ($user_data['id'] == $data['creator_id'])
 					{
 						$user = $user_data;
-						break;					
+						break;
 					}
 				}
-			
+
 			if ($user)
 			{
 				$record['creator_identifier'] = $user['identifier'];
 				$record['creator_email'] = $user['email'];
 				$record['creator_name'] = $user['name'];
 				$record['creator_lastname'] = isset($user['lastname']) ? $user['lastname'] : '';
-			}	
+			}
 			$result[]	= $record;
 		}
-		
+
 		return new array_dataset($result);
 	}
 }
