@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-class CommonFindersGroup extends LimbGroupTest
+class CommonDAOGroup extends LimbGroupTest
 {
-  function CommonFindersGroup()
+  function CommonDAOGroup()
   {
-    parent :: LimbGroupTest('common finders tests');
+    parent :: LimbGroupTest('common DAO tests');
   }
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/../cases/finders');
+    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(dirname(__FILE__) . '/../cases/dao');
   }
 }
 
