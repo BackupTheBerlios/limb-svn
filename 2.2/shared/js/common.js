@@ -11,7 +11,27 @@ if(get_query_item(location.href, 'popup'))
 
 function add_page_to_favourities()
 {
-	window.external.addFavorite(window.location, window.document.title);
+	if (window.sidebar) 
+	{ 
+		window.sidebar.addPanel(window.document.title, window.location, "");
+	} 
+	else if(document.all) 
+	{ 
+		window.external.AddFavorite( window.location, window.document.title);
+	}
+	else if(window.opera && window.print)
+	{ 
+		return true; 
+	} 
+}
+
+function make_homepage(obj)
+{
+	if(document.all)
+	{
+		this.event.srcElement.style.behavior='url(#default#homepage)';
+		this.event.srcElement.setHomePage(window.location);
+	}
 }
 
 function add_event(control, type, fn, use_capture) 

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: domain_rule.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/lib/validators/rules/single_field_rule.class.php');
@@ -40,7 +40,7 @@ class domain_rule extends single_field_rule
 		// We can't be too restrictive by default.
 		if (!preg_match("/^[a-zA-Z0-9.-]+$/i", $value))
 		{
-			$this->error('BAD_DOMAIN_CHARACTERS');
+			$this->error(strings :: get('BAD_DOMAIN_CHARACTERS', 'error'));
 		} 
 
 		if (is_integer(strpos($value, '--', $value)))
