@@ -27,7 +27,7 @@ Mock::generatePartial(
 Mock::generatePartial(
   'image_cache_manager', 
   'image_cache_manager_test_version2', 
-  array('is_cacheable', '_get_fetcher', '_cache_media_file')
+  array('is_cacheable', '_get_fetcher', '_cache_media_file', '_is_image_cached', '_get_cached_image_extension')
 );
 
 Mock::generatePartial(
@@ -270,204 +270,218 @@ class image_cache_manager_test extends UnitTestCase
 
   function test_process_img_tag()
   {        
-    $this->fetcher->expectOnce('fetch_one_by_node_id', array(1));
-    $this->fetcher->setReturnValue('fetch_one_by_node_id',     
+    $c = '<p><img alt="test" src="/root?node_id=1" border="0"></p>';
+    
+    $this->cache_manager2->expectOnce('_is_image_cached');
+    $this->cache_manager2->setReturnvalue('_is_image_cached', false);
+  
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',     
       array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'thumbnail' => array(
-            'media_id' => 200,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
+        1 => array(
+          'identifier' => 'test_image', 
+          'variations' => array(
+            'thumbnail' => array(
+              'media_id' => 200,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )  
       )
     );
     
-    $c = '<p><img alt="test" src="/root?node_id=1" border="0"></p>';
-    
-    $this->cache_manager2->expectOnce('_cache_media_file', array(200, '.jpg'));
+    $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
     $this->cache_manager2->process_content($c);
     
-    $this->assertEqual($c, "<p><img alt=\"test\" src='/var/images/200.jpg' border=\"0\"></p>");
+    $this->assertEqual($c, "<p><img alt=\"test\" src='" . IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg' border=\"0\"></p>");
+  }
+
+
+  function test_process_img_tag_some_images_cached()
+  {        
+    $c = '<p><img alt="test" src="/root?node_id=1" border="0"></p><img alt="test" src="/root?node_id=2" border="0">';
+
+    $this->cache_manager2->expectCallCount('_is_image_cached', 2);
+    $this->cache_manager2->expectCallCount('_get_cached_image_extension', 2);
+
+    $this->cache_manager2->setReturnValue('_is_image_cached', true, array(2, 'thumbnail'));
+    $this->cache_manager2->setReturnValue('_is_image_cached', false, array(2, 'thumbnail'));
+
+    $this->cache_manager2->setReturnValue('_get_cached_image_extension', '.jpg', array(2, 'thumbnail'));
+    $this->cache_manager2->setReturnValue('_get_cached_image_extension', false, array(2, 'thumbnail'));
+    
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',     
+      array(
+        1 => array(
+          'identifier' => 'test_image', 
+          'variations' => array(
+            'thumbnail' => array(
+              'media_id' => 200,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )  
+      )
+    );
+    
+    $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
+    $this->cache_manager2->setReturnValue('_filter_not_cached_images', array(1 => 'thumbnail'));
+    $this->cache_manager2->process_content($c);
+    
+    $this->assertEqual($c, 
+      '<p><img alt="test" src=\'' . IMAGE_CACHE_WEB_DIR . 
+      '1thumbnail.jpg\' border="0"></p><img alt="test" src=\'' . IMAGE_CACHE_WEB_DIR . 
+      '2thumbnail.jpg\' border="0">');
   }
 
   function test_process_content_background_attribute()
-  {        
-    $this->fetcher->expectOnce('fetch_one_by_node_id', array(1));
-    $this->fetcher->setReturnValue('fetch_one_by_node_id',     
+  { 
+    $c = '<td width="1" background="/root?node_id=1" border="0"></td>';
+    
+    $this->cache_manager2->expectOnce('_is_image_cached');
+    $this->cache_manager2->setReturnvalue('_is_image_cached', false);
+  
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',     
       array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'thumbnail' => array(
-            'media_id' => 200,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
+        1 => array(
+          'identifier' => 'test_image', 
+          'variations' => array(
+            'thumbnail' => array(
+              'media_id' => 200,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )  
       )
     );
     
-    $c = '<td width="1" background="/root?node_id=1" border="0"></td>';
-    
-    $this->cache_manager2->expectOnce('_cache_media_file', array(200, '.jpg'));
+    $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
     $this->cache_manager2->process_content($c);
     
-    $this->assertEqual($c, "<td width=\"1\" background='/var/images/200.jpg' border=\"0\"></td>");
+    $this->assertEqual($c, "<td width=\"1\" background='" . IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg' border=\"0\"></td>");
   }
     
   function test_process_content_quotes_proper_handling()
   {        
-    $this->fetcher->expectOnce('fetch_one_by_node_id', array(1));
-    $this->fetcher->setReturnValue('fetch_one_by_node_id',     
+    $c = '<p><img alt="test" src=\'/root?node_id=1" border="0"></p>';
+
+    $this->cache_manager2->expectOnce('_is_image_cached');
+    $this->cache_manager2->setReturnvalue('_is_image_cached', false);
+    
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',     
       array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'thumbnail' => array(
-            'media_id' => 200,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
+        1 => array(
+          'identifier' => 'test_image', 
+          'variations' => array(
+            'thumbnail' => array(
+              'media_id' => 200,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )  
       )
     );
     
-    $c = '<p><img alt="test" src=\'/root?node_id=1" border="0"></p>';
-    
-    $this->cache_manager2->expectOnce('_cache_media_file', array(200, '.jpg'));
+    $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
     $this->cache_manager2->process_content($c);
     
-    $this->assertEqual($c, "<p><img alt=\"test\" src='/var/images/200.jpg' border=\"0\"></p>");
+    $this->assertEqual($c, "<p><img alt=\"test\" src='" . IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg' border=\"0\"></p>");
   }  
   
   function test_process_content_original_variation()
   {        
-    $this->fetcher->expectOnce('fetch_one_by_node_id', array(1));
-    $this->fetcher->setReturnValue('fetch_one_by_node_id',     
-      array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'original' => array(
-            'media_id' => 100,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
-      )
-    );
-    
     $c = '<p><img alt="test" src="/root?node_id=1&original" border="0"></p>';
-    
-    $this->cache_manager2->expectOnce('_cache_media_file', array(100, '.jpg'));
-    $this->cache_manager2->process_content($c);
-    
-    $this->assertEqual($c, "<p><img alt=\"test\" src='/var/images/100.jpg' border=\"0\"></p>");
-  }  
 
-  function test_process_content_thumbnail_variation()
-  {        
-    $this->fetcher->expectOnce('fetch_one_by_node_id', array(1));
-    $this->fetcher->setReturnValue('fetch_one_by_node_id',     
+    $this->cache_manager2->expectOnce('_is_image_cached');
+    $this->cache_manager2->setReturnvalue('_is_image_cached', false);
+    
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',     
       array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'thumbnail' => array(
-            'media_id' => 100,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
+        1 => array(
+          'identifier' => 'test_image', 
+          'variations' => array(
+            'original' => array(
+              'media_id' => 100,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )  
       )
     );
     
-    $c = '<p><img alt="test" src="/root?node_id=1&thumbnail" border="0"></p>';
-    
-    $this->cache_manager2->expectOnce('_cache_media_file', array(100, '.jpg'));
+    $this->cache_manager2->expectOnce('_cache_media_file', array(100, '1original.jpg'));
     $this->cache_manager2->process_content($c);
     
-    $this->assertEqual($c, "<p><img alt=\"test\" src='/var/images/100.jpg' border=\"0\"></p>");
-  }  
-
-  function test_process_content_icon_variation()
-  {        
-    $this->fetcher->expectOnce('fetch_one_by_node_id', array(1));
-    $this->fetcher->setReturnValue('fetch_one_by_node_id',     
-      array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'icon' => array(
-            'media_id' => 300,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
-      )
-    );
-    
-    $c = '<p><img alt="test" src="/root?node_id=1&icon" border="0"></p>';
-    
-    $this->cache_manager2->expectOnce('_cache_media_file', array(300, '.jpg'));
-    $this->cache_manager2->process_content($c);
-    
-    $this->assertEqual($c, "<p><img alt=\"test\" src='/var/images/300.jpg' border=\"0\"></p>");
+    $this->assertEqual($c, "<p><img alt=\"test\" src='" . IMAGE_CACHE_WEB_DIR . "1original.jpg' border=\"0\"></p>");
   }  
   
-  function test_process_content_img_and_background()
+  function test_process_content_img_and_background_same_image_object()
   {        
-    $this->fetcher->expectArgumentsAt(0, 'fetch_one_by_node_id', array(1));
-    $this->fetcher->expectArgumentsAt(1, 'fetch_one_by_node_id', array(1));
+    $c = '<img src="/root?node_id=1"><br><td width="1" background="/root?node_id=1&icon" border="0"></td>';
+
+    $this->cache_manager2->expectCallCount('_is_image_cached', 2);
+    $this->cache_manager2->setReturnvalue('_is_image_cached', false);
     
-    $this->fetcher->setReturnValueAt(0, 'fetch_one_by_node_id',     
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',     
       array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'thumbnail' => array(
-            'media_id' => 200,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
+        1 => array(
+          'identifier' => 'test_image', 
+          'variations' => array(
+            'thumbnail' => array(
+              'media_id' => 200,
+              'mime_type' => 'image/jpeg'
+            ),
+            'icon' => array(
+              'media_id' => 300,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )  
       )
     );
 
-    $this->fetcher->setReturnValueAt(1, 'fetch_one_by_node_id',     
-      array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'icon' => array(
-            'media_id' => 300,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
-      )
-    );
+    $this->cache_manager2->expectArgumentsAt(0, '_cache_media_file', array(200, '1thumbnail.jpg'));
+    $this->cache_manager2->expectArgumentsAt(1, '_cache_media_file', array(300, '1icon.jpg'));
     
-    $c = '<img src="/root?node_id=1"><br><td width="1" background="/root?node_id=1&icon" border="0"></td>';
-    
-    $this->cache_manager2->expectArgumentsAt(0, '_cache_media_file', array(200, '.jpg'));
-    $this->cache_manager2->expectArgumentsAt(1, '_cache_media_file', array(300, '.jpg'));
     $this->cache_manager2->process_content($c);
     
-    $this->assertEqual($c, "<img src='/var/images/200.jpg'><br><td width=\"1\" background='/var/images/300.jpg' border=\"0\"></td>");
+    $this->assertEqual($c, "<img src='" . 
+      IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg'><br><td width=\"1\" background='" . 
+      IMAGE_CACHE_WEB_DIR . "1icon.jpg' border=\"0\"></td>");
   }          
   
-  function test_cached_write_file()
-  {
+  function test_write_cached_file()
+  {  
+    $c = '<p><img alt="test" src="/root?node_id=1&icon" border="0"></p>';
+    
     $cache_manager =& new image_cache_manager_test_version3($this);
     $cache_manager->setReturnValue('is_cacheable', true);
     $cache_manager->setReturnReference('_get_fetcher', $this->fetcher);
-    
-    $this->fetcher->expectOnce('fetch_one_by_node_id', array(1));
-    $this->fetcher->setReturnValue('fetch_one_by_node_id',     
+  
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',     
       array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'icon' => array(
-            'media_id' => 300,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
+        1 => array(
+          'identifier' => 'test_image', 
+          'variations' => array(
+            'icon' => array(
+              'media_id' => 200,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )  
       )
     );
-    
-    $c = '<p><img alt="test" src="/root?node_id=1&icon" border="0"></p>';
-    $this->_write_media_file(300);
+
+    $this->_write_media_file(200);
     $cache_manager->process_content($c);
     
-    $this->assertTrue(file_exists(IMAGE_CACHE_DIR . '300.jpg'));
+    $this->assertTrue(file_exists(IMAGE_CACHE_DIR . '1icon.jpg'));
     
     $this->_clean_up();
   }
@@ -478,16 +492,18 @@ class image_cache_manager_test extends UnitTestCase
     $cache_manager->setReturnValue('is_cacheable', true);
     $cache_manager->setReturnReference('_get_fetcher', $this->fetcher);
     
-    $this->fetcher->expectOnce('fetch_one_by_node_id', array(1));
-    $this->fetcher->setReturnValue('fetch_one_by_node_id',     
+    $this->fetcher->expectOnce('fetch_by_node_ids', array(array(1), 'image_object', 0));
+    $this->fetcher->setReturnValue('fetch_by_node_ids',     
       array(
-        'identifier' => 'test_image', 
-        'variations' => array(
-          'icon' => array(
-            'media_id' => 300,
-            'mime_type' => 'image/jpeg'
-          ),
-        )
+        1 => array(
+          'identifier' => 'test_image', 
+          'variations' => array(
+            'icon' => array(
+              'media_id' => 200,
+              'mime_type' => 'image/jpeg'
+            ),
+          )
+        )  
       )
     );
     
@@ -495,7 +511,7 @@ class image_cache_manager_test extends UnitTestCase
   
     $cache_manager->process_content($c);
     
-    $this->assertFalse(file_exists(IMAGE_CACHE_DIR . '300.jpg'));
+    $this->assertEqual(sizeof(fs :: ls(IMAGE_CACHE_DIR)), 0);
     
     $this->_clean_up();
   }
