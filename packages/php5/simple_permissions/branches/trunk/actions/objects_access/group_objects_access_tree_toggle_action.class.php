@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(dirname(__FILE__) . '/../site_structure/tree_toggle_action.class.php');
+require_once(dirname(__FILE__) . '/../../access_policy.class.php');
 
 class group_objects_access_tree_toggle_action extends tree_toggle_action
 {
@@ -32,9 +33,11 @@ class group_objects_access_tree_toggle_action extends tree_toggle_action
 
 	protected function _init_dataspace($request)
 	{
-		$data['policy'] = access_policy :: instance()->get_objects_access_by_ids($this->object_ids, access_policy :: ACCESSOR_TYPE_GROUP);
+    $access_policy = new access_policy();
+	
+		$policy = $access_policy->get_objects_access_by_ids($this->object_ids, access_policy :: ACCESSOR_TYPE_GROUP);
 
-		$this->dataspace->merge($data);
+		$this->dataspace->get('policy', $policy);
 	}
 
 	protected function _set_template_tree()

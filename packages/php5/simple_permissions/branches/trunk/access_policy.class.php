@@ -18,16 +18,6 @@ class access_policy
   const ACCESSOR_TYPE_GROUP = 0;
   const ACCESSOR_TYPE_USER = 1;
 
-  protected static $_instance = null;
-
-  static public function instance()
-  {
-    if (!self :: $_instance)
-      self :: $_instance = new access_policy();
-
-    return self :: $_instance;
-  }
-
   public function get_objects_access_by_ids($ids, $accessor_type)
   {
     if (!is_array($ids) || !count($ids))

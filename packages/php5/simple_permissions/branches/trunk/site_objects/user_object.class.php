@@ -10,6 +10,7 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
 require_once(LIMB_DIR . 'class/core/site_objects/content_object.class.php');
+require_once(dirname(__FILE__) . '/../simple_authenticator.class.php');
 
 class user_object extends content_object
 {
@@ -34,7 +35,7 @@ class user_object extends content_object
 	
 	public function create($is_root = false)
 	{
-		$crypted_password = user :: get_crypted_password($this->get_identifier(), $this->get('password'));
+		$crypted_password = simple_authenticator :: get_crypted_password($this->get_identifier(), $this->get('password'));
 		$this->set('password', $crypted_password);
 		return parent :: create($is_root);
 	}
@@ -74,7 +75,7 @@ class user_object extends content_object
 		
 		$this->set(
 			'password', 
-			user :: get_crypted_password(
+			simple_authenticator :: get_crypted_password(
 				$identifier, 
 				$this->get('password')
 			)
@@ -90,7 +91,7 @@ class user_object extends content_object
 		if(!$user->is_logged_in() || !$node_id = $user->get_node_id())
 		  return false;
 
-		$password = $user->get_crypted_password($user->get_login(), $password);
+		$password = simple_authenticator :: get_crypted_password($user->get_login(), $password);
 		
 		if($user->get_password() !== $password)
 			return false;
@@ -104,7 +105,7 @@ class user_object extends content_object
 		
 		$node_id = $user->get_node_id();
 
-		$data['password'] = $user->get_crypted_password($user->get_login(),	$password);
+		$data['password'] = simple_authenticator :: get_crypted_password($user->get_login(),	$password);
 		
 		$user_db_table = db_table_factory :: create('user');
 
@@ -122,7 +123,7 @@ class user_object extends content_object
 		$this->merge($user_data);
 
 		$new_non_crypted_password = user :: generate_password();
-		$crypted_password = user :: get_crypted_password($user_data['identifier'], $new_non_crypted_password);
+		$crypted_password = simple_authenticator :: get_crypted_password($user_data['identifier'], $new_non_crypted_password);
 		$this->set('generated_password', $crypted_password);
 		
 		$this->update(false);
@@ -169,16 +170,6 @@ class user_object extends content_object
 		$db->sql_exec($sql);
 		
 		return current($db->get_array());
-	}
-
-	public function login($login, $password, $locale_id = '')
-	{
-		return  user :: instance()->login($login, $password, $locale_id);
-	}
-	
-	public function logout()
-	{
-		return user :: instance()->logout();
 	}
 }
 

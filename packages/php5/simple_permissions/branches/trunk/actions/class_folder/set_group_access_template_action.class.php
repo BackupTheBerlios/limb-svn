@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(dirname(__FILE__) . '/../../access_policy.class.php');
 
 class set_group_access_template_action extends form_action
 {
@@ -22,7 +23,8 @@ class set_group_access_template_action extends form_action
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
 
-		$data['template'] = access_policy :: instance()->get_group_action_access_templates($class_id);
+    $access_policy = new access_policy();
+		$data['template'] = $access_policy->get_access_templates($class_id, access_policy :: ACCESSOR_TYPE_GROUP);
 
 		$this->dataspace->merge($data);
 	}
@@ -34,7 +36,8 @@ class set_group_access_template_action extends form_action
 
 		$data = $this->dataspace->export();
 
-		access_policy :: instance()->save_group_action_access_template($class_id, $data['template']);
+    $access_policy = new access_policy();
+		$access_policy->save_access_templates($class_id, $data['template'], access_policy :: ACCESSOR_TYPE_GROUP);
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 

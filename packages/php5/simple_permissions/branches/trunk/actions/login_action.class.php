@@ -10,11 +10,10 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'class/core/permissions/user.class.php');
 require_once(LIMB_DIR . 'class/core/actions/form_action.class.php');
+require_once(dirname(__FILE__) . '/../simple_authenticator.class.php');
 
 class login_action extends form_action
 {
-	protected $user_object_class_name = 'user_object';
-
 	protected function _define_dataspace_name()
 	{
 	  return 'login_form';
@@ -54,19 +53,18 @@ class login_action extends form_action
 	
 	protected function _valid_perform($request, $response)
 	{
-		$login = $this->dataspace->get('login');
-		$password = $this->dataspace->get('password');
-		$locale_id = $this->dataspace->get('locale_id');
-		$autologin = $this->dataspace->get('autologin');
-
-		$user_object = site_object_factory :: create($this->user_object_class_name);
-
-		if($user_object->login($login, $password, $locale_id))
+	  $login_params = array(
+	    'login' => $this->dataspace->get('login'),
+		  'password' => $this->dataspace->get('password'),
+		  'locale_id' => $this->dataspace->get('locale_id')
+	  );
+    
+    $authenticator = new simple_authenticator();
+    
+		$authenticator->login($login_params);
+		
+		if (user :: instance()->is_logged_in())
 		{
-  		if($autologin)
-  		{
-  			user :: instance()->$user->configure_autologin();
-  		}
   			
   		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 		  

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . '/class/core/actions/form_action.class.php');
+require_once(dirname(__FILE__) . '/../../access_policy.class.php');
 
 class set_group_access extends form_action
 {
@@ -22,11 +23,10 @@ class set_group_access extends form_action
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
 
-		$access_policy = access_policy :: instance();
+    $access_policy = new access_policy();
+		$policy = $access_policy->get_actions_access($class_id, access_policy :: ACCESSOR_TYPE_GROUP);
 
-		$data['policy'] = $access_policy->get_actions_access($class_id, access_policy :: ACCESSOR_TYPE_GROUP);
-
-		$this->dataspace->merge($data);
+		$this->dataspace->set('policy', $policy);
 	}
 	
 	protected function _valid_perform($request, $response)
@@ -34,10 +34,8 @@ class set_group_access extends form_action
 		if (!$class_id = $request->get('class_id'))
 		  throw new LimbException('class_id not defined');
 		
-		$data = $this->dataspace->export();
-		$access_policy = access_policy :: instance();
-
-		$access_policy->save_actions_access($class_id, $data['policy'], access_policy :: ACCESSOR_TYPE_GROUP);
+    $access_policy = new access_policy();
+		$access_policy->save_actions_access($class_id, $this->dataspace->get('policy'), access_policy :: ACCESSOR_TYPE_GROUP);
 
 		$request->set_status(request :: STATUS_FORM_SUBMITTED);
 
