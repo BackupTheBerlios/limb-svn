@@ -31,11 +31,11 @@ class richedit_component extends text_area_component
 
 		echo "
     <script type='text/javascript'>  
-      var _editor_url = '/shared/HTMLArea-3.0-rc1/';   
+      var _editor_url = '/HTMLArea-3.0-rc1/';   
       var _editor_lang = 'en'; 
     </script>
   	
-    <script type='text/javascript' src='/shared/HTMLArea-3.0-rc1/htmlarea.js'></script>
+    <script type='text/javascript' src='/HTMLArea-3.0-rc1/htmlarea.js'></script>
     <script type='text/javascript'>  
       HTMLArea.loadPlugin('TableOperations');
     </script>
