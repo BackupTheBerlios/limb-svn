@@ -10,7 +10,6 @@
 	<core:PARAMETER name='loader_class_name' value='simple_order_object'>
 	<core:PARAMETER name='datasource_path' value='simple_orders_list_datasource'>
 	<core:PARAMETER name='order' value='time=DESC'>
-	<core:PARAMETER name='fetch_method' value='fetch'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">
@@ -18,6 +17,7 @@
 <grid:LIST id='orders'>
 <table border=0 cellspacing=0 cellpadding=4 width=100%>
 <tr>
+	<th><grid:SELECTORS_TOGGLER></th>
 	<th>Номер заказа</th>
 	<th>Дата формирования заказа</th>
 	<th>ФИО заказчика</th>
@@ -26,22 +26,16 @@
 </tr>
 <grid:ITERATOR>
 	<tr class="jip">
-		<td jip='object'>
-			<a href={$path}?action=view&popup=1 target='_blank' onclick='click_href(this.href);return false;'>#{$identifier}</a>
-		</td>
-		<td>
-			<locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'>
-		</td>
-		<td>
-			{$user_name} {$user_secondname} {$user_lastname}
-		</td>
-		<td>
-			<a href=mailto:{$user_email}>{$user_email}</a>
-		</td>
-		<td>
-			<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
-		</td>
+		<td><core:INCLUDE file="/admin/selector.html"></td>
+		<td jip='object'><a href={$path}?action=view&popup=1 target='_blank' onclick='click_href(this.href);return false;'>#{$identifier}</a></td>
+		<td><locale:DATE_FORMAT hash_id='time' locale_format='short_date_time' type='stamp'></td>
+		<td>{$user_name} {$user_secondname} {$user_lastname}</td>
+		<td><a href=mailto:{$user_email}>{$user_email}</a></td>
+		<td align="center" jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 	</tr>
 </grid:ITERATOR>
+<tr>
+	<td colspan='6' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+</tr>
 </table>
 </grid:LIST>
