@@ -1,5 +1,5 @@
 Version 2.3RC1
-(13 November 2004, from /php4/branches/trunk r906)
+(13 November 2004, from /php4/branches/trunk r907)
 svn://svn.berlios.de/limb/php4/tags/2.3RC1
 
   --  ***WARNING***: BC break! API of DB schema, access_policy has changed!
