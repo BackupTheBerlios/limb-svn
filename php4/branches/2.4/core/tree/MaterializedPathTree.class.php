@@ -11,6 +11,7 @@
 
 class MaterializedPathTree// implements Tree
 {
+  var $_conn = null;
   var $_db = null;
 
   var $_node_table = 'sys_site_object_tree';
@@ -35,7 +36,8 @@ class MaterializedPathTree// implements Tree
   function MaterializedPathTree()
   {
     $toolkit =& Limb :: toolkit();
-    $this->_db =& $toolkit->getDB();
+    $this->_conn =& $toolkit->getDbConnection();
+    $this->_db =& new SimpleDB($this->_conn);
   }
 
   function setDumbMode($status=true)
@@ -93,54 +95,43 @@ class MaterializedPathTree// implements Tree
   }
 
   /**
-  * Fetch the whole nested set
-  */
-  function getAllNodes()
-  {
-    $node_set = array();
-    $root_nodes = $this->getRootNodes();
-
-    foreach($root_nodes as $root_id => $rootnode)
-    {
-      $node_set = $node_set + $this->getSubBranch($root_id, -1, true, false);
-    }
-    return $node_set;
-  }
-
-  /**
   * Fetches the first level (the rootnodes)
   */
-  function getRootNodes()
+  function & getRootNodes()
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table} WHERE parent_id=0";
 
-    $this->_db->sqlExec($sql);
-    return $this->_db->getArray('id');
+    $stmt =& $this->_conn->newStatement($sql);
+    return $stmt->getRecordSet();
   }
 
   /**
   * Fetch the parents of a node given by id
   */
-  function getParents($id)
+  function & getParents($id)
   {
     if (!$child = $this->getNode($id))
-      return false;
+      return null;
 
     $join_table = $this->_node_table . '2';
-    $concat = $this->_db->concat(array($this->_node_table . '.path', '"%"'));
+    $concat = $this->_dbConcat(array($this->_node_table . '.path', '"%"'));
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}, {$this->_node_table} AS  {$join_table}
             WHERE
-            {$join_table}.path LIKE $concat AND
-            {$this->_node_table}.root_id = {$child['root_id']} AND
-            {$this->_node_table}.level < {$child['level']} AND
-            {$join_table}.id = {$child['id']}
+            {$join_table}.path LIKE {$concat} AND
+            {$this->_node_table}.root_id = :root_id AND
+            {$this->_node_table}.level < :level AND
+            {$join_table}.id = :id
             ORDER BY {$this->_node_table}.level ASC";
 
-    $this->_db->sqlExec($sql);
-    return $this->_db->getArray('id');
+    $stmt =& $this->_conn->newStatement($sql);
+    $stmt->setInteger('root_id', $child['root_id']);
+    $stmt->setVarChar('level', $child['level']);
+    $stmt->setVarChar('id', $child['id']);
+
+    return $stmt->getRecordSet();
   }
 
   /**
@@ -149,23 +140,21 @@ class MaterializedPathTree// implements Tree
   function getParent($id)
   {
     if (!$child = $this->getNode($id))
-      return false;
+      return null;
 
     if ($child['id'] == $child['root_id'])
-      return false;
+      return null;
 
     return $this->getNode($child['parent_id']);
   }
 
   /**
   * Fetch all siblings of the node given by id
-  * Important: The node given by ID will also be returned
-  * Do aunset($array[$id]) on the result if you don't want that
   */
-  function getSiblings($id)
+  function & getSiblings($id)
   {
     if (!($sibling = $this->getNode($id)))
-      return false;
+      return null;
 
     $parent = $this->getParent($sibling['id']);
     return $this->getChildren($parent['id']);
@@ -174,47 +163,51 @@ class MaterializedPathTree// implements Tree
   /**
   * Fetch the children _one level_ after of a node given by id
   */
-  function getChildren($id)
+  function & getChildren($id)
   {
     if (!$parent = $this->getNode($id))
-      return false;
+      return null;
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
-            WHERE parent_id={$parent['id']}";
+            WHERE parent_id = :parent_id";
 
-    $this->_db->sqlExec($sql);
-    return $this->_db->getArray('id');
+    $stmt =& $this->_conn->newStatement($sql);
+    $stmt->set('parent_id', $parent['id']);
+
+    return $stmt->getRecordSet();
   }
 
   function countChildren($id)
   {
     if (!$parent = $this->getNode($id))
-      return false;
+      return null;
 
     $sql = "SELECT count(id) as counter FROM {$this->_node_table}
-            WHERE parent_id={$id}";
+            WHERE parent_id = :parent_id";
 
-    $this->_db->sqlExec($sql);
-    $dataset = $this->_db->fetchRow();
-
-    return (int)$dataset['counter'];
+    $stmt =& $this->_conn->newStatement($sql);
+    $stmt->set('parent_id', $id);
+    return $stmt->getOneValue();
   }
 
   /**
   * Fetch all the children of a node given by id
-  * get_children only queries the immediate children
-  * get_sub_branch returns all nodes below the given node
   */
-  function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  function & getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
     if (!$parent_node = $this->getNode($id))
-      return false;
+      return null;
 
     if ($depth != -1)
       $depth_condition = " AND level <=" . ($parent_node['level'] + $depth);
     else
       $depth_condition = '';
+
+    if($include_parent)
+      $include_parent_condition = '';
+    else
+      $include_parent_condition = " AND id!={$id}";
 
     if($check_expanded_parents)
     {
@@ -236,17 +229,20 @@ class MaterializedPathTree// implements Tree
       }
 
       if($sql_for_expanded_parents)
-        $sql_path_condition .= ' AND ( '. implode(' OR ', $sql_for_expanded_parents) . ')';
+        $sql_path_condition .= ' ( '. implode(' OR ', $sql_for_expanded_parents) . ')';
+
+      if($sql_path_condition && $sql_for_collapsed_parents)
+        $sql_path_condition .= ' AND ';
 
       if($sql_for_collapsed_parents)
-        $sql_path_condition .= ' AND ' . implode(' AND ', $sql_for_collapsed_parents);
+        $sql_path_condition .= implode(' AND ', $sql_for_collapsed_parents);
 
       $sql = "SELECT " . $this->_getSelectFields() . "
               FROM {$this->_node_table}
               WHERE
-              id!={$id}
               {$sql_path_condition}
               {$depth_condition}
+              {$include_parent_condition}
               ORDER BY path";
 
     }
@@ -255,27 +251,20 @@ class MaterializedPathTree// implements Tree
       $sql = "SELECT " . $this->_getSelectFields() . "
               FROM {$this->_node_table}
               WHERE
-              path LIKE '{$parent_node['path']}%%' AND
-              id!={$id}
+              path LIKE '{$parent_node['path']}%%'
               {$depth_condition}
+              {$include_parent_condition}
               ORDER BY path";
     }
 
-    $node_set = array();
-
-    if($include_parent)
-      $node_set[$id] = $parent_node;
-
-    $this->_db->sqlExec($sql);
-    $this->_db->assignArray($node_set, 'id');
-
-    return $node_set;
+    $stmt =& $this->_conn->newStatement($sql);
+    return $stmt->getRecordSet();
   }
 
-  function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  function & getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
     if(!$parent_node = $this->getNodeByPath($path))
-      return false;
+      return null;
 
     return $this->getSubBranch($parent_node['id'], $depth, $include_parent, $check_expanded_parents);
   }
@@ -286,10 +275,15 @@ class MaterializedPathTree// implements Tree
   function getNode($id)
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE id={$id}";
+            FROM {$this->_node_table} WHERE id=:id";
 
-    $this->_db->sqlExec($sql);
-    return current($this->_db->getArray('id'));
+    $stmt =& $this->_conn->newStatement($sql);
+    $stmt->setInteger('id', $id);
+
+    if($r = $stmt->getOneRecord())
+      return $r->export();
+
+    return null;
   }
 
   function getNodeByPath($path, $delimiter='/')
@@ -304,9 +298,9 @@ class MaterializedPathTree// implements Tree
     $level = sizeof($path_array);
 
     if(!count($path_array))
-      return false;
+      return null;
 
-    $in_condition = $this->_db->sqlIn('identifier', array_unique($path_array));
+    $in_condition = $this->_dbIn('identifier', array_unique($path_array));
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
@@ -315,51 +309,46 @@ class MaterializedPathTree// implements Tree
             AND level <= {$level}
             ORDER BY path";
 
-    $this->_db->sqlExec($sql);
-
-    if(!$nodes = $this->_db->getArray('id'))
-      return false;
+    $stmt =& $this->_conn->newStatement($sql);
+    $rs =& $stmt->getRecordSet();
 
     $curr_level = 0;
-    $result_node_id = -1;
     $parent_id = 0;
     $path_to_node = '';
 
-    foreach($nodes as $node)
+    for($rs->rewind();$rs->valid();$rs->next())
     {
+      $record = $rs->current();
+      $node = $record->export();
+
       if ($node['level'] < $curr_level)
         continue;
 
-      if($node['identifier'] == $path_array[$curr_level] &&  $node['parent_id'] == $parent_id)
+      if($node['identifier'] == $path_array[$curr_level] &&
+         $node['parent_id'] == $parent_id)
       {
         $parent_id = $node['id'];
 
         $curr_level++;
-        $result_node_id = $node['id'];
         $path_to_node .= $delimiter . $node['identifier'];
+
         if ($curr_level == $level)
-          break;
+          return $node;
       }
     }
 
-    if ($curr_level == $level)
-      return isset($nodes[$result_node_id]) ? $nodes[$result_node_id] : false;
-
-    return false;
+    return null;
   }
 
-  function getNodesByIds($ids)
+  function & getNodesByIds($ids)
   {
-    if(!$ids)
-      return array();
-
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
-            WHERE " . $this->_db->sqlIn('id', $ids) . "
+            WHERE " . $this->_dbIn('id', $ids) . "
             ORDER BY path";
 
-    $this->_db->sqlExec($sql);
-    return $this->_db->getArray('id');
+    $stmt =& $this->_conn->newStatement($sql);
+    return $stmt->getRecordSet();
   }
 
   function getMaxChildIdentifier($parent_id)
@@ -369,11 +358,14 @@ class MaterializedPathTree// implements Tree
 
     $sql = "SELECT identifier FROM {$this->_node_table}
             WHERE
-            root_id={$parent['root_id']} AND
-            parent_id={$parent['id']}";
+            root_id=:root_id AND
+            parent_id=:parent_id";
 
-    $this->_db->sqlExec($sql);
-    if($arr = array_keys($this->_db->getArray('identifier')))
+    $stmt =& $this->_conn->newStatement($sql);
+    $stmt->setInteger('root_id', $parent['root_id']);
+    $stmt->setInteger('parent_id', $parent['id']);
+
+    if($arr = $stmt->getOneColumnAsArray())
     {
       uasort($arr, 'strnatcmp');
       return end($arr);
@@ -384,7 +376,7 @@ class MaterializedPathTree// implements Tree
 
   function isNode($id)
   {
-    return ($this->getNode($id) !== false);
+    return ($this->getNode($id) !== null);
   }
 
   function isNodeExpanded($id)
@@ -406,7 +398,9 @@ class MaterializedPathTree// implements Tree
     if($internal === false)
       $this->_verifyUserValues($values);
 
-    return $this->_db->sqlUpdate($this->_node_table, $values, array('id' => $id));
+    $this->_db->update($this->_node_table, $values, array('id' => $id));
+
+    return true;//???
   }
   function setExpandedParents(& $expanded_parents)
   {
@@ -471,14 +465,17 @@ class MaterializedPathTree// implements Tree
   {
     $this->_expanded_parents = array();
 
-    $root_nodes = $this->getRootNodes();
+    $rs =& $this->getRootNodes();
 
-    foreach(array_keys($root_nodes) as $id)
+    for($rs->rewind(); $rs->valid(); $rs->next())
     {
-      $parents = $this->getSubBranch($id, -1, true, false);
+      $record = $rs->current();
+      $branch_set =& $this->getSubBranch($record->get('id'), -1, true, false);
 
-      foreach($parents as $parent)
+      for($branch_set->rewind(); $branch_set->valid(); $branch_set->next())
       {
+        $record = $branch_set->current();
+        $parent = $record->export();
         if($parent['parent_id'] == 0)
           $this->_setExpandedParentStatus($parent, true);
         else
@@ -495,12 +492,47 @@ class MaterializedPathTree// implements Tree
     $this->_expanded_parents[$id]['status'] = $status;
   }
 
+  function _getNextNodeInsertId()
+  {
+    $sql = 'SELECT MAX(id) as m FROM '. $this->_node_table;
+    $stmt =& $this->_conn->newStatement($sql);
+    $max = $stmt->getOneValue();
+
+    return isset($max) ? $max + 1 : 1;
+  }
+
+  //this is very dirty hack, since this functionality MUST reside
+  //somewhere in specific connection classes, furthermore it's tested with
+  //MySQL only!!!
+  function _dbConcat($values)
+  {
+    $str = implode(',' , $values);
+    return " CONCAT({$str}) ";
+  }
+
+  //the same story...
+  function _dbSubstr($string, $offset, $limit=null)
+  {
+    if ($limit === null)
+      return " SUBSTRING({$string} FROM {$offset}) ";
+    else
+      return " SUBSTRING({$string} FROM {$offset} FOR {$limit}) ";
+  }
+
+
+  function _dbIn($column_name, $values)
+  {
+    $in_ids = implode('","', $values);
+
+    return $column_name . ' IN ("' . $in_ids . '")';
+  }
+
   function createRootNode($values)
   {
     $this->_verifyUserValues($values);
 
     if (!$this->_dumb_mode)
-      $values['id'] = $node_id = $this->_db->getMaxColumnValue($this->_node_table, 'id') + 1;
+      $values['id'] = $node_id = $this->_getNextNodeInsertId();
     else
       $node_id = $values['id'];
 
@@ -510,7 +542,7 @@ class MaterializedPathTree// implements Tree
     $values['parent_id'] = 0;
     $values['children'] = 0;
 
-    $this->_db->sqlInsert($this->_node_table, $values);
+    $this->_db->insert($this->_node_table, $values);
 
     return $node_id;
   }
@@ -538,7 +570,7 @@ class MaterializedPathTree// implements Tree
 
     if (!$this->_dumb_mode)
     {
-      $node_id = $this->_db->getMaxColumnValue($this->_node_table, 'id') + 1;
+      $node_id = $this->_getNextNodeInsertId();
       $values['id'] = $node_id;
     }
     else
@@ -550,9 +582,9 @@ class MaterializedPathTree// implements Tree
     $values['path'] = $parent_node['path'] . $node_id . '/';
     $values['children'] = 0;
 
-    $this->_db->sqlInsert($this->_node_table, $values);
+    $this->_db->insert($this->_node_table, $values);
 
-    $this->_db->sqlUpdate($this->_node_table,
+    $this->_db->update($this->_node_table,
                            array('children' => $parent_node['children'] + 1),
                            array('id' => $parent_id));
 
@@ -567,15 +599,24 @@ class MaterializedPathTree// implements Tree
     if (!$node = $this->getNode($id))
       return false;
 
-    $this->_db->sqlExec("DELETE FROM {$this->_node_table}
-                          WHERE
-                          path LIKE '{$node['path']}%' AND
-                          root_id={$node['root_id']}");
+    $stmt =& $this->_conn->newStatement("DELETE FROM {$this->_node_table}
+                                        WHERE
+                                        path LIKE :path AND
+                                        root_id = :root_id");
 
-    $this->_db->sqlExec("UPDATE {$this->_node_table}
-                          SET children = children - 1
-                          WHERE
-                          id = {$node['parent_id']}");
+    $stmt->setVarChar('path', $node['path'] . '%');
+    $stmt->setInteger('root_id', $node['root_id']);
+
+    $stmt->execute();
+
+    $stmt =& $this->_conn->newStatement("UPDATE {$this->_node_table}
+                                        SET children = children - 1
+                                        WHERE
+                                        id = :id");
+
+    $stmt->setInteger('id', $node['parent_id']);
+
+    $stmt->execute();
 
     return true;
   }
@@ -598,37 +639,46 @@ class MaterializedPathTree// implements Tree
       return false;
 
     $move_values = array('parent_id' => $target_id);
-    $this->_db->sqlUpdate($this->_node_table, $move_values, array('id' => $id));
+    $this->_db->update($this->_node_table, $move_values, array('id' => $id));
 
     $src_path_len = strlen($source_node['path']);
-    $sub_string = $this->_db->substr('path', 1, $src_path_len);
-    $sub_string2 = $this->_db->substr('path', $src_path_len);
+    $sub_string = $this->_dbSubstr('path', 1, $src_path_len);
+    $sub_string2 = $this->_dbSubstr('path', $src_path_len);
 
     $path_set =
-      $this->_db->concat( array(
+      $this->_dbConcat( array(
         "'{$target_node['path']}'" ,
         "'{$id}'",
         $sub_string2)
       );
 
-    $this->_db->sqlExec("UPDATE {$this->_node_table}
-                          SET
-                          path = {$path_set},
-                          level = level + {$target_node['level']} - {$source_node['level']} + 1,
-                          root_id = {$target_node['root_id']}
-                          WHERE
-                          {$sub_string} = '{$source_node['path']}' OR
-                          path = '{$source_node['path']}'");
+    $sql = "UPDATE {$this->_node_table}
+            SET
+            path = {$path_set},
+            level = level + {$target_node['level']} - {$source_node['level']} + 1,
+            root_id = {$target_node['root_id']}
+            WHERE
+            {$sub_string} = '{$source_node['path']}' OR
+            path = '{$source_node['path']}'";
 
-    $this->_db->sqlExec("UPDATE {$this->_node_table}
-                          SET children = children - 1
-                          WHERE
-                          id = {$source_node['parent_id']}");
+    $stmt =& $this->_conn->newStatement($sql);
+    $stmt->execute();
 
-    $this->_db->sqlExec("UPDATE {$this->_node_table}
-                          SET children = children + 1
-                          WHERE
-                          id = {$target_id}");
+    $sql = "UPDATE {$this->_node_table}
+            SET children = children - 1
+            WHERE
+            id = {$source_node['parent_id']}";
+
+    $stmt =& $this->_conn->newStatement($sql);
+    $stmt->execute();
+
+    $sql = "UPDATE {$this->_node_table}
+            SET children = children + 1
+            WHERE
+            id = {$target_id}";
+
+    $stmt =& $this->_conn->newStatement($sql);
+    $stmt->execute();
 
     return true;
   }

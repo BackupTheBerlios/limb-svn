@@ -41,7 +41,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_behaviour');
+    $this->db->delete('sys_behaviour');
   }
 
   function testFindByIdNull()
@@ -51,7 +51,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testFindById()
   {
-    $this->db->sqlInsert('sys_behaviour', array('id' => $id = 100, 'name' => 'SiteObjectBehaviour'));
+    $this->db->insert('sys_behaviour', array('id' => $id = 100, 'name' => 'SiteObjectBehaviour'));
 
     $behaviour = $this->mapper->findById($id);
 
@@ -92,7 +92,7 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
     $this->mapper->insert($behaviour);
 
-    $this->db->sqlSelect('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
     $record = $this->db->fetchRow();
 
@@ -109,14 +109,14 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testUpdate()
   {
-    $this->db->sqlInsert('sys_behaviour', array('id' => $id = 100));
+    $this->db->insert('sys_behaviour', array('id' => $id = 100));
 
     $behaviour = new SiteObjectBehaviour();
     $behaviour->setId($id);
 
     $this->mapper->update($behaviour);
 
-    $this->db->sqlSelect('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
     $record = $this->db->fetchRow();
 
@@ -133,23 +133,23 @@ class SiteObjectBehaviourMapperTest extends LimbTestCase
 
   function testDelete()
   {
-    $this->db->sqlInsert('sys_behaviour', array('id' => $id = 100));
+    $this->db->insert('sys_behaviour', array('id' => $id = 100));
 
     $behaviour = new SiteObjectBehaviour();
     $behaviour->setId($id);
 
     $this->mapper->delete($behaviour);
 
-    $this->db->sqlSelect('sys_behaviour', '*', 'id=' . $behaviour->getId());
+    $this->db->select('sys_behaviour', '*', 'id=' . $behaviour->getId());
 
     $this->assertTrue(!$this->db->fetchRow());
   }
 
   function testGetIdsByNames()
   {
-    $this->db->sqlInsert('sys_behaviour', array('id' => 10, 'name' => 'test1'));
-    $this->db->sqlInsert('sys_behaviour', array('id' => 11, 'name' => 'test2'));
-    $this->db->sqlInsert('sys_behaviour', array('id' => 12, 'name' => 'test3'));
+    $this->db->insert('sys_behaviour', array('id' => 10, 'name' => 'test1'));
+    $this->db->insert('sys_behaviour', array('id' => 11, 'name' => 'test2'));
+    $this->db->insert('sys_behaviour', array('id' => 12, 'name' => 'test3'));
 
     $ids = SiteObjectBehaviourMapper :: getIdsByNames(array('test1', 'test2'));
 

@@ -104,9 +104,9 @@ class SiteObjectMapperTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_site_object');
-    $this->db->sqlDelete('sys_site_object_tree');
-    $this->db->sqlDelete('sys_class');
+    $this->db->delete('sys_site_object');
+    $this->db->delete('sys_site_object_tree');
+    $this->db->delete('sys_class');
   }
 
   function testGetClassId()
@@ -117,7 +117,7 @@ class SiteObjectMapperTest extends LimbTestCase
     // autogenerate class_id
     $id = $mapper->getClassId($object);
 
-    $this->db->sqlSelect('sys_class', '*', 'name="' . get_class($object) . '"');
+    $this->db->select('sys_class', '*', 'name="' . get_class($object) . '"');
     $arr = $this->db->fetchRow();
 
     $this->assertNotNull($id);
@@ -126,7 +126,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
     // generate class_id only once
     $id = $mapper->getClassId($object);
-    $this->db->sqlSelect('sys_class', '*');
+    $this->db->select('sys_class', '*');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -145,10 +145,10 @@ class SiteObjectMapperTest extends LimbTestCase
 
   function testGetParentLocaleId()
   {
-    $this->db->sqlInsert('sys_site_object', array('locale_id' => $locale_id = 'ru',
+    $this->db->insert('sys_site_object', array('locale_id' => $locale_id = 'ru',
                                                   'id' => 200));
 
-    $this->db->sqlInsert('sys_site_object_tree', array('object_id' => 200,
+    $this->db->insert('sys_site_object_tree', array('object_id' => 200,
                                                         'id' => $parent_node_id = 300));
 
     $mapper = new SiteObjectMapper();
@@ -339,7 +339,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
   function testUpdateSiteObjectRecordOk()
   {
-    $this->db->sqlInsert('sys_site_object',
+    $this->db->insert('sys_site_object',
                           array('id' => $object_id = 100,
                                 'title' => 'old title',
                                 'identifier' => 'old identifier',
@@ -523,7 +523,7 @@ class SiteObjectMapperTest extends LimbTestCase
 
   function testDelete()
   {
-    $this->db->sqlInsert('sys_site_object', array('id' => $object_id = 1));
+    $this->db->insert('sys_site_object', array('id' => $object_id = 1));
 
     $this->site_object->setReturnValue('getId', $object_id);
     $this->site_object->setReturnValue('getNodeId', $node_id = 100);
@@ -536,13 +536,13 @@ class SiteObjectMapperTest extends LimbTestCase
 
     $mapper->delete($this->site_object);
 
-    $this->db->sqlSelect('sys_site_object', '*', 'id=' . $object_id);
+    $this->db->select('sys_site_object', '*', 'id=' . $object_id);
     $this->assertTrue(!$record = $this->db->fetchRow());
   }
 
   function _checkSysSiteObjectRecord($site_object)
   {
-    $this->db->sqlSelect('sys_site_object', '*', 'id=' . $site_object->getId());
+    $this->db->select('sys_site_object', '*', 'id=' . $site_object->getId());
 
     $record = $this->db->fetchRow();
 

@@ -29,7 +29,7 @@ class SessionDbDriverTest extends LimbTestCase
     $this->toolkit->setReturnReference('getUser', $this->user);
 
     $this->db =& LimbDbPool :: getConnection();
-    $this->toolkit->setReturnReference('getDB', $this->db);
+    $this->toolkit->setReturnReference('getDbConnection', $this->db);
 
     Limb :: registerToolkit($this->toolkit);
 
@@ -38,7 +38,7 @@ class SessionDbDriverTest extends LimbTestCase
 
   function tearDown()
   {
-    $this->db->sqlDelete('sys_session');
+    $this->db->delete('sys_session');
 
     $this->user->tally();
 
@@ -57,13 +57,13 @@ class SessionDbDriverTest extends LimbTestCase
 
   function testStorageReadOk()
   {
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => $id = 'fghprty121as',
                                 'session_data' => $data = 'global_user|O:4:"user":12:{s:3:"_id";...',
                                 'last_activity_time' => 10,
                                 'user_id' => 1));
 
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => 'junk',
                                 'session_data' => 'global_user|O:4:"user":12:{s:3:"_id";...',
                                 'last_activity_time' => 10,
@@ -80,7 +80,7 @@ class SessionDbDriverTest extends LimbTestCase
 
   function testStorageReadFalse()
   {
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => 'junk',
                                 'session_data' => 'global_user|O:4:"user":12:{s:3:"_id";...',
                                 'last_activity_time' => 10,
@@ -100,7 +100,7 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageWrite($id, $value);
 
-    $this->db->sqlSelect('sys_session');
+    $this->db->select('sys_session');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -115,7 +115,7 @@ class SessionDbDriverTest extends LimbTestCase
 
   function testStorageWriteUpdate()
   {
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => $id = 'fghprty121as',
                                 'session_data' => $value = 'global_user|O:4:"user":12:{s:3:"_id";...',
                                 'last_activity_time' => $time = 10,
@@ -125,7 +125,7 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageWrite($id, $value);
 
-    $this->db->sqlSelect('sys_session');
+    $this->db->select('sys_session');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -145,7 +145,7 @@ class SessionDbDriverTest extends LimbTestCase
 
     $this->driver->storageWrite($id, $value);
 
-    $this->db->sqlSelect('sys_session');
+    $this->db->select('sys_session');
     $record = $this->db->fetchRow();
 
     $this->assertEqual($record['session_id'], $id);
@@ -154,13 +154,13 @@ class SessionDbDriverTest extends LimbTestCase
 
   function testStorageWriteUpdateBadSessionId()
   {
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => $id = "'fghprty121as';SELECT * FROM test;",
                                 'session_data' => $value = "'data';DROP sys_session;"));
 
     $this->driver->storageWrite($id, $value);
 
-    $this->db->sqlSelect('sys_session');
+    $this->db->select('sys_session');
     $record = $this->db->fetchRow();
 
     $this->assertEqual($record['session_id'], $id);
@@ -169,17 +169,17 @@ class SessionDbDriverTest extends LimbTestCase
 
   function testStorageDestroy()
   {
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => $id = "'fghprty121as';SELECT * FROM test;",
                                 'session_data' => "data"));
 
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => 'junk',
                                 'session_data' => 'junk'));
 
     $this->driver->storageDestroy($id);
 
-    $this->db->sqlSelect('sys_session');
+    $this->db->select('sys_session');
     $arr = $this->db->getArray();
 
     $this->assertEqual(1, sizeof($arr));
@@ -188,45 +188,45 @@ class SessionDbDriverTest extends LimbTestCase
 
   function testStorageGcTrue()
   {
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => "whatever",
                                 'session_data' => "data",
                                 'last_activity_time' => time() - 301));
 
     $this->driver->storageGc(300);
 
-    $this->db->sqlSelect('sys_session');
+    $this->db->select('sys_session');
     $this->assertTrue(!$this->db->fetchRow());
   }
 
   function testStorageGcFalse()
   {
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => "whatever",
                                 'session_data' => "data",
                                 'last_activity_time' => time() - 298));
 
     $this->driver->storageGc(300);
 
-    $this->db->sqlSelect('sys_session');
+    $this->db->select('sys_session');
     $this->assertFalse(!$this->db->fetchRow());
   }
 
   function testStorageDestroyUser()
   {
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => "whatever",
                                 'session_data' => "data",
                                 'user_id' => $user_id = 100));
 
-    $this->db->sqlInsert('sys_session',
+    $this->db->insert('sys_session',
                           array('session_id' => "junk",
                                 'session_data' => "junk",
                                 'user_id' => 200));
 
     $this->driver->storageDestroyUser($user_id);
 
-    $this->db->sqlSelect('sys_session');
+    $this->db->select('sys_session');
     $arr = $this->db->getArray();
 
     $this->assertEqual(1, sizeof($arr));

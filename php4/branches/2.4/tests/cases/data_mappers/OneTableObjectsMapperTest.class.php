@@ -98,7 +98,7 @@ class OneTableObjectsMapperTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('test_one_table_object');
+    $this->db->delete('test_one_table_object');
   }
 
   function testGetDbTable()
@@ -163,7 +163,7 @@ class OneTableObjectsMapperTest extends LimbTestCase
     //we do it because we mock parent update call
     $site_object->setId($object_id = 100);
 
-    $this->db->sqlInsert('test_one_table_object',
+    $this->db->insert('test_one_table_object',
                          array('object_id' => $object_id,
                                'identifier' => 'test',
                                'title' => 'Title',
@@ -181,7 +181,7 @@ class OneTableObjectsMapperTest extends LimbTestCase
 
     $this->mapper->update($site_object);
 
-    $this->db->sqlSelect('test_one_table_object');
+    $this->db->select('test_one_table_object');
     $this->assertEqual(sizeof($this->db->getArray()), 1);
 
     $this->_checkLinkedTableRecord($site_object);
@@ -193,7 +193,7 @@ class OneTableObjectsMapperTest extends LimbTestCase
 
     $site_object->setId($object_id = 100);
 
-    $this->db->sqlInsert('test_one_table_object', array(
+    $this->db->insert('test_one_table_object', array(
                                                    'object_id' => $object_id,
                                                    'identifier' => 'test',
                                                    'title' => 'Title',
@@ -205,7 +205,7 @@ class OneTableObjectsMapperTest extends LimbTestCase
     $this->mapper->expectOnce('_doParentDelete', array($site_object));
     $this->mapper->delete($site_object);
 
-    $this->db->sqlSelect('test_one_table_object');
+    $this->db->select('test_one_table_object');
     $this->assertEqual(sizeof($this->db->getArray()), 0);
   }
 

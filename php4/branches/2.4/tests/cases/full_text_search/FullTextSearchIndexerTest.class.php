@@ -63,7 +63,7 @@ class FullTextSearchIndexerTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_full_text_index');
+    $this->db->delete('sys_full_text_index');
   }
 
   function testIndexObjectNoWordsInDb()
@@ -74,7 +74,7 @@ class FullTextSearchIndexerTest extends LimbTestCase
 
     $this->indexer->add($this->site_object);
 
-    $this->db->sqlSelect('sys_full_text_index', '*', '', 'id');
+    $this->db->select('sys_full_text_index', '*', '', 'id');
     $arr = $this->db->getArray();
 
     $this->assertNotEqual($arr, array());

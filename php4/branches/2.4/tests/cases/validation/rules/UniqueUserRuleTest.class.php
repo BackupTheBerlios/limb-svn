@@ -27,21 +27,21 @@ class UniqueUserRuleTest extends SingleFieldRuleTestCase
     parent :: setUp();
 
     $this->db =& LimbDbPool :: getConnection();
-    $this->db->sqlDelete('user');
-    $this->db->sqlDelete('sys_site_object');
+    $this->db->delete('user');
+    $this->db->delete('sys_site_object');
 
-    $this->db->sqlInsert('sys_site_object', array('id' => 1, 'identifier' => 'vasa', 'class_id' => '1', 'current_version' => '1'));
-    $this->db->sqlInsert('sys_site_object', array('id' => 2, 'identifier' => 'sasa', 'class_id' => '1', 'current_version' => '1'));
-    $this->db->sqlInsert('user', array('id' => 1, 'name' => 'Vasa', 'password' => '1', 'version' => '1', 'object_id' => '1'));
-    $this->db->sqlInsert('user', array('id' => 2, 'name' => 'Sasa', 'password' => '1', 'version' => '1', 'object_id' => '2'));
+    $this->db->insert('sys_site_object', array('id' => 1, 'identifier' => 'vasa', 'class_id' => '1', 'current_version' => '1'));
+    $this->db->insert('sys_site_object', array('id' => 2, 'identifier' => 'sasa', 'class_id' => '1', 'current_version' => '1'));
+    $this->db->insert('user', array('id' => 1, 'name' => 'Vasa', 'password' => '1', 'version' => '1', 'object_id' => '1'));
+    $this->db->insert('user', array('id' => 2, 'name' => 'Sasa', 'password' => '1', 'version' => '1', 'object_id' => '2'));
   }
 
   function tearDown()
   {
     parent :: tearDown();
 
-    $this->db->sqlDelete('user');
-    $this->db->sqlDelete('sys_site_object');
+    $this->db->delete('user');
+    $this->db->delete('sys_site_object');
   }
 
   function testUniqueUserRuleCorrect()

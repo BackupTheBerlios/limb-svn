@@ -31,15 +31,15 @@ class LinksManagerTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_node_link_group');
-    $this->db->sqlDelete('sys_node_link');
+    $this->db->delete('sys_node_link_group');
+    $this->db->delete('sys_node_link');
   }
 
   function testCreateLinksGroup()
   {
     $group_id = $this->links_manager->createLinksGroup('articles', 'Linked articles');
 
-    $this->db->sqlSelect('sys_node_link_group');
+    $this->db->select('sys_node_link_group');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -55,7 +55,7 @@ class LinksManagerTest extends LimbTestCase
     $group_id = $this->links_manager->createLinksGroup('articles', 'Linked articles');
     $this->assertIdentical($this->links_manager->createLinksGroup('articles', 'Linked articles2'), false);
 
-    $this->db->sqlSelect('sys_node_link_group');
+    $this->db->select('sys_node_link_group');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -71,7 +71,7 @@ class LinksManagerTest extends LimbTestCase
     $group_id = $this->links_manager->createLinksGroup('articles', 'Linked articles');
     $this->links_manager->updateLinksGroup($group_id, 'articles2', 'Linked articles2');
 
-    $this->db->sqlSelect('sys_node_link_group');
+    $this->db->select('sys_node_link_group');
     $record = $this->db->fetchRow();
 
     $this->assertEqual('articles2', $record['identifier']);
@@ -84,7 +84,7 @@ class LinksManagerTest extends LimbTestCase
 
     $this->links_manager->deleteLinksGroup($group_id);
 
-    $this->db->sqlSelect('sys_node_link_group');
+    $this->db->select('sys_node_link_group');
     $arr = $this->db->getArray();
     $this->assertEqual(sizeof($arr), 0);
   }
@@ -103,7 +103,7 @@ class LinksManagerTest extends LimbTestCase
 
     $this->links_manager->setGroupsPriority($priority_info);
 
-    $this->db->sqlSelect('sys_node_link_group', 'sys_node_link_group.id as id', '', 'priority DESC');
+    $this->db->select('sys_node_link_group', 'sys_node_link_group.id as id', '', 'priority DESC');
     $arr = $this->db->getArray();
     $this->assertEqual(sizeof($arr), 3);
 
@@ -194,7 +194,7 @@ class LinksManagerTest extends LimbTestCase
     $group_id = $this->links_manager->createLinksGroup('articles', 'Linked articles');
     $link_id  = $this->links_manager->createLink($group_id, 1, 100);
 
-    $this->db->sqlSelect('sys_node_link');
+    $this->db->select('sys_node_link');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -213,7 +213,7 @@ class LinksManagerTest extends LimbTestCase
     $this->links_manager->createLink($group_id, 1, 100);
     $this->links_manager->createLink($group_id, 1, 100);
 
-    $this->db->sqlSelect('sys_node_link');
+    $this->db->select('sys_node_link');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -226,7 +226,7 @@ class LinksManagerTest extends LimbTestCase
 
     $this->links_manager->deleteLink($link_id);
 
-    $this->db->sqlSelect('sys_node_link');
+    $this->db->select('sys_node_link');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 0);
@@ -248,7 +248,7 @@ class LinksManagerTest extends LimbTestCase
 
     $this->links_manager->setLinksPriority($priority_info);
 
-    $this->db->sqlSelect('sys_node_link', '*', '', 'priority ASC');
+    $this->db->select('sys_node_link', '*', '', 'priority ASC');
     $arr = $this->db->getArray();
 
     $this->assertEqual(sizeof($arr), 3);

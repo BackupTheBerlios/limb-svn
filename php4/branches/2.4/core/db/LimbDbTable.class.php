@@ -33,7 +33,7 @@ class LimbDbTable
     $this->_primary_key_name = $this->_definePrimaryKeyName();
 
     $toolkit =& Limb :: toolkit();
-    $this->_db =& $toolkit->getDB();
+    $this->_db =& $toolkit->getDbConnection();
   }
 
   function _defineDbTableName()

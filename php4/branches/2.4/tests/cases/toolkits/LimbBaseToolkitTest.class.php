@@ -65,7 +65,7 @@ class LimbBaseToolkitTest extends LimbTestCase
 
   function testGetDb()
   {
-    $this->assertIsA($this->toolkit->getDB(),
+    $this->assertIsA($this->toolkit->getDbConnection(),
                      'MysqlConnection');//???
   }
 

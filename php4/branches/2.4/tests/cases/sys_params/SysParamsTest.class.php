@@ -27,14 +27,14 @@ class SysParamsTest extends LimbTestCase
   {
     DebugMock :: init($this);
 
-    $this->db->sqlDelete('sys_param');
+    $this->db->delete('sys_param');
   }
 
   function tearDown()
   {
     DebugMock :: tally();
 
-    $this->db->sqlDelete('sys_param');
+    $this->db->delete('sys_param');
   }
 
   function testSaveCharValue()

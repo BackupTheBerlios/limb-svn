@@ -63,10 +63,10 @@ class SiteObjectsRawFinderTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_site_object');
-    $this->db->sqlDelete('sys_site_object_tree');
-    $this->db->sqlDelete('sys_class');
-    $this->db->sqlDelete('sys_behaviour');
+    $this->db->delete('sys_site_object');
+    $this->db->delete('sys_site_object_tree');
+    $this->db->delete('sys_class');
+    $this->db->delete('sys_behaviour');
   }
 
   function testFindRequiredFields()
@@ -103,7 +103,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $db_mock = new MockDbModule($this);
     $toolkit = new MockLimbToolkit($this);
 
-    $toolkit->setReturnReference('getDB', $db_mock);
+    $toolkit->setReturnReference('getDbConnection', $db_mock);
 
     Limb :: registerToolkit($toolkit);
 
@@ -143,7 +143,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $db_mock = new MockDbModule($this);
     $toolkit = new MockLimbToolkit($this);
 
-    $toolkit->setReturnReference('getDB', $db_mock);
+    $toolkit->setReturnReference('getDbConnection', $db_mock);
 
     Limb :: registerToolkit($toolkit);
 
@@ -174,7 +174,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $db_mock = new MockDbModule($this);
     $toolkit = new MockLimbToolkit($this);
 
-    $toolkit->setReturnReference('getDB', $db_mock);
+    $toolkit->setReturnReference('getDbConnection', $db_mock);
 
     Limb :: registerToolkit($toolkit);
 
@@ -283,7 +283,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     {
       $version = mt_rand(1, 3);
 
-      $this->db->sqlInsert('sys_site_object',
+      $this->db->insert('sys_site_object',
         array(
           'id' => $i,
           'class_id' => $this->class_id,
@@ -314,7 +314,7 @@ class SiteObjectsRawFinderTest extends LimbTestCase
     $data = array();
     for($i = 6; $i <= 10 ; $i++)
     {
-      $this->db->sqlInsert('sys_site_object',
+      $this->db->insert('sys_site_object',
         array(
           'id' => $i,
           'class_id' => 1001,

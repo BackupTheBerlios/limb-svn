@@ -65,7 +65,7 @@ class LimbBaseToolkit// implements LimbToolkit
     return SiteObjectBehaviourFactory :: create($behaviour_path);
   }
 
-  function & getDB()
+  function & getDbConnection()
   {
     if($this->db)
       return $this->db;

@@ -125,8 +125,8 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_object_version');
-    $this->db->sqlDelete('test_one_table_object');
+    $this->db->delete('sys_object_version');
+    $this->db->delete('test_one_table_object');
   }
 
   function testGetDbTable()
@@ -162,7 +162,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $site_object->setVersion(1);
     $site_object->increaseVersion();
 
-    $this->db->sqlInsert('test_one_table_object',
+    $this->db->insert('test_one_table_object',
                          array('object_id' => $object_id,
                                'identifier' => 'test',
                                'title' => 'Title',
@@ -183,7 +183,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
     $this->assertEqual($site_object->getVersion(), 2);
 
-    $this->db->sqlSelect('test_one_table_object');
+    $this->db->select('test_one_table_object');
     $this->assertEqual(sizeof($this->db->getArray()), 2);
 
     $this->_checkLinkedTableRecord($site_object);
@@ -200,7 +200,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $site_object->setCreatedDate($created_date = 10);
     $site_object->setModifiedDate($modified_date = 10);
 
-    $this->db->sqlInsert('sys_object_version',
+    $this->db->insert('sys_object_version',
                          array('object_id' => $object_id,
                                'creator_id' => $creator_id,
                                'created_date' => $created_date,
@@ -251,15 +251,15 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
     $site_object->setId($object_id = 100);
 
-    $this->db->sqlInsert('sys_object_version',
+    $this->db->insert('sys_object_version',
                          array('object_id' => $object_id,
                                'version' => 1));
 
-    $this->db->sqlInsert('sys_object_version',
+    $this->db->insert('sys_object_version',
                          array('object_id' => $object_id,
                                'version' => 2));
 
-    $this->db->sqlInsert('sys_object_version',
+    $this->db->insert('sys_object_version',
                          array('object_id' => $junk_object_id = 101,
                                'version' => 2));
 
@@ -267,7 +267,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $this->mapper->expectOnce('_doParentDelete', array($site_object));
     $this->mapper->delete($site_object);
 
-    $this->db->sqlSelect('sys_object_version');
+    $this->db->select('sys_object_version');
     $array = $this->db->getArray();
 
     $this->assertEqual(sizeof($array), 1);
@@ -276,20 +276,20 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
 
   function testTrimVersions()
   {
-    $this->db->sqlInsert('sys_object_version',
+    $this->db->insert('sys_object_version',
                          array('object_id' => $object_id = 100,
                                'version' => 1));
 
-    $this->db->sqlInsert('sys_object_version',
+    $this->db->insert('sys_object_version',
                          array('object_id' => $object_id,
                                'version' => 3));
 
     // should not be deleted!
-    $this->db->sqlInsert('sys_object_version',
+    $this->db->insert('sys_object_version',
                          array('object_id' => $junk_object_id = 101,
                                'version' => 2));
 
-    $this->db->sqlInsert('test_one_table_object',
+    $this->db->insert('test_one_table_object',
                          array('object_id' => $object_id,
                                'identifier' => 'test',
                                'title' => 'Title',
@@ -299,7 +299,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
                                'version' => 1));
 
     // should not be deleted!
-    $this->db->sqlInsert('test_one_table_object',
+    $this->db->insert('test_one_table_object',
                          array('object_id' => $junk_object_id,
                                'identifier' => 'test',
                                'title' => 'Title',
@@ -309,13 +309,13 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
                                'version' => 1));
     $this->mapper->trimVersions($object_id, $version = 2);
 
-    $this->db->sqlSelect('sys_object_version');
+    $this->db->select('sys_object_version');
     $array = $this->db->getArray();
 
     $this->assertEqual(sizeof($array), 1);
     $this->assertEqual($array[0]['object_id'], $junk_object_id);
 
-    $this->db->sqlSelect('test_one_table_object');
+    $this->db->select('test_one_table_object');
     $array = $this->db->getArray();
 
     $this->assertEqual(sizeof($array), 1);
@@ -327,7 +327,7 @@ class VersionedOneTableObjectsMapperTest extends LimbTestCase
     $conditions['object_id'] = $site_object->getId();
     $conditions['version'] = $site_object->getVersion();
 
-    $this->db->sqlSelect('sys_object_version', '*', $conditions);
+    $this->db->select('sys_object_version', '*', $conditions);
     $record = $this->db->fetchRow();
 
     $this->assertEqual($record['object_id'], $site_object->getId());

@@ -28,7 +28,7 @@ class UniqueUserRule extends SingleFieldRule
       return;
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $sql = 'SELECT *
             FROM sys_site_object as sco, user as tn

@@ -69,7 +69,7 @@ class SiteObjectBehaviourMapper extends AbstractDataMapper
   function getIdsByNames($names)
   {
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $db->sqlSelect('sys_behaviour', 'id', sqlIn('name', $names));
 

@@ -64,7 +64,7 @@ class TreeIdentifierRuleTest extends SingleFieldRuleTestCase
 
   function _cleanUp()
   {
-    $this->db->sqlDelete('sys_site_object_tree');
+    $this->db->delete('sys_site_object_tree');
   }
 
   function testTreeIdentifierRuleBlank()

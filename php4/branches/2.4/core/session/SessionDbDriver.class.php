@@ -17,7 +17,7 @@ class SessionDbDriver// implements SessionDriver
   function SessionDbDriver()
   {
     $toolkit =& Limb :: toolkit();
-    $this->db =& $toolkit->getDB();
+    $this->db =& $toolkit->getDbConnection();
     $this->user =& $toolkit->getUser();
   }
 

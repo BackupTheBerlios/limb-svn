@@ -315,7 +315,7 @@ class SiteObjectMapper extends AbstractDataMapper
             AND sso.id = ssot.object_id";
 
     $toolkit =& Limb :: toolkit();
-    $db =& $toolkit->getDB();
+    $db =& $toolkit->getDbConnection();
 
     $db->sqlExec($sql);
 
