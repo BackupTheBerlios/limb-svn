@@ -1,0 +1,43 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<fetch:SUB_BRANCH target='items' navigator="pager" >
+	<core:PARAMETER name='loader_class_name' value='faq_object' >
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='items'>
+<table width=100% border=0 cellspacing=3 cellpadding=0>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='published_status' ></th>
+	<th><locale:STRING name='faq_question' file='faq'></th>
+	<th><locale:STRING name='created_date'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class=jip>
+<td><core:INCLUDE file="/admin/selector.html"></td>
+<td><core:INCLUDE file="published_status.html"></td>
+<td jip=object class=jip-object><a href="{$path}" target='_blank'>{$question}</a></td>
+<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='5' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>
+</table>
+</grid:LIST>

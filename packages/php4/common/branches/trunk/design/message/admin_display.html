@@ -1,0 +1,51 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<span class=jip>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+</fetch:MAPPED>
+</span>
+
+<br>
+<fetch:MAPPED>
+{$content}
+</fetch:MAPPED>
+
+<br>
+<fetch:SUB_BRANCH target='messages' pager='pager'>
+	<core:PARAMETER name='loader_class_name' value='message' >
+	<core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
+
+<grid:LIST id='messages'>
+<table width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='messages_list' file='message'></th>
+	<th><locale:STRING name='identifier'></th>
+	<th><locale:STRING name='created_date'></th>
+	<th><locale:STRING name='modified_date'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class="jip">
+<td><core:INCLUDE file="/admin/selector.html"></td>
+<td><a href="{$path}">{$title}</a></td>
+<td>{$identifier}</td>
+<td><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+<td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+<td><core:INCLUDE file='/admin/priority_input.html'></td>
+<td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='5' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td>&nbsp;</td>
+</tr>
+
+</table>
+</grid:LIST>
