@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,34 +12,34 @@
 // Does not support OPTGROUP tags.
 /**
 * Deals with rendering option elements for HTML select tags
-* 
+*
 */
 class option_renderer
 {
-	/**
-	* Renders an option, sending directly to display. Called from a compiled
-	* template render function.
-	*/
-	public function render_attribute($key, $contents, $selected)
-	{
-		echo '<option value="';
-		echo htmlspecialchars($key, ENT_QUOTES);
-		echo '"';
-		if ($selected)
-		{
-			echo " selected";
-		} 
-		echo '>';
-		if (empty($contents))
-		{
-			echo htmlspecialchars($key, ENT_QUOTES);
-		} 
-		else
-		{
-			echo $contents;
-		} 
-		echo '</option>';
-	} 
+  /**
+  * Renders an option, sending directly to display. Called from a compiled
+  * template render function.
+  */
+  public function render_attribute($key, $contents, $selected)
+  {
+    echo '<option value="';
+    echo htmlspecialchars($key, ENT_QUOTES);
+    echo '"';
+    if ($selected)
+    {
+      echo " selected";
+    }
+    echo '>';
+    if (empty($contents))
+    {
+      echo htmlspecialchars($key, ENT_QUOTES);
+    }
+    else
+    {
+      echo $contents;
+    }
+    echo '</option>';
+  }
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -17,25 +17,25 @@ class behaviour_file_resolver_test extends base_package_file_resolver_test
   {
     return new behaviour_file_resolver(new package_file_resolver());
   }
-  
+
   function test_resolve_behaviour_file_in_packages_ok()
   {
-    $this->assertEqual($this->resolver->resolve('test_behaviour'), 
+    $this->assertEqual($this->resolver->resolve('test_behaviour'),
                        TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/behaviours/test_behaviour.class.php');
-  }  
-  
+  }
+
   function test_resolve_behaviour_file_failed()
   {
     try
-    {    
+    {
       $this->resolver->resolve('no_such_behaviour');
       $this->assertTrue(false);
     }
     catch(FileNotFoundException $e)
     {
-    }    
-  }  
-  
+    }
+  }
+
 }
 
 ?>

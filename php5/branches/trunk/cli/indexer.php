@@ -1,26 +1,26 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 
-if(isset($argv[1]))  
-	$project_dir = $argv[1];
+if(isset($argv[1]))
+  $project_dir = $argv[1];
 else
-	die('project dir required');
-	
-if(isset($argv[2]))  
-	$path = $argv[2];
-else
-	$path = '/root';
+  die('project dir required');
 
-require_once($project_dir . '/setup.php'); 
-require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php'); 
+if(isset($argv[2]))
+  $path = $argv[2];
+else
+  $path = '/root';
+
+require_once($project_dir . '/setup.php');
+require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php');
 require_once(LIMB_DIR . '/class/search/full_text_indexer.class.php');
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
@@ -47,32 +47,32 @@ $missed_objects = array();
 
 foreach($nodes as $node)
 {
-	$db->sql_exec(
-		'SELECT sc.class_name FROM sys_site_object sso, sys_class sc 
-		WHERE sso.class_id=sc.id AND sso.id=' . $node['object_id']);
-	
-	if(!$row = $db->fetch_row())//???
-	{
-		$missed_objects[] = $node['object_id'];
-		continue;
-	}
-	
-	$site_object = Limb :: toolkit()->createSiteObject($row['class_name']);
-	
-	$object_data = current($site_object->fetch_by_ids(array($node['object_id'])));
-	
-	$site_object->merge($object_data);
-	
-	$counter++;
-	
-	echo "indexing {$counter} of {$total}...\n";
-	
-	$indexer->add($site_object);
+  $db->sql_exec(
+    'SELECT sc.class_name FROM sys_site_object sso, sys_class sc
+    WHERE sso.class_id=sc.id AND sso.id=' . $node['object_id']);
+
+  if(!$row = $db->fetch_row())//???
+  {
+    $missed_objects[] = $node['object_id'];
+    continue;
+  }
+
+  $site_object = Limb :: toolkit()->createSiteObject($row['class_name']);
+
+  $object_data = current($site_object->fetch_by_ids(array($node['object_id'])));
+
+  $site_object->merge($object_data);
+
+  $counter++;
+
+  echo "indexing {$counter} of {$total}...\n";
+
+  $indexer->add($site_object);
 }
 
 foreach($missed_objects as $id)
 {
-	echo "missed object_id: {$id}...\n";
+  echo "missed object_id: {$id}...\n";
 }
 
 echo 'done';

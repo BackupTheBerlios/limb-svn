@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -18,7 +18,7 @@ class behaviour_file_resolver extends file_resolver_decorator
       return LIMB_DIR . '/class/core/behaviours/' . $class_path . '.class.php';
 
     return $this->_resolver->resolve('behaviours/' . $class_path . '.class.php', $params);
-  }  
+  }
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -16,34 +16,34 @@
 */
 class block_component extends component
 {
-	/**
-	* Whether the block is visible or not
-	*/
-	protected $visible = true;
-	/**
-	* Called within the compiled template render function to determine
-	* whether block should be displayed.
-	*/
-	public function is_visible()
-	{
-		return $this->visible;
-	} 
+  /**
+  * Whether the block is visible or not
+  */
+  protected $visible = true;
+  /**
+  * Called within the compiled template render function to determine
+  * whether block should be displayed.
+  */
+  public function is_visible()
+  {
+    return $this->visible;
+  }
 
-	/**
-	* Changes the block state to visible
-	*/
-	public function show()
-	{
-		$this->visible = true;
-	} 
+  /**
+  * Changes the block state to visible
+  */
+  public function show()
+  {
+    $this->visible = true;
+  }
 
-	/**
-	* Changes the block state to invisible
-	*/
-	public function hide()
-	{
-		$this->visible = false;
-	} 
-} 
+  /**
+  * Changes the block state to invisible
+  */
+  public function hide()
+  {
+    $this->visible = false;
+  }
+}
 
 ?>

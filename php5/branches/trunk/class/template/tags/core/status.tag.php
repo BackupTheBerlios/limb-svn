@@ -1,19 +1,19 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 class core_status_tag_info
 {
-	public $tag = 'core:STATUS';
-	public $end_tag = ENDTAG_REQUIRED;
-	public $tag_class = 'core_status_tag';
-} 
+  public $tag = 'core:STATUS';
+  public $end_tag = ENDTAG_REQUIRED;
+  public $tag_class = 'core_status_tag';
+}
 
 register_tag(new core_status_tag_info());
 
@@ -23,43 +23,43 @@ register_tag(new core_status_tag_info());
 */
 class core_status_tag extends compiler_directive_tag
 {
-	protected $const;
+  protected $const;
 
-	public function pre_parse()
-	{
-		if (!isset($this->attributes['name']))
-		{
-			throw new WactException('missing required attribute', 
-					array('tag' => $this->tag,
-					'attribute' => 'name',
-					'file' => $this->source_file,
-					'line' => $this->starting_line_no));
-		} 
-		
-		$this->const = $this->attributes['name'];
+  public function pre_parse()
+  {
+    if (!isset($this->attributes['name']))
+    {
+      throw new WactException('missing required attribute',
+          array('tag' => $this->tag,
+          'attribute' => 'name',
+          'file' => $this->source_file,
+          'line' => $this->starting_line_no));
+    }
 
-		return PARSER_REQUIRE_PARSING;
-	} 
+    $this->const = $this->attributes['name'];
 
-	public function pre_generate($code)
-	{
-		$value = 'true';
-		if (isset($this->attributes['value']) && !(boolean)$this->attributes['value'])
-			$value = 'false';
+    return PARSER_REQUIRE_PARSING;
+  }
 
-		$tempvar = $code->get_temp_variable();
-		$code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
-		$code->write_php('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
-		
-		parent::pre_generate($code);
-	} 
+  public function pre_generate($code)
+  {
+    $value = 'true';
+    if (isset($this->attributes['value']) && !(boolean)$this->attributes['value'])
+      $value = 'false';
 
-	public function post_generate($code)
-	{
-	  parent::post_generate($code);
-	  
-		$code->write_php('}');
-	} 
-} 
+    $tempvar = $code->get_temp_variable();
+    $code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
+    $code->write_php('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
+
+    parent::pre_generate($code);
+  }
+
+  public function post_generate($code)
+  {
+    parent::post_generate($code);
+
+    $code->write_php('}');
+  }
+}
 
 ?>

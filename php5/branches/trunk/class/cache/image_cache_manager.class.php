@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -122,7 +122,7 @@ class image_cache_manager
           $node_ids[$node_id] = 1;
       }
     }
-    
+
     $datasource = Limb :: toolkit()->getDatasource('site_objects_by_node_ids_datasource');
     $datasource->set_node_ids(array_keys($node_ids));
     $datasource->set_site_object_class_name('image_object');
@@ -266,11 +266,11 @@ class image_cache_manager
   {
     $user = Limb :: toolkit()->getUser();
 
-		foreach	($user->get('groups', array()) as $group_name)
-			if (in_array($group_name, $groups))
-				return true;
+    foreach	($user->get('groups', array()) as $group_name)
+      if (in_array($group_name, $groups))
+        return true;
 
-		return false;
+    return false;
   }
 
   public function flush()
@@ -312,7 +312,7 @@ class image_cache_manager
   protected function _load_rules()
   {
     $this->rules = array();
- 
+
     $groups = Limb :: toolkit()->getINI('image_cache.ini')->get_all();
 
     foreach($groups as $group => $data)

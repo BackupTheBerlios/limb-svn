@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -17,29 +17,29 @@ class strings_file_resolver_test extends base_package_file_resolver_test
   {
     return new strings_file_resolver(new package_file_resolver());
   }
-  
+
   function test_resolve_strings_file_ok()
-  { 
+  {
     $this->assertEqual($this->resolver->resolve('test', array('en')), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/i18n/test_en.ini');
-  }  
-  
+  }
+
   function test_resolve_strings_file_failed()
   {
     try
-    { 
+    {
       $this->resolver->resolve('no_such_strings_file', array('fr'));
       $this->assertTrue(false);
     }
     catch(FileNotFoundException $e)
     {
-      $this->assertEqual($e->getAdditionalParams(),       
+      $this->assertEqual($e->getAdditionalParams(),
         array(
-  		    'file_path' => 'i18n/no_such_strings_file_fr.ini',
+          'file_path' => 'i18n/no_such_strings_file_fr.ini',
         )
       );
-    }    
-  } 
-  
+    }
+  }
+
 }
 
 ?>

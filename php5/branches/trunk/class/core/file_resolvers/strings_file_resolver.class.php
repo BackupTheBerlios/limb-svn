@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -11,16 +11,16 @@
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
 
 class strings_file_resolver extends file_resolver_decorator
-{  
+{
   public function resolve($file_name, $params = array())
-  {  
+  {
     if(!isset($params[0]))
       $locale_id = DEFAULT_CONTENT_LOCALE_ID;
     else
       $locale_id = $params[0];
-      
+
     return $this->_resolver->resolve('i18n/' . $file_name . '_' . $locale_id . '.ini');
-  }  
+  }
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -29,29 +29,29 @@ class requested_object_datasource_test extends LimbTestCase
 
   function setUp()
   {
-  	$this->tree = new Mocktree($this);
-  	$this->request = new Mockrequest($this);
-  	$this->uri = new Mockuri($this);
+    $this->tree = new Mocktree($this);
+    $this->request = new Mockrequest($this);
+    $this->uri = new Mockuri($this);
     $this->datasource = new requested_object_datasource();
 
     $this->request->setReturnValue('get_uri', $this->uri);
-    
+
     $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnValue('getTree', $this->tree);
     $this->toolkit->setReturnValue('getRequest', $this->request);
-    
+
     Limb :: registerToolkit($this->toolkit);
   }
 
   function tearDown()
   {
     $this->datasource->reset();
-    
+
     $this->uri->tally();
     $this->request->tally();
     $this->tree->tally();
     $this->toolkit->tally();
-    
+
     Limb :: popToolkit();
   }
 
@@ -105,18 +105,18 @@ class requested_object_datasource_test extends LimbTestCase
     $this->datasource->map_request_to_node($this->request);
     $this->assertEqual($node, $this->datasource->map_request_to_node($this->request));
   }
-  
+
   function test_get_object_ids_no_request()
   {
     try
     {
       $this->datasource->get_object_ids();
-      $this->assertTrue(false);  
+      $this->assertTrue(false);
     }
     catch(LimbException $e)
     {
     }
-        
+
   }
 
   function test_get_object_ids()
@@ -124,7 +124,7 @@ class requested_object_datasource_test extends LimbTestCase
     Mock :: generatePartial('requested_object_datasource',
                             'requested_object_get_ids_test_version_datasource',
                             array('map_request_to_node'));
-    
+
     $datasource = new requested_object_get_ids_test_version_datasource($this);
     $node = array('id' => 10, 'object_id' => $object_id = 20);
 
@@ -133,7 +133,7 @@ class requested_object_datasource_test extends LimbTestCase
 
     $datasource->set_request($this->request);
     $this->assertEqual(array($object_id), $datasource->get_object_ids());
-    
+
     $datasource->tally();
   }
 }

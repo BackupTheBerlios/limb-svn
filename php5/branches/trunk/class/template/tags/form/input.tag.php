@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,10 +12,10 @@ require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
 
 class input_tag_info
 {
-	public $tag = 'input';
-	public $end_tag = ENDTAG_FORBIDDEN;
-	public $tag_class = 'input_tag';
-} 
+  public $tag = 'input';
+  public $end_tag = ENDTAG_FORBIDDEN;
+  public $tag_class = 'input_tag';
+}
 
 register_tag(new input_tag_info());
 
@@ -25,56 +25,56 @@ register_tag(new input_tag_info());
 */
 class input_tag extends control_tag
 {
-	/**
-	* Sets the runtime_component_path property, depending on the type of
-	* Input tag
-	*/
-	public function prepare()
-	{
-		$type = strtolower($this->attributes['type']);
+  /**
+  * Sets the runtime_component_path property, depending on the type of
+  * Input tag
+  */
+  public function prepare()
+  {
+    $type = strtolower($this->attributes['type']);
 
-		switch ($type)
-		{
-			case 'text':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_text_component';
-				break;
-			case 'password':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_password_component';
-				break;
-			case 'checkbox':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_checkbox_component';
-				break;
-			case 'submit':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
-				break;
-			case 'radio':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_radio_component';
-				break;
-			case 'reset':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_reset_component';
-				break;
-			case 'file':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_file_component';
-				break;
-			case 'hidden':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_hidden_component';
-				break;
-			case 'image':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_image_component';
-				break;
-			case 'button':
-				$this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_button_component';
-				break;
-			default:
-  			throw new WactException('unknown input type', 
-					array('tag' => $this->tag,
-					'type' => $type,
-					'file' => $this->source_file,
-					'line' => $this->starting_line_no));
-		} 
+    switch ($type)
+    {
+      case 'text':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_text_component';
+        break;
+      case 'password':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_password_component';
+        break;
+      case 'checkbox':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_checkbox_component';
+        break;
+      case 'submit':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_submit_component';
+        break;
+      case 'radio':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_radio_component';
+        break;
+      case 'reset':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_reset_component';
+        break;
+      case 'file':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_file_component';
+        break;
+      case 'hidden':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_hidden_component';
+        break;
+      case 'image':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_image_component';
+        break;
+      case 'button':
+        $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/input_button_component';
+        break;
+      default:
+        throw new WactException('unknown input type',
+          array('tag' => $this->tag,
+          'type' => $type,
+          'file' => $this->source_file,
+          'line' => $this->starting_line_no));
+    }
 
-		parent :: prepare();
-	} 
-} 
+    parent :: prepare();
+  }
+}
 
 ?>

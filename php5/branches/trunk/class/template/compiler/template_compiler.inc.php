@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -32,32 +32,32 @@ require_once(LIMB_DIR . '/class/core/packages_info.class.php');
 */
 $GLOBALS['tag_dictionary'] = new tag_dictionary();
 
-function load_tags_from_directory($tags_repository_dir)  
+function load_tags_from_directory($tags_repository_dir)
 {
   if(!is_dir($tags_repository_dir))
     return;
-  
+
   $repository_dir = opendir($tags_repository_dir);
- 
+
   while(($tag_dir = readdir($repository_dir)) !== false)
   {
-  	if(!is_dir($tags_repository_dir . $tag_dir))
-  	  continue;
-  	
-		if(($dir = opendir($tags_repository_dir . $tag_dir)) == false)
-		  continue;
+    if(!is_dir($tags_repository_dir . $tag_dir))
+      continue;
 
-		while(($tag_file = readdir($dir)) !== false) 
-		{  
-			if  (substr($tag_file, -8,  8) == '.tag.php')  
-			{
-				include_once($tags_repository_dir . $tag_dir . '/' . $tag_file); 
-			} 
-		} 
-		closedir($dir); 
+    if(($dir = opendir($tags_repository_dir . $tag_dir)) == false)
+      continue;
+
+    while(($tag_file = readdir($dir)) !== false)
+    {
+      if  (substr($tag_file, -8,  8) == '.tag.php')
+      {
+        include_once($tags_repository_dir . $tag_dir . '/' . $tag_file);
+      }
+    }
+    closedir($dir);
   }
   closedir($repository_dir);
-} 
+}
 
 function load_core_tags()
 {
@@ -70,11 +70,11 @@ function load_packages_tags()
 {
   $info = packages_info :: instance();
   $packages = $info->get_packages();
-  
+
   foreach($packages as $package)
-	{
-		load_tags_from_directory($package['path'] . '/template/tags/');
-	} 
+  {
+    load_tags_from_directory($package['path'] . '/template/tags/');
+  }
 }
 
 load_packages_tags();
@@ -87,46 +87,46 @@ load_packages_tags();
 */
 function compile_template_file($filename, $resolve_path = true)
 {
-	global $tag_dictionary;
-	
-	if($resolve_path)
-	{
-		if(!$sourcefile = resolve_template_source_file_name($filename))
+  global $tag_dictionary;
+
+  if($resolve_path)
+  {
+    if(!$sourcefile = resolve_template_source_file_name($filename))
       throw new FileNotFoundException('template file not found', $filename);
-	}
-	else
-		$sourcefile = $filename;
-		
-	$destfile = resolve_template_compiled_file_name($sourcefile);
-	
-	if (empty($sourcefile))
-	{
+  }
+  else
+    $sourcefile = $filename;
+
+  $destfile = resolve_template_compiled_file_name($sourcefile);
+
+  if (empty($sourcefile))
+  {
     throw new FileNotFoundException('compiled template file not found', $filename);
-	} 
+  }
 
-	$code = new codewriter();
-	$code->set_function_prefix(md5($destfile));
+  $code = new codewriter();
+  $code->set_function_prefix(md5($destfile));
 
-	$tree = new root_compiler_component();
-	$tree->set_source_file($sourcefile);
+  $tree = new root_compiler_component();
+  $tree->set_source_file($sourcefile);
 
-	$sfp = new source_file_parser($sourcefile, $tag_dictionary);
-	$sfp->parse($tree);
-	
-	$tree->prepare();
+  $sfp = new source_file_parser($sourcefile, $tag_dictionary);
+  $sfp->parse($tree);
 
-	$render_function = $code->begin_function('($dataspace)');
-	$tree->generate($code);
-	$code->end_function();
+  $tree->prepare();
 
-	$construct_function = $code->begin_function('($dataspace)');
-	$tree->generate_constructor($code);
-	$code->end_function();
+  $render_function = $code->begin_function('($dataspace)');
+  $tree->generate($code);
+  $code->end_function();
 
-	$code->write_php('$GLOBALS[\'template_render\'][$this->codefile] = \'' . $render_function . '\';');
-	$code->write_php('$GLOBALS[\'template_construct\'][$this->codefile] = \'' . $construct_function . '\';');
+  $construct_function = $code->begin_function('($dataspace)');
+  $tree->generate_constructor($code);
+  $code->end_function();
 
-	write_template_file($destfile, $code->get_code());
-} 
+  $code->write_php('$GLOBALS[\'template_render\'][$this->codefile] = \'' . $render_function . '\';');
+  $code->write_php('$GLOBALS[\'template_construct\'][$this->codefile] = \'' . $construct_function . '\';');
+
+  write_template_file($destfile, $code->get_code());
+}
 
 ?>

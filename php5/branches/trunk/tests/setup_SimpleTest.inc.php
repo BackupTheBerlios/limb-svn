@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -15,8 +15,8 @@ if(!$SimpleTest_dir = get_ini_option('external.ini', 'library_path', 'SimpleTest
 
 define('SIMPLE_TEST', $SimpleTest_dir);
 
-if ( !file_exists(SIMPLE_TEST . 'unit_tester.php') ) 
-	die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
+if ( !file_exists(SIMPLE_TEST . 'unit_tester.php') )
+  die ('Make sure the SIMPLE_TEST constant is set correctly in this file');
 
 require_once(SIMPLE_TEST . 'unit_tester.php');
 require_once(SIMPLE_TEST . 'mock_objects.php');

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -10,29 +10,29 @@
 ***********************************************************************************/
 class print_link_tag_info
 {
-	public $tag = 'print:LINK';
-	public $end_tag = ENDTAG_REQUIRED;
-	public $tag_class = 'print_link_tag';
-} 
+  public $tag = 'print:LINK';
+  public $end_tag = ENDTAG_REQUIRED;
+  public $tag_class = 'print_link_tag';
+}
 
 register_tag(new print_link_tag_info());
 
 class print_link_tag extends compiler_directive_tag
 {
-	public function generate_contents($code)
-	{
-		$mapped = '$' . $code->get_temp_variable();
+  public function generate_contents($code)
+  {
+    $mapped = '$' . $code->get_temp_variable();
 
-		$code->write_php("{$mapped} = Limb :: toolkit()->getFetcher()->fetch_requested_object(Limb :: toolkit()->getRequest());");
+    $code->write_php("{$mapped} = Limb :: toolkit()->getFetcher()->fetch_requested_object(Limb :: toolkit()->getRequest());");
 
-		$code->write_php("if(isset({$mapped}['actions']) && array_key_exists('print_version', {$mapped}['actions'])){");
+    $code->write_php("if(isset({$mapped}['actions']) && array_key_exists('print_version', {$mapped}['actions'])){");
 
-		$code->write_php($this->get_dataspace_ref_code() . "->set('link', {$mapped}['path'] . '?action=print_version');");
+    $code->write_php($this->get_dataspace_ref_code() . "->set('link', {$mapped}['path'] . '?action=print_version');");
 
-		parent :: generate_contents($code);
+    parent :: generate_contents($code);
 
-		$code->write_php('}');
-	}
-} 
+    $code->write_php('}');
+  }
+}
 
 ?>

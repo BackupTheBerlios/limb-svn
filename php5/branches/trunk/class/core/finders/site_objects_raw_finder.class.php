@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/class/core/finders/data_finder.interface.php');
 
 class site_objects_raw_finder implements data_finder
 {
-  const RAW_SELECT_STMT = 
+  const RAW_SELECT_STMT =
     "SELECT
     sso.current_version as current_version,
     sso.modified_date as modified_date,
@@ -45,12 +45,12 @@ class site_objects_raw_finder implements data_finder
     AND sys_behaviour.id = sso.behaviour_id
     AND ssot.object_id = sso.id
     %s %s";
-    
-  const RAW_COUNT_STMT = 
+
+  const RAW_COUNT_STMT =
     "SELECT COUNT(sso.id) as count
      FROM sys_site_object as sso %s
      WHERE sso.id %s %s";
-  
+
   public function find($params = array(), $sql_params=array())//refactor!!!
   {
     $sql = sprintf(self :: RAW_SELECT_STMT,
@@ -71,19 +71,19 @@ class site_objects_raw_finder implements data_finder
 
     return $db->get_array('id');
   }
-  
+
   public function find_by_id($id)
   {
     return $this->find(array(), array('conditions' => array(' AND sso.id=' . $id)));
   }
-  
+
   protected function _add_sql($add_sql, $type)//refactor!!!
   {
     if (isset($add_sql[$type]))
       return implode(' ', $add_sql[$type]);
     else
       return '';
-  }  
+  }
 
   protected function _build_order_sql($order_array)
   {

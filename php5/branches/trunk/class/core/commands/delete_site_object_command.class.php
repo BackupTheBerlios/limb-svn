@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -17,28 +17,28 @@ class delete_site_object_command implements Command
     $toolkit = Limb :: toolkit();
     $datasource = $toolkit->getDatasource('requested_object_datasource');
     $datasource->set_request($toolkit->getRequest());
-    
+
     return wrap_with_site_object($datasource->fetch());
   }
-  
-	public function perform()
-	{
-		$object = $this->_get_object_to_delete();
 
-		try
-		{
-		  $object->delete();
-		}
-		catch (SQLException $sql_e)
-		{
-		  throw $sql_e;
-		}
-		catch(LimbException $e)
-		{
-			return Limb :: STATUS_ERROR;
-		}
+  public function perform()
+  {
+    $object = $this->_get_object_to_delete();
 
-		return Limb :: STATUS_OK;
+    try
+    {
+      $object->delete();
+    }
+    catch (SQLException $sql_e)
+    {
+      throw $sql_e;
+    }
+    catch(LimbException $e)
+    {
+      return Limb :: STATUS_ERROR;
+    }
+
+    return Limb :: STATUS_OK;
   }
 }
 

@@ -1,19 +1,19 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/lib/db/db_table.class.php');
 require_once(LIMB_DIR . '/class/lib/util/complex_array.class.php');
 
 class one_table_object_db_table extends db_table
 {
-  protected function _define_columns() 
+  protected function _define_columns()
   {
     return array(
       'id' => array('type' => 'numeric'),
@@ -22,7 +22,7 @@ class one_table_object_db_table extends db_table
       'identifier' => '',
       'title' => '',
     );
-    
+
   }
 }
 

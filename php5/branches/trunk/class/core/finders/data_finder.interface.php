@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -11,9 +11,9 @@
 interface data_finder
 {
   public function find($params = array(), $sql_params = array());//refactor!!!
-  
+
   public function find_count($sql_params=array());//refactor!!!
-  
+
   public function find_by_id($id);
 }
 

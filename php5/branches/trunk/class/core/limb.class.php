@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -20,14 +20,14 @@ class Limb
 
   const STATUS_FORM_NOT_VALID = 16;
   const STATUS_ERROR = 32;
-  
+
   static protected $toolkits = array();
-  
+
   static public function registerToolkit($toolkit)
-  {    
+  {
     self :: $toolkits[] = $toolkit;
   }
-    
+
   static public function popToolkit()
   {
     array_pop(self :: $toolkits);
@@ -39,4 +39,4 @@ class Limb
   }
 }
 
-?> 
+?>

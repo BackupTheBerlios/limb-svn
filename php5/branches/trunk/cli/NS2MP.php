@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -8,22 +8,22 @@
 * $Id$
 *
 ***********************************************************************************/
-if(isset($argv[1]))  
-	$project_dir = $argv[1];
+if(isset($argv[1]))
+  $project_dir = $argv[1];
 else
-	die('project dir required');
+  die('project dir required');
 
-if(isset($argv[2]))  
-	$ns_table = $argv[2];
+if(isset($argv[2]))
+  $ns_table = $argv[2];
 else
-	$ns_table = 'old_sys_site_object_tree';
+  $ns_table = 'old_sys_site_object_tree';
 
-if(isset($argv[3]))  
-	$mp_table = $argv[3];
+if(isset($argv[3]))
+  $mp_table = $argv[3];
 else
-	$mp_table = 'sys_site_object_tree';
-	
-require_once($project_dir . '/setup.php'); 
+  $mp_table = 'sys_site_object_tree';
+
+require_once($project_dir . '/setup.php');
 
 require_once(LIMB_DIR . '/class/core/tree/drivers/nested_sets_tree.class.php');
 require_once(LIMB_DIR . '/class/core/tree/materialized_path_tree.class.php');
@@ -46,23 +46,23 @@ foreach($root_ns_nodes as $root_node)
   unset($root_node['l']);
   unset($root_node['r']);
   unset($root_node['ordr']);
-	$mp->create_root_node($root_node);
-	
-	$sub_branch = $ns->get_sub_branch($root_node['id'], -1);
-	
-	$branch_size = sizeof($sub_branch);
-	echo 'total branches in current root: ' . $branch_size . "\n";
-	
-	$c = 0;
-	foreach($sub_branch as $node)
-	{
-		echo ++$c . ' branch of ' . $branch_size . "\n";
-		
+  $mp->create_root_node($root_node);
+
+  $sub_branch = $ns->get_sub_branch($root_node['id'], -1);
+
+  $branch_size = sizeof($sub_branch);
+  echo 'total branches in current root: ' . $branch_size . "\n";
+
+  $c = 0;
+  foreach($sub_branch as $node)
+  {
+    echo ++$c . ' branch of ' . $branch_size . "\n";
+
     unset($node['l']);
     unset($node['r']);
     unset($node['ordr']);
-		$mp->create_sub_node($node['parent_id'], $node);
-	}
+    $mp->create_sub_node($node['parent_id'], $node);
+  }
 }
 
 

@@ -1,68 +1,68 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(LIMB_DIR . '/class/validators/error_list.class.php');
-	
-class error_list_test extends LimbTestCase 
-{  	
-  function error_list_test() 
+
+class error_list_test extends LimbTestCase
+{
+  function error_list_test()
   {
-  	parent :: LimbTestCase();
+    parent :: LimbTestCase();
   }
-  
+
   function setUp()
   {
-  	$e =& error_list :: instance();
-  	$e->reset();
+    $e =& error_list :: instance();
+    $e->reset();
   }
-  
+
   function tearDown()
   {
-  	$e =& error_list :: instance();
-  	$e->reset();
+    $e =& error_list :: instance();
+    $e->reset();
   }
-      
+
   function test_instance()
   {
-  	$e =& error_list :: instance();
-  	    	
-  	$this->assertNotNull($e);
-  	$this->assertIsA($e, 'error_list');
-  	
-  	$e2 =& error_list :: instance();
-  	
-  	$this->assertTrue($e === $e2);
+    $e =& error_list :: instance();
+
+    $this->assertNotNull($e);
+    $this->assertIsA($e, 'error_list');
+
+    $e2 =& error_list :: instance();
+
+    $this->assertTrue($e === $e2);
   }
-  
+
   function test_add_error()
   {
-  	$e =& error_list :: instance();
-  	
-  	$e->add_error('test', 'error');
-  	
-  	$errors = $e->get_errors('test');
-  	
-  	$this->assertEqual(sizeof($errors), 1);
-  	$this->assertEqual($errors[0]['error'], 'error');
-  	
-  	$e->add_error('test', 'error2', array('param' => 1));
-		
-		$errors = $e->get_errors('test');
-		
-  	$this->assertEqual(sizeof($errors), 2);
-  	$this->assertEqual($errors[1]['error'], 'error2');
-  	$this->assertEqual($errors[1]['params']['param'], 1);
-  	
-  	$errors = $e->get_errors('no_errors');
-  	$this->assertNull($errors);
-  } 
+    $e =& error_list :: instance();
+
+    $e->add_error('test', 'error');
+
+    $errors = $e->get_errors('test');
+
+    $this->assertEqual(sizeof($errors), 1);
+    $this->assertEqual($errors[0]['error'], 'error');
+
+    $e->add_error('test', 'error2', array('param' => 1));
+
+    $errors = $e->get_errors('test');
+
+    $this->assertEqual(sizeof($errors), 2);
+    $this->assertEqual($errors[1]['error'], 'error2');
+    $this->assertEqual($errors[1]['params']['param'], 1);
+
+    $errors = $e->get_errors('no_errors');
+    $this->assertNull($errors);
+  }
 }
 
 ?>

@@ -1,13 +1,13 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 require_once(dirname(__FILE__) . '/setup.php');
 require_once(dirname(__FILE__) . '/limb_root_group_test.class.php');
 require_once(dirname(__FILE__) . '/lib/cli_test_runner.class.php');

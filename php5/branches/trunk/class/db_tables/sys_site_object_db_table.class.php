@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -14,7 +14,7 @@ class sys_site_object_db_table extends db_table
 {
   protected function _define_columns()
   {
-  	return array(
+    return array(
       'id' => array('type' => 'numeric'),
       'class_id' => array('type' => 'numeric'),
       'behaviour_id' => array('type' => 'numeric'),
@@ -31,22 +31,22 @@ class sys_site_object_db_table extends db_table
 
   protected function _define_constraints()
   {
-  	return array(
-    	'id' =>	array(
-    		array(
-					'table_name' => 'sys_object_version',
-					'field' => 'object_id',
-				),
-	  		array(
-					'table_name' => 'sys_node_link',
-					'field' => 'target_node_id'
-				),
-	  		array(
-					'table_name' => 'sys_node_link',
-					'field' => 'linker_node_id'
-				),
-			)
-		);
+    return array(
+      'id' =>	array(
+        array(
+          'table_name' => 'sys_object_version',
+          'field' => 'object_id',
+        ),
+        array(
+          'table_name' => 'sys_node_link',
+          'field' => 'target_node_id'
+        ),
+        array(
+          'table_name' => 'sys_node_link',
+          'field' => 'linker_node_id'
+        ),
+      )
+    );
   }
 }
 

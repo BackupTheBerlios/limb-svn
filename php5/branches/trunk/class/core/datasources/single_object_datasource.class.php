@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -10,17 +10,17 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/site_objects_datasource.class.php');
 
-class single_object_datasource extends site_objects_datasource 
+class single_object_datasource extends site_objects_datasource
 {
   protected $path;
   protected $node_id;
   protected $object_id;
-  
+
   function __construct()
   {
     $this->reset();
   }
-  
+
   public function set_path($path)
   {
     $this->path = $path;
@@ -35,16 +35,16 @@ class single_object_datasource extends site_objects_datasource
   {
     $this->object_id = $object_id;
   }
-  
+
   public function reset()
   {
     parent :: reset();
-    
+
     $this->path = '';
     $this->node_id = null;
     $this->object_id = null;
   }
-  
+
   public function get_object_ids()
   {
     if ($this->object_id)
@@ -55,10 +55,10 @@ class single_object_datasource extends site_objects_datasource
 
     if ($this->path && $object_id = $this->_get_object_id_by_path())
       return array($object_id);
-    
+
     return array();
   }
-  
+
   protected function _get_object_id_by_node_id()
   {
     $tree = Limb :: toolkit()->getTree();
@@ -80,4 +80,4 @@ class single_object_datasource extends site_objects_datasource
   }
 }
 
-?> 
+?>

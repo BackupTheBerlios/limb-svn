@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -9,22 +9,22 @@
 *
 ***********************************************************************************/
 
-class LimbTestCase extends UnitTestCase 
+class LimbTestCase extends UnitTestCase
 {
-  function LimbTestCase($label = false) 
+  function LimbTestCase($label = false)
   {
     parent :: UnitTestCase($label);
   }
-  
-  function &_createRunner(&$reporter) 
+
+  function &_createRunner(&$reporter)
   {
-    if ($this->_isDebugging()) 
+    if ($this->_isDebugging())
       return new SimpleRunner($this, $reporter);
-    
+
     return parent::_createRunner($reporter);
   }
-  
-  function _isDebugging() 
+
+  function _isDebugging()
   {
     return (isset($_SERVER['SERVER_PORT']) && ($_SERVER['SERVER_PORT'] == 81));
   }

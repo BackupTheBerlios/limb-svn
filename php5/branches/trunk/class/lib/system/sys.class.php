@@ -1,13 +1,13 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 //Inspired by EZpublish(http//ez.no), system class
 
 require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
@@ -15,7 +15,7 @@ require_once(LIMB_DIR . '/class/lib/http/ip.class.php');
 class sys
 {
   protected static $instance = null;
-   
+
   protected $line_separator;		// line separator used in files
   protected $file_separator;		// directory separator used for files
   protected $env_separator;			// list separator used for env variables
@@ -32,17 +32,17 @@ class sys
   {
     $this->_collect_system_params();
   }
-  
-	static public function instance()
-	{
+
+  static public function instance()
+  {
     if (!self :: $instance)
       self :: $instance = new sys();
 
-    return self :: $instance;	
-	}  
-	
-	protected function _collect_system_params()
-	{
+    return self :: $instance;
+  }
+
+  protected function _collect_system_params()
+  {
     // Determine OS specific settings
     if ( substr( php_uname(), 0, 7 ) == 'Windows' )
     {
@@ -71,58 +71,58 @@ class sys
       $this->env_separator = ':';
       $this->backup_filename = '~';
     }
-    
+
     $request_uri = self :: server_variable('REQUEST_URI');
 
     // Remove url parameters
     if ( ereg( "([^?]+)", $request_uri, $regs ) )
-    	$request_uri = $regs[1];
+      $request_uri = $regs[1];
 
     // Remove internal links
     if ( ereg( "([^#]+)", $request_uri, $regs ) )
-    	$request_uri = $regs[1];
+      $request_uri = $regs[1];
 
     $this->request_uri = $request_uri;
-    
+
     if(isset($_SERVER['REMOTE_ADDR']))
     {
-    	$client_ip = $_SERVER['REMOTE_ADDR'];
-    
-			if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-			{
-				if ( preg_match("/^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/", $_SERVER['HTTP_X_FORWARDED_FOR'], $ip_list))
-				{
-					$protected_ip = array('/^0\./', '/^127\.0\.0\.1/', '/^192\.168\..*/', '/^172\.16\..*/', '/^10..*/', '/^224..*/', '/^240..*/');
-					$client_ip = preg_replace($protected_ip, $client_ip, $ip_list[1]);
-				}
-			}
+      $client_ip = $_SERVER['REMOTE_ADDR'];
 
-			$this->client_ip = $client_ip;
-		}
-		
-		if(php_sapi_name() == 'cli')
-			$this->exec_mode = 'cli';
-		elseif(substr(php_sapi_name(),0,3) == 'cgi')
-			$this->exec_mode = 'cgi';
-		elseif($_SERVER['GATEWAY_INTERFACE'])
-			$this->exec_mode = 'module';	
-	}
-  
+      if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+      {
+        if ( preg_match("/^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/", $_SERVER['HTTP_X_FORWARDED_FOR'], $ip_list))
+        {
+          $protected_ip = array('/^0\./', '/^127\.0\.0\.1/', '/^192\.168\..*/', '/^172\.16\..*/', '/^10..*/', '/^224..*/', '/^240..*/');
+          $client_ip = preg_replace($protected_ip, $client_ip, $ip_list[1]);
+        }
+      }
+
+      $this->client_ip = $client_ip;
+    }
+
+    if(php_sapi_name() == 'cli')
+      $this->exec_mode = 'cli';
+    elseif(substr(php_sapi_name(),0,3) == 'cgi')
+      $this->exec_mode = 'cgi';
+    elseif($_SERVER['GATEWAY_INTERFACE'])
+      $this->exec_mode = 'module';
+  }
+
   static public function os_type()
-  {    	
+  {
     return sys::instance()->os_type;
   }
 
   static public function client_ip()
   {
     return sys::instance()->client_ip;
-	}
-			
+  }
+
   /*
    return the file_system type, either "win32" or "unix"
   */
   static public function file_system_type()
-  {    	
+  {
     return sys::instance()->file_system_type;
   }
 
@@ -146,7 +146,7 @@ class sys
    Returns the string which is used for line separators on the current OS (server).
   */
   static public function line_separator()
-  {   	
+  {
     return sys::instance()->line_separator;
   }
 
@@ -194,10 +194,10 @@ class sys
   {
     $_ENV[$name] = $value;
   }
-  
+
   static public function exec_mode()
   {
-  	return sys::instance()->exec_mode;
+    return sys::instance()->exec_mode;
   }
 
   static public function request_uri()

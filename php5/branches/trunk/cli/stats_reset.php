@@ -1,20 +1,20 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 
+***********************************************************************************/
 
-if(isset($argv[1]))  
-	$project_dir = $argv[1];
+if(isset($argv[1]))
+  $project_dir = $argv[1];
 else
-	die('project dir required');
+  die('project dir required');
 
-require_once($project_dir . '/setup.php'); 
+require_once($project_dir . '/setup.php');
 require_once(LIMB_DIR . '/class/lib/db/db_factory.class.php');
 
 $db = db_factory::instance();

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -29,7 +29,7 @@ Mock :: generate('response');
 
 Mock :: generatePartial('site_object_controller_filter',
                         'site_object_controller_filter_test_version',
-                        array('_get_controller')); 
+                        array('_get_controller'));
 
 class site_object_controller_filter_test extends LimbTestCase
 {
@@ -42,11 +42,11 @@ class site_object_controller_filter_test extends LimbTestCase
   var $controller;
   var $behaviour;
   var $response;
-  
+
   function setUp()
   {
     $this->filter = new site_object_controller_filter_test_version($this);
-    
+
     $this->toolkit = new MockLimbToolkit($this);
     $this->site_object = new Mocksite_object($this);
     $this->request = new Mockrequest($this);
@@ -55,25 +55,25 @@ class site_object_controller_filter_test extends LimbTestCase
     $this->controller = new Mocksite_object_controller($this);
     $this->behaviour = new Mocksite_object_behaviour($this);
     $this->response = new Mockresponse($this);
-    
+
     $this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
     $this->datasource->expectOnce('fetch');
-    
-    $this->toolkit->setReturnValue('getDatasource', 
-                                   $this->datasource, 
+
+    $this->toolkit->setReturnValue('getDatasource',
+                                   $this->datasource,
                                    array('requested_object_datasource'));
-    
+
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object, array('site_object'));
-    
+
     $this->filter_chain->expectOnce('next');
-    
+
     $this->site_object->setReturnValue('get_controller', $this->controller);
-    
+
     $this->controller->expectOnce('process', array(new IsAExpectation('Mockrequest')));
-    
+
     Limb :: registerToolkit($this->toolkit);
   }
-  
+
   function tearDown()
   {
     $this->request->tally();
@@ -82,15 +82,15 @@ class site_object_controller_filter_test extends LimbTestCase
     $this->site_object->tally();
     $this->filter->tally();
     $this->behaviour->tally();
-    $this->response->tally();  
+    $this->response->tally();
 
-    Limb :: popToolkit();    
+    Limb :: popToolkit();
   }
-  
+
   function test_run()
   {
     $this->datasource->setReturnValue('fetch', array('class_name' => 'site_object'));
-    
+
     $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 }

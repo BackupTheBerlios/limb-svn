@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -20,23 +20,23 @@ if(!is_registered_resolver('ini'))
 
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
-	return get_ini($file_path, $use_cache)->get_option($var_name, $group_name);
-} 
+  return get_ini($file_path, $use_cache)->get_option($var_name, $group_name);
+}
 
 function get_ini($file_name, $use_cache = null)
 {
   if (isset($GLOBALS['testing_ini'][$file_name]))
   {
-  	$resolved_file = VAR_DIR . $file_name;
+    $resolved_file = VAR_DIR . $file_name;
     $use_cache = false;
   }
   else
   {
     resolve_handle($resolver =& get_file_resolver('ini'));
-    $resolved_file = $resolver->resolve($file_name);  
-  }  
-  
-	return new ini($resolved_file, $use_cache);
-} 
+    $resolved_file = $resolver->resolve($file_name);
+  }
+
+  return new ini($resolved_file, $use_cache);
+}
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -20,20 +20,20 @@ Mock :: generate('site_objects_by_node_ids_datasource');
 Mock :: generate('LimbToolkit');
 
 Mock :: generatePartial(
-  'image_cache_manager', 
-  'image_cache_manager_test_version', 
+  'image_cache_manager',
+  'image_cache_manager_test_version',
   array('get_rules', '_set_matched_rule', '_get_matched_rule', '_is_user_in_groups')
 );
 
 Mock :: generatePartial(
-  'image_cache_manager', 
-  'image_cache_manager_test_version2', 
+  'image_cache_manager',
+  'image_cache_manager_test_version2',
   array('is_cacheable', '_cache_media_file', '_is_image_cached', '_get_cached_image_extension')
 );
 
 Mock :: generatePartial(
-  'image_cache_manager', 
-  'image_cache_manager_test_version3', 
+  'image_cache_manager',
+  'image_cache_manager_test_version3',
   array('is_cacheable')
 );
 
@@ -44,43 +44,43 @@ class image_cache_manager_test extends LimbTestCase
   var $uri;
   var $datasource;
   var $toolkit;
-  
+
   function setUp()
   {
     $this->uri = new Mockuri($this);
     $this->datasource = new Mocksite_objects_by_node_ids_datasource($this);
-    
+
     $this->cache_manager = new image_cache_manager_test_version($this);
-    $this->cache_manager->set_uri($this->uri);    
-    
+    $this->cache_manager->set_uri($this->uri);
+
     $this->cache_manager2 = new image_cache_manager_test_version2($this);
     $this->cache_manager2->setReturnValue('is_cacheable', true);
-    
+
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getDatasource', 
-                                   $this->datasource, 
+    $this->toolkit->setReturnValue('getDatasource',
+                                   $this->datasource,
                                    array('site_objects_by_node_ids_datasource'));
-    
+
     Limb :: registerToolkit($this->toolkit);
   }
-  
+
   function tearDown()
   {
     $this->cache_manager->tally();
     $this->cache_manager2->tally();
     $this->uri->tally();
     $this->datasource->tally();
-    
+
     Limb :: popToolkit();
   }
-  
+
   function test_get_rules_from_ini()
   {
     $cache_manager = new image_cache_manager();
-    
+
     register_testing_ini(
       'image_cache.ini',
-      ' 
+      '
       [rule1]
        path_regex = /root/test1
       [rule2]
@@ -91,34 +91,34 @@ class image_cache_manager_test extends LimbTestCase
        path_regex = /root/test3
       '
     );
-    
-    $this->toolkit->setReturnValue('getINI', 
-                                   get_ini('image_cache.ini'), 
-                                   array('image_cache.ini'));    
- 
-    $this->assertEqual($cache_manager->get_rules(), 
+
+    $this->toolkit->setReturnValue('getINI',
+                                   get_ini('image_cache.ini'),
+                                   array('image_cache.ini'));
+
+    $this->assertEqual($cache_manager->get_rules(),
       array(
         array('path_regex' => '/root/test1'),
         array('path_regex' => '/root/test2', 'groups' => array('members', 'visitors'))
       )
     );
-    
+
     clear_testing_ini();
-  } 
-  
+  }
+
   function test_is_not_cacheable_no_uri()
   {
     $cache_manager = new image_cache_manager();
-    
+
     $this->assertFalse($cache_manager->is_cacheable());
   }
-  
+
   function test_is_cacheable_groups_match()
-  {         
+  {
     $this->uri->setReturnValue('get_path', '/root/test');
-    
+
     $this->cache_manager->setReturnValueAt(0, '_is_user_in_groups', true, array(array('members', 'visitors')));
-    
+
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
                'type' => 'allow',
@@ -126,19 +126,19 @@ class image_cache_manager_test extends LimbTestCase
               );
 
     $this->cache_manager->setReturnValue('get_rules',
-      array($rule)    
+      array($rule)
     );
-    
+
     $this->assertTrue($this->cache_manager->is_cacheable());
     $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
-  }  
-  
+  }
+
   function test_is_not_cacheable_groups_dont_match()
-  {         
+  {
     $this->uri->setReturnValue('get_path', '/root/test');
-    
+
     $this->cache_manager->setReturnValueAt(0, '_is_user_in_groups', false, array(array('members')));
-    
+
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
                'type' => 'allow',
@@ -146,48 +146,48 @@ class image_cache_manager_test extends LimbTestCase
               );
 
     $this->cache_manager->setReturnValue('get_rules',
-      array($rule)    
+      array($rule)
     );
-    
+
     $this->assertFalse($this->cache_manager->is_cacheable());
     $this->cache_manager->expectNever('_set_matched_rule');
-  }  
+  }
 
   function test_is_cacheable_allow_by_default()
-  { 
+  {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
               );
 
     $this->cache_manager->setReturnValue('get_rules',
-      array($rule)    
+      array($rule)
     );
-        
+
     $this->uri->setReturnValue('get_path', '/root/test');
-    
+
     $this->assertTrue($this->cache_manager->is_cacheable());
     $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
   }
 
   function test_is_not_cacheable_deny()
-  { 
+  {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
                'type' => 'deny'
               );
 
     $this->cache_manager->setReturnValue('get_rules',
-      array($rule)    
+      array($rule)
     );
-        
+
     $this->uri->setReturnValue('get_path', '/root/test');
-    
-    $this->assertFalse($this->cache_manager->is_cacheable()); 
+
+    $this->assertFalse($this->cache_manager->is_cacheable());
     $this->cache_manager->expectNever('_set_matched_rule');
   }
 
   function test_is_cacheable_extra_query_items()
-  {       
+  {
     $rule = array(
                'path_regex' => '/^\/root\/test.*$/',
                'required' => array('action', 'pager'),
@@ -195,16 +195,16 @@ class image_cache_manager_test extends LimbTestCase
               );
 
     $this->cache_manager->setReturnValue('get_rules',
-      array($rule)    
+      array($rule)
     );
-      
+
     $this->uri->setReturnValue('get_query_items', array('action' => 1, 'pager' => 1, 'extra' => 1));
     $this->uri->setReturnValue('get_path', '/root/test');
 
     $this->assertTrue($this->cache_manager->is_cacheable());
     $this->cache_manager->expectOnce('_set_matched_rule', array($rule));
   }
-    
+
   function test_is_not_cacheable_path_doesnt_match()
   {
     $rule = array(
@@ -213,17 +213,17 @@ class image_cache_manager_test extends LimbTestCase
               );
 
     $this->cache_manager->setReturnValue('get_rules',
-      array($rule)    
+      array($rule)
     );
-          
+
     $this->uri->setReturnValue('get_path', '/root/tesx');
-    
+
     $this->assertFalse($this->cache_manager->is_cacheable());
     $this->cache_manager->expectNever('_set_matched_rule');
-  }      
+  }
 
   function test_is_cacheable_second_rule_match()
-  {    
+  {
     $rule1 = array(
            'path_regex' => '/^\/root\/test1.*$/',
            'type' => 'allow'
@@ -240,17 +240,17 @@ class image_cache_manager_test extends LimbTestCase
     );
 
     $this->cache_manager->setReturnValue('get_rules',
-      array($rule1, $rule2, $rule3)    
+      array($rule1, $rule2, $rule3)
     );
 
     $this->uri->setReturnValue('get_path', '/root/test2');
-    
+
     $this->assertTrue($this->cache_manager->is_cacheable());
     $this->cache_manager->expectOnce('_set_matched_rule', array($rule2));
   }
 
   function test_is_not_cacheable_second_rule_deny()
-  {    
+  {
     $rule1 = array(
            'path_regex' => '/^\/root\/test1.*$/',
            'type' => 'allow'
@@ -262,56 +262,56 @@ class image_cache_manager_test extends LimbTestCase
     );
 
     $this->cache_manager->setReturnValue('get_rules',
-      array($rule1, $rule2)    
+      array($rule1, $rule2)
     );
-              
+
     $this->uri->setReturnValue('get_path', '/root/test2');
-    
+
     $this->assertFalse($this->cache_manager->is_cacheable());
-    $this->cache_manager->expectNever('_set_matched_rule');        
+    $this->cache_manager->expectNever('_set_matched_rule');
   }
-  
+
   function test_process_empty_content()
-  {        
+  {
     $this->cache_manager2->process_content($c = '');
     $this->assertIdentical($c, '');
     $this->toolkit->expectNever('getDatasource');
   }
 
   function test_process_img_tag()
-  {        
+  {
     $c = '<p><img alt="test" src="/root?node_id=1" border="0"></p>';
-    
+
     $this->cache_manager2->expectOnce('_is_image_cached');
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
-  
+
     $this->datasource->expectOnce('set_node_ids', array(array(1)));
     $this->datasource->expectOnce('set_site_object_class_name', array('image_object'));
     $this->datasource->expectOnce('fetch');
-    
-    $this->datasource->setReturnValue('fetch',     
+
+    $this->datasource->setReturnValue('fetch',
       array(
         1 => array(
-          'identifier' => 'test_image', 
+          'identifier' => 'test_image',
           'variations' => array(
             'thumbnail' => array(
               'media_id' => 200,
               'mime_type' => 'image/jpeg'
             ),
           )
-        )  
+        )
       )
     );
-    
+
     $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
     $this->cache_manager2->process_content($c);
-    
+
     $this->assertEqual($c, "<p><img alt=\"test\" src='" . IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg' border=\"0\"></p>");
   }
 
 
   function test_process_img_tag_some_images_cached()
-  {        
+  {
     $c = '<p><img alt="test" src="/root?node_id=1" border="0"></p><img alt="test" src="/root?node_id=2" border="0">';
 
     $this->cache_manager2->expectCallCount('_is_image_cached', 2);
@@ -322,67 +322,67 @@ class image_cache_manager_test extends LimbTestCase
 
     $this->cache_manager2->setReturnValue('_get_cached_image_extension', '.jpg', array(2, 'thumbnail'));
     $this->cache_manager2->setReturnValue('_get_cached_image_extension', false, array(2, 'thumbnail'));
-    
+
     $this->datasource->expectOnce('set_node_ids', array(array(1)));
     $this->datasource->expectOnce('set_site_object_class_name', array('image_object'));
-    $this->datasource->expectOnce('fetch');    
-    
-    $this->datasource->setReturnValue('fetch',     
+    $this->datasource->expectOnce('fetch');
+
+    $this->datasource->setReturnValue('fetch',
       array(
         1 => array(
-          'identifier' => 'test_image', 
+          'identifier' => 'test_image',
           'variations' => array(
             'thumbnail' => array(
               'media_id' => 200,
               'mime_type' => 'image/jpeg'
             ),
           )
-        )  
+        )
       )
     );
-    
+
     $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
     $this->cache_manager2->process_content($c);
-    
-    $this->assertEqual($c, 
-      '<p><img alt="test" src=\'' . IMAGE_CACHE_WEB_DIR . 
-      '1thumbnail.jpg\' border="0"></p><img alt="test" src=\'' . IMAGE_CACHE_WEB_DIR . 
+
+    $this->assertEqual($c,
+      '<p><img alt="test" src=\'' . IMAGE_CACHE_WEB_DIR .
+      '1thumbnail.jpg\' border="0"></p><img alt="test" src=\'' . IMAGE_CACHE_WEB_DIR .
       '2thumbnail.jpg\' border="0">');
   }
 
   function test_process_content_background_attribute()
-  { 
+  {
     $c = '<td width="1" background="/root?node_id=1" border="0"></td>';
-    
+
     $this->cache_manager2->expectOnce('_is_image_cached');
     $this->cache_manager2->setReturnvalue('_is_image_cached', false);
 
     $this->datasource->expectOnce('set_node_ids', array(array(1)));
     $this->datasource->expectOnce('set_site_object_class_name', array('image_object'));
-    $this->datasource->expectOnce('fetch');    
+    $this->datasource->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',     
+    $this->datasource->setReturnValue('fetch',
       array(
         1 => array(
-          'identifier' => 'test_image', 
+          'identifier' => 'test_image',
           'variations' => array(
             'thumbnail' => array(
               'media_id' => 200,
               'mime_type' => 'image/jpeg'
             ),
           )
-        )  
+        )
       )
     );
-    
+
     $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
     $this->cache_manager2->process_content($c);
-    
+
     $this->assertEqual($c, "<td width=\"1\" background='" . IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg' border=\"0\"></td>");
   }
-    
+
   function test_process_content_quotes_proper_handling()
-  {        
+  {
     $c = '<p><img alt="test" src=\'/root?node_id=1" border="0"></p>';
 
     $this->cache_manager2->expectOnce('_is_image_cached');
@@ -390,30 +390,30 @@ class image_cache_manager_test extends LimbTestCase
 
     $this->datasource->expectOnce('set_node_ids', array(array(1)));
     $this->datasource->expectOnce('set_site_object_class_name', array('image_object'));
-    $this->datasource->expectOnce('fetch');    
-    
-    $this->datasource->setReturnValue('fetch',     
+    $this->datasource->expectOnce('fetch');
+
+    $this->datasource->setReturnValue('fetch',
       array(
         1 => array(
-          'identifier' => 'test_image', 
+          'identifier' => 'test_image',
           'variations' => array(
             'thumbnail' => array(
               'media_id' => 200,
               'mime_type' => 'image/jpeg'
             ),
           )
-        )  
+        )
       )
     );
-    
+
     $this->cache_manager2->expectOnce('_cache_media_file', array(200, '1thumbnail.jpg'));
     $this->cache_manager2->process_content($c);
-    
+
     $this->assertEqual($c, "<p><img alt=\"test\" src='" . IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg' border=\"0\"></p>");
-  }  
-  
+  }
+
   function test_process_content_original_variation()
-  {        
+  {
     $c = '<p><img alt="test" src="/root?node_id=1&original" border="0"></p>';
 
     $this->cache_manager2->expectOnce('_is_image_cached');
@@ -421,30 +421,30 @@ class image_cache_manager_test extends LimbTestCase
 
     $this->datasource->expectOnce('set_node_ids', array(array(1)));
     $this->datasource->expectOnce('set_site_object_class_name', array('image_object'));
-    $this->datasource->expectOnce('fetch');    
-    
-    $this->datasource->setReturnValue('fetch',     
+    $this->datasource->expectOnce('fetch');
+
+    $this->datasource->setReturnValue('fetch',
       array(
         1 => array(
-          'identifier' => 'test_image', 
+          'identifier' => 'test_image',
           'variations' => array(
             'original' => array(
               'media_id' => 100,
               'mime_type' => 'image/jpeg'
             ),
           )
-        )  
+        )
       )
     );
-    
+
     $this->cache_manager2->expectOnce('_cache_media_file', array(100, '1original.jpg'));
     $this->cache_manager2->process_content($c);
-    
+
     $this->assertEqual($c, "<p><img alt=\"test\" src='" . IMAGE_CACHE_WEB_DIR . "1original.jpg' border=\"0\"></p>");
-  }  
-  
+  }
+
   function test_process_content_img_and_background_same_image_object()
-  {        
+  {
     $c = '<img src="/root?node_id=1"><br><td width="1" background="/root?node_id=1&icon" border="0"></td>';
 
     $this->cache_manager2->expectCallCount('_is_image_cached', 2);
@@ -452,12 +452,12 @@ class image_cache_manager_test extends LimbTestCase
 
     $this->datasource->expectOnce('set_node_ids', array(array(1)));
     $this->datasource->expectOnce('set_site_object_class_name', array('image_object'));
-    $this->datasource->expectOnce('fetch');    
-    
-    $this->datasource->setReturnValue('fetch',     
+    $this->datasource->expectOnce('fetch');
+
+    $this->datasource->setReturnValue('fetch',
       array(
         1 => array(
-          'identifier' => 'test_image', 
+          'identifier' => 'test_image',
           'variations' => array(
             'thumbnail' => array(
               'media_id' => 200,
@@ -468,50 +468,50 @@ class image_cache_manager_test extends LimbTestCase
               'mime_type' => 'image/jpeg'
             ),
           )
-        )  
+        )
       )
     );
 
     $this->cache_manager2->expectArgumentsAt(0, '_cache_media_file', array(200, '1thumbnail.jpg'));
     $this->cache_manager2->expectArgumentsAt(1, '_cache_media_file', array(300, '1icon.jpg'));
-    
+
     $this->cache_manager2->process_content($c);
-    
-    $this->assertEqual($c, "<img src='" . 
-      IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg'><br><td width=\"1\" background='" . 
+
+    $this->assertEqual($c, "<img src='" .
+      IMAGE_CACHE_WEB_DIR . "1thumbnail.jpg'><br><td width=\"1\" background='" .
       IMAGE_CACHE_WEB_DIR . "1icon.jpg' border=\"0\"></td>");
-  }          
-  
+  }
+
   function test_write_cached_file()
-  {  
+  {
     $c = '<p><img alt="test" src="/root?node_id=1&icon" border="0"></p>';
-    
+
     $cache_manager = new image_cache_manager_test_version3($this);
     $cache_manager->setReturnValue('is_cacheable', true);
 
     $this->datasource->expectOnce('set_node_ids', array(array(1)));
     $this->datasource->expectOnce('set_site_object_class_name', array('image_object'));
-    $this->datasource->expectOnce('fetch');    
+    $this->datasource->expectOnce('fetch');
 
-    $this->datasource->setReturnValue('fetch',     
+    $this->datasource->setReturnValue('fetch',
       array(
         1 => array(
-          'identifier' => 'test_image', 
+          'identifier' => 'test_image',
           'variations' => array(
             'icon' => array(
               'media_id' => 200,
               'mime_type' => 'image/jpeg'
             ),
           )
-        )  
+        )
       )
     );
 
     $this->_write_media_file(200);
     $cache_manager->process_content($c);
-    
+
     $this->assertTrue(file_exists(IMAGE_CACHE_DIR . '1icon.jpg'));
-    
+
     $this->_clean_up();
   }
 
@@ -522,40 +522,40 @@ class image_cache_manager_test extends LimbTestCase
 
     $this->datasource->expectOnce('set_node_ids', array(array(1)));
     $this->datasource->expectOnce('set_site_object_class_name', array('image_object'));
-    $this->datasource->expectOnce('fetch');    
-    
-    $this->datasource->setReturnValue('fetch',     
+    $this->datasource->expectOnce('fetch');
+
+    $this->datasource->setReturnValue('fetch',
       array(
         1 => array(
-          'identifier' => 'test_image', 
+          'identifier' => 'test_image',
           'variations' => array(
             'icon' => array(
               'media_id' => 200,
               'mime_type' => 'image/jpeg'
             ),
           )
-        )  
+        )
       )
     );
-    
+
     $c = '<p><img alt="test" src="/root?node_id=1&icon" border="0"></p>';
-  
+
     $cache_manager->process_content($c);
-    
+
     $this->assertEqual(sizeof(fs :: ls(IMAGE_CACHE_DIR)), 0);
-    
+
     $this->_clean_up();
   }
 
   function _write_media_file($media_id)
   {
     fs :: mkdir(MEDIA_DIR);
-    
+
     $f = fopen(MEDIA_DIR . $media_id . '.media', 'w');
     fwrite($f, 'test');
     fclose($f);
   }
-  
+
   function _clean_up()
   {
     fs :: rm(IMAGE_CACHE_DIR);

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -33,27 +33,27 @@ function assign_paths_to_site_objects(&$objects_array, $append = '')
 
 function wrap_with_site_object($fetched_data)
 {
-	if(!$fetched_data)
-		return false;
+  if(!$fetched_data)
+    return false;
 
-	if(!is_array($fetched_data))
-		return false;
+  if(!is_array($fetched_data))
+    return false;
 
-	if(isset($fetched_data['class_name']))
-	{
-		$site_object = Limb :: toolkit()->createSiteObject($fetched_data['class_name']);
-		$site_object->merge($fetched_data);
-		return $site_object;
-	}
+  if(isset($fetched_data['class_name']))
+  {
+    $site_object = Limb :: toolkit()->createSiteObject($fetched_data['class_name']);
+    $site_object->merge($fetched_data);
+    return $site_object;
+  }
 
-	$site_objects = array();
-	foreach($fetched_data as $id => $data)
-	{
-		$site_object = Limb :: toolkit()->createSiteObject($data['class_name']);
-		$site_object->merge($data);
-		$site_objects[$id] = $site_object;
-	}
-	return $site_objects;
+  $site_objects = array();
+  foreach($fetched_data as $id => $data)
+  {
+    $site_object = Limb :: toolkit()->createSiteObject($data['class_name']);
+    $site_object->merge($data);
+    $site_objects[$id] = $site_object;
+  }
+  return $site_objects;
 }
 
-?> 
+?>

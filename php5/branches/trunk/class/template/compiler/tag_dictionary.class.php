@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -20,8 +20,8 @@ define('ENDTAG_FORBIDDEN', 3);
 */
 function register_tag($taginfo)
 {
-	$GLOBALS['tag_dictionary']->register_tag($taginfo);
-} 
+  $GLOBALS['tag_dictionary']->register_tag($taginfo);
+}
 
 /**
 * The tag_dictionary, which exists as a global variable, acting as a registry
@@ -29,44 +29,44 @@ function register_tag($taginfo)
 */
 class tag_dictionary
 {
-	/**
-	* Associative array of tag_info objects
-	*/
-	protected $tag_information = array();
-	/**
-	* Indexed array containing registered tag names
-	*/
-	protected $tag_list = array();
+  /**
+  * Associative array of tag_info objects
+  */
+  protected $tag_information = array();
+  /**
+  * Indexed array containing registered tag names
+  */
+  protected $tag_list = array();
 
-	/**
-	* Registers a tag in the dictionary, called from the global register_tag()
-	* function.
-	*/
-	public function register_tag($taginfo)
-	{
-		$tag = strtolower($taginfo->tag);
-		$this->tag_list[] = $tag;
-		$this->tag_information[$tag] = $taginfo;
-	} 
+  /**
+  * Registers a tag in the dictionary, called from the global register_tag()
+  * function.
+  */
+  public function register_tag($taginfo)
+  {
+    $tag = strtolower($taginfo->tag);
+    $this->tag_list[] = $tag;
+    $this->tag_information[$tag] = $taginfo;
+  }
 
-	/**
-	* Gets the tag information about a given tag.
-	* Called from the source_file_parser
-	*/
-	public function get_tag_info($tag)
-	{
-		if(isset($this->tag_information[strtolower($tag)]))
-			return $this->tag_information[strtolower($tag)];
-	} 
+  /**
+  * Gets the tag information about a given tag.
+  * Called from the source_file_parser
+  */
+  public function get_tag_info($tag)
+  {
+    if(isset($this->tag_information[strtolower($tag)]))
+      return $this->tag_information[strtolower($tag)];
+  }
 
-	/**
-	* Gets the list of a registered tags.
-	* Called from the source_file_parser
-	*/
-	public function get_tag_list()
-	{
-		return $this->tag_list;
-	} 
-} 
+  /**
+  * Gets the list of a registered tags.
+  * Called from the source_file_parser
+  */
+  public function get_tag_list()
+  {
+    return $this->tag_list;
+  }
+}
 
 ?>

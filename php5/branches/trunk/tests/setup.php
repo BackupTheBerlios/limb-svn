@@ -1,32 +1,32 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
 * $Id$
 *
-***********************************************************************************/ 	
+***********************************************************************************/
 if (file_exists(dirname(__FILE__) . '/constants.php'))
-	include_once(dirname(__FILE__) . '/constants.php');
+  include_once(dirname(__FILE__) . '/constants.php');
 
 if(!defined('LIMB_DIR'))
   define('LIMB_DIR', dirname(__FILE__) . '/../');
-  
-if(!defined('VAR_DIR'))  
+
+if(!defined('VAR_DIR'))
   define('VAR_DIR', dirname(__FILE__) . '/var/');
 
 if(!defined('CONTENT_LOCALE_ID'))
   define('CONTENT_LOCALE_ID', 'en');
-  
+
 if(!defined('MANAGEMENT_LOCALE_ID'))
   define('MANAGEMENT_LOCALE_ID', 'en');
 
-if(!defined('DEFAULT_MANAGEMENT_LOCALE_ID'))  
+if(!defined('DEFAULT_MANAGEMENT_LOCALE_ID'))
   define('DEFAULT_MANAGEMENT_LOCALE_ID', 'en');
-  
-if(!defined('DEFAULT_CONTENT_LOCALE_ID'))  
+
+if(!defined('DEFAULT_CONTENT_LOCALE_ID'))
   define('DEFAULT_CONTENT_LOCALE_ID','en');
 
 require_once(LIMB_DIR . '/setup.php');

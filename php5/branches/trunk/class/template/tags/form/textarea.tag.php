@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,10 +12,10 @@ require_once(LIMB_DIR . '/class/template/tags/form/control_tag.class.php');
 
 class text_area_tag_info
 {
-	public $tag = 'textarea';
-	public $end_tag = ENDTAG_REQUIRED;
-	public $tag_class = 'text_area_tag';
-} 
+  public $tag = 'textarea';
+  public $end_tag = ENDTAG_REQUIRED;
+  public $tag_class = 'text_area_tag';
+}
 
 register_tag(new text_area_tag_info());
 
@@ -23,13 +23,13 @@ class text_area_tag extends control_tag
 {
   public function __construct()
   {
-	  $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/text_area_component';
-	}
-		
-	public function generate_contents($code)
-	{
-		$code->write_php($this->get_component_ref_code() . '->render_contents();');
-	} 
-} 
+    $this->runtime_component_path = dirname(__FILE__) . '/../../components/form/text_area_component';
+  }
+
+  public function generate_contents($code)
+  {
+    $code->write_php($this->get_component_ref_code() . '->render_contents();');
+  }
+}
 
 ?>

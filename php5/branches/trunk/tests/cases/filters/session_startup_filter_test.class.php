@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -31,39 +31,39 @@ class session_startup_filter_test extends LimbTestCase
   var $toolkit;
   var $response;
   var $session;
-  
+
   function setUp()
   {
     $this->filter = new session_startup_filter($this);
-    
-    $this->toolkit = new MockLimbToolkit($this);    
+
+    $this->toolkit = new MockLimbToolkit($this);
     $this->request = new Mockrequest($this);
     $this->filter_chain = new Mockfilter_chain($this);
     $this->response = new Mockhttp_response($this);
     $this->session = new Mocksession($this);
-    
+
     $this->toolkit->setReturnValue('getSession', $this->session);
-    
+
     Limb :: registerToolkit($this->toolkit);
   }
-  
+
   function tearDown()
   {
     $this->request->tally();
-    $this->response->tally();  
+    $this->response->tally();
     $this->session->tally();
     $this->toolkit->tally();
     $this->filter_chain->tally();
 
-    Limb :: popToolkit();    
+    Limb :: popToolkit();
   }
-    
+
   function test_run()
-  {  
+  {
     $this->session->expectOnce('start');
     $this->filter_chain->expectOnce('next');
-    
-    $this->filter->run($this->filter_chain, $this->request, $this->response);    
+
+    $this->filter->run($this->filter_chain, $this->request, $this->response);
   }
 }
 

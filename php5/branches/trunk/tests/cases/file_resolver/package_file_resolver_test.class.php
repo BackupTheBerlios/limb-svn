@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,8 +12,8 @@ require_once(dirname(__FILE__) . '/base_package_file_resolver_test.class.php');
 require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
 
 Mock :: generatePartial(
-  'package_file_resolver', 
-  'package_file_resolver_test_version', 
+  'package_file_resolver',
+  'package_file_resolver_test_version',
   array('_find_file_in_packages')
 );
 
@@ -23,9 +23,9 @@ class package_file_resolver_test extends base_package_file_resolver_test
   {
     return new package_file_resolver();
   }
-  
+
   function test_resolve_file_name()
-  {    
+  {
     $this->assertEqual($this->resolver->resolve('package2_action'), TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/package2_action');
   }
 

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: support@limb-project.com
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -10,13 +10,13 @@
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/site_object_identifier_generator.interface.php');
 
-class IncrementSiteObjectIdentifierGenerator implements SiteObjectIdentifierGenerator 
+class IncrementSiteObjectIdentifierGenerator implements SiteObjectIdentifierGenerator
 {
   public function generate($site_object)
   {
     $tree = Limb :: toolkit()->getTree();
     $identifier = $tree->get_max_child_identifier($site_object->get_parent_node_id());
-                                                  
+
     if($identifier === false)
       return false;
 
@@ -29,4 +29,4 @@ class IncrementSiteObjectIdentifierGenerator implements SiteObjectIdentifierGene
   }
 }
 
-?> 
+?>
