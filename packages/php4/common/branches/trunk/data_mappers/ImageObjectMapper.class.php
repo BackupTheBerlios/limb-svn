@@ -16,7 +16,7 @@ class ImageObjectMapper extends AbstractDataMapper
 
   function & _getOneTableMapper()
   {
-    if($this->one_table_mapper)
+    if(is_object($this->one_table_mapper))
       return $this->one_table_mapper;
 
     require_once(LIMB_DIR . '/core/data_mappers/OneTableObjectMapper.class.php');

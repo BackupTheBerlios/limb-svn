@@ -22,7 +22,7 @@ class SimpleACLBaseToolkit// implements LimbToolkit
 
   function & getAuthorizer()
   {
-    if($this->authorizer)
+    if(is_object($this->authorizer))
       return $this->authorizer;
 
     include_once(dirname(__FILE__) . '/SimpleACLAuthorizer.class.php');
@@ -38,7 +38,7 @@ class SimpleACLBaseToolkit// implements LimbToolkit
 
   function & getAuthenticator()
   {
-    if($this->authenticator)
+    if(is_object($this->authenticator))
       return $this->authenticator;
 
     include_once(dirname(__FILE__) . '/SimpleACLAuthenticator.class.php');
