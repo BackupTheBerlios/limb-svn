@@ -8,14 +8,38 @@
 * $Id: mail.inc.php 961 2004-12-15 11:14:32Z pachanga $
 *
 ***********************************************************************************/
+@define('USE_PHPMAIL', false);
+@define('SMTP_PORT', '25');
+@define('SMTP_HOST', 'localhost');
+@define('SMTP_AUTH', false);
+@define('SMTP_USER', '');
+@define('SMTP_PASSWORD', '');
+
+function & create_mailer()
+{
+  include_once(PHPMailer_DIR . '/class.phpmailer.php');
+  $mail = new PHPMailer();
+  $mail->LE = "\r\n";
+  if(USE_PHPMAIL)
+    return $mail;
+
+  $mail->IsSMTP();
+  $mail->Host = SMTP_HOST;
+  $mail->Port = SMTP_PORT;
+  if(SMTP_AUTH == true)
+  {
+    $mail->SMTPAuth = true;
+    $mail->Username = SMTP_USER;
+    $mail->Password = SMTP_PASSWORD;
+  }
+
+  return $mail;
+}
 
 function send_plain_mail($recipients, $sender, $subject, $body, $charset = 'windows-1251')
 {
-  include_once(PHPMailer_DIR . '/class.phpmailer.php');
-
-  $mail = new PHPMailer();
+  $mail =& create_mailer();
   $mail->IsHTML(false);
-  $mail->LE = "\r\n";//we're using php mail function!!!
   $mail->CharSet = $charset;
 
   $recipients = process_mail_recipients($recipients);
@@ -36,11 +60,8 @@ function send_plain_mail($recipients, $sender, $subject, $body, $charset = 'wind
 
 function send_html_mail($recipients, $sender, $subject, $html, $text = null, $charset = 'windows-1251')
 {
-  include_once(PHPMailer_DIR . '/class.phpmailer.php');
-
-  $mail = new PHPMailer();
+  $mail =& create_mailer();
   $mail->IsHTML(true);
-  $mail->LE = "\r\n";//we're using php mail function!!!
   $mail->CharSet = $charset;
 
   $mail->Body = $html;
