@@ -5,23 +5,13 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: create_poll_action.class.php 786 2004-10-12 14:24:43Z pachanga $
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/commands/form_create_site_object_command.class.php');
 
-class create_poll_action extends form_create_site_object_action
+class create_poll_form_command extends form_create_site_object_command
 {
-	protected function _define_site_object_class_name()
-	{
-	  return 'poll';
-	}  
-	  
-	protected function _define_dataspace_name()
-	{
-	  return 'create_poll';
-	}
-  
   protected function _define_datamap()
 	{
 	  return complex_array :: array_merge(
@@ -34,13 +24,13 @@ class create_poll_action extends form_create_site_object_action
 	  );     
 	}   
 	
-	protected function _init_validator()
+	protected function _register_validation_rules($validator, $dataspace)
 	{
-		parent :: _init_validator();
+		parent :: _register_validation_rules($validator, $dataspace);
 
-    $this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'start_date'));
-		$this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'finish_date'));
-		$this->validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'restriction'));
+    $validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'start_date'));
+		$validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'finish_date'));
+		$validator->add_rule(array(LIMB_DIR . '/class/validators/rules/required_rule', 'restriction'));
 	}
 }
 

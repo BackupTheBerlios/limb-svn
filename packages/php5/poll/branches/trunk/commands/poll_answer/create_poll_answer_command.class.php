@@ -8,19 +8,14 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once(LIMB_DIR . '/class/core/actions/form_edit_site_object_action.class.php');
+require_once(LIMB_DIR . '/class/core/commands/create_site_object_command.class.php');
 
-class edit_poll_answer_action extends form_edit_site_object_action
+class create_poll_answer_command extends create_site_object_command
 {
 	protected function _define_site_object_class_name()
 	{
 	  return 'poll_answer';
 	}  
-	  
-	protected function _define_dataspace_name()
-	{
-	  return 'edit_poll_answer';
-	}
 }
 
 ?>
