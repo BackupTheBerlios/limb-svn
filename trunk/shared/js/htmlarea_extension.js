@@ -1,17 +1,3 @@
-HTMLArea.isBlockElement = function(el) 
-{
-  if(!el.tagName)//quick and dirty hack
-  {
-    return false;
-  }
-    
-	var blockTags = " body form textarea fieldset ul ol dl li div " +
-		"p h1 h2 h3 h4 h5 h6 quote pre table thead " +
-		"tbody tfoot tr td iframe address ";
-		
-	return (blockTags.indexOf(" " + el.tagName.toLowerCase() + " ") != -1);
-};
-
 function install_limb_full_extension(config)
 {
   config.toolbar = 
@@ -31,7 +17,27 @@ function install_limb_full_extension(config)
 		  "about" ]
 	];
 	
-  config.registerButton({
+	register_limb_buttons(config);	
+}
+
+function install_limb_lite_extension(config)
+{		
+  config.toolbar = [
+			[ 'bold', 'italic', 'underline', 'strikethrough', 'separator',
+			  'subscript', 'superscript', 'separator',
+			  'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'separator',
+				'insertorderedlist', 'insertunorderedlist', 'outdent', 'indent', 'separator',
+				'copy', 'cut', 'paste','separator',
+			  "inserthorizontalrule", "createlink", "insertimage", "inserttable", "insertlimbimage", "insertlimbfile",  "clear_msw", "htmlmode", "separator"
+			]
+		];
+		
+	register_limb_buttons(config);
+}
+
+function register_limb_buttons(config)
+{
+    config.registerButton({
     id        : "insertlimbimage",
     tooltip   : "Insert image from repository",
     image     : "/shared/images/editor/ed_image.gif",
@@ -42,7 +48,7 @@ function install_limb_full_extension(config)
   config.registerButton({
     id        : "insertlimbfile",
     tooltip   : "Insert file from repository",
-    image     : "/shared/images/editor/ed_link.gif",
+    image     : "/shared/images/editor/ed_link_file.gif",
     textMode  : false,
     action    : insert_limb_repository_file
   });	
@@ -73,7 +79,6 @@ function insert_limb_repository_image(e, id)
       {
   			parent = editor.getParentElement();		
       	      
-        // delete selected content and replace with image
         if (parent.tagName == 'IMG')
           editor.execCommand('Delete');
         
@@ -196,54 +201,37 @@ function insert_limb_repository_file(e, id)
 	
   	function (file)
     {
-      var htmlSelectionControl = "Control";
-      var grngMaster = editor._doc.selection.createRange();
+			editor._doc.execCommand("createlink", false, '/root?node_id=' + file['node_id']);
+			a = editor.getParentElement();
+			var sel = editor._getSelection();
+			var range = editor._createRange(sel);
+			if (!HTMLArea.is_ie) 
+			{
+				a = range.startContainer;
+				if (!/^a$/i.test(a.tagName))
+					a = a.nextSibling;
+			}
+			
+			if(a)  		  
+        a.title = file['name'] + ' : ' + file['size'];
       
-      // delete selected content and replace with image
-      if (editor._doc.selection.type == htmlSelectionControl)
-      {
-        grngMaster.execCommand('Delete');
-        grngMaster = editor._doc.selection.createRange();
-      }
-        
-    	idstr = "556e697175657e537472696e67";
-      grngMaster.execCommand("CreateLink", null, idstr);
-      coll = editor._doc.getElementsByTagName("A");
-      for(i=0; i<coll.length; i++)
-      {
-      	if (coll[i].href == idstr)
-      	{
-    		  link_element = coll[i];
-      		if (link_element.firstChild == null)
-      		{
-      			txt = editor._doc.createTextNode(file.name);
-      			link_element.appendChild(txt);
-      		}
-    		  link_element.href = '/root?node_id=' + file.node_id;
-    		  link_element.title = file.name;
-    		}
-    	}
-    
-      grngMaster.collapse(false);
-      grngMaster.select();
     }, 
 	  function (obj){});
 }
 
-/*function install_limb_lite_extension(config)
-{		
-  config.toolbar = [
-			[ 'bold', 'italic', 'underline', 'strikethrough', 'separator',
-			  'subscript', 'superscript', 'separator',
-			  'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'separator',
-				'insertorderedlist', 'insertunorderedlist', 'outdent', 'indent', 'separator',
-				'copy', 'cut', 'paste','separator',
-			  'inserthorizontalrule', 'createlink', 'insertimage', 'insertlinkfile', 'htmlmode', 'separator',
-			  'popupeditor', 'separator', 'clear_msw'
-			]
-		];
-}*/
-
+HTMLArea.isBlockElement = function(el) //quick and dirty hack
+{
+  if(!el.tagName)
+  {
+    return false;
+  }
+    
+	var blockTags = " body form textarea fieldset ul ol dl li div " +
+		"p h1 h2 h3 h4 h5 h6 quote pre table thead " +
+		"tbody tfoot tr td iframe address ";
+		
+	return (blockTags.indexOf(" " + el.tagName.toLowerCase() + " ") != -1);
+};
 
 function clear_msw(editor)
 {
