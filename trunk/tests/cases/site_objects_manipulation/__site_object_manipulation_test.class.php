@@ -42,6 +42,7 @@ class site_object_manipulation_test extends UnitTestCase
 	var $db = null;
 	var $object = null;
 	
+	var $root_node_id = '';
 	var $parent_node_id = '';
 	var $sub_node_id = '';
 		 	
@@ -61,20 +62,22 @@ class site_object_manipulation_test extends UnitTestCase
   	$tree =& tree :: instance();
 
 		$values['identifier'] = 'root';
-		$root_node_id = $tree->create_root_node($values, false, true);
+		$values['object_id'] = 100;
+		$this->root_node_id = $tree->create_root_node($values, false, true);
+		
+		$class_id = $this->object->get_class_id();
+		$this->db->sql_insert('sys_site_object', array('id' => 100, 'class_id' => $class_id, 'current_version' => 1));
 
 		$values['identifier'] = 'ru';
 		$values['object_id'] = 1;
-		$this->parent_node_id = $tree->create_sub_node($root_node_id, $values);
+		$this->parent_node_id = $tree->create_sub_node($this->root_node_id, $values);
 
-		$class_id = $this->object->get_class_id();
 		$this->db->sql_insert('sys_site_object', array('id' => 1, 'class_id' => $class_id, 'current_version' => 1));
 
 		$values['identifier'] = 'document';
 		$values['object_id'] = 10;
 		$this->sub_node_id = $tree->create_sub_node($this->parent_node_id, $values);
 
-		$class_id = $this->object->get_class_id();
 		$this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => $class_id, 'current_version' => 1));
   }
   
@@ -133,7 +136,7 @@ class site_object_manipulation_test extends UnitTestCase
 		
   	$this->_check_sys_class_record();
   }
-  
+    
   function test_versioned_update()
   {
   	$this->object->set_parent_node_id($this->parent_node_id);

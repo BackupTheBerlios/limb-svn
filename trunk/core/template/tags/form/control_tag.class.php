@@ -90,29 +90,6 @@ class control_tag extends server_tag_component_tag
 		$code->write_php($this->get_component_ref_code() . '->render_js_validation();');
 		$code->write_php($this->get_component_ref_code() . '->render_errors();');
 	}
-	
-	function prepare()
-	{
-		parent :: prepare();
-		
-		if(isset($this->attributes['locale_type']))
-		{
-			if(strtolower($this->attributes['locale_type']) == 'content')
-				$locale_constant = constant('CONTENT_LOCALE_ID');	
-			else
-				$locale_constant = constant('MANAGEMENT_LOCALE_ID');	
-		}
-		else
-			$locale_constant = constant('MANAGEMENT_LOCALE_ID');	
-		
-		if (isset($this->attributes['locale_value']))
-		{
-			if(isset($this->attributes['locale_file']))
-				$this->attributes['value'] = strings :: get($this->attributes['locale_value'], $this->attributes['locale_file'], $locale_constant);
-			else
-				$this->attributes['value'] = strings :: get($this->attributes['locale_value'], 'common', $locale_constant);
-		}
-	}
 } 
 
 ?>

@@ -177,6 +177,8 @@ class form_element extends tag_component
 		
 	function render_attributes()
 	{				
+		$this->_process_localized_value();
+
 		foreach ($this->attributes as $attrib_name => $value)
 		{	
 			if($this->attach_form_prefix && $attrib_name == 'name')
@@ -195,6 +197,33 @@ class form_element extends tag_component
 			} 
 		} 
 	} 
-	
+ 
+	function _process_localized_value()
+	{
+		if (!isset($this->attributes['locale_value']))
+			return;
+		
+		if(isset($this->attributes['locale_type']))
+		{
+			if(strtolower($this->attributes['locale_type']) == 'content')
+				$locale_constant = constant('CONTENT_LOCALE_ID');	
+			else
+				$locale_constant = constant('MANAGEMENT_LOCALE_ID');	
+			
+			unset($this->attributes['locale_type']);
+		}
+		else
+			$locale_constant = constant('MANAGEMENT_LOCALE_ID');	
+		
+		if(isset($this->attributes['locale_file']))
+		{
+			$this->attributes['value'] = strings :: get($this->attributes['locale_value'], $this->attributes['locale_file'], $locale_constant);
+			unset($this->attributes['locale_file']);
+		}	
+		else
+			$this->attributes['value'] = strings :: get($this->attributes['locale_value'], 'common', $locale_constant);
+		
+		unset($this->attributes['locale_value']);
+	}
 } 
 ?>
