@@ -18,7 +18,7 @@ class period_news_object_controller extends site_object_controller
 		$this->_actions = array(
 				'display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/news_object/display.html',
+						'template_path' => '/period_news_object/display.html',
 				),
 				'edit' => array(
 						'permissions_required' => 'w',
@@ -26,7 +26,7 @@ class period_news_object_controller extends site_object_controller
 						'JIP' => true,
 						'action_name' => strings :: get('edit_newsline', 'newsline'),
 						'action_path' => '/period_news/edit_period_news_action',
-						'template_path' => '/news_object/edit.html',
+						'template_path' => '/period_news_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
 				'publish' => array(

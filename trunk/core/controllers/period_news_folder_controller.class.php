@@ -17,15 +17,15 @@ class period_news_folder_controller extends site_object_controller
 		$this->_actions = array(
 				'display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/news_folder/display.html'
+						'template_path' => '/period_news_folder/display.html'
 				),
 				'admin_display' => array(
 						'permissions_required' => 'rw',
-						'template_path' => '/news_folder/admin_display.html'
+						'template_path' => '/period_news_folder/admin_display.html'
 				),
 				'create_news' => array(
 						'permissions_required' => 'w',
-						'template_path' => '/news_object/create.html',
+						'template_path' => '/period_news_object/create.html',
 						'action_path' => '/period_news/create_period_news_action',
 						'JIP' => true,
 						'popup' => true,

@@ -10,7 +10,14 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/locale/strings.class.php');
-require_once(PROJECT_DIR . '/chat/chat_setup.php');
+if(file_exists(PROJECT_DIR . '/chat/chat_setup.php'))
+{
+	require_once(PROJECT_DIR . '/chat/chat_setup.php');
+}
+else
+{
+	require_once(LIMB_DIR . 'core/model/chat/chat_setup.php');
+}
 
 class chat_system
 {
