@@ -5,22 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: DAOGroup.class.php 1073 2005-01-29 15:01:02Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/tests/lib/LimbGroupTest.class.php');
-
-class LimbRootGroupTest extends LimbGroupTest
+class ORMGroup extends LimbGroupTest
 {
-  function LimbRootGroupTest()
+  function ORMGroup()
   {
-    parent :: LimbGroupTest('all LIMB tests');
+    parent :: LimbGroupTest('ORM tests');
   }
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases');
+    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/orm');
   }
 }
-
 ?>

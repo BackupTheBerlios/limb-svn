@@ -5,19 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: DataMappersGroup.class.php 1074 2005-01-29 15:46:16Z pachanga $
 *
 ***********************************************************************************/
-class SiteObjectsGroup extends LimbGroupTest
+class DataMappersGroup extends LimbGroupTest
 {
-  function SiteObjectsGroup()
+  function DataMappersGroup()
   {
-    parent :: LimbGroupTest('domain objects tests');
+    parent :: LimbGroupTest('data mappers tests');
   }
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/domain_objects');
+    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/orm/data_mappers');
   }
 }
 ?>

@@ -5,19 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: DomainObjectsGroup.class.php 1074 2005-01-29 15:46:16Z pachanga $
 *
 ***********************************************************************************/
-class DataMappersGroup extends LimbGroupTest
+class DomainObjectsGroup extends LimbGroupTest
 {
-  function DataMappersGroup()
+  function DomainObjectsGroup()
   {
-    parent :: LimbGroupTest('data mappers tests');
+    parent :: LimbGroupTest('domain objects tests');
   }
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/data_mappers');
+    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/orm/domain_objects');
   }
 }
 ?>
