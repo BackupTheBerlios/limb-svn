@@ -14,7 +14,6 @@ class set_publish_status_action extends action
 {
 	function perform(&$request, &$response)
 	{
-		trigger_error('Stop', E_USER_WARNING);
 		$request->set_status(REQUEST_STATUS_SUCCESS);
 		
 		if($request->has_attribute('popup'))
@@ -44,7 +43,7 @@ class set_publish_status_action extends action
 		
 		$this->_apply_access_policy($object, $action);
 
-	  fetcher :: flush_cache();
+	  flush_fetcher_cache();
 	}
 	
 	function get_publish_status($object)

@@ -89,7 +89,7 @@ class form_edit_site_object_action extends form_site_object_action
 
 	  $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 	  
-	  fetcher :: flush_cache();
+	  flush_fetcher_cache();
 	}
 	
 	function _update_object_operation()
