@@ -14,23 +14,43 @@ TagDictionary::registerTag($taginfo, __FILE__);
 
 require_once(LIMB_DIR . '/core/i18n/Locale.class.php');
 
-class LimbLocaleNumberTag extends CompilerDirectiveTag
+class LimbLocaleNumberTag extends ServerComponentTag
 {
-	function preParse() 
-  {
-		return PARSER_FORBID_PARSING;
-	}
+  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/locale/LocaleNumberFormatComponent.class.php';
+  var $runtimeComponentName = 'LocaleNumberFormatComponent';
 
-	function CheckNestingLevel() 
+  function preParse()
   {
-		if ($this->findParentByClass('LocaleNumberFormatTag')) 
-		  $this->raiseCompilerError('BADSELFNESTING');
-	}
-  
+    return PARSER_FORBID_PARSING;
+  }
+
+  function CheckNestingLevel()
+  {
+    if ($this->findParentByClass('LocaleNumberFormatTag'))
+      $this->raiseCompilerError('BADSELFNESTING');
+  }
+
   function generateContents(&$code)
   {
+    if($fract_digits = $this->getAttribute('fract_digits'))
+      $code->writePhp($this->getComponentRefCode() . '->setFractDigits("'. $fract_digits .'");');
+
+    if($thousand_separator = $this->getAttribute('thousand_separator'))
+      $code->writePhp($this->getComponentRefCode() . '->setThousandSeparator("'. $thousand_separator .'");');
+
+    if($decimal_symbol = $this->getAttribute('decimal_symbol'))
+      $code->writePhp($this->getComponentRefCode() . '->setDecimalSymbol("'. $decimal_symbol .'");');
+
+    $locale = $this->_getLocale();
+    $code->writePhp($this->getComponentRefCode() . '->setLocale("'. $locale .'");');
+
+    $value = $this->_getValue();
+
+    $code->writePhp('echo' . $this->getComponentRefCode() . '->format("'. $value .'");');
+
+    /*
     $locale =& $this->_getLocale();
-    
+
     if(!$fract_digits = $this->getAttribute('fract_digits'))
       $fract_digits = $locale->fract_digits;
 
@@ -40,29 +60,39 @@ class LimbLocaleNumberTag extends CompilerDirectiveTag
     if(!$thousand_separator = $this->getAttribute('thousand_separator'))
     {
       $thousand_separator = $locale->thousand_separator;
-    }  
-      
+    }
+
     if($text_node = $this->findChildByClass('TextNode'))
     {
-      $content =& $text_node->contents; 
-      
+      $content =& $text_node->contents;
+
       $code->writeHTML( number_format($content, $fract_digits, $decimal_symbol, $thousand_separator));
     }
     elseif($value = $this->getAttribute('value'))
     {
       $code->writeHTML( number_format($value, $fract_digits, $decimal_symbol, $thousand_separator));
-    }
-    
+    }*/
+
     $this->removeChildren();
   }
-  
-  function & _getLocale()
+
+  function _getValue()
   {
-    $toolkit =& Limb :: toolkit();
-    
+    if($text_node = $this->findChildByClass('TextNode'))
+      return $text_node->contents;
+    elseif($value = $this->getAttribute('value'))
+      return $value;
+    else
+      $this->raiseCompilerError('MISSINGREQUIREATTRIBUTE',
+                                array('attribute' => 'value'));
+
+  }
+
+  function _getLocale()
+  {
     if($locale = $this->getAttribute('locale'))
-      return $toolkit->getLocale($locale);
-    
+      return $locale;
+
     if($locale_type = $this->getAttribute('locale_type'))
     {
       if(strtolower($locale_type) == 'management')
@@ -73,14 +103,14 @@ class LimbLocaleNumberTag extends CompilerDirectiveTag
     else
       $locale_constant = 'CONTENT_LOCALE_ID';
 
-    return $toolkit->getLocale(constant($locale_constant));
+    return constant($locale_constant);
   }
 
-	function removeChildren() 
+  function removeChildren()
   {
-		foreach(array_keys($this->children) as $key) 
-			unset($this->children[$key]);
-	}  
+    foreach(array_keys($this->children) as $key)
+      unset($this->children[$key]);
+  }
 }
 
 ?>

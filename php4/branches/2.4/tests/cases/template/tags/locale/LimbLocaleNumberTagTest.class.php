@@ -39,15 +39,15 @@ class LimbLocaleNumberTagTestCase extends LimbTestCase
   function testUseOtherLocale()
   {
     $toolkit =& new MockLimbToolkit($this);
-    
+
     $real_toolkit = Limb :: toolkit();
     $locale = $real_toolkit->getLocale('ru');
     $locale->fract_digits = 4;
-    
+
     $toolkit->setReturnReference('getLocale', $locale, array('ru'));
 
     Limb :: registerToolkit($toolkit);
-    
+
     $template = '<limb:locale:NUMBER locale="ru">100000</limb:locale:NUMBER>';
 
     RegisterTestingTemplate('/limb/locale_number_russian.html', $template);
@@ -59,7 +59,7 @@ class LimbLocaleNumberTagTestCase extends LimbTestCase
     $toolkit->tally();
     Limb :: popToolkit();
   }
-  
+
   function testUseValue()
   {
     $template = '<limb:locale:NUMBER locale="en" value="100000"/>';
@@ -103,8 +103,8 @@ class LimbLocaleNumberTagTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), '100 000.00');
   }
-  
-  // I can't test locale_type attribute since CONTENT_LOCALE_ID and MANAGEMENT_LOCALE_ID 
+
+  // I can't test locale_type attribute since CONTENT_LOCALE_ID and MANAGEMENT_LOCALE_ID
   // are equal in test environment
 }
 ?>
