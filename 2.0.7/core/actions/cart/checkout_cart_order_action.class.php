@@ -18,6 +18,7 @@ require_once(LIMB_DIR . 'core/lib/mail/send_html_mail.inc.php');
 require_once(LIMB_DIR . 'core/template/template.class.php');
 require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
+require_once(LIMB_DIR . 'core/model/sys_param.class.php');
 
 class checkout_cart_order_action extends form_action
 {
@@ -46,6 +47,16 @@ class checkout_cart_order_action extends form_action
 		);
 		$this->_import($data);
 	}
+
+	function _get_email()
+	{
+		$sys_param =& sys_param :: instance();
+
+		if(!$email = $sys_param->get_param('contact_email', 'char'))
+			$email = constant('ADMINISTRATOR_EMAIL');		
+
+		return $email;
+	}
 	
 	function _valid_perform()
 	{
@@ -54,7 +65,9 @@ class checkout_cart_order_action extends form_action
 
 		$subject = sprintf(strings :: get('message_subject', 'cart'), $_SERVER['HTTP_HOST']);
 		
-		if(!send_plain_mail(array(ADMINISTRATOR_EMAIL), 
+		$recipient_email = $this->_get_email();
+
+		if(!send_plain_mail(array($recipient_email), 
 												$_SERVER['SERVER_ADMIN']. '<' . $_SERVER['HTTP_HOST'] . '> ', 
 												$subject, 
 												$text_body))
