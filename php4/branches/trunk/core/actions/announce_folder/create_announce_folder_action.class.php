@@ -8,25 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . 'core/actions/form_create_site_object_action.class.php');
+require_once(LIMB_DIR . 'core/actions/site_object/create_action.class.php');
 
-class create_announce_folder_action extends form_create_site_object_action
+class create_announce_folder_action extends create_action
 {
-	function _define_site_object_class_name()
+	function _define_controller_name()
 	{
-	  return 'announce_folder';
-	}  
-	  
-	function _define_dataspace_name()
-	{
-	  return 'create_announce_folder';
-	}
-	
-	function _init_validator()
-	{
-		parent :: _init_validator();
-
-    $this->validator->add_rule($v = array(LIMB_DIR . 'core/lib/validators/rules/required_rule', 'title'));
+	  return 'announce_folder_controller';
 	}
 }
 

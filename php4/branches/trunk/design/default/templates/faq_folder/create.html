@@ -1,8 +1,8 @@
 <core:WRAP file="popup.html" placeholder="content">
 <h2><locale:STRING name="faq_folder_creation" file="faq"></h2>
-<form method="post" name="create_faq_folder" id="create_faq_folder">
+<form method="post" name="create_site_object" id="create_site_object">
   <table width="100%" border="0" cellspacing="0" cellpadding="3">
-		<core:INCLUDE file="/faq_folder/form_fields.html">
+    <core:INCLUDE file='/admin/admin_form_items/folder_form_fields.html'>
     <tr>
       <td colspan=2 align=center height=30>
       <action_button action="create_faq_folder" name="create" type="submit" id="create" locale_value="create" class="button">

@@ -9,18 +9,18 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
-	
+
 class empty_controller extends site_object_controller
 {
-	function _define_actions()
-	{
-		return array();
-	}
-	
-	function _define_default_action()
-	{
-	  return '';
-	}
+  function _define_actions()
+  {
+    return array();
+  }
+
+  function _define_default_action()
+  {
+    return '';
+  }
 }
 
 ?>
