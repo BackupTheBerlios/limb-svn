@@ -4,14 +4,16 @@
 <core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
 
-<fetch:SUB_BRANCH target='images_folder'>
-	<core:PARAMETER name='order' value='priority=ASC'>
+<fetch:SUB_BRANCH target='images_folder' navigator="pager">
+  <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
-<fetch:SUB_BRANCH target='images' navigator="pager" >
-	<core:PARAMETER name='loader_class_name' value='image_object' >
-	<core:PARAMETER name='order' value='priority=ASC'>
+<fetch:SUB_BRANCH target='images' navigator="pager2" >
+  <core:PARAMETER name='loader_class_name' value='image_object' >
+  <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
 
 <grid:LIST id='images_folder'>
 <table border=0 cellspacing=2 cellpadding=0>
@@ -21,7 +23,7 @@
 </table>
 </grid:LIST>
 
-<core:INCLUDE file="pager.html">
+<core:INCLUDE file="pager2.html">
 
 <grid:LIST id='images'>
 <table border=0 cellspacing=2 cellpadding=0>
@@ -29,18 +31,18 @@
 <core:INCLUDE file='/admin/grid_items/no_publish_grid_header.html'>
 <grid:ITERATOR>
 <tr>
-	<td><core:INCLUDE file="/admin/selector.html"></td>
-	<td><core:INCLUDE file='/admin/priority_input.html'></td>
-	<td>
+  <td><core:INCLUDE file="/admin/selector.html"></td>
+  <td><core:INCLUDE file='/admin/priority_input.html'></td>
+  <td>
     <core:INCLUDE file="/admin/list_item_hint.html">
-		<core:OPTIONAL for='title'>
-		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
-		</core:OPTIONAL>
-		<core:DEFAULT for='title'>
-		<img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
-		</core:DEFAULT>
-	</td>
-	<td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+    <core:OPTIONAL for='title'>
+    <img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
+    </core:OPTIONAL>
+    <core:DEFAULT for='title'>
+    <img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
+    </core:DEFAULT>
+  </td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
 <core:INCLUDE file='/admin/full_grid_footer.html'>

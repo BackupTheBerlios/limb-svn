@@ -2,13 +2,15 @@
 
 <fetch:MAPPED>
 <core:INCLUDE file="jip_actions/normal.html">
-<br>
 {$content}
-</fetch:MAPPED>
+<core:OPTIONAL for="content">
 <br>
+</core:OPTIONAL>
+</fetch:MAPPED>
+
 <fetch:SUB_BRANCH target='messages' pager='pager'>
-	<core:PARAMETER name='loader_class_name' value='message' >
-	<core:PARAMETER name='order' value='priority=ASC'>
+  <core:PARAMETER name='loader_class_name' value='message' >
+  <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">

@@ -28,14 +28,13 @@ class session_history_manager
     $request =& request :: instance();
     $tab_id = session_history_manager :: datermine_tab_id();
 
-    $history = session :: get('session_history');
+    if(!$history = session :: get('session_history'))
+      $history = array();
+
     if(!isset($history[$tab_id]))
       $history[$tab_id] = array();
 
-    if($request->uri)
-      $uri =& $request->uri;
-    else
-      $uri =& new uri($_SERVER['PHP_SELF']);
+    $uri =& $request->get_uri();
 
     $uri->remove_query_item('rn');
     if($uri->get_query_item('popup'))

@@ -5,8 +5,8 @@
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='items' navigator="pager" >
-	<core:PARAMETER name='loader_class_name' value='faq_object' >
-	<core:PARAMETER name='order' value='priority=ASC'>
+  <core:PARAMETER name='loader_class_name' value='faq_object' >
+  <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">
@@ -27,6 +27,6 @@
   <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
 </tr>
 </grid:ITERATOR>
-<core:INCLUDE file='/admin/full_grid_footer.html'> 
+<core:INCLUDE file='/admin/full_grid_footer.html'>
 </table>
 </grid:LIST>

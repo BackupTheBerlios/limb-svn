@@ -4,15 +4,17 @@
 <core:INCLUDE file="jip_actions/normal.html">
 </fetch:MAPPED>
 
-<fetch:SUB_BRANCH target='files_folder'>
+<fetch:SUB_BRANCH target='files_folder' navigator="pager">
   <core:PARAMETER name='loader_class_name' value='site_object'>
   <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
-<fetch:SUB_BRANCH target='files'  navigator="pager" >
+<fetch:SUB_BRANCH target='files'  navigator="pager2" >
   <core:PARAMETER name='loader_class_name' value='file_object' >
   <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
+
+<core:INCLUDE file="pager.html">
 
 <grid:LIST id='files_folder'>
 <table>
@@ -22,7 +24,7 @@
 </table>
 </grid:LIST>
 
-<core:INCLUDE file="pager.html">
+<core:INCLUDE file="pager2.html">
 
 <grid:LIST id='files'>
 <table>

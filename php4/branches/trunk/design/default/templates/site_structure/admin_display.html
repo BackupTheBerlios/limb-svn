@@ -30,10 +30,7 @@
 <tr class=row>
 <td><core:INCLUDE file="/admin/selector.html"></td>
 <td height=100%><grid:TREE_ITEM></td>
-<td height=100%>
-  <core:INCLUDE file="/admin/list_item_hint.html">
-  #<b>{$node_id}</b>
-</td>
+<td height=100%>#<b>{$node_id}</b><core:INCLUDE file="/admin/list_item_hint.html"></td>
 <td align="center"><core:INCLUDE file="published_status.html"></td>
 <td><core:INCLUDE file="/jip_actions/dropdown.html"></td>
 <td><a title='<locale:STRING name="change_controller" file="site_structure">' href="{^path}?action=change_controller&id={$node_id}&popup=1" onclick="return click_href(this.href);" ><img src='/shared/images/configure.gif'></a><small>&nbsp;{$controller_name}</small></td>
