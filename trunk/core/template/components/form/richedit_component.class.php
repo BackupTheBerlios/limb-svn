@@ -36,7 +36,8 @@ class richedit_component extends text_area_component
     <script type='text/javascript'>  
       var _editor_url = '/shared/HTMLArea-3.0-rc1/';    
     </script>
-  		
+  	
+  	<script type='text/javascript' src='/shared/js/htmlarea_extension.js'></script>		
     <script type='text/javascript' src='/shared/HTMLArea-3.0-rc1/htmlarea.js'></script>";	
 	}
 
@@ -52,6 +53,9 @@ class richedit_component extends text_area_component
       function init_richedit_{$id}()
       {
 	    	var editor = new HTMLArea('{$id}');
+	    	
+	    	install_limb_full_extension(editor.config);
+	    	
         editor.config.width = '600px';
         editor.config.height = '400px';  	    	
         editor.generate();
