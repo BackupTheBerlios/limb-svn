@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/template/components/form/select_multiple_component.class.php');
 
-class select_double_component extends select_multiple_component 
+class select_double_component extends select_multiple_component
 {
   function _render_js()
   {
@@ -24,13 +24,13 @@ class select_double_component extends select_multiple_component
   {
     $this->_render_js();
     $selector_name = 'doubleselect_' . $this->get_attribute('id');
-    $field_name = $this->_process_name_attribute($this->get_field_name());
-    
+    $field_name = $this->_process_name_attribute($this->attributes['name']);
+
     echo "
       <script>
       var {$selector_name} = new DoubleSelect('{$field_name}');
       {$selector_name}.replaceSelect();
-      </script>    
+      </script>
     ";
   }
 }
