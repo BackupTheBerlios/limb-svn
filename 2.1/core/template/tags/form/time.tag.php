@@ -9,6 +9,8 @@
 *
 ***********************************************************************************/
 
+require_once(LIMB_DIR . '/core/template/tags/form/select.tag.php');
+
 class select_time_tag_info
 {
 	var $tag = 'time';
