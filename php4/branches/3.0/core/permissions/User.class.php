@@ -42,8 +42,6 @@ class User extends Object
 
   function logout()
   {
-    $this->reset();
-
     $this->_is_logged_in = false;
   }
 
@@ -52,14 +50,34 @@ class User extends Object
     return $this->_is_logged_in;
   }
 
+  function getId()
+  {
+    return $this->get('id');
+  }
+
+  function setId($id)
+  {
+    $this->set('id', $id);
+  }
+
   function getLogin()
   {
     return $this->get('login');
   }
 
-  function getId()
+  function setLogin($login)
   {
-    return $this->get('id', DEFAULT_USER_ID);
+    return $this->set('login', $login);
+  }
+
+  function getGroups()
+  {
+    return $this->get('groups');
+  }
+
+  function setGroups($groups)
+  {
+    $this->set('groups', $groups);
   }
 }
 ?>

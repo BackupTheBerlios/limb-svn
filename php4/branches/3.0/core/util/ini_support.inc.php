@@ -35,6 +35,12 @@ function getIni($file_name, $use_cache = null)
   {
     $resolver =& Handle :: resolve(getFileResolver('ini'));
     $resolved_file = $resolver->resolve($file_name);
+
+    if (catch('LimbException', $e))
+    {
+      throw($e);
+      return;
+    }
   }
 
   return new Ini($resolved_file, $use_cache);

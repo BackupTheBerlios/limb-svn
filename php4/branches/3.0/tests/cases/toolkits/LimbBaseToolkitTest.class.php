@@ -89,18 +89,6 @@ class LimbBaseToolkitTest extends LimbTestCase
     $this->assertEqual($conf->getOption('test'), 1);
   }
 
-  function testGetAuthenticator()
-  {
-    $this->assertIsA($this->toolkit->getAuthenticator(),
-                     'SimpleAuthenticator');
-  }
-
-  function testGetAuthorizer()
-  {
-    $this->assertIsA($this->toolkit->getAuthorizer(),
-                     'SimpleAuthorizer');
-  }
-
   function testGetRequest()
   {
     $this->assertIsA($this->toolkit->getRequest(),

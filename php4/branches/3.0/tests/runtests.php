@@ -12,6 +12,9 @@ require_once(dirname(__FILE__) . '/setup.php');
 require_once(dirname(__FILE__) . '/LimbRootGroupTest.class.php');
 require_once(dirname(__FILE__) . '/lib/CliTestRunner.class.php');
 
+$inst =& PackagesInfo :: instance();
+$inst->loadPackages();//???
+
 $root_group = new LimbRootGroupTest();
 $test_runner = new CLITestRunner();
 

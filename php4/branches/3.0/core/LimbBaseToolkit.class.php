@@ -13,8 +13,6 @@ class LimbBaseToolkit// implements LimbToolkit
 {
   var $current_dataspace_name = 'default';
   var $fetcher;
-  var $authorizer;
-  var $authenticator;
   var $response;
   var $request;
   var $session;
@@ -127,30 +125,6 @@ class LimbBaseToolkit// implements LimbToolkit
       $this->ini_cache = array();
     elseif(isset($this->ini_cache[$ini_path]))
       unset($this->ini_cache[$ini_path]);
-  }
-
-  function & getAuthenticator()
-  {
-    if($this->authenticator)
-      return $this->authenticator;
-
-    include_once(LIMB_SIMPLE_PERMISSIONS_DIR . '/SimpleAuthenticator.class.php');
-
-    $this->authenticator = new SimpleAuthenticator();
-
-    return $this->authenticator;
-  }
-
-  function & getAuthorizer()
-  {
-    if($this->authorizer)
-      return $this->authorizer;
-
-    include_once(LIMB_SIMPLE_PERMISSIONS_DIR . '/SimpleAuthorizer.class.php');
-
-    $this->authorizer = new SimpleAuthorizer();
-
-    return $this->authorizer;
   }
 
   function & getUOW()

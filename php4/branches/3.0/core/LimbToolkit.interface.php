@@ -24,8 +24,6 @@ class LimbToolkit
   function getUser(){}
   function getINI($ini_path){}
   function flushINIcache(){}
-  function getAuthorizer(){}
-  function getAuthenticator(){}
   function getRequest(){}
   function getResponse(){}
   function getLocale(){}
