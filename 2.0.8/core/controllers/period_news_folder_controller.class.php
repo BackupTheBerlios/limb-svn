@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: school_news_folder_controller.class.php 33 2004-03-10 16:05:12Z server $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
@@ -42,6 +42,15 @@ class period_news_folder_controller extends site_object_controller
 						'template_path' => '/site_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete'),
+						'action_path' => '/site_object/delete_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				), 				
 		);
  		
 		parent :: site_object_controller();

@@ -240,6 +240,7 @@ class metadata_component extends component
 	
 	function &_get_mapped_controller()//for testing
 	{
+		trigger_error('', E_USER_WARNING);
 		$controller =& get_mapped_controller();
 		return $controller;
 	}

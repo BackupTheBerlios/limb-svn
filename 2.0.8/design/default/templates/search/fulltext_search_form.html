@@ -1,5 +1,5 @@
 <fieldset>
-	<legend style='color:#000000'>Поиск по сайту</legend>
+	<legend style='color:#000000'><locale:STRING name='fulltext_search' file='search' locale_type='content'></legend>
 	<table>
 	<form id='full_text_search_form' name='search_form' action='/root/search' method='get'>
 	  <tr>
@@ -11,7 +11,7 @@
 			</td>
 	    <td>
 				<select id='fulltext_search_limit_options' name='limit' class='input' options_ini_file='limit_options'></select>
-		    <input type='submit' class='button' value='Найти'>
+		    <input type='submit' class='button' locale_value='search' locale_type='content' locale_file='search'>
 		    <core:LITERAL><input type='hidden' name='action' value='fulltext_search'></core:LITERAL>
 	    </td>
 	  </tr>

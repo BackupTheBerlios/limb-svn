@@ -55,30 +55,42 @@ if($_REQUEST['action'] == 'create_object' && $params_set)
   $tree =& limb_tree :: instance();
 	
 	$object =& site_object_factory :: create($params['class']);
-
+	
+	$is_root = false;
 	if(!$parent_data = fetch_one_by_path($params['parent_path']))
 	{
-		echo('parent object not found');
-		exit();
+		if ($params['parent_path'] == '/')
+			$is_root = true;
+		else
+		{	
+			echo('parent object not found');
+			exit();
+		}	
 	}	
-
-	$params['parent_node_id'] = $parent_data['node_id'];
-	$parent_object =& site_object_factory :: instance($parent_data['class_name']);
-	$parent_object->import_attributes($parent_data);
-
-
+	
+	if (!$is_root)
+		$params['parent_node_id'] = $parent_data['node_id'];
+	else	
+		$params['parent_node_id'] = 0;
+		
 	$object->import_attributes($params);
 
-	if($object->create())
+	if($object->create($is_root))
 		echo $params['parent_path'].'/'. $params['identifier'].' created <br/>';
 	else
 	{
 		echo('object was not created');
 		exit();
 	}	
-
-	$access_policy =& access_policy :: instance();
-	$access_policy->save_object_access($object, $parent_object);
+	
+	if (!$is_root)
+	{
+		$parent_object =& site_object_factory :: instance($parent_data['class_name']);
+		$parent_object->import_attributes($parent_data);
+	
+		$access_policy =& access_policy :: instance();
+		$access_policy->save_object_access($object, $parent_object);
+	}	
 
 
   $db->commit();
