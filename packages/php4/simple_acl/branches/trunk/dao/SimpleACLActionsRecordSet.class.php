@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/IteratorDbDecorator.class.php');
-require_once(dirname(__FILE__) . '/../SimpleACL.class.php');
 
 class SimpleACLActionsRecordSet extends IteratorDbDecorator
 {
@@ -33,7 +32,7 @@ class SimpleACLActionsRecordSet extends IteratorDbDecorator
     if ($this->authorizer)
       return $this->authorizer;
 
-    $toolkit =& SimpleACL :: toolkit();
+    $toolkit =& Limb :: toolkit('SimpleACL');
     $this->authorizer =& $toolkit->getAuthorizer();
 
     return $this->authorizer;

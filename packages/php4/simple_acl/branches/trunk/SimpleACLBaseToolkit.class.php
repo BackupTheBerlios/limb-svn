@@ -41,7 +41,7 @@ class SimpleACLBaseToolkit// implements SimpleACLToolkit
     include_once(dirname(__FILE__) . '/DAO/SimpleACLIniBasedUsersDAO.class.php');
     $this->dao = new SimpleACLIniBasedUsersDAO();
 
-    $this->authenticator->setUsersDAO($this->dao)
+    $this->authenticator->setUsersDAO($this->dao);
 
     return $this->authenticator;
   }
