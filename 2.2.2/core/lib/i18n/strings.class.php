@@ -35,16 +35,16 @@ class strings
 	function _get_recursive($key, $filename, $locale_id)
 	{
 		$path = $this->_get_path($filename, $locale_id);
+		$md5_path = md5($path);		
+		if(isset($this->_cache[$md5_path][$key]))
+			return $this->_cache[$md5_path][$key];
 		
-		if(isset($this->_cache[$path][$key]))
-			return $this->_cache[$path][$key];
-		
-		if(isset($this->_ini_objects[$path]))
-			$ini =& $this->_ini_objects[$path];
+		if(isset($this->_ini_objects[$md5_path]))
+			$ini =& $this->_ini_objects[$md5_path];
 		else
 		{	  	
 			$ini =& ini :: instance($path);			
-			$this->_ini_objects[$path] =& $ini;					
+			$this->_ini_objects[$md5_path] =& $ini;					
 		}
 		
 		if(!($value = $ini->get_option($key, 'constants')))
@@ -57,13 +57,14 @@ class strings
 		}
 		
 		if($value)
-			$this->_cache[$path][$key] = $value;
-		
+			$this->_cache[$md5_path][$key] = $value;
+
 		return $value;
 	}
 		
 	function _get_path($filename='common', $locale_id)
 	{					  
+
 		if(isset($this->_path_cache[$filename][$locale_id]))
 			return $this->_path_cache[$filename][$locale_id];	  
 		
