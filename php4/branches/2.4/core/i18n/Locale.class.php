@@ -250,7 +250,7 @@ class Locale
     $country_ini->assignOption($this->country_comment, 'country_comment', 'regional_settings');
 
     $country_ini->assignOption($this->decimal_symbol, 'decimal_symbol', 'numbers');
-    $country_ini->assignOption($this->thousand_separator, 'thousand_separator', 'numbers');
+    $country_ini->assignOption($this->thousand_separator, 'thousands_separator', 'numbers');
     $country_ini->assignOption($this->fract_digits, 'fract_digits', 'numbers');
     $country_ini->assignOption($this->negative_symbol, 'negative_symbol', 'numbers');
     $country_ini->assignOption($this->positive_symbol, 'positive_symbol', 'numbers');
@@ -258,7 +258,7 @@ class Locale
     $country_ini->assignOption($this->currency_decimal_symbol, 'decimal_symbol', 'currency');
     $country_ini->assignOption($this->currency_name, 'name', 'currency');
     $country_ini->assignOption($this->currency_short_name, 'short_name', 'currency');
-    $country_ini->assignOption($this->currency_thousand_separator, 'thousand_separator', 'currency');
+    $country_ini->assignOption($this->currency_thousand_separator, 'thousands_separator', 'currency');
     $country_ini->assignOption($this->currency_fract_digits, 'fract_digits', 'currency');
     $country_ini->assignOption($this->currency_negative_symbol, 'negative_symbol', 'currency');
     $country_ini->assignOption($this->currency_positive_symbol, 'positive_symbol', 'currency');
@@ -639,7 +639,7 @@ class Locale
   */
   function getMonthName($num, $short = false)
   {
-    if ($num >= 1 &&  $num <= 12)
+    if ($num >= 0 &&  $num <= 11)
     {
       if ($short)
         $name = $this->short_month_names[$num];

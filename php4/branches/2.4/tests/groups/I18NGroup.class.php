@@ -5,15 +5,20 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: CronGroup.class.php 921 2004-11-23 15:53:11Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/lib/error/Debug.class.php');
+class I18NGroup extends LimbGroupTest
+{
+  function I18NGroup()
+  {
+    $this->limbGroupTest('i18n tests');
+  }
 
-if(!defined('ERROR_HANDLER_TYPE'))
-  Debug :: setHandleType('custom');
-else
-  Debug :: setHandleType(ERROR_HANDLER_TYPE);
+  function getTestCasesHandles()
+  {
+    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/i18n');
+  }
 
-
+}
 ?>

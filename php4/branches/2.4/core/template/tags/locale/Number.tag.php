@@ -8,11 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-$taginfo =& new TagInfo('limb:locale:STRING', 'LimbLocaleStringTag');
+$taginfo =& new TagInfo('limb:locale:NUMBER', 'LimbLocaleNumberTag');
 $taginfo->setDefaultLocation(LOCATION_SERVER);
 TagDictionary::registerTag($taginfo, __FILE__);
 
-class LimbLocaleStringTag extends CompilerDirectiveTag
+require_once(LIMB_DIR . '/core/i18n/Locale.class.php');
+
+class LimbLocaleNumberTag extends CompilerDirectiveTag
 {
 	function preParse() 
   {
@@ -21,40 +23,45 @@ class LimbLocaleStringTag extends CompilerDirectiveTag
 
 	function CheckNestingLevel() 
   {
-		if ($this->findParentByClass('LimbLocaleStringTag')) 
-      $this->raiseCompilerError('BADSELFNESTING');
+		if ($this->findParentByClass('LocaleNumberFormatTag')) 
+		  $this->raiseCompilerError('BADSELFNESTING');
 	}
   
   function generateContents(&$code)
   {
-    $code->registerInclude(LIMB_DIR . '/core/i18n/Strings.class.php');
+    $locale =& $this->_getLocale();
     
-    $file = 'common';
+    if(!$fract_digits = $this->getAttribute('fract_digits'))
+      $fract_digits = $locale->fract_digits;
 
-    if(!$file = $this->getAttribute('file'))
-      $file = 'common';
+    if(!$decimal_symbol = $this->getAttribute('decimal_symbol'))
+      $decimal_symbol = $locale->decimal_symbol;
 
-    $locale = $this->_getLocale();
-    
+    if(!$thousand_separator = $this->getAttribute('thousand_separator'))
+    {
+      $thousand_separator = $locale->thousand_separator;
+    }  
+      
     if($text_node = $this->findChildByClass('TextNode'))
     {
       $content =& $text_node->contents; 
       
-      $code->writePhp("echo strings :: get('{$content}', '{$file}', '$locale');");
-      
+      $code->writeHTML( number_format($content, $fract_digits, $decimal_symbol, $thousand_separator));
     }
-    elseif($name = $this->getAttribute('name'))
+    elseif($value = $this->getAttribute('value'))
     {
-       $code->writePhp("echo strings :: get('{$name}', '{$file}', '{$locale}');");
+      $code->writeHTML( number_format($value, $fract_digits, $decimal_symbol, $thousand_separator));
     }
     
     $this->removeChildren();
   }
   
-  function _getLocale()
+  function & _getLocale()
   {
+    $toolkit =& Limb :: toolkit();
+    
     if($locale = $this->getAttribute('locale'))
-      return $locale;
+      return $toolkit->getLocale($locale);
     
     if($locale_type = $this->getAttribute('locale_type'))
     {
@@ -65,13 +72,14 @@ class LimbLocaleStringTag extends CompilerDirectiveTag
     }
     else
       $locale_constant = 'CONTENT_LOCALE_ID';
-    
-    return constant($locale_constant);
+
+    return $toolkit->getLocale(constant($locale_constant));
   }
-  
+
 	function removeChildren() 
   {
-    $this->children = array();
+		foreach(array_keys($this->children) as $key) 
+			unset($this->children[$key]);
 	}  
 }
 

@@ -8,38 +8,31 @@
 * $Id$
 *
 ***********************************************************************************/
-class LocaleLocaleTagInfo
-{
-  var $tag = 'locale:LOCALE';
-  var $end_tag = ENDTAG_REQUIRED;
-  var $tag_class = 'locale_locale_tag';
-}
-
-registerTag(new LocaleLocaleTagInfo());
-
-class LocaleLocaleTag extends CompilerDirectiveTag
+$taginfo =& new TagInfo('limb:LOCALE', 'LimbLocaleTag');
+$taginfo->setDefaultLocation(LOCATION_SERVER);
+TagDictionary::registerTag($taginfo, __FILE__);
+ 
+class LimbLocaleTag extends CompilerDirectiveTag
 {
   function preParse()
   {
-    if (!isset($this->attributes['name']) ||  !$this->attributes['name'])
+    $name = $this->getAttribute('name');
+    if (empty($name))
     {
-      return throw(new WactException('missing required attribute',
-          array('tag' => $this->tag,
-          'attribute' => 'name',
-          'file' => $this->source_file,
-          'line' => $this->starting_line_no)));
+      $this->raiseCompilerError('MISSINGREQUIREATTRIBUTE',
+                                array('attribute' => 'name'));
     }
 
     return PARSER_REQUIRE_PARSING;
   }
-
-  function preGenerate($code)
+  
+  function preGenerate(&$code)
   {
     parent::preGenerate($code);
 
-    if(isset($this->attributes['locale_type']))
+    if($locale_type = $this->getAttribute('locale_type'))
     {
-      if(strtolower($this->attributes['locale_type']) == 'management')
+      if(strtolower($locale_type) == 'management')
         $locale_constant = 'MANAGEMENT_LOCALE_ID';
       else
         $locale_constant = 'CONTENT_LOCALE_ID';
@@ -47,10 +40,11 @@ class LocaleLocaleTag extends CompilerDirectiveTag
     else
         $locale_constant = 'CONTENT_LOCALE_ID';
 
-    $code->writePhp('if ("' . $this->attributes['name']. '" == constant("'. $locale_constant .'")) {');
+    $name = $this->getAttribute('name');
+    $code->writePhp('if ("' . $name. '" == constant("'. $locale_constant .'")) {');
   }
 
-  function postGenerate($code)
+  function postGenerate(&$code)
   {
     $code->writePhp('}');
     parent::postGenerate($code);

@@ -161,7 +161,7 @@ class Date
           if(($index = array_search($value, $locale->getMonthNames(true))) !== false)
           {
             if($index !== false)
-              $month = $index;
+              $month = $index + 1;
           }
         break;
 
@@ -169,7 +169,7 @@ class Date
           if(($index = array_search($value, $locale->getMonthNames())) !== false)
           {
             if($index !== false)
-              $month = $index;
+              $month = $index + 1;
           }
         break;
 
@@ -368,10 +368,10 @@ class Date
         switch ($nextchar)
         {
           case 'a':
-              $output .= $locale->getDayName($this->getDayOfWeek(), true);
+              $output .= $locale->getDayName($this->getDayOfWeek() - 1, true);
               break;
           case 'A':
-              $output .= $locale->getDayName($this->getDayOfWeek());
+              $output .= $locale->getDayName($this->getDayOfWeek() - 1);
               break;
           case 'b':
               $output .= $locale->getMonthName($this->month - 1, true);

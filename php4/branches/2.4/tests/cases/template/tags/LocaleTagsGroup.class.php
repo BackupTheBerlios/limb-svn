@@ -5,19 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: TemplateTagsGroup.class.php 1011 2005-01-11 16:29:30Z pachanga $
 *
 ***********************************************************************************/
-class TemplateTagsGroup extends LimbGroupTest
+class LocaleTagsGroup extends LimbGroupTest
 {
-  function TemplateTagsGroup()
+  function LocaleTagsGroup()
   {
-    parent :: LimbGroupTest('template tags tests');
+    parent :: LimbGroupTest('locale tags tests');
   }
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/template/tags');
+    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/template/tags/locale');
   }
 }
 ?>

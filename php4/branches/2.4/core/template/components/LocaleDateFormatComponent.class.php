@@ -19,7 +19,8 @@ class LocaleDateFormatComponent extends Component
 
   var $format_string = '';
 
-  var $locale_type = CONTENT_LOCALE_ID;
+  var $locale;
+  var $date_locale;
 
   function prepare()
   {
@@ -36,18 +37,20 @@ class LocaleDateFormatComponent extends Component
     $this->date_type = $type;
   }
 
-  function setLocaleType($locale_type)
+  function setLocale($locale)
   {
-    if ($locale_type == 'management')
-      $this->locale_type = MANAGEMENT_LOCALE_ID;
-    else
-      $this->locale_type = CONTENT_LOCALE_ID;
+    $this->locale = $locale;
   }
 
-  function setLocaleFormatType($type)
+  function setDateLocale($locale)
+  {
+    $this->date_locale = $locale;
+  }
+  
+  function setFormatType($type)
   {
     $toolkit =& Limb :: toolkit();
-    $locale =& $toolkit->getLocale($this->locale_type);
+    $locale =& $toolkit->getLocale($this->locale);
 
     switch($type)
     {
@@ -80,18 +83,22 @@ class LocaleDateFormatComponent extends Component
     }
   }
 
-  function setDate($date_string, $format=DATE_SHORT_FORMAT_ISO)
+  function setDate($value, $format=DATE_SHORT_FORMAT_ISO)
   {
     switch($this->date_type)
     {
       case 'string':
-        $toolkit =& Limb :: toolkit();
-        $locale =& $toolkit->getLocale($this->locale_type);
-        $this->date->setByLocaleString($locale, $date_string, $format);
+        $this->date->setByString($value, $format);
       break;
 
+      case 'localized_string':
+        $toolkit =& Limb :: toolkit();
+        $locale =& $toolkit->getLocale($this->date_locale);
+        $this->date->setByLocaleString($locale, $value, $format);
+      break;
+      
       case 'stamp':
-        $this->date->setByStamp((int)$date_string);
+        $this->date->setByStamp((int)$value);
       break;
     }
   }
@@ -99,7 +106,7 @@ class LocaleDateFormatComponent extends Component
   function format()
   {
     $toolkit =& Limb :: toolkit();
-    $locale =& $toolkit->getLocale($this->locale_type);
+    $locale =& $toolkit->getLocale($this->locale);
 
     if($this->format_string)
       $format_string = $this->format_string;
@@ -108,7 +115,6 @@ class LocaleDateFormatComponent extends Component
 
     echo $this->date->format($locale, $format_string);
   }
-
 }
 
 ?>
