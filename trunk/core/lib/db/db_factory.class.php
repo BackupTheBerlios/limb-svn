@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: db_factory.class.php 398 2004-02-04 14:39:17Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -30,7 +30,7 @@ class	db_factory
 				$db_params['name'] = DB_NAME;
 			}
 			
-		  include_once(LIMB_DIR . 'core/lib/db/' . $db_class_name . '.class.php');
+		  include_once(LIMB_DIR . 'core/lib/db/modules/' . $db_class_name . '.class.php');
 		  
 		  $obj =& new $db_class_name($db_params);
 		  
