@@ -1,4 +1,4 @@
-<locale:STRING name='order_title' file='cart'>
+<locale:STRING name='order_title' file='cart'> {$date}
 <core:LITERAL>
 
 </core:LITERAL>
@@ -18,21 +18,18 @@ E-mail: {$email}
 <core:LITERAL>
 
 </core:LITERAL>
-<locale:STRING name='notes' file='cart'>: {$notes}
-<core:LITERAL>
 
-</core:LITERAL>
 <locale:STRING name='order_contents' file='cart'>
 <core:LITERAL>
 *************************************************************************************
 </core:LITERAL>
 <list:LIST id='cart_items'>
-<locale:STRING name='order_item' file='cart'> | <locale:STRING name='item_count' file='cart'> | <locale:STRING name='notes' file='cart'>
+<locale:STRING name='order_item' file='cart'> | <locale:STRING name='price' file='cart'> | <locale:STRING name='amount' file='cart'> | <locale:STRING name='summ' file='cart'> | <locale:STRING name='notes' file='cart'>
 <core:LITERAL>
 *************************************************************************************
 </core:LITERAL>
 <list:ITEM>
-{$description} | {$amount} | {$note}
+{$description} | {$price} | {$amount} | {$summ} | {$note}
 <list:SEPARATOR>
 
 -------------------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: content_object.class.php 536 2004-02-22 12:48:39Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -81,8 +81,6 @@ class content_object extends site_object
 
 	function fetch_count($params=array(), $sql_params=array())
 	{
-		$sql_params['columns'][] = ', tn.*, tn.id as record_id';
-		
 		$db_table =& $this->_get_db_table();
 		$table_name = $db_table->get_table_name();
 		$sql_params['tables'][] = ",{$table_name} as tn";

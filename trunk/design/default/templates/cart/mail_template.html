@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1><locale:STRING name='order_title' file='cart'></h1>
+<h1><locale:STRING name='order_title' file='cart'> {$date}</h1>
 <table border=0>
 <tr>
 	<td><locale:STRING name='name' file='enterprise_member'>:</td>
@@ -18,10 +18,6 @@
 	<td><locale:STRING name='address' file='enterprise_member'>:</td>
 	<td>{$address}</td>
 </tr>
-<tr>
-	<td><locale:STRING name='notes' file='cart'>:</td>
-	<td> {$notes}</td>
-</tr>
 </table>
 
 <locale:STRING name='order_contents' file='cart'>
@@ -29,13 +25,17 @@
 <table border=0>
 <tr>
 <th><locale:STRING name='order_item' file='cart'></th>
+<th><locale:STRING name='price' file='cart'></th>
 <th><locale:STRING name='count' file='cart'></th>
+<th><locale:STRING name='summ' file='cart'></th>
 <th><locale:STRING name='notes' file='cart'></th>
 </tr>
 <list:ITEM>
 <tr>
 <td>{$description}</td>
+<td>{$price}</td>
 <td>{$amount}</td>
+<td>{$summ}</td>
 <td>{$note}</td>
 </tr>
 </list:ITEM>
