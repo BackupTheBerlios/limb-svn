@@ -817,8 +817,8 @@ class debug
 				$return_text .= "<tr><td class='$class'>" . $point['description'] . "</td><td class='$class'>" .
 				number_format($elapsed, $this->timing_accuracy) . "s</td><td class='$class'>" .
 			  number_format($rel_elapsed, $this->timing_accuracy) . "s</td>" .
-				"<td class='$class'>" . number_format($memory / 1024, $this->timing_accuracy) . "Kb</td>" . 
-				"<td class='$class'>" . number_format($rel_memory_elapsed / 1024, $this->timing_accuracy) . "Kb</td>"
+				"<td class='$class'>" . number_format($memory / 1024, 2) . "Kb&nbsp;</td>" . 
+				"<td class='$class'>" . number_format($rel_memory_elapsed / 1024, 2) . "Kb</td>"
 				. "</tr>";
 			} 
 			else
@@ -826,8 +826,8 @@ class debug
 				$return_text .= $point['description'] .
 				number_format($elapsed, $this->timing_accuracy) . "s " .
 				number_format($rel_elapsed, $this->timing_accuracy) . "s " . 
-				number_format($memory / 1024, $this->timing_accuracy) . "Kb " . 
-				number_format($rel_memory_elapsed / 1024, $this->timing_accuracy) . "Kb" . 
+				number_format($memory / 1024, 2) . "Kb " . 
+				number_format($rel_memory_elapsed / 1024, 2) . "Kb" . 
 				"\n";
 			} 
 		}
