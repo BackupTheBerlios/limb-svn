@@ -18,6 +18,11 @@ class OneTableObjectsCriteria
     $this->db_table_name = $db_table_name;
   }
 
+  function setDBTableName($db_table_name)
+  {
+    $this->db_table_name = $db_table_name;
+  }
+
   function process(&$sql)
   {
     $db_table =& $this->getDbTable($this->db_table_name);
