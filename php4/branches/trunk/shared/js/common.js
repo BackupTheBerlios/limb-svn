@@ -1,10 +1,10 @@
-var agt = navigator.userAgent.toLowerCase(); 
-var is_ie	= (agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1);
-var is_gecko = navigator.product == "Gecko"; 
+var agt = navigator.userAgent.toLowerCase();
+var is_ie = (agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1);
+var is_gecko = navigator.product == "Gecko";
 var is_opera  = (agt.indexOf("opera") != -1);
-var is_mac	  = (agt.indexOf("mac") != -1);
+var is_mac    = (agt.indexOf("mac") != -1);
 var is_mac_ie = (is_ie && is_mac);
-var is_win_ie = (is_ie && !is_mac); 
+var is_win_ie = (is_ie && !is_mac);
 
 var LOADING_STATUS_PAGE = '/shared/loading.html';
 var PROGRESS_PAGE = '/shared/progress.html';
@@ -12,286 +12,286 @@ var PROGRESS_IS_SHOWN = false;
 
 if(get_query_item(location.href, 'popup'))
 {
-	add_event(window, 'load', process_popup);
+  add_event(window, 'load', process_popup);
 }
 
 function add_page_to_favourities()
 {
-	if (window.sidebar) 
-	{ 
-		window.sidebar.addPanel(window.document.title, window.location, "");
-	} 
-	else if(document.all) 
-	{ 
-		window.external.AddFavorite( window.location, window.document.title);
-	}
-	else if(window.opera && window.print)
-	{ 
-		return true; 
-	} 
+  if (window.sidebar)
+  {
+    window.sidebar.addPanel(window.document.title, window.location, "");
+  }
+  else if(document.all)
+  {
+    window.external.AddFavorite( window.location, window.document.title);
+  }
+  else if(window.opera && window.print)
+  {
+    return true;
+  }
 }
 
 function make_homepage(obj)
 {
-	if(document.all)
-	{
-		this.event.srcElement.style.behavior='url(#default#homepage)';
-		this.event.srcElement.setHomePage(window.location);
-	}
+  if(document.all)
+  {
+    this.event.srcElement.style.behavior='url(#default#homepage)';
+    this.event.srcElement.setHomePage(window.location);
+  }
 }
 
-function add_event(control, type, fn, use_capture) 
-{ 
+function add_event(control, type, fn, use_capture)
+{
  if (control.addEventListener)
- { 
-   control.addEventListener(type, fn, use_capture); 
-   return true; 
- } 
+ {
+   control.addEventListener(type, fn, use_capture);
+   return true;
+ }
  else if (control.attachEvent)
- { 
-   var r = control.attachEvent("on" + type, fn); 
-   return r; 
- } 
-}  
+ {
+   var r = control.attachEvent("on" + type, fn);
+   return r;
+ }
+}
 
 function get_query_item(page_href, item_name)
 {
-	arr = get_query_items(page_href);
-	
-	if(arr[item_name])
-		return arr[item_name];
-	else
-		return null;	
+  arr = get_query_items(page_href);
+
+  if(arr[item_name])
+    return arr[item_name];
+  else
+    return null;
 }
 
 function build_query(items)
 {
-	query = '';
-	for(index in items)
-	{
-		query = query + index + '=' + items[index] + '&';
-	}
-	return query;
+  query = '';
+  for(index in items)
+  {
+    query = query + index + '=' + items[index] + '&';
+  }
+  return query;
 }
 
 function get_query_items(uri)
 {
-	query_items = new Array();
-	
-	arr = uri.split('?');
-	if(!arr[1])
-		return query_items;
-		
-	query = arr[1];
+  query_items = new Array();
 
-	arr = query.split('&');
-	
-	for(index in arr)
-	{
-		if(arr[index])
-		{
-			key_value = arr[index].split('=');
-			if(!key_value[1])
-				continue;
-			
-			query_items[key_value[0]] = key_value[1];
-		}
-	}
-	
-	return query_items;
+  arr = uri.split('?');
+  if(!arr[1])
+    return query_items;
+
+  query = arr[1];
+
+  arr = query.split('&');
+
+  for(index in arr)
+  {
+    if(arr[index])
+    {
+      key_value = arr[index].split('=');
+      if(!key_value[1])
+        continue;
+
+      query_items[key_value[0]] = key_value[1];
+    }
+  }
+
+  return query_items;
 }
 
 function set_http_get_parameter(uri, parameter, val)
 {
-	uri_pieces = uri.split('?');
-	
-	items = get_query_items(uri);
-	items[parameter] = val;
-	
-	return uri_pieces[0] + '?' + build_query(items);
+  uri_pieces = uri.split('?');
+
+  items = get_query_items(uri);
+  items[parameter] = val;
+
+  return uri_pieces[0] + '?' + build_query(items);
 }
 
 function add_random_to_url(page_href)
 {
-	if(page_href.indexOf('?') == -1)
-		page_href = page_href + '?';
-		
-	page_href = page_href.replace(/&*rn=[^&]+/g, '');
-	
-	items = page_href.split('#');
-	
-	page_href = items[0] + '&rn=' + Math.floor(Math.random()*10000);
-	
-	if(items[1])
-		page_href = page_href + '#' + items[1];
-			
-	return page_href;
+  if(page_href.indexOf('?') == -1)
+    page_href = page_href + '?';
+
+  page_href = page_href.replace(/&*rn=[^&]+/g, '');
+
+  items = page_href.split('#');
+
+  page_href = items[0] + '&rn=' + Math.floor(Math.random()*10000);
+
+  if(items[1])
+    page_href = page_href + '#' + items[1];
+
+  return page_href;
 }
 
 function toggle_display(obj_id)
 {
-	obj = document.getElementById(obj_id);
-	if (typeof(obj) == 'object')
-		if (typeof(obj.length) != 'undefined')
-			for(i=0; i<obj.length; i++)
-				toggle_obj_display(obj[i]);
-		else
-			toggle_obj_display(obj);
+  obj = document.getElementById(obj_id);
+  if (typeof(obj) == 'object')
+    if (typeof(obj.length) != 'undefined')
+      for(i=0; i<obj.length; i++)
+        toggle_obj_display(obj[i]);
+    else
+      toggle_obj_display(obj);
 }
 
 function toggle_obj_display(obj)
 {
-	if (obj.style.display == 'none')
-	{
-		obj.style.display = 'block';
-		add_cookie_element('displayed_objects', obj.id);
-		remove_cookie_element('hidden_objects', obj.id);
-	}
-	else
-	{
-		obj.style.display = 'none';
-		add_cookie_element('hidden_objects', obj.id);
-		remove_cookie_element('displayed_objects', obj.id);
-	}
+  if (obj.style.display == 'none')
+  {
+    obj.style.display = 'block';
+    add_cookie_element('displayed_objects', obj.id);
+    remove_cookie_element('hidden_objects', obj.id);
+  }
+  else
+  {
+    obj.style.display = 'none';
+    add_cookie_element('hidden_objects', obj.id);
+    remove_cookie_element('displayed_objects', obj.id);
+  }
 }
 
 function optimize_window()
-{	
-	w = window;
-	
-	var x_ratio = 0.85;
-	var y_ratio = 0.90;
-	
-	top_opener = window;
-	
-	do
-	{
-	  iterate = false;
-	  if (top_opener.opener)
-	  {
-	    top_opener = top_opener.opener;
-	    iterate = true;
-	  }
-	  else
-	    if (top_opener.top && top_opener != top_opener.top)
-	    {
-	      top_opener = top_opener.top
-  	    iterate = true;
-  	  }
-	}
-	while (iterate)
-	
+{
+  w = window;
+
+  var x_ratio = 0.85;
+  var y_ratio = 0.90;
+
+  top_opener = window;
+
+  do
+  {
+    iterate = false;
+    if (top_opener.opener)
+    {
+      top_opener = top_opener.opener;
+      iterate = true;
+    }
+    else
+      if (top_opener.top && top_opener != top_opener.top)
+      {
+        top_opener = top_opener.top
+        iterate = true;
+      }
+  }
+  while (iterate)
+
   if (is_ie)
-	{
-		openerWidth = top_opener.document.body.clientWidth;
-		openerHeight = top_opener.document.body.clientHeight;
-		openerLeft = top_opener.screenLeft;
-		openerTop = top_opener.screenTop;
-	}
-	else if(is_gecko || is_opera)
-	{
-		openerWidth = top_opener.innerWidth;
-		openerHeight = top_opener.innerHeight;
-		openerLeft = top_opener.screenX + top_opener.outerWidth - top_opener.innerWidth;
-		openerTop = top_opener.screenY + top_opener.outerHeight - top_opener.innerHeight;
-	}
-	else
-	{
-		openerWidth = top_opener.document.body.clientWidth;
-		openerHeight = top_opener.document.body.clientHeight;
-		openerLeft = top_opener.screenLeft;
-		openerTop = top_opener.screenTop;
-	}
-	
-	if(window.WINDOW_WIDTH)
-   	newWidth = window.WINDOW_WIDTH;
+  {
+    openerWidth = top_opener.document.body.clientWidth;
+    openerHeight = top_opener.document.body.clientHeight;
+    openerLeft = top_opener.screenLeft;
+    openerTop = top_opener.screenTop;
+  }
+  else if(is_gecko || is_opera)
+  {
+    openerWidth = top_opener.innerWidth;
+    openerHeight = top_opener.innerHeight;
+    openerLeft = top_opener.screenX + top_opener.outerWidth - top_opener.innerWidth;
+    openerTop = top_opener.screenY + top_opener.outerHeight - top_opener.innerHeight;
+  }
   else
-  	newWidth = openerWidth*x_ratio;
+  {
+    openerWidth = top_opener.document.body.clientWidth;
+    openerHeight = top_opener.document.body.clientHeight;
+    openerLeft = top_opener.screenLeft;
+    openerTop = top_opener.screenTop;
+  }
 
-	if(window.WINDOW_HEIGHT)
-   	newHeight = window.WINDOW_HEIGHT;
+  if(window.WINDOW_WIDTH)
+    newWidth = window.WINDOW_WIDTH;
   else
-  	newHeight = openerHeight*y_ratio;
+    newWidth = openerWidth*x_ratio;
+
+  if(window.WINDOW_HEIGHT)
+    newHeight = window.WINDOW_HEIGHT;
+  else
+    newHeight = openerHeight*y_ratio;
 
 
-	newLeft = openerLeft + (openerWidth - newWidth)/2;
-	newTop = openerTop + (openerHeight - newHeight)/2;
-	
-	w.moveTo(newLeft, newTop);
-	w.resizeTo(newWidth, newHeight);
+  newLeft = openerLeft + (openerWidth - newWidth)/2;
+  newTop = openerTop + (openerHeight - newHeight)/2;
+
+  w.moveTo(newLeft, newTop);
+  w.resizeTo(newWidth, newHeight);
 }
 
 //makes popup window at href address
 function popup(href, window_name, window_params, dont_set_focus, on_close_handler, on_init_handler)
-{	
+{
   href = set_http_get_parameter(href, 'popup', 1);
-  
-	if (typeof(window_name) == 'undefined' || window_name == null) 
-		window_name = '_generate';
 
-	new_left = window.screen.width / 2 - 100;
-	new_top = window.screen.height / 2 - 50;
+  if (typeof(window_name) == 'undefined' || window_name == null)
+    window_name = '_generate';
 
-	if (typeof(window_params) == 'undefined' || window_params == null) 
-		window_params = 'width=150,height=50,left=' + new_left + ',top=' + new_top + ',scrollbars=yes,resizable=yes,help=no,status=yes';
-	else
-		window_params = 'left=' + new_left + ',top=' + new_top + ',' + window_params;
-	
-	if (window_name.toLowerCase() == '_generate')
-		window_name = 'w' + hex_md5(href) + 's';
+  new_left = window.screen.width / 2 - 100;
+  new_top = window.screen.height / 2 - 50;
 
-	if (typeof(window.popups) != 'array')
-		window.popups = new Array();
+  if (typeof(window_params) == 'undefined' || window_params == null)
+    window_params = 'width=150,height=50,left=' + new_left + ',top=' + new_top + ',scrollbars=yes,resizable=yes,help=no,status=yes';
+  else
+    window_params = 'left=' + new_left + ',top=' + new_top + ',' + window_params;
 
-	if (typeof(window.popups[window_name]) != 'array')
-		window.popups[window_name] = new Array();
-		
-	if (typeof(on_close_handler) != 'undefined') 
-		window.popups[window_name]['close_popup_handler'] = on_close_handler;
+  if (window_name.toLowerCase() == '_generate')
+    window_name = 'w' + hex_md5(href) + 's';
 
-	if (typeof(on_init_handler) != 'undefined') 
-		window.popups[window_name]['init_popup_handler'] = on_init_handler;
+  if (typeof(window.popups) != 'array')
+    window.popups = new Array();
 
-	window.popups[window_name]['status'] = 'popped_up';
+  if (typeof(window.popups[window_name]) != 'array')
+    window.popups[window_name] = new Array();
 
-	w = window.open(LOADING_STATUS_PAGE, window_name, window_params);	
-	if (href != LOADING_STATUS_PAGE)
-	 w.location.href = href;
-	
-	if(!dont_set_focus)
-		w.focus();
-		
-	return w;
+  if (typeof(on_close_handler) != 'undefined')
+    window.popups[window_name]['close_popup_handler'] = on_close_handler;
+
+  if (typeof(on_init_handler) != 'undefined')
+    window.popups[window_name]['init_popup_handler'] = on_init_handler;
+
+  window.popups[window_name]['status'] = 'popped_up';
+
+  w = window.open(LOADING_STATUS_PAGE, window_name, window_params);
+  if (href != LOADING_STATUS_PAGE)
+   w.location.href = href;
+
+  if(!dont_set_focus)
+    w.focus();
+
+  return w;
 }
 
 function process_popup()
-{	
-	href = location.href;
-	
-	if (typeof(window.opener.popups) != 'undefined')
-		if (window.opener.popups[window.name]['status'] == 'popped_up')
-			optimize_window();
-	
-	if(opener && (get_query_item(href, 'reload_parent')))
-		opener.location.reload();
-	else
-  	if (typeof(window.opener.popups) != 'undefined')
-  		window.opener.popups[window.name]['status'] = 'processed';
+{
+  href = location.href;
+
+  if (typeof(window.opener.popups) != 'undefined')
+    if (window.opener.popups[window.name]['status'] == 'popped_up')
+      optimize_window();
+
+  if(opener && (get_query_item(href, 'reload_parent')))
+    opener.location.reload();
+  else
+    if (typeof(window.opener.popups) != 'undefined')
+      window.opener.popups[window.name]['status'] = 'processed';
 }
 
-function trim(value) 
+function trim(value)
 {
    var temp = value;
    var obj = /^(\s*)([\W\w]*)(\b\s*$)/;
-   
+
    if (obj.test(temp))
     temp = temp.replace(obj, '$2');
-    
+
    var obj = / +/g;
    temp = temp.replace(obj, " ");
    if (temp == " ")
     temp = "";
-    
+
    return temp;
 }
 
@@ -301,7 +301,7 @@ function get_cookie(name)
   for (var i=0; i < a_cookie.length; i++)
   {
     var a_crumb = a_cookie[i].split("=");
-    if (name == a_crumb[0]) 
+    if (name == a_crumb[0])
       return unescape(a_crumb[1]);
   }
   return null;
@@ -309,11 +309,11 @@ function get_cookie(name)
 
 function set_cookie(name, value, path, expires)
 {
-	path_str = (path) ? '; path=' + path : '; path=/';
-	expires_str = (expires) ? '; expires=' + expires : '';
-	
-	cookie_str = name + '=' + value + path_str + expires_str;
-	
+  path_str = (path) ? '; path=' + path : '; path=/';
+  expires_str = (expires) ? '; expires=' + expires : '';
+
+  cookie_str = name + '=' + value + path_str + expires_str;
+
   document.cookie = cookie_str;
 }
 
@@ -324,222 +324,222 @@ function remove_cookie(name, path)
 
 function add_cookie_element(cookie_name, element)
 {
-	cookie_elements = get_cookie(cookie_name);
-	if (cookie_elements == null || cookie_elements == 'undefined') 
-		cookie_elements_array = new Array();
-	else
-		cookie_elements_array = cookie_elements.split(',');
-	present = 0;
-	for(i=0; i<cookie_elements_array.length; i++)
-		if (cookie_elements_array[i] == element)
-		{
-			present = 1;
-			break;
-		}
-	if (!present)
-	{
-		cookie_elements_array.push(element);
-		new_cookie_elements = cookie_elements_array.join(',');
-		set_cookie(cookie_name, new_cookie_elements);
-	}
+  cookie_elements = get_cookie(cookie_name);
+  if (cookie_elements == null || cookie_elements == 'undefined')
+    cookie_elements_array = new Array();
+  else
+    cookie_elements_array = cookie_elements.split(',');
+  present = 0;
+  for(i=0; i<cookie_elements_array.length; i++)
+    if (cookie_elements_array[i] == element)
+    {
+      present = 1;
+      break;
+    }
+  if (!present)
+  {
+    cookie_elements_array.push(element);
+    new_cookie_elements = cookie_elements_array.join(',');
+    set_cookie(cookie_name, new_cookie_elements);
+  }
 }
 
 function remove_cookie_element(cookie_name, element)
 {
-	cookie_elements = get_cookie(cookie_name);
-	if (cookie_elements == null || cookie_elements == 'undefined') 
-		cookie_elements_array = new Array();
-	else
-		cookie_elements_array = cookie_elements.split(',');
-	new_cookie_elements_array = new Array();
-	present = 0;
-	for(i=0; i<cookie_elements_array.length; i++)
-		if (cookie_elements_array[i] != element)
-			new_cookie_elements_array.push(cookie_elements_array[i]);
-		else
-			present = 1;
-	if (present)
-	{
-		new_cookie_elements = new_cookie_elements_array.join(',');
-		set_cookie(cookie_name, new_cookie_elements);
-	}
+  cookie_elements = get_cookie(cookie_name);
+  if (cookie_elements == null || cookie_elements == 'undefined')
+    cookie_elements_array = new Array();
+  else
+    cookie_elements_array = cookie_elements.split(',');
+  new_cookie_elements_array = new Array();
+  present = 0;
+  for(i=0; i<cookie_elements_array.length; i++)
+    if (cookie_elements_array[i] != element)
+      new_cookie_elements_array.push(cookie_elements_array[i]);
+    else
+      present = 1;
+  if (present)
+  {
+    new_cookie_elements = new_cookie_elements_array.join(',');
+    set_cookie(cookie_name, new_cookie_elements);
+  }
 }
 
 //makes window w(current if not specified) go to href address
 function jump(href, w)
 {
-	if(!w)
-		w = window;
+  if(!w)
+    w = window;
 
-	w.location.href = LOADING_STATUS_PAGE;
-	w.location.href = href;	
+  w.location.href = LOADING_STATUS_PAGE;
+  w.location.href = href;
 }
 
 //makes window w(current if not specified) reload itself with new get request
 function jump_change_get(get, w)
 {
-	href = document.location.href;
-	is_get = href.indexOf('?');
-	
-	if(is_get > -1)
-		href = href.substring(0, get_begin);
-		
-	jump(href + '?' + get, w);
+  href = document.location.href;
+  is_get = href.indexOf('?');
+
+  if(is_get > -1)
+    href = href.substring(0, get_begin);
+
+  jump(href + '?' + get, w);
 }
 
 function get_close_popup_handler()
 {
-	return opener.popups[window.name]['close_popup_handler'];
+  return opener.popups[window.name]['close_popup_handler'];
 }
 
 function get_init_popup_handler()
 {
-	return opener.popups[window.name]['init_popup_handler'];
+  return opener.popups[window.name]['init_popup_handler'];
 }
 
 function show_progress()
 {
-	popup(PROGRESS_PAGE, 'progress', 'width=500,height=230,scrollbars=no,resizable=yes,help=no,status=no,menubar=no');
-	PROGRESS_IS_SHOWN = true;
+  popup(PROGRESS_PAGE, 'progress', 'width=500,height=230,scrollbars=no,resizable=yes,help=no,status=no,menubar=no');
+  PROGRESS_IS_SHOWN = true;
 }
 
 function click_href(href, window_name)
 {
-	has_progress = href.indexOf('progress=1');
-	if(has_progress > -1)
-		show_progress();
+  has_progress = href.indexOf('progress=1');
+  if(has_progress > -1)
+    show_progress();
 
-	is_popup = href.indexOf('popup=1');
-	if(is_popup > -1)
-		popup(href, window_name);
-	
-	return !((has_progress > -1) || (is_popup > -1));
+  is_popup = href.indexOf('popup=1');
+  if(is_popup > -1)
+    popup(href, window_name);
+
+  return !((has_progress > -1) || (is_popup > -1));
 }
 
 function change_form_action(form, action)
 {
-	if(!form)
-	  return;
+  if(!form)
+    return;
 
-	form.action = action;
+  form.action = action;
 }
 
 function add_form_action_parameter(form, parameter, val)
 {
-	if(!form)
-	  return;
+  if(!form)
+    return;
 
   form.action = set_http_get_parameter(form.action + '', parameter, val);
 }
 
 function add_form_hidden_parameter(form, parameter, val)
-{	
-	if(!form)
-	  return;
-	  
-	hidden = document.getElementById(parameter + '_hidden_parameter');
-	if(hidden)
-	{
-		hidden.value = val;
-		form.appendChild(hidden);
-	}	
-	else
-	{			
-		hidden = document.createElement('INPUT');
-		hidden.id = parameter + '_hidden_parameter';
-		hidden.type = 'hidden';
-		hidden.name = parameter;
-		hidden.value = val;
-		form.appendChild(hidden);
-	}
+{
+  if(!form)
+    return;
+
+  hidden = document.getElementById(parameter + '_hidden_parameter');
+  if(hidden)
+  {
+    hidden.value = val;
+    form.appendChild(hidden);
+  }
+  else
+  {
+    hidden = document.createElement('INPUT');
+    hidden.id = parameter + '_hidden_parameter';
+    hidden.type = 'hidden';
+    hidden.name = parameter;
+    hidden.value = val;
+    form.appendChild(hidden);
+  }
 }
 
 function submit_form(form, form_action)
 {
-	has_progress = form_action.indexOf('progress=1');
-	if(has_progress > -1)
-		show_progress();
-		
-	is_popup = form_action.indexOf('popup=1');
-	if(is_popup > -1)
-	{
-		window_name = 'w' + hex_md5(form_action) + 's';
-		w = popup(LOADING_STATUS_PAGE, window_name);
-		form.target = w.name;
-	}
-	
-	if(form_action)
-		form.action = form_action;
-	
-	form.submit();
+  has_progress = form_action.indexOf('progress=1');
+  if(has_progress > -1)
+    show_progress();
+
+  is_popup = form_action.indexOf('popup=1');
+  if(is_popup > -1)
+  {
+    window_name = 'w' + hex_md5(form_action) + 's';
+    w = popup(LOADING_STATUS_PAGE, window_name);
+    form.target = w.name;
+  }
+
+  if(form_action)
+    form.action = form_action;
+
+  form.submit();
 }
 
 function process_action_control(droplist)
 {
-	if (typeof(droplist.value) != 'undefined')
-		value = droplist.value;
-	else
-		value = droplist[0].value;
-	
-	submit_form(droplist.form, value);
+  if (typeof(droplist.value) != 'undefined')
+    value = droplist.value;
+  else
+    value = droplist[0].value;
+
+  submit_form(droplist.form, value);
 }
 
 function sync_action_controls(obj)
 {
-	col = obj.form.elements[obj.name];
-	if (typeof(col.length) != 'undefined' && col.length>0)
-		for(i=0; i<col.length; i++)
-		{
-			col(i).selectedIndex = obj.selectedIndex;
-		}
+  col = obj.form.elements[obj.name];
+  if (typeof(col.length) != 'undefined' && col.length>0)
+    for(i=0; i<col.length; i++)
+    {
+      col(i).selectedIndex = obj.selectedIndex;
+    }
 }
 
 function transfer_value(target_id, transfer_value)
 {
-	obj = document.getElementById(target_id);
-	if(obj)
-	{
-		obj.value = transfer_value;
-	}
+  obj = document.getElementById(target_id);
+  if(obj)
+  {
+    obj.value = transfer_value;
+  }
 }
 
 function transfer_img_src(target_id, transfer_src)
 {
-	obj = document.getElementById(target_id);
-	if(obj)
-	{
-		obj.src = transfer_src;
-	}
+  obj = document.getElementById(target_id);
+  if(obj)
+  {
+    obj.src = transfer_src;
+  }
 }
 
 function goto_page(message, href)
 {
-	if (confirm(message))
-		jump(href)
+  if (confirm(message))
+    jump(href)
 }
 
 function open_page(message, href, window_name, window_params)
 {
-	if (typeof(window_name) == 'undefined' || window_name == null)
-		window_name = '_generate';
+  if (typeof(window_name) == 'undefined' || window_name == null)
+    window_name = '_generate';
 
-	if (typeof(window_params) == 'undefined' || window_params == null)
-		window_name = 'height=400,width=600,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes';
+  if (typeof(window_params) == 'undefined' || window_params == null)
+    window_name = 'height=400,width=600,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes';
 
-	if (confirm(message))
-		popup(href, window_name, window_params)
+  if (confirm(message))
+    popup(href, window_name, window_params)
 }
 
 function bulk_options(start, end, selected, options_attrs)
 {
-	options = '';
-	for(i = start; i <= end; i++)
-		if (i == selected) options += '<option value=' + i + ' selected ' + options_attrs + '>'+i;
-			else options += '<option value=' + i + ' ' + options_attrs + '>'+i;
-	document.write(options)
+  options = '';
+  for(i = start; i <= end; i++)
+    if (i == selected) options += '<option value=' + i + ' selected ' + options_attrs + '>'+i;
+      else options += '<option value=' + i + ' ' + options_attrs + '>'+i;
+  document.write(options)
 }
 
-//MD5 stuff 
+//MD5 stuff
 
 var hexcase = 0;  /* hex output format. 0 - lowercase; 1 - uppercase        */
 var b64pad  = ""; /* base-64 pad character. "=" for strict RFC compliance   */
@@ -557,7 +557,7 @@ function core_md5(x, len)
   /* append padding */
   x[len >> 5] |= 0x80 << ((len) % 32);
   x[(((len + 64) >>> 9) << 4) + 14] = len;
-  
+
   var a =  1732584193;
   var b = -271733879;
   var c = -1732584194;
@@ -569,7 +569,7 @@ function core_md5(x, len)
     var oldb = b;
     var oldc = c;
     var oldd = d;
- 
+
     a = md5_ff(a, b, c, d, x[i+ 0], 7 , -680876936);
     d = md5_ff(d, a, b, c, x[i+ 1], 12, -389564586);
     c = md5_ff(c, d, a, b, x[i+ 2], 17,  606105819);
@@ -644,7 +644,7 @@ function core_md5(x, len)
     d = safe_add(d, oldd);
   }
   return Array(a, b, c, d);
-  
+
 }
 
 function md5_cmn(q, a, b, x, s, t)
@@ -674,7 +674,7 @@ function core_hmac_md5(key, data)
   if(bkey.length > 16) bkey = core_md5(bkey, key.length * chrsz);
 
   var ipad = Array(16), opad = Array(16);
-  for(var i = 0; i < 16; i++) 
+  for(var i = 0; i < 16; i++)
   {
     ipad[i] = bkey[i] ^ 0x36363636;
     opad[i] = bkey[i] ^ 0x5C5C5C5C;
@@ -746,113 +746,113 @@ function binl2b64(binarray)
 
 function var_dump(obj, level)
 {
-	if(level>10) return '';
+  if(level>10) return '';
 
-	var res = '';
-	var shift = "";
-	
-	for(i=0; i<level*2; i++) 
-		shift+="\t\t";
-	
-	if(typeof(obj)=='object')
-	{
-		try
-		{
-			for(key in obj)
-			{
-				if(obj[key] == 'none' || obj[key] == '' || obj[key]==null) continue;
-					
-				if(typeof(obj[key]) == 'unknown' || typeof(obj[key]) == 'undefined') continue;
-				
-				res += shift + key + ' = ' + obj[key] + '\n';
-				res += var_dump(obj[key], level++);
-			}
-		}
-		catch(e){}
-	}
-	return res;
+  var res = '';
+  var shift = "";
+
+  for(i=0; i<level*2; i++)
+    shift+="\t\t";
+
+  if(typeof(obj)=='object')
+  {
+    try
+    {
+      for(key in obj)
+      {
+        if(obj[key] == 'none' || obj[key] == '' || obj[key]==null) continue;
+
+        if(typeof(obj[key]) == 'unknown' || typeof(obj[key]) == 'undefined') continue;
+
+        res += shift + key + ' = ' + obj[key] + '\n';
+        res += var_dump(obj[key], level++);
+      }
+    }
+    catch(e){}
+  }
+  return res;
 }
 /*debug*/
 tmp_window_onload = window.onload
 window.onload = function()
 {
-	if(window != top)
-		if(top.onload_iframe)
-			top.onload_iframe()
-	if(tmp_window_onload) tmp_window_onload()
-	
-	apply_behavior()
+  if(window != top)
+    if(top.onload_iframe)
+      top.onload_iframe()
+  if(tmp_window_onload) tmp_window_onload()
+
+  apply_behavior()
 }
 function apply_behavior()
 {
-	
-	CLASS_MAP = build_class_map(document)
-	var arr = document.getElementsByTagName('*')
-	for(var v in arr)
-	{
-		
-		if(typeof(arr[v]) != 'undefined' && CLASS_MAP[arr[v].className])
-		{
-			try
-			{
-				var clss = window[CLASS_MAP[arr[v].className]].prototype
-				
-			}
-			catch(ex)
-			{
-				confirm('apply_behavior() - NO CLASS DEFINED: ' + CLASS_MAP[arr[v].className])
-				break
-			}
-			for(var j in clss)
-			{
-				arr[v][j] = clss[j]
-			}
-		}
-	}
+
+  CLASS_MAP = build_class_map(document)
+  var arr = document.getElementsByTagName('*')
+  for(var v in arr)
+  {
+
+    if(typeof(arr[v]) != 'undefined' && CLASS_MAP[arr[v].className])
+    {
+      try
+      {
+        var clss = window[CLASS_MAP[arr[v].className]].prototype
+
+      }
+      catch(ex)
+      {
+        confirm('apply_behavior() - NO CLASS DEFINED: ' + CLASS_MAP[arr[v].className])
+        break
+      }
+      for(var j in clss)
+      {
+        arr[v][j] = clss[j]
+      }
+    }
+  }
 }
 function build_class_map(doc)
 {
-	var arr = []
-	for(var i = 0; i<doc.styleSheets.length; i++)
-	{
-		var rules = doc.styleSheets[i].rules
-		if(is_gecko) rules = doc.styleSheets[i].cssRules
-		
-		for(var j = 0; j<rules.length; j++)
-	  {
-			var rule = rules[j];
-			if(rule.style.page)
-			{
-				arr[rule.selectorText.substr(1)] = rule.style.page
-			}
-		}
-	}
-	
-	return arr
+  var arr = []
+  for(var i = 0; i<doc.styleSheets.length; i++)
+  {
+    var rules = doc.styleSheets[i].rules
+    if(is_gecko) rules = doc.styleSheets[i].cssRules
+
+    for(var j = 0; j<rules.length; j++)
+    {
+      var rule = rules[j];
+      if(rule.style.page)
+      {
+        arr[rule.selectorText.substr(1)] = rule.style.page
+      }
+    }
+  }
+
+  return arr
 }
 
 //=======================
-//	ACTIONS
+//  ACTIONS
 //=======================
 function action(){}
 action.prototype.onmouseover = function()
 {
-	this.style.backgroundImage = "url(/shared/images/rect.gif)"
-	
+  this.style.backgroundImage = "url(/shared/images/rect.gif)"
+
 }
 action.prototype.onmouseout = function()
 {
-	this.style.backgroundImage = ""
+  this.style.backgroundImage = ""
 }
 
 function row(){}
 row.prototype.onmouseover = function()
 {
-	this.style.backgroundColor='#F7F7F7'
+  this.style.backgroundColor='#F7F7F7'
 }
 row.prototype.onmouseout = function()
 {
-		this.style.backgroundColor=''
+    this.style.backgroundColor=''
 }
 
 //
@@ -861,75 +861,75 @@ row.prototype.onmouseout = function()
 function actions(){}
 actions.prototype.onmouseover = function()
 {
-	this.style.backgroundColor='#F7F7F7'
+  this.style.backgroundColor='#F7F7F7'
 
-//	if(this.isHover)return
-//	this.set_active()
-//	this.isHover = true
+//  if(this.isHover)return
+//  this.set_active()
+//  this.isHover = true
 }
 actions.prototype.onmouseout = function()
 {
-	this.style.backgroundColor=''
+  this.style.backgroundColor=''
 
-//	if(this.HT()) return
-//	this.set_normal()
-//	this.isHover = false
-		
+//  if(this.HT()) return
+//  this.set_normal()
+//  this.isHover = false
+
 }
-//actions.prototype.set_active = function()
-//{
-//	try{
-//	var acts = this.get_jip_element('actions')
-//	if(acts == null) return
-//	acts.className = 'jip-actions-active'
-//	var obj = this.get_jip_element('object')
-//	obj.className = 'jip-object-active'
-//	
-//	this.get_jip_element('l').src = '/shared/images/actl.gif'
-//	this.get_jip_element('r').src = '/shared/images/actr.gif'
-//	}
-//	catch(ex)
-//	{
-////		alert('JIP ACTION: initialization fail')
-//	}
-//}
-//actions.prototype.set_normal = function()
-//{
-//	try{
-//	var acts = this.get_jip_element('actions')
-//	if(acts == null) return
-//	acts.className = 'jip-actions'
+actions.prototype.set_active = function()
+{
+  try{
+  var acts = this.get_jip_element('actions')
+  if(acts == null) return
+  acts.className = 'jip-actions-active'
+  var obj = this.get_jip_element('object')
+  obj.className = 'jip-object-active'
+
+  this.get_jip_element('l').src = '/shared/images/actl.gif'
+  this.get_jip_element('r').src = '/shared/images/actr.gif'
+  }
+  catch(ex)
+  {
+//    alert('JIP ACTION: initialization fail')
+  }
+}
+actions.prototype.set_normal = function()
+{
+  try{
+  var acts = this.get_jip_element('actions')
+  if(acts == null) return
+  acts.className = 'jip-actions'
+
+  this.get_jip_element('object').className = 'jip-object'
+
+  this.get_jip_element('l').src = '/shared/images/act1.gif'
+  this.get_jip_element('r').src = '/shared/images/act3.gif'
+  }
+  catch(ex)
+  {
+//    alert('JIP ACTION: initialization fail')
+  }
+}
 //
-//	this.get_jip_element('object').className = 'jip-object'
+// [ service]
 //
-//	this.get_jip_element('l').src = '/shared/images/act1.gif'
-//	this.get_jip_element('r').src = '/shared/images/act3.gif'
-//	}
-//	catch(ex)
-//	{
-////		alert('JIP ACTION: initialization fail')
-//	}
-//}
-////
-//// [ service]
-////
-//actions.prototype.get_jip_element = function(jip_name)
-//{
-//	var arr = this.all
-//	for(var i=0;i<arr.length; i++)
-//		if(arr[i].jip == jip_name) return arr[i]
-//	return null
-//}
-//actions.prototype.HT = function()
-//{
-//	var obj = this.document.elementFromPoint(event.x, event.y)
-//	while(obj != null)
-//	{
-//		if(obj == this)return true
-//		obj = obj.parentElement
-//	}
-//	return false
-//}
+actions.prototype.get_jip_element = function(jip_name)
+{
+  var arr = this.all
+  for(var i=0;i<arr.length; i++)
+    if(arr[i].jip == jip_name) return arr[i]
+  return null
+}
+actions.prototype.HT = function()
+{
+  var obj = this.document.elementFromPoint(event.x, event.y)
+  while(obj != null)
+  {
+    if(obj == this)return true
+    obj = obj.parentElement
+  }
+  return false
+}
 
 
 //
@@ -938,6 +938,6 @@ actions.prototype.onmouseout = function()
 function debug_info(){}
 debug_info.prototype.onclick = function()
 {
-	WS = new ActiveXObject("WScript.shell");
-	WS.exec("uedit32.exe " + this.alt);
+  WS = new ActiveXObject("WScript.shell");
+  WS.exec("uedit32.exe " + this.alt);
 }

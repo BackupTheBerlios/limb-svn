@@ -17,6 +17,12 @@ class save_priority_action extends form_action
     return 'grid_form';
   }
 
+  function perform(&$request, &$response)
+  {
+    trigger_error('Stop', E_USER_WARNING);
+    parent :: perform($request, $response);
+  }
+
   function _valid_perform(&$request, &$response)
   {
     $data = $this->dataspace->export();

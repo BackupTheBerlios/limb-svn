@@ -14,14 +14,14 @@ class grid_actions_tag_info
 	var $tag = 'grid:actions';
 	var $end_tag = ENDTAG_REQUIRED;
 	var $tag_class = 'grid_actions_tag';
-} 
+}
 
 register_tag(new grid_actions_tag_info());
 
 class grid_actions_tag extends compiler_directive_tag
 {
   var $actions = array();
-	
+
 	function check_nesting_level()
 	{
 		if (!$this->find_parent_by_class('grid_list_tag'))
@@ -32,21 +32,21 @@ class grid_actions_tag extends compiler_directive_tag
 					'line' => $this->starting_line_no));
 		}
 	}
-	
+
   function prepare()
   {
 		$grid_tag =& $this->find_parent_by_class('grid_list_tag');
 		$grid_tag->set_form_required();
-		
+
     parent :: prepare();
   }
 
-	
+
 	function pre_generate(&$code)
-	{	  	  
+	{
 	  parent :: pre_generate($code);
 	}
-	
+
 	function register_action($action)
 	{
 		$this->actions[] = $action;
@@ -56,12 +56,12 @@ class grid_actions_tag extends compiler_directive_tag
 	{
 		if(!count($this->actions))
 			parent :: post_generate($code);
-		$selector_id = uniqid(''); 
-		
+		$selector_id = uniqid('');
+
 		$code->write_html("
 		<select id='{$selector_id}'>
         <option value=''>");
-		$code->write_php("echo strings :: get('choose_any')");        
+		$code->write_php("echo strings :: get('choose_any')");
     $code->write_html("</option>");
 
 		foreach($this->actions as $option)
@@ -115,7 +115,7 @@ class grid_actions_tag extends compiler_directive_tag
 			$code->write_html("'" . $option['name'] . "'");
     if(isset($this->attributes['button_class']))
     	$code->write_html(" class='{$this->attributes['button_class']}'");
-    	
+
     $code->write_html(" onclick='submit_grid_form(this, \"{$selector_id}\")'>");
 	}
 
@@ -124,22 +124,22 @@ class grid_actions_tag extends compiler_directive_tag
 		if (!isset($option['path']))
 		{
 			$action_path = $_SERVER['PHP_SELF'];
-			
+
 			$request = request :: instance();
 			if($node_id = $request->get_attribute('node_id'))
 				$action_path .= '?node_id=' . $node_id;
 		}
 		else
 			$action_path = $option['path'];
-		
+
 		if (strpos($action_path, '?') === false)
 			$action_path .= '?';
-		else	
+		else
 			$action_path .= '&';
-		
+
 		if($option['action'])
 			$action_path .= 'action=' . $option['action'];
-			
+
 		if (isset($option['reload_parent']) && $option['reload_parent'])
 			$action_path .= '&reload_parent=1';
 
@@ -148,6 +148,6 @@ class grid_actions_tag extends compiler_directive_tag
 
 		return $action_path;
 	}
-} 
+}
 
 ?>
