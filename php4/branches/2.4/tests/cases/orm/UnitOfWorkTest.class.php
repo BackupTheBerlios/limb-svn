@@ -186,6 +186,7 @@ class UnitOfWorkTest extends LimbTestCase
   {
     $obj = new UOWTestObject();
     $obj->set('id', $id = 1);
+    $this->uow->register($obj);
 
     $this->uow->delete($obj);
 
@@ -214,6 +215,47 @@ class UnitOfWorkTest extends LimbTestCase
     $this->dao->setReturnValue('fetchById', null, array($id));
 
     $this->assertNull($this->uow->load('UOWTestObject', $id));
+  }
+
+  function testEvictNewObject()
+  {
+    $obj = new UOWTestObject();
+    $this->uow->register($obj);
+
+    $this->uow->evict($obj);
+
+    $this->mapper->expectNever('save', array($obj));
+
+    $this->uow->commit();
+  }
+
+  function testEvictExistingObject()
+  {
+    $obj = new UOWTestObject();
+    $obj->set('id', $id = 1);
+    $this->uow->register($obj);
+
+    $this->uow->evict($obj);
+
+    $this->mapper->expectNever('save', array($obj));
+
+    $this->uow->commit();
+  }
+
+  function testEvictToBeDeletedObject()
+  {
+    $obj = new UOWTestObject();
+    $obj->set('id', $id = 1);
+
+    $this->uow->register($obj);
+
+    $this->uow->delete($obj);
+
+    $this->uow->evict($obj);
+
+    $this->mapper->expectNever('delete', array($obj));
+
+    $this->uow->commit();
   }
 }
 

@@ -44,14 +44,46 @@ class UnitOfWork
   {
     if($id = $this->_getId($obj))
     {
-      $cache =& $this->_getCache();
-      $cache->put($id, $obj, UOW_CACHE_GROUP);
+      $this->_putToCache($id, $obj);
       $this->registered[$id] = $this->_getHash($obj);
     }
     else
     {
       $this->new[] =& $obj;
     }
+  }
+
+  function evict(&$obj)
+  {
+    if($id = $this->_getId($obj))
+    {
+      $this->_purgeFromCache($id);
+
+      if(isset($this->registered[$id]))
+        unset($this->registered[$id]);
+
+      //???
+      foreach($this->deleted as $key => $deleted)
+      {
+        if($deleted == $obj)
+          unset($this->deleted[$key]);
+      }
+    }
+    else
+    {
+      //???
+      foreach($this->new as $key => $new)
+      {
+        if($new == $obj)
+          unset($this->new[$key]);
+      }
+    }
+  }
+
+  function & _putToCache($id, &$obj)
+  {
+    $cache =& $this->_getCache();
+    $cache->put($id, $obj, UOW_CACHE_GROUP);
   }
 
   function & _getFromCache($id)
@@ -140,7 +172,6 @@ class UnitOfWork
       $obj =& $this->new[$key];
       $mapper =& $this->_getDataMapper($obj->__class_name);
       $mapper->save($obj);
-
       $this->register($obj);
     }
 
@@ -153,15 +184,13 @@ class UnitOfWork
     {
       $obj =& $this->deleted[$key];
 
-      if($id = $this->_getId(&$obj))
+      if($id = $this->_getId($obj))
       {
         $mapper =& $this->_getDataMapper($obj->__class_name);
         $mapper->delete($obj);
-        $this->_purgeFromCache($id);
+        $this->evict($obj);
       }
     }
-
-    $this->deleted = array();
   }
 
   function _isDirty($id, $obj)
