@@ -36,7 +36,7 @@ class FormProcessingCommand// implements Command
   //for mocking
   function & _getValidator()
   {
-    if($this->validator)
+    if(is_object($this->validator))
       return $this->validator;
 
     include_once(WACT_ROOT . '/validation/validator.inc.php');

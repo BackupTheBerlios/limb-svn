@@ -27,7 +27,7 @@ class SQLBasedDAO
 
   function & getSQL()
   {
-    if($this->sql)
+    if(is_object($this->sql))
       return $this->sql;
 
     $this->sql =& $this->_initSQL();

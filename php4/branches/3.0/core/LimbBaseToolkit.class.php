@@ -88,7 +88,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getDbConnection()
   {
-    if($this->db)
+    if(is_object($this->db))
       return $this->db;
 
     include_once(LIMB_DIR . '/core/db/LimbDbPool.class.php');
@@ -99,7 +99,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getTree()
   {
-    if($this->tree)
+    if(is_object($this->tree))
       return $this->tree;
 
     include_once(LIMB_DIR . '/core/tree/TreeDecorator.class.php');
@@ -112,7 +112,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getUser()
   {
-    if($this->user)
+    if(is_object($this->user))
       return $this->user;
 
     include_once(LIMB_DIR . '/core/permissions/User.class.php');
@@ -145,7 +145,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getUOW()
   {
-    if($this->uow)
+    if(is_object($this->uow))
       return $this->uow;
 
     include_once(LIMB_DIR . '/core/UnitOfWork.class.php');
@@ -158,7 +158,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getRequest()
   {
-    if($this->request)
+    if(is_object($this->request))
       return $this->request;
 
     include_once(LIMB_DIR . '/core/request/Request.class.php');
@@ -169,7 +169,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getResponse()
   {
-    if($this->response)
+    if(is_object($this->response))
       return $this->response;
 
     include_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
@@ -180,7 +180,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getCache()
   {
-    if($this->cache)
+    if(is_object($this->cache))
       return $this->cache;
 
     include_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
@@ -197,7 +197,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & getSession()
   {
-    if($this->session)
+    if(is_object($this->session))
       return $this->session;
 
     include_once(LIMB_DIR . '/core/session/Session.class.php');
