@@ -293,17 +293,23 @@ class fs
     return $path;
   }
   
-  static public function is_path_relative($file_path)
+  static public function is_path_relative($file_path, $os_type = null)
   {
-    return !fs :: is_path_absolute($file_path);
+    return !fs :: is_path_absolute($file_path, $os_type);
   }
   
-  static public function is_path_absolute($file_path)
+  static public function is_path_absolute($file_path, $os_type = null)
   {
-    if(sys :: os_type() == 'win32')
+    if($os_type === null)
+      $os_type = sys :: os_type();
+      
+    if($os_type == 'win32')
       return preg_match('/^[a-zA-Z]+?:/', $file_path);
     else
-      return (substr($file_path, 1, 2) == fs :: separator());  
+    {
+      $piece = substr($file_path, 0, 1);
+      return ($piece  == '/' || $piece  == '\\');  
+    }
   }
   
   static protected function _normalize_separators($path, $separator)

@@ -61,6 +61,18 @@ class fs_test extends LimbTestCase
 		$this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/'));
   }
   
+  function test_is_path_absolute()
+  {
+    $this->assertTrue(fs :: is_path_absolute('c:/var/wow', 'win32'));
+    $this->assertTrue(fs :: is_path_absolute('/var/wow', 'unix'));
+    
+    $this->assertFalse(fs :: is_path_absolute(':/var/wow', 'win32'));
+    $this->assertFalse(fs :: is_path_absolute('/var/wow', 'win32'));
+    $this->assertFalse(fs :: is_path_absolute('c:/var/wow', 'unix'));
+    
+    $this->assertFalse(fs :: is_path_absolute('var/wow'));
+  }
+  
   function test_clean_path1()
   {
   	$path = fs :: clean_path('/tmp\../tmp/wow////hey/');
