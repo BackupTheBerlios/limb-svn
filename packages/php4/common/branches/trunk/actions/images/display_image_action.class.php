@@ -13,7 +13,7 @@ require_once(LIMB_DIR . 'class/core/actions/action.class.php');
 class display_image_action extends action
 {	
 	function perform(&$request, &$response)
-	{		
+	{	
 	  $object_data =& fetch_requested_object($request);
 		$variation = $this->_get_variation();
 		$image = $object_data['variations'][$variation];
@@ -67,7 +67,7 @@ class display_image_action extends action
 	
 	function &get_http_cache()
 	{
-	  include_once(LIMB_DIR . '/core/request/http_cache.class.php');
+	  include_once(LIMB_DIR . '/class/core/request/http_cache.class.php');
 	  $cache =& new http_cache();
 	  return $cache;
 	}
