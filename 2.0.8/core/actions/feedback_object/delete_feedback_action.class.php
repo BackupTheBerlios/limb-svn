@@ -14,7 +14,7 @@ class delete_feedback_action extends form_delete_site_object_action
 {
 	function delete_feedback_action($name='delete_form')
 	{		
-		parent :: form_delete_site_object_action($name, array('content_object' => 'feedback'));
+		parent :: form_delete_site_object_action($name, array('content_object' => 'feedback_object'));
 	}
 }
 

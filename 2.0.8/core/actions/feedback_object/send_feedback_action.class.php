@@ -25,7 +25,6 @@ class send_feedback_action extends form_action
 	function _init_validator()
 	{
 		$this->validator->add_rule(new required_rule('subject'));
-		$this->validator->add_rule(new required_rule('sender_name'));
 		$this->validator->add_rule(new required_rule('sender_email'));
 		$this->validator->add_rule(new email_rule('sender_email'));
 		$this->validator->add_rule(new required_rule('body'));
@@ -44,8 +43,14 @@ class send_feedback_action extends form_action
 	function _valid_perform()
 	{
 		$mail_data = $this->dataspace->export();
+
+		if(is_set($mail_data['sender_name']) )
+			$sender_name = $mail_data['sender_name'];
+		else
+			$sender_name = $mail_data['sender_firstname'] . ' ' . $mail_data['sender_lastname'];	
+		
 		$body = sprintf(strings :: get('body_template', 'feedback'),
-										$mail_data['sender_name'], 
+										$sender_name, 
 										$mail_data['sender_email'],
 										$mail_data['body']);
 										

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: files_folder_controller.class.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -24,6 +24,15 @@ class stats_event_controller extends site_object_controller
 						'template_path' => '/stats_event/events_list.html',
 						'action_name' => strings :: get('show_events_list', 'stats'),
 						'action_path' => '/stats_event/stats_event_filter_action',
+				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete'),
+						'action_path' => '/site_object/delete_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
 				),
 		);
  		

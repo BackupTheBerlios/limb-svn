@@ -68,6 +68,15 @@ class stats_report_controller extends site_object_controller
 						'action_path' => '/stats_report/stats_routes_report_action',
 						'display_in_breadcrumbs' => true
 				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete'),
+						'action_path' => '/site_object/delete_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
+				),
 		);
  		
 		parent :: site_object_controller();
