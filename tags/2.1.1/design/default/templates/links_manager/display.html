@@ -1,0 +1,31 @@
+<core:WRAP file="admin/page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/extended.html">
+
+<DATASOURCE target='groups'>
+	<core:PARAMETER name='datasource_path' value='/links_groups_datasource'>
+</DATASOURCE>
+<grid:LIST id='groups'>
+<table>
+<tr>
+<th>ID</th>
+<th><locale:STRING name='identifier'></th>
+<th><locale:STRING name='title'></th>
+<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr>
+<td>{$id}</td>
+<td>{$identifier}</td>
+<td>{$title}</td>
+<td>
+  <a href='{^path}?action=delete_group&group_id={$id}&popup=1' onclick="return click_href(this.href);">Delete group</a>&nbsp;&nbsp;
+  <a href='{^path}?action=edit_group&group_id={$id}&popup=1' onclick="return click_href(this.href);">Edit group</a>
+</td>
+</tr>
+</grid:ITERATOR>
+</tr>
+</table>
+</grid:LIST>
+</fetch:MAPPED>
