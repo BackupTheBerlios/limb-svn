@@ -14,6 +14,8 @@ require_once(LIMB_DIR . 'core/template/fileschemes/simpleroot/compiler_support.i
 require_once(LIMB_DIR . 'core/template/template_highlight_handler.class.php');
 require_once(LIMB_DIR . '/core/lib/external/XML_HTMLSax/XML_HTMLSax.php');
 
+define('TEMPLATE_FOR_HACKERS', '/template_source/for-hackers.html');
+
 class display_template_source_action extends action
 {
 	var $history = array();
@@ -24,24 +26,25 @@ class display_template_source_action extends action
 	}
 	
 	function perform()
-	{		
+	{
 		if(isset($_REQUEST['t']) && is_array($_REQUEST['t']) && sizeof($_REQUEST['t']) > 0)
+		{
 			$this->history = $_REQUEST['t'];
+			$template_path = end($this->history);
+		}
 		else
-			return new failed_response();
-		
-		$template_path = end($this->history);
+			$template_path = TEMPLATE_FOR_HACKERS;
 		
 		if(substr($template_path, -5,  5) != '.html')
-			return new failed_response();
+			$template_path = TEMPLATE_FOR_HACKERS;
 				
 		if(!$source_file_path = resolve_template_source_file_name($template_path))
 		{
 			debug :: write_error('template not found',
 	 			__FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
 				array('template_path' => $this->template_path));
-
-			return new failed_response();
+			
+			$source_file_path = resolve_template_source_file_name(TEMPLATE_FOR_HACKERS);
 		}
 		
 		$template_contents = file_get_contents($source_file_path);

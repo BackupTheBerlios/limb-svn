@@ -561,7 +561,10 @@ class locale
 
   function get_available_locales_data()
   {
-		global $AVAILABLE_LOCALES;
+  	if(isset($GLOBALS['AVAILABLE_LOCALES']) && is_array($GLOBALS['AVAILABLE_LOCALES']))
+			$available_locales = $GLOBALS['AVAILABLE_LOCALES'];
+		else
+			return array();
 		
 		$locales_data = array();
 		

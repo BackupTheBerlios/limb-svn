@@ -24,7 +24,9 @@ echo "loading site objects...\n";
 $loader = new project_site_objects_loader();
 
 if(!$site_objects = $loader->get_site_objects())
+{
 	die("no site objects loaded");
+}
 
 $class_db_table =& db_table_factory :: instance('sys_class');
 
