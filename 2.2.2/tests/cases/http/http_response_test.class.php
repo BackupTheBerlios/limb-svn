@@ -112,9 +112,13 @@ class http_response_test extends UnitTestCase
   
   function test_redirect()
   {
-    $this->response->expectOnce('_send_string', array("<html><head><meta http-equiv=refresh content='0;url=/to/some/place?t=1&t=2'></head><body bgcolor=white></body></html>"));
+    $path = '/to/some/place?t=1&t=2';
+  	$message = strings :: get('redirect_message');
+  	$message = str_replace('%path%', $path, $message);
     
-    $this->response->redirect("/to/some/place?t=1&t=2");
+    $this->response->expectOnce('_send_string', array(new WantedPatternExpectation("~<html><head><meta http-equiv=refresh content='0;url=" . preg_quote($path) . "'~")));
+    
+    $this->response->redirect($path);
     $this->response->commit();
   }
     
