@@ -20,7 +20,7 @@ define('LIMB_STATUS_ERROR', 32);
 
 class Limb
 {
-  var $toolkits = array();
+  var $toolkits = array(array());
 
   function & instance()
   {
@@ -30,26 +30,31 @@ class Limb
     return $GLOBALS['LimbGlobalInstance'];
   }
 
-  function registerToolkit(&$toolkit)
+  function registerToolkit(&$toolkit, $name = 'default')
   {
     $limb =& Limb :: instance();
-    $limb->toolkits[] =& $toolkit;
+    $limb->toolkits[$name][] =& $toolkit;
   }
 
-  function & popToolkit()
+  function & popToolkit($name = 'default')
   {
     $limb =& Limb :: instance();
-    $toolkit =& array_pop($limb->toolkits);
+
+    if(!isset($limb->toolkits[$name]) || sizeof($limb->toolkits[$name]) == 0)
+      return false;
+
+    $toolkit =& array_pop($limb->toolkits[$name]);
     return $toolkit;
   }
 
-  function & toolkit()
+  function & toolkit($name = 'default')
   {
     $limb =& Limb :: instance();
-    if(sizeof($limb->toolkits) == 0)
+
+    if(!isset($limb->toolkits[$name]) || sizeof($limb->toolkits[$name]) == 0)
       return false;
 
-    return $limb->toolkits[sizeof($limb->toolkits) - 1];
+    return $limb->toolkits[$name][sizeof($limb->toolkits[$name]) - 1];
   }
 }
 

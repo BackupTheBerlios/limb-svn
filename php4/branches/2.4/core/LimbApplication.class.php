@@ -68,8 +68,8 @@ class LimbApplication
     registerFileResolver('template',            new CachingFileResolver(new TemplateFileResolver(new PackageFileResolver())));
     registerFileResolver('behaviour',           new CachingFileResolver(new BehaviourFileResolver(new PackageFileResolver())));
     registerFileResolver('db_table',            new CachingFileResolver(new DbTableFileResolver(new PackageFileResolver())));
-    registerFileResolver('dao',          new CachingFileResolver(new DAOFileResolver(new PackageFileResolver())));
-    registerFileResolver('object',         new CachingFileResolver(new ObjectFileResolver(new PackageFileResolver())));
+    registerFileResolver('dao',                 new CachingFileResolver(new DAOFileResolver(new PackageFileResolver())));
+    registerFileResolver('object',              new CachingFileResolver(new ObjectFileResolver(new PackageFileResolver())));
   }
 
   function run()

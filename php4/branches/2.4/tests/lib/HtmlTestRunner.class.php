@@ -53,7 +53,8 @@ class HTMLTestRunner extends TestRunner
 
     echo '<p><a href="' . $this->getBaseURL() . '?browse=' . $path . $postfix . '">Back</a></p>';
 
-    echo Debug :: parseHtmlConsole();
+    if(Debug :: isConsoleEnabled())
+      echo Debug :: parseHtmlConsole();
   }
 
   function _displayBrowse($path, &$root_group, &$current_group)
@@ -93,7 +94,8 @@ class HTMLTestRunner extends TestRunner
 
     echo $buffer;
 
-    echo Debug :: parseHtmlConsole();
+    if(Debug :: isConsoleEnabled())
+      echo Debug :: parseHtmlConsole();
   }
 }
 

@@ -13,8 +13,8 @@ class TestsIniFileResolver// implements FileResolver
 {
   function resolve($file_name, $params = array())
   {
-    if (file_exists(LIMB_DIR . 'tests/settings/' . $file_name))
-      $dir = LIMB_DIR . 'tests/settings/';
+    if (file_exists(LIMB_DIR . '/tests/settings/' . $file_name))
+      $dir = LIMB_DIR . '/tests/settings/';
     elseif (file_exists(LIMB_DIR . '/settings/' . $file_name))
       $dir = LIMB_DIR . '/settings/';
     else
