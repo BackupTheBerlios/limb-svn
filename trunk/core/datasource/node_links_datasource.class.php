@@ -21,12 +21,23 @@ class node_links_datasource extends datasource
 		
 		$links_manager = new links_manager();
 		
-		$groups = $links_manager->fetch_groups();
+		$groups = array();
+		
+		if(isset($params['group_identifier']))
+		{
+		  if($group = $links_manager->fetch_group_by_identifier($params['group_identifier']))
+		    $groups[$group['id']] = $group;
+		}
+		else
+		  $groups = $links_manager->fetch_groups();
 
 		if (!is_array($groups) || !count($groups))
 		  return new empty_dataset();
-		
-		$links = $links_manager->fetch_target_links($mapped_node['id']);
+
+		if(isset($params['back_links']) && $params['back_links'])
+		  $links = $links_manager->fetch_back_links($mapped_node['id'], array_keys($groups));
+		else
+		  $links = $links_manager->fetch_target_links($mapped_node['id'], array_keys($groups));
 
 		if (!is_array($links) || !count($links))
 		  return new array_dataset($groups);

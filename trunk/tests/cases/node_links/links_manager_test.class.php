@@ -128,7 +128,23 @@ class links_manager_test extends UnitTestCase
     $this->assertEqual($group['title'], 'Linked articles2');
     $this->assertEqual($group['id'], $group_id2);
   }
+
+  function test_fetch_group_by_identifier_failed()
+  {
+    $this->assertFalse($this->links_manager->fetch_group_by_identifier('no_such_article'));
+  } 
   
+  function test_fetch_group_by_identifier()
+  {
+    $group_id1 = $this->links_manager->create_links_group('articles1', 'Linked articles1');
+    $group_id2 = $this->links_manager->create_links_group('articles2', 'Linked articles2');
+    
+    $group = $this->links_manager->fetch_group_by_identifier('articles2');
+    
+    $this->assertEqual($group['identifier'], 'articles2');
+    $this->assertEqual($group['title'], 'Linked articles2');
+    $this->assertEqual($group['id'], $group_id2);
+  }  
   
   function test_fetch_groups()
   {
@@ -256,15 +272,17 @@ class links_manager_test extends UnitTestCase
   	$this->links_manager->create_link($group_id2, $linker_node_id, 200);
   	$this->links_manager->create_link($group_id1, $linker_node_id, 101);
 
-  	$node_ids = $this->links_manager->fetch_target_links_node_ids($linker_node_id, $group_id1);
+  	$node_ids = $this->links_manager->fetch_target_links_node_ids($linker_node_id, array($group_id1));
   	$this->assertEqual($node_ids, array(100, 101));
 
-  	$node_ids = $this->links_manager->fetch_target_links_node_ids($no_such_linker_node_id = 10, $group_id1);
+  	$node_ids = $this->links_manager->fetch_target_links_node_ids($linker_node_id, array($group_id1, $group_id2));
+  	$this->assertEqual($node_ids, array(100, 200, 101));
+
+  	$node_ids = $this->links_manager->fetch_target_links_node_ids($no_such_linker_node_id = 10, array($group_id1));
 
   	$this->assertEqual($node_ids, array());
   }
 
-  
   function test_fetch_target_links_node_ids_for_node_no_group()
   {
     $group_id1 = $this->links_manager->create_links_group('articles', 'Linked articles');
@@ -292,11 +310,15 @@ class links_manager_test extends UnitTestCase
   	$this->links_manager->create_link($group_id2, 3, $target_node_id1);
   	$this->links_manager->create_link($group_id1, 2, $target_node_id1);
 
-  	$node_ids = $this->links_manager->fetch_back_links_node_ids($target_node_id1, $group_id1);
+  	$node_ids = $this->links_manager->fetch_back_links_node_ids($target_node_id1, array($group_id1));
   	
   	$this->assertEqual($node_ids, array(1, 2));
 
-  	$node_ids = $this->links_manager->fetch_back_links_node_ids($no_such_target_node_id = 300, $group_id1);
+  	$node_ids = $this->links_manager->fetch_back_links_node_ids($target_node_id1, array($group_id1, $group_id2));
+  	
+  	$this->assertEqual($node_ids, array(1, 3, 2));
+
+  	$node_ids = $this->links_manager->fetch_back_links_node_ids($no_such_target_node_id = 300, array($group_id1));
 
   	$this->assertEqual($node_ids, array());
   }

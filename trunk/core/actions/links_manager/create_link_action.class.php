@@ -19,11 +19,6 @@ class create_link_action extends form_action
 	{
 	  return 'link';
 	}
-
-	function _init_dataspace()
-	{		  
-	  $this->dataspace->set('target_node_id', -1000);
-	}
 	
 	function _init_validator()
 	{

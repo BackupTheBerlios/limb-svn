@@ -69,6 +69,16 @@ class links_manager
     return $group_db_table->get_list('', 'priority ASC');
   }
 
+  function fetch_group_by_identifier($identifier)
+  {
+    $group_db_table = db_table_factory :: instance('sys_node_link_group');
+    
+    if($arr = $group_db_table->get_list(array('identifier' => $identifier)))
+      return current($arr);
+    else
+      return false;
+  }
+  
   function fetch_group($group_id)
   {
     $group_db_table = db_table_factory :: instance('sys_node_link_group');
@@ -107,41 +117,41 @@ class links_manager
     $link_db_table->delete_by_id($link_id);
   }
   
-  function fetch_target_links_node_ids($linker_node_id, $group_id = null)
+  function fetch_target_links_node_ids($linker_node_id, $groups_ids = array())
   {
-    $links = $this->fetch_target_links($linker_node_id, $group_id);
+    $links = $this->fetch_target_links($linker_node_id, $groups_ids);
     
     return complex_array :: get_column_values('target_node_id', $links);
   }
   
-  function fetch_target_links($linker_node_id, $group_id = null)
+  function fetch_target_links($linker_node_id, $groups_ids = array())
   {
     $link_db_table = db_table_factory :: instance('sys_node_link');
     
-    $conditions['linker_node_id'] = $linker_node_id;
+    $conditions = "linker_node_id = {$linker_node_id}";
     
-    if ($group_id !== null)
-      $conditions['group_id'] = (int)$group_id;
+    if (is_array($groups_ids) && count($groups_ids))
+      $conditions .= ' AND ' . sql_in('group_id', $groups_ids);
      
     return $link_db_table->get_list($conditions, 'priority ASC');
   }
 
-  function fetch_back_links_node_ids($target_node_id, $group_id = null)
+  function fetch_back_links_node_ids($target_node_id, $groups_ids = array())
   {
-    $links = $this->fetch_back_links($target_node_id, $group_id);
+    $links = $this->fetch_back_links($target_node_id, $groups_ids);
     
     return complex_array :: get_column_values('linker_node_id', $links);
   }
 
-  function fetch_back_links($target_node_id, $group_id = null)
+  function fetch_back_links($target_node_id, $groups_ids = array())
   {
     $link_db_table = db_table_factory :: instance('sys_node_link');
+
+    $conditions = "target_node_id = {$target_node_id}";
     
-    $conditions['target_node_id'] = $target_node_id;
+    if (is_array($groups_ids) && count($groups_ids))
+      $conditions .= ' AND ' . sql_in('group_id', $groups_ids);
     
-    if ($group_id !== null)
-      $conditions['group_id'] = (int)$group_id;
-     
     return $link_db_table->get_list($conditions, 'priority ASC');
   }
 

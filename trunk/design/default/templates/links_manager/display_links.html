@@ -6,10 +6,11 @@
 <DATASOURCE target='groups'>
 	<core:PARAMETER name='datasource_path' value='/node_links_datasource'>
 </DATASOURCE>
+
 <grid:LIST id='groups'>
 <grid:ITERATOR>
   <h2>{$identifier} - {$title}</h2><br>
-  <a href='/root/admin/links_manager?action=create_link&group_id={$id}&linker_node_id={^node_id}&popup=1' onclick="return click_href(this.href);"><locale:STRING name='create_link_in_group' file='links'></a><br>
+  <a href='/root/admin/links_manager?action=create_link&group_id={$id}&linker_node_id={^node_id}&popup=1' onclick="return click_href(this.href);"><img src='/shared/images/new.generic.gif' alt='<locale:STRING name='create_link_in_group' file='links'>' ></a><br>
   <core:DATA_TRANSFER hash_id='links' target='links'>
   <grid:LIST id='links'>
   <table>
@@ -27,7 +28,7 @@
   <td>{$title}</td>
   <td><a href='{$path}' target='_black'>{$path}</a></td>
   <td>
-    <a href='/root/admin/links_manager?action=delete_link&link_id={$id}&popup=1' onclick="return click_href(this.href);"><locale:STRING name='delete_link' file='links'></a>&nbsp;&nbsp;
+    <a href='/root/admin/links_manager?action=delete_link&link_id={$id}&popup=1' onclick="return click_href(this.href);"><img src='/shared/images/rem.gif' alt='<locale:STRING name='delete_link' file='links'>'></a>&nbsp;&nbsp;
   </td>
   </tr>
   </grid:ITERATOR>

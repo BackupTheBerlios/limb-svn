@@ -17,6 +17,17 @@ require_once(LIMB_DIR . 'core/model/response/close_popup_response.class.php');
 
 class form_create_site_object_action extends form_site_object_action
 {
+  function _init_dataspace()
+  {
+    parent :: _init_dataspace();
+    
+    if (($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
+    {
+      $parent_object_data =& $this->_load_parent_object_data();
+      $this->dataspace->set('parent_node_id', $parent_object_data['node_id']);
+    }
+  }
+  
 	function _init_validator()
 	{		
 		if (($parent_node_id = $this->dataspace->get('parent_node_id')) === null)
