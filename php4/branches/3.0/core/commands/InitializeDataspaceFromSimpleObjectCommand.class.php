@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: FormProcessingCommand.class.php 1143 2005-03-05 11:04:06Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 class InitializeDataspaceFromSimpleObjectCommand
