@@ -37,9 +37,14 @@ class tree
 		  include_once(LIMB_DIR . 'core/tree/drivers/materialized_path_driver.class.php');
 			$this->_tree_driver =& new materialized_path_driver();
 		}
-
+		else
+		  $this->_tree_driver =& $driver;    		
+	}
+	
+	function initialize_expanded_parents()
+	{
 		$parents =& session :: get('tree_expanded_parents');
-		$this->_tree_driver->set_expanded_parents($parents);
+		$this->_tree_driver->set_expanded_parents($parents);	
 	}
 	
 	function is_node($id)
