@@ -14,33 +14,13 @@ require_once(LIMB_DIR . '/class/core/site_objects/site_object_factory.class.php'
 
 class site_object_fetch_test_version extends site_object
 {
-	function _define_attributes_definition()
-	{
-		return complex_array :: array_merge(
-				parent :: _define_attributes_definition(),
-				array(
-				'title' => '',
-				'name' => array('type' => 'numeric'),
-				'search' => array('search' => true),
-				));
-	}
-
-	function _define_class_properties()
-	{
-		return array(
-			'ordr' => 1,
-			'can_be_parent' => 1,
-			'db_table_name' => 'site_object',
-			'controller_class_name' => 'controller_test'
-		);
-	}
 }
 
 class site_object_fetch_test extends LimbTestCase
 {
-	var $class_id = null;
-	var $object = null;
-	var $db = null;
+	var $class_id;
+	var $object;
+	var $db;
 
 	function site_object_fetch_test()
 	{

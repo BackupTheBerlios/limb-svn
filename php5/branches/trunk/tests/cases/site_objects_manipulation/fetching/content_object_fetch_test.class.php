@@ -17,7 +17,7 @@ class news_object_fetch_test_db_table extends content_object_db_table
 {
 	function _define_db_table_name()
 	{
-		return 'test_news_object';
+		return 'test_content_object';
 	}
 
   function _define_columns()
@@ -33,18 +33,7 @@ class news_object_fetch_test_db_table extends content_object_db_table
   }
 }
 
-class news_object_fetch_test extends content_object
-{
-	function _define_class_properties()
-	{
-		return array(
-			'ordr' => 1,
-			'can_be_parent' => 1,
-			'db_table_name' => 'news_object_fetch_test',
-			'controller_class_name' => 'controller_test'
-		);
-	}
-}
+class news_object_fetch_test extends content_object{}
 
 class content_object_fetch_test extends LimbTestCase
 {
@@ -101,7 +90,7 @@ class content_object_fetch_test extends LimbTestCase
   	$this->db->sql_delete('sys_site_object_tree');
   	$this->db->sql_delete('sys_class');
   	$this->db->sql_delete('sys_object_version');
-  	$this->db->sql_delete('test_news_object');
+  	$this->db->sql_delete('test_content_object');
   }
 
   function test_fetch_ids_no_class_restriction()

@@ -18,8 +18,6 @@ class site_object extends object
   const STATUS_PUBLISHED = 1;
   const STATUS_RESTRICTED = 2;
 
-  protected  $_attributes_definition = array();
-
   protected  $_class_id = null;
 
   public function get_locale_by_id($id)
@@ -32,12 +30,10 @@ class site_object extends object
       return false;
   }
 
-  public function is_auto_identifier()
+  protected function _get_identifier_generator()
   {
-    if(isset($this->_class_properties['auto_identifier']))
-      return $this->_class_properties['auto_identifier'];
-    else
-      return false;
+    include_once(LIMB_DIR . '/class/core/site_objects/default_site_object_identifier_generator.class.php');
+    return new DefaultSiteObjectIdentifierGenerator();
   }
 
   public function fetch_ids($params=array(), $sql_params=array(), $sort_ids=array())
@@ -259,15 +255,10 @@ class site_object extends object
   {
     if (!$class_id = $this->get_class_id())
       throw new LimbException('class id is empty');
-
-    if(!$this->is_auto_identifier())
-    {
-      if(!($identifier = $this->get_identifier()))
-        throw new LimbException('identifier is empty');
-    }
-    else
-      $identifier = $this->_generate_auto_identifier();
-
+     
+    if(!$identifier = $this->_get_identifier_generator()->generate($this))
+      throw new LimbException('identifier is empty');
+    
     if (!$this->get_behaviour_id())
       throw new LimbException('behaviour_id is not set');
 
@@ -299,25 +290,6 @@ class site_object extends object
     $this->set('node_id', $tree_node_id);
 
     return $id;
-  }
-
-  protected function _generate_auto_identifier()
-  {
-    $tree = Limb :: toolkit()->getTree();
-
-    $identifier = $tree->get_max_child_identifier($this->get_parent_node_id());
-
-    if($identifier === false)
-      throw new LimbException('couldnt generate identifier');
-
-    if(preg_match('/(.*?)(\d+)$/', $identifier, $matches))
-      $new_identifier = $matches[1] . ($matches[2] + 1);
-    else
-      $new_identifier = $identifier . '1';
-
-    $this->set_identifier($new_identifier);
-
-    return $new_identifier;
   }
 
   protected function _can_add_node_to_parent($parent_node_id)
@@ -385,7 +357,12 @@ class site_object extends object
   {
     return (int)$this->get('behaviour_id');
   }
-
+  
+  public function set_version($version)
+  {
+    $this->set('version', $version);
+  }
+  
   public function get_version()
   {
     return (int)$this->get('version');
@@ -524,9 +501,9 @@ class site_object extends object
     $row_data = $sys_site_object_db_table->get_row_by_id($this->get_id());
 
     if ($force_create_new_version)
-      $this->set('version', $row_data['current_version'] + 1);
+      $this->set_version($row_data['current_version'] + 1);
     else
-      $this->set('version', $row_data['current_version']);
+      $this->set_version($row_data['current_version']);
 
     $time = time();
     $data['current_version'] = $this->get_version();

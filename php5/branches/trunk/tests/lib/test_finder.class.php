@@ -59,7 +59,7 @@ class TestFinder
 	{
 		$cases_handles = array();
 		foreach($files as $file)
-		{
+		{ 
 		  $class_names = $this->_getTestClassNames($file);
 		  
 		  foreach($class_names as $class_name)

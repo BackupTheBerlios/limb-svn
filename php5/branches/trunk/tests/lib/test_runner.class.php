@@ -60,7 +60,7 @@ class TestRunner
   function browse($path, &$root_group)
   {
     $current_group =& $this->test_manager->getCaseByPath($path, $root_group);
-    
+  
     $this->_displayBrowse($this->test_manager->normalizeTestsPath($path), $root_group, $current_group);
   }  
 }

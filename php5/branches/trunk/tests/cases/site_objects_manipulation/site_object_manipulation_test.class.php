@@ -17,9 +17,9 @@ require_once(LIMB_DIR . '/class/core/tree/tree.class.php');
 require_once(LIMB_DIR . '/class/core/permissions/user.class.php');
 
 Mock::generatePartial('BaseLimbToolkit',
-                      'ToolkitMock', array());
+                      'SiteObjectToolkitMock', array());
 
-class SiteObjectManipulationTestToolkit extends ToolkitMock
+class SiteObjectManipulationTestToolkit extends SiteObjectToolkitMock
 {
   var $_mocked_methods = array('getTree', 'getUser');
   
