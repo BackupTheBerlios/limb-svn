@@ -15,7 +15,7 @@ require_once(LIMB_DIR . '/core/model/stats/stats_log.class.php');
 
 class stats_register
 {
-	var $_counter = null;
+	var $_counter_register = null;
 	var $_log_register = null;
 	var $_ip_register = null;
 	var $_reg_date;
@@ -23,8 +23,6 @@ class stats_register
 	function stats_register()
 	{
 		$this->_reg_date = new date();		
-
-		$this->_counter = new stats_counter();
 	}
 
 	function get_register_time_stamp()
@@ -63,7 +61,9 @@ class stats_register
 	function _update_counters()
 	{	
 		$ip_register =& $this->_get_ip_register();
-		$this->_counter->update($this->_reg_date, $ip_register->is_new_host($this->_reg_date));
+		$counter_register =& $this->_get_counter_register();
+		
+		$counter_register->update($this->_reg_date, $ip_register->is_new_host($this->_reg_date));
 	}
 	
 	function & _get_log_register()
@@ -80,6 +80,14 @@ class stats_register
 			$this->_ip_register = new stats_ip();
 		
 		return $this->_ip_register;
+	}	
+
+	function & _get_counter_register()
+	{
+		if (!$this->_counter_register)
+			$this->_counter_register = new stats_counter();
+		
+		return $this->_counter_register;
 	}	
 }
 

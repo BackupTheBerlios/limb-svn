@@ -46,6 +46,18 @@ class stats_log
 		
 		return $this->_referer_register;
 	}
+	
+	function clean_until($date)
+	{
+		$this->db->sql_delete('sys_stat_log', 'time < ' . $date->get_stamp());
+	}
+	
+	function count_log_records()
+	{
+		$this->db->sql_exec('SELECT COUNT(id) as counter FROM sys_stat_log');
+		$row = $this->db->fetch_row();
+		return $row['counter'];
+	}
 }
 
 ?>

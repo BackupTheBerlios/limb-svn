@@ -1,6 +1,6 @@
 /* 
 SQLyog v3.63
-Host - localhost : Database - ptpa
+Host - localhost : Database - niiemp
 **************************************************************
 Server version 4.0.12-nt
 */
@@ -96,7 +96,7 @@ CREATE TABLE `message` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for ptpa.message
+Table data for niiemp.message
 */
 
 INSERT INTO `message` VALUES (1,1,16,'Message',NULL,'messages');
@@ -120,7 +120,7 @@ CREATE TABLE `navigation_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for ptpa.navigation_item
+Table data for niiemp.navigation_item
 */
 
 INSERT INTO `navigation_item` VALUES (1,1,15,'Навигация','','navigation');
@@ -160,7 +160,7 @@ CREATE TABLE `sys_action_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for ptpa.sys_action_access
+Table data for niiemp.sys_action_access
 */
 
 INSERT INTO `sys_action_access` VALUES (216,17,'display',27,0);
@@ -251,7 +251,7 @@ CREATE TABLE `sys_class` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for ptpa.sys_class
+Table data for niiemp.sys_class
 */
 
 INSERT INTO `sys_class` VALUES (1,'main_page','/shared/images/folder.gif',0);
@@ -308,7 +308,7 @@ CREATE TABLE `sys_group_object_access_template` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for ptpa.sys_group_object_access_template
+Table data for niiemp.sys_group_object_access_template
 */
 
 INSERT INTO `sys_group_object_access_template` VALUES (2,6,'create_user');
@@ -330,7 +330,7 @@ CREATE TABLE `sys_group_object_access_template_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for ptpa.sys_group_object_access_template_item
+Table data for niiemp.sys_group_object_access_template_item
 */
 
 INSERT INTO `sys_group_object_access_template_item` VALUES (3,2,27,1,0);
@@ -383,7 +383,7 @@ CREATE TABLE `sys_object_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for ptpa.sys_object_access
+Table data for niiemp.sys_object_access
 */
 
 INSERT INTO `sys_object_access` VALUES (1,1,9,1,1,0);
@@ -502,7 +502,7 @@ CREATE TABLE `sys_object_version` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for ptpa.sys_object_version
+Table data for niiemp.sys_object_version
 */
 
 INSERT INTO `sys_object_version` VALUES (1,7,0,1076755675,1076755675,1);
@@ -565,13 +565,14 @@ CREATE TABLE `sys_session` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for ptpa.sys_session
+Table data for niiemp.sys_session
 */
 
 INSERT INTO `sys_session` VALUES ('0311a416fb1fda371fe7ccf2d7482d82','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078403421,0);
 INSERT INTO `sys_session` VALUES ('0db63b915f4ec4f4f03bb3eedc82fa54','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078827265,0);
 INSERT INTO `sys_session` VALUES ('1f9fdb87882d9d7a300f3963c1be1e10','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078926706,0);
 INSERT INTO `sys_session` VALUES ('509c21f6f9d832a93e1eaa3becbf583e','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}}logged_in_user_data|a:9:{s:12:\"is_logged_in\";b:1;s:2:\"id\";s:2:\"25\";s:7:\"node_id\";s:1:\"7\";s:5:\"login\";s:5:\"admin\";s:5:\"email\";s:15:\"mike@office.bit\";s:4:\"name\";s:5:\"admin\";s:8:\"lastname\";s:5:\"super\";s:8:\"password\";s:32:\"66d4aaa5ea177ac32c69946de3731ec0\";s:6:\"groups\";a:1:{i:28;s:6:\"admins\";}}strings|s:0:\"\";',1078393927,25);
+INSERT INTO `sys_session` VALUES ('e08eb344e72d835ee55bbc49d9d49234','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:0:{}strings|s:0:\"\";',1079185449,0);
 INSERT INTO `sys_session` VALUES ('e1b27d0011d1b33418268cb2160d92f5','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078474017,0);
 INSERT INTO `sys_session` VALUES ('fc724b23a69ffdedc6427e1607ddbf44','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:8;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:7;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:8;s:1:\"r\";i:11;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:2;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:23;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:1:{s:6:\"groups\";a:1:{i:27;s:8:\"visitors\";}}strings|s:0:\"\";',1078480397,0);
 
@@ -600,7 +601,7 @@ CREATE TABLE `sys_site_object` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for ptpa.sys_site_object
+Table data for niiemp.sys_site_object
 */
 
 INSERT INTO `sys_site_object` VALUES (1,1,1,1076755675,0,1076755675,0,'ru','Главная','root');
@@ -678,7 +679,7 @@ CREATE TABLE `sys_site_object_tree` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for ptpa.sys_site_object_tree
+Table data for niiemp.sys_site_object_tree
 */
 
 INSERT INTO `sys_site_object_tree` VALUES (1,1,1,62,0,1,1,'root',19);
@@ -725,6 +726,20 @@ CREATE TABLE `sys_stat_counter` (
   `hosts_today` int(11) NOT NULL default '0',
   `hits_today` int(11) NOT NULL default '0',
   `time` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=InnoDB;
+
+
+/*
+Table struture for sys_stat_day_counters
+*/
+
+drop table if exists `sys_stat_day_counters`;
+CREATE TABLE `sys_stat_day_counters` (
+  `id` int(11) NOT NULL auto_increment,
+  `time` int(11) NOT NULL default '0',
+  `hits` int(11) NOT NULL default '0',
+  `hosts` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
@@ -833,7 +848,7 @@ CREATE TABLE `user` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for ptpa.user
+Table data for niiemp.user
 */
 
 INSERT INTO `user` VALUES (1,1,7,NULL,'super','',NULL,NULL,'','admin');
@@ -856,7 +871,7 @@ CREATE TABLE `user_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for ptpa.user_group
+Table data for niiemp.user_group
 */
 
 INSERT INTO `user_group` VALUES (3,1,27,'Посетители','visitors');
@@ -877,7 +892,7 @@ CREATE TABLE `user_in_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for ptpa.user_in_group
+Table data for niiemp.user_in_group
 */
 
 INSERT INTO `user_in_group` VALUES (1,25,28);

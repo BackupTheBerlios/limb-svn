@@ -9,6 +9,8 @@
 *
 ***********************************************************************************/
 
+require_once(LIMB_DIR . 'core/fetcher.class.php');
+
 class stats_counter
 {
 	var $_hits_today;
@@ -25,7 +27,8 @@ class stats_counter
 	
 	function update($reg_date, $is_new_host)
 	{	
-		$record = $this->_get_counter_record($reg_date->get_stamp());
+		$reg_stamp = $reg_date->get_stamp();
+		$record = $this->_get_counter_record($reg_stamp);
 		
 		$counters_date =& new date();
 		$counters_date->set_by_stamp($record['time']);
@@ -34,7 +37,10 @@ class stats_counter
 		{
 			$record['hosts_today'] = 0;
 			$record['hits_today'] = 0;
-		}	
+			$this->_insert_new_day_counters_record($reg_stamp);
+		}
+		elseif($counters_date->date_to_days() > $reg_date->date_to_days()) //this shouldn't normally happen
+			return;
 		
 		if ($is_new_host)
 		{
@@ -45,12 +51,25 @@ class stats_counter
 		$record['hits_today']++;
 		$record['hits_all']++;
 		
-		$this->_update_today_counters(
-			$reg_date->get_stamp(), 
+		$this->_update_counters_record(
+			$reg_stamp, 
 			$record['hits_today'], 
 			$record['hosts_today'], 
 			$record['hits_all'], 
-			$record['hosts_all']);	
+			$record['hosts_all']);
+			
+		$this->_update_day_counters_record(
+			$reg_stamp,
+			$record['hits_today'], 
+			$record['hosts_today']);	
+	}
+	
+	function _is_home_hit()
+	{
+		if(!$object_data = fetch_mapped_by_url())
+			return false;
+			
+		return ($object_data['parent_node_id'] == 0);
 	}
 	
 	function _get_counter_record($stamp)
@@ -67,12 +86,51 @@ class stats_counter
 				'time' => $stamp
 			);
 			$this->db->sql_insert('sys_stat_counter', $record);
+
+			$this->_insert_new_day_counters_record($stamp);
 		}
 		
 		return $record;
 	}
+	
+	function _get_new_day_counters_record($stamp)
+	{
+		$this->db->sql_select('sys_stat_day_counters', '*', array('time' => $this->_make_day_stamp($stamp)));
+		return $this->db->fetch_row();
+	}
+	
+	function _insert_new_day_counters_record($stamp)
+	{
+		$record = array(
+			'hosts' => 0,
+			'hits' => 0,
+			'home_hits' => 0,
+			'time' => $this->_make_day_stamp($stamp)
+		);
+		$this->db->sql_insert('sys_stat_day_counters', $record);
+	}
+	
+	function _make_day_stamp($stamp)
+	{
+		$arr = getdate($stamp);
+		return mktime(0, 0, 0, $arr['mon'], $arr['mday'], $arr['year']);
+	}
+	
+	function _update_day_counters_record($stamp, $hits_today, $hosts_today)
+	{
+		$home_hit = ($this->_is_home_hit()) ? 1 : 0;
+				
+		$sql = "UPDATE sys_stat_day_counters 
+						SET hosts={$hosts_today}, 
+						hits={$hits_today},
+						home_hits=home_hits+{$home_hit}
+						WHERE
+						time=" . $this->_make_day_stamp($stamp);
+					
+		$this->db->sql_exec($sql);
+	}
 
-	function _update_today_counters($stamp, $hits_today, $hosts_today, $hits_all, $hosts_all)
+	function _update_counters_record($stamp, $hits_today, $hosts_today, $hits_all, $hosts_all)
 	{
 		$update_array['hits_today'] = $hits_today;
 		$update_array['hosts_today'] = $hosts_today;

@@ -35,7 +35,7 @@ class stats_ip
 			return true;
 		}
 		elseif($ip_date->date_to_days() > $reg_date->date_to_days()) //this shouldn't happen normally...
-			$this->_update_stat_ip_record($reg_date->get_stamp());
+			return false;
 
 		return false;
 	}

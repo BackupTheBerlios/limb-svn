@@ -91,7 +91,7 @@ class ip
 		return $ip_list;
 	}
 	
-	function encode_ip($ip=null)
+	function encode_ip($ip)
 	{		
 		$ip_sep = explode('.', $ip);
 			
@@ -101,6 +101,7 @@ class ip
 	function decode_ip($hex_ip)
 	{
 		$hexipbang = explode('.', chunk_split($hex_ip, 2, '.'));
+		
 		return hexdec($hexipbang[0]). '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
 	}
 

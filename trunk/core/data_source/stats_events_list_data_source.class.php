@@ -10,7 +10,7 @@
 ***********************************************************************************/ 
 
 require_once(LIMB_DIR . 'core/data_source/data_source.class.php');
-require_once(LIMB_DIR . 'core/model/stats/stats_report.class.php');
+require_once(LIMB_DIR . 'core/model/stats/stats_event_report.class.php');
 
 class stats_events_list_data_source extends data_source
 {
@@ -22,21 +22,21 @@ class stats_events_list_data_source extends data_source
 				RESPONSE_STATUS_FORM_NOT_VALID => 'RESPONSE_STATUS_FORM_NOT_VALID'
 			);
 		
-	var $stats_report = null;
+	var $stats_event_report = null;
 	
 	function stats_events_list_data_source()
 	{
-		$this->stats_report =& new stats_report();
+		$this->stats_event_report =& new stats_event_report();
 		
 		parent :: data_source();		
 	}
 
 	function & get_data_set(&$counter, $params=array())
 	{		
-		$this->_configure_stats_report_filter();
+		$this->_configure_stats_event_report_filter();
 		
-		$counter = $this->stats_report->fetch_count($params);
-		$arr = $this->stats_report->fetch($params);
+		$counter = $this->stats_event_report->fetch_count($params);
+		$arr = $this->stats_event_report->fetch($params);
 		
 		$arr = $this->_process_result_array($arr);
 		
@@ -55,7 +55,7 @@ class stats_events_list_data_source extends data_source
 		return $result;
 	}
 	
-	function _configure_stats_report_filter()
+	function _configure_stats_event_report_filter()
 	{
 		$this->_set_ip_filter();
 		
@@ -73,13 +73,13 @@ class stats_events_list_data_source extends data_source
 	function _set_login_filter()
 	{
 		if (isset($_REQUEST['stats_user_login']))
-			$this->stats_report->set_login_filter($_REQUEST['stats_user_login']);
+			$this->stats_event_report->set_login_filter($_REQUEST['stats_user_login']);
 	}
 
 	function _set_action_filter()
 	{
 		if (isset($_REQUEST['stats_action_name']))
-			$this->stats_report->set_action_filter($_REQUEST['stats_action_name']);
+			$this->stats_event_report->set_action_filter($_REQUEST['stats_action_name']);
 	}
 	
 	function _set_ip_filter()
@@ -88,7 +88,7 @@ class stats_events_list_data_source extends data_source
 			return;
 			
 		$ip_list = ip :: process_ip_range($_REQUEST['stats_ip']);
-		$this->stats_report->set_ip_filter($ip_list);
+		$this->stats_event_report->set_ip_filter($ip_list);
 	}
 	
 	function _set_status_filter()
@@ -103,7 +103,7 @@ class stats_events_list_data_source extends data_source
 				$status_mask = $status_mask | $response_keys[$index];
 
 		if ($status_mask)
-			$this->stats_report->set_status_filter($status_mask);
+			$this->stats_event_report->set_status_filter($status_mask);
 	}
 	
 	function _set_object_filter()
@@ -113,9 +113,9 @@ class stats_events_list_data_source extends data_source
 
 		$tree =& limb_tree :: instance();
 		if($node = $tree->get_node_by_path($_REQUEST['stats_object_path']))
-			$this->stats_report->set_object_filter($node['id']);
+			$this->stats_event_report->set_object_filter($node['id']);
 		else
-			$this->stats_report->set_object_filter(-1);
+			$this->stats_event_report->set_object_filter(-1);
 	}
 	
 	function _set_period_filter()
@@ -156,7 +156,7 @@ class stats_events_list_data_source extends data_source
 		if (isset($_REQUEST['stats_finish_minute']))
 			$finish_date->set_minute($_REQUEST['stats_finish_minute']);
 		
-		$this->stats_report->set_period_filter($start_date, $finish_date);
+		$this->stats_event_report->set_period_filter($start_date, $finish_date);
 	}
 }
 ?>

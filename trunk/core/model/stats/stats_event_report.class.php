@@ -12,12 +12,12 @@ require_once(LIMB_DIR . 'core/lib/error/error.inc.php');
 require_once(LIMB_DIR . 'core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/http/ip.class.php');
 
-class stats_report
+class stats_event_report
 {
 	var $db = null;
 	var $filter_conditions = array();
 	
-	function stats_report()
+	function stats_event_report()
 	{
 		$this->db =& db_factory :: instance();
 	}

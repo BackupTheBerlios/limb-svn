@@ -1,6 +1,6 @@
 /* 
 SQLyog v3.63
-Host - localhost : Database - temp_eng
+Host - localhost : Database - temp
 **************************************************************
 Server version 4.0.12-nt
 */
@@ -96,7 +96,7 @@ CREATE TABLE `message` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_eng.message
+Table data for temp.message
 */
 
 INSERT INTO `message` VALUES (1,1,16,'Message',NULL,'messages');
@@ -120,7 +120,7 @@ CREATE TABLE `navigation_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_eng.navigation_item
+Table data for temp.navigation_item
 */
 
 INSERT INTO `navigation_item` VALUES (1,1,15,'navigation','','navigation');
@@ -160,7 +160,7 @@ CREATE TABLE `sys_action_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_eng.sys_action_access
+Table data for temp.sys_action_access
 */
 
 INSERT INTO `sys_action_access` VALUES (216,17,'display',27,0);
@@ -252,7 +252,7 @@ CREATE TABLE `sys_class` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for temp_eng.sys_class
+Table data for temp.sys_class
 */
 
 INSERT INTO `sys_class` VALUES (1,'main_page','/shared/images/folder.gif',0);
@@ -307,7 +307,7 @@ CREATE TABLE `sys_group_object_access_template` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_eng.sys_group_object_access_template
+Table data for temp.sys_group_object_access_template
 */
 
 INSERT INTO `sys_group_object_access_template` VALUES (1,6,'create_user');
@@ -329,7 +329,7 @@ CREATE TABLE `sys_group_object_access_template_item` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_eng.sys_group_object_access_template_item
+Table data for temp.sys_group_object_access_template_item
 */
 
 INSERT INTO `sys_group_object_access_template_item` VALUES (1,1,27,1,1);
@@ -382,7 +382,7 @@ CREATE TABLE `sys_object_access` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_eng.sys_object_access
+Table data for temp.sys_object_access
 */
 
 INSERT INTO `sys_object_access` VALUES (1,1,9,1,1,0);
@@ -501,7 +501,7 @@ CREATE TABLE `sys_object_version` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_eng.sys_object_version
+Table data for temp.sys_object_version
 */
 
 INSERT INTO `sys_object_version` VALUES (1,7,0,1076755675,1076755675,1);
@@ -564,7 +564,7 @@ CREATE TABLE `sys_session` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_eng.sys_session
+Table data for temp.sys_session
 */
 
 INSERT INTO `sys_session` VALUES ('8478ecc9584bf2eb4f0ee0c42d308a42','tree_expanded_parents|a:7:{i:1;a:4:{s:1:\"l\";i:1;s:1:\"r\";i:62;s:7:\"root_id\";i:1;s:6:\"status\";b:1;}i:2;a:4:{s:1:\"l\";i:2;s:1:\"r\";i:9;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:8;a:4:{s:1:\"l\";i:10;s:1:\"r\";i:15;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:6;a:4:{s:1:\"l\";i:16;s:1:\"r\";i:19;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:15;a:4:{s:1:\"l\";i:28;s:1:\"r\";i:55;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:19;a:4:{s:1:\"l\";i:29;s:1:\"r\";i:52;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}i:20;a:4:{s:1:\"l\";i:30;s:1:\"r\";i:49;s:7:\"root_id\";i:1;s:6:\"status\";b:0;}}logged_in_user_data|a:9:{s:12:\"is_logged_in\";b:1;s:2:\"id\";s:2:\"25\";s:7:\"node_id\";s:1:\"7\";s:5:\"login\";s:5:\"admin\";s:5:\"email\";s:15:\"mike@office.bit\";s:4:\"name\";s:5:\"admin\";s:8:\"lastname\";s:5:\"super\";s:8:\"password\";s:32:\"66d4aaa5ea177ac32c69946de3731ec0\";s:6:\"groups\";a:1:{i:28;s:6:\"admins\";}}strings|s:0:\"\";',1077190936,25);
@@ -594,7 +594,7 @@ CREATE TABLE `sys_site_object` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';
 
 /*
-Table data for temp_eng.sys_site_object
+Table data for temp.sys_site_object
 */
 
 INSERT INTO `sys_site_object` VALUES (1,1,1,1076755675,0,1076755675,0,'en','Main','root');
@@ -672,7 +672,7 @@ CREATE TABLE `sys_site_object_tree` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 114688 kB; InnoDB free: 114688 kB; InnoDB free:';
 
 /*
-Table data for temp_eng.sys_site_object_tree
+Table data for temp.sys_site_object_tree
 */
 
 INSERT INTO `sys_site_object_tree` VALUES (1,1,1,62,0,1,1,'root',19);
@@ -719,6 +719,20 @@ CREATE TABLE `sys_stat_counter` (
   `hosts_today` int(11) NOT NULL default '0',
   `hits_today` int(11) NOT NULL default '0',
   `time` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=InnoDB;
+
+
+/*
+Table struture for sys_stat_day_counters
+*/
+
+drop table if exists `sys_stat_day_counters`;
+CREATE TABLE `sys_stat_day_counters` (
+  `id` int(11) NOT NULL auto_increment,
+  `time` int(11) NOT NULL default '0',
+  `hits` int(11) NOT NULL default '0',
+  `hosts` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
@@ -827,7 +841,7 @@ CREATE TABLE `user` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_eng.user
+Table data for temp.user
 */
 
 INSERT INTO `user` VALUES (1,1,7,NULL,'super','',NULL,NULL,'','admin');
@@ -850,7 +864,7 @@ CREATE TABLE `user_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_eng.user_group
+Table data for temp.user_group
 */
 
 INSERT INTO `user_group` VALUES (3,1,27,'Visitors','visitors');
@@ -871,7 +885,7 @@ CREATE TABLE `user_in_group` (
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 114688 kB; InnoDB free: ';
 
 /*
-Table data for temp_eng.user_in_group
+Table data for temp.user_in_group
 */
 
 INSERT INTO `user_in_group` VALUES (1,25,28);
