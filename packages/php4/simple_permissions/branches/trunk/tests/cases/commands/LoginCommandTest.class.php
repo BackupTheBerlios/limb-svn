@@ -73,7 +73,7 @@ class LoginCommandTest extends LimbTestCase
     $this->user->expectOnce('isLoggedIn');
     $this->user->setReturnValue('isLoggedIn', false);
 
-    $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_ERROR, $this->command->perform());
   }
 
   function testPerformOkRedirectToRoot()

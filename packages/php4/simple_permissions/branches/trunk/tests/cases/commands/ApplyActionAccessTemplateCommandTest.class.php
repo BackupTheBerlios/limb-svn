@@ -107,7 +107,7 @@ class ApplyActionAccessTemplateCommandTest extends LimbTestCase
     $this->command->setReturnValue('_getAccessPolicy',
                                    new AccessPolicyForApplyActionAccessTemplateCommand());
 
-    $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_ERROR, $this->command->perform());
   }
 }
 

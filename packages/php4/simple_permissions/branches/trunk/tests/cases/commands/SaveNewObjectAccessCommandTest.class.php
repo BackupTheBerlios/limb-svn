@@ -135,7 +135,7 @@ class SaveNewObjectAccessCommandTest extends LimbTestCase
 
     $this->site_object->setReturnValue('getParentNodeId', $parent_node_id);
 
-    $this->assertEqual(Limb :: STATUS_ERROR, $this->command->perform());
+    $this->assertEqual(LIMB_STATUS_ERROR, $this->command->perform());
   }
 
   function testPerformFailureNoCreatedObjectData()

@@ -10,10 +10,10 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/permissions/Authenticator.interface.php');
 
+define('SIMPLE_AUTHENTICATOR_DEFAULT_USER_GROUP', 'visitors');
+
 class SimpleAuthenticator implements Authenticator
 {
-  const DEFAULT_USER_GROUP = 'visitors';
-
   function login($params = array())
   {
     if(!isset($params['login']))
@@ -79,7 +79,7 @@ class SimpleAuthenticator implements Authenticator
             tn.version as version,
             tn.object_id as object_id
             FROM sys_site_object as sso, user_group as tn
-            WHERE sso.identifier='" . SimpleAuthenticator :: DEFAULT_USER_GROUP . "'
+            WHERE sso.identifier='" . SIMPLE_AUTHENTICATOR_DEFAULT_USER_GROUP . "'
             AND sso.id=tn.object_id
             AND sso.current_version=tn.version";
 

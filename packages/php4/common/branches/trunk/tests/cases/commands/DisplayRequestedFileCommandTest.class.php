@@ -73,7 +73,7 @@ class DisplayRequestedFileCommandTest extends LimbTestCase
 
     $this->response->expectNever('commit');
 
-    $this->assertEqual($this->command->perform(), Limb :: STATUS_ERROR);
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_ERROR);
   }
 
   function testPerformNoMediaFileNotIcon()
@@ -87,7 +87,7 @@ class DisplayRequestedFileCommandTest extends LimbTestCase
     $this->request->expectOnce('hasAttribute', array('icon'));
     $this->request->setReturnValue('hasAttribute', false, array('icon'));
 
-    $this->assertEqual($this->command->perform(), Limb :: STATUS_ERROR);
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_ERROR);
   }
 
   function testPerformNoMediaFileIsIcon()

@@ -84,7 +84,7 @@ class DisplayRequestedImageCommandTest extends LimbTestCase
 
     $this->response->expectNever('commit');
 
-    $this->assertEqual($this->command->perform(), Limb :: STATUS_ERROR);
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_ERROR);
   }
 
   function testPerformNoSuchVariationOriginal()
@@ -98,7 +98,7 @@ class DisplayRequestedImageCommandTest extends LimbTestCase
 
     $this->response->expectNever('commit');
 
-    $this->assertEqual($this->command->perform(), Limb :: STATUS_ERROR);
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_ERROR);
   }
 
   function testPerformNoSuchVariationNotOriginal()
@@ -129,7 +129,7 @@ class DisplayRequestedImageCommandTest extends LimbTestCase
 
     $this->response->expectNever('commit');
 
-    $this->assertEqual($this->command->perform(), Limb :: STATUS_ERROR);
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_ERROR);
   }
 
   function testPerformNoMediaFileNotOriginal()

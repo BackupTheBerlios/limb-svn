@@ -24,7 +24,7 @@ class SetGroupAccessTemplateAction extends FormAction
       throw new LimbException('class_id not defined');
 
     $access_policy = new AccessPolicy();
-    $data['template'] = $access_policy->getAccessTemplates($class_id, AccessPolicy :: ACCESSOR_TYPE_GROUP);
+    $data['template'] = $access_policy->getAccessTemplates($class_id, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
 
     $this->dataspace->merge($data);
   }
@@ -37,7 +37,7 @@ class SetGroupAccessTemplateAction extends FormAction
     $data = $this->dataspace->export();
 
     $access_policy = new AccessPolicy();
-    $access_policy->saveAccessTemplates($class_id, $data['template'], AccessPolicy :: ACCESSOR_TYPE_GROUP);
+    $access_policy->saveAccessTemplates($class_id, $data['template'], ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
 
     $request->setStatus(Request :: STATUS_FORM_SUBMITTED);
 

@@ -50,7 +50,7 @@ class SimpleAuthorizer implements Authorizer
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
 
-    if(($user_id = $user->getId()) != User :: DEFAULT_USER_ID)
+    if(($user_id = $user->getId()) != DEFAULT_USER_ID)
       $accessor_ids[] = $user_id;
 
     $groups = $user->get('groups', array());

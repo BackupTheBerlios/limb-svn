@@ -32,7 +32,7 @@ class ApplyActionAccessTemplateCommand implements Command
     }
     catch(LimbException $e)
     {
-      return Limb :: STATUS_ERROR;
+      return LIMB_STATUS_ERROR;
     }
 
     return Limb :: getSTATUS_OK();

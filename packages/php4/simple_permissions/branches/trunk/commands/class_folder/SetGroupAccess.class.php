@@ -28,7 +28,7 @@ class SetGroupAccessCommand extends FormCommand
       throw new LimbException('class_id not defined');
 
     $access_policy = $this->_getAccessPolicy();
-    $policy = $access_policy->getActionsAccess($class_id, AccessPolicy :: ACCESSOR_TYPE_GROUP);
+    $policy = $access_policy->getActionsAccess($class_id, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
 
     $dataspace->set('policy', $policy);
   }
@@ -45,7 +45,7 @@ class SetGroupAccessCommand extends FormCommand
     $access_policy = $this->_getAccessPolicy();
     $access_policy->saveActionsAccess($class_id,
                                         $dataspace->get('policy'),
-                                        AccessPolicy :: ACCESSOR_TYPE_GROUP);
+                                        ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
 
     return Limb :: getSTATUS_OK();
   }

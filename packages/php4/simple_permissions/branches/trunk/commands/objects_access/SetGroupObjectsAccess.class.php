@@ -40,7 +40,7 @@ class SetGroupObjectsAccess extends FormAction
   function _fillPolicy()
   {
     $access_policy = new AccessPolicy();
-    $policy = $access_policy->getObjectsAccessByIds($this->object_ids, AccessPolicy :: ACCESSOR_TYPE_GROUP);
+    $policy = $access_policy->getObjectsAccessByIds($this->object_ids, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
 
     $this->dataspace->set('policy', $policy);
   }
@@ -67,7 +67,7 @@ class SetGroupObjectsAccess extends FormAction
     if(isset($data['update']) &&  isset($data['policy']))
     {
       $access_policy = new AccessPolicy();
-      $access_policy->saveObjectsAccess($data['policy'], AccessPolicy :: ACCESSOR_TYPE_GROUP, $groups);
+      $access_policy->saveObjectsAccess($data['policy'], ACCESS_POLICY_ACCESSOR_TYPE_GROUP, $groups);
     }
 
     $this->_setTemplateTree();

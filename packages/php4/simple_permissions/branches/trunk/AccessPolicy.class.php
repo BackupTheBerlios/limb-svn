@@ -11,6 +11,9 @@
 require_once(LIMB_DIR . '/class/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/class/lib/util/ComplexArray.class.php');
 
+define('ACCESS_POLICY_ACCESSOR_TYPE_GROUP', 0);
+define('ACCESS_POLICY_ACCESSOR_TYPE_USER', 1);
+
 class AccessPolicy
 {
   const ACCESSOR_TYPE_GROUP = 0;
@@ -87,18 +90,18 @@ class AccessPolicy
     $object_id = $object->getId();
     $parent_object_id = $parent_object->getId();
 
-    $group_template = $this->getAccessTemplate($behaviour_id, $action, AccessPolicy :: ACCESSOR_TYPE_GROUP);
-    $user_template = $this->getAccessTemplate($behaviour_id, $action, AccessPolicy :: ACCESSOR_TYPE_USER);
+    $group_template = $this->getAccessTemplate($behaviour_id, $action, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
+    $user_template = $this->getAccessTemplate($behaviour_id, $action, ACCESS_POLICY_ACCESSOR_TYPE_USER);
 
     if (!count($group_template))
-      $group_result = $this->copyObjectsAccess($object_id, $parent_object_id, AccessPolicy :: ACCESSOR_TYPE_GROUP);
+      $group_result = $this->copyObjectsAccess($object_id, $parent_object_id, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
     else
-      $group_result = $this->saveObjectsAccess(array($object_id => $group_template), AccessPolicy :: ACCESSOR_TYPE_GROUP);
+      $group_result = $this->saveObjectsAccess(array($object_id => $group_template), ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
 
     if (!count($user_template))
-      $user_result = $this->copyObjectsAccess($object_id, $parent_object_id, AccessPolicy :: ACCESSOR_TYPE_USER);
+      $user_result = $this->copyObjectsAccess($object_id, $parent_object_id, ACCESS_POLICY_ACCESSOR_TYPE_USER);
     else
-      $user_result = $this->saveObjectsAccess(array($object_id => $user_template), AccessPolicy :: ACCESSOR_TYPE_USER);
+      $user_result = $this->saveObjectsAccess(array($object_id => $user_template), ACCESS_POLICY_ACCESSOR_TYPE_USER);
 
     if (!$group_result &&  !$user_result)
     {
@@ -115,8 +118,8 @@ class AccessPolicy
     $behaviour_id = $object->getBehaviourId();
     $object_id = $object->getId();
 
-    $user_templates = $this->getAccessTemplates($behaviour_id, AccessPolicy :: ACCESSOR_TYPE_USER);
-    $group_templates = $this->getAccessTemplates($behaviour_id, AccessPolicy :: ACCESSOR_TYPE_GROUP);
+    $user_templates = $this->getAccessTemplates($behaviour_id, ACCESS_POLICY_ACCESSOR_TYPE_USER);
+    $group_templates = $this->getAccessTemplates($behaviour_id, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
 
     if(!isset($user_templates[$action]) &&  !isset($group_templates[$action]))
     {
@@ -132,8 +135,8 @@ class AccessPolicy
 
     $db_table->delete($conditions);
 
-    $this->saveObjectsAccess(array($object_id => $group_templates[$action]), AccessPolicy :: ACCESSOR_TYPE_GROUP);
-    $this->saveObjectsAccess(array($object_id => $user_templates[$action]), AccessPolicy :: ACCESSOR_TYPE_USER);
+    $this->saveObjectsAccess(array($object_id => $group_templates[$action]), ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
+    $this->saveObjectsAccess(array($object_id => $user_templates[$action]), ACCESS_POLICY_ACCESSOR_TYPE_USER);
 
     return true;
   }

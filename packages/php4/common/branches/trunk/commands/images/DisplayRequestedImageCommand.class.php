@@ -26,14 +26,14 @@ class DisplayRequestedImageCommand implements Command
     $datasource->setRequest($request);
 
     if(!$object_data = $datasource->fetch())
-      return Limb :: STATUS_ERROR;
+      return LIMB_STATUS_ERROR;
 
     $variation = $this->_getRequestedVariation($request);
 
     if(!isset($object_data['variations'][$variation]))
     {
       if($variation == 'original')
-        return Limb :: STATUS_ERROR;
+        return LIMB_STATUS_ERROR;
       else
       {
         $response->header("Content-type: image/gif");
@@ -48,7 +48,7 @@ class DisplayRequestedImageCommand implements Command
     if(!file_exists(MEDIA_DIR. $image['media_id'] . '.media'))
     {
       if($variation == 'original')
-        return Limb :: STATUS_ERROR;
+        return LIMB_STATUS_ERROR;
       else
       {
         $response->header("HTTP/1.1 404 Not found");

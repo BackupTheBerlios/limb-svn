@@ -90,25 +90,25 @@ class SimpleAuthorizerTest extends LimbTestCase
                            'object_id' => 300,
                            'access' => 1,
                            'accessor_id' => 100, // this one is accessible
-                           'accessor_type' => AccessPolicy :: ACCESSOR_TYPE_GROUP));
+                           'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
 
     $db_table->insert(array('id' => 2,
                            'object_id' => 302,
                            'access' => 1,
                            'accessor_id' => 200, // this one is accessible
-                           'accessor_type' => AccessPolicy :: ACCESSOR_TYPE_GROUP));
+                           'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
 
     $db_table->insert(array('id' => 3,
                            'object_id' => 301,
                            'access' => 1,
                            'accessor_id' => 101, // this one is not accessible
-                           'accessor_type' => AccessPolicy :: ACCESSOR_TYPE_GROUP));
+                           'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
 
     $db_table->insert(array('id' => 4,
                            'object_id' => 305, // this one is not accessible
                            'access' => 1,
                            'accessor_id' => 100,
-                           'accessor_type' => AccessPolicy :: ACCESSOR_TYPE_GROUP));
+                           'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
 
     $result = array(300, 302);
     $this->assertEqual($authorizer->getAccessibleObjectIds(array(300, 301, 302, 303)), $result);
@@ -148,25 +148,25 @@ class SimpleAuthorizerTest extends LimbTestCase
                            'behaviour_id' => $behaviour_id,
                            'action_name' => 'create',
                            'accessor_id' => 100, // this one is accessible
-                           'accessor_type' => AccessPolicy :: ACCESSOR_TYPE_GROUP));
+                           'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
 
     $db_table->insert(array('id' => 2,
                            'behaviour_id' => $behaviour_id,
                            'action_name' => 'delete',
                            'accessor_id' => 200, // this one is accessible too
-                           'accessor_type' => AccessPolicy :: ACCESSOR_TYPE_GROUP));
+                           'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
 
     $db_table->insert(array('id' => 3,
                             'behaviour_id' => $behaviour_id,
                             'action_name' => 'edit',
                             'accessor_id' => 101, // this one is NOT accessible
-                            'accessor_type' => AccessPolicy :: ACCESSOR_TYPE_GROUP));
+                            'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
 
     $db_table->insert(array('id' => 4,
                             'behaviour_id' => 12, // this one is NOT accessible too
                             'action_name' => 'publich',
                             'accessor_id' => 101,
-                            'accessor_type' => AccessPolicy :: ACCESSOR_TYPE_GROUP));
+                            'accessor_type' => ACCESS_POLICY_ACCESSOR_TYPE_GROUP));
 
     $result = array('create', 'delete');
 

@@ -38,7 +38,7 @@ class GroupObjectsAccessTreeToggleAction extends TreeToggleAction
   {
     $access_policy = new AccessPolicy();
 
-    $policy = $access_policy->getObjectsAccessByIds($this->object_ids, AccessPolicy :: ACCESSOR_TYPE_GROUP);
+    $policy = $access_policy->getObjectsAccessByIds($this->object_ids, ACCESS_POLICY_ACCESSOR_TYPE_GROUP);
 
     $this->dataspace->set('policy', $policy);
   }
