@@ -1,0 +1,34 @@
+<core:WRAP file="popup.html" placeholder="content">
+<h2><locale:STRING name='user_editing' file='user'></h2>
+<form method="post" name="edit_user" id="edit_user">
+<input type="hidden" name="identifier" id="identifier" >
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+	<tr class=com4>
+		<td colspan=2 class=pad4><core:INCLUDE file="form_errors.html"></td>
+	</tr>
+    <tr>
+      <td><label for="name"><span class=req>*</span><locale:STRING name='firstname' file='user'></label></td>
+      <td><input name="name" type="text" id="name" label="Name" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="lastname"><locale:STRING name='lastname' file='user'></label></td>
+      <td><input name="lastname" type="text" id="lastname" label="Last name" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="email"><span class=req>*</span><locale:STRING name='email'></label></td>
+      <td><input name="email" type="text" id="email" label="Email" class="input">
+      </td>
+    </tr>
+		<core:INCLUDE file='admin/admin_form_items/req_info.html'>
+    <tr>
+      <td colspan=2 align=center>
+      <action_button action="edit" name="update" type="submit" id="update" locale_value="update"  reload_parent="true" class="button">
+	     &nbsp;
+      <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+
+      </td>
+    </tr>
+  </table>
+</form>
