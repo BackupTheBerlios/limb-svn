@@ -197,7 +197,6 @@ class metadata_component extends component
 		
 		$this->_add_object_action_path($results);
 		
-		$results[sizeof($results)-1]['is_last'] = true;
 		
 		return new array_dataset($results);
 	}
@@ -230,7 +229,13 @@ class metadata_component extends component
 					next($offset_arr);
 				}
 			}
+			
+			$last_element = $data['id'];
 		}
+		
+		if (isset($results[$last_element]))
+			$results[$last_element]['is_last'] = true;
+
 		return $results;
 	}
 
