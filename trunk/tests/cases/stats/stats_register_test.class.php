@@ -26,7 +26,7 @@ Mock::generatePartial
 Mock::generatePartial
 (
   'stats_counter',
-  'stats_counter_test_version',
+  'stats_counter_test_version2',
   array(
   	'set_new_host',
   	'update'
@@ -86,7 +86,7 @@ class stats_register_test extends UnitTestCase
    	$this->stats_ip->stats_ip();
   	$this->stats_ip->setReturnValue('get_client_ip', ip :: encode_ip('127.0.0.1'));
 
-   	$this->stats_counter = new stats_counter_test_version($this);
+   	$this->stats_counter = new stats_counter_test_version2($this);
    	$this->stats_counter->stats_counter();
 
    	$this->stats_referer = new stats_referer_test_version($this);
@@ -153,7 +153,7 @@ class stats_register_test extends UnitTestCase
   	$this->stats_ip->expectOnce('is_new_host');
   	$this->stats_ip->expectOnce('get_client_ip');
 
-  	$this->stats_counter->expectOnce('set_new_host', array(true));
+  	$this->stats_counter->expectOnce('set_new_host');
   	$this->stats_counter->expectOnce('update', array($date));
 
   	$this->stats_referer->expectOnce('get_referer_page_id');

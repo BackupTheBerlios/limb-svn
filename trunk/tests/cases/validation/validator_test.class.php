@@ -17,7 +17,7 @@ Mock::generate('error_list');
 
 Mock::generatePartial(
     'validator',
-    'validator_test_version',
+    'validator_test_version2',
     array('_get_error_list')); 
 
 Mock :: generate('rule');
@@ -30,7 +30,7 @@ class validator_test extends UnitTestCase
 	function setUp()
 	{
    $this->error_list =& new Mockerror_list($this);
-   $this->validator =& new validator_test_version($this);
+   $this->validator =& new validator_test_version2($this);
    $this->validator->setReturnReference('_get_error_list', $this->error_list);
 	} 
 	  	  
