@@ -10,25 +10,31 @@
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
 
-class feedback_object extends content_object
+class pictured_news_object extends content_object
 {
+	function pictured_news_object()
+	{
+		parent :: content_object();
+	}
+	
 	function _define_attributes_definition()
 	{
 		return complex_array :: array_merge(
 				parent :: _define_attributes_definition(),
 				array(
-				'title' => array(),
-				'content' => array('search' => true, 'search_weight' => 1),
-			));
+				'content' => array('search' => true),
+				'annotation' => array('search' => true),
+				'identifier' => array('search' => false)								
+				));
 	}
 	
 	function _define_class_properties()
 	{
 		return array(
 			'ordr' => 1,
-			'can_be_parent' => 1,
-			'controller_class_name' => 'feedback_object_controller',
-			'db_table_name' => 'message',
+			'can_be_parent' => 0,
+			'controller_class_name' => 'pictured_news_object_controller',
+			'auto_identifier' => true
 		);
 	}
 }

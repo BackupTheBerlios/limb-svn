@@ -59,12 +59,13 @@ class datasource_tag extends server_component_tag
 		foreach($targets as $target)
 		{
 		  $target = trim($target);
-		  $target_component = null;
 		  
-		  if(!$target_component =& $this->parent->find_child($target))
+		  $target_component = $this->parent->find_child($target);
+		  
+		  if(!$target_component)
 		  {
 		    $root =& $this->get_root_dataspace();
-		    $target_component =& $root->find_child($target);
+		    $target_component = $root->find_child($target);
 		  }
 		    
 			if($target_component)
