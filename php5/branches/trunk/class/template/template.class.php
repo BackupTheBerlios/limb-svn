@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -53,7 +53,7 @@ class template extends component
 		
 		if (!isset($GLOBALS['template_render'][$this->codefile]))
 		{
-			if (get_ini_option('config.ini', 'force_compile', 'templates'))
+			if (get_ini_option('common.ini', 'force_compile', 'templates'))
 			{
 			  include_once(LIMB_DIR . 'class/template/compiler/template_compiler.inc.php');
 				compile_template_file($file, $resolve_path);

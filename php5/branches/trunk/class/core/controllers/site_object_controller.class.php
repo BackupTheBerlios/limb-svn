@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -111,9 +111,10 @@ abstract class site_object_controller
 		  $this->_perform_action($request, $response);
 		  $this->_commit_transaction($request);
 		}
-		catch(SQLException $e)
+		catch(LimbException $e)
 		{
 		  $this->_roll_back_transaction($request);
+		  throw $e;
 		}
 	}
 	

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -12,7 +12,11 @@ require_once(LIMB_DIR . '/class/lib/util/ini.class.php');
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
 
 if(!is_registered_resolver('ini'))
-  register_file_resolver('ini', LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver');
+{
+  include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+  include_once(LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver.class.php');
+  register_file_resolver('ini', new ini_file_resolver(new package_file_resolver()));
+}
 
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {

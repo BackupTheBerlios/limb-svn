@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -8,19 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
 
-class db_table_file_resolver extends package_file_resolver
+class db_table_file_resolver extends file_resolver_decorator
 {
-  protected function _do_resolve($class_path)
+  public function resolve($class_path, $params = array())
   {    
     if(file_exists(LIMB_DIR . '/class/db_tables/' . $class_path . '_db_table.class.php'))
       return LIMB_DIR . '/class/db_tables/' . $class_path . '_db_table.class.php';
 
-    if($resolved_path = $this->_find_file_in_packages('db_tables/' . $class_path . '_db_table.class.php'))
-      return $resolved_path;  
-    else
-  	  throw new FileNotFoundException('db_table not found', $class_path);
+    return $this->_resolver->resolve('db_tables/' . $class_path . '_db_table.class.php', $params);
   }   
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -8,10 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php');
 
-class ini_file_resolver
+class ini_file_resolver implements file_resolver
 {
-  public function resolve($file_name)
+  public function resolve($file_name, $params = array())
   {
   	if (file_exists(LIMB_APP_DIR . '/settings/' . $file_name))
   		$dir = LIMB_APP_DIR . '/settings/';

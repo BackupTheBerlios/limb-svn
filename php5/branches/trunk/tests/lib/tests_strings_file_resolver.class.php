@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -8,11 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php');
 
-class tests_strings_file_resolver
+class tests_strings_file_resolver implements file_resolver
 {
-  function resolve($file_name, $locale_id)
+  function resolve($file_name, $params = array())
   { 
+    if(!isset($params[0]))
+      $locale_id = DEFAULT_CONTENT_LOCALE_ID;
+    else
+      $locale_id = $params[0];
+
   	if(file_exists(LIMB_DIR . '/tests/i18n/' . $file_name . '_' . $locale_id . '.ini'))
   		$dir = LIMB_DIR . '/tests/i18n/';
   	else

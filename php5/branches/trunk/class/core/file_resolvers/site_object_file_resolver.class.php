@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -8,19 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
 
-class site_object_file_resolver extends package_file_resolver
+class site_object_file_resolver extends file_resolver_decorator
 {
-  protected function _do_resolve($class_path)
+  public function resolve($class_path, $params = array())
   {
     if(file_exists(LIMB_DIR . 'class/core/site_objects/' . $class_path . '.class.php'))
       return LIMB_DIR . 'class/core/site_objects/' . $class_path . '.class.php';    
       
-    if(!$resolved_path = $this->_find_file_in_packages('site_objects/' . $class_path . '.class.php'))    
-  	  throw new FileNotFoundException('site object not found', $class_path);
-  		  
-		return $resolved_path;
+    return $this->_resolver->resolve('site_objects/' . $class_path . '.class.php', $params);   
   }  
 }
 

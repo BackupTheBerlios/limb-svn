@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
 require_once(LIMB_DIR . '/class/lib/util/ini_support.inc.php');
 
-class template_file_resolver extends package_file_resolver
+class template_file_resolver extends file_resolver_decorator
 {
-  protected function _do_resolve($file_path)
+  public function resolve($file_path, $params = array())
   {
     $tmpl_path = get_ini_option('common.ini', 'path', 'Templates');
     
@@ -24,17 +24,17 @@ class template_file_resolver extends package_file_resolver
       
     if(file_exists($tmpl_path . $file_path))
       return $tmpl_path . $file_path;      
-      
-    if($resolved_path = $this->_find_file_in_packages('design/' . $locale . $file_path))
-    {
-      return $resolved_path;
+    
+    try
+    {  
+      $resolved_path = $this->_resolver->resolve('design/' . $locale . $file_path, $params);
     }
-    elseif($resolved_path = $this->_find_file_in_packages('design/'  . $file_path))
+    catch(FileNotFoundException $e)
     {
-      return $resolved_path;
+      $resolved_path = $this->_resolver->resolve('design/'  . $file_path, $params);
     }
-    else
-  	  throw new FileNotFoundException('template not found', $file_path);
+    
+    return $resolved_path;
   }
   
   protected function _get_locale_prefix()

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -43,7 +43,7 @@ final class strings
 	protected function _do_get($key, $filename, $locale_id)
 	{
 		$path = $this->_get_path($filename, $locale_id);
-		
+
 		if(isset($this->_cache[$path][$key]))
 			return $this->_cache[$path][$key];
 		
@@ -65,9 +65,9 @@ final class strings
 	{					  
 		if(isset($this->_path_cache[$file_name][$locale_id]))
 			return $this->_path_cache[$file_name][$locale_id];	  
-			
+		
     resolve_handle($resolver =& get_file_resolver('strings'));
-    $path = $resolver->resolve($file_name, $locale_id);
+    $path = $resolver->resolve($file_name, array($locale_id));
 			
 	  $this->_path_cache[$file_name][$locale_id] = $path;
 	  

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -30,11 +30,13 @@ require_once(LIMB_DIR . '/setup.php');
 require_once(LIMB_DIR . '/tests/lib/debug_mock.class.php');//don't move this line!!!
 
 require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolvers_registry.inc.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+include_once(LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver.class.php');
 
-register_file_resolver('ini',     LIMB_DIR . '/tests/lib/tests_ini_file_resolver');
-register_file_resolver('action',  LIMB_DIR . '/tests/lib/tests_action_file_resolver');
-register_file_resolver('strings', LIMB_DIR . '/tests/lib/tests_strings_file_resolver');
-register_file_resolver('db_table',LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
+register_file_resolver('ini',       LIMB_DIR . '/tests/lib/tests_ini_file_resolver');
+register_file_resolver('action',    LIMB_DIR . '/tests/lib/tests_action_file_resolver');
+register_file_resolver('strings',   LIMB_DIR . '/tests/lib/tests_strings_file_resolver');
+register_file_resolver('db_table',  new db_table_file_resolver(new package_file_resolver()));
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -23,7 +23,7 @@ class template_file_resolver_test extends base_package_file_resolver_test
   function & _define_resolver()
   {
     $resolver =& new template_file_resolver_test_version($this);
-    $resolver->__construct();
+    $resolver->__construct(new package_file_resolver());
     
     $resolver->setReturnValue('_get_locale_prefix', '');
   

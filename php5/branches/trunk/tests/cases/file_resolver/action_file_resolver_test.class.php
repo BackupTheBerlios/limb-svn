@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -15,7 +15,7 @@ class action_file_resolver_test extends base_package_file_resolver_test
 {  
   function & _define_resolver()
   {
-    return new action_file_resolver();
+    return new action_file_resolver(new package_file_resolver());
   }  
   
   function test_resolve_action_file_in_limb()

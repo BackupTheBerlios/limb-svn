@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -11,7 +11,11 @@
 require_once(LIMB_DIR . 'class/lib/error/debug.class.php');
 
 if(!is_registered_resolver('datasource'))
-  register_file_resolver('datasource', LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver');
+{
+  include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+  include_once(LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver.class.php');
+  register_file_resolver('datasource', new datasource_file_resolver(new package_file_resolver()));
+}
 
 class datasource_factory
 {

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -11,7 +11,11 @@
 require_once(LIMB_DIR . 'class/lib/system/objects_support.inc.php');
 
 if(!is_registered_resolver('site_object'))
-  register_file_resolver('site_object', $r = LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver');
+{
+  include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+  include_once(LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver.class.php');
+  register_file_resolver('site_object', new site_object_file_resolver(new package_file_resolver()));
+}
 
 abstract class site_object_factory
 {

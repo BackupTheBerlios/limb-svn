@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -21,7 +21,7 @@ class locale_locale_tag extends compiler_directive_tag
 {
 	function pre_parse()
 	{
-		if (!isset($this->attributes['name']) || !$this->attributes['name']))
+		if (!isset($this->attributes['name']) || !$this->attributes['name'])
 		{
 			throw new WactException('missing required attribute', 
 					array('tag' => $this->tag,

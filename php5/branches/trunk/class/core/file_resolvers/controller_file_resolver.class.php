@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -8,16 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
 
-class controller_file_resolver extends package_file_resolver
+class controller_file_resolver extends file_resolver_decorator
 {
-  public function resolve($class_path)
+  public function resolve($class_path, $params = array())
   {
-    if(!$resolved_path = parent :: resolve('controllers/' . $class_path . '.class.php'))    
-  	  throw new FileNotFoundException('controller not found', $class_path);
-  		  
-		return $resolved_path;
+    return $this->_resolver->resolve('controllers/' . $class_path . '.class.php', $params);
   }  
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -44,7 +44,7 @@ class core_parameter_tag extends compiler_directive_tag
 	
 	public function check_nesting_level()
 	{
-		if (!$this->parent instanceof server_component_tag))
+		if (!$this->parent instanceof server_component_tag)
 		{
 			throw new WactException('wrong parent tag', 
 					array('tag' => $this->tag,

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -51,15 +51,26 @@ class limb_application
   
   protected function _register_file_resolvers()
   {
-    register_file_resolver('intercepting_filter', LIMB_DIR . '/class/core/file_resolvers/intercepting_filter_file_resolver');
-    register_file_resolver('ini',                 LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver');
-    register_file_resolver('action',              LIMB_DIR . '/class/core/file_resolvers/action_file_resolver');
-    register_file_resolver('strings',             LIMB_DIR . '/class/core/file_resolvers/strings_file_resolver');
-    register_file_resolver('template',            LIMB_DIR . '/class/core/file_resolvers/template_file_resolver');
-    register_file_resolver('controller',          LIMB_DIR . '/class/core/file_resolvers/controller_file_resolver');
-    register_file_resolver('db_table',            LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver');
-    register_file_resolver('datasource',          LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver');
-    register_file_resolver('site_object',         LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver');
+    //we could make them handles, yet the readability would suffer :(
+    include_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/caching_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/ini_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/action_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/strings_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/template_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/controller_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/db_table_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/datasource_file_resolver.class.php');
+    include_once(LIMB_DIR . '/class/core/file_resolvers/site_object_file_resolver.class.php');
+  
+    register_file_resolver('ini',                 new caching_file_resolver(new ini_file_resolver(new package_file_resolver())));
+    register_file_resolver('action',              new caching_file_resolver(new action_file_resolver(new package_file_resolver())));
+    register_file_resolver('strings',             new caching_file_resolver(new strings_file_resolver(new package_file_resolver())));
+    register_file_resolver('template',            new caching_file_resolver(new template_file_resolver(new package_file_resolver())));
+    register_file_resolver('controller',          new caching_file_resolver(new controller_file_resolver(new package_file_resolver())));
+    register_file_resolver('db_table',            new caching_file_resolver(new db_table_file_resolver(new package_file_resolver())));
+    register_file_resolver('datasource',          new caching_file_resolver(new datasource_file_resolver(new package_file_resolver())));
+    register_file_resolver('site_object',         new caching_file_resolver(new site_object_file_resolver(new package_file_resolver())));
   }
     
   public function run()

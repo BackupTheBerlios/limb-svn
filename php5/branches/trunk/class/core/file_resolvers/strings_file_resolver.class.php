@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -8,16 +8,18 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/class/core/file_resolvers/package_file_resolver.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver_decorator.class.php');
 
-class strings_file_resolver extends package_file_resolver
-{
-  public function resolve($file_name, $locale_id)  
+class strings_file_resolver extends file_resolver_decorator
+{  
+  public function resolve($file_name, $params = array())
   {  
-    if(!$resolved_path = parent :: resolve('i18n/' . $file_name . '_' . $locale_id . '.ini'))    
-  	  throw new FileNotFoundException('strings file not found', $file_name, array('locale_id' => $locale_id));
-  		  
-		return $resolved_path;  
+    if(!isset($params[0]))
+      $locale_id = DEFAULT_CONTENT_LOCALE_ID;
+    else
+      $locale_id = $params[0];
+      
+    return $this->_resolver->resolve('i18n/' . $file_name . '_' . $locale_id . '.ini');
   }  
 }
 

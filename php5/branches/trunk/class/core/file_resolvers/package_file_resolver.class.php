@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
-* Copyright 2004 BIT, Ltd. http://www.0x00.ru, mailto: bit@0x00.ru
+* Copyright 2004 BIT, Ltd. http://limb-project.com, mailto: limb@0x00.ru
 *
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
@@ -9,37 +9,20 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/class/core/packages_info.class.php');
+require_once(LIMB_DIR . '/class/core/file_resolvers/file_resolver.interface.php');
 
-class package_file_resolver
+class package_file_resolver implements file_resolver
 {
   protected $_packages_info = null;
-  protected $_resolved_file_paths = array();
   
   function __construct()
   {
     $this->_packages_info = packages_info :: instance();
   }
     
-  public function resolve($file_path)
+  public function resolve($file_path, $params = array())
   {
-    if (isset($this->_resolved_file_paths[$file_path]))
-      return $this->_resolved_file_paths[$file_path];
-  
-    $resolved_file_path = $this->_do_resolve($file_path);
-    
-    $this->_resolved_file_paths[$file_path] = $resolved_file_path;
-    
-    return $resolved_file_path;
-  }
-  
-  protected function _do_resolve($file_path)
-  {
-    return $this->_find_file_in_packages($file_path);
-  }
-    
-  protected function _find_file_in_packages($file_path)
-  {
-    $packages = $this->get_packages();
+    $packages = $this->_get_packages();
     
     foreach($packages as $package)
     {
@@ -51,10 +34,10 @@ class package_file_resolver
         return $resolved_file_path;
     }
     
-    return false;
+    throw new FileNotFoundException('file not found in packages', $file_path);
   }
-  
-  public function get_packages()
+        
+  protected function _get_packages()
   {
     return $this->_packages_info->get_packages();
   }
