@@ -72,8 +72,7 @@ class LimbDbTableTest extends LimbTestCase
 
   function testInsert()
   {
-    $id = $this->db_table_test->insert(array('id' => null,
-                                             'title' =>  'wow',
+    $id = $this->db_table_test->insert(array('title' =>  'wow',
                                              'description' => 'wow!',
                                              'junk!!!' => 'junk!!!'));
 
@@ -87,8 +86,8 @@ class LimbDbTableTest extends LimbTestCase
 
   function testUpdateAll()
   {
-    $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description' ));
-    $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
+    $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description' ));
+    $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description2'));
 
     $this->db_table_test->update(array('description' =>  'new_description',
                                        'junk!!!' => 'junk!!!'));
@@ -109,9 +108,9 @@ class LimbDbTableTest extends LimbTestCase
 
   function testUpdateByCondition()
   {
-    $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
-    $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
-    $this->db_table_test->insert(array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
+    $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description'));
+    $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description2'));
+    $this->db_table_test->insert(array('title' =>  'yo', 'description' => 'description3'));
 
     $this->db_table_test->update(
       array('description' =>  'new_description',
@@ -139,9 +138,9 @@ class LimbDbTableTest extends LimbTestCase
 
   function testUpdateByMixedCondition()
   {
-    $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description'));
-    $this->db_table_test->insert(array('id' => null, 'title' =>  'wow', 'description' => 'description2'));
-    $this->db_table_test->insert(array('id' => null, 'title' =>  'yo', 'description' => 'description3'));
+    $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description'));
+    $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description2'));
+    $this->db_table_test->insert(array('title' =>  'yo', 'description' => 'description3'));
 
     $res = $this->db_table_test->update(array('description' =>  'new_description', 'title' => 'wow2'),
                                         array('title' => 'wow', "description='description2'"));
@@ -186,8 +185,8 @@ class LimbDbTableTest extends LimbTestCase
   function testSelectAll()
   {
     $data = array(
-      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
-      1 => array('id' => null, 'title' =>  'wow', 'description' => 'description2')
+      0 => array('title' =>  'wow', 'description' => 'description'),
+      1 => array('title' =>  'wow', 'description' => 'description2')
     );
 
     $this->db_table_test->insert($data[0]);
@@ -209,8 +208,8 @@ class LimbDbTableTest extends LimbTestCase
   function testSelectByCondition()
   {
     $data = array(
-      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
-      1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
+      0 => array('title' =>  'wow', 'description' => 'description'),
+      1 => array('title' =>  'wow!', 'description' => 'description2')
     );
 
     $this->db_table_test->insert($data[0]);
@@ -231,8 +230,8 @@ class LimbDbTableTest extends LimbTestCase
   function testSelectByMixedCondition()
   {
     $data = array(
-      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
-      1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2'),
+      0 => array('title' =>  'wow', 'description' => 'description'),
+      1 => array('title' =>  'wow!', 'description' => 'description2'),
     );
 
     $this->db_table_test->insert($data[0]);
@@ -251,8 +250,8 @@ class LimbDbTableTest extends LimbTestCase
   function testSelectRecordById()
   {
     $data = array(
-      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
-      1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
+      0 => array('title' =>  'wow', 'description' => 'description'),
+      1 => array('title' =>  'wow!', 'description' => 'description2')
     );
 
     $this->db_table_test->insert($data[0]);
@@ -270,8 +269,8 @@ class LimbDbTableTest extends LimbTestCase
   function testDeleteAll()
   {
     $data = array(
-      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
-      1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
+      0 => array('title' =>  'wow', 'description' => 'description'),
+      1 => array('title' =>  'wow!', 'description' => 'description2')
     );
 
     $this->db_table_test->insert($data[0]);
@@ -290,8 +289,8 @@ class LimbDbTableTest extends LimbTestCase
   function testDeleteByMixedCondition()
   {
     $data = array(
-      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
-      1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
+      0 => array('title' =>  'wow', 'description' => 'description'),
+      1 => array('title' =>  'wow!', 'description' => 'description2')
     );
 
     $this->db_table_test->insert($data[0]);
@@ -311,8 +310,8 @@ class LimbDbTableTest extends LimbTestCase
   function testDeleteById()
   {
     $data = array(
-      0 => array('id' => null, 'title' =>  'wow', 'description' => 'description'),
-      1 => array('id' => null, 'title' =>  'wow!', 'description' => 'description2')
+      0 => array('title' =>  'wow', 'description' => 'description'),
+      1 => array('title' =>  'wow!', 'description' => 'description2')
     );
 
     $id = $this->db_table_test->insert($data[0]);
