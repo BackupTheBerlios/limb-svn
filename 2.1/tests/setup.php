@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/ 	
 if(!defined('SIMPLE_TEST'))
-	define('SIMPLE_TEST', LIMB_DIR . '/core/lib/external/simpletest1.0beta4/');
+	define('SIMPLE_TEST', LIMB_DIR . '/tests/lib/simpletest1.0beta4/');
 
 if ( !file_exists(SIMPLE_TEST . 'unit_tester.php') ) 
 	die ('Make sure the SIMPLE_TEST constant is set correctly in this file');

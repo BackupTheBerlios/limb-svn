@@ -55,6 +55,11 @@ class tree_db_driver extends tree_driver
 		$this->_node_table = $table_name;
 	}
 	
+	function get_node_table()
+	{
+		return $this->_node_table;
+	}
+	
 	function & _get_result_set($sql)
 	{
 		$this->_db->sql_exec($sql);

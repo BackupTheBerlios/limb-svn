@@ -61,7 +61,8 @@ class materialized_path_driver_test extends UnitTestCase
 			'path' => '/10/', 
 			'root_id' => 10,
 			'level' => 2,
-			'parent_id' => 1000
+			'parent_id' => 1000,
+			'children' => 0
 		);
 
 		$this->db->sql_insert(MATERIALIZED_PATH_TEST_TABLE, $node);
@@ -84,7 +85,8 @@ class materialized_path_driver_test extends UnitTestCase
 			'path' => '/1/', 
 			'root_id' => 1,
 			'level' => 1,
-			'parent_id' => 0
+			'parent_id' => 0,
+			'children' => 1
 		);
 
 		$this->db->sql_insert(MATERIALIZED_PATH_TEST_TABLE, $root_node);
@@ -96,7 +98,8 @@ class materialized_path_driver_test extends UnitTestCase
 			'path' => '/1/10/', 
 			'root_id' => 1,
 			'level' => 2,
-			'parent_id' => 1
+			'parent_id' => 1,
+			'children' => 0
 		);
 
 		$this->db->sql_insert(MATERIALIZED_PATH_TEST_TABLE, $node);
@@ -114,13 +117,15 @@ class materialized_path_driver_test extends UnitTestCase
 			'path' => '/0/', 
 			'root_id' => 0,
 			'level' => 23,
-			'parent_id' => 1000
+			'parent_id' => 1000,
+			'children' => 1000
 		);
 		
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'path'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
+		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'children'));
 		
 		$node_id = $this->driver->create_root_node($node);
 		
@@ -139,6 +144,7 @@ class materialized_path_driver_test extends UnitTestCase
 		$this->assertEqual($row['parent_id'], 0, 'invalid parameter: parent_id');
 		$this->assertEqual($row['root_id'], $node_id, 'invalid parameter: root_id');
 		$this->assertEqual($row['path'], '/' . $node_id . '/', 'invalid parameter: path');
+		$this->assertEqual($row['children'], 0, 'invalid parameter: children');
 	} 
 	
 	function test_create_root_node_dumb()
@@ -150,7 +156,8 @@ class materialized_path_driver_test extends UnitTestCase
 			'path' => '/0/', 
 			'root_id' => 0,
 			'level' => 23,
-			'parent_id' => 1000
+			'parent_id' => 1000,
+			'children' => 10000
 		);
 		
 		$this->driver->set_dumb_mode();
@@ -185,13 +192,15 @@ class materialized_path_driver_test extends UnitTestCase
 			'path' => '/0/', 
 			'root_id' => 0,
 			'level' => 23,
-			'parent_id' => 1000
+			'parent_id' => 1000,
+			'children' => 1000
 		);
 				
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'path'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
+		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'children'));
 
 		$sub_node_id = $this->driver->create_sub_node($parent_node_id, $sub_node);
 
@@ -200,6 +209,10 @@ class materialized_path_driver_test extends UnitTestCase
 		$this->db->sql_select(MATERIALIZED_PATH_TEST_TABLE);
 		$arr = $this->db->get_array();
 		$this->assertEqual(sizeof($arr), 2);
+		
+		$row = reset($arr);
+		
+		$this->assertEqual($row['children'], 1, 'invalid parameter in parent: children');
 		
 		$row = end($arr);
 
@@ -210,6 +223,7 @@ class materialized_path_driver_test extends UnitTestCase
 		$this->assertEqual($row['parent_id'], $parent_node_id, 'invalid parameter: parent_id');
 		$this->assertEqual($row['root_id'], $parent_node['root_id'], 'invalid parameter: root_id');
 		$this->assertEqual($row['path'], '/' . $parent_node_id . '/'. $sub_node_id . '/', 'invalid parameter: path');
+		$this->assertEqual($row['children'], 0, 'invalid parameter: children');
 	} 
 		
 	function test_create_sub_node_dumb()
@@ -226,7 +240,8 @@ class materialized_path_driver_test extends UnitTestCase
 			'path' => '/0/', 
 			'root_id' => 0,
 			'level' => 23,
-			'parent_id' => 1000
+			'parent_id' => 1000,
+			'children' => 1000
 		);
 
 		$sub_node_id = $this->driver->create_sub_node($parent_node_id, $sub_node);
@@ -279,6 +294,10 @@ class materialized_path_driver_test extends UnitTestCase
 		$arr = $this->db->get_array();
 		$this->assertEqual(sizeof($arr), 2);
 
+		$row = reset($arr);
+		
+		$this->assertEqual($row['children'], 1, 'invalid parent parameter: children');
+		
 		$row = end($arr);
 		
 		$this->assertEqual($row['id'], $sub_node_id2, 'invalid parameter: id');
@@ -286,6 +305,7 @@ class materialized_path_driver_test extends UnitTestCase
 		$this->assertEqual($row['identifier'], 'test2', 'invalid parameter: identifier');
 		$this->assertEqual($row['level'], 2, 'invalid parameter: level');
 		$this->assertEqual($row['parent_id'], $parent_node_id, 'invalid parameter: parent_id');
+		$this->assertEqual($row['children'], 0, 'invalid parameter: children');
 	}
 	
 	function test_is_node()
@@ -431,13 +451,15 @@ class materialized_path_driver_test extends UnitTestCase
 			'path' => '/0/', 
 			'root_id' => 0,
 			'level' => 23,
-			'parent_id' => 1000
+			'parent_id' => 1000,
+			'children' => 1000
 		);
 
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'id'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'path'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'root_id'));
 		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'level'));
+		debug_mock :: expect_write_error(TREE_ERROR_NODE_WRONG_PARAM, array('value' => 'children'));
 
 		$this->assertTrue($this->driver->update_node($node_id, $node));
 		
@@ -477,7 +499,16 @@ class materialized_path_driver_test extends UnitTestCase
 		$root_id_2 = $this->driver->create_root_node( array('identifier' => 'test', 'object_id' => 10));
 		$sub_node_id_2 = $this->driver->create_sub_node($root_id_2, array('identifier' => 'test', 'object_id' => 10));
 		
+		$root_node = $this->driver->get_node($root_id);		
+		$this->assertEqual($root_node['children'], 1, 'invalid parent parameter: children');
+		
 		$this->assertTrue($this->driver->move_tree($sub_node_id_1, $sub_node_id_2));
+
+		$root_node = $this->driver->get_node($root_id);		
+		$this->assertEqual($root_node['children'], 0, 'invalid parent parameter: children');
+		
+		$sub_node_2 = $this->driver->get_node($sub_node_id_2);
+		$this->assertEqual($sub_node_2['children'], 1, 'invalid parent parameter: children');
 		
 		$current_path = '/' . $root_id_2 . '/' . $sub_node_id_2 . '/';
 		

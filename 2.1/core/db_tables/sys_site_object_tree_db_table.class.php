@@ -28,6 +28,7 @@ class sys_site_object_tree_db_table extends db_table
       'level' => array('type' => 'numeric'),
       'identifier' => '',
       'priority' => array('type' => 'numeric'),
+      'children' => array('type' => 'numeric'),
     );
   }
   

@@ -25,6 +25,7 @@ class materialized_path_driver extends tree_db_driver
 		'path' => 'path',
 		'level' => 'level', 
 		'parent_id' => 'parent_id',
+		'children' => 'children'
 	);
 	
 	var $_expanded_parents = array(); 
@@ -34,7 +35,7 @@ class materialized_path_driver extends tree_db_driver
 	* @var array An array of field ids that must exist in the table
 	* @access private 
 	*/
-	var $_required_params = array('id', 'root_id', 'path', 'level');
+	var $_required_params = array('id', 'root_id', 'path', 'level', 'children');
 
 	/**
 	* Constructor
@@ -538,19 +539,7 @@ class materialized_path_driver extends tree_db_driver
   	else
   		return false;
   }
-    
-  function check_expanded_parents()
-  {
-  	if(!is_array($this->_expanded_parents) || sizeof($this->_expanded_parents) == 0)
-  	{
-  		$this->reset_expanded_parents();
-  	}
-  	elseif(sizeof($this->_expanded_parents) > 0)
-  	{
-  		$this->update_expanded_parents();
-  	}
-  }
-  
+      
   function update_expanded_parents()
   {
   	$nodes_ids = array_keys($this->_expanded_parents);
@@ -620,6 +609,7 @@ class materialized_path_driver extends tree_db_driver
 		$values['path'] = '/' . $node_id . '/';
 		$values['level'] = 1;
 		$values['parent_id'] = 0;
+		$values['children'] = 0;
 		
 		$this->_db->sql_insert($this->_node_table, $values);
 				
@@ -669,8 +659,11 @@ class materialized_path_driver extends tree_db_driver
 		$values['level'] = $parent_node['level'] + 1;
 		$values['parent_id'] = $parent_id;			
 		$values['path'] = $parent_node['path'] . $node_id . '/';
+		$values['children'] = 0;
 		
 		$this->_db->sql_insert($this->_node_table, $values);
+		
+		$this->_db->sql_update($this->_node_table, array('children' => $parent_node['children'] + 1), array('id' => $parent_id));
 
 		return $node_id;
 	} 
@@ -698,6 +691,11 @@ class materialized_path_driver extends tree_db_driver
 														path LIKE '{$node['path']}%' AND 
 														root_id={$node['root_id']}");
 
+		$this->_db->sql_exec("	UPDATE {$this->_node_table}
+														SET children = children - 1
+														WHERE 
+														id = {$node['parent_id']}");
+														
 		return true;
 	} 
 		
@@ -774,6 +772,16 @@ class materialized_path_driver extends tree_db_driver
     
 		
 		$this->_db->sql_exec($sql);
+		
+		$this->_db->sql_exec("	UPDATE {$this->_node_table}
+														SET children = children - 1
+														WHERE 
+														id = {$source_node['parent_id']}");
+														
+		$this->_db->sql_exec("	UPDATE {$this->_node_table}
+														SET children = children + 1
+														WHERE 
+														id = {$target_id}");
 		
 		return true;
 	} 

@@ -101,7 +101,7 @@ class grid_tree_item_tag extends compiler_directive_tag
 		");
 
 		$code->write_php("
-			if({$ref}->get('can_be_parent'))
+			if({$ref}->get('children') > 0)
 			{
 				if({$ref}->get('is_expanded'))
 					{$node_htm} .= {$close_link};
@@ -145,7 +145,7 @@ class grid_tree_item_tag extends compiler_directive_tag
 		$code->write_php("
 			echo \"<tr><td height=100% \";
 			
-			if({$ref}->get('can_be_parent'))
+			if({$ref}->get('children') > 0)
 			{
 				if({$ref}->get('is_expanded'))
 				{

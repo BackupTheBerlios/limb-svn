@@ -25,6 +25,11 @@ class tree
 		$obj =&	instantiate_object('tree', array('driver' => $driver));
 		return $obj;
 	}
+	
+	function & get_driver()
+	{
+		return $this->_tree_driver;
+	}
 
 	function initialize_tree_driver($driver = null)
 	{
@@ -135,12 +140,12 @@ class tree
   	return $this->_tree_driver->get_node_by_path($path, $delimiter, $recursive);	
 	}
 	
-	function & get_sub_branch($id, $include_parent = false)
+	function & get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
 	{
-		$this->_tree_driver->get_sub_branch($id, array(), $include_parent);
+		return $this->_tree_driver->get_sub_branch($id, $depth, $include_parent, $check_expanded_parents, $only_parents);
 	}
 	
-	function & get_sub_branch_by_path($path, $depth = -1, $include_parent, $check_expanded_parents = false, $only_parents = false)
+	function & get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
 	{
 		return $this->_tree_driver->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents);
 	}
@@ -148,6 +153,11 @@ class tree
 	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
 	{
 		return $this->_tree_driver->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents);
+	}
+	
+	function & get_root_nodes()
+	{
+		return $this->_tree_driver->get_root_nodes();
 	}
 	
 	function count_accessible_children($id)
