@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: file_select_controller.class.php 21 2004-03-05 11:43:13Z server $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -20,6 +20,15 @@ class template_source_controller extends site_object_controller
 						'permissions_required' => 'r',
 						'action_path' => '/template_source/display_template_source_action',
 						'template_path' => '/template_source/display.html',
+				),
+				'delete' => array(
+						'permissions_required' => 'w',
+						'JIP' => true,
+						'popup' => true,
+						'action_name' => strings :: get('delete'),
+						'action_path' => '/site_object/delete_action',
+						'template_path' => '/site_object/delete.html',
+						'img_src' => '/shared/images/rem.gif'
 				),
 		); 		
 
