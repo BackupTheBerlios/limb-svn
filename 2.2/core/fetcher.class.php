@@ -373,10 +373,10 @@ class fetcher
 	}
 }
 
-function & map_request_to_node($request = null, $recursive = false)
+function & map_request_to_node($request = null)
 {
 	$fetcher =& fetcher :: instance();
-	$result =& $fetcher->map_request_to_node($request, $recursive);
+	$result =& $fetcher->map_request_to_node($request);
 	return $result;
 }
 

@@ -137,9 +137,9 @@ class tree
 		return $this->_tree_driver->get_max_child_identifier($id);
 	}
 			
-	function & get_node_by_path($path, $delimiter='/', $recursive = false)
+	function & get_node_by_path($path, $delimiter='/')
 	{
-  	return $this->_tree_driver->get_node_by_path($path, $delimiter, $recursive);	
+  	return $this->_tree_driver->get_node_by_path($path, $delimiter);	
 	}
 	
 	function & get_sub_branch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
