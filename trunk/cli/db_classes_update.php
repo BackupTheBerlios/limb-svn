@@ -8,38 +8,26 @@
 * $Id$
 *
 ***********************************************************************************/ 
-require_once('../setup.php');
+if(isset($argv[1]))  
+	$project_dir = $argv[1];
+else
+	die('project dir required');
+	
+require_once($project_dir . '/setup.php'); 
 require_once(LIMB_DIR . '/core/lib/db/db_table_factory.class.php');
-
-function load_site_objects($dir_name, &$site_objects)
-{ 
-	if ($dir = opendir($dir_name))
-	{  
-		while(($object_file = readdir($dir)) !== false) 
-		{  
-			if  (substr($object_file, -10,  10) == '.class.php')
-			{
-				$class_name = substr($object_file, 0, strpos($object_file, '.'));
-				
-				if(!class_exists($class_name))
-				{
-					include_once($dir_name . '/' . $object_file);
-					$site_objects[] = new $class_name();
-				}
-			} 
-		} 
-		closedir($dir); 
-	} 
-} 
+require_once(LIMB_DIR . '/tests/lib/project_site_objects_loader.class.php');
 
 $site_objects = array();
 
 echo "loading site objects...\n";
 
-load_site_objects(PROJECT_DIR . '/core/model/site_objects/', $site_objects);
-load_site_objects(LIMB_DIR . '/core/model/site_objects/', $site_objects);
+$loader = new project_site_objects_loader();
 
-$type_db_table =& db_table_factory :: instance('sys_class');
+if(!$site_objects = $loader->get_site_objects())
+	die("no site objects loaded");
+
+$class_db_table =& db_table_factory :: instance('sys_class');
+
 foreach($site_objects as $object)
 {
 	$class_id = $object->get_class_id();
@@ -48,7 +36,10 @@ foreach($site_objects as $object)
 	
 	echo "updating " . get_class($object)  . "...\n";
 	
-	$type_db_table->update_by_id($class_id, $class_properties);
+	if(!isset($class_properties['icon']))
+		$class_properties['icon'] = '/shared/images/generic.gif';
+		
+	$class_db_table->update_by_id($class_id, $class_properties);
 }
 
 echo 'done';

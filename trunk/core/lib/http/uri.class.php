@@ -232,7 +232,15 @@ class uri
     	$this->_query_items[$name] = $value;
     else
     	$this->_query_items[$name] = is_array($value)? array_map('urlencode', $value): urlencode($value);
-  }    
+  }
+  
+  function get_query_item($name)
+  {
+    if (isset($this->_query_items[$name]))
+    	return $this->_query_items[$name];
+    	
+		return false;
+  }
 
   /**
   * Removes a query_string item

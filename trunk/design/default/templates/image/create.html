@@ -5,6 +5,7 @@
 <form name="create_image" id="create_image" enctype="multipart/form-data" method="post">
 	<core:INCLUDE file="form_errors.html">
 	<table>
+	<col span=100 valign=bottom class=form>
 	<tr>
 		<td></td>
 		<td class='text'>
@@ -102,7 +103,7 @@
 	</tr>
 	
 	<tr>
-		<td><locale:STRING name='identifier'></td>
+		<td><span class='req'>*</span><locale:STRING name='identifier'></td>
 		<td align='left' nowrap><input id="identifier" name="identifier" class="input" type="text" size="60"  value=''/></td>
 	</tr>
 	
@@ -117,8 +118,11 @@
 	</tr>
 	
 	<tr>
-	<td colspan='2'>
+	<td colspan='2' align=center>
 	<action_button name="create_button" class="button"  action="create_image" value="Create"/>
+   &nbsp;
+   <input name="cancel" type="button" id="cancel" value="Cancel" onclick='window.close();' class="button">
+
 	</td>
 	</tr>
 

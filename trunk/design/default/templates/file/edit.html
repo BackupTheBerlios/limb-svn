@@ -3,34 +3,26 @@
 <br>
 <fetch:MAPPED>
 <a href="{$path}"><locale:STRING name='download_link' file='file'></a><br>
-<locale:STRING name='file_name' file='file'>:{$file_name}
-Mime-type:{$mime_type}
-<locale:STRING name='size' file='file'>:{$size}
+<locale:STRING name='file_name' file='file'>: {$file_name}<br>
+Mime-type: {$mime_type}<br>
+<locale:STRING name='size' file='file'>: {$size} bytes
 </fetch:MAPPED>
 
 <form name="edit_file" id="edit_file" enctype="multipart/form-data" method="post">
 	<core:INCLUDE file="form_errors.html">
-	<table>
-	
+<table>	
+		<core:INCLUDE file='/file/form_fields.html'>
 	<tr>
-		<td><span class=req>*</span><locale:STRING name='identifier'></td>
-		<td align='left' nowrap><input id="identifier" name="identifier" class="input" type="text" size="60"  value=''/></td>
-	</tr>
-	
-	<tr>
-		<td><span class=req>*</span><locale:STRING name='file' file='file'></td>
+		<td><locale:STRING name='file' file='file'></td>
 		<td align='left' nowrap><input id="file" name="file" class="input" type="file"/></td>
 	</tr>
-	
 	<tr>
-		<td><locale:STRING name='description' file='file'></td>
-		<td align='left' nowrap><textarea name="description" class="input" cols='60' rows='5' class='textarea'></textarea></td>
-	</tr>
-	
-	<tr>
-	<td colspan='2'>
-	<action_button name="edit_button" class="button"  action="edit" reload_parent="true" value="Update"/>
-	</td>
+		<td>
+		<action_button name="edit_button" class="button"  action="edit" reload_parent="true" value="Update"/>
+		 &nbsp;
+		 <input name="cancel" type="button" id="cancel" value="Cancel" onclick='window.close();' class="button">
+
+		</td>
 	</tr>
 
 </table>

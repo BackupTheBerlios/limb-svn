@@ -121,7 +121,7 @@ class limb_tree extends nested_db_tree
   		)
   	);
   	
-  	if(!count($nodes))
+  	if(!$nodes)
   		return false;
   	
   	$curr_level = 0;
@@ -158,7 +158,7 @@ class limb_tree extends nested_db_tree
   		return false;	
 	}
 	
-	function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $sql_add = array())
+	function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $sql_add = array())
 	{
 		if(!$parent_node = $this->get_node_by_path($path))
 			return false;
@@ -179,6 +179,12 @@ class limb_tree extends nested_db_tree
 			}
 		}
 		
+		if($only_parents)
+		{
+			$sql_add['join'][] = ', sys_class as sc';
+			$sql_add['append'][] = ' AND sc.id = sso.class_id AND sc.can_be_parent = 1';
+		}
+		
 		$prev_mode = $this->set_sort_mode(NESE_SORT_PREORDER);	
  		$nodes =& $this->get_sub_branch($parent_node['id'], $sql_add, $include_parent);
  		$this->set_sort_mode($prev_mode);
@@ -186,7 +192,7 @@ class limb_tree extends nested_db_tree
 		return $nodes;
 	}
 	
-	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null)
+	function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
 	{
 		$sql_add['columns'][] = ', soa.object_id';
 		$sql_add['join'][] = ', sys_site_object as sso, sys_object_access as soa';
@@ -197,10 +203,10 @@ class limb_tree extends nested_db_tree
 			
 		if ($class_id)
 			$sql_add['append'][] = " AND sso.class_id = {$class_id}";
-
+			
 		$sql_add['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
 
-		$result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $sql_add);
+		$result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $sql_add);
 		
 		return $result;
 	}

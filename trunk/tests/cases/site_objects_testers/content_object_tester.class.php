@@ -92,7 +92,7 @@ class content_object_tester extends site_object_tester
   	
   	foreach($this->object->get_attributes_definition() as $attribute => $data)
   	{
-  		if(in_array($attribute, array('id', 'version', 'object_id')))
+  		if(in_array($attribute, array('id', 'version', 'object_id', 'parent_node_id')))
   			continue;
   		
   		if($data === '' || (is_array($data) && !isset($data['type'])))

@@ -39,7 +39,7 @@ class file_object extends media_object
 	
 	function update($force_create_new_version = true)
 	{
-		if(!$this->update_file())
+		if($this->get_attribute('tmp_file_path') && !$this->update_file())
 			return false;
 			
 		return parent :: update($force_create_new_version);

@@ -125,7 +125,19 @@ class form_element extends tag_component
 			debug :: write_warning("form element 'name' attribute not set:" . $this->get_server_id());
 		
 		return $dataspace->get_by_index_string($this->_make_index_name($this->attributes['name']));
-	} 
+	}
+	
+	function set_value($value)
+	{
+		$form_component =& $this->find_parent_by_class('form_component');
+
+		$dataspace =& dataspace :: instance($form_component->attributes['name']);
+
+		if(!isset($this->attributes['name']))
+			debug :: write_warning("form element 'name' attribute not set:" . $this->get_server_id());
+		
+		$dataspace->set_by_index_string($this->_make_index_name($this->attributes['name']), $value);
+	}
 	
 	function render_errors()
 	{

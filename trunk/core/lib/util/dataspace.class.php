@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: dataspace.class.php 367 2004-01-30 14:38:37Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -71,20 +71,34 @@ class dataspace
 		} 
 	} 
 	
-	function get_by_index_string($index)
+	function _process_index_string($index)
 	{
 		if(!preg_match('/^(\[\w+\]|\[\'\w+\'\]|\[\"\w+\"\])+$/', $index))
 			return null;
 		
 		$index = str_replace(array('"', '\''), array('', ''), $index);
 		$index = str_replace(array('[', ']'), array('["', '"]'), $index);
-		
-					
+		return $index;
+	}
+	
+	function get_by_index_string($raw_index)
+	{
+		if(!$index = $this->_process_index_string($raw_index))
+			return null;
+								
 		eval('$res = isset($this->vars' . $index . ') ? $this->vars' . $index . ' : null;');
 		
 		return $res;
 	}
 
+	function set_by_index_string($raw_index, $value)
+	{
+		if(!$index = $this->_process_index_string($raw_index))
+			return null;
+										
+		eval('$this->vars' . $index . ' = "";$res =& $this->vars' . $index . ';');
+		$res = $value;
+	}
 
 	function get_size()
 	{

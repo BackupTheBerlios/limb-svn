@@ -20,6 +20,7 @@ class form_create_site_object_action extends form_site_object_action
 	var $definition = array(
 		'site_object' => 'site_object',
 		'datamap' => array(
+			'parent_node_id' => 'parent_node_id',
 			'identifier' => 'identifier',
 			'title' => 'title'
 		)

@@ -8,15 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/lib/util/array_dataset.class.php');
 require_once(LIMB_DIR . 'core/datasource/datasource_factory.class.php');
 require_once(LIMB_DIR . 'core/template/components/datasource_component.class.php');
 
 class fetch_sub_branch_datasource_component extends datasource_component
 {
-	
 	function & _get_datasource()
 	{
 		if (!isset($this->parameters['datasource_path']))

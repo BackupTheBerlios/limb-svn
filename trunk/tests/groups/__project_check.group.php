@@ -40,13 +40,13 @@ class tests_project_check extends GroupTest
 		{
 			include_once(PROJECT_DIR . '/tests/cases/site_objects_testers/' . $class_name . '_tester.class.php');
 			$test_case_name = $class_name . '_tester';
-			$test_case =& new $test_case_name();
+			$test_case =& new $test_case_name($class_name);
 		}
 		elseif(file_exists(LIMB_DIR . '/tests/cases/site_objects_testers/' . $class_name . '_tester.class.php'))
 		{
 			include_once(LIMB_DIR . '/tests/cases/site_objects_testers/' . $class_name . '_tester.class.php');
 			$test_case_name = $class_name . '_tester';
-			$test_case =& new $test_case_name();
+			$test_case =& new $test_case_name($class_name);
 		}
 		else
 		{	

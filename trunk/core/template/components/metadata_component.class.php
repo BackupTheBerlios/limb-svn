@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/template/component.class.php');
 require_once(LIMB_DIR . 'core/lib/db/db_table.class.php');
@@ -20,7 +18,9 @@ class metadata_component extends component
 {
 	var $node_id = '';
 	
-	var $_object_ids_array = array();
+	var $node_path = '';
+	
+	var $object_ids_array = array();
 
 	var $object_metadata = array();
 	
@@ -30,8 +30,8 @@ class metadata_component extends component
 	
 	function _get_path_objects_ids_array()
 	{		
-		if (count($this->_object_ids_array))
-			return $this->_object_ids_array;
+		if (count($this->object_ids_array))
+			return $this->object_ids_array;
 	
 		$tree =& limb_tree :: instance();
 		
@@ -49,7 +49,7 @@ class metadata_component extends component
 		if ($node)
 			$result[$node['object_id']] = $node['object_id'];
 		
-		return $this->_object_ids_array = $result;
+		return $this->object_ids_array = $result;
 	}
 	
 	function & _get_path_objects_array()
@@ -117,7 +117,14 @@ class metadata_component extends component
 	{
 		if (!$this->node_id)
 		{
-			$node = map_url_to_node();
+			if($this->node_path)
+			{
+				if(!$node = map_url_to_node($this->node_path))
+					$node = map_current_request_to_node();
+			}
+			else
+				$node = map_current_request_to_node();
+
 			$this->node_id = $node['id'];
 		}
 
@@ -240,6 +247,11 @@ class metadata_component extends component
 	function set_offset_path($path)
 	{
 		$this->offset_path = $path;
+	}
+	
+	function set_node_path($path)
+	{
+		$this->node_path = $path;
 	}
 	
 } 

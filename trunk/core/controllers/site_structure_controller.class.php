@@ -20,11 +20,11 @@ class site_structure_controller extends site_object_controller
 		$this->_actions = array(
 				'display' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/admin/site_structure.html',
+						'template_path' => '/site_structure/display.html',						
 				),
 				'toggle' => array(
 						'permissions_required' => 'r',
-						'template_path' => '/admin/site_structure.html',
+						'template_path' => '/site_structure/display.html',						
 						'action_path' => 'tree_toggle_action', 
 						'display_in_breadcrumbs' => false,
 				),
@@ -36,7 +36,7 @@ class site_structure_controller extends site_object_controller
 				),
 				'move' => array(
 						'permissions_required' => 'w',
-						'template_path' => '/admin/site_structure.html',
+						'template_path' => '/site_structure/display.html',						
 						'action_path' => 'tree_move_item_action', 
 						'display_in_breadcrumbs' => false,
 						'popup' => true,
@@ -49,6 +49,11 @@ class site_structure_controller extends site_object_controller
 						'action_path' => '/site_object/edit_action',
 						'template_path' => '/site_object/edit.html',
 						'img_src' => '/shared/images/edit.gif'
+				),
+				'parent_select' => array(
+						'permissions_required' => 'r',
+						'action_name' => strings :: get('select_parent', 'site_structure'),
+						'template_path' => '/site_structure/parent_select.html',
 				),
 		);
  		

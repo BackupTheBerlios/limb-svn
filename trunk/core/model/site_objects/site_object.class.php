@@ -32,6 +32,7 @@ class site_object extends object
     $this->_attributes_definition['id'] = array('type' => 'numeric');
     $this->_attributes_definition['version'] = array('type' => 'numeric');
     $this->_attributes_definition['object_id'] = array('type' => 'numeric');
+    $this->_attributes_definition['parent_node_id'] = array('type' => 'numeric');
     $this->_attributes_definition['title'] = array('search' => true, 'search_weight' => 50);
     $this->_attributes_definition['identifier'] = array('search' => true, 'search_weight' => 50);
     
@@ -39,7 +40,7 @@ class site_object extends object
     
     parent :: object();
 	}
-	
+		
 	function is_auto_identifier()
 	{
 		if($definition = $this->get_attribute_definition('identifier'))
@@ -54,7 +55,7 @@ class site_object extends object
 		return array(
 			'class_ordr' => 1,
 			'can_be_parent' => 1,
-			'icon' => '/shared/images/generic.gif'
+			'icon' => '/shared/images/generic.gif',
 		);
 	}
 	
@@ -691,7 +692,7 @@ class site_object extends object
 		{
 			if ($node['parent_id'] != $data['parent_node_id'])
 			{
-				if (!$tree->move_tree($data['node_id'], $data['parent_node_id'], NESE_MOVE_BEFORE))
+				if (!$tree->move_tree($data['node_id'], $data['parent_node_id'], NESE_MOVE_BELOW))
 				{
 				 	error('could not move node',
 	    		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, 

@@ -38,7 +38,7 @@ $recursive = false;
 if (isset($_REQUEST['recursive_search_for_node']) && $_REQUEST['recursive_search_for_node'])
 	$recursive = true;
 
-$node =& map_url_to_node('', $recursive);
+$node =& map_current_request_to_node($recursive);
 
 if(!$node)
 {

@@ -32,7 +32,7 @@ class project_site_objects_loader
 		
 		$db->select_db($project_db);
 		
-		$db->sql_select('sys_class');
+		$db->sql_select('sys_class', '*', 'class_name != "site_object"');
 		
 		$list = $db->get_array();
 		

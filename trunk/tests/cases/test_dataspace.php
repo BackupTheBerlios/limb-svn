@@ -180,7 +180,7 @@ class shared_data_space_test_case extends UnitTestCase
 		$array = array('rainbow' => array('color' => 'red'));
 		$this->dataspace->import($array);
 		
-		$this->assertNull($this->dataspace->get_by_index_string('""hkljkscc'), 'No brackets');
+		$this->assertNull($this->dataspace->get_by_index_string('""hkljkscc'), 'invalid index string');
 		$this->assertNull($this->dataspace->get_by_index_string('["rainbow][color]', 'wrong quotation nesting'));
 		$this->assertNull($this->dataspace->get_by_index_string('[rainbow["color"]]', 'wrong brackets nesting'));
 
@@ -190,6 +190,30 @@ class shared_data_space_test_case extends UnitTestCase
 		$this->assertEqual($this->dataspace->get_by_index_string('[rainbow]["color"]'), 'red');
 		$this->assertEqual($this->dataspace->get_by_index_string('["rainbow"][\'color\']'), 'red');
 	} 
+	
+	function test_set_by_index_string()
+	{
+		$size_before = $this->dataspace->get_size();
+		
+		$this->dataspace->set_by_index_string('""hkljkscc', 'test');
+		$this->assertEqual($this->dataspace->get_size(), $size_before, 'invalid index string, nothing should be written');
+		
+		$this->dataspace->set_by_index_string('["rainbow][color]', 'test');
+		$this->assertEqual($this->dataspace->get_size(), $size_before, 'wrong quotation nesting, nothing should be written');
+
+		$this->dataspace->set_by_index_string('[rainbow["color"]]', 'test');
+		$this->assertEqual($this->dataspace->get_size(), $size_before, 'wrong brackets nesting, nothing should be written');
+		
+		$this->dataspace->set_by_index_string('[rainbow][color]', array(1 => 'red'));
+		$this->assertEqual($this->dataspace->vars['rainbow']['color'], array(1 => 'red'));
+
+		$this->dataspace->set_by_index_string('[rainbow]["color"]', '"red"');
+		$this->assertEqual($this->dataspace->vars['rainbow']['color'], '"red"');
+
+		$this->dataspace->set_by_index_string('["rainbow"][\'color\']', 10);
+		$this->assertEqual($this->dataspace->vars['rainbow']['color'], 10);
+	} 
+
 } 
 
 ?>

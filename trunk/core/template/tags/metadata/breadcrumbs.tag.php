@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 class metadata_breadcrumbs_tag_info
 {
 	var $tag = 'metadata:BREADCRUMBS';
@@ -31,6 +29,12 @@ class metadata_breadcrumbs_tag extends server_component_tag
 	function generate_contents(&$code)
 	{
 		$child_list =& $this->find_immediate_child_by_class('grid_list_tag');
+
+		if(isset($this->attributes['request_path_attribute']))	
+		{
+			$code->write_php('if(isset($_REQUEST["' . $this->attributes['request_path_attribute']. '"]))');
+			$code->write_php($this->get_component_ref_code() . '->set_node_path($_REQUEST["' . $this->attributes['request_path_attribute']. '"]);');
+		}
 		
 		if(isset($this->attributes['offset_path']))	
 			$code->write_php($this->get_component_ref_code() . '->set_offset_path("' . $this->attributes['offset_path'] . '");');

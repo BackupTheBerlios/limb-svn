@@ -247,6 +247,7 @@ CREATE TABLE `sys_class` (
   `class_name` varchar(50) NOT NULL default '',
   `icon` varchar(30) NOT NULL default '',
   `class_ordr` smallint(6) NOT NULL default '0',
+  `can_be_parent` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `class` (`class_name`)
 ) TYPE=InnoDB COMMENT='InnoDB free: 10240 kB; InnoDB free: 10240 kB; InnoDB free: 1';

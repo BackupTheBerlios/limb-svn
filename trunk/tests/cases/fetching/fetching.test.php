@@ -82,7 +82,7 @@ class test_fetching extends test_limb_case
   {
   	parent :: setUp();
   	
-  	$this->fetcher =& fetcher :: instance();
+  	$this->fetcher =& new fetcher();
   	
   	$user_id = 10;
   	
@@ -176,23 +176,30 @@ class test_fetching extends test_limb_case
   	$this->assertEqual($node['identifier'], 'articles');  	
   }
   
-  function test_map_by_url_no_params()
+  function test_map_current_request_phpself()
   { 	
   	$php_self = $_SERVER['PHP_SELF'];
   	$_SERVER['PHP_SELF'] = '/root/articles';
   	
-  	$node =& $this->fetcher->map_url_to_node('http://www.wow-baby.com/root/articles?id=2#wow');
+  	$node =& $this->fetcher->map_current_request_to_node();
   	
 		$this->assertNotIdentical($node, false);
   	$this->assertEqual($node['identifier'], 'articles');  	
   	
-  	$_SERVER['PHP_SELF'] = $php_self;
-  	  	
+  	$_SERVER['PHP_SELF'] = $php_self;	
+  }
+
+  function test_map_current_request_node_id()
+  { 	
+  	$php_self = $_SERVER['PHP_SELF'];
+  	$_SERVER['PHP_SELF'] = '/root/articles/no/such/article';
+  	
   	$_REQUEST['node_id'] = $this->articles_object->get_node_id();
   	
-  	$node =& $this->fetcher->map_url_to_node();
+  	$node =& $this->fetcher->map_current_request_to_node();
 
 		unset($_REQUEST['node_id']);
+		$_SERVER['PHP_SELF'] = $php_self;
 		
 		$this->assertNotIdentical($node, false);
   	$this->assertEqual($node['identifier'], 'articles');  	

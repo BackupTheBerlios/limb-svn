@@ -123,4 +123,4 @@ select{font:8pt Verdana, sans; border:solid 1px #3278ED; height:18px}
 .error-block{border:dashed 1px #e00000; padding:3px 20px 0 20px}
 
 
-.row{behavior:url('/shared/htcs/row.htc');}
+//.row{behavior:url('/shared/htcs/row.htc');}

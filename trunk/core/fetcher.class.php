@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/ 
-
 require_once(LIMB_DIR . 'core/tree/limb_tree.class.php');
 require_once(LIMB_DIR . 'core/model/site_object_factory.class.php');
 require_once(LIMB_DIR . 'core/lib/http/uri.class.php');
@@ -50,11 +49,12 @@ class fetcher
 	}
 		
 	function & fetch_sub_branch($path, $loader_class_name, &$counter, $params = array(), $fetch_method = 'fetch_by_ids')
-	{
+	{		
 		$tree =& limb_tree :: instance();
 		$site_object =& site_object_factory :: instance($loader_class_name);
 		
-		if (!isset($params['restrict_by_class']) ||
+		if ($loader_class_name != 'site_object' &&
+				!isset($params['restrict_by_class']) ||
 				(isset($params['restrict_by_class']) && (bool)$params['restrict_by_class']))
 			$class_id = $site_object->get_class_id();
 		else
@@ -69,17 +69,20 @@ class fetcher
 			$include_parent = (bool)$params['include_parent'];
 		else
 			$include_parent = false;
+
+		if (isset($params['only_parents']))
+			$only_parents = (bool)$params['only_parents'];
+		else
+			$only_parents = false;
 		
 		$depth = isset($params['depth']) ? $params['depth'] : 1;	
 		
-		if(!$nodes = $tree->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id))
+		if(!$nodes = $tree->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents))
 			return array();
 						
-		$object_ids = complex_array :: get_column_values('object_id', $nodes);
-		
-		if (!count($object_ids))
+		if(!$object_ids = complex_array :: get_column_values('object_id', $nodes))
 			return array();
-		
+				
 		$result =& $this->fetch_by_ids($object_ids, $loader_class_name, $counter, $params, $fetch_method);
 		
 		return $result;
@@ -202,9 +205,7 @@ class fetcher
 	{
 		$tree =& limb_tree :: instance();
 		
-		$node = $tree->get_node_by_path($path);
-		
-		if (!$node)
+		if (!$node = $tree->get_node_by_path($path))
 			return false;
 		
 		$result =& $this->fetch_one_by_node_id($node['id']);
@@ -213,7 +214,7 @@ class fetcher
 	
 	function & fetch_mapped_by_url()
 	{
-		if(!$node =& $this->map_url_to_node())
+		if(!$node =& $this->map_current_request_to_node())
 			return array();
 			
 		$object_data =& $this->fetch_one_by_node_id($node['id']);
@@ -221,32 +222,40 @@ class fetcher
 		return $object_data;
 	}
 
-	function & map_url_to_node($url = '', $recursive = false)
+	function & map_url_to_node($url, $recursive = false)
+	{	
+		$tree =& limb_tree :: instance();
+				
+		$uri = new uri($url);
+		
+		if(($node_id = $uri->get_query_item('node_id')) === false)
+			$node =& $tree->get_node_by_path($uri->path, '/', $recursive);
+		else
+			$node =& $tree->get_node((int)$node_id);
+		
+		return $node;
+	}
+	
+	function & map_current_request_to_node($recursive = false)
 	{
 		if($this->_node_mapped_by_url)
 			return $this->_node_mapped_by_url;
-		
-		$tree =& limb_tree :: instance();
-		
-		if($url == '')
+			
+		if(isset($_REQUEST['node_id']))
 		{
-			if(isset($_REQUEST['node_id']))
-			{
-				$node =& $tree->get_node((int)$_REQUEST['node_id']);
-				
-				$this->_node_mapped_by_url =& $node;
-				
-				return $node;
-			}
-			else
-				$url = $_SERVER['PHP_SELF'];
+			$tree =& limb_tree :: instance();
+			
+			$node =& $tree->get_node((int)$_REQUEST['node_id']);
+			
+			$this->_node_mapped_by_url =& $node;
+			
+			return $node;
 		}
+		else
+			$url = $_SERVER['PHP_SELF'];
 		
-		$uri = new uri();
-		$uri->parse($url);
-		
-		$node =& $tree->get_node_by_path($uri->path, '/', $recursive);
-		
+		$node =& $this->map_url_to_node($url);
+					
 		$this->_node_mapped_by_url =& $node;
 		
 		return $node;
@@ -276,7 +285,14 @@ class fetcher
 	}
 }
 
-function & map_url_to_node($url = '', $recursive = false)
+function & map_current_request_to_node($recursive = false)
+{
+	$fetcher =& fetcher :: instance();
+	$result =& $fetcher->map_current_request_to_node($recursive);
+	return $result;
+}
+
+function & map_url_to_node($url, $recursive = false)
 {
 	$fetcher =& fetcher :: instance();
 	$result =& $fetcher->map_url_to_node($url, $recursive);
