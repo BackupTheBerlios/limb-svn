@@ -164,11 +164,21 @@ class options_form_element extends container_form_element
 
 	function _set_options_from_strings_file()
 	{
+		if($locale_type = $this->get_attribute('locale_type'))
+		{
+			if(strtolower($locale_type) == 'content')
+				$locale_constant = 'CONTENT_LOCALE_ID';	
+			else
+				$locale_constant = 'MANAGEMENT_LOCALE_ID';	
+		}
+		else
+			$locale_constant = 'MANAGEMENT_LOCALE_ID';	
+	
 		$ini_file = $this->get_attribute('options_ini_file');
 		
-		$this->set_choices(strings :: get('options', $ini_file));
+		$this->set_choices(strings :: get('options', $ini_file, constant($locale_constant)));
 		
-		$this->set_default_value(strings :: get('default_option', $ini_file));
+		$this->set_default_value(strings :: get('default_option', $ini_file, constant($locale_constant)));
 	}
 	
 	function _set_options_from_datasource()
