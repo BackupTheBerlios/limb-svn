@@ -16,32 +16,37 @@
 class FakemailDaemon
 {
   var $pid = null;
-  var $path = null;
+  var $mail_path = null;
   var $port = null;
   var $host = null;
-  var $log  = null;
+  var $log_path  = null;
 
-  function FakemailDaemon($path = null, $port = null, $host = null)
+  function FakemailDaemon($mail_path = null, $port = null, $host = null)
   {
-    $this->path = is_null($path) ?  FAKEMAIL_PATH : $path;
+    $this->mail_path = is_null($mail_path) ?  FAKEMAIL_PATH : $mail_path;
     $this->port = is_null($port) ?  FAKEMAIL_PORT : $port;
     $this->host = is_null($host) ?  FAKEMAIL_HOST : $host;
   }
 
-  function useLog($log = null)
+  function useLog($log_path = null)
   {
-    $this->log = is_null($log) ?  $this->path . '/fakemail.log' : $log;
+    $this->log_path = is_null($log_path) ?  $this->mail_path . '/fakemail.log' : $log_path;
   }
 
   function start()
   {
-    if(!file_exists($this->path) || !is_dir($this->path))
-      die('Directory for fakemail \"'. $this->path .'\" not found' );
+    if(!file_exists($this->mail_path) || !is_dir($this->mail_path))
+      die('Directory for fake mails \"'. $this->mail_path .'\" not found' );
 
-    $fakemail = "perl ". FAKEMAIL_SCRIPT ." --background --path={$this->path} --port={$this->port} --host={$this->host}" ;
-    if($this->log)
-      $fakemail .= " --log={$this->log}";
-    $this->pid = exec($fakemail);
+    $cmd = "perl ". FAKEMAIL_SCRIPT ." --background --path={$this->mail_path} --port={$this->port} --host={$this->host}" ;
+
+    if($this->log_path)
+      $cmd .= " --log_path={$this->log_path}";
+
+    $this->pid = exec($cmd, $out);
+
+    if(!$this->pid)
+      die('fakemail script has not started for some reason, here is the command line: ' . $cmd);
   }
 
   function stop()
@@ -52,14 +57,14 @@ class FakemailDaemon
 
   function clearLog()
   {
-     unlink($this->log);
+     unlink($this->log_path);
   }
 
   function removeRecipientMail($recipient)
   {
      $names = $this->_getRecipientFileNames($recipient);
      foreach($names as $name)
-       $contents[] = unlink($this->path .'/'. $name);
+       $contents[] = unlink($this->mail_path .'/'. $name);
   }
 
   function getRecipientMailCount($recipient)
@@ -72,18 +77,18 @@ class FakemailDaemon
      $contents = array();
      $names = $this->_getRecipientFileNames($recipient);
      foreach($names as $name)
-       $contents[] = file_get_contents($this->path .'/'. $name);
+       $contents[] = file_get_contents($this->mail_path .'/'. $name);
      return $contents;
   }
 
   function _getRecipientFileNames($recipient)
   {
-    $this_path = getcwd();
+    $saved_wroking_dir = getcwd();
     $recipient_files = array();
 
-    if (is_dir($this->path))
+    if (is_dir($this->mail_path))
     {
-      chdir($this->path);
+      chdir($this->mail_path);
       $handle = opendir('.');
       while (($file = readdir($handle)) !== false)
       {
@@ -96,7 +101,7 @@ class FakemailDaemon
       closedir($handle);
     }
 
-    chdir($this_path);
+    chdir($saved_wroking_dir);
     return $recipient_files;
   }
 }
