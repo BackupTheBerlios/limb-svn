@@ -5,13 +5,15 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: dir.class.php 571 2004-02-27 10:10:50Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define( 'DIR_SEPARATOR_LOCAL', 1 );
 define( 'DIR_SEPARATOR_UNIX', 2 );
 define( 'DIR_SEPARATOR_DOS', 3 );
 define( 'WIN32_NET_PREFIX', '\\\\' );
+
+require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 
 class dir
 {

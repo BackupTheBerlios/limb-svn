@@ -260,7 +260,7 @@ class HTMLTestManager extends TestManager
 		} 
 		$buffer .= "</ul>\n";
 		
-		return $buffer .= "<br><a href='" . $manager->getBaseURL() . "?all={$directory}'>All tests from this group</a>\n";
+		return $buffer .= "<br><a href='" . $manager->getBaseURL() . "?all={$directory}'>All group tests from this directory</a>\n";
 	} 
 
 	function &getTestCaseList($directory)

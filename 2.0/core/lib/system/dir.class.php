@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: dir.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 define( 'DIR_SEPARATOR_LOCAL', 1 );
@@ -257,7 +257,7 @@ class dir
     return $path;
   }
   
-	function walk_dir($dir, $function, $args)
+	function walk_dir($dir, $function, $args=array())
 	{
 		if(is_dir($dir))
 		{
