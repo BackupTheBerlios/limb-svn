@@ -69,11 +69,9 @@ class send_feedback_action extends form_action
 
     if(!$recipient_email ||
        !send_plain_mail(array($recipient_email),
-                    $mail_data['sender_email'],
-                    $subject,
-                    $body
-                    )
-        )
+                        $mail_data['sender_email'],
+                        $subject,
+                        $body))
     {
       message_box :: write_error(strings :: get('mail_not_sent', 'feedback'));
 

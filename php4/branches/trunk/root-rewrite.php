@@ -13,6 +13,7 @@ if (file_exists('protect.php'))
 
 require_once('setup.php');
 
-require(LIMB_DIR.'/mod_rewrite_fix.php');
-require(LIMB_DIR . '/root.php');
+require_once(LIMB_DIR.'/mod_rewrite_fix.php');
+require_once(LIMB_DIR . '/root.php');
+
 ?>
