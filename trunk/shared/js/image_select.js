@@ -1,7 +1,8 @@
-function image_select(id, img_id)
+function image_select(id, md5_id)
 {
 	this.id_container = document.getElementById(id);
-	this.img = document.getElementById(img_id);
+	this.img = document.getElementById(md5_id + '_img');
+	this.name = document.getElementById(md5_id + '_name');
 }
 
 image_select.prototype.generate = function()
@@ -19,7 +20,7 @@ image_select.prototype.generate = function()
 
 image_select.prototype.get_image = function()
 {
-	img = {node_id: this.id_container.value};
+	img = {node_id: this.id_container.value, name: this.name.innerHTML};
 	
 	return img;
 }
@@ -27,6 +28,7 @@ image_select.prototype.get_image = function()
 image_select.prototype.insert_image = function(image)
 {
 	this.id_container.value = image.node_id;
+	this.name.innerHTML = image.name;
 	
 	this.generate();
 }
