@@ -11,7 +11,6 @@
 require_once(dirname(__FILE__) . '/../../../commands/save_new_object_access_command.class.php');
 require_once(dirname(__FILE__) . '/../../../access_policy.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/fetcher.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');

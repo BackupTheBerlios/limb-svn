@@ -60,7 +60,7 @@ class simple_authenticator implements authenticator
 
 	protected function _get_default_db_groups()
 	{
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 	
 		$sql = "SELECT 
             sso.id as id,
@@ -89,7 +89,7 @@ class simple_authenticator implements authenticator
 	{
 	  $user = Limb :: toolkit()->getUser();
 	  
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 		
 		$sql = "SELECT 
             sso.id as id,
@@ -119,7 +119,7 @@ class simple_authenticator implements authenticator
 	{
 		$crypted_password = self :: get_crypted_password($login, $password);
 
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 		
 		$sql = "SELECT 
             sso.id as id,

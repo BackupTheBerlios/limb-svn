@@ -30,7 +30,7 @@ class stats_search_phrase_test extends LimbTestCase
   {
   	parent :: LimbTestCase();
   	
-  	$this->db =& db_factory :: instance();
+  	$this->db = db_factory :: instance();
   }
   
   function setUp()
@@ -103,7 +103,7 @@ class stats_search_phrase_test extends LimbTestCase
   	$date = new date();
   	$this->assertTrue($this->stats_search_phrase->register($date));
   	
-  	$db =& db_factory :: instance();
+  	$db = db_factory :: instance();
   	$db->sql_select('sys_stat_search_phrase');
   	
   	$arr = $db->get_array();

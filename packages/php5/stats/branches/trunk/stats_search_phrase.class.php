@@ -19,7 +19,7 @@ class stats_search_phrase
 	
 	public function __construct()
 	{
-		$this->db = db_factory :: instance();
+		$this->db = Limb :: toolkit()->getDB();
 		$this->url = new uri();
 	}
 	

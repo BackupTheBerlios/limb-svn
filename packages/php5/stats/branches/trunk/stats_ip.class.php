@@ -14,7 +14,7 @@ class stats_ip
 	
 	function __construct()
 	{
-		$this->db = db_factory :: instance();
+		$this->db = Limb :: toolkit()->getDB();
 	}
 
 	public function is_new_host($reg_date)

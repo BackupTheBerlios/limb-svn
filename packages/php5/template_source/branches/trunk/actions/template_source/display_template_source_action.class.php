@@ -72,7 +72,7 @@ class display_template_source_action extends action
 
 	protected function _get_template_path_from_node($node_id)
 	{
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_node_id($node_id);
     
 		if(!$site_object = wrap_with_site_object($datasource->fetch()))

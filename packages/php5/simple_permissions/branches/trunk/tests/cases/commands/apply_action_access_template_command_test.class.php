@@ -11,14 +11,14 @@
 require_once(dirname(__FILE__) . '/../../../commands/apply_action_access_template_command.class.php');
 require_once(dirname(__FILE__) . '/../../../access_policy.class.php');
 require_once(LIMB_DIR . '/class/core/request/request.class.php');
-require_once(LIMB_DIR . '/class/core/fetcher.class.php');
+require_once(LIMB_DIR . '/class/core/datasources/requested_object_datasource.class.php');
 require_once(LIMB_DIR . '/class/core/limb_toolkit.interface.php');
 require_once(LIMB_DIR . '/class/core/site_objects/site_object.class.php');
 require_once(LIMB_DIR . '/class/core/controllers/site_object_controller.class.php');
 
 Mock :: generate('LimbToolkit');
 Mock :: generate('request');
-Mock :: generate('fetcher');
+Mock :: generate('requested_object_datasource');
 Mock :: generate('site_object');
 Mock :: generate('site_object_controller');
 Mock :: generate('access_policy');
@@ -41,7 +41,7 @@ class apply_action_access_template_command_test extends LimbTestCase
 	var $command;
   var $request;
   var $toolkit;
-  var $fetcher;
+  var $datasource;
   var $site_object;
   var $controller;
   var $access_policy;
@@ -49,13 +49,13 @@ class apply_action_access_template_command_test extends LimbTestCase
   function setUp()
   {
     $this->request = new Mockrequest($this);
-    $this->fetcher = new Mockfetcher($this);
+    $this->datasource = new Mockrequested_object_datasource($this);
     $this->site_object = new Mocksite_object($this);
     $this->controller = new Mocksite_object_controller($this); 
     $this->access_policy = new Mockaccess_policy($this);
     
     $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnValue('getFetcher', $this->fetcher);
+    $this->toolkit->setReturnValue('getDatasource', $this->datasource, array('requested_object_datasource'));
     $this->toolkit->setReturnValue('getRequest', $this->request);
     $this->toolkit->setReturnValue('createSiteObject', $this->site_object);
      
@@ -71,7 +71,7 @@ class apply_action_access_template_command_test extends LimbTestCase
     Limb :: popToolkit();
     
     $this->request->tally();
-    $this->fetcher->tally();
+    $this->datasource->tally();
   	$this->toolkit->tally();
     $this->site_object->tally();
     $this->controller->tally();
@@ -86,10 +86,12 @@ class apply_action_access_template_command_test extends LimbTestCase
     $this->controller->expectOnce('get_action', array(new IsAExpectation('Mockrequest')));
     $this->controller->setReturnValue('get_action', $action = 'some_action');
     
-  	$this->fetcher->expectOnce('fetch_requested_object', array(new IsAExpectation('Mockrequest')));
-  	$this->fetcher->setReturnValue('fetch_requested_object', $object_data);
+  	$this->datasource->expectOnce('set_request', array(new IsAExpectation('Mockrequest')));
+  	$this->datasource->expectOnce('fetch', array(new IsAExpectation('Mockrequest')));
+  	$this->datasource->setReturnValue('fetch', $object_data);
     
-    $this->access_policy->expectOnce('apply_access_templates', array(new IsAExpectation('Mocksite_object'), $action));
+    $this->access_policy->expectOnce('apply_access_templates', 
+                                     array(new IsAExpectation('Mocksite_object'), $action));
     
     $this->command->setReturnValue('_get_access_policy', $this->access_policy);
 

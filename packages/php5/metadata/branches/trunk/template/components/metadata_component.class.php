@@ -76,7 +76,7 @@ class metadata_component extends component
 		AND	' . sql_in('sso.id', $ids_array) . '
 		ORDER BY ssot.level';
 
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 		$db->sql_exec($sql);
 
 		return $db->get_array('id');
@@ -144,7 +144,7 @@ class metadata_component extends component
     }
     else
     {
-      $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+      $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
       $datasource->set_request($request);
       $node = $datasource->map_request_to_node($request);
     }  

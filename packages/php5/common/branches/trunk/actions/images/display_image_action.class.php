@@ -14,7 +14,7 @@ class display_image_action extends action
 {
 	public function perform($request, $response)
 	{
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
 		$object_data = $datasource->fetch();

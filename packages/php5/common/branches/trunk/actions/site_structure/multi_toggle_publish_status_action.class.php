@@ -63,7 +63,7 @@ class multi_toggle_publish_status_action extends form_action
 
 	protected function _get_objects($node_ids)
 	{
-    $datasource = Limb :: toolkit()->createDatasource('site_objects_by_node_ids_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('site_objects_by_node_ids_datasource');
     $datasource->set_node_ids($node_ids);
     
 		return $datasource->fetch();

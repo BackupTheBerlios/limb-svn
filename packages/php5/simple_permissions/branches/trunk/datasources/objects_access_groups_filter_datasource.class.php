@@ -27,7 +27,7 @@ class objects_access_groups_filter_datasource implements options_datasource
 
   protected function _get_user_groups()
   {
-    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
     $datasource->set_path('/root/user_groups');
     $datasource->set_site_object_class_name('user_group');
     $datasource->set_restrict_by_class();

@@ -19,7 +19,7 @@ class set_membership extends form_action
 
 	protected function _init_dataspace($request)
 	{
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
 		$object_data = $datasource->fetch();
@@ -33,7 +33,7 @@ class set_membership extends form_action
 
 	protected function _valid_perform($request, $response)
 	{
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
 		$object_data = $datasource->fetch();

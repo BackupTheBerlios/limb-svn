@@ -16,7 +16,7 @@ class object_versions_datasource implements datasource
 	{
     $request = Limb :: toolkit()->getRequest();
 
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
 
 		$object_data = $datasource->fetch();
@@ -62,7 +62,7 @@ class object_versions_datasource implements datasource
   
   protected function _get_users()
   {
-    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
     $datasource->set_path('/root/users');
     $datasource->set_site_object_class_name('user_object');
     $datasource->set_restrict_by_class();

@@ -23,7 +23,7 @@ class stats_counter
 
 	public function __construct()
 	{
-		$this->db = db_factory :: instance();
+		$this->db = Limb :: toolkit()->getDB();
 	}
 
 	public function set_new_host($status = true)
@@ -79,7 +79,7 @@ class stats_counter
 	{
     $request = Limb :: toolkit()->getRequest();
     
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
 		if(!$object_data = $datasource->fetch())

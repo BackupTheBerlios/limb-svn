@@ -24,7 +24,7 @@ class full_text_search_indexer_test extends LimbTestCase
 		
 	function setUp()
 	{
-		$this->db =& db_factory :: instance();
+		$this->db = db_factory :: instance();
 		
 		$this->_clean_up();
 		

@@ -18,7 +18,7 @@ class stats_ips_report implements stats_report_interface
 	
 	public function __construct()
 	{
-		$this->db = db_factory :: instance();
+		$this->db = Limb :: toolkit()->getDB();
 	}
 		
 	public function fetch($params = array())

@@ -27,7 +27,7 @@ class version_datasource implements datasource
 		$version = (int)$version;
 		$node_id = (int)$node_id;
 
-    $datasource = Limb :: toolkit()->createDatasource('single_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('single_object_datasource');
     $datasource->set_node_id($node_id);
 
 		if(!$site_object = wrap_with_site_object($datasource->fetch()))

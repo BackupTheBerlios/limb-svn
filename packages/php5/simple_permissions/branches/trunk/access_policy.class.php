@@ -227,7 +227,7 @@ class access_policy
 
   public function get_access_templates($class_id, $accessor_type)
   {
-    $db = db_factory :: instance();
+    $db = Limb :: toolkit()->getDB();
 
     $sql = "SELECT
             saat.action_name as action_name,

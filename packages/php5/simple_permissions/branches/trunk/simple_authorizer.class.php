@@ -14,7 +14,7 @@ class simple_authorizer implements authorizer
 {
   protected $_cached_class_accessible_actions = array();
 
-  public function get_accessible_object_ids($object_ids, $action = 'display')
+  public function get_accessible_object_ids($object_ids, $action = 'disp lay')
   {
 		if (!count($object_ids))
 			return array();
@@ -26,7 +26,7 @@ class simple_authorizer implements authorizer
     if (!$accessor_ids)
       return array();
 			
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 		
     $sql = "SELECT soa.object_id as id
       FROM sys_object_access as soa
@@ -104,7 +104,7 @@ class simple_authorizer implements authorizer
 		
 		$in_ids = implode(',', $accessor_ids);
 
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 
 		$sql = "SELECT saa.action_name as action_name FROM sys_action_access as saa
 			WHERE saa.class_id = {$class_id} AND

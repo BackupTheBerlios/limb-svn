@@ -187,7 +187,7 @@ class poll_container extends site_object
 
 	protected function _load_all_questions()
 	{
-    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
     $datasource->set_path('root/polls');
     $datasource->set_order(array('start_date' => 'DESC'));
     $datasource->set_site_object_class_name('poll');
@@ -198,7 +198,7 @@ class poll_container extends site_object
 
 	protected function _load_answers($question_path)
 	{
-    $datasource = Limb :: toolkit()->createDatasource('site_objects_branch_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('site_objects_branch_datasource');
     $datasource->set_path($question_path);
     $datasource->set_site_object_class_name('poll_answer');
     $datasource->set_restrict_by_class();

@@ -45,7 +45,7 @@ class edit_user_action extends form_edit_site_object_action
     
     $request = Limb :: toolkit()->getRequest();
 
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
 		if ($object_data = $datasource->fetch())

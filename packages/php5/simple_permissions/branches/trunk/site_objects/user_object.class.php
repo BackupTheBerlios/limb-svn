@@ -136,7 +136,7 @@ class user_object extends content_object
 
 	public function get_user_by_email($email)
 	{
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 		
 		$sql = 
 			'SELECT *, scot.id as node_id, sco.id as id FROM 

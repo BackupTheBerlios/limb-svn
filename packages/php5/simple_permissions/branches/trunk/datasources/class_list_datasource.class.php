@@ -16,7 +16,7 @@ class class_list_datasource implements datasource
 	{
     $request = Limb :: toolkit()->getRequest();
     
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
 		if(!$arr = $datasource->fetch())

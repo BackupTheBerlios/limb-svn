@@ -19,7 +19,7 @@ class stats_event_report implements stats_report_interface
 	
 	public function __construct()
 	{
-		$this->db = db_factory :: instance();
+		$this->db = Limb :: toolkit()->getDB();
 	}
 	
 	public function set_login_filter($login_string)

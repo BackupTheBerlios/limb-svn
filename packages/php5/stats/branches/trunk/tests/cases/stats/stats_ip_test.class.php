@@ -29,7 +29,7 @@ class stats_ip_test extends LimbTestCase
   {
   	parent :: LimbTestCase();
   	
-  	$this->db =& db_factory :: instance();
+  	$this->db = db_factory :: instance();
   }
   
   function setUp()

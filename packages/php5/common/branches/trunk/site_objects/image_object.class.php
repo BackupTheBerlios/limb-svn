@@ -296,7 +296,7 @@ class image_object extends media_object
 						AND iv.variation='{$variation}' 
 						AND iv.media_id=m.id";
 		
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 		$db->sql_exec($sql);
 		
 		return $db->fetch_row();
@@ -368,7 +368,7 @@ class image_object extends media_object
 				WHERE iv.media_id = m.id AND 
 				iv.image_id IN {$ids}";
 		
-		$db = db_factory :: instance();
+		$db = Limb :: toolkit()->getDB();
 		
 		$db->sql_exec($sql);
 		

@@ -44,7 +44,7 @@ class register_new_object_action extends form_action
 		
 		$object = Limb :: toolkit()->createSiteObject($params['class']);
     
-    $datasource = Limb :: toolkit()->createDatasource('single_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('single_object_datasource');
     $datasource->set_path($params['parent_path']);
 		
 		$is_root = false;

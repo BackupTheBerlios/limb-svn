@@ -14,7 +14,7 @@ class template_source_component extends component
 	{
     $request = Limb :: toolkit()->getRequest();
     
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
 		if(!$site_object = wrap_with_site_object($datasource->fetch()))

@@ -17,7 +17,7 @@ class apply_action_access_template_command implements Command
     $toolkit = Limb :: toolkit();
     $request = $toolkit->getRequest();
 
-    $datasource = $toolkit->createDatasource('requested_object_datasource');
+    $datasource = $toolkit->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
     $object = wrap_with_site_object($datasource->fetch());

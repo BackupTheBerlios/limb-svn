@@ -20,7 +20,7 @@ class full_text_indexer
 			
 	function __construct()
 	{
-		$this->db = db_factory :: instance();
+		$this->db = Limb :: toolkit()->getDB();
 	} 
 	
 	static public function instance()

@@ -17,7 +17,7 @@ class stats_search_engines_report
 	
 	function __construct()
 	{
-		$this->db = db_factory :: instance();
+		$this->db = Limb :: toolkit()->getDB();
 	}
 		
 	public function fetch($params = array())

@@ -30,7 +30,7 @@ class stats_register
 	public function __construct()
 	{
 		$this->_reg_date = new date();		
-  	$this->db = db_factory :: instance();
+  	$this->db = Limb :: toolkit()->getDB();
 	}
 
 	function get_register_time_stamp()

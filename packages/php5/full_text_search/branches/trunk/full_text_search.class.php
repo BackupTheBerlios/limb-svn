@@ -18,7 +18,7 @@ class full_text_search
 	
 	function __construct()
 	{
-		$this->db = db_factory :: instance();
+		$this->db = Limb :: toolkit()->getDB();
 		
 		$this->use_boolean_mode = $this->_check_boolean_mode();
 	}

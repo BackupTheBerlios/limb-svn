@@ -19,7 +19,7 @@ class set_publish_status_action extends action
 		if($request->has_attribute('popup'))
 			$response->write(close_popup_response($request));
     
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
 		if(!$object = wrap_with_site_object($datasource->fetch()))
   		return;

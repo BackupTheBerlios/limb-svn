@@ -69,7 +69,7 @@ class set_group_objects_access extends form_action
 	
 	protected function _set_template_tree()
 	{
-		$datasource = Limb :: toolkit()->createDatasource('group_object_access_datasource');
+		$datasource = Limb :: toolkit()->getDatasource('group_object_access_datasource');
 		$params = array(
 			'path' => '/root',
 			'depth' => -1,

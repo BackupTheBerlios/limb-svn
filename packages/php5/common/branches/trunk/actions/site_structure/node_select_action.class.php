@@ -19,7 +19,7 @@ class node_select_action extends action
 	  if(!$path = $request->get('path'))
 	    return;
 
-    $datasource = Limb :: toolkit()->createDatasource('single_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('single_object_datasource');
     $datasource->set_path($path);
     
 	  if(!$object_data = $datasource->fetch())

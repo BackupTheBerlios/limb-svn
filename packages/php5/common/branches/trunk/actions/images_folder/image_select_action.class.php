@@ -14,7 +14,7 @@ class image_select_action extends action
 {
 	public function perform($request, $response)
 	{
-    $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+    $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
     $datasource->set_request($request);
     
 		$object = $datasource->fetch();

@@ -54,7 +54,7 @@ class edit_file_action extends form_edit_site_object_action
 			}
       
       $request = Limb :: toolkit()->getRequest();
-      $datasource = Limb :: toolkit()->createDatasource('requested_object_datasource');
+      $datasource = Limb :: toolkit()->getDatasource('requested_object_datasource');
       $datasource->set_request($request);
       
       $object_data = $datasource->fetch();
