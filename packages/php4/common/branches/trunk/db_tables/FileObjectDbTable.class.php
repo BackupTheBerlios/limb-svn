@@ -8,18 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/db_tables/OneTableObjectDbTable.class.php');
+require_once(LIMB_DIR . '/core/db/LimbDbTable.class.php');
 
-class FileObjectDbTable extends OneTableObjectDbTable
+class FileObjectDbTable extends LimbDbTable
 {
   function _defineColumns()
   {
-    return ComplexArray :: array_merge(
-      parent :: _defineColumns(),
-      array(
+    return array(
         'description' => '',
         'media_id' => ''
-      )
+        'id' => array('type' => 'int')
     );
   }
 

@@ -6,17 +6,20 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: FileObjectsRawFinder.class.php 1090 2005-02-03 13:07:57Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/dao/DAO.class.php');
-require_once(dirname(__FILE__) . '/ImageObjectsRecordSet.class.php');
-
-class ImageObjectsDAO extends DAO
+class FileObjectsCriteria
 {
-  function & fetch()
+  function process(&$sql)
   {
-    return new ImageObjectsRecordSet(parent :: fetch());
+    $sql->addTable('media as m');
+    $sql->addCondition('tn.media_id = m.id');
+    $sql->addField('m.media_file_id as media_file_id');
+    $sql->addField('m.file_name as file_name');
+    $sql->addField('m.mime_type as mime_type');
+    $sql->addField('m.etag as etag');
+    $sql->addField('m.size as size');
   }
 }
 ?>
