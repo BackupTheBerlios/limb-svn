@@ -5,10 +5,9 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: debug.class.php 504 2004-02-20 14:25:40Z server $
+* $Id$
 *
 ***********************************************************************************/ 
-
 define('DEBUG_LEVEL_NOTICE', 1);
 define('DEBUG_LEVEL_WARNING', 2);
 define('DEBUG_LEVEL_ERROR', 3);
@@ -28,44 +27,59 @@ define('DEBUG_HANDLE_TRIGGER_ERROR', 2);
 
 define('DEBUG_OUTPUT_MESSAGE_SCREEN', 1);
 define('DEBUG_OUTPUT_MESSAGE_STORE', 2);
+define('DEBUG_OUTPUT_MESSAGE_SEND', 4);
 
 require_once(LIMB_DIR . 'core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . 'core/lib/system/dir.class.php');
 require_once(LIMB_DIR . 'core/lib/system/sys.class.php');
 require_once(LIMB_DIR . 'core/lib/util/log.class.php');
+require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
 
 class debug
 { 
 	// String array containing the debug information
 	var $debug_strings = array(); 
+	
 	// Array which contains the time points
 	var $time_points = array(); 
+	
 	// Array wich contains time accumulators
 	var $time_accumulator_list = array(); 
+	
 	// Determines which debug messages should be shown
 	var $show_types; 
+	
 	// Determines what to do with php errors, ignore, fetch or output
 	var $handle_type = DEBUG_HANDLE_NATIVE; 
+	
 	// An array of the output_formats for the different debug levels
 	var $output_format; 
+	
 	// An array of log_files used by the debug class with each key being the debug level
 	var $log_files; 
+	
 	// How many places behing . should be displayed when showing times
 	var $timing_accuracy = 4; 
+	
 	// How many places behing . should be displayed when showing percentages
 	var $percent_accuracy = 4; 
-	// Determines how messages are output (screen/log)
-	var $message_output; 
+	
+	// Determines how messages are output (screen/log/mail)
+	var $message_output = DEBUG_OUTPUT_MESSAGE_STORE; 
+	
 	// A list of message types
 	var $message_types; 
+	
 	// A map with message types and whether they should do file logging.
 	var $log_file_enabled; 
+	
 	// The time when the script was started
 	var $script_start;
 
 	function debug()
 	{
-		$this->output_format = array(DEBUG_LEVEL_NOTICE => array('color' => 'green',
+		$this->output_format = array(
+			DEBUG_LEVEL_NOTICE => array('color' => 'green',
 				'name' => 'Notice'),
 			DEBUG_LEVEL_WARNING => array('color' => 'orange',
 				'name' => 'Warning'),
@@ -76,7 +90,8 @@ class debug
 			DEBUG_TIMING_POINT => array('color' => 'blue',
 				'name' => 'Timing'));
 
-		$this->log_files = array(DEBUG_LEVEL_NOTICE => array(VAR_DIR . 'log/',
+		$this->log_files = array(
+			DEBUG_LEVEL_NOTICE => array(VAR_DIR . 'log/',
 				'notice.log'),
 			DEBUG_LEVEL_WARNING => array(VAR_DIR . 'log/',
 				'warning.log'),
@@ -87,13 +102,15 @@ class debug
 			DEBUG_LEVEL => array(VAR_DIR . 'log/',
 				'debug.log'));
 
-		$this->message_types = array(DEBUG_LEVEL_NOTICE,
+		$this->message_types = array(
+			DEBUG_LEVEL_NOTICE,
 			DEBUG_LEVEL_WARNING,
 			DEBUG_LEVEL_ERROR,
 			DEBUG_TIMING_POINT,
 			DEBUG_LEVEL);
 
-		$this->log_file_enabled = array(DEBUG_LEVEL_NOTICE => true,
+		$this->log_file_enabled = array(
+			DEBUG_LEVEL_NOTICE => true,
 			DEBUG_LEVEL_WARNING => true,
 			DEBUG_LEVEL_ERROR => true,
 			DEBUG_TIMING_POINT => false,
@@ -102,8 +119,7 @@ class debug
 		$this->show_types = DEBUG_SHOW_ALL;
 		$this->handle_type = DEBUG_HANDLE_NATIVE;
 		$this->old_handler = false;
-		$this->message_output = DEBUG_OUTPUT_MESSAGE_STORE;
-		$this->script_start = debug::_time_to_float(microtime());
+		$this->script_start = debug :: _time_to_float(microtime());
 		$this->time_accumulator_list = array();
 		$this->time_accumulator_group_list = array();
 	} 
@@ -259,7 +275,7 @@ class debug
 	/*
     Writes a debug notice.
   */
-	function write_notice($string, $code_line = '', $params = array(), $write_to_log = true)
+	function write_notice($string, $code_line = '', $params = array())
 	{
 		if (!debug::is_debug_enabled())
 			return;
@@ -270,13 +286,13 @@ class debug
 		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
 			trigger_error($string, E_USER_NOTICE);
 		else
-			$debug->write(DEBUG_LEVEL_NOTICE, $string, $code_line, $params, $write_to_log);
+			$debug->write(DEBUG_LEVEL_NOTICE, $string, $code_line, $params);
 	} 
 
 	/*
     writes a debug warning.
   */
-	function write_warning($string, $code_line = '', $params = array(), $write_to_log = true)
+	function write_warning($string, $code_line = '', $params = array())
 	{
 		if (!debug::is_debug_enabled())
 			return;
@@ -287,13 +303,13 @@ class debug
 		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
 			trigger_error($string, E_USER_WARNING);
 		else
-			$debug->write(DEBUG_LEVEL_WARNING, $string, $code_line, $params, $write_to_log);
+			$debug->write(DEBUG_LEVEL_WARNING, $string, $code_line, $params);
 	} 
 
 	/*
     Writes a debug error.
   */
-	function write_error($string, $code_line = '', $params = array(), $write_to_log = true)
+	function write_error($string, $code_line = '', $params = array())
 	{
 		if (!debug::is_debug_enabled())
 			return;
@@ -304,13 +320,13 @@ class debug
 		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
 			trigger_error($string, E_USER_ERROR);
 		else
-			$debug->write(DEBUG_LEVEL_ERROR, $string, $code_line, $params, $write_to_log);
+			$debug->write(DEBUG_LEVEL_ERROR, $string, $code_line, $params);
 	} 
-
+	
 	/*
     Writes a debug message.
   */
-	function write_debug($string, $code_line = '', $params = array(), $write_to_log = true)
+	function write_debug($string, $code_line = '', $params = array())
 	{
 		if (!debug::is_debug_enabled())
 			return;
@@ -321,12 +337,57 @@ class debug
 		if ($debug->handle_type == DEBUG_HANDLE_TRIGGER_ERROR)
 			trigger_error($string, E_USER_NOTICE);
 		else
-			$debug->write(DEBUG_LEVEL, $string, $code_line, $params, $write_to_log);
+			$debug->write(DEBUG_LEVEL, $string, $code_line, $params);
 	} 
+	
+	function _send_mail($description, $verbosity_level)
+	{
+		$mail = new mime_mail();
+		
+		$title = '';
+		
+		switch ($verbosity_level)
+		{
+			case DEBUG_LEVEL_NOTICE:
+				$title .= ' debug notice';
+				$mail->add_header("X-Priority: 0 (Low)");
+			break;
+			
+			case DEBUG_LEVEL_WARNING:
+				$title .= ' debug warning';
+			break;
+			
+			case DEBUG_LEVEL_ERROR:
+				$title .= ' debug error';
+				$mail->add_header("X-Priority: 1 (High)");
+			break;
+			
+			case DEBUG_TIMING_POINT:
+				$title .= ' timig point';
+			break;
+		} 
+		
+		$message = '';
+		
+		if(($user_id = user :: get_id()) != VISITOR_USER_ID)
+			$message .= "user id:\t"
+								.	"{$user_id}\n"
+								. "login:\t\t"  . user :: get_login() . "\n"
+								. "e-mail:\t\t" . user :: get_email() . "\n";
+
+		$message .= "ip:\t\t" . sys :: client_ip() . "\n"
+							. "request:\t" . REQUEST_URI . "\n"
+							. "description:\n" . $description;
+				
+		$mail->set_body($message);
+		$mail->build_message();
+		
+		$mail->send('developer', DEVELOPER_EMAIL, $_SERVER['SERVER_ADMIN'], '<' . $_SERVER['HTTP_HOST'] . '> ' . $_SERVER['SERVER_ADMIN'], $title);
+	}
 
 	/*
    Determines the way messages are output, the $output parameter
-   is DEBUG_OUTPUT_MESSAGE_SCREEN and DEBUG_OUTPUT_MESSAGE_STORE ored together.
+   is DEBUG_OUTPUT_MESSAGE_SCREEN, DEBUG_OUTPUT_MESSAGE_STORE, DEBUG_OUTPUT_MESSAGE_SEND
   */
 	function set_message_output($output)
 	{
@@ -334,8 +395,10 @@ class debug
 			$debug =& debug::instance();
 		else
 			$debug =& $this;
-
+		
+		$prev_output = $debug->message_output;
 		$debug->message_output = $output;
+		return $prev_output;
 	} 
 
 	function set_store_log($store)
@@ -374,40 +437,22 @@ class debug
 	/*
     Writes a debug log message.
   */
-	function write($verbosity_level, $string, $code_line = '', $params = array(), $write_to_log = true)
+	function write($verbosity_level, $string, $code_line = '', $params = array())
 	{
 		if (!debug::is_debug_enabled())
 			return;
-
-		switch ($verbosity_level)
-		{
-			case DEBUG_LEVEL_NOTICE:
-			case DEBUG_LEVEL_WARNING:
-			case DEBUG_LEVEL_ERROR:
-			case DEBUG_LEVEL:
-			case DEBUG_TIMING_POINT:
-				break;
-
-			default:
-				$verbosity_level = DEBUG_LEVEL_ERROR;
-				break;
-		} 
 		
-		$log_string = $string; 
+		if(!in_array($verbosity_level, $this->message_types))
+			$verbosity_level = DEBUG_LEVEL_ERROR;
 		
-		$log_string .= (($code_line) ? "\n$code_line" : '');
+		$log_string = $string;		
+		$log_string .= (($code_line) ? "\n{$code_line}" : '');
 		$log_string .= (count($params) ? "\n" . var_export($params, true) : '');
 		
 		if ($this->message_output & DEBUG_OUTPUT_MESSAGE_SCREEN)
 		{
 			print("$verbosity_level:\n $log_string\n\n");
 		} 
-
-		$files =& $this->log_files();
-		$file_name = false;
-
-		if (isset($files[$verbosity_level]))
-			$file_name = $files[$verbosity_level];
 		
 		if ($this->message_output & DEBUG_OUTPUT_MESSAGE_STORE)
 		{
@@ -417,11 +462,20 @@ class debug
 				'string' => $log_string
 			);
 
-			if ($write_to_log && $file_name !== false && $this->is_log_file_enabled($verbosity_level))
-			{				
+			$files =& $this->log_files();
+			$file_name = false;
+	
+			if (isset($files[$verbosity_level]))
+				$file_name = $files[$verbosity_level];
+
+			if ($file_name !== false && $this->is_log_file_enabled($verbosity_level))
 				$this->_write_file($file_name, $log_string, $verbosity_level);
-			} 
-		} 
+		}
+			
+		if($this->message_output & DEBUG_OUTPUT_MESSAGE_SEND)
+		{
+			$this->_send_mail($log_string, $verbosity_level);
+		}
 	}
 	
 	/*

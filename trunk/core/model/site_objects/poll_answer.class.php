@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: poll_answer.class.php 419 2004-02-09 15:12:03Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/content_object.class.php');
@@ -15,6 +15,13 @@ class poll_answer extends content_object
 	function poll_answer()
 	{
 		parent :: content_object();
+	}
+
+	function _define_attributes_definition()
+	{
+		return array(
+			'identifier' => array('search' => true, 'auto_identifier' => true)
+		);
 	}
 	
 	function _define_class_properties()

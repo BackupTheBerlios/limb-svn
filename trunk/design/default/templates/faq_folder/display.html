@@ -1,9 +1,5 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<table width=100% border=0 cellspacing=0 cellpadding=0  height=100% >
-<tr>
-	<td width=100% valign=top style='padding:10px 20px 30px 20px'>
-				<!--НАЧАЛО: КОНТЕНТ-->
 <core:INCLUDE file="page_data.html">
 
 <fetch:MAPPED>
@@ -62,9 +58,6 @@
 </table>
 </list:LIST>
 
-			<!--КОНЕЦ: КОНТЕНТ-->
-	</td>
-	<td class=com5 height=100% valign=top align="right">
 <!--начало: правая колонка-->
 <!--начало: разделы-->
 <fetch:SUB_BRANCH target='faq_folder' >
@@ -72,13 +65,4 @@
 	<core:PARAMETER name='path' value='/root/faq' >
 </fetch:SUB_BRANCH>
 
-
 <core:INCLUDE file="/faq_folder/level_folders.html">
-
-<!--конец: разделы-->
-<img src='/design/main/images/1x1.gif' height=0 width=165>
-<!--конец: правая колонка-->
-	</td>
-</tr>
-</table>
-

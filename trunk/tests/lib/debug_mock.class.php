@@ -93,7 +93,7 @@ class debug_mock extends debug
 		if(!$this->mock)
 		{
 			if($args[0] != DEBUG_TIMING_POINT)
-				parent :: write($args[0], $args[1], $args[2], $args[3], $args[4]);
+				parent :: write($args[0], $args[1], $args[2], $args[3]);
 			else
 				parent :: write($args[0], $args[1]);
 				
@@ -120,7 +120,7 @@ class debug_mock extends debug
 			{
 				$this->test->fail('unexpected debug exception: [ ' . $args[1] . ' ]');
 				
-				parent :: write($args[0], $args[1], $args[2], $args[3], $args[4]);
+				parent :: write($args[0], $args[1], $args[2], $args[3]);
 			}
 		}
 	} 	

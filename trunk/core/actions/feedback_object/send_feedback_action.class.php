@@ -14,6 +14,8 @@ require_once(LIMB_DIR . 'core/lib/validators/rules/required_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/validators/rules/email_rule.class.php');
 require_once(LIMB_DIR . 'core/lib/mail/mime_mail.class.php');
 
+require_once(LIMB_DIR . 'core/model/response/redirect_response.class.php');
+
 class send_feedback_action extends form_action
 {
 	function send_feedback_action($name='feedback_form', $merge_definition=array())
@@ -58,8 +60,9 @@ class send_feedback_action extends form_action
 			message_box :: write_error(strings :: get('mail_not_sent', 'feedback'));
 			return new failed_response();
 		}
-
-		return new response(RESPONSE_STATUS_FORM_SUBMITTED);
+		
+		message_box :: write_error(strings :: get('message_was_sent', 'feedback'));
+		return new redirect_response(RESPONSE_STATUS_FORM_SUBMITTED, PHP_SELF);
 	}
 }
 ?>

@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class poll_controller extends site_object_controller
@@ -29,7 +27,7 @@ class poll_controller extends site_object_controller
 						'popup' => true,
 						'img_src' => '/shared/images/new.generic.gif',
 						'action_name' => strings :: get('create_poll_answer','poll'),
-						'can_have_access_template' => true, 
+						'can_have_access_template' => true, 						
 				),
 				'edit' => array(
 						'permissions_required' => 'w',
@@ -40,6 +38,27 @@ class poll_controller extends site_object_controller
 						'template_path' => '/poll/edit.html',
 						'img_src' => '/shared/images/edit.gif'
 				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/publish_action',
+						'img_src' => '/shared/images/publish.gif',
+						'template_path' => '/news_object/display.html',
+						'can_have_access_template' => true,
+				),
+				'unpublish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('unpublish'),
+						'action_path' => '/doc_flow_object/unpublish_action',
+						'img_src' => '/shared/images/unpublish.gif',
+						'template_path' => '/news_object/display.html',
+						'can_have_access_template' => true,
+				),
+
 				'delete' => array(
 						'permissions_required' => 'w',
 						'JIP' => true,

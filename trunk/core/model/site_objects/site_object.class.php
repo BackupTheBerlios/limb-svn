@@ -404,7 +404,10 @@ class site_object extends object
 			}
 		}
 		else
-			$identifier = $this->_generate_auto_identifier();
+		{
+			if(($identifier = $this->_generate_auto_identifier()) === false)
+				return false;
+		}
 		
 		if (!$id = $this->_create_site_object_record())
 		{
@@ -462,15 +465,15 @@ class site_object extends object
 	{
 		$tree =& limb_tree :: instance();
 		
-		if(!$identifier = $tree->get_max_child_identifier($this->get_parent_node_id()))
-			$new_identifier = 1;
+		$identifier = $tree->get_max_child_identifier($this->get_parent_node_id());
+		
+		if($identifier === false)
+			return false;
+			
+		if(preg_match('/^(.*)(\d+)$/', $identifier, $matches))
+			$new_identifier = $matches[1] . ($matches[2] + 1);
 		else
-		{
-			if(preg_match('/^(.*)(\d+)$/', $identifier, $matches))
-				$new_identifier = $matches[1] . ($matches[2] + 1);
-			else
-				$new_identifier = $identifier . '1';
-		}
+			$new_identifier = $identifier . '1';
 		
 		$this->set_identifier($new_identifier);
 		

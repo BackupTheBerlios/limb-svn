@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: image_object.class.php 537 2004-02-22 14:24:21Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 require_once(LIMB_DIR . 'core/model/site_objects/media_object.class.php');
@@ -75,7 +75,7 @@ class image_object extends media_object
 	function _create_generate_operation($variation, &$result)
 	{
 		$files_data = $this->get_attribute('files_data', array());
-		$output_file = tempnam('', 'p');
+		$output_file = tempnam(VAR_DIR, 'p');
 		
 		if(!isset($files_data['name'][$this->get_attribute($variation . '_base_variation')]))
 		{
@@ -145,7 +145,7 @@ class image_object extends media_object
 		
 		if($upload_max_size = $this->get_attribute('upload_' . $variation . '_max_size'))
 		{
-			$output_file = tempnam('', 'p');
+			$output_file = tempnam(VAR_DIR, 'p');
 			
 		  if(!$this->_resize_operation(
 				  	$variation, 
@@ -201,7 +201,7 @@ class image_object extends media_object
 
 	function _update_generate_operation($variation, &$result)
 	{
-		$output_file = tempnam('', 'p');
+		$output_file = tempnam(VAR_DIR, 'p');
 		
 		if(!$this->_resize_operation(
 					$this->get_attribute($variation . '_base_variation'), 
@@ -278,7 +278,7 @@ class image_object extends media_object
 		
 		if ($upload_max_size = $this->get_attribute('upload_' . $variation . '_max_size'))
 		{
-			$output_file = tempnam('', 'p');
+			$output_file = tempnam(VAR_DIR, 'p');
 			
 		  if(!$this->_resize_operation(
 				  	$variation, 

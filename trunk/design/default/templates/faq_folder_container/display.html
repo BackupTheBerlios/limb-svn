@@ -1,10 +1,5 @@
 <core:WRAP file="page.html" placeholder="content">
 
-<table width=100% border=0 cellspacing=0 cellpadding=0  height=100% >
-<tr>
-	<td width=100% valign=top style='padding:10px 20px 30px 20px'>
-				<!--ÍÀ×ÀËÎ: ÊÎÍÒÅÍÒ-->
-
 <core:INCLUDE file="page_data.html">
 
 <fetch:MAPPED>
@@ -23,7 +18,6 @@
   <list:ITEM>
 		<tr class='jip'>
 			<td width='1'><core:INCLUDE file="published_status.html"></td>
-			<td width='1'><a href='{$path}'><img class=icon src='/design/main/images/icons/f.gif'></a></td>
 			<td jip='object' class='jip_object' >
 				<a href='{$path}'>{$title}</a>
 			</td>
@@ -34,12 +28,3 @@
   </list:ITEM>
 </table>
 </list:LIST>
-
-
-
-			<!--ÊÎÍÅÖ: ÊÎÍÒÅÍÒ-->
-	</td>
-</tr>
-</table>
-
-

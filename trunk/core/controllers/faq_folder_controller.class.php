@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class faq_folder_controller extends site_object_controller
@@ -21,6 +19,18 @@ class faq_folder_controller extends site_object_controller
 						'permissions_required' => 'r',
 						'template_path' => '/faq_folder/display.html'
 				),
+				'admin_display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/faq_folder/admin_display.html'
+				),
+				'admin_detail' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/admin/object_detail_info.html',
+						'popup' => true,
+						'JIP' => true,
+						'img_src' => '/shared/images/details.gif',
+						'action_name' => strings :: get('detail_info'),
+				),
 				'create_faq_object' => array(
 						'permissions_required' => 'w',
 						'template_path' => '/faq_object/create.html',
@@ -29,6 +39,7 @@ class faq_folder_controller extends site_object_controller
 						'popup' => true,
 						'img_src' => '/shared/images/new.generic.gif',
 						'action_name' => strings :: get('create_faq_question','faq'),
+						'can_have_access_template' => true,
 				),
 				'edit' => array(
 						'permissions_required' => 'w',
@@ -38,6 +49,26 @@ class faq_folder_controller extends site_object_controller
 						'action_path' => '/faq_folder/edit_faq_folder_action',
 						'template_path' => '/faq_folder/edit.html',
 						'img_src' => '/shared/images/edit.gif'
+				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/publish_action',
+						'img_src' => '/shared/images/publish.gif',
+						'template_path' => '/news_object/display.html',
+						'can_have_access_template' => true,
+				),
+				'unpublish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('unpublish'),
+						'action_path' => '/doc_flow_object/unpublish_action',
+						'img_src' => '/shared/images/unpublish.gif',
+						'template_path' => '/news_object/display.html',
+						'can_have_access_template' => true,
 				),
 				'order' => array(
 						'permissions_required' => 'r',
@@ -53,7 +84,7 @@ class faq_folder_controller extends site_object_controller
 						'img_src' => '/shared/images/rem.gif'
 				),
 		);
- 		
+
 		parent :: site_object_controller();
 	}
 }

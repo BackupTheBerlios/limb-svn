@@ -1,18 +1,14 @@
 <table border=0 cellspacing=0 cellpadding=0>
 <tr>
-	<td><img class=icon src='/design/main/images/icons/q.gif'></td>
 	<td><a class=named name={$identifier}>{$question}</a></td>
 </tr>
 <tr>
-	<td></td>
 	<td><core:OPTIONAL for='question_author'>{$question_author}</core:OPTIONAL> <core:OPTIONAL for='question_author_email'><a href='mailto:{$question_author_email}'>@</a><hr></core:OPTIONAL></td>
 </tr>
 <tr>
-	<td></td>
 	<td class=annotation>{$answer}</td>
 </tr>
 <tr>
-	<td></td>
 	<td class=annotation>
 		<core:OPTIONAL for='answer_author'><hr>{$answer_author}</core:OPTIONAL>
 		<core:OPTIONAL for='answer_author_email'><a href='mailto:{$answer_author_email}'>@</a></core:OPTIONAL>

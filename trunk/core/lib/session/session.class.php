@@ -56,6 +56,7 @@ class session
 function start_user_session()
 {
 	$has_started =& $GLOBALS['session_is_started'];
+	
 	if (isset($has_started) && $has_started)
 		return false;
 	
@@ -92,18 +93,16 @@ function _session_db_close()
   return true;
 }
 
-function & _session_db_read( $session_id )
+function & _session_db_read($session_id)
 {
 	$db =& db_factory :: instance();
 
 	$db->sql_select('sys_session', 'session_data', "session_id='{$session_id}'");
-  $session_res = current($db->get_array());	
-
-  if(sizeof($session_res) == 1)
-    return $session_res['session_data'];
+	
+  if($session_res = $db->fetch_row())
+  	return $session_res['session_data'];
   else
-   	return false;
-
+  	return false;
 }
 
 function _session_db_write( $session_id, $value )

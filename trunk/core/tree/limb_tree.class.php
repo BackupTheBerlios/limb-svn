@@ -76,7 +76,7 @@ class limb_tree extends nested_db_tree
 		} 
 		if (!$parent || $parent['l'] == ($parent['r'] - 1))
 		{
-			return false;
+			return 0;
 		} 
 
 		$sql = sprintf('SELECT identifier FROM %s
@@ -92,7 +92,7 @@ class limb_tree extends nested_db_tree
 		if($row =& $this->db->fetch_row())
 			return $row['identifier'];
 		else
-			return '';	
+			return 0;
 	}
 		
 	function get_node_by_path($path, $delimiter='/', $recursive = false)

@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class faq_folder_container_controller extends site_object_controller
@@ -21,6 +19,10 @@ class faq_folder_container_controller extends site_object_controller
 						'permissions_required' => 'r',
 						'template_path' => '/faq_folder_container/display.html'
 				),
+				'admin_display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/faq_folder_container/admin_display.html'
+				),
 				'create_faq_folder' => array(
 						'permissions_required' => 'w',
 						'template_path' => '/faq_folder/create.html',
@@ -29,7 +31,7 @@ class faq_folder_container_controller extends site_object_controller
 						'popup' => true,
 						'img_src' => '/shared/images/new.folder.gif',
 						'action_name' => strings :: get('create_faq_folder','faq'),
-
+						'can_have_access_template' => true,
 				),
 		);
  		

@@ -11,7 +11,6 @@
 
 <table width=100% border=0 cellspacing=3 cellpadding=0>
 <tr>
-	<th></th>
 	<th><locale:STRING name='faq_folder' file='faq'></th>
 	<th><locale:STRING name='published_status' ></th>
 	<th><locale:STRING name='created_date'></th>
@@ -20,7 +19,6 @@
 </tr>
 <grid:LIST id='folders'>
 <tr class=jip>
-<td><img class=icon src='/design/main/images/icons/f.gif'></td>
 <td jip=object class=jip-object><grid:ITEM><a href="{$path}?action=admin_display">{$title}</a></grid:ITEM></td>
 <td align="center"><grid:ITEM>
 					<core:INCLUDE file="published_status.html">

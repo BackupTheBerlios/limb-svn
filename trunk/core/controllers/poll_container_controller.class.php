@@ -8,8 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
-
 require_once(LIMB_DIR . 'core/controllers/site_object_controller.class.php');
 	
 class poll_container_controller extends site_object_controller
@@ -21,6 +19,10 @@ class poll_container_controller extends site_object_controller
 						'permissions_required' => 'r',
 						'template_path' => '/poll_container/display.html'
 				),
+				'admin_display' => array(
+						'permissions_required' => 'r',
+						'template_path' => '/poll_container/admin_display.html'
+				),
 				'create_poll' => array(
 						'permissions_required' => 'w',
 						'template_path' => '/poll/create.html',
@@ -29,6 +31,7 @@ class poll_container_controller extends site_object_controller
 						'popup' => true,
 						'img_src' => '/shared/images/new.generic.gif',
 						'action_name' => strings :: get('create_poll_question','poll'),
+						'can_have_access_template' => true,
 				),
 				'vote' => array(
 						'permissions_required' => 'r',

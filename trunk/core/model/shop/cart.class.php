@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 
-
 class cart
 {		
 	var $_catalog_id = array();
@@ -47,7 +46,6 @@ class cart
   	return $obj;
   }
 
-
 	function add_items($items = array())
 	{
 		if (!count($items))
@@ -58,7 +56,6 @@ class cart
 			$this->add_item($item_id, $data['amount'], $data['price'], $data['description'] , $data['notes']);
 		}	
 	}
-
 
 	function add_item($item_id, $amount = 0, $price = '', $description = array(), $notes = '')
 	{
@@ -77,7 +74,6 @@ class cart
 		$this->_items[$item_id]['description'] = $description;
 		$this->_items[$item_id]['notes'] = $notes;
 	}
-
 	
 	function set_items_amounts($items = array())
 	{
@@ -87,7 +83,6 @@ class cart
 		foreach($items as $item_id => $new_amount)
 			$this->set_item_amount($item_id, $new_amount);
 	}
-
 
 	function set_item_amount($item_id, $new_amount = 0)
 	{
@@ -104,7 +99,6 @@ class cart
 		$this->_items[$item_id]['amount'] = $new_amount;
 	}
 
-
 	function set_items_notes($items = array())
 	{
 		if (!count($items))
@@ -114,13 +108,11 @@ class cart
 			$this->set_item_amount($item_id, $new_note);
 	}
 
-
 	function set_item_note($item_id, $new_note = '')
 	{
 		if (isset($this->_items[$item_id]))
 			$this->_items[$item_id]['note'] = $new_note;
 	}
-
 
 	function update_cart_items_property($propety_name, $items = array())
 	{
@@ -130,7 +122,6 @@ class cart
 			$this->update_cart_item_property($propety_name, $item_id, $new_value);
 	}
 
-
 	function update_cart_item_property($propety_name, $item_id, $new_value = '')
 	{
 		if (!$propety_name)
@@ -139,7 +130,6 @@ class cart
 		if (isset($this->_items[$item_id]))
 			$this->_items[$item_id][$propety_name] = $new_value;
 	}
-
 	
 	function get_total_summ()
 	{
@@ -152,14 +142,12 @@ class cart
 		
 		return $summ;
 	}
-	
 
 	function delete_item($item_id)
 	{
 		if (isset($this->_items[$item_id]))
 			unset($this->_items[$item_id]);
 	}
-
 
 	function delete_items($items = array())
 	{
@@ -169,25 +157,21 @@ class cart
 		foreach($items as $item_id => $item_data)
 			$this->delete_item($item_id);
 	}
-
 	
 	function get_items()
 	{
 		return $this->_items;		
 	}
 
-
 	function get_status()
 	{
 		return $this->_status;		
 	}
 
-
 	function set_status($new_status = '')
 	{
 		$this->_status = $new_status;
 	}
-
 
 	function get_items_count()
 	{
@@ -210,11 +194,9 @@ class cart
 		return $result;
 	}
 
-
 	function clear()
 	{
 		$this->_items =  array();		
 	}
-	
 }
 ?>

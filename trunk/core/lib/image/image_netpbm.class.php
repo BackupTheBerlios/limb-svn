@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: image_netpbm.class.php 410 2004-02-06 10:46:51Z server $
+* $Id$
 *
 ***********************************************************************************/ 
 
@@ -238,7 +238,7 @@ class image_netpbm extends image_library
 		if (!$this->library_installed)
 			return false;
 	  
-		$tmp_file = tempnam('', 'netpbm');
+		$tmp_file = tempnam(VAR_DIR, 'netpbm');
 		$this->current_output_file = $tmp_file;
 		$this->current_output_file_type = 'BMP';
 		
@@ -292,7 +292,7 @@ class image_netpbm extends image_library
 		if ($cy + $ch > $info[1])
 		  $ch = $info[1] - $cy;
 
-		$tmp_file = tempnam('', 'netpbm');
+		$tmp_file = tempnam(VAR_DIR, 'netpbm');
 
 		$cmd = $this->_to_pnm() . ' | ' . PNMCUT . " $cx $cy $cw $ch > {$tmp_file}";
 		

@@ -545,4 +545,4 @@ class mime_mail
     return $date.CRLF.$from.CRLF.$to.CRLF.$subject.CRLF.implode(CRLF, $this->headers).CRLF.implode(CRLF, $xtra_headers).CRLF.CRLF.$this->mime; 
   } 
 }
-?> 
+?>

@@ -26,7 +26,6 @@ class poll_tag extends server_component_tag
 {
 	var $runtime_component_path = '/core/template/components/poll_component';
 
-
 	function pre_generate(&$code)
 	{
 		parent::pre_generate($code);
@@ -36,8 +35,8 @@ class poll_tag extends server_component_tag
 
 	function generate_contents(&$code)
 	{		
-		$form_child =& $this->find_child('poll_form');
-		$results_child =& $this->find_child('poll_results');
+		$form_child =& $this->find_child_by_class('poll_form_tag');
+		$results_child =& $this->find_child_by_class('poll_results_tag');
 		
 		$code->write_php('if (' . $this->get_component_ref_code() . '->poll_exists()) {');
 		$code->write_php('if (' . $this->get_component_ref_code() . '->can_vote()) {');
@@ -50,7 +49,7 @@ class poll_tag extends server_component_tag
 			}");
 	} 
 
-
+ 
 	function &get_dataspace()
 	{
 		return $this;
@@ -61,6 +60,6 @@ class poll_tag extends server_component_tag
 	{
 		return $this->get_component_ref_code();
 	} 
-} 
+}
 
 ?>

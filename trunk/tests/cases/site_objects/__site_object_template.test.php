@@ -88,19 +88,28 @@ class test_site_object_template extends UnitTestCase
   
   function test_failed_create()
   {
-  	debug_mock :: expect_write_error('identifier is empty');
+  	if(!$this->object->is_auto_identifier())
+  	{
+  		debug_mock :: expect_write_error('identifier is empty');
   	
-  	$this->assertIdentical($this->object->create(), false);
+  		$this->assertIdentical($this->object->create(), false);
+  	}
   	
 		$this->object->set_parent_node_id(1000000);
+
+  	if(!$this->object->is_auto_identifier())
+  	{
+			debug_mock :: expect_write_error('identifier is empty');
 		
-		debug_mock :: expect_write_error('identifier is empty');
-		
-  	$this->assertIdentical($this->object->create(), false);
+  		$this->assertIdentical($this->object->create(), false);
+  	}
   	
 		$this->object->set_identifier('test');
-		
-		debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 1000000));
+
+  	if($this->object->is_auto_identifier())
+			debug_mock :: expect_write_error(NESE_ERROR_NOT_FOUND, array('id' => 1000000));
+		else
+			debug_mock :: expect_write_error('tree registering failed', array('parent_node_id' => 1000000));
 		
   	$this->assertIdentical($this->object->create(), false);
   }
