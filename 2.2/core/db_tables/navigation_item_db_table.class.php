@@ -16,6 +16,7 @@ class navigation_item_db_table extends content_object_db_table
   {
   	return array(
       'url' => '',
+      'new_window' => array('type' => 'numeric'),
     );
   }
 }

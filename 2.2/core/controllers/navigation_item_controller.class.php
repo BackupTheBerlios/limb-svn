@@ -28,6 +28,7 @@ class navigation_item_controller extends site_object_controller
 						'popup' => true,
 						'img_src' => '/shared/images/new.generic.gif',
 						'action_name' => strings :: get('create_menu_item','navigation'),
+						'can_have_access_template' => true,
 				),
 				'edit' => array(
 						'permissions_required' => 'w',
@@ -37,6 +38,24 @@ class navigation_item_controller extends site_object_controller
 						'action_path' => '/navigation_item/edit_navigation_item_action',
 						'template_path' => '/navigation_item/edit.html',
 						'img_src' => '/shared/images/edit.gif'
+				),
+				'publish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('publish'),
+						'action_path' => '/doc_flow_object/set_publish_status_action',
+						'img_src' => '/shared/images/publish.gif',
+						'can_have_access_template' => true,
+				),
+				'unpublish' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('unpublish'),
+						'action_path' => '/doc_flow_object/set_publish_status_action',
+						'img_src' => '/shared/images/unpublish.gif',
+						'can_have_access_template' => true,
 				),
 				'delete' => array(
 						'permissions_required' => 'w',

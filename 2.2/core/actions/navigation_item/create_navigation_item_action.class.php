@@ -28,8 +28,14 @@ class create_navigation_item_action extends form_create_site_object_action
 	      parent :: _define_datamap(),
 	      array(
   				'url' => 'url',
+  				'new_window' => 'new_window',
 	      )
 	  );     
+	}  
+
+	function _define_increase_version_flag()
+	{
+	  return false;
 	}  
 
 	function _init_validator()

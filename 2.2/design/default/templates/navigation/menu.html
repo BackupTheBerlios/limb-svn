@@ -3,7 +3,7 @@
 <col align=right style='padding:2px 5px 2px 2px'>
 <grid:ITERATOR>
 		<tr>
-			<td class=border1><a href='{$url}'>{$title}</a></td>
+			<td class=border1><a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a></td>
 			<core:OPTIONAL for="in_path">
 				<td><img src='/shared/images/arr1.gif'></td>
 			</core:OPTIONAL>

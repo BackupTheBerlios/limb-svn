@@ -28,6 +28,7 @@ class edit_navigation_item_action extends form_edit_site_object_action
 	      parent :: _define_datamap(),
 	      array(
   				'url' => 'url',
+  				'new_window' => 'new_window',
 	      )
 	  );     
 	}  
