@@ -132,7 +132,8 @@ function toggle_obj_display(obj)
 function optimize_window()
 {	
 	w = window;
-	if(typeof(document.all['popup_div'])=='object')
+	div = document.getElementById('popup_div');
+	if(typeof(div) == 'object')
 	{
 		var xper = 0.1
 		var yper = 0.1
@@ -142,6 +143,7 @@ function optimize_window()
 		w.resizeTo(window.screen.width*wper, window.screen.height*hper);
 		return
 	}
+	
 	deltaX = w.document.body.scrollWidth - w.document.body.clientWidth;
 	deltaY = w.document.body.scrollHeight - w.document.body.clientHeight;
 
@@ -158,7 +160,6 @@ function optimize_window()
 	newTop = (w.screen.height - w.document.body.clientHeight - deltaY)/2 - 30;
 
 	w.moveTo(newLeft, newTop);
-
 	w.resizeBy(deltaX, deltaY);
 }
 
@@ -413,20 +414,20 @@ function sync_action_controls(obj)
 		}
 }
 
-function transfer_value(target_object_name, transfer_value)
+function transfer_value(target_id, transfer_value)
 {
-	if(document.all[target_object_name])
+	obj = document.getElementById(target_id);
+	if(obj)
 	{
-		obj = document.all[target_object_name];
 		obj.value = transfer_value;
 	}
 }
 
-function transfer_img_src(target_img_name, transfer_src)
+function transfer_img_src(target_id, transfer_src)
 {
-	if(document.all[target_img_name])
+	obj = document.getElementById(target_id);
+	if(obj)
 	{
-		obj = document.all[target_img_name];
 		obj.src = transfer_src;
 	}
 }
