@@ -11,24 +11,13 @@
 
 class InitializeExistingObjectCommand
 {
-  var $object_handle;
-
-  function InitializeExistingObjectCommand(&$object_handle)
-  {
-    $this->object_handle =& $object_handle;
-  }
+  function InitializeExistingObjectCommand(){}
 
   function perform()
   {
-    $object =& Handle :: resolve($this->object_handle);
-
     $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-    $uow =& $toolkit->getUOW();
-    if(!$object = $uow->load($object->__class_name, $request->get('id')))
-      return LIMB_STATUS_ERROR;
-
-    $toolkit->setProcessedObject($object);
+    $mapped_object =& $toolkit->getMappedObject();
+    $toolkit->setProcessedObject($mapped_object);
 
     return LIMB_STATUS_OK;
   }

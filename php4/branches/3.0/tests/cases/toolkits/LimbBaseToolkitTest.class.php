@@ -155,7 +155,25 @@ class LimbBaseToolkitTest extends LimbTestCase
     $object = new Object();
     $this->toolkit->setProcessedObject($object);
 
+    $object->set('id', 'whatever');
+
     $this->assertEqual($this->toolkit->getProcessedObject(), $object);
+  }
+
+  function testSetGetMappedObject()
+  {
+    $object = new Object();
+    $this->toolkit->setMappedObject($object);
+
+    $object->set('id', 'whatever');
+
+    $this->assertEqual($this->toolkit->getMappedObject(), $object);
+  }
+
+  function testGetPath2IdTranslator()
+  {
+    $this->assertIsA($this->toolkit->getPath2IdTranslator(),
+                     'Path2IdTranslator');
   }
 }
 

@@ -18,7 +18,7 @@ class ChildItemsPathAssignerRecordSet extends IteratorDbDecorator
   {
     $record =& parent :: current();
 
-    $record->set('path', $this->parent_path . '/' .$record->get('identifier'));
+    $record->set('path', $this->parent_path . '/' . $record->get('identifier'));
 
     return $record;
   }
@@ -27,9 +27,10 @@ class ChildItemsPathAssignerRecordSet extends IteratorDbDecorator
   {
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
+    $mapped_object =& $toolkit->getMappedObject();
 
-    $id_translator = new Path2IdTranslator();
-    if($path = $id_translator->toPath($request->get('id')))
+    $id_translator =& $toolkit->getPath2IdTranslator();
+    if($path = $id_translator->toPath($mapped_object->get('id')))
       $this->parent_path = $path;
 
     parent :: rewind();

@@ -20,19 +20,14 @@ class InitializeExistingObjectCommandTest extends LimbTestCase
 
   function testPerform()
   {
-    $handle = new Handle('SimpleObject');
     $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-    $request->set('id', $id = 10);
 
     $object = new SimpleObject();
-    $object->set('id', $id);
+    $object->set('id', $id = 10);
 
-    $uow =& $toolkit->getUOW();
+    $toolkit->setMappedObject($object);
 
-    $uow->register($object);
-
-    $command = new InitializeExistingObjectCommand($handle);
+    $command = new InitializeExistingObjectCommand();
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 

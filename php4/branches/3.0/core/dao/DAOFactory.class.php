@@ -33,11 +33,6 @@ class DAOFactory
   {
     $class_name = end(explode('/', $class_path));
 
-    $factory =& DAOFactory :: instance();
-
-    if(isset($factory->daos[$class_name]))
-      return $factory->daos[$class_name];
-
     if(!class_exists($class_name))
     {
       $resolver =& Handle :: resolve(getFileResolver('dao'));
@@ -48,11 +43,7 @@ class DAOFactory
       include_once($full_path);
     }
 
-    $dao =& new $class_name();
-
-    $factory->daos[$class_name] =& $dao;
-
-    return $dao;
+    return new $class_name();
   }
 }
 

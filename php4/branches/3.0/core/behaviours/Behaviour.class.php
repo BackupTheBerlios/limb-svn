@@ -57,7 +57,7 @@ class Behaviour extends Object
     $ini =& $this->_getIni();
 
     if($ini->hasGroup($action))
-      return $ini->gasGroup($action);
+      return $ini->getGroup($action);
     else
       return array();
   }

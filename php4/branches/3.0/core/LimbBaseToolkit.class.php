@@ -23,6 +23,8 @@ class LimbBaseToolkit// implements LimbToolkit
   var $cache;
   var $uow;
   var $processed_object;
+  var $mapped_object;
+  var $path2id_translator;
   var $ini_cache = array();
   var $dataspace_registry;
 
@@ -40,6 +42,8 @@ class LimbBaseToolkit// implements LimbToolkit
     $this->cache = null;
     $this->uow = null;
     $this->processed_object = null;
+    $this->mapped_object = null;
+    $this->path2id_translator = null;
     $this->ini_cache = array();
   }
 
@@ -265,6 +269,27 @@ class LimbBaseToolkit// implements LimbToolkit
   function & getProcessedObject()
   {
     return $this->processed_object;
+  }
+
+  function setMappedObject(&$object)
+  {
+    $this->mapped_object =& $object;
+  }
+
+  function & getMappedObject()
+  {
+    return $this->mapped_object;
+  }
+
+  function & getPath2IdTranslator()
+  {
+    if(is_object($this->path2id_translator))
+      return $this->path2id_translator;
+
+    include_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
+    $this->path2id_translator = new Path2IdTranslator();
+
+    return $this->path2id_translator;
   }
 }
 

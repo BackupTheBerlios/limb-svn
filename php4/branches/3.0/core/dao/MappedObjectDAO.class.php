@@ -9,28 +9,14 @@
 *
 ***********************************************************************************/
 
-class RequestedObjectDAO
+class MappedObjectDAO
 {
-  function RequestedObjectDAO(){}
+  function MappedObjectDAO(){}
 
   function & fetch()
   {
     $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-
-    if(!$id = $request->get('id'))
-      return new Dataspace();
-
-    $dao =& $toolkit->createDAO('ObjectsClassNamesDAO');
-    if(!$dataspace = $dao->fetchById($id))
-      return new Dataspace();
-
-    $uow =& $toolkit->getUOW();
-
-    if(!$object = $uow->load($dataspace->get('name'), $id))
-      return new Dataspace();
-
-    return $object;
+    return $toolkit->getMappedObject();
   }
 }
 
