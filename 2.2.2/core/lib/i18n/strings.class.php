@@ -55,10 +55,7 @@ class strings
 	}
 		
 	function _get_path($filename='common', $locale_id=null)
-	{	
-		if(isset($this->_path_cache[$filename][$locale_id]))
-			return $this->_path_cache[$filename][$locale_id];
-			
+	{				
   	if(!$locale_id)
   	{
 	  	if(defined('MANAGEMENT_LOCALE_ID'))
@@ -66,6 +63,9 @@ class strings
 	  	else
 	  		$locale_id = DEFAULT_MANAGEMENT_LOCALE_ID;
 	  }
+	  
+		if(isset($this->_path_cache[$filename][$locale_id]))
+			return $this->_path_cache[$filename][$locale_id];	  
 		
 		if(file_exists(PROJECT_DIR . '/core/strings/' . $filename . '_' . $locale_id . '.ini'))
   		$dir = PROJECT_DIR . '/core/strings/';
