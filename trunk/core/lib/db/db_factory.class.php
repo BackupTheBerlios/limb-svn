@@ -207,12 +207,12 @@ class	db_factory
   {
   	$self =& db_factory::instance();
   	
-  	if($this->db_map === null)
+  	if($self->db_map === null)
   	{
-  		$this->init_database_map();
+  		$self->init_database_map();
   	}
   		
-  	return $this->db_map;
+  	return $self->db_map;
   }
   
   function init_database_map()
@@ -221,6 +221,8 @@ class	db_factory
     
     $conn = $self->get_connection();
     $dsn = $conn->get_dsn();
+    
+    include_once(LIMB_DIR . '/core/lib/db/peer/map/db_map.class.php');
     
     $self->db_map =& new db_map($dsn['database']);
     

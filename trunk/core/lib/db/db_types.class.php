@@ -94,13 +94,11 @@ class db_types
 	*/
 	function get_affix($db_type)
 	{
-		$self = &db_types::get_instance();
+		$self = &db_types::instance();
 
 		if (! isset($self->affix_map[$db_type]))
 		{
-			$e = new sql_exception(DB_ERROR, "Unable to return 'affix' for unknown dbType: " . $db_type);
-			print $e;
-			return $e;
+			return new sql_exception(DB_ERROR, "Unable to return 'affix' for unknown dbType: " . $db_type);
 		} 
 		return $self->affix_map[$db_type];
 	} 
@@ -124,7 +122,7 @@ class db_types
 	*/
 	function getdb_name($db_type)
 	{
-		$self = &db_types::get_instance();
+		$self = &db_types::instance();
 
 		if (! isset($self->db_type_map[$db_type]))
 		{
@@ -141,7 +139,7 @@ class db_types
 	*/
 	function getdb_code($db_type_name)
 	{
-		$self = &db_types::get_instance();
+		$self = &db_types::instance();
 		$type = array_search($db_type_name, $self->db_type_map);
 
 		if ($type === false)
@@ -155,7 +153,7 @@ class db_types
 	/*
   * @private
   */
-	function &get_instance()
+	function &instance()
 	{
 		static $instance;
 

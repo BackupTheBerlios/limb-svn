@@ -200,4 +200,28 @@ class connection_common extends connection
 
 		return true;
 	} 
+	
+  /**
+  * This method is used to ignore case.
+  *
+  * @param in The string to transform to upper case.
+  * @return The upper case string.
+  */
+  function to_upper_case($in)
+  {
+  	error('abstract function',
+		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+  }
+
+  /**
+  * This method is used to ignore case.
+  *
+  * @param in The string whose case to ignore.
+  * @return The string in a case that can be ignored.
+  */
+  function ignore_case($in)
+  {
+  	error('abstract function',
+		 __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
+  }
 } 

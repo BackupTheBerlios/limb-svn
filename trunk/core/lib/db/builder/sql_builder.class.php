@@ -9,44 +9,31 @@
 *
 ***********************************************************************************/
 
-/**
-* This is the base class for all Peer classes in the system.  Peer
-* classes are responsible for isolating all of the database access
-* for a specific business object.  They execute all of the SQL
-* against the database.  Over time this class has grown to include
-* utility methods which ease execution of cross-database queries and
-* the implementation of concrete peers.
-* (inspired by propel project http://propel.phpdbg.org)
-*/
-class db_peer
+require_once(LIMB_DIR . 'core/lib/db/db_table_factory.class.php');
+
+class sql_builder
 {
 	/**
-	* * Array (hash) that contains the cached mapBuilders.
+	* * Array (hash) that contains the cached map_builders.
 	*/
 	var $map_builders = array();
-	var $validator_map = array();
 
 	/**
 	* Method to perform deletes based on values and keys in a
 	* criteria.
 	* 
 	* @param criteria $criteria The criteria to use.
-	* @return number of rows affected on success, db_factoryException on error
+	* @return number of rows affected on success, db_factory_exception on error
 	* @access public 
 	* @static 
 	*/
 	function do_delete($criteria)
 	{
 		if (! is_a($criteria, 'criteria'))
-			return new exception (DB_PEER_ERROR, "parameter 1 not of type 'criteria' !");
+			return new exception (DB_ERROR, "parameter 1 not of type 'criteria' !");
 
 		$connection= &db_factory::get_connection();
-		$db_map = &db_factory::get_database_map();
-
-		if (is_error($db_map))
-		{
-			return $db_map;
-		} 
+		
 		// Set up a list of required tables (one DELETE statement will
 		// be executed per table)
 		$tables_keys = array();
@@ -98,7 +85,7 @@ class db_peer
 				$sql = "SELECT COUNT(*) FROM " . $table_name . " WHERE " . $sql_snippet;
 				$stmt = $con->prepare_statement($sql);
 
-				if (is_error($e = db_peer::populate_stmt_values($stmt, $select_params, $db_map)))
+				if (is_error($e = sql_builder::populate_stmt_values($stmt, $select_params)))
 					return $e;
 
 				$rs = &$stmt->execute_query(result_set::FETCHMODE_NUM());
@@ -110,7 +97,7 @@ class db_peer
 				if ($rs->get_int(1) > 1)
 				{
 					$rs->close();
-					return new exception(DB_PEER_ERROR, "Expecting to delete 1 record, but criteria match multiple.");
+					return new exception(DB_ERROR, "Expecting to delete 1 record, but criteria match multiple.");
 				} 
 				$rs->close();
 			} 
@@ -118,7 +105,7 @@ class db_peer
 			$sql = "DELETE FROM " . $table_name . " WHERE " . $sql_snippet;
 			$stmt = &$con->prepare_statement($sql);
 
-			if (is_error($e = db_peer::populate_stmt_values($stmt, $select_params, $db_map)))
+			if (is_error($e = sql_builder::populate_stmt_values($stmt, $select_params)))
 				return $e;
 
 			$result = $stmt->execute_update();
@@ -151,7 +138,7 @@ class db_peer
 	* @param connection $con A connection.
 	* @return mixed An Object which is the id of the row that was inserted
 	* (if the table has a primary key) or null (if the table does not
-	* have a primary key) OR db_factoryException on error.
+	* have a primary key) OR db_factory_exception on error.
 	*/
 	function do_insert($criteria, &$con)
 	{
@@ -163,22 +150,17 @@ class db_peer
 
 		if (empty($keys))
 		{
-			return new exception(DB_PEER_ERROR, "Database insert attempted without anything specified to insert");
+			return new exception(DB_ERROR, "Database insert attempted without anything specified to insert");
 		} 
 
 		$table_name = $criteria->get_table_name($keys[0]);
-
-		$db_map = &db_factory::get_database_map();
-
-		if (is_error($db_map))
-			return $db_map;
 
 		$table_map = &$db_map->get_table($table_name);
 		$key_info = &$table_map->get_primary_key_method_info();
 		$use_id_gen = $table_map->is_use_id_generator();
 		$key_gen = &$con->get_id_generator();
 
-		$pk = db_peer::get_primary_key($criteria); 
+		$pk = sql_builder::get_primary_key($criteria);
 		// only get a new key value if you need to
 		// the reason is that a primary key might be defined
 		// but you are still going to set its value. for example:
@@ -188,13 +170,13 @@ class db_peer
 		// we're inserting into.
 		if ($pk !== null && ! $criteria->contains_key($pk->get_fully_qualified_name()))
 		{ 
-			// If the keyMethod is SEQUENCE get the id before the insert.
+			// If the key_method is SEQUENCE get the id before the insert.
 			if ($key_gen->is_before_insert())
 			{
 				$id = $key_gen->get_id($key_info);
 				if (is_error($id))
 				{
-					return new exception(DB_PEER_ERROR, "Unable to get sequence id.", $id);
+					return new exception(DB_ERROR, "Unable to get sequence id.", $id);
 				} 
 				$criteria->add($pk->get_fully_qualified_name(), $id);
 			} 
@@ -213,9 +195,9 @@ class db_peer
 		 . " VALUES (" . substr(str_repeat("?,", count($columns)), 0, -1) . ")";
 
 		$stmt = &$con->prepare_statement($sql);
-		$params = &db_peer::build_params($qualified_cols, $criteria);
+		$params = &sql_builder::build_params($qualified_cols, $criteria);
 
-		if (is_error($e = db_peer::populate_stmt_values($stmt, $params, $db_map)))
+		if (is_error($e = sql_builder::populate_stmt_values($stmt, $params)))
 		{
 			return new exception("Unable to execute INSERT statement.", $e);
 		} 
@@ -240,7 +222,7 @@ class db_peer
 
 	/**
 	* Method used to update rows in the DB.  Rows are selected based
-	* on selectcriteria and updated using values in updateValues.
+	* on selectcriteria and updated using values in update_values.
 	* <p>
 	* Use this method for performing an update of the kind:
 	* <p>
@@ -249,19 +231,16 @@ class db_peer
 	* 
 	* @param  $selectcriteria A criteria object containing values used in where
 	*         clause.
-	* @param  $updateValues A criteria object containing values used in set
+	* @param  $update_values A criteria object containing values used in set
 	*         clause.
 	* @param  $con A connection.
-	* @return db_factoryException on error
+	* @return db_factory_exception on error
 	* @static public
 	*/
 	function do_update(&$select_criteria, &$update_values, &$con)
 	{
 		$connection= &db_factory::get_connection();
-		$db_map = &db_factory::get_database_map();
 
-		if (is_error($db_map))
-			return $db_map; 
 		// Get list of required tables, containing all columns
 		$tables_columns = $select_criteria->get_tables_columns(); 
 		// we also need the columns for the update SQL
@@ -275,7 +254,7 @@ class db_peer
 			foreach($columns as $col_name)
 			{
 				$sb = "";
-				$c = &$select_criteria->get_criterion($col_name);
+				$c =& $select_criteria->get_criterion($col_name);
 
 				if (is_error($e = $c->append_ps_to($sb, $select_params)))
 					return $e;
@@ -292,12 +271,12 @@ class db_peer
 			{ 
 				// Get affected records.
 				$sql = "SELECT COUNT(*) FROM " . $table_name . " WHERE " . $sql_snippet;
-				$stmt = &$con->prepare_statement($sql);
+				$stmt =& $con->prepare_statement($sql);
 
-				if (is_error($e = db_peer::populate_stmt_values($stmt, $select_params, $db_map)))
+				if (is_error($e = sql_builder::populate_stmt_values($stmt, $select_params)))
 					return $e;
 
-				$rs = &$stmt->execute_query(result_set::FETCHMODE_NUM());
+				$rs =& $stmt->execute_query(result_set::FETCHMODE_NUM());
 				if (is_error($rs))
 				{
 					return new exception(DB_ERROR, "Unable to execute UPDATE statement !", $rs);
@@ -308,7 +287,7 @@ class db_peer
 					if ($rs->get_int(1) > 1)
 					{
 						$rs->close();
-						return new exception(DB_PEER_ERROR, "Expected to update 1 record, multiple matched.");
+						return new exception(DB_ERROR, "Expected to update 1 record, multiple matched.");
 					} 
 					$rs->close();
 				} 
@@ -322,17 +301,20 @@ class db_peer
 
 			$sql = substr($sql, 0, -1) . " WHERE " . $sql_snippet;
 
-			$stmt = &$con->prepare_statement($sql); 
+			$stmt =& $con->prepare_statement($sql); 
 			// Replace '?' with the actual values
-			$params = &db_peer::build_params($update_tables_columns[$table_name], $update_values);
+			$params =& sql_builder::build_params($update_tables_columns[$table_name], $update_values);
 
-			if (is_error($e = db_peer::populate_stmt_values($stmt, array_merge($params, $select_params), $db_map)))
+			if (is_error($e = sql_builder::populate_stmt_values($stmt, array_merge($params, $select_params))))
 				return $e;
 
 			if (is_error($e = $stmt->execute_update()))
 			{
-				if ($rs) $rs->close();
-				if ($stmt) $stmt->close();
+				if ($rs) 
+					$rs->close();
+				if ($stmt) 
+					$stmt->close();
+					
 				return new exception(DB_ERROR, "Unable to execute UPDATE statement.", $e);
 			} 
 
@@ -342,29 +324,25 @@ class db_peer
 	} 
 
 	/**
-	* Executes query build by createSelectSql() and returns ResultSet.
+	* Executes query build by create_select_sql() and returns result_set.
 	* 
 	* @param criteria $criteria A criteria.
 	* @param connection $con A connection to use.
-	* @return ResultSet The resultset or db_factoryException on error.
-	* @see createSelectSql
+	* @return result_set The resultset or db_factory_exception on error.
+	* @see create_select_sql
 	* @protected 
 	* @static 
 	*/
 	function &do_select(&$criteria, &$con)
 	{
-		$db_map = db_factory::get_database_map();
 		$stmt = null;
-
-		if (is_error($db_map))
-			return $db_map;
 
 		if ($con->get_auto_commit() === true)
 		{ 
 			// transaction support exists for (only?) Postgres, which must
 			// have SELECT statements that include bytea columns wrapped w/
 			// transactions.
-			$con =& transaction::begin_optional($criteria->get_connection_name(), $criteria->is_use_transaction());
+			$con =& transaction :: begin_optional($criteria->get_connection_name(), $criteria->is_use_transaction());
 			if (is_error($con))
 			{
 				return $con;
@@ -372,7 +350,7 @@ class db_peer
 		} 
 
 		$params = array();
-		$sql = db_peer::create_select_sql($criteria, $params);
+		$sql = sql_builder::create_select_sql($criteria, $params);
 		if (is_error($sql))
 		{
 			return $sql;
@@ -382,7 +360,7 @@ class db_peer
 		$stmt->set_limit($criteria->get_limit());
 		$stmt->set_offset($criteria->get_offset());
 
-		if (is_error($e = db_peer::populate_stmt_values($stmt, $params, $db_map)))
+		if (is_error($e = sql_builder::populate_stmt_values($stmt, $params)))
 			return $e;
 
 		$rs = &$stmt->execute_query(result_set::FETCHMODE_NUM());
@@ -409,9 +387,9 @@ class db_peer
 	* in the given criteria object.
 	* 
 	* @param criteria $criteria A criteria.
-	* @return ColumnMap If the criteria object contains a primary
+	* @return column_map If the criteria object contains a primary
 	*           key, or null if it doesn't.
-	* @throws db_factoryException
+	* @throws db_factory_exception
 	* @private static
 	*/
 	function get_primary_key($criteria)
@@ -425,24 +403,8 @@ class db_peer
 
 		if (!empty($table))
 		{
-			$db_map = db_factory::get_database_map();
-
-			if (is_error($db_map))
-				return $db_map;
-
-			if ($db_map->get_table($table) == null)
-				return new exception(DB_PEER_ERROR, "\$db_map->get_table() is null");
-
-			$t = &$db_map->get_table($table);
-			$columns = $t->get_columns();
-			foreach(array_keys($columns) as $key)
-			{
-				if ($columns[$key]->is_primary_key())
-				{
-					$pk = $columns[$key];
-					break;
-				} 
-			} 
+			$t =& db_table_factory :: instance($table);
+			$pk = $t->get_primary_key_name();
 		} 
 
 		return $pk;
@@ -454,20 +416,17 @@ class db_peer
 	* This method creates only prepared statement SQL (using ? where values
 	* will go).  The second parameter ($params) stores the values that need
 	* to be set before the statement is executed.  The reason we do it this way
-	* is to let the Creole layer handle all escaping & value formatting.
+	* is to let the db layer handle all escaping & value formatting.
 	* 
 	* @param criteria $criteria criteria for the SELECT query.
 	* @param array $ &$params Parameters that are to be replaced in prepared statement.
 	* @return string 
-	* @throws db_factoryException Trouble creating the query string.
+	* @throws db_factory_exception Trouble creating the query string.
 	*/
 	function create_select_sql(&$criteria, &$params)
 	{
 		$connection = &db_factory::get_connection();
-		$db_map = &db_factory::get_database_map();
-
-		if (is_error($db_map))
-			return $db_map; 
+		
 		// redundant definition $select_modifiers = array();
 		$select_clause = array();
 		$from_clause = array();
@@ -491,7 +450,7 @@ class db_peer
 			$paren_pos = strpos($column_name, '(');
 			$dot_pos = strpos($column_name, '.'); 
 			// [HL] I think we really only want to worry about adding stuff to
-			// the fromClause if this function has a TABLE.COLUMN in it at all.
+			// the from_clause if this function has a TABLE.COLUMN in it at all.
 			// e.g. COUNT(*) should not need this treatment -- or there needs to
 			// be special treatment for '*'
 			if ($dot_pos !== false)
@@ -551,13 +510,11 @@ class db_peer
 					$table = $table_name;
 				} 
 
-				$t = &$db_map->get_table($table);
-				$col = &$t->get_column($some_criteria[$i]->get_column());
-
-				$type = $col->get_type();
+				$t = & db_table_factory :: instance($table);
+				$type = &$t->get_column_type($some_criteria[$i]->get_column());
 
 				$ignore_case = (
-					($criteria->is_ignore_case() || $some_criteria[$i]->is_ignore_case()) && ($type == "string")
+					($criteria->is_ignore_case() || $some_criteria[$i]->is_ignore_case()) && (!$type)
 				);
 
 				$some_criteria[$i]->set_ignore_case($ignore_case);
@@ -608,11 +565,10 @@ class db_peer
 					$table = $table_name;
 				} 
 
-				$t = &$db_map->get_table($table);
-				$col = &$t->get_column(substr($join2, $dot + 1));
-				$type = &$col->get_type();
+				$t = & db_table_factory :: instance($table);
+				$type = &$t->get_column_type(substr($join2, $dot + 1));
 
-				$ignore_case = ($criteria->is_ignore_case() && ($type == "string")
+				$ignore_case = ($criteria->is_ignore_case() && (!$type)
 					);
 				if ($ignore_case)
 				{
@@ -661,9 +617,8 @@ class db_peer
 					$column_name = substr($order_by_column, $dot_pos + 1, $space_pos - ($dot_pos + 1));
 				} 
 
-				$t = &$db_map->get_table($table);
-				$column = $t->get_column($column_name);
-				if ($column->get_type() == "string")
+				$t = & db_table_factory :: instance($table);
+				if (!$t->get_column_type($column_name))
 				{
 					if ($space_pos === false)
 					{
@@ -693,8 +648,8 @@ class db_peer
 	} 
 
 	/**
-	* Builds a params array, like the kind populated by Criterion::appendPsTo().
-	* This is useful for building an array even when it is not using the appendPsTo() method.
+	* Builds a params array, like the kind populated by Criterion::append_ps_to().
+	* This is useful for building an array even when it is not using the append_ps_to() method.
 	* 
 	* @param array $columns 
 	* @param criteria $values 
@@ -718,13 +673,12 @@ class db_peer
 	/**
 	* Populates values in a prepared statement.
 	* 
-	* @param PreparedStatement $stmt 
+	* @param prepared_statement $stmt 
 	* @param array $params array('column' => ..., 'table' => ..., 'value' => ...)
-	* @param DatabaseMap $connectionap 
 	* @return int The number of params replaced.
 	* @private static
 	*/
-	function populate_stmt_values(&$stmt, &$params, &$db_map)
+	function populate_stmt_values(&$stmt, &$params)
 	{
 		$i = 1;
 		foreach($params as $param)
@@ -739,15 +693,16 @@ class db_peer
 			} 
 			else
 			{
-				$t = &$db_map->get_table($table_name);
-				$c_map = $t->get_column($column_name);
-				$setter = 'set' . db_types::get_affix($c_map->get_db_type());
+				$t =& db_table_factory :: instance($table_name);
+				$affix = db_types::get_affix($t->get_column_type($column_name));
 
-				if (is_error($setter))
+				if (is_error($affix))
 				{
-					return new exception(DB_ERROR, $setter);
+					return new exception(DB_ERROR, $affix);
 				} 
-
+				
+				$setter = 'set_' . $affix;
+				
 				$stmt->$setter($i++, $value);
 			} 
 		}
@@ -762,7 +717,7 @@ class db_peer
 
 		if ($instance === null)
 		{
-			$instance = new db_peer();
+			$instance = new sql_builder();
 		} 
 
 		return $instance;
