@@ -78,6 +78,9 @@ class subscribe_mail extends content_object
 		
 		foreach($total_list as $key => $data)
 		{
+			if (!isset($data['email']) || !$data['email'])
+				continue;
+				
 			$user_id = $data['id'];
 			if(array_key_exists($user_id, $subscribers))
 			{

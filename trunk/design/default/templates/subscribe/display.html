@@ -11,38 +11,37 @@
 	<core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
-
 <grid:LIST id='folders'>
- 	<table border=0 cellspacing=2 cellpadding=2>
+<table border=0 cellspacing=2 cellpadding=2 width=100%>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='published_status' ></th>
+	<th><locale:STRING name='subscribe_themes' file='subscribe'></th>
+	<th><locale:STRING name='items_order'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr class=jip>
+	<td><core:INCLUDE file="/admin/selector.html"></td>
+	<td><core:INCLUDE file="published_status.html"></td>
+	<td jip='object' class=jip-object>
+		<table width=100% border=0 cellspacing=0 cellpadding=2>
 		<tr>
-			<td></td>
-			<td>
-			<locale:STRING name='subscribe_themes' file='subscribe'>
-			</td>
-			<td>
-			<locale:STRING name='actions' >
-			</td>
+			<td width=1><a href="{$path}"><img src='/shared/images/subscribe.gif'></a></td>
+			<td><a href="{$path}">{$title}</a></td>
 		</tr>
-		<tr><td colspan=10 height=2 class=com1></td></tr>
-    <grid:ITERATOR>
-			<tr  class=jip>
-				<td width=1>
-					<core:INCLUDE file="published_status.html">
-				</td>
-				<td jip='object' class=jip-object>
-					<table width=100% border=0 cellspacing=0 cellpadding=2>
-					<tr>
-						<td width=1><a href="{$path}"><img src='/shared/images/subscribe.gif'></a></td>
-						<td><a href="{$path}">{$title}</a></td>
-					</tr>
-					</table>	
-				</td>
-				<td>
-					<core:INCLUDE file="jip_actions/normal.html">
-				</td>
-			</tr>
-    </grid:ITERATOR>
-	</table>
+		</table>	
+	</td>
+	<td><core:INCLUDE file='/admin/priority_input.html'></td>
+	<td><core:INCLUDE file="jip_actions/normal.html"></td>
+</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='2' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+	<td colspan='2' align='right'><core:INCLUDE file='/admin/priority_button.html'></td>
+	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+</tr>    
+</table>
 </grid:LIST>
 
 

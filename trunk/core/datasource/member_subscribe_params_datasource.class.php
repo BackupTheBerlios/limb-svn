@@ -14,7 +14,7 @@ class member_subscribe_params_datasource extends datasource
 {
 	function & get_dataset(& $counter, $params = array())
 	{
-		$themes =& fetch_sub_branch('/root/subscribe', 'subscribe_theme', $counter, $params);
+		$themes =& fetch('subscribe_theme', $counter, $params);
 		
 		if (!count($themes))
 			return new array_dataset(array());

@@ -29,6 +29,15 @@ class subscribe_controller extends site_object_controller
 						'action_name' => strings :: get('create_subscribe_theme', 'subscribe'),
 						'can_have_access_template' => true,
 				),
+				'edit' => array(
+						'permissions_required' => 'w',
+						'popup' => true,
+						'JIP' => true,
+						'action_name' => strings :: get('edit'),
+						'action_path' => '/site_object/edit_action',
+						'template_path' => '/site_object/edit.html',
+						'img_src' => '/shared/images/edit.gif'
+				),
 		);
 	}
 }

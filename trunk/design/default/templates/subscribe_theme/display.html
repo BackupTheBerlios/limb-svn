@@ -14,30 +14,33 @@
 <core:INCLUDE file="pager.html">
 
 <grid:LIST id='items'>
- 	<table border=0 cellspacing=2 cellpadding=2>
-			<tr>
-				<td><locale:STRING name='subscribe_mails' file='subscribe'></td>
-				<td><locale:STRING name='created_date'></td>
-				<td><locale:STRING name='actions'></td>
-			</tr>
-		<tr><td colspan=10 height=2 class=com1></td></tr>
-    <grid:ITERATOR>
-			<tr  class=jip>
-				<td jip='object' class=jip-object>
-					<table width=100% border=0 cellspacing=0 cellpadding=2>
-					<tr>
-						<td width=1><a href="{$path}"><img src='/shared/images/s.gif'></a></td>
-						<td><a href="{$path}">{$title}</a></td>
-					</tr>
-					</table>	
-				</td>
-				<td>
-					<locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'>
-				</td>
-				<td>
-					<core:INCLUDE file="jip_actions/normal.html">
-				</td>
-			</tr>
-    </grid:ITERATOR>
-	</table>
+<table border=0 cellspacing=2 cellpadding=2>
+<tr>
+	<th><grid:SELECTORS_TOGGLER></th>
+	<th><locale:STRING name='subscribe_mails' file='subscribe'></th>
+	<th><locale:STRING name='created_date'></th>
+	<th><locale:STRING name='actions'></th>
+</tr>
+<tr><td colspan=10 height=2 class=com1></td></tr>
+<grid:ITERATOR>
+	<tr  class=jip>
+	<td><core:INCLUDE file="/admin/selector.html"></td>
+	<td jip='object' class=jip-object>
+	<table width=100% border=0 cellspacing=0 cellpadding=2>
+	<tr>
+		<td width=1><a href="{$path}"><img src='/shared/images/s.gif'></a></td>
+		<td><a href="{$path}">{$title}</a></td>
+	</tr>
+	</table>	
+	</td>
+	<td>
+	<locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'>
+	</td>
+	<td><core:INCLUDE file="jip_actions/normal.html"></td>
+	</tr>
+</grid:ITERATOR>
+<tr>
+	<td colspan='4' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+</tr>    
+</table>
 </grid:LIST>
