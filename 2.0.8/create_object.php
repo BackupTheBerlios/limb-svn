@@ -15,6 +15,7 @@ if(is_array($params) &&
 		!empty($params['class']) &&		!empty($params['parent_path']) &&
 		!empty($params['identifier']) &&		!empty($params['title']))
 		$params_set= true;
+
 if($_REQUEST['action'] == 'create_object' && $params_set)
 {
 	require_once('setup.php');
@@ -56,7 +57,10 @@ if($_REQUEST['action'] == 'create_object' && $params_set)
 	$object =& site_object_factory :: create($params['class']);
 
 	if(!$parent_data = fetch_one_by_path($params['parent_path']))
+	{
+		echo('parent object not found');
 		exit();
+	}	
 
 	$params['parent_node_id'] = $parent_data['node_id'];
 	$parent_object =& site_object_factory :: instance($parent_data['class_name']);
@@ -68,7 +72,10 @@ if($_REQUEST['action'] == 'create_object' && $params_set)
 	if($object->create())
 		echo $params['parent_path'].'/'. $params['identifier'].' created <br/>';
 	else
+	{
+		echo('object was not created');
 		exit();
+	}	
 
 	$access_policy =& access_policy :: instance();
 	$access_policy->save_object_access($object, $parent_object);
