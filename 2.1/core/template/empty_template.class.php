@@ -21,6 +21,7 @@ class empty_template
 
 	function display()
 	{
+		debug :: write_error('template is null', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__);
 	} 
 } 
 

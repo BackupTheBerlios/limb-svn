@@ -24,7 +24,7 @@ class display_file_action extends action
 			header("HTTP/1.1 404 Not found");
 			
 			if(isset($_GET['icon']))
-				return new dont_track_response();
+				return new exit_response(RESPONSE_STATUS_DONT_TRACK);
 			else
 				return new exit_response(RESPONSE_STATUS_FAILURE);
 		}
@@ -51,7 +51,7 @@ class display_file_action extends action
 			else
 				readfile(SHARED_DIR . "images/mime_icons/file.{$size}.gif");
 				
-			return new dont_track_response();
+			return new exit_response(RESPONSE_STATUS_DONT_TRACK);
 		}
 		
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $object_data['etag'])

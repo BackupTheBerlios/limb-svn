@@ -15,6 +15,10 @@ error_reporting (E_ERROR | E_PARSE);
 
 $site_path = $argv[1];
 
+$force == false;
+if(isset($argv[2]) && $argv[2] == 'force')
+	$force = true;
+
 if (file_exists($site_path . '/setup_custom.php'))
 	include_once($site_path . '/setup_custom.php');
 
@@ -29,7 +33,7 @@ $cron_last_run_file = $cron_scripts_dir . '.scripts_last_run';
 
 $scripts_last_run = array();
 
-if(file_exists($cron_last_run_file))
+if($force == false && file_exists($cron_last_run_file))
 {
 	$fp = fopen($cron_last_run_file, 'r');
 	

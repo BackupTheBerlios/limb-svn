@@ -1,0 +1,102 @@
+--------------------------------------------------------------------------------
+LIMB - Lithesome Interactive Media Builder -  $Id: INSTALL 257 2004-05-17 09:30:34Z server $
+--------------------------------------------------------------------------------
+http://www.sourceforge.net/projects/limb
+
+--------------------------------------------------------------------------------
+ !!!WARNING!!!
+--------------------------------------------------------------------------------
+This is the pre-alfa of the first public release of the LIMB  based  project. These
+instructions contain ***only*** necessary information on how to get LIMB based project
+working.
+You're strongly required to be able to configure Apache, MySQL.
+If you're stuck and need help, please feel free to contact the developers over email: 
+limb@0x00.ru
+
+***This package doesn't contains tests yet, they will be included later***
+
+--------------------------------------------------------------------------------
+	SYSTEM REQUIREMENTS
+--------------------------------------------------------------------------------
+OS : OS independent
+
+Web Server: Apache  1.3+ (configured  with  AllowOverride  All) with php istalled as
+a module(important!)
+
+Development Environment: PHP 4.2+  
+
+Preferred Database: MySQL 4.0+ 
+(LIMB will work on 3.23+ with InnoDB support, however LIMB uses full text search 
+capabilities of 4.0+ version, hence no search support below 4.0)
+
+--------------------------------------------------------------------------------
+	SETUP PROJECT 
+--------------------------------------------------------------------------------
+1.	Unpack downloaded archive
+2.	Edit project settings in setup_custom.php
+3.	Dump data base structure and initial data from sql.sql that you can find 
+		in YOUR_PROJECT_DIRECTORY/init/ directory
+
+--------------------------------------------------------------------------------
+	SETUP APACHE
+--------------------------------------------------------------------------------
+Here's a small example of the virtual host setup:
+
+NameVirtualHost 192.168.0.6
+
+<VirtualHost 192.168.0.6>
+    DocumentRoot YOUR_PROJECT_DIRECTORY
+    ServerName YOUR_PROJECT
+    ErrorLog logs/YOUR_PROJECT-error_log
+    CustomLog logs/YOUR_PROJECT-access_log common
+		Alias /shared YOUR_PROJECT_DIRECTORY/limb/shared/
+</VirtualHost>
+
+Please note that you need to write an alias for shared directory in the apache 
+project virtual host section. You may skip this step by simply copying 
+YOUR_PROJECT_DIRECTORY/limb/shared/ contents to YOUR_PROJECT_DIRECTORY/shared/ directory.
+
+--------------------------------------------------------------------------------
+	SETTING PERMISSIONS
+--------------------------------------------------------------------------------
+Your PHP installation will need write access to a 'var' directory in the project directory.
+Usually this directory contains several subdirectorys: 'compiled', 'cache', 'media', 'log'. 
+
+var
+|
++-compiled
+|
++-cache
+|
++-log
+|
++-media
+	
+Also if you want to run tests you will have to duplicate 'var' directory in
+'YOUR_PROJECT_DIRECTORY/tests/' (currently tests are not included).
+
+After installation use /root/admin address to get access to the administration zone.
+To log in use 'admin' as a login and 'test' as a password.
+
+--------------------------------------------------------------------------------
+	config.ini
+--------------------------------------------------------------------------------
+Every project has config.ini file in /core/settings directory.
+
+By default it contains only one valuable parameter:
+force_compile = 1
+
+This parameter forces the WACT template engine to recompile template every time 
+it is requested, this is useful for development, however for production and speed 
+purposes you will definitely want it to be set to 0.
+
+--------------------------------------------------------------------------------
+ TEMPLATE FILE NAME RESOLVING 
+--------------------------------------------------------------------------------
+Templates can be found in YOUR_PROJECT_DIRECTORY/design/main/templates/
+directory or in YOUR_PROJECT_DIRECTORY/limb/design/default/templates/ directory.
+
+Templating engine first looks up the requested template in
+YOUR_PROJECT_DIRECTORY/design/main/templates/ 
+if not found, it tries
+YOUR_PROJECT_DIRECTORY/limb/design/default/templates/.
