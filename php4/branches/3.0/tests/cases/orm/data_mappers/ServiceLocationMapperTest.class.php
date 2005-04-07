@@ -5,19 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: Object2ServiceMapperTest.class.php 1181 2005-03-21 10:46:55Z pachanga $
+* $Id: ServiceLocationMapperTest.class.php 1181 2005-03-21 10:46:55Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/Object2ServiceMapper.class.php');
-require_once(LIMB_DIR . '/core/Object.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/ServiceLocationMapper.class.php');
+require_once(LIMB_DIR . '/core/ServiceLocation.class.php');
 
-class Object2ServiceMapperTest extends LimbTestCase
+class ServiceLocationMapperTest extends LimbTestCase
 {
   var $db;
 
-  function Object2ServiceMapperTest()
+  function ServiceLocationMapperTest()
   {
-    parent :: LimbTestCase('object 2 service mapper test');
+    parent :: LimbTestCase('service location mapper test');
   }
 
   function setUp()
@@ -41,25 +41,25 @@ class Object2ServiceMapperTest extends LimbTestCase
 
   function testLoad()
   {
-    $mapper = new Object2ServiceMapper();
-    $object = new Object();
+    $mapper = new ServiceLocationMapper();
+    $object = new ServiceLocation();
 
     $record = new Dataspace();
-    $record->import(array('service_name' => $service_name = 'TestService',
-                          'title' => $title = 'some title',
+    $record->import(array('_service_name' => $service_name = 'TestService',
+                          '_service_title' => $title = 'some title',
                           ));
 
     $mapper->load($record, $object);
 
-    $this->assertEqual($object->get('service_name'), $service_name);
+    $this->assertEqual($object->get('name'), $service_name);
     $this->assertEqual($object->get('title'), $title);
   }
 
   function testFailedInsertNoOId()
   {
-    $object = new Object();
+    $object = new ServiceLocation();
 
-    $mapper = new Object2ServiceMapper();
+    $mapper = new ServiceLocationMapper();
 
     $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
@@ -68,9 +68,9 @@ class Object2ServiceMapperTest extends LimbTestCase
 
   function testInsertOk()
   {
-    $mapper = new Object2ServiceMapper();
-    $object = new Object();
-    $object->set('service_name', $service_name = 'TestService');
+    $mapper = new ServiceLocationMapper();
+    $object = new ServiceLocation();
+    $object->set('name', $service_name = 'TestService');
     $object->set('title', $title = 'Test title');
     $object->set('oid', $oid = 100);
 
@@ -96,9 +96,9 @@ class Object2ServiceMapperTest extends LimbTestCase
     $this->db->insert('sys_service', array('id' => $service_id = 10,
                                            'name' => $service_name = 'TestService'));
 
-    $mapper = new Object2ServiceMapper();
-    $object = new Object();
-    $object->set('service_name', $service_name);
+    $mapper = new ServiceLocationMapper();
+    $object = new ServiceLocation();
+    $object->set('name', $service_name);
     $object->set('title', $title = 'Test title');
     $object->set('oid', $oid = 100);
 
@@ -113,7 +113,7 @@ class Object2ServiceMapperTest extends LimbTestCase
 
   function testUpdateRecordExists()
   {
-    $mapper = new Object2ServiceMapper();
+    $mapper = new ServiceLocationMapper();
 
     $this->db->insert('sys_service', array('id' => $service_id = 10,
                                            'name' => $service_name = 'TestService'));
@@ -123,8 +123,8 @@ class Object2ServiceMapperTest extends LimbTestCase
                             'service_id' => $old_service_id = 499,
                             'title' => 'Old title'));
 
-    $object = new Object();
-    $object->set('service_name', $service_name);
+    $object = new ServiceLocation();
+    $object->set('name', $service_name);
     $object->set('title', $title = 'Test title');
     $object->set('oid', $oid);
 
@@ -147,10 +147,10 @@ class Object2ServiceMapperTest extends LimbTestCase
 
   function testUpdateRecordNotExists()
   {
-    $mapper = new Object2ServiceMapper();
+    $mapper = new ServiceLocationMapper();
 
-    $object = new Object();
-    $object->set('service_name', $service_name = 'TestService');
+    $object = new ServiceLocation();
+    $object->set('name', $service_name = 'TestService');
     $object->set('title', $title = 'Test title');
     $object->set('oid', $oid = 100);
 
@@ -173,7 +173,7 @@ class Object2ServiceMapperTest extends LimbTestCase
 
   function testDelete()
   {
-    $mapper = new Object2ServiceMapper();
+    $mapper = new ServiceLocationMapper();
 
     $this->db->insert('sys_object_to_service',
                       array('oid' => $oid = 100,
@@ -185,9 +185,9 @@ class Object2ServiceMapperTest extends LimbTestCase
                       array('id' => $service_id,
                             'name' => $service_name = 'TestService'));
 
-    $object = new Object();
+    $object = new ServiceLocation();
     $object->set('oid', $oid);
-    $object->set('service_name', $service_name);
+    $object->set('name', $service_name);
 
     $mapper->delete($object);
 

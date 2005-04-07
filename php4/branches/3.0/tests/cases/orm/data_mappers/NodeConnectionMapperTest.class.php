@@ -8,16 +8,16 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/Object2NodeMapper.class.php');
-require_once(LIMB_DIR . '/core/Object.class.php');
+require_once(LIMB_DIR . '/core/data_mappers/NodeConnectionMapper.class.php');
+require_once(LIMB_DIR . '/core/NodeConnection.class.php');
 
-class Object2NodeMapperTest extends LimbTestCase
+class NodeConnectionMapperTest extends LimbTestCase
 {
   var $db;
 
-  function Object2NodeMapperTest()
+  function NodeConnectionMapperTest()
   {
-    parent :: LimbTestCase('object 2 node mapper test');
+    parent :: LimbTestCase('node connection mapper test');
   }
 
   function setUp()
@@ -40,9 +40,9 @@ class Object2NodeMapperTest extends LimbTestCase
 
   function testFailedInsertNoOId()
   {
-    $object = new Object();
+    $object = new NodeConnection();
 
-    $mapper = new Object2NodeMapper();
+    $mapper = new NodeConnectionMapper();
 
     $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
@@ -51,10 +51,10 @@ class Object2NodeMapperTest extends LimbTestCase
 
   function testFailedInsertNoObjectId()
   {
-    $object = new Object();
+    $object = new NodeConnection();
     $object->set('oid', 10);
 
-    $mapper = new Object2NodeMapper();
+    $mapper = new NodeConnectionMapper();
 
     $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
@@ -63,11 +63,11 @@ class Object2NodeMapperTest extends LimbTestCase
 
   function testInsertOk()
   {
-    $mapper = new Object2NodeMapper();
-    $object = new Object();
+    $mapper = new NodeConnectionMapper();
+    $object = new NodeConnection();
 
     $object->set('oid', $oid = 100);
-    $object->set('node_id', $node_id = 500);
+    $object->set('id', $node_id = 500);
 
     $mapper->insert($object);
 
@@ -81,11 +81,11 @@ class Object2NodeMapperTest extends LimbTestCase
 
   function testUpdate()
   {
-    $mapper = new Object2NodeMapper();
-    $object = new Object();
+    $mapper = new NodeConnectionMapper();
+    $object = new NodeConnection();
 
     $object->set('oid', $oid = 100);
-    $object->set('node_id', $node_id = 500);
+    $object->set('id', $node_id = 500);
 
     $this->db->insert('sys_object_to_node',
                       array('oid' => $oid,
@@ -103,8 +103,8 @@ class Object2NodeMapperTest extends LimbTestCase
 
   function testDelete()
   {
-    $mapper = new Object2NodeMapper();
-    $object = new Object();
+    $mapper = new NodeConnectionMapper();
+    $object = new NodeConnection();
 
     $object->set('oid', $oid = 100);
 

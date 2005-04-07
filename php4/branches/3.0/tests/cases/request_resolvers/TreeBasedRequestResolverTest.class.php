@@ -82,7 +82,31 @@ class TreeBasedRequestResolverTest extends LimbTestCase
     $this->assertEqual($service->getName(), '404');
   }
 
-  function testGetServiceOk()
+  function testGetServiceByOIDOk()
+  {
+    $resolver = new TreeBasedRequestResolver();
+
+    $request =& $this->toolkit->getRequest();
+    $request->set('oid', "10c"); //checking explicit typecasting to int
+
+    $id = 10;
+    $this->path2id_resolver->expectNever('toId');
+
+    $this->db->insert('sys_object', array('oid' => $id,
+                                          'class_id' => 100));
+
+    $this->db->insert('sys_object_to_service', array('oid' => $id,
+                                         '            service_id' => $service_id = 30));
+
+    $this->db->insert('sys_service', array('id' => $service_id,
+                                           'name' => $service_name = 'TestService'));
+
+    $service = $resolver->getRequestedService($request);
+
+    $this->assertEqual($service->getName(), $service_name);
+  }
+
+  function testGetServiceByPathOk()
   {
     $resolver = new TreeBasedRequestResolver();
 
@@ -176,7 +200,7 @@ class TreeBasedRequestResolverTest extends LimbTestCase
     $this->assertFalse($resolver->getRequestedEntity($request));
   }
 
-  function testGetRequestedEntityOk()
+  function testGetRequestedEntityByPathOk()
   {
     $uow = new MockUnitOfWork($this);
     $this->toolkit->setReturnReference('getUOW', $uow);
@@ -187,6 +211,31 @@ class TreeBasedRequestResolverTest extends LimbTestCase
 
     $this->path2id_resolver->expectOnce('toId', array($path));
     $this->path2id_resolver->setReturnValue('toId', $id = 10);
+
+    $this->db->insert('sys_object', array('oid' => $id,
+                                          'class_id' => $class_id = 100));
+
+    $this->db->insert('sys_class', array('id' => $class_id,
+                                         'name' => $class_name = 'TestClass'));
+
+    $uow->expectOnce('load', array($class_name, $id));
+    $uow->setReturnValue('load', $expected_entity = 'whatever');
+
+    $resolver = new TreeBasedRequestResolver();
+    $this->assertEqual($resolver->getRequestedEntity($request), $expected_entity);
+
+    $uow->tally();
+  }
+
+  function testGetRequestedEntityByOIDOk()
+  {
+    $uow = new MockUnitOfWork($this);
+    $this->toolkit->setReturnReference('getUOW', $uow);
+
+    $request =& $this->toolkit->getRequest();
+    $request->set('oid', $id = 10);
+
+    $this->path2id_resolver->expectNever('toId');
 
     $this->db->insert('sys_object', array('oid' => $id,
                                           'class_id' => $class_id = 100));

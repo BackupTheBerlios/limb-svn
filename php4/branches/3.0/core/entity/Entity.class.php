@@ -38,6 +38,22 @@ class Entity extends Object
     }
     return $parts;
   }
+
+  function export()
+  {
+     $res = parent :: export();
+
+    foreach(array_keys($this->parts) as $name)
+    {
+      $part =& $this->getPart($name);
+      $export = $part->export();
+
+      foreach($export as $key => $data)
+        $res['_' . $name . '_' . $key] = $data;
+    }
+
+    return $res;
+  }
 }
 
 ?>

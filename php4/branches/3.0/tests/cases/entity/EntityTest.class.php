@@ -49,10 +49,35 @@ class EntityTest extends LimbTestCase
     $e = new Entity();
     $e->registerPart('Object1', $o1 = new Object());
     $e->registerPart('Object2', $o2 = new Object());
-restore_error_handler();trigger_error('Stop', E_USER_WARNING);
+
     $this->assertEqual($e->getParts(),
                        array('Object1' => $o1,
                              'Object2' => $o2));
+  }
+
+  function testExport()
+  {
+    $e = new Entity();
+    $e->set('oid', $oid = 10);
+    $e->set('prop1', 'prop1');
+    $e->set('prop2', 'prop2');
+
+    $o1 = new Object();
+    $o1->set('prop1', 'prop11');
+
+    $o2 = new Object();
+    $o2->set('prop2', 'prop22');
+
+    $e->registerPart('part1', $o1);
+    $e->registerPart('part2', $o2);
+
+    $this->assertEqual($e->export(),
+                       array('oid' => $oid,
+                             'prop1' => 'prop1',
+                             'prop2' => 'prop2',
+                             '_part1_prop1' => 'prop11',
+                             '_part2_prop2' => 'prop22'));
+
   }
 }
 

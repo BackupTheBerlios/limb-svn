@@ -10,21 +10,21 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
-class Object2NodeMapper extends AbstractDataMapper
+class NodeConnectionMapper extends AbstractDataMapper
 {
   function insert(&$object)
   {
     if (!$object->get('oid'))
       return throw(new LimbException('oid is not set'));
 
-    if (!$object->get('node_id'))
+    if (!$object->get('id'))
       return throw(new LimbException('node id is not set'));
 
     $toolkit =& Limb :: toolkit();
     $db_table =& $toolkit->createDBTable('SysObject2Node');
 
     $row = array('oid' => $object->get('oid'),
-                 'node_id' => $object->get('node_id'));
+                 'node_id' => $object->get('id'));
 
     $db_table->insert($row);
   }
@@ -39,13 +39,13 @@ class Object2NodeMapper extends AbstractDataMapper
     $rs->rewind();
     if($rs->valid())
     {
-      $row['node_id'] = $object->get('node_id');
+      $row['node_id'] = $object->get('id');
       $db_table->update($row, $condition);
     }
     else
     {
       $row['oid'] = $object->get('oid');
-      $row['node_id'] = $object->get('node_id');
+      $row['node_id'] = $object->get('id');
       $db_table->insert($row);
     }
   }

@@ -64,6 +64,9 @@ class TreeBasedRequestResolver // implements ServiceTranslator
 
   function _getId(&$request)
   {
+    if($request->hasAttribute('oid'))
+      return (int)$request->get('oid');
+
     $toolkit =& Limb :: toolkit();
     $uri =& $request->getUri();
     $path = $uri->getPath();

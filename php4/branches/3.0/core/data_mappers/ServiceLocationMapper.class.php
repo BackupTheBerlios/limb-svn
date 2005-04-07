@@ -5,17 +5,17 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: Object2NodeMapper.class.php 1101 2005-02-14 11:54:06Z pachanga $
+* $Id: NodeConnectionMapper.class.php 1101 2005-02-14 11:54:06Z pachanga $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
-class Object2ServiceMapper extends AbstractDataMapper
+class ServiceLocationMapper extends AbstractDataMapper
 {
   function load(&$record, &$object)
   {
-    $object->set('title', $record->get('title'));
-    $object->set('service_name', $record->get('service_name'));
+    $object->set('title', $record->get('_service_title'));
+    $object->set('name', $record->get('_service_name'));
   }
 
   function insert(&$object)
@@ -76,12 +76,12 @@ class Object2ServiceMapper extends AbstractDataMapper
     $toolkit =& Limb :: toolkit();
     $service_db_table =& $toolkit->createDBTable('SysService');
 
-    $rs =& $service_db_table->select(array('name' => $object->get('service_name')));
+    $rs =& $service_db_table->select(array('name' => $object->get('name')));
 
     $rs->rewind();
     if(!$rs->valid())
     {
-      $row = array('name' => $object->get('service_name'));
+      $row = array('name' => $object->get('name'));
       $service_id = $service_db_table->insert($row);
     }
     else
