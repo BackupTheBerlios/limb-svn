@@ -65,29 +65,10 @@ class Path2IdTranslator
     if(!$row = $rs->getRow())
       return null;
 
-    $tree =& $toolkit->getTree();
-
-    if(!$path = $tree->getPathToNode((integer)$row['node_id']))
-       return null;
-
-    return $this->_applyResultingPathOffsets($path);
+    return $this->getPathToNode((integer)$row['node_id']);
   }
 
-  function getPathToObject(&$object)
-  {
-    if ($parent_node_id = $object->get('parent_node_id'))
-    {
-      $path = $this->_getPathByNode($parent_node_id);
-      return $path . '/' . $object->get('identifier');
-    }
-
-    if($node_id = $object->get('node_id'))
-      return $this->_getPathByNode($node_id);
-
-    return $this->toPath($object->get('oid'));
-  }
-
-  function _getPathByNode($node_id)
+  function getPathToNode($node_id)
   {
     $toolkit =& Limb :: toolkit();
     $cache =& $toolkit->getCache();

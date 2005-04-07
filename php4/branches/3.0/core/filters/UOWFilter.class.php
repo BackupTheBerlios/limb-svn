@@ -9,17 +9,16 @@
 *
 ***********************************************************************************/
 
-class CommandProcessingFilter//implements InterceptingFilter
+class UOWFilter//implements InterceptingFilter
 {
   function run(&$filter_chain, &$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
-    $service =& $toolkit->getCurrentService();
+    $uow =& $toolkit->getUOW();
 
-    $command =& $service->getActionCommand($service->getCurrentAction());
-    $command->perform();
-
+    $uow->start();
     $filter_chain->next();
+    $uow->commit();
   }
 }
 

@@ -82,10 +82,10 @@ class LimbBaseToolkit// implements LimbToolkit
     return DAOFactory :: create($dao_path);
   }
 
-  function & createObject($object_path)
+  function & createObject($object_path, $args = array())//fix?
   {
     include_once(LIMB_DIR . '/core/ObjectFactory.class.php');
-    return ObjectFactory :: create($object_path);
+    return ObjectFactory :: create($object_path, $args);
   }
 
   function & createDataMapper($mapper_path)
@@ -283,16 +283,6 @@ class LimbBaseToolkit// implements LimbToolkit
   {
     $this->view =& Handle :: resolve($this->view);
     return $this->view;
-  }
-
-  function setProcessedObject(&$object)
-  {
-    $this->processed_object =& $object;
-  }
-
-  function & getProcessedObject()
-  {
-    return $this->processed_object;
   }
 
   function setCurrentEntity(&$object)

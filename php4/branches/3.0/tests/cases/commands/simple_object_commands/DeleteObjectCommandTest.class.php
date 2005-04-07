@@ -35,27 +35,12 @@ class DeleteObjectCommandTest extends LimbTestCase
     $object = new SimpleObject();
     $object->set('id', $id = 1001);
 
-    $toolkit->setProcessedObject($object);
-
-    $command = new DeleteObjectCommand();
+    $command = new DeleteObjectCommand($object);
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $uow =& $toolkit->getUOW();
     $this->assertTrue($uow->isDeleted($object));
-  }
-
-  function testPerformError()
-  {
-    $object = new SimpleObject();
-    $toolkit =& Limb :: toolkit();
-
-    $command = new DeleteObjectCommand();
-
-    $this->assertEqual($command->perform(), LIMB_STATUS_ERROR);
-
-    $uow =& $toolkit->getUOW();
-    $this->assertFalse($uow->isDeleted($object));
   }
 }
 

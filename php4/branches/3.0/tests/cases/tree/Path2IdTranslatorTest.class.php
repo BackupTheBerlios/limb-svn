@@ -198,50 +198,9 @@ class Path2IdTranslatorTest extends LimbTestCase
     $this->assertEqual('/limb/cmf/test1', $translator->toPath($id));
   }
 
-  function testGetPathToObjectByParentNodeId()
+  function testGetPathToNode()
   {
-    $object = new Object();
-    $object->set('parent_node_id', $parent_node_id = 10);
-    $object->set('identifier', $identifier = 'test_item');
-
-    $this->tree->expectOnce('getPathToNode', array($parent_node_id));
-    $this->tree->setReturnValue('getPathToNode', $path = '/internal/whatever', array($parent_node_id));
-
-    $this->db->insert('sys_object_to_node', array('oid' => $id = 200, 'node_id' => $parent_node_id));
-
-    $path2id_translator = new Path2IdTranslator();
-    $path2id_translator->setExternalOffset('/external/');
-    $path2id_translator->setInternalOffset('/internal/');
-
-    $this->assertEqual($path2id_translator->getPathToObject($object), '/external/whatever/test_item');
-  }
-
-  function testGetPathToObjectByParentNodeIdCached()
-  {
-    $object = new Object();
-    $object->set('parent_node_id', $parent_node_id = 10);
-    $object->set('identifier', $identifier = 'test_item');
-
-    $this->tree->expectOnce('getPathToNode', array($parent_node_id));
-    $this->tree->setReturnValue('getPathToNode', $path = 'whatever', array($parent_node_id));
-
-    $this->db->insert('sys_object_to_node', array('oid' => $id = 200, 'node_id' => $parent_node_id));
-
-    $path2id_translator = new Path2IdTranslator();
-
-    $path1 = $path2id_translator->getPathToObject($object);
-    $path2 = $path2id_translator->getPathToObject($object);
-
-    $this->assertEqual($path1, $path2);
-  }
-
-  function testGetPathToObjectByNodeID()
-  {
-    $object = new Object();
-    $object->set('node_id', $node_id = 10);
-    $object->set('identifier', $identifier = 'test_item');
-
-    $this->tree->expectOnce('getPathToNode', array($node_id));
+    $this->tree->expectOnce('getPathToNode', array($node_id = 10));
     $this->tree->setReturnValue('getPathToNode', $path = '/internal/whatever', array($node_id));
 
     $path2id_translator = new Path2IdTranslator();
@@ -249,22 +208,18 @@ class Path2IdTranslatorTest extends LimbTestCase
     $path2id_translator->setExternalOffset('/external/');
     $path2id_translator->setInternalOffset('/internal/');
 
-    $this->assertEqual($path2id_translator->getPathToObject($object), '/external/whatever');
+    $this->assertEqual($path2id_translator->getPathToNode($node_id), '/external/whatever');
   }
 
-  function testGetPathToObjectByNodeIDCached()
+  function testGetPathToNodeCached()
   {
-    $object = new Object();
-    $object->set('node_id', $node_id = 10);
-    $object->set('identifier', $identifier = 'test_item');
-
-    $this->tree->expectOnce('getPathToNode', array($node_id));
+    $this->tree->expectOnce('getPathToNode', array($node_id = 10));
     $this->tree->setReturnValue('getPathToNode', $path = 'whatever', array($node_id));
 
     $path2id_translator = new Path2IdTranslator();
 
-    $path1 = $path2id_translator->getPathToObject($object);
-    $path2 = $path2id_translator->getPathToObject($object);
+    $path1 = $path2id_translator->getPathToNode($node_id);
+    $path2 = $path2id_translator->getPathToNode($node_id);
     $this->assertEqual($path1, $path2);
   }
 }

@@ -12,26 +12,23 @@
 class MapDataspaceToObjectCommand
 {
   var $map;
+  var $object;
 
-  function MapDataspaceToObjectCommand($map)
+  function MapDataspaceToObjectCommand($map, &$object)
   {
     $this->map = $map;
+    $this->object =& $object;
   }
 
   function perform()
   {
-    $toolkit =& Limb :: toolkit();
-
-    if(!$object =& $toolkit->getProcessedObject())
-      return LIMB_STATUS_ERROR;
-
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
     foreach($this->map as $key => $setter)
     {
       if ((($value = $dataspace->get($key)) !== false) && (($value = $dataspace->get($key)) !== null))
-        $object->set($setter, $value);
+        $this->object->set($setter, $value);
     }
 
     return LIMB_STATUS_OK;

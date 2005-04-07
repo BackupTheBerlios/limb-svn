@@ -24,9 +24,8 @@ class RegisterObjectCommandTest extends LimbTestCase
     $object->set('title', $title = 'any title');
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setProcessedObject($object);
 
-    $command = new RegisterObjectCommand();
+    $command = new RegisterObjectCommand($object);
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 

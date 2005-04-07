@@ -20,7 +20,7 @@ class RequestResolverMappingFilter//implements InterceptingFilter
     foreach(array_keys($this->mappers) as $key)
     {
       $mapper =& Handle :: resolve($this->mappers[$key]);
-      if($resolver =& $mapper->map($request))
+      if(is_object($resolver =& $mapper->map($request)))
         $toolkit->setRequestResolver($resolver);
     }
 

@@ -40,9 +40,7 @@ class MapDataspaceToObjectCommandTest extends LimbTestCase
 
     $object = new SimpleObject();
 
-    $toolkit->setProcessedObject($object);
-
-    $command = new MapDataspaceToObjectCommand($map);
+    $command = new MapDataspaceToObjectCommand($map, $object);
 
     $dataspace =& $toolkit->getDataspace();
     $dataspace->set('ds_title', $title = 'title');
@@ -56,25 +54,6 @@ class MapDataspaceToObjectCommandTest extends LimbTestCase
     $values = $object->export();
     $this->assertFalse(array_key_exists('any_field', $values));
   }
-
-  function testPerformError()
-  {
-    $object = new SimpleObject();
-
-    $map = array('title' => 'title',
-                 'annotation' => 'annotation',
-                 'content' => 'content');
-
-    $command = new MapDataspaceToObjectCommand($map);
-
-    $toolkit =& Limb :: toolkit();
-
-    $this->assertEqual($command->perform(), LIMB_STATUS_ERROR);
-
-    $this->assertFalse($object->get('title'));
-    $this->assertFalse($object->get('annotation'));
-  }
-
 }
 
 ?>

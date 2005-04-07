@@ -46,9 +46,7 @@ class MapObjectToDataspaceCommandTest extends LimbTestCase
                  'annotation' => 'ds_annotation',
                  'content' => 'ds_content');
 
-    $toolkit->setProcessedObject($object);
-
-    $command = new MapObjectToDataspaceCommand($map);
+    $command = new MapObjectToDataspaceCommand($map, $object);
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
@@ -57,24 +55,6 @@ class MapObjectToDataspaceCommandTest extends LimbTestCase
     $this->assertEqual($dataspace->get('ds_annotation'), $annotation);
     $this->assertIdentical($dataspace->get('ds_content'), $content);
   }
-
-  function testPerformError()
-  {
-    $map = array('title' => 'ds_title',
-                 'annotation' => 'ds_annotation',
-                 'content' => 'ds_content');
-
-    $command = new MapObjectToDataspaceCommand($map);
-
-    $toolkit =& Limb :: toolkit();
-
-    $this->assertEqual($command->perform(), LIMB_STATUS_ERROR);
-
-    $dataspace =& $toolkit->getDataspace();
-    $this->assertFalse($dataspace->get('ds_title'));
-    $this->assertFalse($dataspace->get('ds_annotation'));
-  }
-
 }
 
 ?>

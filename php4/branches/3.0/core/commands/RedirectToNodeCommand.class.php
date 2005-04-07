@@ -10,17 +10,21 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectCommand.class.php');
 
-class RedirectToMappedObjectCommand
+class RedirectToNodeCommand
 {
+  var $node;
+
+  function RedirectToNodeCommand(&$node)
+  {
+    $this->node =& $node;
+  }
+
   function perform()
   {
     $toolkit =& Limb :: toolkit();
-    if(!$mapped_object =& $toolkit->getCurrentEntity())
-      return LIMB_STATUS_ERROR;
-
     $path2id_translator =& $toolkit->getPath2IdTranslator();
 
-    $path = $path2id_translator->toPath($mapped_object->get('oid'));
+    $path = $path2id_translator->getPathToNode($this->node->get('id'));
     $command =& $this->getRedirectCommand($path);
     return $command->perform();
   }

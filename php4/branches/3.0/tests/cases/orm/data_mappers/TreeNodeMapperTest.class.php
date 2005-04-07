@@ -69,15 +69,15 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $object = new Object();
 
     $record = new Dataspace();
-    $record->import(array('node_id' => $node_id = 10,
-                          'parent_node_id' => $parent_node_id = 100,
-                          'identifier' => $identifier = 'test',
+    $record->import(array('_tree_id' => $node_id = 10,
+                          '_tree_parent_id' => $parent_node_id = 100,
+                          '_tree_identifier' => $identifier = 'test',
                           ));
 
     $mapper->load($record, $object);
 
-    $this->assertEqual($object->get('node_id'), $node_id);
-    $this->assertEqual($object->get('parent_node_id'), $parent_node_id);
+    $this->assertEqual($object->get('id'), $node_id);
+    $this->assertEqual($object->get('parent_id'), $parent_node_id);
     $this->assertEqual($object->get('identifier'), $identifier);
   }
 
@@ -89,7 +89,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
     $object = new Object();
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('parent_id', $parent_node_id = 10);
 
     $this->tree->expectNever('canAddNode');
 
@@ -112,7 +112,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
     $object = new Object();
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('parent_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode', array($parent_node_id));
     $this->tree->setReturnValue('canAddNode', false);
@@ -120,7 +120,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper->insert($object);
     $this->assertTrue(catch('Exception', $e));
     $this->assertEqual($e->getMessage(), 'tree registering failed');
-    $this->assertEqual($e->getAdditionalParams(), array('parent_node_id' => 10));
+    $this->assertEqual($e->getAdditionalParams(), array('parent_id' => 10));
   }
 
 
@@ -132,7 +132,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
     $object = new Object();
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('parent_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode', array($parent_node_id));
     $this->tree->setReturnValue('canAddNode', true);
@@ -159,7 +159,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper->setReturnReference('_getIdentifierGenerator', $generator);
 
     $object = new Object();
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('parent_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode', array($parent_node_id));
     $this->tree->setReturnValue('canAddNode', true);
@@ -173,7 +173,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $mapper->insert($object);
 
-    $this->assertEqual($object->get('node_id'), $node_id);
+    $this->assertEqual($object->get('id'), $node_id);
     $this->assertEqual($object->get('identifier'), $identifier);
 
     $generator->tally();
@@ -197,7 +197,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $mapper->insert($object);
 
-    $this->assertEqual($object->get('node_id'), $root_node_id);
+    $this->assertEqual($object->get('id'), $root_node_id);
     $this->assertEqual($object->get('identifier'), $identifier);
 
     $generator->tally();
@@ -219,7 +219,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
 
     $object = new Object();
-    $object->set('node_id', 10);
+    $object->set('id', 10);
 
     $mapper->update($object);
     $this->assertTrue(catch('Exception', $e));
@@ -231,8 +231,8 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
 
     $object = new Object();
-    $object->set('node_id', $node_id = 100);
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('id', $node_id = 100);
+    $object->set('parent_id', $parent_node_id = 10);
     $object->set('identifier', $identifier = 'test');
 
     $this->tree->expectOnce('getNode');
@@ -249,8 +249,8 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
 
     $object = new Object();
-    $object->set('node_id', $node_id = 100);
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('id', $node_id = 100);
+    $object->set('parent_id', $parent_node_id = 10);
     $object->set('identifier', $identifier = 'test');
 
     $this->tree->expectOnce('getNode');
@@ -267,8 +267,8 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
 
     $object = new Object();
-    $object->set('node_id', $node_id = 100);
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('id', $node_id = 100);
+    $object->set('parent_id', $parent_node_id = 10);
 
     $this->tree->expectOnce('canAddNode');
     $this->tree->setReturnValue('canAddNode', true);
@@ -289,8 +289,8 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
 
     $object = new Object();
-    $object->set('node_id', $node_id = 100);
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('id', $node_id = 100);
+    $object->set('parent_id', $parent_node_id = 10);
     $object->set('identifier', $identifier = 'test');
 
     $this->tree->expectOnce('getNode');
@@ -312,8 +312,8 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
 
     $object = new Object();
-    $object->set('node_id', $node_id = 100);
-    $object->set('parent_node_id', $parent_node_id = 10);
+    $object->set('id', $node_id = 100);
+    $object->set('parent_id', $parent_node_id = 10);
     $object->set('identifier', $identifier = 'test');
 
     $this->tree->expectOnce('canAddNode');
@@ -344,7 +344,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
     $object = new Object();
 
-    $object->set('node_id', $node_id = 100);
+    $object->set('id', $node_id = 100);
 
     $this->tree->expectOnce('canDeleteNode', array($node_id));
     $this->tree->setReturnValue('canDeleteNode', false, array($node_id));
@@ -357,7 +357,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
     $object = new Object();
 
-    $object->set('node_id', $node_id = 100);
+    $object->set('id', $node_id = 100);
 
     $this->tree->setReturnValue('canDeleteNode', true, array($node_id));
     $this->tree->expectOnce('deleteNode', array($node_id));

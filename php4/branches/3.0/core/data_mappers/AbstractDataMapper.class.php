@@ -29,8 +29,10 @@ class AbstractDataMapper
       $this->insert($object);
   }
 
+  //protected
   function insert(&$object){}
 
+  //protected
   function update(&$object){}
 
   function delete(&$object){}

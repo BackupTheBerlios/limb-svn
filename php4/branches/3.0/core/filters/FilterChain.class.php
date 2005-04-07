@@ -46,8 +46,8 @@ class FilterChain
 
     if(isset($this->filters[$this->counter]))
     {
-      $this->filters[$this->counter] =& Handle :: resolve($this->filters[$this->counter]);
-      $this->filters[$this->counter]->run($this, $this->request, $this->response);
+      $filter =& Handle :: resolve($this->filters[$this->counter]);
+      $filter->run($this, $this->request, $this->response);
     }
   }
 

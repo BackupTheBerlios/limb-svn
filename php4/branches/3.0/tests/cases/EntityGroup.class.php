@@ -8,16 +8,16 @@
 * $Id: TreeGroup.class.php 1102 2005-02-14 12:36:26Z pachanga $
 *
 ***********************************************************************************/
-class PermissionsGroup extends LimbGroupTest
+class EntityGroup extends LimbGroupTest
 {
-  function PermissionsGroup()
+  function EntityGroup()
   {
-    parent :: LimbGroupTest('permissions related tests');
+    parent :: LimbGroupTest('entity tests');
   }
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/permissions');
+    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/entity');
   }
 }
 ?>

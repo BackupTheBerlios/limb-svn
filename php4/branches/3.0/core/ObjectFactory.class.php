@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: ObjectFactory.class.php 1098 2005-02-10 12:06:14Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/system/objects_support.inc.php');
@@ -19,11 +19,12 @@ if(!isRegisteredResolver('object'))
 
 class ObjectFactory
 {
-  function create($class_name)
+  function create($class_name, $args = array())
   {
     ObjectFactory :: _includeClassFile($class_name);
+    $handle = new Handle($class_name, $args);
 
-    return new $class_name();
+    return Handle :: resolve($handle);
   }
 
   function _includeClassFile($class_name)
@@ -32,7 +33,6 @@ class ObjectFactory
       return;
 
     $resolver =& Handle :: resolve(getFileResolver('object'));
-
     $full_path = $resolver->resolve($class_name);
 
     include_once($full_path);

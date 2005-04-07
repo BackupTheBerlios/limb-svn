@@ -11,17 +11,19 @@
 
 class RegisterObjectCommand
 {
-  function RegisterObjectCommand(){}
+  var $object;
+
+  function RegisterObjectCommand(&$object)
+  {
+    $this->object =& $object;
+  }
 
   function perform()
   {
     $toolkit =& Limb :: toolkit();
-    if(!$object =& $toolkit->getProcessedObject($toolkit))
-      return LIMB_STATUS_ERROR;
-
     $uow =& $toolkit->getUOW();
 
-    $uow->register($object);
+    $uow->register($this->object);
 
     return LIMB_STATUS_OK;
   }

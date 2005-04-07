@@ -15,5 +15,24 @@ if(!defined('ERROR_HANDLER_TYPE'))
 else
   Debug :: setHandleType(ERROR_HANDLER_TYPE);
 
+function isErrorHandlerInstalled($handler)
+{
+  $prev_handler = set_error_handler('dummyErrorHandler');
+  $res = $prev_handler === $handler;
+  set_error_handler($prev_handler);
+
+  return $res;
+}
+
+function isPHPErrorHandlerInstalled()
+{
+  $prev_handler = set_error_handler('dummyErrorHandler');
+  $res = $prev_handler === NULL;
+  set_error_handler($prev_handler);
+
+  return $res;
+}
+
+function dummyErrorHandler(){}
 
 ?>

@@ -8,7 +8,7 @@
 * $Id: RedirectCommandTest.class.php 1159 2005-03-14 10:10:35Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/RedirectToProcessedObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/RedirectToNodeCommand.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
@@ -18,18 +18,18 @@ Mock :: generate('LimbBaseToolkit');
 Mock :: generate('Path2IdTranslator');
 Mock :: generate('Command');
 
-Mock :: generatePartial('RedirectToProcessedObjectCommand',
-                        'RedirectToProcessedObjectCommandTestVersion',
+Mock :: generatePartial('RedirectToNodeCommand',
+                        'RedirectToNodeCommandTestVersion',
                         array('getRedirectCommand'));
 
 
-class RedirectToProcessedObjectCommandTest extends LimbTestCase
+class RedirectToNodeCommandTest extends LimbTestCase
 {
   var $path2id_translator;
 
-  function RedirectToProcessedObjectCommandTest()
+  function RedirectToNodeCommandTest()
   {
-    parent :: LimbTestCase('redirect to processed object command test');
+    parent :: LimbTestCase('redirect to node command test');
   }
 
   function setUp()
@@ -51,18 +51,18 @@ class RedirectToProcessedObjectCommandTest extends LimbTestCase
 
   function testPerformOk()
   {
-    $object = new Object();
-    $object->set('oid', $id = 10);
-    $this->toolkit->setReturnReference('getProcessedObject', $object);
+    $node = new Object();
+    $node->set('id', $node_id = 10);
 
-    $this->path2id_translator->expectOnce('toPath', array($id));
-    $this->path2id_translator->setReturnValue('toPath', $path = 'any path');
+    $this->path2id_translator->expectOnce('getPathToNode', array($node_id));
+    $this->path2id_translator->setReturnValue('getPathToNode', $path = 'any path');
 
     $regirect_command = new MockCommand($this);
     $regirect_command->expectOnce('perform');
     $regirect_command->setReturnValue('perform', LIMB_STATUS_OK);
 
-    $command = new RedirectToProcessedObjectCommandTestVersion($this);
+    $command = new RedirectToNodeCommandTestVersion($this);
+    $command->RedirectToNodeCommand($node);
 
     $command->setReturnReference('getRedirectCommand', $regirect_command, array($path));
 

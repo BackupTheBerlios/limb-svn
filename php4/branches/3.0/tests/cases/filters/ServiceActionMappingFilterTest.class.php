@@ -79,6 +79,45 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $service->tally();
   }
 
+  function testRunOkEmptyAction()
+  {
+    $toolkit =& Limb :: toolkit();
+
+    $request =& $toolkit->getRequest();
+    $response = $toolkit->getResponse();
+
+    $resolver = new MockRequestResolver($this);
+    $service = new MockService($this);
+
+    $toolkit->setRequestResolver($resolver);
+
+    $filter = new ServiceActionMappingFilter();
+
+    $fc = new MockFilterChain($this);
+    $fc->expectOnce('next');
+
+    $resolver->expectOnce('getRequestedService', array($request));
+    $resolver->setReturnReference('getRequestedService', $service);
+
+    $resolver->expectOnce('getRequestedAction', array($request));
+    $resolver->setReturnValue('getRequestedAction', '');
+
+    $service->expectOnce('getDefaultAction');
+    $service->setReturnValue('getDefaultAction', $action = 'whatever');
+
+    $service->expectOnce('setCurrentAction', array($action));
+
+    $filter->run($fc, $request, $response);
+
+    $service =& $toolkit->getCurrentService();
+
+    $this->assertIsA($service, 'MockService');
+
+    $fc->tally();
+    $resolver->tally();
+    $service->tally();
+  }
+
   function testRunOkActionNotFound()
   {
     registerTestingIni('404.service.ini',

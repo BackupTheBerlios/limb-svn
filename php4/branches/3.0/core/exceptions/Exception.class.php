@@ -158,6 +158,11 @@ class Exception
 //idea taken from binarycloud
 function throw(&$exception)
 {
+  $use_html = php_sapi_name() != 'cli';
+
+  if(!isErrorHandlerInstalled('simpleTestErrorHandler'))
+    trigger_error($exception->toString(), E_USER_NOTICE);
+
   if (isset($GLOBALS['global_exception']))
   {
     if ($GLOBALS['global_exception'] !== null)
@@ -166,11 +171,6 @@ function throw(&$exception)
       printf('Trying to throw an Exception (%s) though last exception (%s) was not caught',
              $exception->toString(),
              $GLOBALS['global_exception']->toString());
-
-      if(php_sapi_name() == 'cli')
-        $use_html = false;
-      else
-        $use_html = true;
 
       print $GLOBALS['global_exception']->getBacktrace($use_html);
       die();//???
@@ -193,4 +193,3 @@ function catch($type, &$result)
   $GLOBALS['global_exception'] = null;
   return true;
 }
-

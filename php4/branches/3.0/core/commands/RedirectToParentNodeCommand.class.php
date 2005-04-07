@@ -10,17 +10,20 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectCommand.class.php');
 
-class RedirectToProcessedObjectCommand
+class RedirectToParentNodeCommand
 {
+  var $node;
+  function RedirectToParentNodeCommand(&$node)
+  {
+    $this->node =& $node;
+  }
+
   function perform()
   {
     $toolkit =& Limb :: toolkit();
-    if(!$mapped_object =& $toolkit->getProcessedObject())
-      return LIMB_STATUS_ERROR;
 
     $path2id_translator =& $toolkit->getPath2IdTranslator();
-
-    $path = $path2id_translator->toPath($mapped_object->get('oid'));
+    $path = $path2id_translator->getPathToNode((integer)$this->node->get('parent_id'));
     $command =& $this->getRedirectCommand($path);
     return $command->perform();
   }

@@ -39,6 +39,22 @@ class Object2ServiceMapperTest extends LimbTestCase
     $this->db->delete('sys_service');
   }
 
+  function testLoad()
+  {
+    $mapper = new Object2ServiceMapper();
+    $object = new Object();
+
+    $record = new Dataspace();
+    $record->import(array('service_name' => $service_name = 'TestService',
+                          'title' => $title = 'some title',
+                          ));
+
+    $mapper->load($record, $object);
+
+    $this->assertEqual($object->get('service_name'), $service_name);
+    $this->assertEqual($object->get('title'), $title);
+  }
+
   function testFailedInsertNoOId()
   {
     $object = new Object();

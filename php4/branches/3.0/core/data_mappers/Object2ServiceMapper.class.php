@@ -12,6 +12,12 @@ require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
 class Object2ServiceMapper extends AbstractDataMapper
 {
+  function load(&$record, &$object)
+  {
+    $object->set('title', $record->get('title'));
+    $object->set('service_name', $record->get('service_name'));
+  }
+
   function insert(&$object)
   {
     if (!$object->get('oid'))

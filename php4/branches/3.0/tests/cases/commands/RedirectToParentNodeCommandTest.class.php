@@ -8,33 +8,37 @@
 * $Id: RedirectCommandTest.class.php 1159 2005-03-14 10:10:35Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/RedirectToMappedObjectCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/RedirectToParentNodeCommand.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
 require_once(LIMB_DIR . '/core/commands/Command.interface.php');
+require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
 
-Mock :: generate('LimbBaseToolkit');
+Mock :: generatePartial('LimbBaseToolkit',
+                 'LimbBaseToolkitRedirectToParentNodeCommandTestVersion',
+                 array('getPath2IdTranslator'));
+
 Mock :: generate('Path2IdTranslator');
 Mock :: generate('Command');
 
-Mock :: generatePartial('RedirectToMappedObjectCommand',
-                        'RedirectToMappedObjectCommandTestVersion',
+Mock :: generatePartial('RedirectToParentNodeCommand',
+                        'RedirectToParentNodeCommandTestVersion',
                         array('getRedirectCommand'));
 
 
-class RedirectToMappedObjectCommandTest extends LimbTestCase
+class RedirectToParentNodeCommandTest extends LimbTestCase
 {
   var $path2id_translator;
 
-  function RedirectToMappedObjectCommandTest()
+  function RedirectToParentNodeCommandTest()
   {
-    parent :: LimbTestCase('redirect to mapped object command test');
+    parent :: LimbTestCase('redirect to parent node command test');
   }
 
   function setUp()
   {
-    $this->toolkit = new MockLimbBaseToolkit($this);
+    $this->toolkit = new LimbBaseToolkitRedirectToParentNodeCommandTestVersion($this);
     $this->path2id_translator = new MockPath2IdTranslator($this);
     $this->toolkit->setReturnReference('getPath2IdTranslator', $this->path2id_translator);
 
@@ -51,18 +55,20 @@ class RedirectToMappedObjectCommandTest extends LimbTestCase
 
   function testPerformOk()
   {
-    $object = new Object();
-    $object->set('oid', $id = 10);
-    $this->toolkit->setReturnReference('getCurrentEntity', $object);
+    $node = new Object();
+    $node->set('parent_id', $parent_node_id = 100);
 
-    $this->path2id_translator->expectOnce('toPath', array($id));
-    $this->path2id_translator->setReturnValue('toPath', $path = 'any path');
+    $this->toolkit->setCurrentEntity($object);
+
+    $this->path2id_translator->expectOnce('getPathToNode', array($parent_node_id));
+    $this->path2id_translator->setReturnValue('getPathToNode', $path = 'any path');
 
     $regirect_command = new MockCommand($this);
     $regirect_command->expectOnce('perform');
     $regirect_command->setReturnValue('perform', LIMB_STATUS_OK);
 
-    $command = new RedirectToMappedObjectCommandTestVersion($this);
+    $command = new RedirectToParentNodeCommandTestVersion($this);
+    $command->RedirectToParentNodeCommand($node);
 
     $command->setReturnReference('getRedirectCommand', $regirect_command, array($path));
 

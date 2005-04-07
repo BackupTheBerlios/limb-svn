@@ -150,16 +150,6 @@ class LimbBaseToolkitTest extends LimbTestCase
                      'ViewTestVersion');
   }
 
-  function testSetGetProcessedObject()
-  {
-    $object = new Object();
-    $this->toolkit->setProcessedObject($object);
-
-    $object->set('id', 'whatever');
-
-    $this->assertEqual($this->toolkit->getProcessedObject(), $object);
-  }
-
   function testSetGetCurrentEntity()
   {
     $object = new Object();

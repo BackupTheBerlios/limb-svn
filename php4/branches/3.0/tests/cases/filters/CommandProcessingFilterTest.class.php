@@ -11,22 +11,14 @@
 require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
 require_once(LIMB_DIR . '/core/filters/CommandProcessingFilter.class.php');
 require_once(LIMB_DIR . '/core/services/Service.class.php');
-require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
 require_once(LIMB_DIR . '/core/commands/Command.interface.php');
 
 Mock :: generate('FilterChain');
 Mock :: generate('Service');
-Mock :: generate('UnitOfWork');
 Mock :: generate('Command');
-
-Mock :: generatePartial('LimbBaseToolkit',
-                        'ToolkitCommandProcessingFilterTestVersion',
-                        array('getUOW'));
 
 class CommandProcessingFilterTest extends LimbTestCase
 {
-  var $toolkit;
-
   function CommandProcessingFilterTest()
   {
     parent :: LimbTestCase('command processing filter test');
@@ -34,25 +26,17 @@ class CommandProcessingFilterTest extends LimbTestCase
 
   function setUp()
   {
-    $this->uow = new MockUnitOfWork($this);
-
-    $this->toolkit = new ToolkitCommandProcessingFilterTestVersion($this);
-    $this->toolkit->setReturnReference('getUOW', $this->uow);
-
-    Limb :: registerToolkit($this->toolkit);
+    Limb :: saveToolkit();
   }
 
   function tearDown()
   {
-    $this->uow->tally();
-
     Limb :: restoreToolkit();
   }
 
   function testRunOk()
   {
-    $this->uow->expectOnce('start');
-    $this->uow->expectOnce('commit');
+    $toolkit =& Limb :: toolkit();
 
     $command = new MockCommand($this);
     $command->expectOnce('perform');
@@ -63,7 +47,7 @@ class CommandProcessingFilterTest extends LimbTestCase
     $service->expectOnce('getActionCommand', array($action));
     $service->setReturnReference('getActionCommand', $command);
 
-    $this->toolkit->setCurrentService($service);
+    $toolkit->setCurrentService($service);
 
     $filter = new CommandProcessingFilter();
 

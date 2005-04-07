@@ -20,9 +20,12 @@ class ServiceActionMappingFilter//implements InterceptingFilter
       return throw(new Exception('request resolver not set'));
 
     $service =& $resolver->getRequestedService($request);
-    $action =& $resolver->getRequestedAction($request);
-
-    if($service->actionExists($action))
+    if(!$action =& $resolver->getRequestedAction($request))
+    {
+      $service->setCurrentAction($service->getDefaultAction());
+      $toolkit->setCurrentService($service);
+    }
+    elseif($service->actionExists($action))
     {
       $service->setCurrentAction($action);
       $toolkit->setCurrentService($service);

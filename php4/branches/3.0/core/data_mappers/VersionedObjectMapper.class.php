@@ -116,7 +116,7 @@ class VersionedObjectMapper extends AbstractDataMapper
 
     $this->_insertVersionRecord($object, $version_session_id, $version);
 
-    $this->_updateCurrentVersionRecord(&$object, $version_session_id);
+    $this->_updateCurrentVersionRecord($object, $version_session_id);
   }
 
   function delete(&$object)

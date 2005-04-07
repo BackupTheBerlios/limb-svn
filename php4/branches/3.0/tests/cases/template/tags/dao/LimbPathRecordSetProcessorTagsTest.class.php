@@ -47,18 +47,18 @@ class LimbPathRecordSetProcessorTagTestCase extends LimbTestCase
 
   function testTag()
   {
-    $object1_data = array('oid' => $id1 = 10);
-    $object2_data = array('oid' => $id2 = 20);
+    $object1_data = array('_tree_id' => $id1 = 10);
+    $object2_data = array('_tree_id' => $id2 = 20);
 
     $rs = new PagedArrayDataset(array($object1_data, $object2_data));
 
-    $this->path2id_translator->expectAtleastOnce('getPathToObject');
-    $this->path2id_translator->setReturnValueAt(0, 'getPathToObject', $path1 = 'path1');
-    $this->path2id_translator->setReturnValueAt(1, 'getPathToObject', $path2 = 'path2');
+    $this->path2id_translator->expectAtleastOnce('getPathToNode');
+    $this->path2id_translator->setReturnValueAt(0, 'getPathToNode', $path1 = 'path1');
+    $this->path2id_translator->setReturnValueAt(1, 'getPathToNode', $path2 = 'path2');
 
     $template = '<limb:recordset_processor:PATH source="list1">'.
                  '<list:LIST id="list1">'.
-                   '<list:ITEM>{$path}_{$oid}|</list:ITEM>'.
+                   '<list:ITEM>{$path}_{$_tree_id}|</list:ITEM>'.
                  '</list:LIST>';
 
     RegisterTestingTemplate('/limb/path_record_set_processor.html', $template);
