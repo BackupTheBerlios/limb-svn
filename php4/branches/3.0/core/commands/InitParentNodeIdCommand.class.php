@@ -10,14 +10,19 @@
 ***********************************************************************************/
 class InitParentNodeIdCommand
 {
+  var $node;
+
+  function InitParentNodeIdCommand(&$node)
+  {
+    $this->node =& $node;
+  }
+
   function perform()
   {
     $toolkit =& Limb :: toolkit();
-    if(!$mapped_object =& $toolkit->getCurrentEntity())
-      return LIMB_STATUS_OK;
 
     $dataspace =& $toolkit->getDataspace();
-    $dataspace->set('parent_node_id', $mapped_object->get('node_id'));
+    $dataspace->set('parent_node_id', $this->node->get('id'));
 
     return LIMB_STATUS_OK;
   }

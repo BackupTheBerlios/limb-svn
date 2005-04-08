@@ -8,10 +8,11 @@
 * $Id: ImageObjectsDAOTest.class.php 1093 2005-02-07 15:17:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/MappedObjectDirectChildrenDAO.class.php');
+require_once(LIMB_DIR . '/core/DAO/CurrentEntityDirectChildrenDAO.class.php');
 include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
-require_once(LIMB_DIR . '/core/Object.class.php');
+require_once(LIMB_DIR . '/core/entity/Entity.class.php');
+require_once(LIMB_DIR . '/core/NodeConnection.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
 require_once(LIMB_DIR . '/core/DAO/criteria/TreeBranchCriteria.class.php');
@@ -19,32 +20,32 @@ require_once(LIMB_DIR . '/core/DAO/criteria/TreeBranchCriteria.class.php');
 Mock :: generate('SQLBasedDAO');
 
 Mock :: generatePartial('LimbBaseToolkit',
-                        'LimbBaseToolkitMappedObjectDirectChildrenDAOTestVersion',
+                        'LimbBaseToolkitCurrentEntityDirectChildrenDAOTestVersion',
                         array('getTree'));
 
 Mock :: generate('TreeBranchCriteria');
 Mock :: generate('Tree');
 
-Mock :: generatePartial('MappedObjectDirectChildrenDAO',
-                        'MappedObjectDirectChildrenDAOTestVersion',
+Mock :: generatePartial('CurrentEntityDirectChildrenDAO',
+                        'CurrentEntityDirectChildrenDAOTestVersion',
                         array('getTreeBranchCriteria'));
 
-class MappedObjectDirectChildrenDAOTest extends LimbTestCase
+class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
 {
   var $db;
   var $toolkit;
   var $tree;
 
-  function MappedObjectDirectChildrenDAOTest()
+  function CurrentEntityDirectChildrenDAOTest()
   {
-    parent :: LimbTestCase('Mapped object direct children DAO test');
+    parent :: LimbTestCase('current entity direct children dao test');
   }
 
   function setUp()
   {
     $this->tree = new MockTree($this);
 
-    $this->toolkit = new LimbBaseToolkitMappedObjectDirectChildrenDAOTestVersion($this);
+    $this->toolkit = new LimbBaseToolkitCurrentEntityDirectChildrenDAOTestVersion($this);
     $this->toolkit->setReturnReference('getTree', $this->tree);
 
     Limb :: registerToolkit($this->toolkit);
@@ -60,9 +61,12 @@ class MappedObjectDirectChildrenDAOTest extends LimbTestCase
 
   function testFetch()
   {
-    $object = new Object();
-    $object->set('node_id', $id = 10);
-    $this->toolkit->setCurrentEntity($object);
+    $entity = new Entity();
+    $node = new NodeConnection();
+    $node->set('id', $id = 10);
+    $entity->registerPart('node', $node);
+
+    $this->toolkit->setCurrentEntity($entity);
 
     $this->tree->expectOnce('getPathToNode', array($id));
     $this->tree->setReturnValue('getPathToNode', $path = 'whatever');
@@ -82,8 +86,8 @@ class MappedObjectDirectChildrenDAOTest extends LimbTestCase
     $criteria = new MockTreeBranchCriteria($this);
     $criteria->expectOnce('setPath', array($path));
 
-    $dao = new MappedObjectDirectChildrenDAOTestVersion($this);
-    $dao->MappedObjectDirectChildrenDAO($decorated_dao);
+    $dao = new CurrentEntityDirectChildrenDAOTestVersion($this);
+    $dao->CurrentEntityDirectChildrenDAO($decorated_dao);
     $dao->setReturnReference('getTreeBranchCriteria', $criteria);
 
     $this->assertIsA($dao->fetch(), 'ChildItemsPathAssignerRecordSet');
@@ -95,7 +99,7 @@ class MappedObjectDirectChildrenDAOTest extends LimbTestCase
 
   function testGetTreeBranchCriteria()
   {
-    $dao = new MappedObjectDirectChildrenDAO(new SQLBasedDAO());
+    $dao = new CurrentEntityDirectChildrenDAO(new SQLBasedDAO());
     $this->assertIsA($dao->getTreeBranchCriteria(), 'TreeBranchCriteria');
   }
 

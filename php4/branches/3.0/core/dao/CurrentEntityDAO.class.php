@@ -9,14 +9,17 @@
 *
 ***********************************************************************************/
 
-class MappedObjectDAO
+class CurrentEntityDAO
 {
-  function MappedObjectDAO(){}
+  function CurrentEntityDAO(){}
 
   function & fetch()
   {
     $toolkit =& Limb :: toolkit();
-    return $toolkit->getCurrentEntity();
+    $entity =& $toolkit->getCurrentEntity();
+    $record = new Dataspace();
+    $record->import($entity->export());
+    return $record;
   }
 }
 

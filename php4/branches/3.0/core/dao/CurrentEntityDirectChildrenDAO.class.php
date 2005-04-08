@@ -10,9 +10,9 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/DAO/SQLBasedDAODecorator.class.php');
 
-class MappedObjectDirectChildrenDAO extends SQLBasedDAODecorator
+class CurrentEntityDirectChildrenDAO extends SQLBasedDAODecorator
 {
-  function MappedObjectDirectChildrenDAO(&$dao)
+  function CurrentEntityDirectChildrenDAO(&$dao)
   {
     parent :: SQLBasedDAODecorator($dao);
   }
@@ -20,14 +20,15 @@ class MappedObjectDirectChildrenDAO extends SQLBasedDAODecorator
   function fetch()
   {
     $toolkit =& Limb :: toolkit();
-    if(!$mapped_object =& $toolkit->getCurrentEntity())
+    if(!$entity =& $toolkit->getCurrentEntity())
     {
       include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
       return new PagedArrayDataset(array());
     }
 
+    $node =& $entity->getPart('node');
     $tree =& $toolkit->getTree();
-    if(!$path = $tree->getPathToNode($mapped_object->get('node_id')))
+    if(!$path = $tree->getPathToNode($node->get('id')))
     {
       include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
       return new PagedArrayDataset(array());
